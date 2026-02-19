@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Startup Loop — Output Registry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Sora:wght@300;400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design tokens (identical to startup-loop-workflow-v2.user.html) ── */
+    :root {
+      --bg:        #040b18;
+      --surface:   #070f1e;
+      --surface2:  #0c1830;
+      --border:    rgba(201,168,76,.1);
+      --border-2:  rgba(201,168,76,.28);
+      --text:      #ddd6c8;
+      --muted:     #5a6b7a;
+      --accent:    #c9a84c;
+      --link:      #7db3d8;
+
+      /* Venture */
+      --head:      #a78bfa;
+      --head-dim:  rgba(124,58,237,.15);
+      --pet:       #34d399;
+      --pet-dim:   rgba(5,150,105,.15);
+      --brik:      #fbbf24;
+      --brik-dim:  rgba(217,119,6,.15);
+
+      /* Status */
+      --done-bg:   rgba(52,211,153,.12);
+      --done-text: #34d399;
+      --draft-bg:  rgba(251,191,36,.12);
+      --draft-text:#fbbf24;
+      --hyp-bg:    rgba(167,139,250,.12);
+      --hyp-text:  #a78bfa;
+      --await-bg:  rgba(125,179,216,.12);
+      --await-text:#7db3d8;
+      --sidebar-w: 248px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    /* ── Grain texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 300px 300px;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Sora', ui-sans-serif, system-ui, sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.7;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 2px solid rgba(201,168,76,.2);
+      overflow-y: auto;
+      z-index: 100;
+      padding: 0 0 40px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(201,168,76,.15) transparent;
+    }
+    .sidebar-logo {
+      padding: 24px 20px 16px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 10px;
+    }
+    .sidebar-section {
+      padding: 8px 20px 3px;
+      font-family: 'Sora', sans-serif;
+      font-size: 9px;
+      font-weight: 300;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,.5);
+      margin-top: 16px;
+    }
+    #sidebar a {
+      display: block;
+      padding: 6px 20px;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      margin: 1px 0;
+      border-left: 2px solid transparent;
+      transition: color .18s, border-color .18s, background .18s;
+    }
+    #sidebar a:hover {
+      color: #fff;
+      border-left-color: var(--accent);
+      background: rgba(201,168,76,.04);
+    }
+    .sidebar-venture {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar-venture::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .sidebar-venture.head::before { background: var(--head); }
+    .sidebar-venture.pet::before  { background: var(--pet); }
+    .sidebar-venture.brik::before { background: var(--brik); }
+
+    /* ── Main ── */
+    #main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 48px 56px 100px;
+      max-width: 1200px;
+    }
+
+    /* ── Section animate-in ── */
+    .section-block {
+      margin-bottom: 56px;
+      animation: fadeUp .5s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Page header ── */
+    .page-header { margin-bottom: 48px; }
+    .page-header h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 32px;
+      font-weight: 400;
+      margin: 0 0 8px;
+      color: #ece8e0;
+      letter-spacing: .02em;
+      line-height: 1.3;
+    }
+    .page-header p {
+      margin: 0;
+      color: var(--muted);
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+    }
+    .snapshot-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--border-2);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+    .snapshot-chip::before {
+      content: '◷';
+      color: var(--accent);
+      font-size: 11px;
+    }
+
+    /* ── Section headings ── */
+    h2.section-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 22px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      scroll-margin-top: 28px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: .01em;
+    }
+    h2.section-heading .section-icon {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--accent);
+      flex-shrink: 0;
+      line-height: 1;
+      opacity: .8;
+    }
+    h3.biz-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 17px;
+      font-weight: 600;
+      margin: 32px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      scroll-margin-top: 28px;
+    }
+    h3.biz-heading .biz-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    h3.biz-heading.head { color: #d4c6ff; }
+    h3.biz-heading.head .biz-dot { background: var(--head); box-shadow: 0 0 6px var(--head); }
+    h3.biz-heading.pet  { color: #a7f3d0; }
+    h3.biz-heading.pet  .biz-dot { background: var(--pet);  box-shadow: 0 0 6px var(--pet); }
+    h3.biz-heading.brik { color: #fde68a; }
+    h3.biz-heading.brik .biz-dot { background: var(--brik); box-shadow: 0 0 6px var(--brik); }
+    .biz-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: .06em;
+      margin-left: auto;
+    }
+
+    /* ── Artifact table ── */
+    .artifact-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .artifact-table th {
+      background: var(--surface2);
+      padding: 9px 14px;
+      font-family: 'Sora', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      text-align: left;
+      white-space: nowrap;
+    }
+    .artifact-table th:last-child { border-right: none; }
+    .artifact-table td {
+      padding: 10px 14px;
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .artifact-table td:last-child { border-right: none; }
+    .artifact-table tr:last-child td { border-bottom: none; }
+    .artifact-table tbody tr:nth-child(odd) td { background: rgba(255,255,255,.014); }
+    .artifact-table tbody tr:hover td { background: rgba(201,168,76,.025); }
+    .artifact-table td.artifact-name {
+      font-family: 'Sora', sans-serif;
+      font-weight: 400;
+      color: var(--text);
+      min-width: 170px;
+    }
+    .artifact-table td.artifact-path {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 400;
+      color: rgba(125,179,216,.8);
+      word-break: break-all;
+      min-width: 260px;
+    }
+    .artifact-table td.artifact-notes {
+      font-size: 11.5px;
+      min-width: 160px;
+    }
+    .stage-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(201,168,76,.08);
+      border: 1px solid rgba(201,168,76,.2);
+      border-radius: 4px;
+      padding: 1px 6px;
+      white-space: nowrap;
+      letter-spacing: .05em;
+    }
+
+    /* ── Status badges ── */
+    .badge-active {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--done-bg); color: var(--done-text);
+      border-radius: 20px; padding: 2px 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 600; white-space: nowrap;
+      box-shadow: 0 0 8px rgba(52,211,153,.2);
+      animation: badge-glow 3s ease-in-out infinite;
+    }
+    @keyframes badge-glow {
+      0%, 100% { box-shadow: 0 0 8px rgba(52,211,153,.2); }
+      50%       { box-shadow: 0 0 14px rgba(52,211,153,.35); }
+    }
+    .badge-draft {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--draft-bg); color: var(--draft-text);
+      border-radius: 20px; padding: 2px 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 600; white-space: nowrap;
+    }
+    .badge-hypothesis {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--hyp-bg); color: var(--hyp-text);
+      border-radius: 20px; padding: 2px 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 600; white-space: nowrap;
+    }
+    .badge-awaiting {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--await-bg); color: var(--await-text);
+      border-radius: 20px; padding: 2px 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 600; white-space: nowrap;
+    }
+    .badge-active::before     { content: '✓ '; }
+    .badge-draft::before      { content: '◐ '; }
+    .badge-hypothesis::before { content: '◎ '; }
+    .badge-awaiting::before   { content: '? '; }
+
+    /* ── Summary strip ── */
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 800px) { .summary-strip { grid-template-columns: 1fr; } }
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .summary-card.head { border-left: 3px solid var(--head); box-shadow: inset 4px 0 20px var(--head-dim); }
+    .summary-card.pet  { border-left: 3px solid var(--pet);  box-shadow: inset 4px 0 20px var(--pet-dim); }
+    .summary-card.brik { border-left: 3px solid var(--brik); box-shadow: inset 4px 0 20px var(--brik-dim); }
+    .summary-biz {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .summary-card.head .summary-biz { color: #d4c6ff; }
+    .summary-card.pet  .summary-biz { color: #a7f3d0; }
+    .summary-card.brik .summary-biz { color: #fde68a; }
+    .summary-desc {
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--muted);
+    }
+    .summary-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .summary-card.head .summary-count { color: var(--head); }
+    .summary-card.pet  .summary-count { color: var(--pet); }
+    .summary-card.brik .summary-count { color: var(--brik); }
+    .summary-stages {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+
+    /* ── Exclusion footer ── */
+    .exclusion-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 2px solid rgba(201,168,76,.15);
+      padding: 20px 24px;
+      margin-top: 8px;
+    }
+    .exclusion-panel h4 {
+      font-family: 'Sora', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: rgba(201,168,76,.55);
+      margin: 0 0 12px;
+    }
+    .exclusion-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .excl-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 400;
+      color: var(--muted);
+      background: rgba(90,107,122,.08);
+      border: 1px solid rgba(90,107,122,.18);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .excl-reason {
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(90,107,122,.7);
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+    .excl-reason strong { color: var(--muted); font-weight: 400; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+<nav id="sidebar">
+  <div class="sidebar-logo">Output Registry</div>
+
+  <div class="sidebar-section">Overview</div>
+  <a href="#overview">Summary</a>
+  <a href="#curation">Curation Rules</a>
+
+  <div class="sidebar-section">Businesses</div>
+  <a href="#head" class="sidebar-venture head">HEAD</a>
+  <a href="#pet"  class="sidebar-venture pet">PET</a>
+  <a href="#brik" class="sidebar-venture brik">BRIK</a>
+
+  <div class="sidebar-section">Reference</div>
+  <a href="#exclusions">Exclusions</a>
+</nav>
+
+<!-- ════════════════════════════════════════ MAIN ════════════════════════════════ -->
+<main id="main">
+
+  <!-- Page header -->
+  <div class="page-header section-block">
+    <h1>Startup Loop — Output Registry</h1>
+    <p>Every decision-grade artifact produced in the startup loop, organised by stage. Read-only record of work done.</p>
+    <div class="snapshot-chip">Snapshot · 2026-02-19</div>
+  </div>
+
+  <!-- ── Overview ── -->
+  <div id="overview" class="section-block">
+    <h2 class="section-heading"><span class="section-icon">I.</span> Overview</h2>
+
+    <div class="summary-strip">
+      <div class="summary-card head">
+        <div class="summary-biz">HEAD</div>
+        <div class="summary-desc">Mini Pet Headband · DTC</div>
+        <div class="summary-count">11</div>
+        <div class="summary-stages">8 stages covered</div>
+      </div>
+      <div class="summary-card pet">
+        <div class="summary-biz">PET</div>
+        <div class="summary-desc">Dog Accessories · DTC</div>
+        <div class="summary-count">13</div>
+        <div class="summary-stages">9 stages covered</div>
+      </div>
+      <div class="summary-card brik">
+        <div class="summary-biz">BRIK</div>
+        <div class="summary-desc">Brikette Boutique Hotel</div>
+        <div class="summary-count">20</div>
+        <div class="summary-stages">10 stages covered</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Curation Rules ── -->
+  <div id="curation" class="section-block">
+    <h2 class="section-heading"><span class="section-icon">II.</span> Curation Rules</h2>
+    <table class="artifact-table">
+      <thead>
+        <tr>
+          <th>Rule</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="artifact-name">Genuine outputs only</td>
+          <td class="artifact-notes">Research, plans, baselines, forecasts, scorecards, decision logs, briefs, feasibility studies, signal reviews.</td>
+        </tr>
+        <tr>
+          <td class="artifact-name">No prompts or templates</td>
+          <td class="artifact-notes">Files whose primary purpose is to feed a process are excluded (e.g. <code>*-prompt.user.md</code>, <code>*-request-prompt.user.md</code>).</td>
+        </tr>
+        <tr>
+          <td class="artifact-name">Pointer-first</td>
+          <td class="artifact-notes">Where a <code>latest.user.md</code> pointer exists for market-research or site-upgrades, the pointer appears — not the dated source it references.</td>
+        </tr>
+        <tr>
+          <td class="artifact-name">Latest version only</td>
+          <td class="artifact-notes">When multiple numbered versions of a document exist (e.g. forecast v1 + v2), only the latest is shown.</td>
+        </tr>
+        <tr>
+          <td class="artifact-name">No exec summaries</td>
+          <td class="artifact-notes">Always derivative of their parent document. Excluded.</td>
+        </tr>
+        <tr>
+          <td class="artifact-name">No <code>.agent.md</code> variants</td>
+          <td class="artifact-notes">Agent-facing pipeline files. Excluded.</td>
+        </tr>
+        <tr>
+          <td class="artifact-name">Content test, not suffix test</td>
+          <td class="artifact-notes">Some genuine outputs use plain <code>.md</code> (auto-generated analyses, signal reviews). The test is frontmatter <code>Type:</code> or evident content, not the filename suffix.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ════════════════════════════════════════ HEAD ═══════════════════════════════ -->
+  <div id="head" class="section-block">
+    <h2 class="section-heading"><span class="section-icon">III.</span> HEAD — Mini Pet Headband</h2>
+
+    <h3 class="biz-heading head"><span class="biz-dot"></span>HEAD <span class="biz-meta">11 artifacts · 8 stages</span></h3>
+
+    <table class="artifact-table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Artifact</th>
+          <th>Path</th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="stage-tag">S0</span></td>
+          <td class="artifact-name">Intake Packet</td>
+          <td class="artifact-path">docs/business-os/startup-baselines/HEAD-intake-packet.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Business context, assumptions, and constraints</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S0</span></td>
+          <td class="artifact-name">Forecast Seed</td>
+          <td class="artifact-path">docs/business-os/startup-baselines/HEAD-forecast-seed.user.md</td>
+          <td><span class="badge-draft">Draft</span></td>
+          <td class="artifact-notes">Pre-loop revenue hypothesis</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S1</span></td>
+          <td class="artifact-name">Market Intelligence</td>
+          <td class="artifact-path">docs/business-os/market-research/HEAD/latest.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Pointer → 2026-02-12 research report</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S1</span></td>
+          <td class="artifact-name">Brand Dossier</td>
+          <td class="artifact-path">docs/business-os/strategy/HEAD/brand-dossier.user.md</td>
+          <td><span class="badge-draft">Draft</span></td>
+          <td class="artifact-notes">Visual + voice identity</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S3</span></td>
+          <td class="artifact-name">90-Day Forecast v2</td>
+          <td class="artifact-path">docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md</td>
+          <td><span class="badge-draft">Draft</span></td>
+          <td class="artifact-notes">P10/P50/P90 scenario model · v1 superseded</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S5</span></td>
+          <td class="artifact-name">Prioritization Scorecard</td>
+          <td class="artifact-path">docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Go-item ranking</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S5B</span></td>
+          <td class="artifact-name">Strategy Plan</td>
+          <td class="artifact-path">docs/business-os/strategy/HEAD/plan.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Canonical strategy wrapper</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S6B</span></td>
+          <td class="artifact-name">Site Upgrade Brief</td>
+          <td class="artifact-path">docs/business-os/site-upgrades/HEAD/latest.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Pointer → 2026-02-12 upgrade brief</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S9B</span></td>
+          <td class="artifact-name">Launch Readiness Backlog</td>
+          <td class="artifact-path">docs/business-os/strategy/HEAD/launch-readiness-action-backlog.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Pre-launch action items</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S10</span></td>
+          <td class="artifact-name">Week 2 Gate Dry-Run</td>
+          <td class="artifact-path">docs/business-os/strategy/HEAD/2026-02-11-week2-gate-dry-run.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Gate assessment record</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S10</span></td>
+          <td class="artifact-name">Weekly K/P/C/S Decision</td>
+          <td class="artifact-path">docs/business-os/strategy/HEAD/2026-02-12-weekly-kpcs-decision.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">First weekly decision memo</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ════════════════════════════════════════ PET ════════════════════════════════ -->
+  <div id="pet" class="section-block">
+    <h2 class="section-heading"><span class="section-icon">IV.</span> PET — Dog Accessories</h2>
+
+    <h3 class="biz-heading pet"><span class="biz-dot"></span>PET <span class="biz-meta">13 artifacts · 9 stages</span></h3>
+
+    <table class="artifact-table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Artifact</th>
+          <th>Path</th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="stage-tag">S0</span></td>
+          <td class="artifact-name">Intake Packet</td>
+          <td class="artifact-path">docs/business-os/startup-baselines/PET-intake-packet.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Business context and constraints</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S0</span></td>
+          <td class="artifact-name">Forecast Seed</td>
+          <td class="artifact-path">docs/business-os/startup-baselines/PET-forecast-seed.user.md</td>
+          <td><span class="badge-draft">Draft</span></td>
+          <td class="artifact-notes">Pre-loop revenue hypothesis</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S1</span></td>
+          <td class="artifact-name">Market Intelligence</td>
+          <td class="artifact-path">docs/business-os/market-research/PET/latest.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Pointer → current research report</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S1</span></td>
+          <td class="artifact-name">Brand Dossier</td>
+          <td class="artifact-path">docs/business-os/strategy/PET/brand-dossier.user.md</td>
+          <td><span class="badge-draft">Draft</span></td>
+          <td class="artifact-notes">Visual + voice identity</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S2B</span></td>
+          <td class="artifact-name">Offer Design</td>
+          <td class="artifact-path">docs/business-os/startup-baselines/PET-offer.md</td>
+          <td><span class="badge-hypothesis">Hypothesis</span></td>
+          <td class="artifact-notes">ICP, positioning, pricing (€80), objection map · 6 sections complete</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S3</span></td>
+          <td class="artifact-name">90-Day Forecast v2</td>
+          <td class="artifact-path">docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md</td>
+          <td><span class="badge-draft">Draft</span></td>
+          <td class="artifact-notes">P10/P50/P90 scenario model</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S5</span></td>
+          <td class="artifact-name">Prioritization Scorecard</td>
+          <td class="artifact-path">docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Go-item ranking</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S5B</span></td>
+          <td class="artifact-name">Strategy Plan</td>
+          <td class="artifact-path">docs/business-os/strategy/PET/plan.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Canonical strategy wrapper</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S6B</span></td>
+          <td class="artifact-name">Site Upgrade Brief</td>
+          <td class="artifact-path">docs/business-os/site-upgrades/PET/latest.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Pointer → 2026-02-12 upgrade brief</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S6B</span></td>
+          <td class="artifact-name">Naming Shortlist</td>
+          <td class="artifact-path">docs/business-os/strategy/PET/2026-02-18-naming-shortlist.user.md</td>
+          <td><span class="badge-awaiting">Awaiting Decision</span></td>
+          <td class="artifact-notes">Recommends "Vellara" — pending operator decision</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S9B</span></td>
+          <td class="artifact-name">Launch Readiness Backlog</td>
+          <td class="artifact-path">docs/business-os/strategy/PET/launch-readiness-action-backlog.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Pre-launch action items</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S10</span></td>
+          <td class="artifact-name">Week 2 Gate Dry-Run</td>
+          <td class="artifact-path">docs/business-os/strategy/PET/2026-02-11-week2-gate-dry-run.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Gate assessment record</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S10</span></td>
+          <td class="artifact-name">Weekly K/P/C/S Decision</td>
+          <td class="artifact-path">docs/business-os/strategy/PET/2026-02-12-weekly-kpcs-decision.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">First weekly decision memo</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ════════════════════════════════════════ BRIK ═══════════════════════════════ -->
+  <div id="brik" class="section-block">
+    <h2 class="section-heading"><span class="section-icon">V.</span> BRIK — Brikette Boutique Hotel</h2>
+
+    <h3 class="biz-heading brik"><span class="biz-dot"></span>BRIK <span class="biz-meta">20 artifacts · 10 stages</span></h3>
+
+    <table class="artifact-table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Artifact</th>
+          <th>Path</th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="stage-tag">S0</span></td>
+          <td class="artifact-name">Intake Packet</td>
+          <td class="artifact-path">docs/business-os/startup-baselines/BRIK-intake-packet.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Business context and constraints</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S0</span></td>
+          <td class="artifact-name">Forecast Seed</td>
+          <td class="artifact-path">docs/business-os/startup-baselines/BRIK-forecast-seed.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Pre-loop revenue hypothesis · Active + Integrated</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S1</span></td>
+          <td class="artifact-name">Market Intelligence</td>
+          <td class="artifact-path">docs/business-os/market-research/BRIK/latest.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Pointer → 2026-02-15 research report</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S1</span></td>
+          <td class="artifact-name">Brand Dossier</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/brand-dossier.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Visual + voice identity · Active (not Draft)</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S1B</span></td>
+          <td class="artifact-name">Historical Performance Baseline</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Historical occupancy + revenue data</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S1B</span></td>
+          <td class="artifact-name">Octorate Operational Data Baseline</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">PMS data snapshot</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S2A</span></td>
+          <td class="artifact-name">GA4 + Search Console Setup Note</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Measurement stack configuration record</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S2A</span></td>
+          <td class="artifact-name">Measurement Verification</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Verified tracking is live</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S3</span></td>
+          <td class="artifact-name">90-Day Forecast v1</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">P10/P50/P90 scenario model · only version</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S3</span></td>
+          <td class="artifact-name">Apartment Revenue Architecture</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/2026-02-12-apartment-revenue-architecture.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Revenue model for apartment unit</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S3</span></td>
+          <td class="artifact-name">Room Pricing Analysis</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/room-pricing-analysis.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">OTA rate analysis by room/season · auto-generated from Octorate export</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S5</span></td>
+          <td class="artifact-name">Prioritization Scorecard</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Go-item ranking</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S5B</span></td>
+          <td class="artifact-name">Strategy Plan</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/plan.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Canonical strategy wrapper</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S6B</span></td>
+          <td class="artifact-name">Site Upgrade Brief</td>
+          <td class="artifact-path">docs/business-os/site-upgrades/BRIK/latest.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Pointer → 2026-02-12 upgrade brief</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S6B</span></td>
+          <td class="artifact-name">Sales Funnel External Brief</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/2026-02-17-brikette-sales-funnel-external-brief.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">External brief on funnel conversion</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S6B</span></td>
+          <td class="artifact-name">Octorate Process Reduction Feasibility</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/2026-02-17-octorate-process-reduction-feasibility.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Feasibility study for PMS friction reduction</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S7</span></td>
+          <td class="artifact-name">Product Spec</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/product-spec.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Website + booking product specification</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S7</span></td>
+          <td class="artifact-name">Prime App Design Branding</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/prime-app-design-branding.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Design language and brand guidelines</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S10</span></td>
+          <td class="artifact-name">Weekly K/P/C/S Decision</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">First weekly decision memo</td>
+        </tr>
+        <tr>
+          <td><span class="stage-tag">S10</span></td>
+          <td class="artifact-name">Signal Review W08</td>
+          <td class="artifact-path">docs/business-os/strategy/BRIK/signal-review-20260218-1238-W08.md</td>
+          <td><span class="badge-active">Active</span></td>
+          <td class="artifact-notes">Week 8 signal quality review · plain .md, Type: Signal-Review</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Exclusions ── -->
+  <div id="exclusions" class="section-block">
+    <h2 class="section-heading"><span class="section-icon">VI.</span> Exclusions</h2>
+    <div class="exclusion-panel">
+      <h4>Excluded file categories</h4>
+      <div class="exclusion-list">
+        <span class="excl-tag">*-exec-summary.*</span>
+        <span class="excl-tag">*.agent.md</span>
+        <span class="excl-tag">*.user.html</span>
+        <span class="excl-tag">*-prompt.user.md</span>
+        <span class="excl-tag">*-request-prompt.*</span>
+        <span class="excl-tag">index.user.md</span>
+        <span class="excl-tag">*-sources.md</span>
+        <span class="excl-tag">superseded versions</span>
+      </div>
+      <div class="excl-reason">
+        <strong>Exec summaries</strong> are derivative of their parent forecast and excluded across all three businesses.
+        <strong>Agent variants</strong> (<code>.agent.md</code>) and <strong>rendered HTML copies</strong> (<code>.user.html</code>) are excluded in favour of the canonical <code>.user.md</code> source.
+        <strong>Prompt and request-prompt files</strong> are inputs to processes, not outputs of them.
+        <strong>Navigation indexes</strong> (<code>index.user.md</code>) and <strong>source lists</strong> (<code>*-sources.md</code>) are supporting material, not decision-grade artifacts.
+        <strong>Superseded forecast versions</strong>: HEAD and PET v1 forecasts are excluded; only v2 is shown.
+        <br><br>
+        <strong>Suffix note:</strong> <code>.user.md</code> is the conventional suffix for operator-facing docs but is not the inclusion criterion. <code>room-pricing-analysis.md</code> (BRIK, <code>Type: Analysis-Output</code>) and <code>signal-review-*.md</code> (BRIK, <code>Type: Signal-Review</code>) use plain <code>.md</code> and are included on content grounds.
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // Highlight active sidebar link on scroll
+  const sections = document.querySelectorAll('[id]');
+  const links = document.querySelectorAll('#sidebar a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector('#sidebar a[href="#' + e.target.id + '"]');
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

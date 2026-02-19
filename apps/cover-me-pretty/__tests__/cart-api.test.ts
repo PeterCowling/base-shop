@@ -3,21 +3,21 @@
 // shared platform-core cartApi handlers.
 
 import {
+  DELETE as RouteDELETE,
+  GET as RouteGET,
+  PATCH as RoutePATCH,
+  POST as RoutePOST,
+} from "../src/api/cart/route";
+import {
   DELETE as AppDELETE,
   GET as AppGET,
   PATCH as AppPATCH,
   POST as AppPOST,
 } from "../src/app/api/cart/route";
-import {
-  DELETE as CoreDELETE,
-  GET as CoreGET,
-  PATCH as CorePATCH,
-  POST as CorePOST,
-} from "@acme/platform-core/cartApi";
 
 test("App Router /api/cart re-exports shared cartApi handlers", () => {
-  expect(AppGET).toBe(CoreGET);
-  expect(AppPOST).toBe(CorePOST);
-  expect(AppPATCH).toBe(CorePATCH);
-  expect(AppDELETE).toBe(CoreDELETE);
+  expect(AppGET).toBe(RouteGET);
+  expect(AppPOST).toBe(RoutePOST);
+  expect(AppPATCH).toBe(RoutePATCH);
+  expect(AppDELETE).toBe(RouteDELETE);
 });

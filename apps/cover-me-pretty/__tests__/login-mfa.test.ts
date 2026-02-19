@@ -1,4 +1,13 @@
 // apps/cover-me-pretty/__tests__/login-mfa.test.ts
+import {
+  createCustomerSession,
+  isMfaEnabled,
+  validateCsrfToken,
+  verifyMfa,
+} from "@acme/auth";
+
+import { POST } from "../src/app/api/login/route";
+
 jest.mock("@acme/auth", () => ({
   __esModule: true,
   createCustomerSession: jest.fn(),
@@ -6,20 +15,32 @@ jest.mock("@acme/auth", () => ({
   isMfaEnabled: jest.fn(),
   verifyMfa: jest.fn(),
 }));
-
-import {
-  createCustomerSession,
-  validateCsrfToken,
-  isMfaEnabled,
-  verifyMfa,
-} from "@acme/auth";
-import { POST } from "../src/app/api/login/route";
+jest.mock("@acme/config/env/auth", () => ({
+  __esModule: true,
+  authEnv: { AUTH_PROVIDER: "local" },
+}));
+jest.mock("argon2", () => ({
+  __esModule: true,
+  verify: (hash: string, password: string) => verifyArgon2(hash, password),
+}));
 
 type LoginBody = {
   customerId: string;
   password: string;
   remember?: boolean;
 };
+
+function verifyArgon2(hash: string, password: string): Promise<boolean> {
+  if (hash === "hash-cust1") {
+    return Promise.resolve(password === "pass1234");
+  }
+  return Promise.resolve(false);
+}
+
+const ORIGINAL_LOCAL_AUTH_USERS = process.env.LOCAL_AUTH_USERS;
+const LOCAL_AUTH_USERS_FIXTURE = JSON.stringify({
+  cust1: { passwordHash: "hash-cust1", role: "customer" },
+});
 
 function makeRequest(body: LoginBody, headers: Record<string, string> = {}) {
   return new Request("http://example.com/api/login", {
@@ -29,7 +50,18 @@ function makeRequest(body: LoginBody, headers: Record<string, string> = {}) {
   });
 }
 
-afterEach(() => jest.clearAllMocks());
+beforeEach(() => {
+  process.env.LOCAL_AUTH_USERS = LOCAL_AUTH_USERS_FIXTURE;
+  jest.clearAllMocks();
+});
+
+afterAll(() => {
+  if (ORIGINAL_LOCAL_AUTH_USERS === undefined) {
+    delete process.env.LOCAL_AUTH_USERS;
+  } else {
+    process.env.LOCAL_AUTH_USERS = ORIGINAL_LOCAL_AUTH_USERS;
+  }
+});
 
 test("rejects missing MFA token", async () => {
   (validateCsrfToken as jest.Mock).mockResolvedValue(true);

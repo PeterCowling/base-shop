@@ -36,6 +36,7 @@ describe("POST /api/tax", () => {
   });
 
   it("returns 500 when calculateTax throws", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => undefined);
     parseJsonBody.mockResolvedValue({
       success: true,
       data: { provider: "taxjar", amount: 100, toCountry: "US" },
@@ -43,6 +44,7 @@ describe("POST /api/tax", () => {
     calculateTax.mockRejectedValue(new Error("fail"));
     const res = await POST({} as NextRequest);
     expect(res.status).toBe(500);
-    await expect(res.json()).resolves.toEqual({ error: "fail" });
+    await expect(res.json()).resolves.toEqual({ error: "Failed to calculate tax" });
+    errorSpy.mockRestore();
   });
 });

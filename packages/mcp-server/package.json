@@ -43,6 +43,7 @@
     "@acme/config": "workspace:^",
     "@acme/platform-core": "workspace:^",
     "@acme/zod-utils": "workspace:^",
+    "@anthropic-ai/sdk": "^0.32.1",
     "@google-cloud/local-auth": "^3.0.1",
     "@modelcontextprotocol/sdk": "^1.0.0",
     "google-auth-library": "^10.5.0",

@@ -140,6 +140,20 @@ pnpm -w run test:governed -- jest -- --testPathPattern="draft-generate|draft-int
 - `Avg question coverage`: fraction of detected questions where stemmed keywords appear in the draft body.
 - `Knowledge injections`: count of `sources_used` entries with `injected: true` (TASK-07 gap-fill signal).
 
+### LLM Refinement Stage (Targeted)
+
+Use the governed runner with `testPathPattern="draft-refine"` to run the `draft_refine` MCP tool test suite. This suite covers LLM refinement success, graceful fallback on API failure, and quality gate pass on refined output (TASK-11).
+
+```bash
+# draft_refine tool unit suite (TC-11-01..04)
+pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage
+```
+
+**Metric interpretation:**
+- `refinement_applied: true` + `refinement_source: 'claude-cli'` confirms the LLM path executed.
+- `refinement_applied: false` + `refinement_source: 'none'` confirms graceful fallback on error.
+- Quality gate check confirms refined output passes `draft_quality_check`.
+
 ---
 
 ## Rule 3: Limit Jest Workers

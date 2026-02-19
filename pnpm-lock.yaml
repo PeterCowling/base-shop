@@ -2099,6 +2099,9 @@ importers:
       '@acme/zod-utils':
         specifier: workspace:^
         version: link:../zod-utils
+      '@anthropic-ai/sdk':
+        specifier: ^0.32.1
+        version: 0.32.1(encoding@0.1.13)
       '@google-cloud/local-auth':
         specifier: ^3.0.1
         version: 3.0.1(encoding@0.1.13)

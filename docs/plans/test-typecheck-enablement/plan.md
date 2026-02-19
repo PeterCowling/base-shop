@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-19 (Phases 1–4 complete; TASK-22 + TASK-23 complete; TASK-24/25 + TASK-04/05 (cms) pending)
+Last-updated: 2026-02-19 (Phases 1–4 complete; TASK-22 + TASK-23 + TASK-24 complete; TASK-25 + TASK-04/05 (cms) pending)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -112,7 +112,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-21     | CHECKPOINT  | Phase 4 gate — assess TYPECHECK_ALL + pre-commit + cms   | 90%        | S      | Complete (2026-02-18) | TASK-20, TASK-04 | TASK-22      |
 | TASK-22     | IMPLEMENT   | Phase 5 small batch: zod-utils, telemetry, date-utils, themes, email-templates | 75% | M | Complete (2026-02-19) | TASK-21 | TASK-23 |
 | TASK-23     | IMPLEMENT   | Phase 5: packages/lib tsconfig + error fixes             | 83%        | M      | Complete (2026-02-19) | TASK-21 | TASK-24 |
-| TASK-24     | IMPLEMENT   | Phase 5: Extend CI for Phase 5 packages                  | 85%        | S      | Pending | TASK-22, TASK-23, TASK-04 | TASK-25 |
+| TASK-24     | IMPLEMENT   | Phase 5: Extend CI for Phase 5 packages                  | 85%        | S      | Complete (2026-02-19) | TASK-22, TASK-23 | TASK-25 |
 | TASK-25     | CHECKPOINT  | Phase 5 gate — assess remaining 30+ packages + TYPECHECK_ALL readiness | 85% | S | Pending | TASK-24 | -      |
 
 ## Parallelism Guide
@@ -1117,9 +1117,9 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `.github/workflows/ci.yml`
-- **Depends on:** TASK-22, TASK-23, TASK-04
+- **Depends on:** TASK-22, TASK-23
 - **Blocks:** TASK-25
 - **Confidence:** 85%
 - **Acceptance:** All new invocations exit 0; CI job duration within 15 min
@@ -1127,6 +1127,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Planning validation:** None: S effort
 - **Rollout / rollback:** Revert CI step if failures
 - **Documentation impact:** None
+- **Build evidence (2026-02-19):** Commit `1992fc5983`. Added 6 Phase-5 packages: zod-utils, telemetry, date-utils, themes, email-templates, lib. All verified passing locally. apps/cms excluded pending TASK-04. Step renamed to "Phase-1 + Phase-4 + Phase-5 packages".
 
 ---
 

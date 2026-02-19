@@ -4,7 +4,6 @@ import { fetchJson } from '../fetchJson.js';
 
 describe('fetchJson', () => {
   beforeEach(() => {
-    // @ts-expect-error - jest mock
     global.fetch = jest.fn();
   });
 

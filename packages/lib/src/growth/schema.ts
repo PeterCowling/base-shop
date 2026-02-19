@@ -181,7 +181,7 @@ export const growthLedgerSchema: z.ZodType<GrowthLedger> = z.object({
   threshold_locked_at: z.string().datetime({ offset: true }),
   updated_at: z.string().datetime({ offset: true }),
   stages: growthLedgerStagesSchema,
-});
+}) as unknown as z.ZodType<GrowthLedger>;
 
 export const GROWTH_METRIC_CATALOG: Record<GrowthStageKey, GrowthStageDefinition> = {
   acquisition: {

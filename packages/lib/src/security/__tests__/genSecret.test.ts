@@ -19,7 +19,7 @@ describe('genSecret', () => {
         arr.set([0xde, 0xad, 0xbe, 0xef]);
         return arr;
       },
-    } as Crypto;
+    } as unknown as Crypto;
     Object.defineProperty(globalThis, 'crypto', { value: mock });
     expect(genSecret(4)).toBe('deadbeef');
   });
@@ -29,7 +29,7 @@ describe('genSecret', () => {
       arr.fill(0);
       return arr;
     });
-    const mock = { getRandomValues } as Crypto;
+    const mock = { getRandomValues } as unknown as Crypto;
     Object.defineProperty(globalThis, 'crypto', { value: mock });
     expect(genSecret()).toBe('00'.repeat(16));
     expect(getRandomValues).toHaveBeenCalledWith(expect.any(Uint8Array));
@@ -43,7 +43,7 @@ describe('genSecret', () => {
         }
         return arr;
       },
-    } as Crypto;
+    } as unknown as Crypto;
     Object.defineProperty(globalThis, 'crypto', { value: mock });
     const bytes = 8;
     const secret = genSecret(bytes);
@@ -53,7 +53,7 @@ describe('genSecret', () => {
 
   it('returns empty string when byte length is 0', () => {
     const getRandomValues = jest.fn(() => new Uint8Array());
-    const mock = { getRandomValues } as Crypto;
+    const mock = { getRandomValues } as unknown as Crypto;
     Object.defineProperty(globalThis, 'crypto', { value: mock });
     expect(genSecret(0)).toBe('');
     expect(getRandomValues).toHaveBeenCalledWith(new Uint8Array(0));
@@ -65,7 +65,7 @@ describe('genSecret', () => {
 
   it('uses GEN_SECRET env var when provided', () => {
     const getRandomValues = jest.fn();
-    const mock = { getRandomValues } as Crypto;
+    const mock = { getRandomValues } as unknown as Crypto;
     Object.defineProperty(globalThis, 'crypto', { value: mock });
     process.env.GEN_SECRET = 'fixed';
     expect(genSecret()).toBe('fixed');

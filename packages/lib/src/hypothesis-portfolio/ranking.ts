@@ -112,7 +112,7 @@ export function rankHypotheses(
       },
     });
 
-    if (!validation.ok) {
+    if (validation.ok === false) {
       blocked.push({
         hypothesis,
         inadmissible_reason:

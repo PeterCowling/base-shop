@@ -3,12 +3,9 @@
  */
 import { jest } from '@jest/globals';
 
-let pinoInstance: {
-  error: jest.Mock;
-  warn: jest.Mock;
-  info: jest.Mock;
-  debug: jest.Mock;
-};
+// Using any for mock properties: @jest/globals v27 (2-param Mock) conflicts with
+// @types/jest v29 (3-param Mock); noImplicitAny: false makes this safe in tests.
+let pinoInstance: any;
 
 const debugOutput = jest.fn();
 
@@ -58,9 +55,7 @@ describe('logger', () => {
     const meta = { id: 1 };
     const message = `${level} message`;
 
-    // @ts-expect-error - index signature for logger methods
     logger[level](message, meta);
-    // @ts-expect-error - index signature for pino instance methods
     expect(pinoInstance[level]).toHaveBeenCalledWith(meta, message);
   });
 
@@ -72,9 +67,7 @@ describe('logger', () => {
   ])('%s forwards message with empty metadata when omitted', async (level) => {
     const { logger } = await import('../logger.server.js');
     const message = `${level} only`;
-    // @ts-expect-error - index signature for logger methods
     logger[level](message);
-    // @ts-expect-error - index signature for pino instance methods
     expect(pinoInstance[level]).toHaveBeenCalledWith({}, message);
   });
 
@@ -83,7 +76,7 @@ describe('logger', () => {
     const obj = { id: 1 };
     const err = new Error('boom');
     logger.error('object meta', obj);
-    logger.error('error meta', err);
+    logger.error('error meta', err as unknown as Record<string, unknown>);
     expect(pinoInstance.error).toHaveBeenNthCalledWith(1, obj, 'object meta');
     expect(pinoInstance.error).toHaveBeenNthCalledWith(2, err, 'error meta');
   });

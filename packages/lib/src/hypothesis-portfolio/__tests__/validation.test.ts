@@ -45,7 +45,7 @@ describe("hypothesis-portfolio validation", () => {
       });
 
       expect(result.ok).toBe(false);
-      if (!result.ok) {
+      if (result.ok === false) {
         expect(result.error.code).toBe("schema_validation_failed");
         expect(result.error.message).toContain("Required");
       }
@@ -58,7 +58,7 @@ describe("hypothesis-portfolio validation", () => {
       );
 
       expect(result.ok).toBe(false);
-      if (!result.ok) {
+      if (result.ok === false) {
         expect(result.error.code).toBe("schema_validation_failed");
         expect(result.error.path).toEqual(["prior_confidence"]);
       }
@@ -74,7 +74,7 @@ describe("hypothesis-portfolio validation", () => {
       );
 
       expect(result.ok).toBe(false);
-      if (!result.ok) {
+      if (result.ok === false) {
         expect(result.error.code).toBe("schema_validation_failed");
         expect(result.error.path?.[0]).toBe("dependency_hypothesis_ids");
       }
@@ -99,7 +99,7 @@ describe("hypothesis-portfolio validation", () => {
       );
 
       expect(result.ok).toBe(false);
-      if (!result.ok) {
+      if (result.ok === false) {
         expect(result.error.code).toBe("non_monetary_unit_requires_conversion");
       }
     });
@@ -114,7 +114,7 @@ describe("hypothesis-portfolio validation", () => {
       });
 
       expect(result.ok).toBe(false);
-      if (!result.ok) {
+      if (result.ok === false) {
         expect(result.error.code).toBe("unit_horizon_mismatch");
       }
     });
@@ -126,7 +126,7 @@ describe("hypothesis-portfolio validation", () => {
       );
 
       expect(result.ok).toBe(false);
-      if (!result.ok) {
+      if (result.ok === false) {
         expect(result.error.code).toBe("schema_validation_failed");
         expect(result.error.path).toEqual(["activated_date"]);
       }
@@ -146,7 +146,7 @@ describe("hypothesis-portfolio validation", () => {
       );
 
       expect(result.ok).toBe(false);
-      if (!result.ok) {
+      if (result.ok === false) {
         expect(result.error.code).toBe("schema_validation_failed");
         expect(result.error.path).toEqual(["activation_override_reason"]);
       }
@@ -186,7 +186,7 @@ describe("hypothesis-portfolio validation", () => {
       });
 
       expect(result.ok).toBe(false);
-      if (!result.ok) {
+      if (result.ok === false) {
         expect(result.error.code).toBe("weight_sum_must_equal_one");
       }
     });

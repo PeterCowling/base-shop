@@ -31,7 +31,6 @@ describe('slugify', () => {
 
   it('returns an empty string for null/undefined input', () => {
     expect(slugify(null)).toBe('');
-    // @ts-expect-error Test undefined input
     expect(slugify(undefined)).toBe('');
   });
 });

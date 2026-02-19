@@ -10,7 +10,7 @@ import type {
 const RATE_LIKE_TOKENS = ["MRR", "ARR", "ARPU", "RATE", "PCT", "PERCENT"];
 const MONETARY_UNIT_PATTERN = /^USD_[A-Z0-9_]+$/;
 
-const hypothesisSchema: z.ZodType<Hypothesis> = z
+const hypothesisSchema = z
   .object({
     id: z.string().min(1),
     hypothesis_key: z
@@ -104,7 +104,7 @@ const hypothesisSchema: z.ZodType<Hypothesis> = z
         });
       }
     }
-  });
+  }) as unknown as z.ZodType<Hypothesis>;
 
 const portfolioMetadataSchema = z.object({
   max_concurrent_experiments: z.number().int().positive().default(3),
@@ -248,5 +248,5 @@ export function validatePortfolioMetadata(
     };
   }
 
-  return { ok: true, value: metadata };
+  return { ok: true, value: metadata as PortfolioMetadata };
 }

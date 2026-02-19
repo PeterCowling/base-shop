@@ -1,8 +1,13 @@
 /** @jest-environment node */
 
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
+
 import { getGmailClient } from "../clients/gmail";
-import { handleGmailTool } from "../tools/gmail";
+import { handleGmailTool, setLockStore } from "../tools/gmail";
 import { processCancellationEmail } from "../tools/process-cancellation-email";
+import { createLockStore, type LockStore } from "../utils/lock-store";
 
 type GmailLabel = { id: string; name: string };
 type GmailHeader = { name: string; value: string };
@@ -35,6 +40,7 @@ type GmailStub = {
       get: jest.Mock;
     };
     messages: {
+      list: jest.Mock;
       modify: jest.Mock;
       get: jest.Mock;
     };
@@ -54,6 +60,20 @@ jest.mock("../tools/process-cancellation-email", () => ({
 
 const getGmailClientMock = getGmailClient as jest.Mock;
 const processCancellationEmailMock = processCancellationEmail as jest.Mock;
+
+// Redirect audit log and lock store writes to a temp directory for isolation.
+let _globalTmpDir: string;
+beforeAll(() => {
+  _globalTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "organize-inbox-global-"));
+  process.env.AUDIT_LOG_PATH = path.join(_globalTmpDir, "email-audit-log.jsonl");
+  // Inject a file-backed store in a temp dir so tests don't affect real data/locks/.
+  setLockStore(createLockStore(path.join(_globalTmpDir, "locks")));
+});
+afterAll(() => {
+  setLockStore(createLockStore(fs.mkdtempSync(path.join(os.tmpdir(), "lock-store-restore-"))));
+  delete process.env.AUDIT_LOG_PATH;
+  fs.rmSync(_globalTmpDir, { recursive: true, force: true });
+});
 
 function createHeader(name: string, value: string): GmailHeader {
   return { name, value };
@@ -114,6 +134,7 @@ function createGmailStub({
         get: jest.fn(async ({ id }: { id: string }) => ({ data: threadStore[id] })),
       },
       messages: {
+        list: jest.fn(async () => ({ data: { messages: [] } })),
         modify: jest.fn(async ({ id, requestBody }: { id: string; requestBody: { addLabelIds?: string[]; removeLabelIds?: string[] } }) => {
           const message = messageStore[id];
           if (!message) {
@@ -868,5 +889,223 @@ describe("gmail_organize_inbox cancellation processing (TASK-15)", () => {
 
     expect(payload.counts.processedCancellations).toBe(1);
     expect(messageStore["msg-cancel-5"].labelIds).toContain(cancellationBookingNotFound.id);
+  });
+});
+
+// =============================================================================
+// TC-03-05 & TC-03-06: Durable lock store integration tests (TASK-03)
+// =============================================================================
+
+describe("gmail_organize_inbox startup recovery (TC-03-05)", () => {
+  let tmpDir: string;
+  let auditLogPath: string;
+
+  const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+  const processing = { id: "label-processing", name: "Brikette/Queue/In-Progress" };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "organize-inbox-recovery-"));
+    auditLogPath = path.join(tmpDir, "email-audit-log.jsonl");
+    process.env.AUDIT_LOG_PATH = auditLogPath;
+  });
+
+  afterEach(() => {
+    // Restore a clean store so subsequent tests are not polluted
+    setLockStore(createLockStore(fs.mkdtempSync(path.join(os.tmpdir(), "lock-store-restore-"))));
+    delete process.env.AUDIT_LOG_PATH;
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  // TC-03-05: startup recovery requeues In-Progress emails with no valid lock file
+  it("TC-03-05: startup recovery requeues an In-Progress email when no lock file exists", async () => {
+    // Mock lock store: message has In-Progress label, but lock store has no entry for it
+    const mockStore: LockStore = {
+      acquire: jest.fn(() => true),
+      release: jest.fn(),
+      get: jest.fn((_messageId: string) => null), // no lock file
+      isStale: jest.fn((_messageId: string, _timeoutMs: number) => false),
+      list: jest.fn(() => [] as string[]),
+    };
+    setLockStore(mockStore);
+
+    // The In-Progress message that will be "orphaned"
+    const orphanedMsg: GmailMessage = {
+      id: "msg-orphaned",
+      threadId: "thread-orphaned",
+      labelIds: [processing.id],
+      payload: { headers: [] },
+    };
+
+    // messages.list returns the orphaned message (for In-Progress label query)
+    // threads.list returns empty (no inbox threads to process)
+    const labelsStore = [needsProcessing, processing];
+    let labelCounter = labelsStore.length + 1;
+    const messageStore: Record<string, GmailMessage> = {
+      "msg-orphaned": { ...orphanedMsg },
+    };
+
+    const gmail = {
+      users: {
+        labels: {
+          list: jest.fn(async () => ({ data: { labels: labelsStore } })),
+          create: jest.fn(async ({ requestBody }: { requestBody: { name: string } }) => {
+            const newLabel = { id: `label-${labelCounter++}`, name: requestBody.name };
+            labelsStore.push(newLabel);
+            return { data: newLabel };
+          }),
+        },
+        threads: {
+          list: jest.fn(async () => ({ data: { threads: [] } })),
+          get: jest.fn(async ({ id }: { id: string }) => ({ data: {} })),
+        },
+        messages: {
+          list: jest.fn(async () => ({
+            data: { messages: [{ id: "msg-orphaned" }] },
+          })),
+          get: jest.fn(async ({ id }: { id: string }) => ({ data: messageStore[id] })),
+          modify: jest.fn(async ({ id, requestBody }: { id: string; requestBody: { addLabelIds?: string[]; removeLabelIds?: string[] } }) => {
+            const message = messageStore[id];
+            if (!message) throw new Error(`Message not found: ${id}`);
+            const remove = requestBody.removeLabelIds || [];
+            const add = requestBody.addLabelIds || [];
+            message.labelIds = message.labelIds.filter(l => !remove.includes(l));
+            for (const labelId of add) {
+              if (!message.labelIds.includes(labelId)) message.labelIds.push(labelId);
+            }
+            return { data: message };
+          }),
+          drafts: {
+            create: jest.fn(),
+          },
+        },
+        drafts: {
+          create: jest.fn(),
+        },
+      },
+    };
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", {
+      dryRun: false,
+    });
+
+    // Should succeed
+    expect((result as { isError?: boolean }).isError).not.toBe(true);
+
+    // The orphaned message should have had In-Progress removed and Needs-Processing added
+    expect(gmail.users.messages.modify).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: "msg-orphaned",
+        requestBody: expect.objectContaining({
+          removeLabelIds: expect.arrayContaining([processing.id]),
+        }),
+      })
+    );
+
+    // Lock store release should have been called for the orphaned message
+    expect(mockStore.release).toHaveBeenCalledWith("msg-orphaned");
+  });
+});
+
+describe("gmail_reconcile_in_progress staleHours default (TC-03-06)", () => {
+  let tmpDir: string;
+
+  const processing = { id: "label-processing", name: "Brikette/Queue/In-Progress" };
+  const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "reconcile-stalehours-"));
+    process.env.AUDIT_LOG_PATH = path.join(tmpDir, "email-audit-log.jsonl");
+
+    // Use a clean file-backed store per test
+    setLockStore(createLockStore(tmpDir));
+  });
+
+  afterEach(() => {
+    setLockStore(createLockStore(fs.mkdtempSync(path.join(os.tmpdir(), "lock-store-restore-"))));
+    delete process.env.AUDIT_LOG_PATH;
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  // TC-03-06: staleHours default in handleReconcileInProgress is 2 (not 24)
+  it("TC-03-06: default staleHours for reconcile_in_progress is 2 hours — emails older than 2h are requeued, emails younger than 2h are kept", async () => {
+    // A message that is 3 hours old (should be requeued by default 2h threshold)
+    const threeHoursAgoMs = Date.now() - 3 * 60 * 60 * 1000;
+    const threeHoursAgoSec = threeHoursAgoMs;
+
+    const labelsStore = [needsProcessing, processing];
+    let labelCounter = labelsStore.length + 1;
+    const messageStore: Record<string, GmailMessage> = {
+      "msg-stale-3h": {
+        id: "msg-stale-3h",
+        threadId: "thread-stale-3h",
+        labelIds: [processing.id],
+        payload: {
+          headers: [
+            { name: "From", value: "guest@example.com" },
+            { name: "Subject", value: "Check-in question" },
+            { name: "Date", value: new Date(threeHoursAgoSec).toUTCString() },
+          ],
+        },
+        snippet: "Hi, question about check-in",
+      },
+    };
+
+    const gmail = {
+      users: {
+        labels: {
+          list: jest.fn(async () => ({ data: { labels: labelsStore } })),
+          create: jest.fn(async ({ requestBody }: { requestBody: { name: string } }) => {
+            const newLabel = { id: `label-${labelCounter++}`, name: requestBody.name };
+            labelsStore.push(newLabel);
+            return { data: newLabel };
+          }),
+        },
+        messages: {
+          list: jest.fn(async () => ({
+            data: { messages: [{ id: "msg-stale-3h" }] },
+          })),
+          get: jest.fn(async ({ id }: { id: string }) => ({ data: messageStore[id] })),
+          modify: jest.fn(async ({ id, requestBody }: { id: string; requestBody: { addLabelIds?: string[]; removeLabelIds?: string[] } }) => {
+            const message = messageStore[id];
+            if (!message) throw new Error(`Message not found: ${id}`);
+            const remove = requestBody.removeLabelIds || [];
+            const add = requestBody.addLabelIds || [];
+            message.labelIds = message.labelIds.filter(l => !remove.includes(l));
+            for (const labelId of add) {
+              if (!message.labelIds.includes(labelId)) message.labelIds.push(labelId);
+            }
+            return { data: message };
+          }),
+        },
+        threads: {
+          list: jest.fn(async () => ({ data: { threads: [] } })),
+          get: jest.fn(async () => ({ data: { messages: [] } })),
+        },
+        drafts: {
+          create: jest.fn(),
+        },
+      },
+    };
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    // Call without staleHours arg — should use default of 2
+    const result = await handleGmailTool("gmail_reconcile_in_progress", {
+      dryRun: false,
+    });
+
+    expect((result as { isError?: boolean }).isError).not.toBe(true);
+    const payload = JSON.parse(result.content[0].text) as {
+      staleHours: number;
+      counts: { keptFresh: number; routedRequeued: number };
+    };
+
+    // Default staleHours should be 2
+    expect(payload.staleHours).toBe(2);
+
+    // 3h old message should be routed (not kept fresh), since 3h > 2h default
+    expect(payload.counts.keptFresh).toBe(0);
   });
 });

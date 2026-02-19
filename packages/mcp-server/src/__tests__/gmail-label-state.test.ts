@@ -1,7 +1,12 @@
 /** @jest-environment node */
 
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
+
 import { getGmailClient } from "../clients/gmail";
-import { handleGmailTool } from "../tools/gmail";
+import { handleGmailTool, setLockStore } from "../tools/gmail";
+import { createLockStore } from "../utils/lock-store";
 
 type GmailLabel = { id: string; name: string };
 
@@ -41,6 +46,21 @@ jest.mock("../clients/gmail", () => ({
 }));
 
 const getGmailClientMock = getGmailClient as jest.Mock;
+
+// Redirect audit log and lock store writes to temp directories for isolation.
+let _globalTmpDir: string;
+let _lockDir: string;
+beforeAll(() => {
+  _globalTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "label-state-global-"));
+  _lockDir = path.join(_globalTmpDir, "locks");
+  process.env.AUDIT_LOG_PATH = path.join(_globalTmpDir, "email-audit-log.jsonl");
+  setLockStore(createLockStore(_lockDir));
+});
+afterAll(() => {
+  setLockStore(createLockStore(fs.mkdtempSync(path.join(os.tmpdir(), "lock-store-restore-"))));
+  delete process.env.AUDIT_LOG_PATH;
+  fs.rmSync(_globalTmpDir, { recursive: true, force: true });
+});
 
 function createGmailStub({
   labels,
@@ -141,6 +161,14 @@ describe("gmail label state machine", () => {
     const processing = { id: "label-processing", name: "Brikette/Queue/In-Progress" };
     const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
 
+    // Write a stale lock file for msg-2 (older than PROCESSING_TIMEOUT_MS = 30 min)
+    // so the file-backed lock store reports the lock as stale.
+    fs.mkdirSync(_lockDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(_lockDir, "msg-2.json"),
+      JSON.stringify({ lockedAt: Date.now() - 31 * 60 * 1000, owner: "codex" })
+    );
+
     const { gmail, messageStore } = createGmailStub({
       labels: [needsProcessing, processing],
       messages: {
@@ -168,6 +196,7 @@ describe("gmail label state machine", () => {
       })
     );
 
+    // Lock file should have been released and a new one acquired
     expect(messageStore["msg-2"].labelIds).toContain(processing.id);
   });
 

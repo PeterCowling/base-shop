@@ -19,6 +19,7 @@ import { z } from "zod";
 import { getGmailClient } from "../clients/gmail.js";
 import { createRawEmail } from "../utils/email-mime.js";
 import { generateEmailHtml } from "../utils/email-template.js";
+import { createLockStore,type LockStore } from "../utils/lock-store.js";
 import {
   errorResult,
   formatError,
@@ -121,7 +122,17 @@ export const REQUIRED_LABELS = [
 ];
 
 const PROCESSING_TIMEOUT_MS = 30 * 60 * 1000;
-const processingLocks = new Map<string, number>();
+
+// Default lock store instance (file-backed). Replaceable in tests via setLockStore().
+let lockStoreRef: LockStore = createLockStore();
+
+/**
+ * Replaces the module-level lock store instance.
+ * Use in tests to inject a mock or a store backed by a temp directory.
+ */
+export function setLockStore(store: LockStore): void {
+  lockStoreRef = store;
+}
 
 // =============================================================================
 // Audit log
@@ -134,7 +145,7 @@ const processingLocks = new Map<string, number>();
 export interface AuditEntry {
   ts: string;           // ISO 8601 UTC timestamp
   messageId: string;
-  action: "lock-acquired" | "outcome";
+  action: "lock-acquired" | "lock-released" | "outcome";
   actor: string;
   result?: string;      // only present for action === "outcome"
 }
@@ -389,7 +400,7 @@ const migrateLabelsSchema = z.object({
 
 const reconcileInProgressSchema = z.object({
   dryRun: z.boolean().optional().default(true),
-  staleHours: z.number().min(1).max(24 * 30).optional().default(24),
+  staleHours: z.number().min(1).max(24 * 30).optional().default(2),
   limit: z.number().min(1).max(200).optional().default(100),
   actor: z.enum(["codex", "claude", "human"]).optional().default("codex"),
 });
@@ -534,7 +545,7 @@ export const gmailTools = [
       type: "object",
       properties: {
         dryRun: { type: "boolean", description: "Preview only; do not modify labels.", default: true },
-        staleHours: { type: "number", description: "Age threshold in hours before reconciliation applies.", default: 24 },
+        staleHours: { type: "number", description: "Age threshold in hours before reconciliation applies.", default: 2 },
         limit: { type: "number", description: "Maximum in-progress messages to inspect.", default: 100 },
         actor: {
           type: "string",
@@ -764,20 +775,8 @@ function actorToLabelName(actor: AgentActor): string {
   }
 }
 
-function isProcessingLockStale(
-  lockTimestamp: number | undefined,
-  internalDate: string | null | undefined
-): boolean {
-  if (lockTimestamp) {
-    return Date.now() - lockTimestamp > PROCESSING_TIMEOUT_MS;
-  }
-  if (internalDate) {
-    const parsed = Number(internalDate);
-    if (!Number.isNaN(parsed)) {
-      return Date.now() - parsed > PROCESSING_TIMEOUT_MS;
-    }
-  }
-  return false;
+function isProcessingLockStale(messageId: string): boolean {
+  return lockStoreRef.isStale(messageId, PROCESSING_TIMEOUT_MS);
 }
 
 function formatGmailQueryDate(date: Date): string {
@@ -1633,6 +1632,58 @@ async function handleCancellationCase({
   }
 }
 
+/**
+ * Startup recovery: scan Gmail for In-Progress emails whose lock file is
+ * absent or stale. Requeues them to Needs-Processing so they are not lost.
+ * Called at the start of each handleOrganizeInbox run.
+ */
+async function runStartupRecovery(
+  gmail: gmail_v1.Gmail,
+  labelMap: Map<string, string>,
+  needsProcessingLabelId: string,
+  dryRun: boolean
+): Promise<void> {
+  const processingLabelIds = collectLabelIds(labelMap, [
+    LABELS.PROCESSING,
+    LEGACY_LABELS.PROCESSING,
+  ]);
+  if (processingLabelIds.length === 0) return;
+
+  const inProgressResponse = await gmail.users.messages.list({
+    userId: "me",
+    labelIds: processingLabelIds.slice(0, 1), // check first matching label only
+    maxResults: 50,
+  });
+  const inProgressMessages = inProgressResponse.data.messages || [];
+  for (const inProgressMsg of inProgressMessages) {
+    if (!inProgressMsg.id) continue;
+    const lockEntry = lockStoreRef.get(inProgressMsg.id);
+    const isStale = lockEntry
+      ? lockStoreRef.isStale(inProgressMsg.id, PROCESSING_TIMEOUT_MS)
+      : true; // no lock file → treat as stale (orphaned)
+    if (isStale) {
+      if (!dryRun) {
+        await gmail.users.messages.modify({
+          userId: "me",
+          id: inProgressMsg.id,
+          requestBody: {
+            addLabelIds: [needsProcessingLabelId],
+            removeLabelIds: processingLabelIds,
+          },
+        });
+      }
+      lockStoreRef.release(inProgressMsg.id);
+      appendAuditEntry({
+        ts: new Date().toISOString(),
+        messageId: inProgressMsg.id,
+        action: "lock-released",
+        actor: "system",
+        result: "startup-recovery",
+      });
+    }
+  }
+}
+
 async function handleOrganizeInbox(
   gmail: gmail_v1.Gmail,
   args: unknown
@@ -1668,6 +1719,8 @@ async function handleOrganizeInbox(
   const labelNameById = new Map<string, string>(
     Array.from(labelMap.entries()).map(([name, id]) => [id, name])
   );
+
+  await runStartupRecovery(gmail, labelMap, needsProcessingLabelId, dryRun);
 
   const response = await gmail.users.threads.list({
     userId: "me",
@@ -2120,10 +2173,7 @@ async function handleGetEmail(
 
   const messageLabelIds = msg.labelIds || [];
   if (messageLabelIds.some(labelId => processingLabelIds.includes(labelId))) {
-    const isStale = isProcessingLockStale(
-      processingLocks.get(emailId),
-      msg.internalDate
-    );
+    const isStale = isProcessingLockStale(emailId);
     if (isStale) {
       await gmail.users.messages.modify({
         userId: "me",
@@ -2132,7 +2182,8 @@ async function handleGetEmail(
           removeLabelIds: processingLabelIds,
         },
       });
-      processingLocks.delete(emailId);
+      lockStoreRef.release(emailId);
+      appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system" });
     } else {
       return errorResult(`Email ${emailId} is already being processed.`);
     }
@@ -2152,7 +2203,7 @@ async function handleGetEmail(
       ],
     },
   });
-  processingLocks.set(emailId, Date.now());
+  lockStoreRef.acquire(emailId, actor || "unknown");
   appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-acquired", actor });
 
   const headers = (msg.payload?.headers || []) as EmailHeader[];
@@ -2299,10 +2350,12 @@ async function cleanupInProgress(emailId: string, gmail: gmail_v1.Gmail): Promis
         removeLabelIds: inProgressLabelIds.length > 0 ? inProgressLabelIds : undefined,
       },
     });
-    processingLocks.delete(emailId);
+    lockStoreRef.release(emailId);
+    appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system" });
     return "cleanup succeeded";
   } catch (cleanupError) {
-    processingLocks.delete(emailId);
+    lockStoreRef.release(emailId);
+    appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system" });
     const msg = cleanupError instanceof Error ? cleanupError.message : String(cleanupError);
     return `cleanup failed: ${msg}`;
   }
@@ -2485,7 +2538,8 @@ async function handleMarkProcessed(
     const errorMessage = error instanceof Error ? error.message : String(error);
     return errorResult(`Failed to apply labels: ${errorMessage}. ${cleanupStatus}`);
   }
-  processingLocks.delete(emailId);
+  lockStoreRef.release(emailId);
+  appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system" });
   appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "outcome", actor, result: action });
 
   const workflow = isPrepaymentAction(action)

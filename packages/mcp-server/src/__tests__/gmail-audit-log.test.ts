@@ -246,15 +246,17 @@ describe("gmail audit log (TASK-01)", () => {
     expect((result as { isError?: boolean }).isError).not.toBe(true);
 
     const entries = readAuditEntries(auditLogPath);
-    expect(entries).toHaveLength(1);
+    // handleMarkProcessed now writes two entries: lock-released + outcome
+    expect(entries.length).toBeGreaterThanOrEqual(1);
 
-    const entry = entries[0];
-    expect(entry.messageId).toBe("msg-tc02");
-    expect(entry.action).toBe("outcome");
-    expect(entry.actor).toBe("claude");
-    expect(entry.result).toBe("drafted");
-    expect(typeof entry.ts).toBe("string");
-    expect(() => new Date(entry.ts).toISOString()).not.toThrow();
+    const outcomeEntry = entries.find(e => e.action === "outcome");
+    expect(outcomeEntry).toBeDefined();
+    expect(outcomeEntry!.messageId).toBe("msg-tc02");
+    expect(outcomeEntry!.action).toBe("outcome");
+    expect(outcomeEntry!.actor).toBe("claude");
+    expect(outcomeEntry!.result).toBe("drafted");
+    expect(typeof outcomeEntry!.ts).toBe("string");
+    expect(() => new Date(outcomeEntry!.ts).toISOString()).not.toThrow();
   });
 
   // -------------------------------------------------------------------------

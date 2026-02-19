@@ -1,4 +1,5 @@
 import { readFile, stat } from "fs/promises";
+import { createRequire } from "module";
 import path from "path";
 import { pathToFileURL } from "url";
 
@@ -108,11 +109,9 @@ export async function resolvePluginEntry(dir: string): Promise<{
 }
 
 export async function importByType(entryPath: string, isModule: boolean) {
-  if (!isModule) {
-    // CJS modules: use require() so Jest's module resolver can handle the path,
-    // and so Node.js doesn't need a file:// URL specifier for .cjs/.js files.
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    return require(entryPath) as unknown;
+  if (!isModule && !/\.mjs$/.test(entryPath)) {
+    // CJS modules (.cjs, .js): use createRequire so jest.mock("module") can intercept.
+    return createRequire(__filename)(entryPath) as unknown;
   }
   const specifier = pathToFileURL(entryPath).href;
   // Dynamic import works for ESM; CJS modules appear under `default`.

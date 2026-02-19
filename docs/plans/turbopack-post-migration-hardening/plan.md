@@ -74,7 +74,7 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Replace global webpack-only checker with app/command policy matrix and updated tests | 85% | M | Complete (2026-02-19) | - | TASK-02 |
 | TASK-02 | IMPLEMENT | Align docs/workflow messaging to the revised bundler policy contract | 85% | S | Pending | TASK-01 | - |
-| TASK-03 | INVESTIGATE | Validate browser-safe shared export seam for `createGuideUrlHelpers` | 75% | S | Pending | - | TASK-04 |
+| TASK-03 | INVESTIGATE | Validate browser-safe shared export seam for `createGuideUrlHelpers` | 75% | S | Complete (2026-02-19) | - | TASK-04 |
 | TASK-04 | IMPLEMENT | Migrate Brikette to shared guide helper export and delete local duplicate | 80% | M | Pending | TASK-03 | - |
 | TASK-05 | INVESTIGATE | Probe CI Turbopack smoke runtime budget and workflow placement | 70% | S | Pending | - | TASK-06 |
 | TASK-06 | IMPLEMENT | Add deterministic Brikette Turbopack dev smoke check to CI | 85% | M | Pending | TASK-05 | - |
@@ -201,7 +201,7 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `packages/guides-core/src/index.ts`, `packages/guides-core/package.json`, `apps/brikette/src/guides/slugs/urls.ts`
 - **Depends on:** -
 - **Blocks:** TASK-04
@@ -223,6 +223,16 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 - **Documentation impact:** add investigation artifact under plan directory.
 - **Notes / references:**
   - Duplicate helper locations: `packages/guides-core/src/index.ts`, `apps/brikette/src/guides/slugs/url-helpers.ts`
+- **Build completion evidence (2026-02-19):**
+  - Created artifact: `docs/plans/turbopack-post-migration-hardening/artifacts/guides-core-export-investigation.md`.
+  - Recommendation locked for TASK-04: use browser-safe subpath import specifier `@acme/guides-core/url-helpers`.
+  - Validation results:
+    - `pnpm --filter @acme/guides-core test -- createGuideUrlHelpers.test.ts` -> pass.
+    - Brikette Turbopack probe evidence captured:
+      - `curl -fsS http://127.0.0.1:3012/en/apartment` with `application/ld+json` count `1`.
+      - `curl -fsS http://127.0.0.1:3012/en/help` with `positano` count `549`.
+  - Investigation notes:
+    - `packages/guides-core/src/index.ts` currently re-exports Node-only `fsContent` helpers (`node:fs/promises`, `node:path`), so root-index import remains unsafe for client compilation paths.
 
 ---
 

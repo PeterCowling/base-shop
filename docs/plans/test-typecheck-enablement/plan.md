@@ -1,10 +1,10 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-19 (Phases 1–5 complete; TASK-04 complete; TASK-05 (cms CI) remaining)
+Last-updated: 2026-02-19 (ALL tasks complete; apps/cms CI gate active)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -93,7 +93,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-02     | IMPLEMENT   | ~~Add CI step for packages/** + fix any errors found~~   | 35%        | M      | Superseded | TASK-01      | -               |
 | TASK-03     | INVESTIGATE | Enumerate apps/cms test type errors                      | 88%        | S      | Complete (2026-02-18) | -               | TASK-04         |
 | TASK-04     | IMPLEMENT   | Fix apps/cms test type errors (deferred post-TASK-06)    | 85%        | L      | Complete (2026-02-19) | TASK-03, TASK-06| TASK-05         |
-| TASK-05     | IMPLEMENT   | Extend CI step to cover apps/cms                         | 90%        | S      | Pending | TASK-04, TASK-16| TASK-06 *(post-defer)* |
+| TASK-05     | IMPLEMENT   | Extend CI step to cover apps/cms                         | 90%        | S      | Complete (2026-02-19) | TASK-04, TASK-16| TASK-06 *(post-defer)* |
 | TASK-15     | IMPLEMENT   | Fix 8 small packages + create per-package typecheck configs | 88%     | M      | Complete (2026-02-18) | TASK-01         | TASK-16         |
 | TASK-16     | IMPLEMENT   | Add CI step for 7 fixed small packages                   | 90%        | S      | Complete (2026-02-18) | TASK-15         | TASK-06         |
 | TASK-06     | CHECKPOINT  | Phase 1 gate — reassess Phase 2 + CMS priority          | 95%        | S      | Complete (2026-02-18) | TASK-16         | TASK-07, TASK-08|
@@ -338,7 +338,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `.github/workflows/ci.yml`
 - **Depends on:** TASK-04, TASK-16
 - **Blocks:** -

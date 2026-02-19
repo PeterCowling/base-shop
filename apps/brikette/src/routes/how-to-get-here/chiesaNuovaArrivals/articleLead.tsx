@@ -109,6 +109,8 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
     (kneesDockPrefix && kneesDockLinkText) ||
     (kneesPorterPrefix && kneesPorterLinkText);
 
+  const mapKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY;
+
   const introSection = renderIntroSection(intro, image);
   const customSections = renderCustomSections(sections, context);
 
@@ -155,7 +157,7 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
               <div className="aspect-video">
                 <iframe
                   title={`${stepsHeading} map`}
-                  src={stepsMapEmbedUrl}
+                  src={mapKey ? `${stepsMapEmbedUrl}&key=${mapKey}` : stepsMapEmbedUrl}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy={MAP_REFERRER_POLICY}

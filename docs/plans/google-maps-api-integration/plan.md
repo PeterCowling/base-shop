@@ -5,6 +5,7 @@ Domain: UI
 Workstream: Engineering
 Created: 2026-02-19
 Last-updated: 2026-02-19
+Engineer-tasks-status: All engineer-executable tasks Complete (TASK-01/02 are owner actions awaiting GCP key)
 Feature-Slug: google-maps-api-integration
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -102,7 +103,7 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 | TASK-04 | IMPLEMENT | ContactFormWithMap: TDD — red tests then default URL + stories + fixtures | 80% | S | Complete (2026-02-19) | - | TASK-CP1 |
 | TASK-CP1 | CHECKPOINT | Checkpoint: component tests green; validate approach before guide migration | 95% | S | Complete (2026-02-19) | TASK-03 ✓, TASK-04 ✓ | TASK-05 |
 | TASK-05 | IMPLEMENT | articleLead.tsx: key injection at render time + guide URL format test | 80% | S | Complete (2026-02-19) | TASK-CP1 ✓ | TASK-06 |
-| TASK-06 | IMPLEMENT | Update 36 locale JSON files: replace ?pb= stepsMapEmbedUrl with v1 URLs | 80% | M | Pending | TASK-05 | - |
+| TASK-06 | IMPLEMENT | Update 36 locale JSON files: replace ?pb= stepsMapEmbedUrl with v1 URLs | 80% | M | Complete (2026-02-19) | TASK-05 ✓ | - |
 
 ## Parallelism Guide
 
@@ -405,7 +406,7 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:**
   - `apps/brikette/src/locales/*/guides/content/chiesaNuovaArrivals.json` (×18 locales)
   - `apps/brikette/src/locales/*/guides/content/chiesaNuovaDepartures.json` (×18 locales)
@@ -449,6 +450,14 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
   - Rollout: single atomic commit for all 36 files; reviewable as a diff with uniform pattern
   - Rollback: `git revert` the single commit; maps revert to `?pb=` format (still functional for now)
 - **Documentation impact:** None: locale JSON data files
+- **Build evidence (2026-02-19):**
+  - Scout: decoded `?pb=` URL — arrivals = Bar Internazionale → Hostel Brikette (walking); departures = reverse
+  - Batch Python script updated all 36 files deterministically; 8 non-locale dirs correctly skipped
+  - Arrivals URL: `https://www.google.com/maps/embed/v1/directions?origin=Bar+Internazionale%2C+Positano%2C+Italy&destination=Hostel+Brikette%2C+Positano%2C+Italy&mode=walking`
+  - Departures URL: `https://www.google.com/maps/embed/v1/directions?origin=Hostel+Brikette%2C+Positano%2C+Italy&destination=Bar+Internazionale%2C+Positano%2C+Italy&mode=walking`
+  - TC-01: 0 `?pb=` matches ✓  TC-02: 36 v1 matches ✓  TC-03: spot-check EN arrivals/departures correct ✓  TC-04: articleLead tests 2/2 pass ✓
+  - Typecheck + lint: clean (brikette turbo cache hit)
+  - Commit: `8847961ba9` (note: an unrelated CI-fix commit included locale files; that commit was reverted; files were re-applied and committed separately)
 
 ---
 

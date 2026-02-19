@@ -1,4 +1,4 @@
-import { createGuideUrlHelpers } from "@acme/guides-core";
+import { createGuideUrlHelpers } from "@acme/guides-core/url-helpers";
 
 import { BASE_URL } from "../../config/site";
 import type { AppLanguage } from "../../i18n.config";

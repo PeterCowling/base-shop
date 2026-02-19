@@ -75,7 +75,7 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 | TASK-01 | IMPLEMENT | Replace global webpack-only checker with app/command policy matrix and updated tests | 85% | M | Complete (2026-02-19) | - | TASK-02 |
 | TASK-02 | IMPLEMENT | Align docs/workflow messaging to the revised bundler policy contract | 85% | S | Complete (2026-02-19) | TASK-01 | - |
 | TASK-03 | INVESTIGATE | Validate browser-safe shared export seam for `createGuideUrlHelpers` | 75% | S | Complete (2026-02-19) | - | TASK-04 |
-| TASK-04 | IMPLEMENT | Migrate Brikette to shared guide helper export and delete local duplicate | 80% | M | Pending | TASK-03 | - |
+| TASK-04 | IMPLEMENT | Migrate Brikette to shared guide helper export and delete local duplicate | 80% | M | Complete (2026-02-19) | TASK-03 | - |
 | TASK-05 | INVESTIGATE | Probe CI Turbopack smoke runtime budget and workflow placement | 70% | S | Complete (2026-02-19) | - | TASK-06 |
 | TASK-06 | IMPLEMENT | Add deterministic Brikette Turbopack dev smoke check to CI | 85% | M | Pending | TASK-05 | - |
 
@@ -252,8 +252,8 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `packages/guides-core/src/index.ts`, `packages/guides-core/package.json`, `packages/guides-core/__tests__/createGuideUrlHelpers.test.ts`, `apps/brikette/src/guides/slugs/urls.ts`, `apps/brikette/src/guides/slugs/url-helpers.ts`
+- **Status:** Complete (2026-02-19)
+- **Affects:** `packages/guides-core/src/index.ts`, `packages/guides-core/src/url-helpers.ts`, `packages/guides-core/package.json`, `packages/guides-core/__tests__/createGuideUrlHelpers.test.ts`, `apps/brikette/src/guides/slugs/urls.ts`, `apps/brikette/src/guides/slugs/url-helpers.ts`
 - **Depends on:** TASK-03
 - **Blocks:** -
 - **Confidence:** 80%
@@ -298,6 +298,25 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
   - Update migration notes in plan evidence block.
 - **Notes / references:**
   - Brikette call site: `apps/brikette/src/guides/slugs/urls.ts`
+- **Build completion evidence (2026-02-19):**
+  - Implemented browser-safe helper seam from TASK-03:
+    - Added `packages/guides-core/src/url-helpers.ts`.
+    - Re-exported helper API from `packages/guides-core/src/index.ts`.
+    - Added package subpath export in `packages/guides-core/package.json` for `@acme/guides-core/url-helpers`.
+  - Migrated Brikette to shared helper and removed duplicate:
+    - Updated `apps/brikette/src/guides/slugs/urls.ts` import to `@acme/guides-core/url-helpers`.
+    - Deleted `apps/brikette/src/guides/slugs/url-helpers.ts`.
+  - Hardened export contract coverage:
+    - Updated `packages/guides-core/__tests__/createGuideUrlHelpers.test.ts` with index re-export assertion.
+  - Validation results:
+    - TC-01: `rg -n 'createGuideUrlHelpers' apps/brikette/src/guides/slugs/urls.ts` -> shared subpath import present.
+    - TC-02: `test ! -f apps/brikette/src/guides/slugs/url-helpers.ts` -> pass.
+    - TC-03: `pnpm --filter @acme/guides-core test -- createGuideUrlHelpers.test.ts` -> pass (3 tests).
+    - TC-04: `pnpm --filter @apps/brikette typecheck` -> pass.
+    - TC-05: `pnpm --filter @apps/brikette build` -> pass.
+  - Turbopack dev probe:
+    - `curl -fsS http://127.0.0.1:3012/en/apartment | rg -o 'application/ld\\+json' | wc -l` -> `1`
+    - No `fs`/`path` module resolution error text observed in page response.
 
 ---
 

@@ -6,8 +6,8 @@ Workstream: Mixed
 Last-reviewed: 2026-02-18
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-18
-Last-updated: 2026-02-18
-Build-Progress: TASK-00..TASK-09 complete; TASK-12+TASK-13 complete (INVESTIGATE precursors); TASK-10 CHECKPOINT eligible (depends on TASK-02+TASK-09)
+Last-updated: 2026-02-19
+Build-Progress: TASK-00..TASK-10 complete (TASK-10 CHECKPOINT done 2026-02-19); TASK-11 now eligible
 Feature-Slug: email-draft-quality-upgrade
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -92,8 +92,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 80% | M | Complete (2026-02-18) | TASK-05, TASK-06, TASK-12 | TASK-09 |
 | TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 80% | M | Complete (2026-02-18) | TASK-04, TASK-13 | TASK-09 |
 | TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 80% | M | Complete (2026-02-18) | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
-| TASK-10 | CHECKPOINT | Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope | 95% | S | Pending | TASK-02, TASK-09 | TASK-11 |
-| TASK-11 | IMPLEMENT | Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata | TBD | TBD | Needs-Replan | TASK-10 | - |
+| TASK-10 | CHECKPOINT | Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope | 95% | S | Complete (2026-02-19) | TASK-02, TASK-09 | TASK-11 |
+| TASK-11 | IMPLEMENT | Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata | 80% | M | Pending | TASK-10 | - |
 | TASK-12 | INVESTIGATE | Define knowledge injection approach: injection timing, citation rendering, sources_used schema, sanitisation pass order | 80% | S | Complete (2026-02-18) | TASK-05 | TASK-07 |
 | TASK-13 | INVESTIGATE | Verify thread snippet sufficiency for context deduplication; define expanded request pattern set and false-positive rate | 80% | S | Complete (2026-02-18) | TASK-04 | TASK-08 |
 
@@ -563,7 +563,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Skill:** lp-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `docs/plans/email-draft-quality-upgrade/plan.md`
 - **Depends on:** TASK-02, TASK-09
 - **Blocks:** TASK-11
@@ -588,26 +588,57 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:**
   - Updates this plan with checkpoint outcomes and TASK-11 scope.
+- **Build completion evidence (2026-02-19):**
+  - Horizon assumption 1 (coverage improvement): ✅ Validated — TASK-09 shows 10/10 quality pass, 100% avg coverage incl. 5 multi-topic fixtures.
+  - Horizon assumption 2 (harness stability): ✅ Validated — 2 consecutive stable runs: Green (10/10, 100%) + checkpoint run (10/10, 100%). Zero flaky failures.
+  - Horizon assumption 3 (Claude CLI): ✅ Validated — claude-sonnet-4-6 running via Claude Code CLI. TASK-11 execution constraint satisfied.
+  - Rollout trigger criteria (from `decisions/v1-1-scope-boundary-decision.md`): all 4 criteria satisfied.
+  - TASK-11 inline replan: status Needs-Replan → Pending; confidence TBD → 80%; effort TBD → M; Affects and TC-11 contracts defined. See updated TASK-11 section below.
 
 ### TASK-11: Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata
 - **Type:** IMPLEMENT
-- **Deliverable:** `draft_refine` MCP tool (additive LLM refinement stage)
+- **Deliverable:** `draft_refine` MCP tool (additive LLM refinement stage registered in MCP server)
 - **Execution-Skill:** lp-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
-- **Effort:** TBD (set at TASK-10 replan)
-- **Status:** Needs-Replan
-- **Affects:** TBD — defined at TASK-10 replan
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `packages/mcp-server/src/tools/draft-refine.ts`, `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/package.json`, `packages/mcp-server/src/__tests__/draft-refine.test.ts`
 - **Depends on:** TASK-10
 - **Blocks:** -
-- **Confidence:** TBD
-- **Execution constraint:** Must be implemented via AI agent CLI (Claude CLI or Codex), not manual authoring.
-- **Acceptance:** TBD — defined at TASK-10 replan. Must include:
-  - `refinement_applied: boolean` output flag
-  - `refinement_source: 'claude-cli' | 'codex' | 'none'` metadata
-  - Graceful fallback to deterministic draft when LLM call fails or exceeds latency threshold
-  - Additive only — does not replace `draft_generate` or `draft_quality_check`
-- **Note:** Scope and confidence to be fully defined via `/lp-replan` at TASK-10 checkpoint.
+- **Confidence:** 80% *(set at TASK-10 inline replan — 2026-02-19)*
+  - Implementation: 80% - tool registration pattern clear (`toolDefinitions` spread + Set dispatch in `index.ts`); `handleDraftGenerateTool(name, args)` signature is the model; `jsonResult`/`errorResult` from `validation.ts`. File `draft-refine.ts` is greenfield (does not exist). `@anthropic-ai/sdk` not yet in `package.json` — must be added.
+  - Approach: 80% - additive pattern proven by prior tools; Claude SDK message API is straightforward; try/catch fallback pattern matches existing tools (no timeout API, try/catch only). Tool is strictly additive — does not replace `draft_generate` or `draft_quality_check`.
+  - Impact: 80% - TASK-00 operator confirmed LLM now; `draft_refine` fills semantic gap after deterministic generation; harness baseline locked by TASK-09; checkpoint complete.
+- **Execution constraint:** Must be implemented via AI agent CLI (Claude CLI), not manual authoring. Uses `@anthropic-ai/sdk` Anthropic client.
+- **Acceptance:**
+  - `draft_refine` MCP tool is registered and callable via Claude Desktop/MCP.
+  - Tool accepts `draft` (bodyPlain + bodyHtml), `actionPlan`, and optional `context` parameters.
+  - Successful refinement: `refinement_applied: true`, `refinement_source: 'claude-cli'`, refined body replaces input.
+  - LLM failure/timeout: `refinement_applied: false`, `refinement_source: 'none'`, original draft returned unchanged.
+  - `@anthropic-ai/sdk` added to `packages/mcp-server/package.json` dependencies.
+  - Additive only — does not replace `draft_generate` or `draft_quality_check`.
+- **Validation contract (TC-11):**
+  - TC-11-01: fixture with valid draft + actionPlan → `refinement_applied: true`, `refinement_source: 'claude-cli'`, bodyPlain length > 0.
+  - TC-11-02: Anthropic SDK mocked to throw error → `refinement_applied: false`, `refinement_source: 'none'`, original bodyPlain returned unchanged.
+  - TC-11-03: refined output passes `draft_quality_check` (quality.passed === true for a clean fixture).
+  - TC-11-04: targeted tests pass with `pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage`.
+- **Execution plan:** Red -> Green -> Refactor
+- **Planning validation (required for M/L):**
+  - Checks run: tool registration pattern (`index.ts` Set dispatch + `toolDefinitions` spread); `handleDraftGenerateTool` signature; validation utils; `package.json` dependencies.
+  - Validation artifacts: `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/src/utils/validation.ts`, `packages/mcp-server/package.json`.
+  - Unexpected findings: `@anthropic-ai/sdk` not yet installed — must be added. No timeout API in existing tools — use try/catch only.
+- **Scouts:** None remaining — all surfaces mapped at TASK-10 checkpoint.
+- **Edge Cases & Hardening:**
+  - Fallback must not alter original draft content even partially on error.
+  - SDK mock pattern in tests must cover both throw and promise-rejection cases.
+- **What would make this >=90%:**
+  - One full ops-inbox session using `draft_refine` with zero fallback triggers and quality-check pass on all outputs.
+- **Rollout / rollback:**
+  - Rollout: register tool in MCP server; ops-inbox skill updated to call `draft_refine` after `draft_generate`.
+  - Rollback: unregister tool from `index.ts` dispatch table; revert `package.json` SDK addition.
+- **Documentation impact:**
+  - Update ops-inbox skill to include `draft_refine` as optional refinement step after `draft_generate`.
 
 ### TASK-12: Define knowledge injection approach (injection timing, citation rendering, sources_used schema, sanitisation)
 - **Type:** INVESTIGATE
@@ -719,7 +750,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 ## Overall-confidence Calculation
 - S=1, M=2, L=3
 - Weighted sum (complete tasks counted at their locked confidence):
-  - S tasks: `85 + 85 + 95 = 265`
-  - M tasks: `2 * (75 + 85 + 85 + 85 + 80 + 80 + 80 + 80) = 1300` *(TASK-07, TASK-08, TASK-09 all promoted to 80%)*
-- Total weight: `3 + 16 = 19`
-- Overall-confidence: `1565 / 19 = 82.4%` -> **82%**
+  - S tasks: `85 + 85 + 95 = 265` *(TASK-00, TASK-02, TASK-10)*
+  - M tasks: `2 * (75 + 85 + 85 + 85 + 80 + 80 + 80 + 80 + 80) = 1460` *(TASK-01, TASK-03..TASK-09, TASK-11 — all promoted/set to ≥80%)*
+- Total weight: `3 + 18 = 21`
+- Overall-confidence: `1725 / 21 = 82.1%` -> **82%**

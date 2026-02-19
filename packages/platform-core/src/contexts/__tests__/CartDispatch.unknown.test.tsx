@@ -20,6 +20,7 @@ describe("Cart dispatch: unknown actions", () => {
   beforeEach(() => {
     clearCartStorage();
     ({ fetchMock, restore: restoreFetch } = setupFetchMock());
+    jest.spyOn(console, "warn").mockImplementation(() => {});
   });
 
   afterEach(() => {

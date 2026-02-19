@@ -1,5 +1,8 @@
 /** @jest-environment node */
 
+import { readFileSync } from "fs";
+import { join } from "path";
+
 import handleDraftQualityTool from "../tools/draft-quality-check";
 
 function parseResult(result: { content: Array<{ text: string }> }) {
@@ -16,6 +19,24 @@ function parseResult(result: { content: Array<{ text: string }> }) {
       status: "covered" | "partial" | "missing";
     }>;
   };
+}
+
+type StoredTemplate = {
+  subject: string;
+  body: string;
+  category: string;
+  template_id?: string;
+  reference_scope?: "reference_required" | "reference_optional_excluded";
+  canonical_reference_url?: string | null;
+  normalization_batch?: "A" | "B" | "C" | "D";
+};
+
+function loadStoredTemplates(): StoredTemplate[] {
+  const raw = readFileSync(
+    join(process.cwd(), "packages", "mcp-server", "data", "email-templates.json"),
+    "utf8"
+  );
+  return JSON.parse(raw) as StoredTemplate[];
 }
 
 describe("draft_quality_check", () => {
@@ -183,6 +204,41 @@ describe("draft_quality_check", () => {
     });
     const payload = parseResult(result);
     expect(payload.failed_checks).not.toContain("unanswered_questions");
+  });
+});
+
+describe("draft_quality_check TASK-04 template normalization", () => {
+  it("TC-04-01: reference-required templates all contain canonical https references", () => {
+    const templates = loadStoredTemplates();
+    const required = templates.filter(
+      (template) => template.reference_scope === "reference_required"
+    );
+
+    expect(required).toHaveLength(41);
+
+    for (const template of required) {
+      const fullText = `${template.subject}\n${template.body}`;
+      expect(template.canonical_reference_url).toMatch(/^https:\/\//);
+      expect(fullText.includes(template.canonical_reference_url ?? "")).toBe(true);
+      expect(/https?:\/\//i.test(fullText)).toBe(true);
+    }
+  });
+
+  it("TC-04-02: optional/excluded templates are explicitly tagged by metadata", () => {
+    const templates = loadStoredTemplates();
+    const optional = templates.filter(
+      (template) => template.reference_scope === "reference_optional_excluded"
+    );
+    const withMissingScope = templates.filter((template) => !template.reference_scope);
+
+    expect(templates).toHaveLength(53);
+    expect(optional).toHaveLength(12);
+    expect(withMissingScope).toHaveLength(0);
+
+    for (const template of optional) {
+      expect(template.template_id).toMatch(/^T\d{2}$/);
+      expect(template.normalization_batch).toMatch(/^[A-D]$/);
+    }
   });
 });
 

@@ -1,267 +1,479 @@
 [
   {
     "subject": "Why cancelled",
-    "body": "Dear Guest,\r\n\r\nThank you for your email. I am sorry this has been frustrating.\r\n\r\nYour reservation was cancelled because the required confirmation and payment steps were not completed in time.\r\n\r\nFor this booking type, the process is:\r\n1) accept the terms and conditions;\r\n2) complete payment when prompted.\r\n\r\nIf either step is missed, the reservation is cancelled automatically and cannot be reinstated.\r\n\r\nIf you would like, we can guide you through making a new reservation with current availability.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "booking-issues"
+    "body": "Dear Guest,\r\n\r\nThank you for your email. I am sorry this has been frustrating.\r\n\r\nYour reservation was cancelled because the required confirmation and payment steps were not completed in time.\r\n\r\nFor this booking type, the process is:\r\n1) accept the terms and conditions;\r\n2) complete payment when prompted.\r\n\r\nIf either step is missed, the reservation is cancelled automatically and cannot be reinstated.\r\n\r\nIf you would like, we can guide you through making a new reservation with current availability.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing>",
+    "category": "booking-issues",
+    "template_id": "T01",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing",
+    "normalization_batch": "B"
   },
   {
     "subject": "Agreement Received",
     "body": "Thank you, we have received your agreement to the terms and conditions for your reservation.\r\n\r\nNext step from our side: we will process the payment and send confirmation shortly.\r\n\r\nNo further action is needed right now. If payment does not go through, we will be in touch to let you know.",
-    "category": "general"
+    "category": "general",
+    "template_id": "T02",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": null,
+    "normalization_batch": "D"
   },
   {
     "subject": "Alcohol Policy",
-    "body": "Dear Guests in Room Nine,\r\n\r\nWe hope you are enjoying your stay at the hostel.\r\n\r\nThis morning, our cleaning crew removed a bottle of tequila from your room. If this item belongs to you, please visit the front desk to collect it either upon checkout or when you plan to head out and intend to consume them *outside* the hostel.\r\n\r\nPlease be reminded that bringing alcohol purchased outside of the hostel into the premises is against our policy, as stated in the room rules, terms, and conditions for room booking. As a licensed property, we must regulate alcohol consumption on-site.\r\n\r\nWe kindly ask for your cooperation with this rule to ensure compliance with legal requirements. Failure to adhere to this policy will result in the discontinuation of your stay with us.\r\n\r\nThank you for your understanding.\r\n\r\nRegards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
-    "category": "policies"
+    "body": "Dear Guests in Room Nine,\r\n\r\nWe hope you are enjoying your stay at the hostel.\r\n\r\nThis morning, our cleaning crew removed a bottle of tequila from your room. If this item belongs to you, please visit the front desk to collect it either upon checkout or when you plan to head out and intend to consume them *outside* the hostel.\r\n\r\nPlease be reminded that bringing alcohol purchased outside of the hostel into the premises is against our policy, as stated in the room rules, terms, and conditions for room booking. As a licensed property, we must regulate alcohol consumption on-site.\r\n\r\nWe kindly ask for your cooperation with this rule to ensure compliance with legal requirements. Failure to adhere to this policy will result in the discontinuation of your stay with us.\r\n\r\nThank you for your understanding.\r\n\r\nRegards,\r\n\r\nPeter Cowling\r\n\r\nOwner\r\n\r\nFor full details, please see: <https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing>",
+    "category": "policies",
+    "template_id": "T03",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing",
+    "normalization_batch": "B"
   },
   {
     "subject": "Transportation to Hostel Brikette",
     "body": "Dear Guest,\r\n\r\nThanks for your email.\r\n\r\nWe have detailed travel guides on our website that cover all transport options to the hostel:\r\n\r\n   - Travel directions to the hostel <https://hostel-positano.com/en/assistance/travel-help>\r\n   - Arriving by ferry <https://hostel-positano.com/en/assistance/arriving-by-ferry>\r\n\r\nThese guides include step-by-step instructions, maps, and taxi information.\r\n\r\nWe look forward to seeing you at the hostel.\r\n\r\n-- \r\nRegards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "transportation"
+    "category": "transportation",
+    "template_id": "T04",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/travel-help",
+    "normalization_batch": "A"
   },
   {
     "subject": "Arriving before check-in time",
-    "body": "Dear Guest, \r\n\r\n\r\nThank you for reaching out to us. \r\n\r\n\r\nAlthough official check-in time begins at 2:30 pm, we are pleased to accommodate guests from 10:30 am onwards on check-in day. We kindly request that guests do not arrive before 10:30 am, so that there is sufficient time for breakfast service and checkouts. \r\n\r\n\r\n*Early Arrival Process*\r\n\r\nUpon your arrival, we'll facilitate a smooth pre-check-in process. This includes verifying details from a photo ID, processing room payment (if not already done), collecting the city tax and keycard deposit, and providing you with a security band. \r\n\r\n\r\n\r\n*Amenities Available Before Check-In*\r\n\r\n\r\n   - Bag Drop: A secure area for your luggage storage. \r\n   - Facilities: Access to bathrooms/changing areas. \r\n   - Connectivity: Complimentary WiFi. \r\n   - Information Services: Assistance through our digital assistant and dedicated staff members. \r\n   - Relaxation: Our bar and terrace are open for your enjoyment. \r\n\r\n\r\nPlease note that these amenities are also available to you on the day of checkout until 3:30 pm. \r\n\r\n\r\n\r\nSafe travels, and we look forward to seeing you at the hostel!\r\n\r\n\r\n\r\n-- \r\nRegards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "check-in"
+    "body": "Dear Guest, \r\n\r\n\r\nThank you for reaching out to us. \r\n\r\n\r\nAlthough official check-in time begins at 2:30 pm, we are pleased to accommodate guests from 10:30 am onwards on check-in day. We kindly request that guests do not arrive before 10:30 am, so that there is sufficient time for breakfast service and checkouts. \r\n\r\n\r\n*Early Arrival Process*\r\n\r\nUpon your arrival, we'll facilitate a smooth pre-check-in process. This includes verifying details from a photo ID, processing room payment (if not already done), collecting the city tax and keycard deposit, and providing you with a security band. \r\n\r\n\r\n\r\n*Amenities Available Before Check-In*\r\n\r\n\r\n   - Bag Drop: A secure area for your luggage storage. \r\n   - Facilities: Access to bathrooms/changing areas. \r\n   - Connectivity: Complimentary WiFi. \r\n   - Information Services: Assistance through our digital assistant and dedicated staff members. \r\n   - Relaxation: Our bar and terrace are open for your enjoyment. \r\n\r\n\r\nPlease note that these amenities are also available to you on the day of checkout until 3:30 pm. \r\n\r\n\r\n\r\nSafe travels, and we look forward to seeing you at the hostel!\r\n\r\n\r\n\r\n-- \r\nRegards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/checkin-checkout>",
+    "category": "check-in",
+    "template_id": "T05",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/checkin-checkout",
+    "normalization_batch": "A"
   },
   {
     "subject": "Essential - Inner Building, Opening Main Door",
     "body": "Dear Guest,\r\n\r\nFor access to the hostel main door, follow the steps outlined below. You will need a specific code, and to know how to enter the code. Note, your keycard is only for room access.\r\n\r\nThe main door is locked overnight for security reasons. If you are part of a group, please ensure everyone in your group is familiar with the door operation to avoid potential lockouts.\r\n\r\n\r\nDon't get Locked Out!\r\n\r\nRead the instructions <https://docs.google.com/document/d/1nbe64lX27WM88W6d8ucsfvuJU-2_PX--zQB4LEv8LjM/edit?usp=sharing>\r\n\r\nAsk us for a demonstration\r\n\r\n\r\nDigital Assistant\r\n\r\nGet answers to any questions. <https://hostel-positano.com/en/assistance>\r\n\r\nAnswers include links to super useful guides!\r\n\r\n\r\nRegards,\r\n\r\nHostel Brikette, Positano",
-    "category": "access"
+    "category": "access",
+    "template_id": "T06",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://docs.google.com/document/d/1nbe64lX27WM88W6d8ucsfvuJU-2_PX--zQB4LEv8LjM/edit?usp=sharing",
+    "normalization_batch": "A"
   },
   {
     "subject": "Essential - Outer buildings, Opening Main Door",
     "body": "Dear Guest,\r\n\r\nThe main door, where the common areas are located, is locked overnight for security reasons. For access to the hostel main door, follow the steps outlined below. Note that your keycard will get you in and out of your room, so you do not need to know the code to get into the room, just if you want to get into the common areas.\r\n\r\n\r\nAccess the common areas 24hrs a day\r\n\r\nRead the instructions <https://docs.google.com/document/d/1nbe64lX27WM88W6d8ucsfvuJU-2_PX--zQB4LEv8LjM/edit?usp=sharing>\r\n\r\nAsk us for a demonstration\r\n\r\n\r\nDigital Assistant\r\n\r\nGet answers to any questions. <https://hostel-positano.com/en/assistance>\r\n\r\nAnswers include links to super useful guides!\r\n\r\n\r\nRegards,\r\n\r\nHostel Brikette, Positano",
-    "category": "access"
+    "category": "access",
+    "template_id": "T07",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://docs.google.com/document/d/1nbe64lX27WM88W6d8ucsfvuJU-2_PX--zQB4LEv8LjM/edit?usp=sharing",
+    "normalization_batch": "A"
   },
   {
     "subject": "Arrival Time - Hostel Brikette, Positano",
-    "body": "Dear Guest,\r\n\r\nWe hope you are having a great day and all is going well.\r\n\r\nJust touching base to check whether you will reach us before 10:30pm tonight. If you anticipate arriving later than this time, please let us know so we can provide you with detailed instructions on our late check-in process.\r\n\r\nWe eagerly await your arrival and look forward to welcoming you to our establishment.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
-    "category": "check-in"
+    "body": "Dear Guest,\r\n\r\nWe hope you are having a great day and all is going well.\r\n\r\nJust touching base to check whether you will reach us before 10:30pm tonight. If you anticipate arriving later than this time, please let us know so we can provide you with detailed instructions on our late check-in process.\r\n\r\nWe eagerly await your arrival and look forward to welcoming you to our establishment.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/checkin-checkout>",
+    "category": "check-in",
+    "template_id": "T08",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/checkin-checkout",
+    "normalization_batch": "A"
   },
   {
     "subject": "Change Credit Card Details",
     "body": "Dear Guest,\r\n\r\nThanks for your email.\r\n\r\nPlease insert your revised credit card details here <https://book.octorate.com/octobook/site/reservation/login.xhtml?_xrand=1266613326&codice=45111>.\r\n\r\n\r\nWe will then run the payment, sometime in the next 24hrs. \r\n\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
-    "category": "payment"
+    "category": "payment",
+    "template_id": "T09",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://book.octorate.com/octobook/site/reservation/login.xhtml?_xrand=1266613326&codice=45111",
+    "normalization_batch": "B"
   },
   {
     "subject": "Out of hours check-in",
     "body": "Dear Guest,\r\n\r\nPlease find our out of hours check-in process here: <https://hostel-positano.com/en/assistance/late-checkin>.\r\n\r\nWe look forward to seeing you at the hostel.\r\n\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
-    "category": "check-in"
+    "category": "check-in",
+    "template_id": "T10",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/late-checkin",
+    "normalization_batch": "A"
   },
   {
     "subject": "Prepayment - Cancelled post 3rd Attempt",
     "body": "Dear Guest,\r\n\r\nWe completed the final (third) prepayment attempt and it was not successful.\r\n\r\nAs a result, the reservation has now been cancelled in line with booking policy.\r\n\r\nWe have notified Hostelworld so their system can reflect the cancellation.\r\n\r\nIf you would like to book again, we can help you with current availability and the fastest payment method.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "prepayment"
+    "category": "prepayment",
+    "template_id": "T11",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": null,
+    "normalization_batch": "D"
   },
   {
     "subject": "Prepayment - 1st Attempt Failed (Octorate)",
     "body": "Dear Guest,\r\n\r\nThank you again for choosing to stay with us.\r\n\r\nWe attempted to process the required prepayment today, but the transaction did not complete.\r\n\r\nNo action is needed immediately. We will try a second time tomorrow.\r\n\r\nIn the meantime, please check that your card is enabled for international/online payments and has sufficient available funds.\r\n\r\nIf you prefer a different card, reply and we will send a secure update link.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "prepayment"
+    "category": "prepayment",
+    "template_id": "T12",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": null,
+    "normalization_batch": "D"
   },
   {
     "subject": "Prepayment - 2nd Attempt Failed",
     "body": "Dear Guest,\r\n\r\nFurther to our earlier message, the second prepayment attempt also failed.\r\n\r\nWe will make one final attempt tomorrow. If that final attempt fails, the reservation will be cancelled automatically according to policy.\r\n\r\nPlease update payment details as soon as possible if needed, and ensure your card can accept international/online charges.\r\n\r\nIf your booking was made through Hostelworld, any deposit refund questions must be handled directly with Hostelworld.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "prepayment"
+    "category": "prepayment",
+    "template_id": "T13",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": null,
+    "normalization_batch": "D"
   },
   {
     "subject": "Prepayment - 1st Attempt Failed (Hostelworld)",
     "body": "Dear Guest,\r\n\r\nThank you for your reservation.\r\n\r\nOur first prepayment attempt was not successful.\r\n\r\nUnder Hostelworld policy, we will make up to three payment attempts before a reservation is cancelled.\r\n\r\nWe will try again tomorrow. Please confirm your payment method is active for international/online charges.\r\n\r\nIf you want to use a different card, reply and we will send a secure link.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "prepayment"
+    "category": "prepayment",
+    "template_id": "T14",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": null,
+    "normalization_batch": "D"
   },
   {
     "subject": "Cancellation of Non-Refundable Booking",
-    "body": "Dear Guest,\r\n\r\nThank you for contacting us, and I am sorry for the circumstances behind your request.\r\n\r\nWe can process the cancellation immediately if you would like us to proceed.\r\n\r\nYour reservation was made on a discounted non-refundable rate. Because this rate is confirmed in advance, it is not eligible for refund under the booking terms.\r\n\r\nIf you would like us to proceed with cancellation, please reply to confirm and we will complete it promptly.\r\n\r\nWe know this is disappointing when plans change unexpectedly. If you have travel insurance, your provider may be able to help recover costs.\r\n\r\nIf anything is unclear, we are happy to explain each step.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "cancellation"
+    "body": "Dear Guest,\r\n\r\nThank you for contacting us, and I am sorry for the circumstances behind your request.\r\n\r\nWe can process the cancellation immediately if you would like us to proceed.\r\n\r\nYour reservation was made on a discounted non-refundable rate. Because this rate is confirmed in advance, it is not eligible for refund under the booking terms.\r\n\r\nIf you would like us to proceed with cancellation, please reply to confirm and we will complete it promptly.\r\n\r\nWe know this is disappointing when plans change unexpectedly. If you have travel insurance, your provider may be able to help recover costs.\r\n\r\nIf anything is unclear, we are happy to explain each step.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing>",
+    "category": "cancellation",
+    "template_id": "T15",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing",
+    "normalization_batch": "B"
   },
   {
     "subject": "No Show",
-    "body": "Dear Guest,\r\n\r\nWe are sorry you were unable to arrive for your stay.\r\n\r\nAs check-in was not completed, the reservation has been closed as a no-show.\r\n\r\nIf you would like to stay on different dates, please send your preferred dates and we will help you rebook based on availability.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "cancellation"
+    "body": "Dear Guest,\r\n\r\nWe are sorry you were unable to arrive for your stay.\r\n\r\nAs check-in was not completed, the reservation has been closed as a no-show.\r\n\r\nIf you would like to stay on different dates, please send your preferred dates and we will help you rebook based on availability.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing>",
+    "category": "cancellation",
+    "template_id": "T16",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing",
+    "normalization_batch": "B"
   },
   {
     "subject": "Age Restriction",
-    "body": "Dear Guest,\r\n\r\n\r\nThank you for your understanding as we explain our age-related policy. We implemented this policy in response to various complaints we received concerning the atmosphere in our establishment.\r\n\r\n\r\nPreviously, we encountered situations where guests reported feeling uncomfortable due to the presence of older individuals in the dormitories. These complaints were often vague and difficult to verify, which led to challenging decisions.\r\n\r\n\r\nInitially, we attempted to be flexible with the policy, admitting guests who assured us they were easygoing. Unfortunately, despite their assurances, some of these guests later complained about noise levels.\r\n\r\n\r\nAs a result, we have decided to adhere more strictly to our policy during peak seasons to minimize risks and maintain a comfortable environment for all our guests. During the start and end of the season, when risks are more manageable, we can be more flexible.\r\n\r\n\r\nWe acknowledge that this policy may not be ideal for everyone, but we believe it is preferable to the alternative. We appreciate your understanding and thank you for allowing us to clarify our position on this matter.\r\n\r\n\r\nBest regards,\r\n\r\n\r\nPeter Cowling\r\n\r\nOwner",
-    "category": "policies"
+    "body": "Dear Guest,\r\n\r\n\r\nThank you for your understanding as we explain our age-related policy. We implemented this policy in response to various complaints we received concerning the atmosphere in our establishment.\r\n\r\n\r\nPreviously, we encountered situations where guests reported feeling uncomfortable due to the presence of older individuals in the dormitories. These complaints were often vague and difficult to verify, which led to challenging decisions.\r\n\r\n\r\nInitially, we attempted to be flexible with the policy, admitting guests who assured us they were easygoing. Unfortunately, despite their assurances, some of these guests later complained about noise levels.\r\n\r\n\r\nAs a result, we have decided to adhere more strictly to our policy during peak seasons to minimize risks and maintain a comfortable environment for all our guests. During the start and end of the season, when risks are more manageable, we can be more flexible.\r\n\r\n\r\nWe acknowledge that this policy may not be ideal for everyone, but we believe it is preferable to the alternative. We appreciate your understanding and thank you for allowing us to clarify our position on this matter.\r\n\r\n\r\nBest regards,\r\n\r\n\r\nPeter Cowling\r\n\r\nOwner\r\n\r\nFor full details, please see: <https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing>",
+    "category": "policies",
+    "template_id": "T17",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing",
+    "normalization_batch": "B"
   },
   {
     "subject": "Path of the Gods Hike - Recommended Routes",
-    "body": "Dear Guest,\r\n\r\nWe are pleased to provide you with the following suggested routes for the popular Path of the Gods hike. Each option offers unique advantages to enhance your hiking experience:\r\n\r\n\r\n   - Via Amalfi on the ferry <https://docs.google.com/document/d/1W2SCLPgOFYSrVyaxuelQQJwACfgRwJ5HVQP6Hzs67Ic/edit?usp=sharing> - Most scenic route via Amalfi\r\n   - Via Amalfi on the bus <https://docs.google.com/document/d/1drLc9ZhyrA86_dB-Y-_eqJdtHKphrn4NHq6Bn2h2wrk/edit?usp=sharing> - Most convenient route via Amalfi\r\n   - Via Nocelle <https://docs.google.com/document/d/1WBfYvqkyjQ-yVIXymKa0UIpTDKqftv7Zd_Ot2bpJ24E/edit?usp=sharing> - Longer walking experience with less transport time\r\n   \r\n\r\nWe hope this information helps you in choosing the route that best suits your preferences. Should you have any questions or need further assistance, please feel free to reach out.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
-    "category": "activities"
+    "body": "Dear Guest,\r\n\r\nWe are pleased to provide you with the following suggested routes for the popular Path of the Gods hike. Each option offers unique advantages to enhance your hiking experience:\r\n\r\n\r\n   - Via Amalfi on the ferry <https://docs.google.com/document/d/1W2SCLPgOFYSrVyaxuelQQJwACfgRwJ5HVQP6Hzs67Ic/edit?usp=sharing> - Most scenic route via Amalfi\r\n   - Via Amalfi on the bus <https://docs.google.com/document/d/1drLc9ZhyrA86_dB-Y-_eqJdtHKphrn4NHq6Bn2h2wrk/edit?usp=sharing> - Most convenient route via Amalfi\r\n   - Via Nocelle <https://docs.google.com/document/d/1WBfYvqkyjQ-yVIXymKa0UIpTDKqftv7Zd_Ot2bpJ24E/edit?usp=sharing> - Longer walking experience with less transport time\r\n   \r\n\r\nWe hope this information helps you in choosing the route that best suits your preferences. Should you have any questions or need further assistance, please feel free to reach out.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/path-of-gods-hike>",
+    "category": "activities",
+    "template_id": "T18",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/path-of-gods-hike",
+    "normalization_batch": "A"
   },
   {
     "subject": "Prepayment Successful",
     "body": "Dear Guest,\r\n\r\nWe are pleased to confirm that the payment transaction has been successfully processed, and your reservation is now complete.\r\n\r\nWe look forward to your arrival, and to providing you with a comfortable and enjoyable stay at our hostel.\r\n\r\nShould you have any questions, or require further assistance, please don't hesitate to reach out to us.\r\n\r\nWarm regards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
-    "category": "prepayment"
+    "category": "prepayment",
+    "template_id": "T19",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": null,
+    "normalization_batch": "D"
   },
   {
-    "subject": "Breakfast \u2014 Eligibility and Hours",
-    "body": "Dear Guest,\r\n\r\nThank you for your question about breakfast.\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM. Each guest is entitled to one breakfast per day. To order, simply use the hostel ordering system and collect your breakfast within 30 minutes. Please note that breakfast is served on-site only and cannot be taken away.\r\n\r\nIf you have any dietary requirements or further questions, please let us know.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "breakfast"
+    "subject": "Breakfast — Eligibility and Hours",
+    "body": "Dear Guest,\r\n\r\nThank you for your question about breakfast.\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM. Each guest is entitled to one breakfast per day. To order, simply use the hostel ordering system and collect your breakfast within 30 minutes. Please note that breakfast is served on-site only and cannot be taken away.\r\n\r\nIf you have any dietary requirements or further questions, please let us know.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/booking-basics>",
+    "category": "breakfast",
+    "template_id": "T20",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/booking-basics",
+    "normalization_batch": "A"
   },
   {
-    "subject": "Breakfast \u2014 Not Included (OTA Booking)",
+    "subject": "Breakfast — Not Included (OTA Booking)",
     "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nBreakfast is available exclusively for direct bookings. As your reservation was made through a third-party booking platform, breakfast is unfortunately not included in your stay.\r\n\r\nFor future stays, booking directly through our website ensures you receive all available benefits, including breakfast. You can find more details at <https://hostel-positano.com/en/assistance/booking-basics>.\r\n\r\nIf you have any other questions, please do not hesitate to ask.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "breakfast"
+    "category": "breakfast",
+    "template_id": "T21",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/booking-basics",
+    "normalization_batch": "A"
   },
   {
-    "subject": "Luggage Storage \u2014 Before Check-in",
+    "subject": "Luggage Storage — Before Check-in",
     "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nYes, we offer free luggage storage on your arrival day. You can drop off your bags from 10:30 AM onwards. Our secure storage area will keep your belongings safe while you explore Positano before check-in.\r\n\r\nFor more details, please see our luggage storage guide: <https://hostel-positano.com/en/assistance/luggage-storage-positano>.\r\n\r\nWe look forward to welcoming you!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "luggage"
+    "category": "luggage",
+    "template_id": "T22",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/luggage-storage-positano",
+    "normalization_batch": "A"
   },
   {
-    "subject": "Luggage Storage \u2014 After Checkout",
-    "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nAfter checkout, you are welcome to store your luggage free of charge until 3:30 PM on your departure day. You may collect your bags at any time between 7:30 AM and 3:30 PM.\r\n\r\nPlease note that if you need to collect your luggage after 3:30 PM, our porter service is available at a cost of \u20ac15 per bag.\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/luggage-storage-positano>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "luggage"
+    "subject": "Luggage Storage — After Checkout",
+    "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nAfter checkout, you are welcome to store your luggage free of charge until 3:30 PM on your departure day. You may collect your bags at any time between 7:30 AM and 3:30 PM.\r\n\r\nPlease note that if you need to collect your luggage after 3:30 PM, our porter service is available at a cost of €15 per bag.\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/luggage-storage-positano>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "luggage",
+    "template_id": "T23",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/luggage-storage-positano",
+    "normalization_batch": "A"
   },
   {
-    "subject": "Luggage Storage \u2014 Porter Service",
-    "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nOur standard luggage storage hours on departure day are 7:30 AM to 3:30 PM (free of charge). If you need to collect your bags after 3:30 PM, our porter service can assist you at a cost of \u20ac15 per bag.\r\n\r\nPlease let us know your expected collection time so we can arrange this for you. More information is available here: <https://hostel-positano.com/en/assistance/porter-service-positano>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "luggage"
+    "subject": "Luggage Storage — Porter Service",
+    "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nOur standard luggage storage hours on departure day are 7:30 AM to 3:30 PM (free of charge). If you need to collect your bags after 3:30 PM, our porter service can assist you at a cost of €15 per bag.\r\n\r\nPlease let us know your expected collection time so we can arrange this for you. More information is available here: <https://hostel-positano.com/en/assistance/porter-service-positano>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/luggage-storage-positano>",
+    "category": "luggage",
+    "template_id": "T24",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/luggage-storage-positano",
+    "normalization_batch": "A"
   },
   {
     "subject": "WiFi Information",
     "body": "Dear Guest,\r\n\r\nThank you for your question.\r\n\r\nComplimentary WiFi is available throughout the hostel from check-in to checkout. The network supports general browsing and email. Please note that streaming and high-bandwidth activities may experience limited performance, and connection speeds are not guaranteed.\r\n\r\nYou will receive the WiFi details at check-in.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "wifi"
+    "category": "wifi",
+    "template_id": "T25",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance",
+    "normalization_batch": "D"
   },
   {
-    "subject": "Booking Change \u2014 Date Modification",
+    "subject": "Booking Change — Date Modification",
     "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nDate changes are subject to availability. Please let us know your preferred new dates and we will check what options are available for you.\r\n\r\nPlease note that for non-refundable bookings, modifications may not be possible. For full details on our change and cancellation policy, please see: <https://hostel-positano.com/en/assistance/changing-cancelling>.\r\n\r\nWe will do our best to accommodate your request.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "booking-changes"
+    "category": "booking-changes",
+    "template_id": "T26",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/changing-cancelling",
+    "normalization_batch": "A"
   },
   {
-    "subject": "Booking Change \u2014 Room Type",
+    "subject": "Booking Change — Room Type",
     "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nRoom type changes are subject to availability and any applicable rate differences. Please let us know which room type you would prefer, and we will check what we can offer.\r\n\r\nFor more information about our booking policies, please see: <https://hostel-positano.com/en/assistance/changing-cancelling>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "booking-changes"
+    "category": "booking-changes",
+    "template_id": "T27",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/changing-cancelling",
+    "normalization_batch": "A"
   },
   {
     "subject": "Booking Extension Request",
     "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nWe are happy to look into extending your stay. Please note that extensions are subject to availability and our maximum stay limit of 7 nights.\r\n\r\nPlease let us know how many additional nights you would like, and we will confirm whether this is possible along with the applicable rate.\r\n\r\nFor more details: <https://hostel-positano.com/en/assistance/changing-cancelling>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "booking-changes"
+    "category": "booking-changes",
+    "template_id": "T28",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/changing-cancelling",
+    "normalization_batch": "A"
   },
   {
     "subject": "Checkout Reminder",
-    "body": "Dear Guest,\r\n\r\nWe hope you have enjoyed your stay with us.\r\n\r\nThis is a friendly reminder that checkout is by 10:00 AM. After checkout, you are welcome to store your luggage free of charge until 3:30 PM and continue to enjoy our bar, terrace, and facilities.\r\n\r\nPlease return your keycard at reception to receive your \u20ac10 deposit refund.\r\n\r\nFor full checkout details: <https://hostel-positano.com/en/assistance/checkin-checkout>.\r\n\r\nWe wish you safe onward travels!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "checkout"
+    "body": "Dear Guest,\r\n\r\nWe hope you have enjoyed your stay with us.\r\n\r\nThis is a friendly reminder that checkout is by 10:00 AM. After checkout, you are welcome to store your luggage free of charge until 3:30 PM and continue to enjoy our bar, terrace, and facilities.\r\n\r\nPlease return your keycard at reception to receive your €10 deposit refund.\r\n\r\nFor full checkout details: <https://hostel-positano.com/en/assistance/checkin-checkout>.\r\n\r\nWe wish you safe onward travels!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "checkout",
+    "template_id": "T29",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/checkin-checkout",
+    "normalization_batch": "A"
   },
   {
     "subject": "Late Checkout Request",
-    "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nLate checkout is available until 12:00 PM at a cost of \u20ac40, subject to availability. Standard checkout time is 10:00 AM.\r\n\r\nPlease let us know if you would like to request late checkout and we will confirm availability for your departure date.\r\n\r\nFor more details about check-in and checkout: <https://hostel-positano.com/en/assistance/checkin-checkout>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "checkout"
+    "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nLate checkout is available until 12:00 PM at a cost of €40, subject to availability. Standard checkout time is 10:00 AM.\r\n\r\nPlease let us know if you would like to request late checkout and we will confirm availability for your departure date.\r\n\r\nFor more details about check-in and checkout: <https://hostel-positano.com/en/assistance/checkin-checkout>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "checkout",
+    "template_id": "T30",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/checkin-checkout",
+    "normalization_batch": "A"
   },
   {
     "subject": "Quiet Hours Reminder",
     "body": "Dear Guest,\r\n\r\nWe hope you are enjoying your stay.\r\n\r\nThis is a friendly reminder that quiet hours are in effect from 11:45 PM to 8:00 AM. During this time, we kindly ask all guests to keep noise to a minimum in rooms, hallways, and common areas out of respect for fellow guests.\r\n\r\nPlease note that repeated disturbances may result in further action. Our full house rules can be found here: <https://hostel-positano.com/en/assistance/rules>.\r\n\r\nThank you for your cooperation.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "house-rules"
+    "category": "house-rules",
+    "template_id": "T31",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/rules",
+    "normalization_batch": "A"
   },
   {
     "subject": "Visitor Policy",
     "body": "Dear Guest,\r\n\r\nThank you for your question about visitors.\r\n\r\nVisitors are welcome in our communal areas between 10:30 AM and 11:00 PM. All visitors must present a valid photo ID at reception upon arrival. Please note that visitors are not permitted in guest rooms or dormitories.\r\n\r\nFor our complete house rules, please see: <https://hostel-positano.com/en/assistance/rules>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "house-rules"
+    "category": "house-rules",
+    "template_id": "T32",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/rules",
+    "normalization_batch": "A"
   },
   {
     "subject": "Deposit and Keycard Info",
-    "body": "Dear Guest,\r\n\r\nThank you for your question.\r\n\r\nAt check-in, we collect a \u20ac10 refundable deposit which covers your keycard and linen. This deposit is returned to you at checkout when you hand back your keycard at reception.\r\n\r\nThe city tax is also collected at check-in, as required by local regulations.\r\n\r\nFor full details on the check-in process: <https://hostel-positano.com/en/assistance/checkin-checkout>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "check-in"
+    "body": "Dear Guest,\r\n\r\nThank you for your question.\r\n\r\nAt check-in, we collect a €10 refundable deposit which covers your keycard and linen. This deposit is returned to you at checkout when you hand back your keycard at reception.\r\n\r\nThe city tax is also collected at check-in, as required by local regulations.\r\n\r\nFor full details on the check-in process: <https://hostel-positano.com/en/assistance/checkin-checkout>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "check-in",
+    "template_id": "T33",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/checkin-checkout",
+    "normalization_batch": "A"
   },
   {
     "subject": "Coupon Code Redemption",
     "body": "Dear Guest,\r\n\r\nThank you for booking with us and for sharing your coupon code.\r\n\r\nWe have applied the discount to your reservation. You will see this reflected in your booking details. No further action is needed on your part.\r\n\r\nWe appreciate you booking directly with us, and we look forward to welcoming you to the hostel!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "promotions"
+    "category": "promotions",
+    "template_id": "T34",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": "https://hostel-positano.com/",
+    "normalization_batch": "D"
   },
   {
-    "subject": "Job Application \u2014 Acknowledgement",
+    "subject": "Job Application — Acknowledgement",
     "body": "Dear Applicant,\r\n\r\nThank you for your interest in joining the Hostel Brikette team.\r\n\r\nWe have received your application and will review it along with other candidates. If your profile matches our current needs, we will be in touch to arrange an interview.\r\n\r\nPlease note that we typically recruit for the upcoming season between January and March. If you do not hear from us within a few weeks, we encourage you to apply again for future seasons.\r\n\r\nWe wish you all the best.\r\n\r\nBest regards,\r\n\r\nHostel Brikette, Positano",
-    "category": "employment"
+    "category": "employment",
+    "template_id": "T35",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": null,
+    "normalization_batch": "D"
   },
   {
-    "subject": "Lost Item \u2014 Report Received",
+    "subject": "Lost Item — Report Received",
     "body": "Dear Guest,\r\n\r\nThank you for getting in touch about your lost item.\r\n\r\nWe will check the room and our lost property storage. To help us locate your item, please confirm:\r\n\r\n   - A description of the item\r\n   - The room number you stayed in\r\n   - Your checkout date\r\n\r\nIf we find the item, we can arrange to hold it for collection or discuss shipping options. Please note that shipping costs would be at the guest's expense.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "lost-found"
+    "category": "lost-found",
+    "template_id": "T36",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance",
+    "normalization_batch": "D"
   },
   {
-    "subject": "Booking Inquiry \u2014 Availability",
-    "body": "Dear Guest,\r\n\r\nThank you for your message.\r\n\r\nFor live availability and pricing, please use our direct booking page:\r\nhttps://hostel-positano.com/\r\n\r\nThat page always shows the most up-to-date room options and rates.\r\n\r\nIf you send us your dates and room preference, we can also point you to the most suitable option.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "booking-issues"
+    "subject": "Booking Inquiry — Availability",
+    "body": "Dear Guest,\r\n\r\nThank you for your message.\r\n\r\nFor live availability and pricing, please use our direct booking page:\r\nhttps://hostel-positano.com/en/assistance/booking-basics\\r\\n\\r\\nThat page always shows the most up-to-date room options and rates.\r\n\r\nIf you send us your dates and room preference, we can also point you to the most suitable option.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "booking-issues",
+    "template_id": "T37",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/booking-basics",
+    "normalization_batch": "C"
   },
   {
     "subject": "Room Capacity Clarification",
-    "body": "Dear Guest,\r\n\r\nThank you for your question.\r\n\r\nOur dorm rooms have multiple beds, and each booking is for one bed per guest. If you are travelling as a group, each member will need their own booking for a bed in the room.\r\n\r\nFor groups wanting a private space, we offer private rooms that accommodate 2 guests. These are subject to availability.\r\n\r\nPlease check our website for live availability: <https://hostel-positano.com/>. If you have any further questions about room types, please let us know.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "booking-issues"
+    "body": "Dear Guest,\r\n\r\nThank you for your question.\r\n\r\nOur dorm rooms have multiple beds, and each booking is for one bed per guest. If you are travelling as a group, each member will need their own booking for a bed in the room.\r\n\r\nFor groups wanting a private space, we offer private rooms that accommodate 2 guests. These are subject to availability.\r\n\r\nPlease check our website for live availability: <https://hostel-positano.com/>. If you have any further questions about room types, please let us know.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/booking-basics>",
+    "category": "booking-issues",
+    "template_id": "T38",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/booking-basics",
+    "normalization_batch": "C"
   },
   {
     "subject": "Hostel Facilities and Services",
-    "body": "Dear Guest,\r\n\r\nThank you for your question about our facilities.\r\n\r\nAt Hostel Brikette we offer:\r\n\r\n   - Complimentary WiFi throughout the property\r\n   - Free luggage storage on arrival and departure days\r\n   - A bar and terrace with views over Positano\r\n   - Breakfast for direct bookings (8:00\u201310:30 AM)\r\n   - A digital assistant for local tips and travel information\r\n\r\nPlease note that we do not currently offer on-site laundry facilities.\r\n\r\nFor a full overview of everything available, visit our assistance page: <https://hostel-positano.com/en/assistance>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "faq"
+    "body": "Dear Guest,\r\n\r\nThank you for your question about our facilities.\r\n\r\nAt Hostel Brikette we offer:\r\n\r\n   - Complimentary WiFi throughout the property\r\n   - Free luggage storage on arrival and departure days\r\n   - A bar and terrace with views over Positano\r\n   - Breakfast for direct bookings (8:00–10:30 AM)\r\n   - A digital assistant for local tips and travel information\r\n\r\nPlease note that we do not currently offer on-site laundry facilities.\r\n\r\nFor a full overview of everything available, visit our assistance page: <https://hostel-positano.com/en/assistance>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "faq",
+    "template_id": "T39",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance",
+    "normalization_batch": "A"
   },
   {
-    "subject": "Cancellation Request \u2014 Medical Hardship",
-    "body": "Dear Guest,\r\n\r\nThank you for explaining the situation, and we are very sorry to hear about your emergency.\r\n\r\nWe understand this is a difficult moment.\r\n\r\nFor bookings on a non-refundable rate, the payment terms still apply and we cannot issue a refund directly.\r\n\r\nIf you have travel insurance, we recommend submitting a claim as soon as possible, and we can provide supporting booking documentation on request.\r\n\r\nIf you would like us to proceed with cancellation immediately, reply to confirm and we will process it promptly.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "cancellation"
+    "subject": "Cancellation Request — Medical Hardship",
+    "body": "Dear Guest,\r\n\r\nThank you for explaining the situation, and we are very sorry to hear about your emergency.\r\n\r\nWe understand this is a difficult moment.\r\n\r\nFor bookings on a non-refundable rate, the payment terms still apply and we cannot issue a refund directly.\r\n\r\nIf you have travel insurance, we recommend submitting a claim as soon as possible, and we can provide supporting booking documentation on request.\r\n\r\nIf you would like us to proceed with cancellation immediately, reply to confirm and we will process it promptly.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing>",
+    "category": "cancellation",
+    "template_id": "T40",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing",
+    "normalization_batch": "B"
   },
   {
     "subject": "Cancellation Confirmation",
     "body": "Dear Guest,\r\n\r\nWe have received your cancellation request and can confirm your reservation has been cancelled.\r\n\r\nIf you made your booking through a third-party platform (such as Hostelworld or Booking.com), please refer to that platform's cancellation policy regarding any refunds.\r\n\r\nFor direct bookings, the refund terms depend on the rate selected at the time of booking. If you have questions about your specific case, please reply to this email.\r\n\r\nWe hope to welcome you to the hostel in the future.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "cancellation"
+    "category": "cancellation",
+    "template_id": "T41",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": "https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing",
+    "normalization_batch": "D"
   },
   {
-    "subject": "Payment Dispute \u2014 Acknowledgement",
-    "body": "Dear Guest,\r\n\r\nThank you for your message. We understand your concern and we are reviewing this with priority.\r\n\r\nTo complete the review quickly, please reply with your booking reference, payment date, and the last 4 digits of the card used.\r\n\r\nOnce we verify the payment trail, we will send a clear written response with next steps.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "payment"
+    "subject": "Payment Dispute — Acknowledgement",
+    "body": "Dear Guest,\r\n\r\nThank you for your message. We understand your concern and we are reviewing this with priority.\r\n\r\nTo complete the review quickly, please reply with your booking reference, payment date, and the last 4 digits of the card used.\r\n\r\nOnce we verify the payment trail, we will send a clear written response with next steps.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing>",
+    "category": "payment",
+    "template_id": "T42",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing",
+    "normalization_batch": "B"
   },
   {
-    "subject": "Overbooking Support \u2014 Next Steps",
-    "body": "Dear Guest,\r\n\r\nThank you for your patience, and we are sorry for the inconvenience.\r\n\r\nWe are reviewing your booking status urgently and will confirm the final accommodation plan shortly.\r\n\r\nIf your original room cannot be honored, we will provide clear next steps, including relocation or cancellation options based on policy.\r\n\r\nPlease share the best phone number for urgent contact while we finalize this.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "booking-issues"
+    "subject": "Overbooking Support — Next Steps",
+    "body": "Dear Guest,\r\n\r\nThank you for your patience, and we are sorry for the inconvenience.\r\n\r\nWe are reviewing your booking status urgently and will confirm the final accommodation plan shortly.\r\n\r\nIf your original room cannot be honored, we will provide clear next steps, including relocation or cancellation options based on policy.\r\n\r\nPlease share the best phone number for urgent contact while we finalize this.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/changing-cancelling>",
+    "category": "booking-issues",
+    "template_id": "T43",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/changing-cancelling",
+    "normalization_batch": "C"
   },
   {
-    "subject": "Bar and Terrace \u2014 Hours and Access",
+    "subject": "Bar and Terrace — Hours and Access",
     "body": "Dear Guest,\r\n\r\nThank you for your question about our bar and terrace.\r\n\r\nOur bar and terrace are open daily and are available to all guests from 10:30 AM. They are a great place to relax, enjoy a drink, and take in the views over Positano.\r\n\r\nGuests are welcome to use the bar and terrace both before check-in (from 10:30 AM on arrival day) and after checkout (until 3:30 PM on departure day).\r\n\r\nPlease note that only drinks purchased at the hostel bar may be consumed on the terrace, in line with our licensed premises policy.\r\n\r\nFor more information about our facilities, please visit: <https://hostel-positano.com/en/assistance>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "faq"
+    "category": "faq",
+    "template_id": "T44",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance",
+    "normalization_batch": "A"
   },
   {
-    "subject": "Parking \u2014 Not Available, Nearby Options",
+    "subject": "Parking — Not Available, Nearby Options",
     "body": "Dear Guest,\r\n\r\nThank you for your question about parking.\r\n\r\nUnfortunately, Hostel Brikette does not have on-site parking and we are unable to reserve parking spaces on your behalf. Positano is a pedestrian-priority town and private car access to the centre is restricted, particularly during peak season.\r\n\r\nSome options guests use:\r\n\r\n   - Public car parks are available at the entrances to Positano (e.g. Piazza dei Mulini and Via Cristoforo Colombo). These operate on a pay-and-display basis and spaces fill quickly in summer.\r\n   - A number of guests prefer to travel by ferry, bus, or taxi to avoid the parking challenge entirely.\r\n\r\nFor travel directions to the hostel, including ferry and bus options, please see: <https://hostel-positano.com/en/assistance/travel-help>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "transportation"
+    "category": "transportation",
+    "template_id": "T45",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/travel-help",
+    "normalization_batch": "A"
   },
   {
-    "subject": "Pets \u2014 Policy",
-    "body": "Dear Guest,\r\n\r\nThank you for your question about bringing a pet.\r\n\r\nWe are sorry, but Hostel Brikette does not permit pets on the premises. This policy applies to all guest rooms and communal areas, and is in place to protect the comfort and wellbeing of all guests, including those with allergies.\r\n\r\nWe appreciate your understanding.\r\n\r\nIf you have any other questions about your stay, please do not hesitate to ask.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "policies"
+    "subject": "Pets — Policy",
+    "body": "Dear Guest,\r\n\r\nThank you for your question about bringing a pet.\r\n\r\nWe are sorry, but Hostel Brikette does not permit pets on the premises. This policy applies to all guest rooms and communal areas, and is in place to protect the comfort and wellbeing of all guests, including those with allergies.\r\n\r\nWe appreciate your understanding.\r\n\r\nIf you have any other questions about your stay, please do not hesitate to ask.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing>",
+    "category": "policies",
+    "template_id": "T46",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing",
+    "normalization_batch": "B"
   },
   {
-    "subject": "City Tax \u2014 What to Expect at Check-in",
-    "body": "Dear Guest,\r\n\r\nThank you for your question about the city tax.\r\n\r\nThe city tax (tassa di soggiorno) is a local government levy collected at check-in, as required by Italian law. It is not included in the room rate and must be paid in person at the hostel.\r\n\r\nThe amount varies depending on the municipality's current rate and your length of stay. Our team will confirm the exact amount when you arrive.\r\n\r\nPlease note that payment is required at check-in along with the \u20ac10 refundable keycard deposit.\r\n\r\nFor full details on the check-in process, please see: <https://hostel-positano.com/en/assistance/checkin-checkout>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "check-in"
+    "subject": "City Tax — What to Expect at Check-in",
+    "body": "Dear Guest,\r\n\r\nThank you for your question about the city tax.\r\n\r\nThe city tax (tassa di soggiorno) is a local government levy collected at check-in, as required by Italian law. It is not included in the room rate and must be paid in person at the hostel.\r\n\r\nThe amount varies depending on the municipality's current rate and your length of stay. Our team will confirm the exact amount when you arrive.\r\n\r\nPlease note that payment is required at check-in along with the €10 refundable keycard deposit.\r\n\r\nFor full details on the check-in process, please see: <https://hostel-positano.com/en/assistance/checkin-checkout>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "check-in",
+    "template_id": "T47",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/checkin-checkout",
+    "normalization_batch": "A"
   },
   {
-    "subject": "Private Room vs Dormitory \u2014 Comparison",
-    "body": "Dear Guest,\r\n\r\nThank you for your question about our room types.\r\n\r\nHere is a quick comparison to help you choose:\r\n\r\n*Private Rooms*\r\n\r\n   - Accommodates 2 guests\r\n   - Exclusive use of the room\r\n   - Ideal for couples or guests who prefer more privacy\r\n   - Subject to availability\r\n\r\n*Dormitory Rooms*\r\n\r\n   - Shared rooms with multiple beds\r\n   - Each booking is for one bed\r\n   - Great for solo travellers and those looking to meet other guests\r\n   - Our most affordable option\r\n\r\nBoth room types include access to all hostel facilities: bar, terrace, WiFi, and luggage storage.\r\n\r\nFor live availability and pricing for both options, please visit: <https://hostel-positano.com/>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "booking-issues"
+    "subject": "Private Room vs Dormitory — Comparison",
+    "body": "Dear Guest,\r\n\r\nThank you for your question about our room types.\r\n\r\nHere is a quick comparison to help you choose:\r\n\r\n*Private Rooms*\r\n\r\n   - Accommodates 2 guests\r\n   - Exclusive use of the room\r\n   - Ideal for couples or guests who prefer more privacy\r\n   - Subject to availability\r\n\r\n*Dormitory Rooms*\r\n\r\n   - Shared rooms with multiple beds\r\n   - Each booking is for one bed\r\n   - Great for solo travellers and those looking to meet other guests\r\n   - Our most affordable option\r\n\r\nBoth room types include access to all hostel facilities: bar, terrace, WiFi, and luggage storage.\r\n\r\nFor live availability and pricing for both options, please visit: <https://hostel-positano.com/>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/booking-basics>",
+    "category": "booking-issues",
+    "template_id": "T48",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/booking-basics",
+    "normalization_batch": "C"
   },
   {
     "subject": "Things to Do in Positano",
-    "body": "Dear Guest,\r\n\r\nThank you for your question about activities in Positano.\r\n\r\nPositano and the Amalfi Coast have a huge amount to offer. Here are some of our top recommendations:\r\n\r\n   - Path of the Gods hike \u2014 our most popular recommendation. See our guide: <https://hostel-positano.com/en/assistance/path-of-gods-hike>\r\n   - Ferry trips to Amalfi, Ravello, and Capri\r\n   - The beaches of Positano (Spiaggia Grande and Fornillo)\r\n   - Exploring the village, shops, and restaurants\r\n   - Boat hire and coastal excursions\r\n\r\nFor a full set of local tips and travel guides, please visit our digital assistant: <https://hostel-positano.com/en/assistance>.\r\n\r\nWe are always happy to give personal recommendations at the hostel \u2014 just ask at reception!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "activities"
+    "body": "Dear Guest,\r\n\r\nThank you for your question about activities in Positano.\r\n\r\nPositano and the Amalfi Coast have a huge amount to offer. Here are some of our top recommendations:\r\n\r\n   - Path of the Gods hike — our most popular recommendation. See our guide: <https://hostel-positano.com/en/assistance/path-of-gods-hike>\r\n   - Ferry trips to Amalfi, Ravello, and Capri\r\n   - The beaches of Positano (Spiaggia Grande and Fornillo)\r\n   - Exploring the village, shops, and restaurants\r\n   - Boat hire and coastal excursions\r\n\r\nFor a full set of local tips and travel guides, please visit our digital assistant: <https://hostel-positano.com/en/assistance>.\r\n\r\nWe are always happy to give personal recommendations at the hostel — just ask at reception!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "activities",
+    "template_id": "T49",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance",
+    "normalization_batch": "A"
   },
   {
     "subject": "Receipt / Invoice Request",
     "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nWe are happy to provide a receipt or invoice for your stay. Please reply with the following details so we can process this for you:\r\n\r\n   - Your full name (or company name if a business invoice is required)\r\n   - Your booking reference or dates of stay\r\n   - The billing address and, if applicable, your VAT number\r\n\r\nWe will send the document to the email address associated with your booking.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "payment"
+    "category": "payment",
+    "template_id": "T50",
+    "reference_scope": "reference_optional_excluded",
+    "canonical_reference_url": "https://docs.google.com/document/d/1-Qr5uCli0_vnTgmd9yTjLDtIDVcusGJYyCcnC_fPmf0/edit?usp=sharing",
+    "normalization_batch": "D"
   },
   {
-    "subject": "Group Booking \u2014 How It Works",
-    "body": "Dear Guest,\r\n\r\nThank you for your interest in a group booking at Hostel Brikette.\r\n\r\nFor groups, here is how the booking process works:\r\n\r\n   - Each guest books individually for their own bed in a shared dormitory room, or you can request a private room (accommodates 2 guests) if available.\r\n   - For groups of 3 or more, we recommend contacting us directly so we can check current availability and advise on the best room configuration.\r\n   - Please note our maximum stay is 7 nights and our rooms accommodate up to 5 guests per room.\r\n\r\nTo check live availability, please visit: <https://hostel-positano.com/>.\r\n\r\nIf you would like to discuss a group arrangement further, please reply with your group size, preferred dates, and any specific requirements.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "booking-issues"
+    "subject": "Group Booking — How It Works",
+    "body": "Dear Guest,\r\n\r\nThank you for your interest in a group booking at Hostel Brikette.\r\n\r\nFor groups, here is how the booking process works:\r\n\r\n   - Each guest books individually for their own bed in a shared dormitory room, or you can request a private room (accommodates 2 guests) if available.\r\n   - For groups of 3 or more, we recommend contacting us directly so we can check current availability and advise on the best room configuration.\r\n   - Please note our maximum stay is 7 nights and our rooms accommodate up to 5 guests per room.\r\n\r\nTo check live availability, please visit: <https://hostel-positano.com/>.\r\n\r\nIf you would like to discuss a group arrangement further, please reply with your group size, preferred dates, and any specific requirements.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/booking-basics>",
+    "category": "booking-issues",
+    "template_id": "T51",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/booking-basics",
+    "normalization_batch": "C"
   },
   {
     "subject": "Out of Hours Check-In Instructions",
     "body": "Dear Guest,\r\n\r\nThank you for letting us know you will be arriving late.\r\n\r\nFor arrivals after 10:30 PM, we have a self-check-in process in place. Please follow the step-by-step instructions in our late check-in guide: <https://hostel-positano.com/en/assistance/late-checkin>.\r\n\r\nThe guide covers:\r\n\r\n   - How to access the building after hours\r\n   - Locating your room\r\n   - What to do if you have any difficulty\r\n\r\nIf you have any questions or need assistance on the night, the emergency contact details are included in the guide.\r\n\r\nWe look forward to welcoming you!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "check-in"
+    "category": "check-in",
+    "template_id": "T52",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/late-checkin",
+    "normalization_batch": "A"
   },
   {
     "subject": "Arriving by Bus",
     "body": "Dear Guest,\r\n\r\nThank you for your question about arriving by bus.\r\n\r\nPositano is well connected by bus from Naples, Sorrento, and along the Amalfi Coast. The SITA Sud bus service runs regularly during the season.\r\n\r\nFor step-by-step instructions on arriving by bus, including stop locations and walking directions to the hostel, please see our arriving by bus guide: <https://hostel-positano.com/en/assistance/arriving-by-bus>.\r\n\r\nIf you are travelling from Naples or Sorrento, we also have a general travel directions guide here: <https://hostel-positano.com/en/assistance/travel-help>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
-    "category": "transportation"
+    "category": "transportation",
+    "template_id": "T53",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/assistance/arriving-by-bus",
+    "normalization_batch": "A"
   }
 ]

@@ -1,6 +1,8 @@
 /** @jest-environment node */
 
+import { readFileSync } from "fs";
 import { readFile } from "fs/promises";
+import { join } from "path";
 
 import { handleBriketteResourceRead } from "../resources/brikette-knowledge.js";
 import { handleDraftGuideRead } from "../resources/draft-guide.js";
@@ -118,6 +120,24 @@ const baseActionPlan = {
     confidence: 0.8,
   },
 };
+
+type StoredTemplate = {
+  subject: string;
+  body: string;
+  category: string;
+  template_id?: string;
+  reference_scope?: "reference_required" | "reference_optional_excluded";
+  canonical_reference_url?: string | null;
+  normalization_batch?: "A" | "B" | "C" | "D";
+};
+
+function loadStoredTemplates(): StoredTemplate[] {
+  const raw = readFileSync(
+    join(process.cwd(), "packages", "mcp-server", "data", "email-templates.json"),
+    "utf8"
+  );
+  return JSON.parse(raw) as StoredTemplate[];
+}
 
 function setupDraftGenerateMocks(): void {
   jest.resetAllMocks();
@@ -1288,5 +1308,56 @@ describe("draft_generate tool TASK-07 — knowledge gap-fill injection", () => {
     expect(payload.sources_used).toBeDefined();
     const anyInjected = (payload.sources_used as Array<{ injected: boolean }>).some((e) => e.injected);
     expect(anyInjected).toBe(false);
+  });
+});
+
+describe("draft_generate tool TASK-04 template normalization", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TC-04-03: normalized reference-required templates still produce policy-safe drafts", async () => {
+    const templates = loadStoredTemplates();
+    const cancellationTemplate = templates.find(
+      (template) => template.subject === "Cancellation Request — Medical Hardship"
+    );
+
+    expect(cancellationTemplate).toBeDefined();
+    expect(cancellationTemplate?.reference_scope).toBe("reference_required");
+    expect(cancellationTemplate?.canonical_reference_url).toMatch(/^https:\/\//);
+
+    readFileMock.mockResolvedValue(JSON.stringify(templates));
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "We need to cancel due to medical hardship. What are our options?",
+        intents: {
+          questions: [{ text: "Can we cancel due to medical hardship?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: {
+          category: "cancellation",
+          confidence: 0.94,
+        },
+      },
+      subject: "Cancellation request",
+      recipientName: "Giulia",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const bodyLower = payload.draft.bodyPlain.toLowerCase();
+
+    const usedTemplate = templates.find(
+      (template) => template.subject === payload.template_used.subject
+    );
+    expect(usedTemplate?.reference_scope).toBe("reference_required");
+    expect(usedTemplate?.canonical_reference_url).toMatch(/^https:\/\//);
+    expect(payload.quality.failed_checks).not.toContain("prohibited_claims");
+    expect(bodyLower).toContain("per the cancellation policy");
+    expect(bodyLower).not.toContain("availability is confirmed");
+    expect(bodyLower).not.toContain("we will charge now");
   });
 });

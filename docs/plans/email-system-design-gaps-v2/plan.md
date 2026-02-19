@@ -76,9 +76,9 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 - Foundation Gate: Pass
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
-  - Promotion Gate satisfied for `TASK-03` and `TASK-04` using completed precursor evidence (`TASK-12`, `TASK-13`) plus fresh E2 validation checks.
-  - Build-eligible now: `TASK-04` (`IMPLEMENT`, `>=80`, unblocked); `TASK-03` completed in this build cycle.
-  - Next action: continue `/lp-build` on remaining Wave 3 task.
+  - Promotion Gate satisfied for Wave 3 (`TASK-03`, `TASK-04`) using completed precursor evidence (`TASK-12`, `TASK-13`) plus fresh E2 validation checks.
+  - Build-eligible now: `TASK-09` (`IMPLEMENT`, `85%`, unblocked). `TASK-05` remains below build threshold (`75%`) pending `/lp-replan` after checkpoint flow.
+  - Next action: continue `/lp-build` with `TASK-09`, then checkpoint-gated confidence refresh for downstream `75%` tasks.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -95,7 +95,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-12 | INVESTIGATE | Finalize telemetry event contract + daily rollup sink before instrumentation | 85% | S | Complete (2026-02-19) | TASK-01, TASK-02 | TASK-03 |
 | TASK-13 | INVESTIGATE | Produce template reference-scope matrix for all 53 templates | 85% | S | Complete (2026-02-19) | TASK-01 | TASK-04 |
 | TASK-03 | IMPLEMENT | Add production telemetry for fallback, drafted outcomes, and path usage | 80% | M | Complete (2026-02-19) | TASK-01, TASK-02, TASK-12 | TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 |
-| TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 80% | M | Pending | TASK-01, TASK-13 | TASK-05, TASK-06 |
+| TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 80% | M | Complete (2026-02-19) | TASK-01, TASK-13 | TASK-05, TASK-06 |
 | TASK-05 | IMPLEMENT | Enforce strict context-aware reference quality checks | 75% | M | Pending | TASK-01, TASK-03, TASK-04 | TASK-06 |
 | TASK-09 | IMPLEMENT | Unify label attribution for booking and guest-activity draft flows | 85% | M | Pending | TASK-01, TASK-03 | TASK-06 |
 | TASK-11 | IMPLEMENT | Add startup preflight checks for email system dependencies | 85% | S | Complete (2026-02-19) | - | TASK-06 |
@@ -373,7 +373,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `packages/mcp-server/data/email-templates.json`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`
 - **Depends on:** TASK-01, TASK-13
 - **Blocks:** TASK-05, TASK-06
@@ -408,6 +408,25 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Dependencies: unchanged (`TASK-01`, `TASK-13`).
 - Validation contract: unchanged (TC-04 remains complete for implementation phase).
 - Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- **Build evidence:** Implementation completed (2026-02-19):
+  - Normalized all `53` templates with explicit metadata:
+    - `template_id` (`T01`-`T53`)
+    - `reference_scope` (`reference_required` vs `reference_optional_excluded`)
+    - `canonical_reference_url` (nullable for excluded templates)
+    - `normalization_batch` (`A`-`D`)
+  - Added canonical reference links to all in-scope templates and reduced corpus `noUrl` count from `24` to `12` (remaining `12` are explicitly tagged `reference_optional_excluded`).
+  - Added TASK-04 regression coverage:
+    - metadata/reference scan assertions in `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`
+    - policy-safe generation regression over normalized template corpus in `packages/mcp-server/src/__tests__/draft-generate.test.ts`
+  - Validation PASS:
+    - `node -e 'const fs=require("fs");const templates=JSON.parse(fs.readFileSync("packages/mcp-server/data/email-templates.json","utf8"));const required=templates.filter(t=>t.reference_scope==="reference_required");const missing=required.filter(t=>!t.canonical_reference_url||!(`${t.subject}\\n${t.body}`.includes(t.canonical_reference_url)));const noScope=templates.filter(t=>!t.reference_scope);console.log(JSON.stringify({total:templates.length,required:required.length,optional:templates.filter(t=>t.reference_scope==="reference_optional_excluded").length,missingCanonicalInRequired:missing.length,missingScope:noScope.length},null,2));if(missing.length||noScope.length)process.exit(1);'`
+      - Result: `{"total":53,"required":41,"optional":12,"missingCanonicalInRequired":0,"missingScope":0}`
+    - `pnpm exec jest --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/draft-generate.test.ts packages/mcp-server/src/__tests__/draft-quality-check.test.ts packages/mcp-server/src/__tests__/template-lint.test.ts --maxWorkers=2`
+      - Result: `3/3` suites passed, `59/59` tests passed.
+    - `pnpm --filter @acme/mcp-server typecheck`
+      - Result: pass.
+    - `pnpm --filter @acme/mcp-server lint`
+      - Result: pass (existing repo warnings only).
 
 ### TASK-05: Enforce strict context-aware reference quality checks
 - **Type:** IMPLEMENT
@@ -789,6 +808,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-19: `/lp-build` completed TASK-13 and recorded template scope matrix evidence; no further build-eligible tasks until `/lp-replan`.
 - 2026-02-19: `/lp-replan` (standard mode) promoted TASK-03 and TASK-04 to 80% after precursor completion + fresh E2 validation; Wave 3 is now build-eligible.
 - 2026-02-19: `/lp-build` completed TASK-03 telemetry implementation; Wave 3 now has TASK-04 remaining.
+- 2026-02-19: `/lp-build` completed TASK-04 template normalization and scope tagging; Wave 4 is open with TASK-09 build-eligible and TASK-05 below confidence threshold.
 
 ## Overall-confidence Calculation
 

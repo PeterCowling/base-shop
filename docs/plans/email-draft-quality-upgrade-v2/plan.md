@@ -156,14 +156,15 @@ or corrupt output.
 }
 ```
 
-`originalBodyPlain.bodyHtml` is intentionally excluded — it was not used in any tool logic
-and carried unnecessary coupling. The HTML in output is always derived from `refinedBodyPlain`.
+The old `originalDraft.bodyHtml` field (from the initial v2 draft) is intentionally excluded —
+it was not used in any tool logic and carried unnecessary coupling. The HTML in output is
+always derived from `refinedBodyPlain`.
 
 ### Schema guard for old callers
 
 If the payload contains a `draft` field but no `refinedBodyPlain`, the tool returns:
 ```
-errorResult("draft_refine schema changed: replace `draft` with `originalBodyPlain` + `refinedBodyPlain`. See docs/plans/email-draft-quality-upgrade-v2/plan.md")
+errorResult("draft_refine input schema has changed: remove the `draft` field and supply `originalBodyPlain: string` + `refinedBodyPlain: string` instead.")
 ```
 
 ### Output schema (`codex` tri-state restored)
@@ -304,9 +305,9 @@ reference or type-check against SDK types. One full-suite pass de-risks the remo
   - TC-03-03: `testing-policy.md` no longer contains "LLM call" or "fallback" language in the refinement section; does contain "attestation" or "Claude refines".
   - TC-03-04: `pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage` exits 0.
   - TC-03-05: `pnpm --filter @acme/mcp-server typecheck` exits 0.
-  - TC-03-06: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --no-coverage` exits 0.
+  - TC-03-06: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --no-coverage --maxWorkers=2` exits 0.
     *(Full suite required: SDK removal is a dependency-level change; targeted tests won't catch
-    module resolution failures elsewhere in mcp-server.)*
+    module resolution failures elsewhere in mcp-server. `--maxWorkers=2` per repo broader-run policy.)*
 
 - **Execution plan:** Red → Green → Refactor
 - **Rollout / rollback:** Test + docs only; rollback by reverting both files.

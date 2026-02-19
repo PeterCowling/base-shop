@@ -39,10 +39,28 @@ describe("booking email tool", () => {
     const createDraftMock = jest
       .fn()
       .mockResolvedValue({ data: { id: "draft-1", message: { id: "msg-1" } } });
+    const modifyMessageMock = jest.fn().mockResolvedValue({});
+    const listLabelsMock = jest.fn().mockResolvedValue({
+      data: {
+        labels: [
+          { id: "lbl-ready", name: "Brikette/Drafts/Ready-For-Review" },
+          { id: "lbl-drafted", name: "Brikette/Outcome/Drafted" },
+          { id: "lbl-human", name: "Brikette/Agent/Human" },
+          { id: "lbl-pre-arrival", name: "Brikette/Outbound/Pre-Arrival" },
+        ],
+      },
+    });
     const gmail = {
       users: {
         drafts: {
           create: createDraftMock,
+        },
+        messages: {
+          modify: modifyMessageMock,
+        },
+        labels: {
+          list: listLabelsMock,
+          create: jest.fn(),
         },
       },
     };
@@ -60,6 +78,18 @@ describe("booking email tool", () => {
       userId: "me",
       requestBody: {
         message: { raw: expect.any(String) },
+      },
+    });
+    expect(modifyMessageMock).toHaveBeenCalledWith({
+      userId: "me",
+      id: "msg-1",
+      requestBody: {
+        addLabelIds: expect.arrayContaining([
+          "lbl-ready",
+          "lbl-drafted",
+          "lbl-human",
+          "lbl-pre-arrival",
+        ]),
       },
     });
 
@@ -86,10 +116,61 @@ describe("booking email tool", () => {
       .filter((line) => line.trim() !== "")
       .map((line) => JSON.parse(line) as { event_key?: string; source_path?: string; tool_name?: string });
     const draftCreatedEvent = telemetryLines.find((line) => line.event_key === "email_draft_created");
+    const outcomeLabeledEvent = telemetryLines.find((line) => line.event_key === "email_outcome_labeled");
     expect(draftCreatedEvent).toMatchObject({
       event_key: "email_draft_created",
       source_path: "reception",
       tool_name: "mcp_send_booking_email",
     });
+    expect(outcomeLabeledEvent).toMatchObject({
+      event_key: "email_outcome_labeled",
+      source_path: "reception",
+      tool_name: "mcp_send_booking_email",
+      action: "drafted",
+    });
+  });
+
+  it("TC-09-03: returns actionable error when drafted outcome labels cannot be applied", async () => {
+    const createDraftMock = jest
+      .fn()
+      .mockResolvedValue({ data: { id: "draft-2", message: { id: "msg-2" } } });
+    const modifyMessageMock = jest
+      .fn()
+      .mockRejectedValue(new Error("label mutation failed"));
+    const gmail = {
+      users: {
+        drafts: {
+          create: createDraftMock,
+        },
+        messages: {
+          modify: modifyMessageMock,
+        },
+        labels: {
+          list: jest.fn().mockResolvedValue({
+            data: {
+              labels: [
+                { id: "lbl-ready", name: "Brikette/Drafts/Ready-For-Review" },
+                { id: "lbl-drafted", name: "Brikette/Outcome/Drafted" },
+                { id: "lbl-human", name: "Brikette/Agent/Human" },
+                { id: "lbl-pre-arrival", name: "Brikette/Outbound/Pre-Arrival" },
+              ],
+            },
+          }),
+          create: jest.fn(),
+        },
+      },
+    };
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleBookingEmailTool("mcp_send_booking_email", {
+      bookingRef: "BOOK124",
+      recipients: ["guest@example.com"],
+      occupantLinks: ["https://example.com/occ1"],
+    });
+
+    expect(result).toMatchObject({ isError: true });
+    expect(result.content[0].text).toContain("Failed to apply draft outcome labels");
+    expect(createDraftMock).toHaveBeenCalledTimes(1);
   });
 });

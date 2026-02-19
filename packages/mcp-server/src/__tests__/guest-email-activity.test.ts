@@ -22,6 +22,37 @@ function decodeRawEmail(raw: string): string {
   return buffer.toString("utf-8");
 }
 
+function buildGuestActivityGmailMock(
+  createDraftMock: jest.Mock,
+  modifyMessageMock: jest.Mock = jest.fn().mockResolvedValue({})
+) {
+  const gmail = {
+    users: {
+      drafts: {
+        create: createDraftMock,
+      },
+      messages: {
+        modify: modifyMessageMock,
+      },
+      labels: {
+        list: jest.fn().mockResolvedValue({
+          data: {
+            labels: [
+              { id: "lbl-ready", name: "Brikette/Drafts/Ready-For-Review" },
+              { id: "lbl-drafted", name: "Brikette/Outcome/Drafted" },
+              { id: "lbl-human", name: "Brikette/Agent/Human" },
+              { id: "lbl-ops", name: "Brikette/Outbound/Operations" },
+            ],
+          },
+        }),
+        create: jest.fn(),
+      },
+    },
+  };
+
+  return { gmail, modifyMessageMock };
+}
+
 describe("guest email activity helper", () => {
   let tmpDir: string;
   let auditLogPath: string;
@@ -43,13 +74,7 @@ describe("guest email activity helper", () => {
     const createDraftMock = jest
       .fn()
       .mockResolvedValue({ data: { id: "draft-21", message: { id: "msg-21" } } });
-    const gmail = {
-      users: {
-        drafts: {
-          create: createDraftMock,
-        },
-      },
-    };
+    const { gmail, modifyMessageMock } = buildGuestActivityGmailMock(createDraftMock);
 
     getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
 
@@ -71,6 +96,18 @@ describe("guest email activity helper", () => {
     const decoded = decodeRawEmail(raw);
     expect(decoded).toContain("Subject: Agreement Received");
     expect(decoded).toContain("we have received your agreement to the terms and conditions");
+    expect(modifyMessageMock).toHaveBeenCalledWith({
+      userId: "me",
+      id: "msg-21",
+      requestBody: {
+        addLabelIds: expect.arrayContaining([
+          "lbl-ready",
+          "lbl-drafted",
+          "lbl-human",
+          "lbl-ops",
+        ]),
+      },
+    });
 
     const telemetryLines = fs
       .readFileSync(auditLogPath, "utf-8")
@@ -92,13 +129,7 @@ describe("guest email activity helper", () => {
     const createDraftMock = jest
       .fn()
       .mockResolvedValue({ data: { id: "draft-5", message: { id: "msg-5" } } });
-    const gmail = {
-      users: {
-        drafts: {
-          create: createDraftMock,
-        },
-      },
-    };
+    const { gmail } = buildGuestActivityGmailMock(createDraftMock);
 
     getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
 
@@ -124,13 +155,7 @@ describe("guest email activity helper", () => {
     const createDraftMock = jest
       .fn()
       .mockResolvedValue({ data: { id: "draft-8", message: { id: "msg-8" } } });
-    const gmail = {
-      users: {
-        drafts: {
-          create: createDraftMock,
-        },
-      },
-    };
+    const { gmail } = buildGuestActivityGmailMock(createDraftMock);
 
     getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
 
@@ -207,13 +232,7 @@ describe("guest email activity helper", () => {
     const createDraftMock = jest
       .fn()
       .mockResolvedValue({ data: { id: "draft-27", message: { id: "msg-27" } } });
-    const gmail = {
-      users: {
-        drafts: {
-          create: createDraftMock,
-        },
-      },
-    };
+    const { gmail } = buildGuestActivityGmailMock(createDraftMock);
 
     getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
 
@@ -264,5 +283,25 @@ describe("guest email activity helper", () => {
       "We have received your cancellation request"
     );
     expect(getGmailClientMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-09-03: throws actionable error when guest-activity label mutation fails", async () => {
+    const createDraftMock = jest
+      .fn()
+      .mockResolvedValue({ data: { id: "draft-fail", message: { id: "msg-fail" } } });
+    const { gmail } = buildGuestActivityGmailMock(
+      createDraftMock,
+      jest.fn().mockRejectedValue(new Error("label mutation failed"))
+    );
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    await expect(
+      sendGuestEmailActivity({
+        bookingRef: "BOOK123",
+        activityCode: 21,
+        recipients: ["guest@example.com"],
+      })
+    ).rejects.toThrow("Failed to apply draft outcome labels");
   });
 });

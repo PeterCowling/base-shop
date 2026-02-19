@@ -76,9 +76,9 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 - Foundation Gate: Pass
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
-  - Promotion Gate satisfied for Wave 3 (`TASK-03`, `TASK-04`) using completed precursor evidence (`TASK-12`, `TASK-13`) plus fresh E2 validation checks.
-  - Build-eligible now: `TASK-09` (`IMPLEMENT`, `85%`, unblocked). `TASK-05` remains below build threshold (`75%`) pending `/lp-replan` after checkpoint flow.
-  - Next action: continue `/lp-build` with `TASK-09`, then checkpoint-gated confidence refresh for downstream `75%` tasks.
+  - Foundation waves through `TASK-09` are complete (`TASK-03`, `TASK-04`, `TASK-09`).
+  - Build-eligible now: none. `TASK-05` remains below build threshold (`75%`) and is the blocker to `TASK-06` checkpoint.
+  - Next action: run `/lp-replan` to promote `TASK-05` to executable confidence (>=80), then resume `/lp-build`.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -97,7 +97,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-03 | IMPLEMENT | Add production telemetry for fallback, drafted outcomes, and path usage | 80% | M | Complete (2026-02-19) | TASK-01, TASK-02, TASK-12 | TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 |
 | TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 80% | M | Complete (2026-02-19) | TASK-01, TASK-13 | TASK-05, TASK-06 |
 | TASK-05 | IMPLEMENT | Enforce strict context-aware reference quality checks | 75% | M | Pending | TASK-01, TASK-03, TASK-04 | TASK-06 |
-| TASK-09 | IMPLEMENT | Unify label attribution for booking and guest-activity draft flows | 85% | M | Pending | TASK-01, TASK-03 | TASK-06 |
+| TASK-09 | IMPLEMENT | Unify label attribution for booking and guest-activity draft flows | 85% | M | Complete (2026-02-19) | TASK-01, TASK-03 | TASK-06 |
 | TASK-11 | IMPLEMENT | Add startup preflight checks for email system dependencies | 85% | S | Complete (2026-02-19) | - | TASK-06 |
 | TASK-06 | CHECKPOINT | Horizon checkpoint after foundation quality/telemetry tranche | 95% | S | Pending | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | TASK-14, TASK-15, TASK-07, TASK-10 |
 | TASK-14 | SPIKE | Probe reviewed-ledger storage/state model and promotion idempotency contract | 80% | S | Pending | TASK-06 | TASK-07, TASK-08 |
@@ -479,7 +479,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `packages/mcp-server/src/tools/booking-email.ts`, `packages/mcp-server/src/tools/guest-email-activity.ts`, `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/__tests__/booking-email.test.ts`, `packages/mcp-server/src/__tests__/guest-email-activity.test.ts`
 - **Depends on:** TASK-01, TASK-03
 - **Blocks:** TASK-06
@@ -508,6 +508,22 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - Rollback: revert flow-specific label mutations while preserving draft generation.
 - **Documentation impact:** update operations guide for expected labels by flow.
 - **Notes / references:** fact-find V2-06 and runtime label-volume ambiguity.
+- **Build evidence:** Implementation completed (2026-02-19):
+  - Added strict drafted-outcome label application helper in `packages/mcp-server/src/tools/gmail.ts`:
+    - `applyDraftOutcomeLabelsStrict` now enforces required label presence, applies labels in one modify call, emits `email_outcome_labeled`, and throws actionable errors on failure.
+  - Wired both reception draft flows to the helper:
+    - `mcp_send_booking_email` applies: `Brikette/Drafts/Ready-For-Review`, `Brikette/Outcome/Drafted`, `Brikette/Agent/Human`, `Brikette/Outbound/Pre-Arrival`.
+    - `guest_email_activity` applies: `Brikette/Drafts/Ready-For-Review`, `Brikette/Outcome/Drafted`, `Brikette/Agent/Human`, `Brikette/Outbound/Operations`.
+  - Added/updated TC-09 coverage:
+    - `packages/mcp-server/src/__tests__/booking-email.test.ts`
+    - `packages/mcp-server/src/__tests__/guest-email-activity.test.ts`
+  - Validation PASS:
+    - `pnpm exec jest --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/booking-email.test.ts packages/mcp-server/src/__tests__/guest-email-activity.test.ts --maxWorkers=2`
+      - Result: `2/2` suites passed, `10/10` tests passed.
+    - `pnpm --filter @acme/mcp-server typecheck`
+      - Result: pass.
+    - `pnpm --filter @acme/mcp-server lint`
+      - Result: pass (existing package warnings only; no task-scoped lint errors).
 
 ### TASK-11: Add startup preflight checks for email system dependencies
 - **Type:** IMPLEMENT
@@ -809,6 +825,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-19: `/lp-replan` (standard mode) promoted TASK-03 and TASK-04 to 80% after precursor completion + fresh E2 validation; Wave 3 is now build-eligible.
 - 2026-02-19: `/lp-build` completed TASK-03 telemetry implementation; Wave 3 now has TASK-04 remaining.
 - 2026-02-19: `/lp-build` completed TASK-04 template normalization and scope tagging; Wave 4 is open with TASK-09 build-eligible and TASK-05 below confidence threshold.
+- 2026-02-19: `/lp-build` completed TASK-09 drafted-outcome label harmonization for booking and guest-activity flows; no further build-eligible tasks until `/lp-replan` promotes TASK-05.
 
 ## Overall-confidence Calculation
 

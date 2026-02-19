@@ -8,7 +8,7 @@ import { createRawEmail } from "../utils/email-mime.js";
 import { stripLegacySignatureBlock } from "../utils/email-signature.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 
-import { appendTelemetryEvent } from "./gmail.js";
+import { appendTelemetryEvent,applyDraftOutcomeLabelsStrict } from "./gmail.js";
 
 function resolveDataRoot(): string {
   const candidates = [
@@ -234,13 +234,21 @@ export async function sendGuestEmailActivity(
       message: { raw },
     },
   });
+  const draftMessageId = response.data?.message?.id;
+  await applyDraftOutcomeLabelsStrict(clientResult.client, {
+    draftMessageId: draftMessageId ?? "",
+    sourcePath: "reception",
+    actor: "human",
+    outboundCategory: "operations",
+    toolName: "guest_email_activity",
+  });
 
   appendTelemetryEvent({
     ts: new Date().toISOString(),
     event_key: "email_draft_created",
     source_path: "reception",
     tool_name: "guest_email_activity",
-    message_id: response.data?.message?.id || null,
+    message_id: draftMessageId || null,
     draft_id: response.data?.id || null,
     actor: "system",
   });

@@ -937,6 +937,90 @@ export function collectLabelIds(
     .filter((labelId): labelId is string => !!labelId);
 }
 
+type DraftOutcomeOutboundCategory = "pre-arrival" | "operations";
+
+export interface ApplyDraftOutcomeLabelsInput {
+  draftMessageId: string;
+  sourcePath: EmailSourcePath;
+  actor?: AgentActor;
+  outboundCategory?: DraftOutcomeOutboundCategory;
+  toolName?: string;
+}
+
+function resolveDraftOutcomeLabelNames(
+  actor: AgentActor,
+  outboundCategory?: DraftOutcomeOutboundCategory
+): string[] {
+  const labelNames = [
+    LABELS.READY_FOR_REVIEW,
+    LABELS.PROCESSED_DRAFTED,
+    actorToLabelName(actor),
+  ];
+
+  if (outboundCategory === "pre-arrival") {
+    labelNames.push(LABELS.OUTBOUND_PRE_ARRIVAL);
+  } else if (outboundCategory === "operations") {
+    labelNames.push(LABELS.OUTBOUND_OPERATIONS);
+  }
+
+  return labelNames;
+}
+
+export async function applyDraftOutcomeLabelsStrict(
+  gmail: gmail_v1.Gmail,
+  input: ApplyDraftOutcomeLabelsInput
+): Promise<{ appliedLabelNames: string[] }> {
+  const {
+    draftMessageId,
+    sourcePath,
+    actor = "human",
+    outboundCategory,
+    toolName = "unknown_tool",
+  } = input;
+
+  const normalizedMessageId = draftMessageId.trim();
+  if (!normalizedMessageId) {
+    throw new Error("Draft created but Gmail did not return message ID; cannot apply outcome labels.");
+  }
+
+  const labelNames = resolveDraftOutcomeLabelNames(actor, outboundCategory);
+  const labelMap = await ensureLabelMap(gmail, labelNames);
+  const missingLabels = labelNames.filter((labelName) => !labelMap.get(labelName));
+  if (missingLabels.length > 0) {
+    throw new Error(
+      `Missing required Gmail labels for drafted outcome: ${missingLabels.join(", ")}`
+    );
+  }
+
+  const addLabelIds = collectLabelIds(labelMap, labelNames);
+  try {
+    await gmail.users.messages.modify({
+      userId: "me",
+      id: normalizedMessageId,
+      requestBody: {
+        addLabelIds,
+      },
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(
+      `Failed to apply draft outcome labels (${labelNames.join(", ")}): ${errorMessage}`
+    );
+  }
+
+  appendTelemetryEvent({
+    ts: new Date().toISOString(),
+    event_key: "email_outcome_labeled",
+    source_path: sourcePath,
+    actor,
+    tool_name: toolName,
+    message_id: normalizedMessageId,
+    action: "drafted",
+  });
+
+  return { appliedLabelNames: labelNames };
+}
+
 function actorToLabelName(actor: AgentActor): string {
   switch (actor) {
     case "claude":

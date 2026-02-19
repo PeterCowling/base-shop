@@ -5,7 +5,7 @@ import { createRawEmail } from "../utils/email-mime.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 
-import { appendTelemetryEvent } from "./gmail.js";
+import { appendTelemetryEvent,applyDraftOutcomeLabelsStrict } from "./gmail.js";
 
 const bookingEmailSchema = z.object({
   bookingRef: z.string().min(1),
@@ -98,13 +98,21 @@ export async function sendBookingEmail(
       message: { raw },
     },
   });
+  const draftMessageId = response.data?.message?.id;
+  await applyDraftOutcomeLabelsStrict(gmail, {
+    draftMessageId: draftMessageId ?? "",
+    sourcePath: "reception",
+    actor: "human",
+    outboundCategory: "pre-arrival",
+    toolName: "mcp_send_booking_email",
+  });
 
   appendTelemetryEvent({
     ts: new Date().toISOString(),
     event_key: "email_draft_created",
     source_path: "reception",
     tool_name: "mcp_send_booking_email",
-    message_id: response.data?.message?.id || null,
+    message_id: draftMessageId || null,
     draft_id: response.data?.id || null,
     actor: "system",
   });

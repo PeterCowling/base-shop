@@ -2276,10 +2276,42 @@ async function handleCreateDraft(
   });
 }
 
+/**
+ * Attempts to remove the In-Progress label from an email and release the
+ * processing lock.  This is called on the error path of handleMarkProcessed
+ * (and potentially other handlers) when the main Gmail API call throws, to
+ * avoid leaving an email stuck with In-Progress label indefinitely.
+ *
+ * Never throws — always returns a status string so the caller can include it
+ * in the errorResult message.
+ */
+async function cleanupInProgress(emailId: string, gmail: gmail_v1.Gmail): Promise<string> {
+  const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
+  const inProgressLabelIds = collectLabelIds(labelMap, [
+    LABELS.PROCESSING,
+    LEGACY_LABELS.PROCESSING,
+  ]);
+  try {
+    await gmail.users.messages.modify({
+      userId: "me",
+      id: emailId,
+      requestBody: {
+        removeLabelIds: inProgressLabelIds.length > 0 ? inProgressLabelIds : undefined,
+      },
+    });
+    processingLocks.delete(emailId);
+    return "cleanup succeeded";
+  } catch (cleanupError) {
+    processingLocks.delete(emailId);
+    const msg = cleanupError instanceof Error ? cleanupError.message : String(cleanupError);
+    return `cleanup failed: ${msg}`;
+  }
+}
+
 async function handleMarkProcessed(
   gmail: gmail_v1.Gmail,
   args: unknown
-): Promise<ReturnType<typeof jsonResult>> {
+): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
   const { emailId, action, actor, prepaymentProvider } = markProcessedSchema.parse(args);
 
   const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
@@ -2439,14 +2471,20 @@ async function handleMarkProcessed(
     new Set(removeLabelIds.filter(labelId => !uniqueAddLabelIds.includes(labelId)))
   );
 
-  await gmail.users.messages.modify({
-    userId: "me",
-    id: emailId,
-    requestBody: {
-      addLabelIds: uniqueAddLabelIds.length > 0 ? uniqueAddLabelIds : undefined,
-      removeLabelIds: uniqueRemoveLabelIds.length > 0 ? uniqueRemoveLabelIds : undefined,
-    },
-  });
+  try {
+    await gmail.users.messages.modify({
+      userId: "me",
+      id: emailId,
+      requestBody: {
+        addLabelIds: uniqueAddLabelIds.length > 0 ? uniqueAddLabelIds : undefined,
+        removeLabelIds: uniqueRemoveLabelIds.length > 0 ? uniqueRemoveLabelIds : undefined,
+      },
+    });
+  } catch (error) {
+    const cleanupStatus = await cleanupInProgress(emailId, gmail);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return errorResult(`Failed to apply labels: ${errorMessage}. ${cleanupStatus}`);
+  }
   processingLocks.delete(emailId);
   appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "outcome", actor, result: action });
 

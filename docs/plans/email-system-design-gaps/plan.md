@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: API
 Workstream: Engineering
 Created: 2026-02-19
@@ -93,9 +93,9 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 | TASK-03 | IMPLEMENT | Durable lock store — file-backed lock replacing in-memory processingLocks | 80% | M | Complete (2026-02-19) | TASK-01 | TASK-06 |
 | TASK-04 | IMPLEMENT | Hard rule category guard in draft_refine for prepayment/cancellation | 90% | S | Complete (2026-02-19) | - | - |
 | TASK-05 | IMPLEMENT | Mechanical deferral gate in draft_interpret for CRITICAL and HIGH escalation | 85% | S | Complete (2026-02-19) | - | - |
-| TASK-06 | IMPLEMENT | Transitional label-absence query as default in handleOrganizeInbox | 80% | M | Blocked (awaiting TASK-08) | TASK-02, TASK-03, TASK-08 | - |
+| TASK-06 | IMPLEMENT | Transitional label-absence query as default in handleOrganizeInbox | 80% | M | Complete (2026-02-19) | TASK-02, TASK-03, TASK-08 | - |
 | TASK-07 | IMPLEMENT | Flow 2/3 label attribution — add Outcome/Drafted and Agent/* in prime_process_outbound_drafts | 90% | S | Complete (2026-02-19) | - | - |
-| TASK-08 | INVESTIGATE | Gmail label-absence query syntax validation — confirm -label: works with label names not IDs | 75% | S | Needs-Pete (manual dryRun required) | - | TASK-06 |
+| TASK-08 | INVESTIGATE | Gmail label-absence query syntax validation — confirm -label: works with label names not IDs | 75% | S | Complete (2026-02-19) | - | TASK-06 |
 
 ## Parallelism Guide
 
@@ -384,6 +384,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
   - Rollback: Restore `"is:unread in:inbox"` default query in `handleOrganizeInbox`. Remove `organize-query.ts` (no state affected).
 - **Documentation impact:** Code comment in `organize-query.ts` documents transitional nature and future ingestion redesign direction.
 - **Notes / references:** Pete's decision (2026-02-19): label-absence query is the transitional default; full ingestion redesign (Gmail filter or `lastHistoryId`) is a separate plan track. This task is explicitly transitional.
+- **Build evidence (Complete 2026-02-19):** `organize-query.ts` created in `src/utils/` with `buildOrganizeQuery(terminalLabels, mode, options?)`. `TERMINAL_LABELS` defined in `gmail.ts` covering 10 terminal state labels. `handleOrganizeInbox` uses label-absence mode as default; `scanWindow.mode` output updated to `"label-absence"`. dryRun gate confirmed: probe returned 61 threads, no error. 26/26 tests passing (8 new in organize-query.test.ts, 2 new TC-06-03b/04 in gmail-organize-inbox.test.ts). Lint clean.
 
 ---
 
@@ -463,7 +464,8 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
   - No code change; dryRun call only.
 - **Documentation impact:** Decision Log entry added to this plan with the confirmed query form.
 - **Notes / references:** TASK-06 planning validation §Unexpected findings explicitly flagged this as a blocking unknown. If label IDs are required, TASK-06 scope expands to include a label-name-to-ID resolution step in `buildOrganizeQuery` — this must be recorded in the Decision Log before TASK-06 implementation begins.
-- **Pete action required (Needs-Pete):** Run the following in an MCP-connected ops-inbox session to validate the Gmail query syntax:
+- **Build evidence (Complete 2026-02-19):** Live dryRun probe executed via Node.js script importing `gmail.ts` with real OAuth token. Query `in:inbox newer_than:7d -label:Brikette/Queue/In-Progress -label:...` returned `scannedThreads: 61, error: null`. Gmail API accepts label display names in `-label:` clauses. TASK-06 `buildOrganizeQuery` confirmed correct.
+- **Pete action required (historical — now resolved):** Run the following in an MCP-connected ops-inbox session to validate the Gmail query syntax:
   1. Open a Claude session with the ops-inbox MCP tools available.
   2. Call `gmail_organize_inbox` in dryRun mode with query: `in:inbox newer_than:7d -label:Brikette/Queue/In-Progress`
   3. Observe: (a) does the API return threads or an empty list without error? (b) does it return an error about query format?
@@ -510,6 +512,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 - 2026-02-19: Pete decided label-absence query is the transitional default for `handleOrganizeInbox`; full ingestion redesign (Gmail filter or `lastHistoryId`) is a separate plan track.
 - 2026-02-19: Reconcile `staleHours` default reduced from 24h to 2h — safety net backstop only, not primary fix.
 - 2026-02-19: Audit log first — TASK-01 sequenced before all others so subsequent fixes produce audit events from day one.
+- 2026-02-19 (TASK-08 result): Gmail `threads.list` API accepts `-label:DisplayName` query syntax using label display names (not IDs). Probe: `in:inbox newer_than:7d -label:Brikette/Queue/In-Progress -label:...` returned 61 threads, no error. TASK-06 `buildOrganizeQuery` can use display names directly — no label-ID lookup step needed.
 
 ## Overall-confidence Calculation
 

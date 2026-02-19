@@ -320,7 +320,8 @@ describe("gmail_organize_inbox", () => {
     expect(messageStore["msg-4"].labelIds).toEqual(beforeLabels);
   });
 
-  it("scans all unread inbox emails by default (no date window)", async () => {
+  // TC-06-03b: handleOrganizeInbox uses label-absence query as default (not is:unread)
+  it("TC-06-03b: uses label-absence query by default (no date window)", async () => {
     const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
     const { gmail } = createGmailStub({
       labels: [needsProcessing],
@@ -349,12 +350,58 @@ describe("gmail_organize_inbox", () => {
     const result = await handleGmailTool("gmail_organize_inbox", { dryRun: true });
     const payload = JSON.parse(result.content[0].text);
 
-    expect(gmail.users.threads.list).toHaveBeenCalledWith(
-      expect.objectContaining({
-        q: "is:unread in:inbox",
-      })
-    );
-    expect(payload.scanWindow.mode).toBe("all-unread");
+    // Must use label-absence query — not is:unread
+    const calledWith = gmail.users.threads.list.mock.calls[0][0] as { q: string };
+    expect(calledWith.q).toContain("in:inbox");
+    expect(calledWith.q).toContain("newer_than:");
+    expect(calledWith.q).toContain("-label:");
+    expect(calledWith.q).not.toContain("is:unread");
+    expect(payload.scanWindow.mode).toBe("label-absence");
+  });
+
+  // TC-06-04: dryRun mode with label-absence query returns thread count and does NOT call messages.modify
+  it("TC-06-04: dryRun mode uses label-absence query and does not call messages.modify", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-dry": {
+          id: "thread-dry",
+          messages: [
+            {
+              id: "msg-dry",
+              threadId: "thread-dry",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "guest@example.com"),
+                  createHeader("Subject", "Check-in question"),
+                  createHeader("Date", "Tue, 10 Feb 2026 16:00:00 +0000"),
+                ],
+              },
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: true });
+    const payload = JSON.parse(result.content[0].text);
+
+    // threads.list was called with a label-absence query
+    const calledWith = gmail.users.threads.list.mock.calls[0][0] as { q: string };
+    expect(calledWith.q).toContain("-label:");
+    expect(calledWith.q).not.toContain("is:unread");
+
+    // Result includes thread count
+    expect(typeof payload.counts.scannedThreads).toBe("number");
+
+    // messages.modify must NOT be called in dryRun mode
+    expect(gmail.users.messages.modify).not.toHaveBeenCalled();
+
+    // dryRun flag reflected in result
+    expect(payload.dryRun).toBe(true);
   });
 });
 

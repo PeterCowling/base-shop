@@ -20,6 +20,7 @@ import { getGmailClient } from "../clients/gmail.js";
 import { createRawEmail } from "../utils/email-mime.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 import { createLockStore,type LockStore } from "../utils/lock-store.js";
+import { buildOrganizeQuery } from "../utils/organize-query.js";
 import {
   errorResult,
   formatError,
@@ -91,6 +92,33 @@ const LEGACY_TO_CURRENT_LABEL_MAP: Record<string, string> = {
   [LEGACY_LABELS.PROMOTIONAL]: LABELS.PROMOTIONAL,
   [LEGACY_LABELS.SPAM]: LABELS.SPAM,
 };
+
+/**
+ * Labels that represent a "done" or "in-flight" state for the organize-inbox
+ * label-absence query. Emails already bearing any of these labels are excluded
+ * from the scan so they are not re-processed.
+ *
+ * Excluded intentionally:
+ *   - NEEDS_PROCESSING: entry-point label (emails awaiting triage are the
+ *     target of the scan, not the exclusion)
+ *   - AGENT_*: actor labels, not state labels
+ *   - WORKFLOW_* (prepayment/cancellation): mid-flight workflow labels that
+ *     should still be visible if re-scanning is needed; err on inclusion if
+ *     unsure — these are left out since they are transient workflow markers,
+ *     not final outcomes.
+ */
+const TERMINAL_LABELS: string[] = [
+  LABELS.PROCESSING,           // Brikette/Queue/In-Progress — actively being processed
+  LABELS.AWAITING_AGREEMENT,   // Brikette/Queue/Needs-Decision — waiting for Pete's decision
+  LABELS.DEFERRED,             // Brikette/Queue/Deferred — consciously deferred
+  LABELS.READY_FOR_REVIEW,     // Brikette/Drafts/Ready-For-Review — draft waiting review
+  LABELS.SENT,                 // Brikette/Drafts/Sent — draft was sent
+  LABELS.PROCESSED_DRAFTED,    // Brikette/Outcome/Drafted — final outcome: drafted
+  LABELS.PROCESSED_ACKNOWLEDGED, // Brikette/Outcome/Acknowledged — final outcome: acknowledged
+  LABELS.PROCESSED_SKIPPED,    // Brikette/Outcome/Skipped — final outcome: skipped
+  LABELS.PROMOTIONAL,          // Brikette/Outcome/Promotional — classified as promotional
+  LABELS.SPAM,                 // Brikette/Outcome/Spam — classified as spam
+];
 
 type AgentActor = "codex" | "claude" | "human";
 
@@ -1690,7 +1718,6 @@ async function handleOrganizeInbox(
 ): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
   const { testMode, specificStartDate, limit, dryRun } = organizeInboxSchema.parse(args);
 
-  let query = "is:unread in:inbox";
   let startDateString: string | null = null;
   let tomorrowDateString: string | null = null;
 
@@ -1701,8 +1728,16 @@ async function handleOrganizeInbox(
     }
     startDateString = formatGmailQueryDate(parsed);
     tomorrowDateString = formatGmailQueryDate(new Date(Date.now() + 24 * 60 * 60 * 1000));
-    query = `${query} after:${startDateString} before:${tomorrowDateString}`;
   }
+
+  // Transitional fix (TASK-06): label-absence query covers emails read before the bot runs.
+  // Long-term: Gmail filter or users.history.list + lastHistoryId ingestion.
+  // Validated via dryRun before live deployment (see TASK-08 decision log).
+  const query = buildOrganizeQuery(
+    TERMINAL_LABELS,
+    "label-absence",
+    startDateString ? { startDate: startDateString } : undefined,
+  );
 
   const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
   const needsProcessingLabelId = labelMap.get(LABELS.NEEDS_PROCESSING);
@@ -1971,7 +2006,7 @@ async function handleOrganizeInbox(
       beforeDate: tomorrowDateString,
       testMode,
       specificStartDate: specificStartDate ?? null,
-      mode: specificStartDate ? "from-date" : "all-unread",
+      mode: specificStartDate ? "from-date" : "label-absence",
     },
     counts: {
       scannedThreads,

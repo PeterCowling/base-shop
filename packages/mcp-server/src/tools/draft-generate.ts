@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { z } from "zod";
@@ -5,12 +6,14 @@ import { z } from "zod";
 import { handleBriketteResourceRead } from "../resources/brikette-knowledge.js";
 import { handleDraftGuideRead } from "../resources/draft-guide.js";
 import { handleVoiceExamplesRead } from "../resources/voice-examples.js";
-import {
-  evaluateQuestionCoverage,
-  extractQuestionKeywords,
-} from "../utils/coverage.js";
+import { evaluateQuestionCoverage } from "../utils/coverage.js";
 import { stripLegacySignatureBlock } from "../utils/email-signature.js";
 import { generateEmailHtml } from "../utils/email-template.js";
+import {
+  appendJsonlEvent,
+  normalizeSignalCategory,
+} from "../utils/signal-events.js";
+import { resolveSlots } from "../utils/slot-resolver.js";
 import {
   type EmailTemplate,
   type PerQuestionRankEntry,
@@ -31,10 +34,14 @@ import {
   type PolicyDecision,
 } from "./policy-decision.js";
 import {
+  hashQuestion,
   ingestUnknownAnswerEntries,
+  readActiveFaqPromotions,
+  type ReviewedFaqPromotionRecord,
 } from "./reviewed-ledger.js";
 
 const DATA_ROOT = join(process.cwd(), "packages", "mcp-server", "data");
+const SIGNAL_EVENTS_PATH = join(DATA_ROOT, "draft-signal-events.jsonl");
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const templateCache = new Map<string, { data: EmailTemplate[]; expires: number }>();
 
@@ -813,12 +820,14 @@ function stripCitationMarkers(text: string): string {
 
 // TASK-07: injects high-relevance knowledge snippets for uncovered questions into the body.
 // Injection happens before removeForbiddenPhrases + enforceLengthBounds so sanitisation applies.
+// TASK-01 (Bug 3): added exact-match fast-path for active FAQ promotions keyed by question hash.
 function buildGapFillResult(
   body: string,
   uncoveredQuestions: string[],
   candidates: Array<{ uri: string; snippet: KnowledgeSnippet }>,
+  activePromotions: ReviewedFaqPromotionRecord[] = [],
 ): { body: string; sourcesUsed: SourcesUsedEntry[] } {
-  if (uncoveredQuestions.length === 0 || candidates.length === 0) {
+  if (uncoveredQuestions.length === 0 || (candidates.length === 0 && activePromotions.length === 0)) {
     return { body, sourcesUsed: [] };
   }
 
@@ -826,7 +835,29 @@ function buildGapFillResult(
   const injectedCitations = new Set<string>();
   let resultBody = body;
 
-  for (const _question of uncoveredQuestions.slice(0, KNOWLEDGE_MAX_INJECTIONS)) {
+  for (const question of uncoveredQuestions.slice(0, KNOWLEDGE_MAX_INJECTIONS)) {
+    // Exact-match fast-path: check active promotions first by question hash.
+    const questionHash = hashQuestion(question);
+    const promotionMatch = activePromotions.find(
+      (p) => p.question_hash === questionHash && p.status === "active" && p.answer,
+    );
+    if (promotionMatch) {
+      const citation = `promoted:${promotionMatch.key}`;
+      if (!injectedCitations.has(citation)) {
+        injectedCitations.add(citation);
+        resultBody = normalizeParagraphs(`${resultBody}\n\n${promotionMatch.answer}`);
+        sourcesUsed.push({
+          uri: "promoted",
+          citation,
+          text: promotionMatch.answer,
+          score: 10,
+          injected: true,
+        });
+        continue;
+      }
+    }
+
+    // Fall back to BM25 candidates.
     const match = candidates.find((c) => !injectedCitations.has(c.snippet.citation));
     if (match) {
       injectedCitations.add(match.snippet.citation);
@@ -858,6 +889,11 @@ function buildGapFillResult(
   return { body: resultBody, sourcesUsed };
 }
 
+// TASK-01 (Bug 1): fixed escalation sentence replaces the previous keyword-interpolation approach,
+// which produced garbled output (e.g. "For your question about check, time we can confirm...").
+const ESCALATION_FALLBACK_SENTENCE =
+  "For this specific question we want to give you the most accurate answer — Pete or Cristiana will follow up with you directly.";
+
 function appendCoverageFallbacks(
   body: string,
   uncoveredQuestions: string[],
@@ -866,30 +902,7 @@ function appendCoverageFallbacks(
     return body;
   }
 
-  const additions: string[] = [];
-  const seenTopics = new Set<string>();
-
-  for (const question of uncoveredQuestions.slice(0, 3)) {
-    const keywords = extractQuestionKeywords(question).slice(0, 4);
-    const topic = keywords.length > 0
-      ? keywords.join(", ")
-      : question.replace(/\s+/g, " ").replace(/\?/g, "").trim();
-    if (!topic || seenTopics.has(topic)) {
-      continue;
-    }
-    seenTopics.add(topic);
-    additions.push(
-      sentence(
-        `For your question about ${topic}, we can confirm the details and help with next steps`
-      )
-    );
-  }
-
-  if (additions.length === 0) {
-    return body;
-  }
-
-  return normalizeParagraphs(`${body}\n\n${additions.join("\n\n")}`);
+  return normalizeParagraphs(`${body}\n\n${ESCALATION_FALLBACK_SENTENCE}`);
 }
 
 function applyAlwaysRules(
@@ -1012,17 +1025,25 @@ function selectAgreementTemplate(templates: EmailTemplate[]): EmailTemplate | un
   );
 }
 
-function personalizeGreeting(body: string, recipientName?: string): string {
+// TASK-03: refactored to emit a {{SLOT:GREETING}} marker and return a slots map,
+// allowing resolveSlots() to perform the final substitution after gap-fill.
+function personalizeGreeting(
+  body: string,
+  recipientName?: string,
+): { body: string; slots: Record<string, string> } {
   if (!recipientName) {
-    return body;
+    return { body, slots: {} };
   }
 
   const trimmed = body.trimStart();
   if (/^Dear\s+Guest,/i.test(trimmed)) {
-    return trimmed.replace(/^Dear\s+Guest,/i, `Dear ${recipientName},`);
+    return {
+      body: trimmed.replace(/^Dear\s+Guest,/i, "{{SLOT:GREETING}}"),
+      slots: { GREETING: `Dear ${recipientName},` },
+    };
   }
 
-  return body;
+  return { body, slots: {} };
 }
 
 function enforceLengthBounds(body: string, bounds: LengthBounds): string {
@@ -1101,6 +1122,9 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       prepaymentProvider,
     } = draftGenerateSchema.parse(args);
 
+    // TASK-02: generate a stable draft_id that links selection and refinement events.
+    const draft_id = randomUUID();
+
     const templates = await loadTemplates();
 
     // TASK-04: resolve primary scenario category — prefer scenarios[0] (v1.1.0) over singular scenario (v1.0.0)
@@ -1155,6 +1179,20 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
 
     const isComposite = uniqueTemplatesForComposite.length >= 2;
 
+    // TASK-02: write selection event — best-effort, never fails the draft.
+    const { scenario_category: signalCategory, scenario_category_raw: signalCategoryRaw } =
+      normalizeSignalCategory(primaryScenarioCategory);
+    appendJsonlEvent(SIGNAL_EVENTS_PATH, {
+      event: "selection",
+      draft_id,
+      ts: new Date().toISOString(),
+      template_subject: selectedTemplate?.subject ?? null,
+      template_category: selectedTemplate?.category ?? null,
+      selection: rankResult.selection,
+      scenario_category: signalCategory,
+      scenario_category_raw: signalCategoryRaw,
+    }).catch(() => {});
+
     let bodyPlain: string;
     let usedTemplateFallback = false;
     if (isComposite) {
@@ -1195,10 +1233,13 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       .filter((entry) => entry.status === "missing")
       .map((entry) => entry.question);
 
+    // TASK-01 (Bug 3): pass active FAQ promotions for exact-match fast-path.
+    const activePromotions = await readActiveFaqPromotions();
     const { body: bodyWithGapFills, sourcesUsed } = buildGapFillResult(
       bodyPlain,
       uncoveredAfterAssembly,
       injectionCandidates,
+      activePromotions,
     );
     bodyPlain = bodyWithGapFills;
 
@@ -1234,13 +1275,16 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     contentBody = enforceLengthBounds(contentBody, contentBounds);
     contentBody = applyPolicyDecisionContent(contentBody, policyDecision);
     bodyPlain = stripSignature(contentBody).trim();
-    bodyPlain = personalizeGreeting(bodyPlain, recipientName);
+    // TASK-03: personalizeGreeting now returns a slots map; resolveSlots applies after gap-fill.
+    const { body: bodyWithGreeting, slots: greetingSlots } = personalizeGreeting(bodyPlain, recipientName);
+    bodyPlain = bodyWithGreeting;
 
     const finalCoverage = evaluateQuestionCoverage(bodyPlain, allIntents);
     const uncoveredAfterRefinement = finalCoverage
       .filter((entry) => entry.status === "missing")
       .map((entry) => entry.question);
     bodyPlain = appendCoverageFallbacks(bodyPlain, uncoveredAfterRefinement);
+    bodyPlain = resolveSlots(bodyPlain, greetingSlots);
 
     const includeBookingLink = actionPlan.workflow_triggers.booking_monitor && !agreementTemplate;
     const bodyHtml = generateEmailHtml({
@@ -1269,7 +1313,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       qualityResponse as { content: Array<{ text: string }> }
     );
 
-    const shouldCaptureUnknownAnswers = usedTemplateFallback || quality.failed_checks.includes("missing_question_coverage");
+    const shouldCaptureUnknownAnswers = usedTemplateFallback || quality.failed_checks.includes("unanswered_questions");
     const unknownQuestions = uniqueStrings([
       ...uncoveredAfterRefinement,
       ...(usedTemplateFallback ? actionPlan.intents.questions.map((question) => question.text) : []),
@@ -1296,7 +1340,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     if (shouldCaptureUnknownAnswers && unknownQuestions.length > 0) {
       const reasons = uniqueStrings([
         usedTemplateFallback ? "template_fallback" : "",
-        quality.failed_checks.includes("missing_question_coverage") ? "missing_question_coverage" : "",
+        quality.failed_checks.includes("unanswered_questions") ? "unanswered_questions" : "",
       ]);
 
       try {
@@ -1329,6 +1373,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     }
 
     return jsonResult({
+      draft_id,
       composite: isComposite,
       preliminary_coverage: {
         questions_with_no_template_match: uncoveredQuestions,

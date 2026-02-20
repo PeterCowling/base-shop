@@ -85,6 +85,7 @@ describe("TASK-11 v2: TC-01-01 Successful refinement", () => {
   it("returns refinement_applied: true, claude-cli, quality.passed: true, DOCTYPE html", async () => {
     const result = await handleDraftRefineTool("draft_refine", {
       actionPlan: BASE_ACTION_PLAN,
+      draft_id: "test-draft-id-01",
       originalBodyPlain: ORIGINAL_BODY,
       refinedBodyPlain: REFINED_BODY_PASS,
     });
@@ -109,6 +110,7 @@ describe("TASK-11 v2: TC-01-02 Identity check (no-op)", () => {
   it("returns refinement_applied: false when refinedBodyPlain equals originalBodyPlain", async () => {
     const result = await handleDraftRefineTool("draft_refine", {
       actionPlan: BASE_ACTION_PLAN,
+      draft_id: "test-draft-id-02",
       originalBodyPlain: ORIGINAL_BODY,
       refinedBodyPlain: ORIGINAL_BODY, // same text
     });
@@ -131,6 +133,7 @@ describe("TASK-11 v2: TC-01-03 Quality failure (adversarial text)", () => {
   it("returns refinement_applied: true with quality.passed: false and named failed_checks", async () => {
     const result = await handleDraftRefineTool("draft_refine", {
       actionPlan: BASE_ACTION_PLAN,
+      draft_id: "test-draft-id-03",
       originalBodyPlain: ORIGINAL_BODY,
       refinedBodyPlain: REFINED_BODY_FAIL,
     });
@@ -211,6 +214,7 @@ describe("TASK-04: TC-04-01 Prepayment category blocks text modification", () =>
         scenario: { category: "prepayment" },
         workflow_triggers: { booking_monitor: false },
       },
+      draft_id: "test-draft-id-04",
       originalBodyPlain:
         "Your prepayment of €50 is required within 48 hours to confirm your booking.",
       refinedBodyPlain:
@@ -236,6 +240,7 @@ describe("TASK-04: TC-04-02 Cancellation category blocks text modification", () 
         scenario: { category: "cancellation" },
         workflow_triggers: { booking_monitor: false },
       },
+      draft_id: "test-draft-id-05",
       originalBodyPlain:
         "We confirm your booking has been cancelled per our policy. No refund is applicable.",
       refinedBodyPlain:
@@ -264,6 +269,7 @@ describe("TASK-04: TC-04-03 Prepayment category with identical text passes", () 
         scenario: { category: "prepayment" },
         workflow_triggers: { booking_monitor: false },
       },
+      draft_id: "test-draft-id-06",
       originalBodyPlain: prepaymentBody,
       refinedBodyPlain: prepaymentBody,
     });
@@ -292,6 +298,7 @@ describe("TASK-04: TC-04-04 Non-protected category allows text modification", ()
         scenario: { category: "faq" },
         workflow_triggers: { booking_monitor: false },
       },
+      draft_id: "test-draft-id-07",
       originalBodyPlain: "Check-in is from 2:30pm. Best regards, Hostel Brikette",
       refinedBodyPlain:
         "Dear guest, thank you for reaching out to Hostel Brikette. Check-in is available from 2:30pm each day. If you plan to arrive earlier we are happy to offer complimentary luggage storage from 10:30am. We look forward to welcoming you very soon. Warm regards, the Brikette team.",

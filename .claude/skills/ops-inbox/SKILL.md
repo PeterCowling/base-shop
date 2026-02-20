@@ -19,8 +19,41 @@ Run this skill when you want to process customer inquiry emails for Brikette:
 - MCP server running locally with Gmail tools enabled
 - Gmail API credentials configured for Pete's account
 - Network access to Gmail API
+- Fallback CLI available: `scripts/ops/create-brikette-drafts.py`
 
 ## Workflow
+
+### 0. Mandatory MCP Preflight (Fail Fast)
+
+Before any inbox processing, run:
+
+```typescript
+health_check({ strict: false })
+```
+
+Then enforce these rules:
+
+1. If this call fails with tool-resolution/transport errors (for example `Tool not found`, unknown tool, or MCP disconnect), stop immediately.
+2. Do not continue to `gmail_organize_inbox` or any other MCP call in that session.
+3. Tell the user this is a stale/continued session with a dead MCP registry and require a fresh Claude Code session.
+4. Recovery command:
+   ```bash
+   claude
+   ```
+   Then rerun `/ops-inbox`.
+5. If preflight returns `status: "unhealthy"`, stop and show the failing checks/remediation.
+6. If preflight returns `status: "degraded"`, continue only with explicit user approval.
+
+If the user wants dry-run fallback (or MCP remains unavailable), queue drafts locally instead of writing Gmail drafts:
+
+```bash
+python3 scripts/ops/create-brikette-drafts.py \
+  --input <path-to-drafts.json> \
+  --dry-run \
+  --queue-file data/email-fallback-queue/<timestamp>-ops-inbox.jsonl
+```
+
+> **NOTE:** Dry-run and Python-fallback sessions produce no signal events. This is expected — those sessions are excluded from calibration data and will not appear in `draft_signal_stats` counts.
 
 ### 1. Run Inbox Organize Cycle
 
@@ -182,6 +215,8 @@ When user selects an email to process:
    ```typescript
    draft_refine({
      actionPlan,
+     draft_id: draftGenerateResult.draft_id,  // links this refinement to the selection signal event
+     rewrite_reason: "<reason>",  // "none" | "style" | "language-adapt" | "light-edit" | "heavy-rewrite" | "missing-info" | "wrong-template"
      originalBodyPlain: patchedBodyPlain,  // post-gap-patch plain text
      refinedBodyPlain: claudeRefinedBodyPlain,  // Claude's rewrite (or same text if no improvement)
    })
@@ -261,6 +296,23 @@ gmail_create_draft({
 })
 gmail_mark_processed({ emailId: "...", action: "drafted" })
 ```
+
+**Create draft (dry-run fallback queue):**
+
+Use this path when:
+- MCP tools are unavailable in the current session, or
+- user explicitly requests dry-run/no Gmail mutation.
+
+Steps:
+1. Build JSON input payload with draft candidates (`emailId`, `to`, `subject`, `recipientName`, `bodyPlain`).
+2. Run:
+   ```bash
+   python3 scripts/ops/create-brikette-drafts.py \
+     --input <path-to-drafts.json> \
+     --dry-run \
+     --queue-file data/email-fallback-queue/<timestamp>-ops-inbox.jsonl
+   ```
+3. Report the queue file path and do not call `gmail_mark_processed` in dry-run mode.
 
 **Edit request:**
 - User provides feedback: "Make it shorter", "More formal", etc.

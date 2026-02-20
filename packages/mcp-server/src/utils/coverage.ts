@@ -23,9 +23,13 @@ function tokenize(text: string): string[] {
 
 export function extractQuestionKeywords(question: string): string[] {
   return question
-    .replace(/\?/g, "")
     .split(/\s+/)
-    .map(w => w.toLowerCase())
+    .map(w =>
+      w
+        .toLowerCase()
+        .replace(/[^a-z0-9'-]+$/g, "")
+        .replace(/^[^a-z0-9'-]+/, "")
+    )
     .filter(w => w.length > 2 && !STOP_WORDS.has(w))
     .slice(0, 5);
 }

@@ -42,6 +42,9 @@ jest.mock("../tools/reviewed-ledger.js", () => ({
     created: [],
     duplicates: [],
   })),
+  // TASK-02/TASK-01: new imports added to draft-generate.ts
+  readActiveFaqPromotions: jest.fn(async () => []),
+  hashQuestion: jest.fn((q: string) => `mock-hash-${q.slice(0, 8)}`),
 }));
 
 const readFileMock = readFile as jest.Mock;

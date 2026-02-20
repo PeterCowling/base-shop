@@ -10,6 +10,7 @@ import { draftGenerateTools, handleDraftGenerateTool } from "./draft-generate.js
 import { draftInterpretTools, handleDraftInterpretTool } from "./draft-interpret.js";
 import { draftQualityTools, handleDraftQualityTool } from "./draft-quality-check.js";
 import { draftRefineTools, handleDraftRefineTool } from "./draft-refine.js";
+import { draftSignalStatsTools, handleDraftSignalStatsTool } from "./draft-signal-stats.js";
 import { gmailTools, handleGmailTool } from "./gmail.js";
 import { handleHealthTool, healthTools } from "./health.js";
 import { handleInventoryTool, inventoryTools } from "./inventory.js";
@@ -49,6 +50,7 @@ export const toolDefinitions = [
   ...draftGenerateTools,
   ...draftQualityTools,
   ...draftRefineTools,
+  ...draftSignalStatsTools,
   ...outboundDraftTools,
 ];
 
@@ -83,6 +85,7 @@ const draftInterpretToolNames = new Set(draftInterpretTools.map((t) => t.name));
 const draftGenerateToolNames = new Set(draftGenerateTools.map((t) => t.name));
 const draftQualityToolNames = new Set(draftQualityTools.map((t) => t.name));
 const draftRefineToolNames = new Set(draftRefineTools.map((t) => t.name));
+const draftSignalStatsToolNames = new Set(draftSignalStatsTools.map((t) => t.name));
 const outboundDraftToolNames = new Set(outboundDraftTools.map((t) => t.name));
 
 export async function handleToolCall(name: string, args: unknown) {
@@ -167,6 +170,9 @@ export async function handleToolCall(name: string, args: unknown) {
   }
   if (draftRefineToolNames.has(name as never)) {
     return handleDraftRefineTool(name, args);
+  }
+  if (draftSignalStatsToolNames.has(name as never)) {
+    return handleDraftSignalStatsTool(name, args);
   }
   if (outboundDraftToolNames.has(name as never)) {
     return handleOutboundDraftTool(name, args);

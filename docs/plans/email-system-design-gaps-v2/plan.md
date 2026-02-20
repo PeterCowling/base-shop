@@ -12,7 +12,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-build
 Supporting-Skills: none
-Overall-confidence: 82%
+Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan-only
 Business-OS-Integration: off
@@ -78,7 +78,8 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 - Build Gate: Pass (task-level)
   - Foundation through checkpoint is complete and Wave 6 precursor tasks are complete (`TASK-14`, `TASK-15`).
   - Wave 7 implementation tasks (`TASK-07`, `TASK-10`) are complete with governed validation evidence.
-  - Next action: run `/lp-replan` to promote `TASK-08` (currently `75%`) before final implementation wave.
+  - Build-eligible now: `TASK-08` (`80%`) for final implementation wave.
+  - Next action: run `/lp-build` for `TASK-08`.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -104,7 +105,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-15 | INVESTIGATE | Build 90-day Octorate subject corpus + misroute baseline for parser hardening | 85% | S | Complete (2026-02-20) | TASK-06 | TASK-10 |
 | TASK-07 | IMPLEMENT | Build unknown-answer capture and reviewed-ledger ingestion | 80% | M | Complete (2026-02-20) | TASK-01, TASK-03, TASK-06, TASK-14 | TASK-08 |
 | TASK-10 | IMPLEMENT | Harden Octorate routing patterns and replay fixtures | 80% | M | Complete (2026-02-20) | TASK-03, TASK-06, TASK-15 | - |
-| TASK-08 | IMPLEMENT | Build reviewed promotion path from ledger into reusable KB/templates | 75% | M | Pending | TASK-07, TASK-14 | - |
+| TASK-08 | IMPLEMENT | Build reviewed promotion path from ledger into reusable KB/templates | 80% | M | Pending | TASK-07, TASK-14 | - |
 
 ## Parallelism Guide
 
@@ -869,10 +870,10 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Affects:** `packages/mcp-server/src/tools/*ledger*.ts`, `packages/mcp-server/src/resources/brikette-knowledge.ts`, `packages/mcp-server/data/email-templates.json`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/ledger-promotion*.test.ts`
 - **Depends on:** TASK-07, TASK-14
 - **Blocks:** -
-- **Confidence:** 75%
-  - Implementation: 75% - promotion writes need schema-safe merge logic and audit hooks.
-  - Approach: 75% - governance is defined but promotion conflict handling needs explicit policy.
-  - Impact: 75% - should improve answer scope over time, but measurable lift depends on unknown volume and approval quality.
+- **Confidence:** 80%
+  - Implementation: 80% - TASK-07 now provides production reviewed-ledger ingestion/state primitives, reducing promotion writer uncertainty to bounded merge logic.
+  - Approach: 80% - TASK-14 contract fixes promotion semantics (deterministic keying, idempotency, revert behavior, conflict rejection) and removes the prior policy gap.
+  - Impact: 80% - telemetry + ingestion baseline now allow promotion outcomes to be observed while keeping rollout bounded to approved records only.
 - **Acceptance:**
   - Only approved ledger entries are eligible for promotion.
   - Promotion writes are auditable, reversible, and idempotent.
@@ -882,12 +883,16 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - TC-08-02: rejected/deferred records are not promoted.
   - TC-08-03: duplicate promotion request is idempotent.
   - TC-08-04: rollback/unpublish path removes promoted entry cleanly.
+  - TC-08-05: conflicting promotion key (different source entry) is rejected without mutating existing promoted artifact.
+  - Test type: unit + integration.
+  - Test location: `packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts`, `packages/mcp-server/src/__tests__/reviewed-ledger.test.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`.
+  - Run: `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts packages/mcp-server/src/__tests__/reviewed-ledger.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts --maxWorkers=2`
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
   - Checks run: D3 decision lock review and fact-find assumption/risk scan.
   - Validation artifacts: reviewed-ledger-first architecture explicitly mandated.
   - Unexpected findings: none.
-- **Scouts:** define conflict policy when promotion target key already exists.
+- **Scouts:** `None: conflict policy fixed by TASK-14 contract (same source -> idempotent; different source -> reject conflict).`
 - **Edge Cases & Hardening:** conflicting answers, outdated policy references, multilingual duplication.
 - **What would make this >=90%:** two release cycles with stable promotion quality metrics and low rollback rate.
 - **Rollout / rollback:**
@@ -900,6 +905,12 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Key change: Added TASK-14 as explicit precursor to lock idempotency/revert semantics before promotion writes.
 - Dependencies: updated to include `TASK-14` alongside `TASK-07`.
 - Validation contract: unchanged (TC-08), now gated by upstream spike evidence.
+- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+#### Re-plan Update (2026-02-20)
+- Confidence: 75% -> 80% (Evidence: E2/E3)
+- Key change: Completed TASK-07 + TASK-14 evidence resolves promotion conflict/idempotency uncertainty and locks implementation seam for promotion writes.
+- Dependencies: unchanged.
+- Validation contract: expanded with explicit test metadata and conflict-rejection case (`TC-08-05`).
 - Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
 
 ## Risks & Mitigations
@@ -958,6 +969,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-20: `/lp-build` completed Wave 6 precursor tasks (`TASK-14` spike + `TASK-15` investigation). Wave 7 remains blocked by confidence threshold (`TASK-07`, `TASK-10` at `75%`), requiring `/lp-replan` before further implementation.
 - 2026-02-20: `/lp-replan` (standard mode) promoted `TASK-07` and `TASK-10` from `75%` to `80%` using fresh governed E2 evidence; no topology change, no `/lp-sequence` rerun, Wave 7 is now `/lp-build` eligible.
 - 2026-02-20: `/lp-build` completed Wave 7 implementation tasks (`TASK-07`, `TASK-10`) with governed validation; remaining task `TASK-08` stays below threshold (`75%`) and requires `/lp-replan` before execution.
+- 2026-02-20: `/lp-replan` (standard mode) promoted `TASK-08` from `75%` to `80%` using TASK-07/TASK-14 completion evidence plus fresh governed tests; no topology change, no `/lp-sequence` rerun; Wave 8 is now `/lp-build` eligible.
 
 ## Overall-confidence Calculation
 
@@ -977,7 +989,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - TASK-15 85 (S=1)
   - TASK-07 80 (M=2)
   - TASK-10 80 (M=2)
-  - TASK-08 75 (M=2)
-- Weighted sum = 1890
+  - TASK-08 80 (M=2)
+- Weighted sum = 1900
 - Total weight = 23
-- Overall-confidence = 1890 / 23 = 82.2% -> **82%**
+- Overall-confidence = 1900 / 23 = 82.6% -> **83%**

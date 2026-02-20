@@ -442,3 +442,59 @@ Backward-compatible defaults when metadata is missing:
 
 1. Run `/lp-build` for Wave 7 (`TASK-07`, `TASK-10`).
 2. Re-run `/lp-replan` for `TASK-08` after `TASK-07` completes.
+
+## Invocation (Run 5)
+
+- Skill: `/lp-replan` (standard mode)
+- Date: 2026-02-20
+- Scope: reassess final blocked implementation task `TASK-08` after completion of `TASK-07` and precursor spike `TASK-14`.
+
+## Gate Outcomes (Run 5)
+
+- Promotion Gate: met for `TASK-08` (`75%` -> `80%`) using fresh E2 checks plus completed E3 precursor contract evidence.
+- Validation Gate: repaired for runnable status by adding explicit TC-08 metadata (test type/location/run) and conflict-case coverage.
+- Precursor Gate: unchanged; no additional precursor tasks required.
+- Sequencing Gate: no topology change (task graph unchanged), so no `/lp-sequence` rerun required.
+- Escalation Gate: no additional user decision required; conflict policy now derives directly from validated TASK-14 contract.
+
+## Evidence (Run 5, E2/E3/E1)
+
+- Command:
+  - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/reviewed-ledger.test.ts packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts --maxWorkers=2`
+  - Result: `3/3` suites passed, `33/33` tests passed.
+- Command:
+  - `node -e 'const fs=require("fs");const p="packages/mcp-server/data/email-templates.json";const t=JSON.parse(fs.readFileSync(p,"utf8"));const total=t.length;const withId=t.filter(x=>typeof x.template_id==="string"&&x.template_id.length>0).length;const required=t.filter(x=>x.reference_scope==="reference_required");const optional=t.filter(x=>x.reference_scope==="reference_optional_excluded");const missingMeta=t.filter(x=>!x.template_id||!x.reference_scope||x.normalization_batch==null);console.log(JSON.stringify({total,withId,required:required.length,optional:optional.length,missingMeta:missingMeta.length},null,2));if(missingMeta.length)process.exit(1);'`
+  - Result:
+    - `total: 53`
+    - `withId: 53`
+    - `reference_required: 41`
+    - `reference_optional_excluded: 12`
+    - `missingMeta: 0`
+- E3 precursor carry-forward:
+  - TASK-14 contract proves deterministic promotion keying (`faq:<question_hash>`), same-key idempotency, and rollback semantics.
+  - Conflict handling contract is explicit (`promotion_conflict_existing_key`) for competing entries.
+- E1 call-site checks:
+  - Template read seam for promotion consumers is stable in `draft_generate`: `packages/mcp-server/src/tools/draft-generate.ts:133`, `packages/mcp-server/src/tools/draft-generate.ts:1342`.
+  - Knowledge read seam remains centralized in `handleBriketteResourceRead`: `packages/mcp-server/src/tools/draft-generate.ts:610`, `packages/mcp-server/src/resources/brikette-knowledge.ts`.
+  - Reviewed-ledger state primitives now exist in production tooling: `packages/mcp-server/src/tools/reviewed-ledger.ts:158`, `packages/mcp-server/src/tools/reviewed-ledger.ts:188`.
+  - Conflict/idempotency assertions remain executable in spike contract tests: `packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts:113`, `packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts:240`.
+
+## Replan Decisions (Run 5)
+
+- Promoted `TASK-08` to `80%`:
+  - Implementation uncertainty reduced by completed reviewed-ledger ingestion/state module (`TASK-07`) and green governed tests.
+  - Approach uncertainty reduced by adopting the TASK-14 contract as the explicit promotion policy:
+    - deterministic key `faq:<question_hash>`
+    - same source entry + same key => idempotent
+    - different source entry + same key => reject conflict
+    - rollback marks promoted record as reverted while preserving ledger history
+  - Impact remains bounded by approved-only rollout with explicit rollback path.
+- Validation contract repaired:
+  - Added explicit test metadata (type/location/run) to TC-08 in `plan.md`.
+  - Added conflict rejection coverage requirement (`TC-08-05`).
+- Held-back test at 80:
+  - Remaining unknown is production quality lift magnitude, not implementation viability; this affects post-release metrics, not build safety threshold.
+
+## Next Build Order
+
+1. Run `/lp-build` for Wave 8 (`TASK-08`).

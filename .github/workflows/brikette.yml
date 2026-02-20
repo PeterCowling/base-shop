@@ -63,6 +63,12 @@ jobs:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
 
+      - name: Build workspace UI artifacts for smoke
+        run: |
+          pnpm --filter @acme/design-system build
+          pnpm --filter @acme/design-tokens build
+          pnpm --filter @acme/ui build
+
       - name: Run Turbopack route smoke
         timeout-minutes: 8
         run: node apps/brikette/scripts/e2e/brikette-smoke.mjs --mode=turbopack

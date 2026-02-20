@@ -1,5 +1,6 @@
 ---
 Type: Fact-Find-Artifact
+Status: Historical
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-15

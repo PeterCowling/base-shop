@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Active
+---
 # Brikette CTA + GA4 Funnel — Verification Protocol
 
 Last-updated: 2026-02-18 (TASK-40 update: DebugView method, SPA page_view, promotions, custom dimensions)

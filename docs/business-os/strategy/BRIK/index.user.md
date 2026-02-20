@@ -2,6 +2,7 @@
 Type: Strategy-Index
 Business-Unit: BRIK
 Last-updated: 2026-02-17
+Status: Active
 ---
 
 # Brand & Strategy Index — BRIK

@@ -1,7 +1,11 @@
+---
+Type: Reference
+Status: Reference
+---
 ### TASK-XX: Horizon checkpoint - reassess downstream plan
 - **Type:** CHECKPOINT
-- **Deliverable:** <updated plan evidence via /lp-replan>
-- **Execution-Skill:** lp-build
+- **Deliverable:** <updated plan evidence via /lp-do-replan>
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** <code | business-artifact | mixed>
 - **Effort:** <S>
 - **Status:** <Pending | In-Progress | Complete (YYYY-MM-DD) | Blocked | Superseded | Needs-Input>
@@ -13,8 +17,8 @@
   - Approach: 95% - prevents deep dead-end execution
   - Impact: 95% - controls downstream risk
 - **Acceptance:**
-  - `/lp-build` checkpoint executor run
-  - `/lp-replan` run on downstream tasks
+  - `/lp-do-build` checkpoint executor run
+  - `/lp-do-replan` run on downstream tasks
   - confidence for downstream tasks recalibrated from latest evidence
   - plan updated and re-sequenced
 - **Horizon assumptions to validate:**

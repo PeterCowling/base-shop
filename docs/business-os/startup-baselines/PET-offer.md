@@ -1,4 +1,6 @@
 ---
+Type: Offer
+Status: Active
 business: PET
 artifact: offer-design
 created: 2026-02-17

@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Historical
+---
 # TASK-11 Evidence Note — Model A Parallel Dispatch Validation
 
 **Date**: 2026-02-18

@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Active
+---
 # Email Draft Quality — Baseline and Fixture Manifest
 
 **Plan:** `docs/plans/email-draft-quality-upgrade/plan.md`

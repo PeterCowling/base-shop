@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Active
+---
 # Replan Notes — Email Draft Quality Upgrade
 
 ## TASK-12: Knowledge Injection Approach Design

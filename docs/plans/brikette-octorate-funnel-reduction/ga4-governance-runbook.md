@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Active
+---
 # GA4 Governance Runbook — Brikette Funnel Reduction
 
 **Status:** Active

@@ -2,6 +2,7 @@
 Type: Strategy-Index
 Business-Unit: PET
 Last-updated: 2026-02-17
+Status: Active
 ---
 
 # Brand & Strategy Index — PET

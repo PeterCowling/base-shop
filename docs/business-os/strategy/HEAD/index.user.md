@@ -1,7 +1,8 @@
 ---
 Type: Strategy-Index
 Business-Unit: HEAD
-Last-updated: 2026-02-17
+Last-updated: 2026-02-20
+Status: Active
 ---
 
 # Brand & Strategy Index — HEAD
@@ -13,10 +14,33 @@ Gates read `Status` from this table — not from individual file frontmatters.
 
 | Artifact | Path | Status | Last-reviewed |
 |----------|------|--------|---------------|
-| Brand Dossier | `docs/business-os/strategy/HEAD/brand-dossier.user.md` | Draft | 2026-02-17 |
+| Brand Dossier | `docs/business-os/strategy/HEAD/brand-dossier.user.md` | Draft | 2026-02-20 |
 | Competitive Positioning | `docs/business-os/strategy/HEAD/competitive-positioning.user.md` | — | — |
-| Messaging Hierarchy | `docs/business-os/strategy/HEAD/messaging-hierarchy.user.md` | — | — |
+| Messaging Hierarchy | `docs/business-os/strategy/HEAD/messaging-hierarchy.user.md` | Draft | 2026-02-20 |
 | Creative Voice Brief | `docs/business-os/strategy/HEAD/creative-voice-brief.user.md` | — | — |
+
+## Strategy Research Artifacts
+
+| Artifact | Path | Status | Last-reviewed |
+|----------|------|--------|---------------|
+| Product Range Research (prompt) | `docs/business-os/strategy/HEAD/adjacent-product-research-prompt.md` | Active | 2026-02-20 |
+| Product Range Research (results) | `docs/business-os/strategy/HEAD/lp-other-products-results.user.md` | Active | 2026-02-20 |
+| Naming Research (prompt) | `docs/business-os/strategy/HEAD/naming-research-prompt.md` | Active | 2026-02-19 |
+| Naming Research (shortlist) | `docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md` | Draft | 2026-02-20 |
+| Naming Research (latest pointer) | `docs/business-os/strategy/HEAD/latest-naming-shortlist.user.md` | Draft | 2026-02-20 |
+
+## Startup-Loop Canonical Artifacts
+
+| Stage | Artifact | Path | Status | Last-reviewed |
+|----------|------|--------|--------|---------------|
+| S2 | Market intelligence (latest) | `docs/business-os/market-research/HEAD/latest.user.md` | Active | 2026-02-20 |
+| S2B | Offer | `docs/business-os/startup-baselines/HEAD-offer.md` | Active | 2026-02-20 |
+| S3 | Forecast | `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md` | Active | 2026-02-20 |
+| S6B | Channels | `docs/business-os/startup-baselines/HEAD-channels.md` | Active | 2026-02-20 |
+| S3B | Adjacent product + naming research | `docs/business-os/strategy/HEAD/lp-other-products-results.user.md` | Active | 2026-02-20 |
+| S5A | Prioritization | `docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md` | Active | 2026-02-20 |
+
+> S3B refresh completed on 20 Feb 2026 and replayed into canonical S2B/S3/S6B/S5A artifacts. Top-3 build candidates: Activity organiser pouch, School-ready multi-pack headbands, Clip-on identity badges.
 
 **Status vocabulary:**
 - `—` Not yet created

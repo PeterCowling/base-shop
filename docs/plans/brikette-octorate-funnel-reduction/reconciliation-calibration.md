@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Active
+---
 # Reconciliation Calibration Note — TASK-08
 
 **Status:** Blocked — GA4 handoff events still zero (TASK-05A not yet deployed to production)

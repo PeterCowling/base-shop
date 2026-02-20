@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Historical
+---
 # Brikette SSR SEO Signal Hardening Plan - Fact Check Report
 
 **Date:** 2026-02-14

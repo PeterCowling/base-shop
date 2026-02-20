@@ -1,4 +1,6 @@
 ---
+Type: Reference
+Status: Reference
 Prompt-ID: BRAND-DR-02
 Stage: BD-1 (Brand Dossier), BD-3 (Messaging)
 Business: {{BIZ}}

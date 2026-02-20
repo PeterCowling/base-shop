@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Historical
+---
 # TASK-12 Evidence Note — WebSearch 3-Concurrent Rate Validation
 
 **Date**: 2026-02-18

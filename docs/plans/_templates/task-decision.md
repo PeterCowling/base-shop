@@ -1,7 +1,11 @@
+---
+Type: Reference
+Status: Reference
+---
 ### TASK-XX: <description>
 - **Type:** DECISION
 - **Deliverable:** <decision artifact output path>
-- **Execution-Skill:** <lp-build | lp-replan | specialized>
+- **Execution-Skill:** <lp-do-build | lp-do-replan | specialized>
 - **Execution-Track:** <code | business-artifact | mixed>
 - **Effort:** <S | M | L>
 - **Status:** <Pending | In-Progress | Complete (YYYY-MM-DD) | Blocked | Superseded | Needs-Input>

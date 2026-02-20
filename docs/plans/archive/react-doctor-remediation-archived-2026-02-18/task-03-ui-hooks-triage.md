@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Historical
+---
 # TASK-03 Triage: `useState`-in-Anonymous Violations — `@acme/ui`
 
 **Date:** 2026-02-18

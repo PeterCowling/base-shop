@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Active
+---
 # Skylar Outbound Pack (EN)
 
 ## Identity (general)

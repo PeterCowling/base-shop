@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Active
+---
 # TASK-21 Decision Memo: Content Sticky CTA — Post-Amendment State
 
 **Date:** 2026-02-18

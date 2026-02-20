@@ -1,3 +1,7 @@
+---
+Type: Brief
+Status: Active
+---
 Orchestrated Business Startup Loop Operating System
 Research synthesis
 Core definitions

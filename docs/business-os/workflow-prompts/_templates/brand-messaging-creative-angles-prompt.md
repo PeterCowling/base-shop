@@ -1,4 +1,6 @@
 ---
+Type: Reference
+Status: Reference
 Prompt-ID: BRAND-DR-04
 Stage: BD-3 (Messaging), BD-4 (Creative Brief)
 Business: {{BIZ}}

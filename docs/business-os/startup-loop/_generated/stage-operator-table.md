@@ -1,15 +1,20 @@
+---
+Type: Reference
+Status: Active
+---
 <!-- AUTO-GENERATED — do not edit directly. Edit stage-operator-dictionary.yaml and re-run: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts -->
-<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 1.7.0 -->
+<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 1.9.0 -->
 
 # Startup Loop — Stage Operator Reference
 
 | # | Stage ID | Short label | Outcome | Aliases | Conditional |
 |---|---|---|---|---|---|
-| 1 | `S0A` | Problem framing | Clear problem statement with articulated pain, affected customer, and evidence of real demand. | `problem-framing`, `s0a` | start-point = problem |
-| 1 | `S0B` | Solution-space scan | Mapped solution space with at least three distinct options and comparative feasibility notes. | `solution-space`, `s0b` | start-point = problem |
-| 1 | `S0C` | Option selection | Selected solution option with rationale, key assumptions, and handoff brief for S0 intake. | `option-selection`, `s0c` | start-point = problem |
-| 1 | `S0D` | Naming handoff | Validated business or product name with brand-safety check and domain availability confirmed. | `naming-handoff`, `s0d` | start-point = problem |
-| 1 | `S0` | Intake | Structured startup context packet ready for all downstream stages. | `intake`, `s0` | — |
+| 1 | `DISCOVERY-01` | Problem framing | Clear problem statement with articulated pain, affected customer, and evidence of real demand. | `problem-framing`, `discovery-01` | start-point = problem |
+| 1 | `DISCOVERY-02` | Solution-space scan | Mapped solution space with at least three distinct options and comparative feasibility notes. | `solution-space`, `discovery-02` | start-point = problem |
+| 1 | `DISCOVERY-03` | Option selection | Selected solution option with rationale, key assumptions, and handoff brief for DISCOVERY intake. | `option-selection`, `discovery-03` | start-point = problem |
+| 1 | `DISCOVERY-04` | Naming handoff | Validated business or product name with brand-safety check and domain availability confirmed. | `naming-handoff`, `discovery-04` | start-point = problem |
+| 1 | `DISCOVERY-05` | Operator evidence | Operator evidence packet: launch surface, stock status, pricing model, channel pre-decisions, and open evidence gaps documented. | `operator-evidence`, `our-stance`, `discovery-05` | start-point = problem |
+| 1 | `DISCOVERY` | Intake | Structured startup context packet ready for all downstream stages. | `intake`, `discovery` | — |
 | 2 | `S1` | Readiness check | Readiness report with blocker list. All 7 gates checked. | `readiness`, `s1` | — |
 | 3 | `S1B` | Measurement setup | Analytics stack live with GA4, Search Console, and conversion events verified before any paid traffic. | `measurement-bootstrap`, `measurement-setup`, `s1b` | launch-surface = pre-website |
 | 4 | `S2A` | Historical baseline | Consolidated business history document with net value, booking data, and traffic logs as a decision baseline. | `historical-baseline`, `baseline-history`, `s2a` | launch-surface = website-live |

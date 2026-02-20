@@ -7,6 +7,7 @@ Created: 2026-02-18
 Last-reviewed: 2026-02-18
 Owner: Operator
 Skill: /lp-weekly
+Canonical code: .claude/skills/lp-weekly/
 Related-fact-find: docs/plans/startup-loop-s10-weekly-orchestration/fact-find.md
 Related-plan: docs/plans/startup-loop-s10-weekly-orchestration/plan.md
 Spec-version: v1

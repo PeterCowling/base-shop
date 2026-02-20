@@ -1,7 +1,8 @@
 ---
 Type: Strategy-Index
 Business-Unit: HBAG
-Last-updated: 2026-02-17
+Last-updated: 2026-02-20
+Status: Active
 ---
 
 # Brand & Strategy Index — HBAG
@@ -17,6 +18,36 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | Competitive Positioning | `docs/business-os/strategy/HBAG/competitive-positioning.user.md` | — | — |
 | Messaging Hierarchy | `docs/business-os/strategy/HBAG/messaging-hierarchy.user.md` | — | — |
 | Creative Voice Brief | `docs/business-os/strategy/HBAG/creative-voice-brief.user.md` | — | — |
+
+## Strategy Research Artifacts
+
+| Artifact | Path | Status | Last-reviewed |
+|----------|------|--------|---------------|
+| Mini Handbag PMF Fact-Find | `docs/plans/mini-handbag-pmf/fact-find.md` | Active | 2026-02-17 |
+| Mini Handbag PMF Plan | `docs/plans/mini-handbag-pmf/plan.md` | Draft | 2026-02-18 |
+| CE Marking Investigation | `docs/plans/mini-handbag-pmf/ce-marking-investigation.md` | Active | 2026-02-18 |
+| Photography Brief | `docs/plans/mini-handbag-pmf/task-06-photography-brief.md` | Active | 2026-02-17 |
+| Naming Research | `docs/business-os/strategy/HBAG/naming-research-prompt.md` | Active | 2026-02-20 |
+| Naming Shortlist | `docs/business-os/strategy/HBAG/2026-02-20-naming-shortlist.user.md` | Active | 2026-02-20 |
+
+## Startup-Loop Canonical Artifacts
+
+| Stage | Artifact | Path | Status | Last-reviewed |
+|-------|----------|------|--------|---------------|
+| DISCOVERY-05 | Operator evidence | `docs/business-os/strategy/HBAG/s0e-operator-evidence.user.md` | Active | 2026-02-20 |
+| DISCOVERY | Intake packet | `docs/business-os/startup-baselines/HBAG-intake-packet.user.md` | Active | 2026-02-20 |
+| S1 | Readiness verdict | `docs/business-os/strategy/HBAG/s1-readiness.user.md` | Active | 2026-02-20 |
+| S2 | Market intelligence (latest) | `docs/business-os/market-research/HBAG/latest.user.md` | Active | 2026-02-20 |
+| S2B | Offer | `docs/business-os/startup-baselines/HBAG-offer.md` | Active | 2026-02-20 |
+| S3 | Forecast | `docs/business-os/startup-baselines/HBAG/S3-forecast/2026-02-20-lp-forecast.user.md` | Draft | 2026-02-20 |
+| S3 | Forecast seed | `docs/business-os/startup-baselines/HBAG-forecast-seed.user.md` | Active | 2026-02-20 |
+| S6B | Channels | `docs/business-os/startup-baselines/HBAG-channels.md` | Active | 2026-02-20 |
+| S6B gate | Demand evidence pack | `docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md` | Active | 2026-02-20 |
+| S5A | Prioritization scorecard | — | — | — |
+
+> S2/S2B/S3/S6B backfill completed 2026-02-20 from `mini-handbag-pmf` fact-find and plan evidence.
+> All stage artifacts are hypothesis-quality — not yet validated by first-party HBAG sales data.
+> TASK-09 checkpoint (4-week demand probe) will provide first-party validation data for refresh.
 
 **Status vocabulary:**
 - `—` Not yet created

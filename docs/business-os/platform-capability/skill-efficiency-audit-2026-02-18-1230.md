@@ -10,6 +10,7 @@ Type: Skill Efficiency Audit
 Audit-Date: 2026-02-18
 Skill: /meta-loop-efficiency
 Run: 2026-02-18-1230
+Status: Active
 ---
 
 # Startup Loop Skill Efficiency Audit — 2026-02-18 12:30
@@ -30,7 +31,7 @@ Run: 2026-02-18-1230
 Compliant skills (no action needed): draft-outreach, lp-bos-sync, lp-design-system,
 lp-launch-qa, lp-prioritize, lp-refactor, lp-seo, startup-loop.
 
-H1-compliant but H2 dispatch-candidate: lp-brand-bootstrap, lp-fact-find, lp-replan,
+H1-compliant but H2 dispatch-candidate: lp-brand-bootstrap, lp-do-fact-find, lp-do-replan,
 lp-signal-review, lp-site-upgrade.
 
 ---
@@ -56,8 +57,8 @@ descending within tier. All findings are new (first run; previous_artifact: none
 | lp-sequence | 287 | **monolith** | No modules/; invoked on every plan topology change → high-frequency; strong candidate |
 | lp-channels | 262 | **monolith** | No modules/; 6 stage headings (Stage 1–6) present |
 | lp-offer | 233 | **monolith** | No modules/; has 1 dispatch ref (partially addressed) |
-| lp-build | 222 | bloated-orchestrator | Has modules/; SKILL.md orchestrator itself exceeds threshold; prioritise slim-down |
-| lp-plan | 214 | bloated-orchestrator | Has modules/; SKILL.md orchestrator exceeds threshold; also H2 dispatch-candidate |
+| lp-do-build | 222 | bloated-orchestrator | Has modules/; SKILL.md orchestrator itself exceeds threshold; prioritise slim-down |
+| lp-do-plan | 214 | bloated-orchestrator | Has modules/; SKILL.md orchestrator exceeds threshold; also H2 dispatch-candidate |
 | lp-forecast | 201 | **monolith** | No modules/; barely over threshold; 5 phase headings → H2 candidate too |
 
 ### MEDIUM tier
@@ -87,7 +88,7 @@ descending within tier. All findings are new (first run; previous_artifact: none
 ## 4. List 2 — Dispatch Opportunities (H2 + H3)
 
 H2 criterion: dispatch_refs_any_md == 0 AND phase_matches_any_md ≥ 3.
-H3 criterion (advisory): references lp-build in any .md; no wave-dispatch-protocol.md ref.
+H3 criterion (advisory): references lp-do-build in any .md; no wave-dispatch-protocol.md ref.
 
 Ranked tier-first, then phase_matches descending within tier.
 
@@ -95,10 +96,10 @@ Ranked tier-first, then phase_matches descending within tier.
 
 | Skill | phase_matches | dispatch_refs | H2 | H3 | Notes |
 |---|---:|---:|---|---|---|
-| lp-plan | 10 | 0 | dispatch-candidate | wave-candidate | Also H1 bloated-orchestrator; Plan Phase 1–10 headings across modules |
-| lp-fact-find | 9 | 0 | dispatch-candidate | wave-candidate | H1 compliant (198L); 9 phase headings across modules |
+| lp-do-plan | 10 | 0 | dispatch-candidate | wave-candidate | Also H1 bloated-orchestrator; Plan Phase 1–10 headings across modules |
+| lp-do-fact-find | 9 | 0 | dispatch-candidate | wave-candidate | H1 compliant (198L); 9 phase headings across modules |
 | lp-channels | 6 | 0 | dispatch-candidate | — | Also H1 monolith; Stage 1–6 headings (confirmed manually) |
-| lp-replan | 5 | 0 | dispatch-candidate | wave-candidate | H1 compliant (151L); Phase 1–5 headings |
+| lp-do-replan | 5 | 0 | dispatch-candidate | wave-candidate | H1 compliant (151L); Phase 1–5 headings |
 | lp-forecast | 5 | 0 | dispatch-candidate | — | Also H1 monolith (201L) |
 
 ### MEDIUM tier
@@ -121,10 +122,10 @@ Ranked tier-first, then phase_matches descending within tier.
 | lp-guide-improve | 3 | 0 | dispatch-candidate | — | Also H1 monolith (226L, unlisted → low) |
 
 **H3 advisory note:** H3 (wave-dispatch-protocol ref) fires for 8 skills. Many of
-these reference lp-build in a downstream context (e.g. "proceed to /lp-build") rather
+these reference lp-do-build in a downstream context (e.g. "proceed to /lp-do-build") rather
 than as a parallel build orchestration target. H3 calibration recommended after
-reviewing which skills actually orchestrate parallel build waves. lp-plan is the
-highest-value H3 target (it produces the Parallelism Guide consumed by lp-build).
+reviewing which skills actually orchestrate parallel build waves. lp-do-plan is the
+highest-value H3 target (it produces the Parallelism Guide consumed by lp-do-build).
 
 ---
 
@@ -143,7 +144,7 @@ Top action targets from this scan (highest combined signal):
 **Recommended next step:**
 
 ```
-/lp-fact-find startup-loop-token-efficiency-v2
+/lp-do-fact-find startup-loop-token-efficiency-v2
 ```
 
 Scope suggestion: start with lp-design-qa domain split (H1+H2 highest combined

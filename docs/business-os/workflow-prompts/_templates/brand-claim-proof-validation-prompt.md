@@ -1,4 +1,6 @@
 ---
+Type: Reference
+Status: Reference
 Prompt-ID: BRAND-DR-03
 Stage: BD-3 (Messaging Hierarchy — Claims + Proof Ledger)
 Business: {{BIZ}}

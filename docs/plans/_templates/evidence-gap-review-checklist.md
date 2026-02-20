@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Reference
+---
 # Evidence Gap Review Checklist (Outcome A)
 
 Run this checklist before setting `Status: Ready-for-planning`.

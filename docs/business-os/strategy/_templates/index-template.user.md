@@ -2,6 +2,7 @@
 Type: Strategy-Index
 Business-Unit: <BRIK|HEAD|PET|HBAG>
 Last-updated: <YYYY-MM-DD>
+Status: Reference
 ---
 
 # Brand & Strategy Index — <BIZ>

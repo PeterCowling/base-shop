@@ -1,7 +1,11 @@
+---
+Type: Reference
+Status: Reference
+---
 ### TASK-XX: <description>
 - **Type:** IMPLEMENT
 - **Deliverable:** <code-change + output location>
-- **Execution-Skill:** <lp-build or specialized>
+- **Execution-Skill:** <lp-do-build or specialized>
 - **Execution-Track:** <code | mixed>
 - **Startup-Deliverable-Alias:** <none | startup-* alias>
 - **Effort:** <S | M | L>

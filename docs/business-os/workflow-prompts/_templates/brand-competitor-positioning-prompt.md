@@ -1,4 +1,6 @@
 ---
+Type: Reference
+Status: Reference
 Prompt-ID: BRAND-DR-01
 Stage: BD-2 (Competitive Positioning)
 Business: {{BIZ}}

@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Active
+---
 # Manual Verification Protocol: TASK-08 view_item Events
 
 ## Context

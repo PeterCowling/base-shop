@@ -1,6 +1,5 @@
 /** @jest-environment node */
 // packages/stripe/src/__tests__/loadPaymentsEnv.test.ts
-import { describe, expect, it, jest } from "@jest/globals";
 
 import { loadPaymentsEnv, paymentsEnvSchema } from "@acme/config/env/payments";
 
@@ -31,7 +30,7 @@ describe("loadPaymentsEnv", () => {
       { STRIPE_SECRET_KEY: "sk_123", STRIPE_WEBHOOK_SECRET: undefined },
       "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
     ],
-  ])("throws when %s is missing", (_name, vars, message) => {
+  ])("throws when %s is missing", (_name: string, vars: Record<string, string | undefined>, message: string) => {
     const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     expect(() =>
       loadPaymentsEnv({
@@ -59,7 +58,7 @@ describe("loadPaymentsEnv", () => {
 
   it.each(["usd", "USDT"])(
     "falls back to defaults on invalid currency %s",
-    (currency) => {
+    (currency: string) => {
       const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
       const env = loadPaymentsEnv({
         PAYMENTS_CURRENCY: currency,

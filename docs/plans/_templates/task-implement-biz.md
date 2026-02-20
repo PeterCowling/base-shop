@@ -1,7 +1,11 @@
+---
+Type: Reference
+Status: Reference
+---
 ### TASK-XX: <description>
 - **Type:** IMPLEMENT
 - **Deliverable:** <business artifact + output location>
-- **Execution-Skill:** <draft-email | draft-whatsapp | draft-marketing | biz-product-brief | biz-spreadsheet | lp-build>
+- **Execution-Skill:** <draft-email | draft-whatsapp | draft-marketing | biz-product-brief | biz-spreadsheet | lp-do-build>
 - **Execution-Track:** <business-artifact | mixed>
 - **Startup-Deliverable-Alias:** <none | startup-* alias>
 - **Effort:** <S | M | L>

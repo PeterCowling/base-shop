@@ -1,5 +1,6 @@
 ---
 Type: Evidence-Pack
+Status: Reference
 BIZ: <BRIK|HEAD|PET|HBAG>
 Period: <YYYY-MM>
 Created: <YYYY-MM-DD>

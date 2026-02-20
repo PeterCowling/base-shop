@@ -1,3 +1,7 @@
+---
+Type: Reference
+Status: Active
+---
 # v1.1 Scope Boundary Decision
 
 **Plan:** `docs/plans/email-draft-quality-upgrade/plan.md`
@@ -28,8 +32,8 @@
 
 **What this means for the plan:**
 - Wave 7 (TASK-10) transitions from "optional LLM horizon checkpoint" to "LLM implementation readiness gate + kick-off."
-- A new task `TASK-11` must be added (via `/lp-replan`) after TASK-10 to implement the `draft_refine` MCP tool.
-- TASK-11 execution skill: `lp-build` + AI agent CLI execution constraint.
+- A new task `TASK-11` must be added (via `/lp-do-replan`) after TASK-10 to implement the `draft_refine` MCP tool.
+- TASK-11 execution skill: `lp-do-build` + AI agent CLI execution constraint.
 - TASK-10 acceptance must now include: explicit confirmation that TASK-09 regression harness covers LLM output assertions, and TASK-11 scope is defined with confidence ≥ 80%.
 
 **Compatibility constraint introduced:**

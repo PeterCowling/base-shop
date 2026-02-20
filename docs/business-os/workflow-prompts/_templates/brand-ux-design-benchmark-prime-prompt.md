@@ -1,4 +1,6 @@
 ---
+Type: Reference
+Status: Reference
 Prompt-ID: BRAND-DR-05
 Stage: BD-1 (brand-dossier visual identity rationale), pre-BD-5 (lp-design-spec)
 Business: BRIK

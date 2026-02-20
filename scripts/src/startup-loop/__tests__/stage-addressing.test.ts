@@ -19,7 +19,7 @@ import {
 
 describe("resolveById (--stage <ID>)", () => {
   it("VC-04: resolves known canonical stage IDs", () => {
-    const ids = ["S0", "S1", "S1B", "S2A", "S2", "S2B", "S3", "S4", "S5A", "S5B", "S6", "S6B", "S7", "S8", "S9", "S9B", "S10"];
+    const ids = ["S0A", "S0B", "S0C", "S0D", "S0", "S1", "S1B", "S2A", "S2", "S2B", "S3", "S3B", "S4", "S5A", "S5B", "S6", "S6B", "S7", "S8", "S9", "S9B", "S10"];
     for (const id of ids) {
       const result = resolveById(id);
       expect(result.ok).toBe(true);

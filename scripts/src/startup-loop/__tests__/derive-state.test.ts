@@ -135,11 +135,16 @@ describe("deriveState", () => {
       }
     });
 
-    it("includes all 17 stages from loop-spec", () => {
+    it("includes all 22 stages from loop-spec", () => {
       const state = deriveState([], STATE_OPTIONS);
       const stageIds = Object.keys(state.stages);
-      expect(stageIds).toHaveLength(17);
+      expect(stageIds).toHaveLength(22);
       expect(stageIds).toContain("S0");
+      expect(stageIds).toContain("S0A");
+      expect(stageIds).toContain("S0B");
+      expect(stageIds).toContain("S0C");
+      expect(stageIds).toContain("S0D");
+      expect(stageIds).toContain("S3B");
       expect(stageIds).toContain("S10");
       expect(stageIds).toContain("S4");
       expect(stageIds).toContain("S5A");

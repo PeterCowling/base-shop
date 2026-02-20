@@ -10,7 +10,7 @@
 
 // Type definitions
 export type MetricId = 'traffic' | 'cvr' | 'aov' | 'cac' | 'orders' | 'revenue';
-export type StageId = 'S0' | 'S1' | 'S1B' | 'S2A' | 'S2' | 'S2B' | 'S3' | 'S6B' | 'S4' | 'S5A' | 'S5B' | 'S6' | 'S7' | 'S8' | 'S9' | 'S9B' | 'S10';
+export type StageId = 'S0A' | 'S0B' | 'S0C' | 'S0D' | 'S0' | 'S1' | 'S1B' | 'S2A' | 'S2' | 'S2B' | 'S3' | 'S3B' | 'S6B' | 'S4' | 'S5A' | 'S5B' | 'S6' | 'S7' | 'S8' | 'S9' | 'S9B' | 'S10';
 export type MetricDirection = 'higher_is_better' | 'lower_is_better';
 export type MetricClass = 'primitive' | 'derived';
 export type DiagnosisStatus = 'ok' | 'no_bottleneck' | 'insufficient_data' | 'partial_data';
@@ -86,7 +86,7 @@ export interface BottleneckDiagnosis {
 }
 
 // Constants
-const UPSTREAM_PRIORITY_ORDER: StageId[] = ['S0', 'S1', 'S1B', 'S2A', 'S2', 'S2B', 'S3', 'S6B', 'S4', 'S5A', 'S5B', 'S6', 'S7', 'S8', 'S9', 'S9B', 'S10'];
+const UPSTREAM_PRIORITY_ORDER: StageId[] = ['S0A', 'S0B', 'S0C', 'S0D', 'S0', 'S1', 'S1B', 'S2A', 'S2', 'S2B', 'S3', 'S3B', 'S6B', 'S4', 'S5A', 'S5B', 'S6', 'S7', 'S8', 'S9', 'S9B', 'S10'];
 
 const SEVERITY_THRESHOLDS = {
   CRITICAL: 0.50,

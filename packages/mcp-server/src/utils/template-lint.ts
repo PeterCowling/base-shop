@@ -14,10 +14,13 @@ const URL_REGEX = /https?:\/\/[^\s)]+/g;
 /**
  * Matches unfilled placeholders in three common forms:
  *   {var}        — single-brace (original)
- *   {{var}}      — double-brace (Handlebars-style)
+ *   {{var}}      — double-brace (Handlebars-style), excluding {{SLOT:*}} markers
  *   [PLACEHOLDER] — bracket-upper convention
+ *
+ * {{SLOT:*}} patterns (e.g. {{SLOT:GREETING}}) are intentional template
+ * composability markers and are NOT treated as unfilled placeholders.
  */
-const PLACEHOLDER_REGEX = /\{\{[^}]+\}\}|\{[^}]+\}|\[[A-Z][A-Z0-9_\s]*\]/g;
+const PLACEHOLDER_REGEX = /\{\{(?!SLOT:)[^}]+\}\}|\{(?!\{|SLOT:)[^}]+\}|\[[A-Z][A-Z0-9_\s]*\]/g;
 
 /**
  * Sentence-level pattern: a sentence that contains "here" or "click here" as a

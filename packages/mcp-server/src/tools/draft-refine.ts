@@ -8,6 +8,7 @@ import { join } from "path";
 import { z } from "zod";
 
 import { generateEmailHtml } from "../utils/email-template.js";
+import { redactPii } from "../utils/pii-redact.js";
 import {
   appendJsonlEvent,
   editDistancePct,
@@ -214,6 +215,7 @@ export async function handleDraftRefineTool(name: string, args: unknown) {
   const bodyHtml = generateEmailHtml({ bodyText: refinedBodyPlain });
   const quality = await runQualityGate(actionPlan, refinedBodyPlain, bodyHtml);
   // TASK-02: write refinement event — best-effort.
+  // TASK-04: include refined_body_redacted for proposal generation.
   appendJsonlEvent(SIGNAL_EVENTS_PATH, {
     event: "refinement",
     draft_id,
@@ -222,6 +224,7 @@ export async function handleDraftRefineTool(name: string, args: unknown) {
     refinement_applied: true,
     refinement_source: "claude-cli",
     edit_distance_pct: editDistancePct(originalBodyPlain, refinedBodyPlain),
+    refined_body_redacted: redactPii(refinedBodyPlain),
   }).catch(() => {});
 
   const result: RefineResult = {

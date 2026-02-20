@@ -1,3 +1,6 @@
+import { readFileSync } from "fs";
+import { join } from "path";
+
 import { BM25Index, type SearchResult, stemmedTokenizer } from "@acme/lib";
 
 import {
@@ -5,6 +8,44 @@ import {
   type PrepaymentStep,
   selectPrepaymentTemplate,
 } from "./workflow-triggers.js";
+
+// ---------------------------------------------------------------------------
+// Ranker priors — synchronous cache for use in synchronous rankTemplates()
+// ---------------------------------------------------------------------------
+
+interface RankerPriors {
+  calibrated_at: string | null;
+  priors: Record<string, Record<string, number>>;
+}
+
+const RANKER_PRIORS_PATH = join(
+  process.cwd(),
+  "packages",
+  "mcp-server",
+  "data",
+  "ranker-template-priors.json",
+);
+
+// undefined = not yet attempted; null = load failed / file absent
+let _priorsCache: RankerPriors | null | undefined = undefined;
+
+function getPriorsSync(): RankerPriors | null {
+  if (_priorsCache !== undefined) {
+    return _priorsCache;
+  }
+  try {
+    const raw = readFileSync(RANKER_PRIORS_PATH, "utf-8");
+    _priorsCache = JSON.parse(raw) as RankerPriors;
+  } catch {
+    _priorsCache = null;
+  }
+  return _priorsCache;
+}
+
+/** Reset the module-level priors cache. Used in tests and after calibration. */
+export function invalidatePriorsCache(): void {
+  _priorsCache = undefined;
+}
 
 export const SCENARIO_CATEGORIES = [
   "access",
@@ -85,6 +126,9 @@ export interface TemplateCandidate {
   confidence: number;
   evidence: string[];
   matches: Record<string, string[]>;
+  // TASK-05: set when ranker priors are applied; absent when no priors file exists.
+  adjustedScore?: number;
+  adjustedConfidence?: number;
 }
 
 export interface TemplateRankResult {
@@ -228,7 +272,7 @@ function applyThresholds(candidates: TemplateCandidate[]): TemplateRankResult {
     };
   }
 
-  const topConfidence = candidates[0].confidence;
+  const topConfidence = candidates[0].adjustedConfidence ?? candidates[0].confidence;
   const selection =
     topConfidence >= AUTO_THRESHOLD
       ? "auto"
@@ -328,6 +372,23 @@ export function rankTemplates(
       return buildCandidate(template, result, queryTerms);
     })
     .filter((candidate): candidate is TemplateCandidate => candidate !== null);
+
+  // TASK-05: apply ranker priors to adjust scores and confidences.
+  const priors = getPriorsSync();
+  if (priors && Object.keys(priors.priors).length > 0) {
+    const priorsKey = categoryHint ?? "general";
+    const categoryPriors = priors.priors[priorsKey] ?? {};
+    for (const candidate of candidates) {
+      const delta = categoryPriors[candidate.template.subject] ?? 0;
+      if (delta !== 0) {
+        const clamped = Math.max(-30, Math.min(30, delta));
+        candidate.adjustedScore = candidate.score * (1 + clamped / 100);
+        candidate.adjustedConfidence = Math.max(0, Math.min(100, candidate.confidence + clamped));
+      }
+    }
+    // Re-sort by adjustedScore (descending) when priors were applied.
+    candidates.sort((a, b) => (b.adjustedScore ?? b.score) - (a.adjustedScore ?? a.score));
+  }
 
   return applyThresholds(candidates);
 }

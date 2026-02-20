@@ -1,6 +1,15 @@
 import { appendFile, mkdir, readFile } from "fs/promises";
 import { dirname, join } from "path";
 
+// Path to ranker priors — read by countSignalEvents for calibration window.
+const RANKER_PRIORS_PATH = join(
+  process.cwd(),
+  "packages",
+  "mcp-server",
+  "data",
+  "ranker-template-priors.json",
+);
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -33,6 +42,9 @@ export interface RefinementEvent {
   refinement_applied: boolean;
   refinement_source: string;
   edit_distance_pct: number;
+  // TASK-04: PII-redacted body of the refined draft (present when refinement_applied = true).
+  // Used by draft_template_review to generate proposal bodies without operator re-entry.
+  refined_body_redacted?: string;
 }
 
 export type SignalEvent = SelectionEvent | RefinementEvent;
@@ -237,11 +249,25 @@ export async function countSignalEvents(
 
   const joined = joinEvents(selectionEvents, refinementEvents);
 
+  // TASK-05: read calibrated_at from ranker-template-priors.json to compute
+  // events_since_last_calibration (only events after the last calibration).
+  let calibratedAt: string | null = null;
+  try {
+    const priorsRaw = await readFile(RANKER_PRIORS_PATH, "utf-8");
+    const priors = JSON.parse(priorsRaw) as { calibrated_at: string | null };
+    calibratedAt = priors.calibrated_at ?? null;
+  } catch {
+    // File not found or invalid JSON — no calibration recorded yet.
+  }
+
+  const eventsSinceCalibration = calibratedAt
+    ? joined.filter(({ selection }) => selection.ts > calibratedAt!).length
+    : joined.length;
+
   return {
     selection_count: selectionEvents.length,
     refinement_count: refinementEvents.length,
     joined_count: joined.length,
-    // TODO(TASK-05): subtract events already consumed by calibration.
-    events_since_last_calibration: joined.length,
+    events_since_last_calibration: eventsSinceCalibration,
   };
 }

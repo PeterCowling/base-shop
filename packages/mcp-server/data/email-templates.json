@@ -28,21 +28,21 @@
   },
   {
     "subject": "Transportation to Hostel Brikette",
-    "body": "Dear Guest,\r\n\r\nThanks for your email.\r\n\r\nWe have detailed travel guides on our website that cover all transport options to the hostel:\r\n\r\n   - Travel directions to the hostel <https://hostel-positano.com/en/assistance/travel-help>\r\n   - Arriving by ferry <https://hostel-positano.com/en/assistance/arriving-by-ferry>\r\n\r\nThese guides include step-by-step instructions, maps, and taxi information.\r\n\r\nWe look forward to seeing you at the hostel.\r\n\r\n-- \r\nRegards,\r\n\r\nPeter Cowling\r\nOwner",
+    "body": "{{SLOT:GREETING}}\r\n\r\nThanks for your email.\r\n\r\nWe have detailed travel guides on our website that cover all transport options to the hostel:\r\n\r\n   - Travel directions to the hostel <https://hostel-positano.com/en/assistance/travel-help>\r\n   - Arriving by ferry <https://hostel-positano.com/en/assistance/arriving-by-ferry>\r\n\r\nThese guides include step-by-step instructions, maps, and taxi information.\r\n\r\nWe look forward to seeing you at the hostel.\r\n\r\n{{SLOT:KNOWLEDGE_INJECTION}}\r\n\r\n-- \r\nRegards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "transportation",
     "template_id": "T04",
     "reference_scope": "reference_required",
     "canonical_reference_url": "https://hostel-positano.com/en/assistance/travel-help",
-    "normalization_batch": "A"
+    "normalization_batch": "B"
   },
   {
     "subject": "Arriving before check-in time",
-    "body": "Dear Guest, \r\n\r\n\r\nThank you for reaching out to us. \r\n\r\n\r\nAlthough official check-in time begins at 2:30 pm, we are pleased to accommodate guests from 10:30 am onwards on check-in day. We kindly request that guests do not arrive before 10:30 am, so that there is sufficient time for breakfast service and checkouts. \r\n\r\n\r\n*Early Arrival Process*\r\n\r\nUpon your arrival, we'll facilitate a smooth pre-check-in process. This includes verifying details from a photo ID, processing room payment (if not already done), collecting the city tax and keycard deposit, and providing you with a security band. \r\n\r\n\r\n\r\n*Amenities Available Before Check-In*\r\n\r\n\r\n   - Bag Drop: A secure area for your luggage storage. \r\n   - Facilities: Access to bathrooms/changing areas. \r\n   - Connectivity: Complimentary WiFi. \r\n   - Information Services: Assistance through our digital assistant and dedicated staff members. \r\n   - Relaxation: Our bar and terrace are open for your enjoyment. \r\n\r\n\r\nPlease note that these amenities are also available to you on the day of checkout until 3:30 pm. \r\n\r\n\r\n\r\nSafe travels, and we look forward to seeing you at the hostel!\r\n\r\n\r\n\r\n-- \r\nRegards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/checkin-checkout>",
+    "body": "{{SLOT:GREETING}}\r\n\r\n\r\nThank you for reaching out to us. \r\n\r\n\r\nAlthough official check-in time begins at 2:30 pm, we are pleased to accommodate guests from 10:30 am onwards on check-in day. We kindly request that guests do not arrive before 10:30 am, so that there is sufficient time for breakfast service and checkouts. \r\n\r\n\r\n*Early Arrival Process*\r\n\r\nUpon your arrival, we'll facilitate a smooth pre-check-in process. This includes verifying details from a photo ID, processing room payment (if not already done), collecting the city tax and keycard deposit, and providing you with a security band. \r\n\r\n\r\n\r\n*Amenities Available Before Check-In*\r\n\r\n\r\n   - Bag Drop: A secure area for your luggage storage. \r\n   - Facilities: Access to bathrooms/changing areas. \r\n   - Connectivity: Complimentary WiFi. \r\n   - Information Services: Assistance through our digital assistant and dedicated staff members. \r\n   - Relaxation: Our bar and terrace are open for your enjoyment. \r\n\r\n\r\nPlease note that these amenities are also available to you on the day of checkout until 3:30 pm. \r\n\r\n\r\n\r\nSafe travels, and we look forward to seeing you at the hostel!\r\n\r\n{{SLOT:KNOWLEDGE_INJECTION}}\r\n\r\n-- \r\nRegards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/checkin-checkout>",
     "category": "check-in",
     "template_id": "T05",
     "reference_scope": "reference_required",
     "canonical_reference_url": "https://hostel-positano.com/en/assistance/checkin-checkout",
-    "normalization_batch": "A"
+    "normalization_batch": "B"
   },
   {
     "subject": "Essential - Inner Building, Opening Main Door",
@@ -64,12 +64,12 @@
   },
   {
     "subject": "Arrival Time - Hostel Brikette, Positano",
-    "body": "Dear Guest,\r\n\r\nWe hope you are having a great day and all is going well.\r\n\r\nJust touching base to check whether you will reach us before 10:30pm tonight. If you anticipate arriving later than this time, please let us know so we can provide you with detailed instructions on our late check-in process.\r\n\r\nWe eagerly await your arrival and look forward to welcoming you to our establishment.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/checkin-checkout>",
+    "body": "{{SLOT:GREETING}}\r\n\r\nWe hope you are having a great day and all is going well.\r\n\r\nJust touching base to check whether you will reach us before 10:30pm tonight. If you anticipate arriving later than this time, please let us know so we can provide you with detailed instructions on our late check-in process.\r\n\r\nWe eagerly await your arrival and look forward to welcoming you to our establishment.\r\n\r\n{{SLOT:KNOWLEDGE_INJECTION}}\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/checkin-checkout>",
     "category": "check-in",
     "template_id": "T08",
     "reference_scope": "reference_required",
     "canonical_reference_url": "https://hostel-positano.com/en/assistance/checkin-checkout",
-    "normalization_batch": "A"
+    "normalization_batch": "B"
   },
   {
     "subject": "Change Credit Card Details",
@@ -154,12 +154,12 @@
   },
   {
     "subject": "Path of the Gods Hike - Recommended Routes",
-    "body": "Dear Guest,\r\n\r\nWe are pleased to provide you with the following suggested routes for the popular Path of the Gods hike. Each option offers unique advantages to enhance your hiking experience:\r\n\r\n\r\n   - Via Amalfi on the ferry <https://docs.google.com/document/d/1W2SCLPgOFYSrVyaxuelQQJwACfgRwJ5HVQP6Hzs67Ic/edit?usp=sharing> - Most scenic route via Amalfi\r\n   - Via Amalfi on the bus <https://docs.google.com/document/d/1drLc9ZhyrA86_dB-Y-_eqJdtHKphrn4NHq6Bn2h2wrk/edit?usp=sharing> - Most convenient route via Amalfi\r\n   - Via Nocelle <https://docs.google.com/document/d/1WBfYvqkyjQ-yVIXymKa0UIpTDKqftv7Zd_Ot2bpJ24E/edit?usp=sharing> - Longer walking experience with less transport time\r\n   \r\n\r\nWe hope this information helps you in choosing the route that best suits your preferences. Should you have any questions or need further assistance, please feel free to reach out.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/path-of-gods-hike>",
+    "body": "{{SLOT:GREETING}}\r\n\r\nWe are pleased to provide you with the following suggested routes for the popular Path of the Gods hike. Each option offers unique advantages to enhance your hiking experience:\r\n\r\n\r\n   - Via Amalfi on the ferry <https://docs.google.com/document/d/1W2SCLPgOFYSrVyaxuelQQJwACfgRwJ5HVQP6Hzs67Ic/edit?usp=sharing> - Most scenic route via Amalfi\r\n   - Via Amalfi on the bus <https://docs.google.com/document/d/1drLc9ZhyrA86_dB-Y-_eqJdtHKphrn4NHq6Bn2h2wrk/edit?usp=sharing> - Most convenient route via Amalfi\r\n   - Via Nocelle <https://docs.google.com/document/d/1WBfYvqkyjQ-yVIXymKa0UIpTDKqftv7Zd_Ot2bpJ24E/edit?usp=sharing> - Longer walking experience with less transport time\r\n   \r\n\r\nWe hope this information helps you in choosing the route that best suits your preferences. Should you have any questions or need further assistance, please feel free to reach out.\r\n\r\n{{SLOT:KNOWLEDGE_INJECTION}}\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/path-of-gods-hike>",
     "category": "activities",
     "template_id": "T18",
     "reference_scope": "reference_required",
     "canonical_reference_url": "https://hostel-positano.com/en/assistance/path-of-gods-hike",
-    "normalization_batch": "A"
+    "normalization_batch": "B"
   },
   {
     "subject": "Prepayment Successful",
@@ -172,12 +172,12 @@
   },
   {
     "subject": "Breakfast — Eligibility and Hours",
-    "body": "Dear Guest,\r\n\r\nThank you for your question about breakfast.\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM. Each guest is entitled to one breakfast per day. To order, simply use the hostel ordering system and collect your breakfast within 30 minutes. Please note that breakfast is served on-site only and cannot be taken away.\r\n\r\nIf you have any dietary requirements or further questions, please let us know.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/booking-basics>",
+    "body": "{{SLOT:GREETING}}\r\n\r\nThank you for your question about breakfast.\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM. Each guest is entitled to one breakfast per day. To order, simply use the hostel ordering system and collect your breakfast within 30 minutes. Please note that breakfast is served on-site only and cannot be taken away.\r\n\r\nIf you have any dietary requirements or further questions, please let us know.\r\n\r\n{{SLOT:KNOWLEDGE_INJECTION}}\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner\r\n\r\nFor full details, please see: <https://hostel-positano.com/en/assistance/booking-basics>",
     "category": "breakfast",
     "template_id": "T20",
     "reference_scope": "reference_required",
     "canonical_reference_url": "https://hostel-positano.com/en/assistance/booking-basics",
-    "normalization_batch": "A"
+    "normalization_batch": "B"
   },
   {
     "subject": "Breakfast — Not Included (OTA Booking)",
@@ -190,12 +190,12 @@
   },
   {
     "subject": "Luggage Storage — Before Check-in",
-    "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nYes, we offer free luggage storage on your arrival day. You can drop off your bags from 10:30 AM onwards. Our secure storage area will keep your belongings safe while you explore Positano before check-in.\r\n\r\nFor more details, please see our luggage storage guide: <https://hostel-positano.com/en/assistance/luggage-storage-positano>.\r\n\r\nWe look forward to welcoming you!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "body": "{{SLOT:GREETING}}\r\n\r\nThank you for your email.\r\n\r\nYes, we offer free luggage storage on your arrival day. You can drop off your bags from 10:30 AM onwards. Our secure storage area will keep your belongings safe while you explore Positano before check-in.\r\n\r\nFor more details, please see our luggage storage guide: <https://hostel-positano.com/en/assistance/luggage-storage-positano>.\r\n\r\n{{SLOT:KNOWLEDGE_INJECTION}}\r\n\r\nWe look forward to welcoming you!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "luggage",
     "template_id": "T22",
     "reference_scope": "reference_required",
     "canonical_reference_url": "https://hostel-positano.com/en/assistance/luggage-storage-positano",
-    "normalization_batch": "A"
+    "normalization_batch": "B"
   },
   {
     "subject": "Luggage Storage — After Checkout",
@@ -253,12 +253,12 @@
   },
   {
     "subject": "Checkout Reminder",
-    "body": "Dear Guest,\r\n\r\nWe hope you have enjoyed your stay with us.\r\n\r\nThis is a friendly reminder that checkout is by 10:00 AM. After checkout, you are welcome to store your luggage free of charge until 3:30 PM and continue to enjoy our bar, terrace, and facilities.\r\n\r\nPlease return your keycard at reception to receive your €10 deposit refund.\r\n\r\nFor full checkout details: <https://hostel-positano.com/en/assistance/checkin-checkout>.\r\n\r\nWe wish you safe onward travels!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "body": "{{SLOT:GREETING}}\r\n\r\nWe hope you have enjoyed your stay with us.\r\n\r\nThis is a friendly reminder that checkout is by 10:00 AM. After checkout, you are welcome to store your luggage free of charge until 3:30 PM and continue to enjoy our bar, terrace, and facilities.\r\n\r\nPlease return your keycard at reception to receive your €10 deposit refund.\r\n\r\nFor full checkout details: <https://hostel-positano.com/en/assistance/checkin-checkout>.\r\n\r\n{{SLOT:KNOWLEDGE_INJECTION}}\r\n\r\nWe wish you safe onward travels!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "checkout",
     "template_id": "T29",
     "reference_scope": "reference_required",
     "canonical_reference_url": "https://hostel-positano.com/en/assistance/checkin-checkout",
-    "normalization_batch": "A"
+    "normalization_batch": "B"
   },
   {
     "subject": "Late Checkout Request",

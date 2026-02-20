@@ -34,10 +34,10 @@ const WEBPACK_APP_FILTERS = Object.freeze({
   "business-os": "@apps/business-os",
 });
 
-const TEMPLATE_APP_WEBPACK_PREREQS = Object.freeze([
-  "@acme/ui",
-  "@acme/cms-ui",
-]);
+const WEBPACK_APP_PREREQS = Object.freeze({
+  "template-app": Object.freeze(["@acme/ui", "@acme/cms-ui"]),
+  "business-os": Object.freeze(["@acme/guide-system"]),
+});
 
 function dieUsage(message) {
   process.stderr.write(`ERROR: ${message}\n\n${USAGE}`);
@@ -142,8 +142,9 @@ function main() {
   const templateAppDir = path.join(options.repoRoot, "packages/template-app");
 
   if (!options.skipWebpack) {
-    if (options.webpackApps.includes("template-app")) {
-      for (const filter of TEMPLATE_APP_WEBPACK_PREREQS) {
+    for (const appId of options.webpackApps) {
+      const prereqs = WEBPACK_APP_PREREQS[appId] ?? [];
+      for (const filter of prereqs) {
         const ok = runStep({
           label: `webpack-prereq:${filter}`,
           command: "pnpm",
@@ -153,9 +154,6 @@ function main() {
         });
         if (!ok) process.exit(1);
       }
-    }
-
-    for (const appId of options.webpackApps) {
       const filter = WEBPACK_APP_FILTERS[appId];
       const ok = runStep({
         label: `webpack:${appId}`,

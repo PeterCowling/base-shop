@@ -367,7 +367,7 @@ The brikette app contains webpack-specific APIs and config that create dead code
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
 - **Affects:** `docs/plans/brikette-webpack-removal/plan.md`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-08, TASK-09
@@ -380,13 +380,14 @@ The brikette app contains webpack-specific APIs and config that create dead code
   - `/lp-do-replan` run on TASK-08 and TASK-09 using spike-results.md as evidence
   - Confidence for TASK-08 and TASK-09 recalibrated from spike evidence
   - Plan updated and re-sequenced if task structure changes
-- **Horizon assumptions to validate:**
-  - `import.meta.glob` is available and supports recursive patterns (Q1 from TASK-06)
-  - guides.state.ts initialization can be made to pre-populate state at startup (synchronously or via async pattern) without breaking the `resetGuidesState` public API (Q2/Q3 from TASK-06)
-  - moduleResolver.ts JSON-LD discovery can be restored (import.meta.glob, manifest, or accept-empty) — and the blast radius of returning `null` from `resolveHeadRenderer` is understood (Q4 from TASK-06)
-  - TASK-08 confidence rises to ≥80% after spike (build-eligible for IMPLEMENT)
-  - TASK-09 confidence rises to ≥60% after spike (if still BLOCKED at <60%, raise issue and halt plan)
-- **Validation contract:** TASK-08 and TASK-09 have updated confidence ≥ their respective build-eligibility thresholds before TASK-07 is marked complete.
+- **Horizon assumptions — validated by spike:**
+  - `import.meta.glob` NOT available in Next.js + Turbopack (Vite-only). Both TASK-08 and TASK-09 use strip-webpack-branches approach instead.
+  - guides.state.ts: top-level await NOT recommended (es2020 target constraint, importer cascade). Strip branches; accept empty-map init; `guides.backend.ts` per-request fallback unchanged.
+  - moduleResolver.ts: accept-empty confirmed safe. Zero live JSON-LD modules discovered under webpack today; sole caller (`jsonLdBlock.tsx:18`) handles null gracefully. No replacement needed.
+  - TASK-08 confidence: 60% → **85%** (above 80% IMPLEMENT threshold ✓)
+  - TASK-09 confidence: 55% → **90%** (above 80% IMPLEMENT threshold ✓)
+- **Validation contract:** PASS. TASK-08 at 85% ≥ 80% threshold; TASK-09 at 90% ≥ 60% threshold.
+- **Build evidence:** Spike-results.md read. TASK-08 and TASK-09 updated with revised confidence, concrete execution plans, and acceptance criteria. No topology change — wave 3 (TASK-08, TASK-09 parallel) proceeds as planned.
 - **Planning validation:** `None: planning control task.`
 - **Rollout / rollback:** `None: planning control task.`
 - **Documentation impact:** Updated `plan.md` with revised TASK-08 and TASK-09 sections.
@@ -396,7 +397,7 @@ The brikette app contains webpack-specific APIs and config that create dead code
 ### TASK-08: Migrate guides.state.ts
 
 - **Type:** IMPLEMENT
-- **Deliverable:** `apps/brikette/src/locales/guides.state.ts` with webpackContextToRecord calls replaced by the spike-confirmed replacement API; state pre-populated at startup
+- **Deliverable:** `apps/brikette/src/locales/guides.state.ts` with webpackContextToRecord calls removed; state starts empty on import (same as current Turbopack behavior); `guides.backend.ts` per-request fallback unchanged
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
@@ -405,47 +406,43 @@ The brikette app contains webpack-specific APIs and config that create dead code
 - **Affects:** `apps/brikette/src/locales/guides.state.ts`
 - **Depends on:** TASK-07
 - **Blocks:** TASK-10
-- **Confidence:** 60% (pre-CHECKPOINT; will be revised by TASK-07)
-  - Implementation: 70% — file fully understood from planning validation (5 exports, 3 webpackContextToRecord call sites, module-load side effect); but implementation approach depends on spike findings.
-  - Approach: 60% — two candidate approaches with different complexity: (a) `import.meta.glob` with sync result → drop-in replacement for `webpackContextToRecord`; (b) async initialization (await guides.imports.ts at module scope) → requires `resetGuidesState` to be async or an init Promise pattern. Neither approach is confirmed until spike completes.
-  - Impact: 85% — correctness protected by guides.backend.ts fallback; performance improvement (startup-time caching vs per-request) is the primary goal; public API (5 exports) must remain unchanged.
-- **Acceptance (provisional; will be revised by CHECKPOINT):**
-  - `webpackGlob`, `webpackContextToRecord`, `supportsWebpackGlob`, `supportsImportMetaGlob` references removed (or `supportsImportMetaGlob` updated to reflect new API).
-  - State map pre-populated at startup (guide bundles available via `getGuidesBundlesMap()` without requiring `guides.backend.ts` fallback).
+- **Confidence:** 85% (revised by TASK-07 CHECKPOINT from spike results)
+  - Implementation: 90% — file fully mapped (5 exports, 3 webpackContextToRecord call sites at lines 39-42/47-49/55-57, module-load side effect at line 173); approach confirmed by spike.
+  - Approach: 85% — strip webpack branches; replace 3 ternaries with `{}`; remove import; remove `shouldUseRealModules` and `supportsImportMetaGlob` (confirmed unused outside this file by spike). `resetGuidesState(initialModuleOverrides)` module-load side effect preserved — starts with empty state in Turbopack environments; `guides.backend.ts` per-request fallback unchanged. No async initialization needed.
+  - Impact: 85% — no regression beyond current Turbopack state; public API (5 exports: `supportsImportMetaGlob`, `resetGuidesState`, `getGuidesBundlesMap`, `getSplitLocalesSet`, `getOverridesActiveFlag`) preserved.
+- **Acceptance:**
+  - `webpackGlob`, `webpackContextToRecord`, `supportsWebpackGlob`, `supportsImportMetaGlob`, `shouldUseRealModules` references removed from `guides.state.ts`.
   - `resetGuidesState`, `getGuidesBundlesMap`, `getSplitLocalesSet`, `getOverridesActiveFlag` public APIs preserved.
-  - `guide-content-filtering.test.ts` and `guide-diagnostics.test.ts` pass.
+  - `pnpm -w run test:governed -- jest -- --config=apps/brikette/jest.config.cjs --testPathPattern=guide-content-filtering` passes.
   - `pnpm --filter brikette build` passes.
-- **Validation contract (provisional):**
-  - TC-01: `grep "webpackContextToRecord\|import.meta.webpackContext" apps/brikette/src/locales/guides.state.ts` returns no matches.
-  - TC-02: `getGuidesBundlesMap()` returns a non-empty Map after initialization (smoke assertion in `guide-diagnostics.test.ts` or manual verification).
-  - TC-03: `guide-content-filtering.test.ts` passes (validates CONTENT_KEYS against live guide set).
-  - TC-04: TypeScript compilation passes for all 5 importers of guides.state.ts (`guides.predicates.ts`, `guides.get.ts`, `guides.list.ts`, `guides.peek.ts`, `guides.test-helpers.ts`).
-- **Execution plan:** Red → Green → Refactor (approach determined by CHECKPOINT)
-  - Red: Confirm `guide-content-filtering.test.ts` and `guide-diagnostics.test.ts` pass before any changes.
-  - Green: Replace the three `supportsWebpackGlob ? webpackContextToRecord(...) : {}` ternaries with the spike-confirmed replacement. Preserve the `resetGuidesState(initialModuleOverrides)` module-load side effect. If using async initialization, wire the init Promise into the module export or use top-level await (to be determined by spike).
-  - Refactor: Remove `supportsWebpackGlob`, `getWebpackContext`, `webpackContextToRecord` imports. Clean up `supportsImportMetaGlob` re-export if no longer meaningful.
-- **Planning validation:**
-  - Checks run: Planning validation agent read `guides.state.ts` in full; confirmed 5 public exports, 3 call sites (lines 39-42, 47-49, 55-57), `shouldUseRealModules` gate at line 31, module-load side effect at line 173.
-  - Validation artifacts: Agent confirmed importers: `guides.predicates.ts`, `guides.get.ts`, `guides.list.ts`, `guides.peek.ts`, `guides.test-helpers.ts` — all use accessor functions only.
-  - Unexpected findings: Module-load side effect (`resetGuidesState(initialModuleOverrides)` at line 173) runs synchronously at import time. If the replacement API is async (guides.imports.ts), this requires async initialization strategy. Spike must resolve.
+- **Validation contract:**
+  - TC-01: `grep "webpackContextToRecord\|webpackGlob\|supportsWebpackGlob\|supportsImportMetaGlob\|shouldUseRealModules" apps/brikette/src/locales/guides.state.ts` returns no matches.
+  - TC-02: TypeScript compilation passes for all 5 importers (`guides.predicates.ts`, `guides.get.ts`, `guides.list.ts`, `guides.peek.ts`, `guides.test-helpers.ts`).
+  - TC-03: `guide-content-filtering.test.ts` passes.
+  - TC-04: `pnpm --filter brikette build` exits 0.
+- **Execution plan:** Red → Green → Refactor
+  - Red: Run `guide-content-filtering.test.ts`; confirm passes before changes.
+  - Green: (1) Remove `import { getWebpackContext, supportsWebpackGlob, webpackContextToRecord } from "../utils/webpackGlob"`. (2) Remove `export const supportsImportMetaGlob = supportsWebpackGlob;`. (3) Remove the `shouldUseRealModules` variable. (4) Replace the three `shouldUseRealModules ? webpackContextToRecord(...) : {}` ternaries (at lines ~39-42, ~47-49, ~55-57) with `{}` unconditionally. The `overrides`-based code path (reading from `globalThis[GLOBAL_OVERRIDES_KEY]`) remains intact. (5) Run typecheck and build.
+  - Refactor: Verify that `resetGuidesState(initialModuleOverrides)` module-load call at line ~173 is preserved and still compiles correctly.
 - **Consumer tracing:**
-  - Modified behavior: `shouldUseRealModules` gate is removed; state is populated at startup unconditionally.
-  - Callers of guides.state.ts: 5 files, all use accessor functions (`getGuidesBundlesMap`, etc.) — API preserved, callers safe.
-  - `supportsImportMetaGlob` re-export: currently `= supportsWebpackGlob`; after migration this export is either updated to reflect the new API or removed if callers don't need it (check importers of `supportsImportMetaGlob`).
-- **Scouts:** Before execution, grep for `supportsImportMetaGlob` importers to determine if the export can be removed or must be updated.
-- **Edge Cases & Hardening:** If using top-level `await`, verify that Next.js's module graph handles it without creating circular await deadlocks with other locale modules imported at startup.
-- **What would make this >=90%:** Spike confirms `import.meta.glob` is synchronous (or sync-capable), enabling a drop-in replacement for `webpackContextToRecord` without architectural changes.
+  - `supportsImportMetaGlob`: confirmed unused outside guides.state.ts (spike grep). Removing is safe.
+  - 5 importers of guides.state.ts: all use accessor functions only — no signature changes, all safe.
+  - `guides.backend.ts` per-request fallback: unchanged; continues to load guides on first request under Turbopack.
+- **Scouts:** Read current `guides.state.ts` fully before editing to confirm line numbers match planning validation.
+- **Edge Cases & Hardening:** The `shouldUseRealModules` variable depends on `supportsImportMetaGlob` and `overrides === undefined`. Once both are removed, ensure all three ternary call sites are correctly replaced (not just one).
+- **What would make this >=90%:** Confirmed integration test showing guide content loads correctly after migration (smoke test in guide-content-filtering.test.ts).
 - **Rollout / rollback:**
   - Rollout: Single-file change; `guides.backend.ts` fallback remains active as a safety net.
   - Rollback: Revert; guides continue to load via `guides.backend.ts` fallback.
-- **Documentation impact:** None (implementation detail; no public API change).
+- **Documentation impact:** None.
+- **Notes:** Post-TASK-08 follow-on (out of scope): wire `loadGuidesModuleOverridesFromFsSync()` from `guides.fs.ts` into `instrumentation.ts` for startup-time state caching as a performance improvement.
 
 ---
 
-### TASK-09: Migrate moduleResolver.ts
+### TASK-09: Migrate moduleResolver.ts (accept-empty)
 
 - **Type:** IMPLEMENT
-- **Deliverable:** `apps/brikette/src/routes/guides/blocks/utils/moduleResolver.ts` with webpackGlob removed and `JSON_LD_MODULES` populated via spike-confirmed replacement (or accepted as `{}` with documented rationale)
+- **Deliverable:** `apps/brikette/src/routes/guides/blocks/utils/moduleResolver.ts` with webpackGlob removed; `JSON_LD_MODULES` hardcoded as `{}` plus test fixtures; `JSON_LD_CONTEXT` export removed
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
@@ -454,31 +451,36 @@ The brikette app contains webpack-specific APIs and config that create dead code
 - **Affects:** `apps/brikette/src/routes/guides/blocks/utils/moduleResolver.ts`
 - **Depends on:** TASK-07
 - **Blocks:** TASK-10
-- **Confidence:** 55% (pre-CHECKPOINT; BLOCKED; will be revised by TASK-07)
-  - Implementation: 75% — code fully understood from planning validation; but approach for restoring JSON-LD discovery is spike-dependent.
-  - Approach: 55% — NO fallback exists for JSON-LD module discovery; `resolveHeadRenderer` silently returns null when `JSON_LD_MODULES = {}`; two approaches: (a) accept-empty (JSON-LD remains broken under Turbopack as it is today), (b) replace with import.meta.glob pattern using the JSON-LD naming convention regex. Neither is confirmed viable until spike.
-  - Impact: 70% — JSON-LD structured data already silently broken under Turbopack today; migration makes this permanent (approach a) or restores it (approach b); callers of `resolveHeadRenderer` unknown — blast radius not fully characterized.
-- **Acceptance (provisional; will be revised by CHECKPOINT):**
+- **Confidence:** 90% (revised by TASK-07 CHECKPOINT from spike results)
+  - Implementation: 95% — code fully mapped; spike confirmed approach; changes are targeted deletions.
+  - Approach: 90% — accept-empty confirmed safe: spike grep found zero matching JSON-LD modules in the discovery path (`blocks/` dir); `JSON_LD_MODULES` is already `{}` under both webpack and Turbopack today. Sole caller (`jsonLdBlock.tsx:18`) handles null return gracefully. No replacement discovery needed.
+  - Impact: 90% — no regression beyond current Turbopack state; `resolveHeadRenderer` continues to return null for non-existent modules as it does today; callers fully characterized (spike).
+- **Acceptance:**
   - No `webpackGlob`, `webpackContextToRecord`, `supportsWebpackGlob` references remain in `moduleResolver.ts`.
+  - `JSON_LD_CONTEXT` export removed (no external callers found in spike).
+  - `JSON_LD_MODULES` is `{ ...TEST_JSON_LD_MODULES }` (test fixtures preserved).
+  - Code comment added documenting the accept-empty decision and date.
   - `pnpm --filter brikette build` passes.
-  - Decision documented: either `JSON_LD_MODULES` is populated via replacement API, or accept-empty approach is explicitly recorded.
-- **Validation contract (provisional):**
+- **Validation contract:**
   - TC-01: `grep "webpackGlob\|webpackContext\|supportsWebpackGlob" apps/brikette/src/routes/guides/blocks/utils/moduleResolver.ts` returns no matches.
   - TC-02: TypeScript compilation passes.
-  - TC-03 (if approach b): JSON-LD modules are discoverable at runtime for guide pages (smoke test required).
-- **Execution plan:** Determined by CHECKPOINT after spike.
-- **Planning validation:**
-  - Checks run: Planning validation agent read `moduleResolver.ts` in full; confirmed all 3 webpackGlob exports imported; `JSON_LD_CONTEXT` built eagerly at module-load time; `JSON_LD_MODULES` combines discovered modules with test fixtures.
-  - Validation artifacts: Agent confirmed discovery pattern (regex, recursive from `blocks/` dir) and 4 public exports.
-  - Unexpected findings (HIGH RISK): `resolveHeadRenderer` iterates `JSON_LD_MODULES` to find a matching renderer — returns `null` when map is empty. No fallback. Under Turbopack today, JSON-LD structured data is already broken. Callers of `resolveHeadRenderer` were not identified in planning validation — spike must search for callers and assess production impact.
-- **Consumer tracing:** Not fully characterized at plan time — spike must identify callers of `resolveHeadRenderer` and confirm whether accept-empty is tolerable or approach b (replacement discovery) is required.
-- **Scouts:** Before CHECKPOINT revises this task, search for all callers of `resolveHeadRenderer` and `JSON_LD_MODULES` to characterize blast radius.
-- **Edge Cases & Hardening:** If approach b is chosen (import.meta.glob with naming regex), verify that Turbopack's glob pattern supports the specific regex `/(?:\.jsonld|\.schema|JsonLd|JsonLD|StructuredData|MetaBridge|Meta)\.tsx?$/`. Turbopack's `import.meta.glob` may require glob patterns (not regex) — a naming convention refactor of JsonLD component files may be needed.
-- **What would make this >=90%:** Spike confirms `import.meta.glob` supports the discovery pattern AND callers of `resolveHeadRenderer` are identified and tolerate the current `null` return under Turbopack.
+  - TC-03: `pnpm --filter brikette build` exits 0.
+- **Execution plan:** Red → Green → Refactor
+  - Red: Read `moduleResolver.ts` fully; confirm current test state.
+  - Green: (1) Remove `import { getWebpackContext, supportsWebpackGlob, webpackContextToRecord } from "@/utils/webpackGlob"`. (2) Remove the `JSON_LD_CONTEXT` export and the `webpackContextToRecord` call. (3) Replace `JSON_LD_MODULES` with: `export const JSON_LD_MODULES: Record<string, unknown> = { ...TEST_JSON_LD_MODULES };` (4) Add code comment: `// JSON-LD module discovery via webpackContext removed 2026-02-20. Zero modules matched the discovery pattern at removal time. If JSON-LD renderers are added, wire them as explicit static imports here.`
+  - Refactor: Verify `resolveHeadRenderer` and `pickExport` still compile and function correctly with the simplified `JSON_LD_MODULES`.
+- **Consumer tracing:**
+  - `JSON_LD_CONTEXT`: confirmed no external callers (spike grep). Removing is safe.
+  - `JSON_LD_MODULES`: one external consumer in `jsonLdBlock.tsx` via `resolveHeadRenderer`. Already receives `{}` result under Turbopack today; no regression.
+  - `resolveHeadRenderer` caller (`jsonLdBlock.tsx:18`): handles null return with warning log; no user-visible regression.
+  - `index.ts` re-export of `resolveHeadRenderer`: preserved (no signature change).
+- **Scouts:** Read `moduleResolver.ts` before editing to confirm TEST_JSON_LD_MODULES variable name and import structure.
+- **Edge Cases & Hardening:** Confirm `TEST_JSON_LD_MODULES` is defined within `moduleResolver.ts` (not imported from test files) so it's safe in production builds.
+- **What would make this >=90%:** Already at 90%.
 - **Rollout / rollback:**
-  - Rollout: Single-file change; `JSON_LD_MODULES` behavior already `{}` under Turbopack today.
-  - Rollback: Revert; no production regression beyond current state.
-- **Documentation impact:** If accept-empty approach is chosen, document why JSON-LD discovery was not restored and open a follow-on card.
+  - Rollout: Single-file change; behavior identical to current Turbopack state.
+  - Rollback: Revert; no production regression.
+- **Documentation impact:** Code comment added documenting the accept-empty decision. Follow-on card to add real JSON-LD renderers if needed.
 
 ---
 

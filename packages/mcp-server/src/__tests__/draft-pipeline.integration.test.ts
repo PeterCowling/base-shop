@@ -7,7 +7,7 @@
  *   draft_interpret → draft_generate → (coverage evaluation + quality gate)
  *
  * Measures: question coverage rate, quality gate pass rate, sources_used attribution.
- * Fail gate: passRate >= 0.90 (same threshold as pipeline-integration.test.ts)
+ * Fail gate: passRate >= 0.90 (TASK-05 TC-05-04 regression threshold)
  *
  * Run command:
  *   pnpm -w run test:governed -- jest -- --testPathPattern="draft-pipeline.integration" --no-coverage
@@ -71,6 +71,11 @@ jest.mock("../resources/voice-examples.js", () => ({
       },
     ],
   })),
+}));
+
+// Keep integration harness isolated from Gmail client auth dependencies.
+jest.mock("../tools/gmail.js", () => ({
+  appendTelemetryEvent: jest.fn(),
 }));
 
 // ---------------------------------------------------------------------------
@@ -253,7 +258,7 @@ describe("TASK-09: Fixture Inventory", () => {
 });
 
 // ---------------------------------------------------------------------------
-// TC-09-01 / TC-09-04: Coverage Evaluation Harness
+// TC-09-01 / TC-09-04 / TASK-05 TC-05-04: Coverage Evaluation Harness
 // ---------------------------------------------------------------------------
 
 describe("TASK-09: Coverage Evaluation Harness", () => {
@@ -304,7 +309,7 @@ describe("TASK-09: Coverage Evaluation Harness", () => {
     }
     console.info("=== End TASK-09 Report ===\n");
 
-    // TC-09-04: Quality gate enforcement
+    // TC-09-04 / TASK-05 TC-05-04: Quality gate regression threshold
     expect(passRate).toBeGreaterThanOrEqual(0.9);
   });
 

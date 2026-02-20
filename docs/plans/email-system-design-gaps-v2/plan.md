@@ -4,7 +4,7 @@ Status: Draft
 Domain: API
 Workstream: Engineering
 Created: 2026-02-19
-Last-updated: 2026-02-19
+Last-updated: 2026-02-20
 Last-reviewed: 2026-02-19
 Feature-Slug: email-system-design-gaps-v2
 Deliverable-Type: code-change
@@ -76,9 +76,9 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 - Foundation Gate: Pass
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
-  - Foundation waves through `TASK-09` are complete (`TASK-03`, `TASK-04`, `TASK-09`).
-  - Build-eligible now: none. `TASK-05` remains below build threshold (`75%`) and is the blocker to `TASK-06` checkpoint.
-  - Next action: run `/lp-replan` to promote `TASK-05` to executable confidence (>=80), then resume `/lp-build`.
+  - Foundation waves through `TASK-09` are complete (`TASK-03`, `TASK-04`, `TASK-05`, `TASK-09`).
+  - Build-eligible now: `TASK-06` (`CHECKPOINT`, unblocked).
+  - Next action: run `/lp-build` for checkpoint `TASK-06`.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -96,7 +96,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-13 | INVESTIGATE | Produce template reference-scope matrix for all 53 templates | 85% | S | Complete (2026-02-19) | TASK-01 | TASK-04 |
 | TASK-03 | IMPLEMENT | Add production telemetry for fallback, drafted outcomes, and path usage | 80% | M | Complete (2026-02-19) | TASK-01, TASK-02, TASK-12 | TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 |
 | TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 80% | M | Complete (2026-02-19) | TASK-01, TASK-13 | TASK-05, TASK-06 |
-| TASK-05 | IMPLEMENT | Enforce strict context-aware reference quality checks | 75% | M | Pending | TASK-01, TASK-03, TASK-04 | TASK-06 |
+| TASK-05 | IMPLEMENT | Enforce strict context-aware reference quality checks | 80% | M | Complete (2026-02-20) | TASK-01, TASK-03, TASK-04 | TASK-06 |
 | TASK-09 | IMPLEMENT | Unify label attribution for booking and guest-activity draft flows | 85% | M | Complete (2026-02-19) | TASK-01, TASK-03 | TASK-06 |
 | TASK-11 | IMPLEMENT | Add startup preflight checks for email system dependencies | 85% | S | Complete (2026-02-19) | - | TASK-06 |
 | TASK-06 | CHECKPOINT | Horizon checkpoint after foundation quality/telemetry tranche | 95% | S | Pending | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | TASK-14, TASK-15, TASK-07, TASK-10 |
@@ -435,14 +435,14 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
 - **Affects:** `packages/mcp-server/src/tools/draft-quality-check.ts`, `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`, `packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts`
 - **Depends on:** TASK-01, TASK-03, TASK-04
 - **Blocks:** TASK-06
-- **Confidence:** 75%
-  - Implementation: 75% - rule expansion is straightforward but requires careful scenario gating.
-  - Approach: 75% - avoids Goodhart behavior by checking applicability and not only link presence.
-  - Impact: 80% - Held-back test: one bad applicability heuristic could increase manual edits significantly; capped at 75.
+- **Confidence:** 80%
+  - Implementation: 80% - upstream prerequisites are complete and applicability metadata now exists in the normalized template corpus (`reference_scope`, `canonical_reference_url`), leaving bounded rule-extension work.
+  - Approach: 80% - implementation can extend a single quality gate seam (`draft_quality_check`) with deterministic scenario/scope checks and existing task-scoped test coverage.
+  - Impact: 80% - Held-back test: no unresolved design unknown remains that would push this below 80; remaining risk is execution-time regression that is covered by TC-05 and telemetry watch during rollout.
 - **Acceptance:**
   - Factual/policy scenarios fail when required references are missing.
   - Link-inappropriate scenarios do not fail purely for missing links.
@@ -471,6 +471,33 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Dependencies: unchanged (`TASK-01`, `TASK-03`, `TASK-04`).
 - Validation contract: unchanged.
 - Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+#### Re-plan Update (2026-02-19, Run 3)
+- Confidence: 75% -> 80% (Evidence: E2)
+- Key change: prerequisites (`TASK-03`, `TASK-04`) are complete and governed quality/template suites reconfirm task-scoped readiness.
+- Dependencies: unchanged (`TASK-01`, `TASK-03`, `TASK-04`).
+- Validation contract: unchanged; TC-05-04 regression harness replay remains required at build time (current ESM parser failure documented in replan notes).
+- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- **Build evidence:** Implementation completed (2026-02-20):
+  - Added scenario-aware reference quality enforcement in `packages/mcp-server/src/tools/draft-quality-check.ts`:
+    - Loads normalized template reference metadata (`reference_scope`, `canonical_reference_url`) by category.
+    - Enforces `missing_required_reference` failures for applicable in-scope categories with no reference links.
+    - Emits `reference_not_applicable` warning when links are present but not matched to canonical/allowed references.
+    - Preserves booking-monitor hard link requirement (`missing_required_link`) and avoids false-fail enforcement for broad `faq`/`general` buckets.
+  - Added/updated TC-05 coverage:
+    - `packages/mcp-server/src/__tests__/draft-quality-check.test.ts` now includes:
+      - TC-05-01 in-scope missing reference fails.
+      - TC-05-02 in-scope canonical reference passes.
+      - TC-05-03 out-of-scope operational no-reference passes.
+      - TC-05-04 non-applicable reference warning behavior.
+    - `packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts` now mocks Gmail telemetry dependency and maps regression threshold to TASK-05 TC-05-04.
+  - Validation PASS:
+    - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/draft-quality-check.test.ts packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts --maxWorkers=2`
+      - Result: `2/2` suites passed, `37/37` tests passed.
+      - Harness output: quality pass-rate `10/10 (100%)`, average question coverage `100%`.
+    - `pnpm --filter @acme/mcp-server typecheck`
+      - Result: pass.
+    - `pnpm --filter @acme/mcp-server lint`
+      - Result: pass (existing package warnings only; no task-scoped lint errors).
 
 ### TASK-09: Unify label attribution for booking and guest-activity draft flows
 - **Type:** IMPLEMENT
@@ -826,6 +853,8 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-19: `/lp-build` completed TASK-03 telemetry implementation; Wave 3 now has TASK-04 remaining.
 - 2026-02-19: `/lp-build` completed TASK-04 template normalization and scope tagging; Wave 4 is open with TASK-09 build-eligible and TASK-05 below confidence threshold.
 - 2026-02-19: `/lp-build` completed TASK-09 drafted-outcome label harmonization for booking and guest-activity flows; no further build-eligible tasks until `/lp-replan` promotes TASK-05.
+- 2026-02-19: `/lp-replan` (standard mode) promoted TASK-05 to 80% after prerequisite completion and fresh governed E2 checks; Wave 4 is now build-eligible for TASK-05 before checkpoint TASK-06.
+- 2026-02-20: `/lp-build` completed TASK-05 strict context-aware reference quality enforcement with full TC-05 validation; next runnable task is checkpoint TASK-06.
 
 ## Overall-confidence Calculation
 
@@ -837,7 +866,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - TASK-13 85 (S=1)
   - TASK-03 80 (M=2)
   - TASK-04 80 (M=2)
-  - TASK-05 75 (M=2)
+  - TASK-05 80 (M=2)
   - TASK-09 85 (M=2)
   - TASK-11 85 (S=1)
   - TASK-06 95 (S=1)
@@ -846,6 +875,6 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - TASK-07 75 (M=2)
   - TASK-10 75 (M=2)
   - TASK-08 75 (M=2)
-- Weighted sum = 1860
+- Weighted sum = 1870
 - Total weight = 23
-- Overall-confidence = 1860 / 23 = 80.9% -> **81%**
+- Overall-confidence = 1870 / 23 = 81.3% -> **81%**

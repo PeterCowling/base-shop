@@ -5,6 +5,9 @@ import { join } from "path";
 
 import handleDraftQualityTool from "../tools/draft-quality-check";
 
+const CANONICAL_REFERENCE_URL =
+  "https://hostel-positano.com/en/assistance/checkin-checkout";
+
 function parseResult(result: { content: Array<{ text: string }> }) {
   return JSON.parse(result.content[0].text) as {
     passed: boolean;
@@ -96,7 +99,7 @@ describe("draft_quality_check", () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: baseActionPlan,
       draft: {
-        bodyPlain: "Check-in is at 3pm. https://example.com",
+        bodyPlain: `Check-in is at 3pm. ${CANONICAL_REFERENCE_URL}`,
         bodyHtml: "<p>Check-in is at 3pm</p>",
       },
     });
@@ -108,7 +111,7 @@ describe("draft_quality_check", () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: baseActionPlan,
       draft: {
-        bodyPlain: "Check-in is at 3pm. https://example.com",
+        bodyPlain: `Check-in is at 3pm. ${CANONICAL_REFERENCE_URL}`,
         bodyHtml:
           "<p>Check-in is at 3pm</p><img alt=\"Cristiana's Signature\"><img alt=\"Peter's Signature\">",
       },
@@ -121,7 +124,7 @@ describe("draft_quality_check", () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: baseActionPlan,
       draft: {
-        bodyPlain: "Check-in is at 3pm. https://example.com Best regards, Hostel Brikette",
+        bodyPlain: `Check-in is at 3pm. ${CANONICAL_REFERENCE_URL} Best regards, Hostel Brikette`,
       },
     });
     const payload = parseResult(result);
@@ -132,7 +135,7 @@ describe("draft_quality_check", () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: baseActionPlan,
       draft: {
-        bodyPlain: "Short. Best regards, Hostel Brikette https://example.com",
+        bodyPlain: `Short. Best regards, Hostel Brikette ${CANONICAL_REFERENCE_URL}`,
         bodyHtml: "<p>Short</p>",
       },
     });
@@ -239,6 +242,93 @@ describe("draft_quality_check TASK-04 template normalization", () => {
       expect(template.template_id).toMatch(/^T\d{2}$/);
       expect(template.normalization_batch).toMatch(/^[A-D]$/);
     }
+  });
+});
+
+describe("draft_quality_check TASK-05 reference applicability", () => {
+  it("TC-05-01: in-scope factual response without reference fails", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What time is check-in?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "check-in" },
+      },
+      draft: {
+        bodyPlain: "Check-in starts at 15:00. Best regards, Hostel Brikette",
+        bodyHtml: "<!DOCTYPE html><html><body><p>Check-in starts at 15:00.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("missing_required_reference");
+  });
+
+  it("TC-05-02: in-scope factual response with canonical reference passes", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What time is check-in?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "check-in" },
+      },
+      draft: {
+        bodyPlain: `Check-in starts at 15:00. See ${CANONICAL_REFERENCE_URL}. Best regards, Hostel Brikette`,
+        bodyHtml: "<!DOCTYPE html><html><body><p>Check-in starts at 15:00.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).not.toContain("missing_required_reference");
+    expect(payload.failed_checks).not.toContain("reference_not_applicable");
+  });
+
+  it("TC-05-03: out-of-scope operational response without reference passes", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Can you confirm prepayment attempt status?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "prepayment" },
+      },
+      draft: {
+        bodyPlain:
+          "We attempted your prepayment and will retry shortly. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>We attempted your prepayment and will retry shortly.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).not.toContain("missing_required_reference");
+    expect(payload.failed_checks).not.toContain("reference_not_applicable");
+  });
+
+  it("TC-05-04: in-scope response with unrelated link fails applicability check", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What time is check-in?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "check-in" },
+      },
+      draft: {
+        bodyPlain:
+          "Check-in starts at 15:00. See https://unrelated.example.org/guide. Best regards, Hostel Brikette",
+        bodyHtml: "<!DOCTYPE html><html><body><p>Check-in starts at 15:00.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.warnings).toContain("reference_not_applicable");
   });
 });
 

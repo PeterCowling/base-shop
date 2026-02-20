@@ -1,3 +1,5 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import { z } from "zod";
 
 import {
@@ -54,6 +56,32 @@ type PolicyDecisionInput = {
     allowedCategories?: string[];
   };
 };
+
+type StoredTemplateReference = {
+  category: string;
+  reference_scope?: "reference_required" | "reference_optional_excluded";
+  canonical_reference_url?: string | null;
+};
+
+type CategoryReferencePolicy = {
+  requiresReference: boolean;
+  canonicalUrls: string[];
+};
+
+const TEMPLATE_DATA_PATH = join(
+  process.cwd(),
+  "packages",
+  "mcp-server",
+  "data",
+  "email-templates.json"
+);
+
+const BOOKING_MONITOR_REFERENCE_HOSTS = new Set<string>([
+  "hostelworld.com",
+  "www.hostelworld.com",
+]);
+
+let categoryReferencePolicyCache: Map<string, CategoryReferencePolicy> | null = null;
 
 const qualityCheckSchema = z.object({
   actionPlan: z.object({
@@ -207,6 +235,149 @@ function hasLink(text: string): boolean {
   return /(https?:\/\/\S+)/i.test(text);
 }
 
+function extractLinks(text: string): string[] {
+  const matches = text.match(/https?:\/\/[^\s<>"')]+/gi) ?? [];
+  return matches.map((url) => url.replace(/[.,;:!?]+$/g, ""));
+}
+
+function normalizeUrlForMatch(url: string): string {
+  return url.trim().toLowerCase().replace(/\/+$/g, "");
+}
+
+function parseHostname(url: string): string | null {
+  try {
+    return new URL(url).hostname.toLowerCase();
+  } catch {
+    return null;
+  }
+}
+
+function loadCategoryReferencePolicy(): Map<string, CategoryReferencePolicy> {
+  if (categoryReferencePolicyCache) {
+    return categoryReferencePolicyCache;
+  }
+
+  try {
+    const raw = readFileSync(TEMPLATE_DATA_PATH, "utf8");
+    const templates = JSON.parse(raw) as StoredTemplateReference[];
+    const grouped = new Map<string, { requiresReference: boolean; canonicalUrls: Set<string> }>();
+
+    for (const template of templates) {
+      const normalizedCategory =
+        normalizeScenarioCategory(template.category) ?? template.category.toLowerCase();
+      const existing = grouped.get(normalizedCategory) ?? {
+        requiresReference: false,
+        canonicalUrls: new Set<string>(),
+      };
+
+      if (template.reference_scope === "reference_required") {
+        existing.requiresReference = true;
+        if (template.canonical_reference_url) {
+          existing.canonicalUrls.add(
+            normalizeUrlForMatch(template.canonical_reference_url)
+          );
+        }
+      }
+
+      grouped.set(normalizedCategory, existing);
+    }
+
+    categoryReferencePolicyCache = new Map<string, CategoryReferencePolicy>();
+    for (const [category, policy] of grouped.entries()) {
+      categoryReferencePolicyCache.set(category, {
+        requiresReference: policy.requiresReference,
+        canonicalUrls: Array.from(policy.canonicalUrls),
+      });
+    }
+    return categoryReferencePolicyCache;
+  } catch {
+    categoryReferencePolicyCache = new Map<string, CategoryReferencePolicy>();
+    return categoryReferencePolicyCache;
+  }
+}
+
+function resolveScenarioCategories(actionPlan: EmailActionPlanInput): string[] {
+  const categories =
+    actionPlan.actionPlanVersion === "1.1.0" &&
+    actionPlan.scenarios &&
+    actionPlan.scenarios.length > 0
+      ? actionPlan.scenarios.map((scenario) => scenario.category)
+      : [actionPlan.scenario.category];
+
+  return Array.from(
+    new Set(
+      categories.map((category) =>
+        normalizeScenarioCategory(category) ?? category.toLowerCase()
+      )
+    )
+  );
+}
+
+function requiresReferenceForActionPlan(actionPlan: EmailActionPlanInput): {
+  requiresReference: boolean;
+  canonicalUrls: string[];
+} {
+  const policyByCategory = loadCategoryReferencePolicy();
+  const categories = resolveScenarioCategories(actionPlan);
+
+  let requiresReference = false;
+  const canonicalUrls = new Set<string>();
+
+  for (const category of categories) {
+    // Broad buckets (`faq`, `general`) mix link-required and link-optional intents.
+    // Keep strict enforcement for specific scenario categories to avoid false fails.
+    if (category === "faq" || category === "general") {
+      continue;
+    }
+
+    const policy = policyByCategory.get(category);
+    if (!policy) {
+      continue;
+    }
+    if (policy.requiresReference) {
+      requiresReference = true;
+    }
+    for (const url of policy.canonicalUrls) {
+      canonicalUrls.add(url);
+    }
+  }
+
+  return {
+    requiresReference,
+    canonicalUrls: Array.from(canonicalUrls),
+  };
+}
+
+function hasApplicableReference(
+  links: string[],
+  canonicalUrls: string[],
+  allowBookingMonitorLinks: boolean
+): boolean {
+  for (const rawLink of links) {
+    const normalizedLink = normalizeUrlForMatch(rawLink);
+
+    if (
+      canonicalUrls.some(
+        (canonicalUrl) =>
+          normalizedLink === canonicalUrl ||
+          normalizedLink.startsWith(`${canonicalUrl}/`) ||
+          normalizedLink.startsWith(`${canonicalUrl}?`)
+      )
+    ) {
+      return true;
+    }
+
+    if (allowBookingMonitorLinks) {
+      const hostname = parseHostname(normalizedLink);
+      if (hostname && BOOKING_MONITOR_REFERENCE_HOSTS.has(hostname)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 function contradictsCommitments(body: string, commitments: string[]): boolean {
   const lower = body.toLowerCase();
   const contradictionCues = [
@@ -303,8 +474,27 @@ function runChecks(
     failed_checks.push("missing_signature");
   }
 
-  if (actionPlan.workflow_triggers.booking_monitor && !hasLink(draft.bodyPlain + " " + (draft.bodyHtml ?? ""))) {
+  const draftText = `${draft.bodyPlain} ${draft.bodyHtml ?? ""}`;
+  const draftLinks = extractLinks(draftText);
+  const containsAnyLink = hasLink(draftText);
+
+  if (actionPlan.workflow_triggers.booking_monitor && !containsAnyLink) {
     failed_checks.push("missing_required_link");
+  }
+
+  const referencePolicy = requiresReferenceForActionPlan(actionPlan);
+  if (referencePolicy.requiresReference) {
+    if (draftLinks.length === 0) {
+      failed_checks.push("missing_required_reference");
+    } else if (
+      !hasApplicableReference(
+        draftLinks,
+        referencePolicy.canonicalUrls,
+        actionPlan.workflow_triggers.booking_monitor
+      )
+    ) {
+      warnings.push("reference_not_applicable");
+    }
   }
 
   if (actionPlan.thread_summary?.prior_commitments?.length) {

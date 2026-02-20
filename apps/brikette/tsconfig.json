@@ -44,6 +44,14 @@
         "../../packages/guides-core/dist/*",
         "../../packages/guides-core/src/*"
       ],
+      "@acme/guide-system": [
+        "../../packages/guide-system/dist/index.d.ts",
+        "../../packages/guide-system/src/index.ts"
+      ],
+      "@acme/guide-system/*": [
+        "../../packages/guide-system/dist/*",
+        "../../packages/guide-system/src/*"
+      ],
       "@acme/telemetry": [
         "../../packages/telemetry/dist/index.d.ts"
       ],

@@ -366,6 +366,9 @@ const BOOKING_MONITOR_FROM_PATTERNS = [
 
 const BOOKING_MONITOR_SUBJECT_PATTERNS = [
   /^new reservation\b/i,
+  /^reservation\s+[a-z0-9_-]+\s+confirmed\b/i,
+  /^new modification\b/i,
+  /^reservation\s+[a-z0-9_-]+\s+has been changed\b/i,
 ];
 
 const CANCELLATION_MONITOR_FROM_PATTERNS = [
@@ -374,6 +377,7 @@ const CANCELLATION_MONITOR_FROM_PATTERNS = [
 
 const CANCELLATION_MONITOR_SUBJECT_PATTERNS = [
   /^new cancellation\b/i,
+  /^reservation\s+[a-z0-9_-]+\s+cancelled\b/i,
 ];
 
 const TERMS_AND_CONDITIONS_URL =

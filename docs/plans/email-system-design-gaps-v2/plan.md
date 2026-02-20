@@ -77,8 +77,8 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
   - Foundation through checkpoint is complete and Wave 6 precursor tasks are complete (`TASK-14`, `TASK-15`).
-  - Build-eligible now: `TASK-07` and `TASK-10` (both promoted to `80%` by `/lp-replan` with fresh E2 evidence).
-  - Next action: run `/lp-build` for Wave 7 implementation tasks.
+  - Wave 7 implementation tasks (`TASK-07`, `TASK-10`) are complete with governed validation evidence.
+  - Next action: run `/lp-replan` to promote `TASK-08` (currently `75%`) before final implementation wave.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -102,8 +102,8 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-06 | CHECKPOINT | Horizon checkpoint after foundation quality/telemetry tranche | 95% | S | Complete (2026-02-20) | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | TASK-14, TASK-15, TASK-07, TASK-10 |
 | TASK-14 | SPIKE | Probe reviewed-ledger storage/state model and promotion idempotency contract | 80% | S | Complete (2026-02-20) | TASK-06 | TASK-07, TASK-08 |
 | TASK-15 | INVESTIGATE | Build 90-day Octorate subject corpus + misroute baseline for parser hardening | 85% | S | Complete (2026-02-20) | TASK-06 | TASK-10 |
-| TASK-07 | IMPLEMENT | Build unknown-answer capture and reviewed-ledger ingestion | 80% | M | Pending | TASK-01, TASK-03, TASK-06, TASK-14 | TASK-08 |
-| TASK-10 | IMPLEMENT | Harden Octorate routing patterns and replay fixtures | 80% | M | Pending | TASK-03, TASK-06, TASK-15 | - |
+| TASK-07 | IMPLEMENT | Build unknown-answer capture and reviewed-ledger ingestion | 80% | M | Complete (2026-02-20) | TASK-01, TASK-03, TASK-06, TASK-14 | TASK-08 |
+| TASK-10 | IMPLEMENT | Harden Octorate routing patterns and replay fixtures | 80% | M | Complete (2026-02-20) | TASK-03, TASK-06, TASK-15 | - |
 | TASK-08 | IMPLEMENT | Build reviewed promotion path from ledger into reusable KB/templates | 75% | M | Pending | TASK-07, TASK-14 | - |
 
 ## Parallelism Guide
@@ -737,8 +737,8 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/*ledger*.ts`, `packages/mcp-server/src/__tests__/draft-*.test.ts`, `docs/guides/brikette-email-system.html`
+- **Status:** Complete (2026-02-20)
+- **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/*ledger*.ts`, `packages/mcp-server/src/__tests__/draft-*.test.ts`, `packages/mcp-server/src/__tests__/reviewed-ledger.test.ts`, `docs/guides/brikette-email-system.html`
 - **Depends on:** TASK-01, TASK-03, TASK-06, TASK-14
 - **Blocks:** TASK-08
 - **Confidence:** 80%
@@ -754,8 +754,9 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - TC-07-02: duplicate unknown detection is idempotent by defined key.
   - TC-07-03: approved/rejected state transitions enforce allowed transition rules.
   - Test type: unit + integration.
-  - Test location: `packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts`.
+  - Test location: `packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts`, `packages/mcp-server/src/__tests__/reviewed-ledger.test.ts`.
   - Run: `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts --maxWorkers=2`
+  - Additional run: `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/reviewed-ledger.test.ts --maxWorkers=2`
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
   - Checks run: fact-find reviewed-ledger decision and burden estimate review.
@@ -781,6 +782,19 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Dependencies: unchanged.
 - Validation contract: updated with explicit test type/location/run metadata for TC-07.
 - Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- **Scope expansion (build):** Added `packages/mcp-server/src/__tests__/reviewed-ledger.test.ts` to provide direct unit coverage for the new reviewed-ledger ingestion/state-transition module.
+- **Build evidence:** Implementation completed (2026-02-20):
+  - Added reviewed-ledger ingestion/state-transition module: `packages/mcp-server/src/tools/reviewed-ledger.ts`.
+  - Wired unknown-answer capture into draft generation fallback/coverage-failure path with response metadata under `learning_ledger`: `packages/mcp-server/src/tools/draft-generate.ts`.
+  - Added/updated tests:
+    - `packages/mcp-server/src/__tests__/reviewed-ledger.test.ts`
+    - `packages/mcp-server/src/__tests__/draft-generate.test.ts`
+  - Validation PASS:
+    - `pnpm --filter @acme/mcp-server typecheck`
+    - `pnpm --filter @acme/mcp-server lint`
+    - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts --maxWorkers=2`
+    - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/reviewed-ledger.test.ts --maxWorkers=2`
+    - Result: `4/4` suites passed, `70/70` tests passed.
 
 ### TASK-10: Harden Octorate routing patterns and replay fixtures
 - **Type:** IMPLEMENT
@@ -789,7 +803,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
 - **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`, `packages/mcp-server/src/__fixtures__/octorate/*`
 - **Depends on:** TASK-03, TASK-06, TASK-15
 - **Blocks:** -
@@ -833,6 +847,16 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Dependencies: unchanged.
 - Validation contract: updated with explicit test type/location/run metadata for TC-10.
 - Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- **Build evidence:** Implementation completed (2026-02-20):
+  - Expanded Octorate subject monitor regex coverage in `packages/mcp-server/src/tools/gmail.ts` to include:
+    - booking/update variants: `Reservation ... Confirmed`, `NEW MODIFICATION ...`, `Reservation ... has been changed`.
+    - cancellation variant: `Reservation ... Cancelled`.
+  - Added regression tests for new operational variants plus non-operational promotional subjects in `packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`.
+  - Validation PASS:
+    - `pnpm --filter @acme/mcp-server typecheck`
+    - `pnpm --filter @acme/mcp-server lint`
+    - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts packages/mcp-server/src/__tests__/startup-loop-octorate-bookings.test.ts --maxWorkers=2`
+    - Result: `2/2` suites passed, `26/26` tests passed.
 
 ### TASK-08: Build reviewed promotion path from ledger into reusable KB/templates
 - **Type:** IMPLEMENT
@@ -933,6 +957,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-20: `/lp-build` executed checkpoint TASK-06 and reassessed downstream tranche; no resequencing required, Wave 6 (`TASK-14`, `TASK-15`) is now build-eligible.
 - 2026-02-20: `/lp-build` completed Wave 6 precursor tasks (`TASK-14` spike + `TASK-15` investigation). Wave 7 remains blocked by confidence threshold (`TASK-07`, `TASK-10` at `75%`), requiring `/lp-replan` before further implementation.
 - 2026-02-20: `/lp-replan` (standard mode) promoted `TASK-07` and `TASK-10` from `75%` to `80%` using fresh governed E2 evidence; no topology change, no `/lp-sequence` rerun, Wave 7 is now `/lp-build` eligible.
+- 2026-02-20: `/lp-build` completed Wave 7 implementation tasks (`TASK-07`, `TASK-10`) with governed validation; remaining task `TASK-08` stays below threshold (`75%`) and requires `/lp-replan` before execution.
 
 ## Overall-confidence Calculation
 

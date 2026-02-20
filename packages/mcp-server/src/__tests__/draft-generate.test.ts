@@ -8,6 +8,7 @@ import { handleBriketteResourceRead } from "../resources/brikette-knowledge.js";
 import { handleDraftGuideRead } from "../resources/draft-guide.js";
 import { handleVoiceExamplesRead } from "../resources/voice-examples.js";
 import { clearTemplateCache, handleDraftGenerateTool } from "../tools/draft-generate";
+import { ingestUnknownAnswerEntries } from "../tools/reviewed-ledger.js";
 
 jest.mock("fs/promises", () => ({
   readFile: jest.fn(),
@@ -35,10 +36,19 @@ jest.mock("../tools/gmail.js", () => ({
   appendTelemetryEvent: jest.fn(),
 }));
 
+jest.mock("../tools/reviewed-ledger.js", () => ({
+  ingestUnknownAnswerEntries: jest.fn(async () => ({
+    path: "/tmp/reviewed-learning-ledger.jsonl",
+    created: [],
+    duplicates: [],
+  })),
+}));
+
 const readFileMock = readFile as jest.Mock;
 const handleBriketteResourceReadMock = handleBriketteResourceRead as jest.Mock;
 const handleDraftGuideReadMock = handleDraftGuideRead as jest.Mock;
 const handleVoiceExamplesReadMock = handleVoiceExamplesRead as jest.Mock;
+const ingestUnknownAnswerEntriesMock = ingestUnknownAnswerEntries as jest.Mock;
 
 const draftGuideFixture = {
   length_calibration: {
@@ -168,6 +178,11 @@ function setupDraftGenerateMocks(): void {
         text: JSON.stringify(voiceExamplesFixture),
       },
     ],
+  });
+  ingestUnknownAnswerEntriesMock.mockResolvedValue({
+    path: "/tmp/reviewed-learning-ledger.jsonl",
+    created: [],
+    duplicates: [],
   });
 }
 
@@ -1308,6 +1323,88 @@ describe("draft_generate tool TASK-07 — knowledge gap-fill injection", () => {
     expect(payload.sources_used).toBeDefined();
     const anyInjected = (payload.sources_used as Array<{ injected: boolean }>).some((e) => e.injected);
     expect(anyInjected).toBe(false);
+  });
+
+  it("TC-07-04: template fallback captures unknown question into reviewed ledger", async () => {
+    readFileMock.mockResolvedValue(JSON.stringify([]));
+    ingestUnknownAnswerEntriesMock.mockResolvedValue({
+      path: "/tmp/reviewed-learning-ledger.jsonl",
+      created: [
+        {
+          question_hash: "hash-unknown-1",
+        },
+      ],
+      duplicates: [],
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Do you have parking nearby?",
+        intents: {
+          questions: [{ text: "Do you have parking nearby?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "transportation", confidence: 0.8 },
+      },
+      subject: "Parking question",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(ingestUnknownAnswerEntriesMock).toHaveBeenCalledTimes(1);
+    expect(ingestUnknownAnswerEntriesMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        sourcePath: "queue",
+        scenarioCategory: "transportation",
+        language: "EN",
+        questions: ["Do you have parking nearby?"],
+      }),
+    );
+    expect(payload.learning_ledger).toEqual(
+      expect.objectContaining({
+        created: 1,
+        duplicates: 0,
+        question_hashes: ["hash-unknown-1"],
+      }),
+    );
+  });
+
+  it("TC-07-05: duplicate unknown capture reports idempotent duplicate count", async () => {
+    readFileMock.mockResolvedValue(JSON.stringify([]));
+    ingestUnknownAnswerEntriesMock.mockResolvedValue({
+      path: "/tmp/reviewed-learning-ledger.jsonl",
+      created: [],
+      duplicates: [
+        {
+          question_hash: "hash-unknown-1",
+        },
+      ],
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Can I check in at 1am?",
+        intents: {
+          questions: [{ text: "Can I check in at 1am?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "check-in", confidence: 0.8 },
+      },
+      subject: "Late check-in",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.learning_ledger).toEqual(
+      expect.objectContaining({
+        created: 0,
+        duplicates: 1,
+      }),
+    );
   });
 });
 

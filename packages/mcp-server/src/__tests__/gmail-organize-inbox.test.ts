@@ -529,6 +529,59 @@ describe("gmail_organize_inbox classification", () => {
     expect(payload.counts.labeledDeferred).toBe(0);
   });
 
+  it("routes Octorate 'Reservation ... Cancelled' variant to cancellation handler", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const promotional = { id: "label-promo", name: "Brikette/Outcome/Promotional" };
+    const cancellationReceived = { id: "label-cancel-received", name: "Brikette/Workflow/Cancellation-Received" };
+    const cancellationProcessed = { id: "label-cancel-processed", name: "Brikette/Workflow/Cancellation-Processed" };
+    const cancellationParseFailed = { id: "label-cancel-parse-failed", name: "Brikette/Workflow/Cancellation-Parse-Failed" };
+    const cancellationBookingNotFound = { id: "label-cancel-not-found", name: "Brikette/Workflow/Cancellation-Booking-Not-Found" };
+    const { gmail } = createGmailStub({
+      labels: [needsProcessing, promotional, cancellationReceived, cancellationProcessed, cancellationParseFailed, cancellationBookingNotFound],
+      threads: {
+        "thread-9b": {
+          id: "thread-9b",
+          messages: [
+            {
+              id: "msg-9b",
+              threadId: "thread-9b",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                mimeType: "text/html",
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "Reservation VL2XH9 Cancelled"),
+                  createHeader("Date", "Tue, 10 Feb 2026 15:30:00 +0000"),
+                ],
+                body: {
+                  data: encodeBase64Url("<html>Reservation VL2XH9 Cancelled</html>"),
+                },
+              },
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+    processCancellationEmailMock.mockResolvedValue({
+      status: "success",
+      reservationCode: "VL2XH9",
+      activitiesWritten: 1,
+    });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: true });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.processedCancellations).toBe(1);
+    expect(payload.counts.labeledPromotional).toBe(0);
+  });
+});
+
+describe("gmail_organize_inbox classification (octorate reservation variants)", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("processes Octorate NEW RESERVATION emails into guest drafts", async () => {
     const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
     const processedDrafted = { id: "label-processed-drafted", name: "Brikette/Outcome/Drafted" };
@@ -615,6 +668,166 @@ describe("gmail_organize_inbox classification", () => {
     expect(messageStore["msg-10"].labelIds).toContain(processedDrafted.id);
     expect(messageStore["msg-10"].labelIds).not.toContain("INBOX");
     expect(messageStore["msg-10"].labelIds).not.toContain("UNREAD");
+  });
+
+  it("routes Octorate confirmed/modification/change variants through booking handler (not promotional)", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-10b": {
+          id: "thread-10b",
+          messages: [
+            {
+              id: "msg-10b",
+              threadId: "thread-10b",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                mimeType: "text/html",
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "Reservation VL2XH9 Confirmed"),
+                  createHeader("Date", "Wed, 11 Feb 2026 07:16:00 +0100"),
+                ],
+                body: {
+                  data: encodeBase64Url(`
+                    <table>
+                      <tr><td><b>reservation code</b></td><td>6355834117_6080280211</td></tr>
+                      <tr><td><b>guest name</b></td><td>John Example</td></tr>
+                      <tr><td>email</td><td><a href="mailto:john.guest@example.com">john.guest@example.com</a></td></tr>
+                      <tr><td><b>check in</b></td><td>2026-07-11</td></tr>
+                      <tr><td><b>nights</b></td><td>2</td></tr>
+                      <tr><td><b>total amount</b></td><td>274.19</td></tr>
+                    </table>
+                  `),
+                },
+              },
+            },
+          ],
+        },
+        "thread-10c": {
+          id: "thread-10c",
+          messages: [
+            {
+              id: "msg-10c",
+              threadId: "thread-10c",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                mimeType: "text/html",
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "NEW MODIFICATION 5505142157_6048923085 Booking 2026-08-06 - 2026-08-10"),
+                  createHeader("Date", "Wed, 28 Jan 2026 12:03:18 +0100"),
+                ],
+                body: {
+                  data: encodeBase64Url(`
+                    <table>
+                      <tr><td><b>reservation code</b></td><td>5505142157_6048923085</td></tr>
+                      <tr><td><b>guest name</b></td><td>Carolina Solte</td></tr>
+                      <tr><td>email</td><td><a href="mailto:csolte.153181@guest.booking.com">csolte.153181@guest.booking.com</a></td></tr>
+                      <tr><td><b>check in</b></td><td>2026-08-06</td></tr>
+                      <tr><td><b>nights</b></td><td>4</td></tr>
+                    </table>
+                  `),
+                },
+              },
+            },
+          ],
+        },
+        "thread-10d": {
+          id: "thread-10d",
+          messages: [
+            {
+              id: "msg-10d",
+              threadId: "thread-10d",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                mimeType: "text/html",
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "Reservation 5505142157_6048923085 has been changed"),
+                  createHeader("Date", "Wed, 28 Jan 2026 12:05:18 +0100"),
+                ],
+                body: {
+                  data: encodeBase64Url(`
+                    <table>
+                      <tr><td><b>reservation code</b></td><td>5505142157_6048923085</td></tr>
+                      <tr><td><b>guest name</b></td><td>Carolina Solte</td></tr>
+                      <tr><td>email</td><td><a href="mailto:csolte.153181@guest.booking.com">csolte.153181@guest.booking.com</a></td></tr>
+                      <tr><td><b>check in</b></td><td>2026-08-06</td></tr>
+                      <tr><td><b>nights</b></td><td>4</td></tr>
+                    </table>
+                  `),
+                },
+              },
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: true });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.processedBookingReservations).toBe(3);
+    expect(payload.counts.labeledPromotional).toBe(0);
+  });
+
+  it("keeps non-operational Octorate system subjects as promotional", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const promotional = { id: "label-promo", name: "Brikette/Outcome/Promotional" };
+    const { gmail } = createGmailStub({
+      labels: [needsProcessing, promotional],
+      threads: {
+        "thread-12a": {
+          id: "thread-12a",
+          messages: [
+            {
+              id: "msg-12a",
+              threadId: "thread-12a",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "A customer saved their research"),
+                ],
+              },
+            },
+          ],
+        },
+        "thread-12b": {
+          id: "thread-12b",
+          messages: [
+            {
+              id: "msg-12b",
+              threadId: "thread-12b",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "Allow login in Octorate"),
+                ],
+              },
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: true });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.labeledPromotional).toBe(2);
+    expect(payload.counts.processedBookingReservations).toBe(0);
+    expect(payload.counts.processedCancellations).toBe(0);
+  });
+});
+
+describe("gmail_organize_inbox classification (deferred handling)", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
   it("defers NEW RESERVATION emails when guest email cannot be parsed", async () => {

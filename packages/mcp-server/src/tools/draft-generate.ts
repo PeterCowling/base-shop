@@ -30,6 +30,9 @@ import {
   evaluatePolicy,
   type PolicyDecision,
 } from "./policy-decision.js";
+import {
+  ingestUnknownAnswerEntries,
+} from "./reviewed-ledger.js";
 
 const DATA_ROOT = join(process.cwd(), "packages", "mcp-server", "data");
 const CACHE_TTL_MS = 5 * 60 * 1000;
@@ -1032,6 +1035,16 @@ function enforceLengthBounds(body: string, bounds: LengthBounds): string {
   return normalizeParagraphs(adjusted);
 }
 
+function uniqueStrings(values: string[]): string[] {
+  return Array.from(
+    new Set(
+      values
+        .map((value) => value.trim())
+        .filter((value) => value.length > 0),
+    ),
+  );
+}
+
 const DEFAULT_COMPOSITE_LIMIT = 3;
 
 /**
@@ -1256,6 +1269,65 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       qualityResponse as { content: Array<{ text: string }> }
     );
 
+    const shouldCaptureUnknownAnswers = usedTemplateFallback || quality.failed_checks.includes("missing_question_coverage");
+    const unknownQuestions = uniqueStrings([
+      ...uncoveredAfterRefinement,
+      ...(usedTemplateFallback ? actionPlan.intents.questions.map((question) => question.text) : []),
+    ]);
+
+    let learningLedger:
+      | {
+          path: string;
+          created: number;
+          duplicates: number;
+          question_hashes: string[];
+          reasons: string[];
+        }
+      | {
+          path: null;
+          created: 0;
+          duplicates: 0;
+          question_hashes: string[];
+          reasons: string[];
+          error: string;
+        }
+      | null = null;
+
+    if (shouldCaptureUnknownAnswers && unknownQuestions.length > 0) {
+      const reasons = uniqueStrings([
+        usedTemplateFallback ? "template_fallback" : "",
+        quality.failed_checks.includes("missing_question_coverage") ? "missing_question_coverage" : "",
+      ]);
+
+      try {
+        const ingestion = await ingestUnknownAnswerEntries({
+          questions: unknownQuestions,
+          draftedAnswer: bodyPlain,
+          sourcePath: "queue",
+          scenarioCategory: primaryScenarioCategory,
+          language: actionPlan.language,
+          normalizedText: actionPlan.normalized_text,
+        });
+
+        learningLedger = {
+          path: ingestion.path,
+          created: ingestion.created.length,
+          duplicates: ingestion.duplicates.length,
+          question_hashes: ingestion.created.map((entry) => entry.question_hash),
+          reasons,
+        };
+      } catch (error) {
+        learningLedger = {
+          path: null,
+          created: 0,
+          duplicates: 0,
+          question_hashes: [],
+          reasons,
+          error: formatError(error),
+        };
+      }
+    }
+
     return jsonResult({
       composite: isComposite,
       preliminary_coverage: {
@@ -1285,6 +1357,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       sources_used: sourcesUsed,
       policy: policyDecision,
       quality,
+      learning_ledger: learningLedger,
       ranker: {
         selection: rankResult.selection,
         candidates: policyCandidates.map((candidate) => ({

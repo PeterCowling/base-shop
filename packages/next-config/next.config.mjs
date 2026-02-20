@@ -15,7 +15,7 @@ const coreEnv = {
 
 export default withShopCode(coreEnv.SHOP_CODE, {
   outputFileTracingRoot: repoRoot,
-  webpack(config, { isServer, webpack, nextRuntime }) {
+  webpack(config, { isServer, nextRuntime }) {
     // Preserve existing tweaks from the base config
     if (typeof baseConfig.webpack === "function") {
       config = baseConfig.webpack(config, { isServer });

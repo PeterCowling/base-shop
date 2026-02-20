@@ -91,6 +91,10 @@ newMapper["^@acme/guides-core$"] = path.resolve(
   __dirname,
   "../../packages/guides-core/src/index.ts"
 );
+newMapper["^@acme/guides-core/url-helpers$"] = path.resolve(
+  __dirname,
+  "../../packages/guides-core/src/url-helpers.ts"
+);
 
 // @tests/ alias for test utilities
 newMapper["^@tests/(.*)$"] = path.resolve(__dirname, "src/test/$1");

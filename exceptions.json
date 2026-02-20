@@ -85,6 +85,20 @@
     "BRIK-DS-001": {},
     "BRIK-ENG-0017": {},
     "BRIK-ENG-0020": {},
+    "BRIK-BK-001": {
+      "allow": [
+        "apps/brikette/src/app/*/apartment/book/ApartmentBookContent.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "max-lines-per-function exception for ApartmentBookContent apartment booking form; sub-component extraction follow-up."
+    },
+    "BRIK-2145": {
+      "allow": [
+        "apps/brikette/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Brikette SEO audit, CTA, guide, routes, and schema lint exceptions (security/detect-non-literal-regexp, max-params, complexity) pending refactor."
+    },
     "CAR-1432": {},
     "CF-1001": {},
     "CF-1002": {},
@@ -293,6 +307,13 @@
     "LINT-1023": {
       "expires": "2026-12-31",
       "notes": "Static regex patterns for i18n key format detection in test utilities; no user input involved."
+    },
+    "LINT-1307": {
+      "allow": [
+        "apps/brikette/src/i18n.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "i18n.ts runtime require-imports and console exceptions for server-context guards and guide coverage debug helper."
     },
     "LOG-1001": {},
     "OPS-000": {},

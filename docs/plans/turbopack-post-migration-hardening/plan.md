@@ -1,10 +1,10 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-19
-Last-updated: 2026-02-19
+Last-updated: 2026-02-20
 Feature-Slug: turbopack-post-migration-hardening
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -77,7 +77,7 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 | TASK-03 | INVESTIGATE | Validate browser-safe shared export seam for `createGuideUrlHelpers` | 75% | S | Complete (2026-02-19) | - | TASK-04 |
 | TASK-04 | IMPLEMENT | Migrate Brikette to shared guide helper export and delete local duplicate | 80% | M | Complete (2026-02-19) | TASK-03 | - |
 | TASK-05 | INVESTIGATE | Probe CI Turbopack smoke runtime budget and workflow placement | 70% | S | Complete (2026-02-19) | - | TASK-06 |
-| TASK-06 | IMPLEMENT | Add deterministic Brikette Turbopack dev smoke check to CI | 85% | M | Blocked (2026-02-19) | TASK-05 | - |
+| TASK-06 | IMPLEMENT | Add deterministic Brikette Turbopack dev smoke check to CI | 85% | M | Complete (2026-02-20) | TASK-05 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -373,8 +373,8 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Blocked (2026-02-19)
-- **Affects:** `.github/workflows/brikette.yml`, `.github/workflows/reusable-app.yml`, `apps/brikette/scripts/e2e/brikette-smoke.mjs` (existing file, update in place)
+- **Status:** Complete (2026-02-20)
+- **Affects:** `.github/workflows/brikette.yml`, `apps/brikette/scripts/e2e/brikette-smoke.mjs` (existing file, updated in place), `apps/brikette/tsconfig.json`, `apps/brikette/src/components/seo/ApartmentStructuredData.tsx`, `apps/brikette/src/components/seo/TravelHelpStructuredData.tsx`, `apps/brikette/src/schema/apartment.ts`, `apps/brikette/src/schema/travel-help/en-nearby.ts`, `apps/brikette/src/test/components/seo/ApartmentStructuredData.test.tsx`, `apps/brikette/src/test/components/seo/TravelHelpStructuredData.test.tsx`
 - **Depends on:** TASK-05
 - **Blocks:** -
 - **Confidence:** 85%
@@ -422,7 +422,7 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
   - Update workflow comments and developer docs referencing Brikette smoke coverage.
 - **Notes / references:**
   - Existing Brikette workflow: `.github/workflows/brikette.yml`
-- **Build evidence (2026-02-19, partial / blocked):**
+- **Build evidence (2026-02-20, complete):**
   - Implemented dedicated Turbopack smoke job in `.github/workflows/brikette.yml`:
     - `turbopack-smoke` job with `timeout-minutes: 8`
     - runs on `pull_request` and `workflow_dispatch`
@@ -434,16 +434,20 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
       - per-route timeout `30s`
       - global budget `480s` (8m)
       - robust dev-process start/teardown with log tail on failure
-    - route assertions now use `/en/apartment`, `/en/how-to-get-here`, `/en/breakfast-menu`
-      - runtime note: `/en/help` currently redirects in a loop under dev in this working tree (`/en/help` <-> `/en/help/`), so `positano` content assertion is anchored to `/en/how-to-get-here`.
+    - route assertions use `/en/apartment`, `/en/how-to-get-here`, `/en/breakfast-menu`
+  - Follow-on hardening required by CI probes:
+    - added `pnpm --filter @acme/i18n build` to smoke prebuild step in `.github/workflows/brikette.yml`
+    - pinned Brikette `@acme/i18n` resolution to dist paths in `apps/brikette/tsconfig.json`
+    - replaced schema `?raw`/`.jsonld` imports with Turbopack-safe `.ts` modules and removed raw-import typing dependency
   - Validation results:
-    - TC-01: `node apps/brikette/scripts/e2e/brikette-smoke.mjs --mode=turbopack` -> pass (`Brikette Turbopack smoke passed in 56.2s.`).
-    - TC-02: `node scripts/check-next-webpack-flag.mjs --all` -> pass.
-    - TC-03: **blocked**. Push required to execute CI was blocked by unrelated pre-push changed-range validation failure:
-      - failing test: `apps/cms/src/app/api/seo/audit/[shop]/__tests__/route.test.ts`
-      - error: `Cannot find module '@date-utils'`
-  - Local task commit created:
+    - TC-01: `node apps/brikette/scripts/e2e/brikette-smoke.mjs --mode=turbopack` -> pass (`Brikette Turbopack smoke passed in 90.4s.`).
+    - TC-02: `node scripts/check-next-webpack-flag.mjs --all` -> pass (validated in pre-push gate on this task branch).
+    - TC-03: CI run `22212754591` smoke job `64250289678` -> pass (`Brikette Turbopack smoke passed in 58.3s.`): https://github.com/PeterCowling/base-shop/actions/runs/22212754591/job/64250289678
+  - Task commits:
     - `f90ac108a2` (`ci(brikette): add turbopack dev smoke job and harness mode`)
+    - `077d038931` (`fix(brikette): resolve guide-system turbopack import`)
+    - `eed0bdb0d8` (`fix(brikette): pin turbopack i18n resolution to dist`)
+    - `a6a850d143` (`fix(brikette): replace schema raw imports with turbopack-safe modules`)
 
 ## Risks & Mitigations
 | Risk | Likelihood | Impact | Mitigation |
@@ -466,19 +470,20 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
   - None: leverage existing workflow status + PR checks.
 
 ## Acceptance Criteria (overall)
-- [ ] `check-next-webpack-flag` supports explicit app/command matrix and passes updated tests.
-- [ ] `node scripts/check-next-webpack-flag.mjs --all` passes with Brikette Turbopack dev script preserved.
-- [ ] Policy docs/workflow messaging reflect matrix contract, not global webpack-only text.
-- [ ] Brikette no longer contains local `url-helpers.ts`; shared helper ownership restored.
-- [ ] Brikette typecheck/build and guides-core helper tests pass post-migration.
-- [ ] CI includes deterministic Brikette Turbopack dev smoke with specified routes and TASK-05-defined timeout/budget constants.
-- [ ] Production build path still uses `next build --webpack`.
-- [ ] i18n alias retirement is explicitly logged as follow-up scope, not silent debt.
+- [x] `check-next-webpack-flag` supports explicit app/command matrix and passes updated tests.
+- [x] `node scripts/check-next-webpack-flag.mjs --all` passes with Brikette Turbopack dev script preserved.
+- [x] Policy docs/workflow messaging reflect matrix contract, not global webpack-only text.
+- [x] Brikette no longer contains local `url-helpers.ts`; shared helper ownership restored.
+- [x] Brikette typecheck/build and guides-core helper tests pass post-migration.
+- [x] CI includes deterministic Brikette Turbopack dev smoke with specified routes and TASK-05-defined timeout/budget constants.
+- [x] Production build path still uses `next build --webpack`.
+- [x] i18n alias retirement is explicitly logged as follow-up scope, not silent debt.
 
 ## Decision Log
 - 2026-02-19: Default policy direction set to app-aware matrix (Brikette Turbopack dev allowed; build webpack-enforced). Owner: Peter.
 - 2026-02-19: Helper ownership direction set to shared browser-safe export in `guides-core`; app-local copy is transitional debt. Owner: Engineering.
 - 2026-02-19: Shared webpack `@acme/i18n` dist alias retirement deferred to explicit follow-up pass. Owner: Platform.
+- 2026-02-20: `?raw` JSON-LD imports in Brikette SEO path converted to `.ts` schema modules (not Turbopack loader rules) to keep deterministic typing/runtime behavior and avoid custom loader debt. Owner: Engineering.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

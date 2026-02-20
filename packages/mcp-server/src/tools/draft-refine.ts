@@ -6,6 +6,7 @@
 
 import { z } from "zod";
 
+import { generateEmailHtml } from "../utils/email-template.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 
 import { handleDraftQualityTool } from "./draft-quality-check.js";
@@ -37,20 +38,6 @@ type RefineResult = {
   refinement_source: RefinementSource;
   quality: QualityGateResult;
 };
-
-// ---------------------------------------------------------------------------
-// HTML derivation
-// ---------------------------------------------------------------------------
-
-function deriveHtml(bodyPlain: string): string {
-  const paragraphs = bodyPlain
-    .split(/\n\n+/)
-    .map((p) => p.trim())
-    .filter(Boolean)
-    .map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`)
-    .join("\n");
-  return `<!DOCTYPE html>\n<html><body>\n${paragraphs}\n</body></html>`;
-}
 
 // ---------------------------------------------------------------------------
 // Input schema
@@ -153,7 +140,7 @@ export async function handleDraftRefineTool(name: string, args: unknown) {
 
   // Identity check: refinement was a no-op
   if (refinedBodyPlain.trim() === originalBodyPlain.trim()) {
-    const bodyHtml = deriveHtml(originalBodyPlain);
+    const bodyHtml = generateEmailHtml({ bodyText: originalBodyPlain });
     const quality = await runQualityGate(actionPlan, originalBodyPlain, bodyHtml);
     const result: RefineResult = {
       draft: { bodyPlain: originalBodyPlain, bodyHtml },
@@ -164,8 +151,8 @@ export async function handleDraftRefineTool(name: string, args: unknown) {
     return jsonResult(result);
   }
 
-  // Refinement was applied — derive HTML and run quality gate
-  const bodyHtml = deriveHtml(refinedBodyPlain);
+  // Refinement was applied — generate branded HTML and run quality gate
+  const bodyHtml = generateEmailHtml({ bodyText: refinedBodyPlain });
   const quality = await runQualityGate(actionPlan, refinedBodyPlain, bodyHtml);
 
   const result: RefineResult = {

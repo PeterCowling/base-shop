@@ -73,7 +73,7 @@ Retires `--webpack` from all Brikette production build commands and updates the 
 - Foundation Gate: Pass
 - Sequenced: Yes
 - Edge-case review complete: Yes
-- Auto-build eligible: No (Status: Draft; TASK-05 at 75% pre-checkpoint)
+- Auto-build eligible: No (Status: Complete; TASK-05 at 75% pre-checkpoint)
 
 ## Task Summary
 

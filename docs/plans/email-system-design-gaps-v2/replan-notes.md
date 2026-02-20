@@ -255,3 +255,136 @@ Backward-compatible defaults when metadata is missing:
 
 1. Run `/lp-build` for Wave 3 foundation tasks (`TASK-03`, `TASK-04`) now that both are `>=80` and unblocked.
 2. Re-run `/lp-replan` after Wave 3 and Wave 4 complete (or at CHECKPOINT TASK-06) for downstream confidence reassessment.
+
+## Invocation (Run 3)
+
+- Skill: `/lp-replan` (standard mode)
+- Date: 2026-02-19
+- Scope: reassess and attempt promotion of Wave 4 quality task `TASK-05` after completion of `TASK-03`, `TASK-04`, and `TASK-09`.
+
+## Gate Outcomes (Run 3)
+
+- Promotion Gate: met for `TASK-05` (`75%` -> `80%`) with fresh E2 evidence and no unresolved design precursor required.
+- Validation Gate: met; TC-05 remains complete, with integration-harness replay caveat recorded below.
+- Precursor Gate: unchanged; no new precursor tasks added.
+- Sequencing Gate: no topology change (stable task IDs and dependencies unchanged).
+- Escalation Gate: no new user decision required; D1/D2/D3 remain active.
+
+## Evidence (Run 3, E2/E1)
+
+- Command:
+  - `node -e 'const fs=require("fs");const t=JSON.parse(fs.readFileSync("packages/mcp-server/data/email-templates.json","utf8"));const req=t.filter(x=>x.reference_scope==="reference_required");const opt=t.filter(x=>x.reference_scope==="reference_optional_excluded");const bad=req.filter(x=>!x.canonical_reference_url||!(`${x.subject}\\n${x.body}`.includes(x.canonical_reference_url)));console.log(JSON.stringify({total:t.length,reference_required:req.length,reference_optional_excluded:opt.length,requiredMissingCanonical:bad.length},null,2));if(bad.length)process.exit(1);'`
+  - Result:
+    - `total: 53`
+    - `reference_required: 41`
+    - `reference_optional_excluded: 12`
+    - `requiredMissingCanonical: 0`
+- Command:
+  - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/draft-quality-check.test.ts packages/mcp-server/src/__tests__/template-lint.test.ts --maxWorkers=2`
+  - Result: `2/2` suites passed, `34/34` tests passed.
+- Command:
+  - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/draft-quality-check.test.ts packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts --maxWorkers=2`
+  - Result: `draft-quality-check` passed; `draft-pipeline.integration` failed at test-runtime with Jest ESM parse error (`uuid/dist/esm-browser/index.js` via `src/clients/gmail.ts` import chain).
+  - Retry with `JEST_FORCE_CJS=1` produced the same runtime parser failure for `draft-pipeline.integration`.
+- E1 static seam check:
+  - `packages/mcp-server/src/tools/draft-quality-check.ts` still enforces link presence only through `booking_monitor` trigger (`missing_required_link`) and is isolated to one quality gate seam for TASK-05 expansion.
+
+## Replan Decisions (Run 3)
+
+- Promoted `TASK-05` confidence from `75%` to `80%`:
+  - Upstream blockers removed (`TASK-03`, `TASK-04` complete).
+  - Direct governed suites for quality logic and template corpus invariants are green.
+  - Applicability metadata baseline (`reference_scope`, `canonical_reference_url`) is fully populated and stable.
+- No new precursor task added:
+  - The `draft-pipeline.integration` ESM parse failure is treated as a validation-harness environment issue, not a design unknown in TASK-05 scope.
+  - Keep TC-05-04 replay requirement explicit in TASK-05 execution and capture expected deltas during build.
+- Downstream task confidences unchanged (`TASK-07`, `TASK-08`, `TASK-10` remain at `75%` pending checkpoint/precursor flow).
+
+## Next Build Order
+
+1. Run `/lp-build` for `TASK-05` (Wave 4).
+2. Run `/lp-build` for checkpoint `TASK-06` immediately after `TASK-05`.
+3. Re-run `/lp-replan` after checkpoint completion for post-checkpoint tasks (`TASK-14`, `TASK-15`, `TASK-07`, `TASK-10`, `TASK-08`).
+
+## TASK-14 Output (Build, 2026-02-20)
+
+### Prototype contract decision
+
+- Storage model: JSONL ledger entries with immutable identity fields (`entry_id`, `created_at`, `question_hash`) plus mutable review/promotion envelope (`review_state`, `promotion_key`, `promoted_at`, `reverted_at`).
+- Review transitions: allow `new -> approved|rejected|deferred`; allow `deferred -> approved|rejected`; reject all other transitions as invalid.
+- Promotion idempotency: deterministic key `faq:<question_hash>`; duplicate promotion attempts on same approved entry resolve idempotently without duplicate promoted artifacts.
+- Rollback semantics: mark promoted artifact as `reverted` and preserve ledger history trail (`created`, `state_transition`, `promoted`, `reverted`).
+
+### Rejected alternatives
+
+- Rejected: overwrite-in-place promotion writes with no event history (fails auditability and revert traceability).
+- Rejected: auto-promote from non-approved states (breaks reviewed-ledger governance decision D3).
+
+### Executable evidence
+
+- Added spike contract test: `packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts`.
+- Updated fixture states for startup-loop ledger shape: `packages/mcp-server/src/__tests__/fixtures/startup-loop/learning-ledger.complete.jsonl`.
+- Validation PASS:
+  - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts --maxWorkers=2`
+  - Result: `1/1` suite passed, `3/3` tests passed.
+
+## TASK-15 Output (Build, 2026-02-20)
+
+### 90-day extraction frame
+
+- Time window: Gmail query operator `newer_than:90d` executed on 2026-02-20 (effective window approximately late-November 2025 through 2026-02-20).
+- Primary source filter: `from:noreply@smtp.octorate.com`.
+- Reproducible query set:
+  - `newer_than:90d from:noreply@smtp.octorate.com`
+  - `newer_than:90d from:noreply@smtp.octorate.com subject:"NEW RESERVATION"`
+  - `newer_than:90d from:noreply@smtp.octorate.com subject:"NEW CANCELLATION"`
+  - `newer_than:90d from:noreply@smtp.octorate.com subject:"Reservation" subject:"Confirmed"`
+  - `newer_than:90d from:noreply@smtp.octorate.com subject:"Reservation" subject:"Cancelled"`
+  - `newer_than:90d from:noreply@smtp.octorate.com subject:"NEW MODIFICATION"`
+  - `newer_than:90d from:noreply@smtp.octorate.com subject:"has been changed"`
+  - `newer_than:90d from:noreply@smtp.octorate.com subject:"Allow login in Octorate"`
+  - `newer_than:90d from:noreply@smtp.octorate.com subject:"A customer saved their research"`
+  - `newer_than:90d label:"Brikette/Outcome/Promotional" from:noreply@smtp.octorate.com`
+
+### Variant baseline (query counts)
+
+- `NEW RESERVATION`: `100` returned with `hasMore=true` (tool-capped; actual volume >100).
+- `NEW CANCELLATION`: `31` returned (`hasMore=false`).
+- `Reservation <code> Confirmed`: `35` (`hasMore=false`).
+- `Reservation <code> Cancelled`: `3` (`hasMore=false`).
+- `NEW MODIFICATION`: `5` (`hasMore=false`).
+- `Reservation <code> has been changed`: `1` (`hasMore=false`).
+- `Allow login in Octorate`: `9` (`hasMore=false`).
+- `A customer saved their research`: `4` (`hasMore=false`).
+
+### Coverage vs parser patterns
+
+- Explicitly covered by current monitor regexes (`gmail.ts`): `NEW RESERVATION`, `NEW CANCELLATION`.
+- Uncovered operational variants: `Reservation ... Confirmed`, `Reservation ... Cancelled`, `NEW MODIFICATION`, `Reservation ... has been changed`.
+- Non-operational/system variants: `Allow login in Octorate`, `A customer saved their research`.
+
+### Misroute baseline (promotional-labeled Octorate)
+
+- Total promotional-labeled Octorate messages in 90 days: exact `23` (resolved by limit probe: `limit=22 -> hasMore=true`, `limit=23 -> hasMore=false`).
+- Composition of those 23:
+  - `NEW CANCELLATION`: `18`
+  - `NEW MODIFICATION`: `2`
+  - `Reservation ... Cancelled`: `1`
+  - `A customer saved their research`: `2`
+  - `Allow login in Octorate`: `0`
+
+### Additional signal for TASK-10 scope
+
+- `Brikette/Workflow/Cancellation-{Received|Processed|Parse-Failed|Booking-Not-Found}` queries returned `0` Octorate matches over 90 days.
+- Implication: current operational reliability depends on queue/promotional routing and monitor regexes, not on downstream cancellation workflow labels.
+
+### Fixture backlog for TASK-10
+
+- Add operational fixtures expected to route away from promotional:
+  - `Reservation <code> Confirmed`
+  - `Reservation <code> Cancelled`
+  - `NEW MODIFICATION ...`
+  - `Reservation <code> has been changed`
+- Keep promotional fixtures as true negatives:
+  - `Allow login in Octorate`
+  - `A customer saved their research`

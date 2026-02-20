@@ -76,9 +76,9 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 - Foundation Gate: Pass
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
-  - Foundation waves through `TASK-09` are complete (`TASK-03`, `TASK-04`, `TASK-05`, `TASK-09`) and checkpoint `TASK-06` has been executed.
-  - Build-eligible now: `TASK-14` (`80%`) and `TASK-15` (`85%`) in Wave 6.
-  - Next action: run `/lp-build` for `TASK-14` or `TASK-15`.
+  - Foundation through checkpoint is complete and Wave 6 precursor tasks are complete (`TASK-14`, `TASK-15`).
+  - Build-eligible now: none (Wave 7 tasks `TASK-07` and `TASK-10` remain below `IMPLEMENT` threshold at `75%`).
+  - Next action: run `/lp-replan` to promote Wave 7 implementation tasks.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -100,8 +100,8 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-09 | IMPLEMENT | Unify label attribution for booking and guest-activity draft flows | 85% | M | Complete (2026-02-19) | TASK-01, TASK-03 | TASK-06 |
 | TASK-11 | IMPLEMENT | Add startup preflight checks for email system dependencies | 85% | S | Complete (2026-02-19) | - | TASK-06 |
 | TASK-06 | CHECKPOINT | Horizon checkpoint after foundation quality/telemetry tranche | 95% | S | Complete (2026-02-20) | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | TASK-14, TASK-15, TASK-07, TASK-10 |
-| TASK-14 | SPIKE | Probe reviewed-ledger storage/state model and promotion idempotency contract | 80% | S | Pending | TASK-06 | TASK-07, TASK-08 |
-| TASK-15 | INVESTIGATE | Build 90-day Octorate subject corpus + misroute baseline for parser hardening | 85% | S | Pending | TASK-06 | TASK-10 |
+| TASK-14 | SPIKE | Probe reviewed-ledger storage/state model and promotion idempotency contract | 80% | S | Complete (2026-02-20) | TASK-06 | TASK-07, TASK-08 |
+| TASK-15 | INVESTIGATE | Build 90-day Octorate subject corpus + misroute baseline for parser hardening | 85% | S | Complete (2026-02-20) | TASK-06 | TASK-10 |
 | TASK-07 | IMPLEMENT | Build unknown-answer capture and reviewed-ledger ingestion | 75% | M | Pending | TASK-01, TASK-03, TASK-06, TASK-14 | TASK-08 |
 | TASK-10 | IMPLEMENT | Harden Octorate routing patterns and replay fixtures | 75% | M | Pending | TASK-03, TASK-06, TASK-15 | - |
 | TASK-08 | IMPLEMENT | Build reviewed promotion path from ledger into reusable KB/templates | 75% | M | Pending | TASK-07, TASK-14 | - |
@@ -634,7 +634,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
 - **Affects:** `docs/plans/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/email-system-design-gaps-v2/plan.md`, `packages/mcp-server/src/__tests__/fixtures/startup-loop/learning-ledger.complete.jsonl`, `[readonly] packages/mcp-server/src/resources/brikette-knowledge.ts`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-07, TASK-08
@@ -657,6 +657,17 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Rollout / rollback:** `None: spike-only task`
 - **Documentation impact:** include contract decision + rejected alternatives in `replan-notes.md`.
 - **Notes / references:** fact-find D3 reviewed-ledger decision; lack of dedicated ledger/promotion tests in current suite.
+- **Build evidence:** Spike completed (2026-02-20):
+  - Added prototype contract suite: `packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts`.
+  - Updated representative ledger fixture states for startup-loop tests: `packages/mcp-server/src/__tests__/fixtures/startup-loop/learning-ledger.complete.jsonl`.
+  - Contract decisions validated in prototype:
+    - Storage shape: JSONL ledger rows with immutable `entry_id`/`created_at` plus mutable `review_state` + promotion envelope.
+    - Allowed transitions: `new -> approved/rejected/deferred`; `deferred -> approved/rejected`; terminal otherwise.
+    - Idempotency key: deterministic `faq:<question_hash>` promotion key per approved entry.
+    - Rollback: mark promoted artifact `reverted` while preserving ledger history events.
+  - Validation PASS:
+    - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts --maxWorkers=2`
+    - Result: `1/1` suite passed, `3/3` tests passed.
 
 ### TASK-15: Build 90-day Octorate subject corpus + misroute baseline for parser hardening
 - **Type:** INVESTIGATE
@@ -665,7 +676,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
 - **Affects:** `docs/plans/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/email-system-design-gaps-v2/plan.md`, `[readonly] packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-10
@@ -683,6 +694,41 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Rollout / rollback:** `None: investigation-only task`
 - **Documentation impact:** append baseline table and fixture backlog into `replan-notes.md`.
 - **Notes / references:** fact-find V2-07 sampling clarification and outstanding long-tail uncertainty.
+- **Build evidence:** Investigation completed (2026-02-20):
+  - Reproducible 90-day extraction commands (Gmail MCP):
+    - `newer_than:90d from:noreply@smtp.octorate.com`
+    - `newer_than:90d from:noreply@smtp.octorate.com subject:"NEW RESERVATION"`
+    - `newer_than:90d from:noreply@smtp.octorate.com subject:"NEW CANCELLATION"`
+    - `newer_than:90d from:noreply@smtp.octorate.com subject:"Reservation" subject:"Confirmed"`
+    - `newer_than:90d from:noreply@smtp.octorate.com subject:"Reservation" subject:"Cancelled"`
+    - `newer_than:90d from:noreply@smtp.octorate.com subject:"NEW MODIFICATION"`
+    - `newer_than:90d from:noreply@smtp.octorate.com subject:"has been changed"`
+    - `newer_than:90d from:noreply@smtp.octorate.com subject:"Allow login in Octorate"`
+    - `newer_than:90d from:noreply@smtp.octorate.com subject:"A customer saved their research"`
+    - Promotional baseline: `newer_than:90d label:"Brikette/Outcome/Promotional" from:noreply@smtp.octorate.com`
+  - 90-day variant baseline (as of 2026-02-20):
+    - `NEW RESERVATION`: `100` returned with `hasMore=true` (tool-capped; true volume >100).
+    - `NEW CANCELLATION`: `31` returned in sample run (`hasMore=false`).
+    - `Reservation <code> Confirmed`: `35` (`hasMore=false`).
+    - `Reservation <code> Cancelled`: `3` (`hasMore=false`).
+    - `NEW MODIFICATION`: `5` (`hasMore=false`).
+    - `Reservation <code> has been changed`: `1` (`hasMore=false`).
+    - `Allow login in Octorate`: `9` (`hasMore=false`).
+    - `A customer saved their research`: `4` (`hasMore=false`).
+  - Parser coverage grouping against current monitor regexes in `packages/mcp-server/src/tools/gmail.ts`:
+    - Explicitly covered: `NEW RESERVATION`, `NEW CANCELLATION`.
+    - Uncovered operational variants: `Reservation ... Confirmed`, `Reservation ... Cancelled`, `NEW MODIFICATION`, `Reservation ... has been changed`.
+    - Non-operational/system variants: `Allow login in Octorate`, `A customer saved their research`.
+  - Misroute baseline (promotional-labeled Octorate): exact count `23` (derived via limit probe: `limit=22 -> hasMore=true`, `limit=23 -> hasMore=false`).
+    - `NEW CANCELLATION`: `18`
+    - `NEW MODIFICATION`: `2`
+    - `Reservation ... Cancelled`: `1`
+    - `A customer saved their research`: `2`
+    - `Allow login in Octorate`: `0`
+  - Additional routing signal: `Brikette/Workflow/Cancellation-{Received|Processed|Parse-Failed|Booking-Not-Found}` queries returned `0` Octorate messages in 90 days, so parser reliability currently depends on queue/promotional routing rather than workflow labels.
+  - Fixture candidates for TASK-10 test expansion:
+    - Promote to covered-operational fixtures: `Reservation ... Confirmed`, `Reservation ... Cancelled`, `NEW MODIFICATION`, `Reservation ... has been changed`.
+    - Keep promotional fixtures: `Allow login in Octorate`, `A customer saved their research`.
 
 ### TASK-07: Build unknown-answer capture and reviewed-ledger ingestion
 - **Type:** IMPLEMENT
@@ -867,6 +913,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-19: `/lp-replan` (standard mode) promoted TASK-05 to 80% after prerequisite completion and fresh governed E2 checks; Wave 4 is now build-eligible for TASK-05 before checkpoint TASK-06.
 - 2026-02-20: `/lp-build` completed TASK-05 strict context-aware reference quality enforcement with full TC-05 validation; next runnable task is checkpoint TASK-06.
 - 2026-02-20: `/lp-build` executed checkpoint TASK-06 and reassessed downstream tranche; no resequencing required, Wave 6 (`TASK-14`, `TASK-15`) is now build-eligible.
+- 2026-02-20: `/lp-build` completed Wave 6 precursor tasks (`TASK-14` spike + `TASK-15` investigation). Wave 7 remains blocked by confidence threshold (`TASK-07`, `TASK-10` at `75%`), requiring `/lp-replan` before further implementation.
 
 ## Overall-confidence Calculation
 

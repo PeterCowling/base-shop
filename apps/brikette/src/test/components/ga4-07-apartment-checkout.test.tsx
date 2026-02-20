@@ -80,7 +80,7 @@ describe("ApartmentBookContent GA4 enrichment (GA4-07 TC-02/TC-04)", () => {
   it("fires begin_checkout with price, quantity (nights), value, and currency", () => {
     render(<ApartmentBookContent lang="en" />);
 
-    const ctaButton = screen.getByText("cta.flex");
+    const ctaButton = screen.getByText("apartment.cta.flex");
     fireEvent.click(ctaButton);
 
     expect(window.gtag).toHaveBeenCalledWith(
@@ -104,7 +104,7 @@ describe("ApartmentBookContent GA4 enrichment (GA4-07 TC-02/TC-04)", () => {
   it("still fires begin_checkout with item_id and item_name (regression)", () => {
     render(<ApartmentBookContent lang="en" />);
 
-    const ctaButton = screen.getByText("cta.flex");
+    const ctaButton = screen.getByText("apartment.cta.flex");
     fireEvent.click(ctaButton);
 
     expect(window.gtag).toHaveBeenCalledWith(
@@ -225,7 +225,7 @@ describe("TASK-09: WhatsApp prefill, long-stay reroute, and sessionStorage redir
   it("TC-05: sessionStorage stores checkin/checkout before window.location.assign", () => {
     render(<ApartmentBookContent lang="en" />);
 
-    fireEvent.click(screen.getByText("cta.flex"));
+    fireEvent.click(screen.getByText("apartment.cta.flex"));
 
     const storedCall = setItemSpy.mock.calls.find(([key]) => key === "apartment_booking_return");
     expect(storedCall).toBeDefined();

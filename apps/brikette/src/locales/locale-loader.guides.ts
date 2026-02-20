@@ -18,10 +18,7 @@ export const loadGuidesLocaleResource = async (
   ns: string,
 ): Promise<unknown | undefined> => {
   try {
-    const mod = await import(
-      /* webpackInclude: /(^|\/)[a-z]{2}\/guides(\/.*)?\.json$/ */
-      `./${lang}/${ns}.json`
-    );
+    const mod = await import(`./${lang}/${ns}.json`);
     return unwrapDefault(mod);
   } catch {
     return undefined;

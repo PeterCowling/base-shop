@@ -1,5 +1,5 @@
 {
-  "generated": "2026-02-17T12:49:25Z",
+  "generated": "2026-02-20T00:00:00Z",
   "rawIdeas": [
     {"id": "BRIK-OPP-0002", "title": "Hostel booking FAQs content", "business": "BRIK"},
     {"id": "PIPE-OPP-0001", "title": "Dropship-first logistics model validation", "business": "PIPE"},
@@ -91,6 +91,7 @@
     {"id": "PLAT-ENG-0013", "title": "No-Hardcoded-Copy Non-UI Exemptions Plan", "business": "PLAT", "planLink": ""},
     {"id": "PLAT-ENG-0014", "title": "Postbuild Script tsx Runtime Resolution Fix - Plan", "business": "PLAT", "planLink": ""},
     {"id": "PLAT-ENG-0017", "title": "Test Sweep Plan", "business": "PLAT", "planLink": ""},
-    {"id": "PLAT-OPP-0001", "title": "Implement Business OS Phase 0", "business": "PLAT", "planLink": ""}
+    {"id": "PLAT-OPP-0001", "title": "Implement Business OS Phase 0", "business": "PLAT", "planLink": ""},
+    {"id": "PLAT-003", "slug": "brikette-webpack-removal", "title": "Brikette Webpack Overhang Removal", "business": "PLAT", "planLink": "docs/plans/brikette-webpack-removal/plan.md", "overallConfidence": "75%"}
   ]
 }

@@ -8,7 +8,6 @@ export const loadSplitRouteModule = async (
 ): Promise<RouteContentModule | undefined> => {
   try {
     const mod = await import(
-      /* webpackInclude: /how-to-get-here\/routes\/[^/]+\.json$/ */
       `../../locales/${lang}/how-to-get-here/routes/${contentKey}.json`
     );
     return mod as RouteContentModule;

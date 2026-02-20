@@ -22,6 +22,16 @@
       "path": ".claude/skills/biz-update-plan/SKILL.md"
     },
     {
+      "name": "lp-other-products",
+      "description": "Produce a deep research prompt for adjacent product range exploration. Reads the target business's startup loop docs (offer, ICP, market intel, brand dossier) and outputs a structured Perplexity-ready prompt covering customer JTBD, manufacturer accessory landscape, product candidate set with one-page cards, prioritisation rubric, 90-day MVP plan, and bundling strategy.",
+      "path": ".claude/skills/lp-other-products/SKILL.md"
+    },
+    {
+      "name": "brand-naming-research",
+      "description": "Produce a deep research prompt for business name exploration. Reads the target business's startup loop docs, encodes product, ICP, market, regulatory constraints, and competitive landscape, then outputs a structured research prompt ready to paste into Perplexity Deep Research or equivalent.",
+      "path": ".claude/skills/brand-naming-research/SKILL.md"
+    },
+    {
       "name": "draft-email",
       "description": "Draft a decision-ready outbound or response email artifact with channel-safe structure, clear CTA, and review checklist.",
       "path": ".claude/skills/draft-email/SKILL.md"
@@ -93,13 +103,13 @@
     },
     {
       "name": "lp-brand-bootstrap",
-      "description": "Bootstrap a brand-language.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at S7 before /lp-design-spec.",
+      "description": "Bootstrap a brand-dossier.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at S7 before /lp-design-spec.",
       "path": ".claude/skills/lp-brand-bootstrap/SKILL.md"
     },
     {
-      "name": "lp-build",
-      "description": "Execute tasks from an approved plan, one task at a time, with strict confidence gating and mandatory validation for code and business-artifact deliverables.",
-      "path": ".claude/skills/lp-build/SKILL.md"
+      "name": "lp-do-build",
+      "description": "Thin build orchestrator. Executes one runnable task per cycle from an approved plan using canonical gates, track-specific executors, and shared ops utilities.",
+      "path": ".claude/skills/lp-do-build/SKILL.md"
     },
     {
       "name": "lp-channels",
@@ -108,7 +118,7 @@
     },
     {
       "name": "lp-design-qa",
-      "description": "Audit a built UI against the design spec and design system for visual/UI regression, accessibility, responsive behavior, and token compliance. Produces structured issues ready for lp-build fixes.",
+      "description": "Audit a built UI against the design spec and design system for visual/UI regression, accessibility, responsive behavior, and token compliance. Produces structured issues ready for lp-do-build fixes.",
       "path": ".claude/skills/lp-design-qa/SKILL.md"
     },
     {
@@ -127,9 +137,9 @@
       "path": ".claude/skills/lp-experiment/SKILL.md"
     },
     {
-      "name": "lp-fact-find",
-      "description": "Gather evidence and context before planning or as a standalone briefing. Supports code and business deliverables by classifying execution track and routing to progressive execution skills.",
-      "path": ".claude/skills/lp-fact-find/SKILL.md"
+      "name": "lp-do-fact-find",
+      "description": "Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits planning or briefing artifacts with a shared schema.",
+      "path": ".claude/skills/lp-do-fact-find/SKILL.md"
     },
     {
       "name": "lp-forecast",
@@ -163,13 +173,13 @@
     },
     {
       "name": "lp-onboarding-audit",
-      "description": "Audit an app's onboarding flow against the \"Onboarding Done Right\" checklist. Customizes the generic checklist for the app's purpose and audience, then audits actual code using lp-fact-find's Outcome A process. Produces a planning-ready brief.",
+      "description": "Audit an app's onboarding flow against the \"Onboarding Done Right\" checklist. Customizes the generic checklist for the app's purpose and audience, then audits actual code using lp-do-fact-find's Outcome A process. Produces a planning-ready brief.",
       "path": ".claude/skills/lp-onboarding-audit/SKILL.md"
     },
     {
-      "name": "lp-plan",
-      "description": "Create a confidence-gated execution plan for a feature or business deliverable, then auto-continue to build if eligible. Produces a plan doc with atomic tasks, acceptance criteria, execution routing, and per-task confidence assessments.",
-      "path": ".claude/skills/lp-plan/SKILL.md"
+      "name": "lp-do-plan",
+      "description": "Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and optionally hands off to /lp-do-build when explicit auto-build intent is present.",
+      "path": ".claude/skills/lp-do-plan/SKILL.md"
     },
     {
       "name": "lp-prioritize",
@@ -187,9 +197,9 @@
       "path": ".claude/skills/lp-refactor/SKILL.md"
     },
     {
-      "name": "lp-replan",
-      "description": "Resolve low-confidence tasks in an existing plan. Investigate, remove uncertainty, make decisions with evidence, and update the plan doc so that remaining work can proceed safely.",
-      "path": ".claude/skills/lp-replan/SKILL.md"
+      "name": "lp-do-replan",
+      "description": "Thin orchestrator for resolving low-confidence plan tasks with evidence, explicit precursor tasks, stable task IDs, and checkpoint-aware reassessment.",
+      "path": ".claude/skills/lp-do-replan/SKILL.md"
     },
     {
       "name": "lp-seo",
@@ -198,13 +208,33 @@
     },
     {
       "name": "lp-sequence",
-      "description": "Topologically sort plan tasks into correct implementation order, renumber sequentially, and add explicit dependency/blocker metadata to enable parallel subagent execution.",
+      "description": "Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata to enable parallel subagent execution.",
       "path": ".claude/skills/lp-sequence/SKILL.md"
     },
     {
+      "name": "lp-signal-review",
+      "description": "Weekly signal strengthening review for startup loop runs. Audits a run against ten structural signal-strengthening principles, scores each on Severity × Support axes, identifies top findings, and emits a Signal Review artifact with ranked Finding Briefs (quality check — what went wrong this run) and Process-Improvement Stubs (continuous improvement — which process artifact caused it and what to change).",
+      "path": ".claude/skills/lp-signal-review/SKILL.md"
+    },
+    {
       "name": "lp-site-upgrade",
-      "description": "Build website-upgrade strategy in three layers: (1) periodic platform capability baseline, (2) per-business upgrade brief from reference sites, and (3) lp-fact-find handoff packet for prioritized implementation backlog. Use when upgrading an existing site by synthesizing best-of patterns with platform-fit constraints.",
+      "description": "Build website-upgrade strategy in three layers: (1) periodic platform capability baseline, (2) per-business upgrade brief from reference sites, and (3) lp-do-fact-find handoff packet for prioritized implementation backlog. Use when upgrading an existing site by synthesizing best-of patterns with platform-fit constraints.",
       "path": ".claude/skills/lp-site-upgrade/SKILL.md"
+    },
+    {
+      "name": "lp-visual",
+      "description": "Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams). Prompts for the target document and produces self-contained HTML with interactive, zoomable diagrams. Use when asked to add diagrams to a guide, visualise a system or workflow, or improve documentation readability with visuals.",
+      "path": ".claude/skills/lp-visual/SKILL.md"
+    },
+    {
+      "name": "lp-weekly",
+      "description": "S10 weekly orchestration wrapper. Coordinates the full weekly decision, audit/CI, measurement compilation, and experiment lane flows into one deterministic sequence. Additive-first; never replaces canonical S10 authorities. No new hard stage blocks in first iteration.",
+      "path": ".claude/skills/lp-weekly/SKILL.md"
+    },
+    {
+      "name": "meta-loop-efficiency",
+      "description": "Weekly startup-loop skill efficiency audit. Scans lp-* + startup-loop + draft-outreach skills with deterministic heuristics (wc-l, grep, ls), emits a ranked opportunity artifact, and fires a planning anchor only on new-to-HIGH findings.",
+      "path": ".claude/skills/meta-loop-efficiency/SKILL.md"
     },
     {
       "name": "meta-reflect",
@@ -232,18 +262,18 @@
       "path": ".claude/skills/ops-ship/SKILL.md"
     },
     {
-      "name": "review-critique",
-      "description": "Hardnosed critic for lp-fact-find, lp-plan, lp-offer, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.",
-      "path": ".claude/skills/review-critique/SKILL.md"
+      "name": "lp-do-critique",
+      "description": "Hardnosed critic for lp-do-fact-find, lp-do-plan, lp-offer, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.",
+      "path": ".claude/skills/lp-do-critique/SKILL.md"
     },
     {
-      "name": "review-fact-check",
+      "name": "lp-do-factcheck",
       "description": "Verify the accuracy of statements in markdown documents by auditing the actual repository state. Directly fix inaccuracies in-place rather than producing a separate report.",
-      "path": ".claude/skills/review-fact-check/SKILL.md"
+      "path": ".claude/skills/lp-do-factcheck/SKILL.md"
     },
     {
       "name": "review-plan-status",
-      "description": "Report on the status of incomplete plans — how many tasks remain in each. Optionally review-fact-check plans before reporting.",
+      "description": "Report on the status of incomplete plans — how many tasks remain in each. Optionally lp-do-factcheck plans before reporting.",
       "path": ".claude/skills/review-plan-status/SKILL.md"
     },
     {

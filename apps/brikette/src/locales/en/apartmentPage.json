@@ -2,24 +2,44 @@
   "slug": "apartment",
   "meta": {
     "title": "Private Apartment in Positano — Step-Free Arrival",
-    "description": "100sqm private apartment with step-free arrival, full kitchen, 2 bathrooms. Ideal for couples. Professionally managed with optional terrace and breakfast next door. From €265/night."
+    "description": "85sqm private apartment with step-free arrival, full kitchen, 2 bathrooms. Ideal for couples. Professionally managed with optional terrace and breakfast next door. From €265/night."
   },
   "title": "Private Serviced Apartment in Positano",
-  "body": "A 100sqm private apartment designed for couples who want independence with support. Step-free arrival from the road, full kitchen, 2 bathrooms, and space to spread out. Managed by a professional hospitality team next door. From €265/night in shoulder season.",
+  "body": "A 85sqm private apartment designed for couples who want independence with support. Step-free arrival from the road, full kitchen, 2 bathrooms, and space to spread out. Managed by a professional hospitality team next door. From €265/night in shoulder season.",
+  "directSavings": {
+    "eyebrow": "Book direct and save",
+    "heading": "Up to 26% less than Booking.com",
+    "nr": {
+      "label": "Non-Refundable",
+      "saving": "Save 26%",
+      "detail": "Best direct price"
+    },
+    "flex": {
+      "label": "Flexible Rate",
+      "saving": "Save 21%",
+      "detail": "Free cancellation"
+    }
+  },
   "heroImageAlt": "Exterior of the apartment building",
+  "heroTagline": "Private apartment · Positano, Italy",
   "heroTitle": "Your Private Positano Apartment",
-  "heroIntro": "100sqm of independence with step-free arrival. Full kitchen, 2 bathrooms, and professional hospitality support next door. Perfect for couples seeking authentic Positano character.",
+  "heroIntro": "85sqm of independence with step-free arrival. Full kitchen, 2 bathrooms, and professional hospitality support next door. Perfect for couples seeking authentic Positano character.",
   "bookButton": "Book Now",
-  "galleryHeading": "Gallery",
-  "galleryAlt": "Apartment interior and terrace views",
-  "galleryAlts": ["Apartment living area", "Apartment bedroom", "Communal terrace with sea view"],
+  "galleryHeading": "Inside your private Positano apartment",
+  "galleryAlt": "Apartment interior",
+  "galleryAlts": ["Apartment bathroom with rain shower", "Open-plan living area", "Fully equipped kitchen"],
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
   "detailsHeading": "Details",
   "detailsList": [
     "Sleeps up to 4 guests",
     "Full kitchen with appliances",
     "2 full bathrooms",
     "Air conditioning",
-    "100sqm split-level interior"
+    "85sqm split-level interior"
   ],
   "amenitiesHeading": "Amenities",
   "amenitiesImageAlt": "Apartment amenities image",
@@ -29,7 +49,7 @@
     "Air conditioning",
     "Washer and dryer",
     "2 full bathrooms",
-    "100sqm living space"
+    "85sqm living space"
   ],
   "fitCheck": {
     "heading": "Is this apartment right for you?",
@@ -64,7 +84,7 @@
       },
       {
         "title": "Space to Spread Out",
-        "text": "100sqm with full kitchen, 2 bathrooms, washer and dryer. Everything you need for a comfortable stay.",
+        "text": "85sqm with full kitchen, 2 bathrooms, washer and dryer. Everything you need for a comfortable stay.",
         "alt": "Spacious living area"
       },
       {
@@ -103,14 +123,14 @@
   "privateStay": {
     "meta": {
       "title": "Private Serviced Apartment in Positano",
-      "description": "A private 100sqm apartment with full kitchen, professionally managed with optional access to terrace, breakfast, and bar next door."
+      "description": "A private 85sqm apartment with full kitchen, professionally managed with optional access to terrace, breakfast, and bar next door."
     },
     "heroTitle": "Your private apartment in Positano",
     "heroSubtitle": "Professionally managed with hospitality-grade support next door",
     "sections": {
       "privacy": {
         "title": "Complete independence",
-        "body": "A 100sqm apartment that is entirely yours. Full kitchen, washer and dryer, two bathrooms, and space to spread out. No shared spaces, no check-in desk — just your own front door."
+        "body": "A 85sqm apartment that is entirely yours. Full kitchen, washer and dryer, two bathrooms, and space to spread out. No shared spaces, no check-in desk — just your own front door."
       },
       "support": {
         "title": "Professional support when you need it",

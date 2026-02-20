@@ -3,6 +3,8 @@ import "@testing-library/jest-dom";
 import fs from "fs";
 import path from "path";
 
+import apartmentSchema from "@/schema/apartment";
+
 // TC-01: "apartment" is in NAV_ITEMS array
 describe("Navigation integration", () => {
   it("includes 'apartment' in NAV_ITEMS", () => {
@@ -35,14 +37,10 @@ describe("Redirects configuration", () => {
   });
 });
 
-// TC-04: apartment.jsonld contains updated schema fields
+// TC-04: apartment schema contains updated fields
 describe("Apartment structured data", () => {
   it("includes occupancy and floorSize fields", () => {
-    const jsonldPath = path.resolve(
-      __dirname,
-      "../../../schema/apartment.jsonld",
-    );
-    const schema = JSON.parse(fs.readFileSync(jsonldPath, "utf-8"));
+    const schema = apartmentSchema;
 
     expect(schema["@type"]).toBe("Apartment");
     expect(schema.occupancy).toBeDefined();
@@ -57,11 +55,7 @@ describe("Apartment structured data", () => {
   });
 
   it("mentions step-free in description", () => {
-    const jsonldPath = path.resolve(
-      __dirname,
-      "../../../schema/apartment.jsonld",
-    );
-    const schema = JSON.parse(fs.readFileSync(jsonldPath, "utf-8"));
+    const schema = apartmentSchema;
 
     expect(schema.description.toLowerCase()).toContain("step-free");
   });

@@ -38,7 +38,7 @@ function PrivateStayContent({ lang }: Props) {
         </section>
 
         {/* Three Content Sections */}
-        <div className="grid gap-8 sm:grid-cols-1">
+        <div className="grid gap-8 lg:grid-cols-3">
           {/* Privacy Section */}
           <div className="rounded-2xl border border-brand-outline/30 bg-brand-surface/50 p-6 shadow-sm backdrop-blur-sm">
             <h2 className="mb-3 text-xl font-semibold text-brand-heading">

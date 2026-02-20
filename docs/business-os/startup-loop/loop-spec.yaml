@@ -34,7 +34,8 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 #         Entry routing: explicit --start-point problem|product flag (default: product).
 #         Condition: "start-point = problem" — consistent with --launch-surface gate pattern.
 #         Stages: S0A (Problem framing) → S0B (Solution-space scan) → S0C (Option selection) → S0D (Naming handoff).
-#         S0D uses brand-naming-research skill; GATE-BD-00 naming contract unchanged (fires at S0→S1 only).
+#         S0D uses brand-naming-research (prompt-handoff); operator saves Perplexity results as
+#         *-naming-shortlist.user.md to satisfy GATE-BD-00 (fires at S0→S1, not S0D→S0).
 #         Operators with --start-point product (or flag absent) bypass S0A–S0D: pass-through, no gate block.
 #         Decision: docs/plans/startup-loop-pre-s0-problem-framing/plan.md 2026-02-20.
 
@@ -50,7 +51,8 @@ stages:
   # ── Conditional pre-intake stage family (S0A–S0D) ─────────────────────────
   # Triggered when operator invokes /startup-loop start --start-point problem.
   # Operators using --start-point product (or flag absent) bypass S0A–S0D entirely: pass-through, no gate block.
-  # S0D output satisfies GATE-BD-00 pass condition at S0→S1 (gate fires at S0→S1, not S0D→S0).
+  # S0D (brand-naming-research) produces a naming research prompt; the operator's Perplexity results
+  # saved as *-naming-shortlist.user.md satisfy GATE-BD-00 at S0→S1. Gate fires at S0→S1, not S0D→S0.
 
   - id: S0A
     name: Problem framing
@@ -83,9 +85,10 @@ stages:
     conditional: true
     condition: "start-point = problem"
     bos_sync: "Persist naming research prompt under docs/business-os/strategy/<BIZ>/"
-    # GATE-BD-00 note: gate fires at S0→S1 (not S0D→S0). The naming shortlist produced by
-    # brand-naming-research satisfies the existing *-naming-shortlist.user.md pass condition.
-    # No new naming artifact contract introduced by S0D.
+    # GATE-BD-00 note: gate fires at S0→S1 (not S0D→S0). brand-naming-research produces a
+    # naming research PROMPT (naming-research-prompt.md). The operator runs this in Perplexity
+    # and saves results as <YYYY-MM-DD>-naming-shortlist.user.md — that artifact satisfies the
+    # *-naming-shortlist.user.md pass condition. No new naming contract introduced by S0D.
 
   - id: S0
     name: Intake

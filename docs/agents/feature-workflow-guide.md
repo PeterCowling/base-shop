@@ -21,13 +21,13 @@ This is the **entrypoint** for feature work in Base-Shop. It is intentionally sh
 
 Read only the skill you need for the current phase:
 
-- **Fact-find:** `.claude/skills/lp-fact-find/SKILL.md`
-- **Plan:** `.claude/skills/lp-plan/SKILL.md` (auto-runs `/lp-sequence` at the end)
+- **Fact-find:** `.claude/skills/lp-do-fact-find/SKILL.md`
+- **Plan:** `.claude/skills/lp-do-plan/SKILL.md` (auto-runs `/lp-sequence` at the end)
 - **Sequence:** `.claude/skills/lp-sequence/SKILL.md` (also runnable standalone)
-- **Build:** `.claude/skills/lp-build/SKILL.md`
-- **Re-plan:** `.claude/skills/lp-replan/SKILL.md` (auto-runs `/lp-sequence` at the end)
+- **Build:** `.claude/skills/lp-do-build/SKILL.md`
+- **Re-plan:** `.claude/skills/lp-do-replan/SKILL.md` (auto-runs `/lp-sequence` at the end)
 
-For non-code deliverables, `/lp-build` dispatches to progressive execution skills (for example: `/draft-email`, `/biz-product-brief`, `/draft-marketing`, `/biz-spreadsheet`, `/draft-whatsapp`).
+For non-code deliverables, `/lp-do-build` dispatches to progressive execution skills (for example: `/draft-email`, `/biz-product-brief`, `/draft-marketing`, `/biz-spreadsheet`, `/draft-whatsapp`).
 
 ## Phase Selection (Decision Tree)
 
@@ -44,16 +44,16 @@ In plan docs, use **confidence** / **Overall-confidence** terminology for planni
 - **Confidence ≥90:** target/motivation (aim for it when credible)
 - **Confidence 80–89:** implementation/spike build-eligible when unblocked
 - **Confidence 60–79:** caution; often planning-only unless task type is INVESTIGATE
-- **Confidence <60:** do not build; lp-replan first
+- **Confidence <60:** do not build; lp-do-replan first
 
 **Build gates:**
 - **IMPLEMENT** and **SPIKE** tasks require **≥80%** confidence and unblocked dependencies.
 - **INVESTIGATE** tasks require **≥60%** confidence and unblocked dependencies.
-- **CHECKPOINT** is procedural and handled by `/lp-build` checkpoint flow.
+- **CHECKPOINT** is procedural and handled by `/lp-do-build` checkpoint flow.
 
 ## Scientific Re-Plan Rules
 
-When running `/lp-replan`, confidence increases must be evidence-led:
+When running `/lp-do-replan`, confidence increases must be evidence-led:
 
 - Do not raise confidence from narrative reasoning alone.
 - Use an evidence ladder:
@@ -82,16 +82,16 @@ The core loop updates Business OS automatically. No extra user action is require
 
 ### Baseline Behavior
 
-1. Set `Business-Unit` in lp-fact-find frontmatter (or inherit from existing card).
+1. Set `Business-Unit` in lp-do-fact-find frontmatter (or inherit from existing card).
 2. Keep `Business-OS-Integration` omitted or `on` (default).
 3. Use `Business-OS-Integration: off` only for intentionally standalone work.
 
 ### What is automated
 
-- `/idea-generate`: creates prioritized ideas/cards and seeds top-K lp-fact-find stage docs.
-- `/lp-fact-find`: creates/updates card + `lp-fact-find` stage doc.
-- `/lp-plan`: creates `plan` stage doc and applies deterministic `Fact-finding -> Planned` when plan gate passes.
-- `/lp-build`: applies deterministic `Planned -> In progress` at build start and `In progress -> Done` at completion gate.
+- `/idea-generate`: creates prioritized ideas/cards and seeds top-K lp-do-fact-find stage docs.
+- `/lp-do-fact-find`: creates/updates card + `lp-do-fact-find` stage doc.
+- `/lp-do-plan`: creates `plan` stage doc and applies deterministic `Fact-finding -> Planned` when plan gate passes.
+- `/lp-do-build`: applies deterministic `Planned -> In progress` at build start and `In progress -> Done` at completion gate.
 
 ### Discovery freshness
 
@@ -107,3 +107,10 @@ Loop write paths rebuild `docs/business-os/_meta/discovery-index.json`. If rebui
 ## Special-Purpose Workflows
 
 - **Business OS coordination:** `docs/business-os/agent-workflows.md` (idea management, card lifecycle, plan updates)
+- **Pre-S0 problem-first entry:** Use when beginning a startup from a customer problem rather than a committed product. Add `--start-point problem` to `/startup-loop start`. This routes through S0A–S0D before S0 intake:
+  - S0A Problem framing → `/lp-problem-frame` → `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
+  - S0B Solution-space scan → `/lp-solution-space` → Perplexity prompt + operator-filled results artifact
+  - S0C Option selection → `/lp-option-select` → decision record with shortlist and elimination rationale; explicit kill gate if no viable option
+  - S0D Naming handoff → `/brand-naming-research` → naming research prompt (operator runs in Perplexity; save results as `<YYYY-MM-DD>-naming-shortlist.user.md` to satisfy GATE-BD-00 at S0→S1)
+  - Default (`--start-point product` or flag absent) bypasses S0A–S0D entirely — no behavior change for existing operators.
+  - See gate routing: `.claude/skills/startup-loop/modules/cmd-start.md` Gate D

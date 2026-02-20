@@ -22,11 +22,6 @@
       "path": ".claude/skills/biz-update-plan/SKILL.md"
     },
     {
-      "name": "lp-other-products",
-      "description": "Produce a deep research prompt for adjacent product range exploration. Reads the target business's startup loop docs (offer, ICP, market intel, brand dossier) and outputs a structured Perplexity-ready prompt covering customer JTBD, manufacturer accessory landscape, product candidate set with one-page cards, prioritisation rubric, 90-day MVP plan, and bundling strategy.",
-      "path": ".claude/skills/lp-other-products/SKILL.md"
-    },
-    {
       "name": "brand-naming-research",
       "description": "Produce a deep research prompt for business name exploration. Reads the target business's startup loop docs, encodes product, ICP, market, regulatory constraints, and competitive landscape, then outputs a structured research prompt ready to paste into Perplexity Deep Research or equivalent.",
       "path": ".claude/skills/brand-naming-research/SKILL.md"
@@ -107,11 +102,6 @@
       "path": ".claude/skills/lp-brand-bootstrap/SKILL.md"
     },
     {
-      "name": "lp-do-build",
-      "description": "Thin build orchestrator. Executes one runnable task per cycle from an approved plan using canonical gates, track-specific executors, and shared ops utilities.",
-      "path": ".claude/skills/lp-do-build/SKILL.md"
-    },
-    {
       "name": "lp-channels",
       "description": "Startup channel strategy + GTM skill (S6B). Analyzes channel-customer fit, selects 2-3 launch channels with rationale, and produces a 30-day GTM timeline. Consumes lp-offer output (ICP, positioning, objections) and feeds channel selection to draft-marketing and lp-seo.",
       "path": ".claude/skills/lp-channels/SKILL.md"
@@ -132,14 +122,39 @@
       "path": ".claude/skills/lp-design-system/SKILL.md"
     },
     {
-      "name": "lp-experiment",
-      "description": "Startup experiment design and weekly readout for the S8/S10 build-measure-decide loop.",
-      "path": ".claude/skills/lp-experiment/SKILL.md"
+      "name": "lp-do-build",
+      "description": "Thin build orchestrator. Executes one runnable task per cycle from an approved plan using canonical gates, track-specific executors, and shared ops utilities.",
+      "path": ".claude/skills/lp-do-build/SKILL.md"
+    },
+    {
+      "name": "lp-do-critique",
+      "description": "Hardnosed critic for lp-do-fact-find, lp-do-plan, lp-offer, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.",
+      "path": ".claude/skills/lp-do-critique/SKILL.md"
     },
     {
       "name": "lp-do-fact-find",
       "description": "Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits planning or briefing artifacts with a shared schema.",
       "path": ".claude/skills/lp-do-fact-find/SKILL.md"
+    },
+    {
+      "name": "lp-do-factcheck",
+      "description": "Verify the accuracy of statements in markdown documents by auditing the actual repository state. Directly fix inaccuracies in-place rather than producing a separate report.",
+      "path": ".claude/skills/lp-do-factcheck/SKILL.md"
+    },
+    {
+      "name": "lp-do-plan",
+      "description": "Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and optionally hands off to /lp-do-build when explicit auto-build intent is present.",
+      "path": ".claude/skills/lp-do-plan/SKILL.md"
+    },
+    {
+      "name": "lp-do-replan",
+      "description": "Thin orchestrator for resolving low-confidence plan tasks with evidence, explicit precursor tasks, stable task IDs, and checkpoint-aware reassessment.",
+      "path": ".claude/skills/lp-do-replan/SKILL.md"
+    },
+    {
+      "name": "lp-experiment",
+      "description": "Startup experiment design and weekly readout for the S8/S10 build-measure-decide loop.",
+      "path": ".claude/skills/lp-experiment/SKILL.md"
     },
     {
       "name": "lp-forecast",
@@ -177,14 +192,24 @@
       "path": ".claude/skills/lp-onboarding-audit/SKILL.md"
     },
     {
-      "name": "lp-do-plan",
-      "description": "Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and optionally hands off to /lp-do-build when explicit auto-build intent is present.",
-      "path": ".claude/skills/lp-do-plan/SKILL.md"
+      "name": "lp-option-select",
+      "description": "Option selection gate for new startups (S0C). Reads solution-space research results, builds an evaluation matrix, and produces a shortlist of 1-2 options with elimination rationale. Explicit kill gate — decision record required to continue to S0D.",
+      "path": ".claude/skills/lp-option-select/SKILL.md"
+    },
+    {
+      "name": "lp-other-products",
+      "description": "Produce a deep research prompt for adjacent product range exploration. Reads the target business's startup loop docs (offer, ICP, market intel, brand dossier) and outputs a structured Perplexity-ready prompt covering customer JTBD, manufacturer accessory landscape, product candidate set with one-page cards, prioritisation rubric, 90-day MVP plan, and bundling strategy.",
+      "path": ".claude/skills/lp-other-products/SKILL.md"
     },
     {
       "name": "lp-prioritize",
       "description": "S5 startup go-item ranking - score and select top 2-3 items to pursue",
       "path": ".claude/skills/lp-prioritize/SKILL.md"
+    },
+    {
+      "name": "lp-problem-frame",
+      "description": "Problem framing for new startups (S0A). Produces a falsifiable problem statement artifact before entering S0 intake. Upstream of lp-solution-space.",
+      "path": ".claude/skills/lp-problem-frame/SKILL.md"
     },
     {
       "name": "lp-readiness",
@@ -195,11 +220,6 @@
       "name": "lp-refactor",
       "description": "Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition.",
       "path": ".claude/skills/lp-refactor/SKILL.md"
-    },
-    {
-      "name": "lp-do-replan",
-      "description": "Thin orchestrator for resolving low-confidence plan tasks with evidence, explicit precursor tasks, stable task IDs, and checkpoint-aware reassessment.",
-      "path": ".claude/skills/lp-do-replan/SKILL.md"
     },
     {
       "name": "lp-seo",
@@ -220,6 +240,11 @@
       "name": "lp-site-upgrade",
       "description": "Build website-upgrade strategy in three layers: (1) periodic platform capability baseline, (2) per-business upgrade brief from reference sites, and (3) lp-do-fact-find handoff packet for prioritized implementation backlog. Use when upgrading an existing site by synthesizing best-of patterns with platform-fit constraints.",
       "path": ".claude/skills/lp-site-upgrade/SKILL.md"
+    },
+    {
+      "name": "lp-solution-space",
+      "description": "Solution space scanning for new startups (S0B). Produces a structured Perplexity-ready research prompt covering 5-10 candidate product-type options with feasibility flags. Feasibility only — no demand scoring until S2.",
+      "path": ".claude/skills/lp-solution-space/SKILL.md"
     },
     {
       "name": "lp-visual",
@@ -260,16 +285,6 @@
       "name": "ops-ship",
       "description": "Ship local changes to origin/dev with hard-enforced git safety policy, integrator-shell lock/guard flow, validate-changes gating, and CI watch-fix loops until required checks pass.",
       "path": ".claude/skills/ops-ship/SKILL.md"
-    },
-    {
-      "name": "lp-do-critique",
-      "description": "Hardnosed critic for lp-do-fact-find, lp-do-plan, lp-offer, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.",
-      "path": ".claude/skills/lp-do-critique/SKILL.md"
-    },
-    {
-      "name": "lp-do-factcheck",
-      "description": "Verify the accuracy of statements in markdown documents by auditing the actual repository state. Directly fix inaccuracies in-place rather than producing a separate report.",
-      "path": ".claude/skills/lp-do-factcheck/SKILL.md"
     },
     {
       "name": "review-plan-status",

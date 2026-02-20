@@ -12,6 +12,7 @@ import { validateEventStream } from "../event-validation";
  * - VC-04B-02-03: Schema version mismatch → detected
  * - VC-04B-02-04: Missing required fields → detected
  * - VC-04B-02-05: Empty stream → valid (no events is valid)
+ * - VC-04B-02-06: run_aborted accepted (TASK-06)
  */
 
 function makeEvent(overrides: Partial<RunEvent>): RunEvent {
@@ -131,6 +132,28 @@ describe("validateEventStream", () => {
     } as unknown as RunEvent;
 
     const result = validateEventStream([eventWithGrowthPayload]);
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  // VC-04B-02-06: run_aborted acceptance (TASK-06)
+  it("accepts run_aborted event type with stage '*'", () => {
+    const events: RunEvent[] = [
+      makeEvent({ event: "run_aborted", stage: "*" }),
+    ];
+
+    const result = validateEventStream(events);
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  it("does not require artifacts for run_aborted event", () => {
+    // Unlike stage_completed, run_aborted has no conditional field requirements.
+    const events: RunEvent[] = [
+      makeEvent({ event: "run_aborted", stage: "*", artifacts: null }),
+    ];
+
+    const result = validateEventStream(events);
     expect(result.valid).toBe(true);
     expect(result.errors).toHaveLength(0);
   });

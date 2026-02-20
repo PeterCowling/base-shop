@@ -10,6 +10,7 @@ import { type DerivedState, deriveState, type RunEvent } from "../derive-state";
  * - VC-04A-02: Manual resume (stage_started for Blocked stage)
  * - VC-04A-03: Launch-QA contract (active_stage, per-stage status, artifacts)
  * - VC-04A-04: Deterministic replay (same events → byte-identical state)
+ * - VC-04A-05: run_aborted handling — clears active_stage, preserves stage statuses (TASK-06)
  */
 
 // -- Fixture helpers --
@@ -170,6 +171,41 @@ describe("deriveState", () => {
       const stageKeys = Object.keys(state.stages);
       const sorted = [...stageKeys].sort();
       expect(stageKeys).toEqual(sorted);
+    });
+  });
+
+  // VC-04A-05: run_aborted handling — run-level abort event clears active_stage
+  // and does not revert completed stage statuses (TASK-06).
+  describe("VC-04A-05: run_aborted handling", () => {
+    it("clears active_stage on run_aborted event", () => {
+      const events: RunEvent[] = [
+        makeEvent({ event: "stage_started", stage: "S0", timestamp: "2026-02-13T12:00:00Z" }),
+        makeEvent({ event: "run_aborted", stage: "*", timestamp: "2026-02-13T12:01:00Z" }),
+      ];
+
+      const state = deriveState(events, STATE_OPTIONS);
+
+      expect(state.active_stage).toBeNull();
+      // Stage status is not reverted by run_aborted
+      expect(state.stages.S0.status).toBe("Active");
+    });
+
+    it("preserves completed stage statuses on mid-run abort", () => {
+      const events: RunEvent[] = [
+        makeEvent({ event: "stage_started", stage: "S0", timestamp: "2026-02-13T12:00:00Z" }),
+        makeEvent({ event: "stage_completed", stage: "S0", timestamp: "2026-02-13T12:01:00Z", artifacts: {} }),
+        makeEvent({ event: "stage_started", stage: "S1", timestamp: "2026-02-13T12:01:30Z" }),
+        makeEvent({ event: "run_aborted", stage: "*", timestamp: "2026-02-13T12:02:00Z" }),
+      ];
+
+      const state = deriveState(events, STATE_OPTIONS);
+
+      // active_stage cleared — run is terminated
+      expect(state.active_stage).toBeNull();
+      // Completed stages retain their Done status
+      expect(state.stages.S0.status).toBe("Done");
+      // In-progress stage retains Active status; run_aborted does not revert stages
+      expect(state.stages.S1.status).toBe("Active");
     });
   });
 });

@@ -56,7 +56,7 @@ ls docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md 2>/dev/null
    - Output path: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-prompt.md`
 3. Return blocked run packet:
    - `blocking_reason`: `GATE-BD-00: Business name status is unconfirmed and no naming shortlist has been returned.`
-   - `next_action`: `Run the naming prompt at docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-prompt.md through Deep Research (or Perplexity). Save the returned document — including the required YAML front matter — to docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-shortlist.user.md, then run /startup-loop advance --business <BIZ>.`
+   - `next_action`: `Run the naming prompt at docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-prompt.md through a deep research tool (OpenAI Deep Research or equivalent). Save the returned document — including the required YAML front matter — to docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-shortlist.user.md, then run /startup-loop advance --business <BIZ>.`
    - `prompt_file`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-prompt.md`
    - `required_output_path`: `docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md (any date prefix accepted)`
 
@@ -112,6 +112,25 @@ grep "Messaging Hierarchy" docs/business-os/strategy/<BIZ>/index.user.md | grep 
 
 ---
 
+### GATE-S3B-01: Adjacent product research advisory at S2B Done
+
+**Gate ID**: GATE-S3B-01 (Soft — advisory, does not block advance)
+**Trigger**: S2B completion check — evaluated when S2B is Done and intake packet has `growth_intent` referencing product range expansion, or operator manually invokes.
+
+**Rule**: Check whether `lp-other-products-prompt.md` exists under `docs/business-os/strategy/<BIZ>/`.
+
+```bash
+ls docs/business-os/strategy/<BIZ>/lp-other-products-prompt.md 2>/dev/null
+```
+
+**When triggered** (S2B Done + condition met + prompt absent):
+- Advisory: `GATE-S3B-01: Growth intent references product range expansion. Run /lp-other-products <BIZ> to generate the adjacent product research prompt, then drop it into a deep research tool (OpenAI Deep Research or equivalent). Save results to docs/business-os/strategy/<BIZ>/lp-other-products-results.user.md for S5A (lp-prioritize) to pick up as additional go-item candidates.`
+- Does NOT block S3/S6B fan-out or S4 join barrier.
+
+**When skipped**: Condition not met (growth_intent absent or does not reference product range expansion), OR prompt already exists.
+
+---
+
 ### S10 Phase 1 Weekly Advance Dispatch
 
 **Trigger**: S10 weekly advance (Phase 1 default route).
@@ -163,7 +182,7 @@ Where:
 
 **Output**: `docs/business-os/strategy/<BIZ>/signal-review-<YYYYMMDD>-<HHMM>-W<ISOweek>.md`
 
-**v1 posture (advisory)**: Signal Review is emitted for operator review. Findings are presented as Finding Briefs which the operator promotes to `/lp-fact-find` manually. This dispatch does NOT block S10 advance regardless of finding count or severity.
+**v1 posture (advisory)**: Signal Review is emitted for operator review. Findings are presented as Finding Briefs which the operator promotes to `/lp-do-fact-find` manually. This dispatch does NOT block S10 advance regardless of finding count or severity.
 
 **GATE-S10-SIGNAL-01**: Reserved for v1.1 (artifact existence soft warning). Not active in v1.
 
@@ -238,9 +257,9 @@ Protocol reference: `.claude/skills/_shared/subagent-dispatch-contract.md` (Mode
 
 ---
 
-## Ongoing Gap-Fill Gates (lp-fact-find complement)
+## Ongoing Gap-Fill Gates (lp-do-fact-find complement)
 
-These gates fire on live loop events — not just at weekly review time. They are **advisory by default** (do not block advance) unless the condition has persisted long enough to open a replan trigger (GATE-LOOP-GAP-02 hard mode). Each gate dispatches `/lp-fact-find` with `startup-loop-gap-fill` alias and the appropriate trigger type.
+These gates fire on live loop events — not just at weekly review time. They are **advisory by default** (do not block advance) unless the condition has persisted long enough to open a replan trigger (GATE-LOOP-GAP-02 hard mode). Each gate dispatches `/lp-do-fact-find` with `startup-loop-gap-fill` alias and the appropriate trigger type.
 
 ---
 
@@ -262,9 +281,9 @@ ls docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/block-brief-<stage>.md
 
 **When triggered** (blocked event found, no existing brief):
 
-Dispatch `/lp-fact-find` with:
+Dispatch `/lp-do-fact-find` with:
 ```
-/lp-fact-find --startup-loop-gap-fill --trigger block --biz <BIZ> --run-id <run_id> --stage <blocked_stage>
+/lp-do-fact-find --startup-loop-gap-fill --trigger block --biz <BIZ> --run-id <run_id> --stage <blocked_stage>
 ```
 
 Present output to operator before showing next-action. Do NOT block advance — advisory only.
@@ -305,19 +324,19 @@ print(t.get('status', 'none'))
 |---|---|---|
 | No | any | Skip gate |
 | Yes | `none` or `acknowledged` | Advisory: dispatch gap-fill, surface to operator, continue advance |
-| Yes | `open` | **Hard block**: `GATE-LOOP-GAP-02: Replan trigger is open for a persisting bottleneck constraint. Run /lp-fact-find --startup-loop-gap-fill --trigger bottleneck first, then /lp-replan before advancing.` |
+| Yes | `open` | **Hard block**: `GATE-LOOP-GAP-02: Replan trigger is open for a persisting bottleneck constraint. Run /lp-do-fact-find --startup-loop-gap-fill --trigger bottleneck first, then /lp-do-replan before advancing.` |
 
 **When dispatching** (advisory path):
 
 ```
-/lp-fact-find --startup-loop-gap-fill --trigger bottleneck --biz <BIZ> --run-id <run_id>
+/lp-do-fact-find --startup-loop-gap-fill --trigger bottleneck --biz <BIZ> --run-id <run_id>
 ```
 
 Output path: `docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-gap-fill-<YYYY-MM-DD>.md`
 
 **When hard blocked**:
 - Blocking reason: `GATE-LOOP-GAP-02: Replan trigger is open. A bottleneck constraint has persisted for multiple consecutive runs at moderate+ severity. Evidence investigation required before advancing.`
-- Next action: `Run /lp-fact-find --startup-loop-gap-fill --trigger bottleneck --biz <BIZ>, review the output, then run /lp-replan --biz <BIZ>. When replan-trigger.json status is acknowledged, re-run /startup-loop advance --business <BIZ>.`
+- Next action: `Run /lp-do-fact-find --startup-loop-gap-fill --trigger bottleneck --biz <BIZ>, review the output, then run /lp-do-replan --biz <BIZ>. When replan-trigger.json status is acknowledged, re-run /startup-loop advance --business <BIZ>.`
 
 ---
 
@@ -337,9 +356,9 @@ Where `<YYYY-MM-DD>` is the current date. If file exists: gate passes silently. 
 
 **When triggered**:
 
-Dispatch `/lp-fact-find` with:
+Dispatch `/lp-do-fact-find` with:
 ```
-/lp-fact-find --startup-loop-gap-fill --trigger feedback --biz <BIZ> --run-id <run_id>
+/lp-do-fact-find --startup-loop-gap-fill --trigger feedback --biz <BIZ> --run-id <run_id>
 ```
 
 Output path: `docs/business-os/strategy/<BIZ>/feedback-loop-audit-<YYYY-MM-DD>.md`

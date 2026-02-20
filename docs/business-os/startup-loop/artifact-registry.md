@@ -23,11 +23,11 @@ Skills MUST use canonical paths from this registry. Stale or legacy paths listed
 
 | Artifact ID | Producer | Stage | Canonical Path | Required Fields / Sections | Consumers | Version Marker |
 |---|---|---|---|---|---|---|
-| `offer` | `lp-offer` | S2B | `docs/business-os/startup-baselines/<BIZ>-offer.md` | ICP segmentation, pain/promise mapping, offer structure, positioning one-pager, pricing/packaging hypothesis, objection map + risk reversal | `lp-channels`, `lp-forecast`, `lp-seo`, `review-critique` | frontmatter `artifact: offer-artifact` |
-| `channels` | `lp-channels` | S6B | `docs/business-os/startup-baselines/<BIZ>-channels.md` | Selected channels (2-3), constraints (stop condition, denominator target, quality metric, owner, review date, spend/timebox), 30-day GTM timeline, budget allocation | `lp-forecast`, `lp-seo`, `lp-fact-find` | frontmatter `artifact: channel-strategy` |
+| `offer` | `lp-offer` | S2B | `docs/business-os/startup-baselines/<BIZ>-offer.md` | ICP segmentation, pain/promise mapping, offer structure, positioning one-pager, pricing/packaging hypothesis, objection map + risk reversal | `lp-channels`, `lp-forecast`, `lp-seo`, `lp-do-critique` | frontmatter `artifact: offer-artifact` |
+| `channels` | `lp-channels` | S6B | `docs/business-os/startup-baselines/<BIZ>-channels.md` | Selected channels (2-3), constraints (stop condition, denominator target, quality metric, owner, review date, spend/timebox), 30-day GTM timeline, budget allocation | `lp-forecast`, `lp-seo`, `lp-do-fact-find` | frontmatter `artifact: channel-strategy` |
 | `forecast` | `lp-forecast` | S3 | `docs/business-os/startup-baselines/<BIZ>/S3-forecast/YYYY-MM-DD-lp-forecast.user.md` | P10/P50/P90 scenario bands, unit economics (CAC/AOV/margin/CVR), channel ranges, first-14-day validation plan, assumption register | `lp-prioritize`, startup-loop S4 baseline | Dated filename; frontmatter `artifact: forecast` |
 | `seo` | `lp-seo` | S6B companion | `docs/business-os/strategy/<BIZ>/seo/YYYY-MM-DD-<phase>-<BIZ>.user.md` | Phase-specific output (keyword-universe / content-clusters / serp-briefs / tech-audit / snippet-optimization) | `draft-marketing`, `lp-launch-qa`, `lp-metrics` | Dated filename; phase tag in filename |
-| `briefing_contract` | startup-loop maintainers (`lp-build` workflow) | S6/S10 operator briefing | `docs/business-os/startup-loop/briefing-contract-schema-v1.md` | Required metadata keys (`business`, `artifact`, `status`, `owner`, `last_updated`, `source_of_truth`, `depends_on`, `decisions`); status taxonomy; contradiction key set; T1 operator-card schema | `scripts/src/startup-loop/contract-lint.ts`, `docs/business-os/startup-loop-output-registry.user.html`, `/lp-build` task contracts | frontmatter `Type: Schema-Contract`, `Version: 1.0.0` |
+| `briefing_contract` | startup-loop maintainers (`lp-do-build` workflow) | S6/S10 operator briefing | `docs/business-os/startup-loop/briefing-contract-schema-v1.md` | Required metadata keys (`business`, `artifact`, `status`, `owner`, `last_updated`, `source_of_truth`, `depends_on`, `decisions`); status taxonomy; contradiction key set; T1 operator-card schema | `scripts/src/startup-loop/contract-lint.ts`, `docs/business-os/startup-loop-output-registry.user.html`, `/lp-do-build` task contracts | frontmatter `Type: Schema-Contract`, `Version: 1.0.0` |
 
 ## Path Namespace Rules
 
@@ -62,11 +62,14 @@ Paths that existed before this registry was published. Skills MUST NOT read from
 ```
 lp-readiness (S1)
     └── lp-offer (S2B)  →  startup-baselines/<BIZ>-offer.md
+            ├── lp-forecast (S3)  →  startup-baselines/<BIZ>/S3-forecast/YYYY-MM-DD.user.md
+            │       └── startup-loop S4 join barrier
+            ├── lp-other-products (S3B, conditional)  →  strategy/<BIZ>/lp-other-products-prompt.md
+            │       └── startup-loop S4 join barrier (optional artifact)
             ├── lp-channels (S6B)  →  startup-baselines/<BIZ>-channels.md
-            │       └── lp-forecast (S3)  →  startup-baselines/<BIZ>/S3-forecast/YYYY-MM-DD.user.md
-            │               └── startup-loop S4 join barrier
-            ├── lp-seo (S6B companion)  →  strategy/<BIZ>/seo/YYYY-MM-DD-<phase>-<BIZ>.user.md
-            └── review-critique
+            │       ├── lp-seo (S6B companion)  →  strategy/<BIZ>/seo/YYYY-MM-DD-<phase>-<BIZ>.user.md
+            │       └── startup-loop S4 join barrier
+            └── lp-do-critique
 ```
 
 ## Validation Rules (for lint tooling)

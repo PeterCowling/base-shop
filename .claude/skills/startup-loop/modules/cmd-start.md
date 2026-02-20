@@ -20,15 +20,42 @@
 
 **Condition**: `--start-point = problem`
 
-**Rule**: Route to S0A Problem framing. Skip Gate D entirely when `--start-point product` or flag absent (pass-through directly to S0).
-
-**Prompt handoff**:
-- `prompt_file`: `.claude/skills/lp-problem-frame/SKILL.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
+**Rule**: Route through S0A → S0B → S0C → S0D in sequence before S0 intake. Skip Gate D entirely when `--start-point product` or flag absent (pass-through directly to S0).
 
 **Backward compatibility**: Absent `--start-point` flag is treated as `product` — no behavior change for existing operators.
 
-**Re-entry**: If S0A–S0D were completed on a prior run for this business, they are skippable on re-entry with `--start-point problem` (check for existing `problem-statement.user.md` artifact under the business strategy path).
+**S0A — Problem framing:**
+- `prompt_file`: `.claude/skills/lp-problem-frame/SKILL.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
+- **Re-entry**: If `problem-statement.user.md` exists for this business → S0A complete; skip to S0B.
+
+**S0B — Solution-space scan (two-tier):**
+- Tier 1 — prompt written (started): `docs/business-os/strategy/<BIZ>/solution-space-prompt.md`
+- Tier 2 — results returned (complete): `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-space-results.user.md`
+- `prompt_file`: `.claude/skills/lp-solution-space/SKILL.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-space-results.user.md`
+- **Re-entry**: If any `*-solution-space-results.user.md` exists → S0B complete; skip to S0C. If only `solution-space-prompt.md` exists → S0B started; hand off prompt to operator.
+
+**S0C — Option selection:**
+- `prompt_file`: `.claude/skills/lp-option-select/SKILL.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md`
+- **Re-entry**: If `s0c-option-select.user.md` exists → S0C complete; skip to S0D.
+
+**S0D — Naming handoff (two-tier):**
+- Tier 1 — prompt written (started): `docs/business-os/strategy/<BIZ>/naming-research-prompt.md`
+- Tier 2 — shortlist returned (complete): `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-shortlist.user.md`
+- `prompt_file`: `.claude/skills/brand-naming-research/SKILL.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-shortlist.user.md`
+- **Re-entry**: If any `*-naming-shortlist.user.md` exists → S0D complete (GATE-BD-00 at S0→S1 will be satisfied). If only `naming-research-prompt.md` exists → S0D started; hand off prompt to operator.
+
+**S0 pass-through (all sub-stages complete):**
+When all four completion artifacts exist:
+1. `problem-statement.user.md`
+2. Any `*-solution-space-results.user.md`
+3. `s0c-option-select.user.md`
+4. Any `*-naming-shortlist.user.md`
+
+→ Gate D is satisfied. Continue to Gate A (S0 intake).
 
 ---
 

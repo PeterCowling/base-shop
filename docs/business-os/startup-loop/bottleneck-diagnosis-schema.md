@@ -15,7 +15,7 @@ Canonical schemas for bottleneck diagnosis artifacts: `bottleneck-diagnosis.json
 
 The bottleneck diagnosis system identifies the highest-leverage growth constraint after S10 completion (typically weekly). It provides deterministic ranking of metric misses, prefers upstream drivers over downstream symptoms, and writes a guarded replan signal when the same constraint persists across N consecutive runs.
 
-This is diagnosis + signaling only. It does not execute `/lp-replan` automatically.
+This is diagnosis + signaling only. It does not execute `/lp-do-replan` automatically.
 
 ## 2) Metric Catalog (v1)
 
@@ -143,10 +143,10 @@ Severity is classified based on the normalized `miss` value:
 The `upstream_priority_order` defines stage precedence for tie-breaking and multi-block selection. This ordering is derived from startup-loop dependency flow (not stage-ID numeric sorting).
 
 ```
-S0, S1, S1B, S2A, S2, S2B, S3, S6B, S4, S5A, S5B, S6, S7, S8, S9, S9B, S10
+S0A, S0B, S0C, S0D, S0, S1, S1B, S2A, S2, S2B, S3, S3B, S6B, S4, S5A, S5B, S6, S7, S8, S9, S9B, S10
 ```
 
-**Note:** `S6B` intentionally precedes `S4` because `S4` (Baseline merge) consumes S6B outputs as dependencies.
+**Note:** `S6B` intentionally precedes `S4` because `S4` (Baseline merge) consumes S6B outputs as dependencies. `S0A–S0D` precede `S0` because they form the conditional problem-first pre-intake sequence (v1.7.0). `S3B` follows `S3` as a conditional parallel fan-out sibling (v1.6.0).
 
 ### Upstream Attribution Rules
 

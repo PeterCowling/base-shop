@@ -13,7 +13,7 @@ import stageOperatorMap from "../../../docs/business-os/startup-loop/_generated/
 
 export interface RunEvent {
   schema_version: number;
-  event: "stage_started" | "stage_completed" | "stage_blocked";
+  event: "stage_started" | "stage_completed" | "stage_blocked" | "run_aborted";
   run_id: string;
   stage: string;
   timestamp: string;
@@ -84,6 +84,13 @@ export function deriveState(
 
   // Replay events in order
   for (const event of events) {
+    // Run-level events use stage: "*" which is not a valid stage ID.
+    // Handle them before the stage lookup guard to avoid being skipped.
+    if (event.event === "run_aborted") {
+      activeStage = null;
+      continue;
+    }
+
     const stage = stages[event.stage];
     if (!stage) continue; // Unknown stage — skip
 

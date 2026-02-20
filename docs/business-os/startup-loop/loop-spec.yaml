@@ -27,14 +27,14 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 # v1.6.0: Added S3B (Adjacent product research) as third conditional member of fan-out-1.
 #         Condition: growth_intent in intake packet references product range expansion, or operator invokes.
 #         Non-blocking at S4 — results artifact is optional (required: false).
-#         GATE-S3B-01 (Soft/advisory) dispatches /adjacent-product-research at S2B Done.
-#         Results artifact (human-produced after Perplexity run) consumed optionally by lp-prioritize (S5A).
-#         Skill: .claude/skills/adjacent-product-research/SKILL.md. Decision: 2026-02-20.
+#         GATE-S3B-01 (Soft/advisory) dispatches /lp-other-products at S2B Done.
+#         Results artifact (human-produced after deep research tool run) consumed optionally by lp-prioritize (S5A).
+#         Skill: .claude/skills/lp-other-products/SKILL.md. Decision: 2026-02-20.
 # v1.7.0: Added S0A–S0D conditional pre-intake stage family for problem-first operator entry.
 #         Entry routing: explicit --start-point problem|product flag (default: product).
 #         Condition: "start-point = problem" — consistent with --launch-surface gate pattern.
 #         Stages: S0A (Problem framing) → S0B (Solution-space scan) → S0C (Option selection) → S0D (Naming handoff).
-#         S0D uses brand-naming-research (prompt-handoff); operator saves Perplexity results as
+#         S0D uses brand-naming-research (prompt-handoff); operator saves deep research results as
 #         *-naming-shortlist.user.md to satisfy GATE-BD-00 (fires at S0→S1, not S0D→S0).
 #         Operators with --start-point product (or flag absent) bypass S0A–S0D: pass-through, no gate block.
 #         Decision: docs/plans/startup-loop-pre-s0-problem-framing/plan.md 2026-02-20.
@@ -51,7 +51,7 @@ stages:
   # ── Conditional pre-intake stage family (S0A–S0D) ─────────────────────────
   # Triggered when operator invokes /startup-loop start --start-point problem.
   # Operators using --start-point product (or flag absent) bypass S0A–S0D entirely: pass-through, no gate block.
-  # S0D (brand-naming-research) produces a naming research prompt; the operator's Perplexity results
+  # S0D (brand-naming-research) produces a naming research prompt; the operator's deep research results
   # saved as *-naming-shortlist.user.md satisfy GATE-BD-00 at S0→S1. Gate fires at S0→S1, not S0D→S0.
 
   - id: S0A
@@ -86,7 +86,7 @@ stages:
     condition: "start-point = problem"
     bos_sync: "Persist naming research prompt under docs/business-os/strategy/<BIZ>/"
     # GATE-BD-00 note: gate fires at S0→S1 (not S0D→S0). brand-naming-research produces a
-    # naming research PROMPT (naming-research-prompt.md). The operator runs this in Perplexity
+    # naming research PROMPT (naming-research-prompt.md). The operator runs this in a deep research tool
     # and saves results as <YYYY-MM-DD>-naming-shortlist.user.md — that artifact satisfies the
     # *-naming-shortlist.user.md pass condition. No new naming contract introduced by S0D.
 
@@ -178,8 +178,8 @@ stages:
     bos_sync: none
     # GATE-S3B-01 (Soft/advisory) — evaluated at S2B Done.
     # Trigger: growth_intent field in intake packet references product range expansion.
-    # Pass condition: adjacent-product-research-prompt.md exists under docs/business-os/strategy/<BIZ>/
-    # Results (human-produced after Perplexity run): docs/business-os/strategy/<BIZ>/adjacent-product-research-results.user.md
+    # Pass condition: lp-other-products-prompt.md exists under docs/business-os/strategy/<BIZ>/
+    # Results (human-produced after deep research tool run): docs/business-os/strategy/<BIZ>/lp-other-products-results.user.md
     # Results consumed optionally by S5A (lp-prioritize) as additional go-item candidates.
 
   - id: S6B

@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-20
-Last-updated: 2026-02-20 (CHECKPOINT-A executed — blocked; TASK-08 added; JSONL truncated)
+Last-updated: 2026-02-20 (TASK-08 complete — test isolation fixed; CHECKPOINT-A awaiting real data)
 Last-reviewed: 2026-02-20
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: email-draft-self-improving-system
@@ -89,7 +89,7 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 | TASK-01 | IMPLEMENT | Fix 3 confirmed pipeline bugs | 90% | M | Complete (2026-02-20) | - | - |
 | TASK-02 | IMPLEMENT | Signal capture — draft_id, selection/refinement events, edit distance, rewrite_reason | 85% | M | Complete (2026-02-20) | - | TASK-08, CHECKPOINT-A |
 | TASK-03 | IMPLEMENT | Slot/injection system — SlotResolver, template assembly integration | 85% | S | Complete (2026-02-20) | - | TASK-07 |
-| TASK-08 | IMPLEMENT | Fix signal events test isolation — mock appendJsonlEvent in affected test files | 95% | S | Pending | TASK-02 | CHECKPOINT-A |
+| TASK-08 | IMPLEMENT | Fix signal events test isolation — mock appendJsonlEvent in affected test files | 95% | S | Complete (2026-02-20) | TASK-02 | CHECKPOINT-A |
 | CHECKPOINT-A | CHECKPOINT | Threshold validation gate — review edit-distance distribution before building pipeline | 95% | S | Blocked (2026-02-20) | TASK-02, TASK-08, ≥20 real joined events | TASK-04, TASK-05, TASK-07 |
 | TASK-07 | IMPLEMENT | Migrate 5–10 high-value templates to slot syntax | 80% | M | Pending | TASK-03, CHECKPOINT-A | - |
 | TASK-04 | IMPLEMENT | Template proposal pipeline — generate, PII-strip, review tool, write-back | 75% | L | Pending | CHECKPOINT-A | TASK-06 |
@@ -295,7 +295,7 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
 - **Affects:**
   - `packages/mcp-server/src/__tests__/draft-refine.test.ts`
   - `packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts` (check and fix if needed)

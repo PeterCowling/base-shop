@@ -1,5 +1,5 @@
 import { setupMocks } from "../src/__tests__/analyticsTestUtils";
-import type { EmailAnalyticsEvent } from "../src/analytics";
+import type { EmailAnalyticsEvent, EmailEventType } from "../src/analytics";
 
 describe("mapSendGridEvent", () => {
   it.each([
@@ -17,7 +17,7 @@ describe("mapSendGridEvent", () => {
       email: "user@example.com",
     } as const;
     expect(mapSendGridEvent(ev)).toEqual<EmailAnalyticsEvent>({
-      type,
+      type: type as EmailEventType,
       messageId: "m1",
       recipient: "user@example.com",
     });
@@ -70,8 +70,8 @@ describe("mapSendGridEvent", () => {
       event: "open",
       sg_message_id: "m2",
       email: "user@example.com",
-      category: ["camp1", "camp2"],
-    } as const;
+      category: ["camp1", "camp2"] as string[],
+    };
     expect(mapSendGridEvent(ev)).toEqual<EmailAnalyticsEvent>({
       type: "email_open",
       campaign: "camp1",

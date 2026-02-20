@@ -2468,7 +2468,7 @@ async function handleGetEmail(
       ],
       removeLabelIds: [
         ...needsProcessingLabelIds,
-        ...allAgentLabelIds,
+        ...allAgentLabelIds.filter(id => id !== agentLabelId),
       ],
     },
   });

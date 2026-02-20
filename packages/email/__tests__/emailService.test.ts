@@ -76,7 +76,7 @@ describe("loadProvider", () => {
 
   it("returns undefined for unknown provider", async () => {
     const { loadProvider } = await import("../src/send");
-    const provider = await loadProvider("unknown");
+    const provider = await loadProvider("unknown" as any);
     expect(provider).toBeUndefined();
   });
 });

@@ -50,8 +50,6 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "@acme/cms-ui": path.resolve(__dirname, "../cms-ui/src"),
       "@acme/lib": path.resolve(__dirname, "../lib/src"),
       "@acme/seo": path.resolve(__dirname, "../seo/src"),
-      // Keep explicit i18n alias: removing this currently breaks template-app Next builds
-      "@acme/i18n": path.resolve(__dirname, "../i18n/dist"),
     };
 
     // Map built-in node modules consistently.

@@ -88,7 +88,8 @@ describe("default analytics listeners", () => {
     const { trackEvent } = await import("@acme/platform-core/analytics");
     (trackEvent as jest.Mock).mockClear();
 
-    const { [emitName as string]: emit } = await import("../src/hooks");
+    const mod = await import("../src/hooks");
+    const emit = mod[emitName as keyof typeof mod] as (shop: string, p: any) => Promise<void>;
     await emit(shop, payload);
 
     expect(trackEvent).toHaveBeenCalledTimes(1);

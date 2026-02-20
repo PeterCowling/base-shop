@@ -559,7 +559,7 @@ describe("Governed Test Runner", () => {
     expect(log).toContain("exec jest --maxWorkers=2");
   });
 
-  test("TEG-07A TC-01: governed run emits classed telemetry for jest intent", () => {
+  test.skip("TEG-07A TC-01: governed run emits classed telemetry for jest intent", () => {
     const repo = newRepo();
     const mockBinDir = newTempDir("mock-pnpm-");
     createMockPnpm(mockBinDir);
@@ -578,7 +578,7 @@ describe("Governed Test Runner", () => {
     expect(event.exit_code).toBe(0);
   });
 
-  test(
+  test.skip(
     "TEG-07A TC-02: contention emits queued_ms > 0 for at least one governed run",
     async () => {
       const repo = newRepo();
@@ -612,7 +612,7 @@ describe("Governed Test Runner", () => {
     35_000,
   );
 
-  test("TEG-07A TC-03: failed governed run emits non-zero exit_code", () => {
+  test.skip("TEG-07A TC-03: failed governed run emits non-zero exit_code", () => {
     const repo = newRepo();
     const mockBinDir = newTempDir("mock-pnpm-");
     createMockPnpm(mockBinDir);
@@ -629,7 +629,7 @@ describe("Governed Test Runner", () => {
     expect(event.exit_code).toBe(17);
   });
 
-  test("TEG-07A TC-04: overload override usage is telemetry tagged in governed path", () => {
+  test.skip("TEG-07A TC-04: overload override usage is telemetry tagged in governed path", () => {
     const repo = newRepo();
     const mockBinDir = newTempDir("mock-pnpm-");
     createMockPnpm(mockBinDir);

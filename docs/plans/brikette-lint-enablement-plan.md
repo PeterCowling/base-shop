@@ -11,8 +11,8 @@ Feature-Slug: brikette-lint-enablement
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-refactor, lp-replan, lp-sequence
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-refactor, lp-do-replan, lp-sequence
 Overall-confidence: 70
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: off
@@ -314,7 +314,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
     - UI/UX-sensitive (tap size, layout primitives, typography)
     - Copy/localization
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `docs/plans/brikette-lint-enablement-plan.md`, `docs/plans/_artifacts/brikette-eslint.*.json`, `docs/plans/_artifacts/brikette-eslint.*.stderr`, `[readonly] eslint.config.mjs`, `[readonly] apps/brikette/src/**/*`, `[readonly] apps/brikette/package.json`
 - **Depends on:** -
 - **Blocks:** TASK-02
@@ -349,13 +349,13 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 ### TASK-02: Sequencing gate: replan tasks 3+ based on ledger distribution + set drift policy
 - **Type:** CHECKPOINT
 - **Deliverable:** Updated plan tasks after TASK-02 are re-sequenced and (if needed) decomposed based on ledger evidence, plus an explicit drift policy for the remediation window.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `docs/plans/brikette-lint-enablement-plan.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03, TASK-04
 - **Confidence:** 95%
 - **Acceptance:**
-  - Run `/lp-replan` on tasks after this checkpoint.
+  - Run `/lp-do-replan` on tasks after this checkpoint.
   - Reorder/replace tasks 3+ so the first remediation tranche targets the highest-count rules and highest-error files.
   - Pull infra/noise and high-leverage warning blockers earlier if they dominate the distribution.
   - Decide and record the drift guardrail to use during remediation:
@@ -377,7 +377,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Code/config change so eslint type-aware runs do not emit TypeScript project-service warnings for Brikette source files.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/tsconfig.json`, `apps/brikette/tsconfig.scripts.json` (if needed), `eslint.config.mjs` (only if required)
 - **Depends on:** TASK-02
 - **Blocks:** TASK-12 (only if infra/noise exists)
@@ -409,7 +409,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change; remove the eslint-disable and satisfy lint without adding fake tickets.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/utils/i18n-types.ts`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-05
@@ -436,7 +436,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Code changes that eliminate mechanical lint failures and reduce churn for later refactors.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/components/assistance/quick-links-section/normalise.ts`, `apps/brikette/src/test/helpers/hydrationTestUtils.ts`, `apps/brikette/src/lib/metrics/smoothed-metrics.ts`, `apps/brikette/src/components/seo/TravelHelpStructuredData.tsx`
 - **Depends on:** TASK-04
 - **Blocks:** TASK-06
@@ -469,7 +469,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Refactors that reduce complexity under configured eslint thresholds without changing behavior.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/utils/loadI18nNs.ts`, `apps/brikette/src/utils/ensureGuideContent.ts`, `apps/brikette/src/utils/routeHead.ts`, `apps/brikette/src/utils/testHeadFallback.ts`, `apps/brikette/src/utils/tags/normalizers.ts`
 - **Depends on:** TASK-05
 - **Blocks:** TASK-07
@@ -502,7 +502,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Refactors that bring function length under configured thresholds while preserving UI output.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/app/[lang]/bar-menu/BarMenuContent.tsx`, `apps/brikette/src/app/[lang]/breakfast-menu/BreakfastMenuContent.tsx`, `apps/brikette/src/components/guides/GenericContent.tsx`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-08
@@ -535,14 +535,14 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 ### TASK-08: Horizon checkpoint: rerun lint, replan remaining remediation batches
 - **Type:** CHECKPOINT
 - **Deliverable:** Updated plan for remaining remediation, driven by fresh ledger data after the first tranche.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `docs/plans/brikette-lint-enablement-plan.md`
 - **Depends on:** TASK-07
 - **Blocks:** TASK-09, TASK-14..TASK-28
 - **Confidence:** 95%
 - **Acceptance:**
   - Rerun `pnpm --filter @apps/brikette exec eslint src --no-fix` and capture new counts.
-  - Run `/lp-replan` on tasks after TASK-08 with updated evidence.
+  - Run `/lp-do-replan` on tasks after TASK-08 with updated evidence.
   - If tasks are split/added/removed, run `/lp-sequence` before continuing build.
 - **Validation contract:**
   - TC-01: Updated counts and deltas are recorded in this plan.
@@ -563,7 +563,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Replace `any` with concrete types (or `unknown` + narrowing) in the highest-error guide SEO rendering path(s) until `@typescript-eslint/no-explicit-any` errors drop materially.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/routes/guides/guide-seo/components/generic-or-fallback/renderFallbackContent.tsx`, `apps/brikette/src/routes/guides/guide-seo/components/generic-or-fallback/renderPrimaryContent.tsx`, plus additional guide-seo files selected from the post-checkpoint ledger
 - **Depends on:** TASK-08
 - **Blocks:** TASK-12
@@ -596,7 +596,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Code changes that eliminate DS/layout primitive errors in a targeted batch.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/app/[lang]/assistance/layout.tsx`, `apps/brikette/src/components/footer/FooterNav.tsx`, `apps/brikette/src/app/[lang]/experiences/ExperienceFeatureSection.tsx`, plus additional files selected from the post-checkpoint ledger
 - **Depends on:** TASK-08
 - **Blocks:** TASK-12
@@ -632,7 +632,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Status:** Superseded (2026-02-15) — decomposed into `TASK-19` (strategy) + `TASK-20` (implementation batch).
 - **Deliverable:** Code + locale updates that eliminate hardcoded copy errors.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/locales/**`, plus code files from the post-checkpoint ledger that fail `ds/no-hardcoded-copy`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-12
@@ -658,7 +658,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Status:** Superseded (2026-02-15) — decomposed into `TASK-21..TASK-25` (+ `TASK-23` for security warnings).
 - **Deliverable:** Warning remediation so `--max-warnings=0` is feasible.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** Brikette files from the post-checkpoint ledger; `eslint.config.mjs` (only for narrowly-scoped overrides if necessary)
 - **Depends on:** TASK-08
 - **Blocks:** TASK-12
@@ -686,7 +686,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Package script change; lint is enabled and green.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/package.json`
 - **Depends on:** TASK-09, TASK-14, TASK-15, TASK-16, TASK-17, TASK-18, TASK-20, TASK-22, TASK-23, TASK-24, TASK-25, TASK-30, TASK-31, TASK-32, TASK-27, TASK-28 (+ TASK-03 if applicable)
 - **Blocks:** -
@@ -711,7 +711,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** DS/container compliance changes that eliminate `ds/container-widths-only-at` errors in the remaining offender set.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/app/[lang]/experiences/ExperiencesCtaSection.tsx`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-12
@@ -744,7 +744,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Replace remaining non-DS layout primitives in the offender set until `ds/enforce-layout-primitives` errors are eliminated.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/routes/how-to-get-here/_galleries.tsx`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-12
@@ -773,7 +773,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-15)
 - **Deliverable:** Refactor `sections.tsx` and `guideExtras.ts` files to clear coupled lint errors (layout primitives + complexity) without changing rendered content.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - `apps/brikette/src/routes/how-to-get-here/sections.tsx`
   - `apps/brikette/src/routes/how-to-get-here/_callouts.tsx`
@@ -818,7 +818,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Code refactors that eliminate remaining `react-hooks/rules-of-hooks`, `react-hooks/error-boundaries`, and `max-depth` errors.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - `apps/brikette/src/components/assistance/quick-links-section/index.tsx` (react-hooks/rules-of-hooks)
   - `apps/brikette/src/routes/guides/guide-seo/components/fallback/RenderManualString.tsx` (react-hooks/error-boundaries)
@@ -857,7 +857,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Refactors that bring remaining offender functions under the configured `max-lines-per-function` threshold without changing runtime behavior.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - `apps/brikette/src/components/guides/generic-content/buildContent.ts`
   - `apps/brikette/src/routes/guides/guide-seo/components/FaqStructuredDataBlock.tsx`
@@ -905,7 +905,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Mechanical cleanup that removes remaining unused vars without changing behavior.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - `apps/brikette/src/components/guides/GuideCollectionWithSearch.tsx`
   - `apps/brikette/src/lib/seo-audit/index.ts`
@@ -941,7 +941,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 ### TASK-19: i18n/copy strategy check (coverage/parity tests + locale policy)
 - **Type:** INVESTIGATE
 - **Deliverable:** A documented decision (in this plan) for how ds/no-hardcoded-copy remediations should add keys across locales without breaking i18n coverage/parity checks.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `docs/plans/brikette-lint-enablement-plan.md`, `[readonly] apps/brikette/src/test/content-readiness/i18n/**`, `[readonly] apps/brikette/src/locales/**`, `[readonly] apps/brikette/src/i18n.ts`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-20, TASK-29
@@ -976,7 +976,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 ### TASK-20: Remove `ds/no-hardcoded-copy` errors in redirect stubs (cookie-policy, privacy-policy)
 - **Type:** IMPLEMENT
 - **Deliverable:** Redirect fallback pages comply with lint by removing hardcoded UI copy and using container primitives correctly.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - `apps/brikette/src/app/cookie-policy/page.tsx`
   - `apps/brikette/src/app/privacy-policy/page.tsx`
@@ -1011,7 +1011,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-16)
 - **Deliverable:** Copy localization changes that eliminate remaining `ds/no-hardcoded-copy` errors (and reduce warnings materially).
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/locales/**` plus the remaining offender files identified in the post-task-13-09 ledger:
   - `apps/brikette/src/routes/how-to-get-here/briketteToFerryDock/_articleLead.tsx`
   - `apps/brikette/src/app/[lang]/hospitality-preview/page.tsx`
@@ -1066,7 +1066,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 ### TASK-21: Restricted-imports audit (verify supported entrypoints + migration map)
 - **Type:** INVESTIGATE
 - **Deliverable:** A migration map (in this plan) for each `no-restricted-imports` offender: what supported import to switch to, or what repo change is required if no supported entrypoint exists.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `docs/plans/brikette-lint-enablement-plan.md`, `[readonly] eslint.config.mjs`, `[readonly] apps/brikette/src/**/*`, `[readonly] packages/ui/**/*` (if present)
 - **Depends on:** TASK-08
 - **Blocks:** TASK-22
@@ -1124,7 +1124,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-16)
 - **Deliverable:** Import migrations that eliminate `no-restricted-imports` warnings in the offender set.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** Offender set from the post-task-13-09 ledger (19 warnings, 18 files) plus any shared helper files required by the migration.
 - **Depends on:** TASK-21
 - **Blocks:** TASK-12
@@ -1153,7 +1153,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 ### TASK-23: Remediate security warnings to reach `--max-warnings=0` (tests + seo-audit)
 - **Type:** IMPLEMENT
 - **Deliverable:** Warning remediation for `security/*` rules so strict lint can pass.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** Offender set from the post-task-13-09 ledger, including:
   - `apps/brikette/src/test/**`
   - `apps/brikette/src/lib/seo-audit/index.ts`
@@ -1177,7 +1177,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 ### TASK-24: Fix `ds/min-tap-size` warnings (apartment tranche + SkipLink)
 - **Type:** IMPLEMENT
 - **Deliverable:** UI changes that eliminate `ds/min-tap-size` warnings in a low-coupling offender subset.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - `apps/brikette/src/app/[lang]/apartment/ApartmentPageContent.tsx`
   - `apps/brikette/src/app/[lang]/apartment/private-stay/PrivateStayContent.tsx`
@@ -1212,7 +1212,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 ### TASK-30: ExperiencesHero lint remediation (tap-size + coupled warnings)
 - **Type:** IMPLEMENT
 - **Deliverable:** Reduce blocker findings in `ExperiencesHero` so strict lint can progress (tap-size plus any directly coupled warnings/errors that prevent isolated fixes).
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/app/[lang]/experiences/ExperiencesHero.tsx`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-12
@@ -1247,7 +1247,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 ### TASK-31: HowToGetHereIndexContent warnings (tap-size + unsafe-regex)
 - **Type:** IMPLEMENT
 - **Deliverable:** Eliminate the warning set in `HowToGetHereIndexContent` needed for `--max-warnings=0`.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/app/[lang]/how-to-get-here/HowToGetHereIndexContent.tsx`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-12
@@ -1277,7 +1277,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 ### TASK-25: Fix remaining a11y/Next/react-hooks warnings (alt-text, no-img-element, exhaustive-deps)
 - **Type:** IMPLEMENT
 - **Deliverable:** Warning remediation for the remaining small warning set so strict lint can pass.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** Offender set from the post-task-13-09 ledger:
   - `apps/brikette/src/test/components/careers-hero.test.tsx` (`jsx-a11y/alt-text`)
   - `apps/brikette/src/test/components/guide-collection-card.test.tsx` (`jsx-a11y/alt-text`)
@@ -1312,7 +1312,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 ### TASK-26: `no-explicit-any` remaining offenders: type strategy + call-site map
 - **Type:** INVESTIGATE
 - **Deliverable:** A call-site map and type strategy that makes the remaining `no-explicit-any` offender set implementable without “spray unknown everywhere” regressions.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `docs/plans/brikette-lint-enablement-plan.md`, `[readonly] apps/brikette/src/routes/guides/guide-seo/**`, `[readonly] apps/brikette/src/routes/how-to-get-here/**`, `[readonly] apps/brikette/src/lib/seo-audit/**`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-27
@@ -1766,7 +1766,7 @@ export function isStructuredRouteContent(
 ### TASK-27: Remove remaining `@typescript-eslint/no-explicit-any` errors (post-task-13-09 ledger)
 - **Type:** IMPLEMENT
 - **Deliverable:** Type remediations that eliminate the remaining `@typescript-eslint/no-explicit-any` errors (59 errors across 9 files in the post-task-13-09 ledger).
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** Remaining offender set (post-task-13-09 ledger):
   - `apps/brikette/src/routes/guides/guide-seo/components/fallback/renderAliasFaqsOnly.tsx`
   - `apps/brikette/src/routes/how-to-get-here/transformRouteToGuide.ts`
@@ -1815,7 +1815,7 @@ export function isStructuredRouteContent(
 ### TASK-28: Reduce remaining `complexity` errors to configured thresholds (post-task-13-09 ledger)
 - **Type:** IMPLEMENT
 - **Deliverable:** Refactors that bring remaining `complexity` offenders under the configured threshold, prioritising the multi-count hotspots.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** Remaining offender set (post-task-13-09 ledger; 40 errors across 36 files), starting with:
   - `apps/brikette/src/routes/guides/guide-seo/components/fallback/RenderFallbackStructured.tsx` (3)
   - `apps/brikette/src/routes/guides/guide-seo/components/generic/translatorWrapper.ts` (2)

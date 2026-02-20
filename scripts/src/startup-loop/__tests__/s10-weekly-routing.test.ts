@@ -56,7 +56,7 @@ describe("TC-06-01: S10 stage contract stability (loop-spec.yaml)", () => {
     const raw = fs.readFileSync(loopSpecPath, "utf8");
     const idMatches = raw.match(/^\s+- id: S\w+/gm);
     expect(idMatches).not.toBeNull();
-    expect(idMatches!.length).toBe(22); // 17 original + S0A/S0B/S0C/S0D/S3B added in v1.6.0/v1.7.0
+    expect(idMatches!.length).toBe(22); // 17 original + DISCOVERY-01/02/03/04/05/S3B added in v1.6.0/v1.7.0/v1.9.0
   });
 });
 

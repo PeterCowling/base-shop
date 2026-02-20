@@ -6,7 +6,7 @@ Domain: Platform, Commerce
 Last-reviewed: 2026-02-14
 Relates-to charter: docs/commerce-charter.md
 Last-updated: 2026-02-14
-Last-updated-by: Codex (review-fact-check)
+Last-updated-by: Codex (lp-do-factcheck)
 Audit-Ref: working-tree
 Audit-Date: 2026-02-14
 ---

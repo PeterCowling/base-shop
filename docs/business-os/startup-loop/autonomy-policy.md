@@ -34,7 +34,7 @@ BOS sync actions write only to local files (docs, strategy plans, startup baseli
 
 | Stage | Name | BOS Sync Action | Tier |
 |-------|------|-----------------|------|
-| S0 | Intake | Update `docs/business-os/strategy/<BIZ>/plan.user.md` | Autonomous |
+| DISCOVERY | Intake | Update `docs/business-os/strategy/<BIZ>/plan.user.md` | Autonomous |
 | S1 | Readiness | Record blockers/warnings in readiness docs + strategy risk section | Autonomous |
 | S1B | Measurement bootstrap | Record measurement setup status under `docs/business-os/strategy/<BIZ>/` | Autonomous |
 | S2A | Historical baseline | Persist baseline under `docs/business-os/strategy/<BIZ>/` | Autonomous |
@@ -132,7 +132,7 @@ Use these criteria when adding new stages or actions to the loop:
 
 All 17 stages from loop-spec.yaml v1.0.0 are classified:
 
-- **Autonomous:** 11 stages — S0, S1, S1B, S2A, S2, S2B, S3, S6B, S4, S5A, S6
+- **Autonomous:** 11 stages — DISCOVERY, S1, S1B, S2A, S2, S2B, S3, S6B, S4, S5A, S6
 - **Guarded (BOS sync):** 6 stages — S5B, S7, S8, S9, S9B, S10
 - **Prohibited:** 0 stages (prohibited applies to actions, not stages)
 

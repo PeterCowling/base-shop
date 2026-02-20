@@ -12,6 +12,9 @@ Bootstrap measurement infrastructure for a startup before or just after website 
 
 **Parameters:**
 - `--business`: Business code (e.g., `BRIK`, `SEG`, `XA`)
+
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
+
 - `--mode`: Operating mode. Defaults to `website-live`. Use `pre-website` for measurement setup before a production site exists.
 
 **Example:**

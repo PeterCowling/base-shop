@@ -9,7 +9,7 @@ Feature-Slug: ds-dashboard-migration
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Overall-confidence: 95%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -135,7 +135,7 @@ border-emerald-200 text-emerald-700 → border-success text-success
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/dashboard/src/pages/_app.tsx`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/dashboard/src/pages/_app.tsx`
 - **Depends on:** -
@@ -169,7 +169,7 @@ border-emerald-200 text-emerald-700 → border-success text-success
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/dashboard/src/pages/dashboard.tsx`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/dashboard/src/pages/dashboard.tsx`
 - **Depends on:** -
@@ -202,7 +202,7 @@ border-emerald-200 text-emerald-700 → border-success text-success
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/dashboard/src/pages/shops.tsx`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/dashboard/src/pages/shops.tsx`
 - **Depends on:** -
@@ -239,7 +239,7 @@ border-emerald-200 text-emerald-700 → border-success text-success
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/dashboard/src/pages/shops/[id].tsx`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/dashboard/src/pages/shops/[id].tsx`
 - **Depends on:** -
@@ -279,7 +279,7 @@ border-emerald-200 text-emerald-700 → border-success text-success
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/dashboard/src/pages/Upgrade.tsx`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/dashboard/src/pages/Upgrade.tsx`
 - **Depends on:** -
@@ -321,7 +321,7 @@ border-emerald-200 text-emerald-700 → border-success text-success
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 2 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/dashboard/src/pages/history.tsx`
   - **Primary:** `apps/dashboard/src/pages/workboard.tsx`
@@ -357,7 +357,7 @@ border-emerald-200 text-emerald-700 → border-success text-success
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `eslint.config.mjs` + `tools/eslint-baselines/ds-no-raw-tailwind-color.json`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `eslint.config.mjs`
   - **Primary:** `tools/eslint-baselines/ds-no-raw-tailwind-color.json`

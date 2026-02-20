@@ -13,8 +13,8 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: website-upgrade-backlog
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-plan, lp-seo, lp-design-spec
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-plan, lp-seo, lp-design-spec
 Related-Plan: docs/plans/brik-apartment-landing-conversion-audit/plan.md
 Business-OS-Integration: off
 Business-Unit: BRIK
@@ -56,7 +56,7 @@ Convert the current `/en/apartment` and `/en/apartment/book` audit into a planni
 - Canonical BRIK upgrade brief pointer: `docs/business-os/site-upgrades/BRIK/latest.user.md`
 
 ### Key Modules / Files
-- Evidence capture artifacts (required before `/lp-build` execution):
+- Evidence capture artifacts (required before `/lp-do-build` execution):
 - `artifacts/fact-find/2026-02-17/apartment.en.view-source.html` - raw source capture for `/en/apartment`.
 - `artifacts/fact-find/2026-02-17/apartment.book.en.view-source.html` - raw source capture for `/en/apartment/book`.
 - `artifacts/fact-find/2026-02-17/apartment.en.screenshot.png` - rendered-page screenshot (JS on).
@@ -289,9 +289,9 @@ Pass/fail checks to store in `artifacts/fact-find/2026-02-17/evidence-notes.md`:
 
 ## Execution Routing Packet
 - Primary execution skill:
-- `lp-build`
+- `lp-do-build`
 - Supporting skills:
-- `lp-plan`, `lp-seo`, `lp-design-spec`
+- `lp-do-plan`, `lp-seo`, `lp-design-spec`
 - Deliverable acceptance package:
 - Updated apartment and booking page behavior, validated routing, reproducible rendering evidence artifacts, legal/perks decision artifacts, new media/copy modules, SEO/schema/canonical artifacts, and event tracking verification.
 - Post-delivery measurement plan:
@@ -317,4 +317,4 @@ Pass/fail checks to store in `artifacts/fact-find/2026-02-17/evidence-notes.md`:
 - Blocking items:
 - None for planning kickoff; unresolved assumptions should become early verification tasks in plan.
 - Recommended next step:
-- `/lp-plan`
+- `/lp-do-plan`

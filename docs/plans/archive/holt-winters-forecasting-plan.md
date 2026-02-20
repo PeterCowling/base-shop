@@ -10,7 +10,7 @@ Relates-to charter: none
 Feature-Slug: holt-winters-forecasting
 Deliverable-Type: single-deliverable
 Execution-Track: implementation
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Overall-confidence: 86%
 Confidence-Method: min(Implementation,Approach,Impact) - formulas and APIs are well-defined, but interval calibration and initialization quality still require careful validation
@@ -83,7 +83,7 @@ Primary reference: `docs/plans/archive/advanced-math-algorithms-fact-find.md` (O
 - **Type:** IMPLEMENT
 - **Status:** Pending
 - **Deliverable:** code-change + tests.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 91% (Implementation 92 / Approach 90 / Impact 91)
 - **Affects:** `packages/lib/src/math/forecasting/`
 - **Depends on:** none
@@ -113,7 +113,7 @@ Primary reference: `docs/plans/archive/advanced-math-algorithms-fact-find.md` (O
 - **Type:** IMPLEMENT
 - **Status:** Pending
 - **Deliverable:** code-change + tests.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 86% (Implementation 87 / Approach 84 / Impact 86)
 - **Affects:** `seasonal-decomposition.ts`
 - **Depends on:** HW-00
@@ -142,7 +142,7 @@ Primary reference: `docs/plans/archive/advanced-math-algorithms-fact-find.md` (O
 - **Type:** IMPLEMENT
 - **Status:** Pending
 - **Deliverable:** code-change + tests.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 84% (Implementation 86 / Approach 82 / Impact 84)
 - **Affects:** `holt-winters.ts`
 - **Depends on:** HW-00, HW-01
@@ -173,7 +173,7 @@ Primary reference: `docs/plans/archive/advanced-math-algorithms-fact-find.md` (O
 - **Type:** IMPLEMENT
 - **Status:** Pending
 - **Deliverable:** code-change + tests.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 83% (Implementation 84 / Approach 82 / Impact 83)
 - **Affects:** `holt-winters.ts`
 - **Depends on:** HW-00, HW-01
@@ -204,7 +204,7 @@ Primary reference: `docs/plans/archive/advanced-math-algorithms-fact-find.md` (O
 - **Type:** IMPLEMENT
 - **Status:** Pending
 - **Deliverable:** code-change + tests.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 85% (Implementation 86 / Approach 84 / Impact 85)
 - **Affects:** `model-selection.ts`, `ewma.ts`, `holt-winters.ts`
 - **Depends on:** HW-02, HW-03
@@ -239,7 +239,7 @@ Primary reference: `docs/plans/archive/advanced-math-algorithms-fact-find.md` (O
 - **Type:** IMPLEMENT
 - **Status:** Pending
 - **Deliverable:** code-change + tests.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 80% (Implementation 81 / Approach 78 / Impact 80)
 - **Affects:** `prediction-intervals.ts`, `ewma.ts`, `holt-winters.ts`
 - **Depends on:** HW-02, HW-03
@@ -275,7 +275,7 @@ Primary reference: `docs/plans/archive/advanced-math-algorithms-fact-find.md` (O
 - **Type:** IMPLEMENT
 - **Status:** Pending
 - **Deliverable:** code-change + tests.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 82% (Implementation 84 / Approach 80 / Impact 82)
 - **Affects:** `parameter-optimization.ts`
 - **Depends on:** HW-04, HW-05

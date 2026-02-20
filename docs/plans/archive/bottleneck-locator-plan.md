@@ -12,8 +12,8 @@ Feature-Slug: bottleneck-locator
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-sequence, /lp-replan
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-sequence, /lp-do-replan
 Overall-confidence: 87%
 Confidence-Method: min(Implementation,Approach,Impact) — schema/persistence patterns proven; startup-loop metrics exist; guarded trigger lifecycle specified
 Business-OS-Integration: on
@@ -26,12 +26,12 @@ Business-Unit: PLAT
 
 Implement a bottleneck diagnosis system that runs on S10 completion (typically weekly), identifies the highest-leverage growth constraint, and writes a guarded replan signal when the same constraint signature persists across N consecutive runs.
 
-This is diagnosis + signaling only. It does not execute `/lp-replan` automatically.
+This is diagnosis + signaling only. It does not execute `/lp-do-replan` automatically.
 
 Primary references:
 - `docs/plans/archive/advanced-math-algorithms-fact-find.md` (Opportunity R)
 - `docs/business-os/startup-loop/loop-spec.yaml`
-- `.claude/skills/lp-replan/SKILL.md`
+- `.claude/skills/lp-do-replan/SKILL.md`
 - `docs/business-os/startup-loop/event-state-schema.md`
 - `docs/business-os/startup-loop/manifest-schema.md`
 
@@ -180,7 +180,7 @@ Normalize `stage_blocked` reason codes:
 
 - **Type:** DECISION
 - **Deliverable:** business-artifact (schema definition document)
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 90%
   - Implementation: 90% — aligns with existing manifest/events deterministic patterns
   - Approach: 91% — explicit contracts reduce downstream ambiguity
@@ -239,7 +239,7 @@ Normalize `stage_blocked` reason codes:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 85%
   - Implementation: 85% — artifact read/parsing is straightforward
   - Approach: 86% — no new data collection required
@@ -285,7 +285,7 @@ Normalize `stage_blocked` reason codes:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 84%
   - Implementation: 84% — pure deterministic ranking function
   - Approach: 85% — attribution rules avoid symptom-only bottlenecks
@@ -338,7 +338,7 @@ Normalize `stage_blocked` reason codes:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 87%
   - Implementation: 87% — composition of BL-02 + BL-03 with deterministic comparator
   - Approach: 88% — uses explicit run ordering contract
@@ -383,7 +383,7 @@ Normalize `stage_blocked` reason codes:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 87%
   - Implementation: 87% — JSONL append + dedupe by run_id is straightforward
   - Approach: 88% — matches existing append-only ledger patterns
@@ -427,7 +427,7 @@ Normalize `stage_blocked` reason codes:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 86%
   - Implementation: 86% — state machine is small and deterministic
   - Approach: 87% — guarded signaling follows autonomy policy
@@ -455,7 +455,7 @@ Normalize `stage_blocked` reason codes:
     - does not auto-delete on first non-persistent run
     - resolves only after configured non-persistent streak or explicit operator resolution
     - resolved trigger reopens (`status=resolved -> open`) if persistence criteria are met again; increment `reopened_count`
-  - Does not execute `/lp-replan`; it writes a guarded signal only.
+  - Does not execute `/lp-do-replan`; it writes a guarded signal only.
 - **Test contract:**
   - **TC-01:** Open trigger — 3 persistent moderate+ runs create `status=open` trigger file.
   - **TC-02:** Severity gate — persistent `minor` constraint does not open trigger when `minSeverity=moderate`.
@@ -476,7 +476,7 @@ Normalize `stage_blocked` reason codes:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 84%
   - Implementation: 84% — clear hook point in S10 completion
   - Approach: 85% — preserves existing S10 flow with additive behavior
@@ -580,13 +580,13 @@ Normalize `stage_blocked` reason codes:
 ### DL-03: Guarded trigger with lifecycle, not autonomous replan execution
 
 **Decided:** 2026-02-13
-**Chosen option:** Maintain `replan-trigger.json` lifecycle state (`open/acknowledged/resolved`) and require manual `/lp-replan` invocation.
+**Chosen option:** Maintain `replan-trigger.json` lifecycle state (`open/acknowledged/resolved`) and require manual `/lp-do-replan` invocation.
 
 **Rationale:**
 - Matches autonomy policy for guarded control-plane actions.
 - Avoids accidental replan loops.
 - Preserves operator context and decision authority.
 
-**Alternative considered:** immediate auto-execution of `/lp-replan` — rejected for v1 risk profile.
+**Alternative considered:** immediate auto-execution of `/lp-do-replan` — rejected for v1 risk profile.
 
 ---

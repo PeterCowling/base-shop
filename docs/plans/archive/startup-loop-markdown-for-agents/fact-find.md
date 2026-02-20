@@ -12,8 +12,8 @@ Feature-Slug: startup-loop-markdown-for-agents
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-sequence, /lp-replan
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-sequence, /lp-do-replan
 Related-Plan: docs/plans/startup-loop-markdown-for-agents/plan.md
 Business-OS-Integration: off
 Business-Unit: PLAT
@@ -201,7 +201,7 @@ Inference from sources:
 ### Open (User Input Needed)
 - None blocking for planning.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - **Implementation:** 82%
   - Why: existing refresh lifecycle, artifact conventions, and Cloudflare adapter patterns reduce unknowns.
   - To reach >=90%: complete a spike confirming one real domain end-to-end (`Accept: text/markdown` -> persisted artifact -> pack evidence).
@@ -251,9 +251,9 @@ Inference from sources:
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `/lp-build`
+  - `/lp-do-build`
 - Supporting skills:
-  - `/lp-sequence`, `/lp-replan`
+  - `/lp-sequence`, `/lp-do-replan`
 - Deliverable acceptance package (what must exist before task can be marked complete):
   - New adapter/tool contracts merged with passing targeted tests.
   - Persisted markdown source artifacts referenced by startup-loop evidence outputs.
@@ -267,4 +267,4 @@ Inference from sources:
 - Blocking items (if any):
   - None
 - Recommended next step:
-  - Proceed to `/lp-plan` with this brief and sequence tasks to land adapter and artifact contracts before broader collector rollout.
+  - Proceed to `/lp-do-plan` with this brief and sequence tasks to land adapter and artifact contracts before broader collector rollout.

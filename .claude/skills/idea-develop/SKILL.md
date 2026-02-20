@@ -180,7 +180,7 @@ Use PATCH with JSON Merge Patch and optimistic concurrency. Move location to `wo
 ## Integration with Other Skills
 
 - After creating card, recommend `/idea-advance` to move to Fact-finding lane
-- Use `/lp-fact-find` skill for structured fact-finding
+- Use `/lp-do-fact-find` skill for structured fact-finding
 
 ## Example Session (API)
 

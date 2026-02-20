@@ -2,15 +2,20 @@
  * Stage Label Rename — TASK-09 SPIKE Stability + Guard Tests
  *
  * SPIKE FINDING (2026-02-18): Option B label rename scope = ZERO.
- * All 17 stage labels are build-sequence node names (Intake, Readiness, Forecast, …).
+ * All 27 stage labels are build-sequence node names (Intake, Readiness, Forecast, …).
  * None contain deprecated v1 workstream long-form names. No label strings need to
  * change in stage-operator-dictionary.yaml as a result of the v2 workstream rename.
  *
+ * Updated v1.9.0: DISCOVERY/DISCOVERY-01..05 stages added (was S0/S0A-S0E).
+ * Updated v2.0.0: DISCOVERY expanded to 7 sub-stages (DISCOVERY-01..07). Added DISCOVERY-05
+ *                 (Channel Plan), DISCOVERY-06 (Measure Plan). Former DISCOVERY-05 renamed DISCOVERY-07.
+ * Updated v2.1.0: Added BRAND-01 (Brand strategy), BRAND-02 (Brand identity), BRAND (container) between DISCOVERY and S1.
+ *
  * This file therefore contains:
- *   (A) STABILITY tests — all 17 short + long labels resolve correctly today.
+ *   (A) STABILITY tests — all 27 short + long labels resolve correctly today.
  *       These act as a regression guard: if any label is inadvertently renamed they fail.
  *   (B) DEPRECATION GUARD tests — deprecated workstream names are not resolvable as labels.
- *   (C) ALIAS MECHANISM tests — all 44 canonical aliases round-trip via resolveByAlias.
+ *   (C) ALIAS MECHANISM tests — all canonical aliases round-trip via resolveByAlias.
  *   (D) RED GATE SHAPES — it.todo() stubs showing the TDD pattern that WOULD be used
  *       if Option B had required new aliases. Kept as documentation; not implemented.
  */
@@ -21,7 +26,17 @@ import { resolveByAlias, resolveByLabel } from "../stage-addressing.js";
 
 describe("Label stability — label_operator_short", () => {
   const SHORT_LABELS: [string, string][] = [
-    ["Intake", "S0"],
+    ["Problem framing", "DISCOVERY-01"],
+    ["Solution-space scan", "DISCOVERY-02"],
+    ["Option selection", "DISCOVERY-03"],
+    ["Naming handoff", "DISCOVERY-04"],
+    ["Channel Plan", "DISCOVERY-05"],
+    ["Measure Plan", "DISCOVERY-06"],
+    ["Operator evidence", "DISCOVERY-07"],
+    ["Intake", "DISCOVERY"],
+    ["Brand-01", "BRAND-01"],
+    ["Brand-02", "BRAND-02"],
+    ["Brand", "BRAND"],
     ["Readiness check", "S1"],
     ["Measurement setup", "S1B"],
     ["Historical baseline", "S2A"],
@@ -56,7 +71,17 @@ describe("Label stability — label_operator_short", () => {
 
 describe("Label stability — label_operator_long", () => {
   const LONG_LABELS: [string, string][] = [
-    ["S0 — Intake", "S0"],
+    ["DISCOVERY-01 — Problem framing", "DISCOVERY-01"],
+    ["DISCOVERY-02 — Solution-space scan", "DISCOVERY-02"],
+    ["DISCOVERY-03 — Option selection", "DISCOVERY-03"],
+    ["DISCOVERY-04 — Naming handoff", "DISCOVERY-04"],
+    ["DISCOVERY-05 — Channel Plan", "DISCOVERY-05"],
+    ["DISCOVERY-06 — Measure Plan", "DISCOVERY-06"],
+    ["DISCOVERY-07 — Operator evidence", "DISCOVERY-07"],
+    ["DISCOVERY — Intake", "DISCOVERY"],
+    ["BRAND-01 — Brand strategy", "BRAND-01"],
+    ["BRAND-02 — Brand identity", "BRAND-02"],
+    ["BRAND — Brand", "BRAND"],
     ["S1 — Readiness", "S1"],
     ["S1B — Measurement bootstrap (pre-website)", "S1B"],
     ["S2A — Historical baseline (website-live)", "S2A"],
@@ -112,13 +137,41 @@ describe("Deprecation guard — v1 workstream names are not stage labels", () =>
   );
 });
 
-// ── (C) ALIAS MECHANISM: All 44 canonical aliases round-trip ────────────────
+// ── (C) ALIAS MECHANISM: All 50 canonical aliases round-trip ────────────────
 
 describe("Alias mechanism — all canonical aliases resolve", () => {
   const ALL_ALIASES: [string, string][] = [
-    // S0
-    ["intake", "S0"],
-    ["s0", "S0"],
+    // DISCOVERY-01..07
+    ["problem-framing", "DISCOVERY-01"],
+    ["discovery-01", "DISCOVERY-01"],
+    ["solution-space", "DISCOVERY-02"],
+    ["discovery-02", "DISCOVERY-02"],
+    ["option-selection", "DISCOVERY-03"],
+    ["discovery-03", "DISCOVERY-03"],
+    ["naming-handoff", "DISCOVERY-04"],
+    ["discovery-04", "DISCOVERY-04"],
+    ["distribution-planning", "DISCOVERY-05"],
+    ["discovery-05", "DISCOVERY-05"],
+    ["channel-plan", "DISCOVERY-05"],
+    ["measurement-plan", "DISCOVERY-06"],
+    ["discovery-06", "DISCOVERY-06"],
+    ["measure-plan", "DISCOVERY-06"],
+    ["operator-evidence", "DISCOVERY-07"],
+    ["our-stance", "DISCOVERY-07"],
+    ["discovery-07", "DISCOVERY-07"],
+    // DISCOVERY
+    ["intake", "DISCOVERY"],
+    ["discovery", "DISCOVERY"],
+    // BRAND-01
+    ["brand-strategy", "BRAND-01"],
+    ["brand-01", "BRAND-01"],
+    // BRAND-02
+    ["brand-identity", "BRAND-02"],
+    ["brand-02", "BRAND-02"],
+    ["brand-dossier", "BRAND-02"],
+    // BRAND
+    ["brand", "BRAND"],
+    ["brand-intake", "BRAND"],
     // S1
     ["readiness", "S1"],
     ["s1", "S1"],

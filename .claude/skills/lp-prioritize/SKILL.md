@@ -13,6 +13,8 @@ description: S5 startup go-item ranking - score and select top 2-3 items to purs
 /lp-prioritize --business <BIZ>
 ```
 
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
+
 Optional flags:
 - `--max <N>` - select top N items (default 2-3)
 - `--backlog <PATH>` - include existing backlog items
@@ -33,7 +35,7 @@ This skill reads candidate go-items from upstream outputs (lp-readiness, lp-offe
 
 3. **Includes experiment + distribution candidates**: idea-generate focuses on business ideas. lp-prioritize ranks ALL go-items: product features, experiments, distribution bets, content pieces, operational improvements.
 
-4. **Direct output to lp-fact-find**: Ranked list feeds directly into lp-fact-find for the top items. No card creation, no idea persistence, no DGPs.
+4. **Direct output to lp-do-fact-find**: Ranked list feeds directly into lp-do-fact-find for the top items. No card creation, no idea persistence, no DGPs.
 
 5. **100-150 lines vs 1200+ lines**: Deliberately lightweight for startups with 5-10 candidates, not enterprise backlogs with hundreds of items.
 
@@ -46,6 +48,9 @@ This skill reads candidate go-items from upstream outputs (lp-readiness, lp-offe
   - lp-offer output (feature candidates, positioning experiments)
   - lp-forecast output (distribution experiments, content bets)
   - Existing backlog (if provided via `--backlog`)
+
+**Optional (S3B)**:
+- `docs/business-os/strategy/<BIZ>/lp-other-products-results.user.md` — if present (human-produced after running the S3B prompt in a deep research tool), extract product candidates from the Track 4 top-5 shortlist as additional go-items. Score them through the standard Effort/Impact/Learning-Value rubric alongside feature and distribution bet candidates. Source label: `S3B lp-other-products`.
 
 **Candidate shape**: Each item must have title, description, and source (which upstream output it came from).
 
@@ -169,7 +174,7 @@ Invalid output:
 
 ## Integration
 
-**Downstream**: Output feeds directly into `/lp-fact-find` for the selected top 2-3 items. Each selected item becomes a fact-find target.
+**Downstream**: Output feeds directly into `/lp-do-fact-find` for the selected top 2-3 items. Each selected item becomes a fact-find target.
 
 **Upstream**: Reads from:
 - `/lp-readiness` (capability gaps, quick wins)
@@ -188,4 +193,4 @@ Expected output:
 1. Ranked table of all candidates (8-12 items typical)
 2. Top 3 selected items with acceptance criteria and effort
 3. "Why not" notes for items 4-6
-4. Ready to pipe selected items into `/lp-fact-find`
+4. Ready to pipe selected items into `/lp-do-fact-find`

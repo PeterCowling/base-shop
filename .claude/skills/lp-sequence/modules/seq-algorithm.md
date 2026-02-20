@@ -35,7 +35,7 @@ Sort tasks using topological ordering (Kahn's algorithm or DFS-based):
    - Lower phase number
    - Smaller effort (S before M before L)
    - Alphabetical by description (stable tiebreak)
-3. Detect cycles — if found, report them and STOP (cycles indicate a planning error that needs `/lp-replan`)
+3. Detect cycles — if found, report them and STOP (cycles indicate a planning error that needs `/lp-do-replan`)
 
 ## Step 4: ID Handling
 

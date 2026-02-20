@@ -23,7 +23,7 @@ timebox:
   lint_warn_until_utc: "2026-02-14"
 
 stage_aliases:
-  lp-fact-find: fact-find
+  lp-do-fact-find: fact-find
 
 filename_aliases:
   fact-finding.user.md: fact-find.user.md

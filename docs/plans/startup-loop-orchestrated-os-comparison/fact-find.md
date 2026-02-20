@@ -13,8 +13,8 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-plan, lp-sequence
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-plan, lp-sequence
 Related-Plan: docs/plans/startup-loop-orchestrated-os-comparison/plan.md
 Business-OS-Integration: off
 Business-Unit: BOS
@@ -89,8 +89,8 @@ Compare the research model in `docs/briefs/orchestrated-business-startup-loop-op
 - Upstream dependencies:
   - Research baseline and current canonical startup-loop contracts.
 - Downstream dependents:
-  - `/lp-plan` for implementation sequencing.
-  - `/lp-build` for contract and process-layer implementation tasks.
+  - `/lp-do-plan` for implementation sequencing.
+  - `/lp-do-build` for contract and process-layer implementation tasks.
   - Operator weekly cadence documentation.
 - Likely blast radius:
   - Medium-to-high if process-layer orchestration is added directly into core stage graph.
@@ -225,9 +225,9 @@ None for initial planning readiness.
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `lp-plan`
+  - `lp-do-plan`
 - Supporting skills:
-  - `lp-build`, `lp-sequence`, `lp-fact-find`
+  - `lp-do-build`, `lp-sequence`, `lp-do-fact-find`
 - Deliverable acceptance package:
   - Process registry doc, capability schema updates, workflow contract updates, acceptance checklist.
 - Post-delivery measurement plan:
@@ -251,4 +251,4 @@ None for initial planning readiness.
 - Blocking items:
   - None for creating a scoped implementation plan.
 - Recommended next step:
-  - `/lp-plan startup-loop-orchestrated-os-comparison`
+  - `/lp-do-plan startup-loop-orchestrated-os-comparison`

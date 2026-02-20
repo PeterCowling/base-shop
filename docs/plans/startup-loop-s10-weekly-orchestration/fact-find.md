@@ -13,8 +13,8 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-plan, startup-loop, lp-experiment, lp-signal-review, lp-fact-find
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-plan, startup-loop, lp-experiment, lp-signal-review, lp-do-fact-find
 Related-Plan: docs/plans/startup-loop-s10-weekly-orchestration/plan.md
 Business-OS-Integration: off
 Business-Unit: BOS
@@ -86,7 +86,7 @@ Improve S10 with a dedicated weekly orchestrator contract and coordinated weekly
 - `.claude/skills/startup-loop/modules/cmd-advance.md`
   - S10 includes GATE-BD-08 warning.
   - S10 dispatches `/lp-signal-review` weekly.
-  - Pre-S10 gate dispatches `/lp-fact-find --startup-loop-gap-fill --trigger feedback`.
+  - Pre-S10 gate dispatches `/lp-do-fact-find --startup-loop-gap-fill --trigger feedback`.
 - `.claude/skills/lp-experiment/SKILL.md`
   - Defines experiment `design` and per-experiment `readout`.
 - `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
@@ -327,9 +327,9 @@ Default for planning: **Phase 0 -> Phase 1 first**, then evaluate Phase 2 remap.
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `lp-build`
+  - `lp-do-build`
 - Supporting skills:
-  - `startup-loop`, `lp-experiment`, `lp-signal-review`, `lp-fact-find`
+  - `startup-loop`, `lp-experiment`, `lp-signal-review`, `lp-do-fact-find`
 - Deliverable acceptance package:
   - `/lp-weekly` orchestration contract
   - S10 sequence and lane contracts
@@ -364,5 +364,5 @@ Default for planning: **Phase 0 -> Phase 1 first**, then evaluate Phase 2 remap.
 - Blocking items:
   - None for planning start; phase decision is gated as first plan task with a default.
 - Recommended next step:
-  - `/lp-plan startup-loop-s10-weekly-orchestration`
+  - `/lp-do-plan startup-loop-s10-weekly-orchestration`
   - Include fit gates against `docs/plans/startup-loop-orchestrated-os-comparison-v2/plan.md` TASK-06 and TASK-07.

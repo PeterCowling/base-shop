@@ -11,8 +11,8 @@ Last-updated: 2026-02-13
 Feature-Slug: test-execution-resource-governor
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-replan, ops-ship
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-replan, ops-ship
 Related-Plan: docs/plans/test-execution-resource-governor-plan.md
 Business-OS-Integration: off
 Business-Unit: PLAT

@@ -100,7 +100,7 @@ Source: Repo capability snapshot + internal docs (no external web research in th
 | Business-specific site-upgrade briefs still missing (`HEAD`, `PET`, others) | High | No Adopt/Adapt/Defer/Reject matrix means implementation scope drifts | Generate per-business upgrade briefs using template + this baseline |
 | Startup KPI instrumentation not uniformly codified per business | High | Hard to decide keep/pivot/scale quickly | Require KPI contract (traffic, CVR, CAC, refund, fulfillment SLA, SEO health) in each brief |
 | CMS-first bias can delay startup launches | Medium | Startup timeline suffers when waiting for full CMS pathway | Enforce app-direct first launch mode unless explicit exception |
-| Runtime/profile ambiguity for commerce features | Medium | Can cause rework at checkout/webhook integration time | Force explicit runtime declaration in lp-fact-find and plan docs |
+| Runtime/profile ambiguity for commerce features | Medium | Can cause rework at checkout/webhook integration time | Force explicit runtime declaration in lp-do-fact-find and plan docs |
 | Conversion-focused component patterns not pre-packaged per vertical | Medium | Repeated ad hoc implementation across businesses | Build a minimal conversion pattern pack tied to real startup deliverables |
 
 ## G) Preferred Patterns and Anti-Patterns
@@ -128,7 +128,7 @@ Source: Repo capability snapshot + internal docs (no external web research in th
 3. Lock launch-surface mode (`pre-website` or `website-live`).
 4. Define KPI and decision gates for first 14/30/60/90 days.
 5. Choose Adopt/Adapt/Defer/Reject for each reference pattern.
-6. Generate lp-fact-find packet and move into plan/build flow.
+6. Generate lp-do-fact-find packet and move into plan/build flow.
 
 ## H) Adopt/Adapt/Defer/Reject Scoring Rubric
 

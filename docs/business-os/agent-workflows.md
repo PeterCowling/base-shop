@@ -85,8 +85,8 @@ Agent:
 - Proposes `Proposed-Lane` with rationale and evidence
 
 **Important:** baseline core-loop transitions are deterministic in skill execution:
-- `/lp-plan`: `Fact-finding -> Planned`
-- `/lp-build`: `Planned -> In progress` and `In progress -> Done`
+- `/lp-do-plan`: `Fact-finding -> Planned`
+- `/lp-do-build`: `Planned -> In progress` and `In progress -> Done`
 
 Use `/idea-advance` only when you intentionally need an exception path.
 
@@ -203,20 +203,20 @@ Agent:
 
 ### Feature Workflow Skills with Business OS Integration (Default)
 
-The core loop (`/idea-generate` -> `/lp-fact-find` -> `/lp-plan` -> `/lp-build`) integrates with Business OS by default.
+The core loop (`/idea-generate` -> `/lp-do-fact-find` -> `/lp-do-plan` -> `/lp-do-build`) integrates with Business OS by default.
 
 **Baseline mode:** `Business-OS-Integration` omitted or `on`.
 
-**Escape hatch:** set `Business-OS-Integration: off` in controlling lp-fact-find/plan frontmatter for intentionally standalone work.
+**Escape hatch:** set `Business-OS-Integration: off` in controlling lp-do-fact-find/plan frontmatter for intentionally standalone work.
 
 **Automated behavior:**
 
 | Skill | Baseline integration behavior |
 |-------|-------------------------------|
 | `/idea-generate` | Creates prioritized ideas/cards and seeds top-K `fact-find` stage docs via latest-wins upsert (`GET /api/agent/stage-docs/:cardId/:stage` -> `PATCH` if exists, `POST` if missing) |
-| `/lp-fact-find` | On card selection, reads latest `fact-find` stage doc (including sweep-seeded docs) as starting context; then creates/updates card + `fact-find` stage doc via latest-wins upsert |
-| `/lp-plan` | Creates `plan` stage doc, updates `Plan-Link`, applies deterministic `Fact-finding -> Planned` when gate passes |
-| `/lp-build` | Creates/updates `build` stage doc, updates `Last-Progress`, applies deterministic `Planned -> In progress` and `In progress -> Done` when gates pass |
+| `/lp-do-fact-find` | On card selection, reads latest `fact-find` stage doc (including sweep-seeded docs) as starting context; then creates/updates card + `fact-find` stage doc via latest-wins upsert |
+| `/lp-do-plan` | Creates `plan` stage doc, updates `Plan-Link`, applies deterministic `Fact-finding -> Planned` when gate passes |
+| `/lp-do-build` | Creates/updates `build` stage doc, updates `Last-Progress`, applies deterministic `Planned -> In progress` and `In progress -> Done` when gates pass |
 
 **Ideas triage UI:** `/ideas` is the backlog triage surface. It lists ideas in deterministic order (`P0 -> P5`, then created date DESC, then ID ASC) with server-driven filters/search via URL params and click-through to `/ideas/[id]`.
 
@@ -240,16 +240,16 @@ The core loop (`/idea-generate` -> `/lp-fact-find` -> `/lp-plan` -> `/lp-build`)
   - owner handoff.
 
 **Stage-doc latest-wins upsert contract (canonical):**
-- Applies to both `/idea-generate` stage seeding and `/lp-fact-find` stage updates.
+- Applies to both `/idea-generate` stage seeding and `/lp-do-fact-find` stage updates.
 - Treat each `cardId + stage` as one logical current document.
 - Write flow: `GET /api/agent/stage-docs/:cardId/:stage` -> `PATCH` when present (`baseEntitySha` required) -> `POST` only when missing (`404`).
 - On `PATCH` conflict (`409`): refetch and retry once; if still conflicting, fail-closed and surface error.
 - Repository internals may append records over time, but workflow semantics are latest-wins for operator behavior.
 
 **Fact-find seeded-doc consumption contract:**
-- If `/idea-generate` seeded a `fact-find` stage doc, `/lp-fact-find` must load it when a card is selected.
+- If `/idea-generate` seeded a `fact-find` stage doc, `/lp-do-fact-find` must load it when a card is selected.
 - Seeded content is starting context (questions/findings/recommendations), not a planning bypass.
-- `/lp-fact-find` deepens evidence and refreshes the same logical `fact-find` stage doc via latest-wins upsert.
+- `/lp-do-fact-find` deepens evidence and refreshes the same logical `fact-find` stage doc via latest-wins upsert.
 
 **Compatibility:** existing documents without `Business-OS-Integration` field default to `on`; set `off` only for exception paths.
 
@@ -258,17 +258,17 @@ The core loop (`/idea-generate` -> `/lp-fact-find` -> `/lp-plan` -> `/lp-build`)
 ```
 1. /idea-generate -> prioritized ideas + cards + top-K fact-find stage docs
    ↓
-2. /lp-fact-find -> loads seeded fact-find stage doc (if present), produces evidence brief, refreshes fact-find stage doc (latest-wins)
+2. /lp-do-fact-find -> loads seeded fact-find stage doc (if present), produces evidence brief, refreshes fact-find stage doc (latest-wins)
    ↓
-3. /lp-plan -> plan doc + plan stage doc
+3. /lp-do-plan -> plan doc + plan stage doc
    ↓
-4. /lp-plan applies deterministic lane move: Fact-finding -> Planned (when plan gate passes)
+4. /lp-do-plan applies deterministic lane move: Fact-finding -> Planned (when plan gate passes)
    ↓
-5. /lp-build starts execution and applies deterministic lane move: Planned -> In progress
+5. /lp-do-build starts execution and applies deterministic lane move: Planned -> In progress
    ↓
-6. /lp-build completes eligible implementation tasks with validation evidence
+6. /lp-do-build completes eligible implementation tasks with validation evidence
    ↓
-7. /lp-build applies deterministic lane move: In progress -> Done (when completion gate passes)
+7. /lp-do-build applies deterministic lane move: In progress -> Done (when completion gate passes)
    ↓
 8. /biz-update-plan and /biz-update-people capture reflections and capability updates
 ```
@@ -327,7 +327,7 @@ Every Business OS operation requires **evidence**. Use evidence source types fro
 - Document assumptions explicitly if evidence unavailable
 
 ### Deterministic lane transition failed
-- Check completion/transition gates in `/lp-plan` and `/lp-build` skill docs
+- Check completion/transition gates in `/lp-do-plan` and `/lp-do-build` skill docs
 - Check for unresolved dependencies
 - Verify stage doc completeness (all questions answered)
 
@@ -367,7 +367,7 @@ Before any agent skill commits:
 ## Next Steps
 
 1. For new ideas → Use `/idea-develop` to create cards
-2. For card progression → Run core loop stages; deterministic lane updates occur inside `/lp-plan` and `/lp-build`
+2. For card progression → Run core loop stages; deterministic lane updates occur inside `/lp-do-plan` and `/lp-do-build`
 3. For weekly reviews → Use `/idea-scan` to detect changes
 4. For plan updates → Use `/biz-update-plan` after reflections
 5. For team tracking → Use `/biz-update-people` after capabilities/gaps change

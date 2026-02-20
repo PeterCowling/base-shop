@@ -9,7 +9,7 @@ Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Overall-confidence: 88%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -159,12 +159,12 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-12 | SPIKE — CMS build OOM: webpack-escape for typescript import committed; TC-01 (build exits 0) not satisfied on 16 GB machine; precursor chain TASK-21→TASK-22 created | Spike Complete (2026-02-17) / TC-01 unmet | `71fe4c561d` |
 | TASK-21 | transpilePackages audit — @acme/ui (2,256 TS files) identified as dominant contributor; Tier 1/2 removal lists defined; src-alias constraints documented | Complete (2026-02-17) | see post-task commit |
 | TASK-22 | CMS build graph reduction — transpilePackages cut from 15 → 3 CMS-specific entries (~3,258 TS files removed); typescript added to serverExternalPackages; tokenUtils TS2307 fixed; CMS typecheck+lint green | Complete (2026-02-17) | `e469da612c` |
-| TASK-13 | CHECKPOINT — CMS/cmp/xa typecheck+lint+build all verified; zero sync API findings; Cloudflare audit artifact written; /lp-replan run; TASK-14 promoted to 82% | Complete (2026-02-17) | `3644f6efa9` (docs) + cloudflare-free-tier-audit.md |
+| TASK-13 | CHECKPOINT — CMS/cmp/xa typecheck+lint+build all verified; zero sync API findings; Cloudflare audit artifact written; /lp-do-replan run; TASK-14 promoted to 82% | Complete (2026-02-17) | `3644f6efa9` (docs) + cloudflare-free-tier-audit.md |
 | TASK-16 | Webpack policy coverage map: 93 files scanned; 3 XA wrapper bypass vectors all compliant; D-04 accepted limitation; scanner gap documented with Option A/B hardening paths | Complete (2026-02-17) | config-snapshot §12 |
 | TASK-17 | Decision: Option A (peer-first). `@acme/next-config` moves next/react/react-dom to peerDependencies; root devDependencies.next removed. D-01/D-02 remediation path explicit. | Complete (2026-02-17) | plan decision log |
 | TASK-18 | D-01/D-02 manifest remediation: `packages/next-config` moves `next` to peerDependencies; `@next/env` removed; root devDep duplicate removed; lockfile updated. All 4 TCs passed. | Complete (2026-02-17) | `0aef8d5a59` |
 | TASK-19 | Turbopack repro matrix: 1 OBSERVED-REPRO (extensionAlias); 10 UNVERIFIED-ASSUMPTION (webpack() internals); 1 UNVERIFIED-ASSUMPTION (high-risk: brikette `?raw`). §13 written to config-snapshot. | Complete (2026-02-17) | `4614e29dfd` |
-| TASK-20 | CHECKPOINT — governance tranche reviewed; TASK-14/15 confidence unchanged at 82%; Cloudflare posture valid; topology unchanged; TASK-14 and TASK-15 ready for `/lp-build`. | Complete (2026-02-17) | plan-only |
+| TASK-20 | CHECKPOINT — governance tranche reviewed; TASK-14/15 confidence unchanged at 82%; Cloudflare posture valid; topology unchanged; TASK-14 and TASK-15 ready for `/lp-do-build`. | Complete (2026-02-17) | plan-only |
 | TASK-14 | CMS middleware ambiguity resolved: deleted root `middleware.ts` (Node crypto, no auth); `src/middleware.ts` is now active (JWT auth, CSRF, RBAC, Edge-safe). 38/38 tests pass. Lint + typecheck clean. | Complete (2026-02-17) | `1dc0880c1b` (del) + `4ae9186cf3` (test) |
 | TASK-15 | `node:crypto` removed from cover-me-pretty middleware; replaced with `await crypto.subtle.digest()` + btoa; `buildCspExtras()` helper extracted (max-depth lint fix); `@jest-environment node` docblock added to test (jsdom lacks crypto.subtle). 4/4 tests pass. | Complete (2026-02-17) | `d1b3839072` |
 
@@ -204,7 +204,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change (XA build wrapper uses `next build --webpack`)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/xa/scripts/build-xa.mjs` (add `--webpack` to the `next build` invocation)
   - `[readonly] apps/xa-b/scripts/build-xa.mjs` (reference; already includes `--webpack`)
@@ -244,7 +244,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-10: Build OOM Mitigation (Next 16)
 - **Type:** INVESTIGATE
 - **Deliverable:** Analysis artifact: `docs/plans/nextjs-16-upgrade/build-oom-notes.md`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `docs/plans/nextjs-16-upgrade/build-oom-notes.md`
   - `[readonly] apps/cms/package.json` (build script / memory policy)
@@ -290,7 +290,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change (cover-me-pretty build uses increased heap by default)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cover-me-pretty/package.json` (`build` script)
 - **Depends on:** TASK-10
@@ -320,7 +320,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-12: SPIKE - CMS Build OOM Mitigation Prototype
 - **Type:** SPIKE
 - **Deliverable:** Prototype code change + evidence notes in `docs/plans/nextjs-16-upgrade/build-oom-notes.md`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/platform-core/src/themeTokens/index.ts` (likely root cause: Node-only imports + broad dynamic import context)
   - `apps/cms/src/services/shops/theme.ts` and `apps/cms/src/services/shops/themeService.ts` (consumers)
@@ -356,7 +356,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **TC-01 status:** FAIL — CMS build still OOMs. Machine requires 32 GB+ or architectural changes.
 - **TC-03 status:** Pre-existing failures (2 tokenUtils tests; brandx/dummy theme data mismatch, unrelated to this spike).
 - **Scope expansion documented:** `apps/cms/next.config.mjs` (not in original Affects list) — added `typescript` to `serverExternalPackages` as belt-and-suspenders.
-- **Routing:** → `/lp-replan` for TASK-12 with new evidence. See full spike evidence in `docs/plans/nextjs-16-upgrade/build-oom-notes.md`.
+- **Routing:** → `/lp-do-replan` for TASK-12 with new evidence. See full spike evidence in `docs/plans/nextjs-16-upgrade/build-oom-notes.md`.
 
 #### Re-plan Update (2026-02-17)
 - Confidence: 82% → Spike Complete (TC-01 unmet); Evidence: E2 (executable build verification at 4/8/10/12 GB)
@@ -368,7 +368,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-21: INVESTIGATE - CMS `transpilePackages` Reduction Audit
 - **Type:** INVESTIGATE
 - **Deliverable:** Audit note appended to `docs/plans/nextjs-16-upgrade/build-oom-notes.md` — list of packages safe to remove from CMS `transpilePackages`, with must-keep rationale and expected memory-impact estimate.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Pending
@@ -410,7 +410,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-22: IMPLEMENT - CMS Build Graph Reduction
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — reduced `transpilePackages` in `apps/cms/next.config.mjs` + committed deferred `serverExternalPackages` change; documented pre-existing tokenUtils.ts typecheck errors.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -464,7 +464,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Complete Cloudflare Free-tier compliance checks for touched Cloudflare apps (Workers/Pages mode, quota-risk posture, fail mode policy, and invocation routing controls).
   - Persist a Cloudflare audit note at `docs/plans/nextjs-16-upgrade/cloudflare-free-tier-audit.md` with per-app request/binding budgets and latest observed usage snapshot.
   - Compare build output warnings and classify expected vs unexpected (expected = known non-fatal warnings already tracked in plan artifacts; unexpected = new warning class or warning count increase).
-  - Run `/lp-replan` on tasks after this checkpoint.
+  - Run `/lp-do-replan` on tasks after this checkpoint.
 - **Command set (deterministic):**
   - `pnpm --filter @apps/cms build && pnpm --filter @apps/cms lint && pnpm --filter @apps/cms typecheck`
   - `pnpm --filter @apps/cover-me-pretty build && pnpm --filter @apps/cover-me-pretty lint && pnpm --filter @apps/cover-me-pretty typecheck`
@@ -509,14 +509,14 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Wrangler mode/bindings scan: ✅ Documented in cloudflare-free-tier-audit.md
   - `_routes.json` check: ✅ No manual routes file needed (brikette = static Pages export)
   - Cloudflare free-tier audit: ✅ `docs/plans/nextjs-16-upgrade/cloudflare-free-tier-audit.md` written
-- **Replan:** `/lp-replan TASK-14 TASK-15 TASK-16 TASK-19` run; TASK-14 promoted 72% → 82%
+- **Replan:** `/lp-do-replan TASK-14 TASK-15 TASK-16 TASK-19` run; TASK-14 promoted 72% → 82%
 - **Key finding:** Both `apps/cms/middleware.ts` (root; `crypto`+`helmet`; no auth) and `apps/cms/src/middleware.ts` (src/; `helmet`+auth/RBAC) exist. Root-level takes Next.js precedence. Auth enforcement in src/middleware.ts may be dead code. TASK-14 must resolve this ambiguity.
 
 ### TASK-14: Resolve CMS Middleware Ambiguity And Enforce Runtime-Compatible Dependencies
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change (single authoritative middleware/proxy entrypoint for CMS)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cms/middleware.ts`
   - `apps/cms/src/middleware.ts`
@@ -580,7 +580,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Next.js root-level middleware takes precedence over src/ — `apps/cms/middleware.ts` is likely what runs; `apps/cms/src/middleware.ts` may be dead code
   - `helmet` is NOT listed in `apps/cms/package.json` (available via workspace peer only)
 - TC-01 formally updated: `pnpm --filter @apps/cms lint && pnpm --filter @apps/cms typecheck` (primary gate); `pnpm --filter @apps/cms build` (best-effort; may OOM on 16 GB)
-- Status: **Ready for /lp-build**
+- Status: **Ready for /lp-do-build**
 
 #### Build Completion (2026-02-17)
 - **Status:** Complete
@@ -604,7 +604,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change (Edge-safe CSP hash generation for cover-me-pretty)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cover-me-pretty/middleware.ts`
 - **Depends on:** TASK-13, TASK-11
@@ -653,7 +653,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-16: INVESTIGATE - Webpack Policy Coverage Hardening (Wrapper/Baseline Gaps)
 - **Type:** INVESTIGATE
 - **Deliverable:** Analysis artifact update in `docs/plans/nextjs-16-upgrade/config-snapshot-fact-find-2026-02-17.md` with a scanner-hardening recommendation and explicit scope map.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -697,7 +697,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-17: DECISION - Dependency Ownership Model (`@acme/next-config` + Root Next Policy)
 - **Type:** DECISION
 - **Deliverable:** Decision log entry in this plan + selected ownership model with explicit rationale.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -750,7 +750,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-18: IMPLEMENT - Apply Dependency Policy Decision (D-01/D-02 Remediation)
 - **Type:** IMPLEMENT
 - **Deliverable:** Manifest updates aligned to TASK-17 decision.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -797,7 +797,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - lockfile churn is minimal and bounded: one stale `next@^15.3.9` dep entry + one stale `@next/env@15.3.5` entry removed from `@acme/next-config` section; no new entries added
   - All 14 consumers resolve `next` via root hoisting; peer constraint `">=16.0.0"` satisfied automatically
 - **TC contract updated:** TC-03 split — added `pnpm --filter @acme/next-config test` (covers Node builtin test runner); TC-04 added for key consumer typecheck+lint
-- **Status:** Ready for `/lp-build`
+- **Status:** Ready for `/lp-do-build`
 
 #### Build Completion (2026-02-17)
 - **Status:** Complete
@@ -818,7 +818,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-19: INVESTIGATE - Turbopack Blocker Repro Matrix (Observed vs Assumed)
 - **Type:** INVESTIGATE
 - **Deliverable:** Repro matrix appended to `docs/plans/nextjs-16-upgrade/config-snapshot-fact-find-2026-02-17.md`.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
 - **Status:** Complete (2026-02-17)
@@ -855,7 +855,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-20: CHECKPOINT - Governance Tranche Replan And Confidence Recalibration
 - **Type:** CHECKPOINT
 - **Deliverable:** Updated plan sequencing + confidence recalculation after TASK-18 and TASK-19.
-- **Execution-Skill:** /lp-replan
+- **Execution-Skill:** /lp-do-replan
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -867,7 +867,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Approach: 95% - prevents stale confidence and stale dependency assumptions.
   - Impact: 95% - improves handoff quality for remaining implementation tasks.
 - **Acceptance:**
-  - `/lp-replan` run for any tasks impacted by dependency-policy or blocker-evidence updates.
+  - `/lp-do-replan` run for any tasks impacted by dependency-policy or blocker-evidence updates.
   - Task confidences updated with explicit evidence deltas.
   - Cloudflare Free-tier posture is re-validated (quota assumptions, fail mode assignments, and invocation routing controls documented for touched apps).
   - Plan gates re-evaluated and recorded.
@@ -879,8 +879,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Rollout / rollback:** `None: planning control task`
 - **Build completion evidence (2026-02-17):**
   - Tranche evidence reviewed: TASK-16 (webpack scanner 93 files; D-04 accepted), TASK-17 (Option A peer-first), TASK-18 (D-01/D-02 resolved; 4 TCs pass), TASK-19 (extensionAlias OBSERVED-REPRO; webpack() internals UNVERIFIED-ASSUMPTION).
-  - TASK-14 (82%): unchanged — tranche is orthogonal to CMS middleware runtime. Remains above 80% threshold. TC contract complete. Ready for `/lp-build`.
-  - TASK-15 (82%): unchanged — tranche is orthogonal to CMP crypto middleware. Remains above 80% threshold. TC contract complete. Ready for `/lp-build`.
+  - TASK-14 (82%): unchanged — tranche is orthogonal to CMS middleware runtime. Remains above 80% threshold. TC contract complete. Ready for `/lp-do-build`.
+  - TASK-15 (82%): unchanged — tranche is orthogonal to CMP crypto middleware. Remains above 80% threshold. TC contract complete. Ready for `/lp-do-build`.
   - Cloudflare Free-tier posture: valid — TASK-18 (manifest-only) and TASK-19 (investigation-only) made zero runtime/Worker/Pages changes. TASK-13 audit artifact remains authoritative.
   - Topology: no new tasks, no new dependencies. `/lp-sequence` not needed.
   - All acceptance criteria met.
@@ -927,6 +927,6 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-17: TASK-17 DECISION resolved — **Option A (peer-first)**. `@acme/next-config` will move `next`/`@next/env` from `dependencies` to `peerDependencies`; add `next` as `devDependency` for local testing. Root `devDependencies.next` duplicate removed. Eliminates D-01 structurally; resolves D-02. TASK-18 unblocked.
 - 2026-02-17: TASK-18 complete (`0aef8d5a59`). D-01 resolved: `@acme/next-config` now declares `next` as `peerDependencies: ">=16.0.0"` with no hard dep. D-02 resolved: root `devDependencies.next` removed; single authoritative declaration in `dependencies`. All 4 TCs passed (single version workspace-wide, stale `@next/env 15.3.5` path gone, next-config lint+tests clean, CMS+cover-me-pretty typecheck+lint green). TASK-20 now unblocked pending TASK-19.
 - 2026-02-17: TASK-19 complete. Turbopack blocker repro matrix written to §13 of config-snapshot artifact. Key finding: `extensionAlias` in `@acme/next-config` is the sole `OBSERVED-REPRO` blocker (XA page HTTP 500: `@acme/i18n` cannot resolve `.js` ESM specifiers under Turbopack). All webpack() callback internals are `UNVERIFIED-ASSUMPTION` (Turbopack silently skips the callback; startup probes alone are insufficient). Brikette `?raw` loader is `UNVERIFIED-ASSUMPTION (high-risk)` with 2 live import sites and a concrete test protocol. TASK-20 fully unblocked.
-- 2026-02-17: TASK-20 CHECKPOINT complete. Governance tranche (TASK-16→TASK-19) reviewed — all four tasks are orthogonal to TASK-14 and TASK-15. No confidence adjustments needed. Cloudflare Free-tier posture valid (TASK-18 manifest-only + TASK-19 investigation-only made no runtime changes). Topology unchanged; `/lp-sequence` not required. TASK-14 (82%) and TASK-15 (82%) are both above IMPLEMENT threshold with complete validation contracts. Both are ready for `/lp-build`.
+- 2026-02-17: TASK-20 CHECKPOINT complete. Governance tranche (TASK-16→TASK-19) reviewed — all four tasks are orthogonal to TASK-14 and TASK-15. No confidence adjustments needed. Cloudflare Free-tier posture valid (TASK-18 manifest-only + TASK-19 investigation-only made no runtime changes). Topology unchanged; `/lp-sequence` not required. TASK-14 (82%) and TASK-15 (82%) are both above IMPLEMENT threshold with complete validation contracts. Both are ready for `/lp-do-build`.
 - 2026-02-17: TASK-14 complete (`1dc0880c1b` del + `4ae9186cf3` test). Root `apps/cms/middleware.ts` removed — had Node-only `crypto` import and no auth enforcement. `apps/cms/src/middleware.ts` is now the sole active middleware: JWT auth, CSRF protection, RBAC via `canRead`/`canWrite`, Edge-safe (Web Crypto `randomUUID`; type-only `http` import). 38/38 middleware tests pass; CMS lint 0 errors; typecheck clean. Security headers assertion added to TC-03.
 - 2026-02-17: TASK-15 complete (`d1b3839072`). `node:crypto` removed from cover-me-pretty middleware; `crypto.subtle.digest('SHA-256', ...)` + btoa now used for CSP hash generation. `buildCspExtras()` helper extracted to satisfy max-depth lint constraint. `@jest-environment node` docblock added to test file — jsdom exposes `crypto` without `subtle` and the conditional polyfill is skipped when `globalThis.crypto` already exists. 4/4 tests pass; lint + typecheck clean. Plan Status → Complete.

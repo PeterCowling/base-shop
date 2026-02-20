@@ -9,7 +9,7 @@ Feature-Slug: agent-web-browsing-superpower
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -33,7 +33,7 @@ This plan was replanned to reduce churn during build by locking contracts and ma
 - Add a `packages/mcp-server/jest.config.cjs` (scoped to the package) and run all browser-tool tests with it.
   - Evidence (E2): running Jest with the repo-root config can fail when `.open-next` artifacts exist (haste-map duplicate packages). We hit this when running governed tests: `tool-policy-gates` passed, but `template-ranker` failed due to a duplicate `@acme/lib` package coming from an `.open-next` output directory.
 - Decompose `browser_observe` / `browser_act` into (a) pure contract logic tasks and (b) tool-handler integration tasks.
-- Expand validation contracts to meet minimum case counts (M >= 3, L >= 5) so `/lp-build` has an executable contract per task.
+- Expand validation contracts to meet minimum case counts (M >= 3, L >= 5) so `/lp-do-build` has an executable contract per task.
 - Add explicit precursors for the missing "actionId -> target" mapping and driver contract so `browser_act` does not require re-observing and guessing targets.
 
 ## Goals
@@ -141,7 +141,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** TypeScript BIC v0.1 types + helper functions + unit tests; package-scoped Jest config for reliable governed runs
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/jest.config.cjs`
   - `packages/mcp-server/src/tools/browser/bic.ts`
@@ -190,7 +190,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** In-memory session manager + observation epoch enforcement + basic navigation
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser/session.ts`
   - `packages/mcp-server/src/tools/browser/driver.ts`
@@ -229,7 +229,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** SPIKE
 - **Deliverable:** CDP adapter functions + fixture-based tests proving we can extract role/name and resolve nodes deterministically
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser/cdp.ts`
   - `packages/mcp-server/src/tools/browser/selectors.ts`
@@ -286,7 +286,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** pure functions that (a) rank affordances deterministically and (b) page them via cursor, plus a derived forms representation referencing actionIds
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser/ranking.ts`
   - `packages/mcp-server/src/tools/browser/forms.ts`
@@ -338,7 +338,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** pure helpers for (a) deterministic expect evaluation and (b) safety confirmation protocol enforcement
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser/expect.ts`
   - `packages/mcp-server/src/tools/browser/safety.ts`
@@ -390,7 +390,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Extend session state to store the current observation's action targets so `browser_act` can resolve element targets deterministically for the latest observation epoch.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser/session.ts`
   - `packages/mcp-server/src/__tests__/browser-session.unit.test.ts`
@@ -443,7 +443,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Expand `BrowserDriver` into a v0.1 contract that supports fixture-based observe/act tests without importing Playwright types in unit tests; provide a minimal mock driver used by contract tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser/driver.ts`
   - `packages/mcp-server/src/__tests__/browser-driver.unit.test.ts`
@@ -496,7 +496,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** `browser_observe` returns BIC v0.1 with identity + affordances + paging + derived forms (uses session + CDP + ranking)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser/observe.ts`
   - `packages/mcp-server/src/__tests__/browser-observe.contract.test.ts`
@@ -577,7 +577,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** `browser_act` executes action taxonomy, enforces safety confirmation, tool-verifies expectations, and always returns `nextObservation`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser/act.ts`
   - `packages/mcp-server/src/__tests__/browser-act.contract.test.ts`
@@ -652,7 +652,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** `browser_act` safety gating cannot be bypassed by passing a forged `risk` or `label` from the client; safety-relevant metadata is derived from the latest observation registry
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser/session.ts`
   - `packages/mcp-server/src/tools/browser/observe.ts`
@@ -698,7 +698,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** `browser_*` tools exposed via MCP server; minimal end-to-end smoke runner for local verification
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser.ts`
   - `packages/mcp-server/src/tools/browser/driver-playwright.ts`
@@ -757,7 +757,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
     - observation payload sizing behaves (no 10k affordance dumps)
     - stale observation rejection works in practice
     - safety confirmation is impossible to bypass
-  - If issues found: run `/lp-replan` on remaining tasks and update this plan.
+  - If issues found: run `/lp-do-replan` on remaining tasks and update this plan.
 - **Horizon assumptions to validate:**
   - Selector generation is sufficiently reliable within an observation epoch.
   - CDP AX extraction captures enough interactive affordances for common UIs.

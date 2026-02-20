@@ -9,7 +9,7 @@ Feature-Slug: brik-apartment-pages
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-design-system
 Overall-confidence: 87%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -122,7 +122,7 @@ Build incrementally — the existing apartment page becomes the hub. New sub-pag
 - **Type:** IMPLEMENT
 - **Deliverable:** React component at `apps/brikette/src/components/apartment/FitCheck.tsx`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/components/apartment/FitCheck.tsx` (new), `apps/brikette/src/locales/en/apartmentPage.json`
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-03, TASK-04, TASK-05
@@ -159,7 +159,7 @@ Build incrementally — the existing apartment page becomes the hub. New sub-pag
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `apps/brikette/src/app/[lang]/apartment/ApartmentPageContent.tsx` and translations
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/app/[lang]/apartment/ApartmentPageContent.tsx`, `apps/brikette/src/locales/en/apartmentPage.json`, `apps/brikette/src/app/[lang]/apartment/page.tsx`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-06
@@ -199,7 +199,7 @@ Build incrementally — the existing apartment page becomes the hub. New sub-pag
 - **Type:** IMPLEMENT
 - **Deliverable:** New page at `apps/brikette/src/app/[lang]/apartment/street-level-arrival/`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/app/[lang]/apartment/street-level-arrival/page.tsx` (new), `apps/brikette/src/app/[lang]/apartment/street-level-arrival/StreetLevelArrivalContent.tsx` (new), `apps/brikette/src/locales/en/apartmentPage.json`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-06
@@ -241,7 +241,7 @@ Build incrementally — the existing apartment page becomes the hub. New sub-pag
 - **Type:** IMPLEMENT
 - **Deliverable:** New page at `apps/brikette/src/app/[lang]/apartment/private-stay/`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/app/[lang]/apartment/private-stay/page.tsx` (new), `apps/brikette/src/app/[lang]/apartment/private-stay/PrivateStayContent.tsx` (new), `apps/brikette/src/locales/en/apartmentPage.json`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-06
@@ -283,7 +283,7 @@ Build incrementally — the existing apartment page becomes the hub. New sub-pag
 - **Type:** IMPLEMENT
 - **Deliverable:** New page at `apps/brikette/src/app/[lang]/apartment/book/`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/app/[lang]/apartment/book/page.tsx` (new), `apps/brikette/src/app/[lang]/apartment/book/ApartmentBookContent.tsx` (new), `apps/brikette/src/data/roomsData.ts`, `functions/api/octorate/_utils.ts`, `apps/brikette/src/locales/en/apartmentPage.json`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-06
@@ -330,7 +330,7 @@ Build incrementally — the existing apartment page becomes the hub. New sub-pag
 - **Type:** IMPLEMENT
 - **Deliverable:** Navigation update, GA4 event utilities, redirect config, updated JSON-LD
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/config/navItems.ts`, `apps/brikette/src/locales/en/header.json`, `apps/brikette/public/_redirects`, `apps/brikette/src/schema/apartment.jsonld`, `apps/brikette/src/components/seo/ApartmentStructuredData.tsx`
 - **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05
 - **Blocks:** -

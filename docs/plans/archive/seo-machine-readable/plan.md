@@ -9,7 +9,7 @@ Feature-Slug: seo-machine-readable
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Overall-confidence: 87%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -140,7 +140,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Bug fix — `apps/cover-me-pretty/src/app/robots.ts`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/cover-me-pretty/src/app/robots.ts`
 - **Depends on:** -
@@ -192,7 +192,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Bug fix — `apps/cochlearfit/src/lib/site.ts`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/cochlearfit/src/lib/site.ts`
   - **[readonly]** `apps/cover-me-pretty/src/app/robots.ts` (reference for env pattern)
@@ -248,7 +248,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** New package — `packages/seo/`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `packages/seo/package.json`, `packages/seo/tsconfig.json`, `packages/seo/jest.config.cjs`, `packages/seo/src/index.ts`, `packages/seo/src/config/index.ts`, `packages/seo/src/metadata/index.ts`, `packages/seo/src/metadata/buildMetadata.ts`, `packages/seo/src/metadata/buildAlternates.ts`, `packages/seo/src/metadata/ensureTrailingSlash.ts`, `tsconfig.base.json`, `jest.moduleMapper.cjs`
   - **[readonly]** `packages/date-utils/package.json` (scaffold reference), `packages/types/tsconfig.json` (tsconfig reference), `packages/types/jest.config.cjs` (jest config reference)
@@ -324,7 +324,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Package subpath — `@acme/seo/jsonld`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `packages/seo/src/jsonld/index.ts`, `packages/seo/src/jsonld/serialize.ts`, `packages/seo/src/jsonld/JsonLdScript.tsx`, `packages/seo/src/jsonld/organization.ts`, `packages/seo/src/jsonld/product.ts`, `packages/seo/src/jsonld/article.ts`, `packages/seo/src/jsonld/breadcrumb.ts`, `packages/seo/src/jsonld/faq.ts`, `packages/seo/src/jsonld/websiteSearch.ts`, `packages/seo/src/jsonld/itemList.ts`, `packages/seo/src/jsonld/event.ts`, `packages/seo/src/jsonld/service.ts`, `packages/ui/src/lib/seo/serializeJsonLd.ts`, `packages/ui/src/lib/seo/index.ts`
   - **[readonly]** `apps/brikette/src/utils/seo/jsonld/serialize.ts` (source), `apps/brikette/src/utils/seo/jsonld/breadcrumb.ts` (source), `apps/brikette/src/utils/seo/jsonld/article.ts` (source), `apps/cover-me-pretty/src/lib/jsonld.tsx` (reference for Organization/Product/Article builders)
@@ -399,7 +399,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Package subpaths — `@acme/seo/robots`, `@acme/seo/sitemap`, `@acme/seo/ai`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `packages/seo/src/robots/index.ts`, `packages/seo/src/robots/buildRobotsTxt.ts`, `packages/seo/src/robots/buildRobotsMetadataRoute.ts`, `packages/seo/src/sitemap/index.ts`, `packages/seo/src/sitemap/buildSitemapEntry.ts`, `packages/seo/src/sitemap/buildSitemapWithAlternates.ts`, `packages/seo/src/ai/index.ts`, `packages/seo/src/ai/buildLlmsTxt.ts`, `packages/seo/src/ai/buildAiPluginManifest.ts`
   - **[readonly]** `apps/brikette/src/seo/robots.ts` (source), `apps/cover-me-pretty/src/app/robots.ts` (MetadataRoute pattern), `apps/cover-me-pretty/src/app/sitemap.ts` (sitemap pattern), `apps/brikette/public/llms.txt` (format reference), `apps/brikette/public/.well-known/ai-plugin.json` (format reference)
@@ -474,7 +474,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Blocks:** SEO-07, SEO-08, SEO-09, SEO-10
 - **Confidence:** 95%
 - **Acceptance:**
-  - Run `/lp-replan` on all tasks after this checkpoint (SEO-07 through SEO-10)
+  - Run `/lp-do-replan` on all tasks after this checkpoint (SEO-07 through SEO-10)
   - Reassess remaining task confidence using evidence from completed package (E2 evidence)
   - Confirm or revise the approach for app integrations
   - If Brikette extraction (SEO-10) can be promoted to ≥80% based on E2 evidence, update its plan
@@ -489,7 +489,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 #### Build Completion (2026-02-13)
 - **Status:** Complete
-- **Execution cycle:** Checkpoint reassessment via `/lp-replan`
+- **Execution cycle:** Checkpoint reassessment via `/lp-do-replan`
 - **Horizon assumptions validated:**
   - ✅ Package API shape works correctly — 7 subpath exports, 54 tests, build exits 0, typecheck passes 52 packages
   - ⚠️ `@acme/ui/lib/seo` re-export NOT YET TESTED — deferred to SEO-10; `buildCanonicalUrl` is NOT yet in `@acme/seo` (blocker)
@@ -511,7 +511,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** App integration — `apps/cochlearfit/`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/cochlearfit/src/app/robots.ts` (new), `apps/cochlearfit/src/app/sitemap.ts` (new), `apps/cochlearfit/src/lib/jsonld.tsx` (new), `apps/cochlearfit/src/lib/seo.ts` (update), `apps/cochlearfit/src/app/layout.tsx` (update — add Organization JSON-LD), `apps/cochlearfit/src/app/[lang]/faq/page.tsx` (update — add FAQ JSON-LD), `apps/cochlearfit/package.json` (add @acme/seo dep), `apps/cochlearfit/public/llms.txt` (new)
   - **[readonly]** `apps/cochlearfit/src/lib/site.ts` (site constants), `apps/cover-me-pretty/src/app/robots.ts` (pattern ref), `apps/cover-me-pretty/src/app/sitemap.ts` (pattern ref)
@@ -589,7 +589,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** App integration — `apps/skylar/`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/skylar/src/lib/seo.ts` (new), `apps/skylar/src/app/robots.ts` (new), `apps/skylar/src/app/sitemap.ts` (new), `apps/skylar/src/lib/jsonld.tsx` (new), `apps/skylar/src/app/layout.tsx` (update), `apps/skylar/src/app/[lang]/page.tsx` (update), `apps/skylar/src/app/[lang]/products/page.tsx` (update), `apps/skylar/src/app/[lang]/real-estate/page.tsx` (update), `apps/skylar/src/app/[lang]/people/page.tsx` (update), `apps/skylar/package.json` (add @acme/seo dep), `apps/skylar/public/llms.txt` (new)
   - **[readonly]** `apps/cochlearfit/src/lib/seo.ts` (pattern ref after SEO-07)
@@ -663,7 +663,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** App integration — `apps/cover-me-pretty/`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/cover-me-pretty/src/lib/seo.ts` (update — wrap @acme/seo/metadata), `apps/cover-me-pretty/src/lib/jsonld.tsx` (update — use @acme/seo/jsonld), `apps/cover-me-pretty/package.json` (add @acme/seo dep), `apps/cover-me-pretty/public/llms.txt` (new)
   - **[readonly]** `apps/cover-me-pretty/src/app/robots.ts`, `apps/cover-me-pretty/src/app/sitemap.ts`, `apps/cover-me-pretty/src/app/[lang]/layout.tsx`
@@ -739,7 +739,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Incremental migration — `apps/brikette/` + `packages/seo/`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/brikette/src/utils/seo.ts` (update — re-export generic functions from @acme/seo), `apps/brikette/src/utils/seo/jsonld/serialize.ts` (update — re-export from @acme/seo), `apps/brikette/src/app/_lib/metadata.ts` (update — use @acme/seo/metadata internally), `apps/brikette/package.json` (add @acme/seo dep), `apps/brikette/public/llms.txt` (optional: wire to generator)
   - **[readonly]** 5 files importing from `apps/brikette/src/utils/seo.ts` (verify no breakage), 27 files importing from `apps/brikette/src/utils/seo/jsonld/` (verify JSON-LD chain), 12 files importing from `@acme/ui/lib/seo` (verify re-export works), `apps/brikette/src/test/components/seo-jsonld-contract.test.tsx`, `apps/brikette/src/test/utils/seo.test.ts`
@@ -861,7 +861,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Code extraction — `packages/seo/src/metadata/` + `packages/ui/src/lib/seo/`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `packages/seo/src/metadata/buildCanonicalUrl.ts` (new), `packages/seo/src/metadata/index.ts` (add export), `packages/ui/src/lib/seo/buildCanonicalUrl.ts` (update to re-export from @acme/seo)
   - **[readonly]** `packages/ui/src/lib/__tests__/buildCanonicalUrl.test.ts` (verify passes), `packages/ui/src/lib/seo/index.ts` (barrel unchanged — re-exports from local file which now re-exports from @acme/seo)

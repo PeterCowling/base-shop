@@ -14,6 +14,9 @@ Build P10/P50/P90 scenario bands and first-14-day validation plan for pre-launch
 ```
 
 - `--business`: Business name (BRIK, intshop, etc.)
+
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
+
 - `--horizon-days`: Forecast horizon in days (default: 90)
 - `--launch-surface`: Stage of launch — `pre-website` (MVP planning) or `website-live` (post-launch tracking)
 

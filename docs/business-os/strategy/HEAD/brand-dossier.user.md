@@ -1,14 +1,14 @@
 ---
 Type: Brand-Dossier
 Business-Unit: HEAD
-Business-Name: Headband (CochlearFit)
+Business-Name: Headband (name pending clearance)
 Status: Draft
 Created: 2026-02-17
-Last-reviewed: 2026-02-17
+Last-reviewed: 2026-02-20
 Token-Source: TBD — packages/themes/cochlearfit/src/tokens.ts (theme package does not yet exist; see App Coverage below)
 ---
 
-# Headband (CochlearFit) — Brand Dossier
+# Headband (Name Pending) — Brand Dossier
 
 > **Draft status.** Token values are not duplicated in this document. When the theme package
 > is created, the single source of truth will be `packages/themes/cochlearfit/src/tokens.ts`.
@@ -122,8 +122,9 @@ _First pattern to define: product compatibility display component (which process
 ## References
 
 - Business strategy: `docs/business-os/strategy/HEAD/plan.user.md`
-- 90-day forecast: `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`
-- Forecast exec summary: `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2-exec-summary.user.md`
+- 90-day forecast (canonical): `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md`
+- Offer design (canonical): `docs/business-os/startup-baselines/HEAD-offer.md`
+- Naming shortlist: `docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md`
 - Strategy index (artifact status): `docs/business-os/strategy/HEAD/index.user.md`
 - Design system handbook: `docs/design-system-handbook.md`
 
@@ -131,10 +132,10 @@ _First pattern to define: product compatibility display component (which process
 
 | Claim | Evidence | Source | Confidence |
 |-------|----------|--------|------------|
-| Italy TAM ~17k cochlear-implant users | Stated in forecast exec summary | `headband-90-day-launch-forecast-v2-exec-summary.user.md` | Low (directional estimate; not verified against official Italian registry data) |
-| Competitor price range EUR 12–28.80 | Stated in forecast exec summary | `headband-90-day-launch-forecast-v2-exec-summary.user.md` | Low (needs direct competitor URL verification) |
-| Primary market is Italy, high-intent search acquisition | Business plan + forecast | `plan.user.md`, `headband-90-day-launch-forecast-v2.user.md` | Medium |
-| Fit/compatibility is primary purchase decision factor | Stated as critical risk in plan | `plan.user.md` (Unclear Differentiation risk) | Medium |
+| Italy TAM directional band ~17k-20k | Consolidated market-intel refresh | `docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md` | Medium |
+| Category supports low-risk textile + organisation expansion | S3B synthesis top-3 MVP recommendation | `docs/business-os/strategy/HEAD/lp-other-products-results.user.md` | Medium |
+| Primary market is Italy, high-intent + referral-acquisition mix | Canonical strategy + channels backfill | `docs/business-os/strategy/HEAD/plan.user.md`, `docs/business-os/startup-baselines/HEAD-channels.md` | Medium |
+| Fit/compatibility clarity is a primary conversion and returns driver | Offer and forecast assumptions | `docs/business-os/startup-baselines/HEAD-offer.md`, `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md` | Medium |
 
 ## Draft → Active Advancement Criteria
 

@@ -10,7 +10,7 @@ Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: prime-hardcoded-copy-i18n-remediation
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Overall-confidence: 84%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -53,7 +53,7 @@ Prime has 1172 `ds/no-hardcoded-copy` lint warnings (78% of all warnings) and in
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/prime-hardcoded-copy-i18n-remediation-lp-fact-find.md`
+- Related brief: `docs/plans/prime-hardcoded-copy-i18n-remediation-lp-do-fact-find.md`
 - Key findings:
   - 1172 `ds/no-hardcoded-copy` warnings: 793 in tests, 82 internal_ops, 93 guest_surface, 127 shared_logic, 77 other_prod
   - ESLint override ordering bug: test override at line 985 disables globally, Prime catch-all at line 2266 re-enables as warn, defeating dev-tools exception at line 2255
@@ -140,7 +140,7 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** DECISION
 - **Deliverable:** Decision record in this plan's Decision Log
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `packages/types/src/constants.ts`, locale pipeline scope, acceptance criteria for DS-10/DS-11
 - **Depends on:** -
 - **Blocks:** DS-08, DS-10
@@ -152,7 +152,7 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** DECISION
 - **Deliverable:** Decision record in this plan's Decision Log
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `packages/i18n/src/`, `apps/prime/public/locales/`, `apps/prime/src/i18n.optimized.ts`, build pipeline
 - **Depends on:** -
 - **Blocks:** DS-08, DS-09, DS-10
@@ -164,7 +164,7 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** DECISION
 - **Deliverable:** Decision record in this plan's Decision Log
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** Rollout phases, acceptance criteria, translation production workflow
 - **Depends on:** -
 - **Blocks:** DS-08, DS-10
@@ -176,7 +176,7 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `eslint.config.mjs`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `eslint.config.mjs` (lines 2255-2296)
 - **Depends on:** -
 - **Blocks:** DS-07, DS-13
@@ -236,7 +236,7 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/prime/src/i18n.optimized.ts`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/prime/src/i18n.optimized.ts`
 - **Depends on:** -
 - **Blocks:** DS-08, DS-09, DS-12
@@ -297,7 +297,7 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/prime/src/hooks/dataOrchestrator/useUnifiedBookingData.ts` + helper
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/prime/src/hooks/dataOrchestrator/useUnifiedBookingData.ts` (line 223), `[new] apps/prime/src/lib/i18n/normalizeLocale.ts`
 - **Depends on:** -
 - **Blocks:** -
@@ -363,13 +363,13 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `eslint.config.mjs`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `eslint.config.mjs`
 - **Depends on:** DS-04
 - **Blocks:** DS-08
 - **Confidence:** 80%
   - Implementation: 85% — rule options (`ignorePatterns`, `ignoreProperties`) documented in schema. Evidence: `packages/eslint-plugin-ds/src/rules/no-hardcoded-copy.ts:174-203`.
-  - Approach: 82% — structural file-pattern exceptions for owner/staff-lookup/shared_logic paths. Per lp-fact-find, these are non-guest-facing.
+  - Approach: 82% — structural file-pattern exceptions for owner/staff-lookup/shared_logic paths. Per lp-do-fact-find, these are non-guest-facing.
   - Impact: 80% — overly broad patterns could silence real violations. Must use narrow globs.
 - **Acceptance:**
   - Internal operator pages (`apps/prime/src/app/owner/**`, `apps/prime/src/app/staff-lookup/**`) produce 0 `ds/no-hardcoded-copy` warnings.
@@ -390,7 +390,7 @@ None — all tasks complete (DS-01 through DS-13).
   - Green: add file-pattern override blocks for owner + staff-lookup after Prime catch-all → TC-13-17 pass
   - Refactor: verify no unintended files caught by patterns
 - **Planning validation:**
-  - Checks run: verified lp-fact-find lint distribution — 82 warnings across 8 internal_ops files
+  - Checks run: verified lp-do-fact-find lint distribution — 82 warnings across 8 internal_ops files
   - Unexpected findings: `staff-lookup/StaffLookupClient.tsx` uses `useTranslation('PreArrival')` — this is an internal tool borrowing a guest namespace. The exemption should still apply (staff-lookup is not guest-visible).
 - **What would make this ≥90%:**
   - Add an audit test that flags unexpected growth of hardcoded-copy in exempted paths
@@ -430,7 +430,7 @@ None — all tasks complete (DS-01 through DS-13).
 - **Blocks:** DS-09, DS-10
 - **Confidence:** 95%
 - **Acceptance:**
-  - Run `/lp-replan` on all tasks after this checkpoint (DS-09 through DS-13)
+  - Run `/lp-do-replan` on all tasks after this checkpoint (DS-09 through DS-13)
   - Reassess remaining task confidence using evidence from completed tasks + resolved decisions
   - Confirm or revise the approach for i18n bootstrap, locale pipeline, and copy migration
   - Update plan with any new findings, splits, or abandoned tasks
@@ -456,7 +456,7 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/prime/src/app/providers.tsx`, `apps/prime/src/app/layout.tsx`, `apps/prime/src/i18n.optimized.ts`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/prime/src/app/providers.tsx`, `apps/prime/src/app/layout.tsx`, `apps/prime/src/i18n.optimized.ts`, `[readonly] apps/prime/src/components/i18n/I18nPreloader.tsx`, `[readonly] apps/prime/src/components/i18n/LazyTranslations.tsx`
 - **Depends on:** DS-02, DS-05, DS-08
 - **Blocks:** DS-11, DS-12, DS-13
@@ -526,7 +526,7 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — build script + locale files + CI config
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `[new] apps/prime/scripts/build-locale-assets.sh` or `.ts`, `apps/prime/public/locales/`, `apps/prime/package.json` (build script), `[readonly] packages/i18n/src/*.json`
 - **Depends on:** DS-01, DS-02, DS-03, DS-08
 - **Blocks:** DS-11, DS-12
@@ -597,7 +597,7 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — top guest-surface components + translation keys
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - **Primary:** `apps/prime/src/app/(guarded)/booking-details/page.tsx` (20 warnings), `apps/prime/src/components/homepage/HomePage.tsx` + `DoList.tsx` + `ServicesList.tsx` + `SocialHighlightsCard.tsx` (~15 warnings combined), `apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx` (Activities namespace), `apps/prime/src/app/(guarded)/chat/channel/page.tsx` + `GuestDirectory.tsx` (Chat namespace)
   - **Secondary:** `[readonly] packages/i18n/src/en.json`, `[readonly] apps/prime/src/i18n.optimized.ts`
@@ -628,7 +628,7 @@ None — all tasks complete (DS-01 through DS-13).
   - Green: extract keys, add to en.json, wrap with `t()` → TC-26-30 pass
   - Refactor: consolidate key naming, remove dead fallback literals
 - **Planning validation:**
-  - Checks run: inventoried top guest-surface files and warning counts from lp-fact-find
+  - Checks run: inventoried top guest-surface files and warning counts from lp-do-fact-find
   - Unexpected findings: Some components use `useTranslation` with keys that already exist but with inline fallback — those need fallback removal, not full extraction
 - **What would make this ≥90%:**
   - DS-09 and DS-10 complete → i18n infrastructure proven end-to-end
@@ -671,7 +671,7 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — test files
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `[new] apps/prime/src/__tests__/namespace-manifest.test.ts` (may be created in DS-05), `packages/i18n/src/__tests__/translations-completeness.test.ts`, `[new] apps/prime/src/__tests__/locale-file-existence.test.ts`
 - **Depends on:** DS-05, DS-09, DS-10
 - **Blocks:** -
@@ -736,7 +736,7 @@ None — all tasks complete (DS-01 through DS-13).
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — documentation files
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `docs/i18n/add-translation-keys.md`, `apps/prime/docs/CONTRIBUTING.md`
 - **Depends on:** DS-04, DS-09
 - **Blocks:** -
@@ -755,7 +755,7 @@ None — all tasks complete (DS-01 through DS-13).
   - Validation type: review checklist
   - Run/verify: manual review
 - **Execution plan:** Red → Green → Refactor
-  - Red: verify stale references exist (already confirmed in lp-fact-find)
+  - Red: verify stale references exist (already confirmed in lp-do-fact-find)
   - Green: update docs with current reality
   - Refactor: remove redundant or contradictory sections
 - **Planning validation:**

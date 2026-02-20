@@ -34,9 +34,9 @@ Stage labels sourced from: `docs/business-os/startup-loop/_generated/stage-opera
 | Baseline merge (S4) | no-prompt-required | all | Skill-driven: `/lp-baseline-merge` |
 | Prioritize (S5A) | `prioritization-scorer-prompt.md` | all | |
 | BOS sync (S5B) | no-prompt-required | all | Skill-driven: `/lp-bos-sync` |
-| Fact-find (S7) | no-prompt-required | all | Skill-driven: `/lp-fact-find` |
-| Plan (S8) | no-prompt-required | all | Skill-driven: `/lp-plan` |
-| Build (S9) | no-prompt-required | all | Skill-driven: `/lp-build` |
+| Fact-find (S7) | no-prompt-required | all | Skill-driven: `/lp-do-fact-find` |
+| Plan (S8) | no-prompt-required | all | Skill-driven: `/lp-do-plan` |
+| Build (S9) | no-prompt-required | all | Skill-driven: `/lp-do-build` |
 | Post-deploy verification (S9B) | `post-deploy-measurement-verification-prompt.md` | all | Run immediately after first production deploy. Two-phase: Immediate (T+0, DebugView/curl only) and Delayed (T+1 Data API baseline, T+7 week-1 baseline + GSC coverage delta). DV-03 cross-domain linking is advisory (H). |
 | QA gates (S9B) | no-prompt-required | all | Skill-driven: `/lp-launch-qa` |
 | Weekly decision (S10) | `weekly-kpcs-decision-prompt.md` | all | |

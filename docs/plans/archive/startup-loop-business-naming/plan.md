@@ -9,7 +9,7 @@ Feature-Slug: startup-loop-business-naming
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort (S=1 M=2 L=3)
@@ -105,7 +105,7 @@ The startup loop has no process for generating a business or product name when a
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `docs/business-os/startup-baselines/_templates/intake-packet-template.md` (or equivalent canonical template path) with two new fields; semantic documentation inline.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -151,7 +151,7 @@ The startup loop has no process for generating a business or product name when a
 
 - **Type:** INVESTIGATE
 - **Deliverable:** Investigation note appended to `docs/plans/startup-loop-business-naming/fact-find.md` § Remaining Assumptions; confirmed or revised schema field list for TASK-03 to use when editing loop-spec.yaml.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -184,7 +184,7 @@ The startup loop has no process for generating a business or product name when a
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `docs/business-os/market-research/_templates/deep-research-naming-prompt.md` — a complete, usable prompt template with `{{FIELD}}` placeholders mapped to Naming Prompt Seed Contract, all four research task sections, output format spec, and required shortlist front matter schema.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
@@ -241,7 +241,7 @@ The startup loop has no process for generating a business or product name when a
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `.claude/skills/startup-loop/SKILL.md` with GATE-BD-00 check at S0→S1 transition; idempotent prompt generation; glob-based shortlist detection; stable pointer write on pass; `naming_gate` field in status output.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -280,7 +280,7 @@ The startup loop has no process for generating a business or product name when a
 - **Planning validation (required for M):**
   - Checks run: Read `.claude/skills/startup-loop/SKILL.md` S0→S1 section in full to confirm exact insertion point and confirm glob-based file detection is used for other gates.
   - Validation artifacts: Finding documented inline as scout note in execution.
-  - Unexpected findings: If glob-based detection is not used elsewhere, escalate to `/lp-replan` before implementing.
+  - Unexpected findings: If glob-based detection is not used elsewhere, escalate to `/lp-do-replan` before implementing.
 - **Scouts:**
   - Read the S2 gate logic in `startup-loop/SKILL.md` end-to-end to confirm: (a) file-existence check mechanism, (b) blocking message format, (c) resume instruction format, (d) `latest.user.md` write pattern.
   - Confirm whether `startup-loop/SKILL.md` or `loop-spec.yaml` is the authoritative source for gate logic. (Gate logic may be in prose in SKILL.md but registered in spec. TASK-03b resolves this.)
@@ -311,7 +311,7 @@ Note: depending on the schema assessment finding, TASK-03 may include the `loop-
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `.claude/skills/lp-brand-bootstrap/SKILL.md` — reads `docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md` front matter if present; extracts `recommended_business_name` to pre-fill brand dossier name field; skips gracefully with advisory if file absent or front matter malformed.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -358,7 +358,7 @@ Note: depending on the schema assessment finding, TASK-03 may include the `loop-
 
 ## Risks & Mitigations
 
-- Glob-based shortlist detection not supported by existing startup-loop gate infrastructure → TASK-03 scout must confirm before implementation; escalate to `/lp-replan` if not supported.
+- Glob-based shortlist detection not supported by existing startup-loop gate infrastructure → TASK-03 scout must confirm before implementation; escalate to `/lp-do-replan` if not supported.
 - `loop-spec.yaml` requires `spec_version` bump → TASK-03b resolves; if required, communicate to any consumers of the spec before merging.
 - lp-brand-bootstrap front matter extraction is more complex than anticipated (e.g. custom YAML parser needed) → TASK-04 scout confirms before implementation; if complex, reduce to a note in the brand dossier template rather than automated extraction.
 - Intake packet blank template does not exist → TASK-01 creates it from HEAD-intake-packet.user.md. Non-blocking; accepted scope expansion.

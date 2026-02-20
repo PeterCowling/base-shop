@@ -13,7 +13,7 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/startup-loop-token-efficiency/plan.md
 Business-OS-Integration: off
@@ -44,7 +44,7 @@ Every startup loop stage currently runs as a **single-agent, sequential prompt e
 
 ### Terminology
 
-An **invocation** means one user call to a skill (e.g., `/lp-build` to execute a single plan task cycle). An **effective context** is the sum of all files loaded before the skill begins executing: SKILL.md + loaded module + explicitly included `_shared/` contracts + transitive includes from those contracts.
+An **invocation** means one user call to a skill (e.g., `/lp-do-build` to execute a single plan task cycle). An **effective context** is the sum of all files loaded before the skill begins executing: SKILL.md + loaded module + explicitly included `_shared/` contracts + transitive includes from those contracts.
 
 ---
 
@@ -74,29 +74,29 @@ Evidence: audit of all files in `.claude/skills/` — all SKILL.md files read; c
 |---|---|---|---|---|---|---|
 | `lp-seo` | 922 | 0 | 0 | 0 | **922** | **922** |
 | `lp-launch-qa` | 792 | 0 | 0 | 0 | **792** | **792** |
-| `lp-plan` | 214 | 190 | ~43 | 345 | **~792** | **~447** |
-| `lp-build` | 209 | 111 | ~20 | 345 | **~685** | **~340** |
-| `lp-fact-find` | 198 | 76 | ~65 | 345 | **~684** | **~339** |
+| `lp-do-plan` | 214 | 190 | ~43 | 345 | **~792** | **~447** |
+| `lp-do-build` | 209 | 111 | ~20 | 345 | **~685** | **~340** |
+| `lp-do-fact-find` | 198 | 76 | ~65 | 345 | **~684** | **~339** |
 | `startup-loop` | 432 | 0 | — | 0 | **432** | **432** |
 | `lp-sequence` | 287 | 0 | — | 0 | **287** | **287** |
 | `lp-channels` | 262 | 0 | — | 0 | **262** | **262** |
 | `lp-offer` | 230 | 0 | — | 0 | **230** | **230** |
 | `lp-forecast` | 201 | 0 | — | 0 | **201** | **201** |
 
-Key insight: `_shared/stage-doc-operations.md` (345 lines) is the single largest hidden cost driver. It is never referenced in any SKILL.md directly — it loads transitively via `build-bos-integration.md`, `plan-bos-integration.md`, and `fact-find-bos-integration.md` whenever BOS integration is active. At BOS-on, `lp-plan` reaches the same effective context as `lp-launch-qa` despite its SKILL.md being 4× smaller.
+Key insight: `_shared/stage-doc-operations.md` (345 lines) is the single largest hidden cost driver. It is never referenced in any SKILL.md directly — it loads transitively via `build-bos-integration.md`, `plan-bos-integration.md`, and `fact-find-bos-integration.md` whenever BOS integration is active. At BOS-on, `lp-do-plan` reaches the same effective context as `lp-launch-qa` despite its SKILL.md being 4× smaller.
 
 ### Hot Shared Contracts
 
 | _shared/ file | Lines | Referenced by | Notes |
 |---|---|---|---|
-| `stage-doc-operations.md` | 345 | lp-build, lp-plan, lp-fact-find (transitive) | Largest single include; never directly loaded |
-| `confidence-scoring-rules.md` | 49 | lp-plan | |
-| `bos-api-payloads.md` | 48 | lp-plan | |
-| `fact-find-bos-integration.md` | 45 | lp-fact-find | Itself includes stage-doc-ops |
-| `auto-continue-policy.md` | 36 | lp-plan (×2) | |
-| `discovery-index-contract.md` | 31 | lp-build, lp-plan, lp-fact-find | Most widely referenced by direct count |
-| `build-bos-integration.md` | 25 | lp-build | Includes stage-doc-ops |
-| `plan-bos-integration.md` | 26 | lp-plan | Includes stage-doc-ops |
+| `stage-doc-operations.md` | 345 | lp-do-build, lp-do-plan, lp-do-fact-find (transitive) | Largest single include; never directly loaded |
+| `confidence-scoring-rules.md` | 49 | lp-do-plan | |
+| `bos-api-payloads.md` | 48 | lp-do-plan | |
+| `fact-find-bos-integration.md` | 45 | lp-do-fact-find | Itself includes stage-doc-ops |
+| `auto-continue-policy.md` | 36 | lp-do-plan (×2) | |
+| `discovery-index-contract.md` | 31 | lp-do-build, lp-do-plan, lp-do-fact-find | Most widely referenced by direct count |
+| `build-bos-integration.md` | 25 | lp-do-build | Includes stage-doc-ops |
+| `plan-bos-integration.md` | 26 | lp-do-plan | Includes stage-doc-ops |
 
 ### lp-launch-qa: What's In Those 792 Lines
 
@@ -182,9 +182,9 @@ Evidence: all SKILL.md files read; sequential execution confirmed by searching f
 | S3 | `lp-forecast` | Monolith (201 lines) | No significant opportunity | No — small enough | None |
 | S6B primary | `lp-channels` | Monolith (262 lines) | Parallel with lp-seo + outreach | Low value to split | OPP-4 (P2) |
 | S6B secondary | `lp-seo` | Monolith (922 lines) | Yes — phase modules; SERP parallelism | **Yes — high priority** | OPP-3a (P2), OPP-3b (P3) |
-| S7 | `lp-fact-find` | Thin orchestrator (~684 BOS-on) | No — already modular | Already done | OPP-A (stage-doc-ops split) |
-| S8 | `lp-plan` | Thin orchestrator (~792 BOS-on) | No — already modular | Already done | OPP-A (stage-doc-ops split) |
-| S9 | `lp-build` | Thin orchestrator (~685 BOS-on) | **Yes — wave dispatch** | Already done | OPP-1 (P1), OPP-A |
+| S7 | `lp-do-fact-find` | Thin orchestrator (~684 BOS-on) | No — already modular | Already done | OPP-A (stage-doc-ops split) |
+| S8 | `lp-do-plan` | Thin orchestrator (~792 BOS-on) | No — already modular | Already done | OPP-A (stage-doc-ops split) |
+| S9 | `lp-do-build` | Thin orchestrator (~685 BOS-on) | **Yes — wave dispatch** | Already done | OPP-1 (P1), OPP-A |
 | S9B | `lp-launch-qa` | Monolith (792 lines) | **Yes — domain modules + parallel** | **Yes — high priority** | OPP-2 (P1) |
 | Cross-cutting | `stage-doc-ops` | Hot shared contract (345 lines) | N/A | **Yes — split read/write** | OPP-A (P2) |
 
@@ -204,7 +204,7 @@ Each opportunity is sized across three metrics. Impact is expressed as direction
 
 ---
 
-### OPP-1: `/lp-build` — Parallel Wave Dispatch (Highest Leverage)
+### OPP-1: `/lp-do-build` — Parallel Wave Dispatch (Highest Leverage)
 
 | Metric | Before | After | Change |
 |---|---|---|---|
@@ -212,10 +212,10 @@ Each opportunity is sized across three metrics. Impact is expressed as direction
 | Total tokens | N × (685 + task tokens) | (num waves) × (685 + max-wave tokens) + orchestration overhead | ↓ for high-wave-count plans |
 | Latency | N sequential cycles | max(wave duration) + merge time | ↓↓ for plans with ≥2 parallel tasks per wave |
 
-**Current state:** `/lp-build` executes one task per cycle, sequentially. `/lp-sequence` produces a Parallelism Guide with numbered execution waves and explicit blocking relationships. The SKILL.md states its purpose is "to enable parallel subagent execution for `/lp-build`." This is implemented in lp-sequence's output but never consumed at dispatch time.
+**Current state:** `/lp-do-build` executes one task per cycle, sequentially. `/lp-sequence` produces a Parallelism Guide with numbered execution waves and explicit blocking relationships. The SKILL.md states its purpose is "to enable parallel subagent execution for `/lp-do-build`." This is implemented in lp-sequence's output but never consumed at dispatch time.
 
 **Mechanism (Model A — recommended):**
-1. `lp-build` reads the Parallelism Guide from the plan's sidecar (or from the plan itself)
+1. `lp-do-build` reads the Parallelism Guide from the plan's sidecar (or from the plan itself)
 2. Identifies current wave — tasks with no pending `Blocks` predecessors
 3. Wave size = 1: continue current one-task-per-cycle pattern
 4. Wave size ≥ 2: dispatch each task as a parallel subagent (analysis mode only per Model A)
@@ -246,7 +246,7 @@ For a 10-task plan decomposed as waves `[4, 3, 3]`:
 - Subagent output must pass a "no-regressions" check before orchestrator applies diff
 - Wave completion gate: all tests pass before advancing to next wave
 
-**Effort:** Medium. Requires `_shared/wave-dispatch-protocol.md` (new), update to `lp-build/SKILL.md` (wave-reading + dispatch logic), no schema changes.
+**Effort:** Medium. Requires `_shared/wave-dispatch-protocol.md` (new), update to `lp-do-build/SKILL.md` (wave-reading + dispatch logic), no schema changes.
 
 ---
 
@@ -379,9 +379,9 @@ Max 200 words total per competitor. Orchestrator summarises into Evidence Regist
 | Total tokens | Same | Same pattern, smaller include | ↓ |
 | Latency | — | — | — |
 
-**Current state:** `stage-doc-operations.md` (345 lines) is the largest single shared contract. It is loaded transitively by `build-bos-integration.md`, `plan-bos-integration.md`, and `fact-find-bos-integration.md` — adding 345 lines to every lp-build, lp-plan, and lp-fact-find invocation with BOS integration on. The three BOS integration files together are only 96 lines (25+26+45); the transitive load is 3.6× their combined size.
+**Current state:** `stage-doc-operations.md` (345 lines) is the largest single shared contract. It is loaded transitively by `build-bos-integration.md`, `plan-bos-integration.md`, and `fact-find-bos-integration.md` — adding 345 lines to every lp-do-build, lp-do-plan, and lp-do-fact-find invocation with BOS integration on. The three BOS integration files together are only 96 lines (25+26+45); the transitive load is 3.6× their combined size.
 
-Skills that would benefit most: lp-build (685 → ~370 lines), lp-plan (792 → ~497), lp-fact-find (684 → ~385) — all with BOS-on.
+Skills that would benefit most: lp-do-build (685 → ~370 lines), lp-do-plan (792 → ~497), lp-do-fact-find (684 → ~385) — all with BOS-on.
 
 **Mechanism:**
 1. Split `stage-doc-operations.md` into:
@@ -445,7 +445,7 @@ Two axes: **Impact Tier** (value once implemented) vs **Recommended Execution Or
 | OPP-3a | `lp-seo` phase modules | ↓↓ 66% per phase run | ↓ | — | High | **3rd — largest monolith** |
 | OPP-B | Subagent dispatch contract | — | — | — | Enabler | **4th — prerequisite for all dispatch** |
 | OPP-2 | `lp-launch-qa` domain parallel | ↓↓ 73% per subagent | ↑ 85% total | ↓↓ 75% latency | P1 | **5th — after contract + modules** |
-| OPP-1 | `lp-build` wave dispatch | — | ↓ for large plans | ↓↓ 40-70% | P1 | **6th — needs OPP-B + existing seq.** |
+| OPP-1 | `lp-do-build` wave dispatch | — | ↓ for large plans | ↓↓ 40-70% | P1 | **6th — needs OPP-B + existing seq.** |
 | OPP-4 | S6B parallel secondary skills | — | ↓ slight | ↓ ~50% S6B | P2 | **7th — low effort** |
 | OPP-3b | `lp-seo` SERP intra-phase parallel | ↓↓ per subagent | ↑ slight | ↓↓ Phase 3 | P2 | **8th — after OPP-3a** |
 | OPP-5 | `lp-offer` competitor research | ↓ (compact summaries) | ↑ slight | ↓ Stage 1 | P3 | **9th** |
@@ -457,12 +457,12 @@ Two axes: **Impact Tier** (value once implemented) vs **Recommended Execution Or
 
 ## Patterns & Conventions Observed
 
-- **Thin orchestrator pattern** — `lp-fact-find`, `lp-plan`, `lp-build`, `lp-replan`: SKILL.md stays 150–215 lines; complexity in module files; only one module per run. Proven, established pattern.
+- **Thin orchestrator pattern** — `lp-do-fact-find`, `lp-do-plan`, `lp-do-build`, `lp-do-replan`: SKILL.md stays 150–215 lines; complexity in module files; only one module per run. Proven, established pattern.
 - **Module routing** — classification decision → load only one module. Already halves effective context for workflow skills vs. monolithic alternatives.
 - **Shared contracts** — `_shared/` directory (22 files, ~1,317 lines). Clean DRY factoring of BOS integration, confidence scoring, evidence tiers. No payload duplication.
-- **Parallelism Guide (designed-but-not-implemented)** — `lp-sequence` SKILL.md line 3/8/24/160: multiple explicit statements that the Parallelism Guide exists "to enable parallel subagent execution for `/lp-build`." Dispatch is designed-in but no skill exercises it.
+- **Parallelism Guide (designed-but-not-implemented)** — `lp-sequence` SKILL.md line 3/8/24/160: multiple explicit statements that the Parallelism Guide exists "to enable parallel subagent execution for `/lp-do-build`." Dispatch is designed-in but no skill exercises it.
 - **`--domain` / `--phase` flags** — `lp-launch-qa` and `lp-seo` expose per-scope flags that model independence of sub-units. They reduce scope for single-agent runs but are not used for subagent dispatch.
-- **Zero Task tool usage in core loop** — Confirmed by search for `Task(`, `task tool`, `subagent`, `spawn` across `.claude/skills/**/*.md`: zero occurrences in any of `startup-loop`, `lp-build`, `lp-plan`, `lp-fact-find`, `lp-offer`, `lp-forecast`, `lp-channels`, `lp-seo`, `lp-launch-qa`. (Non-loop skills `guide-translate` and `review-plan-status` do use Task tool.)
+- **Zero Task tool usage in core loop** — Confirmed by search for `Task(`, `task tool`, `subagent`, `spawn` across `.claude/skills/**/*.md`: zero occurrences in any of `startup-loop`, `lp-do-build`, `lp-do-plan`, `lp-do-fact-find`, `lp-offer`, `lp-forecast`, `lp-channels`, `lp-seo`, `lp-launch-qa`. (Non-loop skills `guide-translate` and `review-plan-status` do use Task tool.)
 
 ---
 
@@ -479,10 +479,10 @@ Two axes: **Impact Tier** (value once implemented) vs **Recommended Execution Or
 
 ## Dependency & Impact Map
 
-- Upstream: OPP-1 depends on lp-sequence Parallelism Guide format being stable (not changing between lp-sequence run and lp-build dispatch)
+- Upstream: OPP-1 depends on lp-sequence Parallelism Guide format being stable (not changing between lp-sequence run and lp-do-build dispatch)
 - Upstream: OPP-3b depends on OPP-3a (phase modules must exist before intra-phase parallelism)
 - Upstream: OPP-1, OPP-2, OPP-3b, OPP-4, OPP-5 all depend on OPP-B (dispatch contract)
-- Downstream: changes to lp-build task execution model may affect BOS sync timing (build-bos-integration.md write happens per task; wave model changes the unit)
+- Downstream: changes to lp-do-build task execution model may affect BOS sync timing (build-bos-integration.md write happens per task; wave model changes the unit)
 - Blast radius: EFF-1, OPP-3a, OPP-A are low-blast (module extraction; no schema changes). OPP-1, OPP-2 are medium-blast (new execution model; orchestrator aggregation step is new code path).
 
 ---
@@ -494,9 +494,9 @@ Two axes: **Impact Tier** (value once implemented) vs **Recommended Execution Or
 | # | Hypothesis | Depends on | Falsification cost | Falsification time |
 |---|---|---|---|---|
 | H1 | Module routing reduces effective context by 66-78% for lp-seo and lp-launch-qa | Line count audit (done) | Low — count lines before/after | Before first release |
-| H2 | Wave dispatch (Model A) reduces lp-build wall time by 40-70% | Real plan run with wave size ≥2 | Medium — need representative 10+ task plan | After OPP-1 implementation |
+| H2 | Wave dispatch (Model A) reduces lp-do-build wall time by 40-70% | Real plan run with wave size ≥2 | Medium — need representative 10+ task plan | After OPP-1 implementation |
 | H3 | Domain parallelization increases total lp-launch-qa token spend by ~85% | Token profiling on real QA run | Low — Claude API reports token counts | After OPP-2 implementation |
-| H4 | OPP-A (stage-doc-ops split) reduces lp-build effective context from 685 to ~370 lines | File size audit (done; mechanism clear) | Low — trivially verifiable | Before release |
+| H4 | OPP-A (stage-doc-ops split) reduces lp-do-build effective context from 685 to ~370 lines | File size audit (done; mechanism clear) | Low — trivially verifiable | Before release |
 | H5 | Parallel subagents without strict schema produce lower-quality outputs than single-agent | Quality comparison test | Medium — requires human evaluation | After first parallel skill implemented |
 
 ### Existing Signal Coverage
@@ -522,15 +522,15 @@ Two axes: **Impact Tier** (value once implemented) vs **Recommended Execution Or
 ### Resolved
 
 - Q: Does `/lp-sequence` produce output suitable for wave dispatch?
-  - A: Yes. Parallelism Guide explicitly encodes execution waves and blocking relationships. lp-sequence SKILL.md states purpose as "enable parallel subagent execution for `/lp-build`."
+  - A: Yes. Parallelism Guide explicitly encodes execution waves and blocking relationships. lp-sequence SKILL.md states purpose as "enable parallel subagent execution for `/lp-do-build`."
   - Evidence: `.claude/skills/lp-sequence/SKILL.md` lines 3, 8, 24, 160
 
 - Q: Do any skills currently use the Task tool?
   - A: No. Confirmed by search for `Task(`, `task tool`, `subagent`, `spawn` across `.claude/skills/**/*.md` — zero occurrences in any core loop skill.
   - Evidence: grep query above; findings limited to lp-sequence (passive documentation), guide-translate, review-plan-status (non-loop)
 
-- Q: What is the actual effective context for lp-plan and lp-build, not just SKILL.md lines?
-  - A: With BOS integration on, lp-plan reaches ~792 lines and lp-build reaches ~685 lines, driven by the transitive load of stage-doc-operations.md (345 lines).
+- Q: What is the actual effective context for lp-do-plan and lp-do-build, not just SKILL.md lines?
+  - A: With BOS integration on, lp-do-plan reaches ~792 lines and lp-do-build reaches ~685 lines, driven by the transitive load of stage-doc-operations.md (345 lines).
   - Evidence: empirical audit of all _shared/ file references and transitive includes
 
 - Q: Is `stage-doc-operations.md` the largest hidden cost?
@@ -584,8 +584,8 @@ Two axes: **Impact Tier** (value once implemented) vs **Recommended Execution Or
 
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
-| lp-build wave dispatch produces file write conflicts | Medium | High | Model A enforces analysis-only subagents; orchestrator applies diffs sequentially with touched_files conflict check |
-| stage-doc-operations.md split misses a cross-operation dependency | Low | Medium | Read the full file before splitting; validate by running lp-fact-find BOS sync after split |
+| lp-do-build wave dispatch produces file write conflicts | Medium | High | Model A enforces analysis-only subagents; orchestrator applies diffs sequentially with touched_files conflict check |
+| stage-doc-operations.md split misses a cross-operation dependency | Low | Medium | Read the full file before splitting; validate by running lp-do-fact-find BOS sync after split |
 | lp-seo phase split loses cross-phase state | Low | Medium | Define explicit inter-phase artifact hand-off schema before splitting; test with --phase 2 reading --phase 1 output |
 | OPP-2 parallel domains miss cross-domain failure correlation | Low | Medium | Required cross-domain synthesis step in orchestrator; explicit cross-domain interaction checklist in aggregator |
 | Parallelization increases total token cost unexpectedly | Medium | Medium | Track total tokens via API usage field; set per-skill budget caps in dispatch contract (OPP-B) |
@@ -622,7 +622,7 @@ Two axes: **Impact Tier** (value once implemented) vs **Recommended Execution Or
 3. **TASK-03**: Extract `/lp-seo` 5 phases into `lp-seo/modules/phase-N.md`; create `phase-base-contract.md`; update SKILL.md to thin orchestrator (OPP-3a)
 4. **TASK-04**: Author `_shared/subagent-dispatch-contract.md` — output schema, Model A protocol, budget controls, quality guardrails, failure handling (OPP-B / prerequisite)
 5. **TASK-05**: Extract `/lp-launch-qa` 6 domains into module files; extract report template; refactor SKILL.md to thin orchestrator with parallel dispatch + cross-domain synthesis (OPP-2)
-6. **TASK-06**: Implement wave dispatch in `/lp-build` — wave-reading from Parallelism Guide, Model A parallel Task dispatch, merge protocol, conflict detection (OPP-1)
+6. **TASK-06**: Implement wave dispatch in `/lp-do-build` — wave-reading from Parallelism Guide, Model A parallel Task dispatch, merge protocol, conflict detection (OPP-1)
 7. **TASK-07**: Update `/startup-loop` S6B section to dispatch `lp-seo` and `draft-outreach` in parallel via Task tool after `lp-channels` completes (OPP-4)
 8. **TASK-08**: Add intra-phase SERP parallelism to `lp-seo/modules/phase-3.md` — subagent per keyword cluster, hard caps, schema (OPP-3b)
 9. **TASK-09**: Add competitor research subagent dispatch to `/lp-offer` Stage 1 — compact output schema, one subagent per competitor (OPP-5)
@@ -631,7 +631,7 @@ Two axes: **Impact Tier** (value once implemented) vs **Recommended Execution Or
 
 ## Execution Routing Packet
 
-- Primary execution skill: `lp-build` (editing skill markdown files — no TypeScript changes required)
+- Primary execution skill: `lp-do-build` (editing skill markdown files — no TypeScript changes required)
 - Supporting skills: none
 - Deliverable acceptance package:
   - All modified SKILL.md files: ≤250 lines for orchestrator files; module files extracted with confirmed line counts
@@ -639,8 +639,8 @@ Two axes: **Impact Tier** (value once implemented) vs **Recommended Execution Or
   - Before/after token and line count recorded for each modified skill
   - OPP-B (dispatch contract) authored before any dispatch task executed
 - Post-delivery measurement:
-  - Token count before/after for lp-seo, lp-launch-qa, lp-plan, lp-build (BOS-on invocations)
-  - Wall time before/after for lp-launch-qa (OPP-2) and one lp-build run with wave size ≥2 (OPP-1)
+  - Token count before/after for lp-seo, lp-launch-qa, lp-do-plan, lp-do-build (BOS-on invocations)
+  - Wall time before/after for lp-launch-qa (OPP-2) and one lp-do-build run with wave size ≥2 (OPP-1)
 
 ---
 
@@ -675,4 +675,4 @@ Two axes: **Impact Tier** (value once implemented) vs **Recommended Execution Or
 
 - Status: Ready-for-planning
 - Blocking items: none (open questions are scoping decisions, not blockers; OPP-B sequencing is captured in task seeds)
-- Recommended next step: `/lp-plan docs/plans/startup-loop-token-efficiency/fact-find.md`
+- Recommended next step: `/lp-do-plan docs/plans/startup-loop-token-efficiency/fact-find.md`

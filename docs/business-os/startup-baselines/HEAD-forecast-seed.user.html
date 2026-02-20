@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HEAD Forecast Seed for SFS-00</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    /* Audience toggle — Model A: single engineering appendix wrapper */
+    [data-audience="engineering"] {
+      display: none;
+    }
+    body.show-engineering [data-audience="engineering"] {
+      display: block;
+    }
+    .audience-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 0 24px;
+      padding: 8px 16px;
+      background: var(--header);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-family: inherit;
+    }
+    .audience-toggle:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
+<h1>HEAD Forecast Seed for SFS-00</h1>
+<h2>0a) Business-Now (Outcome Contract Proposal)</h2>
+<ul>
+<li>Outcome-ID: <code>HEAD-OUT-2026Q1-01</code></li>
+<li>Outcome statement: Achieve first reliable direct sales for HEAD in Italy through own-site launch with sustainable unit economics.</li>
+<li>Baseline (2026-02-12):
+<ul>
+<li>net orders: 0</li>
+<li>net revenue: EUR 0</li>
+<li>blended CAC: not measured</li>
+<li>return rate: not measured</li>
+</ul>
+</li>
+<li>Target (90 days):
+<ul>
+<li>net orders: 110 (forecast P50)</li>
+<li>net revenue: EUR 3,000 (forecast P50)</li>
+<li>blended CAC: &#x3C;=EUR 13 by day 60 and &#x3C;=EUR 13-15 steady-state band by day 90 (pending observed contribution)</li>
+<li>return rate: &#x3C;=7%</li>
+</ul>
+</li>
+<li>By (deadline): 2026-05-13</li>
+<li>Owner: Pete</li>
+<li>Leading indicators (weekly):
+<ul>
+<li>total sessions</li>
+<li>CVR by channel</li>
+<li>paid CAC and blended CAC</li>
+<li>payment success rate</li>
+<li>return reason distribution</li>
+</ul>
+</li>
+<li>Decision link: <code>DEC-HEAD-01</code> (whether to scale paid acquisition beyond precision/retargeting and commit to second-SKU expansion)</li>
+<li>Stop/Pivot guardrails:
+<ul>
+<li>if paid CAC > gross profit per order for 7 consecutive days, reduce paid to retargeting only</li>
+<li>if sitewide CVR &#x3C;0.9% after >=500 sessions, pause spend expansion and run conversion fixes first</li>
+</ul>
+</li>
+</ul>
+<h2>0b) Existing-Work-Now (From Current Evidence)</h2>
+<p>Confirmed available now:</p>
+<ul>
+<li>Product concept and category: cochlear-implant retention headband</li>
+<li>Extension lane candidate set and priorities: organiser pouch, school-ready multi-pack headbands, patch packs</li>
+<li>Stock position: first product inventory already purchased (near-term launch-ready)</li>
+<li>Canonical S3 forecast artifact and market-intel refresh published (2026-02-20)</li>
+<li>Channel intent: own-site primary channel with constrained Etsy probes</li>
+</ul>
+<p>Still missing / needs confirmation:</p>
+<ul>
+<li>exact in-stock date and sellable units count</li>
+<li>final price architecture by SKU and bundle ladder</li>
+<li>compatibility matrix for processor variants</li>
+<li>payment stack readiness checklist and end-to-end test status</li>
+<li>returns flow copy and operational SLA confirmation</li>
+<li>trademark/domain clearance for shortlist naming candidates</li>
+</ul>
+<h2>0c) Merge + Classification for First Execution Pack</h2>
+<p>Reuse-existing:</p>
+<ul>
+<li>forecast benchmarks and ICP hypotheses from <code>docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md</code></li>
+<li>top-3 adjacent-product MVP priorities from <code>docs/business-os/strategy/HEAD/lp-other-products-results.user.md</code></li>
+</ul>
+<p>Adapt-existing:</p>
+<ul>
+<li>convert forecast KPI set into live weekly scorecard with real thresholds</li>
+<li>refine ICP from broad "people with cochlear implants" to prioritized buyer segment sequence</li>
+<li>shift offer from single-SKU fragility to bundle-aware MVP lane</li>
+</ul>
+<p>New required artifacts:</p>
+<ul>
+<li>HEAD launch scorecard (weekly live metrics)</li>
+<li>compatibility and fit decision aid (customer-facing)</li>
+<li>paid spend control sheet linked to CAC guardrails</li>
+<li>returns reason taxonomy and escalation triggers</li>
+<li>naming clearance decision memo (selected mark + fallback)</li>
+</ul>
+<h2>Ready-to-Execute Go Items (Seed)</h2>
+<ol>
+<li>Launch analytics + payment reliability baseline on own-site funnel.</li>
+<li>Publish compatibility/fit guidance and assisted support path.</li>
+<li>Launch top-3 MVP adjacent products (multi-pack, organiser pouch, patch packs) with bundle-first merchandising.</li>
+<li>Run capped week-1 acquisition experiment (high-intent + retargeting) with daily CAC/CVR reviews.</li>
+<li>Hold week-2 recalibration decision and re-forecast remaining 10 weeks using observed data.</li>
+</ol>
+<h2>Priors (Machine)</h2>
+<p>Last updated: 2026-02-20 12:00 UTC</p>
+<pre><code class="language-json">[
+  {
+    "id": "forecast.target.net_orders",
+    "type": "target",
+    "statement": "Net orders target for 90 days is 110 (P50 forecast)",
+    "confidence": 0.5,
+    "value": 110,
+    "unit": "orders",
+    "last_updated": "2026-02-20T00:00:00Z",
+    "evidence": ["docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md"]
+  },
+  {
+    "id": "forecast.target.net_revenue",
+    "type": "target",
+    "statement": "Net revenue target for 90 days is EUR 3000 (P50 forecast)",
+    "confidence": 0.5,
+    "value": 3000,
+    "unit": "EUR",
+    "last_updated": "2026-02-20T00:00:00Z",
+    "evidence": ["docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md"]
+  },
+  {
+    "id": "forecast.constraint.blended_cac",
+    "type": "constraint",
+    "statement": "Blended CAC must be &#x3C;=EUR 13-15 by day 90",
+    "confidence": 0.6,
+    "value": 13,
+    "unit": "EUR",
+    "operator": "lte",
+    "range": {"min": 13, "max": 15},
+    "last_updated": "2026-02-20T00:00:00Z",
+    "evidence": ["docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md"]
+  },
+  {
+    "id": "forecast.constraint.return_rate",
+    "type": "constraint",
+    "statement": "Return rate must be &#x3C;=7%",
+    "confidence": 0.6,
+    "value": 7,
+    "unit": "percent",
+    "operator": "lte",
+    "last_updated": "2026-02-20T00:00:00Z",
+    "evidence": ["docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md"]
+  },
+  {
+    "id": "forecast.constraint.min_cvr",
+    "type": "constraint",
+    "statement": "Sitewide CVR must be >=0.9% after 500 sessions",
+    "confidence": 0.7,
+    "value": 0.9,
+    "unit": "percent",
+    "operator": "gte",
+    "last_updated": "2026-02-20T00:00:00Z",
+    "evidence": ["Stop/pivot guardrail from forecast outcome contract"]
+  }
+]
+</code></pre>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/startup-baselines/HEAD-forecast-seed.user.md</code></div>
+      <div>Generated: 2026-02-20T13:28:09.679Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    // startOnLoad: false — we render manually so hidden engineering diagrams
+    // (inside display:none) are not attempted on load, which causes spurious
+    // "Syntax error in text" failures in Mermaid v11.
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    // Render only the visible (operator) diagrams immediately.
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    // Audience toggle — Model A.
+    // Engineering diagrams are rendered on first reveal (not on load).
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          // Render engineering diagrams now that they are visible.
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

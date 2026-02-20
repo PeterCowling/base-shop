@@ -13,7 +13,7 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: doc-rewrite
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/startup-loop-workflow-redesign/plan.md
 Business-OS-Integration: off
@@ -209,8 +209,8 @@ Not investigated: No external research required. This is a structural redesign o
   - Evidence: MEMORY.md (`Render script: pnpm docs:render-user-html -- <path.user.md>`).
 
 - Q: Is the deliverable-routing.yaml routing correct for a doc-rewrite?
-  - A: The routing file (`deliverable-routing.yaml`) lists `doc` as a family with subtypes `product-brief` and `marketing-asset`. A doc-rewrite is an internal operational document, not a marketing asset or product brief. The appropriate primary execution skill is `lp-build` (doc track). The `Deliverable-Type: doc-rewrite` is a locally defined extension of the `doc` family routing, consistent with how lp-build handles non-code deliverables.
-  - Evidence: `.claude/skills/lp-fact-find/routing/deliverable-routing.yaml`
+  - A: The routing file (`deliverable-routing.yaml`) lists `doc` as a family with subtypes `product-brief` and `marketing-asset`. A doc-rewrite is an internal operational document, not a marketing asset or product brief. The appropriate primary execution skill is `lp-do-build` (doc track). The `Deliverable-Type: doc-rewrite` is a locally defined extension of the `doc` family routing, consistent with how lp-do-build handles non-code deliverables.
+  - Evidence: `.claude/skills/lp-do-fact-find/routing/deliverable-routing.yaml`
 
 - Q: What are the current per-business blockers to populate "Today" panels?
   - A: Confirmed from section 5 of source document:
@@ -313,7 +313,7 @@ None remaining — all questions resolved.
 ## Execution Routing Packet
 
 - Primary execution skill:
-  - `lp-build` (doc track) — document authoring and restructuring
+  - `lp-do-build` (doc track) — document authoring and restructuring
 - Supporting skills:
   - none — this is a pure document rewrite; no code or data pipeline involvement
 - Deliverable acceptance package:
@@ -353,4 +353,4 @@ None remaining — all questions resolved.
 - Blocking items:
   - None blocking plan creation. The open question about render pipeline `<script>` injection should be resolved before TASK-06 is executed (not before planning).
 - Recommended next step:
-  - `/lp-plan` — all evidence is sufficient to produce a validation-first, ordered task plan.
+  - `/lp-do-plan` — all evidence is sufficient to produce a validation-first, ordered task plan.

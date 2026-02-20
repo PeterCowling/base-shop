@@ -11,7 +11,7 @@ Feature-Slug: startup-loop-output-registry
 Deliverable-Type: html-document
 Startup-Deliverable-Alias: none
 Execution-Track: business-artifact
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact); overall effort-weighted
@@ -116,7 +116,7 @@ Total confirmed artifacts: HEAD 11, PET 13, BRIK 20.
 - **Type:** IMPLEMENT
 - **Deliverable:** `docs/business-os/startup-loop-output-registry.user.html` —
   self-contained HTML file
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -221,7 +221,7 @@ Total confirmed artifacts: HEAD 11, PET 13, BRIK 20.
 - **Type:** IMPLEMENT
 - **Deliverable:** Verified visual parity confirmation (operator sign-off or
   diff notes recorded in this plan)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S

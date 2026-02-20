@@ -1,12 +1,12 @@
 ---
 name: lp-onboarding-audit
-description: Audit an app's onboarding flow against the "Onboarding Done Right" checklist. Customizes the generic checklist for the app's purpose and audience, then audits actual code using lp-fact-find's Outcome A process. Produces a planning-ready brief.
+description: Audit an app's onboarding flow against the "Onboarding Done Right" checklist. Customizes the generic checklist for the app's purpose and audience, then audits actual code using lp-do-fact-find's Outcome A process. Produces a planning-ready brief.
 operating_mode: EXECUTE
 ---
 
 # Onboarding Audit
 
-Audit an app's onboarding experience against the universal "Onboarding Done Right" checklist (sections A–I). Customizes the checklist for the app's business context, audits actual code, and produces a fact-find brief that feeds directly into `/lp-plan`.
+Audit an app's onboarding experience against the universal "Onboarding Done Right" checklist (sections A–I). Customizes the checklist for the app's business context, audits actual code, and produces a fact-find brief that feeds directly into `/lp-do-plan`.
 
 ## When to Use
 
@@ -29,7 +29,7 @@ Audit an app's onboarding experience against the universal "Onboarding Done Righ
 - Create/update Business OS card and stage doc via agent API
 
 **Not Allowed:**
-- Code changes or refactors (use `/lp-build` after planning)
+- Code changes or refactors (use `/lp-do-build` after planning)
 - Running tests (audit is static analysis + code reading)
 - User research or live user testing (audit is code-only)
 - Marking items Pass without citing evidence
@@ -84,7 +84,7 @@ Audit an app's onboarding experience against the universal "Onboarding Done Righ
 
 ### Step 3: Audit Actual Onboarding Code
 
-**Goal:** Scan the codebase using lp-fact-find's evidence audit methodology.
+**Goal:** Scan the codebase using lp-do-fact-find's evidence audit methodology.
 
 1. **Locate onboarding entry points:**
    - Search for: `onboard*`, `welcome*`, `setup*`, `guided*`, `activation*` in component names and routes
@@ -146,7 +146,7 @@ Audit an app's onboarding experience against the universal "Onboarding Done Righ
 
 ### Step 5: Produce Fact-Find Brief
 
-**Goal:** Write a planning-ready brief using `lp-fact-find` Outcome A format.
+**Goal:** Write a planning-ready brief using `lp-do-fact-find` Outcome A format.
 
 **Output path:**
 ```
@@ -166,7 +166,7 @@ Last-updated: <YYYY-MM-DD>
 Feature-Slug: <app>-onboarding-audit
 Deliverable-Type: <code-change | multi-deliverable>
 Execution-Track: <code | mixed>
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-design-system
 Related-Plan: docs/plans/<app>-onboarding-audit-plan.md
 Business-OS-Integration: on
@@ -192,8 +192,8 @@ Business-Unit: <BIZ>
 5. **Findings Summary** — Sections passing / failing / needing improvement / N/A
 6. **Risks** — Table with top risks, likelihood, impact, mitigation
 7. **Recommended Fixes** — Prioritized as P0 (critical) / P1 (important) / P2 (polish), each with component path and expected impact
-8. **Confidence Inputs** — Implementation, Approach, Impact, Delivery-Readiness, Testability scores (0–100) for `/lp-plan`
-9. **Suggested Task Seeds** — Non-binding task ideas for `/lp-plan`
+8. **Confidence Inputs** — Implementation, Approach, Impact, Delivery-Readiness, Testability scores (0–100) for `/lp-do-plan`
+9. **Suggested Task Seeds** — Non-binding task ideas for `/lp-do-plan`
 10. **Planning Readiness** — Status + blocking items if any
 
 ### Step 6: Report Completion
@@ -221,7 +221,7 @@ Onboarding audit complete for <app> (<BIZ>).
 
 **Brief:** `docs/plans/<app>-onboarding-audit-fact-find.md`
 **Status:** Ready-for-planning | Needs-input
-**Next:** `/lp-plan <app>-onboarding-audit`
+**Next:** `/lp-do-plan <app>-onboarding-audit`
 ```
 
 ## Quality Checks
@@ -234,15 +234,15 @@ Onboarding audit complete for <app> (<BIZ>).
 - [ ] Every N/A section has documented reasoning
 - [ ] Must-have risk items checked (A: Aha, B: sign-up gate, G: analytics, F: paywall)
 - [ ] At least one risk identified (no "everything is perfect" audits)
-- [ ] Fact-find brief has all required lp-fact-find Outcome A sections
+- [ ] Fact-find brief has all required lp-do-fact-find Outcome A sections
 - [ ] Confidence inputs provided (5 dimensions, 0–100)
 - [ ] Planning readiness status set
 - [ ] Brief saved at correct path with correct frontmatter
 
 ## Integration
 
-- **Consumed by**: `/lp-plan` (reads fact-find brief to generate improvement plan)
-- **Feeds into**: `/lp-build` (via lp-plan's task list)
+- **Consumed by**: `/lp-do-plan` (reads fact-find brief to generate improvement plan)
+- **Feeds into**: `/lp-do-build` (via lp-do-plan's task list)
 - **References**: `.claude/skills/_shared/onboarding-done-right-checklist.md` (generic checklist)
 - **Loop position**: S7 (Fact-find) — specialized fact-find for onboarding audits
 - **Trigger conditions**:

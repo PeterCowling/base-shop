@@ -10,7 +10,7 @@ Last-updated: 2026-02-14
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -137,7 +137,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — updated package.json files and next.config.mjs files across the monorepo
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `package.json` (root — `next` in deps/devDeps and `pnpm.overrides`; `react`/`react-dom` and @types; `engines.node`)
   - `.github/workflows/*.yml` (Node setup must use >=20.9.0; `node-version: 20` is not a guarantee)
@@ -207,7 +207,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — updated package.json scripts across all apps
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cover-me-pretty/package.json` (`build`, `dev`)
   - `apps/cochlearfit/package.json` (`build`, `dev`, `preview`, `preview:pages`)
@@ -265,7 +265,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — updated dependency versions
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `package.json` (root — `next-auth`, `eslint-config-next`, `next-intl` if present)
   - `packages/ui/package.json` (`next-auth` peer dep)
@@ -318,7 +318,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — remove all synchronous Async Request API usage across the repo
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - All Next.js App Router entrypoints that can receive request context: `page.tsx`, `layout.tsx`, `route.ts`, `generateMetadata`, icons/sitemaps/robots handlers, etc.
   - Known hotspots (from pre-audit): cover-me-pretty and cms (but task is explicitly repo-wide)
@@ -368,7 +368,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — eliminate known upgrade-guide breakpoints that are easy to miss until CI/runtime
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Root/package/app scripts that reference `next lint`
   - Any CI scripts invoking `next lint` or relying on `next build` to lint
@@ -447,7 +447,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — ensure repo typecheck is green after Async Request APIs migration
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/editorial/tsconfig.json` (ensure build emits `dist/index.d.ts`)
   - `apps/cover-me-pretty/src/app/[lang]/returns/page.test.tsx` (async `params` in test props)
@@ -491,7 +491,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — restore green `pnpm typecheck` in a clean checkout (no reliance on local/untracked files)
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser.ts` (new file; required by `packages/mcp-server/src/tools/index.ts`)
 - **Depends on:** -
@@ -525,7 +525,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — restore green `pnpm lint` in a clean checkout
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/reception/src/hooks/data/bar/useUnconfirmedBarOrderData.ts` (remove setState side-effect from `useMemo`)
 - **Depends on:** -
@@ -587,7 +587,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — updated @opennextjs/cloudflare version + verified Cloudflare builds
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/brikette/package.json` (`@opennextjs/cloudflare`)
   - `apps/business-os/package.json` (`@opennextjs/cloudflare`)
@@ -640,7 +640,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — fix any test failures or regressions from the Next 16 upgrade
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Any test files that fail due to Next 16 changes (unknown scope until tests run)
   - `[readonly] apps/*/src/**/__tests__/*.{test,spec}.{ts,tsx}` (test files to run)

@@ -5,7 +5,7 @@ For operational reference (stage types, schema, creation procedures), see `./sta
 
 ## Fact-Finding Stage Doc
 
-Created when a card enters the Fact-finding lane (typically from `/lp-fact-find` or `/idea-develop`).
+Created when a card enters the Fact-finding lane (typically from `/lp-do-fact-find` or `/idea-develop`).
 
 ```markdown
 ---
@@ -62,7 +62,7 @@ _To be completed during Fact-finding phase_
 
 ## Planned Stage Doc
 
-Created when `/lp-plan` completes with a Card-ID.
+Created when `/lp-do-plan` completes with a Card-ID.
 
 ```markdown
 ---
@@ -104,12 +104,12 @@ Plan-Confidence: {%}
 **To In Progress:**
 - Plan approved
 - At least one task ready to build
-- `/lp-build` initiated
+- `/lp-do-build` initiated
 ```
 
 ## Build Stage Doc
 
-Created when `/lp-build` starts the first task.
+Created when `/lp-do-build` starts the first task.
 
 ```markdown
 ---

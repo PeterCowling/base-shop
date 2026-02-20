@@ -11,8 +11,8 @@ Feature-Slug: test-execution-resource-governor
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-replan, /ops-ship
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-do-replan, /ops-ship
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact) per task; Overall is effort-weighted average (S=1, M=2, L=3)
 Business-OS-Integration: off
@@ -220,7 +220,7 @@ Schedule note:
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (`scripts/agents/*`, `scripts/agent-bin/*`, telemetry writer) + tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `scripts/agents/with-git-guard.sh`, `scripts/agents/guarded-shell-hooks.sh`, `scripts/agent-bin/pnpm`, `scripts/agent-bin/turbo`, `scripts/agent-bin/npm`, `scripts/agent-bin/npx`, `scripts/tests/telemetry-log.sh`, `scripts/__tests__/pnpm-test-safety-policy.test.ts`, `scripts/__tests__/turbo-test-safety-policy.test.ts`, `scripts/__tests__/guarded-shell-hooks.test.ts`
 - **Depends on:** -
 - **Blocks:** TEG-06, TEG-07
@@ -263,7 +263,7 @@ Schedule note:
 - **Type:** IMPLEMENT
 - **Deliverable:** queue/lock scripts + queue tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `scripts/tests/test-lock.sh`, `scripts/tests/test-lock-config.sh`, `scripts/__tests__/test-lock-queue.test.ts`, `[readonly] scripts/git/writer-lock.sh`, `[readonly] scripts/__tests__/writer-lock-queue.test.ts`
 - **Depends on:** -
 - **Blocks:** TEG-03
@@ -310,7 +310,7 @@ Schedule note:
 - **Type:** IMPLEMENT
 - **Deliverable:** governed runner script and root script wiring.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `scripts/tests/run-governed-test.sh`, `scripts/tests/runner-shaping.sh`, `scripts/__tests__/test-governed-runner.test.ts`, `package.json`, `[readonly] scripts/tests/test-lock.sh`
 - **Depends on:** TEG-02
 - **Blocks:** TEG-04, TEG-05, TEG-07
@@ -360,7 +360,7 @@ Schedule note:
 ### TEG-04: Horizon checkpoint - reassess remaining plan
 - **Type:** CHECKPOINT
 - **Deliverable:** plan update / re-sequencing artifact.
-- **Execution-Skill:** /lp-replan
+- **Execution-Skill:** /lp-do-replan
 - **Affects:** `docs/plans/test-execution-resource-governor-plan.md`
 - **Depends on:** TEG-03
 - **Blocks:** TEG-05, TEG-06, TEG-07
@@ -389,7 +389,7 @@ Schedule note:
 - **Type:** IMPLEMENT
 - **Deliverable:** package script rewrites + targeted test command updates.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `package.json`, `apps/prime/package.json`, `apps/xa/package.json`, `apps/xa-b/package.json`, `apps/xa-drop-worker/package.json`, `apps/xa-j/package.json`, `apps/xa-uploader/package.json`, `functions/package.json`, `packages/tailwind-config/package.json`, `packages/telemetry/package.json`, `packages/theme/package.json`, `scripts/package.json`, `__tests__/package.json`, `scripts/tests/run-governed-test.sh`, `scripts/__tests__/test-governed-runner.test.ts`, `scripts/__tests__/pnpm-test-safety-policy.test.ts`, `docs/testing-policy.md`, `[readonly] packages/design-tokens/jest-runner.cjs`
 - **Depends on:** TEG-04
 - **Blocks:** TEG-06
@@ -464,7 +464,7 @@ Schedule note:
 - **Type:** IMPLEMENT
 - **Deliverable:** enforced policy in wrappers/guard shell + policy tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `scripts/agents/with-git-guard.sh`, `scripts/agents/guarded-shell-hooks.sh`, `scripts/agent-bin/pnpm`, `scripts/agent-bin/turbo`, `scripts/agent-bin/npm`, `scripts/agent-bin/npx`, `scripts/__tests__/pnpm-test-safety-policy.test.ts`, `scripts/__tests__/turbo-test-safety-policy.test.ts`, `scripts/__tests__/guarded-shell-hooks.test.ts`
 - **Depends on:** TEG-01, TEG-05
 - **Blocks:** TEG-07A, TEG-08, TEG-09
@@ -523,7 +523,7 @@ Schedule note:
 - **Type:** IMPLEMENT
 - **Deliverable:** governed-run telemetry emission path + regression tests for calibration metrics.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `scripts/tests/run-governed-test.sh`, `scripts/tests/telemetry-log.sh`, `scripts/__tests__/test-governed-runner.test.ts`, `[readonly] scripts/tests/test-lock.sh`
 - **Depends on:** TEG-01, TEG-06
 - **Blocks:** TEG-07B, TEG-07
@@ -583,7 +583,7 @@ Schedule note:
 - **Type:** SPIKE
 - **Deliverable:** bounded calibration harness + telemetry summary generator + baseline calibration report section.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `scripts/tests/run-governed-calibration.sh`, `scripts/tests/summarize-governor-telemetry.mjs`, `scripts/__tests__/governed-calibration-harness.test.ts`, `docs/plans/test-execution-resource-governor-calibration.md`, `[readonly] scripts/tests/run-governed-test.sh`, `[readonly] scripts/tests/telemetry-log.sh`
 - **Depends on:** TEG-07A
 - **Blocks:** TEG-07, TEG-08
@@ -643,7 +643,7 @@ Schedule note:
 ### TEG-07: Calibration telemetry and budget tuning (multi-day soak)
 - **Type:** INVESTIGATE
 - **Deliverable:** finalized calibration report artifact under `docs/plans/test-execution-resource-governor-calibration.md`.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** governed telemetry output + calibration report.
 - **Depends on:** TEG-01, TEG-04, TEG-07A, TEG-07B
 - **Blocks:** TEG-09
@@ -685,7 +685,7 @@ Schedule note:
 - **Type:** IMPLEMENT
 - **Deliverable:** admission library + runner integration + tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `scripts/tests/run-governed-test.sh`, `scripts/tests/resource-admission.sh`, `scripts/tests/history-store.sh`, `scripts/__tests__/resource-admission.test.ts`, `scripts/__tests__/governed-runner-admission.test.ts`
 - **Depends on:** TEG-06, TEG-07B
 - **Blocks:** TEG-09
@@ -760,7 +760,7 @@ Schedule note:
 - **Type:** IMPLEMENT
 - **Deliverable:** docs lint rule + policy/runbook updates + command example normalization.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `scripts/src/docs-lint.ts`, `scripts/__tests__/docs-lint.test.ts`, `docs/testing-policy.md`, `AGENTS.md`, `docs/plans/*` (active non-archive docs requiring command normalization)
 - **Depends on:** TEG-06, TEG-07, TEG-08
 - **Blocks:** -
@@ -844,8 +844,8 @@ Schedule note:
 - 2026-02-13: TEG-05 was temporarily blocked on unrelated baseline (`@acme/template-app` build failure from `packages/lib` changes) while migrating `apps/xa*` scripts.
 - 2026-02-13: Resolved the `packages/lib`/`template-app` baseline blocker and completed remaining TEG-05 app package manifest migrations in commit `2ce513bf06`.
 - 2026-02-13: Completed TEG-06 by flipping wrapper/shell bypass handling from warn-only to hard-block mode with split override behavior and governed reroute semantics.
-- 2026-02-13: lp-replan introduced precursor task `TEG-07A` after telemetry audit showed calibration data quality gap (`governed=0`, `queued_ms>0=0`) in local event stream.
-- 2026-02-13: After TEG-07A completion, telemetry audit still showed insufficient organic calibration depth (`total=33`, `governed=1`, governed classes=`governed-jest`, days=1), so lp-replan introduced `TEG-07B` as a deterministic day-zero calibration precursor.
+- 2026-02-13: lp-do-replan introduced precursor task `TEG-07A` after telemetry audit showed calibration data quality gap (`governed=0`, `queued_ms>0=0`) in local event stream.
+- 2026-02-13: After TEG-07A completion, telemetry audit still showed insufficient organic calibration depth (`total=33`, `governed=1`, governed classes=`governed-jest`, days=1), so lp-do-replan introduced `TEG-07B` as a deterministic day-zero calibration precursor.
 - 2026-02-13: Re-sequenced remaining dependency graph to `TEG-07A -> TEG-07B -> TEG-08`, with `TEG-07` soak continuing as final-hardening gate before `TEG-09`.
 - 2026-02-13: Completed TEG-07B and appended day-zero synthetic calibration evidence (`34 governed samples`, `3 governed classes`, `9 contention samples`) to `docs/plans/test-execution-resource-governor-calibration.md`; TEG-08 is now build-eligible.
 - 2026-02-13: Completed TEG-08 by shipping admission + history-store primitives and integrating telemetry-visible queue-on-pressure behavior in `run-governed-test.sh`; final hardening remains gated on TEG-07 soak before TEG-09.

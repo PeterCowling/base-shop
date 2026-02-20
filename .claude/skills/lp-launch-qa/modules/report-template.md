@@ -202,8 +202,8 @@ Decision: <GO | NO-GO>
 
 **If NO-GO:**
 1. Commit this QA report to repo
-2. Create follow-up build tasks for each blocker via `/lp-replan`
-3. Re-run `/lp-build` on blocker fixes
+2. Create follow-up build tasks for each blocker via `/lp-do-replan`
+3. Re-run `/lp-do-build` on blocker fixes
 4. Re-run `/lp-launch-qa` after fixes deployed
 5. Do NOT proceed to S10 until all blockers are resolved
 ```
@@ -247,7 +247,7 @@ Launch QA complete — NO-GO decision (blockers found).
 
 **Report saved:** docs/business-os/site-upgrades/<BIZ>/launch-qa-report-YYYY-MM-DD.md
 
-**Next step:** Fix blockers via `/lp-replan` + `/lp-build`, then re-run `/lp-launch-qa`.
+**Next step:** Fix blockers via `/lp-do-replan` + `/lp-do-build`, then re-run `/lp-launch-qa`.
 ```
 
 ## Commit format

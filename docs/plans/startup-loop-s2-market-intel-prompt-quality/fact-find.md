@@ -10,8 +10,8 @@ Feature-Slug: startup-loop-s2-market-intel-prompt-quality
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-plan
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-do-plan
 Related-Plan: docs/plans/startup-loop-s2-market-intel-prompt-quality/plan.md
 Business-OS-Integration: on
 Business-Unit: BOS
@@ -200,7 +200,7 @@ Generator must determine base URL using strict precedence:
 
 If base URL cannot be determined, prompt must return `Status: BLOCKED` with missing field: website URL.
 
-## Task Seeds For `/lp-plan`
+## Task Seeds For `/lp-do-plan`
 1. Add hospitality S2 prompt template + update deliverable language to booking/distribution/ops.
 2. Update generator (`scripts/src/startup-loop/s2-market-intelligence-handoff.ts`) to:
 - select template by inferred profile (registry + matchers)

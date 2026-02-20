@@ -3,7 +3,7 @@ Type: Reference
 Status: Active
 ---
 <!-- AUTO-GENERATED — do not edit directly. Edit stage-operator-dictionary.yaml and re-run: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts -->
-<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 1.9.0 -->
+<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 2.1.0 -->
 
 # Startup Loop — Stage Operator Reference
 
@@ -13,8 +13,13 @@ Status: Active
 | 1 | `DISCOVERY-02` | Solution-space scan | Mapped solution space with at least three distinct options and comparative feasibility notes. | `solution-space`, `discovery-02` | start-point = problem |
 | 1 | `DISCOVERY-03` | Option selection | Selected solution option with rationale, key assumptions, and handoff brief for DISCOVERY intake. | `option-selection`, `discovery-03` | start-point = problem |
 | 1 | `DISCOVERY-04` | Naming handoff | Validated business or product name with brand-safety check and domain availability confirmed. | `naming-handoff`, `discovery-04` | start-point = problem |
-| 1 | `DISCOVERY-05` | Operator evidence | Operator evidence packet: launch surface, stock status, pricing model, channel pre-decisions, and open evidence gaps documented. | `operator-evidence`, `our-stance`, `discovery-05` | start-point = problem |
+| 1 | `DISCOVERY-05` | Channel Plan | Distribution plan with ≥2 launch channels, cost/effort estimates, and ICP fit rationale. | `distribution-planning`, `discovery-05`, `channel-plan` | start-point = problem |
+| 1 | `DISCOVERY-06` | Measure Plan | Measurement plan with tracking method, ≥2 key metrics, success thresholds, and data collection feasibility confirmed. | `measurement-plan`, `discovery-06`, `measure-plan` | start-point = problem |
+| 1 | `DISCOVERY-07` | Operator evidence | Operator evidence packet: launch surface, stock status, pricing model, channel pre-decisions, and open evidence gaps documented. | `operator-evidence`, `our-stance`, `discovery-07` | start-point = problem |
 | 1 | `DISCOVERY` | Intake | Structured startup context packet ready for all downstream stages. | `intake`, `discovery` | — |
+| 1 | `BRAND-01` | Brand strategy | Brand name confirmed; personality adjective pairs, audience, voice & tone documented. | `brand-strategy`, `brand-01` | always |
+| 1 | `BRAND-02` | Brand identity | Visual language: colour palette, typography, imagery direction, token overrides. Brand dossier at Draft+. | `brand-identity`, `brand-02`, `brand-dossier` | always |
+| 1 | `BRAND` | Brand | Brand stage complete. Proceeds to S1 (no gate). | `brand`, `brand-intake` | always |
 | 2 | `S1` | Readiness check | Readiness report with blocker list. All 7 gates checked. | `readiness`, `s1` | — |
 | 3 | `S1B` | Measurement setup | Analytics stack live with GA4, Search Console, and conversion events verified before any paid traffic. | `measurement-bootstrap`, `measurement-setup`, `s1b` | launch-surface = pre-website |
 | 4 | `S2A` | Historical baseline | Consolidated business history document with net value, booking data, and traffic logs as a decision baseline. | `historical-baseline`, `baseline-history`, `s2a` | launch-surface = website-live |

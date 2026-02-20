@@ -11,7 +11,7 @@ Feature-Slug: brik-ga4-baseline-lock
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: startup-weekly-kpcs-memo
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-sequence
 Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1, M=2, L=3)
@@ -98,7 +98,7 @@ This plan operationalizes the highest-priority BRIK P1 item from the startup-loo
 - **Type:** IMPLEMENT
 - **Deliverable:** multi-deliverable update to measurement verification artifact with explicit pass/fail evidence and blockers.
 - **Startup-Deliverable-Alias:** startup-weekly-kpcs-memo
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** section entry in `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md` with dated sign-off line
@@ -147,7 +147,7 @@ This plan operationalizes the highest-priority BRIK P1 item from the startup-loo
 - **Type:** IMPLEMENT
 - **Deliverable:** business-plan update with 7-day KPI baseline table and source window metadata.
 - **Startup-Deliverable-Alias:** startup-weekly-kpcs-memo
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `docs/business-os/strategy/BRIK/plan.user.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** dated baseline lock note in `docs/business-os/strategy/BRIK/plan.user.md`
@@ -190,7 +190,7 @@ This plan operationalizes the highest-priority BRIK P1 item from the startup-loo
 - **Type:** IMPLEMENT
 - **Deliverable:** synchronized status updates in weekly memo and startup-loop workflow guide.
 - **Startup-Deliverable-Alias:** startup-weekly-kpcs-memo
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md`, `docs/business-os/startup-loop-workflow.user.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** updated dated section in weekly memo linking changed status rows

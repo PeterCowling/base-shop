@@ -11,7 +11,7 @@ Foundation-Complete: 2026-02-14
 Feature-Slug: agent-web-browsing-superpower
 Deliverable-Type: multi-deliverable
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/archive/agent-web-browsing-superpower/plan.md
 Business-OS-Integration: off
@@ -107,7 +107,7 @@ Once the agent can reliably observe and act, the next performance jump comes fro
 - Site-specific "page objects" / adapters for frequently used sites (Stripe, Cloudflare, Google Sheets).
 - An evaluation harness with deterministic fixtures and metrics so regressions are caught quickly.
 
-## Key Contracts (Lock These Before /lp-plan)
+## Key Contracts (Lock These Before /lp-do-plan)
 
 These are the decisions that, if left vague, will cause interface churn mid-implementation.
 
@@ -568,9 +568,9 @@ Test layers:
 - **Quick probes for:** H2 (unit tests for epoch validation), H4 (fixture-based risk classification tests)
 - **Structured tests for:** H1 (requires full BIC + eval harness; defer quantitative validation until v0.1 is built)
 - **Deferred validation for:** H3 (requires external site access; start with local fixtures and Storybook, defer external site eval until post-v0.1)
-- **Note:** This informs VC-XX design in `/lp-plan` - H2 and H4 get early VC checks (unit tests), H1 gets deferred VC (post-build eval harness)
+- **Note:** This informs VC-XX design in `/lp-do-plan` - H2 and H4 get early VC checks (unit tests), H1 gets deferred VC (post-build eval harness)
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 ### Implementation Confidence: 75%
 
@@ -650,7 +650,7 @@ Test layers:
 - Build: golden snapshot test for BIC output (prove observation stability) (0.5 days)
 - Prove: run a Playwright MCP tool test in CI successfully (unblock CI integration) (0.5 days)
 
-## Open Questions (To Resolve In /lp-plan)
+## Open Questions (To Resolve In /lp-do-plan)
 
 - Which agents must be supported first (Claude Code, Codex, other CLIs), and what are their available tool channels?
 - Where should observation logs live (local artifacts vs repo files vs ephemeral storage)?
@@ -669,4 +669,4 @@ Status: Ready-for-planning.
 
 **Blocking items:** None. Open questions are non-blocking (agent priority, log location, external eval set, headful mode) - can be resolved during planning or deferred to implementation.
 
-**Suggested next step:** `/lp-plan` to produce an implementation plan that (1) formalizes BIC `schemaVersion=0.1` as a TypeScript type, (2) implements MCP-backed Playwright `observe/act` with tool-supported verification and safety gating, (3) adds the evaluation harness and metrics so we can measure improvement across models, and (4) includes confidence-gated task sequencing with early validation checks for H2 (epoch validation) and H4 (risk classification).
+**Suggested next step:** `/lp-do-plan` to produce an implementation plan that (1) formalizes BIC `schemaVersion=0.1` as a TypeScript type, (2) implements MCP-backed Playwright `observe/act` with tool-supported verification and safety gating, (3) adds the evaluation harness and metrics so we can measure improvement across models, and (4) includes confidence-gated task sequencing with early validation checks for H2 (epoch validation) and H4 (risk classification).

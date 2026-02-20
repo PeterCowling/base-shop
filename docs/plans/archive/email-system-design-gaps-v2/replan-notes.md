@@ -10,7 +10,7 @@ Relates-to: docs/plans/archive/email-system-design-gaps-v2/plan.md
 
 ## Invocation (Run 1)
 
-- Skill: `/lp-replan` (standard mode)
+- Skill: `/lp-do-replan` (standard mode)
 - Date: 2026-02-19
 - Scope: low-confidence `IMPLEMENT` tasks (`TASK-03`, `TASK-04`, `TASK-05`, `TASK-07`, `TASK-08`, `TASK-10`) and direct dependents.
 
@@ -219,7 +219,7 @@ Backward-compatible defaults when metadata is missing:
 
 ## Invocation (Run 2)
 
-- Skill: `/lp-replan` (standard mode)
+- Skill: `/lp-do-replan` (standard mode)
 - Date: 2026-02-19
 - Scope: promote Wave 3 foundation IMPLEMENT tasks (`TASK-03`, `TASK-04`) after precursor completion (`TASK-12`, `TASK-13`).
 
@@ -253,12 +253,12 @@ Backward-compatible defaults when metadata is missing:
 
 ## Next Build Order
 
-1. Run `/lp-build` for Wave 3 foundation tasks (`TASK-03`, `TASK-04`) now that both are `>=80` and unblocked.
-2. Re-run `/lp-replan` after Wave 3 and Wave 4 complete (or at CHECKPOINT TASK-06) for downstream confidence reassessment.
+1. Run `/lp-do-build` for Wave 3 foundation tasks (`TASK-03`, `TASK-04`) now that both are `>=80` and unblocked.
+2. Re-run `/lp-do-replan` after Wave 3 and Wave 4 complete (or at CHECKPOINT TASK-06) for downstream confidence reassessment.
 
 ## Invocation (Run 3)
 
-- Skill: `/lp-replan` (standard mode)
+- Skill: `/lp-do-replan` (standard mode)
 - Date: 2026-02-19
 - Scope: reassess and attempt promotion of Wave 4 quality task `TASK-05` after completion of `TASK-03`, `TASK-04`, and `TASK-09`.
 
@@ -302,9 +302,9 @@ Backward-compatible defaults when metadata is missing:
 
 ## Next Build Order
 
-1. Run `/lp-build` for `TASK-05` (Wave 4).
-2. Run `/lp-build` for checkpoint `TASK-06` immediately after `TASK-05`.
-3. Re-run `/lp-replan` after checkpoint completion for post-checkpoint tasks (`TASK-14`, `TASK-15`, `TASK-07`, `TASK-10`, `TASK-08`).
+1. Run `/lp-do-build` for `TASK-05` (Wave 4).
+2. Run `/lp-do-build` for checkpoint `TASK-06` immediately after `TASK-05`.
+3. Re-run `/lp-do-replan` after checkpoint completion for post-checkpoint tasks (`TASK-14`, `TASK-15`, `TASK-07`, `TASK-10`, `TASK-08`).
 
 ## TASK-14 Output (Build, 2026-02-20)
 
@@ -391,7 +391,7 @@ Backward-compatible defaults when metadata is missing:
 
 ## Invocation (Run 4)
 
-- Skill: `/lp-replan` (standard mode)
+- Skill: `/lp-do-replan` (standard mode)
 - Date: 2026-02-20
 - Scope: reassess Wave 7 `IMPLEMENT` tasks below threshold (`TASK-07`, `TASK-10`) and impacted dependent (`TASK-08`).
 
@@ -440,12 +440,12 @@ Backward-compatible defaults when metadata is missing:
 
 ## Next Build Order
 
-1. Run `/lp-build` for Wave 7 (`TASK-07`, `TASK-10`).
-2. Re-run `/lp-replan` for `TASK-08` after `TASK-07` completes.
+1. Run `/lp-do-build` for Wave 7 (`TASK-07`, `TASK-10`).
+2. Re-run `/lp-do-replan` for `TASK-08` after `TASK-07` completes.
 
 ## Invocation (Run 5)
 
-- Skill: `/lp-replan` (standard mode)
+- Skill: `/lp-do-replan` (standard mode)
 - Date: 2026-02-20
 - Scope: reassess final blocked implementation task `TASK-08` after completion of `TASK-07` and precursor spike `TASK-14`.
 
@@ -497,4 +497,4 @@ Backward-compatible defaults when metadata is missing:
 
 ## Next Build Order
 
-1. Run `/lp-build` for Wave 8 (`TASK-08`).
+1. Run `/lp-do-build` for Wave 8 (`TASK-08`).

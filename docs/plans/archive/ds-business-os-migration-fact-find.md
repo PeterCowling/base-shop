@@ -10,7 +10,7 @@ Feature-Slug: ds-business-os-migration
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Related-Plan: docs/plans/ds-business-os-migration-plan.md
 Business-OS-Integration: on
@@ -130,7 +130,7 @@ Business-OS has no scoped DS rules — only gets global `warn` level. The `globa
 
 None.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 90% — mechanical mapping, but 50 files means risk of missed edge cases
 - **Approach:** 90% — semantic tokens are correct; mapping table covers all observed patterns
@@ -157,11 +157,11 @@ None.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-design-system`
 - Deliverable acceptance: `pnpm lint` passes with `error` severity, zero raw Tailwind palette colours in production code
 
 ## Planning Readiness
 
 - Status: **Ready-for-planning**
-- Recommended next step: `/lp-plan`
+- Recommended next step: `/lp-do-plan`

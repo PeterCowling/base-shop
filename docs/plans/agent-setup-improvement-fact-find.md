@@ -9,7 +9,7 @@ Last-updated: 2026-02-15
 Feature-Slug: agent-setup-improvement
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Related-Plan: (not yet created)
 Supersedes: docs/plans/archive/agent-enhancement-plan-archived-2026-02-14.md
@@ -104,8 +104,8 @@ Audit the current multi-agent configuration in Base-Shop and identify concrete i
 - **Largest skills** (top 5 by lines):
   - `ideas-go-faster` — 1,289 lines
   - `idea-generate` — 1,289 lines
-  - `lp-fact-find` — 1,032 lines
-  - `lp-plan` — 1,017 lines
+  - `lp-do-fact-find` — 1,032 lines
+  - `lp-do-plan` — 1,017 lines
   - `lp-seo` — 920 lines
 
 ### Safety Enforcement Architecture
@@ -187,7 +187,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
   - CI workflow (`.github/workflows/ci.yml`)
 - Downstream dependents:
   - All agent sessions (every conversation loads these files)
-  - Feature workflow (lp-fact-find → plan → build → lp-replan)
+  - Feature workflow (lp-do-fact-find → plan → build → lp-do-replan)
   - Business OS integration (card/stage-doc operations)
   - Guide translation workflow
 - Likely blast radius:
@@ -256,7 +256,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
   - Why it matters: Codex loads this every session; 11KB of always-loaded context vs. Claude's 2.7KB
   - Default recommendation: Reduce CODEX.md, but retain a non-negotiable safety TL;DR + explicit integrator-shell requirement + pointer to the canonical safety doc/kernel.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 85%
   - Strong: all config files, scripts, and conventions are well-understood from this audit
@@ -316,7 +316,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: none (all tasks are config/documentation changes)
 - Deliverable acceptance package:
   - Safety rules are derived from single source (no manual sync)
@@ -333,4 +333,4 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 - Status: **Ready-for-planning** (with 2 non-blocking open questions)
 - Blocking items: none (open questions have safe defaults)
-- Recommended next step: Proceed to `/lp-plan` — the open questions can be resolved during planning with user input
+- Recommended next step: Proceed to `/lp-do-plan` — the open questions can be resolved during planning with user input

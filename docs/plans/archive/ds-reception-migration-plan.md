@@ -9,7 +9,7 @@ Feature-Slug: ds-reception-migration
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Overall-confidence: 88%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -107,7 +107,7 @@ Start with small directories to establish patterns, then tackle the large ones. 
 
 - **Type:** INVESTIGATE
 - **Deliverable:** Violation inventory report (comment in plan) + ESLint config change
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `eslint.config.mjs` (change `offAllDsRules` to selective warn for colour rules)
 - **Depends on:** -
@@ -172,7 +172,7 @@ Start with small directories to establish patterns, then tackle the large ones. 
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — ~20 files across small directories
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/reception/src/components/analytics/` (2 files)
   - **Primary:** `apps/reception/src/components/live/` (2 files)
@@ -224,7 +224,7 @@ Start with small directories to establish patterns, then tackle the large ones. 
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 16 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/reception/src/components/common/` (16 files)
 - **Depends on:** REC-01
@@ -270,7 +270,7 @@ Start with small directories to establish patterns, then tackle the large ones. 
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — ~30 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/reception/src/components/roomgrid/` (27 TSX files)
   - **Primary:** `apps/reception/src/components/roomgrid/constants/statusColors.ts`
@@ -361,7 +361,7 @@ Start with small directories to establish patterns, then tackle the large ones. 
 - **Blocks:** REC-05, REC-06, REC-07, REC-08
 - **Confidence:** 95%
 - **Acceptance:**
-  - Run `/lp-replan` on REC-05 through REC-08
+  - Run `/lp-do-replan` on REC-05 through REC-08
   - Reassess violation counts from REC-01 against completed work
   - Confirm migration patterns established in REC-02/03/04 work for large directories
   - Update task confidence based on actual velocity from Waves 1-2
@@ -397,7 +397,7 @@ Start with small directories to establish patterns, then tackle the large ones. 
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 3 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/reception/src/components/checkins/DateSelector.tsx` (1 violation)
   - **Primary:** `apps/reception/src/components/checkins/keycardButton/PaymentMethodSelector.tsx` (2 violations)
@@ -452,7 +452,7 @@ Start with small directories to establish patterns, then tackle the large ones. 
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 5 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/reception/src/components/bar/orderTaking/CategoryHeader.tsx` (18 violations)
   - **Primary:** `apps/reception/src/components/bar/orderTaking/ProductGrid.tsx` (1 violation)
@@ -503,7 +503,7 @@ Start with small directories to establish patterns, then tackle the large ones. 
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 8 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/reception/src/hooks/data/bar/useProducts.ts` (86 violations — hex colour constants for product categories)
   - **Primary:** `apps/reception/src/hooks/data/bar/__tests__/useProducts.test.ts` (1 violation)
@@ -562,7 +562,7 @@ Start with small directories to establish patterns, then tackle the large ones. 
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `eslint.config.mjs`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `eslint.config.mjs`
 - **Depends on:** REC-02, REC-03, REC-04, REC-05, REC-06, REC-07, REC-08

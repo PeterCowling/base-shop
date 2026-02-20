@@ -1,5 +1,3 @@
-import { jest } from "@jest/globals";
-
 describe("design tokens preset", () => {
   const assertTokens = (config: any) => {
     expect(config.theme?.colors?.bg).toEqual(expect.stringMatching(/^hsl\(.*\)$/));

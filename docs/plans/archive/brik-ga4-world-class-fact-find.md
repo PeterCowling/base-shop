@@ -10,7 +10,7 @@ Feature-Slug: brik-ga4-world-class
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/brik-ga4-world-class-plan.md
 Business-OS-Integration: on
@@ -311,7 +311,7 @@ Upgrade Brikette's GA4 implementation from basic client-side gtag tracking to a 
   - Decision owner: Pete
   - Default assumption: Create audiences in GA4 now (zero cost); link to Ads when account is available. Risk: Audiences accumulate data from day 1 regardless.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 82%
   - Strong: gtag patterns established, Admin API access verified, consent mode docs are clear
@@ -391,7 +391,7 @@ Upgrade Brikette's GA4 implementation from basic client-side gtag tracking to a 
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: none
 - Deliverable acceptance package:
   - Consent Mode v2 active with cookie banner (Lighthouse CWV comparison showing no regression)
@@ -411,4 +411,4 @@ Upgrade Brikette's GA4 implementation from basic client-side gtag tracking to a 
   - CMP selection can be defaulted to lightweight OSS (decision during planning)
   - Octorate callback investigation can be an INVESTIGATE task in the plan
   - Google Ads linking is manual and deferred to P3
-- Recommended next step: Proceed to `/lp-plan brik-ga4-world-class`
+- Recommended next step: Proceed to `/lp-do-plan brik-ga4-world-class`

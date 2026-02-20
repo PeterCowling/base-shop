@@ -163,7 +163,7 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌───────────────┐
-│  lp-fact-find   │────▶│ lp-plan  │────▶│ lp-build  │
+│  lp-do-fact-find   │────▶│ lp-do-plan  │────▶│ lp-do-build  │
 │             │     │              │     │               │
 │ Audit repo  │     │ Tasks with   │     │ Only builds   │
 │ Map impact  │     │ confidence % │     │ tasks ≥80%    │
@@ -171,7 +171,7 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 └─────────────┘     └──────────────┘     └───────┬───────┘
        ▲                    ▲                     │
        │              ┌─────┴─────┐               │
-       └──────────────│  lp-replan   │◀──────────────┘
+       └──────────────│  lp-do-replan   │◀──────────────┘
                       │            │  confidence <80%
                       └────────────┘
 ```
@@ -180,10 +180,10 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 
 | Phase | Action | Skill file |
 |-------|--------|-----------|
-| Fact-find | Read and follow | `.claude/skills/lp-fact-find/SKILL.md` |
-| Plan | Read and follow | `.claude/skills/lp-plan/SKILL.md` |
-| Build | Read and follow | `.claude/skills/lp-build/SKILL.md` |
-| Re-plan | Read and follow | `.claude/skills/lp-replan/SKILL.md` |
+| Fact-find | Read and follow | `.claude/skills/lp-do-fact-find/SKILL.md` |
+| Plan | Read and follow | `.claude/skills/lp-do-plan/SKILL.md` |
+| Build | Read and follow | `.claude/skills/lp-do-build/SKILL.md` |
+| Re-plan | Read and follow | `.claude/skills/lp-do-replan/SKILL.md` |
 
 ### Confidence System
 
@@ -213,15 +213,15 @@ When uncertain about the right approach:
 ### Example Session
 
 ```
-1. Read `.claude/skills/lp-fact-find/SKILL.md`
+1. Read `.claude/skills/lp-do-fact-find/SKILL.md`
 2. Audit the affected codebase areas, produce a brief
-3. Read `.claude/skills/lp-plan/SKILL.md`
+3. Read `.claude/skills/lp-do-plan/SKILL.md`
 4. Create plan at `docs/plans/<feature>-plan.md` with confidence scores
 5. If all tasks ≥80%:
-   - Read `.claude/skills/lp-build/SKILL.md`
+   - Read `.claude/skills/lp-do-build/SKILL.md`
    - Build tasks one at a time
 6. If any task <80%:
-   - Read `.claude/skills/lp-replan/SKILL.md`
+   - Read `.claude/skills/lp-do-replan/SKILL.md`
    - Investigate, update confidence, loop back to step 5
 ```
 
@@ -232,12 +232,12 @@ When uncertain about the right approach:
 scripts/agents/list-skills
 ```
 
-The skill registry (`.agents/registry/skills.json`) lists all available skills with descriptions. Core workflow skills: `lp-fact-find`, `lp-plan`, `lp-build`, `lp-replan`. Read each skill's `SKILL.md` file for instructions.
+The skill registry (`.agents/registry/skills.json`) lists all available skills with descriptions. Core workflow skills: `lp-do-fact-find`, `lp-do-plan`, `lp-do-build`, `lp-do-replan`. Read each skill's `SKILL.md` file for instructions.
 
 ## What Stays the Same
 
 - Read `AGENTS.md` for commands and rules
 - Follow `docs/plans/` workflow
-- Use the lp-fact-find → plan → build → lp-replan loop (see above)
+- Use the lp-do-fact-find → plan → build → lp-do-replan loop (see above)
 - Run validation before committing (when possible)
 - Never take shortcuts on large-scale fixes

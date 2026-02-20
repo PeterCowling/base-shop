@@ -24,7 +24,7 @@ Audit how the `lp-*` skill system currently composes end-to-end through Startup 
 
 ## 2) Executive Summary
 
-The LP skill library is materially stronger in coverage and includes clear specialist roles (`lp-offer`, `lp-forecast`, `lp-channels`, `lp-site-upgrade`, `lp-fact-find`, `lp-plan`, `lp-build`, `lp-replan`, `lp-sequence`, QA/measurement skills).  
+The LP skill library is materially stronger in coverage and includes clear specialist roles (`lp-offer`, `lp-forecast`, `lp-channels`, `lp-site-upgrade`, `lp-do-fact-find`, `lp-do-plan`, `lp-do-build`, `lp-do-replan`, `lp-sequence`, QA/measurement skills).  
 The main current risk is not missing capability; it is contract drift between:
 
 1. The Startup Loop workflow guide.
@@ -35,7 +35,7 @@ Highest-impact sequencing breaks are:
 
 1. Stage model drift (`S2B/S6B/S9B` exists in skill but not workflow/prompt contract).
 2. Artifact path drift (`lp-offer`/`lp-channels` flat files vs `lp-forecast` nested directories).
-3. Handoff filename drift (`-fact-find.md` vs `-lp-fact-find.md`).
+3. Handoff filename drift (`-fact-find.md` vs `-lp-do-fact-find.md`).
 4. BOS lane/persistence drift (`S5` requires API card writes, but `lp-prioritize` explicitly does not persist).
 5. Launch path drift (`lp-launch-qa` expects `/lp-launch` and `loop-state.json`, neither currently wired in loop contract/artifacts).
 
@@ -44,7 +44,7 @@ Highest-impact sequencing breaks are:
 ### 3.1 Skills inventory (LP family)
 
 Current LP-prefixed skills discovered:
-`lp-brand-bootstrap`, `lp-build`, `lp-channels`, `lp-design-qa`, `lp-design-spec`, `lp-design-system`, `lp-experiment`, `lp-fact-find`, `lp-forecast`, `lp-guide-audit`, `lp-guide-improve`, `lp-launch-qa`, `lp-measure`, `lp-offer`, `lp-onboarding-audit`, `lp-plan`, `lp-prioritize`, `lp-readiness`, `lp-refactor`, `lp-replan`, `lp-seo`, `lp-sequence`, `lp-site-upgrade`.
+`lp-brand-bootstrap`, `lp-do-build`, `lp-channels`, `lp-design-qa`, `lp-design-spec`, `lp-design-system`, `lp-experiment`, `lp-do-fact-find`, `lp-forecast`, `lp-guide-audit`, `lp-guide-improve`, `lp-launch-qa`, `lp-measure`, `lp-offer`, `lp-onboarding-audit`, `lp-do-plan`, `lp-prioritize`, `lp-readiness`, `lp-refactor`, `lp-do-replan`, `lp-seo`, `lp-sequence`, `lp-site-upgrade`.
 
 Evidence: `.claude/skills` listing.
 
@@ -58,9 +58,9 @@ Evidence: `.claude/skills` listing.
 4. `S5 -> /lp-prioritize`
 5. `S6 -> /lp-site-upgrade`
 6. `S6B -> /lp-channels, /lp-seo, /draft-outreach`
-7. `S7 -> /lp-fact-find`
-8. `S8 -> /lp-plan`
-9. `S9 -> /lp-build`
+7. `S7 -> /lp-do-fact-find`
+8. `S8 -> /lp-do-plan`
+9. `S9 -> /lp-do-build`
 10. `S9B -> /lp-launch-qa, /lp-design-qa, /lp-measure`
 11. `S10 -> /lp-experiment`
 
@@ -76,9 +76,9 @@ Evidence: `.claude/skills/startup-loop/SKILL.md:62`, `.claude/skills/startup-loo
 | SQ-02 | S1 route mismatch (`idea-readiness` vs `lp-readiness`) | First gate behavior differs depending on which doc the operator follows | Mermaid high-level flow uses `idea-readiness` in `docs/business-os/startup-loop-workflow.user.md:21`; wrapper routes to `/lp-readiness` in `.claude/skills/startup-loop/SKILL.md:63` |
 | SQ-03 | Artifact contract mismatch between `lp-offer/lp-channels` and `lp-forecast` | `lp-forecast` cannot reliably consume upstream outputs from nominal prior stages | `lp-offer` writes `docs/business-os/startup-baselines/<BIZ>-offer.md` in `.claude/skills/lp-offer/SKILL.md:26`; `lp-channels` reads/writes same flat convention in `.claude/skills/lp-channels/SKILL.md:36`, `.claude/skills/lp-channels/SKILL.md:156`; `lp-forecast` expects nested paths `.../<BIZ>/S2-offer-hypothesis/` and `.../<BIZ>/S2-channel-selection/` in `.claude/skills/lp-forecast/SKILL.md:47`, `.claude/skills/lp-forecast/SKILL.md:48` |
 | SQ-04 | Actual repo shape does not match nested startup-baseline path assumptions | Skills expecting nested baseline directories or `loop-state.json` will fail or require manual workaround | Only flat startup-baseline files currently present (`matching_files=0` for offer/channels/lp-forecast/loop-state pattern; and no subdirs under startup-baselines) from `find docs/business-os/startup-baselines` output; existing files shown in `docs/business-os/startup-baselines` root only |
-| SQ-05 | Fact-find handoff filename mismatch into plan/build fast paths | `lp-plan` and `lp-build` may miss `lp-fact-find` output unless user manually points to path | `lp-fact-find` output: `docs/plans/<feature-slug>-fact-find.md` in `.claude/skills/lp-fact-find/SKILL.md:223`; `lp-plan` fast path expects `docs/plans/<slug>-lp-fact-find.md` in `.claude/skills/lp-plan/SKILL.md:127`; `lp-build` optional brief path also uses `-lp-fact-find.md` in `.claude/skills/lp-build/SKILL.md:66` |
+| SQ-05 | Fact-find handoff filename mismatch into plan/build fast paths | `lp-do-plan` and `lp-do-build` may miss `lp-do-fact-find` output unless user manually points to path | `lp-do-fact-find` output: `docs/plans/<feature-slug>-fact-find.md` in `.claude/skills/lp-do-fact-find/SKILL.md:223`; `lp-do-plan` fast path expects `docs/plans/<slug>-lp-do-fact-find.md` in `.claude/skills/lp-do-plan/SKILL.md:127`; `lp-do-build` optional brief path also uses `-lp-do-fact-find.md` in `.claude/skills/lp-do-build/SKILL.md:66` |
 | SQ-06 | BOS persistence contract mismatch at S5 | Workflow requires promoting prioritized items to cards via API, but prioritization skill says no persistence | Workflow sync matrix requires API writes at `S5` in `docs/business-os/startup-loop-workflow.user.md:423`; `lp-prioritize` says "No card creation, no idea persistence" in `.claude/skills/lp-prioritize/SKILL.md:36`, `.claude/skills/lp-prioritize/SKILL.md:160` |
-| SQ-07 | Stage-doc naming mismatch for fact-find stage | Stage docs may be written/read under different stage keys (`fact-find` vs `lp-fact-find`) causing hidden drift | Workflow BOS matrix uses `stage-docs/:cardId/fact-find` in `docs/business-os/startup-loop-workflow.user.md:424`; `lp-fact-find` reads stage `lp-fact-find` in `.claude/skills/lp-fact-find/SKILL.md:109` |
+| SQ-07 | Stage-doc naming mismatch for fact-find stage | Stage docs may be written/read under different stage keys (`fact-find` vs `lp-do-fact-find`) causing hidden drift | Workflow BOS matrix uses `stage-docs/:cardId/fact-find` in `docs/business-os/startup-loop-workflow.user.md:424`; `lp-do-fact-find` reads stage `lp-do-fact-find` in `.claude/skills/lp-do-fact-find/SKILL.md:109` |
 | SQ-08 | Launch gate depends on non-wired contracts | S9B→S10 may block indefinitely in real use | `lp-launch-qa` expects `docs/business-os/startup-baselines/<BIZ>/loop-state.json` in `.claude/skills/lp-launch-qa/SKILL.md:80`, `.claude/skills/lp-launch-qa/SKILL.md:97`; startup-baselines currently has no such file; skill also routes to `/lp-launch` in `.claude/skills/lp-launch-qa/SKILL.md:41`, `.claude/skills/lp-launch-qa/SKILL.md:596` while wrapper routes S10 to `/lp-experiment` in `.claude/skills/startup-loop/SKILL.md:77` |
 
 ### 4.2 Medium-severity findings
@@ -99,8 +99,8 @@ Evidence: `.claude/skills/startup-loop/SKILL.md:62`, `.claude/skills/startup-loo
 | PX-01 | Forecast + channels split after offer | Run `lp-forecast` and `lp-channels` in parallel immediately after `lp-offer`, then join before `S5` | Explicitly allowed in `.claude/skills/lp-channels/SKILL.md:234` |
 | PX-02 | S2 and S6 deep-research packs for existing businesses | After `S2A` becomes `Active`, run market-intelligence and site-upgrade deep-research requests in parallel | Existing-business route currently sequences S2 then S6 (`docs/business-os/startup-loop-workflow.user.md:46`, `docs/business-os/startup-loop-workflow.user.md:47`), but both consume same S2A gate and are independent outputs |
 | PX-03 | S6B trio fan-out | After channel strategy is set, run `lp-seo` and `draft-outreach` in parallel while channel owner finalizes GTM calendar | Wrapper groups these at S6B in `.claude/skills/startup-loop/SKILL.md:72` |
-| PX-04 | Build execution waves | Keep using `lp-sequence` + `lp-plan` + `lp-build` wave model to parallelize implementation safely by dependency graph | `lp-plan` requires a generated parallelism guide in `.claude/skills/lp-plan/SKILL.md:620`; `lp-build` enforces sequence freshness in `.claude/skills/lp-build/SKILL.md:190`; `lp-replan` re-sequences after decomposition in `.claude/skills/lp-replan/SKILL.md:593` |
-| PX-05 | Multi-item throughput after prioritization | For top 2-3 go items, run separate `lp-fact-find` passes in parallel (one card/feature slug each) before converging at planning/build | `lp-prioritize` selects top 2-3 in `.claude/skills/lp-prioritize/SKILL.md:93`; downstream handoff is per-item into `lp-fact-find` in `.claude/skills/lp-prioritize/SKILL.md:153` |
+| PX-04 | Build execution waves | Keep using `lp-sequence` + `lp-do-plan` + `lp-do-build` wave model to parallelize implementation safely by dependency graph | `lp-do-plan` requires a generated parallelism guide in `.claude/skills/lp-do-plan/SKILL.md:620`; `lp-do-build` enforces sequence freshness in `.claude/skills/lp-do-build/SKILL.md:190`; `lp-do-replan` re-sequences after decomposition in `.claude/skills/lp-do-replan/SKILL.md:593` |
+| PX-05 | Multi-item throughput after prioritization | For top 2-3 go items, run separate `lp-do-fact-find` passes in parallel (one card/feature slug each) before converging at planning/build | `lp-prioritize` selects top 2-3 in `.claude/skills/lp-prioritize/SKILL.md:93`; downstream handoff is per-item into `lp-do-fact-find` in `.claude/skills/lp-prioritize/SKILL.md:153` |
 
 ### 5.2 Parallelization blockers to fix first
 
@@ -127,7 +127,7 @@ Recommended canonical loop (single source of truth):
 8. `S4` Baseline merge (consolidate branch outputs to one canonical baseline artifact).
 9. `S5` Prioritize + BOS card persistence.
 10. `S6` Site-upgrade synthesis (if website scope active; can be precomputed earlier once baseline exists).
-11. `S7 -> S8 -> S9` (`lp-fact-find -> lp-plan -> lp-build`).
+11. `S7 -> S8 -> S9` (`lp-do-fact-find -> lp-do-plan -> lp-do-build`).
 12. `S9B` QA gates.
 13. `S10` Weekly readout/experiments.
 
@@ -135,8 +135,8 @@ Recommended canonical loop (single source of truth):
 
 1. **Unify stage contract** across wrapper + workflow + prompt pack (`S2B/S6B/S9B` included consistently).
 2. **Unify artifact paths** for startup-baselines (`flat` vs `nested`) and update all LP skills to one convention.
-3. **Unify fact-find filename convention** (`-fact-find.md` vs `-lp-fact-find.md`) in `lp-plan` and `lp-build`.
-4. **Unify BOS stage keys** (`fact-find` vs `lp-fact-find`) and persistence responsibilities at S5.
+3. **Unify fact-find filename convention** (`-fact-find.md` vs `-lp-do-fact-find.md`) in `lp-do-plan` and `lp-do-build`.
+4. **Unify BOS stage keys** (`fact-find` vs `lp-do-fact-find`) and persistence responsibilities at S5.
 5. **Decide S10 launch primitive** (`/lp-launch` vs `/lp-experiment`) and update `lp-launch-qa` + wrapper accordingly.
 6. **Normalize stale integration names** (`lp-channel`, `lp-content`) to existing skills.
 
@@ -161,9 +161,9 @@ This section adjudicates the external expert review against current repo state.
 |---|---|---|---|
 | 1. Single canonical Loop Spec | **Correct** | Stage contract is duplicated/drifted between workflow guide, wrapper, and skill contracts (SQ-01, SQ-09). | **Yes** |
 | 2. Artifact resolver + manifest | **Correct** | Upstream/downstream skills currently disagree on baseline artifact paths (`lp-offer`/`lp-channels` flat vs `lp-forecast` nested). | **Yes** |
-| 3. Feature workspace folder (`docs/plans/<slug>/...`) | **Correct** | `lp-fact-find`/`lp-plan`/`lp-build` naming drift exists (`-fact-find.md` vs `-lp-fact-find.md`) and causes fast-path ambiguity (SQ-05). | **Yes** |
+| 3. Feature workspace folder (`docs/plans/<slug>/...`) | **Correct** | `lp-do-fact-find`/`lp-do-plan`/`lp-do-build` naming drift exists (`-fact-find.md` vs `-lp-do-fact-find.md`) and causes fast-path ambiguity (SQ-05). | **Yes** |
 | 4. Split prioritize vs persist (`lp-bos-sync`) | **Correct** | Workflow requires S5 BOS persistence; `lp-prioritize` explicitly says no persistence (SQ-06). | **Yes** |
-| 5. Canonical stage-doc keys + aliases | **Correct** | `fact-find` vs `lp-fact-find` naming drift exists in contracts (SQ-07). | **Yes** |
+| 5. Canonical stage-doc keys + aliases | **Correct** | `fact-find` vs `lp-do-fact-find` naming drift exists in contracts (SQ-07). | **Yes** |
 | 6. `loop-state.json` as convergence primitive | **Correct** | `lp-launch-qa` depends on loop-state, but artifact contract is not wired in baseline flow (SQ-08). | **Yes** |
 | 7. Decide S10 primitive (`/lp-experiment` vs `/lp-launch`) | **Correct** | Wrapper uses `/lp-experiment`; `lp-launch-qa` still references `/lp-launch` (not implemented) (SQ-08). | **Yes** |
 | 8. Automated drift detection (CI linters) | **Correct** | Current drift was detected manually via audit; no contract lint guardrails are present. | **Yes** |
@@ -210,9 +210,9 @@ The following amendments are now adopted as the target remediation shape:
    - Done when flat/nested path drift no longer exists in active contracts.
 
 3. **Plan Workspace Canonicalization**
-   - Done when `lp-fact-find` writes `docs/plans/<slug>/fact-find.md` as canonical output.
-   - Done when `lp-plan` and `lp-build` read canonical workspace paths by default.
-   - Done when legacy `-fact-find`/`-lp-fact-find` names are supported only as compatibility reads.
+   - Done when `lp-do-fact-find` writes `docs/plans/<slug>/fact-find.md` as canonical output.
+   - Done when `lp-do-plan` and `lp-do-build` read canonical workspace paths by default.
+   - Done when legacy `-fact-find`/`-lp-do-fact-find` names are supported only as compatibility reads.
 
 4. **S5 Split: Prioritize vs Persist**
    - Done when `/lp-prioritize` remains side-effect free.

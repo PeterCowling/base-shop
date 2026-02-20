@@ -5,7 +5,7 @@ description: Topologically sort plan tasks into correct implementation order, pr
 
 # Sequence Plan
 
-Analyze an existing plan's tasks, determine correct implementation order based on dependencies and file overlap, preserve task IDs by default, and add explicit blocking relationships so `/lp-build` can dispatch parallel subagents safely.
+Analyze an existing plan's tasks, determine correct implementation order based on dependencies and file overlap, preserve task IDs by default, and add explicit blocking relationships so `/lp-do-build` can dispatch parallel subagents safely.
 
 ## Operating Mode
 
@@ -19,17 +19,17 @@ Analyze an existing plan's tasks, determine correct implementation order based o
 
 Run `/lp-sequence` when:
 
-- A plan has been created or updated via `/lp-plan` and tasks need correct execution ordering
+- A plan has been created or updated via `/lp-do-plan` and tasks need correct execution ordering
 - Tasks were added in phases/batches and the implementation order isn't optimized
-- You want to enable parallel subagent execution for `/lp-build` by making blocking relationships explicit
-- A `/lp-replan` added or removed tasks and the numbering/dependencies need cleanup
+- You want to enable parallel subagent execution for `/lp-do-build` by making blocking relationships explicit
+- A `/lp-do-replan` added or removed tasks and the numbering/dependencies need cleanup
 - Planning or replanning decomposed tasks: run this after all structural edits and before build handoff/resume
 
 Do **not** use `/lp-sequence` if:
 
-- The plan doesn't exist yet -> use `/lp-plan`
-- Tasks need scope/confidence changes -> use `/lp-replan`
-- You want to build tasks -> use `/lp-build`
+- The plan doesn't exist yet -> use `/lp-do-plan`
+- Tasks need scope/confidence changes -> use `/lp-do-replan`
+- You want to build tasks -> use `/lp-do-build`
 
 ## Fast Path (with argument)
 
@@ -115,10 +115,10 @@ Load `modules/seq-plan-update.md`. Apply all plan edits:
 ## Completion Messages
 
 **Success:**
-> "Plan sequenced. N tasks reordered into K execution waves (max parallelism: P). Critical path: W waves. Stable IDs preserved (or explicit renumber map applied). Ready for `/lp-build`."
+> "Plan sequenced. N tasks reordered into K execution waves (max parallelism: P). Critical path: W waves. Stable IDs preserved (or explicit renumber map applied). Ready for `/lp-do-build`."
 
 **Cycle detected:**
-> "Cannot sequence — circular dependency detected between TASK-A and TASK-B. Run `/lp-replan` to resolve the cycle before sequencing."
+> "Cannot sequence — circular dependency detected between TASK-A and TASK-B. Run `/lp-do-replan` to resolve the cycle before sequencing."
 
 **No changes needed:**
 > "Plan is already correctly sequenced. No reordering required."

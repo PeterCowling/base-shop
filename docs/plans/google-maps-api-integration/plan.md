@@ -10,7 +10,7 @@ Feature-Slug: google-maps-api-integration
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact); overall effort-weighted average (S=1,M=2,L=3)
@@ -123,7 +123,7 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 
 - **Type:** DECISION
 - **Deliverable:** GCP API key value (delivered out-of-band to owner; recorded in Cloudflare Pages env by TASK-02)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Pending
@@ -158,7 +158,7 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — updated `apps/brikette/.env.local` (dev); updated Cloudflare Pages env (staging + production); updated env reference doc
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Pending
@@ -194,7 +194,7 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — updated `packages/ui/src/organisms/modals/LocationModal.tsx`; extended `packages/ui/src/organisms/modals/__tests__/ModalBasics.test.tsx`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
 - **Status:** Complete (2026-02-19)
@@ -253,7 +253,7 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — updated `packages/ui/src/components/cms/blocks/ContactFormWithMap.tsx`; updated tests (×2), fixtures (×2), stories (×1)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-19)
@@ -311,8 +311,8 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 ### TASK-CP1: Checkpoint — component tests green; validate approach before guide migration
 
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan evidence via /lp-replan if needed; go/no-go signal for TASK-05
-- **Execution-Skill:** lp-build
+- **Deliverable:** Updated plan evidence via /lp-do-replan if needed; go/no-go signal for TASK-05
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-19)
@@ -336,7 +336,7 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 - **Scope note:** URL/browser route correctness is explicitly validated in TASK-06 scout (pre-batch update), not in this component checkpoint
 - **Planning validation:** None: procedural checkpoint
 - **Rollout / rollback:** None: planning control task
-- **Documentation impact:** Update plan status; record any horizon findings; invoke /lp-replan if TASK-05/06 approach needs revision
+- **Documentation impact:** Update plan status; record any horizon findings; invoke /lp-do-replan if TASK-05/06 approach needs revision
 - **Build evidence (2026-02-19):**
   - All 3 targeted component test suites green (15/15 ModalBasics; 2/2 ContactFormWithMap ×2)
   - No horizon assumption invalidated; no topology change; no replan required
@@ -349,7 +349,7 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — updated `apps/brikette/src/routes/how-to-get-here/chiesaNuovaArrivals/articleLead.tsx`; new test asserting key injection behaviour
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-19)
@@ -403,7 +403,7 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — updated `stepsMapEmbedUrl` in all 18 arrivals and 18 departures locale JSON files
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
 - **Status:** Complete (2026-02-19)

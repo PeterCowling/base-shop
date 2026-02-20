@@ -1,6 +1,6 @@
 # Fact-Find Business OS Integration Contract
 
-Use this shared contract for `/lp-fact-find` Business OS writes.
+Use this shared contract for `/lp-do-fact-find` Business OS writes.
 
 ## Scope
 

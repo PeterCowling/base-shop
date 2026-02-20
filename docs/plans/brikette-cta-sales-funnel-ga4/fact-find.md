@@ -10,7 +10,7 @@ Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-spec, /lp-seo
 Related-Plan: docs/plans/brikette-cta-sales-funnel-ga4/plan.md
 Business-OS-Integration: on
@@ -863,7 +863,7 @@ For the verification protocol (Track C Task 0 + Track D-43), the staging GA4 str
 - Q: Priority ordering: book page conversion content first or GA4 instrumentation first?
   - A: **Modal removal is now a prerequisite for both.** Sequencing: Track E (modal removal) → Track A (book page conversion content) + Track C (GA4 events) in parallel. Modal removal establishes the new routing baseline on which both tracks build.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 85%
   - Strong existing patterns for CTAs (StickyBookNow, ExperiencesCtaSection, DirectBookingPerks), GA4 events (ga4-events.ts, test conventions), and structured data (existing JSON-LD components). Modal removal blast radius is fully mapped (11 call sites, 2 UI components, ~8 test files). Book page enhancement is primarily composition of existing components. RoomCard already has all the data needed (roomSku, octorateRateCode, checkIn/checkOut/adults) to build a direct Octorate link.
@@ -1090,7 +1090,7 @@ Deals are not products — they are promotional offers that redirect users to th
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-design-spec` (for book page layout decisions), `/lp-seo` (structured data validation, meta tag optimisation)
 - Deliverable acceptance package:
   - Book page has: conversion-optimised H1/meta, DirectBookingPerks, social proof, FAQ section, location snippet, lodging + `FAQPage` + `BreadcrumbList` JSON-LD (no third-party `aggregateRating`), internal guide links
@@ -1116,9 +1116,9 @@ Deals are not products — they are promotional offers that redirect users to th
 - Blocking items: Three open questions with documented defaults:
   1. Deals CTA Option A/B (default: Option A — navigate to `/book?deal=ID`)
   2. Carousel CTA Option A/B (default: Option A — navigate to `/book`)
-  3. **Route truth verification (Decision A Task 0):** whether `router.push("/it/prenota")` works on static export determines the URL strategy for all call site migrations. If this is not pre-verified manually before `/lp-plan`, the plan must sequence Task 0 as a hard gate before any call site migration task.
+  3. **Route truth verification (Decision A Task 0):** whether `router.push("/it/prenota")` works on static export determines the URL strategy for all call site migrations. If this is not pre-verified manually before `/lp-do-plan`, the plan must sequence Task 0 as a hard gate before any call site migration task.
 - Sequencing invariant: Track E (modal removal) must sequence before Tracks A, B, C. Within Track E: Task 0 (route truth) → Task 30 (URL builder extraction) → Tasks 34/35 (call site migrations).
-- Recommended next step: Proceed to `/lp-plan`. Confirm open questions (deals, carousel, route truth) before task generation if possible — otherwise defaults apply and sequencing guards handle uncertainty.
+- Recommended next step: Proceed to `/lp-do-plan`. Confirm open questions (deals, carousel, route truth) before task generation if possible — otherwise defaults apply and sequencing guards handle uncertainty.
 
 ---
 

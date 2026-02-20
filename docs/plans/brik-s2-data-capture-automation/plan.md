@@ -9,7 +9,7 @@ Feature-Slug: brik-s2-data-capture-automation
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -116,7 +116,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** A small, importable module exposing structured scenario inputs for parity capture (check-in/out/pax) and formatted labels for prompt display.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Primary: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
   - Primary: `scripts/src/startup-loop/hospitality-scenarios.ts` (new)
@@ -155,7 +155,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Extend export script to accept explicit filter and dates suitable for S2 month-range contract.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Primary: `packages/mcp-server/octorate-export-final-working.mjs`
   - Primary: `packages/mcp-server/octorate-export-args.cjs` (new)
@@ -194,7 +194,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Generate `YYYY-MM-DD-bookings-by-channel.csv` into market-research data dir for last 12 complete check-in months.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Primary: `packages/mcp-server/octorate-process-bookings.mjs`
   - Primary: `packages/mcp-server/src/startup-loop/octorate-bookings.ts` (new pure module)
@@ -237,7 +237,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Generate `YYYY-MM-DD-commission-by-channel.csv` derived from bookings-by-channel + rates config.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Primary: `packages/mcp-server/src/startup-loop/commission.ts` (new)
   - Primary: `packages/mcp-server/src/startup-loop/commission-rates.json` (new)
@@ -273,7 +273,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** One CLI entrypoint that writes the three dated CSV artifacts for a given `--as-of` and output dir.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Primary: `scripts/src/startup-loop/s2-operator-capture.ts` (new)
   - Secondary: `[readonly] packages/mcp-server/octorate-full-pipeline.mjs`
@@ -331,7 +331,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Script to capture Direct booking-engine price/policy for given scenario args; writes row into parity CSV.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Primary: `packages/mcp-server/octorate-parity-direct.mjs` (new)
   - Secondary: `[readonly] packages/mcp-server/src/tools/browser.ts`
@@ -368,7 +368,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Script to capture Hostelworld total with deposit + pay-at-property mapping.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Primary: `packages/mcp-server/hostelworld-parity.mjs` (new)
 - **Depends on:** TASK-06
@@ -406,7 +406,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Script that navigates to Booking.com with scenario dates and extracts price automatically, with deterministic failure handling.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Primary: `packages/mcp-server/bookingcom-parity.mjs` (new)
   - Primary: `packages/mcp-server/src/startup-loop/parity-bookingcom.ts` (new)
@@ -460,7 +460,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Unit + integration coverage for the seams that will otherwise cause rework.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Primary: `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` (extend)
   - Primary: `scripts/src/startup-loop/__tests__/operator-captured-data.test.ts` (new)
@@ -509,7 +509,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Reassess auto-only mode success rate for Booking.com/Hostelworld (if consistently blocked, consider fallback strategies or different extraction techniques).
   - Confirm Octorate export filter choice (check-in vs create-time) is producing the intended economics window.
   - Verify commission rates (15%/15%) align with actual invoices or contracts.
-  - If gaps exist, run `/lp-replan` on any remaining or newly added tasks.
+  - If gaps exist, run `/lp-do-replan` on any remaining or newly added tasks.
 
 #### Checkpoint Completion (2026-02-16)
 - **Status:** Complete

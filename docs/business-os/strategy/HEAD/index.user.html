@@ -80,10 +80,42 @@
       font-size: 0.9rem;
       color: var(--muted);
     }
+    /* Audience toggle — Model A: single engineering appendix wrapper */
+    [data-audience="engineering"] {
+      display: none;
+    }
+    body.show-engineering [data-audience="engineering"] {
+      display: block;
+    }
+    .audience-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 0 24px;
+      padding: 8px 16px;
+      background: var(--header);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-family: inherit;
+    }
+    .audience-toggle:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+    }
   </style>
 </head>
 <body>
   <main>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
 <h1>Brand &#x26; Strategy Index — HEAD</h1>
 <p>This index is the single gate-check lookup for brand artifact status.
 Gates read <code>Status</code> from this table — not from individual file frontmatters.</p>
@@ -102,7 +134,7 @@ Gates read <code>Status</code> from this table — not from individual file fron
 <td>Brand Dossier</td>
 <td><code>docs/business-os/strategy/HEAD/brand-dossier.user.md</code></td>
 <td>Draft</td>
-<td>2026-02-17</td>
+<td>2026-02-20</td>
 </tr>
 <tr>
 <td>Competitive Positioning</td>
@@ -113,8 +145,8 @@ Gates read <code>Status</code> from this table — not from individual file fron
 <tr>
 <td>Messaging Hierarchy</td>
 <td><code>docs/business-os/strategy/HEAD/messaging-hierarchy.user.md</code></td>
-<td>—</td>
-<td>—</td>
+<td>Draft</td>
+<td>2026-02-20</td>
 </tr>
 <tr>
 <td>Creative Voice Brief</td>
@@ -124,6 +156,108 @@ Gates read <code>Status</code> from this table — not from individual file fron
 </tr>
 </tbody>
 </table>
+<h2>Strategy Research Artifacts</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Path</th>
+<th>Status</th>
+<th>Last-reviewed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Product Range Research (prompt)</td>
+<td><code>docs/business-os/strategy/HEAD/adjacent-product-research-prompt.md</code></td>
+<td>Active</td>
+<td>2026-02-20</td>
+</tr>
+<tr>
+<td>Product Range Research (results)</td>
+<td><code>docs/business-os/strategy/HEAD/lp-other-products-results.user.md</code></td>
+<td>Active</td>
+<td>2026-02-20</td>
+</tr>
+<tr>
+<td>Naming Research (prompt)</td>
+<td><code>docs/business-os/strategy/HEAD/naming-research-prompt.md</code></td>
+<td>Active</td>
+<td>2026-02-19</td>
+</tr>
+<tr>
+<td>Naming Research (shortlist)</td>
+<td><code>docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md</code></td>
+<td>Draft</td>
+<td>2026-02-20</td>
+</tr>
+<tr>
+<td>Naming Research (latest pointer)</td>
+<td><code>docs/business-os/strategy/HEAD/latest-naming-shortlist.user.md</code></td>
+<td>Draft</td>
+<td>2026-02-20</td>
+</tr>
+</tbody>
+</table>
+<h2>Startup-Loop Canonical Artifacts</h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Artifact</th>
+<th>Path</th>
+<th>Status</th>
+<th>Last-reviewed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S2</td>
+<td>Market intelligence (latest)</td>
+<td><code>docs/business-os/market-research/HEAD/latest.user.md</code></td>
+<td>Active</td>
+<td>2026-02-20</td>
+</tr>
+<tr>
+<td>S2B</td>
+<td>Offer</td>
+<td><code>docs/business-os/startup-baselines/HEAD-offer.md</code></td>
+<td>Active</td>
+<td>2026-02-20</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Forecast</td>
+<td><code>docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md</code></td>
+<td>Active</td>
+<td>2026-02-20</td>
+</tr>
+<tr>
+<td>S6B</td>
+<td>Channels</td>
+<td><code>docs/business-os/startup-baselines/HEAD-channels.md</code></td>
+<td>Active</td>
+<td>2026-02-20</td>
+</tr>
+<tr>
+<td>S3B</td>
+<td>Adjacent product + naming research</td>
+<td><code>docs/business-os/strategy/HEAD/lp-other-products-results.user.md</code></td>
+<td>Active</td>
+<td>2026-02-20</td>
+</tr>
+<tr>
+<td>S5A</td>
+<td>Prioritization</td>
+<td><code>docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md</code></td>
+<td>Active</td>
+<td>2026-02-20</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>S3B refresh completed on 20 Feb 2026 and replayed into canonical S2B/S3/S6B/S5A artifacts. Top-3 build candidates: Activity organiser pouch, School-ready multi-pack headbands, Clip-on identity badges.</p>
+</blockquote>
 <p><strong>Status vocabulary:</strong></p>
 <ul>
 <li><code>—</code> Not yet created</li>
@@ -200,12 +334,43 @@ grep "Brand Dossier" docs/business-os/strategy/HEAD/index.user.md | grep -E "Dra
 </code></pre>
     <div class="meta">
       <div>Source: <code>docs/business-os/strategy/HEAD/index.user.md</code></div>
-      <div>Generated: 2026-02-17T10:11:15.194Z</div>
+      <div>Generated: 2026-02-20T13:28:09.619Z</div>
     </div>
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+    // startOnLoad: false — we render manually so hidden engineering diagrams
+    // (inside display:none) are not attempted on load, which causes spurious
+    // "Syntax error in text" failures in Mermaid v11.
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    // Render only the visible (operator) diagrams immediately.
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    // Audience toggle — Model A.
+    // Engineering diagrams are rendered on first reveal (not on load).
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          // Render engineering diagrams now that they are visible.
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
   </script>
 </body>
 </html>

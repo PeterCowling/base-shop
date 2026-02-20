@@ -16,6 +16,8 @@ Produces a comprehensive offer artifact for startups. Defines ICP, pain/promise 
 Required:
 - `--business <BIZ>` — business identifier (e.g., BRIK, SEG, INT)
 
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
+
 ## Operating Mode
 
 RESEARCH + DESIGN + DOCUMENT
@@ -186,7 +188,7 @@ Produces single file: `docs/business-os/startup-baselines/<BIZ>-offer.md`
 **Downstream compatibility**:
 - `lp-forecast` consumes: ICP (for TAM/SAM estimation), pricing hypothesis (for revenue modeling), confidence level (for scenario ranges)
 - `lp-channels` consumes: ICP (for channel-customer fit), positioning (for messaging), objections (for content strategy)
-- `review-critique` (DS-14 offer mode) consumes: entire artifact for critique
+- `lp-do-critique` (DS-14 offer mode) consumes: entire artifact for critique
 
 ## Quality Checks
 
@@ -226,7 +228,7 @@ Invalid outputs that MUST be rejected:
 ### Downstream (S2C, S2D)
 - `/lp-forecast --business <BIZ>` (S2C) reads ICP and pricing hypothesis for revenue modeling
 - `/lp-channels --business <BIZ>` (S2D) reads ICP, positioning, and objections for channel selection
-- `review-critique` (DS-14 offer mode) critiques this artifact for logical gaps
+- `lp-do-critique` (DS-14 offer mode) critiques this artifact for logical gaps
 
 ### Parallel Skills
 - Can run after or parallel to `/lp-market` (market research baseline) if it exists

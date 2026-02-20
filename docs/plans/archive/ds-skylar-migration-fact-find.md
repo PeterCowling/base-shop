@@ -10,7 +10,7 @@ Feature-Slug: ds-skylar-migration
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Related-Plan: docs/plans/ds-skylar-migration-plan.md
 Business-OS-Integration: on
@@ -127,7 +127,7 @@ Pattern: dark overlays on hero images using `zinc-900` at various opacities.
   - Decision owner: Pete
   - Default assumption: map to base tokens where possible, create Skylar theme only if >5 unique tokens needed
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 70% — CSS gradient migration requires design judgement, not just find-and-replace
 - **Approach:** 75% — unclear whether Skylar needs its own theme package
@@ -155,7 +155,7 @@ Pattern: dark overlays on hero images using `zinc-900` at various opacities.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-design-system`
 - Deliverable acceptance: `pnpm lint` passes at `error` severity, custom CSS variables eliminated, baseline entries removed, visual sign-off
 
@@ -163,4 +163,4 @@ Pattern: dark overlays on hero images using `zinc-900` at various opacities.
 
 - Status: **Ready-for-planning**
 - Blocking items: Design decision on Skylar theme package (can default to base tokens)
-- Recommended next step: `/lp-plan` (answer open question first or accept default)
+- Recommended next step: `/lp-do-plan` (answer open question first or accept default)

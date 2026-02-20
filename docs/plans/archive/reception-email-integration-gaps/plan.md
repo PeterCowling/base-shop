@@ -9,7 +9,7 @@ Feature-Slug: reception-email-integration-gaps
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (pending tasks only)
@@ -170,7 +170,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (enum update)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/reception/src/constants/activities.ts`
 - **Depends on:** -
 - **Confidence:** 90%
@@ -229,7 +229,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (UI label updates)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/reception/src/components/checkins/StatusButton.tsx`, `[readonly] apps/reception/src/constants/activities.ts`
 - **Depends on:** TASK-01
 - **Confidence:** 88%
@@ -286,7 +286,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (data file update)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/mcp-server/data/email-templates.json`
 - **Depends on:** -
 - **Confidence:** 92%
@@ -348,7 +348,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (case mapping)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/mcp-server/src/tools/guest-email-activity.ts`, `[readonly] packages/mcp-server/data/email-templates.json`
 - **Depends on:** TASK-01, TASK-03
 - **Confidence:** 90%
@@ -406,7 +406,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (array update)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/reception/src/hooks/mutations/useActivitiesMutations.ts`
 - **Depends on:** TASK-01, TASK-04
 - **Confidence:** 90%
@@ -464,7 +464,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (array cleanup)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/reception/src/hooks/mutations/useActivitiesMutations.ts`
 - **Depends on:** -
 - **Confidence:** 92%
@@ -530,7 +530,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (new mutation hook)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/reception/src/hooks/mutations/useArchiveBooking.ts` (new file), `[readonly] apps/reception/src/hooks/mutations/useDeleteGuestFromBooking.ts` (pattern reference), `[readonly] apps/reception/src/services/useFirebase.ts` (Firebase client)
 - **Depends on:** -
 - **Confidence:** 85%
@@ -607,7 +607,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (security rules update)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/reception/firebase.rules` (or equivalent rules file)
 - **Depends on:** TASK-07
 - **Confidence:** 88%
@@ -672,7 +672,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (wire new hook)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/reception/src/hooks/mutations/useBulkBookingActions.ts`, `[readonly] apps/reception/src/hooks/mutations/useArchiveBooking.ts`
 - **Depends on:** TASK-07
 - **Confidence:** 88%
@@ -741,7 +741,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (filter logic + toggle + badge)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/reception/src/components/checkins/CheckinsTable.tsx` (or equivalent table component), `apps/reception/src/hooks/data/useBookingsData.ts` (or query hook)
 - **Depends on:** TASK-07
 - **Confidence:** 85%
@@ -817,7 +817,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (new cancellation flow)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/reception/src/hooks/mutations/useCancelBooking.ts` (new file), `apps/reception/src/components/checkins/CancelBookingButton.tsx` (or equivalent UI), `[readonly] apps/reception/src/hooks/mutations/useArchiveBooking.ts`, `[readonly] apps/reception/src/hooks/mutations/useActivitiesMutations.ts`
 - **Depends on:** TASK-05, TASK-07
 - **Confidence:** 82%
@@ -899,7 +899,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Depends on:** TASK-02, TASK-06, TASK-08, TASK-09, TASK-10, TASK-11
 - **Confidence:** 95%
 - **Acceptance:**
-  - Run `/lp-replan` on tasks TASK-13 through TASK-16
+  - Run `/lp-do-replan` on tasks TASK-13 through TASK-16
   - Reassess confidence using evidence from completed Phases 1-2
   - Validate foundational patterns work correctly (soft-delete, email auto-trigger)
   - Confirm automated processing approach before deep implementation
@@ -944,7 +944,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - **Blocked by dependency:** TASK-14 (depends on TASK-13), TASK-15 (depends on TASK-14), TASK-16 (depends on TASK-15)
   - **Below threshold:** TASK-14 (75%), TASK-15 (75%)
 - **Recommendation:**
-  - Proceed with `/lp-build` for TASK-13 only (parser implementation)
+  - Proceed with `/lp-do-build` for TASK-13 only (parser implementation)
   - After TASK-13 completes, reassess TASK-14 with parser in place (may promote above 80%)
   - TASK-15 and TASK-16 remain blocked by dependency chain
 
@@ -952,7 +952,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (parser module)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/mcp-server/src/parsers/cancellation-email-parser.ts` (new file)
 - **Depends on:** TASK-12
 - **Confidence:** 85%
@@ -1052,7 +1052,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (new MCP tool)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/mcp-server/src/tools/process-cancellation-email.ts` (new file), `[readonly] packages/mcp-server/src/parsers/cancellation-email-parser.ts`, `[readonly] packages/mcp-server/src/tools/outbound-drafts.ts` (Firebase REST pattern)
 - **Depends on:** TASK-13
 - **Confidence:** 80%
@@ -1147,7 +1147,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Firebase REST pattern is proven and ready to use in MCP tool
   - ActivityId collision-safe generation needs index suffix for batch writes: `act_${Date.now()}_${index}`
   - Multi-step workflow complexity remains but patterns are validated by Phase 2
-  - **Task is now above 80% threshold and ready for `/lp-build`**
+  - **Task is now above 80% threshold and ready for `/lp-do-build`**
 - **Changes to task:**
   - Status: Ready for build (dependencies complete, confidence ≥80%)
   - Acceptance: unchanged
@@ -1185,7 +1185,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (Gmail workflow integration)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/tools/process-cancellation-email.ts`
 - **Depends on:** TASK-14
 - **Confidence:** 80%
@@ -1272,7 +1272,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - TASK-13 completion provides E2 evidence for OTA filtering (parser rejects non-Octorate emails before tool invocation)
   - Exception path pattern validated by BOOKING_MONITOR precedent (lines 824-832)
   - Impact confidence raised from 75% → 80% based on E2 evidence closing all uncertainty
-  - **Task is now above 80% threshold and ready for `/lp-build`**
+  - **Task is now above 80% threshold and ready for `/lp-do-build`**
 - **Changes to task:**
   - Status: Ready for build (dependencies complete, confidence ≥80%)
   - Acceptance: unchanged
@@ -1311,7 +1311,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (Gmail label setup)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** Gmail label configuration (via Gmail API or manual setup)
 - **Depends on:** TASK-15
 - **Confidence:** 90%

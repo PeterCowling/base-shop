@@ -9,7 +9,7 @@ Feature-Slug: brik-apartment-content-rework
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-design-system
 Overall-confidence: 91%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -121,7 +121,7 @@ A final validation task (TASK-04) runs the full test suite and updates the GA4 t
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `apps/brikette/src/locales/en/apartmentPage.json`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/locales/en/apartmentPage.json`
 - **Depends on:** -
 - **Blocks:** TASK-04
@@ -171,7 +171,7 @@ A final validation task (TASK-04) runs the full test suite and updates the GA4 t
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `ApartmentPageContent.tsx`, `StreetLevelArrivalContent.tsx`, `PrivateStayContent.tsx`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/app/[lang]/apartment/ApartmentPageContent.tsx`, `apps/brikette/src/app/[lang]/apartment/street-level-arrival/StreetLevelArrivalContent.tsx`, `apps/brikette/src/app/[lang]/apartment/private-stay/PrivateStayContent.tsx`
 - **Depends on:** -
 - **Blocks:** TASK-04
@@ -214,7 +214,7 @@ A final validation task (TASK-04) runs the full test suite and updates the GA4 t
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `ApartmentBookContent.tsx` and `roomsData.ts`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/app/[lang]/apartment/book/ApartmentBookContent.tsx`, `apps/brikette/src/data/roomsData.ts`
 - **Depends on:** -
 - **Blocks:** TASK-04
@@ -254,7 +254,7 @@ A final validation task (TASK-04) runs the full test suite and updates the GA4 t
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated and new test files; full suite green
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/brikette/src/test/components/apartment/ApartmentContentAccuracy.test.tsx` (new), `apps/brikette/src/test/components/apartment/ApartmentStructureAndLinks.test.tsx` (new), `apps/brikette/src/test/components/ga4-07-apartment-checkout.test.tsx` (update)
 - **Depends on:** TASK-01, TASK-02, TASK-03
 - **Blocks:** -

@@ -56,7 +56,7 @@ Concrete repo findings that affect correctness and cacheability:
 
 ## Fact-Find Reference
 
-- `docs/plans/coverage-caching-lp-fact-find.md`
+- `docs/plans/coverage-caching-lp-do-fact-find.md`
 
 ## Proposed Approach
 

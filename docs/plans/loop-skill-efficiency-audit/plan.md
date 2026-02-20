@@ -9,7 +9,7 @@ Feature-Slug: loop-skill-efficiency-audit
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
@@ -120,7 +120,7 @@ cadence docs, and run the first live audit.
 - **Type:** IMPLEMENT
 - **Deliverable:** New file `.claude/skills/meta-loop-efficiency/SKILL.md` — the
   complete skill definition for `/meta-loop-efficiency`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -160,8 +160,8 @@ cadence docs, and run the first live audit.
 - **Planning validation (required for M/L):** None: S-effort task; `.md` authoring only
 - **Scouts:**
   - Verify: `ls .claude/skills/meta-loop-efficiency/` does not already exist
-  - Confirm: `wc -l .claude/skills/*/SKILL.md | sort -rn | head -5` shows lp-build
-    (222L) as the largest bloated-orchestrator above threshold — confirms what the H1 flag looks like in practice (lp-build has modules/ so it is bloated-orchestrator, not monolith; the 200L threshold itself is the reference point)
+  - Confirm: `wc -l .claude/skills/*/SKILL.md | sort -rn | head -5` shows lp-do-build
+    (222L) as the largest bloated-orchestrator above threshold — confirms what the H1 flag looks like in practice (lp-do-build has modules/ so it is bloated-orchestrator, not monolith; the 200L threshold itself is the reference point)
 - **Edge Cases & Hardening:**
   - If SKILL.md draft exceeds 200L: extract the heuristic detail tables to a
     `modules/heuristics.md` file (allowed by the thin-orchestrator pattern); SKILL.md
@@ -192,7 +192,7 @@ cadence docs, and run the first live audit.
 - **Deliverable:** One new table row in `docs/business-os/startup-loop-workflow.user.md`
   §Standing Refresh; one new footnote line in `.claude/skills/lp-experiment/SKILL.md`
   §S10 Readout section
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -253,7 +253,7 @@ cadence docs, and run the first live audit.
 - **Deliverable:** First audit artifact at
   `docs/business-os/platform-capability/skill-efficiency-audit-YYYY-MM-DD-HHMM.md`
   with correct 6-line header, committed to git
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S

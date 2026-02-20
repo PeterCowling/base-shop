@@ -46,7 +46,7 @@ Rewrite the `/idea-generate` SKILL.md from a kanban board health checker into a 
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/idea-generate-redesign-lp-fact-find.md`
+- Related brief: `docs/plans/idea-generate-redesign-lp-do-fact-find.md`
 - Key findings:
   - Current skill is a kanban flow analyzer — wrong problem
   - Zero business plans exist; zero people profiles exist
@@ -94,7 +94,7 @@ Ingest (plans + profiles + cards + ideas)
 
 5. **Full AI-driven idea pipeline (two-stage priority)** — No human in the loop between diagnosis and kanban entry. The sweep:
    - **Stage 1 (Raw):** Generates all ideas with a raw priority score from the scoring rubric. Logs to inbox via API, tagged `raw`, `sweep-generated`, `sweep-<date>`.
-   - **Stage 2 (Auto-work-up):** For ideas scoring above a threshold, automatically works them up into cards. This means the sweep invokes `/idea-develop` logic inline — creating a card with kanban priority (P0-P3), description, business assignment, and an initial lp-fact-find stage doc. Cards enter the kanban at the Inbox lane, ready for `/lp-fact-find`.
+   - **Stage 2 (Auto-work-up):** For ideas scoring above a threshold, automatically works them up into cards. This means the sweep invokes `/idea-develop` logic inline — creating a card with kanban priority (P0-P3), description, business assignment, and an initial lp-do-fact-find stage doc. Cards enter the kanban at the Inbox lane, ready for `/lp-do-fact-find`.
    - **Safeguards:** Max 3 auto-worked-up cards per sweep. All auto-created cards tagged `sweep-auto` so Pete can identify AI-generated work. Ideas below the threshold remain raw in the inbox for manual review.
    - **Two-stage priority:** The raw score is a triage signal from business process analysis (Impact × Confidence × Time-to-signal) / (Effort × (1 + Risk)). The kanban priority (P0-P3) is a commitment signal assigned during work-up based on constraint severity, business maturity stage, and plan alignment.
 
@@ -128,7 +128,7 @@ Ingest (plans + profiles + cards + ideas)
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-03
 - **Confidence:** 85%
-  - Implementation: 88% — Clear structure from lp-fact-find, draft pack materials available as source, existing skill as starting point. Single file rewrite.
+  - Implementation: 88% — Clear structure from lp-do-fact-find, draft pack materials available as source, existing skill as starting point. Single file rewrite.
   - Approach: 85% — User direction is clear (Elon Musk philosophy, business process auditor). MACRO framework is well-defined. Minor uncertainty: exact forecasting format.
   - Impact: 82% — Replaces current skill entirely. Integration points with other skills well-mapped. Risk: first sweep may bootstrap missing plans/profiles awkwardly.
 - **Effort:** L
@@ -146,7 +146,7 @@ Ingest (plans + profiles + cards + ideas)
   - Includes trajectory forecast per business
   - Two-stage idea pipeline: raw ideas with priority scores → auto-work-up top ideas into cards
   - Raw ideas tagged `raw`, `sweep-generated`, `sweep-<date>` with scoring rubric scores
-  - Auto-work-up for ideas above priority threshold: creates card + lp-fact-find stage doc, tagged `sweep-auto`
+  - Auto-work-up for ideas above priority threshold: creates card + lp-do-fact-find stage doc, tagged `sweep-auto`
   - Max 3 auto-created cards per sweep; remaining ideas stay raw in inbox
   - No `--create-ideas` flag or human gatekeeping — fully AI-driven
   - Self-evaluation is a pass/fail checklist (not a 30-point rubric)
@@ -166,7 +166,7 @@ Ingest (plans + profiles + cards + ideas)
     - TC-10: Trajectory forecast section uses prose, not models → "At current pace..." format
     - TC-11: Two-stage idea pipeline defined: Stage 1 (raw with scores) → Stage 2 (auto-work-up to card) → no human gate between them
     - TC-12: Raw idea format includes priority score from rubric (Impact, Confidence, Time-to-signal, Effort, Risk) → score is computed, not arbitrary
-    - TC-13: Auto-work-up section creates card + lp-fact-find stage doc for top-scoring ideas → uses `/idea-develop` or card-operations conventions
+    - TC-13: Auto-work-up section creates card + lp-do-fact-find stage doc for top-scoring ideas → uses `/idea-develop` or card-operations conventions
     - TC-14: Max 3 auto-created cards per sweep; threshold for auto-work-up defined → safeguard against noise
     - TC-15: All auto-created cards tagged `sweep-auto` → traceable, reviewable by Pete
     - TC-16: No `--create-ideas` flag or human confirmation → fully AI-driven pipeline

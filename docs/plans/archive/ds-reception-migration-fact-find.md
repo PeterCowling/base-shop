@@ -10,7 +10,7 @@ Feature-Slug: ds-reception-migration
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Related-Plan: docs/plans/ds-reception-migration-plan.md
 Business-OS-Integration: on
@@ -172,7 +172,7 @@ Alternatively, these could become hospitality-specific tokens (already exist: `-
   - Decision owner: Pete
   - Default assumption: use hospitality tokens where they match, fall back to general semantic tokens
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 70% — large scope (220 files), hex constants need refactoring not just class replacement
 - **Approach:** 85% — token migration is correct; phased rollout (warn → error) is proven
@@ -212,7 +212,7 @@ Alternatively, these could become hospitality-specific tokens (already exist: `-
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-design-system`
 - Deliverable acceptance: DS colour rules at `error` for Reception, zero violations, `statusColors.ts` eliminated
 
@@ -220,4 +220,4 @@ Alternatively, these could become hospitality-specific tokens (already exist: `-
 
 - Status: **Ready-for-planning**
 - Blocking items: status colour mapping decision (can proceed with default)
-- Recommended next step: `/lp-plan`
+- Recommended next step: `/lp-do-plan`

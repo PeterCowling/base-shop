@@ -1,5 +1,3 @@
-import { describe, expect, it } from "@jest/globals";
-
 let resolveConfig: any;
 try {
   // tailwindcss is not a direct dep of this package; skip if unavailable

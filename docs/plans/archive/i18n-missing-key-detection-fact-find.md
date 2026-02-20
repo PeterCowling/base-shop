@@ -146,7 +146,7 @@ Users are seeing raw i18n keys rendered on the brikette website instead of trans
 
 None - sufficient information gathered to proceed with planning.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 85%
   - `isPlaceholderString()` already handles detection logic
@@ -204,4 +204,4 @@ None - sufficient information gathered to proceed with planning.
 
 - Status: **Ready-for-planning**
 - Blocking items: None
-- Recommended next step: Proceed to `/lp-plan` to design the test utility and integration approach
+- Recommended next step: Proceed to `/lp-do-plan` to design the test utility and integration approach

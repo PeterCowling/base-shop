@@ -628,7 +628,7 @@ MCP Server (packages/mcp-server)
     - Adding MCP coordination adds complexity without clear MVP benefit
   - **Decision:** Standalone Apps Script for MVP, consider MCP enhancement in future phase
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 70% (adjusted for architecture pivot)
   - Strong: **Existing MCP server infrastructure** (`packages/mcp-server/`) with established patterns
@@ -818,7 +818,7 @@ Google Apps Script           Claude Web           Gmail
 - **Next steps:**
   1. Get Pete's decision on preferred interface and workflow
   2. Prototype chosen approach (MCP tools or Claude Code workflow)
-  3. Run `/lp-plan` to create implementation plan
+  3. Run `/lp-do-plan` to create implementation plan
   4. Include INVESTIGATE task for baseline metric validation
 
 ---

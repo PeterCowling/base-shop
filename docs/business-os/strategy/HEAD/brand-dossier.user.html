@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Headband (CochlearFit) — Brand Dossier</title>
+  <title>Headband (Name Pending) — Brand Dossier</title>
   <style>
     :root {
       --bg: #ffffff;
@@ -80,11 +80,43 @@
       font-size: 0.9rem;
       color: var(--muted);
     }
+    /* Audience toggle — Model A: single engineering appendix wrapper */
+    [data-audience="engineering"] {
+      display: none;
+    }
+    body.show-engineering [data-audience="engineering"] {
+      display: block;
+    }
+    .audience-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 0 24px;
+      padding: 8px 16px;
+      background: var(--header);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-family: inherit;
+    }
+    .audience-toggle:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+    }
   </style>
 </head>
 <body>
   <main>
-<h1>Headband (CochlearFit) — Brand Dossier</h1>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
+<h1>Headband (Name Pending) — Brand Dossier</h1>
 <blockquote>
 <p><strong>Draft status.</strong> Token values are not duplicated in this document. When the theme package
 is created, the single source of truth will be <code>packages/themes/cochlearfit/src/tokens.ts</code>.
@@ -272,8 +304,9 @@ A dedicated <code>/lp-design-spec</code> session + theme package creation is req
 <h2>References</h2>
 <ul>
 <li>Business strategy: <code>docs/business-os/strategy/HEAD/plan.user.md</code></li>
-<li>90-day forecast: <code>docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md</code></li>
-<li>Forecast exec summary: <code>docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2-exec-summary.user.md</code></li>
+<li>90-day forecast (canonical): <code>docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md</code></li>
+<li>Offer design (canonical): <code>docs/business-os/startup-baselines/HEAD-offer.md</code></li>
+<li>Naming shortlist: <code>docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md</code></li>
 <li>Strategy index (artifact status): <code>docs/business-os/strategy/HEAD/index.user.md</code></li>
 <li>Design system handbook: <code>docs/design-system-handbook.md</code></li>
 </ul>
@@ -289,27 +322,27 @@ A dedicated <code>/lp-design-spec</code> session + theme package creation is req
 </thead>
 <tbody>
 <tr>
-<td>Italy TAM ~17k cochlear-implant users</td>
-<td>Stated in forecast exec summary</td>
-<td><code>headband-90-day-launch-forecast-v2-exec-summary.user.md</code></td>
-<td>Low (directional estimate; not verified against official Italian registry data)</td>
-</tr>
-<tr>
-<td>Competitor price range EUR 12–28.80</td>
-<td>Stated in forecast exec summary</td>
-<td><code>headband-90-day-launch-forecast-v2-exec-summary.user.md</code></td>
-<td>Low (needs direct competitor URL verification)</td>
-</tr>
-<tr>
-<td>Primary market is Italy, high-intent search acquisition</td>
-<td>Business plan + forecast</td>
-<td><code>plan.user.md</code>, <code>headband-90-day-launch-forecast-v2.user.md</code></td>
+<td>Italy TAM directional band ~17k-20k</td>
+<td>Consolidated market-intel refresh</td>
+<td><code>docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md</code></td>
 <td>Medium</td>
 </tr>
 <tr>
-<td>Fit/compatibility is primary purchase decision factor</td>
-<td>Stated as critical risk in plan</td>
-<td><code>plan.user.md</code> (Unclear Differentiation risk)</td>
+<td>Category supports low-risk textile + organisation expansion</td>
+<td>S3B synthesis top-3 MVP recommendation</td>
+<td><code>docs/business-os/strategy/HEAD/lp-other-products-results.user.md</code></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Primary market is Italy, high-intent + referral-acquisition mix</td>
+<td>Canonical strategy + channels backfill</td>
+<td><code>docs/business-os/strategy/HEAD/plan.user.md</code>, <code>docs/business-os/startup-baselines/HEAD-channels.md</code></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Fit/compatibility clarity is a primary conversion and returns driver</td>
+<td>Offer and forecast assumptions</td>
+<td><code>docs/business-os/startup-baselines/HEAD-offer.md</code>, <code>docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md</code></td>
 <td>Medium</td>
 </tr>
 </tbody>
@@ -329,12 +362,43 @@ A dedicated <code>/lp-design-spec</code> session + theme package creation is req
 </ul>
     <div class="meta">
       <div>Source: <code>docs/business-os/strategy/HEAD/brand-dossier.user.md</code></div>
-      <div>Generated: 2026-02-17T10:11:15.181Z</div>
+      <div>Generated: 2026-02-20T13:28:09.605Z</div>
     </div>
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+    // startOnLoad: false — we render manually so hidden engineering diagrams
+    // (inside display:none) are not attempted on load, which causes spurious
+    // "Syntax error in text" failures in Mermaid v11.
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    // Render only the visible (operator) diagrams immediately.
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    // Audience toggle — Model A.
+    // Engineering diagrams are rendered on first reveal (not on load).
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          // Render engineering diagrams now that they are visible.
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
   </script>
 </body>
 </html>

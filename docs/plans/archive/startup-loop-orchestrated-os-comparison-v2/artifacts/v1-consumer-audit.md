@@ -4,12 +4,12 @@ Task: TASK-10
 Plan: startup-loop-orchestrated-os-comparison-v2
 Status: Complete
 Created: 2026-02-18
-Method: ripgrep scan across repo for process-registry-v1 references during /lp-replan evidence pass
+Method: ripgrep scan across repo for process-registry-v1 references during /lp-do-replan evidence pass
 ---
 
 # supersede-now Consumer Breakage Audit
 
-Produced during `/lp-replan` evidence gathering after TASK-00 decision (supersede-now). Identifies all files that reference `process-registry-v1.md` as an authoritative source and must be re-pointed before v1 is archived.
+Produced during `/lp-do-replan` evidence gathering after TASK-00 decision (supersede-now). Identifies all files that reference `process-registry-v1.md` as an authoritative source and must be re-pointed before v1 is archived.
 
 ---
 
@@ -112,4 +112,4 @@ These files mention v1 but not as an authoritative runtime source — they are p
 
 Per TASK-10 acceptance: scan complete, breakage list produced, migration steps per file documented.
 
-**Investigation status: COMPLETE** (executed during /lp-replan evidence pass 2026-02-18).
+**Investigation status: COMPLETE** (executed during /lp-do-replan evidence pass 2026-02-18).

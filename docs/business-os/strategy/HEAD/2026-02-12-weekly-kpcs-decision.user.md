@@ -2,7 +2,7 @@
 Type: Weekly-KPCS-Decision
 Status: Active
 Business: HEAD
-Week-Ending: 2026-02-12
+Week-Ending: 2026-02-20
 Owner: Pete
 ---
 
@@ -10,42 +10,44 @@ Owner: Pete
 
 ## A) KPI Delta Summary
 
-- This is week-0 initialization (no live commercial metrics yet).
-- Baseline remains: orders 0, revenue 0, CAC unmeasured, returns unmeasured.
+- This remains a pre-scale week with no material live-sales denominator yet.
+- Baseline still effectively week-0/early week-1: orders and CAC evidence not decision-grade.
 
 ## B) Decision
 
 Decision: **Continue**.
 
 Rationale:
-- Outcome contract is now locked.
-- Intake, market intelligence, site-upgrade brief, baseline seed, and prioritization scorecard are active.
-- Immediate next step is execution instrumentation and operational confirmation, not strategy pivot.
+- Canonical S2B/S3/S6B artifacts are now backfilled and aligned to the outcome contract.
+- Top-3 MVP lane is explicit and low-risk (multi-pack headbands, organiser pouch, patch packs).
+- Immediate next step is execution and denominator-quality data capture, not channel or strategy pivot.
 
 ## C) What Changed This Week
 
 Signal:
-- Canonical inputs for HEAD loop were activated (intake packet, blocker interview, prioritization scorecard).
-- Mapping readiness gate moved to warning/pass for active scope.
+- Canonical startup-baseline artifacts now exist for offer, forecast, and channels.
+- Naming shortlist has been returned and is pending clearance decision.
+- Prioritization has shifted from generic launch tasks to concrete MVP productisation tasks.
 
 Noise:
-- No live demand/economics data yet; no scale/kill call can be made.
+- No decision-grade live demand/economics data yet; no scale/kill call can be made.
 
 ## D) Next-Week Action Plan
 
-1. Confirm stock date and sellable units in seed.
-2. Confirm compatibility matrix and publish fit/support guidance.
-3. Establish analytics and payment reliability baseline.
-4. Start capped week-1 acquisition test with daily CAC/CVR tracking.
-5. Prepare week-2 forecast recalibration artifact.
+1. Confirm stock date and sellable units for all top-3 MVP SKUs.
+2. Publish compatibility/fit guidance and bundle-ready PDP updates.
+3. Establish analytics/payment baseline with denominator checks.
+4. Start capped own-site + constrained Etsy probe tests with daily CAC/CVR tracking.
+5. Finalize naming clearance path for shortlist candidate(s).
 
 ## E) Risk Watchlist
 
 - Compatibility ambiguity can inflate returns.
 - Missing payment/returns clarity can suppress conversion.
 - Lack of measured CVR/CAC can delay decision-grade planning.
+- Copy drift risk remains high in a medical-adjacent category unless guardrails are enforced.
 
 ## F) Data Quality Issues
 
-- No observed traffic/conversion data yet.
-- No observed returns and payment-success distributions yet.
+- No decision-grade observed traffic/conversion data yet.
+- No decision-grade returns and payment-success distributions yet.

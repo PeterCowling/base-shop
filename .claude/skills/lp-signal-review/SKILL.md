@@ -46,7 +46,7 @@ Keep this file thin. Do not embed principle definitions, scoring rubrics, or fin
 
 ### Prohibited actions
 
-- Auto-spawning `/lp-fact-find` calls. Finding Briefs are stubs within the Signal Review; operator promotes manually.
+- Auto-spawning `/lp-do-fact-find` calls. Finding Briefs are stubs within the Signal Review; operator promotes manually.
 - Auto-spawning `/meta-reflect` calls. Process-Improvement Stubs are stubs within the Signal Review; operator promotes manually by running `/meta-reflect <process-artifact-path>`.
 - Creating any files other than the Signal Review artifact.
 - Code changes, plan edits, BOS API writes (v1).

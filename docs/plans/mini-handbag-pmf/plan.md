@@ -138,7 +138,7 @@ Variant priority from fact-find scoring:
 | 1    | TASK-01, TASK-02, TASK-03, TASK-04 | —               | All independent; run in parallel immediately    |
 | 2    | TASK-05, TASK-06             | TASK-01; TASK-03 for 06  | TASK-05 unblocked on TASK-01; TASK-06 needs both |
 | 3    | TASK-07, TASK-08             | TASK-06; TASK-02 for 08  | Both can launch once TASK-06 photos are ready   |
-| 4    | TASK-09                      | TASK-07 + TASK-08 (4 wks) | Checkpoint — run `/lp-replan` before Wave 5    |
+| 4    | TASK-09                      | TASK-07 + TASK-08 (4 wks) | Checkpoint — run `/lp-do-replan` before Wave 5    |
 | 5    | TASK-10, TASK-11             | TASK-09                  | Parallel after checkpoint clearance             |
 
 ---
@@ -199,7 +199,7 @@ Variant priority from fact-find scoring:
 
 - **Type:** INVESTIGATE
 - **Deliverable:** Margin stack summary filed as `docs/plans/mini-handbag-pmf/supply-chain-investigation.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Pending
@@ -240,7 +240,7 @@ Variant priority from fact-find scoring:
 - **Type:** INVESTIGATE
 - **Deliverable:** Readiness note appended to `docs/plans/mini-handbag-pmf/fact-find.md`
   under a new `## Product Readiness Notes` section.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -277,7 +277,7 @@ Variant priority from fact-find scoring:
 
 - **Type:** INVESTIGATE
 - **Deliverable:** CE compliance summary at `docs/plans/mini-handbag-pmf/ce-marking-investigation.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -351,7 +351,7 @@ Variant priority from fact-find scoring:
   - [ ] `Decision-Link`: `DEC-HBAG-01` — if 0 sales by 2026-04-17 (60 days), reassess
     pricing and variant selection before continuing.
   - [ ] `Stop/Pivot Threshold`: if 0 sales across all active channels after 60 days,
-    halt channel spend, run `/lp-replan`, and reassess positioning.
+    halt channel spend, run `/lp-do-replan`, and reassess positioning.
 - **Validation contract (VC-01):**
   - VC-01: Contract completeness → pass when all 9 required fields are non-empty and
     `DEC-HBAG-01` references a concrete decision rule; within 1 day of TASK-01
@@ -379,7 +379,7 @@ Variant priority from fact-find scoring:
 - **Type:** IMPLEMENT
 - **Deliverable:** ≥3 in-context photos per variant (9 photos minimum), saved to
   `docs/plans/mini-handbag-pmf/photography/` or equivalent local media path.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -528,7 +528,7 @@ Variant priority from fact-find scoring:
 - **Validation contract:**
   - VC-01: Etsy conversion signal → pass when ≥3 sales (any variant) within 28 days
     of listings going live; else flag at checkpoint as "Etsy signal weak" and
-    run `/lp-replan` on TASK-10 pricing/channel strategy.
+    run `/lp-do-replan` on TASK-10 pricing/channel strategy.
   - VC-02: Etsy engagement signal → pass when ≥50 unique listing views + ≥5 favourites
     per listing within 14 days; else consider Etsy Ads (small budget €15–30) before
     concluding demand is absent.
@@ -556,9 +556,9 @@ Variant priority from fact-find scoring:
 ### TASK-09: CHECKPOINT — 4-week demand signal gate; reassess downstream plan
 
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan evidence via `/lp-replan`; downstream tasks re-scored
+- **Deliverable:** Updated plan evidence via `/lp-do-replan`; downstream tasks re-scored
   from actual demand data.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Pending
@@ -566,7 +566,7 @@ Variant priority from fact-find scoring:
 - **Depends on:** TASK-07 (2-week social probe complete), TASK-08 (4-week Etsy active)
 - **Blocks:** TASK-10, TASK-11
 - **Confidence:** 95%
-  - Implementation: 95% — process defined; invoke `/lp-replan`.
+  - Implementation: 95% — process defined; invoke `/lp-do-replan`.
   - Approach: 95% — prevents deep dead-end execution.
   - Impact: 95% — controls all downstream risk; TASK-10 and TASK-11 confidence
     cannot be meaningfully set without this data.
@@ -574,7 +574,7 @@ Variant priority from fact-find scoring:
   - [ ] Demand signal data collated from `demand-log.md`: Etsy views/favs/sales,
     Instagram DM inquiries, intent confirmations.
   - [ ] VC pass/fail status recorded for TASK-07 (VC-01, VC-02) and TASK-08 (VC-01, VC-02).
-  - [ ] `/lp-replan` invoked on TASK-10 and TASK-11.
+  - [ ] `/lp-do-replan` invoked on TASK-10 and TASK-11.
   - [ ] TASK-10 (in-destination trial) re-scored with updated confidence based on
     Etsy/social signal strength.
   - [ ] Decision for H4 (dog holder) and H5 (first bag): proceed, defer, or drop —
@@ -586,10 +586,10 @@ Variant priority from fact-find scoring:
     in actual market context).
   - In-destination trial (TASK-10) is viable given season timing.
 - **Validation contract:** Checkpoint complete when all four acceptance criteria are
-  met and `/lp-replan` output is filed in `docs/plans/mini-handbag-pmf/plan.md`.
+  met and `/lp-do-replan` output is filed in `docs/plans/mini-handbag-pmf/plan.md`.
 - **Planning validation:** None: planning control task.
 - **Rollout / rollback:** None: planning control task.
-- **Documentation impact:** Plan updated via `/lp-replan`; Decision Log updated.
+- **Documentation impact:** Plan updated via `/lp-do-replan`; Decision Log updated.
 
 ---
 
@@ -615,7 +615,7 @@ Variant priority from fact-find scoring:
   - Implementation: 60% — depends on tourist season timing and boutique receptivity;
     cannot be confirmed pre-checkpoint.
   - Approach: 68% — leather sandal precedent in Positano validates the channel; but
-    boutique outreach approach needs `/lp-replan` evidence from checkpoint.
+    boutique outreach approach needs `/lp-do-replan` evidence from checkpoint.
   - Impact: 72% — in-destination is the highest-value distribution for H3 (Amalfi
     location variant); but season window is narrow (June–Sept).
 - **Acceptance:**
@@ -661,7 +661,7 @@ Variant priority from fact-find scoring:
 - **Reviewer:** Pete
 - **Approval-Evidence:** Pete confirms meta-reflect output is useful.
 - **Measurement-Readiness:** None: methodology improvement task.
-- **Affects:** `.claude/skills/lp-fact-find/`, `.claude/skills/lp-plan/`,
+- **Affects:** `.claude/skills/lp-do-fact-find/`, `.claude/skills/lp-do-plan/`,
   `docs/plans/_templates/`
 - **Depends on:** TASK-09 (CHECKPOINT — needs real PMF experience to reflect on)
 - **Blocks:** —
@@ -709,7 +709,7 @@ Variant priority from fact-find scoring:
 - **Product quality doesn't read as premium in photos** (High): TASK-06 VC-01
   (perception test) is the gate. If <3/5 estimate ≥€80, do not proceed to listing.
 - **Premium pricing rejected by Etsy buyers** (Medium): TASK-08 VC-01 (3 sales in
-  28 days) catches this. If VC fails, run `/lp-replan` on pricing before TASK-10.
+  28 days) catches this. If VC fails, run `/lp-do-replan` on pricing before TASK-10.
 - **Tourist season window too narrow for in-destination trial** (Medium): TASK-10
   is post-checkpoint and scheduled for June+. If checkpoint clears late, trial
   window shrinks. Mitigation: start boutique outreach (TASK-10 prep) in May.

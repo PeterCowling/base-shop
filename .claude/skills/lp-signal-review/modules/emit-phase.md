@@ -9,7 +9,7 @@ This module is invoked by `/lp-signal-review` after `audit-phase.md` produces a 
 3. Applies novelty gate and cap enforcement
 4. Emits the Signal Review artifact with all required sections
 
-**Draft-mode constraint (normative)**: This module must not call `/lp-fact-find`, `/meta-reflect`, or any other skill. It must not create files other than the Signal Review artifact. It must not write to BOS API or modify prior Signal Review artifacts. Finding Brief stubs and Process-Improvement Stubs are embedded in the Signal Review only; promotion is always manual.
+**Draft-mode constraint (normative)**: This module must not call `/lp-do-fact-find`, `/meta-reflect`, or any other skill. It must not create files other than the Signal Review artifact. It must not write to BOS API or modify prior Signal Review artifacts. Finding Brief stubs and Process-Improvement Stubs are embedded in the Signal Review only; promotion is always manual.
 
 ---
 
@@ -236,7 +236,7 @@ Status: Draft
 Feature-Slug: <signal-finding-P0N-YYYYMMDD>
 Execution-Track: <business-artifact or mixed>
 Deliverable-Type: <single-deliverable>
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Business-Unit: <BIZ>
 Card-ID: none
 ---
@@ -314,12 +314,12 @@ To act on a finding:
 2. Create a new file at `docs/plans/<finding-slug>/fact-find.md`.
 3. Paste the frontmatter stub. Fill remaining required fields from `docs/plans/_templates/fact-find-planning.md`.
 4. Add `Fingerprint: <fingerprint>` in the body (not in frontmatter).
-5. Run `/lp-fact-find` on the brief to complete the evidence audit and gap review.
+5. Run `/lp-do-fact-find` on the brief to complete the evidence audit and gap review.
 6. Once promoted, future Signal Reviews will suppress this fingerprint (dedup source: open plan tasks).
 
 Suggested invocation after creating the file:
 
-    /lp-fact-find docs/plans/<finding-slug>/fact-find.md
+    /lp-do-fact-find docs/plans/<finding-slug>/fact-find.md
 
 To act on a Process-Improvement Stub:
 

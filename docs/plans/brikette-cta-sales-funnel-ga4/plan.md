@@ -9,7 +9,7 @@ Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-spec, /lp-seo
 Overall-confidence: 84%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by Effort (S=1, M=2, L=3)
@@ -212,7 +212,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | 2 | TASK-25 | TASK-24 | Brikette modal infrastructure removal (depends on ModalType cleanup) |
 | 3 | TASK-26, TASK-27 | TASK-22, TASK-24 (both); TASK-23 also for TASK-27 | Parallel call site migrations; TASK-22 verdict must be known for URL path |
 | 4 | TASK-28 | TASK-25, TASK-26, TASK-27 | Test cleanup; all migrations must be complete |
-| 5 | TASK-29 | TASK-28 | CHECKPOINT — must invoke /lp-replan before proceeding |
+| 5 | TASK-29 | TASK-28 | CHECKPOINT — must invoke /lp-do-replan before proceeding |
 | 6a | TASK-20, TASK-21, TASK-30, TASK-37, TASK-40, TASK-41, TASK-42 | TASK-29 | Parallel: TASK-37 (enum cleanup) must complete before TASK-31 starts |
 | 6b | TASK-31 | TASK-37 | Helpers using cleaned enums; TASK-31 now depends on TASK-37 (replan delta) |
 | 7 | TASK-13, TASK-14, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36 | Wave 6b per task + TASK-15 | Parallel: all implementation tracks; TASK-13 needs TASK-20, TASK-14 needs TASK-21 |
@@ -280,7 +280,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-13: Upgrade /book page (conversion content + JSON-LD + deal banner + i18n)
 - **Type:** IMPLEMENT
 - **Deliverable:** `apps/brikette/src/app/[lang]/book/BookPageContent.tsx` + new `BookPageStructuredData.tsx` + `bookPage.json` additions
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
@@ -337,7 +337,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-14: Add ContentStickyCta to content pages (Link-based)
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `GuideContent`, `BarMenuContent`, `BreakfastMenuContent`, about page, assistance pages, how-to-get-here pages with `<Link href="/{lang}/book">` sticky CTA
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -358,7 +358,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-20: Lock /book JSON-LD field list + @type strategy + absolute URL source + snapshot-test plan
 - **Type:** INVESTIGATE
 - **Deliverable:** Decision memo appended to `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md` (or inline decision note in TASK-13)
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -380,7 +380,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-21: Content sticky CTA scope + copy + Link-only approach
 - **Type:** INVESTIGATE
 - **Deliverable:** Decision memo (inline in fact-find or separate planning note)
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Pending
@@ -403,7 +403,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-22: Route truth verification (Decision A)
 - **Type:** INVESTIGATE
 - **Deliverable:** Decision A updated in `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md` with verified URL strategy; update all call site table entries accordingly
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -431,7 +431,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-23: Extract Octorate URL builder from Booking2Modal into shared utility
 - **Type:** IMPLEMENT
 - **Deliverable:** `apps/brikette/src/utils/buildOctorateUrl.ts` (new) + `apps/brikette/src/utils/buildOctorateUrl.test.ts` (new)
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -470,7 +470,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-24: Remove ModalType booking/booking2 + delete packages/ui booking modal primitives
 - **Type:** IMPLEMENT
 - **Deliverable:** Modified `packages/ui/src/context/modal/context.ts`, deleted `packages/ui/src/organisms/modals/BookingModal.tsx` + `BookingModal2.tsx`, updated `packages/ui/src/organisms/modals/index.ts`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -506,7 +506,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-25: Remove brikette booking modal infrastructure
 - **Type:** IMPLEMENT
 - **Deliverable:** Deleted `BookingModal.tsx` + `Booking2Modal.tsx` from brikette global-modals; updated `lazy-modals.ts`, `payloadMap.ts`, `global-modals.tsx`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -548,7 +548,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-26: Migrate 9x openModal("booking") call sites to router.push/Link
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated files across 8 components/pages (per blast radius table in fact-find)
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -591,7 +591,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-27: Migrate 2x openModal("booking2") in RoomCard to direct Octorate links
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `apps/brikette/src/components/rooms/RoomCard.tsx` with direct `<a href={octorateUrl}>` and Decision B/E queryState logic
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -637,7 +637,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-28: Delete extinct tests + update 7 modal-era tests
 - **Type:** IMPLEMENT
 - **Deliverable:** Deleted test files (×2) + updated test assertions in 7 test files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -683,8 +683,8 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 
 ### TASK-29: CHECKPOINT — Horizon checkpoint post-modal-removal
 - **Type:** CHECKPOINT
-- **Deliverable:** Reassessed plan via `/lp-replan` for Track A/B/C/D tasks
-- **Execution-Skill:** lp-build
+- **Deliverable:** Reassessed plan via `/lp-do-replan` for Track A/B/C/D tasks
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -696,15 +696,15 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - Approach: 95% — prevents deep dead-end execution.
   - Impact: 95% — controls downstream risk.
 - **Acceptance:**
-  - `/lp-build` executor confirms TASK-28 complete and test suite green
-  - `/lp-replan` run on TASK-20, TASK-21, TASK-30–TASK-42 with updated evidence
+  - `/lp-do-build` executor confirms TASK-28 complete and test suite green
+  - `/lp-do-replan` run on TASK-20, TASK-21, TASK-30–TASK-42 with updated evidence
   - Plan updated and re-sequenced if needed
 - **Horizon assumptions to validate:**
   - Is the TypeScript compilation fully clean after all Track E work? (No residual booking/booking2 references)
   - Are any Track C events already accidentally duplicated in the existing code (from superseded TASK-06/11)?
   - Are there any RoomCard rendering issues post-queryState on staging?
 - **Validation contract:** TASK-28 complete; `pnpm --filter brikette test` green; plan updated post-replan.
-- **Build evidence (2026-02-18):** `/lp-replan` executed. All 3 horizon assumptions validated:
+- **Build evidence (2026-02-18):** `/lp-do-replan` executed. All 3 horizon assumptions validated:
   1. **TypeScript clean:** ✅ 0 errors in brikette + packages/ui after full Track E work.
   2. **Duplicate GA4 events:** 3 findings with plan deltas applied:
      - `fireSelectItem` already wired in `apps/brikette/src/components/rooms/RoomsSection.tsx` (line 38). TASK-32 updated: do not add a second `select_item` fire from RoomCard; instead update RoomsSection's `onRoomSelect` to fire with full GA4 item fields + wrap navigation in `trackThenNavigate` for `begin_checkout`.
@@ -717,7 +717,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-30: Create trackThenNavigate helper + unit tests
 - **Type:** IMPLEMENT
 - **Deliverable:** `apps/brikette/src/utils/trackThenNavigate.ts` (new) + unit tests
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -762,7 +762,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-31: Create new GA4 event helpers + unit tests
 - **Type:** IMPLEMENT
 - **Deliverable:** New/updated helper functions in `apps/brikette/src/utils/ga4-events.ts`: `fireViewPromotion` (new), `fireSelectPromotion` (new), `fireSelectItem` (updated for full GA4 item fields)
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -804,7 +804,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-32: Wire select_item + begin_checkout on RoomCard direct Octorate navigation
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `apps/brikette/src/components/rooms/RoomsSection.tsx` — onRoomSelect fires `select_item` with full GA4 item fields + wraps Octorate navigation in `trackThenNavigate` for `begin_checkout`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -847,7 +847,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-33: Add search_availability to /book date picker
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `BookPageContent.tsx` firing `search_availability` on date picker submit and on initial valid URL param load
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -880,7 +880,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-34: Add view_promotion + select_promotion to deals page
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `DealsPageContent.tsx` firing `view_promotion` + `select_promotion`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -913,7 +913,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-35: Add begin_checkout to StickyBookNow click
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `StickyBookNow.tsx` (packages/ui) with optional `onBeforeNavigate` callback prop; wired in brikette app layer to fire `begin_checkout` via `trackThenNavigate`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -949,7 +949,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-36: Wire cta_click to OffersModal + content-page CTAs
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `OffersModal.tsx` firing `fireCtaClick` before router.push; content-page CTAs wired via TASK-14
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -981,7 +981,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-37: Update GA4_ENUMS + clean superseded helpers + prefetch dead imports
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `apps/brikette/src/utils/ga4-events.ts` (enum + helper cleanup) + cleaned `apps/brikette/src/utils/prefetchInteractive.ts`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -1018,7 +1018,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-38: Playwright smoke test for GA4 events on staging
 - **Type:** IMPLEMENT
 - **Deliverable:** New Playwright test file; documented run instructions for staging
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -1051,7 +1051,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-39: Add test coverage for reportWebVitals.ts
 - **Type:** IMPLEMENT
 - **Deliverable:** `apps/brikette/src/test/performance/reportWebVitals-coverage.test.ts` (new or updated)
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -1078,7 +1078,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-40: Update verification protocol (DebugView + SPA page_view + custom dimensions)
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `docs/plans/brikette-cta-sales-funnel-ga4/verification-protocol.md` (or updated TASK-16 output)
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -1114,7 +1114,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-41: Verify and implement page_view on SPA route changes
 - **Type:** IMPLEMENT
 - **Deliverable:** `apps/brikette/src/app/layout.tsx` or root provider updated to fire `page_view` on client-side navigation (if not already present); unit test
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -1157,7 +1157,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 ### TASK-42: Register GA4 custom dimensions in GA4 Admin (ops task)
 - **Type:** IMPLEMENT
 - **Deliverable:** Documented GA4 Admin configuration: `cta_id`, `cta_location`, `item_list_id`, `coupon` registered as event-scoped custom dimensions; screenshot or confirmation in verification-protocol.md
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S

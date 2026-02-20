@@ -9,8 +9,8 @@ Feature-Slug: startup-loop-markdown-for-agents
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-sequence, /lp-replan
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-sequence, /lp-do-replan
 Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: off
@@ -94,7 +94,7 @@ This plan adds a deterministic markdown-ingestion path for startup-loop standing
 - **Type:** DECISION
 - **Deliverable:** Policy ADR at `docs/plans/startup-loop-markdown-for-agents/decisions/markdown-adapter-policy.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `docs/plans/startup-loop-markdown-for-agents/decisions/markdown-adapter-policy.md`, `[readonly] docs/plans/startup-loop-markdown-for-agents/fact-find.md`, `[readonly] packages/mcp-server/src/tools/loop.ts`
 - **Depends on:** -
 - **Blocks:** TASK-02
@@ -120,7 +120,7 @@ This plan adds a deterministic markdown-ingestion path for startup-loop standing
 - **Status:** Complete (2026-02-14)
 - **Deliverable:** New markdown adapter tool surface in `@acme/mcp-cloudflare` with deterministic contract tests
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/mcp-cloudflare/src/client.ts`, `packages/mcp-cloudflare/src/tools/index.ts`, `packages/mcp-cloudflare/src/tools/content.ts`, `packages/mcp-cloudflare/src/tools/content.contract.test.ts`, `[readonly] packages/mcp-cloudflare/src/tools/analytics.ts`
 - **Depends on:** TASK-01 (complete)
 - **Blocks:** TASK-03
@@ -167,7 +167,7 @@ This plan adds a deterministic markdown-ingestion path for startup-loop standing
 - **Status:** Complete (2026-02-14)
 - **Deliverable:** Startup-loop tooling to fetch/store markdown sources with provenance envelope and artifact paths
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/mcp-server/src/tools/loop.ts`, `packages/mcp-server/src/lib/loop-artifact-reader.ts`, `packages/mcp-server/src/lib/wave2-contracts.ts`, `packages/mcp-server/src/__tests__/startup-loop-tools.integration.test.ts`, `packages/mcp-server/src/__tests__/fixtures/startup-loop/`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-04
@@ -215,7 +215,7 @@ This plan adds a deterministic markdown-ingestion path for startup-loop standing
 - **Status:** Complete (2026-02-14)
 - **Deliverable:** Operational integration for pack evidence, prompt consumption, and preflight policy checks
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/mcp-server/src/tools/loop.ts`, `scripts/src/startup-loop/mcp-preflight.ts`, `scripts/src/startup-loop/__tests__/mcp-preflight.test.ts`, `docs/business-os/workflow-prompts/_templates/monthly-market-pulse-prompt.md`, `docs/business-os/startup-loop-workflow.user.md`
 - **Depends on:** TASK-03
 - **Blocks:** -

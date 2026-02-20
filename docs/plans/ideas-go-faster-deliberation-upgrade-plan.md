@@ -11,8 +11,8 @@ Feature-Slug: idea-generate-deliberation-upgrade
 Related-Fact-Find: docs/plans/ideas-go-faster-deliberation-upgrade-fact-find.md
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-replan
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-replan
 Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact) after scope right-sizing + mechanism hardening
 Business-OS-Integration: off
@@ -136,7 +136,7 @@ Add:
 Still in monolithic orchestrator, but split commit behavior:
 
 - 3A Prepare:
-  - generate card payloads + lp-fact-find templates + dependency manifest.
+  - generate card payloads + lp-do-fact-find templates + dependency manifest.
   - perform zero writes.
 - 3B Commit/Reconcile:
   - apply dependency-ordered writes.
@@ -250,7 +250,7 @@ Debug mode may emit separate supporting files:
 
 Immediate rollback if any occur:
 
-- one write-safety defect (duplicate create or broken card->lp-fact-find linkage).
+- one write-safety defect (duplicate create or broken card->lp-do-fact-find linkage).
 - two rubric categories at `baseline - 2` or worse in a single live run.
 - mean rubric delta < -0.5 across two consecutive live runs.
 
@@ -351,7 +351,7 @@ Immediate rollback if any occur:
   - Card-id-map files exist with proper structure
 - **Acceptance:**
   - manifest and ledger include required fields defined above.
-  - card->lp-fact-find dependency injection is enforced and testable.
+  - card->lp-do-fact-find dependency injection is enforced and testable.
   - rerun skip behavior uses `operation_id + payload_fingerprint`.
   - dry-run emits `would_create` entries with zero writes.
 

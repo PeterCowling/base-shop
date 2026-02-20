@@ -112,16 +112,16 @@ Score each principle independently. Correlated co-failures (e.g., P01 and P02 fa
 **Artifacts to read**: `plan.user.md`, S2B offer artifact, S6B channel strategy, S5A prioritization artifact.
 
 **Positive evidence**:
-- A `/review-critique` call documented in the plan or stage doc for the stage where a key decision was locked
+- A `/lp-do-critique` call documented in the plan or stage doc for the stage where a key decision was locked
 - An "objections considered", "critique addressed", or "risks" section in a key decision artifact with non-generic entries
 
 **Failure indicators**:
-- No `/review-critique` call documented for a stage locking a key decision (offer, channel, prioritization)
+- No `/lp-do-critique` call documented for a stage locking a key decision (offer, channel, prioritization)
 - All risks in stage artifacts rated Low likelihood with identical, unspecific mitigations
 - Critique was invoked but its findings are not addressed or documented as accepted risks
 
 **Support scoring guide**:
-- 5: One or more decision artifacts reviewed; `/review-critique` reference confirmed present or explicitly absent with no critique section found
+- 5: One or more decision artifacts reviewed; `/lp-do-critique` reference confirmed present or explicitly absent with no critique section found
 - 4: Two artifacts checked; partial evidence of review
 - 3: One artifact checked; failure indicator clearly present or absent
 - 2: One artifact partially checked
@@ -159,7 +159,7 @@ Score each principle independently. Correlated co-failures (e.g., P01 and P02 fa
 
 **Positive evidence**:
 - `startup-loop/SKILL.md` contains only gate checks, dispatch, and handoffs — no stage-specific implementation logic embedded
-- Each executor skill (`lp-build`, `lp-fact-find`, etc.) appears self-contained (thin SKILL.md + modules)
+- Each executor skill (`lp-do-build`, `lp-do-fact-find`, etc.) appears self-contained (thin SKILL.md + modules)
 
 **Failure indicators**:
 - `startup-loop/SKILL.md` contains stage-specific implementation details or planning content (not just dispatch)

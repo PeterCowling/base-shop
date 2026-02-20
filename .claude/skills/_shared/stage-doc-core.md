@@ -10,11 +10,11 @@ For skill integration notes and lane transitions, see `./stage-doc-integration.m
 | Stage | Canonical API Key | File Name | When Created | Purpose |
 |-------|-------------------|-----------|--------------|---------|
 | Fact-finding | `fact-find` | `fact-find.user.md` | Card enters Fact-finding lane | Track evidence gathering questions and findings |
-| Planned | `plan` | `plan.user.md` | `/lp-plan` completes with Card-ID | Link to plan doc, track confidence |
-| Build | `build` | `build.user.md` | `/lp-build` starts first task | Track task completion progress |
+| Planned | `plan` | `plan.user.md` | `/lp-do-plan` completes with Card-ID | Link to plan doc, track confidence |
+| Build | `build` | `build.user.md` | `/lp-do-build` starts first task | Track task completion progress |
 | Reflect | `reflect` | `reflect.user.md` | Card enters Reflected lane | Post-mortem and learnings |
 
-**Note:** When calling stage-doc endpoints, always use the **stage-doc type** (`fact-find|plan|build|reflect`), never a skill slug (e.g. `lp-fact-find`). Legacy aliases may be accepted during a compatibility window but must not be emitted by skills.
+**Note:** When calling stage-doc endpoints, always use the **stage-doc type** (`fact-find|plan|build|reflect`), never a skill slug (e.g. `lp-do-fact-find`). Legacy aliases may be accepted during a compatibility window but must not be emitted by skills.
 
 ## File Location
 

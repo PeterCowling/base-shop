@@ -145,4 +145,7 @@ docs/plans/email-autodraft-consolidation-baseline-sample.txt
 
 # Octorate data extraction (contains booking data, do not commit)
 data/octorate/
+
+# Email draft fallback queues (may contain customer content/PII)
+data/email-fallback-queue/
 packages/mcp-server/.tmp/

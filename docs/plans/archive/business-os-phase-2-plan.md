@@ -80,7 +80,7 @@ This plan has been superseded by `docs/plans/archive/business-os-multi-user-mvp-
 - Related briefs:
   - `docs/plans/business-os-kanban-plan.md` (Phase 0/1 baseline)
   - `docs/plans/business-os-board-ux-overhaul-plan.md` (Phase 1 UX baseline)
-  - `docs/plans/business-os-card-presentation-lp-fact-find.md` (UX research)
+  - `docs/plans/business-os-card-presentation-lp-do-fact-find.md` (UX research)
 - Key findings from Phase 1:
   - Archive functionality implemented (admin vs regular user permissions)
   - User model established (Pete, Cristiana as admins; Avery as regular user)
@@ -224,7 +224,7 @@ This plan has been superseded by `docs/plans/archive/business-os-multi-user-mvp-
 - **Description:**
   - Problem: TypeScript errors in all test files: "Property 'toBeInTheDocument' does not exist on type 'Assertion'"
   - Root cause: Jest matcher types not available (toBeInTheDocument, toBe, toEqual, toHaveAttribute, etc.)
-  - Impact: Baseline typecheck fails, blocking all `/lp-build` operations
+  - Impact: Baseline typecheck fails, blocking all `/lp-do-build` operations
   - Files affected (partial list):
     - `src/components/board/BoardLane.test.tsx` (18 errors)
     - `src/components/board/BoardView.test.tsx` (13 errors)

@@ -1,6 +1,6 @@
 # Plan BOS Integration Contract
 
-Use this contract when `/lp-plan` has `Card-ID` and `Business-OS-Integration` is not `off`.
+Use this contract when `/lp-do-plan` has `Card-ID` and `Business-OS-Integration` is not `off`.
 
 ## Fail-Closed Rules
 

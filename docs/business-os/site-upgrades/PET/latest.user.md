@@ -17,4 +17,4 @@ Current active site-upgrade brief:
 
 ## Operator note
 
-This brief is now the canonical PET site-upgrade input for startup-loop and lp-fact-find planning.
+This brief is now the canonical PET site-upgrade input for startup-loop and lp-do-fact-find planning.

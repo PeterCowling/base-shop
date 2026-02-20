@@ -13,8 +13,8 @@ Feature-Slug: startup-loop-marketing-sales-capability-gap-audit
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-sequence, lp-replan
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-sequence, lp-do-replan
 Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); overall effort-weighted (S=1, M=2, L=3)
 Auto-Build-Intent: plan-only
@@ -64,7 +64,7 @@ Backward compatibility is preserved by keeping canonical runtime stage IDs stabl
 ## Constraints and Assumptions
 
 - Constraints:
-  - Keep planning in `plan-only` mode; no auto handoff to `/lp-build` without explicit user intent.
+  - Keep planning in `plan-only` mode; no auto handoff to `/lp-do-build` without explicit user intent.
   - Preserve canonical plan path `docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md`.
   - Internal tooling (lint/tests/simulation) is in scope; external connector/tool buildout is out of scope.
   - All VC checks must satisfy `docs/business-os/_shared/business-vc-quality-checklist.md`.
@@ -165,7 +165,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** INVESTIGATE
 - **Deliverable:** Deadlock evidence artifact with `business x stage x blocked_reason x days` table and data-source notes
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** M
 - **Status:** Pending
@@ -209,7 +209,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** DECISION
 - **Deliverable:** Recorded topology decision and migration rule set in this plan and loop-spec change notes
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -250,7 +250,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** DECISION
 - **Deliverable:** Denominator policy decision and threshold ownership model
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -293,7 +293,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Canonical capability contract doc and cross-reference from startup-loop docs
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -358,7 +358,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Demand Evidence Pack schema and template requirements wired into S1/S1B and pre-S6B guidance
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -423,7 +423,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Canonical artifact registry and aligned path references across lp-offer/channels/forecast/seo
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -482,7 +482,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `loop-spec` and startup-loop gate contract for chosen S6B topology
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -498,7 +498,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
   - Implementation: 80% - artifact registry (TASK-06 ✓) normalises path contracts, reducing migration risk; upgrade from 79% (E1 resolved)
   - Approach: 80% - TASK-02 ✓ resolved topology choice (sub-gate split selected); "topology affects status semantics" uncertainty now answered; upgrade from 78% (E1 resolved)
   - Impact: 85% - resolves coupling deadlock and clarifies strategy vs activation discipline
-  - **Replan note (2026-02-17):** Promoted to 80% threshold. TASK-02 Complete → sub-gate topology decision resolved the primary approach uncertainty. TASK-06 Complete → normalised path contracts reduce implementation migration risk. Task remains blocked on TASK-16 (pending); eligible for /lp-build once TASK-16 is complete.
+  - **Replan note (2026-02-17):** Promoted to 80% threshold. TASK-02 Complete → sub-gate topology decision resolved the primary approach uncertainty. TASK-06 Complete → normalised path contracts reduce implementation migration risk. Task remains blocked on TASK-16 (pending); eligible for /lp-do-build once TASK-16 is complete.
 - **Acceptance:**
   - Chosen topology is encoded in loop-spec and startup-loop skill docs.
   - Stage/gate semantics distinguish strategy design from spend activation.
@@ -543,7 +543,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated forecast contract with confidence-tier spend/timebox limits and mandatory assumption fields
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -604,7 +604,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated weekly decision template and QA guidance with denominator/uncertainty checks
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** startup-weekly-kpcs-memo
 - **Effort:** M
@@ -661,7 +661,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Bottleneck schema update with `business_model_profile` and profile-specific metric adapters
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -677,7 +677,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
   - Implementation: 81% - schema extension path confirmed: add optional `business_model_profile` enum field and `profile_funnel_metrics` map reusing same per-metric shape as v1 `funnel_metrics`; no structural rewrite needed; upgrade from 80%
   - Approach: 81% - metric-to-stage ownership resolved via E2 evidence (fact-find specifies 6+6 profile metrics + schema structure maps all 12 cleanly to existing stages/directions); `business_model_profile` optional preserves backward compat; upstream priority order unchanged; upgrade from 79%
   - Impact: 84% - reduces false bottleneck attribution across business models
-  - **Replan note (2026-02-17):** Promoted to 81%. Metric ownership uncertainty resolved: all 12 profile metrics (6 hospitality + 6 DTC) map to existing stages without requiring upstream priority order changes. Backward compatibility confirmed via optional field. Task is Ready for /lp-build.
+  - **Replan note (2026-02-17):** Promoted to 81%. Metric ownership uncertainty resolved: all 12 profile metrics (6 hospitality + 6 DTC) map to existing stages without requiring upstream priority order changes. Backward compatibility confirmed via optional field. Task is Ready for /lp-do-build.
 - **Acceptance:**
   - Schema adds `business_model_profile` and profile metric sets for hospitality and DTC.
   - Default behavior for unknown profile is explicit and deterministic.
@@ -724,8 +724,8 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 ### TASK-11: Horizon checkpoint - reassess downstream enforcement scope
 
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan section from `/lp-replan` pass over TASK-12 assumptions
-- **Execution-Skill:** lp-build
+- **Deliverable:** Updated plan section from `/lp-do-replan` pass over TASK-12 assumptions
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -737,8 +737,8 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
   - Approach: 95% - prevents committing tooling before contract stability is proven
   - Impact: 95% - reduces rework and false confidence in enforcement layer
 - **Acceptance:**
-  - `/lp-build` stops normal progression at checkpoint.
-  - `/lp-replan` runs on TASK-12 assumptions.
+  - `/lp-do-build` stops normal progression at checkpoint.
+  - `/lp-do-replan` runs on TASK-12 assumptions.
   - Downstream confidence and dependencies are recalibrated and re-sequenced.
 - **Horizon assumptions to validate:**
   - Contract docs are stable enough to encode as lint rules.
@@ -759,7 +759,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Enforcement tooling for artifact contract lint and S6B gate simulation
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
@@ -775,7 +775,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
   - Implementation: 82% - Jest test pattern confirmed (market-intelligence-pack-lint.test.ts analogue); automatic CI wiring via test:affected; E2 evidence
   - Approach: 83% - gate simulation via fs.mkdtemp proven in s2-market-intelligence-handoff.test.ts; all gate conditions verbatim in SKILL.md; normalization assumptions resolved
   - Impact: 82% - enforcement materially reduces contract regressions
-  - **Replan note (2026-02-17, TASK-11 checkpoint):** Raised from 72%→75% on E1 × 4. TASK-20 complete → promoted from 75%→82% (E2: concrete implementation proof via existing test analogue + fs.mkdtemp fixture pattern). Now eligible for /lp-build.
+  - **Replan note (2026-02-17, TASK-11 checkpoint):** Raised from 72%→75% on E1 × 4. TASK-20 complete → promoted from 75%→82% (E2: concrete implementation proof via existing test analogue + fs.mkdtemp fixture pattern). Now eligible for /lp-do-build.
 - **Acceptance:**
   - Contract lint test fails on seeded path mismatch fixture.
   - Gate simulation validates strategy vs activation gate outcomes across representative scenarios.
@@ -824,7 +824,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** INVESTIGATE
 - **Deliverable:** `docs/plans/startup-loop-marketing-sales-capability-gap-audit/artifacts/2026-02-17-stage-addressing-surface-map.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -871,7 +871,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `docs/business-os/startup-loop/stage-operator-dictionary.yaml` and `docs/business-os/startup-loop/stage-operator-dictionary.schema.json`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -936,7 +936,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** stage-view generator plus committed generated outputs for operator-facing surfaces
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -998,7 +998,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** updated startup-loop contracts and operator docs consuming generated naming views
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
@@ -1064,8 +1064,8 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 ### TASK-17: Reassess naming/addressing scope after contract integration
 
 - **Type:** CHECKPOINT
-- **Deliverable:** updated downstream execution notes in this plan via `/lp-replan` if assumptions break
-- **Execution-Skill:** lp-build
+- **Deliverable:** updated downstream execution notes in this plan via `/lp-do-replan` if assumptions break
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -1077,8 +1077,8 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
   - Approach: 95% - prevents parser/addressing work from running on stale assumptions
   - Impact: 95% - avoids downstream rework and confidence inflation
 - **Acceptance:**
-  - `/lp-build` checkpoint executor runs before TASK-18.
-  - If assumptions diverged, `/lp-replan` updates TASK-18 and TASK-19 dependencies/confidence.
+  - `/lp-do-build` checkpoint executor runs before TASK-18.
+  - If assumptions diverged, `/lp-do-replan` updates TASK-18 and TASK-19 dependencies/confidence.
   - Plan is re-sequenced after any topology updates.
 - **Horizon assumptions to validate:**
   - Addressing enforcement boundary identified in TASK-13 still matches post-TASK-16 architecture.
@@ -1092,7 +1092,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 - **Assumption 1 (addressing boundary):** CONFIRMED. `packages/mcp-server/src/tools/loop.ts` still has hardcoded `STARTUP_LOOP_STAGES` (lines 29-47, IDs only); untouched by TASK-16. No `spec_version` reference in `loop.ts`. MCP server boundary identified by TASK-13 is unchanged post-TASK-16.
 - **Assumption 2 (no new parser consumers):** CONFIRMED. Only `derive-state.ts` was added as a new consumer of `stage-operator-map.json`. `loop.ts` migration is pre-existing known gap from TASK-13. No additional migration tasks required.
 - **Gap note (bounded — no new task):** Derived display fields (`current_stage_label`, `current_stage_display`, `next_stage_label`, `next_stage_display`) exist in contract docs only; not yet assembled in code. `loop.ts` packet assembly is already in TASK-18 scope — adding scope note there is sufficient.
-- **Topology changed:** No. No `/lp-replan` or `/lp-sequence` required.
+- **Topology changed:** No. No `/lp-do-replan` or `/lp-sequence` required.
 - **TASK-18 and TASK-19 confidence:** unchanged (82%, 80%). Both remain above type threshold. TASK-18 eligible after this checkpoint.
 - **Validation contract:** checkpoint closed with explicit confirmation that both horizon assumptions hold.
 
@@ -1100,7 +1100,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** stage-addressing resolver and strict compatibility contract updates
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -1171,7 +1171,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** IMPLEMENT
 - **Deliverable:** naming lint/test guardrails plus comprehension pilot artifact
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -1252,7 +1252,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 
 - **Type:** INVESTIGATE
 - **Deliverable:** `docs/plans/startup-loop-marketing-sales-capability-gap-audit/artifacts/2026-02-17-lint-execution-environment.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-17)

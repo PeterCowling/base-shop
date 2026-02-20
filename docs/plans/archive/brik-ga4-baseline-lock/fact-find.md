@@ -12,7 +12,7 @@ Feature-Slug: brik-ga4-baseline-lock
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: startup-weekly-kpcs-memo
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-sequence
 Related-Plan: docs/plans/brik-ga4-baseline-lock/plan.md
 Business-OS-Integration: off
@@ -182,7 +182,7 @@ BRIK has completed S2/S3/S4/S5/S6 artifacts, but the top-ranked P1 execution ite
 ### Open (User Input Needed)
 - None required to write plan tasks; operator execution steps are explicit in the plan.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - **Implementation:** 84%
   - Event instrumentation and document integration path are concrete; external verification step is clear.
 - **Approach:** 86%
@@ -226,7 +226,7 @@ BRIK has completed S2/S3/S4/S5/S6 artifacts, but the top-ranked P1 execution ite
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `/lp-build`
+  - `/lp-do-build`
 - Supporting skills:
   - `/lp-sequence`
 - Deliverable acceptance package:

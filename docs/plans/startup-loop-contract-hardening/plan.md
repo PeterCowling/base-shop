@@ -9,7 +9,7 @@ Feature-Slug: startup-loop-contract-hardening
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-sequence
 Overall-confidence: 84%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -24,7 +24,7 @@ Card-ID:
 Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on-disk stage-doc filenames, and canonical contract docs. This plan implements a compatibility-window normalization layer (aliases accepted only at API/tooling boundaries), hardens lint/tests to detect drift early, and migrates legacy docs/filenames to canonical forms.
 
 ## Goals
-- Stage-doc API accepts canonical stage keys and (during a compatibility window) legacy alias `lp-fact-find`, normalizing all writes to canonical `fact-find`.
+- Stage-doc API accepts canonical stage keys and (during a compatibility window) legacy alias `lp-do-fact-find`, normalizing all writes to canonical `fact-find`.
 - Tooling/repo readers treat `fact-finding.user.md` as a temporary legacy alias for `fact-find.user.md` with deterministic precedence.
 - Startup-loop contract docs reference real canonical targets (no broken links).
 - Startup-loop contract lint becomes a reliable drift gate (catches both API-contract drift and skill/doc reintroduction).
@@ -58,8 +58,8 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 - Filesystem stage-doc creation/validation:
   - `apps/business-os/src/lib/lane-transitions.ts` writes/reads `${stage}.{user|agent}.md` (canonical stage keys)
 - Current drift sources:
-  - `.claude/skills/idea-generate/SKILL.md` uses `lp-fact-find` in stage-doc writes and endpoint paths
-  - `.claude/skills/idea-develop/SKILL.md` uses `lp-fact-find` in stage-doc writes
+  - `.claude/skills/idea-generate/SKILL.md` uses `lp-do-fact-find` in stage-doc writes and endpoint paths
+  - `.claude/skills/idea-develop/SKILL.md` uses `lp-do-fact-find` in stage-doc writes
   - `.claude/skills/_shared/stage-doc-operations.md` uses `fact-finding.user.md` and non-canonical schema terminology
 - Contract lint:
   - `scripts/check-startup-loop-contracts.sh` (SQ-01..SQ-12)
@@ -79,7 +79,7 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Add migration config + loader + schema validation for compatibility window | 80% | M | Complete (2026-02-15) | - | TASK-02, TASK-03, TASK-06 |
-| TASK-02 | IMPLEMENT | Agent API: accept stage aliases (lp-fact-find) with normalization + telemetry + tests | 84% | M | Complete (2026-02-15) | TASK-01 | TASK-11 |
+| TASK-02 | IMPLEMENT | Agent API: accept stage aliases (lp-do-fact-find) with normalization + telemetry + tests | 84% | M | Complete (2026-02-15) | TASK-01 | TASK-11 |
 | TASK-03 | IMPLEMENT | Filesystem stage-doc reader: dual-read legacy fact-finding.user.md with canonical precedence + tests | 80% | M | Complete (2026-02-15) | TASK-01 | TASK-10 |
 | TASK-04 | IMPLEMENT | Docs: fix stage-doc helper + canonical filename/key references across core BOS docs | 85% | M | Complete (2026-02-15) | - | TASK-10 |
 | TASK-05 | IMPLEMENT | Skills: migrate idea-* stage-doc writes/paths to canonical stage keys; update wording | 85% | M | Complete (2026-02-15) | - | TASK-06, TASK-11 |
@@ -121,7 +121,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Canonical YAML + build-time generated runtime config module
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `docs/business-os/startup-loop/contract-migration.yaml`
   - `apps/business-os/scripts/generate-contract-migration.mjs` (build-time generator)
@@ -164,7 +164,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Stage alias normalization in stage-doc endpoints + tests
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/business-os/src/app/api/agent/stage-docs/route.ts`
   - `apps/business-os/src/app/api/agent/stage-docs/[cardId]/[stage]/route.ts`
@@ -177,14 +177,14 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Approach: 85% — keeps StageTypeSchema canonical and makes alias support timeboxed.
   - Impact: 80% — touches API contract; mitigated via tests and telemetry.
 - **Acceptance:**
-  - During window, `lp-fact-find` is accepted for `stage` (body/path/query) and normalized to `fact-find`.
+  - During window, `lp-do-fact-find` is accepted for `stage` (body/path/query) and normalized to `fact-find`.
   - All writes store/use canonical stage (`fact-find`) and canonical `filePath`.
-  - When normalization occurs, emit telemetry `bos.stage_alias_used` and optionally response header `x-bos-stage-normalized: lp-fact-find->fact-find`.
+  - When normalization occurs, emit telemetry `bos.stage_alias_used` and optionally response header `x-bos-stage-normalized: lp-do-fact-find->fact-find`.
   - Deployment invariant: enforce Node runtime for these routes (do not run as edge runtime).
 - **Validation contract:**
   - TC-01: POST with canonical `stage=fact-find` → 201 created; persisted stage is `fact-find`.
-  - TC-02: POST with alias `stage=lp-fact-find` (within window) → 201 created; persisted stage is `fact-find`; header present.
-  - TC-03: GET/PATCH path stage `lp-fact-find` (within window) → 200 OK; operates on `fact-find` record.
+  - TC-02: POST with alias `stage=lp-do-fact-find` (within window) → 201 created; persisted stage is `fact-find`; header present.
+  - TC-03: GET/PATCH path stage `lp-do-fact-find` (within window) → 200 OK; operates on `fact-find` record.
   - TC-04: after cutoff, alias stage is rejected → 400 with deterministic error.
   - Run/verify: `pnpm --filter @apps/business-os test -- apps/business-os/src/app/api/agent/stage-docs/__tests__/route.test.ts --maxWorkers=2`.
 - **Execution plan:** Red → Green → Refactor
@@ -205,7 +205,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Deterministic dual-read for `fact-finding.user.md` as alias for `fact-find.user.md` across all filesystem readers (canonical wins)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/business-os/src/lib/lane-transitions.ts`
   - `apps/business-os/src/lib/lane-transitions.test.ts`
@@ -245,7 +245,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Docs updated to reflect canonical stage-doc keys + filenames
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `.claude/skills/_shared/stage-doc-operations.md`
   - `docs/business-os/business-os-charter.md`
@@ -278,7 +278,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** idea-* skills use canonical `fact-find` stage-doc type and canonical stage-doc endpoints
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `.claude/skills/idea-generate/SKILL.md`, `.claude/skills/idea-develop/SKILL.md`, `.claude/skills/idea-advance/SKILL.md`
 - **Depends on:** -
 - **Blocks:** TASK-06, TASK-11
@@ -287,14 +287,14 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Approach: 90% — removes root-cause drift.
   - Impact: 80% — impacts agent behavior; mitigated by compatibility window.
 - **Acceptance:**
-  - No stage-doc writes use `lp-fact-find`.
-  - No stage-doc endpoint paths use `/lp-fact-find`.
+  - No stage-doc writes use `lp-do-fact-find`.
+  - No stage-doc endpoint paths use `/lp-do-fact-find`.
 - **Validation contract:**
-  - TC-01: contract lint fails if `.claude/skills/idea-*` contains stage-doc writes with `lp-fact-find`.
+  - TC-01: contract lint fails if `.claude/skills/idea-*` contains stage-doc writes with `lp-do-fact-find`.
   - Run/verify: `bash scripts/check-startup-loop-contracts.sh`.
 - **Execution plan:** Red → Green → Refactor
 - **Planning validation:**
-  - Checks run: `rg -n "\\\"stage\\\": \\\"lp-fact-find\\\"" -S .claude/skills` (baseline offenders identified in fact-find inventory).
+  - Checks run: `rg -n "\\\"stage\\\": \\\"lp-do-fact-find\\\"" -S .claude/skills` (baseline offenders identified in fact-find inventory).
 - **What would make this ≥90%:**
   - Extend contract lint (TASK-06) and ensure it is green after skill edits.
 - **Rollout / rollback:**
@@ -308,7 +308,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** Deterministic contract lint enhancements (decision-ref existence, allowlisted legacy filename refs, idea-* stage alias emissions) + `--self-test`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `scripts/check-startup-loop-contracts.sh`
 - **Depends on:** TASK-01, TASK-05, TASK-09
@@ -318,7 +318,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Approach: 80% — makes lint authoritative for the drift classes we are fixing.
   - Impact: 82% — could create false positives; mitigated via allowlist + self-test mode.
 - **Acceptance:**
-  - Lint fails on `"stage": "lp-fact-find"` in `.claude/skills/idea-*` stage-doc writes.
+  - Lint fails on `"stage": "lp-do-fact-find"` in `.claude/skills/idea-*` stage-doc writes.
   - Lint fails on `fact-finding.user.md` references outside temporary allowlist.
   - Lint fails when `docs/plans/lp-skill-system-sequencing-plan.md` decision reference is missing.
   - Allowlist mechanism exists and is timeboxed/removed in TASK-13.
@@ -342,7 +342,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** `.claude/skills/lp-bos-sync/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `.claude/skills/lp-bos-sync/SKILL.md`, `[readonly] scripts/src/startup-loop/bos-sync.ts`
 - **Depends on:** -
 - **Blocks:** TASK-11
@@ -365,7 +365,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** bring lint SQ-12 fail and SQ-10 warn to green
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `.claude/skills/lp-experiment/SKILL.md`, `.claude/skills/lp-seo/SKILL.md`
 - **Depends on:** -
 - **Blocks:** TASK-11
@@ -388,7 +388,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** `docs/plans/lp-skill-system-sequencing-plan.md` exists and contract docs reference it
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `docs/plans/lp-skill-system-sequencing-plan.md` (new shim)
   - `docs/business-os/startup-loop/loop-spec.yaml`
@@ -422,7 +422,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** migrate `fact-finding.user.md` to `fact-find.user.md` on disk and in references
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `docs/business-os/cards/BRIK-ENG-0020.user.md`
   - `docs/business-os/cards/BRIK-ENG-0020/fact-finding.user.md` (rename)
@@ -462,7 +462,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
     - SQ-02 fixed, SQ-12 fixed, SQ-10 addressed
     - New alias/filename checks are green
   - Search for remaining legacy usage:
-    - `rg -n "lp-fact-find" .claude/skills` is limited to migration notes only
+    - `rg -n "lp-do-fact-find" .claude/skills` is limited to migration notes only
     - `rg -n "fact-finding\\.user\\.md" docs/business-os` is 0 or explicitly allowlisted
   - Confirm API telemetry surfaces alias usage (if any) and that it is trending to zero.
   - Run downstream consumer tests:
@@ -475,9 +475,9 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Build evidence:**
   - `bash scripts/check-startup-loop-contracts.sh` (PASS 2026-02-15).
   - Legacy usage checks (PASS 2026-02-15):
-    - `rg -n '"stage"\\s*:\\s*"lp-fact-find"' -S .claude/skills` (0 matches).
-    - `rg -n '/api/agent/stage-docs/.+/lp-fact-find\\b' -S .claude/skills` (0 matches).
-    - `rg -n --fixed-strings 'API stage \`lp-fact-find\`' -S .claude/skills` (0 matches).
+    - `rg -n '"stage"\\s*:\\s*"lp-do-fact-find"' -S .claude/skills` (0 matches).
+    - `rg -n '/api/agent/stage-docs/.+/lp-do-fact-find\\b' -S .claude/skills` (0 matches).
+    - `rg -n --fixed-strings 'API stage \`lp-do-fact-find\`' -S .claude/skills` (0 matches).
     - `rg -n --fixed-strings 'fact-finding.user.md' docs/business-os` (only `docs/business-os/startup-loop/contract-migration.yaml`).
   - Downstream tests (PASS 2026-02-15):
     - `pnpm --filter @acme/mcp-server test:startup-loop`
@@ -487,7 +487,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** disable alias acceptance + dual-read via config cutoffs (keep code for rollback)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `docs/business-os/startup-loop/contract-migration.yaml`
 - **Depends on:** TASK-11
 - **Blocks:** TASK-13
@@ -517,7 +517,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** INVESTIGATE
 - **Deliverable:** decision memo + evidence packet confirming legacy usage is zero post-cutoff
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `docs/plans/startup-loop-contract-hardening/replan-notes.md` (new)
   - `[readonly] docs/business-os/startup-loop/contract-migration.yaml`
@@ -538,7 +538,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
       - `bos.stage_doc_filename_alias_used` count = 0 (or list exact cards/time if non-zero).
     - Repo audit evidence:
       - `bash scripts/check-startup-loop-contracts.sh` output (PASS).
-      - `rg` audits showing no `lp-fact-find` stage-doc emissions and no `fact-finding.user.md` references outside config.
+      - `rg` audits showing no `lp-do-fact-find` stage-doc emissions and no `fact-finding.user.md` references outside config.
   - Explicit go/no-go: “OK to remove compatibility code paths” with rationale.
 - **Validation contract:**
   - VC-01: `docs/plans/startup-loop-contract-hardening/replan-notes.md` exists and contains the evidence packet + go/no-go.
@@ -551,7 +551,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Type:** IMPLEMENT
 - **Deliverable:** remove alias/dual-read code paths + remove allowlists after stabilization period
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/business-os/src/app/api/agent/stage-docs/route.ts`
   - `apps/business-os/src/app/api/agent/stage-docs/[cardId]/[stage]/route.ts`

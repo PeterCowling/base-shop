@@ -8,10 +8,12 @@ operating_mode: EXECUTE
 
 Initialize brand language documentation for a business in the startup loop.
 
+> **Note**: In the startup loop BRAND stage, use `/lp-do-brand-02-brand-identity` instead. `lp-brand-bootstrap` remains available for standalone brand dossier creation outside the loop.
+
 ## When to Use
 
 - **S0/S1 gate**: Startup loop detects missing `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
-- **S7 prerequisite**: `/lp-fact-find` flags `Design-Spec-Required: yes` but no brand language exists
+- **S7 prerequisite**: `/lp-do-fact-find` flags `Design-Spec-Required: yes` but no brand language exists
 - **Manual**: Operator invokes `/lp-brand-bootstrap <BIZ>` at any time
 
 ## Inputs
@@ -82,7 +84,7 @@ If the business has no app yet:
 
 - **Consumed by**: `/lp-design-spec` (reads brand language for token bindings and component decisions)
 - **Updated by**: `/lp-design-spec` (writes back stable patterns to Signature Patterns section)
-- **Referenced by**: `/lp-build` (for UI implementation guidance)
+- **Referenced by**: `/lp-do-build` (for UI implementation guidance)
 - **Loop position**: S0/S1 (setup) or S7 (pre-design-spec)
 
 ## Example Invocation

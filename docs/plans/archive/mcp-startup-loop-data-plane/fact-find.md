@@ -12,8 +12,8 @@ Feature-Slug: mcp-startup-loop-data-plane
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-replan, /lp-sequence
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-do-replan, /lp-sequence
 Related-Plan: docs/plans/mcp-startup-loop-data-plane/plan.md
 Business-OS-Integration: off
 Business-Unit: PLAT
@@ -29,7 +29,7 @@ Reframe MCP from a "shop/CMS utility server" into a startup-loop data plane that
 ### Goals
 - Map current MCP capabilities to startup-loop stage requirements (`S0..S10`).
 - Identify data/tooling gaps blocking stronger loop execution.
-- Define evidence-backed implementation seeds for `/lp-plan`.
+- Define evidence-backed implementation seeds for `/lp-do-plan`.
 - Preserve stage mutation boundaries and existing repository contracts.
 
 ### Non-goals
@@ -115,7 +115,7 @@ Reframe MCP from a "shop/CMS utility server" into a startup-loop data plane that
   - Business OS D1 APIs and auth middleware in `apps/business-os`.
   - Startup-loop file contracts in `scripts/src/startup-loop`.
 - Downstream dependents:
-  - Loop skills relying on data availability and freshness (`/lp-forecast`, `/lp-prioritize`, `/lp-experiment`, `/lp-fact-find`).
+  - Loop skills relying on data availability and freshness (`/lp-forecast`, `/lp-prioritize`, `/lp-experiment`, `/lp-do-fact-find`).
   - Operator workflows requiring weekly K/P/C/S decision throughput.
 - Likely blast radius:
   - MCP server package (`packages/mcp-server`) and tests.
@@ -178,7 +178,7 @@ Reframe MCP from a "shop/CMS utility server" into a startup-loop data plane that
 - Deferred validation for:
   - External measurement connectors that depend on real environment credentials.
 - Note:
-  - `/lp-plan` should map each hypothesis to VC gates (contract tests + integration checks + operator rehearsal).
+  - `/lp-do-plan` should map each hypothesis to VC gates (contract tests + integration checks + operator rehearsal).
 
 ### Test Landscape (required for `code` or `mixed`; optional otherwise)
 
@@ -274,7 +274,7 @@ Reframe MCP from a "shop/CMS utility server" into a startup-loop data plane that
 ### Open (User Input Needed)
 - None for planning handoff.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - Implementation: 84%
   - Why: Core contracts and APIs already exist; missing work is integration and tool design, not unknown architecture.
   - Raise to >=90:
@@ -330,9 +330,9 @@ Reframe MCP from a "shop/CMS utility server" into a startup-loop data plane that
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `/lp-build`
+  - `/lp-do-build`
 - Supporting skills:
-  - `/lp-replan`, `/lp-sequence`
+  - `/lp-do-replan`, `/lp-sequence`
 - Deliverable acceptance package (what must exist before task can be marked complete):
   - New MCP data-plane tool registry with documented permission classes.
   - Passing targeted tests for new MCP tools and BOS bridge behavior.
@@ -348,7 +348,7 @@ Reframe MCP from a "shop/CMS utility server" into a startup-loop data plane that
 - Blocking items (if any):
   - None
 - Recommended next step:
-  - Proceed to `/lp-plan` using this brief and prioritize phased delivery (read-only first, guarded writes second, connectors third).
+  - Proceed to `/lp-do-plan` using this brief and prioritize phased delivery (read-only first, guarded writes second, connectors third).
 
 ## Source Baseline
 - Legacy source used as baseline input:
@@ -356,7 +356,7 @@ Reframe MCP from a "shop/CMS utility server" into a startup-loop data plane that
 
 ## External Review Resolution Addendum (2026-02-13)
 
-This addendum resolves gaps identified in independent high-level review so `/lp-plan` can start from explicit contracts and decisions.
+This addendum resolves gaps identified in independent high-level review so `/lp-do-plan` can start from explicit contracts and decisions.
 
 ### 1) Stage x Capability Matrix (S0..S10)
 
@@ -551,7 +551,7 @@ This is a workflow-tracking toggle, not an architectural prohibition on BOS API 
   - Freshness fields required for business resource responses.
   - Warning threshold (default 30 days) with explicit stale warnings.
 
-### 12) ADR Shortlist for `/lp-plan`
+### 12) ADR Shortlist for `/lp-do-plan`
 
 - ADR-01: BOS API-first access policy (writes always API; reads API default).
 - ADR-02: Stage-policy enforcement split (MCP preflight + BOS authoritative write checks).
@@ -582,8 +582,8 @@ This is a workflow-tracking toggle, not an architectural prohibition on BOS API 
 ### 14) Addendum Readiness
 
 - Status: incorporated
-- Planning effect: removes major architectural ambiguities before `/lp-plan`
-- Recommended next step: proceed to `/lp-plan` and sequence MVS-01 as first implementation wave.
+- Planning effect: removes major architectural ambiguities before `/lp-do-plan`
+- Recommended next step: proceed to `/lp-do-plan` and sequence MVS-01 as first implementation wave.
 
 ### 15) External Reviewability (No Repo Access)
 

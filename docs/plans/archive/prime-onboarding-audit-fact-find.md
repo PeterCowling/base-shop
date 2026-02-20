@@ -9,7 +9,7 @@ Last-updated: 2026-02-12
 Feature-Slug: prime-onboarding-audit
 Deliverable-Type: multi-deliverable
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-design-system
 Related-Plan: docs/plans/prime-onboarding-audit-plan.md
 Business-OS-Integration: on
@@ -26,10 +26,10 @@ Audit of Prime's guided onboarding flow (3-step arrival readiness) against the "
 ### Goals
 - Score every applicable checklist item with evidence from actual code
 - Identify gaps that block L3 readiness (integrated operations)
-- Produce prioritized fix list that feeds directly into `/lp-plan`
+- Produce prioritized fix list that feeds directly into `/lp-do-plan`
 
 ### Non-goals
-- Code changes (audit only — fixes go to `/lp-plan` → `/lp-build`)
+- Code changes (audit only — fixes go to `/lp-do-plan` → `/lp-do-build`)
 - Auditing dormant legacy onboarding components (GuestProfileStep, SocialOptInStep, WelcomeHandoffStep) — these are not active
 - User research or live usability testing
 
@@ -335,6 +335,6 @@ Audit of Prime's guided onboarding flow (3-step arrival readiness) against the "
 
 **Status: Ready-for-planning**
 
-No blocking items. All evidence gathered, all sections scored with code citations. P0 fixes are well-scoped with clear component targets. The 83% composite confidence exceeds the 80% threshold for `/lp-plan`.
+No blocking items. All evidence gathered, all sections scored with code citations. P0 fixes are well-scoped with clear component targets. The 83% composite confidence exceeds the 80% threshold for `/lp-do-plan`.
 
-**Next:** `/lp-plan prime-onboarding-audit`
+**Next:** `/lp-do-plan prime-onboarding-audit`

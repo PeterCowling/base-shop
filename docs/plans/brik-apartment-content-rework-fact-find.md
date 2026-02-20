@@ -10,7 +10,7 @@ Feature-Slug: brik-apartment-content-rework
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-design-system
 Related-Plan: docs/plans/brik-apartment-content-rework-plan.md
 Business-OS-Integration: on
@@ -250,7 +250,7 @@ All 4 pages generate OG images from `/img/facade.avif`. Ideally each intent page
   - Decision owner: Pete
   - Default assumption: Use €265 (shoulder season minimum from brief). Risk: GA4 values won't match peak-season actual.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 92%
   - Most changes are translation-file edits (apartmentPage.json). Hub structure reorder is a JSX move in one file. WhatsApp fix is a string constant. All patterns established.
@@ -305,7 +305,7 @@ All 4 pages generate OG images from `/img/facade.avif`. Ideally each intent page
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-design-system` (token compliance check only)
 - Deliverable acceptance package:
   - All 4 apartment pages render brief-aligned content
@@ -324,4 +324,4 @@ All 4 pages generate OG images from `/img/facade.avif`. Ideally each intent page
 
 - Status: Ready-for-planning
 - Blocking items: None (open questions have safe defaults)
-- Recommended next step: Proceed to `/lp-plan`
+- Recommended next step: Proceed to `/lp-do-plan`

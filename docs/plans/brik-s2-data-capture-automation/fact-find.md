@@ -10,7 +10,7 @@ Feature-Slug: brik-s2-data-capture-automation
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/brik-s2-data-capture-automation/plan.md
 Business-OS-Integration: on
@@ -250,7 +250,7 @@ Three automation tracks:
 
 None. All questions resolved.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 82%
   - Strong existing infrastructure: Playwright browser tools, Octorate script patterns, `deriveBookingSource()` logic already proven.
@@ -359,7 +359,7 @@ None. All questions resolved.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: none
 - Deliverable acceptance package:
   - `2026-02-15-parity-scenarios.csv` — all 9 rows have non-empty `total_price_all_in` values (or explicit "unavailable" with notes)
@@ -377,4 +377,4 @@ None. All questions resolved.
 
 - Status: Ready-for-planning
 - Blocking items: None (open questions have safe defaults with documented risk)
-- Recommended next step: Proceed to `/lp-plan`. The three open questions (commission rates, automation vs semi-auto, Octorate reports) can be resolved during build with the documented default assumptions.
+- Recommended next step: Proceed to `/lp-do-plan`. The three open questions (commission rates, automation vs semi-auto, Octorate reports) can be resolved during build with the documented default assumptions.

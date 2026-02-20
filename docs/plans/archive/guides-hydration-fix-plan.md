@@ -60,7 +60,7 @@ This plan establishes hydration regression tests and hardens the affected compon
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/guides-hydration-fix-lp-fact-find.md`
+- Related brief: `docs/plans/guides-hydration-fix-lp-do-fact-find.md`
 - Key findings:
   - **Primary cause (verified, dev/preview):** `PreviewBanner` eligibility can differ between SSR and the first client render (search params + optional client-only status overrides), shifting the script subtree
   - **Verified (published routes too):** `FaqStructuredDataBlock` previously emitted a placeholder element on the client while SSR emitted an FAQ JSON-LD `<script>` when `hasLocalizedContent` differed between SSR and the first client render
@@ -82,7 +82,7 @@ This plan establishes hydration regression tests and hardens the affected compon
   - Use `useOptionalRouterPathname()` from `locationUtils.ts` for pathname (existing pattern in `ArticleStructuredData`)
   - Use `next/dynamic` with `{ ssr: false }` for client-only components (already used for `GuideEditorialPanel`)
   - Use `useEffect` for client-only side effects (standard React pattern)
-  - Write test stubs for L-effort tasks (per lp-plan requirements)
+  - Write test stubs for L-effort tasks (per lp-do-plan requirements)
 
 ## Proposed Approach
 

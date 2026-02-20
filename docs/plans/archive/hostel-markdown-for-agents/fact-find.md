@@ -10,7 +10,7 @@ Feature-Slug: hostel-markdown-for-agents
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Related-Plan: none (no plan created)
 Business-OS-Integration: off
@@ -216,7 +216,7 @@ This fact-find is scoped to **Hostel's website only** (the Brikette app) and exp
   - Decision owner: Pete.
   - Default assumption + risk: Default to "top pages only" (`/en`, room pages, guides index); risk is agents hitting uncovered URLs.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - **Implementation:** 70%
   - Cloudflare-native enablement steps are clear, but compatibility is blocked by the current lack of `Content-Length` on HTML responses.
 - **Approach:** 65%
@@ -258,7 +258,7 @@ This fact-find is scoped to **Hostel's website only** (the Brikette app) and exp
 - Update docs/runbook: where to enable/disable the feature; how to verify.
 
 ## Execution Routing Packet
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: none
 - Deliverable acceptance package:
   - Cloudflare setting enabled (or custom fallback deployed)

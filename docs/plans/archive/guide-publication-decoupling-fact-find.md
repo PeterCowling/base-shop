@@ -294,7 +294,7 @@ Priority: overrides.json > manifest entry > schema default ("draft")
   - Decision impacted: Whether to build actual multi-site filtering or just add the schema fields.
   - Default assumption: No second consumer site yet. Add `sites` field to schema, implement single-site filtering for brikette, defer multi-site content bundling until a second site materialises. Risk: low — schema preparation is cheap.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 82%
   - High: All authoring APIs already exist in business-os, draft route removal is straightforward deletion, status filtering logic is well-understood
@@ -367,7 +367,7 @@ Priority: overrides.json > manifest entry > schema default ("draft")
 - Non-blocking open questions:
   - Manifest location (keep in brikette vs move to shared package) — default assumption is safe
   - First additional consumer site — deferred; schema preparation is sufficient
-- Recommended next step: Proceed to `/lp-plan` with phase-based approach (Phase 1 → Phase 2 → Phase 3)
+- Recommended next step: Proceed to `/lp-do-plan` with phase-based approach (Phase 1 → Phase 2 → Phase 3)
 
 ## File Removal Inventory
 

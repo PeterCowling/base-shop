@@ -22,9 +22,9 @@
       "path": ".claude/skills/biz-update-plan/SKILL.md"
     },
     {
-      "name": "brand-naming-research",
-      "description": "Produce a deep research prompt for business name exploration. Reads the target business's startup loop docs, encodes product, ICP, market, regulatory constraints, and competitive landscape, then outputs a structured research prompt ready to paste into Perplexity Deep Research or equivalent.",
-      "path": ".claude/skills/brand-naming-research/SKILL.md"
+      "name": "lp-do-discovery-04-business-name-options",
+      "description": "Produce a deep research prompt for business name exploration (DISCOVERY-04). Reads the target business's startup loop docs, encodes product, ICP, market, regulatory constraints, and competitive landscape, then outputs a structured research prompt ready to paste into Perplexity Deep Research or equivalent.",
+      "path": ".claude/skills/lp-do-discovery-04-business-name-options/SKILL.md"
     },
     {
       "name": "draft-email",
@@ -97,8 +97,18 @@
       "path": ".claude/skills/lp-bos-sync/SKILL.md"
     },
     {
+      "name": "lp-do-brand-01-brand-strategy",
+      "path": ".claude/skills/lp-do-brand-01-brand-strategy/SKILL.md",
+      "description": "Brand strategy elicitation for new startups (BRAND-01). Confirms business name, defines audience, personality, and voice & tone."
+    },
+    {
+      "name": "lp-do-brand-02-brand-identity",
+      "path": ".claude/skills/lp-do-brand-02-brand-identity/SKILL.md",
+      "description": "Visual brand identity for new startups (BRAND-02). Produces brand-dossier with colour palette, typography, imagery direction, and token overrides."
+    },
+    {
       "name": "lp-brand-bootstrap",
-      "description": "Bootstrap a brand-dossier.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at S7 before /lp-design-spec.",
+      "description": "Standalone brand dossier bootstrap outside the startup loop. Superseded by lp-do-brand-02-brand-identity for the BRAND stage within the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template.",
       "path": ".claude/skills/lp-brand-bootstrap/SKILL.md"
     },
     {
@@ -192,9 +202,24 @@
       "path": ".claude/skills/lp-onboarding-audit/SKILL.md"
     },
     {
-      "name": "lp-option-select",
-      "description": "Option selection gate for new startups (S0C). Reads solution-space research results, builds an evaluation matrix, and produces a shortlist of 1-2 options with elimination rationale. Explicit kill gate — decision record required to continue to S0D.",
-      "path": ".claude/skills/lp-option-select/SKILL.md"
+      "name": "lp-do-discovery-05-distribution-planning",
+      "description": "Distribution planning for new startups (DISCOVERY-05). Elicits ≥2 launch channels with cost/effort estimates and ICP fit rationale. Produces a distribution-plan artifact ready for measurement planning. Upstream of lp-do-discovery-06-measurement-plan.",
+      "path": ".claude/skills/lp-do-discovery-05-distribution-planning/SKILL.md"
+    },
+    {
+      "name": "lp-do-discovery-06-measurement-plan",
+      "description": "Measurement planning for new startups (DISCOVERY-06). Elicits tracking setup, ≥2 key metrics, success thresholds, and data collection feasibility. Produces a measurement-plan artifact ready for operator evidence capture. Upstream of lp-do-discovery-07-our-stance.",
+      "path": ".claude/skills/lp-do-discovery-06-measurement-plan/SKILL.md"
+    },
+    {
+      "name": "lp-do-discovery-07-our-stance",
+      "description": "Our Stance for new startups (DISCOVERY-07). Elicits operator-direct knowledge: launch surface, inventory readiness, commercial architecture, and pre-locked channel decisions. Mandatory final sub-stage before DISCOVERY GATE.",
+      "path": ".claude/skills/lp-do-discovery-07-our-stance"
+    },
+    {
+      "name": "lp-do-discovery-03-option-picking",
+      "description": "Option selection gate for new startups (DISCOVERY-03). Reads solution-space research results, builds an evaluation matrix, and produces a shortlist of 1-2 options with elimination rationale. Explicit kill gate — decision record required to continue to DISCOVERY-04.",
+      "path": ".claude/skills/lp-do-discovery-03-option-picking/SKILL.md"
     },
     {
       "name": "lp-other-products",
@@ -207,9 +232,9 @@
       "path": ".claude/skills/lp-prioritize/SKILL.md"
     },
     {
-      "name": "lp-problem-frame",
-      "description": "Problem framing for new startups (S0A). Produces a falsifiable problem statement artifact before entering S0 intake. Upstream of lp-solution-space.",
-      "path": ".claude/skills/lp-problem-frame/SKILL.md"
+      "name": "lp-do-discovery-01-problem-framing",
+      "description": "Problem framing for new startups (DISCOVERY-01). Produces a falsifiable problem statement artifact before entering S0 intake. Upstream of lp-do-discovery-02-solution-space-scan.",
+      "path": ".claude/skills/lp-do-discovery-01-problem-framing/SKILL.md"
     },
     {
       "name": "lp-readiness",
@@ -242,9 +267,9 @@
       "path": ".claude/skills/lp-site-upgrade/SKILL.md"
     },
     {
-      "name": "lp-solution-space",
-      "description": "Solution space scanning for new startups (S0B). Produces a structured Perplexity-ready research prompt covering 5-10 candidate product-type options with feasibility flags. Feasibility only — no demand scoring until S2.",
-      "path": ".claude/skills/lp-solution-space/SKILL.md"
+      "name": "lp-do-discovery-02-solution-space-scan",
+      "description": "Solution space scanning for new startups (DISCOVERY-02). Produces a structured Perplexity-ready research prompt covering 5-10 candidate product-type options with feasibility flags. Feasibility only — no demand scoring until S2.",
+      "path": ".claude/skills/lp-do-discovery-02-solution-space-scan/SKILL.md"
     },
     {
       "name": "lp-visual",

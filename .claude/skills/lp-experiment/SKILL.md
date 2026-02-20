@@ -13,6 +13,9 @@ Startup experiment design and weekly readout for the S8/S10 build-measure-decide
 
 **Parameters:**
 - `--business`: Business code (e.g., `BRIK`, `SEG`, `XA`)
+
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
+
 - `--experiment`: Experiment name (readout mode only, reference to existing spec)
 
 **Examples:**
@@ -296,7 +299,7 @@ Use during design mode to identify where in the conversion funnel an experiment 
 
 **Upstream:**
 - **lp-measure (S1B):** Provides event taxonomy for metric selection in design mode
-- **lp-build (S9):** Experiments designed during build phase to test features being shipped
+- **lp-do-build (S9):** Experiments designed during build phase to test features being shipped
 
 **Downstream:**
 - **lp-prioritize (S5A):** Readout decisions feed back into prioritization for next cycle

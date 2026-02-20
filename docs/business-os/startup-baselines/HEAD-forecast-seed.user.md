@@ -1,12 +1,12 @@
 ---
 Type: Startup-Baseline-Seed
-Status: Draft
+Status: Active
 Business: HEAD
 Created: 2026-02-12
-Updated: 2026-02-12
-Last-reviewed: 2026-02-12
+Updated: 2026-02-20
+Last-reviewed: 2026-02-20
 Owner: Pete
-Seed-Source: docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md
+Seed-Source: docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md
 ---
 
 # HEAD Forecast Seed for SFS-00
@@ -42,43 +42,48 @@ Seed-Source: docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.u
 
 Confirmed available now:
 - Product concept and category: cochlear-implant retention headband
+- Extension lane candidate set and priorities: organiser pouch, school-ready multi-pack headbands, patch packs
 - Stock position: first product inventory already purchased (near-term launch-ready)
-- Market forecast and benchmark pack: completed in v2 forecast
-- Channel intent: own-site primary channel
+- Canonical S3 forecast artifact and market-intel refresh published (2026-02-20)
+- Channel intent: own-site primary channel with constrained Etsy probes
 
 Still missing / needs confirmation:
 - exact in-stock date and sellable units count
-- final price architecture (single vs bundle pricing)
+- final price architecture by SKU and bundle ladder
 - compatibility matrix for processor variants
 - payment stack readiness checklist and end-to-end test status
 - returns flow copy and operational SLA confirmation
+- trademark/domain clearance for shortlist naming candidates
 
 ## 0c) Merge + Classification for First Execution Pack
 
 Reuse-existing:
-- forecast benchmarks and ICP hypotheses from `headband-90-day-launch-forecast-v2.user.md`
-- first 14-day validation checklist from same source
+- forecast benchmarks and ICP hypotheses from `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md`
+- top-3 adjacent-product MVP priorities from `docs/business-os/strategy/HEAD/lp-other-products-results.user.md`
 
 Adapt-existing:
 - convert forecast KPI set into live weekly scorecard with real thresholds
 - refine ICP from broad "people with cochlear implants" to prioritized buyer segment sequence
+- shift offer from single-SKU fragility to bundle-aware MVP lane
 
 New required artifacts:
 - HEAD launch scorecard (weekly live metrics)
 - compatibility and fit decision aid (customer-facing)
 - paid spend control sheet linked to CAC guardrails
 - returns reason taxonomy and escalation triggers
+- naming clearance decision memo (selected mark + fallback)
 
 ## Ready-to-Execute Go Items (Seed)
 
 1. Launch analytics + payment reliability baseline on own-site funnel.
 2. Publish compatibility/fit guidance and assisted support path.
-3. Run capped week-1 acquisition experiment (high-intent + retargeting) with daily CAC/CVR reviews.
-4. Hold week-2 recalibration decision and re-forecast remaining 10 weeks using observed data.
+3. Launch top-3 MVP adjacent products (multi-pack, organiser pouch, patch packs) with bundle-first merchandising.
+4. Run capped week-1 acquisition experiment (high-intent + retargeting) with daily CAC/CVR reviews.
+5. Hold week-2 recalibration decision and re-forecast remaining 10 weeks using observed data.
 
 ## Priors (Machine)
 
-Last updated: 2026-02-13 12:00 UTC
+Last updated: 2026-02-20 12:00 UTC
 
 ```json
 [
@@ -89,8 +94,8 @@ Last updated: 2026-02-13 12:00 UTC
     "confidence": 0.5,
     "value": 110,
     "unit": "orders",
-    "last_updated": "2026-02-12T00:00:00Z",
-    "evidence": ["docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md"]
+    "last_updated": "2026-02-20T00:00:00Z",
+    "evidence": ["docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md"]
   },
   {
     "id": "forecast.target.net_revenue",
@@ -99,8 +104,8 @@ Last updated: 2026-02-13 12:00 UTC
     "confidence": 0.5,
     "value": 3000,
     "unit": "EUR",
-    "last_updated": "2026-02-12T00:00:00Z",
-    "evidence": ["docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md"]
+    "last_updated": "2026-02-20T00:00:00Z",
+    "evidence": ["docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md"]
   },
   {
     "id": "forecast.constraint.blended_cac",
@@ -111,8 +116,8 @@ Last updated: 2026-02-13 12:00 UTC
     "unit": "EUR",
     "operator": "lte",
     "range": {"min": 13, "max": 15},
-    "last_updated": "2026-02-12T00:00:00Z",
-    "evidence": ["docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md"]
+    "last_updated": "2026-02-20T00:00:00Z",
+    "evidence": ["docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md"]
   },
   {
     "id": "forecast.constraint.return_rate",
@@ -122,8 +127,8 @@ Last updated: 2026-02-13 12:00 UTC
     "value": 7,
     "unit": "percent",
     "operator": "lte",
-    "last_updated": "2026-02-12T00:00:00Z",
-    "evidence": ["docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md"]
+    "last_updated": "2026-02-20T00:00:00Z",
+    "evidence": ["docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md"]
   },
   {
     "id": "forecast.constraint.min_cvr",
@@ -133,7 +138,7 @@ Last updated: 2026-02-13 12:00 UTC
     "value": 0.9,
     "unit": "percent",
     "operator": "gte",
-    "last_updated": "2026-02-12T00:00:00Z",
+    "last_updated": "2026-02-20T00:00:00Z",
     "evidence": ["Stop/pivot guardrail from forecast outcome contract"]
   }
 ]

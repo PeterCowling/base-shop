@@ -13,7 +13,7 @@ Deliverable-Type: marketing-asset
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: /draft-marketing
-Supporting-Skills: /lp-build, /lp-channels, /lp-seo
+Supporting-Skills: /lp-do-build, /lp-channels, /lp-seo
 Related-Plan: docs/plans/skylar-marketing-promotion/plan.md
 Business-OS-Integration: off
 Business-Unit: PLAT
@@ -287,7 +287,7 @@ Even without analytics tooling, we can measure promotion effectiveness.
 - Risk: No analytics baseline.
   - Mitigation: UTMs + outreach log now; analytics later.
 
-## Confidence inputs (for /lp-plan)
+## Confidence inputs (for /lp-do-plan)
 - Implementation: 85
   - Copy-only changes are straightforward in `apps/skylar/i18n/*.json`.
 - Approach: 88
@@ -345,7 +345,7 @@ These are not blockers (defaults are set), but they change plan tasks.
 - Green: ship Release 1 copy + updated outreach variants; run 30/30 outreach; score replies.
 - Refactor: tighten copy based on reply patterns; rerun the same outreach protocol.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - Implementation: 85
   - Copy changes are contained to `apps/skylar/i18n/*.json`.
 - Approach: 88

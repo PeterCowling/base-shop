@@ -11,8 +11,8 @@ Related-Fact-Find: docs/briefs/git-conflict-enforcement-balance-fact-find.md
 Prior-Fact-Find: docs/plans/archive/ci-integration-speed-control-fact-find.md (archived)
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-replan, ops-ship
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-replan, ops-ship
 Overall-confidence: 69%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by evidence completeness and safety risk
 Business-Unit: PLAT
@@ -130,7 +130,7 @@ For this plan, “no-loss” means all of the following:
 ### GIT-COH-01: Build conflict failure taxonomy
 - **Type:** INVESTIGATE
 - **Deliverable:** Catalog of conflict types, operator failure modes, and current resolution pain points
-- **Execution-Skill:** `lp-replan`
+- **Execution-Skill:** `lp-do-replan`
 - **Affects:** `docs/git-safety.md`, git workflow docs, conflict fixture definitions
 - **Depends on:** -
 - **Effort:** M
@@ -148,7 +148,7 @@ For this plan, “no-loss” means all of the following:
 ### GIT-COH-02: Define script contract and fixture matrix
 - **Type:** PLAN
 - **Deliverable:** Additive-only script spec with no-loss assertions and test matrix
-- **Execution-Skill:** `lp-replan`
+- **Execution-Skill:** `lp-do-replan`
 - **Affects:** planned `scripts/git/*` interface, docs contract section, test fixture definitions
 - **Depends on:** GIT-COH-01
 - **Effort:** M
@@ -167,7 +167,7 @@ For this plan, “no-loss” means all of the following:
 ### GIT-COH-03: Implement minimal safe merge-assistant script
 - **Type:** IMPLEMENT
 - **Deliverable:** Minimal script + tests executing additive-only, policy-compliant conflict workflow
-- **Execution-Skill:** `lp-build`
+- **Execution-Skill:** `lp-do-build`
 - **Affects:** `scripts/git/*`, script tests, operator docs
 - **Depends on:** GIT-COH-02
 - **Effort:** M
@@ -189,7 +189,7 @@ For this plan, “no-loss” means all of the following:
 ### GIT-COH-04: Validate compliance and rollout protocol
 - **Type:** INVESTIGATE
 - **Deliverable:** Go/no-go decision package for moving plan to Active
-- **Execution-Skill:** `lp-replan`
+- **Execution-Skill:** `lp-do-replan`
 - **Affects:** `AGENTS.md` references, `docs/git-safety.md`, adoption protocol docs
 - **Depends on:** GIT-COH-03
 - **Effort:** M

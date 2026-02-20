@@ -10,7 +10,7 @@ Feature-Slug: email-system-design-gaps
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Overall-confidence: 85%
 Confidence-Method: effort-weighted average of per-task confidence; S=1, M=2
@@ -113,7 +113,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 
 - **Type:** IMPLEMENT
 - **Deliverable:** New audit log helper + entries written from `handleGetEmail` and `handleMarkProcessed`; new test file
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -157,7 +157,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 
 - **Type:** IMPLEMENT
 - **Deliverable:** try/catch wrapper around Gmail API calls in handleMarkProcessed and handleGetEmail with In-Progress label cleanup on error path
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -198,7 +198,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 
 - **Type:** IMPLEMENT
 - **Deliverable:** New `lock-store.ts` pure module; updated `handleGetEmail`, `handleMarkProcessed`, `handleOrganizeInbox`; new test files
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -253,7 +253,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Category guard in `handleDraftRefineTool`; extended test cases in `draft-refine.test.ts`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -296,7 +296,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `escalation_required` field added to `EmailActionPlan` type and derivation in `handleDraftInterpretTool`; updated ops-inbox SKILL.md; extended test cases
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -342,7 +342,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 
 - **Type:** IMPLEMENT
 - **Deliverable:** New `organize-query.ts` pure module; updated `handleOrganizeInbox` default query; extended test files
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -392,7 +392,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `categoryToLabelNames` in `outbound-drafts.ts`; new or extended test cases
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -435,7 +435,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 
 - **Type:** INVESTIGATE
 - **Deliverable:** Evidence note confirming (or refuting) whether Gmail `threads.list` accepts `-label:Brikette/Queue/In-Progress` using the label's display name, and the correct query form to use in `buildOrganizeQuery`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -472,7 +472,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
   4. Compare the thread count with a regular `is:unread in:inbox` query to validate correct exclusion.
   5. Record findings in the Decision Log below. Then TASK-06 can proceed.
   - If label names work: TASK-06 can use `buildOrganizeQuery` with display names directly.
-  - If label IDs are required: TASK-06 scope expands to include a label-name→ID lookup step in `buildOrganizeQuery`. Update TASK-06 Affects and re-run `/lp-replan` for TASK-06.
+  - If label IDs are required: TASK-06 scope expands to include a label-name→ID lookup step in `buildOrganizeQuery`. Update TASK-06 Affects and re-run `/lp-do-replan` for TASK-06.
 
 ---
 

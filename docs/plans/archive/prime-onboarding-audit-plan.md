@@ -9,7 +9,7 @@ Feature-Slug: prime-onboarding-audit
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-design-system
 Overall-confidence: 89%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -117,7 +117,7 @@ Single sequential improvement pass on GuidedOnboardingFlow.tsx, ordered by prior
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — `GuidedOnboardingFlow.tsx`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/prime/src/components/portal/GuidedOnboardingFlow.tsx`
 - **Depends on:** -
 - **Blocks:** OB-02 (file overlap: GuidedOnboardingFlow.tsx)
@@ -180,7 +180,7 @@ Single sequential improvement pass on GuidedOnboardingFlow.tsx, ordered by prior
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — `GuidedOnboardingFlow.tsx` + `en/Onboarding.json` + `it/Onboarding.json`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/prime/src/components/portal/GuidedOnboardingFlow.tsx`, `apps/prime/public/locales/en/Onboarding.json`, `apps/prime/public/locales/it/Onboarding.json`
 - **Depends on:** OB-01 (file overlap: GuidedOnboardingFlow.tsx)
 - **Blocks:** OB-03 (file overlap: GuidedOnboardingFlow.tsx)
@@ -248,7 +248,7 @@ Single sequential improvement pass on GuidedOnboardingFlow.tsx, ordered by prior
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — `GuidedOnboardingFlow.tsx`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/prime/src/components/portal/GuidedOnboardingFlow.tsx`, `[readonly] packages/design-system/src/atoms/Toast.tsx`
 - **Depends on:** OB-02 (file overlap: GuidedOnboardingFlow.tsx)
 - **Blocks:** OB-04 (file overlap: GuidedOnboardingFlow.tsx)
@@ -311,7 +311,7 @@ Single sequential improvement pass on GuidedOnboardingFlow.tsx, ordered by prior
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — `GuidedOnboardingFlow.tsx`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/prime/src/components/portal/GuidedOnboardingFlow.tsx`
 - **Depends on:** OB-03 (file overlap: GuidedOnboardingFlow.tsx)
 - **Blocks:** OB-05 (file overlap: GuidedOnboardingFlow.tsx)
@@ -367,7 +367,7 @@ Single sequential improvement pass on GuidedOnboardingFlow.tsx, ordered by prior
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — `GuidedOnboardingFlow.tsx`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/prime/src/components/portal/GuidedOnboardingFlow.tsx`, `[readonly] packages/design-system/src/atoms/Skeleton.tsx`
 - **Depends on:** OB-04 (file overlap: GuidedOnboardingFlow.tsx)
 - **Blocks:** OB-06 (file overlap: GuidedOnboardingFlow.tsx)
@@ -423,7 +423,7 @@ Single sequential improvement pass on GuidedOnboardingFlow.tsx, ordered by prior
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — `GuidedOnboardingFlow.tsx`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/prime/src/components/portal/GuidedOnboardingFlow.tsx`
 - **Depends on:** OB-05 (file overlap: GuidedOnboardingFlow.tsx)
 - **Blocks:** OB-07 (tests final state)
@@ -488,7 +488,7 @@ Single sequential improvement pass on GuidedOnboardingFlow.tsx, ordered by prior
 - **Type:** IMPLEMENT
 - **Deliverable:** New test file — `apps/prime/cypress/e2e/guided-onboarding-flow.cy.ts`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/prime/cypress/e2e/guided-onboarding-flow.cy.ts` (new), `[readonly] apps/prime/cypress/support/prime-mocks.ts`
 - **Depends on:** OB-06 (tests final state after all improvements)
 - **Blocks:** -
@@ -556,7 +556,7 @@ Single sequential improvement pass on GuidedOnboardingFlow.tsx, ordered by prior
 
 - **Type:** DECISION
 - **Deliverable:** Decision artifact — updated plan with chosen approach
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/prime/src/components/onboarding/GuestProfileStep.tsx`, `apps/prime/src/components/onboarding/SocialOptInStep.tsx`, `apps/prime/src/components/onboarding/WelcomeHandoffStep.tsx`, `apps/prime/src/components/onboarding/OnboardingLayout.tsx`, `apps/prime/src/components/onboarding/ProgressBar.tsx`
 - **Depends on:** -
 - **Blocks:** -

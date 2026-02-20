@@ -13,7 +13,7 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/test-typecheck-enablement/plan.md
 Business-OS-Integration: off
@@ -207,7 +207,7 @@ This plan incrementally enables test-file type checking: wire the existing infra
 - TASK-14: Add pre-commit hook companion (`typecheck-tests-staged.sh`)
 
 ## Execution Routing Packet
-- Primary execution skill: `lp-build`
+- Primary execution skill: `lp-do-build`
 - Supporting skills: none
 - Deliverable acceptance package:
   - `node scripts/typecheck-tests.mjs` exits 0 in CI for all targeted packages
@@ -238,4 +238,4 @@ This plan incrementally enables test-file type checking: wire the existing infra
 ## Planning Readiness
 - Status: Ready-for-planning
 - Blocking items: none (verification in TASK-01 is the first task, not a pre-planning blocker)
-- Recommended next step: `/lp-plan` with this fact-find as input
+- Recommended next step: `/lp-do-plan` with this fact-find as input

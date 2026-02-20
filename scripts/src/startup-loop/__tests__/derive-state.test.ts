@@ -140,11 +140,12 @@ describe("deriveState", () => {
       const state = deriveState([], STATE_OPTIONS);
       const stageIds = Object.keys(state.stages);
       expect(stageIds).toHaveLength(22);
-      expect(stageIds).toContain("S0");
-      expect(stageIds).toContain("S0A");
-      expect(stageIds).toContain("S0B");
-      expect(stageIds).toContain("S0C");
-      expect(stageIds).toContain("S0D");
+      expect(stageIds).toContain("DISCOVERY");
+      expect(stageIds).toContain("DISCOVERY-01");
+      expect(stageIds).toContain("DISCOVERY-02");
+      expect(stageIds).toContain("DISCOVERY-03");
+      expect(stageIds).toContain("DISCOVERY-04");
+      expect(stageIds).toContain("DISCOVERY-05");
       expect(stageIds).toContain("S3B");
       expect(stageIds).toContain("S10");
       expect(stageIds).toContain("S4");

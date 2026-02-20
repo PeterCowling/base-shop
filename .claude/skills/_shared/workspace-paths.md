@@ -1,7 +1,7 @@
 # Workspace Path Policy
 
 Canonical path resolution for feature workspaces and stage-doc API keys.
-All workflow skills (`/lp-fact-find`, `/lp-plan`, `/lp-build`, `/lp-replan`, `/lp-sequence`) MUST follow this policy.
+All workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`, `/lp-do-replan`, `/lp-sequence`) MUST follow this policy.
 
 ## 1) Feature Workspace Layout
 
@@ -9,9 +9,9 @@ New work uses directory-based workspaces:
 
 ```
 docs/plans/<slug>/
-  fact-find.md          # lp-fact-find brief
-  plan.md               # lp-plan document
-  replan-notes.md       # lp-replan notes (optional)
+  fact-find.md          # lp-do-fact-find brief
+  plan.md               # lp-do-plan document
+  replan-notes.md       # lp-do-replan notes (optional)
   design-spec.md        # lp-design-spec (optional)
   design-qa-report.md   # lp-design-qa (optional)
 ```
@@ -68,9 +68,9 @@ When calling the BOS Agent API for stage documents, use these canonical stage ke
 
 | Stage | Canonical API Key | Rejected Aliases |
 |-------|-------------------|------------------|
-| Fact-finding | `fact-find` | `lp-fact-find` |
-| Planned | `plan` | `planned`, `lp-plan` |
-| Build | `build` | `lp-build` |
+| Fact-finding | `fact-find` | `lp-do-fact-find` |
+| Planned | `plan` | `planned`, `lp-do-plan` |
+| Build | `build` | `lp-do-build` |
 | Reflect | `reflect` | `lp-reflect` |
 
 **Rules:**
@@ -90,7 +90,7 @@ Legacy cards may have `Plan-Link: docs/plans/<slug>-plan.md`. Skills reading thi
 
 ## 5) Fast-Path Resolution
 
-When a skill receives a slug argument (e.g., `/lp-build my-feature`):
+When a skill receives a slug argument (e.g., `/lp-do-build my-feature`):
 
 1. Resolve to canonical workspace: `docs/plans/my-feature/plan.md`
 2. If not found, try legacy: `docs/plans/my-feature-plan.md`
@@ -98,7 +98,7 @@ When a skill receives a slug argument (e.g., `/lp-build my-feature`):
 
 ## 6) Briefing Notes (Non-Plan Artifacts)
 
-Understanding-only lp-fact-find outputs (Outcome B) use a separate path:
+Understanding-only lp-do-fact-find outputs (Outcome B) use a separate path:
 
 ```
 docs/briefs/<topic-slug>-briefing.md

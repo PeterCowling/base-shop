@@ -13,8 +13,8 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-plan
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-plan
 Related-Plan: docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md
 Business-OS-Integration: off
 Business-Unit: BOS
@@ -333,9 +333,9 @@ Calibration anchor: no prior closed-loop marketing/sales capability audit in thi
 ## Execution Routing Packet
 
 - Primary execution skill:
-  - `lp-plan`
+  - `lp-do-plan`
 - Supporting skills:
-  - `lp-build`, `lp-sequence`
+  - `lp-do-build`, `lp-sequence`
 - Deliverable acceptance package:
   - Updated loop-spec/gate docs, capability contract registry, prompt/template updates, and contract-test coverage.
 - Post-delivery measurement plan:
@@ -372,4 +372,4 @@ Calibration anchor: no prior closed-loop marketing/sales capability audit in thi
   - Decision on S6B stage-key approach (split stage IDs vs split gates).
   - Decision on denominator policy baseline (global defaults vs profile-specific defaults).
 - Recommended next step:
-  - `/lp-plan` to convert these contracts and guardrails into sequenced implementation tasks.
+  - `/lp-do-plan` to convert these contracts and guardrails into sequenced implementation tasks.

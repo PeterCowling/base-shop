@@ -5,19 +5,19 @@ description: Translate a feature requirement into a concrete frontend design spe
 
 # Design Spec
 
-Produce a design specification that maps a feature requirement to concrete design-system components, semantic tokens, and layout decisions — grounded in the business's brand language. Feeds directly into `/lp-plan` to raise confidence on UI tasks.
+Produce a design specification that maps a feature requirement to concrete design-system components, semantic tokens, and layout decisions — grounded in the business's brand language. Feeds directly into `/lp-do-plan` to raise confidence on UI tasks.
 
 ## Operating Mode
 
 **ALLOWED:** Read codebase, read docs, read theme tokens, create/update design spec docs, create/update brand language docs.
-**NOT ALLOWED:** Write application code, modify components, change tokens, run builds. Design only — implementation is `/lp-build`'s job.
+**NOT ALLOWED:** Write application code, modify components, change tokens, run builds. Design only — implementation is `/lp-do-build`'s job.
 
 ## When to Use
 
 - New page, section, or significant UI component
 - Visual refresh or rebrand work
 - Any feature where fact-find flags `Design-Spec-Required: yes`
-- When `/lp-plan` produces low-confidence UI tasks (design decisions unmade)
+- When `/lp-do-plan` produces low-confidence UI tasks (design decisions unmade)
 - Standalone brand language bootstrapping for a new business
 
 ## Invocation
@@ -77,7 +77,7 @@ Use `businesses.json` to resolve which business owns the target app, then locate
 | XA | XA | xa | _(TBD)_ |
 | Platform | PLAT | design-system, storybook, etc. | `base` |
 
-**When theme package doesn't exist:** Note this in the spec as a prerequisite task for `/lp-plan`.
+**When theme package doesn't exist:** Note this in the spec as a prerequisite task for `/lp-do-plan`.
 
 ## Workflow
 
@@ -312,11 +312,11 @@ PageLayout
 - [ ] Accessibility section is non-empty with concrete ARIA/focus/contrast items
 - [ ] Brand Dossier Active (GATE-BD-07 pre-flight passed: Status == Active in brand-dossier.user.md)
 - [ ] Token bindings match actual values in theme package (not invented)
-- [ ] Prerequisites list is complete — no hidden assumptions for `/lp-plan`
+- [ ] Prerequisites list is complete — no hidden assumptions for `/lp-do-plan`
 
 ## Integration
 
-### With `/lp-fact-find`
+### With `/lp-do-fact-find`
 
 When a fact-find classifies a feature as UI-heavy, it should add to its output:
 
@@ -324,9 +324,9 @@ When a fact-find classifies a feature as UI-heavy, it should add to its output:
 Design-Spec-Required: yes
 ```
 
-This signals that `/lp-design-spec` should run before `/lp-plan`.
+This signals that `/lp-design-spec` should run before `/lp-do-plan`.
 
-### With `/lp-plan`
+### With `/lp-do-plan`
 
 Plan reads the design spec and uses it to:
 - Pre-populate `Affects` lists with component file paths from the component map
@@ -334,7 +334,7 @@ Plan reads the design spec and uses it to:
 - Create concrete validation contracts referencing the spec's token bindings
 - Generate prerequisite tasks for missing tokens or components
 
-### With `/lp-build`
+### With `/lp-do-build`
 
 During build, the design spec serves as a reference:
 - Exact token classes to use (no guessing)
@@ -357,15 +357,15 @@ This creates a virtuous cycle: each design spec strengthens the brand language, 
 > **Component map:** {N} reused, {M} new components needed.
 > **Prerequisites:** {list any blockers for plan}.
 >
-> Ready for `/lp-plan {slug}`. The plan should reference this spec for UI task confidence.
+> Ready for `/lp-do-plan {slug}`. The plan should reference this spec for UI task confidence.
 
 ### Spec Complete (standalone)
 
 > Design spec complete: `docs/plans/{slug}-design-spec.md`
 >
 > This is a standalone spec (no fact-find). To proceed:
-> 1. `/lp-fact-find {slug}` — if the feature needs broader investigation
-> 2. `/lp-plan {slug}` — if scope is clear and you want to go straight to planning
+> 1. `/lp-do-fact-find {slug}` — if the feature needs broader investigation
+> 2. `/lp-do-plan {slug}` — if scope is clear and you want to go straight to planning
 
 ### GATE-BD-07 Blocked (Brand Dossier not Active)
 

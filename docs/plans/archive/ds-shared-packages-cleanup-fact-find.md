@@ -10,7 +10,7 @@ Feature-Slug: ds-shared-packages-cleanup
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Related-Plan: docs/plans/ds-shared-packages-cleanup-plan.md
 Business-OS-Integration: on
@@ -119,7 +119,7 @@ All replacements map to well-established semantic tokens. No new tokens needed.
 
 None.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 95% — straightforward find-and-replace with known token mappings
 - **Approach:** 95% — semantic tokens are the correct solution; no alternative needed
@@ -145,11 +145,11 @@ None.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-design-system`
 - Deliverable acceptance: `pnpm lint` passes, baseline file has 21 fewer entries, no visual regressions in Storybook
 
 ## Planning Readiness
 
 - Status: **Ready-for-planning**
-- Recommended next step: `/lp-plan`
+- Recommended next step: `/lp-do-plan`

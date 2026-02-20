@@ -10,7 +10,7 @@ Feature-Slug: ds-compliance-v2
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Related-Plan: docs/plans/ds-compliance-v2-plan.md
 Business-OS-Integration: off
@@ -200,7 +200,7 @@ Since reception has `offAllDsRules`, violations don't appear in lint. Pattern-ba
 
 None — all questions resolved from repo evidence.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 88%
   - Established pattern from Phase 1 (8 completed plans). ESLint config changes are mechanical. Reception violation estimates are approximate but bounded.
@@ -253,7 +253,7 @@ None — all questions resolved from repo evidence.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-design-system`
 - Deliverable acceptance package:
   - `pnpm lint` passes with 0 warnings (excluding explicitly deferred rules)
@@ -267,4 +267,4 @@ None — all questions resolved from repo evidence.
 
 - Status: Archived
 - Blocking items: None
-- Recommended next step: Proceed to `/lp-plan`
+- Recommended next step: Proceed to `/lp-do-plan`

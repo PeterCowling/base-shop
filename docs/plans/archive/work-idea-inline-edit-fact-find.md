@@ -161,7 +161,7 @@ Add inline editing functionality to the "Work Idea" button on idea detail pages 
 ### Open (User Input Needed)
 None — sufficient information to proceed to planning.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 85%
   - Existing patterns are well-established (server actions, form handling, git operations)
@@ -256,4 +256,4 @@ None — sufficient information to proceed to planning.
 
 - Status: **Ready-for-planning**
 - Blocking items: None
-- Recommended next step: Proceed to `/lp-plan` with this lp-fact-find brief
+- Recommended next step: Proceed to `/lp-do-plan` with this lp-do-fact-find brief

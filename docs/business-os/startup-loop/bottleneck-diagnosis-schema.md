@@ -143,10 +143,10 @@ Severity is classified based on the normalized `miss` value:
 The `upstream_priority_order` defines stage precedence for tie-breaking and multi-block selection. This ordering is derived from startup-loop dependency flow (not stage-ID numeric sorting).
 
 ```
-S0A, S0B, S0C, S0D, S0, S1, S1B, S2A, S2, S2B, S3, S3B, S6B, S4, S5A, S5B, S6, S7, S8, S9, S9B, S10
+DISCOVERY-01, DISCOVERY-02, DISCOVERY-03, DISCOVERY-04, DISCOVERY-05, DISCOVERY, S1, S1B, S2A, S2, S2B, S3, S3B, S6B, S4, S5A, S5B, S6, S7, S8, S9, S9B, S10
 ```
 
-**Note:** `S6B` intentionally precedes `S4` because `S4` (Baseline merge) consumes S6B outputs as dependencies. `S0A–S0D` precede `S0` because they form the conditional problem-first pre-intake sequence (v1.7.0). `S3B` follows `S3` as a conditional parallel fan-out sibling (v1.6.0).
+**Note:** `S6B` intentionally precedes `S4` because `S4` (Baseline merge) consumes S6B outputs as dependencies. `DISCOVERY-01–DISCOVERY-05` precede `DISCOVERY` because they form the conditional problem-first pre-intake sequence (v1.7.0, renamed v1.9.0). `S3B` follows `S3` as a conditional parallel fan-out sibling (v1.6.0).
 
 ### Upstream Attribution Rules
 

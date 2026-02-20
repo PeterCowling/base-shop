@@ -10,8 +10,8 @@ Feature-Slug: startup-loop-s10-weekly-orchestration
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-sequence, startup-loop, lp-experiment, lp-signal-review, lp-fact-find
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-sequence, startup-loop, lp-experiment, lp-signal-review, lp-do-fact-find
 Overall-confidence: 84%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort (S=1, M=2, L=3)
 Auto-Build-Intent: plan-only
@@ -109,7 +109,7 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
 ### TASK-01: Lock transition mode, week anchor, and idempotency policy
 - **Type:** DECISION
 - **Deliverable:** `docs/plans/startup-loop-s10-weekly-orchestration/decisions/s10-weekly-transition-decision.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -148,7 +148,7 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
 ### TASK-02: Publish S10 orchestration contract (`/lp-weekly`) with sequence + lane rules
 - **Type:** IMPLEMENT
 - **Deliverable:** S10 orchestration contract doc at `docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -203,7 +203,7 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
 ### TASK-03: Create `/lp-weekly` skill skeleton + modules (no-block posture)
 - **Type:** IMPLEMENT
 - **Deliverable:** New skill scaffold: `.claude/skills/lp-weekly/SKILL.md` + `modules/` files
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -245,7 +245,7 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
 ### TASK-04: Wire Phase 1 default route via startup-loop surfaces (without stage-semantic changes)
 - **Type:** IMPLEMENT
 - **Deliverable:** Routing updates in startup-loop skill docs/modules so S10 default path calls `/lp-weekly`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -298,7 +298,7 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
 ### TASK-05: Add additive weekly packet + latest pointer and cross-artifact linking policy
 - **Type:** IMPLEMENT
 - **Deliverable:** Weekly packet schema/contract and pointer policy
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -346,7 +346,7 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
 ### TASK-06: Add compatibility regression checks (authority boundaries + artifact continuity)
 - **Type:** IMPLEMENT
 - **Deliverable:** Regression checks and test updates for S10 wrapper compatibility
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -393,8 +393,8 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
 
 ### TASK-07: Horizon checkpoint - reassess downstream plan
 - **Type:** CHECKPOINT
-- **Deliverable:** updated plan evidence via `/lp-replan`
-- **Execution-Skill:** lp-build
+- **Deliverable:** updated plan evidence via `/lp-do-replan`
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -406,8 +406,8 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
   - Approach: 95% - required before optional remap decision.
   - Impact: 95% - prevents remap without real weekly evidence.
 - **Acceptance:**
-  - `/lp-build` checkpoint executor run.
-  - `/lp-replan` run on downstream remap decision.
+  - `/lp-do-build` checkpoint executor run.
+  - `/lp-do-replan` run on downstream remap decision.
   - Two-cycle metrics captured:
     - missed Section H checks,
     - unresolved REM carryover,
@@ -424,7 +424,7 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
 ### TASK-08: Decide whether to execute optional Phase 2 S10 mapping remap
 - **Type:** DECISION
 - **Deliverable:** `docs/plans/startup-loop-s10-weekly-orchestration/decisions/s10-weekly-phase2-remap-decision.md`
-- **Execution-Skill:** lp-replan
+- **Execution-Skill:** lp-do-replan
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -484,8 +484,8 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
 - 2026-02-18: Plan created from `startup-loop-s10-weekly-orchestration` fact-find.
 - 2026-02-18: Default transition stance set to Option B (Phase 0 + Phase 1) pending TASK-01 confirmation.
 - 2026-02-18: TASK-01 closed. Operator confirmed Option B, ISO week UTC anchor (YYYY-Www), overwrite idempotency. Decision artifact at `decisions/s10-weekly-transition-decision.md`.
-- 2026-02-18: TASK-04 replanned 75→80. E1 evidence (static audit of cmd-advance.md, SKILL.md, loop-spec.yaml) resolved: guard scope (dispatch ≠ gate, block insertion allowed), double-dispatch pattern (new block with "subsumes" language), loop-spec [readonly] scope confirmed. Approach pattern pinned in task. Ready for `/lp-build`.
-- 2026-02-18: TASK-06 replanned 75→80. E1+E2 evidence: 34-test-file exploration; S10 seams confirmed at concrete line ranges in stage-addressing.test.ts, derive-state.test.ts, generate-stage-operator-views.test.ts; js-yaml load pattern reusable; lint-style content assertions (market-intelligence-pack-lint.test.ts) confirmed as approach for TC-06-03/04; TC-06-04 idempotency testable via schema doc text assertions. Ready for `/lp-build`.
+- 2026-02-18: TASK-04 replanned 75→80. E1 evidence (static audit of cmd-advance.md, SKILL.md, loop-spec.yaml) resolved: guard scope (dispatch ≠ gate, block insertion allowed), double-dispatch pattern (new block with "subsumes" language), loop-spec [readonly] scope confirmed. Approach pattern pinned in task. Ready for `/lp-do-build`.
+- 2026-02-18: TASK-06 replanned 75→80. E1+E2 evidence: 34-test-file exploration; S10 seams confirmed at concrete line ranges in stage-addressing.test.ts, derive-state.test.ts, generate-stage-operator-views.test.ts; js-yaml load pattern reusable; lint-style content assertions (market-intelligence-pack-lint.test.ts) confirmed as approach for TC-06-03/04; TC-06-04 idempotency testable via schema doc text assertions. Ready for `/lp-do-build`.
 - 2026-02-18: TASK-06 Complete. 2 new test files (s10-weekly-routing.test.ts + s10-packet-linkage.test.ts); 28 tests green. TC-06-01..04 all pass. 2 assertion fixes applied during Red→Green (weekly-kpcs short form; regex match-to-end-of-line).
 
 ## Overall-confidence Calculation

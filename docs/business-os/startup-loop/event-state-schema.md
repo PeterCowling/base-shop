@@ -123,7 +123,12 @@ The derived state is compatible with the existing `loop-state.json` contract:
 
 | Stage ID | label_operator_short |
 |---|---|
-| S0 | Intake |
+| DISCOVERY-01 | Problem framing |
+| DISCOVERY-02 | Solution-space scan |
+| DISCOVERY-03 | Option selection |
+| DISCOVERY-04 | Naming handoff |
+| DISCOVERY-05 | Operator evidence |
+| DISCOVERY | Intake |
 | S1 | Readiness check |
 | S1B | Measurement setup |
 | S2A | Historical baseline |

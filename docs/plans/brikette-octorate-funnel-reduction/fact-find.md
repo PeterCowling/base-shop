@@ -14,7 +14,7 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-design-spec,lp-seo
 Related-Plan: docs/plans/brikette-octorate-funnel-reduction/plan.md
 Business-OS-Integration: off
@@ -615,7 +615,7 @@ E) Redirect scope (answered)
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `lp-build`
+  - `lp-do-build`
 - Supporting skills:
   - `lp-design-spec`, `lp-seo`
 - Deliverable acceptance package:
@@ -677,4 +677,4 @@ E) Redirect scope (answered)
     - `.tmp/reconciliation-2026-02-10_2026-02-17/calibration-summary.md`
   - run one GA4 diagnostics root-cause check on representative `200`/`308`/`404` URLs from the untagged list.
 - Recommended next step:
-  - proceed to `/lp-plan` with D1-D4 defaults locked and explicit data-gap tasks in the plan.
+  - proceed to `/lp-do-plan` with D1-D4 defaults locked and explicit data-gap tasks in the plan.

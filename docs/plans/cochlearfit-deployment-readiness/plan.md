@@ -10,7 +10,7 @@ Feature-Slug: cochlearfit-deployment-readiness
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Overall-confidence: 69%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -299,7 +299,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** multi-deliverable + Documentation artifact
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** External (Stripe Dashboard), `docs/plans/cochlearfit-deployment-readiness/stripe-setup.md`
 - **Depends on:** TASK-19
 - **Blocks:** TASK-08, TASK-09
@@ -368,7 +368,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + Documentation artifact
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** External (Inventory API deployment), `docs/plans/cochlearfit-deployment-readiness/inventory-api.md`
 - **Depends on:** TASK-20, TASK-22
 - **Blocks:** TASK-09
@@ -461,7 +461,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + Documentation artifact
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cochlearfit-worker/src/index.ts`
   - `apps/cochlearfit-worker/src/__tests__/inventory-authority-shop-id.test.ts` (new)
@@ -518,7 +518,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** multi-deliverable + Documentation artifact
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** External (Email service provider), `docs/plans/cochlearfit-deployment-readiness/email-setup.md`
 - **Depends on:** -
 - **Blocks:** TASK-06, TASK-07, TASK-09
@@ -591,7 +591,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `scripts/bundle-worker-catalog.ts` (new file)
   - `apps/cochlearfit-worker/package.json` (add prebuild script)
@@ -685,7 +685,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cochlearfit-worker/src/index.ts` (remove hardcoded catalog, import generated)
   - `apps/cochlearfit-worker/package.json` (ensure generated file exists before dev/lint/typecheck)
@@ -751,7 +751,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cochlearfit-worker/src/templates/order-receipt.html` (new file, HTML template)
   - `apps/cochlearfit-worker/src/templates/order-receipt.txt` (new file, plain-text fallback)
@@ -810,7 +810,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cochlearfit-worker/src/index.ts` (lines 307-331: retrieve session with expand[]=line_items, lines ~470: send email, idempotency logic)
   - `apps/cochlearfit-worker/package.json` (add email service client library)
@@ -888,7 +888,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `data/shops/cochlearfit/products.json`
   - `data/shops/cochlearfit/variants.json`
@@ -951,7 +951,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** multi-deliverable + Documentation artifact
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cochlearfit-worker/wrangler.toml` (remove committed secrets, add env var comments)
   - External (Cloudflare Workers secrets via `wrangler secret put`)
@@ -1078,7 +1078,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** multi-deliverable
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - External (Cloudflare Workers deployment)
   - External (Cloudflare Pages staging deployment)
@@ -1136,7 +1136,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** multi-deliverable
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - External (staging environment testing)
   - `docs/plans/cochlearfit-deployment-readiness/staging-test-results.md` (new doc)
@@ -1207,7 +1207,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** multi-deliverable
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - External (Cloudflare Pages production deployment)
   - `[readonly] apps/cochlearfit/package.json` (build config)
@@ -1259,7 +1259,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** multi-deliverable
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - External (production environment testing)
   - `docs/plans/cochlearfit-deployment-readiness/production-smoke-test.md` (new doc)
@@ -1317,7 +1317,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cochlearfit-worker/src/__tests__/` (expand test directory created in TASK-18)
   - `apps/cochlearfit-worker/README.md` (test running instructions + scope note)
@@ -1357,7 +1357,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Updated confidence:** 80% (scope alignment only)
   - **Evidence class:** E1 (plan integrity check)
 - **Decision / resolution:**
-  - `apps/cochlearfit-worker/README.md` is listed as a Documentation impact; added it to `Affects` so `/lp-build` can update it without violating scope rules.
+  - `apps/cochlearfit-worker/README.md` is listed as a Documentation impact; added it to `Affects` so `/lp-do-build` can update it without violating scope rules.
 
 #### Re-plan Update (2026-02-14) — Validation Gate Unblocked (ESLint crash)
 - **Previous confidence:** 80%
@@ -1420,7 +1420,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `eslint.config.mjs`
 - **Depends on:** -
@@ -1461,7 +1461,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Documentation artifact
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `docs/plans/cochlearfit-deployment-readiness/fulfillment-runbook.md` (new doc)
   - `[readonly] Stripe Dashboard` (order lookup reference)
@@ -1516,7 +1516,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cochlearfit-worker/src/__tests__/` (expand test directory)
   - `apps/cochlearfit-worker/package.json` (add coverage script and any required dev deps)
@@ -1581,7 +1581,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + Documentation artifact
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cochlearfit-worker/wrangler.toml` (remove committed secrets; add `[env.staging]` + `[env.production]` topology with no secret values)
   - `docs/plans/cochlearfit-deployment-readiness/worker-config.md` (new doc: secret names + wrangler commands; no values)
@@ -1623,7 +1623,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** SPIKE
 - **Deliverable:** code-change
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/cochlearfit-worker/package.json` (add `test` script)
   - `apps/cochlearfit-worker/jest.config.cjs` (new)
@@ -1662,7 +1662,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** INVESTIGATE
 - **Deliverable:** Documentation artifact
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `docs/plans/cochlearfit-deployment-readiness/stripe-setup.md` (new)
   - `[readonly] data/shops/cochlearfit/variants.json` (variant IDs)
@@ -1687,7 +1687,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** INVESTIGATE
 - **Deliverable:** Documentation artifact
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `docs/plans/cochlearfit-deployment-readiness/inventory-api.md` (new)
   - `[readonly] apps/cochlearfit-worker/src/index.ts` (contract)

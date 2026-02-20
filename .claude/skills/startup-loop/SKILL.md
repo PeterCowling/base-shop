@@ -31,6 +31,8 @@ Not allowed:
 - `/startup-loop submit --business <BIZ> --stage <S#> --artifact <path>`
 - `/startup-loop advance --business <BIZ>`
 
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
+
 ## Command Module Routing
 
 Load the relevant module per command:
@@ -42,6 +44,12 @@ Load the relevant module per command:
 | `submit` | `modules/cmd-submit.md` |
 | `advance` | `modules/cmd-advance.md` |
 
+**Internal modules** (called automatically — not operator-invocable):
+
+| Module | Trigger |
+|---|---|
+| `modules/discovery-intake-sync.md` | Called by `cmd-start` at Gate D pass-through AND by `cmd-advance` at GATE-DISCOVERY-00 complete. Writes or refreshes `<BIZ>-intake-packet.user.md` from DISCOVERY-01–DISCOVERY-07 precursors. No-op when precursors are unchanged. |
+
 ## Required Output Contract
 
 For `start`, `status`, and `advance`, return this exact packet:
@@ -49,7 +57,7 @@ For `start`, `status`, and `advance`, return this exact packet:
 ```text
 run_id: SFS-<BIZ>-<YYYYMMDD>-<hhmm>
 business: <BIZ>
-loop_spec_version: 1.7.0
+loop_spec_version: 1.9.0
 current_stage: <S#>
 status: <ready|blocked|awaiting-input|complete>
 blocking_reason: <none or exact reason>
@@ -77,18 +85,24 @@ When a stage reference cannot be resolved, return fail-closed with deterministic
 
 ## Stage Model
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.7.0).
+Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.9.0).
 Stage labels: `docs/business-os/startup-loop/_generated/stage-operator-map.json`.
 
-Stages S0..S10 (22 stages total):
+Stages DISCOVERY-01..S10 (27 stages total):
 
 | Stage | Name | Skill | Conditional |
 |---|---|---|---|
-| S0A | Problem framing | `/lp-problem-frame` | start-point=problem |
-| S0B | Solution-space scan | `/lp-solution-space` | start-point=problem |
-| S0C | Option selection | `/lp-option-select` | start-point=problem |
-| S0D | Naming handoff | `/brand-naming-research` | start-point=problem |
-| S0 | Intake | `/startup-loop start` | — |
+| DISCOVERY-01 | Problem framing | `/lp-do-discovery-01-problem-framing` | start-point=problem |
+| DISCOVERY-02 | Solution-space scan | `/lp-do-discovery-02-solution-space-scan` | start-point=problem |
+| DISCOVERY-03 | Option selection | `/lp-do-discovery-03-option-picking` | start-point=problem |
+| DISCOVERY-04 | Naming handoff | `/lp-do-discovery-04-business-name-options` | start-point=problem |
+| DISCOVERY-05 | Distribution planning | `/lp-do-discovery-05-distribution-planning` | start-point=problem |
+| DISCOVERY-06 | Measurement plan | `/lp-do-discovery-06-measurement-plan` | start-point=problem |
+| DISCOVERY-07 | Operator evidence | `/lp-do-discovery-07-our-stance` | start-point=problem |
+| DISCOVERY | Intake | `/startup-loop start` | — |
+| BRAND-01 | Brand strategy | `/lp-do-brand-01-brand-strategy` | — |
+| BRAND-02 | Brand identity | `/lp-do-brand-02-brand-identity` | — |
+| BRAND | Brand (container) | — | — |
 | S1 | Readiness check | `/lp-readiness` | — |
 | S1B | Measurement setup | prompt handoff (pre-website) | — |
 | S2A | Historical baseline | prompt handoff (website-live) | — |

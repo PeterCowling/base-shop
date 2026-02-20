@@ -11,7 +11,7 @@ Feature-Slug: agent-setup-improvement
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-sequence
 Overall-confidence: 100%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -136,7 +136,7 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 
 ## Parallelism Guide
 
-Sequenced after lp-replan (dependencies updated; no renumbering).
+Sequenced after lp-do-replan (dependencies updated; no renumbering).
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
@@ -162,14 +162,14 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - `scripts/agents/list-skills` (or `.ts` + small shell wrapper)
   - (Optional) `scripts/agents/generate-skill-registry` for `--check` mode
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - Primary: `.agents/registry/skills.json`, `scripts/agents/list-skills`, `scripts/agents/generate-skill-registry*`
   - Secondary: `[readonly] .claude/skills/**/SKILL.md`
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-06
 - **Confidence:** 88%
-  - Implementation: 90% — existing skill frontmatter (`name`, `description`) is present on core skills (sample: `.claude/skills/lp-plan/SKILL.md`).
+  - Implementation: 90% — existing skill frontmatter (`name`, `description`) is present on core skills (sample: `.claude/skills/lp-do-plan/SKILL.md`).
   - Approach: 88% — generated registry eliminates drift and works for all agents.
   - Impact: 85% — low blast radius; docs/overlays can adopt incrementally.
 - **Acceptance:**
@@ -197,7 +197,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Deliverable:** CI-enforced validator
   - Replace `scripts/validate-agent-manifest.js` with real checks (or rename to `scripts/validate-agent-config.js` and update call sites).
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - Primary: `scripts/validate-agent-manifest.js` (and possibly `package.json`, `.github/workflows/ci.yml`)
   - Secondary: `[readonly] .agents/registry/skills.json`, `[readonly] docs/git-safety.md`, `[readonly] .claude/settings.json`
@@ -228,7 +228,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Type:** DECISION
 - **Status:** Complete (2026-02-15)
 - **Deliverable:** Recorded decision in plan + implemented schema choice in `docs/git-safety.md`.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `docs/git-safety.md`, `.claude/settings.json`, `.claude/hooks/pre-tool-use-git-safety.sh`, `scripts/agent-bin/git`
 - **Depends on:** -
 - **Blocks:** TASK-04
@@ -255,7 +255,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - Generated artifacts committed under `.agents/safety/generated/` (JSON + shell include).
   - `.claude/settings.json` `permissions.{deny,ask,allow}` regenerated from the kernel (JSON-level replacement; no in-file markers).
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - Primary: `docs/git-safety.md`, `.claude/settings.json`, `.agents/safety/generated/git-safety-policy.json`, `.agents/safety/generated/git-safety-policy.sh`, generator script(s)
   - Secondary: `[readonly] .claude/hooks/pre-tool-use-git-safety.sh`, `[readonly] scripts/agent-bin/git`, `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
@@ -296,7 +296,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Status:** Complete (2026-02-15)
 - **Deliverable:** Tests reference generated policy artifacts rather than duplicating the matrix in test code.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - Primary: `scripts/__tests__/git-safety-policy.test.ts`
   - Secondary: `[readonly] docs/git-safety.md`, `[readonly] generator outputs`
@@ -338,7 +338,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - `scripts/agent-bin/git` consumes the same evaluator (already done in TASK-11).
   - Kernel + generator remain the only place the policy is edited; enforcement scripts become thin evaluators.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - Primary: `.claude/hooks/pre-tool-use-git-safety.sh`, `scripts/agent-bin/git`
   - Secondary: `[readonly] .agents/safety/generated/git-safety-policy.*`, `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
@@ -396,7 +396,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Type:** INVESTIGATE
 - **Status:** Complete (2026-02-15)
 - **Deliverable:** Concrete interface contract for hooking the evaluator to Claude PreToolUse (raw string input), including ask behavior and parsing scope.
-- **Execution-Skill:** lp-replan
+- **Execution-Skill:** lp-do-replan
 - **Affects:** `[readonly] .claude/hooks/pre-tool-use-git-safety.sh`, `[readonly] scripts/agents/evaluate-git-safety.mjs`, `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] .claude/settings.json`
 - **Depends on:** TASK-11
 - **Blocks:** TASK-14, TASK-09
@@ -431,7 +431,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Type:** SPIKE
 - **Status:** Complete (2026-02-15)
 - **Deliverable:** Evaluator supports raw command strings safely (quote-aware) and a hook mode that treats `ask` as allow.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - Primary: `scripts/agents/evaluate-git-safety.mjs` (extend CLI), plus new unit tests (new file under `scripts/__tests__/`)
   - Secondary: `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] docs/git-safety.md`
@@ -462,7 +462,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - Option A: generated bash data tables (regex + allow/deny lists) sourced by both scripts
   - Option B: shared node evaluator CLI (`node scripts/...`) called by both scripts
   - Option C: keep scripts hand-maintained; enforce via tests only (explicitly accept manual edits)
-- **Execution-Skill:** lp-replan
+- **Execution-Skill:** lp-do-replan
 - **Affects:** `[readonly] docs/git-safety.md`, `[readonly] .agents/safety/generated/*`, `[readonly] .claude/hooks/pre-tool-use-git-safety.sh`, `[readonly] scripts/agent-bin/git`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
 - **Depends on:** TASK-04, TASK-05
 - **Blocks:** TASK-11
@@ -502,7 +502,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Type:** SPIKE
 - **Status:** Complete (2026-02-15)
 - **Deliverable:** One enforcement layer consumes the shared evaluator and passes tests (stabilize semantics before touching the messier entrypoint).
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - Primary: (recommended first) `scripts/agent-bin/git` (argv-based, cleaner inputs), plus evaluator entrypoint (new) and/or generator outputs under `.agents/safety/generated/`
   - Secondary: `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
@@ -529,7 +529,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Type:** SPIKE
 - **Status:** Complete (2026-02-15)
 - **Deliverable:** Kernel gains a semantic rule set suitable for evaluation, and the generator emits a compiled policy artifact that includes semantic rules (not only platform matchers).
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - Primary: `docs/git-safety.md` (kernel schema), `scripts/src/agents/git-safety-policy.ts`, `scripts/src/agents/generate-git-safety-policy.ts`, `.agents/safety/generated/git-safety-policy.json`
   - Secondary: `[readonly] .claude/hooks/pre-tool-use-git-safety.sh`, `[readonly] scripts/agent-bin/git`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
@@ -557,7 +557,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Status:** Complete (2026-02-15)
 - **Deliverable:** Docs no longer point at stale SKILLS_INDEX; the index is updated or replaced with generated output.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - Primary: `.claude/SKILLS_INDEX.md`, `.claude/HOW_TO_USE_SKILLS.md`, `.claude/SETUP_COMPLETE.md`, `docs/github-setup.md`
   - Secondary: `[readonly] .agents/registry/skills.json`
@@ -579,7 +579,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Validation contract:**
   - TC-01: `rg -n "skills/fact-find" .claude/SKILLS_INDEX.md` returns no matches → pass.
   - TC-02: `rg -n "SKILLS_INDEX\\.md" docs/github-setup.md .claude/HOW_TO_USE_SKILLS.md .claude/SETUP_COMPLETE.md` returns no matches → pass.
-  - TC-03: `scripts/agents/list-skills` runs and includes `lp-plan` → pass.
+  - TC-03: `scripts/agents/list-skills` runs and includes `lp-do-plan` → pass.
 - **Rollout / rollback:** revert doc changes.
 - **Evidence:**
   - Updated `.claude/SKILLS_INDEX.md` to point at `scripts/agents/list-skills` + generated registry.
@@ -620,7 +620,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Status:** Complete (2026-02-15)
 - **Deliverable:** Updated `CODEX.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `CODEX.md`, (optional) `AGENTS.md`
 - **Depends on:** TASK-07
 - **Blocks:** -

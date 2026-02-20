@@ -299,11 +299,11 @@ The detailed stage-by-stage data flow (inputs, processing, outputs) is captured 
 flowchart LR
     P[Platform Capability Baseline\nperiodic] --> U[Per-Business Upgrade Brief\nreference-site synthesis]
     U --> M[Best-Of Matrix\nAdopt/Adapt/Defer/Reject]
-    M --> Q[lp-fact-find backlog packet]
-    Q --> R[lp-plan/lp-build]
+    M --> Q[lp-do-fact-find backlog packet]
+    Q --> R[lp-do-plan/lp-do-build]
 ```
 
-This sub-loop feeds the main startup loop at the lp-fact-find stage.
+This sub-loop feeds the main startup loop at the lp-do-fact-find stage.
 
 ## Stage-by-Stage Workflow [Engineering Reference]
 

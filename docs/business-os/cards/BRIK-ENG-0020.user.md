@@ -17,7 +17,7 @@ Last-Progress: 2026-02-02
 Architecture-Decision: Claude Code + MCP Tools (Pattern B)
 Workflow-Design: docs/plans/email-autodraft-workflow-design.md
 Consolidation-Plan: docs/plans/email-autodraft-consolidation-plan.md
-Consolidation-Fact-Find: docs/plans/email-autodraft-consolidation-lp-fact-find.md
+Consolidation-Fact-Find: docs/plans/email-autodraft-consolidation-lp-do-fact-find.md
 Last-updated: 2026-02-05
 ---
 
@@ -104,12 +104,12 @@ Estimated impact: 60-80% of inquiries can be handled with high-quality auto-draf
 **Consolidation Plan (2026-02-02):** Comprehensive world-class email autodraft system.
 
 1. ✅ ~~Move to Fact-finding lane~~
-2. ✅ ~~Revise lp-fact-find with Google Apps Script approach~~
+2. ✅ ~~Revise lp-do-fact-find with Google Apps Script approach~~
 3. ✅ ~~Make GDPR decision~~ - Anthropic DPA accepted (2026-02-01)
 4. ✅ ~~Architecture pivot~~ - Claude Code + MCP Tools (2026-02-01)
 5. ✅ ~~Interface decision~~ - Claude Code selected (2026-02-01)
 6. ✅ ~~Workflow design~~ - Complete (see `docs/plans/email-autodraft-workflow-design.md`)
-7. ✅ ~~Consolidation lp-fact-find~~ - Complete (see `docs/plans/email-autodraft-consolidation-lp-fact-find.md`)
+7. ✅ ~~Consolidation lp-do-fact-find~~ - Complete (see `docs/plans/email-autodraft-consolidation-lp-do-fact-find.md`)
 8. ✅ ~~Consolidation plan~~ - Complete (see `docs/plans/email-autodraft-consolidation-plan.md`)
 9. **NEXT:** Start with TASK-00 (baseline measurement) - blocks all implementation
 10. **All 19 tasks now ≥80%** — Re-plan completed 2026-02-02, raising 8 tasks above threshold
@@ -119,4 +119,4 @@ Estimated impact: 60-80% of inquiries can be handled with high-quality auto-draf
 - Three-stage pipeline: Interpretation → Composition → Quality Gate
 - Professional email formatting from GAS
 - Agreement detection with 0% false positive tolerance
-- Overall confidence: 82% (raised from 74% via lp-replan)
+- Overall confidence: 82% (raised from 74% via lp-do-replan)

@@ -13,7 +13,7 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/react-doctor-remediation/plan.md
 Business-OS-Integration: off
@@ -314,7 +314,7 @@ Ordered by priority (security first, then correctness, then performance/quality)
 
 ## Execution Routing Packet
 
-- Primary execution skill: `lp-build`
+- Primary execution skill: `lp-do-build`
 - Supporting skills: none
 - Deliverable acceptance package:
   - `pnpm typecheck` passes across affected packages.
@@ -363,4 +363,4 @@ Ordered by priority (security first, then correctness, then performance/quality)
 - Blocking items:
   - None blocking planning. Two open questions (FALLBACK_AUTHOR, data-fetching approach) can be resolved per-task during build; they do not block creating the task list.
 - Recommended next step:
-  - `/lp-plan react-doctor-remediation` — start with Tier-1 tasks (SEC, BUG, HOOKS) which are fully evidenced.
+  - `/lp-do-plan react-doctor-remediation` — start with Tier-1 tasks (SEC, BUG, HOOKS) which are fully evidenced.

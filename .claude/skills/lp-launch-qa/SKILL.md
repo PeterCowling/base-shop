@@ -15,6 +15,9 @@ Pre-launch quality assurance gate (S9B). Audits 6 domains in parallel and produc
 
 **Arguments:**
 - `--business`: Business unit code (`BRIK`, `PLAT`, `PIPE`, `BOS`)
+
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
+
 - `--domain`: Optional scope filter. Default: `all`
 
 **Fast path examples:**
@@ -24,9 +27,9 @@ Pre-launch quality assurance gate (S9B). Audits 6 domains in parallel and produc
 /lp-launch-qa --business BRIK --domain seo
 ```
 
-**When to use:** After `/lp-build` completes S9; before `/lp-launch` (S10) or any experiment driving external traffic; as a periodic health check on live production sites.
+**When to use:** After `/lp-do-build` completes S9; before `/lp-launch` (S10) or any experiment driving external traffic; as a periodic health check on live production sites.
 
-**When NOT to use:** During development; for non-customer-facing internal tools; as a replacement for `/lp-plan` validation contracts.
+**When NOT to use:** During development; for non-customer-facing internal tools; as a replacement for `/lp-do-plan` validation contracts.
 
 ## Operating Mode
 
@@ -45,7 +48,7 @@ Pre-launch quality assurance gate (S9B). Audits 6 domains in parallel and produc
 - Platform capability baseline: `docs/business-os/platform-capability/latest.user.md`
 - Startup loop state: `docs/business-os/startup-baselines/<BIZ>/loop-state.json`
 
-**If baseline/loop-state is missing:** STOP — "Baseline missing. Run `/lp-fact-find` with `Startup-Deliverable-Alias: website-upgrade-backlog` to create site baseline before launch QA."
+**If baseline/loop-state is missing:** STOP — "Baseline missing. Run `/lp-do-fact-find` with `Startup-Deliverable-Alias: website-upgrade-backlog` to create site baseline before launch QA."
 
 ## Workflow
 
@@ -53,7 +56,7 @@ Pre-launch quality assurance gate (S9B). Audits 6 domains in parallel and produc
 
 **1a) Validate arguments** — confirm `--business` valid; confirm `--domain` is one of: `conversion`, `seo`, `performance`, `legal`, `brand-copy`, `measurement`, `all`.
 
-**1b) Locate site baseline and loop state** — read `latest.user.md` for deployment URL, analytics config, conversion flows, legal doc paths; read loop state to confirm S9 complete. If S9 incomplete: STOP — "Build incomplete. Complete `/lp-build` on S9 tasks before running launch QA."
+**1b) Locate site baseline and loop state** — read `latest.user.md` for deployment URL, analytics config, conversion flows, legal doc paths; read loop state to confirm S9 complete. If S9 incomplete: STOP — "Build incomplete. Complete `/lp-do-build` on S9 tasks before running launch QA."
 
 **1c) Identify deployment target** — staging URL for pre-launch; production URL for health check. Default to staging unless user specifies production.
 

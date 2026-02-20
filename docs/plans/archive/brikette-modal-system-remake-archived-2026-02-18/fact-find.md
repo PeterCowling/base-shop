@@ -14,8 +14,8 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-replan,lp-refactor
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-replan,lp-refactor
 Related-Plan: docs/plans/brikette-modal-system-remake/plan.md
 Business-OS-Integration: off
 Business-Unit: BRIK
@@ -288,9 +288,9 @@ Core conclusion: the panel visibility incident was a symptom of broader modal ar
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `lp-build`
+  - `lp-do-build`
 - Supporting skills:
-  - `lp-replan`, `lp-refactor`
+  - `lp-do-replan`, `lp-refactor`
 - Deliverable acceptance package:
   - Type-safe modal contract, single host, invariant tests, migration notes.
 - Post-delivery measurement plan:
@@ -317,4 +317,4 @@ Core conclusion: the panel visibility incident was a symptom of broader modal ar
   - Confirm owner stack decision (Q1).
   - Confirm booking v1/v2 convergence policy (Q2).
 - Recommended next step:
-  - `/lp-plan docs/plans/brikette-modal-system-remake/fact-find.md`
+  - `/lp-do-plan docs/plans/brikette-modal-system-remake/fact-find.md`

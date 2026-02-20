@@ -88,7 +88,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 
 | Stage | Name | Primary Process Activities |
 |---|---|---|
-| S0 | Intake | FIN-3 (initial risk scan), DATA-1 (KPI setup start) |
+| DISCOVERY | Intake | FIN-3 (initial risk scan), DATA-1 (KPI setup start) |
 | S1 | Readiness | FIN-3 (compliance readiness), CDI-2 (customer evidence review) |
 | S1B | Measurement bootstrap | DATA-1 (KPI infrastructure setup) |
 | S2A | Historical baseline | DATA-1 (baseline KPI data collection) |

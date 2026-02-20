@@ -12,7 +12,7 @@ Feature-Slug: startup-loop-process-naming-ux
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-sequence
 Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); overall effort-weighted (S=1, M=2, L=3)
@@ -139,7 +139,7 @@ Chosen approach: Option B.
 ### TASK-01: Map startup-loop stage addressing and packet emission surfaces
 - **Type:** INVESTIGATE
 - **Deliverable:** `docs/plans/startup-loop-process-naming-ux/artifacts/2026-02-17-stage-addressing-surface-map.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -174,7 +174,7 @@ Chosen approach: Option B.
 ### TASK-02: Create canonical stage dictionary schema and dataset
 - **Type:** IMPLEMENT
 - **Deliverable:** `docs/business-os/startup-loop/stage-operator-dictionary.yaml` + `docs/business-os/startup-loop/stage-operator-dictionary.schema.json`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -220,7 +220,7 @@ Chosen approach: Option B.
 ### TASK-03: Build deterministic stage-view generator and generated artifacts
 - **Type:** IMPLEMENT
 - **Deliverable:** generation tool + committed generated outputs for operator surfaces
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -262,7 +262,7 @@ Chosen approach: Option B.
 ### TASK-04: Integrate label-first naming and derived run-packet display fields
 - **Type:** IMPLEMENT
 - **Deliverable:** updated startup-loop contracts + operator docs consuming generated naming views
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
@@ -308,8 +308,8 @@ Chosen approach: Option B.
 
 ### TASK-05: Horizon checkpoint — reassess downstream parser and guardrail scope
 - **Type:** CHECKPOINT
-- **Deliverable:** updated downstream execution notes in this plan via `/lp-replan` if assumptions break
-- **Execution-Skill:** lp-build
+- **Deliverable:** updated downstream execution notes in this plan via `/lp-do-replan` if assumptions break
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -321,8 +321,8 @@ Chosen approach: Option B.
   - Approach: 95% - avoids locking into wrong parser surface assumptions
   - Impact: 95% - prevents downstream rework
 - **Acceptance:**
-  - `/lp-build` checkpoint executor run before TASK-06.
-  - If assumptions diverged, `/lp-replan` updates TASK-06/TASK-07 with revised dependencies/confidence.
+  - `/lp-do-build` checkpoint executor run before TASK-06.
+  - If assumptions diverged, `/lp-do-replan` updates TASK-06/TASK-07 with revised dependencies/confidence.
   - Plan re-sequenced after any topology changes.
 - **Horizon assumptions to validate:**
   - Stage-addressing enforcement boundary identified in TASK-01 still matches post-TASK-04 architecture.
@@ -337,7 +337,7 @@ Chosen approach: Option B.
 ### TASK-06: Implement fail-closed stage addressing (`--stage`, `--stage-alias`, strict `--stage-label`)
 - **Type:** IMPLEMENT
 - **Deliverable:** stage addressing resolver + contract updates with strict compatibility behavior
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -382,7 +382,7 @@ Chosen approach: Option B.
 ### TASK-07: Add guardrails (lint/tests) and capture operator comprehension evidence
 - **Type:** IMPLEMENT
 - **Deliverable:** lint/test coverage + operator comprehension pilot artifact
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -462,7 +462,7 @@ Chosen approach: Option B.
 
 - 2026-02-17: Keep startup-loop stage IDs stable as runtime contracts; improve UX through additive operator labels and generated views.
 - 2026-02-17: Standardize addressing on `--stage` + `--stage-alias`; `--stage-label` remains strict exact-match compatibility only (no fuzzy matching).
-- 2026-02-17: Plan mode remains `plan-only`; no automatic handoff to `/lp-build` in this step.
+- 2026-02-17: Plan mode remains `plan-only`; no automatic handoff to `/lp-do-build` in this step.
 
 ## Overall-confidence Calculation
 

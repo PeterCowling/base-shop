@@ -10,7 +10,7 @@ Feature-Slug: email-system-design-gaps-v2
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
@@ -26,7 +26,7 @@ Relates-to: docs/plans/archive/email-system-design-gaps-v2/fact-find.md
 
 ## Summary
 
-This plan operationalizes the v2 fact-find into an auth-first remediation sequence for the Brikette email system. The sequence treats route auth as a hard production gate, then establishes production telemetry and reference-quality controls, and finally adds the reviewed-ledger learning loop. It also includes label-path consistency, Octorate parser hardening, and startup preflight checks so runtime behavior is measurable and safer. The plan is intentionally `Draft` and `plan-only`: implementation should begin only via `/lp-build` task-by-task with checkpoint enforcement.
+This plan operationalizes the v2 fact-find into an auth-first remediation sequence for the Brikette email system. The sequence treats route auth as a hard production gate, then establishes production telemetry and reference-quality controls, and finally adds the reviewed-ledger learning loop. It also includes label-path consistency, Octorate parser hardening, and startup preflight checks so runtime behavior is measurable and safer. The plan is intentionally `Draft` and `plan-only`: implementation should begin only via `/lp-do-build` task-by-task with checkpoint enforcement.
 
 ## Goals
 
@@ -109,7 +109,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 
 ## Parallelism Guide
 
-Execution waves for `/lp-build` subagent dispatch. Later waves require completion of prerequisite blockers.
+Execution waves for `/lp-do-build` subagent dispatch. Later waves require completion of prerequisite blockers.
 
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
@@ -130,7 +130,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-01: Add server-side auth/authz guard for reception MCP routes
 - **Type:** IMPLEMENT
 - **Deliverable:** Authenticated/authorized route guards for `booking-email` and `guest-email-activity` API handlers with integration tests in reception app.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -173,7 +173,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-02: Resolve production usage attribution for queue vs reception draft paths
 - **Type:** INVESTIGATE
 - **Deliverable:** Investigation note appended to plan + metrics baseline for 30-day drafted outcomes and path attribution.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-19)
@@ -228,7 +228,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-12: Finalize telemetry event contract + daily rollup sink before instrumentation
 - **Type:** INVESTIGATE
 - **Deliverable:** Evidence-backed telemetry contract (event names/fields/source-path taxonomy) and one storage sink decision for daily rollups.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -265,7 +265,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-13: Produce template reference-scope matrix for all 53 templates
 - **Type:** INVESTIGATE
 - **Deliverable:** Full template matrix marking `reference_required` vs `reference_optional/excluded`, canonical URL targets, and normalization batches.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -305,7 +305,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-03: Add production telemetry for fallback, drafted outcomes, and path usage
 - **Type:** IMPLEMENT
 - **Deliverable:** Structured counters/events for fallback and path attribution plus daily rollup visibility for operators.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -370,7 +370,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-04: Normalize template references and scoping metadata
 - **Type:** IMPLEMENT
 - **Deliverable:** Template corpus normalized with canonical references and explicit scope tags for where references are required.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -432,7 +432,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-05: Enforce strict context-aware reference quality checks
 - **Type:** IMPLEMENT
 - **Deliverable:** Expanded `draft_quality_check` rules that require references where applicable and validate appropriateness.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -503,7 +503,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-09: Unify label attribution for booking and guest-activity draft flows
 - **Type:** IMPLEMENT
 - **Deliverable:** Consistent queue/outcome labeling for booking and guest-activity generated drafts.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -556,7 +556,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-11: Add startup preflight checks for email system dependencies
 - **Type:** IMPLEMENT
 - **Deliverable:** Deterministic startup preflight for Gmail/Firebase/Octorate/DB prerequisites with actionable operator messaging.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -593,8 +593,8 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 
 ### TASK-06: Horizon checkpoint - reassess downstream plan
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated downstream confidence and dependency integrity via `/lp-replan` after foundation tranche.
-- **Execution-Skill:** lp-build
+- **Deliverable:** Updated downstream confidence and dependency integrity via `/lp-do-replan` after foundation tranche.
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-20)
@@ -606,8 +606,8 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - Approach: 95% - checkpoint prevents blind continuation into learning/parser tranche.
   - Impact: 95% - improves safety of downstream execution.
 - **Acceptance:**
-  - `/lp-build` reaches checkpoint and pauses normal progression.
-  - `/lp-replan` updates downstream tasks using fresh evidence.
+  - `/lp-do-build` reaches checkpoint and pauses normal progression.
+  - `/lp-do-replan` updates downstream tasks using fresh evidence.
   - Plan remains sequenced after checkpoint adjustments.
 - **Horizon assumptions to validate:**
   - Telemetry baseline is sufficient to prioritize between learning-loop and Octorate hardening work.
@@ -620,7 +620,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - Checkpoint assumption review:
     - Telemetry baseline is now live from TASK-03 (path attribution + fallback/drafted outcome signals).
     - Strict reference enforcement from TASK-05 passed regression harness (`draft_quality_check` + `draft-pipeline.integration` at `10/10` fixture pass-rate).
-  - `/lp-replan` checkpoint reassessment outcome for downstream tranche:
+  - `/lp-do-replan` checkpoint reassessment outcome for downstream tranche:
     - No topology change required; task IDs and dependency graph remain valid.
     - No `/lp-sequence` rerun required.
     - Confidence/dependency status remains:
@@ -631,7 +631,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-14: Probe reviewed-ledger storage/state model and promotion idempotency contract
 - **Type:** SPIKE
 - **Deliverable:** Short prototype/decision packet covering storage format, review-state transitions, promotion idempotency keying, and rollback semantics.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -673,7 +673,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-15: Build 90-day Octorate subject corpus + misroute baseline for parser hardening
 - **Type:** INVESTIGATE
 - **Deliverable:** Reproducible subject-corpus baseline (90-day window), variant clustering, and fixture candidate list for TASK-10.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -734,7 +734,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-07: Build unknown-answer capture and reviewed-ledger ingestion
 - **Type:** IMPLEMENT
 - **Deliverable:** Persistence path for unknown-answer events into reviewed ledger with operator review state.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -800,7 +800,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-10: Harden Octorate routing patterns and replay fixtures
 - **Type:** IMPLEMENT
 - **Deliverable:** Expanded Octorate subject parser/pattern set with replay fixtures and misroute tests.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -862,7 +862,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 ### TASK-08: Build reviewed promotion path from ledger into reusable KB/templates
 - **Type:** IMPLEMENT
 - **Deliverable:** Controlled promotion workflow that writes approved ledger entries to reusable knowledge/template assets with audit trail.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -973,21 +973,21 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-19: D1 locked - deployment mode private/single-computer for now; auth hardening still mandatory before broader rollout.
 - 2026-02-19: D2 locked - strict reference-required policy for factual/policy answers.
 - 2026-02-19: D3 locked - reviewed-ledger-first learning architecture.
-- 2026-02-19: `/lp-plan` mode selected as `plan-only`; no automatic `/lp-build` handoff.
-- 2026-02-19: `/lp-replan` (standard mode) added precursor chain TASK-12/TASK-13/TASK-14/TASK-15; stable task IDs preserved and execution resequenced.
-- 2026-02-19: `/lp-build` completed TASK-13 and recorded template scope matrix evidence; no further build-eligible tasks until `/lp-replan`.
-- 2026-02-19: `/lp-replan` (standard mode) promoted TASK-03 and TASK-04 to 80% after precursor completion + fresh E2 validation; Wave 3 is now build-eligible.
-- 2026-02-19: `/lp-build` completed TASK-03 telemetry implementation; Wave 3 now has TASK-04 remaining.
-- 2026-02-19: `/lp-build` completed TASK-04 template normalization and scope tagging; Wave 4 is open with TASK-09 build-eligible and TASK-05 below confidence threshold.
-- 2026-02-19: `/lp-build` completed TASK-09 drafted-outcome label harmonization for booking and guest-activity flows; no further build-eligible tasks until `/lp-replan` promotes TASK-05.
-- 2026-02-19: `/lp-replan` (standard mode) promoted TASK-05 to 80% after prerequisite completion and fresh governed E2 checks; Wave 4 is now build-eligible for TASK-05 before checkpoint TASK-06.
-- 2026-02-20: `/lp-build` completed TASK-05 strict context-aware reference quality enforcement with full TC-05 validation; next runnable task is checkpoint TASK-06.
-- 2026-02-20: `/lp-build` executed checkpoint TASK-06 and reassessed downstream tranche; no resequencing required, Wave 6 (`TASK-14`, `TASK-15`) is now build-eligible.
-- 2026-02-20: `/lp-build` completed Wave 6 precursor tasks (`TASK-14` spike + `TASK-15` investigation). Wave 7 remains blocked by confidence threshold (`TASK-07`, `TASK-10` at `75%`), requiring `/lp-replan` before further implementation.
-- 2026-02-20: `/lp-replan` (standard mode) promoted `TASK-07` and `TASK-10` from `75%` to `80%` using fresh governed E2 evidence; no topology change, no `/lp-sequence` rerun, Wave 7 is now `/lp-build` eligible.
-- 2026-02-20: `/lp-build` completed Wave 7 implementation tasks (`TASK-07`, `TASK-10`) with governed validation; remaining task `TASK-08` stays below threshold (`75%`) and requires `/lp-replan` before execution.
-- 2026-02-20: `/lp-replan` (standard mode) promoted `TASK-08` from `75%` to `80%` using TASK-07/TASK-14 completion evidence plus fresh governed tests; no topology change, no `/lp-sequence` rerun; Wave 8 is now `/lp-build` eligible.
-- 2026-02-20: `/lp-build` completed Wave 8 implementation task (`TASK-08`) with governed validation; all runnable tasks are complete and plan status is `Complete`.
+- 2026-02-19: `/lp-do-plan` mode selected as `plan-only`; no automatic `/lp-do-build` handoff.
+- 2026-02-19: `/lp-do-replan` (standard mode) added precursor chain TASK-12/TASK-13/TASK-14/TASK-15; stable task IDs preserved and execution resequenced.
+- 2026-02-19: `/lp-do-build` completed TASK-13 and recorded template scope matrix evidence; no further build-eligible tasks until `/lp-do-replan`.
+- 2026-02-19: `/lp-do-replan` (standard mode) promoted TASK-03 and TASK-04 to 80% after precursor completion + fresh E2 validation; Wave 3 is now build-eligible.
+- 2026-02-19: `/lp-do-build` completed TASK-03 telemetry implementation; Wave 3 now has TASK-04 remaining.
+- 2026-02-19: `/lp-do-build` completed TASK-04 template normalization and scope tagging; Wave 4 is open with TASK-09 build-eligible and TASK-05 below confidence threshold.
+- 2026-02-19: `/lp-do-build` completed TASK-09 drafted-outcome label harmonization for booking and guest-activity flows; no further build-eligible tasks until `/lp-do-replan` promotes TASK-05.
+- 2026-02-19: `/lp-do-replan` (standard mode) promoted TASK-05 to 80% after prerequisite completion and fresh governed E2 checks; Wave 4 is now build-eligible for TASK-05 before checkpoint TASK-06.
+- 2026-02-20: `/lp-do-build` completed TASK-05 strict context-aware reference quality enforcement with full TC-05 validation; next runnable task is checkpoint TASK-06.
+- 2026-02-20: `/lp-do-build` executed checkpoint TASK-06 and reassessed downstream tranche; no resequencing required, Wave 6 (`TASK-14`, `TASK-15`) is now build-eligible.
+- 2026-02-20: `/lp-do-build` completed Wave 6 precursor tasks (`TASK-14` spike + `TASK-15` investigation). Wave 7 remains blocked by confidence threshold (`TASK-07`, `TASK-10` at `75%`), requiring `/lp-do-replan` before further implementation.
+- 2026-02-20: `/lp-do-replan` (standard mode) promoted `TASK-07` and `TASK-10` from `75%` to `80%` using fresh governed E2 evidence; no topology change, no `/lp-sequence` rerun, Wave 7 is now `/lp-do-build` eligible.
+- 2026-02-20: `/lp-do-build` completed Wave 7 implementation tasks (`TASK-07`, `TASK-10`) with governed validation; remaining task `TASK-08` stays below threshold (`75%`) and requires `/lp-do-replan` before execution.
+- 2026-02-20: `/lp-do-replan` (standard mode) promoted `TASK-08` from `75%` to `80%` using TASK-07/TASK-14 completion evidence plus fresh governed tests; no topology change, no `/lp-sequence` rerun; Wave 8 is now `/lp-do-build` eligible.
+- 2026-02-20: `/lp-do-build` completed Wave 8 implementation task (`TASK-08`) with governed validation; all runnable tasks are complete and plan status is `Complete`.
 
 ## Overall-confidence Calculation
 

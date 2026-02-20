@@ -10,7 +10,7 @@ Feature-Slug: brik-activities-program
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-channels, /lp-seo
 Related-Plan: docs/plans/brik-activities-program/plan.md
 Business-OS-Integration: off
@@ -224,7 +224,7 @@ Current (implied) Firebase RTDB contract used by Prime:
   - Why it matters: templates, cadence, and asset formats differ.
   - Default assumption (if any) + risk: default to Instagram + TikTok; risk is wasted effort if channel focus differs.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - **Implementation:** 78%
   - Prime guest surfaces exist; missing piece is schedule authoring + seeding and (likely) RTDB write hardening.
 - **Approach:** 75%
@@ -259,7 +259,7 @@ Current (implied) Firebase RTDB contract used by Prime:
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - /lp-build
+  - /lp-do-build
 - Supporting skills:
   - /lp-channels, /lp-seo
 - Deliverable acceptance package (what must exist before task can be marked complete):
@@ -277,4 +277,4 @@ Current (implied) Firebase RTDB contract used by Prime:
   - Specific definition of the 3 baseline anchor activities (so we can seed Prime and market without overclaiming)
   - Work-exchange minimum commitment (so careers copy is coherent)
 - Recommended next step:
-  - Proceed to `/lp-plan brik-activities-program` (plan can include explicit DECIDE tasks for the remaining open items).
+  - Proceed to `/lp-do-plan brik-activities-program` (plan can include explicit DECIDE tasks for the remaining open items).

@@ -9,7 +9,7 @@ Feature-Slug: react-doctor-remediation
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
@@ -112,7 +112,7 @@ Card-ID: none
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/cms/src/app/cms/shop/[shop]/themes/page.tsx`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -158,7 +158,7 @@ Card-ID: none
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/cms/src/app/cms/configurator/steps/StepShopType.tsx`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -200,7 +200,7 @@ Card-ID: none
 
 - **Type:** INVESTIGATE
 - **Deliverable:** triage artifact — `docs/plans/react-doctor-remediation/task-03-ui-hooks-triage.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -234,7 +234,7 @@ Card-ID: none
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 8 Storybook story files under `packages/ui/src/`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S *(revised from L after TASK-03 triage)*
@@ -266,7 +266,7 @@ Card-ID: none
 - **Planning validation (M/L required):**
   - Checks run: TASK-03 triage must be complete. File list and classification confirmed.
   - Validation artifacts: `docs/plans/react-doctor-remediation/task-03-ui-hooks-triage.md`
-  - Unexpected findings: if TASK-03 reveals >30 true violations at L complexity each, raise this to `/lp-replan` before proceeding.
+  - Unexpected findings: if TASK-03 reveals >30 true violations at L complexity each, raise this to `/lp-do-replan` before proceeding.
 - **Scouts:** After TASK-03 completes, update this task's confidence based on actual scope. If triage shows ≤10 true violations at S complexity each, raise confidence to 85%.
 - **Edge Cases & Hardening:** Extracted components that used to close over parent state now receive that state as props. If the prop threading is complex (>3 levels), prefer extracting to a custom hook that reads from context instead.
 - **What would make this >=80%:** TASK-03 triage complete with file list enumerated and all instances classified.
@@ -282,8 +282,8 @@ Card-ID: none
 ### CHECKPOINT-A: Tier-1 complete — verify errors cleared, assess blast radius
 
 - **Type:** CHECKPOINT
-- **Deliverable:** updated plan evidence via `/lp-replan`; react-doctor rescan results
-- **Execution-Skill:** lp-build
+- **Deliverable:** updated plan evidence via `/lp-do-replan`; react-doctor rescan results
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -299,7 +299,7 @@ Card-ID: none
   - `npx -y react-doctor@latest` re-run on at minimum `@acme/ui`, `@apps/cms`; error counts vs baseline recorded.
   - All Tier-1 errors (auth gap, inline component, hooks violations) confirmed zero.
   - Monorepo typecheck clean.
-  - `/lp-replan` run on TASK-05 through TASK-11 if any unexpected findings from TASK-04.
+  - `/lp-do-replan` run on TASK-05 through TASK-11 if any unexpected findings from TASK-04.
   - Plan updated with new confidence values if any revision needed.
 - **Horizon assumptions to validate:**
   - TASK-04 scope was manageable (≤30 true violations); no unexpected hook extraction patterns surfaced.
@@ -316,7 +316,7 @@ Card-ID: none
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — multiple files in `apps/cms/src`, `apps/cover-me-pretty/src`, `apps/brikette/src`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -363,7 +363,7 @@ Card-ID: none
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — files in `apps/cms/src` (×4) and `packages/ui/src` (×7)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -405,7 +405,7 @@ Card-ID: none
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `packages/ui/src/` (×17), `apps/brikette/src/` (×7)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -448,7 +448,7 @@ Card-ID: none
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `packages/ui/src/` (×15), `apps/cms/src/` (×6), `apps/cover-me-pretty/src/` (×3), `packages/template-app/src/` (×3)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -489,7 +489,7 @@ Card-ID: none
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/brikette/src/` (×34), `packages/ui/src/` (×10), `packages/template-app/src/` (×8)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -530,7 +530,7 @@ Card-ID: none
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — multiple files in `apps/brikette/src/`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
@@ -560,7 +560,7 @@ Card-ID: none
 - **Planning validation (L required):**
   - Checks run: `grep -n "key={index}\|key={i}\|key={idx}" apps/brikette/src/` — confirm count is ≈71 before starting.
   - Validation artifacts: pre-fix grep count, post-fix grep count (should be 0 in brikette).
-  - Unexpected findings: if any list data model has no stable ID field, raise to `/lp-replan` for that subset before proceeding.
+  - Unexpected findings: if any list data model has no stable ID field, raise to `/lp-do-replan` for that subset before proceeding.
 - **Scouts:** Read `apps/brikette/src/components/guides/` — guide section data likely uses `id` or `type` as stable keys already. Confirm before writing fix code.
 - **Edge Cases & Hardening:** If a list is guaranteed immutable and never reordered (e.g., a static menu rendered once), index keys technically do not cause bugs — but replace anyway for consistency and future-proofing.
 - **What would make this >=90%:** Pre-audit confirming all 71 lists have a natural stable ID field in the data shape.
@@ -576,7 +576,7 @@ Card-ID: none
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/cms/src/` (×25), `packages/ui/src/` (×11)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -621,7 +621,7 @@ Card-ID: none
 
 - **Type:** CHECKPOINT
 - **Deliverable:** updated plan evidence; react-doctor rescan results; useSWR follow-on plan stub
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -654,7 +654,7 @@ Card-ID: none
 
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
-| `packages/ui` TASK-04 scope exceeds L estimate (>30 complex hook extractions) | Medium | High | TASK-03 triage gates TASK-04; raise to `/lp-replan` if scope is excessive before building |
+| `packages/ui` TASK-04 scope exceeds L estimate (>30 complex hook extractions) | Medium | High | TASK-03 triage gates TASK-04; raise to `/lp-do-replan` if scope is excessive before building |
 | Array-key fixes (TASK-10) require data model changes for lists without stable IDs | Low | Medium | Scout each list data shape before committing; add deterministic composite key if no ID exists |
 | `next/script` strategy change breaks JSON-LD structured data in brikette | Low | High | Scout brikette's dominant script pattern before TASK-09; confirm JSON-LD uses `beforeInteractive` or native inline pattern |
 | `packages/ui` consumer breakage from TASK-04 hook extractions | Medium | High | Run monorepo typecheck after every batch of TASK-04 changes |

@@ -43,7 +43,7 @@ B) Scored item table
    Columns: `Item | Impact | Speed | Confidence | Dependency | Delay risk | Validation leverage | Weighted score | Priority`
 C) Top backlog (P1/P2/P3) with acceptance criteria
 D) Deferred items and rationale
-E) Execution recommendation for next `lp-fact-find -> lp-plan -> lp-build` run
+E) Execution recommendation for next `lp-do-fact-find -> lp-do-plan -> lp-do-build` run
 
 Rules:
 - No generic rankings; every score needs evidence-based rationale.

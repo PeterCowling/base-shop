@@ -5,7 +5,7 @@ Domain: Dashboard / Upgrade
 Last-reviewed: 2026-02-14
 Relates-to charter: none
 Last-updated: 2026-02-14
-Last-updated-by: Codex (review-fact-check)
+Last-updated-by: Codex (lp-do-factcheck)
 Audit-Ref: working-tree
 Audit-Date: 2026-02-14
 ---

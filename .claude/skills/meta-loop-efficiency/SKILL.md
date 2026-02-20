@@ -60,7 +60,7 @@ find "$skill" -name "*.md" -exec grep -hE "^#{1,6} (Phase|Stage|Domain|Step) [0-
 
 ### H3 — Wave dispatch adoption
 
-Applies only to skills that reference `lp-build` as their execution skill AND have `phase_matches_any_md ≥ 3` (filters out skills that merely name lp-build as a downstream step).
+Applies only to skills that reference `lp-do-build` as their execution skill AND have `phase_matches_any_md ≥ 3` (filters out skills that merely name lp-do-build as a downstream step).
 If `wave-dispatch-protocol.md` is not referenced in any `.md` file in the directory → **wave-candidate** (advisory).
 
 ## Ranking
@@ -83,7 +83,7 @@ Rank within each tier by `phase_matches_any_md` descending:
 
 ### Invocation tier assignments (fixed)
 
-- **high**: startup-loop, lp-build, lp-plan, lp-replan, lp-sequence, lp-offer, lp-channels, lp-seo, lp-forecast, lp-fact-find
+- **high**: startup-loop, lp-do-build, lp-do-plan, lp-do-replan, lp-sequence, lp-offer, lp-channels, lp-seo, lp-forecast, lp-do-fact-find
 - **medium**: lp-launch-qa, lp-design-qa, lp-experiment, lp-design-spec, lp-prioritize, lp-site-upgrade
 - **low**: lp-onboarding-audit, lp-brand-bootstrap, lp-readiness, lp-bos-sync, lp-baseline-merge, lp-measure, draft-outreach
 
@@ -120,7 +120,7 @@ Artifact sections:
 2. **Possible duplicates** (H0)
 3. **List 1 — Modularization opportunities** (H1, hierarchical)
 4. **List 2 — Dispatch opportunities** (H2/H3, hierarchical)
-5. **Planning anchor** — when new-to-HIGH items exist: suggest `/lp-fact-find startup-loop-token-efficiency-v2`
+5. **Planning anchor** — when new-to-HIGH items exist: suggest `/lp-do-fact-find startup-loop-token-efficiency-v2`
 6. **Delta status** — new-vs-known breakdown, regression flags
 
 ## Commit Guard

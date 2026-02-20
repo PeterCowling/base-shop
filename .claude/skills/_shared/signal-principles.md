@@ -62,10 +62,10 @@ Each principle entry has these fields:
 - **id:** P03
 - **name:** Adversarial Review
 - **audit_question:** Was a critic agent or adversarial review invoked before locking in a key decision for this stage?
-- **evidence_expectation:** A `/review-critique` call or equivalent adversarial review artifact exists and was produced before the stage's key decision artifact (offer, channel plan, prioritisation) was marked complete or promoted.
+- **evidence_expectation:** A `/lp-do-critique` call or equivalent adversarial review artifact exists and was produced before the stage's key decision artifact (offer, channel plan, prioritisation) was marked complete or promoted.
 - **severity_default:** 3
 - **failure_indicators:**
-  - No `/review-critique` call documented for the stage where a key decision was locked
+  - No `/lp-do-critique` call documented for the stage where a key decision was locked
   - Key decision artifact has no "objections considered", "critique addressed", or "risks" section
   - All risks in the stage artifact are rated Low likelihood with identical, unspecific mitigations
   - Review critique was invoked but its findings were not addressed or documented as accepted risks
@@ -91,8 +91,8 @@ Each principle entry has these fields:
 
 - **id:** P05
 - **name:** Operator/Executor Separation
-- **audit_question:** Is the control plane (startup-loop orchestrator) architecturally separate from execution (lp-build, lp-fact-find, etc.), and has this boundary been maintained?
-- **evidence_expectation:** `startup-loop/SKILL.md` remains a thin orchestrator (gate checks, dispatch, handoffs only). No stage-specific implementation logic is embedded in the orchestrator. Each executor skill (`lp-build`, `lp-fact-find`, etc.) is self-contained.
+- **audit_question:** Is the control plane (startup-loop orchestrator) architecturally separate from execution (lp-do-build, lp-do-fact-find, etc.), and has this boundary been maintained?
+- **evidence_expectation:** `startup-loop/SKILL.md` remains a thin orchestrator (gate checks, dispatch, handoffs only). No stage-specific implementation logic is embedded in the orchestrator. Each executor skill (`lp-do-build`, `lp-do-fact-find`, etc.) is self-contained.
 - **severity_default:** 2
 - **failure_indicators:**
   - `startup-loop/SKILL.md` contains stage-specific implementation details or planning content (not just dispatch)

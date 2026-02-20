@@ -19,7 +19,7 @@ import {
 
 describe("resolveById (--stage <ID>)", () => {
   it("VC-04: resolves known canonical stage IDs", () => {
-    const ids = ["S0A", "S0B", "S0C", "S0D", "S0", "S1", "S1B", "S2A", "S2", "S2B", "S3", "S3B", "S4", "S5A", "S5B", "S6", "S6B", "S7", "S8", "S9", "S9B", "S10"];
+    const ids = ["DISCOVERY-01", "DISCOVERY-02", "DISCOVERY-03", "DISCOVERY-04", "DISCOVERY-05", "DISCOVERY-06", "DISCOVERY-07", "DISCOVERY", "BRAND-01", "BRAND-02", "BRAND", "S1", "S1B", "S2A", "S2", "S2B", "S3", "S3B", "S4", "S5A", "S5B", "S6", "S6B", "S7", "S8", "S9", "S9B", "S10"];
     for (const id of ids) {
       const result = resolveById(id);
       expect(result.ok).toBe(true);
@@ -57,13 +57,13 @@ describe("resolveById (--stage <ID>)", () => {
   });
 
   it("suggests alias path when input matches an alias", () => {
-    // "intake" is an alias for S0
+    // "intake" is an alias for DISCOVERY
     const result = resolveById("intake");
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      // Should suggest --stage S0 or --stage-alias intake
+      // Should suggest --stage DISCOVERY or --stage-alias intake
       const suggestionText = result.suggestions.join(" ");
-      expect(suggestionText).toContain("S0");
+      expect(suggestionText).toContain("DISCOVERY");
     }
   });
 });
@@ -71,11 +71,11 @@ describe("resolveById (--stage <ID>)", () => {
 // ── VC-01 + VC-02: Alias resolution (--stage-alias <slug>) ──────────────────
 
 describe("resolveByAlias (--stage-alias <slug>)", () => {
-  it("VC-01: valid alias 'intake' resolves to S0", () => {
+  it("VC-01: valid alias 'intake' resolves to DISCOVERY", () => {
     const result = resolveByAlias("intake");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S0");
+      expect(result.stageId).toBe("DISCOVERY");
       expect(result.mode).toBe("alias");
     }
   });
@@ -211,11 +211,11 @@ describe("resolveByLabel (--stage-label <text>)", () => {
     }
   });
 
-  it("resolves 'Intake' (S0 short label)", () => {
+  it("resolves 'Intake' (DISCOVERY short label)", () => {
     const result = resolveByLabel("Intake");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S0");
+      expect(result.stageId).toBe("DISCOVERY");
     }
   });
 

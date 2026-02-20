@@ -11,8 +11,8 @@ Feature-Slug: hypothesis-portfolio-manager
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-replan, /lp-sequence
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-do-replan, /lp-sequence
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact) per task; Overall is effort-weighted average (S=1, M=2, L=3)
 Business-OS-Integration: on
@@ -170,7 +170,7 @@ HPM-04 completed on 2026-02-13.
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** schema docs (`docs/business-os/hypothesis-portfolio/schema.md`)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `docs/business-os/hypothesis-portfolio/schema.md`
 - **Reviewer:** Pete (BOS owner)
 - **Approval-Evidence:** merge diff for `docs/business-os/hypothesis-portfolio/schema.md` plus reviewer sign-off comment in plan thread
@@ -214,7 +214,7 @@ HPM-04 completed on 2026-02-13.
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change (`packages/lib/src/hypothesis-portfolio/*`)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `packages/lib/src/hypothesis-portfolio/`
 - **Reviewer:** Pete (BOS owner)
 - **Approval-Evidence:** passing targeted test log for `validation.test.ts` attached to build-log and reviewed
@@ -263,7 +263,7 @@ HPM-04 completed on 2026-02-13.
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change + contract docs (`scripts/src/hypothesis-portfolio/*`, `docs/business-os/hypothesis-portfolio/storage-contract.md`)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `scripts/src/hypothesis-portfolio/` and `docs/business-os/hypothesis-portfolio/storage-contract.md`
 - **Reviewer:** Pete (BOS owner)
 - **Approval-Evidence:** passing adapter tests and reviewed contract doc diff
@@ -312,7 +312,7 @@ HPM-04 completed on 2026-02-13.
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** plan update in this document
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-replan
+- **Execution-Skill:** /lp-do-replan
 - **Artifact-Destination:** `docs/plans/hypothesis-portfolio-manager-plan.md`
 - **Reviewer:** Pete (BOS owner)
 - **Approval-Evidence:** checkpoint comment marking confidence re-score before HPM-06 start
@@ -338,7 +338,7 @@ HPM-04 completed on 2026-02-13.
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** calibration report (`docs/plans/hypothesis-portfolio-manager-calibration.md`)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `docs/plans/hypothesis-portfolio-manager-calibration.md`
 - **Reviewer:** Pete (BOS owner)
 - **Approval-Evidence:** calibration report reviewed and linked in Decision Log
@@ -366,7 +366,7 @@ HPM-04 completed on 2026-02-13.
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change (`packages/lib/src/hypothesis-portfolio/ranking.ts`, `constraints.ts` + tests)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `packages/lib/src/hypothesis-portfolio/`
 - **Reviewer:** Pete (BOS owner)
 - **Approval-Evidence:** passing ranking/constraint test logs attached to build-log
@@ -418,7 +418,7 @@ HPM-04 completed on 2026-02-13.
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change (`scripts/src/hypothesis-portfolio/cli.ts` + command handlers + tests)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `scripts/src/hypothesis-portfolio/`
 - **Reviewer:** Pete (BOS owner)
 - **Approval-Evidence:** command rehearsal transcript attached to build-log and reviewed
@@ -487,7 +487,7 @@ HPM-04 completed on 2026-02-13.
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** skill and integration docs updates
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/lp-prioritize/SKILL.md` and `docs/business-os/hypothesis-portfolio/integration-guide.md`
 - **Reviewer:** Pete (BOS owner)
 - **Approval-Evidence:** reviewed prioritize run showing linked and unlinked item behavior
@@ -551,7 +551,7 @@ HPM-04 completed on 2026-02-13.
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** validation report + operator docs
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `docs/plans/hypothesis-portfolio-manager-validation-report.md` and `docs/business-os/hypothesis-portfolio/runbook.md`
 - **Reviewer:** Pete (BOS owner)
 - **Approval-Evidence:** sign-off on validation report with explicit go/no-go decision

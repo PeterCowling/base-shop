@@ -11,7 +11,7 @@ Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: idea-generate-process-hardening
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/idea-generate-process-hardening-plan.md
 Business-OS-Integration: off
@@ -31,7 +31,7 @@ Audit the `/idea-generate` pipeline contract as an executable process definition
 - Preserve the strategic model (multi-lens cabinet) while making execution deterministic.
 
 ### Non-goals
-- Implementing the hardening changes in this lp-fact-find step.
+- Implementing the hardening changes in this lp-do-fact-find step.
 - Replacing the cabinet model with a simpler workflow.
 - Redesigning unrelated skills outside the `idea-generate` dependency surface.
 
@@ -69,7 +69,7 @@ Audit the `/idea-generate` pipeline contract as an executable process definition
 ### Data and Contracts
 - Ideas POST schema: `business`, `content`, optional `tags`, `priority`, `location`; ID allocated server-side (`apps/business-os/src/app/api/agent/ideas/route.ts:22`, `apps/business-os/src/app/api/agent/ideas/route.ts:117`).
 - Cards POST schema: requires lane/priority/owner and description or content; ID allocated server-side (`apps/business-os/src/app/api/agent/cards/route.ts:21`, `apps/business-os/src/app/api/agent/cards/route.ts:121`).
-- Stage-doc POST schema: requires existing parent card; stage enum is `lp-fact-find|plan|build|reflect` (`apps/business-os/src/app/api/agent/stage-docs/route.ts:18`, `packages/platform-core/src/repositories/businessOsStageDocs.server.ts:25`).
+- Stage-doc POST schema: requires existing parent card; stage enum is `lp-do-fact-find|plan|build|reflect` (`apps/business-os/src/app/api/agent/stage-docs/route.ts:18`, `packages/platform-core/src/repositories/businessOsStageDocs.server.ts:25`).
 - Stage-doc IDs are random per create (`packages/platform-core/src/repositories/businessOsStageDocs.server.ts:226`).
 
 ### Dependency and Impact Map
@@ -77,8 +77,8 @@ Audit the `/idea-generate` pipeline contract as an executable process definition
   - Cabinet shared specs in `.claude/skills/_shared/cabinet/`.
   - Business OS workflow contract in `docs/business-os/agent-workflows.md`.
 - Downstream dependents:
-  - `/lp-fact-find` discovery freshness contract depends on sweep write correctness (`.claude/skills/lp-fact-find/SKILL.md:825`).
-  - `/lp-plan` and `/lp-build` depend on card/stage-doc integrity for lane progression.
+  - `/lp-do-fact-find` discovery freshness contract depends on sweep write correctness (`.claude/skills/lp-do-fact-find/SKILL.md:825`).
+  - `/lp-do-plan` and `/lp-do-build` depend on card/stage-doc integrity for lane progression.
 - Likely blast radius:
   - Duplicate or inconsistent entities in ideas/cards/stage-docs.
   - Wrong prioritization or resurfacing decisions from tag/status drift.
@@ -90,7 +90,7 @@ Audit the `/idea-generate` pipeline contract as an executable process definition
 - Channel constraints:
   - Source-of-truth is repo markdown plus API route behavior.
 - Existing templates/assets:
-  - Fact-find and plan templates in `.claude/skills/lp-fact-find/SKILL.md` and `.claude/skills/lp-plan/SKILL.md`.
+  - Fact-find and plan templates in `.claude/skills/lp-do-fact-find/SKILL.md` and `.claude/skills/lp-do-plan/SKILL.md`.
 - Approvals/owners:
   - Repo owner/maintainer review for process contract changes.
 - Compliance constraints:
@@ -124,7 +124,7 @@ Audit the `/idea-generate` pipeline contract as an executable process definition
   - No contract test ensuring DGP tags emitted by orchestrator align with lifecycle docs.
   - No check for internal contradiction in orchestrator trigger/failure rules.
 - Extinct tests:
-  - None identified in this lp-fact-find scope.
+  - None identified in this lp-do-fact-find scope.
 
 #### Testability Assessment
 - Easy to test:
@@ -205,7 +205,7 @@ Audit the `/idea-generate` pipeline contract as an executable process definition
 ### Open (User Input Needed)
 - None required for planning. The plan can proceed with defaults and includes any strategic choices as explicit DECISION tasks where needed.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - Implementation: 87%
   - Strong evidence map and concrete file-level defect locations.
   - Remaining uncertainty is mostly around implementation shape for idempotency.
@@ -221,7 +221,7 @@ Audit the `/idea-generate` pipeline contract as an executable process definition
 ## Planning Constraints and Notes
 - Must-follow patterns:
   - Keep top-k deterministic semantics once normalized.
-  - Preserve workflow loop (`idea-generate -> lp-fact-find -> lp-plan -> lp-build`).
+  - Preserve workflow loop (`idea-generate -> lp-do-fact-find -> lp-do-plan -> lp-do-build`).
 - Rollout/rollback expectations:
   - Deploy in bounded slices: docs contract first, idempotency next, then regression checks.
   - Keep reversible migrations for API behavior changes.
@@ -237,7 +237,7 @@ Audit the `/idea-generate` pipeline contract as an executable process definition
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `/lp-build`
+  - `/lp-do-build`
 - Supporting skills:
   - `/lp-sequence` for dependency waves.
 - Deliverable acceptance package:
@@ -250,4 +250,4 @@ Audit the `/idea-generate` pipeline contract as an executable process definition
 - Blocking items:
   - None
 - Recommended next step:
-  - Proceed to `/lp-plan idea-generate-process-hardening`
+  - Proceed to `/lp-do-plan idea-generate-process-hardening`

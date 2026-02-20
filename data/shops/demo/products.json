@@ -12,13 +12,13 @@
       "de": "Warm",
       "it": "Warm"
     },
-    "price": 1000,
+    "price": 1999,
     "currency": "EUR",
     "media": [],
     "shop": "demo",
     "status": "draft",
-    "row_version": 2,
+    "row_version": 3,
     "created_at": "2026-01-20T12:04:52.297Z",
-    "updated_at": "2026-01-20T12:21:49.660Z"
+    "updated_at": "2026-02-18T21:06:11.531Z"
   }
 ]

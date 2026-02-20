@@ -3,15 +3,15 @@
 # All other documents (SKILL.md, workflow guide, prompt index) MUST align to this spec.
 # Version bumps require downstream alignment check (VC-02).
 
-spec_version: "1.7.0"
+spec_version: "2.1.0"
 created: "2026-02-13"
 decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 # v1.1.0: Added BD-3 sub-deliverable annotation on S2B (see docs/plans/startup-loop-branding-design-module/plan.md)
 # v1.2.0: Added GATE-MEAS-01 (Hard) — S6B blocked until decision-grade measurement signal verified.
 #         Rationale: channel spend before working measurement is structurally invalid. Always.
-#         Decision captured: 2026-02-17 during BRIK S0 startup loop initiation.
+#         Decision captured: 2026-02-17 during BRIK DISCOVERY startup loop initiation.
 #         Superseded by v1.5.0 sub-gate split (GATE-S6B-STRAT-01 + GATE-S6B-ACT-01).
-# v1.3.0: Added GATE-BD-00 (Hard) — S0→S1 blocked when business_name_status=unconfirmed until naming
+# v1.3.0: Added GATE-BD-00 (Hard) — DISCOVERY→S1 blocked when business_name_status=unconfirmed until naming
 #         shortlist returned. Gate is a prompt-handoff pattern (mirrors S2 market intelligence).
 #         Absent or confirmed status skips gate (backwards-compatible). Decision: 2026-02-17.
 #         See: docs/plans/startup-loop-business-naming/plan.md
@@ -30,14 +30,40 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 #         GATE-S3B-01 (Soft/advisory) dispatches /lp-other-products at S2B Done.
 #         Results artifact (human-produced after deep research tool run) consumed optionally by lp-prioritize (S5A).
 #         Skill: .claude/skills/lp-other-products/SKILL.md. Decision: 2026-02-20.
-# v1.7.0: Added S0A–S0D conditional pre-intake stage family for problem-first operator entry.
+# v1.7.0: Added DISCOVERY-01–DISCOVERY-04 conditional pre-intake stage family for problem-first operator entry.
 #         Entry routing: explicit --start-point problem|product flag (default: product).
 #         Condition: "start-point = problem" — consistent with --launch-surface gate pattern.
-#         Stages: S0A (Problem framing) → S0B (Solution-space scan) → S0C (Option selection) → S0D (Naming handoff).
-#         S0D uses brand-naming-research (prompt-handoff); operator saves deep research results as
-#         *-naming-shortlist.user.md to satisfy GATE-BD-00 (fires at S0→S1, not S0D→S0).
-#         Operators with --start-point product (or flag absent) bypass S0A–S0D: pass-through, no gate block.
+#         Stages: DISCOVERY-01 (Problem framing) → DISCOVERY-02 (Solution-space scan) → DISCOVERY-03 (Option selection) → DISCOVERY-04 (Naming handoff).
+#         DISCOVERY-04 uses lp-do-discovery-04-business-name-options (prompt-handoff); operator saves deep research results as
+#         *-naming-shortlist.user.md to satisfy GATE-BD-00 (fires at DISCOVERY→S1, not DISCOVERY-04→DISCOVERY).
+#         Operators with --start-point product (or flag absent) bypass DISCOVERY-01–DISCOVERY-04: pass-through, no gate block.
 #         Decision: docs/plans/startup-loop-pre-s0-problem-framing/plan.md 2026-02-20.
+# v1.8.0: Added DISCOVERY-05 (Operator Evidence Capture) as mandatory fifth stage in the conditional pre-intake family.
+#         Stage DISCOVERY-05 follows DISCOVERY-04 and precedes DISCOVERY intake. Skill: /lp-do-discovery-05-our-stance.
+#         Mandatory within start-point=problem path — cannot be skipped.
+#         GATE-DISCOVERY-05-00 (Hard) fires at DISCOVERY-05→DISCOVERY advance: blocks until s0e-operator-evidence.user.md exists.
+#         discovery-intake-sync.md extended to consume DISCOVERY-05 as fifth precursor (Precursor-DISCOVERY-05).
+#         Rationale: research stages DISCOVERY-01–DISCOVERY-04 produce externally-verified market/naming context; DISCOVERY-05
+#         records what only the operator can know (physical product, supplier, infrastructure, pre-decisions).
+#         Separating operator knowledge from research output makes the intake packet deterministically
+#         traceable to its sources. Decision: 2026-02-20.
+# v2.0.0: Expanded DISCOVERY from 5 to 7 sub-stages. Added DISCOVERY-05 (Distribution Planning,
+#         lp-do-discovery-05-distribution-planning) and DISCOVERY-06 (Measurement Plan,
+#         lp-do-discovery-06-measurement-plan). Former DISCOVERY-05 (Our Stance) renamed DISCOVERY-07.
+#         Added DISCOVERY GATE (GATE-DISCOVERY-00) at DISCOVERY→S1: validates all 7 sub-stages,
+#         ≥2 channels (DISCOVERY-05), tracking method + ≥2 metrics (DISCOVERY-06), and operator evidence (DISCOVERY-07).
+#         lp-readiness (S1) remains as confirmation pass. Decision: 2026-02-20.
+# v2.1.0: Added BRAND stage (BRAND-01 Brand Strategy, BRAND-02 Brand Identity) between DISCOVERY and S1.
+#         No gate between BRAND and S1 — BRAND-02 completion proceeds directly to S1.
+#         Skill: /lp-do-brand-01-brand-strategy (brand-strategy.user.md), /lp-do-brand-02-brand-identity (brand-dossier.user.md).
+#         Decision: 2026-02-20.
+# v1.9.0: Renamed stage family S0/S0A-S0E → DISCOVERY/DISCOVERY-01..05 and updated skill references.
+#         S0A → DISCOVERY-01, S0B → DISCOVERY-02, S0C → DISCOVERY-03, S0D → DISCOVERY-04, S0E → DISCOVERY-05, S0 → DISCOVERY.
+#         Skill renames: lp-problem-frame→lp-do-discovery-01-problem-framing,
+#         lp-solution-space→lp-do-discovery-02-solution-space-scan,
+#         lp-option-select→lp-do-discovery-03-option-picking,
+#         brand-naming-research→lp-do-discovery-04-business-name-options,
+#         lp-operator-evidence→lp-do-discovery-05-our-stance. Decision: 2026-02-20.
 
 # Capability contract: docs/business-os/startup-loop/marketing-sales-capability-contract.md
 # Defines the 7 canonical marketing/sales capabilities (CAP-01 through CAP-07), their artifact paths,
@@ -48,62 +74,136 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 # ─────────────────────────────────────────────────────────
 
 stages:
-  # ── Conditional pre-intake stage family (S0A–S0D) ─────────────────────────
+  # ── Conditional pre-intake stage family (DISCOVERY-01–DISCOVERY-07) ─────────────────────────
   # Triggered when operator invokes /startup-loop start --start-point problem.
-  # Operators using --start-point product (or flag absent) bypass S0A–S0D entirely: pass-through, no gate block.
-  # S0D (brand-naming-research) produces a naming research prompt; the operator's deep research results
-  # saved as *-naming-shortlist.user.md satisfy GATE-BD-00 at S0→S1. Gate fires at S0→S1, not S0D→S0.
+  # Operators using --start-point product (or flag absent) bypass DISCOVERY-01–DISCOVERY-07 entirely: pass-through, no gate block.
+  # DISCOVERY-04 (lp-do-discovery-04-business-name-options) produces a naming research prompt; the operator's deep research results
+  # saved as *-naming-shortlist.user.md satisfy GATE-BD-00 at DISCOVERY→S1. Gate fires at DISCOVERY→S1, not DISCOVERY-04→DISCOVERY.
 
-  - id: S0A
+  - id: DISCOVERY-01
     name: Problem framing
-    skill: /lp-problem-frame
+    skill: /lp-do-discovery-01-problem-framing
     prompt_required: false
     conditional: true
     condition: "start-point = problem"
     bos_sync: "Persist problem statement under docs/business-os/strategy/<BIZ>/"
 
-  - id: S0B
+  - id: DISCOVERY-02
     name: Solution-space scan
-    skill: /lp-solution-space
+    skill: /lp-do-discovery-02-solution-space-scan
     prompt_required: false
     conditional: true
     condition: "start-point = problem"
     bos_sync: "Persist solution-space prompt and results artifact slot under docs/business-os/strategy/<BIZ>/"
 
-  - id: S0C
+  - id: DISCOVERY-03
     name: Option selection
-    skill: /lp-option-select
+    skill: /lp-do-discovery-03-option-picking
     prompt_required: false
     conditional: true
     condition: "start-point = problem"
     bos_sync: "Persist option-select artifact under docs/business-os/strategy/<BIZ>/"
 
-  - id: S0D
+  - id: DISCOVERY-04
     name: Naming handoff
-    skill: /brand-naming-research
+    skill: /lp-do-discovery-04-business-name-options
     prompt_required: false
     conditional: true
     condition: "start-point = problem"
     bos_sync: "Persist naming research prompt under docs/business-os/strategy/<BIZ>/"
-    # GATE-BD-00 note: gate fires at S0→S1 (not S0D→S0). brand-naming-research produces a
+    # GATE-BD-00 note: gate fires at DISCOVERY→S1 (not DISCOVERY-04→DISCOVERY). lp-do-discovery-04-business-name-options produces a
     # naming research PROMPT (naming-research-prompt.md). The operator runs this in a deep research tool
     # and saves results as <YYYY-MM-DD>-naming-shortlist.user.md — that artifact satisfies the
-    # *-naming-shortlist.user.md pass condition. No new naming contract introduced by S0D.
+    # *-naming-shortlist.user.md pass condition. No new naming contract introduced by DISCOVERY-04.
 
-  - id: S0
+  - id: DISCOVERY-05
+    name: Distribution planning
+    skill: /lp-do-discovery-05-distribution-planning
+    prompt_required: false
+    conditional: true
+    condition: "start-point = problem"
+    mandatory_within_condition: true
+    # Mandatory within the problem-start path — cannot be skipped.
+    # Identifies ≥2 launch channels with cost/effort estimates and ICP fit rationale.
+    # Reads DISCOVERY-01 (ICP) and DISCOVERY-03 (selected product) as inputs.
+    # Artifact: distribution-plan.user.md. DISCOVERY GATE checks ≥2 channels present.
+    bos_sync: "Persist distribution-plan.user.md under docs/business-os/strategy/<BIZ>/"
+
+  - id: DISCOVERY-06
+    name: Measurement plan
+    skill: /lp-do-discovery-06-measurement-plan
+    prompt_required: false
+    conditional: true
+    condition: "start-point = problem"
+    mandatory_within_condition: true
+    # Mandatory within the problem-start path — cannot be skipped.
+    # Defines tracking method, ≥2 key metrics, success thresholds, and data collection feasibility.
+    # Reads DISCOVERY-05 (channels) as input.
+    # Artifact: measurement-plan.user.md. DISCOVERY GATE checks tracking method + ≥2 metrics present.
+    bos_sync: "Persist measurement-plan.user.md under docs/business-os/strategy/<BIZ>/"
+
+  - id: DISCOVERY-07
+    name: Operator evidence capture
+    skill: /lp-do-discovery-07-our-stance
+    prompt_required: false
+    conditional: true
+    condition: "start-point = problem"
+    mandatory_within_condition: true
+    # Mandatory within the problem-start path — cannot be skipped.
+    # Captures what the operator directly knows: physical product, supplier, infrastructure,
+    # commercial architecture, and pre-locked channel decisions.
+    # All externally-researched context lives in DISCOVERY-01–DISCOVERY-06; DISCOVERY-07 is operator-direct only.
+    # GATE-S0E-00 (Hard) blocks DISCOVERY-07→DISCOVERY advance until s0e-operator-evidence.user.md exists with Status: Active.
+    # discovery-intake-sync.md reads this as Precursor-DISCOVERY-07.
+    bos_sync: "Persist s0e-operator-evidence.user.md under docs/business-os/strategy/<BIZ>/"
+
+  - id: DISCOVERY
     name: Intake
     skill: /startup-loop start
     prompt_required: true
     prompt_template: intake-normalizer-prompt.md
     conditional: false
     bos_sync: "Update docs/business-os/strategy/<BIZ>/plan.user.md"
-    # GATE-BD-00 (Hard) — evaluated at S0→S1 advance.
-    # Triggers when business_name_status=unconfirmed in intake packet.
-    # Absent or confirmed status skips gate (backwards-compatible, fail-open).
-    # Prompt template: docs/business-os/market-research/_templates/deep-research-naming-prompt.md
-    # Pass condition: any *-naming-shortlist.user.md glob match under docs/business-os/strategy/<BIZ>/
-    # On pass: writes docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md (stable pointer)
-    # See: docs/plans/startup-loop-business-naming/plan.md
+    # GATE-DISCOVERY-00 (Hard) — DISCOVERY GATE — evaluated at DISCOVERY→S1 advance.
+    # Validates all 7 DISCOVERY sub-stage artifacts (DISCOVERY-01–DISCOVERY-07) are present and Active.
+    # Checks: ≥2 channels in distribution-plan.user.md (DISCOVERY-05),
+    #         tracking method + ≥2 metrics in measurement-plan.user.md (DISCOVERY-06),
+    #         s0e-operator-evidence.user.md Active (DISCOVERY-07).
+    # Naming shortlist (DISCOVERY-04) is validated as part of GATE-DISCOVERY-00.
+
+  # ── BRAND stage family ────────────────────────────────────────────────────
+  # Runs for all start-points (conditional: false). Inserted between DISCOVERY and S1.
+  # No gate between BRAND and S1 — BRAND-02 completion proceeds directly to S1.
+
+  - id: BRAND
+    name: Brand
+    type: container
+    stages:
+      - BRAND-01
+      - BRAND-02
+    conditional: false
+    ordering_constraints:
+      - BRAND-01 → BRAND-02
+      - BRAND-02 → BRAND
+    # BRAND-01: brand-strategy.user.md (skill: /lp-do-brand-01-brand-strategy)
+    # BRAND-02: brand-dossier.user.md (skill: /lp-do-brand-02-brand-identity)
+    # No gate between BRAND and S1.
+
+  - id: BRAND-01
+    name: Brand strategy
+    skill: /lp-do-brand-01-brand-strategy
+    prompt_required: true
+    prompt_template: brand-01-brand-strategy-prompt.md
+    conditional: false
+    bos_sync: "Persist brand-strategy.user.md under docs/business-os/strategy/<BIZ>/"
+
+  - id: BRAND-02
+    name: Brand identity
+    skill: /lp-do-brand-02-brand-identity
+    prompt_required: true
+    prompt_template: brand-02-brand-identity-prompt.md
+    conditional: false
+    bos_sync: "Persist brand-dossier.user.md under docs/business-os/strategy/<BIZ>/"
 
   - id: S1
     name: Readiness
@@ -297,11 +397,17 @@ stages:
 
 ordering:
   sequential:
-    - [S0A, S0B]         # problem-first pre-intake: S0A→S0B (conditional)
-    - [S0B, S0C]         # problem-first pre-intake: S0B→S0C (conditional)
-    - [S0C, S0D]         # problem-first pre-intake: S0C→S0D (conditional)
-    - [S0D, S0]          # problem-first: S0D exits into standard S0 intake
-    - [S0, S1]
+    - [DISCOVERY-01, DISCOVERY-02]   # problem-first pre-intake: DISCOVERY-01→DISCOVERY-02 (conditional)
+    - [DISCOVERY-02, DISCOVERY-03]   # problem-first pre-intake: DISCOVERY-02→DISCOVERY-03 (conditional)
+    - [DISCOVERY-03, DISCOVERY-04]   # problem-first pre-intake: DISCOVERY-03→DISCOVERY-04 (conditional)
+    - [DISCOVERY-04, DISCOVERY-05]   # problem-first: DISCOVERY-04→DISCOVERY-05 distribution planning (mandatory within path)
+    - [DISCOVERY-05, DISCOVERY-06]   # problem-first: DISCOVERY-05→DISCOVERY-06 measurement plan (mandatory within path)
+    - [DISCOVERY-06, DISCOVERY-07]   # problem-first: DISCOVERY-06→DISCOVERY-07 operator evidence capture (mandatory within path)
+    - [DISCOVERY-07, DISCOVERY]      # problem-first: DISCOVERY-07 exits into standard DISCOVERY intake
+    - [DISCOVERY, BRAND-01]
+    - [BRAND-01, BRAND-02]
+    - [BRAND-02, BRAND]
+    - [BRAND, S1]
     - [S1, S1B]          # conditional
     - [S1, S2A]          # conditional
     - [S2A, S2]          # S2A gates S2 for website-live
@@ -347,6 +453,6 @@ run_packet:
     - next_action
     - prompt_file
     - required_output_path
-    - naming_gate     # skipped | blocked | complete (computed from filesystem; see GATE-BD-00)
+    - naming_gate     # deprecated — removed with GATE-BD-00; field retained for backwards-compat; always null
     - bos_sync_actions
     - loop_spec_version   # must match this spec's spec_version

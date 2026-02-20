@@ -37,7 +37,7 @@ Reframe for this revision: this is now startup-loop-first, not math-first. The c
 2. Identify high-value gaps where better math would move business metrics
 3. Catalogue specific external techniques with realistic integration paths
 4. Identify startup-loop growth capabilities that are currently missing or weak, even when they are not strictly "math modules"
-5. Produce a prioritised opportunity list ready for `/lp-plan`
+5. Produce a prioritised opportunity list ready for `/lp-do-plan`
 
 ### Compatibility Constraint (Hard Gate)
 
@@ -317,7 +317,7 @@ The list above improves analysis quality, but it still under-targets growth-loop
 
 **[FACT]** The startup loop has stages and QA gates, but no dedicated "constraint detector" that continuously identifies the highest-leverage bottleneck in the growth funnel.
 
-**[PROPOSAL]** Add a weekly bottleneck diagnosis artifact and auto-trigger `/lp-replan` when the same root cause persists across N runs.
+**[PROPOSAL]** Add a weekly bottleneck diagnosis artifact and auto-trigger `/lp-do-replan` when the same root cause persists across N runs.
 
 #### Opportunity S: ICP/Offer Drift Detection
 
@@ -506,8 +506,8 @@ All Tier A0 and B0 opportunities now have implementation plans.
 
 ## Next Steps
 
-- [x] Pick Tier A0 + B0 items and open `/lp-plan` for each — **done** (7 plans created)
-- [ ] Review plans and approve for `/lp-build` execution
+- [x] Pick Tier A0 + B0 items and open `/lp-do-plan` for each — **done** (7 plans created)
+- [ ] Review plans and approve for `/lp-do-build` execution
 - [ ] Review this revised roadmap with startup-loop owners; confirm Track A as primary
 - [ ] Create a "shopping docket" for Section 3.5 speculative items (papers, OSS repos, case studies, benchmarks)
 - [ ] Apply compatibility gate to remaining roadmap items (Tier A1/B1+): TypeScript/in-repo only, otherwise drop

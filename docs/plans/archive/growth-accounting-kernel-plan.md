@@ -11,8 +11,8 @@ Feature-Slug: growth-accounting-kernel
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-replan, /lp-sequence
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-do-replan, /lp-sequence
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact) per task; Overall is effort-weighted average (S=1, M=2, L=3)
 Business-OS-Integration: off
@@ -144,7 +144,7 @@ Chosen: Option C because it validates deterministic contracts before high-blast-
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change (`packages/lib/src/growth/types.ts`, `packages/lib/src/growth/schema.ts`) + schema docs.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/lib/src/growth/types.ts`, `packages/lib/src/growth/schema.ts`, `packages/lib/src/growth/index.ts`, `packages/lib/src/growth/__tests__/schema.test.ts`, `docs/business-os/growth-accounting/ledger-schema.md`, `[readonly] docs/business-os/strategy/HEAD/plan.user.md`, `[readonly] docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md`
 - **Depends on:** -
 - **Blocks:** GAK-02, GAK-03
@@ -191,7 +191,7 @@ Chosen: Option C because it validates deterministic contracts before high-blast-
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change (`packages/lib/src/growth/evaluate.ts`) + reducer tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/lib/src/growth/evaluate.ts`, `packages/lib/src/growth/index.ts`, `packages/lib/src/growth/__tests__/evaluate.test.ts`, `[readonly] apps/prime/src/lib/owner/businessScorecard.ts`
 - **Depends on:** GAK-01
 - **Blocks:** GAK-04, GAK-06
@@ -243,7 +243,7 @@ Chosen: Option C because it validates deterministic contracts before high-blast-
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change (`packages/lib/src/growth/store.ts`) + persistence tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/lib/src/growth/store.ts`, `packages/lib/src/growth/serialize.ts`, `packages/lib/src/growth/__tests__/store.test.ts`, `docs/business-os/growth-accounting/store-contract.md`, `[readonly] scripts/src/startup-loop/s10-learning-hook.ts`
 - **Depends on:** GAK-01
 - **Blocks:** GAK-04, GAK-06
@@ -295,7 +295,7 @@ Chosen: Option C because it validates deterministic contracts before high-blast-
 - **Type:** CHECKPOINT
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** plan update/re-sequencing artifact.
-- **Execution-Skill:** /lp-replan
+- **Execution-Skill:** /lp-do-replan
 - **Affects:** `docs/plans/growth-accounting-kernel-plan.md`
 - **Depends on:** GAK-02, GAK-03
 - **Blocks:** GAK-05
@@ -328,7 +328,7 @@ Chosen: Option C because it validates deterministic contracts before high-blast-
 - **Type:** INVESTIGATE
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** analysis artifact (`docs/business-os/growth-accounting/metrics-adapter-contract.md`).
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `docs/business-os/growth-accounting/metrics-adapter-contract.md`, `[readonly] scripts/src/startup-loop/metrics-aggregate.ts`, `[readonly] scripts/src/startup-loop/funnel-metrics-extractor.ts`, `[readonly] docs/business-os/startup-loop-workflow.user.md`
 - **Depends on:** GAK-04
 - **Blocks:** GAK-06
@@ -363,7 +363,7 @@ Chosen: Option C because it validates deterministic contracts before high-blast-
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change in startup-loop control plane and tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `scripts/src/startup-loop/growth-metrics-adapter.ts`, `scripts/src/startup-loop/s10-growth-accounting.ts`, `scripts/src/startup-loop/s10-diagnosis-integration.ts`, `scripts/src/startup-loop/__tests__/s10-growth-accounting.test.ts`, `scripts/src/startup-loop/__tests__/s10-diagnosis-integration.test.ts`, `scripts/src/startup-loop/__tests__/event-validation.test.ts`, `packages/lib/src/index.ts`, `[readonly] packages/lib/src/growth/evaluate.ts`, `[readonly] packages/lib/src/growth/store.ts`
 - **Depends on:** GAK-02, GAK-03, GAK-05
 - **Blocks:** GAK-07
@@ -416,7 +416,7 @@ Chosen: Option C because it validates deterministic contracts before high-blast-
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** API route + UI component + tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/business-os/src/app/api/business/[business]/growth-ledger/route.ts`, `apps/business-os/src/app/api/business/[business]/growth-ledger/route.test.ts`, `apps/business-os/src/components/board/GrowthLedgerCard.tsx`, `apps/business-os/src/components/board/GrowthLedgerCardContainer.tsx`, `apps/business-os/src/components/board/GrowthLedgerCard.test.tsx`, `apps/business-os/src/app/boards/[businessCode]/page.tsx`, `packages/i18n/src/en.json`
 - **Depends on:** GAK-06
 - **Blocks:** GAK-08
@@ -467,7 +467,7 @@ Chosen: Option C because it validates deterministic contracts before high-blast-
 - **Type:** IMPLEMENT
 - **Deliverable:** validation report + reproducible fixture run artifacts.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `docs/business-os/growth-accounting/validation-report.md`, `data/shops/HEAD/growth-ledger.json`, `scripts/src/startup-loop/__tests__/fixtures/growth-ledger-head.json`
 - **Depends on:** GAK-07
 - **Blocks:** GAK-09
@@ -516,7 +516,7 @@ Chosen: Option C because it validates deterministic contracts before high-blast-
 - **Type:** IMPLEMENT
 - **Deliverable:** policy/doc updates and guardrail operating guide.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `docs/business-os/startup-loop-workflow.user.md`, `docs/testing-policy.md`, `docs/business-os/growth-accounting/operator-guide.md`, `docs/plans/growth-accounting-kernel-plan.md`
 - **Depends on:** GAK-08
 - **Blocks:** -
@@ -591,7 +591,7 @@ Chosen: Option C because it validates deterministic contracts before high-blast-
 
 ## Decision Log
 
-- 2026-02-13: Reframed plan to current `/lp-plan` format with checkpoint gating after kernel core.
+- 2026-02-13: Reframed plan to current `/lp-do-plan` format with checkpoint gating after kernel core.
 - 2026-02-13: Chose kernel-first sequence (schema/reducer/persistence before S10 wiring).
 - 2026-02-13: Added explicit INVESTIGATE gate (GAK-05) for metrics-adapter ownership uncertainty.
 - 2026-02-13: Planning validation executed on existing seams:

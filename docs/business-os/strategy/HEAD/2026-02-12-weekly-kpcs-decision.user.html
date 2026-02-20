@@ -80,61 +80,126 @@
       font-size: 0.9rem;
       color: var(--muted);
     }
+    /* Audience toggle — Model A: single engineering appendix wrapper */
+    [data-audience="engineering"] {
+      display: none;
+    }
+    body.show-engineering [data-audience="engineering"] {
+      display: block;
+    }
+    .audience-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 0 24px;
+      padding: 8px 16px;
+      background: var(--header);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-family: inherit;
+    }
+    .audience-toggle:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+    }
   </style>
 </head>
 <body>
   <main>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
 <h1>HEAD Weekly K/P/C/S Decision</h1>
 <h2>A) KPI Delta Summary</h2>
 <ul>
-<li>This is week-0 initialization (no live commercial metrics yet).</li>
-<li>Baseline remains: orders 0, revenue 0, CAC unmeasured, returns unmeasured.</li>
+<li>This remains a pre-scale week with no material live-sales denominator yet.</li>
+<li>Baseline still effectively week-0/early week-1: orders and CAC evidence not decision-grade.</li>
 </ul>
 <h2>B) Decision</h2>
 <p>Decision: <strong>Continue</strong>.</p>
 <p>Rationale:</p>
 <ul>
-<li>Outcome contract is now locked.</li>
-<li>Intake, market intelligence, site-upgrade brief, baseline seed, and prioritization scorecard are active.</li>
-<li>Immediate next step is execution instrumentation and operational confirmation, not strategy pivot.</li>
+<li>Canonical S2B/S3/S6B artifacts are now backfilled and aligned to the outcome contract.</li>
+<li>Top-3 MVP lane is explicit and low-risk (multi-pack headbands, organiser pouch, patch packs).</li>
+<li>Immediate next step is execution and denominator-quality data capture, not channel or strategy pivot.</li>
 </ul>
 <h2>C) What Changed This Week</h2>
 <p>Signal:</p>
 <ul>
-<li>Canonical inputs for HEAD loop were activated (intake packet, blocker interview, prioritization scorecard).</li>
-<li>Mapping readiness gate moved to warning/pass for active scope.</li>
+<li>Canonical startup-baseline artifacts now exist for offer, forecast, and channels.</li>
+<li>Naming shortlist has been returned and is pending clearance decision.</li>
+<li>Prioritization has shifted from generic launch tasks to concrete MVP productisation tasks.</li>
 </ul>
 <p>Noise:</p>
 <ul>
-<li>No live demand/economics data yet; no scale/kill call can be made.</li>
+<li>No decision-grade live demand/economics data yet; no scale/kill call can be made.</li>
 </ul>
 <h2>D) Next-Week Action Plan</h2>
 <ol>
-<li>Confirm stock date and sellable units in seed.</li>
-<li>Confirm compatibility matrix and publish fit/support guidance.</li>
-<li>Establish analytics and payment reliability baseline.</li>
-<li>Start capped week-1 acquisition test with daily CAC/CVR tracking.</li>
-<li>Prepare week-2 forecast recalibration artifact.</li>
+<li>Confirm stock date and sellable units for all top-3 MVP SKUs.</li>
+<li>Publish compatibility/fit guidance and bundle-ready PDP updates.</li>
+<li>Establish analytics/payment baseline with denominator checks.</li>
+<li>Start capped own-site + constrained Etsy probe tests with daily CAC/CVR tracking.</li>
+<li>Finalize naming clearance path for shortlist candidate(s).</li>
 </ol>
 <h2>E) Risk Watchlist</h2>
 <ul>
 <li>Compatibility ambiguity can inflate returns.</li>
 <li>Missing payment/returns clarity can suppress conversion.</li>
 <li>Lack of measured CVR/CAC can delay decision-grade planning.</li>
+<li>Copy drift risk remains high in a medical-adjacent category unless guardrails are enforced.</li>
 </ul>
 <h2>F) Data Quality Issues</h2>
 <ul>
-<li>No observed traffic/conversion data yet.</li>
-<li>No observed returns and payment-success distributions yet.</li>
+<li>No decision-grade observed traffic/conversion data yet.</li>
+<li>No decision-grade returns and payment-success distributions yet.</li>
 </ul>
     <div class="meta">
       <div>Source: <code>docs/business-os/strategy/HEAD/2026-02-12-weekly-kpcs-decision.user.md</code></div>
-      <div>Generated: 2026-02-12T11:31:58.162Z</div>
+      <div>Generated: 2026-02-20T13:28:09.575Z</div>
     </div>
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+    // startOnLoad: false — we render manually so hidden engineering diagrams
+    // (inside display:none) are not attempted on load, which causes spurious
+    // "Syntax error in text" failures in Mermaid v11.
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    // Render only the visible (operator) diagrams immediately.
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    // Audience toggle — Model A.
+    // Engineering diagrams are rendered on first reveal (not on load).
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          // Render engineering diagrams now that they are visible.
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
   </script>
 </body>
 </html>

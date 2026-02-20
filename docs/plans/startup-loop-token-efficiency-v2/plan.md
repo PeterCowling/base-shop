@@ -9,7 +9,7 @@ Feature-Slug: startup-loop-token-efficiency-v2
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: meta-loop-efficiency
 Overall-confidence: 85%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
@@ -102,7 +102,7 @@ Modularize the three highest-signal startup-loop skills flagged in the 2026-02-1
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Rewritten `.claude/skills/lp-design-qa/SKILL.md` (≤200L orchestrator) + 5 new module files in `.claude/skills/lp-design-qa/modules/`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -174,7 +174,7 @@ Modularize the three highest-signal startup-loop skills flagged in the 2026-02-1
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Rewritten `.claude/skills/lp-sequence/SKILL.md` (≤200L orchestrator) + 2 new module files in `.claude/skills/lp-sequence/modules/`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -229,7 +229,7 @@ Modularize the three highest-signal startup-loop skills flagged in the 2026-02-1
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Rewritten `.claude/skills/lp-channels/SKILL.md` (≤200L orchestrator) + 3 new module files in `.claude/skills/lp-channels/modules/`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -300,7 +300,7 @@ Modularize the three highest-signal startup-loop skills flagged in the 2026-02-1
   - TC-04: lp-sequence NOT in List 1 (H1-compliant, 124L) ✓ — appears in List 2 advisory (false positive)
   - TC-05: lp-channels NOT in List 1 (H1-compliant, 92L) ✓ — appears in List 2 advisory (known false positive)
   - Artifact committed on dev branch (`066b4d0e4b`) ✓
-  - lp-fact-find regression (198→201L) flagged for editorial trim — minor, no planning task needed
+  - lp-do-fact-find regression (198→201L) flagged for editorial trim — minor, no planning task needed
 - **Affects:**
   - `docs/business-os/platform-capability/skill-efficiency-audit-<stamp>.md` (create)
   - `[readonly] .claude/skills/meta-loop-efficiency/SKILL.md`

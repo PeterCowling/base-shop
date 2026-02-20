@@ -13,7 +13,7 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-launch-qa
 Related-Plan: docs/plans/startup-loop-infra-measurement-bootstrap/plan.md
 Business-OS-Integration: off
@@ -699,6 +699,6 @@ What raises each to >=90:
 - Blocking items: None that prevent planning. Open Q1 (S1B filename) should be resolved before the
   loop-spec update task; default assumption allows planning to proceed.
 - Recommended next step:
-  `/lp-plan docs/plans/startup-loop-infra-measurement-bootstrap/fact-find.md` — scope and sequence
+  `/lp-do-plan docs/plans/startup-loop-infra-measurement-bootstrap/fact-find.md` — scope and sequence
   TASK-D1 through TASK-07. TASK-D1 (decision) resolves first; TASK-01/02/03 run in parallel after D1;
   TASK-04 gates TASK-05/06/07.

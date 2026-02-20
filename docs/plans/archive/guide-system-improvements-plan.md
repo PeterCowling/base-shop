@@ -61,7 +61,7 @@ Key improvements:
 
 ## Fact-Find Reference
 
-**Related brief:** `docs/plans/guide-system-improvements-lp-fact-find.md`
+**Related brief:** `docs/plans/guide-system-improvements-lp-do-fact-find.md`
 
 **Key findings:**
 - Guide system is well-structured with strong type safety (Zod throughout)
@@ -552,4 +552,4 @@ After Phase 1 completion, proceed to Phase 2 (foundational improvements):
 - Template refactoring (extract smaller components)
 - Performance monitoring and optimization
 
-See `docs/plans/guide-system-improvements-lp-fact-find.md` for full medium-term roadmap.
+See `docs/plans/guide-system-improvements-lp-do-fact-find.md` for full medium-term roadmap.

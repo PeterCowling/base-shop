@@ -12,8 +12,8 @@ Feature-Slug: lp-skill-system-sequencing
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-sequence, /lp-replan
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-sequence, /lp-do-replan
 Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact) — LPSP-01 resolved; sub-80% tasks split and replanned; VC contracts enumerated 2026-02-13
 Business-OS-Integration: off
@@ -111,7 +111,7 @@ Primary references:
 - **Type:** DECISION
 - **Status:** Done (2026-02-13)
 - **Deliverable:** Decision log update in this plan.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 88%
 - **Resolved questions:**
   - DL-01: 17-stage canonical model, S4 as first-class join-barrier stage.
@@ -127,7 +127,7 @@ Primary references:
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** business-artifact + code-change.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 82% → 85% post-validation
 - **Affects:**
   - `docs/business-os/startup-loop/loop-spec.yaml` (new)
@@ -160,7 +160,7 @@ Primary references:
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** business-artifact (schema definition + examples).
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 84% → 88% post-validation
 - **Replan note:** Split from original LPSP-03 (76%) to separate schema design from control-plane implementation.
 - **Scope:**
@@ -192,7 +192,7 @@ Primary references:
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 82% → 86% post-validation
 - **Replan note:** Split from original LPSP-03 (76%). Adapts existing BOS optimistic-concurrency patterns (`computeEntitySha`) to manifest updates.
 - **Depends on:** LPSP-03A (needs stage-result schema as input contract).
@@ -243,7 +243,7 @@ Primary references:
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change + business-artifact.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 85% → 89% post-validation
 - **Replan note:** Split from original LPSP-04 (74%). Scoped to happy-path event/state schemas and derivation. Recovery automation deferred to LPSP-04B.
 - **Depends on:** LPSP-03A (stage-result format feeds event schema).
@@ -296,7 +296,7 @@ Primary references:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + business-artifact.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 84%
 - **Replan note:** Split from original LPSP-04 (74%). Hardening phase — builds on proven LPSP-04A foundation. Promoted from 78%→84% after LPSP-04A+06B completion (E2 evidence).
 - **Depends on:** LPSP-04A (needs event/state schemas), LPSP-06B (needs merge barrier for failure scenarios).
@@ -362,7 +362,7 @@ Primary references:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact + code-change.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 84%
 - **Acceptance:**
   - Canonical feature workspace path active for new work (`docs/plans/<slug>/...`).
@@ -390,21 +390,21 @@ Primary references:
   - Post-validation: 87%
   - Delta reason: validation confirmed clean separation — no stray legacy write paths in core 5 skills; stage-doc key normalization documented with backward-compatible note
 - **Validation:**
-  - Ran: `grep -r 'docs/plans/<.*>-plan\.md' .claude/skills/{lp-fact-find,lp-plan,lp-build,lp-replan,lp-sequence}/` — only legacy fallback (read-only) references remain
+  - Ran: `grep -r 'docs/plans/<.*>-plan\.md' .claude/skills/{lp-do-fact-find,lp-do-plan,lp-do-build,lp-do-replan,lp-sequence}/` — only legacy fallback (read-only) references remain
   - Pre-commit hooks: PASS
 - **Documentation updated:** workspace-paths.md (new), stage-doc-operations.md (stage key normalization + canonical path templates)
 - **Implementation notes:**
   - Created `.claude/skills/_shared/workspace-paths.md` — canonical directory layout, alias map, resolution algorithm, write blocking rules, stage-doc API key policy
-  - Normalized stage-doc API key: `fact-find` (canonical) replaces `lp-fact-find` (legacy read-only alias)
-  - Updated all 5 core workflow skills (lp-fact-find, lp-plan, lp-build, lp-replan, lp-sequence)
-  - Supporting skills (idea-generate, idea-develop, idea-advance) still use `lp-fact-find` key — acceptable during migration, documented in stage-doc-operations.md note
+  - Normalized stage-doc API key: `fact-find` (canonical) replaces `lp-do-fact-find` (legacy read-only alias)
+  - Updated all 5 core workflow skills (lp-do-fact-find, lp-do-plan, lp-do-build, lp-do-replan, lp-sequence)
+  - Supporting skills (idea-generate, idea-develop, idea-advance) still use `lp-do-fact-find` key — acceptable during migration, documented in stage-doc-operations.md note
   - 7 files changed, 157 insertions, 42 deletions
 
 ### LPSP-06A: Define `/lp-baseline-merge` skill contract
 
 - **Type:** DECISION
 - **Deliverable:** business-artifact (`.claude/skills/lp-baseline-merge/SKILL.md`).
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 90%
 - **Replan note:** Split from original LPSP-06 (78%). Tractable design task with clear inputs from DL-01/DL-02.
 - **Depends on:** LPSP-02 (loop spec), LPSP-05 (canonical paths).
@@ -444,7 +444,7 @@ Primary references:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + tests.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 80%
 - **Replan note:** Split from original LPSP-06 (78%). Implementation follows contract from LPSP-06A.
 - **Depends on:** LPSP-06A (skill contract), LPSP-04A (stage-result schema for upstream validation).
@@ -490,7 +490,7 @@ Primary references:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + tests.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 80%
 - **Replan note:** Split from original LPSP-06 (78%). Leverages existing BOS Agent API with optimistic concurrency (entitySha).
 - **Depends on:** LPSP-06A (contract), LPSP-04A (stage-result schema for S5A→S5B gating).
@@ -535,7 +535,7 @@ Primary references:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 80%
 - **Acceptance:**
   - Policy tiers defined (`autonomous`, `guarded`, `prohibited`).
@@ -577,7 +577,7 @@ Primary references:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + business-artifact.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 82%
 - **Acceptance:**
   - Contract lint covers stage graph, skill existence, root policies, alias sunset.
@@ -649,7 +649,7 @@ Primary references:
 
 - **Type:** CHECKPOINT
 - **Deliverable:** validation report.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 86%
 - **Acceptance:**
   - One full run completes with no manual path hints.
@@ -726,9 +726,9 @@ S4   Baseline merge (barrier)     /lp-baseline-merge   [NEW]
 S5A  Prioritize                   /lp-prioritize (pure ranking, no side effects)
 S5B  BOS sync                     /lp-bos-sync         [NEW]
 S6   Site-upgrade synthesis       /lp-site-upgrade
-S7   Fact-find                    /lp-fact-find
-S8   Plan                         /lp-plan
-S9   Build                        /lp-build
+S7   Fact-find                    /lp-do-fact-find
+S8   Plan                         /lp-do-plan
+S9   Build                        /lp-do-build
 S9B  QA gates                     /lp-launch-qa, /lp-design-qa
 S10  Weekly readout + experiments  /lp-experiment
 ```

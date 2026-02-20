@@ -35,7 +35,7 @@ Research requirements:
 4) Classify each pattern as Adopt, Adapt, Defer, or Reject with explicit rationale.
 5) Produce concrete website design implications and technical implementation implications.
 6) Produce prioritized backlog candidates (P1/P2/P3) with acceptance criteria and dependencies.
-7) Include risks and open questions that must be resolved before lp-fact-find/plan.
+7) Include risks and open questions that must be resolved before lp-do-fact-find/plan.
 
 Output format (strict):
 A) Executive summary (max 12 bullets)

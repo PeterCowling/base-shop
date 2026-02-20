@@ -176,7 +176,7 @@ User expectation: "Every time the status of documents changes, reflect those cha
   - Default assumption + risk:
     - Phase 1 detects committed changes (via git HEAD/version endpoint); Phase 2 adds watcher/mtime scanning if uncommitted edits must be detected.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - **Implementation:** 78%
   - Known: Polling pattern exists (`RunStatus.tsx`), and `router.refresh()` is used successfully elsewhere.
   - Known: Authorization layer validated (2026-01-30) — works correctly in the repo checkout model
@@ -260,4 +260,4 @@ User expectation: "Every time the status of documents changes, reflect those cha
 - Blocking items (if any):
   - None (open questions are non-blocking; defaults are acceptable for Phase 1)
 - Recommended next step:
-  - Proceed to `/lp-plan` using the repo checkout approach and Phase 1 polling.
+  - Proceed to `/lp-do-plan` using the repo checkout approach and Phase 1 polling.

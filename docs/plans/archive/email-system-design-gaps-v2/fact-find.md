@@ -14,7 +14,7 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/archive/email-system-design-gaps-v2/plan.md
 Relates-to: docs/plans/archive/email-system-design-gaps/fact-find.md
@@ -44,7 +44,7 @@ This document supersedes the depth focus of `docs/plans/archive/email-system-des
 
 - Decision owner: Pete Cowling (Product/Engineering).
 - Operational co-owner: Cristiana Marzano (Reception operations).
-- Decision: Are Gmail/reception integration correctness and capability gaps sufficiently characterized to proceed to `/lp-plan`?
+- Decision: Are Gmail/reception integration correctness and capability gaps sufficiently characterized to proceed to `/lp-do-plan`?
 
 ### Goals
 
@@ -403,7 +403,7 @@ This document supersedes the depth focus of `docs/plans/archive/email-system-des
 ## Execution Routing Packet
 
 - Primary execution skill:
-  - `lp-build`
+  - `lp-do-build`
 - Supporting skills:
   - none
 - Deliverable acceptance package:
@@ -451,4 +451,4 @@ This document supersedes the depth focus of `docs/plans/archive/email-system-des
   - Plan creation: unblocked.
   - Implementation kickoff: blocked on initial instrumentation baseline tasks (#1-#4) and environment preflight completion because Delivery-Readiness is `78%` (<80 implementation threshold).
 - Recommended next step:
-  - `/lp-plan docs/plans/archive/email-system-design-gaps-v2/fact-find.md`
+  - `/lp-do-plan docs/plans/archive/email-system-design-gaps-v2/fact-find.md`

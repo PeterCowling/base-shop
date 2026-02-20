@@ -107,10 +107,10 @@ Loop write paths rebuild `docs/business-os/_meta/discovery-index.json`. If rebui
 ## Special-Purpose Workflows
 
 - **Business OS coordination:** `docs/business-os/agent-workflows.md` (idea management, card lifecycle, plan updates)
-- **Pre-S0 problem-first entry:** Use when beginning a startup from a customer problem rather than a committed product. Add `--start-point problem` to `/startup-loop start`. This routes through S0A–S0D before S0 intake:
-  - S0A Problem framing → `/lp-problem-frame` → `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
-  - S0B Solution-space scan → `/lp-solution-space` → Perplexity prompt + operator-filled results artifact
-  - S0C Option selection → `/lp-option-select` → decision record with shortlist and elimination rationale; explicit kill gate if no viable option
-  - S0D Naming handoff → `/brand-naming-research` → naming research prompt (operator runs in Perplexity; save results as `<YYYY-MM-DD>-naming-shortlist.user.md` to satisfy GATE-BD-00 at S0→S1)
-  - Default (`--start-point product` or flag absent) bypasses S0A–S0D entirely — no behavior change for existing operators.
+- **Pre-S0 problem-first entry:** Use when beginning a startup from a customer problem rather than a committed product. Add `--start-point problem` to `/startup-loop start`. This routes through DISCOVERY-01–DISCOVERY-04 before S0 intake:
+  - DISCOVERY-01 Problem framing → `/lp-do-discovery-01-problem-framing` → `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
+  - DISCOVERY-02 Solution-space scan → `/lp-do-discovery-02-solution-space-scan` → deep research prompt + operator-filled results artifact
+  - DISCOVERY-03 Option selection → `/lp-do-discovery-03-option-picking` → decision record with shortlist and elimination rationale; explicit kill gate if no viable option
+  - DISCOVERY-04 Naming handoff → `/lp-do-discovery-04-business-name-options` → naming research prompt (operator runs in deep research tool; save results as `<YYYY-MM-DD>-naming-shortlist.user.md` to satisfy GATE-BD-00 at S0→S1)
+  - Default (`--start-point product` or flag absent) bypasses DISCOVERY-01–DISCOVERY-04 entirely — no behavior change for existing operators.
   - See gate routing: `.claude/skills/startup-loop/modules/cmd-start.md` Gate D

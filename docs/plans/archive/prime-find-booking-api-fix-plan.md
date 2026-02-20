@@ -8,7 +8,7 @@ Last-updated: 2026-02-12
 Feature-Slug: prime-find-booking-api-fix
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Overall-confidence: 90%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -46,7 +46,7 @@ The `/api/find-booking` and `/api/guest-session` POST endpoints are completely b
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/prime-find-booking-api-fix-lp-fact-find.md`
+- Related brief: `docs/plans/prime-find-booking-api-fix-lp-do-fact-find.md`
 - Key findings:
   - Booking reference IS the Firebase key (not a field on the booking record)
   - Guest names live at `guestsDetails/{bookingRef}/{occupantId}` with separate `firstName`/`lastName` fields
@@ -106,7 +106,7 @@ Both changes follow identical patterns already proven in `guest-booking.ts`. No 
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/prime/functions/api/find-booking.ts` + `apps/prime/functions/__tests__/find-booking.test.ts`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/prime/functions/api/find-booking.ts`, `apps/prime/functions/__tests__/find-booking.test.ts`
   - `[readonly] apps/prime/functions/api/guest-booking.ts` (reference implementation)
   - `[readonly] apps/prime/src/types/bookings.ts` (data contracts)
@@ -145,7 +145,7 @@ Both changes follow identical patterns already proven in `guest-booking.ts`. No 
   - **Refactor evidence:** Clean up dead code (check-in generation, booking node writes). Tests stay green.
 - **Scouts:**
   - `FirebaseRest.get` supports direct path lookup → confirmed via `guest-booking.ts:127` usage
-  - `guestsDetails/{ref}` returns all occupant details as `Record<string, GuestDetailsRecord>` → confirmed via lp-fact-find Firebase query evidence
+  - `guestsDetails/{ref}` returns all occupant details as `Record<string, GuestDetailsRecord>` → confirmed via lp-do-fact-find Firebase query evidence
   - Token shape (`guestSessionsByToken`) is unchanged → confirmed via `guest-session.ts:59` and `guest-booking.ts` usage
 - **Rollout / rollback:**
   - Rollout: Deploy via Cloudflare Pages Functions (automatic on push)
@@ -178,7 +178,7 @@ Both changes follow identical patterns already proven in `guest-booking.ts`. No 
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/prime/functions/api/guest-session.ts` + `apps/prime/functions/__tests__/guest-session.test.ts`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `apps/prime/functions/api/guest-session.ts`, `apps/prime/functions/__tests__/guest-session.test.ts`
   - `[readonly] apps/prime/functions/api/guest-booking.ts` (reference implementation)
   - `[readonly] apps/prime/src/types/bookings.ts` (data contracts)
@@ -216,7 +216,7 @@ Both changes follow identical patterns already proven in `guest-booking.ts`. No 
   - **Green evidence:** Rewrite POST to use occupant + guestsDetails lookup. All TCs pass.
   - **Refactor evidence:** Clean up dead helper functions. Tests stay green.
 - **Scouts:**
-  - `guestsDetails/{bookingId}/{occId}` returns `GuestDetailsRecord` with `firstName` and `lastName` → confirmed via lp-fact-find evidence and `guest-booking.ts:149`
+  - `guestsDetails/{bookingId}/{occId}` returns `GuestDetailsRecord` with `firstName` and `lastName` → confirmed via lp-do-fact-find evidence and `guest-booking.ts:149`
   - POST response shape `{ bookingId, guestUuid, guestFirstName }` is what `g/page.tsx` expects → confirmed via `apps/prime/src/app/g/page.tsx` source
   - GET handler reads only from `guestSessionsByToken` (no booking data) → confirmed correct, no changes needed
 - **Rollout / rollback:**

@@ -143,7 +143,7 @@ ls docs/business-os/strategy/<BIZ>/feedback-loop-audit-<as_of_date>.md 2>/dev/nu
 
 If absent: dispatch sub-flow per GATE-LOOP-GAP-03 protocol:
 ```
-/lp-fact-find --startup-loop-gap-fill --trigger feedback --biz <BIZ> --run-id <run_id>
+/lp-do-fact-find --startup-loop-gap-fill --trigger feedback --biz <BIZ> --run-id <run_id>
 ```
 
 Record output path as `feedback_audit_ref`.

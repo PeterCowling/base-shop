@@ -1,6 +1,6 @@
 # Confidence Scoring Rules (Planning)
 
-Use this compact ruleset for `/lp-plan` and `/lp-replan`.
+Use this compact ruleset for `/lp-do-plan` and `/lp-do-replan`.
 
 ## Core Definitions
 
@@ -17,7 +17,7 @@ Use this compact ruleset for `/lp-plan` and `/lp-replan`.
 - `CHECKPOINT`: procedural task type; no numeric threshold gate.
 
 Auto-continue note:
-- `/lp-plan` auto-continue still requires at least one `IMPLEMENT` task at `>=80`.
+- `/lp-do-plan` auto-continue still requires at least one `IMPLEMENT` task at `>=80`.
 
 ## Evidence Caps
 

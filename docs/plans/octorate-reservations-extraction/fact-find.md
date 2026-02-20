@@ -414,7 +414,7 @@ No conflicts expected with reservations extraction work.
 
 ---
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 **Implementation**: 60%
 - **Why**:
@@ -652,7 +652,7 @@ This suggests the modern Angular UI may be at `/pms` instead of `/octobook`. Req
   - Test automation using known-good manual export as fixture
   - Automation becomes "nice-to-have" enhancement, not blocker
 
-**Decision point**: Manual export + documented schema = sufficient to proceed to `/lp-plan`
+**Decision point**: Manual export + documented schema = sufficient to proceed to `/lp-do-plan`
 
 ---
 
@@ -689,7 +689,7 @@ This suggests the modern Angular UI may be at `/pms` instead of `/octobook`. Req
    - Analyze Excel structure, document schema
    - Answer Q4-Q7 based on actual data
 
-3. **Then proceed to `/lp-plan`**:
+3. **Then proceed to `/lp-do-plan`**:
    - With validated Excel structure
    - With working export script
    - With clear transformation requirements

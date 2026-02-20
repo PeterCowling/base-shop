@@ -10,7 +10,7 @@ Feature-Slug: ds-dashboard-migration
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Related-Plan: docs/plans/ds-dashboard-migration-plan.md
 Business-OS-Integration: on
@@ -91,7 +91,7 @@ Migrate `apps/dashboard/` from raw Tailwind `slate-*` palette colours to semanti
 
 None.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 95% — 7 files, mechanical mapping
 - **Approach:** 95% — same pattern as all other migrations
@@ -114,11 +114,11 @@ None.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-design-system`
 - Deliverable acceptance: `pnpm lint` passes at `error` severity, baseline entries removed
 
 ## Planning Readiness
 
 - Status: **Ready-for-planning**
-- Recommended next step: `/lp-plan`
+- Recommended next step: `/lp-do-plan`

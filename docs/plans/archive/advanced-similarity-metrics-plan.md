@@ -11,8 +11,8 @@ Feature-Slug: advanced-similarity-metrics
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-replan
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-do-replan
 Overall-confidence: 84%
 Confidence-Method: min(Implementation,Approach,Impact) per task; Overall is effort-weighted average (S=1, M=2, L=3)
 Business-OS-Integration: off
@@ -60,7 +60,7 @@ This plan adds a new `packages/lib/src/math/similarity/` module with five advanc
   - Existing library already supports Pearson/Spearman but lacks non-monotonic dependence metrics.
   - External references (fast_vector_similarity, hoeffdings_d_explainer) are algorithm references only; no runtime dependency adoption.
 - Validation-foundation note:
-  - The legacy fact-find predates current `/lp-fact-find` validation-frontmatter standards. This plan backfills confidence using repository evidence and targeted baseline test runs.
+  - The legacy fact-find predates current `/lp-do-fact-find` validation-frontmatter standards. This plan backfills confidence using repository evidence and targeted baseline test runs.
 
 ## Existing System Notes
 
@@ -126,7 +126,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (`packages/lib/src/math/similarity/*`) + baseline tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/lib/src/math/similarity/index.ts`, `packages/lib/src/math/similarity/common.ts`, `packages/lib/src/math/similarity/__tests__/common.test.ts`, `packages/lib/src/math/index.ts`, `[readonly] packages/lib/package.json`
 - **Depends on:** -
 - **Blocks:** ASM-02, ASM-03, ASM-05, ASM-06, ASM-07
@@ -181,7 +181,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + unit tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/lib/src/math/similarity/hoeffding.ts`, `packages/lib/src/math/similarity/__tests__/hoeffding.test.ts`, `packages/lib/src/math/similarity/index.ts`
 - **Depends on:** ASM-01
 - **Blocks:** ASM-04
@@ -241,7 +241,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + unit tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/lib/src/math/similarity/distance-correlation.ts`, `packages/lib/src/math/similarity/__tests__/distance-correlation.test.ts`, `packages/lib/src/math/similarity/index.ts`
 - **Depends on:** ASM-01
 - **Blocks:** ASM-04
@@ -299,7 +299,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 ### ASM-04: Horizon checkpoint — reassess remaining plan
 - **Type:** CHECKPOINT
 - **Deliverable:** plan update/re-sequencing artifact.
-- **Execution-Skill:** /lp-replan
+- **Execution-Skill:** /lp-do-replan
 - **Affects:** `docs/plans/advanced-similarity-metrics-plan.md`
 - **Depends on:** ASM-02, ASM-03
 - **Blocks:** ASM-05, ASM-06, ASM-07
@@ -331,7 +331,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 ### ASM-05: Resolve NMI contract/binning calibration before implementation
 - **Type:** INVESTIGATE
 - **Deliverable:** analysis artifact (`docs/plans/advanced-similarity-metrics-nmi-calibration.md`) + plan update.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/lib/src/math/similarity/mutual-information.ts` (planned), `packages/lib/src/math/similarity/__tests__/mutual-information.test.ts` (planned), `docs/plans/advanced-similarity-metrics-plan.md`
 - **Depends on:** ASM-04
 - **Blocks:** ASM-08
@@ -371,7 +371,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + unit tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/lib/src/math/similarity/jensen-shannon.ts`, `packages/lib/src/math/similarity/__tests__/jensen-shannon.test.ts`, `packages/lib/src/math/similarity/index.ts`
 - **Depends on:** ASM-04
 - **Blocks:** ASM-09
@@ -425,7 +425,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + unit tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/lib/src/math/similarity/kendall.ts`, `packages/lib/src/math/similarity/__tests__/kendall.test.ts`, `packages/lib/src/math/similarity/index.ts`
 - **Depends on:** ASM-04
 - **Blocks:** ASM-09
@@ -480,7 +480,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + unit tests.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/lib/src/math/similarity/mutual-information.ts`, `packages/lib/src/math/similarity/__tests__/mutual-information.test.ts`, `packages/lib/src/math/similarity/index.ts`
 - **Depends on:** ASM-05
 - **Blocks:** ASM-09
@@ -533,7 +533,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + integration tests + module documentation.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/lib/src/math/similarity/__tests__/integration.test.ts`, `packages/lib/src/math/similarity/README.md`, `packages/lib/src/math/similarity/index.ts`, `packages/lib/src/math/index.ts`, `[readonly] packages/lib/src/index.ts`
 - **Depends on:** ASM-06, ASM-07, ASM-08
 - **Blocks:** -

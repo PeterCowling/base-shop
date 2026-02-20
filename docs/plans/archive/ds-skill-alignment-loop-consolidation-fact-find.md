@@ -10,7 +10,7 @@ Feature-Slug: ds-skill-alignment-loop-consolidation
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /meta-reflect
 Related-Plan: docs/plans/ds-skill-alignment-loop-consolidation-plan.md
 Business-OS-Integration: on
@@ -36,7 +36,7 @@ Restructure the entire skill inventory (~37 skills across 10 prefix families) to
 
 ### Non-goals
 
-- Implementing the skills (that's `/lp-plan` → `/lp-build`)
+- Implementing the skills (that's `/lp-do-plan` → `/lp-do-build`)
 - Changing the S0–S10 stage numbering (preserve compatibility with existing docs/cards)
 - Rewriting existing working skills just for naming consistency (rename dirs, update refs, done)
 
@@ -46,7 +46,7 @@ Restructure the entire skill inventory (~37 skills across 10 prefix families) to
   - Each skill is a directory under `.claude/skills/<name>/SKILL.md` — renaming means renaming the directory + updating all refs
   - Skills are registered in the system prompt via the skill list — renames require updating that list
   - Existing cards/stage-docs reference current skill names — must update or alias
-  - Must not break the working core loop (`/lp-fact-find` → `/lp-plan` → `/lp-sequence` → `/lp-build`)
+  - Must not break the working core loop (`/lp-do-fact-find` → `/lp-do-plan` → `/lp-sequence` → `/lp-do-build`)
 - Assumptions:
   - New sub-stages (S2B, S6B, S9B) can be added without renumbering existing stages
   - Business-artifact skills (`draft-*`, `biz-*`) remain cross-cutting execution endpoints
@@ -66,9 +66,9 @@ Restructure the entire skill inventory (~37 skills across 10 prefix families) to
 | `/idea-forecast` | S3 | 90-day forecast, assumption register | Market intel, intake packet |
 | `/idea-generate` | S5 | Prioritized ideas, cards via API | Baseline seed, forecast, constraints |
 | `/lp-site-upgrade` | S6 | Upgrade brief, best-of matrix | Platform baseline, reference sites |
-| `/lp-fact-find` | S7 | Planning-ready brief | Go-items from S5/S6 |
-| `/lp-plan` | S8 | Confidence-gated plan | Fact-find brief |
-| `/lp-build` | S9 | Shipped work + validation | Plan doc |
+| `/lp-do-fact-find` | S7 | Planning-ready brief | Go-items from S5/S6 |
+| `/lp-do-plan` | S8 | Confidence-gated plan | Fact-find brief |
+| `/lp-do-build` | S9 | Shipped work + validation | Plan doc |
 
 **Gap**: S0, S1B, S2, S2A, S4, S10 have no dedicated skill (template/manual only).
 
@@ -77,12 +77,12 @@ Restructure the entire skill inventory (~37 skills across 10 prefix families) to
 | Prefix | Skills | Role |
 |--------|--------|------|
 | `idea-` (4) | `idea-develop`, `idea-advance`, `idea-scan`, `ideas-go-faster` | Card lifecycle & portfolio |
-| `lp-` (7) | `lp-sequence`, `lp-replan`, `lp-brand-bootstrap`, `lp-design-spec`, `lp-design-system`, `lp-refactor`, `lp-onboarding-audit` | Loop support & design |
+| `lp-` (7) | `lp-sequence`, `lp-do-replan`, `lp-brand-bootstrap`, `lp-design-spec`, `lp-design-system`, `lp-refactor`, `lp-onboarding-audit` | Loop support & design |
 | `lp-guide-` (2) | `lp-guide-audit`, `lp-guide-improve` | Brikette domain |
 | `guide-` (1) | `guide-translate` | Brikette domain |
 | `biz-` (4) | `biz-update-plan`, `biz-update-people`, `biz-product-brief`, `biz-spreadsheet` | Business strategy & artifacts |
 | `ops-` (3) | `ops-ship`, `ops-inbox`, `ops-git-recover` | Operations |
-| `review-` (3) | `review-critique`, `review-fact-check`, `review-plan-status` | Quality assurance |
+| `review-` (3) | `lp-do-critique`, `lp-do-factcheck`, `review-plan-status` | Quality assurance |
 | `meta-` (2) | `meta-reflect`, `meta-user-test` | Process improvement |
 | `draft-` (3) | `draft-email`, `draft-whatsapp`, `draft-marketing` | Artifact authoring |
 
@@ -110,7 +110,7 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 
 **Loop support (7)** — Already `lp-` prefixed, serve multiple stages:
 - `lp-sequence`: Bridge between S8→S9 (topological sort).
-- `lp-replan`: Loop-back from S9→S8 when confidence drops.
+- `lp-do-replan`: Loop-back from S9→S8 when confidence drops.
 - `lp-brand-bootstrap`: S0/S1 brand language setup.
 - `lp-design-spec`: S7→S8 bridge for UI features.
 - `lp-design-system`: Token reference, used anywhere.
@@ -134,8 +134,8 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 - `ops-git-recover`: Git recovery. Emergency utility.
 
 **Quality (3)** — Cross-cutting review:
-- `review-critique`: Hardnosed critic for any doc.
-- `review-fact-check`: Repo-verified fact checking.
+- `lp-do-critique`: Hardnosed critic for any doc.
+- `lp-do-factcheck`: Repo-verified fact checking.
 - `review-plan-status`: Plan progress reporting.
 
 **Meta (2)** — Process improvement:
@@ -154,11 +154,11 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 
 | Prefix | Meaning | Examples |
 |--------|---------|---------|
-| `lp-` | **Loop-bound** — executes or directly supports a specific S0–S10 stage | `lp-readiness`, `lp-fact-find`, `lp-build` |
+| `lp-` | **Loop-bound** — executes or directly supports a specific S0–S10 stage | `lp-readiness`, `lp-do-fact-find`, `lp-do-build` |
 | `idea-` | **Established business portfolio** — idea generation, readiness, forecasting for larger businesses. Cross-cutting card lifecycle utilities shared with the loop. | `idea-generate`, `idea-readiness`, `idea-develop` |
 | `biz-` | **Business strategy** — maintains business docs and produces strategy artifacts | `biz-update-plan`, `biz-product-brief` |
 | `ops-` | **Operations** — infrastructure, shipping, email triage | `ops-ship`, `ops-inbox` |
-| `review-` | **Quality** — critique, fact-check, status reporting | `review-critique`, `review-fact-check` |
+| `review-` | **Quality** — critique, fact-check, status reporting | `lp-do-critique`, `lp-do-factcheck` |
 | `meta-` | **Meta** — process improvement, session reflection | `meta-reflect` |
 | `draft-` | **Artifact authoring** — produces business communication artifacts | `draft-email`, `draft-marketing` |
 | `guide-` | **Domain: Brikette** — guide content operations | `guide-translate` |
@@ -187,7 +187,7 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 | `/icp-segmentation` | **ABSORB into `lp-offer`** | ICP ranking is step 1 of offer design, not a standalone skill |
 | `/positioning-onepager` | **ABSORB into `lp-offer`** | Positioning is the output format of offer design |
 | `/pricing-packaging` | **ABSORB into `lp-offer`** | Pricing is step 3 of offer design |
-| `/value-prop-stress-test` | **ABSORB into `review-critique`** | This is a Munger-style inversion review — `/review-critique` already does this for fact-finds and plans. Add an "offer" schema detection mode. |
+| `/value-prop-stress-test` | **ABSORB into `lp-do-critique`** | This is a Munger-style inversion review — `/lp-do-critique` already does this for fact-finds and plans. Add an "offer" schema detection mode. |
 
 **Net new skills: 1** (`lp-offer`)
 
@@ -339,7 +339,7 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 
 | Skill | Extension | Why |
 |-------|-----------|-----|
-| `review-critique` | Add "offer" schema detection mode | Absorbs `/value-prop-stress-test` |
+| `lp-do-critique` | Add "offer" schema detection mode | Absorbs `/value-prop-stress-test` |
 | `draft-marketing` | Add `brief` mode (creative brief) + landing page copy type | Absorbs `/creative-briefs` and `/landing-page-copy` |
 | `draft-email` | Add `sequence` mode (welcome, abandon, winback) | Absorbs `/email-sms-sequence` |
 
@@ -372,9 +372,9 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 | S5 | Prioritization | **`/lp-prioritize`** (new — startup-specific) | **BUILD** |
 | S6 | Surface & Funnel Synthesis | **`/lp-site-upgrade`** (renamed) | Exists → rename |
 | **S6B** | **Asset & Channel Prep** | **`/lp-channels`** + **`/lp-seo`** + `draft-*` + **`draft-outreach`** | **BUILD** |
-| S7 | Fact-Find | `/lp-fact-find` | Exists |
-| S8 | Plan + Sequence | `/lp-plan` + `/lp-sequence` | Exists |
-| S9 | Build | `/lp-build` | Exists |
+| S7 | Fact-Find | `/lp-do-fact-find` | Exists |
+| S8 | Plan + Sequence | `/lp-do-plan` + `/lp-sequence` | Exists |
+| S9 | Build | `/lp-do-build` | Exists |
 | **S9B** | **Launch QA** | **`/lp-launch-qa`** + **`/lp-design-qa`** | **BUILD** |
 | S10 | Experiment & Decision Loop | **`/lp-experiment`** (new) | **BUILD** |
 
@@ -450,7 +450,7 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 
 ---
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 80%
   - High: 1 rename is mechanical (dir rename + grep/sed refs). New skill SKILL.md files follow established patterns. Well-understood file structure.
@@ -471,7 +471,7 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 - **Testability:** 70%
   - Medium: skill quality is validated by running the skill on a real business (HEAD/PET/BRIK), not by unit tests. No automated test for "does this skill produce a good artifact?"
   - Lower than before because 11 new skills × 0 automated tests = high manual validation burden.
-  - Improvement: Add a validation checklist to each new skill's SKILL.md (quality checks section, following the pattern in `lp-fact-find`). Consider a "skill smoke test" script that validates output structure.
+  - Improvement: Add a validation checklist to each new skill's SKILL.md (quality checks section, following the pattern in `lp-do-fact-find`). Consider a "skill smoke test" script that validates output structure.
 
 ---
 
@@ -484,7 +484,7 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 | 11 new skills is too many to build before the next loop run | Medium | Medium | Prioritize by stage order. The 3 startup stage skills + `lp-offer` complete the core spine. The rest can be built incrementally as stages are reached. |
 | Deferred skills turn out to be needed sooner (e.g., partner prospecting for BRIK) | Low | Low | Deferred list is documented with triggers — easy to promote when needed |
 | Skill count grows from 37 → 48 (11 new + 1 rename) | Low | Low | Net increase is justified: 3 fill empty stages, 8 fill the three missing spines. Cross-cutting utilities are untouched. |
-| `lp-offer` is a new concept — no template/pattern to follow | Medium | Medium | Base it on the existing `lp-fact-find` brief pattern but for offer artifacts. Run on HEAD first as a probe. |
+| `lp-offer` is a new concept — no template/pattern to follow | Medium | Medium | Base it on the existing `lp-do-fact-find` brief pattern but for offer artifacts. Run on HEAD first as a probe. |
 | Shared skills (`idea-develop`, `idea-advance`, `idea-scan`) need to work with both systems | Low | Medium | These are already cross-cutting. No changes needed — they operate on Business OS cards regardless of which system created them. |
 
 ---
@@ -500,7 +500,7 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 - Rollout expectations:
   - Phase 1: Rename + startup stage skills (complete the core loop spine first)
   - Phase 2-5: Spine skills by stage order (Offer → Experiment → Distribution → Launch QA)
-  - Phase 6: Extend existing skills (`review-critique`, `draft-marketing`, `draft-email`)
+  - Phase 6: Extend existing skills (`lp-do-critique`, `draft-marketing`, `draft-email`)
   - Phase 7: Loop integration (orchestrator + routing + discovery)
 - Observability:
   - After each new skill is built, run it once on a real business and capture the output quality
@@ -533,20 +533,20 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 12. Build `lp-design-qa` (S9B) — UI regression QA
 
 ### Phase 6: Extensions
-13. Extend `review-critique` with "offer" schema detection
+13. Extend `lp-do-critique` with "offer" schema detection
 14. Extend `draft-marketing` with `brief` and `landing-page-copy` modes
 15. Extend `draft-email` with `sequence` mode
 
 ### Phase 7: Loop Integration
 16. Update `/startup-loop` orchestrator to reference new `lp-*` stage skills
-17. Update `/lp-fact-find` progressive routing to include new skills
+17. Update `/lp-do-fact-find` progressive routing to include new skills
 18. Rebuild discovery index and validate end-to-end flow
 
 ---
 
 ## Execution Routing Packet
 
-- **Primary execution skill:** `/lp-build` (orchestrator mode for multi-deliverable)
+- **Primary execution skill:** `/lp-do-build` (orchestrator mode for multi-deliverable)
 - **Supporting skills:** `/meta-reflect` (post-completion learning capture)
 - **Deliverable acceptance package:**
   - 1 rename (`site-upgrade` → `lp-site-upgrade`) complete with zero broken references
@@ -566,4 +566,4 @@ The `idea-*` skills serve **larger/established businesses** with existing card p
 
 - **Status: Ready-for-planning**
 - Blocking items: None — the 3 open questions are preference decisions, not blockers (defaults are stated)
-- Recommended next step: Answer the open questions, then proceed to `/lp-plan`
+- Recommended next step: Answer the open questions, then proceed to `/lp-do-plan`

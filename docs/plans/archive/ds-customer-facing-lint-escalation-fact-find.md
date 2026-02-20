@@ -10,7 +10,7 @@ Feature-Slug: ds-customer-facing-lint-escalation
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Related-Plan: docs/plans/ds-customer-facing-lint-escalation-plan.md
 Business-OS-Integration: on
@@ -111,7 +111,7 @@ This means any current violations in these apps are producing warnings that don'
 
 None.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 90% — config change is mechanical; violation cleanup may surface unexpected files
 - **Approach:** 95% — escalating to error is the standard enforcement pattern already proven in CMS
@@ -135,7 +135,7 @@ None.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-design-system`
 - Deliverable acceptance: `pnpm lint` passes with `error` severity for these apps, zero un-exempted violations
 
@@ -143,4 +143,4 @@ None.
 
 - Status: **Ready-for-planning**
 - Blocking items: P0 must land first
-- Recommended next step: `/lp-plan` (after P0 is complete)
+- Recommended next step: `/lp-do-plan` (after P0 is complete)

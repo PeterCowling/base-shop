@@ -12,8 +12,8 @@ Feature-Slug: mcp-startup-loop-data-plane-wave-2
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-sequence, /lp-replan
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-sequence, /lp-do-replan
 Related-Plan: docs/plans/mcp-startup-loop-data-plane-wave-2/plan.md
 Business-OS-Integration: off
 Business-Unit: PLAT
@@ -168,7 +168,7 @@ Collectors produce artifacts -> MCP exposes normalized reads plus guarded refres
   - Existing startup-loop scripts and artifact schemas.
   - Business OS D1 APIs for guarded writes.
 - Downstream dependents:
-  - `/lp-forecast`, `/lp-prioritize`, `/lp-experiment`, `/lp-fact-find`, weekly S10 operator decisions.
+  - `/lp-forecast`, `/lp-prioritize`, `/lp-experiment`, `/lp-do-fact-find`, weekly S10 operator decisions.
 - Likely blast radius:
   - `packages/mcp-server` tool registry/contract layer.
   - Potential adapter usage from `packages/mcp-cloudflare`.
@@ -554,7 +554,7 @@ Collectors produce artifacts -> MCP exposes normalized reads plus guarded refres
   - or consolidate Cloudflare measurement surface into base MCP in later phase.
 - Decision: confirm owners and acceptance criteria for the `analytics_*` sunset trigger execution window.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - **Implementation:** 82%
   - Why: core building blocks (MCP dispatch model, startup-loop kernels, BOS guarded APIs) already exist.
 - **Approach:** 84%
@@ -567,7 +567,7 @@ Collectors produce artifacts -> MCP exposes normalized reads plus guarded refres
   - Why: deterministic kernels and fixture patterns are strong, but live connector behavior remains harder.
 
 ### What would raise confidence to >=90
-- Lock architecture decisions in `/lp-plan`:
+- Lock architecture decisions in `/lp-do-plan`:
   - ratify artifact-reader MCP default and exception policy,
   - credential/tenancy model,
   - `analytics_*` containment policy.
@@ -634,9 +634,9 @@ Collectors produce artifacts -> MCP exposes normalized reads plus guarded refres
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `/lp-build`
+  - `/lp-do-build`
 - Supporting skills:
-  - `/lp-sequence`, `/lp-replan`
+  - `/lp-sequence`, `/lp-do-replan`
 - Deliverable acceptance package:
   - Wave-2 schema spec and shared middleware implemented (`metrics-registry.v1`, `provenance.v1`, `packet-redaction.v1`).
   - Vertical slice (`measure_*` + `app_*` + `pack_*`) passing targeted fixture-based determinism and replay tests.
@@ -657,7 +657,7 @@ Collectors produce artifacts -> MCP exposes normalized reads plus guarded refres
   - None for planning kickoff.
   - Implementation should gate on Phase 0 architecture decisions (tenancy model and analytics surface policy ownership/acceptance).
 - Recommended next step:
-  - Proceed to `/lp-plan` for `mcp-startup-loop-data-plane-wave-2`, sequencing read-only capabilities first and deferring guarded `ops_*` until policy and audit gates are validated.
+  - Proceed to `/lp-do-plan` for `mcp-startup-loop-data-plane-wave-2`, sequencing read-only capabilities first and deferring guarded `ops_*` until policy and audit gates are validated.
 
 ## Source Baseline
 - First-wave baseline references:

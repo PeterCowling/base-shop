@@ -74,8 +74,8 @@ RESULT: PASS — all contract checks passed
 2) No stage-doc alias emissions from skills (API stage key mismatch)
 
 ```bash
-rg -n '"stage"\\s*:\\s*"lp-fact-find"' .claude/skills
-rg -n 'stage-docs/.*/lp-fact-find' .claude/skills
+rg -n '"stage"\\s*:\\s*"lp-do-fact-find"' .claude/skills
+rg -n 'stage-docs/.*/lp-do-fact-find' .claude/skills
 ```
 
 Result:
@@ -134,8 +134,8 @@ date -u +"%Y-%m-%dT%H:%M:%SZ"
 3) Repo audit (re-run on the day you flip GO)
 ```bash
 bash scripts/check-startup-loop-contracts.sh
-rg -n '\"stage\"\\s*:\\s*\"lp-fact-find\"' .claude/skills
-rg -n 'stage-docs/.*/lp-fact-find' .claude/skills
+rg -n '\"stage\"\\s*:\\s*\"lp-do-fact-find\"' .claude/skills
+rg -n 'stage-docs/.*/lp-do-fact-find' .claude/skills
 rg -n --fixed-strings 'fact-finding.user.md' docs/business-os
 ```
 

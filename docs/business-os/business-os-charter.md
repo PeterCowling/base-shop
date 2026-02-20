@@ -23,7 +23,7 @@ Business OS is a **repo-native coordination system** for human and agent work ac
 2. **Evidence-gated, risk-managed workflow** for non-coding work matching engineering rigor
 3. **Progressive elaboration:** raw ideas → worked ideas → cards → staged execution → reflection → plan updates
 4. **Visible and queryable execution state** via in-repo business plans, people responsibilities, and card status
-5. **Human-agent collaboration:** both can generate, lp-fact-find, plan, execute, and reflect on opportunities
+5. **Human-agent collaboration:** both can generate, lp-do-fact-find, plan, execute, and reflect on opportunities
 
 **Design Principles:**
 

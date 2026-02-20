@@ -13,8 +13,8 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-plan, lp-sequence
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-plan, lp-sequence
 Related-Plan: docs/plans/startup-loop-business-naming/plan.md
 Business-OS-Integration: off
 Business-Unit: PIPE
@@ -329,9 +329,9 @@ _None — all questions resolved._
 ## Execution Routing Packet
 
 - Primary execution skill:
-  - `lp-build` — for TASK-01 through TASK-04 (file creation and skill edits)
+  - `lp-do-build` — for TASK-01 through TASK-04 (file creation and skill edits)
 - Supporting skills:
-  - `lp-plan` — to produce the sequenced, confidence-gated plan from these seeds
+  - `lp-do-plan` — to produce the sequenced, confidence-gated plan from these seeds
   - `lp-sequence` — to set explicit dependency ordering: TASK-01 before TASK-02 (seed contract defines field names used in template); TASK-02 before TASK-03 (gate references template); TASK-03b independent of TASK-03 but both must complete before integration test; TASK-04 independent
 - Deliverable acceptance package:
   - TASK-01: `business_name_status` and `target_languages` present in intake packet template with semantics and parse-error behaviour documented
@@ -381,4 +381,4 @@ _None — all questions resolved._
 - Status: Ready-for-planning
 - Blocking items: none
 - Recommended next step:
-  - `/lp-plan docs/plans/startup-loop-business-naming/fact-find.md`
+  - `/lp-do-plan docs/plans/startup-loop-business-naming/fact-find.md`

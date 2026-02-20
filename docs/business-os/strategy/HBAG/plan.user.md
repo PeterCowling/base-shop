@@ -66,7 +66,7 @@ _No learnings recorded yet. This section is append-only — learnings are added 
 | **Owner** | Pete |
 | **Leading-Indicator-1** | Weekly Etsy listing views + add-to-cart count (tracked in `docs/plans/mini-handbag-pmf/demand-log.md`) |
 | **Leading-Indicator-2** | Weekly Instagram/TikTok DM purchase inquiries (tracked in demand-log) |
-| **Decision-Link** | `DEC-HBAG-01` — if 0 sales by 2026-04-17 (60-day gate): pause channel spend, run `/lp-replan` on pricing and variant selection before continuing |
+| **Decision-Link** | `DEC-HBAG-01` — if 0 sales by 2026-04-17 (60-day gate): pause channel spend, run `/lp-do-replan` on pricing and variant selection before continuing |
 | **Stop/Pivot Threshold** | 0 sales across all active channels after 60 days → halt, replan. Fewer than 3 Etsy views/day after 14 days → investigate tags/title before waiting full 28 days |
 | **Evidence-Pointers** | `docs/plans/mini-handbag-pmf/fact-find.md`, `docs/plans/mini-handbag-pmf/plan.md` |
 

@@ -9,8 +9,8 @@ Last-updated: 2026-02-14
 Feature-Slug: reception-email-integration-gaps
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-plan
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-do-plan
 Related-Plan: docs/plans/reception-email-integration-gaps/plan.md
 Business-OS-Integration: on
 Business-Unit: BRIK
@@ -960,7 +960,7 @@ Current state creates a contradiction:
 
 ---
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 **Implementation:** 70%
 - Clear technical path for all three phases (manual cancellation, soft-delete, inbound parsing)
@@ -1164,11 +1164,11 @@ Current state creates a contradiction:
 
 ## Execution Routing Packet
 
-**Primary execution skill:** `/lp-build`
+**Primary execution skill:** `/lp-do-build`
 
 **Supporting skills:**
-- `/lp-plan` — Create detailed implementation plan
-- `/review-critique` — Review email templates and parsing logic
+- `/lp-do-plan` — Create detailed implementation plan
+- `/lp-do-critique` — Review email templates and parsing logic
 
 **Deliverable acceptance package:**
 - Email template added to `email-templates.json`
@@ -1216,6 +1216,6 @@ Current state creates a contradiction:
 
 **Recommended next step:**
 - ✅ Blocking question resolved (Option B: code 27 for cancellation)
-- Ready for `/lp-plan` to create detailed implementation plan
+- Ready for `/lp-do-plan` to create detailed implementation plan
 - Note: Sample emails are prerequisite for Phase 3 implementation (not blocking planning)
 - Phases can be executed in order: Phase 1 (manual cancellation), Phase 2 (soft-delete infrastructure), Phase 3 (automated inbound processing)

@@ -11,7 +11,7 @@ Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: idea-generate-deliberation-upgrade
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/idea-generate-deliberation-upgrade-plan.md
 Business-OS-Integration: off
@@ -72,8 +72,8 @@ Audit the current `/idea-generate` output contract for deliberation transparency
   - `_shared/cabinet` personas and dossier template conventions.
   - stance contract in `.claude/skills/_shared/cabinet/stances.md`.
 - Downstream dependents:
-  - `/lp-fact-find` stage-doc seeding quality (decision logs and evidence handoff).
-  - `/lp-plan` confidence and rationale quality from seeded docs.
+  - `/lp-do-fact-find` stage-doc seeding quality (decision logs and evidence handoff).
+  - `/lp-do-plan` confidence and rationale quality from seeded docs.
 - Likely blast radius:
   - Skill contract readability and operator trust.
   - Checker coverage breadth.
@@ -171,7 +171,7 @@ Audit the current `/idea-generate` output contract for deliberation transparency
    - B) standard (2 support + 2 objections)
    - C) full ledger (all participating lenses)
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - Implementation: 84%
   - Contract edits are localized and pattern-consistent.
 - Approach: 81%
@@ -200,4 +200,4 @@ Audit the current `/idea-generate` output contract for deliberation transparency
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `/lp-build`
+  - `/lp-do-build`

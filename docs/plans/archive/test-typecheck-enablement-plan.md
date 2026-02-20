@@ -10,7 +10,7 @@ Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
@@ -136,7 +136,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 ### TASK-01: Verify packages/** test typecheck passes clean
 - **Type:** INVESTIGATE
 - **Deliverable:** Console output + finding recorded in plan notes (not a separate artifact)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Pending
@@ -167,14 +167,14 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
   - 88% (1028/1175) are mock-type incompatibilities — jest mock objects assigned without explicit type params fail `MockInstance<ReturnType, Args, Context>` shape checks since @types/jest 29.5.x added `withImplementation`
   - Smallest packages (fixable quickly): editorial (1), types (2), themes (1), stripe (4), i18n (4), design-system (4), seo (6), design-tokens (5) — total ~27 errors across 8 packages
   - Root assumption FALSE: errors have grown back since `8944ff6446` (new test code written without explicit mock typing)
-  - **TASK-02 confidence regressed from 82% → 35%: Implementation confidence drops — cannot fix 1175 errors in M effort. Routing to /lp-replan.**
+  - **TASK-02 confidence regressed from 82% → 35%: Implementation confidence drops — cannot fix 1175 errors in M effort. Routing to /lp-do-replan.**
 
 ---
 
 ### TASK-02: Add CI step for packages/** + fix any errors found
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `.github/workflows/ci.yml` (new step in `typecheck` job); error fixes in `packages/**` test files if TASK-01 finds any
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -232,7 +232,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 ### TASK-03: Enumerate apps/cms test type errors
 - **Type:** INVESTIGATE
 - **Deliverable:** Error count + list of affected files recorded as TASK-04 input
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Pending
@@ -269,7 +269,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 ### TASK-04: Fix apps/cms test type errors
 - **Type:** IMPLEMENT
 - **Deliverable:** Fixed `apps/cms/__tests__/**` and `apps/cms/src/**/*.test.ts` files with zero type errors
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
@@ -334,7 +334,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 ### TASK-05: Extend CI step to cover apps/cms
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `.github/workflows/ci.yml` — CI step extended to also run CMS test typecheck
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -380,7 +380,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 ### TASK-15: Fix 8 small packages + create per-package typecheck configs
 - **Type:** IMPLEMENT
 - **Deliverable:** 7 new `tsconfig.test.typecheck.json` files (one per package); fixed test files with zero errors per package. Packages: `packages/editorial`, `packages/types`, `packages/stripe`, `packages/i18n`, `packages/design-system`, `packages/design-tokens`, `packages/seo`. (`packages/themes` deferred — sub-package directory structure complicates root-level config.)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -443,7 +443,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 ### TASK-16: Add CI step for 7 fixed small packages
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `.github/workflows/ci.yml` — new `Typecheck tests (Phase-1 packages)` step with 7 TYPECHECK_FILTER invocations
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -494,8 +494,8 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 
 ### TASK-06: Phase 1 gate — reassess Phase 2 + CMS priority
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan via `/lp-replan` for TASK-07–TASK-09 and CMS path (TASK-04/05) based on Phase 1 evidence
-- **Execution-Skill:** lp-build
+- **Deliverable:** Updated plan via `/lp-do-replan` for TASK-07–TASK-09 and CMS path (TASK-04/05) based on Phase 1 evidence
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -517,7 +517,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
   - Should CMS (178 errors, TASK-04/05) be slotted into Phase 2 alongside platform-core/machine, or deferred to Phase 3?
   - Are `packages/themes` (1 error) and second-tier packages (auth 43, email 45, lib 34) ready to queue?
   - Has the mock-type error pattern in packages/** decreased (new test code written with proper types)?
-- **Validation contract:** `/lp-replan` run on TASK-07–TASK-09 and CMS path; plan updated with revised effort/confidence
+- **Validation contract:** `/lp-do-replan` run on TASK-07–TASK-09 and CMS path; plan updated with revised effort/confidence
 - **Planning validation:** Phase 1 CI run evidence (TASK-16 merged PR)
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** `docs/plans/test-typecheck-enablement/plan.md` updated
@@ -552,7 +552,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-07: packages/platform-core — create tsconfig + fix errors
 - **Type:** IMPLEMENT
 - **Deliverable:** `packages/platform-core/tsconfig.test.typecheck.json` (new file); fixed test files in `packages/platform-core/src/__tests__/**` and `packages/platform-core/__tests__/**`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -614,7 +614,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-08: packages/platform-machine — create tsconfig + fix errors
 - **Type:** IMPLEMENT
 - **Deliverable:** `packages/platform-machine/tsconfig.test.typecheck.json` (new file); fixed test files
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -667,7 +667,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-09: Extend CI step — platform-core + platform-machine
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `.github/workflows/ci.yml` — CI step extended with two more TYPECHECK_FILTER invocations
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -703,8 +703,8 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 
 ### TASK-10: Phase 2 gate — reassess Phase 3
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan via `/lp-replan` for TASK-11–TASK-13
-- **Execution-Skill:** lp-build
+- **Deliverable:** Updated plan via `/lp-do-replan` for TASK-11–TASK-13
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -724,7 +724,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
   - Were platform-core/machine errors manageable or large?
   - Is CI job duration within budget after 4 invocations?
   - Should packages/ui exclude bug be fixed in Phase 3 or Phase 4?
-- **Validation contract:** `/lp-replan` run on TASK-11–TASK-14; plan updated
+- **Validation contract:** `/lp-do-replan` run on TASK-11–TASK-14; plan updated
 - **Planning validation:** Phase 2 CI evidence
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** `docs/plans/test-typecheck-enablement/plan.md` updated
@@ -744,7 +744,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-11: apps/brikette — create tsconfig + fix errors
 - **Type:** IMPLEMENT
 - **Deliverable:** `apps/brikette/tsconfig.test.typecheck.json` (new file); fixed test files in `apps/brikette/src/test/**`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
@@ -804,7 +804,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-12: packages/template-app — create tsconfig + fix errors
 - **Type:** IMPLEMENT
 - **Deliverable:** `packages/template-app/tsconfig.test.typecheck.json` (new file); fixed test files
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -846,7 +846,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-13: Extend CI step — brikette + template-app
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `.github/workflows/ci.yml` with brikette and template-app invocations
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -882,8 +882,8 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 
 ### TASK-14: Phase 3 gate — assess Phase 4 (TYPECHECK_ALL + pre-commit)
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan via `/lp-replan` for Phase 4 tasks (to be defined after this checkpoint)
-- **Execution-Skill:** lp-build
+- **Deliverable:** Updated plan via `/lp-do-replan` for Phase 4 tasks (to be defined after this checkpoint)
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -906,7 +906,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
   - How many remaining packages/apps don't have `tsconfig.test.typecheck.json`?
   - Is `TYPECHECK_ALL=1` safe (i.e., are all target packages covered with dedicated configs)?
   - Should the `tsconfig.test.json` fallback in the script be removed or guarded?
-- **Validation contract:** `/lp-replan` run; Phase 4 tasks defined and sequenced
+- **Validation contract:** `/lp-do-replan` run; Phase 4 tasks defined and sequenced
 - **Planning validation:** Phase 3 CI evidence; error count summary across all phases
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** `docs/plans/test-typecheck-enablement/plan.md` updated with Phase 4 tasks
@@ -925,7 +925,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-17: Fix packages/ui tsconfig.test.typecheck.json exclude bug
 - **Type:** IMPLEMENT
 - **Deliverable:** Corrected `packages/ui/tsconfig.test.typecheck.json` (remove `exclude: ["__tests__/**"]` that cancels include)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -951,7 +951,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-18: packages/auth — create tsconfig + fix errors
 - **Type:** IMPLEMENT
 - **Deliverable:** `packages/auth/tsconfig.test.typecheck.json` + error fixes in `packages/auth` test files
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
 - **Status:** Complete (2026-02-18)
@@ -977,7 +977,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-19: packages/email — create tsconfig + fix errors
 - **Type:** IMPLEMENT
 - **Deliverable:** `packages/email/tsconfig.test.typecheck.json` + error fixes in `packages/email` test files
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
 - **Status:** Complete (2026-02-18)
@@ -1003,7 +1003,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-20: Extend CI step — packages/ui + packages/auth + packages/email
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `.github/workflows/ci.yml` with Phase 4 packages added to loop
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -1025,8 +1025,8 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 
 ### TASK-21: Phase 4 CHECKPOINT — assess remaining coverage + pre-commit
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan via `/lp-replan` for Phase 5 (pre-commit, TYPECHECK_ALL, remaining packages)
-- **Execution-Skill:** lp-build
+- **Deliverable:** Updated plan via `/lp-do-replan` for Phase 5 (pre-commit, TYPECHECK_ALL, remaining packages)
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -1045,7 +1045,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
   - Which remaining packages warrant Phase 5 coverage? (packages/lib, packages/cms-ui, packages/auth-* etc.)
   - Is TYPECHECK_ALL=1 safe with Phase 4 complete?
   - Should pre-commit hook gate on typecheck-tests or remain CI-only?
-- **Validation contract:** `/lp-replan` run; Phase 5 tasks defined or plan closed
+- **Validation contract:** `/lp-do-replan` run; Phase 5 tasks defined or plan closed
 - **Planning validation:** Phase 4 CI evidence; remaining error count estimate
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** Plan updated with Phase 5 tasks or Status: Complete
@@ -1070,7 +1070,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-22: Phase 5 small batch — zod-utils, telemetry, date-utils, themes, email-templates
 - **Type:** IMPLEMENT
 - **Deliverable:** `tsconfig.test.typecheck.json` for 5 small packages; error fixes; 0 errors each
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
 - **Status:** Complete (2026-02-19)
@@ -1097,7 +1097,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-23: Phase 5 — packages/lib tsconfig + error fixes
 - **Type:** IMPLEMENT
 - **Deliverable:** `packages/lib/tsconfig.test.typecheck.json` + error fixes in `packages/lib` test files
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
 - **Status:** Complete (2026-02-19)
@@ -1127,7 +1127,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 ### TASK-24: Phase 5 — Extend CI step for Phase 5 packages
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `.github/workflows/ci.yml` with Phase 5 packages added to loop
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-19)
@@ -1146,8 +1146,8 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 
 ### TASK-25: Phase 5 CHECKPOINT — assess TYPECHECK_ALL readiness + pre-commit
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan via `/lp-replan` for Phase 6 (pre-commit hook, remaining large packages)
-- **Execution-Skill:** lp-build
+- **Deliverable:** Updated plan via `/lp-do-replan` for Phase 6 (pre-commit hook, remaining large packages)
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-19)
@@ -1164,7 +1164,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
   - Has CI duration crept past 15 min?
   - Which of remaining packages/apps are high-risk (business-os 353 tests, reception 335 tests, cms-ui 240 tests, config 126 tests)?
   - Is pre-commit hook worth enabling for covered packages before full TYPECHECK_ALL?
-- **Validation contract:** `/lp-replan` run; Phase 6 tasks defined or plan closed
+- **Validation contract:** `/lp-do-replan` run; Phase 6 tasks defined or plan closed
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** Plan updated with Phase 6 tasks or Status: Complete
 - **Checkpoint evidence (2026-02-19):**

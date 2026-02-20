@@ -9,7 +9,7 @@ Feature-Slug: startup-loop-token-efficiency
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); overall effort-weighted
@@ -28,7 +28,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 ## Goals
 
 - Reduce per-invocation effective context for lp-seo (922→~310 lines), lp-launch-qa (792→~210/subagent), startup-loop (432→~100 lines), and BOS-on workflow skills (685→~370 lines)
-- Introduce parallel subagent dispatch for lp-launch-qa domains, lp-build waves, S6B secondary skills, lp-seo SERP phase, and lp-offer competitor research
+- Introduce parallel subagent dispatch for lp-launch-qa domains, lp-do-build waves, S6B secondary skills, lp-seo SERP phase, and lp-offer competitor research
 - Establish `_shared/subagent-dispatch-contract.md` as the canonical protocol for all future parallel dispatch in the loop
 
 ## Non-goals
@@ -50,7 +50,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - `stage-doc-operations.md` can be split along `core/templates/integration` lines (confirmed by file read: ~160 lines are template blocks, ~100 lines are actual operation instructions; see TASK-01 planning validation)
   - `lp-sequence` Parallelism Guide accurately captures inter-task dependencies (design intent confirmed; execution not yet validated)
   - Brand Copy domain (Domain 5) in lp-launch-qa is independent of SEO domain output — needs verification at CHECKPOINT
-  - Writer-lock Model A provides meaningful parallelism on the analysis phase of lp-build tasks (analysis:write ratio ~70-80%)
+  - Writer-lock Model A provides meaningful parallelism on the analysis phase of lp-do-build tasks (analysis:write ratio ~70-80%)
 
 ## Fact-Find Reference
 
@@ -59,7 +59,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - Empirical effective context model: BOS-on effective context is 685-792 lines for workflow skills, driven by transitive load of `stage-doc-operations.md` (345 lines)
   - `lp-launch-qa` line breakdown: ~200 lines are embedded report template (25% of file); domain boundaries confirmed at ~30-55 lines each
   - Zero Task tool usage confirmed in core loop skills by explicit grep
-  - `lp-sequence` Parallelism Guide explicitly designed for wave dispatch in `lp-build` — unimplemented
+  - `lp-sequence` Parallelism Guide explicitly designed for wave dispatch in `lp-do-build` — unimplemented
   - Three-metric framework: max-context (↓ by module routing), total tokens (may ↑ with parallelism), latency (↓ by parallelism)
   - Writer-lock Model A specified: parallel analysis, serial apply; subagents read-only
   - **Planning validation correction**: `stage-doc-operations.md` is NOT structured read/write/validate — it is structured by stage type with large embedded template blocks. Split must be `core/templates/integration` not `read/write/validate/bos-auth`
@@ -91,7 +91,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 | TASK-04 | IMPLEMENT | OPP-B: Author _shared/subagent-dispatch-contract.md | 82% | S | Complete (2026-02-18) | - | TASK-05 |
 | TASK-05 | CHECKPOINT | Validate Wave 1 extractions; replan Wave 3 dispatch tasks | 95% | S | Complete (2026-02-18) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
 | TASK-06 | IMPLEMENT | OPP-2: lp-launch-qa domain modules + parallel orchestrator | 80% | M | Complete (2026-02-18) | TASK-04, TASK-05 | - |
-| TASK-07 | IMPLEMENT | OPP-1: lp-build wave dispatch (Model A) | 82% | L | Complete (2026-02-18) | TASK-04, TASK-05, TASK-11 | - |
+| TASK-07 | IMPLEMENT | OPP-1: lp-do-build wave dispatch (Model A) | 82% | L | Complete (2026-02-18) | TASK-04, TASK-05, TASK-11 | - |
 | TASK-08 | IMPLEMENT | OPP-4: startup-loop S6B parallel secondary skill dispatch | 80% | S | Complete (2026-02-18) | TASK-04, TASK-05 | - |
 | TASK-09 | IMPLEMENT | OPP-3b: lp-seo Phase 3 SERP intra-phase parallelism | 80% | M | Complete (2026-02-18) | TASK-03, TASK-04, TASK-05, TASK-12 | - |
 | TASK-10 | IMPLEMENT | OPP-5: lp-offer competitor research parallel dispatch | 80% | S | Complete (2026-02-18) | TASK-04, TASK-05 | - |
@@ -115,7 +115,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Three new files in `.claude/skills/_shared/`; updated BOS integration files; original `stage-doc-operations.md` replaced
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -133,7 +133,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - **Confidence:** 80%
   - Implementation: 88% — file read at planning time confirms structure; split boundaries clear
   - Approach: 80% — split strategy corrected from fact-find (core/templates/integration, not read/write/validate); mechanism confirmed
-  - Impact: 90% — H4 hypothesis high confidence; transitive include drops from 345 to ~100 lines; lp-build effective context 685→~440 lines (BOS-on)
+  - Impact: 90% — H4 hypothesis high confidence; transitive include drops from 345 to ~100 lines; lp-do-build effective context 685→~440 lines (BOS-on)
 - **Acceptance:**
   - `stage-doc-core.md` exists; ≤120 lines; contains: stage types table, frontmatter schema, step-by-step creation, evidence types table, idempotency note, related resources
   - `stage-doc-templates.md` exists; contains all four stage template blocks (fact-find, plan, build, reflect)
@@ -153,7 +153,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - **Scouts:** Before writing new files, confirm no skill references `stage-doc-templates.md` today (expect 0 references — templates are new concept)
 - **Edge Cases & Hardening:** Redirect note in old `stage-doc-operations.md` prevents any skill that hardcodes the filename from silently missing content. All three BOS integration files must reference `stage-doc-core.md` exclusively.
 - **What would make this >=90%:**
-  - Run a real lp-fact-find BOS sync after the split and verify it completes correctly
+  - Run a real lp-do-fact-find BOS sync after the split and verify it completes correctly
 - **Rollout / rollback:**
   - Rollout: Create three new files; update three BOS integration files; test one BOS-integrated skill invocation
   - Rollback: Restore `stage-doc-operations.md` from git; revert BOS integration file changes
@@ -172,7 +172,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `startup-loop/modules/` directory with 4 command files; `startup-loop/SKILL.md` reduced to thin router ≤120 lines
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -187,7 +187,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - **Blocks:** TASK-05
 - **Confidence:** 82%
   - Implementation: 85% — command boundaries are clear; startup-loop SKILL.md read; 432 lines confirmed; gate logic maps to command types
-  - Approach: 82% — established thin-orchestrator pattern (lp-fact-find, lp-plan, lp-build); key risk is gate dependencies spanning multiple commands (e.g., a gate checked in `submit` might reference state set in `start`)
+  - Approach: 82% — established thin-orchestrator pattern (lp-do-fact-find, lp-do-plan, lp-do-build); key risk is gate dependencies spanning multiple commands (e.g., a gate checked in `submit` might reference state set in `start`)
   - Impact: 85% — 65-80% context reduction per invocation; startup-loop is invoked at every stage boundary
 - **Acceptance:**
   - `startup-loop/modules/` directory exists with 4 files
@@ -226,7 +226,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `lp-seo/modules/` directory with `phase-base-contract.md` + 5 phase files; `lp-seo/SKILL.md` reduced to thin orchestrator ≤120 lines
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -283,7 +283,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `_shared/subagent-dispatch-contract.md` (~60 lines) — canonical protocol for all parallel dispatch in the startup loop
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -330,8 +330,8 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 ### TASK-05: CHECKPOINT — Validate Wave 1 module extractions; replan Wave 3 dispatch tasks
 
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan.md with re-assessed confidence for TASK-06 through TASK-10 via `/lp-replan`
-- **Execution-Skill:** lp-build
+- **Deliverable:** Updated plan.md with re-assessed confidence for TASK-06 through TASK-10 via `/lp-do-replan`
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -345,12 +345,12 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - **Horizon assumptions to validate:**
   - H-01: Brand Copy domain (Domain 5) in lp-launch-qa is independent of SEO domain output — verify by reading both domain sections in the extracted modules (TASK-06 planning)
   - H-02: lp-sequence Parallelism Guide is complete enough to drive wave dispatch — verify by running lp-sequence on this plan itself and checking wave output
-  - H-03: stage-doc-core.md split (TASK-01) did not break any BOS-integrated skill invocation — verify with a dry-run of lp-fact-find BOS path
+  - H-03: stage-doc-core.md split (TASK-01) did not break any BOS-integrated skill invocation — verify with a dry-run of lp-do-fact-find BOS path
   - H-04: startup-loop gate cross-references (TASK-02) are complete — verify by running `startup-loop status` command
   - H-05: lp-seo phase-base-contract.md is complete enough that phase modules don't need to duplicate rubric — verify by attempting a Phase 3 run after TASK-03
   - H-06: subagent-dispatch-contract.md (TASK-04) covers all cases needed by TASK-06, TASK-07, TASK-08 — review against each task's dispatch requirements
 - **Status:** Complete (2026-02-18)
-- **Validation contract:** lp-replan run produces updated confidence scores for TASK-06 through TASK-10; plan re-sequenced; all downstream tasks re-evaluated
+- **Validation contract:** lp-do-replan run produces updated confidence scores for TASK-06 through TASK-10; plan re-sequenced; all downstream tasks re-evaluated
 - **Planning validation:** None: planning control task
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** `docs/plans/startup-loop-token-efficiency/plan.md` updated with new confidence scores
@@ -370,7 +370,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `lp-launch-qa/modules/` directory with 6 domain files + `report-template.md`; `lp-launch-qa/SKILL.md` refactored to thin parallel orchestrator with cross-domain synthesis
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -429,17 +429,17 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 ---
 
-### TASK-07: OPP-1 — lp-build wave dispatch (Model A)
+### TASK-07: OPP-1 — lp-do-build wave dispatch (Model A)
 
 - **Type:** IMPLEMENT
-- **Deliverable:** `lp-build/SKILL.md` updated with wave-reading logic and Model A parallel Task dispatch; new `_shared/wave-dispatch-protocol.md`
-- **Execution-Skill:** lp-build
+- **Deliverable:** `lp-do-build/SKILL.md` updated with wave-reading logic and Model A parallel Task dispatch; new `_shared/wave-dispatch-protocol.md`
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
 - **Status:** Pending
 - **Affects:**
-  - `.claude/skills/lp-build/SKILL.md` (wave-reading + dispatch logic added)
+  - `.claude/skills/lp-do-build/SKILL.md` (wave-reading + dispatch logic added)
   - `.claude/skills/_shared/wave-dispatch-protocol.md` (new)
   - `[readonly] .claude/skills/lp-sequence/SKILL.md`
   - `[readonly] .claude/skills/_shared/subagent-dispatch-contract.md`
@@ -450,21 +450,21 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - Approach: 82% — H-02 resolved; TASK-11 SPIKE confirms Model A runs without writer-lock contention (2 parallel agents, read-only, no conflicts); L effort scale uncertainty remains but mechanism is empirically validated
   - Impact: 82% — Amdahl's law analysis gives 40-70% range; well-bounded
 - **Acceptance:**
-  - `lp-build/SKILL.md` remains ≤250 lines (currently ~685 effective context at BOS-on; SKILL.md is 209 lines — may grow by ~30 lines for wave logic)
+  - `lp-do-build/SKILL.md` remains ≤250 lines (currently ~685 effective context at BOS-on; SKILL.md is 209 lines — may grow by ~30 lines for wave logic)
   - `_shared/wave-dispatch-protocol.md` exists; references `subagent-dispatch-contract.md`; specifies: wave-reading from Parallelism Guide, how to dispatch tasks in parallel via Task tool, conflict detection via `touched_files` comparison, merge procedure, failure handling (quarantine task, continue wave)
-  - `lp-build/SKILL.md` dispatch block: wave size = 1 → continue current sequential pattern; wave size ≥ 2 → dispatch in parallel per `wave-dispatch-protocol.md`
+  - `lp-do-build/SKILL.md` dispatch block: wave size = 1 → continue current sequential pattern; wave size ≥ 2 → dispatch in parallel per `wave-dispatch-protocol.md`
   - Subagents run in read-only/analysis mode; produce `{ diff_proposal, touched_files, summary, status }` — never write files directly
   - Orchestrator acquires writer lock, applies diffs sequentially, runs tests once per wave
   - Code-track tasks only for initial implementation (business-artifact deferred to post-validation per open question resolution)
 - **Validation contract (TC-01 to TC-05):**
-  - TC-01: `wc -l .claude/skills/lp-build/SKILL.md` → ≤250 lines
+  - TC-01: `wc -l .claude/skills/lp-do-build/SKILL.md` → ≤250 lines
   - TC-02: `_shared/wave-dispatch-protocol.md` exists; grep for `touched_files` and `Model A` → both present
   - TC-03: On a plan with a 3-task wave from Parallelism Guide: 3 parallel subagents dispatched; no writer-lock contention
   - TC-04: If two subagents in the same wave touch the same file: conflict detected; those tasks applied serially
   - TC-05: If one subagent fails: its task marked `blocked`; remaining wave tasks applied normally
-- **Execution plan:** Red (prototype wave-reading logic against this plan's own Parallelism Guide; verify Parallelism Guide format matches expected input) → Green (write wave-dispatch-protocol.md; update lp-build SKILL.md with dispatch block) → Refactor (verify single-task wave still works as before; verify writer-lock interaction; verify conflict detection)
+- **Execution plan:** Red (prototype wave-reading logic against this plan's own Parallelism Guide; verify Parallelism Guide format matches expected input) → Green (write wave-dispatch-protocol.md; update lp-do-build SKILL.md with dispatch block) → Refactor (verify single-task wave still works as before; verify writer-lock interaction; verify conflict detection)
 - **Planning validation (L effort):**
-  - Checks run: lp-sequence SKILL.md lines 3, 8, 24, 160 confirm Parallelism Guide design intent. lp-build SKILL.md at 209 lines confirmed; adding wave dispatch block may push to ~240 lines (within 250 limit). writer-lock confirmed at `scripts/agents/with-writer-lock.sh`.
+  - Checks run: lp-sequence SKILL.md lines 3, 8, 24, 160 confirm Parallelism Guide design intent. lp-do-build SKILL.md at 209 lines confirmed; adding wave dispatch block may push to ~240 lines (within 250 limit). writer-lock confirmed at `scripts/agents/with-writer-lock.sh`.
   - Validation artifacts: Parallelism Guide output spec in lp-sequence SKILL.md.
   - Unexpected findings: L effort cap applies — with reasoning-only evidence on approach, cap is 75 per scoring rules. Overall confidence = min(80, 70, 82) = 70%. Approach = 70 is the binding constraint.
 - **Scouts:** Before implementing dispatch, run `/lp-sequence` on this plan and verify the Parallelism Guide output matches the expected wave format. If format has changed, update wave-reading logic accordingly.
@@ -472,18 +472,18 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - **What would make this >=90%:**
   - Run wave dispatch on a real 10-task plan with wave size ≥ 3; verify no conflicts; measure wall time
 - **Rollout / rollback:**
-  - Rollout: Create wave-dispatch-protocol.md first; then add dispatch block to lp-build SKILL.md; test on a plan with ≥2 parallel tasks in one wave
-  - Rollback: Revert lp-build SKILL.md to pre-dispatch version; delete wave-dispatch-protocol.md
-- **Documentation impact:** MEMORY.md: note that lp-build now supports wave dispatch with Model A; reference wave-dispatch-protocol.md
+  - Rollout: Create wave-dispatch-protocol.md first; then add dispatch block to lp-do-build SKILL.md; test on a plan with ≥2 parallel tasks in one wave
+  - Rollback: Revert lp-do-build SKILL.md to pre-dispatch version; delete wave-dispatch-protocol.md
+- **Documentation impact:** MEMORY.md: note that lp-do-build now supports wave dispatch with Model A; reference wave-dispatch-protocol.md
 - **Notes / references:** Code-track tasks only for initial release. Business-artifact wave dispatch deferred pending one validated code-track run. Per open question resolution default: start code-only.
 - **Status:** Complete (2026-02-18)
 - **Build evidence (2026-02-18):**
-  - TC-01: `lp-build/SKILL.md` = 222 lines (≤250 ✓)
+  - TC-01: `lp-do-build/SKILL.md` = 222 lines (≤250 ✓)
   - TC-02: `wave-dispatch-protocol.md` = 55 lines (≤60 ✓); "Model A" + "touched_files" both present (4 combined matches) ✓
   - TC-03: Wave dispatch block dispatches analysis subagents in ONE message; output schema `{diff_proposal, touched_files, summary, status}` specified ✓
   - TC-04: Conflict detection via `touched_files` overlap → serial apply for conflicting tasks ✓
   - TC-05: Failed task marked `Blocked`; quarantined; remaining wave tasks continue ✓
-  - `lp-build/SKILL.md` references `wave-dispatch-protocol.md` (1 match) ✓; `wave-dispatch-protocol.md` references `subagent-dispatch-contract.md` (1 match) ✓
+  - `lp-do-build/SKILL.md` references `wave-dispatch-protocol.md` (1 match) ✓; `wave-dispatch-protocol.md` references `subagent-dispatch-contract.md` (1 match) ✓
 
 ---
 
@@ -491,7 +491,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `startup-loop/modules/cmd-advance.md` (or SKILL.md if modules not split yet in same wave) updated with parallel dispatch instruction for lp-seo and draft-outreach after lp-channels completes
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -540,7 +540,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `lp-seo/modules/phase-3.md` updated with parallel SERP keyword dispatch (subagent per keyword cluster, hard caps, structured schema)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -592,7 +592,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `lp-offer/SKILL.md` Stage 1 updated with parallel competitor research dispatch; `lp-offer/competitor-research-brief.md` (new, ~30 lines)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -641,7 +641,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 - **Type:** SPIKE
 - **Deliverable:** Evidence note in `docs/plans/startup-loop-token-efficiency/task-11-model-a-spike.md` — structured output confirming Model A dispatch works without writer-lock contention
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -685,7 +685,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 - **Type:** SPIKE
 - **Deliverable:** Evidence note in `docs/plans/startup-loop-token-efficiency/task-12-websearch-spike.md` — structured output confirming WebSearch handles 3-concurrent calls without throttling
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -754,14 +754,14 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - [x] TASK-11: Model A dispatch validated (evidence note produced); TASK-07 confidence updated to ≥80
 - [x] TASK-12: WebSearch 3-concurrent validated (evidence note produced); TASK-09 confidence updated to ≥80
 - [x] TASK-06: lp-launch-qa/SKILL.md ≤150 lines; 6 domain modules + report-template.md exist; cross-domain synthesis step present; --domain flag backwards compatible
-- [x] TASK-07: wave-dispatch-protocol.md exists; lp-build SKILL.md ≤250 lines; wave dispatch block present; single-task wave regression-free
+- [x] TASK-07: wave-dispatch-protocol.md exists; lp-do-build SKILL.md ≤250 lines; wave dispatch block present; single-task wave regression-free
 - [x] TASK-08: startup-loop S6B section directs parallel lp-seo + draft-outreach dispatch
 - [x] TASK-09: phase-3.md contains SERP dispatch block; hard caps and output schema present; failure handling present
 - [x] TASK-10: competitor-research-brief.md exists; lp-offer Stage 1 updated with parallel dispatch
 
 ## Decision Log
 
-- 2026-02-18: OPP-A split strategy corrected from read/write/validate/bos-auth to core/templates/integration. Reason: stage-doc-operations.md is structured by stage type with large embedded template blocks, not by operation type. Templates (~160 lines) are not needed by BOS integration skills at runtime. Planning validation finding during lp-plan execution.
+- 2026-02-18: OPP-A split strategy corrected from read/write/validate/bos-auth to core/templates/integration. Reason: stage-doc-operations.md is structured by stage type with large embedded template blocks, not by operation type. Templates (~160 lines) are not needed by BOS integration skills at runtime. Planning validation finding during lp-do-plan execution.
 - 2026-02-18: Open question default applied — OPP-1 wave dispatch will be code-track only for initial implementation. Business-artifact wave dispatch deferred to post-validation.
 - 2026-02-18: Open question default applied — OPP-2 (lp-launch-qa) will use full parallelization (not hybrid dispatch). Rationale: latency is primary driver per fact-find default assumption.
 

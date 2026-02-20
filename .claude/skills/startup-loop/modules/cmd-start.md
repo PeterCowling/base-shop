@@ -16,46 +16,89 @@
 
 ---
 
-## Gate D: Problem-first pre-intake (S0A–S0D)
+## Gate D: Problem-first pre-intake (DISCOVERY-01–DISCOVERY-07)
 
 **Condition**: `--start-point = problem`
 
-**Rule**: Route through S0A → S0B → S0C → S0D in sequence before S0 intake. Skip Gate D entirely when `--start-point product` or flag absent (pass-through directly to S0).
+**Rule**: Route through DISCOVERY-01 → DISCOVERY-02 → DISCOVERY-03 → DISCOVERY-04 → DISCOVERY-05 → DISCOVERY-06 → DISCOVERY-07 in sequence before DISCOVERY intake. Skip Gate D entirely when `--start-point product` or flag absent (pass-through directly to DISCOVERY).
 
 **Backward compatibility**: Absent `--start-point` flag is treated as `product` — no behavior change for existing operators.
 
-**S0A — Problem framing:**
-- `prompt_file`: `.claude/skills/lp-problem-frame/SKILL.md`
+**DISCOVERY-01 — Problem framing:**
+- `prompt_file`: `.claude/skills/lp-do-discovery-01-problem-framing/SKILL.md`
 - `required_output_path`: `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
-- **Re-entry**: If `problem-statement.user.md` exists for this business → S0A complete; skip to S0B.
+- **Re-entry**: If `problem-statement.user.md` exists for this business → DISCOVERY-01 complete; skip to DISCOVERY-02.
 
-**S0B — Solution-space scan (two-tier):**
+**DISCOVERY-02 — Solution-space scan (two-tier):**
 - Tier 1 — prompt written (started): `docs/business-os/strategy/<BIZ>/solution-space-prompt.md`
 - Tier 2 — results returned (complete): `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-space-results.user.md`
-- `prompt_file`: `.claude/skills/lp-solution-space/SKILL.md`
+- `prompt_file`: `.claude/skills/lp-do-discovery-02-solution-space-scan/SKILL.md`
 - `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-space-results.user.md`
-- **Re-entry**: If any `*-solution-space-results.user.md` exists → S0B complete; skip to S0C. If only `solution-space-prompt.md` exists → S0B started; hand off prompt to operator.
+- **Re-entry**: If any `*-solution-space-results.user.md` exists → DISCOVERY-02 complete; skip to DISCOVERY-03. If only `solution-space-prompt.md` exists → DISCOVERY-02 started; hand off prompt to operator.
 
-**S0C — Option selection:**
-- `prompt_file`: `.claude/skills/lp-option-select/SKILL.md`
+**DISCOVERY-03 — Option selection:**
+- `prompt_file`: `.claude/skills/lp-do-discovery-03-option-picking/SKILL.md`
 - `required_output_path`: `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md`
-- **Re-entry**: If `s0c-option-select.user.md` exists → S0C complete; skip to S0D.
+- **Re-entry**: If `s0c-option-select.user.md` exists → DISCOVERY-03 complete; skip to DISCOVERY-04.
 
-**S0D — Naming handoff (two-tier):**
+**DISCOVERY-04 — Naming handoff (two-tier):**
 - Tier 1 — prompt written (started): `docs/business-os/strategy/<BIZ>/naming-research-prompt.md`
 - Tier 2 — shortlist returned (complete): `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-shortlist.user.md`
-- `prompt_file`: `.claude/skills/brand-naming-research/SKILL.md`
+- `prompt_file`: `.claude/skills/lp-do-discovery-04-business-name-options/SKILL.md`
 - `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-shortlist.user.md`
-- **Re-entry**: If any `*-naming-shortlist.user.md` exists → S0D complete (GATE-BD-00 at S0→S1 will be satisfied). If only `naming-research-prompt.md` exists → S0D started; hand off prompt to operator.
+- **Re-entry**: If any `*-naming-shortlist.user.md` exists → DISCOVERY-04 complete. If only `naming-research-prompt.md` exists → DISCOVERY-04 started; hand off prompt to operator.
 
-**S0 pass-through (all sub-stages complete):**
-When all four completion artifacts exist:
+**DISCOVERY-05 — Distribution planning:**
+- `prompt_file`: `.claude/skills/lp-do-discovery-05-distribution-planning/SKILL.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/distribution-plan.user.md`
+- **Re-entry**: If `distribution-plan.user.md` exists with ≥2 channels → DISCOVERY-05 complete; skip to DISCOVERY-06.
+
+**DISCOVERY-06 — Measurement plan:**
+- `prompt_file`: `.claude/skills/lp-do-discovery-06-measurement-plan/SKILL.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/measurement-plan.user.md`
+- **Re-entry**: If `measurement-plan.user.md` exists with tracking method + ≥2 metrics → DISCOVERY-06 complete; skip to DISCOVERY-07.
+
+**DISCOVERY-07 — Operator evidence capture:**
+- `prompt_file`: `.claude/skills/lp-do-discovery-07-our-stance/SKILL.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/s0e-operator-evidence.user.md`
+- **Re-entry**: If `s0e-operator-evidence.user.md` exists → DISCOVERY-07 complete; continue to DISCOVERY pass-through.
+
+**DISCOVERY pass-through (all sub-stages complete):**
+When all seven completion artifacts exist:
 1. `problem-statement.user.md`
 2. Any `*-solution-space-results.user.md`
 3. `s0c-option-select.user.md`
 4. Any `*-naming-shortlist.user.md`
+5. `distribution-plan.user.md`
+6. `measurement-plan.user.md`
+7. `s0e-operator-evidence.user.md`
 
-→ Gate D is satisfied. Continue to Gate A (S0 intake).
+→ Gate D is satisfied. Run DISCOVERY intake sync — apply `modules/discovery-intake-sync.md` (first-run or drift check) before continuing to Gate E (BRAND routing).
+
+---
+
+## Gate E: BRAND stage routing (BRAND-01 → BRAND-02)
+
+**Condition**: After DISCOVERY pass-through completes (all start-points).
+
+**Rule**: Check for BRAND artifact completion in sequence:
+
+**BRAND-01 — Brand strategy:**
+- `prompt_file`: `.claude/skills/lp-do-brand-01-brand-strategy/SKILL.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/brand-strategy.user.md`
+- **Re-entry**: If `brand-strategy.user.md` exists → BRAND-01 complete; skip to BRAND-02.
+
+**BRAND-02 — Brand identity:**
+- `prompt_file`: `.claude/skills/lp-do-brand-02-brand-identity/SKILL.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
+- **Re-entry**: If `brand-dossier.user.md` exists → BRAND-02 complete; proceed to S1.
+
+**BRAND pass-through (both artifacts complete):**
+When both completion artifacts exist:
+1. `brand-strategy.user.md`
+2. `brand-dossier.user.md`
+
+→ Gate E is satisfied. Continue to Gate A (S1 intake).
 
 ---
 

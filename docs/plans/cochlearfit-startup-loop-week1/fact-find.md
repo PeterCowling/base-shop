@@ -12,8 +12,8 @@ Feature-Slug: cochlearfit-startup-loop-week1
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-plan, /lp-channels, /lp-seo
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-do-plan, /lp-channels, /lp-seo
 Related-Plan: docs/plans/cochlearfit-startup-loop-week1/plan.md
 Business-OS-Integration: on
 Business-Unit: HEAD
@@ -228,7 +228,7 @@ This section integrates the useful parts of the retired deployment-readiness fac
   - Why it matters: spend caps and out-of-stock behavior.
   - Decision owner: Pete
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - Implementation: 80%
   - App/test patterns exist; key gap is pricing/Stripe readiness and measurement instrumentation.
 - Approach: 70%
@@ -261,7 +261,7 @@ This section integrates the useful parts of the retired deployment-readiness fac
 - Add a data-backed catalog packet (`data/shops/cochlearfit/*`) if ops needs no-code updates.
 
 ## Execution Routing Packet
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-channels`, `/lp-seo`
 - Deliverable acceptance package:
   - A buildable, purchase-ready storefront, plus a Week-1 experiment protocol and a daily KPI pack.
@@ -271,4 +271,4 @@ This section integrates the useful parts of the retired deployment-readiness fac
 ## Planning Readiness
 - Status: Ready-for-planning
 - Blocking items (non-blocking for planning, blocking for full execution): Stripe + pricing + inventory confirmation.
-- Recommended next step: proceed to `/lp-plan` to produce an executable Week-1 plan with DECISION + IMPLEMENT tasks.
+- Recommended next step: proceed to `/lp-do-plan` to produce an executable Week-1 plan with DECISION + IMPLEMENT tasks.

@@ -18,6 +18,13 @@ This guide explains how to use Claude Code to process customer emails for Hostel
 claude
 ```
 
+Important:
+- Start a fresh session for inbox runs (do not rely on a continued/compacted session if tools were previously unavailable).
+- First action in the session should be MCP preflight:
+  ```typescript
+  health_check({ strict: false })
+  ```
+
 ### 2. Process Emails
 
 Run the skill:
@@ -166,6 +173,19 @@ For complex inquiries Claude cannot handle:
 Ensure the MCP server is started:
 ```bash
 cd packages/mcp-server && pnpm start
+```
+
+If you see tool-resolution errors (for example `Tool not found`) in a continued session:
+1. Stop the current session.
+2. Start a fresh one with `claude`.
+3. Run `health_check({ strict: false })` before `/ops-inbox`.
+
+If MCP remains unavailable, queue drafts locally (no Gmail mutations):
+```bash
+python3 scripts/ops/create-brikette-drafts.py \
+  --input <path-to-drafts.json> \
+  --dry-run \
+  --queue-file data/email-fallback-queue/<timestamp>-ops-inbox.jsonl
 ```
 
 ### Drafts not appearing in Gmail

@@ -10,7 +10,7 @@ Feature-Slug: brikette-octorate-funnel-reduction
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-sequence,lp-design-spec,lp-seo
 Overall-confidence: 79%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -186,7 +186,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 ### TASK-01: Lock named owners and operating cadence
 - **Type:** DECISION
 - **Deliverable:** owner/cadence decision recorded in `docs/plans/brikette-octorate-funnel-reduction/plan.md` and rollout checklist
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -209,7 +209,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 ### TASK-02: Redirect/canonical hardening rollout (legacy + cross-locale + `/book`)
 - **Type:** IMPLEMENT
 - **Deliverable:** redirect rule set and tests covering approved legacy/cross-locale mappings plus `/book` canonical behavior
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -262,7 +262,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 ### TASK-03: Handoff behavior normalization and endpoint-policy enforcement
 - **Type:** IMPLEMENT
 - **Deliverable:** normalized same-tab handoff with explicit endpoint policy and required params on all primary booking CTAs
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -310,7 +310,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 ### TASK-04: Investigate GA4 handoff capture gap in standard reports
 - **Type:** INVESTIGATE
 - **Deliverable:** root-cause diagnosis note + corrective checklist at `docs/plans/brikette-octorate-funnel-reduction/ga4-handoff-capture-investigation.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
 - **Status:** Complete (2026-02-17)
@@ -363,7 +363,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 ### TASK-05A: Native `handoff_to_engine` instrumentation across existing flows
 - **Type:** IMPLEMENT
 - **Deliverable:** canonical GA4 handoff event emission in product code across current mixed handoff modes
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -416,7 +416,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 ### TASK-05B: Legacy `begin_checkout` compatibility cleanup after normalization
 - **Type:** IMPLEMENT
 - **Deliverable:** explicit compatibility end-state after same-tab normalization (`begin_checkout` alias retained or removed by policy)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -465,7 +465,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 ### TASK-06: GA4 admin governance + reporting contract + ops handoff
 - **Type:** IMPLEMENT
 - **Deliverable:** governance artifact and reporting runbook at `docs/plans/brikette-octorate-funnel-reduction/ga4-governance-runbook.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -514,8 +514,8 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 
 ### TASK-07: Horizon checkpoint - reassess downstream plan
 - **Type:** CHECKPOINT
-- **Deliverable:** updated downstream confidence and sequencing via `/lp-replan` if needed
-- **Execution-Skill:** lp-build
+- **Deliverable:** updated downstream confidence and sequencing via `/lp-do-replan` if needed
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -527,7 +527,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
   - Approach: 95% - checkpoint prevents blind continuation under uncertain measurement state.
   - Impact: 95% - avoids executing reconciliation/SSR tasks on invalid assumptions.
 - **Acceptance:**
-  - `/lp-build` checkpoint executor run.
+  - `/lp-do-build` checkpoint executor run.
   - downstream tasks revalidated against latest route + measurement evidence.
   - plan remains sequenced and confidence-adjusted.
 - **Horizon assumptions to validate:**
@@ -543,12 +543,12 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
   - Assumption 2 (same-tab regression): TASK-03 complete; all three primary booking surfaces now emit `same_tab`. TC-05 threshold monitoring via runbook §6 escalation policy. No regression detected in test suites.
   - Assumption 3 (redirect rollout): TASK-02 Complete (2026-02-17). Middleware test suite green. No anomaly detected.
   - Downstream assessment: TASK-10B (SSR remediation) unblocked and ready; confidence 72% — proceed. TASK-08 (calibration) requires post-deploy GA4 window; confidence unchanged at 74% — deferred to first available post-deploy window where GA4 handoff count > 0. No topology change required; existing sequence remains valid.
-  - Verdict: Proceed. No `/lp-replan` required for downstream confidence. TASK-08 and TASK-10B unblocked.
+  - Verdict: Proceed. No `/lp-do-replan` required for downstream confidence. TASK-08 and TASK-10B unblocked.
 
 ### TASK-08: Overlap-window calibration (non-zero GA4 handoff + Octorate bookings)
 - **Type:** INVESTIGATE
 - **Deliverable:** calibration artifact set in `.tmp/reconciliation-<window>/` plus summary note in `docs/plans/brikette-octorate-funnel-reduction/reconciliation-calibration.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
 - **Status:** Blocked (Awaiting TASK-05A production deployment + post-deploy GA4 data window)
@@ -588,7 +588,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 ### TASK-09: No-API reconciliation operating pack (aggregate + probabilistic)
 - **Type:** IMPLEMENT
 - **Deliverable:** operating pack with runbook + weekly memo template + repeatable command set at `docs/plans/brikette-octorate-funnel-reduction/reconciliation-ops-pack.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -650,7 +650,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 ### TASK-10A: Add SSR/no-JS + i18n leakage detection gate (report-only mode) for commercial routes
 - **Type:** IMPLEMENT
 - **Deliverable:** automated detection suite in report-only mode (warn/fail-report artifact, no CI hard-fail yet)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -690,7 +690,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 ### TASK-10B: SSR/no-JS remediation for booking landers + i18n leakage fixes
 - **Type:** IMPLEMENT
 - **Deliverable:** route/rendering fixes that satisfy TASK-10A gates on commercial routes
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L

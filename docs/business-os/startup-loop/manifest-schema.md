@@ -85,13 +85,13 @@ The `baseline_pointers` field tracks three pointer classes for baseline artifact
 
 | Pointer class | Description | Writer | Stage |
 |---|---|---|---|
-| `current` | Baseline snapshot set used to seed the current run | S0, S4 | S0 promotes from previous `next_seed`; S4 writes run-authoritative merge |
+| `current` | Baseline snapshot set used to seed the current run | DISCOVERY, S4 | DISCOVERY promotes from previous `next_seed`; S4 writes run-authoritative merge |
 | `stage_candidate` | Stage-local outputs before S4 merge | S2B, S3, S6B | Updated during stage completion |
 | `next_seed` | Learning-updated snapshots for next run | S10 | Written by learning compiler after experiment outcomes |
 
 **Lifecycle timeline:**
 
-1. **Run start (S0):** Initialize `current` from previous run `next_seed`.
+1. **Run start (DISCOVERY):** Initialize `current` from previous run `next_seed`.
    - If no previous run, `current` points to canonical HEAD baseline artifacts.
    - `stage_candidate` and `next_seed` are empty.
 
@@ -113,7 +113,7 @@ The `baseline_pointers` field tracks three pointer classes for baseline artifact
    - S10 updates `next_seed` to point to new snapshots.
    - `current` remains unchanged (preserves current-run baseline integrity).
 
-5. **Next run (S0):** Loader promotes previous `next_seed` to new run `current`.
+5. **Next run (DISCOVERY):** Loader promotes previous `next_seed` to new run `current`.
    - New manifest created with `current` = previous manifest `next_seed`.
    - Previous manifest remains immutable with `status: current`.
 
@@ -122,7 +122,7 @@ The `baseline_pointers` field tracks three pointer classes for baseline artifact
 - **S2B, S3, S6B:** Write `stage_candidate` only.
 - **S4:** Writes `current` only (from `stage_candidate` + seed `current`).
 - **S10:** Writes `next_seed` only (from current-run `current` + prior deltas).
-- **S0:** Copies previous `next_seed` to new run `current` (read-only operation on previous manifest).
+- **DISCOVERY:** Copies previous `next_seed` to new run `current` (read-only operation on previous manifest).
 
 ### 3B) Status Lifecycle
 

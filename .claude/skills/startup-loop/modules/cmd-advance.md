@@ -16,82 +16,103 @@ If either fails: return `status: blocked` with exact reason and retry action.
 
 ## Hard Gates (Advance-Time)
 
-### GATE-BD-00: Business naming research required at S0→S1 (when name unconfirmed)
+### GATE-S0E-00: Operator evidence required at DISCOVERY-07→DISCOVERY (when start-point=problem)
 
-**Gate ID**: GATE-BD-00 (Hard)
-**Trigger**: Before advancing from S0 to S1. Runs before GATE-BD-01. Does not trigger for businesses with a confirmed name.
+**Gate ID**: GATE-S0E-00 (Hard)
+**Trigger**: Before advancing from DISCOVERY-07 to DISCOVERY. Only fires when `start-point=problem`.
 
-**`naming_gate` computation (filesystem-only, no stored state):**
-
-```bash
-# Step 1 — read business_name_status from intake packet
-grep -i "Business name status" docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md 2>/dev/null \
-  | grep -i "unconfirmed"
-# If no match → status is absent or confirmed → naming_gate: skipped
-```
+**Check (filesystem-only):**
 
 ```bash
-# Step 2 (only if unconfirmed) — check for returned shortlist
-ls docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md 2>/dev/null
-# If match found → naming_gate: complete
-# If no match     → naming_gate: blocked
+# Check for operator evidence artifact with Status: Active
+grep -l "Status: Active" docs/business-os/strategy/<BIZ>/s0e-operator-evidence.user.md 2>/dev/null
+# Match found  → gate passes
+# No match     → gate blocked
 ```
 
 **Decision table:**
 
-| `business_name_status` | Shortlist exists? | `naming_gate` | Action |
+| s0e-operator-evidence.user.md exists? | Status field | Gate result | Action |
 |---|---|---|---|
-| absent or `confirmed` | either | `skipped` | Continue to GATE-BD-01 |
-| `unconfirmed` | no | `blocked` | Generate prompt (idempotent); block advance |
-| `unconfirmed` | yes | `complete` | Write stable pointer; emit advisory; continue to GATE-BD-01 |
+| No | — | `blocked` | Run `/lp-do-discovery-07-our-stance --business <BIZ>` |
+| Yes | `Active` | `pass` | Continue to DISCOVERY intake sync |
+| Yes | `Draft` or absent | `blocked` | Complete artifact (all sections A–D, Section E gaps listed) then set Status: Active |
 
-**When `naming_gate: blocked`:**
+**When blocked:**
 
-1. Check if naming prompt already exists (idempotent — do not overwrite):
-   ```bash
-   ls docs/business-os/strategy/<BIZ>/*-naming-prompt.md 2>/dev/null
-   ```
-2. If prompt absent: read intake packet fields, populate template, write prompt:
-   - Template: `docs/business-os/market-research/_templates/deep-research-naming-prompt.md`
-   - Output path: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-prompt.md`
-3. Return blocked run packet:
-   - `blocking_reason`: `GATE-BD-00: Business name status is unconfirmed and no naming shortlist has been returned.`
-   - `next_action`: `Run the naming prompt at docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-prompt.md through a deep research tool (OpenAI Deep Research or equivalent). Save the returned document — including the required YAML front matter — to docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-shortlist.user.md, then run /startup-loop advance --business <BIZ>.`
-   - `prompt_file`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-prompt.md`
-   - `required_output_path`: `docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md (any date prefix accepted)`
+Return blocked run packet:
+- `blocking_reason`: `GATE-S0E-00: Operator evidence artifact missing or not Active. Required before DISCOVERY intake sync can run.`
+- `next_action`: `Run /lp-do-discovery-07-our-stance --business <BIZ>. Artifact required at docs/business-os/strategy/<BIZ>/s0e-operator-evidence.user.md with Status: Active.`
+- `prompt_file`: none (skill generates the artifact interactively)
 
-**When `naming_gate: complete`:**
+**When passes:**
 
-1. Identify the most recent shortlist file (pick `max(date)` if multiple):
-   ```bash
-   ls docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md 2>/dev/null | sort -r | head -1
-   ```
-2. Write stable pointer (copy to fixed path for `lp-brand-bootstrap`):
-   ```bash
-   cp "<latest-shortlist-path>" docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md
-   ```
-3. Emit non-blocking advisory:
-   `GATE-BD-00: Naming shortlist accepted. Recommended name extracted for lp-brand-bootstrap. Consider updating business_name in the intake packet and setting business_name_status to confirmed.`
-4. Continue to GATE-BD-01.
-
-**Parse error handling:** If `business_name_status` field is present but value cannot be parsed, treat as `confirmed` (fail-open) and emit: `Warning: GATE-BD-00: Could not parse business_name_status — treating as confirmed. Check intake packet for malformed field.`
+Proceed to DISCOVERY intake sync. The sync module reads `s0e-operator-evidence.user.md` as its seventh precursor (`Precursor-DISCOVERY-07`).
 
 ---
 
-### GATE-BD-01: Brand Dossier bootstrap required at S1 advance
+### GATE-DISCOVERY-00: DISCOVERY GATE — all sub-stages required at DISCOVERY→BRAND-01
 
-**Gate ID**: GATE-BD-01 (Hard)
-**Trigger**: Before advancing from S1 to S2 (or S1B/S2A for conditional stages).
+**Gate ID**: GATE-DISCOVERY-00 (Hard)
+**Trigger**: Before advancing from DISCOVERY to BRAND-01. Always fires when start-point=problem.
 
-**Rule**: Check `docs/business-os/strategy/<BIZ>/index.user.md` — read Brand Dossier Status column. Gate passes if Brand Dossier Status = `Draft` or `Active`. Gate blocks if Status = `—` (not created) or file is missing.
+**Named**: DISCOVERY GATE
+
+Validates that all 7 DISCOVERY sub-stage artifacts are present and complete before the business can enter the readiness stage.
+
+**Check (filesystem-only):**
 
 ```bash
-grep "Brand Dossier" docs/business-os/strategy/<BIZ>/index.user.md | grep -E "Draft|Active"
+# DISCOVERY-01: Problem Statement
+grep -l "Status: Active" docs/business-os/strategy/<BIZ>/problem-statement.user.md 2>/dev/null
+
+# DISCOVERY-02: Solution Space Results (any date prefix)
+ls docs/business-os/strategy/<BIZ>/*-solution-space-results.user.md 2>/dev/null | head -1
+
+# DISCOVERY-03: Option Select
+ls docs/business-os/strategy/<BIZ>/s0c-option-select.user.md 2>/dev/null
+
+# DISCOVERY-04: Naming Shortlist (any date prefix) — skip check if name confirmed
+ls docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md 2>/dev/null | head -1
+
+# DISCOVERY-05: Distribution Plan — must have ≥2 channels
+grep -l "Status: Active\|Status: Draft" docs/business-os/strategy/<BIZ>/distribution-plan.user.md 2>/dev/null
+
+# DISCOVERY-06: Measurement Plan — must have tracking method + ≥2 metrics
+grep -l "Status: Active\|Status: Draft" docs/business-os/strategy/<BIZ>/measurement-plan.user.md 2>/dev/null
+
+# DISCOVERY-07: Operator Evidence
+grep -l "Status: Active" docs/business-os/strategy/<BIZ>/s0e-operator-evidence.user.md 2>/dev/null
 ```
 
-**When blocked**:
-- Blocking reason: `GATE-BD-01: Brand Dossier missing or not at Draft minimum. Cannot advance past S1.`
-- Next action: `Run /lp-brand-bootstrap <BIZ> to create brand-dossier.user.md, then update index.user.md Status to Draft.`
+**Decision table:**
+
+| Sub-stage | Artifact | Status | Gate result |
+|---|---|---|---|
+| DISCOVERY-01 | problem-statement.user.md | Active | ✅ pass |
+| DISCOVERY-01 | missing or not Active | — | ❌ blocked |
+| DISCOVERY-02 | *-solution-space-results.user.md | any | ✅ pass |
+| DISCOVERY-02 | missing | — | ❌ blocked |
+| DISCOVERY-03 | s0c-option-select.user.md | any | ✅ pass |
+| DISCOVERY-03 | missing | — | ❌ blocked |
+| DISCOVERY-04 | *-naming-shortlist.user.md | any | ✅ pass (or skipped if name confirmed) |
+| DISCOVERY-05 | distribution-plan.user.md with ≥2 channels | Active or Draft | ✅ pass |
+| DISCOVERY-05 | missing or <2 channels | — | ❌ blocked |
+| DISCOVERY-06 | measurement-plan.user.md with tracking + ≥2 metrics | Active or Draft | ✅ pass |
+| DISCOVERY-06 | missing or <2 metrics | — | ❌ blocked |
+| DISCOVERY-07 | s0e-operator-evidence.user.md | Active | ✅ pass |
+| DISCOVERY-07 | missing or not Active | — | ❌ blocked |
+
+**When blocked:**
+
+Return blocked run packet:
+- `blocking_reason`: `GATE-DISCOVERY-00: DISCOVERY GATE — [list missing sub-stages]. All 7 DISCOVERY sub-stages required before BRAND-01.`
+- `next_action`: For each missing sub-stage, specify the skill to run: DISCOVERY-05 → `/lp-do-discovery-05-distribution-planning`, DISCOVERY-06 → `/lp-do-discovery-06-measurement-plan`, DISCOVERY-07 → `/lp-do-discovery-07-our-stance`
+- `prompt_file`: none (skills generate artifacts interactively)
+
+**When passes:**
+
+Run DISCOVERY intake sync (apply `modules/discovery-intake-sync.md`). Continue to BRAND-01.
 
 ---
 
@@ -373,7 +394,7 @@ Present output summary to operator alongside the S10 weekly-kpcs prompt — this
 
 For each stage, require appropriate sync actions:
 
-- `S0`: update `docs/business-os/strategy/<BIZ>/plan.user.md` scope and constraints.
+- `DISCOVERY`: update `docs/business-os/strategy/<BIZ>/plan.user.md` scope and constraints.
 - `S1/S1B/S2/S3/S10`: persist strategy/readiness artifacts under `docs/business-os/...` and update any `latest.user.md` pointers.
 - `S5A`: no BOS sync (pure ranking, no side effects).
 - `S5B`: create/update ideas/cards via Business OS API (`/api/agent/ideas`, `/api/agent/cards`); commit manifest pointer.

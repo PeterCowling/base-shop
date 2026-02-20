@@ -15,13 +15,13 @@ Related-Plan: docs/plans/business-os-skill-integration-plan.md
 
 ### Summary
 
-Integrate Business OS card lifecycle management into the lp-fact-find, lp-plan, and lp-build skills so that completing work through these skills automatically creates and updates Business OS cards. Currently, running `/lp-fact-find` -> `/lp-plan` -> `/lp-build` produces artifacts in `docs/plans/` but the Business OS kanboard remains stale with no corresponding card tracking the work.
+Integrate Business OS card lifecycle management into the lp-do-fact-find, lp-do-plan, and lp-do-build skills so that completing work through these skills automatically creates and updates Business OS cards. Currently, running `/lp-do-fact-find` -> `/lp-do-plan` -> `/lp-do-build` produces artifacts in `docs/plans/` but the Business OS kanboard remains stale with no corresponding card tracking the work.
 
 ### Goals
 
-- When `/lp-fact-find` completes for a new topic, automatically create a Business OS card (or link to existing one) and create a fact-finding stage document
-- When `/lp-plan` completes, create a planned stage document and propose lane transition to "Planned"
-- When `/lp-build` starts/completes tasks, update card status and progress
+- When `/lp-do-fact-find` completes for a new topic, automatically create a Business OS card (or link to existing one) and create a fact-finding stage document
+- When `/lp-do-plan` completes, create a planned stage document and propose lane transition to "Planned"
+- When `/lp-do-build` starts/completes tasks, update card status and progress
 - The integration should be automatic (no manual card creation required)
 - Must be idempotent (running a skill multiple times doesn't create duplicate cards)
 
@@ -49,9 +49,9 @@ Integrate Business OS card lifecycle management into the lp-fact-find, lp-plan, 
 ### Entry Points
 
 #### Skill Files (to be modified)
-- `.claude/skills/lp-fact-find/SKILL.md` - produces `docs/plans/<feature>-lp-fact-find.md`
-- `.claude/skills/lp-plan/SKILL.md` - produces `docs/plans/<feature>-plan.md`
-- `.claude/skills/lp-build/SKILL.md` - updates plan doc as tasks complete
+- `.claude/skills/lp-do-fact-find/SKILL.md` - produces `docs/plans/<feature>-lp-do-fact-find.md`
+- `.claude/skills/lp-do-plan/SKILL.md` - produces `docs/plans/<feature>-plan.md`
+- `.claude/skills/lp-do-build/SKILL.md` - updates plan doc as tasks complete
 
 #### Business OS Skills (potential reuse)
 - `.claude/skills/idea-develop/SKILL.md` - converts raw ideas to cards + creates fact-finding stage docs
@@ -60,9 +60,9 @@ Integrate Business OS card lifecycle management into the lp-fact-find, lp-plan, 
 ### Key Modules / Files
 
 #### Skill Implementations
-- `/Users/petercowling/base-shop/.claude/skills/lp-fact-find/SKILL.md` - 436 lines, produces two outcomes (Planning Brief or Briefing Note)
-- `/Users/petercowling/base-shop/.claude/skills/lp-plan/SKILL.md` - 446 lines, creates confidence-gated implementation plans
-- `/Users/petercowling/base-shop/.claude/skills/lp-build/SKILL.md` - 308 lines, implements tasks with TDD
+- `/Users/petercowling/base-shop/.claude/skills/lp-do-fact-find/SKILL.md` - 436 lines, produces two outcomes (Planning Brief or Briefing Note)
+- `/Users/petercowling/base-shop/.claude/skills/lp-do-plan/SKILL.md` - 446 lines, creates confidence-gated implementation plans
+- `/Users/petercowling/base-shop/.claude/skills/lp-do-build/SKILL.md` - 308 lines, implements tasks with TDD
 - `/Users/petercowling/base-shop/.claude/skills/idea-develop/SKILL.md` - 414 lines, converts ideas to cards + stage docs
 - `/Users/petercowling/base-shop/.claude/skills/idea-advance/SKILL.md` - 207 lines, proposes lane transitions
 
@@ -140,7 +140,7 @@ interface CardFrontmatter {
 ```typescript
 interface StageFrontmatter {
   Type: "Stage";
-  Stage: StageType;  // lp-fact-find | plan | build | reflect
+  Stage: StageType;  // lp-do-fact-find | plan | build | reflect
   "Card-ID": string;
   Created?: string;
   Updated?: string;
@@ -150,24 +150,24 @@ interface StageFrontmatter {
 #### Plan Document Relationship
 - Plan docs live in `docs/plans/<feature-slug>-plan.md`
 - Stage docs could reference plan docs via path (e.g., `Plan-Link: docs/plans/<feature>-plan.md`)
-- Current lp-fact-find briefs already have `Related-Plan` in frontmatter
+- Current lp-do-fact-find briefs already have `Related-Plan` in frontmatter
 
 ### Dependency & Impact Map
 
 #### Upstream Dependencies
 - Business OS charter rules (`docs/business-os/business-os-charter.md`)
 - Card/stage document schemas (`apps/business-os/src/lib/types.ts`)
-- Existing skill implementations (lp-fact-find, lp-plan, lp-build)
+- Existing skill implementations (lp-do-fact-find, lp-do-plan, lp-do-build)
 - Business catalog (`docs/business-os/strategy/businesses.json`)
 
 #### Downstream Dependents
-- Users running `/lp-fact-find`, `/lp-plan`, `/lp-build`
+- Users running `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`
 - Existing cards and stage documents (must not break)
 - Skills that consume card state (`/idea-advance`, `/idea-scan`, `/biz-update-plan`)
 - Business OS app (reads card files)
 
 #### Likely Blast Radius
-- **Direct:** 3 skill instruction files (lp-fact-find, lp-plan, lp-build)
+- **Direct:** 3 skill instruction files (lp-do-fact-find, lp-do-plan, lp-do-build)
 - **Optional:** New helper module for card operations (if reuse pattern is complex)
 - **Documentation:** `docs/business-os/agent-workflows.md`, `docs/agents/feature-workflow-guide.md`
 - **Validation:** May need to extend `pnpm docs:lint` rules
@@ -232,10 +232,10 @@ Key insight: `61524169b9` mentions "MVP-C2 (Collision-proof ID allocation)" - th
 
 #### Q1: Where should Business OS card context be stored during skill execution?
 - **Why it matters:** Skills need to know which card they're operating on
-- **Decision impacted:** How lp-fact-find/plan/build track their associated card
+- **Decision impacted:** How lp-do-fact-find/plan/build track their associated card
 - **Options:**
   - A) Add frontmatter to plan docs: `Card-ID: BRIK-ENG-0020`
-  - B) Use skill arguments: `/lp-fact-find --card BRIK-ENG-0020`
+  - B) Use skill arguments: `/lp-do-fact-find --card BRIK-ENG-0020`
   - C) Auto-detect from topic/feature-slug matching
 - **Default assumption (if no answer):** Option A (add Card-ID to plan doc frontmatter) + Option C (auto-detect if missing)
 
@@ -257,7 +257,7 @@ Key insight: `61524169b9` mentions "MVP-C2 (Collision-proof ID allocation)" - th
   - C) Infer from affected code paths (apps/brikette -> BRIK, packages/* -> PLAT)
 - **Default assumption (if no answer):** Option A (require explicit) with Option C as fallback heuristic
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 75%
   - Strong foundation exists: `/idea-develop` already creates cards + stage docs
@@ -307,9 +307,9 @@ Key insight: `61524169b9` mentions "MVP-C2 (Collision-proof ID allocation)" - th
 3. **Create helper module** - Optional shared logic for card lookup/creation (if pattern is complex)
 
 ### Phase 2: Skill Integration
-4. **Extend /lp-fact-find** - After creating lp-fact-find brief, optionally create/link Business OS card + fact-finding stage doc
-5. **Extend /lp-plan** - After creating plan, create planned stage doc; propose lane move to Planned
-6. **Extend /lp-build** - On task completion, update card progress; on all tasks complete, propose lane move to Done
+4. **Extend /lp-do-fact-find** - After creating lp-do-fact-find brief, optionally create/link Business OS card + fact-finding stage doc
+5. **Extend /lp-do-plan** - After creating plan, create planned stage doc; propose lane move to Planned
+6. **Extend /lp-do-build** - On task completion, update card progress; on all tasks complete, propose lane move to Done
 
 ### Phase 3: Polish
 7. **Add idempotency checks** - Prevent duplicate cards for same feature-slug
@@ -320,7 +320,7 @@ Key insight: `61524169b9` mentions "MVP-C2 (Collision-proof ID allocation)" - th
 
 - **Status:** Ready-for-planning
 - **Blocking items:** None - open questions have reasonable defaults
-- **Recommended next step:** Proceed to `/lp-plan` with following notes:
+- **Recommended next step:** Proceed to `/lp-do-plan` with following notes:
   1. Investigate MVP-C2 commit for ID allocation details before TASK-01
   2. Start with opt-in approach (explicit Card-ID linking)
   3. Design for future expansion to automatic mode
@@ -332,13 +332,13 @@ Key insight: `61524169b9` mentions "MVP-C2 (Collision-proof ID allocation)" - th
 
 | File | Purpose |
 |------|---------|
-| `.claude/skills/lp-fact-find/SKILL.md` | Current lp-fact-find implementation |
-| `.claude/skills/lp-plan/SKILL.md` | Current lp-plan implementation |
-| `.claude/skills/lp-build/SKILL.md` | Current lp-build implementation |
+| `.claude/skills/lp-do-fact-find/SKILL.md` | Current lp-do-fact-find implementation |
+| `.claude/skills/lp-do-plan/SKILL.md` | Current lp-do-plan implementation |
+| `.claude/skills/lp-do-build/SKILL.md` | Current lp-do-build implementation |
 | `.claude/skills/idea-develop/SKILL.md` | Card creation pattern |
 | `.claude/skills/idea-advance/SKILL.md` | Lane transition pattern |
 | `.claude/skills/idea-scan/SKILL.md` | Repo scanning pattern |
-| `.claude/skills/lp-replan/SKILL.md` | Re-planning workflow |
+| `.claude/skills/lp-do-replan/SKILL.md` | Re-planning workflow |
 | `docs/business-os/agent-workflows.md` | Business OS workflow guide |
 | `docs/business-os/business-os-charter.md` | Business OS rules and constraints |
 | `docs/agents/feature-workflow-guide.md` | Feature workflow entrypoint |
@@ -346,4 +346,4 @@ Key insight: `61524169b9` mentions "MVP-C2 (Collision-proof ID allocation)" - th
 | `docs/business-os/cards/BRIK-ENG-0020.user.md` | Example card with plan links |
 | `docs/business-os/cards/BRIK-ENG-0020/fact-finding.user.md` | Example stage doc |
 | `docs/business-os/_meta/counters.json` | ID counter storage (empty) |
-| `docs/plans/commerce-core-readiness-lp-fact-find.md` | Example lp-fact-find without card link |
+| `docs/plans/commerce-core-readiness-lp-do-fact-find.md` | Example lp-do-fact-find without card link |

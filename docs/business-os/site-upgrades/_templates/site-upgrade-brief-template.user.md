@@ -55,7 +55,7 @@ Platform-Baseline: docs/business-os/platform-capability/<YYYY-MM-DD>-platform-ca
 
 ## 9) Open Questions
 
-- Questions that block accurate tasking in lp-fact-find/lp-plan.
+- Questions that block accurate tasking in lp-do-fact-find/lp-do-plan.
 
 ## 10) Source List
 

@@ -44,7 +44,7 @@ hardware, branding, and go-to-market.
 - Confirm the premium dog holder price point (€60–€120) is achievable with the
   existing product body + leash clip hardware.
 - Establish whether the same supplier can provide leash clip attachment hardware.
-- Define the ICP and initial channel strategy clearly enough for `/lp-plan`.
+- Define the ICP and initial channel strategy clearly enough for `/lp-do-plan`.
 - Set an outcome contract structure for the PETS business unit.
 - Define product line vision so the brand name (from `/lp-offer`) has the right scope.
 
@@ -280,5 +280,5 @@ the ultra-luxury price of Pagerie.
   - Brand name blocked until `/lp-offer` — TASK-01 of the plan should be
     running `/lp-offer`.
 - Recommended next step:
-  - `/lp-plan pets-dog-accessories-pmf`
+  - `/lp-do-plan pets-dog-accessories-pmf`
   - Resolve Q1 (supplier hardware) in parallel.

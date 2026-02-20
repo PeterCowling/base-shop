@@ -279,7 +279,7 @@ Response:
 
 ### Phase 2: Skill Migration
 
-1. Update all remaining skills (`/lp-fact-find`, `/lp-build`, etc.)
+1. Update all remaining skills (`/lp-do-fact-find`, `/lp-do-build`, etc.)
 2. Add deprecation warning to `Write` tool usage for `docs/business-os/`
 3. Document migration guide for custom skills
 
@@ -318,7 +318,7 @@ To avoid silent drift from old skills creating orphan markdown:
 - Validation of deterministic serialization before full cutover
 - Git history showing gradual migration progress
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 ### Implementation: 78%
 - ✅ D1 schema and repositories exist
@@ -358,7 +358,7 @@ To avoid silent drift from old skills creating orphan markdown:
   2. Agent write interface: **Option A — direct HTTP** (clean break)
   3. Real-time notification: **Option A — cursor-based polling** (contract in Decision 3)
 - **No blocking unknowns remain**
-- **Recommended next step:** Proceed to `/lp-plan` with specified options
+- **Recommended next step:** Proceed to `/lp-do-plan` with specified options
 
 ## Suggested Task Seeds
 
@@ -375,8 +375,8 @@ To avoid silent drift from old skills creating orphan markdown:
 **Phase 2: Skill Migration**
 7. **BOS-UW-07:** Update `card-operations.md` shared helper to use API for create + edit
 8. **BOS-UW-08:** Migrate `/idea-develop` skill to API writes (create)
-9. **BOS-UW-09:** Migrate `/lp-build` skill to API writes (edit — task status updates)
-10. **BOS-UW-10:** Migrate remaining skills (`/lp-fact-find`, `/idea-advance`, etc.)
+9. **BOS-UW-09:** Migrate `/lp-do-build` skill to API writes (edit — task status updates)
+10. **BOS-UW-10:** Migrate remaining skills (`/lp-do-fact-find`, `/idea-advance`, etc.)
 
 **Phase 3: Documentation & Cleanup**
 11. **BOS-UW-11:** Update Business OS charter for D1-canonical reality

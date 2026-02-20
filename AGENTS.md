@@ -107,10 +107,10 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 4. Implement → Validate → Commit
 5. Mark task complete, move to next
 
-**Feature workflow**: `/lp-fact-find` → `/lp-plan` → `/lp-build` → `/lp-replan` (when tasks are below execution threshold, blocked, or scope shifts)
+**Feature workflow**: `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build` → `/lp-do-replan` (when tasks are below execution threshold, blocked, or scope shifts)
 
-**Idea generation**: `/idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-fact-find docs. Feeds into the feature workflow above.
-- Full pipeline: `/idea-generate` → `/lp-fact-find` → `/lp-plan` → `/lp-build`
+**Idea generation**: `/idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-do-fact-find docs. Feeds into the feature workflow above.
+- Full pipeline: `/idea-generate` → `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build`
 - Spec: `.claude/skills/idea-generate/SKILL.md`
 - Stances: `--stance=improve-data` (default) or `--stance=grow-business` (activates traction mode for market-facing L1-L2 businesses)
 - Shared personas: `.claude/skills/_shared/cabinet/` (filter, prioritizer, dossier template, lens files)
@@ -126,13 +126,13 @@ A skill is a local instruction set stored in `.claude/skills/<name>/SKILL.md`.
 
 - `lp-baseline-merge`: Join startup-loop fan-out outputs into a baseline snapshot/manifest at S4. (file: `.claude/skills/lp-baseline-merge/SKILL.md`)
 - `lp-brand-bootstrap`: Bootstrap `brand-language.user.md` for a business entering the startup loop. (file: `.claude/skills/lp-brand-bootstrap/SKILL.md`)
-- `lp-build`: Execute approved plan tasks with confidence gating and required validation. (file: `.claude/skills/lp-build/SKILL.md`)
+- `lp-do-build`: Execute approved plan tasks with confidence gating and required validation. (file: `.claude/skills/lp-do-build/SKILL.md`)
 - `lp-channels`: Build startup channel strategy + GTM plan from offer outputs. (file: `.claude/skills/lp-channels/SKILL.md`)
 - `lp-design-qa`: Audit implemented UI against design spec/system, accessibility, and responsiveness. (file: `.claude/skills/lp-design-qa/SKILL.md`)
 - `lp-design-spec`: Convert requirements into concrete frontend design specs mapped to design tokens/system. (file: `.claude/skills/lp-design-spec/SKILL.md`)
 - `lp-design-system`: Apply design tokens/system patterns correctly and avoid arbitrary UI values. (file: `.claude/skills/lp-design-system/SKILL.md`)
 - `lp-experiment`: Run startup experiment design/readout workflow for S8/S10 build-measure-decide loops. (file: `.claude/skills/lp-experiment/SKILL.md`)
-- `lp-fact-find`: Gather evidence/context before planning or as a standalone briefing. (file: `.claude/skills/lp-fact-find/SKILL.md`)
+- `lp-do-fact-find`: Gather evidence/context before planning or as a standalone briefing. (file: `.claude/skills/lp-do-fact-find/SKILL.md`)
 - `lp-forecast`: Produce startup 90-day P10/P50/P90 scenario forecasts. (file: `.claude/skills/lp-forecast/SKILL.md`)
 - `lp-guide-audit`: Run English-guide SEO audit and iterative fixes. (file: `.claude/skills/lp-guide-audit/SKILL.md`)
 - `lp-guide-improve`: Entry point for guide improvement workflow (audit, translation, or both). (file: `.claude/skills/lp-guide-improve/SKILL.md`)
@@ -140,18 +140,18 @@ A skill is a local instruction set stored in `.claude/skills/<name>/SKILL.md`.
 - `lp-measure`: Bootstrap startup measurement infrastructure pre-launch or post-launch. (file: `.claude/skills/lp-measure/SKILL.md`)
 - `lp-offer`: Build startup offer artifact (ICP, positioning, pricing, objections). (file: `.claude/skills/lp-offer/SKILL.md`)
 - `lp-onboarding-audit`: Audit product onboarding using the "Onboarding Done Right" checklist and produce a planning-ready brief. (file: `.claude/skills/lp-onboarding-audit/SKILL.md`)
-- `lp-plan`: Create confidence-gated execution plans and auto-continue to build when eligible. (file: `.claude/skills/lp-plan/SKILL.md`)
+- `lp-do-plan`: Create confidence-gated execution plans and auto-continue to build when eligible. (file: `.claude/skills/lp-do-plan/SKILL.md`)
 - `lp-prioritize`: Rank startup go-items and select top priorities to pursue. (file: `.claude/skills/lp-prioritize/SKILL.md`)
 - `lp-readiness`: Run startup preflight gate before offer-building. (file: `.claude/skills/lp-readiness/SKILL.md`)
 - `lp-refactor`: Refactor React components for maintainability, performance, and pattern quality. (file: `.claude/skills/lp-refactor/SKILL.md`)
-- `lp-replan`: Resolve low-confidence plan tasks with additional evidence and decisions. (file: `.claude/skills/lp-replan/SKILL.md`)
+- `lp-do-replan`: Resolve low-confidence plan tasks with additional evidence and decisions. (file: `.claude/skills/lp-do-replan/SKILL.md`)
 - `lp-seo`: Produce phased SEO strategy (keywords, clusters, SERP, technical, snippets). (file: `.claude/skills/lp-seo/SKILL.md`)
 - `lp-sequence`: Topologically sequence plan tasks and dependency metadata (stable IDs by default; renumber only when explicitly requested). (file: `.claude/skills/lp-sequence/SKILL.md`)
-- `lp-site-upgrade`: Create layered website-upgrade strategy and `lp-fact-find` handoff packet. (file: `.claude/skills/lp-site-upgrade/SKILL.md`)
+- `lp-site-upgrade`: Create layered website-upgrade strategy and `lp-do-fact-find` handoff packet. (file: `.claude/skills/lp-site-upgrade/SKILL.md`)
 
 ### How to use `lp-*` skills
 
-- Trigger rule: if a user asks for a specific `lp-*` skill (for example `/lp-plan`) or the task clearly matches one above, load that skill file and follow it.
+- Trigger rule: if a user asks for a specific `lp-*` skill (for example `/lp-do-plan`) or the task clearly matches one above, load that skill file and follow it.
 - Progressive loading: read only the needed sections first; load referenced files on-demand.
 - Path resolution: resolve relative paths from the skill directory before trying alternatives.
 - Reuse over rewrite: prefer referenced templates/scripts/assets shipped with the skill.
@@ -166,8 +166,8 @@ In plan docs, use **confidence** / **Overall-confidence** for plan confidence va
 - **Build gates:**
   - `IMPLEMENT` and `SPIKE` tasks require **≥80%** confidence and must be unblocked.
   - `INVESTIGATE` tasks require **≥60%** confidence and must be unblocked.
-  - `CHECKPOINT` is procedural and handled by `/lp-build` checkpoint contract.
-  - If below threshold, stop and run `/lp-replan`.
+  - `CHECKPOINT` is procedural and handled by `/lp-do-build` checkpoint contract.
+  - If below threshold, stop and run `/lp-do-replan`.
 
 ## Progressive Context Loading
 

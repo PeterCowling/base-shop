@@ -42,6 +42,15 @@ jobs:
           fi
           node scripts/ci/path-classifier.cjs --config merge_gate --paths-file /tmp/changed-files.txt --format outputs >> "$GITHUB_OUTPUT"
 
+      - name: Enforce i18n resolver contract (scoped)
+        run: |
+          if grep -Eq '^(packages/i18n/|packages/next-config/)|(^|/)tsconfig[^/]*\.json$' /tmp/changed-files.txt; then
+            echo "Running i18n resolver contract checks..."
+            node scripts/check-i18n-resolver-contract.mjs --repo-root "$PWD"
+          else
+            echo "Skipping i18n resolver contract checks (no relevant path changes)."
+          fi
+
       - name: Lint GitHub Actions workflows
         if: >-
           ${{

@@ -9,8 +9,8 @@ Feature-Slug: brikette-modal-system-remake
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-replan,lp-sequence,lp-refactor
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-replan,lp-sequence,lp-refactor
 Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: executed
@@ -158,7 +158,7 @@ The plan explicitly preserves product and analytics invariants while reducing re
 ### TASK-01: Select authoritative modal orchestration owner (`apps/brikette` vs `packages/ui`)
 - **Type:** DECISION
 - **Deliverable:** decision record in `docs/plans/brikette-modal-system-remake/plan.md` (Decision Log + updated task assumptions)
-- **Execution-Skill:** lp-replan
+- **Execution-Skill:** lp-do-replan
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -195,7 +195,7 @@ The plan explicitly preserves product and analytics invariants while reducing re
 ### TASK-02: Decide booking-flow convergence and handoff/analytics semantics (V1/V2 policy)
 - **Type:** DECISION
 - **Deliverable:** booking flow policy section in `docs/plans/brikette-modal-system-remake/plan.md`
-- **Execution-Skill:** lp-replan
+- **Execution-Skill:** lp-do-replan
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -238,7 +238,7 @@ The plan explicitly preserves product and analytics invariants while reducing re
 ### TASK-03: Produce preload-policy evidence (global core preload vs modal-scoped preload contract)
 - **Type:** INVESTIGATE
 - **Deliverable:** preload strategy memo appended to `docs/plans/brikette-modal-system-remake/plan.md` (Decision Log references)
-- **Execution-Skill:** lp-replan
+- **Execution-Skill:** lp-do-replan
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -285,7 +285,7 @@ The plan explicitly preserves product and analytics invariants while reducing re
 ### TASK-04: Introduce typed modal payload registry + migrate initial consumers off `unknown` casts
 - **Type:** IMPLEMENT
 - **Deliverable:** code changes in modal context and wrappers replacing `unknown` payload casts with discriminated payload map
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -354,7 +354,7 @@ The plan explicitly preserves product and analytics invariants while reducing re
 ### TASK-05: Migrate to single modal host/switcher ownership and deprecate duplicate orchestration path
 - **Type:** IMPLEMENT
 - **Deliverable:** one authoritative host/provider/switcher path with deprecation notices/removals for duplicate stack
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -409,7 +409,7 @@ The plan explicitly preserves product and analytics invariants while reducing re
 ### TASK-06: Decompose provider effects and implement selected i18n preload contract
 - **Type:** IMPLEMENT
 - **Deliverable:** provider split into state host + dedicated effect modules (telemetry, preload, focus/scroll/escape)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -476,7 +476,7 @@ The plan explicitly preserves product and analytics invariants while reducing re
 ### TASK-07: Normalize modal primitive/layout behavior (viewport, scroll affordance, interaction consistency)
 - **Type:** IMPLEMENT
 - **Deliverable:** shared modal layout contract applied across modal implementations
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -537,8 +537,8 @@ The plan explicitly preserves product and analytics invariants while reducing re
 
 ### TASK-08: Horizon checkpoint - reassess downstream plan
 - **Type:** CHECKPOINT
-- **Deliverable:** updated plan evidence via /lp-replan
-- **Execution-Skill:** lp-build
+- **Deliverable:** updated plan evidence via /lp-do-replan
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -550,8 +550,8 @@ The plan explicitly preserves product and analytics invariants while reducing re
   - Approach: 95% - prevents deep dead-end execution
   - Impact: 95% - controls downstream risk
 - **Acceptance:**
-  - `/lp-build` checkpoint executor run
-  - `/lp-replan` run on downstream tasks
+  - `/lp-do-build` checkpoint executor run
+  - `/lp-do-replan` run on downstream tasks
   - confidence for downstream tasks recalibrated from latest evidence
   - plan updated and re-sequenced
   - Exit criteria met:
@@ -566,7 +566,7 @@ The plan explicitly preserves product and analytics invariants while reducing re
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** plan update at `docs/plans/brikette-modal-system-remake/plan.md`
 - **Build completion evidence (2026-02-17):**
-  - `/lp-replan` checkpoint run completed. TASK-09 and TASK-10 reassessed against fresh implementation evidence.
+  - `/lp-do-replan` checkpoint run completed. TASK-09 and TASK-10 reassessed against fresh implementation evidence.
   - TC-05 (handoff/deduplication): covered by existing ga4-09 and ga4-10 tests — pre-satisfied.
   - TC-04 (escape, focus-return): partially satisfied by modal-provider-effects TC-03a/b/c — tab-trap is net-new TASK-09 work.
   - TC-06 browser harness: no Playwright infrastructure exists in Brikette — staging checklist escape hatch confirmed valid path.
@@ -577,7 +577,7 @@ The plan explicitly preserves product and analytics invariants while reducing re
 ### TASK-09: Add integration/contract/a11y test suite for modal invariants
 - **Type:** IMPLEMENT
 - **Deliverable:** deterministic tests covering payload preservation, namespace race, viewport reachability, focus/escape/focus-return, and handoff contracts
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -646,7 +646,7 @@ The plan explicitly preserves product and analytics invariants while reducing re
 ### TASK-10: Remove legacy compatibility paths and finalize docs/rollout notes
 - **Type:** IMPLEMENT
 - **Deliverable:** cleanup of deprecated orchestration/contract shims and final migration documentation
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -736,8 +736,8 @@ The plan explicitly preserves product and analytics invariants while reducing re
 - 2026-02-17: **TASK-01 resolved — Option A.** `apps/brikette` is the authoritative modal orchestration owner. `packages/ui` exports primitives/components only. `ModalPayloadMap` lives in `apps/brikette`; `packages/ui` must not import Brikette payload types. TASK-04 and TASK-05 are unblocked.
 - 2026-02-17: **TASK-02 resolved — Option B.** Converge V1/V2 booking flows into a single booking modal with one handoff mode and the canonical event contract (modal_open, modal_close, handoff_to_engine, handoff_failed). V1 payload/shim complexity is scoped for removal in TASK-04/TASK-10. TASK-04 is unblocked.
 - 2026-02-17: **TASK-03 complete — preload policy = modal-scoped (Option B).** `bookPage` preload via `i18n.loadNamespaces(["bookPage"])` in provider `useEffect([])` is confirmed correct. Option A (add to `CORE_LAYOUT`) fails startup delta budget. Current implementation already uses Option B. TASK-06 unblocked. Recommendation: add explicit loading state to `PolicyFeeClarityPanel` to close the narrow race window.
-- 2026-02-17: **Confidence replan.** TASK-06 raised 78% → 82% (preload policy confirmed, decomposition scope concrete). TASK-09 raised 78% → 81% (TASK-02 Option B reduces test combinatorics). All IMPLEMENT tasks now meet ≥80% threshold. Plan is fully eligible for `/lp-build`.
-- 2026-02-17: **TASK-08 checkpoint complete.** `/lp-replan` checkpoint run against TASK-09 and TASK-10. Evidence: TC-05 (handoff/deduplication) pre-covered by ga4-09/ga4-10; TC-04 escape/focus-return partially covered — tab-trap is net-new scope; no Playwright infrastructure in Brikette — TC-06 falls to staging checklist (pre-anticipated escape hatch). No topology changes. No new precursor tasks. TASK-09 and TASK-10 confidence held (81%, 84%). Horizon assumptions validated: no hidden drift from typed contract migration. TASK-09 is ready to build.
+- 2026-02-17: **Confidence replan.** TASK-06 raised 78% → 82% (preload policy confirmed, decomposition scope concrete). TASK-09 raised 78% → 81% (TASK-02 Option B reduces test combinatorics). All IMPLEMENT tasks now meet ≥80% threshold. Plan is fully eligible for `/lp-do-build`.
+- 2026-02-17: **TASK-08 checkpoint complete.** `/lp-do-replan` checkpoint run against TASK-09 and TASK-10. Evidence: TC-05 (handoff/deduplication) pre-covered by ga4-09/ga4-10; TC-04 escape/focus-return partially covered — tab-trap is net-new scope; no Playwright infrastructure in Brikette — TC-06 falls to staging checklist (pre-anticipated escape hatch). No topology changes. No new precursor tasks. TASK-09 and TASK-10 confidence held (81%, 84%). Horizon assumptions validated: no hidden drift from typed contract migration. TASK-09 is ready to build.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

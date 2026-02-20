@@ -293,7 +293,7 @@ with H1/H2 during tourist season → H4 (dog) → H5 (first bag, deferred pendin
 
 ## Suggested Task Seeds (Non-binding)
 
-These flow into `/lp-plan`:
+These flow into `/lp-do-plan`:
 
 1. **Answer the 5 open questions above** — owner Pete, prerequisite for all other tasks.
 2. **Write HBAG outcome contract** — define HBAG-OUT-2026Q1-01 with baseline, target,
@@ -381,6 +381,6 @@ These flow into `/lp-plan`:
   - Q1–Q5 are soft-blocking individual task execution — plan should include tasks to
     resolve them before dependent tasks run.
 - Recommended next step:
-  - **`/lp-plan`** — create the demand test + brand foundation plan for HBAG.
+  - **`/lp-do-plan`** — create the demand test + brand foundation plan for HBAG.
   - Answer Q1–Q5 before running demand test tasks.
   - Run `/lp-offer` as the first plan task to lock the offer hypothesis.

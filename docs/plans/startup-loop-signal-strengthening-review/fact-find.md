@@ -13,8 +13,8 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-fact-find, meta-reflect
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-fact-find, meta-reflect
 Related-Plan: docs/plans/startup-loop-signal-strengthening-review/plan.md
 Business-OS-Integration: off
 Business-Unit: PIPE
@@ -31,7 +31,7 @@ Three artifact types are introduced. Use these terms precisely throughout:
 |---|---|
 | **Signal Review** | The weekly audit artifact emitted by `/lp-signal-review`. One per run. Path: `docs/business-os/strategy/<BIZ>/signal-review-<YYYYMMDD>-<HHMM>-W<ISOweek>.md` |
 | **Finding Brief** | A stub emitted inside the Signal Review for each top-ranked finding (frontmatter + 3-bullet summary). Not a full fact-find. Operator promotes these manually. |
-| **Finding Fact-find** | A full `/lp-fact-find` artifact produced when an operator promotes a Finding Brief. Path: `docs/plans/<finding-slug>/fact-find.md` |
+| **Finding Fact-find** | A full `/lp-do-fact-find` artifact produced when an operator promotes a Finding Brief. Path: `docs/plans/<finding-slug>/fact-find.md` |
 
 ---
 
@@ -54,7 +54,7 @@ A set of ten signal-strengthening principles was identified for AI-driven workfl
 9. **Checkpointed restartability** — each stage emits a persistent artifact; recovery is cheap
 10. **Human judgment gates** — ICP commitment, pricing, channel commitment require human sign-off, not AI consensus
 
-This feature adds a **weekly Signal Strengthening Review** as a recurring step within the S10 (weekly readout) stage of the startup loop. The review audits the current run against the ten principles, identifies the weakest signal areas, and emits a Signal Review artifact containing ranked Finding Briefs. Operators promote Finding Briefs to full Finding Fact-finds, which flow into `/lp-plan` via the normal pathway.
+This feature adds a **weekly Signal Strengthening Review** as a recurring step within the S10 (weekly readout) stage of the startup loop. The review audits the current run against the ten principles, identifies the weakest signal areas, and emits a Signal Review artifact containing ranked Finding Briefs. Operators promote Finding Briefs to full Finding Fact-finds, which flow into `/lp-do-plan` via the normal pathway.
 
 ### Goals
 
@@ -66,7 +66,7 @@ This feature adds a **weekly Signal Strengthening Review** as a recurring step w
 
 ### Non-goals
 
-- Auto-spawning `/lp-fact-find` calls (v1 emits Finding Briefs only; operator promotes)
+- Auto-spawning `/lp-do-fact-find` calls (v1 emits Finding Briefs only; operator promotes)
 - Blocking advance from S10 (advisory only in v1; soft warning gate deferred to v1.1)
 - Modifying loop-spec.yaml schema or bumping spec_version (v1 = cmd-advance dispatch only)
 - Cross-business aggregation (per-run, per-business review only)
@@ -89,7 +89,7 @@ This feature adds a **weekly Signal Strengthening Review** as a recurring step w
 
 ## Skill Contract & I/O Interface
 
-This section is the normative definition. `/lp-plan` must not invent anything here.
+This section is the normative definition. `/lp-do-plan` must not invent anything here.
 
 ### Inputs
 
@@ -197,13 +197,13 @@ If none of these markers are present AND the stage artifact exists, log Severity
 
 - `.claude/skills/startup-loop/SKILL.md` — needs S10 dispatch addition for `/lp-signal-review` alongside weekly-kpcs prompt
 - `.claude/skills/startup-loop/modules/cmd-advance.md` — S10 gate section; v1 adds dispatch only; v1.1 adds GATE-S10-SIGNAL-01 soft warning
-- `.claude/skills/lp-fact-find/SKILL.md` — Finding Fact-find output format; Finding Brief promotion stubs must be compatible
+- `.claude/skills/lp-do-fact-find/SKILL.md` — Finding Fact-find output format; Finding Brief promotion stubs must be compatible
 - `docs/plans/_templates/fact-find-planning.md` — promotion target schema; Finding Brief frontmatter stub must be a valid partial of this
 - `.claude/skills/_shared/` — new `signal-principles.md` file lives here; `evidence-ladder.md` is referenced by scoring rubric
 
 ### Patterns & Conventions Observed
 
-- Skill files follow a consistent pattern: `SKILL.md` as thin orchestrator + `modules/` for command-specific behaviour — evidence: `.claude/skills/startup-loop/`, `.claude/skills/lp-fact-find/`
+- Skill files follow a consistent pattern: `SKILL.md` as thin orchestrator + `modules/` for command-specific behaviour — evidence: `.claude/skills/startup-loop/`, `.claude/skills/lp-do-fact-find/`
 - Shared cross-skill contracts live in `.claude/skills/_shared/` — evidence: `confidence-scoring-rules.md`, `evidence-ladder.md`, `fail-first-biz.md`
 - Stage gates are defined in `cmd-advance.md` with GATE-XX-YY identifiers; some are blocking (GATE-BD-00), some are soft warnings (GATE-BD-08) — evidence: `cmd-advance.md`
 - Parallel skill dispatch is done via Task tool in a single message — evidence: S6B dispatch pattern in `cmd-advance.md`
@@ -232,8 +232,8 @@ If none of these markers are present AND the stage artifact exists, log Severity
   - `.claude/skills/_shared/evidence-ladder.md` — referenced by scoring rubric
 - Downstream dependents:
   - Operator — reviews Signal Review, decides which Finding Briefs to promote
-  - `/lp-fact-find` — receives promoted Finding Briefs as inputs (operator-initiated, not auto-triggered)
-  - `/lp-plan` — Finding Fact-finds become plan tasks via the standard pathway
+  - `/lp-do-fact-find` — receives promoted Finding Briefs as inputs (operator-initiated, not auto-triggered)
+  - `/lp-do-plan` — Finding Fact-finds become plan tasks via the standard pathway
   - `cmd-advance.md` — v1 addition is dispatch only; v1.1 adds GATE-S10-SIGNAL-01 artifact existence check
 - Blast radius (v1):
   - Low: one new skill directory, one extension to `cmd-advance.md` S10 dispatch section, one new `_shared` file
@@ -265,7 +265,7 @@ If none of these markers are present AND the stage artifact exists, log Severity
 |---|---|---|---|
 | H1 | No existing audit mechanism in loop; 10 principles identified with rationale | Session context | Medium — reasoned, not empirical |
 | H2 | S10 is already weekly cadence; natural fit confirmed in loop-spec.yaml | loop-spec.yaml direct read | High |
-| H3 | Fact-find template consumed by lp-plan; schema stable across all existing plans | `docs/plans/_templates/fact-find-planning.md` | High |
+| H3 | Fact-find template consumed by lp-do-plan; schema stable across all existing plans | `docs/plans/_templates/fact-find-planning.md` | High |
 | H4 | Principles drawn from established AI workflow patterns | Session context | Medium |
 | H5 | No precedent in this loop for advisory artifacts; unknown discipline level | None | Low |
 
@@ -345,7 +345,7 @@ Even after dedup and novelty filtering, emit at most `max_findings` (default 3) 
 
 ### Draft-mode posture (v1)
 
-Finding Briefs are stubs inside the Signal Review document. The operator must explicitly promote a Finding Brief by calling `/lp-fact-find` with the stub's args. The skill never auto-calls `/lp-fact-find`.
+Finding Briefs are stubs inside the Signal Review document. The operator must explicitly promote a Finding Brief by calling `/lp-do-fact-find` with the stub's args. The skill never auto-calls `/lp-do-fact-find`.
 
 ---
 
@@ -406,7 +406,7 @@ Finding Briefs are stubs inside the Signal Review document. The operator must ex
   - Dedup by fingerprint before emitting any Finding Brief
   - Novelty gate: skip if matching open plan task exists
   - Hard cap: max 3 Finding Briefs per run
-  - Draft-mode: no auto-spawning of `/lp-fact-find`
+  - Draft-mode: no auto-spawning of `/lp-do-fact-find`
 - Rollout:
   - v1: additive only — new skill + `_shared` asset + `cmd-advance.md` S10 dispatch extension
   - Rollback: remove skill directory + revert `cmd-advance.md` S10 dispatch line; no data loss
@@ -436,8 +436,8 @@ Finding Briefs are stubs inside the Signal Review document. The operator must ex
 
 ## Execution Routing Packet
 
-- Primary execution skill: `lp-build`
-- Supporting skills: `lp-fact-find` (operator-initiated promotion of Finding Briefs), `meta-reflect` (post-run learning capture)
+- Primary execution skill: `lp-do-build`
+- Supporting skills: `lp-do-fact-find` (operator-initiated promotion of Finding Briefs), `meta-reflect` (post-run learning capture)
 - Deliverable acceptance package:
   - `.claude/skills/lp-signal-review/SKILL.md` exists and is invocable standalone
   - `.claude/skills/_shared/signal-principles.md` exists with all ten principles, versioned
@@ -472,23 +472,23 @@ Confirms: S10 is the terminal weekly stage; `/lp-experiment` is listed as the sk
 # .claude/skills/ directory listing
 lp-brand-bootstrap/
 lp-bos-sync/
-lp-build/
+lp-do-build/
 lp-channels/
 lp-design-qa/
 lp-design-spec/
 lp-design-system/
-lp-fact-find/
+lp-do-fact-find/
 lp-forecast/
 lp-guide-audit/
 lp-guide-improve/
 lp-launch-qa/
 lp-offer/
 lp-onboarding-audit/
-lp-plan/
+lp-do-plan/
 lp-prioritize/
 lp-readiness/
 lp-refactor/
-lp-replan/
+lp-do-replan/
 lp-sequence/
 lp-site-upgrade/
 lp-seo/
@@ -562,4 +562,4 @@ Confirms: `_shared/` is the established home for cross-skill contracts; `evidenc
 
 - Status: Ready-for-planning
 - Blocking items: none — all open questions resolved with documented defaults; remaining assumptions are low-risk and have verification paths in TASK-02 and TASK-07
-- Recommended next step: `/lp-plan docs/plans/startup-loop-signal-strengthening-review/fact-find.md`
+- Recommended next step: `/lp-do-plan docs/plans/startup-loop-signal-strengthening-review/fact-find.md`

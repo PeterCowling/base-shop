@@ -9,7 +9,7 @@ Feature-Slug: startup-loop-infra-measurement-bootstrap
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: business-artifact
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-launch-qa
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); overall effort-weighted (S=1, M=2, L=3)
@@ -135,7 +135,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 
 - **Type:** DECISION
 - **Deliverable:** Recorded decision in this plan's Decision Log; filename consumed by TASK-01
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -181,7 +181,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 - **Type:** IMPLEMENT
 - **Deliverable:** `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md`
   (Option A default; filename may change per TASK-D1 to `infra-and-measurement-bootstrap-prompt.md`)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
@@ -309,7 +309,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `docs/business-os/workflow-prompts/_templates/measurement-quality-audit-prompt.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -378,7 +378,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `docs/business-os/workflow-prompts/_templates/post-deploy-measurement-verification-prompt.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -459,7 +459,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `docs/business-os/startup-loop/loop-spec.yaml`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -529,7 +529,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `docs/business-os/workflow-prompts/README.user.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -583,7 +583,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `.claude/skills/startup-loop/SKILL.md` Gate A section
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -653,7 +653,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated `.claude/skills/lp-launch-qa/SKILL.md` with 7 new measurement checks
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M

@@ -9,8 +9,8 @@ Feature-Slug: mcp-startup-loop-data-plane-wave-2
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-sequence, lp-replan
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-sequence, lp-do-replan
 Overall-confidence: 78%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1,M=2)
 Business-OS-Integration: off
@@ -110,7 +110,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Type:** DECISION
 - **Deliverable:** ADR at `docs/plans/mcp-startup-loop-data-plane-wave-2/decisions/credential-tenancy.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `docs/plans/mcp-startup-loop-data-plane-wave-2/fact-find.md`, `[readonly] apps/business-os/src/app/api/agent/cards/[id]/route.ts`, `[readonly] scripts/src/startup-loop/growth-metrics-adapter.ts`
 - **Depends on:** -
 - **Blocks:** TASK-07
@@ -173,7 +173,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Type:** INVESTIGATE
 - **Deliverable:** `docs/plans/mcp-startup-loop-data-plane-wave-2/impact-map.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `[readonly] packages/mcp-server/src/tools/index.ts`, `[readonly] packages/mcp-cloudflare/src/tools/index.ts`, `[readonly] docs/business-os/startup-loop/loop-spec.yaml`, `[readonly] docs/business-os/startup-loop/stage-result-schema.md`
 - **Depends on:** -
 - **Blocks:** TASK-03
@@ -235,7 +235,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Type:** IMPLEMENT
 - **Deliverable:** Contract kernel + policy middleware in `packages/mcp-server` with tests
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Artifact-Destination:** `packages/mcp-server/src/lib/wave2-contracts/` and `packages/mcp-server/src/tools/`
 - **Reviewer:** PLAT engineering owner
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane-wave-2/approvals/TASK-03.md`
@@ -308,7 +308,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Type:** IMPLEMENT
 - **Deliverable:** End-to-end artifact-backed vertical slice in MCP + fixture-backed tests
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Artifact-Destination:** `packages/mcp-server/src/tools/` and `packages/mcp-server/src/__tests__/fixtures/startup-loop/`
 - **Reviewer:** PLAT engineering owner
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane-wave-2/approvals/TASK-04.md`
@@ -381,7 +381,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Type:** CHECKPOINT
 - **Deliverable:** Updated confidence + dependency adjustments in this plan document
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-replan
+- **Execution-Skill:** lp-do-replan
 - **Affects:** `docs/plans/mcp-startup-loop-data-plane-wave-2/plan.md`
 - **Depends on:** TASK-04
 - **Blocks:** TASK-06, TASK-09, TASK-10
@@ -390,7 +390,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
   - Approach: 95% — required to prevent long-horizon error compounding.
   - Impact: 95% — plan-only updates, no runtime risk.
 - **Acceptance:**
-  - Run `/lp-replan` for TASK-06..TASK-08 using evidence from TASK-03/TASK-04.
+  - Run `/lp-do-replan` for TASK-06..TASK-08 using evidence from TASK-03/TASK-04.
   - Confirm or revise confidence, dependencies, and scope before expansion.
   - Record go/no-go outcome and rationale in Decision Log.
 - **Validation contract:**
@@ -399,7 +399,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
   - Acceptance coverage: TC-01..TC-02 cover all acceptance bullets.
   - Validation type: checkpoint review.
   - Validation location/evidence: updated `docs/plans/mcp-startup-loop-data-plane-wave-2/plan.md` Decision Log.
-  - Run/verify: `/lp-replan` output is persisted and referenced.
+  - Run/verify: `/lp-do-replan` output is persisted and referenced.
 - **Execution plan:**
   - Red -> Green -> Refactor.
   - Red evidence: identify at least one post-slice uncertainty that could invalidate downstream sequencing.
@@ -441,7 +441,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Type:** IMPLEMENT
 - **Deliverable:** `refresh_status_*`, guarded `refresh_enqueue_*`, `anomaly_detect_*` handlers + tests
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Artifact-Destination:** `packages/mcp-server/src/tools/` and `packages/mcp-server/src/__tests__/`
 - **Reviewer:** PLAT engineering owner
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane-wave-2/approvals/TASK-06.md`
@@ -526,7 +526,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Type:** IMPLEMENT
 - **Deliverable:** Additional `measure_*` adapters + Cloudflare test coverage + startup-loop surface containment
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Artifact-Destination:** `packages/mcp-server/src/tools/`, `packages/mcp-cloudflare/src/`, `packages/mcp-cloudflare/src/__tests__/`
 - **Reviewer:** PLAT engineering owner + BOS ops reviewer
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane-wave-2/approvals/TASK-07.md`
@@ -616,7 +616,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Type:** IMPLEMENT
 - **Deliverable:** `exp_*` control tools + one `ops_*_guarded` pilot with audit/concurrency controls
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Artifact-Destination:** `packages/mcp-server/src/tools/` and `packages/mcp-server/src/__tests__/`
 - **Reviewer:** PLAT engineering owner + BOS governance reviewer
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane-wave-2/approvals/TASK-08.md`
@@ -711,7 +711,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Type:** SPIKE
 - **Deliverable:** Contract-test harness + package-local analytics tests proving adapter compatibility
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Artifact-Destination:** `packages/mcp-cloudflare/src/__tests__/`, `packages/mcp-server/src/__tests__/`
 - **Reviewer:** PLAT engineering owner
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane-wave-2/approvals/TASK-09.md`
@@ -779,7 +779,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Type:** SPIKE
 - **Deliverable:** Executable contract draft for `exp_*` + guarded `ops_*` payload/response envelopes
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Artifact-Destination:** `packages/mcp-server/src/__tests__/`, `packages/mcp-server/src/tools/`
 - **Reviewer:** PLAT engineering owner + BOS governance reviewer
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane-wave-2/approvals/TASK-10.md`

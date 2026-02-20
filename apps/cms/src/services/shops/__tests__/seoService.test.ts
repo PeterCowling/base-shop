@@ -101,6 +101,7 @@ describe("seo service", () => {
     const fd = new FormData();
     fd.append("locale", "en");
     fd.append("title", "t");
+    fd.append("description", "desc");
     const result = await updateSeo("shop", fd);
     expect(errorSpy).toHaveBeenCalledWith(
       "[updateSeo] failed to persist settings for shop shop",
@@ -173,4 +174,3 @@ describe("seo service", () => {
     });
   });
 });
-

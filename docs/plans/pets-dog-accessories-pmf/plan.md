@@ -139,7 +139,7 @@ brand") per Q3 input. No crossover with HBAG at any stage.
 | 1    | TASK-01, TASK-02, TASK-03   | —                                | All three independent; run in parallel immediately        |
 | 2    | TASK-04, TASK-05             | TASK-01                          | Brand name required before styling/handle naming          |
 | 3    | TASK-06, TASK-07             | TASK-03+TASK-04; TASK-04+TASK-05 | Stagger TASK-06/07 1–2 weeks behind HBAG equivalents     |
-| 4    | TASK-08                      | TASK-06 + TASK-07 (4 wks)        | Checkpoint — invoke `/lp-replan` before Wave 5            |
+| 4    | TASK-08                      | TASK-06 + TASK-07 (4 wks)        | Checkpoint — invoke `/lp-do-replan` before Wave 5            |
 | 5    | TASK-09, TASK-10             | TASK-08                          | Both parallel after checkpoint clearance                  |
 
 ---
@@ -261,7 +261,7 @@ brand") per Q3 input. No crossover with HBAG at any stage.
   - [ ] `Leading-Indicator-1`: Weekly Etsy listing views + add-to-cart count.
   - [ ] `Leading-Indicator-2`: Weekly Instagram DM purchase inquiries.
   - [ ] `Decision-Link`: `DEC-PET-02` — if 0 sales by 2026-04-17 (60-day gate),
-    pause channel spend, run `/lp-replan` on pricing and variant before continuing.
+    pause channel spend, run `/lp-do-replan` on pricing and variant before continuing.
   - [ ] `Stop/Pivot Threshold`: 0 sales across all active channels after 60 days →
     halt, replan. Fewer than 3 Etsy views/day after 14 days → investigate tags/title.
 - **Validation contract:**
@@ -295,7 +295,7 @@ brand") per Q3 input. No crossover with HBAG at any stage.
 - **Type:** INVESTIGATE
 - **Deliverable:** Margin stack summary filed as
   `docs/plans/pets-dog-accessories-pmf/supply-chain-investigation.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Pending
@@ -342,7 +342,7 @@ brand") per Q3 input. No crossover with HBAG at any stage.
 - **Deliverable:** ≥5 usable in-context photos of the dog holder, saved to
   `docs/plans/pets-dog-accessories-pmf/photography/` (or local media path).
   Photography brief: `docs/plans/pets-dog-accessories-pmf/task-04-photography-brief.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -410,7 +410,7 @@ brand") per Q3 input. No crossover with HBAG at any stage.
 - **Type:** IMPLEMENT
 - **Deliverable:** Active Instagram account + TikTok account under the PETS brand name
   (from TASK-01). Bio, profile image (placeholder), and first pinned post configured.
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -496,7 +496,7 @@ brand") per Q3 input. No crossover with HBAG at any stage.
   - [ ] Shop has NO reference to HBAG, handbag accessories, or Brikette.
 - **Validation contract:**
   - VC-01: Etsy conversion signal → pass when ≥3 sales within 28 days of listing going
-    live; else flag at checkpoint as "Etsy signal weak" and run `/lp-replan` on pricing
+    live; else flag at checkpoint as "Etsy signal weak" and run `/lp-do-replan` on pricing
     or channel strategy.
   - VC-02: Etsy engagement signal → pass when ≥30 unique listing views + ≥3 favourites
     within 14 days; else consider Etsy Ads (€15–30 budget) before concluding demand
@@ -592,9 +592,9 @@ brand") per Q3 input. No crossover with HBAG at any stage.
 ### TASK-08: CHECKPOINT — 4-week demand signal gate; reassess downstream plan
 
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan evidence via `/lp-replan`; downstream tasks re-scored
+- **Deliverable:** Updated plan evidence via `/lp-do-replan`; downstream tasks re-scored
   from actual demand data (Etsy + Instagram/TikTok combined signal).
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Pending
@@ -602,7 +602,7 @@ brand") per Q3 input. No crossover with HBAG at any stage.
 - **Depends on:** TASK-06 (4-week Etsy probe complete), TASK-07 (2-week social probe complete)
 - **Blocks:** TASK-09, TASK-10
 - **Confidence:** 95%
-  - Implementation: 95% — process is defined; invoke `/lp-replan`.
+  - Implementation: 95% — process is defined; invoke `/lp-do-replan`.
   - Approach: 95% — prevents deep dead-end execution.
   - Impact: 95% — controls all downstream risk; TASK-09 and TASK-10 confidence cannot
     be meaningfully set without this data.
@@ -610,7 +610,7 @@ brand") per Q3 input. No crossover with HBAG at any stage.
   - [ ] Demand signal data collated from `demand-log.md`: Etsy views/favs/sales,
     Instagram DM inquiries, intent confirmations.
   - [ ] VC pass/fail status recorded for TASK-06 (VC-01, VC-02) and TASK-07 (VC-01, VC-02).
-  - [ ] `/lp-replan` invoked on TASK-09 and TASK-10.
+  - [ ] `/lp-do-replan` invoked on TASK-09 and TASK-10.
   - [ ] TASK-09 (product line expansion) re-scored with updated confidence based on
     demand signal strength.
   - [ ] Decision for product line direction: which SKU 2 to develop, or whether to
@@ -622,10 +622,10 @@ brand") per Q3 input. No crossover with HBAG at any stage.
   - PETS and HBAG channels remain separate (no buyer confusion reported).
   - Supplier leash clip variant is deliverable at acceptable margin from TASK-03.
 - **Validation contract:** Checkpoint complete when all five acceptance criteria are met
-  and `/lp-replan` output is filed in `docs/plans/pets-dog-accessories-pmf/plan.md`.
+  and `/lp-do-replan` output is filed in `docs/plans/pets-dog-accessories-pmf/plan.md`.
 - **Planning validation:** None: planning control task.
 - **Rollout / rollback:** None: planning control task.
-- **Documentation impact:** Plan updated via `/lp-replan`; Decision Log updated.
+- **Documentation impact:** Plan updated via `/lp-do-replan`; Decision Log updated.
 
 ---
 
@@ -693,7 +693,7 @@ brand") per Q3 input. No crossover with HBAG at any stage.
 - **Reviewer:** Pete
 - **Approval-Evidence:** Pete confirms meta-reflect output is useful.
 - **Measurement-Readiness:** None: methodology improvement task.
-- **Affects:** `.claude/skills/lp-fact-find/`, `.claude/skills/lp-plan/`,
+- **Affects:** `.claude/skills/lp-do-fact-find/`, `.claude/skills/lp-do-plan/`,
   `docs/plans/_templates/`
 - **Depends on:** TASK-08 (CHECKPOINT — needs real PMF experience to reflect on)
 - **Blocks:** —
@@ -738,7 +738,7 @@ brand") per Q3 input. No crossover with HBAG at any stage.
   ≥3/5 estimate ≥€60) gates this. If <3/5, reshoot before listing.
 - **€80 price rejected by Etsy dog accessory buyers** (High): Etsy artisan dog accessories
   confirm €25–60 as the typical premium ceiling. €80 is at the top of this band.
-  TASK-06 VC-01 (3 sales in 28 days) catches this. If VC fails, run `/lp-replan` on
+  TASK-06 VC-01 (3 sales in 28 days) catches this. If VC fails, run `/lp-do-replan` on
   pricing before TASK-09. Mitigation: LISH £65 confirms the buyer exists, but not
   specifically on Etsy.
 - **New social account — cold-start reach too low to measure demand** (High): TASK-07

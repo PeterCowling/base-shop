@@ -69,7 +69,7 @@ It builds on the existing structure (`AGENTS.md`, `docs/index.md`, `docs/cms-pla
   - Overall confidence = min(Implementation, Approach, Impact)
   - Document in "Re-plan Update" section
 
-  **Example (from brikette-seo lp-replan session):**
+  **Example (from brikette-seo lp-do-replan session):**
   ```
   Task: Align canonical/trailing-slash policy
   Before: 52% (Approach unknown: keep or remove slashes?)

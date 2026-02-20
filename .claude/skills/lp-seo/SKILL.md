@@ -23,6 +23,8 @@ Systematic, phased SEO planning for organic search visibility. Works for any bus
 
 **Required**: `--business <BIZ>` flag pointing to the business directory under `docs/business-os/strategy/`.
 
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
+
 **Optional flags**:
 - `--locale <LOCALE>`: Target locale for keyword research (default: en-US)
 - `--competitors <COMMA_SEPARATED_URLS>`: Competitor URLs for analysis

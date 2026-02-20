@@ -10,7 +10,7 @@ Feature-Slug: startup-loop-branding-design-module
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-brand-bootstrap, /lp-design-spec, /lp-offer, /draft-marketing, /lp-launch-qa
 Related-Plan: docs/plans/startup-loop-branding-design-module/plan.md
 Business-OS-Integration: on
@@ -512,7 +512,7 @@ Must reach Status: Active before S9B (GATE-BD-05).
 | S6B Channel + GTM | Tagline and value props inform outreach scripts and GTM messaging |
 | S6B SEO strategy | Value props → SEO content clusters |
 | BD-4 Creative brief | Headline candidates from messaging hierarchy |
-| S7/S8 Fact-find/Plan | lp-fact-find reads messaging-hierarchy for landing page and copy tasks |
+| S7/S8 Fact-find/Plan | lp-do-fact-find reads messaging-hierarchy for landing page and copy tasks |
 | S9B QA | GATE-BD-05: messaging-hierarchy Active + ≥3 proof rows required at launch |
 
 ---
@@ -994,7 +994,7 @@ skill files). No market spend required.
 
 ---
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 78%
   - Strong: Loop spec and advance rules fully read. Branding infrastructure well-understood.
@@ -1076,7 +1076,7 @@ skill files). No market spend required.
 
 ## Execution Routing Packet
 
-- **Primary execution skill:** `/lp-build` (orchestrator mode — multi-deliverable)
+- **Primary execution skill:** `/lp-do-build` (orchestrator mode — multi-deliverable)
 - **Supporting skills:**
   - `/lp-brand-bootstrap` — BD-1 for HEAD/PET/HBAG (BRIK already has brand-language, rename/update)
   - `/lp-design-spec` — BD-5 gate enhancement (after confirming skill contract)
@@ -1126,7 +1126,7 @@ skill files). No market spend required.
 - **Approach:** 80% → 77% — BD-4 depends on lp-channels contract unknown; index.user.md
   pattern unvalidated against BOS card-read behavior.
 
-### Remaining Assumptions (flagged for /lp-plan)
+### Remaining Assumptions (flagged for /lp-do-plan)
 
 - **lp-offer additional input handling:** Assumed brand-dossier can be added as a recommended
   input without breaking existing lp-offer workflow. Must be verified by reading full SKILL.md.
@@ -1148,4 +1148,4 @@ skill files). No market spend required.
 - **Blocking items:** None. Open assumptions are scoped as INVESTIGATION tasks within the plan.
 - **First plan task:** Read lp-offer, lp-channels, lp-launch-qa, lp-design-qa SKILL.md files fully.
   All gate-addition build tasks are blocked until those 4 reads complete.
-- **Recommended next step:** `/lp-plan startup-loop-branding-design-module`
+- **Recommended next step:** `/lp-do-plan startup-loop-branding-design-module`

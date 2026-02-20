@@ -93,7 +93,7 @@
 <li>Parallelization opportunities that are safe and high-leverage.</li>
 </ol>
 <h2>2) Executive Summary</h2>
-<p>The LP skill library is materially stronger in coverage and includes clear specialist roles (<code>lp-offer</code>, <code>lp-forecast</code>, <code>lp-channels</code>, <code>lp-site-upgrade</code>, <code>lp-fact-find</code>, <code>lp-plan</code>, <code>lp-build</code>, <code>lp-replan</code>, <code>lp-sequence</code>, QA/measurement skills).<br>
+<p>The LP skill library is materially stronger in coverage and includes clear specialist roles (<code>lp-offer</code>, <code>lp-forecast</code>, <code>lp-channels</code>, <code>lp-site-upgrade</code>, <code>lp-do-fact-find</code>, <code>lp-do-plan</code>, <code>lp-do-build</code>, <code>lp-do-replan</code>, <code>lp-sequence</code>, QA/measurement skills).<br>
 The main current risk is not missing capability; it is contract drift between:</p>
 <ol>
 <li>The Startup Loop workflow guide.</li>
@@ -104,14 +104,14 @@ The main current risk is not missing capability; it is contract drift between:</
 <ol>
 <li>Stage model drift (<code>S2B/S6B/S9B</code> exists in skill but not workflow/prompt contract).</li>
 <li>Artifact path drift (<code>lp-offer</code>/<code>lp-channels</code> flat files vs <code>lp-forecast</code> nested directories).</li>
-<li>Handoff filename drift (<code>-fact-find.md</code> vs <code>-lp-fact-find.md</code>).</li>
+<li>Handoff filename drift (<code>-fact-find.md</code> vs <code>-lp-do-fact-find.md</code>).</li>
 <li>BOS lane/persistence drift (<code>S5</code> requires API card writes, but <code>lp-prioritize</code> explicitly does not persist).</li>
 <li>Launch path drift (<code>lp-launch-qa</code> expects <code>/lp-launch</code> and <code>loop-state.json</code>, neither currently wired in loop contract/artifacts).</li>
 </ol>
 <h2>3) Current Composition Map</h2>
 <h3>3.1 Skills inventory (LP family)</h3>
 <p>Current LP-prefixed skills discovered:
-<code>lp-brand-bootstrap</code>, <code>lp-build</code>, <code>lp-channels</code>, <code>lp-design-qa</code>, <code>lp-design-spec</code>, <code>lp-design-system</code>, <code>lp-experiment</code>, <code>lp-fact-find</code>, <code>lp-forecast</code>, <code>lp-guide-audit</code>, <code>lp-guide-improve</code>, <code>lp-launch-qa</code>, <code>lp-measure</code>, <code>lp-offer</code>, <code>lp-onboarding-audit</code>, <code>lp-plan</code>, <code>lp-prioritize</code>, <code>lp-readiness</code>, <code>lp-refactor</code>, <code>lp-replan</code>, <code>lp-seo</code>, <code>lp-sequence</code>, <code>lp-site-upgrade</code>.</p>
+<code>lp-brand-bootstrap</code>, <code>lp-do-build</code>, <code>lp-channels</code>, <code>lp-design-qa</code>, <code>lp-design-spec</code>, <code>lp-design-system</code>, <code>lp-experiment</code>, <code>lp-do-fact-find</code>, <code>lp-forecast</code>, <code>lp-guide-audit</code>, <code>lp-guide-improve</code>, <code>lp-launch-qa</code>, <code>lp-measure</code>, <code>lp-offer</code>, <code>lp-onboarding-audit</code>, <code>lp-do-plan</code>, <code>lp-prioritize</code>, <code>lp-readiness</code>, <code>lp-refactor</code>, <code>lp-do-replan</code>, <code>lp-seo</code>, <code>lp-sequence</code>, <code>lp-site-upgrade</code>.</p>
 <p>Evidence: <code>.claude/skills</code> listing.</p>
 <h3>3.2 Intended stage routes in <code>/startup-loop</code></h3>
 <p><code>/startup-loop</code> currently defines:</p>
@@ -122,9 +122,9 @@ The main current risk is not missing capability; it is contract drift between:</
 <li><code>S5 -> /lp-prioritize</code></li>
 <li><code>S6 -> /lp-site-upgrade</code></li>
 <li><code>S6B -> /lp-channels, /lp-seo, /draft-outreach</code></li>
-<li><code>S7 -> /lp-fact-find</code></li>
-<li><code>S8 -> /lp-plan</code></li>
-<li><code>S9 -> /lp-build</code></li>
+<li><code>S7 -> /lp-do-fact-find</code></li>
+<li><code>S8 -> /lp-do-plan</code></li>
+<li><code>S9 -> /lp-do-build</code></li>
 <li><code>S9B -> /lp-launch-qa, /lp-design-qa, /lp-measure</code></li>
 <li><code>S10 -> /lp-experiment</code></li>
 </ol>
@@ -168,8 +168,8 @@ The main current risk is not missing capability; it is contract drift between:</
 <tr>
 <td>SQ-05</td>
 <td>Fact-find handoff filename mismatch into plan/build fast paths</td>
-<td><code>lp-plan</code> and <code>lp-build</code> may miss <code>lp-fact-find</code> output unless user manually points to path</td>
-<td><code>lp-fact-find</code> output: <code>docs/plans/&#x3C;feature-slug>-fact-find.md</code> in <code>.claude/skills/lp-fact-find/SKILL.md:223</code>; <code>lp-plan</code> fast path expects <code>docs/plans/&#x3C;slug>-lp-fact-find.md</code> in <code>.claude/skills/lp-plan/SKILL.md:127</code>; <code>lp-build</code> optional brief path also uses <code>-lp-fact-find.md</code> in <code>.claude/skills/lp-build/SKILL.md:66</code></td>
+<td><code>lp-do-plan</code> and <code>lp-do-build</code> may miss <code>lp-do-fact-find</code> output unless user manually points to path</td>
+<td><code>lp-do-fact-find</code> output: <code>docs/plans/&#x3C;feature-slug>-fact-find.md</code> in <code>.claude/skills/lp-do-fact-find/SKILL.md:223</code>; <code>lp-do-plan</code> fast path expects <code>docs/plans/&#x3C;slug>-lp-do-fact-find.md</code> in <code>.claude/skills/lp-do-plan/SKILL.md:127</code>; <code>lp-do-build</code> optional brief path also uses <code>-lp-do-fact-find.md</code> in <code>.claude/skills/lp-do-build/SKILL.md:66</code></td>
 </tr>
 <tr>
 <td>SQ-06</td>
@@ -180,8 +180,8 @@ The main current risk is not missing capability; it is contract drift between:</
 <tr>
 <td>SQ-07</td>
 <td>Stage-doc naming mismatch for fact-find stage</td>
-<td>Stage docs may be written/read under different stage keys (<code>fact-find</code> vs <code>lp-fact-find</code>) causing hidden drift</td>
-<td>Workflow BOS matrix uses <code>stage-docs/:cardId/fact-find</code> in <code>docs/business-os/startup-loop-workflow.user.md:424</code>; <code>lp-fact-find</code> reads stage <code>lp-fact-find</code> in <code>.claude/skills/lp-fact-find/SKILL.md:109</code></td>
+<td>Stage docs may be written/read under different stage keys (<code>fact-find</code> vs <code>lp-do-fact-find</code>) causing hidden drift</td>
+<td>Workflow BOS matrix uses <code>stage-docs/:cardId/fact-find</code> in <code>docs/business-os/startup-loop-workflow.user.md:424</code>; <code>lp-do-fact-find</code> reads stage <code>lp-do-fact-find</code> in <code>.claude/skills/lp-do-fact-find/SKILL.md:109</code></td>
 </tr>
 <tr>
 <td>SQ-08</td>
@@ -261,14 +261,14 @@ The main current risk is not missing capability; it is contract drift between:</
 <tr>
 <td>PX-04</td>
 <td>Build execution waves</td>
-<td>Keep using <code>lp-sequence</code> + <code>lp-plan</code> + <code>lp-build</code> wave model to parallelize implementation safely by dependency graph</td>
-<td><code>lp-plan</code> requires a generated parallelism guide in <code>.claude/skills/lp-plan/SKILL.md:620</code>; <code>lp-build</code> enforces sequence freshness in <code>.claude/skills/lp-build/SKILL.md:190</code>; <code>lp-replan</code> re-sequences after decomposition in <code>.claude/skills/lp-replan/SKILL.md:593</code></td>
+<td>Keep using <code>lp-sequence</code> + <code>lp-do-plan</code> + <code>lp-do-build</code> wave model to parallelize implementation safely by dependency graph</td>
+<td><code>lp-do-plan</code> requires a generated parallelism guide in <code>.claude/skills/lp-do-plan/SKILL.md:620</code>; <code>lp-do-build</code> enforces sequence freshness in <code>.claude/skills/lp-do-build/SKILL.md:190</code>; <code>lp-do-replan</code> re-sequences after decomposition in <code>.claude/skills/lp-do-replan/SKILL.md:593</code></td>
 </tr>
 <tr>
 <td>PX-05</td>
 <td>Multi-item throughput after prioritization</td>
-<td>For top 2-3 go items, run separate <code>lp-fact-find</code> passes in parallel (one card/feature slug each) before converging at planning/build</td>
-<td><code>lp-prioritize</code> selects top 2-3 in <code>.claude/skills/lp-prioritize/SKILL.md:93</code>; downstream handoff is per-item into <code>lp-fact-find</code> in <code>.claude/skills/lp-prioritize/SKILL.md:153</code></td>
+<td>For top 2-3 go items, run separate <code>lp-do-fact-find</code> passes in parallel (one card/feature slug each) before converging at planning/build</td>
+<td><code>lp-prioritize</code> selects top 2-3 in <code>.claude/skills/lp-prioritize/SKILL.md:93</code>; downstream handoff is per-item into <code>lp-do-fact-find</code> in <code>.claude/skills/lp-prioritize/SKILL.md:153</code></td>
 </tr>
 </tbody>
 </table>
@@ -317,7 +317,7 @@ The main current risk is not missing capability; it is contract drift between:</
 <li><code>S4</code> Baseline merge (consolidate branch outputs to one canonical baseline artifact).</li>
 <li><code>S5</code> Prioritize + BOS card persistence.</li>
 <li><code>S6</code> Site-upgrade synthesis (if website scope active; can be precomputed earlier once baseline exists).</li>
-<li><code>S7 -> S8 -> S9</code> (<code>lp-fact-find -> lp-plan -> lp-build</code>).</li>
+<li><code>S7 -> S8 -> S9</code> (<code>lp-do-fact-find -> lp-do-plan -> lp-do-build</code>).</li>
 <li><code>S9B</code> QA gates.</li>
 <li><code>S10</code> Weekly readout/experiments.</li>
 </ol>
@@ -325,8 +325,8 @@ The main current risk is not missing capability; it is contract drift between:</
 <ol>
 <li><strong>Unify stage contract</strong> across wrapper + workflow + prompt pack (<code>S2B/S6B/S9B</code> included consistently).</li>
 <li><strong>Unify artifact paths</strong> for startup-baselines (<code>flat</code> vs <code>nested</code>) and update all LP skills to one convention.</li>
-<li><strong>Unify fact-find filename convention</strong> (<code>-fact-find.md</code> vs <code>-lp-fact-find.md</code>) in <code>lp-plan</code> and <code>lp-build</code>.</li>
-<li><strong>Unify BOS stage keys</strong> (<code>fact-find</code> vs <code>lp-fact-find</code>) and persistence responsibilities at S5.</li>
+<li><strong>Unify fact-find filename convention</strong> (<code>-fact-find.md</code> vs <code>-lp-do-fact-find.md</code>) in <code>lp-do-plan</code> and <code>lp-do-build</code>.</li>
+<li><strong>Unify BOS stage keys</strong> (<code>fact-find</code> vs <code>lp-do-fact-find</code>) and persistence responsibilities at S5.</li>
 <li><strong>Decide S10 launch primitive</strong> (<code>/lp-launch</code> vs <code>/lp-experiment</code>) and update <code>lp-launch-qa</code> + wrapper accordingly.</li>
 <li><strong>Normalize stale integration names</strong> (<code>lp-channel</code>, <code>lp-content</code>) to existing skills.</li>
 </ol>
@@ -369,7 +369,7 @@ The main current risk is not missing capability; it is contract drift between:</
 <tr>
 <td>3. Feature workspace folder (<code>docs/plans/&#x3C;slug>/...</code>)</td>
 <td><strong>Correct</strong></td>
-<td><code>lp-fact-find</code>/<code>lp-plan</code>/<code>lp-build</code> naming drift exists (<code>-fact-find.md</code> vs <code>-lp-fact-find.md</code>) and causes fast-path ambiguity (SQ-05).</td>
+<td><code>lp-do-fact-find</code>/<code>lp-do-plan</code>/<code>lp-do-build</code> naming drift exists (<code>-fact-find.md</code> vs <code>-lp-do-fact-find.md</code>) and causes fast-path ambiguity (SQ-05).</td>
 <td><strong>Yes</strong></td>
 </tr>
 <tr>
@@ -381,7 +381,7 @@ The main current risk is not missing capability; it is contract drift between:</
 <tr>
 <td>5. Canonical stage-doc keys + aliases</td>
 <td><strong>Correct</strong></td>
-<td><code>fact-find</code> vs <code>lp-fact-find</code> naming drift exists in contracts (SQ-07).</td>
+<td><code>fact-find</code> vs <code>lp-do-fact-find</code> naming drift exists in contracts (SQ-07).</td>
 <td><strong>Yes</strong></td>
 </tr>
 <tr>
@@ -480,9 +480,9 @@ The main current risk is not missing capability; it is contract drift between:</
 <li>
 <p><strong>Plan Workspace Canonicalization</strong></p>
 <ul>
-<li>Done when <code>lp-fact-find</code> writes <code>docs/plans/&#x3C;slug>/fact-find.md</code> as canonical output.</li>
-<li>Done when <code>lp-plan</code> and <code>lp-build</code> read canonical workspace paths by default.</li>
-<li>Done when legacy <code>-fact-find</code>/<code>-lp-fact-find</code> names are supported only as compatibility reads.</li>
+<li>Done when <code>lp-do-fact-find</code> writes <code>docs/plans/&#x3C;slug>/fact-find.md</code> as canonical output.</li>
+<li>Done when <code>lp-do-plan</code> and <code>lp-do-build</code> read canonical workspace paths by default.</li>
+<li>Done when legacy <code>-fact-find</code>/<code>-lp-do-fact-find</code> names are supported only as compatibility reads.</li>
 </ul>
 </li>
 <li>

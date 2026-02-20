@@ -7,7 +7,7 @@ Relates-to charter: none
 Created: 2026-01-19
 Created-by: Claude (Opus 4.5)
 Last-updated: 2026-02-14
-Last-updated-by: Codex (review-fact-check)
+Last-updated-by: Codex (lp-do-factcheck)
 Audit-Ref: working-tree
 Audit-Date: 2026-02-14
 Consolidates:
@@ -50,7 +50,7 @@ These items primarily affect:
 - **Status**: ✅ **COMPLETE**
 - **Priority**: P0
 - **Estimated effort**: Small (administrative)
-- **Completed**: Pre-existing (discovered during 2026-02-09 review-fact-check)
+- **Completed**: Pre-existing (discovered during 2026-02-09 lp-do-factcheck)
 - **Implementation**:
   - Repo-verified: CI workflows reference `secrets.TURBO_TOKEN` and `vars.TURBO_TEAM`
   - External verification required: confirm `TURBO_TOKEN` and `TURBO_TEAM` are actually configured in GitHub Actions settings
@@ -106,7 +106,7 @@ These items primarily affect:
 - **Status**: ✅ **COMPLETE**
 - **Priority**: P0
 - **Estimated effort**: Small (administrative)
-- **Completed**: Pre-existing (discovered during 2026-02-09 lp-replan)
+- **Completed**: Pre-existing (discovered during 2026-02-09 lp-do-replan)
 - **Implementation**:
   - Repo-verified: CI workflows reference `secrets.CLOUDFLARE_API_TOKEN` and `secrets.CLOUDFLARE_ACCOUNT_ID`
   - External verification required: confirm these secrets are actually configured in GitHub Actions settings
@@ -314,7 +314,7 @@ These items primarily affect:
 - **Estimated effort**: Small (administrative)
 
 #### Re-plan Update (2026-02-09)
-- **Still valid.** Code is complete and verified (auth.ts, api-context.ts, db.ts all confirmed during review-fact-check). Product-pipeline has a CI workflow (`.github/workflows/product-pipeline.yml`) deploying to Cloudflare Pages.
+- **Still valid.** Code is complete and verified (auth.ts, api-context.ts, db.ts all confirmed during lp-do-factcheck). Product-pipeline has a CI workflow (`.github/workflows/product-pipeline.yml`) deploying to Cloudflare Pages.
 - **Dependency updated:** No longer blocked by ADMIN-03 (Cloudflare secrets already configured). Still practically blocked by ADMIN-02 (D1/R2 placeholder IDs mean the app can't fully function even with auth).
 - **Note:** Product-pipeline deploys as static export to Pages (`OUTPUT_EXPORT=1`), but `wrangler.toml` defines D1/R2/Queue bindings for the Worker runtime. The API key auth is in the Worker code path. Need to verify which deployment mode is active for the API endpoints.
 
@@ -399,7 +399,7 @@ These items primarily affect:
 - **Status**: ✅ **COMPLETE** (core requirement met)
 - **Priority**: P2
 - **Estimated effort**: Small
-- **Completed**: Pre-existing (discovered during 2026-02-09 review-fact-check)
+- **Completed**: Pre-existing (discovered during 2026-02-09 lp-do-factcheck)
 - **Implementation**:
   - `pnpm audit --audit-level=high` already runs in `ci.yml` (lines 56-60)
   - Ignores known false positive: `--ignore GHSA-p6mc-m468-83gw`

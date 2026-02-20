@@ -9,7 +9,7 @@ Feature-Slug: ds-skill-alignment-loop-consolidation
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /meta-reflect
 Overall-confidence: 84%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -22,7 +22,7 @@ Card-ID: pending
 
 ## Summary
 
-Align the skill inventory with the S0–S10 startup loop by: (1) renaming `site-upgrade` → `lp-site-upgrade`, (2) building 11 new `lp-*` skills that fill three missing spines (Offer, Distribution, Experiment) and three empty stages (S1, S3, S5), (3) extending 3 existing skills to absorb proposed functionality, and (4) updating the `startup-loop` orchestrator and `lp-fact-find` routing to reference the new skills. The `idea-*` family is explicitly untouched — it serves established businesses as a parallel system.
+Align the skill inventory with the S0–S10 startup loop by: (1) renaming `site-upgrade` → `lp-site-upgrade`, (2) building 11 new `lp-*` skills that fill three missing spines (Offer, Distribution, Experiment) and three empty stages (S1, S3, S5), (3) extending 3 existing skills to absorb proposed functionality, and (4) updating the `startup-loop` orchestrator and `lp-do-fact-find` routing to reference the new skills. The `idea-*` family is explicitly untouched — it serves established businesses as a parallel system.
 
 ## Goals
 
@@ -58,7 +58,7 @@ Align the skill inventory with the S0–S10 startup loop by: (1) renaming `site-
   - Three structural gaps: Offer spine (S2B), Distribution spine (S6B), Experiment spine (S1B/S9B/S10)
   - `idea-*` family (7 skills) serves established businesses — NOT part of startup loop
   - Consolidation: ~40 proposed skills → 11 new + 1 rename + 3 extensions
-  - Site-upgrade rename blast radius: 25 files total, 3 critical (skill dir, lp-fact-find, startup-loop)
+  - Site-upgrade rename blast radius: 25 files total, 3 critical (skill dir, lp-do-fact-find, startup-loop)
   - Skill pattern: loop-stage skills are 150-250 lines with Quality Checks section
 
 ## Existing System Notes
@@ -67,20 +67,20 @@ Align the skill inventory with the S0–S10 startup loop by: (1) renaming `site-
   - `.claude/skills/` — all skill directories (37 total)
   - `.claude/skills/_shared/card-operations.md` — shared card API patterns
   - `.claude/skills/startup-loop/SKILL.md` — orchestrator (204 lines, references S0-S10 skills)
-  - `.claude/skills/lp-fact-find/SKILL.md` — progressive routing table (1032 lines, 13 refs to site-upgrade)
+  - `.claude/skills/lp-do-fact-find/SKILL.md` — progressive routing table (1032 lines, 13 refs to site-upgrade)
   - `.claude/skills/idea-readiness/SKILL.md` — 230 lines, 7-gate structure (reference for lp-readiness differentiation)
   - `.claude/skills/idea-forecast/SKILL.md` — 203 lines, market-research-gate pattern (reference for lp-forecast differentiation)
   - `.claude/skills/idea-generate/SKILL.md` — Cabinet Secretary pipeline (reference for lp-prioritize differentiation)
 - Patterns to follow:
-  - `.claude/skills/lp-replan/SKILL.md` — good example of a 150-250 line stage skill with quality checks
+  - `.claude/skills/lp-do-replan/SKILL.md` — good example of a 150-250 line stage skill with quality checks
   - `.claude/skills/draft-email/SKILL.md` — good example of a minimal artifact drafter (80 lines)
-  - `.claude/skills/review-critique/SKILL.md` — good example of multi-schema skill with modes (459 lines)
+  - `.claude/skills/lp-do-critique/SKILL.md` — good example of multi-schema skill with modes (459 lines)
 
 ## Proposed Approach
 
 Build skills in loop-stage order (S1 → S1B → S2B → S3 → S5 → S6 → S6B → S9B → S10) so each skill's output template can reference what the next stage expects. Group into waves for parallelism where skills at the same stage or independent stages can be authored concurrently.
 
-The rename goes first (mechanical, unblocks lp-fact-find ref updates). Then core spine (S1/S3/S5), then offer, then experiment, then distribution, then launch QA, then extensions, then loop integration.
+The rename goes first (mechanical, unblocks lp-do-fact-find ref updates). Then core spine (S1/S3/S5), then offer, then experiment, then distribution, then launch QA, then extensions, then loop integration.
 
 ## Task Summary
 
@@ -99,9 +99,9 @@ The rename goes first (mechanical, unblocks lp-fact-find ref updates). Then core
 | DS-11 | IMPLEMENT | Build draft-outreach (S6B outreach scripts) | 86% | S | Complete (2026-02-13) | DS-08 | DS-16 |
 | DS-12 | IMPLEMENT | Build lp-launch-qa (S9B pre-launch gate) | 82% | M | Complete (2026-02-13) | DS-08 | DS-16 |
 | DS-13 | IMPLEMENT | Build lp-design-qa (S9B UI regression QA) | 82% | M | Complete (2026-02-13) | DS-08 | DS-16 |
-| DS-14 | IMPLEMENT | Extend review-critique with offer schema | 88% | S | Complete (2026-02-13) | DS-05, DS-08 | DS-16 |
+| DS-14 | IMPLEMENT | Extend lp-do-critique with offer schema | 88% | S | Complete (2026-02-13) | DS-05, DS-08 | DS-16 |
 | DS-15 | IMPLEMENT | Extend draft-marketing + draft-email | 87% | S | Complete (2026-02-13) | DS-08 | DS-16 |
-| DS-16 | IMPLEMENT | Update startup-loop orchestrator + lp-fact-find routing | 80% | M | Complete (2026-02-13) | DS-01, DS-02, DS-03, DS-04, DS-05, DS-06, DS-07, DS-08, DS-09, DS-10, DS-11, DS-12, DS-13, DS-14, DS-15 | - |
+| DS-16 | IMPLEMENT | Update startup-loop orchestrator + lp-do-fact-find routing | 80% | M | Complete (2026-02-13) | DS-01, DS-02, DS-03, DS-04, DS-05, DS-06, DS-07, DS-08, DS-09, DS-10, DS-11, DS-12, DS-13, DS-14, DS-15 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -130,10 +130,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — renamed directory + updated references
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `.claude/skills/site-upgrade/` (rename to `.claude/skills/lp-site-upgrade/`)
-  - **Primary:** `.claude/skills/lp-fact-find/SKILL.md` (13 refs)
+  - **Primary:** `.claude/skills/lp-do-fact-find/SKILL.md` (13 refs)
   - **Primary:** `.claude/skills/startup-loop/SKILL.md` (2 refs)
   - **Primary:** `docs/plans/ds-skill-alignment-loop-consolidation-fact-find.md`
   - **Secondary:** `[readonly] docs/business-os/startup-loop-workflow.user.md` (1 mention — update for consistency)
@@ -145,7 +145,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Impact: 90% — blast radius documented. Non-critical refs in user-facing docs can be updated for consistency.
 - **Acceptance:**
   - Directory renamed from `site-upgrade` to `lp-site-upgrade`
-  - All references in `.claude/skills/lp-fact-find/SKILL.md` updated
+  - All references in `.claude/skills/lp-do-fact-find/SKILL.md` updated
   - All references in `.claude/skills/startup-loop/SKILL.md` updated
   - Grep for `site-upgrade` in `.claude/skills/` returns zero hits (excluding `lp-site-upgrade` itself)
 - **Validation contract:**
@@ -163,7 +163,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: atomic commit with dir rename + all ref updates
   - Rollback: `git revert` — single commit
 - **Documentation impact:** `docs/business-os/startup-loop-workflow.user.md` mention updated
-- **Notes:** Blast radius from exploration: 25 files total. 3 critical (skill dir, lp-fact-find, startup-loop). 20+ non-critical (user-facing docs, artifact files). Non-critical files should be updated for consistency but are not functionally impacted.
+- **Notes:** Blast radius from exploration: 25 files total. 3 critical (skill dir, lp-do-fact-find, startup-loop). 20+ non-critical (user-facing docs, artifact files). Non-critical files should be updated for consistency but are not functionally impacted.
 
 #### Build Completion (2026-02-13)
 - **Status:** Complete
@@ -179,7 +179,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — `.claude/skills/lp-readiness/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/lp-readiness/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms skill produces useful output when run on a real business
@@ -233,7 +233,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — `.claude/skills/lp-forecast/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/lp-forecast/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms skill produces useful output when run on a real business
@@ -279,7 +279,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — `.claude/skills/lp-prioritize/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/lp-prioritize/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms skill produces useful output when run on a real business
@@ -306,7 +306,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - VC-04: Size constraint — 80-170 lines → pass
   - Validation type: review checklist
 - **Execution plan:** Red → Green → Refactor (VC-first fail-first loop)
-- **What would make this ≥90%:** Run on HEAD and verify ranked output feeds cleanly into lp-fact-find
+- **What would make this ≥90%:** Run on HEAD and verify ranked output feeds cleanly into lp-do-fact-find
 - **Rollout / rollback:** New file / delete directory
 - **Documentation impact:** None
 - **Notes:** This is deliberately simpler than `idea-generate`. A startup with 5-10 candidates doesn't need a 7-stage pipeline. It needs: "which 2-3 things should we do first, and why?"
@@ -325,7 +325,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — `.claude/skills/lp-offer/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/lp-offer/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms skill produces useful offer artifact when run on a real business
@@ -334,9 +334,9 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - **Primary:** `.claude/skills/lp-offer/SKILL.md` (new)
   - **Secondary:** `[readonly] .claude/skills/lp-readiness/SKILL.md` (upstream — readiness checks offer clarity)
 - **Depends on:** DS-02 (lp-readiness defines what "offer clarity" means; lp-offer must produce it)
-- **Blocks:** DS-08, DS-14 (review-critique offer mode references lp-offer output), DS-16
+- **Blocks:** DS-08, DS-14 (lp-do-critique offer mode references lp-offer output), DS-16
 - **Confidence:** 83%
-  - Implementation: 85% — no direct template to follow, but lp-fact-find's brief pattern provides structural inspiration. Consolidates ICP + positioning + pricing into sections of one artifact.
+  - Implementation: 85% — no direct template to follow, but lp-do-fact-find's brief pattern provides structural inspiration. Consolidates ICP + positioning + pricing into sections of one artifact.
   - Approach: 83% — offer design as a single skill (vs. 4 separate) is the right consolidation per fact-find. Untested hypothesis (H3).
   - Impact: 80% — new concept in the loop. Downstream consumers (lp-forecast, lp-channels) will depend on its output format.
 - **Acceptance:**
@@ -359,7 +359,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **What would make this ≥90%:** Run on HEAD and verify offer artifact is decision-grade and feeds into lp-forecast
 - **Rollout / rollback:** New file / delete directory
 - **Documentation impact:** None
-- **Notes:** This is the most novel skill — no direct precedent. Base structure on lp-fact-find's brief pattern: clear inputs, workflow steps, output template with sections, quality checks. The offer artifact replaces "price intent" assumptions in forecasting.
+- **Notes:** This is the most novel skill — no direct precedent. Base structure on lp-do-fact-find's brief pattern: clear inputs, workflow steps, output template with sections, quality checks. The offer artifact replaces "price intent" assumptions in forecasting.
 
 #### Build Completion (2026-02-13)
 - **Status:** Complete
@@ -375,7 +375,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — `.claude/skills/lp-measure/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/lp-measure/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms skill produces actionable measurement setup when run
@@ -420,7 +420,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — `.claude/skills/lp-experiment/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/lp-experiment/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms skill produces actionable experiment designs
@@ -470,7 +470,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Blocks:** DS-09, DS-10, DS-11, DS-12, DS-13, DS-14, DS-15, DS-16
 - **Confidence:** 95%
 - **Acceptance:**
-  - Run `/lp-replan` on all tasks after this checkpoint (DS-09 through DS-16)
+  - Run `/lp-do-replan` on all tasks after this checkpoint (DS-09 through DS-16)
   - Reassess remaining task confidence using evidence from completed tasks
   - Verify: do the 7 completed skills have consistent output templates that downstream skills can consume?
   - Verify: does the lp-offer output format work for lp-forecast and lp-channels (DS-09)?
@@ -488,7 +488,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Commits:** (plan update only — checkpoint produces no code)
 - **Execution cycle:**
   - Validated 4 horizon assumptions against completed skill evidence
-  - No `/lp-replan` needed — all assumptions confirmed
+  - No `/lp-do-replan` needed — all assumptions confirmed
 - **Confidence reassessment:**
   - Original: 95%
   - Post-validation: 95%
@@ -508,11 +508,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — `.claude/skills/lp-channels/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/lp-channels/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms skill produces actionable channel strategy
-- **Measurement-Readiness:** Validated by first startup-loop run; channel strategy consumed by lp-fact-find (S7) for go-item scoping
+- **Measurement-Readiness:** Validated by first startup-loop run; channel strategy consumed by lp-do-fact-find (S7) for go-item scoping
 - **Affects:**
   - **Primary:** `.claude/skills/lp-channels/SKILL.md` (new)
 - **Depends on:** DS-08
@@ -552,7 +552,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — `.claude/skills/lp-seo/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/lp-seo/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms skill produces actionable SEO artifacts at each phase
@@ -603,7 +603,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — `.claude/skills/draft-outreach/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/draft-outreach/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms skill produces usable outreach scripts
@@ -649,7 +649,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — `.claude/skills/lp-launch-qa/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/lp-launch-qa/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms skill produces actionable pre-launch checklist
@@ -694,7 +694,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — `.claude/skills/lp-design-qa/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/lp-design-qa/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms skill produces actionable QA checklist
@@ -707,7 +707,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Confidence:** 82%
   - Implementation: 85% — UI QA checklists are well-understood. Screenshots-to-issues format is standard.
   - Approach: 82% — distinct from lp-design-spec (design) because this is post-build verification.
-  - Impact: 80% — new concept. Fills the gap between lp-build and lp-launch-qa.
+  - Impact: 80% — new concept. Fills the gap between lp-do-build and lp-launch-qa.
 - **Acceptance:**
   - SKILL.md created with all required sections
   - Covers: UI regression checklist, screenshots-to-issues format, a11y checks, responsive checks, token compliance
@@ -734,31 +734,31 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 ---
 
-### DS-14: Extend review-critique with offer schema detection
+### DS-14: Extend lp-do-critique with offer schema detection
 
 - **Type:** IMPLEMENT
-- **Deliverable:** business-artifact — updated `.claude/skills/review-critique/SKILL.md`
+- **Deliverable:** business-artifact — updated `.claude/skills/lp-do-critique/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
-- **Artifact-Destination:** `.claude/skills/review-critique/SKILL.md` (existing, extend)
+- **Execution-Skill:** /lp-do-build
+- **Artifact-Destination:** `.claude/skills/lp-do-critique/SKILL.md` (existing, extend)
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms offer critique mode works on a real offer artifact
 - **Measurement-Readiness:** Validated when first lp-offer output is critiqued
 - **Affects:**
-  - **Primary:** `.claude/skills/review-critique/SKILL.md` (extend)
+  - **Primary:** `.claude/skills/lp-do-critique/SKILL.md` (extend)
 - **Depends on:** DS-05 (lp-offer defines the output format to critique), DS-08
 - **Blocks:** DS-16
 - **Confidence:** 88%
-  - Implementation: 92% — review-critique already has multi-schema detection (fact-find, plan, process). Adding "offer" schema is a known pattern extension.
+  - Implementation: 92% — lp-do-critique already has multi-schema detection (fact-find, plan, process). Adding "offer" schema is a known pattern extension.
   - Approach: 88% — Munger-style inversion for offers (value-prop stress test) fits naturally into the existing critique framework.
   - Impact: 85% — extends existing file, low blast radius.
 - **Acceptance:**
-  - New "Offer" schema added to review-critique's schema detection
+  - New "Offer" schema added to lp-do-critique's schema detection
   - Offer schema checks: ICP specificity, positioning distinctiveness, pricing justification, objection completeness, risk reversal strength
   - Munger-style inversion: "Why would this offer fail?" applied to each offer section
   - 30-50 lines added to existing 459-line file
 - **Validation contract:**
-  - VC-01: Schema detection — review-critique auto-detects offer artifacts and applies offer-specific rubric → pass; doesn't detect → fail
+  - VC-01: Schema detection — lp-do-critique auto-detects offer artifacts and applies offer-specific rubric → pass; doesn't detect → fail
   - VC-02: Critique depth — offer rubric includes ≥5 specific check dimensions → pass; <5 → fail
   - VC-03: Non-regression — existing schemas (fact-find, plan, process) still work → pass; broken → fail
   - Validation type: review checklist
@@ -781,7 +781,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — updated `.claude/skills/draft-marketing/SKILL.md` and `.claude/skills/draft-email/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `.claude/skills/draft-marketing/SKILL.md`, `.claude/skills/draft-email/SKILL.md` (existing, extend)
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms new modes work
@@ -819,39 +819,39 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 ---
 
-### DS-16: Update startup-loop orchestrator + lp-fact-find routing
+### DS-16: Update startup-loop orchestrator + lp-do-fact-find routing
 
 - **Type:** IMPLEMENT
-- **Deliverable:** business-artifact — updated `.claude/skills/startup-loop/SKILL.md` and `.claude/skills/lp-fact-find/SKILL.md`
+- **Deliverable:** business-artifact — updated `.claude/skills/startup-loop/SKILL.md` and `.claude/skills/lp-do-fact-find/SKILL.md`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
-- **Artifact-Destination:** `.claude/skills/startup-loop/SKILL.md`, `.claude/skills/lp-fact-find/SKILL.md` (existing, update)
+- **Execution-Skill:** /lp-do-build
+- **Artifact-Destination:** `.claude/skills/startup-loop/SKILL.md`, `.claude/skills/lp-do-fact-find/SKILL.md` (existing, update)
 - **Reviewer:** Pete
 - **Approval-Evidence:** User confirms `/startup-loop status` shows all stages with skill coverage
 - **Measurement-Readiness:** Validated by running `/startup-loop status` for each business after update
 - **Affects:**
   - **Primary:** `.claude/skills/startup-loop/SKILL.md` (update stage references)
-  - **Primary:** `.claude/skills/lp-fact-find/SKILL.md` (update progressive routing table)
+  - **Primary:** `.claude/skills/lp-do-fact-find/SKILL.md` (update progressive routing table)
 - **Depends on:** DS-01 through DS-15 (all skills must exist before orchestrator can reference them)
 - **Blocks:** -
 - **Confidence:** 80%
-  - Implementation: 82% — startup-loop is 204 lines, well-structured. Updates are reference additions. lp-fact-find routing table is a known pattern.
+  - Implementation: 82% — startup-loop is 204 lines, well-structured. Updates are reference additions. lp-do-fact-find routing table is a known pattern.
   - Approach: 80% — the orchestrator needs to route to new lp-* skills at each stage. This is straightforward but touches the most critical coordination file.
   - Impact: 78% — startup-loop orchestrator is the entry point for the entire loop. Errors here affect all businesses.
 - **Acceptance:**
   - startup-loop SKILL.md updated: S1 → `/lp-readiness`, S1B → `/lp-measure`, S2B → `/lp-offer`, S3 → `/lp-forecast`, S5 → `/lp-prioritize`, S6 → `/lp-site-upgrade`, S6B → `/lp-channels` + `/lp-seo`, S9B → `/lp-launch-qa` + `/lp-design-qa`, S10 → `/lp-experiment`
-  - lp-fact-find routing table updated: new Primary-Execution-Skill entries for new deliverable types
+  - lp-do-fact-find routing table updated: new Primary-Execution-Skill entries for new deliverable types
   - `/startup-loop status` correctly shows skill coverage for all stages
   - No regressions in existing stage routing (S7/S8/S9 unchanged)
 - **Validation contract:**
   - VC-01: Stage coverage — every stage S0-S10 (including sub-stages) has a skill reference or explicit "template/manual" note → pass; any stage missing → fail
   - VC-02: Routing accuracy — each stage skill reference matches the actual skill directory name → pass; typo or mismatch → fail
-  - VC-03: Fact-find routing — lp-fact-find progressive routing table includes entries for all new execution skills → pass; missing entries → fail
+  - VC-03: Fact-find routing — lp-do-fact-find progressive routing table includes entries for all new execution skills → pass; missing entries → fail
   - VC-04: Non-regression — S7/S8/S9 routing unchanged → pass; modified → fail
   - Validation type: review checklist + grep verification
   - Run/verify: `grep -c "lp-readiness\|lp-forecast\|lp-prioritize\|lp-offer\|lp-measure\|lp-experiment\|lp-channels\|lp-seo\|lp-launch-qa\|lp-design-qa\|lp-site-upgrade" .claude/skills/startup-loop/SKILL.md` should return ≥11
 - **Execution plan:** Red → Green → Refactor (VC-first fail-first loop)
-  - Red: verify current startup-loop doesn't reference new skills; verify lp-fact-find routing table lacks new entries
+  - Red: verify current startup-loop doesn't reference new skills; verify lp-do-fact-find routing table lacks new entries
   - Green: add all stage references and routing entries; verify VCs pass
   - Refactor: ensure stage descriptions are concise and consistent; re-verify
 - **What would make this ≥90%:** Run `/startup-loop status --business HEAD` and verify all stages show green skill coverage
@@ -866,8 +866,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Validation:**
   - VC-01 ✓ every stage S0-S10 has skill reference or "operator prompt handoff" note
   - VC-02 ✓ each skill ref matches actual directory name (verified by grep — all 11 present)
-  - VC-03 ✓ lp-fact-find routing table updated (draft-outreach + lp-channels + lp-seo added)
-  - VC-04 ✓ S7/S8/S9 routing preserved (S7=lp-fact-find, S8=lp-plan, S9=lp-build)
+  - VC-03 ✓ lp-do-fact-find routing table updated (draft-outreach + lp-channels + lp-seo added)
+  - VC-04 ✓ S7/S8/S9 routing preserved (S7=lp-do-fact-find, S8=lp-do-plan, S9=lp-do-build)
 - **Documentation updated:** startup-loop-workflow.user.md deferred (not a blocking update)
 
 ---
@@ -891,9 +891,9 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - [ ] 1 rename complete: `site-upgrade` → `lp-site-upgrade` with zero broken references
 - [ ] 11 new skills created, each with: Operating Mode, Inputs, Workflow, Output Contract, Quality Checks
 - [ ] 3 startup stage skills each have "Differs from idea-*" section with ≥3 differences
-- [ ] 3 existing skills extended: review-critique (offer schema), draft-marketing (brief mode), draft-email (sequence mode)
+- [ ] 3 existing skills extended: lp-do-critique (offer schema), draft-marketing (brief mode), draft-email (sequence mode)
 - [ ] startup-loop orchestrator references all new lp-* stage skills
-- [ ] lp-fact-find routing table includes new execution skills
+- [ ] lp-do-fact-find routing table includes new execution skills
 - [ ] `/startup-loop status` shows skill coverage for all stages S0–S10
 - [ ] idea-* family completely untouched
 

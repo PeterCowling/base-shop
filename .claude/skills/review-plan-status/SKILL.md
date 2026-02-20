@@ -1,6 +1,6 @@
 ---
 name: review-plan-status
-description: Report on the status of incomplete plans — how many tasks remain in each. Optionally review-fact-check plans before reporting.
+description: Report on the status of incomplete plans — how many tasks remain in each. Optionally lp-do-factcheck plans before reporting.
 ---
 
 # Plans Report Status
@@ -15,10 +15,10 @@ Scan `docs/plans/` for plans that are not yet complete, and report on the status
 - Read plan documents in `docs/plans/` (not `docs/plans/archive/`)
 - Parse frontmatter Status field and task summary tables
 - Count task completion status per plan
-- Invoke `/review-fact-check` on individual plans (only when user opts in)
+- Invoke `/lp-do-factcheck` on individual plans (only when user opts in)
 
 **Not allowed:**
-- Modifying plan documents (unless review-fact-check mode is enabled)
+- Modifying plan documents (unless lp-do-factcheck mode is enabled)
 - Creating new files
 - Changing task statuses
 
@@ -33,10 +33,10 @@ Scan `docs/plans/` for plans that are not yet complete, and report on the status
 
 Before scanning, ask the user:
 
-> Would you like to run `/review-fact-check` on each incomplete plan before reporting status? This updates plans to reflect the actual repo state but takes longer.
+> Would you like to run `/lp-do-factcheck` on each incomplete plan before reporting status? This updates plans to reflect the actual repo state but takes longer.
 
 Options:
-1. **Yes — review-fact-check first** — Run `/review-fact-check <plan-path>` on each incomplete plan before collecting status. This ensures task statuses reflect reality.
+1. **Yes — lp-do-factcheck first** — Run `/lp-do-factcheck <plan-path>` on each incomplete plan before collecting status. This ensures task statuses reflect reality.
 2. **No — report as-is** — Report based on what the plan documents currently say. Faster, but statuses may be stale.
 
 Wait for the user's answer before proceeding.
@@ -55,9 +55,9 @@ Scan `docs/plans/*.md` (exclude `docs/plans/archive/`). For each plan:
 
 ## Step 3: Fact-Check (If Opted In)
 
-If the user chose review-fact-check mode:
+If the user chose lp-do-factcheck mode:
 
-For each incomplete plan identified in Step 2, invoke `/review-fact-check <plan-path>` with `scope: focused` (task statuses and file references only). This corrects any stale task-completion claims before reporting.
+For each incomplete plan identified in Step 2, invoke `/lp-do-factcheck <plan-path>` with `scope: focused` (task statuses and file references only). This corrects any stale task-completion claims before reporting.
 
 Use parallel subagents (up to 3 concurrent) to speed this up.
 
@@ -101,7 +101,7 @@ Output a summary table sorted by completion percentage (least complete first):
 Plans Status Report
 ====================
 Date: YYYY-MM-DD
-Mode: [review-fact-checked | as-reported]
+Mode: [lp-do-factchecked | as-reported]
 Plans scanned: N (M excluded as complete/archived/non-plan)
 
 | Plan | Status | Total | Done | In Progress | Remaining | % Complete |
@@ -136,7 +136,7 @@ After the detailed breakdown, add a brief observations section:
 - Plans closest to completion (>80% done)
 - Plans with no progress (0% done)
 - Plans with tasks in progress (active work)
-- Any plans where review-fact-check revealed stale statuses (if review-fact-check mode was used)
+- Any plans where lp-do-factcheck revealed stale statuses (if lp-do-factcheck mode was used)
 
 ## Error Handling
 
@@ -149,7 +149,7 @@ After the detailed breakdown, add a brief observations section:
 | After report... | Consider... |
 |-----------------|-------------|
 | Plan 100% complete | Set `Status: Archived` and move to `docs/plans/archive/` |
-| Plan near completion | `/lp-build` to finish remaining tasks |
-| Plan stale (0% progress, old dates) | Archive or `/lp-replan` |
-| Many stale statuses found by review-fact-check | Review and commit review-fact-check fixes |
-| Plan has no tasks | `/lp-plan` to add structured tasks |
+| Plan near completion | `/lp-do-build` to finish remaining tasks |
+| Plan stale (0% progress, old dates) | Archive or `/lp-do-replan` |
+| Many stale statuses found by lp-do-factcheck | Review and commit lp-do-factcheck fixes |
+| Plan has no tasks | `/lp-do-plan` to add structured tasks |

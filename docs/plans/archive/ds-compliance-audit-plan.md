@@ -9,7 +9,7 @@ Feature-Slug: ds-compliance-audit
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Overall-confidence: 89%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -106,7 +106,7 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — move 2 files to `docs/plans/archive/`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `docs/plans/ds-skylar-migration-fact-find.md`
   - **Primary:** `docs/plans/ds-business-os-migration-fact-find.md`
@@ -141,7 +141,7 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix 2 raw color classes + add scoped error rule
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/cochlearfit/` (2 files with violations — error state styling)
   - **Primary:** `eslint.config.mjs` (add scoped error block)
@@ -176,7 +176,7 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix 2 raw color classes + add scoped error rule
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/handbag-configurator/src/` (1 file — `ViewerCanvas.tsx` loading state)
   - **Primary:** `eslint.config.mjs`
@@ -211,7 +211,7 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix 5 violations + remove 5 baseline entries
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `packages/template-app/src/app/[lang]/product/[slug]/PdpClient.client.tsx`
   - **Primary:** `packages/template-app/src/app/account/returns/ReturnForm.tsx`
@@ -250,7 +250,7 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix 10 violations across 8 files + add scoped error rule
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/cover-me-pretty/src/` (8 files — links, panels, buttons)
   - **Primary:** `eslint.config.mjs`
@@ -286,7 +286,7 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix violations in xa-j (39) + xa-b (39, shared code) + add 2 scoped error rules
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/xa-j/src/` (~10 files: XaProductCard, XaImageGallery, XaMegaMenu, XaSupportDock, XaFiltersDrawer, XaBuyBox, access/*)
   - **Primary:** `apps/xa-b/src/` (same files — verify shared or fix independently)
@@ -325,7 +325,7 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix 80 violations across 11 files + add scoped error rule
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/xa-uploader/src/` (11 files — catalog form components)
   - **Primary:** `eslint.config.mjs`
@@ -361,7 +361,7 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix 39 violations across 17 files + add scoped error rule
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/product-pipeline/src/` (17 files — stage cards, decision scorecards, scenario lab)
   - **Primary:** `eslint.config.mjs`
@@ -399,7 +399,7 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix 3 violations + remove 3 baseline entries
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `packages/ui/src/components/organisms/operations/SplitPane/SplitPane.tsx` (lines 351, 369)
   - **Primary:** `packages/ui/src/organisms/modals/primitives.tsx` (line 19)
@@ -436,7 +436,7 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 - **Type:** DECISION
 - **Deliverable:** Decision recorded in plan Decision Log
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:** `packages/ui/src/atoms/RatingsBar.tsx` (8 violations)
 - **Depends on:** -
 - **Blocks:** DSA-11
@@ -465,7 +465,7 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix or annotate 9 violations + update baseline
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `packages/ui/src/atoms/RatingsBar.tsx` (8 violations)
   - **Primary:** `packages/ui/src/organisms/modals/primitives.tsx` (1 violation — if not already fixed in DSA-09)

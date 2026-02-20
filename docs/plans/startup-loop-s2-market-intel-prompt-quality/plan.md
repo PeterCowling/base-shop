@@ -9,7 +9,7 @@ Feature-Slug: startup-loop-s2-market-intel-prompt-quality
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-sequence
 Overall-confidence: 83
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -120,7 +120,7 @@ Chosen: Option B.
 - **Type:** IMPLEMENT
 - **Deliverable:** Refactor S2 generator to assemble a single `BEGIN_INTERNAL_BASELINES` block that contains only embedded evidence required by Deep Research.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** Generated prompt file under `docs/business-os/market-research/<BIZ>/`.
 - **Reviewer:** Pete
 - **Approval-Evidence:** Accept prompt by replying “ok” after inspection.
@@ -167,7 +167,7 @@ Chosen: Option B.
 - **Type:** IMPLEMENT
 - **Deliverable:** New template file under `docs/business-os/market-research/_templates/` for hospitality/direct booking/OTA mode.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `docs/business-os/market-research/_templates/<template>.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** reviewer ack in commit message or chat.
@@ -202,7 +202,7 @@ Chosen: Option B.
 - **Type:** IMPLEMENT
 - **Deliverable:** Generator chooses the correct profile template using a registry and supports an explicit override file.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** generator output prompt file under `docs/business-os/market-research/<BIZ>/`.
 - **Reviewer:** Pete
 - **Approval-Evidence:** reviewer ack after inspecting generated BRIK prompt.
@@ -247,7 +247,7 @@ Chosen: Option B.
 - **Type:** IMPLEMENT
 - **Deliverable:** Generator derives canonical base URL with strict precedence and injects explicit website-live funnel audit instructions.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** Generated hospitality prompt contains explicit URLs and audit steps.
 - **Reviewer:** Pete
 - **Approval-Evidence:** reviewer ack after inspecting prompt.
@@ -287,7 +287,7 @@ Chosen: Option B.
 - **Type:** IMPLEMENT
 - **Deliverable:** When prompt would exceed defined size budgets, generator emits a two-pass prompt (Pass 1 internal diagnosis; Pass 2 external competitor/demand/scenarios) plus synthesis instructions.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** one generated prompt file containing two clearly labeled Deep Research blocks (Pass 1 and Pass 2).
 - **Reviewer:** Pete
 - **Approval-Evidence:** reviewer ack.
@@ -329,7 +329,7 @@ Chosen: Option B.
 - **Type:** IMPLEMENT
 - **Deliverable:** Add a manual scoring checklist to run once per release.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `docs/business-os/market-research/prompt-quality-eval.user.md` (or equivalent) referenced by operators.
 - **Reviewer:** Pete
 - **Approval-Evidence:** reviewer ack.
@@ -359,7 +359,7 @@ Chosen: Option B.
 - **Confidence:** 95
 - **Acceptance:**
   - Generate the BRIK prompt(s) and score them with the rubric.
-  - If any rubric dimension scores 0, run `/lp-replan` before continuing and capture what failed.
+  - If any rubric dimension scores 0, run `/lp-do-replan` before continuing and capture what failed.
 
 #### Checkpoint Completion (2026-02-15)
 - **Status:** Complete
@@ -372,7 +372,7 @@ Chosen: Option B.
 ### TASK-08: Template tightening (internal baseline citation rule, parity check, fixed scenario dates, stop/continue/start structure, remove leading bias)
 - **Type:** IMPLEMENT
 - **Deliverable:** Update the hospitality S2 template to resolve P0 prompt-quality issues identified in review.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Primary: `docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.hospitality-direct-booking-ota.md`
 - **Depends on:** TASK-07
@@ -401,7 +401,7 @@ Chosen: Option B.
 ### TASK-09: Generator tightening (scenario date injection, compress inventory header, remove duplicate website-audit addon)
 - **Type:** IMPLEMENT
 - **Deliverable:** Generator renders hospitality prompts with deterministic scenario dates, compact inventory header, and no duplicated website-audit block.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - Primary: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
   - Tests: `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
@@ -435,14 +435,14 @@ Chosen: Option B.
 
 ### TASK-10: Regenerate BRIK prompt + rerun rubric after follow-up tranche
 - **Type:** CHECKPOINT
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Depends on:** TASK-09
 - **Blocks:** -
 - **Confidence:** 95
 - **Acceptance:**
   - Re-generate the BRIK prompt for `2026-02-15`.
   - Re-score BRIK on the rubric and record the run notes (or confirm prior PASS still holds).
-  - If any rubric dimension scores 0, run `/lp-replan` before continuing further changes.
+  - If any rubric dimension scores 0, run `/lp-do-replan` before continuing further changes.
 
 #### Checkpoint Completion (2026-02-15)
 - **Status:** Complete

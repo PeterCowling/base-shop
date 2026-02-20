@@ -1,81 +1,147 @@
 {
   "_generated_from": "docs/business-os/startup-loop/stage-operator-dictionary.yaml",
-  "_loop_spec_version": "1.7.0",
+  "_loop_spec_version": "2.1.0",
   "_schema_version": 1,
   "_note": "AUTO-GENERATED — do not edit directly. Edit stage-operator-dictionary.yaml and re-run: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts",
   "stages": [
     {
-      "id": "S0A",
+      "id": "DISCOVERY-01",
       "name_machine": "problem-framing",
       "label_operator_short": "Problem framing",
-      "label_operator_long": "S0A — Problem framing",
+      "label_operator_long": "DISCOVERY-01 — Problem framing",
       "outcome_operator": "Clear problem statement with articulated pain, affected customer, and evidence of real demand.",
       "aliases": [
         "problem-framing",
-        "s0a"
+        "discovery-01"
       ],
       "display_order": 1,
       "conditional": true,
       "condition": "start-point = problem",
-      "operator_next_prompt": "Proceed to S0B Solution-space scan."
+      "operator_next_prompt": "Proceed to DISCOVERY-02 Solution-space scan."
     },
     {
-      "id": "S0B",
+      "id": "DISCOVERY-02",
       "name_machine": "solution-space-scan",
       "label_operator_short": "Solution-space scan",
-      "label_operator_long": "S0B — Solution-space scan",
+      "label_operator_long": "DISCOVERY-02 — Solution-space scan",
       "outcome_operator": "Mapped solution space with at least three distinct options and comparative feasibility notes.",
       "aliases": [
         "solution-space",
-        "s0b"
+        "discovery-02"
       ],
       "display_order": 1,
       "conditional": true,
       "condition": "start-point = problem",
-      "operator_next_prompt": "Proceed to S0C Option selection."
+      "operator_next_prompt": "Proceed to DISCOVERY-03 Option selection."
     },
     {
-      "id": "S0C",
+      "id": "DISCOVERY-03",
       "name_machine": "option-selection",
       "label_operator_short": "Option selection",
-      "label_operator_long": "S0C — Option selection",
-      "outcome_operator": "Selected solution option with rationale, key assumptions, and handoff brief for S0 intake.",
+      "label_operator_long": "DISCOVERY-03 — Option selection",
+      "outcome_operator": "Selected solution option with rationale, key assumptions, and handoff brief for DISCOVERY intake.",
       "aliases": [
         "option-selection",
-        "s0c"
+        "discovery-03"
       ],
       "display_order": 1,
       "conditional": true,
       "condition": "start-point = problem",
-      "operator_next_prompt": "Proceed to S0D Naming handoff if a business name is still needed, otherwise proceed to S0 Intake."
+      "operator_next_prompt": "Proceed to DISCOVERY-04 Naming handoff if a business name is still needed, otherwise proceed to DISCOVERY Intake."
     },
     {
-      "id": "S0D",
+      "id": "DISCOVERY-04",
       "name_machine": "naming-handoff",
       "label_operator_short": "Naming handoff",
-      "label_operator_long": "S0D — Naming handoff",
+      "label_operator_long": "DISCOVERY-04 — Naming handoff",
       "outcome_operator": "Validated business or product name with brand-safety check and domain availability confirmed.",
       "aliases": [
         "naming-handoff",
-        "s0d"
+        "discovery-04"
       ],
       "display_order": 1,
       "conditional": true,
       "condition": "start-point = problem",
-      "operator_next_prompt": "Proceed to S0 Intake with selected name confirmed."
+      "operator_next_prompt": "Proceed to DISCOVERY-05 Distribution planning."
     },
     {
-      "id": "S0",
+      "id": "DISCOVERY-05",
+      "name_machine": "distribution-planning",
+      "label_operator_short": "Channel Plan",
+      "label_operator_long": "DISCOVERY-05 — Channel Plan",
+      "outcome_operator": "Distribution plan with ≥2 launch channels, cost/effort estimates, and ICP fit rationale.",
+      "aliases": [
+        "distribution-planning",
+        "discovery-05",
+        "channel-plan"
+      ],
+      "display_order": 1,
+      "conditional": true,
+      "condition": "start-point = problem",
+      "operator_next_prompt": "Proceed to DISCOVERY-06 Measurement plan."
+    },
+    {
+      "id": "DISCOVERY-06",
+      "name_machine": "measurement-plan",
+      "label_operator_short": "Measure Plan",
+      "label_operator_long": "DISCOVERY-06 — Measure Plan",
+      "outcome_operator": "Measurement plan with tracking method, ≥2 key metrics, success thresholds, and data collection feasibility confirmed.",
+      "aliases": [
+        "measurement-plan",
+        "discovery-06",
+        "measure-plan"
+      ],
+      "display_order": 1,
+      "conditional": true,
+      "condition": "start-point = problem",
+      "operator_next_prompt": "Proceed to DISCOVERY-07 Operator evidence."
+    },
+    {
+      "id": "DISCOVERY-07",
+      "name_machine": "operator-evidence",
+      "label_operator_short": "Operator evidence",
+      "label_operator_long": "DISCOVERY-07 — Operator evidence",
+      "outcome_operator": "Operator evidence packet: launch surface, stock status, pricing model, channel pre-decisions, and open evidence gaps documented.",
+      "aliases": [
+        "operator-evidence",
+        "our-stance",
+        "discovery-07"
+      ],
+      "display_order": 1,
+      "conditional": true,
+      "condition": "start-point = problem",
+      "operator_next_prompt": "Proceed to DISCOVERY Intake with all seven precursors complete."
+    },
+    {
+      "id": "DISCOVERY",
       "name_machine": "intake",
       "label_operator_short": "Intake",
-      "label_operator_long": "S0 — Intake",
+      "label_operator_long": "DISCOVERY — Intake",
       "outcome_operator": "Structured startup context packet ready for all downstream stages.",
       "aliases": [
         "intake",
-        "s0"
+        "discovery"
       ],
       "display_order": 1,
       "operator_next_prompt": "Run /lp-readiness to check gate readiness before moving to S1."
+    },
+    {
+      "id": "BRAND-01",
+      "label_operator_short": "Brand-01",
+      "label_operator_long": "BRAND-01 — Brand strategy",
+      "condition": "always"
+    },
+    {
+      "id": "BRAND-02",
+      "label_operator_short": "Brand-02",
+      "label_operator_long": "BRAND-02 — Brand identity",
+      "condition": "always"
+    },
+    {
+      "id": "BRAND",
+      "label_operator_short": "Brand",
+      "label_operator_long": "BRAND — Brand",
+      "condition": "always"
     },
     {
       "id": "S1",
@@ -331,16 +397,32 @@
     }
   ],
   "alias_index": {
-    "problem-framing": "S0A",
-    "s0a": "S0A",
-    "solution-space": "S0B",
-    "s0b": "S0B",
-    "option-selection": "S0C",
-    "s0c": "S0C",
-    "naming-handoff": "S0D",
-    "s0d": "S0D",
-    "intake": "S0",
-    "s0": "S0",
+    "problem-framing": "DISCOVERY-01",
+    "discovery-01": "DISCOVERY-01",
+    "solution-space": "DISCOVERY-02",
+    "discovery-02": "DISCOVERY-02",
+    "option-selection": "DISCOVERY-03",
+    "discovery-03": "DISCOVERY-03",
+    "naming-handoff": "DISCOVERY-04",
+    "discovery-04": "DISCOVERY-04",
+    "distribution-planning": "DISCOVERY-05",
+    "discovery-05": "DISCOVERY-05",
+    "channel-plan": "DISCOVERY-05",
+    "measurement-plan": "DISCOVERY-06",
+    "discovery-06": "DISCOVERY-06",
+    "measure-plan": "DISCOVERY-06",
+    "operator-evidence": "DISCOVERY-07",
+    "our-stance": "DISCOVERY-07",
+    "discovery-07": "DISCOVERY-07",
+    "intake": "DISCOVERY",
+    "discovery": "DISCOVERY",
+    "brand-strategy": "BRAND-01",
+    "brand-01": "BRAND-01",
+    "brand-identity": "BRAND-02",
+    "brand-02": "BRAND-02",
+    "brand-dossier": "BRAND-02",
+    "brand": "BRAND",
+    "brand-intake": "BRAND",
     "readiness": "S1",
     "s1": "S1",
     "measurement-bootstrap": "S1B",

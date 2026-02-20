@@ -10,7 +10,7 @@ Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/nextjs-16-upgrade/plan.md
 Business-OS-Integration: off
@@ -37,10 +37,10 @@ FACT-FIND ONLY (no code migrations applied here).
 - Confirm prerequisites and toolchain constraints are enforced (Node, TS, React, lint)
 - Identify any remaining hard-break surfaces called out by Next 16
 - Inventory remaining deprecations and runtime constraints (middleware vs proxy)
-- Seed follow-up tasks with concrete evidence/paths for `/lp-plan`
+- Seed follow-up tasks with concrete evidence/paths for `/lp-do-plan`
 
 ### Non-goals
-- Implement fixes (belongs in `/lp-build`)
+- Implement fixes (belongs in `/lp-do-build`)
 - Turbopack migration for apps with custom webpack (separate project)
 
 ### Constraints & Assumptions
@@ -247,7 +247,7 @@ Once stable:
 2. CMS canonical interception entrypoint: is `apps/cms/src/middleware.ts` the intended canonical file, and can `apps/cms/middleware.ts` be removed?
 3. Warnings policy: do we allow `middleware` deprecation warnings only for apps explicitly classified as Edge/Worker, and fail on any other new deprecation class?
 
-## Suggested Task Seeds (for `/lp-plan`)
+## Suggested Task Seeds (for `/lp-do-plan`)
 
 1. **App runtime classification inventory (required foundation)**
 - Produce a table mapping each Next app to deployment runtime (Node vs Worker/Edge) and interception mechanism (proxy vs middleware).
@@ -302,7 +302,7 @@ Once stable:
 - Acceptance:
   - CMS build succeeds on a 16GB machine using a documented command.
 
-## Confidence Inputs For `/lp-plan`
+## Confidence Inputs For `/lp-do-plan`
 - Implementation: 82
   - What raises to ≥90: land one Worker/Edge middleware hardening end-to-end (CMS is the best stress case).
 - Approach: 80

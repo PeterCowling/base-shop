@@ -13,7 +13,7 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/email-system-design-gaps/plan.md
 Business-OS-Integration: off
@@ -27,7 +27,7 @@ Card-ID: none
 
 ### Summary
 
-The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_interpret`, `draft_generate`, `draft_refine`, `prime_process_outbound_drafts`) has eight identified design gaps that need remediation. The gaps span scan coverage, lock durability, deferral automation, policy enforcement, label hygiene on error, observability, Flow 2/3 label attribution, and numeric escalation thresholds. This brief documents exactly what the code does today versus what it should do, so that `/lp-plan` can create safe, testable implementation tasks.
+The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_interpret`, `draft_generate`, `draft_refine`, `prime_process_outbound_drafts`) has eight identified design gaps that need remediation. The gaps span scan coverage, lock durability, deferral automation, policy enforcement, label hygiene on error, observability, Flow 2/3 label attribution, and numeric escalation thresholds. This brief documents exactly what the code does today versus what it should do, so that `/lp-do-plan` can create safe, testable implementation tasks.
 
 ### Goals
 
@@ -38,7 +38,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 ### Non-goals
 
 - Making any code changes during this investigation.
-- Designing specific fix implementations (that is for `/lp-plan`).
+- Designing specific fix implementations (that is for `/lp-do-plan`).
 
 ### Constraints & Assumptions
 
@@ -511,7 +511,7 @@ Sequencing principle: observability first (Issue 6), then data-loss risks (Issue
 
 ## Execution Routing Packet
 
-- Primary execution skill: `lp-build`
+- Primary execution skill: `lp-do-build`
 - Supporting skills: none
 - Deliverable acceptance package:
   - All 8 issues have code-level fixes (or explicit decision to defer) per plan tasks.
@@ -555,5 +555,5 @@ Sequencing principle: observability first (Issue 6), then data-loss risks (Issue
 - Status: Ready-for-planning
 - Blocking items: none. All open questions resolved (2026-02-19).
 - Recommended next step:
-  - `/lp-plan docs/plans/email-system-design-gaps/fact-find.md` — all 7 task seeds are ready to be converted to plan tasks.
+  - `/lp-do-plan docs/plans/email-system-design-gaps/fact-find.md` — all 7 task seeds are ready to be converted to plan tasks.
   - Issue 1 full ingestion redesign (Gmail filter or `lastHistoryId`) should be treated as a separate plan track after the transitional fix lands.

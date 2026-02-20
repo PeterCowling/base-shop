@@ -15,7 +15,7 @@ Related-Plan: docs/plans/composite-email-templates-plan.md
 
 ### Summary
 
-Many guest emails ask about multiple topics (breakfast + luggage + WiFi, check-in + directions, etc.) and can only be answered by pulling together content from several single-topic templates. The current pipeline selects a single "best" template, which leaves questions unanswered. This lp-fact-find investigates the feasibility of composing replies from multiple templates.
+Many guest emails ask about multiple topics (breakfast + luggage + WiFi, check-in + directions, etc.) and can only be answered by pulling together content from several single-topic templates. The current pipeline selects a single "best" template, which leaves questions unanswered. This lp-do-fact-find investigates the feasibility of composing replies from multiple templates.
 
 ### Goals
 
@@ -223,7 +223,7 @@ This is a natural composite fallback for multi-topic FAQ emails. The ranker may 
 
 None — all design questions resolved via code evidence.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 90%
   - High: Clear change points in `draft-generate.ts`, pure function logic, existing test infrastructure. Only ~30-40 lines of new code.
@@ -282,4 +282,4 @@ None — all design questions resolved via code evidence.
 
 - Status: Ready-for-planning
 - Blocking items: None
-- Recommended next step: Proceed to `/lp-plan composite-email-templates`
+- Recommended next step: Proceed to `/lp-do-plan composite-email-templates`

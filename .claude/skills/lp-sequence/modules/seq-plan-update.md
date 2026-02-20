@@ -67,7 +67,7 @@ Report what changed:
 - Max parallelism: P tasks in wave N
 - Critical path length: W waves
 
-Ready for `/lp-build`.
+Ready for `/lp-do-build`.
 ```
 
 ## Handling Edge Cases

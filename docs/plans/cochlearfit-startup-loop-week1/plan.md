@@ -10,7 +10,7 @@ Feature-Slug: cochlearfit-startup-loop-week1
 Fact-Find-Reference: docs/plans/cochlearfit-startup-loop-week1/fact-find.md
 Execution-Track: mixed
 Deliverable-Type: multi-deliverable
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-channels, /lp-seo
 Business-Unit: HEAD
 Overall-confidence: 72%
@@ -61,7 +61,7 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 - Type: IMPLEMENT
 - Effort: S
 - Confidence: 85%
-- Execution-Skill: /lp-build
+- Execution-Skill: /lp-do-build
 - Depends on: -
 
 **Problem:** The runtime catalog path can render empty or inconsistent because server pages use `listCochlearfitProducts()` (file-backed, empty in-repo) while client helpers/tests assume `apps/cochlearfit/src/data/products.ts` (i18n-keyed, non-empty).
@@ -87,7 +87,7 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 - Type: IMPLEMENT
 - Effort: S
 - Confidence: 80%
-- Execution-Skill: /lp-build
+- Execution-Skill: /lp-do-build
 - Depends on: CF-101
 
 **Goal:** Preserve a long-term path to data-backed catalogs without breaking Week-1. Implement a safe fallback strategy:
@@ -119,7 +119,7 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 - Type: IMPLEMENT
 - Effort: M
 - Confidence: 65%
-- Execution-Skill: /lp-build
+- Execution-Skill: /lp-do-build
 - Depends on: CF-D02
 
 **Acceptance criteria**
@@ -134,7 +134,7 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 - Type: IMPLEMENT
 - Effort: S
 - Confidence: 60%
-- Execution-Skill: /lp-build
+- Execution-Skill: /lp-do-build
 - Depends on: CF-D02
 
 **Acceptance criteria**
@@ -149,7 +149,7 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 - Type: IMPLEMENT
 - Effort: M
 - Confidence: 70%
-- Execution-Skill: /lp-build
+- Execution-Skill: /lp-do-build
 - Depends on: CF-201, CF-202, CF-D03
 
 **Acceptance criteria**
@@ -169,7 +169,7 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 - Type: INVESTIGATE
 - Effort: M
 - Confidence: 55%
-- Execution-Skill: /lp-build
+- Execution-Skill: /lp-do-build
 - Depends on: CF-101
 
 **Questions**
@@ -184,7 +184,7 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 - Type: IMPLEMENT
 - Effort: M
 - Confidence: 60%
-- Execution-Skill: /lp-build
+- Execution-Skill: /lp-do-build
 - Depends on: CF-301
 
 **Acceptance criteria**
@@ -206,7 +206,7 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 - Type: IMPLEMENT
 - Effort: M
 - Confidence: 70%
-- Execution-Skill: /lp-build
+- Execution-Skill: /lp-do-build
 - Depends on: CF-D02
 
 **Acceptance criteria**
@@ -221,7 +221,7 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 - Type: IMPLEMENT
 - Effort: S
 - Confidence: 65%
-- Execution-Skill: /lp-build
+- Execution-Skill: /lp-do-build
 - Depends on: -
 
 **Acceptance criteria**
@@ -242,4 +242,4 @@ For code changes under `apps/cochlearfit`:
 - Produce a first draft of the daily KPI pack script/output format and verify it can be refreshed.
 
 ## Next Step
-- If you confirm the three decisions (CF-D01/CF-D02/CF-D03), we can move the plan to `Status: Active` and start `/lp-build` on CF-101 immediately.
+- If you confirm the three decisions (CF-D01/CF-D02/CF-D03), we can move the plan to `Status: Active` and start `/lp-do-build` on CF-101 immediately.

@@ -47,7 +47,7 @@ Scale: 0-5 per criterion.
 
 ## E) Execution Recommendation
 
-Run `lp-fact-find -> lp-plan -> lp-build` first on:
+Run `lp-do-fact-find -> lp-do-plan -> lp-do-build` first on:
 1. GA4 event verification + first 7-day KPI baseline lock.
 2. Policy/fee clarity + booking-step performance hardening.
 3. Cancellation reason coding instrumentation and weekly reporting.

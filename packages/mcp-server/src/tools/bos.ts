@@ -19,7 +19,13 @@ import {
 } from "./policy.js";
 
 const STARTUP_LOOP_STAGES = [
-  "S0",
+  "DISCOVERY-05",
+  "DISCOVERY-06",
+  "DISCOVERY-07",
+  "DISCOVERY",
+  "BRAND-01",
+  "BRAND-02",
+  "BRAND",
   "S1",
   "S1B",
   "S2A",

@@ -10,7 +10,7 @@ Feature-Slug: seo-machine-readable
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Related-Plan: docs/plans/seo-machine-readable/plan.md
 Business-OS-Integration: on
@@ -379,7 +379,7 @@ These regress easily during refactors and should become unit tests in `packages/
 
 - (None — all questions resolved with sensible defaults)
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 82%
   - Strong reference implementation exists in Brikette with clear patterns. All apps use the same framework (Next.js App Router). Package infrastructure patterns are well-established. Gap: exact extraction boundaries for Brikette's i18n-heavy slug translation logic (tightly coupled to Brikette routes).
@@ -443,7 +443,7 @@ These regress easily during refactors and should become unit tests in `packages/
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: none required
 - Deliverable acceptance package (staged):
   - **Stage 1 — Bug fixes (standalone):** CMP robots.ts phantom reference removed; Cochlearfit `SITE_URL` updated from placeholder
@@ -461,4 +461,4 @@ These regress easily during refactors and should become unit tests in `packages/
 
 - Status: Ready-for-planning
 - Blocking items: None (open questions have sensible defaults)
-- Recommended next step: Proceed to `/lp-plan`
+- Recommended next step: Proceed to `/lp-do-plan`

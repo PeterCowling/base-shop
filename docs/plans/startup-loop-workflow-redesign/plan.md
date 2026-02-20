@@ -9,7 +9,7 @@ Feature-Slug: startup-loop-workflow-redesign
 Deliverable-Type: doc-rewrite
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Overall-confidence: 86%
 Confidence-Method: weighted average by effort; per-task sub-scores are informational only
@@ -88,7 +88,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 ## Plan Gates
 
-- Foundation Gate: Pass — fact-find complete, deliverable type confirmed (doc-rewrite), execution track confirmed (mixed), primary execution skill confirmed (lp-build), delivery-readiness 90%.
+- Foundation Gate: Pass — fact-find complete, deliverable type confirmed (doc-rewrite), execution track confirmed (mixed), primary execution skill confirmed (lp-do-build), delivery-readiness 90%.
 - Build Gate: Pass — TASK-00 confidence 88% >= 80%; all content tasks confidence >= 82%; no blocking unknowns.
 - Sequenced: Yes
 - Edge-case review complete: Yes
@@ -131,7 +131,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change to `scripts/src/render-user-doc-html.ts`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -203,7 +203,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Mermaid `flowchart LR` diagram added to `docs/business-os/startup-loop-workflow.user.md` (new section, pre-restructure)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -253,7 +253,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Three "Today" panels added to `docs/business-os/startup-loop-workflow.user.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -305,7 +305,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Three action cards (HEAD, PET, BRIK) added to `docs/business-os/startup-loop-workflow.user.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -355,7 +355,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** New "Readiness check" section with six plain-language questions added to `docs/business-os/startup-loop-workflow.user.md`; original RG table unchanged and preserved in engineering appendix
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -412,7 +412,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Two new tables added to `docs/business-os/startup-loop-workflow.user.md`: "Business Operator Actions" (operator body) and "Platform Engineering Actions" (engineering appendix); original "Open Tasks" table preserved verbatim in engineering appendix
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -465,7 +465,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Engineering appendix section in `docs/business-os/startup-loop-workflow.user.md` wrapped in a single `<section data-audience="engineering">` block
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -525,7 +525,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Rewritten `docs/business-os/startup-loop-workflow.user.md` with operator-first structure
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
@@ -596,7 +596,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** New "If you have 10/30/60 minutes" section in `docs/business-os/startup-loop-workflow.user.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -647,7 +647,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** New operator-readable version of the hand-off map added to operator body in `docs/business-os/startup-loop-workflow.user.md`; original hand-off map preserved verbatim in engineering appendix
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -699,7 +699,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated purpose statement and front matter in `docs/business-os/startup-loop-workflow.user.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -716,7 +716,7 @@ Plain-language names used in operator sections, with engineering details behind.
   - Approach: 95% — purpose statement rewrite from engineering spec to operator guide is clear and specified
   - Impact: 95% — establishes correct expectations at page load; signals document audience immediately
 - **Acceptance:**
-  - Purpose section opening changed from: "Define the full startup operating loop from idea/spec input to execution and lp-replanning, with explicit inputs, processing, outputs, and current remaining data gaps for HEAD, PET, and BRIK." to: "This page tells you what to do next for HEAD, PET, and BRIK — and how to do it."
+  - Purpose section opening changed from: "Define the full startup operating loop from idea/spec input to execution and lp-do-replanning, with explicit inputs, processing, outputs, and current remaining data gaps for HEAD, PET, and BRIK." to: "This page tells you what to do next for HEAD, PET, and BRIK — and how to do it."
   - Front matter title updated to match the new operator-first framing
   - Front matter `Updated` date set to 2026-02-17
 - **Validation contract (VC-10):**
@@ -746,7 +746,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** CHECKPOINT
 - **Deliverable:** Verified `docs/business-os/startup-loop-workflow.user.html` output
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -785,7 +785,7 @@ Plain-language names used in operator sections, with engineering details behind.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated internal anchor links in `docs/business-os/startup-loop-workflow.user.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S

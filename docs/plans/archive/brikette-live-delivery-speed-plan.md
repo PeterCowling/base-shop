@@ -77,7 +77,7 @@ Proposed solutions: namespace bundling by language (TASK-15, target <200 chunks)
 - **Quality gates:** Brikette lint is currently disabled (`apps/brikette/package.json`), so the validation gate is typecheck + targeted Jest + perf checks.
 
 ## Fact-Find Reference
-- Related brief: `docs/plans/brikette-live-delivery-speed-lp-fact-find.md`
+- Related brief: `docs/plans/brikette-live-delivery-speed-lp-do-fact-find.md`
 - Key findings (2026-02-04):
   - Always-on bundle: `apps/brikette/.next/static/chunks/app/[lang]/layout.js` is ~12MB uncompressed.
   - Always-on prefetch: `apps/brikette/src/utils/prefetchInteractive.ts` pulls ~7MB (swiper + modals) on every page.
@@ -394,7 +394,7 @@ This plan intentionally treats caching as a correctness problem first (avoid cac
   - Land the build-artifact check script + enforce the script-size budget in LHCI (TASK-09) so regressions are deterministic CI failures.
 - **Rollout / rollback:**
   - Rollout: land behind a short-lived flag if needed (fallback to previous loader); validate on staging before production.
-  - Rollback: revert loader changes; accept larger bundle until lp-replanned.
+  - Rollback: revert loader changes; accept larger bundle until lp-do-replanned.
 - **Documentation impact:** Update this plan with the chosen approach and measured before/after numbers.
 - **Notes / references:** The goal is to remove nested guide JSON import contexts (especially `guides/content/*`) from the always-on client layout bundle.
 
@@ -508,7 +508,7 @@ This plan intentionally treats caching as a correctness problem first (avoid cac
   - Staging branch `_headers` has **311 rules** (645 lines) — listing every locale route individually.
   - Cloudflare Pages has a **100-rule limit** on `_headers` files. Rules beyond 100 are silently dropped (no error, no warning).
   - Commit `c68b59f774` ("move _headers to config/ to avoid 100-rule limit") created the condensed 22-rule version on `dev`, but it hasn't been merged to staging/main yet.
-  - Next.js `output: 'export'` DOES copy `public/` to `out/` correctly — the earlier lp-replan claim that `_headers` wasn't deployed was wrong. It IS deployed, just ignored due to rule count.
+  - Next.js `output: 'export'` DOES copy `public/` to `out/` correctly — the earlier lp-do-replan claim that `_headers` wasn't deployed was wrong. It IS deployed, just ignored due to rule count.
   - **Separate issue:** `postbuild` script writes `robots.txt`/`sitemap.xml` to `public/` AFTER Next.js has already copied `public/` to `out/`. These SEO files are missing from deployments.
 - **Acceptance:**
   - 22-rule `_headers` (from `dev` branch) deployed to staging.
@@ -607,7 +607,7 @@ This plan intentionally treats caching as a correctness problem first (avoid cac
   - Audit these pages for remaining dense link grids using default prefetch behavior (no explicit `prefetch` prop) and opt out where it meaningfully reduces waste without hurting UX.
 
 #### Re-plan Update (2026-02-05 — Initial)
-- **Previous confidence:** n/a (new task split from TASK-07 during lp-replan)
+- **Previous confidence:** n/a (new task split from TASK-07 during lp-do-replan)
 - **Updated confidence:** 82%
   - Implementation: 85% — concrete call sites identified; changes are mechanical and reviewable.
   - Approach: 82% — same principle as TASK-07 but applied to assistance/how-to hotspots.
@@ -918,7 +918,7 @@ Webpack creates a separate chunk for each dynamically imported JSON file when us
 - **Decision / resolution:**
   - This is correctly a "Needs-Input" task awaiting user decision.
   - Confidence raised to 85% to reflect that the decision framing is correct and the implementation paths are known.
-  - For DECISION tasks, "Needs-Input" is the appropriate status (not a blocker requiring lp-replanning).
+  - For DECISION tasks, "Needs-Input" is the appropriate status (not a blocker requiring lp-do-replanning).
 - **Rationale for confidence adjustment:**
   - A DECISION task at 60% confidence is acceptable when it genuinely awaits user preference (not a technical gap).
   - Raising to 85% clarifies that the only "low confidence" aspect was the decision framing, which is now resolved.
@@ -941,7 +941,7 @@ Webpack creates a separate chunk for each dynamically imported JSON file when us
 - **Status:** Pending (highest remaining priority)
 - **Confidence:** 88%
   - Implementation: 88% — investigation scope is clear; key constraint areas identified (CF limits, guide publishing, i18n architecture).
-  - Approach: 90% — investigate-before-implement is the right approach given the complexity revealed by lp-replan.
+  - Approach: 90% — investigate-before-implement is the right approach given the complexity revealed by lp-do-replan.
   - Impact: 85% — investigation output directly determines whether TASK-16 (splitChunks) or a new codegen IMPLEMENT task is the right next step.
 - **Acceptance:**
   - Produce a written investigation document (or section in this plan) covering:
@@ -978,7 +978,7 @@ Webpack creates a separate chunk for each dynamically imported JSON file when us
 - **Type changed:** IMPLEMENT → INVESTIGATE
   - User requested: "investigate and set out your best ideas, but then stop, and do not implement anything."
   - The i18n loading architecture is more complex than the original plan assumed (3-tier guides loading, separate how-to-get-here loader, 4,419 JSON files). Investigation-first is the correct approach.
-- **Investigation performed (pre-investigation findings from lp-replan):**
+- **Investigation performed (pre-investigation findings from lp-do-replan):**
   - **CF Pages free-tier:** 20K file limit confirmed. Current ~4K chunks are well within limit. Bundling would reduce to <200 (massive headroom). Not a blocker either way.
   - **Guide publishing:** Business OS writes individual JSON files via `apps/business-os/src/app/api/guides/[guideKey]/route.ts:119` → `writeGuidesNamespaceToFs()` → `writeContentFiles()` which writes per-guide JSON. Bundling at build time does NOT break this because: (a) writes target individual files, (b) bundling is build-time codegen reading those files, (c) status is managed via manifest overrides, not content files.
   - **i18n complexity:** `locale-loader.ts` (client, top-level only, one `webpackInclude`), `locale-loader.guides.ts` (server, `fs.readFileSync`, NO webpack), `guides.imports.ts` (client, 3-tier: webpack context → imports → FS), `content-modules.ts` (client, separate `webpackInclude` for how-to-get-here). Two `webpackInclude` sites that generate chunks: `locale-loader.ts:65` and `content-modules.ts:11`.
@@ -1059,7 +1059,7 @@ Webpack creates a separate chunk for each dynamically imported JSON file when us
 
 **Current Status (2026-02-09):** 11 of 19 tasks complete
 
-Based on lp-replan findings, the highest-leverage sequence is:
+Based on lp-do-replan findings, the highest-leverage sequence is:
 
 **Wave 1 — Blockers (parallel):**
 1. **TASK-06A** (fix `_headers` deployment) — blocker for cache headers + GA setup. Small fix to build-cmd.
@@ -1116,7 +1116,7 @@ Based on lp-replan findings, the highest-leverage sequence is:
 - 2026-02-09: Decision (TASK-15) — Changed from IMPLEMENT to INVESTIGATE. I18n loading is more complex than assumed; investigate approach before implementing. Must consider CF free-tier limits, guide draft→publish flow from Business OS, and multi-tier loading architecture.
 
 ## Plan Changelog
-- 2026-02-05: Plan created from lp-fact-find; i18n bundle fix requires investigation before implementation.
+- 2026-02-05: Plan created from lp-do-fact-find; i18n bundle fix requires investigation before implementation.
 - 2026-02-05: Re-plan — confirmed `loadLocaleResource()` recursive locale context as the primary driver of the ~12MB layout chunk; chosen fix is a "core vs guides" loader split + deferred guides-only imports; split `<Link prefetch>` work into TASK-07 (experiences) + TASK-11 (assistance/how-to); updated all IMPLEMENT tasks to meet test-contract requirements.
 - 2026-02-05: Implemented (TASK-12) — GA script wiring added in root layout and Web Vitals emitter made GA-only; follow-up verification tracked in TASK-13.
 - 2026-02-05: Investigation complete (TASK-08) — confirmed TASK-05 success (layout 12MB → 28KB); identified chunk explosion root cause as 3,982 JSON translation chunks (97.4% of 4,088 total) created by webpack's dynamic import chunking; proposed three follow-on solutions: namespace bundling by language (TASK-15, 85% confidence, target <200 chunks), webpack splitChunks config (TASK-16, 70% confidence, stopgap fallback only), and icon consolidation if detected (TASK-17, 90% confidence); overall confidence increased from 82% → 84%, remaining confidence increased from 79% → 82%.

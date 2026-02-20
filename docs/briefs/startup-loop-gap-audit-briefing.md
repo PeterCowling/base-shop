@@ -15,7 +15,7 @@ The startup loop has a strong canonical stage graph and data-plane contracts, bu
 
 Highest load-bearing gaps observed:
 - Stage skill coverage drift: `/lp-bos-sync` is referenced as a canonical stage but has no skill doc; several other stage skills reference wrong stage numbers, missing skills, or non-canonical paths.
-- Stage-doc key/name drift: multiple skills/docs still use `lp-fact-find` (and the repo filesystem uses `fact-finding`) while the agent API schema only accepts `fact-find`.
+- Stage-doc key/name drift: multiple skills/docs still use `lp-do-fact-find` (and the repo filesystem uses `fact-finding`) while the agent API schema only accepts `fact-find`.
 - Broken decision references: multiple canonical startup-loop docs point at `docs/plans/lp-skill-system-sequencing-plan.md`, which does not exist (only `docs/plans/archive/...` plus `docs/plans/*.html`).
 - Supporting skills (design-spec, design-qa, measure, seo) often assume legacy plan workspace paths and/or nonexistent companion skills, increasing operator overhead and token burn.
 - MCP data-plane coverage is intentionally partial (no `measure_*` connectors yet), and there are additional practical gaps (for example no BOS stage-doc upsert tool) that slow loop execution.
@@ -84,7 +84,7 @@ This is the single deduped register of gaps found. Items are phrased as failure 
 
 | Gap ID | Severity | Failure Mode | Blast Radius | Primary Surfaces |
 |---|---:|---|---|---|
-| GAP-01 | P0 | Stage-doc key drift: `lp-fact-find` (skills) vs `fact-find` (agent API enum); filesystem has `fact-finding.user.md` but API writes `fact-find.user.md`. | BOS stage doc create/filter can fail (400) or create parallel, inconsistent stage-doc histories across cards. | Skills, Agent API, Repo stage-doc repository, Filesystem naming |
+| GAP-01 | P0 | Stage-doc key drift: `lp-do-fact-find` (skills) vs `fact-find` (agent API enum); filesystem has `fact-finding.user.md` but API writes `fact-find.user.md`. | BOS stage doc create/filter can fail (400) or create parallel, inconsistent stage-doc histories across cards. | Skills, Agent API, Repo stage-doc repository, Filesystem naming |
 | GAP-02 | P0 | Canonical docs reference missing decision plan: `docs/plans/lp-skill-system-sequencing-plan.md` not present at referenced path. | Undermines trust in loop contracts; forces ad hoc archeology; increases token burn and wrong implementation choices. | Docs (loop contracts), Plan doc topology |
 | GAP-03 | P1 | Sole mutation boundary not documented as a skill: `/lp-bos-sync` missing SKILL.md while `bos-sync.ts` exists. | Governance/control-plane weakness; mutation behavior becomes ad hoc; higher incident risk. | Skills, Scripts, Loop-spec references |
 | GAP-04 | P1 | Stage semantics drift: `/lp-experiment` stage mapping mismatch (SQ-12), and legacy/nonexistent companion skill references. | Wrong stage ordering; fragile downstream consumption; operator confusion. | Skills, Contract lint |
@@ -97,13 +97,13 @@ This is the single deduped register of gaps found. Items are phrased as failure 
 
 ### GAP-01 Detail: Stage-Doc Key/Filename Drift
 Failure signature (observed/likely):
-- `POST /api/agent/stage-docs` returns 400 `{ error: "Invalid request", details: ... }` when a skill submits `stage: "lp-fact-find"` because the API schema is strict (`StageTypeSchema`). See `apps/business-os/src/app/api/agent/stage-docs/route.ts`.
+- `POST /api/agent/stage-docs` returns 400 `{ error: "Invalid request", details: ... }` when a skill submits `stage: "lp-do-fact-find"` because the API schema is strict (`StageTypeSchema`). See `apps/business-os/src/app/api/agent/stage-docs/route.ts`.
 - Stage-doc file paths written by API always follow `docs/business-os/cards/<cardId>/<stage>.user.md` where `<stage>` is the enum value (for example `fact-find`), so any filesystem convention like `fact-finding.user.md` cannot be produced by the API and creates split-brain stage-doc histories.
 
 Evidence anchors:
 - Agent API enum: `packages/platform-core/src/repositories/businessOsStageDocs.server.ts` (`StageTypeSchema = ["fact-find","plan","build","reflect"]`).
 - Create path pattern: `apps/business-os/src/app/api/agent/stage-docs/route.ts` (`filePath: .../${stage}.user.md`).
-- Non-canonical usage in skills: `.claude/skills/idea-generate/SKILL.md`, `.claude/skills/idea-develop/SKILL.md` (uses `lp-fact-find`).
+- Non-canonical usage in skills: `.claude/skills/idea-generate/SKILL.md`, `.claude/skills/idea-develop/SKILL.md` (uses `lp-do-fact-find`).
 - Filesystem example: `docs/business-os/cards/BRIK-ENG-0020/fact-finding.user.md`.
 
 Candidate fix surfaces (no decision here):
@@ -284,17 +284,17 @@ Evidence:
 Stage type: Type B (Skill stage).
 
 Intended:
-- `/lp-fact-find` creates `docs/plans/<slug>/fact-find.md` and (when integrated) upserts stage doc key `fact-find` via agent API.
+- `/lp-do-fact-find` creates `docs/plans/<slug>/fact-find.md` and (when integrated) upserts stage doc key `fact-find` via agent API.
 
 Gaps observed (high impact):
-- Multiple Business OS skills/docs still use stage key `lp-fact-find` for stage doc operations.
+- Multiple Business OS skills/docs still use stage key `lp-do-fact-find` for stage doc operations.
 - The Business OS agent API stage enum is strict: `fact-find`, `plan`, `build`, `reflect`.
 - This is an execution blocker for stage-doc creation in those skills, and it also creates token/UX churn (operators have to reconcile which naming is real).
 
 Evidence:
-- `.claude/skills/lp-fact-find/SKILL.md` (uses `fact-find`)
-- `.claude/skills/idea-develop/SKILL.md` (uses `lp-fact-find`)
-- `.claude/skills/idea-generate/SKILL.md` (uses `lp-fact-find`)
+- `.claude/skills/lp-do-fact-find/SKILL.md` (uses `fact-find`)
+- `.claude/skills/idea-develop/SKILL.md` (uses `lp-do-fact-find`)
+- `.claude/skills/idea-generate/SKILL.md` (uses `lp-do-fact-find`)
 - `apps/business-os/src/app/api/agent/stage-docs/route.ts` (StageTypeSchema validation)
 - `packages/platform-core/src/repositories/businessOsStageDocs.server.ts` (StageTypeSchema definition)
 
@@ -302,13 +302,13 @@ Evidence:
 Stage type: Type B (Skill stage).
 
 Intended:
-- `/lp-plan` writes `docs/plans/<slug>/plan.md` and upserts stage doc key `plan`.
+- `/lp-do-plan` writes `docs/plans/<slug>/plan.md` and upserts stage doc key `plan`.
 
 Gaps observed:
 - Supporting skills in the loop still assume legacy flat plan workspace paths (for example `.claude/skills/lp-design-spec/SKILL.md`, `.claude/skills/lp-design-qa/SKILL.md`).
 
 Evidence:
-- `.claude/skills/lp-plan/SKILL.md`
+- `.claude/skills/lp-do-plan/SKILL.md`
 - `.claude/skills/lp-design-spec/SKILL.md`
 - `.claude/skills/lp-design-qa/SKILL.md`
 
@@ -316,13 +316,13 @@ Evidence:
 Stage type: Type B (Skill stage), with Type A validation scripts/tooling.
 
 Intended:
-- `/lp-build` executes plan tasks, validates, commits, and updates BOS via agent API.
+- `/lp-do-build` executes plan tasks, validates, commits, and updates BOS via agent API.
 
 Gaps observed:
 - Build path is comparatively well-defined; loop-level risk is that upstream planning inputs/signals are missing or wrong due to earlier drift (especially fact-find stage doc key drift and baseline artifact path drift).
 
 Evidence:
-- `.claude/skills/lp-build/SKILL.md`
+- `.claude/skills/lp-do-build/SKILL.md`
 
 ### S9B - QA Gates
 Stage type: Type B (Skill stage).
@@ -408,7 +408,7 @@ Evidence:
 - `/lp-experiment` stage semantics drift
 
 It does not catch:
-- `idea-*` skills still using `lp-fact-find` stage key for stage-doc creates
+- `idea-*` skills still using `lp-do-fact-find` stage key for stage-doc creates
 - Legacy plan workspace path assumptions in multiple loop-adjacent skills
 
 Evidence:
@@ -449,6 +449,6 @@ This is an "execution-ready" framing of where fixes would likely land, without d
 5. Tooling/signal improvements: MCP tool surface gaps and run-index observability (throughput and speed).
 
 ## Unknowns / Follow-ups (Needs Verification)
-- Whether `lp-fact-find` stage-doc aliasing is supported in deployed environments (repo API schema is strict).
+- Whether `lp-do-fact-find` stage-doc aliasing is supported in deployed environments (repo API schema is strict).
 - Whether startup-loop run artifacts under `docs/business-os/startup-baselines/<BIZ>/runs/*` are intentionally uncommitted (and if so, where operators should find exemplars).
 - Whether `/startup-loop` is implemented in an external agent runtime not represented in this repo (repo has contracts and kernels; wrapper is still doc-driven).

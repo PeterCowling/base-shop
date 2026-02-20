@@ -11,8 +11,8 @@ Build-Progress: 3/3 tasks complete
 Feature-Slug: email-draft-quality-upgrade-v2
 Deliverable-Type: multi-deliverable
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-build
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-build
 Overall-confidence: 90%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by effort
 Auto-Build-Intent: plan-only
@@ -130,7 +130,7 @@ or corrupt output.
 ### TASK-01: Rework `draft_refine` tool — attestation pattern, remove SDK, new input schema
 
 - **Type:** IMPLEMENT
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-19)
@@ -237,7 +237,7 @@ Tool wraps `refinedBodyPlain` in standard HTML structure, splitting on double-ne
 ### TASK-02: Update `ops-inbox` skill — Claude refines, then calls `draft_refine` to commit
 
 - **Type:** IMPLEMENT
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -280,7 +280,7 @@ Tool wraps `refinedBodyPlain` in standard HTML structure, splitting on double-ne
 ### TASK-03: Rewrite `draft-refine.test.ts` + update `testing-policy.md` semantics
 
 - **Type:** IMPLEMENT
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending

@@ -10,7 +10,7 @@ Relates-to charter: none
 Feature-Slug: ab-testing-framework
 Deliverable-Type: single-deliverable
 Execution-Track: implementation
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Overall-confidence: 81%
 Confidence-Method: effort-weighted average of per-task min(Implementation,Approach,Impact); ABT-07B at 68% with precursor chain (ABT-08, ABT-09) gating promotion
@@ -106,7 +106,7 @@ Wave 4:             ABT-07B
 
 - **Type**: IMPLEMENT
 - **Deliverable**: code-change + tests
-- **Execution-Skill**: /lp-build
+- **Execution-Skill**: /lp-do-build
 - **Confidence**: 80%
   - Implementation: 80% — well-documented algorithms (Lanczos, Abramowitz-Stegun, continued fractions) with existing analogous numerical code in codebase
   - Approach: 85% — single viable approach per function, no design decisions required
@@ -181,7 +181,7 @@ Wave 4:             ABT-07B
 
 - **Type**: IMPLEMENT
 - **Deliverable**: code-change
-- **Execution-Skill**: /lp-build
+- **Execution-Skill**: /lp-do-build
 - **Confidence**: 95%
   - Implementation: 95% — trivial directory creation and barrel export, follows 10 existing modules
   - Approach: 95% — single approach: match existing module pattern
@@ -234,7 +234,7 @@ Wave 4:             ABT-07B
 
 - **Type**: IMPLEMENT
 - **Deliverable**: code-change + tests
-- **Execution-Skill**: /lp-build
+- **Execution-Skill**: /lp-do-build
 - **Confidence**: 88%
   - Implementation: 88% — closed-form formula, single function, clear spec
   - Approach: 90% — textbook formula with no design choices
@@ -303,7 +303,7 @@ where:
 
 - **Type**: IMPLEMENT
 - **Deliverable**: code-change + tests
-- **Execution-Skill**: /lp-build
+- **Execution-Skill**: /lp-do-build
 - **Confidence**: 86%
   - Implementation: 86% — three tests using ABT-00 primitives, straightforward formulas
   - Approach: 88% — standard statistical tests with explicit API contracts
@@ -373,7 +373,7 @@ where:
 
 - **Type**: IMPLEMENT
 - **Deliverable**: code-change + tests
-- **Execution-Skill**: /lp-build
+- **Execution-Skill**: /lp-do-build
 - **Confidence**: 88%
   - Implementation: 88% — Wilson/Newcombe are well-documented closed-form computations
   - Approach: 90% — method choices specified (Wilson for proportions, Newcombe for differences)
@@ -439,7 +439,7 @@ where:
 
 - **Type**: IMPLEMENT
 - **Deliverable**: code-change + tests
-- **Execution-Skill**: /lp-build
+- **Execution-Skill**: /lp-do-build
 - **Confidence**: 83%
   - Implementation: 83% — Gamma-ratio Beta sampling + regularized incomplete beta for quantiles; no existing Beta/Gamma sampling in codebase but pattern is well-documented
   - Approach: 85% — Gamma-ratio method chosen over inverse-CDF; Jeffreys prior default
@@ -508,7 +508,7 @@ where:
 
 - **Type**: IMPLEMENT
 - **Deliverable**: code-change + tests
-- **Execution-Skill**: /lp-build
+- **Execution-Skill**: /lp-do-build
 - **Confidence**: 84%
   - Implementation: 84% — reuses Beta sampling from ABT-05; selection logic is straightforward
   - Approach: 86% — Thompson sampling is the standard Bayesian bandit approach
@@ -567,7 +567,7 @@ where:
 
 - **Type**: IMPLEMENT
 - **Deliverable**: code-change + tests
-- **Execution-Skill**: /lp-build
+- **Execution-Skill**: /lp-do-build
 - **Confidence**: 80%
   - Implementation: 80% — O'Brien-Fleming approximation formula is documented; boundary computation is straightforward
   - Approach: 85% — explicit approximation approach avoids complex spending function machinery
@@ -624,7 +624,7 @@ where:
 
 - **Type**: INVESTIGATE
 - **Deliverable**: decision memo (appended to this plan)
-- **Execution-Skill**: /lp-build
+- **Execution-Skill**: /lp-do-build
 - **Confidence**: 88%
   - Implementation: 88% — literature review and specification document, well-scoped
   - Approach: 90% — clear deliverable (mathematical formulation document)
@@ -733,7 +733,7 @@ where:
 
 - **Type**: SPIKE
 - **Deliverable**: code-change + tests (prototype)
-- **Execution-Skill**: /lp-build
+- **Execution-Skill**: /lp-do-build
 - **Confidence**: 82%
   - Implementation: 82% — Monte Carlo simulation loop using SeededRandom is straightforward; the main risk is whether the chosen mSPRT variant achieves acceptable type-I control
   - Approach: 85% — simulation approach is standard (10k+ runs with SeededRandom)
@@ -789,7 +789,7 @@ where:
 
 - **Type**: IMPLEMENT
 - **Deliverable**: code-change + tests
-- **Execution-Skill**: /lp-build
+- **Execution-Skill**: /lp-do-build
 - **Confidence**: 82%
   - Implementation: 82% — ABT-08/09 provided explicit method + calibration harness; production wrapper and API constraints are straightforward.
   - Approach: 82% — two-sided first with explicit assumptions is conservative and operationally clear.

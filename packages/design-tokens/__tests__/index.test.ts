@@ -1,5 +1,3 @@
-import { jest } from "@jest/globals";
-
 import designTokens from "../index.ts";
 import { disabledColors } from "../src/core/disabled.ts";
 

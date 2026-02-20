@@ -118,7 +118,7 @@ Supporting work:
 
 ### When is a business "L2 ready"?
 
-L2 isn't a binary switch -- it's a gradient. But the business should be able to demonstrate measurable outcomes, not just content volume. Indicative thresholds (to be refined per business type during lp-fact-find):
+L2 isn't a binary switch -- it's a gradient. But the business should be able to demonstrate measurable outcomes, not just content volume. Indicative thresholds (to be refined per business type during lp-do-fact-find):
 
 **Coverage thresholds:**
 - Guide library covers the top customer intents (top 20 support questions have corresponding guides)

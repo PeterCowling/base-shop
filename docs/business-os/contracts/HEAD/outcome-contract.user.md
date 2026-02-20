@@ -3,21 +3,23 @@ Type: Outcome-Contract
 Status: Active
 Business: HEAD
 Created: 2026-02-19
-Updated: 2026-02-19
-Last-reviewed: 2026-02-19
+Updated: 2026-02-20
+Last-reviewed: 2026-02-20
 Owner: Pete
 business: HEAD
 artifact: outcome_contract
 status: Active
 owner: Pete
-last_updated: 2026-02-19
+last_updated: 2026-02-20
 source_of_truth: true
 depends_on:
   - docs/business-os/startup-baselines/HEAD-intake-packet.user.md
-  - docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md
-  - docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md
+  - docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md
+  - docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md
+  - docs/business-os/startup-baselines/HEAD-offer.md
 decisions:
   - DEC-HEAD-01
+  - DEC-HEAD-CH-01
 ---
 
 # HEAD Outcome Contract (Canonical)

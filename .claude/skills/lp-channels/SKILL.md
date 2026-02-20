@@ -15,6 +15,8 @@ Produces a channel selection strategy and 30-day go-to-market (GTM) timeline for
 
 Required: `--business <BIZ>` — business identifier (e.g., BRIK, SEG, INT)
 
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
+
 ## Operating Mode
 
 RESEARCH + ANALYSIS + STRATEGY + DOCUMENT
@@ -71,7 +73,7 @@ Produces single file: `docs/business-os/startup-baselines/<BIZ>-channels.md`
 **Downstream compatibility**:
 - `draft-marketing`: selected channels, positioning, success metrics
 - `lp-seo`: organic channel context, keyword intent from ICP
-- `lp-fact-find`: channel strategy to scope go-items
+- `lp-do-fact-find`: channel strategy to scope go-items
 - `startup-loop`: S6B validation gate before S7
 
 ## Integration
@@ -84,7 +86,7 @@ Produces single file: `docs/business-os/startup-baselines/<BIZ>-channels.md`
 ### Downstream (S7, S8, S9)
 - `/draft-marketing` — channel selection for asset targeting
 - `/lp-seo` — organic channel context and ICP keyword intent
-- `/lp-fact-find` — scopes go-items from GTM timeline
+- `/lp-do-fact-find` — scopes go-items from GTM timeline
 - `startup-loop` — S6B validation before S7
 
 ### Parallel Skills

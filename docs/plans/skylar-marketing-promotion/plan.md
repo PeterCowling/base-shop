@@ -9,7 +9,7 @@ Feature-Slug: skylar-marketing-promotion
 Deliverable-Type: marketing-asset
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-channels, /lp-seo
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -114,7 +114,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change - updated EN copy in `apps/skylar/i18n/en.json`.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** Skylar production site copy (static export) + repo i18n JSON.
 - **Reviewer:** Pete
 - **Approval-Evidence:** User acknowledgement in PR description or chat (2026-02-14).
@@ -170,7 +170,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Type:** IMPLEMENT
 - **Deliverable:** Business artifacts - outbound templates + outreach log template.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:**
   - `docs/plans/skylar-marketing-promotion/outbound.en.md`
   - `docs/plans/skylar-marketing-promotion/outreach-log.csv`
@@ -208,7 +208,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-03: IT alignment (minimal pass)
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change - remove services/service delivery + partner reuse language in IT copy.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** Skylar IT locale copy.
 - **Reviewer:** Pete
 - **Approval-Evidence:** User acknowledgement in PR description or chat.
@@ -230,7 +230,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-04: ZH alignment (minimal pass)
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change - remove partner/service framing where it implies for-hire work.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** Skylar ZH locale copy.
 - **Reviewer:** Pete
 - **Approval-Evidence:** User acknowledgement in PR description or chat.
@@ -254,7 +254,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Blocks:** TASK-06
 - **Confidence:** 95%
 - **Acceptance:**
-  - Run `/lp-replan` on all tasks after this checkpoint.
+  - Run `/lp-do-replan` on all tasks after this checkpoint.
   - Reassess remaining task confidence using evidence from shipped Release 1 copy + outreach log results.
   - Confirm or revise the approach for Release 2 doors.
 - **Horizon assumptions to validate:**
@@ -264,7 +264,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-06: Release 2 (deferred) - audience doors + UTMs + optional Loop/Portfolio
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change - explicit audience doors and measurable CTAs.
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** Skylar home page + CTAs.
 - **Reviewer:** Pete
 - **Approval-Evidence:** User acknowledgement in PR.

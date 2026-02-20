@@ -4,14 +4,15 @@ Status: Active
 Decision-ID: DEC-HEAD-CH-01
 Business: HEAD
 Created: 2026-02-19
-Updated: 2026-02-19
-Last-reviewed: 2026-02-19
+Updated: 2026-02-20
+Last-reviewed: 2026-02-20
 Owner: Pete
 Depends-on:
   - docs/business-os/contracts/HEAD/outcome-contract.user.md
   - docs/business-os/startup-baselines/HEAD-intake-packet.user.md
-  - docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md
-  - docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2-exec-summary.user.md
+  - docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md
+  - docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md
+  - docs/business-os/startup-baselines/HEAD-channels.md
 ---
 
 # DEC-HEAD-CH-01 - Channel Surface Decision

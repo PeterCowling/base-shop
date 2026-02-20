@@ -11,7 +11,7 @@ Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: legacy-booking-gas-takeover
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: ops-inbox
 Related-Plan: docs/plans/legacy-booking-gas-takeover-plan.md
 Business-OS-Integration: on
@@ -123,7 +123,7 @@ Take over remaining legacy booking-processing behavior currently tied to Google 
 - `a094e85d18` - checkpoint commit touching current workspace state.
 
 ## External Research
-- Not required for this lp-fact-find; repository evidence was sufficient to define migration approach and blockers.
+- Not required for this lp-do-fact-find; repository evidence was sufficient to define migration approach and blockers.
 
 ## Questions
 ### Resolved
@@ -145,7 +145,7 @@ Take over remaining legacy booking-processing behavior currently tied to Google 
    - Decision impacted: confidence in migration correctness and test fixture completeness.
    - Recommended default: yes; make this the first implementation task.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - Implementation: 78%
   - Strong for reception and MCP surfaces; reduced by incomplete live GAS source parity.
 - Approach: 84%
@@ -187,7 +187,7 @@ Take over remaining legacy booking-processing behavior currently tied to Google 
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `lp-build`
+  - `lp-do-build`
 - Supporting skills:
   - `ops-inbox`
 - Deliverable acceptance package:
@@ -222,4 +222,4 @@ Take over remaining legacy booking-processing behavior currently tied to Google 
   - Confirm parity-first vs redesign-first migration strategy.
   - Provide/export live GAS booking-monitor source for missing runtime function parity.
 - Recommended next step:
-  - Answer the two open questions, then proceed to `/lp-plan` for atomic execution plan.
+  - Answer the two open questions, then proceed to `/lp-do-plan` for atomic execution plan.

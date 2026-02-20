@@ -12,7 +12,7 @@ Feature-Slug: content-translation-pipeline-startup-loop
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-readiness, /lp-offer, /lp-channels, /lp-seo, /lp-launch-qa
 Related-Plan: docs/plans/content-translation-pipeline-plan.md
 Business-OS-Integration: off

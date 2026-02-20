@@ -214,9 +214,9 @@ Option B would additionally rename stage short labels (e.g., `s1b`, `s2a`) to al
 | `.claude/skills/lp-readiness/SKILL.md` | Vocabulary update | Low |
 | `.claude/skills/lp-offer/SKILL.md` | Vocabulary update | Low |
 | `.claude/skills/lp-channels/SKILL.md` | Vocabulary update | Low |
-| `.claude/skills/lp-fact-find/SKILL.md` | Vocabulary update | Low |
-| `.claude/skills/lp-plan/SKILL.md` | Vocabulary update | Low |
-| `.claude/skills/lp-build/SKILL.md` | Vocabulary update | Low |
+| `.claude/skills/lp-do-fact-find/SKILL.md` | Vocabulary update | Low |
+| `.claude/skills/lp-do-plan/SKILL.md` | Vocabulary update | Low |
+| `.claude/skills/lp-do-build/SKILL.md` | Vocabulary update | Low |
 
 ### Group D — Code + Tests (TASK-05, TASK-07)
 | File | Change | Risk |

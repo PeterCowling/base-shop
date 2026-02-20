@@ -11,8 +11,8 @@ Feature-Slug: mcp-startup-loop-data-plane
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-replan, /lp-sequence
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-do-replan, /lp-sequence
 Overall-confidence: 85%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1, M=2, L=3)
 Business-OS-Integration: off
@@ -164,7 +164,7 @@ Design outline:
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change in MCP tool registry/policy layer + policy gate tests + legacy compatibility adapter.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `packages/mcp-server/src/tools/` + `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-01`
 - **Reviewer:** Platform infrastructure owner (PLAT)
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-01-approval`
@@ -216,7 +216,7 @@ Design outline:
 - **Type:** IMPLEMENT
 - **Deliverable:** API-first BOS bridge tools and client helper in MCP with test coverage.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `packages/mcp-server/src/tools/bos.ts` + `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-02`
 - **Reviewer:** Business OS API owner
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-02-approval`
@@ -268,7 +268,7 @@ Design outline:
 - **Type:** IMPLEMENT
 - **Deliverable:** startup-loop artifact status/freshness read tools with deterministic output contracts.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `packages/mcp-server/src/tools/loop.ts` + `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-03`
 - **Reviewer:** Startup-loop runtime owner
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-03-approval`
@@ -320,7 +320,7 @@ Design outline:
 - **Type:** CHECKPOINT
 - **Deliverable:** updated confidence and sequencing assessment in this plan.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-replan
+- **Execution-Skill:** /lp-do-replan
 - **Effort:** S
 - **Affects:** `docs/plans/mcp-startup-loop-data-plane/plan.md`
 - **Depends on:** TASK-02, TASK-03
@@ -347,7 +347,7 @@ Design outline:
 ### TASK-05: Finalize MCP->BOS identity/deployment model and exception policy
 - **Type:** DECISION
 - **Deliverable:** ADR note at `docs/plans/mcp-startup-loop-data-plane/adr-identity-and-access.md`.
-- **Execution-Skill:** /lp-replan
+- **Execution-Skill:** /lp-do-replan
 - **Effort:** S
 - **Affects:** `docs/plans/mcp-startup-loop-data-plane/plan.md`, `docs/plans/mcp-startup-loop-data-plane/adr-identity-and-access.md`, `[readonly] apps/business-os/src/lib/auth/middleware.ts`
 - **Depends on:** TASK-04
@@ -372,7 +372,7 @@ Design outline:
 - **Type:** IMPLEMENT
 - **Deliverable:** guarded write MCP tool with conflict/retry semantics and audit-safe error mapping.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `packages/mcp-server/src/tools/bos.ts` + `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-06`
 - **Reviewer:** Business OS API owner + platform infra owner
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-06-approval`
@@ -423,7 +423,7 @@ Design outline:
 - **Type:** IMPLEMENT
 - **Deliverable:** targeted startup-loop MCP integration test suite with fixture matrix, reusable Jest wrapper/config, and BOS API stub fixture library.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `packages/mcp-server/src/__tests__/startup-loop-tools.integration.test.ts` + `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-07`
 - **Reviewer:** Platform QA owner
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-07-approval`
@@ -475,7 +475,7 @@ Design outline:
 - **Type:** IMPLEMENT
 - **Deliverable:** drift-preflight check + updated MCP/startup-loop operational docs.
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Artifact-Destination:** `scripts/src/startup-loop/mcp-preflight.ts` + docs updates + `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-08`
 - **Reviewer:** Platform operations owner
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane/build-validation.md#task-08-approval`

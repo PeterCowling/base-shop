@@ -10,7 +10,7 @@ Feature-Slug: ds-compliance-audit
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Related-Plan: docs/plans/ds-compliance-audit-plan.md
 Business-OS-Integration: on
@@ -215,7 +215,7 @@ All warn-level apps already import `@themes/base/tokens.css` via their global CS
   - Decision owner: Pete (design system owner)
   - Default assumption: Keep baselined with `/* ds-exception: brand-specific opacity */` annotation + risk: sets precedent for other brand-specific exemptions
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 88%
   - Strong: 7 apps are trivial to medium complexity; token system is already integrated everywhere; established migration pattern from P1-P4
@@ -279,7 +279,7 @@ All warn-level apps already import `@themes/base/tokens.css` via their global CS
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-design-system` (token reference)
 - Deliverable acceptance package:
   - `pnpm lint` green after each task
@@ -294,4 +294,4 @@ All warn-level apps already import `@themes/base/tokens.css` via their global CS
 
 - Status: Ready-for-planning
 - Blocking items: None (RatingsBar decision is Wave 4 and doesn't block earlier waves)
-- Recommended next step: Proceed to `/lp-plan`
+- Recommended next step: Proceed to `/lp-do-plan`

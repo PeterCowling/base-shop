@@ -13,9 +13,9 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: html-document
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
-Related-Plan-Note: plan.md does not exist yet — created by /lp-plan at next stage
+Related-Plan-Note: plan.md does not exist yet — created by /lp-do-plan at next stage
 Business-OS-Integration: off
 Business-Unit: none
 Card-ID: none
@@ -319,7 +319,7 @@ None. All inclusion questions resolved.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `lp-build` (business-artifact track → HTML document)
+- Primary execution skill: `lp-do-build` (business-artifact track → HTML document)
 - Supporting skills: none
 - Deliverable acceptance package:
   - Self-contained HTML file at `docs/business-os/startup-loop-output-registry.user.html`
@@ -358,5 +358,5 @@ None. All inclusion questions resolved.
 - Status: Ready-for-planning
 - Blocking items: none — all inclusion questions resolved, artifact inventory
   complete, design reference confirmed
-- Recommended next step: `/lp-plan` to sequence the HTML build tasks, then
-  `/lp-build` to execute
+- Recommended next step: `/lp-do-plan` to sequence the HTML build tasks, then
+  `/lp-do-build` to execute

@@ -16,6 +16,8 @@ Pre-offer readiness check for startups entering the loop. Validates that the bus
 Required:
 - `--business <BIZ>` — business identifier (e.g., BRIK, SEG, INT)
 
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
+
 ## Operating Mode
 
 READ + AUDIT + GATE
@@ -26,6 +28,12 @@ This skill:
 - Produces a binary go/no-go verdict with specific fail reasons
 - Does NOT modify any files
 - Does NOT ask follow-up questions (fails fast if gates don't pass)
+
+## Relationship to DISCOVERY GATE
+
+When `start-point=problem`, the **DISCOVERY GATE** (GATE-DISCOVERY-00) runs before BRAND (BRAND-01 → BRAND-02), which precedes S1. GATE-DISCOVERY-00 validates all 7 DISCOVERY sub-stage artifacts including distribution feasibility (DISCOVERY-05) and measurement plan (DISCOVERY-06). After the gate passes, BRAND-01 (brand strategy) and BRAND-02 (brand identity) run in sequence before lp-readiness is reached. In this path, lp-readiness serves as a confirmation pass — RG-01, RG-02, and RG-03 should already be satisfied by DISCOVERY artifacts and the gate checks should return PASS quickly.
+
+When `start-point=product`, operators bypass DISCOVERY and BRAND entirely. lp-readiness performs the full RG-01/RG-02/RG-03 checks from scratch against whatever strategy docs exist.
 
 ## Differs from idea-readiness
 

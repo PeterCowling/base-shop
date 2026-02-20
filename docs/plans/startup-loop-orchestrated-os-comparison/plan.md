@@ -10,8 +10,8 @@ Feature-Slug: startup-loop-orchestrated-os-comparison
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-sequence, lp-replan, lp-fact-find
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-sequence, lp-do-replan, lp-do-fact-find
 Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort (S=1, M=2, L=3)
 Auto-Build-Intent: plan-only
@@ -104,7 +104,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 ### TASK-00: Build contract-overlap matrix (current loop vs research model)
 - **Type:** INVESTIGATE
 - **Deliverable:** `docs/plans/startup-loop-orchestrated-os-comparison/artifacts/contract-overlap-matrix.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -143,7 +143,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 ### TASK-01: Lock v1 boundary contract (stage engine vs process registry)
 - **Type:** DECISION
 - **Deliverable:** `docs/plans/startup-loop-orchestrated-os-comparison/decisions/v1-boundary-decision.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -184,7 +184,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 ### TASK-02: Create process-registry-v1 contract mapped to existing stages
 - **Type:** IMPLEMENT
 - **Deliverable:** New contract doc `docs/business-os/startup-loop/process-registry-v1.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
@@ -241,7 +241,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 ### TASK-03: Add CAP-05 sales-ops schema contract and artifact template references
 - **Type:** IMPLEMENT
 - **Deliverable:** CAP-05 contract upgrade + schema/template docs for sales ops
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -297,7 +297,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 ### TASK-04: Add CAP-06 lifecycle/retention schema contract and S10 hooks
 - **Type:** IMPLEMENT
 - **Deliverable:** CAP-06 retention contract + S10 prompt integration contract updates
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -354,7 +354,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 ### TASK-05: Define exception-runbooks-v1 for four canonical exception states
 - **Type:** IMPLEMENT
 - **Deliverable:** `docs/business-os/startup-loop/exception-runbooks-v1.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -411,7 +411,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 ### TASK-06: Add weekly light-audit and monthly deep-audit checklist contracts
 - **Type:** IMPLEMENT
 - **Deliverable:** `docs/business-os/startup-loop/audit-cadence-contract-v1.md` + workflow references
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -466,8 +466,8 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 
 ### TASK-07: Horizon checkpoint - reassess downstream plan
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan evidence via `/lp-replan` if needed
-- **Execution-Skill:** lp-build
+- **Deliverable:** Updated plan evidence via `/lp-do-replan` if needed
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -475,7 +475,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
   - Evidence summary: All 6 implementation tasks completed. All 5 new contract docs created. All 3 targeted files extended additively. Zero loop-spec.yaml/manifest-schema.md/bottleneck-diagnosis-schema.md modifications.
   - Horizon assumption 1 (additive contracts don't destabilize stage cadence): VALIDATED. Stage ordering S0..S10 intact. No gate logic modified. No circular dependencies between new contracts.
   - Horizon assumption 2 (operator overhead within timeboxes): PROVISIONALLY VALIDATED BY DESIGN. Weekly audit 16 min < 20 min (VC-06-B). Monthly 120 min at target. Pilot validation (actual timed runs) required.
-  - Downstream tasks: None. All plan acceptance criteria met. No `/lp-replan` trigger needed.
+  - Downstream tasks: None. All plan acceptance criteria met. No `/lp-do-replan` trigger needed.
   - Pilot-readiness recommendation: **PROCEED (narrow)** — BRIK as primary pilot (active S10 cadence); HEAD/PET run weekly light-audit from next S10; defer BRIK monthly deep-audit to first full March 2026 month.
 - **Affects:** `docs/plans/startup-loop-orchestrated-os-comparison/plan.md`
 - **Depends on:** TASK-06
@@ -485,8 +485,8 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
   - Approach: 95% - prevents deep dead-end execution
   - Impact: 95% - controls downstream risk
 - **Acceptance:**
-  - `/lp-build` checkpoint executor run
-  - `/lp-replan` run on downstream tasks when confidence drops below thresholds
+  - `/lp-do-build` checkpoint executor run
+  - `/lp-do-replan` run on downstream tasks when confidence drops below thresholds
   - confidence for downstream tasks recalibrated from latest evidence
   - plan updated and re-sequenced
 - **Horizon assumptions to validate:**

@@ -8,7 +8,7 @@ Created: 2026-02-03
 Last-updated: 2026-02-08
 Relates-to charter: docs/commerce-charter.md
 Feature-Slug: xa-publish-privacy
-Fact-Find-Reference: docs/plans/xa-publish-privacy-lp-fact-find.md
+Fact-Find-Reference: docs/plans/xa-publish-privacy-lp-do-fact-find.md
 Overall-confidence: 85%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1, M=2, L=3)
 Progress: 8/9 tasks complete

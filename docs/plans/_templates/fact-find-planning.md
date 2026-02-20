@@ -13,7 +13,7 @@ Deliverable-Channel: <none | email | whatsapp>
 Deliverable-Subtype: <none | product-brief | marketing-asset>
 Deliverable-Type: <code-change | email-message | whatsapp-message | product-brief | marketing-asset | spreadsheet | multi-deliverable>
 Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-upgrade-backlog>
-Primary-Execution-Skill: <lp-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
+Primary-Execution-Skill: <lp-do-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>
 Related-Plan: docs/plans/<feature-slug>/plan.md
 Business-OS-Integration: <on | off>
@@ -226,7 +226,7 @@ For each score, include evidence basis and what would raise it to >=80 and >=90.
 - Blocking items:
   - ...
 - Recommended next step:
-  - `/lp-plan` or answer blocking questions
+  - `/lp-do-plan` or answer blocking questions
 
 ## Section Omission Rule
 

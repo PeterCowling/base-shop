@@ -10,8 +10,8 @@ Last-reviewed: 2026-02-09
 Feature-Slug: business-os-ideas-surface-and-automation
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: idea-generate, lp-fact-find, lp-plan
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: idea-generate, lp-do-fact-find, lp-do-plan
 Related-Plan: docs/plans/business-os-ideas-surface-and-automation-plan.md
 Relates-to charter: docs/business-os/business-os-charter.md
 Business-OS-Integration: off
@@ -23,7 +23,7 @@ Card-ID:
 
 ## Scope
 ### Summary
-Update the Business OS ideas-to-delivery workflow so ideas are never rendered inside Kanban lanes. Ideas should live on a dedicated Ideas surface with two explicit sections: P1-P3 (primary) and P4-P5 (secondary), both with click-through to detail. Preserve the workflow loop (`/idea-generate -> /lp-fact-find -> /lp-plan -> /lp-build`) while addressing known automation weak points.
+Update the Business OS ideas-to-delivery workflow so ideas are never rendered inside Kanban lanes. Ideas should live on a dedicated Ideas surface with two explicit sections: P1-P3 (primary) and P4-P5 (secondary), both with click-through to detail. Preserve the workflow loop (`/idea-generate -> /lp-do-fact-find -> /lp-do-plan -> /lp-do-build`) while addressing known automation weak points.
 
 ### Goals
 - Remove idea entities from board lane rendering.
@@ -39,7 +39,7 @@ Update the Business OS ideas-to-delivery workflow so ideas are never rendered in
 ### Constraints & Assumptions
 - Constraints:
   - API-backed data model remains canonical (`/api/agent/*`, D1 repositories).
-  - Existing deterministic transitions in `/lp-plan` and `/lp-build` remain in place.
+  - Existing deterministic transitions in `/lp-do-plan` and `/lp-do-build` remain in place.
   - Existing idea detail route (`/ideas/[id]`) remains the deep-link target.
 - Assumptions:
   - "No ideas in Kanban lanes" applies to UI rendering of idea entities, not to card entities created from ideas.
@@ -47,7 +47,7 @@ Update the Business OS ideas-to-delivery workflow so ideas are never rendered in
 
 ## Evidence Audit (Current State)
 ### Entry Points
-- `.claude/skills/idea-generate/SKILL.md` — Stage 6/7 generation, card creation, lp-fact-find seeding contract.
+- `.claude/skills/idea-generate/SKILL.md` — Stage 6/7 generation, card creation, lp-do-fact-find seeding contract.
 - `apps/business-os/src/app/boards/[businessCode]/page.tsx` — board loads cards plus inbox ideas.
 - `apps/business-os/src/components/board/BoardView.tsx` — passes filtered ideas into lane rendering.
 - `apps/business-os/src/components/board/BoardLane.tsx` — renders `CompactIdea` in Inbox lane.
@@ -163,11 +163,11 @@ Update the Business OS ideas-to-delivery workflow so ideas are never rendered in
   - Decision impacted: data model and UI status badges/linking strategy.
   - Default assumption + risk: keep auto-card creation; risk is duplicate cognitive load unless clearly labeled.
 - Q: Should optional Stage 7b backfill be activated now or remain future work?
-  - Why it matters: affects queue fairness for existing high-priority cards missing lp-fact-find docs.
+  - Why it matters: affects queue fairness for existing high-priority cards missing lp-do-fact-find docs.
   - Decision impacted: idea-generate Stage 7 selection contract.
   - Default assumption + risk: keep disabled in this phase; risk is continued starvation of older P1/P2 cards.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - **Implementation:** 87%
   - Board/UI query contracts already exist; required changes are scoped and concrete.
 - **Approach:** 83%
@@ -187,7 +187,7 @@ Update the Business OS ideas-to-delivery workflow so ideas are never rendered in
   - Rollout by isolating board changes from ideas-surface changes behind explicit route/component updates.
   - Rollback by restoring board idea render path and preserving ideas route.
 - Observability expectations:
-  - Add explicit counters for sweep partial failures and ideas without lp-fact-find coverage.
+  - Add explicit counters for sweep partial failures and ideas without lp-do-fact-find coverage.
 
 ## Suggested Task Seeds (Non-binding)
 - Remove idea rendering from Kanban lane components and board data path.
@@ -198,17 +198,17 @@ Update the Business OS ideas-to-delivery workflow so ideas are never rendered in
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `lp-build`
+  - `lp-do-build`
 - Supporting skills:
-  - `idea-generate`, `lp-fact-find`, `lp-plan`
+  - `idea-generate`, `lp-do-fact-find`, `lp-do-plan`
 - Deliverable acceptance package:
   - Updated board behavior (no idea entities in lanes), updated ideas triage UX with two priority sections, updated tests, and updated workflow docs.
 - Post-delivery measurement plan:
-  - Track count of ideas surfaced by bucket, ideas with/without lp-fact-find docs, sweep partial-failure counts.
+  - Track count of ideas surfaced by bucket, ideas with/without lp-do-fact-find docs, sweep partial-failure counts.
 
 ## Planning Readiness
 - Status: Ready-for-planning
 - Blocking items:
   - None blocking plan creation; open policy questions can be modeled as DECISION tasks.
 - Recommended next step:
-  - Proceed to `/lp-plan`.
+  - Proceed to `/lp-do-plan`.

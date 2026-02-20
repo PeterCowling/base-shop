@@ -15,7 +15,7 @@ Primary code entrypoints:
 This document is the deliverable for **CMS-BUILD-01**. It maps the user journeys, CMS surfaces, and reference components that collectively make a shop build ready for launch (Configurator ⇒ Settings ⇒ Theme ⇒ Pages ⇒ Products).
 
 - **Audience:** CMS developers, UX designers/writers, and AI agents that need a concise, code-linked overview of how build surfaces connect to ConfigChecks and templates.
-- **Role:** this is the **“what exists & how it connects”** map. Gaps are described in `docs/cms/shop-build-gap-analysis.md`; fixes are planned in `docs/cms/shop-build-plan.md` and detailed for docs/help/telemetry in `docs/cms/shop-build-docs-help-plan.md`.
+- **Role:** this is the **“what exists & how it connects”** map. Gaps are described in `docs/cms/shop-build-gap-analysis.md`; fixes are planned in `docs/cms/shop-build-plan.md` and detailed for docs/help/telemetry in `docs/cms/shop-build-docs-help-do-plan.md`.
 
 The map is intentionally concise and linked so agents can verify every step against the code and docs derived from `docs/cms/build-shop-guide.md` and `docs/cms/configurator-contract.md`.
 
@@ -80,7 +80,7 @@ Everything else (Theme Editor fine‑tuning, Additional Pages, media library, ad
 | Environment Variables | `.../StepEnvVars.tsx` | `checkPayments`, `checkShippingTax` (indirect) | Prompts for provider env vars used by `platform-core`. |
 | Summary | `.../StepSummary.tsx` | all checks | Shows progress, final review, `apps/cms/src/app/cms/configurator/hooks/useConfiguratorDashboardState.ts`. |
 
-All ConfigChecks are defined in `packages/platform-core/src/configurator.ts`, and each required step above is expected to participate in the `build_flow_step_view`, `build_flow_step_complete`, and `build_flow_step_error` telemetry events described in `docs/cms/shop-build-docs-help-plan.md`.
+All ConfigChecks are defined in `packages/platform-core/src/configurator.ts`, and each required step above is expected to participate in the `build_flow_step_view`, `build_flow_step_complete`, and `build_flow_step_error` telemetry events described in `docs/cms/shop-build-docs-help-do-plan.md`.
 
 ## 3. Post-configurator surfaces
 
@@ -112,6 +112,6 @@ For launch readiness:
 
 - This map was the foundation for CMS-BUILD-02, which used it to produce the gap analysis in `docs/cms/shop-build-gap-analysis.md` (per-check coverage vs UX gaps).
 - CMS-BUILD-06 and later tasks expand the component side of this map, turning each row into a richer `component/block → surface` matrix (for example, starter kits based on `packages/ui` organisms and Page Builder blocks).
-- Build-flow telemetry events (`build_flow_step_*`, `build_flow_first_product_*`, `build_flow_help_requested`, `build_flow_exit`) should be emitted from the steps and surfaces listed here; see `docs/cms/shop-build-docs-help-plan.md` for event names and payloads.
+- Build-flow telemetry events (`build_flow_step_*`, `build_flow_first_product_*`, `build_flow_help_requested`, `build_flow_exit`) should be emitted from the steps and surfaces listed here; see `docs/cms/shop-build-docs-help-do-plan.md` for event names and payloads.
 
 Treat this map as the stable routing/structure reference; when ConfigChecks or core build flows change, update it in tandem with the gap analysis and docs/help plan so agents always have a current, code-linked overview.

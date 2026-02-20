@@ -9,8 +9,8 @@ Feature-Slug: startup-loop-signal-strengthening-review
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-fact-find, meta-reflect
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-fact-find, meta-reflect
 Overall-confidence: 83%
 Confidence-Method: task_confidence = min(Implementation,Approach,Impact); overall = effort-weighted avg(task_confidence) (S=1,M=2,L=3)
 Auto-Build-Intent: plan-only
@@ -23,7 +23,7 @@ Card-ID: none
 
 ## Summary
 
-Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the startup loop. The skill audits a startup loop run against ten structural signal-strengthening principles, scores each principle on Severity × Support axes, identifies the top 3 findings, and emits a Signal Review artifact containing ranked Finding Briefs. Operators promote Finding Briefs to full Finding Fact-finds manually via `/lp-fact-find`; the skill never auto-spawns. Integration with S10 is additive (extend `cmd-advance.md` dispatch only; no loop-spec.yaml schema changes in v1). A checkpoint after the core modules are built validates finding novelty and promotion stub quality before v1.1 gate work is considered.
+Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the startup loop. The skill audits a startup loop run against ten structural signal-strengthening principles, scores each principle on Severity × Support axes, identifies the top 3 findings, and emits a Signal Review artifact containing ranked Finding Briefs. Operators promote Finding Briefs to full Finding Fact-finds manually via `/lp-do-fact-find`; the skill never auto-spawns. Integration with S10 is additive (extend `cmd-advance.md` dispatch only; no loop-spec.yaml schema changes in v1). A checkpoint after the core modules are built validates finding novelty and promotion stub quality before v1.1 gate work is considered.
 
 ## Goals
 
@@ -35,7 +35,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
 
 ## Non-goals
 
-- Auto-spawning `/lp-fact-find` calls (operator promotes manually)
+- Auto-spawning `/lp-do-fact-find` calls (operator promotes manually)
 - Adding GATE-S10-SIGNAL-01 in v1 (deferred to v1.1 post-checkpoint)
 - Modifying loop-spec.yaml schema or bumping spec_version
 - Cross-business aggregation
@@ -76,7 +76,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
 - Foundation Gate: Pass
   - `Deliverable-Type: multi-deliverable` ✓
   - `Execution-Track: mixed` ✓
-  - `Primary-Execution-Skill: lp-build` ✓
+  - `Primary-Execution-Skill: lp-do-build` ✓
   - `Startup-Deliverable-Alias: none` ✓
   - Delivery-readiness: 82% ✓
   - Test landscape confirmed ✓ (structural validation; prompt-driven skills; no unit tests — consistent with existing skills)
@@ -116,7 +116,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `.claude/skills/_shared/signal-principles.md` — versioned checklist of all ten signal-strengthening principles
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -176,7 +176,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
 
 - **Type:** INVESTIGATE
 - **Deliverable:** Investigation notes inline in this plan (Decision Log entry + TASK-06 acceptance update if needed)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -225,7 +225,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `.claude/skills/lp-signal-review/SKILL.md` — invocable skill orchestrator
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -235,7 +235,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
 - **Blocks:** TASK-04, TASK-05
 - **Confidence:** 80%
   - Implementation: 82% — skill pattern is well-established; Contract & I/O is fully specified; TASK-02 result may refine invocation docs
-  - Approach: 83% — thin orchestrator follows exact same structure as `startup-loop/SKILL.md` and `lp-fact-find/SKILL.md`
+  - Approach: 83% — thin orchestrator follows exact same structure as `startup-loop/SKILL.md` and `lp-do-fact-find/SKILL.md`
   - Impact: 80% — this is the entry point; if incorrect, all downstream modules fail
 - **Acceptance:**
   - File exists at `.claude/skills/lp-signal-review/SKILL.md`
@@ -244,21 +244,21 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
   - Module routing documented: `audit-phase.md` then `emit-phase.md`
   - Self-check gate documented: all ten principle IDs (`P01`–`P10`) must appear in Principle Scores section before Signal Review is emitted; if any are absent, skill must fail-closed with a named error
   - All four exit conditions defined: `success-with-findings`, `success-no-findings`, `partial-success`, `fail-closed`
-  - Operating mode section: `AUDIT + EMIT`; prohibited actions: code changes, BOS writes, auto-spawning `/lp-fact-find`
+  - Operating mode section: `AUDIT + EMIT`; prohibited actions: code changes, BOS writes, auto-spawning `/lp-do-fact-find`
   - Input section references `.claude/skills/_shared/signal-principles.md` for principle definitions
 - **Validation contract (TC-03):**
   - TC-03-A: Read file — invocation syntax includes all five parameters from fact-find Contract & I/O
   - TC-03-B: Read file — all four exit conditions are named and defined
   - TC-03-C: Read file — self-check gate is explicitly described (names all ten principle IDs or references P01–P10 range)
   - TC-03-D: Read file — module routing lists both `audit-phase.md` and `emit-phase.md` in sequence
-  - TC-03-E: Read file — prohibited actions explicitly list auto-spawning `/lp-fact-find`
+  - TC-03-E: Read file — prohibited actions explicitly list auto-spawning `/lp-do-fact-find`
 - **Execution plan:** Red → Green → Refactor
   - Red: create file with frontmatter + section headers only (invocation, module routing, operating mode, exit conditions, self-check gate)
   - Green: fill all sections; verify against fact-find Contract & I/O for completeness
   - Refactor: cross-check module routing names match the actual filenames created in TASK-04/05; ensure self-check gate covers all ten principle IDs from TASK-01
 - **Planning validation:** None: M effort but schema is fully specified; no ambiguous decisions
 - **Scouts:**
-  - Read `.claude/skills/lp-fact-find/SKILL.md` (or `startup-loop/SKILL.md`) before writing to confirm current frontmatter conventions (name/description fields, operating mode section heading style)
+  - Read `.claude/skills/lp-do-fact-find/SKILL.md` (or `startup-loop/SKILL.md`) before writing to confirm current frontmatter conventions (name/description fields, operating mode section heading style)
 - **Edge Cases & Hardening:**
   - `fail-closed` boundary: `run_root` does not exist OR `signal-principles.md` is missing/unparseable → emit `fail-closed` immediately; no Signal Review artifact produced; do not attempt partial audit
   - `partial-success` boundary: `run_root` exists AND ≥1 stage artifact is found, but some stage artifacts are missing → degrade per missing-artifact rule; emit Signal Review with P09 finding for missing artifacts; do not emit `fail-closed`
@@ -274,12 +274,12 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
   - TC-03-B: All four exit conditions named and defined — PASS
   - TC-03-C: Self-check gate described; names P01–P10 range explicitly — PASS
   - TC-03-D: Module routing lists audit-phase.md then emit-phase.md in sequence — PASS
-  - TC-03-E: Prohibited actions explicitly includes auto-spawning `/lp-fact-find` — PASS
+  - TC-03-E: Prohibited actions explicitly includes auto-spawning `/lp-do-fact-find` — PASS
   - TASK-02 findings applied: `--run-root docs/business-os/strategy/<BIZ>/` documented as deterministic; manual fallback line not needed (removed from edge cases)
 - **Status:** Complete (2026-02-18)
 - **Notes / references:**
   - Contract & I/O: `fact-find.md` § Skill Contract & I/O Interface
-  - Pattern reference: `.claude/skills/startup-loop/SKILL.md`, `.claude/skills/lp-fact-find/SKILL.md`
+  - Pattern reference: `.claude/skills/startup-loop/SKILL.md`, `.claude/skills/lp-do-fact-find/SKILL.md`
   - Self-check gate motivation: fact-find § Test Landscape → Coverage Gaps
 
 ---
@@ -288,7 +288,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `.claude/skills/lp-signal-review/modules/audit-phase.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -350,7 +350,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `.claude/skills/lp-signal-review/modules/emit-phase.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -375,13 +375,13 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
   - Finding Brief structure documented: includes frontmatter stub with all required `fact-find-planning.md` keys prefilled (Feature-Slug, Outcome, Execution-Track, etc.) so operator can paste and extend
   - Self-audit section documented: when `self_audit_mode: track-only`, emit "Unresolved Prior Findings" section by reading prior Signal Review artifacts for unresolved fingerprints
   - All required Signal Review sections emitted in order (from fact-find Contract & I/O)
-  - Draft-mode constraint explicitly documented: the module must not call `/lp-fact-find` or create files outside the Signal Review artifact
+  - Draft-mode constraint explicitly documented: the module must not call `/lp-do-fact-find` or create files outside the Signal Review artifact
 - **Validation contract (TC-05):**
   - TC-05-A: Read file — fingerprint dedup procedure is present with a defined search path
   - TC-05-B: Read file — novelty gate rule is present (match found → log to Skipped Findings)
   - TC-05-C: Read file — cap enforcement at `max_findings` is documented
   - TC-05-D: Read file — Finding Brief frontmatter stub includes at minimum these keys from `fact-find-planning.md`: `Feature-Slug`, `Outcome`, `Execution-Track`, `Deliverable-Type`, `Primary-Execution-Skill`, `Business-Unit`, `Card-ID`; no custom keys (e.g., `Finding-ID`) appear in the frontmatter stub — the fingerprint goes in the body as `Fingerprint: <value>`
-  - TC-05-E: Read file — draft-mode constraint is explicitly stated (no auto-spawning `/lp-fact-find`)
+  - TC-05-E: Read file — draft-mode constraint is explicitly stated (no auto-spawning `/lp-do-fact-find`)
   - TC-05-F: Read file — self-audit section procedure references prior Signal Review artifact paths
 - **Execution plan:** Red → Green → Refactor
   - Red: section headers + dedup/novelty/cap rules as bullet-point stubs
@@ -409,7 +409,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
   - TC-05-B: Novelty gate rule present: "No match in either source → novel → eligible for top-N slot"; match found → log to Skipped Findings — PASS
   - TC-05-C: Cap enforcement at `max_findings` documented in Step 3; remaining eligible candidates logged to Skipped Findings with reason `cap-exceeded` — PASS
   - TC-05-D: Promotion stub frontmatter includes: Type, Outcome, Status, Feature-Slug, Execution-Track, Deliverable-Type, Primary-Execution-Skill, Business-Unit, Card-ID. No Finding-ID key. Fingerprint in body as `Fingerprint: <value>` — PASS
-  - TC-05-E: Draft-mode constraint explicitly stated in Phase Purpose: "This module must not call `/lp-fact-find` or any other skill" — PASS
+  - TC-05-E: Draft-mode constraint explicitly stated in Phase Purpose: "This module must not call `/lp-do-fact-find` or any other skill" — PASS
   - TC-05-F: Self-audit section (Unresolved Prior Findings) references `docs/business-os/strategy/<BIZ>/signal-review-*.md` paths for prior artifact reads — PASS
   - Refactor: fingerprint format validated against two hypothetical examples (P08-S10-no-outcome-data-in-readout, P10-S2B-no-human-approved-field); REPEAT escalation documented with new-evidence condition; first-run edge case (no prior Signal Reviews) handled explicitly
 - **Status:** Complete (2026-02-18)
@@ -420,7 +420,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `.claude/skills/startup-loop/modules/cmd-advance.md` — S10 section updated with `/lp-signal-review` dispatch
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -479,7 +479,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
 
 - **Type:** CHECKPOINT
 - **Deliverable:** Decision Log entry below with checkpoint results; plan updated if v1.1 scope changes
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -552,7 +552,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
   - Top Findings (≤ max_findings): each with Fingerprint, Severity, Support, stage(s) affected, failure indicator, evidence pointer, and promotion frontmatter snippet
   - Skipped Findings section: each suppressed finding listed with dedup reason
   - Unresolved Prior Findings section: present (may be empty on first run)
-  - Promotion instructions: `/lp-fact-find` command invocation + copy-paste frontmatter stub for operator
+  - Promotion instructions: `/lp-do-fact-find` command invocation + copy-paste frontmatter stub for operator
 
 ## Decision Log
 
@@ -560,7 +560,7 @@ Adds a `/lp-signal-review` skill that runs weekly within the S10 stage of the st
 - 2026-02-18: Advisory posture locked for v1; GATE-S10-SIGNAL-01 reserved for v1.1 post-checkpoint. Rationale: gate-before-evidence violates ground truth anchoring principle.
 - 2026-02-18: Self-audit = `track-only` from run 4; `off` for first 3 runs. Rationale: no history to audit until run 3+ exists.
 - 2026-02-18: BOS integration = off in v1. Rationale: keep v1 additive and low-risk; opt-in post-validation.
-- 2026-02-18: Finding Brief = operator-promoted only (no auto-spawning `/lp-fact-find`). Rationale: eliminates recursion/churn risk entirely in v1.
+- 2026-02-18: Finding Brief = operator-promoted only (no auto-spawning `/lp-do-fact-find`). Rationale: eliminates recursion/churn risk entirely in v1.
 - 2026-02-18 (TASK-02): `run_root` is deterministically `docs/business-os/strategy/<BIZ>/`; biz always operator-supplied via `--business`; no manual fallback needed. Manual invocation fallback line in TASK-06 acceptance is superseded — dispatch can always be deterministic.
 - 2026-02-18 (TASK-02): S10 dispatch goes in `cmd-advance.md` as a new named section `### S10 Signal Review Dispatch` after GATE-BD-08, following S6B secondary dispatch structure. No loop-spec.yaml changes needed.
 - 2026-02-18 (TASK-07 Checkpoint): First live Signal Review run on BRIK. Run date: 2026-02-18 (W08). Finding count: 3 emitted. Novelty: all 3 novel (no prior Signal Reviews; no fingerprint matches in open plan tasks). Findings: P10 (human sign-off markers absent — Severity 5/Support 4), P09 (demand-evidence-pack.md not at canonical path; brik-ga4-baseline-lock plan referenced but missing — Severity 4/Support 5), P04 (CVR assumptions unanchored; begin_checkout=0 — Severity 4/Support 4). Skipped cap-exceeded: P08 (no second weekly readout), P02 (no per-dimension confidence scores). Artifact: `docs/business-os/strategy/BRIK/signal-review-20260218-1238-W08.md`. Promotion stubs present and promotable. v1.1 recommendation: PROCEED — findings were non-obvious (P10 sign-off markers, P09 canonical path gap), stubs are promotable. Recommend scheduling v1.1 GATE-S10-SIGNAL-01 planning after 4 weekly cycles confirm consistent run cadence.

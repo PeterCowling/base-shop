@@ -226,9 +226,10 @@ describe("canonical dictionary round-trip", () => {
     const dict = loadYaml(raw) as Dictionary;
     const map = buildMap(dict, "docs/business-os/startup-loop/stage-operator-dictionary.yaml");
 
-    expect(map.stages.length).toBe(22); // 17 original + S0A/S0B/S0C/S0D/S3B added in v1.6.0/v1.7.0
+    expect(map.stages.length).toBe(22); // 17 original + DISCOVERY-01/02/03/04/05/S3B added in v1.6.0/v1.7.0/v1.9.0
     expect(Object.keys(map.alias_index).length).toBeGreaterThanOrEqual(22);
-    expect(map.alias_index["s0"]).toBe("S0");
+    expect(map.alias_index["intake"]).toBe("DISCOVERY");
+    expect(map.alias_index["discovery"]).toBe("DISCOVERY");
     expect(map.alias_index["channel-strategy"]).toBe("S6B");
     expect(map.alias_index["weekly-decision"]).toBe("S10");
   });

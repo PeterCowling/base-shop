@@ -1,12 +1,12 @@
 ---
 name: lp-design-qa
-description: Audit a built UI against the design spec and design system for visual/UI regression, accessibility, responsive behavior, and token compliance. Produces structured issues ready for lp-build fixes.
+description: Audit a built UI against the design spec and design system for visual/UI regression, accessibility, responsive behavior, and token compliance. Produces structured issues ready for lp-do-build fixes.
 operating_mode: AUDIT
 ---
 
 # Design QA
 
-Audit a built UI against the design spec, design system standards, and brand language for visual regression, accessibility compliance, responsive behavior, and semantic token usage. Produces a structured issue list that feeds back into `/lp-build` for fixes.
+Audit a built UI against the design spec, design system standards, and brand language for visual regression, accessibility compliance, responsive behavior, and semantic token usage. Produces a structured issue list that feeds back into `/lp-do-build` for fixes.
 
 **Key distinction from `/lp-launch-qa`:**
 - **lp-design-qa** focuses on visual/UI correctness — does it look right and meet design system standards?
@@ -14,7 +14,7 @@ Audit a built UI against the design spec, design system standards, and brand lan
 
 ## When to Use
 
-- **S9B (UI Regression QA)**: After `/lp-build` completes UI tasks, before merging to main
+- **S9B (UI Regression QA)**: After `/lp-do-build` completes UI tasks, before merging to main
 - **Post-Design-Spec**: When a design spec exists and implementation is complete
 - **Pre-PR Review**: Before human visual/design review to catch systematic issues
 - **Responsive Audit**: Standalone audit of responsive behavior across breakpoints
@@ -32,7 +32,7 @@ Audit a built UI against the design spec, design system standards, and brand lan
 - Create/update issue report and Business OS card/stage doc via agent API
 
 **Not Allowed:**
-- Code changes (use `/lp-build` for fixes)
+- Code changes (use `/lp-do-build` for fixes)
 - Browser testing or screenshot capture
 - Mockup creation or visual redesign (that's `/lp-design-spec`)
 - Functional testing (that's `/lp-launch-qa`)
@@ -45,6 +45,8 @@ Audit a built UI against the design spec, design system standards, and brand lan
 /lp-design-qa --business <BIZ>
 /lp-design-qa <feature-slug> --scope responsive|a11y|tokens|visual|full
 ```
+
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
 
 `--scope full` audits all 4 domains (default). Scoped variants run one domain only.
 
@@ -120,7 +122,7 @@ Design QA complete for <feature-slug> (<BIZ>).
 
 **Report:** `docs/plans/<slug>-design-qa-report.md`
 **Next:**
-- If issues found: `/lp-build` to fix issues in report
+- If issues found: `/lp-do-build` to fix issues in report
 - If passed: `/lp-launch-qa` for functional/compliance readiness
 ```
 
@@ -137,8 +139,8 @@ Design QA complete for <feature-slug> (<BIZ>).
 
 ## Integration
 
-- **Upstream:** `/lp-design-spec` (expected visual state); `/lp-build` (produces the built UI)
-- **Downstream:** `/lp-build` (uses issue report to fix regressions); `/lp-launch-qa` (assumes design QA passed); human PR reviewers
+- **Upstream:** `/lp-design-spec` (expected visual state); `/lp-do-build` (produces the built UI)
+- **Downstream:** `/lp-do-build` (uses issue report to fix regressions); `/lp-launch-qa` (assumes design QA passed); human PR reviewers
 - **Loop position:** S9B (UI Regression QA) — post-build, pre-launch-qa
 - **Business OS sync:** Updates build stage doc with design-qa results and issue count
 

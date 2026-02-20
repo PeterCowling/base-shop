@@ -9,7 +9,7 @@ Feature-Slug: ds-customer-facing-lint-escalation
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Overall-confidence: 86%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -100,7 +100,7 @@ Three phases in dependency order:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 2 files in `apps/prime/src/`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/prime/src/app/owner/scorecard/page.tsx`
   - **Primary:** `apps/prime/src/components/quests/TierCompletionModal.tsx`
@@ -127,7 +127,7 @@ Three phases in dependency order:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 11 files in `apps/xa/src/`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/xa/src/app/page.tsx`
   - **Primary:** `apps/xa/src/app/not-found.tsx`
@@ -170,7 +170,7 @@ Three phases in dependency order:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 3 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/brikette/src/routes/guides/blocks/handlers/tableBlock.tsx`
   - **Primary:** `apps/brikette/src/routes/guides/blocks/handlers/calloutBlock.tsx`
@@ -199,7 +199,7 @@ Three phases in dependency order:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 7 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/brikette/src/components/guides/EventInfo.tsx`
   - **Primary:** `apps/brikette/src/components/guides/ProsConsTable.tsx`
@@ -238,7 +238,7 @@ Three phases in dependency order:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 6 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/brikette/src/components/landing/WhyStaySection.tsx`
   - **Primary:** `apps/brikette/src/components/landing/BookingWidget.tsx`
@@ -276,7 +276,7 @@ Three phases in dependency order:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 4 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/brikette/src/routes/deals/DealCard.tsx`
   - **Primary:** `apps/brikette/src/routes/deals/DealStatusBanner.tsx`
@@ -307,7 +307,7 @@ Three phases in dependency order:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 6 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/brikette/src/app/[lang]/apartment/street-level-arrival/StreetLevelArrivalContent.tsx`
   - **Primary:** `apps/brikette/src/app/[lang]/apartment/private-stay/PrivateStayContent.tsx`
@@ -345,7 +345,7 @@ Three phases in dependency order:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `eslint.config.mjs`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `eslint.config.mjs`
 - **Depends on:** CFL-01, CFL-02, CFL-03, CFL-04, CFL-05, CFL-06, CFL-07

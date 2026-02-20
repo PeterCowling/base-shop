@@ -91,6 +91,19 @@ if ! printf '%s\n' "$ALL_CHANGED" | node "$REPO_ROOT/scripts/check-next-webpack-
 fi
 echo "OK: Next.js command policy matrix check passed"
 
+I18N_RESOLVER_CHANGED=$(echo "$ALL_CHANGED" | grep -E '^(packages/i18n/|packages/next-config/)|(^|/)tsconfig[^/]*\.json$' || true)
+if [ -n "$I18N_RESOLVER_CHANGED" ]; then
+    echo ""
+    echo "Checking i18n resolver contract..."
+    if ! node "$REPO_ROOT/scripts/check-i18n-resolver-contract.mjs" --repo-root "$REPO_ROOT"; then
+        echo "FAIL: i18n resolver contract check failed (${CHANGE_MODE})"
+        exit 1
+    fi
+    echo "OK: i18n resolver contract check passed"
+else
+    echo "Skipping i18n resolver contract check (no relevant path changes)"
+fi
+
 # 2. Typecheck + lint (scoped to changed workspace packages)
 echo ""
 echo "> Typecheck + lint (changed packages)"

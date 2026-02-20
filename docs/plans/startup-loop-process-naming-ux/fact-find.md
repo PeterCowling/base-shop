@@ -13,8 +13,8 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-plan
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-plan
 Related-Plan: docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md
 Business-OS-Integration: off
 Business-Unit: BOS
@@ -244,9 +244,9 @@ Each stage label must pass:
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `lp-build`
+  - `lp-do-build`
 - Supporting skills:
-  - `lp-plan`
+  - `lp-do-plan`
 - Deliverable acceptance package:
   - canonical stage dictionary + generator + updated operator docs + run packet/alias contract updates + lint/tests.
 - Post-delivery measurement plan:
@@ -258,4 +258,4 @@ Each stage label must pass:
 - Blocking items:
   - Decision on strict compatibility behavior for `--stage-label`.
 - Recommended next step:
-  - `/lp-plan` to sequence a non-breaking naming UX rollout with schema + generator + lint/test guardrails.
+  - `/lp-do-plan` to sequence a non-breaking naming UX rollout with schema + generator + lint/test guardrails.

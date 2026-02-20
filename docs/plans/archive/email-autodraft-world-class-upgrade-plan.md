@@ -8,7 +8,7 @@ Last-updated: 2026-02-10
 Feature-Slug: email-autodraft-world-class-upgrade
 Deliverable-Type: multi-deliverable
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: draft-email, ops-inbox
 Overall-confidence: 84%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -54,7 +54,7 @@ Upgrade the Brikette email autodraft pipeline from deterministic template assemb
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/email-autodraft-world-class-upgrade-lp-fact-find.md`
+- Related brief: `docs/plans/email-autodraft-world-class-upgrade-lp-do-fact-find.md`
 - Key findings:
   - F1: Generation underuses available action-plan intelligence (voice/guide loaded but unused at `draft-generate.ts:259-260`).
   - F2: No entity grounding for booking-specific decisions (schema at `draft-generate.ts:30` has no booking entity fields).
@@ -64,7 +64,7 @@ Upgrade the Brikette email autodraft pipeline from deterministic template assemb
   - F6: GAS remains in live-path dependencies (reception hooks, inbox monitor).
   - F7: Workflow/operability constraints (sequential stages, per-message API calls).
   - F8: State/test/consistency risks (in-memory locks, hardcoded knowledge, taxonomy mismatch).
-- Resolved questions from lp-fact-find:
+- Resolved questions from lp-do-fact-find:
   - Hybrid architecture is working direction (sponsor confirmed).
   - Non-refundable = no exceptions (policy fixed).
   - EN only for phase 1 sensitive scenarios.
@@ -138,7 +138,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 | 1 | TASK-01, TASK-03, TASK-10 | - | Independent foundation tasks. TASK-10 (GAS migration) is fully independent of quality work. |
 | 2 | TASK-02, TASK-04 | Wave 1: TASK-01, TASK-03 | TASK-02 needs TASK-01 (file overlap: draft-generate.ts). TASK-04 needs TASK-03 (file overlap: draft-interpret.ts). |
 | 3 | TASK-05, TASK-06 | Wave 2: TASK-04 | TASK-05 needs TASK-04 (taxonomy). TASK-06 needs TASK-03 + TASK-04 (escalation + taxonomy). |
-| 4 | TASK-07 (CHECKPOINT) | Waves 1–3: all tasks | Re-assessment gate. Auto-continue pauses here for `/lp-replan`. |
+| 4 | TASK-07 (CHECKPOINT) | Waves 1–3: all tasks | Re-assessment gate. Auto-continue pauses here for `/lp-do-replan`. |
 | 5 | TASK-08 | Wave 4: TASK-07 | Policy decision layer (L-effort). Sequential bottleneck. |
 | 6 | TASK-09 | Wave 5: TASK-08 | Template rewrites depend on policy rubric. |
 
@@ -153,7 +153,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `packages/mcp-server/src/tools/draft-generate.ts`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-07
@@ -218,7 +218,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `packages/mcp-server/src/tools/draft-generate.ts`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`
 - **Depends on:** TASK-01 _(file overlap: draft-generate.ts)_
 - **Blocks:** TASK-07
@@ -281,12 +281,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `packages/mcp-server/src/tools/draft-interpret.ts`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
 - **Depends on:** -
 - **Blocks:** TASK-04, TASK-06, TASK-07
 - **Confidence:** 82%
-  - Implementation: 85% — Escalation triggers are enumerated in the lp-fact-find; implementation follows `classifyScenario` pattern (line 406).
+  - Implementation: 85% — Escalation triggers are enumerated in the lp-do-fact-find; implementation follows `classifyScenario` pattern (line 406).
   - Approach: 80% — Two-tier model (HIGH/CRITICAL) with configurable thresholds is well-scoped.
   - Impact: 80% — Adds new field to EmailActionPlan type; existing consumers are not affected (field is additive).
 - **Acceptance:**
@@ -322,7 +322,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollback: Remove escalation field; downstream consumers ignore it (field is optional until policy layer depends on it).
 - **Documentation impact:** None
 - **Notes / references:**
-  - Fact-find escalation triggers: `docs/plans/email-autodraft-world-class-upgrade-lp-fact-find.md` (lines 174–178)
+  - Fact-find escalation triggers: `docs/plans/email-autodraft-world-class-upgrade-lp-do-fact-find.md` (lines 174–178)
   - EUR threshold: configurable constant, default €500, to be confirmed at CHECKPOINT.
 
 #### Build Completion (2026-02-10)
@@ -352,7 +352,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — shared category enum + alignment across 4 modules
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/utils/template-ranker.ts`, `packages/mcp-server/src/tools/draft-quality-check.ts`, `packages/mcp-server/data/email-templates.json`, `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
 - **Depends on:** TASK-03 _(file overlap: draft-interpret.ts)_
 - **Blocks:** TASK-05, TASK-06, TASK-07
@@ -420,7 +420,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `packages/mcp-server/src/tools/draft-quality-check.ts`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `packages/mcp-server/src/tools/draft-quality-check.ts`, `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`, `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
 - **Depends on:** TASK-04
 - **Blocks:** TASK-07
@@ -489,7 +489,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
 - **Depends on:** TASK-03, TASK-04
 - **Blocks:** TASK-07
@@ -498,7 +498,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Approach: 85% — Fixture-driven testing with scenario coverage is the right pattern.
   - Impact: 85% — Test-only change; no production code affected.
 - **Acceptance:**
-  - Add ≥8 new fixtures covering gaps identified in lp-fact-find:
+  - Add ≥8 new fixtures covering gaps identified in lp-do-fact-find:
     - Prepayment step 2 (2nd attempt failed).
     - Prepayment step 3 (cancelled after 3rd attempt).
     - Prepayment success.
@@ -564,7 +564,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Blocks:** TASK-08
 - **Confidence:** 95%
 - **Acceptance:**
-  - Run `/lp-replan` on TASK-08, TASK-09, TASK-10 using evidence from completed tasks.
+  - Run `/lp-do-replan` on TASK-08, TASK-09, TASK-10 using evidence from completed tasks.
   - Reassess pipeline test pass rate after enrichment + classification + quality upgrades.
   - Confirm EUR threshold for high-value dispute escalation (default €500).
   - Confirm template rewrite source: use existing repo text as baseline (or import Gmail text if user provides it).
@@ -601,7 +601,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — new `packages/mcp-server/src/tools/policy-decision.ts` + integration
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `packages/mcp-server/src/tools/policy-decision.ts` (new), `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/draft-quality-check.ts`, `packages/mcp-server/src/__tests__/policy-decision.test.ts` (new), `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
   - `[readonly] packages/mcp-server/src/tools/draft-interpret.ts` — reads EmailActionPlan type
 - **Depends on:** TASK-07
@@ -652,7 +652,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollback: Remove policy consumption from generate + quality-check; policy module becomes dead code.
 - **Documentation impact:** `.claude/skills/ops-inbox/SKILL.md` — add review-tier guidance for mandatory-review and owner-alert scenarios.
 - **Notes / references:**
-  - Non-refundable policy: lp-fact-find resolved Q (line 158) — no concessions, no exceptions.
+  - Non-refundable policy: lp-do-fact-find resolved Q (line 158) — no concessions, no exceptions.
   - Tone policy: factual + professional, not cold. Soften phrasing, not meaning.
   - EUR threshold: configurable constant `HIGH_VALUE_DISPUTE_EUR` (default 500, confirm at CHECKPOINT).
 
@@ -700,7 +700,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** mixed — `packages/mcp-server/data/email-templates.json` + template tests
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `packages/mcp-server/data/email-templates.json`, `packages/mcp-server/src/__tests__/template-lint.test.ts`, `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
   - `[readonly] packages/mcp-server/src/tools/policy-decision.ts` — reads policy rubric for tone alignment
 - **Depends on:** TASK-08
@@ -742,8 +742,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollback: Revert template JSON to pre-rewrite state via git.
 - **Documentation impact:** None (templates are data, not docs)
 - **Notes / references:**
-  - Canonical non-refundable wording: Gmail template (lp-fact-find Q, line 171). Use existing repo text as baseline if Gmail text not provided.
-  - Tone policy: factual + professional, not cold (lp-fact-find resolved Q, line 161).
+  - Canonical non-refundable wording: Gmail template (lp-do-fact-find Q, line 171). Use existing repo text as baseline if Gmail text not provided.
+  - Tone policy: factual + professional, not cold (lp-do-fact-find resolved Q, line 161).
 
 #### Re-plan Update (2026-02-10)
 - **Previous confidence:** 80%
@@ -788,7 +788,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/reception/src/services/useBookingEmail.ts`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/reception/src/services/useBookingEmail.ts`
   - `[readonly] apps/reception/src/app/api/mcp/booking-email/route.ts` — verify MCP route is functional
 - **Depends on:** -
@@ -873,7 +873,7 @@ The following are explicitly out of scope for this plan. They should be planned 
 
 | Item | Hypothesis | Confidence | Reason for Deferral |
 |------|-----------|------------|---------------------|
-| Guest email GAS migration | A9 (partial) | 75% | Requires new MCP tool; unclear requirements for `useEmailGuest` migration. Needs `/lp-fact-find`. |
+| Guest email GAS migration | A9 (partial) | 75% | Requires new MCP tool; unclear requirements for `useEmailGuest` migration. Needs `/lp-do-fact-find`. |
 | Operator ergonomics | A8 | 72% | Workflow design changes need operator feedback data. Fact-find estimates are directional only. |
 | GAS inbox monitor migration | A9 (partial) | 65% | `Code.gs` inbox monitoring has no MCP equivalent yet. Large scope, needs separate plan. |
 | Hardcoded knowledge sync | F8 (partial) | 70% | Room/menu data drift is a risk but not urgent. Build step or JSON generation needed. |

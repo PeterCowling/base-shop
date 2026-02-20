@@ -12,8 +12,8 @@ Feature-Slug: learning-compiler
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: control-plane
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-experiment, /lp-replan
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-experiment, /lp-do-replan
 Overall-confidence: 90%
 Confidence-Method: min(Implementation,Approach,Impact) after defining immutable snapshots, bounded machine interface, deterministic identity, supersede replacement semantics, and manifest lifecycle
 Business-OS-Integration: on
@@ -176,7 +176,7 @@ Routing rules:
 - **Type:** MIGRATE
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** business-artifact + migration script
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 92%
 - **Effort:** M
 - **Affects:**
@@ -198,7 +198,7 @@ Routing rules:
 - **Type:** DECISION
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** business-artifact (schema docs)
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 90%
 - **Effort:** S
 - **Affects:**
@@ -223,7 +223,7 @@ Routing rules:
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 88%
 - **Effort:** S
 - **Depends on:** LC-01
@@ -247,7 +247,7 @@ Routing rules:
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change + business-artifact
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 86%
 - **Effort:** M
 - **Depends on:** LC-00, LC-01
@@ -271,7 +271,7 @@ Routing rules:
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 85%
 - **Effort:** M
 - **Depends on:** LC-02, LC-03
@@ -296,7 +296,7 @@ Routing rules:
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 84%
 - **Effort:** M
 - **Depends on:** LC-03, LC-04
@@ -319,7 +319,7 @@ Routing rules:
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 86%
 - **Effort:** M
 - **Depends on:** LC-01, LC-04, LC-05
@@ -343,7 +343,7 @@ Routing rules:
 - **Type:** CHECKPOINT
 - **Status:** Complete (2026-02-13)
 - **Deliverable:** validation report
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Confidence:** 88%
 - **Effort:** M
 - **Depends on:** LC-06

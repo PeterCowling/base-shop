@@ -10,8 +10,8 @@ Feature-Slug: startup-loop-contract-hardening
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-plan, /lp-sequence
+Primary-Execution-Skill: /lp-do-build
+Supporting-Skills: /lp-do-plan, /lp-sequence
 Related-Plan: docs/plans/startup-loop-contract-hardening/plan.md
 Business-OS-Integration: on
 Business-Unit: BOS
@@ -54,10 +54,10 @@ Primary input note (Outcome B): `docs/briefs/startup-loop-gap-audit-briefing.md`
 ### Canonical Contract (Must Hold)
 - Stage-doc types (canonical, API + filenames): `fact-find`, `plan`, `build`, `reflect`.
 - Canonical stage-doc path template: `docs/business-os/cards/${cardId}/${stage}.user.md`.
-- Rule: when calling stage-doc endpoints, always use stage-doc type (never a skill slug like `lp-fact-find`).
+- Rule: when calling stage-doc endpoints, always use stage-doc type (never a skill slug like `lp-do-fact-find`).
 
 ### Legacy Compatibility (During Window Only)
-- Stage key aliases accepted (recommended): `lp-fact-find` -> `fact-find`.
+- Stage key aliases accepted (recommended): `lp-do-fact-find` -> `fact-find`.
 - Filename aliases accepted by repo readers/tools (recommended): `fact-finding.user.md` -> `fact-find.user.md`.
 
 ### Deprecation Mechanism (Recommended)
@@ -78,7 +78,7 @@ Enforcement mechanism (recommended): loop-spec nodes that produce stage docs dec
 
 ## Terminology (Contract Vocabulary)
 - Stage-doc type: the `stage` value used by stage-doc API endpoints and the filename segment in `docs/business-os/cards/${cardId}/${stage}.user.md`. Canonical set: `fact-find|plan|build|reflect`.
-- Skill slug: the `/lp-*` identifier used to route agent behaviors (for example `/lp-fact-find`). Never valid as a stage-doc API key.
+- Skill slug: the `/lp-*` identifier used to route agent behaviors (for example `/lp-do-fact-find`). Never valid as a stage-doc API key.
 - Stage graph node: a node in the startup-loop stage graph (currently referenced from `loop-spec.yaml`). A node may reference a skill slug.
 
 ## Normalization Rules (Deterministic)
@@ -86,7 +86,7 @@ Enforcement mechanism (recommended): loop-spec nodes that produce stage docs dec
 ### Stage Key Normalization
 - Accepted canonical stage-doc keys: `fact-find|plan|build|reflect`.
 - Accepted legacy aliases during the compatibility window:
-  - `lp-fact-find` normalizes to `fact-find`.
+  - `lp-do-fact-find` normalizes to `fact-find`.
 - Normalization applies to:
   - `POST /api/agent/stage-docs` request body `stage`.
   - `GET/PATCH /api/agent/stage-docs/[cardId]/[stage]` path param `stage`.
@@ -107,10 +107,10 @@ Enforcement mechanism (recommended): loop-spec nodes that produce stage docs dec
 
 These numbers are intended to bound migration scope and build a fixture set.
 
-- Stage key alias used as a stage-doc type (`"stage": "lp-fact-find"`): 3 call sites.
+- Stage key alias used as a stage-doc type (`"stage": "lp-do-fact-find"`): 3 call sites.
   - `.claude/skills/idea-generate/SKILL.md` (2)
   - `.claude/skills/idea-develop/SKILL.md` (1)
-- Stage-doc endpoint path includes legacy stage key (`.../stage-docs/.../lp-fact-find`): 3 call sites.
+- Stage-doc endpoint path includes legacy stage key (`.../stage-docs/.../lp-do-fact-find`): 3 call sites.
   - `.claude/skills/idea-generate/SKILL.md`
 - Repo references to `fact-finding.user.md`: 27 call sites.
   - Under `docs/business-os/**`: 3 call sites.
@@ -125,8 +125,8 @@ Planning requirement: extend inventory to include all consumers that read stage 
 Measured on: `dev` working tree as of 2026-02-15 (commit SHA not captured).
 
 Commands (run from repo root; `rg` respects `.gitignore` by default):
-- `rg -n --fixed-strings "\"stage\": \"lp-fact-find\"" .claude/skills`
-- `rg -n "stage-docs/.*/lp-fact-find" -S .claude/skills`
+- `rg -n --fixed-strings "\"stage\": \"lp-do-fact-find\"" .claude/skills`
+- `rg -n "stage-docs/.*/lp-do-fact-find" -S .claude/skills`
 - `rg -n --fixed-strings "fact-finding.user.md" docs`
 - `find docs -name fact-finding.user.md -print`
 - `find docs -name fact-find.user.md -print`
@@ -144,14 +144,14 @@ Notes:
 - `apps/business-os/src/app/api/agent/stage-docs/route.ts` — stage-doc list/create; strict `StageTypeSchema` validation.
 - `apps/business-os/src/app/api/agent/stage-docs/[cardId]/[stage]/route.ts` — stage-doc get/patch; strict `StageTypeSchema` validation and canonical file path template.
 - `packages/platform-core/src/repositories/businessOsStageDocs.server.ts` — `StageTypeSchema = ["fact-find","plan","build","reflect"]`.
-- `.claude/skills/_shared/workspace-paths.md` — canonical stage key policy; explicitly rejects `lp-fact-find` for stage-doc writes.
+- `.claude/skills/_shared/workspace-paths.md` — canonical stage key policy; explicitly rejects `lp-do-fact-find` for stage-doc writes.
 - `.claude/skills/_shared/stage-doc-operations.md` — stage-doc ops helper; mixes canonical API key with non-canonical filename convention (`fact-finding.user.md`).
 - `scripts/check-startup-loop-contracts.sh` — contract lint (currently fails).
 
 ### Key Modules / Files
 - Drift hot spots:
-  - `.claude/skills/idea-generate/SKILL.md` — seeds stage docs using `stage: "lp-fact-find"` and routes GET/PATCH to `/lp-fact-find` stage paths.
-  - `.claude/skills/idea-develop/SKILL.md` — creates stage docs using `stage: "lp-fact-find"`.
+  - `.claude/skills/idea-generate/SKILL.md` — seeds stage docs using `stage: "lp-do-fact-find"` and routes GET/PATCH to `/lp-do-fact-find` stage paths.
+  - `.claude/skills/idea-develop/SKILL.md` — creates stage docs using `stage: "lp-do-fact-find"`.
   - `.claude/skills/lp-experiment/SKILL.md` — stage mapping drift (lint SQ-12) and legacy companion skill references.
   - `.claude/skills/lp-seo/SKILL.md` — non-canonical path topology (lint SQ-10 warn).
 - Runtime “sole mutation boundary” script exists:
@@ -177,7 +177,7 @@ Notes:
   - MCP tooling and tests that assume the canonical filePath.
   - Board lane transitions and repo-reader logic that assumes canonical stage file names.
 - Likely blast radius:
-  - Any workflow that creates/patches stage docs (idea generation, idea develop, lp-fact-find integration).
+  - Any workflow that creates/patches stage docs (idea generation, idea develop, lp-do-fact-find integration).
   - Board state derived from stage-doc presence (lane transitions).
   - Operators following docs/templates that encode the wrong stage key or filename.
 
@@ -194,18 +194,18 @@ Notes:
 
 ## Findings And Recommended Fixes (Evidence-Backed)
 
-### FND-01 (P0): Stage Key Drift (`lp-fact-find` vs `fact-find`)
-**Failure mode:** Skill/tooling uses `stage: "lp-fact-find"` or routes to `/api/agent/stage-docs/<cardId>/lp-fact-find`, but the agent API validates against `StageTypeSchema` and rejects unknown stage keys with 400 `Invalid stage` / 400 `Invalid request`.
+### FND-01 (P0): Stage Key Drift (`lp-do-fact-find` vs `fact-find`)
+**Failure mode:** Skill/tooling uses `stage: "lp-do-fact-find"` or routes to `/api/agent/stage-docs/<cardId>/lp-do-fact-find`, but the agent API validates against `StageTypeSchema` and rejects unknown stage keys with 400 `Invalid stage` / 400 `Invalid request`.
 
 **Failure signatures (concrete):**
-- `GET /api/agent/stage-docs/[cardId]/[stage]` returns 400 `{ error: "Invalid stage" }` when `stage=lp-fact-find`. Evidence: `apps/business-os/src/app/api/agent/stage-docs/[cardId]/[stage]/route.ts`.
-- `POST /api/agent/stage-docs` returns 400 `{ error: "Invalid request", details: ... }` when the body includes `stage: "lp-fact-find"`. Evidence: `apps/business-os/src/app/api/agent/stage-docs/route.ts` (`CreateStageDocSchema` uses `stage: StageTypeSchema`).
+- `GET /api/agent/stage-docs/[cardId]/[stage]` returns 400 `{ error: "Invalid stage" }` when `stage=lp-do-fact-find`. Evidence: `apps/business-os/src/app/api/agent/stage-docs/[cardId]/[stage]/route.ts`.
+- `POST /api/agent/stage-docs` returns 400 `{ error: "Invalid request", details: ... }` when the body includes `stage: "lp-do-fact-find"`. Evidence: `apps/business-os/src/app/api/agent/stage-docs/route.ts` (`CreateStageDocSchema` uses `stage: StageTypeSchema`).
 
 **Evidence:**
 - Canonical enum: `packages/platform-core/src/repositories/businessOsStageDocs.server.ts`.
 - Drifted skill usage:
-  - `.claude/skills/idea-develop/SKILL.md` uses `"stage": "lp-fact-find"`.
-  - `.claude/skills/idea-generate/SKILL.md` uses `"stage": "lp-fact-find"` and calls `GET/PATCH` on `.../lp-fact-find`.
+  - `.claude/skills/idea-develop/SKILL.md` uses `"stage": "lp-do-fact-find"`.
+  - `.claude/skills/idea-generate/SKILL.md` uses `"stage": "lp-do-fact-find"` and calls `GET/PATCH` on `.../lp-do-fact-find`.
 
 **Recommended solution (default posture): alias-and-migrate**
 - Implement stage key normalization per “Normalization Rules”.
@@ -215,7 +215,7 @@ Notes:
   - Then remove alias acceptance after the repo is migrated and lint is green.
 
 **Definition of Done (planner-ready):**
-- Stage-doc endpoints accept canonical stage keys and (during window) the `lp-fact-find` alias.
+- Stage-doc endpoints accept canonical stage keys and (during window) the `lp-do-fact-find` alias.
 - Any write via alias results in canonical `filePath` and canonical stage in stored data.
 - Contract lint fails on any skill emitting alias stage keys for stage-doc writes.
 - Tests cover canonical and alias behaviors for POST/GET/PATCH and list filters.
@@ -306,7 +306,7 @@ Rationale:
 Telemetry expectation: log alias usage with caller identification where available (skill name, user agent, or MCP tool name).
 
 Implementation switch (recommended): `docs/business-os/startup-loop/contract-migration.yaml` with explicit cutoffs (for example `alias_accept_until`, `lint_warn_until`). API + lint read this config.
-Telemetry surface (recommended): structured server log event `bos.stage_alias_used` including `{ cardId, rawStage, normalizedStage, endpoint }` (no doc content). Optionally also return response header `x-bos-stage-normalized: lp-fact-find->fact-find` when normalization occurs.
+Telemetry surface (recommended): structured server log event `bos.stage_alias_used` including `{ cardId, rawStage, normalizedStage, endpoint }` (no doc content). Optionally also return response header `x-bos-stage-normalized: lp-do-fact-find->fact-find` when normalization occurs.
 Lint allowlist (temporary, migration fixtures only): lives in `scripts/check-startup-loop-contracts.sh` as `MIGRATION_ALLOWLIST=(...)` and is removed at window end.
 
 ## Verification Strategy (Layered)
@@ -341,7 +341,7 @@ Lint allowlist (temporary, migration fixtures only): lives in `scripts/check-sta
 - Risk: doc reference chain changes can cause long-term confusion if not standardized.
   - Mitigation: publish one policy and enforce with lint.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - Implementation: 82%
   - What raises to >=90: full consumer inventory for stage-doc reads/writes and a fixture-based integration test.
 - Approach: 88%

@@ -77,4 +77,4 @@ These files are now **in scope** for v2 due to Option B:
 
 ## De-risking Note
 
-Option B increases implementation risk in TASK-05 and TASK-07. The operator has authorized `/lp-replan` to add TDD tasks as needed to gate label rename changes behind test coverage before implementation proceeds.
+Option B increases implementation risk in TASK-05 and TASK-07. The operator has authorized `/lp-do-replan` to add TDD tasks as needed to gate label rename changes behind test coverage before implementation proceeds.

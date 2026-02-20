@@ -9,7 +9,7 @@ Feature-Slug: <kebab-case>
 Deliverable-Type: <code-change | email-message | product-brief | marketing-asset | spreadsheet | whatsapp-message | multi-deliverable>
 Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-upgrade-backlog>
 Execution-Track: <code | business-artifact | mixed>
-Primary-Execution-Skill: <lp-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
+Primary-Execution-Skill: <lp-do-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>
 Overall-confidence: <0-100%>
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort

@@ -37,10 +37,18 @@ describe("contract-migration", () => {
 
   test("TC-03: stage key normalization maps legacy alias when enabled", () => {
     const { config } = getContractMigrationConfig();
+    const firstAlias = Object.entries(config.stage_aliases)[0];
+    if (!firstAlias) {
+      // Alias table can be empty once migration is fully complete.
+      expect(normalizeStageKey(config, "lp-do-fact-find", new Date(0))).toBeNull();
+      return;
+    }
 
-    // Pick an instant that is guaranteed to be <= any realistic cutoff.
-    const enabledNow = utc("1970-01-01T00:00:00.000Z");
-    const result = normalizeStageKey(config, "lp-fact-find", enabledNow);
+    const [legacyAlias, canonicalStage] = firstAlias;
+
+    // Use the configured inclusive cutoff instant to stay aligned with generated config.
+    const enabledNow = new Date(config.timebox.alias_accept_until_utc.getTime());
+    const result = normalizeStageKey(config, legacyAlias, enabledNow);
 
     if (!result) {
       // Config is already expired (or alias removed). That is allowed.
@@ -50,9 +58,9 @@ describe("contract-migration", () => {
 
     expect(result.normalized).toBe(true);
     if (result.normalized) {
-      expect(result.rawStage).toBe("lp-fact-find");
-      expect(result.normalizedStage).toBe("fact-find");
-      expect(result.stage).toBe("fact-find");
+      expect(result.rawStage).toBe(legacyAlias);
+      expect(result.normalizedStage).toBe(canonicalStage);
+      expect(result.stage).toBe(canonicalStage);
     }
   });
 

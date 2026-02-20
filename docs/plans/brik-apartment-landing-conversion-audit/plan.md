@@ -11,8 +11,8 @@ Feature-Slug: brik-apartment-landing-conversion-audit
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: website-upgrade-backlog
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-sequence, lp-replan, lp-seo, lp-design-spec
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-sequence, lp-do-replan, lp-seo, lp-design-spec
 Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact); overall effort-weighted (S=1, M=2, L=3)
 Auto-Build-Intent: plan-only
@@ -57,7 +57,7 @@ against measured conversion and crawl evidence instead of assumptions.
 ## Constraints & Assumptions
 
 - Constraints:
-  - Planning mode only (`plan-only`); no auto continuation to `/lp-build`.
+  - Planning mode only (`plan-only`); no auto continuation to `/lp-do-build`.
   - Decisions on legal terms, perks, and review-policy must be explicit before implementation tasks that depend on them.
   - Any review schema must remain disabled unless first-party, on-page-visible review data is confirmed.
   - Validation must use targeted commands only (no unfiltered `pnpm test`).
@@ -98,9 +98,9 @@ Chosen approach: Option A.
 - Build Gate: Open
   - TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 complete.
   - TASK-09 complete (2026-02-18) — WhatsApp prefill, long-stay reroute, sessionStorage redirect-back, `whatsapp_click` GA4 event; 7/7 TC PASS.
-  - TASK-11 promoted to 82% via `/lp-replan` (2026-02-17) — CF pattern confirmed; eligible for next `/lp-build`.
+  - TASK-11 promoted to 82% via `/lp-do-replan` (2026-02-17) — CF pattern confirmed; eligible for next `/lp-do-build`.
   - TASK-16 complete — Octorate precheck INCAPABLE; TASK-09 narrowed scope confirmed.
-  - TASK-11 (82%) eligible for next `/lp-build` cycle.
+  - TASK-11 (82%) eligible for next `/lp-do-build` cycle.
   - TASK-12 still blocked by TASK-11.
 - Sequenced: Yes
 - Edge-case review complete: Yes
@@ -149,7 +149,7 @@ Chosen approach: Option A.
 ### TASK-01: Capture reproducible apartment evidence artifacts + baseline validation map
 - **Type:** INVESTIGATE
 - **Deliverable:** Evidence packet and baseline map under `artifacts/fact-find/2026-02-17/`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
 - **Status:** Complete (2026-02-17)
@@ -195,7 +195,7 @@ Chosen approach: Option A.
 ### TASK-02: Approve facts-sheet and pricing-claim policy for apartment copy
 - **Type:** DECISION
 - **Deliverable:** `docs/plans/brik-apartment-landing-conversion-audit/apartment-facts-v1.md` + `docs/plans/brik-apartment-landing-conversion-audit/pricing-claim-policy.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -230,7 +230,7 @@ Chosen approach: Option A.
 ### TASK-03: Confirm apartment legal terms scope and route label rules
 - **Type:** DECISION
 - **Deliverable:** `docs/plans/brik-apartment-landing-conversion-audit/apartment-terms-scope.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -265,7 +265,7 @@ Chosen approach: Option A.
 ### TASK-04: Decide direct-booking perks behavior on apartment routes
 - **Type:** DECISION
 - **Deliverable:** `docs/plans/brik-apartment-landing-conversion-audit/perks-decision.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -300,7 +300,7 @@ Chosen approach: Option A.
 ### TASK-05: Approve review-source policy and schema eligibility guardrail
 - **Type:** DECISION
 - **Deliverable:** `docs/plans/brik-apartment-landing-conversion-audit/review-permissions-log.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -335,7 +335,7 @@ Chosen approach: Option A.
 ### TASK-06: Finalize canonical host, hreflang locale matrix, and locale link map
 - **Type:** DECISION
 - **Deliverable:** `docs/plans/brik-apartment-landing-conversion-audit/canonical-hreflang-rules.md` and `docs/plans/brik-apartment-landing-conversion-audit/internal-link-map-v1.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
@@ -370,7 +370,7 @@ Chosen approach: Option A.
 ### TASK-07: Implement apartment-context CTA, legal label wiring, and perks-route behavior
 - **Type:** IMPLEMENT
 - **Deliverable:** Code changes aligning apartment route CTA/legal/perks behavior
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** website-upgrade-backlog
 - **Effort:** M
@@ -426,7 +426,7 @@ Chosen approach: Option A.
 ### TASK-08: Harden SSR/i18n rendering for apartment routes with deterministic source checks
 - **Type:** IMPLEMENT
 - **Deliverable:** Apartment route rendering and source-level i18n leakage hardening
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** website-upgrade-backlog
 - **Effort:** M
@@ -478,7 +478,7 @@ Chosen approach: Option A.
 ### TASK-09: Implement booking module no-result fallback + WhatsApp prefill attribution
 - **Type:** IMPLEMENT
 - **Deliverable:** Apartment booking module behavior and instrumentation enhancements
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** website-upgrade-backlog
 - **Effort:** L
@@ -547,7 +547,7 @@ Chosen approach: Option A.
 ### TASK-10: Publish verified apartment content pack (facts/policies/arrival/fallback copy)
 - **Type:** IMPLEMENT
 - **Deliverable:** Business content package + localization guidance for apartment route updates
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** website-upgrade-backlog
 - **Effort:** M
@@ -611,7 +611,7 @@ Chosen approach: Option A.
 ### TASK-11: Replace apartment media set and image SEO metadata
 - **Type:** IMPLEMENT
 - **Deliverable:** Apartment media manifest + alt/caption metadata package and integration plan
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** website-upgrade-backlog
 - **Effort:** M
@@ -661,7 +661,7 @@ Chosen approach: Option A.
 ### TASK-16: Probe Octorate API for real-time availability precheck capability
 - **Type:** SPIKE
 - **Deliverable:** Evidence report on Octorate availability precheck API capability and integration pattern
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -699,8 +699,8 @@ Chosen approach: Option A.
 
 ### TASK-12: Horizon checkpoint before technical SEO/review/perf tranche
 - **Type:** CHECKPOINT
-- **Deliverable:** updated downstream confidence and dependency recalibration via `/lp-replan`
-- **Execution-Skill:** lp-build
+- **Deliverable:** updated downstream confidence and dependency recalibration via `/lp-do-replan`
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -712,8 +712,8 @@ Chosen approach: Option A.
   - Approach: 95% - prevents downstream execution on stale assumptions.
   - Impact: 95% - materially reduces rework risk in SEO/review/perf tranche.
 - **Acceptance:**
-  - `/lp-build` checkpoint executor run is recorded.
-  - `/lp-replan` refresh updates downstream tasks if evidence diverges from assumptions.
+  - `/lp-do-build` checkpoint executor run is recorded.
+  - `/lp-do-replan` refresh updates downstream tasks if evidence diverges from assumptions.
   - Plan re-sequenced after any topology change.
 - **Horizon assumptions to validate:**
   - SSR leak fixes remain stable after content/media integration.
@@ -726,7 +726,7 @@ Chosen approach: Option A.
 ### TASK-13: Implement canonical/hreflang and baseline schema hardening
 - **Type:** IMPLEMENT
 - **Deliverable:** technical SEO hardening for apartment routes (canonical/hreflang/schema baseline)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** website-upgrade-backlog
 - **Effort:** M
@@ -768,7 +768,7 @@ Chosen approach: Option A.
 ### TASK-14: Ship testimonial module and conditional review schema gating
 - **Type:** IMPLEMENT
 - **Deliverable:** on-page testimonial section + review markup gate tied to permissions policy
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** website-upgrade-backlog
 - **Effort:** M
@@ -810,7 +810,7 @@ Chosen approach: Option A.
 ### TASK-15: Enforce apartment mobile performance guardrails and monitoring
 - **Type:** IMPLEMENT
 - **Deliverable:** apartment-route performance budget checks + monitoring notes
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** website-upgrade-backlog
 - **Effort:** M
@@ -884,14 +884,14 @@ Chosen approach: Option A.
 
 ## Decision Log
 
-- 2026-02-17: `/lp-plan` created in `plan-only` mode from `docs/plans/brik-apartment-landing-conversion-audit/fact-find.md`.
+- 2026-02-17: `/lp-do-plan` created in `plan-only` mode from `docs/plans/brik-apartment-landing-conversion-audit/fact-find.md`.
 - 2026-02-17: Stable task IDs adopted; dependencies/topology sequenced for mixed-track execution and checkpoint enforcement.
-- 2026-02-17: TASK-01 complete via `/lp-build`. Evidence at `artifacts/fact-find/2026-02-17/evidence-notes.md`. Key confirmed: header CTA is route-agnostic (FAIL), no apartment booking no-JS fallback (FAIL), schema compliant (PASS). 7 coverage gaps documented.
-- 2026-02-17: TASK-08 complete via `/lp-build`. Added static Octorate `<noscript>` fallback to `apartment/book/page.tsx`. Added TC-04/TC-05 to `commercial-routes-ssr-audit.test.ts` (54/54 pass).
+- 2026-02-17: TASK-01 complete via `/lp-do-build`. Evidence at `artifacts/fact-find/2026-02-17/evidence-notes.md`. Key confirmed: header CTA is route-agnostic (FAIL), no apartment booking no-JS fallback (FAIL), schema compliant (PASS). 7 coverage gaps documented.
+- 2026-02-17: TASK-08 complete via `/lp-do-build`. Added static Octorate `<noscript>` fallback to `apartment/book/page.tsx`. Added TC-04/TC-05 to `commercial-routes-ssr-audit.test.ts` (54/54 pass).
 - 2026-02-17: TASK-02–TASK-06 complete (DECISION wave). Decisions: pricing Option A (static "from €265/night in shoulder season"); terms Option B (neutral global label); perks `perks_apply_apartment: false` (banner suppressed on apartment routes); review schema INELIGIBLE (testimonials only); canonical host `www.brikette.com`. 7 artifacts written. TASK-07 and TASK-10 now unblocked.
-- 2026-02-17: TASK-07 complete via `/lp-build`. Implemented apartment-aware CTA routing in `DesktopHeader.tsx` + `MobileNav.tsx` (apartment routes → `/apartment/book`, hostel routes → `/book`), neutral `"Terms & Conditions"` label in `footer.json`, and `NotificationBanner` suppression via `usePathname()` guard. 10/10 tests pass (ApartmentStructureAndLinks). TASK-09 now unblocked (76% confidence → `/lp-replan` recommended before execution).
-- 2026-02-17: TASK-10 complete via `/lp-build`. Produced `content-pack-v1.md` (8 sections): quick facts, pricing copy, legal/perks policy, fit-check copy, 3 no-availability fallback states, 2 WhatsApp prefill templates, locale link targets, 17-claim copy audit. All VC contracts pass. "authentic Positano character" claim flagged EXCLUDED. Artifact tagged Draft — Awaiting owner review with embedded checklist. TASK-11 now unblocked at 78% (below 80% → `/lp-replan` required; media asset delivery confirmation needed).
-- 2026-02-17: `/lp-replan` — TASK-09 promoted 76%→82% (scope narrowed: `availability_no_result` deferred to TASK-16 SPIKE; dynamic WhatsApp prefill + long-stay reroute + `whatsapp_click` event remain). TASK-11 promoted 78%→82% (scout resolved: no CF config changes; `GallerySection.tsx::IMAGES` trivially updatable; TC-01 file-existence gate added). TASK-16 SPIKE added to probe Octorate precheck API. Both TASK-09 and TASK-11 now eligible for `/lp-build`.
+- 2026-02-17: TASK-07 complete via `/lp-do-build`. Implemented apartment-aware CTA routing in `DesktopHeader.tsx` + `MobileNav.tsx` (apartment routes → `/apartment/book`, hostel routes → `/book`), neutral `"Terms & Conditions"` label in `footer.json`, and `NotificationBanner` suppression via `usePathname()` guard. 10/10 tests pass (ApartmentStructureAndLinks). TASK-09 now unblocked (76% confidence → `/lp-do-replan` recommended before execution).
+- 2026-02-17: TASK-10 complete via `/lp-do-build`. Produced `content-pack-v1.md` (8 sections): quick facts, pricing copy, legal/perks policy, fit-check copy, 3 no-availability fallback states, 2 WhatsApp prefill templates, locale link targets, 17-claim copy audit. All VC contracts pass. "authentic Positano character" claim flagged EXCLUDED. Artifact tagged Draft — Awaiting owner review with embedded checklist. TASK-11 now unblocked at 78% (below 80% → `/lp-do-replan` required; media asset delivery confirmation needed).
+- 2026-02-17: `/lp-do-replan` — TASK-09 promoted 76%→82% (scope narrowed: `availability_no_result` deferred to TASK-16 SPIKE; dynamic WhatsApp prefill + long-stay reroute + `whatsapp_click` event remain). TASK-11 promoted 78%→82% (scout resolved: no CF config changes; `GallerySection.tsx::IMAGES` trivially updatable; TC-01 file-existence gate added). TASK-16 SPIKE added to probe Octorate precheck API. Both TASK-09 and TASK-11 now eligible for `/lp-do-build`.
 - 2026-02-17: TASK-16 SPIKE complete — Octorate precheck INCAPABLE. No public availability endpoint; partner API is OAuth2 operator-only; booking engine is JSF/PrimeFaces (not REST); CORS blocks cross-origin XHR. Recommended alternative: iCal feed (Option B, needs iCal URL from property owner dashboard). TASK-09 narrowed scope confirmed correct. `spike-octorate-precheck.md` written.
 
 ## Overall-confidence Calculation

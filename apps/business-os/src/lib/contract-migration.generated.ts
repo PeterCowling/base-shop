@@ -13,7 +13,7 @@ export const CONTRACT_MIGRATION_CONFIG = {
     "lint_warn_until_utc": "2026-02-14"
   },
   "stage_aliases": {
-    "lp-fact-find": "fact-find"
+    "lp-do-fact-find": "fact-find"
   },
   "filename_aliases": {
     "fact-finding.user.md": "fact-find.user.md"
@@ -21,5 +21,29 @@ export const CONTRACT_MIGRATION_CONFIG = {
   "allowlists": {
     "legacy_filename_refs": [],
     "legacy_stage_key_emitters": []
+  },
+  "stage_addressing": {
+    "resolver_module": "scripts/src/startup-loop/stage-addressing.ts",
+    "canonical_alias_source": "docs/business-os/startup-loop/_generated/stage-operator-map.json",
+    "modes": [
+      {
+        "id": "id",
+        "flag": "--stage",
+        "behavior": "canonical-always",
+        "fallback": "suggest_alias"
+      },
+      {
+        "id": "alias",
+        "flag": "--stage-alias",
+        "behavior": "fail-closed",
+        "fallback": "deterministic_suggestions"
+      },
+      {
+        "id": "label",
+        "flag": "--stage-label",
+        "behavior": "exact-match-only",
+        "fallback": "canonical_label_list"
+      }
+    ]
   }
 } as const;

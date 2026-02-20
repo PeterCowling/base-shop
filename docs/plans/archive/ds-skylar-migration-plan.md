@@ -9,7 +9,7 @@ Feature-Slug: ds-skylar-migration
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Overall-confidence: 92%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -126,7 +126,7 @@ For variables that don't map cleanly, use CSS custom properties that reference b
 
 - **Type:** INVESTIGATE
 - **Deliverable:** Decision memo — definitive mapping table for all Skylar custom colours to base tokens
-- **Execution-Skill:** /lp-build (investigation mode)
+- **Execution-Skill:** /lp-do-build (investigation mode)
 - **Affects:**
   - **[readonly]** `apps/skylar/src/app/styles/shell.css` (22 `--skylar-*` + 8 `--it-*` variable definitions)
   - **[readonly]** `packages/themes/base/tokens.static.css` (available base tokens)
@@ -298,7 +298,7 @@ For near-blacks (`#050403`, `#0f0f0f`, `#0b0a07`, `#0b0b0b`): map to `hsl(var(--
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/skylar/src/app/styles/shell.css`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/skylar/src/app/styles/shell.css` (324 lines; 58 violations: 15 rgba + 7 hsla + 36 hex; 22 `--skylar-*` + 8 `--it-*` definitions)
   - **[readonly]** `packages/themes/base/src/tokens.ts`
@@ -382,7 +382,7 @@ For near-blacks (`#050403`, `#0f0f0f`, `#0b0a07`, `#0b0b0b`): map to `hsl(var(--
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 14 CSS files in `apps/skylar/src/app/styles/loket-*.css`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/skylar/src/app/styles/loket-hero.css` (23 violations)
   - **Primary:** `apps/skylar/src/app/styles/loket-nav.css` (12 violations)
@@ -458,7 +458,7 @@ For near-blacks (`#050403`, `#0f0f0f`, `#0b0a07`, `#0b0b0b`): map to `hsl(var(--
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 5 CSS files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/skylar/src/app/styles/milan-home.css` (51 violations: 50 rgba + 1 hex)
   - **Primary:** `apps/skylar/src/app/styles/milan-base.css` (29 violations: 27 rgba + 2 hex)
@@ -527,7 +527,7 @@ For near-blacks (`#050403`, `#0f0f0f`, `#0b0a07`, `#0b0b0b`): map to `hsl(var(--
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 3 CSS files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/skylar/src/app/styles/products-en.css` (35 violations: 31 rgba + 4 hex)
   - **Primary:** `apps/skylar/src/app/styles/people-en.css` (24 violations: 21 rgba + 3 hex)
@@ -588,7 +588,7 @@ For near-blacks (`#050403`, `#0f0f0f`, `#0b0a07`, `#0b0b0b`): map to `hsl(var(--
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 14 CSS files in `apps/skylar/src/app/styles/zh/`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/skylar/src/app/styles/zh/panel.css` (14 violations: 9 rgba + 5 hex)
   - **Primary:** `apps/skylar/src/app/styles/zh/products-catalog.css` (12 violations: 10 rgba + 2 hex)
@@ -663,7 +663,7 @@ For near-blacks (`#050403`, `#0f0f0f`, `#0b0a07`, `#0b0b0b`): map to `hsl(var(--
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `Nav.module.css`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/skylar/src/components/Nav.module.css` (11 violations: 11 rgba; 4 `--skylar-*` refs + 5 `--it-*` refs)
 - **Depends on:** SKY-01
@@ -731,7 +731,7 @@ For near-blacks (`#050403`, `#0f0f0f`, `#0b0a07`, `#0b0b0b`): map to `hsl(var(--
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `eslint.config.mjs` + baseline file
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `eslint.config.mjs`
   - **Primary:** `tools/eslint-baselines/ds-no-raw-tailwind-color.json`

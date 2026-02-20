@@ -9,7 +9,7 @@ Feature-Slug: ds-shared-packages-cleanup
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Overall-confidence: 96%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -100,7 +100,7 @@ Key mappings:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `packages/ui/src/components/organisms/operations/ComboBox/ComboBox.tsx`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `packages/ui/src/components/organisms/operations/ComboBox/ComboBox.tsx`
   - **[readonly]** `packages/themes/base/src/tokens.ts`
@@ -141,7 +141,7 @@ Key mappings:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `packages/ui/src/components/organisms/operations/SearchBar/SearchBar.tsx`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `packages/ui/src/components/organisms/operations/SearchBar/SearchBar.tsx`
   - **[readonly]** `packages/themes/base/src/tokens.ts`
@@ -178,7 +178,7 @@ Key mappings:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 3 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `packages/ui/src/components/organisms/operations/StepWizard/StepWizard.tsx`
   - **Primary:** `packages/template-app/src/app/edit-preview/page.tsx`
@@ -219,7 +219,7 @@ Key mappings:
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `tools/eslint-baselines/ds-no-raw-tailwind-color.json`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `tools/eslint-baselines/ds-no-raw-tailwind-color.json`
 - **Depends on:** DS-01, DS-02, DS-03

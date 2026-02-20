@@ -13,7 +13,7 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/loop-skill-efficiency-audit/plan.md
 Business-OS-Integration: off
@@ -36,7 +36,7 @@ ad-hoc audit.
 This plan creates `/meta-loop-efficiency` — a standalone skill that scans
 `.claude/skills/` weekly, applies deterministic efficiency heuristics, and emits a
 ranked opportunity report. When significant new opportunities are found it emits a
-planning anchor for `/lp-fact-find`. When no opportunities clear the threshold it
+planning anchor for `/lp-do-fact-find`. When no opportunities clear the threshold it
 emits a clean `no-op` signal.
 
 ### Goals
@@ -77,7 +77,7 @@ emits a clean `no-op` signal.
   - A SKILL.md >200 lines without a `modules/` subdirectory is always a candidate,
     not always an obligation (some skills may be intentionally large)
   - Invocation frequency of a skill is a proxy for dispatch impact — loop-critical
-    skills (lp-offer, lp-seo, lp-channels, startup-loop, lp-build) have higher
+    skills (lp-offer, lp-seo, lp-channels, startup-loop, lp-do-build) have higher
     invocation frequency than meta/admin skills (meta-reflect, ops-git-recover)
 
 ---
@@ -112,19 +112,19 @@ emits a clean `no-op` signal.
 - Dispatch adoption pattern: grep for `subagent-dispatch-contract` in SKILL.md;
   confirmed in: lp-offer, lp-launch-qa, startup-loop/modules/cmd-advance.md,
   lp-seo/modules/phase-3.md (4 skills adopted as of 2026-02-18)
-- Module pattern: `modules/` directory present in: lp-build, lp-fact-find,
-  lp-launch-qa, lp-plan, lp-replan, lp-seo, startup-loop (7 skills as of 2026-02-18)
+- Module pattern: `modules/` directory present in: lp-do-build, lp-do-fact-find,
+  lp-launch-qa, lp-do-plan, lp-do-replan, lp-seo, startup-loop (7 skills as of 2026-02-18)
 
 ### Current Opportunity Inventory (as of 2026-02-18)
 
 Evidence from `wc -l` scan — **loop skills only** (`lp-*` + `startup-loop`):
 
 Already compliant (thin orchestrator + modules where warranted):
-- `lp-build` (222L SKILL.md + modules/) ✓
+- `lp-do-build` (222L SKILL.md + modules/) ✓
 - `lp-launch-qa` (128L SKILL.md + modules/) ✓
 - `lp-seo` (66L SKILL.md + modules/) ✓
 - `startup-loop` (109L SKILL.md + modules/) ✓
-- `lp-plan`, `lp-replan`, `lp-fact-find` (thin orchestrators with modules/) ✓
+- `lp-do-plan`, `lp-do-replan`, `lp-do-fact-find` (thin orchestrators with modules/) ✓
 - `lp-offer` (233L, dispatch adopted via subagent-dispatch-contract.md) ✓
 
 Opportunities (loop skills >200L without modules, sorted by impact_score):
@@ -153,7 +153,7 @@ Top priority opportunities from this snapshot:
 
 - Upstream: no upstream dependencies (read-only audit)
 - Downstream:
-  - When audit finds HIGH opportunity: emits planning anchor → `/lp-fact-find` for
+  - When audit finds HIGH opportunity: emits planning anchor → `/lp-do-fact-find` for
     a new `startup-loop-token-efficiency-v2` plan
   - When audit finds no opportunities: emits `no-op` signal; no downstream action
 - Blast radius of creating the skill:
@@ -211,8 +211,8 @@ No skill file modifications permitted.
   mentions; multi-digit numbers supported.)
 - `dispatch_refs_any_md == 0` AND `phase_matches_any_md ≥ 3` → **dispatch-candidate**
 
-**H3 — Wave dispatch adoption** (for lp-build-targeting skills only):
-- Does the skill explicitly reference `lp-build` as its execution skill AND does NOT
+**H3 — Wave dispatch adoption** (for lp-do-build-targeting skills only):
+- Does the skill explicitly reference `lp-do-build` as its execution skill AND does NOT
   reference `wave-dispatch-protocol.md` in any `.md` file in the directory?
   → **wave-candidate** (advisory)
 - Not applicable to non-plan-executor skills.
@@ -234,8 +234,8 @@ Rank within each tier by `phase_matches_any_md` descending:
 3. `low` tier
 
 Invocation tier assignments (fixed, derived from startup-loop Stage Model):
-- `high`: startup-loop, lp-build, lp-plan, lp-replan, lp-sequence, lp-offer,
-  lp-channels, lp-seo, lp-forecast, lp-fact-find
+- `high`: startup-loop, lp-do-build, lp-do-plan, lp-do-replan, lp-sequence, lp-offer,
+  lp-channels, lp-seo, lp-forecast, lp-do-fact-find
 - `medium`: lp-launch-qa, lp-design-qa, lp-experiment, lp-design-spec,
   lp-prioritize, lp-site-upgrade
 - `low`: lp-onboarding-audit, lp-brand-bootstrap, lp-readiness, lp-bos-sync,
@@ -284,7 +284,7 @@ Sections:
 2. **Possible duplicates** (H0): skill pairs with identical SKILL.md hash
 3. **List 1 — Modularization opportunities** (H1): hierarchical, tier-ranked
 4. **List 2 — Dispatch opportunities** (H2/H3): hierarchical, tier-ranked
-5. **Planning anchor** (when new-to-HIGH items exist): `/lp-fact-find` invocation
+5. **Planning anchor** (when new-to-HIGH items exist): `/lp-do-fact-find` invocation
    hint with proposed slug `startup-loop-token-efficiency-v2` (incrementing suffix)
 6. **Delta status**: explicit new-vs-known breakdown, regression flags
 
@@ -404,7 +404,7 @@ startup loop and outside this audit's scope. No open questions remain.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `lp-build`
+- Primary execution skill: `lp-do-build`
 - Supporting skills: none
 - Deliverable acceptance package:
   - `meta-loop-efficiency/SKILL.md` exists; ≤200 lines; invocation format present;
@@ -454,5 +454,5 @@ startup loop and outside this audit's scope. No open questions remain.
 
 - Status: Ready-for-planning
 - Blocking items: none
-- Recommended next step: `/lp-plan` (plan file will be written to
+- Recommended next step: `/lp-do-plan` (plan file will be written to
   `docs/plans/loop-skill-efficiency-audit/plan.md` per frontmatter `Related-Plan`)

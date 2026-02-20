@@ -10,7 +10,7 @@ Last-reviewed: 2026-02-15
 Feature-Slug: brik-policy-fee-clarity-and-booking-perf
 Deliverable-Type: multi-deliverable
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/archive/brik-policy-fee-clarity-and-booking-perf/plan.md
 Business-OS-Integration: on

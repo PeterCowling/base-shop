@@ -13,7 +13,7 @@ Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/startup-loop-token-efficiency-v2/plan.md
 Business-OS-Integration: off
@@ -43,7 +43,7 @@ Modularize the three highest-signal startup-loop skills identified in the 2026-0
 - lp-sequence dispatch adoption — the 5 workflow steps are sequential algorithm stages (graph build → sort → update), not parallel domains; H2 flag is a false positive here
 - lp-channels dispatch adoption — the 6 stages are sequential research steps (each feeds the next); H2 flag is also a false positive; lp-channels being dispatched BY startup-loop is already possible without changes
 - Any changes to skill behaviour, invocation contract, or output format
-- Changes to other skills in scope (lp-forecast, lp-offer, lp-plan, etc. — deferred to future audit cycle)
+- Changes to other skills in scope (lp-forecast, lp-offer, lp-do-plan, etc. — deferred to future audit cycle)
 
 ### Constraints & Assumptions
 
@@ -89,18 +89,18 @@ Modularize the three highest-signal startup-loop skills identified in the 2026-0
 ### Dependency & Impact Map
 
 **lp-design-qa:**
-- Upstream: `/lp-design-spec` (design spec input); `/lp-build` (produces the UI under audit)
-- Downstream: `/lp-build` (receives issue report to fix regressions); `/lp-launch-qa` (assumes design QA passed); human PR reviewers
+- Upstream: `/lp-design-spec` (design spec input); `/lp-do-build` (produces the UI under audit)
+- Downstream: `/lp-do-build` (receives issue report to fix regressions); `/lp-launch-qa` (assumes design QA passed); human PR reviewers
 - Blast radius: SKILL.md split only; no consumer changes needed (all invoke orchestrator)
 
 **lp-sequence:**
-- Upstream: `/lp-plan`, `/lp-replan` (call lp-sequence after structural edits — highest frequency)
-- Downstream: `/lp-build` (uses sequenced plan for wave dispatch)
+- Upstream: `/lp-do-plan`, `/lp-do-replan` (call lp-sequence after structural edits — highest frequency)
+- Downstream: `/lp-do-build` (uses sequenced plan for wave dispatch)
 - Blast radius: SKILL.md split only; invocation contract unchanged
 
 **lp-channels:**
 - Upstream: `/lp-offer`, `/lp-readiness`
-- Downstream: `/draft-marketing`, `/lp-seo`, `/lp-fact-find` (scopes go-items from GTM timeline); `startup-loop` S6B gate
+- Downstream: `/draft-marketing`, `/lp-seo`, `/lp-do-fact-find` (scopes go-items from GTM timeline); `startup-loop` S6B gate
 - Blast radius: SKILL.md split only
 
 ### Patterns & Conventions Observed
@@ -232,7 +232,7 @@ Wave structure: TASK-01, TASK-02, TASK-03 are independent (no file overlap) — 
 
 ## Execution Routing Packet
 
-- Primary execution skill: `lp-build`
+- Primary execution skill: `lp-do-build`
 - Supporting skills: none
 - Deliverable acceptance package:
   - Each task: `wc -l .claude/skills/<skill>/SKILL.md ≤ 200`; `wc -l .claude/skills/<skill>/modules/*.md` (none >400L); `grep -r "modules/" .claude/skills/<skill>/` cross-refs all exist
@@ -268,4 +268,4 @@ Wave structure: TASK-01, TASK-02, TASK-03 are independent (no file overlap) — 
 
 - **Status: Ready-for-planning**
 - Blocking items: none
-- Recommended next step: `/lp-plan startup-loop-token-efficiency-v2`
+- Recommended next step: `/lp-do-plan startup-loop-token-efficiency-v2`

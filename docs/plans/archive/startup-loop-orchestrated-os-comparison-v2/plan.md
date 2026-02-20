@@ -10,8 +10,8 @@ Feature-Slug: startup-loop-orchestrated-os-comparison-v2
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-sequence, lp-replan, lp-fact-find
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-sequence, lp-do-replan, lp-do-fact-find
 Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort (S=1, M=2, L=3)
 Auto-Build-Intent: plan-only
@@ -117,7 +117,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 ### TASK-00: Lock v2 scope boundary (stage-label scope + v1/v2 migration mode)
 - **Type:** DECISION
 - **Deliverable:** `docs/plans/startup-loop-orchestrated-os-comparison-v2/decisions/v2-scope-boundary-decision.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -166,7 +166,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 ### TASK-01: Produce canonical vocabulary + assignment baseline artifact
 - **Type:** INVESTIGATE
 - **Deliverable:** `docs/plans/startup-loop-orchestrated-os-comparison-v2/artifacts/v2-vocabulary-and-assignment-baseline.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -215,7 +215,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 ### TASK-02: Define workstream/workflow taxonomy contract v2
 - **Type:** IMPLEMENT
 - **Deliverable:** Business contract doc defining canonical enums, descriptions, and usage rules
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -287,7 +287,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 ### TASK-03: Create machine-readable process assignment matrix (28 processes)
 - **Type:** IMPLEMENT
 - **Deliverable:** Assignment artifact linking process IDs to `workstream_id` and `workflow_phases[]`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -353,7 +353,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 ### TASK-04: Refactor process registry to v2 naming/assignment structure
 - **Type:** IMPLEMENT
 - **Deliverable:** v2 process registry aligned to taxonomy and assignment matrix
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -427,7 +427,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 ### TASK-05: Add assignment validator script/tests for completeness and enum safety
 - **Type:** IMPLEMENT
 - **Deliverable:** Code validator + tests for process assignment contract integrity
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -492,7 +492,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 ### TASK-06: Update dependent contracts, skills, prompt templates, and operator docs to v2 vocabulary
 - **Type:** IMPLEMENT
 - **Deliverable:** Documentation + skill + prompt-template alignment patch for v2 workstream/workflow language
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -501,7 +501,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - **Reviewer:** startup-loop maintainers + operator
 - **Approval-Evidence:** review acknowledgment in decision log
 - **Measurement-Readiness:** time-to-map top 3 weekly priorities to workstreams (minutes, target <=15) + legacy-term incidence count (`Domain` as primary lane label) in sampled S10 notes
-- **Affects:** `docs/business-os/startup-loop/marketing-sales-capability-contract.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/startup-loop/event-state-schema.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`, `.claude/skills/lp-readiness/SKILL.md`, `.claude/skills/lp-offer/SKILL.md`, `.claude/skills/lp-channels/SKILL.md`, `.claude/skills/lp-fact-find/SKILL.md`, `.claude/skills/lp-plan/SKILL.md`, `.claude/skills/lp-build/SKILL.md`, `docs/business-os/startup-loop/exception-runbooks-v1.md` (v1→v2 re-point), `docs/business-os/startup-loop/audit-cadence-contract-v1.md` (v1→v2 re-point), `docs/business-os/startup-loop/retention-schema.md` (v1→v2 re-point), `docs/business-os/startup-loop/sales-ops-schema.md` (v1→v2 re-point), `[readonly] docs/business-os/startup-loop/process-registry-v2.md`
+- **Affects:** `docs/business-os/startup-loop/marketing-sales-capability-contract.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/startup-loop/event-state-schema.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`, `.claude/skills/lp-readiness/SKILL.md`, `.claude/skills/lp-offer/SKILL.md`, `.claude/skills/lp-channels/SKILL.md`, `.claude/skills/lp-do-fact-find/SKILL.md`, `.claude/skills/lp-do-plan/SKILL.md`, `.claude/skills/lp-do-build/SKILL.md`, `docs/business-os/startup-loop/exception-runbooks-v1.md` (v1→v2 re-point), `docs/business-os/startup-loop/audit-cadence-contract-v1.md` (v1→v2 re-point), `docs/business-os/startup-loop/retention-schema.md` (v1→v2 re-point), `docs/business-os/startup-loop/sales-ops-schema.md` (v1→v2 re-point), `[readonly] docs/business-os/startup-loop/process-registry-v2.md`
 - **Depends on:** TASK-04, TASK-10
 - **Blocks:** TASK-08
 - **Confidence:** 80%
@@ -552,7 +552,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - Status: Complete
   - Affected files: exception-runbooks-v1.md (7 refs), audit-cadence-contract-v1.md (8 refs), retention-schema.md (4 refs), sales-ops-schema.md (4 refs), marketing-sales-capability-contract.md (2 refs) — 25 total string replacements
   - Group 2 (startup-loop-workflow.user.md, event-state-schema.md, weekly-kpcs-decision-prompt.md): clean — no deprecated workstream long-form names or Domain-as-lane-term usage found
-  - Group 3 (6 skill docs: lp-readiness, lp-offer, lp-channels, lp-fact-find, lp-plan, lp-build): clean — no deprecated workstream vocabulary in instructional content
+  - Group 3 (6 skill docs: lp-readiness, lp-offer, lp-channels, lp-do-fact-find, lp-do-plan, lp-do-build): clean — no deprecated workstream vocabulary in instructional content
   - VC-06-01: PASS — `rg process-registry-v1` in all 5 consumer files = 0 hits
   - VC-06-02: PASS — no doc changes touched stage ordering or loop-spec.yaml references
   - VC-06-03: PASS (structural) — operator mapping clarity improved by consistent v2 registry pointer
@@ -563,7 +563,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 ### TASK-07: Add compatibility regression checks (addressing, generator, assignment)
 - **Type:** IMPLEMENT
 - **Deliverable:** Test and check updates ensuring v2 does not break existing addressing semantics
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
@@ -626,7 +626,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 ### TASK-08: Completion checkpoint — Option B label rename confirmed + supersede-now archive clean
 - **Type:** CHECKPOINT
 - **Deliverable:** Completion evidence record confirming Option B label rename complete and supersede-now archive clean
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
@@ -638,7 +638,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - Approach: 95% - prevents accidental expansion into high-risk rename work.
   - Impact: 95% - controls scope and confidence before next wave.
 - **Acceptance:**
-  - `/lp-build` checkpoint executor run.
+  - `/lp-do-build` checkpoint executor run.
   - All TC-07 tests passing (including TC-07-05 label rename correctness + TC-07-06 alias fallback).
   - `rg process-registry-v1` scan confirms zero authoritative references remain in the 5 consumer files.
   - v1 registry tombstone header present and correct.
@@ -668,7 +668,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 ### TASK-09: Write failing RED tests for stage-label rename (TDD gate for Option B)
 - **Type:** SPIKE
 - **Deliverable:** `scripts/src/startup-loop/__tests__/stage-label-rename.test.ts` (failing test file — RED phase)
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
@@ -694,7 +694,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - TC-09-03: tests are isolated (no side effects on other test suites).
 - **Execution plan:** Write failing tests only (no implementation). RED phase.
 - **Planning validation:** None (S-effort SPIKE; seam confirmed by evidence scan).
-- **Scouts:** None: integration seam fully confirmed by /lp-replan evidence scan.
+- **Scouts:** None: integration seam fully confirmed by /lp-do-replan evidence scan.
 - **Edge Cases & Hardening:**
   - Parameterize label assertions per stage ID so a single fixture covers all renamed stages.
 - **Rollout / rollback:**
@@ -716,7 +716,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 ### TASK-10: supersede-now consumer breakage audit
 - **Type:** INVESTIGATE
 - **Deliverable:** `docs/plans/startup-loop-orchestrated-os-comparison-v2/artifacts/v1-consumer-audit.md`
-- **Execution-Skill:** lp-build
+- **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
@@ -725,7 +725,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - **Blocks:** TASK-04, TASK-06
 - **Confidence:** 88%
 - **Build Evidence (2026-02-18):**
-  - Status: Complete (executed during /lp-replan evidence pass)
+  - Status: Complete (executed during /lp-do-replan evidence pass)
   - Method: ripgrep scan for `process-registry-v1` + `## Domain:` references across repo
   - Key findings:
     - 5 high-risk authoritative consumers: exception-runbooks-v1.md, audit-cadence-contract-v1.md, retention-schema.md, sales-ops-schema.md, marketing-sales-capability-contract.md
@@ -770,11 +770,11 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - 2026-02-18: Plan patched from reviewer feedback: dependency unblocking, workflow-phase semantics, source-of-truth/deprecation policy, schema-versioned matrix requirements, and measurable rollout criteria.
 - 2026-02-18: Plan patched again for consistency and enforcement: TASK-00/TASK-01 gating alignment, machine-readable taxonomy enum source, explicit transitional process-ID authority, activation field semantics/tests, CI rollout mode, and baseline observability protocol.
 - 2026-02-18: TASK-01 complete. Vocabulary/assignment baseline artifact produced at `artifacts/v2-vocabulary-and-assignment-baseline.md`. Wave 2 partially eligible: TASK-02 runnable; TASK-00 is DECISION type (requires plan/replan resolution before TASK-04/TASK-06/TASK-07 can proceed).
-- 2026-02-18: TASK-00 closed. Operator decisions: **Option B** (stage labels renamed this wave) + **`supersede-now`** (v2 immediately replaces v1, no coexist). Decision artifact at `decisions/v2-scope-boundary-decision.md`. Routing to /lp-replan to add TDD de-risking tasks for label rename and supersede-now scope expansion.
-- 2026-02-18: /lp-replan complete. Key findings: alias[] mechanism already exists in stage-operator-dictionary.yaml — Option B scope is YAML field updates only, no source changes to stage-addressing.ts or generator. TASK-09 (SPIKE, RED tests) + TASK-10 (consumer audit, Complete) added. TASK-04/06/07/08 updated. Topology re-sequenced. Plan re-confidence: TASK-04 78→80%, TASK-07 76→82%, TASK-06 81→80% (scope expanded M).
+- 2026-02-18: TASK-00 closed. Operator decisions: **Option B** (stage labels renamed this wave) + **`supersede-now`** (v2 immediately replaces v1, no coexist). Decision artifact at `decisions/v2-scope-boundary-decision.md`. Routing to /lp-do-replan to add TDD de-risking tasks for label rename and supersede-now scope expansion.
+- 2026-02-18: /lp-do-replan complete. Key findings: alias[] mechanism already exists in stage-operator-dictionary.yaml — Option B scope is YAML field updates only, no source changes to stage-addressing.ts or generator. TASK-09 (SPIKE, RED tests) + TASK-10 (consumer audit, Complete) added. TASK-04/06/07/08 updated. Topology re-sequenced. Plan re-confidence: TASK-04 78→80%, TASK-07 76→82%, TASK-06 81→80% (scope expanded M).
 - 2026-02-18: Wave 3 complete (TASK-03 + TASK-09). process-assignment-v2.yaml written (28/28 processes, OPS-4 phase ordering corrected). SPIKE finding: Option B label rename scope = ZERO — no stage labels contain deprecated workstream terminology; no label field changes needed in stage-operator-dictionary.yaml. stage-label-rename.test.ts: 87 pass, 2 todo, 0 fail. Wave 4 eligible: TASK-04 + TASK-05.
-- 2026-02-18: TASK-04 complete. process-registry-v2.md created (28 processes, 7 canonical Workstream sections, 4 assignment rows per process, Authority & Deprecation Policy, VC-04-A/B/C all pass). v1 tombstoned. stage-operator-dictionary.yaml: zero changes (label scope = zero per TASK-09). TASK-05 at 76% below IMPLEMENT threshold — routed to /lp-replan.
-- 2026-02-18: /lp-replan complete (TASK-05). E2 evidence: generate-stage-operator-views.ts confirmed as near-complete template; `node --import tsx` hook confirmed; --check flag NOT needed for pure validators; all deps in place. TASK-05 confidence 76% → 82%. Execution hook acceptance clarified. No topology changes. TASK-05 ready for /lp-build.
+- 2026-02-18: TASK-04 complete. process-registry-v2.md created (28 processes, 7 canonical Workstream sections, 4 assignment rows per process, Authority & Deprecation Policy, VC-04-A/B/C all pass). v1 tombstoned. stage-operator-dictionary.yaml: zero changes (label scope = zero per TASK-09). TASK-05 at 76% below IMPLEMENT threshold — routed to /lp-do-replan.
+- 2026-02-18: /lp-do-replan complete (TASK-05). E2 evidence: generate-stage-operator-views.ts confirmed as near-complete template; `node --import tsx` hook confirmed; --check flag NOT needed for pure validators; all deps in place. TASK-05 confidence 76% → 82%. Execution hook acceptance clarified. No topology changes. TASK-05 ready for /lp-do-build.
 - 2026-02-18: TASK-05 complete. Validator (`validate-process-assignment.ts`) and tests (`validate-process-assignment.test.ts`) written following generate-stage-operator-views.ts template. 21/21 tests pass (TC-05-01..07). Live validator: 28/28 processes valid. `validate-process-assignment` npm script added to scripts/package.json. Wave 5 eligible: TASK-06 + TASK-07.
 - 2026-02-18: Wave 5 complete (TASK-06 + TASK-07). TASK-06: 5 consumer files re-pointed (25 replacements total); all Group 2/3 files clean — no changes needed; VC-06-01..06 all pass; rg scan zero hits. TASK-07: 163/163 tests pass, 0 fail — no additions needed; all TC-07-01..06 satisfied by existing test coverage. Wave 6 eligible: TASK-08 (CHECKPOINT).
 - 2026-02-18: TASK-08 CHECKPOINT complete. All 3 horizon assumptions validated. Option B label rename scope = ZERO (no changes needed). supersede-now archive clean (0 v1 hits in 5 consumer files). 33 suites, 451 tests pass. Plan Status: Complete.

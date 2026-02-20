@@ -7,7 +7,7 @@ Relates-to charter: docs/runtime/runtime-charter.md
 Created: 2026-01-24
 Created-by: Codex (GPT-5)
 Last-updated: 2026-02-07
-Last-updated-by: Claude (review-fact-check)
+Last-updated-by: Claude (lp-do-factcheck)
 ---
 
 # Plan: Re-enable linting for apps/cover-me-pretty
@@ -44,7 +44,7 @@ Cover-me-pretty is the runtime storefront we use for e2e smoke flows. Linting is
    - TryOnPanel imports are clean (no `import/no-duplicates` violations).
 4. **Scoped ESLint override**: (Status: ✅ done — override exists at `eslint.config.mjs` lines ~1928-1937 with `complexity: 45` and `max-lines-per-function: 400`)
 5. **Validation**: (Status: ✅ done — `pnpm --filter "@apps/cover-me-pretty" lint` exits 0 with zero errors)
-6. **Document and close the plan**: (Status: ✅ done — updated 2026-02-07 via review-fact-check)
+6. **Document and close the plan**: (Status: ✅ done — updated 2026-02-07 via lp-do-factcheck)
 
 ## Acceptance Criteria
 - `pnpm --filter @apps/cover-me-pretty lint` exits 0 with no ESLint errors.

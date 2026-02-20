@@ -73,14 +73,14 @@ Key insight from external research: **Tools should be agent-first** — designed
 
 ### Skill Inventory (Current)
 
-> **Note (2026-02-11 review-fact-check):** This snapshot listed 14 skills at plan creation (2026-01-20). The repo now contains **40 skills** in `.claude/skills/`. The original 14 are listed below; see `.claude/skills/*/SKILL.md` for the full current set. Skills were NOT migrated to `.agents/skills/` (see Phase 2 tasks).
+> **Note (2026-02-11 lp-do-factcheck):** This snapshot listed 14 skills at plan creation (2026-01-20). The repo now contains **40 skills** in `.claude/skills/`. The original 14 are listed below; see `.claude/skills/*/SKILL.md` for the full current set. Skills were NOT migrated to `.agents/skills/` (see Phase 2 tasks).
 
 ```
 .claude/skills/
-├── lp-fact-find/SKILL.md            ✅ Core workflow
-├── lp-plan/SKILL.md         ✅ Core workflow
-├── lp-build/SKILL.md        ✅ Core workflow
-├── lp-replan/SKILL.md              ✅ Core workflow
+├── lp-do-fact-find/SKILL.md            ✅ Core workflow
+├── lp-do-plan/SKILL.md         ✅ Core workflow
+├── lp-do-build/SKILL.md        ✅ Core workflow
+├── lp-do-replan/SKILL.md              ✅ Core workflow
 ├── create-ui-component/SKILL.md  ✅ Component creation
 ├── add-component-tests/SKILL.md  ✅ Testing
 ├── add-form-validation/SKILL.md  ✅ Forms
@@ -234,7 +234,7 @@ Phases are thematic groupings; the critical path is the actual execution order a
   - **Fact-check (2026-02-11)**: Partially done. `scripts/validate-agent-manifest.js` exists but is a stub (`console.log('PASS'); process.exit(0)`) — no actual validation logic. CI step exists in `.github/workflows/ci.yml` (line 127) but runs the no-op stub. `js-yaml` is not a direct dependency.
 
 - [ ] **AGENT-05**: Migrate core skills to `.agents/`
-  - **Scope**: Migrate only core workflow skills first (`lp-plan.md`, `lp-build.md`)
+  - **Scope**: Migrate only core workflow skills first (`lp-do-plan.md`, `lp-do-build.md`)
   - **Remaining 10 skills**: Left in `.claude/skills/` for now; migrate incrementally in follow-up tasks or leave in place if working
   - Update references in `AGENTS.md`, `CODEX.md`, `CLAUDE.md`
   - **Backward compatibility strategy (no symlinks)**:
@@ -242,7 +242,7 @@ Phases are thematic groupings; the critical path is the actual execution order a
       ```markdown
       # Moved
 
-      This skill has moved to `.agents/skills/workflows/lp-plan.md`.
+      This skill has moved to `.agents/skills/workflows/lp-do-plan.md`.
 
       Please read the new location.
       ```
@@ -519,7 +519,7 @@ If the `.agents/` migration causes problems:
 
 1. **Immediate**: Stub files in `.claude/skills/` still work — agents can follow redirects or ignore them
 2. **Short-term**: Restore **original** skill files (not stubs) to `.claude/skills/` from git history
-   - Use: `git checkout <commit-before-migration> -- .claude/skills/lp-plan/SKILL.md .claude/skills/lp-build/SKILL.md`
+   - Use: `git checkout <commit-before-migration> -- .claude/skills/lp-do-plan/SKILL.md .claude/skills/lp-do-build/SKILL.md`
 3. **Full rollback**:
    - `git rm -r .agents/`
    - Restore original `.claude/skills/` files from commit before migration (replaces stubs with originals)
@@ -541,7 +541,7 @@ The `.claude/` directory is Claude Code-specific. OpenAI's Codex may not read it
 
 During migration:
 1. Keep stub files in `.claude/skills/` that redirect to `.agents/skills/`
-   - Example stub content: `# Moved to .agents/skills/workflows/lp-plan.md`
+   - Example stub content: `# Moved to .agents/skills/workflows/lp-do-plan.md`
 2. Update documentation to reference new locations
 3. Remove stubs after confirming both agents use `.agents/` paths reliably
 

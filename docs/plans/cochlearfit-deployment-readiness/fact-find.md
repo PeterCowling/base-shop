@@ -11,7 +11,7 @@ Feature-Slug: cochlearfit-deployment-readiness
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/cochlearfit-deployment-readiness/plan.md
 Business-OS-Integration: off
@@ -578,7 +578,7 @@ INVENTORY_AUTHORITY_TOKEN = "REPLACE_ME"              # COMMITTED PLACEHOLDER
 
 ---
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 **Implementation: 70%**
 - Medium-high confidence: Cart/checkout are production-quality
@@ -812,7 +812,7 @@ INVENTORY_AUTHORITY_TOKEN = "REPLACE_ME"              # COMMITTED PLACEHOLDER
 
 **Recommended Next Steps:**
 1. ✅ All decisions made (long-term quality choices)
-2. Run `/lp-plan` to create detailed task breakdown with dependencies
+2. Run `/lp-do-plan` to create detailed task breakdown with dependencies
 3. Start Stripe account setup immediately (longest lead time)
 4. Once Stripe Price IDs available, unblock Worker catalog bundling (TASK-04, TASK-05)
 5. Parallel: Select email service and start domain verification

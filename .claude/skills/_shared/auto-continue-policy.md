@@ -22,15 +22,15 @@ Silence is not approval.
 
 ## Execution Scope
 
-- Auto-continue invokes `/lp-build <feature-slug>`.
+- Auto-continue invokes `/lp-do-build <feature-slug>`.
 - Build execution continues until a checkpoint or threshold stop condition.
 
 ## CHECKPOINT Cross-Skill Contract
 
-- `/lp-build` owns checkpoint execution behavior.
-- When `/lp-build` reaches a CHECKPOINT task, it must:
+- `/lp-do-build` owns checkpoint execution behavior.
+- When `/lp-do-build` reaches a CHECKPOINT task, it must:
   1. stop normal build progression,
-  2. invoke `/lp-replan` for downstream tasks,
+  2. invoke `/lp-do-replan` for downstream tasks,
   3. resume only if revised downstream tasks remain build-eligible.
 
-`/lp-plan` must not bypass this contract.
+`/lp-do-plan` must not bypass this contract.

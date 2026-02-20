@@ -10,7 +10,7 @@ Feature-Slug: ds-compliance-v2
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Overall-confidence: 89%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -117,7 +117,7 @@ This avoids the big-bang risk of enabling all rules at once, and front-loads the
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — eslint-disable comments in 5 design-system primitive files
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `packages/design-system/src/primitives/scroll-area.tsx` — 2 warnings (no-arbitrary-tailwind + no-raw-radius for `rounded-[inherit]`)
   - `packages/design-system/src/primitives/slider.tsx` — 1 warning (enforce-focus-ring-token)
@@ -159,7 +159,7 @@ This avoids the big-bang risk of enabling all rules at once, and front-loads the
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — eslint-disable comments in 13 files
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/business-os/src/app/api/board-version/route.ts`
   - `apps/business-os/src/app/api/cards/[id]/route.ts`
@@ -213,7 +213,7 @@ This avoids the big-bang risk of enabling all rules at once, and front-loads the
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix or eslint-disable in 1 file (CardActionsPanel.tsx has 4 warnings; StepFlowShell.tsx handled in DS-01)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/business-os/src/components/card-detail/CardActionsPanel.tsx` — 4 min-tap-size warnings
 - **Depends on:** -
@@ -248,7 +248,7 @@ This avoids the big-bang risk of enabling all rules at once, and front-loads the
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `eslint.config.mjs` reception override blocks
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `eslint.config.mjs` — lines ~1589-1601 (first reception override) and ~2291-2308 (second reception override)
   - `[readonly] packages/eslint-plugin-ds/src/rules/` — rule names for reference
@@ -296,7 +296,7 @@ This avoids the big-bang risk of enabling all rules at once, and front-loads the
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix ~15 violations in reception + escalate rules in config
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/reception/src/` — estimated ~10 files with token violations
   - `eslint.config.mjs` — escalate 3 rules from warn to error in reception override
@@ -340,7 +340,7 @@ This avoids the big-bang risk of enabling all rules at once, and front-loads the
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix ~91 violations in reception + escalate rules in config
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `apps/reception/src/` — estimated ~45 files with spacing/arbitrary-tailwind violations
   - `eslint.config.mjs` — escalate 2 rules from warn to error in reception override
@@ -375,14 +375,14 @@ This avoids the big-bang risk of enabling all rules at once, and front-loads the
 - **Notes / references:**
   - Spacing tokens: check `packages/themes/base/tokens.static.css` and `tokens.dynamic.css` for available spacing scale
   - Non-tokenizable arbitrary values (e.g., `w-[calc(100%-2rem)]`) get eslint-disable with justification
-  - If actual violation count significantly exceeds estimates (>120), stop and `/lp-replan` to split
+  - If actual violation count significantly exceeds estimates (>120), stop and `/lp-do-replan` to split
 
 ### DS-07: Escalate Prime non-color rules from warn to error
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — update Prime override in `eslint.config.mjs`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `eslint.config.mjs` — lines ~2376-2407 (Prime override block)
 - **Depends on:** -
@@ -425,7 +425,7 @@ This avoids the big-bang risk of enabling all rules at once, and front-loads the
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — final verification pass, config cleanup
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `eslint.config.mjs` — any remaining config cleanup
 - **Depends on:** DS-01, DS-02, DS-03, DS-04, DS-05, DS-06, DS-07

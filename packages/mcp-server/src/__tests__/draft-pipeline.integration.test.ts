@@ -78,6 +78,14 @@ jest.mock("../tools/gmail.js", () => ({
   appendTelemetryEvent: jest.fn(),
 }));
 
+// TASK-08: Prevent integration test runs from writing selection events to the
+// production draft-signal-events.jsonl. appendJsonlEvent is best-effort
+// (called with .catch(() => {})) so a no-op mock is sufficient.
+jest.mock("../utils/signal-events.js", () => ({
+  ...jest.requireActual("../utils/signal-events.js"),
+  appendJsonlEvent: jest.fn(() => Promise.resolve()),
+}));
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------

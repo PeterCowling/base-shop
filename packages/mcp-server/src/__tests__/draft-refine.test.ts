@@ -24,6 +24,14 @@ import { readFileSync } from "node:fs";
 
 import { handleDraftRefineTool } from "../tools/draft-refine";
 
+// TASK-08: Prevent test runs from writing orphaned refinement events to the
+// production draft-signal-events.jsonl. appendJsonlEvent is best-effort
+// (called with .catch(() => {})) so a no-op mock is sufficient.
+jest.mock("../utils/signal-events.js", () => ({
+  ...jest.requireActual("../utils/signal-events.js"),
+  appendJsonlEvent: jest.fn(() => Promise.resolve()),
+}));
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------

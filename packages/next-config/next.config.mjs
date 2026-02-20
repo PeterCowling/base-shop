@@ -77,15 +77,9 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       ]) {
         config.resolve.alias[`node:${mod}`] = mod;
       }
-
-      if (webpack?.NormalModuleReplacementPlugin) {
-        config.plugins ??= [];
-        config.plugins.push(
-          new webpack.NormalModuleReplacementPlugin(/^node:/, (resource) => {
-            resource.request = resource.request.replace(/^node:/, "");
-          }),
-        );
-      }
+      // Cover sub-path specifiers not handled by the bare-module loop above.
+      config.resolve.alias["node:fs/promises"] = "fs/promises";
+      config.resolve.alias["node:stream/web"] = "stream/web";
     }
 
     return config;

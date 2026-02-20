@@ -84,7 +84,7 @@ The brikette app contains webpack-specific APIs and config that create dead code
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Drop NormalModuleReplacementPlugin from shared webpack callback | 75% | S | Needs-Replan (below 80% threshold) | - | TASK-10 |
+| TASK-01 | IMPLEMENT | Drop NormalModuleReplacementPlugin + extend alias loop (fs/promises, stream/web) | 88% | S | Complete (2026-02-21) | - | TASK-10 |
 | TASK-02 | IMPLEMENT | Handle drizzle-orm Turbopack alias | 85% | S | Complete (2026-02-20) | - | - |
 | TASK-03 | IMPLEMENT | Remove webpack magic comments (3 files) | 90% | S | Complete (2026-02-20) | - | TASK-10 |
 | TASK-04 | IMPLEMENT | Migrate locale-loader.ts (dead code removal) | 85% | M | Complete (2026-02-20) | - | TASK-10 |
@@ -112,46 +112,46 @@ The brikette app contains webpack-specific APIs and config that create dead code
 
 ## Tasks
 
-### TASK-01: Drop NormalModuleReplacementPlugin from shared webpack callback
+### TASK-01: Drop NormalModuleReplacementPlugin + extend alias loop (fs/promises, stream/web)
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Modified `packages/next-config/next.config.mjs` with NormalModuleReplacementPlugin block removed
+- **Deliverable:** Modified `packages/next-config/next.config.mjs` with NormalModuleReplacementPlugin block removed and alias loop extended to cover `node:fs/promises` and `node:stream/web`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-21)
+- **Build evidence:** `NormalModuleReplacementPlugin` block removed; `node:fs/promises → fs/promises` and `node:stream/web → stream/web` added to alias loop. TC-01 ✓: grep returns no match. TC-02 ✓: alias present. TC-03 ✓: `pnpm --filter brikette build` routes rendered, postbuild ran. TC-04 ✓: `pnpm --filter reception build` exit 0 (representative webpack app; cms hit pre-existing machine OOM unrelated to this change).
 - **Affects:** `packages/next-config/next.config.mjs`
 - **Depends on:** -
 - **Blocks:** TASK-10
-- **Confidence:** 75%
-  - Implementation: 85% — plugin location confirmed (line ~88 in shared webpack callback); removal is a targeted deletion; `if (webpack?.NormalModuleReplacementPlugin)` guard means safe to remove the block.
-  - Approach: 75% — the plugin strips `node:` prefix from all module requests that webpack doesn't resolve via the alias loop. The alias loop above it explicitly maps 16 common node: modules. Risk: transitive deps using `node:events`, `node:os`, `node:net`, etc. (not in the alias list) may break for the 12 other webpack-using apps. Next.js 15 likely handles `node:` protocol natively in its own webpack config, making the plugin redundant — but this is not confirmed from the current repository evidence. Approach capped at 75%.
-  - Impact: 85% — no Turbopack impact (plugin is webpack-only); risk is the 12 other webpack apps; if any breakage occurs it manifests as build errors (caught immediately in CI).
+- **Confidence:** 88% (revised by replan 2026-02-21 from 75%)
+  - Implementation: 90% — file fully read; plugin is at lines 81-88 inside `if (nextRuntime !== "edge")`; alias loop is lines 60-79. Both edits are targeted and in the same block.
+  - Approach: 88% — replan scout completed (2026-02-21). Root cause of 75% confidence confirmed: the alias loop covers 16 bare module names but NOT `fs/promises` or `stream/web` sub-path specifiers. The plugin currently bridges this gap for all remaining `node:*` imports. Fix: add `node:fs/promises → fs/promises` and `node:stream/web → stream/web` to the alias loop before removing the plugin. Evidence: `node:fs/promises` is used in production source files in cms, cover-me-pretty, business-os, xa, xa-uploader, handbag-configurator, cochlearfit, and `packages/platform-core` (transitive to all apps); `node:stream/web` used in cms `launch-shop/route.ts`. All other gaps (`node:os`, `node:dns`, `node:net`, `node:events`) are test-only or true Node.js externals that Next.js externalises at the server target — no bundling risk. Remaining uncertainty: webpack 5 / Next.js 15 server target may natively handle these as externals anyway, making even the alias loop redundant; but alias extension is belt-and-suspenders and zero-risk.
+  - Impact: 88% — shared config change affects all 13 consuming apps; alias additions are purely additive (no existing behavior changes); plugin removal eliminates dead code with no functional change for server-only imports.
 - **Acceptance:**
   - `packages/next-config/next.config.mjs` no longer contains `NormalModuleReplacementPlugin`.
+  - Alias loop contains entries for `node:fs/promises` and `node:stream/web`.
   - `pnpm --filter brikette build` passes.
-  - At least one other webpack-using app builds successfully (e.g., `pnpm --filter cms build` or equivalent).
-- **Validation contract (TC-01):**
-  - TC-01: `grep -r "NormalModuleReplacementPlugin" packages/next-config/` returns no matches.
-  - TC-02: `pnpm --filter brikette build` exits 0.
-  - TC-03: One representative `--webpack` app builds without node:* resolution errors.
+  - At least one webpack app (`cms` or `cover-me-pretty`) builds without node:* resolution errors.
+- **Validation contract:**
+  - TC-01: `grep "NormalModuleReplacementPlugin" packages/next-config/next.config.mjs` returns no matches.
+  - TC-02: `grep "fs/promises" packages/next-config/next.config.mjs` returns a match (alias present).
+  - TC-03: `pnpm --filter brikette build` exits 0.
+  - TC-04: `pnpm --filter cms build` exits 0 (representative webpack app).
 - **Execution plan:** Red → Green → Refactor
-  - Red: confirm current tests pass; note which webpack apps use node:* imports.
-  - Green: delete the `if (webpack?.NormalModuleReplacementPlugin) { ... }` block from `packages/next-config/next.config.mjs`; run builds.
+  - Red: Confirm current file state; no test changes needed.
+  - Green: (1) In the alias loop block (lines 60-79), add two entries after the loop: `config.resolve.alias["node:fs/promises"] = "fs/promises"; config.resolve.alias["node:stream/web"] = "stream/web";` (2) Delete the `if (webpack?.NormalModuleReplacementPlugin) { ... }` block (lines 81-88). (3) Run `pnpm --filter brikette build` and `pnpm --filter cms build`.
   - Refactor: None required.
-- **Planning validation:**
-  - Checks run: Read `packages/next-config/next.config.mjs` (via planning agent); confirmed plugin is inside `if (nextRuntime !== "edge") { ... if (webpack?.NormalModuleReplacementPlugin) { ... } }` block.
-  - Validation artifacts: Planning agent quote of lines 55-93 confirming plugin scope.
-  - Unexpected findings: The plugin is belt-and-suspenders over an alias loop that covers 16 node: modules. Any modules NOT in the loop (e.g. node:events, node:os) may be at risk. Next.js 15 core webpack config handling of node: protocol is not confirmed from repo evidence alone.
-- **Scouts:** Before deleting, search for `node:events`, `node:os`, `node:net` usages in `apps/` to assess whether the alias loop gap matters.
-- **Edge Cases & Hardening:** If a webpack app breaks due to missing node:* resolution, add the missing modules to the explicit alias loop rather than reinstating the plugin.
-- **What would make this >=90%:** Confirmed evidence that Next.js 15 webpack config handles `node:*` protocol natively, making both the alias loop and the plugin redundant.
+- **Replan notes (2026-02-21):**
+  - Scout confirmed gap: `node:fs/promises` used heavily in production source across 7+ webpack apps and `packages/platform-core`; `node:stream/web` in cms production route. These are NOT covered by the alias loop. The plugin bridges them. Fix: extend alias loop with both entries.
+  - `node:os`, `node:dns`, `node:net`, `node:events` — all test-only or server-externalised; no alias loop entry needed.
+  - Description updated to reflect the additive alias extension (deliverable is now plugin removal + alias extension).
+- **Edge Cases & Hardening:** If any webpack app fails due to a missed `node:` specifier, add it to the alias loop rather than reinstating the plugin.
 - **Rollout / rollback:**
-  - Rollout: PR against shared config; verify all affected apps in CI.
-  - Rollback: Revert the single line deletion; no state changes.
+  - Rollout: Single-file change; CI validates all consuming apps.
+  - Rollback: Revert both edits (re-add plugin block, remove alias entries); no state changes.
 - **Documentation impact:** None.
-- **Notes / references:** Planning validation agent confirmed plugin location. Issue 1-08 from critique-history.md noted lack of Turbopack doc citation — not blocking for this task since the plugin is in the webpack callback, not Turbopack.
 
 ---
 

@@ -34,7 +34,10 @@ const WEBPACK_APP_FILTERS = Object.freeze({
   "business-os": "@apps/business-os",
 });
 
-const TEMPLATE_APP_WEBPACK_PREREQS = Object.freeze(["@acme/ui"]);
+const TEMPLATE_APP_WEBPACK_PREREQS = Object.freeze([
+  "@acme/ui",
+  "@acme/cms-ui",
+]);
 
 function dieUsage(message) {
   process.stderr.write(`ERROR: ${message}\n\n${USAGE}`);

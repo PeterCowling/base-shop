@@ -41,6 +41,7 @@ describe("i18n resolver contract surface labels (dry-run)", () => {
     const r = runCheck(["--dry-run", "--webpack-apps", "template-app,business-os", "--skip-node"]);
     expect(r.status).toBe(0);
     expect(r.stdout).toContain("webpack-prereq:@acme/ui");
+    expect(r.stdout).toContain("webpack-prereq:@acme/cms-ui");
     expect(r.stdout).toContain("webpack:template-app");
     expect(r.stdout).toContain("webpack:business-os");
   });
@@ -64,6 +65,7 @@ describe("i18n resolver contract surface labels (dry-run)", () => {
     const r = runCheck(["--dry-run", "--skip-webpack", "--skip-node"]);
     expect(r.status).toBe(0);
     expect(r.stdout).not.toContain("webpack-prereq:@acme/ui");
+    expect(r.stdout).not.toContain("webpack-prereq:@acme/cms-ui");
     expect(r.stdout).not.toContain("webpack:template-app");
     expect(r.stdout).not.toContain("webpack:business-os");
     // build-lifecycle:brikette should still appear

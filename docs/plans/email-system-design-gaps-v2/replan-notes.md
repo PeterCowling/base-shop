@@ -2,7 +2,7 @@
 Type: Notes
 Status: Active
 Domain: API
-Last-reviewed: 2026-02-19
+Last-reviewed: 2026-02-20
 Relates-to: docs/plans/email-system-design-gaps-v2/plan.md
 ---
 
@@ -388,3 +388,57 @@ Backward-compatible defaults when metadata is missing:
 - Keep promotional fixtures as true negatives:
   - `Allow login in Octorate`
   - `A customer saved their research`
+
+## Invocation (Run 4)
+
+- Skill: `/lp-replan` (standard mode)
+- Date: 2026-02-20
+- Scope: reassess Wave 7 `IMPLEMENT` tasks below threshold (`TASK-07`, `TASK-10`) and impacted dependent (`TASK-08`).
+
+## Gate Outcomes (Run 4)
+
+- Promotion Gate: met for `TASK-07` (`75%` -> `80%`) and `TASK-10` (`75%` -> `80%`) with fresh E2 evidence and completed precursor chain (`TASK-14`, `TASK-15`).
+- Validation Gate: met; TC-07 and TC-10 now include explicit test metadata (type/location/run) for build readiness.
+- Precursor Gate: unchanged; no new precursor tasks required.
+- Sequencing Gate: no topology change (stable task IDs/dependencies retained), so no `/lp-sequence` rerun required.
+- Escalation Gate: no additional user decisions required; D1/D2/D3 remain sufficient.
+
+## Evidence (Run 4, E2/E1)
+
+- Command:
+  - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts --maxWorkers=2`
+  - Result: `2/2` suites passed, `62/62` tests passed.
+- Command:
+  - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts packages/mcp-server/src/__tests__/startup-loop-octorate-bookings.test.ts --maxWorkers=2`
+  - Result: `2/2` suites passed, `23/23` tests passed.
+- Command:
+  - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/gmail-audit-log.test.ts --maxWorkers=2`
+  - Result: `1/1` suite passed, `5/5` tests passed.
+- Command:
+  - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/startup-loop-tools.integration.test.ts --maxWorkers=2`
+  - Result: `1/1` suite passed, `17/17` tests passed.
+- Gmail MCP spot-checks (2026-02-20):
+  - `newer_than:90d from:noreply@smtp.octorate.com subject:"NEW RESERVATION"` -> `100` returned, `hasMore=true` (tool cap unchanged).
+  - `newer_than:90d from:noreply@smtp.octorate.com subject:"NEW CANCELLATION"` -> `31` returned, `hasMore=false`.
+  - `newer_than:90d label:"Brikette/Outcome/Promotional" from:noreply@smtp.octorate.com` -> `23` returned, `hasMore=false`.
+- E1 call-site checks:
+  - Draft fallback + telemetry emission seam remains explicit: `packages/mcp-server/src/tools/draft-generate.ts:1156-1165`.
+  - Draft quality invocation is still deterministic and trigger-driven: `packages/mcp-server/src/tools/draft-generate.ts:1240-1253`.
+  - Parser classifier gate uses narrow monitor regexes (`^new reservation`, `^new cancellation`): `packages/mcp-server/src/tools/gmail.ts:367-377`, `packages/mcp-server/src/tools/gmail.ts:1171-1189`.
+  - Promotional sample output remains tool-capped at 10 for dry-run reports: `packages/mcp-server/src/tools/gmail.ts:2164-2170`.
+
+## Replan Decisions (Run 4)
+
+- Promoted `TASK-07` to `80%`:
+  - TASK-14 removed storage/transition/idempotency ambiguity.
+  - Fresh governed draft + audit log tests confirm ingestion seam viability and append-only persistence reliability.
+- Promoted `TASK-10` to `80%`:
+  - TASK-15 converted long-tail variant uncertainty into a bounded fixture backlog + measurable baseline.
+  - Fresh routing tests reconfirm cancellation/booking handling seam stability before parser expansion.
+- Kept `TASK-08` at `75%`:
+  - Dependency on unfinished `TASK-07` remains; no change to promotion prerequisites.
+
+## Next Build Order
+
+1. Run `/lp-build` for Wave 7 (`TASK-07`, `TASK-10`).
+2. Re-run `/lp-replan` for `TASK-08` after `TASK-07` completes.

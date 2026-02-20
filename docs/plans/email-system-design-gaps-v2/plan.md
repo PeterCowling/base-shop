@@ -5,14 +5,14 @@ Domain: API
 Workstream: Engineering
 Created: 2026-02-19
 Last-updated: 2026-02-20
-Last-reviewed: 2026-02-19
+Last-reviewed: 2026-02-20
 Feature-Slug: email-system-design-gaps-v2
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-build
 Supporting-Skills: none
-Overall-confidence: 81%
+Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan-only
 Business-OS-Integration: off
@@ -77,8 +77,8 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
   - Foundation through checkpoint is complete and Wave 6 precursor tasks are complete (`TASK-14`, `TASK-15`).
-  - Build-eligible now: none (Wave 7 tasks `TASK-07` and `TASK-10` remain below `IMPLEMENT` threshold at `75%`).
-  - Next action: run `/lp-replan` to promote Wave 7 implementation tasks.
+  - Build-eligible now: `TASK-07` and `TASK-10` (both promoted to `80%` by `/lp-replan` with fresh E2 evidence).
+  - Next action: run `/lp-build` for Wave 7 implementation tasks.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -102,8 +102,8 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-06 | CHECKPOINT | Horizon checkpoint after foundation quality/telemetry tranche | 95% | S | Complete (2026-02-20) | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | TASK-14, TASK-15, TASK-07, TASK-10 |
 | TASK-14 | SPIKE | Probe reviewed-ledger storage/state model and promotion idempotency contract | 80% | S | Complete (2026-02-20) | TASK-06 | TASK-07, TASK-08 |
 | TASK-15 | INVESTIGATE | Build 90-day Octorate subject corpus + misroute baseline for parser hardening | 85% | S | Complete (2026-02-20) | TASK-06 | TASK-10 |
-| TASK-07 | IMPLEMENT | Build unknown-answer capture and reviewed-ledger ingestion | 75% | M | Pending | TASK-01, TASK-03, TASK-06, TASK-14 | TASK-08 |
-| TASK-10 | IMPLEMENT | Harden Octorate routing patterns and replay fixtures | 75% | M | Pending | TASK-03, TASK-06, TASK-15 | - |
+| TASK-07 | IMPLEMENT | Build unknown-answer capture and reviewed-ledger ingestion | 80% | M | Pending | TASK-01, TASK-03, TASK-06, TASK-14 | TASK-08 |
+| TASK-10 | IMPLEMENT | Harden Octorate routing patterns and replay fixtures | 80% | M | Pending | TASK-03, TASK-06, TASK-15 | - |
 | TASK-08 | IMPLEMENT | Build reviewed promotion path from ledger into reusable KB/templates | 75% | M | Pending | TASK-07, TASK-14 | - |
 
 ## Parallelism Guide
@@ -741,10 +741,10 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/*ledger*.ts`, `packages/mcp-server/src/__tests__/draft-*.test.ts`, `docs/guides/brikette-email-system.html`
 - **Depends on:** TASK-01, TASK-03, TASK-06, TASK-14
 - **Blocks:** TASK-08
-- **Confidence:** 75%
-  - Implementation: 75% - new persistence and review-state transitions are required.
-  - Approach: 75% - reviewed-ledger-first model is chosen, but schema details remain to be finalized.
-  - Impact: 80% - Held-back test: if review workflow is too heavy, adoption drops. Score held at 75 pending pilot data.
+- **Confidence:** 80%
+  - Implementation: 80% - TASK-14 spike now locks storage shape, transition rules, idempotency keying, and rollback semantics.
+  - Approach: 80% - ingestion can attach to existing draft interpretation/generation seams with tested append-only persistence patterns.
+  - Impact: 80% - ingestion-only rollout and explicit rollback path bound operator-load risk while preserving current escalation behavior.
 - **Acceptance:**
   - Unknown-answer events create ledger records with question/context/source metadata.
   - Records support review states (`new`, `approved`, `rejected`, `deferred`).
@@ -753,6 +753,9 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - TC-07-01: unknown scenario triggers ledger record creation.
   - TC-07-02: duplicate unknown detection is idempotent by defined key.
   - TC-07-03: approved/rejected state transitions enforce allowed transition rules.
+  - Test type: unit + integration.
+  - Test location: `packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts`.
+  - Run: `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts --maxWorkers=2`
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
   - Checks run: fact-find reviewed-ledger decision and burden estimate review.
@@ -772,6 +775,12 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Dependencies: updated to include `TASK-14`.
 - Validation contract: unchanged (TC-07), now paired with upstream `TC-14` spike contract.
 - Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+#### Re-plan Update (2026-02-20)
+- Confidence: 75% -> 80% (Evidence: E2)
+- Key change: TASK-14 contract output + fresh governed draft/audit tests removed remaining design unknowns for ingestion scaffolding.
+- Dependencies: unchanged.
+- Validation contract: updated with explicit test type/location/run metadata for TC-07.
+- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
 
 ### TASK-10: Harden Octorate routing patterns and replay fixtures
 - **Type:** IMPLEMENT
@@ -784,10 +793,10 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`, `packages/mcp-server/src/__fixtures__/octorate/*`
 - **Depends on:** TASK-03, TASK-06, TASK-15
 - **Blocks:** -
-- **Confidence:** 75%
-  - Implementation: 75% - parser extension is straightforward but variant coverage may be broad.
-  - Approach: 75% - replay fixtures reduce drift risk; unknown long-tail formats remain.
-  - Impact: 75% - improved routing expected, but true production miss-rate remains to be measured.
+- **Confidence:** 80%
+  - Implementation: 80% - TASK-15 now provides explicit 90-day variant inventory and fixture backlog for parser expansion.
+  - Approach: 80% - existing Octorate routing/cancellation harness is stable and already enforces false-positive boundaries.
+  - Impact: 80% - misroute baseline (`23` promotional-labeled Octorate messages) gives a measurable pre/post target for rollout validation.
 - **Acceptance:**
   - Known reservation/cancellation/modification variants are routed to correct monitor outcomes.
   - Regression tests include prior misclassified examples.
@@ -796,9 +805,12 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - TC-10-01: fixture set of known Octorate reservation-status subjects routes to booking/cancellation handlers.
   - TC-10-02: non-operational Octorate marketing/news subjects remain promotional.
   - TC-10-03: dry-run sample classification summary produced before/after change.
+  - Test type: unit + integration.
+  - Test location: `packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`, `packages/mcp-server/src/__tests__/startup-loop-octorate-bookings.test.ts`.
+  - Run: `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts packages/mcp-server/src/__tests__/startup-loop-octorate-bookings.test.ts --maxWorkers=2`
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
-  - Checks run: fact-find V2-07 sample evidence review (`4/10` tool-capped promotional sample; `16` Octorate promotional in 30-day query).
+  - Checks run: fact-find V2-07 + TASK-15 90-day corpus review (`23` promotional-labeled Octorate messages baseline; variant split documented).
   - Validation artifacts: exact sampling frame documented.
   - Unexpected findings: none.
 - **Scouts:** `None: fixture collection can start from existing sampled subjects`.
@@ -814,6 +826,12 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Key change: Added TASK-15 investigation to quantify 90-day subject variants before parser hardening.
 - Dependencies: updated to include `TASK-15`.
 - Validation contract: unchanged (TC-10), pending fixture enrichment from TASK-15.
+- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+#### Re-plan Update (2026-02-20)
+- Confidence: 75% -> 80% (Evidence: E2)
+- Key change: TASK-15 baseline + fresh governed parser/routing tests now define bounded operational variants and measurable misroute target.
+- Dependencies: unchanged.
+- Validation contract: updated with explicit test type/location/run metadata for TC-10.
 - Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
 
 ### TASK-08: Build reviewed promotion path from ledger into reusable KB/templates
@@ -914,6 +932,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-20: `/lp-build` completed TASK-05 strict context-aware reference quality enforcement with full TC-05 validation; next runnable task is checkpoint TASK-06.
 - 2026-02-20: `/lp-build` executed checkpoint TASK-06 and reassessed downstream tranche; no resequencing required, Wave 6 (`TASK-14`, `TASK-15`) is now build-eligible.
 - 2026-02-20: `/lp-build` completed Wave 6 precursor tasks (`TASK-14` spike + `TASK-15` investigation). Wave 7 remains blocked by confidence threshold (`TASK-07`, `TASK-10` at `75%`), requiring `/lp-replan` before further implementation.
+- 2026-02-20: `/lp-replan` (standard mode) promoted `TASK-07` and `TASK-10` from `75%` to `80%` using fresh governed E2 evidence; no topology change, no `/lp-sequence` rerun, Wave 7 is now `/lp-build` eligible.
 
 ## Overall-confidence Calculation
 
@@ -931,9 +950,9 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - TASK-06 95 (S=1)
   - TASK-14 80 (S=1)
   - TASK-15 85 (S=1)
-  - TASK-07 75 (M=2)
-  - TASK-10 75 (M=2)
+  - TASK-07 80 (M=2)
+  - TASK-10 80 (M=2)
   - TASK-08 75 (M=2)
-- Weighted sum = 1870
+- Weighted sum = 1890
 - Total weight = 23
-- Overall-confidence = 1870 / 23 = 81.3% -> **81%**
+- Overall-confidence = 1890 / 23 = 82.2% -> **82%**

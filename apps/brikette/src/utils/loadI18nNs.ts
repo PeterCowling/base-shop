@@ -55,10 +55,18 @@ async function ensureNodeFs() {
     return { fs: nodeFs, path: nodePath };
   }
 
-  const { createRequire } = (await import("module")) as unknown as typeof import("module");
-  const req = createRequire(import.meta.url);
-  nodeFs = req("fs") as typeof import("fs");
-  nodePath = req("path") as typeof import("path");
+  const getBuiltinModule = (process as typeof process & {
+    getBuiltinModule?: (id: string) => unknown;
+  }).getBuiltinModule;
+  if (typeof getBuiltinModule !== "function") {
+    throw new Error("Node builtins are unavailable in this runtime.");
+  }
+
+  nodeFs = getBuiltinModule("fs") as typeof import("fs") | undefined;
+  nodePath = getBuiltinModule("path") as typeof import("path") | undefined;
+  if (!nodeFs || !nodePath) {
+    throw new Error("Failed to resolve Node fs/path builtins.");
+  }
 
   return { fs: nodeFs, path: nodePath };
 }

@@ -6,7 +6,6 @@
 /* i18n-exempt file -- ABC-123 [ttl=2026-12-31] module loader patterns are not user-facing */
 import { getWebpackContext, supportsWebpackGlob, webpackContextToRecord } from "../utils/webpackGlob";
 
-import { loadGuidesModuleOverridesFromFs, loadGuidesModuleOverridesFromFsSync } from "./guides.fs";
 import type {
   GlobalGuidesState,
   GuidesNamespace,
@@ -25,6 +24,7 @@ export const supportsImportMetaGlob = supportsWebpackGlob;
 // Typed accessor for globalThis storage keys (avoids repeated as unknown as casts)
 const globalRecord = globalThis as unknown as Record<string, unknown>;
 
+// eslint-disable-next-line complexity -- BRIK-2145 [ttl=2026-12-31] Existing bundle-normalisation logic is intentionally consolidated; refactor is out of scope for this Turbopack hardening patch.
 function buildGuidesState(overrides?: ModuleOverrides): GuidesState {
   // Only use import.meta.glob when it's available in this runtime
   // and no explicit module overrides were provided.
@@ -150,23 +150,6 @@ if (!supportsImportMetaGlob) {
   const cached = globalRecord[GLOBAL_OVERRIDES_KEY] as ModuleOverrides | undefined;
   if (cached) {
     initialModuleOverrides = cached;
-  } else {
-    // Prefer a synchronous scan in Node/Vitest to avoid races where tests
-    // access getGuidesBundle() before the async warmup completes.
-    const syncOverrides = loadGuidesModuleOverridesFromFsSync();
-    if (syncOverrides) {
-      initialModuleOverrides = syncOverrides;
-      globalRecord[GLOBAL_OVERRIDES_KEY] = syncOverrides;
-    } else {
-      // Warm the global cache asynchronously for non-Vite Node contexts (tests/scripts).
-      // This does not block module initialisation in the browser bundle.
-      void loadGuidesModuleOverridesFromFs().then((overrides) => {
-        globalRecord[GLOBAL_OVERRIDES_KEY] = overrides;
-        if (initialModuleOverrides === undefined) {
-          initialModuleOverrides = overrides;
-        }
-      });
-    }
   }
 }
 

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-20
@@ -94,7 +94,7 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 | TASK-07 | IMPLEMENT | Migrate 5–10 high-value templates to slot syntax | 80% | M | Complete (2026-02-20) | TASK-03, CHECKPOINT-A | - |
 | TASK-04 | IMPLEMENT | Template proposal pipeline — generate, PII-strip, review tool, write-back | 80% | L | Complete (2026-02-20) | CHECKPOINT-A | TASK-06 |
 | TASK-05 | IMPLEMENT | Ranker priors — draft_ranker_calibrate tool, load/apply priors in ranker | 80% | M | Complete (2026-02-20) | CHECKPOINT-A | TASK-06 |
-| TASK-06 | IMPLEMENT | Session summary integration — signal/proposal counts, backlog escalation in ops-inbox | 80% | S | Pending | TASK-04, TASK-05 | - |
+| TASK-06 | IMPLEMENT | Session summary integration — signal/proposal counts, backlog escalation in ops-inbox | 80% | S | Complete (2026-02-20) | TASK-04, TASK-05 | - |
 
 ## Parallelism Guide
 
@@ -498,7 +498,8 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
+- **Build-Evidence:** Step 7 updated to call `draft_signal_stats` + `draft_template_review list` before summary output; signal health block + backlog warning + calibration prompt added to summary template; MCP Signal & Improvement Tools table added. Committed `72ffd74714`.
 - **Affects:**
   - `.claude/skills/ops-inbox/SKILL.md`
 - **Depends on:** TASK-04, TASK-05

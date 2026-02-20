@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Archived
 Domain: API
 Workstream: Engineering
 Created: 2026-02-19
@@ -18,8 +18,8 @@ Auto-Build-Intent: plan-only
 Business-OS-Integration: off
 Business-Unit: BRIK
 Card-ID: none
-Related-Fact-Find: docs/plans/email-system-design-gaps-v2/fact-find.md
-Relates-to: docs/plans/email-system-design-gaps-v2/fact-find.md
+Related-Fact-Find: docs/plans/archive/email-system-design-gaps-v2/fact-find.md
+Relates-to: docs/plans/archive/email-system-design-gaps-v2/fact-find.md
 ---
 
 # Email System Design Gaps V2 Plan
@@ -56,7 +56,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/email-system-design-gaps-v2/fact-find.md`
+- Related brief: `docs/plans/archive/email-system-design-gaps-v2/fact-find.md`
 - Key findings used:
   - V2-01: reception `/api/mcp/*` routes currently have no server-side auth/authz guard.
   - V2-03: fallback behavior exists, but production fallback frequency is not instrumented.
@@ -163,7 +163,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - Rollout: enable guard paths in both routes simultaneously.
   - Rollback: feature-flag bypass only in emergency internal mode; preserve audit logging of bypass usage.
 - **Documentation impact:** update ops runbook for auth failure troubleshooting and local private-mode setup.
-- **Notes / references:** `docs/plans/email-system-design-gaps-v2/fact-find.md` V2-01, D1.
+- **Notes / references:** `docs/plans/archive/email-system-design-gaps-v2/fact-find.md` V2-01, D1.
 - **Scope expansion (build):** Added reception client auth-header propagation (`mcpAuthHeaders` + hook call-sites) so authenticated browser-origin requests continue to satisfy the new server-side route guard.
 - **Build evidence:** Commit `6cc3e8556a`; Validation PASS (2026-02-19):
   - `pnpm --filter @apps/reception typecheck`
@@ -177,7 +177,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-19)
-- **Affects:** `data/email-audit-log.jsonl`, `[readonly] docs/plans/email-system-design-gaps-v2/fact-find.md`, `docs/plans/email-system-design-gaps-v2/plan.md`
+- **Affects:** `data/email-audit-log.jsonl`, `[readonly] docs/plans/archive/email-system-design-gaps-v2/fact-find.md`, `docs/plans/archive/email-system-design-gaps-v2/plan.md`
 - **Depends on:** -
 - **Blocks:** TASK-03
 - **Confidence:** 85%
@@ -195,7 +195,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Planning validation:** local audit log checked and confirmed session-local (42 rows, short same-day window).
 - **Rollout / rollback:** `None: non-implementation task`
 - **Documentation impact:** update plan decision log with investigation outcome.
-- **Notes / references:** `docs/plans/email-system-design-gaps-v2/fact-find.md` runtime section (`0 Drafted` ambiguity).
+- **Notes / references:** `docs/plans/archive/email-system-design-gaps-v2/fact-find.md` runtime section (`0 Drafted` ambiguity).
 - **Build evidence:** Investigation completed (2026-02-19) using read-only evidence sources:
   - **Evidence sources (30-day window = 2026-01-20 to 2026-02-19):**
     - `gmail_list_query(label:"Brikette/Outcome/Drafted" newer_than:30d)` -> `0` emails.
@@ -233,7 +233,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Complete (2026-02-19)
-- **Affects:** `docs/plans/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/email-system-design-gaps-v2/plan.md`, `[readonly] packages/mcp-server/src/tools/draft-generate.ts`, `[readonly] packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/tools/booking-email.ts`, `[readonly] packages/mcp-server/src/tools/guest-email-activity.ts`
+- **Affects:** `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/archive/email-system-design-gaps-v2/plan.md`, `[readonly] packages/mcp-server/src/tools/draft-generate.ts`, `[readonly] packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/tools/booking-email.ts`, `[readonly] packages/mcp-server/src/tools/guest-email-activity.ts`
 - **Depends on:** TASK-01, TASK-02
 - **Blocks:** TASK-03
 - **Confidence:** 85%
@@ -257,7 +257,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Documentation impact:** append telemetry contract decision to `replan-notes.md`.
 - **Notes / references:** fact-find V2-03 + TASK-02 attribution evidence.
 - **Build evidence:** Investigation completed (2026-02-19):
-  - Telemetry contract table + source-path defaults + rollup sink decision documented in `docs/plans/email-system-design-gaps-v2/replan-notes.md` (`TASK-12 Output (Build, 2026-02-19)`).
+  - Telemetry contract table + source-path defaults + rollup sink decision documented in `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md` (`TASK-12 Output (Build, 2026-02-19)`).
   - Validation PASS:
     - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/gmail-audit-log.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts --maxWorkers=2`
     - Result: `2/2` suites passed, `28/28` tests passed.
@@ -270,7 +270,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Complete (2026-02-19)
-- **Affects:** `docs/plans/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/email-system-design-gaps-v2/plan.md`, `[readonly] packages/mcp-server/data/email-templates.json`
+- **Affects:** `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/archive/email-system-design-gaps-v2/plan.md`, `[readonly] packages/mcp-server/data/email-templates.json`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-04
 - **Confidence:** 85%
@@ -295,7 +295,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Documentation impact:** add matrix and batch ordering to `replan-notes.md`.
 - **Notes / references:** fact-find V2-05, D2.
 - **Build evidence:** Investigation completed (2026-02-19):
-  - Full 53-template scope matrix + canonical targets + TASK-04 batch checks documented in `docs/plans/email-system-design-gaps-v2/replan-notes.md` (`TASK-13 Output (Build, 2026-02-19)`).
+  - Full 53-template scope matrix + canonical targets + TASK-04 batch checks documented in `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md` (`TASK-13 Output (Build, 2026-02-19)`).
   - Validation PASS:
     - `node -e 'const fs=require("fs");const a=JSON.parse(fs.readFileSync("packages/mcp-server/data/email-templates.json","utf8"));const arr=Array.isArray(a)?a:(a.templates||[]);const no=arr.filter(t=>!/https?:\\/\\//i.test(JSON.stringify(t)));console.log(JSON.stringify({total:arr.length,noUrl:no.length}));'`
     - Result: `{"total":53,"noUrl":24}`
@@ -344,7 +344,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Key change: Promoted after TASK-12 contract completion removed schema/sink unknowns and fresh governed tests reconfirmed telemetry seams.
 - Dependencies: unchanged (`TASK-01`, `TASK-02`, `TASK-12`).
 - Validation contract: unchanged (TC-03 remains complete for implementation phase).
-- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- Notes: `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`
 - **Build evidence:** Implementation completed (2026-02-19):
   - Added telemetry event emission for:
     - fallback detection in `draft_generate`,
@@ -408,7 +408,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Key change: Promoted after TASK-13 matrix completion resolved scope ambiguity and fresh governed tests reconfirmed template/pipeline baselines.
 - Dependencies: unchanged (`TASK-01`, `TASK-13`).
 - Validation contract: unchanged (TC-04 remains complete for implementation phase).
-- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- Notes: `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`
 - **Build evidence:** Implementation completed (2026-02-19):
   - Normalized all `53` templates with explicit metadata:
     - `template_id` (`T01`-`T53`)
@@ -471,13 +471,13 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Key change: Kept below threshold; strict-rule rollout remains blocked on upstream precursors/tasks (`TASK-12`, `TASK-13`, `TASK-03`, `TASK-04`).
 - Dependencies: unchanged (`TASK-01`, `TASK-03`, `TASK-04`).
 - Validation contract: unchanged.
-- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- Notes: `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`
 #### Re-plan Update (2026-02-19, Run 3)
 - Confidence: 75% -> 80% (Evidence: E2)
 - Key change: prerequisites (`TASK-03`, `TASK-04`) are complete and governed quality/template suites reconfirm task-scoped readiness.
 - Dependencies: unchanged (`TASK-01`, `TASK-03`, `TASK-04`).
 - Validation contract: unchanged; TC-05-04 regression harness replay remains required at build time (current ESM parser failure documented in replan notes).
-- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- Notes: `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`
 - **Build evidence:** Implementation completed (2026-02-20):
   - Added scenario-aware reference quality enforcement in `packages/mcp-server/src/tools/draft-quality-check.ts`:
     - Loads normalized template reference metadata (`reference_scope`, `canonical_reference_url`) by category.
@@ -598,7 +598,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-20)
-- **Affects:** `docs/plans/email-system-design-gaps-v2/plan.md`
+- **Affects:** `docs/plans/archive/email-system-design-gaps-v2/plan.md`
 - **Depends on:** TASK-03, TASK-04, TASK-05, TASK-09, TASK-11
 - **Blocks:** TASK-14, TASK-15, TASK-07, TASK-10
 - **Confidence:** 95%
@@ -636,7 +636,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Complete (2026-02-20)
-- **Affects:** `docs/plans/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/email-system-design-gaps-v2/plan.md`, `packages/mcp-server/src/__tests__/fixtures/startup-loop/learning-ledger.complete.jsonl`, `[readonly] packages/mcp-server/src/resources/brikette-knowledge.ts`
+- **Affects:** `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/archive/email-system-design-gaps-v2/plan.md`, `packages/mcp-server/src/__tests__/fixtures/startup-loop/learning-ledger.complete.jsonl`, `[readonly] packages/mcp-server/src/resources/brikette-knowledge.ts`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-07, TASK-08
 - **Confidence:** 80%
@@ -678,7 +678,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Complete (2026-02-20)
-- **Affects:** `docs/plans/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/email-system-design-gaps-v2/plan.md`, `[readonly] packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`
+- **Affects:** `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/archive/email-system-design-gaps-v2/plan.md`, `[readonly] packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-10
 - **Confidence:** 85%
@@ -776,13 +776,13 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Key change: Added TASK-14 spike as mandatory precursor for storage/transition contract before ingestion implementation.
 - Dependencies: updated to include `TASK-14`.
 - Validation contract: unchanged (TC-07), now paired with upstream `TC-14` spike contract.
-- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- Notes: `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`
 #### Re-plan Update (2026-02-20)
 - Confidence: 75% -> 80% (Evidence: E2)
 - Key change: TASK-14 contract output + fresh governed draft/audit tests removed remaining design unknowns for ingestion scaffolding.
 - Dependencies: unchanged.
 - Validation contract: updated with explicit test type/location/run metadata for TC-07.
-- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- Notes: `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`
 - **Scope expansion (build):** Added `packages/mcp-server/src/__tests__/reviewed-ledger.test.ts` to provide direct unit coverage for the new reviewed-ledger ingestion/state-transition module.
 - **Build evidence:** Implementation completed (2026-02-20):
   - Added reviewed-ledger ingestion/state-transition module: `packages/mcp-server/src/tools/reviewed-ledger.ts`.
@@ -841,13 +841,13 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Key change: Added TASK-15 investigation to quantify 90-day subject variants before parser hardening.
 - Dependencies: updated to include `TASK-15`.
 - Validation contract: unchanged (TC-10), pending fixture enrichment from TASK-15.
-- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- Notes: `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`
 #### Re-plan Update (2026-02-20)
 - Confidence: 75% -> 80% (Evidence: E2)
 - Key change: TASK-15 baseline + fresh governed parser/routing tests now define bounded operational variants and measurable misroute target.
 - Dependencies: unchanged.
 - Validation contract: updated with explicit test type/location/run metadata for TC-10.
-- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- Notes: `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`
 - **Build evidence:** Implementation completed (2026-02-20):
   - Expanded Octorate subject monitor regex coverage in `packages/mcp-server/src/tools/gmail.ts` to include:
     - booking/update variants: `Reservation ... Confirmed`, `NEW MODIFICATION ...`, `Reservation ... has been changed`.
@@ -905,13 +905,13 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Key change: Added TASK-14 as explicit precursor to lock idempotency/revert semantics before promotion writes.
 - Dependencies: updated to include `TASK-14` alongside `TASK-07`.
 - Validation contract: unchanged (TC-08), now gated by upstream spike evidence.
-- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- Notes: `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`
 #### Re-plan Update (2026-02-20)
 - Confidence: 75% -> 80% (Evidence: E2/E3)
 - Key change: Completed TASK-07 + TASK-14 evidence resolves promotion conflict/idempotency uncertainty and locks implementation seam for promotion writes.
 - Dependencies: unchanged.
 - Validation contract: expanded with explicit test metadata and conflict-rejection case (`TC-08-05`).
-- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- Notes: `docs/plans/archive/email-system-design-gaps-v2/replan-notes.md`
 - **Scope expansion (build):** Added `packages/mcp-server/src/__tests__/reviewed-ledger.test.ts` to validate promotion/rollback behavior directly on the production reviewed-ledger module, not only the spike harness.
 - **Build evidence:** Implementation completed (2026-02-20):
   - Added production promotion/rollback path in `packages/mcp-server/src/tools/reviewed-ledger.ts`:

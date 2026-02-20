@@ -1,9 +1,9 @@
 ---
 Type: Notes
-Status: Active
+Status: Archived
 Domain: API
 Last-reviewed: 2026-02-20
-Relates-to: docs/plans/email-system-design-gaps-v2/plan.md
+Relates-to: docs/plans/archive/email-system-design-gaps-v2/plan.md
 ---
 
 # Email System Design Gaps V2 Replan Notes

@@ -7,7 +7,7 @@ import { buildCanonicalUrl } from "@acme/ui/lib/seo";
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { guideSlug } from "@/routes.guides-helpers";
-import NEARBY from "@/schema/travel-help/en-nearby.jsonld?raw";
+import NEARBY from "@/schema/travel-help/en-nearby";
 import { buildFaqJsonLd } from "@/utils/buildFaqJsonLd";
 import { HOTEL_ID } from "@/utils/schema";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";

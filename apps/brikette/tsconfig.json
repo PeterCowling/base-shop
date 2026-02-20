@@ -52,6 +52,13 @@
         "../../packages/guide-system/dist/*",
         "../../packages/guide-system/src/*"
       ],
+      "@acme/i18n": [
+        "../../packages/i18n/dist/index.js",
+        "../../packages/i18n/dist/index.d.ts"
+      ],
+      "@acme/i18n/*": [
+        "../../packages/i18n/dist/*"
+      ],
       "@acme/telemetry": [
         "../../packages/telemetry/dist/index.d.ts"
       ],

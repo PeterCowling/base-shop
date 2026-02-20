@@ -67,6 +67,7 @@ jobs:
         run: |
           pnpm --filter @acme/design-system build
           pnpm --filter @acme/design-tokens build
+          pnpm --filter @acme/i18n build
           pnpm --filter @acme/ui build
 
       - name: Run Turbopack route smoke

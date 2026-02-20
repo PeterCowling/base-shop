@@ -434,6 +434,10 @@ When user requests batch processing ("Process all FAQ emails"):
 
 When user says "Done" or queue is empty:
 
+1. Call `draft_signal_stats` to retrieve event counts for this session.
+2. Call `draft_template_review` with `action: "list"` to get pending proposal count.
+3. Output the summary block below.
+
 ```markdown
 ## Session Complete
 
@@ -455,7 +459,22 @@ When user says "Done" or queue is empty:
 Remember to review and send drafts in Gmail!
 
 **Deferred for manual review:** 1 email
+
+**Signal health:**
+- N selection events · N refinement events · N joined signals this session
+- N template proposals pending review
+  - [one-line summary per pending proposal, e.g. "T05 check-in: wrong-template (2026-02-20)"]
+
+> ⚠️ **Backlog warning:** >10 pending proposals — run `draft_template_review list` and review.
+> _(Remove this line if ≤10 proposals pending.)_
+
+> 💡 **Calibration prompt:** ≥20 joined signals since last calibration — consider running `draft_ranker_calibrate`.
+> _(Remove this line if events_since_last_calibration < 20.)_
 ```
+
+**Graceful fallback:** If `draft-signal-events.jsonl` or `template-proposals.jsonl` are missing, show `"0 events"` / `"0 proposals pending"` — do not error.
+
+> **NOTE:** Dry-run and Python-fallback sessions produce no signal events. Show `"0 events"` for those sessions.
 
 ## Email Classification Guide
 
@@ -647,6 +666,16 @@ Before creating each draft, verify:
 | `brikette://draft-guide` | Draft quality framework |
 | `brikette://voice-examples` | Voice/tone examples |
 | `brikette://email-examples` | Classification examples |
+
+## MCP Signal & Improvement Tools
+
+| Tool | Action/Params | Purpose |
+|------|--------------|---------|
+| `draft_signal_stats` | (none) | Returns `{selection_count, refinement_count, joined_count, events_since_last_calibration}` — used in Session Summary |
+| `draft_template_review` | `action: "list"` | Lists pending template improvement proposals with one-line summaries |
+| `draft_template_review` | `action: "approve", proposal_id, expected_file_hash` | Approves a proposal and writes to `email-templates.json` (optimistic concurrency) |
+| `draft_template_review` | `action: "reject", proposal_id` | Rejects and archives a proposal |
+| `draft_ranker_calibrate` | `dry_run?: boolean` | Computes and persists ranker priors from ≥20 joined events; use when `events_since_last_calibration ≥ 20` |
 
 ## Email Templates
 

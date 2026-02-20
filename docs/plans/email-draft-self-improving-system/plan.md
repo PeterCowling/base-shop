@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-20
-Last-updated: 2026-02-20 (TASK-04/05 replan: confidence 75%→80%; normalization_batch type corrected STRING; events_since_last_calibration added to TASK-05 scope)
+Last-updated: 2026-02-20 (Wave 3 complete: TASK-04/05/07 built, tested 67 tests passing, committed)
 Last-reviewed: 2026-02-20
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: email-draft-self-improving-system
@@ -91,9 +91,9 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 | TASK-03 | IMPLEMENT | Slot/injection system — SlotResolver, template assembly integration | 85% | S | Complete (2026-02-20) | - | TASK-07 |
 | TASK-08 | IMPLEMENT | Fix signal events test isolation — mock appendJsonlEvent in affected test files | 95% | S | Complete (2026-02-20) | TASK-02 | CHECKPOINT-A |
 | CHECKPOINT-A | CHECKPOINT | Threshold validation gate — provisional thresholds accepted; retroactive calibration via draft_signal_stats | 95% | S | Complete (2026-02-20) | TASK-02, TASK-08 | TASK-04, TASK-05, TASK-07 |
-| TASK-07 | IMPLEMENT | Migrate 5–10 high-value templates to slot syntax | 80% | M | Pending | TASK-03, CHECKPOINT-A | - |
-| TASK-04 | IMPLEMENT | Template proposal pipeline — generate, PII-strip, review tool, write-back | 80% | L | Pending | CHECKPOINT-A | TASK-06 |
-| TASK-05 | IMPLEMENT | Ranker priors — draft_ranker_calibrate tool, load/apply priors in ranker | 80% | M | Pending | CHECKPOINT-A | TASK-06 |
+| TASK-07 | IMPLEMENT | Migrate 5–10 high-value templates to slot syntax | 80% | M | Complete (2026-02-20) | TASK-03, CHECKPOINT-A | - |
+| TASK-04 | IMPLEMENT | Template proposal pipeline — generate, PII-strip, review tool, write-back | 80% | L | Complete (2026-02-20) | CHECKPOINT-A | TASK-06 |
+| TASK-05 | IMPLEMENT | Ranker priors — draft_ranker_calibrate tool, load/apply priors in ranker | 80% | M | Complete (2026-02-20) | CHECKPOINT-A | TASK-06 |
 | TASK-06 | IMPLEMENT | Session summary integration — signal/proposal counts, backlog escalation in ops-inbox | 80% | S | Pending | TASK-04, TASK-05 | - |
 
 ## Parallelism Guide
@@ -363,7 +363,8 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
+- **Build-Evidence:** `draft-template-review.ts` new MCP tool (list/approve/reject); `pii-redact.ts` utility; `template-proposals.jsonl` JSONL append-only; optimistic concurrency via SHA-256 hash; atomic write; 30-day auto-reject; normalization_batch string advance. 28 tests (TC-01–TC-08) all passing. Committed `a08384f8e1`.
 - **Affects:**
   - `packages/mcp-server/src/tools/draft-template-review.ts` (new)
   - `packages/mcp-server/data/template-proposals.jsonl` (new file, created on first write)
@@ -431,7 +432,8 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
+- **Build-Evidence:** `draft-ranker-calibrate.ts` new MCP tool; `ranker-template-priors.json` bootstrap; `template-ranker.ts` priors-application step (adjustedScore multiplicative, adjustedConfidence additive clamp); `applyThresholds()` reads `adjustedConfidence ?? confidence`; `invalidatePriorsCache()` for test isolation. 29 tests (TC-01–TC-09) all passing. Committed `a08384f8e1`.
 - **Affects:**
   - `packages/mcp-server/src/tools/draft-ranker-calibrate.ts` (new)
   - `packages/mcp-server/data/ranker-template-priors.json` (new file)
@@ -540,7 +542,8 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
+- **Build-Evidence:** 7 templates migrated (T04/T05/T08/T18/T20/T22/T29) — `{{SLOT:GREETING}}` + `{{SLOT:KNOWLEDGE_INJECTION}}` inserted at natural sign-off point; Dear Guest removed; normalization_batch A→B on all 7. `template-lint.ts` PLACEHOLDER_REGEX fixed (`(?!\{|SLOT:)` double negative lookahead on single-brace alternative). 35 tests all passing. Committed `a08384f8e1`.
 - **Affects:**
   - `packages/mcp-server/data/email-templates.json`
   - `[readonly] packages/mcp-server/src/tools/draft-generate.ts` (verify assembly)

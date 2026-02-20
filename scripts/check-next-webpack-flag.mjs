@@ -23,7 +23,7 @@ const DEFAULT_COMMAND_POLICY = Object.freeze({
 const APP_COMMAND_POLICY_MATRIX = Object.freeze({
   brikette: Object.freeze({
     dev: RULE_ALLOW_ANY,
-    build: RULE_REQUIRE_WEBPACK,
+    build: RULE_ALLOW_ANY,
   }),
 });
 

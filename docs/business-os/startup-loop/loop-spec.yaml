@@ -3,7 +3,7 @@
 # All other documents (SKILL.md, workflow guide, prompt index) MUST align to this spec.
 # Version bumps require downstream alignment check (VC-02).
 
-spec_version: "1.5.0"
+spec_version: "1.7.0"
 created: "2026-02-13"
 decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 # v1.1.0: Added BD-3 sub-deliverable annotation on S2B (see docs/plans/startup-loop-branding-design-module/plan.md)
@@ -24,6 +24,19 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 #         Rationale: strategy design before measurement is valid; spend commitment before measurement is not.
 #         Resolves S6B planning stall on pre-website businesses. Decision: TASK-02 (2026-02-17).
 #         See: docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md (TASK-02, TASK-07)
+# v1.6.0: Added S3B (Adjacent product research) as third conditional member of fan-out-1.
+#         Condition: growth_intent in intake packet references product range expansion, or operator invokes.
+#         Non-blocking at S4 — results artifact is optional (required: false).
+#         GATE-S3B-01 (Soft/advisory) dispatches /adjacent-product-research at S2B Done.
+#         Results artifact (human-produced after Perplexity run) consumed optionally by lp-prioritize (S5A).
+#         Skill: .claude/skills/adjacent-product-research/SKILL.md. Decision: 2026-02-20.
+# v1.7.0: Added S0A–S0D conditional pre-intake stage family for problem-first operator entry.
+#         Entry routing: explicit --start-point problem|product flag (default: product).
+#         Condition: "start-point = problem" — consistent with --launch-surface gate pattern.
+#         Stages: S0A (Problem framing) → S0B (Solution-space scan) → S0C (Option selection) → S0D (Naming handoff).
+#         S0D uses brand-naming-research skill; GATE-BD-00 naming contract unchanged (fires at S0→S1 only).
+#         Operators with --start-point product (or flag absent) bypass S0A–S0D: pass-through, no gate block.
+#         Decision: docs/plans/startup-loop-pre-s0-problem-framing/plan.md 2026-02-20.
 
 # Capability contract: docs/business-os/startup-loop/marketing-sales-capability-contract.md
 # Defines the 7 canonical marketing/sales capabilities (CAP-01 through CAP-07), their artifact paths,
@@ -34,6 +47,46 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 # ─────────────────────────────────────────────────────────
 
 stages:
+  # ── Conditional pre-intake stage family (S0A–S0D) ─────────────────────────
+  # Triggered when operator invokes /startup-loop start --start-point problem.
+  # Operators using --start-point product (or flag absent) bypass S0A–S0D entirely: pass-through, no gate block.
+  # S0D output satisfies GATE-BD-00 pass condition at S0→S1 (gate fires at S0→S1, not S0D→S0).
+
+  - id: S0A
+    name: Problem framing
+    skill: /lp-problem-frame
+    prompt_required: false
+    conditional: true
+    condition: "start-point = problem"
+    bos_sync: "Persist problem statement under docs/business-os/strategy/<BIZ>/"
+
+  - id: S0B
+    name: Solution-space scan
+    skill: /lp-solution-space
+    prompt_required: false
+    conditional: true
+    condition: "start-point = problem"
+    bos_sync: "Persist solution-space prompt and results artifact slot under docs/business-os/strategy/<BIZ>/"
+
+  - id: S0C
+    name: Option selection
+    skill: /lp-option-select
+    prompt_required: false
+    conditional: true
+    condition: "start-point = problem"
+    bos_sync: "Persist option-select artifact under docs/business-os/strategy/<BIZ>/"
+
+  - id: S0D
+    name: Naming handoff
+    skill: /brand-naming-research
+    prompt_required: false
+    conditional: true
+    condition: "start-point = problem"
+    bos_sync: "Persist naming research prompt under docs/business-os/strategy/<BIZ>/"
+    # GATE-BD-00 note: gate fires at S0→S1 (not S0D→S0). The naming shortlist produced by
+    # brand-naming-research satisfies the existing *-naming-shortlist.user.md pass condition.
+    # No new naming artifact contract introduced by S0D.
+
   - id: S0
     name: Intake
     skill: /startup-loop start
@@ -100,8 +153,9 @@ stages:
     bos_sync: "Persist offer + messaging_hierarchy artifacts under docs/business-os/startup-baselines/<BIZ>/"
 
   # ── Parallel fan-out ──────────────────────────────────
-  # S3 and S6B may execute concurrently after S2B completes.
-  # Both must complete before S4 (join barrier) can proceed.
+  # S3, S3B, and S6B may execute concurrently after S2B completes.
+  # S3 and S6B must complete before S4 (join barrier) can proceed.
+  # S3B is conditional and non-blocking at S4 (optional artifact).
 
   - id: S3
     name: Forecast
@@ -110,6 +164,20 @@ stages:
     conditional: false
     parallel_group: fan-out-1
     bos_sync: "Update latest pointer + strategy assumptions/targets"
+
+  - id: S3B
+    name: Adjacent product research
+    skill: /lp-other-products
+    prompt_required: false
+    conditional: true
+    condition: "growth_intent includes product_range OR operator_invoked"
+    parallel_group: fan-out-1
+    bos_sync: none
+    # GATE-S3B-01 (Soft/advisory) — evaluated at S2B Done.
+    # Trigger: growth_intent field in intake packet references product range expansion.
+    # Pass condition: adjacent-product-research-prompt.md exists under docs/business-os/strategy/<BIZ>/
+    # Results (human-produced after Perplexity run): docs/business-os/strategy/<BIZ>/adjacent-product-research-results.user.md
+    # Results consumed optionally by S5A (lp-prioritize) as additional go-item candidates.
 
   - id: S6B
     name: Channel strategy + GTM
@@ -152,6 +220,9 @@ stages:
       - stage: S6B
         artifact_key: outreach
         required: false
+      - stage: S3B
+        artifact_key: adjacent_product_research
+        required: false
     bos_sync: "Write candidate baseline snapshot + draft manifest (uncommitted)"
 
   - id: S5A
@@ -181,21 +252,21 @@ stages:
 
   - id: S7
     name: Fact-find
-    skill: /lp-fact-find
+    skill: /lp-do-fact-find
     prompt_required: false
     conditional: false
     bos_sync: "Upsert fact-find stage doc via /api/agent/stage-docs/:cardId/fact-find"
 
   - id: S8
     name: Plan
-    skill: /lp-plan
+    skill: /lp-do-plan
     prompt_required: false
     conditional: false
     bos_sync: "Upsert plan stage doc + lane transition Fact-finding -> Planned"
 
   - id: S9
     name: Build
-    skill: /lp-build
+    skill: /lp-do-build
     prompt_required: false
     conditional: false
     bos_sync: "Upsert build stage doc + lane transitions to In progress / Done"
@@ -223,6 +294,10 @@ stages:
 
 ordering:
   sequential:
+    - [S0A, S0B]         # problem-first pre-intake: S0A→S0B (conditional)
+    - [S0B, S0C]         # problem-first pre-intake: S0B→S0C (conditional)
+    - [S0C, S0D]         # problem-first pre-intake: S0C→S0D (conditional)
+    - [S0D, S0]          # problem-first: S0D exits into standard S0 intake
     - [S0, S1]
     - [S1, S1B]          # conditional
     - [S1, S2A]          # conditional
@@ -230,8 +305,10 @@ ordering:
     - [S1B, S2]          # S1B gates S2 for pre-website (warning quality)
     - [S2, S2B]
     - [S2B, S3]
+    - [S2B, S3B]         # fan-out: S3B starts after S2B (conditional)
     - [S2B, S6B]         # fan-out: S3 and S6B both start after S2B
     - [S3, S4]           # fan-in: S4 waits for S3
+    - [S3B, S4]          # fan-in: S4 waits for S3B if running (non-blocking — optional artifact)
     - [S6B, S4]          # fan-in: S4 waits for S6B
     - [S4, S5A]
     - [S5A, S5B]
@@ -245,8 +322,9 @@ ordering:
 
   parallel_groups:
     fan-out-1:
-      members: [S3, S6B]
+      members: [S3, S3B, S6B]
       join_at: S4
+      conditional_members: [S3B]    # S3B only runs when condition is met; non-blocking at join
 
 # ─────────────────────────────────────────────────────────
 # Run Packet Contract

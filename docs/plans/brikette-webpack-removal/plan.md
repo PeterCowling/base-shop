@@ -90,9 +90,9 @@ The brikette app contains webpack-specific APIs and config that create dead code
 | TASK-04 | IMPLEMENT | Migrate locale-loader.ts (dead code removal) | 85% | M | Complete (2026-02-20) | - | TASK-10 |
 | TASK-05 | IMPLEMENT | Remove dead webpack branches from breakfast-menu/strings.ts | 80% | S | Complete (2026-02-20) | - | TASK-10 |
 | TASK-06 | INVESTIGATE | Spike: Turbopack-safe replacement for import.meta.webpackContext | 80% | M | Complete (2026-02-20) | - | TASK-07 |
-| TASK-07 | CHECKPOINT | Reassess guides.state.ts and moduleResolver.ts migration after spike | 95% | S | Pending | TASK-06 | TASK-08, TASK-09 |
-| TASK-08 | IMPLEMENT | Migrate guides.state.ts | 85% | M | Pending | TASK-07 | TASK-10 |
-| TASK-09 | IMPLEMENT | Migrate moduleResolver.ts (accept-empty) | 90% | M | Pending | TASK-07 | TASK-10 |
+| TASK-07 | CHECKPOINT | Reassess guides.state.ts and moduleResolver.ts migration after spike | 95% | S | Complete (2026-02-20) | TASK-06 | TASK-08, TASK-09 |
+| TASK-08 | IMPLEMENT | Migrate guides.state.ts | 85% | M | Complete (2026-02-20) | TASK-07 | TASK-10 |
+| TASK-09 | IMPLEMENT | Migrate moduleResolver.ts (accept-empty) | 90% | M | Complete (2026-02-20) | TASK-07 | TASK-10 |
 | TASK-10 | IMPLEMENT | Delete webpackGlob.ts and cleanup (mock, moduleNameMapper) | 85% | S | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-08, TASK-09 | TASK-11 |
 | TASK-11 | IMPLEMENT | Simplify jest-import-meta-transform.cjs | 80% | S | Pending | TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | End-to-end Turbopack build verification | 85% | S | Pending | TASK-11 | - |
@@ -402,7 +402,8 @@ The brikette app contains webpack-specific APIs and config that create dead code
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
+- **Build evidence:** Webpack import removed; `supportsImportMetaGlob` export removed; `shouldUseRealModules` variable removed; 3 `webpackContextToRecord` ternaries replaced with `{}` unconditionally; `if (!supportsImportMetaGlob)` guard removed (body executed unconditionally). TC-01 passed: no webpack references remain. TC-02 passed: `pnpm --filter brikette exec tsc --noEmit` clean. TC-03 passed: `guide-content-filtering.test.ts` 5/5 tests pass.
 - **Affects:** `apps/brikette/src/locales/guides.state.ts`
 - **Depends on:** TASK-07
 - **Blocks:** TASK-10
@@ -447,7 +448,8 @@ The brikette app contains webpack-specific APIs and config that create dead code
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
+- **Build evidence:** Webpack import removed; `JSON_LD_CONTEXT` export removed; `JSON_LD_MODULES` simplified to `{ ...TEST_JSON_LD_MODULES }` with accept-empty comment. JSDoc updated. TC-01 passed: no webpack references remain. TC-02 passed: TypeScript compilation clean. `pickExport` and `resolveHeadRenderer` functions preserved and compile correctly.
 - **Affects:** `apps/brikette/src/routes/guides/blocks/utils/moduleResolver.ts`
 - **Depends on:** TASK-07
 - **Blocks:** TASK-10

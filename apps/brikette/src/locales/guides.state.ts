@@ -4,8 +4,6 @@
 // -----------------------------------------------------------------------------
 
 /* i18n-exempt file -- ABC-123 [ttl=2026-12-31] module loader patterns are not user-facing */
-import { getWebpackContext, supportsWebpackGlob, webpackContextToRecord } from "../utils/webpackGlob";
-
 import type {
   GlobalGuidesState,
   GuidesNamespace,
@@ -17,45 +15,26 @@ import type {
 } from "./guides.types";
 import { assignNestedValue, finaliseSplitBundle, normalisePathSegments, readModule } from "./guides.util";
 
-// Avoid the unsafe `Function` type; we only need to check presence
-// of a callable webpack context at runtime.
-export const supportsImportMetaGlob = supportsWebpackGlob;
-
 // Typed accessor for globalThis storage keys (avoids repeated as unknown as casts)
 const globalRecord = globalThis as unknown as Record<string, unknown>;
 
 // eslint-disable-next-line complexity -- BRIK-2145 [ttl=2026-12-31] Existing bundle-normalisation logic is intentionally consolidated; refactor is out of scope for this Turbopack hardening patch.
 function buildGuidesState(overrides?: ModuleOverrides): GuidesState {
-  // Only use import.meta.glob when it's available in this runtime
-  // and no explicit module overrides were provided.
-  const shouldUseRealModules = overrides === undefined && supportsImportMetaGlob;
   const hasLegacyOverride = overrides ? "legacy" in overrides : false;
   const hasSplitGlobalOverride = overrides ? "splitGlobal" in overrides : false;
   const hasSplitContentOverride = overrides ? "splitContent" in overrides : false;
 
   const legacyModules: ModuleRecord<GuidesNamespace> = hasLegacyOverride
     ? overrides?.legacy ?? ({} as ModuleRecord<GuidesNamespace>)
-    : (shouldUseRealModules
-      ? (webpackContextToRecord<GuidesNamespace>(
-          getWebpackContext("./", true, /guides\\.json$/)
-        ) as ModuleRecord<GuidesNamespace>)
-        : ({} as ModuleRecord<GuidesNamespace>));
+    : ({} as ModuleRecord<GuidesNamespace>);
 
   const splitGlobalModules: ModuleRecord = hasSplitGlobalOverride
     ? overrides?.splitGlobal ?? ({} as ModuleRecord)
-    : shouldUseRealModules
-      ? webpackContextToRecord(
-          getWebpackContext("./", true, /guides\/.*\\.json$/)
-        )
-      : ({} as ModuleRecord);
+    : ({} as ModuleRecord);
 
   const splitContentModules: ModuleRecord = hasSplitContentOverride
     ? overrides?.splitContent ?? ({} as ModuleRecord)
-    : shouldUseRealModules
-      ? webpackContextToRecord(
-          getWebpackContext("./", true, /guides\/content\/[^/]+\\.json$/)
-        )
-      : ({} as ModuleRecord);
+    : ({} as ModuleRecord);
 
   const legacyBundles = new Map<string, GuidesNamespace>();
   const splitBundles = new Map<string, PartialGuidesNamespace>();
@@ -144,13 +123,11 @@ function getGlobalState(): GlobalGuidesState | undefined {
   return state as GlobalGuidesState;
 }
 
-// Compute initial overrides only once per process when import.meta.glob is unavailable.
+// Compute initial overrides only once per process.
 // Avoid top-level await to keep the browser build target at "es2020".
-if (!supportsImportMetaGlob) {
-  const cached = globalRecord[GLOBAL_OVERRIDES_KEY] as ModuleOverrides | undefined;
-  if (cached) {
-    initialModuleOverrides = cached;
-  }
+const cached = globalRecord[GLOBAL_OVERRIDES_KEY] as ModuleOverrides | undefined;
+if (cached) {
+  initialModuleOverrides = cached;
 }
 
 export function resetGuidesState(overrides?: ModuleOverrides): void {

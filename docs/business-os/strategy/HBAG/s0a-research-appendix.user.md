@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 # S0A Research Appendix — HBAG
 
 ---

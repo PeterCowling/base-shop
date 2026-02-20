@@ -1,4 +1,6 @@
 ---
+Type: Reference
+Status: Active
 business: HEAD
 artifact: channel-strategy
 created: 2026-02-20

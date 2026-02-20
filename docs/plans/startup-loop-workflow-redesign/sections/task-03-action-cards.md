@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 ## Per-business action cards
 
 These cards tell you exactly what to do for each business. Each step is actionable — no code knowledge or repository access required.

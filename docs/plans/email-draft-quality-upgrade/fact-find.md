@@ -1,4 +1,6 @@
 ---
+Type: Reference
+Status: Active
 Feature-Slug: email-draft-quality-upgrade
 Business-Unit: brikette
 Card-ID: ~new~

@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 ## Quick Actions by stage
 
 Use this table to find the right action for each stage. For prompt file paths and output paths, see the Engineering appendix.

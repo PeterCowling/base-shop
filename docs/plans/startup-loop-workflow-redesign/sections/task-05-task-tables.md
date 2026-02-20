@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 ## Business Operator Actions
 
 These are the actions owned by Pete as venture-studio operator. Each row is a concrete next step — not a platform task.

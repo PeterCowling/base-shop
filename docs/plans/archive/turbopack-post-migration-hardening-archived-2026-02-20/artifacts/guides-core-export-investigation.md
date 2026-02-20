@@ -1,3 +1,6 @@
+Type: Reference
+Status: Historical
+
 # TASK-03 Investigation: Browser-Safe `guides-core` Export Seam
 
 Date: 2026-02-19  

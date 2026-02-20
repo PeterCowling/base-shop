@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 ## If you have 10/30/60 minutes
 
 Already familiar with the loop? Use this guide to decide what to work on today based on the time you have.

@@ -1,4 +1,6 @@
 ---
+Type: Reference
+Status: Active
 business: HEAD
 artifact: offer-design
 created: 2026-02-20

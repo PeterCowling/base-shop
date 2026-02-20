@@ -11,6 +11,7 @@
     "verbatimModuleSyntax": false,
     "paths": {
       "~test/*": ["test/*"],
+      "@jest/globals": ["test/jest-globals-compat.d.ts"],
       "@acme/editorial": ["packages/editorial/src/index.ts", "packages/editorial/dist/index.d.ts"],
       "@acme/editorial/*": ["packages/editorial/src/*", "packages/editorial/dist/*"],
       "@acme/platform-machine": ["packages/platform-machine/src/index.ts", "packages/platform-machine/dist/index.d.ts"],

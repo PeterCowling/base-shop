@@ -1,4 +1,6 @@
 ---
+Type: Reference
+Status: Active
 business: HBAG
 artifact: offer-design
 created: 2026-02-20

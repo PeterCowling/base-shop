@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 # Template-App i18n Alias Retirement Investigation
 
 Date: 2026-02-20  

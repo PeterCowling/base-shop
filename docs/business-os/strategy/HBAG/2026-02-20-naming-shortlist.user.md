@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 # Naming Shortlist — HBAG
 
 ---

@@ -1,3 +1,6 @@
+Type: Reference
+Status: Historical
+
 # TASK-05 Probe: Brikette Turbopack Smoke CI Placement and Timing
 
 Date: 2026-02-19  

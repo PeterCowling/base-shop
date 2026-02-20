@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 # startup-loop-contract-hardening: TASK-14 Stability Gate Evidence (2026-02-15)
 
 Measured on:

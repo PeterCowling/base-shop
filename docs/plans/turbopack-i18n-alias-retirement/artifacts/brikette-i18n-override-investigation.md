@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 # Brikette i18n Override Investigation
 
 Date: 2026-02-20  

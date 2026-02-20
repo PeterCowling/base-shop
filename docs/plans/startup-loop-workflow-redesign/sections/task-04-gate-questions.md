@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 ## Readiness check
 
 Before investing time in the next stage, answer these six questions. Each one is a yes/no check. A 'No' means you have work to do first — see the action cards above.

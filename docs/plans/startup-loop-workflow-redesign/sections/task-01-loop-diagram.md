@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 ## The Loop in 8 steps
 
 Every week you run the same eight steps — gather data, design your offer, forecast, prioritise, act, then review — so the business gets sharper each time round.

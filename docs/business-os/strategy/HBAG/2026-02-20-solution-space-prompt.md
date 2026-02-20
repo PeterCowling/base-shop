@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 # Solution Space Prompt — HBAG
 
 ---

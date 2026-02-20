@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 ## Today (updated 2026-02-17)
 
 ### HEAD

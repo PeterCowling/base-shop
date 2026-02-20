@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 # Critique History: email-draft-self-improving-system
 
 ## Round 1 — 2026-02-20

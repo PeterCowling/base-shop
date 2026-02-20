@@ -1,3 +1,6 @@
+Type: Reference
+Status: Active
+
 # Option Selection Decision — HBAG
 
 ---

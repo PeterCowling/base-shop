@@ -12,7 +12,7 @@
 # TASK-02 decision: S6B retains stage key; split into GATE-S6B-STRAT-01 and GATE-S6B-ACT-01.
 
 schema_version: 1
-loop_spec_version: "1.3.0"
+loop_spec_version: "1.6.0"
 
 stages:
 
@@ -100,6 +100,20 @@ stages:
       - s3
     display_order: 7
     operator_next_prompt: "Forecast and S6B Channel strategy must both complete before S4 Baseline merge."
+
+  - id: S3B
+    name_machine: adjacent-product-research
+    label_operator_short: "Adjacent product research"
+    label_operator_long: "S3B — Adjacent product research"
+    outcome_operator: "Adjacent product research results: 5-10 candidate product types with feasibility flags and ICP fit scoring for product range expansion."
+    aliases:
+      - adjacent-product-research
+      - adjacent-products
+      - s3b
+    display_order: 7
+    conditional: true
+    condition: "growth_intent includes product_range OR operator_invoked"
+    operator_next_prompt: "S3B is non-blocking at S4. Share results artifact as optional go-item candidates with S5A Prioritize."
 
   - id: S6B
     name_machine: channel-strategy

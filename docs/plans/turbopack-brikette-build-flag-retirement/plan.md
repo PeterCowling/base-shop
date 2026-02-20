@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-20
@@ -84,7 +84,7 @@ Retires `--webpack` from all Brikette production build commands and updates the 
 | TASK-03 | IMPLEMENT | Remove --webpack from Brikette build command surfaces | 85% | S | Complete (2026-02-20) | TASK-01, TASK-02 | TASK-04 |
 | TASK-04 | CHECKPOINT | Reassess resolver harness task after TASK-03 confirmed green in CI | 95% | S | Complete (2026-02-20) | TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Resolver harness Option B refactor + tests | 80% | M | Complete (2026-02-20) | TASK-04 | TASK-06 |
-| TASK-06 | IMPLEMENT | Run and record full acceptance matrix | 90% | S | Pending | TASK-05 | — |
+| TASK-06 | IMPLEMENT | Run and record full acceptance matrix | 90% | S | Complete (2026-02-20) | TASK-05 | — |
 
 ## Parallelism Guide
 
@@ -393,7 +393,7 @@ Retires `--webpack` from all Brikette production build commands and updates the 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
 - **Affects:** `docs/plans/turbopack-brikette-build-flag-retirement/plan.md` (decision log), `[readonly] scripts/check-next-webpack-flag.mjs`, `[readonly] scripts/check-i18n-resolver-contract.mjs`
 - **Depends on:** TASK-05
 - **Blocks:** —
@@ -426,6 +426,15 @@ Retires `--webpack` from all Brikette production build commands and updates the 
 - **Documentation impact:** Record results in Decision Log below
 - **Notes / references:**
   - Post-delivery: monitor merge-gate and pre-commit policy failures for one week; monitor Brikette staging workflow runtime/flakiness
+- **Build evidence (2026-02-20):**
+  - TC-01: `node scripts/check-next-webpack-flag.mjs --all` → exit 0 ✓ (local)
+  - TC-02: policy tests 20/20 pass (9 resolver-contract + 11 webpack-flag-policy) ✓ (local)
+  - TC-03: Turbopack build → CI job `turbopack-smoke` id=64293735441, duration 3m9s, ✓ (brikette.yml run 22226294769)
+  - TC-04: static-export CI enforcement → CI job `static-export-check` id=64293735335, duration 5m50s, ✓ (brikette.yml run 22226294769)
+  - TC-05: template-app build → Deploy Prime run 22226294764 concluded success ✓ (CI)
+  - TC-06: business-os build → Deploy Business OS run 22226294746 concluded success ✓ (CI)
+  - TC-07: `node scripts/check-i18n-resolver-contract.mjs --dry-run --skip-node` → `PASS build-lifecycle:brikette`, exit 0 ✓ (local); `webpack:brikette` absent ✓; `turbopack:brikette-build` absent ✓
+  - All 7 acceptance matrix checks pass; CI failures (Lighthouse script.size budget, Core Platform lint/typecheck) are pre-existing on SHA 75633b4be8 before this work, unrelated to these changes
 
 ---
 
@@ -461,6 +470,7 @@ Retires `--webpack` from all Brikette production build commands and updates the 
 - 2026-02-20: TASK-02 (static-export enforcement) is a hard merge gate on TASK-03 (command changes) — no regression gap window accepted
 - 2026-02-20: Static-export gate model locked to single-source ownership in `brikette.yml`; Merge Gate enforces by requiring the Brikette workflow for scoped changes (no duplicate direct static-export step in `merge-gate.yml`)
 - 2026-02-20: Removed unverified webpack-vs-Turbopack `out/` equivalence claim; correctness gate is contract-level static-export invariants (build + alias generation + route restore)
+- 2026-02-20: All acceptance matrix checks passed (TASK-06 complete); plan marked Complete
 
 ## Overall-confidence Calculation
 

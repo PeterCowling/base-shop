@@ -5,13 +5,30 @@
 - `--business <BIZ>` required
 - `--mode <dry|live>` required
 - `--launch-surface <pre-website|website-live>` required
+- `--start-point <problem|product>` optional, default: `product`
 
 ## Steps
 
 1. Resolve business context from canonical artifacts under `docs/business-os/`.
 2. Determine highest completed stage and next required stage.
-3. Apply hard gates below (Gate A, Gate B, Gate C) based on `--launch-surface`.
+3. Apply hard gates below (Gate D, Gate A, Gate B, Gate C) in order.
 4. Return run packet with exact next action.
+
+---
+
+## Gate D: Problem-first pre-intake (S0A–S0D)
+
+**Condition**: `--start-point = problem`
+
+**Rule**: Route to S0A Problem framing. Skip Gate D entirely when `--start-point product` or flag absent (pass-through directly to S0).
+
+**Prompt handoff**:
+- `prompt_file`: `.claude/skills/lp-problem-frame/SKILL.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
+
+**Backward compatibility**: Absent `--start-point` flag is treated as `product` — no behavior change for existing operators.
+
+**Re-entry**: If S0A–S0D were completed on a prior run for this business, they are skippable on re-entry with `--start-point problem` (check for existing `problem-statement.user.md` artifact under the business strategy path).
 
 ---
 

@@ -5,7 +5,7 @@ description: Chat command wrapper for operating Startup Loop runs. Supports /sta
 
 # Startup Loop
 
-Operate the Startup Loop through a single chat command surface. This skill is an operator wrapper. It does not replace `/lp-fact-find`, `/lp-plan`, or `/lp-build`.
+Operate the Startup Loop through a single chat command surface. This skill is an operator wrapper. It does not replace `/lp-do-fact-find`, `/lp-do-plan`, or `/lp-do-build`.
 
 ## Operating Mode
 
@@ -25,7 +25,8 @@ Not allowed:
 
 ## Invocation
 
-- `/startup-loop start --business <BIZ> --mode <dry|live> --launch-surface <pre-website|website-live>`
+- `/startup-loop start --business <BIZ> --mode <dry|live> --launch-surface <pre-website|website-live> [--start-point <problem|product>]`
+  - `--start-point` is optional. Default is `product`. Existing runs that omit this flag are unaffected.
 - `/startup-loop status --business <BIZ>`
 - `/startup-loop submit --business <BIZ> --stage <S#> --artifact <path>`
 - `/startup-loop advance --business <BIZ>`
@@ -48,7 +49,7 @@ For `start`, `status`, and `advance`, return this exact packet:
 ```text
 run_id: SFS-<BIZ>-<YYYYMMDD>-<hhmm>
 business: <BIZ>
-loop_spec_version: 1.5.0
+loop_spec_version: 1.7.0
 current_stage: <S#>
 status: <ready|blocked|awaiting-input|complete>
 blocking_reason: <none or exact reason>
@@ -76,30 +77,35 @@ When a stage reference cannot be resolved, return fail-closed with deterministic
 
 ## Stage Model
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.5.0).
+Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.7.0).
 Stage labels: `docs/business-os/startup-loop/_generated/stage-operator-map.json`.
 
-Stages S0..S10 (17 stages total):
+Stages S0..S10 (22 stages total):
 
-| Stage | Name | Skill |
-|---|---|---|
-| S0 | Intake | `/startup-loop start` |
-| S1 | Readiness check | `/lp-readiness` |
-| S1B | Measurement setup | prompt handoff (pre-website) |
-| S2A | Historical baseline | prompt handoff (website-live) |
-| S2 | Market intelligence | Deep Research prompt handoff |
-| S2B | Offer design | `/lp-offer` |
-| S3 | Forecast (parallel with S6B) | `/lp-forecast` |
-| S6B | Channel strategy + GTM | `/lp-channels`, `/lp-seo`, `/draft-outreach` |
-| S4 | Baseline merge (join barrier) | `/lp-baseline-merge` |
-| S5A | Prioritize | `/lp-prioritize` |
-| S5B | BOS sync (sole mutation boundary) | `/lp-bos-sync` |
-| S6 | Site-upgrade synthesis | `/lp-site-upgrade` |
-| S7 | Fact-find | `/lp-fact-find` |
-| S8 | Plan | `/lp-plan` |
-| S9 | Build | `/lp-build` |
-| S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa` |
-| S10 | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) |
+| Stage | Name | Skill | Conditional |
+|---|---|---|---|
+| S0A | Problem framing | `/lp-problem-frame` | start-point=problem |
+| S0B | Solution-space scan | `/lp-solution-space` | start-point=problem |
+| S0C | Option selection | `/lp-option-select` | start-point=problem |
+| S0D | Naming handoff | `/brand-naming-research` | start-point=problem |
+| S0 | Intake | `/startup-loop start` | — |
+| S1 | Readiness check | `/lp-readiness` | — |
+| S1B | Measurement setup | prompt handoff (pre-website) | — |
+| S2A | Historical baseline | prompt handoff (website-live) | — |
+| S2 | Market intelligence | Deep Research prompt handoff | — |
+| S2B | Offer design | `/lp-offer` | — |
+| S3 | Forecast (parallel with S6B) | `/lp-forecast` | — |
+| S3B | Adjacent product research | `/lp-other-products` | growth_intent=product_range |
+| S6B | Channel strategy + GTM | `/lp-channels`, `/lp-seo`, `/draft-outreach` | — |
+| S4 | Baseline merge (join barrier) | `/lp-baseline-merge` | — |
+| S5A | Prioritize | `/lp-prioritize` | — |
+| S5B | BOS sync (sole mutation boundary) | `/lp-bos-sync` | — |
+| S6 | Site-upgrade synthesis | `/lp-site-upgrade` | — |
+| S7 | Fact-find | `/lp-do-fact-find` | — |
+| S8 | Plan | `/lp-do-plan` | — |
+| S9 | Build | `/lp-do-build` | — |
+| S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa` | — |
+| S10 | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) | — |
 
 ## Global Invariants
 

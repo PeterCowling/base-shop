@@ -12,9 +12,61 @@
 # TASK-02 decision: S6B retains stage key; split into GATE-S6B-STRAT-01 and GATE-S6B-ACT-01.
 
 schema_version: 1
-loop_spec_version: "1.6.0"
+loop_spec_version: "1.7.0"
 
 stages:
+
+  - id: S0A
+    name_machine: problem-framing
+    label_operator_short: "Problem framing"
+    label_operator_long: "S0A — Problem framing"
+    outcome_operator: "Clear problem statement with articulated pain, affected customer, and evidence of real demand."
+    aliases:
+      - problem-framing
+      - s0a
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to S0B Solution-space scan."
+
+  - id: S0B
+    name_machine: solution-space-scan
+    label_operator_short: "Solution-space scan"
+    label_operator_long: "S0B — Solution-space scan"
+    outcome_operator: "Mapped solution space with at least three distinct options and comparative feasibility notes."
+    aliases:
+      - solution-space
+      - s0b
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to S0C Option selection."
+
+  - id: S0C
+    name_machine: option-selection
+    label_operator_short: "Option selection"
+    label_operator_long: "S0C — Option selection"
+    outcome_operator: "Selected solution option with rationale, key assumptions, and handoff brief for S0 intake."
+    aliases:
+      - option-selection
+      - s0c
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to S0D Naming handoff if a business name is still needed, otherwise proceed to S0 Intake."
+
+  - id: S0D
+    name_machine: naming-handoff
+    label_operator_short: "Naming handoff"
+    label_operator_long: "S0D — Naming handoff"
+    outcome_operator: "Validated business or product name with brand-safety check and domain availability confirmed."
+    aliases:
+      - naming-handoff
+      - s0d
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to S0 Intake with selected name confirmed."
 
   - id: S0
     name_machine: intake

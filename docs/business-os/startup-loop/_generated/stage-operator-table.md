@@ -1,10 +1,14 @@
 <!-- AUTO-GENERATED — do not edit directly. Edit stage-operator-dictionary.yaml and re-run: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts -->
-<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 1.3.0 -->
+<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 1.7.0 -->
 
 # Startup Loop — Stage Operator Reference
 
 | # | Stage ID | Short label | Outcome | Aliases | Conditional |
 |---|---|---|---|---|---|
+| 1 | `S0A` | Problem framing | Clear problem statement with articulated pain, affected customer, and evidence of real demand. | `problem-framing`, `s0a` | start-point = problem |
+| 1 | `S0B` | Solution-space scan | Mapped solution space with at least three distinct options and comparative feasibility notes. | `solution-space`, `s0b` | start-point = problem |
+| 1 | `S0C` | Option selection | Selected solution option with rationale, key assumptions, and handoff brief for S0 intake. | `option-selection`, `s0c` | start-point = problem |
+| 1 | `S0D` | Naming handoff | Validated business or product name with brand-safety check and domain availability confirmed. | `naming-handoff`, `s0d` | start-point = problem |
 | 1 | `S0` | Intake | Structured startup context packet ready for all downstream stages. | `intake`, `s0` | — |
 | 2 | `S1` | Readiness check | Readiness report with blocker list. All 7 gates checked. | `readiness`, `s1` | — |
 | 3 | `S1B` | Measurement setup | Analytics stack live with GA4, Search Console, and conversion events verified before any paid traffic. | `measurement-bootstrap`, `measurement-setup`, `s1b` | launch-surface = pre-website |
@@ -12,6 +16,7 @@
 | 5 | `S2` | Market intelligence | Decision-grade market intelligence pack covering competitors, demand, pricing, and channels. | `market-intelligence`, `market-intel`, `s2` | — |
 | 6 | `S2B` | Offer design | Offer artifact: target customer, positioning, pricing model, and messaging hierarchy. | `offer-design`, `offer`, `s2b` | — |
 | 7 | `S3` | Forecast | 90-day P10/P50/P90 revenue forecast with assumption register and sparse-evidence guardrails. | `forecast`, `s3` | — |
+| 7 | `S3B` | Adjacent product research | Adjacent product research results: 5-10 candidate product types with feasibility flags and ICP fit scoring for product range expansion. | `adjacent-product-research`, `adjacent-products`, `s3b` | growth_intent includes product_range OR operator_invoked |
 | 8 | `S6B` | Channel strategy + GTM | Channel plan with 2-3 selected launch channels, 30-day GTM timeline, and SEO strategy. | `channel-strategy`, `channels`, `gtm`, `s6b` | — |
 | 9 | `S4` | Baseline merge | Candidate baseline snapshot and draft manifest combining offer, forecast, and channel artifacts. | `baseline-merge`, `s4` | — |
 | 10 | `S5A` | Prioritize | Scored and ranked action list — top 2-3 items to work on next. | `prioritize`, `s5a` | — |

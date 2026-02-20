@@ -2,27 +2,27 @@
 // ---------------------------------------------------------------------------
 // Guides-only locale loader.
 //
-// Uses filesystem access (fs.readFileSync) instead of webpack context to
-// prevent bundling 20+ MiB of guide JSON into the server handler. Guide
-// pages are pre-rendered at build time (SSG), so the JSON is loaded during
-// build and embedded in the HTML output. The runtime Worker only serves the
-// pre-rendered HTML.
+// Uses dynamic imports so this module stays compatible with both webpack and
+// Turbopack without relying on Node-only builtins in client-reachable graphs.
 // ---------------------------------------------------------------------------
 
-import fs from "node:fs";
-import path from "node:path";
-
-const LOCALES_DIR = path.resolve(process.cwd(), "src/locales");
+const unwrapDefault = (mod: unknown): unknown => {
+  if (mod && typeof mod === "object" && "default" in mod) {
+    return (mod as { default?: unknown }).default ?? mod;
+  }
+  return mod;
+};
 
 export const loadGuidesLocaleResource = async (
   lang: string,
   ns: string,
 ): Promise<unknown | undefined> => {
   try {
-    const filePath = path.join(LOCALES_DIR, lang, `${ns}.json`);
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- BRIK-2145 Path constructed from validated lang/ns parameters and known locales directory structure; used in SSG build only
-    const content = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(content);
+    const mod = await import(
+      /* webpackInclude: /(^|\/)[a-z]{2}\/guides(\/.*)?\.json$/ */
+      `./${lang}/${ns}.json`
+    );
+    return unwrapDefault(mod);
   } catch {
     return undefined;
   }

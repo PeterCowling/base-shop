@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: API
 Workstream: Engineering
 Created: 2026-02-19
@@ -78,8 +78,8 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 - Build Gate: Pass (task-level)
   - Foundation through checkpoint is complete and Wave 6 precursor tasks are complete (`TASK-14`, `TASK-15`).
   - Wave 7 implementation tasks (`TASK-07`, `TASK-10`) are complete with governed validation evidence.
-  - Build-eligible now: `TASK-08` (`80%`) for final implementation wave.
-  - Next action: run `/lp-build` for `TASK-08`.
+  - Wave 8 implementation task (`TASK-08`) is complete with governed validation evidence.
+  - No remaining runnable tasks.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -105,7 +105,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-15 | INVESTIGATE | Build 90-day Octorate subject corpus + misroute baseline for parser hardening | 85% | S | Complete (2026-02-20) | TASK-06 | TASK-10 |
 | TASK-07 | IMPLEMENT | Build unknown-answer capture and reviewed-ledger ingestion | 80% | M | Complete (2026-02-20) | TASK-01, TASK-03, TASK-06, TASK-14 | TASK-08 |
 | TASK-10 | IMPLEMENT | Harden Octorate routing patterns and replay fixtures | 80% | M | Complete (2026-02-20) | TASK-03, TASK-06, TASK-15 | - |
-| TASK-08 | IMPLEMENT | Build reviewed promotion path from ledger into reusable KB/templates | 80% | M | Pending | TASK-07, TASK-14 | - |
+| TASK-08 | IMPLEMENT | Build reviewed promotion path from ledger into reusable KB/templates | 80% | M | Complete (2026-02-20) | TASK-07, TASK-14 | - |
 
 ## Parallelism Guide
 
@@ -866,8 +866,8 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `packages/mcp-server/src/tools/*ledger*.ts`, `packages/mcp-server/src/resources/brikette-knowledge.ts`, `packages/mcp-server/data/email-templates.json`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/ledger-promotion*.test.ts`
+- **Status:** Complete (2026-02-20)
+- **Affects:** `packages/mcp-server/src/tools/*ledger*.ts`, `packages/mcp-server/src/resources/brikette-knowledge.ts`, `packages/mcp-server/data/email-templates.json`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/ledger-promotion*.test.ts`, `packages/mcp-server/src/__tests__/reviewed-ledger.test.ts`
 - **Depends on:** TASK-07, TASK-14
 - **Blocks:** -
 - **Confidence:** 80%
@@ -912,6 +912,23 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Dependencies: unchanged.
 - Validation contract: expanded with explicit test metadata and conflict-rejection case (`TC-08-05`).
 - Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- **Scope expansion (build):** Added `packages/mcp-server/src/__tests__/reviewed-ledger.test.ts` to validate promotion/rollback behavior directly on the production reviewed-ledger module, not only the spike harness.
+- **Build evidence:** Implementation completed (2026-02-20):
+  - Added production promotion/rollback path in `packages/mcp-server/src/tools/reviewed-ledger.ts`:
+    - approved-only promotion gate
+    - deterministic keying (`faq:<question_hash>`)
+    - idempotent duplicate promotion handling
+    - conflict rejection for key collisions with different source entries
+    - reversible promotion status with ledger history/audit events
+  - Updated knowledge resource merge to include active reviewed-ledger FAQ promotions in runtime reads: `packages/mcp-server/src/resources/brikette-knowledge.ts`.
+  - Added/updated task-scoped tests:
+    - `packages/mcp-server/src/__tests__/reviewed-ledger.test.ts`
+    - `packages/mcp-server/src/__tests__/draft-generate.test.ts`
+  - Validation PASS:
+    - `pnpm --filter @acme/mcp-server typecheck`
+    - `pnpm --filter @acme/mcp-server lint`
+    - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts packages/mcp-server/src/__tests__/reviewed-ledger.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts --maxWorkers=2`
+    - Result: `3/3` suites passed, `39/39` tests passed.
 
 ## Risks & Mitigations
 
@@ -970,6 +987,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-20: `/lp-replan` (standard mode) promoted `TASK-07` and `TASK-10` from `75%` to `80%` using fresh governed E2 evidence; no topology change, no `/lp-sequence` rerun, Wave 7 is now `/lp-build` eligible.
 - 2026-02-20: `/lp-build` completed Wave 7 implementation tasks (`TASK-07`, `TASK-10`) with governed validation; remaining task `TASK-08` stays below threshold (`75%`) and requires `/lp-replan` before execution.
 - 2026-02-20: `/lp-replan` (standard mode) promoted `TASK-08` from `75%` to `80%` using TASK-07/TASK-14 completion evidence plus fresh governed tests; no topology change, no `/lp-sequence` rerun; Wave 8 is now `/lp-build` eligible.
+- 2026-02-20: `/lp-build` completed Wave 8 implementation task (`TASK-08`) with governed validation; all runnable tasks are complete and plan status is `Complete`.
 
 ## Overall-confidence Calculation
 

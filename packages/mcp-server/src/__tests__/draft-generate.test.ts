@@ -1234,6 +1234,64 @@ describe("draft_generate tool TASK-07 — knowledge gap-fill injection", () => {
     expect(injectedEntry?.citation).toContain("breakfast");
   });
 
+  it("TC-08-06: promoted FAQ entries remain consumable by draft generation", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "General inquiry",
+          body: "Thank you for contacting us. We will be happy to assist. Best regards, Hostel Brikette",
+          category: "general",
+        },
+      ]),
+    );
+    handleBriketteResourceReadMock.mockImplementation(async (uri: string) => {
+      if (uri === "brikette://faq") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                items: [
+                  {
+                    question: "Can I store luggage before check-in?",
+                    answer: "Yes, luggage storage is available before check-in.",
+                    source: "reviewed-ledger",
+                    promoted_key: "faq:q-luggage-before-checkin",
+                  },
+                ],
+              }),
+            },
+          ],
+        };
+      }
+      return {
+        contents: [{ uri, mimeType: "application/json", text: JSON.stringify({ items: [] }) }],
+      };
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Can I store luggage before check-in?",
+        intents: {
+          questions: [{ text: "Can I store luggage before check-in?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "luggage", confidence: 0.8 },
+      },
+      subject: "Luggage before check-in",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.draft.bodyPlain).toContain("Yes, luggage storage is available before check-in.");
+    expect(
+      (payload.sources_used as Array<{ injected: boolean }>).some((entry) => entry.injected),
+    ).toBe(true);
+  });
+
   it("TC-07-02: no matching snippet produces sources_used with no injected:true entries", async () => {
     // Template body doesn't mention wifi — question will be uncovered
     readFileMock.mockResolvedValue(

@@ -50,6 +50,33 @@ export interface IngestUnknownAnswersResult {
   duplicates: ReviewedLedgerEntry[];
 }
 
+export interface ReviewedFaqPromotionRecord {
+  key: string;
+  source_entry_id: string;
+  question_hash: string;
+  question: string;
+  answer: string;
+  status: ReviewedLedgerPromotionStatus;
+  promoted_at: string;
+  reverted_at: string | null;
+}
+
+export interface PromoteReviewedLedgerEntryResult {
+  ledgerPath: string;
+  promotionPath: string;
+  entry: ReviewedLedgerEntry;
+  promotionRecord: ReviewedFaqPromotionRecord;
+  idempotent: boolean;
+}
+
+export interface RevertReviewedLedgerPromotionResult {
+  ledgerPath: string;
+  promotionPath: string;
+  entry: ReviewedLedgerEntry;
+  promotionRecord: ReviewedFaqPromotionRecord | null;
+  idempotent: boolean;
+}
+
 const ALLOWED_TRANSITIONS: Record<ReviewedLedgerReviewState, ReviewedLedgerReviewState[]> = {
   new: ["approved", "rejected", "deferred"],
   approved: [],
@@ -73,6 +100,34 @@ function resolveDefaultLedgerPath(): string {
     process.cwd(),
     "data",
     "reviewed-learning-ledger.jsonl",
+  );
+
+  if (
+    process.cwd().endsWith(`${nodePath.sep}packages${nodePath.sep}mcp-server`) ||
+    process.cwd().endsWith(`${nodePath.sep}packages${nodePath.sep}mcp-server${nodePath.sep}`)
+  ) {
+    return fromPackageRoot;
+  }
+
+  return fromMonorepoRoot;
+}
+
+function resolveDefaultPromotionPath(): string {
+  if (process.env.REVIEWED_PROMOTION_PATH) {
+    return process.env.REVIEWED_PROMOTION_PATH;
+  }
+
+  const fromMonorepoRoot = nodePath.join(
+    process.cwd(),
+    "packages",
+    "mcp-server",
+    "data",
+    "reviewed-learning-promotions.json",
+  );
+  const fromPackageRoot = nodePath.join(
+    process.cwd(),
+    "data",
+    "reviewed-learning-promotions.json",
   );
 
   if (
@@ -130,6 +185,19 @@ function parseLedgerEntry(raw: unknown): ReviewedLedgerEntry | null {
     return null;
   }
 
+  const legacyPromotionKey = typeof (candidate as { promotion_key?: unknown }).promotion_key === "string"
+    ? (candidate as { promotion_key: string }).promotion_key
+    : null;
+  const legacyPromotionStatus = typeof (candidate as { promotion_status?: unknown }).promotion_status === "string"
+    ? (candidate as { promotion_status: ReviewedLedgerPromotionStatus }).promotion_status
+    : null;
+  const legacyPromotedAt = typeof (candidate as { promoted_at?: unknown }).promoted_at === "string"
+    ? (candidate as { promoted_at: string }).promoted_at
+    : null;
+  const legacyRevertedAt = typeof (candidate as { reverted_at?: unknown }).reverted_at === "string"
+    ? (candidate as { reverted_at: string }).reverted_at
+    : null;
+
   return {
     entry_id: candidate.entry_id,
     created_at: candidate.created_at,
@@ -144,14 +212,116 @@ function parseLedgerEntry(raw: unknown): ReviewedLedgerEntry | null {
     language: candidate.language ?? "UNKNOWN",
     context_excerpt: candidate.context_excerpt ?? "",
     promotion: candidate.promotion ?? {
-      key: null,
-      status: null,
-      promoted_at: null,
-      reverted_at: null,
+      key: legacyPromotionKey,
+      status: legacyPromotionStatus,
+      promoted_at: legacyPromotedAt,
+      reverted_at: legacyRevertedAt,
     },
     history: Array.isArray(candidate.history)
       ? candidate.history as ReviewedLedgerHistoryEvent[]
       : [],
+  };
+}
+
+function serializeLedgerEntries(entries: ReviewedLedgerEntry[]): string {
+  if (entries.length === 0) {
+    return "";
+  }
+  return `${entries.map((entry) => JSON.stringify(entry)).join("\n")}\n`;
+}
+
+async function writeReviewedLedgerEntries(
+  entries: ReviewedLedgerEntry[],
+  ledgerPath: string,
+): Promise<void> {
+  await fs.mkdir(nodePath.dirname(ledgerPath), { recursive: true });
+  const tmpPath = `${ledgerPath}.tmp`;
+  await fs.writeFile(tmpPath, serializeLedgerEntries(entries), "utf-8");
+  await fs.rename(tmpPath, ledgerPath);
+}
+
+function normalizePromotionRecord(raw: unknown): ReviewedFaqPromotionRecord | null {
+  if (!raw || typeof raw !== "object") {
+    return null;
+  }
+
+  const candidate = raw as Partial<ReviewedFaqPromotionRecord>;
+  if (
+    typeof candidate.key !== "string" ||
+    typeof candidate.source_entry_id !== "string" ||
+    typeof candidate.question_hash !== "string" ||
+    typeof candidate.question !== "string" ||
+    typeof candidate.answer !== "string" ||
+    (candidate.status !== "active" && candidate.status !== "reverted") ||
+    typeof candidate.promoted_at !== "string"
+  ) {
+    return null;
+  }
+
+  return {
+    key: candidate.key,
+    source_entry_id: candidate.source_entry_id,
+    question_hash: candidate.question_hash,
+    question: candidate.question,
+    answer: candidate.answer,
+    status: candidate.status,
+    promoted_at: candidate.promoted_at,
+    reverted_at: typeof candidate.reverted_at === "string" ? candidate.reverted_at : null,
+  };
+}
+
+export async function readReviewedPromotionRecords(
+  promotionPath = resolveDefaultPromotionPath(),
+): Promise<ReviewedFaqPromotionRecord[]> {
+  try {
+    const raw = await fs.readFile(promotionPath, "utf-8");
+    const parsed = JSON.parse(raw) as unknown;
+    const records = Array.isArray(parsed)
+      ? parsed
+      : (parsed as { records?: unknown }).records;
+    if (!Array.isArray(records)) {
+      return [];
+    }
+
+    return records
+      .map((record) => normalizePromotionRecord(record))
+      .filter((record): record is ReviewedFaqPromotionRecord => record !== null);
+  } catch (error) {
+    const code = (error as NodeJS.ErrnoException | undefined)?.code;
+    if (code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
+}
+
+async function writeReviewedPromotionRecords(
+  records: ReviewedFaqPromotionRecord[],
+  promotionPath: string,
+): Promise<void> {
+  await fs.mkdir(nodePath.dirname(promotionPath), { recursive: true });
+  const tmpPath = `${promotionPath}.tmp`;
+  await fs.writeFile(tmpPath, JSON.stringify({ records }, null, 2), "utf-8");
+  await fs.rename(tmpPath, promotionPath);
+}
+
+function appendHistoryEvent(
+  entry: ReviewedLedgerEntry,
+  event: ReviewedLedgerHistoryEvent["event"],
+  details: Record<string, string>,
+  at: string,
+): ReviewedLedgerEntry {
+  return {
+    ...entry,
+    updated_at: at,
+    history: [
+      ...entry.history,
+      {
+        at,
+        event,
+        details,
+      },
+    ],
   };
 }
 
@@ -212,6 +382,198 @@ export function transitionReviewedLedgerState(
       },
     ],
   };
+}
+
+export async function setReviewedLedgerState(
+  entryId: string,
+  nextState: ReviewedLedgerReviewState,
+  at = new Date().toISOString(),
+  ledgerPath = resolveDefaultLedgerPath(),
+): Promise<ReviewedLedgerEntry> {
+  const entries = await readReviewedLedgerEntries(ledgerPath);
+  const index = entries.findIndex((entry) => entry.entry_id === entryId);
+  if (index < 0) {
+    throw new Error(`ledger_entry_not_found:${entryId}`);
+  }
+
+  const transitioned = transitionReviewedLedgerState(entries[index], nextState, at);
+  entries[index] = transitioned;
+  await writeReviewedLedgerEntries(entries, ledgerPath);
+  return transitioned;
+}
+
+export async function promoteReviewedLedgerEntry(
+  entryId: string,
+  at = new Date().toISOString(),
+  ledgerPath = resolveDefaultLedgerPath(),
+  promotionPath = resolveDefaultPromotionPath(),
+): Promise<PromoteReviewedLedgerEntryResult> {
+  const entries = await readReviewedLedgerEntries(ledgerPath);
+  const entryIndex = entries.findIndex((entry) => entry.entry_id === entryId);
+  if (entryIndex < 0) {
+    throw new Error(`ledger_entry_not_found:${entryId}`);
+  }
+
+  const entry = entries[entryIndex];
+  if (entry.review_state !== "approved") {
+    throw new Error("promotion_requires_approved_state");
+  }
+
+  const promotionKey = `faq:${entry.question_hash}`;
+  const promotions = await readReviewedPromotionRecords(promotionPath);
+  const existingIndex = promotions.findIndex((record) => record.key === promotionKey);
+
+  if (existingIndex >= 0 && promotions[existingIndex].source_entry_id !== entry.entry_id) {
+    throw new Error("promotion_conflict_existing_key");
+  }
+
+  const existing = existingIndex >= 0 ? promotions[existingIndex] : null;
+  const isIdempotent = existing?.status === "active";
+  const promotionRecord: ReviewedFaqPromotionRecord = existing
+    ? {
+      ...existing,
+      status: "active",
+      reverted_at: null,
+      promoted_at: existing.promoted_at ?? at,
+      question: entry.question,
+      answer: entry.drafted_answer.trim(),
+    }
+    : {
+      key: promotionKey,
+      source_entry_id: entry.entry_id,
+      question_hash: entry.question_hash,
+      question: entry.question,
+      answer: entry.drafted_answer.trim(),
+      status: "active",
+      promoted_at: at,
+      reverted_at: null,
+    };
+
+  if (existingIndex >= 0) {
+    promotions[existingIndex] = promotionRecord;
+  } else {
+    promotions.push(promotionRecord);
+  }
+
+  const promotedEntry = appendHistoryEvent(
+    {
+      ...entry,
+      promotion: {
+        key: promotionRecord.key,
+        status: "active",
+        promoted_at: promotionRecord.promoted_at,
+        reverted_at: null,
+      },
+    },
+    isIdempotent ? "promotion_idempotent" : "promoted",
+    { key: promotionRecord.key },
+    at,
+  );
+
+  entries[entryIndex] = promotedEntry;
+  await writeReviewedLedgerEntries(entries, ledgerPath);
+  await writeReviewedPromotionRecords(promotions, promotionPath);
+
+  return {
+    ledgerPath,
+    promotionPath,
+    entry: promotedEntry,
+    promotionRecord,
+    idempotent: isIdempotent,
+  };
+}
+
+export async function revertReviewedLedgerPromotion(
+  entryId: string,
+  at = new Date().toISOString(),
+  ledgerPath = resolveDefaultLedgerPath(),
+  promotionPath = resolveDefaultPromotionPath(),
+): Promise<RevertReviewedLedgerPromotionResult> {
+  const entries = await readReviewedLedgerEntries(ledgerPath);
+  const entryIndex = entries.findIndex((entry) => entry.entry_id === entryId);
+  if (entryIndex < 0) {
+    throw new Error(`ledger_entry_not_found:${entryId}`);
+  }
+
+  const entry = entries[entryIndex];
+  if (!entry.promotion.key) {
+    return {
+      ledgerPath,
+      promotionPath,
+      entry,
+      promotionRecord: null,
+      idempotent: true,
+    };
+  }
+
+  const promotions = await readReviewedPromotionRecords(promotionPath);
+  const recordIndex = promotions.findIndex((record) => record.key === entry.promotion.key);
+  if (recordIndex < 0) {
+    return {
+      ledgerPath,
+      promotionPath,
+      entry,
+      promotionRecord: null,
+      idempotent: true,
+    };
+  }
+
+  if (promotions[recordIndex].source_entry_id !== entry.entry_id) {
+    throw new Error("promotion_conflict_existing_key");
+  }
+
+  const record = promotions[recordIndex];
+  if (record.status === "reverted") {
+    return {
+      ledgerPath,
+      promotionPath,
+      entry,
+      promotionRecord: record,
+      idempotent: true,
+    };
+  }
+
+  const revertedRecord: ReviewedFaqPromotionRecord = {
+    ...record,
+    status: "reverted",
+    reverted_at: at,
+  };
+  promotions[recordIndex] = revertedRecord;
+
+  const revertedEntry = appendHistoryEvent(
+    {
+      ...entry,
+      promotion: {
+        ...entry.promotion,
+        status: "reverted",
+        reverted_at: at,
+      },
+    },
+    "reverted",
+    { key: record.key },
+    at,
+  );
+
+  entries[entryIndex] = revertedEntry;
+  await writeReviewedLedgerEntries(entries, ledgerPath);
+  await writeReviewedPromotionRecords(promotions, promotionPath);
+
+  return {
+    ledgerPath,
+    promotionPath,
+    entry: revertedEntry,
+    promotionRecord: revertedRecord,
+    idempotent: false,
+  };
+}
+
+export async function readActiveFaqPromotions(
+  promotionPath = resolveDefaultPromotionPath(),
+): Promise<ReviewedFaqPromotionRecord[]> {
+  const records = await readReviewedPromotionRecords(promotionPath);
+  return records
+    .filter((record) => record.status === "active" && record.key.startsWith("faq:"))
+    .sort((left, right) => left.promoted_at.localeCompare(right.promoted_at));
 }
 
 export async function ingestUnknownAnswerEntries(

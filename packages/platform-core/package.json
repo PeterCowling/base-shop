@@ -240,9 +240,9 @@
     "@acme/config": "workspace:^",
     "@acme/date-utils": "workspace:^",
     "@acme/i18n": "workspace:^",
+    "@acme/lib": "workspace:^",
     "@acme/page-builder-core": "workspace:^",
     "@acme/plugin-sanity": "workspace:^",
-    "@acme/lib": "workspace:^",
     "@acme/stripe": "workspace:^",
     "@acme/templates": "workspace:^",
     "@acme/types": "workspace:^",
@@ -255,6 +255,7 @@
   },
   "devDependencies": {
     "@prisma/client": "6.14.0",
+    "memfs": "3.5.3",
     "prisma": "6.14.0",
     "react-test-renderer": "19.2.1"
   }

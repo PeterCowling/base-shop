@@ -76,9 +76,9 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 - Foundation Gate: Pass
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
-  - Foundation waves through `TASK-09` are complete (`TASK-03`, `TASK-04`, `TASK-05`, `TASK-09`).
-  - Build-eligible now: `TASK-06` (`CHECKPOINT`, unblocked).
-  - Next action: run `/lp-build` for checkpoint `TASK-06`.
+  - Foundation waves through `TASK-09` are complete (`TASK-03`, `TASK-04`, `TASK-05`, `TASK-09`) and checkpoint `TASK-06` has been executed.
+  - Build-eligible now: `TASK-14` (`80%`) and `TASK-15` (`85%`) in Wave 6.
+  - Next action: run `/lp-build` for `TASK-14` or `TASK-15`.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -99,7 +99,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-05 | IMPLEMENT | Enforce strict context-aware reference quality checks | 80% | M | Complete (2026-02-20) | TASK-01, TASK-03, TASK-04 | TASK-06 |
 | TASK-09 | IMPLEMENT | Unify label attribution for booking and guest-activity draft flows | 85% | M | Complete (2026-02-19) | TASK-01, TASK-03 | TASK-06 |
 | TASK-11 | IMPLEMENT | Add startup preflight checks for email system dependencies | 85% | S | Complete (2026-02-19) | - | TASK-06 |
-| TASK-06 | CHECKPOINT | Horizon checkpoint after foundation quality/telemetry tranche | 95% | S | Pending | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | TASK-14, TASK-15, TASK-07, TASK-10 |
+| TASK-06 | CHECKPOINT | Horizon checkpoint after foundation quality/telemetry tranche | 95% | S | Complete (2026-02-20) | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | TASK-14, TASK-15, TASK-07, TASK-10 |
 | TASK-14 | SPIKE | Probe reviewed-ledger storage/state model and promotion idempotency contract | 80% | S | Pending | TASK-06 | TASK-07, TASK-08 |
 | TASK-15 | INVESTIGATE | Build 90-day Octorate subject corpus + misroute baseline for parser hardening | 85% | S | Pending | TASK-06 | TASK-10 |
 | TASK-07 | IMPLEMENT | Build unknown-answer capture and reviewed-ledger ingestion | 75% | M | Pending | TASK-01, TASK-03, TASK-06, TASK-14 | TASK-08 |
@@ -596,7 +596,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-20)
 - **Affects:** `docs/plans/email-system-design-gaps-v2/plan.md`
 - **Depends on:** TASK-03, TASK-04, TASK-05, TASK-09, TASK-11
 - **Blocks:** TASK-14, TASK-15, TASK-07, TASK-10
@@ -615,6 +615,17 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Planning validation:** `None: procedural control task`.
 - **Rollout / rollback:** `None: planning control task`.
 - **Documentation impact:** update plan history with checkpoint outcome.
+- **Build evidence:** Checkpoint completed (2026-02-20):
+  - Checkpoint assumption review:
+    - Telemetry baseline is now live from TASK-03 (path attribution + fallback/drafted outcome signals).
+    - Strict reference enforcement from TASK-05 passed regression harness (`draft_quality_check` + `draft-pipeline.integration` at `10/10` fixture pass-rate).
+  - `/lp-replan` checkpoint reassessment outcome for downstream tranche:
+    - No topology change required; task IDs and dependency graph remain valid.
+    - No `/lp-sequence` rerun required.
+    - Confidence/dependency status remains:
+      - `TASK-14` (`80%`) and `TASK-15` (`85%`) are now the next unblocked runnable tasks.
+      - `TASK-07`, `TASK-10`, and `TASK-08` remain blocked by their precursor dependencies (`TASK-14`, `TASK-15`, `TASK-07` respectively).
+  - Validation contract satisfied by checkpoint evidence capture in plan + decision log.
 
 ### TASK-14: Probe reviewed-ledger storage/state model and promotion idempotency contract
 - **Type:** SPIKE
@@ -855,6 +866,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-19: `/lp-build` completed TASK-09 drafted-outcome label harmonization for booking and guest-activity flows; no further build-eligible tasks until `/lp-replan` promotes TASK-05.
 - 2026-02-19: `/lp-replan` (standard mode) promoted TASK-05 to 80% after prerequisite completion and fresh governed E2 checks; Wave 4 is now build-eligible for TASK-05 before checkpoint TASK-06.
 - 2026-02-20: `/lp-build` completed TASK-05 strict context-aware reference quality enforcement with full TC-05 validation; next runnable task is checkpoint TASK-06.
+- 2026-02-20: `/lp-build` executed checkpoint TASK-06 and reassessed downstream tranche; no resequencing required, Wave 6 (`TASK-14`, `TASK-15`) is now build-eligible.
 
 ## Overall-confidence Calculation
 

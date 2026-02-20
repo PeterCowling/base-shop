@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Archived
 Domain: Platform
 Workstream: Product
 Created: 2026-02-20

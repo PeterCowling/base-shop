@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-20
-Last-updated: 2026-02-20 (CHECKPOINT-A resolved — provisional thresholds accepted; Wave 3 unblocked)
+Last-updated: 2026-02-20 (TASK-04/05 replan: confidence 75%→80%; normalization_batch type corrected STRING; events_since_last_calibration added to TASK-05 scope)
 Last-reviewed: 2026-02-20
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: email-draft-self-improving-system
@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
-Overall-confidence: 80%
+Overall-confidence: 85%
 Confidence-Method: min(Implementation,Approach,Impact); overall effort-weighted average
 Auto-Build-Intent: plan-only
 Business-OS-Integration: off
@@ -92,8 +92,8 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 | TASK-08 | IMPLEMENT | Fix signal events test isolation — mock appendJsonlEvent in affected test files | 95% | S | Complete (2026-02-20) | TASK-02 | CHECKPOINT-A |
 | CHECKPOINT-A | CHECKPOINT | Threshold validation gate — provisional thresholds accepted; retroactive calibration via draft_signal_stats | 95% | S | Complete (2026-02-20) | TASK-02, TASK-08 | TASK-04, TASK-05, TASK-07 |
 | TASK-07 | IMPLEMENT | Migrate 5–10 high-value templates to slot syntax | 80% | M | Pending | TASK-03, CHECKPOINT-A | - |
-| TASK-04 | IMPLEMENT | Template proposal pipeline — generate, PII-strip, review tool, write-back | 75% | L | Pending | CHECKPOINT-A | TASK-06 |
-| TASK-05 | IMPLEMENT | Ranker priors — draft_ranker_calibrate tool, load/apply priors in ranker | 75% | M | Pending | CHECKPOINT-A | TASK-06 |
+| TASK-04 | IMPLEMENT | Template proposal pipeline — generate, PII-strip, review tool, write-back | 80% | L | Pending | CHECKPOINT-A | TASK-06 |
+| TASK-05 | IMPLEMENT | Ranker priors — draft_ranker_calibrate tool, load/apply priors in ranker | 80% | M | Pending | CHECKPOINT-A | TASK-06 |
 | TASK-06 | IMPLEMENT | Session summary integration — signal/proposal counts, backlog escalation in ops-inbox | 80% | S | Pending | TASK-04, TASK-05 | - |
 
 ## Parallelism Guide
@@ -374,11 +374,11 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
   - `[readonly] packages/mcp-server/data/draft-signal-events.jsonl`
 - **Depends on:** CHECKPOINT-A
 - **Blocks:** TASK-06
-- **Confidence:** 75%
-  - Implementation: 75% — proposal schema defined; PII redaction patterns specified; write-back logic is clear. Confidence cap applies: reasoning-only evidence for the `draft_template_review` tool UX (diff view, approve/reject flow). Validated thresholds come from CHECKPOINT-A.
+- **Confidence:** 80%
+  - Implementation: 80% — CHECKPOINT-A resolved; write patterns confirmed (tmp+rename atomic write, linter gate `pnpm --filter @acme/mcp-server lint:templates`); `joinEvents()` API confirmed; `template-proposals.jsonl` (new file, must create) and `email-templates.json` write path confirmed. Key correction: `normalization_batch` is STRING type ("A"–"D") not integer — write-back uses string-increment logic (patch: "D"→"E"; new: "A"). PII token format confirmed: `[EMAIL]`, `[BOOKING_REF]`, `[PHONE]` — new `pii-redact.ts` utility (no reusable existing utility; `sanitizeContextSnippet` in `reviewed-ledger.ts` uses a different private format).
   - Approach: 80% — `rewrite_reason` primary filter is explicit; `isHardRuleProtected()` guard is specified; `previous_body_redacted` rollback mechanism is defined
-  - Impact: 75% — dependent on CHECKPOINT-A confirming threshold values; without that, proposal generation rate is uncertain
-- **What would make this >=85%:** CHECKPOINT-A confirms threshold boundaries; mock test demonstrates end-to-end proposal generation → approval → write-back in a unit test with a controlled fixture
+  - Impact: 80% — CHECKPOINT-A confirmed; provisional thresholds accepted with human-review backstop; proposal generation rate may vary from provisional threshold predictions but is bounded by mandatory human approval gate
+- **What would make this >=85%:** Mock test demonstrates end-to-end proposal generation → approval → write-back in a unit test with a controlled fixture; first real ops-inbox session post-TASK-02 confirms proposal rate within expected range
 - **Acceptance:**
   - [ ] Joined event with `rewrite_reason: "wrong-template"` and `outcome: "wrong-template"` produces entry in `template-proposals.jsonl`
   - [ ] Joined event with `rewrite_reason: "style"` produces NO proposal
@@ -390,13 +390,14 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
   - [ ] `email-templates.json` writes are atomic (`.tmp` + rename), never partial in-place mutation
   - [ ] `previous_body_redacted` field preserved in proposal record after approval
   - [ ] Proposals >30 days old auto-rejected by `draft_template_review` at review time
+  - [ ] After any `email-templates.json` write-back, `pnpm --filter @acme/mcp-server lint:templates` passes (template governance linter)
 - **Validation contract:**
   - TC-01: `draft_template_review list` called with one qualifying joined event (`rewrite_reason: "wrong-template"`, `category: "booking-issues"`) in `draft-signal-events.jsonl` whose composite key (`draft_id` + `timestamp`) does not yet appear in `template-proposals.jsonl` → output includes the event as a new pending entry; `template-proposals.jsonl` contains one new entry with `review_state: "pending"` (proposals are generated lazily on each `list` call, not at `draft_refine` time)
   - TC-02: After calling `draft_template_review list` with this event in `draft-signal-events.jsonl`: joined event `{ rewrite_reason: "style", outcome: "heavy-rewrite" }` → no new entry in `template-proposals.jsonl`
   - TC-03: After calling `draft_template_review list` with this event in `draft-signal-events.jsonl`: joined event with `category: "prepayment"` → no new entry even if `rewrite_reason: "wrong-template"`
   - TC-04: Proposal body containing `"booking@example.com"` and `"MA4BJ9"` → stored as `"[EMAIL]"` and `"[BOOKING_REF]"`
-  - TC-05: `draft_template_review approve <patch-proposal-id>` → `email-templates.json` body for the template is updated; `normalization_batch` is incremented; proposal `review_state` → `"approved"`
-  - TC-06: `draft_template_review approve <new-proposal-id>` → new entry appended to `email-templates.json` with next sequential T-number and `normalization_batch: 0` (integer)
+  - TC-05: `draft_template_review approve <patch-proposal-id>` → `email-templates.json` body for the template is updated; `normalization_batch` advanced to next batch letter (e.g. `"D"` → `"E"`); proposal `review_state` → `"approved"`
+  - TC-06: `draft_template_review approve <new-proposal-id>` → new entry appended to `email-templates.json` with next sequential T-number and `normalization_batch: "A"` (string, first batch)
   - TC-07: `draft_template_review approve <id>` with stale expected hash (file changed after list) → returns `templates_conflict_retry` and performs no write
   - TC-08: Proposal with `timestamp` >30 days ago → `draft_template_review list` shows it as `"auto-rejected"` (not `"pending"`)
 - **Execution plan:** Red → Green → Refactor
@@ -404,8 +405,8 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
   - Green: (1) Implement `pii-redact.ts` with regex patterns for email, booking ref, phone, greeting-line strip. (2) Implement proposal generation function: triggered lazily when `draft_template_review list` is called; reads all joined events from `signal-events.ts`; applies `rewrite_reason` and hard-rule filters; skips joined events whose composite key (`draft_id` + `timestamp`) already appears in an existing `template-proposals.jsonl` entry — this check is session-agnostic and handles MCP process restarts; writes new qualifying proposals to `template-proposals.jsonl`. (3) Implement `draft_template_review` MCP tool: `list` (runs lazy generation, then returns pending proposals), `approve`, `reject` actions; write-back logic for patch and new-template cases using expected-hash optimistic concurrency + atomic temp-file rename. (4) Register tool in `tools/index.ts`.
   - Refactor: Extract `isHardRuleProtected(category)` guard as a shared utility used by both this module and `template-ranker.ts`
 - **Planning validation:**
-  - Checks run: confirmed `email-templates.json` uses standard Node JSON parse/write pattern (no schema validation library); `normalization_batch` field present on all templates
-  - Unexpected findings: None anticipated; confirm at build time that all 53 templates have `normalization_batch` field
+  - Checks run (replan 2026-02-20): confirmed `email-templates.json` has 53 templates, all with `normalization_batch` field; `normalization_batch` is STRING type ("A"–"D") on all existing templates — NOT integer as plan assumed; atomic write pattern (tmp+rename) confirmed from `reviewed-ledger.ts:237–240`; template governance linter (`pnpm --filter @acme/mcp-server lint:templates`) must pass after write-back; `joinEvents()` return type confirmed as `Array<{selection: SelectionEvent; refinement: RefinementEvent}>` from `signal-events.ts:171–191`; `template-proposals.jsonl` does not exist yet (expected — must create on first write)
+  - Unexpected findings: `normalization_batch` is STRING type ("A", "B", "C", "D") throughout — plan's prior "integer, new templates start at 0" was premature; write-back uses string increment; new templates start at "A". Decision log updated.
 - **Scouts:** Define and test optimistic-concurrency failure path for `email-templates.json` approval writes (do not assume single writer)
 - **Edge Cases & Hardening:**
   - Two proposals for same `template_id` both approved in same session → second approve fails with `templates_conflict_retry` due to hash mismatch; operator must refresh list
@@ -417,15 +418,15 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 - **Documentation impact:** Add `draft_template_review` to MCP resources table in ops-inbox SKILL.md
 - **Notes / references:**
   - `previous_body_redacted` stores the verbatim template body (no guest PII) — does not need redaction
-  - `normalization_batch` type is integer throughout — existing templates increment on each patch approval; new templates start at `0`
-  - New template approval: derive initial `subject` from first non-empty line of `proposed_body_redacted`; set `normalization_batch: 0` for new templates
+  - `normalization_batch` type is STRING throughout — existing templates have values "A"–"D"; patch approval advances to next letter (e.g. "D"→"E"); new templates start at "A". Decision log entry 2026-02-20 ("integer, new templates start at 0") was superseded by evidence — see replan entry.
+  - New template approval: derive initial `subject` from first non-empty line of `proposed_body_redacted`; set `normalization_batch: "A"` for new templates
 
 ---
 
 ### TASK-05: Ranker priors — draft_ranker_calibrate, load/apply priors
 
 - **Type:** IMPLEMENT
-- **Deliverable:** `draft_ranker_calibrate` MCP tool; `ranker-template-priors.json`; priors loaded and applied in `template-ranker.ts` (including `TemplateCandidate` interface extension and `applyThresholds()` update)
+- **Deliverable:** `draft_ranker_calibrate` MCP tool; `ranker-template-priors.json` (includes `calibrated_at` timestamp alongside per-template priors); priors loaded and applied in `template-ranker.ts` (including `TemplateCandidate` interface extension and `applyThresholds()` update); `countSignalEvents()` `TODO(TASK-05)` resolved in `signal-events.ts` — `events_since_last_calibration` reads `calibrated_at` from `ranker-template-priors.json` and counts events since that timestamp
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
@@ -436,15 +437,15 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
   - `packages/mcp-server/data/ranker-template-priors.json` (new file)
   - `packages/mcp-server/src/utils/template-ranker.ts` — interface extension (`TemplateCandidate` gains `adjustedScore?: number`, `adjustedConfidence?: number`); `rankTemplates()` gains priors-application step; `applyThresholds()` updated to read `adjustedConfidence ?? confidence`
   - `packages/mcp-server/src/tools/index.ts`
-  - `[readonly] packages/mcp-server/src/utils/signal-events.ts`
+  - `packages/mcp-server/src/utils/signal-events.ts` (TODO(TASK-05) resolution for `events_since_last_calibration`)
   - `[readonly] packages/mcp-server/data/draft-signal-events.jsonl`
 - **Depends on:** CHECKPOINT-A
 - **Blocks:** TASK-06
-- **Confidence:** 75%
-  - Implementation: 80% — ranker loading point is clear; calibrate tool reads JSONL and writes JSON; joining logic is defined in TASK-02's `signal-events.ts`. Held-back test: "What single unresolved unknown would push Implementation below 80?" → O(n) JSONL scan could be slow for large event files. At current scale (<200 events/month), not a real concern. Held-back test passes. Score: 80.
+- **Confidence:** 80%
+  - Implementation: 80% — CHECKPOINT-A resolved; `TemplateCandidate` interface confirmed at lines 82–88 (no `adjustedScore`/`adjustedConfidence` yet — must add); `buildCandidate()` confirmed NOT exported (priors applied in `rankTemplates()` after `buildCandidate()` returns — correct as planned); `applyThresholds()` target line confirmed at line 231 (`const topConfidence = candidates[0].confidence;` → must update to `adjustedConfidence ?? confidence`); `HARD_RULE_CATEGORIES` guard confirmed at lines 311–313 (short-circuits before BM25 — priors correctly bypass prepayment/cancellation). Scope addition: `TODO(TASK-05)` at `signal-events.ts:244` — `countSignalEvents()` updated to accept last-calibration timestamp from `ranker-template-priors.json` and return events since that timestamp.
   - Approach: 85% — bounded priors (±30 cap), asymmetric deltas with rationale, orphaned-event exclusion, graceful fallback when priors file is missing
-  - Impact: 75% — dependent on CHECKPOINT-A confirming threshold boundaries; calibration deltas may need revision after first run
-- **What would make this >=85%:** CHECKPOINT-A confirms thresholds; first calibration run produces non-trivial priors that measurably shift ranker output in tests
+  - Impact: 80% — CHECKPOINT-A confirmed; provisional thresholds accepted; calibration deltas may need revision after first run but bounded by ±30 cap; `events_since_last_calibration` correctly computed once priors file records `calibrated_at` timestamp
+- **What would make this >=85%:** First calibration run produces non-trivial priors that measurably shift ranker output in tests; real ops-inbox events confirm expected calibration window timing
 - **Acceptance:**
   - [ ] `draft_ranker_calibrate` runs only when ≥20 joined events since last calibration (minimum sample gate)
   - [ ] Output: `ranker-template-priors.json` with per-scenario, per-template prior deltas
@@ -470,8 +471,8 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
   - Green: (1) Implement `draft_ranker_calibrate`: read `draft-signal-events.jsonl` via `joinEvents()`, filter by minimum gate and last-calibration timestamp, aggregate event deltas by `(scenario_category, selected_template_id)` using mean, apply ±30 cap, write `ranker-template-priors.json`. (2) In `template-ranker.ts`: extend `TemplateCandidate` interface with `adjustedScore?: number` and `adjustedConfidence?: number` optional fields. In `rankTemplates()`, load priors at function start (or accept priors as parameter); call `buildCandidate()` as before (signature unchanged — `(template, result, queryTerms)`); then for each resulting candidate, look up its prior by `(scenarioCategory, template.template_id)` and set: `candidate.adjustedScore = candidate.score * (1 + priorDelta / 100)` (multiplicative — scale-independent for unbounded BM25 float); `candidate.adjustedConfidence = Math.min(100, Math.max(0, candidate.confidence + priorDelta))` (direct clamp — confidence is 0–100 integer); sort candidates array by `adjustedScore` descending in place. Update `applyThresholds()` line 231: change `const topConfidence = candidates[0].confidence` to `const topConfidence = candidates[0].adjustedConfidence ?? candidates[0].confidence` so threshold decisions use the adjusted value when priors are present. (3) Register `draft_ranker_calibrate` in `tools/index.ts`.
   - Refactor: If loading priors on every `rankTemplates()` call is a performance concern, cache with a module-level singleton with TTL; acceptable at current call rate
 - **Planning validation:**
-  - Checks run: confirmed `rankTemplates()` is called once per `handleDraftGenerateTool()` invocation; confirmed it receives a templates array parameter (not a cached singleton that would need invalidation); confirmed `TemplateCandidate.score` is raw unbounded BM25 float (not normalized); confirmed `TemplateCandidate.confidence` is integer 0–100 computed as `Math.round(matchedTerms/totalTerms*100)` at `template-ranker.ts:210`; confirmed `TemplateCandidate` interface at lines 82–88 has only `{ template, score, confidence, evidence, matches }` — `adjustedScore` and `adjustedConfidence` fields do not exist yet and must be added; confirmed `buildCandidate()` signature at lines 197–201 is `(template, result, queryTerms)` — priors must be applied in `rankTemplates()` after `buildCandidate()` returns, not inside `buildCandidate()`; `applyThresholds()` at line 231 currently reads `candidates[0].confidence` — must be updated to `adjustedConfidence ?? confidence`
-  - Unexpected findings: BM25 score is unbounded — multiplicative formula `score * (1 + priorDelta/100)` is used (not additive) to ensure the adjustment is proportional regardless of absolute score magnitude
+  - Checks run (replan 2026-02-20): `TemplateCandidate` interface at lines 82–88 confirmed: `{ template, score, confidence, evidence, matches }` — `adjustedScore`/`adjustedConfidence` absent, must add; `buildCandidate()` at lines 197–219 signature: `(template, result: SearchResult, queryTerms: Set<string>): TemplateCandidate` — NOT exported; `rankTemplates()` at lines 304–333: `(templates: EmailTemplate[], input: TemplateRankInput): TemplateRankResult` — takes templates array; `applyThresholds()` line 231: `const topConfidence = candidates[0].confidence;` — confirmed target; `HARD_RULE_CATEGORIES` guard at lines 311–313 short-circuits before BM25 — priors bypass prepayment/cancellation by design; `countSignalEvents` has `TODO(TASK-05)` at line 244 for `events_since_last_calibration` — fix scoped to this task; `draft-ranker-calibrate.ts` and `ranker-template-priors.json` both confirmed absent (must create); `AUTO_THRESHOLD = 80`, `SUGGEST_THRESHOLD = 25` at lines 103–104
+  - Unexpected findings: BM25 score is unbounded — multiplicative formula `score * (1 + priorDelta/100)` is used (not additive) to ensure scale-independent adjustment; `events_since_last_calibration` requires `ranker-template-priors.json` to record a `calibrated_at: string` timestamp field (add to priors file schema)
 - **Scouts:** Check `HARD_RULE_CATEGORIES` fast-path runs before `rankTemplates()` — priors should only apply to the BM25 path (confirm hard-rule categories cannot receive priors)
 - **Edge Cases & Hardening:**
   - Corrupt `ranker-template-priors.json` (invalid JSON) → log error, fall back to no priors (do not crash ranker)
@@ -633,6 +634,9 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 - 2026-02-20: `draft_signal_stats` MCP tool added to TASK-02 deliverable (lightweight read-only event counter). Resolves the implicit O(N) file-scan mechanism for TASK-06 session summary counts.
 - 2026-02-20: CHECKPOINT-A execution (Wave 2 gate) — BLOCKED initially; resolved same day. Finding: `draft-signal-events.jsonl` contained 10 orphaned refinement events (all `draft_id: "test-draft-id-XX"`), 0 selection events, 0 joined pairs. All events were test artifacts written by `draft-refine.test.ts` (no `appendJsonlEvent` mock in that file). TASK-08 added and completed to fix test isolation. `draft-signal-events.jsonl` truncated.
 - 2026-02-20: CHECKPOINT-A resolution — provisional thresholds (`<12%/35%/70%`) accepted without observed distribution data. Rationale: (1) TASK-04 proposals require mandatory human approval before any template write — miscalibrated thresholds affect proposal rate (too many or too few proposals) but cannot corrupt templates without human sign-off; (2) TASK-05 ranker calibration requires manual trigger with ±30 cap — threshold miscalibration shifts priors but is bounded and reversible; (3) provisional thresholds are empirically grounded from fact-find session (poles confirmed, interior boundaries unvalidated); (4) the system will accumulate real events through normal ops-inbox operation as TASK-04/05 are built and deployed — retroactive threshold review via `draft_signal_stats` once ≥20 joined events accumulate. TASK-04, TASK-05, TASK-07 unblocked for Wave 3.
+- 2026-02-20 (replan): `normalization_batch` is STRING type ("A"–"D") in actual `email-templates.json` — prior decision log entry ("locked to integer throughout; new templates start at 0") superseded by evidence. String format retained throughout. Patch approvals advance to next letter (e.g. "D"→"E"); new templates start at "A". No integer migration needed.
+- 2026-02-20 (replan): TASK-05 scope expanded to include `TODO(TASK-05)` fix in `signal-events.ts:244` — `events_since_last_calibration` in `countSignalEvents()` reads `calibrated_at` timestamp from `ranker-template-priors.json` and counts events since that timestamp. `ranker-template-priors.json` gains `calibrated_at: string` field. `signal-events.ts` changed from `[readonly]` to writable in TASK-05 affects.
+- 2026-02-20 (replan): TASK-04 and TASK-05 confidence boosted 75%→80% (evidence-based). CHECKPOINT-A resolution removes primary impact uncertainty. Confirmed: atomic write pattern, joinEvents API, template linter constraint, TemplateCandidate interface targets, applyThresholds line 231, HARD_RULE_CATEGORIES priors bypass. Overall-confidence updated 80%→85%. Wave 3 ready for build.
 
 ## Overall-confidence Calculation
 
@@ -641,10 +645,10 @@ Adds a closed-loop quality improvement system to the Brikette MCP email draft pi
 | TASK-01 | 90% | M | 2 | 180 |
 | TASK-02 | 85% | M | 2 | 170 |
 | TASK-03 | 85% | S | 1 | 85 |
-| TASK-04 | 75% | L | 3 | 225 |
-| TASK-05 | 75% | M | 2 | 150 |
+| TASK-04 | 80% | L | 3 | 240 |
+| TASK-05 | 80% | M | 2 | 160 |
 | TASK-06 | 80% | S | 1 | 80 |
 | TASK-07 | 80% | M | 2 | 160 |
-| **Total** | | | **13** | **1050** |
+| **Total** | | | **13** | **1075** |
 
-Overall-confidence = 1050 / 13 = **80%** (rounded to nearest 5)
+Overall-confidence = 1075 / 13 = **85%** (rounded to nearest 5)

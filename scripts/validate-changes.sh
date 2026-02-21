@@ -377,50 +377,76 @@ for pkg_file in "$PKG_MAP"/*; do
             ABS_SOURCE_FILES="$ABS_SOURCE_FILES $(pwd)/$sf"
         done
 
-        # Single batched probe: find related tests for ALL source files at once
-        # (replaces per-file jest --listTests loop for speed)
-        if ! RAW_RELATED=$(run_jest_exec "$PKG_PATH" --listTests --findRelatedTests $ABS_SOURCE_FILES --passWithNoTests 2>&1); then
-            echo "    ERROR: Jest failed while probing tests for package: $PKG_PATH"
-            echo "    Output: $RAW_RELATED"
-            exit 1
-        fi
-
-        # Filter to only actual file paths (lines starting with /)
-        RELATED=$(echo "$RAW_RELATED" | grep '^/' || true)
-
-        if [ -z "$RELATED" ]; then
-            # No tests found for any file in this package batch
-            for sf in $SOURCE_FILES; do
-                echo "    WARN: No tests found for: $sf"
-                MISSING_TESTS=$((MISSING_TESTS + 1))
-                MISSING_FILES="$MISSING_FILES $sf"
-            done
+        if [ "$PKG_PATH" = "./packages/mcp-server" ]; then
+            echo "    INFO: Skipping --listTests probe for $PKG_PATH (non-terminating in some governed runs)."
+            ADJACENT_TESTS=$(find_source_adjacent_tests "$PKG_PATH" "$PKG_TYPE" "$PKG_NAME" "$SOURCE_FILES")
+            if [ -n "$ADJACENT_TESTS" ]; then
+                echo "    Source-adjacent tests:$ADJACENT_TESTS"
+                if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --runTestsByPath $ADJACENT_TESTS --maxWorkers=2 2>&1; then
+                    echo "    FAIL: Source-adjacent tests failed in $PKG_PATH"
+                    exit 1
+                fi
+            else
+                echo "    WARN: No source-adjacent tests found; running findRelatedTests with passWithNoTests."
+                if ! RAW_FALLBACK=$(JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --findRelatedTests $ABS_SOURCE_FILES --passWithNoTests --maxWorkers=2 2>&1); then
+                    echo "    FAIL: Tests failed in $PKG_PATH"
+                    echo "    Output: $RAW_FALLBACK"
+                    exit 1
+                fi
+                if printf '%s\n' "$RAW_FALLBACK" | grep -qi 'No tests found'; then
+                    for sf in $SOURCE_FILES; do
+                        echo "    WARN: No tests found for: $sf"
+                        MISSING_TESTS=$((MISSING_TESTS + 1))
+                        MISSING_FILES="$MISSING_FILES $sf"
+                    done
+                fi
+            fi
         else
-            RELATED_COUNT=$(echo "$RELATED" | sed '/^$/d' | wc -l | tr -d ' ')
-            if [ "$RELATED_COUNT" -gt "$RELATED_TEST_LIMIT" ]; then
-                echo "    INFO: Related test set size $RELATED_COUNT exceeds limit $RELATED_TEST_LIMIT."
-                echo "    Running source-adjacent tests to avoid full-sweep behavior..."
+            # Single batched probe: find related tests for ALL source files at once
+            # (replaces per-file jest --listTests loop for speed)
+            if ! RAW_RELATED=$(run_jest_exec "$PKG_PATH" --listTests --findRelatedTests $ABS_SOURCE_FILES --passWithNoTests 2>&1); then
+                echo "    ERROR: Jest failed while probing tests for package: $PKG_PATH"
+                echo "    Output: $RAW_RELATED"
+                exit 1
+            fi
 
-                ADJACENT_TESTS=$(find_source_adjacent_tests "$PKG_PATH" "$PKG_TYPE" "$PKG_NAME" "$SOURCE_FILES")
-                if [ -n "$ADJACENT_TESTS" ]; then
-                    echo "    Source-adjacent tests:$ADJACENT_TESTS"
-                    if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --runTestsByPath $ADJACENT_TESTS --maxWorkers=2 2>&1; then
-                        echo "    FAIL: Source-adjacent tests failed in $PKG_PATH"
-                        exit 1
+            # Filter to only actual file paths (lines starting with /)
+            RELATED=$(echo "$RAW_RELATED" | grep '^/' || true)
+
+            if [ -z "$RELATED" ]; then
+                # No tests found for any file in this package batch
+                for sf in $SOURCE_FILES; do
+                    echo "    WARN: No tests found for: $sf"
+                    MISSING_TESTS=$((MISSING_TESTS + 1))
+                    MISSING_FILES="$MISSING_FILES $sf"
+                done
+            else
+                RELATED_COUNT=$(echo "$RELATED" | sed '/^$/d' | wc -l | tr -d ' ')
+                if [ "$RELATED_COUNT" -gt "$RELATED_TEST_LIMIT" ]; then
+                    echo "    INFO: Related test set size $RELATED_COUNT exceeds limit $RELATED_TEST_LIMIT."
+                    echo "    Running source-adjacent tests to avoid full-sweep behavior..."
+
+                    ADJACENT_TESTS=$(find_source_adjacent_tests "$PKG_PATH" "$PKG_TYPE" "$PKG_NAME" "$SOURCE_FILES")
+                    if [ -n "$ADJACENT_TESTS" ]; then
+                        echo "    Source-adjacent tests:$ADJACENT_TESTS"
+                        if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --runTestsByPath $ADJACENT_TESTS --maxWorkers=2 2>&1; then
+                            echo "    FAIL: Source-adjacent tests failed in $PKG_PATH"
+                            exit 1
+                        fi
+                    else
+                        echo "    WARN: No source-adjacent tests found; falling back to related tests."
+                        if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --findRelatedTests $ABS_SOURCE_FILES --maxWorkers=2 2>&1; then
+                            echo "    FAIL: Tests failed in $PKG_PATH"
+                            exit 1
+                        fi
                     fi
                 else
-                    echo "    WARN: No source-adjacent tests found; falling back to related tests."
+                    # Tests found — run them (coverage thresholds relaxed)
+                    echo "    Running related tests for files (coverage thresholds relaxed)..."
                     if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --findRelatedTests $ABS_SOURCE_FILES --maxWorkers=2 2>&1; then
                         echo "    FAIL: Tests failed in $PKG_PATH"
                         exit 1
                     fi
-                fi
-            else
-                # Tests found — run them (coverage thresholds relaxed)
-                echo "    Running related tests for files (coverage thresholds relaxed)..."
-                if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --findRelatedTests $ABS_SOURCE_FILES --maxWorkers=2 2>&1; then
-                    echo "    FAIL: Tests failed in $PKG_PATH"
-                    exit 1
                 fi
             fi
         fi

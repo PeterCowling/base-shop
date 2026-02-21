@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, type RenderResult } from "@testing-library/react";
 
 import CanvasItem from "../../src/components/cms/page-builder/CanvasItem";
 import ComponentEditor from "../../src/components/cms/page-builder/ComponentEditor";
@@ -50,7 +50,15 @@ if (typeof (globalThis as any).CSS === "undefined") {
 
 export { CanvasItem, ComponentEditor };
 
-export function renderCanvasItem(component: any, options: any = {}) {
+type RenderCanvasItemResult = RenderResult & {
+  el: HTMLElement;
+  dispatch: jest.Mock;
+};
+
+export function renderCanvasItem(
+  component: any,
+  options: any = {},
+): RenderCanvasItemResult {
   const dispatch = jest.fn();
   const result = render(
     <CanvasItem

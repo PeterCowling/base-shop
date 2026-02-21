@@ -16,7 +16,7 @@ declare module 'jest-axe' {
   export const toHaveNoViolations: {
     toHaveNoViolations(results: AxeResults): {
       pass: boolean;
-      message(): string | undefined;
+      message(): string;
       actual?: AxeResults['violations'];
     };
   };

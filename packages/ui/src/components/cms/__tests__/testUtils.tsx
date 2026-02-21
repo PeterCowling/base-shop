@@ -1,11 +1,19 @@
-import { render } from "@testing-library/react";
+import { render, type RenderResult } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import MediaFileItem from "../MediaFileItem";
 
 type Props = React.ComponentProps<typeof MediaFileItem>;
+type SetupMediaResult = RenderResult & {
+  user: ReturnType<typeof userEvent.setup>;
+  fileInput: HTMLInputElement;
+  onDelete: NonNullable<Props["onDelete"]>;
+  onReplace: NonNullable<Props["onReplace"]>;
+};
 
-export function setupMedia(overrides: Partial<Props> & Pick<Props, "item">) {
+export function setupMedia(
+  overrides: Partial<Props> & Pick<Props, "item">,
+): SetupMediaResult {
   const onDelete = overrides.onDelete ?? jest.fn();
   const onReplace = overrides.onReplace ?? jest.fn();
 

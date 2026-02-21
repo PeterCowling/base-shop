@@ -93,7 +93,7 @@ The brikette app contains webpack-specific APIs and config that create dead code
 | TASK-07 | CHECKPOINT | Reassess guides.state.ts and moduleResolver.ts migration after spike | 95% | S | Complete (2026-02-20) | TASK-06 | TASK-08, TASK-09 |
 | TASK-08 | IMPLEMENT | Migrate guides.state.ts | 85% | M | Complete (2026-02-20) | TASK-07 | TASK-10 |
 | TASK-09 | IMPLEMENT | Migrate moduleResolver.ts (accept-empty) | 90% | M | Complete (2026-02-20) | TASK-07 | TASK-10 |
-| TASK-10 | IMPLEMENT | Delete webpackGlob.ts and cleanup (mock, moduleNameMapper) | 85% | S | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-08, TASK-09 | TASK-11 |
+| TASK-10 | IMPLEMENT | Delete webpackGlob.ts and cleanup (mock, moduleNameMapper) | 85% | S | Complete (2026-02-21) | TASK-01, TASK-03, TASK-04, TASK-05, TASK-08, TASK-09 | TASK-11 |
 | TASK-11 | IMPLEMENT | Simplify jest-import-meta-transform.cjs | 80% | S | Pending | TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | End-to-end Turbopack build verification | 85% | S | Pending | TASK-11 | - |
 
@@ -494,7 +494,7 @@ The brikette app contains webpack-specific APIs and config that create dead code
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-21)
 - **Affects:** `apps/brikette/src/utils/webpackGlob.ts`, `apps/brikette/src/test/__mocks__/webpackGlob.ts`, `apps/brikette/jest.config.cjs`
 - **Depends on:** TASK-01, TASK-03, TASK-04, TASK-05, TASK-08, TASK-09
 - **Blocks:** TASK-11
@@ -502,6 +502,7 @@ The brikette app contains webpack-specific APIs and config that create dead code
   - Implementation: 90% — process is clear: delete 2 files, remove 3 lines from jest.config.cjs.
   - Approach: 85% — before deleting, verify no remaining references to webpackGlob exist; any missed reference manifests immediately as a build failure (which is desirable — caught and fixed rather than silent regression).
   - Impact: 90% — the deletion is the definitive signal that all consumers have been migrated; if any reference remains, the build breaks (safe failure mode).
+- **Build evidence (2026-02-21):** `grep -rn webpackGlob apps/brikette/src packages` → CLEAN. Deleted `webpackGlob.ts` and `__mocks__/webpackGlob.ts`. Removed 5-line `moduleNameMapper` block from `jest.config.cjs`. `tsc --noEmit` clean. Committed `0eda8997ff` (3 files, 70 deletions).
 - **Acceptance:**
   - `apps/brikette/src/utils/webpackGlob.ts` does not exist.
   - `apps/brikette/src/test/__mocks__/webpackGlob.ts` does not exist.

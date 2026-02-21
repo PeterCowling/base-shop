@@ -15,6 +15,18 @@ const coreEnv = {
 
 export default withShopCode(coreEnv.SHOP_CODE, {
   outputFileTracingRoot: repoRoot,
+  // Mirror the webpack source aliases for Turbopack so workspace packages
+  // resolve to TypeScript source rather than their compiled dist/ output.
+  // This prevents HMR boundary errors when dist files import src-resolved modules.
+  turbopack: {
+    resolveAlias: {
+      "@acme/design-system": path.resolve(__dirname, "../design-system/src"),
+      "@acme/cms-ui": path.resolve(__dirname, "../cms-ui/src"),
+      "@acme/lib": path.resolve(__dirname, "../lib/src"),
+      "@acme/seo": path.resolve(__dirname, "../seo/src"),
+      "@themes-local": path.resolve(__dirname, "../themes"),
+    },
+  },
   webpack(config, { isServer, nextRuntime }) {
     // Preserve existing tweaks from the base config
     if (typeof baseConfig.webpack === "function") {

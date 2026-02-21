@@ -7,6 +7,7 @@ Created: 2026-02-13
 Last-updated: 2026-02-14
 Last-reviewed: 2026-02-14
 Feature-Slug: cochlearfit-deployment-readiness
+Relates-to charter: docs/business-os/business-os-charter.md
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
@@ -241,6 +242,9 @@ Worker (Needs fixes):
    - Only allow `PAGES_ORIGIN` domains (staging + production Pages URLs)
    - Reject requests from unknown origins (reduces browser-based abuse, e.g., unauthorized API calls from unrelated sites)
    - **Note:** Production uses same-origin `/api/*` routing (no CORS needed); staging may use cross-origin Workers.dev URL (strict CORS required)
+
+## Active tasks
+See `## Tasks` section for the active task list.
 
 ## Task Summary
 

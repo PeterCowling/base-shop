@@ -5,7 +5,9 @@ Domain: Business
 Workstream: Product
 Created: 2026-02-17
 Last-updated: 2026-02-18 (TASK-04 complete — CE marking investigation filed; H5 proceed under GPSR + REACH non-toy path)
+Last-reviewed: 2026-02-18
 Feature-Slug: mini-handbag-pmf
+Relates-to charter: docs/business-os/business-os-charter.md
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: startup-demand-test-protocol
 Execution-Track: business-artifact
@@ -113,6 +115,9 @@ Variant priority from fact-find scoring:
 
 ---
 
+## Active tasks
+See `## Tasks` section for the active task list.
+
 ## Task Summary
 
 | Task ID  | Type        | Description                                        | Confidence | Effort | Status  | Depends on           | Blocks               |
@@ -156,7 +161,7 @@ Variant priority from fact-find scoring:
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
 - **Decision:** Option B — Premium (€80–€150). Confirmed by Pete 2026-02-17.
-- **Affects:** `docs/business-os/strategy/HBAG/brand-dossier.user.md`, `docs/plans/mini-handbag-pmf/plan.md`
+- **Affects:** `docs/business-os/strategy/HBAG/brand-identity.user.md`, `docs/plans/mini-handbag-pmf/plan.md`
 - **Depends on:** —
 - **Blocks:** TASK-05, TASK-06
 - **Confidence:** 90%

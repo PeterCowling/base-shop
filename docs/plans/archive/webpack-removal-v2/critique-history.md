@@ -1,3 +1,11 @@
+---
+Type: Critique-History
+Status: Reference
+Domain: Platform
+Last-reviewed: 2026-02-21
+Relates-to charter: docs/business-os/business-os-charter.md
+---
+
 # Critique History: webpack-removal-v2
 
 ## Round 1 — 2026-02-21

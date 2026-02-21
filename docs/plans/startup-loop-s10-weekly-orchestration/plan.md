@@ -18,7 +18,7 @@ Auto-Build-Intent: plan-only
 Business-OS-Integration: off
 Business-Unit: BOS
 Card-ID: none
-Relates-to: docs/business-os/business-os-charter.md
+Relates-to charter: docs/business-os/business-os-charter.md
 Related-v2-plan: docs/plans/startup-loop-orchestrated-os-comparison-v2/plan.md
 ---
 
@@ -81,6 +81,9 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
   - Re-entrancy, week-boundary anchor, partial inputs, and authority drift are explicitly covered.
 - Auto-build eligible: **No**
   - `plan-only` and Build/Auto gates not passed.
+
+## Active tasks
+See `## Tasks` section for the active task list.
 
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |

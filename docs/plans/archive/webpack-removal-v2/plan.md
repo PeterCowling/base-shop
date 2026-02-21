@@ -1,10 +1,10 @@
 ---
 Type: Plan
-Status: Draft
+Status: Archived
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-21
-Last-updated: 2026-02-21T3
+Last-updated: 2026-02-21T4
 Feature-Slug: webpack-removal-v2
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -93,6 +93,9 @@ brikette-only.
 - Edge-case review complete: Yes
 - Auto-build eligible: Yes (all tasks >=80% after TASK-01 PROCEED rebase)
 
+## Active tasks
+See `## Tasks` section for the active task list.
+
 ## Task Summary
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
@@ -100,8 +103,8 @@ brikette-only.
 | TASK-01 | INVESTIGATE | Turbopack static export go/no-go verification | 90% | S | Complete (2026-02-21) | - | TASK-02 |
 | TASK-02 | IMPLEMENT | Add `--turbopack` to build commands | 85% | S | Complete (2026-02-21) | TASK-01 | TASK-03 |
 | TASK-03 | IMPLEMENT | Remove webpack callback from brikette config | 85% | S | Complete (2026-02-21) | TASK-02 | TASK-04, TASK-05 |
-| TASK-04 | IMPLEMENT | Add CI turbopack-build validation job | 80% | S | Pending | TASK-03 | - |
-| TASK-05 | IMPLEMENT | Full verification pass (tests + policy) | 85% | S | Pending | TASK-03 | - |
+| TASK-04 | IMPLEMENT | Add CI turbopack-build validation job | 80% | S | Complete (2026-02-21) | TASK-03 | - |
+| TASK-05 | IMPLEMENT | Full verification pass (tests + policy) | 85% | S | Complete (2026-02-21) | TASK-03 | - |
 
 ## Parallelism Guide
 
@@ -305,7 +308,7 @@ brikette-only.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-21)
 - **Affects:** `.github/workflows/brikette.yml`
 - **Depends on:** TASK-03
 - **Blocks:** -
@@ -317,6 +320,11 @@ brikette-only.
     and the assertion (`out/en/index.html` exists) is a simple file check.
   - Approach: 85% — clear pattern from existing turbopack-smoke CI job
   - Impact: 85% — adds safety net for future regressions; no downside
+- **Build evidence:**
+  - TC-01 PASS: `grep 'Validate static export output' .github/workflows/brikette.yml` → matches at line 111
+  - TC-02 PASS: `test -f apps/brikette/out/en.html` and `test -d apps/brikette/out/_next/static` assertions present
+  - Inserted 4-line validation step after the build step (line 109) in the `static-export-check` PR job
+  - Step inherits existing job `if` guard (PR + workflow_dispatch events)
 - **Acceptance:**
   - `.github/workflows/brikette.yml` contains a build validation step (in the existing PR job
     or as a new step) that runs `OUTPUT_EXPORT=1 next build --turbopack` and asserts output.
@@ -363,7 +371,7 @@ brikette-only.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-21)
 - **Affects:** `[readonly] apps/brikette/`, `[readonly] scripts/check-next-webpack-flag.mjs`
 - **Depends on:** TASK-03
 - **Blocks:** -
@@ -374,6 +382,12 @@ brikette-only.
     risk (not Q1 feasibility) — a domain independent of the fact-find's Q1 uncertainty.
   - Approach: 85% — well-defined commands; governed test runner and policy script
   - Impact: 90% — confirms nothing is broken; no risk from running tests
+- **Build evidence:**
+  - TC-01 PASS: governed Jest with `--testPathPattern='apps/brikette/'` → exit 0 (with `--detectOpenHandles --forceExit` for hang safety)
+  - TC-02 PASS: `node scripts/check-next-webpack-flag.mjs --all` → exit 0
+  - TC-03 PASS: `pnpm --filter @apps/brikette typecheck` → exit 0
+  - Note: pre-existing `ga4-view-item-list-impressions.test.tsx` failures (React 19 `prefetch` attribute mismatch) are not brikette-scoped and unrelated to webpack removal. 13 pre-existing `describe.skip` tests remain skipped as expected.
+  - Jest hang investigation: brikette was the only package missing `--detectOpenHandles`; stale governed runner processes from earlier attempts blocked the test queue. Cleared stale locks and processes; tests completed normally with `--forceExit`.
 - **Acceptance:**
   - Brikette Jest suite passes (governed runner, all shards).
   - `scripts/check-next-webpack-flag.mjs --all` passes.
@@ -442,6 +456,9 @@ brikette-only.
 - 2026-02-21: **TASK-01 PROCEED.** Turbopack static export confirmed working (Next.js 16.1.6). Build exits 0, 4021 pages generated in 79s, output structure identical to webpack (`out/en.html` pattern, not `out/en/index.html`). `ssr-polyfills.cjs` compatible. `postbuild` succeeds. Corrected TC-02/TASK-04 path from `out/en/index.html` to `out/en.html`. Rebased TASK-02 70%→85%, TASK-03 70%→85%. Overall confidence rebased 79%→85%.
 - 2026-02-21: **TASK-02 Complete.** `--turbopack` added to package.json build script and all 3 CI build locations (lines 104, 129, 161). TC-01/TC-02 pass. TC-03 satisfied by TASK-01 evidence (same command, same codebase). TASK-03 now unblocked.
 - 2026-02-21: **TASK-03 Complete.** Webpack callback (27 lines, 136–162) deleted from `apps/brikette/next.config.mjs`. TC-01: 0 webpack references remain. TC-02: turbopack resolveAlias block intact. TC-03: build exit 0 (117s, 4021 pages, no module-not-found errors). Q2 confirmed: `resolve.fallback` for Node built-ins is not needed under Turbopack. TASK-04 and TASK-05 now unblocked (Wave 4, parallel).
+- 2026-02-21: **TASK-04 Complete.** Added "Validate static export output" step at line 111 in `static-export-check` PR job. Asserts `test -f apps/brikette/out/en.html` and `test -d apps/brikette/out/_next/static`. TC-01/TC-02 pass.
+- 2026-02-21: **TASK-05 Complete.** Full verification pass: governed Jest (brikette-scoped) exit 0, webpack policy check exit 0, typecheck exit 0. No new test failures from webpack removal. Pre-existing `ga4-view-item-list-impressions` failures unrelated (React 19 `prefetch`). 13 pre-existing skipped tests remain as expected.
+- 2026-02-21: **Plan Complete.** All 5 tasks executed successfully. Brikette production build switched from webpack to Turbopack, webpack callback removed, CI validation added, full verification passed.
 
 ## Overall-confidence Calculation
 

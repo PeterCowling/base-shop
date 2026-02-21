@@ -153,6 +153,9 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - Auto-build eligible: Yes
   - At least one IMPLEMENT task is >=80 with no unresolved decision dependency (`TASK-02`, `TASK-05A`).
 
+## Active tasks
+See `## Tasks` section for the active task list.
+
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|

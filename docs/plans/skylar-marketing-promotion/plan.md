@@ -5,7 +5,9 @@ Domain: Venture-Studio
 Workstream: Marketing
 Created: 2026-02-14
 Last-updated: 2026-02-14
+Last-reviewed: 2026-02-14
 Feature-Slug: skylar-marketing-promotion
+Relates-to charter: docs/business-os/business-os-charter.md
 Deliverable-Type: marketing-asset
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
@@ -81,6 +83,7 @@ Release 2 is deferred:
 - Optionally add "Loop" and "Portfolio" sections and UTMs.
 
 ## Active tasks
+See `## Tasks` section for the active task list.
 
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |

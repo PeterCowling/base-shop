@@ -5,7 +5,9 @@ Domain: UI / API / Infra
 Workstream: Engineering
 Created: 2026-02-18
 Last-updated: 2026-02-18
+Last-reviewed: 2026-02-18
 Feature-Slug: cochlearfit-ga4-funnel
+Relates-to charter: docs/business-os/business-os-charter.md
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
@@ -87,6 +89,9 @@ CochlearFit has a fully built purchase funnel (Home → Shop → PDP → Cart �
 - Sequenced: **Yes**
 - Edge-case review complete: **Yes** (applied inline per task in Edge Cases & Hardening fields)
 - Auto-build eligible: **No** — TASK-D01 and TASK-D02 are unresolved DECISION tasks blocking majority of IMPLEMENT tasks; plan Status is Draft; owner must confirm decisions before Active designation
+
+## Active tasks
+See `## Tasks` section for the active task list.
 
 ## Task Summary
 

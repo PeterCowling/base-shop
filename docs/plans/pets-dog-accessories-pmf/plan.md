@@ -5,7 +5,9 @@ Domain: Business
 Workstream: Product
 Created: 2026-02-17
 Last-updated: 2026-02-17
+Last-reviewed: 2026-02-17
 Feature-Slug: pets-dog-accessories-pmf
+Relates-to charter: docs/business-os/business-os-charter.md
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: startup-demand-test-protocol
 Execution-Track: business-artifact
@@ -115,6 +117,9 @@ brand") per Q3 input. No crossover with HBAG at any stage.
 
 ---
 
+## Active tasks
+See `## Tasks` section for the active task list.
+
 ## Task Summary
 
 | Task ID  | Type        | Description                                                | Confidence | Effort | Status  | Depends on       | Blocks               |
@@ -169,7 +174,7 @@ brand") per Q3 input. No crossover with HBAG at any stage.
   30-day no-fault exchange policy identified as key competitive weapon vs Pagerie.
   ICP locked: urban millennial female dog owner, 25–40, dog-as-lifestyle extension.
   **Brand name — Deep Research complete (2026-02-18):**
-  Output saved to `docs/business-os/strategy/PET/2026-02-18-naming-shortlist.user.md`.
+  Output saved to `docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md`.
   Recommendation: **Vellara** (invented, accessory-first fashion territory; low SERP noise;
   warm leather-goods phonetics; no pet-category anchor; scales across full product line).
   Shortlist: Vellara, Lunera, Civana, Passea, Tressa.

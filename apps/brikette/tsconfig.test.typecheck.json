@@ -9,6 +9,7 @@
     "noEmit": true,
     "types": ["jest", "node", "react", "react-dom", "@testing-library/jest-dom"],
     "paths": {
+      "@jest/globals": ["../../test/jest-globals-compat.d.ts"],
       "@/*": ["src/*", "dist/*", "../../packages/ui/dist/*"],
       "@tests/*": ["src/test/*"],
       "~test/*": ["../../test/*"],

@@ -1,3 +1,10 @@
+---
+Type: Critique-History
+Status: Reference
+Domain: Platform
+Last-reviewed: 2026-02-21
+---
+
 # Critique History: brikette-webpack-removal
 
 ## Round 1 — 2026-02-20

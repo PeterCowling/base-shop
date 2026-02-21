@@ -12,7 +12,8 @@ import { z } from "zod";
 
 import {
   joinEvents,
-  readSignalEvents,
+  type RefinementEvent,
+  type SelectionEvent,
 } from "../utils/signal-events.js";
 import {
   type EmailTemplate,
@@ -133,6 +134,41 @@ async function readTemplates(): Promise<TemplateEntry[]> {
   return JSON.parse(raw) as TemplateEntry[];
 }
 
+async function readDraftSignalEvents(filePath: string): Promise<{
+  selectionEvents: SelectionEvent[];
+  refinementEvents: RefinementEvent[];
+}> {
+  let raw: string;
+  try {
+    raw = await readFile(filePath, "utf-8");
+  } catch (err) {
+    const code = (err as NodeJS.ErrnoException | undefined)?.code;
+    if (code === "ENOENT") {
+      return { selectionEvents: [], refinementEvents: [] };
+    }
+    throw err;
+  }
+
+  const selectionEvents: SelectionEvent[] = [];
+  const refinementEvents: RefinementEvent[] = [];
+
+  for (const line of raw.split("\n")) {
+    if (!line.trim()) continue;
+    try {
+      const parsed = JSON.parse(line) as { event?: string };
+      if (parsed.event === "selection") {
+        selectionEvents.push(parsed as SelectionEvent);
+      } else if (parsed.event === "refinement") {
+        refinementEvents.push(parsed as RefinementEvent);
+      }
+    } catch {
+      // Skip malformed lines in append-only JSONL.
+    }
+  }
+
+  return { selectionEvents, refinementEvents };
+}
+
 function hashFileContent(content: string): string {
   return createHash("sha256").update(content).digest("hex");
 }
@@ -154,7 +190,7 @@ async function generatePendingProposals(
   existingProposals: Map<string, TemplateProposal>,
   templates: TemplateEntry[],
 ): Promise<TemplateProposal[]> {
-  const { selectionEvents, refinementEvents } = await readSignalEvents(SIGNAL_EVENTS_PATH);
+  const { selectionEvents, refinementEvents } = await readDraftSignalEvents(SIGNAL_EVENTS_PATH);
   const pairs = joinEvents(selectionEvents, refinementEvents);
 
   const templatesBySubject = new Map(

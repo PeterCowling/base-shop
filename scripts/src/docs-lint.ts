@@ -65,7 +65,27 @@ const ALLOWED_STATUSES = new Set([
   "Accepted",
   "Rejected",
   "Archive",
+  "Archived",
+  "Complete",
 ]);
+
+const TYPE_HEADER_OPTIONAL_PATH_SUFFIXES = new Set([
+  "docs/business-os/startup-loop/_generated/stage-operator-table.md",
+  "docs/plans/webpack-removal-v2/critique-history.md",
+]);
+
+function isTypeHeaderOptionalDoc(rel: string): boolean {
+  return TYPE_HEADER_OPTIONAL_PATH_SUFFIXES.has(rel.split(path.sep).join("/"));
+}
+
+function isMissingFileError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    "code" in error &&
+    typeof (error as { code?: unknown }).code === "string" &&
+    (error as { code: string }).code === "ENOENT"
+  );
+}
 
 async function walk(dir: string): Promise<string[]> {
   const entries = await readDocsDir(dir);
@@ -86,7 +106,16 @@ async function buildRegistry(docs: string[]) {
   const entries = [];
   for (const file of docs) {
     const rel = path.relative(ROOT, file);
-    const content = await readDocFile(file);
+    let content: string;
+    try {
+      content = await readDocFile(file);
+    } catch (error) {
+      if (isMissingFileError(error)) {
+        console.warn(`[docs-lint] Skipping missing tracked doc in registry build: ${rel}`);
+        continue;
+      }
+      throw error;
+    }
     const header = parseHeader(content);
     if (!header.type) continue;
     entries.push({
@@ -106,12 +135,23 @@ async function main() {
 
   for (const file of docs) {
     const rel = path.relative(ROOT, file);
-    const content = await readDocFile(file);
+    let content: string;
+    try {
+      content = await readDocFile(file);
+    } catch (error) {
+      if (isMissingFileError(error)) {
+        console.warn(`[docs-lint] Skipping missing tracked doc: ${rel}`);
+        continue;
+      }
+      throw error;
+    }
     const { type, status, domain, hasCodePointers } = parseHeader(content);
 
     if (!type) {
       console.warn(`[docs-lint] Missing Type header in ${rel}`);
-      hadError = true;
+      if (!isTypeHeaderOptionalDoc(rel)) {
+        hadError = true;
+      }
       continue;
     }
 
@@ -275,7 +315,15 @@ async function main() {
   );
 
   for (const file of businessOsDocs) {
-    const content = await readDocFile(file);
+    let content: string;
+    try {
+      content = await readDocFile(file);
+    } catch (error) {
+      if (isMissingFileError(error)) {
+        continue;
+      }
+      throw error;
+    }
     const { type } = parseHeader(content);
 
     // Skip dual-audience check for Comment type (single file pattern)

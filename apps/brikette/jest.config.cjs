@@ -24,12 +24,6 @@ const envMock = path.resolve(__dirname, "src/test/__mocks__/config-env.ts");
 newMapper["^@/config/env$"] = envMock;
 newMapper["^\\.+/config/env$"] = envMock;
 
-// webpackGlob.ts uses import.meta which Jest CJS mode can't parse
-// Match both @/ alias and relative imports (../utils/webpackGlob from locales/)
-const webpackGlobMock = path.resolve(__dirname, "src/test/__mocks__/webpackGlob.ts");
-newMapper["^@/utils/webpackGlob$"] = webpackGlobMock;
-newMapper["(\\.\\.?/)+utils/webpackGlob$"] = webpackGlobMock;
-
 // guides.fs.ts uses import.meta.url (for createRequire) which Jest can't parse
 const guidesFsMock = path.resolve(__dirname, "src/test/__mocks__/guides-fs.ts");
 newMapper["^@/locales/guides\\.fs$"] = guidesFsMock;

@@ -13,7 +13,8 @@ It owns:
 3. Track routing to specialized planner modules
 4. Plan persistence using external templates
 5. Optional BOS sync
-6. Optional handoff to `/lp-do-build`
+6. Mandatory critique via `/lp-do-critique` (autofix mode)
+7. Optional handoff to `/lp-do-build`
 
 It does not embed large plan/task templates or long doctrine blocks.
 
@@ -220,15 +221,50 @@ If eligible and mode is `plan+auto`, invoke `/lp-do-build <feature-slug>`.
 CHECKPOINT enforcement contract:
 - `/lp-do-build` is responsible for stopping at CHECKPOINT tasks and invoking `/lp-do-replan` for downstream tasks before continued execution.
 
+## Phase 11: Automatic Critique (score-gated)
+
+After the plan is persisted (Phase 8) and before any build handoff (Phase 10), evaluate `Overall-confidence` from the plan to decide whether `/lp-do-critique` runs automatically.
+
+**Gate rule:** If `Overall-confidence` < 4.0 (i.e. < 80), automatically invoke `/lp-do-critique`. Plans scoring >= 4.0 skip automatic critique (user can still invoke manually).
+
+**Invocation (when triggered):**
+- Target: `docs/plans/<feature-slug>/plan.md`
+- Mode: default (CRITIQUE + AUTOFIX)
+- Scope: `full`
+
+**Flow:**
+1. Read `Overall-confidence` from the persisted plan frontmatter.
+2. If score >= 4.0: skip critique, proceed to Phase 10.
+3. If score < 4.0: run `/lp-do-critique docs/plans/<feature-slug>/plan.md`.
+4. Critique produces findings and applies autofixes to the plan.
+5. After critique:
+   - If critique verdict is `not credible` or critique score <= 2.5:
+     - Set plan `Status: Draft` (block auto-build).
+     - Report critique findings to user.
+     - Recommend `/lp-do-replan` or revision before proceeding.
+   - If critique verdict is `partially credible` (critique score 3.0–3.5):
+     - Autofixes are already applied.
+     - Report top issues to user.
+     - Proceed to build handoff only if mode is `plan+auto` and user confirms.
+   - If critique verdict is `credible` (critique score >= 4.0):
+     - Autofixes are already applied.
+     - Proceed normally (build handoff if eligible).
+
+**Ordering:** Phase 11 runs after Phase 8 (persist) and Phase 9 (BOS sync), but before Phase 10 (build handoff). Build eligibility is re-evaluated after critique autofixes are applied.
+
 ## Completion Messages
 
-Plan-only:
+Plan-only (confidence >= 4.0, critique skipped):
 
-> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`.
+> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Overall-confidence: `<X.X>` (critique skipped — above threshold).
+
+Plan-only (confidence < 4.0, critique ran):
+
+> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Critique verdict: `<credible / partially credible / not credible>` (score: `<X.X>`).
 
 Plan+auto:
 
-> Plan complete and eligible. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `Active`. Gates passed. Auto-continuing to `/lp-do-build <feature-slug>`.
+> Plan complete and eligible. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `Active`. Gates passed. Critique verdict: `<credible / partially credible / not credible>` (score: `<X.X>`). Auto-continuing to `/lp-do-build <feature-slug>`.
 
 ## Quick Checklist
 
@@ -239,4 +275,7 @@ Plan+auto:
 - [ ] VC checks reference shared business VC checklist when relevant
 - [ ] `/lp-sequence` completed after structural edits
 - [ ] Consumer tracing complete for all new outputs and modified behaviors in M/L code/mixed tasks
+- [ ] Phase 11 gate evaluated: `/lp-do-critique` ran automatically if Overall-confidence < 4.0
+- [ ] Critique verdict and score reported in completion message (or skipped note if >= 4.0)
+- [ ] Auto-build blocked if critique score <= 2.5
 - [ ] Auto-build only when explicit intent + eligibility

@@ -1,22 +1,29 @@
 ---
 name: lp-visual
-description: Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams). Prompts for the target document and produces self-contained HTML with interactive, zoomable diagrams. Use when asked to add diagrams to a guide, visualise a system or workflow, or improve documentation readability with visuals.
+description: Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). Supports multiple documents via a references directory of reusable palettes, zoom controls, and initialization patterns. Use when asked to add diagrams to a guide, visualise a system or workflow, build a KPI dashboard, or improve documentation readability with visuals.
 ---
 
 # lp-visual — Visual Documentation Enhancer
 
 ## Step 1: Choose Document
 
-Ask the user which document to produce visuals for. Present choices:
+Ask the user which document to produce visuals for. Present known documents, plus the option to target an arbitrary file:
 
 > Which document should I generate visuals for?
 > 1. **email** — Brikette email system architecture (`docs/guides/brikette-email-system.html`)
+> 2. **new document** — provide a file path and I will create or enhance it
 
-Wait for the user's choice. If they say "email" or "1", proceed with the **Email Document** workflow below.
+Wait for the user's choice.
+
+- If they say "email" or "1", proceed with the **Email Document Workflow** below.
+- If they say "new document", "2", or provide a file path, proceed with the **New Document Workflow**.
+- If they name a file path directly (e.g. `docs/guides/some-file.html`), treat it as the "new document" workflow with that path.
 
 ---
 
 ## Email Document Workflow
+
+> This is the first document supported by lp-visual. It follows the same pattern as new documents (palette selection, reference loading, diagram insertion) but with proven, hardcoded diagram definitions that should not be modified.
 
 **Target file:** `docs/guides/brikette-email-system.html`
 
@@ -329,11 +336,112 @@ Append immediately before the closing `</body>` tag (inside the existing `</div>
 
 ---
 
+## New Document Workflow
+
+For any document not listed in the menu above.
+
+### Step 1 — Gather target details
+
+Ask the user:
+1. **Target file path** — where to write or find the HTML file (e.g. `docs/guides/my-system.html`)
+2. **Document domain** — one of: `operational`, `architecture`, `workflow`, `analytics`
+
+If the user provides only a path, infer the domain from context or ask.
+
+### Step 2 — Read or create the target file
+
+- If the file exists, read it. This is an additive enhancement — do not remove existing content.
+- If the file does not exist, create it using the rich template pattern: full HTML5 document with `<head>` (meta, fonts, Mermaid CDN, palette CSS) and `<body>` (title, sections, diagram placeholders). Use the structure of `docs/guides/brikette-email-system.html` as the canonical example.
+
+### Step 3 — Load references
+
+Read the following reference files and apply their contents:
+
+1. **`references/css-variables.md`** — select the palette matching the document domain. Insert the `:root` and dark-mode CSS variables into the document's `<style>` block.
+2. **`references/zoom-controls.md`** — insert the diagram container CSS and the zoom/pan JavaScript.
+3. **`references/mermaid-init.md`** — insert the Mermaid CDN import and `mermaid.initialize()` call, substituting themeVariables from the palette mapping table.
+
+### Step 4 — Design and insert diagrams
+
+Analyze the document content and design diagrams appropriate to the subject matter:
+
+- Identify the key concepts, flows, states, or relationships that benefit from visualization
+- Choose diagram types from the supported set (see **Supported Diagram Types** below)
+- Use the `mermaid-wrap` container template from `references/zoom-controls.md` for each diagram
+- Add a `<p class="diagram-caption">` after each diagram
+- Place diagrams near the text they illustrate
+
+### Step 5 — Validate
+
+- Confirm all Mermaid syntax parses (no unquoted special characters, no `\n` in labels)
+- Confirm all CSS variables resolve against the chosen palette
+- Confirm zoom controls are wired up (JavaScript present before `</body>`)
+
+---
+
+## References
+
+The `references/` directory contains reusable building blocks for visual documents. Always read these when enhancing a document — do not hardcode values from memory.
+
+| File | Purpose |
+|------|---------|
+| `references/css-variables.md` | 4 color palettes (operational, architecture, workflow, analytics) with light + dark mode |
+| `references/zoom-controls.md` | Zoom/pan CSS + JavaScript for interactive Mermaid diagrams |
+| `references/mermaid-init.md` | Mermaid CDN import, initialization config, ELK loader, classDef conventions |
+| `references/diagram-types.md` | Supported Mermaid diagram types with selection guidance |
+| `references/chartjs-usage.md` | Chart.js KPI dashboard patterns and the `chart` code fence format |
+
+---
+
+## Supported Diagram Types
+
+See `references/diagram-types.md` for full guidance on each type, including when to use and when to avoid.
+
+Summary of supported types:
+
+- **`flowchart`** (TD or LR) — the primary diagram type. Use for process flows, pipelines, decision trees, label state machines. Handles complex labels with special characters reliably.
+- **`sequenceDiagram`** — temporal flows with multiple actors. Use for request/response patterns, API call chains, multi-system handshakes.
+- **`stateDiagram-v2`** — simple state machines. Appropriate for simple state names (e.g., Pending, Active, Killed). Avoid when labels contain colons, slashes, or multi-word paths — use `flowchart` instead.
+- **`mindmap`** — brainstorming and idea mapping. Use for taxonomy trees, feature decomposition, topic clustering.
+
+---
+
+## Chart.js KPI Dashboards
+
+See `references/chartjs-usage.md` for the full guide including loader setup and configuration patterns.
+
+Embed charts using the ` ```chart ` code fence format:
+
+````
+```chart
+{
+  "type": "bar",
+  "data": {
+    "labels": ["Jan", "Feb", "Mar", "Apr"],
+    "datasets": [{
+      "label": "Revenue",
+      "data": [1200, 1900, 3000, 2500]
+    }]
+  }
+}
+```
+````
+
+The render pipeline transforms ` ```chart ` blocks into `<canvas>` elements with Chart.js initialization.
+
+**Quality rule:** Prefer tables for <4 data points. Use charts when trends, comparisons, or distributions need visual emphasis.
+
+---
+
 ## Delivery
 
-1. Save the updated file.
-2. Open in Chrome: `open docs/guides/brikette-email-system.html`
-3. Report to the user: which diagrams were inserted, where in the document they appear, and that Ctrl+scroll and the +/−/↺ buttons are available for each diagram.
+1. Save the updated or newly created file.
+2. Open in Chrome: `open <target-file-path>`
+3. Report to the user:
+   - Which diagrams were inserted and where in the document they appear
+   - Which palette was applied (and the document domain)
+   - That Ctrl+scroll and the +/-/reset buttons are available for each diagram
+   - If Chart.js dashboards were added, confirm they render correctly
 
 ---
 
@@ -342,10 +450,12 @@ Append immediately before the closing `</body>` tag (inside the existing `</div>
 Apply these to every diagram in this project:
 
 - **Quote all labels with special chars** — parentheses `()`, colons `:`, slashes `/`, ampersands `&` go inside `["..."]` or `("...")` node labels. Unquoted special chars cause silent parse failures.
-- **Never use `stateDiagram-v2` for complex labels** — use `flowchart` with rounded/stadium nodes (`(["..."])`) instead. State diagram labels cannot handle multi-word text with punctuation.
+- **Prefer flowchart over stateDiagram-v2 when labels contain colons, slashes, or multi-word paths.** stateDiagram-v2 is appropriate for simple state names (e.g., Pending, Active, Killed).
 - **Never set `color:` in `classDef`** — it hardcodes a value that breaks in the opposite color scheme. Use `fill:` with 8-digit hex (last 2 digits = opacity, e.g. `#2d6a4f33` for 20% opacity) so tints work in both light and dark.
 - **CSS overrides for text color are mandatory** — `themeVariables.primaryTextColor` only affects default nodes. Add the `.mermaid .nodeLabel { color: var(--text) !important; }` override so text respects the page's color scheme.
 - **Max ~20 nodes per diagram** — split complex flows rather than crowding.
-- **Arrow semantics**: `-->` primary flow · `-.->` async/recovery/optional · `==>` critical/highlighted path · `--x` blocked/rejected.
+- **For >20 nodes or >3 nested subgraphs, use ELK layout** via `%%{ init: { 'flowchart': { 'defaultRenderer': 'elk' } } }%%` directive at the top of the diagram. See `references/mermaid-init.md` for the ELK loader setup.
+- **Arrow semantics**: `-->` primary flow, `-.->` async/recovery/optional, `==>` critical/highlighted path, `--x` blocked/rejected.
 - **Escape `&` as `&amp;` inside `<pre class="mermaid">` blocks** — the browser parses HTML entities before Mermaid sees the text.
-- **Never use `\n` in node labels** — `\n` renders as literal text. Use a real line break (Enter) inside the quoted label instead: `["line one\nline two"]` ❌ → `["line one` + newline + `line two"]` ✓.
+- **Never use `\n` in node labels** — `\n` renders as literal text. Use a real line break (Enter) inside the quoted label instead: `["line one\nline two"]` (wrong) vs `["line one` + newline + `line two"]` (correct).
+- **`look: 'handDrawn'` is for draft/WIP only.** Never use it for published guides or production documentation.

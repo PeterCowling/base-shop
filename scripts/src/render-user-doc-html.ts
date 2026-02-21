@@ -4,9 +4,17 @@ import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+const VALID_TEMPLATES = ["basic", "rich"] as const;
+type Template = (typeof VALID_TEMPLATES)[number];
+
+const VALID_PALETTES = ["operational", "architecture", "workflow", "analytics"] as const;
+type Palette = (typeof VALID_PALETTES)[number];
+
 type CliOptions = {
   inputPaths: string[];
   outDir?: string;
+  template: Template;
+  palette: Palette;
 };
 
 function printUsage(): void {
@@ -15,18 +23,22 @@ function printUsage(): void {
       "Render .user.md docs to standalone .user.html companions.",
       "",
       "Usage:",
-      "  pnpm docs:render-user-html -- <path/to/file.user.md> [more files...]",
-      "  pnpm docs:render-user-html -- --out-dir <dir> <path/to/file.user.md> [more files...]",
+      "  pnpm docs:render-user-html -- [options] <path/to/file.user.md> [more files...]",
+      "",
+      "Options:",
+      "  --out-dir <dir>       Output directory (default: same as input)",
+      "  --template basic|rich Template to use (default: basic)",
+      "  --palette <name>      Color palette: operational, architecture, workflow, analytics (default: operational)",
       "",
       "Examples:",
       "  pnpm docs:render-user-html -- docs/business-os/startup-loop-workflow.user.md",
-      "  pnpm docs:render-user-html -- --out-dir docs/rendered docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md",
+      "  pnpm docs:render-user-html -- --template rich --palette workflow docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md",
     ].join("\n")
   );
 }
 
 function parseArgs(argv: string[]): CliOptions {
-  const options: CliOptions = { inputPaths: [] };
+  const options: CliOptions = { inputPaths: [], template: "basic", palette: "operational" };
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -47,6 +59,26 @@ function parseArgs(argv: string[]): CliOptions {
         throw new Error("--out-dir requires a directory value.");
       }
       options.outDir = dir;
+      i += 1;
+      continue;
+    }
+
+    if (arg === "--template") {
+      const val = argv[i + 1] as Template | undefined;
+      if (!val || !VALID_TEMPLATES.includes(val)) {
+        throw new Error(`--template must be one of: ${VALID_TEMPLATES.join(", ")}`);
+      }
+      options.template = val;
+      i += 1;
+      continue;
+    }
+
+    if (arg === "--palette") {
+      const val = argv[i + 1] as Palette | undefined;
+      if (!val || !VALID_PALETTES.includes(val)) {
+        throw new Error(`--palette must be one of: ${VALID_PALETTES.join(", ")}`);
+      }
+      options.palette = val;
       i += 1;
       continue;
     }
@@ -113,6 +145,20 @@ function transformMermaidBlocks(html: string): string {
   );
 }
 
+function transformChartBlocks(html: string): string {
+  return html.replace(
+    /<pre><code class="language-chart">([\s\S]*?)<\/code><\/pre>/g,
+    (_whole, encoded) => {
+      const decoded = decodeHtmlEntities(String(encoded)).trim();
+      return `<pre class="chart" style="display:none">${decoded}</pre>`;
+    }
+  );
+}
+
+function hasChartBlocks(html: string): boolean {
+  return html.includes('<pre class="chart"');
+}
+
 /**
  * Wraps everything from the first <h2>Engineering appendix</h2> heading to the
  * end of the document in a <section data-audience="engineering"> block.
@@ -165,6 +211,126 @@ async function renderMarkdownToHtml(markdownBody: string): Promise<string> {
 
   return String(file);
 }
+
+const TEMPLATES_DIR = path.resolve("docs/templates/visual");
+
+async function loadTemplate(name: Template): Promise<string | null> {
+  const templatePath = path.join(TEMPLATES_DIR, `${name}-template.html`);
+  try {
+    return await fs.readFile(templatePath, "utf8");
+  } catch {
+    return null;
+  }
+}
+
+const PALETTE_CSS: Record<Palette, string> = {
+  operational: `:root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}`,
+  architecture: `:root {
+  --bg:#faf8f5;--surface:#ffffff;--border:#e0dbd4;--border-soft:#ebe7e1;
+  --text:#2d2822;--text-muted:#7a7168;--accent:#a0522d;--accent-soft:#f5ebe4;
+  --warn:#b45309;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f0ece6;--code-border:#d9d3cb;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1e1b18;--surface:#28241f;--border:#42392e;--border-soft:#332e27;
+  --text:#f2ede7;--text-muted:#a89d93;--accent:#cd7f5c;--accent-soft:#3d2518;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#332e27;--code-border:#42392e;
+}}`,
+  workflow: `:root {
+  --bg:#f6fafa;--surface:#ffffff;--border:#d4e4e4;--border-soft:#e3eded;
+  --text:#1a2626;--text-muted:#5f7474;--accent:#0d7377;--accent-soft:#e0f5f5;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#ecf4f4;--code-border:#c9dede;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#141e1e;--surface:#1c2828;--border:#2e4242;--border-soft:#243434;
+  --text:#e8f4f4;--text-muted:#8aadad;--accent:#2dd4bf;--accent-soft:#0d3333;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#243434;--code-border:#2e4242;
+}}`,
+  analytics: `:root {
+  --bg:#fdf8f8;--surface:#ffffff;--border:#e8d8d8;--border-soft:#f0e4e4;
+  --text:#2a1a1a;--text-muted:#7a6060;--accent:#9f1239;--accent-soft:#fce7f3;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f5ecec;--code-border:#e0d0d0;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1e1418;--surface:#281c22;--border:#422e36;--border-soft:#33242c;
+  --text:#f5ece8;--text-muted:#ad8e96;--accent:#fb7185;--accent-soft:#3d1225;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#33242c;--code-border:#422e36;
+}}`,
+};
+
+function applyTemplate(
+  template: string,
+  params: { title: string; sourcePath: string; htmlBody: string; palette: Palette },
+): string {
+  const generatedAtIso = new Date().toISOString();
+  const sourceRelative = path.relative(process.cwd(), params.sourcePath);
+  return template
+    .replace("{{TITLE}}", params.title)
+    .replace("{{BODY}}", params.htmlBody)
+    .replace("{{SOURCE}}", sourceRelative)
+    .replace("{{GENERATED_AT}}", generatedAtIso)
+    .replace("{{PALETTE_CSS}}", PALETTE_CSS[params.palette]);
+}
+
+const CHARTJS_LOADER = `<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script>
+  (function(){
+    var style=getComputedStyle(document.documentElement);
+    var textColor=style.getPropertyValue('--text').trim()||'#101418';
+    var mutedColor=style.getPropertyValue('--muted').trim()||style.getPropertyValue('--text-muted').trim()||'#5a6570';
+    var borderColor=style.getPropertyValue('--border').trim()||'#d9e0e7';
+    Chart.defaults.color=mutedColor;
+    Chart.defaults.borderColor=borderColor;
+    Chart.defaults.plugins.legend.labels.color=textColor;
+    Chart.defaults.plugins.title.color=textColor;
+    Chart.defaults.scale.grid=Chart.defaults.scale.grid||{};
+    Chart.defaults.scale.grid.color=borderColor;
+    Chart.defaults.scale.ticks=Chart.defaults.scale.ticks||{};
+    Chart.defaults.scale.ticks.color=mutedColor;
+    function renderChartBlocks(){
+      document.querySelectorAll('pre.chart').forEach(function(pre){
+        try{
+          var config=JSON.parse(pre.textContent);
+          var container=document.createElement('div');
+          container.style.position='relative';
+          container.style.height=config.height||'300px';
+          container.style.marginBottom='1.5rem';
+          config.options=config.options||{};
+          config.options.responsive=true;
+          config.options.maintainAspectRatio=false;
+          delete config.height;
+          var canvas=document.createElement('canvas');
+          container.appendChild(canvas);
+          pre.replaceWith(container);
+          new Chart(canvas,config);
+        }catch(err){
+          pre.style.display='block';pre.style.color='#991b1b';
+          pre.style.background='#fee2e2';pre.style.padding='1rem';
+          pre.style.borderRadius='6px';
+          pre.textContent='Chart render error: '+err.message;
+        }
+      });
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',renderChartBlocks);}
+    else{renderChartBlocks();}
+  })();
+</script>`;
 
 function wrapHtmlDocument(params: {
   title: string;
@@ -300,6 +466,17 @@ ${params.htmlBody}
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+    // Conditionally load ELK layout engine for complex diagrams.
+    const hasElk = Array.from(document.querySelectorAll(".mermaid"))
+      .some(el => el.textContent?.includes("defaultRenderer"));
+    if (hasElk) {
+      const { default: elkLayouts } = await import(
+        "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0/dist/mermaid-layout-elk.esm.min.mjs"
+      );
+      mermaid.registerLayoutLoaders(elkLayouts);
+    }
+
     // startOnLoad: false — we render manually so hidden engineering diagrams
     // (inside display:none) are not attempted on load, which causes spurious
     // "Syntax error in text" failures in Mermaid v11.
@@ -338,7 +515,10 @@ ${params.htmlBody}
 `;
 }
 
-async function processFile(inputPath: string, outDir?: string): Promise<void> {
+async function processFile(
+  inputPath: string,
+  options: { outDir?: string; template: Template; palette: Palette },
+): Promise<void> {
   const absoluteInputPath = path.resolve(inputPath);
   const markdownRaw = await fs.readFile(absoluteInputPath, "utf8");
   const markdownBody = stripFrontMatter(markdownRaw);
@@ -346,14 +526,34 @@ async function processFile(inputPath: string, outDir?: string): Promise<void> {
 
   const rawHtmlBody = await renderMarkdownToHtml(markdownBody);
   const mermaidHtmlBody = transformMermaidBlocks(rawHtmlBody);
-  const htmlBody = wrapEngineeringAppendix(mermaidHtmlBody);
-  const wrappedHtml = wrapHtmlDocument({
-    title,
-    sourcePath: absoluteInputPath,
-    htmlBody,
-  });
+  const chartHtmlBody = transformChartBlocks(mermaidHtmlBody);
+  const htmlBody = wrapEngineeringAppendix(chartHtmlBody);
 
-  const outputPath = resolveOutputPath(absoluteInputPath, outDir ? path.resolve(outDir) : undefined);
+  // Try to use a template file; fall back to inline HTML (basic backward compat).
+  const templateContent = await loadTemplate(options.template);
+  let wrappedHtml: string;
+
+  if (templateContent) {
+    wrappedHtml = applyTemplate(templateContent, {
+      title,
+      sourcePath: absoluteInputPath,
+      htmlBody,
+      palette: options.palette,
+    });
+  } else {
+    wrappedHtml = wrapHtmlDocument({
+      title,
+      sourcePath: absoluteInputPath,
+      htmlBody,
+    });
+  }
+
+  // Inject Chart.js loader when chart blocks are present (and not already in the template).
+  if (hasChartBlocks(wrappedHtml) && !wrappedHtml.includes("chart.js@4")) {
+    wrappedHtml = wrappedHtml.replace("</body>", `${CHARTJS_LOADER}\n</body>`);
+  }
+
+  const outputPath = resolveOutputPath(absoluteInputPath, options.outDir ? path.resolve(options.outDir) : undefined);
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(outputPath, wrappedHtml, "utf8");
 
@@ -368,7 +568,11 @@ async function processFile(inputPath: string, outDir?: string): Promise<void> {
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
   for (const inputPath of options.inputPaths) {
-    await processFile(inputPath, options.outDir);
+    await processFile(inputPath, {
+      outDir: options.outDir,
+      template: options.template,
+      palette: options.palette,
+    });
   }
 }
 

@@ -11,6 +11,7 @@
     "allowImportingTsExtensions": true,
     "allowJs": true,
     "paths": {
+      "@jest/globals": ["../../test/jest-globals-compat.d.ts"],
       "@/*": ["./src/*"],
       "@cms/*": ["./src/*"],
       "@/components/atoms/shadcn": ["../../test/__mocks__/shadcnDialogStub.tsx"],

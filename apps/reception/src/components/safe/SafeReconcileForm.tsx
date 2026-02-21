@@ -96,7 +96,7 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
           hideConfirm
           submitRef={submitRef}
         >
-          <div className="mb-5 mt-[30px]">
+          <div className="mb-5 mt-8">
             <PasswordReauthInline
               onSubmit={() => submitRef.current?.()}
               submitLabel="Confirm reconcile"

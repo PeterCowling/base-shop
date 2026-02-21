@@ -1,29 +1,111 @@
 {
   "doList": {
-    "continueToExplore": "[IT] Continue To Explore",
-    "startYourEpicStay": "[IT] Start Your Epic Stay"
+    "continueToExplore": "Continua a esplorare",
+    "startYourEpicStay": "Inizia il tuo soggiorno"
   },
   "error": {
-    "loadInfo": "[IT] Load Info",
-    "missingData": "[IT] Missing Data"
+    "loadInfo": "Errore durante il caricamento. Riprova.",
+    "missingData": "Impossibile caricare i dati della prenotazione."
   },
   "guest": "Ospite",
-  "loading": "Caricamento",
-  "ourServices": "[IT] Our Services",
+  "loading": "Caricamento\u2026",
+  "ourServices": "I nostri servizi",
   "profileBanner": {
-    "completeButton": "[IT] Complete Button",
-    "returningTitle": "[IT] Returning Title",
-    "title": "Titolo",
-    "updateButton": "[IT] Update Button"
+    "completeButton": "Completa il profilo",
+    "description": "Raccontaci del tuo soggiorno per ricevere suggerimenti personalizzati.",
+    "returningDescription": "Aggiorna le tue preferenze per questo soggiorno per ricevere consigli personalizzati.",
+    "returningTitle": "Bentornato!",
+    "skippedDescription": "Aggiungi le tue preferenze per ricevere consigli migliori.",
+    "title": "Completa il tuo profilo",
+    "updateButton": "Aggiorna preferenze"
+  },
+  "services": {
+    "barMenu": {
+      "alt": "Cocktail al bancone del bar",
+      "description": "Sfoglia il nostro menu di drink e cocktail.",
+      "title": "Menu del bar"
+    },
+    "breakfastMenu": {
+      "alt": "Colazione servita a tavola",
+      "description": "Scopri cosa c'\u00e8 per colazione.",
+      "title": "Menu colazione"
+    },
+    "complimentaryBreakfastService": {
+      "alt": "Colazione in omaggio",
+      "description": "La tua colazione in omaggio \u00e8 pronta.",
+      "title": "La tua colazione"
+    },
+    "digitalAssistantService": {
+      "alt": "Chat con l'assistente digitale",
+      "description": "Fai domande, ricevi consigli e gestisci il tuo soggiorno.",
+      "title": "Assistente digitale"
+    },
+    "eveningDrink": {
+      "alt": "Drink serale in omaggio",
+      "description": "Goditi il tuo drink serale in omaggio.",
+      "title": "Il tuo drink serale"
+    },
+    "mainDoorService": {
+      "alt": "Porta d'ingresso principale",
+      "description": "Ottieni il codice di accesso per il portone.",
+      "title": "Accesso portone"
+    },
+    "overnightIssues": {
+      "alt": "Segnala un problema",
+      "description": "Facci sapere se qualcosa necessita attenzione.",
+      "title": "Segnala un problema"
+    }
   },
   "social": {
-    "discoverDescription": "[IT] Discover Description",
-    "discoverTitle": "[IT] Discover Title",
-    "exploreGuide": "Esplora la Guida",
+    "browse": "Sfoglia",
+    "discoverDescription": "Esplora gemme nascoste, ristoranti locali e le viste pi\u00f9 belle di Positano.",
+    "discoverTitle": "Scopri Positano",
+    "exploreGuide": "Apri la guida",
     "explorePositano": "Esplora Positano",
-    "upcomingActivity": "[IT] Upcoming Activity"
+    "joinChat": "Unisciti alla chat",
+    "seeAll": "Vedi tutto",
+    "seeWhatsHappening": "Scopri cosa c'\u00e8",
+    "upcomingActivity": "Prossima attivit\u00e0"
+  },
+  "tasks": {
+    "bagStorage": {
+      "alt": "Deposito bagagli",
+      "completedTitle": "Bagagli depositati",
+      "note": "Deposito gratuito disponibile il giorno del check-out.",
+      "title": "Deposita i bagagli"
+    },
+    "complimentaryBreakfast": {
+      "alt": "Colazione in omaggio",
+      "completedTitle": "Colazione richiesta",
+      "note": "Servita dalle 8:00 alle 10:30 nella sala colazione.",
+      "title": "Richiedi la colazione"
+    },
+    "complimentaryEveningDrink": {
+      "alt": "Drink serale in omaggio",
+      "completedTitle": "Drink richiesto",
+      "note": "Disponibile dalle 18:00 alle 20:00 al bar.",
+      "title": "Richiedi il drink serale"
+    },
+    "digitalAssistant": {
+      "alt": "Assistente digitale",
+      "completedTitle": "Assistente pronto",
+      "note": "Chiedi qualsiasi cosa sul tuo soggiorno.",
+      "title": "Conosci il tuo assistente digitale"
+    },
+    "exploreBreakfastMenu": {
+      "alt": "Menu colazione",
+      "completedTitle": "Menu esplorato",
+      "note": "",
+      "title": "Esplora il menu colazione"
+    },
+    "mainDoorAccess": {
+      "alt": "Codice di accesso portone",
+      "completedTitle": "Codice salvato",
+      "note": "Ti servir\u00e0 questo codice per entrare nell'edificio.",
+      "title": "Ottieni il codice del portone"
+    }
   },
   "welcome": {
-    "greeting": "Saluto"
+    "greeting": "Benvenuto, {{firstName}}!"
   }
 }

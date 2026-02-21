@@ -38,14 +38,16 @@ describe("db fallbacks", () => {
     });
   });
 
-  it("uses in-memory stub when DATABASE_URL is undefined", async () => {
+  it("returns missing client proxy when DATABASE_URL is undefined", async () => {
     await (jest as any).isolateModulesAsync(async () => {
       process.env.NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({}),
       }));
       const { prisma } = await import("@acme/platform-core/db");
-      await exerciseStub("s2", prisma);
+      expect(() => prisma.rentalOrder).toThrow(
+        "Prisma client unavailable (DATABASE_URL missing or @prisma/client not installed). Tried to access prisma.rentalOrder",
+      );
     });
   });
 
@@ -66,7 +68,7 @@ describe("db fallbacks", () => {
     });
   });
 
-  it("falls back to stub when createRequire throws", async () => {
+  it("returns missing client proxy when createRequire throws", async () => {
     await (jest as any).isolateModulesAsync(async () => {
       process.env.NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({
@@ -82,13 +84,9 @@ describe("db fallbacks", () => {
         { virtual: true },
       );
       const { prisma } = await import("@acme/platform-core/db");
-      await prisma.rentalOrder.create({
-        data: { shop: "s3", sessionId: "s3", trackingNumber: "t3" },
-      });
-      const orders = await prisma.rentalOrder.findMany({ where: { shop: "s3" } });
-      expect(orders).toEqual([
-        { shop: "s3", sessionId: "s3", trackingNumber: "t3" },
-      ]);
+      expect(() => prisma.rentalOrder).toThrow(
+        "Prisma client unavailable (DATABASE_URL missing or @prisma/client not installed). Tried to access prisma.rentalOrder",
+      );
     });
   });
 });

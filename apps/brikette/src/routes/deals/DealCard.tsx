@@ -91,10 +91,8 @@ function DealCard({
                 "py-1",
                 "text-xs",
                 "font-semibold",
-                "bg-slate-100",
-                "text-slate-900",
-                "dark:bg-slate-500/20",
-                "dark:text-slate-50"
+                "bg-surface-1",
+                "text-fg"
               )}
             >
               {translate("dealCard.status.expired")}

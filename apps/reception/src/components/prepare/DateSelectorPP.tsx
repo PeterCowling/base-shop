@@ -41,8 +41,8 @@ export default function DateSelector({
           transition-colors
           ${
             isSelected
-              ? "bg-primary-main text-white border-primary-main dark:bg-darkAccentGreen dark:text-darkBg dark:border-darkAccentGreen"
-              : "bg-white text-gray-700 border-gray-400 hover:bg-gray-100 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              ? "bg-primary-main text-primary-fg border-primary-main dark:bg-darkAccentGreen dark:text-darkBg dark:border-darkAccentGreen"
+              : "bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
           }
         `}
       >
@@ -117,10 +117,10 @@ export default function DateSelector({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: `${defaultNames.root} bg-white shadow-lg p-5 rounded dark:bg-darkSurface dark:text-darkAccentGreen`,
-                today: "border-amber-500",
-                selected: "bg-amber-500 border-amber-500 text-white",
-                chevron: `${defaultNames.chevron} fill-amber-500`,
+                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded dark:bg-darkSurface dark:text-darkAccentGreen`,
+                today: "border-warning-border",
+                selected: "bg-warning text-primary-fg",
+                chevron: `${defaultNames.chevron} fill-warning`,
               }}
             />
           </div>

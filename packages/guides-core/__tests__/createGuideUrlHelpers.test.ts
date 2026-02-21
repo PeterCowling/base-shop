@@ -1,4 +1,5 @@
-import { createGuideUrlHelpers } from "../src";
+import { createGuideUrlHelpers as createGuideUrlHelpersFromIndex } from "../src";
+import { createGuideUrlHelpers } from "../src/url-helpers";
 
 type Lang = "en" | "it";
 type GuideKey = "beachGuide" | "foodTour";
@@ -24,6 +25,10 @@ const helpers = createGuideUrlHelpers<Lang, GuideKey>({
 });
 
 describe("createGuideUrlHelpers", () => {
+  it("re-exports helper from package index", () => {
+    expect(createGuideUrlHelpersFromIndex).toBe(createGuideUrlHelpers);
+  });
+
   it("builds guide paths and absolute urls", () => {
     expect(helpers.guidePath("en", "beachGuide")).toBe("/en/guides/best-beaches");
     expect(helpers.guidePath("it", "foodTour")).toBe("/it/experiences/food-tour");

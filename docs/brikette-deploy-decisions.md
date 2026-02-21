@@ -1,6 +1,6 @@
 # Brikette Deploy Decisions
 
-> **IMPORTANT**: Read this before ANY brikette deploy change. Referenced by `/deploy-brikette` skill.
+> **IMPORTANT**: Read this before ANY brikette deploy change. Referenced by `/ops-deploy` skill.
 
 ## Current State (2026-02-06)
 
@@ -203,4 +203,4 @@ Upgrading to Cloudflare Workers Paid unlocks the full Worker deploy for staging:
 - `apps/brikette/open-next.config.ts` — OpenNext adapter config (production only)
 - `apps/brikette/public/_redirects` — Edge redirects for static deploy
 - `scripts/post-deploy-health-check.sh` — Post-deploy verification
-- `scripts/post-deploy-brikette-cache-check.sh` — Cache header verification (production only)
+- `scripts/post-ops-deploy-cache-check.sh` — Cache header verification (production only)

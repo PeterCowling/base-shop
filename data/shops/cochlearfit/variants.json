@@ -1,0 +1,110 @@
+[
+  {
+    "id": "classic-kids-sand",
+    "productSlug": "classic",
+    "size": "kids",
+    "color": "sand",
+    "price": 3400,
+    "currency": "USD",
+    "stripePriceId": "price_classic_kids_sand"
+  },
+  {
+    "id": "classic-kids-ocean",
+    "productSlug": "classic",
+    "size": "kids",
+    "color": "ocean",
+    "price": 3400,
+    "currency": "USD",
+    "stripePriceId": "price_classic_kids_ocean"
+  },
+  {
+    "id": "classic-kids-berry",
+    "productSlug": "classic",
+    "size": "kids",
+    "color": "berry",
+    "price": 3400,
+    "currency": "USD",
+    "stripePriceId": "price_classic_kids_berry"
+  },
+  {
+    "id": "classic-adult-sand",
+    "productSlug": "classic",
+    "size": "adult",
+    "color": "sand",
+    "price": 3800,
+    "currency": "USD",
+    "stripePriceId": "price_classic_adult_sand"
+  },
+  {
+    "id": "classic-adult-ocean",
+    "productSlug": "classic",
+    "size": "adult",
+    "color": "ocean",
+    "price": 3800,
+    "currency": "USD",
+    "stripePriceId": "price_classic_adult_ocean"
+  },
+  {
+    "id": "classic-adult-berry",
+    "productSlug": "classic",
+    "size": "adult",
+    "color": "berry",
+    "price": 3800,
+    "currency": "USD",
+    "stripePriceId": "price_classic_adult_berry"
+  },
+  {
+    "id": "sport-kids-sand",
+    "productSlug": "sport",
+    "size": "kids",
+    "color": "sand",
+    "price": 3600,
+    "currency": "USD",
+    "stripePriceId": "price_sport_kids_sand"
+  },
+  {
+    "id": "sport-kids-ocean",
+    "productSlug": "sport",
+    "size": "kids",
+    "color": "ocean",
+    "price": 3600,
+    "currency": "USD",
+    "stripePriceId": "price_sport_kids_ocean"
+  },
+  {
+    "id": "sport-kids-berry",
+    "productSlug": "sport",
+    "size": "kids",
+    "color": "berry",
+    "price": 3600,
+    "currency": "USD",
+    "stripePriceId": "price_sport_kids_berry"
+  },
+  {
+    "id": "sport-adult-sand",
+    "productSlug": "sport",
+    "size": "adult",
+    "color": "sand",
+    "price": 4000,
+    "currency": "USD",
+    "stripePriceId": "price_sport_adult_sand"
+  },
+  {
+    "id": "sport-adult-ocean",
+    "productSlug": "sport",
+    "size": "adult",
+    "color": "ocean",
+    "price": 4000,
+    "currency": "USD",
+    "stripePriceId": "price_sport_adult_ocean"
+  },
+  {
+    "id": "sport-adult-berry",
+    "productSlug": "sport",
+    "size": "adult",
+    "color": "berry",
+    "price": 4000,
+    "currency": "USD",
+    "stripePriceId": "price_sport_adult_berry"
+  }
+]

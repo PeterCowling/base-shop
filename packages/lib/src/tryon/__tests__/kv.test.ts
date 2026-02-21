@@ -1,4 +1,4 @@
-import { kvGet, kvPut } from "../kv";
+import { kvGet, kvPut } from "../kv.js";
 
 describe("kv helpers", () => {
   const originalDescriptor = Object.getOwnPropertyDescriptor(globalThis, "TRYON_KV");

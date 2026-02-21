@@ -2,8 +2,9 @@
  * Prime theme token overrides.
  *
  * Prime is a guest-facing hospitality portal (Positano, Italy).
- * These overrides layer on top of @themes/base to give the app
- * a warm, Mediterranean feel while remaining minimal.
+ * Target demographic: 99% female, 60% aged 18-25, mobile-only.
+ * Warm coral/rose palette with Plus Jakarta Sans for a friendly,
+ * lifestyle-app aesthetic.
  *
  * Only tokens that differ from base are defined here.
  */
@@ -11,21 +12,21 @@
 import type { Token, TokenMap } from '@themes/base';
 
 export const tokens: TokenMap = {
-  // Brand: warm teal primary (Mediterranean)
-  '--color-primary': { light: '192 80% 34%', dark: '192 75% 55%' },
+  // Brand: warm coral primary (lifestyle/travel)
+  '--color-primary': { light: '6 78% 47%', dark: '6 72% 68%' },
   '--color-primary-fg': { light: '0 0% 100%', dark: '0 0% 10%' },
-  '--color-primary-soft': { light: '192 70% 95%', dark: '192 70% 18%' },
-  '--color-primary-hover': { light: '192 80% 30%', dark: '192 75% 62%' },
-  '--color-primary-active': { light: '192 80% 26%', dark: '192 75% 68%' },
+  '--color-primary-soft': { light: '6 65% 96%', dark: '6 60% 18%' },
+  '--color-primary-hover': { light: '6 78% 42%', dark: '6 72% 74%' },
+  '--color-primary-active': { light: '6 78% 37%', dark: '6 72% 78%' },
 
-  // Accent: warm amber (sunset)
-  '--color-accent': { light: '32 90% 55%', dark: '32 85% 60%' },
+  // Accent: warm gold (complementary to coral)
+  '--color-accent': { light: '36 85% 55%', dark: '36 80% 62%' },
   '--color-accent-fg': { light: '0 0% 10%', dark: '0 0% 10%' },
-  '--color-accent-soft': { light: '32 90% 95%', dark: '32 70% 20%' },
+  '--color-accent-soft': { light: '36 80% 96%', dark: '36 65% 20%' },
 
-  // Typography: prime uses the shared Geist Sans token
+  // Typography: Plus Jakarta Sans for friendly, mobile-optimized feel
   '--font-sans': {
-    light: 'var(--font-geist-sans)',
+    light: 'var(--font-plus-jakarta-sans)',
   },
 
   // Slightly softer corners for a friendlier feel

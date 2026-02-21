@@ -17,7 +17,7 @@ describe("useFSM", () => {
     expect(result.current).not.toBeNull();
     expect(result.current?.state).toBe("idle");
 
-    let nextState: string;
+    let nextState!: string;
     act(() => {
       nextState = result.current!.send("FETCH");
     });
@@ -55,7 +55,7 @@ describe("useFSM", () => {
       useFSM<"idle" | "fallback", "UNKNOWN">("idle", []),
     );
 
-    let next: string;
+    let next!: string;
     act(() => {
       next = result.current!.send("UNKNOWN", fallback);
     });

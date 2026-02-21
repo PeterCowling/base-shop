@@ -97,6 +97,7 @@ function TooltipComponent({ booking, onDoubleClick }: TooltipComponentProps) {
     <>
       {/* A container ensuring the tooltip can float above other elements */}
       <div className="relative z-50" style={{ zIndex: 9999 }}>
+        {/* eslint-disable-next-line ds/no-raw-spacing -- internal POS layout spacing [DS-06] */}
         <CustomTooltip title={tooltipContent} style={{ marginLeft: "100px" }}>
           {/* The name with potential highlight on hover */}
           <span

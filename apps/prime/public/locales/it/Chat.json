@@ -1,27 +1,28 @@
 {
-  "anonymousGuest": "Ospite Anonimo",
-  "availableWhenLive": "[IT] Available When Live",
-  "backToActivities": "[IT] Back To Activities",
-  "channelTitle": "[IT] Channel Title",
+  "anonymousGuest": "Ospite",
+  "availableWhenLive": "La chat sar\u00e0 disponibile quando l'attivit\u00e0 inizia.",
+  "backToActivities": "Torna alle attivit\u00e0",
+  "channelTitle": "Chat attivit\u00e0",
   "chat": {
     "directory": {
-      "loading": "Caricamento",
-      "noGuests": "[IT] No Guests",
-      "noGuestsDescription": "[IT] No Guests Description",
-      "optInDescription": "[IT] Opt In Description",
-      "optInRequired": "[IT] Opt In Required",
-      "quiet": "[IT] Quiet",
-      "social": "[IT] Social",
       "guestLabel": "Ospite {{id}}",
-      "startChat": "[IT] Start Chat",
-      "title": "Titolo"
+      "loading": "Caricamento ospiti\u2026",
+      "noGuests": "Nessun ospite disponibile",
+      "noGuestsDescription": "Nessun altro ospite ha attivato la chat. Riprova pi\u00f9 tardi!",
+      "optInDescription": "Attiva la chat ospiti nelle impostazioni per connetterti con gli altri ospiti.",
+      "optInRequired": "Attivazione chat necessaria",
+      "quiet": "Tranquillo",
+      "social": "Socievole",
+      "startChat": "Avvia chat",
+      "title": "Elenco ospiti"
     }
   },
-  "goToActivities": "[IT] Go To Activities",
-  "loadingActivity": "[IT] Loading Activity",
-  "noChannelSelected": "[IT] No Channel Selected",
+  "goToActivities": "Vai alle attivit\u00e0",
+  "loadingActivity": "Caricamento attivit\u00e0\u2026",
+  "markPresenceToChat": "Segna la tua presenza nella pagina attivit\u00e0 per iniziare a chattare.",
+  "noChannelSelected": "Nessun canale selezionato.",
   "send": "Invia",
-  "statusLive": "[IT] Status Live",
-  "statusUpcoming": "[IT] Status Upcoming",
-  "typeMessage": "Scrivi un messaggio"
+  "statusLive": "In corso",
+  "statusUpcoming": "Inizia a breve",
+  "typeMessage": "Scrivi un messaggio\u2026"
 }

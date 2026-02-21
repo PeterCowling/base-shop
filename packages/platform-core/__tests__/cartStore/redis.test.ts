@@ -62,13 +62,13 @@ describe("RedisCartStore", () => {
     expect(expireMock).toHaveBeenLastCalledWith("bcd:sku", 1);
   });
   const makeFallback = (): jest.Mocked<CartStore> => ({
-    createCart: jest.fn().mockResolvedValue("fb"),
-    getCart: jest.fn().mockResolvedValue({} as any),
-    setCart: jest.fn().mockResolvedValue(undefined),
-    deleteCart: jest.fn().mockResolvedValue(undefined),
-    incrementQty: jest.fn().mockResolvedValue({} as any),
-    setQty: jest.fn().mockResolvedValue({} as any),
-    removeItem: jest.fn().mockResolvedValue({} as any),
+    createCart: (jest.fn() as any).mockResolvedValue("fb"),
+    getCart: (jest.fn() as any).mockResolvedValue({} as any),
+    setCart: (jest.fn() as any).mockResolvedValue(undefined),
+    deleteCart: (jest.fn() as any).mockResolvedValue(undefined),
+    incrementQty: (jest.fn() as any).mockResolvedValue({} as any),
+    setQty: (jest.fn() as any).mockResolvedValue({} as any),
+    removeItem: (jest.fn() as any).mockResolvedValue({} as any),
   });
 
   class FakeRedis {
@@ -130,8 +130,7 @@ describe("RedisCartStore", () => {
 
   it("falls back when getCart fails", async () => {
     const fallback = makeFallback();
-    const hgetall = jest
-      .fn()
+    const hgetall = (jest.fn() as any)
       .mockResolvedValueOnce(undefined)
       .mockResolvedValueOnce({});
     const store = new RedisCartStore({ hgetall } as any, 1, fallback);
@@ -141,7 +140,7 @@ describe("RedisCartStore", () => {
 
   it("falls back when setCart fails", async () => {
     const fallback = makeFallback();
-    const del = jest.fn().mockResolvedValue(undefined);
+    const del = (jest.fn() as any).mockResolvedValue(undefined);
     const store = new RedisCartStore({ del } as any, 1, fallback);
     await store.setCart("id", {} as any);
     expect(fallback.setCart).toHaveBeenCalledWith("id", {} as any);
@@ -149,7 +148,7 @@ describe("RedisCartStore", () => {
 
   it("falls back when incrementQty fails", async () => {
     const fallback = makeFallback();
-    const hincrby = jest.fn().mockResolvedValue(undefined);
+    const hincrby = (jest.fn() as any).mockResolvedValue(undefined);
     const store = new RedisCartStore({ hincrby } as any, 1, fallback);
     await store.incrementQty("id", { id: "sku" } as any, 1);
     expect(fallback.incrementQty).toHaveBeenCalled();
@@ -157,7 +156,7 @@ describe("RedisCartStore", () => {
 
   it("falls back when setQty fails", async () => {
     const fallback = makeFallback();
-    const hexists = jest.fn().mockResolvedValue(undefined);
+    const hexists = (jest.fn() as any).mockResolvedValue(undefined);
     const store = new RedisCartStore({ hexists } as any, 1, fallback);
     await store.setQty("id", "sku", 1);
     expect(fallback.setQty).toHaveBeenCalled();
@@ -165,7 +164,7 @@ describe("RedisCartStore", () => {
 
   it("falls back when removeItem fails", async () => {
     const fallback = makeFallback();
-    const hdel = jest.fn().mockResolvedValue(undefined);
+    const hdel = (jest.fn() as any).mockResolvedValue(undefined);
     const store = new RedisCartStore({ hdel } as any, 1, fallback);
     await store.removeItem("id", "sku");
     expect(fallback.removeItem).toHaveBeenCalled();
@@ -187,20 +186,20 @@ describe("RedisCartStore", () => {
 
   it("returns null when setting qty=0 for missing item and falls back on failure", async () => {
     const fallback = makeFallback();
-    const hexists = jest.fn().mockResolvedValueOnce(0);
+    const hexists = (jest.fn() as any).mockResolvedValueOnce(0);
     const store = new RedisCartStore({ hexists } as any, 1, fallback);
     expect(await store.setQty("id", "sku", 0)).toBeNull();
-    hexists.mockResolvedValueOnce(undefined);
+    (hexists as any).mockResolvedValueOnce(undefined);
     await store.setQty("id", "sku", 0);
     expect(fallback.setQty).toHaveBeenCalledWith("id", "sku", 0);
   });
 
   it("returns null when removing non-existent item and falls back on failure", async () => {
     const fallback = makeFallback();
-    const hdel = jest.fn().mockResolvedValueOnce(0);
+    const hdel = (jest.fn() as any).mockResolvedValueOnce(0);
     const store = new RedisCartStore({ hdel } as any, 1, fallback);
     expect(await store.removeItem("id", "sku")).toBeNull();
-    hdel.mockResolvedValueOnce(undefined);
+    (hdel as any).mockResolvedValueOnce(undefined);
     await store.removeItem("id", "sku");
     expect(fallback.removeItem).toHaveBeenCalledWith("id", "sku");
   });
@@ -219,9 +218,9 @@ describe("RedisCartStore", () => {
     ).toBe(true);
 
     const fallback2 = makeFallback();
-    const hexists = jest.fn().mockResolvedValue(1);
-    const hset = jest.fn().mockResolvedValueOnce(undefined);
-    const expire = jest.fn().mockResolvedValue(1);
+    const hexists = (jest.fn() as any).mockResolvedValue(1);
+    const hset = (jest.fn() as any).mockResolvedValueOnce(undefined);
+    const expire = (jest.fn() as any).mockResolvedValue(1);
     const store2 = new RedisCartStore({ hexists, hset, expire } as any, 1, fallback2);
     await store2.setQty("id2", "sku", 3);
     expect(fallback2.setQty).toHaveBeenCalledWith("id2", "sku", 3);

@@ -1,4 +1,4 @@
-import bookingTransactionPredicates from "../../.claude/skills/user-testing-audit/scripts/booking-transaction-predicates.cjs";
+import bookingTransactionPredicates from "../../.claude/skills/meta-user-test/scripts/booking-transaction-predicates.cjs";
 
 const {
   analyzeBookingProviderUrl,
@@ -6,7 +6,7 @@ const {
   collectBookingTransactionRegressionIssues,
 } = bookingTransactionPredicates;
 
-describe("user-testing-audit booking transaction predicates (unit)", () => {
+describe("meta-user-test booking transaction predicates (unit)", () => {
   it("accepts valid booking provider handoff URL with required params", () => {
     const analyzed = analyzeBookingProviderUrl(
       "https://book.octorate.com/octobook/site/reservation/result.xhtml?codice=45111&checkin=2026-02-12&checkout=2026-02-14&pax=2"

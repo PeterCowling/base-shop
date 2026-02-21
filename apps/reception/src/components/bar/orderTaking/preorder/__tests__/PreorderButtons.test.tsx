@@ -61,13 +61,16 @@ jest.mock(
   })
 );
 
-jest.mock("../../../../../utils/dateUtils", async () => {
-  const actual = jest.requireActual("../../../../../utils/dateUtils");
-  return {
-    ...actual,
-    getItalyLocalTimeHHMM: () => "09:15",
-  };
-});
+jest.mock("../../../../../utils/dateUtils", () => ({
+  __esModule: true,
+  getCurrentDateInRome: () => new Date("2023-07-20T09:00:00"),
+  getItalyLocalTimeHHMM: () => "09:15",
+  getItalyLocalDateParts: () => ({ monthName: "July", day: "20" }),
+  timeToMinutes: (t: string) => {
+    const [h, m] = t.split(":").map(Number);
+    return h * 60 + m;
+  },
+}));
 
 function setupSnapshotWithOrder() {
   onValueMock.mockImplementation((ref, cb) => {
@@ -95,18 +98,12 @@ function setupSnapshotEmpty() {
 }
 
 beforeEach(() => {
-  jest.useFakeTimers({ toFake: ["Date"] });
-  jest.setSystemTime(new Date("2023-07-20T08:00:00+02:00"));
   onValueMock.mockReset();
   removeMock.mockReset();
   mockCreateSale.mockReset();
   mockDeletePreorder.mockReset();
   mockSetBleeperAvailability.mockReset();
   mockFindNextAvailableBleeper.mockReset();
-});
-
-afterEach(() => {
-  jest.useRealTimers();
 });
 
 /* ------------------------------------------------------------------ */

@@ -37,7 +37,7 @@ Rigor is required but must be timeboxed and decision-oriented. P1/P2 must ship s
 
 **Graceful degradation:** If business plan missing, falls back to maturity model and flags as critical finding in sweep report.
 
-**Output format:** Appends Decision Log block to dossier with priority, potential-impact, traction objective (under `grow-business`), strategic fit, plan target, stance weight, and rationale. For P1/P2 under `grow-business`, also outputs a Rigor Pack that pre-populates the fact-find stage doc.
+**Output format:** Appends Decision Log block to dossier with priority, potential-impact, traction objective (under `grow-business`), strategic fit, plan target, stance weight, and rationale. For P1/P2 under `grow-business`, also outputs a Rigor Pack that pre-populates the lp-do-fact-find stage doc.
 
 ---
 
@@ -212,7 +212,7 @@ Together, they act as a **strategic fit and effectiveness filter** — their job
 
 ### Rigor Pack (mandatory for P1/P2 under `grow-business`)
 
-Each P1/P2 must include all of the following. Target: one page total. This content pre-populates the fact-find stage doc to accelerate `/fact-find`; it does not replace `/fact-find`.
+Each P1/P2 must include all of the following. Target: one page total. This content pre-populates the lp-do-fact-find stage doc to accelerate `/lp-do-fact-find`; it does not replace `/lp-do-fact-find`.
 
 **1. Objective & Contribution Card (Drucker)**
 - Objective: baseline → target → date
@@ -376,7 +376,7 @@ If `docs/business-os/strategy/<BIZ>/plan.user.md` doesn't exist:
 1. **Flag as critical finding** in sweep report:
    ```
    CRITICAL: [BIZ] has no business plan. Drucker/Porter prioritizer operating in degraded mode.
-   Recommendation: Create business plan using `/plan-feature` or manual documentation.
+   Recommendation: Create business plan using `/lp-do-plan` or manual documentation.
    ```
 
 2. **Fall back to maturity model** as proxy:
@@ -845,7 +845,7 @@ Abandonment:
 Rationale: Drucker contribution test — this produces the first market signal for direct bookings, which is BRIK's #1 objective. Within circle of competence (we know content and web). Bounded downside (worst case: 2 weeks spent, zero bookings, valuable learning). Porter: focused beachhead (one city, one segment, one channel) that reinforces content-led differentiation.
 ```
 
-**Rigor Pack output (pre-populates fact-find stage doc):**
+**Rigor Pack output (pre-populates lp-do-fact-find stage doc):**
 
 ```markdown
 ## 1. Objective & Contribution Card
@@ -875,7 +875,7 @@ We will not optimize OTA listings or run paid ads this cycle, because we are pri
 - Capacity source: Pete redirects 10h/week from content creation to booking flow setup + manual follow-up.
 ```
 
-**Key insight:** Traction-mode P1 includes a complete Rigor Pack that can directly pre-populate the fact-find stage doc and make `/fact-find` faster.
+**Key insight:** Traction-mode P1 includes a complete Rigor Pack that can directly pre-populate the lp-do-fact-find stage doc and make `/lp-do-fact-find` faster.
 
 ### Example 5: P2 under `grow-business` traction mode (infrastructure business — standard format)
 

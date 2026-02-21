@@ -56,6 +56,123 @@ const safeGetOptionalString: typeof getOptionalString =
 const safeGetStringWithFallback: typeof getStringWithFallback =
   typeof getStringWithFallback === "function" ? getStringWithFallback : FALLBACK_GET_STRING_WITH_FALLBACK;
 
+// Helper to resolve meta title from meta key
+function resolveMetaTitle(
+  metaKey: string | undefined,
+  translations: Translations,
+): {
+  metaTitle: string | undefined;
+  trimmedMeta: string;
+  metaTitleIsPlaceholder: boolean;
+  metaTitleIsEnglishFallback: boolean;
+} {
+  const metaTitleKey = `meta.${metaKey}.title` as const;
+  const metaTitleCandidate =
+    metaKey ? safeGetOptionalString(translations.tGuides, metaTitleKey) : undefined;
+  const metaTitleEn = translations.guidesEn
+    ? safeGetOptionalString(translations.guidesEn, metaTitleKey)
+    : undefined;
+  const trimmedMeta = typeof metaTitleCandidate === "string" ? metaTitleCandidate.trim() : "";
+  const metaTitleIsPlaceholder = trimmedMeta.toLowerCase().includes("meta");
+  const metaTitleIsEnglishFallback =
+    Boolean(trimmedMeta) && metaTitleEn === metaTitleCandidate && (translations.lang ?? "") !== "en";
+  const metaTitle =
+    metaTitleCandidate && !metaTitleIsPlaceholder && !metaTitleIsEnglishFallback
+      ? metaTitleCandidate
+      : undefined;
+
+  return { metaTitle, trimmedMeta, metaTitleIsPlaceholder, metaTitleIsEnglishFallback };
+}
+
+// Helper to pick localized SEO title
+function pickLocalizedSeo(
+  key: string | null | undefined,
+  translations: Translations,
+): string | undefined {
+  if (!key) return undefined;
+  const candidate = safeGetOptionalString(translations.tGuides, key);
+  if (!candidate) return undefined;
+  const lang = translations.lang ?? "en";
+  if (lang !== "en") {
+    const english = translations.guidesEn
+      ? safeGetOptionalString(translations.guidesEn, key)
+      : undefined;
+    if (
+      english &&
+      english.trim().length > 0 &&
+      english.trim().toLowerCase() === candidate.trim().toLowerCase()
+    ) {
+      return undefined;
+    }
+  }
+  return candidate;
+}
+
+// Helper to resolve SEO title
+function resolveSeoTitle(
+  guideKey: string,
+  metaKey: string | undefined,
+  translations: Translations,
+  hasLocalizedContent: boolean | undefined,
+  trimmedMeta: string,
+): {
+  localizedSeo: string | undefined;
+  resolvedSeo: string | undefined;
+  normalizedMeta: string;
+  normalizedSeo: string;
+} {
+  const seoKey = `content.${guideKey}.seo.title` as const;
+  const altSeoKey = metaKey && metaKey !== guideKey ? (`content.${metaKey}.seo.title` as const) : null;
+
+  const localizedSeo = pickLocalizedSeo(altSeoKey, translations) ?? pickLocalizedSeo(seoKey, translations);
+
+  const resolvedSeo = (() => {
+    if (localizedSeo) {
+      return localizedSeo;
+    }
+    if (hasLocalizedContent) {
+      return undefined;
+    }
+    const enGuidesT: TFunction = translations.guidesEn ?? translations.translateGuides ?? translations.tGuides;
+    return altSeoKey
+      ? (safeGetStringWithFallback(translations.tGuides, enGuidesT, altSeoKey) ||
+         safeGetStringWithFallback(translations.tGuides, enGuidesT, seoKey))
+      : safeGetStringWithFallback(translations.tGuides, enGuidesT, seoKey);
+  })();
+
+  const normalizedMeta = trimmedMeta.toLowerCase();
+  const normalizedSeo = typeof resolvedSeo === "string" ? resolvedSeo.trim().toLowerCase() : "";
+
+  return { localizedSeo, resolvedSeo, normalizedMeta, normalizedSeo };
+}
+
+// Helper to determine if SEO title should be preferred over meta title
+function shouldPreferSeoOverMeta(
+  resolvedSeo: string | undefined,
+  metaTitle: string | undefined,
+  preferLocalizedSeoTitle: boolean | undefined,
+  localizedSeo: string | undefined,
+  hasLocalizedContent: boolean | undefined,
+  metaTitleIsPlaceholder: boolean,
+  metaTitleIsEnglishFallback: boolean,
+  normalizedMeta: string,
+  normalizedSeo: string,
+): boolean {
+  const preferSeoOverride = Boolean(preferLocalizedSeoTitle && localizedSeo && hasLocalizedContent);
+
+  return Boolean(
+    resolvedSeo &&
+      (preferSeoOverride ||
+        (hasLocalizedContent
+          ? (!metaTitle || metaTitleIsPlaceholder || metaTitleIsEnglishFallback ||
+              (normalizedMeta && normalizedSeo && normalizedMeta === normalizedSeo))
+          : (!metaTitle ||
+              (normalizedMeta && normalizedSeo && normalizedMeta === normalizedSeo) ||
+              metaTitleIsPlaceholder ||
+              metaTitleIsEnglishFallback))),
+  );
+}
+
 export function useDisplayH1Title(params: {
   metaKey: string | undefined;
   effectiveTitle: string | undefined;
@@ -76,73 +193,29 @@ export function useDisplayH1Title(params: {
   } = params;
 
   return useMemo(() => {
-    const metaTitleKey = `meta.${metaKey}.title` as const;
-    const metaTitleCandidate =
-      metaKey ? safeGetOptionalString(translations.tGuides, metaTitleKey) : undefined;
-    const metaTitleEn = translations.guidesEn
-      ? safeGetOptionalString(translations.guidesEn, metaTitleKey)
-      : undefined;
-    const trimmedMeta = typeof metaTitleCandidate === "string" ? metaTitleCandidate.trim() : "";
-    const metaTitleIsPlaceholder = trimmedMeta.toLowerCase().includes("meta");
-    const metaTitleIsEnglishFallback =
-      Boolean(trimmedMeta) && metaTitleEn === metaTitleCandidate && (translations.lang ?? "") !== "en";
-    const metaTitle =
-      metaTitleCandidate && !metaTitleIsPlaceholder && !metaTitleIsEnglishFallback
-        ? metaTitleCandidate
-        : undefined;
+    const { metaTitle, trimmedMeta, metaTitleIsPlaceholder, metaTitleIsEnglishFallback } = resolveMetaTitle(
+      metaKey,
+      translations,
+    );
 
-    const seoKey = `content.${guideKey}.seo.title` as const;
-    const altSeoKey = metaKey && metaKey !== guideKey ? (`content.${metaKey}.seo.title` as const) : null;
-    // When localized structured content exists, avoid falling back to EN to
-    // prevent incidental getFixedT calls in tests. Otherwise, allow an EN
-    // fallback via guidesEn/translateGuides.
-    const pickLocalizedSeo = (key: string | null | undefined) => {
-      if (!key) return undefined;
-      const candidate = safeGetOptionalString(translations.tGuides, key);
-      if (!candidate) return undefined;
-      const lang = translations.lang ?? "en";
-      if (lang !== "en") {
-        const english = translations.guidesEn
-          ? safeGetOptionalString(translations.guidesEn, key)
-          : undefined;
-        if (
-          english &&
-          english.trim().length > 0 &&
-          english.trim().toLowerCase() === candidate.trim().toLowerCase()
-        ) {
-          return undefined;
-        }
-      }
-      return candidate;
-    };
+    const { localizedSeo, resolvedSeo, normalizedMeta, normalizedSeo } = resolveSeoTitle(
+      guideKey,
+      metaKey,
+      translations,
+      hasLocalizedContent,
+      trimmedMeta,
+    );
 
-    const localizedSeo = pickLocalizedSeo(altSeoKey) ?? pickLocalizedSeo(seoKey);
-    const preferSeoOverride = Boolean(preferLocalizedSeoTitle && localizedSeo && hasLocalizedContent);
-    const resolvedSeo = (() => {
-      if (localizedSeo) {
-        return localizedSeo;
-      }
-      if (hasLocalizedContent) {
-        return undefined;
-      }
-      const enGuidesT: TFunction = translations.guidesEn ?? translations.translateGuides ?? translations.tGuides;
-      return altSeoKey
-        ? (safeGetStringWithFallback(translations.tGuides, enGuidesT, altSeoKey) ||
-           safeGetStringWithFallback(translations.tGuides, enGuidesT, seoKey))
-        : safeGetStringWithFallback(translations.tGuides, enGuidesT, seoKey);
-    })();
-    const normalizedMeta = trimmedMeta.toLowerCase();
-    const normalizedSeo = typeof resolvedSeo === "string" ? resolvedSeo.trim().toLowerCase() : "";
-    const shouldPreferSeo = Boolean(
-      resolvedSeo &&
-        (preferSeoOverride ||
-          (hasLocalizedContent
-            ? (!metaTitle || metaTitleIsPlaceholder || metaTitleIsEnglishFallback ||
-                (normalizedMeta && normalizedSeo && normalizedMeta === normalizedSeo))
-            : (!metaTitle ||
-                (normalizedMeta && normalizedSeo && normalizedMeta === normalizedSeo) ||
-                metaTitleIsPlaceholder ||
-                metaTitleIsEnglishFallback))),
+    const shouldPreferSeo = shouldPreferSeoOverMeta(
+      resolvedSeo,
+      metaTitle,
+      preferLocalizedSeoTitle,
+      localizedSeo,
+      hasLocalizedContent,
+      metaTitleIsPlaceholder,
+      metaTitleIsEnglishFallback,
+      normalizedMeta,
+      normalizedSeo,
     );
 
     if (resolvedSeo && shouldPreferSeo) return resolvedSeo;

@@ -98,11 +98,11 @@ export function IdeaEditorForm({
     <form onSubmit={handleSubmit((data) => onSubmit(data))} className="space-y-4">
       {/* Preview Toggle */}
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold text-gray-900">Edit Idea</h3>
+        <h3 className="text-lg font-semibold text-fg">Edit Idea</h3>
         <button
           type="button"
           onClick={() => setShowPreview(!showPreview)}
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-sm text-info-fg hover:text-info-fg"
         >
           {showPreview ? "Edit" : "Preview"}
         </button>
@@ -110,7 +110,7 @@ export function IdeaEditorForm({
 
       {/* Content Editor or Preview */}
       {showPreview ? (
-        <div className="border border-gray-200 rounded-md p-4 bg-white min-h-96">
+        <div className="border border-1 rounded-md p-4 bg-panel min-h-96">
           <MarkdownContent content={content || ""} />
         </div>
       ) : (

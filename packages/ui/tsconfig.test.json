@@ -11,6 +11,7 @@
     "skipLibCheck": true,
     "baseUrl": "../..",
     "paths": {
+      "@jest/globals": ["test/jest-globals-compat.d.ts"],
       "@/*": ["packages/ui/src/*"],
       "@acme/ui": ["packages/ui/dist/index.d.ts"],
       "@acme/ui/*": ["packages/ui/dist/*"],

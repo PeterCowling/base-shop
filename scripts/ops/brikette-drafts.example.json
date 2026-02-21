@@ -1,0 +1,9 @@
+[
+  {
+    "emailId": "19c65dbb4a9f26f3",
+    "to": "guest@example.com",
+    "subject": "RE: Your Hostel Brikette Reservation",
+    "recipientName": "Daniel",
+    "bodyPlain": "Dear Daniel,\n\nThank you for your message.\n\nYour reservation is confirmed pending payment.\n\nWarm regards,\nPeter & Cristiana\nHostel Brikette, Positano"
+  }
+]

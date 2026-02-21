@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LP Skill System Sequencing Plan</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>LP Skill System Sequencing Plan</h1>
+<h2>Summary</h2>
+<p>This plan implements the sequencing fact-find by moving Startup Loop to a deterministic, replayable runtime contract with safe parallel execution:</p>
+<ol>
+<li>Runtime-authoritative loop spec.</li>
+<li>Data-plane/control-plane split (single-writer control updates).</li>
+<li>Event-sourced run state with derived views.</li>
+<li>Deterministic fan-out/fan-in merge barrier.</li>
+<li>Idempotent persistence boundary.</li>
+<li>Contract lint guardrails and controlled-velocity thresholds.</li>
+</ol>
+<p>Primary references:</p>
+<ul>
+<li><code>docs/plans/lp-skill-system-sequencing-fact-find.md</code></li>
+<li><code>docs/business-os/startup-loop-current-vs-proposed.user.md</code></li>
+<li><code>.claude/skills/startup-loop/SKILL.md</code></li>
+<li><code>docs/business-os/startup-loop-workflow.user.md</code></li>
+</ul>
+<h2>Goals</h2>
+<ol>
+<li>Remove stage/path/naming drift as an operational failure mode.</li>
+<li>Enable safe parallel fan-out by preventing shared-state contention.</li>
+<li>Make runs auditable and recoverable from partial failure.</li>
+<li>Keep rollout velocity high via explicit stabilization triggers, not ad-hoc interventions.</li>
+</ol>
+<h2>Non-goals</h2>
+<ol>
+<li>Rewriting every LP skill in one release.</li>
+<li>Multi-run concurrency per business in the first cut.</li>
+<li>Introducing heavy orchestration infrastructure beyond current repo patterns.</li>
+</ol>
+<h2>Constraints &#x26; Assumptions</h2>
+<ul>
+<li>Constraints:
+<ul>
+<li>Existing startup-loop usage must continue during migration.</li>
+<li>Compatibility window is required (legacy reads, canonical writes).</li>
+<li>No destructive bulk migration of historical artifacts.</li>
+</ul>
+</li>
+<li>Assumptions:
+<ul>
+<li>One active run per business is acceptable during stabilization.</li>
+<li><code>/lp-baseline-merge</code> and <code>/lp-bos-sync</code> can be introduced incrementally.</li>
+</ul>
+</li>
+</ul>
+<h2>Task Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Task ID</th>
+<th>Type</th>
+<th>Description</th>
+<th align="right">Confidence</th>
+<th>Effort</th>
+<th>Status</th>
+<th>Depends on</th>
+<th>Blocks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LPSP-01</td>
+<td>DECISION</td>
+<td>Finalize runtime contract decisions (stage set, baseline commit stage, concurrency policy, alias sunset gate)</td>
+<td align="right">88%</td>
+<td>S</td>
+<td>Pending</td>
+<td>-</td>
+<td>LPSP-02, LPSP-03, LPSP-05</td>
+</tr>
+<tr>
+<td>LPSP-02</td>
+<td>IMPLEMENT</td>
+<td>Add runtime-authoritative loop spec and align wrapper/workflow/prompt index</td>
+<td align="right">82%</td>
+<td>M</td>
+<td>Pending</td>
+<td>LPSP-01</td>
+<td>LPSP-06, LPSP-08</td>
+</tr>
+<tr>
+<td>LPSP-03</td>
+<td>IMPLEMENT</td>
+<td>Introduce stage-result + single-writer control semantics (manifest + derived state updates)</td>
+<td align="right">76%</td>
+<td>L</td>
+<td>Pending</td>
+<td>LPSP-01</td>
+<td>LPSP-04, LPSP-07</td>
+</tr>
+<tr>
+<td>LPSP-04</td>
+<td>IMPLEMENT</td>
+<td>Add event-sourced run ledger + derived state schema + recovery semantics</td>
+<td align="right">74%</td>
+<td>L</td>
+<td>Pending</td>
+<td>LPSP-03</td>
+<td>LPSP-06, LPSP-08</td>
+</tr>
+<tr>
+<td>LPSP-05</td>
+<td>IMPLEMENT</td>
+<td>Canonicalize feature workspace + stage-doc key policy + alias handling</td>
+<td align="right">84%</td>
+<td>M</td>
+<td>Pending</td>
+<td>LPSP-01</td>
+<td>LPSP-06</td>
+</tr>
+<tr>
+<td>LPSP-06</td>
+<td>IMPLEMENT</td>
+<td>Implement deterministic S4 merge barrier and S5A/S5B split (<code>lp-prioritize</code> + <code>lp-bos-sync</code>)</td>
+<td align="right">78%</td>
+<td>L</td>
+<td>Pending</td>
+<td>LPSP-02, LPSP-04, LPSP-05</td>
+<td>LPSP-08</td>
+</tr>
+<tr>
+<td>LPSP-07</td>
+<td>IMPLEMENT</td>
+<td>Define autonomy policy tiers and enforce guarded side-effect boundary</td>
+<td align="right">80%</td>
+<td>M</td>
+<td>Pending</td>
+<td>LPSP-03</td>
+<td>LPSP-08</td>
+</tr>
+<tr>
+<td>LPSP-08</td>
+<td>IMPLEMENT</td>
+<td>Add contract lint + controlled-velocity metrics/triggers + run-concurrency gate</td>
+<td align="right">79%</td>
+<td>M</td>
+<td>Pending</td>
+<td>LPSP-02, LPSP-04, LPSP-06, LPSP-07</td>
+<td>LPSP-09</td>
+</tr>
+<tr>
+<td>LPSP-09</td>
+<td>CHECKPOINT</td>
+<td>Validate end-to-end supervised dry run on one business path</td>
+<td align="right">86%</td>
+<td>M</td>
+<td>Pending</td>
+<td>LPSP-08</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h2>Active Tasks</h2>
+<ul>
+<li><code>LPSP-01</code> (DECISION) is the current critical path entry.</li>
+</ul>
+<h2>Parallelism Guide</h2>
+<table>
+<thead>
+<tr>
+<th>Wave</th>
+<th>Tasks</th>
+<th>Prerequisites</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>LPSP-01</td>
+<td>-</td>
+<td>Resolve remaining contract decisions once, before code/docs divergence increases</td>
+</tr>
+<tr>
+<td>2</td>
+<td>LPSP-02, LPSP-05</td>
+<td>LPSP-01</td>
+<td>Stage/spec alignment and workspace/key policy can proceed in parallel</td>
+</tr>
+<tr>
+<td>3</td>
+<td>LPSP-03</td>
+<td>LPSP-01</td>
+<td>Establish single-writer semantics before event-derived runtime</td>
+</tr>
+<tr>
+<td>4</td>
+<td>LPSP-04, LPSP-07</td>
+<td>LPSP-03</td>
+<td>Recovery/event model and autonomy policy can progress together</td>
+</tr>
+<tr>
+<td>5</td>
+<td>LPSP-06</td>
+<td>LPSP-02, LPSP-04, LPSP-05</td>
+<td>Merge barrier and S5 split depend on contract + runtime state</td>
+</tr>
+<tr>
+<td>6</td>
+<td>LPSP-08</td>
+<td>LPSP-02, LPSP-04, LPSP-06, LPSP-07</td>
+<td>Guardrails and metrics after core orchestration semantics are in place</td>
+</tr>
+<tr>
+<td>7</td>
+<td>LPSP-09</td>
+<td>LPSP-08</td>
+<td>End-to-end supervised dry-run validation</td>
+</tr>
+</tbody>
+</table>
+<h2>Tasks</h2>
+<h3>LPSP-01: Finalize runtime contract decisions</h3>
+<ul>
+<li><strong>Type:</strong> DECISION</li>
+<li><strong>Deliverable:</strong> Decision log update in this plan.</li>
+<li><strong>Execution-Skill:</strong> /lp-do-build</li>
+<li><strong>Confidence:</strong> 88%</li>
+<li><strong>Questions to resolve:</strong>
+<ul>
+<li>Final stage set and S4 semantics (stage + barrier).</li>
+<li>Baseline commit stage (<code>S4</code> vs <code>S5B</code>) for business-current pointer updates.</li>
+<li>Alias sunset gate definition (<code>N</code> consecutive zero-legacy runs).</li>
+<li>Run-concurrency relaxation gate thresholds and observation window.</li>
+</ul>
+</li>
+<li><strong>Acceptance:</strong>
+<ul>
+<li>Decisions recorded with explicit chosen option and rationale.</li>
+<li>Downstream tasks reference these decisions as fixed inputs.</li>
+</ul>
+</li>
+</ul>
+<h3>LPSP-02: Add runtime-authoritative loop spec and align docs/wrapper</h3>
+<ul>
+<li><strong>Type:</strong> IMPLEMENT</li>
+<li><strong>Deliverable:</strong> business-artifact + code-change.</li>
+<li><strong>Execution-Skill:</strong> /lp-do-build</li>
+<li><strong>Confidence:</strong> 82%</li>
+<li><strong>Affects:</strong>
+<ul>
+<li><code>docs/business-os/startup-loop/loop-spec.yaml</code> (new)</li>
+<li><code>.claude/skills/startup-loop/SKILL.md</code></li>
+<li><code>docs/business-os/startup-loop-workflow.user.md</code></li>
+<li><code>docs/business-os/workflow-prompts/README.user.md</code></li>
+</ul>
+</li>
+<li><strong>Acceptance:</strong>
+<ul>
+<li>Wrapper stage graph matches loop spec.</li>
+<li>Workflow stage graph matches loop spec.</li>
+<li>Prompt index covers all spec stages or marks <code>no-prompt-required</code>.</li>
+<li>Run packet contract includes <code>loop_spec_version</code>.</li>
+</ul>
+</li>
+<li><strong>Validation contract (VC-02):</strong>
+<ul>
+<li>Spec/doc/wrapper graph diff check passes.</li>
+<li>No unresolved stage aliasing in active stage map.</li>
+</ul>
+</li>
+</ul>
+<h3>LPSP-03: Stage-result + single-writer control semantics</h3>
+<ul>
+<li><strong>Type:</strong> IMPLEMENT</li>
+<li><strong>Deliverable:</strong> code-change + business-artifact.</li>
+<li><strong>Execution-Skill:</strong> /lp-do-build</li>
+<li><strong>Confidence:</strong> 76%</li>
+<li><strong>Affects (expected):</strong>
+<ul>
+<li>Startup-loop orchestration implementation path.</li>
+<li>Baseline manifest update mechanism.</li>
+<li>Stage result file schema (new).</li>
+</ul>
+</li>
+<li><strong>Acceptance:</strong>
+<ul>
+<li>Stage workers publish stage-owned outputs and stage result files only.</li>
+<li>Shared control artifacts are updated by single-writer control path only.</li>
+<li>Manifest pointer updates reject unresolved or invalid stage results.</li>
+</ul>
+</li>
+<li><strong>Validation contract (VC-03):</strong>
+<ul>
+<li>Simulated parallel stage completion cannot produce manifest write contention.</li>
+<li>Single-writer path can deterministically re-derive pointers.</li>
+</ul>
+</li>
+</ul>
+<h3>LPSP-04: Event-sourced run ledger + derived state + recovery</h3>
+<ul>
+<li><strong>Type:</strong> IMPLEMENT</li>
+<li><strong>Deliverable:</strong> code-change + business-artifact.</li>
+<li><strong>Execution-Skill:</strong> /lp-do-build</li>
+<li><strong>Confidence:</strong> 74%</li>
+<li><strong>Affects (expected):</strong>
+<ul>
+<li><code>runs/&#x3C;run_id>/events.jsonl</code> schema</li>
+<li><code>runs/&#x3C;run_id>/state.json</code> derived view</li>
+<li>Recovery handling in startup-loop orchestration</li>
+</ul>
+</li>
+<li><strong>Acceptance:</strong>
+<ul>
+<li>Runs append events as source of truth.</li>
+<li>Derived state reproduces stage statuses and blockers.</li>
+<li>Recovery actions (<code>resume</code>, <code>restart</code>, <code>abort</code>) are recorded and replayable.</li>
+</ul>
+</li>
+<li><strong>Validation contract (VC-04):</strong>
+<ul>
+<li>Mid-run failure simulation resumes from last <code>Done</code> stage.</li>
+<li>Corrupt event stream simulation triggers controlled restart behavior.</li>
+<li>No hidden cleanup of partial artifacts.</li>
+</ul>
+</li>
+</ul>
+<h3>LPSP-05: Workspace canonicalization + stage-doc key policy</h3>
+<ul>
+<li><strong>Type:</strong> IMPLEMENT</li>
+<li><strong>Deliverable:</strong> business-artifact + code-change.</li>
+<li><strong>Execution-Skill:</strong> /lp-do-build</li>
+<li><strong>Confidence:</strong> 84%</li>
+<li><strong>Acceptance:</strong>
+<ul>
+<li>Canonical feature workspace path active for new work (<code>docs/plans/&#x3C;slug>/...</code>).</li>
+<li>Stage-doc canonical keys enforced for writes.</li>
+<li>Legacy alias reads remain supported during migration; legacy writes blocked.</li>
+</ul>
+</li>
+<li><strong>Validation contract (VC-05):</strong>
+<ul>
+<li>New fact-find/plan/build chain resolves canonical workspace files.</li>
+<li>Legacy path inputs remain readable during migration window.</li>
+</ul>
+</li>
+</ul>
+<h3>LPSP-06: Deterministic S4 merge + S5A/S5B split</h3>
+<ul>
+<li><strong>Type:</strong> IMPLEMENT</li>
+<li><strong>Deliverable:</strong> code-change + skill-contract update.</li>
+<li><strong>Execution-Skill:</strong> /lp-do-build</li>
+<li><strong>Confidence:</strong> 78%</li>
+<li><strong>Acceptance:</strong>
+<ul>
+<li><code>/lp-baseline-merge</code> validates required upstream artifacts and composes deterministic snapshot.</li>
+<li><code>S5A</code> remains side-effect free (<code>/lp-prioritize</code>).</li>
+<li><code>S5B</code> (<code>/lp-bos-sync</code>) is sole mutation boundary for BOS writes.</li>
+<li><code>bos-sync</code> is idempotent under retry.</li>
+</ul>
+</li>
+<li><strong>Validation contract (VC-06):</strong>
+<ul>
+<li>Join stage blocks on missing required inputs with explicit reasons.</li>
+<li>Re-running S5B does not duplicate or diverge BOS records.</li>
+</ul>
+</li>
+</ul>
+<h3>LPSP-07: Autonomy policy tiers and guarded actions</h3>
+<ul>
+<li><strong>Type:</strong> IMPLEMENT</li>
+<li><strong>Deliverable:</strong> business-artifact.</li>
+<li><strong>Execution-Skill:</strong> /lp-do-build</li>
+<li><strong>Confidence:</strong> 80%</li>
+<li><strong>Acceptance:</strong>
+<ul>
+<li>Policy tiers defined (<code>autonomous</code>, <code>guarded</code>, <code>prohibited</code>).</li>
+<li>Core loop actions mapped into tiers with examples.</li>
+<li>Side-effect stages explicitly marked guarded.</li>
+</ul>
+</li>
+<li><strong>Validation contract (VC-07):</strong>
+<ul>
+<li>Policy classification is referenced by wrapper route behavior.</li>
+<li>Guarded actions emit explicit state transition or review signals.</li>
+</ul>
+</li>
+</ul>
+<h3>LPSP-08: Contract lint + controlled-velocity triggers + concurrency gate</h3>
+<ul>
+<li><strong>Type:</strong> IMPLEMENT</li>
+<li><strong>Deliverable:</strong> code-change + business-artifact.</li>
+<li><strong>Execution-Skill:</strong> /lp-do-build</li>
+<li><strong>Confidence:</strong> 79%</li>
+<li><strong>Acceptance:</strong>
+<ul>
+<li>Contract lint covers stage graph, skill existence, root policies, alias sunset.</li>
+<li>Controlled-velocity metrics collected (manual interventions, join-block recurrence, replan frequency, lint failure trend, resume success).</li>
+<li>Stabilization triggers enforce pause conditions.</li>
+<li>One-active-run-per-business gate enforced; relaxation requires threshold pass.</li>
+</ul>
+</li>
+<li><strong>Validation contract (VC-08):</strong>
+<ul>
+<li>Intentional contract violations fail lint.</li>
+<li>Simulated threshold breach toggles stabilization mode.</li>
+<li>Concurrent second run request is queued/blocked per policy.</li>
+</ul>
+</li>
+</ul>
+<h3>LPSP-09: Supervised dry-run checkpoint</h3>
+<ul>
+<li><strong>Type:</strong> CHECKPOINT</li>
+<li><strong>Deliverable:</strong> validation report.</li>
+<li><strong>Execution-Skill:</strong> /lp-do-build</li>
+<li><strong>Confidence:</strong> 86%</li>
+<li><strong>Acceptance:</strong>
+<ul>
+<li>One full run completes with no manual path hints.</li>
+<li>One injected failure scenario successfully resumes.</li>
+<li>No shared-state contention observed.</li>
+<li>BOS mutation boundaries honored (<code>S5B</code> only).</li>
+</ul>
+</li>
+<li><strong>Validation contract (VC-09):</strong>
+<ul>
+<li>Dry-run trace includes run events, derived state snapshots, and decision log.</li>
+<li>All blocking reasons are explicit and reproducible.</li>
+</ul>
+</li>
+</ul>
+<h2>Validation Strategy</h2>
+<ol>
+<li>Stage graph conformance checks after each contract-affecting task.</li>
+<li>Failure-injection checks for recovery semantics before rollout expansion.</li>
+<li>Idempotency checks for any side-effecting step (<code>/lp-bos-sync</code>).</li>
+<li>CI lint gating before declaring migration complete.</li>
+</ol>
+<h2>Risks</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Severity</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single-writer semantics accidentally bypassed</td>
+<td>High</td>
+<td>Enforce write ownership in orchestration and lint rules; test concurrent completions</td>
+</tr>
+<tr>
+<td>Recovery model incomplete for edge cases</td>
+<td>High</td>
+<td>Add explicit restart criteria and failure-injection validation</td>
+</tr>
+<tr>
+<td>Alias sunset stalls</td>
+<td>Medium</td>
+<td>Tie sunset to measurable zero-legacy-read threshold</td>
+</tr>
+<tr>
+<td>Contract lint over-tightening blocks progress</td>
+<td>Medium</td>
+<td>Stage rollout warning→error with stabilization thresholds</td>
+</tr>
+</tbody>
+</table>
+<h2>What Would Make Confidence >=90%</h2>
+<ol>
+<li>Complete <code>LPSP-01</code> decisions and remove current architectural ambiguity.</li>
+<li>Demonstrate one successful end-to-end supervised run with injected failure resume.</li>
+<li>Prove idempotent <code>S5B</code> behavior in repeated mutation attempts.</li>
+<li>Show contract-lint catches all previously observed drift classes (SQ-01..SQ-12).</li>
+</ol>
+<h2>Decision Log</h2>
+<ul>
+<li>Pending decisions to resolve in <code>LPSP-01</code> before implementation starts.</li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/plans/lp-skill-system-sequencing-plan.md</code></div>
+      <div>Generated: 2026-02-13T12:19:10.008Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

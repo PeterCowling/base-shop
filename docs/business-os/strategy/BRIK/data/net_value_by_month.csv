@@ -1,0 +1,26 @@
+month,net_booking_value,method,notes
+2024-02,17934.65,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=69; duplicate_refs_removed=3
+2024-03,46615.13,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=184; duplicate_refs_removed=10
+2024-04,86892.32,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=274; duplicate_refs_removed=11
+2024-05,91610.90,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=295; duplicate_refs_removed=14
+2024-06,104807.43,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=367; duplicate_refs_removed=15
+2024-07,90304.64,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=350; duplicate_refs_removed=11
+2024-08,75758.66,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=337; duplicate_refs_removed=4
+2024-09,43348.01,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=210; duplicate_refs_removed=2
+2024-10,15946.00,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=87; duplicate_refs_removed=1
+2024-11,4120.47,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=13; duplicate_refs_removed=0
+2024-12,7794.72,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=24; duplicate_refs_removed=1
+2025-01,21964.53,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=68; duplicate_refs_removed=1
+2025-02,28646.47,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=116; duplicate_refs_removed=13
+2025-03,46193.54,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=221; duplicate_refs_removed=26
+2025-04,64471.32,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=236; duplicate_refs_removed=4
+2025-05,73571.33,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=263; duplicate_refs_removed=7
+2025-06,81317.03,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=305; duplicate_refs_removed=9
+2025-07,69696.17,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=273; duplicate_refs_removed=10
+2025-08,69100.15,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=239; duplicate_refs_removed=5
+2025-09,37049.13,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=163; duplicate_refs_removed=10
+2025-10,15827.30,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=82; duplicate_refs_removed=8
+2025-11,3118.65,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=14; duplicate_refs_removed=1
+2025-12,7618.52,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=24; duplicate_refs_removed=0
+2026-01,18190.62,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=69; duplicate_refs_removed=6
+2026-02,13316.63,observed export marked net-of-cancellations; deduped by Refer per month,observed from export_19519177.xls; raw_rows=49; duplicate_refs_removed=5

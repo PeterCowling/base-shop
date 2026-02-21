@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 
 import { Section } from "../atoms/Section";
 import { Inline } from "../components/atoms/primitives/Inline";
-import { useModal } from "../context/ModalContext";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { useTheme } from "../hooks/useTheme";
 import type { AppLanguage } from "../i18n.config";
@@ -33,7 +32,13 @@ const FALLBACK_LOGO_ALT =
   /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback logo alt text. */
   "Hostel Brikette logo";
 
-function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JSX.Element {
+function DesktopHeader({
+  lang: explicitLang,
+  onPrimaryCtaClick,
+}: {
+  lang?: AppLanguage;
+  onPrimaryCtaClick?: () => void;
+}): React.JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n } = useTranslation();
   const normalizedI18nLang = useMemo(() => {
@@ -47,19 +52,25 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const headerT = useMemo(() => i18n.getFixedT(lang, "header"), [i18n, lang]);
   const hasHeaderBundle = i18n.hasResourceBundle(lang, "header");
-  const { openModal } = useModal();
   const pathname = usePathname();
   const { theme } = useTheme();
 
-  const book = useCallback(() => openModal("booking"), [openModal]);
-  const bookHref = `/${lang}/${translatePath("book", lang)}`;
+  // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
+  // booking page instead of opening the hostel booking modal.
+  const apartmentPath = `/${translatePath("apartment", lang)}`;
+  const isApartmentRoute = pathname.startsWith(`/${lang}${apartmentPath}`);
+  const bookHref = isApartmentRoute
+    ? `/${lang}${apartmentPath}/book`
+    : `/${lang}/${translatePath("book", lang)}`;
   const onBookClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>) => {
+      // On apartment routes let normal navigation handle the link — no modal.
+      if (isApartmentRoute) return;
       // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
+      onPrimaryCtaClick?.();
       event.preventDefault();
-      book();
     },
-    [book]
+    [onPrimaryCtaClick, isApartmentRoute]
   );
 
   const navTranslate = useCallback<TranslateFn>(
@@ -98,7 +109,6 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
 
   const { navLinks } = buildNavLinks(lang, navTranslate);
   const ctaClass = "cta-dark";
-  const apartmentPath = `/${translatePath("apartment", lang)}`;
   const primaryCtaLabel = useMemo(() => {
     if (!tokensReady) return FALLBACK_PRIMARY_CTA_LABEL;
     return resolvePrimaryCtaLabel(tTokens, { fallback: FALLBACK_PRIMARY_CTA_LABEL }) ?? FALLBACK_PRIMARY_CTA_LABEL;

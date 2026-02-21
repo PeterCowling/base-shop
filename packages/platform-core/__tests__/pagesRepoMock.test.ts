@@ -34,10 +34,10 @@ jest.mock("fs", () => ({ promises: fsMock }));
 // Prisma mock
 const prisma = {
   page: {
-    findMany: jest.fn(),
-    upsert: jest.fn(),
-    deleteMany: jest.fn(),
-    update: jest.fn(),
+    findMany: jest.fn() as any,
+    upsert: jest.fn() as any,
+    deleteMany: jest.fn() as any,
+    update: jest.fn() as any,
   },
 };
 
@@ -77,7 +77,7 @@ afterEach(() => {
 
 describe("pages repository core logic", () => {
   it("getPages returns rows from prisma", async () => {
-    prisma.page.findMany.mockResolvedValueOnce([{ data: samplePage }]);
+    prisma.page.findMany.mockResolvedValueOnce([{ data: samplePage }] as any);
     const pages = await repo.getPages(shop);
     expect(pages).toEqual([samplePage]);
   });
@@ -116,7 +116,7 @@ describe("pages repository core logic", () => {
   });
 
   it("deletePage throws when page not found", async () => {
-    prisma.page.deleteMany.mockResolvedValueOnce({ count: 0 });
+    prisma.page.deleteMany.mockResolvedValueOnce({ count: 0 } as any);
     prisma.page.findMany.mockRejectedValueOnce(new Error("db"));
     await expect(repo.deletePage(shop, "nope")).rejects.toThrow(
       "Page nope not found in"

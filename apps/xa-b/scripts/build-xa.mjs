@@ -37,7 +37,10 @@ const env = {
 };
 
 const pnpmCmd = process.platform === "win32" ? "pnpm.cmd" : "pnpm";
-const result = spawnSync(pnpmCmd, ["exec", "next", "build"], {
+// Next.js 16 enables Turbopack by default. XA apps inherit a shared `webpack`
+// config from @acme/next-config, so we must opt into webpack explicitly until
+// that config is migrated.
+const result = spawnSync(pnpmCmd, ["exec", "next", "build", "--webpack"], {
   stdio: "inherit",
   env,
 });

@@ -17,7 +17,7 @@ describe("jsonProductsRepository", () => {
       created_at: "old",
       updated_at: "old",
     };
-    const readFile = jest.fn().mockResolvedValue(JSON.stringify([product]));
+    const readFile = (jest.fn() as any).mockResolvedValue(JSON.stringify([product]));
     const writeFile = jest.fn();
     const rename = jest.fn();
     const mkdir = jest.fn();
@@ -45,7 +45,7 @@ describe("jsonProductsRepository", () => {
   });
 
   it("throws when original product is missing", async () => {
-    const readFile = jest.fn().mockResolvedValue("[]");
+    const readFile = (jest.fn() as any).mockResolvedValue("[]");
     const writeFile = jest.fn();
     const rename = jest.fn();
     const mkdir = jest.fn();

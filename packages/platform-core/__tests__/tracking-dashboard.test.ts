@@ -52,7 +52,7 @@ describe("tracking dashboard", () => {
   });
 
   test("notifies on status change", async () => {
-    const sendEmail = jest.fn();
+    const sendEmail = jest.fn() as any;
     global.fetch = jest
       .fn<Promise<any>, any>()
       .mockResolvedValue({ ok: true, json: async () => ({}) } as any) as any;
@@ -74,7 +74,7 @@ describe("tracking dashboard", () => {
   });
 
   test("does not notify when status is unchanged", async () => {
-    const sendEmail = jest.fn();
+    const sendEmail = jest.fn() as any;
     global.fetch = jest
       .fn<Promise<any>, any>()
       .mockResolvedValue({ ok: true, json: async () => ({}) } as any) as any;

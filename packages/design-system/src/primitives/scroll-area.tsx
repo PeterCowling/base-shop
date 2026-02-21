@@ -18,6 +18,7 @@ export const ScrollArea = ({
     className={cn("relative overflow-hidden", className)}
     {...props}
   >
+    {/* eslint-disable-next-line ds/no-arbitrary-tailwind, ds/no-raw-radius -- rounded-[inherit] is a valid CSS pattern for composable scroll areas to inherit border-radius from parent container [DS-01] */}
     <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
       {children}
     </ScrollAreaPrimitive.Viewport>

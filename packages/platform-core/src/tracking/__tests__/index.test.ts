@@ -7,11 +7,11 @@ import {
 
 // Use globalThis to avoid Jest mock hoisting issues
 declare global {
-  var __trackingTestGetTrackingStatusMock: jest.Mock | undefined;
+  var __trackingTestGetTrackingStatusMock: any;
 }
 globalThis.__trackingTestGetTrackingStatusMock = jest.fn();
 
-const getTrackingStatusMock = globalThis.__trackingTestGetTrackingStatusMock!;
+const getTrackingStatusMock: any = globalThis.__trackingTestGetTrackingStatusMock!;
 
 jest.mock("../../shipping", () => ({
   get getTrackingStatus() {
@@ -28,7 +28,7 @@ describe('getTrackingDashboard', () => {
   });
 
   it('uses custom providers and defaults unknown providers', async () => {
-    const custom = jest.fn().mockResolvedValue({
+    const custom = (jest.fn() as any).mockResolvedValue({
       status: 'Custom',
       steps: [{ label: 'Custom', complete: true }],
     });
@@ -40,7 +40,7 @@ describe('getTrackingDashboard', () => {
       { id: '3', type: 'shipment' as const, provider: 'dhl', trackingNumber: '456' },
     ];
 
-    const result = await getTrackingDashboard(items, { ups: custom });
+    const result = await getTrackingDashboard(items, { ups: custom as any });
 
     expect(custom).toHaveBeenCalledWith('123');
     expect(getTrackingStatusMock).toHaveBeenCalledWith({ provider: 'dhl', trackingNumber: '456' });
@@ -53,14 +53,13 @@ describe('getTrackingDashboard', () => {
 });
 
 describe('notifyStatusChange', () => {
-  let fetchMock: jest.Mock;
-  let emailMock: { sendEmail: jest.Mock };
+  let fetchMock: any;
+  let emailMock: any;
 
   const item = { id: '1', type: 'shipment' as const, provider: 'ups', trackingNumber: '123' };
 
   beforeEach(() => {
     fetchMock = jest.fn();
-    // @ts-expect-error - override global fetch
     global.fetch = fetchMock;
     emailMock = { sendEmail: jest.fn() };
     delete process.env.TWILIO_SID;

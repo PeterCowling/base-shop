@@ -1,4 +1,4 @@
-import bookingTransactionPredicates from "../../.claude/skills/user-testing-audit/scripts/booking-transaction-predicates.cjs";
+import bookingTransactionPredicates from "../../.claude/skills/meta-user-test/scripts/booking-transaction-predicates.cjs";
 
 const {
   evaluateBookingTransactionCheck,
@@ -26,7 +26,7 @@ function runBookingFlowAudit(fixtures: FlowFixture[]) {
   return collectBookingTransactionRegressionIssues(flowChecks);
 }
 
-describe("user-testing-audit booking transaction flow (e2e-style)", () => {
+describe("meta-user-test booking transaction flow (e2e-style)", () => {
   it("catches broken provider handoff in booking journey matrix", () => {
     const issues = runBookingFlowAudit([
       {

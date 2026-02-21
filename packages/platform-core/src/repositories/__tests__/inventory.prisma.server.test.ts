@@ -29,7 +29,7 @@ describe("prisma inventory repository", () => {
     const { prismaInventoryRepository } = await import("../inventory.prisma.server");
     const { prisma } = await import("../../db");
 
-    const items = [
+    const items: any[] = [
       { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
       {
         sku: "b",
@@ -113,6 +113,7 @@ describe("prisma inventory repository", () => {
 
     await expect(
       prismaInventoryRepository.update("shop", "a", {}, () => ({
+        sku: "a",
         productId: "p1",
         quantity: 2,
         variantAttributes: {},

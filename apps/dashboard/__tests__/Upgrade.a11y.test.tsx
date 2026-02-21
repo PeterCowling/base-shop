@@ -9,22 +9,43 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
+jest.mock("@acme/i18n", () => ({
+  useTranslations: jest.fn(() => (key: string) => key),
+}));
+
+jest.mock("../src/lib/telemetry", () => ({
+  trackEvent: jest.fn(),
+}));
+
 const { useRouter } = require("next/router");
 
 describe("Upgrade page accessibility (color-contrast)", () => {
+  // Generous timeout: module compilation + async fetch + re-render can be slow in CI.
+  jest.setTimeout(30_000);
+
   const originalFetch = global.fetch;
   let Upgrade: typeof import("../src/pages/Upgrade").default;
 
   beforeEach(async () => {
     (useRouter as jest.Mock).mockReturnValue({ query: { id: "shop1" } });
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        core: [
-          { file: "CompA.tsx", componentName: "CompA" },
-          { file: "CompB.tsx", componentName: "CompB" },
-        ],
-      }),
+    global.fetch = jest.fn((input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.includes("/api/shop/shop1/component-diff")) {
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            core: [
+              { file: "CompA.tsx", componentName: "CompA", newChecksum: "abc123" },
+              { file: "CompB.tsx", componentName: "CompB", newChecksum: "def456" },
+            ],
+          }),
+        }) as any;
+      }
+      return Promise.resolve({
+        ok: false,
+        status: 404,
+        text: async () => "Not found",
+      }) as any;
     });
     ({ default: Upgrade } = await import("../src/pages/Upgrade"));
   });
@@ -40,8 +61,8 @@ describe("Upgrade page accessibility (color-contrast)", () => {
 
     const { container } = render(<Upgrade />);
 
-    // Ensure content is present before running axe
-    await screen.findByText("core");
+    // Ensure content is present before running axe (longer timeout for CI)
+    await screen.findByText("shop1", {}, { timeout: 15_000 });
 
     const results = await axe(container, {
       runOnly: { type: "rule", values: ["color-contrast"] },

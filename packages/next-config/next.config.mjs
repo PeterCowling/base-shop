@@ -7,13 +7,27 @@ import { baseConfig, withShopCode } from "./index.mjs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const repoRoot = path.resolve(__dirname, "../..");
+
 const coreEnv = {
   SHOP_CODE: process.env.SHOP_CODE,
 };
 
 export default withShopCode(coreEnv.SHOP_CODE, {
-  eslint: { ignoreDuringBuilds: true },
-  webpack(config, { isServer, webpack }) {
+  outputFileTracingRoot: repoRoot,
+  // Mirror the webpack source aliases for Turbopack so workspace packages
+  // resolve to TypeScript source rather than their compiled dist/ output.
+  // This prevents HMR boundary errors when dist files import src-resolved modules.
+  turbopack: {
+    resolveAlias: {
+      "@acme/design-system": path.resolve(__dirname, "../design-system/src"),
+      "@acme/cms-ui": path.resolve(__dirname, "../cms-ui/src"),
+      "@acme/lib": path.resolve(__dirname, "../lib/src"),
+      "@acme/seo": path.resolve(__dirname, "../seo/src"),
+"@themes-local": path.resolve(__dirname, "../themes"),
+    },
+  },
+  webpack(config, { isServer, nextRuntime }) {
     // Preserve existing tweaks from the base config
     if (typeof baseConfig.webpack === "function") {
       config = baseConfig.webpack(config, { isServer });
@@ -44,39 +58,40 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "drizzle-orm": false,
       // Allow platform-core theme loader to resolve local theme fixtures
       "@themes-local": path.resolve(__dirname, "../themes"),
-      // Keep explicit i18n alias: removing this currently breaks template-app Next builds
-      "@acme/i18n": path.resolve(__dirname, "../i18n/dist"),
+      "@acme/design-system": path.resolve(__dirname, "../design-system/src"),
+      "@acme/cms-ui": path.resolve(__dirname, "../cms-ui/src"),
+      "@acme/lib": path.resolve(__dirname, "../lib/src"),
+      "@acme/seo": path.resolve(__dirname, "../seo/src"),
     };
 
-    // Map built-in node modules consistently (unchanged)
-    for (const mod of [
-      "assert",
-      "buffer",
-      "child_process",
-      "crypto",
-      "fs",
-      "http",
-      "https",
-      "module",
-      "path",
-      "stream",
-      "string_decoder",
-      "timers",
-      "url",
-      "util",
-      "vm",
-      "zlib",
-    ]) {
-      config.resolve.alias[`node:${mod}`] = mod;
-    }
-
-    if (webpack?.NormalModuleReplacementPlugin) {
-      config.plugins ??= [];
-      config.plugins.push(
-        new webpack.NormalModuleReplacementPlugin(/^node:/, (resource) => {
-          resource.request = resource.request.replace(/^node:/, "");
-        }),
-      );
+    // Map built-in node modules consistently.
+    // Skip for edge runtime — node:* modules are unavailable there and the
+    // replacement would cause webpack to fail on imports in nodejs-only files
+    // that happen to be compiled by the edge-route loader pass in Next.js 15.
+    if (nextRuntime !== "edge") {
+      for (const mod of [
+        "assert",
+        "buffer",
+        "child_process",
+        "crypto",
+        "fs",
+        "http",
+        "https",
+        "module",
+        "path",
+        "stream",
+        "string_decoder",
+        "timers",
+        "url",
+        "util",
+        "vm",
+        "zlib",
+      ]) {
+        config.resolve.alias[`node:${mod}`] = mod;
+      }
+      // Cover sub-path specifiers not handled by the bare-module loop above.
+      config.resolve.alias["node:fs/promises"] = "fs/promises";
+      config.resolve.alias["node:stream/web"] = "stream/web";
     }
 
     return config;

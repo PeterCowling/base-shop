@@ -122,7 +122,8 @@ describe("TokenBucket", () => {
 
       // Consume all tokens
       bucket.consume(10);
-      expect(bucket.peek().tokens).toBe(0);
+      // Use toBeCloseTo: peek() calls refill() which may add fractional tokens
+      expect(bucket.peek().tokens).toBeCloseTo(0, 1);
 
       // Wait 50ms - should refill 5 tokens
       await new Promise((resolve) => setTimeout(resolve, 50));
@@ -189,7 +190,8 @@ describe("TokenBucket", () => {
       const bucket = new TokenBucket({ capacity: 10, refillRate: 5 });
 
       bucket.consume(10);
-      expect(bucket.peek().tokens).toBe(0);
+      // Use toBeCloseTo: peek() calls refill() which may add fractional tokens
+      expect(bucket.peek().tokens).toBeCloseTo(0, 1);
 
       bucket.reset();
       expect(bucket.peek().tokens).toBe(10);
@@ -242,21 +244,27 @@ describe("TokenBucket", () => {
     });
 
     it("enables distributed use with external store", () => {
-      // Simulate two instances sharing state via external store
-      const bucket1 = new TokenBucket({ capacity: 10, refillRate: 5 });
-      const bucket2 = new TokenBucket({ capacity: 10, refillRate: 5 });
+      const nowSpy = jest.spyOn(Date, "now").mockReturnValue(1_700_000_000_000);
 
-      // Bucket1 consumes some tokens
-      bucket1.consume(3);
+      try {
+        // Simulate two instances sharing state via external store
+        const bucket1 = new TokenBucket({ capacity: 10, refillRate: 5 });
+        const bucket2 = new TokenBucket({ capacity: 10, refillRate: 5 });
 
-      // "Store" the state
-      const storedState = bucket1.getState();
+        // Bucket1 consumes some tokens
+        bucket1.consume(3);
 
-      // Bucket2 loads the state
-      bucket2.setState(storedState);
+        // "Store" the state
+        const storedState = bucket1.getState();
 
-      // Both should have same token count
-      expect(bucket2.peek().tokens).toBe(bucket1.peek().tokens);
+        // Bucket2 loads the state
+        bucket2.setState(storedState);
+
+        // With a fixed clock there is no refill drift between assertions.
+        expect(bucket2.peek().tokens).toBe(bucket1.peek().tokens);
+      } finally {
+        nowSpy.mockRestore();
+      }
     });
   });
 

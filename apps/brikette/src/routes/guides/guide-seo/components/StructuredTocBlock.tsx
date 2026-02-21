@@ -123,6 +123,7 @@ export default function StructuredTocBlock({
   });
 
   try {
+    // eslint-disable-next-line ds/no-hardcoded-copy -- TASK-29: debug message not user-facing
     debugGuide("Render structured ToC", { guideKey, titleText, itemsCount: items?.length, items });
     if (!hasLocalizedContent) {
       logStructuredToc("[StructuredTocBlock]", guideKey, {

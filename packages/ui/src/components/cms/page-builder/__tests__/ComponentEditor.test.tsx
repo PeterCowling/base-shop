@@ -27,7 +27,9 @@ describe("ComponentEditor", () => {
 
     // Update content via the specific editor
     fireEvent.click(screen.getByRole("button", { name: /Content/ }));
-    const input = await screen.findByLabelText("Label");
+    const input = await screen.findByLabelText("Label", undefined, {
+      timeout: 10000,
+    });
     fireEvent.change(input, { target: { value: "Click" } });
     expect(onChange).toHaveBeenCalledWith({ label: "Click" });
 
@@ -39,4 +41,3 @@ describe("ComponentEditor", () => {
     expect(onResize).toHaveBeenCalledWith({ widthDesktop: "100px" });
   });
 });
-

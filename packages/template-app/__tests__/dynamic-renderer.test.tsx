@@ -7,7 +7,7 @@ jest.mock("@acme/platform-core/products/index", () => ({ PRODUCTS: [{ id: "sku1"
 
 const productGridMock = jest.fn(() => <div data-testid="grid" />);
 jest.mock("@acme/platform-core/components/shop/ProductGrid", () => ({
-  ProductGrid: (props: any) => productGridMock(props),
+  ProductGrid: (props: any) => (productGridMock as any)(props),
 }));
 
 // Capture Text block props to verify className merge (stackStrategy branch)

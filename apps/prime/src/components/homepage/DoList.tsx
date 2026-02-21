@@ -69,11 +69,12 @@ function DoList({
   return (
     <div className={`text-justify max-w-[400px] mx-auto ${className}`}>
       {/* Subheader */}
-      <p className="text-2xl font-bold text-gray-800 text-center mt-6 mb-4">
+      <p className="text-2xl font-bold text-foreground text-center mt-6 mb-4">
         {subheaderText}
       </p>
 
       {/* Render tasks as a list */}
+      {/* eslint-disable-next-line ds/enforce-layout-primitives -- BRIK-002 task list container with dynamic children */}
       <ul className="list-none flex flex-col gap-4 items-stretch px-4 mb-8">
         {orderedTasks.map((task) => {
           const completed = isTaskCompleted(task.id);

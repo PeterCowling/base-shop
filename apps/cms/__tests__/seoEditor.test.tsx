@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { act } from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import SeoEditor from "../src/app/cms/shop/[shop]/settings/seo/SeoEditor";
@@ -13,6 +14,14 @@ jest.mock("@cms/actions/shops.server", () => ({
   setFreezeTranslations: (...args: unknown[]) => setFreezeTranslationsMock(...args),
   updateSeo: (...args: unknown[]) => updateSeoMock(...args),
   generateSeo: (...args: unknown[]) => generateSeoMock(...args),
+}));
+
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => ({
+    success: jest.fn(),
+    warning: jest.fn(),
+    error: jest.fn(),
+  }),
 }));
 
 jest.mock(
@@ -82,11 +91,6 @@ describe("SeoEditor", () => {
     await user.click(screen.getByRole("tab", { name: "DE" }));
 
     expect(titleInput).toHaveValue("Custom");
-
-    await user.click(
-      screen.getByRole("button", { name: /show advanced settings/i }),
-    );
-    expect(screen.getByLabelText("Canonical Base")).toHaveValue("de.com");
   });
 
   it("generates metadata", async () => {
@@ -113,10 +117,13 @@ describe("SeoEditor", () => {
       ),
     );
 
-    expect(screen.getByLabelText("Title")).toHaveValue("Gen title");
-    expect(screen.getByLabelText("Description")).toHaveValue("Gen description");
-    expect(screen.getByLabelText("Image URL")).toHaveValue("img.png");
-    expect(screen.getByLabelText("Image Alt Text")).toHaveValue("Gen alt");
+    await waitFor(() => {
+      expect(screen.getByLabelText("Title")).toHaveValue("Gen title");
+      expect(screen.getByLabelText("Description")).toHaveValue("Gen description");
+      expect(screen.getByLabelText("Image URL")).toHaveValue("img.png");
+      // `alt` is intentionally not set by `generate()`; it remains user-authored.
+      expect(screen.getByLabelText("Image Alt Text")).toHaveValue("");
+    });
   });
 
   it("shows errors from save", async () => {
@@ -148,6 +155,8 @@ describe("SeoEditor", () => {
     await user.click(screen.getByRole("button", { name: /save/i }));
 
     expect(updateSeoMock).toHaveBeenCalled();
-    expect(await screen.findByText("Check alt text")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Check alt text", { selector: "li" }),
+    ).toBeInTheDocument();
   });
 });

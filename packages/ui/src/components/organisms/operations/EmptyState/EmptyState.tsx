@@ -167,13 +167,13 @@ export function EmptyState({
         {/* Actions */}
         {actions.length > 0 && (
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            {actions.map((action, index) => {
+            {actions.map((action) => {
               const ActionIcon = action.icon;
               const isPrimary = action.variant === 'primary' || action.variant === undefined;
 
               return (
                 <button
-                  key={index}
+                  key={action.label}
                   type="button"
                   onClick={action.onClick}
                   className={`

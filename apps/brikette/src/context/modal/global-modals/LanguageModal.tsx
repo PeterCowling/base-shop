@@ -3,7 +3,7 @@
 /*  Language modal container                                                  */
 /* -------------------------------------------------------------------------- */
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -132,13 +132,17 @@ export function LanguageGlobalModal(): JSX.Element | null {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  // Build a location-like object for compatibility
-  const search = searchParams?.toString();
-  const location = {
-    pathname: pathname ?? "/",
-    search: search ? `?${search}` : "",
-    hash: typeof window !== "undefined" ? window.location.hash : "",
-  };
+  const search = useMemo(() => searchParams?.toString() ?? "", [searchParams]);
+
+  // Build a location-like object for compatibility (stable across renders).
+  const location = useMemo(
+    () => ({
+      pathname: pathname ?? "/",
+      search: search ? `?${search}` : "",
+      hash: typeof window !== "undefined" ? window.location.hash : "",
+    }),
+    [pathname, search],
+  );
   const navigate = useCallback((path: string, options?: { replace?: boolean }) => {
     if (options?.replace) {
       router.replace(path);

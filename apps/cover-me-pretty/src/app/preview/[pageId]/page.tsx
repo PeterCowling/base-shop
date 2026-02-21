@@ -7,13 +7,14 @@ import { devicePresets, getLegacyPreset } from "@acme/ui/utils/devicePresets";
 
 import PreviewClient from "./PreviewClient";
 
-export default async function PreviewPage({
-  params,
-  searchParams,
-}: {
-  params: { pageId: string };
-  searchParams: { token?: string; upgrade?: string; device?: string; view?: string };
-}) {
+export default async function PreviewPage(
+  props: {
+    params: Promise<{ pageId: string }>;
+    searchParams: Promise<{ token?: string; upgrade?: string; device?: string; view?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const { pageId } = params;
   const query = new URLSearchParams();
   if (searchParams.token) query.set("token", searchParams.token);

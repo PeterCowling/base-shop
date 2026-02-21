@@ -14,6 +14,9 @@ const { useRouter } = require("next/router");
 const originalFetch = global.fetch;
 let consoleErrorSpy: jest.SpyInstance;
 
+// Dashboard pages use dynamic require() which is slow in CI
+jest.setTimeout(30_000);
+
 describe("Dashboard navigation surfaces", () => {
   beforeEach(() => {
     global.fetch = jest.fn((input: RequestInfo | URL) => {
@@ -123,10 +126,11 @@ describe("Dashboard navigation surfaces", () => {
     (useRouter as jest.Mock).mockReturnValue({ query: { id: "shop1" } });
     const ShopDetail = require("../src/pages/shops/[id]").default;
     render(<ShopDetail />);
-    expect(screen.getByText(/Shop shop1/i)).toBeInTheDocument();
+    await screen.findByText(/Shop shop1/i);
     expect(screen.getByText("Diff")).toBeInTheDocument();
     const historyTab = screen.getByText("History");
-    await userEvent.click(historyTab);
+    const user = userEvent.setup();
+    await user.click(historyTab);
     await screen.findByText(/job-1/i);
   });
 });

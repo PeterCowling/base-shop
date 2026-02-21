@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import type { TFunction } from "i18next";
 
+import type { AppLanguage } from "@/i18n.config";
 import { debugGuide } from "@/utils/debug";
 import { allowEnglishGuideFallback } from "@/utils/guideFallbackPolicy";
 
@@ -49,6 +50,190 @@ interface Props {
   manualStructuredFallbackRendered?: boolean;
 }
 
+function resolveArticleDescriptionResolved(params: {
+  articleDescription?: string;
+  context: GuideSeoTemplateContext;
+}): string | undefined {
+  if (typeof params.articleDescription === "string") return params.articleDescription;
+  try {
+    const descRaw = (params.context as any)?.article?.description;
+    return typeof descRaw === "string" ? (descRaw as string) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function safeDebugManualFallback(params: {
+  guideKey: string;
+  lang: string;
+  hasLocalizedContent: boolean;
+  localizedManualFallback: unknown;
+}) {
+  try {
+    debugGuide("GenericContent localized manual fallback", {
+      guideKey: params.guideKey,
+      lang: params.lang,
+      hasLocalizedContent: params.hasLocalizedContent,
+      manualFallbackType: params.localizedManualFallback == null ? null : typeof params.localizedManualFallback,
+    });
+  } catch {
+    /* noop */
+  }
+}
+
+function shouldSkipByGuidePolicies(params: {
+  guideKey: string;
+  hasLocalizedContent: boolean;
+  hasStructuredLocal: boolean;
+  hasStructuredEnEffective: boolean;
+}): boolean {
+  if (shouldSkipWhenPureEmpty(params.guideKey)) {
+    if (!params.hasLocalizedContent && !params.hasStructuredLocal && !params.hasStructuredEnEffective) {
+      return true;
+    }
+  }
+  if (shouldSkipFallbacksWhenUnlocalized(params.guideKey) && !params.hasLocalizedContent) {
+    return true;
+  }
+  return false;
+}
+
+function shouldSuppressManualDueToMalformedFallback(params: { translations: any; guideKey: string }): boolean {
+  try {
+    const kProbe = `content.${params.guideKey}.fallback` as const;
+    const raw = params.translations?.tGuides?.(kProbe, { returnObjects: true }) as unknown;
+    if (raw == null) return false;
+    if (typeof raw === "object" && !Array.isArray(raw)) return false;
+    if (Array.isArray(raw)) return raw.length > 0;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function resolveManualFallbackRaw(params: {
+  englishFallbackAllowed: boolean;
+  preferManualWhenUnlocalized?: boolean;
+  guideKey: string;
+  translations: any;
+  hookI18n: any;
+  localizedManualFallback: unknown;
+}): { localManualRaw: unknown; enManualRaw: unknown } {
+  const kManual = `content.${params.guideKey}.fallback` as const;
+  const localManualRaw =
+    params.localizedManualFallback && typeof params.localizedManualFallback === "object" && !Array.isArray(params.localizedManualFallback)
+      ? params.localizedManualFallback
+      : (params.translations?.tGuides?.(kManual, { returnObjects: true }) as unknown);
+
+  const allowEnglishManual = params.englishFallbackAllowed && !params.preferManualWhenUnlocalized;
+  const enManualRaw = allowEnglishManual
+    ? (() => {
+        try {
+          const fixed = params.hookI18n?.getFixedT?.("en", "guides");
+          if (typeof fixed === "function") return fixed(kManual, { returnObjects: true }) as unknown;
+        } catch {
+          /* noop */
+        }
+        return undefined;
+      })()
+    : undefined;
+
+  return { localManualRaw, enManualRaw };
+}
+
+function computeManualFallbackFlags(params: { localManualRaw: unknown; enManualRaw: unknown }): {
+  manualLocalMeaningful: boolean;
+  manualEnMeaningful: boolean;
+  shouldRenderManual: boolean;
+} {
+  const manualLocalMeaningful = manualFallbackHasMeaningfulContent(params.localManualRaw);
+  const manualEnMeaningful = manualFallbackHasMeaningfulContent(params.enManualRaw);
+  const shouldRenderManual = manualLocalMeaningful || manualEnMeaningful;
+  return { manualLocalMeaningful, manualEnMeaningful, shouldRenderManual };
+}
+
+function renderManualObjectNode(params: {
+  translations: any;
+  hookI18n: any;
+  guideKey: string;
+  lang: string;
+  t: TFunction;
+  showTocWhenUnlocalized: boolean;
+  suppressTocTitle?: boolean;
+}): JSX.Element | null {
+  return RenderManualObject({
+    translations: params.translations,
+    hookI18n: params.hookI18n,
+    guideKey: params.guideKey as any,
+    lang: params.lang as any,
+    t: params.t as any,
+    showTocWhenUnlocalized: params.showTocWhenUnlocalized,
+    ...(typeof params.suppressTocTitle === "boolean" ? { suppressTocTitle: params.suppressTocTitle } : {}),
+  }) as any;
+}
+
+function maybeRenderManualFallback(params: {
+  hasLocalizedContent: boolean;
+  preferGenericWhenFallback?: boolean;
+  suppressUnlocalizedFallback?: boolean;
+  englishFallbackAllowed: boolean;
+  preferManualWhenUnlocalized?: boolean;
+  guideKey: string;
+  lang: string;
+  translations: any;
+  hookI18n: any;
+  t: TFunction;
+  showTocWhenUnlocalized: boolean;
+  suppressTocTitle?: boolean;
+  localizedManualFallback: unknown;
+}): { node: JSX.Element | null; manualFallbackExists: boolean; manualLocalMeaningful: boolean; manualEnMeaningful: boolean } {
+  if (params.hasLocalizedContent) {
+    return { node: null, manualFallbackExists: false, manualLocalMeaningful: false, manualEnMeaningful: false };
+  }
+  if (params.preferGenericWhenFallback || params.suppressUnlocalizedFallback) {
+    return { node: null, manualFallbackExists: false, manualLocalMeaningful: false, manualEnMeaningful: false };
+  }
+
+  if (shouldSuppressManualDueToMalformedFallback({ translations: params.translations, guideKey: params.guideKey })) {
+    return { node: null, manualFallbackExists: false, manualLocalMeaningful: false, manualEnMeaningful: false };
+  }
+
+  const { localManualRaw, enManualRaw } = resolveManualFallbackRaw({
+    englishFallbackAllowed: params.englishFallbackAllowed,
+    preferManualWhenUnlocalized: params.preferManualWhenUnlocalized,
+    guideKey: params.guideKey,
+    translations: params.translations,
+    hookI18n: params.hookI18n,
+    localizedManualFallback: params.localizedManualFallback,
+  });
+
+  const { manualLocalMeaningful, manualEnMeaningful, shouldRenderManual } = computeManualFallbackFlags({
+    localManualRaw,
+    enManualRaw,
+  });
+
+  if (!shouldRenderManual) {
+    return { node: null, manualFallbackExists: manualLocalMeaningful, manualLocalMeaningful, manualEnMeaningful };
+  }
+
+  const node = renderManualObjectNode({
+    translations: params.translations,
+    hookI18n: params.hookI18n,
+    guideKey: params.guideKey,
+    lang: params.lang,
+    t: params.t,
+    showTocWhenUnlocalized: params.showTocWhenUnlocalized,
+    suppressTocTitle: params.suppressTocTitle,
+  });
+
+  return {
+    node,
+    manualFallbackExists: Boolean(node) || manualLocalMeaningful,
+    manualLocalMeaningful,
+    manualEnMeaningful,
+  };
+}
+
 export default function GenericOrFallbackContent({
   lang,
   requestedLang,
@@ -77,12 +262,7 @@ export default function GenericOrFallbackContent({
   const englishFallbackAllowed = allowEnglishGuideFallback(lang);
 
   // Resolve article description
-  const articleDescriptionResolved =
-    typeof articleDescription === "string"
-      ? articleDescription
-      : typeof (context as any)?.article?.description === "string"
-      ? ((context as any).article.description as string)
-      : undefined;
+  const articleDescriptionResolved = resolveArticleDescriptionResolved({ articleDescription, context });
 
   // Probe for structured content
   const hasStructuredLocal = probeHasStructuredLocal(translations, guideKey);
@@ -101,114 +281,35 @@ export default function GenericOrFallbackContent({
     [targetLocale, guideKey, hasLocalizedContent],
   );
 
-  // Debug logging
-  try {
-    debugGuide("GenericContent localized manual fallback", {
+  safeDebugManualFallback({ guideKey, lang, hasLocalizedContent, localizedManualFallback });
+
+  if (
+    shouldSkipByGuidePolicies({
       guideKey,
-      lang,
       hasLocalizedContent,
-      manualFallbackType: localizedManualFallback == null ? null : typeof localizedManualFallback,
-    });
-  } catch {/* noop */}
-
-  // ========================================================================
-  // EARLY EXITS - Guide-specific policies
-  // ========================================================================
-
-  // Skip GenericContent for pure-empty guides (e.g., limoncelloCuisine)
-  if (shouldSkipWhenPureEmpty(guideKey)) {
-    if (!hasLocalizedContent && !hasStructuredLocal && !hasStructuredEnEffective) {
-      return null;
-    }
-  }
-
-  // Skip fallbacks entirely for specific guides (e.g., workExchangeItaly)
-  if (shouldSkipFallbacksWhenUnlocalized(guideKey) && !hasLocalizedContent) {
+      hasStructuredLocal,
+      hasStructuredEnEffective,
+    })
+  ) {
     return null;
   }
 
-  // ========================================================================
-  // MANUAL FALLBACK DETECTION
-  // ========================================================================
-
-  let manualFallbackExists = false;
-  let manualLocalMeaningful = false;
-  let manualEnMeaningful = false;
-
-  // Check for manual fallback when unlocalized
-  if (!hasLocalizedContent && !preferGenericWhenFallback && !suppressUnlocalizedFallback) {
-    // Suppress all fallback rendering when locale defines malformed manual fallback
-    try {
-      const kProbe = `content.${guideKey}.fallback` as const;
-      const raw = translations?.tGuides?.(kProbe, { returnObjects: true }) as unknown;
-      if (raw != null && (typeof raw !== 'object' || Array.isArray(raw))) {
-        if (!Array.isArray(raw) || raw.length > 0) {
-          return null;
-        }
-      }
-    } catch { /* noop */ }
-
-    // Check manual fallback content
-    try {
-      const kManual = `content.${guideKey}.fallback` as const;
-      const localManualRaw =
-        localizedManualFallback && typeof localizedManualFallback === "object" && !Array.isArray(localizedManualFallback)
-          ? localizedManualFallback
-          : (translations?.tGuides?.(kManual, { returnObjects: true }) as unknown);
-      const enManualRaw = englishFallbackAllowed
-        ? (() => {
-            try {
-              const fixed = (hookI18n as any)?.getFixedT?.("en", "guides");
-              if (typeof fixed === 'function') return fixed(kManual, { returnObjects: true }) as unknown;
-            } catch { /* noop */ }
-            return undefined;
-          })()
-        : undefined;
-
-      manualLocalMeaningful = manualFallbackHasMeaningfulContent(localManualRaw);
-      manualEnMeaningful = manualFallbackHasMeaningfulContent(enManualRaw);
-      const allowEnglishManual = englishFallbackAllowed && !preferManualWhenUnlocalized;
-      const hasManual = manualLocalMeaningful || (allowEnglishManual && manualEnMeaningful);
-
-      if (manualLocalMeaningful) manualFallbackExists = true;
-
-      if (hasManual) {
-        manualFallbackExists = true;
-	        return (
-	          <RenderManualObject
-	            translations={translations}
-	            hookI18n={hookI18n}
-	            guideKey={guideKey as any}
-	            lang={lang as any}
-	            t={t as any}
-	            showTocWhenUnlocalized={showTocWhenUnlocalized}
-	            {...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {})}
-	          />
-	        ) as any;
-      }
-    } catch { /* noop */ }
-  }
-
-  // Early manual fallback rendering
-  if (!hasLocalizedContent && !suppressUnlocalizedFallback) {
-    const allowEnglishManual = englishFallbackAllowed && !preferManualWhenUnlocalized;
-    const shouldRenderManual = manualLocalMeaningful || (allowEnglishManual && manualEnMeaningful);
-	    if (shouldRenderManual) {
-	      const manualEarly = RenderManualObject({
-	        translations,
-	        hookI18n,
-	        guideKey: guideKey as any,
-	        lang: lang as any,
-	        t: t as any,
-	        showTocWhenUnlocalized,
-	        ...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {}),
-	      });
-      if (manualEarly) {
-        manualFallbackExists = true;
-        return manualEarly as any;
-      }
-    }
-  }
+  const { node: manualNode, manualFallbackExists } = maybeRenderManualFallback({
+    hasLocalizedContent,
+    preferGenericWhenFallback,
+    suppressUnlocalizedFallback,
+    englishFallbackAllowed,
+    preferManualWhenUnlocalized,
+    guideKey,
+    lang,
+    translations,
+    hookI18n,
+    t,
+    showTocWhenUnlocalized,
+    suppressTocTitle,
+    localizedManualFallback,
+  });
+  if (manualNode) return manualNode;
 
   // Skip GenericContent when route prefers manual and suppresses fallbacks
   if (
@@ -220,14 +321,10 @@ export default function GenericOrFallbackContent({
     return null;
   }
 
-  // ========================================================================
-  // PRIMARY CONTENT RENDERING
-  // ========================================================================
-
   const hasStructured = hasStructuredLocal || hasStructuredEnEffective;
 
   const primaryNode = renderPrimaryContent({
-    lang,
+    lang: lang as AppLanguage,
     guideKey,
     translations,
     hookI18n,
@@ -256,7 +353,7 @@ export default function GenericOrFallbackContent({
   if (primaryNode) return primaryNode;
 
   return renderFallbackContent({
-    lang,
+    lang: lang as AppLanguage,
     guideKey,
     translations,
     hookI18n,

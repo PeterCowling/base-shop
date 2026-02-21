@@ -6,8 +6,8 @@ describe("reverseLogisticsEvent stub", () => {
   it("create stores events", async () => {
     const delegate = createReverseLogisticsEventDelegate();
 
-    await delegate.create({ data: { id: "e1", type: "received" } });
-    await delegate.create({ data: { id: "e2", type: "cleaning" } });
+    await delegate.create({ data: { id: "e1", type: "received" } as any });
+    await delegate.create({ data: { id: "e2", type: "cleaning" } as any });
 
     const events = await delegate.findMany({ where: {} });
     expect(events).toHaveLength(2);
@@ -24,8 +24,8 @@ describe("reverseLogisticsEvent stub", () => {
 
     const result = await delegate.createMany({
       data: [
-        { id: "m1", type: "received" },
-        { id: "m2", type: "repair" },
+        { id: "m1", type: "received" } as any,
+        { id: "m2", type: "repair" } as any,
       ],
     });
 
@@ -44,10 +44,10 @@ describe("reverseLogisticsEvent stub", () => {
   it("findMany filters by given criteria", async () => {
     const delegate = createReverseLogisticsEventDelegate();
 
-    await delegate.create({ data: { id: "e1", type: "received" } });
-    await delegate.create({ data: { id: "e2", type: "cleaning" } });
+    await delegate.create({ data: { id: "e1", type: "received" } as any });
+    await delegate.create({ data: { id: "e2", type: "cleaning" } as any });
 
-    const received = await delegate.findMany({ where: { type: "received" } });
+    const received = await delegate.findMany({ where: { type: "received" } as any });
     expect(received).toHaveLength(1);
     expect(received[0]).toMatchObject({ id: "e1", type: "received" });
   });
@@ -55,10 +55,10 @@ describe("reverseLogisticsEvent stub", () => {
   it("findMany returns empty array when no events match", async () => {
     const delegate = createReverseLogisticsEventDelegate();
 
-    await delegate.create({ data: { id: "e1", type: "received" } });
-    await delegate.create({ data: { id: "e2", type: "cleaning" } });
+    await delegate.create({ data: { id: "e1", type: "received" } as any });
+    await delegate.create({ data: { id: "e2", type: "cleaning" } as any });
 
-    const none = await delegate.findMany({ where: { type: "shipping" } });
+    const none = await delegate.findMany({ where: { type: "shipping" } as any });
     expect(none).toHaveLength(0);
   });
 });

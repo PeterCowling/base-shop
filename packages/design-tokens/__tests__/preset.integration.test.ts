@@ -1,5 +1,3 @@
-import { describe, expect, it } from "@jest/globals";
-
 let resolveConfig: any;
 try {
   // tailwindcss is not a direct dep of this package; skip if unavailable
@@ -13,7 +11,7 @@ const itFn = resolveConfig ? it : it.skip;
 describe("design tokens preset integration", () => {
   itFn("resolves preset with tailwind", async () => {
     const presetModule = await import("../src/index.ts");
-    const preset = presetModule.default;
+    const preset = (presetModule as any).default;
 
     if (!preset) {
       console.warn("No default export found - design-tokens uses named exports only");

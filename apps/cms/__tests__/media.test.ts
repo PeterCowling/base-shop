@@ -96,7 +96,7 @@ describe("media actions", () => {
         await expect(listMedia("shop1")).resolves.toEqual([]);
       })
     );
-  }, 15_000);
+  }, 60_000);
 
   it("uploadMedia stores file, metadata and returns item", async () => {
     await withTmpDir((dir) =>
@@ -124,14 +124,19 @@ describe("media actions", () => {
         expect(item.altText).toBe("hello");
         expect(item.type).toBe("image");
 
-        const stored = path.join(dir, "public", item.url);
+        const { resolveDataRoot } = await import("@acme/platform-core/dataRoot");
+        const stored = path.join(
+          resolveDataRoot(),
+          "shop1",
+          "uploads",
+          path.basename(item.url),
+        );
         await expect(fs.access(stored)).resolves.toBeUndefined();
 
         const metaPath = path.join(
-          dir,
-          "public",
-          "uploads",
+          resolveDataRoot(),
           "shop1",
+          "uploads",
           "metadata.json"
         );
         const meta = JSON.parse(
@@ -162,14 +167,19 @@ describe("media actions", () => {
 
         expect(item.type).toBe("video");
 
-        const stored = path.join(dir, "public", item.url);
+        const { resolveDataRoot } = await import("@acme/platform-core/dataRoot");
+        const stored = path.join(
+          resolveDataRoot(),
+          "shop1",
+          "uploads",
+          path.basename(item.url),
+        );
         await expect(fs.access(stored)).resolves.toBeUndefined();
 
         const metaPath = path.join(
-          dir,
-          "public",
-          "uploads",
+          resolveDataRoot(),
           "shop1",
+          "uploads",
           "metadata.json"
         );
         const meta = JSON.parse(

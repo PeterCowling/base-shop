@@ -3,11 +3,50 @@ import { render, screen } from "@testing-library/react";
 
 import ProductsPage from "../src/app/cms/shop/[shop]/products/page";
 
+jest.mock("@acme/telemetry", () => ({
+  __esModule: true,
+  track: jest.fn(),
+}));
+
+jest.mock("@acme/i18n/useTranslations.server", () => ({
+  __esModule: true,
+  useTranslations: async (_locale: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const en = require("@acme/i18n/en.json") as Record<string, string>;
+    return (key: string, vars?: Record<string, unknown>): string => {
+      const msg = en[key] ?? key;
+      if (!vars) return msg;
+      return msg.replace(/\{(.*?)\}/g, (_: string, name: string) =>
+        Object.prototype.hasOwnProperty.call(vars, name)
+          ? String(vars[name])
+          : `{${name}}`,
+      );
+    };
+  },
+}));
+
 const checkShopExistsMock = jest.fn();
 jest.mock("@acme/lib", () => ({
   __esModule: true,
   get checkShopExists() {
     return checkShopExistsMock;
+  },
+}));
+
+jest.mock("@acme/platform-core/shops", () => ({
+  __esModule: true,
+  get checkShopExists() {
+    return checkShopExistsMock;
+  },
+}));
+
+const inventoryReadMock = jest.fn();
+jest.mock("@acme/platform-core/repositories/inventory.server", () => ({
+  __esModule: true,
+  inventoryRepository: {
+    get read() {
+      return inventoryReadMock;
+    },
   },
 }));
 
@@ -93,6 +132,15 @@ jest.mock("@acme/design-system/atoms", () => {
   };
 });
 
+jest.mock("@acme/design-system/primitives", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    Inline: ({ children, ...props }: any) =>
+      React.createElement("div", props, children),
+  };
+});
+
 jest.mock("@acme/cms-ui", () => {
   const React = require("react");
   return {
@@ -174,6 +222,7 @@ function findFormAction(node: React.ReactNode): FormAction | undefined {
 describe("ProductsPage", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    inventoryReadMock.mockResolvedValue([]);
   });
 
   it("renders the admin view with actions wired", async () => {

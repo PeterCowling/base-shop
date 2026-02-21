@@ -21,23 +21,31 @@ export function StepProgress({
 }: StepProgressProps) {
   const safeTotal = Math.max(totalSteps, 1);
   const safeCurrent = clamp(currentStep, 0, safeTotal);
-  const percent = Math.round((safeCurrent / safeTotal) * 100);
+  const isComplete = safeCurrent >= safeTotal;
 
   return (
     <div className={cn("space-y-2", className)}>
       <div className="text-xs font-semibold text-primary">
-        Step {safeCurrent} of {safeTotal}
+        {isComplete ? "Almost done" : `Step ${safeCurrent} of ${safeTotal}`}
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-muted/40">
-        <div
-          role="progressbar"
-          aria-label={label}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={percent}
-          className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
-          style={{ width: `${percent}%` }}
-        />
+      <div
+        // eslint-disable-next-line ds/enforce-layout-primitives -- Step progress bar uses flex layout for horizontal progress indicators, acceptable in primitive component [DS-01]
+        className="flex gap-1.5"
+        role="progressbar"
+        aria-label={label}
+        aria-valuemin={0}
+        aria-valuemax={safeTotal}
+        aria-valuenow={safeCurrent}
+      >
+        {Array.from({ length: safeTotal }, (_, i) => (
+          <div
+            key={i}
+            className={cn(
+              "h-1.5 flex-1 rounded-full transition-colors",
+              i < safeCurrent ? "bg-primary" : "bg-muted/40",
+            )}
+          />
+        ))}
       </div>
     </div>
   );

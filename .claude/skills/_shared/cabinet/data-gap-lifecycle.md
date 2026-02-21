@@ -60,7 +60,7 @@ Decision Gap Proposals are stored as **Idea entities** via the Agent API with sp
 
 | Field | Value | Purpose |
 |-------|-------|---------|
-| `Status` | `raw` | Compatible with `/work-idea` entry requirement |
+| `Status` | `raw` | Compatible with `/idea-develop` entry requirement |
 | `Tags` | `["sweep-generated", "cabinet-v1", "dgp", "gap:<type>"]` | Enable filtering for pickup mechanism. Type is `data`, `timing`, or `dependency`. Also add `held` tag if DGP originates from Stage 4 Hold verdict. |
 | `Content` | Full Dossier (see below) | Include Dossier Header + resolution plan |
 
@@ -111,7 +111,7 @@ Every DGP must include:
 
 ### Contrarian Gate Resolution Template
 
-For DGPs tagged `gate-unresolved`, the fact-find should target the specific incomplete artifacts:
+For DGPs tagged `gate-unresolved`, the lp-do-fact-find should target the specific incomplete artifacts:
 
 ```
 ## Contrarian Gate Resolution: <Idea Title>
@@ -142,7 +142,7 @@ For DGPs tagged `gate-unresolved`, the fact-find should target the specific inco
 - What does a skeptic say our real market is?
 
 ### Evidence Gathered
-<fill during fact-find>
+<fill during lp-do-fact-find>
 
 ### Gate Re-evaluation Recommendation
 <PASS/UNRESOLVED/FAIL based on new evidence>
@@ -229,7 +229,7 @@ Ideas that pass the confidence gate (score 60-100, tier: presentable) but receiv
   6. Market Definition Reality Check
   7. Incentive Truth-Bending Check
 
-**Resolution path:** When the missing artifact data is gathered (via fact-find or next sweep), the idea re-enters Stage 4 for Contrarian Gate re-evaluation. If the gate now returns PASS, the idea proceeds to Munger-Buffett verdict and onward through the pipeline.
+**Resolution path:** When the missing artifact data is gathered (via lp-do-fact-find or next sweep), the idea re-enters Stage 4 for Contrarian Gate re-evaluation. If the gate now returns PASS, the idea proceeds to Munger-Buffett verdict and onward through the pipeline.
 
 **Key difference from confidence-gate DGPs:** Confidence-gate DGPs have score 30-59 and need to reach 60+ to become presentable. Contrarian Gate DGPs are already presentable (score 60-100) but are blocked by incomplete gate artifacts. They have higher inherent quality and should receive a VOI boost in prioritization.
 
@@ -275,7 +275,7 @@ const dgps = await queryIdeas({
 
 **Pickup Order**: DGPs are worked **in VOI-Score descending order**.
 
-**Output**: Investigation produces a **fact-find stage doc** (not a build card). The fact-find doc answers the blocking questions listed in the DGP's "Blocking Questions" section.
+**Output**: Investigation produces a **lp-do-fact-find stage doc** (not a build card). The lp-do-fact-find doc answers the blocking questions listed in the DGP's "Blocking Questions" section.
 
 #### Timing Gaps
 
@@ -341,7 +341,7 @@ Update the Idea entity:
 
 3. **Add Evidence Section**:
    - Append findings from investigation
-   - Link to fact-find doc
+   - Link to lp-do-fact-find doc
    - Update "Open Questions" section (should now be empty or minor)
 
 ### After Promotion
@@ -415,7 +415,7 @@ If a hunch gains new evidence (e.g., customer interview reveals demand), it can 
 A DGP represents an **investigation target**, not a **build-ready spec**. Converting a DGP directly to a build card would mean:
 
 - Building without validating assumptions
-- Skipping the fact-find stage of the feature workflow
+- Skipping the lp-do-fact-find stage of the feature workflow
 - Bypassing the confidence gate that protects against wasted effort
 
 ### Allowed Flow
@@ -424,7 +424,7 @@ A DGP represents an **investigation target**, not a **build-ready spec**. Conver
 DGP (decision-gap idea)
     |
     v
-Investigation card (fact-find task)
+Investigation card (lp-do-fact-find task)
     |
     v
 Fact-find stage doc (answers blocking questions)
@@ -556,7 +556,7 @@ decision_gate: "If demand >50 AND fraud >2% AND sellers prefer: promote. Else: k
 
 ### Investigation Completion
 
-Agent completes fact-find, produces stage doc with findings:
+Agent completes lp-do-fact-find, produces stage doc with findings:
 
 - Demand: 120 sellers expected in Year 1
 - Fraud: Industry average 5%, peer platform saw 8%
@@ -620,6 +620,6 @@ Passes Drucker/Porter → **Build lane** (converted to Kanban card).
 
 ## Version History
 
-- **v1.2** (2026-02-10): Contrarian Gate integration: added Contrarian Gate → DGP path for UNRESOLVED ideas (presentable but gate-blocked), +15 VOI boost for gate DGPs, gate resolution fact-find template, promotion path requires gate re-evaluation to PASS.
+- **v1.2** (2026-02-10): Contrarian Gate integration: added Contrarian Gate → DGP path for UNRESOLVED ideas (presentable but gate-blocked), +15 VOI boost for gate DGPs, gate resolution lp-do-fact-find template, promotion path requires gate re-evaluation to PASS.
 - **v1.1** (2026-02-09): Renamed from "Data Gap Proposal" to "Decision Gap Proposal". Added Gap-Type field (data/timing/dependency) to accommodate three types of holds. Updated tags structure, dossier header fields, pickup mechanisms, and content requirements to support all three gap types.
 - **v1.0** (2026-02-09): Initial specification for Cabinet System CS-04

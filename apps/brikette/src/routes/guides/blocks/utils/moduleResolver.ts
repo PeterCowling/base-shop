@@ -1,12 +1,8 @@
 /**
  * Module resolution utilities for block composition.
- *
- * Handles webpack context resolution for JSON-LD modules.
  */
 import type { ReactNode } from "react";
 import { createElement } from "react";
-
-import { getWebpackContext, supportsWebpackGlob, webpackContextToRecord } from "@/utils/webpackGlob";
 
 import type { GuideSeoTemplateContext } from "../../guide-seo/types";
 
@@ -14,14 +10,6 @@ import { normalizeModuleKey, normalizeModuleSpecifier } from "./stringHelpers";
 
 // Test fixture stubs (actual files not present in this build)
 const TestJsonLdWidgetFixture = { default: {} };
-
-export const JSON_LD_CONTEXT = supportsWebpackGlob
-  ? getWebpackContext(
-      "..",
-      true,
-      /(?:\.jsonld|\.schema|JsonLd|JsonLD|StructuredData|MetaBridge|Meta)\.tsx?$/,
-    )
-  : undefined;
 
 const TEST_JSON_LD_MODULES: Record<string, unknown> =
   process.env.NODE_ENV === "test"
@@ -31,8 +19,10 @@ const TEST_JSON_LD_MODULES: Record<string, unknown> =
       }
     : {};
 
+// JSON-LD module discovery via webpackContext removed 2026-02-20.
+// Zero modules matched the discovery pattern at removal time.
+// If JSON-LD renderers are added, wire them as explicit static imports here.
 export const JSON_LD_MODULES: Record<string, unknown> = {
-  ...webpackContextToRecord<Record<string, unknown>>(JSON_LD_CONTEXT),
   ...TEST_JSON_LD_MODULES,
 };
 

@@ -901,7 +901,7 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
 
 ### TASK-08: Batch migrate remaining routes (scripted, small batches)
 
-**SPLIT INTO TASK-08a + TASK-08b after re-plan (2026-01-27)**
+**SPLIT INTO TASK-08a + TASK-08b after lp-do-replan (2026-01-27)**
 
 ---
 
@@ -1009,7 +1009,7 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
   - Repo: All 24 route definitions in `src/data/how-to-get-here/routes.json`
   - Content: 24 route content files across `src/locales/*/how-to-get-here/routes/`
   - Migration CLI: `scripts/migrate-transport-route.ts`
-  - Pattern breakdown (see re-plan notes below)
+  - Pattern breakdown (see lp-do-replan notes below)
 
 - **Decision / resolution:**
   - **Discovery:** 14 routes failed migration with "missing header block" error.

@@ -1,24 +1,66 @@
 {
   "cta": {
-    "popularWithGuests": "[IT] Popular With Guests",
-    "poweredBy": "[IT] Powered By"
+    "popularWithGuests": "I preferiti degli ospiti",
+    "poweredBy": "Powered by Brikette"
+  },
+  "guides": {
+    "boatTours": {
+      "description": "Esplora la Costiera Amalfitana dall'acqua con un tour in barca da Positano.",
+      "tag": "Popolare",
+      "title": "Tour in barca"
+    },
+    "cheapEats": {
+      "description": "Posti deliziosi e convenienti dove mangiare a Positano, scelti dai locali.",
+      "tag": "Economico",
+      "title": "Mangiare spendendo poco"
+    },
+    "eatingOut": {
+      "description": "I migliori ristoranti e trattorie di Positano per ogni budget.",
+      "tag": "Essenziale",
+      "title": "Dove mangiare"
+    },
+    "fornilloBeach": {
+      "description": "Un'alternativa pi\u00f9 tranquilla alla spiaggia principale, a pochi passi.",
+      "tag": "Segreto locale",
+      "title": "Spiaggia di Fornillo"
+    },
+    "pathOfTheGods": {
+      "description": "Un'escursione costiera mozzafiato con viste spettacolari sulla Costiera Amalfitana.",
+      "tag": "Da fare",
+      "title": "Sentiero degli Dei"
+    },
+    "positanoBeaches": {
+      "description": "La guida completa a tutte le spiagge di Positano e dintorni.",
+      "tag": "Essenziale",
+      "title": "Spiagge di Positano"
+    },
+    "sunriseHike": {
+      "description": "Inizia la giornata con una magica escursione all'alba sopra Positano.",
+      "tag": "Per mattinieri",
+      "title": "Escursione all'alba"
+    },
+    "sunsetViewpoints": {
+      "description": "I punti pi\u00f9 spettacolari per ammirare il tramonto sul Mar Tirreno.",
+      "tag": "Imperdibile",
+      "title": "Punti panoramici al tramonto"
+    }
   },
   "meta": {
-    "subtitle": "Sottotitolo",
-    "title": "Titolo"
+    "subtitle": "Consigli curati da locali e ospiti passati.",
+    "title": "Guida di Positano"
   },
   "sections": {
     "afternoon": {
-      "subtitle": "Sottotitolo",
-      "title": "Titolo"
+      "subtitle": "Spiagge, escursioni e avventure costiere.",
+      "title": "Pomeriggio"
     },
     "evening": {
-      "subtitle": "Sottotitolo",
-      "title": "Titolo"
+      "subtitle": "Ristoranti e tramonti spettacolari.",
+      "title": "Sera"
     },
     "morning": {
-      "subtitle": "Sottotitolo",
-      "title": "Titolo"
+      "subtitle": "Avventure mattutine e posti per colazione.",
+      "title": "Mattina"
     }
   }
 }

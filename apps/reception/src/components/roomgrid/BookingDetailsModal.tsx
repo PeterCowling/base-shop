@@ -101,11 +101,11 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-        <div className="relative bg-white w-full max-w-sm p-6 rounded shadow-lg dark:bg-darkSurface">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 p-4">
+        <div className="relative bg-surface w-full max-w-sm p-6 rounded shadow-lg dark:bg-darkSurface">
           <button
             onClick={handleClose}
-            className="absolute top-2 right-2 w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
+            className="absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-3 hover:bg-surface-3 flex items-center justify-center"
             aria-label="Close"
           >
             <span className="text-lg">&#x2715;</span>
@@ -165,7 +165,7 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
               </label>
               <select
                 id="target-room"
-                className="w-full border rounded p-2 text-gray-900"
+                className="w-full border rounded p-2 text-foreground"
                 value={targetRoom}
                 onChange={(e) => setTargetRoom(e.target.value)}
               >
@@ -179,7 +179,7 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
               <button
                 type="button"
                 onClick={handleMoveBooking}
-                className="w-full px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                className="w-full px-4 py-2 rounded bg-primary text-primary-fg hover:bg-primary"
               >
                 Move Booking
               </button>

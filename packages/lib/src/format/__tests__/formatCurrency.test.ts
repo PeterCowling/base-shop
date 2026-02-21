@@ -1,4 +1,4 @@
-import { formatCurrency } from "../formatCurrency";
+import { formatCurrency } from "../formatCurrency.js";
 
 describe("formatCurrency", () => {
   it("rejects malformed currency codes", () => {

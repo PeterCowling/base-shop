@@ -3,6 +3,10 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import RootLayout, { metadata } from '../layout';
 
+jest.mock('next/font/google', () => ({
+  Plus_Jakarta_Sans: () => ({ className: 'font-sans', variable: '--font-plus-jakarta-sans' }),
+}));
+
 jest.mock('../../components/pwa/ServiceWorkerProvider', () => ({
   __esModule: true,
   default: ({ children }: { children: ReactNode }) => (

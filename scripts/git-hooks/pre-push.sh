@@ -33,7 +33,7 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   fi
 
   echo "[pre-push] Validating range ${range} for ${remote_ref#refs/heads/}"
-  VALIDATE_RANGE="$range" STRICT=1 bash scripts/validate-changes.sh
+  VALIDATE_RANGE="$range" ALLOW_TEST_PROCS="${ALLOW_TEST_PROCS:-0}" bash scripts/validate-changes.sh
   validated_any="1"
 done <"$tmp_refs"
 

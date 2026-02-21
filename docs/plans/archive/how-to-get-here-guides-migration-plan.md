@@ -61,7 +61,7 @@ Concrete repo findings that reduce risk and clarify what must (and must not) cha
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/how-to-get-here-guides-migration-fact-find.md`
+- Related brief: `docs/plans/how-to-get-here-guides-migration-lp-do-fact-find.md`
 - Key findings (revalidated):
   - 24 routes in `apps/brikette/src/data/how-to-get-here/routes.json`
   - Route content exists for all locales under `apps/brikette/src/locales/*/how-to-get-here/routes/`

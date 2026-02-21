@@ -25,7 +25,6 @@
 import {
   EWMA,
   HoltSmoothing,
-  SimpleExponentialSmoothing,
 } from "@acme/lib";
 
 // ============================================================================

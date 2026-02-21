@@ -6,7 +6,7 @@
   letter-spacing: 0.5em;
   text-transform: uppercase;
   font-size: 0.75rem;
-  color: rgba(228, 61, 18, 0.75);
+  color: hsl(var(--skylar-en-accent) / 0.75);
 }
 
 .loket-people__grid {
@@ -34,7 +34,7 @@
   margin: 0;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(228, 61, 18, 0.75);
+  color: hsl(var(--skylar-en-accent) / 0.75);
 }
 
 .loket-people__grid div {
@@ -48,7 +48,7 @@
   text-transform: uppercase;
   font-size: 0.65rem;
   color: var(--skylar-en-accent);
-  border-bottom: 1px solid rgba(228, 61, 18, 0.3);
+  border-bottom: 1px solid hsl(var(--skylar-en-accent) / 0.3);
   padding-bottom: 0.2rem;
 }
 

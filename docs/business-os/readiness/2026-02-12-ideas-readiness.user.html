@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ideas Readiness Refresh</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>Ideas Readiness Refresh</h1>
+<p>Readiness status: WARNING (mapping gate pass for active scope). App ownership mapping coverage is complete for active planning scope, with non-blocking catalog hygiene follow-ups.</p>
+<h2>1. Scope and Method</h2>
+<ul>
+<li>Audited source of truth:
+<ul>
+<li><code>docs/business-os/readiness/path-business-map.user.yaml</code></li>
+<li><code>docs/business-os/strategy/businesses.json</code></li>
+<li>top-level app directories under <code>apps/</code></li>
+</ul>
+</li>
+<li>Coverage rule:
+<ul>
+<li><code>mapped</code> = app directory is present in either path-map rules (<code>prefix: apps/&#x3C;app>/</code>) or business catalog app lists.</li>
+<li><code>excluded</code> = app directory explicitly listed in <code>excluded_paths</code> in <code>path-business-map.user.yaml</code>.</li>
+<li><code>unmapped</code> = app directory not mapped and not excluded.</li>
+</ul>
+</li>
+</ul>
+<h2>2. Coverage Snapshot</h2>
+<ul>
+<li>Total app directories: <strong>25</strong></li>
+<li>Excluded app directories: <strong>3</strong>
+<ul>
+<li><code>apps/xa-b</code></li>
+<li><code>apps/xa-drop-worker</code></li>
+<li><code>apps/xa-j</code></li>
+</ul>
+</li>
+<li>Active-scope app directories: <strong>22</strong></li>
+<li>Mapped active-scope app directories: <strong>22</strong></li>
+<li>Unmapped active-scope app directories: <strong>0</strong></li>
+<li>Coverage (active scope): <strong>100.0%</strong> (22/22)</li>
+</ul>
+<h2>3. Changes Since Last Snapshot</h2>
+<ul>
+<li>Mapping coverage moved from blocked state to full active-scope coverage.</li>
+<li>Previously blocked apps (<code>api</code>, <code>cms</code>, <code>dashboard</code>, <code>storybook</code>, <code>telemetry-worker</code>, <code>checkout-gateway-worker</code>, <code>cochlearfit</code>, <code>cochlearfit-worker</code>) now resolve via mapping sources.</li>
+<li>Excluded XA app paths are now explicitly honored as out of active planning scope.</li>
+</ul>
+<h2>4. Hard Blockers (RG-04 Code-to-Plan Traceability)</h2>
+<p>None for active planning scope.</p>
+<h2>5. Non-Blocking Warnings</h2>
+<ul>
+<li><code>apps/skylar</code> is mapped in <code>path-business-map.user.yaml</code> to <code>HOLDCO</code>, but <code>HOLDCO</code> is not yet registered as a canonical business ID in <code>docs/business-os/strategy/businesses.json</code>.
+<ul>
+<li>Impact: taxonomy hygiene and reporting consistency risk.</li>
+<li>Severity: warning (non-blocking for current HEAD/PET execution).</li>
+</ul>
+</li>
+</ul>
+<h2>6. Go / No-Go</h2>
+<p>Mapping gate status: PASS for active planning scope.
+<code>/ideas-go-faster</code> is not blocked by app ownership mapping at this time.</p>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/readiness/2026-02-12-ideas-readiness.user.md</code></div>
+      <div>Generated: 2026-02-12T11:29:21.417Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

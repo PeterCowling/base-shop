@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 /* eslint-disable -- XAUP-0001 [ttl=2026-12-31] uploader zip tests rely on temp fs operations */
 
 import { describe, expect, it } from "@jest/globals";

@@ -6,22 +6,27 @@ jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
 }));
 
 jest.mock("../send", () => ({
+  __esModule: true,
   sendCampaignEmail: jest.fn().mockResolvedValue(undefined),
 }));
 
 jest.mock("../hooks", () => ({
+  __esModule: true,
   emitSend: jest.fn().mockResolvedValue(undefined),
 }));
 
 jest.mock("../analytics", () => ({
+  __esModule: true,
   syncCampaignAnalytics: jest.fn().mockResolvedValue(undefined),
 }));
 
 jest.mock("../segments", () => ({
+  __esModule: true,
   resolveSegment: jest.fn(),
 }));
 
 jest.mock("../templates", () => ({
+  __esModule: true,
   renderTemplate: jest.fn(),
 }));
 

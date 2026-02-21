@@ -7,8 +7,6 @@
 import { type ComponentType,lazy } from "react";
 
 import type {
-  BookingModal2Props as UIBookingModal2Props,
-  BookingModalProps as UIBookingModalProps,
   ContactModalProps as UIContactModalProps,
   FacilitiesModalProps as UIFacilitiesModalProps,
   LanguageModalProps as UILanguageModalProps,
@@ -24,12 +22,6 @@ function lazyModal<T = Record<string, never>>(
 
 export const OffersModal = lazyModal<UIOffersModalProps>(() =>
   import("../../organisms/modals/OffersModal"),
-);
-export const BookingModal = lazyModal<UIBookingModalProps>(() =>
-  import("../../organisms/modals/BookingModal"),
-);
-export const BookingModal2 = lazyModal<UIBookingModal2Props>(() =>
-  import("../../organisms/modals/BookingModal2"),
 );
 export const LocationModal = lazyModal<UILocationModalProps>(() =>
   import("../../organisms/modals/LocationModal"),

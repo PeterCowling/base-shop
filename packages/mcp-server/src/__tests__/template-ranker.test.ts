@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-import { rankTemplates } from "../utils/template-ranker";
+import { rankTemplates, rankTemplatesPerQuestion } from "../utils/template-ranker";
 
 const templates = [
   {
@@ -193,5 +193,36 @@ describe("template ranker", () => {
     });
 
     expect(result.candidates[0]?.template.category).toBe("policies");
+  });
+});
+
+describe("template ranker TASK-06 — rankTemplatesPerQuestion", () => {
+  it("TC-06-01: maps distinct top candidate per question for breakfast/luggage/wifi", () => {
+    const result = rankTemplatesPerQuestion(
+      [
+        { text: "Is breakfast included?" },
+        { text: "Can we store luggage?" },
+        { text: "Do you have WiFi?" },
+      ],
+      templates,
+    );
+
+    expect(result).toHaveLength(3);
+    expect(result[0].question).toBe("Is breakfast included?");
+    expect(result[0].candidates[0]?.template.category).toBe("breakfast");
+    expect(result[1].question).toBe("Can we store luggage?");
+    expect(result[1].candidates[0]?.template.category).toBe("luggage");
+    expect(result[2].question).toBe("Do you have WiFi?");
+    expect(result[2].candidates[0]?.template.category).toBe("wifi");
+  });
+
+  it("TC-06-02: single-topic question returns one entry without cross-contamination", () => {
+    const result = rankTemplatesPerQuestion(
+      [{ text: "What time is check in?" }],
+      templates,
+    );
+
+    expect(result).toHaveLength(1);
+    expect(result[0].candidates[0]?.template.category).toBe("check-in");
   });
 });

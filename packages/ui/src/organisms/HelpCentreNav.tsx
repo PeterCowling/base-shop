@@ -10,6 +10,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import Link from "next/link";
 import clsx from "clsx";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -50,9 +51,9 @@ PositionedAside.displayName = "PositionedAside";
 
 function DefaultNavLink({ item, highlighted, defaultClassName, children }: RenderLinkArgs): ReactNode {
   return (
-    <a href={item.href} className={defaultClassName} aria-current={highlighted ? "page" : undefined}>
+    <Link href={item.href} className={defaultClassName} aria-current={highlighted ? "page" : undefined}>
       {children}
-    </a>
+    </Link>
   );
 }
 

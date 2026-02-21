@@ -27,13 +27,13 @@ type SessionStoreMock = {
 };
 
 const mockCookies: CookieStore = {
-  get: jest.fn(),
-  set: jest.fn(),
-  delete: jest.fn(),
+  get: jest.fn() as unknown as CookieStore["get"],
+  set: jest.fn() as unknown as CookieStore["set"],
+  delete: jest.fn() as unknown as CookieStore["delete"],
 };
 
 const mockHeaders: HeadersStore = {
-  get: jest.fn(),
+  get: jest.fn() as unknown as HeadersStore["get"],
 };
 
 jest.mock("next/headers", () => ({
@@ -52,15 +52,15 @@ jest.mock("@acme/config/env/core", () => ({
   },
 }));
 
-const sealData = jest.fn();
-const unsealData = jest.fn();
+const sealData = jest.fn<Promise<string>, [unknown, { password: string; ttl: number }]>();
+const unsealData = jest.fn<Promise<unknown>, [string, { password: string; ttl: number }]>();
 
 jest.mock("iron-session", () => ({
   sealData,
   unsealData,
 }));
 
-const randomUUID = jest.fn();
+const randomUUID = jest.fn<string, []>();
 
 jest.mock("crypto", () => ({
   randomUUID,
@@ -92,10 +92,10 @@ beforeEach(() => {
   unsealData.mockReset();
   randomUUID.mockReset();
   mockSessionStore = {
-    get: jest.fn(),
-    set: jest.fn(),
-    delete: jest.fn(),
-    list: jest.fn(),
+    get: jest.fn() as unknown as SessionStoreMock["get"],
+    set: jest.fn() as unknown as SessionStoreMock["set"],
+    delete: jest.fn() as unknown as SessionStoreMock["delete"],
+    list: jest.fn() as unknown as SessionStoreMock["list"],
   };
   createSessionStore.mockResolvedValue(mockSessionStore);
 });

@@ -146,8 +146,8 @@ const EditableBalanceCell: React.FC<EditableBalanceCellProps> = ({
 
   return (
     <td
-      className={`border-b border-gray-400 py-2 px-3 ${
-        justUpdated ? "bg-green-100" : ""
+      className={`border-b border-border py-2 px-3 ${
+        justUpdated ? "bg-success-surface" : ""
       } dark:border-darkSurface dark:text-darkAccentGreen`}
     >
       {isEditing ? (

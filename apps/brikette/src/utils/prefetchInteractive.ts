@@ -82,14 +82,12 @@ export const shouldPrefetchInteractiveBundlesOnIdle = (pathname: string): boolea
 let prefetchStarted = false;
 
 const importInteractiveBundles = async (): Promise<void> => {
-  await import(/* webpackPrefetch: true */ "swiper");
-  await import(/* webpackPrefetch: true */ "swiper/react");
-  await import(/* webpackPrefetch: true */ "@acme/ui/organisms/modals/BookingModal");
-  await import(/* webpackPrefetch: true */ "@acme/ui/organisms/modals/BookingModal2");
-  await import(/* webpackPrefetch: true */ "@acme/ui/organisms/modals/LocationModal");
-  await import(/* webpackPrefetch: true */ "@acme/ui/organisms/modals/ContactModal");
-  await import(/* webpackPrefetch: true */ "@acme/ui/organisms/modals/OffersModal");
-  await import(/* webpackPrefetch: true */ "@acme/ui/organisms/modals/FacilitiesModal");
+  await import("swiper");
+  await import("swiper/react");
+  await import("@acme/ui/organisms/modals/LocationModal");
+  await import("@acme/ui/organisms/modals/ContactModal");
+  await import("@acme/ui/organisms/modals/OffersModal");
+  await import("@acme/ui/organisms/modals/FacilitiesModal");
 };
 
 export async function prefetchInteractiveBundlesNow(): Promise<void> {

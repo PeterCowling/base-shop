@@ -1,29 +1,111 @@
 {
   "doList": {
-    "continueToExplore": "Continue To Explore",
-    "startYourEpicStay": "Start Your Epic Stay"
+    "continueToExplore": "Continue exploring",
+    "startYourEpicStay": "Start your stay"
   },
   "error": {
-    "loadInfo": "Load Info",
-    "missingData": "Missing Data"
+    "loadInfo": "Error loading information. Please try again.",
+    "missingData": "Unable to load your booking information."
   },
   "guest": "Guest",
-  "loading": "Loading",
+  "loading": "Loading...",
   "ourServices": "Our Services",
   "profileBanner": {
-    "completeButton": "Complete Button",
-    "returningTitle": "Returning Title",
-    "title": "Title",
-    "updateButton": "Update Button"
+    "completeButton": "Complete profile",
+    "description": "Tell us about your stay to get personalised tips.",
+    "returningDescription": "Update your preferences for this stay to get personalised recommendations.",
+    "returningTitle": "Welcome back!",
+    "skippedDescription": "Add your preferences to get better recommendations.",
+    "title": "Complete your profile",
+    "updateButton": "Update preferences"
+  },
+  "services": {
+    "barMenu": {
+      "alt": "Cocktail on a bar counter",
+      "description": "Browse our drinks and cocktail menu.",
+      "title": "Bar Menu"
+    },
+    "breakfastMenu": {
+      "alt": "Breakfast spread on a table",
+      "description": "See what's on offer for breakfast.",
+      "title": "Breakfast Menu"
+    },
+    "complimentaryBreakfastService": {
+      "alt": "Complimentary breakfast",
+      "description": "Your complimentary breakfast is ready to enjoy.",
+      "title": "Your Breakfast"
+    },
+    "digitalAssistantService": {
+      "alt": "Digital assistant chat",
+      "description": "Ask questions, get tips, and manage your stay.",
+      "title": "Digital Assistant"
+    },
+    "eveningDrink": {
+      "alt": "Complimentary evening drink",
+      "description": "Enjoy your complimentary evening drink.",
+      "title": "Your Evening Drink"
+    },
+    "mainDoorService": {
+      "alt": "Main entrance door",
+      "description": "Get your access code for the main door.",
+      "title": "Main Door Access"
+    },
+    "overnightIssues": {
+      "alt": "Report an issue",
+      "description": "Let us know if something needs attention.",
+      "title": "Report an Issue"
+    }
   },
   "social": {
-    "discoverDescription": "Discover Description",
-    "discoverTitle": "Discover Title",
-    "exploreGuide": "Explore Guide",
+    "browse": "Browse",
+    "discoverDescription": "Explore hidden gems, local restaurants, and the best views in Positano.",
+    "discoverTitle": "Discover Positano",
+    "exploreGuide": "Open guide",
     "explorePositano": "Explore Positano",
+    "joinChat": "Join the chat",
+    "seeAll": "See all",
+    "seeWhatsHappening": "See what's on",
     "upcomingActivity": "Upcoming Activity"
   },
+  "tasks": {
+    "bagStorage": {
+      "alt": "Luggage storage",
+      "completedTitle": "Bags stored safely",
+      "note": "Free storage available on check-out day.",
+      "title": "Store your bags"
+    },
+    "complimentaryBreakfast": {
+      "alt": "Complimentary breakfast",
+      "completedTitle": "Breakfast claimed",
+      "note": "Served 8:00 \u2013 10:30 in the breakfast room.",
+      "title": "Claim your breakfast"
+    },
+    "complimentaryEveningDrink": {
+      "alt": "Complimentary evening drink",
+      "completedTitle": "Drink claimed",
+      "note": "Available 18:00 \u2013 20:00 at the bar.",
+      "title": "Claim your evening drink"
+    },
+    "digitalAssistant": {
+      "alt": "Digital assistant",
+      "completedTitle": "Assistant ready",
+      "note": "Ask anything about your stay.",
+      "title": "Meet your digital assistant"
+    },
+    "exploreBreakfastMenu": {
+      "alt": "Breakfast menu",
+      "completedTitle": "Menu explored",
+      "note": "",
+      "title": "Explore the breakfast menu"
+    },
+    "mainDoorAccess": {
+      "alt": "Main door access code",
+      "completedTitle": "Door code saved",
+      "note": "You'll need this code to enter the building.",
+      "title": "Get your door code"
+    }
+  },
   "welcome": {
-    "greeting": "Greeting"
+    "greeting": "Welcome, {{firstName}}!"
   }
 }

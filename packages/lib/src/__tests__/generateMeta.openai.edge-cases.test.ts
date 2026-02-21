@@ -48,7 +48,7 @@ describe("generateMeta edge cases", () => {
       jest.doMock("openai", () => ({ __esModule: true, default: OpenAI }), {
         virtual: true,
       });
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
 
       expect(meta).toEqual({
@@ -87,7 +87,7 @@ describe("generateMeta edge cases", () => {
       jest.doMock("openai", () => ({ __esModule: true, default: OpenAI }), {
         virtual: true,
       });
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
 
       expect(meta).toEqual({

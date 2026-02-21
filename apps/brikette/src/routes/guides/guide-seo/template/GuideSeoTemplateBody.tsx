@@ -182,16 +182,16 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
       <Section as="div" padding="none" className="mx-auto max-w-3xl px-4 pt-3 md:px-8 lg:px-10">
         {IS_DEV && fallbackInjectedForLocale && lang !== "en" && (
           <div
-            className="mb-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800"
+            className="mb-4 rounded-lg border border-info bg-info-soft px-4 py-3 text-sm text-info-fg"
             suppressHydrationWarning
           >
             <p className="font-semibold">English fallback active</p>
-            <p className="mt-1 text-blue-700">
-              Showing English content for locale <code className="rounded bg-blue-100 px-1 font-mono text-xs">{lang}</code>.
-              {" "}Translation file: <code className="rounded bg-blue-100 px-1 font-mono text-xs">src/locales/{lang}/guides/content/{manifestEntry?.contentKey ?? guideKey}.json</code>
+            <p className="mt-1">
+              Showing English content for locale <code className="rounded bg-info-soft px-1 font-mono text-xs">{lang}</code>.
+              {" "}Translation file: <code className="rounded bg-info-soft px-1 font-mono text-xs">src/locales/{lang}/guides/content/{manifestEntry?.contentKey ?? guideKey}.json</code>
             </p>
-            <p className="mt-1 text-xs text-blue-600">
-              Run: <code className="rounded bg-blue-100 px-1 font-mono">pnpm validate-content --locale={lang} --guides={manifestEntry?.contentKey ?? guideKey}</code>
+            <p className="mt-1 text-xs">
+              Run: <code className="rounded bg-info-soft px-1 font-mono">pnpm validate-content --locale={lang} --guides={manifestEntry?.contentKey ?? guideKey}</code>
             </p>
           </div>
         )}

@@ -1,0 +1,3 @@
+undefined
+/Users/petercowling/base-shop/apps/brikette:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: eslint src --no-fix -f json -o /Users/petercowling/base-shop/docs/plans/_artifacts/brikette-eslint.2026-02-15.post-task-20.json

@@ -7,6 +7,8 @@
 
 import React from "react";
 
+import { ensureTrailingSlash } from "@acme/seo/metadata";
+
 import { GUIDE_SLUG_LOOKUP_BY_LANG,type GuideKey, guideNamespace,guideSlug } from "@/guides/slugs";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { SLUGS } from "@/slug-map";
@@ -63,8 +65,9 @@ const SUPPORTED_LANGS_SAFE: readonly AppLanguage[] = (() => {
 /* ------------------------------------------------------------------ */
 /* Helper utilities                                                   */
 /* ------------------------------------------------------------------ */
-export const ensureTrailingSlash = (p: string): string =>
-  p === "/" || p.endsWith("/") ? p : `${p}/`;
+// Re-exported from @acme/seo — canonical implementation lives in the shared package.
+// Also used locally in this file (e.g., buildLinks canonical path).
+export { ensureTrailingSlash };
 
 const stripLang = (p: string, l: string): string => {
   const parts = p.split("/").filter(Boolean);

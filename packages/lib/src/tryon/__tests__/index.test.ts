@@ -1,4 +1,4 @@
-import { getProvider } from "../index";
+import { getProvider } from "../index.js";
 
 describe("getProvider", () => {
   const originalEnv = { ...process.env };

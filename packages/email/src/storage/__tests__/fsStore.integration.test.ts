@@ -6,8 +6,8 @@ import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import type { AbandonedCart } from "../../abandonedCart";
 import { recoverAbandonedCarts } from "../../abandonedCart";
 import { sendCampaignEmail } from "../../send";
+import type { Campaign } from "../../types";
 import { fsCampaignStore } from "../fsStore";
-import type { Campaign } from "../types";
 
 jest.mock("../../send", () => ({
   __esModule: true,

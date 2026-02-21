@@ -77,7 +77,7 @@ function LoadingOverlay({ label }: { label: string }) {
   const { active, progress } = useProgress();
   if (!active) return null;
   return (
-    <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/60 text-xs uppercase handbag-tracking-label text-white">
+    <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-foreground/60 text-xs uppercase handbag-tracking-label text-primary-fg">
       {label} {Math.round(progress)}%
     </div>
   );
@@ -308,7 +308,7 @@ export function ViewerCanvas({
       />
       <LoadingOverlay label={t("handbagConfigurator.overlay.loadingModel")} />
       {modelError ? (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/70 text-center text-xs uppercase handbag-tracking-label text-white">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-foreground/70 text-center text-xs uppercase handbag-tracking-label text-primary-fg">
           {modelError}
         </div>
       ) : null}

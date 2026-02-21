@@ -8,7 +8,7 @@ import { Price } from "@acme/design-system/atoms/Price";
 import ImageGallery from "@acme/platform-core/components/pdp/ImageGallery";
 import SizeSelector from "@acme/platform-core/components/pdp/SizeSelector";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
-import type { SKU } from "@acme/types";
+import type { MediaItem, SKU } from "@acme/types";
 
 export default function PdpClient({ product }: { product: SKU }) {
   const [size, setSize] = useState<string | null>(null);
@@ -16,7 +16,7 @@ export default function PdpClient({ product }: { product: SKU }) {
 
   return (
     <div className="p-6 lg:grid lg:grid-cols-2 lg:gap-10">
-      <ImageGallery items={product.media} />
+      <ImageGallery items={product.media as MediaItem[]} />
 
       <section className="flex flex-col gap-6">
         <h1 className="text-3xl font-bold">{product.title}</h1>

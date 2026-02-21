@@ -1,8 +1,6 @@
 import { createRequire } from "node:module";
 import path from "node:path";
 
-import { beforeEach } from "vitest";
-
 import i18n from "@/i18n";
 import { __setGuidesModulesForTests, getGuidesBundle, type GuidesNamespace } from "@/locales/guides";
 import { guidesTestStubBundle } from "@/locales/guides.stub";

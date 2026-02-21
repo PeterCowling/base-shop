@@ -358,6 +358,125 @@ Evidence gathered...
       const stageDoc = await reader.getStageDoc("BRIK-OPP-0001", "plan");
       expect(stageDoc).toBeNull();
     });
+
+    it("reads from legacy fact-finding.user.md when canonical missing (within window)", async () => {
+      jest.useFakeTimers();
+      // Within window: dual-read enabled through 2026-02-14 (inclusive).
+      jest.setSystemTime(new Date("2026-02-14T12:00:00.000Z"));
+
+      const cardId = "BRIK-OPP-LEGACY";
+      const cardDir = path.join(businessOsPath, `cards/${cardId}`);
+      await mkdirWithinRoot(tempDir, cardDir, { recursive: true });
+
+      const legacy = `---
+Type: Stage
+Stage: fact-find
+Card-ID: ${cardId}
+Created: 2026-02-15
+---
+
+# Legacy Fact Find
+`;
+      await writeFileWithinRoot(
+        tempDir,
+        path.join(cardDir, "fact-finding.user.md"),
+        legacy
+      );
+
+      const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
+
+      const doc = await reader.getStageDoc(cardId, "fact-find");
+      expect(doc).not.toBeNull();
+      expect(doc?.filePath).toContain("fact-finding.user.md");
+      expect(doc?.content).toContain("Legacy Fact Find");
+
+      expect(infoSpy).toHaveBeenCalledWith(
+        "bos.stage_doc_filename_alias_used",
+        expect.objectContaining({ cardId, stage: "fact-find" })
+      );
+
+      infoSpy.mockRestore();
+      jest.useRealTimers();
+    });
+
+    it("ignores legacy fact-finding.user.md when canonical missing (after window end)", async () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date("2026-02-15T12:00:00.000Z"));
+
+      const cardId = "BRIK-OPP-POST-WINDOW";
+      const cardDir = path.join(businessOsPath, `cards/${cardId}`);
+      await mkdirWithinRoot(tempDir, cardDir, { recursive: true });
+
+      await writeFileWithinRoot(
+        tempDir,
+        path.join(cardDir, "fact-finding.user.md"),
+        `---
+Type: Stage
+Stage: fact-find
+Card-ID: ${cardId}
+Created: 2026-02-15
+---
+
+# Legacy Fact Find (Post Window)
+`
+      );
+
+      const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
+
+      const doc = await reader.getStageDoc(cardId, "fact-find");
+      expect(doc).toBeNull();
+      expect(infoSpy).not.toHaveBeenCalled();
+
+      infoSpy.mockRestore();
+      jest.useRealTimers();
+    });
+
+    it("prefers canonical fact-find.user.md when both canonical and legacy exist", async () => {
+      jest.useFakeTimers();
+      // Within window: dual-read enabled through 2026-02-14 (inclusive).
+      jest.setSystemTime(new Date("2026-02-14T12:00:00.000Z"));
+
+      const cardId = "BRIK-OPP-BOTH";
+      const cardDir = path.join(businessOsPath, `cards/${cardId}`);
+      await mkdirWithinRoot(tempDir, cardDir, { recursive: true });
+
+      const canonical = `---
+Type: Stage
+Stage: fact-find
+Card-ID: ${cardId}
+Created: 2026-02-15
+---
+
+# Canonical Fact Find
+`;
+      const legacy = `---
+Type: Stage
+Stage: fact-find
+Card-ID: ${cardId}
+Created: 2026-02-15
+---
+
+# Legacy Fact Find
+`;
+
+      await writeFileWithinRoot(
+        tempDir,
+        path.join(cardDir, "fact-find.user.md"),
+        canonical
+      );
+      await writeFileWithinRoot(
+        tempDir,
+        path.join(cardDir, "fact-finding.user.md"),
+        legacy
+      );
+
+      const doc = await reader.getStageDoc(cardId, "fact-find");
+      expect(doc).not.toBeNull();
+      expect(doc?.filePath).toContain("fact-find.user.md");
+      expect(doc?.content).toContain("Canonical Fact Find");
+
+      jest.useRealTimers();
+    });
   });
 
   describe("getCardStageDocs", () => {

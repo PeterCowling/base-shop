@@ -116,7 +116,7 @@ export function XaFiltersDrawer({
         <DrawerContent
           aria-describedby={undefined}
           side="left"
-          className="z-50 h-screen max-h-screen w-96 overflow-y-auto bg-white p-5 shadow-xl focus:outline-none"
+          className="z-50 h-screen max-h-screen w-96 overflow-y-auto bg-surface p-5 shadow-xl focus:outline-none"
         >
           <div className="mb-4 flex items-center justify-between gap-4">
             <div>

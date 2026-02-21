@@ -18,7 +18,7 @@ describe("module startup", () => {
       process.env.NODE_ENV = "test";
       const actual = jest.requireActual("../startReverseLogisticsService");
       process.env.NODE_ENV = originalEnv;
-      startMock().catch((err) =>
+      startMock().catch((err: unknown) =>
         logger.error("failed to start reverse logistics service", { err })
       );
       return { ...actual, startReverseLogisticsService: startMock };

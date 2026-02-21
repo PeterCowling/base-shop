@@ -17,7 +17,7 @@ jest.mock('@acme/config/env/shipping', () => ({
 const mockEnv = globalThis.__upsTestMockEnv!;
 
 describe('createReturnLabel', () => {
-  let fetchMock: jest.Mock;
+  let fetchMock: any;
 
   beforeEach(() => {
     fetchMock = jest.fn();
@@ -81,7 +81,7 @@ describe('createReturnLabel', () => {
 });
 
 describe('getStatus', () => {
-  let fetchMock: jest.Mock;
+  let fetchMock: any;
 
   beforeEach(() => {
     fetchMock = jest.fn();

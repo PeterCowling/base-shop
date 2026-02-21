@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 import { hasAdminSession } from "../../../../../../lib/accessAdmin";
 import { revokeInvite } from "../../../../../../lib/accessStore";
 
-export const runtime = "edge";
+// Uses node:crypto/fs via accessStore.
+export const runtime = "nodejs";
 
 function summarizeInvite(invite: {
   id: string;

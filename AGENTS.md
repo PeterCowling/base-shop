@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-02-10
+Last-reviewed: 2026-02-13
 ---
 
 # AGENTS.md — Operational Runbook
@@ -67,7 +67,7 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
   - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
   - If you are running in a non-interactive environment (no TTY; e.g. CI or API-driven agents), you cannot open a subshell. Wrap each write-related command instead:
     - `scripts/agents/integrator-shell.sh -- <command> [args...]`
-    - Wait mode is FIFO queue-ordered (first-come, first-served) and waits forever by default; pass `--timeout <sec>` only when you explicitly want fast-fail behavior.
+    - Wait mode is FIFO queue-ordered (first-come, first-served). In non-interactive agent runs, waiting is **poll-based** (**30s** checks) and **hard-stops after 5 minutes** with an error so the agent can report the issue (stale locks are auto-cleaned only when PID is dead on this host).
   - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)
   - Show full token (human only): `scripts/git/writer-lock.sh status --print-token`
   - If lock handling blocks your git write:
@@ -107,25 +107,87 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 4. Implement → Validate → Commit
 5. Mark task complete, move to next
 
-**Feature workflow**: `/fact-find` → `/plan-feature` → `/build-feature` → `/re-plan` (if confidence <80%)
+**Feature workflow**: `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build` → `/lp-do-replan` (when tasks are below execution threshold, blocked, or scope shifts)
 
-**Idea generation**: `/ideas-go-faster` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds fact-find docs. Feeds into the feature workflow above.
-- Full pipeline: `/ideas-go-faster` → `/fact-find` → `/plan-feature` → `/build-feature`
-- Spec: `.claude/skills/ideas-go-faster/SKILL.md`
+**Idea generation**: `/idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-do-fact-find docs. Feeds into the feature workflow above.
+- Full pipeline: `/idea-generate` → `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build`
+- Spec: `.claude/skills/idea-generate/SKILL.md`
 - Stances: `--stance=improve-data` (default) or `--stance=grow-business` (activates traction mode for market-facing L1-L2 businesses)
 - Shared personas: `.claude/skills/_shared/cabinet/` (filter, prioritizer, dossier template, lens files)
 
 Skills live in `.claude/skills/<name>/SKILL.md`. Claude Code auto-discovers them; Codex reads them directly.
 For a short entrypoint into the workflow (progressive disclosure), see `docs/agents/feature-workflow-guide.md`.
 
-## Confidence Index (CI) Policy (Planning)
+## Skills
 
-In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
+A skill is a local instruction set stored in `.claude/skills/<name>/SKILL.md`.
 
-- **CI ≥90 is a motivation, not a quota.** Do not “raise CI” by deleting planned work or narrowing scope without an explicit user decision.
-- **How to raise CI credibly:** add evidence (file references, call-site maps), add/strengthen tests, run targeted validations, or add a small spike/INVESTIGATE task to remove uncertainty.
-- **If CI <90:** keep the work, but add a clear **“What would make this ≥90%”** section (concrete actions/evidence that would raise confidence).
-- **Build gate still applies:** `/build-feature` only proceeds on **IMPLEMENT** tasks that are **≥80%** confidence and unblocked. If <80%, stop and `/re-plan`.
+### Available `lp-*` skills
+
+- `lp-baseline-merge`: Join startup-loop fan-out outputs into a baseline snapshot/manifest at S4. (file: `.claude/skills/lp-baseline-merge/SKILL.md`)
+- `lp-assessment-bootstrap`: Bootstrap `brand-language.user.md` for a business entering the startup loop. (file: `.claude/skills/lp-assessment-bootstrap/SKILL.md`)
+- `lp-do-build`: Execute approved plan tasks with confidence gating and required validation. (file: `.claude/skills/lp-do-build/SKILL.md`)
+- `lp-channels`: Build startup channel strategy + GTM plan from offer outputs. (file: `.claude/skills/lp-channels/SKILL.md`)
+- `lp-design-qa`: Audit implemented UI against design spec/system, accessibility, and responsiveness. (file: `.claude/skills/lp-design-qa/SKILL.md`)
+- `lp-design-spec`: Convert requirements into concrete frontend design specs mapped to design tokens/system. (file: `.claude/skills/lp-design-spec/SKILL.md`)
+- `lp-design-system`: Apply design tokens/system patterns correctly and avoid arbitrary UI values. (file: `.claude/skills/lp-design-system/SKILL.md`)
+- `lp-experiment`: Run startup experiment design/readout workflow for DO/S10 build-measure-decide loops. (file: `.claude/skills/lp-experiment/SKILL.md`)
+- `lp-do-fact-find`: Gather evidence/context before planning or as a standalone briefing. (file: `.claude/skills/lp-do-fact-find/SKILL.md`)
+- `lp-forecast`: Produce startup 90-day P10/P50/P90 scenario forecasts. (file: `.claude/skills/lp-forecast/SKILL.md`)
+- `lp-guide-audit`: Run English-guide SEO audit and iterative fixes. (file: `.claude/skills/lp-guide-audit/SKILL.md`)
+- `lp-guide-improve`: Entry point for guide improvement workflow (audit, translation, or both). (file: `.claude/skills/lp-guide-improve/SKILL.md`)
+- `lp-launch-qa`: Run pre-launch QA gate for startup loop readiness (conversion, SEO, performance, legal). (file: `.claude/skills/lp-launch-qa/SKILL.md`)
+- `lp-measure`: Bootstrap startup measurement infrastructure pre-launch or post-launch. (file: `.claude/skills/lp-measure/SKILL.md`)
+- `lp-offer`: Build startup offer artifact (ICP, positioning, pricing, objections). (file: `.claude/skills/lp-offer/SKILL.md`)
+- `lp-onboarding-audit`: Audit product onboarding using the "Onboarding Done Right" checklist and produce a planning-ready brief. (file: `.claude/skills/lp-onboarding-audit/SKILL.md`)
+- `lp-do-plan`: Create confidence-gated execution plans and auto-continue to build when eligible. (file: `.claude/skills/lp-do-plan/SKILL.md`)
+- `lp-prioritize`: Rank startup go-items and select top priorities to pursue. (file: `.claude/skills/lp-prioritize/SKILL.md`)
+- `lp-readiness`: Run startup preflight gate before offer-building. (file: `.claude/skills/lp-readiness/SKILL.md`)
+- `lp-refactor`: Refactor React components for maintainability, performance, and pattern quality. (file: `.claude/skills/lp-refactor/SKILL.md`)
+- `lp-do-replan`: Resolve low-confidence plan tasks with additional evidence and decisions. (file: `.claude/skills/lp-do-replan/SKILL.md`)
+- `lp-seo`: Produce phased SEO strategy (keywords, clusters, SERP, technical, snippets). (file: `.claude/skills/lp-seo/SKILL.md`)
+- `lp-sequence`: Topologically sequence plan tasks and dependency metadata (stable IDs by default; renumber only when explicitly requested). (file: `.claude/skills/lp-sequence/SKILL.md`)
+- `lp-site-upgrade`: Create layered website-upgrade strategy and `lp-do-fact-find` handoff packet. (file: `.claude/skills/lp-site-upgrade/SKILL.md`)
+- `lp-visual`: Generate HTML documentation with Mermaid diagrams, Chart.js dashboards, and rich visual layouts. Auto-load when asked to visualise a system, add diagrams to a guide, or build a KPI dashboard. (file: `.claude/skills/lp-visual/SKILL.md`)
+
+### Design & Visual skills
+
+- `frontend-design`: Build distinctive frontend interfaces grounded in the design system. Auto-load when the user asks to create UI components, pages, or visual interfaces. (file: `.claude/skills/frontend-design/SKILL.md`)
+- `lp-design-spec`: Convert requirements into concrete frontend design specs mapped to design tokens/system. (file: `.claude/skills/lp-design-spec/SKILL.md`)
+- `lp-design-system`: Apply design tokens/system patterns correctly and avoid arbitrary UI values. (file: `.claude/skills/lp-design-system/SKILL.md`)
+- `lp-design-qa`: Audit implemented UI against design spec/system, accessibility, and responsiveness. (file: `.claude/skills/lp-design-qa/SKILL.md`)
+
+### Design & Visual routing
+
+When the user's request involves building or modifying UI:
+1. Load `frontend-design` for aesthetic direction grounded in the design system
+2. Reference `lp-design-system` for token quick-ref during implementation
+3. After significant UI work, suggest `/lp-visual` to document the feature visually
+
+When the user's request involves documentation or diagrams:
+1. Load `lp-visual` for diagram/chart creation
+2. If the doc is for a specific business, derive palette from the brand dossier (see `references/css-variables.md` Brand-Derived Palettes)
+3. Reference `lp-design-system` for consistent color language
+
+### How to use `lp-*` skills
+
+- Trigger rule: if a user asks for a specific `lp-*` skill (for example `/lp-do-plan`) or the task clearly matches one above, load that skill file and follow it.
+- Progressive loading: read only the needed sections first; load referenced files on-demand.
+- Path resolution: resolve relative paths from the skill directory before trying alternatives.
+- Reuse over rewrite: prefer referenced templates/scripts/assets shipped with the skill.
+
+## Plan Confidence Policy
+
+In plan docs, use **confidence** / **Overall-confidence** for plan confidence values.
+
+- **Confidence ≥90 is a motivation, not a quota.** Do not "raise confidence" by deleting planned work or narrowing scope without an explicit user decision.
+- **How to raise confidence credibly:** add evidence (file references, call-site maps), add/strengthen tests, run targeted validations, or add a small SPIKE/INVESTIGATE task to remove uncertainty.
+- **If confidence <90:** keep the work, but add a clear **"What would make this ≥90%"** section (concrete actions/evidence that would raise confidence).
+- **Build gates:**
+  - `IMPLEMENT` and `SPIKE` tasks require **≥80%** confidence and must be unblocked.
+  - `INVESTIGATE` tasks require **≥60%** confidence and must be unblocked.
+  - `CHECKPOINT` is procedural and handled by `/lp-do-build` checkpoint contract.
+  - If below threshold, stop and run `/lp-do-replan`.
 
 ## Progressive Context Loading
 
@@ -151,8 +213,8 @@ Error: Cannot use import statement outside a module
 | Error Pattern | Skill | Location |
 |---------------|-------|----------|
 | `Cannot use import statement outside a module` | jest-esm-issues | `.claude/skills/jest-esm-issues/SKILL.md` |
-| `git status` confusing / lost commits | git-recovery | `.claude/skills/git-recovery/SKILL.md` |
-| `ERESOLVE` / peer dependency errors | dependency-conflicts | `.claude/skills/dependency-conflicts/SKILL.md` |
+| `git status` confusing / lost commits | ops-git-recover | `.claude/skills/ops-git-recover/SKILL.md` |
+| `ERESOLVE` / peer dependency errors | code-fix-deps | `.claude/skills/code-fix-deps/SKILL.md` |
 
 ### When to Ask vs. When to Load Context
 
@@ -165,8 +227,8 @@ Error: Cannot use import statement outside a module
 
 ## Plan Documentation
 
-- **Current / maintained plans** live in `docs/plans/` (or the domain’s plan directory like `docs/cms-plan/`) and should follow `docs/plans/<name>-plan.md`.
-- **Completed plans** live in `docs/plans/archive/` with `Status: Archived`.
+- **Current / maintained plans** live in `docs/plans/` (or the domain’s plan directory like `docs/cms-plan/`) and should follow canonical path `docs/plans/<slug>/plan.md` (legacy flat path is read-only compatibility).
+- **Completed plans** keep `Status: Complete`; they may remain in place or be moved to `docs/plans/archive/` as storage policy, while keeping `Status: Complete`.
 - **Superseded plans** live in `docs/historical/plans/` (or the domain’s historical directory).
 - **When superseding a plan (v2, rewrites, etc.)**
   - Prefer keeping the *canonical* plan path stable (create the new plan under the original name in `docs/plans/`).
@@ -174,7 +236,7 @@ Error: Cannot use import statement outside a module
   - Add a forward pointer in the superseded plan header: `Superseded-by: <path-to-new-plan>`.
   - If you must disambiguate filenames, append a date (preferred) like `-superseded-YYYY-MM-DD` rather than adding `-v2` to the current plan.
 - Required metadata: Type, Status, Domain, Last-reviewed, Relates-to charter
-- **When the user asks for a plan:** the plan must be persisted as a Plan doc (not just chat output). If no relevant Plan doc exists (or it's not in Plan format), create/update one in the most appropriate location (default: `docs/plans/`; CMS threads: `docs/cms-plan/`) and populate it with the planning/audit results (summary, tasks, acceptance criteria, risks).
+- **When the user asks for a plan:** the plan must be persisted as a Plan doc (not just chat output). If no relevant Plan doc exists (or it's not in Plan format), create/update one in the most appropriate location (default: `docs/plans/<slug>/plan.md`; CMS threads may use their domain plan directory) and populate it with the planning/audit results (summary, tasks, acceptance criteria, risks).
 
 ### Handling Audit Limits
 
@@ -209,11 +271,31 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 - Read before editing
 - Study existing patterns before adding code
 
+## Multi-Agent Environment
+
+Base-Shop supports multiple agents working concurrently. The writer lock system ensures only one agent writes at a time, but you may encounter:
+
+- **Expected:** Files, commits, or branches created by other agents or the user
+- **Expected:** Uncommitted changes from another agent currently holding the writer lock
+- **Normal operation:** Pull the latest changes with `git fetch origin && git pull --ff-only origin dev` before starting work
+
+When to STOP and ask:
+- Git state is internally inconsistent (conflicts, detached HEAD, corrupt objects)
+- You're asked to perform work that conflicts with visible uncommitted changes
+- Merge conflicts appear that you cannot safely resolve
+- Branch structure doesn't match expected flow (`dev -> staging -> main`)
+
+When to proceed normally:
+- Files exist that you didn't create (other agents' work)
+- Recent commits from other agents on `dev`
+- Untracked files outside your work scope
+
 ## Quick Reference
 
 | Scenario | Action |
 |----------|--------|
-| Git state confusing | STOP. Run `git status`, share output, ask user |
+| Git state internally inconsistent | STOP. Run `git status`, share output, ask user |
+| Files/commits from other agents | Normal — pull latest and proceed |
 | Tests failing | Fix before commit. Never skip validation |
 | Need to undo | Use `git revert`, never `reset --hard` |
 | Large-scale fix needed | Create plan in `docs/plans/`, don't take shortcuts |
@@ -230,7 +312,7 @@ After completing significant work, consider capturing learnings to improve futur
 - Discovered gaps in documentation or skills
 
 **How to reflect:**
-1. Use `/session-reflect` (or read `.claude/skills/session-reflect/SKILL.md`)
+1. Use `/meta-reflect` (or read `.claude/skills/meta-reflect/SKILL.md`)
 2. Follow the skill workflow: identify friction, classify by layer, propose atomic changes to existing docs/skills
 3. All improvements go into existing target files — no separate learnings store
 

@@ -52,12 +52,12 @@ const partialPageSchema =
     ? pageSchemaObject.partial()
     : z.object({}).passthrough();
 
-const pageDiffEntrySchema: z.ZodType<PageDiffEntry> = z
+const pageDiffEntrySchema: z.ZodType<PageDiffEntry, z.ZodTypeDef, PageDiffEntry> = z
   .object({
     timestamp: z.string().datetime(),
     diff: partialPageSchema,
   })
-  .strict();
+  .strict() as z.ZodType<PageDiffEntry, z.ZodTypeDef, PageDiffEntry>;
 
 /**
  * Parse a newline-delimited Page diff history log.

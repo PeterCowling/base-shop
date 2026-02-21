@@ -42,7 +42,7 @@ The safest path forward is:
 ### Uncommitted Changes
 
 Current working directory has modifications:
-- `docs/audits/fact-check-multi-writer-git-locking-plan-2026-02-01.md` (modified)
+- `docs/audits/lp-do-factcheck-multi-writer-git-locking-plan-2026-02-01.md` (modified)
 - `docs/plans/multi-writer-git-locking-plan.md` (deleted)
 
 ---

@@ -2,6 +2,8 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
+import { Grid } from "@acme/design-system/primitives";
+
 import type { AppLanguage } from "@/i18n.config";
 
 import { FooterTextLink } from "./FooterLinks";
@@ -24,7 +26,7 @@ const FooterNav = memo(function FooterNav({
 
   return (
     <nav aria-label={t("navAriaLabel") as string}>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <Grid cols={1} gap={6} className="sm:grid-cols-2 lg:grid-cols-3">
         {navGroups.map((group) => (
           <div key={group.key} className="space-y-3">
             <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/70 dark:text-brand-text/70">
@@ -51,7 +53,7 @@ const FooterNav = memo(function FooterNav({
             </ul>
           </div>
         ))}
-      </div>
+      </Grid>
     </nav>
   );
 });

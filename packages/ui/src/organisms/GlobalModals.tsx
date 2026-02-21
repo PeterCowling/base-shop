@@ -1,6 +1,5 @@
 // packages/ui/src/organisms/GlobalModals.tsx
 import {
-  type ChangeEvent,
   lazy,
   memo,
   Suspense,
@@ -15,14 +14,9 @@ import hotel from "../config/hotel";
 import { useModal } from "../context/ModalContext";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { type AppLanguage,i18nConfig } from "../i18n.config";
-import { resolveBookingCtaLabel, resolveSharedToken } from "../shared";
-import { getDatePlusTwoDays } from "../utils/dateUtils";
+import { resolveBookingCtaLabel } from "../shared";
 
 import type {
-  BookingGuestOption,
-  BookingModal2Copy,
-  BookingModalBuildParams,
-  BookingModalCopy,
   ContactModalCopy,
   FacilitiesModalCategory,
   FacilitiesModalCopy,
@@ -33,29 +27,15 @@ import type {
 } from "./modals/types";
 
 // Lazy-loaded modals within the UI package
-const BookingModal = lazy(() => import("./modals/BookingModal"));
-const BookingModal2 = lazy(() => import("./modals/BookingModal2"));
 const LocationModal = lazy(() => import("./modals/LocationModal"));
 const ContactModal = lazy(() => import("./modals/ContactModal"));
 const OffersModal = lazy(() => import("./modals/OffersModal"));
 const FacilitiesModal = lazy(() => import("./modals/FacilitiesModal"));
 const LanguageModal = lazy(() => import("./modals/LanguageModal"));
 
-interface BookingData {
-  checkIn?: string;
-  checkOut?: string;
-  adults?: number;
-  rateType?: "nonRefundable" | "refundable";
-  room?: {
-    nonRefundableCode?: string;
-    refundableCode?: string;
-  };
-}
-
-const BOOKING_CODE = "45111" as const;
 const ENCODED_CONTACT_EMAIL = "aG9zdGVscG9zaXRhbm9AZ21haWwuY29t" as const;
 const HOSTEL_ADDRESS = `${hotel.address.streetAddress}, ${hotel.address.postalCode} ${hotel.address.addressLocality}` as const;
-const formatDate = (date: Date): string => {
+const _formatDate = (date: Date): string => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
@@ -76,7 +56,7 @@ const Loader = memo(function Loader(): React.JSX.Element {
 
 function GlobalModals(): React.JSX.Element | null {
   const lang = useCurrentLanguage();
-  const { activeModal, modalData, openModal, closeModal } = useModal();
+  const { activeModal, modalData, openModal: _openModal, closeModal } = useModal();
 
   const { t: tModals, ready: modalsReady } = useTranslation("modals", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
@@ -85,18 +65,7 @@ function GlobalModals(): React.JSX.Element | null {
     keyPrefix: "facilitiesModal",
   });
 
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
-  const [adults, setAdults] = useState(1);
   const [contactEmail, setContactEmail] = useState("");
-
-  useEffect(() => {
-    if (activeModal !== "booking2") return;
-    const data = (modalData as BookingData | null) ?? null;
-    setCheckIn(data?.checkIn ?? "");
-    setCheckOut(data?.checkOut ?? (data?.checkIn ? getDatePlusTwoDays(data.checkIn) : ""));
-    setAdults(typeof data?.adults === "number" ? data.adults : 1);
-  }, [activeModal, modalData]);
 
   useEffect(() => {
     if (activeModal !== "contact") return;
@@ -159,81 +128,6 @@ function GlobalModals(): React.JSX.Element | null {
       };
     },
     [facilitiesReady, tFacilities],
-  );
-
-  const bookingCopy = useMemo<BookingModalCopy>(() => {
-    void modalsReady;
-    void tokensReady;
-    const defaultAvailabilityLabel = tModals("booking.buttonAvailability", {
-      lng: i18nConfig.fallbackLng,
-    }) as string;
-    const buttonLabel =
-      resolveSharedToken(tTokens, "checkAvailability", {
-        fallback: () => {
-          const direct = tModals("booking.buttonAvailability") as string;
-          if (direct && direct.trim() && direct !== "booking.buttonAvailability") {
-            return direct;
-          }
-          const fallback = tModals("booking.buttonAvailability", { lng: i18nConfig.fallbackLng }) as string;
-          if (fallback && fallback.trim() && fallback !== "booking.buttonAvailability") {
-            return fallback;
-          }
-          return defaultAvailabilityLabel;
-        },
-      }) ?? defaultAvailabilityLabel;
-
-    return {
-      title: tModals("booking.title"),
-      subTitle: tModals("booking.subTitle"),
-      checkInLabel: tModals("booking.checkInLabel"),
-      checkOutLabel: tModals("booking.checkOutLabel"),
-      guestsLabel: tModals("booking.guestsLabel"),
-      overlayLabel: tModals("booking.close"),
-      closeLabel: tModals("booking.close"),
-      datePlaceholder: tModals("booking.datePlaceholder"),
-      buttonLabel,
-    };
-  }, [modalsReady, tModals, tTokens, tokensReady]);
-
-  const guestOptions = useMemo<BookingGuestOption[]>(() => {
-    void modalsReady;
-    return Array.from({ length: 8 }, (_, index) => {
-      const count = index + 1;
-      const key = count === 1 ? "booking.guestsSingle" : "booking.guestsPlural";
-      return {
-        value: count,
-        label: tModals(key, { count }) as string,
-      };
-    });
-  }, [modalsReady, tModals]);
-
-  const buildBookingHref = useCallback(
-    ({ checkIn: ci, checkOut: co, guests: pax }: BookingModalBuildParams): string => {
-      const params = new URLSearchParams({
-        checkin: formatDate(ci),
-        checkout: formatDate(co),
-        codice: BOOKING_CODE,
-        pax: String(pax),
-      });
-      return `https://book.octorate.com/octobook/site/reservation/result.xhtml?${params}`;
-    },
-    [],
-  );
-
-  const booking2Copy = useMemo<BookingModal2Copy>(
-    () => {
-      void modalsReady;
-      return {
-        title: tModals("booking2.selectDatesTitle"),
-        checkInLabel: tModals("booking2.checkInDate"),
-        checkOutLabel: tModals("booking2.checkOutDate"),
-        adultsLabel: tModals("booking2.adults"),
-        confirmLabel: tModals("booking2.confirm"),
-        cancelLabel: tModals("booking2.cancel"),
-        overlayLabel: tModals("booking2.dismissOverlay", { defaultValue: tModals("booking2.cancel") }),
-      };
-    },
-    [modalsReady, tModals],
   );
 
   const locationCopy = useMemo<LocationModalCopy>(
@@ -304,25 +198,9 @@ function GlobalModals(): React.JSX.Element | null {
     [modalsReady, tModals],
   );
 
-  const handleConfirm = useCallback((): void => {
-    const data = modalData as BookingData | null;
-    if (!data) return;
-    const { rateType, room } = data;
-    if (!rateType || !checkIn || !checkOut) return;
-    const roomCode = rateType === "nonRefundable" ? room?.nonRefundableCode : room?.refundableCode;
-    if (!roomCode) return;
-    window.location.href = `https://book.octorate.com/octobook/site/reservation/confirm.xhtml?codice=45111&checkin=${checkIn}&checkout=${checkOut}&room=${roomCode}&pax=${adults}&children=0&childrenAges=`;
-  }, [modalData, checkIn, checkOut, adults]);
-
-  const handleDateChange = useCallback((newCheckIn: string): void => {
-    setCheckIn(newCheckIn);
-    if (newCheckIn) setCheckOut(getDatePlusTwoDays(newCheckIn));
-  }, []);
-
   const handleReserve = useCallback((): void => {
     closeModal();
-    openModal("booking");
-  }, [closeModal, openModal]);
+  }, [closeModal]);
 
   const handleLanguageSelect = useCallback(
     (code: string): void => {
@@ -358,31 +236,6 @@ function GlobalModals(): React.JSX.Element | null {
           onClose={closeModal}
           onReserve={handleReserve}
           copy={offersCopy}
-        />
-      )}
-
-      {activeModal === "booking" && (
-        <BookingModal
-          isOpen
-          onClose={closeModal}
-          copy={bookingCopy}
-          guestOptions={guestOptions}
-          buildBookingHref={buildBookingHref}
-        />
-      )}
-
-      {activeModal === "booking2" && (
-        <BookingModal2
-          isOpen
-          copy={booking2Copy}
-          checkIn={checkIn}
-          checkOut={checkOut}
-          adults={adults}
-          onCheckInChange={(event: ChangeEvent<HTMLInputElement>) => handleDateChange(event.target.value)}
-          onCheckOutChange={(event: ChangeEvent<HTMLInputElement>) => setCheckOut(event.target.value)}
-          onAdultsChange={(event: ChangeEvent<HTMLInputElement>) => setAdults(parseInt(event.target.value, 10) || 1)}
-          onConfirm={handleConfirm}
-          onCancel={closeModal}
         />
       )}
 

@@ -62,7 +62,7 @@ test("campaign create stores two recipients", async () => {
 test("campaign list prints stored campaigns", async () => {
   const campaignsPath = path.join(dataRoot, "shop", "campaigns.json");
   files[campaignsPath] = JSON.stringify([{ id: "1" }], null, 2);
-  const log = jest.spyOn(console, "log").mockImplementation(() => {});
+  const log = jest.spyOn(console, "info").mockImplementation(() => {});
   const { run } = await import("../src/cli");
   await run(["node", "email", "campaign", "list", "shop"]);
   expect(log).toHaveBeenCalledWith(
@@ -77,7 +77,7 @@ test.each([
 ])("campaign list returns [] when %s", async (_case) => {
   const campaignsPath = path.join(dataRoot, "shop", "campaigns.json");
   if (_case === "malformed json") files[campaignsPath] = "{";
-  const log = jest.spyOn(console, "log").mockImplementation(() => {});
+  const log = jest.spyOn(console, "info").mockImplementation(() => {});
   const { run } = await import("../src/cli");
   await run(["node", "email", "campaign", "list", "shop"]);
   expect(log).toHaveBeenCalledWith("[]");
@@ -85,7 +85,7 @@ test.each([
 });
 
 test("campaign send invokes scheduler", async () => {
-  const log = jest.spyOn(console, "log").mockImplementation(() => {});
+  const log = jest.spyOn(console, "info").mockImplementation(() => {});
   const { run } = await import("../src/cli");
   await run(["node", "email", "campaign", "send"]);
   expect(sendDueCampaigns).toHaveBeenCalledTimes(1);

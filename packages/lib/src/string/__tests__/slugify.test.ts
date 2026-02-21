@@ -1,4 +1,4 @@
-import slugify from '../slugify';
+import slugify from '../slugify.js';
 
 describe('slugify', () => {
   it('converts basic ASCII strings', () => {
@@ -31,7 +31,6 @@ describe('slugify', () => {
 
   it('returns an empty string for null/undefined input', () => {
     expect(slugify(null)).toBe('');
-    // @ts-expect-error Test undefined input
     expect(slugify(undefined)).toBe('');
   });
 });

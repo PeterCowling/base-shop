@@ -565,7 +565,7 @@ Reasoning:
 - Git export is write-only (mirror for audit/manual inspection)
 - Evidence: BOS-D1-05 (read path migration) completed
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /lp-do-plan)
 
 ### Implementation: 72%
 

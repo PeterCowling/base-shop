@@ -5,8 +5,8 @@ describe("reverseLogisticsEvent delegate", () => {
     const delegate = createReverseLogisticsEventDelegate();
     const result = await delegate.createMany({
       data: [
-        { id: "e1", type: "received" },
-        { id: "e2", type: "cleaning" },
+        { id: "e1", type: "received" } as any,
+        { id: "e2", type: "cleaning" } as any,
       ],
     });
     expect(result).toEqual({ count: 2 });
@@ -24,13 +24,13 @@ describe("reverseLogisticsEvent delegate", () => {
     const delegate = createReverseLogisticsEventDelegate();
     await delegate.createMany({
       data: [
-        { id: "e1", type: "received", shop: "s1" },
-        { id: "e2", type: "received", shop: "s2" },
-        { id: "e3", type: "cleaning", shop: "s1" },
+        { id: "e1", type: "received", shop: "s1" } as any,
+        { id: "e2", type: "received", shop: "s2" } as any,
+        { id: "e3", type: "cleaning", shop: "s1" } as any,
       ],
     });
     const filtered = await delegate.findMany({
-      where: { type: "received", shop: "s1" },
+      where: { type: "received", shop: "s1" } as any,
     });
     expect(filtered).toEqual([
       { id: "e1", type: "received", shop: "s1" },
@@ -41,13 +41,13 @@ describe("reverseLogisticsEvent delegate", () => {
     const delegate = createReverseLogisticsEventDelegate();
     await delegate.createMany({
       data: [
-        { id: "e1", type: "received", trackingNumber: "tn1" },
-        { id: "e2", type: "received", trackingNumber: "tn2" },
-        { id: "e3", type: "cleaning", trackingNumber: "tn1" },
+        { id: "e1", type: "received", trackingNumber: "tn1" } as any,
+        { id: "e2", type: "received", trackingNumber: "tn2" } as any,
+        { id: "e3", type: "cleaning", trackingNumber: "tn1" } as any,
       ],
     });
     const filtered = await delegate.findMany({
-      where: { type: "received", trackingNumber: "tn1" },
+      where: { type: "received", trackingNumber: "tn1" } as any,
     });
     expect(filtered).toEqual([
       { id: "e1", type: "received", trackingNumber: "tn1" },

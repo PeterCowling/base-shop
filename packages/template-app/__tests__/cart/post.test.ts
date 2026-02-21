@@ -26,7 +26,7 @@ test("adds items and sets cookie", async () => {
   const header = res.headers.get("Set-Cookie")!;
   const encoded = header.split(";")[0].split("=")[1];
   const id = decodeCartCookie(encoded)!;
-  const stored = await getCart(id);
+  const stored = await getCart(id as any);
   expect(stored[idKey].qty).toBe(2);
 });
 

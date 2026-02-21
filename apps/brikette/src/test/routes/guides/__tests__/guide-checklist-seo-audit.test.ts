@@ -3,8 +3,10 @@
  */
 import { describe, expect, it } from "@jest/globals";
 
-import type { GuideManifestEntry, ManifestOverrides, SeoAuditResult } from "@/routes/guides/guide-manifest";
+import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { buildGuideChecklist } from "@/routes/guides/guide-manifest";
+import type { ManifestOverrides, SeoAuditResult } from "@/routes/guides/guide-manifest-overrides";
+
 
 describe("buildGuideChecklist - seoAudit item", () => {
   const createMockEntry = (overrides?: Partial<GuideManifestEntry>): GuideManifestEntry => ({

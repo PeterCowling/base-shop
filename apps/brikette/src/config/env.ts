@@ -1,11 +1,35 @@
 // src/config/env.ts
 // Centralized, Next-friendly environment helpers.
 
+// Next.js only inlines env vars when referenced as `process.env.NEXT_PUBLIC_*`.
+// Reading via `process.env[key]` works in Node, but in the browser `process` is
+// undefined, so we must keep a static map for the public keys we read.
+const STATIC_PROCESS_ENV = {
+  NODE_ENV: process.env.NODE_ENV,
+  NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+  NEXT_PUBLIC_SITE_ORIGIN: process.env.NEXT_PUBLIC_SITE_ORIGIN,
+  NEXT_PUBLIC_SITE_DOMAIN: process.env.NEXT_PUBLIC_SITE_DOMAIN,
+  NEXT_PUBLIC_PUBLIC_DOMAIN: process.env.NEXT_PUBLIC_PUBLIC_DOMAIN,
+  NEXT_PUBLIC_DOMAIN: process.env.NEXT_PUBLIC_DOMAIN,
+  NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+  NEXT_PUBLIC_NOINDEX_PREVIEW: process.env.NEXT_PUBLIC_NOINDEX_PREVIEW,
+  NEXT_PUBLIC_DEBUG_GUIDE_TITLES: process.env.NEXT_PUBLIC_DEBUG_GUIDE_TITLES,
+  NEXT_PUBLIC_DEBUG_GUIDES: process.env.NEXT_PUBLIC_DEBUG_GUIDES,
+  NEXT_PUBLIC_CONSENT_BANNER: process.env.NEXT_PUBLIC_CONSENT_BANNER,
+} as const;
+
 const getProcessEnvValue = (key: string): string | undefined => {
-  if (typeof process === "undefined" || !process.env) return undefined;
-  const value = process.env[key];
-  if (typeof value === "string" && value.length > 0) {
-    return value;
+  const staticValue = (STATIC_PROCESS_ENV as Record<string, unknown>)[key];
+  if (typeof staticValue === "string" && staticValue.length > 0) {
+    return staticValue;
+  }
+
+  // Server/Node fallback for non-public keys.
+  if (typeof process !== "undefined" && process.env) {
+    const value = process.env[key];
+    if (typeof value === "string" && value.length > 0) {
+      return value;
+    }
   }
   return undefined;
 };
@@ -88,3 +112,4 @@ export const DEBUG_GUIDE_TITLES = readEnv([
   "VITE_DEBUG_GUIDES",
 ]);
 export const DEBUG_GUIDES = readEnv(["NEXT_PUBLIC_DEBUG_GUIDES", "VITE_DEBUG_GUIDES"]);
+export const CONSENT_BANNER = readEnv(["NEXT_PUBLIC_CONSENT_BANNER"]);

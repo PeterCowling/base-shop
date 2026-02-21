@@ -1,115 +1,30 @@
+/**
+ * JSON-LD builders for Cover-Me-Pretty.
+ *
+ * Common builders are re-exported from @acme/seo/jsonld.
+ * CMP-specific builders (blogItemListJsonLd) remain local.
+ */
 import React from "react";
 
+import { serializeJsonLdValue } from "@acme/seo/jsonld";
+
+// Re-export shared builders (identical signatures)
+export { articleJsonLd, organizationJsonLd, productJsonLd } from "@acme/seo/jsonld";
+
+/**
+ * Render a `<script type="application/ld+json">` tag.
+ * Uses XSS-safe serialization from @acme/seo.
+ */
 export function JsonLdScript({ data }: { data: unknown }) {
-  const json = JSON.stringify(data);
+  if (data == null) return null;
   return (
     <script
-      /* i18n-exempt -- ABC-123 MIME type constant, not user-facing copy [ttl=2025-06-30] */
+      // i18n-exempt -- SEO-09 MIME type constant, not user-facing copy [ttl=2027-12-31]
       type="application/ld+json"
-      
-      dangerouslySetInnerHTML={{ __html: json }}
+      suppressHydrationWarning
+      dangerouslySetInnerHTML={{ __html: serializeJsonLdValue(data) }}
     />
   );
-}
-
-export function organizationJsonLd({
-  name,
-  logo,
-  url,
-}: {
-  name: string;
-  logo?: string;
-  url?: string;
-}) {
-  const data: Record<string, unknown> = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name,
-  };
-  if (logo) data.logo = logo;
-  if (url) data.url = url;
-  return data;
-}
-
-export function productJsonLd({
-  name,
-  description,
-  image,
-  brand,
-  sku,
-  url,
-  price,
-  priceCurrency,
-  availability,
-  aggregateRating,
-}: {
-  name: string;
-  description?: string;
-  image?: string;
-  brand?: string;
-  sku?: string;
-  url?: string;
-  price?: number;
-  priceCurrency?: string;
-  availability?: "InStock" | "OutOfStock" | "PreOrder";
-  aggregateRating?: { ratingValue: number; reviewCount: number };
-}) {
-  const data: Record<string, unknown> = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name,
-  };
-  if (description) data.description = description;
-  if (image) data.image = image;
-  if (brand) data.brand = { "@type": "Brand", name: brand };
-  if (sku) data.sku = sku;
-  if (url) data.url = url;
-  if (price && priceCurrency) {
-    data.offers = {
-      "@type": "Offer",
-      price: (price / 100).toFixed(2),
-      priceCurrency,
-      availability: availability
-        ? `https://schema.org/${availability}`
-        : undefined,
-    };
-  }
-  if (aggregateRating) {
-    data.aggregateRating = {
-      "@type": "AggregateRating",
-      ratingValue: aggregateRating.ratingValue,
-      reviewCount: aggregateRating.reviewCount,
-    };
-  }
-  return data;
-}
-
-export function articleJsonLd({
-  headline,
-  description,
-  datePublished,
-  author,
-  image,
-  url,
-}: {
-  headline: string;
-  description?: string;
-  datePublished?: string;
-  author?: string;
-  image?: string;
-  url?: string;
-}) {
-  const data: Record<string, unknown> = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline,
-  };
-  if (description) data.description = description;
-  if (datePublished) data.datePublished = datePublished;
-  if (author) data.author = { "@type": "Person", name: author };
-  if (image) data.image = image;
-  if (url) data.url = url;
-  return data;
 }
 
 function toIsoDate(input?: string) {
@@ -118,6 +33,7 @@ function toIsoDate(input?: string) {
   return Number.isNaN(d.getTime()) ? undefined : d.toISOString();
 }
 
+/** CMP-specific blog item list with BlogPosting items and date normalization. */
 export function blogItemListJsonLd({
   url,
   items,

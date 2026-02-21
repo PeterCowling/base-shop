@@ -7,6 +7,10 @@ import StepShopPage from "../src/app/cms/configurator/steps/StepShopPage";
 const pushMock = jest.fn();
 jest.mock("next/navigation", () => ({ useRouter: () => ({ push: pushMock }) }));
 
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => ({ success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn() }),
+}));
+
 // Mock UI components
 jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
@@ -18,6 +22,11 @@ jest.mock("@acme/design-system/shadcn", () => {
   );
   const SelectTrigger = ({ children }: any) => <div>{children}</div>;
   const SelectValue = ({ placeholder }: any) => <div>{placeholder}</div>;
+  const Dialog = ({ children }: any) => <div>{children}</div>;
+  const DialogContent = ({ children }: any) => <div>{children}</div>;
+  const DialogFooter = ({ children }: any) => <div>{children}</div>;
+  const DialogHeader = ({ children }: any) => <div>{children}</div>;
+  const DialogTitle = ({ children }: any) => <div>{children}</div>;
   return {
     Button,
     Select,
@@ -25,6 +34,11 @@ jest.mock("@acme/design-system/shadcn", () => {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
   };
 });
 

@@ -8,11 +8,11 @@ Created: 2026-02-11
 Last-updated: 2026-02-11
 Last-reviewed: 2026-02-11
 Relates-to charter: docs/business-os/business-os-charter.md
-Feature-Slug: ideas-readiness-bos-outcome-contract
+Feature-Slug: idea-readiness-bos-outcome-contract
 Deliverable-Type: product-brief
 Execution-Track: business-artifact
-Primary-Execution-Skill: update-business-plan
-Supporting-Skills: ideas-readiness
+Primary-Execution-Skill: biz-update-plan
+Supporting-Skills: idea-readiness
 Business-OS-Integration: on
 Business-Unit: BOS
 ---
@@ -26,7 +26,7 @@ Define BOS outcomes around coordination effectiveness and decision throughput, n
 ### Goals
 - Establish one active BOS outcome that measures whether coordination system improves delivery decisions.
 - Link BOS outcome to explicit operating decisions (cadence, process strictness, tooling investment).
-- Define quantitative leading indicators for cabinet/fact-find/plan/build flow quality.
+- Define quantitative leading indicators for cabinet/lp-do-fact-find/plan/build flow quality.
 
 ### Non-goals
 - Expanding BOS scope before outcome measurement exists.
@@ -75,4 +75,4 @@ Define BOS outcomes around coordination effectiveness and decision throughput, n
 
 ## Recommended Next Step
 - Update `docs/business-os/strategy/BOS/plan.user.md` with completed contract.
-- Re-run `/ideas-readiness`.
+- Re-run `/idea-readiness`.

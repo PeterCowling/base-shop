@@ -29,9 +29,9 @@ type RentalRepoMock = {
 
 export function mockRentalRepo(overrides: Partial<RentalRepoMock> = {}) {
   const repo: RentalRepoMock = {
-    addOrder: jest.fn(),
-    markReturned: jest.fn(),
-    markRefunded: jest.fn(),
+    addOrder: jest.fn() as any,
+    markReturned: jest.fn() as any,
+    markRefunded: jest.fn() as any,
     ...overrides,
   };
   jest.doMock(

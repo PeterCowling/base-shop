@@ -20,7 +20,7 @@ Deploy the Business OS app to Cloudflare Pages so the agent API is always reacha
 ## Goals
 
 - Agent API always reachable (no manual dev server required)
-- Cards created at idea generation and updated through fact-find → plan → build
+- Cards created at idea generation and updated through lp-do-fact-find → plan → build
 - Export workflow (`bos-export.yml`) gets a live URL
 - Zero changes to existing skill code
 
@@ -44,7 +44,7 @@ Deploy the Business OS app to Cloudflare Pages so the agent API is always reacha
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/bos-agent-api-availability-fact-find.md`
+- Related brief: `docs/plans/bos-agent-api-availability-lp-do-fact-find.md`
 - Key findings:
   - All 27 API routes export `runtime = "edge"` — fully Edge-compatible
   - Agent API routes (`/api/agent/*`) have zero Node.js module imports
@@ -72,7 +72,7 @@ Deploy the Business OS app to Cloudflare Pages so the agent API is always reacha
 
 ## Proposed Approach
 
-Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The fact-find evaluated 4 options (deploy, auto-start, queue, direct D1) and Option A (deploy) is unambiguously correct. See fact-find for full analysis.
+Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The lp-do-fact-find evaluated 4 options (deploy, auto-start, queue, direct D1) and Option A (deploy) is unambiguously correct. See lp-do-fact-find for full analysis.
 
 **Build concern:** Two UI pages (`people/page.tsx`, `plans/PlanDocumentPage.tsx`) import `safe-fs` which uses Node.js `fs`. The OpenNext build may fail or tree-shake these. TASK-02 handles this — if the build fails, we stub these pages with Edge-compatible alternatives.
 
@@ -357,7 +357,7 @@ Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The 
   - GitHub repository variable `BOS_AGENT_API_BASE_URL` set to deployed URL
   - GitHub repository variable `BOS_EXPORT_API_BASE_URL` set to deployed URL
   - `bos-export.yml` runs successfully with new URL (hourly cron or manual trigger)
-  - At least one skill (`/fact-find` or `/work-idea`) successfully creates a card via the deployed API
+  - At least one skill (`/lp-do-fact-find` or `/idea-develop`) successfully creates a card via the deployed API
 - **Test contract:**
   - **Test cases:**
     - TC-17: Export workflow → manual trigger of `bos-export.yml` succeeds (or creates "no changes" PR)
@@ -381,14 +381,14 @@ Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The 
   - TC-18: Deferred (skill invocation requires env var in Claude Code process)
 - **Confidence reassessment:** Original: 92% → Post-test: 92% (unchanged — remaining tests require main branch)
 - **Implementation notes:**
-  - Updated card-operations.md, work-idea/SKILL.md, kanban-sweep/SKILL.md
+  - Updated card-operations.md, idea-develop/SKILL.md, kanban-sweep/SKILL.md
   - GitHub vars set: `BOS_AGENT_API_BASE_URL`, `BOS_EXPORT_API_BASE_URL`
   - GitHub secrets set: `BOS_AGENT_API_KEY`, `BOS_EXPORT_API_KEY`
 
 ### TASK-07: Fix documentation (ports, outdated notes)
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/_shared/card-operations.md`, `.claude/skills/work-idea/SKILL.md`, `.claude/skills/kanban-sweep/SKILL.md`
+- **Affects:** `.claude/skills/_shared/card-operations.md`, `.claude/skills/idea-develop/SKILL.md`, `.claude/skills/kanban-sweep/SKILL.md`
 - **Depends on:** TASK-05
 - **Confidence:** 95%
   - Implementation: 98% — Text edits only
@@ -396,7 +396,7 @@ Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The 
   - Impact: 92% — No code impact; prevents agents from using wrong port
 - **Acceptance:**
   - `card-operations.md` line 12: `localhost:3000` → `localhost:3020`
-  - `work-idea/SKILL.md` line 40: `localhost:3000` → `localhost:3020`
+  - `idea-develop/SKILL.md` line 40: `localhost:3000` → `localhost:3020`
   - `kanban-sweep/SKILL.md`: verify port references are correct
   - All skills reference correct dev port and mention deployed URL as primary
 - **Test contract:**
@@ -411,7 +411,7 @@ Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The 
   - Rollback: Revert edits (trivial)
 - **Documentation impact:** This IS the documentation task
 - **Notes / references:**
-  - MEMORY.md already fixed (outdated `getRequestContext` note removed in fact-find session)
+  - MEMORY.md already fixed (outdated `getRequestContext` note removed in lp-do-fact-find session)
 
 #### Build Completion (2026-02-07)
 - **Status:** Complete (merged with TASK-06)
@@ -451,5 +451,5 @@ Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The 
 
 ## Decision Log
 
-- 2026-02-07: Deploy to Cloudflare Pages (Option A) — only option that solves root cause, requires zero skill changes, enables export workflow. Options B/C/D rejected (see fact-find).
+- 2026-02-07: Deploy to Cloudflare Pages (Option A) — only option that solves root cause, requires zero skill changes, enables export workflow. Options B/C/D rejected (see lp-do-fact-find).
 - 2026-02-07: API key auth only (no Cloudflare Access) for Phase 1 — 32+ char key with timing-safe comparison + rate limiting is sufficient for single-user. Cloudflare Access can be added later if needed.

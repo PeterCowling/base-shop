@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Platform Capability Baseline (2026-02-12)</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>Platform Capability Baseline (2026-02-12)</h1>
+<h2>A) Executive Summary</h2>
+<ul>
+<li>[Observed][High] The repo has a strong reusable web foundation for fast startup site work: shared UI/design tokens, page-builder packages, checkout primitives, telemetry, and app templates across <code>apps/</code> and <code>packages/</code>.</li>
+<li>[Observed][High] Commerce primitives are mature enough for direct startup launch work (cart/checkout/webhook standards documented, Stripe tooling/scripts present).</li>
+<li>[Observed][High] Test and validation surface is broad (unit, integration, Cypress e2e, Storybook tests, Lighthouse/LHCI scripts), but not yet uniformly productized per startup app.</li>
+<li>[Observed][High] Platform automation for launch exists (<code>pnpm launch-shop</code>, setup/generate/provision scripts, runbook evidence in prior audits).</li>
+<li>[Observed][Medium] The monorepo carries both platform-grade and startup-specific apps/workers; capability exists, but operator routing discipline is required to prevent execution drift.</li>
+<li>[Observed][High] Current baseline pointers for site-upgrade and market-research artifacts are still mostly <code>Status: Missing</code>, so process readiness is behind technical capability readiness.</li>
+<li>[Inferred][High] For speed-to-first-sales execution, platform supports a "build directly in app now, retrofit into CMS later" operating mode without architectural dead-end risk.</li>
+<li>[Inferred][Medium] Primary bottleneck is no longer raw engineering capability; it is missing canonical baseline artifacts and inconsistent go-to-market instrumentation per startup.</li>
+<li>[Inferred][Medium] Checkout/payments and deployment are reusable now; copy/offer/measurement loops remain the highest leverage gap for startup outcomes.</li>
+<li>[Inferred][High] Platform baseline should be treated as standing reference for all site-upgrade briefs, refreshed on cadence and after major platform changes.</li>
+</ul>
+<h2>B) Capability Assumptions and Scope Boundaries</h2>
+<h3>Scope used for this baseline</h3>
+<ul>
+<li>Included app layer: <code>apps/api</code>, <code>apps/cms</code>, <code>apps/dashboard</code>, <code>apps/storybook</code>, <code>apps/reception</code>, <code>apps/prime</code>, <code>apps/brikette</code>, <code>apps/cochlearfit</code>, <code>apps/cochlearfit-worker</code>, <code>apps/cover-me-pretty</code>, <code>apps/handbag-configurator</code>, <code>apps/handbag-configurator-api</code>, <code>apps/xa</code>, <code>apps/xa-uploader</code>, <code>apps/checkout-gateway-worker</code>, <code>apps/telemetry-worker</code>, <code>apps/front-door-worker</code>.</li>
+<li>Included package layer: core PLAT packages (for example <code>@acme/ui</code>, <code>@acme/design-system</code>, <code>@acme/design-tokens</code>, <code>@acme/platform-core</code>, <code>@acme/page-builder-*</code>, <code>@acme/stripe</code>, <code>@acme/telemetry</code>, <code>@acme/theme</code>, <code>@acme/templates</code>, <code>@acme/types</code>, <code>@acme/zod-utils</code>, and related shared packages).</li>
+<li>Included process evidence: <code>package.json</code> scripts, repo quality audit, commerce blueprint, PLAT strategy plan, startup loop workflow.</li>
+</ul>
+<h3>Explicit exclusions</h3>
+<ul>
+<li>Excluded apps by operator direction: <code>apps/xa-b</code>, <code>apps/xa-drop-worker</code>, <code>apps/xa-j</code>.</li>
+<li>No external market benchmarking used in this baseline (internal capability analysis only).</li>
+</ul>
+<h3>Baseline assumption</h3>
+<ul>
+<li>Recommendations are optimized for startup speed-to-first-sales and near-term conversion learning, not platform purity.</li>
+</ul>
+<h2>C) Reusable Capability Inventory</h2>
+<h3>C1. Frontend and design system</h3>
+<ul>
+<li>[Observed][High] Shared UI and design foundations exist (<code>@acme/ui</code>, <code>@acme/design-system</code>, <code>@acme/design-tokens</code>, theme packages, Storybook app and test scripts).</li>
+<li>[Observed][Medium] Page-construction primitives exist (<code>@acme/page-builder-core</code>, <code>@acme/page-builder-ui</code>, templates/template-app).</li>
+<li>[Inferred][Medium] Platform can support rapid landing/PDP/checkout composition; most friction will be business-specific content and conversion instrumentation.</li>
+</ul>
+<h3>C2. Commerce and transaction layer</h3>
+<ul>
+<li>[Observed][High] Commerce standards are documented and codified (contract + manifest direction, checkout/webhook modes in commerce blueprint).</li>
+<li>[Observed][High] Stripe integration tooling is present (<code>register-stripe-webhook</code>, <code>checkout-test</code>, <code>stripe</code> package dependencies and scripts).</li>
+<li>[Observed][High] Checkout gateway and worker apps are present for operational variants (<code>checkout-gateway-worker</code>, <code>front-door-worker</code>).</li>
+<li>[Inferred][Medium] Platform has enough capability to run startup launches without waiting for full CMS integration.</li>
+</ul>
+<h3>C3. Content and CMS layer</h3>
+<ul>
+<li>[Observed][High] CMS/editorial stack exists (<code>apps/cms</code>, <code>@acme/cms-ui</code>, <code>@acme/editorial</code>, Sanity-related packages, page-builder packages).</li>
+<li>[Observed][Medium] Prior audits indicate strong progress but not full operational simplification for every startup launch path.</li>
+<li>[Inferred][High] CMS is a valid strategic platform lane, but should not be a hard dependency for first startup sales loops.</li>
+</ul>
+<h3>C4. Deployment, observability, and quality</h3>
+<ul>
+<li>[Observed][High] Launch/deploy scaffolding exists (<code>pnpm launch-shop</code>, <code>setup-ci</code>, deployment and validation scripts, quality audit evidence).</li>
+<li>[Observed][High] Testing stack spans unit/integration/e2e/storybook/lighthouse.</li>
+<li>[Observed][Medium] Telemetry foundations exist (<code>@acme/telemetry</code>, <code>apps/telemetry-worker</code>), but startup-level KPI instrumentation remains uneven.</li>
+<li>[Inferred][Medium] Delivery reliability is strong enough for iterative startup shipping if each business has explicit measurement and gate contracts.</li>
+</ul>
+<h2>D) Delivery Constraints and Risk Table</h2>
+<table>
+<thead>
+<tr>
+<th>Constraint</th>
+<th>Evidence</th>
+<th>Risk if ignored</th>
+<th>Confidence</th>
+<th>Practical handling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monorepo complexity and breadth</td>
+<td>Large app + package surface, mixed business/system concerns</td>
+<td>Teams optimize infra work not sales outcomes</td>
+<td>High</td>
+<td>Force every startup deliverable to include outcome + KPI + decision gate</td>
+</tr>
+<tr>
+<td>CMS path not universally launch-ready for all startup contexts</td>
+<td>Startup workflow docs call out missing canonical upgrade artifacts; PLAT plan still has unresolved quality/measurement items</td>
+<td>Delay to first sales while waiting on platform-perfect flow</td>
+<td>Medium</td>
+<td>Use app-direct launch path first, CMS retrofit second</td>
+</tr>
+<tr>
+<td>Testing breadth can become slow/fragile if run broadly</td>
+<td>Root scripts include guardrails (<code>test</code> guard, targeted patterns); AGENTS testing policy emphasizes filtered runs</td>
+<td>Slow iteration and flaky signal</td>
+<td>High</td>
+<td>Keep targeted test policy and per-change validation contracts</td>
+</tr>
+<tr>
+<td>Missing canonical baseline pointers</td>
+<td><code>latest.user.md</code> pointers in platform/site-upgrade/market-research often <code>Missing</code></td>
+<td>Repeated re-discovery, weak planning quality</td>
+<td>High</td>
+<td>Maintain pointer discipline; refresh baseline docs on cadence</td>
+</tr>
+<tr>
+<td>Mixed runtime patterns (Node + worker variants)</td>
+<td>Commerce blueprint and app inventory show divergent runtime shapes</td>
+<td>Integration inconsistencies across launches</td>
+<td>Medium</td>
+<td>Choose per-launch runtime profile explicitly in brief/plan</td>
+</tr>
+</tbody>
+</table>
+<h2>E) Website-Upgrade Capability Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Capability area</th>
+<th>Current strength</th>
+<th>Proven in repo</th>
+<th>Known limits</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IA/navigation frameworks</td>
+<td>Medium</td>
+<td>Page-builder + template packages, multiple Next apps</td>
+<td>Not all businesses have active canonical upgrade briefs</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>PDP and conversion components</td>
+<td>Medium</td>
+<td>UI/design-system stack, commerce apps, Storybook coverage</td>
+<td>Startup-specific offer/fit/compatibility components not standardized per business</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Checkout and payments</td>
+<td>High</td>
+<td>Commerce blueprint, Stripe scripts, checkout worker/gateway components</td>
+<td>Runtime divergence can add integration overhead</td>
+<td>High</td>
+</tr>
+<tr>
+<td>SEO and metadata</td>
+<td>Medium</td>
+<td>Lighthouse/SEO scripts present (<code>seo:audit</code>, LHCI scripts)</td>
+<td>No enforced per-business SEO baseline packet in startup loop yet</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Analytics and monitoring</td>
+<td>Medium</td>
+<td>Telemetry packages/workers, synthetic monitor script</td>
+<td>KPI dashboards and event taxonomies not uniformly bound to each startup stage gate</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Localization</td>
+<td>Medium</td>
+<td><code>@acme/i18n</code>, locale scripts, multi-app support</td>
+<td>Business-level localization readiness not documented consistently</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Content operations</td>
+<td>Medium</td>
+<td>CMS/editorial/sanity stack, launch-shop automation</td>
+<td>Current strategy favors app-direct first; CMS throughput target is not yet default operational path</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Experimentation velocity</td>
+<td>Medium</td>
+<td>Broad script/tooling surface and test infra</td>
+<td>Missing canonical per-business experiment backlog contracts in several startup tracks</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h2>F) Gap Register (Severity + Mitigation)</h2>
+<table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>Severity</th>
+<th>Why this blocks fast upgrades</th>
+<th>Mitigation pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Missing active platform baseline pointer (resolved by this doc) plus missing downstream upgrade pointers</td>
+<td>High</td>
+<td>Without canonical baseline and linked briefs, teams re-interpret platform fit each run</td>
+<td>Keep <code>latest.user.md</code> pointers active and date-stamped; require pointer check in preflight</td>
+</tr>
+<tr>
+<td>Business-specific site-upgrade briefs still missing (<code>HEAD</code>, <code>PET</code>, others)</td>
+<td>High</td>
+<td>No Adopt/Adapt/Defer/Reject matrix means implementation scope drifts</td>
+<td>Generate per-business upgrade briefs using template + this baseline</td>
+</tr>
+<tr>
+<td>Startup KPI instrumentation not uniformly codified per business</td>
+<td>High</td>
+<td>Hard to decide keep/pivot/scale quickly</td>
+<td>Require KPI contract (traffic, CVR, CAC, refund, fulfillment SLA, SEO health) in each brief</td>
+</tr>
+<tr>
+<td>CMS-first bias can delay startup launches</td>
+<td>Medium</td>
+<td>Startup timeline suffers when waiting for full CMS pathway</td>
+<td>Enforce app-direct first launch mode unless explicit exception</td>
+</tr>
+<tr>
+<td>Runtime/profile ambiguity for commerce features</td>
+<td>Medium</td>
+<td>Can cause rework at checkout/webhook integration time</td>
+<td>Force explicit runtime declaration in fact-find and plan docs</td>
+</tr>
+<tr>
+<td>Conversion-focused component patterns not pre-packaged per vertical</td>
+<td>Medium</td>
+<td>Repeated ad hoc implementation across businesses</td>
+<td>Build a minimal conversion pattern pack tied to real startup deliverables</td>
+</tr>
+</tbody>
+</table>
+<h2>G) Preferred Patterns and Anti-Patterns</h2>
+<h3>Preferred patterns</h3>
+<ul>
+<li>[Observed+Inferred][High] Outcome-first delivery: each work item must state business outcome, KPI target, and decision gate.</li>
+<li>[Observed][High] Reuse shared platform primitives before new one-off implementations (<code>@acme/ui</code>, design-system, platform-core, telemetry, page-builder).</li>
+<li>[Inferred][High] App-direct launch first, CMS retrofit second when startup speed is priority.</li>
+<li>[Observed][High] Use targeted test/validation runs aligned with changed scope.</li>
+<li>[Inferred][Medium] Package design-system/UI work only when attached to a concrete sales-impact deliverable.</li>
+</ul>
+<h3>Anti-patterns</h3>
+<ul>
+<li>Platform cleanup detached from startup outcome contract.</li>
+<li>CMS migration as prerequisite for first customer sales.</li>
+<li>Unbounded broad test runs for small changes.</li>
+<li>Creating business upgrade plans without explicit platform-fit scoring.</li>
+<li>Rebuilding solved platform primitives in business apps without evidence.</li>
+</ul>
+<h3>Do-first checklist for new site-upgrade work</h3>
+<ol>
+<li>Confirm active platform baseline pointer.</li>
+<li>Confirm active business upgrade brief pointer.</li>
+<li>Lock launch-surface mode (<code>pre-website</code> or <code>website-live</code>).</li>
+<li>Define KPI and decision gates for first 14/30/60/90 days.</li>
+<li>Choose Adopt/Adapt/Defer/Reject for each reference pattern.</li>
+<li>Generate fact-find packet and move into plan/build flow.</li>
+</ol>
+<h2>H) Adopt/Adapt/Defer/Reject Scoring Rubric</h2>
+<p>Score each candidate pattern 0-5 in each dimension.</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>What 0 means</th>
+<th>What 5 means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>User value impact</td>
+<td>No meaningful user benefit</td>
+<td>Strongly improves purchase confidence/usability</td>
+</tr>
+<tr>
+<td>Conversion/commercial impact</td>
+<td>No measurable revenue effect</td>
+<td>Clear expected CVR/AOV/CAC benefit</td>
+</tr>
+<tr>
+<td>Platform fit</td>
+<td>Requires net-new risky architecture</td>
+<td>Fits existing platform primitives cleanly</td>
+</tr>
+<tr>
+<td>Effort (inverse)</td>
+<td>Multi-sprint/high coordination</td>
+<td>Can ship quickly with existing components</td>
+</tr>
+<tr>
+<td>Risk (inverse)</td>
+<td>High legal/ops/quality risk</td>
+<td>Low implementation and operational risk</td>
+</tr>
+</tbody>
+</table>
+<p>Weighted score:</p>
+<ul>
+<li><code>Total = 0.30*UserValue + 0.30*Commercial + 0.20*PlatformFit + 0.10*EffortInverse + 0.10*RiskInverse</code></li>
+</ul>
+<p>Decision thresholds:</p>
+<ul>
+<li><code>Adopt</code>: score >= 4.0 and no dimension &#x3C; 3</li>
+<li><code>Adapt</code>: score 3.0-3.9 or one dimension &#x3C; 3 with clear mitigation</li>
+<li><code>Defer</code>: score 2.0-2.9, useful later but not now</li>
+<li><code>Reject</code>: score &#x3C; 2.0 or fails hard constraints (compliance, runtime, operator constraints)</li>
+</ul>
+<h2>I) Freshness Contract</h2>
+<ul>
+<li>Default refresh cadence: every 30 days.</li>
+<li>Force refresh triggers:
+<ul>
+<li>Major platform/package architecture change affecting website delivery.</li>
+<li>Material runtime/deployment/checkout standard change.</li>
+<li>New startup business added or major channel model shift.</li>
+<li>Evidence of repeated misfit between business briefs and delivered work.</li>
+</ul>
+</li>
+<li>Staleness rule: if baseline age >30 days, mark brief confidence as reduced until refreshed.</li>
+</ul>
+<h2>J) Source List (Repo Evidence)</h2>
+<p>Access date for all sources: 2026-02-12.</p>
+<ol>
+<li><code>package.json</code> (root scripts and platform capabilities) - confidence high.</li>
+<li><code>docs/repo-quality-audit-2026-01.md</code> (launch readiness evidence) - confidence high.</li>
+<li><code>docs/commerce/cart-checkout-standardization-blueprint.md</code> (commerce contract/runtime standards) - confidence high.</li>
+<li><code>docs/business-os/strategy/PLAT/plan.user.md</code> (platform priorities and risks) - confidence medium.</li>
+<li><code>docs/business-os/startup-loop-workflow.user.md</code> (startup loop and missing data context) - confidence high.</li>
+<li><code>docs/business-os/platform-capability/latest.user.md</code> (prior missing baseline pointer state) - confidence high.</li>
+<li><code>docs/business-os/site-upgrades/*/latest.user.md</code> (business upgrade brief pointer status) - confidence high.</li>
+<li><code>apps/</code> and <code>packages/</code> directory inventories (capability surface) - confidence high.</li>
+</ol>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/platform-capability/2026-02-12-platform-capability-baseline.user.md</code></div>
+      <div>Generated: 2026-02-12T09:51:20.427Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

@@ -33,27 +33,27 @@ export default async function EditCardPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-bg py-8 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
             <Link
               href={`/cards/${id}`}
-              className="text-blue-600 hover:text-blue-800"
+              className="text-info-fg hover:text-info-fg"
             >
               ← Back to Card
             </Link>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Edit Card</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-3xl font-bold text-fg">Edit Card</h1>
+          <p className="mt-2 text-muted">
             Update card details, lane position, priority, or ownership.
           </p>
-          <p className="mt-1 text-sm text-gray-500">Card ID: {id}</p>
+          <p className="mt-1 text-sm text-muted">Card ID: {id}</p>
         </div>
 
         {/* Form */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-panel rounded-lg shadow p-6">
           <CardEditorForm
             businesses={BUSINESSES}
             existingCard={card}
@@ -63,11 +63,11 @@ export default async function EditCardPage({ params }: PageProps) {
         </div>
 
         {/* Help Text */}
-        <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
-          <h2 className="text-sm font-medium text-yellow-900 mb-2">
+        <div className="mt-6 p-4 bg-warning-soft border border-warning-soft rounded-md">
+          <h2 className="text-sm font-medium text-warning-fg mb-2">
             Important Notes
           </h2>
-          <ul className="text-sm text-yellow-800 space-y-1">
+          <ul className="text-sm text-warning-fg space-y-1">
             <li>
               • Business cannot be changed after card creation (data integrity)
             </li>

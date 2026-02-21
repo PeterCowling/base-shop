@@ -1,0 +1,34 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "rootDir": "../..",
+    "allowImportingTsExtensions": true,
+    "types": ["jest", "node"],
+    "verbatimModuleSyntax": false,
+    "paths": {
+      "@jest/globals": ["test/jest-globals-compat.d.ts"],
+      "@acme/config": ["packages/config/dist/index.d.ts"],
+      "@acme/config/*": ["packages/config/dist/*"],
+      "@acme/platform-core": ["packages/platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["packages/platform-core/dist/*"],
+      "@acme/types": ["packages/types/dist/index.d.ts"],
+      "@acme/types/*": ["packages/types/dist/*"],
+      "@acme/email": ["packages/email/src/index.ts", "packages/email/dist/index.d.ts"],
+      "@acme/email/*": ["packages/email/src/*", "packages/email/dist/*"]
+    }
+  },
+  "include": [
+    "__tests__/**/*.ts",
+    "__tests__/**/*.tsx",
+    "src/__tests__/**/*.ts",
+    "src/__tests__/**/*.tsx",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx"
+  ],
+  "exclude": ["**/node_modules/**", "**/dist/**"]
+}

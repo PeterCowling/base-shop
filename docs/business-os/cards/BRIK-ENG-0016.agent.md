@@ -16,14 +16,14 @@ Last-updated: 2026-02-05
 ---
 # Work Idea Inline Edit Plan
 
-**Source:** Migrated from `work-idea-inline-edit-plan.md`
+**Source:** Migrated from `idea-develop-inline-edit-plan.md`
 
 
 # Work Idea Inline Edit Plan
 
 ## Summary
 
-Add inline editing functionality to the "Work Idea" button on idea detail pages. When clicked, users can edit the idea content directly on the page using a textarea with markdown preview. Saving transitions the idea Status from "raw" to "worked" (one-way). This enables users to refine ideas before converting them to cards, without navigating to a separate page or using the full `/work-idea` agent skill.
+Add inline editing functionality to the "Work Idea" button on idea detail pages. When clicked, users can edit the idea content directly on the page using a textarea with markdown preview. Saving transitions the idea Status from "raw" to "worked" (one-way). This enables users to refine ideas before converting them to cards, without navigating to a separate page or using the full `/idea-develop` agent skill.
 
 ## Goals
 
@@ -35,8 +35,8 @@ Add inline editing functionality to the "Work Idea" button on idea detail pages.
 
 ## Non-goals
 
-- Moving idea files between inbox/ and worked/ directories (existing `/work-idea` skill handles that)
+- Moving idea files between inbox/ and worked/ directories (existing `/idea-develop` skill handles that)
 - Creating cards from ideas (existing "Convert to Card" button handles that)
 - Full WYSIWYG markdown editor (Phase 0: simple textarea sufficient)
 
-[... see full plan in docs/plans/work-idea-inline-edit-plan.md]
+[... see full plan in docs/plans/idea-develop-inline-edit-plan.md]

@@ -79,6 +79,23 @@ on:
       CART_COOKIE_SECRET:
         required: false
 
+      NEXT_PUBLIC_FIREBASE_API_KEY:
+        required: false
+      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN:
+        required: false
+      NEXT_PUBLIC_FIREBASE_PROJECT_ID:
+        required: false
+      NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET:
+        required: false
+      NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID:
+        required: false
+      NEXT_PUBLIC_FIREBASE_APP_ID:
+        required: false
+      NEXT_PUBLIC_FIREBASE_DATABASE_URL:
+        required: false
+      NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID:
+        required: false
+
 jobs:
   validate:
     name: Validate

@@ -110,10 +110,10 @@ describe("ProductGrid", () => {
     await act(async () => {});
     const grid = screen.getByTestId("grid") as HTMLElement;
     Object.defineProperty(grid, "clientWidth", { value: 500, configurable: true });
-    act(() => resizeCb([] as any));
+    act(() => resizeCb([] as any, null as any));
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" });
     Object.defineProperty(grid, "clientWidth", { value: 1200, configurable: true });
-    act(() => resizeCb([] as any));
+    act(() => resizeCb([] as any, null as any));
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" });
   });
 
@@ -136,13 +136,13 @@ describe("ProductGrid", () => {
     await act(async () => {});
     const grid = screen.getByTestId("grid") as HTMLElement;
     Object.defineProperty(grid, "clientWidth", { value: 1200, configurable: true });
-    act(() => resizeCb([] as any));
+    act(() => resizeCb([] as any, null as any));
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(3, minmax(0, 1fr))" });
     Object.defineProperty(grid, "clientWidth", { value: 800, configurable: true });
-    act(() => resizeCb([] as any));
+    act(() => resizeCb([] as any, null as any));
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(2, minmax(0, 1fr))" });
     Object.defineProperty(grid, "clientWidth", { value: 500, configurable: true });
-    act(() => resizeCb([] as any));
+    act(() => resizeCb([] as any, null as any));
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(1, minmax(0, 1fr))" });
   });
 
@@ -164,10 +164,10 @@ describe("ProductGrid", () => {
     await act(async () => {});
     const grid = screen.getByTestId("grid") as HTMLElement;
     Object.defineProperty(grid, "clientWidth", { value: 2000, configurable: true });
-    act(() => resizeCb([] as any));
+    act(() => resizeCb([] as any, null as any));
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" });
     Object.defineProperty(grid, "clientWidth", { value: 300, configurable: true });
-    act(() => resizeCb([] as any));
+    act(() => resizeCb([] as any, null as any));
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(2, minmax(0, 1fr))" });
   });
 
@@ -189,10 +189,10 @@ describe("ProductGrid", () => {
     await act(async () => {});
     const grid = screen.getByTestId("grid") as HTMLElement;
     Object.defineProperty(grid, "clientWidth", { value: 800, configurable: true });
-    act(() => resizeCb([] as any));
+    act(() => resizeCb([] as any, null as any));
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(3, minmax(0, 1fr))" });
     Object.defineProperty(grid, "clientWidth", { value: 100, configurable: true });
-    act(() => resizeCb([] as any));
+    act(() => resizeCb([] as any, null as any));
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(1, minmax(0, 1fr))" });
   });
 

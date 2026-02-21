@@ -2,6 +2,8 @@ export type ActivationFunnelEventType =
   | 'lookup_success'
   | 'verify_success'
   | 'guided_step_complete'
+  | 'guided_step_skipped'
+  | 'guided_flow_abandoned'
   | 'arrival_mode_entered'
   | 'staff_lookup_used'
   | 'utility_action_used';
@@ -184,6 +186,8 @@ export function aggregateActivationFunnel(
     lookup_success: 0,
     verify_success: 0,
     guided_step_complete: 0,
+    guided_step_skipped: 0,
+    guided_flow_abandoned: 0,
     arrival_mode_entered: 0,
     staff_lookup_used: 0,
     utility_action_used: 0,

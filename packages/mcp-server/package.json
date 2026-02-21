@@ -33,6 +33,7 @@
     "clean": "rimraf dist *.tsbuildinfo",
     "start": "node ./dist/index.js",
     "dev": "tsx ./src/index.ts",
+    "test:startup-loop": "pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.startup-loop.config.cjs --runInBand",
     "gmail:auth": "tsx ./scripts/test-gmail-auth.ts",
     "lint": "NODE_OPTIONS='--max-old-space-size=8192' eslint .",
     "lint:templates": "tsx ./scripts/lint-templates.ts",
@@ -46,6 +47,7 @@
     "@modelcontextprotocol/sdk": "^1.0.0",
     "google-auth-library": "^10.5.0",
     "googleapis": "^171.0.0",
+    "playwright-core": "1.57.0",
     "zod": "^3.25.73"
   },
   "devDependencies": {

@@ -134,6 +134,7 @@ describe("inventory server", () => {
       { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
     ]);
     const result = await updateInventoryItem("shop", "a", {}, (cur) => ({
+      sku: "a",
       productId: cur!.productId,
       quantity: cur!.quantity + 2,
       variantAttributes: cur!.variantAttributes,
@@ -222,6 +223,7 @@ describe("inventory repository concurrency", () => {
     await Promise.all(
       Array.from({ length: 5 }).map(() =>
         updateInventoryItem(shop, "a", {}, (current) => ({
+          sku: "a",
           productId: "p1",
           quantity: (current?.quantity ?? 0) + 1,
           variantAttributes: {},

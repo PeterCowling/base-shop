@@ -2,13 +2,13 @@ import { jest } from "@jest/globals";
 
 import { variantKey } from "../../repositories/inventory.server";
 
-const sendEmail = jest.fn();
-const getShopSettings = jest.fn();
-const loadCoreEnvMock = jest.fn();
-const readFile = jest.fn();
-const writeFile = jest.fn();
-const mkdir = jest.fn();
-const fetchMock = jest.fn().mockResolvedValue({ ok: true } as Response);
+const sendEmail: any = jest.fn();
+const getShopSettings: any = jest.fn();
+const loadCoreEnvMock: any = jest.fn();
+const readFile: any = jest.fn();
+const writeFile: any = jest.fn();
+const mkdir: any = jest.fn();
+const fetchMock: any = (jest.fn() as any).mockResolvedValue({ ok: true } as Response);
 
 global.fetch = fetchMock as any;
 
@@ -76,7 +76,7 @@ describe("checkAndAlert", () => {
       expect.any(String),
       "utf8",
     );
-    const logged = JSON.parse(writeFile.mock.calls[0][1]);
+    const logged = JSON.parse(writeFile.mock.calls[0][1] as string);
     const key = variantKey("sku1", { size: "m" });
     expect(logged[key]).toBe(now);
   });
@@ -106,7 +106,7 @@ describe("checkAndAlert", () => {
     await checkAndAlert("shop", items);
 
     expect(sendEmail).toHaveBeenCalledTimes(2);
-    const recipients = sendEmail.mock.calls.map((c) => c[0]);
+    const recipients = sendEmail.mock.calls.map((c: any) => c[0]);
     expect(recipients).toEqual([
       "env1@example.com",
       "env2@example.com",
@@ -191,7 +191,7 @@ describe("checkAndAlert", () => {
       expect.any(String),
       "utf8",
     );
-    const logged = JSON.parse(writeFile.mock.calls[0][1]);
+    const logged = JSON.parse(writeFile.mock.calls[0][1] as string);
     expect(logged[keySuppressed]).toBe(now);
     const keyFresh = variantKey("new", { size: "m" });
     expect(logged[keyFresh]).toBe(now);

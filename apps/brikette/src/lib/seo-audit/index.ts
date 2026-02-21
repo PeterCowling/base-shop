@@ -25,6 +25,7 @@ import {
   type StructuredDataDeclaration,
 } from "@/routes/guides/guide-manifest";
 import type { SeoAuditResult } from "@/routes/guides/guide-manifest-overrides";
+import type { GuideContentWithGallery } from "@/types/guides";
 
 type GuideContent = {
   seo?: {
@@ -284,7 +285,7 @@ function normalizeImageSrc(value: unknown): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
-function getSectionImages(content: GuideContent): NormalizedGuideImage[] {
+function getSectionImages(content: GuideContent | GuideContentWithGallery): NormalizedGuideImage[] {
   const out: NormalizedGuideImage[] = [];
   if (!Array.isArray(content.sections)) return out;
   content.sections.forEach((section) => {
@@ -308,13 +309,14 @@ function getSectionImages(content: GuideContent): NormalizedGuideImage[] {
   return out;
 }
 
-function getAllImages(content: GuideContent): NormalizedGuideImage[] {
+function getAllImages(content: GuideContent | GuideContentWithGallery): NormalizedGuideImage[] {
   const sectionImages = getSectionImages(content);
 
   // Also include top-level gallery images
   const galleryImages: NormalizedGuideImage[] = [];
-  if (Array.isArray((content as any).gallery)) {
-    (content as any).gallery.forEach((item: any) => {
+  const contentWithGallery = content as GuideContentWithGallery;
+  if (Array.isArray(contentWithGallery.gallery)) {
+    contentWithGallery.gallery.forEach((item) => {
       const src = normalizeImageSrc(item.src ?? item.image);
       if (!src) return;
       galleryImages.push({
@@ -332,10 +334,6 @@ function getAllImages(content: GuideContent): NormalizedGuideImage[] {
   }
 
   return [...sectionImages, ...galleryImages];
-}
-
-function countImages(content: GuideContent): number {
-  return getAllImages(content).length;
 }
 
 /**
@@ -538,6 +536,7 @@ function checkSpellingGrammar(
   };
 
   Object.entries(commonMisspellings).forEach(([wrong, correct]) => {
+    // eslint-disable-next-line security/detect-non-literal-regexp -- BRIK-2145 Constructing regex from known safe misspelling dictionary keys
     const regex = new RegExp(`\\b${wrong}\\b`, "gi");
     const matches = allText.match(regex);
     if (matches) {
@@ -587,7 +586,8 @@ function checkImageSizes(content: GuideContent): { oversize: number; moderate: n
   let total = 0;
 
   getAllImages(content).forEach((img) => {
-    const sizeKB = img.sizeKB || img.size || 0;
+    const rawSize = img.sizeKB || img.size || 0;
+    const sizeKB = typeof rawSize === 'number' ? rawSize : 0;
     if (!Number.isFinite(sizeKB) || sizeKB <= 0) return;
     total++;
     if (sizeKB > 500) oversize++;
@@ -649,12 +649,14 @@ function countConcreteFactsPer500Words(content: GuideContent): number {
 
   let factCount = 0;
 
+  // eslint-disable-next-line security/detect-unsafe-regex -- BRIK-2145 Static pattern for extracting numeric facts from guide content; no user input in pattern
   const numbers = text.match(/\b\d{1,3}(,\d{3})*(\.\d+)?\s*(minutes?|hours?|km|meters?|€|\$|£)\b/gi);
   if (numbers) factCount += numbers.length;
 
   const times = text.match(/\b\d{1,2}:\d{2}\s*(am|pm)?\b/gi);
   if (times) factCount += times.length;
 
+  // eslint-disable-next-line security/detect-unsafe-regex -- BRIK-2145 Static pattern for extracting proper names from guide content; no user input in pattern
   const properNames = text.match(/\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+\b/g);
   if (properNames) factCount += properNames.length * 0.5;
 
@@ -847,6 +849,7 @@ function calculateKeywordStuffingRate(content: GuideContent, focusKeyword: strin
   const phrase = focusKeyword.trim().toLowerCase();
   if (phrase.length < 3) return 0;
 
+  // eslint-disable-next-line security/detect-non-literal-regexp -- BRIK-2145 Building regex from escaped focus keyword (guide manifest config value)
   const pattern = new RegExp(`(?:^|\\b)${escapeRegExp(phrase)}(?:\\b|$)`, "gi");
   const occurrences = (text.match(pattern) || []).length;
 
@@ -858,6 +861,7 @@ function calculateKeywordStuffingRate(content: GuideContent, focusKeyword: strin
 
 function countMatches(text: string, pattern: RegExp): number {
   const flags = pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`;
+  // eslint-disable-next-line security/detect-non-literal-regexp -- BRIK-2145 Constructing from already-compiled RegExp pattern source
   const global = new RegExp(pattern.source, flags);
   return Array.from(text.matchAll(global)).length;
 }
@@ -950,6 +954,149 @@ function getStructuredDataType(declaration: StructuredDataDeclaration): string {
 // METRICS EXTRACTION
 // ============================================================================
 
+// Helper to extract meta tag metrics
+function extractMetaMetrics(content: GuideContent) {
+  return {
+    metaTitleLength: content.seo?.title?.length ?? 0,
+    metaDescriptionLength: content.seo?.description?.length ?? 0,
+    hasTitleTag: content.seo?.title ? 1 : 0,
+    hasMetaDescription: content.seo?.description ? 1 : 0,
+  };
+}
+
+// Helper to extract content metrics
+function extractContentMetrics(content: GuideContent, wordCount: number) {
+  return {
+    contentWordCount: wordCount,
+    headingCount: countHeadings(content),
+    h2Count: countH2Headings(content),
+    hasH1: content.seo?.title ? 1 : 0,
+  };
+}
+
+// Helper to extract link and media metrics
+function extractLinkMediaMetrics(
+  internalLinks: ReturnType<typeof extractInternalLinks>,
+  linkValidation: ReturnType<typeof validateInternalLinks>,
+  content: GuideContent,
+  allImages: ReturnType<typeof getAllImages>,
+) {
+  return {
+    internalLinkCount: internalLinks.length,
+    invalidInternalLinkOccurrences: linkValidation.invalidOccurrences,
+    faqCount: content.faqs?.length ?? 0,
+    imageCount: allImages.length,
+  };
+}
+
+// Helper to extract HTML hygiene metrics
+function extractHtmlHygieneMetrics(
+  content: GuideContent,
+  manifest: GuideManifestEntry,
+  allImages: ReturnType<typeof getAllImages>,
+) {
+  return {
+    urlSlugLength: manifest.slug.length,
+    hasOgTitle: content.seo?.title ? 1 : 0,
+    hasOgDescription: content.seo?.description ? 1 : 0,
+    hasOgImage: content.seo?.image || allImages[0] ? 1 : 0,
+  };
+}
+
+// Helper to extract content completeness metrics
+function extractCompletenessMetrics(
+  content: GuideContent,
+  placeholderIssues: ReturnType<typeof detectPlaceholders>,
+  shouldCheckEarlyAnswer: boolean,
+  template: GuideTemplate,
+  spellingErrors: ReturnType<typeof checkSpellingGrammar>,
+  locale: AppLanguage,
+) {
+  return {
+    firstParagraphLength: getFirstParagraphWordCount(content),
+    hasEarlyAnswer: shouldCheckEarlyAnswer && checkEarlyAnswer(content, template) ? 1 : 0,
+    hasPlaceholders: placeholderIssues.length > 0 ? 1 : 0,
+    errorRate: locale === "en" ? spellingErrors.errorRate : undefined,
+  };
+}
+
+// Helper to extract image quality metrics
+function extractImageMetrics(
+  imageAltCoverage: ReturnType<typeof checkImageAltText>,
+  imageSizes: ReturnType<typeof checkImageSizes>,
+  content: GuideContent,
+  allImages: ReturnType<typeof getAllImages>,
+) {
+  return {
+    imageAltCoverage: imageAltCoverage.coverage,
+    imageAltTotal: imageAltCoverage.total,
+    imageAltWithAlt: imageAltCoverage.withAlt,
+    imageOversizeCount: imageSizes.oversize,
+    imageModerateCount: imageSizes.moderate,
+    featuredImageWidth: content.seo?.image?.width || allImages[0]?.width || 0,
+    usesModernFormats: checkModernImageFormats(content) ? 1 : 0,
+  };
+}
+
+// Helper to extract content strategy metrics
+function extractStrategyMetrics(
+  shouldCheckLocalSpecifics: boolean,
+  shouldCheckFirstHand: boolean,
+  content: GuideContent,
+) {
+  return {
+    localEntityCount: shouldCheckLocalSpecifics ? countLocalEntities(content) : undefined,
+    concreteFactsDensity: shouldCheckLocalSpecifics ? countConcreteFactsPer500Words(content) : undefined,
+    hasFirstHandDetails: shouldCheckFirstHand && detectFirstHandDetails(content) ? 1 : 0,
+  };
+}
+
+// Helper to extract readability metrics
+function extractReadabilityMetrics(content: GuideContent, readingGradeLevel: number) {
+  return {
+    avgParagraphLength: calculateAvgParagraphLength(content),
+    avgSentenceLength: calculateAvgSentenceLength(content),
+    readingGradeLevel,
+  };
+}
+
+// Helper to extract keyword optimization metrics
+function extractKeywordMetrics(
+  focusKeyword: string | null,
+  keywordInTitle: { present: boolean; nearFront: boolean },
+  content: GuideContent,
+  h2Alignment: ReturnType<typeof checkH2AlignmentToQueries>,
+) {
+  return {
+    hasFocusKeyword: focusKeyword ? 1 : 0,
+    focusKeywordInTitle: focusKeyword && keywordInTitle.present ? 1 : 0,
+    focusKeywordNearFront: focusKeyword && keywordInTitle.nearFront ? 1 : 0,
+    focusKeywordEarly: focusKeyword && checkFocusKeywordInFirstNWords(content, focusKeyword, 150) ? 1 : 0,
+    h2AlignmentCount: h2Alignment.aligned,
+    h2TotalCount: h2Alignment.total,
+    keywordStuffingRate: calculateKeywordStuffingRate(content, focusKeyword),
+  };
+}
+
+// Helper to extract structured data metrics
+function extractStructuredDataMetrics(
+  manifest: GuideManifestEntry,
+  ctaAnalysis: ReturnType<typeof analyzeCTAs>,
+  timeSensitive: boolean,
+  content: GuideContent,
+) {
+  return {
+    hasBreadcrumbs: manifest.structuredData.some((s) => getStructuredDataType(s) === "BreadcrumbList") ? 1 : 0,
+    hasArticleSchema: manifest.structuredData.some((s) => getStructuredDataType(s) === "Article") ? 1 : 0,
+    hasPrimaryCTA: ctaAnalysis.hasPrimary ? 1 : 0,
+    hasAboveFoldCTA: ctaAnalysis.hasAboveFold ? 1 : 0,
+    contextualCTACount: ctaAnalysis.contextualCount,
+    hasLastUpdated: content.lastUpdated ? 1 : 0,
+    hasYearReferences: timeSensitive && checkYearReferences(content) ? 1 : 0,
+  };
+}
+
+// eslint-disable-next-line max-params -- BRIK-2145 Aggregation helper kept as-is to avoid broad refactor in checkpoint commit.
 function extractAuditMetrics(
   content: GuideContent,
   manifest: GuideManifestEntry,
@@ -984,81 +1131,17 @@ function extractAuditMetrics(
   const readingGradeLevel = calculateReadingGrade(content, locale);
 
   const metrics: Record<string, number | undefined> = {
-    // Meta tags
-    metaTitleLength: content.seo?.title?.length ?? 0,
-    metaDescriptionLength: content.seo?.description?.length ?? 0,
-    hasTitleTag: content.seo?.title ? 1 : 0,
-    hasMetaDescription: content.seo?.description ? 1 : 0,
-
-    // Content
-    contentWordCount: wordCount,
-    headingCount: countHeadings(content),
-    h2Count: countH2Headings(content),
-    hasH1: content.seo?.title ? 1 : 0,
-
-    // Links & Media
-    internalLinkCount: internalLinks.length,
-    invalidInternalLinkOccurrences: linkValidation.invalidOccurrences,
-    faqCount: content.faqs?.length ?? 0,
-    imageCount: allImages.length,
-
-    // HTML hygiene (lightweight — still mostly content-only)
-    urlSlugLength: manifest.slug.length,
-    hasOgTitle: content.seo?.title ? 1 : 0,
-    hasOgDescription: content.seo?.description ? 1 : 0,
-    hasOgImage: content.seo?.image || allImages[0] ? 1 : 0,
-
-    // Content completeness
-    firstParagraphLength: getFirstParagraphWordCount(content),
-    hasEarlyAnswer: shouldCheckEarlyAnswer && checkEarlyAnswer(content, template) ? 1 : 0,
-    hasPlaceholders: placeholderIssues.length > 0 ? 1 : 0,
-
-    // Spell/grammar (en-only)
-    errorRate: locale === "en" ? spellingErrors.errorRate : undefined,
-
-    // Image quality
-    imageAltCoverage: imageAltCoverage.coverage,
-    imageAltTotal: imageAltCoverage.total,
-    imageAltWithAlt: imageAltCoverage.withAlt,
-    imageOversizeCount: imageSizes.oversize,
-    imageModerateCount: imageSizes.moderate,
-    featuredImageWidth: content.seo?.image?.width || allImages[0]?.width || 0,
-    usesModernFormats: checkModernImageFormats(content) ? 1 : 0,
-
-    // Content strategy (scoped)
-    localEntityCount: shouldCheckLocalSpecifics ? countLocalEntities(content) : undefined,
-    concreteFactsDensity: shouldCheckLocalSpecifics ? countConcreteFactsPer500Words(content) : undefined,
-    hasFirstHandDetails: shouldCheckFirstHand && detectFirstHandDetails(content) ? 1 : 0,
-
-    // Readability
-    avgParagraphLength: calculateAvgParagraphLength(content),
-    avgSentenceLength: calculateAvgSentenceLength(content),
-    readingGradeLevel,
-
-    // Keyword optimization (scoped by focusKeyword presence)
-    hasFocusKeyword: focusKeyword ? 1 : 0,
-    focusKeywordInTitle: focusKeyword && keywordInTitle.present ? 1 : 0,
-    focusKeywordNearFront: focusKeyword && keywordInTitle.nearFront ? 1 : 0,
-    focusKeywordEarly: focusKeyword && checkFocusKeywordInFirstNWords(content, focusKeyword, 150) ? 1 : 0,
-    h2AlignmentCount: h2Alignment.aligned,
-    h2TotalCount: h2Alignment.total,
-    keywordStuffingRate: calculateKeywordStuffingRate(content, focusKeyword),
-
-    // Internal link quality
+    ...extractMetaMetrics(content),
+    ...extractContentMetrics(content, wordCount),
+    ...extractLinkMediaMetrics(internalLinks, linkValidation, content, allImages),
+    ...extractHtmlHygieneMetrics(content, manifest, allImages),
+    ...extractCompletenessMetrics(content, placeholderIssues, shouldCheckEarlyAnswer, template, spellingErrors, locale),
+    ...extractImageMetrics(imageAltCoverage, imageSizes, content, allImages),
+    ...extractStrategyMetrics(shouldCheckLocalSpecifics, shouldCheckFirstHand, content),
+    ...extractReadabilityMetrics(content, readingGradeLevel ?? 0),
+    ...extractKeywordMetrics(focusKeyword, keywordInTitle, content, h2Alignment),
     genericAnchorCount,
-
-    // Structured data (presence only; render-time validation should be a separate stage)
-    hasBreadcrumbs: manifest.structuredData.some((s) => getStructuredDataType(s) === "BreadcrumbList") ? 1 : 0,
-    hasArticleSchema: manifest.structuredData.some((s) => getStructuredDataType(s) === "Article") ? 1 : 0,
-
-    // CTAs
-    hasPrimaryCTA: ctaAnalysis.hasPrimary ? 1 : 0,
-    hasAboveFoldCTA: ctaAnalysis.hasAboveFold ? 1 : 0,
-    contextualCTACount: ctaAnalysis.contextualCount,
-
-    // Freshness (scoped)
-    hasLastUpdated: content.lastUpdated ? 1 : 0,
-    hasYearReferences: timeSensitive && checkYearReferences(content) ? 1 : 0,
+    ...extractStructuredDataMetrics(manifest, ctaAnalysis, timeSensitive, content),
   };
 
   return {
@@ -1634,6 +1717,7 @@ export async function auditGuideSeo(
 
   let content: GuideContent;
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- BRIK-2145 Path constructed from validated guideKey and locale; used in Node.js test/audit scripts only
     const raw = await fs.readFile(contentPath, "utf-8");
     content = JSON.parse(raw) as GuideContent;
   } catch (err) {
@@ -1754,6 +1838,7 @@ export async function saveAuditResults(guideKey: GuideKey, results: SeoAuditResu
 
   let overrides: Record<string, unknown>;
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- BRIK-2145 Path constructed from process.cwd() + fixed relative path; used in Node.js audit scripts only
     const raw = await fs.readFile(overridesPath, "utf-8");
     overrides = JSON.parse(raw) as Record<string, unknown>;
   } catch (err) {
@@ -1770,6 +1855,7 @@ export async function saveAuditResults(guideKey: GuideKey, results: SeoAuditResu
 
   (overrides[guideKey] as Record<string, unknown>).auditResults = results;
 
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- BRIK-2145 Path constructed from process.cwd() + fixed relative path; used in Node.js audit scripts only
   await fs.writeFile(overridesPath, JSON.stringify(overrides, null, 2), "utf-8");
 }
 

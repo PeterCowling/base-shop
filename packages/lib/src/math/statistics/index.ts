@@ -47,10 +47,10 @@ export {
   sum,
   variance,
   zScore,
-} from "./descriptive";
+} from "./descriptive.js";
 
 // Correlation functions
-export { covariance, pearson, spearman } from "./correlation";
+export { covariance, pearson, spearman } from "./correlation.js";
 
 // Classes for streaming/online statistics
 export {
@@ -58,4 +58,4 @@ export {
   type HistogramBin,
   OnlineStats,
   type OnlineStatsState,
-} from "./classes";
+} from "./classes.js";

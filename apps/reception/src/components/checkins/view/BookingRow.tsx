@@ -15,16 +15,16 @@ import TooltipComponent from "../tooltip/Tooltip";
 function getKeycardIconClass(depositType?: LoanMethod): string {
   const normalized = depositType ? depositType.toUpperCase() : undefined;
 
-  if (normalized === "NO_CARD") return "fas fa-ban fa-lg text-red-500";
-  if (normalized === "CASH") return "fas fa-id-card fa-lg text-green-600";
+  if (normalized === "NO_CARD") return "fas fa-ban fa-lg text-error-main";
+  if (normalized === "CASH") return "fas fa-id-card fa-lg text-success-main";
   if (
     normalized === "PASSPORT" ||
     normalized === "LICENSE" ||
     normalized === "ID"
   ) {
-    return "fas fa-id-card fa-lg text-yellow-600";
+    return "fas fa-id-card fa-lg text-warning-main";
   }
-  return "fas fa-id-card fa-lg text-gray-700";
+  return "fas fa-id-card fa-lg text-muted-foreground";
 }
 
 interface BookingRowViewProps {
@@ -41,6 +41,7 @@ interface BookingRowViewProps {
   notesText?: string;
   notesOpen: boolean;
   closeNotes: () => void;
+  isCancelled?: boolean;
 }
 
 const BookingRowView: FC<BookingRowViewProps> = ({
@@ -57,6 +58,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
   notesText,
   notesOpen,
   closeNotes,
+  isCancelled,
 }) => (
   <>
     <tr
@@ -66,7 +68,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
       onClick={onRowClick}
     >
       <td className="p-4">
-        <div className="flex font-semibold">
+        <div className="flex items-center gap-2 font-semibold">
           <TooltipComponent
             booking={{
               personalDetails: {
@@ -82,6 +84,11 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             }}
             onDoubleClick={onNameDoubleClick}
           />
+          {isCancelled && (
+            <span className="px-2 py-0.5 text-xs font-bold text-white bg-error-main rounded">
+              CANCELLED
+            </span>
+          )}
         </div>
       </td>
       <td className="p-4">
@@ -102,7 +109,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
           {booking.isFirstForBooking ? (
             <RoomPaymentButton booking={booking} />
           ) : (
-            <em className="text-gray-600">—</em>
+            <em className="text-muted-foreground">—</em>
           )}
         </div>
       </td>

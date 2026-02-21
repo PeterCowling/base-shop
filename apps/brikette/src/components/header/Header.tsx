@@ -4,12 +4,13 @@
 // Breakpoint raised to lg (1024 px) to reduce clutter.
 // --------------------------------------------------------------------------
 
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { useTheme } from "@/hooks/useTheme";
 import type { AppLanguage } from "@/i18n.config";
+import { fireCtaClick } from "@/utils/ga4-events";
 
 import DesktopHeader from "./DesktopHeader";
 import MobileMenu from "./MobileMenu";
@@ -29,6 +30,14 @@ function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
   /* Derived values ---------------------------------------------------------- */
   const showHeader = !scrolled || mouseNearTop;
   const barClass = theme === "dark" ? "progress-bar-dark" : "progress-bar-light";
+
+  const onDesktopHeaderCtaClick = useCallback(() => {
+    fireCtaClick({ ctaId: "header_check_availability", ctaLocation: "desktop_header" });
+  }, []);
+
+  const onMobileNavCtaClick = useCallback(() => {
+    fireCtaClick({ ctaId: "mobile_nav_check_availability", ctaLocation: "mobile_nav" });
+  }, []);
 
   /* Render ------------------------------------------------------------------ */
   return (
@@ -51,8 +60,13 @@ function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
                     duration-300 motion-safe:transform-gpu dark:shadow-md
                     ${showHeader ? "translate-y-0" : "-translate-y-full"}`}
       >
-        <MobileNav lang={resolvedLang} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-        <DesktopHeader lang={resolvedLang} />
+        <MobileNav
+          lang={resolvedLang}
+          menuOpen={menuOpen}
+          setMenuOpen={setMenuOpen}
+          onPrimaryCtaClick={onMobileNavCtaClick}
+        />
+        <DesktopHeader lang={resolvedLang} onPrimaryCtaClick={onDesktopHeaderCtaClick} />
         <MobileMenu lang={resolvedLang} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       </header>
     </>

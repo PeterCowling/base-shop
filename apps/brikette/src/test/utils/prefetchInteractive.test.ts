@@ -9,14 +9,6 @@ jest.mock("swiper/react", () => {
   importSpy("swiper/react");
   return { __esModule: true, default: {} };
 });
-jest.mock("@acme/ui/organisms/modals/BookingModal", () => {
-  importSpy("BookingModal");
-  return { __esModule: true, default: {} };
-});
-jest.mock("@acme/ui/organisms/modals/BookingModal2", () => {
-  importSpy("BookingModal2");
-  return { __esModule: true, default: {} };
-});
 jest.mock("@acme/ui/organisms/modals/LocationModal", () => {
   importSpy("LocationModal");
   return { __esModule: true, default: {} };
@@ -87,10 +79,10 @@ describe("prefetchInteractiveBundles", () => {
   it("falls back to setTimeout when requestIdleCallback is missing", async () => {
     setConnection(undefined);
     Object.defineProperty(window, "requestIdleCallback", { writable: true, value: undefined });
-    const setTimeoutSpy = jest.spyOn(window, "setTimeout").mockImplementation((cb: () => void) => {
+    const setTimeoutSpy = jest.spyOn(window, "setTimeout").mockImplementation(((cb: () => void) => {
       cb();
-      return 0 as unknown as number;
-    });
+      return 0;
+    }) as typeof setTimeout);
 
     const mod = await import("@/utils/prefetchInteractive");
     await mod.default();

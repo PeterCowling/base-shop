@@ -29,9 +29,9 @@ The Technical cabinet reviews the codebase itself — not business strategy or c
 
 ### Trigger Conditions (CRITICAL)
 Technical cabinet runs when ANY of:
-1. `scan-repo` detected code diffs since last sweep
+1. `idea-scan` detected code diffs since last sweep
 2. Stance is `improve-data` (technical debt is a data/measurement gap)
-3. `--force-code-review` flag passed to `/ideas-go-faster`
+3. `--force-code-review` flag passed to `/idea-generate`
 
 Technical cabinet SKIPS when:
 - Stance is `grow-business` AND no scan diffs AND no `--force-code-review`

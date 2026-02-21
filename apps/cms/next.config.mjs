@@ -150,6 +150,10 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     externalDir: true,
+    // Next 16's build uses multiple workers for static/data collection. On
+    // large apps (CMS), this can exceed Node's heap limit in some environments.
+    // Allow overriding, but keep a conservative default for stability.
+    cpus: Number.parseInt(process.env.NEXT_BUILD_CPUS ?? "2", 10),
   },
   // Ensure UI calls to `/cms/api/*` hit route handlers under `/api/*`
   async rewrites() {
@@ -160,10 +164,6 @@ const nextConfig = {
       },
     ];
   },
-  eslint: {
-    // Speed up CI and avoid blocking builds on lint-only rules
-    ignoreDuringBuilds: true,
-  },
 
   // Allow CI/test builds even if TypeScript type-checking complains about
   // workspace path aliases that are resolved at webpack-level only.
@@ -171,7 +171,12 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
-  // Keep heavy Node-only libs external on the server bundle
+  // Keep heavy Node-only libs external on the server bundle.
+  // `typescript` is here because @acme/platform-core/themeTokens imports it
+  // statically; when platform-core is in transpilePackages, webpack follows the
+  // import and tries to bundle the entire TS compiler (~40 MB), causing OOM on
+  // Next 16 --webpack builds. Keeping it external lets the server use the
+  // workspace devDep via require() without bundling it. (TASK-12 spike fix)
   serverExternalPackages: [
     "lighthouse",
     "puppeteer",
@@ -179,28 +184,21 @@ const nextConfig = {
     "resend",
     "@react-email/render",
     "html-to-text",
+    "typescript",
   ],
 
-  // Transpile workspace packages that ship TS/modern syntax
+  // Transpile workspace packages that ship TS/modern syntax.
+  // TASK-22 reduction: packages with a complete dist/ and no src-alias override are
+  // removed so webpack uses compiled JS instead of TypeScript source. This reduces
+  // the build-graph size by ~3,258 TS files (~94%). See build-oom-notes.md TASK-21/22.
   transpilePackages: Array.from(
     new Set([
       ...(preset.transpilePackages ?? []),
-      "@themes/base",
-      "@themes/bcd",
+      // Must transpile: no dist/ directory (source-only theme packages).
       "@themes/brandx",
       "@themes/dark",
-      "@acme/platform-core",
-      "@acme/ui",
-      "@acme/date-utils",
-      "@acme/lib",
-      "@acme/types",
-      "@acme/tailwind-config",
-      "@acme/design-tokens",
+      // Must transpile: src-aliased by this webpack config (dist/ is never reached).
       "@acme/configurator",
-      "@acme/telemetry",
-      "@acme/config",
-      // NEW: transpile the theme package itself so Next can parse its TS
-      "@acme/theme",
     ])
   ),
 
@@ -241,6 +239,29 @@ const nextConfig = {
       "@": path.resolve(__dirname, "src"),
       // Allow platform-core theme loader to resolve local theme fixtures
       "@themes-local": path.resolve(__dirname, "../../packages/themes"),
+      // Subpath aliases for theme packages that have no dist/ in CI and no
+      // build script. Aliasing only the consumed subpath avoids the OOM risk
+      // of adding the whole package to transpilePackages.
+      "@themes/bcd/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/bcd/src/tailwind-tokens.ts",
+      ),
+      "@themes/brandx/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/brandx/src/tailwind-tokens.ts",
+      ),
+      "@themes/dark/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/dark/src/tailwind-tokens.ts",
+      ),
+      "@themes/dummy/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/dummy/src/tailwind-tokens.ts",
+      ),
+      "@themes/prime/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/prime/src/tailwind-tokens.ts",
+      ),
       "@acme/configurator": path.resolve(
         __dirname,
         "../../packages/configurator/src",

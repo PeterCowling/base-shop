@@ -1,4 +1,4 @@
-import { t } from "../i18n";
+import { t } from "../i18n.js";
 
 export type BreakerState = 'closed' | 'open' | 'half-open';
 

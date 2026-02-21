@@ -12,7 +12,7 @@ Confidence-Method: Delivery confidence only (implementation readiness + approach
 Business-Unit: BRIK
 Card-ID: BRIK-ENG-0017
 Relates-to charter: none
-Fact-Find-Ref: docs/plans/prime-guest-portal-gap-fact-find.md
+Fact-Find-Ref: docs/plans/prime-guest-portal-gap-lp-do-fact-find.md
 Re-planned: 2026-02-10 (iteration 12)
 Build-progress: 61/61 tasks complete (all TASK-01 through TASK-61 complete)
 ---
@@ -356,7 +356,7 @@ Rows below are in **numeric TASK-ID order**.
 
 ### Scope Selected
 
-This `/re-plan` pass targeted the highest-risk low-confidence tasks that either:
+This `/lp-do-replan` pass targeted the highest-risk low-confidence tasks that either:
 1. Block MVP safety gates (`TASK-39`, `TASK-40`, `TASK-41`, `TASK-43`, `TASK-44`)
 2. Block near-term sequential build order (`TASK-12`, `TASK-14`, `TASK-15`)
 3. Block owner/business rollout confidence (`TASK-47`, `TASK-48`, `TASK-49`)
@@ -404,7 +404,7 @@ Audit work already completed for this pass:
 
 ### Scope Selected
 
-This `/re-plan` pass covered the remaining active sub-80 tasks identified in Iteration 2:
+This `/lp-do-replan` pass covered the remaining active sub-80 tasks identified in Iteration 2:
 
 - `TASK-20`, `TASK-21`, `TASK-22`
 - `TASK-24`, `TASK-25`, `TASK-26`, `TASK-27`
@@ -445,7 +445,7 @@ Work remains valuable and unblocked, but these items still need additional evide
 
 ### Scope Selected
 
-This `/re-plan` pass focused on the previously sub-80 tasks in the TASK-20..TASK-30 implementation window:
+This `/lp-do-replan` pass focused on the previously sub-80 tasks in the TASK-20..TASK-30 implementation window:
 
 - `TASK-21`
 - `TASK-22`
@@ -490,7 +490,7 @@ This `/re-plan` pass focused on the previously sub-80 tasks in the TASK-20..TASK
 
 ### Scope Selected
 
-This `/re-plan` pass targeted the remaining low-confidence social/deferred tracks:
+This `/lp-do-replan` pass targeted the remaining low-confidence social/deferred tracks:
 
 - `TASK-45`, `TASK-46`
 - `TASK-51`, `TASK-52`, `TASK-53`
@@ -544,7 +544,7 @@ This `/re-plan` pass targeted the remaining low-confidence social/deferred track
 
 ### Scope Selected
 
-This `/re-plan` pass targeted the remaining active work after `TASK-40`:
+This `/lp-do-replan` pass targeted the remaining active work after `TASK-40`:
 
 - `TASK-41` through `TASK-50`
 
@@ -597,7 +597,7 @@ This `/re-plan` pass targeted the remaining active work after `TASK-40`:
 
 ### Scope Selected
 
-This `/re-plan` pass targeted all remaining sub-80% active tasks:
+This `/lp-do-replan` pass targeted all remaining sub-80% active tasks:
 
 - `TASK-42`, `TASK-43`, `TASK-44`, `TASK-45`, `TASK-46`
 - `TASK-47`, `TASK-48`, `TASK-49`
@@ -672,7 +672,7 @@ Tasks NOT promoted (TASK-43, 44, 45, 46, 47, 48, 49): all gaps are confirmed as 
 
 ### Scope Selected
 
-This `/re-plan` pass targeted the remaining deferred low-confidence tasks:
+This `/lp-do-replan` pass targeted the remaining deferred low-confidence tasks:
 
 - `TASK-51`
 - `TASK-52`
@@ -718,19 +718,19 @@ Conditional confidence is now explicit:
 
 ### Sequencing Applied (Decomposition Closure)
 
-`/sequence-plan` equivalent ordering was applied after decomposition (no renumber required because new tasks append after `TASK-53`):
+`/lp-sequence` equivalent ordering was applied after decomposition (no renumber required because new tasks append after `TASK-53`):
 
 1. Wave 1: `TASK-54`, `TASK-57`, `TASK-60`
 2. Wave 2: `TASK-55`, `TASK-58`, `TASK-61`
 3. Wave 3: `TASK-56`, `TASK-59`
-4. Wave 4: `TASK-51`, `TASK-52`, `TASK-53` (only after precursor completion and follow-up `/re-plan` promotion)
+4. Wave 4: `TASK-51`, `TASK-52`, `TASK-53` (only after precursor completion and follow-up `/lp-do-replan` promotion)
 
 ### Wave Execution Update (2026-02-10)
 
 - Completed from Wave 1: `TASK-54`, `TASK-57`, `TASK-60`.
 - Completed from Wave 2: `TASK-55`, `TASK-58`, `TASK-61`.
 - Completed from Wave 3: `TASK-56`, `TASK-59`.
-- Wave 4 promotion check completed via `/re-plan` and `/sequence-plan` verification.
+- Wave 4 promotion check completed via `/lp-do-replan` and `/lp-sequence` verification.
 - Active sequence: Wave 4 build-ready tasks `TASK-51`, `TASK-52`, `TASK-53`.
 
 ## Re-plan Iteration 12 (2026-02-10)
@@ -3368,7 +3368,7 @@ Precursor chains (`TASK-54`..`TASK-61`) are now complete. Wave 4 tasks are imple
 ### Resolved (2026-02-07)
 
 - Q: How much is actually implemented?
-  - A: Substantially more than the old plan claimed. See fact-find `docs/plans/prime-guest-portal-gap-fact-find.md` for full code truth assessment.
+  - A: Substantially more than the old plan claimed. See lp-do-fact-find `docs/plans/prime-guest-portal-gap-lp-do-fact-find.md` for full code truth assessment.
 
 - Q: Is Firebase the right data store?
   - A: Yes for now. Comprehensive schema (40+ nodes), security rules, real-time subscriptions. No migration planned.

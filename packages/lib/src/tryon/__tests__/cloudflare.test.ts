@@ -1,5 +1,5 @@
-import { BUDGET } from "../index";
-import * as cloudflare from "../providers/cloudflare";
+import { BUDGET } from "../index.js";
+import * as cloudflare from "../providers/cloudflare.js";
 
 jest.mock(
   "@acme/i18n/en.json",

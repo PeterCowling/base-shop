@@ -125,66 +125,67 @@ export const StickyPosition: Story = {
   ),
 };
 
-export const Interactive: Story = {
-  render: () => {
-    const [selectedItems, setSelectedItems] = useState<number[]>([1, 3, 5]);
+function InteractiveStory() {
+  const [selectedItems, setSelectedItems] = useState<number[]>([1, 3, 5]);
 
-    const items = Array.from({ length: 10 }, (_, i) => ({
-      id: i + 1,
-      name: `Item ${i + 1}`,
-    }));
+  const items = Array.from({ length: 10 }, (_, i) => ({
+    id: i + 1,
+    name: `Item ${i + 1}`,
+  }));
 
-    const toggleItem = (id: number) => {
-      setSelectedItems((prev) =>
-        prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
-      );
-    };
-
-    return (
-      <div className="space-y-4">
-        {selectedItems.length > 0 && (
-          <BulkActions
-            selectedCount={selectedItems.length}
-            totalCount={items.length}
-            actions={[
-              {
-                id: 'export',
-                label: 'Export',
-                icon: Download,
-                onClick: () => alert(`Exporting ${selectedItems.length} items`),
-              },
-              {
-                id: 'delete',
-                label: 'Delete',
-                icon: Trash2,
-                onClick: () => {
-                  if (confirm(`Delete ${selectedItems.length} items?`)) {
-                    setSelectedItems([]);
-                  }
-                },
-                variant: 'danger',
-              },
-            ]}
-            onClearSelection={() => setSelectedItems([])}
-          />
-        )}
-
-        <div className="space-y-2 rounded border border-slate-200 p-4">
-          {items.map((item) => (
-            <label key={item.id} className="flex items-center gap-3 rounded p-2 hover:bg-slate-50">
-              <input
-                type="checkbox"
-                checked={selectedItems.includes(item.id)}
-                onChange={() => toggleItem(item.id)}
-                className="rounded"
-              />
-              <span className="text-sm">{item.name}</span>
-            </label>
-          ))}
-        </div>
-      </div>
+  const toggleItem = (id: number) => {
+    setSelectedItems((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
     );
-  },
+  };
+
+  return (
+    <div className="space-y-4">
+      {selectedItems.length > 0 && (
+        <BulkActions
+          selectedCount={selectedItems.length}
+          totalCount={items.length}
+          actions={[
+            {
+              id: 'export',
+              label: 'Export',
+              icon: Download,
+              onClick: () => alert(`Exporting ${selectedItems.length} items`),
+            },
+            {
+              id: 'delete',
+              label: 'Delete',
+              icon: Trash2,
+              onClick: () => {
+                if (confirm(`Delete ${selectedItems.length} items?`)) {
+                  setSelectedItems([]);
+                }
+              },
+              variant: 'danger',
+            },
+          ]}
+          onClearSelection={() => setSelectedItems([])}
+        />
+      )}
+
+      <div className="space-y-2 rounded border border-slate-200 p-4">
+        {items.map((item) => (
+          <label key={item.id} className="flex items-center gap-3 rounded p-2 hover:bg-slate-50">
+            <input
+              type="checkbox"
+              checked={selectedItems.includes(item.id)}
+              onChange={() => toggleItem(item.id)}
+              className="rounded"
+            />
+            <span className="text-sm">{item.name}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
+export const Interactive: Story = {
+  render: () => <InteractiveStory />,
 };
 
 export const DarkMode: Story = {

@@ -67,11 +67,11 @@ function applyTemplate(template: string, values: Record<string, string>): string
 
 function toneClasses(tone: StatusTone): string {
   if (tone === "good")
-    return "bg-emerald-100 text-emerald-800"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+    return "bg-success-soft text-success-fg"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
   if (tone === "warn")
-    return "bg-amber-100 text-amber-800"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+    return "bg-warning-soft text-warning-fg"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
   if (tone === "bad")
-    return "bg-red-100 text-red-800"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+    return "bg-danger-soft text-danger-fg"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
   return "bg-surface-3 text-foreground/70"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
 }
 

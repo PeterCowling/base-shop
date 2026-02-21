@@ -95,7 +95,7 @@ _Record observations, patterns, or insights during baseline collection:_
 
 ## How to Use This Document
 
-1. **Start date:** When you begin using `/process-emails` regularly
+1. **Start date:** When you begin using `/ops-inbox` regularly
 2. **Track daily:** Spend 2 minutes at end of day logging metrics
 3. **After 1 week:** Calculate summaries and type distribution
 4. **Compare:** After 2 weeks of automation, compare to these baselines

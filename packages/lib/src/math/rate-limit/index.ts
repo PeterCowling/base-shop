@@ -4,8 +4,8 @@ export type {
   LeakyBucketOptions,
   TokenBucketOptions,
   TokenBucketState,
-} from "./token-bucket";
+} from "./token-bucket.js";
 export {
   LeakyBucket,
   TokenBucket,
-} from "./token-bucket";
+} from "./token-bucket.js";

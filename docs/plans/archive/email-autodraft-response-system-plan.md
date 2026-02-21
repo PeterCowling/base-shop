@@ -24,10 +24,10 @@ No active tasks at this time.
 
 ## Summary
 
-Build an email response drafting system for Hostel Brikette using Claude Code with MCP tools. Pete runs `/process-emails` in Claude Code, which uses MCP tools to fetch pending emails from Gmail, access the knowledge base (FAQ, rooms, pricing), and create draft responses. All drafts are reviewed by Pete before sending, maintaining human-in-loop quality control.
+Build an email response drafting system for Hostel Brikette using Claude Code with MCP tools. Pete runs `/ops-inbox` in Claude Code, which uses MCP tools to fetch pending emails from Gmail, access the knowledge base (FAQ, rooms, pricing), and create draft responses. All drafts are reviewed by Pete before sending, maintaining human-in-loop quality control.
 
 **Architecture Decision (2026-02-01):** Pattern B - Claude Code + MCP Tools
-- Primary interface: Claude Code (CLI) with `/process-emails` skill
+- Primary interface: Claude Code (CLI) with `/ops-inbox` skill
 - Integration: Extend existing MCP server (`packages/mcp-server/`) with Gmail tools
 - Knowledge base: Exposed as MCP resources (FAQ, rooms, pricing, policies)
 - Human-in-loop: Pete initiates sessions and reviews all drafts before sending
@@ -65,7 +65,7 @@ Build an email response drafting system for Hostel Brikette using Claude Code wi
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/email-autodraft-response-system-fact-find.md`
+- Related brief: `docs/plans/email-autodraft-response-system-lp-do-fact-find.md`
 - Workflow design: `docs/plans/email-autodraft-workflow-design.md`
 - Key findings:
   - MCP server infrastructure exists with 12 tool modules and established patterns
@@ -86,7 +86,7 @@ Build an email response drafting system for Hostel Brikette using Claude Code wi
   - `apps/brikette/src/locales/en/faq.json` - 29 FAQ items (knowledge base source)
   - `apps/brikette/src/config/rooms.ts` - Room configurations with pricing
   - `apps/brikette/src/data/menuPricing.ts` - Bar and breakfast menu prices
-  - `.claude/skills/process-emails/SKILL.md` - Skill file (already created as placeholder)
+  - `.claude/skills/ops-inbox/SKILL.md` - Skill file (already created as placeholder)
 
 - Patterns to follow:
   - Tool pattern: `packages/mcp-server/src/tools/health.ts` (tool definitions + handleTool function)
@@ -486,7 +486,7 @@ Brikette/
 
 - **Type:** IMPLEMENT
 - **Effort:** M
-- **Affects:** `.claude/skills/process-emails/SKILL.md`
+- **Affects:** `.claude/skills/ops-inbox/SKILL.md`
 - **Depends on:** TASK-02, TASK-03
 - **Status:** Complete (2026-02-02)
 - **Confidence:** 85%
@@ -510,18 +510,18 @@ Brikette/
   - Unexpected findings: None - existing skill provides good starting point
 - **Rollout / rollback:**
   - Rollout: Skill available immediately after file update
-  - Rollback: Revert to placeholder version; `/process-emails` still invocable
+  - Rollback: Revert to placeholder version; `/ops-inbox` still invocable
 - **Documentation impact:**
   - Update: Skill file is itself documentation
   - Update: `docs/guides/brikette-email-workflow.md` with skill usage
 - **Notes / references:**
-  - Existing skill: `.claude/skills/process-emails/SKILL.md`
+  - Existing skill: `.claude/skills/ops-inbox/SKILL.md`
   - Workflow design: `docs/plans/email-autodraft-workflow-design.md` (Skill Design section)
 
 #### Build Completion (2026-02-02)
 
 - **Files modified:**
-  - `.claude/skills/process-emails/SKILL.md` - Enhanced with complete workflow
+  - `.claude/skills/ops-inbox/SKILL.md` - Enhanced with complete workflow
 - **Implementation notes:**
   - Added new action types: `acknowledged` (informational emails), `promotional` (marketing/newsletters)
   - Updated classification categories to include Informational and Promotional types
@@ -548,7 +548,7 @@ Brikette/
 
 - **Type:** IMPLEMENT
 - **Effort:** S
-- **Affects:** Part of skill file (`.claude/skills/process-emails/SKILL.md`)
+- **Affects:** Part of skill file (`.claude/skills/ops-inbox/SKILL.md`)
 - **Depends on:** TASK-06
 - **Status:** Complete (2026-02-02)
 - **Confidence:** 88%
@@ -673,7 +673,7 @@ Brikette/
   - Approach: 78% - Component verification order established; each step validates before proceeding
   - Impact: 75% - Test isolation via `Brikette/Test/` label hierarchy; rollback documented; failure scenarios mapped
 - **Investigation performed:**
-  - Repo: `.claude/skills/process-emails/SKILL.md:1-314` - skill file confirmed comprehensive with error handling sections
+  - Repo: `.claude/skills/ops-inbox/SKILL.md:1-314` - skill file confirmed comprehensive with error handling sections
   - Repo: `packages/mcp-server/src/tools/health.ts:29-63` - health check pattern provides template for component verification
   - External: Gmail label hierarchy design confirmed standard (nested labels supported)
 - **Decision / resolution:**
@@ -733,7 +733,7 @@ Brikette/
 - **Manual validation still needed:**
   - Create draft and verify appears in Gmail
   - Apply Needs-Processing label and verify gmail_list_pending returns it
-  - Full workflow with /process-emails skill
+  - Full workflow with /ops-inbox skill
 - **Acceptance criteria status:**
   - [x] Gmail API connection working
   - [x] Email listing works correctly
@@ -813,7 +813,7 @@ Brikette/
 ## Acceptance Criteria (overall)
 
 - [x] MCP server starts with Gmail tools and knowledge base resources
-- [x] `/process-emails` skill guides complete email processing workflow
+- [x] `/ops-inbox` skill guides complete email processing workflow
 - [x] Can list pending customer emails from Gmail
 - [x] Can fetch email details with thread context
 - [x] Can access FAQ, rooms, pricing from knowledge base
@@ -833,9 +833,9 @@ Brikette/
 - 2026-02-01: GDPR position - Anthropic DPA accepted as sufficient coverage
 - 2026-02-01: Baseline metrics - Deferred to INVESTIGATE task (TASK-10)
 - 2026-02-01: Gmail API vs GAS bridge - Gmail API direct integration chosen for MCP tools
-- 2026-02-01 (re-plan): **OAuth approach** - User OAuth with refresh token (Option B) selected for MVP. Service account (Option A) rejected because it requires Google Workspace admin and adds complexity for no benefit in local MCP scenario. Packages: `googleapis@105` + `@google-cloud/local-auth@2.1.0`.
-- 2026-02-01 (re-plan): **Rate limits** - Confirmed acceptable. Gmail API allows 15,000 quota units/min/user. Expected usage ~100-200 units/day (10-20 emails). Well within limits.
-- 2026-02-01 (re-plan): **E2E test strategy** - Phased component-by-component testing with `Brikette/Test/` label isolation. Six phases with explicit success criteria per phase.
+- 2026-02-01 (lp-do-replan): **OAuth approach** - User OAuth with refresh token (Option B) selected for MVP. Service account (Option A) rejected because it requires Google Workspace admin and adds complexity for no benefit in local MCP scenario. Packages: `googleapis@105` + `@google-cloud/local-auth@2.1.0`.
+- 2026-02-01 (lp-do-replan): **Rate limits** - Confirmed acceptable. Gmail API allows 15,000 quota units/min/user. Expected usage ~100-200 units/day (10-20 emails). Well within limits.
+- 2026-02-01 (lp-do-replan): **E2E test strategy** - Phased component-by-component testing with `Brikette/Test/` label isolation. Six phases with explicit success criteria per phase.
 
 ---
 
@@ -880,7 +880,7 @@ Effort-weighted average:
 
 **Tasks Blocked (<60%):** 0 tasks
 
-**Recommended Action:** Proceed to `/build-feature`. All implementation tasks are now >=80% except TASK-09 (integration test at 78%), which is acceptable given its nature as a verification task with explicit phased testing strategy.
+**Recommended Action:** Proceed to `/lp-do-build`. All implementation tasks are now >=80% except TASK-09 (integration test at 78%), which is acceptable given its nature as a verification task with explicit phased testing strategy.
 
 **Build Order:**
 1. TASK-03 + TASK-04 (parallel, no dependencies)

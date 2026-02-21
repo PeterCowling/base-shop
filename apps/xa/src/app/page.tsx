@@ -56,7 +56,7 @@ export default function HomePage() {
             </div>
             <Button
               asChild
-              className="xa-hero-cta rounded-none bg-black px-6 text-white hover:bg-neutral-900"
+              className="xa-hero-cta rounded-none bg-fg px-6 text-fg-inverse hover:bg-fg/90"
             >
               <Link href="/account/register">Join Us</Link>
             </Button>

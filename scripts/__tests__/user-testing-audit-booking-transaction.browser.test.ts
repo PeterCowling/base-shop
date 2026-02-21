@@ -3,7 +3,7 @@ import { createServer, type Server } from "node:http";
 
 import { type Browser, chromium, type Page } from "playwright";
 
-import bookingTransactionPredicates from "../../.claude/skills/user-testing-audit/scripts/booking-transaction-predicates.cjs";
+import bookingTransactionPredicates from "../../.claude/skills/meta-user-test/scripts/booking-transaction-predicates.cjs";
 
 const { evaluateBookingTransactionCheck, collectBookingTransactionRegressionIssues } =
   bookingTransactionPredicates;
@@ -284,7 +284,28 @@ async function runRoomTransaction(browser: Browser, origin: string) {
   }
 }
 
-describe("user-testing-audit booking transaction browser flow", () => {
+// Skip when Playwright browsers are not installed (e.g. CI without playwright install step)
+const canLaunchBrowser = (() => {
+  try {
+    const { execSync } = require("child_process");
+    const out = execSync("npx playwright install --help 2>&1 || true", {
+      encoding: "utf8",
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+    // Check if chromium binary path exists
+    const browserPath = execSync(
+      'node -e "try{console.log(require(\'playwright\').chromium.executablePath())}catch{}"',
+      { encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] },
+    ).trim();
+    return !!browserPath && require("fs").existsSync(browserPath);
+  } catch {
+    return false;
+  }
+})();
+
+const describeOrSkip = canLaunchBrowser ? describe : describe.skip;
+
+describeOrSkip("meta-user-test booking transaction browser flow", () => {
   jest.setTimeout(90000);
 
   let browser: Browser | null = null;

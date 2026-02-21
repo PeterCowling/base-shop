@@ -113,6 +113,32 @@ pnpm --filter @acme/mcp-server start
 | `theme_compare` | Compare theme tokens between shops or presets |
 | `theme_validate` | Validate theme configuration and check for issues |
 
+### Octorate Tools
+
+| Tool | Description |
+|------|-------------|
+| `octorate_login_interactive` | Opens local Chrome, logs in, waits for you to complete MFA, saves session state |
+| `octorate_calendar_check` | Uses saved session state to verify the calendar page can be opened headless |
+
+### Startup-Loop Data Plane Tools
+
+| Tool | Type | Description |
+|------|------|-------------|
+| `bos_cards_list` | Read | List Business OS cards scoped to startup-loop context |
+| `bos_stage_doc_get` | Read | Read stage-doc content and current `entitySha` |
+| `bos_stage_doc_patch_guarded` | Guarded write | Patch stage-doc with optimistic concurrency (`baseEntitySha`) |
+| `loop_manifest_status` | Read | Read baseline manifest status and freshness envelope |
+| `loop_learning_ledger_status` | Read | Read learning-ledger health and freshness |
+| `loop_metrics_summary` | Read | Read aggregated loop metrics and freshness |
+
+### Startup-Loop Policy Model
+
+- Phase-1 strict enforcement applies to `bos_*` and `loop_*` tools only.
+- Required policy metadata includes permission, side effects, allowed stages, and audit tag.
+- Guarded writes require `current_stage`, `write_reason`, and `baseEntitySha`.
+- Legacy non-loop tools run in compatibility mode and are logged for future annotation.
+- Guarded write conflicts return `CONFLICT_ENTITY_SHA` with `re_read_required=true`; MCP does not auto-merge/retry.
+
 ## Resources
 
 | URI | Description |
@@ -139,7 +165,15 @@ The MCP server is configured in `.claude/settings.json`:
 
 ## Environment Variables
 
+- `OCTORATE_USERNAME` - Octorate login username (required for `octorate_*` tools)
+- `OCTORATE_PASSWORD` - Octorate login password (required for `octorate_*` tools; do not commit)
+- `OCTORATE_STORAGE_STATE_PATH` - Optional path to storage state JSON (default: `.secrets/octorate/storage-state.json`)
+- `OCTORATE_CHROME_EXECUTABLE` - Optional path to Chrome executable (defaults to common OS paths)
 - `DATABASE_URL` - PostgreSQL connection string (required for Prisma operations)
+- `BOS_AGENT_API_BASE_URL` - Base URL for Business OS agent API (required for `bos_*` tools)
+- `BOS_AGENT_API_KEY` - API key for Business OS agent API (required for `bos_*` tools)
+- `STARTUP_LOOP_ARTIFACT_ROOT` - Optional artifact root for `loop_*` tools (default: repo root)
+- `STARTUP_LOOP_STALE_THRESHOLD_SECONDS` - Freshness threshold for `loop_*` tools (default: 30 days)
 
 ## Development
 
@@ -152,6 +186,12 @@ pnpm --filter @acme/mcp-server exec tsc --noEmit
 
 # Run in development mode
 pnpm --filter @acme/mcp-server dev
+
+# Run startup-loop integration suite (stable wrapper config)
+pnpm --filter @acme/mcp-server test:startup-loop
+
+# Run startup-loop MCP preflight checks (local/ci/deployed profiles)
+pnpm preflight:mcp-startup-loop -- --profile local
 ```
 
 ## Architecture

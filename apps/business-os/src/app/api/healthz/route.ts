@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- server-side API route — error messages and status strings, not customer-facing UI copy [DS-02] */
 /**
  * Health Check Endpoint
  * MVP-A2: Detailed health information for monitoring

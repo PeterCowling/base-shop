@@ -2,16 +2,24 @@ import { afterEach, beforeEach, describe, expect, jest,test } from "@jest/global
 
 import { collectProductSlugs, filterExistingProductSlugs,getConfig } from "../config";
 
-const getShopById = jest.fn<any, any[]>();
-const getSanityConfig = jest.fn<any, any[]>();
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
+  getShopById: jest.fn(),
+}));
+jest.mock("@acme/platform-core/shops", () => ({
+  getSanityConfig: jest.fn(),
+}));
 
-jest.mock("@acme/platform-core/repositories/shop.server", () => ({ getShopById }));
-jest.mock("@acme/platform-core/shops", () => ({ getSanityConfig }));
+const { getShopById: mockGetShopById } = jest.requireMock(
+  "@acme/platform-core/repositories/shop.server"
+) as { getShopById: jest.Mock<any, any[]> };
+const { getSanityConfig: mockGetSanityConfig } = jest.requireMock(
+  "@acme/platform-core/shops"
+) as { getSanityConfig: jest.Mock<any, any[]> };
 
 describe("blog config service", () => {
   beforeEach(() => {
-    getShopById.mockReset();
-    getSanityConfig.mockReset();
+    mockGetShopById.mockReset();
+    mockGetSanityConfig.mockReset();
   });
 
   afterEach(() => {
@@ -20,14 +28,14 @@ describe("blog config service", () => {
 
   test("getConfig returns sanity config", async () => {
     const config = { projectId: "p", dataset: "d", token: "t" };
-    getShopById.mockResolvedValue({ id: "shop1" });
-    getSanityConfig.mockReturnValue(config);
+    mockGetShopById.mockResolvedValue({ id: "shop1" });
+    mockGetSanityConfig.mockReturnValue(config);
     await expect(getConfig("shop1")).resolves.toEqual(config);
   });
 
   test("getConfig throws when missing config", async () => {
-    getShopById.mockResolvedValue({ id: "shop2" });
-    getSanityConfig.mockReturnValue(undefined);
+    mockGetShopById.mockResolvedValue({ id: "shop2" });
+    mockGetSanityConfig.mockReturnValue(undefined);
     await expect(getConfig("shop2")).rejects.toThrow(
       "Missing Sanity config for shop shop2",
     );
@@ -101,4 +109,3 @@ describe("blog config service", () => {
     });
   });
 });
-

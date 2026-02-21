@@ -1,0 +1,74 @@
+---
+# Startup Loop Contract Migration Window (Canonical)
+#
+# This file is canonical for human review and for lint/tooling.
+# Runtime MUST NOT read this file from the filesystem.
+# Runtime uses a build-time embedded module: apps/business-os/src/lib/contract-migration.generated.ts
+#
+# Semantics:
+# - Cutoffs are inclusive through 23:59:59Z on the given date.
+# - If config is missing/invalid at runtime, legacy behavior must fail-closed
+#   (aliases + dual-read disabled) while canonical behavior continues.
+
+version: "1"
+
+timebox:
+  # Stage-key aliases are accepted (and normalized) until this cutoff.
+  alias_accept_until_utc: "2026-02-14"
+
+  # Dual-read legacy filenames until this cutoff.
+  dual_read_until_utc: "2026-02-14"
+
+  # Lint escalates from WARN to FAIL after this date.
+  lint_warn_until_utc: "2026-02-14"
+
+stage_aliases:
+  lp-do-fact-find: fact-find
+
+filename_aliases:
+  fact-finding.user.md: fact-find.user.md
+
+allowlists:
+  # Temporary allowlist for references to legacy filenames.
+  # Use only for archived docs/fixtures. Remove after the compatibility window.
+  legacy_filename_refs: []
+
+  # Temporary allowlist for legacy stage keys emitted by skills.
+  # Should be empty quickly; use only to avoid breaking unrelated work during window start.
+  legacy_stage_key_emitters: []
+
+# Stage Addressing Resolver Contract (added TASK-18, 2026-02-18)
+#
+# The stage-addressing resolver (scripts/src/startup-loop/stage-addressing.ts) implements
+# fail-closed addressing hierarchy. This section documents the addressing contract.
+#
+# Addressing hierarchy (in priority order):
+#   1. --stage <ID>          Canonical stage ID (S0–S10). Case-insensitive. Always primary.
+#   2. --stage-alias <slug>  Deterministic slug from alias_index in stage-operator-map.json.
+#                            Fail-closed: unknown alias returns non-success with suggestions.
+#   3. --stage-label <text>  Exact canonical label (case-sensitive). Fail-closed on near-match.
+#
+# Canonical alias source: docs/business-os/startup-loop/_generated/stage-operator-map.json
+# Re-generate with: pnpm --filter scripts generate-stage-operator-views
+#
+# Backward compatibility:
+#   - --stage <ID> is permanent and must never be removed.
+#   - --stage-alias resolves via alias_index which is generated and stable.
+#   - --stage-label requires exact match; consumer must use canonical labels from stage-operator-table.md.
+stage_addressing:
+  resolver_module: "scripts/src/startup-loop/stage-addressing.ts"
+  canonical_alias_source: "docs/business-os/startup-loop/_generated/stage-operator-map.json"
+  modes:
+    - id: id
+      flag: "--stage"
+      behavior: "canonical-always"
+      fallback: suggest_alias
+    - id: alias
+      flag: "--stage-alias"
+      behavior: "fail-closed"
+      fallback: deterministic_suggestions
+    - id: label
+      flag: "--stage-label"
+      behavior: "exact-match-only"
+      fallback: canonical_label_list
+---

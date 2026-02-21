@@ -14,7 +14,7 @@ The primary UX aspiration is that a non‑technical shop owner can go from “no
 
 - `docs/cms/build-shop-guide.md` (see **Launch in under an hour** and **Required checks in plain language**).
 - `docs/cms/shop-build-journey-map.md` (see **One-hour launch path (minimum viable)**).
-- `docs/cms/shop-build-docs-help-plan.md` (docs/help/telemetry spec for CMS-BUILD-11).
+- `docs/cms/shop-build-docs-help-do-plan.md` (docs/help/telemetry spec for CMS-BUILD-11).
 
 ## Active tasks
 
@@ -229,7 +229,7 @@ The primary UX aspiration is that a non‑technical shop owner can go from “no
   - Status: ☑
   - Scope:
     - Emit and analyse build-flow telemetry to measure how close the experience is to the one-hour launch aspiration:
-      - Ensure Configurator steps and related surfaces emit `build_flow_step_*`, `build_flow_first_product_*`, `build_flow_help_requested`, `build_flow_exit`, and `build_flow_launch_ready` events following `docs/cms/shop-build-docs-help-plan.md` and `docs/cms/configurator-contract.md`.
+      - Ensure Configurator steps and related surfaces emit `build_flow_step_*`, `build_flow_first_product_*`, `build_flow_help_requested`, `build_flow_exit`, and `build_flow_launch_ready` events following `docs/cms/shop-build-docs-help-do-plan.md` and `docs/cms/configurator-contract.md`.
       - Define basic metrics (in observability docs or dashboards) for:
         - Time from first `build_flow_step_view` for a shop to its first `build_flow_launch_ready`.
         - Percentage of shops that reach `build_flow_launch_ready` within 60 minutes.

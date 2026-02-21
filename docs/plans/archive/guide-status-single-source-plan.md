@@ -44,7 +44,7 @@ Business-Unit: BRIK
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/guide-status-single-source-fact-find.md`
+- Related brief: `docs/plans/guide-status-single-source-lp-do-fact-find.md`
 - Key findings:
   - Module init order guarantees manifest registry is populated before `guides.index.ts` evaluates (already proven by `section` derivation on line 185)
   - No circular dependency risk — import graph is acyclic: `guides.index.ts → namespaces.ts → guide-manifest.ts`

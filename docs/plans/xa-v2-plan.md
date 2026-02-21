@@ -3,18 +3,21 @@ Type: Plan
 Status: Active
 Domain: Commerce
 Created: 2026-02-11
-Last-updated: 2026-02-11
+Last-updated: 2026-02-14
+Last-reviewed: 2026-02-14
 Relates-to charter: none
 Feature-Slug: xa-v2
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
-Supporting-Skills: safe-commit-push-ci
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: ops-ship
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by Effort
 Supersedes:
   - docs/plans/archive/xa-client-readiness-plan.md
   - docs/plans/archive/xa-publish-privacy-plan.md
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # XA v2 Plan
@@ -51,16 +54,16 @@ XA is a member rewards storefront (Next.js 15 + React 19). The app is locally ve
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| XA-V2-01 | IMPLEMENT | Deploy to Cloudflare staging + verify | 82% | M | Pending | - | XA-V2-02, XA-V2-03 |
+| XA-V2-01 | IMPLEMENT | Deploy to Cloudflare staging + verify | 82% | M | Blocked | - | XA-V2-02, XA-V2-03 |
 | XA-V2-02 | INVESTIGATE | Cloudflare account #2 + Pages/Access setup | 82% | M | Pending | XA-V2-01 | - |
 | XA-V2-03 | DECISION | Assess landing page content | 85% | S | Pending | XA-V2-01 | XA-V2-04 |
 | XA-V2-04 | IMPLEMENT | Landing page fixes (if needed) | 80% | M | Pending | XA-V2-03 | XA-V2-05 |
 | XA-V2-05 | IMPLEMENT | Prepare demo script | 90% | S | Pending | XA-V2-03 | - |
-| XA-V2-06 | IMPLEMENT | Run lint checks | 90% | S | Pending | - | - |
+| XA-V2-06 | IMPLEMENT | Run lint checks | 90% | S | Complete | - | - |
 | XA-V2-07 | INVESTIGATE | Establish test coverage baseline | 85% | S | Pending | - | XA-V2-08 |
 | XA-V2-08 | IMPLEMENT | Progress toward 80% coverage | 75% | L | Pending | XA-V2-07 | - |
 
-## Tasks
+## Active tasks
 
 ### XA-V2-01: Deploy to Cloudflare staging + verify
 - **Type:** IMPLEMENT
@@ -69,14 +72,19 @@ XA is a member rewards storefront (Next.js 15 + React 19). The app is locally ve
 - **Effort:** M
 - **Depends on:** -
 - **Blocks:** XA-V2-02, XA-V2-03
-- **Scope:** Trigger CI workflow, verify staging URL responds, health check passes, invite flow works. Previous run `21833231931` was stalled at `actions/checkout@v4` — may need fresh dispatch.
+- **Status:** Blocked (health check failing)
+- **Scope:** Trigger CI workflow, verify staging URL responds, health check passes, invite flow works.
 - **Acceptance:**
   - CI workflow completes successfully
   - Staging URL returns 200 on `/api/health`
   - Core flows accessible: `/`, `/women/clothing`, `/products/mini-parka`, `/cart`, `/wishlist`
-- **Known blockers:**
-  - `XA_STAGING_PROJECT` value and Workers URL pattern need confirmation
-  - Secrets (`SESSION_SECRET`, `XA_STEALTH_INVITE_CODES`) must be set via `wrangler secret put`
+- **Current state (2026-02-14):**
+  - Build succeeds, deploy step completes
+  - Health check fails because `healthcheck-base-url` is not passed to reusable workflow
+  - Workflow passes `environment-url` (Workers URL) but health check script defaults to `.pages.dev` URL construction
+  - GitHub environment `xa-staging` exists with `XA_STAGING_PROJECT=xa-site` and secret `XA_STEALTH_INVITE_CODES`
+  - Expected URL: `https://xa-site.peter-cowling1976.workers.dev`
+- **Next action:** Add `healthcheck-base-url: ${{ inputs.environment-url }}` to `.github/workflows/xa.yml` reusable workflow call
 
 ### XA-V2-02: Cloudflare account #2 + Pages/Access setup
 - **Type:** INVESTIGATE
@@ -135,8 +143,10 @@ XA is a member rewards storefront (Next.js 15 + React 19). The app is locally ve
 - **Effort:** S
 - **Depends on:** -
 - **Blocks:** -
+- **Status:** Complete (2026-02-14)
 - **Scope:** `pnpm --filter @apps/xa-c lint`
 - **Acceptance:** No errors (warnings acceptable)
+- **Result:** `pnpm --filter @apps/xa-c lint` passes with no errors (verified 2026-02-14)
 
 ### XA-V2-07: Establish test coverage baseline
 - **Type:** INVESTIGATE
@@ -161,10 +171,13 @@ XA is a member rewards storefront (Next.js 15 + React 19). The app is locally ve
 
 ## Open Questions (carried forward)
 
-- [ ] Confirm `XA_STAGING_PROJECT` value and resulting Workers URL pattern
+- [x] Confirm `XA_STAGING_PROJECT` value and resulting Workers URL pattern
+  - **Resolved (2026-02-14):** `XA_STAGING_PROJECT=xa-site`, URL pattern is `https://xa-site.peter-cowling1976.workers.dev`
 - [ ] Should preview require Cloudflare Access? If yes, which emails/groups?
-- [ ] What is the demo invite code (`XA_STEALTH_INVITE_CODES`)?
+- [x] What is the demo invite code (`XA_STEALTH_INVITE_CODES`)?
+  - **Resolved (2026-02-14):** Secret is configured in `xa-staging` environment
 - [ ] Who is the client contact for scheduling the review?
+- [ ] Has Cloudflare account #2 been created for stealth staging? (TASK-03 from xa-publish-privacy-plan)
 
 ## Risks & Mitigations
 
@@ -178,3 +191,10 @@ XA is a member rewards storefront (Next.js 15 + React 19). The app is locally ve
 ## Decision Log
 
 - 2026-02-11: Created as consolidated successor to xa-client-readiness-plan and xa-publish-privacy-plan. All completed tasks preserved in archived plans for reference.
+- 2026-02-14: Fact-check completed. Key findings:
+  - XA-V2-01 status updated to "Blocked" - deploy succeeds but health check fails due to missing `healthcheck-base-url` parameter
+  - XA-V2-06 (lint) verified complete - no errors
+  - XA-V2-02 remains pending - no evidence of second Cloudflare account creation
+  - Environment `xa-staging` exists with `XA_STAGING_PROJECT` and `XA_STEALTH_INVITE_CODES` configured
+  - Recent staging branch pushes trigger XA workflow but fail at health check step
+  - Expected staging URL: `https://xa-site.peter-cowling1976.workers.dev` (not yet verified accessible)

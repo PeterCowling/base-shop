@@ -219,4 +219,27 @@ const setTestRuntimeForTests = (value: boolean | undefined): void => {
   forcedTestRuntime = value;
 };
 
-export { ensureDocument, globalRef, setTestRuntimeForTests,setWindowLocationHref };
+// ---------------------------------------------------------------------------
+// SSR-safe document/body accessors — used by modal effect hooks
+// ---------------------------------------------------------------------------
+
+export const getDocument = (): (Document | DocumentShim) | undefined => {
+  if (typeof globalThis === "undefined") return undefined;
+  const maybeDocument = ensureDocument();
+  return maybeDocument ?? undefined;
+};
+
+export type ShimBodyElement = HTMLElement | DocumentShim["body"];
+
+export const getDocumentBody = (): ShimBodyElement | null => {
+  const targetDocument = getDocument();
+  if (!targetDocument) return null;
+  const body = targetDocument.body;
+  if (!body) return null;
+  if (body instanceof HTMLElement) {
+    return body;
+  }
+  return body as DocumentShim["body"];
+};
+
+export { ensureDocument, globalRef, setTestRuntimeForTests, setWindowLocationHref };

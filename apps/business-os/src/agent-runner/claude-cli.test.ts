@@ -6,7 +6,7 @@ describe("agent-runner/claude-cli", () => {
   it("builds args for non-interactive JSON output", () => {
     const args = buildClaudeArgs({
       cwd: "/repo",
-      prompt: "/scan-repo",
+      prompt: "/idea-scan",
       outputFormat: "json",
       permissionMode: "dontAsk",
       allowedTools: "Bash,Read",
@@ -23,7 +23,7 @@ describe("agent-runner/claude-cli", () => {
       "Bash,Read",
       "--max-turns",
       "3",
-      "/scan-repo",
+      "/idea-scan",
     ]);
   });
 });

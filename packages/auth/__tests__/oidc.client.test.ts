@@ -10,7 +10,7 @@ globalThis.__oidcClientTestDiscover = jest.fn(async () => ({
   Client: function Client(this: any, config: any) {
     this.config = config;
   },
-}));
+})) as unknown as jest.Mock;
 
 const discover = globalThis.__oidcClientTestDiscover!;
 

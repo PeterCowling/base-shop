@@ -5,7 +5,8 @@ import { listSectionHistory } from "@acme/platform-core/repositories/sections/se
 
 export const runtime = "nodejs";
 
-export async function GET(_req: Request, { params }: { params: { shop: string } }) {
+export async function GET(_req: Request, props: { params: Promise<{ shop: string }> }) {
+  const params = await props.params;
   try {
     await requirePermission("manage_pages");
   } catch {

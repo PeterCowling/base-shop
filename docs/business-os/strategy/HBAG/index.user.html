@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Brand & Strategy Index — HBAG</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>Brand &#x26; Strategy Index — HBAG</h1>
+<p>This index is the single gate-check lookup for brand artifact status.
+Gates read <code>Status</code> from this table — not from individual file frontmatters.</p>
+<h2>Brand Artifacts</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Path</th>
+<th>Status</th>
+<th>Last-reviewed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brand Dossier</td>
+<td><code>docs/business-os/strategy/HBAG/brand-dossier.user.md</code></td>
+<td>Draft</td>
+<td>2026-02-17</td>
+</tr>
+<tr>
+<td>Competitive Positioning</td>
+<td><code>docs/business-os/strategy/HBAG/competitive-positioning.user.md</code></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Messaging Hierarchy</td>
+<td><code>docs/business-os/strategy/HBAG/messaging-hierarchy.user.md</code></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Creative Voice Brief</td>
+<td><code>docs/business-os/strategy/HBAG/creative-voice-brief.user.md</code></td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Status vocabulary:</strong></p>
+<ul>
+<li><code>—</code> Not yet created</li>
+<li><code>Draft</code> Created; not all required fields complete; minimum proof ledger may be absent</li>
+<li><code>Active</code> All required frontmatter fields non-TBD; proof ledger has ≥1 entry; reviewed by Pete</li>
+</ul>
+<h2>Gate Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Gate ID</th>
+<th>Artifact checked</th>
+<th>Required status</th>
+<th>Hard/Soft</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GATE-BD-01</td>
+<td>Brand Dossier</td>
+<td>Draft minimum</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>GATE-BD-02</td>
+<td>Competitive Positioning</td>
+<td>Draft minimum</td>
+<td>Soft (warning)</td>
+</tr>
+<tr>
+<td>GATE-BD-03</td>
+<td>Messaging Hierarchy</td>
+<td>Draft minimum</td>
+<td>Hard (S2B Done gate)</td>
+</tr>
+<tr>
+<td>GATE-BD-04</td>
+<td>Creative Voice Brief</td>
+<td>—</td>
+<td>Soft (warning after S6B)</td>
+</tr>
+<tr>
+<td>GATE-BD-05</td>
+<td>Brand Dossier</td>
+<td>Active</td>
+<td>Hard (lp-launch-qa)</td>
+</tr>
+<tr>
+<td>GATE-BD-06</td>
+<td>Messaging Hierarchy</td>
+<td>Active</td>
+<td>Hard (lp-launch-qa)</td>
+</tr>
+<tr>
+<td>GATE-BD-07</td>
+<td>Brand Dossier</td>
+<td>Active</td>
+<td>Hard (lp-design-spec pre-flight)</td>
+</tr>
+<tr>
+<td>GATE-BD-08</td>
+<td>Competitive Positioning</td>
+<td>Active</td>
+<td>Soft (lp-launch-qa)</td>
+</tr>
+</tbody>
+</table>
+<p>For full gate definitions, see <code>docs/plans/startup-loop-branding-design-module/fact-find.md</code> §Gate Policy Table.</p>
+<h2>Usage</h2>
+<p>When a skill gate checks brand artifact status, it reads this index:</p>
+<pre><code class="language-bash"># Example: GATE-BD-01 check in startup-loop SKILL.md advance rules
+# Gate passes if Brand Dossier Status = Draft or Active
+grep "Brand Dossier" docs/business-os/strategy/HBAG/index.user.md | grep -E "Draft|Active"
+</code></pre>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/HBAG/index.user.md</code></div>
+      <div>Generated: 2026-02-17T10:15:44.101Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

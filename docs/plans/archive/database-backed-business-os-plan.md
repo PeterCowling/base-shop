@@ -92,7 +92,7 @@ This plan front-loads the necessary fact-finding/spikes to avoid building the wr
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/database-backed-business-os-fact-find.md`
+- Related brief: `docs/plans/database-backed-business-os-lp-do-fact-find.md`
 - This plan treats code as truth; remaining unknowns are explicitly tracked (notably: Business OS `next-on-pages` build must be unblocked via Edge runtime conversion, after which D1 binding access can be verified end-to-end).
 
 ## Existing system notes (code truth)
@@ -181,7 +181,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 ### BOS-D1-FF-01: Confirm deployment/runtime target + local dev workflow
 
 - **Type:** FACT-FIND
-- **Affects:** `docs/plans/database-backed-business-os-fact-find.md`, `docs/plans/database-backed-business-os-plan.md`
+- **Affects:** `docs/plans/database-backed-business-os-lp-do-fact-find.md`, `docs/plans/database-backed-business-os-plan.md`
 - **Depends on:** -
 - **Confidence:** 85%
   - Implementation: 90% — We can confirm the runtime by auditing existing Cloudflare/Next deployment patterns in-repo and running a minimal `wrangler pages dev` smoke.
@@ -193,7 +193,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
   - [x] Record runtime constraints for the hosted path (no writable repo checkout, no `simple-git`, no Node-only fs writes).
   - [x] Update the “Key decisions” section with the confirmed runtime and dev loop.
 - **Test plan:**
-  - Run a minimal smoke of the chosen dev loop (e.g., build + `wrangler pages dev` for the Business OS app root) and capture the command in the fact-find.
+  - Run a minimal smoke of the chosen dev loop (e.g., build + `wrangler pages dev` for the Business OS app root) and capture the command in the lp-do-fact-find.
 - **Planning validation:** (M-effort)
   - Evidence reviewed:
     - `docs/plans/archive/business-os-kanban-plan.md` BOS-00-A documents that Vercel/Cloudflare do not provide writable checkouts and Phase 0 was “local-only”.
@@ -207,9 +207,9 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 - **What would make this ≥90%:**
   - Demonstrate a working “hello endpoint” running under the chosen Cloudflare dev runtime.
 - **Rollout / rollback:**
-  - Rollout: N/A (fact-find only).
+  - Rollout: N/A (lp-do-fact-find only).
   - Rollback: N/A.
-- **Documentation impact:** Updates required in this plan and the fact-find brief.
+- **Documentation impact:** Updates required in this plan and the lp-do-fact-find brief.
 - **Notes / references:**
   - Hosted deployment concerns already acknowledged: `apps/business-os/src/lib/repo/README.md` (“Hosted Deployment” options).
 
@@ -234,7 +234,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 ### BOS-D1-FF-02: Binding access pattern for D1 in the Next runtime
 
 - **Type:** FACT-FIND
-- **Affects:** `docs/plans/database-backed-business-os-fact-find.md`, `docs/plans/database-backed-business-os-plan.md`
+- **Affects:** `docs/plans/database-backed-business-os-lp-do-fact-find.md`, `docs/plans/database-backed-business-os-plan.md`
 - **Depends on:** BOS-D1-FF-01
 - **Confidence:** 80%
   - Implementation: 85% — We can reuse existing repo precedent for Cloudflare bindings access and validate in the Business OS runtime.
@@ -251,8 +251,8 @@ Add a D1-backed repository layer in `packages/platform-core` that:
   - Tests run: None yet in Business OS runtime (blocked until `next-on-pages` succeeds for Business OS; see BOS-D1-FF-01).
 - **What would make this ≥90%:**
   - Verified `SELECT 1` succeeds via the chosen helper under Cloudflare dev runtime.
-- **Rollout / rollback:** N/A (fact-find only).
-- **Documentation impact:** Update fact-find with the final access pattern and example usage.
+- **Rollout / rollback:** N/A (lp-do-fact-find only).
+- **Documentation impact:** Update lp-do-fact-find with the final access pattern and example usage.
 - **Notes / references:**
   - Precedent binding error pattern: “binding missing” exception in product-pipeline.
 
@@ -261,7 +261,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 ### BOS-D1-FF-03: Spike data access approach (raw D1 SQL + Zod)
 
 - **Type:** FACT-FIND
-- **Affects:** `docs/plans/database-backed-business-os-fact-find.md`, `docs/plans/database-backed-business-os-plan.md`
+- **Affects:** `docs/plans/database-backed-business-os-lp-do-fact-find.md`, `docs/plans/database-backed-business-os-plan.md`
 - **Depends on:** BOS-D1-FF-02
 - **Confidence:** 85%
   - Implementation: 88% — Raw D1 SQL pattern is proven in-repo (product-pipeline); Prisma adapter is higher risk and unnecessary.
@@ -269,7 +269,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
   - Impact: 85% — This choice determines migrations tooling, testing strategy, and how much platform-core must change.
 - **Acceptance:**
   - [ ] Implement a minimal read/write against D1 in the actual target runtime (raw SQL; blocked until `next-on-pages` succeeds for Business OS).
-  - [x] Record perf/complexity notes (DX, typing, migrations workflow) and make a recommendation in the fact-find (raw D1 SQL + Zod).
+  - [x] Record perf/complexity notes (DX, typing, migrations workflow) and make a recommendation in the lp-do-fact-find (raw D1 SQL + Zod).
   - [x] Decide whether platform-core will expose a D1 "client" abstraction, and what it looks like (use `D1Database` + binding helper + raw SQL repositories).
 - **Test plan:**
   - A single integration check under Cloudflare dev runtime that creates a table, inserts a row, and reads it back.
@@ -283,8 +283,8 @@ Add a D1-backed repository layer in `packages/platform-core` that:
     - Business OS runtime integration still blocked until `next-on-pages` succeeds for Business OS (see BOS-D1-FF-01).
 - **What would make this ≥90%:**
   - A working integration proof (in target runtime) plus at least one unit test demonstrating repository usage without Cloudflare runtime.
-- **Rollout / rollback:** N/A (fact-find only).
-- **Documentation impact:** Update both the fact-find and this plan with the chosen approach and rationale.
+- **Rollout / rollback:** N/A (lp-do-fact-find only).
+- **Documentation impact:** Update both the lp-do-fact-find and this plan with the chosen approach and rationale.
 - **Notes / references:**
   - Strong in-repo precedent for raw D1 SQL exists (`apps/product-pipeline/**`).
 
@@ -317,7 +317,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 ### BOS-D1-FF-04: Charter alignment — canonical store + audit trail approach
 
 - **Type:** FACT-FIND
-- **Affects:** `docs/business-os/business-os-charter.md`, `docs/business-os/security.md`, `docs/plans/database-backed-business-os-fact-find.md`, `docs/plans/database-backed-business-os-plan.md`
+- **Affects:** `docs/business-os/business-os-charter.md`, `docs/business-os/security.md`, `docs/plans/database-backed-business-os-lp-do-fact-find.md`, `docs/plans/database-backed-business-os-plan.md`
 - **Depends on:** BOS-D1-FF-01
 - **Confidence:** 82%
   - Implementation: 85% — We can map charter/security language to concrete system invariants and list required doc updates.
@@ -369,7 +369,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 ### BOS-D1-DEC-01: Lock decisions (prerequisite gate)
 
 - **Type:** DECISION
-- **Affects:** `docs/plans/database-backed-business-os-plan.md`, `docs/plans/database-backed-business-os-fact-find.md`
+- **Affects:** `docs/plans/database-backed-business-os-plan.md`, `docs/plans/database-backed-business-os-lp-do-fact-find.md`
 - **Depends on:** BOS-D1-FF-01..04
 - **Confidence:** 82%
   - Implementation: 85% — Once facts are gathered, capturing the decision is simple.
@@ -388,7 +388,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 - **What would make this ≥90%:**
   - A small end-to-end demo exists (D1 read/write + board read) in the chosen runtime before starting large refactors.
 - **Rollout / rollback:** N/A.
-- **Documentation impact:** Ensures plan and fact-find remain aligned and build-ready.
+- **Documentation impact:** Ensures plan and lp-do-fact-find remain aligned and build-ready.
 - **Notes / references:** Keep the decision log updated (see "Decision Log" section).
 
 #### Re-plan Update (2026-01-30)
@@ -412,7 +412,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 ### BOS-D1-01: Provision Business OS D1 database + wrangler config + local setup docs
 
 - **Type:** IMPLEMENT
-- **Affects:** `apps/business-os/wrangler.toml` (NEW), `apps/business-os/README.md` (update), `docs/plans/database-backed-business-os-fact-find.md` (evidence)
+- **Affects:** `apps/business-os/wrangler.toml` (NEW), `apps/business-os/README.md` (update), `docs/plans/database-backed-business-os-lp-do-fact-find.md` (evidence)
 - **Depends on:** BOS-D1-DEC-01
 - **Confidence:** 85%
   - Implementation: 90% — Wrangler tooling and D1 patterns exist in-repo (`apps/product-pipeline/wrangler.toml`).
@@ -1032,7 +1032,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 ### BOS-D1-08: Data migration — importer `docs/business-os/** → D1` + validation report
 
 - **Type:** IMPLEMENT
-- **Affects:** `apps/business-os/scripts/migrate-business-os-to-d1.ts` (NEW), `apps/business-os/package.json` (optional script), `docs/plans/database-backed-business-os-fact-find.md` (evidence)
+- **Affects:** `apps/business-os/scripts/migrate-business-os-to-d1.ts` (NEW), `apps/business-os/package.json` (optional script), `docs/plans/database-backed-business-os-lp-do-fact-find.md` (evidence)
 - **Depends on:** BOS-D1-02
 - **Confidence:** 80%
   - Implementation: 85% — Parsing markdown frontmatter is already implemented (RepoReader); migration is mostly orchestration + D1 repository upserts.
@@ -1066,7 +1066,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
     - `docs/business-os/cards/BRIK-OPP-0001.user.md`
     - `docs/business-os/cards/PLAT-OPP-0001.user.md`
     - `docs/business-os/cards/PLAT-OPP-0002.user.md`
-    - `docs/business-os/cards/PLAT-OPP-0001/fact-find.user.md`
+    - `docs/business-os/cards/PLAT-OPP-0001/lp-do-fact-find.user.md`
     - `docs/business-os/ideas/inbox/SCAN-PLAT-001.user.md`
     - `docs/business-os/ideas/inbox/SCAN-BRIK-001.user.md`
     - `docs/business-os/ideas/inbox/BRIK-OPP-0002.user.md`
@@ -1082,7 +1082,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
     - `--apply`: upsert into local D1 (and optional `--remote` later).
   - **Idempotency:**
     - Cards/ideas: upsert by `ID` (primary key); importer always supplies `ID`.
-    - Stage docs: deterministic `id` = `${cardId}/${stage}` (e.g. `PLAT-OPP-0001/fact-find`) so re-runs overwrite the same row.
+    - Stage docs: deterministic `id` = `${cardId}/${stage}` (e.g. `PLAT-OPP-0001/lp-do-fact-find`) so re-runs overwrite the same row.
   - **File paths stored in DB payload:**
     - Store **repo-relative** `filePath` values (e.g. `docs/business-os/cards/PLAT-OPP-0001.user.md`), not absolute local paths.
   - **Validation report (minimum):**
@@ -1212,7 +1212,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 ### BOS-D1-10: Documentation updates for D1 reality (charter, security, ops)
 
 - **Type:** DOC
-- **Affects:** `docs/business-os/business-os-charter.md`, `docs/business-os/security.md`, `apps/business-os/src/lib/repo/README.md`, `docs/plans/database-backed-business-os-fact-find.md`
+- **Affects:** `docs/business-os/business-os-charter.md`, `docs/business-os/security.md`, `apps/business-os/src/lib/repo/README.md`, `docs/plans/database-backed-business-os-lp-do-fact-find.md`
 - **Depends on:** BOS-D1-DEC-01
 - **Confidence:** 85%
   - Implementation: 90% — Straightforward doc edits once decisions are locked.
@@ -1240,7 +1240,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
   - `docs/business-os/business-os-charter.md` — Updated to state D1 as canonical store with git mirror; removed "repo-native" language; documented hourly git export
   - `docs/business-os/security.md` — Removed "must not deploy" warning; updated for hosted deployment with D1 binding; replaced git/filesystem security with database security
   - `apps/business-os/src/lib/repo/README.md` — Marked worktree/git writer as legacy (local-only); added deprecation notice pointing to D1 architecture
-  - `docs/plans/database-backed-business-os-fact-find.md` — Removed contradictions about local-only deployment; updated status to "Superseded (Implementation Complete)"
+  - `docs/plans/database-backed-business-os-lp-do-fact-find.md` — Removed contradictions about local-only deployment; updated status to "Superseded (Implementation Complete)"
 - **Validation:** Documentation consistency verified across all four affected files
 - **Implementation notes:**
   - Charter now explicitly states D1-canonical architecture with git as export/mirror
@@ -1269,14 +1269,14 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 ## Decision Log
 
 - 2026-01-30: **Chose Cloudflare D1** as the database for Business OS (user decision).
-- 2026-01-30 (re-plan): **Data access layer: Raw D1 SQL + Zod** — product-pipeline precedent, no Prisma Edge runtime complexity (BOS-D1-FF-03).
-- 2026-01-30 (re-plan): **Canonical store: D1-canonical + git mirror (Option A)** — lower complexity, zero-cost hosting, eventual consistency acceptable (BOS-D1-FF-04).
-- 2026-01-30 (re-plan): **Concurrency token: `updated_at` timestamp** — simple, SQLite-native, no version column needed (BOS-D1-06).
-- 2026-01-30 (re-plan): **Auto-refresh: MAX(updated_at) polling** — 30s interval, indexed query, no SSE/DO for MVP (BOS-D1-07).
-- 2026-01-30 (re-plan): **Git export: CI scheduled job** — hourly export via Node script, no runtime secrets needed (BOS-D1-09).
+- 2026-01-30 (lp-do-replan): **Data access layer: Raw D1 SQL + Zod** — product-pipeline precedent, no Prisma Edge runtime complexity (BOS-D1-FF-03).
+- 2026-01-30 (lp-do-replan): **Canonical store: D1-canonical + git mirror (Option A)** — lower complexity, zero-cost hosting, eventual consistency acceptable (BOS-D1-FF-04).
+- 2026-01-30 (lp-do-replan): **Concurrency token: `updated_at` timestamp** — simple, SQLite-native, no version column needed (BOS-D1-06).
+- 2026-01-30 (lp-do-replan): **Auto-refresh: MAX(updated_at) polling** — 30s interval, indexed query, no SSE/DO for MVP (BOS-D1-07).
+- 2026-01-30 (lp-do-replan): **Git export: CI scheduled job** — hourly export via Node script, no runtime secrets needed (BOS-D1-09).
 - 2026-01-30: **BOS-D1-DEC-01 recorded** — plan is ready to begin IMPLEMENT tasks (subject to Edge build gates unblocking `next build` + `next-on-pages`).
-- 2026-01-31 (re-plan): **Edge build is an explicit acceptance gate** — current failures stem from Node-only auth and git/fs server actions imported by Edge pages (BOS-D1-FF-01, BOS-D1-06).
-- 2026-01-31 (re-plan): **Git mirror should use repo pipeline PR workflow** — exporter commits land via `dev` → `staging`, not direct pushes to `staging`/`main` (BOS-D1-09).
+- 2026-01-31 (lp-do-replan): **Edge build is an explicit acceptance gate** — current failures stem from Node-only auth and git/fs server actions imported by Edge pages (BOS-D1-FF-01, BOS-D1-06).
+- 2026-01-31 (lp-do-replan): **Git mirror should use repo pipeline PR workflow** — exporter commits land via `dev` → `staging`, not direct pushes to `staging`/`main` (BOS-D1-09).
 
 ## Risks & mitigations
 

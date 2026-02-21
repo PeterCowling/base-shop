@@ -170,7 +170,7 @@ fad74ed4b0 feat(brikette): filter non-live guide content from build bundle (TASK
 d89da1c304 refactor(brikette): remove authoring utilities (TASK-04)
 ```
 
-TASK-05 unified terminology ("published" → "live") and TASK-06 added content filtering using `isGuideLive()`. Both depend on the GUIDES_INDEX as the status source. This fact-find addresses the remaining gap.
+TASK-05 unified terminology ("published" → "live") and TASK-06 added content filtering using `isGuideLive()`. Both depend on the GUIDES_INDEX as the status source. This lp-do-fact-find addresses the remaining gap.
 
 ## Questions
 
@@ -199,7 +199,7 @@ TASK-05 unified terminology ("published" → "live") and TASK-06 added content f
   - Decision impacted: Whether migration requires updating 90+ manifest entries to "live" first.
   - Default assumption: Update manifest entries to match current GUIDES_INDEX status before switching to single source. Risk: Large diff, but necessary for correctness.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 90%
   - The pattern is already proven (section derivation). The change is mechanical: replace `entry.status ?? "live"` with `getGuideManifestEntry(entry.key)?.status ?? "draft"`. Module init order is safe. No circular deps.
@@ -242,4 +242,4 @@ TASK-05 unified terminology ("published" → "live") and TASK-06 added content f
 
 - Status: **Ready-for-planning** (open questions are non-blocking — defaults are safe)
 - Blocking items: None (open questions have safe default assumptions)
-- Recommended next step: Proceed to `/plan-feature guide-status-single-source`
+- Recommended next step: Proceed to `/lp-do-plan guide-status-single-source`

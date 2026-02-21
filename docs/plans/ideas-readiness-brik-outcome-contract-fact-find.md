@@ -8,11 +8,11 @@ Created: 2026-02-11
 Last-updated: 2026-02-11
 Last-reviewed: 2026-02-11
 Relates-to charter: docs/business-os/business-os-charter.md
-Feature-Slug: ideas-readiness-brik-outcome-contract
+Feature-Slug: idea-readiness-brik-outcome-contract
 Deliverable-Type: product-brief
 Execution-Track: business-artifact
-Primary-Execution-Skill: update-business-plan
-Supporting-Skills: ideas-readiness
+Primary-Execution-Skill: biz-update-plan
+Supporting-Skills: idea-readiness
 Business-OS-Integration: on
 Business-Unit: BRIK
 ---
@@ -30,7 +30,7 @@ Define the exact missing outcome/decision information required for BRIK so idea 
 
 ### Non-goals
 - Implementing new BRIK features.
-- Running `/ideas-go-faster` before this data contract is complete.
+- Running `/idea-generate` before this data contract is complete.
 
 ## Evidence Audit (Current State)
 - Current focus is implementation-heavy and lacks formal outcome fields.
@@ -39,7 +39,7 @@ Define the exact missing outcome/decision information required for BRIK so idea 
   - `docs/business-os/strategy/BRIK/plan.user.md:22`
   - `docs/business-os/strategy/BRIK/plan.user.md:64`
 - Readiness audit currently blocks idea generation.
-  - `docs/business-os/readiness/2026-02-10-ideas-readiness.user.md:34`
+  - `docs/business-os/readiness/2026-02-10-idea-readiness.user.md:34`
 
 ## Missing Data Contract (BRIK)
 
@@ -86,4 +86,4 @@ Status becomes `Ready-for-planning` only when:
 
 ## Recommended Next Step
 - Update `docs/business-os/strategy/BRIK/plan.user.md` with the completed outcome contract.
-- Re-run `/ideas-readiness` before any new idea generation.
+- Re-run `/idea-readiness` before any new idea generation.

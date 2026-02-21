@@ -1,3 +1,4 @@
+export {};
 // Mock implementations will be configured per-test via the variables below.
 let mockRenderTemplate: jest.Mock;
 let mockSanitizeHtml: jest.Mock;
@@ -134,8 +135,8 @@ describe("send core – loadProvider", () => {
   it("caches unknown providers as undefined", async () => {
     await jest.isolateModulesAsync(async () => {
       const { loadProvider } = await import("../send");
-      const first = await loadProvider("custom");
-      const second = await loadProvider("custom");
+      const first = await loadProvider("custom" as any);
+      const second = await loadProvider("custom" as any);
       expect(first).toBeUndefined();
       expect(second).toBeUndefined();
       expect(mockSendgridImport).not.toHaveBeenCalled();

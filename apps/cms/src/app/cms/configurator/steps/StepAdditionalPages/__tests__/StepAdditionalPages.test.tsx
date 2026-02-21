@@ -8,6 +8,12 @@ const markCompleteMock = jest.fn();
 const pushMock = jest.fn();
 const setPages = jest.fn();
 
+// Shared toast object so spies can be inspected by tests.
+jest.mock("@acme/ui/operations", () => {
+  const _t = { success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn() };
+  return { useToast: () => _t };
+});
+
 jest.mock(
   require.resolve(
     "../../../../../../../../../test/__mocks__/componentStub.js",
@@ -78,16 +84,17 @@ jest.mock("../../../lib/api", () => ({
   apiRequest: jest.fn(),
 }));
 const apiRequestMock = apiRequest as jest.Mock;
-apiRequestMock
-  .mockResolvedValueOnce({ data: [], error: null })
-  .mockResolvedValue({ data: { id: "id1" }, error: null });
 
 describe("StepAdditionalPages", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    apiRequestMock
-      .mockResolvedValueOnce({ data: [], error: null })
-      .mockResolvedValue({ data: { id: "id1" }, error: null });
+    // Use implementation that returns array for GET page loads, object for saves.
+    apiRequestMock.mockImplementation(async (url: string, init?: any) => {
+      if (!init || init.method !== "POST") {
+        return { data: [], error: null }; // pages list (usePagesLoader)
+      }
+      return { data: { id: "id1" }, error: null }; // save/draft call
+    });
   });
 
   it("adds a page and saves draft", async () => {
@@ -110,7 +117,8 @@ describe("StepAdditionalPages", () => {
     await user.click(screen.getByRole("button", { name: "fill meta" }));
     await user.click(screen.getByRole("button", { name: "save builder" }));
     expect(apiRequestMock).toHaveBeenCalled();
-    await screen.findByText("Draft saved");
+    const { useToast } = jest.requireMock("@acme/ui/operations") as { useToast: () => Record<string, jest.Mock> };
+    expect(useToast().success).toHaveBeenCalled();
 
     await user.click(screen.getByTestId("confirm-add-page"));
     expect(setPages).toHaveBeenCalledTimes(2);

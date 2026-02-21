@@ -44,7 +44,7 @@ export function getProductById(
           setTimeout(() => resolve(null), 100),
         );
         const product = await Promise.race([
-          m.getProductById<SKU>(a, b),
+          m.getProductById<SKU & { id: string }>(a, b),
           timeout,
         ]);
         return product ?? base.getProductById(b) ?? null;

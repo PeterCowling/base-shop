@@ -2,7 +2,7 @@ import "server-only";
 
 import pino from "pino";
 
-import { getRequestContext } from "../context/requestContext.server";
+import { getRequestContext } from "../context/requestContext.server.js";
 
 export interface LogMeta {
   [key: string]: unknown;

@@ -17,15 +17,15 @@
 }
 
 .dark {
-  --rvg-color-background: theme('colors.darkSurface');
-  --rvg-color-text: theme('colors.darkAccentGreen');
-  --rvg-color-border: theme('colors.darkSurface');
-  --rvg-color-awaiting: theme('colors.darkAccentOrange');
-  --rvg-color-confirmed: theme('colors.darkAccentGreen');
-  --rvg-color-inaccessible: theme('colors.darkSurface');
-  --rvg-color-today: theme('colors.darkAccentGreen');
-  --rvg-color-selected: theme('colors.darkAccentOrange');
-  --rvg-color-weekend: theme('colors.darkBg');
+  --rvg-color-background: var(--reception-dark-surface);
+  --rvg-color-text: var(--reception-dark-accent-green);
+  --rvg-color-border: var(--reception-dark-border);
+  --rvg-color-awaiting: var(--reception-dark-accent-orange);
+  --rvg-color-confirmed: var(--reception-dark-accent-green);
+  --rvg-color-inaccessible: var(--reception-dark-surface);
+  --rvg-color-today: var(--reception-dark-accent-green);
+  --rvg-color-selected: var(--reception-dark-accent-orange);
+  --rvg-color-weekend: var(--reception-dark-bg);
 }
 
 .rvg-wrapper {

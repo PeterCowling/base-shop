@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK Historical Data Request Prompt</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>BRIK Historical Data Request Prompt</h1>
+<p>Use this prompt to request and assemble the missing data required for the BRIK historical baseline.</p>
+<pre><code class="language-text">You are preparing the missing data pack for BRIK historical performance baseline.
+
+Business:
+- code: BRIK
+- name: Brikette
+- date: 2026-02-12
+- required window: trailing 24 months (monthly)
+
+Context:
+- Baseline consolidation is currently blocked because required datasets are missing.
+- For this run, scope is intentionally narrow.
+
+Scope for this run (temporary):
+- Focus only on net monthly value + Cloudflare monthly proxies.
+- Treat bookings_by_month.csv and cancellations_refunds_by_month.csv as out-of-scope.
+
+Task:
+Provide the following files with one row per month (YYYY-MM). If a file cannot be produced, mark it unavailable and explain why.
+
+Required files:
+1) net_value_by_month.csv
+   columns: month, net_booking_value, method, notes
+2) cloudflare_monthly_proxies.csv
+   columns: month, visits_or_requests, top_pages_summary, top_geo_summary, device_summary, notes
+3) data_quality_notes.md
+   include: coverage window, missing months, extraction limits, field definitions, and confidence comments
+
+Rules:
+- Do not invent values.
+- Use YYYY-MM month format only.
+- Keep definitions consistent across months.
+- Mark estimated values explicitly.
+- Write `unavailable` for missing values and state reason.
+
+Delivery checklist:
+- net_value_by_month.csv: provided/unavailable
+- cloudflare_monthly_proxies.csv: provided/unavailable
+- data_quality_notes.md: provided/unavailable
+
+Save the files into:
+- docs/business-os/strategy/BRIK/data/
+</code></pre>
+<h2>Automated extraction (recommended)</h2>
+<p>Use this command to pull monthly Cloudflare proxies directly from API:</p>
+<pre><code class="language-bash">export CLOUDFLARE_API_TOKEN="&#x3C;token-with-account.analytics-read>"
+pnpm brik:export-cloudflare-proxies \
+  --zone-name "hostel-positano.com" \
+  --hostname "hostel-positano.com" \
+  --months 24
+</code></pre>
+<p>The command writes:</p>
+<ul>
+<li><code>docs/business-os/strategy/BRIK/data/cloudflare_monthly_proxies.csv</code></li>
+<li><code>docs/business-os/strategy/BRIK/data/data_quality_notes.md</code></li>
+</ul>
+<p>After data is supplied:</p>
+<ol>
+<li>Re-run baseline consolidation prompt:
+<ul>
+<li><code>docs/business-os/strategy/BRIK/2026-02-12-historical-baseline-prompt.user.md</code></li>
+</ul>
+</li>
+<li>Save updated baseline:
+<ul>
+<li><code>docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code></li>
+</ul>
+</li>
+<li>Render HTML:
+<ul>
+<li><code>pnpm docs:render-user-html -- docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code></li>
+</ul>
+</li>
+</ol>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/BRIK/2026-02-12-historical-data-request-prompt.user.md</code></div>
+      <div>Generated: 2026-02-12T12:33:55.292Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

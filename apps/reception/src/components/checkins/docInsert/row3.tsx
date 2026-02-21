@@ -160,6 +160,7 @@ function Row3({
   }, [documentType, occupantDetails?.document?.type, saveField, setSnackbar]);
 
   return (
+    // eslint-disable-next-line ds/no-raw-spacing -- internal POS layout spacing [DS-06]
     <div className="flex flex-wrap gap-12 mb-[75px]">
       {/* Document Number */}
       <div className="flex flex-col w-[300px]">

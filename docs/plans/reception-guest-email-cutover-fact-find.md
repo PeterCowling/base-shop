@@ -11,8 +11,8 @@ Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-guest-email-cutover
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
-Supporting-Skills: process-emails
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: ops-inbox
 Related-Plan: docs/plans/reception-guest-email-cutover-plan.md
 Business-OS-Integration: on
 Business-Unit: BRIK
@@ -125,7 +125,7 @@ Cut over remaining reception guest-email behavior from direct Google Apps Script
 ### Recent Git History (Targeted)
 - `a763f9b102` - removed GAS fallback in booking-email service (`useBookingEmail`) and standardized MCP route.
 - `b142a51dc6` - recent modifications touching reception mutation/services area.
-- `docs/plans/archive/email-autodraft-world-class-upgrade-plan.md:876` explicitly deferred guest-email GAS migration and called for fact-find.
+- `docs/plans/archive/email-autodraft-world-class-upgrade-plan.md:876` explicitly deferred guest-email GAS migration and called for lp-do-fact-find.
 
 ## Questions
 ### Resolved
@@ -145,7 +145,7 @@ Cut over remaining reception guest-email behavior from direct Google Apps Script
    - Captured user direction: "GAS wording parity first".
    - Build implication: extract/encode legacy wording/structure as acceptance baseline before further tuning.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /lp-do-plan)
 - Implementation: 86%
   - Clear replacement seam exists (`useEmailGuest` + new route/tool), and reception already has MCP route precedent.
 - Approach: 89%
@@ -182,9 +182,9 @@ Cut over remaining reception guest-email behavior from direct Google Apps Script
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `build-feature`
+  - `lp-do-build`
 - Supporting skills:
-  - `process-emails`
+  - `ops-inbox`
 - Deliverable acceptance package:
   - No direct GAS URL usage in `useEmailGuest`.
   - Activity-trigger path uses MCP route/tool with code-aware payload.
@@ -209,6 +209,6 @@ Cut over remaining reception guest-email behavior from direct Google Apps Script
 - Blocking items:
   - none
 - Recommended next step:
-  - Proceed to `/plan-feature` using the user-confirmed defaults:
+  - Proceed to `/lp-do-plan` using the user-confirmed defaults:
     - draft-first delivery mode
     - GAS wording parity first for codes `5/6/7/8`

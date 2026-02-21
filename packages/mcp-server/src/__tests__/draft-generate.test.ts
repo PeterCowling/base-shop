@@ -1,11 +1,14 @@
 /** @jest-environment node */
 
+import { readFileSync } from "fs";
 import { readFile } from "fs/promises";
+import { join } from "path";
 
 import { handleBriketteResourceRead } from "../resources/brikette-knowledge.js";
 import { handleDraftGuideRead } from "../resources/draft-guide.js";
 import { handleVoiceExamplesRead } from "../resources/voice-examples.js";
 import { clearTemplateCache, handleDraftGenerateTool } from "../tools/draft-generate";
+import { ingestUnknownAnswerEntries } from "../tools/reviewed-ledger.js";
 
 jest.mock("fs/promises", () => ({
   readFile: jest.fn(),
@@ -29,10 +32,26 @@ jest.mock("../resources/voice-examples.js", () => ({
   })),
 }));
 
+jest.mock("../tools/gmail.js", () => ({
+  appendTelemetryEvent: jest.fn(),
+}));
+
+jest.mock("../tools/reviewed-ledger.js", () => ({
+  ingestUnknownAnswerEntries: jest.fn(async () => ({
+    path: "/tmp/reviewed-learning-ledger.jsonl",
+    created: [],
+    duplicates: [],
+  })),
+  // TASK-02/TASK-01: new imports added to draft-generate.ts
+  readActiveFaqPromotions: jest.fn(async () => []),
+  hashQuestion: jest.fn((q: string) => `mock-hash-${q.slice(0, 8)}`),
+}));
+
 const readFileMock = readFile as jest.Mock;
 const handleBriketteResourceReadMock = handleBriketteResourceRead as jest.Mock;
 const handleDraftGuideReadMock = handleDraftGuideRead as jest.Mock;
 const handleVoiceExamplesReadMock = handleVoiceExamplesRead as jest.Mock;
+const ingestUnknownAnswerEntriesMock = ingestUnknownAnswerEntries as jest.Mock;
 
 const draftGuideFixture = {
   length_calibration: {
@@ -115,6 +134,24 @@ const baseActionPlan = {
   },
 };
 
+type StoredTemplate = {
+  subject: string;
+  body: string;
+  category: string;
+  template_id?: string;
+  reference_scope?: "reference_required" | "reference_optional_excluded";
+  canonical_reference_url?: string | null;
+  normalization_batch?: "A" | "B" | "C" | "D";
+};
+
+function loadStoredTemplates(): StoredTemplate[] {
+  const raw = readFileSync(
+    join(process.cwd(), "packages", "mcp-server", "data", "email-templates.json"),
+    "utf8"
+  );
+  return JSON.parse(raw) as StoredTemplate[];
+}
+
 function setupDraftGenerateMocks(): void {
   jest.resetAllMocks();
   clearTemplateCache();
@@ -145,10 +182,17 @@ function setupDraftGenerateMocks(): void {
       },
     ],
   });
+  ingestUnknownAnswerEntriesMock.mockResolvedValue({
+    path: "/tmp/reviewed-learning-ledger.jsonl",
+    created: [],
+    duplicates: [],
+  });
 }
 
 describe("draft_generate tool", () => {
-  beforeEach(setupDraftGenerateMocks);
+  beforeEach(() => {
+    setupDraftGenerateMocks();
+  });
 
   it("TC-01/05: uses template ranker output and tracks answered questions", async () => {
     readFileMock.mockResolvedValue(
@@ -330,6 +374,7 @@ describe("draft_generate tool", () => {
     expect(body).toContain("luggage");
     expect(body).toContain("wifi");
   });
+
 
   it("TC-07: composite body does not append plaintext signature boilerplate", async () => {
     readFileMock.mockResolvedValue(
@@ -589,6 +634,65 @@ describe("draft_generate tool TASK-01", () => {
     expect(body).not.toContain("availability is confirmed");
     expect(body).not.toContain("we will charge");
     expect(body).not.toContain("internal note");
+  });
+});
+
+describe("draft_generate tool TASK-05", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TC-05-02: generate output includes preliminary_coverage with per-question entries", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Check-in times",
+          body: "Check-in starts at 3:00 PM. Best regards, Hostel Brikette",
+          category: "check-in",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "What time is check-in and is breakfast included?",
+        intents: {
+          questions: [
+            { text: "What time is check-in?" },
+            { text: "Is breakfast included?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: {
+          category: "check-in",
+          confidence: 0.85,
+        },
+      },
+      subject: "Check-in and breakfast",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error((result as { content: Array<{ text: string }> }).content[0].text);
+    }
+
+    const payload = JSON.parse((result as { content: Array<{ text: string }> }).content[0].text);
+
+    expect(payload.preliminary_coverage).toBeDefined();
+    expect(payload.preliminary_coverage.coverage).toBeInstanceOf(Array);
+    expect(payload.preliminary_coverage.coverage).toHaveLength(2);
+
+    for (const entry of payload.preliminary_coverage.coverage) {
+      expect(entry).toHaveProperty("question");
+      expect(entry).toHaveProperty("matched_count");
+      expect(entry).toHaveProperty("required_matches");
+      expect(entry).toHaveProperty("coverage_score");
+      expect(entry).toHaveProperty("status");
+      expect(entry.status).toBe("missing");
+      expect(entry.matched_count).toBe(0);
+    }
+
+    expect(payload.preliminary_coverage.questions_with_no_template_match).toEqual(
+      expect.arrayContaining(["What time is check-in?", "Is breakfast included?"])
+    );
   });
 });
 
@@ -890,5 +994,528 @@ describe("draft_generate tool TASK-02", () => {
     );
     expect(menuSummary).toBeDefined();
     expect(menuSummary.summary).toBe("");
+  });
+});
+
+describe("draft_generate tool TASK-06 — per-question composite ranking", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TC-06-01: two questions mapping to same template deduplicate to composite: false", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Luggage Storage — Before Check-in",
+          body: "Dear Guest,\r\n\r\nFree luggage storage on your arrival day.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "luggage",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Can we store luggage? Where do we leave our bags?",
+        intents: {
+          questions: [
+            { text: "Can we store luggage?" },
+            { text: "Where do we leave our bags?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Luggage question",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.composite).toBe(false);
+  });
+
+  it("TC-06-02: two questions mapping to distinct templates produce composite: true", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: "Dear Guest,\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "breakfast",
+        },
+        {
+          subject: "WiFi Information",
+          body: "Dear Guest,\r\n\r\nComplimentary WiFi is available throughout the hostel.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "wifi",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included? Do you have WiFi?",
+        intents: {
+          questions: [
+            { text: "Is breakfast included?" },
+            { text: "Do you have WiFi?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Questions",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.composite).toBe(true);
+    const body = payload.draft.bodyPlain.toLowerCase();
+    expect(body).toContain("breakfast");
+    expect(body).toContain("wifi");
+  });
+
+  it("TC-06-03: composite body has exactly one greeting and no trailing signature", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: "Dear Guest,\r\n\r\nBreakfast is served daily.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "breakfast",
+        },
+        {
+          subject: "WiFi Information",
+          body: "Dear Guest,\r\n\r\nComplimentary WiFi is available.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "wifi",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included? Do you have WiFi?",
+        intents: {
+          questions: [
+            { text: "Is breakfast included?" },
+            { text: "Do you have WiFi?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Questions",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const body = payload.draft.bodyPlain;
+    const dearCount = (body.match(/\bDear\b/gi) ?? []).length;
+    const signatureCount = (body.match(/\bBest regards\b/gi) ?? []).length;
+    expect(dearCount).toBe(1);
+    expect(signatureCount).toBe(0);
+  });
+});
+
+describe("draft_generate tool TASK-08 — variable-data guardrail", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TC-08-03: strips inline service pricing phrase from draft body", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Luggage Storage — After Checkout",
+          body: "Dear Guest,\r\n\r\nAfter checkout, luggage storage is free until 3:30 PM. Porter service is available at a cost of €15 per bag.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "luggage",
+        },
+      ])
+    );
+    handleDraftGuideReadMock.mockResolvedValue({
+      contents: [
+        {
+          uri: "brikette://draft-guide",
+          mimeType: "application/json",
+          text: JSON.stringify({
+            content_rules: {
+              never: ["Never quote specific service prices inline without noting they may vary."],
+              always: [],
+              if: [],
+            },
+          }),
+        },
+      ],
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Can you store our bags after checkout?",
+        intents: {
+          questions: [{ text: "Can you store our bags after checkout?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "luggage", confidence: 0.9 },
+      },
+      subject: "Luggage storage after checkout",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.draft.bodyPlain).not.toContain("at a cost of €");
+  });
+});
+
+describe("draft_generate tool TASK-07 — knowledge gap-fill injection", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TC-07-01: uncovered question gets knowledge snippet injected into bodyPlain with sources_used injected:true", async () => {
+    // Template body has no breakfast content — question will be uncovered after assembly
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "General inquiry",
+          body: "Thank you for contacting us. We will be happy to assist. Best regards, Hostel Brikette",
+          category: "general",
+        },
+      ])
+    );
+    // FAQ has relevant breakfast answer
+    handleBriketteResourceReadMock.mockImplementation(async (uri: string) => {
+      if (uri === "brikette://faq") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                items: [
+                  {
+                    id: "breakfast-window",
+                    question: "When is breakfast served?",
+                    answer: "Breakfast is served from 08:00 to 10:30 daily.",
+                  },
+                ],
+              }),
+            },
+          ],
+        };
+      }
+      return {
+        contents: [{ uri, mimeType: "application/json", text: JSON.stringify({ items: [] }) }],
+      };
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "What time is breakfast served?",
+        intents: {
+          questions: [{ text: "What time is breakfast served?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "breakfast", confidence: 0.8 },
+      },
+      subject: "Breakfast hours inquiry",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    // Injected snippet text must appear in bodyPlain (citation markers stripped)
+    expect(payload.draft.bodyPlain).toContain("Breakfast is served from 08:00 to 10:30 daily.");
+    // sources_used must be present with at least one injected entry
+    expect(payload.sources_used).toBeDefined();
+    const injectedEntry = (payload.sources_used as Array<{ injected: boolean; citation: string }>)
+      .find((e) => e.injected);
+    expect(injectedEntry).toBeDefined();
+    expect(injectedEntry?.citation).toContain("breakfast");
+  });
+
+  it("TC-08-06: promoted FAQ entries remain consumable by draft generation", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "General inquiry",
+          body: "Thank you for contacting us. We will be happy to assist. Best regards, Hostel Brikette",
+          category: "general",
+        },
+      ]),
+    );
+    handleBriketteResourceReadMock.mockImplementation(async (uri: string) => {
+      if (uri === "brikette://faq") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                items: [
+                  {
+                    question: "Can I store luggage before check-in?",
+                    answer: "Yes, luggage storage is available before check-in.",
+                    source: "reviewed-ledger",
+                    promoted_key: "faq:q-luggage-before-checkin",
+                  },
+                ],
+              }),
+            },
+          ],
+        };
+      }
+      return {
+        contents: [{ uri, mimeType: "application/json", text: JSON.stringify({ items: [] }) }],
+      };
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Can I store luggage before check-in?",
+        intents: {
+          questions: [{ text: "Can I store luggage before check-in?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "luggage", confidence: 0.8 },
+      },
+      subject: "Luggage before check-in",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.draft.bodyPlain).toContain("Yes, luggage storage is available before check-in.");
+    expect(
+      (payload.sources_used as Array<{ injected: boolean }>).some((entry) => entry.injected),
+    ).toBe(true);
+  });
+
+  it("TC-07-02: no matching snippet produces sources_used with no injected:true entries", async () => {
+    // Template body doesn't mention wifi — question will be uncovered
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "General inquiry",
+          body: "Thank you for contacting us. Best regards, Hostel Brikette",
+          category: "general",
+        },
+      ])
+    );
+    // All URIs return empty items — no matching snippets
+    handleBriketteResourceReadMock.mockResolvedValue({
+      contents: [{ uri: "brikette://faq", mimeType: "application/json", text: JSON.stringify({ items: [] }) }],
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Does the hostel have wifi internet available?",
+        intents: {
+          questions: [{ text: "Does the hostel have wifi internet available?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "wifi", confidence: 0.8 },
+      },
+      subject: "Wifi availability",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.sources_used).toBeDefined();
+    const anyInjected = (payload.sources_used as Array<{ injected: boolean }>).some((e) => e.injected);
+    expect(anyInjected).toBe(false);
+  });
+
+  it("TC-07-03: pricing/menu URI excluded from injection even when content matches (allowlist enforced)", async () => {
+    // Template body doesn't cover breakfast pricing
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "General inquiry",
+          body: "Thank you for contacting us. Best regards, Hostel Brikette",
+          category: "general",
+        },
+      ])
+    );
+    // Only pricing/menu has matching content — safe URIs return empty
+    handleBriketteResourceReadMock.mockImplementation(async (uri: string) => {
+      if (uri === "brikette://pricing/menu") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                breakfast: { price: "€12 per person", note: "Breakfast costs €12 per person." },
+              }),
+            },
+          ],
+        };
+      }
+      return {
+        contents: [{ uri, mimeType: "application/json", text: JSON.stringify({ items: [] }) }],
+      };
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "How much does breakfast cost per person?",
+        intents: {
+          questions: [{ text: "How much does breakfast cost per person?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "breakfast", confidence: 0.8 },
+      },
+      subject: "Breakfast pricing",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    // Pricing content must NOT be injected — allowlist blocks brikette://pricing/menu
+    expect(payload.draft.bodyPlain).not.toContain("€12 per person");
+    expect(payload.sources_used).toBeDefined();
+    const anyInjected = (payload.sources_used as Array<{ injected: boolean }>).some((e) => e.injected);
+    expect(anyInjected).toBe(false);
+  });
+
+  it("TC-07-04: template fallback captures unknown question into reviewed ledger", async () => {
+    readFileMock.mockResolvedValue(JSON.stringify([]));
+    ingestUnknownAnswerEntriesMock.mockResolvedValue({
+      path: "/tmp/reviewed-learning-ledger.jsonl",
+      created: [
+        {
+          question_hash: "hash-unknown-1",
+        },
+      ],
+      duplicates: [],
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Do you have parking nearby?",
+        intents: {
+          questions: [{ text: "Do you have parking nearby?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "transportation", confidence: 0.8 },
+      },
+      subject: "Parking question",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(ingestUnknownAnswerEntriesMock).toHaveBeenCalledTimes(1);
+    expect(ingestUnknownAnswerEntriesMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        sourcePath: "queue",
+        scenarioCategory: "transportation",
+        language: "EN",
+        questions: ["Do you have parking nearby?"],
+      }),
+    );
+    expect(payload.learning_ledger).toEqual(
+      expect.objectContaining({
+        created: 1,
+        duplicates: 0,
+        question_hashes: ["hash-unknown-1"],
+      }),
+    );
+  });
+
+  it("TC-07-05: duplicate unknown capture reports idempotent duplicate count", async () => {
+    readFileMock.mockResolvedValue(JSON.stringify([]));
+    ingestUnknownAnswerEntriesMock.mockResolvedValue({
+      path: "/tmp/reviewed-learning-ledger.jsonl",
+      created: [],
+      duplicates: [
+        {
+          question_hash: "hash-unknown-1",
+        },
+      ],
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Can I check in at 1am?",
+        intents: {
+          questions: [{ text: "Can I check in at 1am?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "check-in", confidence: 0.8 },
+      },
+      subject: "Late check-in",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.learning_ledger).toEqual(
+      expect.objectContaining({
+        created: 0,
+        duplicates: 1,
+      }),
+    );
+  });
+});
+
+describe("draft_generate tool TASK-04 template normalization", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TC-04-03: normalized reference-required templates still produce policy-safe drafts", async () => {
+    const templates = loadStoredTemplates();
+    const cancellationTemplate = templates.find(
+      (template) => template.subject === "Cancellation Request — Medical Hardship"
+    );
+
+    expect(cancellationTemplate).toBeDefined();
+    expect(cancellationTemplate?.reference_scope).toBe("reference_required");
+    expect(cancellationTemplate?.canonical_reference_url).toMatch(/^https:\/\//);
+
+    readFileMock.mockResolvedValue(JSON.stringify(templates));
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "We need to cancel due to medical hardship. What are our options?",
+        intents: {
+          questions: [{ text: "Can we cancel due to medical hardship?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: {
+          category: "cancellation",
+          confidence: 0.94,
+        },
+      },
+      subject: "Cancellation request",
+      recipientName: "Giulia",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const bodyLower = payload.draft.bodyPlain.toLowerCase();
+
+    const usedTemplate = templates.find(
+      (template) => template.subject === payload.template_used.subject
+    );
+    expect(usedTemplate?.reference_scope).toBe("reference_required");
+    expect(usedTemplate?.canonical_reference_url).toMatch(/^https:\/\//);
+    expect(payload.quality.failed_checks).not.toContain("prohibited_claims");
+    expect(bodyLower).toContain("per the cancellation policy");
+    expect(bodyLower).not.toContain("availability is confirmed");
+    expect(bodyLower).not.toContain("we will charge now");
   });
 });

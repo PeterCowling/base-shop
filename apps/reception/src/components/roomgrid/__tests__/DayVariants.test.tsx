@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-raw-color -- test fixtures */
 import "@testing-library/jest-dom";
 
 import { render, screen } from "@testing-library/react";

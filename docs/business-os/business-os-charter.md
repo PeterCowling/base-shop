@@ -6,11 +6,11 @@ Last-reviewed: 2026-01-31
 Primary code entrypoints:
   - apps/business-os/ — Next.js Kanban app
   - docs/business-os/ — Read-only markdown mirror (exported from D1)
-  - .claude/skills/work-idea/ — Agent skill: convert idea to card
-  - .claude/skills/propose-lane-move/ — Agent skill: propose lane transitions
-  - .claude/skills/scan-repo/ — Agent skill: create business-relevant ideas
-  - .claude/skills/update-business-plan/ — Agent skill: update business plans
-  - .claude/skills/update-people/ — Agent skill: update people docs
+  - .claude/skills/idea-develop/ — Agent skill: convert idea to card
+  - .claude/skills/idea-advance/ — Agent skill: propose lane transitions
+  - .claude/skills/idea-scan/ — Agent skill: create business-relevant ideas
+  - .claude/skills/biz-update-plan/ — Agent skill: update business plans
+  - .claude/skills/biz-update-people/ — Agent skill: update people docs
 ---
 
 # Business OS Charter
@@ -23,7 +23,7 @@ Business OS is a **repo-native coordination system** for human and agent work ac
 2. **Evidence-gated, risk-managed workflow** for non-coding work matching engineering rigor
 3. **Progressive elaboration:** raw ideas → worked ideas → cards → staged execution → reflection → plan updates
 4. **Visible and queryable execution state** via in-repo business plans, people responsibilities, and card status
-5. **Human-agent collaboration:** both can generate, fact-find, plan, execute, and reflect on opportunities
+5. **Human-agent collaboration:** both can generate, lp-do-fact-find, plan, execute, and reflect on opportunities
 
 **Design Principles:**
 
@@ -44,13 +44,13 @@ Business OS is a **repo-native coordination system** for human and agent work ac
 ## Core Flows
 
 ### 1. Idea Submission (Human or Agent)
-- Submit raw idea via UI form or agent `/scan-repo` skill
+- Submit raw idea via UI form or agent `/idea-scan` skill
 - Idea stored in D1 via API or UI
 - Export job mirrors ideas to `docs/business-os/ideas/` for review
 - Visible in Inbox lane on business boards
 
 ### 2. Idea → Card Workflow (Agent-assisted)
-- Agent uses `/work-idea` skill to convert idea to card
+- Agent uses `/idea-develop` skill to convert idea to card
 - Creates card + initial fact-finding stage doc in D1 via agent API
 - Export job mirrors card + stage doc into `docs/business-os/cards/`
 - Idea moves to `ideas/worked/` in the exported mirror
@@ -58,7 +58,7 @@ Business OS is a **repo-native coordination system** for human and agent work ac
 ### 3. Card Lifecycle (Lane Progression)
 - **Lanes:** Inbox → Fact-finding → Planned → In progress → Blocked → Done → Reflected
 - Lane transitions require stage documentation (evidence-gated)
-- Agent can propose moves via `/propose-lane-move` skill (Pete approves)
+- Agent can propose moves via `/idea-advance` skill (Pete approves)
 - Pete can move cards directly via UI editor
 
 ### 4. Board Views
@@ -68,12 +68,12 @@ Business OS is a **repo-native coordination system** for human and agent work ac
 
 ### 5. Plan Updates (Evidence-driven)
 - Business plans live at `docs/business-os/strategy/<BIZ>/plan.user.md`
-- Agent uses `/update-business-plan` skill after scans
+- Agent uses `/biz-update-plan` skill after scans
 - Change requests via `/propose-change` create ideas with metadata
 
 ### 6. People Management
 - People doc at `docs/business-os/people/people.user.md`
-- Agent uses `/update-people` based on code attribution
+- Agent uses `/biz-update-people` based on code attribution
 - Tracks responsibilities, skills, availability
 
 ## Key Contracts
@@ -109,8 +109,8 @@ docs/business-os/
 │   ├── <ID>.user.md              # Human-readable card (exported from D1)
 │   ├── <ID>.agent.md             # Agent-readable card (exported from D1)
 │   └── <ID>/
-│       ├── fact-finding.user.md  # Stage documentation (exported from D1)
-│       ├── planned.user.md
+│       ├── fact-find.user.md     # Stage documentation (exported from D1)
+│       ├── plan.user.md
 │       └── ...
 ├── ideas/
 │   ├── inbox/*.md                # Raw ideas (exported from D1)

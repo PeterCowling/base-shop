@@ -84,13 +84,13 @@ export default function ColorThemeSelector({ tokens, baseTokens, onChange, tagFi
           </div>
         </div>
         <Grid className="mt-2" cols={6} gap={1}>
-          {[bg, fg, primary, primaryFg, accent, muted].map((c, i) => (
+          {([["bg", bg], ["fg", fg], ["primary", primary], ["primary-fg", primaryFg], ["accent", accent], ["muted", muted]] as [string, string][]).map(([label, c]) => (
             <div
-              key={i}
+              key={label}
               className="h-4 w-full rounded"
               style={{
                 backgroundColor: `hsl(${c})`,
-                border: i === 1 ? "1px solid hsl(var(--color-fg) / 0.125)" : undefined,
+                border: label === "fg" ? "1px solid hsl(var(--color-fg) / 0.125)" : undefined,
               }}
             />
           ))}

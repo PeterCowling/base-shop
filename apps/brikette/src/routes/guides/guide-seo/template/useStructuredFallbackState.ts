@@ -1,18 +1,21 @@
 import { useMemo } from "react";
 
+import type { AppLanguage } from "@/i18n.config";
 import i18n from "@/i18n";
 
 import type { ManualStructuredFallbackResult } from "../components/ManualStructuredFallback";
 import { computeManualStructuredFallback } from "../components/ManualStructuredFallback";
 import {
   buildStructuredFallback,
+  type FallbackTranslator,
   type StructuredFallback,
 } from "../utils/fallbacks";
+import type { I18nLike } from "../utils/fallbacks/types";
 
 export function useStructuredFallbackState(params: {
   guideKey: string;
-  lang: string;
-  hookI18n: any;
+  lang: AppLanguage;
+  hookI18n: I18nLike;
   translations: { tGuides: (key: string, options?: Record<string, unknown>) => unknown };
   hasLocalizedContent: boolean;
   hasStructuredLocalInitial: boolean;
@@ -56,7 +59,7 @@ export function useStructuredFallbackState(params: {
         // guides namespace (camel-cased from the slug) can be probed when the
         // primary structured arrays are absent. This enables localized
         // fallbacks like content.amalfiCoastPublicTransportGuide.* in tests.
-        translations.tGuides as any,
+        translations.tGuides as FallbackTranslator,
       ),
     [
       guideKey,
@@ -77,7 +80,7 @@ export function useStructuredFallbackState(params: {
         preferManualWhenUnlocalized,
         suppressUnlocalizedFallback,
         translatorProvidedEmptyStructured,
-        lang: lang as any,
+        lang,
       }),
     [
       fallbackStructured,

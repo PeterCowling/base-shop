@@ -1,6 +1,6 @@
 ---
 Type: Stage
-Stage: fact-find
+Stage: lp-do-fact-find
 Card-ID: PLAT-OPP-0001
 Created: 2026-01-28
 Updated: 2026-01-28

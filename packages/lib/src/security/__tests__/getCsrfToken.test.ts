@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { getCsrfToken } from '../getCsrfToken';
+import { getCsrfToken } from '../getCsrfToken.js';
 
 describe('getCsrfToken', () => {
   const originalCrypto = globalThis.crypto;

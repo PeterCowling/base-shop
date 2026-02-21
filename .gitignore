@@ -76,6 +76,11 @@ yarn-error.log*
 !docs/.env.reference.md
 # Note: .env.production files are decrypted from .sops in CI and should NEVER be committed
 
+# Cloudflare Wrangler local state (never commit)
+**/.wrangler/
+**/.dev.vars
+**/.secrets/
+
 # Build outputs (monorepo)
 **/dist/
 **/.tsbuildinfo
@@ -120,6 +125,9 @@ packages/types/src/**/*.d.ts.map
 # VS Code MCP port sentinel (ephemeral)
 .vscode/.mcp-port
 
+# Repo-local temp (ephemeral; should not be committed)
+/.tmp/
+
 # ---------------------------
 # Gmail OAuth credentials
 # ---------------------------
@@ -128,3 +136,16 @@ packages/types/src/**/*.d.ts.map
 # OAuth tokens (contain access/refresh tokens)
 **/token.json
 docs/plans/email-autodraft-consolidation-baseline-sample.txt
+
+# GA4 service-account keys (local only)
+.secrets/ga4/*.json
+
+# Octorate browser session state (contains cookies; never commit)
+.secrets/octorate/*
+
+# Octorate data extraction (contains booking data, do not commit)
+data/octorate/
+
+# Email draft fallback queues (may contain customer content/PII)
+data/email-fallback-queue/
+packages/mcp-server/.tmp/

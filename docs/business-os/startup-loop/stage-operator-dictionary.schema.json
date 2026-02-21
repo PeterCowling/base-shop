@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "docs/business-os/startup-loop/stage-operator-dictionary.schema.json",
+  "title": "Startup Loop Stage Operator Dictionary",
+  "description": "Canonical naming source for operator-facing stage labels, aliases, and display fields. Generated views (stage-operator-map.json, stage-operator-table.md) are derived from this dictionary. List order must match canonical stage order in loop-spec.yaml.",
+  "type": "object",
+  "required": ["schema_version", "loop_spec_version", "stages"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "description": "Dictionary schema version. Increment when field definitions change.",
+      "minimum": 1
+    },
+    "loop_spec_version": {
+      "type": "string",
+      "description": "The loop-spec.yaml spec_version this dictionary aligns to. Must be kept in sync.",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "stages": {
+      "type": "array",
+      "description": "Ordered list of stage entries. Order must match the stages array order in loop-spec.yaml exactly.",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/stage_entry"
+      }
+    }
+  },
+  "definitions": {
+    "stage_entry": {
+      "type": "object",
+      "required": [
+        "id",
+        "name_machine",
+        "label_operator_short",
+        "label_operator_long",
+        "outcome_operator",
+        "aliases",
+        "display_order"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Canonical stage ID from loop-spec.yaml (e.g. S0, S1B, S6B). Must match exactly.",
+          "pattern": "^S[0-9]+[A-Z]*$"
+        },
+        "name_machine": {
+          "type": "string",
+          "description": "Lowercase kebab-case machine name. Stable key in generated views. No spaces.",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "label_operator_short": {
+          "type": "string",
+          "description": "Short operator-facing label for compact surfaces. Maximum 28 characters.",
+          "minLength": 1,
+          "maxLength": 28
+        },
+        "label_operator_long": {
+          "type": "string",
+          "description": "Full operator-facing label. Used in tables and status displays.",
+          "minLength": 1
+        },
+        "outcome_operator": {
+          "type": "string",
+          "description": "What the operator has when this stage is done, expressed as a concrete deliverable.",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "description": "Deterministic slug aliases for --stage-alias addressing. Must be globally unique across all stages in this dictionary. At least one alias required.",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          }
+        },
+        "display_order": {
+          "type": "integer",
+          "description": "Integer position in operator-facing display. Matches index position in loop-spec.yaml stages array (1-based). Conditional sibling stages sharing a logical slot may share the same display_order.",
+          "minimum": 1
+        },
+        "conditional": {
+          "type": "boolean",
+          "description": "True if this stage is conditional and not always executed."
+        },
+        "condition": {
+          "type": "string",
+          "description": "Condition expression when conditional=true (matches loop-spec.yaml condition field)."
+        },
+        "operator_next_prompt": {
+          "type": "string",
+          "description": "Optional short prompt telling the operator what to do next after completing this stage."
+        },
+        "operator_microsteps": {
+          "type": "array",
+          "description": "Optional sub-steps visible to the operator within this stage. Required for composite stages (e.g. S6B with split gates).",
+          "items": {
+            "$ref": "#/definitions/microstep"
+          }
+        }
+      }
+    },
+    "microstep": {
+      "type": "object",
+      "required": ["id", "label", "gate", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Gate ID in canonical format (e.g. GATE-S6B-STRAT-01).",
+          "pattern": "^GATE-[A-Z0-9][A-Z0-9-]*$"
+        },
+        "label": {
+          "type": "string",
+          "description": "Operator-facing label for this microstep. Maximum 40 characters.",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "gate": {
+          "type": "string",
+          "enum": ["Hard", "Soft"],
+          "description": "Gate type. Hard = blocking; Soft = advisory."
+        },
+        "description": {
+          "type": "string",
+          "description": "What this microstep checks or enables for the operator.",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

@@ -51,13 +51,34 @@ type Props = {
 const ROME_SECTION_ID = "rome-travel-planner";
 const EXPERIENCE_SECTION_ID = "experience-planners";
 const INTRO_SECTION_ID = "arrival-help";
-const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
+function isI18nKeyToken(input: string): boolean {
+  // Avoid regex here: ESLint security rules can flag even safe-looking patterns.
+  // We only treat tokens like `filters.suggestion.removeDestination` as i18n keys.
+  if (!input.includes(".")) return false;
+
+  const parts = input.split(".");
+  if (parts.some((p) => p.length === 0)) return false;
+
+  for (const part of parts) {
+    for (let i = 0; i < part.length; i += 1) {
+      const code = part.charCodeAt(i);
+      const isUpper = code >= 65 && code <= 90;
+      const isLower = code >= 97 && code <= 122;
+      const isDigit = code >= 48 && code <= 57;
+      const isUnderscore = code === 95;
+
+      if (!isUpper && !isLower && !isDigit && !isUnderscore) return false;
+    }
+  }
+
+  return true;
+}
 
 function resolveUiLabel(value: unknown, fallback: string): string {
   if (typeof value !== "string") return fallback;
   const trimmed = value.trim();
   if (!trimmed) return fallback;
-  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
+  if (isI18nKeyToken(trimmed)) return fallback;
   return trimmed;
 }
 
@@ -264,7 +285,7 @@ function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
               <li key={route.id}>
                 <a
                   href={`${content.internalBasePath}/${route.id}`}
-                  className="text-sm font-medium text-brand-primary underline-offset-4 hover:underline"
+                  className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium text-brand-primary underline-offset-4 hover:underline"
                 >
                   {route.label}
                 </a>

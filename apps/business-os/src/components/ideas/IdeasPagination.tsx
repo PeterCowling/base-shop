@@ -38,7 +38,7 @@ export function IdeasPagination({
   const isNextDisabled = page >= totalPages;
 
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-700 md:flex-row md:items-center md:justify-between">
+    <div className="flex flex-col gap-3 rounded-lg border border-border-1 bg-panel p-4 text-sm text-secondary md:flex-row md:items-center md:justify-between">
       <p>
         {title}: showing {pageStart}-{pageEnd} of {totalItems}
       </p>
@@ -48,8 +48,8 @@ export function IdeasPagination({
           aria-disabled={isPreviousDisabled}
           className={`rounded-md border px-3 py-1.5 ${
             isPreviousDisabled
-              ? "pointer-events-none border-gray-200 text-gray-400"
-              : "border-gray-300 text-gray-700 hover:bg-gray-50"
+              ? "pointer-events-none border-border-1 text-muted"
+              : "border-border-2 text-secondary hover:bg-surface-1"
           }`}
         >
           Previous
@@ -62,8 +62,8 @@ export function IdeasPagination({
           aria-disabled={isNextDisabled}
           className={`rounded-md border px-3 py-1.5 ${
             isNextDisabled
-              ? "pointer-events-none border-gray-200 text-gray-400"
-              : "border-gray-300 text-gray-700 hover:bg-gray-50"
+              ? "pointer-events-none border-border-1 text-muted"
+              : "border-border-2 text-secondary hover:bg-surface-1"
           }`}
         >
           Next

@@ -1,0 +1,146 @@
+name: BRIK Weekly KPI Reminder
+
+on:
+  schedule:
+    - cron: "15 7 * * *"
+  workflow_dispatch:
+    inputs:
+      force_reminder:
+        description: "Create reminder even if first due date has not been reached"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  issues: write
+
+concurrency:
+  group: brik-weekly-kpi-reminder
+  cancel-in-progress: false
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create weekly KPI reminder issue
+        uses: actions/github-script@v7
+        env:
+          BUSINESS_CODE: BRIK
+          GO_LIVE_DATE: 2026-02-12
+          REMINDER_OFFSET_DAYS: 7
+          FORCE_REMINDER: ${{ inputs.force_reminder || 'false' }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const businessCode = (process.env.BUSINESS_CODE || "BRIK").trim().toUpperCase();
+            const goLiveDateRaw = (process.env.GO_LIVE_DATE || "").trim();
+            const offsetDays = Number(process.env.REMINDER_OFFSET_DAYS || "7");
+            const forceReminder = String(process.env.FORCE_REMINDER || "false").toLowerCase() === "true";
+            const oneDayMs = 24 * 60 * 60 * 1000;
+            const oneWeekMs = 7 * oneDayMs;
+
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(goLiveDateRaw)) {
+              core.setFailed(`Invalid GO_LIVE_DATE: "${goLiveDateRaw}". Expected YYYY-MM-DD.`);
+              return;
+            }
+            if (!Number.isFinite(offsetDays) || offsetDays < 0) {
+              core.setFailed(`Invalid REMINDER_OFFSET_DAYS: "${process.env.REMINDER_OFFSET_DAYS}".`);
+              return;
+            }
+
+            const toUtcDate = (isoDate) => {
+              const [y, m, d] = isoDate.split("-").map(Number);
+              return new Date(Date.UTC(y, m - 1, d, 0, 0, 0));
+            };
+            const formatUtcDate = (date) => {
+              const y = date.getUTCFullYear();
+              const m = String(date.getUTCMonth() + 1).padStart(2, "0");
+              const d = String(date.getUTCDate()).padStart(2, "0");
+              return `${y}-${m}-${d}`;
+            };
+
+            const now = new Date();
+            const todayUtc = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+            const goLiveUtc = toUtcDate(goLiveDateRaw);
+            const firstDueUtc = new Date(goLiveUtc.getTime() + offsetDays * oneDayMs);
+
+            if (!forceReminder && todayUtc < firstDueUtc) {
+              core.notice(
+                `Not due yet. First reminder date is ${formatUtcDate(firstDueUtc)} (today: ${formatUtcDate(todayUtc)}).`
+              );
+              return;
+            }
+
+            const elapsedSinceFirstDue = Math.max(0, todayUtc.getTime() - firstDueUtc.getTime());
+            const cycleIndex = Math.floor(elapsedSinceFirstDue / oneWeekMs);
+            const cycleStartUtc = new Date(firstDueUtc.getTime() + cycleIndex * oneWeekMs);
+            const cycleEndUtc = new Date(cycleStartUtc.getTime() + 6 * oneDayMs);
+
+            const cycleStart = formatUtcDate(cycleStartUtc);
+            const cycleEnd = formatUtcDate(cycleEndUtc);
+            const issueTitle = `[${businessCode}] Weekly KPI capture due (${cycleStart} to ${cycleEnd})`;
+            const reminderLabel = "measurement-reminder";
+            const businessLabel = `business-${businessCode.toLowerCase()}`;
+
+            for (const label of [
+              {
+                name: reminderLabel,
+                color: "1d76db",
+                description: "Scheduled KPI capture reminders",
+              },
+              {
+                name: businessLabel,
+                color: "5319e7",
+                description: `Reminders and tasks for ${businessCode}`,
+              },
+            ]) {
+              try {
+                await github.rest.issues.createLabel({ owner, repo, ...label });
+              } catch (error) {
+                if (error.status !== 422) throw error;
+              }
+            }
+
+            const { data: openIssues } = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              state: "open",
+              labels: `${reminderLabel},${businessLabel}`,
+              per_page: 100,
+            });
+
+            const existing = openIssues.find((issue) => issue.title === issueTitle);
+            if (existing) {
+              core.notice(`Reminder already open: #${existing.number} ${existing.title}`);
+              return;
+            }
+
+            const issueBody = [
+              `Automated reminder for ${businessCode} weekly KPI capture.`,
+              "",
+              `- Business: ${businessCode}`,
+              `- Measurement go-live date: ${goLiveDateRaw}`,
+              `- Reminder window: ${cycleStart} to ${cycleEnd}`,
+              "",
+              "## Checklist",
+              "- [ ] Export Cloudflare monthly proxies (rolling 24 months):",
+              "  - `pnpm brik:export-cloudflare-proxies --zone-name hostel-positano.com --hostname hostel-positano.com --months 24`",
+              "- [ ] Capture GA4 weekly KPI snapshot (sessions, channel split, landing pages, begin_checkout).",
+              "- [ ] Capture Search Console weekly KPI snapshot (queries, pages, impressions, CTR).",
+              "- [ ] Record decisions and actions in Business OS (use UI/API flow; avoid manual docs/business-os edits).",
+              "",
+              "## References",
+              "- `docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md`",
+              "- `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md`",
+            ].join("\n");
+
+            const created = await github.rest.issues.create({
+              owner,
+              repo,
+              title: issueTitle,
+              body: issueBody,
+              labels: [reminderLabel, businessLabel],
+            });
+
+            core.notice(`Created reminder issue: #${created.data.number} ${created.data.title}`);

@@ -25,7 +25,7 @@ describe('email cli', () => {
 
   test('resolveDataRoot finds existing folder in parent', async () => {
     const fs = mockFs();
-    fs.existsSync.mockImplementation((p: string) => p === path.join('/root', 'data', 'shops'));
+    fs.existsSync.mockImplementation((p: unknown) => p === path.join('/root', 'data', 'shops'));
     jest.doMock('fs', () => fs);
     jest.doMock('../../scheduler', () => ({ sendDueCampaigns: jest.fn() }));
     jest.doMock('@acme/date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
@@ -52,7 +52,7 @@ describe('email cli', () => {
     jest.doMock('@acme/i18n/useTranslations.server', () => ({
       useTranslations: () => Promise.resolve((key: string) => key),
     }));
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const log = jest.spyOn(console, 'info').mockImplementation(() => {});
 
     const { run } = await import('../../cli');
     await run(['node', 'cli', 'campaign', 'list', 'shop']);
@@ -64,9 +64,9 @@ describe('email cli', () => {
   test('campaign create with recipients', async () => {
     const fs = mockFs();
     fs.existsSync.mockReturnValue(true);
-    fs.promises.readFile.mockResolvedValue('[]');
-    fs.promises.writeFile.mockResolvedValue(undefined as any);
-    fs.promises.mkdir.mockResolvedValue(undefined as any);
+    (fs.promises.readFile as unknown as { mockResolvedValue: (v: any) => void }).mockResolvedValue('[]');
+    (fs.promises.writeFile as unknown as { mockResolvedValue: (v: any) => void }).mockResolvedValue(undefined);
+    (fs.promises.mkdir as unknown as { mockResolvedValue: (v: any) => void }).mockResolvedValue(undefined);
     jest.doMock('fs', () => fs);
     jest.doMock('../../scheduler', () => ({ sendDueCampaigns: jest.fn() }));
     jest.doMock('@acme/date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
@@ -74,7 +74,7 @@ describe('email cli', () => {
     jest.doMock('@acme/i18n/useTranslations.server', () => ({
       useTranslations: () => Promise.resolve((key: string) => key),
     }));
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const log = jest.spyOn(console, 'info').mockImplementation(() => {});
 
     const { run } = await import('../../cli');
     await run([
@@ -93,7 +93,7 @@ describe('email cli', () => {
       'a@example.com,b@example.com',
     ]);
 
-    const data = JSON.parse(fs.promises.writeFile.mock.calls[0][1]);
+    const data = JSON.parse(fs.promises.writeFile.mock.calls[0][1] as string);
     expect(data[0].recipients).toEqual(['a@example.com', 'b@example.com']);
 
     log.mockRestore();
@@ -102,9 +102,9 @@ describe('email cli', () => {
   test('campaign create without recipients', async () => {
     const fs = mockFs();
     fs.existsSync.mockReturnValue(true);
-    fs.promises.readFile.mockResolvedValue('[]');
-    fs.promises.writeFile.mockResolvedValue(undefined as any);
-    fs.promises.mkdir.mockResolvedValue(undefined as any);
+    (fs.promises.readFile as unknown as { mockResolvedValue: (v: any) => void }).mockResolvedValue('[]');
+    (fs.promises.writeFile as unknown as { mockResolvedValue: (v: any) => void }).mockResolvedValue(undefined);
+    (fs.promises.mkdir as unknown as { mockResolvedValue: (v: any) => void }).mockResolvedValue(undefined);
     jest.doMock('fs', () => fs);
     jest.doMock('../../scheduler', () => ({ sendDueCampaigns: jest.fn() }));
     jest.doMock('@acme/date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
@@ -112,7 +112,7 @@ describe('email cli', () => {
     jest.doMock('@acme/i18n/useTranslations.server', () => ({
       useTranslations: () => Promise.resolve((key: string) => key),
     }));
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const log = jest.spyOn(console, 'info').mockImplementation(() => {});
 
     const { run } = await import('../../cli');
     await run([
@@ -129,7 +129,7 @@ describe('email cli', () => {
       '2020-01-01T00:00:00.000Z',
     ]);
 
-    const data = JSON.parse(fs.promises.writeFile.mock.calls[0][1]);
+    const data = JSON.parse(fs.promises.writeFile.mock.calls[0][1] as string);
     expect(data[0].recipients).toEqual([]);
 
     log.mockRestore();

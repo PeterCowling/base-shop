@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK GA4 + Search Console Setup Note</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>BRIK GA4 + Search Console Setup Note</h1>
+<h2>1) Why this is now top-priority</h2>
+<p>Historical baseline data is now active, but it is still proxy-level. Without GA4 + Search Console in production, BRIK cannot measure:</p>
+<ul>
+<li>booking funnel behavior,</li>
+<li>source/channel conversion quality,</li>
+<li>SEO performance by query/page,</li>
+<li>experiment impact by week.</li>
+</ul>
+<h2>2) Current implementation status in code</h2>
+<p>Tracking hooks already exist in app code and only require runtime configuration:</p>
+<ul>
+<li>GA env key is wired in <code>apps/brikette/src/config/env.ts</code> (<code>NEXT_PUBLIC_GA_MEASUREMENT_ID</code>).</li>
+<li>GA script injection is wired in <code>apps/brikette/src/app/layout.tsx</code>.</li>
+<li>Web Vitals events are wired in <code>apps/brikette/src/performance/reportWebVitals.ts</code>.</li>
+<li>Booking intent event (<code>begin_checkout</code>) is wired in <code>apps/brikette/src/app/[lang]/book/BookPageContent.tsx</code>.</li>
+</ul>
+<p>Current status: production has <code>NEXT_PUBLIC_GA_MEASUREMENT_ID</code> configured (<code>G-2ZSYXG8R7T</code>) and GA collect traffic is visible. See verification artifact: <code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code>.</p>
+<h2>3) External inputs required from operator</h2>
+<ol>
+<li>Google account with access to create GA4 property and Search Console property.</li>
+<li>Production domain ownership control for BRIK site (<code>hostel-positano.com</code> and variants in use).</li>
+<li>Cloudflare Pages environment-variable access for the BRIK deploy target.</li>
+</ol>
+<h2>4) Setup checklist</h2>
+<h3>4.1 GA4</h3>
+<ol>
+<li>Create GA4 property (timezone <code>Europe/Rome</code>, currency <code>EUR</code>).</li>
+<li>Create web data stream for production site URL.</li>
+<li>Copy measurement ID (<code>G-...</code>).</li>
+<li>Register event-scope custom dimensions:
+<ul>
+<li><code>metric_id</code></li>
+<li><code>metric_value</code></li>
+<li><code>metric_delta</code></li>
+<li><code>metric_rating</code></li>
+<li><code>navigation_type</code></li>
+</ul>
+</li>
+<li>Set Cloudflare Pages production env var:
+<ul>
+<li><code>NEXT_PUBLIC_GA_MEASUREMENT_ID=&#x3C;G-...></code></li>
+</ul>
+</li>
+<li>Trigger production redeploy.</li>
+</ol>
+<h3>4.2 Search Console</h3>
+<ol>
+<li>Add property for production domain.</li>
+<li>Complete site ownership verification.</li>
+<li>Submit sitemap:
+<ul>
+<li><code>https://hostel-positano.com/sitemap_index.xml</code></li>
+</ul>
+</li>
+<li>Confirm indexing status starts populating.</li>
+</ol>
+<h3>4.3 Verification after deploy</h3>
+<ol>
+<li>Open <code>view-source:https://hostel-positano.com/en/</code> and confirm <code>gtag/js?id=G-...</code> exists.</li>
+<li>Visit production pages and confirm <code>web_vitals</code> events appear in GA4 Realtime/DebugView.</li>
+<li>Start booking flow and confirm <code>begin_checkout</code> event appears in GA4.</li>
+<li>Confirm Search Console receives sitemap and begins URL discovery.</li>
+</ol>
+<h3>4.4 2026-02-13 execution status</h3>
+<ul>
+<li>Completed:
+<ul>
+<li>GA4 script/config confirmed live on production.</li>
+<li>GA collect requests observed (<code>page_view</code>, <code>user_engagement</code>) for <code>tid=G-2ZSYXG8R7T</code>.</li>
+<li>Search Console DNS verification TXT records present.</li>
+<li><code>robots.txt</code> sitemap directive and <code>sitemap_index.xml</code> confirmed live.</li>
+</ul>
+</li>
+<li>Remaining:
+<ul>
+<li>Confirm <code>web_vitals</code> and <code>begin_checkout</code> in GA4 Realtime/DebugView with property access.</li>
+<li>Confirm Search Console URL discovery status in property UI.</li>
+</ul>
+</li>
+</ul>
+<h2>5) Definition of done</h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" checked disabled> <code>NEXT_PUBLIC_GA_MEASUREMENT_ID</code> set in production and deployed.</li>
+<li class="task-list-item"><input type="checkbox" disabled> GA4 receiving <code>web_vitals</code> and <code>begin_checkout</code> (property-level UI verification still required).</li>
+<li class="task-list-item"><input type="checkbox" checked disabled> Search Console verification records + sitemap endpoint confirmed live.</li>
+<li class="task-list-item"><input type="checkbox" disabled> BRIK plan metrics section updated with first observed baseline window.</li>
+</ul>
+<h2>6) Immediate follow-up once done</h2>
+<ol>
+<li>Run first weekly KPI capture and create BRIK weekly K/P/C/S decision doc.</li>
+<li>Recalibrate BRIK forecast and prioritization using first observed GA4 + Search Console data.</li>
+</ol>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md</code></div>
+      <div>Generated: 2026-02-13T22:21:42.482Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

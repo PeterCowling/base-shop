@@ -10,19 +10,17 @@ describe("/api/return success", () => {
     setupReturnMocks();
     jest.doMock("@acme/platform-core/returnLogistics", () => ({
       __esModule: true,
-      getReturnBagAndLabel: jest
-        .fn()
+      getReturnBagAndLabel: (jest.fn() as any)
         .mockResolvedValue({ homePickupZipCodes: ["12345"] }),
     }));
     jest.doMock("@acme/platform-core/repositories/settings.server", () => ({
       __esModule: true,
-      getShopSettings: jest
-        .fn()
+      getShopSettings: (jest.fn() as any)
         .mockResolvedValue({ returnService: { homePickupEnabled: true } }),
     }));
 
-    const log = jest.spyOn(console, "log").mockImplementation(() => {});
-    const fetchMock = jest.fn().mockResolvedValue({} as Response);
+    const log = jest.spyOn(console, "info").mockImplementation(() => {});
+    const fetchMock = (jest.fn() as any).mockResolvedValue({});
     (global as any).fetch = fetchMock;
 
     const { POST } = await import("../src/api/return/route");

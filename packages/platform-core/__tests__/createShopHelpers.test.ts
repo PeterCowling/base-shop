@@ -21,7 +21,7 @@ describe("createShop helpers", () => {
   describe("prepareOptions", () => {
     it("applies defaults", () => {
       const opts = prepareOptions("shop", {
-        pages: [{ slug: "test", title: { en: "Test Page" }, components: [] }],
+        pages: [{ slug: "test", title: { en: "Test Page" }, components: [], status: "draft", visibility: "public" }],
       });
       expect(opts.name).toBe("shop");
       expect(opts.pages[0].slug).toBe("test");
@@ -110,7 +110,7 @@ describe("createShop helpers", () => {
 
   describe("readFile", () => {
     it("reads using utf8", () => {
-      fsMock.readFileSync.mockReturnValue("content" as unknown as Buffer);
+      fsMock.readFileSync.mockReturnValue("content" as any);
       const res = readFile("file.txt");
       expect(res).toBe("content");
       expect(fsMock.readFileSync).toHaveBeenCalledWith("file.txt", "utf8");

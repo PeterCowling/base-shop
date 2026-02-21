@@ -18,7 +18,7 @@ export const marketingEmailTemplates: MarketingEmailTemplateVariant[] = [
       if (!props || !props.headline || props.content == null) {
         return <></>;
       }
-      return <MarketingEmailTemplate {...(props ?? {})} />;
+      return <MarketingEmailTemplate {...(props as MarketingEmailTemplateProps)} />;
     },
   },
   {
@@ -30,7 +30,7 @@ export const marketingEmailTemplates: MarketingEmailTemplateVariant[] = [
         return <></>;
       }
       return (
-        <MarketingEmailTemplate {...(props ?? {})} className="text-center" />
+        <MarketingEmailTemplate {...(props as MarketingEmailTemplateProps)} className="text-center" />
       );
     },
   },

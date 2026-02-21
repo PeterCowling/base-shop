@@ -142,8 +142,8 @@ describe("generateMeta", () => {
     });
     class OpenAI {
       constructor() {
-        this.responses = { create: responsesCreate };
-        this.images = { generate: imagesGenerate };
+        (this as any).responses = { create: responsesCreate };
+        (this as any).images = { generate: imagesGenerate };
       }
     }
     let result;

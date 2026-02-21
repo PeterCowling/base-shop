@@ -25,7 +25,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 ## Goals
 
 - Create single coordinated system for opportunity management across all businesses (existing + new)
-- Enable humans and agents to generate, work up, fact-find, plan, execute, and reflect on ideas/opportunities
+- Enable humans and agents to generate, work up, lp-do-fact-find, plan, execute, and reflect on ideas/opportunities
 - Provide evidence-gated, risk-managed workflow for non-coding work matching engineering rigor
 - Make business plans, people responsibilities, and execution status visible and queryable in-repo
 - Support progressive elaboration: raw ideas → worked ideas → cards → staged execution → reflection → plan updates
@@ -98,15 +98,15 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Path-level authorization enforced server-side
   - Renders only `.user.md` files (agent files not shown in UI)
 - **Agent layer:** Extends existing `.claude/skills/` pattern
-  - New skills: `/work-idea`, `/propose-lane-move`, `/scan-repo`, `/update-business-plan`, `/update-people`
-  - Reuses existing `/fact-find`, `/plan-feature`, `/build-feature`, `/reflect` for engineering cards
+  - New skills: `/idea-develop`, `/idea-advance`, `/idea-scan`, `/biz-update-plan`, `/biz-update-people`
+  - Reuses existing `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`, `/reflect` for engineering cards
   - All agent runs are Pete-triggered in Phase 0; outputs commit to repo
 
 ### Data flow
 
 1. User submits raw idea → `docs/business-os/ideas/inbox/<ID>.user.md` created
 2. Agent works up idea → `ideas/worked/<ID>.user.md` + card created in `cards/<ID>.user.md`
-3. Card progresses through lanes → stage docs (`fact-find.md`, `plan.md`, `build.md`, `reflect.md`) maintained
+3. Card progresses through lanes → stage docs (`lp-do-fact-find.md`, `plan.md`, `build.md`, `reflect.md`) maintained
 4. Lane moves proposed via `Proposed-Lane` frontmatter field → Pete/agent approves → lane updated
 5. Reflection output updates business plans and people docs
 6. Archive: Dropped/Retired items moved to `archive/` subdirectories; hidden from UI
@@ -151,11 +151,11 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 | BOS-18 | DECISION | Choose git integration (git CLI vs isomorphic-git vs nodegit) | 100% | S | Complete (2026-01-28) | - |
 | BOS-19 | IMPLEMENT | Implement lane transition validation and stage doc creation | 100% | M | Complete (2026-01-28) | BOS-10 |
 | BOS-20 | IMPLEMENT | Build dependency tracking and cycle detection | 100% | M | Complete (2026-01-28) | BOS-08 |
-| BOS-21 | IMPLEMENT | Create agent skill: `/work-idea` | 100% | M | Complete (2026-01-28) | BOS-07 |
-| BOS-22 | IMPLEMENT | Create agent skill: `/propose-lane-move` | 100% | S | Complete (2026-01-28) | BOS-07 |
-| BOS-23 | IMPLEMENT | Create agent skill: `/scan-repo` | 100% | M | Complete (2026-01-28) | BOS-07 |
-| BOS-24 | IMPLEMENT | Create agent skill: `/update-business-plan` | 100% | M | Complete (2026-01-28) | BOS-07 |
-| BOS-25 | IMPLEMENT | Create agent skill: `/update-people` | 100% | M | Complete (2026-01-28) | BOS-07 |
+| BOS-21 | IMPLEMENT | Create agent skill: `/idea-develop` | 100% | M | Complete (2026-01-28) | BOS-07 |
+| BOS-22 | IMPLEMENT | Create agent skill: `/idea-advance` | 100% | S | Complete (2026-01-28) | BOS-07 |
+| BOS-23 | IMPLEMENT | Create agent skill: `/idea-scan` | 100% | M | Complete (2026-01-28) | BOS-07 |
+| BOS-24 | IMPLEMENT | Create agent skill: `/biz-update-plan` | 100% | M | Complete (2026-01-28) | BOS-07 |
+| BOS-25 | IMPLEMENT | Create agent skill: `/biz-update-people` | 100% | M | Complete (2026-01-28) | BOS-07 |
 | BOS-26 | IMPLEMENT | Implement evidence source typing system | 100% | S | Complete (2026-01-28) | BOS-08 |
 | BOS-27 | IMPLEMENT | Add commit identity management (user vs agent) | 100% | S | Complete (2026-01-28) | BOS-10 |
 | BOS-28 | IMPLEMENT | Build lightweight history view for cards | 100% | S | Complete (2026-01-28) | BOS-12 |
@@ -761,7 +761,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Impact: 65% — Core write path now has safety mechanism (auto-PR + CI gates); governance aligned; local runtime proven; hosted deployment still partial (BOS-00-A at 40%)
 
 #### Re-plan Update (2026-01-28) - MAJOR BLOCKERS RESOLVED
-- **Previous confidence:** 85% (initial re-plan), then 45% (after review), then 30% (after adding BOS-00-F blocker)
+- **Previous confidence:** 85% (initial lp-do-replan), then 45% (after review), then 30% (after adding BOS-00-F blocker)
 - **Updated confidence:** 70% 🟡 BUILD-ELIGIBLE (major blockers resolved)
 - **Resolved blockers (2 of 4 existential blockers now complete):**
   - **BOS-00-B (✅ RESOLVED):** Governance resolved via auto-PR workflow. App commits to work/* branches → auto-PR creates PR → auto-merge after CI passes. Preserves audit trail, rollback capability, and repo governance.
@@ -1165,17 +1165,17 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Previous confidence:** 75%
 - **Updated confidence:** 85%
   - Implementation: 88% — Simple logic: map lane to stage doc filename, check existence, create from template if missing
-  - Approach: 85% — Minimal placeholder approach confirmed: frontmatter + 1-2 sentence placeholder body; agent skill populates details during fact-find/plan/build/reflect phases
+  - Approach: 85% — Minimal placeholder approach confirmed: frontmatter + 1-2 sentence placeholder body; agent skill populates details during lp-do-fact-find/plan/build/reflect phases
   - Impact: 82% — Always-on requirement enforced at BOS-10 (write operations); UI assumes stage docs exist; validation prevents missing docs
 - **Decision / resolution:**
   - **Stage doc templates (minimal placeholders):**
-    - `fact-find.(user|agent).md`: Frontmatter: Type: Fact-Find, Status: Draft, Card-ID: <ID>. Body: "Fact-finding in progress."
+    - `lp-do-fact-find.(user|agent).md`: Frontmatter: Type: Fact-Find, Status: Draft, Card-ID: <ID>. Body: "Fact-finding in progress."
     - `plan.(user|agent).md`: Frontmatter: Type: Plan, Status: Draft, Card-ID: <ID>. Body: "Planning in progress."
     - `build.(user|agent).md`: Frontmatter: Type: Build-Log, Status: Draft, Card-ID: <ID>. Body: "Work in progress."
     - `reflect.(user|agent).md`: Frontmatter: Type: Reflection, Status: Draft, Card-ID: <ID>. Body: "Reflection pending."
   - **Validation rules (prerequisite checks):**
     - No prerequisite checks in Phase 0; always-on means stage docs created automatically on lane entry
-    - Future: could add "can't move to Planned without completing fact-find" validation if needed
+    - Future: could add "can't move to Planned without completing lp-do-fact-find" validation if needed
 - **Changes to task:**
   - Acceptance: Removed prerequisite validation (not required in Phase 0; always-on is sufficient)
   - Acceptance: Added specific template structure (frontmatter + placeholder body)
@@ -1250,13 +1250,13 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **What would make this ≥90%:**
   - Code review of implemented DFS (confirm recursion stack logic correct)
 
-### BOS-21: Create agent skill: `/work-idea`
+### BOS-21: Create agent skill: `/idea-develop`
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/work-idea/SKILL.md`
+- **Affects:** `.claude/skills/idea-develop/SKILL.md`
 - **Depends on:** BOS-07
 - **Confidence:** 88%
-  - Implementation: 90% — Skill structure clear from `.claude/skills/fact-find/SKILL.md` (100 lines; name, description, workflow sections); logic straightforward
+  - Implementation: 90% — Skill structure clear from `.claude/skills/lp-do-fact-find/SKILL.md` (100 lines; name, description, workflow sections); logic straightforward
   - Approach: 88% — Reusing existing skill structure is proven; "worked up" = validate required fields + clarify scope (defined below)
   - Impact: 85% — Agent creates cards; BOS-07 validates via docs:lint; malformed cards caught before commit
 
@@ -1267,7 +1267,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Approach: 88% — "Worked up to standard" defined as: (1) all required fields populated per BOS-07 validation, (2) scope clarified (1-3 sentence summary), (3) business code assigned, (4) owner assigned
   - Impact: 85% — Validation via docs:lint (BOS-07) catches malformed cards; agent runs are Pete-supervised in Phase 0; low blast radius
 - **Investigation performed:**
-  - Repo: `.claude/skills/fact-find/SKILL.md` (template: frontmatter, Operating Mode, Workflow, Outputs)
+  - Repo: `.claude/skills/lp-do-fact-find/SKILL.md` (template: frontmatter, Operating Mode, Workflow, Outputs)
   - Repo: 19 existing skills in `.claude/skills/` (consistent structure)
   - Requirements: lines 209-227 (raw idea → worked idea → card workflow)
 - **Decision / resolution:**
@@ -1287,17 +1287,17 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **What would make this ≥90%:**
   - Example raw idea and expected worked idea output (can provide as template in skill doc)
 
-### BOS-22: Create agent skill: `/propose-lane-move`
+### BOS-22: Create agent skill: `/idea-advance`
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/propose-lane-move/SKILL.md`, agent scripts
+- **Affects:** `.claude/skills/idea-advance/SKILL.md`, agent scripts
 - **Depends on:** BOS-07
 - **Confidence:** 80%
   - Implementation: 82% — Simple skill: read card, analyze stage docs, propose lane via Proposed-Lane frontmatter
   - Approach: 80% — Proposal mechanism (frontmatter field) is clear
   - Impact: 78% — Agent proposes only; Pete approves; low risk
 - **Acceptance:**
-  - Skill doc: `.claude/skills/propose-lane-move/SKILL.md`
+  - Skill doc: `.claude/skills/idea-advance/SKILL.md`
   - Agent workflow: read card, verify stage docs complete, check evidence gates, propose next lane via `Proposed-Lane: <lane>` in card frontmatter
   - Evidence references included in proposal (link to specific stage doc sections)
   - Manual test: Pete runs skill, verifies proposal added to card
@@ -1314,14 +1314,14 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Rollout: Pete runs skill manually
   - Rollback: Git revert card frontmatter change
 - **Documentation impact:**
-  - `docs/business-os/agent-workflows.md` document `/propose-lane-move` usage
+  - `docs/business-os/agent-workflows.md` document `/idea-advance` usage
 - **Notes / references:**
   - Requirements lines 403-410 specify lane move proposals
 
-### BOS-23: Create agent skill: `/scan-repo`
+### BOS-23: Create agent skill: `/idea-scan`
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/scan-repo/SKILL.md`
+- **Affects:** `.claude/skills/idea-scan/SKILL.md`
 - **Depends on:** BOS-07
 - **Confidence:** 82%
   - Implementation: 82% — Git diff/status commands straightforward; JSON file I/O is simple; scan scope limited to `docs/business-os/`
@@ -1340,7 +1340,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Scan scope: Only `docs/business-os/**` (narrow scope reduces parse complexity)
 - **Decision / resolution:**
   - **Scan integration workflow (Phase 0):**
-    1. Agent runs `/scan-repo` manually (Pete-triggered)
+    1. Agent runs `/idea-scan` manually (Pete-triggered)
     2. Scan outputs `scans/last-scan.json`: `{lastCommit, scanDate, changedFiles: [{path, status}]}`
     3. Scan outputs `scans/active-docs.json`: `{cards: [{id, lane, lastUpdated}], ideas: [...], plans: [...]}`
     4. Scan outputs `scans/history/<timestamp>.json`: snapshot for audit trail
@@ -1353,10 +1353,10 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **What would make this ≥90%:**
   - Example scan output JSON structure documented (can provide in skill doc)
 
-### BOS-24: Create agent skill: `/update-business-plan`
+### BOS-24: Create agent skill: `/biz-update-plan`
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/update-business-plan/SKILL.md`
+- **Affects:** `.claude/skills/biz-update-plan/SKILL.md`
 - **Depends on:** BOS-07
 - **Confidence:** 82%
   - Implementation: 82% — Plan update logic straightforward: extract learnings from reflect.agent.md, append/update plan sections, dual-audience mirroring
@@ -1372,7 +1372,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Changes to task:**
   - Acceptance: Added plan update rubric (which sections: Strategy, Risks, Opportunities, Learnings)
 - **Acceptance:**
-  - Skill doc: `.claude/skills/update-business-plan/SKILL.md`
+  - Skill doc: `.claude/skills/biz-update-plan/SKILL.md`
   - Agent workflow: read card `reflect.agent.md`, extract learnings/decisions, update `strategy/<BIZ>/plan.(user|agent).md`, commit with descriptive message
   - Dual-audience: changes mirrored to `.user.md` and `.agent.md`
   - Manual test: Pete runs skill after reflection, verifies plan updated
@@ -1390,14 +1390,14 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Rollout: Pete runs skill manually
   - Rollback: Git revert plan changes (Pete reviews diffs)
 - **Documentation impact:**
-  - `docs/business-os/agent-workflows.md` document `/update-business-plan` usage
+  - `docs/business-os/agent-workflows.md` document `/biz-update-plan` usage
 - **Notes / references:**
   - Requirements lines 417-431 specify agent duties
 
-### BOS-25: Create agent skill: `/update-people`
+### BOS-25: Create agent skill: `/biz-update-people`
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/update-people/SKILL.md`
+- **Affects:** `.claude/skills/biz-update-people/SKILL.md`
 - **Depends on:** BOS-07
 - **Confidence:** 82%
   - Implementation: 82% — People update logic similar to BOS-24; extract people-related learnings, update people.(user|agent).md sections
@@ -1413,7 +1413,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Changes to task:**
   - Acceptance: Added people doc structure (Roles, Responsibilities, Capabilities, Gaps)
 - **Acceptance:**
-  - Skill doc: `.claude/skills/update-people/SKILL.md`
+  - Skill doc: `.claude/skills/biz-update-people/SKILL.md`
   - Agent workflow: read card `reflect.agent.md`, extract people-related changes (new responsibilities, capability gaps), update `people/people.(user|agent).md`, commit
   - Dual-audience: changes mirrored
   - Manual test: Pete runs skill, verifies people doc updated
@@ -1431,7 +1431,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Rollout: Pete runs skill manually
   - Rollback: Git revert people changes
 - **Documentation impact:**
-  - `docs/business-os/agent-workflows.md` document `/update-people` usage
+  - `docs/business-os/agent-workflows.md` document `/biz-update-people` usage
 - **Notes / references:**
   - Requirements lines 417-431 specify agent duties
 
@@ -1611,7 +1611,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Impact: 82% — Documentation only; errors would confuse agents but Pete reviews output
 - **Acceptance:**
   - Workflow guide: `docs/business-os/agent-workflows.md`
-  - Sections: Overview, skill summaries (/work-idea, /propose-lane-move, /scan-repo, /update-business-plan, /update-people), examples, troubleshooting
+  - Sections: Overview, skill summaries (/idea-develop, /idea-advance, /idea-scan, /biz-update-plan, /biz-update-people), examples, troubleshooting
   - Linked from `docs/agents/feature-workflow-guide.md`
   - Linked from Business OS charter
 - **Test plan:**

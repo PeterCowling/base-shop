@@ -8,7 +8,8 @@ import {
   updateAccessRequest,
 } from "../../../../../../lib/accessStore";
 
-export const runtime = "edge";
+// Uses node:crypto/fs via accessStore + accessAdmin.
+export const runtime = "nodejs";
 
 function summarizeInvite(invite: {
   id: string;

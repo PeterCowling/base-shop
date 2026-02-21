@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename -- Test helpers that validate doc files from filesystem; paths constructed from known directory structure */
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 

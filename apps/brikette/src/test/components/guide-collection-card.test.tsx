@@ -25,7 +25,7 @@ jest.mock("next/link", () => ({
 }));
 
 jest.mock("@acme/ui/atoms/CfImage", () => ({
-  CfImage: (props: ImgHTMLAttributes<HTMLImageElement>) => <img {...props} />,
+  CfImage: (props: ImgHTMLAttributes<HTMLImageElement>) => <img {...props} alt={props.alt ?? ""} />,
 }));
 
 jest.mock("@/guides/slugs/labels", () => ({

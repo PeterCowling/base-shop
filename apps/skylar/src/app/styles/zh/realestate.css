@@ -23,7 +23,7 @@
 }
 
 .zh-realestate-chips li {
-  border: 1px solid rgba(247, 213, 114, 0.4);
+  border: 1px solid hsl(var(--zh-gold-bright) / 0.4);
   border-radius: 999px;
   padding: 0.4rem 1.2rem;
 }
@@ -33,7 +33,7 @@
   letter-spacing: 0.35em;
   text-transform: uppercase;
   font-size: 0.95rem;
-  color: rgba(247, 213, 142, 0.9);
+  color: hsl(var(--zh-gold-bright) / 0.9);
 }
 
 .zh-realestate-body {
@@ -43,7 +43,7 @@
   margin-top: 0.85rem;
   letter-spacing: 0.08em;
   line-height: 1.85;
-  color: rgba(244, 241, 231, 0.9);
+  color: hsl(46 43% 93% / 0.9);
 }
 
 .zh-realestate-body p {
@@ -74,8 +74,8 @@
 
 .zh-realestate-case {
   border-radius: 28px;
-  border: 1px solid rgba(247, 213, 114, 0.35);
-  background: rgba(8, 7, 6, 0.85);
+  border: 1px solid hsl(var(--zh-gold-bright) / 0.35);
+  background: hsl(0 0% 3% / 0.85);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -87,14 +87,14 @@
   font-family: var(--font-display);
   letter-spacing: 0.25em;
   font-size: 1rem;
-  color: #ffd060;
+  color: hsl(45 100% 69%);
 }
 
 .zh-realestate-case__tag {
   margin: 0;
   letter-spacing: 0.2em;
   font-size: 0.85rem;
-  color: rgba(247, 213, 142, 0.9);
+  color: hsl(var(--zh-gold-bright) / 0.9);
 }
 
 .zh-realestate-details {
@@ -111,8 +111,8 @@
 
 .zh-realestate-detail {
   border-radius: 28px;
-  border: 1px solid rgba(247, 213, 114, 0.3);
-  background: rgba(5, 4, 3, 0.8);
+  border: 1px solid hsl(var(--zh-gold-bright) / 0.3);
+  background: hsl(0 0% 2% / 0.8);
   padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
@@ -123,7 +123,7 @@
   margin: 0;
   letter-spacing: 0.25em;
   font-size: 0.9rem;
-  color: rgba(247, 213, 142, 0.9);
+  color: hsl(var(--zh-gold-bright) / 0.9);
 }
 
 .zh-realestate-cta {

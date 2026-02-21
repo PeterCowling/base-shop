@@ -132,6 +132,7 @@ const DocInsertPage: React.FC = () => {
 
       <div className="bg-white rounded-lg shadow px-8 py-12 dark:bg-darkSurface dark:text-darkAccentGreen">
         {/* BookingRef component */}
+        {/* eslint-disable-next-line ds/no-raw-spacing -- internal POS layout spacing [DS-06] */}
         <div className="mb-[50px]">
           <BookingRef bookingRef={bookingRef} />
         </div>

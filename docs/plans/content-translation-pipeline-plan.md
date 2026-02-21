@@ -2,12 +2,16 @@
 Type: Plan
 Status: Active
 Domain: i18n/CMS
-Last-reviewed: 2026-01-20
+Last-reviewed: 2026-02-14
 Relates-to charter: docs/i18n/i18n-charter.md
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # Content Translation Pipeline Plan
 
+## Related docs
+- Startup loop integration fact-find: `docs/plans/content-translation-pipeline-startup-loop-fact-find.md`
 
 ## Active tasks
 

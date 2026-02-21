@@ -63,8 +63,8 @@ function LoanModalComponent({
   const depositIcon = useMemo(
     (): { icon: IconDefinition; className: string } =>
       depositType === "CASH"
-        ? { icon: faMoneyBill, className: "text-green-400" }
-        : { icon: faFileAlt, className: "text-yellow-400" },
+        ? { icon: faMoneyBill, className: "text-success-main" }
+        : { icon: faFileAlt, className: "text-warning-main" },
     [depositType]
   );
 
@@ -137,16 +137,16 @@ function LoanModalComponent({
     >
       <div className="bg-white rounded-lg shadow-lg w-full max-w-lg dark:bg-darkSurface">
         {/* Header Section */}
-        <div className="px-6 py-4 border-b border-gray-400 flex justify-between items-center">
+        <div className="px-6 py-4 border-b border-border flex justify-between items-center">
           <h2
             id="loanModalTitle"
-            className="text-xl font-bold tracking-wide text-gray-800 dark:text-darkAccentGreen"
+            className="text-xl font-bold tracking-wide text-foreground dark:text-darkAccentGreen"
           >
             {mode === "loan" ? "Add Loan" : "Return Item"}
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-600 hover:text-gray-700 focus:outline-none dark:text-darkAccentGreen"
+            className="text-muted-foreground hover:text-foreground focus:outline-none dark:text-darkAccentGreen"
             aria-label="Close Modal"
           >
             <svg
@@ -170,13 +170,13 @@ function LoanModalComponent({
         <div className="px-6 py-4 space-y-6">
           {/* Occupant Details */}
           {occupant && (
-            <div className="text-sm text-gray-700 bg-gray-50 p-3 rounded dark:bg-darkSurface dark:text-darkAccentGreen">
+            <div className="text-sm text-foreground bg-surface-2 p-3 rounded dark:bg-darkSurface dark:text-darkAccentGreen">
               <div className="font-semibold">Occupant:</div>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-1">
                 <span>
                   {occupant.firstName} {occupant.lastName}
                 </span>
-                <span className="text-gray-700">
+                <span className="text-foreground">
                   Ref: {occupant.bookingRef}
                 </span>
               </div>
@@ -184,23 +184,23 @@ function LoanModalComponent({
           )}
 
           {/* Item Details */}
-          <div className="bg-gray-50 p-3 rounded dark:bg-darkSurface">
-            <label className="block font-semibold mb-1 text-gray-700 dark:text-darkAccentGreen">
+          <div className="bg-surface-2 p-3 rounded dark:bg-darkSurface">
+            <label className="block font-semibold mb-1 text-foreground dark:text-darkAccentGreen">
               {mode === "loan" ? "Loan Item:" : "Return Item:"}
             </label>
-            <div className="text-gray-800 dark:text-darkAccentGreen">{item || "No item specified"}</div>
+            <div className="text-foreground dark:text-darkAccentGreen">{item || "No item specified"}</div>
             {mode === "loan" && (
-              <div className="text-sm text-gray-600 mt-1 dark:text-darkAccentGreen">
+              <div className="text-sm text-muted-foreground mt-1 dark:text-darkAccentGreen">
                 Price: {itemPrice}
               </div>
             )}
           </div>
 
           {/* Quantity Input */}
-          <div className="bg-gray-50 p-3 rounded dark:bg-darkSurface">
+          <div className="bg-surface-2 p-3 rounded dark:bg-darkSurface">
             <label
               htmlFor="countInput"
-              className="block font-semibold mb-1 text-gray-700 dark:text-darkAccentGreen"
+              className="block font-semibold mb-1 text-foreground dark:text-darkAccentGreen"
             >
               {mode === "loan" ? "Quantity to Loan" : "Quantity to Return"}
             </label>
@@ -215,17 +215,17 @@ function LoanModalComponent({
                 className="border rounded px-2 py-1 w-20 me-2"
               />
               {maxCount !== undefined && mode === "return" && (
-                <span className="text-sm text-gray-600 dark:text-darkAccentGreen">(Max: {maxCount})</span>
+                <span className="text-sm text-muted-foreground dark:text-darkAccentGreen">(Max: {maxCount})</span>
               )}
             </div>
           </div>
 
           {/* Deposit Method (only visible if mode === "loan" && item === "Keycard") */}
           {mode === "loan" && item === "Keycard" && (
-            <div className="bg-gray-50 p-3 rounded dark:bg-darkSurface">
+            <div className="bg-surface-2 p-3 rounded dark:bg-darkSurface">
               <label
                 htmlFor="depositMethod"
-                className="block font-semibold mb-1 text-gray-700 flex items-center gap-2 dark:text-darkAccentGreen"
+                className="block font-semibold mb-1 text-foreground flex items-center gap-2 dark:text-darkAccentGreen"
               >
                 Deposit Method
                 <FontAwesomeIcon
@@ -249,15 +249,15 @@ function LoanModalComponent({
         </div>
 
         {/* Action Buttons */}
-        <div className="px-6 py-4 border-t border-gray-400 flex justify-end items-center space-x-2 dark:border-darkAccentGreen">
+        <div className="px-6 py-4 border-t border-border flex justify-end items-center space-x-2 dark:border-darkAccentGreen">
           <button
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="bg-muted hover:bg-surface-2 text-foreground px-4 py-2 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded dark:bg-darkAccentGreen dark:text-darkBg"
+            className="bg-primary-main hover:bg-primary-dark text-primary-fg px-4 py-2 rounded dark:bg-darkAccentGreen dark:text-darkBg"
             onClick={handleSubmit}
           >
             Confirm

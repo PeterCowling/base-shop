@@ -384,6 +384,14 @@
     "width": 409,
     "height": 333
   },
+  "/img/apt1.jpg": {
+    "width": 1600,
+    "height": 1200
+  },
+  "/img/apt2.jpg": {
+    "width": 1200,
+    "height": 1600
+  },
   "/img/hostel-coastal-horizon.webp": {
     "width": 4096,
     "height": 2220
@@ -400,9 +408,9 @@
     "width": 60,
     "height": 60
   },
-  "/img/interno1.webp": {
-    "width": 411,
-    "height": 368
+  "/img/apt3.jpg": {
+    "width": 1024,
+    "height": 1536
   },
   "/img/interno2.webp": {
     "width": 922,

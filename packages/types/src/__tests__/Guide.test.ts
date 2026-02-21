@@ -1,5 +1,3 @@
-import { describe, expect,it } from "@jest/globals";
-
 import {
   guideContentSchema,
   type GuidePublication,
@@ -66,9 +64,9 @@ const assertGuidePublication = (_guide: GuidePublication) => undefined;
 
 assertGuidePublication(validGuide);
 
-// @ts-expect-error status is required
 assertGuidePublication({
   ...validGuide,
+  // @ts-expect-error undefined is not assignable to GuidePublicationStatus
   status: undefined,
 });
 

@@ -9,6 +9,7 @@
     "moduleResolution": "bundler",
     "verbatimModuleSyntax": false,
     "paths": {
+      "@jest/globals": ["test/jest-globals-compat.d.ts"],
       "@acme/zod-utils": ["../zod-utils/dist/index.d.ts"],
       "@acme/zod-utils/*": ["../zod-utils/dist/*"]
     }

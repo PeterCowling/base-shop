@@ -135,7 +135,7 @@ At least 10 of the tracked files above currently share the same modification tim
 None required to proceed with planning. A policy choice can be captured as a DECISION task:
 - Whether agents should be allowed to do *single-file* worktree restores (`git restore -- <file>`) in any circumstance, or never.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 85%
   - We can update docs + safety rationale and tighten the git wrapper logic with a small, targeted change set.
@@ -162,4 +162,4 @@ None required to proceed with planning. A policy choice can be captured as a DEC
 
 - Status: Ready-for-planning
 - Blocking items: None
-- Recommended next step: proceed to `/plan-feature` for `agent-git-instructions-update`.
+- Recommended next step: proceed to `/lp-do-plan` for `agent-git-instructions-update`.

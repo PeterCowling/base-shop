@@ -12,12 +12,10 @@ export function clearCartStorage() {
 export function setupFetchMock() {
   const originalFetch = global.fetch;
   const fetchMock = jest.fn();
-  // @ts-expect-error override
-  global.fetch = fetchMock;
+  global.fetch = fetchMock as any;
   return {
     fetchMock,
     restore: () => {
-      // @ts-expect-error restore
       global.fetch = originalFetch;
       jest.restoreAllMocks();
     },
@@ -26,10 +24,8 @@ export function setupFetchMock() {
 
 export function mockNoWindow() {
   const originalWindow = global.window;
-  // @ts-expect-error override
   (global as any).window = undefined;
   return () => {
-    // @ts-expect-error restore
     (global as any).window = originalWindow;
   };
 }

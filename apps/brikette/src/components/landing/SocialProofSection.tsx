@@ -112,7 +112,7 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
               return (
                 <Cluster
                   key={rating.provider}
-                  className="items-center justify-between rounded-2xl border border-brand-outline/30 bg-brand-bg px-4 py-3 shadow-sm dark:border-white/10 dark:bg-brand-surface"
+                  className="items-center justify-between rounded-2xl border border-brand-outline/30 bg-brand-bg px-4 py-3 shadow-sm border-fg-inverse/10 dark:bg-brand-surface"
                 >
                   <div>
                     <p className="text-sm font-semibold text-brand-heading dark:text-brand-text">
@@ -122,7 +122,7 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
                   </div>
                   <Inline
                     as="span"
-                    className="gap-1 rounded-full bg-brand-surface/70 px-3 py-1 text-sm font-semibold text-brand-heading dark:bg-white/10 dark:text-brand-text"
+                    className="gap-1 rounded-full bg-brand-surface/70 px-3 py-1 text-sm font-semibold text-brand-heading bg-fg-inverse/10 dark:text-brand-text"
                   >
                     <Star className="size-4 text-brand-secondary" aria-hidden />
                     {rating.value.toFixed(1)}
@@ -136,7 +136,7 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
             {featured.map((item, index) => (
               <Stack
                 key={`${item.text}-${index}`}
-                className="h-full gap-3 rounded-2xl border border-brand-outline/30 bg-white/80 p-5 shadow-sm dark:border-white/10 dark:bg-brand-surface"
+                className="h-full gap-3 rounded-2xl border border-brand-outline/30 bg-panel/80 p-5 shadow-sm border-fg-inverse/10 dark:bg-brand-surface"
               >
                 <Inline className="gap-2 text-sm font-semibold text-brand-heading dark:text-brand-text">
                   <Star className="size-4 text-brand-secondary" aria-hidden />

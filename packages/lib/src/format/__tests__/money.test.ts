@@ -5,7 +5,7 @@ import {
   getCurrencyFractionDigits,
   normalizeCurrencyCode,
   toMinor,
-} from "../money";
+} from "../money.js";
 
 describe("money utilities", () => {
   test("normalizeCurrencyCode uppercases and validates", () => {

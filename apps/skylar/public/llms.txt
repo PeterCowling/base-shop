@@ -1,0 +1,6 @@
+# Skylar SRL
+> Product design, China sourcing, custom distribution, and multilingual platforms from the Skylar SRL team.
+
+## Machine-readable sources
+- [Sitemap](/sitemap.xml)
+- [Robots](/robots.txt)

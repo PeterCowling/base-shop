@@ -1,4 +1,4 @@
-import { createManagedTryOnProvider } from "../providers/garment/managed";
+import { createManagedTryOnProvider } from "../providers/garment/managed.js";
 
 jest.mock(
   "@acme/i18n/en.json",

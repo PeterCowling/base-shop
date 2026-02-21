@@ -1,11 +1,11 @@
 "use client";
 
 import type { ChangeEvent } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 
 import { TranslationsProvider, useTranslations } from "@acme/i18n";
 import en from "@acme/i18n/en.json";
-import type { HistoryState,PageComponent } from "@acme/page-builder-core";
+import type { HistoryState, PageComponent } from "@acme/page-builder-core";
 import DynamicRenderer from "@acme/ui/components/DynamicRenderer";
 
 import { Button, Input } from "@/components/atoms/shadcn";
@@ -20,7 +20,8 @@ interface VersionResponse {
   editor?: HistoryState["editor"];
 }
 
-export default function PreviewViewer({ params }: { params: { token: string } }) {
+export default function PreviewViewer(props: { params: Promise<{ token: string }> }) {
+  const params = use(props.params);
   const t = useTranslations();
   const [token, setToken] = useState<string>("");
   const [loading, setLoading] = useState(false);

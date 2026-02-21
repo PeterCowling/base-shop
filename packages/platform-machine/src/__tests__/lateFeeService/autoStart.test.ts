@@ -14,7 +14,7 @@ describe("lateFeeService auto-start", () => {
 
     jest.doMock("../../lateFeeService", () => {
       if (process.env.NODE_ENV !== "test") {
-        startLateFeeService().catch((err) =>
+        startLateFeeService().catch((err: unknown) =>
           loggerError("failed to start late fee service", { err })
         );
       }
@@ -34,7 +34,7 @@ describe("lateFeeService auto-start", () => {
 
     jest.doMock("../../lateFeeService", () => {
       if (process.env.NODE_ENV !== "test") {
-        startLateFeeService().catch((err) =>
+        startLateFeeService().catch((err: unknown) =>
           loggerError("failed to start late fee service", { err })
         );
       }
@@ -55,7 +55,7 @@ describe("lateFeeService auto-start", () => {
 
     jest.doMock("../../lateFeeService", () => {
       if (process.env.NODE_ENV !== "test") {
-        startLateFeeService().catch((err) =>
+        startLateFeeService().catch((err: unknown) =>
           loggerError("failed to start late fee service", { err })
         );
       }

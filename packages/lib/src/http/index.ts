@@ -1,2 +1,2 @@
-export { fetchJson } from "./fetchJson";
-export { parseLimit } from "./parseLimit";
+export { fetchJson } from "./fetchJson.js";
+export { parseLimit } from "./parseLimit.js";

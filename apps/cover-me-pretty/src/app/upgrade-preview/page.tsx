@@ -102,7 +102,7 @@ export default function UpgradePreviewPage() {
               <li key={l.id}>
                 <a
                   href={l.url}
-                  className="text-blue-600 underline inline-flex items-center min-h-11 min-w-11"
+                  className="text-primary underline inline-flex items-center min-h-11 min-w-11"
                 >
                   {/* i18n-exempt -- I18N-123 URL path displayed as label [ttl=2025-06-30] */}
                   {`/preview/${l.id}`}

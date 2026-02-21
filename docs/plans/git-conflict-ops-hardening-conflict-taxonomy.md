@@ -4,7 +4,7 @@ Status: Active
 Domain: Repo/Git
 Created: 2026-02-09
 Last-updated: 2026-02-09
-Relates-to: docs/plans/git-conflict-ops-hardening-plan.md
+Relates-to: docs/plans/archive/git-conflict-ops-hardening-plan-archived-2026-02-14.md
 Task-ID: GIT-COH-01
 ---
 

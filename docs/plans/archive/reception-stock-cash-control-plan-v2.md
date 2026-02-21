@@ -202,7 +202,7 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
     - No high-risk action relies on client-side PINs.
     - Reauth failures are handled consistently and audited.
   - Notes:
-    - **Resolved (2026-02-08 re-plan)**: `getUserByPin` has zero active call sites.
+    - **Resolved (2026-02-08 lp-do-replan)**: `getUserByPin` has zero active call sites.
       Password reauth (`PasswordReauthInline` / `PasswordReauthModal`) covers all 18
       high-risk action types including safe operations, shift close, tender removal,
       keycard returns, voids, corrections, stock adjustments, and settings changes.
@@ -278,7 +278,7 @@ enforcement, reauth coverage, server-side rules, and ingredient audit trail.
     - Reporting matches source-of-truth transactions and surfaces void/correction/audit data.
     - Audit search view can find transactions by key fields.
   - Notes:
-    - **Resolved (2026-02-08 re-plan)**: All core acceptance criteria met:
+    - **Resolved (2026-02-08 lp-do-replan)**: All core acceptance criteria met:
       - `TransactionTable`: voided rows shown with strikethrough + opacity; "VOIDED" / "CORRECTION" badges with reasons.
       - End-of-day reports: `useEndOfDayReportData` filters voided transactions via `isVoidedTransaction`; corrections summary with count + net impact.
       - Dashboard metrics: `ReceptionDashboard` and `RealTimeDashboard` both exclude voided transactions.

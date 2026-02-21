@@ -2,6 +2,7 @@
 "use client";
 import { Fragment, memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@acme/design-system/primitives";
 import { AppLink as Link } from "@acme/ui/atoms/Link";
@@ -9,7 +10,6 @@ import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
 import Page from "@/components/common/Page";
 import { BASE_URL } from "@/config/site";
-import * as ModalCtx from "@/context/ModalContext";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
@@ -48,10 +48,7 @@ function NotFoundView() {
   const { t: tTokens } = useTranslation("_tokens", { lng: lang });
   const { t: tTranslation } = useTranslation("translation", { lng: lang });
 
-  // Prefer optional hook; fall back to useModal for older test mocks.
-  const resolveModalHook: () => ModalCtx.ModalContextValue =
-    typeof ModalCtx.useOptionalModal === "function" ? ModalCtx.useOptionalModal : ModalCtx.useModal;
-  const { openModal } = resolveModalHook();
+  const router = useRouter();
 
   const linkClasses = [
     "font-medium",
@@ -109,8 +106,8 @@ function NotFoundView() {
   })();
 
   const handleReserve = useCallback(() => {
-    openModal("booking");
-  }, [openModal]);
+    router.push(`/${lang}/book`);
+  }, [router, lang]);
 
   // During tests, apply head tags to document.head to keep assertions simple
   const fallbackHeadDescriptors: MetaDescriptor[] | undefined = (() => {

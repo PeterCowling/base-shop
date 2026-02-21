@@ -43,7 +43,7 @@ describe("pages API route", () => {
         "../../../apps/cms/src/app/api/pages/[shop]/route"
       );
       const res = await GET(new NextRequest("http://localhost"), {
-        params: { shop: "test" },
+        params: { shop: "test" } as any,
       });
       expect(await res.json()).toEqual(pages);
     });
@@ -55,7 +55,7 @@ describe("pages API route", () => {
         "../../../apps/cms/src/app/api/pages/[shop]/route"
       );
       const res = await GET(new NextRequest("http://localhost"), {
-        params: { shop: "test" },
+        params: { shop: "test" } as any,
       });
       expect(await res.json()).toEqual([]);
     });

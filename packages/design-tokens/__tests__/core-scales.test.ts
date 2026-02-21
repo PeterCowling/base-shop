@@ -30,7 +30,7 @@ describe('Core Token Scales', () => {
     });
 
     it('exports Opacity type', () => {
-      const key: Opacity = '50';
+      const key: Opacity = 50;
       expect(opacity[key]).toBe('0.5');
     });
   });

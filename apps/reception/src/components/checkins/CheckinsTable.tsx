@@ -3,6 +3,7 @@ import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { useAuth } from "../../context/AuthContext";
+import useBookingMetaStatuses from "../../hooks/data/useBookingMetaStatuses";
 import useCheckinsTableData from "../../hooks/data/useCheckinsTableData";
 import useAddGuestToBookingMutation from "../../hooks/mutations/useAddGuestToBookingMutation";
 import useArchiveEligibleCount from "../../hooks/mutations/useArchiveEligibleCount";
@@ -70,9 +71,36 @@ const CheckinsTable: React.FC = () => {
   /**
    * Sort after data is loaded or partially loaded
    */
-  const finalSortedData = useMemo<CheckInRow[]>(() => {
+  const sortedData = useMemo<CheckInRow[]>(() => {
     return sortCheckinsData(filteredBySelectedDate);
   }, [filteredBySelectedDate]);
+
+  /**
+   * Fetch booking meta statuses for all bookings in sorted data
+   */
+  const allBookingRefs = useMemo<string[]>(() => {
+    return Array.from(new Set(sortedData.map((row) => row.bookingRef)));
+  }, [sortedData]);
+
+  const bookingStatuses = useBookingMetaStatuses(allBookingRefs);
+
+  /**
+   * Toggle for showing/hiding cancelled bookings
+   */
+  const [showCancelled, setShowCancelled] = useState<boolean>(false);
+
+  /**
+   * Filter out cancelled bookings (unless showCancelled is true)
+   */
+  const finalSortedData = useMemo<CheckInRow[]>(() => {
+    if (showCancelled) {
+      return sortedData;
+    }
+    return sortedData.filter((row) => {
+      const status = bookingStatuses[row.bookingRef];
+      return status !== "cancelled";
+    });
+  }, [sortedData, bookingStatuses, showCancelled]);
 
   const guestsByBooking = useMemo<Record<string, CheckInRow[]>>(() => {
     const map: Record<string, CheckInRow[]> = {};
@@ -244,6 +272,9 @@ const CheckinsTable: React.FC = () => {
       closeBookingToDelete={() => setBookingToDelete(null)}
       closeArchiveModal={closeArchiveModal}
       onArchiveComplete={refreshEligibleCount}
+      showCancelled={showCancelled}
+      onToggleCancelled={() => setShowCancelled((prev) => !prev)}
+      bookingStatuses={bookingStatuses}
     />
   );
 };

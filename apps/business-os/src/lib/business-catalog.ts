@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- server-side business data catalog — internal labels, not customer-facing UI copy [DS-02] */
 import type { Business } from "./types";
 
 // TODO (BOS-D1-08): Move businesses to D1 table (or derive from cards)

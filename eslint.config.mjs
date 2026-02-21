@@ -1,13 +1,11 @@
 // eslint.config.mjs
-import { FlatCompat } from "@eslint/eslintrc";
 import tsParser from "@typescript-eslint/parser"; // still needed for parser
-import tsPlugin from "@typescript-eslint/eslint-plugin";
 import boundaries from "eslint-plugin-boundaries";
-import importPlugin from "eslint-plugin-import";
 import dsPlugin from "@acme/eslint-plugin-ds";
 import securityPlugin from "eslint-plugin-security";
 import { fixupPluginRules } from "@eslint/compat";
-import jsxA11y from "eslint-plugin-jsx-a11y";
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 import testingLibrary from "eslint-plugin-testing-library";
 import storybook from "eslint-plugin-storybook";
 import noOnlyTests from "eslint-plugin-no-only-tests";
@@ -27,7 +25,6 @@ import eslintIgnorePatterns from "./tools/eslint-ignore-patterns.cjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const compat = new FlatCompat({ baseDirectory: __dirname });
 
 // Utility: turn off all ds/* rules (useful for the plugin's own test files)
 const offAllDsRules = Object.fromEntries(
@@ -55,7 +52,6 @@ export default [
     // Register baseline plugin objects and enable only Tailwind's contradicting class rule
     plugins: {
       ...(tailwindcss ? { tailwindcss } : {}),
-      "jsx-a11y": jsxA11y,
       "testing-library": testingLibrary,
     },
     rules: tailwindcss
@@ -136,7 +132,24 @@ export default [
   },
 
   /* ▸ Next.js presets (bring in @typescript-eslint plugin once) */
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // Next 16 exports Flat Config arrays already; do not run them through compat shims.
+  ...nextCoreWebVitals,
+  ...nextTypescript,
+
+  /* ▸ React Hooks: keep core rules, disable new strictness rules introduced in newer react-hooks configs */
+  {
+    rules: {
+      "react-hooks/globals": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/immutability": "off",
+      "react-hooks/refs": "off",
+      "react-hooks/purity": "off",
+      "react-hooks/static-components": "off",
+      "react-hooks/unsupported-syntax": "off",
+      "react-hooks/use-memo": "off",
+      "react-hooks/preserve-manual-memoization": "off",
+    },
+  },
 
   /* ▸ Security rules */
   {
@@ -282,6 +295,123 @@ export default [
       "ds/no-raw-tailwind-color": "error",
       // Prevent low-contrast hero patterns (phase in as a warning first)
       "ds/no-hero-primary-foreground": "warn",
+    },
+  },
+
+  /* ▸ Dashboard: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/dashboard/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ Business OS: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/business-os/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ Brikette: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/brikette/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ Prime: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/prime/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ XA: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/xa/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ Skylar: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/skylar/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ XA-uploader: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/xa-uploader/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ XA-J: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/xa-j/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ XA-B: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/xa-b/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ Cover-me-pretty: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/cover-me-pretty/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ Product-pipeline: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/product-pipeline/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ Handbag-configurator: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/handbag-configurator/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ Cochlearfit: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/cochlearfit/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
     },
   },
 
@@ -672,7 +802,7 @@ export default [
         allowDefaultProject: true,
       },
     },
-    plugins: { ds: dsPlugin, "@typescript-eslint": tsPlugin },
+    plugins: { ds: dsPlugin },
     rules: {
       // d.ts files are type declarations; relax rules that don't apply
       "@typescript-eslint/no-unused-vars": "off",
@@ -695,7 +825,6 @@ export default [
         tsconfigRootDir: __dirname,
       },
     },
-    plugins: { "@typescript-eslint": tsPlugin },
     rules: {},
   },
   {
@@ -760,7 +889,6 @@ export default [
         allowDefaultProject: true,
       },
     },
-    plugins: { "@typescript-eslint": tsPlugin },
     rules: {
       // Node scripts may use require() ergonomically
       "@typescript-eslint/no-require-imports": "off",
@@ -816,7 +944,6 @@ export default [
         allowDefaultProject: true,
       },
     },
-    plugins: { "@typescript-eslint": tsPlugin },
     rules: {},
   },
 
@@ -970,6 +1097,43 @@ export default [
       ],
     },
   },
+  /* ▸ Exception: Files using CfImage family or AppLink are exempt from @acme/ui/atoms restriction
+   * until design-system equivalents exist. See docs/plans/brikette-lint-enablement-plan.md TASK-21.
+   */
+  {
+    files: [
+      "**/app/\\[lang\\]/about/page.tsx",
+      "**/app/\\[lang\\]/breakfast-menu/BreakfastMenuContent.tsx",
+      "**/components/apartment/GallerySection.tsx",
+      "**/components/booking/DirectPerksBlock.tsx",
+      "**/components/careers/CareersSection.tsx",
+      "**/components/careers/CareersHero.tsx",
+      "**/components/cta/ContentStickyCta.tsx",
+      "**/components/guides/GuideCollectionCard.tsx",
+      "**/components/guides/GuideCollectionWithSearch.tsx",
+      "**/components/guides/GroupedGuideSection.tsx",
+      "**/components/guides/ImageGallery.tsx",
+      "**/components/guides/generic-content/buildContent.ts",
+      "**/components/not-found/NotFoundView.tsx",
+      "**/components/rooms/FullscreenImage.tsx",
+      "**/components/rooms/RoomCard.tsx",
+      "**/components/rooms/RoomImage.tsx",
+      "**/components/seo/GuideSectionsItemListStructuredData.tsx",
+      "**/routes/guides/blocks/handlers/heroBlock.tsx",
+      "**/routes/guides/blocks/handlers/serviceSchemaBlock.tsx",
+      "**/routes/how-to-get-here/_galleries.tsx",
+      "**/routes/how-to-get-here/sections.tsx",
+      "**/routes/how-to-get-here/components/HeaderSection.tsx",
+      "**/routes/how-to-get-here/components/ZoomableFigure.tsx",
+      "**/routes/how-to-get-here/briketteToFerryDock/_articleLead.tsx",
+      "**/routes/how-to-get-here/ferryDockToBrikette/_articleLead.tsx",
+      "**/routes/how-to-get-here/ferryDockToBrikette/guideExtras.ts",
+      "**/routes/how-to-get-here/chiesaNuovaArrivals/articleLead.tsx",
+    ],
+    rules: {
+      "no-restricted-imports": "off",
+    },
+  },
   {
     files: [
       "packages/platform-core/src/repositories/inventory.server.ts",
@@ -1024,7 +1188,6 @@ export default [
   /* ▸ Enforce UI component layering */
   {
     files: ["packages/ui/**/*.{ts,tsx}"],
-    plugins: { import: importPlugin },
     rules: {
       "import/no-restricted-paths": [
         "error",
@@ -1063,7 +1226,6 @@ export default [
   /* ▸ Package layering: prevent platform-core depending on UI or apps */
   {
     files: ["packages/platform-core/**/*.{ts,tsx,js,jsx}"],
-    plugins: { import: importPlugin },
     rules: {
       "import/no-restricted-paths": [
         "error",
@@ -1090,7 +1252,6 @@ export default [
   /* ▸ Package layering: design-system cannot import from cms-ui or ui */
   {
     files: ["packages/design-system/**/*.{ts,tsx,js,jsx}"],
-    plugins: { import: importPlugin },
     rules: {
       "no-restricted-imports": [
         "error",
@@ -1131,7 +1292,6 @@ export default [
   {
     files: ["packages/ui/src/**/*.{ts,tsx,js,jsx}"],
     ignores: ["packages/ui/src/shims/**/*.{ts,tsx,js,jsx}"],
-    plugins: { import: importPlugin },
     rules: {
       "no-restricted-imports": [
         "error",
@@ -1469,13 +1629,10 @@ export default [
     },
   },
 
-  /* ▸ Reception app: internal tooling, not localized yet */
+  /* ▸ Reception app: internal tooling — non-DS complexity relaxations */
   {
     files: ["apps/reception/**"],
     rules: {
-      ...offAllDsRules,
-      // Reception is a legacy internal tool; DS governance rules are enforced as part of the
-      // design-system migration plan, not as a lint gate today.
       "max-lines-per-function": "off",
       "max-depth": "off",
       "max-params": "off",
@@ -2170,11 +2327,33 @@ export default [
       complexity: ["error", 35],
     },
   },
-  /* ▸ LINT-01: Relaxed limits for Reception app (legacy internal tooling) */
+  /* ▸ LINT-01: Reception app DS rules — phased migration (ds-compliance-v2) */
   {
     files: ["apps/reception/src/**/*.{ts,tsx}"],
     rules: {
-      ...offAllDsRules,
+      /* DS colour rules at error — reception migration complete (REC-09) */
+      "ds/no-raw-color": "error",
+      "ds/no-raw-tailwind-color": "error",
+      /* DS rules deferred to future phase — too many violations for current scope */
+      "ds/enforce-layout-primitives": "off", // ~437 violations — separate migration
+      "ds/no-hardcoded-copy": "off", // internal staff tool — not localized
+      /* DS rules off — not applicable for internal desktop tool */
+      "ds/min-tap-size": "off", // 164 violations — desktop-only internal tool
+      "ds/no-nonlayered-zindex": "off", // 54 violations — internal z-index management
+      "ds/no-physical-direction-classes-in-rtl": "off", // 30 violations — not an RTL app
+      "ds/no-unsafe-viewport-units": "off", // 25 violations — internal, controlled viewport
+      "ds/absolute-parent-guard": "off", // 22 violations — internal modal patterns
+      "ds/container-widths-only-at": "off", // 19 violations — internal layout
+      "ds/enforce-focus-ring-token": "off", // 6 violations — internal tool
+      /* DS rules escalated to error — fixed in DS-05 */
+      "ds/no-raw-zindex": "error",
+      "ds/no-important": "error",
+      "ds/no-raw-typography": "error",
+      "ds/no-raw-font": "off", // receipt printing is domain-specific for POS system
+      /* DS spacing rules — escalation per DS-06 */
+      "ds/no-raw-spacing": "error", // escalated in DS-06 after fixing 8 violations
+      "ds/no-arbitrary-tailwind": "warn", // stays at warn — 69 legitimate POS patterns
+      /* Non-DS relaxations */
       complexity: ["error", 60],
       "max-lines-per-function": [
         "error",
@@ -2192,9 +2371,7 @@ export default [
       "apps/reception/src/components/dashboard/**/*.{ts,tsx}",
     ],
     rules: {
-      "ds/no-raw-color": "warn",
       "ds/no-raw-font": "warn",
-      "ds/no-raw-tailwind-color": "warn",
     },
   },
   {
@@ -2252,38 +2429,17 @@ export default [
     },
   },
 
-  /* ▸ Prime: DS color rules enforced after full migration (TASK-01–13).
-   *   Non-color DS rules at "warn" for progressive hardening.
+  /* ▸ Prime: DS rules at error (inherited from CMS/UI/Apps block).
+   *   Non-color DS rules escalated in ds-compliance-v2 (DS-07).
    *   complexity/max-lines relaxed (large components in guest portal). */
   {
     files: ["apps/prime/**"],
-    plugins: { ds: dsPlugin },
     rules: {
       "max-lines-per-function": "off",
       "complexity": "off",
-      // Non-color DS rules — progressive hardening (warn, not error)
-      "ds/no-raw-spacing": "warn",
-      "ds/no-raw-typography": "warn",
-      "ds/no-raw-radius": "warn",
-      "ds/no-raw-shadow": "warn",
-      "ds/no-raw-zindex": "warn",
-      "ds/no-arbitrary-tailwind": "warn",
-      "ds/no-important": "warn",
-      "ds/no-naked-img": "warn",
-      "ds/require-aspect-ratio-on-media": "warn",
-      "ds/no-negative-margins": "warn",
-      "ds/no-margins-on-atoms": "warn",
-      "ds/enforce-layout-primitives": "warn",
-      "ds/no-unsafe-viewport-units": "warn",
-      "ds/container-widths-only-at": "warn",
-      "ds/no-hardcoded-copy": "warn",
-      "ds/min-tap-size": "warn",
-      "ds/enforce-focus-ring-token": "warn",
-      "ds/no-physical-direction-classes-in-rtl": "warn",
-      "ds/absolute-parent-guard": "warn",
-      "ds/no-nonlayered-zindex": "warn",
+      // Preserve Prime's specific ticketPattern for require-disable-justification
       "ds/require-disable-justification": [
-        "warn",
+        "error",
         { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
       ],
     },

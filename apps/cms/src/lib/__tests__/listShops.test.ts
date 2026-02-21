@@ -1,3 +1,5 @@
+import type { Dirent } from "node:fs";
+
 import fs from "fs/promises";
 
 import { logger } from "@acme/lib/logger";
@@ -27,7 +29,7 @@ describe("listShops", () => {
       { name: "shop-a", isDirectory: () => true },
       { name: "file.txt", isDirectory: () => false },
       { name: "shop-b", isDirectory: () => true },
-    ] as unknown as fs.Dirent[]);
+    ] as unknown as Dirent<Buffer>[]);
 
     await expect(listShops()).resolves.toEqual(["shop-a", "shop-b"]);
   });
@@ -51,7 +53,7 @@ describe("listShopSummaries", () => {
     jest.spyOn(dataRootModule, "resolveDataRoot").mockReturnValue("/data");
     jest.spyOn(fs, "readdir").mockResolvedValueOnce([
       { name: "shop-a", isDirectory: () => true },
-    ] as unknown as fs.Dirent[]);
+    ] as unknown as Dirent<Buffer>[]);
     jest.spyOn(fs, "readFile").mockRejectedValueOnce(Object.assign(new Error("nope"), { code: "ENOENT" }));
 
     await expect(listShopSummaries()).resolves.toEqual([
@@ -70,7 +72,7 @@ describe("listShopSummaries", () => {
     jest.spyOn(dataRootModule, "resolveDataRoot").mockReturnValue("/data");
     jest.spyOn(fs, "readdir").mockResolvedValueOnce([
       { name: "shop-a", isDirectory: () => true },
-    ] as unknown as fs.Dirent[]);
+    ] as unknown as Dirent<Buffer>[]);
     jest.spyOn(fs, "readFile").mockResolvedValueOnce(
       JSON.stringify({
         testsStatus: "passed",

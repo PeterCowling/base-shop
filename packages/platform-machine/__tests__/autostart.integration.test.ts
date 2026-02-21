@@ -13,7 +13,7 @@ describe("auto-start (startReverseLogisticsService import side-effect)", () => {
   it("starts service on import", async () => {
     (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const start = jest.fn().mockResolvedValue(undefined);
-    jest.doMock("@acme/platform-machine/src/startReverseLogisticsService", () => {
+    jest.doMock("@acme/platform-machine/startReverseLogisticsService", () => {
       if (process.env.NODE_ENV !== "test") {
         start().catch((err: unknown) =>
           logger.error("failed to start reverse logistics service", { err })
@@ -21,7 +21,7 @@ describe("auto-start (startReverseLogisticsService import side-effect)", () => {
       }
       return { __esModule: true, startReverseLogisticsService: start };
     });
-    await import("@acme/platform-machine/src/startReverseLogisticsService");
+    await import("@acme/platform-machine/startReverseLogisticsService");
     expect(start).toHaveBeenCalledTimes(1);
     expect(logger.error).not.toHaveBeenCalled();
     (process.env as Record<string, string | undefined>).NODE_ENV = "test";
@@ -30,13 +30,13 @@ describe("auto-start (startReverseLogisticsService import side-effect)", () => {
   it("invokes service and logs failures", async () => {
     (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const start = jest.fn().mockRejectedValue(new Error("fail"));
-    jest.doMock("@acme/platform-machine/src/startReverseLogisticsService", () => {
+    jest.doMock("@acme/platform-machine/startReverseLogisticsService", () => {
       start().catch((err: unknown) =>
         logger.error("failed to start reverse logistics service", { err })
       );
       return { __esModule: true, startReverseLogisticsService: start };
     });
-    await import("@acme/platform-machine/src/startReverseLogisticsService");
+    await import("@acme/platform-machine/startReverseLogisticsService");
     expect(start).toHaveBeenCalled();
     expect(logger.error).toHaveBeenCalledWith(
       "failed to start reverse logistics service",
@@ -68,4 +68,3 @@ afterAll(() => {
   jest.unmock("crypto");
   jest.unmock("@acme/platform-core/dataRoot");
 });
-

@@ -43,6 +43,7 @@ interface Props {
 }
 
 /** Fallback rendering from structured arrays provided by tFb */
+// eslint-disable-next-line complexity -- LINT-1008 [ttl=2026-12-31] legacy fallback renderer; refactor tracked separately
 export default function RenderStructuredArrays({
   tFb,
   translations,
@@ -157,7 +158,7 @@ export default function RenderStructuredArrays({
         {showIntro ? (
           <div className="space-y-4">
             {intro.map((p, idx) => (
-              <p key={idx}>{renderGuideLinkTokens(p, lang, `intro-${idx}`, guideKey)}</p>
+              <p key={`intro-${idx}`}>{renderGuideLinkTokens(p, lang, `intro-${idx}`, guideKey)}</p>
             ))}
           </div>
         ) : null}
@@ -194,7 +195,7 @@ export default function RenderStructuredArrays({
             })()}
             <div className="space-y-3">
               {faqsCombined.map((f, i) => (
-                <details key={i}>
+                <details key={f.q}>
                   <summary role="button" className="font-medium">{f.q}</summary>
                   {renderBodyBlocks(f.a, lang, `faq-${i}`, guideKey)}
                 </details>

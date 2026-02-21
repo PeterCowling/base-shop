@@ -43,6 +43,86 @@ type RouteLinkContext = {
   origin?: string;
 };
 
+function appendOgImageTags(tags: Array<Record<string, string>>, image: OgImage | undefined): void {
+  if (!image?.src) return;
+  tags.push({ property: "og:image", content: image.src });
+  const width = image.width ?? DEFAULT_OG_IMAGE.width;
+  const height = image.height ?? DEFAULT_OG_IMAGE.height;
+  if (width) tags.push({ property: "og:image:width", content: String(width) });
+  if (height) tags.push({ property: "og:image:height", content: String(height) });
+  if (image.alt) tags.push({ property: "og:image:alt", content: image.alt });
+}
+
+function appendTwitterTags(params: {
+  tags: Array<Record<string, string>>;
+  title: string;
+  description: string;
+  url: string;
+  image: OgImage | undefined;
+  twitterCard: string | undefined;
+  includeTwitterUrl: boolean;
+}): void {
+  const { tags, title, description, url, image, twitterCard, includeTwitterUrl } = params;
+  tags.push({ name: "twitter:card", content: (twitterCard && String(twitterCard).trim()) || "summary_large_image" });
+  if (image?.src) tags.push({ name: "twitter:image", content: image.src });
+  tags.push({ name: "twitter:title", content: title });
+  tags.push({ name: "twitter:description", content: description });
+  if (includeTwitterUrl) tags.push({ name: "twitter:url", content: url });
+}
+
+function appendRobotsNoIndex(tags: Array<Record<string, string>>): void {
+  tags.push({
+    name: "robots",
+    content: /* i18n-exempt -- ABC-123 [ttl=2026-12-31] robots directive */ "noindex,follow",
+  });
+}
+
+function appendLocaleAlternates(tags: Array<Record<string, string>>, lang: AppLanguage): void {
+  const supported = (i18nConfig.supportedLngs as readonly AppLanguage[] | undefined) ?? [];
+  supported
+    .filter((l): l is AppLanguage => l !== lang)
+    .forEach((l) => tags.push({ property: "og:locale:alternate", content: l }));
+}
+
+function appendLinkDescriptorsToMetaTags(params: {
+  tags: Array<Record<string, string>>;
+  lang: AppLanguage;
+  url: string;
+  path: string;
+}): void {
+  const { tags, lang, url, path } = params;
+
+  let origin: string | undefined;
+  try {
+    origin = new URL(url).origin;
+  } catch {
+    origin = undefined;
+  }
+  const resolvedOrigin = origin || getOrigin();
+  try {
+    const linkDescriptors = seo.buildLinks({
+      lang,
+      origin: resolvedOrigin,
+      path,
+    });
+
+    linkDescriptors.forEach((descriptor) => {
+      tags.push({
+        tagName: "link",
+        ...descriptor,
+      });
+    });
+  } catch {
+    // If buildLinks throws (e.g., during partial mocks), fall back to canonical only.
+    const canonicalPath = path === "/" || path.endsWith("/") ? path : `${path}/`;
+    tags.push({
+      tagName: "link",
+      rel: "canonical",
+      href: `${resolvedOrigin}${canonicalPath === "/" ? "" : canonicalPath}`,
+    });
+  }
+}
+
 const routeLinkContextStack: RouteLinkContext[] = [];
 let lastRouteLinkContext: RouteLinkContext | undefined;
 
@@ -91,62 +171,17 @@ export function buildRouteMeta({
   tags.push({ property: "og:title", content: title });
   tags.push({ property: "og:description", content: description });
   tags.push({ property: "og:url", content: url });
-  if (image?.src) {
-    tags.push({ property: "og:image", content: image.src });
-    const width = image.width ?? DEFAULT_OG_IMAGE.width;
-    const height = image.height ?? DEFAULT_OG_IMAGE.height;
-    if (width) tags.push({ property: "og:image:width", content: String(width) });
-    if (height) tags.push({ property: "og:image:height", content: String(height) });
-    if (image.alt) tags.push({ property: "og:image:alt", content: image.alt });
-  }
-  tags.push({ name: "twitter:card", content: (twitterCard && String(twitterCard).trim()) || "summary_large_image" });
-  if (image?.src) tags.push({ name: "twitter:image", content: image.src });
-  tags.push({ name: "twitter:title", content: title });
-  tags.push({ name: "twitter:description", content: description });
-  if (includeTwitterUrl) tags.push({ name: "twitter:url", content: url });
+  appendOgImageTags(tags, image);
+  appendTwitterTags({ tags, title, description, url, image, twitterCard, includeTwitterUrl });
   // For non-published pages, we prefer allowing crawlers to follow links
   // (useful for discovery of related content) while preventing indexing.
   if (!isPublished) {
-    tags.push({
-      name: "robots",
-      content: /* i18n-exempt -- ABC-123 [ttl=2026-12-31] robots directive */ "noindex,follow",
-    });
+    appendRobotsNoIndex(tags);
   }
-  const supported = (i18nConfig.supportedLngs as readonly AppLanguage[] | undefined) ?? [];
-  supported
-    .filter((l): l is AppLanguage => l !== lang)
-    .forEach((l) => tags.push({ property: "og:locale:alternate", content: l }));
+  appendLocaleAlternates(tags, lang);
 
   if (path) {
-    let origin: string | undefined;
-    try {
-      origin = new URL(url).origin;
-    } catch {
-      origin = undefined;
-    }
-    const resolvedOrigin = origin || getOrigin();
-    try {
-      const linkDescriptors = seo.buildLinks({
-        lang,
-        origin: resolvedOrigin,
-        path,
-      });
-
-      linkDescriptors.forEach((descriptor) => {
-        tags.push({
-          tagName: "link",
-          ...descriptor,
-        });
-      });
-    } catch {
-      // If buildLinks throws (e.g., during partial mocks), fall back to canonical only.
-      const canonicalPath = path === "/" || path.endsWith("/") ? path : `${path}/`;
-      tags.push({
-        tagName: "link",
-        rel: "canonical",
-        href: `${resolvedOrigin}${canonicalPath === "/" ? "" : canonicalPath}`,
-      });
-    }
+    appendLinkDescriptorsToMetaTags({ tags, lang, url, path });
   }
 
   const context: RouteLinkContext = {

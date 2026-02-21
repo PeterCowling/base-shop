@@ -28,6 +28,14 @@
         "../../packages/ui/dist/*",
         "../../packages/ui/src/*"
       ],
+      "@acme/seo": [
+        "../../packages/seo/dist/index.d.ts",
+        "../../packages/seo/src/index.ts"
+      ],
+      "@acme/seo/*": [
+        "../../packages/seo/dist/*",
+        "../../packages/seo/src/*"
+      ],
       "@acme/guides-core": [
         "../../packages/guides-core/dist/index.d.ts",
         "../../packages/guides-core/src/index.ts"
@@ -35,6 +43,14 @@
       "@acme/guides-core/*": [
         "../../packages/guides-core/dist/*",
         "../../packages/guides-core/src/*"
+      ],
+      "@acme/guide-system": [
+        "../../packages/guide-system/dist/index.d.ts",
+        "../../packages/guide-system/src/index.ts"
+      ],
+      "@acme/guide-system/*": [
+        "../../packages/guide-system/dist/*",
+        "../../packages/guide-system/src/*"
       ],
       "@acme/telemetry": [
         "../../packages/telemetry/dist/index.d.ts"

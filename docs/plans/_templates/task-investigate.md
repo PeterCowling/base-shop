@@ -1,0 +1,28 @@
+---
+Type: Reference
+Status: Reference
+---
+### TASK-XX: <description>
+- **Type:** INVESTIGATE
+- **Deliverable:** <analysis artifact output path>
+- **Execution-Skill:** <lp-do-build | lp-do-replan | specialized>
+- **Execution-Track:** <code | business-artifact | mixed>
+- **Effort:** <S | M | L>
+- **Status:** <Pending | In-Progress | Complete (YYYY-MM-DD) | Blocked | Superseded | Needs-Input>
+- **Affects:** `path/to/area`, `[readonly] path/to/reference`
+- **Depends on:** <TASK-IDs or "-">
+- **Blocks:** <TASK-IDs or "-">
+- **Confidence:** <0-100>%
+  - Implementation: <0-100>% - <reason>
+  - Approach: <0-100>% - <reason>
+  - Impact: <0-100>% - <reason>
+- **Questions to answer:**
+  - ...
+- **Acceptance:**
+  - ...
+- **Validation contract:** <what evidence closes this investigation>
+- **Planning validation:** <checks run or `None: <reason>`>
+- **Rollout / rollback:** `None: non-implementation task` (or explain)
+- **Documentation impact:** <artifact/docs updated>
+- **Notes / references:**
+  - ...

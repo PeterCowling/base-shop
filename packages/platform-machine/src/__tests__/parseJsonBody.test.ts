@@ -28,24 +28,24 @@ describe('parseJsonBody', () => {
     const result = await parseJsonBody(req, schema, '1kb');
     expect((req as any).text).toHaveBeenCalled();
     expect(result.success).toBe(false);
-    expect(result.response.status).toBe(400);
-    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+    expect((result as any).response.status).toBe(400);
+    await expect((result as any).response.json()).resolves.toEqual({ error: 'Invalid JSON' });
   });
 
   it('returns 400 when schema validation fails via json()', async () => {
     const req = makeRequest({}, { 'Content-Type': 'application/json' }, 'json');
     const result = await parseJsonBody(req, schema, '1kb');
     expect(result.success).toBe(false);
-    expect(result.response.status).toBe(400);
-    await expect(result.response.json()).resolves.toEqual({ foo: ['Required'] });
+    expect((result as any).response.status).toBe(400);
+    await expect((result as any).response.json()).resolves.toEqual({ foo: ['Required'] });
   });
 
   it('returns 400 for invalid JSON via text()', async () => {
     const req = makeRequest('{oops', { 'Content-Type': 'application/json' });
     const result = await parseJsonBody(req, schema, '1kb');
     expect(result.success).toBe(false);
-    expect(result.response.status).toBe(400);
-    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+    expect((result as any).response.status).toBe(400);
+    await expect((result as any).response.json()).resolves.toEqual({ error: 'Invalid JSON' });
   });
 
   it('returns 413 when payload exceeds limit', async () => {
@@ -56,13 +56,12 @@ describe('parseJsonBody', () => {
         return new Uint8Array(11); // always 11 bytes
       }
     }
-    // @ts-expect-error overriding global
     global.TextEncoder = MockEncoder;
     try {
       const result = await parseJsonBody(req, schema, 10);
       expect(result.success).toBe(false);
-      expect(result.response.status).toBe(413);
-      await expect(result.response.json()).resolves.toEqual({ error: 'Payload Too Large' });
+      expect((result as any).response.status).toBe(413);
+      await expect((result as any).response.json()).resolves.toEqual({ error: 'Payload Too Large' });
     } finally {
       global.TextEncoder = Original;
     }
@@ -73,11 +72,11 @@ describe('parseJsonBody', () => {
     await expect(parseJsonBody(req, schema, '1kb')).resolves.toEqual({ success: true, data: { foo: 'bar' } });
   });
 
-  it.each([{}, { 'Content-Type': 'application/json' }])('handles missing body with headers %p', async (headers) => {
+  it.each([{} as Record<string, string>, { 'Content-Type': 'application/json' }])('handles missing body with headers %p', async (headers) => {
     const req = makeRequest(undefined, headers);
     const result = await parseJsonBody(req, schema, '1kb');
     expect(result.success).toBe(false);
-    expect(result.response.status).toBe(400);
+    expect((result as any).response.status).toBe(400);
   });
 });
 

@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Check, ChevronRight, ExternalLink, MapPin } from 'lucide-react';
 
+import { Skeleton, Toast } from '@acme/design-system/atoms';
 import { StepFlowShell } from '@acme/design-system/primitives';
 import ExperimentGate from '@acme/ui/components/ab/ExperimentGate';
 
@@ -22,9 +24,13 @@ import type { ArrivalConfidence, ChecklistProgress, EtaMethod } from '../../type
 
 type Step = 1 | 2 | 3;
 
+const HOSTEL_MAPS_URL =
+  'https://www.google.com/maps/search/?api=1&query=Hostel+Brikette+Via+Cristoforo+Colombo+13+Positano';
+
 interface GuidedOnboardingFlowProps {
   guestFirstName?: string | null;
   onComplete: () => void;
+  onClose?: () => void;
 }
 
 function normalizeMethod(method: string | null): EtaMethod | null {
@@ -65,7 +71,9 @@ function normalizeConfidence(confidence: string | null): ArrivalConfidence | nul
 export default function GuidedOnboardingFlow({
   guestFirstName,
   onComplete,
+  onClose,
 }: GuidedOnboardingFlowProps) {
+  const { t } = useTranslation('Onboarding');
   const [step, setStep] = useState<Step>(1);
   const [isSaving, setIsSaving] = useState(false);
   const [celebration, setCelebration] = useState<string | null>(null);
@@ -87,9 +95,12 @@ export default function GuidedOnboardingFlow({
   const [rulesReviewed, setRulesReviewed] = useState(false);
   const [locationSaved, setLocationSaved] = useState(false);
   const [lastCompletedItem, setLastCompletedItem] = useState<keyof ChecklistProgress | null>(null);
+  const [errorToast, setErrorToast] = useState<{ message: string; retry: () => void } | null>(null);
 
   const didInitRef = useRef(false);
   const celebrationTimeoutRef = useRef<number | null>(null);
+  const flowCompletedRef = useRef(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isLoading || didInitRef.current) {
@@ -134,6 +145,37 @@ export default function GuidedOnboardingFlow({
     };
   }, []);
 
+  // Keep step accessible to the abandon cleanup via a ref
+  const stepRef = useRef(step);
+  stepRef.current = step;
+
+  // Focus the step heading after step transitions for screen readers
+  const prevStepRef = useRef(step);
+  useEffect(() => {
+    if (prevStepRef.current !== step) {
+      prevStepRef.current = step;
+      const heading = cardRef.current?.querySelector('h1');
+      if (heading) {
+        heading.setAttribute('tabindex', '-1');
+        heading.focus();
+      }
+    }
+  }, [step]);
+
+  // Track flow abandonment on unmount (if not completed)
+  useEffect(() => {
+    return () => {
+      if (!flowCompletedRef.current) {
+        recordActivationFunnelEvent({
+          type: 'guided_flow_abandoned',
+          sessionKey: getFunnelSessionKey(),
+          route: '/portal',
+          context: { lastStep: stepRef.current },
+        });
+      }
+    };
+  }, []);
+
   const routeSuggestions = useMemo(() => {
     return sortRoutesForPersonalization(ROUTES_TO_POSITANO, arrivalMethodPreference).slice(0, 3);
   }, [arrivalMethodPreference]);
@@ -148,6 +190,37 @@ export default function GuidedOnboardingFlow({
   const etaWindowOptions = useMemo(() => {
     return getEtaWindowOptions(arrivalConfidence);
   }, [arrivalConfidence]);
+
+  // Step-dependent content for StepFlowShell
+  const stepTitle = useMemo(() => {
+    if (step === 1) {
+      return guestFirstName
+        ? t('guidedFlow.step1.titleWithName', { name: guestFirstName })
+        : t('guidedFlow.step1.title');
+    }
+    if (step === 2) {
+      return t('guidedFlow.step2.title');
+    }
+    return t('guidedFlow.step3.title');
+  }, [step, guestFirstName, t]);
+
+  const stepDescription = useMemo((): ReactNode => {
+    if (step === 1) {
+      return (
+        <ExperimentGate
+          flag="prime-onboarding-cta-copy"
+          enabled={experimentVariants.onboardingCtaCopy === 'value-led'}
+          fallback={t('guidedFlow.step1.descriptionControl')}
+        >
+          {t('guidedFlow.step1.descriptionValueLed')}
+        </ExperimentGate>
+      );
+    }
+    if (step === 2) {
+      return t('guidedFlow.step2.description');
+    }
+    return t('guidedFlow.step3.description');
+  }, [step, experimentVariants.onboardingCtaCopy, t]);
 
   function showCelebration(message: string) {
     if (celebrationTimeoutRef.current) {
@@ -182,7 +255,13 @@ export default function GuidedOnboardingFlow({
         },
       });
 
-      showCelebration('Great start. Your arrival path is now personalized.');
+      showCelebration(t('guidedFlow.step1.celebration'));
+      setStep(2);
+    } catch {
+      setErrorToast({
+        message: t('guidedFlow.errors.step1'),
+        retry: () => void handleStepOneContinue(),
+      });
       setStep(2);
     } finally {
       setIsSaving(false);
@@ -206,7 +285,13 @@ export default function GuidedOnboardingFlow({
           stepOrder: experimentVariants.onboardingStepOrder,
         },
       });
-      showCelebration('ETA shared. Reception can now prepare your arrival.');
+      showCelebration(t('guidedFlow.step2.celebration'));
+      setStep(3);
+    } catch {
+      setErrorToast({
+        message: t('guidedFlow.errors.step2'),
+        retry: () => void handleStepTwoContinue(),
+      });
       setStep(3);
     } finally {
       setIsSaving(false);
@@ -245,200 +330,264 @@ export default function GuidedOnboardingFlow({
         },
       });
 
-      showCelebration('Nice work. Your arrival checklist is moving forward.');
+      showCelebration(t('guidedFlow.step3.celebration'));
+      flowCompletedRef.current = true;
+      onComplete();
+    } catch {
+      setErrorToast({
+        message: t('guidedFlow.errors.step3'),
+        retry: () => void handleFinish(),
+      });
+      flowCompletedRef.current = true;
       onComplete();
     } finally {
       setIsSaving(false);
     }
   }
 
+  function handleBack() {
+    if (step === 1) {
+      onClose?.();
+    } else {
+      setStep((step - 1) as Step);
+    }
+  }
+
+  const handleOpenMaps = useCallback(() => {
+    setLocationSaved(true);
+    if (typeof window !== 'undefined') {
+      window.open(HOSTEL_MAPS_URL, '_blank');
+    }
+  }, []);
+
   if (isLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      <main className="min-h-svh bg-muted px-4 py-6">
+        {/* eslint-disable-next-line ds/container-widths-only-at -- PLAT-ENG-0001 top-level card container */}
+        <div className="mx-auto max-w-md space-y-5 rounded-2xl bg-background p-5 shadow-md">
+          <Skeleton className="h-6 w-3/4 rounded" />
+          <Skeleton className="h-4 w-full rounded" />
+          <div className="grid grid-cols-2 gap-2">
+            <Skeleton className="h-10 rounded-full" />
+            <Skeleton className="h-10 rounded-full" />
+            <Skeleton className="h-10 rounded-full" />
+            <Skeleton className="h-10 rounded-full" />
+          </div>
+          <Skeleton className="h-16 w-full rounded-xl" />
+          <p className="text-center text-xs text-muted-foreground">
+            {t('guidedFlow.loadingTip')}
+          </p>
+        </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-muted px-4 py-6">
-      <div className="mx-auto max-w-md space-y-5 rounded-2xl bg-card p-5 shadow-sm">
+    <main className="min-h-svh bg-muted px-4 py-6">
+      {/* eslint-disable-next-line ds/container-widths-only-at -- PLAT-ENG-0001 top-level card container */}
+      <div ref={cardRef} className="mx-auto max-w-md space-y-5 rounded-2xl bg-background p-5 shadow-md">
         <StepFlowShell
           currentStep={step}
           totalSteps={3}
-          title={guestFirstName ? `Welcome ${guestFirstName}, let’s get you arrival-ready` : 'Let’s get you arrival-ready'}
-          description={(
-            <ExperimentGate
-              flag="prime-onboarding-cta-copy"
-              enabled={experimentVariants.onboardingCtaCopy === 'value-led'}
-              fallback="Finish these quick steps to reduce reception wait time and avoid arrival surprises."
-            >
-              Unlock faster check-in and sharper local recommendations by completing these steps now.
-            </ExperimentGate>
-          )}
-          trustCue={{
-            title: 'Privacy reassurance',
-            description: 'We only use this information for your current stay and reception operations.',
-          }}
+          title={stepTitle}
+          description={stepDescription}
+          trustCue={step === 1 ? {
+            title: t('guidedFlow.step1.privacyTitle'),
+            description: t('guidedFlow.step1.privacyDescription'),
+          } : undefined}
           milestoneMessage={celebration}
+          onBack={handleBack}
         >
 
+        {/* ── Step 1: Arrival style ── */}
         {step === 1 && (
-          <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">Choose your arrival style</h2>
-            <p className="text-sm text-muted-foreground">This lets us recommend the best route and defaults for you.</p>
-
+          <section className="space-y-5">
             {showConfidenceBeforeMethod ? (
               <>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-foreground">How confident do you feel about getting here?</p>
+                <fieldset className="space-y-2">
+                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.confidenceLabel')}</legend>
+                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
                   <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setArrivalConfidence('confident')}
-                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                        arrivalConfidence === 'confident'
-                          ? 'border-primary bg-primary-soft text-primary'
-                          : 'border-border text-foreground'
-                      }`}
-                    >
-                      Confident
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setArrivalConfidence('need-guidance')}
-                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                        arrivalConfidence === 'need-guidance'
-                          ? 'border-primary bg-primary-soft text-primary'
-                          : 'border-border text-foreground'
-                      }`}
-                    >
-                      Need guidance
-                    </button>
+                    {([
+                      { value: 'confident' as const, label: t('guidedFlow.step1.confident') },
+                      { value: 'need-guidance' as const, label: t('guidedFlow.step1.needGuidance') },
+                    ]).map(({ value, label }) => (
+                      <button
+                        key={value}
+                        type="button"
+                        role="radio"
+                        aria-checked={arrivalConfidence === value}
+                        onClick={() => setArrivalConfidence(value)}
+                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
+                          arrivalConfidence === value
+                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                            : 'border-border text-foreground hover:border-border-strong'
+                        }`}
+                      >
+                        {arrivalConfidence === value && <Check className="h-3.5 w-3.5" />}
+                        {label}
+                      </button>
+                    ))}
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-foreground">How are you most likely arriving?</p>
+                </fieldset>
+                <fieldset className="space-y-2">
+                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.arrivalMethodLabel')}</legend>
+                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
                   <div className="grid grid-cols-2 gap-2">
                     {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
                       <button
                         key={method}
                         type="button"
+                        role="radio"
+                        aria-checked={arrivalMethodPreference === method}
                         onClick={() => setArrivalMethodPreference(method)}
-                        className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
                           arrivalMethodPreference === method
-                            ? 'border-primary bg-primary-soft text-primary'
-                            : 'border-border text-foreground'
+                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                            : 'border-border text-foreground hover:border-border-strong'
                         }`}
                       >
-                        {method}
+                        {arrivalMethodPreference === method && <Check className="h-3.5 w-3.5" />}
+                        {t(`guidedFlow.methods.${method}`)}
                       </button>
                     ))}
                   </div>
-                </div>
+                </fieldset>
               </>
             ) : (
               <>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-foreground">How are you most likely arriving?</p>
+                <fieldset className="space-y-2">
+                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.arrivalMethodLabel')}</legend>
+                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
                   <div className="grid grid-cols-2 gap-2">
                     {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
                       <button
                         key={method}
                         type="button"
+                        role="radio"
+                        aria-checked={arrivalMethodPreference === method}
                         onClick={() => setArrivalMethodPreference(method)}
-                        className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
                           arrivalMethodPreference === method
-                            ? 'border-primary bg-primary-soft text-primary'
-                            : 'border-border text-foreground'
+                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                            : 'border-border text-foreground hover:border-border-strong'
                         }`}
                       >
-                        {method}
+                        {arrivalMethodPreference === method && <Check className="h-3.5 w-3.5" />}
+                        {t(`guidedFlow.methods.${method}`)}
                       </button>
                     ))}
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-foreground">How confident do you feel about getting here?</p>
+                </fieldset>
+                <fieldset className="space-y-2">
+                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.confidenceLabel')}</legend>
+                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
                   <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setArrivalConfidence('confident')}
-                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                        arrivalConfidence === 'confident'
-                          ? 'border-primary bg-primary-soft text-primary'
-                          : 'border-border text-foreground'
-                      }`}
-                    >
-                      Confident
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setArrivalConfidence('need-guidance')}
-                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                        arrivalConfidence === 'need-guidance'
-                          ? 'border-primary bg-primary-soft text-primary'
-                          : 'border-border text-foreground'
-                      }`}
-                    >
-                      Need guidance
-                    </button>
+                    {([
+                      { value: 'confident' as const, label: t('guidedFlow.step1.confident') },
+                      { value: 'need-guidance' as const, label: t('guidedFlow.step1.needGuidance') },
+                    ]).map(({ value, label }) => (
+                      <button
+                        key={value}
+                        type="button"
+                        role="radio"
+                        aria-checked={arrivalConfidence === value}
+                        onClick={() => setArrivalConfidence(value)}
+                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
+                          arrivalConfidence === value
+                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                            : 'border-border text-foreground hover:border-border-strong'
+                        }`}
+                      >
+                        {arrivalConfidence === value && <Check className="h-3.5 w-3.5" />}
+                        {label}
+                      </button>
+                    ))}
                   </div>
-                </div>
+                </fieldset>
               </>
             )}
 
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-foreground">Recommended routes</p>
-              {routeSuggestions.map((route) => (
-                <button
-                  key={route.slug}
-                  type="button"
-                  onClick={() => setSelectedRouteSlug(route.slug)}
-                  className={`w-full rounded-lg border px-3 py-2 text-left ${
-                    selectedRouteSlug === route.slug
-                      ? 'border-success bg-success-soft'
-                      : 'border-border'
-                  }`}
-                >
-                  <p className="text-sm font-semibold text-foreground">{route.title}</p>
-                  <p className="text-xs text-muted-foreground">{route.description}</p>
-                </button>
-              ))}
-            </div>
+            {arrivalMethodPreference && (
+              <fieldset className="space-y-2">
+                <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.routeLabel')} <span className="font-normal text-foreground/60">{t('guidedFlow.step1.routeOptional')}</span></legend>
+                <div className="space-y-2" role="radiogroup" aria-label={t('guidedFlow.step1.routeGroupLabel')}>
+                  {routeSuggestions.map((route) => {
+                    const isSelected = selectedRouteSlug === route.slug;
+                    return (
+                      <button
+                        key={route.slug}
+                        type="button"
+                        role="radio"
+                        aria-checked={isSelected}
+                        onClick={() => setSelectedRouteSlug(isSelected ? null : route.slug)}
+                        className={`flex w-full items-start gap-3 rounded-xl border-2 p-3 text-left transition-all ${
+                          isSelected
+                            ? 'border-primary bg-primary-soft shadow-sm'
+                            : 'border-border hover:border-border-strong'
+                        }`}
+                      >
+                        <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
+                          isSelected
+                            ? 'border-primary bg-primary'
+                            : 'border-muted-foreground/40'
+                        }`}>
+                          {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block text-sm font-semibold text-foreground">{route.title}</span>
+                          <span className="block text-xs text-foreground/70">{route.description}</span>
+                        </span>
+                        <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            )}
 
-            <div className="flex gap-2">
+            {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 buttons have min-h-11 + padding, width from text exceeds 44px */}
+            <div className="flex items-center gap-3 pt-1">
               <button
                 type="button"
-                onClick={() => setStep(2)}
-                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
+                onClick={() => {
+                  recordActivationFunnelEvent({
+                    type: 'guided_step_skipped',
+                    sessionKey,
+                    route: '/portal',
+                    stepId: 'step-1',
+                    variant: experimentVariants.onboardingCtaCopy,
+                    context: { stepOrder: experimentVariants.onboardingStepOrder },
+                  });
+                  setStep(2);
+                }}
+                className="min-h-11 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Skip for now
+                {t('guidedFlow.skipButton')}
               </button>
               <button
                 type="button"
                 onClick={() => void handleStepOneContinue()}
                 disabled={isSaving}
-                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+                className="ms-auto flex min-h-11 items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
-                Save and continue
+                {t('guidedFlow.saveAndContinue')}
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>
+            {/* eslint-enable ds/min-tap-size */}
           </section>
         )}
 
+        {/* ── Step 2: Share ETA ── */}
         {step === 2 && (
           <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">Share your ETA</h2>
-            <p className="text-sm text-muted-foreground">Sharing ETA helps reception prioritize fast check-in on arrival.</p>
-
             <label className="block text-sm font-medium text-foreground">
-              Arrival time window
+              {t('guidedFlow.step2.etaLabel')}
               <select
                 value={etaWindow}
                 onChange={(event) => setEtaWindow(event.target.value)}
-                className="mt-2 w-full rounded-lg border border-border px-3 py-2"
+                className="mt-2 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-foreground"
               >
                 {etaWindowOptions.map((window) => (
                   <option key={window} value={window}>
@@ -449,103 +598,215 @@ export default function GuidedOnboardingFlow({
             </label>
 
             <label className="block text-sm font-medium text-foreground">
-              Travel method
+              {t('guidedFlow.step2.methodLabel')}
               <select
                 value={etaMethod}
                 onChange={(event) => setEtaMethod(normalizeMethod(event.target.value) ?? 'other')}
-                className="mt-2 w-full rounded-lg border border-border px-3 py-2"
+                className="mt-2 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-foreground"
               >
                 {(['ferry', 'bus', 'train', 'taxi', 'private', 'other'] as const).map((method) => (
                   <option key={method} value={method}>
-                    {method}
+                    {t(`guidedFlow.methods.${method}`)}
                   </option>
                 ))}
               </select>
             </label>
 
-            <div className="flex gap-2">
+            {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 buttons have min-h-11 + padding, width from text exceeds 44px */}
+            <div className="flex items-center gap-3 pt-1">
               <button
                 type="button"
-                onClick={() => setStep(3)}
-                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
+                onClick={() => {
+                  recordActivationFunnelEvent({
+                    type: 'guided_step_skipped',
+                    sessionKey,
+                    route: '/portal',
+                    stepId: 'step-2',
+                    variant: experimentVariants.onboardingCtaCopy,
+                    context: { stepOrder: experimentVariants.onboardingStepOrder },
+                  });
+                  setStep(3);
+                }}
+                className="min-h-11 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Skip for now
+                {t('guidedFlow.skipButton')}
               </button>
               <button
                 type="button"
                 onClick={() => void handleStepTwoContinue()}
                 disabled={isSaving}
-                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+                className="ms-auto flex min-h-11 items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
-                Save ETA
+                {t('guidedFlow.saveAndContinue')}
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>
+            {/* eslint-enable ds/min-tap-size */}
           </section>
         )}
 
+        {/* ── Step 3: Final readiness checks ── */}
         {step === 3 && (
-          <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">Final readiness checks</h2>
-            <p className="text-sm text-muted-foreground">Complete what you can now. You can edit everything later on the dashboard.</p>
+          <section className="space-y-3">
+            {/* Cash for check-in */}
+            <button
+              type="button"
+              onClick={() => setCashPrepared(!cashPrepared)}
+              className={`flex w-full items-start gap-3 rounded-xl border-2 p-4 text-left transition-all active:scale-[0.98] ${
+                cashPrepared
+                  ? 'border-success/40 bg-success-soft'
+                  : 'border-border bg-card hover:border-border-strong'
+              }`}
+            >
+              <span
+                className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded transition-colors ${
+                  cashPrepared
+                    ? 'bg-success text-success-foreground'
+                    : 'border-2 border-muted-foreground/40'
+                }`}
+              >
+                {cashPrepared && <Check className="h-4 w-4" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold text-foreground">
+                  {t('guidedFlow.step3.cashTitle')}
+                </span>
+                <span className="block text-xs text-foreground/70">
+                  {t('guidedFlow.step3.cashDescription')}
+                </span>
+              </span>
+            </button>
 
-            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
-              <input
-                type="checkbox"
-                checked={cashPrepared}
-                onChange={(event) => setCashPrepared(event.target.checked)}
-                className="mt-0.5 h-4 w-4"
-              />
-              I have prepared cash for city tax and keycard deposit
-            </label>
+            {/* House rules */}
+            <button
+              type="button"
+              onClick={() => setRulesReviewed(!rulesReviewed)}
+              className={`flex w-full items-start gap-3 rounded-xl border-2 p-4 text-left transition-all active:scale-[0.98] ${
+                rulesReviewed
+                  ? 'border-success/40 bg-success-soft'
+                  : 'border-border bg-card hover:border-border-strong'
+              }`}
+            >
+              <span
+                className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded transition-colors ${
+                  rulesReviewed
+                    ? 'bg-success text-success-foreground'
+                    : 'border-2 border-muted-foreground/40'
+                }`}
+              >
+                {rulesReviewed && <Check className="h-4 w-4" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold text-foreground">
+                  {t('guidedFlow.step3.rulesTitle')}
+                </span>
+                <span className="block text-xs text-foreground/70">
+                  {t('guidedFlow.step3.rulesDescription')}
+                </span>
+              </span>
+            </button>
 
-            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
-              <input
-                type="checkbox"
-                checked={rulesReviewed}
-                onChange={(event) => setRulesReviewed(event.target.checked)}
-                className="mt-0.5 h-4 w-4"
-              />
-              I reviewed the house rules
-            </label>
-
-            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
-              <input
-                type="checkbox"
-                checked={locationSaved}
-                onChange={(event) => setLocationSaved(event.target.checked)}
-                className="mt-0.5 h-4 w-4"
-              />
-              I saved the hostel location in maps
-            </label>
+            {/* Save hostel location */}
+            <button
+              type="button"
+              onClick={handleOpenMaps}
+              className={`flex w-full items-start gap-3 rounded-xl border-2 p-4 text-left transition-all active:scale-[0.98] ${
+                locationSaved
+                  ? 'border-success/40 bg-success-soft'
+                  : 'border-border bg-card hover:border-border-strong'
+              }`}
+            >
+              <span
+                className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded transition-colors ${
+                  locationSaved
+                    ? 'bg-success text-success-foreground'
+                    : 'border-2 border-muted-foreground/40'
+                }`}
+              >
+                {locationSaved ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
+                )}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold text-foreground">
+                  {t('guidedFlow.step3.locationTitle')}
+                </span>
+                <span className="flex items-center gap-1 text-xs text-primary">
+                  {t('guidedFlow.step3.locationAction')}
+                  <ExternalLink className="h-3 w-3" />
+                </span>
+              </span>
+            </button>
 
             {lastCompletedItem && (
               <p className="rounded-lg bg-info-soft px-3 py-2 text-xs font-medium text-info-foreground">
-                Last completion: {getChecklistItemLabel(lastCompletedItem)}
+                {t('guidedFlow.step3.lastCompleted', { item: getChecklistItemLabel(lastCompletedItem) })}
               </p>
             )}
 
-            <div className="flex gap-2">
+            {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 buttons have min-h-11 + padding, width from text exceeds 44px */}
+            <div className="flex items-center gap-3 pt-2">
               <button
                 type="button"
-                onClick={onComplete}
-                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
+                onClick={() => {
+                  recordActivationFunnelEvent({
+                    type: 'guided_step_skipped',
+                    sessionKey,
+                    route: '/portal',
+                    stepId: 'step-3',
+                    variant: experimentVariants.onboardingCtaCopy,
+                    context: { stepOrder: experimentVariants.onboardingStepOrder },
+                  });
+                  flowCompletedRef.current = true;
+                  onComplete();
+                }}
+                className="min-h-11 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Skip to dashboard
+                {t('guidedFlow.skipButton')}
               </button>
               <button
                 type="button"
                 onClick={() => void handleFinish()}
                 disabled={isSaving}
-                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-success px-3 py-2 text-sm font-semibold text-success-foreground disabled:opacity-60"
+                className="ms-auto flex min-h-11 items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
-                Finish setup
-                <ChevronRight className="h-4 w-4" />
+                {t('guidedFlow.finish')}
+                <Check className="h-4 w-4" />
               </button>
             </div>
+            {/* eslint-enable ds/min-tap-size */}
           </section>
         )}
         </StepFlowShell>
+
+        {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 link text+padding exceeds 44px at runtime */}
+        <a
+          href={`mailto:hostelbrikette@gmail.com?subject=Onboarding help (step-${step})`}
+          onClick={() => {
+            recordActivationFunnelEvent({
+              type: 'utility_action_used',
+              sessionKey,
+              route: '/portal',
+              context: { surface: 'onboarding', stepId: `step-${step}` },
+            });
+          }}
+          className="block min-h-11 pt-2 text-center text-xs text-muted-foreground transition-colors hover:text-foreground"
+        >
+          {t('guidedFlow.helpLink')}
+        </a>
+        {/* eslint-enable ds/min-tap-size */}
+
+        <Toast
+          open={errorToast !== null}
+          message={errorToast?.message ?? ''}
+          variant="danger"
+          duration={5000}
+          actionLabel={t('guidedFlow.errors.retry')}
+          onAction={errorToast?.retry}
+          onClose={() => setErrorToast(null)}
+        />
       </div>
     </main>
   );

@@ -148,7 +148,7 @@ export function LaunchPanel({
             <div className="animate-confetti pointer-events-none absolute inset-0">
               {"🎉 🎊 🎉 🎊 🎉 🎊".split(" ").map((emoji, idx) => (
                 <span
-                  key={idx}
+                  key={`confetti-${idx}`}
                   className="absolute text-2xl"
                   style={{
                     left: `${(idx / 6) * 100}%`,

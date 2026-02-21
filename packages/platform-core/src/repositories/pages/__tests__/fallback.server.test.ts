@@ -1,10 +1,10 @@
 import { jest } from "@jest/globals";
 
 const mockPrisma = {
-  getPages: jest.fn().mockRejectedValue(new Error("boom")),
+  getPages: (jest.fn() as any).mockRejectedValue(new Error("boom")),
 };
 const mockJson = {
-  getPages: jest.fn().mockResolvedValue([{ id: "1" }]),
+  getPages: (jest.fn() as any).mockResolvedValue([{ id: "1" }]),
 };
 
 jest.mock("../pages.prisma.server", () => mockPrisma);

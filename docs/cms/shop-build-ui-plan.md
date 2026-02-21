@@ -57,7 +57,7 @@ Code and contracts remain the source of truth for behaviour (see `docs/cms/cms-c
     - `docs/theming-charter.md`, `docs/commerce-charter.md` (for cross‑domain consistency).
   - Code/docs:
     - `docs/cms/shop-build-journey-map.md`
-    - `docs/cms/shop-build-docs-help-plan.md`
+    - `docs/cms/shop-build-docs-help-do-plan.md`
     - `docs/cms/shop-build-ui-audit.md`
     - `docs/cms/shop-build-ui-patterns.md`
     - `packages/ui/src/components/{atoms,molecules,organisms,cms}`

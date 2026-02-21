@@ -57,7 +57,7 @@ We have a large number of opportunities across existing businesses (operate + im
 
 - generate and capture ideas/opportunities
 - work them up to a standard
-- fact-find
+- lp-do-fact-find
 - plan
 - do/build
 - reflect
@@ -122,8 +122,8 @@ docs/business-os/
     <ID>.user.md
     <ID>.agent.md
     <ID>/
-      fact-find.user.md
-      fact-find.agent.md
+      lp-do-fact-find.user.md
+      lp-do-fact-find.agent.md
       plan.user.md
       plan.agent.md
       build.user.md
@@ -403,7 +403,7 @@ Rule: when a card enters a lane, the corresponding stage docs must exist and be 
 
 Mapping:
 
-- Fact-finding → ensure `docs/business-os/cards/<ID>/fact-find.(user|agent).md`
+- Fact-finding → ensure `docs/business-os/cards/<ID>/lp-do-fact-find.(user|agent).md`
 - Planned → ensure `docs/business-os/cards/<ID>/plan.(user|agent).md`
 - In progress → ensure `docs/business-os/cards/<ID>/build.(user|agent).md`
 - Reflected → ensure `docs/business-os/cards/<ID>/reflect.(user|agent).md`

@@ -1,3 +1,4 @@
+export {};
 let mockSendgridSend: jest.Mock;
 let mockResendSend: jest.Mock;
 let mockSendMail: jest.Mock;
@@ -94,8 +95,8 @@ describe("send helpers", () => {
       const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
 
       const { loadProvider } = await import("../send");
-      const first = await loadProvider("unknown");
-      const second = await loadProvider("unknown");
+      const first = await loadProvider("unknown" as any);
+      const second = await loadProvider("unknown" as any);
       expect(first).toBeUndefined();
       expect(second).toBeUndefined();
       const { SendgridProvider } = await import("../providers/sendgrid");
@@ -124,7 +125,7 @@ describe("send helpers", () => {
           return 0 as any;
         });
 
-      await sendWithRetry(provider, {
+      await sendWithRetry(provider as any, {
         to: "a",
         subject: "b",
         html: "<p>x</p>",
@@ -137,6 +138,8 @@ describe("send helpers", () => {
     });
 
     it("retries primitive rejections and succeeds", async () => {
+      // Suppress expected console.warn from "Unrecognized provider error" on primitive rejections
+      const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
       const { sendWithRetry } = await import("../send");
       const provider = {
         send: jest
@@ -152,7 +155,7 @@ describe("send helpers", () => {
           return 0 as any;
         });
 
-      await sendWithRetry(provider, {
+      await sendWithRetry(provider as any, {
         to: "a",
         subject: "b",
         html: "<p>x</p>",
@@ -163,6 +166,7 @@ describe("send helpers", () => {
       expect(setTimeoutSpy).toHaveBeenNthCalledWith(1, expect.any(Function), 100);
       expect(setTimeoutSpy).toHaveBeenNthCalledWith(2, expect.any(Function), 200);
       setTimeoutSpy.mockRestore();
+      warnSpy.mockRestore();
     });
 
     it("does not retry on non-retryable errors", async () => {
@@ -178,7 +182,7 @@ describe("send helpers", () => {
         });
 
       await expect(
-        sendWithRetry(provider, {
+        sendWithRetry(provider as any, {
           to: "a",
           subject: "b",
           html: "<p>x</p>",
@@ -204,7 +208,7 @@ describe("send helpers", () => {
 
       await expect(
         sendWithRetry(
-          provider,
+          provider as any,
           {
             to: "a",
             subject: "b",

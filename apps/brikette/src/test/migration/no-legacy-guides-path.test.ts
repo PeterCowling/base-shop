@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename -- Test helpers that validate file paths; paths constructed from known directory structure */
 import fs from "node:fs";
 import path from "node:path";
 

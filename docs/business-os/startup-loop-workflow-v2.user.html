@@ -1,0 +1,2082 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Startup Loop — Command Centre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Sora:wght@300;400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --bg:        #040b18;
+      --surface:   #070f1e;
+      --surface2:  #0c1830;
+      --border:    rgba(201,168,76,.1);
+      --border-2:  rgba(201,168,76,.28);
+      --text:      #ddd6c8;
+      --muted:     #5a6b7a;
+      --accent:    #c9a84c;
+      --link:      #7db3d8;
+
+      /* Venture */
+      --head:      #a78bfa;
+      --head-dim:  rgba(124,58,237,.15);
+      --pet:       #34d399;
+      --pet-dim:   rgba(5,150,105,.15);
+      --brik:      #fbbf24;
+      --brik-dim:  rgba(217,119,6,.15);
+
+      /* Status */
+      --done-bg:   rgba(52,211,153,.12);
+      --done-text: #34d399;
+      --draft-bg:  rgba(251,191,36,.12);
+      --draft-text:#fbbf24;
+      --never-bg:  rgba(239,68,68,.1);
+      --never-text:#f87171;
+      --na-bg:     rgba(90,107,122,.12);
+      --na-text:   #5a6b7a;
+      --sidebar-w: 248px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    /* ── Grain texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 300px 300px;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Sora', ui-sans-serif, system-ui, sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.7;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 2px solid rgba(201,168,76,.2);
+      overflow-y: auto;
+      z-index: 100;
+      padding: 0 0 40px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(201,168,76,.15) transparent;
+    }
+
+    .sidebar-logo {
+      padding: 24px 20px 16px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 10px;
+    }
+
+    .sidebar-section {
+      padding: 8px 20px 3px;
+      font-family: 'Sora', sans-serif;
+      font-size: 9px;
+      font-weight: 300;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,.5);
+      margin-top: 16px;
+    }
+
+    #sidebar a {
+      display: block;
+      padding: 6px 20px;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      margin: 1px 0;
+      border-left: 2px solid transparent;
+      transition: color .18s, border-color .18s, background .18s;
+    }
+    #sidebar a:hover {
+      color: #fff;
+      border-left-color: var(--accent);
+      background: rgba(201,168,76,.04);
+    }
+    #sidebar a.active {
+      color: #fff;
+      border-left-color: var(--accent);
+      background: rgba(201,168,76,.06);
+    }
+
+    .sidebar-venture {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar-venture::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .sidebar-venture.head::before { background: var(--head); }
+    .sidebar-venture.pet::before  { background: var(--pet); }
+    .sidebar-venture.brik::before { background: var(--brik); }
+
+    /* ── Main ── */
+    #main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 48px 56px 100px;
+      max-width: 1120px;
+    }
+
+    /* ── Section spacers + animate-in ── */
+    .section-block {
+      margin-bottom: 56px;
+      animation: fadeUp .5s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      margin-bottom: 48px;
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 32px;
+      font-weight: 400;
+      margin: 0 0 8px;
+      color: #ece8e0;
+      letter-spacing: .02em;
+      line-height: 1.3;
+    }
+    .page-header p {
+      margin: 0;
+      color: var(--muted);
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+    }
+    .updated-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--border-2);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+    .updated-chip::before {
+      content: '●';
+      color: var(--done-text);
+      font-size: 7px;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .35; }
+    }
+
+    /* ── Section headings ── */
+    h2.section-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 22px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      scroll-margin-top: 28px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: .01em;
+    }
+    h2.section-heading .section-icon {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--accent);
+      flex-shrink: 0;
+      line-height: 1;
+      opacity: .8;
+    }
+    h3.sub-heading {
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 14px;
+      scroll-margin-top: 28px;
+    }
+
+    /* ── Venture panels ── */
+    .venture-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 900px) {
+      .venture-grid { grid-template-columns: 1fr; }
+    }
+
+    .venture-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .venture-header {
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 600;
+      font-size: 17px;
+      letter-spacing: .02em;
+    }
+    .venture-header .badge {
+      padding: 2px 9px;
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .venture-panel.head .venture-header {
+      border-left: 3px solid var(--head);
+      box-shadow: inset 4px 0 20px var(--head-dim);
+      border-bottom: 1px solid var(--border);
+      color: #d4c6ff;
+    }
+    .venture-panel.head .venture-header .badge { background: var(--head); }
+    .venture-panel.pet .venture-header {
+      border-left: 3px solid var(--pet);
+      box-shadow: inset 4px 0 20px var(--pet-dim);
+      border-bottom: 1px solid var(--border);
+      color: #a7f3d0;
+    }
+    .venture-panel.pet .venture-header .badge { background: #059669; }
+    .venture-panel.brik .venture-header {
+      border-left: 3px solid var(--brik);
+      box-shadow: inset 4px 0 20px var(--brik-dim);
+      border-bottom: 1px solid var(--border);
+      color: #fde68a;
+    }
+    .venture-panel.brik .venture-header .badge { background: #d97706; }
+
+    .venture-tasks { padding: 8px 0; }
+    .task-item {
+      display: flex;
+      gap: 12px;
+      padding: 11px 18px;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+      transition: background .15s, border-color .15s;
+      cursor: default;
+    }
+    .task-item:last-child { border-bottom: none; }
+    .task-item:hover {
+      background: rgba(201,168,76,.025);
+      border-bottom-color: rgba(201,168,76,.15);
+      transform: translateY(-1px);
+    }
+    .task-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .venture-panel.head .task-num { background: rgba(167,139,250,.15); color: var(--head); border: 1px solid rgba(167,139,250,.3); }
+    .venture-panel.pet  .task-num { background: rgba(52,211,153,.12); color: var(--pet); border: 1px solid rgba(52,211,153,.28); }
+    .venture-panel.brik .task-num { background: rgba(251,191,36,.12); color: var(--brik); border: 1px solid rgba(251,191,36,.28); }
+    .task-body { flex: 1; }
+    .task-title {
+      font-family: 'Sora', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .task-why {
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .task-done {
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      color: rgba(90,107,122,.7);
+      font-style: italic;
+      margin-top: 5px;
+    }
+    .task-done::before { content: '· '; }
+
+    /* ── Loop diagram ── */
+    .diagram-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .diagram-card p {
+      color: var(--muted);
+      margin: 0 0 16px;
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+    }
+
+    /* ── Stage status grid ── */
+    .stage-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .stage-row {
+      display: grid;
+      grid-template-columns: 220px 1fr 90px 90px 90px;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .stage-row:last-child { border-bottom: none; }
+    .stage-row.header {
+      background: var(--surface2);
+    }
+    .stage-cell {
+      padding: 10px 14px;
+      border-right: 1px solid var(--border);
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+    }
+    .stage-row.header .stage-cell {
+      font-weight: 300;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--muted);
+    }
+    .stage-cell:last-child { border-right: none; }
+    .stage-cell.name { font-weight: 400; color: var(--text); flex-direction: column; align-items: flex-start; gap: 2px; }
+    .stage-cell.name .stage-sub { font-size: 10px; font-weight: 300; color: var(--muted); }
+    .stage-cell.status { justify-content: center; }
+    .stage-row:not(.header):nth-child(odd) .stage-cell { background: rgba(255,255,255,.015); }
+
+    /* ── Status badges ── */
+    .badge-done {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--done-bg); color: var(--done-text);
+      border-radius: 20px; padding: 2px 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 600; white-space: nowrap;
+      box-shadow: 0 0 8px rgba(52,211,153,.2);
+      animation: badge-glow 3s ease-in-out infinite;
+    }
+    @keyframes badge-glow {
+      0%, 100% { box-shadow: 0 0 8px rgba(52,211,153,.2); }
+      50%       { box-shadow: 0 0 14px rgba(52,211,153,.35); }
+    }
+    .badge-draft {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--draft-bg); color: var(--draft-text);
+      border-radius: 20px; padding: 2px 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 600;
+    }
+    .badge-never {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--never-bg); color: var(--never-text);
+      border-radius: 20px; padding: 2px 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 600;
+    }
+    .badge-na {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--na-bg); color: var(--na-text);
+      border-radius: 20px; padding: 2px 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 600;
+    }
+    .badge-done::before  { content: '✓ '; }
+    .badge-draft::before { content: '◐ '; }
+    .badge-never::before { content: '× '; }
+    .badge-na::before    { content: '— '; }
+
+    /* ── Theme-grouped task lists ── */
+    .theme-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .theme-header {
+      padding: 9px 18px;
+      background: var(--surface2);
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: rgba(201,168,76,.6);
+      border-bottom: 1px solid var(--border);
+    }
+    .theme-list { padding: 6px 0; }
+    .theme-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 7px 18px;
+    }
+    .theme-row span:not(.venture-tag) {
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .venture-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 10px;
+      width: 36px;
+      flex-shrink: 0;
+      letter-spacing: .06em;
+    }
+    .venture-tag.head { color: var(--head); }
+    .venture-tag.pet  { color: var(--pet); }
+    .venture-tag.brik { color: var(--brik); }
+
+    /* ── Time action cards ── */
+    .time-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 800px) { .time-cards { grid-template-columns: 1fr; } }
+    .time-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .time-card-header {
+      padding: 14px 18px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .time-pill {
+      background: var(--accent);
+      color: #040b18;
+      border-radius: 20px;
+      padding: 3px 11px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .time-card-header span {
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--muted);
+    }
+    .time-card ul {
+      margin: 0;
+      padding: 14px 18px 14px 32px;
+      color: var(--muted);
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+    }
+    .time-card li { margin-bottom: 6px; line-height: 1.55; }
+    .time-card li strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    /* ── Quick actions table ── */
+    .qa-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .qa-table th {
+      background: var(--surface2);
+      padding: 10px 16px;
+      font-family: 'Sora', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .qa-table td {
+      padding: 11px 16px;
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .qa-table tr:last-child td { border-bottom: none; }
+    .qa-table tbody tr:hover td { background: rgba(201,168,76,.025); }
+    .qa-table td:first-child { font-weight: 400; color: var(--text); }
+    .qa-table tbody tr:nth-child(odd) td { background: rgba(255,255,255,.015); }
+    .qa-table tbody tr:nth-child(odd):hover td { background: rgba(201,168,76,.025); }
+
+    /* ── Action card per business ── */
+    .action-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .action-card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .action-card-header .title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--text);
+    }
+    .action-card-header .why {
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .action-card.head .action-card-header {
+      border-left: 3px solid var(--head);
+      box-shadow: inset 4px 0 20px var(--head-dim);
+    }
+    .action-card.pet  .action-card-header {
+      border-left: 3px solid var(--pet);
+      box-shadow: inset 4px 0 20px var(--pet-dim);
+    }
+    .action-card.brik .action-card-header {
+      border-left: 3px solid var(--brik);
+      box-shadow: inset 4px 0 20px var(--brik-dim);
+    }
+    .action-card ol {
+      margin: 0;
+      padding: 16px 20px 16px 38px;
+      color: var(--muted);
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+    }
+    .action-card li { margin-bottom: 7px; line-height: 1.55; }
+    .action-done {
+      padding: 10px 20px;
+      background: var(--done-bg);
+      color: var(--done-text);
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      border-top: 1px solid rgba(52,211,153,.15);
+    }
+    .action-done::before {
+      content: '✓  ';
+      font-weight: 400;
+    }
+
+    /* ── Operator actions table ── */
+    .op-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .op-table th {
+      background: var(--surface2);
+      padding: 10px 16px;
+      font-family: 'Sora', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .op-table td {
+      padding: 11px 16px;
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .op-table tr:last-child td { border-bottom: none; }
+    .op-table td:first-child { font-weight: 400; color: var(--text); }
+    .op-table tbody tr:nth-child(odd) td { background: rgba(255,255,255,.015); }
+    .op-table tbody tr:hover td { background: rgba(201,168,76,.025); }
+
+    /* ── Readiness checklist ── */
+    .readiness-list {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .readiness-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 13px 20px;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+    }
+    .readiness-item:last-child { border-bottom: none; }
+    .readiness-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border-2);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      flex-shrink: 0;
+      color: rgba(201,168,76,.6);
+    }
+    .readiness-item .q { color: var(--text); font-weight: 400; }
+    .readiness-item .note { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 3px; }
+
+    /* ── Composite workstream support ── */
+    .ws-stack { display: flex; flex-direction: column; gap: 4px; }
+    .ws-inline {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      white-space: nowrap;
+      vertical-align: middle;
+      margin: 2px 4px 2px 0;
+    }
+    .cell-sep {
+      border: none;
+      border-top: 1px dashed rgba(201,168,76,.12);
+      margin: 8px 0 6px;
+    }
+    .eng-table tr.composite-row td { background: rgba(255,255,255,.018); }
+
+    /* ── Workstream badges ── */
+    .ws-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      white-space: nowrap;
+      transition: box-shadow .18s;
+    }
+    .ws-badge:hover { box-shadow: 0 0 10px currentColor; opacity: .85; }
+
+    /* v2 canonical workstream badge colours */
+    .ws-cdi   { background: rgba(59,130,246,.18);  color: #60a5fa; border: 1px solid rgba(59,130,246,.3); }
+    .ws-off   { background: rgba(139,92,246,.18);  color: #a78bfa; border: 1px solid rgba(139,92,246,.3); }
+    .ws-gtm   { background: rgba(16,185,129,.18);  color: #34d399; border: 1px solid rgba(16,185,129,.3); }
+    .ws-ops   { background: rgba(245,158,11,.18);  color: #fbbf24; border: 1px solid rgba(245,158,11,.3); }
+    .ws-cx    { background: rgba(244,63,94,.18);   color: #fb7185; border: 1px solid rgba(244,63,94,.3); }
+    .ws-fin   { background: rgba(234,179,8,.18);   color: #fde047; border: 1px solid rgba(234,179,8,.3); }
+    .ws-data  { background: rgba(100,116,139,.18); color: #94a3b8; border: 1px solid rgba(100,116,139,.3); }
+    .ws-brand { background: rgba(236,72,153,.18);  color: #f472b6; border: 1px solid rgba(236,72,153,.3); }
+
+    .eng-table tr.brand-row td { background: rgba(236,72,153,.04); border-color: rgba(236,72,153,.12); }
+    .eng-table td.ws-cell { vertical-align: middle; }
+
+    /* ── Engineering section ── */
+    #eng-section { display: none; }
+    #eng-section.open { display: block; }
+    .eng-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid var(--border-2);
+      padding: 9px 18px;
+      color: var(--muted);
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      cursor: pointer;
+      margin-bottom: 36px;
+      letter-spacing: .04em;
+      transition: border-color .18s, color .18s, background .18s;
+    }
+    .eng-toggle-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(201,168,76,.04);
+    }
+    .eng-toggle-btn .chevron { transition: transform .22s; }
+    .eng-toggle-btn.open .chevron { transform: rotate(180deg); }
+
+    /* ── Engineering tables ── */
+    .eng-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .eng-table th {
+      background: var(--surface2);
+      padding: 9px 14px;
+      font-family: 'Sora', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .eng-table td {
+      padding: 10px 14px;
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+    .eng-table tr:last-child td { border-bottom: none; }
+    .eng-table td:first-child { color: var(--text); font-weight: 400; }
+    .eng-table tbody tr:nth-child(odd):not(.composite-row):not(.brand-row) td {
+      background: rgba(255,255,255,.015);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--surface2);
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 11px;
+      color: var(--link);
+    }
+    pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 16px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    blockquote {
+      border-left: 3px solid var(--border-2);
+      margin: 0 0 14px;
+      padding: 10px 16px;
+      background: var(--surface2);
+      color: var(--muted);
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    blockquote strong { color: var(--accent); font-weight: 400; }
+    ul, ol {
+      padding-left: 22px;
+      color: var(--muted);
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+    }
+    li { margin-bottom: 5px; line-height: 1.55; }
+    li strong, p strong { color: var(--text); font-weight: 400; }
+    p {
+      color: var(--muted);
+      font-family: 'Sora', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      margin: 0 0 14px;
+      line-height: 1.7;
+    }
+
+    @media print {
+      #sidebar { display: none; }
+      #main { margin-left: 0; }
+      #eng-section { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<nav id="sidebar">
+  <div class="sidebar-logo">Startup Loop</div>
+
+  <div class="sidebar-section">Overview</div>
+  <a href="#open-tasks">Open Tasks</a>
+  <a href="#loop-diagram">The Loop (8 Steps)</a>
+  <a href="#by-theme">Tasks by Theme</a>
+  <a href="#stage-status">Stage Status</a>
+
+  <div class="sidebar-section">Ventures</div>
+  <a href="#head-tasks" class="sidebar-venture head">HEAD</a>
+  <a href="#pet-tasks"  class="sidebar-venture pet">PET</a>
+  <a href="#brik-tasks" class="sidebar-venture brik">BRIK</a>
+
+  <div class="sidebar-section">Guides</div>
+  <a href="#time-guide">10 / 30 / 60 min</a>
+  <a href="#quick-actions">Quick Actions</a>
+  <a href="#readiness">Readiness + Contracts</a>
+  <a href="#operator-actions">Operator Actions</a>
+  <a href="#action-cards">Action Cards</a>
+
+  <div class="sidebar-section">Engineering</div>
+  <a href="#eng-toggle-anchor">Appendix (toggle)</a>
+  <a href="#standing-refresh">Standing Refresh</a>
+</nav>
+
+<!-- ── Main content ── -->
+<main id="main">
+
+  <!-- Page header -->
+  <div class="page-header">
+    <h1>Startup Loop — Command Centre</h1>
+    <p>What to do next for HEAD, PET, and BRIK. Work through each venture's list top-to-bottom — each task unlocks the next.</p>
+    <div class="updated-chip">Updated 2026-02-17</div>
+  </div>
+
+  <!-- ── Open Tasks ── -->
+  <div class="section-block" id="open-tasks" style="animation-delay:.05s">
+    <h2 class="section-heading">
+      <span class="section-icon">§</span>
+      Open Tasks
+    </h2>
+
+    <div class="venture-grid">
+
+      <!-- HEAD -->
+      <div class="venture-panel head" id="head-tasks">
+        <div class="venture-header">
+          <span class="badge">HEAD</span>
+          Headphones
+        </div>
+        <div class="venture-tasks">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-body">
+              <div class="task-title">Fill Operational Confirmations (6 fields)</div>
+              <div class="task-why">In-stock date, units, pricing, compatibility, payment readiness, returns SLA. Nothing else can advance without these.</div>
+              <div class="task-done">All 6 fields confirmed and timestamped.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-body">
+              <div class="task-title">Complete Pre-website Measurement Setup</div>
+              <div class="task-why">Paid traffic without GA4, Search Console, and conversion event setup produces data you cannot use.</div>
+              <div class="task-done">Measurement setup document at Active status.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-body">
+              <div class="task-title">Produce the HEAD offer artifact (S2B)</div>
+              <div class="task-why">Requires the operational inputs from task 1. Without the offer, the forecast and channel plan have no anchor.</div>
+              <div class="task-done">Offer artifact exists with target customer profile, positioning, and pricing model.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">4</div>
+            <div class="task-body">
+              <div class="task-title">Advance HEAD forecast to decision-grade (S3)</div>
+              <div class="task-why">Draft forecast from 12 Feb uses assumptions. Rebuild once operational inputs are confirmed.</div>
+              <div class="task-done">Forecast document at Active status with confirmed inputs.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">5</div>
+            <div class="task-body">
+              <div class="task-title">Run this week's K/P/C/S decision</div>
+              <div class="task-why">First decision is dated 12 Feb. The loop loses signal without weekly continuation.</div>
+              <div class="task-done">This week's decision document exists and is dated.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">6</div>
+            <div class="task-body">
+              <div class="task-title">Run standing refresh</div>
+              <div class="task-why">No market-pulse, channel-economics, or regulatory-watch documents exist yet for HEAD.</div>
+              <div class="task-done">At least one standing refresh document produced and dated.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PET -->
+      <div class="venture-panel pet" id="pet-tasks">
+        <div class="venture-header">
+          <span class="badge">PET</span>
+          Pet Accessories
+        </div>
+        <div class="venture-tasks">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-body">
+              <div class="task-title">Confirm inventory inputs</div>
+              <div class="task-why">Units on hand, expected arrival date, landed cost per unit. PET forecast cannot reach decision-grade without these three numbers.</div>
+              <div class="task-done">All three inventory inputs confirmed and documented.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-body">
+              <div class="task-title">Run a 7-day paid acquisition test</div>
+              <div class="task-why">No measured CPC or CVR data exists. The forecast uses seed assumptions only.</div>
+              <div class="task-done">First measured CPC and CVR documented from a 7-day live test.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-body">
+              <div class="task-title">Complete Pre-website Measurement Setup</div>
+              <div class="task-why">Same requirement as HEAD. Measurement must be in place before paid traffic can produce usable data.</div>
+              <div class="task-done">Measurement setup document at Active status.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">4</div>
+            <div class="task-body">
+              <div class="task-title">Produce the PET offer artifact (S2B)</div>
+              <div class="task-why">Requires inventory inputs (task 1) and measurement setup (task 3).</div>
+              <div class="task-done">Offer artifact exists with target customer profile, positioning, and pricing model.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">5</div>
+            <div class="task-body">
+              <div class="task-title">Advance PET forecast to decision-grade (S3)</div>
+              <div class="task-why">Draft exists from 11 Feb. Rebuild once inventory is confirmed and acquisition data is captured.</div>
+              <div class="task-done">Forecast document at Active status with confirmed inputs.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">6</div>
+            <div class="task-body">
+              <div class="task-title">Run this week's K/P/C/S decision</div>
+              <div class="task-why">First decision is dated 12 Feb. Weekly continuation required.</div>
+              <div class="task-done">This week's decision document exists and is dated.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">7</div>
+            <div class="task-body">
+              <div class="task-title">Run standing refresh</div>
+              <div class="task-why">No standing refresh documents exist yet for PET.</div>
+              <div class="task-done">At least one standing refresh document produced and dated.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BRIK -->
+      <div class="venture-panel brik" id="brik-tasks">
+        <div class="venture-header">
+          <span class="badge">BRIK</span>
+          Brikette
+        </div>
+        <div class="venture-tasks">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-body">
+              <div class="task-title">Verify GA4 standard report signal</div>
+              <div class="task-why">Check begin_checkout and web_vitals for last 7 days in Standard Reports (not Realtime). Weekly decisions depend on confirmed non-zero signal.</div>
+              <div class="task-done">Non-zero begin_checkout and web_vitals confirmed in standard 7-day report, findings documented.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-body">
+              <div class="task-title">Run day-14 forecast recalibration</div>
+              <div class="task-why">Forecast v1 from 13 Feb is based on seed assumptions. Replace with measured week 1/2 actuals before making scale decisions.</div>
+              <div class="task-done">Recalibration document exists with measured actuals replacing seed inputs.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-body">
+              <div class="task-title">Produce the BRIK offer artifact (S2B)</div>
+              <div class="task-why">BRIK has not completed offer design. Channel strategy and refined forecasting both require it.</div>
+              <div class="task-done">Offer artifact exists with target customer profile, positioning, and pricing model.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">4</div>
+            <div class="task-body">
+              <div class="task-title">Run Channel Strategy (S6B)</div>
+              <div class="task-why">No BRIK channel plan yet. Requires the offer artifact from task 3.</div>
+              <div class="task-done">Channel plan exists with 2-3 selected channels and a 30-day GTM timeline.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">5</div>
+            <div class="task-body">
+              <div class="task-title">Run this week's K/P/C/S decision</div>
+              <div class="task-why">First decision is dated 13 Feb. Weekly continuation required.</div>
+              <div class="task-done">This week's decision document exists and is dated.</div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">6</div>
+            <div class="task-body">
+              <div class="task-title">Run standing refresh</div>
+              <div class="task-why">No standing refresh documents exist yet for BRIK.</div>
+              <div class="task-done">At least one standing refresh document produced and dated.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /venture-grid -->
+  </div><!-- /open-tasks -->
+
+  <!-- ── Loop Diagram ── -->
+  <div class="section-block" id="loop-diagram" style="animation-delay:.1s">
+    <h2 class="section-heading">
+      <span class="section-icon">§</span>
+      The Loop in 8 Steps
+    </h2>
+    <div class="diagram-card">
+      <p>Every week you run the same eight steps — gather data, design your offer, forecast, prioritise, act, then review — so the business gets sharper each time round.</p>
+      <div class="mermaid">
+flowchart LR
+    N1["Setup\n(S0–S1)"]
+    N2["Research\n(S2)"]
+    N3["Offer Design\n(S2B)"]
+    N4["Forecast + Channels\n(S3/S6B)"]
+    N5["Prioritise\n(S4–S5)"]
+    N6["Pick top actions\n(S5A)"]
+    N7["Execute\n(S7–S9B)"]
+    N8["Weekly readout\n+ experiments (S10)"]
+    NEND["End"]
+
+    N1 --> N2
+    N2 --> N3
+    N3 --> N4
+    N4 --> N5
+    N5 --> N6
+    N6 --> N7
+    N7 --> N8
+
+    N8 -->|Continue| N2
+    N8 -->|Scale| N5
+    N8 -->|Kill| NEND
+      </div>
+      <p style="margin-top:16px;">The S10 review gives one of three verdicts: <strong>Continue</strong> (loop back to Research), <strong>Scale</strong> (jump to Prioritise with what you know), or <strong>Kill</strong> (end and move on). Most businesses complete the full first pass in 2–4 weeks.</p>
+    </div>
+  </div>
+
+  <!-- ── Tasks by Theme ── -->
+  <div class="section-block" id="by-theme" style="animation-delay:.15s">
+    <h2 class="section-heading">
+      <span class="section-icon">§</span>
+      Tasks by Theme
+    </h2>
+    <p>Same open tasks grouped by type — use when you want to tackle one theme across all three businesses at once.</p>
+
+    <div class="theme-section">
+      <div class="theme-header">Measurement Setup</div>
+      <div class="theme-list">
+        <div class="theme-row"><span class="venture-tag head">HEAD</span><span>Complete Pre-website Measurement Setup (GA4 + Search Console + conversion events).</span></div>
+        <div class="theme-row"><span class="venture-tag pet">PET</span><span>Complete Pre-website Measurement Setup (same requirement as HEAD).</span></div>
+        <div class="theme-row"><span class="venture-tag brik">BRIK</span><span>Verify GA4 standard report signal: check begin_checkout and web_vitals in standard 7-day reports (not Realtime).</span></div>
+      </div>
+    </div>
+
+    <div class="theme-section">
+      <div class="theme-header">Operational Confirmations</div>
+      <div class="theme-list">
+        <div class="theme-row"><span class="venture-tag head">HEAD</span><span>Fill Operational Confirmations: in-stock date, units, pricing, compatibility, payment flow readiness, returns SLA.</span></div>
+        <div class="theme-row"><span class="venture-tag pet">PET</span><span>Confirm inventory inputs: units on hand, expected arrival date, landed cost per unit.</span></div>
+      </div>
+    </div>
+
+    <div class="theme-section">
+      <div class="theme-header">Acquisition Data</div>
+      <div class="theme-list">
+        <div class="theme-row"><span class="venture-tag pet">PET</span><span>Run a 7-day paid acquisition test to capture the first measured CPC and CVR.</span></div>
+      </div>
+    </div>
+
+    <div class="theme-section">
+      <div class="theme-header">Forecasting</div>
+      <div class="theme-list">
+        <div class="theme-row"><span class="venture-tag head">HEAD</span><span>Advance forecast to decision-grade once operational inputs are confirmed (rebuild the 12 Feb draft).</span></div>
+        <div class="theme-row"><span class="venture-tag pet">PET</span><span>Advance forecast to decision-grade once inventory and acquisition data are captured (rebuild the 11 Feb draft).</span></div>
+        <div class="theme-row"><span class="venture-tag brik">BRIK</span><span>Run day-14 forecast recalibration: replace seed assumptions with measured week 1/2 actuals.</span></div>
+      </div>
+    </div>
+
+    <div class="theme-section">
+      <div class="theme-header">Offer &amp; Channel Design</div>
+      <div class="theme-list">
+        <div class="theme-row"><span class="venture-tag head">HEAD</span><span>Produce offer artifact: target customer profile, positioning, pricing model.</span></div>
+        <div class="theme-row"><span class="venture-tag pet">PET</span><span>Produce offer artifact: target customer profile, positioning, pricing model.</span></div>
+        <div class="theme-row"><span class="venture-tag brik">BRIK</span><span>Produce offer artifact, then produce channel strategy (S6B) with 2-3 launch channels and a 30-day GTM plan.</span></div>
+      </div>
+    </div>
+
+    <div class="theme-section">
+      <div class="theme-header">Weekly Cadence</div>
+      <div class="theme-list">
+        <div class="theme-row"><span style="width:36px;flex-shrink:0;"></span><span>Run the K/P/C/S decision for each business this week. Last completed: HEAD 12 Feb, PET 12 Feb, BRIK 13 Feb.</span></div>
+      </div>
+    </div>
+
+    <div class="theme-section">
+      <div class="theme-header">Standing Refresh (Cross-cutting)</div>
+      <div class="theme-list">
+        <div class="theme-row"><span style="width:36px;flex-shrink:0;"></span><span>No standing refresh documents exist yet for any business. Produce at minimum: one market-pulse document, one channel-economics-refresh document.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Stage Status ── -->
+  <div class="section-block" id="stage-status" style="animation-delay:.2s">
+    <h2 class="section-heading">
+      <span class="section-icon">§</span>
+      Stage Status
+    </h2>
+    <p>When each stage was last completed per business. <strong>Draft</strong> = artifact exists but not decision-grade. <strong>Never</strong> = stage not yet run. <strong>N/A</strong> = not applicable.</p>
+
+    <div class="stage-grid">
+      <div class="stage-row header">
+        <div class="stage-cell name">Stage</div>
+        <div class="stage-cell">What it does</div>
+        <div class="stage-cell status" style="color:var(--head)">HEAD</div>
+        <div class="stage-cell status" style="color:var(--pet)">PET</div>
+        <div class="stage-cell status" style="color:var(--brik)">BRIK</div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S0 — Intake</div>
+        <div class="stage-cell">Turns raw input into structured startup context</div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S1 — Readiness</div>
+        <div class="stage-cell">Checks 7 gates; identifies blockers before spending time on research</div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S1B — Measurement <span class="stage-sub">pre-website only</span></div>
+        <div class="stage-cell">Sets up analytics before any traffic — you cannot measure what you cannot track</div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 13</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S2A — Historical baseline <span class="stage-sub">website-live only</span></div>
+        <div class="stage-cell">Consolidates business history into a decision baseline</div>
+        <div class="stage-cell status"><span class="badge-na">N/A</span></div>
+        <div class="stage-cell status"><span class="badge-na">N/A</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S2 — Market intelligence</div>
+        <div class="stage-cell">Researches competitors, demand, pricing, and channels</div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 15</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S2B — Offer design</div>
+        <div class="stage-cell">Defines target customer, positioning, and pricing model</div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S3 — Forecast</div>
+        <div class="stage-cell">Builds P10/P50/P90 revenue scenarios with guardrails</div>
+        <div class="stage-cell status"><span class="badge-draft">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-draft">Feb 11</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 13</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S3 — Recalibration</div>
+        <div class="stage-cell">Replaces seed assumptions with real week-1/2 data</div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S6B — Channel strategy</div>
+        <div class="stage-cell">Selects 2-3 launch channels with a 30-day GTM plan</div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S4/S5 — Prioritise</div>
+        <div class="stage-cell">Scores and ranks actions by impact — stops you working on the wrong thing</div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 13</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S6 — Site upgrade</div>
+        <div class="stage-cell">Turns competitor observations into a concrete improvement plan</div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 13</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">S10 — Weekly readout + experiments</div>
+        <div class="stage-cell">Runs Keep/Pivot/Scale/Kill — loop health degrades within days without it</div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 12</span></div>
+        <div class="stage-cell status"><span class="badge-done">Feb 13</span></div>
+      </div>
+      <div class="stage-row">
+        <div class="stage-cell name">Standing refresh</div>
+        <div class="stage-cell">Refreshes market, channel, and regulatory inputs on cadence</div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+        <div class="stage-cell status"><span class="badge-never">Never</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── If you have 10/30/60 min ── -->
+  <div class="section-block" id="time-guide" style="animation-delay:.25s">
+    <h2 class="section-heading">
+      <span class="section-icon">§</span>
+      If You Have 10 / 30 / 60 Minutes
+    </h2>
+    <p>Already familiar with the loop? Pick the time slot that matches what you have today.</p>
+
+    <div class="time-cards">
+      <div class="time-card">
+        <div class="time-card-header">
+          <div class="time-pill">10 min</div>
+          <span>Check status &amp; pick one action</span>
+        </div>
+        <ul>
+          <li>Read the open tasks for the business you want to move forward.</li>
+          <li>Identify the single top blocker.</li>
+          <li>Complete one concrete step: fill a field in the Operational Confirmations form, run a 5-minute GA4 check, or confirm one inventory number.</li>
+          <li><strong>Done:</strong> you have moved at least one blocker forward.</li>
+        </ul>
+      </div>
+
+      <div class="time-card">
+        <div class="time-card-header">
+          <div class="time-pill">30 min</div>
+          <span>Complete a full checklist</span>
+        </div>
+        <ul>
+          <li><strong>GA4 verification for BRIK</strong> — open Standard Reports, check begin_checkout and web_vitals for last 7 days, run DebugView if needed, document outcome.</li>
+          <li><strong>Operational Confirmations for HEAD or PET</strong> — fill all 6 required fields and timestamp them.</li>
+          <li><strong>Baseline refresh review</strong> — check whether any standing refresh prompt is overdue and queue it.</li>
+          <li><strong>Done:</strong> the chosen checklist is complete and documented.</li>
+        </ul>
+      </div>
+
+      <div class="time-card">
+        <div class="time-card-header">
+          <div class="time-pill">60 min</div>
+          <span>Produce a required artifact</span>
+        </div>
+        <ul>
+          <li><strong>Day-14 forecast recalibration</strong> — update the BRIK 90-day forecast using measured week-1/2 actuals.</li>
+          <li><strong>Weekly K/P/C/S decision</strong> — run the Keep/Pivot/Scale/Kill review for HEAD, PET, or BRIK and produce the decision document.</li>
+          <li><strong>Complete action card</strong> — pick one business, work through all steps in its action card, and mark it done.</li>
+          <li><strong>Done:</strong> the artifact exists and is dated today.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Quick Actions ── -->
+  <div class="section-block" id="quick-actions" style="animation-delay:.3s">
+    <h2 class="section-heading">
+      <span class="section-icon">§</span>
+      Quick Actions by Stage
+    </h2>
+    <p>Use this table to find the right action for each stage. For prompt file paths and output paths, see the Engineering appendix.</p>
+
+    <table class="qa-table">
+      <thead>
+        <tr>
+          <th>When you are at…</th>
+          <th>What to do</th>
+          <th>Done when</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Starting a new business or major scope shift (S0)</td>
+          <td>Run the Intake Normaliser prompt for this business</td>
+          <td>Intake packet exists for the business</td>
+        </tr>
+        <tr>
+          <td>Readiness check shows a block or warning (S1)</td>
+          <td>Run the Blocker Interview prompt to identify what is missing</td>
+          <td>Blocker interview document exists; all blockers have an owner and a deadline</td>
+        </tr>
+        <tr>
+          <td>Business is pre-website and measurement is not set up (S1B)</td>
+          <td>Run the Pre-website Measurement Setup checklist</td>
+          <td>Measurement setup document is at Active status</td>
+        </tr>
+        <tr>
+          <td>Business is website-live and historical baseline is missing or blocked (S2A)</td>
+          <td>Run the Historical Data Request prompt to identify what data is needed</td>
+          <td>Data request document sent to the data owner</td>
+        </tr>
+        <tr>
+          <td>Required S2A data pack has arrived</td>
+          <td>Run the Historical Baseline Consolidation prompt</td>
+          <td>Historical baseline document is at Active status</td>
+        </tr>
+        <tr>
+          <td>Market intelligence is missing, stale, or points to a Draft (S2)</td>
+          <td>Run the Deep Research: Market Intelligence prompt</td>
+          <td>Market intelligence document is at Active status with a valid latest pointer</td>
+        </tr>
+        <tr>
+          <td>Week-1/2 actuals are available or a major assumption has broken (S3)</td>
+          <td>Run the Forecast Recalibration prompt</td>
+          <td>Forecast recalibration document exists and is dated</td>
+        </tr>
+        <tr>
+          <td>3 or more candidate actions are competing for priority (S5)</td>
+          <td>Run the Prioritisation Scorer prompt</td>
+          <td>Prioritisation scorecard exists with top 2–3 items ranked</td>
+        </tr>
+        <tr>
+          <td>Site upgrade brief is missing, stale, or points to a Draft (S6)</td>
+          <td>Run the Deep Research: Site Upgrade prompt</td>
+          <td>Site upgrade brief is at Active status with a valid latest pointer</td>
+        </tr>
+        <tr>
+          <td>It is the weekly cadence checkpoint (S10)</td>
+          <td>Run the Weekly K/P/C/S Decision prompt (includes Section H weekly audit) via <code>/lp-weekly</code></td>
+          <td>This week's K/P/C/S decision document is dated and saved; Section H audit completed; S10 weekly packet published at <code>docs/business-os/strategy/&lt;BIZ&gt;/s10-weekly-packet-&lt;YYYY-Www&gt;.md</code>; latest pointer updated</td>
+        </tr>
+        <tr>
+          <td>It is the first week of the month</td>
+          <td>Run the monthly deep-audit checklist</td>
+          <td><code>&lt;YYYY-MM&gt;-monthly-audit.user.md</code> exists for each active business; all REM tasks have owners</td>
+        </tr>
+      </tbody>
+    </table>
+    <blockquote>For prompt paths and output paths: see the Engineering appendix → Prompt Hand-Off Map section.</blockquote>
+  </div>
+
+  <!-- ── Readiness Check ── -->
+  <div class="section-block" id="readiness" style="animation-delay:.35s">
+    <h2 class="section-heading">
+      <span class="section-icon">§</span>
+      Readiness Check
+    </h2>
+    <p>Before investing time in the next stage, answer these six questions. A 'No' means you have work to do first.</p>
+
+    <div class="readiness-list">
+      <div class="readiness-item">
+        <div class="readiness-num">1</div>
+        <div>
+          <div class="q">Is the offer defined clearly enough to test with real customers?</div>
+        </div>
+      </div>
+      <div class="readiness-item">
+        <div class="readiness-num">2</div>
+        <div>
+          <div class="q">Is measurement set up and producing real data?</div>
+        </div>
+      </div>
+      <div class="readiness-item">
+        <div class="readiness-num">3</div>
+        <div>
+          <div class="q">Do we have baseline data to compare against?</div>
+          <div class="note">Existing businesses only — skip if you are pre-launch.</div>
+        </div>
+      </div>
+      <div class="readiness-item">
+        <div class="readiness-num">4</div>
+        <div>
+          <div class="q">Do we have inventory and cost inputs to build a reliable forecast?</div>
+        </div>
+      </div>
+      <div class="readiness-item">
+        <div class="readiness-num">5</div>
+        <div>
+          <div class="q">Have we chosen our 2–3 launch channels and do we have a plan for each?</div>
+        </div>
+      </div>
+      <div class="readiness-item">
+        <div class="readiness-num">6</div>
+        <div>
+          <div class="q">Have we selected and scored the top 2–3 things to work on next?</div>
+        </div>
+      </div>
+    </div>
+
+    <blockquote style="margin-top:14px;"><strong>Note for engineers:</strong> The full gate specification (RG-01 through RG-07) with acceptance criteria and evidence paths is preserved verbatim in the Engineering appendix below.</blockquote>
+    <blockquote style="margin-top:8px;"><strong>Capability contract:</strong> The canonical marketing/sales capability registry — defining the seven capabilities required for decision-grade marketing and sales infrastructure — is at <code>docs/business-os/startup-loop/marketing-sales-capability-contract.md</code>.</blockquote>
+    <blockquote style="margin-top:8px;"><strong>Forecast guardrail contract:</strong> S3 forecast outputs must apply a confidence tier (low/medium/high) that controls spend cap, operator time cap, re-check cadence, and allowed decision class. Unknown confidence defaults to <code>low</code> tier (10% spend cap, ≤5 hrs/week/channel, Continue/Investigate only). Full tier table and assumption register requirements (9 mandatory fields including <code>kill_trigger</code>, <code>owner</code>, <code>next_review_date</code>) are in <code>.claude/skills/lp-forecast/SKILL.md</code> (§ Forecast Guardrails).</blockquote>
+    <blockquote style="margin-top:8px;"><strong>S10 denominator validity contract:</strong> Weekly K/P/C/S decisions require denominator validity checks before issuing Scale or Kill. Five KPI families have explicit minimum denominators: Traffic trend ≥200 sessions/week; Lead CVR ≥100 visits + 10 leads; Booking/Purchase CVR ≥150 visits + 8 orders; CAC ≥10 conversions; Revenue/AOV ≥10 orders. If any selected KPI fails its threshold, the decision class is restricted to <code>Continue</code> or <code>Investigate</code> — <code>Scale</code> and <code>Kill</code> require all relevant denominators to pass. Full table in <code>docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md</code> (§ KPI Denominator Minimums).</blockquote>
+    <blockquote style="margin-top:8px;"><strong>Audit cadence contract:</strong> Every S10 session includes a weekly light-audit (8 items, ≤20 min) appended as Section H to the KPCs decision document. A monthly deep-audit (21 items, ≤120 min) runs in the first week of each month, producing a <code>&lt;YYYY-MM&gt;-monthly-audit.user.md</code> per business. Any failed item creates a <code>REM-&lt;BIZ&gt;-&lt;YYYYMMDD&gt;-&lt;n&gt;</code> task with named owner and due date. If item A1 (Measurement active) fails, KPI signal is unreliable and decision class is restricted to <code>Continue</code> / <code>Investigate</code>. Full checklist: <code>docs/business-os/startup-loop/audit-cadence-contract-v1.md</code>.</blockquote>
+    <blockquote style="margin-top:8px;"><strong>Bottleneck profile adapter contract:</strong> S10 bottleneck diagnosis is business-model-aware when <code>business_model_profile</code> is set on the run context. Two profiles supported: <code>hospitality-direct-booking</code> (adds inquiry_to_quote_rate, quote_to_booking_rate, median_response_time, direct_ota_mix, cancellation_rate, review_velocity) and <code>dtc-ecommerce</code> (adds page_to_atc_rate, checkout_completion_rate, cac_by_cohort, refund_rate, support_load_per_100_orders, repeat_purchase_rate). Profile primary primitives compete with base catalog metrics by miss magnitude; profile secondary derived metrics are deprioritised when a profile primary has severity ≥ moderate. Full schema: <code>docs/business-os/startup-loop/bottleneck-diagnosis-schema.md</code> (§§ 2A, 5, 11).</blockquote>
+  </div>
+
+  <!-- ── Operator Actions ── -->
+  <div class="section-block" id="operator-actions" style="animation-delay:.4s">
+    <h2 class="section-heading">
+      <span class="section-icon">§</span>
+      Business Operator Actions
+    </h2>
+    <p>Actions owned by Pete as venture-studio operator. Each row is a concrete next step — not a platform task.</p>
+
+    <table class="op-table">
+      <thead>
+        <tr><th>Action</th><th>Why it matters</th><th>Done when</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Fill the Operational Confirmations form for HEAD</td>
+          <td>HEAD 90-day forecast cannot reach decision-grade without stock date, units, pricing, compatibility, payment readiness, and returns SLA.</td>
+          <td>All 6 fields confirmed and timestamped.</td>
+        </tr>
+        <tr>
+          <td>Fill the Operational Confirmations form for PET (inventory + costs)</td>
+          <td>PET forecast is not decision-grade without real inventory units, arrival date, and landed cost.</td>
+          <td>Inventory confirmed: units, arrival date, landed cost per unit all captured.</td>
+        </tr>
+        <tr>
+          <td>Run a 7-day paid acquisition test for PET</td>
+          <td>PET has no measured CPC or CVR yet — the forecast relies on seed assumptions until real data is captured.</td>
+          <td>First measured CPC and CVR documented from a 7-day live test.</td>
+        </tr>
+        <tr>
+          <td>Verify GA4 standard report signal for BRIK (begin_checkout + web_vitals)</td>
+          <td>The weekly BRIK decision loop needs confirmed non-zero signal in 7-day standard reports, not just realtime.</td>
+          <td>Non-zero begin_checkout and web_vitals in standard 7-day GA4 report.</td>
+        </tr>
+        <tr>
+          <td>Run the day-14 forecast recalibration for BRIK</td>
+          <td>BRIK v1 forecast is based on seed assumptions; first two weeks of measured data must replace them for reliable scaling decisions.</td>
+          <td>Day-14 recalibration document produced and integrated into the BRIK strategy plan.</td>
+        </tr>
+        <tr>
+          <td>Complete the Pre-website Measurement Setup checklist for HEAD</td>
+          <td>HEAD is pre-website; paid traffic cannot start without GA4, Search Console, and conversion event setup.</td>
+          <td>Measurement setup document at Active status.</td>
+        </tr>
+        <tr>
+          <td>Complete the Pre-website Measurement Setup checklist for PET</td>
+          <td>PET is pre-website; same measurement requirement as HEAD.</td>
+          <td>Measurement setup document at Active status.</td>
+        </tr>
+        <tr>
+          <td>Run the weekly K/P/C/S decision for each active business</td>
+          <td>Loop health depends on weekly cadence — decisions go stale within days without the weekly review.</td>
+          <td>Weekly K/P/C/S decision document produced and dated this week.</td>
+        </tr>
+        <tr>
+          <td>Run standing refresh prompts when cadence triggers</td>
+          <td>Market/channel/regulatory inputs go stale without periodic refresh.</td>
+          <td>Monthly market-pulse, channel-economics, and quarterly regulatory-watch documents up to date.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Action Cards ── -->
+  <div class="section-block" id="action-cards" style="animation-delay:.45s">
+    <h2 class="section-heading">
+      <span class="section-icon">§</span>
+      Per-Business Action Cards
+    </h2>
+    <p>Exactly what to do for each business. Each step is actionable — no code knowledge or repository access required.</p>
+
+    <div class="action-card head">
+      <div class="action-card-header">
+        <div class="title"><span style="color:var(--head)">HEAD</span> — Confirm HEAD operations</div>
+        <div class="why">The HEAD 90-day forecast cannot become decision-grade until six operational inputs are confirmed. Without them, any planning and investment decision rests on assumptions.</div>
+      </div>
+      <ol>
+        <li>Confirm the in-stock date — when will the product physically be available to ship?</li>
+        <li>Confirm sellable units — how many units are available at launch?</li>
+        <li>Confirm pricing and any bundle options.</li>
+        <li>Provide the compatibility matrix — which devices/platforms does the product work with?</li>
+        <li>Confirm the payment flow is ready to accept orders.</li>
+        <li>Define the returns policy and SLA (how long does a return take?).</li>
+      </ol>
+      <div class="action-done">All six fields are filled in and timestamped. The Operational Confirmations form shows complete status.</div>
+    </div>
+
+    <div class="action-card pet">
+      <div class="action-card-header">
+        <div class="title"><span style="color:var(--pet)">PET</span> — Confirm PET supply and run first acquisition test</div>
+        <div class="why">The PET forecast is not decision-grade without real inventory data and at least one measured acquisition data point. Seed assumptions are not enough to make a confident investment decision.</div>
+      </div>
+      <ol>
+        <li>Confirm inventory units — how many units are on hand or on order?</li>
+        <li>Confirm the expected arrival date for the inventory.</li>
+        <li>Confirm the landed cost per unit (total cost including shipping, duties, and fees).</li>
+        <li>Run a small paid acquisition test for 7 days (any channel — Meta, Google, TikTok).</li>
+        <li>Record the observed cost per click (CPC) and conversion rate (CVR) from the test.</li>
+      </ol>
+      <div class="action-done">All inventory inputs confirmed. First measured CPC and CVR captured. Forecast document updated to decision-grade.</div>
+    </div>
+
+    <div class="action-card brik">
+      <div class="action-card-header">
+        <div class="title"><span style="color:var(--brik)">BRIK</span> — Restore GA4 measurement signal</div>
+        <div class="why">The weekly BRIK decision loop depends on non-zero signal from two GA4 events (begin_checkout and web_vitals) in standard 7-day reports. If these show zero, the weekly cadence cannot produce reliable data.</div>
+      </div>
+      <ol>
+        <li>Open Google Analytics 4 → go to Standard Reports (NOT the Realtime section).</li>
+        <li>Navigate to Engagement → Events.</li>
+        <li>Set the date range to the last 7 days.</li>
+        <li>Check whether begin_checkout shows a non-zero count.</li>
+        <li>Check whether web_vitals shows a non-zero count.</li>
+        <li>If either is zero: open GA4 DebugView, open a live browser session on the site, and check whether the events fire during a real checkout attempt.</li>
+        <li>Document your findings — what you saw and whether it resolved.</li>
+      </ol>
+      <div class="action-done">Non-zero begin_checkout and web_vitals confirmed in standard 7-day GA4 report. Document saved. Then proceed to the day-14 forecast recalibration.</div>
+    </div>
+  </div>
+
+  <!-- ── Engineering Appendix (toggle) ── -->
+  <div id="eng-toggle-anchor">
+    <button class="eng-toggle-btn" id="eng-btn" onclick="toggleEng()" aria-expanded="false">
+      <span>Engineering Appendix</span>
+      <span class="chevron">▾</span>
+    </button>
+  </div>
+
+  <section id="eng-section">
+
+    <div class="section-block" style="animation-delay:.05s">
+      <h2 class="section-heading">
+        <span class="section-icon">§</span>
+        Platform Engineering Actions
+      </h2>
+      <p>Platform and engineering tasks tracked here for visibility — not required from the operator.</p>
+      <table class="eng-table">
+        <thead><tr><th>Action</th><th>Why it matters</th><th>Done when</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Resolve MCP identity/deployment decision (TASK-05 in MCP plan)</td>
+            <td>Guarded BOS write rollout cannot proceed safely until the identity and deployment model is confirmed.</td>
+            <td>Decision documented and MCP plan TASK-05 marked complete.</td>
+          </tr>
+          <tr>
+            <td>Complete MCP guarded BOS write rollout (TASK-06 in MCP plan)</td>
+            <td>S5B/S7/S8/S9/S10 write paths need governed MCP write capability before BOS can be fully operationalised.</td>
+            <td>MCP guarded-write end-to-end test passes; TASK-06 marked complete.</td>
+          </tr>
+          <tr>
+            <td>Implement wave-2 measure_* MCP connectors</td>
+            <td>S2A/S3/S10 measurement stages need normalised cross-source contracts — GA4, Search Console, and Cloudflare data accessible via MCP tools.</td>
+            <td>Wave-2 connector fact-find brief exists; at least one connector implemented and validated.</td>
+          </tr>
+          <tr>
+            <td>Automate Octorate Batch 1 (booking value) data collection</td>
+            <td>BRIK historical baseline currently relies on manual Batch 1 extraction — automation reduces refresh friction.</td>
+            <td>Automated extraction produces a valid booking value dataset matching the manual baseline format.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-block" style="animation-delay:.1s">
+      <h2 class="section-heading">
+        <span class="section-icon">§</span>
+        Stage-by-Stage Workflow
+      </h2>
+      <p>Canonical source: <code>docs/business-os/startup-loop/loop-spec.yaml</code> (spec_version 1.5.0). Workstreams per <code>workstream-workflow-taxonomy-v2.yaml</code>.</p>
+      <p style="margin-bottom:14px;">
+        <span class="ws-badge ws-cdi" title="Customer Discovery and Market Intelligence">CDI</span> Customer Discovery &amp; Market Intelligence &nbsp;
+        <span class="ws-badge ws-off" title="Offering and Pricing">OFF</span> Offering &amp; Pricing &nbsp;
+        <span class="ws-badge ws-gtm" title="Go-to-Market and Growth">GTM</span> Go-to-Market &amp; Growth &nbsp;
+        <span class="ws-badge ws-ops" title="Operations and Tooling">OPS</span> Operations &amp; Tooling &nbsp;
+        <span class="ws-badge ws-cx" title="Customer Experience and Retention">CX</span> Customer Experience &amp; Retention &nbsp;
+        <span class="ws-badge ws-fin" title="Finance and Sustainability">FIN</span> Finance &amp; Sustainability &nbsp;
+        <span class="ws-badge ws-data" title="Data Capture and Continuous Improvement">DATA</span> Data Capture &amp; CI &nbsp;
+        <span class="ws-badge ws-brand">BD</span> Brand &amp; Design
+      </p>
+      <table class="eng-table">
+        <thead><tr><th>Workstream</th><th>Stage</th><th>Inputs</th><th>Processing</th><th>Outputs</th></tr></thead>
+        <tbody>
+          <!-- ── DATA + FIN: S0 Intake ── -->
+          <tr>
+            <td class="ws-cell">
+              <div class="ws-stack">
+                <span class="ws-badge ws-data" title="Data Capture and Continuous Improvement">DATA</span>
+                <span class="ws-badge ws-fin" title="Finance and Sustainability">FIN</span>
+              </div>
+            </td>
+            <td>S0. Intake</td>
+            <td>Business idea<br>Product spec<br>Channels<br>Constraints<br>Stock timeline</td>
+            <td>Normalize raw user intent into structured startup context</td>
+            <td>Intake packet per business</td>
+          </tr>
+          <!-- S1 COMPOSITE: CDI + FIN + Brand naming/dossier gates both block completion -->
+          <tr class="composite-row">
+            <td class="ws-cell">
+              <div class="ws-stack">
+                <span class="ws-badge ws-cdi" title="Customer Discovery and Market Intelligence">CDI</span>
+                <span class="ws-badge ws-fin" title="Finance and Sustainability">FIN</span>
+                <span class="ws-badge ws-brand">Brand &amp; Design</span>
+              </div>
+            </td>
+            <td>S1. Readiness preflight</td>
+            <td>Strategy plan<br>People profile<br>Path-business mapping<br>Prior cards/ideas</td>
+            <td>
+              Run readiness gates (RG-01..RG-07) and detect blockers
+              <hr class="cell-sep">
+              <span class="ws-inline ws-brand">Brand &amp; Design</span>
+              <strong>GATE-BD-00</strong> (Hard): business name confirmed before S0→S1 advance<br>
+              <span class="ws-inline ws-brand">Brand &amp; Design</span>
+              <strong>GATE-BD-01</strong> (Hard): brand-dossier.user.md at Draft minimum before S1 advance; run <code>/lp-brand-bootstrap</code> if missing
+            </td>
+            <td>
+              Readiness report + missing-context register + blocker questions/prompts
+              <hr class="cell-sep">
+              <span class="ws-inline ws-brand">Brand &amp; Design</span>
+              brand-dossier.user.md at Draft minimum
+            </td>
+          </tr>
+          <tr>
+            <td class="ws-cell"><span class="ws-badge ws-data" title="Data Capture and Continuous Improvement">DATA</span></td>
+            <td>S1B. Pre-website measurement bootstrap</td>
+            <td>Launch-surface mode = pre-website<br>Intake packet<br>Business plan</td>
+            <td>Run mandatory analytics/measurement setup gate and operator handoff</td>
+            <td>Measurement setup note + verification checklist + blocker list</td>
+          </tr>
+          <tr>
+            <td class="ws-cell"><span class="ws-badge ws-data" title="Data Capture and Continuous Improvement">DATA</span></td>
+            <td>S2A. Historical performance baseline</td>
+            <td>Monthly net booking value exports<br>Cloudflare analytics<br>Ops logs<br>Octorate data</td>
+            <td>Consolidate internal history into decision baseline with data-quality notes</td>
+            <td>Historical baseline pack (Status: Active required before S2/S6 for existing businesses)</td>
+          </tr>
+
+          <!-- ── CDI: S2 Market intelligence ── -->
+          <tr>
+            <td class="ws-cell"><span class="ws-badge ws-cdi" title="Customer Discovery and Market Intelligence">CDI</span></td>
+            <td>S2. Market intelligence</td>
+            <td>Deep Research prompt template<br>Business intake packet<br>S2A baseline (existing businesses only)</td>
+            <td>Competitor/demand/pricing/regulatory research, confidence tagging</td>
+            <td>Market Intelligence Pack per business + latest pointer</td>
+          </tr>
+          <!-- BD-2: standalone brand follow-on — not a gate, produces its own artifact -->
+          <tr class="brand-row">
+            <td class="ws-cell"><span class="ws-badge ws-brand">Brand &amp; Design</span></td>
+            <td>BD-2 Competitive Positioning <em style="font-size:11px;color:var(--muted)">(follows S2)</em></td>
+            <td>Market intelligence pack (S2 output)</td>
+            <td>Competitive positioning research via BRAND-DR-01/02 prompts</td>
+            <td>competitive-positioning.user.md; evidence pack entries under <code>docs/business-os/evidence/&lt;BIZ&gt;/</code></td>
+          </tr>
+          <!-- S2B COMPOSITE: OFF (offer design) + Brand (BD-03 gate blocks Done) -->
+          <tr class="composite-row">
+            <td class="ws-cell">
+              <div class="ws-stack">
+                <span class="ws-badge ws-off" title="Offering and Pricing">OFF</span>
+                <span class="ws-badge ws-brand">Brand &amp; Design</span>
+              </div>
+            </td>
+            <td>S2B. Offer design</td>
+            <td>Market intelligence<br>Intake packet<br>Constraints</td>
+            <td>
+              Consolidate ICP, positioning, pricing, offer design into validated hypothesis
+              <hr class="cell-sep">
+              <span class="ws-inline ws-brand">Brand &amp; Design</span>
+              <strong>GATE-BD-03</strong> (Hard): messaging-hierarchy.user.md must exist at Draft minimum before S2B is Done
+            </td>
+            <td>
+              Offer artifact (<code>/lp-offer</code> output)
+              <hr class="cell-sep">
+              <span class="ws-inline ws-brand">Brand &amp; Design</span>
+              messaging-hierarchy.user.md at Draft minimum
+            </td>
+          </tr>
+
+          <!-- ── FIN + DATA: S3 Forecast ── -->
+          <tr>
+            <td class="ws-cell">
+              <div class="ws-stack">
+                <span class="ws-badge ws-fin" title="Finance and Sustainability">FIN</span>
+                <span class="ws-badge ws-data" title="Data Capture and Continuous Improvement">DATA</span>
+              </div>
+            </td>
+            <td>S3. Forecast <em style="font-size:11px;color:var(--muted)">(parallel with S6B)</em></td>
+            <td>Business intake<br>Fresh market intelligence<br>Offer hypothesis</td>
+            <td>Build P10/P50/P90 forecast, guardrails, assumptions, 14-day tests</td>
+            <td>Forecast doc + exec summary + forecast seed</td>
+          </tr>
+          <tr>
+            <td class="ws-cell">
+              <div class="ws-stack">
+                <span class="ws-badge ws-gtm" title="Go-to-Market and Growth">GTM</span>
+                <span class="ws-badge ws-off" title="Offering and Pricing">OFF</span>
+              </div>
+            </td>
+            <td>S6B. Channel strategy + GTM <em style="font-size:11px;color:var(--muted)">(parallel with S3)</em></td>
+            <td>Offer hypothesis<br>Market intelligence<br>Launch surface<br>Measurement signal (decision-grade for spend)</td>
+            <td>
+              Channel-customer fit analysis, 2-3 launch channels, 30-day GTM timeline<br><br>
+              <strong>GATE-S6B-STRAT-01</strong> (Hard): valid DEP required before strategy design begins<br>
+              <strong>GATE-S6B-ACT-01</strong> (Hard): decision-grade measurement signal required before spend activation
+            </td>
+            <td>Channel plan + SEO strategy + outreach drafts</td>
+          </tr>
+          <!-- BD-4: standalone brand follow-on — not a gate, produces its own artifact -->
+          <tr class="brand-row">
+            <td class="ws-cell"><span class="ws-badge ws-brand">Brand &amp; Design</span></td>
+            <td>BD-4 Creative Voice Brief <em style="font-size:11px;color:var(--muted)">(follows S6B)</em></td>
+            <td>Channel plan (S6B output)<br>messaging-hierarchy.user.md (BD-3)</td>
+            <td>Creative voice brief derived from channel angles and messaging decisions (BRAND-DR-04)</td>
+            <td>creative-voice-brief.user.md</td>
+          </tr>
+          <tr>
+            <td class="ws-cell"><span class="ws-badge ws-data" title="Data Capture and Continuous Improvement">DATA</span></td>
+            <td>S4. Baseline merge <em style="font-size:11px;color:var(--muted)">(join barrier)</em></td>
+            <td>Offer / S2B <em>(required)</em><br>Forecast / S3 <em>(required)</em><br>Channels / S6B <em>(required)</em><br>SEO / S6B <em>(optional)</em><br>Outreach / S6B <em>(optional)</em></td>
+            <td>Validate required upstream artifacts; compose deterministic baseline snapshot</td>
+            <td>Candidate baseline snapshot + draft manifest</td>
+          </tr>
+          <tr>
+            <td class="ws-cell"><span class="ws-badge ws-cdi" title="Customer Discovery and Market Intelligence">CDI</span></td>
+            <td>S5A. Prioritize <em style="font-size:11px;color:var(--muted)">(no side effects)</em></td>
+            <td>Baseline snapshot<br>Forecast<br>Constraints</td>
+            <td>Score and rank go-item candidates</td>
+            <td>Prioritized backlog candidates (pure ranking, no persistence)</td>
+          </tr>
+          <tr>
+            <td class="ws-cell"><span class="ws-badge ws-data" title="Data Capture and Continuous Improvement">DATA</span></td>
+            <td>S5B. BOS sync <em style="font-size:11px;color:var(--muted)">(sole mutation boundary)</em></td>
+            <td>Prioritized items from S5A</td>
+            <td>Persist cards/stage-docs to D1; commit manifest pointer as current</td>
+            <td>BOS cards created/updated + manifest committed</td>
+          </tr>
+
+          <!-- ── OFF: S6 Website upgrade synthesis ── -->
+          <tr>
+            <td class="ws-cell"><span class="ws-badge ws-off" title="Offering and Pricing">OFF</span></td>
+            <td>S6. Website upgrade synthesis</td>
+            <td>Platform baseline<br>Business upgrade brief<br>Reference sites</td>
+            <td>Best-of decomposition and fit matrix (Adopt/Adapt/Defer/Reject)</td>
+            <td>Fact-find-ready website backlog packet</td>
+          </tr>
+          <tr>
+            <td class="ws-cell"><span class="ws-badge ws-cdi" title="Customer Discovery and Market Intelligence">CDI</span></td>
+            <td>S7. Fact-find</td>
+            <td>Chosen go-item(s)<br>Evidence docs<br>Constraints</td>
+            <td>Deep evidence audit and task seeds</td>
+            <td>Fact-find brief (Ready-for-planning or Needs-input)</td>
+          </tr>
+          <!-- S8 COMPOSITE: GTM + OPS (plan + capacity) + Brand (BD-05 gate blocks lp-design-spec) -->
+          <tr class="composite-row">
+            <td class="ws-cell">
+              <div class="ws-stack">
+                <span class="ws-badge ws-gtm" title="Go-to-Market and Growth">GTM</span>
+                <span class="ws-badge ws-ops" title="Operations and Tooling">OPS</span>
+                <span class="ws-badge ws-brand">Brand &amp; Design</span>
+              </div>
+            </td>
+            <td>S8. Plan</td>
+            <td>Fact-find brief<br>Brand dossier (must be Active for design spec path)</td>
+            <td>
+              Confidence-gated implementation plan
+              <hr class="cell-sep">
+              <span class="ws-inline ws-brand">Brand &amp; Design</span>
+              <strong>GATE-BD-07</strong> (Hard): lp-design-spec requires Active brand-dossier; blocks design spec if Status ≠ Active
+            </td>
+            <td>
+              Plan doc with tasks/VCs/checkpoints
+              <hr class="cell-sep">
+              <span class="ws-inline ws-brand">Brand &amp; Design</span>
+              Gate pass → lp-design-spec runs; gate block → advance brand-dossier to Active first
+            </td>
+          </tr>
+          <tr>
+            <td class="ws-cell">
+              <div class="ws-stack">
+                <span class="ws-badge ws-ops" title="Operations and Tooling">OPS</span>
+                <span class="ws-badge ws-cx" title="Customer Experience and Retention">CX</span>
+              </div>
+            </td>
+            <td>S9. Build</td>
+            <td>Approved plan tasks</td>
+            <td>Implement + validate + track outputs</td>
+            <td>Shipped work + validation evidence</td>
+          </tr>
+          <!-- S9B COMPOSITE: OPS + DATA (QA + tracking) + Brand (BD-06 brand copy check required to pass) -->
+          <tr class="composite-row">
+            <td class="ws-cell">
+              <div class="ws-stack">
+                <span class="ws-badge ws-ops" title="Operations and Tooling">OPS</span>
+                <span class="ws-badge ws-data" title="Data Capture and Continuous Improvement">DATA</span>
+                <span class="ws-badge ws-brand">Brand &amp; Design</span>
+              </div>
+            </td>
+            <td>S9B. QA gates</td>
+            <td>Build outputs<br>Design spec<br>Performance budget</td>
+            <td>
+              Launch QA, design QA, measurement verification
+              <hr class="cell-sep">
+              <span class="ws-inline ws-brand">Brand &amp; Design</span>
+              <strong>BD-6</strong> Brand Copy Compliance: BC-04 (words-to-avoid), BC-05 (claims vs messaging hierarchy), BC-07 (voice audit) — pass required for go-live
+            </td>
+            <td>
+              QA report + go/no-go recommendation
+              <hr class="cell-sep">
+              <span class="ws-inline ws-brand">Brand &amp; Design</span>
+              Brand compliance verdict (pass required for go-live)
+            </td>
+          </tr>
+
+          <!-- ── DATA + CDI: S10 Weekly readout (DATA-4 is primary anchor) ── -->
+          <tr>
+            <td class="ws-cell">
+              <div class="ws-stack">
+                <span class="ws-badge ws-data" title="Data Capture and Continuous Improvement">DATA</span>
+                <span class="ws-badge ws-cdi" title="Customer Discovery and Market Intelligence">CDI</span>
+                <span class="ws-badge ws-gtm" title="Go-to-Market and Growth">GTM</span>
+                <span class="ws-badge ws-fin" title="Finance and Sustainability">FIN</span>
+              </div>
+            </td>
+            <td>S10. Weekly readout + experiments</td>
+            <td>KPI scoreboard<br>Gate metrics<br>Costs<br>Operational reliability<br>Growth ledger outputs</td>
+            <td>K/P/C/S decisioning + replayability check against growth event payload; experiment design and hypothesis tracking via <code>/lp-experiment</code>; full weekly orchestration via <code>/lp-weekly</code> (weekly decision → Section H audit → measurement compilation → experiment lane)</td>
+            <td>Continue/Pivot/Scale/Kill decision + experiment log + linked growth artifacts; S10 weekly packet at <code>docs/business-os/strategy/&lt;BIZ&gt;/s10-weekly-packet-&lt;YYYY-Www&gt;.md</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-block" style="animation-delay:.15s">
+      <h2 class="section-heading">
+        <span class="section-icon">§</span>
+        Website Upgrade Sub-Loop
+      </h2>
+      <div class="diagram-card">
+        <div class="mermaid">
+flowchart LR
+    P["Platform Capability Baseline\n(periodic)"] --> U["Per-Business Upgrade Brief\n(reference-site synthesis)"]
+    U --> M["Best-Of Matrix\nAdopt/Adapt/Defer/Reject"]
+    M --> Q["lp-do-fact-find backlog packet"]
+    Q --> R["lp-do-plan / lp-do-build"]
+        </div>
+        <p style="margin-top:12px;">This sub-loop feeds the main startup loop at the lp-do-fact-find stage.</p>
+      </div>
+    </div>
+
+    <div class="section-block" style="animation-delay:.2s">
+      <h2 class="section-heading">
+        <span class="section-icon">§</span>
+        Minimal Closure Set
+      </h2>
+      <ol style="color:var(--muted);font-family:'Sora',sans-serif;font-weight:300;font-size:13px;">
+        <li>HEAD and PET operational confirmations are required (<code>stock/date/units/price/compatibility/payments/returns SLA</code>).</li>
+        <li>HEAD and PET forecast recalibration artifacts from measured week-1/2 data are required.</li>
+        <li>BRIK GA4 Realtime/DebugView verification for <code>web_vitals</code> and <code>begin_checkout</code> is required.</li>
+        <li>BRIK weekly baseline refresh is required, with non-zero <code>begin_checkout</code>/<code>web_vitals</code> signal restoration or explicit root-cause evidence.</li>
+        <li>BRIK S2/S6 Deep Research freshness checks (monthly or on major outcome/ICP/channel/product change) are required.</li>
+        <li>BRIK sustained weekly decision cadence and first measured-data forecast recalibration are required.</li>
+        <li>Standing refresh artifacts (market pulse, channel economics, regulatory watch) are required.</li>
+        <li><code>HOLDCO</code> registration in business catalog is required (taxonomy hygiene item from readiness warning).</li>
+      </ol>
+    </div>
+
+    <div class="section-block" style="animation-delay:.25s">
+      <h2 class="section-heading">
+        <span class="section-icon">§</span>
+        Deep Research Gate (S2 + S6)
+      </h2>
+      <h3 class="sub-heading">Mandatory hand-off rule</h3>
+      <p>When either S2 (market intelligence) or S6 (site-upgrade brief) is in a seed/draft state, the workflow must:</p>
+      <ol style="color:var(--muted);font-family:'Sora',sans-serif;font-weight:300;font-size:13px;">
+        <li>Stop progression for that business at the affected stage.</li>
+        <li>Hand the user a ready-to-run Deep Research prompt file (not a template with placeholders).</li>
+        <li>Require Deep Research completion and persistence before continuing downstream stages.</li>
+      </ol>
+      <p><strong>Seed/draft trigger conditions:</strong></p>
+      <ul>
+        <li><code>latest.user.md</code> is Missing, or</li>
+        <li><code>latest.user.md</code> points to a source doc with <code>Status: Draft</code>, or</li>
+        <li>source doc is stale (<code>Last-reviewed</code> older than 30 days), or</li>
+        <li>major outcome/ICP/channel/product change occurred.</li>
+      </ul>
+    </div>
+
+    <div class="section-block" id="standing-refresh" style="animation-delay:.3s">
+      <h2 class="section-heading">
+        <span class="section-icon">§</span>
+        Standing Refresh Prompts (Periodic)
+      </h2>
+      <p>Recurring research prompts for standing information refresh. Run on cadence or on trigger.</p>
+      <table class="eng-table">
+        <thead>
+          <tr><th>Refresh area</th><th>Cadence</th><th>Trigger</th><th>Output path</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Platform capability baseline</td>
+            <td>Every 30–45 days</td>
+            <td>New platform primitives, major architecture shifts, or stale baseline</td>
+            <td><code>docs/business-os/platform-capability/&lt;YYYY-MM-DD&gt;-platform-capability-baseline.user.md</code></td>
+          </tr>
+          <tr>
+            <td>Market pulse per business</td>
+            <td>Monthly</td>
+            <td>Competitor/offer/channel shifts suspected</td>
+            <td><code>docs/business-os/market-research/&lt;BIZ&gt;/&lt;YYYY-MM-DD&gt;-market-pulse.user.md</code></td>
+          </tr>
+          <tr>
+            <td>Channel economics refresh</td>
+            <td>Monthly</td>
+            <td>CPC/CAC/CVR/returns shift or spend-plan review cycle</td>
+            <td><code>docs/business-os/strategy/&lt;BIZ&gt;/&lt;YYYY-MM-DD&gt;-channel-economics-refresh.user.md</code></td>
+          </tr>
+          <tr>
+            <td>Regulatory and claims watch</td>
+            <td>Quarterly</td>
+            <td>New policy/compliance/claims risks in target region</td>
+            <td><code>docs/business-os/strategy/&lt;BIZ&gt;/&lt;YYYY-MM-DD&gt;-regulatory-claims-watch.user.md</code></td>
+          </tr>
+          <tr>
+            <td>Brand Dossier review (GATE-BD-08)</td>
+            <td>Quarterly (90 days)</td>
+            <td>GATE-BD-08 (Soft) warning at S10 if <code>Last-reviewed</code> &gt; 90 days; review claim/proof ledger, voice and audience sections</td>
+            <td>Update <code>docs/business-os/strategy/&lt;BIZ&gt;/brand-dossier.user.md</code> in-place; bump <code>Last-reviewed</code> date</td>
+          </tr>
+          <tr>
+            <td><code>/meta-loop-efficiency</code> skill audit</td>
+            <td>Weekly</td>
+            <td>Any <code>lp-*</code> skill file changed, OR &gt;7 days since last audit artifact</td>
+            <td><code>docs/business-os/platform-capability/skill-efficiency-audit-YYYY-MM-DD-HHMM.md</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section><!-- /eng-section -->
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      background: '#070f1e',
+      primaryColor: '#0c1830',
+      primaryTextColor: '#ddd6c8',
+      primaryBorderColor: 'rgba(201,168,76,.3)',
+      lineColor: '#c9a84c',
+      secondaryColor: '#0c1830',
+      tertiaryColor: '#040b18',
+      edgeLabelBackground: '#070f1e',
+    }
+  });
+
+  function toggleEng() {
+    const section = document.getElementById('eng-section');
+    const btn = document.getElementById('eng-btn');
+    const isOpen = section.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+    if (isOpen) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Active sidebar link on scroll
+  const links = document.querySelectorAll('#sidebar a[href^="#"]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`#sidebar a[href="#${e.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  document.querySelectorAll('[id]').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

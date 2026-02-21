@@ -18,7 +18,8 @@ type SectionHistoryEvent = {
   detectedAt?: string;
 };
 
-export default async function SectionsHistoryPage({ params }: { params: { shop: string } }) {
+export default async function SectionsHistoryPage(props: { params: Promise<{ shop: string }> }) {
+  const params = await props.params;
   await requirePermission("manage_pages");
   const { shop } = params;
   const history = await listSectionHistory(shop);
@@ -36,7 +37,7 @@ export default async function SectionsHistoryPage({ params }: { params: { shop: 
         )}
         <ul className="space-y-3">
           {items.map((e: SectionHistoryEvent, idx: number) => (
-            <li key={idx} className="rounded border p-3">
+            <li key={`${e.type}-${e.id ?? e.after?.id ?? e.before?.id ?? idx}-${e.at ?? e.detectedAt ?? idx}`} className="rounded border p-3">
               <div className="flex items-center justify-between">
                 <div className="text-sm text-neutral-700">
                   <div><span className="font-medium">{t("cms.sections.history.type")}</span> {String(e.type)}</div>

@@ -5,6 +5,7 @@
 // Client component for deals page
 import { Fragment, memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 import clsx from "clsx";
 
 import { Section } from "@acme/design-system/atoms";
@@ -22,6 +23,7 @@ import DealCard from "@/routes/deals/DealCard";
 import { DEALS, PRIMARY_DEAL } from "@/routes/deals/deals";
 import { getDealStatus } from "@/routes/deals/status";
 import { useDealContent } from "@/routes/deals/useDealContent";
+import { fireSelectPromotion, fireViewItemList, fireViewPromotion } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
@@ -275,8 +277,25 @@ function resolvePageCopy({
 }
 
 function DealsPageContent({ lang }: Props) {
+  useEffect(() => {
+    // Fire view_item_list for deals index
+    fireViewItemList({
+      itemListId: "deals_index",
+      rooms: DEALS.map((deal) => ({ sku: deal.id })),
+    });
+    // TC-01: fire view_promotion for all deals on mount
+    if (DEALS.length > 0) {
+      fireViewPromotion({
+        promotions: DEALS.map((deal) => ({
+          promotion_id: deal.id,
+          promotion_name: `${deal.discountPct}% off`,
+        })),
+      });
+    }
+  }, []);
   const { t } = useTranslation("dealsPage", { lng: lang });
   const { openModal } = useOptionalModal();
+  const router = useRouter();
   usePagePreload({ lang, namespaces: ["dealsPage", "_tokens"] });
 
   const { translate: ft, perks, labels } = useDealContent(lang);
@@ -286,12 +305,20 @@ function DealsPageContent({ lang }: Props) {
   const openBooking = useCallback(
     ({ kind, dealId }: { kind: "deal" | "standard"; dealId?: string }) => {
       if (kind === "deal" && dealId) {
-        openModal("booking", { deal: dealId });
+        // TC-02: fire select_promotion before navigating to /book?deal=ID
+        const deal = DEALS.find((d) => d.id === dealId);
+        fireSelectPromotion({
+          promotion: {
+            promotion_id: dealId,
+            promotion_name: deal ? `${deal.discountPct}% off` : dealId,
+          },
+        });
+        router.push(`/${lang}/book?deal=${encodeURIComponent(dealId)}`);
         return;
       }
-      openModal("booking");
+      router.push(`/${lang}/book`);
     },
-    [openModal]
+    [router, lang]
   );
 
   const openOffers = useCallback(() => openModal("offers"), [openModal]);
@@ -392,9 +419,9 @@ function DealsPageContent({ lang }: Props) {
           {labels.perksHeading || "Direct booking perks"}
         </h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {perks.map((perk, index) => (
+          {perks.map((perk) => (
             <div
-              key={index}
+              key={perk.title}
               className="flex flex-col items-center rounded-lg border border-brand-outline/20 bg-brand-bg p-4 text-center"
             >
               <h3 className="font-medium text-brand-heading">{perk.title}</h3>

@@ -1,4 +1,5 @@
 import { IS_DEV } from "@/config/env";
+import type { AppLanguage } from "@/i18n.config";
 import getGuideResource from "@/routes/guides/utils/getGuideResource";
 
 import {
@@ -11,7 +12,7 @@ export function resolveShouldRenderGenericContent(params: {
   guideKey: string;
   hasStructuredLocalInitial: boolean;
   hasAnyLocalized: boolean;
-  lang: string;
+  lang: AppLanguage;
 }): boolean {
   const {
     shouldRenderGenericContentForLocale,
@@ -42,8 +43,8 @@ export function resolveShouldRenderGenericContent(params: {
                 .map((x) => (typeof x === "string" ? x.trim() : String(x ?? "").trim()))
                 .filter((s) => s.length > 0)
             : [];
-        const intro = getGuideResource<unknown>(lang as any, `content.${guideKey}.intro`);
-        const sections = getGuideResource<unknown>(lang as any, `content.${guideKey}.sections`);
+        const intro = getGuideResource<unknown>(lang, `content.${guideKey}.intro`);
+        const sections = getGuideResource<unknown>(lang, `content.${guideKey}.sections`);
         const introOk = normalize(intro).length > 0;
         const sectionsOk = Array.isArray(sections)
           ? (sections as unknown[]).some((s) => {

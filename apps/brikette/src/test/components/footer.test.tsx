@@ -126,6 +126,7 @@ describe("<Footer />", () => {
     const termsLinks = screen.getAllByRole("link", { name: /terms & conditions/i });
     expect(termsLinks.some((link) => link.getAttribute("href") === "/en/terms")).toBe(true);
 
+    // eslint-disable-next-line security/detect-non-literal-regexp -- Building test regex from current year; test code only
     const regex = new RegExp(`© 2023 to ${year}.*hostel brikette`, "i");
     expect(screen.getByText(regex)).toBeInTheDocument();
     jest.useRealTimers();

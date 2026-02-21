@@ -1,0 +1,4 @@
+interface:
+  display_name: "Site Upgrade Best Of"
+  short_description: "Synthesize platform-fit website upgrades from references"
+  default_prompt: "Run site-upgrade-best-of for HEAD with reference sites and produce a fact-find-ready backlog packet."

@@ -9,7 +9,7 @@ Your repository is now fully optimized for working with Claude Code.
 - ✅ `docs/INDEX_FOR_CLAUDE.md` - Quick reference index
 - ✅ `docs/claude-optimization-recommendations.md` - Full recommendations (60+ pages)
 - ✅ `CLAUDE_SETUP_SUMMARY.md` - Setup overview
-- ✅ `.claude/SKILLS_INDEX.md` - Catalog of 65+ recommended skills
+- ✅ `scripts/agents/list-skills` - Skill discovery command (registry: `.agents/registry/skills.json`)
 
 ### Configuration Files
 - ✅ `.claude/config.json` - Claude Code configuration
@@ -49,7 +49,7 @@ Based on your specific needs (Reception migration, CMS development, e-commerce):
 14. **create-email-template.md** - Email templates
 15. **add-i18n-translation.md** - Internationalization
 
-See `.claude/SKILLS_INDEX.md` for the full catalog of 65+ recommended skills.
+See `scripts/agents/list-skills` (registry: `.agents/registry/skills.json`) for the supported skills.
 
 ## 🚀 How to Use
 
@@ -94,7 +94,7 @@ Paste into Claude
 - `docs/architecture.md` - Layer hierarchy
 
 ### For Reference
-- `.claude/SKILLS_INDEX.md` - All recommended skills
+- `scripts/agents/list-skills` - Supported skill catalog (registry: `.agents/registry/skills.json`)
 - `docs/claude-optimization-recommendations.md` - Full implementation plan
 - `.claude/HOW_TO_USE_SKILLS.md` - How to use skills
 
@@ -148,7 +148,8 @@ Paste into Claude
 1. **Identify patterns** - Notice repetitive tasks
 2. **Create prompt template** - Follow the template structure
 3. **Test with Claude** - Verify it works
-4. **Add to SKILLS_INDEX.md** - Document it
+4. **Regenerate the skills registry** - Keep discovery up to date:
+   - `scripts/agents/generate-skill-registry --write`
 5. **Share with team** - Get feedback
 
 ## 📊 Success Metrics
@@ -170,7 +171,7 @@ You'll know this is working when:
 4. **Share with your team**
 
 ### Short Term (This Week)
-1. **Create 3-5 high-priority skills** from SKILLS_INDEX
+1. **Create 3-5 high-priority skills** (see `scripts/agents/list-skills` for the current supported set)
 2. **Test with real work** (Reception migration?)
 3. **Gather feedback** from team
 4. **Iterate and improve**
@@ -240,7 +241,7 @@ Your repository now has:
 
 **Questions?**
 - Check `docs/claude-optimization-recommendations.md` for detailed explanations
-- Review `.claude/SKILLS_INDEX.md` for full skill catalog
+- Review `scripts/agents/list-skills` for the supported skill catalog
 - Reference individual skill docs in `.claude/skills/<skill>/SKILL.md`
 
 **Feedback?**

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PET Forecast Seed for SFS-00</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>PET Forecast Seed for SFS-00</h1>
+<h2>0a) Business-Now (Outcome Contract Proposal)</h2>
+<ul>
+<li>Outcome-ID: <code>PET-OUT-2026Q1-01</code></li>
+<li>Outcome statement: Achieve first reliable direct sales for PET in Italy via pre-website launch surfaces, then convert validated demand into owned-site growth with sustainable unit economics.</li>
+<li>Baseline (2026-02-12):
+<ul>
+<li>paid orders: 0</li>
+<li>net revenue: EUR 0</li>
+<li>blended CAC: not measured</li>
+<li>return rate: not measured</li>
+</ul>
+</li>
+<li>Target (90 days):
+<ul>
+<li>orders: 178 (forecast P50)</li>
+<li>gross revenue incl VAT: EUR 5,874 (forecast P50)</li>
+<li>blended CAC: &#x3C;=EUR 10-12 by day 60-90 (subject to contribution guardrail)</li>
+<li>return rate: &#x3C;=8%</li>
+</ul>
+</li>
+<li>By (deadline): 2026-05-13</li>
+<li>Owner: Pete</li>
+<li>Leading indicators (weekly):
+<ul>
+<li>sessions by channel (TikTok Shop / buy-link / organic / paid)</li>
+<li>CVR by channel</li>
+<li>paid CAC and blended CAC</li>
+<li>payment success rate</li>
+<li>on-time ship rate</li>
+<li>return reason distribution</li>
+</ul>
+</li>
+<li>Decision link: <code>DEC-PET-01</code> (whether to scale spend/channel breadth beyond validation mode)</li>
+<li>Stop/Pivot guardrails:
+<ul>
+<li>if CVR &#x3C;1.2% after sufficient sample, fix conversion before spend increase</li>
+<li>if blended CAC >70% of observed contribution/order pre-ads, stop expansion and run fix-first loop</li>
+<li>if return rate >8% or on-time ship &#x3C;95%, hold growth and remediate operations</li>
+</ul>
+</li>
+</ul>
+<h2>0b) Existing-Work-Now (From Current Evidence)</h2>
+<p>Confirmed available now:</p>
+<ul>
+<li>Product lane and first SKU direction: handbag-style poop bag holder</li>
+<li>Follow-on SKU direction: biodegradable/compostable bag lane</li>
+<li>Initial audience hypothesis: female pet owners</li>
+<li>Inventory posture: first SKU stock purchased; expected in &#x3C;=20 days</li>
+<li>Market intelligence baseline: <code>docs/business-os/market-research/PET/2026-02-12-market-intelligence.user.md</code></li>
+<li>Forecast baseline: <code>docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md</code></li>
+</ul>
+<p>Still missing / needs confirmation:</p>
+<ul>
+<li>exact sellable units and confirmed first in-stock date</li>
+<li>final price architecture (single, bundle, and any shipping threshold strategy)</li>
+<li>validated closure/hardware durability pass criteria for SKU1</li>
+<li>payment stack readiness checklist and live checkout test status</li>
+<li>returns flow copy and operational SLA confirmation</li>
+<li>packaging/environmental labeling compliance checklist for Italy</li>
+</ul>
+<h2>0c) Merge + Classification for First Execution Pack</h2>
+<p>Reuse-existing:</p>
+<ul>
+<li>channel and economics model from <code>italy-90-day-launch-forecast-v2.user.md</code></li>
+<li>segment and positioning evidence from <code>2026-02-12-market-intelligence.user.md</code></li>
+</ul>
+<p>Adapt-existing:</p>
+<ul>
+<li>convert priors into a live weekly PET launch scorecard with measured thresholds</li>
+<li>split offer testing into explicit matrix (price x message x bundle)</li>
+</ul>
+<p>New required artifacts:</p>
+<ul>
+<li>PET launch scorecard (weekly live metrics)</li>
+<li>offer-test matrix (price/messaging/bundle variants)</li>
+<li>durability and returns root-cause tracker</li>
+<li>payment and shipping reliability checklist</li>
+</ul>
+<h2>Ready-to-Execute Go Items (Seed)</h2>
+<ol>
+<li>Launch pre-website conversion surface with full event and checkout instrumentation.</li>
+<li>Run week-1 price and messaging tests (fashion-first vs reliability-first) with strict pass/fail thresholds.</li>
+<li>Validate operations gates (payment success, ship SLA, return reasons) before scale.</li>
+<li>Hold week-2 recalibration and re-forecast the remaining 10 weeks using observed data.</li>
+</ol>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/startup-baselines/PET-forecast-seed.user.md</code></div>
+      <div>Generated: 2026-02-12T10:09:10.579Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

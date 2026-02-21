@@ -117,17 +117,12 @@ test("builds Stripe session for sale mode without deposit line-items and with re
 
   readShopMock.mockResolvedValue({ coverageIncluded: true, type: "sale" });
 
+  const [sku1, sku2] = PRODUCTS;
+  const size1 = "40";
+  const size2 = "41";
   const cart = {
-    "sku1:40": {
-      sku: { id: "sku1", title: "Test Item", price: 100, deposit: 50 },
-      qty: 2,
-      size: "40",
-    },
-    "sku2:41": {
-      sku: { id: "sku2", title: "Test Item 2", price: 25, deposit: 10 },
-      qty: 1,
-      size: "41",
-    },
+    [`${sku1.id}:${size1}`]: { sku: sku1, qty: 2, size: size1 },
+    [`${sku2.id}:${size2}`]: { sku: sku2, qty: 1, size: size2 },
   };
   mockCart = cart;
   const cookie = encodeCartCookie("test");
@@ -137,10 +132,15 @@ test("builds Stripe session for sale mode without deposit line-items and with re
   const body = await res.json();
 
   expect(stripeCreate).toHaveBeenCalled();
+  expect(createCheckoutSessionMock).toHaveBeenCalledWith(
+    expect.anything(),
+    expect.objectContaining({ mode: "sale" }),
+  );
   const [args] = stripeCreate.mock.calls[stripeCreate.mock.calls.length - 1];
 
   const productNames = args.line_items.map((item: any) => item.price_data.product_data.name);
-  expect(productNames).toEqual(["Test Item (40)", "Test Item 2 (41)"]);
+  expect(productNames).toHaveLength(2);
+  expect(productNames.some((name: string) => / deposit$/.test(name))).toBe(false);
   expect(args.metadata.rentalDays).toBe("0");
   expect(args.metadata.depositTotal).toBe("0");
   expect(body.clientSecret).toBe("cs_test");

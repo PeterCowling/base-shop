@@ -26,6 +26,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Enforce Next.js command policy matrix
+        run: node scripts/check-next-webpack-flag.mjs --all
+
       - name: Detect required workflows
         id: filter
         run: |
@@ -38,6 +41,42 @@ jobs:
             echo "**/*" > /tmp/changed-files.txt
           fi
           node scripts/ci/path-classifier.cjs --config merge_gate --paths-file /tmp/changed-files.txt --format outputs >> "$GITHUB_OUTPUT"
+
+      - name: Detect i18n resolver contract scope
+        id: i18n_contract
+        run: |
+          if grep -Eq '^(packages/i18n/|packages/next-config/)|(^|/)tsconfig[^/]*\.json$' /tmp/changed-files.txt; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up pnpm for i18n resolver contract
+        if: ${{ steps.i18n_contract.outputs.run == 'true' }}
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - name: Set up Node.js for i18n resolver contract
+        if: ${{ steps.i18n_contract.outputs.run == 'true' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies for i18n resolver contract
+        if: ${{ steps.i18n_contract.outputs.run == 'true' }}
+        run: pnpm install --frozen-lockfile
+
+      - name: Enforce i18n resolver contract (scoped)
+        if: ${{ steps.i18n_contract.outputs.run == 'true' }}
+        run: |
+          echo "Running i18n resolver contract checks..."
+          node scripts/check-i18n-resolver-contract.mjs --repo-root "$PWD"
+
+      - name: Skip i18n resolver contract (scoped)
+        if: ${{ steps.i18n_contract.outputs.run != 'true' }}
+        run: echo "Skipping i18n resolver contract checks (no relevant path changes)."
 
       - name: Lint GitHub Actions workflows
         if: >-

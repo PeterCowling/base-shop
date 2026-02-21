@@ -1,8 +1,8 @@
-import noJsPredicates from "../../.claude/skills/user-testing-audit/scripts/no-js-predicates.cjs";
+import noJsPredicates from "../../.claude/skills/meta-user-test/scripts/no-js-predicates.cjs";
 
 const { evaluateNoJsRoute, collectNoJsRegressionIssues } = noJsPredicates;
 
-describe("user-testing-audit no-JS issue integration", () => {
+describe("meta-user-test no-JS issue integration", () => {
   it("maps route predicate failures into actionable issue IDs", () => {
     const routeChecks = {
       home: evaluateNoJsRoute({

@@ -26,31 +26,33 @@ export const parseTagsResource = (
 
   const keys = Array.from(new Set([...primaryKeys, ...fallbackKeys]));
 
-  keys.forEach((tag) => {
+  const hasOwn = (obj: unknown, key: string): boolean =>
+    Boolean(obj) && Object.prototype.hasOwnProperty.call(obj, key);
+
+  const buildMeta = (tag: string): TagMeta | undefined => {
     const primaryEntry = primaryTags[tag];
     const fallbackEntry = fallbackTags[tag];
 
-    const hasPrimaryLabel = !!primaryEntry && Object.prototype.hasOwnProperty.call(primaryEntry, "label");
-    const hasPrimaryTitle = !!primaryEntry && Object.prototype.hasOwnProperty.call(primaryEntry, "title");
-    const hasPrimaryDescription =
-      !!primaryEntry && Object.prototype.hasOwnProperty.call(primaryEntry, "description");
+    const label = hasOwn(primaryEntry, "label")
+      ? normalise(primaryEntry?.label) || tag
+      : normalise(fallbackEntry?.label) || tag;
+    if (!label) return undefined;
 
-    const primaryLabel = normalise(primaryEntry?.label);
-    const fallbackLabel = normalise(fallbackEntry?.label);
-    const label = hasPrimaryLabel ? primaryLabel || tag : fallbackLabel || tag;
+    const title = hasOwn(primaryEntry, "title")
+      ? normalise(primaryEntry?.title) || tag
+      : normalise(fallbackEntry?.title) || tag;
 
-    if (!label) return;
+    const description = hasOwn(primaryEntry, "description")
+      ? normalise(primaryEntry?.description) || undefined
+      : normalise(fallbackEntry?.description) || undefined;
 
-    const primaryTitle = normalise(primaryEntry?.title);
-    const fallbackTitle = normalise(fallbackEntry?.title);
-    const title = hasPrimaryTitle ? primaryTitle || tag : fallbackTitle || tag;
+    return description ? { label, title, description } : { label, title };
+  };
 
-    const primaryDescription = normalise(primaryEntry?.description);
-    const fallbackDescription = normalise(fallbackEntry?.description);
-    const description = hasPrimaryDescription ? primaryDescription || undefined : fallbackDescription || undefined;
-
-    entries[tag] = description ? { label, title, description } : { label, title };
+  keys.forEach((tag) => {
+    const meta = buildMeta(tag);
+    if (!meta) return;
+    entries[tag] = meta;
   });
   return entries;
 };
-

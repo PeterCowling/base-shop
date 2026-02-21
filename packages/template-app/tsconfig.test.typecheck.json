@@ -1,0 +1,52 @@
+{
+  "extends": "../../tsconfig.test.typecheck.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationDir": null,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "paths": {
+      "@jest/globals": ["test/jest-globals-compat.d.ts"],
+      "@/*": [
+        "packages/template-app/src/*",
+        "packages/ui/dist/src/*",
+        "packages/i18n/dist/*",
+        "packages/ui/src/*",
+        "packages/template-app/dist/*"
+      ],
+      "@acme/platform-core": [
+        "packages/platform-core/src/index.ts",
+        "packages/platform-core/dist/index.d.ts"
+      ],
+      "@acme/platform-core/*": [
+        "packages/platform-core/src/*",
+        "packages/platform-core/dist/*"
+      ],
+      "@acme/i18n": ["packages/i18n/src/index.ts", "packages/i18n/dist/index.d.ts"],
+      "@acme/i18n/*": ["packages/i18n/src/*", "packages/i18n/dist/*"],
+      "@acme/ui": ["packages/ui/src/index.ts", "packages/ui/dist/index.d.ts"],
+      "@acme/ui/*": ["packages/ui/src/*", "packages/ui/dist/*"],
+      "@acme/stripe": ["packages/stripe/src/index.ts", "packages/stripe/dist/index.d.ts"],
+      "@acme/stripe/*": ["packages/stripe/src/*", "packages/stripe/dist/*"],
+      "@acme/lib": ["packages/lib/src/index.ts", "packages/lib/dist/index.d.ts"],
+      "@acme/lib/*": ["packages/lib/src/*", "packages/lib/dist/*"],
+      "@acme/test-utils": [
+        "packages/test-utils/src/index.ts",
+        "packages/test-utils/dist/index.d.ts"
+      ],
+      "@acme/test-utils/*": [
+        "packages/test-utils/src/*",
+        "packages/test-utils/dist/*"
+      ],
+      "@prisma/client": ["__mocks__/@prisma/client.ts"]
+    }
+  },
+  "include": [
+    "__tests__/**/*.ts",
+    "__tests__/**/*.tsx",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx"
+  ],
+  "exclude": ["**/node_modules/**", "**/dist/**"]
+}

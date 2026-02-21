@@ -20,10 +20,12 @@ export function Progress({
   value = 0,
   label,
   children,
+  labelClassName: _labelClassName,
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
   value?: number;
   label?: React.ReactNode;
+  labelClassName?: string;
 }) {
   return (
     <div
@@ -52,12 +54,12 @@ export function Dialog({ open, onOpenChange, children }: { open: boolean; onOpen
   );
 }
 
-export function DialogTrigger({ children }: { children: React.ReactElement }) {
+export function DialogTrigger({ children }: { children: React.ReactElement<any> }) {
   const ctx = useContext(DialogContext);
   return React.cloneElement(children, {
     onClick: (event: React.MouseEvent) => {
       ctx.onOpenChange(true);
-      children.props.onClick?.(event);
+      (children.props as any).onClick?.(event);
     },
   });
 }
@@ -163,15 +165,29 @@ export function Checkbox({ onCheckedChange, ...props }: CheckboxStubProps) {
   );
 }
 
-export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...props} />;
-}
+type InputStubProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  label?: React.ReactNode;
+  labelClassName?: string;
+};
 
-export function Textarea(
-  props: React.TextareaHTMLAttributes<HTMLTextAreaElement>
-) {
-  return <textarea {...props} />;
-}
+export const Input = React.forwardRef<HTMLInputElement, InputStubProps>(
+  ({ label: _label, labelClassName: _labelClassName, ...props }, ref) => {
+    return <input ref={ref} {...props} />;
+  },
+);
+Input.displayName = "Input";
+
+type TextareaStubProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  label?: React.ReactNode;
+  labelClassName?: string;
+};
+
+export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaStubProps>(
+  ({ label: _label, labelClassName: _labelClassName, ...props }, ref) => {
+    return <textarea ref={ref} {...props} />;
+  },
+);
+Textarea.displayName = "Textarea";
 
 export function Tag({
   children,
@@ -199,9 +215,11 @@ export function Select({ value, onValueChange, children }: AnyProps) {
       if (!React.isValidElement(child)) continue;
       // Identify our stubbed SelectItem by a marker
       if ((child.type as any).__shadcnSelectItem === true) {
-        options.push({ value: child.props.value ?? "", label: child.props.children });
+        const p = child.props as any;
+        options.push({ value: p.value ?? "", label: p.children });
       }
-      if (child.props?.children) walk(child.props.children);
+      const p = child.props as any;
+      if (p?.children) walk(p.children);
     }
   };
   walk(children);
@@ -230,4 +248,57 @@ export function SelectItem({ value, children }: AnyProps) {
   const Comp: any = ({ children: c }: AnyProps) => <>{c}</>;
   Comp.__shadcnSelectItem = true;
   return <Comp value={value}>{children}</Comp>;
+}
+
+// Table family
+export function Table({ children, ...p }: React.HTMLAttributes<HTMLTableElement>) {
+  return <table {...p}>{children}</table>;
+}
+export function TableBody({ children, ...p }: React.HTMLAttributes<HTMLTableSectionElement>) {
+  return <tbody {...p}>{children}</tbody>;
+}
+export function TableCell({ children, ...p }: React.TdHTMLAttributes<HTMLTableCellElement>) {
+  return <td {...p}>{children}</td>;
+}
+export function TableHead({ children, ...p }: React.ThHTMLAttributes<HTMLTableCellElement>) {
+  return <th {...p}>{children}</th>;
+}
+export function TableHeader({ children, ...p }: React.HTMLAttributes<HTMLTableSectionElement>) {
+  return <thead {...p}>{children}</thead>;
+}
+export function TableRow({ children, ...p }: React.HTMLAttributes<HTMLTableRowElement>) {
+  return <tr {...p}>{children}</tr>;
+}
+
+// Accordion family
+export function Accordion({ children, type: _type, collapsible: _col, ...p }: React.HTMLAttributes<HTMLDivElement> & { type?: string; collapsible?: boolean }) {
+  return <div {...p}>{children}</div>;
+}
+export function AccordionContent({ children, ...p }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div {...p}>{children}</div>;
+}
+export function AccordionItem({ children, value: _value, ...p }: React.HTMLAttributes<HTMLDivElement> & { value?: string }) {
+  return <div {...p}>{children}</div>;
+}
+export function AccordionTrigger({ children, ...p }: React.HTMLAttributes<HTMLButtonElement>) {
+  return <button {...(p as React.ButtonHTMLAttributes<HTMLButtonElement>)}>{children}</button>;
+}
+
+// Dialog header
+export function DialogHeader({ children, ...p }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div {...p}>{children}</div>;
+}
+
+// DropdownMenu family — use AnyProps to accept Radix-specific props (align, side, aria-label, etc.)
+export function DropdownMenu({ children }: AnyProps) {
+  return <>{children}</>;
+}
+export function DropdownMenuContent({ children, align: _align, side: _side, sideOffset: _so, ...p }: AnyProps) {
+  return <div {...p}>{children}</div>;
+}
+export function DropdownMenuItem({ children, onSelect: _onSelect, ...p }: AnyProps) {
+  return <div role="menuitem" {...(p as React.HTMLAttributes<HTMLDivElement>)}>{children}</div>;
+}
+export function DropdownMenuTrigger({ children, asChild: _asChild, ...p }: AnyProps) {
+  return <>{children}</>;
 }

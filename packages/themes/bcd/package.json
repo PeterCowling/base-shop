@@ -25,6 +25,8 @@
   },
   "sideEffects": false,
   "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint ."
   }
 }

@@ -32,13 +32,14 @@ function getClientIp(req: NextRequest): string {
 
 const rateLimited = async (
   req: NextRequest,
-  ctx: { params: { nextauth: string[] } }
+  ctx: { params: Promise<{ nextauth: string[] }> }
 ) => {
   const ip = getClientIp(req);
 
   try {
     await limiter.consume(ip);
-    return handler(req, ctx);
+    await ctx.params;
+    return handler(req);
   } catch {
     return new Response("Too Many Requests", { status: 429 });
   }

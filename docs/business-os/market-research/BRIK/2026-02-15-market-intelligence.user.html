@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK Market Intelligence Pack - EU Hostel Direct Booking + OTA Distribution</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>BRIK Market Intelligence Pack - EU Hostel Direct Booking + OTA Distribution</h1>
+<h2>A) Executive summary (max 12 bullets; must answer Delta Q1-Q3 explicitly)</h2>
+<ul>
+<li>Delta Q1 (Why is net booking value down YoY?): Net booking value is down EUR 92,297.23 (-15.2%) YoY, driven primarily by lower booking volume rather than price/ADR erosion. Volume effect explains ~89% of the YoY decline; net/booking explains ~11%. <code>[observed | High confidence]</code> (internal baseline, as-of 2026-02-15)</li>
+<li>The largest YoY decline is concentrated in peak/shoulder months: June (EUR -23,490.40), April (EUR -22,421.00), July (EUR -20,608.47). These three months explain ~72% of the annual net-value drop. <code>[observed | High confidence]</code> (internal baseline, as-of 2026-02-15)</li>
+<li>Direct share increased from 14.1% -> 20.5% (+6.4pp) YoY, meaning the business became less dependent on OTAs in mix, yet still lost total bookings. This is consistent with an OTA volume/ranking/availability problem (or demand displacement) that direct gains could not offset. <code>[observed -> inferred | Medium confidence]</code> (internal baseline, as-of 2026-02-15)</li>
+<li>Current web measurement is not decision-usable (GA4: 73 sessions, 0 begin_checkout, 0 conversions, 0 web vitals). Given the live site shows booking-widget placeholder strings (suggesting client-rendered booking), website conversion may be under-tracked or broken, blocking paid scaling. <code>[observed -> inferred | High confidence]</code> (internal baseline; BRIK site as-of 2026-02-15: <a href="https://hostel-positano.com/en/">https://hostel-positano.com/en/</a>)</li>
+<li>External demand context does not support an Italy-wide collapse: EU tourism nights reached ~3.08B in 2025 (+2%), and Italy's 2024 inbound/non-resident nights exceeded 250M (+6.8%), >half of total nights. This strengthens the view that YoY decline is property/channel-specific, not macro-only. <code>[inferred | Medium confidence]</code> (Eurostat + ISTAT; see Sources)</li>
+<li>Fastest 90-day levers (ranked): (1) repair measurement + funnel tracking to establish reliable CVR/CAC gates; (2) OTA distribution recovery (availability parity, content, promos, ranking levers); (3) direct-rate value fencing (clear best-rate logic, perks, low-friction checkout) to raise direct conversion and reduce cancellation exposure. <code>[inferred | Medium confidence]</code></li>
+<li>Delta Q2 (Fastest levers to move net value): The fastest net-value movement comes from recovering peak-month booking volume (April-July) via OTA visibility + inventory control, while simultaneously increasing direct conversion once tracking is fixed. This matches internal decomposition showing volume is the main driver. <code>[observed -> inferred | High confidence]</code> (internal baseline, as-of 2026-02-15)</li>
+<li>Delta Q3 (14-day stop/continue/start):</li>
+<li>STOP: scaling paid acquisition and any "growth" experiments that cannot be attributed end-to-end (until begin_checkout/purchase are measured). <code>[inferred | High confidence]</code></li>
+<li>CONTINUE: direct-booking perks (breakfast + drink + discount) but restructure to be auto-applied and transparent at room/checkout level. <code>[observed -> inferred | Medium confidence]</code> (BRIK rooms page as-of 2026-02-15: <a href="https://hostel-positano.com/en/rooms/">https://hostel-positano.com/en/rooms/</a>)</li>
+<li>START: a 14-day measurement repair + parity + OTA recovery sprint with explicit thresholds and reforecast triggers (see sections M + Q). <code>[inferred | High confidence]</code></li>
+</ul>
+<h2>B) Business context and explicit assumptions (include business model classification)</h2>
+<p>Business model classification (TODAY): A) Single-property direct booking site + OTAs.</p>
+<p>Evidence:</p>
+<ul>
+<li>11 rooms total inventory and inventory labels consistent with one property's rate plans. <code>[observed | High confidence]</code> (internal baseline, as-of 2026-02-15)</li>
+<li>Experiences commerce appears optional (site menu includes "Experiences"), but this is ancillary to accommodation and does not resemble a multi-property marketplace. <code>[observed -> inferred | Medium confidence]</code> (BRIK site as-of 2026-02-15: <a href="https://hostel-positano.com/en/">https://hostel-positano.com/en/</a>)</li>
+</ul>
+<p>Key internal baselines to anchor all decisions (observed, internal baseline as-of 2026-02-15):</p>
+<ul>
+<li>YoY (12 complete months) net value EUR 514,800.23 vs EUR 607,097.46 (Delta EUR -92,297.23).</li>
+<li>YoY bookings 1,906 vs 2,205 (Delta -299).</li>
+<li>YoY net/booking EUR 270.09 vs EUR 275.33 (Delta EUR -5.23).</li>
+<li>YoY direct share 20.5% vs 14.1% (Delta +6.4pp).</li>
+<li>GA4 snapshot: 73 sessions; 0 begin_checkout; 0 conversions (directional; incomplete).</li>
+</ul>
+<p>Confidence labels used in this pack:</p>
+<ul>
+<li>High: supported by internal baselines and/or primary sources; low ambiguity.</li>
+<li>Medium: plausible and supported by some evidence; requires targeted validation.</li>
+<li>Low: weak/conflicting evidence; treat as hypothesis only.</li>
+</ul>
+<p>External constraints explicitly adopted (observed):</p>
+<ul>
+<li>Paid acquisition is gated until conversion + measurement baselines are reliable.</li>
+</ul>
+<p>Required next artifact (explicit; unblock channel-mix / unit economics split):</p>
+<ul>
+<li>Export bookings by channel + take rate/commission for last 12 complete months. Save as:
+<ul>
+<li><code>docs/business-os/market-research/BRIK/data/2026-02-15-bookings-by-channel.csv</code></li>
+<li><code>docs/business-os/market-research/BRIK/data/2026-02-15-commission-by-channel.csv</code></li>
+<li>Required fields (minimum): <code>month</code>, <code>channel</code> (direct / Booking.com / Hostelworld / other OTA), <code>bookings</code>, <code>gross_value</code>, <code>net_value</code>, <code>commission_amount</code>, <code>effective_take_rate</code>, <code>cancellations</code>, <code>refunds_or_adjustments</code>.</li>
+</ul>
+</li>
+</ul>
+<h2>C) Market size and demand signals table (with confidence labels)</h2>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Geography</th>
+<th>What it suggests for BRIK</th>
+<th>Evidence type</th>
+<th>Confidence</th>
+<th>Evidence (URL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Non-resident nights in Italy exceeded 250M in 2024 (+6.8% YoY); non-residents were 54.6% of total nights</td>
+<td>Italy (national)</td>
+<td>Inbound demand remains structurally strong; a YoY decline is less likely to be macro-only and more likely channel/offer-specific</td>
+<td>Primary (ISTAT)</td>
+<td>High</td>
+<td><a href="https://www.istat.it/wp-content/uploads/2025/03/Statistics-Today-Turist-flows-Q4-2024.pdf">https://www.istat.it/wp-content/uploads/2025/03/Statistics-Today-Turist-flows-Q4-2024.pdf</a></td>
+</tr>
+<tr>
+<td>EU tourism nights reached ~3.08B in 2025 (+2% YoY)</td>
+<td>EU</td>
+<td>Broad leisure demand remains high; competitive intensity rises (more travelers + more supply)</td>
+<td>Primary (Eurostat)</td>
+<td>High</td>
+<td><a href="https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20260116-1">https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20260116-1</a></td>
+</tr>
+<tr>
+<td>854.1M EU STR guest nights booked via major platforms in 2024 (+18.8%)</td>
+<td>EU</td>
+<td>Growing substitute pressure from STR platforms; total-price transparency becomes a decision driver</td>
+<td>Primary (Eurostat platform data)</td>
+<td>High</td>
+<td><a href="https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20250402-1">https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20250402-1</a></td>
+</tr>
+<tr>
+<td>123.7M EU platform nights in Q1 2024 (+28.3%)</td>
+<td>EU</td>
+<td>Off-season/platform growth can siphon price-sensitive travelers away from hostels unless direct value is clear</td>
+<td>Primary (Eurostat)</td>
+<td>High</td>
+<td><a href="https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20240729-1">https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20240729-1</a></td>
+</tr>
+<tr>
+<td>Monthly examples: inbound/outbound expenditure and seasonal shape</td>
+<td>Italy</td>
+<td>Peak season spend remains large; capturing share depends on distribution + perceived value</td>
+<td>Primary (Bank of Italy)</td>
+<td>High</td>
+<td><a href="https://www.bancaditalia.it/statistiche/tematiche/rapporti-estero/turismo-internazionale/evidenze-mensili/">https://www.bancaditalia.it/statistiche/tematiche/rapporti-estero/turismo-internazionale/evidenze-mensili/</a></td>
+</tr>
+</tbody>
+</table>
+<p>Demand implications for Positano / Amalfi Coast (inferred):</p>
+<ul>
+<li>Peak demand is strong and price-inelastic at the destination level, but BRIK's YoY decline in April-July suggests lost share, not a lack of travelers. <code>[inferred | Medium confidence]</code></li>
+<li>Substitute pressure (STR + hotels) means travelers increasingly compare total price + cancellation + fees rather than "nightly headline." <code>[inferred | High confidence]</code></li>
+</ul>
+<h2>D) Competitor map table (direct/adjacent/substitute + OTA/meta + experiences)</h2>
+<p>Selection logic (inferred):</p>
+<ul>
+<li>Catchment competitors = places travelers use as an Amalfi Coast base (Sorrento peninsula / Naples access) and/or budget alternatives near Positano.</li>
+<li>Wallet competitors = Italian city hostels attracting the same budget traveler wallet that would otherwise be allocated to expensive coastal nights.</li>
+</ul>
+<p>Direct-property competitors (12 minimum; evidence-based):</p>
+<table>
+<thead>
+<tr>
+<th>Competitor</th>
+<th>Location bucket</th>
+<th>Positioning &#x26; promise</th>
+<th>Offer mechanics / trust patterns (examples)</th>
+<th>Evidence (URL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Seven Hostel</td>
+<td>Catchment</td>
+<td>Boutique hostel on Sorrento peninsula; quality/price ratio</td>
+<td>Direct site messaging and booking UX patterns</td>
+<td><a href="https://sevenhostel.eu/">https://sevenhostel.eu/</a></td>
+</tr>
+<tr>
+<td>Ulisse Deluxe Hostel</td>
+<td>Catchment</td>
+<td>Hostel/hotel hybrid near Sorrento center</td>
+<td>Card guarantee / pay-later style framing on direct booking</td>
+<td><a href="https://www.ulissedeluxe.com/">https://www.ulissedeluxe.com/</a></td>
+</tr>
+<tr>
+<td>Hostel of the Sun Napoli</td>
+<td>Catchment</td>
+<td>"Perfect base" for Naples + Amalfi</td>
+<td>Direct positioning around transport and traveler base</td>
+<td><a href="https://hostelnapoli.com/">https://hostelnapoli.com/</a></td>
+</tr>
+<tr>
+<td>Ostello Bello Napoli</td>
+<td>Catchment</td>
+<td>Hostel + bar/events positioning</td>
+<td>Strong social proof + direct CTAs</td>
+<td><a href="https://ostellobello.com/it/hostel/napoli/">https://ostellobello.com/it/hostel/napoli/</a></td>
+</tr>
+<tr>
+<td>Albergo California (Positano)</td>
+<td>Catchment</td>
+<td>Hotel substitute for private-room travelers</td>
+<td>"Official site" / direct booking engine mechanics</td>
+<td><a href="https://www.hotelcaliforniapositano.it/">https://www.hotelcaliforniapositano.it/</a></td>
+</tr>
+<tr>
+<td>Sorrento B&#x26;D Rooms</td>
+<td>Catchment</td>
+<td>Budget rooms/guesthouse substitute</td>
+<td>Direct booking engine presence (rooms/guesthouse substitute)</td>
+<td><a href="https://www.sorrentobedrooms.com/">https://www.sorrentobedrooms.com/</a></td>
+</tr>
+<tr>
+<td>YellowSquare Rome</td>
+<td>Wallet</td>
+<td>Party/social hostel with pro entertainment</td>
+<td>Direct offer stack and events-led value proposition</td>
+<td><a href="https://yellowsquare.com/rome/">https://yellowsquare.com/rome/</a></td>
+</tr>
+<tr>
+<td>The Beehive</td>
+<td>Wallet</td>
+<td>Small independent hostel built around community</td>
+<td>Community narrative + hosted activities</td>
+<td><a href="https://www.the-beehive.com/">https://www.the-beehive.com/</a></td>
+</tr>
+<tr>
+<td>Plus Florence</td>
+<td>Wallet</td>
+<td>Large hostel/hotel hybrid with amenities</td>
+<td>Amenities-led differentiator (pool/sauna etc)</td>
+<td><a href="https://plushostels.com/en/florence">https://plushostels.com/en/florence</a></td>
+</tr>
+<tr>
+<td>Anda Venice Hostel</td>
+<td>Wallet</td>
+<td>"Design hostel" with experience-first narrative</td>
+<td>Book-direct fence patterns (discounts, cancellation, perks)</td>
+<td><a href="https://www.andavenice.com/">https://www.andavenice.com/</a></td>
+</tr>
+<tr>
+<td>Generator Rome</td>
+<td>Wallet</td>
+<td>"Affordable luxury" hostel/boutique hybrid</td>
+<td>Book-direct messaging; strong brand consistency</td>
+<td><a href="https://staygenerator.com/hostels/rome?lang=en-GB">https://staygenerator.com/hostels/rome?lang=en-GB</a></td>
+</tr>
+<tr>
+<td>Combo Milano</td>
+<td>Wallet</td>
+<td>Hybrid: hostel + bar/kitchen + events/culture hub</td>
+<td>Targets locals + travelers via venue programming</td>
+<td><a href="https://thisiscombo.com/en/destinations/milan">https://thisiscombo.com/en/destinations/milan</a></td>
+</tr>
+</tbody>
+</table>
+<p>OTAs / meta (5 minimum):</p>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Role in funnel</th>
+<th>Notable mechanics relevant to BRIK</th>
+<th>Evidence (URL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Booking.com</td>
+<td>High-intent conversion at scale</td>
+<td>Commission-based model; partner commission varies</td>
+<td><a href="https://partner.booking.com/en-gb/help/commission-invoices-tax/commission/understanding-our-commission">https://partner.booking.com/en-gb/help/commission-invoices-tax/commission/understanding-our-commission</a></td>
+</tr>
+<tr>
+<td>Hostelworld</td>
+<td>Hostel demand aggregation</td>
+<td>Hostel-focused demand + reviews; deposit/commission mechanics (varies by contract)</td>
+<td><a href="https://www.hostelworld.com/">https://www.hostelworld.com/</a></td>
+</tr>
+<tr>
+<td>Airbnb</td>
+<td>Substitute + sometimes hostel/hotel inventory</td>
+<td>Service-fee model, strong total-price and policy norms</td>
+<td><a href="https://www.airbnb.com/help/article/1857">https://www.airbnb.com/help/article/1857</a></td>
+</tr>
+<tr>
+<td>Expedia Group</td>
+<td>Additional OTA supply + packages</td>
+<td>Distribution levers and packaging effects (high level)</td>
+<td><a href="https://www.expediagroup.com/">https://www.expediagroup.com/</a></td>
+</tr>
+<tr>
+<td>Google Hotels / metasearch</td>
+<td>Comparison-first journeys</td>
+<td>Policy + price comparison norms; requires strong measurement</td>
+<td><a href="https://support.google.com/hotelprices/">https://support.google.com/hotelprices/</a></td>
+</tr>
+</tbody>
+</table>
+<p>Experience marketplaces (4 minimum):</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Why it matters for BRIK experiences cross-sell</th>
+<th>Evidence (URL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GetYourGuide</td>
+<td>Traveler "things to do" discovery; can power affiliate/curated upsell</td>
+<td><a href="https://www.getyourguide.com/c/about/">https://www.getyourguide.com/c/about/</a></td>
+</tr>
+<tr>
+<td>Viator</td>
+<td>Free cancellation + reserve-now-pay-later patterns create conversion expectations</td>
+<td><a href="https://www.viator.com/">https://www.viator.com/</a></td>
+</tr>
+<tr>
+<td>Civitatis</td>
+<td>Strong Italy coverage; useful for Amalfi/Naples day-trip upsells</td>
+<td><a href="https://www.civitatis.com/en/italy/">https://www.civitatis.com/en/italy/</a></td>
+</tr>
+<tr>
+<td>Tiqets</td>
+<td>Tickets-first; useful for museum bundles and skip-the-line norms</td>
+<td><a href="https://www.tiqets.com/en/about-tiqets/">https://www.tiqets.com/en/about-tiqets/</a></td>
+</tr>
+</tbody>
+</table>
+<p>Substitutes (category-level, inferred):</p>
+<ul>
+<li>Hotels &#x26; B&#x26;Bs / room-only guesthouses compete for private-room travelers.</li>
+<li>Short-term rentals are growing strongly in the EU, increasing supply and comparison-shopping friction.</li>
+<li>"Hostel-hybrid" lifestyle brands raise guest expectations (social spaces, bars, curated programming).</li>
+<li>Packages/bundles create "all-in" price anchors; BRIK must compete on transparency and direct perks.</li>
+</ul>
+<h2>E) Pricing and offer benchmark table (using S1-S3 scenarios)</h2>
+<p>Fixed-date scenarios (for this run; as-of 2026-02-15):</p>
+<ul>
+<li>S1 Peak: 2026-07-17 -> 2026-07-19</li>
+<li>S2 Shoulder: 2026-05-12 -> 2026-05-14</li>
+<li>S3 Off-season: 2026-02-24 -> 2026-02-26</li>
+</ul>
+<p>Important execution note (status): PARTIALLY BLOCKED (requires operator browser run).</p>
+<ul>
+<li>Many direct booking engines and OTA price surfaces are client-rendered and cannot be reliably executed end-to-end in the Deep Research environment for exact check-in/check-out contracts.</li>
+<li>Decision requirement: this pack must still cite competitor positioning/mechanics pages (section D), and must produce an operator-ready capture table + protocol to collect missing scenario totals.</li>
+</ul>
+<h3>Parity &#x26; Scenario Capture Table (operator-fill; single table feeds Stop/Continue/Start)</h3>
+<p>Fill this table via a browser run and screenshots. Save the filled data as:</p>
+<ul>
+<li><code>docs/business-os/market-research/BRIK/data/2026-02-15-parity-scenarios.csv</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Surface</th>
+<th align="right">Total price (all-in)</th>
+<th>Taxes/fees clarity</th>
+<th>Cancellation cutoff</th>
+<th>Deposit/payment</th>
+<th>Notes / parity issue</th>
+<th>Evidence (URL)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td>BRIK direct</td>
+<td align="right">BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td></td>
+<td><a href="https://hostel-positano.com/en/book">https://hostel-positano.com/en/book</a></td>
+</tr>
+<tr>
+<td>S1</td>
+<td>Booking.com</td>
+<td align="right">BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td></td>
+<td>(property listing URL)</td>
+</tr>
+<tr>
+<td>S1</td>
+<td>Hostelworld</td>
+<td align="right">BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td></td>
+<td>(property listing URL)</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>BRIK direct</td>
+<td align="right">BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td></td>
+<td><a href="https://hostel-positano.com/en/book">https://hostel-positano.com/en/book</a></td>
+</tr>
+<tr>
+<td>S2</td>
+<td>Booking.com</td>
+<td align="right">BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td></td>
+<td>(property listing URL)</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>Hostelworld</td>
+<td align="right">BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td></td>
+<td>(property listing URL)</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>BRIK direct</td>
+<td align="right">BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td></td>
+<td><a href="https://hostel-positano.com/en/book">https://hostel-positano.com/en/book</a></td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Booking.com</td>
+<td align="right">BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td></td>
+<td>(property listing URL)</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Hostelworld</td>
+<td align="right">BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td>BLOCKED</td>
+<td></td>
+<td>(property listing URL)</td>
+</tr>
+</tbody>
+</table>
+<p>Decision mapping (how this table drives Stop/Continue/Start):</p>
+<ul>
+<li>If OTA total price is lower AND perks are not visible/applied on direct: START "parity + perks reframe" task; STOP any paid tests until fixed.</li>
+<li>If direct is lower or equal but fee/tax clarity differs: START "total price transparency" task (checkout module + confirmation email).</li>
+<li>If cancellation/payment terms differ materially: START "policy alignment" task to reduce abandonment and disputes.</li>
+</ul>
+<h3>Offer mechanics benchmark (visible now; decision-relevant)</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>BRIK direct (visible now)</th>
+<th>Competitive pattern (examples)</th>
+<th>Implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Direct-book fence</td>
+<td>Direct booking perks (discount, breakfast, welcome drink) appear on rooms page</td>
+<td>Many hostels push "book direct" discounts/perks</td>
+<td>Needs earlier, clearer total-value framing at CTA level</td>
+</tr>
+<tr>
+<td>Cancellation framing</td>
+<td>Refundable: free cancel up to 72h before 15:00; non-refundable: 100% at booking; cancellation admin fee EUR 5</td>
+<td>Platforms train users to expect clear cancellation rules</td>
+<td>Make cancellation rules scannable and consistent across direct + OTAs</td>
+</tr>
+<tr>
+<td>Payments</td>
+<td>Visa/Mastercard; cash EUR; refundable may be pay at check-in; security deposit up to one night per guest</td>
+<td>Many competitors emphasize "pay later / card guarantee"</td>
+<td>Deposit rules can suppress conversion if not explained (why/when released/amount)</td>
+</tr>
+<tr>
+<td>Trust signals</td>
+<td>Reviews shown: Hostelworld 2,757 reviews score 9.3; Booking.com 579 reviews score 9.0 (as of Nov 2025)</td>
+<td>Reviews + social proof drive conversion</td>
+<td>Move review proof closer to booking CTA and embed recent snippets</td>
+</tr>
+<tr>
+<td>Local taxes</td>
+<td>Tourist tax exists and varies; must be communicated clearly</td>
+<td>Platforms increasingly push all-in price display</td>
+<td>Direct checkout must show tourist tax handling clearly</td>
+</tr>
+</tbody>
+</table>
+<p>14-day manual protocol to complete scenario totals (fastest path to unblock):</p>
+<ul>
+<li>For each surface (direct + OTA), enter dates for S1/S2/S3; 1 traveler; choose cheapest refundable if offered else cheapest.</li>
+<li>Screenshot: room selection + total price breakdown + taxes/fees + cancellation cutoff + deposit/payment method.</li>
+<li>Record into the single parity table above; compute deltas and note "value fences" (breakfast/drinks, discounts, pay-later).</li>
+<li>Exit criteria: >=8 direct competitors + >=2 OTAs fully captured across all three scenarios (in addition to BRIK parity).</li>
+</ul>
+<h2>F) Segment and JTBD section (primary + secondary sequence)</h2>
+<p>Primary segment (JTBD): "Access Positano on a budget without losing the social/trust layer."</p>
+<ul>
+<li>Functional job: secure a bed/room with predictable total cost and clear rules (check-in, cancellation, taxes). <code>[inferred | High confidence]</code></li>
+<li>Emotional job: feel safe/welcomed in a high-status destination while paying hostel-level pricing; avoid scams/fake listings. <code>[inferred | Medium confidence]</code></li>
+<li>Social job: meet other travelers; shared spaces and events matter. <code>[observed -> inferred | High confidence]</code> (competitor positioning patterns; see section D)</li>
+</ul>
+<p>Secondary segment (JTBD): "Couples/pairs seeking a 'value luxury' Amalfi base."</p>
+<ul>
+<li>Private rooms + "best rate direct" framing can convert couples priced out of hotels. <code>[observed -> inferred | Medium confidence]</code> (BRIK rooms page: <a href="https://hostel-positano.com/en/rooms/">https://hostel-positano.com/en/rooms/</a>)</li>
+</ul>
+<p>Near-term implication (supported, inferred):</p>
+<ul>
+<li>Traveler comparison behavior emphasizes total price + cancellation + fees early and consistently (platform norm); direct sites must remove "price surprise" friction. <code>[inferred | Medium confidence]</code></li>
+</ul>
+<h2>G) Unit economics priors table (AOV/net per booking/CAC/CVR/cancellation/refund exposure/margin ranges)</h2>
+<p>Model scope: single-property accommodation (hostel) with direct + OTAs; experiences as optional add-on.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Direct (website/email)</th>
+<th>OTA (Booking/Hostelworld/others)</th>
+<th>Evidence / assumptions</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Net per booking (AOV proxy)</td>
+<td>EUR 270.09 (observed blended)</td>
+<td>EUR 270.09 (observed blended)</td>
+<td>Observed as blended net/booking (internal baseline). Channel split unknown.</td>
+<td>High (blended), Low (split)</td>
+</tr>
+<tr>
+<td>Payment processing fees</td>
+<td>Assumption: ~1.4-3.4% + fixed fee (varies by PSP/market)</td>
+<td>Often included (OTA collects) or still paid if property collects</td>
+<td>Stripe/PayPal fee tables (vary by country/product)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>OTA commission (property-side)</td>
+<td>N/A</td>
+<td>Assumption range: 10-25% (varies by contract)</td>
+<td>Booking.com notes commission varies; verify with invoices</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Cancellation exposure</td>
+<td>Refundable has 72h cutoff; admin fee EUR 5</td>
+<td>Platform rules affect refunds/cancellations</td>
+<td>BRIK terms page: <a href="https://hostel-positano.com/en/terms">https://hostel-positano.com/en/terms</a></td>
+<td>High</td>
+</tr>
+<tr>
+<td>Support cost per booking</td>
+<td>Assumption: EUR 1-6</td>
+<td>Assumption: EUR 2-10</td>
+<td>No internal support logs provided; validate via time tracking</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Contribution margin per booking (before fixed costs)</td>
+<td>Assumption: 65-85% of net</td>
+<td>Assumption: 45-75% of net</td>
+<td>Depends on commission, variable cost, refund rate</td>
+<td>Low-Medium</td>
+</tr>
+<tr>
+<td>CAC</td>
+<td>Low for organic; paid gated</td>
+<td>"CAC" embedded in commissions</td>
+<td>Treat commission as variable acquisition cost</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<p>What would make these ranges wrong (and how to validate fast):</p>
+<ul>
+<li>If OTA commission is materially above/below assumptions: pull actual commission invoices and compute effective take rate per channel for 30 days.</li>
+<li>If refunds/cancellations materially differ by channel: export cancellations by source and compute net retained value vs booked value.</li>
+</ul>
+<h2>H) Channel strategy implications (first 90 days; constrain paid until measurement + CVR baselines)</h2>
+<p>North star for first 90 days (inferred): recover peak-month volume without buying demand prematurely. Given volume explains ~89% of YoY net-value loss, distribution recovery and conversion clarity dominate ROI. <code>[observed -> inferred | High confidence]</code> (internal baseline)</p>
+<p>Channel priorities (ranked):</p>
+<ul>
+<li>OTAs as volume stabilizers (0-45 days):
+<ul>
+<li>Rationale: direct share rose, but total bookings fell; pattern is consistent with an OTA visibility or configuration problem. <code>[inferred | Medium confidence]</code></li>
+<li>Action focus: content refresh, promo controls for April-July, cancellation parity, inventory open windows, eliminate rate-plan confusion. <code>[inferred | Medium confidence]</code></li>
+</ul>
+</li>
+<li>Direct as margin + data asset (0-90 days, but only after measurement repair):
+<ul>
+<li>Ensure direct perks are automatically applied and visible in total price.</li>
+<li>Add metasearch once tracking is sound (Google Hotel Ads / similar).</li>
+</ul>
+</li>
+<li>Experiences as attach-rate experiment (45-90 days):
+<ul>
+<li>Use marketplaces for supply reference and pricing norms; sell curated day trips as post-booking add-ons.</li>
+</ul>
+</li>
+</ul>
+<p>Paid acquisition gate (hard rule, inferred):</p>
+<ul>
+<li>Do not scale paid until: (a) begin_checkout + purchase are tracked; (b) baseline CVR is stable for 2 consecutive weeks; (c) channel attribution reconciles to net booking value exports.</li>
+</ul>
+<h2>I) Website design implications (implementation-ready checklist with P0/P1/P2 + impact/effort/metric)</h2>
+<p>Live-funnel audit highlights (observed -> inferred):</p>
+<ul>
+<li>The "Book/Check availability" page does not expose room selection and checkout steps in the server-rendered view; homepage shows untranslated booking-widget keys (e.g. "booking.checkInLabel..."), a common symptom of client-side rendering/translation injection. This is consistent with GA4 showing 0 begin_checkout and 0 conversions. <code>[observed -> inferred | High confidence]</code> (BRIK site: <a href="https://hostel-positano.com/en/">https://hostel-positano.com/en/</a>)</li>
+</ul>
+<p>P0 (&#x3C;=14 days) checklist (>=12 items):</p>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Item</th>
+<th>Expected impact</th>
+<th>Effort</th>
+<th>Metric moved</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0</td>
+<td>Implement cross-domain/cross-subdomain tracking for booking engine (or server-side tracking) so begin_checkout + purchase fire</td>
+<td>High</td>
+<td>M</td>
+<td>begin_checkout rate; purchase count</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Add GA4 events: view_item (room), selection, begin_checkout, purchase; plus phone/email/WhatsApp clicks</td>
+<td>High</td>
+<td>M</td>
+<td>funnel visibility</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Create a "Book now" sticky CTA on mobile with date persistence</td>
+<td>Medium</td>
+<td>S</td>
+<td>CTA CTR; booking starts</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Replace placeholder booking labels and ensure booking widget renders reliably on first load</td>
+<td>High</td>
+<td>M</td>
+<td>bounce rate; booking starts</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Show total price clarity: what's included, tourist tax handling, admin fee visibility, deposit rules</td>
+<td>High</td>
+<td>S</td>
+<td>checkout abandonment; support tickets</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Summarize cancellation terms in 2 lines per rate (Refundable vs Non-refundable) with exact cutoff</td>
+<td>Medium</td>
+<td>S</td>
+<td>CVR; disputes</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Move review proof (scores + counts) next to CTA and include 2-3 recent snippets</td>
+<td>Medium</td>
+<td>S</td>
+<td>CVR</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Add "Direct perks" value box per room card and ensure it's auto-applied</td>
+<td>Medium</td>
+<td>S</td>
+<td>room->checkout rate</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Implement email capture for "price drop / availability alert" for peak dates</td>
+<td>Medium</td>
+<td>M</td>
+<td>leads; returning sessions</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Add support promise (response SLA) and channels (email/WhatsApp) with click tracking</td>
+<td>Low-Med</td>
+<td>S</td>
+<td>assisted conversions</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Start weekly reconciliation: bookings export &#x3C;-> GA4 purchase &#x3C;-> net value</td>
+<td>High</td>
+<td>M</td>
+<td>attribution accuracy</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>Create the channel export artifacts (bookings + commission/take rate) for 12 complete months</td>
+<td>High</td>
+<td>M</td>
+<td>ability to quantify channel-mix effect</td>
+</tr>
+</tbody>
+</table>
+<p>P1 (30-60 days):</p>
+<ul>
+<li>Launch metasearch (Google Hotel Ads) once conversion tracking is validated.</li>
+<li>Build room-type merchandising pages (solo bed vs private room vs couples).</li>
+<li>Automate post-booking upsell flow (experiences + late checkout + drinks).</li>
+</ul>
+<p>P2 (nice-to-have):</p>
+<ul>
+<li>On-site personalization (repeat visitor, language-aware perks).</li>
+<li>A/B testing program (pricing display order, trust modules).</li>
+</ul>
+<p>Measurement repair plan (must enable weekly decisions):</p>
+<ul>
+<li>Events: view_item (room page), select_date, begin_checkout, purchase/booking_confirm, generate_lead (email), click_phone, click_whatsapp, click_directions.</li>
+<li>UTM discipline: enforce utm_source/utm_medium/utm_campaign on all marketing links; keep a single source-of-truth channel mapping.</li>
+<li>Reconciliation: weekly join between net booking value exports (internal truth) and GA4 purchase events; flag deltas >5% for investigation.</li>
+</ul>
+<h2>J) Product + operations implications (booking product + experiences cross-sell; failure modes; support)</h2>
+<p>Booking product implications (inferred):</p>
+<ul>
+<li>With only 11 rooms, the opportunity is less about "more traffic" and more about reducing leakage (availability errors, parity confusion, abandoned checkouts) and increasing yield per available bed in peak months. <code>[inferred | High confidence]</code></li>
+<li>The booking terms include a security deposit up to one night per guest and a EUR 5 cancellation admin fee; these must be explained to reduce disputes and chargebacks. <code>[observed -> inferred | Medium confidence]</code> (BRIK terms: <a href="https://hostel-positano.com/en/terms">https://hostel-positano.com/en/terms</a>)</li>
+</ul>
+<p>Experiences cross-sell approach (inferred):</p>
+<ul>
+<li>Treat experiences as post-booking attach first, not pre-booking friction. Use marketplaces for supply and pricing norms.</li>
+<li>Failure mode: bundling accommodation + experiences into a single "package price" can trigger package travel obligations (see K). <code>[inferred | Medium confidence]</code></li>
+</ul>
+<p>Operational "must not break" list (inferred):</p>
+<ul>
+<li>Inventory sync between PMS/channel manager and OTAs must be audited weekly in April-July.</li>
+<li>Check-in window and ID/payment requirements should be repeated in pre-arrival messages to reduce no-shows.</li>
+</ul>
+<h2>K) Regulatory/claims constraints and red lines</h2>
+<p>Price transparency (EU):</p>
+<ul>
+<li>EU consumer law requires showing the total price inclusive of taxes, or how it is calculated, and any additional costs where applicable. <code>[observed | High confidence]</code> (Directive 2011/83/EU; see Sources)</li>
+<li>Red line: do not hide mandatory fees (service/admin) until after checkout steps.</li>
+</ul>
+<p>Local taxes (Positano):</p>
+<ul>
+<li>Municipal tourist tax applies and must be communicated clearly (whether collected online or at check-in). <code>[observed | High confidence]</code> (Comune di Positano; see Sources)</li>
+</ul>
+<p>Payments (PSD2 / SCA):</p>
+<ul>
+<li>Card payments in the EU are subject to Strong Customer Authentication requirements; payment flows/providers must support SCA. <code>[observed | High confidence]</code> (PSD2 + RTS; see Sources)</li>
+</ul>
+<p>Data/privacy (GDPR + cookies):</p>
+<ul>
+<li>Personal data processing must follow GDPR obligations. <code>[observed | High confidence]</code> (GDPR; see Sources)</li>
+</ul>
+<p>Package Travel Directive (accommodation + experiences):</p>
+<ul>
+<li>If BRIK sells a combination of travel services as a "package" or linked travel arrangement, Package Travel Directive duties can apply. <code>[observed | High confidence]</code> (Directive 2015/2302; see Sources)</li>
+<li>Practical guardrail (inferred): keep experiences as optional add-ons charged separately and clearly disclosed, unless compliant package infrastructure exists.</li>
+</ul>
+<h2>L) Proposed 90-day outcome contract (outcome, baseline, target, by-date, owner, leading indicators, decision links)</h2>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Baseline (observed)</th>
+<th>90-day target (inferred)</th>
+<th>By date</th>
+<th>Owner</th>
+<th>Leading indicators (weekly)</th>
+<th>Decision link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Measurement usable for decisions</td>
+<td>GA4: 73 sessions; 0 begin_checkout; 0 conversions</td>
+<td>Purchase tracking + begin_checkout live; >=95% reconciliation between bookings export and GA4 purchase</td>
+<td>2026-03-15</td>
+<td>Growth/Ops</td>
+<td>begin_checkout/session; purchase/session; reconciliation delta</td>
+<td>Unlock metasearch / limited paid tests</td>
+</tr>
+<tr>
+<td>Peak-month volume recovery plan set</td>
+<td>Apr-Jul were top YoY decline months</td>
+<td>Inventory + promo calendar for Apr-Jul locked (>=8-week lead)</td>
+<td>2026-03-31</td>
+<td>Revenue/Ops</td>
+<td>OTA impressions/rank signals where available; pickup curve</td>
+<td>Reforecast YoY recovery</td>
+</tr>
+<tr>
+<td>Channel-level unit economics visibility</td>
+<td>Channel split unknown</td>
+<td>Channel export artifacts created and reviewed</td>
+<td>2026-03-15</td>
+<td>Revenue/Ops</td>
+<td>effective take rate; cancels/refunds by channel</td>
+<td>Quantify channel-mix effect</td>
+</tr>
+<tr>
+<td>Direct conversion lift (once tracked)</td>
+<td>Unknown (not measurable)</td>
+<td>Establish baseline CVR, then +20-40% relative lift from UX fixes</td>
+<td>2026-05-15</td>
+<td>Growth</td>
+<td>room view->begin_checkout; begin_checkout->purchase</td>
+<td>Decide on scaling direct channels</td>
+</tr>
+<tr>
+<td>Direct share protection</td>
+<td>Direct share 20.5% (YoY up)</td>
+<td>Maintain >=20% while recovering OTA volume</td>
+<td>2026-05-15</td>
+<td>Revenue</td>
+<td>direct share (weekly), net value</td>
+<td>Budget allocation</td>
+</tr>
+</tbody>
+</table>
+<h2>M) First-14-day validation plan (tests + thresholds + re-forecast triggers)</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>What it validates</th>
+<th>Pass threshold</th>
+<th>If fail</th>
+<th>Data source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Implement begin_checkout + purchase tracking</td>
+<td>Measurement viability</td>
+<td>>=95% reconciliation between bookings export and GA4 purchase (or >=20 purchases tracked if volume allows)</td>
+<td>Pause growth; debug cross-domain/server-side tracking</td>
+<td>GA4 + bookings export</td>
+</tr>
+<tr>
+<td>Booking widget render + mobile flow</td>
+<td>Funnel friction</td>
+<td>>=90% of test sessions can reach checkout without reload/label errors</td>
+<td>Replace/patch booking widget integration</td>
+<td>QA logs + GA4</td>
+</tr>
+<tr>
+<td>OTA inventory &#x26; rate-plan audit</td>
+<td>Distribution leakage</td>
+<td>0 critical mismatches (sold-out when not; wrong min-stay; wrong occupancy)</td>
+<td>Daily audit until stable</td>
+<td>PMS/OTA extranet</td>
+</tr>
+<tr>
+<td>Manual S1-S3 parity capture</td>
+<td>Price competitiveness</td>
+<td>Direct is &#x3C;= OTA total OR direct wins via perks with clear value</td>
+<td>Adjust rate fences/perks/taxes display</td>
+<td>Screenshots + parity table</td>
+</tr>
+<tr>
+<td>Channel export artifacts</td>
+<td>Channel-mix + margin visibility</td>
+<td>Both CSVs present and reviewed; effective take rate computed</td>
+<td>Block deeper channel-mix analysis until present</td>
+<td>CSV exports + invoices</td>
+</tr>
+</tbody>
+</table>
+<h2>N) Assumptions register (assumption, evidence, confidence, impact, validation test)</h2>
+<table>
+<thead>
+<tr>
+<th>Assumption</th>
+<th>Evidence</th>
+<th>Confidence</th>
+<th>Impact if wrong</th>
+<th>Fast validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OTA volume loss is a primary driver of booking decline</td>
+<td>Direct share rose while total bookings fell, but channel-level data missing</td>
+<td>Medium</td>
+<td>Misallocates effort (OTAs vs pricing/product)</td>
+<td>Export bookings by channel for last 12 months</td>
+</tr>
+<tr>
+<td>Website bookings are undercounted due to tracking/integration</td>
+<td>GA4 shows 0 begin_checkout; booking UI appears client-rendered</td>
+<td>High</td>
+<td>Underestimates direct performance</td>
+<td>Implement purchase tracking + reconcile</td>
+</tr>
+<tr>
+<td>Typical OTA take rate 10-25%</td>
+<td>Booking.com notes varies; industry anchors</td>
+<td>Medium</td>
+<td>Margin model errors</td>
+<td>Pull invoices / effective commission</td>
+</tr>
+<tr>
+<td>Experiences can increase net value via attach rate</td>
+<td>Existence of experience menu + marketplaces</td>
+<td>Medium</td>
+<td>Wasted effort if low take</td>
+<td>Test post-booking add-on email (A/B)</td>
+</tr>
+</tbody>
+</table>
+<h2>O) Risk register (risk, why it matters, mitigation)</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Why it matters</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tracking remains broken -> "flying blind"</td>
+<td>Blocks paid scaling; misreads conversion</td>
+<td>P0 measurement sprint + reconciliation</td>
+</tr>
+<tr>
+<td>Peak inventory misconfigured on OTAs</td>
+<td>Direct cannot replace lost OTA volume fast</td>
+<td>Weekly OTA audit; simplify rate plans</td>
+</tr>
+<tr>
+<td>Price/fee opacity triggers drop-offs or disputes</td>
+<td>Price-sensitive travelers react to surprises</td>
+<td>Total price clarity; tourist tax messaging</td>
+</tr>
+<tr>
+<td>Experiences bundling triggers package travel duties</td>
+<td>Compliance exposure</td>
+<td>Keep add-ons separate unless compliant</td>
+</tr>
+</tbody>
+</table>
+<h2>P) Source list with URL + access date</h2>
+<p>Access date for all sources: 2026-02-15</p>
+<p>BRIK (official):</p>
+<ul>
+<li><a href="https://hostel-positano.com/en">https://hostel-positano.com/en</a></li>
+<li><a href="https://hostel-positano.com/en/rooms/">https://hostel-positano.com/en/rooms/</a></li>
+<li><a href="https://hostel-positano.com/en/book">https://hostel-positano.com/en/book</a></li>
+<li><a href="https://hostel-positano.com/en/terms">https://hostel-positano.com/en/terms</a></li>
+<li><a href="https://hostel-positano.com/en/assistance/bookings-reservations">https://hostel-positano.com/en/assistance/bookings-reservations</a></li>
+</ul>
+<p>Demand / market (primary and reputable):</p>
+<ul>
+<li>ISTAT - Statistics Today, Tourist flows Q4 2024 (PDF): <a href="https://www.istat.it/wp-content/uploads/2025/03/Statistics-Today-Turist-flows-Q4-2024.pdf">https://www.istat.it/wp-content/uploads/2025/03/Statistics-Today-Turist-flows-Q4-2024.pdf</a></li>
+<li>ISTAT - Tourism Satellite Account 2023 (EN) (PDF): <a href="https://www.istat.it/wp-content/uploads/2025/12/Statistica_Report_CST_2023_EN.pdf">https://www.istat.it/wp-content/uploads/2025/12/Statistica_Report_CST_2023_EN.pdf</a></li>
+<li>Eurostat - EU tourism nights at record 3.08B in 2025: <a href="https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20260116-1">https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20260116-1</a></li>
+<li>Eurostat - Tourism statistics explained: <a href="https://ec.europa.eu/eurostat/statistics-explained/index.php/Tourism_statistics_-_nights_spent_at_tourist_accommodation_establishments">https://ec.europa.eu/eurostat/statistics-explained/index.php/Tourism_statistics_-_nights_spent_at_tourist_accommodation_establishments</a></li>
+<li>Eurostat - New records set by online booking platforms in 2024: <a href="https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20250402-1">https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20250402-1</a></li>
+<li>Eurostat - Bookings via online platforms rise by 28.3% in Q1 2024: <a href="https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20240729-1">https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20240729-1</a></li>
+<li>Bank of Italy - Survey on International Tourism 2024 (PDF, EN): <a href="https://www.bancaditalia.it/pubblicazioni/indagine-turismo-internazionale/2025-indagine-turismo-internazionale/en_statistiche_ITI_30062025.pdf?language_id=1">https://www.bancaditalia.it/pubblicazioni/indagine-turismo-internazionale/2025-indagine-turismo-internazionale/en_statistiche_ITI_30062025.pdf?language_id=1</a></li>
+<li>Bank of Italy - International tourism (monthly evidences index): <a href="https://www.bancaditalia.it/statistiche/tematiche/rapporti-estero/turismo-internazionale/evidenze-mensili/">https://www.bancaditalia.it/statistiche/tematiche/rapporti-estero/turismo-internazionale/evidenze-mensili/</a></li>
+<li>OECD - Strengthening tourism statistics in Italy (PDF): <a href="https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/07/strengthening-the-tourism-statistics-and-data-system-in-italy_30c05dc9/fe0b1b14-en.pdf">https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/07/strengthening-the-tourism-statistics-and-data-system-in-italy_30c05dc9/fe0b1b14-en.pdf</a></li>
+<li>OECD - Digitalisation of the tourism ecosystem in Italy (PDF): <a href="https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/07/promoting-the-digitalisation-of-the-tourism-ecosystem-in-italy_33726375/63616a85-en.pdf">https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/07/promoting-the-digitalisation-of-the-tourism-ecosystem-in-italy_33726375/63616a85-en.pdf</a></li>
+</ul>
+<p>Regulatory:</p>
+<ul>
+<li>Consumer Rights Directive (2011/83/EU): <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX%3A02011L0083-20220528">https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX%3A02011L0083-20220528</a></li>
+<li>PSD2 (Directive 2015/2366): <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A32015L2366">https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A32015L2366</a></li>
+<li>SCA RTS (Reg. 2018/389): <a href="https://eur-lex.europa.eu/eli/reg_del/2018/389/oj/eng">https://eur-lex.europa.eu/eli/reg_del/2018/389/oj/eng</a></li>
+<li>GDPR (Reg. 2016/679): <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng">https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng</a></li>
+<li>Package Travel Directive (2015/2302): <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX%3A32015L2302">https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX%3A32015L2302</a></li>
+<li>Comune di Positano tourist tax: <a href="https://comune.positano.sa.it/servizi/imposta-di-soggiorno-ids">https://comune.positano.sa.it/servizi/imposta-di-soggiorno-ids</a></li>
+</ul>
+<p>Payments / fees:</p>
+<ul>
+<li>Stripe pricing: <a href="https://stripe.com/pricing">https://stripe.com/pricing</a></li>
+<li>PayPal merchant fees (PDF example): <a href="https://www.paypalobjects.com/marketing/ua/pdf/FR/en/fr-en-merchant-fees-17-jul-2025.pdf">https://www.paypalobjects.com/marketing/ua/pdf/FR/en/fr-en-merchant-fees-17-jul-2025.pdf</a></li>
+</ul>
+<p>Competitor sites (direct):</p>
+<ul>
+<li>Seven Hostel: <a href="https://sevenhostel.eu/">https://sevenhostel.eu/</a></li>
+<li>Ulisse Deluxe Hostel: <a href="https://www.ulissedeluxe.com/">https://www.ulissedeluxe.com/</a></li>
+<li>Hostel of the Sun Napoli: <a href="https://hostelnapoli.com/">https://hostelnapoli.com/</a></li>
+<li>Ostello Bello Napoli: <a href="https://ostellobello.com/it/hostel/napoli/">https://ostellobello.com/it/hostel/napoli/</a></li>
+<li>Albergo California (Positano): <a href="https://www.hotelcaliforniapositano.it/">https://www.hotelcaliforniapositano.it/</a></li>
+<li>Sorrento B&#x26;D Rooms: <a href="https://www.sorrentobedrooms.com/">https://www.sorrentobedrooms.com/</a></li>
+<li>YellowSquare Rome: <a href="https://yellowsquare.com/rome/">https://yellowsquare.com/rome/</a></li>
+<li>The Beehive: <a href="https://www.the-beehive.com/">https://www.the-beehive.com/</a></li>
+<li>Plus Florence: <a href="https://plushostels.com/en/florence">https://plushostels.com/en/florence</a></li>
+<li>Anda Venice Hostel: <a href="https://www.andavenice.com/">https://www.andavenice.com/</a></li>
+<li>Generator Rome: <a href="https://staygenerator.com/hostels/rome?lang=en-GB">https://staygenerator.com/hostels/rome?lang=en-GB</a></li>
+<li>Combo Milano: <a href="https://thisiscombo.com/en/destinations/milan">https://thisiscombo.com/en/destinations/milan</a></li>
+</ul>
+<p>Platforms:</p>
+<ul>
+<li>Booking.com partner commission: <a href="https://partner.booking.com/en-gb/help/commission-invoices-tax/commission/understanding-our-commission">https://partner.booking.com/en-gb/help/commission-invoices-tax/commission/understanding-our-commission</a></li>
+<li>Hostelworld: <a href="https://www.hostelworld.com/">https://www.hostelworld.com/</a></li>
+<li>Airbnb fees: <a href="https://www.airbnb.com/help/article/1857">https://www.airbnb.com/help/article/1857</a></li>
+<li>Expedia Group: <a href="https://www.expediagroup.com/">https://www.expediagroup.com/</a></li>
+<li>Google Hotels help: <a href="https://support.google.com/hotelprices/">https://support.google.com/hotelprices/</a></li>
+</ul>
+<p>Experiences:</p>
+<ul>
+<li>GetYourGuide (about): <a href="https://www.getyourguide.com/c/about/">https://www.getyourguide.com/c/about/</a></li>
+<li>Viator: <a href="https://www.viator.com/">https://www.viator.com/</a></li>
+<li>Civitatis Italy: <a href="https://www.civitatis.com/en/italy/">https://www.civitatis.com/en/italy/</a></li>
+<li>Tiqets (about): <a href="https://www.tiqets.com/en/about-tiqets/">https://www.tiqets.com/en/about-tiqets/</a></li>
+</ul>
+<h2>Q) Delta and feedback for human operators (required)</h2>
+<p>What is working vs not working given internal baseline trends?</p>
+<p>Working (observed -> inferred):</p>
+<ul>
+<li>Direct share improved YoY (14.1% -> 20.5%), which implies direct tactics/perks and/or manual-direct processes have traction. <code>[observed | Medium confidence]</code> (internal baseline)</li>
+<li>Strong review proof is visible on the site (high counts and scores), a major trust asset. <code>[observed | Medium confidence]</code> (BRIK rooms page: <a href="https://hostel-positano.com/en/rooms/">https://hostel-positano.com/en/rooms/</a>)</li>
+</ul>
+<p>Not working (observed -> inferred):</p>
+<ul>
+<li>Peak-month booking volume fell materially (April-July drive most of the YoY net-value loss), indicating lost share or capacity utilization issues when demand is highest. <code>[observed | High confidence]</code> (internal baseline)</li>
+<li>Measurement and website funnel instrumentation are not reliable, preventing fast iteration and paid gating. <code>[observed | High confidence]</code> (internal baseline; GA4 snapshot)</li>
+</ul>
+<p>Stop / Continue / Start (14-day focus)</p>
+<p>STOP (14 days)</p>
+<ul>
+<li>Action: stop scaling paid acquisition and any channel spend beyond brand defense until purchase-level tracking is accurate.</li>
+<li>Rationale: with 0 begin_checkout/purchase in GA4, you cannot compute CVR or CAC reliably. <code>[observed -> inferred | High confidence]</code> (internal baseline)</li>
+<li>Expected metric movement: N/A (risk reduction); prevents mis-spend.</li>
+<li>14-day verification: tracking reconciliation >=95% between bookings export and GA4 purchase.</li>
+</ul>
+<p>CONTINUE (14 days)</p>
+<ul>
+<li>Action: continue direct-booking perks, but keep messaging consistent and placed at room + checkout levels (auto-applied; visible in total price).</li>
+<li>Rationale: direct perks are a proven industry pattern and already present; they can justify parity differences versus OTAs. <code>[observed -> inferred | Medium confidence]</code> (BRIK rooms page: <a href="https://hostel-positano.com/en/rooms/">https://hostel-positano.com/en/rooms/</a>)</li>
+<li>Expected metric movement: +10-25% relative improvement in room-view -> begin_checkout (once tracked).</li>
+<li>14-day verification: A/B test "perks module near CTA" vs control; compare funnel rates.</li>
+</ul>
+<p>START (14 days)</p>
+<ul>
+<li>Action: start a single-threaded "Measurement + OTA recovery" sprint tied to the three worst months (April/June/July).</li>
+<li>Rationale: volume is the main driver of YoY decline; OTAs remain the fastest volume lever for a single-property hostel. <code>[observed -> inferred | High confidence]</code> (internal baseline)</li>
+<li>Expected metric movement: +10-20% booking pickup vs same booking window (internal), especially for peak dates.</li>
+<li>14-day verification: track pickup curve for April-July 2026 dates vs last 2 weeks; confirm OTA impressions/rank signals where available.</li>
+</ul>
+<p>START (14 days)</p>
+<ul>
+<li>Action: start the S1-S3 parity capture protocol (manual) and fix any discrepancies in taxes/fees visibility and cancellation cutoff.</li>
+<li>Rationale: travelers increasingly compare total price; fee opacity increases abandonment and disputes. <code>[inferred | Medium confidence]</code></li>
+<li>Expected metric movement: lower checkout abandonment; fewer "price surprise" support tickets.</li>
+<li>14-day verification: parity table filled for BRIK direct + 2 OTAs + >=8 competitors; parity issues logged and resolved/mitigated.</li>
+</ul>
+<p>START (14 days)</p>
+<ul>
+<li>Action: start a "tourist tax clarity" module in checkout and confirmation emails (collected when/how much).</li>
+<li>Rationale: local tax is real and must be transparent; reduces guest friction. <code>[observed -> inferred | High confidence]</code> (Comune di Positano tax page; see Sources)</li>
+<li>Expected metric movement: reduced booking disputes; higher post-stay satisfaction.</li>
+<li>14-day verification: tag support contacts mentioning "tax/fees"; target -30% mentions after rollout.</li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/market-research/BRIK/2026-02-15-market-intelligence.user.md</code></div>
+      <div>Generated: 2026-02-15T14:56:01.866Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

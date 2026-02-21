@@ -6,7 +6,8 @@ import {
   flattenInventoryItem,
   normalizeQuantity,
 } from "@acme/platform-core/utils/inventory";
-import type { RawInventoryItem } from "@acme/types";
+// RawInventoryItem removed from @acme/types — use local alias for test-only partial objects
+type RawInventoryItem = Record<string, unknown>;
 
 describe("normalizeQuantity", () => {
   it("handles various units and invalid input", () => {
@@ -71,11 +72,11 @@ describe("expandInventoryItem", () => {
   });
 
   it("throws when raw input missing or blank sku", () => {
-    const missing: RawInventoryItem = {
+    const missing = {
       productId: "p1",
       quantity: 1,
     } as any;
-    const blank: RawInventoryItem = {
+    const blank = {
       sku: "   ",
       productId: "p1",
       quantity: 1,
@@ -85,11 +86,11 @@ describe("expandInventoryItem", () => {
   });
 
   it("throws when raw input missing or blank productId", () => {
-    const missing: RawInventoryItem = {
+    const missing = {
       sku: "s1",
       quantity: 1,
     } as any;
-    const blank: RawInventoryItem = {
+    const blank = {
       sku: "s1",
       productId: " ",
       quantity: 1,
@@ -99,12 +100,12 @@ describe("expandInventoryItem", () => {
   });
 
   it("throws when quantity is negative or non-finite", () => {
-    const negative: RawInventoryItem = {
+    const negative = {
       sku: "s1",
       productId: "p1",
       quantity: -1,
     } as any;
-    const nonFinite: RawInventoryItem = {
+    const nonFinite = {
       sku: "s1",
       productId: "p1",
       quantity: "abc",
@@ -118,7 +119,7 @@ describe("expandInventoryItem", () => {
   });
 
   it("normalizes unit and variant fields", () => {
-    const raw: RawInventoryItem = {
+    const raw = {
       sku: "s1",
       productId: "p1",
       quantity: "3",

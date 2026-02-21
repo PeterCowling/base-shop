@@ -8,11 +8,11 @@ Last-updated: 2026-02-10
 Relates-to charter: none
 Feature-Slug: git-conflict-ops-hardening
 Related-Fact-Find: docs/plans/ci-integration-speed-control-fact-find.md
-Related-Briefing: docs/briefs/git-conflict-enforcement-balance-fact-find.md
+Related-Briefing: docs/briefs/git-conflict-enforcement-balance-lp-do-fact-find.md
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
-Supporting-Skills: re-plan, safe-commit-push-ci
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-replan, ops-ship
 Overall-confidence: 78%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by evidence completeness and safety risk
 Business-Unit: PLAT
@@ -42,7 +42,7 @@ Current state:
 
 - **Mechanistic no-loss guarantees:** Safety anchor, post-merge verification, lockfile regeneration, and merge-commit enforcement all enforced by hooks/guard — not by agent compliance.
 - **Eliminate operator variance:** Controls fire for every agent and every human, every time. No opt-in required.
-- **Reduce token cost:** Remove ~80 lines of redundant safety documentation from `safe-commit-push-ci` skill that duplicate what 4 mechanistic layers already enforce.
+- **Reduce token cost:** Remove ~80 lines of redundant safety documentation from `ops-ship` skill that duplicate what 4 mechanistic layers already enforce.
 - **Extend, don't replace:** All changes are additive to existing infrastructure (`scripts/agent-bin/git`, git hooks, `validate-changes.sh`, `git-safety-policy.test.ts`).
 
 ## Non-goals
@@ -90,7 +90,7 @@ For this plan, "no-loss" means all of the following:
 ## Fact-Find and Evidence Base
 
 - Extraction source: `docs/plans/ci-integration-speed-control-plan.md` (Scope Extraction).
-- Enforcement-balance audit: `docs/briefs/git-conflict-enforcement-balance-fact-find.md` (2026-02-10).
+- Enforcement-balance audit: `docs/briefs/git-conflict-enforcement-balance-lp-do-fact-find.md` (2026-02-10).
 - Existing conflict-process evidence: `docs/git-safety.md` (manual merge conflict process and safety guidance).
 - Policy references:
   - `AGENTS.md` (destructive command prohibitions, writer lock requirements)
@@ -164,7 +164,7 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 
 - **Type:** INVESTIGATE
 - **Deliverable:** Catalog of conflict types, operator failure modes, and current resolution pain points
-- **Execution-Skill:** `re-plan`
+- **Execution-Skill:** `lp-do-replan`
 - **Affects:** `docs/git-safety.md`, git workflow docs, conflict fixture definitions
 - **Depends on:** -
 - **Effort:** M
@@ -183,7 +183,7 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 
 - **Type:** PLAN
 - **Deliverable:** Per-enforcement-point spec defining inputs, outputs, failure modes, and test expectations
-- **Execution-Skill:** `re-plan`
+- **Execution-Skill:** `lp-do-replan`
 - **Affects:** `scripts/agent-bin/git`, `scripts/git-hooks/`, `scripts/validate-changes.sh`, `.claude/hooks/session-start.sh`, `scripts/__tests__/git-safety-policy.test.ts`
 - **Depends on:** GIT-COH-01
 - **Effort:** S (reduced from M — integration points are now well-defined)
@@ -207,7 +207,7 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Guard extension, config change, hook extension, and validation extension — all integrated into existing infrastructure
-- **Execution-Skill:** `build-feature`
+- **Execution-Skill:** `lp-do-build`
 - **Affects:** `scripts/agent-bin/git`, `.claude/hooks/session-start.sh`, `scripts/git-hooks/`, `scripts/validate-changes.sh`
 - **Depends on:** GIT-COH-02
 - **Effort:** M
@@ -274,8 +274,8 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 
 - **Type:** INVESTIGATE + IMPLEMENT (mixed)
 - **Deliverable:** Extended test coverage, slimmed skill, compliance report, and go/no-go decision
-- **Execution-Skill:** `re-plan` (compliance) + `build-feature` (tests + skill edit)
-- **Affects:** `scripts/__tests__/git-safety-policy.test.ts`, `.claude/skills/safe-commit-push-ci/SKILL.md`, `docs/git-safety.md`
+- **Execution-Skill:** `lp-do-replan` (compliance) + `lp-do-build` (tests + skill edit)
+- **Affects:** `scripts/__tests__/git-safety-policy.test.ts`, `.claude/skills/ops-ship/SKILL.md`, `docs/git-safety.md`
 - **Depends on:** GIT-COH-03
 - **Effort:** S
 - **Status:** Pending
@@ -292,9 +292,9 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
   - Lockfile audit: verify validation fails when lockfile is manually spliced after merge conflict.
   - Override mechanism: verify `ALLOW_MERGE_DELETIONS=1` is blocked for agents by guard + PreToolUse.
 
-#### GIT-COH-04b: Slim safe-commit-push-ci skill
+#### GIT-COH-04b: Slim ops-ship skill
 
-- **Target file:** `.claude/skills/safe-commit-push-ci/SKILL.md`
+- **Target file:** `.claude/skills/ops-ship/SKILL.md`
 - **What it does:** Replace ~80 lines of redundant safety command documentation (§ Hardcoded Safety Baseline, § Hard-blocked command classes, § Bypass flags, § Safe sharp tools) with a concise reference:
   ```markdown
   ## Safety Controls (enforced mechanistically)
@@ -316,7 +316,7 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 
 - **Acceptance (GIT-COH-04 overall):**
   - Regression test suite extended with minimum 8 new test cases (2 per control).
-  - `safe-commit-push-ci` skill reduced by ~80 lines with no loss of procedural guidance.
+  - `ops-ship` skill reduced by ~80 lines with no loss of procedural guidance.
   - Compliance checklist completed and passing.
   - Clear rollback trigger conditions documented.
 - **Validation contract:**
@@ -339,7 +339,7 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 
 - Four mechanistic controls implemented and tested within existing infrastructure.
 - No-loss definition is enforced by hooks/guard, not just documented.
-- `safe-commit-push-ci` skill slimmed by ~80 lines with zero loss of procedural value.
+- `ops-ship` skill slimmed by ~80 lines with zero loss of procedural value.
 - Regression test suite extended with minimum 8 new test cases.
 - Compliance checklist passing against all forbidden command classes + new controls.
 
@@ -348,7 +348,7 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 - 2026-02-09: Extracted from `ci-integration-speed-control-plan` to avoid scope creep and confidence dilution.
 - 2026-02-09: Expanded from stub into draft plan with explicit execution profile, constraints, and blocked implementation path.
 - 2026-02-09: Completed GIT-COH-01 with taxonomy artifact at `docs/plans/git-conflict-ops-hardening-conflict-taxonomy.md`.
-- 2026-02-10: **Major reframe (v2).** Enforcement-balance audit (`docs/briefs/git-conflict-enforcement-balance-fact-find.md`) identified that conflict resolution procedure is 100% soft control while destructive command prevention is 4x redundant. Reframed from standalone merge-assistant script (opt-in, token-heavy) to mechanistic enforcement extensions (always-on, zero token cost). GIT-COH-02 through GIT-COH-04 rewritten. Confidence raised from 69% to 78% due to clearer implementation path and well-defined integration points.
+- 2026-02-10: **Major reframe (v2).** Enforcement-balance audit (`docs/briefs/git-conflict-enforcement-balance-lp-do-fact-find.md`) identified that conflict resolution procedure is 100% soft control while destructive command prevention is 4x redundant. Reframed from standalone merge-assistant script (opt-in, token-heavy) to mechanistic enforcement extensions (always-on, zero token cost). GIT-COH-02 through GIT-COH-04 rewritten. Confidence raised from 69% to 78% due to clearer implementation path and well-defined integration points.
 
 ## Overall-confidence calculation
 

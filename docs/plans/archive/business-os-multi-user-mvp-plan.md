@@ -162,8 +162,8 @@ Comments as first-class versioned artifacts. Threads rendered on entity pages.
 ```markdown
 ---
 Type: AgentTask
-ID: QUEUE-20260129-143000-pete-work-idea
-Action: work-idea
+ID: QUEUE-20260129-143000-pete-idea-develop
+Action: idea-develop
 Target: BRIK-OPP-0003
 Initiator: pete
 Status: pending
@@ -183,7 +183,7 @@ Focus on technical feasibility and integration complexity.
 ```markdown
 ---
 Type: AgentRun
-QueueID: QUEUE-20260129-143000-pete-work-idea
+QueueID: QUEUE-20260129-143000-pete-idea-develop
 Status: in-progress
 Started: 2026-01-29T14:30:05Z
 LastUpdated: 2026-01-29T14:32:10Z
@@ -191,7 +191,7 @@ LastUpdated: 2026-01-29T14:32:10Z
 
 ## Progress
 
-[14:30:05] Started work-idea task for BRIK-OPP-0003
+[14:30:05] Started idea-develop task for BRIK-OPP-0003
 [14:30:12] Reading idea file...
 [14:31:45] Generated card: BRIK-ENG-0016
 [14:32:10] Committed card + stage doc
@@ -208,7 +208,7 @@ LastUpdated: 2026-01-29T14:32:10Z
 
 **Current (Phase 0-2):**
 - User: Pete edits markdown directly or via local UI
-- Agent: Pete runs Claude Code CLI in terminal with `/work-idea`, `/plan-feature`, etc.
+- Agent: Pete runs Claude Code CLI in terminal with `/idea-develop`, `/lp-do-plan`, etc.
 - Identity: Dev cookie (forgeable)
 - ID allocation: Manual or "scan dir + increment"
 - Git writes: Uncoordinated (only one user, so no collision yet)
@@ -1526,7 +1526,7 @@ These were the two tasks originally at 78% confidence. Investigation work (tests
     - Queue ID format: {target}-{timestamp}-{random}
     - Stores in: docs/business-os/agent-queue/{queueId}.md
   - Created `/api/agent-queue/create` route:
-    - Validates action type (work-idea, break-into-tasks, draft-plan, custom)
+    - Validates action type (idea-develop, break-into-tasks, draft-plan, custom)
     - MVP-B2 auth checks (when enabled)
     - Returns queueId and commit hash
   - Updated `CardDetail.tsx`:
@@ -1595,7 +1595,7 @@ These were the two tasks originally at 78% confidence. Investigation work (tests
   - Approach: 78% — Daemon structure clear (poll → acquire lock → execute → write log → commit). Uncertainty on skill execution: CLI spawn vs module import. CLI spawn safer (isolation), module import faster.
   - Impact: 80% — New long-running process. Isolated from web server (separate Node process). Repo lock integration critical for correctness. Crash recovery via systemd/PM2.
 - **Investigation performed:**
-  - Repo: **Skills are documented and scoped** in `docs/business-os/agent-workflows.md:19` (5 skills: /work-idea, /propose-lane-move, /scan-repo, /update-business-plan, /update-people)
+  - Repo: **Skills are documented and scoped** in `docs/business-os/agent-workflows.md:19` (5 skills: /idea-develop, /idea-advance, /idea-scan, /biz-update-plan, /biz-update-people)
   - Repo: **"Check CLI exists then exec" pattern** found in `scripts/mcp/sync-ts-language.mjs:50` (`commandExists()` function uses `execFileSync` with `command -v`)
   - Tests: Will need integration tests with mock queue items
   - Patterns: Node.js child_process spawn for CLI execution, existing skill scoping reduces uncertainty
@@ -1619,7 +1619,7 @@ These were the two tasks originally at 78% confidence. Investigation work (tests
   - V2 raises Implementation confidence (logging proven)
   - V3 raises Impact confidence (lock integration proven)
   - V4+V5 raise Impact confidence (operational risk mitigated)
-  - Once complete, update Impact: 80% → 85%, proceed to `/build-feature`
+  - Once complete, update Impact: 80% → 85%, proceed to `/lp-do-build`
 
 #### Re-plan Update (2026-01-30)
 - **Previous confidence:** 78%
@@ -1651,7 +1651,7 @@ These were the two tasks originally at 78% confidence. Investigation work (tests
   - Build V1-V3 as test-first code (unit + integration tests)
   - Write V4 as documentation (runbook + PM2 config)
   - Build V5 as small feature (health endpoint or status file)
-  - Run `/re-plan` on MVP-E3 after all validations complete
+  - Run `/lp-do-replan` on MVP-E3 after all validations complete
   - Expect Impact: 80% → 85% after validation
 
 #### Build Completion (2026-01-30)
@@ -2225,7 +2225,7 @@ Enable dual-locale support (en, it) for all Business OS UI and content. Translat
 - **Documentation updated:**
   - None required for infrastructure (UI docs deferred to Phase 2)
 - **Implementation notes:**
-  - API-route triggering pattern used as decided in re-plan (not RepoWriter hooks)
+  - API-route triggering pattern used as decided in lp-do-replan (not RepoWriter hooks)
   - Translation queueing occurs in: POST /api/cards, convertToCard(), updateIdea()
   - Translation execution pending MVP-E3 (agent runner daemon)
   - UI locale selector deferred (locale can be set via API for now)
@@ -2341,7 +2341,7 @@ This is the clean migration boundary - swap storage layer, keep domain logic.
 ## Next Steps
 
 1. **Review this plan** with Pete - confirm epic priority and scope
-2. ~~**Run `/re-plan`** to assess confidence for each task~~ ✓ **COMPLETED 2026-01-29**
+2. ~~**Run `/lp-do-replan`** to assess confidence for each task~~ ✓ **COMPLETED 2026-01-29**
 3. **Start with Epic A** (production run mode) - lowest risk, enables all other work
 4. **Iterate through epics** A → B → C → D → E → F
 5. **Test with 5 real users** after Epic E complete (agent integration)
@@ -2357,7 +2357,7 @@ This is the clean migration boundary - swap storage layer, keep domain logic.
 - **Tasks blocked (<60%):** 0/18 tasks
 - **Overall confidence:** 86% (effort-weighted)
 - **Critical finding:** Confirmed collision-prone ID allocator in `apps/business-os/src/lib/id-generator.ts` (lines 34-74) - validates expert review
-- **Next action:** `/build-feature` starting with Epic A (MVP-A1)
+- **Next action:** `/lp-do-build` starting with Epic A (MVP-A1)
 
 **Audit Summary (2026-01-30):**
 - **Complete:** 7/18 (MVP-A1, MVP-A2, MVP-A3, MVP-B1, MVP-B2, MVP-B3, MVP-C1) — **Epic A complete! ✅ Epic B complete! ✅**

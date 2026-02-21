@@ -45,117 +45,123 @@ const roles: ComboBoxOption[] = [
 ];
 
 // Basic single select
+function DefaultStory() {
+  const [value, setValue] = useState<string | null>(null);
+  return (
+    <ComboBox
+      options={countries}
+      value={value}
+      onChange={setValue}
+      placeholder="Select a country..."
+    />
+  );
+}
 export const Default: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | null>(null);
-    return (
-      <ComboBox
-        options={countries}
-        value={value}
-        onChange={setValue}
-        placeholder="Select a country..."
-      />
-    );
-  },
+  render: () => <DefaultStory />,
 };
 
 // With pre-selected value
+function WithValueStory() {
+  const [value, setValue] = useState<string | null>('uk');
+  return (
+    <ComboBox
+      options={countries}
+      value={value}
+      onChange={setValue}
+      placeholder="Select a country..."
+    />
+  );
+}
 export const WithValue: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | null>('uk');
-    return (
-      <ComboBox
-        options={countries}
-        value={value}
-        onChange={setValue}
-        placeholder="Select a country..."
-      />
-    );
-  },
+  render: () => <WithValueStory />,
 };
 
 // Multiple selection
+function MultipleSelectStory() {
+  const [value, setValue] = useState<string[]>([]);
+  return (
+    <ComboBox
+      options={countries}
+      value={value}
+      onChange={(v) => setValue(v as string[])}
+      placeholder="Select countries..."
+      multiple
+    />
+  );
+}
 export const MultipleSelect: Story = {
-  render: () => {
-    const [value, setValue] = useState<string[]>([]);
-    return (
-      <ComboBox
-        options={countries}
-        value={value}
-        onChange={(v) => setValue(v as string[])}
-        placeholder="Select countries..."
-        multiple
-      />
-    );
-  },
+  render: () => <MultipleSelectStory />,
 };
 
 // With groups
+function GroupedStory() {
+  const [value, setValue] = useState<string[]>([]);
+  return (
+    <ComboBox
+      options={roles}
+      value={value}
+      onChange={(v) => setValue(v as string[])}
+      placeholder="Select roles..."
+      multiple
+      grouped
+    />
+  );
+}
 export const Grouped: Story = {
-  render: () => {
-    const [value, setValue] = useState<string[]>([]);
-    return (
-      <ComboBox
-        options={roles}
-        value={value}
-        onChange={(v) => setValue(v as string[])}
-        placeholder="Select roles..."
-        multiple
-        grouped
-      />
-    );
-  },
+  render: () => <GroupedStory />,
 };
 
 // With max selections
+function MaxSelectionsStory() {
+  const [value, setValue] = useState<string[]>([]);
+  return (
+    <ComboBox
+      options={countries}
+      value={value}
+      onChange={(v) => setValue(v as string[])}
+      placeholder="Select up to 3 countries..."
+      multiple
+      maxSelections={3}
+    />
+  );
+}
 export const MaxSelections: Story = {
-  render: () => {
-    const [value, setValue] = useState<string[]>([]);
-    return (
-      <ComboBox
-        options={countries}
-        value={value}
-        onChange={(v) => setValue(v as string[])}
-        placeholder="Select up to 3 countries..."
-        multiple
-        maxSelections={3}
-      />
-    );
-  },
+  render: () => <MaxSelectionsStory />,
 };
 
 // Size variants
+function SizesStory() {
+  const [sm, setSm] = useState<string | null>(null);
+  const [md, setMd] = useState<string | null>(null);
+  const [lg, setLg] = useState<string | null>(null);
+  return (
+    <div className="flex flex-col gap-4 w-80">
+      <ComboBox
+        options={countries}
+        value={sm}
+        onChange={setSm}
+        placeholder="Small"
+        size="sm"
+      />
+      <ComboBox
+        options={countries}
+        value={md}
+        onChange={setMd}
+        placeholder="Medium (default)"
+        size="md"
+      />
+      <ComboBox
+        options={countries}
+        value={lg}
+        onChange={setLg}
+        placeholder="Large"
+        size="lg"
+      />
+    </div>
+  );
+}
 export const Sizes: Story = {
-  render: () => {
-    const [sm, setSm] = useState<string | null>(null);
-    const [md, setMd] = useState<string | null>(null);
-    const [lg, setLg] = useState<string | null>(null);
-    return (
-      <div className="flex flex-col gap-4 w-80">
-        <ComboBox
-          options={countries}
-          value={sm}
-          onChange={setSm}
-          placeholder="Small"
-          size="sm"
-        />
-        <ComboBox
-          options={countries}
-          value={md}
-          onChange={setMd}
-          placeholder="Medium (default)"
-          size="md"
-        />
-        <ComboBox
-          options={countries}
-          value={lg}
-          onChange={setLg}
-          placeholder="Large"
-          size="lg"
-        />
-      </div>
-    );
-  },
+  render: () => <SizesStory />,
 };
 
 // Disabled state
@@ -172,135 +178,142 @@ export const Disabled: Story = {
 };
 
 // Loading state
+function LoadingStory() {
+  const [value, setValue] = useState<string | null>(null);
+  return (
+    <ComboBox
+      options={countries}
+      value={value}
+      onChange={setValue}
+      placeholder="Loading options..."
+      loading
+    />
+  );
+}
 export const Loading: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | null>(null);
-    return (
-      <ComboBox
-        options={countries}
-        value={value}
-        onChange={setValue}
-        placeholder="Loading options..."
-        loading
-      />
-    );
-  },
+  render: () => <LoadingStory />,
 };
 
 // With error
+function WithErrorStory() {
+  const [value, setValue] = useState<string | null>(null);
+  return (
+    <ComboBox
+      options={countries}
+      value={value}
+      onChange={setValue}
+      placeholder="Select a country..."
+      error="Please select a country"
+    />
+  );
+}
 export const WithError: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | null>(null);
-    return (
-      <ComboBox
-        options={countries}
-        value={value}
-        onChange={setValue}
-        placeholder="Select a country..."
-        error="Please select a country"
-      />
-    );
-  },
+  render: () => <WithErrorStory />,
 };
 
 // Non-searchable
+function NonSearchableStory() {
+  const [value, setValue] = useState<string | null>(null);
+  return (
+    <ComboBox
+      options={countries}
+      value={value}
+      onChange={setValue}
+      placeholder="Select a country..."
+      searchable={false}
+    />
+  );
+}
 export const NonSearchable: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | null>(null);
-    return (
-      <ComboBox
-        options={countries}
-        value={value}
-        onChange={setValue}
-        placeholder="Select a country..."
-        searchable={false}
-      />
-    );
-  },
+  render: () => <NonSearchableStory />,
 };
 
 // Non-clearable
+function NonClearableStory() {
+  const [value, setValue] = useState<string | null>('us');
+  return (
+    <ComboBox
+      options={countries}
+      value={value}
+      onChange={setValue}
+      placeholder="Select a country..."
+      clearable={false}
+    />
+  );
+}
 export const NonClearable: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | null>('us');
-    return (
-      <ComboBox
-        options={countries}
-        value={value}
-        onChange={setValue}
-        placeholder="Select a country..."
-        clearable={false}
-      />
-    );
-  },
+  render: () => <NonClearableStory />,
 };
 
 // With disabled options
+function WithDisabledOptionsStory() {
+  const [value, setValue] = useState<string | null>(null);
+  const optionsWithDisabled: ComboBoxOption[] = [
+    ...countries.slice(0, 3),
+    { ...countries[3], disabled: true },
+    ...countries.slice(4),
+  ];
+  return (
+    <ComboBox
+      options={optionsWithDisabled}
+      value={value}
+      onChange={setValue}
+      placeholder="Select a country..."
+    />
+  );
+}
 export const WithDisabledOptions: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | null>(null);
-    const optionsWithDisabled: ComboBoxOption[] = [
-      ...countries.slice(0, 3),
-      { ...countries[3], disabled: true },
-      ...countries.slice(4),
-    ];
-    return (
-      <ComboBox
-        options={optionsWithDisabled}
-        value={value}
-        onChange={setValue}
-        placeholder="Select a country..."
-      />
-    );
-  },
+  render: () => <WithDisabledOptionsStory />,
 };
 
 // Custom option renderer
+function CustomRendererStory() {
+  const [value, setValue] = useState<string | null>(null);
+  return (
+    <ComboBox
+      options={countries}
+      value={value}
+      onChange={setValue}
+      placeholder="Select a country..."
+      renderOption={(option, selected) => (
+        <div className="flex items-center gap-2">
+          <span className="text-xl">
+            {option.value === 'us' && '🇺🇸'}
+            {option.value === 'uk' && '🇬🇧'}
+            {option.value === 'de' && '🇩🇪'}
+            {option.value === 'fr' && '🇫🇷'}
+            {option.value === 'jp' && '🇯🇵'}
+            {option.value === 'au' && '🇦🇺'}
+            {option.value === 'ca' && '🇨🇦'}
+            {option.value === 'br' && '🇧🇷'}
+          </span>
+          <div>
+            <div className={selected ? 'font-medium' : ''}>{option.label}</div>
+            <div className="text-xs text-gray-500">{option.description}</div>
+          </div>
+        </div>
+      )}
+    />
+  );
+}
 export const CustomRenderer: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | null>(null);
-    return (
+  render: () => <CustomRendererStory />,
+};
+
+// Dark mode
+function DarkModeStory() {
+  const [value, setValue] = useState<string | null>(null);
+  return (
+    <div className="dark bg-slate-900 p-6 rounded-lg">
       <ComboBox
         options={countries}
         value={value}
         onChange={setValue}
         placeholder="Select a country..."
-        renderOption={(option, selected) => (
-          <div className="flex items-center gap-2">
-            <span className="text-xl">
-              {option.value === 'us' && '🇺🇸'}
-              {option.value === 'uk' && '🇬🇧'}
-              {option.value === 'de' && '🇩🇪'}
-              {option.value === 'fr' && '🇫🇷'}
-              {option.value === 'jp' && '🇯🇵'}
-              {option.value === 'au' && '🇦🇺'}
-              {option.value === 'ca' && '🇨🇦'}
-              {option.value === 'br' && '🇧🇷'}
-            </span>
-            <div>
-              <div className={selected ? 'font-medium' : ''}>{option.label}</div>
-              <div className="text-xs text-gray-500">{option.description}</div>
-            </div>
-          </div>
-        )}
       />
-    );
-  },
-};
-
-// Dark mode
+    </div>
+  );
+}
 export const DarkMode: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | null>(null);
-    return (
-      <div className="dark bg-slate-900 p-6 rounded-lg">
-        <ComboBox
-          options={countries}
-          value={value}
-          onChange={setValue}
-          placeholder="Select a country..."
-        />
-      </div>
-    );
-  },
+  render: () => <DarkModeStory />,
 };

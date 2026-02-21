@@ -5,14 +5,14 @@ Status: Ready-for-planning
 Domain: DevEx/Tooling
 Workstream: Engineering
 Created: 2026-02-11
-Last-updated: 2026-02-11
+Last-updated: 2026-02-15
 Feature-Slug: agent-setup-improvement
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: /build-feature
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: none
-Related-Plan: docs/plans/agent-setup-improvement-plan.md
-Supersedes: docs/plans/agent-enhancement-plan.md
+Related-Plan: (not yet created)
+Supersedes: docs/plans/archive/agent-enhancement-plan-archived-2026-02-14.md
 Business-OS-Integration: on
 Business-Unit: PLAT
 Card-ID: (pending — BOS_AGENT_API_BASE_URL not set; create manually or re-run with env)
@@ -52,39 +52,61 @@ Audit the current multi-agent configuration in Base-Shop and identify concrete i
   - All agents can read markdown files from the repo
   - Agent-specific hooks/permissions are platform features, not things we can standardize
 
+
+### Definitions (Operational)
+
+- **Context bloat**: startup prompt tokens that are always-loaded before any task-specific context is fetched.
+- **Always-loaded**: loaded by platform/config automatically at agent session start (not "commonly copy/pasted").
+- **Parity (repo-level)**: parity in safety + workflow at the repository abstraction level, not parity in platform features (MCP, hooks, subagents).
+
+### Parity Rubric (Plan Target)
+
+- **Hard safety enforcement**: available by default for Claude Code; available for Codex and future agents via one documented command (`scripts/agents/integrator-shell.sh -- <agent>`).
+- **Skill discovery**: a single documented command prints the skill registry for any agent (no memorizing paths).
+- **Onboarding**: adding a new agent platform requires editing **<=3 files** (overlay + capability profile + optional config hook) and **no policy duplication**.
+
+### Known Inconsistencies / Uncertainties (Resolve Early)
+
+- Skill count evidence is inconsistent: this doc says "49 skills" (verified by `find .claude/skills -name SKILL.md | wc -l`), but elsewhere this brief implied "40" without a reliable source.
+- "Always-loaded" is currently measured in lines/bytes, not prompt tokens, and mixes platform auto-load vs config load vs habitual copy/paste.
+- Codex context loading is uncertain: it is **unclear whether** `PROJECT_DIGEST.md` is actually loaded for Codex sessions in practice.
+
+
 ## Evidence Audit (Current State)
 
 ### Agent Configuration Landscape
 
 | File/Location | Scope | Lines | Bytes | Always-loaded? | Agent |
 |---|---|---|---|---|---|
-| `CLAUDE.md` | Claude Code overlay | 74 | 2,746 | Yes (Claude) | Claude Code |
-| `CODEX.md` | Codex overlay | 256 | 11,365 | Yes (Codex) | Codex |
-| `AGENTS.md` | Universal runbook | 253 | 13,318 | Yes (both, via config) | All |
+| `CLAUDE.md` | Claude Code overlay | 73 | 2,712 | Yes (Claude) | Claude Code |
+| `CODEX.md` | Codex overlay | 256 | 11,331 | Yes (Codex) | Codex |
+| `AGENTS.md` | Universal runbook | 313 | 18,779 | Yes (both, via config) | All |
 | `PROJECT_DIGEST.md` | Repo layout/invariants | 110 | 4,222 | Yes (both, via config) | All |
-| `.agents/README.md` | Agent directory guide | 48 | 1,684 | No | All |
+| `.agents/README.md` | Agent directory guide | 48 | 1,672 | No | All |
 | `.agents/safety/rationale.md` | Safety rule explanations | 269 | 9,187 | No | All |
-| `.agents/safety/checklists.md` | Pre-action checklists | 150 | 5,212 | No | All |
-| `docs/agents/feature-workflow-guide.md` | Workflow entrypoint | 107 | 4,918 | No | All |
-| `docs/git-safety.md` | Git safety source of truth | — | — | No | All |
-| `.claude/settings.json` | Hooks + permissions | 109 | — | Yes (Claude) | Claude Code |
-| `.claude/config.json` | Context files + ignores | 21 | — | Yes (Claude) | Claude Code |
-| **Total always-loaded** | | **~700** | **~32KB** | | |
+| `.agents/safety/checklists.md` | Pre-action checklists | 150 | 5,215 | No | All |
+| `docs/agents/feature-workflow-guide.md` | Workflow entrypoint | 106 | 4,878 | No | All |
+| `docs/git-safety.md` | Git safety source of truth | 279 | 8,919 | No | All |
+| `.claude/settings.json` | Hooks + permissions | 126 | 3,632 | Yes (Claude) | Claude Code |
+| `.claude/config.json` | Context files + ignores | 21 | 391 | Yes (Claude) | Claude Code |
+| **Total always-loaded** | | **~900** | **~41KB** | | |
+
+**Note:** lines/bytes are a weak proxy for what matters (startup prompt tokens). Token baselines should be measured per agent (Claude Code vs Codex) and tracked as a regression metric.
 
 ### Skills System
 
-- **Location**: `.claude/skills/*/SKILL.md` (40 skills, 11,263 total lines)
-- **Shared helpers**: `.claude/skills/_shared/` (24 files, 8,396 lines)
+- **Location**: `.claude/skills/*/SKILL.md` (49 skills, 17,563 total lines)
+- **Shared helpers**: `.claude/skills/_shared/` (27 files, 8,761 lines)
 - **Loading mechanism**:
   - Claude Code: auto-discovered via system; invoked with `/skill-name`
   - Codex: must read `.claude/skills/<name>/SKILL.md` directly by path
   - Other agents: no standard discovery mechanism
 - **Largest skills** (top 5 by lines):
-  - `ideas-go-faster` — 1,147 lines
-  - `plan-feature` — 971 lines
-  - `fact-find` — 909 lines
-  - `build-feature` — 699 lines
-  - `re-plan` — 585 lines
+  - `ideas-go-faster` — 1,289 lines
+  - `idea-generate` — 1,289 lines
+  - `lp-do-fact-find` — 1,032 lines
+  - `lp-do-plan` — 1,017 lines
+  - `lp-seo` — 920 lines
 
 ### Safety Enforcement Architecture
 
@@ -92,8 +114,8 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 | Layer | Mechanism | Agent Coverage | Enforcement Type |
 |---|---|---|---|
-| 1. PATH shim | `scripts/agent-bin/git` (207 lines) | Claude Code (via session-start hook) + Codex (via integrator-shell) | **Hard block** — command denied at shell level |
-| 2. Pre-tool hook | `.claude/hooks/pre-tool-use-git-safety.sh` (207 lines) | Claude Code only | **Hard block** — tool call rejected |
+| 1. PATH shim | `scripts/agent-bin/git` (338 lines) | Claude Code (via session-start hook) + Codex (via integrator-shell) | **Hard block** — command denied at shell level |
+| 2. Pre-tool hook | `.claude/hooks/pre-tool-use-git-safety.sh` (241 lines) | Claude Code only | **Hard block** — tool call rejected |
 | 3. Permission deny list | `.claude/settings.json` deny array (34 patterns) | Claude Code only | **Hard block** — tool call denied |
 | 4. Documentation | `AGENTS.md`, `CODEX.md`, `.agents/safety/rationale.md` | All | **Soft** — relies on agent compliance |
 | 5. Checklists | `.agents/safety/checklists.md` | All | **Soft** — optional reference |
@@ -119,7 +141,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 3. **PATH-level safety shims** — `scripts/agent-bin/git` is the strongest enforcement layer and is agent-agnostic
 4. **Feature workflow guide** — `docs/agents/feature-workflow-guide.md` is clean, short, shared
 5. **CODEX.md safety section** — comprehensive with examples and hand-off protocol
-6. **Skill depth** — 40 skills covering code, business, and workflow tasks
+6. **Skill depth** — 49 skills covering code, business, and workflow tasks
 
 ### What's Not Working
 
@@ -128,13 +150,14 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 2. **`.agents/` directory is half-built**: Only `safety/`, `learnings/.gitkeep`, `status/.gitkeep`, `private/`, `pre_rollback_reports/` exist. Planned `skills/`, `orchestration/` directories were never created. README reflects the abandoned plan.
 
 3. **Dead infrastructure**:
+   - `.claude/SKILLS_INDEX.md` appears stale and references skill paths that no longer exist (e.g. `.claude/skills/fact-find/SKILL.md`) — concrete evidence of documentation drift
    - `scripts/validate-agent-manifest.js` is a stub (prints "PASS", exits) — CI runs it but it validates nothing
-   - `.agents/learnings/` is deprecated per README — use `/session-reflect` instead
+   - `.agents/learnings/` is deprecated per README — use `/meta-reflect` instead
    - `.agents/status/` is empty — no orchestration protocol was ever built
 
-4. **Skill discovery is Claude Code-specific**: The `.claude/skills/` path convention works for Claude Code (auto-discovery) but is opaque to other agents. CODEX.md lists 8 skills manually; the other 32 are effectively invisible to Codex.
+4. **Skill discovery is Claude Code-specific**: The `.claude/skills/` path convention works for Claude Code (auto-discovery) but is opaque to other agents. CODEX.md lists 12 skills manually; the other 37 are effectively invisible to Codex.
 
-5. **CODEX.md is 3.5x larger than CLAUDE.md** (256 vs 74 lines): Because Codex lacks hooks, it duplicates safety rules inline + includes full workflow documentation. This bloats Codex's always-loaded context.
+5. **CODEX.md is 3.5x larger than CLAUDE.md** (256 vs 73 lines): Because Codex lacks hooks, it duplicates safety rules inline + includes full workflow documentation. This bloats Codex's always-loaded context.
 
 6. **No agent capability detection**: No standard way for an agent to know what it can do (network? MCP? hooks? subagents?). CODEX.md has manual network detection but this is ad-hoc.
 
@@ -164,7 +187,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
   - CI workflow (`.github/workflows/ci.yml`)
 - Downstream dependents:
   - All agent sessions (every conversation loads these files)
-  - Feature workflow (fact-find → plan → build → re-plan)
+  - Feature workflow (lp-do-fact-find → plan → build → lp-do-replan)
   - Business OS integration (card/stage-doc operations)
   - Guide translation workflow
 - Likely blast radius:
@@ -193,10 +216,10 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 ### Recent Git History (Targeted)
 
-- `.claude/hooks/` — Last modified 2026-02-10 (session-start.sh, git-safety hook)
-- `scripts/agent-bin/git` — Last modified 2026-02-10 (comprehensive safety wrapper)
-- `AGENTS.md` — Last reviewed 2026-02-10 (active maintenance)
-- `CODEX.md` — Last updated 2026-02-02 by Codex
+- `.claude/hooks/` — Last modified 2026-02-11 (session-start.sh, git-safety hook)
+- `scripts/agent-bin/git` — Last modified 2026-02-11 (comprehensive safety wrapper)
+- `AGENTS.md` — Last modified 2026-02-14 (active maintenance)
+- `CODEX.md` — Last modified 2026-02-12
 - `.agents/safety/` — Created as part of original agent-enhancement-plan; comprehensive content
 - `scripts/validate-agent-manifest.js` — Stub since creation; never implemented
 
@@ -206,7 +229,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 - Q: Should skills migrate from `.claude/skills/` to `.agents/skills/`?
   - A: **No.** The original plan proposed this (AGENT-05) but it was never executed. Claude Code auto-discovers `.claude/skills/` — moving them breaks this. The parity problem should be solved differently (e.g., skill registry that any agent can read, or standardized frontmatter).
-  - Evidence: `.agents/README.md` explicitly says "Skills have moved to `.claude/skills/`". 40 skills are there and working.
+  - Evidence: `.agents/README.md` says skills live in `.claude/skills/` (no count). Repo audit shows **49** skills at `.claude/skills/*/SKILL.md`.
 
 - Q: Is the `.agents/` directory still valuable?
   - A: **Partially.** The `safety/` subdirectory has valuable content (rationale.md, checklists.md). The `learnings/`, `status/`, and planned `skills/` directories are dead weight. The `private/` and `pre_rollback_reports/` directories serve real operational purposes but weren't in the original plan.
@@ -227,13 +250,13 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 - Q: Should we invest in making `.agents/` the canonical shared location, or consolidate everything into fewer root-level files?
   - Why it matters: Determines whether to clean up `.agents/` (remove dead directories) or build it out
-  - Default assumption: Clean up `.agents/` to only what's used (safety/) and don't build new infrastructure there. Risk: If future agents can't read `.claude/`, we'd need to revisit.
+  - Default recommendation: Use `.agents/` for agent-agnostic registries/policy kernels, keep `.claude/` platform-specific. This avoids future tool dotdir visibility issues without moving skills.
 
 - Q: Is reducing CODEX.md's size (256 lines) a priority, or is the current approach of inline safety rules acceptable?
   - Why it matters: Codex loads this every session; 11KB of always-loaded context vs. Claude's 2.7KB
-  - Default assumption: Reduce by extracting duplicated content to shared locations. Risk: Codex may be less reliable if safety rules aren't inline.
+  - Default recommendation: Reduce CODEX.md, but retain a non-negotiable safety TL;DR + explicit integrator-shell requirement + pointer to the canonical safety doc/kernel.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 85%
   - Strong: all config files, scripts, and conventions are well-understood from this audit
@@ -262,6 +285,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 - Must-follow patterns:
   - `docs/git-safety.md` remains the single source of truth for safety rules
+  - Recommendation for durability: embed a fenced **machine-readable policy kernel** (YAML/JSON) inside `docs/git-safety.md`, and generate enforcement-layer artifacts from that kernel
   - Skills stay in `.claude/skills/` (Claude Code auto-discovery depends on this)
   - `AGENTS.md` remains the shared universal runbook
   - Any new shared mechanism must be agent-agnostic (no platform-specific features)
@@ -274,23 +298,25 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 ## Suggested Task Seeds (Non-binding)
 
-1. **Generate safety enforcement from single source**: Script that reads `docs/git-safety.md` command matrix and generates/validates the hook, PATH shim, and permissions deny list. Eliminates 8-way duplication.
+1. **Safety policy kernel + generator (not validator-only)**: Define a stable machine-readable policy kernel (YAML/JSON) inside `docs/git-safety.md`, then generate the enforcement-layer rule data from it. Prefer generating small data includes (or clearly delimited sections) consumed by: `scripts/agent-bin/git`, `.claude/hooks/pre-tool-use-git-safety.sh`, and `.claude/settings.json` deny patterns.
 
-2. **Skill registry file**: A simple machine-readable index at `.claude/skills/registry.json` (or YAML) listing all skills with name, path, category, triggers, when-to-use. Replace the dead manifest stub. Any agent can read this.
+2. **Measure startup prompt tokens per agent**: Add a baseline metric for "startup prompt tokens" (Claude Code vs Codex) with "required" vs "optional" context classification. Use it as a regression check (even approximate is better than bytes).
 
-3. **Reduce CODEX.md by extraction**: Move duplicated safety rules to a shared reference (AGENTS.md already covers basics). CODEX.md becomes a thin overlay like CLAUDE.md.
+3. **Replace validation stub (top-3)**: Implement `scripts/validate-agent-manifest.js` (rename to `scripts/validate-agent-config.js`) to fail CI when: (a) safety policy kernel does not parse, (b) regenerated enforcement artifacts differ from committed outputs, (c) skill registry generation differs from committed registry, (d) critical cross-refs resolve (e.g. links to `docs/git-safety.md`, `scripts/agents/integrator-shell.sh`).
 
-4. **Clean up `.agents/`**: Remove dead directories (learnings if truly deprecated), update README, decide on `private/` and `pre_rollback_reports/` gitignore scope.
+4. **Skill registry (generated, not hand-maintained)**: Generate a registry by scanning `.claude/skills/**/SKILL.md` frontmatter (`name`, `description`, optional `allowed-tools`, etc.). Emit an agent-agnostic registry (recommended location: `.agents/registry/skills.json`) plus a single command like `scripts/agents/list-skills` that prints it.
 
-5. **Replace validation stub**: Implement `scripts/validate-agent-manifest.js` (or rename to `validate-agent-config.js`) to actually check: skill files have required fields, cross-references resolve, safety rules are consistent.
+5. **Reduce CODEX.md by extraction, but keep a safety TL;DR**: Keep CODEX.md as a thin operational overlay with (a) non-negotiable safety TL;DR, (b) explicit integrator-shell requirement, (c) links to canonical docs/kernel. Remove duplicated long-form matrices once hard enforcement + validation are in place.
 
-6. **Agent capability profile**: A `.agents/capabilities/<platform>.yaml` file describing what each agent platform supports (hooks, MCP, subagents, network, etc.). Agents read their own profile at session start.
+6. **Repurpose `.agents/` instead of deleting it**: Keep `.agents/safety/` as-is; remove true dead placeholders only if they cause confusion. Use `.agents/` as the home for agent-agnostic registries and policy kernels while keeping `.claude/` platform-specific.
 
-7. **Unified agent onboarding**: A single `docs/agents/README.md` (or extend the feature-workflow-guide) that any agent reads first, with platform-specific setup instructions.
+7. **Agent capability profiles (narrow, declarative)**: Start with static `.agents/capabilities/<platform>.yaml` describing only fields that actually drive instructions/conditional behavior (hooks, MCP, network, subagents). Avoid modeling internals we can't detect or enforce.
+
+8. **Unified agent onboarding (composition-only)**: A single onboarding doc that is short steps + links to canonical docs, with no policy duplication.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/build-feature`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: none (all tasks are config/documentation changes)
 - Deliverable acceptance package:
   - Safety rules are derived from single source (no manual sync)
@@ -307,4 +333,4 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 - Status: **Ready-for-planning** (with 2 non-blocking open questions)
 - Blocking items: none (open questions have safe defaults)
-- Recommended next step: Proceed to `/plan-feature` — the open questions can be resolved during planning with user input
+- Recommended next step: Proceed to `/lp-do-plan` — the open questions can be resolved during planning with user input

@@ -72,7 +72,7 @@ export default function SectionEditor({ component, onChange }: Props) {
     try {
       const raw = component.styles as string | undefined;
       const base = raw ? (JSON.parse(String(raw)) as Record<string, unknown>) : {};
-      const next = { ...base, effects: { ...(base.effects ?? {}), filter } };
+      const next = { ...base, effects: { ...(base.effects as Record<string, unknown> ?? {}), filter } };
       handle("styles", JSON.stringify(next));
     } catch {
       const next = { effects: { filter } };

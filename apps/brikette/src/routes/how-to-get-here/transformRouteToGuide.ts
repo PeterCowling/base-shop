@@ -10,8 +10,12 @@
  * - galleries → gallery metadata
  */
 
+import {
+  isStructuredRouteContent,
+  type RouteCalloutBlock,
+} from "@/lib/how-to-get-here/content-types";
 import type { LinkBinding, LinkTarget } from "@/lib/how-to-get-here/definitions";
-import type { LinkedCopy, RouteContent } from "@/lib/how-to-get-here/schema";
+import type { LinkedCopy, RouteContent, RouteContentValue } from "@/lib/how-to-get-here/schema";
 
 interface GuideContent {
   seo: {
@@ -101,6 +105,7 @@ function replacePlaceholders(
     if (!target) continue;
 
     // Match <placeholderName>Label</placeholderName> (case-sensitive)
+    // eslint-disable-next-line security/detect-non-literal-regexp -- BRIK-2145 Building regex from placeholderName keys (controlled content schema identifiers)
     const regex = new RegExp(`<${placeholderName}>([^<]+)</${placeholderName}>`, "g");
     result = result.replace(regex, (_match, label: string) => {
       return linkTargetToToken(target, label);
@@ -122,6 +127,7 @@ function findBinding(bindings: LinkBinding[], keyPath: string): LinkBinding | un
   for (const binding of bindings) {
     if (binding.key.includes("*")) {
       const pattern = binding.key.replace(/\*/g, "[^.]+");
+      // eslint-disable-next-line security/detect-non-literal-regexp -- BRIK-2145 Building regex from binding.key pattern (controlled route definition schema keys)
       const regex = new RegExp(`^${pattern}$`);
       if (regex.test(keyPath)) {
         return binding;
@@ -136,7 +142,7 @@ function findBinding(bindings: LinkBinding[], keyPath: string): LinkBinding | un
  * Process callout content with link bindings.
  */
 function processCallout(
-  callout: any,
+  callout: RouteCalloutBlock,
   variantKey: string,
   linkBindings: LinkBinding[],
 ): string | undefined {
@@ -180,7 +186,7 @@ function processCallout(
  * Process section field with link bindings.
  */
 function processSectionField(
-  value: any,
+  value: string | LinkedCopy | RouteContentValue,
   keyPath: string,
   linkBindings: LinkBinding[],
 ): string | undefined {
@@ -198,8 +204,8 @@ function processSectionField(
 
   // Has binding
   if (binding.linkObject) {
-    if (typeof value === "object" && "linkLabel" in value) {
-      return linkedCopyToString(value, binding.linkObject);
+    if (typeof value === "object" && value !== null && "linkLabel" in value && typeof value.linkLabel === "string") {
+      return linkedCopyToString(value as LinkedCopy, binding.linkObject);
     }
   }
 
@@ -218,57 +224,62 @@ function processSectionField(
 export function transformRouteToGuide(
   routeDefinition: RouteDefinition,
   routeContent: RouteContent,
-  guideKey: string,
+  _guideKey: string,
 ): GuideContent {
+  // Validate content structure
+  if (!isStructuredRouteContent(routeContent)) {
+    throw new Error("Route content does not match expected structure");
+  }
+
   const linkBindings = routeDefinition.linkBindings || [];
 
   // Extract meta
-  const meta = routeContent.meta as any;
-  if (!meta || typeof meta !== "object") {
-    throw new Error("Route content missing meta block");
-  }
+  const meta = routeContent.meta;
 
   // Extract header or hero (fallback support for both patterns)
-  const header = routeContent.header as any;
-  const hero = routeContent.hero as any;
-  const headerBlock = header || hero;
+  const headerBlock = routeContent.header || routeContent.hero;
 
-  if (!headerBlock || typeof headerBlock !== "object") {
+  if (!headerBlock) {
     throw new Error("Route content missing header or hero block");
   }
 
   // Build guide content
   const guide: GuideContent = {
     seo: {
-      title: meta.title as string,
-      description: meta.description as string,
+      title: meta.title,
+      description: meta.description,
     },
     intro: {
-      title: headerBlock.title as string,
-      body: headerBlock.description as string,
+      title: headerBlock.title,
+      body: headerBlock.description,
     },
   };
 
   // Process callouts
   const callouts: Record<string, string> = {};
-  for (const variant of ["tip", "aside", "cta"]) {
+  for (const variant of ["tip", "aside", "cta"] as const) {
     const callout = routeContent[variant];
     if (callout && typeof callout === "object") {
-      const processed = processCallout(callout, variant, linkBindings);
+      const processed = processCallout(callout as RouteCalloutBlock, variant, linkBindings);
       if (processed) {
         callouts[variant] = processed;
       }
     }
   }
   if (Object.keys(callouts).length > 0) {
-    guide.callouts = callouts as any;
+    guide.callouts = callouts;
   }
 
   // Process sections
   const sections = routeContent.sections;
   if (sections && typeof sections === "object" && !Array.isArray(sections)) {
-    guide.sections = Object.entries(sections).map(([id, section]: [string, any]) => {
-      const guideSection: any = { id };
+    guide.sections = Object.entries(sections).map(([id, section]) => {
+      const guideSection: {
+        id: string;
+        title?: string;
+        body?: string;
+        list?: string[];
+      } = { id };
 
       if (section.title) {
         guideSection.title = section.title;
@@ -311,9 +322,9 @@ export function transformRouteToGuide(
       // List fields (points or list)
       const list = section.points || section.list;
       if (Array.isArray(list)) {
-        guideSection.list = list.map((item: any) => {
+        guideSection.list = list.map((item) => {
           if (typeof item === "string") return item;
-          return item;
+          return String(item);
         });
       }
 
@@ -325,23 +336,42 @@ export function transformRouteToGuide(
   if (routeDefinition.galleries && routeDefinition.galleries.length > 0) {
     guide.galleries = routeDefinition.galleries.map((galleryDef) => {
       const keyParts = galleryDef.key.split(".");
-      let contentGallery: any = routeContent;
+      let contentGallery: RouteContentValue | undefined = routeContent as RouteContentValue;
       for (const part of keyParts.slice(0, -1)) {
-        contentGallery = contentGallery?.[part];
+        if (contentGallery && typeof contentGallery === "object" && part in contentGallery) {
+          contentGallery = (contentGallery as Record<string, RouteContentValue>)[part];
+        } else {
+          contentGallery = undefined;
+        }
       }
 
-      const gallery: any = {};
+      const gallery: {
+        heading?: string;
+        items: Array<{
+          src: string;
+          caption?: string;
+          alt?: string;
+          aspectRatio?: string;
+          preset?: string;
+        }>;
+      } = { items: [] };
 
-      if (contentGallery?.heading) {
-        gallery.heading = contentGallery.heading;
+      if (contentGallery && typeof contentGallery === "object" && "heading" in contentGallery) {
+        gallery.heading = String(contentGallery.heading);
       }
 
       gallery.items = galleryDef.items.map((item, index) => {
-        const contentItem = contentGallery?.items?.[index] || {};
+        const contentItems =
+          contentGallery && typeof contentGallery === "object" && "items" in contentGallery
+            ? contentGallery.items
+            : undefined;
+        const contentItem =
+          Array.isArray(contentItems) && contentItems[index] ? contentItems[index] : {};
+        const itemObj = typeof contentItem === "object" ? contentItem : {};
         return {
           src: item.src,
-          caption: contentItem.caption,
-          alt: contentItem.alt,
+          caption: "caption" in itemObj ? String(itemObj.caption) : undefined,
+          alt: "alt" in itemObj ? String(itemObj.alt) : undefined,
           aspectRatio: item.aspectRatio,
           preset: item.preset,
         };

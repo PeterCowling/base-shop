@@ -28,6 +28,10 @@ jest.mock('../../../lib/experiments/activationExperiments', () => ({
   }),
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+}));
+
 jest.mock('@acme/design-system/primitives', () => ({
   StepFlowShell: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
@@ -117,6 +121,6 @@ describe('GuidedOnboardingFlow DS Migration', () => {
     // Should contain semantic tokens
     expect(html).toMatch(/\btext-foreground\b/);
     expect(html).toMatch(/\bbg-muted\b/);
-    expect(html).toMatch(/\bbg-card\b/);
+    expect(html).toMatch(/\bbg-background\b/);
   });
 });

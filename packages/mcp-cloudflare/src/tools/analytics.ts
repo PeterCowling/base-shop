@@ -33,6 +33,120 @@ interface ZoneAnalytics {
   };
 }
 
+export interface ZoneTrafficTotals {
+  requests: number;
+  cachedRequests: number;
+  bytes: number;
+  cachedBytes: number;
+  threats: number;
+  pageViews: number;
+  uniques: number;
+}
+
+export interface CloudflareProjectedMetric {
+  schemaVersion: "measure.record.v1";
+  source: "cloudflare";
+  metric: string;
+  valueType: "count" | "ratio";
+  value: number;
+  unit: "count" | "bytes" | "ratio";
+  grain: "day";
+  segments: {
+    provider: "cloudflare";
+    zoneId: string;
+  };
+}
+
+export const CLOUDFLARE_MEASURE_CONTRACT_VERSION = "measure.cloudflare.v1";
+
+function toTrafficTotals(input: ZoneAnalytics): ZoneTrafficTotals {
+  return {
+    requests: input.requests?.all || 0,
+    cachedRequests: input.requests?.cached || 0,
+    bytes: input.bandwidth?.all || 0,
+    cachedBytes: input.bandwidth?.cached || 0,
+    threats: input.threats?.all || 0,
+    pageViews: input.pageviews?.all || 0,
+    uniques: input.uniques?.all || 0,
+  };
+}
+
+export function projectZoneTrafficMetrics(input: {
+  zoneId: string;
+  totals: ZoneTrafficTotals;
+}): CloudflareProjectedMetric[] {
+  const cacheHitRatio =
+    input.totals.requests > 0 ? input.totals.cachedRequests / input.totals.requests : 0;
+
+  return [
+    {
+      schemaVersion: "measure.record.v1",
+      source: "cloudflare",
+      metric: "traffic_requests_total",
+      valueType: "count",
+      value: input.totals.requests,
+      unit: "count",
+      grain: "day",
+      segments: {
+        provider: "cloudflare",
+        zoneId: input.zoneId,
+      },
+    },
+    {
+      schemaVersion: "measure.record.v1",
+      source: "cloudflare",
+      metric: "traffic_requests_cached",
+      valueType: "count",
+      value: input.totals.cachedRequests,
+      unit: "count",
+      grain: "day",
+      segments: {
+        provider: "cloudflare",
+        zoneId: input.zoneId,
+      },
+    },
+    {
+      schemaVersion: "measure.record.v1",
+      source: "cloudflare",
+      metric: "traffic_bandwidth_total_bytes",
+      valueType: "count",
+      value: input.totals.bytes,
+      unit: "bytes",
+      grain: "day",
+      segments: {
+        provider: "cloudflare",
+        zoneId: input.zoneId,
+      },
+    },
+    {
+      schemaVersion: "measure.record.v1",
+      source: "cloudflare",
+      metric: "traffic_threats_total",
+      valueType: "count",
+      value: input.totals.threats,
+      unit: "count",
+      grain: "day",
+      segments: {
+        provider: "cloudflare",
+        zoneId: input.zoneId,
+      },
+    },
+    {
+      schemaVersion: "measure.record.v1",
+      source: "cloudflare",
+      metric: "traffic_cache_hit_ratio",
+      valueType: "ratio",
+      value: Number(cacheHitRatio.toFixed(6)),
+      unit: "ratio",
+      grain: "day",
+      segments: {
+        provider: "cloudflare",
+        zoneId: input.zoneId,
+      },
+    },
+  ];
+}
+
 const timeRangeSchema = z.object({
   since: z.string().optional().describe("Start date (ISO 8601 or relative like -7d)"),
   until: z.string().optional().describe("End date (ISO 8601 or relative like now)"),
@@ -198,9 +312,11 @@ export async function handleAnalyticsTool(name: string, args: unknown) {
             }),
             { requests: 0, cachedRequests: 0, bytes: 0, cachedBytes: 0, threats: 0, pageViews: 0, uniques: 0 }
           );
+          const projectedMetrics = projectZoneTrafficMetrics({ zoneId, totals });
 
           return jsonResult({
             period: { since, until },
+            contractVersion: CLOUDFLARE_MEASURE_CONTRACT_VERSION,
             requests: {
               total: formatNumber(totals.requests),
               cached: formatNumber(totals.cachedRequests),
@@ -216,13 +332,20 @@ export async function handleAnalyticsTool(name: string, args: unknown) {
             threats: formatNumber(totals.threats),
             pageViews: formatNumber(totals.pageViews),
             uniqueVisitors: formatNumber(totals.uniques),
+            normalizedMetrics: projectedMetrics,
           });
         } catch {
           // Fallback to REST API
           const analytics = await cfFetch<{ totals: ZoneAnalytics }>(
             `/zones/${zoneId}/analytics/dashboard?since=${since}&until=${until}`
           );
-          return jsonResult(analytics.totals);
+          const totals = toTrafficTotals(analytics.totals);
+          const projectedMetrics = projectZoneTrafficMetrics({ zoneId, totals });
+          return jsonResult({
+            totals: analytics.totals,
+            contractVersion: CLOUDFLARE_MEASURE_CONTRACT_VERSION,
+            normalizedMetrics: projectedMetrics,
+          });
         }
       }
 

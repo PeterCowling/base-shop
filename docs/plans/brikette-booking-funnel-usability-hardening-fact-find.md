@@ -10,8 +10,8 @@ Last-reviewed: 2026-02-11
 Feature-Slug: brikette-booking-funnel-usability-hardening
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
-Supporting-Skills: user-testing-audit,re-plan
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: meta-user-test,lp-do-replan
 Related-Plan: docs/plans/brikette-booking-funnel-usability-hardening-plan.md
 Business-OS-Integration: on
 Business-Unit: BRIK
@@ -25,7 +25,7 @@ Relates-to charter: none
 
 ### Summary
 
-This fact-find converts the latest Brikette usability-testing findings into a planning-ready engineering brief for booking-funnel reliability, translation integrity, and no-JS server HTML quality.
+This lp-do-fact-find converts the latest Brikette usability-testing findings into a planning-ready engineering brief for booking-funnel reliability, translation integrity, and no-JS server HTML quality.
 
 Primary intent: ensure users can complete booking-critical actions even when hydration is delayed or fails, and remove trust-eroding untranslated strings in the conversion funnel.
 
@@ -102,7 +102,7 @@ Primary intent: ensure users can complete booking-critical actions even when hyd
 - Booking deep-link contract:
   - Sticky CTA creates Octorate URL with `codice`, `checkin`, `checkout`, `pax` (`packages/ui/src/organisms/StickyBookNow.tsx:99`).
 - Route quality contract (from current audit tooling):
-  - `hasMeaningfulH1`, `hasNoBailoutMarker`, plus limited home/deals checks (`.claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs:275`).
+  - `hasMeaningfulH1`, `hasNoBailoutMarker`, plus limited home/deals checks (`.claude/skills/meta-user-test/scripts/run-meta-user-test.mjs:275`).
 
 ### Dependency & Impact Map
 
@@ -141,7 +141,7 @@ Primary intent: ensure users can complete booking-critical actions even when hyd
   - `pnpm --filter @apps/brikette lint`
   - `bash scripts/validate-changes.sh`
 - CI/contract hooks:
-  - Audit script contract test at `scripts/__tests__/user-testing-audit-contract.test.ts`.
+  - Audit script contract test at `scripts/__tests__/meta-user-test-contract.test.ts`.
 
 #### Existing Test Coverage
 
@@ -150,7 +150,7 @@ Primary intent: ensure users can complete booking-critical actions even when hyd
 | No-JS policy (source-level guard)  | unit              | `apps/brikette/src/test/routes/no-js/ssr-bailout-policy.test.ts`                       | Guards `useSearchParams` in selected files only; does not validate rendered HTML outcomes.             |
 | i18n placeholder detection utility | unit              | `apps/brikette/src/test/content-readiness/i18n/detectRenderedI18nPlaceholders.test.ts` | Validates detector behavior; not wired to route-level HTML probes in booking funnel.                   |
 | locale/content parity              | integration-style | `apps/brikette/src/test/content-readiness/i18n/i18n-parity-quality-audit.test.ts`      | Detects raw-key-like values in locale files; does not assert no-JS route HTML for booking pages.       |
-| user-testing audit script contract | unit              | `scripts/__tests__/user-testing-audit-contract.test.ts`                                | Ensures script contains current no-JS predicates, but misses booking-funnel-specific predicate checks. |
+| user-testing audit script contract | unit              | `scripts/__tests__/meta-user-test-contract.test.ts`                                | Ensures script contains current no-JS predicates, but misses booking-funnel-specific predicate checks. |
 
 #### Coverage Gaps (Planning Inputs)
 
@@ -174,7 +174,7 @@ Primary intent: ensure users can complete booking-critical actions even when hyd
 #### Recommended Test Approach
 
 - Unit/contract tests:
-  - Extend `scripts/__tests__/user-testing-audit-contract.test.ts` to enforce booking-funnel predicates.
+  - Extend `scripts/__tests__/meta-user-test-contract.test.ts` to enforce booking-funnel predicates.
 - Integration/no-JS probes:
   - Extend audit script route checks for room/detail/how-to planner key leakage + CTA fallback semantics.
 - Targeted component tests:
@@ -216,11 +216,11 @@ Existing active plan `docs/plans/brikette-ssr-seo-signal-hardening-plan.md` over
 Confidence impact on the active plan:
 
 - `BSS-06/BSS-07` impact confidence should be treated as lower until CTA fallback design and booking-funnel no-JS contracts are added.
-- Recommendation: `/re-plan` current active plan (or supersede with dedicated booking-funnel hardening plan) before build execution.
+- Recommendation: `/lp-do-replan` current active plan (or supersede with dedicated booking-funnel hardening plan) before build execution.
 
 ## External Research (If needed)
 
-- Not required for this fact-find. All critical findings came from repo evidence and live deployment HTML probes.
+- Not required for this lp-do-fact-find. All critical findings came from repo evidence and live deployment HTML probes.
 
 ## Questions
 
@@ -242,7 +242,7 @@ Confidence impact on the active plan:
 
 - None blocking for planning.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /lp-do-plan)
 
 - Implementation: 86%
   - Why: root causes and concrete files are identified; extension points for audit checks are clear.
@@ -290,10 +290,10 @@ Confidence impact on the active plan:
 ## Execution Routing Packet
 
 - Primary execution skill:
-  - `build-feature`
+  - `lp-do-build`
 - Supporting skills:
-  - `user-testing-audit`
-  - `re-plan`
+  - `meta-user-test`
+  - `lp-do-replan`
 - Deliverable acceptance package:
   - Updated code for booking CTA fallback + route rendering/i18n integrity.
   - Updated no-JS audit script and contract tests covering booking-funnel predicates.
@@ -308,4 +308,4 @@ Confidence impact on the active plan:
 - Blocking items:
   - None.
 - Recommended next step:
-  - Proceed to `/plan-feature` using this brief and either supersede or re-plan `docs/plans/brikette-ssr-seo-signal-hardening-plan.md` to include booking-funnel P0 scope.
+  - Proceed to `/lp-do-plan` using this brief and either supersede or lp-do-replan `docs/plans/brikette-ssr-seo-signal-hardening-plan.md` to include booking-funnel P0 scope.

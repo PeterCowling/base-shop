@@ -146,7 +146,7 @@ function MenuPerformanceDashboard(): React.ReactElement {
 
   if (error) {
     const message = error instanceof Error ? error.message : String(error);
-    return <p className="text-red-600">Error: {message}</p>;
+    return <p className="text-danger-fg">Error: {message}</p>;
   }
 
   const marginChartData = {
@@ -155,6 +155,7 @@ function MenuPerformanceDashboard(): React.ReactElement {
       {
         label: "Margin %",
         data: Object.values(categoryMarginPct),
+        /* eslint-disable-next-line ds/no-raw-color -- REC-02: chart colour config; tokens not applicable to chart.js/recharts datasets */
         backgroundColor: "#4f46e5",
       },
     ],
@@ -167,6 +168,7 @@ function MenuPerformanceDashboard(): React.ReactElement {
       {
         label: "Item Count",
         data: [baseCount, attachCount],
+        /* eslint-disable-next-line ds/no-raw-color -- REC-02: chart colour config; tokens not applicable to chart.js/recharts datasets */
         backgroundColor: ["#0ea5e9", "#fb923c"],
       },
     ],
@@ -178,14 +180,16 @@ function MenuPerformanceDashboard(): React.ReactElement {
       {
         label: "Contribution €",
         data: hourlyContribution,
+        /* eslint-disable-next-line ds/no-raw-color -- REC-02: chart colour config; tokens not applicable to chart.js/recharts datasets */
         borderColor: "#10b981",
+        /* eslint-disable-next-line ds/no-raw-color -- REC-02: chart colour config; tokens not applicable to chart.js/recharts datasets */
         backgroundColor: "#a7f3d0",
       },
     ],
   };
 
   return (
-    <div className="space-y-8 p-4 bg-white rounded shadow dark:bg-darkSurface dark:text-darkAccentGreen">
+    <div className="space-y-8 p-4 bg-surface rounded shadow dark:bg-darkSurface dark:text-darkAccentGreen">
       <h1 className="text-2xl font-semibold mb-4 dark:text-darkAccentGreen">Menu Performance</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>

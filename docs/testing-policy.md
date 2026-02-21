@@ -1,7 +1,7 @@
 Type: Policy
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-07
+Last-reviewed: 2026-02-13
 Created: 2026-01-17
 Created-by: Claude Opus 4.5 (extracted from AGENTS.md)
 
@@ -34,6 +34,20 @@ jest                                # Runs all tests in current directory
 - Root `pnpm test` is hard-blocked by `scripts/guard-broad-test-run.cjs`.
 - Agent/integrator shells enforce `scripts/agent-bin/pnpm` and `scripts/agent-bin/turbo`, which block unscoped monorepo test fan-out commands.
 - Agent/integrator shells also block unscoped package test runs (for example, `pnpm --filter @apps/cms test` without file/pattern selectors).
+- Agent/integrator shells hard-block ungoverned Jest entry points by default:
+  - `scripts/agent-bin/npm` blocks `npm exec jest` / `npm x jest`
+  - `scripts/agent-bin/npx` blocks `npx jest`
+  - `scripts/agent-bin/pnpm` blocks `pnpm exec jest`
+  - `scripts/agents/guarded-shell-hooks.sh` blocks raw direct forms (`node ...jest/bin/jest.js`, `./node_modules/.bin/jest`)
+- Split override policy:
+  - `BASESHOP_ALLOW_BYPASS_POLICY=1` reroutes blocked bypass commands through `pnpm -w run test:governed -- jest -- <args>`.
+  - `BASESHOP_ALLOW_OVERLOAD=1` is telemetry-visible but does not bypass command-policy blocking.
+- Governed test entrypoint is `pnpm run test:governed -- <intent> -- <args>`:
+  - `intent=jest` and `intent=changed` inject `--maxWorkers=2` unless overridden.
+  - `intent=turbo` injects `--concurrency=2` unless overridden.
+  - Watch flags are blocked unless using explicit `watch-exclusive` opt-in.
+  - `CI=true` runs in governed compatibility mode (shaping enabled; scheduler/admission bypassed).
+- Migrated package `test` scripts now route through `test:governed` (or documented delegated wrappers).
 - If a full monorepo run is explicitly required, use:
   - `BASESHOP_ALLOW_BROAD_TESTS=1 pnpm test:all`
 
@@ -54,9 +68,9 @@ jest                                # Runs all tests in current directory
 
 **API test notes (apps/api):**
 - The `@apps/api` test script runs with `rootDir` set to `apps/api`, which breaks `setupFilesAfterEnv` paths in `apps/api/jest.config.cjs`.
-- Run API tests from the repo root with an explicit rootDir and config:
+- Run API tests from the repo root via the governed runner with an explicit rootDir and config:
   ```bash
-  pnpm exec jest --ci --runInBand --detectOpenHandles \
+  pnpm -w run test:governed -- jest -- --ci --runInBand --detectOpenHandles \
     --config apps/api/jest.config.cjs \
     --rootDir . \
     --runTestsByPath apps/api/src/.../__tests__/file.test.ts \
@@ -83,6 +97,63 @@ pnpm --filter @acme/ui test -- --testNamePattern="renders correctly"
 # CORRECT: Combine file and test name patterns
 pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx -t "handles click"
 ```
+### Growth Accounting Kernel (Targeted)
+
+For growth-accounting verification, use these targeted commands:
+
+```bash
+# S10 integration + replay contract
+pnpm run test:governed -- jest -- --config ./jest.config.cjs -- src/startup-loop/__tests__/s10-growth-accounting.test.ts --modulePathIgnorePatterns=\.open-next/ --modulePathIgnorePatterns=\.worktrees/ --modulePathIgnorePatterns=\.ts-jest/
+
+# Business OS growth card rendering
+pnpm --filter @apps/business-os test -- src/components/board/GrowthLedgerCard.test.tsx
+```
+
+### Startup-Loop MCP Data Plane (Targeted)
+
+Use the dedicated startup-loop Jest wrapper config for MCP integration tests. Do not pass ad hoc ignore flags.
+
+```bash
+# Startup-loop MCP integration suite
+pnpm --filter @acme/mcp-server test:startup-loop
+
+# Startup-loop MCP policy + tool contracts (individual suites)
+CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand --runTestsByPath packages/mcp-server/src/__tests__/tool-policy-gates.test.ts
+CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand --runTestsByPath packages/mcp-server/src/__tests__/bos-tools-write.test.ts
+CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand --runTestsByPath packages/mcp-server/src/__tests__/loop-tools.test.ts
+```
+
+### Email Draft Pipeline (Targeted)
+
+Use the governed runner with a testPathPattern to run the email draft pipeline evaluation harness. This suite covers `draft_interpret → draft_generate` end-to-end with coverage metrics and a `passRate >= 0.90` gate.
+
+```bash
+# Full evaluation harness (10 synthetic fixtures, coverage + quality metrics)
+pnpm -w run test:governed -- jest -- --testPathPattern="draft-pipeline.integration" --no-coverage
+
+# Individual draft-tool unit suites (draft-generate, draft-interpret, draft-quality-check)
+pnpm -w run test:governed -- jest -- --testPathPattern="draft-generate|draft-interpret|draft-quality-check" --no-coverage
+```
+
+**Metric interpretation:**
+- `Quality pass rate`: fraction of fixtures that pass `draft_quality_check`. Gate: ≥ 90%.
+- `Avg question coverage`: fraction of detected questions where stemmed keywords appear in the draft body.
+- `Knowledge injections`: count of `sources_used` entries with `injected: true` (TASK-07 gap-fill signal).
+
+### Attestation Refinement Stage (Targeted)
+
+Use the governed runner with `testPathPattern="draft-refine"` to run the `draft_refine` MCP tool test suite. The tool is a **deterministic attestation layer** — Claude (running in the CLI session) performs the refinement and submits `refinedBodyPlain`; the tool validates quality, attests the result, and derives `bodyHtml`. No Anthropic SDK call occurs inside the tool handler (v2, see `docs/plans/email-draft-quality-upgrade-v2/plan.md` TASK-01).
+
+```bash
+# draft_refine tool unit suite (TC-01-01..TC-01-06)
+pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage
+```
+
+**Metric interpretation:**
+- `refinement_applied: true` + `refinement_source: 'claude-cli'` confirms Claude submitted a refined body (text changed).
+- `refinement_applied: false` + `refinement_source: 'none'` confirms identity check fired (no-op: `refinedBodyPlain === originalBodyPlain`).
+- `quality.passed: true` confirms the attested body passes `draft_quality_check`.
+- `quality.passed: false` with named `failed_checks` is the soft-fail transparency path — caller decides to retry or escalate.
 
 ---
 
@@ -118,6 +189,44 @@ pnpm --filter @acme/ui test -- --runInBand
 **NEVER start a new test run in a different terminal while one is already running.**
 
 **Editor note:** The repo includes `.vscode/settings.json` to disable VS Code Jest auto-run/watch. Keep it enabled to avoid unintended background runners.
+
+### Test Scheduler and Governed Runner
+
+The repository now includes `scripts/tests/test-lock.sh` as the scheduler primitive for governed test execution.
+
+- Supported commands: `acquire`, `release`, `status`, `cancel`, `clean-stale`.
+- Lock metadata includes holder PID, heartbeat timestamp, and command signature.
+- Scope is configurable with `BASESHOP_TEST_LOCK_SCOPE=repo|machine`:
+  - `repo` (default): lock state under `<repo>/.cache/test-governor/test-lock`
+  - `machine`: lock state under a machine-global root (default under `${TMPDIR:-/tmp}`; override with `BASESHOP_TEST_LOCK_MACHINE_ROOT`)
+
+Use this with `scripts/tests/run-governed-test.sh` (`pnpm run test:governed`) as the canonical entrypoint for local test execution.
+
+### Resource Admission Defaults (TEG-08)
+
+Governed local runs apply admission before execution (unless `CI=true` compatibility mode is active):
+
+- Memory budget formula:
+  - `memory_budget_mb = floor(total_ram_mb * 0.60)`
+- CPU slot formula:
+  - `cpu_slots_total = max(1, floor(logical_cpu * 0.70))`
+  - Example: `logical_cpu=10` resolves to `cpu_slots_total=7`.
+- Seeded class budgets are used until history has enough samples for a signature-level P90 override.
+- Probe ambiguity fails safe to queue (`reason=probe-unknown`), not admit.
+
+Admission diagnostics:
+
+```bash
+scripts/tests/resource-admission.sh decide \
+  --class governed-jest \
+  --normalized-sig governed-jest \
+  --workers 2
+```
+
+Override policy:
+
+- `BASESHOP_ALLOW_OVERLOAD=1` bypasses admission/scheduling pressure gates for the current run.
+- Overload overrides are telemetry-visible (`override_overload_used=true`) and must be used only for incident/debug scenarios.
 
 ---
 

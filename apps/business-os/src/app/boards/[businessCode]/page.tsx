@@ -5,6 +5,7 @@ import {
 } from "@acme/platform-core/repositories/businessOs.server";
 
 import { BoardView } from "@/components/board/BoardView";
+import { GrowthLedgerCardContainer } from "@/components/board/GrowthLedgerCardContainer";
 import { filterCardsForBoard, orderCards } from "@/lib/board-logic";
 import { BUSINESSES } from "@/lib/business-catalog";
 import { getCurrentUserServer } from "@/lib/current-user.server-only";
@@ -67,11 +68,18 @@ export default async function BoardPage({ params }: PageProps) {
   );
 
   return (
-    <BoardView
-      businessCode={businessCode}
-      businesses={BUSINESSES}
-      cardsByLane={cardsByLane}
-      currentUser={currentUser}
-    />
+    <div className="bg-surface-1">
+      {businessCode !== "global" ? (
+        <div className="px-6 pt-6 max-md:px-4">
+          <GrowthLedgerCardContainer businessCode={businessCode} />
+        </div>
+      ) : null}
+      <BoardView
+        businessCode={businessCode}
+        businesses={BUSINESSES}
+        cardsByLane={cardsByLane}
+        currentUser={currentUser}
+      />
+    </div>
   );
 }

@@ -15,9 +15,9 @@ declare global {
 
 globalThis.__customerProfilesTestPrisma = {
   customerProfile: {
-    findUnique: jest.fn(),
-    findFirst: jest.fn(),
-    upsert: jest.fn(),
+    findUnique: jest.fn() as any,
+    findFirst: jest.fn() as any,
+    upsert: jest.fn() as any,
   },
 };
 

@@ -28,6 +28,8 @@ afterEach(() => {
 });
 
 describe("launch-shop API", () => {
+  // Dynamic import triggers a large module graph; increase timeout for when
+  // this test runs alongside many other tests in the same process.
   it("returns 400 when required steps are incomplete", async () => {
     const { POST } = await import("../src/app/api/launch-shop/route");
     const req = {
@@ -42,5 +44,5 @@ describe("launch-shop API", () => {
     const json = await res.json();
     expect(Array.isArray(json.missingSteps)).toBe(true);
     expect(json.missingSteps.length).toBeGreaterThan(0);
-  });
+  }, 30000);
 });

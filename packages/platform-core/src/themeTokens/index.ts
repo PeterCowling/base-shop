@@ -1,23 +1,26 @@
 import { existsSync, readFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { join } from "node:path";
 import { runInNewContext } from "node:vm";
 
-import ts from "typescript";
+import { baseTokens, type TokenMap } from "./base";
 
-import {
-  type TokenMap as ThemeTokenMap,
-  tokens as baseTokensSrc,
-} from "../../../themes/base/src";
-
-function typedEntries<T extends object>(obj: T): [keyof T, T[keyof T]][] {
-  return Object.entries(obj) as [keyof T, T[keyof T]][];
-}
-
-export type TokenMap = Record<keyof ThemeTokenMap, string>;
-
-export const baseTokens: TokenMap = Object.fromEntries(
-  typedEntries(baseTokensSrc).map(([k, v]) => [k, v.light])
-) as TokenMap;
+// Prevent webpack from statically following the `typescript` import.
+// A plain `import ts from "typescript"` causes webpack to read the TypeScript
+// compiler's entire 22 MB `lib/` during module-graph resolution, OOMing the
+// Next 16 --webpack CMS build. Using a variable `_req` (cf. emailService.ts)
+// breaks webpack's static tracing without affecting runtime behaviour.
+// ESM-interop: handle jest mock ({__esModule, default}) and real CJS module.
+// (TASK-12 spike fix)
+const _req: NodeRequire =
+  typeof require === "function" ? require : createRequire(process.cwd() + "/");
+const _tsRaw = _req("typescript") as
+  | { __esModule: true; default: typeof import("typescript") }
+  | typeof import("typescript");
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ts: typeof import("typescript") = (_tsRaw as any).__esModule
+  ? (_tsRaw as { __esModule: true; default: typeof import("typescript") }).default
+  : (_tsRaw as typeof import("typescript"));
 
 function transpileTokens(filePath: string): TokenMap {
   // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-1010 path is constructed from controlled workspace locations
@@ -55,7 +58,7 @@ export function loadThemeTokensNode(theme: string): TokenMap {
     return undefined;
   };
 
-  // First, look relative to this file's location. This allows callers to load
+  // First, look relative to this file location. This allows callers to load
   // tokens without relying on their current working directory.
   const localRoot = join(__dirname, "../../../..");
   const localTokens = tryRoot(localRoot);
@@ -74,63 +77,9 @@ export function loadThemeTokensNode(theme: string): TokenMap {
   return workspaceTokens ?? {};
 }
 
-export async function loadThemeTokensBrowser(theme: string): Promise<TokenMap> {
-  if (!theme || theme === "base") return baseTokens;
-  try {
-    const mod = await import(
-      /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$|__tests__\/)/ */
-      `@themes/${theme}`
-    );
-    if ("tokens" in mod) {
-      return Object.fromEntries(
-        Object.entries(
-          (mod as { tokens: Record<string, string | { light: string }> }).tokens
-        ).map(([k, v]) => [k, typeof v === "string" ? v : v.light])
-      ) as TokenMap;
-    }
-  } catch {
-    // Try package-local theme fixtures used in some tests
-    try {
-      const mod = await import(
-        /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$|__tests__\/)/ */
-        `@themes-local/${theme}`
-      );
-      if ("tokens" in mod) {
-        return Object.fromEntries(
-          Object.entries(
-            (mod as { tokens: Record<string, string | { light: string }> }).tokens
-          ).map(([k, v]) => [k, typeof v === "string" ? v : v.light])
-        ) as TokenMap;
-      }
-    } catch {
-      /* fall through to tailwind-tokens */
-    }
-  }
-  try {
-    const mod = await import(
-      /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$)/ */
-      `@themes/${theme}/tailwind-tokens`
-    );
-    return (mod as { tokens: TokenMap }).tokens;
-  } catch {
-    try {
-      const mod = await import(
-        /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$)/ */
-        `@themes-local/${theme}/tailwind-tokens`
-      );
-      return (mod as { tokens: TokenMap }).tokens;
-    } catch {
-      return baseTokens;
-    }
-  }
+export async function loadThemeTokens(theme: string): Promise<TokenMap> {
+  return loadThemeTokensNode(theme);
 }
 
-export async function loadThemeTokens(theme: string): Promise<TokenMap> {
-  const hasWindow =
-    typeof globalThis !== "undefined" &&
-    typeof (globalThis as { window?: unknown }).window !== "undefined";
-  if (!hasWindow) {
-    return loadThemeTokensNode(theme);
-  }
-  return loadThemeTokensBrowser(theme);
-}
+export { baseTokens };
+export type { TokenMap };

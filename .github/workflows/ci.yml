@@ -69,8 +69,36 @@ jobs:
           turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Audit dependencies
         run: |
+          set -euo pipefail
           echo "::group::Running pnpm audit"
-          pnpm audit --audit-level=high --ignore GHSA-p6mc-m468-83gw
+          attempt=1
+          max_attempts=3
+          delay_seconds=10
+          while true; do
+            set +e
+            audit_output="$(pnpm audit --audit-level=high --ignore GHSA-p6mc-m468-83gw 2>&1)"
+            audit_status=$?
+            set -e
+
+            echo "$audit_output"
+
+            if [ "$audit_status" -eq 0 ]; then
+              break
+            fi
+
+            if echo "$audit_output" | grep -Eq "ERR_PNPM_AUDIT_BAD_RESPONSE|Internal Server Error|security/audits error \(500\)"; then
+              if [ "$attempt" -lt "$max_attempts" ]; then
+                echo "Transient npm audit endpoint failure (attempt $attempt/$max_attempts). Retrying in ${delay_seconds}s..."
+                sleep "$delay_seconds"
+                attempt=$((attempt + 1))
+                delay_seconds=$((delay_seconds * 2))
+                continue
+              fi
+              echo "npm audit endpoint failed after $max_attempts attempts."
+            fi
+
+            exit "$audit_status"
+          done
           echo "::endgroup::"
 
   secret-scanning:
@@ -163,10 +191,22 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch --no-tags --prune --depth=1 origin "${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            # Ensure base branch ref is available (may already exist with fetch-depth: 0)
+            if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
+              git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            fi
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
-            echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            # Auto PRs created by GitHub Actions may not trigger pull_request workflows.
+            # For dev pushes, compare against staging so CI covers the full dev→staging delta.
+            if [ "${{ github.ref_name }}" = "dev" ]; then
+              if ! git rev-parse --verify "origin/staging" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+staging:refs/remotes/origin/staging"
+              fi
+              echo "TURBO_SCM_BASE=origin/staging" >> "$GITHUB_ENV"
+            else
+              echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            fi
           fi
           echo "TURBO_SCM_HEAD=${{ github.sha }}" >> "$GITHUB_ENV"
       - name: Lint (affected workspaces)
@@ -217,6 +257,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: ./.github/actions/setup-repo
         with:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
@@ -225,14 +267,32 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch --no-tags --prune --depth=1 origin "${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            # Ensure base branch ref is available (may already exist with fetch-depth: 0)
+            if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
+              git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            fi
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
-            echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            # Auto PRs created by GitHub Actions may not trigger pull_request workflows.
+            # For dev pushes, compare against staging so CI covers the full dev→staging delta.
+            if [ "${{ github.ref_name }}" = "dev" ]; then
+              if ! git rev-parse --verify "origin/staging" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+staging:refs/remotes/origin/staging"
+              fi
+              echo "TURBO_SCM_BASE=origin/staging" >> "$GITHUB_ENV"
+            else
+              echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            fi
           fi
           echo "TURBO_SCM_HEAD=${{ github.sha }}" >> "$GITHUB_ENV"
       - name: Typecheck (affected workspaces)
         run: pnpm exec turbo run typecheck --affected
+      - name: Typecheck tests (Phase-1 + Phase-4 + Phase-5 packages + apps/cms)
+        run: |
+          set -e
+          for pkg in packages/editorial packages/types packages/stripe packages/i18n packages/design-system packages/design-tokens packages/seo packages/platform-core packages/platform-machine apps/brikette packages/template-app packages/ui packages/auth packages/email/ packages/zod-utils packages/telemetry packages/date-utils packages/themes packages/email-templates packages/lib apps/cms; do
+            TYPECHECK_FILTER="$pkg" node scripts/typecheck-tests.mjs
+          done
 
   test:
     name: Unit tests
@@ -245,7 +305,7 @@ jobs:
         contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
       }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
@@ -258,10 +318,22 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch --no-tags --prune --depth=1 origin "${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            # Ensure base branch ref is available (may already exist with fetch-depth: 0)
+            if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
+              git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            fi
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
-            echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            # Auto PRs created by GitHub Actions may not trigger pull_request workflows.
+            # For dev pushes, compare against staging so CI covers the full dev→staging delta.
+            if [ "${{ github.ref_name }}" = "dev" ]; then
+              if ! git rev-parse --verify "origin/staging" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+staging:refs/remotes/origin/staging"
+              fi
+              echo "TURBO_SCM_BASE=origin/staging" >> "$GITHUB_ENV"
+            else
+              echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            fi
           fi
           echo "TURBO_SCM_HEAD=${{ github.sha }}" >> "$GITHUB_ENV"
       - name: Runtime contract manifest tests

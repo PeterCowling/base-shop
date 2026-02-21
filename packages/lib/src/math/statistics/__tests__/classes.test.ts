@@ -1,4 +1,4 @@
-import { Histogram,OnlineStats } from "../classes";
+import { Histogram,OnlineStats } from "../classes.js";
 
 describe("OnlineStats", () => {
   describe("basic operations", () => {

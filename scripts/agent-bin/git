@@ -1,16 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# This wrapper is intended for agent shells only (see scripts/agents/with-git-guard.sh).
-# It blocks a small set of destructive/history-rewriting commands that have caused
-# accidental rollbacks and lost work.
+# Agent git guard wrapper (argv-based).
 #
-# Source of truth: docs/git-safety.md § Command Policy Matrix
-# When updating patterns, update the matrix first, then this script.
+# Policy is evaluated by a shared Node evaluator:
+#   scripts/agents/evaluate-git-safety.mjs
+#
+# Canonical source: docs/git-safety.md (kernel fence)
 
 wrapper_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-real_git=""
+repo_root="${BASESHOP_GUARD_REPO_ROOT:-}"
 
+if [[ -z "$repo_root" ]]; then
+  # This script lives inside the repo; prefer a fast path over invoking git.
+  repo_root="$(cd "${wrapper_dir}/../.." && pwd)"
+fi
+
+real_git=""
 IFS=":" read -r -a path_entries <<< "${PATH:-}"
 for dir in "${path_entries[@]}"; do
   [[ -z "$dir" ]] && continue
@@ -28,311 +34,24 @@ if [[ -z "$real_git" ]]; then
   exit 127
 fi
 
-deny() {
-  local why="$1"
-  shift
-  local blocked_subcmd="${1:-}"
-  local only_cmd="scripts/agents/integrator-shell.sh -- git status"
-
-  case "$blocked_subcmd" in
-    push)
-      only_cmd="scripts/agents/integrator-shell.sh -- git push origin <branch>"
-      ;;
-    commit)
-      only_cmd="scripts/agents/integrator-shell.sh -- git commit -m \"<message>\""
-      ;;
-    reset)
-      only_cmd="scripts/agents/integrator-shell.sh -- git reset HEAD <file>   # unstage only"
-      ;;
-    clean|checkout|restore|switch|stash)
-      only_cmd="scripts/agents/integrator-shell.sh -- git status"
-      ;;
-    rebase)
-      only_cmd="scripts/agents/integrator-shell.sh -- git merge --no-ff <target-branch>"
-      ;;
-    worktree)
-      only_cmd="scripts/agents/integrator-shell.sh -- git switch -c <branch>"
-      ;;
-    config)
-      only_cmd="scripts/agents/integrator-shell.sh -- git config --get core.hooksPath"
-      ;;
-  esac
-
-  echo "------------------------------------------------------------------" >&2
-  echo "GIT COMMAND BLOCKED (agent guard)" >&2
-  echo "------------------------------------------------------------------" >&2
-  echo "" >&2
-  echo "Reason: ${why}" >&2
-  echo "" >&2
-  echo "Command:" >&2
-  printf "  git"
-  for arg in "$@"; do
-    printf " %q" "$arg"
-  done
-  echo "" >&2
-  echo "" >&2
-  echo "Only this path will work in this repo:" >&2
-  echo "  ${only_cmd}" >&2
-  echo "" >&2
-  echo "Do not retry with (hard-blocked):" >&2
-  echo "  - --no-verify / -n" >&2
-  echo "  - SKIP_WRITER_LOCK=1 or SKIP_SIMPLE_GIT_HOOKS=1" >&2
-  echo "  - -c core.hooksPath=... or git config core.hooksPath ..." >&2
-  echo "  - --force / -f, rebase, --amend, stash pop/apply/drop/clear" >&2
-  echo "" >&2
-  echo "If you need read-only inspection, use:" >&2
-  echo "  scripts/agents/integrator-shell.sh --read-only -- <command>" >&2
-  echo "" >&2
-  echo "Reference: docs/git-safety.md" >&2
-  echo "" >&2
+evaluator="${repo_root}/scripts/agents/evaluate-git-safety.mjs"
+policy_json="${repo_root}/.agents/safety/generated/git-safety-policy.json"
+if [[ ! -f "$evaluator" ]]; then
+  echo "ERROR: missing evaluator: ${evaluator}" >&2
   exit 1
-}
-
-subcommand="${1:-}"
-
-# Block -c core.hooksPath (hook bypass)
-for ((i=1; i<=$#; i++)); do
-  arg="${!i}"
-  if [[ "$arg" == "-c" ]]; then
-    next_i=$((i+1))
-    if [[ $next_i -le $# ]]; then
-      next_arg="${!next_i}"
-      if [[ "$next_arg" == core.hooksPath* ]]; then
-        deny "Setting core.hooksPath bypasses git hooks." "$@"
-      fi
-    fi
-  fi
-done
-
-# Block SKIP_* environment variable bypass attempts
-if [[ "${SKIP_WRITER_LOCK:-}" == "1" || "${SKIP_SIMPLE_GIT_HOOKS:-}" == "1" ]]; then
-  deny "SKIP_* environment variables bypass safety hooks." "$@"
+fi
+if [[ ! -f "$policy_json" ]]; then
+  echo "ERROR: missing policy: ${policy_json}" >&2
+  exit 1
 fi
 
-# Block SKIP_* bypass attempts passed as literal arguments
-for arg in "$@"; do
-  if [[ "$arg" =~ ^SKIP_(WRITER_LOCK|SIMPLE_GIT_HOOKS) ]]; then
-    deny "SKIP_* environment variables bypass safety hooks." "$@"
-  fi
-done
+set +e
+node "$evaluator" --policy "$policy_json" -- "$@"
+eval_status="$?"
+set -e
 
-case "$subcommand" in
-  worktree)
-    deny "git worktree adds extra checkouts; Base-Shop workflow forbids worktrees." "$@"
-    ;;
-  reset)
-    # Block reset with mode flags
-    for arg in "$@"; do
-      case "$arg" in
-        --hard|--mixed|--merge|--keep)
-          deny "git reset with mode flags rewrites state and can lose work." "$@"
-          ;;
-      esac
-    done
-    # Block bare reset to earlier commits (e.g. reset HEAD~N)
-    # Allow: git reset HEAD file.txt (unstage)
-    # Block: git reset HEAD~, git reset HEAD~1, etc.
-    for arg in "$@"; do
-      if [[ "$arg" =~ ^HEAD~[0-9]*$ ]]; then
-        deny "Bare reset to earlier commit (HEAD~N) defaults to --mixed and can lose work." "$@"
-      fi
-    done
-    ;;
-  clean)
-    # Block any -f variant, but allow dry-run (--dry-run / -n)
-    has_dry_run="0"
-    for arg in "$@"; do
-      if [[ "$arg" == "--dry-run" || "$arg" == "-n" ]]; then
-        has_dry_run="1"
-      fi
-    done
-
-    if [[ "$has_dry_run" == "0" ]]; then
-      for arg in "$@"; do
-        # Match any flag combination containing 'f' (e.g. -f, -fd, -fdx, -ffdx, -fx)
-        if [[ "$arg" =~ ^-[a-zA-Z]*f[a-zA-Z]*$ ]] || [[ "$arg" == "--force" ]]; then
-          deny "git clean with -f permanently deletes untracked files. Use --dry-run first or move files to archive/." "$@"
-        fi
-      done
-    fi
-    ;;
-  push)
-    for arg in "$@"; do
-      case "$arg" in
-        --force|-f|--force-with-lease)
-          deny "force-push rewrites remote history and can destroy teammates' work." "$@"
-          ;;
-        --mirror)
-          deny "push --mirror can overwrite all remote refs and destroy work." "$@"
-          ;;
-        --no-verify|-n)
-          deny "push --no-verify bypasses safety hooks." "$@"
-          ;;
-      esac
-    done
-    ;;
-  rebase)
-    deny "rebase rewrites history; use merge commits via PRs instead." "$@"
-    ;;
-  commit)
-    for arg in "$@"; do
-      case "$arg" in
-        --amend)
-          deny "amend rewrites history; prefer a new commit and merge via PR." "$@"
-          ;;
-        --no-verify)
-          deny "commit --no-verify bypasses safety hooks." "$@"
-          ;;
-      esac
-    done
-    ;;
-  checkout|restore)
-    # Block repo-wide/bulk worktree discards and force flags.
-    # Allow: single-file worktree restores and index-only restore (--staged).
-    # Block: '.', ':/...', directory paths, globs, --force, and multi-path worktree discards.
-
-    has_staged="0"
-    has_worktree="0"
-
-    # Check force flags and restore mode flags.
-    for arg in "$@"; do
-      case "$arg" in
-        -f|--force)
-          deny "checkout/restore with --force discards local changes destructively." "$@"
-          ;;
-      esac
-
-      if [[ "$subcommand" == "restore" ]]; then
-        case "$arg" in
-          --staged)
-            has_staged="1"
-            ;;
-          --worktree)
-            has_worktree="1"
-            deny "restore --worktree can discard working tree changes." "$@"
-            ;;
-        esac
-      fi
-    done
-
-    affects_worktree="1"
-    if [[ "$subcommand" == "restore" && "$has_staged" == "1" && "$has_worktree" == "0" ]]; then
-      affects_worktree="0"
-    fi
-
-    pathspecs=()
-
-    if [[ "$subcommand" == "checkout" ]]; then
-      # checkout pathspec mode is only unambiguous after '--'.
-      saw_separator="0"
-      for arg in "$@"; do
-        if [[ "$arg" == "--" ]]; then
-          saw_separator="1"
-          continue
-        fi
-        if [[ "$saw_separator" == "1" ]]; then
-          pathspecs+=("$arg")
-        fi
-      done
-    else
-      # restore accepts pathspecs with or without '--'; parse both forms.
-      saw_separator="0"
-      skip_next="0"
-      for ((i=2; i<=$#; i++)); do
-        arg="${!i}"
-
-        if [[ "$skip_next" == "1" ]]; then
-          skip_next="0"
-          continue
-        fi
-
-        if [[ "$arg" == "--" ]]; then
-          saw_separator="1"
-          continue
-        fi
-
-        if [[ "$saw_separator" == "1" ]]; then
-          pathspecs+=("$arg")
-          continue
-        fi
-
-        case "$arg" in
-          --source|--pathspec-from-file|-s|--conflict)
-            skip_next="1"
-            ;;
-          --source=*|--pathspec-from-file=*|--conflict=*)
-            ;;
-          --pathspec-file-nul|--staged|--worktree|--ignore-unmerged|--overlay|--ignore-skip-worktree-bits|--recurse-submodules|--progress|--quiet|--ours|--theirs|--merge|--patch)
-            ;;
-          -*)
-            ;;
-          *)
-            pathspecs+=("$arg")
-            ;;
-        esac
-      done
-    fi
-
-    if [[ "$affects_worktree" == "1" ]]; then
-      if [[ "${#pathspecs[@]}" -gt 1 ]]; then
-        deny "bulk checkout/restore pathspecs can discard multiple files." "$@"
-      fi
-
-      for pathspec in "${pathspecs[@]}"; do
-        case "$pathspec" in
-          "."|":/"|":/."|":/*")
-            deny "repo-wide checkout/restore discards changes." "$@"
-            ;;
-        esac
-
-        if [[ "$pathspec" =~ /$ ]]; then
-          deny "directory checkout/restore (${pathspec}) can discard multiple files." "$@"
-        fi
-
-        if [[ "$pathspec" == *"*"* || "$pathspec" == *"?"* || "$pathspec" == *"["* || "$pathspec" == *":(glob)"* ]]; then
-          deny "glob checkout/restore pattern (${pathspec}) can discard multiple files." "$@"
-        fi
-      done
-    fi
-    ;;
-  switch)
-    # Block destructive switch operations
-    for arg in "$@"; do
-      case "$arg" in
-        --discard-changes|-f|--force)
-          deny "switch with --discard-changes/--force discards local changes." "$@"
-          ;;
-      esac
-    done
-    ;;
-  stash)
-    # Allow: list, show
-    # Block: push, pop, apply, drop, clear, and bare stash (no subcommand)
-    stash_subcmd="${2:-}"
-    case "$stash_subcmd" in
-      list|show)
-        # Allowed
-        ;;
-      push|pop|apply|drop|clear)
-        deny "stash ${stash_subcmd} is forbidden for agent workflows (hidden debt and conflict risk)." "$@"
-        ;;
-      "")
-        deny "bare git stash defaults to stash push and is forbidden for agent workflows." "$@"
-        ;;
-      *)
-        # Unknown subcommand - block to be safe
-        deny "stash subcommand '${stash_subcmd}' can hide or lose work in a multi-agent repo." "$@"
-        ;;
-    esac
-    ;;
-  config)
-    # Block setting core.hooksPath
-    for arg in "$@"; do
-      if [[ "$arg" == "core.hooksPath" ]] || [[ "$arg" == core.hooksPath=* ]]; then
-        deny "Setting core.hooksPath bypasses git hooks." "$@"
-      fi
-    done
-    ;;
-esac
+if [[ "$eval_status" -ne 0 ]]; then
+  exit "$eval_status"
+fi
 
 exec "$real_git" "$@"

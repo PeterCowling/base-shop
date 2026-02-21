@@ -76,64 +76,64 @@ export default function ShopsPage() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h1 className="text-lg font-semibold text-slate-900">Shops</h1>
-        <p className="text-sm text-slate-700">
+      <div className="rounded-lg border border-border bg-bg p-4 shadow-sm">
+        <h1 className="text-lg font-semibold text-fg">Shops</h1>
+        <p className="text-sm text-fg-muted">
           Multi-shop entry point. Pulls from /api/shops; shows an empty state on failure.
         </p>
         {state === "loading" && (
-          <p className="text-xs text-slate-600">Loading shops…</p>
+          <p className="text-xs text-fg-muted">Loading shops…</p>
         )}
         {state === "error" && (
-          <p className="text-xs text-red-700">{error}</p>
+          <p className="text-xs text-danger-fg">{error}</p>
         )}
       </div>
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="rounded-lg border border-border bg-bg p-4 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by name, id, or region"
-            className="w-full max-w-sm rounded border border-slate-200 px-3 py-2 text-sm focus:border-blue-300 focus:outline-none"
+            className="w-full max-w-sm rounded border border-border px-3 py-2 text-sm focus:border-primary focus:outline-none"
           />
           <Link
             href="/Upgrade"
-            className="inline-flex w-fit items-center rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+            className="inline-flex w-fit items-center rounded bg-primary px-4 py-2 text-sm font-semibold text-primary-fg shadow-sm transition hover:bg-primary-hover"
           >
             Go to Upgrade
           </Link>
         </div>
-        <div className="mt-4 overflow-hidden rounded border border-slate-200">
-          <div className="grid grid-cols-[1.5fr,1fr,1fr,1fr,120px] bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700">
+        <div className="mt-4 overflow-hidden rounded border border-border">
+          <div className="grid grid-cols-[1.5fr,1fr,1fr,1fr,120px] bg-bg-2 px-3 py-2 text-xs font-semibold text-fg-muted">
             <span>Name</span>
             <span>Region</span>
             <span>Last upgrade</span>
             <span>Pending</span>
             <span>Status</span>
           </div>
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-border-muted">
             {filtered.map((shop) => (
-              <li key={shop.id} className="grid grid-cols-[1.5fr,1fr,1fr,1fr,120px] items-center gap-2 px-3 py-3 text-sm text-slate-800">
+              <li key={shop.id} className="grid grid-cols-[1.5fr,1fr,1fr,1fr,120px] items-center gap-2 px-3 py-3 text-sm text-fg">
                 <div className="space-y-0.5">
                   <p className="font-semibold">{shop.name ?? shop.id}</p>
-                  <p className="text-xs text-slate-600">{shop.id}</p>
+                  <p className="text-xs text-fg-muted">{shop.id}</p>
                 </div>
-                <span className="text-xs text-slate-600">{shop.region ?? "—"}</span>
-                <span className="text-xs text-slate-600">
+                <span className="text-xs text-fg-muted">{shop.region ?? "—"}</span>
+                <span className="text-xs text-fg-muted">
                   {shop.lastUpgrade ? new Date(shop.lastUpgrade).toLocaleString() : "—"}
                 </span>
-                <span className="text-xs text-slate-600">{shop.pending ?? 0}</span>
+                <span className="text-xs text-fg-muted">{shop.pending ?? 0}</span>
                 <div className="flex items-center gap-2">
                   <StatusBadge status={shop.status ?? "unknown"} />
                   {historyMap[shop.id] && (
-                    <span className="text-xs text-slate-600">
+                    <span className="text-xs text-fg-muted">
                       Last publish: {historyMap[shop.id].status === "failed" ? "Failed" : "Success"} @{" "}
                       {new Date(historyMap[shop.id].timestamp).toLocaleString()}
                     </span>
                   )}
                   <Link
                     href={`/shops/${shop.id}`}
-                    className="text-xs font-semibold text-blue-700 hover:text-blue-900"
+                    className="text-xs font-semibold text-link hover:text-link"
                   >
                     Review
                   </Link>
@@ -141,7 +141,7 @@ export default function ShopsPage() {
               </li>
             ))}
             {filtered.length === 0 && (
-              <li className="px-3 py-3 text-sm text-slate-600">No shops found.</li>
+              <li className="px-3 py-3 text-sm text-fg-muted">No shops found.</li>
             )}
           </ul>
         </div>
@@ -156,10 +156,10 @@ function StatusBadge({
   status: "ready" | "failed" | "up_to_date" | "unknown";
 }) {
   const map: Record<typeof status, string> = {
-    ready: "bg-emerald-100 text-emerald-800",
-    failed: "bg-red-100 text-red-700",
-    up_to_date: "bg-blue-100 text-blue-800",
-    unknown: "bg-slate-100 text-slate-700",
+    ready: "bg-success-soft text-success-fg",
+    failed: "bg-danger-soft text-danger-fg",
+    up_to_date: "bg-info-soft text-info-fg",
+    unknown: "bg-bg-4 text-fg-muted",
   };
   const label: Record<typeof status, string> = {
     ready: "Needs review",

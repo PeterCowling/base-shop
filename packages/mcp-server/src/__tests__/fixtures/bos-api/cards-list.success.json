@@ -1,0 +1,16 @@
+{
+  "cards": [
+    {
+      "ID": "BRIK-ENG-0001",
+      "Business": "BRIK",
+      "Title": "MCP startup-loop data plane",
+      "Lane": "Planned",
+      "Priority": "P1",
+      "Owner": "PLAT",
+      "Feature-Slug": "mcp-startup-loop-data-plane",
+      "Plan-Link": "docs/plans/mcp-startup-loop-data-plane/plan.md",
+      "Created": "2026-02-13",
+      "Updated": "2026-02-13"
+    }
+  ]
+}

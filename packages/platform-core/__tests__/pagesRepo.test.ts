@@ -7,10 +7,10 @@ import { jest } from "@jest/globals";
 // Minimal prisma mock to observe calls
 const prisma = {
   page: {
-    findMany: jest.fn(),
-    upsert: jest.fn(),
-    deleteMany: jest.fn(),
-    update: jest.fn(),
+    findMany: jest.fn() as any,
+    upsert: jest.fn() as any,
+    deleteMany: jest.fn() as any,
+    update: jest.fn() as any,
   },
 };
 
@@ -43,21 +43,21 @@ describe("pages repository with prisma", () => {
       createdBy: "tester",
     } as any;
 
-    prisma.page.findMany.mockResolvedValue([{ data: page }]);
+    prisma.page.findMany.mockResolvedValue([{ data: page }] as any);
 
     const pages = await repo.getPages("shop1");
     expect(prisma.page.findMany).toHaveBeenCalledWith({ where: { shopId: "shop1" } });
     expect(pages[0]).toEqual(page);
 
-    prisma.page.upsert.mockResolvedValue({});
+    prisma.page.upsert.mockResolvedValue({} as any);
     await repo.savePage("shop1", page, undefined);
     expect(prisma.page.upsert).toHaveBeenCalled();
 
-    prisma.page.update.mockResolvedValue({});
+    prisma.page.update.mockResolvedValue({} as any);
     await repo.updatePage("shop1", { id: "1", slug: "start", updatedAt: "now" }, page);
     expect(prisma.page.update).toHaveBeenCalled();
 
-    prisma.page.deleteMany.mockResolvedValue({ count: 1 });
+    prisma.page.deleteMany.mockResolvedValue({ count: 1 } as any);
     await repo.deletePage("shop1", "1");
     expect(prisma.page.deleteMany).toHaveBeenCalledWith({ where: { id: "1", shopId: "shop1" } });
   });

@@ -125,4 +125,60 @@ describe("useActivitiesMutations", () => {
 
     errorSpy.mockRestore();
   });
+
+  // TASK-05: Add code 27 to relevantCodes array
+  it("sends guest email for activity code 27 (CANCELLED)", async () => {
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    let activityResult;
+    await act(async () => {
+      activityResult = await result.current.addActivity("occ1", 27);
+    });
+
+    // TC-01: Code 27 triggers email send (is in relevantCodes)
+    expect(activityResult).toMatchObject({ success: true });
+
+    // TC-02: sendEmailGuest called with code 27 and correct bookingRef
+    expect(sendEmailGuestMock).toHaveBeenCalledWith({
+      bookingRef: "REF123",
+      activityCode: 27,
+    });
+  });
+
+  // TASK-06: Fix silent email failures for codes 2, 3, 4
+  it("does not attempt email for code 2 (no MCP template)", async () => {
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    await act(async () => {
+      await result.current.addActivity("occ1", 2);
+    });
+
+    // TC-01: Code 2 does not trigger email attempt (not in relevantCodes)
+    expect(getMock).not.toHaveBeenCalled();
+    expect(sendEmailGuestMock).not.toHaveBeenCalled();
+  });
+
+  it("does not attempt email for code 3 (no MCP template)", async () => {
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    await act(async () => {
+      await result.current.addActivity("occ1", 3);
+    });
+
+    // TC-02: Code 3 does not trigger email attempt (not in relevantCodes)
+    expect(getMock).not.toHaveBeenCalled();
+    expect(sendEmailGuestMock).not.toHaveBeenCalled();
+  });
+
+  it("does not attempt email for code 4 (no MCP template)", async () => {
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    await act(async () => {
+      await result.current.addActivity("occ1", 4);
+    });
+
+    // TC-03: Code 4 does not trigger email attempt (not in relevantCodes)
+    expect(getMock).not.toHaveBeenCalled();
+    expect(sendEmailGuestMock).not.toHaveBeenCalled();
+  });
 });

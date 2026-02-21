@@ -1,15 +1,13 @@
 // packages/template-app/__tests__/db.test.ts
 /** @jest-environment node */
 
-import type { PrismaClient } from "@prisma/client";
-
 describe("platform-core db stub", () => {
   afterEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
     jest.unmock("@acme/config/env/core");
     jest.unmock("@prisma/client");
-    delete process.env.NODE_ENV;
+    delete (process.env as any).NODE_ENV;
     delete process.env.DATABASE_URL;
   });
 
@@ -24,7 +22,7 @@ describe("platform-core db stub", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("@acme/platform-core/db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("@acme/platform-core/db")) as { prisma: any };
 
     const shop = "stub-shop";
     expect(await prisma.rentalOrder.findMany({ where: { shop } })).toEqual([]);
@@ -45,7 +43,9 @@ describe("platform-core db stub", () => {
     });
   });
 
-  it("falls back to stub when prisma client fails to load", async () => {
+  it("throws when prisma client fails to load in production", async () => {
+    // db.ts now uses missingPrismaClient() (throwing proxy) when Prisma is
+    // unavailable in production — no longer falls back to an in-memory stub.
     (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     (process.env as Record<string, string | undefined>).DATABASE_URL = "postgres://example";
     jest.doMock("@acme/config/env/core", () => ({
@@ -59,13 +59,9 @@ describe("platform-core db stub", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("@acme/platform-core/db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("@acme/platform-core/db")) as { prisma: any };
 
-    await prisma.rentalOrder.create({
-      data: { shop: "shop", sessionId: "1", trackingNumber: "t1" },
-    });
-    const orders = await prisma.rentalOrder.findMany({ where: { shop: "shop" } });
-    expect(orders).toHaveLength(1);
+    expect(() => prisma.rentalOrder).toThrow("Prisma client unavailable");
   });
 
   it("throws when updating a nonexistent order", async () => {
@@ -79,7 +75,7 @@ describe("platform-core db stub", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("@acme/platform-core/db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("@acme/platform-core/db")) as { prisma: any };
 
     await expect(
       prisma.rentalOrder.update({

@@ -27,7 +27,8 @@ interface Props {
 
 export default function StockSchedulerEditor({ shop, status }: Props) {
   const t = useTranslations();
-  const [interval, setInterval] = useState(String(status.intervalMs));
+  // Note: lazy init — only runs on mount. If prop changes, state won't update automatically.
+  const [interval, setInterval] = useState(() => String(status.intervalMs));
 
   const historyRows = useMemo(
     () => mapSchedulerHistoryRows(status.history),

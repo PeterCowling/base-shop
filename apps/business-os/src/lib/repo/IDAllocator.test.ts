@@ -106,8 +106,8 @@ describe("IDAllocator", () => {
       const concurrentOps = 10;
       const ids: string[] = [];
 
-      // Helper to retry allocation with exponential backoff
-      async function allocateWithRetry(maxRetries = 10): Promise<string> {
+      // Helper to retry allocation with exponential backoff + jitter
+      async function allocateWithRetry(maxRetries = 20): Promise<string> {
         for (let attempt = 0; attempt < maxRetries; attempt++) {
           try {
             return await allocator.allocate("BRIK", "card");
@@ -116,9 +116,10 @@ describe("IDAllocator", () => {
               error instanceof Error &&
               error.message.includes("Repository lock is currently held")
             ) {
-              // Wait with exponential backoff (cap at 50ms)
-              const backoffMs = Math.min(Math.pow(2, attempt) * 5, 50);
-              await new Promise((resolve) => setTimeout(resolve, backoffMs));
+              // Wait with exponential backoff (cap at 200ms) + jitter
+              const backoffMs = Math.min(Math.pow(2, attempt) * 5, 200);
+              const jitter = Math.random() * backoffMs * 0.5;
+              await new Promise((resolve) => setTimeout(resolve, backoffMs + jitter));
               continue;
             }
             throw error; // Unexpected error

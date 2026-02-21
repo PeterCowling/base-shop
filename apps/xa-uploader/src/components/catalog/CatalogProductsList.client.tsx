@@ -42,7 +42,7 @@ export function CatalogProductsList({
   }, [products, query]);
 
   return (
-    <aside className="rounded-xl border border-border-2 bg-white p-4 shadow-elevation-1">
+    <aside className="rounded-xl border border-border-2 bg-surface p-4 shadow-elevation-1">
       <div className="flex items-center justify-between gap-3">
         <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
           {t("products")}
@@ -61,7 +61,7 @@ export function CatalogProductsList({
         <input
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
-          className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
           placeholder={t("searchPlaceholder")}
         />
       </label>
@@ -82,7 +82,7 @@ export function CatalogProductsList({
               className={`flex items-stretch gap-2 rounded-md border px-3 py-2 transition ${
                 selected
                   ? "border-[color:var(--gate-ink)] bg-muted"
-                  : "border-border-2 bg-white hover:bg-muted"
+                  : "border-border-2 bg-surface hover:bg-muted"
               }`}
             >
               <label

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- guide manifest type definitions — internal type labels [DS-02] */
 /**
  * Guide manifest types and schemas.
  *

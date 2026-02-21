@@ -46,7 +46,7 @@ const CheckinsHeader: FC<CheckinsHeaderProps> = ({
         CHECKINS
       </h1>
       {/* Right cell with booking, edit, and delete buttons only if user is "Pete" */}
-      <div className="flex justify-end pr-[20px] space-x-2">
+      <div className="flex justify-end pr-5 space-x-2">
         {user?.user_name === "Pete" && (
           <>
             <NewBookingButton onClick={onNewBookingClick} />

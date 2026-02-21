@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import AssistanceArticleSection, { type MediaItem } from "./AssistanceArticleSection";
 
 const DEFAULT_MEDIA = {
-  busLook: "/img/interno1.webp",
+  busLook: "/img/apt3.jpg",
   busLookExtra: "/img/interno2.webp",
   stopToHostel: "/img/tabacchi.webp",
   approach: "/img/arriving-at-hostel.webp",

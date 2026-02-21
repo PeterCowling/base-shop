@@ -293,13 +293,13 @@ export default function StageBLaneApplyCard({
         <div className="text-foreground/60">{strings.lane.appliedLabel}</div>
         <div className="mt-1 font-semibold">{appliedSummary}</div>
         {expiryWarning ? (
-          <div className="mt-2 text-amber-600">{expiryWarning}</div>
+          <div className="mt-2 text-warning-fg">{expiryWarning}</div>
         ) : null}
         {confidenceWarning ? (
-          <div className="mt-2 text-amber-600">{confidenceWarning}</div>
+          <div className="mt-2 text-warning-fg">{confidenceWarning}</div>
         ) : null}
         {basisWarning ? (
-          <div className="mt-2 text-amber-600">{basisWarning}</div>
+          <div className="mt-2 text-warning-fg">{basisWarning}</div>
         ) : null}
         {loading && laneOptions.length === 0 ? (
           <div className="mt-2 text-foreground/60">{strings.lane.loading}</div>

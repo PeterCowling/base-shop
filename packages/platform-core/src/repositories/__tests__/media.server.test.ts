@@ -62,7 +62,7 @@ describe("media repository", () => {
 
     const uploaded = await uploadMediaFile({
       shop: "demo",
-      file,
+      file: file as any,
       altText: "Hero image",
       tags: ["hero", "primary"],
       requiredOrientation: "landscape",
@@ -113,10 +113,10 @@ describe("media repository", () => {
     await expect(
       uploadMediaFile({
         shop: "demo",
-        file,
+        file: file as any,
         requiredOrientation: "landscape",
       }),
-    ).rejects.toMatchObject<MediaError>({
+    ).rejects.toMatchObject({
       name: "MediaError",
       code: "ORIENTATION_LANDSCAPE_REQUIRED",
     });

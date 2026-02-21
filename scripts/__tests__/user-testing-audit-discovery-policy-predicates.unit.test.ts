@@ -1,4 +1,4 @@
-import discoveryPolicyPredicates from "../../.claude/skills/user-testing-audit/scripts/discovery-policy-predicates.cjs";
+import discoveryPolicyPredicates from "../../.claude/skills/meta-user-test/scripts/discovery-policy-predicates.cjs";
 
 const {
   evaluatePolicyRoute,
@@ -7,7 +7,7 @@ const {
   collectDiscoveryPolicyRegressionIssues,
 } = discoveryPolicyPredicates;
 
-describe("user-testing-audit discovery policy predicates (unit)", () => {
+describe("meta-user-test discovery policy predicates (unit)", () => {
   it("detects noindex and hreflang alternates for a localized route", () => {
     const route = evaluatePolicyRoute({
       routePath: "/en",

@@ -34,7 +34,7 @@ describe("SubscribePage", () => {
     });
     (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "cus" });
     const ui = (await SubscribePage({ params: Promise.resolve({ lang: "en" }) })) as ReactElement;
-    const form = ui.props.children[1];
+    const form = (ui as any).props.children[1];
     const action = form.props.action as (fd: FormData) => Promise<void>;
     const fd = new FormData();
     fd.set("plan", "basic");

@@ -72,7 +72,7 @@ The app already has brand-aware button components at `apps/brikette/src/componen
 
 **Current adoption:** Only ~10 import sites (mostly self-references). These wrappers are underutilized.
 
-## Fact-Find Summary (repo-verified 2026-01-25, re-planned 2026-01-25)
+## Fact-Find Summary (repo-verified 2026-01-25, lp-do-replanned 2026-01-25)
 
 **Key Findings:**
 - ~~`BookPageContent.tsx` has 5 inline anchor/link class blocks~~ → ✅ TASK-01 migrated to DS Button/LinkText.

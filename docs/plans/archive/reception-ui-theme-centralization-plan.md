@@ -8,7 +8,7 @@ Last-updated: 2026-02-10
 Feature-Slug: reception-ui-theme-centralization
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: create-ui-component
 Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -43,7 +43,7 @@ Centralize Reception UI primitives, theme state, and token usage onto shared pla
   - Existing shared primitives are sufficient to start (ConfirmDialog, ThemeProvider, form primitives).
 
 ## Fact-Find Reference
-- Related brief: `docs/plans/archive/reception-ui-theme-centralization-fact-find.md`
+- Related brief: `docs/plans/archive/reception-ui-theme-centralization-lp-do-fact-find.md`
 - Key findings:
   - Reception has TWO ESLint override blocks disabling all DS rules (lines 1472-1484 and 2173-2188 in `eslint.config.mjs`).
   - DarkModeContext has only 2 consumers (`DarkModeToggle.tsx`, `Login.tsx`).
@@ -117,7 +117,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-01: Validate dark palette Tailwind color registration
 - **Type:** INVESTIGATE
 - **Deliverable:** Analysis artifact — confirm whether `dark:bg-darkSurface`, `dark:text-darkAccentGreen`, etc. generate valid CSS, and document the registration mechanism.
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:** `[readonly] apps/reception/src/app/globals.css`, `[readonly] apps/reception/src/constants/colors.ts`, `[readonly] tailwind.config.mjs`, `[readonly] packages/tailwind-config/src/index.ts`
 - **Depends on:** -
 - **Blocks:** TASK-06
@@ -144,7 +144,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-02: Enable Reception test runner
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/reception/package.json` test script + CI validation
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/reception/package.json`
 - **Depends on:** -
 - **Blocks:** TASK-07 (CHECKPOINT)
@@ -191,7 +191,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-03: Create ReceptionThemeProvider adapter
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/reception/src/providers/ReceptionThemeProvider.tsx` (new) + adapter hook
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/reception/src/providers/ReceptionThemeProvider.tsx` (new), `[readonly] packages/platform-core/src/contexts/ThemeModeContext.tsx`, `[readonly] packages/ui/src/providers/ThemeProvider.tsx`, `[readonly] apps/reception/src/context/DarkModeContext.tsx`
 - **Depends on:** -
 - **Blocks:** TASK-04
@@ -238,12 +238,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None
 - **Notes / references:**
   - DarkModeContext consumers: `DarkModeToggle.tsx`, `Login.tsx` (migrated in TASK-04)
-  - API gap table documented in fact-find evidence audit
+  - API gap table documented in lp-do-fact-find evidence audit
 
 ### TASK-04: Migrate theme consumers + retire DarkModeContext
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — update 3 files (`Providers.tsx`, `DarkModeToggle.tsx`, `Login.tsx`), delete `DarkModeContext.tsx`
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/reception/src/components/Providers.tsx`, `apps/reception/src/components/common/DarkModeToggle.tsx`, `apps/reception/src/components/Login.tsx`, `apps/reception/src/context/DarkModeContext.tsx` (delete)
 - **Depends on:** TASK-03
 - **Blocks:** TASK-07 (CHECKPOINT)
@@ -286,7 +286,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-05: Migrate dialog consumers + retire DialogContext
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — update 2 files, delete 4 files (DialogContext, AlertModal, ConfirmModal, ConfirmCancelModal)
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/reception/src/components/roomgrid/BookingDetailsModal.tsx`, `apps/reception/src/components/checkins/docInsert/DOBSection.tsx`, `apps/reception/src/context/DialogContext.tsx` (delete), `apps/reception/src/components/common/ConfirmModal.tsx` (delete), `apps/reception/src/components/common/AlertModal.tsx` (delete)
 - **Depends on:** -
 - **Blocks:** TASK-07 (CHECKPOINT)
@@ -333,7 +333,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-06: Define Reception semantic token bridge
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — CSS token bridge in `globals.css` + documentation of color mapping
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/reception/src/app/globals.css`, `apps/reception/src/constants/colors.ts`, `[readonly] packages/tailwind-config/src/index.ts`, `[readonly] packages/themes/base/tokens.css`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-07 (CHECKPOINT), TASK-08
@@ -385,7 +385,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Blocks:** TASK-08
 - **Confidence:** 95%
 - **Acceptance:**
-  - Run `/re-plan` on TASK-08 and TASK-09
+  - Run `/lp-do-replan` on TASK-08 and TASK-09
   - Reassess confidence using evidence from completed foundation tasks
   - Confirm token bridge works and pilot migration approach is valid
   - Update plan with any new findings, splits, or abandoned tasks
@@ -398,7 +398,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-08: Pilot color token migration on common components
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — migrate one small component area from raw dark palette classes to semantic tokens
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:** `apps/reception/src/components/common/DarkModeToggle.tsx`, `apps/reception/src/components/dashboard/ReceptionDashboard.tsx`, `apps/reception/src/components/dashboard/DashboardMetrics.tsx` (candidate files — confirmed at checkpoint)
 - **Depends on:** TASK-06, TASK-07 (CHECKPOINT)
 - **Blocks:** TASK-09
@@ -438,7 +438,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-09: Re-enable DS lint rules for migrated directories
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `eslint.config.mjs` directory-scoped override for migrated area
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:** `eslint.config.mjs`
 - **Depends on:** TASK-08
 - **Blocks:** -

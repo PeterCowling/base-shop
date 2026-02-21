@@ -6,14 +6,16 @@ import {
 import { logger } from "@acme/platform-core/utils";
 import { stripe } from "@acme/stripe";
 
-// Mock fs/promises with actual mock functions
-const readdirMock = jest.fn();
-const readFileMock = jest.fn();
-
+// Mock fs/promises — use jest.fn() directly in the factory so it is always
+// available at hoist time, then retrieve the stable references via requireMock.
 jest.mock("fs/promises", () => ({
-  readFile: readFileMock,
-  readdir: readdirMock,
+  readFile: jest.fn(),
+  readdir: jest.fn(),
 }));
+
+const { readFile: readFileMock, readdir: readdirMock } = jest.requireMock(
+  "fs/promises",
+) as { readFile: jest.Mock; readdir: jest.Mock };
 
 jest.mock("@acme/stripe", () => ({
   stripe: {

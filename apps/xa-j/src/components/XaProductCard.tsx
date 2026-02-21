@@ -49,7 +49,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
     <div className="xa-panel rounded-lg border border-border-1 bg-surface-2/60 p-4 shadow-elevation-1 backdrop-blur">
       <div className="relative">
         <Link href={`/products/${product.slug}`} className="group block">
-          <div className="relative aspect-square overflow-hidden rounded-md bg-white">
+          <div className="relative aspect-square overflow-hidden rounded-md bg-surface">
             {primaryImage ? (
               <>
                 <XaFadeImage

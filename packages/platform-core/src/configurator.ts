@@ -711,7 +711,7 @@ function mapCheckResultToStatus(
   }
   return {
     status: "error",
-    error: result.reason,
+    error: (result as { ok: false; reason?: string }).reason,
   };
 }
 
@@ -783,7 +783,7 @@ export async function runRequiredConfigChecks(
       continue;
     }
     if (!result.ok) {
-      const reason = result.reason || "failed";
+      const reason = (result as { ok: false; reason?: string }).reason || "failed";
       failures.push(`${stepId}:${reason}`);
     }
   }

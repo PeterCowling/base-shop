@@ -1,6 +1,7 @@
 // packages/ui/src/organisms/AssistanceQuickLinksSection.tsx
 import type { ReactNode } from "react";
 import { Fragment, memo } from "react";
+import Link from "next/link";
 import clsx from "clsx";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
@@ -46,9 +47,9 @@ export interface AssistanceQuickLinksSectionProps {
 }
 
 const defaultRenderLink = ({ href, className, children, ariaLabel }: AssistanceQuickLinkRenderProps): ReactNode => (
-  <a href={href} className={className} aria-label={ariaLabel}>
+  <Link href={href} className={className} aria-label={ariaLabel}>
     {children}
-  </a>
+  </Link>
 );
 
 const resolveKey = (item: AssistanceQuickLinkItem): string => {

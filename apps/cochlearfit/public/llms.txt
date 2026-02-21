@@ -1,0 +1,6 @@
+# CochlearFit Headbands
+> Soft-fit headbands designed to secure cochlear implant processors with breathable comfort.
+
+## Machine-readable sources
+- [Sitemap](/sitemap.xml)
+- [Robots](/robots.txt)

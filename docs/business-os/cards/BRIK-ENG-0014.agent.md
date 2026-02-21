@@ -16,7 +16,7 @@ Last-updated: 2026-02-05
 ---
 # Remove Gallery Feature Plan
 
-**Source:** Migrated from `remove-gallery-feature-plan.md`
+**Source:** Migrated from `remove-gallery-featulp-do-replan.md`
 
 
 # Remove Gallery Feature Plan
@@ -39,4 +39,4 @@ Remove the gallery block feature from the guides system completely. Gallery imag
 - Creating new generic image block system
 - Migrating images for guides with unused gallery JSON (just delete the data)
 
-[... see full plan in docs/plans/remove-gallery-feature-plan.md]
+[... see full plan in docs/plans/remove-gallery-featulp-do-replan.md]

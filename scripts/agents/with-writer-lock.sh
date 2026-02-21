@@ -10,8 +10,8 @@ usage() {
   echo "for child processes (git hooks use this to enforce single-writer commits/pushes)."
   echo ""
   echo "Options:"
-  echo "  --timeout <sec>   Wait timeout while acquiring lock (0 = wait forever, default: 0)"
-  echo "  --poll <sec>      Poll interval while waiting (default: 2)"
+  echo "  --timeout <sec>   Wait timeout while acquiring lock (default: 300s in non-interactive agents; 0 = wait forever only in interactive shells)"
+  echo "  --poll <sec>      Poll interval while waiting (default: 30)"
   echo "  --no-wait         Do not wait; fail immediately if lock is held"
   echo "  --wait            Wait for lock (default)"
   echo "  --wait-forever    Equivalent to --wait --timeout 0"
@@ -33,9 +33,18 @@ if [[ ! -x "$lock_script" ]]; then
 fi
 
 wait_for_lock="1"
-timeout_sec="${BASESHOP_WRITER_LOCK_TIMEOUT_SEC:-0}"
-poll_sec="${BASESHOP_WRITER_LOCK_POLL_SEC:-2}"
+timeout_sec="${BASESHOP_WRITER_LOCK_TIMEOUT_SEC:-}"
+poll_sec="${BASESHOP_WRITER_LOCK_POLL_SEC:-30}"
 command_mode="0"
+
+if [[ -z "$timeout_sec" ]]; then
+  # Agents (non-interactive) should not wait indefinitely.
+  if [[ ! -t 0 ]]; then
+    timeout_sec="300"
+  else
+    timeout_sec="0"
+  fi
+fi
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -92,6 +101,14 @@ fi
 if ! [[ "$poll_sec" =~ ^[0-9]+$ ]]; then
   echo "ERROR: --poll must be an integer number of seconds (0 or greater)." >&2
   exit 2
+fi
+
+# Non-interactive agents must not wait forever, and must poll (check) periodically.
+if [[ ! -t 0 ]]; then
+  poll_sec="30"
+  if [[ "$wait_for_lock" == "1" ]]; then
+    timeout_sec="300"
+  fi
 fi
 
 acquire_args=(acquire --timeout "$timeout_sec" --poll "$poll_sec")

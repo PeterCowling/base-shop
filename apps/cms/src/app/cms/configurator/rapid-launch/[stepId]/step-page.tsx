@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 import { Tag } from "@acme/design-system/atoms";
 import { cn } from "@acme/design-system/utils/style";
@@ -120,7 +120,9 @@ export default function StepPage({ stepId }: Props) {
             />
           </div>
           <div className="rounded-2xl border border-border bg-card p-6">
-            <StepComponent prevStepId={prev?.id} nextStepId={next?.id} />
+            <Suspense fallback={null}>
+              <StepComponent prevStepId={prev?.id} nextStepId={next?.id} />
+            </Suspense>
           </div>
         </CardContent>
       </Card>

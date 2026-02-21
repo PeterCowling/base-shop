@@ -4,7 +4,7 @@ Status: Draft
 Domain: User-Testing
 Target-URL: https://5d811679.brikette-website.pages.dev/en
 Created: 2026-02-09
-Created-by: Claude (user-testing-audit skill)
+Created-by: Claude (meta-user-test skill)
 Audit-Timestamp: 2026-02-09T23:51:41.800Z
 Artifacts-JSON: docs/audits/user-testing/2026-02-09-5d811679-brikette-website-pages-dev-en-rerun2.json
 Artifacts-Screenshots: docs/audits/user-testing/2026-02-09-5d811679-brikette-website-pages-dev-en-rerun2-screenshots

@@ -80,7 +80,7 @@ describe('fsUtils', () => {
     const mod = await import('../src/createShop/fsUtils');
     const result = mod.syncTheme('shop', 'new');
     const pkg = JSON.parse(
-      fs.readFileSync('/workspace/base-shop/apps/shop/package.json', 'utf8')
+      fs.readFileSync('/workspace/base-shop/apps/shop/package.json', 'utf8') as string
     );
     const css = fs.readFileSync(
       '/workspace/base-shop/apps/shop/src/app/globals.css',

@@ -3,7 +3,11 @@
     "title": "Buchen Sie Ihren Aufenthalt – Offizielle Website",
     "description": "Flexible und nicht erstattbare Tarife. Sicherer Checkout auf unserer offiziellen Buchungsseite."
   },
-  "heading": "Buchen Sie Ihren Aufenthalt",
+  "heading": "Direkt buchen bei Hostel Brikette, Positano",
+  "subheading": "Wählen Sie Ihre Daten und dann ein Zimmer.",
+  "dealBanner": {
+    "applied": "Angebot angewendet: {{code}}"
+  },
   "roomLabel": "Zimmer",
   "cta": {
     "flex": "Flexibel – Zur Kasse",

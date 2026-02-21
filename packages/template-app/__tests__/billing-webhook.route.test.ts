@@ -35,7 +35,7 @@ jest.mock("@acme/platform-core/repositories/users", () => ({
 const makeReq = (body: unknown) =>
   ({
     text: async () => JSON.stringify(body),
-    headers: { get: () => "sig" } as Headers,
+    headers: { get: () => "sig" } as unknown as Headers,
   }) as unknown as NextRequest;
 
 describe("/api/billing/webhook POST", () => {

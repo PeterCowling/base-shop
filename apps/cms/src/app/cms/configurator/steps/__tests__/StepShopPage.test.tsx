@@ -8,6 +8,12 @@ import StepShopPage from "../StepShopPage";
 const push = jest.fn();
 jest.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
 
+// Shared toast object so spies can be inspected by tests.
+jest.mock("@acme/ui/operations", () => {
+  const _t = { success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn() };
+  return { useToast: () => _t };
+});
+
 const markComplete = jest.fn();
 jest.mock("../../hooks/useStepCompletion", () => ({
   __esModule: true,
@@ -50,13 +56,22 @@ jest.mock("@acme/design-system/shadcn", () => {
   SelectTrigger.displayName = "MockSelectTrigger";
   const SelectValue = ({ placeholder }: any) => <div>{placeholder}</div>;
   SelectValue.displayName = "MockSelectValue";
+  // Dialog components used in the template-confirmation flow
+  const Dialog = ({ open, children }: any) => (open ? <div>{children}</div> : null);
+  Dialog.displayName = "MockDialog";
+  const DialogContent = ({ children }: any) => <div>{children}</div>;
+  DialogContent.displayName = "MockDialogContent";
+  const DialogFooter = ({ children }: any) => <div>{children}</div>;
+  DialogFooter.displayName = "MockDialogFooter";
+  const DialogHeader = ({ children }: any) => <div>{children}</div>;
+  DialogHeader.displayName = "MockDialogHeader";
+  const DialogTitle = ({ children }: any) => <div>{children}</div>;
+  DialogTitle.displayName = "MockDialogTitle";
+  const Toast = ({ open, message }: any) => (open ? <div>{message}</div> : null);
+  Toast.displayName = "MockToast";
   return {
-    Button,
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+    Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+    Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, Toast,
   };
 });
 
@@ -168,6 +183,8 @@ describe("StepShopPage", () => {
   });
 
   it("saves and publishes page via API", async () => {
+    const { useToast } = jest.requireMock("@acme/ui/operations") as { useToast: () => Record<string, jest.Mock> };
+    const toast = useToast();
     apiRequest
       .mockResolvedValueOnce({ data: { id: "1" }, error: null })
       .mockResolvedValueOnce({ data: { id: "2" }, error: null });
@@ -179,7 +196,7 @@ describe("StepShopPage", () => {
       "/cms/api/page-draft/shop",
       expect.objectContaining({ method: "POST" }),
     );
-    await screen.findByText("Draft saved");
+    expect(toast.success).toHaveBeenCalled();
     await act(async () => {
       fireEvent.click(screen.getByText("publish"));
     });
@@ -187,7 +204,7 @@ describe("StepShopPage", () => {
       "/cms/api/page/shop",
       expect.objectContaining({ method: "POST" }),
     );
-    await screen.findByText("Page published");
+    expect(toast.success).toHaveBeenCalledTimes(2);
   });
 
   it("handles navigation buttons", () => {

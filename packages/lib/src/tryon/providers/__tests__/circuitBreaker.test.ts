@@ -1,4 +1,4 @@
-import { createBreaker } from "../../providers/circuitBreaker";
+import { createBreaker } from "../../providers/circuitBreaker.js";
 
 describe("circuit breaker", () => {
   it("opens after failures and recovers after cool-off", async () => {

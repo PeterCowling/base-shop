@@ -85,7 +85,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
             value={handle}
             onChange={(event) => setHandle(event.target.value)}
             placeholder="Handle or collective name"
-            className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
             autoComplete="off"
           />
         </label>
@@ -95,7 +95,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
             value={referredBy}
             onChange={(event) => setReferredBy(event.target.value)}
             placeholder="Who sent you?"
-            className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
             autoComplete="off"
           />
         </label>
@@ -106,7 +106,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
             onChange={(event) => setNote(event.target.value)}
             placeholder="What pulls you into the underground?"
             rows={4}
-            className="mt-2 w-full resize-none rounded-md border border-border-2 bg-white px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+            className="mt-2 w-full resize-none rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
           />
         </label>
 
@@ -114,7 +114,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
           <button
             type="submit"
             disabled={state === "loading"}
-            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {state === "loading" ? "Transmitting..." : "Request access"}
           </button>

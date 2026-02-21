@@ -22,7 +22,16 @@ const LOCK_SCRIPT = path.join(REPO_ROOT, "scripts/git/writer-lock.sh");
 function createTempGitRepo(): string {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "wl-test-"));
   execSync("git init", { cwd: tmpDir, stdio: "ignore" });
-  execSync('git commit --allow-empty -m "init"', {
+  execSync('git config user.name "Test"', { cwd: tmpDir, stdio: "ignore" });
+  execSync('git config user.email "test@test.com"', {
+    cwd: tmpDir,
+    stdio: "ignore",
+  });
+  execSync("git config core.hooksPath /dev/null", {
+    cwd: tmpDir,
+    stdio: "ignore",
+  });
+  execSync('git -c commit.gpgsign=false commit --allow-empty -m "init"', {
     cwd: tmpDir,
     stdio: "ignore",
   });

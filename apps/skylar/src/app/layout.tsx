@@ -28,6 +28,8 @@ import "./styles/milan-people.css";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 
+import { JsonLdScript, organizationJsonLd } from "@/lib/jsonld";
+
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
@@ -49,6 +51,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${roboto.variable} font-sans`}>
+      <head>
+        <JsonLdScript value={organizationJsonLd({ name: "Skylar SRL", url: "https://skylarsrl.com" })} />
+      </head>
       <body className="bg-bg text-fg antialiased">{children}</body>
     </html>
   );

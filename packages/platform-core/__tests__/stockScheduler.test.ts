@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals";
 
-const checkAndAlert = jest.fn().mockResolvedValue([]);
+const checkAndAlert = (jest.fn() as any).mockResolvedValue([]);
 jest.mock("../src/services/stockAlert.server", () => ({
   checkAndAlert,
 }));
@@ -16,25 +16,25 @@ describe("scheduleStockChecks", () => {
   });
 
   it("passes fetched items to checkAndAlert", async () => {
-    const mockGetItems = jest.fn().mockResolvedValue([{ sku: "s" } as any]);
+    const mockGetItems = (jest.fn() as any).mockResolvedValue([{ sku: "s" } as any]);
     const { scheduleStockChecks } = await import("../src/services/stockScheduler.server");
 
-    scheduleStockChecks("shop", mockGetItems, 100);
+    scheduleStockChecks("shop", mockGetItems as any, 100);
 
-    await jest.advanceTimersByTimeAsync(100);
+    await (jest as any).advanceTimersByTimeAsync(100);
 
     expect(mockGetItems).toHaveBeenCalledTimes(1);
     expect(checkAndAlert).toHaveBeenCalledWith("shop", [{ sku: "s" }]);
   });
 
   it("logs when getItems rejects", async () => {
-    const mockGetItems = jest.fn().mockRejectedValueOnce(new Error("fail"));
+    const mockGetItems = (jest.fn() as any).mockRejectedValueOnce(new Error("fail"));
     const consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
     const { scheduleStockChecks } = await import("../src/services/stockScheduler.server");
 
-    scheduleStockChecks("shop", mockGetItems, 100);
+    scheduleStockChecks("shop", mockGetItems as any, 100);
 
-    await jest.advanceTimersByTimeAsync(100);
+    await (jest as any).advanceTimersByTimeAsync(100);
 
     expect(consoleError).toHaveBeenCalledWith(
       "Scheduled stock check failed",
@@ -45,13 +45,13 @@ describe("scheduleStockChecks", () => {
   });
 
   it("exposes status information", async () => {
-    const mockGetItems = jest.fn().mockResolvedValue([]);
+    const mockGetItems = (jest.fn() as any).mockResolvedValue([]);
     const { scheduleStockChecks, getStockCheckStatus } = await import(
       "../src/services/stockScheduler.server"
     );
 
-    scheduleStockChecks("shop", mockGetItems, 100);
-    await jest.advanceTimersByTimeAsync(100);
+    scheduleStockChecks("shop", mockGetItems as any, 100);
+    await (jest as any).advanceTimersByTimeAsync(100);
 
     const status = getStockCheckStatus("shop");
     expect(status?.intervalMs).toBe(100);

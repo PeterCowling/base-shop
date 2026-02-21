@@ -1,4 +1,8 @@
 // apps/cover-me-pretty/__tests__/login-api.test.ts
+import { createCustomerSession, validateCsrfToken } from "@acme/auth";
+
+import { POST } from "../src/app/api/login/route";
+
 jest.mock("@acme/auth", () => ({
   __esModule: true,
   createCustomerSession: jest.fn(),
@@ -6,15 +10,36 @@ jest.mock("@acme/auth", () => ({
   isMfaEnabled: jest.fn().mockResolvedValue(false),
   verifyMfa: jest.fn(),
 }));
-
-import { createCustomerSession, validateCsrfToken } from "@acme/auth";
-import { POST } from "../src/app/api/login/route";
+jest.mock("@acme/config/env/auth", () => ({
+  __esModule: true,
+  authEnv: { AUTH_PROVIDER: "local" },
+}));
+jest.mock("argon2", () => ({
+  __esModule: true,
+  verify: (hash: string, password: string) => verifyArgon2(hash, password),
+}));
 
 type LoginBody = {
   customerId: string;
   password: string;
   remember?: boolean;
 };
+
+function verifyArgon2(hash: string, password: string): Promise<boolean> {
+  if (hash === "hash-cust1") {
+    return Promise.resolve(password === "pass1234");
+  }
+  if (hash === "hash-admin1") {
+    return Promise.resolve(password === "admin123");
+  }
+  return Promise.resolve(false);
+}
+
+const ORIGINAL_LOCAL_AUTH_USERS = process.env.LOCAL_AUTH_USERS;
+const LOCAL_AUTH_USERS_FIXTURE = JSON.stringify({
+  cust1: { passwordHash: "hash-cust1", role: "customer" },
+  admin1: { passwordHash: "hash-admin1", role: "admin" },
+});
 
 function makeRequest(body: LoginBody, headers: Record<string, string> = {}) {
   return new Request("http://example.com/api/login", {
@@ -24,7 +49,18 @@ function makeRequest(body: LoginBody, headers: Record<string, string> = {}) {
   });
 }
 
-afterEach(() => jest.clearAllMocks());
+beforeEach(() => {
+  process.env.LOCAL_AUTH_USERS = LOCAL_AUTH_USERS_FIXTURE;
+  jest.clearAllMocks();
+});
+
+afterAll(() => {
+  if (ORIGINAL_LOCAL_AUTH_USERS === undefined) {
+    delete process.env.LOCAL_AUTH_USERS;
+  } else {
+    process.env.LOCAL_AUTH_USERS = ORIGINAL_LOCAL_AUTH_USERS;
+  }
+});
 
 test("logs in valid customer", async () => {
   (validateCsrfToken as jest.Mock).mockResolvedValue(true);
@@ -121,21 +157,18 @@ test("returns 400 for invalid body", async () => {
   expect(res.status).toBe(400);
 });
 
-test("rate limits after five rapid requests", async () => {
-  (validateCsrfToken as jest.Mock).mockResolvedValue(true);
+test("returns 404 when NODE_ENV=production (local auth disabled)", async () => {
   const originalEnv = process.env.NODE_ENV;
   (process.env as { NODE_ENV: string }).NODE_ENV = "production";
   try {
-    const body = { customerId: "cust1", password: "pass1234" };
-    const headers = { "x-csrf-token": "token" };
-    for (let i = 0; i < 5; i++) {
-      const res = await POST(makeRequest(body, headers));
-      expect(res.status).toBe(200);
-      await expect(res.json()).resolves.toEqual({ ok: true });
-    }
-    const res6 = await POST(makeRequest(body, headers));
-    expect(res6.status).toBe(429);
-    await expect(res6.json()).resolves.toEqual({ error: "Too Many Requests" });
+    const res = await POST(
+      makeRequest(
+        { customerId: "cust1", password: "pass1234" },
+        { "x-csrf-token": "token" },
+      ),
+    );
+    expect(res.status).toBe(404);
+    await expect(res.json()).resolves.toEqual({ error: "Not Found" });
   } finally {
     (process.env as { NODE_ENV?: string }).NODE_ENV = originalEnv;
   }

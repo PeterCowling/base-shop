@@ -32,7 +32,7 @@ Audit why localized top-level slugs fail on Brikette staging and define an imple
 ### Non-goals
 - Migrating staging from static export to Worker runtime.
 - Changing production routing behavior.
-- Implementing fixes in this fact-find step.
+- Implementing fixes in this lp-do-fact-find step.
 
 ## Repo Evidence
 ### 1) Staging is static export; middleware is intentionally unavailable

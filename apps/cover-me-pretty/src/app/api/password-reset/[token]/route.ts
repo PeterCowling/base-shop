@@ -12,10 +12,8 @@ export const runtime = "nodejs";
 
 const schema = z.object({ password: z.string().min(8) }).strict();
 
-export async function POST(
-  req: Request,
-  { params }: { params: { token: string } },
-) {
+export async function POST(req: Request, props: { params: Promise<{ token: string }> }) {
+  const params = await props.params;
   const t = await getServerTranslations("en");
   const parsed = await parseJsonBody(req, schema, "1mb");
   if ("response" in parsed) {

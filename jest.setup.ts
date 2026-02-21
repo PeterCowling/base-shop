@@ -100,6 +100,19 @@ const { configure } = require("@testing-library/react");
 configure({ testIdAttribute: "data-cy" });
 import "./test/polyfills/form-request-submit";
 // Provide a harmless confirm() stub that tests can spy on or override
+// jsdom does not provide setImmediate/clearImmediate; some Node-oriented code expects them.
+try {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const anyGlobal = globalThis as any;
+  if (typeof anyGlobal.setImmediate !== "function") {
+    anyGlobal.setImmediate = (fn: (...args: any[]) => void, ...args: any[]) =>
+      setTimeout(fn, 0, ...args);
+  }
+  if (typeof anyGlobal.clearImmediate !== "function") {
+    anyGlobal.clearImmediate = (id: any) => clearTimeout(id);
+  }
+} catch {}
+
 try {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (globalThis as any).confirm = (msg?: string) => false;
@@ -300,6 +313,8 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   /React does not recognize the `%s` prop on a DOM element\..*labelClassName/,
   /React does not recognize the `%s` prop on a DOM element\..*trailingIcon/,
   "Failed to load upgrade changes Only absolute URLs are supported",
+  "Failed to load order",
+  "Publish failed",
   // Env validation helpers – these are intentionally exercised with invalid
   // inputs across many suites, so the error logs are expected noise in tests.
   "❌ Invalid CMS environment variables",
@@ -313,9 +328,17 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
   "Failed to send campaign email",
   // Bullet-point issue details printed by core/shipping env loaders
-  /^  • .*: .+/,
+  /^\s*• .*: .+/,
   // MSW warning for unhandled AI catalog feed preview request in tests
   /\[MSW\] Error: intercepted a request without a matching request handler:.*\/api\/seo\/ai-catalog/,
+  // Template-app expected error paths (tests assert status codes, not logs)
+  /^\[stripe-webhook\] tenant mismatch\b/,
+  /^\[stripe-webhook\] tenant unresolvable\b/,
+  "Failed to create Stripe checkout session",
+  "Inventory validation failed",
+  "Failed to load upgrade changes",
+  "Publish failed",
+  /^\[api\/delivery\] schedulePickup error:/,
 ];
 
 const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
@@ -324,9 +347,19 @@ const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
   /ALLOW_EN_FALLBACKS=1 set; found \d+ English strings/,
   /\[WARN\] i18n parity\/quality issues found/,
   /\[WARN\] Guide content parity\/quality issues found/,
+  // TASK-10A: commercial route SSR/no-JS audit warnings (report-only gate, pre-TASK-10B)
+  /\[WARN\] \[TASK-10A/,
+  // Funnel metrics extractor expected warnings (BL-02)
+  /\[extractFunnelMetrics\] Failed to read/,
   /\[guide-manifest-overrides\] Malformed JSON, using empty defaults/,
   // Firebase RTDB emits permission_denied warnings during security rules tests
   /@firebase\/database: FIREBASE WARNING:/,
+  // RedisCartStore emits operational warnings on transient Redis failures (tested in fallback tests)
+  "Redis operation failed",
+  // Unrecognized email provider errors (tested in email provider fallback tests)
+  /^Unrecognized provider error/,
+  // Shop smoke tests intentionally warn when SHOP_ID is absent.
+  "SHOP_ID is not set; shop smoke tests will be skipped.",
 ];
 
 const shouldIgnoreConsoleMessage = (
@@ -341,7 +374,7 @@ const shouldIgnoreConsoleMessage = (
       }
       return "";
     })
-    .join(" ");
+    .join(" ").trim();
 
   return patterns.some((pattern) =>
     typeof pattern === "string"

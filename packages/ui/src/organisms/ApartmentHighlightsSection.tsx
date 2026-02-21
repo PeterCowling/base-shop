@@ -7,9 +7,9 @@ import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
 
 const IMAGES = {
-  slide1: "/img/positano-panorama.avif",
-  slide2: "/img/free-perks.avif",
-  slide3: "/img/facade.avif",
+  slide1: "/img/apt1.jpg",
+  slide2: "/img/interno3.jpg",
+  slide3: "/img/apt2.jpg",
 } as const;
 
 interface Slide {
@@ -74,10 +74,10 @@ const ApartmentHighlightsSection: FC<{ lang?: string }> = ({ lang }) => {
   );
 
   return (
-    <section className="bg-brand-surface py-8 dark:bg-brand-text lg:py-12">
+    <section className="py-8 lg:py-12">
       <Section as="div" padding="none" className="max-w-6xl px-4">
-        <h2 className="mb-8 text-center text-3xl font-extrabold tracking-tight text-brand-heading dark:text-brand-surface">{t("highlights.sectionTitle")}</h2>
-        <Grid cols={1} gap={8}>{slideFigures}</Grid>
+        <h2 className="mb-8 text-center text-3xl font-extrabold tracking-tight text-brand-heading">{t("highlights.sectionTitle")}</h2>
+        <Grid cols={1} gap={8} className="sm:grid-cols-2 lg:grid-cols-3">{slideFigures}</Grid>
       </Section>
     </section>
   );

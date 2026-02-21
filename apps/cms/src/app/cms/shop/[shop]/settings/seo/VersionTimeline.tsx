@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/seo/VersionTimeline.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { revertSeo } from "@cms/actions/shops.server";
 
 import { formatTimestamp } from "@acme/date-utils";
@@ -65,7 +65,7 @@ export default function VersionTimeline({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      {React.createElement(DialogTrigger as any, { asChild: true }, trigger)}
       {/* Positioned ancestor for fixed drawer (lint: ds/absolute-parent-guard) */}
       <div className="relative">
         <DialogContent

@@ -1,8 +1,13 @@
 import type { ReactNode } from "react";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@acme/design-system/primitives";
-import { CfImage } from "@acme/ui/atoms/CfImage";
-import { CfResponsiveImage } from "@acme/ui/atoms/CfResponsiveImage";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@acme/design-system/primitives";
+import { CfImage, CfResponsiveImage } from "@acme/ui/atoms";
 
 import { ZoomIn } from "@/icons";
 import { findPlaceholderBinding, type RouteDefinition } from "@/lib/how-to-get-here/definitions";
@@ -36,6 +41,177 @@ export function getSections(
   return [];
 }
 
+function processArrayValue(
+  key: string,
+  value: unknown[],
+  path: string,
+  ctx: RenderContext,
+): { items: ReactNode[]; subSections: ReactNode[] } {
+  const items: ReactNode[] = [];
+  const subSections: ReactNode[] = [];
+  const currentPath = `${path}.${key}`;
+
+  for (let index = 0; index < value.length; index += 1) {
+    const entry = value[index];
+    if (typeof entry === "string") {
+      const itemPath = `${currentPath}.${index}`;
+      const binding =
+        findPlaceholderBinding(ctx.definition, itemPath) ??
+        findPlaceholderBinding(ctx.definition, currentPath);
+      items.push(<li key={itemPath}>{renderRichText(entry, itemPath, binding, ctx)}</li>);
+    } else if (isPlainObject(entry) && (entry["title"] || entry["heading"])) {
+      subSections.push(renderSection(String(index), entry, ctx, currentPath));
+    }
+  }
+
+  return { items, subSections };
+}
+
+function processStringValue(key: string, value: string, path: string, ctx: RenderContext): ReactNode {
+  const currentPath = `${path}.${key}`;
+  const binding = findPlaceholderBinding(ctx.definition, currentPath);
+  return (
+    <p key={currentPath} className="text-base leading-relaxed">
+      {renderRichText(value, currentPath, binding, ctx)}
+    </p>
+  );
+}
+
+function processLinkedCopyValue(key: string, value: unknown, path: string, ctx: RenderContext): ReactNode {
+  const currentPath = `${path}.${key}`;
+  const binding = findPlaceholderBinding(ctx.definition, currentPath);
+  if (!isLinkedCopy(value)) return null;
+  return (
+    <p key={currentPath} className="text-base leading-relaxed">
+      {renderLinkedCopy(value, currentPath, binding, ctx, currentPath)}
+    </p>
+  );
+}
+
+function processNestedObjectValue(
+  key: string,
+  value: Record<string, unknown>,
+  path: string,
+  ctx: RenderContext,
+): ReactNode | null {
+  const currentPath = `${path}.${key}`;
+  const binding = findPlaceholderBinding(ctx.definition, currentPath);
+  const entries: ReactNode[] = [];
+
+  for (const [nestedKey, nestedVal] of Object.entries(value)) {
+    if (typeof nestedVal === "string") {
+      entries.push(
+        <p key={`${currentPath}-${nestedKey}`} className="text-base leading-relaxed">
+          {renderRichText(nestedVal, `${currentPath}.${nestedKey}`, binding, ctx)}
+        </p>,
+      );
+    }
+  }
+
+  if (entries.length === 0) return null;
+
+  return (
+    <div key={currentPath} className="space-y-2">
+      {entries}
+    </div>
+  );
+}
+
+type ProcessedContent = {
+  paragraphs: ReactNode[];
+  lists: ReactNode[][];
+  subSections: ReactNode[];
+  figure: { src: string; alt: string; caption?: string } | null;
+};
+
+function handlePlainObjectValue(
+  key: string,
+  value: Record<string, unknown>,
+  path: string,
+  ctx: RenderContext,
+  accumulated: ProcessedContent,
+): boolean {
+  const currentPath = `${path}.${key}`;
+  const linkListNode = renderLinkListEntry(ctx.definition, ctx, currentPath, value);
+  if (linkListNode) {
+    accumulated.paragraphs.push(linkListNode);
+    return true;
+  }
+
+  // Handle nested sections with titles
+  if (value["title"] || value["heading"] || value["name"]) {
+    const rendered = renderSection(key, value, ctx, path);
+    if (rendered) {
+      accumulated.subSections.push(rendered);
+    }
+    return true;
+  }
+
+  return false;
+}
+
+function processSectionEntry(
+  key: string,
+  value: unknown,
+  path: string,
+  ctx: RenderContext,
+  accumulated: ProcessedContent,
+): void {
+  if (key === "title" || key === "heading" || key === "name") return;
+  const currentPath = `${path}.${key}`;
+
+  // Handle callouts
+  if (key === "aside" || key === "tip" || key === "cta") {
+    const calloutNode = renderCallout(currentPath, value, ctx);
+    if (calloutNode) {
+      accumulated.paragraphs.push(calloutNode);
+      return;
+    }
+  }
+
+  // Handle arrays
+  if (Array.isArray(value)) {
+    const result = processArrayValue(key, value, path, ctx);
+    if (result.items.length > 0) {
+      accumulated.lists.push(result.items);
+    }
+    accumulated.subSections.push(...result.subSections);
+    return;
+  }
+
+  // Handle strings
+  if (typeof value === "string") {
+    accumulated.paragraphs.push(processStringValue(key, value, path, ctx));
+    return;
+  }
+
+  // Handle linked copy
+  if (isLinkedCopy(value)) {
+    accumulated.paragraphs.push(processLinkedCopyValue(key, value, path, ctx));
+    return;
+  }
+
+  // Handle figures
+  if (key === "figure" || key === "image") {
+    accumulated.figure = getFigure(currentPath, value, ctx.definition) ?? accumulated.figure;
+    return;
+  }
+
+  // Handle plain objects (link lists and nested sections)
+  if (isPlainObject(value)) {
+    const handled = handlePlainObjectValue(key, value as Record<string, unknown>, path, ctx, accumulated);
+    if (handled) return;
+  }
+
+  // Handle generic nested objects
+  if (typeof value === "object" && value !== null) {
+    const nestedNode = processNestedObjectValue(key, value as Record<string, unknown>, path, ctx);
+    if (nestedNode) {
+      accumulated.paragraphs.push(nestedNode);
+    }
+  }
+}
+
 export function renderSection(
   sectionKey: string,
   data: unknown,
@@ -52,110 +228,18 @@ export function renderSection(
     (record["name"] as string | undefined) ??
     undefined;
 
-  const paragraphs: ReactNode[] = [];
-  const lists: ReactNode[][] = [];
-  const subSections: ReactNode[] = [];
-  let figure: { src: string; alt: string; caption?: string } | null = null;
+  const content: ProcessedContent = {
+    paragraphs: [],
+    lists: [],
+    subSections: [],
+    figure: null,
+  };
 
   for (const [key, value] of Object.entries(data)) {
-    if (key === "title" || key === "heading" || key === "name") continue;
-    const currentPath = `${path}.${key}`;
-
-    if (key === "aside" || key === "tip" || key === "cta") {
-      const calloutNode = renderCallout(currentPath, value, ctx);
-      if (calloutNode) {
-        paragraphs.push(calloutNode);
-        continue;
-      }
-    }
-
-    if (Array.isArray(value)) {
-      const items: ReactNode[] = [];
-      for (let index = 0; index < value.length; index += 1) {
-        const entry = value[index];
-        if (typeof entry === "string") {
-          const itemPath = `${currentPath}.${index}`;
-          const binding =
-            findPlaceholderBinding(ctx.definition, itemPath) ??
-            findPlaceholderBinding(ctx.definition, currentPath);
-          items.push(<li key={itemPath}>{renderRichText(entry, itemPath, binding, ctx)}</li>);
-        } else if (isPlainObject(entry) && (entry["title"] || entry["heading"])) {
-          subSections.push(renderSection(String(index), entry, ctx, currentPath));
-        }
-      }
-      if (items.length > 0) {
-        lists.push(items);
-      }
-      continue;
-    }
-
-    if (typeof value === "string") {
-      const binding = findPlaceholderBinding(ctx.definition, currentPath);
-      paragraphs.push(
-        <p key={currentPath} className="text-base leading-relaxed">
-          {renderRichText(value, currentPath, binding, ctx)}
-        </p>,
-      );
-      continue;
-    }
-
-    if (isLinkedCopy(value)) {
-      const binding = findPlaceholderBinding(ctx.definition, currentPath);
-      paragraphs.push(
-        <p key={currentPath} className="text-base leading-relaxed">
-          {renderLinkedCopy(value, currentPath, binding, ctx, currentPath)}
-        </p>,
-      );
-      continue;
-    }
-
-    if (key === "figure" || key === "image") {
-      figure = getFigure(currentPath, value, ctx.definition) ?? figure;
-      continue;
-    }
-
-    if (isPlainObject(value)) {
-      const linkListNode = renderLinkListEntry(
-        ctx.definition,
-        ctx,
-        currentPath,
-        value as Record<string, unknown>,
-      );
-      if (linkListNode) {
-        paragraphs.push(linkListNode);
-        continue;
-      }
-    }
-
-    if (isPlainObject(value) && (value["title"] || value["heading"] || value["name"])) {
-      const rendered = renderSection(key, value, ctx, path);
-      if (rendered) {
-        subSections.push(rendered);
-      }
-      continue;
-    }
-
-    if (typeof value === "object" && value !== null) {
-      const binding = findPlaceholderBinding(ctx.definition, currentPath);
-      const entries: ReactNode[] = [];
-      for (const [nestedKey, nestedVal] of Object.entries(value)) {
-        if (typeof nestedVal === "string") {
-          entries.push(
-            <p key={`${currentPath}-${nestedKey}`} className="text-base leading-relaxed">
-              {renderRichText(nestedVal, `${currentPath}.${nestedKey}`, binding, ctx)}
-            </p>,
-          );
-        }
-      }
-      if (entries.length > 0) {
-        paragraphs.push(
-          <div key={currentPath} className="space-y-2">
-            {entries}
-          </div>,
-        );
-      }
-    }
+    processSectionEntry(key, value, path, ctx, content);
   }
+
+  const { paragraphs, lists, subSections, figure } = content;
 
   if (!title && paragraphs.length === 0 && lists.length === 0 && !figure && subSections.length === 0) {
     return null;
@@ -313,7 +397,8 @@ function renderInlineGallery(path: string, ctx: RenderContext): ReactNode | null
 
   return (
     <div className="space-y-4">
-      <ul className="grid grid-cols-1 gap-6 list-none p-0 sm:grid-cols-1 md:grid-cols-2">
+      {/* eslint-disable-next-line ds/enforce-layout-primitives -- BRIK-005 [ttl=2026-03-15] (complex grid layout, DS Grid component doesn't support this pattern) */}
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 list-none p-0">
         {gallery.items.map((item) => {
           const meta = itemsMeta?.[item.id];
           const altText = meta?.alt ?? meta?.caption ?? item.id;

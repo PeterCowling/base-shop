@@ -4,21 +4,21 @@ import type { Settings } from "../settings.json.server";
 
 const prismaMock = {
   setting: {
-    findUnique: jest.fn(),
-    upsert: jest.fn(),
+    findUnique: jest.fn() as any,
+    upsert: jest.fn() as any,
   },
   settingDiff: {
-    create: jest.fn(),
-    findMany: jest.fn(),
+    create: jest.fn() as any,
+    findMany: jest.fn() as any,
   },
 };
 
 jest.mock("../../db", () => ({ prisma: prismaMock }));
 
 const jsonMock = {
-  getShopSettings: jest.fn(),
-  saveShopSettings: jest.fn(),
-  diffHistory: jest.fn(),
+  getShopSettings: jest.fn() as any,
+  saveShopSettings: jest.fn() as any,
+  diffHistory: jest.fn() as any,
 };
 
 jest.mock("../settings.json.server", () => ({
@@ -34,7 +34,7 @@ describe("settings.prisma.server", () => {
     seo: {},
     updatedAt: "",
     updatedBy: "",
-  } as Settings;
+  } as unknown as Settings;
 
   beforeAll(async () => {
     repo = await import("../settings.prisma.server");

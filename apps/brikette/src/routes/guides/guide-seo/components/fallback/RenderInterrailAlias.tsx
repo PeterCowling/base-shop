@@ -95,7 +95,7 @@ export default function RenderInterrailAlias({
         {aliasIntro.length > 0 ? (
           <div className="space-y-4">
             {aliasIntro.map((p, idx) => (
-              <p key={idx}>{renderGuideLinkTokens(p, lang, `alias-intro-${idx}`, guideKey)}</p>
+              <p key={`alias-intro-${idx}`}>{renderGuideLinkTokens(p, lang, `alias-intro-${idx}`, guideKey)}</p>
             ))}
           </div>
         ) : null}
@@ -123,7 +123,7 @@ export default function RenderInterrailAlias({
             </h2>
             <div className="space-y-3">
               {aliasFaqsArr.map((f, i) => (
-                <details key={i}>
+                <details key={f.q}>
                   <summary role="button" className="font-medium">{f.q}</summary>
                   {renderBodyBlocks(f.a, lang, `alias-faq-${i}`, guideKey)}
                 </details>

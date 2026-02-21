@@ -5,8 +5,8 @@ Stances control what the Cabinet system looks for. A stance is not a filter — 
 ## Invocation
 
 ```
-/ideas-go-faster --stance=improve-data    # default
-/ideas-go-faster --stance=grow-business
+/idea-generate --stance=improve-data    # default
+/idea-generate --stance=grow-business
 ```
 
 If no `--stance` parameter is provided, default to `improve-data`.

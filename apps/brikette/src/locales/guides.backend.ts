@@ -18,19 +18,7 @@ export async function loadGuidesNamespace(
   lng: string,
   options: GuidesBackendOptions,
 ): Promise<GuidesNamespace | undefined> {
-  const { canUseNodeFs } = options;
-
-  // Prefer the Node FS loader when running under Node (tests/scripts) to avoid
-  // races where module discovery hasn't hydrated yet.
-  if (canUseNodeFs) {
-    try {
-      const { loadGuidesNamespaceFromFs } = await import("@/locales/_guides/node-loader");
-      const fromFs = loadGuidesNamespaceFromFs(lng);
-      if (fromFs) return fromFs;
-    } catch {
-      // Fall through to other strategies below.
-    }
-  }
+  void options;
 
   const bundle = getGuidesBundle(lng);
   if (bundle) return bundle;
@@ -44,4 +32,3 @@ export async function loadGuidesNamespace(
 
   return undefined;
 }
-

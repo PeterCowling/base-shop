@@ -8,8 +8,8 @@ Last-updated: 2026-02-11
 Feature-Slug: writer-lock-enforcement-queue-hardening
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
-Supporting-Skills: re-plan, safe-commit-push-ci
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-replan, ops-ship
 Overall-confidence: 88%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1,M=2,L=3)
 Business-OS-Integration: off
@@ -50,7 +50,7 @@ Harden the writer-lock queue system to close 7 findings from the security audit:
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/writer-lock-enforcement-queue-hardening-fact-find.md`
+- Related brief: `docs/plans/writer-lock-enforcement-queue-hardening-lp-do-fact-find.md`
 - Key findings:
   - Finding 1 (Critical): orphan waiter can acquire lock after ticket cleanup, recording dead parent PID — single-writer violation.
   - Finding 2 (High): docs recommend `writer-lock.sh acquire --wait` directly, which creates unreleasable lock state (no token export).
@@ -105,7 +105,7 @@ No architectural redesign — all fixes operate within the existing filesystem-b
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `scripts/__tests__/writer-lock-queue.test.ts`
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - **Primary:** `scripts/__tests__/writer-lock-queue.test.ts` (new file)
   - **Secondary:** `[readonly] scripts/git/writer-lock.sh`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
@@ -169,7 +169,7 @@ No architectural redesign — all fixes operate within the existing filesystem-b
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `scripts/git/writer-lock.sh`
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - **Primary:** `scripts/git/writer-lock.sh`
   - **Secondary:** `[readonly] scripts/agents/with-writer-lock.sh`
@@ -235,7 +235,7 @@ No architectural redesign — all fixes operate within the existing filesystem-b
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `AGENTS.md`, `docs/git-safety.md`, `scripts/git-hooks/require-writer-lock.sh`
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - **Primary:** `AGENTS.md`, `docs/git-safety.md`, `scripts/git-hooks/require-writer-lock.sh`
   - **Secondary:** `[readonly] scripts/agents/with-writer-lock.sh`, `[readonly] scripts/agents/integrator-shell.sh`
@@ -297,7 +297,7 @@ No architectural redesign — all fixes operate within the existing filesystem-b
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `scripts/git-hooks/require-writer-lock.sh`
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - **Primary:** `scripts/git-hooks/require-writer-lock.sh`
   - **Secondary:** `[readonly] scripts/agent-bin/git`, `[readonly] .claude/hooks/pre-tool-use-git-safety.sh`, `[readonly] .claude/settings.json`
@@ -360,7 +360,7 @@ No architectural redesign — all fixes operate within the existing filesystem-b
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `scripts/git/writer-lock.sh`
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:**
   - **Primary:** `scripts/git/writer-lock.sh`
 - **Depends on:** -
@@ -418,7 +418,7 @@ No architectural redesign — all fixes operate within the existing filesystem-b
 
 - **Type:** DECISION
 - **Deliverable:** decision artifact — update to this plan document
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:** `scripts/git/writer-lock.sh`, `docs/git-safety.md`
 - **Depends on:** -
 - **Blocks:** -
@@ -463,5 +463,5 @@ No architectural redesign — all fixes operate within the existing filesystem-b
 
 ## Decision Log
 
-- 2026-02-11: Plan created from fact-find brief. SKIP_WRITER_LOCK removal approved based on prior deferral condition being met (clean-stale proven). DS-06 (--force governance) deferred to user decision.
+- 2026-02-11: Plan created from lp-do-fact-find brief. SKIP_WRITER_LOCK removal approved based on prior deferral condition being met (clean-stale proven). DS-06 (--force governance) deferred to user decision.
 - 2026-02-11: DS-06 resolved — Option B (doc-only policy) selected. No code change to `release --force`; strengthen documented break-glass policy in DS-03 scope.

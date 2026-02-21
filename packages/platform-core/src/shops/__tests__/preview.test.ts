@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import { createPreviewToken } from "../../previewTokens";
 
 jest.mock("../deployInfo", () => {
-  const actual = jest.requireActual("../deployInfo");
+  const actual = jest.requireActual("../deployInfo") as any;
   return {
     ...actual,
     readDeployInfo: jest.fn(),

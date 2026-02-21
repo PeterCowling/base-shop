@@ -7,11 +7,13 @@ import type {
   GalleryBindingItem as _GalleryBindingItem,
   HowToGetHereRoutesLocale as _HowToGetHereRoutesLocale,
   LinkBinding as _LinkBinding,
+  LinkedCopy as _LinkedCopy,
   LinkListBinding as _LinkListBinding,
   LinkListBindingItem as _LinkListBindingItem,
   LinkTarget as _LinkTarget,
   MediaBinding as _MediaBinding,
   RouteContent as _RouteContent,
+  RouteContentValue as _RouteContentValue,
   RouteDefinitionDocument as _RouteDefinitionDocument,
   RouteDefinitionEntry as _RouteDefinitionEntry,
 } from "@/lib/how-to-get-here/schema";
@@ -22,6 +24,7 @@ import type { GuidesNamespace as _GuidesNamespace } from "../locales/guides";
 // be discouraged at call-sites.
 export type LinkTarget = Readonly<_LinkTarget>;
 export type LinkBinding = Readonly<_LinkBinding>;
+export type LinkedCopy = Readonly<_LinkedCopy>;
 export type MediaBinding = Readonly<_MediaBinding>;
 export type GalleryBindingItem = Readonly<_GalleryBindingItem>;
 export type GalleryBinding = Readonly<_GalleryBinding>;
@@ -31,6 +34,7 @@ export type RouteDefinitionDocument = Readonly<_RouteDefinitionDocument>;
 export type RouteDefinitionEntry = Readonly<_RouteDefinitionEntry>;
 export type HowToGetHereRoutesLocale = Readonly<_HowToGetHereRoutesLocale>;
 export type RouteContent = Readonly<_RouteContent>;
+export type RouteContentValue = Readonly<_RouteContentValue>;
 
 // Minimal surface for the guides namespace bundle used at runtime.
 export type GuidesNamespace = Readonly<_GuidesNamespace>;

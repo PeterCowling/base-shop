@@ -70,23 +70,23 @@ const SocialHighlightsCard: FC<SocialHighlightsCardProps> = memo(
     }, [nextActivity]);
 
     return (
-      <div className={`rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 p-4 shadow-sm ${className}`}>
+      <div className={`rounded-2xl bg-gradient-to-br from-primary-soft to-accent-soft p-4 shadow-sm ${className}`}>
         {hasActivities ? (
           <>
             {/* Header */}
             <div className="mb-3 flex items-center gap-2">
-              <Users className="h-5 w-5 text-emerald-600" />
-              <span className="text-xs font-medium uppercase tracking-wide text-emerald-600">
+              <Users className="h-5 w-5 text-primary" />
+              <span className="text-xs font-medium uppercase tracking-wide text-primary">
                 {t('social.upcomingActivity')}
               </span>
             </div>
 
             {/* Next activity */}
             <div className="mb-3">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-foreground">
                 {nextActivity.title}
               </h3>
-              <div className="mt-1 flex items-center gap-2 text-sm text-gray-600">
+              <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
                 <Calendar className="h-4 w-4" />
                 <span>{formattedTime}</span>
               </div>
@@ -96,14 +96,14 @@ const SocialHighlightsCard: FC<SocialHighlightsCardProps> = memo(
             <div className="flex gap-2">
               <Link
                 href={`/chat/channel?id=${nextActivity.id}`}
-                className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-600"
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-fg transition-colors hover:bg-primary-hover"
               >
                 <ActionIcon className="h-4 w-4" />
                 {t(ctaKeys.joinChat)}
               </Link>
               <Link
                 href="/activities"
-                className="flex items-center justify-center rounded-lg bg-white/60 px-4 py-2 text-sm font-medium text-emerald-700 transition-colors hover:bg-white/80"
+                className="inline-flex items-center justify-center rounded-lg bg-background/60 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-background/80"
               >
                 {t(ctaKeys.seeAll)}
               </Link>
@@ -113,22 +113,22 @@ const SocialHighlightsCard: FC<SocialHighlightsCardProps> = memo(
           <>
             {/* No activities - show guidebook CTA */}
             <div className="mb-3 flex items-center gap-2">
-              <Map className="h-5 w-5 text-emerald-600" />
-              <span className="text-xs font-medium uppercase tracking-wide text-emerald-600">
+              <Map className="h-5 w-5 text-primary" />
+              <span className="text-xs font-medium uppercase tracking-wide text-primary">
                 {t('social.explorePositano')}
               </span>
             </div>
 
-            <h3 className="mb-2 text-lg font-semibold text-gray-900">
+            <h3 className="mb-2 text-lg font-semibold text-foreground">
               {t('social.discoverTitle')}
             </h3>
-            <p className="mb-3 text-sm text-gray-600">
+            <p className="mb-3 text-sm text-muted-foreground">
               {t('social.discoverDescription')}
             </p>
 
             <Link
               href="/positano-guide"
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-600"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-fg transition-colors hover:bg-primary-hover"
             >
               <Map className="h-4 w-4" />
               {t('social.exploreGuide')}

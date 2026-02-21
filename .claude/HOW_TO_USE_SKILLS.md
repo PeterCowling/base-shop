@@ -268,7 +268,7 @@ and suggest improvements based on our conventions"
 Share skills with new team members:
 ```
 "New developer? Start by reading docs/agents/feature-workflow-guide.md
-and .claude/SKILLS_INDEX.md to understand our development patterns"
+and run scripts/agents/list-skills to see the supported workflow skills"
 ```
 
 ---

@@ -4,7 +4,7 @@ describe("createProductDelegate", () => {
   it("returns null when findUnique is called without shopId_id", async () => {
     const delegate = createProductDelegate();
     await delegate.create({ data: { shopId: "s1", id: "p1" } });
-    const result = await delegate.findUnique({ where: { id: "p1" } });
+    const result = await delegate.findUnique({ where: { id: "p1" } as any });
     expect(result).toBeNull();
   });
 

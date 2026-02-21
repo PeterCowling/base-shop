@@ -1,4 +1,5 @@
 #!/usr/bin/env tsx
+/* eslint-disable ds/no-hardcoded-copy -- server-side export script — not customer-facing UI copy [DS-02] */
 import { execSync } from "node:child_process";
 import { mkdir, readdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";

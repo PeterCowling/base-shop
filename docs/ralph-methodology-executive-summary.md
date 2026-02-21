@@ -82,7 +82,7 @@ Benefit: faster orientation and less context thrash.
 
 - Planning mode: read and write a plan only.
 - Building mode: implement approved plan tasks, one per iteration.
-- Skills: `.claude/skills/plan-feature/SKILL.md` and `.claude/skills/build-feature/SKILL.md`.
+- Skills: `.claude/skills/lp-do-plan/SKILL.md` and `.claude/skills/lp-do-build/SKILL.md`.
 
 ### 3) Ownership and Task Claiming
 

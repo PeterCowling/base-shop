@@ -9,6 +9,7 @@
     "allowImportingTsExtensions": true,
     "baseUrl": "../..",
     "paths": {
+      "@jest/globals": ["test/jest-globals-compat.d.ts"],
       "@/*": ["apps/cms/src/*"],
       "@cms/*": ["apps/cms/src/*"],
       "@/components/*": ["packages/ui/dist/components/*"],

@@ -272,8 +272,8 @@ function Extension() {
     filteredRows.forEach((r) => {
       if (!map[r.bookingRef]) {
         map[r.bookingRef] = useGrey
-          ? "bg-gray-100 dark:bg-darkSurface"
-          : "bg-white dark:bg-darkSurface";
+          ? "bg-surface-2 dark:bg-darkSurface"
+          : "bg-surface dark:bg-darkSurface";
         useGrey = !useGrey;
       }
     });
@@ -298,22 +298,22 @@ function Extension() {
 
   return (
     <>
-      <div className="min-h-[80vh] p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+      <div className="min-h-[80vh] p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
         <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
           EXTENSION
         </h1>
 
-        <div className="bg-white rounded-lg shadow p-6 dark:bg-darkSurface">
+        <div className="bg-surface rounded-lg shadow p-6 dark:bg-darkSurface">
           {loading && (
-            <p className="italic text-gray-600">Loading extension data...</p>
+            <p className="italic text-muted-foreground">Loading extension data...</p>
           )}
 
           {!loading && hasError && (
-            <p className="text-red-600">Error loading data: {String(error)}</p>
+            <p className="text-danger-fg">Error loading data: {String(error)}</p>
           )}
 
           {!loading && !hasError && rows.length === 0 && (
-            <p className="italic text-gray-600">No guests in house.</p>
+            <p className="italic text-muted-foreground">No guests in house.</p>
           )}
 
           {!loading && !hasError && rows.length > 0 && (
@@ -321,7 +321,7 @@ function Extension() {
               <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <label
                   htmlFor="extension-search"
-                  className="text-sm font-semibold text-gray-700 dark:text-darkAccentGreen"
+                  className="text-sm font-semibold text-foreground dark:text-darkAccentGreen"
                 >
                   Search
                 </label>
@@ -336,14 +336,14 @@ function Extension() {
               </div>
 
               {filteredRows.length === 0 ? (
-                <p className="italic text-gray-600">
+                <p className="italic text-muted-foreground">
                   No guests match your search.
                 </p>
               ) : (
                 <div className="overflow-auto">
                   <table className="min-w-full border-collapse text-sm">
                     <thead>
-                      <tr className="bg-gray-200 dark:bg-darkSurface">
+                      <tr className="bg-surface-3 dark:bg-darkSurface">
                         <th
                           className="p-2 border-b text-start cursor-pointer"
                           onClick={() => handleSort("roomNumber")}
@@ -407,8 +407,8 @@ function Extension() {
                               <button
                                 className={`px-2 py-1 rounded ${
                                   availabilityMap[r.occupantId]
-                                    ? "bg-primary-main text-white"
-                                    : "bg-gray-400 text-white cursor-not-allowed"
+                                    ? "bg-primary-main text-primary-fg"
+                                    : "bg-muted text-primary-fg cursor-not-allowed"
                                 }`}
                                 onClick={() => {
                                   if (availabilityMap[r.occupantId]) {
@@ -426,8 +426,8 @@ function Extension() {
                                   <button
                                     className={`px-2 py-1 rounded ${
                                       availabilityMap[r.occupantId]
-                                        ? "bg-primary-main text-white"
-                                        : "bg-gray-400 text-white cursor-not-allowed"
+                                        ? "bg-primary-main text-primary-fg"
+                                        : "bg-muted text-primary-fg cursor-not-allowed"
                                     }`}
                                     onClick={() => {
                                       if (availabilityMap[r.occupantId]) {

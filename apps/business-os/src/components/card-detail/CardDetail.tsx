@@ -50,9 +50,9 @@ export function CardDetail({
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
+      <header className="bg-panel border-b border-border-1 px-6 py-4">
         {/* Breadcrumb */}
         <div className="mb-4">
           <Breadcrumb items={breadcrumbItems} />
@@ -66,12 +66,12 @@ export function CardDetail({
                   ? `/boards/${card.Business}`
                   : "/boards/global"
               }
-              className="text-sm font-medium text-gray-600 hover:text-gray-900"
+              className="text-sm font-medium text-muted hover:text-fg"
             >
               ← Back to Board
             </Link>
             {business && (
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-muted">
                 {business.name}
               </span>
             )}
@@ -80,14 +80,14 @@ export function CardDetail({
             {userCanEdit && (
               <Link
                 href={`/cards/${card.ID}/edit`}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                className="px-4 py-2 text-sm font-medium text-accent-fg bg-accent rounded-md hover:bg-accent/90"
               >
                 Edit Card
               </Link>
             )}
             <Link
               href="/"
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              className="px-4 py-2 text-sm font-medium text-secondary bg-panel border border-border-2 rounded-md hover:bg-surface-1"
             >
               Home
             </Link>
@@ -102,8 +102,8 @@ export function CardDetail({
           {/* Left column - Main content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Card body */}
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-panel rounded-lg border border-border-1 p-6">
+              <h2 className="text-lg font-semibold text-fg mb-4">
                 Description
               </h2>
               <MarkdownContent content={card.content} />
@@ -119,7 +119,7 @@ export function CardDetail({
 
             {/* History (BOS-28) */}
             {history.length > 0 && (
-              <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <div className="bg-panel rounded-lg border border-border-1 p-6">
                 <CardHistory history={history} githubUrl={githubUrl} />
               </div>
             )}
@@ -131,8 +131,8 @@ export function CardDetail({
 
             {/* Dependencies */}
             {card.Dependencies && card.Dependencies.length > 0 && (
-              <div className="bg-white rounded-lg border border-gray-200 p-4">
-                <h3 className="text-sm font-semibold text-gray-900 mb-3">
+              <div className="bg-panel rounded-lg border border-border-1 p-4">
+                <h3 className="text-sm font-semibold text-fg mb-3">
                   Dependencies
                 </h3>
                 <ul className="space-y-2">
@@ -140,7 +140,7 @@ export function CardDetail({
                     <li key={dep}>
                       <Link
                         href={`/cards/${dep}`}
-                        className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                        className="text-sm text-info-fg hover:text-info-fg hover:underline"
                       >
                         {dep}
                       </Link>

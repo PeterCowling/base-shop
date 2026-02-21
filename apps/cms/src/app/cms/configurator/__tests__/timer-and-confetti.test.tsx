@@ -102,7 +102,7 @@ describe("LaunchPanel confetti", () => {
       />,
     );
 
-    expect(screen.getByText("cms.configurator.launchPanel.beatBadge")).toBeInTheDocument();
+    expect(screen.getByText(/cms\.configurator\.launchPanel\.beatBadge/)).toBeInTheDocument();
     expect(screen.getAllByText(/🎉/).length).toBeGreaterThan(0);
 
     act(() => {

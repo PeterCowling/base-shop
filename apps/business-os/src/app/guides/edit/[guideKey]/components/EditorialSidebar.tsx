@@ -324,7 +324,7 @@ function SeoAuditSection({ guideKey, checklist }: { guideKey: string; checklist:
       {hasAudit && score !== null ? (
         <div className="flex items-center gap-3">
           <SeoAuditBadge score={score} />
-          {needsImprovement && <p className="text-xs text-amber-700">Score must be &ge;9.0 to publish</p>}
+          {needsImprovement && <p className="text-xs text-warning-fg">Score must be &ge;9.0 to publish</p>}
         </div>
       ) : (
         <p className="text-xs text-brand-text/60">No audit completed. Run an audit to check SEO quality.</p>
@@ -336,7 +336,7 @@ function SeoAuditSection({ guideKey, checklist }: { guideKey: string; checklist:
         </button>
         {hasAudit && needsImprovement && <span className="self-center text-xs text-brand-text/60">Address issues to reach 9.0+</span>}
       </div>
-      {error && <div className="rounded-md border border-red-300 bg-red-50 p-2 text-xs text-red-700"><strong>Error:</strong> {error}</div>}
+      {error && <div className="rounded-md border border-danger-soft bg-danger-soft p-2 text-xs text-danger-fg"><strong>Error:</strong> {error}</div>}
     </section>
   );
 }

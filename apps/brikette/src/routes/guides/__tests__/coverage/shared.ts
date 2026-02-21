@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { act,screen, waitFor } from "@testing-library/react";
 import { renderRoute as renderTestRoute } from "@tests/renderers";
-import { vi } from "vitest";
+
 
 import i18n from "@/i18n";
 import { getGuidesBundle } from "@/locales/guides";
@@ -167,24 +167,24 @@ const normalizeFaqs = (value: unknown): Array<{ question: string; answer: string
 };
 
 const applyGuideMocks = () => {
-  vi.doMock("@/components/guides/GenericContent", () => ({ __esModule: true, default: genericContentMock }));
-  vi.doMock("@/components/guides/RelatedGuides", () => ({ __esModule: true, default: relatedGuidesMock }));
-  vi.doMock("@/components/guides/TagChips", () => ({ __esModule: true, default: tagChipsMock }));
-  vi.doMock("@/components/guides/TableOfContents", () => ({ __esModule: true, default: tableOfContentsMock }));
-  vi.doMock("@/components/guides/ImageGallery", () => ({ __esModule: true, default: imageGalleryMock }));
-  vi.doMock("@/components/seo/BreadcrumbStructuredData", () => ({
+  jest.doMock("@/components/guides/GenericContent", () => ({ __esModule: true, default: genericContentMock }));
+  jest.doMock("@/components/guides/RelatedGuides", () => ({ __esModule: true, default: relatedGuidesMock }));
+  jest.doMock("@/components/guides/TagChips", () => ({ __esModule: true, default: tagChipsMock }));
+  jest.doMock("@/components/guides/TableOfContents", () => ({ __esModule: true, default: tableOfContentsMock }));
+  jest.doMock("@/components/guides/ImageGallery", () => ({ __esModule: true, default: imageGalleryMock }));
+  jest.doMock("@/components/seo/BreadcrumbStructuredData", () => ({
     __esModule: true,
     default: guideMocks.breadcrumbStructuredData,
   }));
-  vi.doMock("@/components/seo/GuidesTagsStructuredData", () => ({
+  jest.doMock("@/components/seo/GuidesTagsStructuredData", () => ({
     __esModule: true,
     default: guideMocks.guidesTagsStructuredData,
   }));
-  vi.doMock("@/components/seo/ArticleStructuredData", () => ({
+  jest.doMock("@/components/seo/ArticleStructuredData", () => ({
     __esModule: true,
     default: articleStructuredDataMock,
   }));
-  vi.doMock("@/components/seo/GuideFaqJsonLd", () => ({ __esModule: true, default: guideMocks.guideFaqJsonLd }));
+  jest.doMock("@/components/seo/GuideFaqJsonLd", () => ({ __esModule: true, default: guideMocks.guideFaqJsonLd }));
 };
 
 const applyCoverageSeed = (guides: Record<string, unknown>) => {

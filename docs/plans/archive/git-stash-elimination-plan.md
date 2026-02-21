@@ -10,8 +10,8 @@ Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: git-stash-elimination
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
-Supporting-Skills: safe-commit-push-ci
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: ops-ship
 Overall-confidence: 90%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by Effort (S=1, M=2, L=3)
 ---
@@ -41,7 +41,7 @@ Eliminate one-way stash behavior for agents by hard-blocking stash mutations (`p
 
 ## Fact-Find Reference
 - `docs/briefs/git-stash-elimination-briefing.md`
-- `docs/briefs/git-conflict-enforcement-balance-fact-find.md`
+- `docs/briefs/git-conflict-enforcement-balance-lp-do-fact-find.md`
 
 ## Existing System Notes
 - `.claude/hooks/pre-tool-use-git-safety.sh` currently default-allows unmatched commands.
@@ -77,7 +77,7 @@ Eliminate one-way stash behavior for agents by hard-blocking stash mutations (`p
 ### TASK-01: Enforce stash mutation denies in L3/L4/L5
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated hook/guard/permissions behavior for stash commands
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:** `.claude/hooks/pre-tool-use-git-safety.sh`, `scripts/agent-bin/git`, `.claude/settings.json`
 - **Depends on:** -
 - **Blocks:** TASK-02
@@ -109,7 +109,7 @@ Eliminate one-way stash behavior for agents by hard-blocking stash mutations (`p
 ### TASK-02: Update regression tests to lock policy
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated test expectations and cases for stash policy
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** lp-do-build
 - **Affects:** `scripts/__tests__/pre-tool-use-git-safety.test.ts`, `scripts/__tests__/git-safety-policy.test.ts`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03
@@ -138,8 +138,8 @@ Eliminate one-way stash behavior for agents by hard-blocking stash mutations (`p
 ### TASK-03: Align policy and skill docs
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated runbook/guide/skill docs matching enforced stash policy
-- **Execution-Skill:** build-feature
-- **Affects:** `AGENTS.md`, `docs/git-safety.md`, `docs/incident-prevention.md`, `.claude/skills/safe-commit-push-ci/SKILL.md`, `CODEX.md`
+- **Execution-Skill:** lp-do-build
+- **Affects:** `AGENTS.md`, `docs/git-safety.md`, `docs/incident-prevention.md`, `.claude/skills/ops-ship/SKILL.md`, `CODEX.md`
 - **Depends on:** TASK-02
 - **Blocks:** -
 - **Confidence:** 88%

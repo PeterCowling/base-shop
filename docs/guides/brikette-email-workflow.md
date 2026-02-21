@@ -2,7 +2,7 @@
 Type: User-Guide
 Status: Active
 Created: 2026-02-01
-Last-Updated: 2026-02-02
+Last-Updated: 2026-02-14
 Card-ID: BRIK-ENG-0020
 ---
 
@@ -18,11 +18,18 @@ This guide explains how to use Claude Code to process customer emails for Hostel
 claude
 ```
 
+Important:
+- Start a fresh session for inbox runs (do not rely on a continued/compacted session if tools were previously unavailable).
+- First action in the session should be MCP preflight:
+  ```typescript
+  health_check({ strict: false })
+  ```
+
 ### 2. Process Emails
 
 Run the skill:
 ```
-/process-emails
+/ops-inbox
 ```
 
 Or ask conversationally:
@@ -47,13 +54,13 @@ Open Gmail, review your drafts, and send.
 ## Daily Workflow Suggestions
 
 ### Morning Triage (09:00)
-1. Run `/process-emails`
+1. Run `/ops-inbox`
 2. Process availability inquiries first (time-sensitive)
 3. Handle FAQ-type questions in batch
 4. Defer complex inquiries for afternoon
 
 ### Afternoon Follow-up (17:00)
-1. Run `/process-emails` for new emails
+1. Run `/ops-inbox` for new emails
 2. Handle deferred complex inquiries
 3. Review and send all drafts
 
@@ -168,6 +175,19 @@ Ensure the MCP server is started:
 cd packages/mcp-server && pnpm start
 ```
 
+If you see tool-resolution errors (for example `Tool not found`) in a continued session:
+1. Stop the current session.
+2. Start a fresh one with `claude`.
+3. Run `health_check({ strict: false })` before `/ops-inbox`.
+
+If MCP remains unavailable, queue drafts locally (no Gmail mutations):
+```bash
+python3 scripts/ops/create-brikette-drafts.py \
+  --input <path-to-drafts.json> \
+  --dry-run \
+  --queue-file data/email-fallback-queue/<timestamp>-ops-inbox.jsonl
+```
+
 ### Drafts not appearing in Gmail
 
 1. Check Gmail's Drafts folder
@@ -221,7 +241,7 @@ Claude classifies emails to help with processing:
 
 | Command | Effect |
 |---------|--------|
-| `/process-emails` | Start email processing session |
+| `/ops-inbox` | Start email processing session |
 | "Process all" | Work through entire queue |
 | "Process #N" | Handle specific email |
 | "Skip #N" | Remove without response |
@@ -320,9 +340,29 @@ Brikette/
    - You should see:
      ```
      Brikette
-       Inbox
+       Queue
          Needs-Processing
-         Processing
+         In-Progress
+         Needs-Decision
+         Deferred
+       Outcome
+         Drafted
+         Acknowledged
+         Promotional
+         Spam
+       Workflow
+         Prepayment-Chase-1
+         Prepayment-Chase-2
+         Prepayment-Chase-3
+         Agreement-Received
+         Cancellation-Received
+         Cancellation-Processed
+         Cancellation-Parse-Failed
+         Cancellation-Booking-Not-Found
+       Agent
+         Codex
+         Claude
+         Human
        Drafts
          Ready-For-Review
          Sent
@@ -332,8 +372,24 @@ Brikette/
 
 | Label | Purpose | Applied By | Removed By |
 |-------|---------|------------|------------|
-| `Brikette/Inbox/Needs-Processing` | Customer inquiry awaiting response | GAS monitor script (automatic) | MCP tool when processing starts |
-| `Brikette/Inbox/Processing` | Email currently being handled | MCP tool when fetching email | MCP tool when draft created |
+| `Brikette/Queue/Needs-Processing` | Customer inquiry awaiting response | MCP organize tool | MCP tool when processing starts |
+| `Brikette/Queue/In-Progress` | Email currently being handled | MCP tool when fetching email | MCP tool when marked processed |
+| `Brikette/Queue/Needs-Decision` | Workflow/manual decision needed | MCP tool (`awaiting_agreement`/workflow actions) | MCP tool when resolved |
+| `Brikette/Queue/Deferred` | Deferred for manual follow-up | MCP organize/mark tool | MCP tool when resumed |
+| `Brikette/Outcome/Drafted` | Draft created for review | MCP tool when draft created | Manual cleanup/migration |
+| `Brikette/Outcome/Promotional` | Marketing/newsletter classification | MCP organize/mark tool | Manual cleanup/migration |
+| `Brikette/Outcome/Spam` | Spam classification | MCP organize/mark tool | Manual cleanup/migration |
+| `Brikette/Workflow/Prepayment-Chase-1` | First prepayment reminder workflow step | MCP tool on workflow action | MCP tool on next workflow step |
+| `Brikette/Workflow/Prepayment-Chase-2` | Second prepayment reminder workflow step | MCP tool on workflow action | MCP tool on next workflow step |
+| `Brikette/Workflow/Prepayment-Chase-3` | Final prepayment reminder workflow step | MCP tool on workflow action | MCP tool when resolved |
+| `Brikette/Workflow/Agreement-Received` | Customer agreed to payment terms | MCP tool on agreement detection | MCP tool when payment processed |
+| `Brikette/Workflow/Cancellation-Received` | Octorate cancellation email received | MCP organize tool | MCP tool when cancellation processed |
+| `Brikette/Workflow/Cancellation-Processed` | Cancellation successfully processed | MCP process cancellation tool | Manual cleanup/migration |
+| `Brikette/Workflow/Cancellation-Parse-Failed` | Cancellation email parsing failed (dev queue) | MCP process cancellation tool | Manual triage by developer |
+| `Brikette/Workflow/Cancellation-Booking-Not-Found` | Cancellation booking ID not found (ops queue) | MCP process cancellation tool | Manual triage by operations |
+| `Brikette/Agent/Codex` | Last processing owner (Codex) | MCP tool when claiming/marking | Replaced by next actor label |
+| `Brikette/Agent/Claude` | Last processing owner (Claude) | MCP tool when claiming/marking | Replaced by next actor label |
+| `Brikette/Agent/Human` | Last processing owner (Human) | MCP tool when claiming/marking | Replaced by next actor label |
 | `Brikette/Drafts/Ready-For-Review` | Draft ready for Pete to review | MCP tool when draft created | GAS script when draft sent |
 | `Brikette/Drafts/Sent` | Response was sent (for archival) | GAS script when draft sent | Never (archive marker) |
 
@@ -341,15 +397,79 @@ Brikette/
 
 For visual clarity, you can assign colors:
 - `Needs-Processing`: Yellow (attention needed)
-- `Processing`: Blue (in progress)
+- `In-Progress`: Blue (in progress)
+- `Needs-Decision`: Orange (manual decision)
+- `Deferred`: Gray (parked)
 - `Ready-For-Review`: Green (action available)
 - `Sent`: Gray (archived)
+- `Cancellation-Parse-Failed`: Red (dev attention needed)
+- `Cancellation-Booking-Not-Found`: Orange (ops attention needed)
+- `Cancellation-Processed`: Green (completed successfully)
 
 To set colors:
 1. Hover over the label in the sidebar
 2. Click the three dots
 3. Select "Label color"
 4. Choose your preferred color
+
+### Cancellation Failure Queue Triage
+
+The automated cancellation processing may encounter failures that require manual intervention. Failed cancellations are automatically labeled for triage:
+
+#### Parse Failures (`Cancellation-Parse-Failed`)
+**Owner:** Developer
+**Priority:** High (affects automation reliability)
+
+**Common Causes:**
+- Octorate changed email format
+- Email is not a standard cancellation notification
+- Malformed or incomplete email body
+
+**Triage Steps:**
+1. Open the email with the `Cancellation-Parse-Failed` label
+2. Read the full email body and check if it's a valid cancellation
+3. Check MCP server logs for the parse error details
+4. If it's a valid cancellation:
+   - Extract the booking reference manually
+   - Process the cancellation in Prime manually (mark cancelled + draft email)
+   - Update the cancellation parser to handle this format
+5. If it's not a cancellation:
+   - Reclassify the email appropriately
+   - Remove the `Cancellation-Parse-Failed` label
+
+**Prevention:**
+- Gather sample cancellation emails to validate parser coverage
+- Add comprehensive error logging to identify edge cases
+- Consider adding a manual review queue for uncertain cases
+
+#### Booking Not Found (`Cancellation-Booking-Not-Found`)
+**Owner:** Operations
+**Priority:** Medium (may indicate data integrity issue)
+
+**Common Causes:**
+- Booking was deleted or never imported from Octorate
+- Timing issue (cancellation email arrived before booking sync)
+- Booking reference mismatch between Octorate and Prime
+
+**Triage Steps:**
+1. Open the email with the `Cancellation-Booking-Not-Found` label
+2. Extract the booking reference from the email
+3. Check if the booking exists in Octorate
+4. If booking exists in Octorate but not Prime:
+   - Check sync logs for import failures
+   - Manually import the booking if needed
+   - Retry cancellation processing
+5. If booking doesn't exist anywhere:
+   - May be a duplicate/test booking
+   - Archive the email and remove the label
+6. If timing issue (booking syncs later):
+   - Defer for 1 hour and retry
+   - Consider implementing delayed retry logic
+
+**Prevention:**
+- Monitor booking sync reliability
+- Add alerts for high booking-not-found rates (>5%)
+- Consider implementing automatic retry with exponential backoff
 
 ### Troubleshooting Labels
 

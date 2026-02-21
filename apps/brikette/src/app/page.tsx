@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { LinkText, Section } from "@acme/design-system/atoms";
 
 import { BASE_URL } from "@/config/site";
+import i18nApp from "@/i18n";
 import { i18nConfig } from "@/i18n.config";
 
 const fallback = i18nConfig.fallbackLng;
@@ -33,6 +34,7 @@ const host = BASE_URL || "https://hostel-positano.com";
 const canonical = `${host}/${fallback}`;
 
 export const metadata: Metadata = {
+  // i18n-exempt -- TASK-29 [ttl=2026-12-31] Gateway page meta title seen only pre-redirect/by bots, intentionally English-only
   title: "Hostel Brikette — Language Gateway",
   alternates: {
     canonical,
@@ -44,12 +46,12 @@ export const metadata: Metadata = {
 };
 
 export default function LanguageGatewayPage() {
+  const t = i18nApp.getFixedT(fallback, "languageGateway");
+
   return (
     <>
       {/* Client-side language detection and redirect */}
-      <script
-        dangerouslySetInnerHTML={{ __html: languageDetectScript }}
-      />
+      <script dangerouslySetInnerHTML={{ __html: languageDetectScript }} />
       {/* Fallback for noscript - redirect to default language */}
       <noscript>
         <meta httpEquiv="refresh" content={`0;url=/${fallback}`} />
@@ -61,8 +63,8 @@ export default function LanguageGatewayPage() {
         padding="none"
         className="mx-auto max-w-3xl px-8 py-10 font-sans text-brand-text"
       >
-        {/* i18n-exempt -- LINT-1007 [ttl=2026-12-31] English-only gateway label */}
-        <h1 className="text-xl font-semibold">Select a language</h1>
+        <h1 className="text-xl font-semibold">{t("selectLanguage")}</h1>
+        {/* eslint-disable-next-line ds/enforce-layout-primitives -- i18n-exempt LINT-1007 [ttl=2026-12-31] language grid; Grid DS primitive not available for inline li layout */}
         <ul className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 list-none p-0">
           {supported.map((lng) => (
             <li key={lng}>

@@ -27,7 +27,7 @@ globalThis.__oidcFlowTestStore = {
   }),
 };
 
-globalThis.__oidcFlowTestGetOidcClient = jest.fn() as jest.Mock<Promise<OidcClientMock>, []>;
+globalThis.__oidcFlowTestGetOidcClient = jest.fn() as unknown as jest.Mock<Promise<OidcClientMock>, []>;
 globalThis.__oidcFlowTestLoadOidcConfig = jest.fn(() => ({
   issuer: "https://auth.example.com/realms/base-shop",
   clientId: "client-id",
@@ -37,7 +37,7 @@ globalThis.__oidcFlowTestLoadOidcConfig = jest.fn(() => ({
   postLogoutRedirectUri: "https://shop.example.com/",
   enforcePkce: true,
   scope: "openid profile email",
-})) as jest.Mock<OidcConfig, []>;
+})) as unknown as jest.Mock<OidcConfig, []>;
 
 const records = globalThis.__oidcFlowTestRecords;
 const store = globalThis.__oidcFlowTestStore;

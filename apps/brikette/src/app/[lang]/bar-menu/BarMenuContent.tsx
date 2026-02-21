@@ -8,9 +8,10 @@ import { useTranslation } from "react-i18next";
 import { Section } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/primitives";
 
+import { ContentStickyCta } from "@/components/cta/ContentStickyCta";
 import BarMenuStructuredData from "@/components/seo/BarMenuStructuredData";
 import { BASE_URL } from "@/config/site";
-import { type BarMenuItemKey,formatBarMenuPrice } from "@/data/menuPricing";
+import { type BarMenuItemKey, formatBarMenuPrice } from "@/data/menuPricing";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { MenuRow } from "@/routes/bar-menu/_menu-row";
@@ -23,6 +24,134 @@ type Props = {
 };
 
 const JSON_LD_MIME = "application/ld+json" as const;
+
+type MenuItemConfig = {
+  key: BarMenuItemKey;
+  nameKey: `items.${string}.name`;
+  withItemNote?: boolean;
+};
+
+type MenuSectionConfig = {
+  id:
+    | "spritzFrozen"
+    | "houseWine"
+    | "beer"
+    | "vodka"
+    | "rum"
+    | "gin"
+    | "whisky"
+    | "shots"
+    | "gelato";
+  titleKey: `sections.${string}.title`;
+  items: MenuItemConfig[];
+  withSectionNote?: boolean;
+};
+
+const MENU_SECTIONS: MenuSectionConfig[] = [
+  {
+    id: "spritzFrozen",
+    titleKey: "sections.spritzFrozen.title",
+    items: [
+      { key: "aperolSpritz", nameKey: "items.aperolSpritz.name" },
+      { key: "limoncelloSpritz", nameKey: "items.limoncelloSpritz.name", withItemNote: true },
+      { key: "hugoSpritz", nameKey: "items.hugoSpritz.name" },
+      { key: "rossiniSpritz", nameKey: "items.rossiniSpritz.name" },
+      { key: "lemonStrawberryDaiquiri", nameKey: "items.lemonStrawberryDaiquiri.name" },
+      {
+        key: "lemonStrawberryMargarita",
+        nameKey: "items.lemonStrawberryMargarita.name",
+        withItemNote: true,
+      },
+      { key: "lemonDropMartini", nameKey: "items.lemonDropMartini.name", withItemNote: true },
+    ],
+  },
+  {
+    id: "houseWine",
+    titleKey: "sections.houseWine.title",
+    items: [
+      { key: "redWhiteGlass", nameKey: "items.redWhiteGlass.name" },
+      { key: "redWhiteBottle", nameKey: "items.redWhiteBottle.name" },
+      { key: "proseccoGlass", nameKey: "items.proseccoGlass.name" },
+    ],
+  },
+  {
+    id: "beer",
+    titleKey: "sections.beer.title",
+    items: [
+      { key: "nastro330", nameKey: "items.nastro330.name" },
+      { key: "peroni330", nameKey: "items.peroni330.name" },
+      { key: "nastro660", nameKey: "items.nastro660.name" },
+      { key: "peroni660", nameKey: "items.peroni660.name" },
+    ],
+  },
+  {
+    id: "vodka",
+    titleKey: "sections.vodka.title",
+    withSectionNote: true,
+    items: [
+      { key: "skyy", nameKey: "items.skyy.name" },
+      { key: "absolut", nameKey: "items.absolut.name" },
+      { key: "smirnoff", nameKey: "items.smirnoff.name" },
+      { key: "greyGoose", nameKey: "items.greyGoose.name" },
+    ],
+  },
+  {
+    id: "rum",
+    titleKey: "sections.rum.title",
+    withSectionNote: true,
+    items: [
+      { key: "pampero", nameKey: "items.pampero.name" },
+      { key: "bacardiSuperior", nameKey: "items.bacardiSuperior.name" },
+      { key: "captainMorgan", nameKey: "items.captainMorgan.name" },
+      { key: "angosturaReserva", nameKey: "items.angosturaReserva.name" },
+    ],
+  },
+  {
+    id: "gin",
+    titleKey: "sections.gin.title",
+    withSectionNote: true,
+    items: [
+      { key: "beefeater", nameKey: "items.beefeater.name" },
+      { key: "bombaySapphire", nameKey: "items.bombaySapphire.name" },
+      { key: "tanqueray", nameKey: "items.tanqueray.name" },
+      { key: "hendricks", nameKey: "items.hendricks.name" },
+    ],
+  },
+  {
+    id: "whisky",
+    titleKey: "sections.whisky.title",
+    withSectionNote: true,
+    items: [
+      { key: "jwRed", nameKey: "items.jwRed.name" },
+      { key: "jameson", nameKey: "items.jameson.name" },
+      { key: "jackDaniels", nameKey: "items.jackDaniels.name" },
+      { key: "wildTurkey", nameKey: "items.wildTurkey.name" },
+      { key: "chivas12", nameKey: "items.chivas12.name" },
+      { key: "glenfiddich12", nameKey: "items.glenfiddich12.name" },
+    ],
+  },
+  {
+    id: "shots",
+    titleKey: "sections.shots.title",
+    items: [
+      {
+        key: "joseCuervoSilver",
+        nameKey: "items.joseCuervoSilver.name",
+        withItemNote: true,
+      },
+      { key: "limoncelloShot", nameKey: "items.limoncelloShot.name", withItemNote: true },
+    ],
+  },
+  {
+    id: "gelato",
+    titleKey: "sections.gelato.title",
+    items: [
+      { key: "oneScoop", nameKey: "items.oneScoop.name" },
+      { key: "twoScoops", nameKey: "items.twoScoops.name" },
+      { key: "threeScoops", nameKey: "items.threeScoops.name", withItemNote: true },
+    ],
+  },
+];
 
 export function BarMenuContent({ lang }: Props) {
   const { t } = useTranslation("barMenuPage", { lng: lang });
@@ -95,263 +224,35 @@ export function BarMenuContent({ lang }: Props) {
         </header>
 
         <div id="menuSections" className="space-y-10">
-          {/* Spritz & Frozen Cocktails */}
-          <section>
-            <h2 className="mb-2 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-              {barMenuString("sections.spritzFrozen.title")}
-            </h2>
-            <div className="divide-y divide-brand-surface/60 dark:divide-brand-surface/20">
-              <MenuRow
-                name={barMenuString("items.aperolSpritz.name")}
-                price={getDisplayPrice("aperolSpritz")}
-                note={getItemNote("aperolSpritz")}
-              />
-              <MenuRow
-                name={barMenuString("items.limoncelloSpritz.name")}
-                price={getDisplayPrice("limoncelloSpritz")}
-                note={getItemNote("limoncelloSpritz")}
-              />
-              <MenuRow
-                name={barMenuString("items.hugoSpritz.name")}
-                price={getDisplayPrice("hugoSpritz")}
-                note={getItemNote("hugoSpritz")}
-              />
-              <MenuRow
-                name={barMenuString("items.rossiniSpritz.name")}
-                price={getDisplayPrice("rossiniSpritz")}
-                note={getItemNote("rossiniSpritz")}
-              />
-              <MenuRow
-                name={barMenuString("items.lemonStrawberryDaiquiri.name")}
-                price={getDisplayPrice("lemonStrawberryDaiquiri")}
-              />
-              <MenuRow
-                name={barMenuString("items.lemonStrawberryMargarita.name")}
-                price={getDisplayPrice("lemonStrawberryMargarita")}
-                note={getItemNote("lemonStrawberryMargarita")}
-              />
-              <MenuRow
-                name={barMenuString("items.lemonDropMartini.name")}
-                price={getDisplayPrice("lemonDropMartini")}
-                note={getItemNote("lemonDropMartini")}
-              />
-            </div>
-          </section>
-
-          {/* House Wine */}
-          <section>
-            <h2 className="mb-2 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-              {barMenuString("sections.houseWine.title")}
-            </h2>
-            <div className="divide-y divide-brand-surface/60 dark:divide-brand-surface/20">
-              <MenuRow
-                name={barMenuString("items.redWhiteGlass.name")}
-                price={getDisplayPrice("redWhiteGlass")}
-              />
-              <MenuRow
-                name={barMenuString("items.redWhiteBottle.name")}
-                price={getDisplayPrice("redWhiteBottle")}
-              />
-              <MenuRow
-                name={barMenuString("items.proseccoGlass.name")}
-                price={getDisplayPrice("proseccoGlass")}
-              />
-            </div>
-          </section>
-
-          {/* Beer */}
-          <section>
-            <h2 className="mb-2 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-              {barMenuString("sections.beer.title")}
-            </h2>
-            <div className="divide-y divide-brand-surface/60 dark:divide-brand-surface/20">
-              <MenuRow
-                name={barMenuString("items.nastro330.name")}
-                price={getDisplayPrice("nastro330")}
-              />
-              <MenuRow
-                name={barMenuString("items.peroni330.name")}
-                price={getDisplayPrice("peroni330")}
-              />
-              <MenuRow
-                name={barMenuString("items.nastro660.name")}
-                price={getDisplayPrice("nastro660")}
-              />
-              <MenuRow
-                name={barMenuString("items.peroni660.name")}
-                price={getDisplayPrice("peroni660")}
-              />
-            </div>
-          </section>
-
-          {/* Vodka */}
-          <section>
-            <h2 className="mb-2 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-              {barMenuString("sections.vodka.title")}
-            </h2>
-            <div className="divide-y divide-brand-surface/60 dark:divide-brand-surface/20">
-              <MenuRow name={barMenuString("items.skyy.name")} price={getDisplayPrice("skyy")} />
-              <MenuRow
-                name={barMenuString("items.absolut.name")}
-                price={getDisplayPrice("absolut")}
-              />
-              <MenuRow
-                name={barMenuString("items.smirnoff.name")}
-                price={getDisplayPrice("smirnoff")}
-              />
-              <MenuRow
-                name={barMenuString("items.greyGoose.name")}
-                price={getDisplayPrice("greyGoose")}
-              />
-            </div>
-            {getSectionNote("vodka") && (
-              <p className="mt-2 text-sm text-brand-text/70 dark:text-brand-surface/70">
-                {getSectionNote("vodka")}
-              </p>
-            )}
-          </section>
-
-          {/* Rum */}
-          <section>
-            <h2 className="mb-2 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-              {barMenuString("sections.rum.title")}
-            </h2>
-            <div className="divide-y divide-brand-surface/60 dark:divide-brand-surface/20">
-              <MenuRow
-                name={barMenuString("items.pampero.name")}
-                price={getDisplayPrice("pampero")}
-              />
-              <MenuRow
-                name={barMenuString("items.bacardiSuperior.name")}
-                price={getDisplayPrice("bacardiSuperior")}
-              />
-              <MenuRow
-                name={barMenuString("items.captainMorgan.name")}
-                price={getDisplayPrice("captainMorgan")}
-              />
-              <MenuRow
-                name={barMenuString("items.angosturaReserva.name")}
-                price={getDisplayPrice("angosturaReserva")}
-              />
-            </div>
-            {getSectionNote("rum") && (
-              <p className="mt-2 text-sm text-brand-text/70 dark:text-brand-surface/70">
-                {getSectionNote("rum")}
-              </p>
-            )}
-          </section>
-
-          {/* Gin Mixed Drinks */}
-          <section>
-            <h2 className="mb-2 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-              {barMenuString("sections.gin.title")}
-            </h2>
-            <div className="divide-y divide-brand-surface/60 dark:divide-brand-surface/20">
-              <MenuRow
-                name={barMenuString("items.beefeater.name")}
-                price={getDisplayPrice("beefeater")}
-              />
-              <MenuRow
-                name={barMenuString("items.bombaySapphire.name")}
-                price={getDisplayPrice("bombaySapphire")}
-              />
-              <MenuRow
-                name={barMenuString("items.tanqueray.name")}
-                price={getDisplayPrice("tanqueray")}
-              />
-              <MenuRow
-                name={barMenuString("items.hendricks.name")}
-                price={getDisplayPrice("hendricks")}
-              />
-            </div>
-            {getSectionNote("gin") && (
-              <p className="mt-2 text-sm text-brand-text/70 dark:text-brand-surface/70">
-                {getSectionNote("gin")}
-              </p>
-            )}
-          </section>
-
-          {/* Whisky */}
-          <section>
-            <h2 className="mb-2 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-              {barMenuString("sections.whisky.title")}
-            </h2>
-            <div className="divide-y divide-brand-surface/60 dark:divide-brand-surface/20">
-              <MenuRow name={barMenuString("items.jwRed.name")} price={getDisplayPrice("jwRed")} />
-              <MenuRow
-                name={barMenuString("items.jameson.name")}
-                price={getDisplayPrice("jameson")}
-              />
-              <MenuRow
-                name={barMenuString("items.jackDaniels.name")}
-                price={getDisplayPrice("jackDaniels")}
-              />
-              <MenuRow
-                name={barMenuString("items.wildTurkey.name")}
-                price={getDisplayPrice("wildTurkey")}
-              />
-              <MenuRow
-                name={barMenuString("items.chivas12.name")}
-                price={getDisplayPrice("chivas12")}
-              />
-              <MenuRow
-                name={barMenuString("items.glenfiddich12.name")}
-                price={getDisplayPrice("glenfiddich12")}
-              />
-            </div>
-            {getSectionNote("whisky") && (
-              <p className="mt-2 text-sm text-brand-text/70 dark:text-brand-surface/70">
-                {getSectionNote("whisky")}
-              </p>
-            )}
-          </section>
-
-          {/* Shots */}
-          <section>
-            <h2 className="mb-2 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-              {barMenuString("sections.shots.title")}
-            </h2>
-            <div className="divide-y divide-brand-surface/60 dark:divide-brand-surface/20">
-              <MenuRow
-                name={barMenuString("items.joseCuervoSilver.name")}
-                price={getDisplayPrice("joseCuervoSilver")}
-                note={getItemNote("joseCuervoSilver")}
-              />
-              <MenuRow
-                name={barMenuString("items.limoncelloShot.name")}
-                price={getDisplayPrice("limoncelloShot")}
-                note={getItemNote("limoncelloShot")}
-              />
-            </div>
-          </section>
-
-          {/* Gelato */}
-          <section>
-            <h2 className="mb-2 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-              {barMenuString("sections.gelato.title")}
-            </h2>
-            <div className="divide-y divide-brand-surface/60 dark:divide-brand-surface/20">
-              <MenuRow
-                name={barMenuString("items.oneScoop.name")}
-                price={getDisplayPrice("oneScoop")}
-              />
-              <MenuRow
-                name={barMenuString("items.twoScoops.name")}
-                price={getDisplayPrice("twoScoops")}
-              />
-              <MenuRow
-                name={barMenuString("items.threeScoops.name")}
-                price={getDisplayPrice("threeScoops")}
-                note={getItemNote("threeScoops")}
-              />
-            </div>
-          </section>
+          {MENU_SECTIONS.map((section) => (
+            <section key={section.id}>
+              <h2 className="mb-2 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
+                {barMenuString(section.titleKey)}
+              </h2>
+              <div className="divide-y divide-brand-surface/60 dark:divide-brand-surface/20">
+                {section.items.map((item) => (
+                  <MenuRow
+                    key={item.key}
+                    name={barMenuString(item.nameKey)}
+                    price={getDisplayPrice(item.key)}
+                    note={item.withItemNote ? getItemNote(item.key) : undefined}
+                  />
+                ))}
+              </div>
+              {section.withSectionNote && getSectionNote(section.id) ? (
+                <p className="mt-2 text-sm text-brand-text/70 dark:text-brand-surface/70">
+                  {getSectionNote(section.id)}
+                </p>
+              ) : null}
+            </section>
+          ))}
 
           <p className="text-xs text-brand-text/60 dark:text-brand-surface/60">
             {barMenuString("disclaimer")}
           </p>
         </div>
       </Section>
+      <ContentStickyCta lang={lang} ctaLocation="bar_menu" />
     </Fragment>
   );
 }

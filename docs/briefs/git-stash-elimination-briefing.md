@@ -71,9 +71,9 @@ The `lint-staged` auto-stash problem was already solved (`docs/historical/plans/
 
 This path no longer creates stash entries.
 
-### safe-commit-push-ci Skill: Already Correct in Policy, Not Enforced
+### ops-ship Skill: Already Correct in Policy, Not Enforced
 
-The skill doc (`.claude/skills/safe-commit-push-ci/SKILL.md`) already says:
+The skill doc (`.claude/skills/ops-ship/SKILL.md`) already says:
 
 > Default policy is **no new stashes** ... creating a stash that cannot be safely restored/cleared creates hidden debt
 
@@ -122,7 +122,7 @@ git add <only-the-files-I-want-to-commit>
 git commit -m "<message>"
 ```
 
-This is already the stated policy in `safe-commit-push-ci` SKILL.md:
+This is already the stated policy in `ops-ship` SKILL.md:
 > stage only intended files with explicit paths; leave unrelated edits unstaged and untouched
 
 ### 3. Temporary Branch (For Complex Cases)
@@ -167,7 +167,7 @@ The PreToolUse hook does NOT block `stash pop` or `stash apply` (acknowledged ga
 
 - `docs/git-safety.md`: add "no stash push" to golden rules
 - `AGENTS.md`: extend forbidden list from `stash drop/clear` to all stash mutations
-- `.claude/skills/safe-commit-push-ci/SKILL.md`: move `stash push` from "safe sharp tools" to "hard-blocked"; document checkpoint commit as the replacement pattern
+- `.claude/skills/ops-ship/SKILL.md`: move `stash push` from "safe sharp tools" to "hard-blocked"; document checkpoint commit as the replacement pattern
 
 ### 5. Update test cases
 
@@ -193,7 +193,7 @@ git stash drop stash@{N}     # or git stash clear
 | `scripts/agent-bin/git` | L3 agent guard | Block `push` and bare `stash` |
 | `docs/git-safety.md` | Policy doc | Update stash rules |
 | `AGENTS.md` | Agent instructions | Update forbidden list |
-| `.claude/skills/safe-commit-push-ci/SKILL.md` | Commit skill | Update stash policy; add checkpoint commit pattern |
+| `.claude/skills/ops-ship/SKILL.md` | Commit skill | Update stash policy; add checkpoint commit pattern |
 | `scripts/__tests__/git-safety-policy.test.ts` | L3 tests | Update expected decisions |
 | `scripts/__tests__/pre-tool-use-git-safety.test.ts` | L4 tests | Update expected decisions |
 

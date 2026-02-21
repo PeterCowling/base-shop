@@ -8,7 +8,7 @@ describe("db env guards", () => {
     delete process.env.NODE_ENV;
   });
 
-  it("falls back to the stub client when core env throws", async () => {
+  it("returns missing client proxy when core env throws", async () => {
     process.env.NODE_ENV = "production";
     let prisma: any;
     await (jest as any).isolateModulesAsync(async () => {
@@ -20,8 +20,9 @@ describe("db env guards", () => {
       prisma = (await import("@acme/platform-core/db")).prisma;
     });
 
-    const marker = {};
-    await expect(prisma.$transaction(() => marker)).resolves.toBe(marker);
+    expect(() => prisma.$transaction).toThrow(
+      "Prisma client unavailable (DATABASE_URL missing or @prisma/client not installed). Tried to access prisma.$transaction",
+    );
   });
 
   it("errors on invalid DATABASE_URL", async () => {

@@ -1,3 +1,8 @@
+---
+Type: Reference
+Status: Active
+---
+
 # Local Contrast Scan — 2026-02-11
 
 ## Scope

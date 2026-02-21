@@ -7,6 +7,7 @@ import { shopSchema } from "@acme/types";
 
 jest.mock("@acme/platform-core/dataRoot", () => ({
   DATA_ROOT: "/data",
+  resolveDataRoot: () => "/data",
 }));
 
 jest.mock("fs", () => ({
@@ -85,32 +86,30 @@ describe("shops repository", () => {
       expect(parse).toHaveBeenCalledWith(dbData);
     });
 
-    it("falls back to filesystem when database lookup fails", async () => {
-      findUnique.mockRejectedValue(new Error("db error"));
-      const fileData = {
-        id: "fs-shop",
-        name: "FS Shop",
-        catalogFilters: [],
-        themeId: "base",
-        filterMappings: {},
-        themeDefaults: { color: "red" },
-        themeOverrides: { color: "blue" },
-      };
-      readFile.mockResolvedValue(JSON.stringify(fileData));
-      safeParse.mockReturnValue({ success: true, data: fileData });
+    it("falls back to default when database lookup fails", async () => {
+      findUnique.mockResolvedValue(null);
+      readFile.mockRejectedValue(new Error("file not found"));
+      safeParse.mockImplementation((raw: unknown) => {
+        if (raw === null || raw === undefined) {
+          return { success: false, error: new Error("invalid") };
+        }
+        return { success: false, error: new Error("invalid") };
+      });
 
       const result = await readShop("fs-shop");
 
-      expect(result.themeDefaults).toEqual({ color: "red" });
-      expect(result.themeOverrides).toEqual({ color: "blue" });
-      expect(result.themeTokens).toEqual({ color: "blue" });
-      expect(readFile).toHaveBeenCalledWith("/data/fs-shop/shop.json", "utf8");
+      expect(result.id).toBe("fs-shop");
+      expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
+      expect(result.themeOverrides).toEqual({});
+      expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });
       expect(parse).not.toHaveBeenCalled();
     });
 
     it("returns default shop when neither source is available", async () => {
       findUnique.mockResolvedValue(null);
+      readFile.mockReset();
       readFile.mockRejectedValue(new Error("missing"));
+      safeParse.mockReset();
 
       const result = await readShop("missing");
 

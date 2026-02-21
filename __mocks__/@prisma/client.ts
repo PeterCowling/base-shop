@@ -20,4 +20,13 @@ class PrismaClient {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Prisma {
+  export type InputJsonObject = Record<string, any>;
+  export type InputJsonValue = any;
+  export type RentalOrderUpdateInput = Record<string, any>;
+  export type JsonObject = Record<string, any>;
+  export type JsonValue = any;
+  export type SortOrder = "asc" | "desc";
+}
 export { PrismaClient, editChanges as __editChanges };

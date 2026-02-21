@@ -15,6 +15,7 @@ describe("clear action", () => {
     title: "Test",
     price: 100,
     deposit: 0,
+    stock: 0,
     forSale: true,
     forRental: false,
     media: [{ url: "img", type: "image" }],
@@ -142,7 +143,7 @@ describe("clear action", () => {
     fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
     const realSetItem = Storage.prototype.setItem;
     const setSpy = jest.spyOn(Storage.prototype, "setItem");
-    setSpy.mockImplementationOnce(function (key, value) {
+    setSpy.mockImplementationOnce(function (this: Storage, key: string, value: string) {
       return realSetItem.call(this, key, value as any);
     });
     setSpy.mockImplementationOnce(() => {

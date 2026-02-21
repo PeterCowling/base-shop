@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 
 import { useUnifiedBookingData } from '../../hooks/dataOrchestrator/useUnifiedBookingData';
@@ -20,6 +21,7 @@ import ReadinessDashboard from '../pre-arrival/ReadinessDashboard';
 import HomePage from './HomePage';
 
 export default function GuardedHomeExperience() {
+  const { t } = useTranslation('Homepage');
   const router = useRouter();
   const { occupantData, isLoading, error, isCheckedIn } = useUnifiedBookingData();
   const [recentlyCompletedItem, setRecentlyCompletedItem] = useState<keyof ChecklistProgress | null>(null);
@@ -126,23 +128,24 @@ export default function GuardedHomeExperience() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+      <div className="flex min-h-dvh items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
   }
 
   if (error || !occupantData) {
     return (
-      <div className="p-4 text-center mt-5 text-red-600">
-        Unable to load your booking information.
+      <div className="p-4 text-center mt-5 text-danger-fg">
+        {t('error.missingData', { defaultValue: 'Unable to load your booking information.' })}
       </div>
     );
   }
 
   if (arrivalState === 'pre-arrival' && checkInDate) {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-6 pb-24">
+      <main className="min-h-dvh bg-muted px-4 py-6 pb-24">
+        {/* eslint-disable-next-line ds/container-widths-only-at -- BRIK-002 page-level content container */}
         <div className="mx-auto max-w-md">
           <ReadinessDashboard
             preArrivalData={preArrivalData}
@@ -164,7 +167,8 @@ export default function GuardedHomeExperience() {
 
   if (arrivalState === 'arrival-day') {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-6 pb-24">
+      <main className="min-h-dvh bg-muted px-4 py-6 pb-24">
+        {/* eslint-disable-next-line ds/container-widths-only-at -- BRIK-002 page-level content container */}
         <div className="mx-auto max-w-md">
           <ArrivalHome
             firstName={firstName}
@@ -189,7 +193,8 @@ export default function GuardedHomeExperience() {
 
   if (arrivalState === 'checked-in') {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-6 pb-24">
+      <main className="min-h-dvh bg-muted px-4 py-6 pb-24">
+        {/* eslint-disable-next-line ds/container-widths-only-at -- BRIK-002 page-level content container */}
         <div className="mx-auto max-w-md">
           <KeycardStatus status={keycardStatus} className="mb-6" />
           <HomePage />

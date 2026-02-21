@@ -1,0 +1,15 @@
+{
+  "run_id": "run-001",
+  "status": "candidate",
+  "updated_at": "2020-01-01T00:00:00Z",
+  "created_at": "2020-01-01T00:00:00Z",
+  "stage_completions": {
+    "S2B": {
+      "status": "Done",
+      "timestamp": "2020-01-01T00:00:00Z",
+      "produced_keys": [
+        "offer"
+      ]
+    }
+  }
+}

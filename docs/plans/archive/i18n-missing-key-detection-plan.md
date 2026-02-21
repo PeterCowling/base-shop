@@ -52,7 +52,7 @@ Concrete repo findings that shape the “right” approach:
 
 ## Fact-Find Reference
 
-- `docs/plans/i18n-missing-key-detection-fact-find.md`
+- `docs/plans/i18n-missing-key-detection-lp-do-fact-find.md`
 
 ## Proposed Approach
 

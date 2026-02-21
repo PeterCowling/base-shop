@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Startup Loop Prompt Pack</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>Startup Loop Prompt Pack</h1>
+<p>Canonical template directory:</p>
+<ul>
+<li><code>docs/business-os/workflow-prompts/_templates/</code></li>
+</ul>
+<h2>Stage prompts</h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Prompt template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S0 Intake</td>
+<td><code>intake-normalizer-prompt.md</code></td>
+</tr>
+<tr>
+<td>S1 Readiness</td>
+<td><code>readiness-blocker-interview-prompt.md</code></td>
+</tr>
+<tr>
+<td>S1B Pre-website measurement bootstrap</td>
+<td><code>pre-website-measurement-bootstrap-prompt.md</code></td>
+</tr>
+<tr>
+<td>S2A Existing-business data request</td>
+<td><code>historical-data-request-prompt.md</code></td>
+</tr>
+<tr>
+<td>S2A Existing-business baseline</td>
+<td><code>existing-business-historical-baseline-prompt.md</code></td>
+</tr>
+<tr>
+<td>S3 Forecast recalibration</td>
+<td><code>forecast-recalibration-prompt.md</code></td>
+</tr>
+<tr>
+<td>S5 Prioritization</td>
+<td><code>prioritization-scorer-prompt.md</code></td>
+</tr>
+<tr>
+<td>S10 Weekly decision</td>
+<td><code>weekly-kpcs-decision-prompt.md</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Operator prompts</h2>
+<table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Prompt template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run-packet and next-step handoff (<code>start/status/submit/advance</code>)</td>
+<td><code>startup-loop-operator-handoff-prompt.md</code></td>
+</tr>
+</tbody>
+</table>
+<p>Command wrapper that uses this operator prompt:</p>
+<ul>
+<li><code>.claude/skills/startup-loop/SKILL.md</code> (<code>/startup-loop</code>)</li>
+</ul>
+<p>Automatic flag rule:</p>
+<ul>
+<li>If launch-surface mode is <code>pre-website</code>, run S1B before S2 and do not start paid traffic until the S1B verification checklist passes.</li>
+</ul>
+<h2>Standing refresh prompts</h2>
+<table>
+<thead>
+<tr>
+<th>Refresh cadence</th>
+<th>Prompt template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monthly market pulse</td>
+<td><code>monthly-market-pulse-prompt.md</code></td>
+</tr>
+<tr>
+<td>Monthly channel economics</td>
+<td><code>monthly-channel-economics-refresh-prompt.md</code></td>
+</tr>
+<tr>
+<td>Quarterly regulatory watch</td>
+<td><code>quarterly-regulatory-claims-watch-prompt.md</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Adjacent canonical prompts</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Prompt template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S2 Market intelligence</td>
+<td><code>docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md</code></td>
+</tr>
+<tr>
+<td>S6 Site upgrade synthesis</td>
+<td><code>docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md</code></td>
+</tr>
+<tr>
+<td>Platform baseline refresh</td>
+<td><code>docs/business-os/platform-capability/_templates/deep-research-platform-capability-baseline-prompt.md</code></td>
+</tr>
+</tbody>
+</table>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/workflow-prompts/README.user.md</code></div>
+      <div>Generated: 2026-02-12T17:18:31.285Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

@@ -8,11 +8,11 @@ Created: 2026-02-11
 Last-updated: 2026-02-11
 Last-reviewed: 2026-02-11
 Relates-to charter: docs/business-os/business-os-charter.md
-Feature-Slug: ideas-readiness-tooling-prerequisites
+Feature-Slug: idea-readiness-tooling-prerequisites
 Deliverable-Type: spreadsheet
 Execution-Track: business-artifact
-Primary-Execution-Skill: create-ops-spreadsheet
-Supporting-Skills: ideas-readiness, update-business-plan
+Primary-Execution-Skill: biz-spreadsheet
+Supporting-Skills: idea-readiness, biz-update-plan
 Business-OS-Integration: on
 Business-Unit: BOS
 ---
@@ -98,4 +98,4 @@ Each prerequisite row must include:
 
 ## Recommended Next Step
 - Create/update prerequisite tracker in docs/business-os/readiness and link into business plans.
-- Re-run `/ideas-readiness` after owner/date commitments are documented.
+- Re-run `/idea-readiness` after owner/date commitments are documented.

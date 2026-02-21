@@ -10,7 +10,7 @@ describe("MultilingualInput", () => {
     const product = {
       title: { en: "", de: "" },
       description: { en: "", de: "" },
-    };
+    } as any;
     const calls: { name: string; value: string }[] = [];
     const onChange = (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

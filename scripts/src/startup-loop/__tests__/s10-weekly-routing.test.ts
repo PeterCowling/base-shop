@@ -52,11 +52,11 @@ describe("TC-06-01: S10 stage contract stability (loop-spec.yaml)", () => {
     expect(raw).toContain("[S9B, S10]");
   });
 
-  it("total stage count is 22 (no new stages added or removed)", () => {
+  it("total stage count is 29 (no new stages added or removed)", () => {
     const raw = fs.readFileSync(loopSpecPath, "utf8");
-    const idMatches = raw.match(/^\s+- id: S\w+/gm);
+    const idMatches = raw.match(/^\s+- id: [A-Z]\w+/gm);
     expect(idMatches).not.toBeNull();
-    expect(idMatches!.length).toBe(22); // 17 original + DISCOVERY-01/02/03/04/05/S3B added in v1.6.0/v1.7.0/v1.9.0
+    expect(idMatches!.length).toBe(29); // All stages: 15 ASSESSMENT-prefixed + 14 S-prefixed
   });
 });
 

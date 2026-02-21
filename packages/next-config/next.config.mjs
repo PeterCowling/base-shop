@@ -24,6 +24,14 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "@acme/cms-ui": path.resolve(__dirname, "../cms-ui/src"),
       "@acme/lib": path.resolve(__dirname, "../lib/src"),
       "@acme/seo": path.resolve(__dirname, "../seo/src"),
+      // Align i18n resolution with design-system src: when design-system/src
+      // files are compiled, they import @acme/i18n which Turbopack resolves to
+      // src/index.ts (via the design-system tsconfig paths or HMR graph). If
+      // dist/primitives/dialog.js is also loaded (via exports map for sub-path
+      // imports), its @acme/i18n import resolves to dist/index.js — creating two
+      // module IDs for the same package → "module factory not available" HMR error.
+      // Pinning i18n → src ensures a single consistent module identity everywhere.
+      "@acme/i18n": path.resolve(__dirname, "../i18n/src"),
       "@themes-local": path.resolve(__dirname, "../themes"),
     },
   },

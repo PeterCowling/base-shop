@@ -11,6 +11,7 @@
     "types": ["jest", "node"],
     "verbatimModuleSyntax": false,
     "paths": {
+      "@jest/globals": ["test/jest-globals-compat.d.ts"],
       "@acme/config": ["packages/config/dist/index.d.ts"],
       "@acme/config/*": ["packages/config/dist/*"],
       "@acme/platform-core": ["packages/platform-core/dist/index.d.ts"],

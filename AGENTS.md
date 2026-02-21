@@ -125,7 +125,7 @@ A skill is a local instruction set stored in `.claude/skills/<name>/SKILL.md`.
 ### Available `lp-*` skills
 
 - `lp-baseline-merge`: Join startup-loop fan-out outputs into a baseline snapshot/manifest at S4. (file: `.claude/skills/lp-baseline-merge/SKILL.md`)
-- `lp-brand-bootstrap`: Bootstrap `brand-language.user.md` for a business entering the startup loop. (file: `.claude/skills/lp-brand-bootstrap/SKILL.md`)
+- `lp-assessment-bootstrap`: Bootstrap `brand-language.user.md` for a business entering the startup loop. (file: `.claude/skills/lp-assessment-bootstrap/SKILL.md`)
 - `lp-do-build`: Execute approved plan tasks with confidence gating and required validation. (file: `.claude/skills/lp-do-build/SKILL.md`)
 - `lp-channels`: Build startup channel strategy + GTM plan from offer outputs. (file: `.claude/skills/lp-channels/SKILL.md`)
 - `lp-design-qa`: Audit implemented UI against design spec/system, accessibility, and responsiveness. (file: `.claude/skills/lp-design-qa/SKILL.md`)
@@ -148,6 +148,26 @@ A skill is a local instruction set stored in `.claude/skills/<name>/SKILL.md`.
 - `lp-seo`: Produce phased SEO strategy (keywords, clusters, SERP, technical, snippets). (file: `.claude/skills/lp-seo/SKILL.md`)
 - `lp-sequence`: Topologically sequence plan tasks and dependency metadata (stable IDs by default; renumber only when explicitly requested). (file: `.claude/skills/lp-sequence/SKILL.md`)
 - `lp-site-upgrade`: Create layered website-upgrade strategy and `lp-do-fact-find` handoff packet. (file: `.claude/skills/lp-site-upgrade/SKILL.md`)
+- `lp-visual`: Generate HTML documentation with Mermaid diagrams, Chart.js dashboards, and rich visual layouts. Auto-load when asked to visualise a system, add diagrams to a guide, or build a KPI dashboard. (file: `.claude/skills/lp-visual/SKILL.md`)
+
+### Design & Visual skills
+
+- `frontend-design`: Build distinctive frontend interfaces grounded in the design system. Auto-load when the user asks to create UI components, pages, or visual interfaces. (file: `.claude/skills/frontend-design/SKILL.md`)
+- `lp-design-spec`: Convert requirements into concrete frontend design specs mapped to design tokens/system. (file: `.claude/skills/lp-design-spec/SKILL.md`)
+- `lp-design-system`: Apply design tokens/system patterns correctly and avoid arbitrary UI values. (file: `.claude/skills/lp-design-system/SKILL.md`)
+- `lp-design-qa`: Audit implemented UI against design spec/system, accessibility, and responsiveness. (file: `.claude/skills/lp-design-qa/SKILL.md`)
+
+### Design & Visual routing
+
+When the user's request involves building or modifying UI:
+1. Load `frontend-design` for aesthetic direction grounded in the design system
+2. Reference `lp-design-system` for token quick-ref during implementation
+3. After significant UI work, suggest `/lp-visual` to document the feature visually
+
+When the user's request involves documentation or diagrams:
+1. Load `lp-visual` for diagram/chart creation
+2. If the doc is for a specific business, derive palette from the brand dossier (see `references/css-variables.md` Brand-Derived Palettes)
+3. Reference `lp-design-system` for consistent color language
 
 ### How to use `lp-*` skills
 

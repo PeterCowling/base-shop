@@ -15,6 +15,7 @@ type CliOptions = {
   outDir?: string;
   template: Template;
   palette: Palette;
+  paletteFile?: string;
 };
 
 function printUsage(): void {
@@ -29,6 +30,7 @@ function printUsage(): void {
       "  --out-dir <dir>       Output directory (default: same as input)",
       "  --template basic|rich Template to use (default: basic)",
       "  --palette <name>      Color palette: operational, architecture, workflow, analytics (default: operational)",
+      "  --palette-file <path> Custom palette CSS file (overrides --palette)",
       "",
       "Examples:",
       "  pnpm docs:render-user-html -- docs/business-os/startup-loop-workflow.user.md",
@@ -79,6 +81,16 @@ function parseArgs(argv: string[]): CliOptions {
         throw new Error(`--palette must be one of: ${VALID_PALETTES.join(", ")}`);
       }
       options.palette = val;
+      i += 1;
+      continue;
+    }
+
+    if (arg === "--palette-file") {
+      const filePath = argv[i + 1];
+      if (!filePath) {
+        throw new Error("--palette-file requires a file path.");
+      }
+      options.paletteFile = filePath;
       i += 1;
       continue;
     }
@@ -517,7 +529,7 @@ ${params.htmlBody}
 
 async function processFile(
   inputPath: string,
-  options: { outDir?: string; template: Template; palette: Palette },
+  options: { outDir?: string; template: Template; palette: Palette; paletteFile?: string },
 ): Promise<void> {
   const absoluteInputPath = path.resolve(inputPath);
   const markdownRaw = await fs.readFile(absoluteInputPath, "utf8");
@@ -540,6 +552,11 @@ async function processFile(
       htmlBody,
       palette: options.palette,
     });
+    // --palette-file overrides the named palette with custom CSS content.
+    if (options.paletteFile) {
+      const customCss = await fs.readFile(path.resolve(options.paletteFile), "utf8");
+      wrappedHtml = wrappedHtml.replace(PALETTE_CSS[options.palette], customCss);
+    }
   } else {
     wrappedHtml = wrapHtmlDocument({
       title,
@@ -572,6 +589,7 @@ async function main(): Promise<void> {
       outDir: options.outDir,
       template: options.template,
       palette: options.palette,
+      paletteFile: options.paletteFile,
     });
   }
 }

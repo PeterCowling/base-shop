@@ -22,9 +22,9 @@
       "path": ".claude/skills/biz-update-plan/SKILL.md"
     },
     {
-      "name": "lp-do-discovery-04-business-name-options",
-      "description": "Produce a deep research prompt for business name exploration (DISCOVERY-04). Reads the target business's startup loop docs, encodes product, ICP, market, regulatory constraints, and competitive landscape, then outputs a structured research prompt ready to paste into Perplexity Deep Research or equivalent.",
-      "path": ".claude/skills/lp-do-discovery-04-business-name-options/SKILL.md"
+      "name": "lp-do-assessment-04-business-name",
+      "description": "Produce a deep research prompt for business name exploration (ASSESSMENT-04). Reads the target business's startup loop docs, encodes product, ICP, market, regulatory constraints, and competitive landscape, then outputs a structured research prompt ready to paste into Perplexity Deep Research or equivalent.",
+      "path": ".claude/skills/lp-do-assessment-04-business-name/SKILL.md"
     },
     {
       "name": "draft-email",
@@ -45,6 +45,11 @@
       "name": "draft-whatsapp",
       "description": "Draft WhatsApp-ready business messages with concise structure, clear CTA, and compliance-aware guardrails.",
       "path": ".claude/skills/draft-whatsapp/SKILL.md"
+    },
+    {
+      "name": "frontend-design",
+      "description": "Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. Combines bold creative direction with token-constrained implementation.",
+      "path": ".claude/skills/frontend-design/SKILL.md"
     },
     {
       "name": "guide-translate",
@@ -97,19 +102,19 @@
       "path": ".claude/skills/lp-bos-sync/SKILL.md"
     },
     {
-      "name": "lp-do-brand-01-brand-strategy",
-      "path": ".claude/skills/lp-do-brand-01-brand-strategy/SKILL.md",
-      "description": "Brand strategy elicitation for new startups (BRAND-01). Confirms business name, defines audience, personality, and voice & tone."
+      "name": "lp-do-assessment-10-brand-profiling",
+      "path": ".claude/skills/lp-do-assessment-10-brand-profiling/SKILL.md",
+      "description": "Brand profiling for new startups (ASSESSMENT-10). Confirms business name, defines audience, personality, and voice & tone."
     },
     {
-      "name": "lp-do-brand-02-brand-identity",
-      "path": ".claude/skills/lp-do-brand-02-brand-identity/SKILL.md",
-      "description": "Visual brand identity for new startups (BRAND-02). Produces brand-dossier with colour palette, typography, imagery direction, and token overrides."
+      "name": "lp-do-assessment-11-brand-identity",
+      "path": ".claude/skills/lp-do-assessment-11-brand-identity/SKILL.md",
+      "description": "Visual brand identity for new startups (ASSESSMENT-11). Produces brand-dossier with colour palette, typography, imagery direction, and token overrides."
     },
     {
-      "name": "lp-brand-bootstrap",
-      "description": "Standalone brand dossier bootstrap outside the startup loop. Superseded by lp-do-brand-02-brand-identity for the BRAND stage within the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template.",
-      "path": ".claude/skills/lp-brand-bootstrap/SKILL.md"
+      "name": "lp-assessment-bootstrap",
+      "description": "Standalone brand dossier bootstrap outside the startup loop. Superseded by lp-do-assessment-11-brand-identity for the ASSESSMENT stage within the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template.",
+      "path": ".claude/skills/lp-assessment-bootstrap/SKILL.md"
     },
     {
       "name": "lp-channels",
@@ -202,24 +207,24 @@
       "path": ".claude/skills/lp-onboarding-audit/SKILL.md"
     },
     {
-      "name": "lp-do-discovery-05-distribution-planning",
-      "description": "Distribution planning for new startups (DISCOVERY-05). Elicits ≥2 launch channels with cost/effort estimates and ICP fit rationale. Produces a distribution-plan artifact ready for measurement planning. Upstream of lp-do-discovery-06-measurement-plan.",
-      "path": ".claude/skills/lp-do-discovery-05-distribution-planning/SKILL.md"
+      "name": "lp-do-assessment-06-distribution-profiling",
+      "description": "Distribution profiling for new startups (ASSESSMENT-06). Elicits >=2 launch channels with cost/effort estimates and ICP fit rationale. Produces a distribution-plan artifact ready for measurement profiling. Upstream of lp-do-assessment-07-measurement-profiling.",
+      "path": ".claude/skills/lp-do-assessment-06-distribution-profiling/SKILL.md"
     },
     {
-      "name": "lp-do-discovery-06-measurement-plan",
-      "description": "Measurement planning for new startups (DISCOVERY-06). Elicits tracking setup, ≥2 key metrics, success thresholds, and data collection feasibility. Produces a measurement-plan artifact ready for operator evidence capture. Upstream of lp-do-discovery-07-our-stance.",
-      "path": ".claude/skills/lp-do-discovery-06-measurement-plan/SKILL.md"
+      "name": "lp-do-assessment-07-measurement-profiling",
+      "description": "Measurement profiling for new startups (ASSESSMENT-07). Elicits tracking setup, >=2 key metrics, success thresholds, and data collection feasibility. Produces a measurement-plan artifact ready for current situation capture. Upstream of lp-do-assessment-08-current-situation.",
+      "path": ".claude/skills/lp-do-assessment-07-measurement-profiling/SKILL.md"
     },
     {
-      "name": "lp-do-discovery-07-our-stance",
-      "description": "Our Stance for new startups (DISCOVERY-07). Elicits operator-direct knowledge: launch surface, inventory readiness, commercial architecture, and pre-locked channel decisions. Mandatory final sub-stage before DISCOVERY GATE.",
-      "path": ".claude/skills/lp-do-discovery-07-our-stance"
+      "name": "lp-do-assessment-08-current-situation",
+      "description": "Current situation for new startups (ASSESSMENT-08). Elicits operator-direct knowledge: launch surface, inventory readiness, commercial architecture, and pre-locked channel decisions. Mandatory final sub-stage before ASSESSMENT GATE.",
+      "path": ".claude/skills/lp-do-assessment-08-current-situation"
     },
     {
-      "name": "lp-do-discovery-03-option-picking",
-      "description": "Option selection gate for new startups (DISCOVERY-03). Reads solution-space research results, builds an evaluation matrix, and produces a shortlist of 1-2 options with elimination rationale. Explicit kill gate — decision record required to continue to DISCOVERY-04.",
-      "path": ".claude/skills/lp-do-discovery-03-option-picking/SKILL.md"
+      "name": "lp-do-assessment-03-solution-selection",
+      "description": "Solution selection gate for new startups (ASSESSMENT-03). Reads solution-space research results, builds an evaluation matrix, and produces a shortlist of 1-2 options with elimination rationale. Explicit kill gate — decision record required to continue to ASSESSMENT-04.",
+      "path": ".claude/skills/lp-do-assessment-03-solution-selection/SKILL.md"
     },
     {
       "name": "lp-other-products",
@@ -232,9 +237,9 @@
       "path": ".claude/skills/lp-prioritize/SKILL.md"
     },
     {
-      "name": "lp-do-discovery-01-problem-framing",
-      "description": "Problem framing for new startups (DISCOVERY-01). Produces a falsifiable problem statement artifact before entering S0 intake. Upstream of lp-do-discovery-02-solution-space-scan.",
-      "path": ".claude/skills/lp-do-discovery-01-problem-framing/SKILL.md"
+      "name": "lp-do-assessment-01-problem-framing",
+      "description": "Problem framing for new startups (ASSESSMENT-01). Produces a falsifiable problem statement artifact before entering ASSESSMENT intake. Upstream of lp-do-assessment-02-solution-space-scan.",
+      "path": ".claude/skills/lp-do-assessment-01-problem-framing/SKILL.md"
     },
     {
       "name": "lp-readiness",
@@ -267,9 +272,9 @@
       "path": ".claude/skills/lp-site-upgrade/SKILL.md"
     },
     {
-      "name": "lp-do-discovery-02-solution-space-scan",
-      "description": "Solution space scanning for new startups (DISCOVERY-02). Produces a structured Perplexity-ready research prompt covering 5-10 candidate product-type options with feasibility flags. Feasibility only — no demand scoring until S2.",
-      "path": ".claude/skills/lp-do-discovery-02-solution-space-scan/SKILL.md"
+      "name": "lp-do-assessment-02-solution-space-scan",
+      "description": "Solution space scanning for new startups (ASSESSMENT-02). Produces a structured deep-research-ready prompt covering 5-10 candidate product-type options with feasibility flags. Feasibility only — no demand scoring until S2.",
+      "path": ".claude/skills/lp-do-assessment-02-solution-space-scan/SKILL.md"
     },
     {
       "name": "lp-visual",

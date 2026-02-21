@@ -194,6 +194,50 @@ Rose/cranberry accent for data, metrics, and analytics documents.
 
 ---
 
+## Brand-Derived Palettes
+
+When generating visual docs for a specific business, derive the palette from the business's brand dossier and theme tokens instead of using the generic domain palettes above. This keeps visual documentation consistent with the actual product UI.
+
+### Token Mapping
+
+Map design system tokens (from `packages/themes/<theme>/src/tokens.ts`) to visual doc CSS variables:
+
+| Visual doc variable | Design system token | Notes |
+|--------------------|--------------------|-------|
+| `--bg` | `--color-bg` | Convert from HSL tuple to `hsl(...)` |
+| `--surface` | `--surface-1` | First surface layer |
+| `--border` | `--color-border` | Standard border |
+| `--border-soft` | `--color-border-muted` | Subtle borders |
+| `--text` | `--color-fg` | Primary text |
+| `--text-muted` | `--color-fg-muted` or computed | Secondary text |
+| `--accent` | `--color-primary` | Brand primary color |
+| `--accent-soft` | `--color-primary-soft` | Light primary tint |
+| `--warn` | `--color-warning` | Warning state |
+| `--warn-soft` | `--color-warning-soft` | Light warning |
+| `--danger` | `--color-danger` | Error/danger state |
+| `--danger-soft` | `--color-danger-soft` | Light danger |
+| `--code-bg` | `--surface-2` | Code block background |
+| `--code-border` | `--color-border` | Code block border |
+
+### Business-to-Palette Lookup
+
+| Business | Theme package | Recommended base palette | Accent override |
+|----------|--------------|-------------------------|-----------------|
+| BRIK | `packages/themes/prime/` | operational | Warm coral `hsl(6, 78%, 47%)` from prime tokens |
+| PLAT | `packages/themes/base/` | operational | Default green `#2d6a4f` |
+| BOS | `packages/themes/base/` | workflow | Default teal `#0d7377` |
+| HEAD | `packages/themes/base/` | analytics | TBD from brand dossier |
+| PET | `packages/themes/base/` | operational | TBD from brand dossier |
+| HBAG | `packages/themes/base/` | operational | TBD from brand dossier |
+
+### Custom Palette Files
+
+For per-business palettes, create a `.css` file with only `:root` and dark-mode blocks, then pass it to the render pipeline via `--palette-file <path>`. The file contents replace `{{PALETTE_CSS}}` in the template.
+
+Example: `docs/templates/visual/palettes/brik.css` would contain the prime theme's colors mapped to the visual doc variable names.
+
+---
+
 ## Mermaid themeVariables by Palette
 
 When using `theme: 'base'` in `mermaid.initialize()`, derive themeVariables from the palette CSS variables. See `references/mermaid-init.md` for the full initialization pattern with per-palette mappings.

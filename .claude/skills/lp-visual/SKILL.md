@@ -344,9 +344,14 @@ For any document not listed in the menu above.
 
 Ask the user:
 1. **Target file path** — where to write or find the HTML file (e.g. `docs/guides/my-system.html`)
-2. **Document domain** — one of: `operational`, `architecture`, `workflow`, `analytics`
+2. **Business** (optional) — which business is this doc for? (BRIK, PLAT, BOS, HEAD, PET, HBAG)
+3. **Document domain** — one of: `operational`, `architecture`, `workflow`, `analytics`
 
 If the user provides only a path, infer the domain from context or ask.
+
+**Brand-derived palette**: If a business is specified, consult `references/css-variables.md` → "Brand-Derived Palettes" section for the business-to-palette mapping and any accent overrides. Load the brand dossier at `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` for color guidance. Also reference `.claude/skills/lp-design-system/SKILL.md` for token naming conventions — visual doc palettes should feel connected to the product UI.
+
+For the render pipeline, per-business palettes can be passed via `--palette-file <path>` (see `references/css-variables.md` for the custom palette file format).
 
 ### Step 2 — Read or create the target file
 
@@ -390,6 +395,16 @@ The `references/` directory contains reusable building blocks for visual documen
 | `references/mermaid-init.md` | Mermaid CDN import, initialization config, ELK loader, classDef conventions |
 | `references/diagram-types.md` | Supported Mermaid diagram types with selection guidance |
 | `references/chartjs-usage.md` | Chart.js KPI dashboard patterns and the `chart` code fence format |
+
+### Design System Cross-References
+
+When generating visual docs for a specific business, also consult:
+
+| File | Purpose |
+|------|---------|
+| `.claude/skills/lp-design-system/SKILL.md` | Token quick-ref — use for consistent color naming |
+| `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | Per-business brand language and color palette |
+| `packages/themes/<theme>/src/tokens.ts` | Concrete token values for palette derivation |
 
 ---
 

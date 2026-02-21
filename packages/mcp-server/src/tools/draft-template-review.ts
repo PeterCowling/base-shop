@@ -12,8 +12,7 @@ import { z } from "zod";
 
 import {
   joinEvents,
-  type RefinementEvent,
-  type SelectionEvent,
+  readSignalEvents,
 } from "../utils/signal-events.js";
 import {
   type EmailTemplate,
@@ -103,33 +102,6 @@ function nextBatchLetter(current: string): string {
 // Helpers — file I/O
 // ---------------------------------------------------------------------------
 
-async function readSignalEventsRaw(): Promise<{
-  selectionEvents: SelectionEvent[];
-  refinementEvents: RefinementEvent[];
-}> {
-  let raw: string;
-  try {
-    raw = await readFile(SIGNAL_EVENTS_PATH, "utf-8");
-  } catch {
-    return { selectionEvents: [], refinementEvents: [] };
-  }
-  const lines = raw.split("\n").filter(Boolean);
-  const selectionEvents: SelectionEvent[] = [];
-  const refinementEvents: RefinementEvent[] = [];
-  for (const line of lines) {
-    try {
-      const event = JSON.parse(line) as { event: string };
-      if (event.event === "selection") {
-        selectionEvents.push(event as SelectionEvent);
-      } else if (event.event === "refinement") {
-        refinementEvents.push(event as RefinementEvent);
-      }
-    } catch {
-      // Skip malformed lines.
-    }
-  }
-  return { selectionEvents, refinementEvents };
-}
 
 async function readProposals(): Promise<Map<string, TemplateProposal>> {
   let raw: string;
@@ -182,7 +154,7 @@ async function generatePendingProposals(
   existingProposals: Map<string, TemplateProposal>,
   templates: TemplateEntry[],
 ): Promise<TemplateProposal[]> {
-  const { selectionEvents, refinementEvents } = await readSignalEventsRaw();
+  const { selectionEvents, refinementEvents } = await readSignalEvents(SIGNAL_EVENTS_PATH);
   const pairs = joinEvents(selectionEvents, refinementEvents);
 
   const templatesBySubject = new Map(

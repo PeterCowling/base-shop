@@ -19,7 +19,8 @@ import { z } from "zod";
 import { getGmailClient } from "../clients/gmail.js";
 import { createRawEmail } from "../utils/email-mime.js";
 import { generateEmailHtml } from "../utils/email-template.js";
-import { createLockStore,type LockStore } from "../utils/lock-store.js";
+import { withRetry } from "../utils/gmail-retry.js";
+import { createLockStore, type LockStore } from "../utils/lock-store.js";
 import { buildOrganizeQuery } from "../utils/organize-query.js";
 import {
   errorResult,
@@ -202,6 +203,28 @@ export interface TelemetryEvent {
   queue_to?: string | null;
 }
 
+// TASK-04: Zod schema for TelemetryEvent validation on read.
+const TelemetryEventSchema = z.object({
+  ts: z.string(),
+  event_key: z.enum([
+    "email_draft_created",
+    "email_draft_deferred",
+    "email_outcome_labeled",
+    "email_queue_transition",
+    "email_fallback_detected",
+  ]),
+  source_path: z.enum(["queue", "reception", "outbound", "unknown"]),
+  actor: z.string(),
+  tool_name: z.string().optional(),
+  message_id: z.string().nullable().optional(),
+  draft_id: z.string().nullable().optional(),
+  action: z.string().optional(),
+  reason: z.string().optional(),
+  classification: z.string().optional(),
+  queue_from: z.string().nullable().optional(),
+  queue_to: z.string().nullable().optional(),
+}).passthrough();
+
 /**
  * Resolves the default audit log path.
  * Priority:
@@ -275,21 +298,23 @@ function readTelemetryEvents(logPath?: string): TelemetryEvent[] {
     return [];
   }
   const raw = fs.readFileSync(filePath, "utf-8");
-  const lines = raw.split("\n").filter((line) => line.trim() !== "");
+  const lines = raw.split("\n");
   const events: TelemetryEvent[] = [];
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
     try {
-      const parsed = JSON.parse(line) as Partial<TelemetryEvent>;
-      if (
-        parsed &&
-        typeof parsed === "object" &&
-        typeof parsed.event_key === "string" &&
-        typeof parsed.ts === "string"
-      ) {
-        events.push(parsed as TelemetryEvent);
+      const parsed = JSON.parse(line);
+      const result = TelemetryEventSchema.safeParse(parsed);
+      if (result.success) {
+        events.push(result.data as TelemetryEvent);
+      } else {
+        console.warn(
+          `[telemetry] Skipped invalid event at line ${i + 1}: ${result.error.issues[0]?.message ?? "unknown"}`,
+        );
       }
     } catch {
-      // Ignore malformed lines so rollups remain non-fatal.
+      console.warn(`[telemetry] Skipped malformed JSON at line ${i + 1}`);
     }
   }
   return events;
@@ -1991,11 +2016,13 @@ async function handleOrganizeInbox(
 
   await runStartupRecovery(gmail, labelMap, needsProcessingLabelId, dryRun);
 
-  const response = await gmail.users.threads.list({
-    userId: "me",
-    q: query,
-    maxResults: limit,
-  });
+  const response = await withRetry(() =>
+    gmail.users.threads.list({
+      userId: "me",
+      q: query,
+      maxResults: limit,
+    }),
+  );
 
   const threads = response.data.threads || [];
   let scannedThreads = 0;

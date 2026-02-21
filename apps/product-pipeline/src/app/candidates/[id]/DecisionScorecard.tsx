@@ -357,8 +357,8 @@ export default function DecisionScorecard({
               <span
                 className={
                   decisionMessage.tone === "success"
-                    ? "text-xs text-emerald-600"
-                    : "text-xs text-red-600"
+                    ? "text-xs text-success-fg"
+                    : "text-xs text-danger-fg"
                 }
               >
                 {decisionMessage.text}
@@ -400,11 +400,11 @@ export default function DecisionScorecard({
             <div
               className={`mt-1 inline-flex rounded-full px-3 py-1 text-sm font-semibold ${
                 riskLevel === "high"
-                  ? "bg-red-100 text-red-800"
+                  ? "bg-danger-soft text-danger-fg"
                   : riskLevel === "medium"
-                    ? "bg-amber-100 text-amber-800"
+                    ? "bg-warning-soft text-warning-fg"
                     : riskLevel === "low"
-                      ? "bg-emerald-100 text-emerald-800"
+                      ? "bg-success-soft text-success-fg"
                       : "bg-surface-3 text-foreground/70"
               }`}
             >
@@ -416,11 +416,11 @@ export default function DecisionScorecard({
             <div
               className={`mt-1 inline-flex rounded-full px-3 py-1 text-sm font-semibold ${
                 effortLevel === "high"
-                  ? "bg-red-100 text-red-800"
+                  ? "bg-danger-soft text-danger-fg"
                   : effortLevel === "medium"
-                    ? "bg-amber-100 text-amber-800"
+                    ? "bg-warning-soft text-warning-fg"
                     : effortLevel === "low"
-                      ? "bg-emerald-100 text-emerald-800"
+                      ? "bg-success-soft text-success-fg"
                       : "bg-surface-3 text-foreground/70"
               }`}
             >

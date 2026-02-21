@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.test.typecheck.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationDir": null,
+    "declarationMap": false,
+    "emitDeclarationOnly": false
+  },
+  "include": [
+    "base/__tests__/**/*.ts",
+    "base/__tests__/**/*.tsx",
+    "bcd/__tests__/**/*.ts",
+    "brandx/__tests__/**/*.ts",
+    "dark/__tests__/**/*.ts",
+    "prime/__tests__/**/*.ts"
+  ],
+  "exclude": ["**/node_modules/**", "**/dist/**"]
+}

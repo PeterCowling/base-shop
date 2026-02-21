@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK Market Intelligence Pack (Europe, Italy-first)</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>BRIK Market Intelligence Pack (Europe, Italy-first)</h1>
+<h2>A) Executive Summary</h2>
+<ul>
+<li>(observed) Italy tourism demand remains large: 458.4M accommodation presences in 2024, up 2.5% YoY; foreign presences grew faster (+6.8%).</li>
+<li>(observed) Italy inbound travel spending reached EUR54.2B in 2024 (+16.8% YoY), which supports continued demand depth in destination-led booking markets.</li>
+<li>(observed) EU short-stay demand on online platforms remained expansionary in 2025 (+17.8% YoY in Q2 nights), confirming digital-booking momentum.</li>
+<li>(observed) BRIK internal baseline shows seasonality and a softer recent shape: Feb-Dec 2025 net value is down 15.13% vs Feb-Dec 2024.</li>
+<li>(observed) BRIK Cloudflare request proxies are directionally useful but not decision-grade attribution data (<code>r ~= 0.37</code> vs net value in overlapping months).</li>
+<li>(observed) Hostel demand behavior is mobile and near-term: Hostelworld reports 67% of bookings are made &#x3C;=7 days before stay and 83% of bookings happen via app.</li>
+<li>(observed) Direct-booking competitors increasingly use loyalty-discount mechanics (e.g., 5-25% member discounts) to shift demand from OTA-heavy journeys.</li>
+<li>(observed) Booking funnels are offer-led: cancellation flexibility, visible discounts, and fee clarity are consistently used conversion levers.</li>
+<li>(inferred) BRIK should treat mobile speed + pricing/fee transparency + policy clarity as core conversion primitives, not design polish extras.</li>
+<li>(inferred) Until GA4/Search Console are fully live, channel scale decisions should be constrained to low-risk tests and measured weekly against net-value and proxy traffic movement.</li>
+<li>(inferred) Fastest 90-day upside is conversion optimization on current demand, not broad top-of-funnel expansion.</li>
+</ul>
+<h2>B) Business Context and Explicit Assumptions</h2>
+<p>Observed business context:</p>
+<ul>
+<li>Business code/name: <code>BRIK</code> / Brikette.</li>
+<li>Launch surface mode: <code>website-live</code>.</li>
+<li>Internal baseline artifact exists and is active: <code>docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code>.</li>
+<li>Core current constraints: incomplete analytics instrumentation, partial traffic proxy quality, and active operational reliability focus.</li>
+</ul>
+<p>Explicit assumptions in this pack:</p>
+<ul>
+<li>(assumption) BRIK can improve booking outcomes materially via conversion-system fixes before adding large paid spend.</li>
+<li>(assumption) Loyalty-style direct-booking incentives will improve direct share if paired with trust/policy clarity.</li>
+<li>(assumption) Near-term demand softness in internal net-value trend is partially recoverable by conversion and cancellation-quality improvements.</li>
+</ul>
+<h2>C) Market Size and Demand Signals (with confidence labels)</h2>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Current read</th>
+<th>Confidence</th>
+<th>Tag</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Italy accommodation demand</td>
+<td>2024 presences: 458.4M (+2.5% YoY)</td>
+<td>High</td>
+<td>observed</td>
+<td>ISTAT tourism 2024 release</td>
+</tr>
+<tr>
+<td>Foreign-demand pull</td>
+<td>2024 foreign presences: 250.1M (+6.8% YoY)</td>
+<td>High</td>
+<td>observed</td>
+<td>ISTAT tourism 2024 release</td>
+</tr>
+<tr>
+<td>Italy travel spend environment</td>
+<td>2024 inbound traveler spending: EUR54.2B (+16.8% YoY)</td>
+<td>High</td>
+<td>observed</td>
+<td>Bank of Italy international tourism statistics</td>
+</tr>
+<tr>
+<td>Digital accommodation channel momentum</td>
+<td>EU short-stay nights via online platforms: 854.1M in Q2 2025 (+17.8% YoY)</td>
+<td>Medium</td>
+<td>observed</td>
+<td>Eurostat news release</td>
+</tr>
+<tr>
+<td>BRIK historical revenue shape</td>
+<td>Trailing 24 complete months net value: EUR1,121,897.69 (avg EUR46,745.74/month)</td>
+<td>High</td>
+<td>observed</td>
+<td>BRIK historical baseline + source CSV</td>
+</tr>
+<tr>
+<td>BRIK year-on-year pressure</td>
+<td>Feb-Dec 2025 net value down 15.13% vs Feb-Dec 2024</td>
+<td>High</td>
+<td>observed</td>
+<td>BRIK historical baseline</td>
+</tr>
+<tr>
+<td>Proxy-traffic interpretability</td>
+<td>Cloudflare request totals available for 11/24 months; weak-to-moderate correlation vs net value (<code>r ~= 0.37</code>)</td>
+<td>Medium</td>
+<td>observed</td>
+<td>BRIK historical baseline</td>
+</tr>
+<tr>
+<td>Booking behavior timing</td>
+<td>67% of Hostelworld bookings are &#x3C;=7 days before stay</td>
+<td>Medium</td>
+<td>observed</td>
+<td>Hostelworld FY24 annual report</td>
+</tr>
+<tr>
+<td>Mobile booking behavior</td>
+<td>83% of Hostelworld bookings via app in 2024</td>
+<td>Medium</td>
+<td>observed</td>
+<td>Hostelworld FY24 annual report</td>
+</tr>
+</tbody>
+</table>
+<h2>D) Competitor Map (Direct / Adjacent / Substitute)</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Player</th>
+<th>Positioning / pattern</th>
+<th>Channel tactic observed</th>
+<th>Implication for BRIK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Direct OTA / hostel aggregator</td>
+<td>Hostelworld</td>
+<td>Hostel-specific, social travel hooks, mobile-heavy execution</td>
+<td>App-first + social/community features; last-minute booking behavior concentration</td>
+<td>BRIK must optimize for late-booking, mobile-first conversion paths</td>
+</tr>
+<tr>
+<td>Direct OTA / broad accommodation</td>
+<td>Booking.com</td>
+<td>Broad inventory + loyalty discount stack (<code>Genius</code> levels)</td>
+<td>Tiered member discounts, occasional room upgrade/breakfast perks, support messaging</td>
+<td>BRIK should test direct-booking loyalty value propositions, not only static pricing</td>
+</tr>
+<tr>
+<td>Direct OTA / alternative stays</td>
+<td>Airbnb</td>
+<td>Supply breadth + transparent platform fee framework</td>
+<td>Structured host/guest fee model and policy clarity</td>
+<td>BRIK should make fee/policy clarity explicit in checkout path</td>
+</tr>
+<tr>
+<td>Adjacent direct hostel brands</td>
+<td>MEININGER</td>
+<td>Direct booking incentive and membership discount</td>
+<td><code>MEININGER Club</code> discount mechanics</td>
+<td>BRIK can borrow lightweight member-offer mechanics</td>
+</tr>
+<tr>
+<td>Adjacent direct hostel brands</td>
+<td>a&#x26;o Hostels</td>
+<td>Membership discount + late checkout perk</td>
+<td><code>a&#x26;o CLUB</code> incentive stack</td>
+<td>Low-effort loyalty perks can support direct-conversion lift</td>
+</tr>
+<tr>
+<td>Adjacent direct hostel brands</td>
+<td>St Christopher's</td>
+<td>High direct-discount signal for members</td>
+<td>Up to 25% direct discount via rewards club</td>
+<td>Price-sensitive demand can be steered to direct channels with clear membership framing</td>
+</tr>
+<tr>
+<td>Substitute journey</td>
+<td>Google/OTA metasearch pathways</td>
+<td>Comparison-first user behavior</td>
+<td>Price/availability/policy comparison norms</td>
+<td>BRIK funnel must reduce comparison friction and hidden-fee anxiety</td>
+</tr>
+</tbody>
+</table>
+<h2>E) Pricing and Offer Benchmark Table</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Offer / pricing mechanic observed</th>
+<th>Evidence tag</th>
+<th>Practical benchmark use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Booking.com <code>Genius</code></td>
+<td>Tiered discounts: 10% (Level 1), 10-15% (Level 2), 10-20% + potential perks (Level 3)</td>
+<td>observed</td>
+<td>Define direct-member ladder experiments and margin guardrails</td>
+</tr>
+<tr>
+<td>Airbnb fee model</td>
+<td>Typical host service fee ~3%; host-only fee in many cases can be 14-16%</td>
+<td>observed</td>
+<td>Keep total-fee transparency visible to reduce checkout drop-off</td>
+</tr>
+<tr>
+<td>MEININGER Club</td>
+<td>5% direct-booking discount for members</td>
+<td>observed</td>
+<td>Test lightweight loyalty-discount trigger before deeper CRM work</td>
+</tr>
+<tr>
+<td>a&#x26;o CLUB</td>
+<td>10% discount + late checkout perk</td>
+<td>observed</td>
+<td>Combine economic and convenience perks in direct-booking CTA</td>
+</tr>
+<tr>
+<td>St Christopher's Rewards</td>
+<td>Up to 25% member discount messaging</td>
+<td>observed</td>
+<td>Use segmented offer depths by demand window (not blanket discounting)</td>
+</tr>
+<tr>
+<td>Hostelworld Social Pass</td>
+<td>New paid social/travel product; users show higher transaction value and session depth</td>
+<td>observed</td>
+<td>Validate whether social/community hooks can increase repeat/high-intent sessions</td>
+</tr>
+</tbody>
+</table>
+<h2>F) Segment and JTBD Sequence (Primary + Secondary)</h2>
+<p>Primary segment (first):</p>
+<ul>
+<li>Mobile-first, value-aware, short-lead-time travelers (18-35 skew) booking hostels close to travel date.</li>
+<li>JTBD: secure a trusted stay quickly, with clear cancellation/payment terms and low booking friction.</li>
+</ul>
+<p>Secondary segment:</p>
+<ul>
+<li>Couples/small groups evaluating apartment-style or upgraded stay options (including StepFree product-line overlap).</li>
+<li>JTBD: compare value vs flexibility and complete booking confidently without hidden surprises.</li>
+</ul>
+<p>Tertiary segment:</p>
+<ul>
+<li>Repeat destination visitors and referral-led guests seeking direct-booking value/perks.</li>
+<li>JTBD: complete repeat bookings faster with better member economics and support trust.</li>
+</ul>
+<h2>G) Unit Economics Priors (AOV / CAC / CVR / Returns / Margin)</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Prior range / posture</th>
+<th>Tag</th>
+<th>Evidence / validation requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AOV (booking value per order)</td>
+<td>EUR120-320 initial planning corridor</td>
+<td>assumption</td>
+<td>No booking-count denominator in current baseline; replace with observed GA4 + booking data</td>
+</tr>
+<tr>
+<td>CAC (paid)</td>
+<td>EUR20-90 corridor by channel-intent quality</td>
+<td>assumption</td>
+<td>Use only as guardrail until tracked source-level conversions are available</td>
+</tr>
+<tr>
+<td>CVR (session -> booking)</td>
+<td>1.0%-3.0% initial benchmark corridor</td>
+<td>assumption</td>
+<td>Must be replaced by measured funnel CVR after GA4/Search Console instrumentation</td>
+</tr>
+<tr>
+<td>Cancellation / refund pressure</td>
+<td>10%-25% risk corridor by season/segment</td>
+<td>assumption</td>
+<td>Must be tracked weekly with reason codes and policy cohorts</td>
+</tr>
+<tr>
+<td>Contribution margin after channel cost</td>
+<td>15%-35% planning corridor</td>
+<td>assumption</td>
+<td>Recalculate weekly from observed channel mix, discounts, and cancellation outcomes</td>
+</tr>
+</tbody>
+</table>
+<p>Decision note:</p>
+<ul>
+<li>These are explicitly non-decision-grade priors until instrumentation and reason-coded cancellation data are operational.</li>
+</ul>
+<h2>H) Channel Strategy Implications (First 90 Days)</h2>
+<ol>
+<li>Protect and convert existing demand first:
+<ul>
+<li>Prioritize mobile booking-path speed, transparent pricing, and policy clarity.</li>
+</ul>
+</li>
+<li>Introduce controlled direct-booking incentive tests:
+<ul>
+<li>Member-rate and perk tests on selected routes/segments, with margin guardrails.</li>
+</ul>
+</li>
+<li>Constrain paid expansion:
+<ul>
+<li>Keep paid to retargeting and high-intent capture until conversion attribution is reliable.</li>
+</ul>
+</li>
+<li>Build repeatability loop:
+<ul>
+<li>Add email/CRM win-back cadence tied to stay window and cancellation behavior.</li>
+</ul>
+</li>
+<li>Weekly operating cadence:
+<ul>
+<li>Review net value + proxy traffic + cancellation reasons + booking-flow drop-offs every week.</li>
+</ul>
+</li>
+</ol>
+<h2>I) Website Design Implications (Implementation-ready checklist)</h2>
+<ul>
+<li><code>Must</code>: mobile-first booking flow with minimal taps and fast response on constrained networks.</li>
+<li><code>Must</code>: total-price and fee clarity before final checkout action.</li>
+<li><code>Must</code>: cancellation and policy summary visible near price and CTA.</li>
+<li><code>Must</code>: multilingual parity on key conversion pages (search, room type, checkout, policies).</li>
+<li><code>Must</code>: trust stack near CTA (support availability, policy links, payment confidence cues).</li>
+<li><code>Must</code>: offer logic blocks for direct-booking incentives (member pricing/perks).</li>
+<li><code>Should</code>: short-lead-time UX hints (e.g., nearby dates, flexible options) for last-minute behavior.</li>
+<li><code>Should</code>: repeat-booking shortcuts for returning users.</li>
+</ul>
+<h2>J) Product Design Implications (Implementation-ready checklist)</h2>
+<p>For booking-product surfaces (not physical product):</p>
+<ul>
+<li><code>Must</code>: unambiguous date/guest/room selection states and validation.</li>
+<li><code>Must</code>: explicit policy and cancellation state per rate option.</li>
+<li><code>Must</code>: reliable support escalation path during booking failure states.</li>
+<li><code>Must</code>: instrumentation hooks at each funnel step (<code>search -> detail -> checkout -> payment -> confirmation</code>).</li>
+<li><code>Should</code>: offer-personalization primitives (member tier, repeat-guest recognition) with clear fallback behavior.</li>
+</ul>
+<p>Known failure modes to design against:</p>
+<ul>
+<li>hidden-fee shock at final step,</li>
+<li>unclear cancellation conditions,</li>
+<li>slow mobile checkout,</li>
+<li>language inconsistency between listing and policy text,</li>
+<li>payment-authentication failures without clean recovery.</li>
+</ul>
+<h2>K) Regulatory / Claims Constraints and Red Lines</h2>
+<p>Key constraints:</p>
+<ul>
+<li>(observed) EU/Italy right-of-withdrawal rules include exceptions for accommodation/leisure services tied to specific dates; booking terms must be explicit.</li>
+<li>(observed) PSD2 strong customer authentication obligations affect payment-flow design and retry/recovery UX.</li>
+<li>(observed) GDPR obligations apply to analytics and tracking stack decisions.</li>
+<li>(observed) Package-travel directive boundaries matter if BRIK bundles accommodation with additional travel services under qualifying conditions.</li>
+</ul>
+<p>Red lines:</p>
+<ol>
+<li>No checkout experience that hides unavoidable fees or key policy conditions.</li>
+<li>No scaling paid acquisition without reliable conversion measurement.</li>
+<li>No bundled-offer messaging that could unintentionally cross regulatory boundaries without legal review.</li>
+</ol>
+<h2>L) Proposed 90-Day Outcome Contract</h2>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Baseline (today)</th>
+<th>Target</th>
+<th>By</th>
+<th>Owner</th>
+<th>Leading indicators</th>
+<th>Decision link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Booking conversion visibility</td>
+<td>Funnel/source visibility incomplete</td>
+<td>Full booking funnel instrumentation + weekly reporting live</td>
+<td>2026-03-31</td>
+<td>Pete</td>
+<td>funnel completion, step drop-offs, tracked source mix</td>
+<td><code>DEC-BRIK-01</code></td>
+</tr>
+<tr>
+<td>Net-value stabilization</td>
+<td>2025 vs 2024 comparable window down 15.13%</td>
+<td>Stop decline in comparable 8-week window and return to non-negative trend</td>
+<td>2026-05-13</td>
+<td>Pete</td>
+<td>weekly net value, cancellation-adjusted yield</td>
+<td><code>DEC-BRIK-02</code></td>
+</tr>
+<tr>
+<td>Direct-booking performance proof</td>
+<td>No member-offer evidence set</td>
+<td>Two tested direct-offer cohorts with margin + CVR readout</td>
+<td>2026-04-30</td>
+<td>Pete</td>
+<td>direct share, offer take-rate, margin per booking</td>
+<td><code>DEC-BRIK-03</code></td>
+</tr>
+<tr>
+<td>Cancellation quality control</td>
+<td>No reason-coded cancellation operating baseline</td>
+<td>Reason-coded weekly cancellation dashboard active</td>
+<td>2026-04-15</td>
+<td>Pete</td>
+<td>cancellation rate by reason, refund leakage</td>
+<td><code>DEC-BRIK-04</code></td>
+</tr>
+</tbody>
+</table>
+<h2>M) First-14-Day Validation Plan (tests + thresholds + re-forecast triggers)</h2>
+<ol>
+<li>Direct-offer A/B test (<code>member-rate</code> vs control):
+<ul>
+<li>Threshold: >=8% uplift in checkout starts with no >3pp margin deterioration.</li>
+<li>Re-forecast trigger: fail threshold for 2 consecutive weeks.</li>
+</ul>
+</li>
+<li>Policy-clarity test on booking detail pages:
+<ul>
+<li>Threshold: >=10% reduction in checkout abandonment at policy step.</li>
+<li>Re-forecast trigger: abandonment unchanged after two page iterations.</li>
+</ul>
+</li>
+<li>Mobile checkout performance test:
+<ul>
+<li>Threshold: p75 booking checkout load &#x3C;=2.5s on mobile.</li>
+<li>Re-forecast trigger: p75 >3.0s for 7 consecutive days.</li>
+</ul>
+</li>
+<li>Cancellation reason-coding rollout:
+<ul>
+<li>Threshold: >=90% of cancellations coded with standardized reasons.</li>
+<li>Re-forecast trigger: coding coverage &#x3C;80% after week 2.</li>
+</ul>
+</li>
+<li>CRM repeat-booking prompt pilot:
+<ul>
+<li>Threshold: >=3% reactivation among eligible prior guests.</li>
+<li>Re-forecast trigger: &#x3C;1% response after two campaigns.</li>
+</ul>
+</li>
+</ol>
+<h2>N) Assumptions Register</h2>
+<table>
+<thead>
+<tr>
+<th>Assumption</th>
+<th>Evidence basis</th>
+<th>Confidence</th>
+<th>Impact if wrong</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mobile-first conversion improvements can recover a meaningful part of net-value softness</td>
+<td>External mobile/late-booking behavior + internal softness trend</td>
+<td>Medium</td>
+<td>Growth plan overstates near-term recovery potential</td>
+</tr>
+<tr>
+<td>Direct-offer loyalty mechanics will outperform generic discounting</td>
+<td>Competitor direct-club patterns across hostel brands</td>
+<td>Medium</td>
+<td>Margin erosion without conversion benefit</td>
+</tr>
+<tr>
+<td>Cancellation quality interventions can improve realized value quickly</td>
+<td>Internal baseline shows value pressure; cancellations are a plausible lever</td>
+<td>Medium</td>
+<td>Re-forecast must shift to top-of-funnel demand actions</td>
+</tr>
+<tr>
+<td>Paid scale should stay constrained until instrumentation is reliable</td>
+<td>Internal measurement gap is explicit</td>
+<td>High</td>
+<td>Premature spend with weak attribution and poor capital efficiency</td>
+</tr>
+</tbody>
+</table>
+<h2>O) Risk Register</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Why it matters</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Measurement remains incomplete beyond plan window</td>
+<td>Prevents trustworthy optimization and channel decisions</td>
+<td>Time-box GA4/Search Console completion with weekly unblock review</td>
+</tr>
+<tr>
+<td>Offer-led discounting erodes margin</td>
+<td>Direct-share gains may not translate into contribution gains</td>
+<td>Run cohort margin guardrails in every offer test</td>
+</tr>
+<tr>
+<td>Policy/fee clarity remains weak</td>
+<td>Late-stage drop-off and trust damage</td>
+<td>Mandatory policy/fee blocks before payment step</td>
+</tr>
+<tr>
+<td>Cancellation volatility in peak/shoulder transitions</td>
+<td>Can erase apparent booking gains</td>
+<td>Reason-coded cancellation dashboard + policy experiment log</td>
+</tr>
+<tr>
+<td>Operational reliability incidents during demand spikes</td>
+<td>Conversion gains lost if support/reception fails</td>
+<td>Couple conversion work with reliability monitoring and alerting</td>
+</tr>
+</tbody>
+</table>
+<h2>P) Source List (URL + access date)</h2>
+<p>Accessed 2026-02-13 unless noted.</p>
+<p>Internal evidence:</p>
+<ul>
+<li><code>docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code></li>
+<li><code>docs/business-os/strategy/BRIK/data/net_value_by_month.csv</code></li>
+<li><code>docs/business-os/strategy/BRIK/data/cloudflare_monthly_proxies.csv</code></li>
+<li><code>docs/business-os/startup-baselines/BRIK-intake-packet.user.md</code></li>
+</ul>
+<p>External evidence:</p>
+<ul>
+<li><a href="https://www.istat.it/en/archivio/299062">https://www.istat.it/en/archivio/299062</a></li>
+<li><a href="https://www.bancaditalia.it/pubblicazioni/indagine-turismo-internazionale/2025-indagine-turismo-internazionale/statistiche_ITI_04072025.pdf?language_id=1">https://www.bancaditalia.it/pubblicazioni/indagine-turismo-internazionale/2025-indagine-turismo-internazionale/statistiche_ITI_04072025.pdf?language_id=1</a></li>
+<li><a href="https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20251020-1">https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20251020-1</a></li>
+<li><a href="https://www.hostelworldgroup.com/sites/default/files/2025-03/Hostelworld%20FY24%20Annual%20Report.pdf">https://www.hostelworldgroup.com/sites/default/files/2025-03/Hostelworld%20FY24%20Annual%20Report.pdf</a></li>
+<li><a href="https://www.booking.com/genius.html">https://www.booking.com/genius.html</a></li>
+<li><a href="https://www.airbnb.com/help/article/1857">https://www.airbnb.com/help/article/1857</a></li>
+<li><a href="https://www.meininger-hotels.com/en/meininger-club/">https://www.meininger-hotels.com/en/meininger-club/</a></li>
+<li><a href="https://www.aohostels.com/en/aoclub/">https://www.aohostels.com/en/aoclub/</a></li>
+<li><a href="https://www.st-christophers.co.uk/rewards">https://www.st-christophers.co.uk/rewards</a></li>
+<li><a href="https://www.mimit.gov.it/it/mercato-e-consumatori/tutela-del-consumatore/diritti-del-consumatore/diritto-di-recesso">https://www.mimit.gov.it/it/mercato-e-consumatori/tutela-del-consumatore/diritti-del-consumatore/diritto-di-recesso</a></li>
+<li><a href="https://www.eba.europa.eu/legacy/regulation-and-policy/payment-services-and-electronic-money/regulatory-technical-standards-strong-customer-authentication-and-common-and-secure">https://www.eba.europa.eu/legacy/regulation-and-policy/payment-services-and-electronic-money/regulatory-technical-standards-strong-customer-authentication-and-common-and-secure</a></li>
+<li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">https://eur-lex.europa.eu/eli/reg/2016/679/oj</a></li>
+<li><a href="https://eur-lex.europa.eu/eli/dir/2015/2302/oj">https://eur-lex.europa.eu/eli/dir/2015/2302/oj</a></li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md</code></div>
+      <div>Generated: 2026-02-13T22:19:59.431Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

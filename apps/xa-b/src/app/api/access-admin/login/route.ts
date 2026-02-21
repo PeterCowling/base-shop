@@ -8,7 +8,8 @@ import {
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { resolveAccessCookieSecret } from "../../../../lib/stealth";
 
-export const runtime = "edge";
+// Uses node:crypto via accessAdmin.
+export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   const requestIp = getRequestIp(request);

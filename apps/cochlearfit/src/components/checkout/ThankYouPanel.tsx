@@ -69,7 +69,7 @@ const ThankYouPanel = React.memo(function ThankYouPanel() {
 
   if (state.status === "error") {
     return (
-      <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+      <div className="rounded-2xl border border-danger bg-danger-soft p-4 text-sm text-danger-fg">
         {state.message}
       </div>
     );

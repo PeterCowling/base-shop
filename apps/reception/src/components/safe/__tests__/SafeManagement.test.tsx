@@ -429,7 +429,7 @@ describe("SafeManagement", () => {
         amount: 20,
       },
     ];
-    const errorSpy = vi
+    const errorSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => undefined);
     render(<SafeManagement />, { wrapper });

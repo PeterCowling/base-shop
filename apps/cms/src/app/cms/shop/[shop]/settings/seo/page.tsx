@@ -17,6 +17,7 @@ import AiFeedPanel from "./AiFeedPanel";
 import SeoIssuesBanner from "./SeoIssuesBanner";
 import SeoProgressPanel from "./SeoProgressPanel";
 import SitemapStatusPanel from "./SitemapStatusPanel";
+import type { SeoData } from "./useSeoEditor";
 
 const SeoEditor = dynamic(() => import("./SeoEditor"));
 const SeoAuditPanel = dynamic(() => import("./SeoAuditPanel"));
@@ -198,7 +199,7 @@ export default async function SeoSettingsPage({
         <SeoEditor
           shop={shop}
           languages={languages}
-          initialSeo={seo}
+          initialSeo={seo as unknown as Partial<Record<string, SeoData>>}
           initialFreeze={freeze}
         />
       </section>

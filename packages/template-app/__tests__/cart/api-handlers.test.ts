@@ -221,8 +221,7 @@ describe("cart API handlers", () => {
 
     it("qty 0 removes line, otherwise updates", async () => {
       const updated = { bar: { sku: { id: "bar", stock: 5, sizes: [] }, qty: 2 } };
-      const setQty = jest
-        .fn()
+      const setQty = (jest.fn() as any)
         .mockResolvedValueOnce({})
         .mockResolvedValueOnce(updated);
       mockCartCookie();

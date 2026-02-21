@@ -1,9 +1,9 @@
 .nav {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), var(--it-ground));
-  border-top: 0.5px solid rgba(216, 176, 114, 0.65);
-  border-bottom: 0.5px solid rgba(216, 176, 114, 0.35);
+  background: linear-gradient(145deg, hsl(0 0% 100% / 0.96), var(--it-ground));
+  border-top: 0.5px solid hsl(var(--it-gold) / 0.65);
+  border-bottom: 0.5px solid hsl(var(--it-gold) / 0.35);
   padding: 0 clamp(1rem, 2vw, 1.5rem) clamp(1.5rem, 3vw, 2rem);
-  box-shadow: 0 35px 60px -55px rgba(39, 21, 12, 0.4);
+  box-shadow: 0 35px 60px -55px hsl(0 0% 0% / 0.4);
 }
 
 .navShell {
@@ -19,7 +19,7 @@
   flex-direction: column;
   gap: clamp(1rem, 2vw, 1.5rem);
   padding-left: clamp(1rem, 2vw, 2rem);
-  border-left: 1px solid rgba(216, 176, 114, 0.6);
+  border-left: 1px solid hsl(var(--it-gold) / 0.6);
 }
 
 .identityBlock {
@@ -46,15 +46,15 @@
   gap: clamp(1rem, 3vw, 3rem);
   justify-content: space-between;
   align-items: center;
-  border-top: 0.5px solid rgba(216, 176, 114, 0.35);
-  border-bottom: 0.5px solid rgba(216, 176, 114, 0.35);
+  border-top: 0.5px solid hsl(var(--it-gold) / 0.35);
+  border-bottom: 0.5px solid hsl(var(--it-gold) / 0.35);
   padding: clamp(0.9rem, 1.8vw, 1.35rem) 0;
   margin: 0;
   flex-wrap: nowrap;
 }
 
 .link {
-  color: rgba(47, 34, 30, 0.55);
+  color: hsl(var(--it-secondary) / 0.55);
   border-bottom: 1px solid transparent;
   padding-bottom: 0.35rem;
   letter-spacing: clamp(0.35em, 0.9vw, 0.65em);
@@ -107,7 +107,7 @@
   font-size: 0.65rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: rgba(47, 34, 30, 0.55);
+  color: hsl(var(--it-secondary) / 0.55);
 }
 
 .languageLinks {
@@ -136,7 +136,7 @@
 
 .languageLinkActive {
   color: var(--skylar-language-link-active-color);
-  border-bottom: 1px solid rgba(148, 31, 30, 0.4);
+  border-bottom: 1px solid hsl(var(--it-ink) / 0.4);
 }
 
 @media (max-width: 900px) {
@@ -152,7 +152,7 @@
   .navContent {
     border-left: none;
     padding-left: 0;
-    border-top: 1px solid rgba(216, 176, 114, 0.35);
+    border-top: 1px solid hsl(var(--it-gold) / 0.35);
   }
 
   .linksRow {

@@ -6,6 +6,10 @@ import sharedConfig from "@acme/next-config/next.config.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const designSystemStylePath = path.resolve(
+  __dirname,
+  "../../packages/design-system/src/utils/style/index.ts",
+);
 
 const readEnv = (...keys) => {
   for (const key of keys) {
@@ -121,40 +125,13 @@ const nextConfig = {
     ...(sharedConfig.env ?? {}),
     ...publicEnv,
   },
-  webpack: (config, context) => {
-    if (typeof sharedConfig.webpack === "function") {
-      config = sharedConfig.webpack(config, context);
-    }
-
-    config.resolve ??= {};
-    config.resolve.alias = {
-      ...(config.resolve.alias ?? {}),
+  turbopack: {
+    ...(sharedConfig.turbopack ?? {}),
+    resolveAlias: {
+      ...((sharedConfig.turbopack && sharedConfig.turbopack.resolveAlias) ?? {}),
       "@": path.resolve(__dirname, "src"),
-    };
-
-    // The brikette app still has a few Node-only helpers (fs loaders, createRequire).
-    // Those are guarded at runtime, but webpack needs explicit "no polyfill" fallbacks
-    // for the client build to avoid "Module not found" errors.
-    if (!context.isServer) {
-      config.resolve.fallback = {
-        ...(config.resolve.fallback ?? {}),
-        fs: false,
-        module: false,
-        path: false,
-        url: false,
-      };
-    }
-
-    // Vite-style raw imports (e.g. `file.jsonld?raw`) used for JSON-LD payloads.
-    // Map them to webpack's `asset/source` so the module exports the file as a string.
-    config.module ??= {};
-    config.module.rules ??= [];
-    config.module.rules.unshift({
-      resourceQuery: /raw/,
-      type: "asset/source",
-    });
-
-    return config;
+      "@acme/design-system/utils/style": designSystemStylePath,
+    },
   },
 };
 

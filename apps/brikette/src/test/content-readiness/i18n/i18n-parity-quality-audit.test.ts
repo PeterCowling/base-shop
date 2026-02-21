@@ -36,6 +36,7 @@ const RAW_KEY_PREFIXES = [
   "meta.",
 ];
 
+// eslint-disable-next-line security/detect-non-literal-regexp -- TEST-1001 Building pattern from known RAW_KEY_PREFIXES constant array. [ttl=2026-12-31]
 const RAW_KEY_TOKEN_PATTERN = new RegExp(
   // Examples: pages.rooms.title, content.cheapEats.intro
   `\\b(?:${RAW_KEY_PREFIXES.map((p) => p.replace(".", "\\.")).join("|")})` +
@@ -45,6 +46,7 @@ const RAW_KEY_TOKEN_PATTERN = new RegExp(
 
 const PLACEHOLDER_PHRASE_PATTERNS = PLACEHOLDER_PHRASES.map((phrase) => {
   const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  // eslint-disable-next-line security/detect-non-literal-regexp -- TEST-1001 Building patterns from known PLACEHOLDER_PHRASES constant array. [ttl=2026-12-31]
   return new RegExp(`${escaped}[.!?…]*`, "i");
 });
 
@@ -155,7 +157,8 @@ function isSlugLike(value: string): boolean {
   const trimmed = value.trim();
   if (trimmed.length < 4 || trimmed.length > 160) return false;
   if (trimmed.includes(" ")) return false;
-  // Kebab-case slugs (canonical across locales).
+    // Kebab-case slugs (canonical across locales).
+  // eslint-disable-next-line security/detect-unsafe-regex -- TEST-1001 Static pattern for validating kebab-case slugs; no user input. [ttl=2026-12-31]
   return /^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(trimmed);
 }
 
@@ -195,6 +198,7 @@ function truncate(value: string, max = 120): string {
   return `${trimmed.slice(0, max - 3)}...`;
 }
 
+// eslint-disable-next-line complexity -- TEST-1001 Branch-heavy parity checker kept explicit for audit diagnostics. [ttl=2026-12-31]
 function compareValues(args: {
   locale: string;
   file: string;

@@ -68,8 +68,8 @@ describe("json repository", () => {
       const updated = await repo.updateProductInRepo(shop, {
         id: "1",
         sku: "sku-1b",
-      });
-      expect(updated.sku).toBe("sku-1b");
+      } as any);
+      expect((updated as any).sku).toBe("sku-1b");
       expect(updated.row_version).toBe(2);
       await expect(
         repo.updateProductInRepo(shop, { id: "x" })

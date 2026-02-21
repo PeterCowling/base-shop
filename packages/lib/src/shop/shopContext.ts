@@ -1,4 +1,4 @@
-import type { EnvLabel } from "../context/types";
+import type { EnvLabel } from "../context/types.js";
 
 export const SHOP_ID_HEADER = "x-shop-id";
 export const REQUEST_ID_HEADER = "x-request-id";

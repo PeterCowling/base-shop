@@ -5,7 +5,8 @@
 import "swiper/css";
 import "swiper/css/navigation";
 
-import { Fragment, memo, useCallback } from "react";
+import { Fragment, memo, useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 import CarouselSlides from "@acme/ui/organisms/CarouselSlides";
@@ -21,17 +22,17 @@ import WhyStaySection from "@/components/landing/WhyStaySection";
 import AboutStructuredData from "@/components/seo/AboutStructuredData";
 import HomeStructuredData from "@/components/seo/HomeStructuredData";
 import SiteSearchStructuredData from "@/components/seo/SiteSearchStructuredData";
-import { useOptionalModal } from "@/context/ModalContext";
-import { type Room,roomsData } from "@/data/roomsData";
+import { type Room, roomsData } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { fireCtaClick, fireViewItemList } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
 };
 
 function HomeContent({ lang }: Props) {
-  const { openModal } = useOptionalModal();
+  const router = useRouter();
   usePagePreload({
     lang,
     namespaces: ["landingPage", "guides", "testimonials", "faq"],
@@ -39,19 +40,27 @@ function HomeContent({ lang }: Props) {
   });
 
   const handleReserve = useCallback(() => {
-    openModal("booking");
-  }, [openModal]);
+    fireCtaClick({ ctaId: "hero_check_availability", ctaLocation: "home_hero" });
+    router.push(`/${lang}/book`);
+  }, [router, lang]);
 
-  // Handler for opening modal for a specific room/rate type
+  // Handler for opening room rate CTA — navigates to /book (TASK-27 will add direct Octorate link)
   const handleOpenModalForRate = useCallback(
-    (room: Room, rateType: "nonRefundable" | "refundable") => {
-      openModal("booking", { room, rateType });
+    (_room: Room, _rateType: "nonRefundable" | "refundable") => {
+      router.push(`/${lang}/book`);
     },
-    [openModal]
+    [router, lang]
   );
 
   // Rooms data for carousel
   const roomsForCarousel = roomsData.slice(0, 6);
+
+  useEffect(() => {
+    fireViewItemList({
+      itemListId: "home_rooms_carousel",
+      rooms: roomsForCarousel,
+    });
+  }, []);
 
   return (
     <Fragment>

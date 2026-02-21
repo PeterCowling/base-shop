@@ -46,6 +46,7 @@ export type HowToGetHereContent = {
   experienceGuides: ExperienceGuidesContent;
 };
 
+// eslint-disable-next-line security/detect-unsafe-regex -- BRIK-2145 Static pattern for validating i18n key format; no user input
 const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
 
 const ensureString = (value: unknown): string => {

@@ -39,7 +39,7 @@ describe('buildCheckoutMetadata', () => {
     expect(result.tax_mode).toBe("static_rates");
     expect(result.environment).toBe("test");
     expect(result.inventory_reservation_id).toBe("hold_123");
-    expect(result.foo).toBe('bar');
+    expect((result as any).foo).toBe('bar');
   });
 
   test('omits optional keys when not provided', () => {

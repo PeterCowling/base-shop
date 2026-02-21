@@ -41,7 +41,7 @@ This plan reduces Brikette staging CI runtime by attacking the dominant bottlene
   - Three shards is the best initial balance point based on current run data.
 
 ## Fact-Find Reference
-- Related brief: `docs/plans/faster-staging-ci-lp-fact-find.md`
+- Related brief: `docs/plans/faster-staging-ci-lp-do-fact-find.md`
 - Key findings:
   - Latest Brikette staging test step recorded `Time: 1169.105 s` (~19.5m).
   - Recent runs with tests enabled show test p50 ~18.63m and end-to-end avg ~31.24m.
@@ -195,9 +195,9 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
   - Rollout: enable 3 shards in Brikette caller only.
   - Rollback: set shard count back to 1.
 - **Documentation impact:**
-  - Note shard count and rationale in `docs/plans/faster-staging-ci-lp-fact-find.md` (post-build update section).
+  - Note shard count and rationale in `docs/plans/faster-staging-ci-lp-do-fact-find.md` (post-build update section).
 - **Notes / references:**
-  - Shard estimate source: `docs/plans/faster-staging-ci-lp-fact-find.md`.
+  - Shard estimate source: `docs/plans/faster-staging-ci-lp-do-fact-find.md`.
 
 #### Build Completion (2026-02-07)
 - **Status:** Complete
@@ -206,7 +206,7 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
 - **Confidence reassessment:** 88% -> 90% (change stayed fully isolated to Brikette caller inputs).
 - **Validation:**
   - `actionlint .github/workflows/reusable-app.yml .github/workflows/brikette.yml` — PASS
-- **Documentation updated:** included in TASK-04 lp-fact-find update.
+- **Documentation updated:** included in TASK-04 lp-do-fact-find update.
 
 ### TASK-03: Add Jest/ts-jest cache restore strategy for sharded Brikette tests
 - **Type:** IMPLEMENT
@@ -261,7 +261,7 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
 
 ### TASK-04: Capture post-change telemetry and enforce speed acceptance checks
 - **Type:** IMPLEMENT
-- **Affects:** `docs/plans/faster-staging-ci-lp-fact-find.md`, `[readonly] scripts/src/ci/collect-workflow-metrics.ts`
+- **Affects:** `docs/plans/faster-staging-ci-lp-do-fact-find.md`, `[readonly] scripts/src/ci/collect-workflow-metrics.ts`
 - **Depends on:** TASK-02, TASK-03
 - **Blocks:** TASK-05
 - **Confidence:** 90%
@@ -279,7 +279,7 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
     - TC-03: acceptance check clearly states whether <=8m test p50 target is met.
   - **Acceptance coverage:** TC-01/02 ensure data availability; TC-03 ensures decision readiness.
   - **Test type:** script execution + documentation verification.
-  - **Test location:** generated telemetry JSON and updated lp-fact-find section.
+  - **Test location:** generated telemetry JSON and updated lp-do-fact-find section.
   - **Run:** `pnpm --filter scripts run collect-workflow-metrics -- ... --include-jobs`.
   - **Cross-boundary coverage (if applicable):** N/A.
   - **End-to-end coverage (major flows):** N/A.
@@ -292,23 +292,23 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
   - Test stubs written: N/A (S effort).
   - Unexpected findings: None.
 - **Rollout / rollback:**
-  - Rollout: publish telemetry snapshot in plan/lp-fact-find.
+  - Rollout: publish telemetry snapshot in plan/lp-do-fact-find.
   - Rollback: N/A (measurement only).
 - **Documentation impact:**
-  - Update `docs/plans/faster-staging-ci-lp-fact-find.md` with post-change measured baseline.
+  - Update `docs/plans/faster-staging-ci-lp-do-fact-find.md` with post-change measured baseline.
 - **Notes / references:**
   - Use same command window style as pre-change baseline for comparability.
 
 #### Build Completion (2026-02-07)
 - **Status:** Complete
 - **Commit:** `9380974106`
-- **Implementation notes:** added an explicit telemetry gate section to lp-fact-find with executable commands, target thresholds, and a current baseline snapshot; updated testing policy with Brikette shard/cache behavior.
+- **Implementation notes:** added an explicit telemetry gate section to lp-do-fact-find with executable commands, target thresholds, and a current baseline snapshot; updated testing policy with Brikette shard/cache behavior.
 - **Confidence reassessment:** 90% -> 90% (tooling was already in place; implementation formalized enforcement and reporting paths).
 - **Validation:**
   - `pnpm --filter scripts run collect-workflow-metrics -- --workflow "Deploy Brikette" --limit 60 --branch staging --event push --include-jobs --from "2026-01-20T00:00:00Z" --to "2026-02-07T23:59:59Z"` — PASS (snapshot generated)
   - custom Node extractor for `Test` step p50/p90 from latest staging runs — PASS
 - **Documentation updated:**
-  - `docs/plans/faster-staging-ci-lp-fact-find.md`
+  - `docs/plans/faster-staging-ci-lp-do-fact-find.md`
   - `docs/testing-policy.md`
 
 ### TASK-05: Optimize top 3 slow test suites if shard runtime remains >8m
@@ -340,7 +340,7 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
   - **Green:** apply minimal fixture/setup reductions that keep assertions stable.
   - **Refactor:** clean helper reuse and eliminate duplicated expensive setup.
 - **Planning validation:**
-  - Tests run: baseline suite durations observed from latest CI log in lp-fact-find.
+  - Tests run: baseline suite durations observed from latest CI log in lp-do-fact-find.
   - Test stubs written: N/A (M effort).
   - Unexpected findings: Duration attribution is coarse for suites without explicit timing lines in logs.
 - **What would make this >=90%:**
@@ -349,9 +349,9 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
   - Rollout: one suite at a time with timing comparison.
   - Rollback: revert suite-level optimization commit if coverage/perf worsens.
 - **Documentation impact:**
-  - Update performance notes in lp-fact-find with achieved suite-level deltas.
+  - Update performance notes in lp-do-fact-find with achieved suite-level deltas.
 - **Notes / references:**
-  - Hotspot list sourced from `docs/plans/faster-staging-ci-lp-fact-find.md`.
+  - Hotspot list sourced from `docs/plans/faster-staging-ci-lp-do-fact-find.md`.
 
 ### TASK-06: Decide policy for test/doc-only Brikette changes (deploy bypass vs full deploy)
 - **Type:** DECISION
@@ -400,6 +400,6 @@ Implement Brikette CI sharding as the primary performance lever, then validate g
 - [ ] Decision on test/doc-only deploy policy is recorded and implemented or explicitly deferred.
 
 ## Decision Log
-- 2026-02-07: Created new active plan from updated lp-fact-find and superseded archived implementation plan format.
+- 2026-02-07: Created new active plan from updated lp-do-fact-find and superseded archived implementation plan format.
 - 2026-02-07: Chosen primary path is reusable-workflow-based Brikette sharding with 3 initial shards.
 - 2026-02-07: Implemented TASK-01 through TASK-04 (workflow sharding, caller wiring, shard cache restore, telemetry gate documentation).

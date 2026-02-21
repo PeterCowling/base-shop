@@ -30,7 +30,8 @@ class GuideBoundary extends React.Component<BoundaryProps, BoundaryState> {
   override render() {
     if (this.state.hasError) {
       return (
-        <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-6 text-center text-neutral-600">
+        <div className="rounded-lg border border-1 bg-surface-1 p-6 text-center text-muted">
+          {/* eslint-disable-next-line ds/no-hardcoded-copy -- CFL-99 pre-existing: error boundary fallback text */}
           <p className="text-sm">This content could not be loaded. Please try refreshing the page.</p>
         </div>
       );

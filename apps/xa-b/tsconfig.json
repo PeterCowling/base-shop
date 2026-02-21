@@ -14,19 +14,17 @@
         "../../packages/ui/src/*"
       ],
       "@i18n": [
-        "../../packages/i18n/src/index.ts",
-        "../../packages/i18n/dist/index"
+        "../../packages/i18n/dist/index.js",
+        "../../packages/i18n/dist/index.d.ts"
       ],
       "@i18n/*": [
-        "../../packages/i18n/src/*",
         "../../packages/i18n/dist/*"
       ],
       "@acme/i18n": [
-        "../../packages/i18n/src/index.ts",
-        "../../packages/i18n/dist/index"
+        "../../packages/i18n/dist/index.js",
+        "../../packages/i18n/dist/index.d.ts"
       ],
       "@acme/i18n/*": [
-        "../../packages/i18n/src/*",
         "../../packages/i18n/dist/*"
       ],
       "@platform-core": [

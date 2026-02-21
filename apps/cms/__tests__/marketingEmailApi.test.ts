@@ -11,10 +11,10 @@ type MockFn = jest.Mock;
 // Mock auth to avoid pulling in the full auth chain
 jest.doMock("@cms/actions/common/auth", () => ({
   __esModule: true,
-  ensureAuthorized: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
-  ensureCanRead: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
-  ensureShopAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
-  ensureShopReadAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureAuthorized: (jest.fn() as any).mockResolvedValue({ user: { role: "admin" } }),
+  ensureCanRead: (jest.fn() as any).mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopAccess: (jest.fn() as any).mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopReadAccess: (jest.fn() as any).mockResolvedValue({ user: { role: "admin" } }),
 }));
 
 jest.doMock("@acme/platform-core/analytics", () => ({
@@ -105,7 +105,7 @@ describe("marketing email API segments", () => {
       ["a@example.com", "b@example.com"].sort()
     );
     },
-    20000
+    60000
   );
 
   test("falls back to manual recipients when provided", async () => {

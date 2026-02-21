@@ -13,8 +13,8 @@
 
 .realestate-hero__image {
   border-radius: 32px;
-  border: 1px solid rgba(228, 61, 18, 0.3);
-  background: #ffffff;
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.3);
+  background: hsl(0 0% 100%);
   padding: 1rem;
   width: min(40vw, 460px);
   height: auto;
@@ -51,7 +51,7 @@
 
 .realestate-flagship-card {
   border-radius: 32px;
-  border: 1px solid rgba(228, 61, 18, 0.2);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.2);
   background: var(--skylar-en-panel);
   padding: clamp(1.75rem, 3.5vw, 2.85rem);
   display: flex;
@@ -65,7 +65,7 @@
   letter-spacing: 0.3em;
   text-transform: uppercase;
   font-size: clamp(0.75rem, 1vw, 0.95rem);
-  color: rgba(228, 61, 18, 0.85);
+  color: hsl(var(--skylar-en-accent) / 0.85);
 }
 
 .realestate-flagship-card__body {
@@ -89,13 +89,13 @@
   flex-direction: column;
   gap: 0.65rem;
   font-size: clamp(0.9rem, 1vw, 1.05rem);
-  color: rgba(63, 33, 24, 0.85);
+  color: hsl(16 21% 21% / 0.85);
 }
 
 .realestate-flagship-card__cta {
   margin-top: auto;
   padding-top: 0.75rem;
-  border-top: 1px solid rgba(228, 61, 18, 0.15);
+  border-top: 1px solid hsl(var(--skylar-en-accent) / 0.15);
   font-size: 0.7rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -118,7 +118,7 @@
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 2rem;
   padding: 2.5rem 0;
-  border-bottom: 1px solid rgba(228, 61, 18, 0.2);
+  border-bottom: 1px solid hsl(var(--skylar-en-accent) / 0.2);
 }
 
 .realestate-panel {
@@ -131,7 +131,7 @@
   letter-spacing: 0.5em;
   text-transform: uppercase;
   font-size: 0.75rem;
-  color: rgba(228, 61, 18, 0.75);
+  color: hsl(var(--skylar-en-accent) / 0.75);
 }
 
 .realestate-title {
@@ -146,7 +146,7 @@
   margin: 0;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(228, 61, 18, 0.75);
+  color: hsl(var(--skylar-en-accent) / 0.75);
 }
 
 .realestate-highlights {
@@ -179,8 +179,8 @@
   width: min(100%, 320px);
   height: auto;
   border-radius: 30px;
-  border: 1px solid rgba(228, 61, 18, 0.2);
-  background: #fffdf7;
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.2);
+  background: hsl(41 100% 98%);
   padding: 1rem;
   object-fit: cover;
 }
@@ -199,11 +199,11 @@
   height: auto;
   aspect-ratio: 4 / 3;
   border-radius: 40px;
-  border: 1px solid rgba(228, 61, 18, 0.25);
-  background: linear-gradient(150deg, rgba(255, 252, 250, 0.85), #ffffff);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.25);
+  background: linear-gradient(150deg, hsl(35 100% 99% / 0.85), hsl(0 0% 100%));
   padding: clamp(0.5rem, 1vw, 0.85rem);
   object-fit: cover;
-  box-shadow: 0 40px 50px -38px rgba(25, 11, 3, 0.4);
+  box-shadow: 0 40px 50px -38px hsl(0 0% 0% / 0.4);
 }
 
 .realestate-rooms {
@@ -213,10 +213,10 @@
 }
 
 .realestate-room {
-  border: 1px solid rgba(228, 61, 18, 0.3);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.3);
   border-radius: 24px;
   padding: 1rem 1.25rem;
-  background: #fffdfa;
+  background: hsl(37 100% 99%);
 }
 
 .realestate-room__name {
@@ -232,7 +232,7 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   font-size: 0.75rem;
-  color: rgba(228, 61, 18, 0.8);
+  color: hsl(var(--skylar-en-accent) / 0.8);
 }
 
 .realestate-actions {
@@ -252,9 +252,9 @@
 }
 
 .realestate-cta.subtle {
-  color: rgba(228, 61, 18, 0.6);
+  color: hsl(var(--skylar-en-accent) / 0.6);
 }
 
 .realestate-tower .realestate-panel {
-  background: linear-gradient(145deg, rgba(255, 252, 250, 0.95), #ffffff);
+  background: linear-gradient(145deg, hsl(35 100% 99% / 0.95), hsl(0 0% 100%));
 }

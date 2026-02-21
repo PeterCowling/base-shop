@@ -17,6 +17,8 @@ type Props = {
   lang: AppLanguage;
 };
 
+const WHATSAPP_URL = "https://wa.me/393287073695";
+
 function PrivateStayContent({ lang }: Props) {
   const { t } = useTranslation("apartmentPage", { lng: lang });
   usePagePreload({ lang, namespaces: ["apartmentPage"] });
@@ -36,7 +38,7 @@ function PrivateStayContent({ lang }: Props) {
         </section>
 
         {/* Three Content Sections */}
-        <div className="grid gap-8 sm:grid-cols-1">
+        <div className="grid gap-8 lg:grid-cols-3">
           {/* Privacy Section */}
           <div className="rounded-2xl border border-brand-outline/30 bg-brand-surface/50 p-6 shadow-sm backdrop-blur-sm">
             <h2 className="mb-3 text-xl font-semibold text-brand-heading">
@@ -76,16 +78,16 @@ function PrivateStayContent({ lang }: Props) {
           <Link
             href={`/${lang}/apartment/book/`}
             onClick={() => trackApartmentEvent("click_check_availability", { source: "private-stay" })}
-            className="inline-flex items-center justify-center rounded-lg bg-brand-primary px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-primary/90"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 font-semibold text-fg-inverse transition-colors hover:bg-brand-primary/90"
           >
             {t("privateStay.checkAvailability")}
           </Link>
           <a
-            href="https://wa.me/"
+            href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackApartmentEvent("click_whatsapp", { source: "private-stay" })}
-            className="inline-flex items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 font-semibold text-brand-heading transition-colors hover:bg-brand-surface/80"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 font-semibold text-brand-heading transition-colors hover:bg-brand-surface/80"
           >
             {t("privateStay.whatsappCta")}
           </a>

@@ -1,0 +1,98 @@
+[
+  {
+    "sku": "classic-kids-sand",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "kids",
+      "color": "sand"
+    }
+  },
+  {
+    "sku": "classic-kids-ocean",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "kids",
+      "color": "ocean"
+    }
+  },
+  {
+    "sku": "classic-kids-berry",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "kids",
+      "color": "berry"
+    }
+  },
+  {
+    "sku": "classic-adult-sand",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "adult",
+      "color": "sand"
+    }
+  },
+  {
+    "sku": "classic-adult-ocean",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "adult",
+      "color": "ocean"
+    }
+  },
+  {
+    "sku": "classic-adult-berry",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "adult",
+      "color": "berry"
+    }
+  },
+  {
+    "sku": "sport-kids-sand",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "kids",
+      "color": "sand"
+    }
+  },
+  {
+    "sku": "sport-kids-ocean",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "kids",
+      "color": "ocean"
+    }
+  },
+  {
+    "sku": "sport-kids-berry",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "kids",
+      "color": "berry"
+    }
+  },
+  {
+    "sku": "sport-adult-sand",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "adult",
+      "color": "sand"
+    }
+  },
+  {
+    "sku": "sport-adult-ocean",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "adult",
+      "color": "ocean"
+    }
+  },
+  {
+    "sku": "sport-adult-berry",
+    "quantity": 10,
+    "variantAttributes": {
+      "size": "adult",
+      "color": "berry"
+    }
+  }
+]

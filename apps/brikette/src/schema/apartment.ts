@@ -1,0 +1,65 @@
+// i18n-exempt file -- BRIK-2145 [ttl=2026-12-31]
+// JSON-LD schema constants are machine-readable SEO metadata, not UI copy.
+const apartment = {
+  "@context": "https://schema.org",
+  "@type": "Apartment",
+  "@id": "https://hostel-positano.com/apartment",
+  name: "StepFree Chiesa Nuova — Private Apartment in Positano",
+  description:
+    "Private 100sqm apartment in Positano with step-free arrival from the street, full kitchen, sea-view terrace, and professional hospitality support next door. Sleeps 4.",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Via Guglielmo Marconi 358",
+    addressLocality: "Positano SA",
+    postalCode: "84017",
+    addressCountry: "IT",
+  },
+  occupancy: {
+    "@type": "QuantitativeValue",
+    value: 4,
+  },
+  floorSize: {
+    "@type": "QuantitativeValue",
+    value: 100,
+    unitCode: "MTK",
+  },
+  numberOfRooms: 4,
+  numberOfBedrooms: 2,
+  numberOfBathroomsTotal: 2,
+  petsAllowed: false,
+  amenityFeature: [
+    {
+      "@type": "LocationFeatureSpecification",
+      name: "Wi-Fi",
+      value: true,
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      name: "Air Conditioning",
+      value: true,
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      name: "Kitchen",
+      value: true,
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      name: "Terrace",
+      value: true,
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      name: "Washer",
+      value: true,
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      name: "Dryer",
+      value: true,
+    },
+  ],
+  image: ["https://hostel-positano.com/images/apartment/hero.webp"],
+} as const;
+
+export default apartment;

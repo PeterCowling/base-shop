@@ -65,7 +65,7 @@ Build an email response drafting system for Hostel Brikette using Claude Code wi
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/email-autodraft-response-system-lp-fact-find.md`
+- Related brief: `docs/plans/email-autodraft-response-system-lp-do-fact-find.md`
 - Workflow design: `docs/plans/email-autodraft-workflow-design.md`
 - Key findings:
   - MCP server infrastructure exists with 12 tool modules and established patterns
@@ -833,9 +833,9 @@ Brikette/
 - 2026-02-01: GDPR position - Anthropic DPA accepted as sufficient coverage
 - 2026-02-01: Baseline metrics - Deferred to INVESTIGATE task (TASK-10)
 - 2026-02-01: Gmail API vs GAS bridge - Gmail API direct integration chosen for MCP tools
-- 2026-02-01 (lp-replan): **OAuth approach** - User OAuth with refresh token (Option B) selected for MVP. Service account (Option A) rejected because it requires Google Workspace admin and adds complexity for no benefit in local MCP scenario. Packages: `googleapis@105` + `@google-cloud/local-auth@2.1.0`.
-- 2026-02-01 (lp-replan): **Rate limits** - Confirmed acceptable. Gmail API allows 15,000 quota units/min/user. Expected usage ~100-200 units/day (10-20 emails). Well within limits.
-- 2026-02-01 (lp-replan): **E2E test strategy** - Phased component-by-component testing with `Brikette/Test/` label isolation. Six phases with explicit success criteria per phase.
+- 2026-02-01 (lp-do-replan): **OAuth approach** - User OAuth with refresh token (Option B) selected for MVP. Service account (Option A) rejected because it requires Google Workspace admin and adds complexity for no benefit in local MCP scenario. Packages: `googleapis@105` + `@google-cloud/local-auth@2.1.0`.
+- 2026-02-01 (lp-do-replan): **Rate limits** - Confirmed acceptable. Gmail API allows 15,000 quota units/min/user. Expected usage ~100-200 units/day (10-20 emails). Well within limits.
+- 2026-02-01 (lp-do-replan): **E2E test strategy** - Phased component-by-component testing with `Brikette/Test/` label isolation. Six phases with explicit success criteria per phase.
 
 ---
 
@@ -880,7 +880,7 @@ Effort-weighted average:
 
 **Tasks Blocked (<60%):** 0 tasks
 
-**Recommended Action:** Proceed to `/lp-build`. All implementation tasks are now >=80% except TASK-09 (integration test at 78%), which is acceptable given its nature as a verification task with explicit phased testing strategy.
+**Recommended Action:** Proceed to `/lp-do-build`. All implementation tasks are now >=80% except TASK-09 (integration test at 78%), which is acceptable given its nature as a verification task with explicit phased testing strategy.
 
 **Build Order:**
 1. TASK-03 + TASK-04 (parallel, no dependencies)

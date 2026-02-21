@@ -83,6 +83,7 @@ const palette = [
   "color-mix(in srgb, var(--color-brand-terra) 70%, var(--color-brand-surface))",
 ] as const;
 
+// eslint-disable-next-line complexity -- CFL-99 pre-existing: guide rendering has inherent branching
 function CostBreakdown({
   title,
   namespace,
@@ -174,7 +175,7 @@ function CostBreakdown({
   return (
     <figure className={`not-prose my-6 ${className}`}>
       {resolvedTitle ? (
-        <figcaption className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+        <figcaption className="mb-2 text-sm font-medium text-secondary">
           {resolvedTitle}
         </figcaption>
       ) : null}
@@ -206,8 +207,8 @@ function CostBreakdown({
                     className="inline-block size-3 rounded"
                     style={{ backgroundColor: color }}
                   />
-                  <span className="font-medium text-slate-800 dark:text-slate-100">{s.label}</span>
-                  <span className="text-slate-600 dark:text-slate-300">{formattedValue}</span>
+                  <span className="font-medium text-fg">{s.label}</span>
+                  <span className="text-muted">{formattedValue}</span>
                   <span className="sr-only">{accessibleLabel}</span>
                 </li>
               );

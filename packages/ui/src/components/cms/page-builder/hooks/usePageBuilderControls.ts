@@ -185,7 +185,7 @@ const usePageBuilderControls = ({ state, dispatch }: PageBuilderControlsParams) 
   );
 
   const [previewDeviceId, setPreviewDeviceId] = useState(
-    getLegacyPreset("desktop").id
+    () => getLegacyPreset("desktop").id
   );
 
   const [runTour, setRunTour] = useState(false);

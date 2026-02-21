@@ -191,7 +191,7 @@ export function DataTable<T extends Record<string, unknown>>({
               ) : (
                 processedData.map((row, idx) => (
                   <tr
-                    key={idx}
+                    key={String(row.id ?? idx)}
                     onClick={() => onRowClick?.(row)}
                     className={`
                       ${onRowClick ? 'cursor-pointer hover:bg-muted/50' : ''}

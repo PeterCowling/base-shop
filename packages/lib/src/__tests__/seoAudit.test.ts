@@ -16,7 +16,7 @@ describe("runSeoAudit", () => {
         { virtual: true },
       );
 
-      const { runSeoAudit } = await import("../seoAudit");
+      const { runSeoAudit } = await import("../seoAudit.js");
       await expect(runSeoAudit("https://example.com")).rejects.toThrow(
         "chrome-launcher launch function not available",
       );
@@ -38,7 +38,7 @@ describe("runSeoAudit", () => {
         { virtual: true },
       );
 
-      const { runSeoAudit } = await import("../seoAudit");
+      const { runSeoAudit } = await import("../seoAudit.js");
       await expect(runSeoAudit("https://example.com")).rejects.toThrow("lighthouse is not a function");
     });
   });
@@ -61,7 +61,7 @@ describe("runSeoAudit", () => {
         { virtual: true },
       );
 
-      const { runSeoAudit } = await import("../seoAudit");
+      const { runSeoAudit } = await import("../seoAudit.js");
       await expect(runSeoAudit("https://example.com")).rejects.toThrow(
         "lighthouse desktop config not available",
       );
@@ -82,7 +82,7 @@ describe("runSeoAudit", () => {
         { virtual: true },
       );
 
-      const { runSeoAudit } = await import("../seoAudit");
+      const { runSeoAudit } = await import("../seoAudit.js");
       await expect(runSeoAudit("https://example.net")).rejects.toThrow(
         "Lighthouse did not return a result",
       );
@@ -113,7 +113,7 @@ describe("runSeoAudit", () => {
         { virtual: true },
       );
 
-      const { runSeoAudit } = await import("../seoAudit");
+      const { runSeoAudit } = await import("../seoAudit.js");
       const result = await runSeoAudit("https://example.com");
 
       expect(result).toEqual({ score: 91, recommendations: ["Improve alt text"] });
@@ -164,7 +164,7 @@ describe("runSeoAudit", () => {
         { virtual: true },
       );
 
-      const { runSeoAudit } = await import("../seoAudit");
+      const { runSeoAudit } = await import("../seoAudit.js");
       const result = await runSeoAudit("https://example.org");
 
       expect(result).toEqual({ score: 50, recommendations: ["Fix meta"] });
@@ -193,7 +193,7 @@ describe("runSeoAudit", () => {
         { virtual: true },
       );
 
-      const { runSeoAudit } = await import("../seoAudit");
+      const { runSeoAudit } = await import("../seoAudit.js");
       const result = await runSeoAudit("https://example.dev");
 
       expect(result).toEqual({ score: 0, recommendations: ["Add descriptions"] });

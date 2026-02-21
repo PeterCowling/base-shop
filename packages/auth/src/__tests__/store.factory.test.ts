@@ -18,7 +18,7 @@ describe("createSessionStore factory", () => {
   });
 
   it("Env forces redis with credentials -> returns RedisSessionStore", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       const redisClient = {};
       const RedisClass = jest.fn().mockReturnValue(redisClient);
       const redisStoreInstance = {};
@@ -53,7 +53,7 @@ describe("createSessionStore factory", () => {
   });
 
   it("Env undefined but credentials present -> returns RedisSessionStore", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       const redisClient = {};
       const RedisClass = jest.fn().mockReturnValue(redisClient);
       const redisStoreInstance = {};
@@ -94,7 +94,7 @@ describe("createSessionStore factory", () => {
     ],
     ["redis credentials missing", env({})],
   ])("Env %s -> returns MemorySessionStore", async (_desc, coreEnv) => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       const RedisClass = jest.fn();
       const RedisSessionStore = jest.fn();
       const memoryStoreInstance = {};
@@ -118,8 +118,8 @@ describe("createSessionStore factory", () => {
   });
 
   it("Custom factory bypasses redis/memory logic", async () => {
-    await jest.isolateModulesAsync(async () => {
-      const factory = jest.fn().mockResolvedValue({ backend: "custom" });
+    await (jest as any).isolateModulesAsync(async () => {
+      const factory = jest.fn<Promise<{ backend: string }>, []>().mockResolvedValue({ backend: "custom" });
       const RedisClass = jest.fn();
       const RedisSessionStore = jest.fn();
       const MemorySessionStore = jest.fn();
@@ -138,7 +138,7 @@ describe("createSessionStore factory", () => {
       const { createSessionStore, setSessionStoreFactory } = await import(
         "../store"
       );
-      setSessionStoreFactory(factory);
+      setSessionStoreFactory(factory as unknown as Parameters<typeof setSessionStoreFactory>[0]);
       const store = await createSessionStore();
 
       expect(factory).toHaveBeenCalled();
@@ -150,7 +150,7 @@ describe("createSessionStore factory", () => {
   });
 
   it("Redis import throws -> falls back to MemorySessionStore", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       const memoryStoreInstance = {};
       const MemorySessionStore = jest
         .fn()

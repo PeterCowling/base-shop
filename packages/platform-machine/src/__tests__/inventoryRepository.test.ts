@@ -87,7 +87,7 @@ describe('inventory repository', () => {
       { sku: 'sku1', variantAttributes: { size: 'M', color: 'red' } },
       { sku: 'sku2', variantAttributes: {} },
     ] as any[];
-    jsonRepo.read.mockResolvedValue(items);
+    (jsonRepo.read as unknown as jest.Mock).mockResolvedValue(items);
 
     const { readInventoryMap, variantKey } = await import('@acme/platform-core/repositories/inventory.server');
     const map = await readInventoryMap('shop1');

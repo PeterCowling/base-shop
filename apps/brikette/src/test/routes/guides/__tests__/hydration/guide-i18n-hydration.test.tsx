@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 
 // Import after mocks
 import GuideContentMemo from "@/app/[lang]/experiences/[slug]/GuideContent";
@@ -8,12 +8,22 @@ import i18n from "@/i18n";
 // Track addResourceBundle calls
 const addResourceBundleSpy = jest.fn();
 (i18n as unknown as Record<string, unknown>).addResourceBundle = addResourceBundleSpy;
+const changeLanguageSpy = jest.fn().mockResolvedValue(undefined);
+(i18n as unknown as Record<string, unknown>).changeLanguage = changeLanguageSpy;
+
+let assertNoRenderPhaseHydrationOnFirstUseTranslation = false;
+let firstUseTranslationCall = true;
 
 // Mock react-i18next with a controllable translator
 const translationStore: Record<string, Record<string, string>> = {};
 
 jest.mock("react-i18next", () => ({
   useTranslation: (ns: string, opts?: { lng?: string }) => {
+    if (assertNoRenderPhaseHydrationOnFirstUseTranslation && firstUseTranslationCall) {
+      expect(addResourceBundleSpy).not.toHaveBeenCalled();
+      firstUseTranslationCall = false;
+    }
+
     const lang = opts?.lng ?? "en";
     const storeKey = `${lang}/${ns}`;
     return {
@@ -52,16 +62,25 @@ jest.mock("@/routes.guides-helpers", () => ({
   guideNamespace: () => ({ baseKey: "experiences", baseSlug: "experiences" }),
 }));
 
+type GuideContentProps = {
+  lang: string;
+  guideKey: never;
+  serverGuides?: Record<string, unknown>;
+  serverGuidesEn?: Record<string, unknown>;
+};
 // Unwrap memo for testing
-const GuideContent = (GuideContentMemo as unknown as { type: React.ComponentType }).type ?? GuideContentMemo;
+const GuideContent = ((GuideContentMemo as unknown as { type: React.ComponentType }).type ?? GuideContentMemo) as React.ComponentType<GuideContentProps>;
 
 beforeEach(() => {
   addResourceBundleSpy.mockClear();
+  changeLanguageSpy.mockClear();
   for (const key of Object.keys(translationStore)) delete translationStore[key];
+  assertNoRenderPhaseHydrationOnFirstUseTranslation = false;
+  firstUseTranslationCall = true;
 });
 
 describe("GuideContent i18n hydration", () => {
-  it("seeds i18n store from serverGuides prop", () => {
+  it("seeds i18n store from serverGuides prop", async () => {
     const serverGuides = {
       components: { planChoice: { title: "Choose your plan" } },
       content: { positanoMainBeach: { intro: ["Beach intro"] } },
@@ -75,16 +94,18 @@ describe("GuideContent i18n hydration", () => {
       />,
     );
 
-    expect(addResourceBundleSpy).toHaveBeenCalledWith(
-      "en",
-      "guides",
-      serverGuides,
-      true,
-      true,
-    );
+    await waitFor(() => {
+      expect(addResourceBundleSpy).toHaveBeenCalledWith(
+        "en",
+        "guides",
+        serverGuides,
+        true,
+        true,
+      );
+    });
   });
 
-  it("seeds English fallback when serverGuidesEn is provided", () => {
+  it("seeds English fallback when serverGuidesEn is provided", async () => {
     const serverGuides = {
       content: { positanoMainBeach: { intro: ["Intro de"] } },
     };
@@ -101,20 +122,22 @@ describe("GuideContent i18n hydration", () => {
       />,
     );
 
-    expect(addResourceBundleSpy).toHaveBeenCalledWith(
-      "de",
-      "guides",
-      serverGuides,
-      true,
-      true,
-    );
-    expect(addResourceBundleSpy).toHaveBeenCalledWith(
-      "en",
-      "guides",
-      serverGuidesEn,
-      true,
-      true,
-    );
+    await waitFor(() => {
+      expect(addResourceBundleSpy).toHaveBeenCalledWith(
+        "de",
+        "guides",
+        serverGuides,
+        true,
+        true,
+      );
+      expect(addResourceBundleSpy).toHaveBeenCalledWith(
+        "en",
+        "guides",
+        serverGuidesEn,
+        true,
+        true,
+      );
+    });
   });
 
   it("does not crash without serverGuides prop (backward compat)", () => {
@@ -130,7 +153,27 @@ describe("GuideContent i18n hydration", () => {
     expect(addResourceBundleSpy).not.toHaveBeenCalled();
   });
 
-  it("does not re-seed i18n store on re-render (ref guard)", () => {
+  it("does not hydrate i18n in render before first translation hook executes", async () => {
+    assertNoRenderPhaseHydrationOnFirstUseTranslation = true;
+
+    const serverGuides = {
+      content: { positanoMainBeach: { intro: ["Beach intro"] } },
+    };
+
+    render(
+      <GuideContent
+        lang="en"
+        guideKey={"positanoMainBeach" as never}
+        serverGuides={serverGuides}
+      />,
+    );
+
+    await waitFor(() => {
+      expect(addResourceBundleSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("does not re-seed i18n store on re-render with unchanged props", async () => {
     const serverGuides = {
       content: { positanoMainBeach: { intro: ["Beach intro"] } },
     };
@@ -143,7 +186,9 @@ describe("GuideContent i18n hydration", () => {
       />,
     );
 
-    expect(addResourceBundleSpy).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(addResourceBundleSpy).toHaveBeenCalledTimes(1);
+    });
 
     // Re-render with same props
     rerender(
@@ -154,7 +199,7 @@ describe("GuideContent i18n hydration", () => {
       />,
     );
 
-    // Should still be 1 — ref guard prevents second call
+    // Should still be 1 — effect dependencies should not re-run for identical props
     expect(addResourceBundleSpy).toHaveBeenCalledTimes(1);
   });
 });

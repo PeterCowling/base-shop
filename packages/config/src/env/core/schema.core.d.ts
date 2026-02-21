@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 export declare const coreEnvSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<Omit<{
     NEXTAUTH_SECRET: z.ZodEffects<z.ZodString, string, string> | z.ZodDefault<z.ZodEffects<z.ZodString, string, string>>;
     PREVIEW_TOKEN_SECRET: z.ZodOptional<z.ZodEffects<z.ZodString, string, string>>;
@@ -572,3 +571,4 @@ export declare const coreEnvSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<Omit<{
     AUTH_TOKEN_TTL: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNumber]>>;
 }, z.ZodTypeAny, "passthrough">, unknown>;
 export type CoreEnv = z.infer<typeof coreEnvSchema>;
+//# sourceMappingURL=schema.core.d.ts.map

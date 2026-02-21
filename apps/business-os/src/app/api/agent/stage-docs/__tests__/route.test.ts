@@ -13,6 +13,7 @@ import {
 } from "@acme/platform-core/repositories/businessOs.server";
 
 import { __resetAgentRateLimitForTests } from "@/lib/auth/agent-auth";
+import { getContractMigrationConfig } from "@/lib/contract-migration";
 import { getDb } from "@/lib/d1.server";
 import { computeEntitySha } from "@/lib/entity-sha";
 
@@ -38,6 +39,22 @@ jest.mock("@acme/platform-core/repositories/businessOs.server", () => {
 });
 
 const VALID_KEY = `${"A".repeat(31)}!`;
+const { config: contractMigrationConfig } = getContractMigrationConfig();
+
+function getConfiguredStageAlias() {
+  const aliasEntry = Object.entries(contractMigrationConfig.stage_aliases)[0];
+  if (!aliasEntry) {
+    throw new Error("TC-09..TC-13 require at least one configured stage alias");
+  }
+
+  const [legacyStage, canonicalStage] = aliasEntry;
+  return {
+    legacyStage,
+    canonicalStage,
+    withinCutoff: new Date(contractMigrationConfig.timebox.alias_accept_until_utc.getTime()),
+    afterCutoff: new Date(contractMigrationConfig.timebox.alias_accept_until_utc.getTime() + 1),
+  };
+}
 
 function createRequest(
   url: string,
@@ -91,6 +108,7 @@ describe("/api/agent/stage-docs", () => {
   });
 
   afterEach(() => {
+    jest.useRealTimers();
     delete process.env.BOS_AGENT_API_KEY;
     __resetAgentRateLimitForTests();
     jest.clearAllMocks();
@@ -272,5 +290,189 @@ describe("/api/agent/stage-docs", () => {
       "BRIK-ENG-0001",
       StageTypeSchema.parse("fact-find")
     );
+  });
+
+  it("TC-09: stage filter accepts legacy alias within window (normalized)", async () => {
+    jest.useFakeTimers();
+    const { legacyStage, canonicalStage, withinCutoff } = getConfiguredStageAlias();
+    jest.setSystemTime(withinCutoff);
+
+    (listStageDocsForCard as jest.Mock).mockResolvedValue([baseStageDoc]);
+
+    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
+
+    const request = createRequest(
+      `http://localhost/api/agent/stage-docs?cardId=BRIK-ENG-0001&stage=${legacyStage}`,
+      undefined,
+      { "x-agent-api-key": VALID_KEY }
+    );
+
+    const response = await listStageDocs(request);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("x-bos-stage-normalized")).toBe(`${legacyStage}->${canonicalStage}`);
+
+    expect(listStageDocsForCard).toHaveBeenCalledWith(
+      db,
+      "BRIK-ENG-0001",
+      StageTypeSchema.parse(canonicalStage)
+    );
+
+    expect(infoSpy).toHaveBeenCalledWith(
+      "bos.stage_alias_used",
+      expect.objectContaining({
+        cardId: "BRIK-ENG-0001",
+        rawStage: legacyStage,
+        normalizedStage: canonicalStage,
+      })
+    );
+
+    infoSpy.mockRestore();
+    jest.useRealTimers();
+  });
+
+  it("TC-10: POST accepts legacy alias stage within window (normalized)", async () => {
+    jest.useFakeTimers();
+    const { legacyStage, canonicalStage, withinCutoff } = getConfiguredStageAlias();
+    jest.setSystemTime(withinCutoff);
+
+    (getCardById as jest.Mock).mockResolvedValue(baseCard);
+    (upsertStageDoc as jest.Mock).mockResolvedValue({ success: true, stageDoc: baseStageDoc });
+
+    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
+
+    const request = createRequest(
+      "http://localhost/api/agent/stage-docs",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          cardId: "BRIK-ENG-0001",
+          stage: legacyStage,
+          content: "Fact-find content",
+        }),
+      },
+      {
+        "content-type": "application/json",
+        "x-agent-api-key": VALID_KEY,
+      }
+    );
+
+    const response = await createStageDoc(request);
+    expect(response.status).toBe(201);
+    expect(response.headers.get("x-bos-stage-normalized")).toBe(`${legacyStage}->${canonicalStage}`);
+
+    const [, createdStageDoc] = (upsertStageDoc as jest.Mock).mock.calls[0];
+    expect(createdStageDoc.Stage).toBe(canonicalStage);
+    expect(createdStageDoc.filePath).toBe(
+      `docs/business-os/cards/BRIK-ENG-0001/${canonicalStage}.user.md`
+    );
+
+    expect(infoSpy).toHaveBeenCalledWith(
+      "bos.stage_alias_used",
+      expect.objectContaining({
+        cardId: "BRIK-ENG-0001",
+        rawStage: legacyStage,
+        normalizedStage: canonicalStage,
+      })
+    );
+
+    infoSpy.mockRestore();
+    jest.useRealTimers();
+  });
+
+  it("TC-11: path stage accepts legacy alias within window (normalized)", async () => {
+    jest.useFakeTimers();
+    const { legacyStage, canonicalStage, withinCutoff } = getConfiguredStageAlias();
+    jest.setSystemTime(withinCutoff);
+
+    (getLatestStageDoc as jest.Mock).mockResolvedValue(baseStageDoc);
+
+    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
+
+    const request = createRequest(
+      `http://localhost/api/agent/stage-docs/BRIK-ENG-0001/${legacyStage}`,
+      undefined,
+      { "x-agent-api-key": VALID_KEY }
+    );
+    const params = Promise.resolve({ cardId: "BRIK-ENG-0001", stage: legacyStage });
+
+    const response = await getStageDoc(request, { params });
+    expect(response.status).toBe(200);
+    expect(response.headers.get("x-bos-stage-normalized")).toBe(`${legacyStage}->${canonicalStage}`);
+
+    expect(getLatestStageDoc).toHaveBeenCalledWith(db, "BRIK-ENG-0001", canonicalStage);
+
+    expect(infoSpy).toHaveBeenCalledWith(
+      "bos.stage_alias_used",
+      expect.objectContaining({
+        cardId: "BRIK-ENG-0001",
+        rawStage: legacyStage,
+        normalizedStage: canonicalStage,
+      })
+    );
+
+    infoSpy.mockRestore();
+    jest.useRealTimers();
+  });
+
+  it("TC-12: PATCH path stage accepts legacy alias within window (normalized)", async () => {
+    jest.useFakeTimers();
+    const { legacyStage, canonicalStage, withinCutoff } = getConfiguredStageAlias();
+    jest.setSystemTime(withinCutoff);
+
+    (getLatestStageDoc as jest.Mock).mockResolvedValue(baseStageDoc);
+    (upsertStageDoc as jest.Mock).mockResolvedValue({ success: true, stageDoc: baseStageDoc });
+
+    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
+
+    const baseEntitySha = await computeEntityShaFor(baseStageDoc);
+
+    const request = createRequest(
+      `http://localhost/api/agent/stage-docs/BRIK-ENG-0001/${legacyStage}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          baseEntitySha,
+          patch: { content: "Updated content" },
+        }),
+      },
+      {
+        "content-type": "application/json",
+        "x-agent-api-key": VALID_KEY,
+      }
+    );
+    const params = Promise.resolve({ cardId: "BRIK-ENG-0001", stage: legacyStage });
+
+    const response = await patchStageDoc(request, { params });
+    expect(response.status).toBe(200);
+    expect(response.headers.get("x-bos-stage-normalized")).toBe(`${legacyStage}->${canonicalStage}`);
+
+    const [, updatedStageDoc] = (upsertStageDoc as jest.Mock).mock.calls[0];
+    expect(updatedStageDoc.Stage).toBe(canonicalStage);
+    expect(updatedStageDoc.filePath).toBe(
+      `docs/business-os/cards/BRIK-ENG-0001/${canonicalStage}.user.md`
+    );
+
+    infoSpy.mockRestore();
+    jest.useRealTimers();
+  });
+
+  it("TC-13: after cutoff, legacy alias is rejected (400)", async () => {
+    jest.useFakeTimers();
+    const { legacyStage, afterCutoff } = getConfiguredStageAlias();
+    jest.setSystemTime(afterCutoff);
+
+    const request = createRequest(
+      `http://localhost/api/agent/stage-docs/BRIK-ENG-0001/${legacyStage}`,
+      undefined,
+      { "x-agent-api-key": VALID_KEY }
+    );
+    const params = Promise.resolve({ cardId: "BRIK-ENG-0001", stage: legacyStage });
+
+    const response = await getStageDoc(request, { params });
+    expect(response.status).toBe(400);
+
+    const payload = await response.json();
+    expect(payload.error).toBe("Invalid stage");
+    expect(response.headers.get("x-bos-stage-normalized")).toBeNull();
   });
 });

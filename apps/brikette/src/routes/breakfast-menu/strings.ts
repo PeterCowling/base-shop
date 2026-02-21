@@ -11,21 +11,9 @@ import {
   type LocaleModule,
 } from "@/utils/localeFallback";
 import { getSlug } from "@/utils/slug";
-import { getWebpackContext, supportsWebpackGlob, webpackContextToRecord } from "@/utils/webpackGlob";
 
-// i18n-exempt -- TECH-000 [ttl=2026-12-31] build-time locale discovery
-const breakfastMenuLocaleModules: Record<string, LocaleModule> = supportsWebpackGlob
-  ? webpackContextToRecord<LocaleModule>(
-      getWebpackContext("../../locales", true, /breakfastMenuPage\\.json$/),
-      { prefix: "/locales" },
-    )
-  : {};
-const menusLocaleModules: Record<string, LocaleModule> = supportsWebpackGlob
-  ? webpackContextToRecord<LocaleModule>(
-      getWebpackContext("../../locales", true, /menus\\.json$/),
-      { prefix: "/locales" },
-    )
-  : {};
+const breakfastMenuLocaleModules: Record<string, LocaleModule> = {};
+const menusLocaleModules: Record<string, LocaleModule> = {};
 
 const BREAKFAST_MENU_FALLBACKS = loadLocaleFallbacks(breakfastMenuLocaleModules);
 BREAKFAST_MENU_FALLBACKS.en = BREAKFAST_MENU_FALLBACKS.en ?? (enBreakfastMenuPage as LocaleBundle);

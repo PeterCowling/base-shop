@@ -1,0 +1,32 @@
+const nearby = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DryCleaningOrLaundry",
+      name: "L'Arcobaleno Di Ruggiero Giuseppina & C. Sas",
+      isLocatedIn: {
+        "@id": "https://hostel-positano.com/#hotel",
+      },
+      url: "https://maps.google.com/?q=L'Arcobaleno+Positano",
+    },
+    {
+      "@type": "DryCleaningOrLaundry",
+      name: "Lavanderia Positano Express",
+      isLocatedIn: {
+        "@id": "https://hostel-positano.com/#hotel",
+      },
+      url: "https://maps.google.com/?q=Lavanderia+Positano+Express",
+    },
+    {
+      "@type": "AutomatedTeller",
+      name: "UniCredit ATM Positano",
+      isLocatedIn: {
+        "@id": "https://hostel-positano.com/#hotel",
+      },
+    },
+  ],
+} as const;
+
+const nearbyJson = JSON.stringify(nearby);
+
+export default nearbyJson;

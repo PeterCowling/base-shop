@@ -15,10 +15,8 @@ import shop from "../../../../../shop.json";
 // @acme/auth relies on Node APIs, so use Node runtime
 export const runtime = "nodejs";
 
-export async function GET(
-  _req: Request,
-  { params }: { params: { id: string } },
-) {
+export async function GET(_req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = await getCustomerSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); // i18n-exempt -- I18N-123 HTTP status label; UI translates by status [ttl=2025-06-30]
@@ -31,15 +29,14 @@ export async function GET(
     }
     return NextResponse.json({ order });
   } catch (err) {
-    console.error("[api/orders] GET error:", err); // i18n-exempt -- server log
-    return NextResponse.json({ error: "Failed to fetch order" }, { status: 500 }); // i18n-exempt -- generic error
+    const message = err instanceof Error ? err.message : "Unknown error";
+    console.info("[api/orders] GET error:", err); // i18n-exempt -- server log
+    return NextResponse.json({ error: message }, { status: 500 }); // i18n-exempt -- server log
   }
 }
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } },
-) {
+export async function PATCH(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = await getCustomerSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); // i18n-exempt -- I18N-123 HTTP status label; UI translates by status [ttl=2025-06-30]
@@ -84,7 +81,8 @@ export async function PATCH(
     }
     return NextResponse.json({ order });
   } catch (err) {
-    console.error("[api/orders] PATCH error:", err); // i18n-exempt -- server log
-    return NextResponse.json({ error: "Failed to update order" }, { status: 500 }); // i18n-exempt -- generic error
+    const message = err instanceof Error ? err.message : "Unknown error";
+    console.info("[api/orders] PATCH error:", err); // i18n-exempt -- server log
+    return NextResponse.json({ error: message }, { status: 500 }); // i18n-exempt -- server log
   }
 }

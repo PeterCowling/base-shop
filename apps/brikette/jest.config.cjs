@@ -24,12 +24,6 @@ const envMock = path.resolve(__dirname, "src/test/__mocks__/config-env.ts");
 newMapper["^@/config/env$"] = envMock;
 newMapper["^\\.+/config/env$"] = envMock;
 
-// webpackGlob.ts uses import.meta which Jest CJS mode can't parse
-// Match both @/ alias and relative imports (../utils/webpackGlob from locales/)
-const webpackGlobMock = path.resolve(__dirname, "src/test/__mocks__/webpackGlob.ts");
-newMapper["^@/utils/webpackGlob$"] = webpackGlobMock;
-newMapper["(\\.\\.?/)+utils/webpackGlob$"] = webpackGlobMock;
-
 // guides.fs.ts uses import.meta.url (for createRequire) which Jest can't parse
 const guidesFsMock = path.resolve(__dirname, "src/test/__mocks__/guides-fs.ts");
 newMapper["^@/locales/guides\\.fs$"] = guidesFsMock;
@@ -72,6 +66,13 @@ const uiAtomsMock = path.resolve(__dirname, "src/test/__mocks__/ui-atoms.tsx");
 newMapper["^@acme/ui/atoms$"] = uiAtomsMock;
 newMapper["^@acme/ui/atoms/(.*)$"] = uiAtomsMock;
 
+// @acme/ui/molecules — stub with Proxy-based componentStub
+// Note: do NOT add a broad @acme/ui/organisms/* mapper here; tests that need
+// specific organisms mock them with jest.mock() and a broad mapper would conflict.
+const componentStub = path.resolve(__dirname, "../../test/__mocks__/componentStub.js");
+newMapper["^@acme/ui/molecules$"] = componentStub;
+newMapper["^@acme/ui/molecules/(.*)$"] = componentStub;
+
 // @acme/design-system sub-path exports (Jest doesn't support package.json "exports" field)
 const dsPrimitivesStub = path.resolve(__dirname, "src/test/__mocks__/design-system-primitives.ts");
 newMapper["^@acme/design-system/primitives$"] = dsPrimitivesStub;
@@ -84,9 +85,21 @@ newMapper["^@acme/guides-core$"] = path.resolve(
   __dirname,
   "../../packages/guides-core/src/index.ts"
 );
+newMapper["^@acme/guides-core/url-helpers$"] = path.resolve(
+  __dirname,
+  "../../packages/guides-core/src/url-helpers.ts"
+);
 
 // @tests/ alias for test utilities
 newMapper["^@tests/(.*)$"] = path.resolve(__dirname, "src/test/$1");
+
+// ?raw imports (Vite/webpack raw-loader query) — Jest can't handle ?raw suffix
+newMapper["^(.+)\\?raw$"] = path.resolve(__dirname, "src/test/__mocks__/raw-file.ts");
+
+// swiper/css imports — CSS package sub-paths not matched by *.css extension pattern
+const emptyStub = path.resolve(__dirname, "src/test/__mocks__/raw-file.ts");
+newMapper["^swiper/css$"] = emptyStub;
+newMapper["^swiper/css/(.*)$"] = emptyStub;
 
 // --- Copy remaining original mappers, filtering out CMS-specific stubs ---
 // The shared preset's jest.moduleMapper.cjs includes patterns designed for the CMS app

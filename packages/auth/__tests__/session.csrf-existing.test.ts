@@ -24,7 +24,7 @@ type HeadersStore = {
 jest.mock("@acme/zod-utils/initZod", () => ({ initZod: jest.fn() }));
 
 const mockCookies = jest.fn<Promise<CookieStore>, []>();
-const mockHeaders = jest.fn<HeadersStore, []>(() => ({ get: jest.fn(() => null) }));
+const mockHeaders = jest.fn<HeadersStore, []>(() => ({ get: jest.fn(() => null) as unknown as HeadersStore["get"] }));
 jest.mock("next/headers", () => ({
   cookies: () => mockCookies(),
   headers: () => mockHeaders(),
@@ -36,14 +36,14 @@ function createStore(): CookieStore {
     get: jest.fn((name: string) => {
       const value = jar.get(name);
       return value ? { name, value } : undefined;
-    }),
+    }) as unknown as CookieStore["get"],
     set: jest.fn((name: string, value: string, opts?: CookieOptions) => {
       jar.set(name, value);
       return opts;
-    }),
+    }) as unknown as CookieStore["set"],
     delete: jest.fn((opts: { name: string }) => {
       jar.delete(opts.name);
-    }),
+    }) as unknown as CookieStore["delete"],
   };
 }
 

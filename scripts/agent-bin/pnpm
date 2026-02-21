@@ -49,6 +49,52 @@ deny() {
   exit 1
 }
 
+emit_bypass_event() {
+  local event_class="$1"
+  local mode="${2:-enforce}"
+  local repo_root="${BASESHOP_GUARD_REPO_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
+  local telemetry_script="${repo_root}/scripts/tests/telemetry-log.sh"
+
+  if [[ -x "$telemetry_script" ]]; then
+    "$telemetry_script" emit \
+      --governed false \
+      --policy-mode "$mode" \
+      --class "$event_class" \
+      --normalized-sig "$event_class" \
+      --pressure-level unknown \
+      --workers 0 \
+      --override-policy-used "${BASESHOP_ALLOW_BYPASS_POLICY:-0}" \
+      --override-overload-used "${BASESHOP_ALLOW_OVERLOAD:-0}" >/dev/null 2>&1 || true
+  fi
+}
+
+block_bypass() {
+  local event_class="$1"
+  local preview="$2"
+  echo "BLOCKED: ungoverned Jest invocation detected (${event_class})." >&2
+  echo "Command: ${preview}" >&2
+  echo "Recommended: pnpm -w run test:governed -- jest -- <args>" >&2
+  if [[ "${BASESHOP_ALLOW_OVERLOAD:-0}" == "1" ]]; then
+    echo "Note: BASESHOP_ALLOW_OVERLOAD=1 does not bypass command-policy blocking." >&2
+  fi
+  echo "Set BASESHOP_ALLOW_BYPASS_POLICY=1 to reroute through the governed runner." >&2
+  emit_bypass_event "$event_class" "enforce"
+  exit 1
+}
+
+reroute_bypass_to_governed() {
+  local event_class="$1"
+  shift
+  echo "BYPASS POLICY OVERRIDE: rerouting '${event_class}' through governed runner." >&2
+  emit_bypass_event "$event_class" "enforce"
+
+  local -a reroute_cmd=("$real_pnpm" "-w" "run" "test:governed" "--" "jest")
+  if [[ $# -gt 0 ]]; then
+    reroute_cmd+=("--" "$@")
+  fi
+  exec "${reroute_cmd[@]}"
+}
+
 if [[ "${BASESHOP_ALLOW_BROAD_TESTS:-}" == "1" ]]; then
   exec "$real_pnpm" "$@"
 fi
@@ -60,8 +106,10 @@ has_recursive="0"
 has_turbo_scope="0"
 is_pnpm_test="0"
 is_turbo_test="0"
+is_pnpm_exec_jest="0"
 has_test_selector="0"
 seen_double_dash="0"
+declare -a pnpm_exec_jest_args=()
 
 for ((i=1; i<=$#; i++)); do
   arg="${!i}"
@@ -134,16 +182,60 @@ for ((i=1; i<=$#; i++)); do
     next_i=$((i+1))
     next2_i=$((i+2))
     next3_i=$((i+3))
-    if [[ $next3_i -le $# ]]; then
+
+    next_arg=""
+    next2_arg=""
+    next3_arg=""
+    if [[ $next_i -le $# ]]; then
       next_arg="${!next_i}"
+    fi
+    if [[ $next2_i -le $# ]]; then
       next2_arg="${!next2_i}"
+    fi
+    if [[ $next3_i -le $# ]]; then
       next3_arg="${!next3_i}"
-      if [[ "$next_arg" == "turbo" && "$next2_arg" == "run" && "$next3_arg" == "test" ]]; then
-        is_turbo_test="1"
-      fi
+    fi
+
+    if [[ "$next_arg" == "jest" || ( "$next_arg" == "--" && "$next2_arg" == "jest" ) ]]; then
+      is_pnpm_exec_jest="1"
+    fi
+
+    if [[ "$next_arg" == "turbo" && "$next2_arg" == "run" && "$next3_arg" == "test" ]]; then
+      is_turbo_test="1"
     fi
   fi
 done
+
+if [[ "$is_pnpm_exec_jest" == "1" ]]; then
+  # Capture forwarded Jest args from `pnpm exec jest [--] <args...>`.
+  for ((i=1; i<=$#; i++)); do
+    arg="${!i}"
+    if [[ "$arg" != "exec" ]]; then
+      continue
+    fi
+    cmd_i=$((i + 1))
+    if [[ $cmd_i -le $# && "${!cmd_i}" == "--" ]]; then
+      cmd_i=$((cmd_i + 1))
+    fi
+    if [[ $cmd_i -le $# && "${!cmd_i}" == "jest" ]]; then
+      args_i=$((cmd_i + 1))
+      if [[ $args_i -le $# && "${!args_i}" == "--" ]]; then
+        args_i=$((args_i + 1))
+      fi
+      for ((j=args_i; j<=$#; j++)); do
+        pnpm_exec_jest_args+=("${!j}")
+      done
+      break
+    fi
+  done
+
+  if [[ "${BASESHOP_GOVERNED_CONTEXT:-0}" != "1" ]]; then
+    if [[ "${BASESHOP_ALLOW_BYPASS_POLICY:-0}" == "1" ]]; then
+      reroute_bypass_to_governed "pnpm-exec-jest" "${pnpm_exec_jest_args[@]}"
+    fi
+    block_bypass "pnpm-exec-jest" "pnpm $*"
+  fi
+fi
 
 is_workspace_root="0"
 if [[ -f "${effective_dir%/}/pnpm-workspace.yaml" ]]; then

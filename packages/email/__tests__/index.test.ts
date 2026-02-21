@@ -50,28 +50,28 @@ describe("email package entry point", () => {
 
     const mod = await import("../src/index");
 
-    await mod.resolveSegment("a", 1);
+    await mod.resolveSegment("a", 1 as any);
     expect(segments.resolveSegment).toHaveBeenCalledWith("a", 1);
 
-    await mod.createContact("b");
+    await (mod.createContact as any)("b");
     expect(segments.createContact).toHaveBeenCalledWith("b");
 
-    await mod.addToList("list", "c");
+    await mod.addToList("list", "c" as any);
     expect(segments.addToList).toHaveBeenCalledWith("list", "c");
 
-    await mod.listSegments("d");
+    await (mod.listSegments as any)("d");
     expect(segments.listSegments).toHaveBeenCalledWith("d");
 
-    await mod.createCampaign("e");
+    await (mod.createCampaign as any)("e");
     expect(scheduler.createCampaign).toHaveBeenCalledWith("e");
 
     await mod.listCampaigns("f");
     expect(scheduler.listCampaigns).toHaveBeenCalledWith("f");
 
-    await mod.sendDueCampaigns("g");
+    await (mod.sendDueCampaigns as any)("g");
     expect(scheduler.sendDueCampaigns).toHaveBeenCalledWith("g");
 
-    await mod.syncCampaignAnalytics("h");
+    await (mod.syncCampaignAnalytics as any)("h");
     expect(scheduler.syncCampaignAnalytics).toHaveBeenCalledWith("h");
 
     await mod.setCampaignStore("i" as any);
@@ -80,10 +80,10 @@ describe("email package entry point", () => {
     await mod.fsCampaignStore.readCampaigns("j");
     expect(storage.fsCampaignStore.readCampaigns).toHaveBeenCalledWith("j");
 
-    await mod.fsCampaignStore.writeCampaigns("k", 2);
+    await mod.fsCampaignStore.writeCampaigns("k", 2 as any);
     expect(storage.fsCampaignStore.writeCampaigns).toHaveBeenCalledWith("k", 2);
 
-    await mod.fsCampaignStore.listShops("l");
+    await (mod.fsCampaignStore.listShops as any)("l");
     expect(storage.fsCampaignStore.listShops).toHaveBeenCalledWith("l");
   });
 });

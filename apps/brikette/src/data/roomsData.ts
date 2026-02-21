@@ -319,16 +319,16 @@ const roomsData: Room[] = [
   {
     id: "apartment",
     sku: "apartment",
-    widgetRoomCode: "TODO", // TODO: Get from Octorate after apartment is added
-    widgetRateCodeNR: "TODO_NR", // TODO: Get actual rate plan IDs
-    widgetRateCodeFlex: "TODO_FLEX", // TODO: Get actual rate plan IDs
+    widgetRoomCode: "TODO", // TODO: Get room number from Octorate
+    widgetRateCodeNR: "804934", // Direct, Non-Refundable, 2025-14 (2 pax)
+    widgetRateCodeFlex: "804933", // Direct, Refundable, 2025-14 (2 pax)
     rateCodes: {
-      direct: { nr: "TODO_NR", flex: "TODO_FLEX" },
+      direct: { nr: "804934", flex: "804933" }, // 2 pax; 3 pax derived: nr=805559, flex=805578
       ota: { nr: "TODO_NR_OTA", flex: "TODO_FLEX_OTA" },
     },
     occupancy: 4,
     pricingModel: "perRoom",
-    basePrice: { amount: 150.0, currency: "EUR" }, // TODO: Update with actual pricing
+    basePrice: { amount: 265.0, currency: "EUR" },
     seasonalPrices: SEASONAL,
     availability: { totalBeds: 4, defaultRelease: 4 },
     imagesRaw: ["/images/apartment/landing.webp"], // TODO: Add actual apartment images

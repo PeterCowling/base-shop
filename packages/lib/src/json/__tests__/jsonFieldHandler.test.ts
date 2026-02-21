@@ -1,4 +1,4 @@
-import { type ErrorSetter, jsonFieldHandler } from '../jsonFieldHandler';
+import { type ErrorSetter, jsonFieldHandler } from '../jsonFieldHandler.js';
 
 describe('jsonFieldHandler', () => {
   it('parses valid JSON and clears errors', () => {

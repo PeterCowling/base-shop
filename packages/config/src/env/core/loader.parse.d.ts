@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 export declare function parseCoreEnv(raw?: NodeJS.ProcessEnv): z.objectOutputType<Omit<{
     NEXTAUTH_SECRET: z.ZodEffects<z.ZodString, string, string> | z.ZodDefault<z.ZodEffects<z.ZodString, string, string>>;
     PREVIEW_TOKEN_SECRET: z.ZodOptional<z.ZodEffects<z.ZodString, string, string>>;
@@ -230,3 +229,4 @@ export declare function loadCoreEnv(raw?: NodeJS.ProcessEnv): z.objectOutputType
 } & {
     AUTH_TOKEN_TTL: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNumber]>>;
 }, z.ZodTypeAny, "passthrough">;
+//# sourceMappingURL=loader.parse.d.ts.map

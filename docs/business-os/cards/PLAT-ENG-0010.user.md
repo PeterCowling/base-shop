@@ -39,4 +39,4 @@ Last-updated: 2026-02-05
 The predecessor plan (v1) built primitives bottom-up. This plan delivers an integrated UI experience top-down: define the three-stage operator flow in the CMS, then wire it to existing infrastructure.
 
 
-[... see full plan in docs/plans/launch-3hr-v2-plan.md]
+[... see full plan in docs/plans/archive/launch-3hr-v2-plan-archived-2026-02-14.md]

@@ -1,18 +1,11 @@
 ---
 name: startup-loop
-description: Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks.
+description: Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks. Routes to lp-* stage skills at each stage.
 ---
 
 # Startup Loop
 
-Operate the Startup Loop through a single chat command surface:
-
-- `/startup-loop start --business <BIZ> --mode <dry|live> --launch-surface <pre-website|website-live>`
-- `/startup-loop status --business <BIZ>`
-- `/startup-loop submit --business <BIZ> --stage <S#> --artifact <path>`
-- `/startup-loop advance --business <BIZ>`
-
-This skill is an operator wrapper. It does not replace `/lp-fact-find`, `/lp-plan`, or `/lp-build`.
+Operate the Startup Loop through a single chat command surface. This skill is an operator wrapper. It does not replace the DO processes (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`).
 
 ## Operating Mode
 
@@ -30,12 +23,32 @@ Not allowed:
 - Advancing while required artifacts or BOS sync actions are incomplete.
 - Treating markdown mirrors of cards/ideas as source of truth.
 
-## Canonical References
+## Invocation
 
-- Workflow contract: `docs/business-os/startup-loop-workflow.user.md`
-- Prompt index: `docs/business-os/workflow-prompts/README.user.md`
-- Operator handoff template:
-  - `docs/business-os/workflow-prompts/_templates/startup-loop-operator-handoff-prompt.md`
+- `/startup-loop start --business <BIZ> --mode <dry|live> --launch-surface <pre-website|website-live> [--start-point <problem|product>]`
+  - `--start-point` is optional. Default is `product`. Existing runs that omit this flag are unaffected.
+- `/startup-loop status --business <BIZ>`
+- `/startup-loop submit --business <BIZ> --stage <S#> --artifact <path>`
+- `/startup-loop advance --business <BIZ>`
+
+**Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
+
+## Command Module Routing
+
+Load the relevant module per command:
+
+| Command | Module |
+|---|---|
+| `start` | `modules/cmd-start.md` |
+| `status` | `modules/cmd-status.md` |
+| `submit` | `modules/cmd-submit.md` |
+| `advance` | `modules/cmd-advance.md` |
+
+**Internal modules** (called automatically — not operator-invocable):
+
+| Module | Trigger |
+|---|---|
+| `modules/discovery-intake-sync.md` | Called by `cmd-start` at Gate D pass-through AND by `cmd-advance` at GATE-DISCOVERY-00 complete. Writes or refreshes `<BIZ>-intake-packet.user.md` from DISCOVERY-01–DISCOVERY-07 precursors. No-op when precursors are unchanged. |
 
 ## Required Output Contract
 
@@ -44,161 +57,71 @@ For `start`, `status`, and `advance`, return this exact packet:
 ```text
 run_id: SFS-<BIZ>-<YYYYMMDD>-<hhmm>
 business: <BIZ>
+loop_spec_version: 1.9.0
 current_stage: <S#>
 status: <ready|blocked|awaiting-input|complete>
 blocking_reason: <none or exact reason>
 next_action: <single sentence command/action>
 prompt_file: <path or none>
 required_output_path: <path or none>
+naming_gate: <skipped|blocked|complete>
 bos_sync_actions:
   - <required sync action 1>
   - <required sync action 2>
 ```
 
+## Stage Addressing
+
+| Flag | Behavior |
+|---|---|
+| `--stage <ID>` | Canonical stage ID. Case-insensitive. Always primary. |
+| `--stage-alias <slug>` | Deterministic slug from `stage-operator-map.json` alias_index. Fail-closed on unknown. |
+| `--stage-label <text>` | Exact match against `label_operator_short` or `label_operator_long`. Case-sensitive. Fail-closed on near-match. |
+
+Resolver: `scripts/src/startup-loop/stage-addressing.ts`
+Canonical alias source: `docs/business-os/startup-loop/_generated/stage-operator-map.json`
+
+When a stage reference cannot be resolved, return fail-closed with deterministic suggestions. Do not infer or guess stage IDs from near-matches.
+
 ## Stage Model
 
-Stages: `S0`..`S10`
+Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.9.0).
+Stage labels: `docs/business-os/startup-loop/_generated/stage-operator-map.json`.
 
-- `S0` Intake
-- `S1` Readiness preflight
-- `S1B` Pre-website measurement bootstrap
-- `S2A` Existing-business historical baseline (website-live only)
-- `S2` Market intelligence
-- `S3` Forecasting
-- `S4` Startup baseline merge (SFS-00)
-- `S5` Prioritization
-- `S6` Site-upgrade synthesis
-- `S7` Fact-find
-- `S8` Plan
-- `S9` Build
-- `S10` Weekly K/P/C/S decision loop
+Stages DISCOVERY-01..S10 (25 stages total):
 
-## Command Behavior
+| Stage | Name | Skill | Conditional |
+|---|---|---|---|
+| DISCOVERY-01 | Problem framing | `/lp-do-discovery-01-problem-framing` | start-point=problem |
+| DISCOVERY-02 | Solution-space scan | `/lp-do-discovery-02-solution-space-scan` | start-point=problem |
+| DISCOVERY-03 | Option selection | `/lp-do-discovery-03-option-picking` | start-point=problem |
+| DISCOVERY-04 | Naming handoff | `/lp-do-discovery-04-business-name-options` | start-point=problem |
+| DISCOVERY-05 | Distribution planning | `/lp-do-discovery-05-distribution-planning` | start-point=problem |
+| DISCOVERY-06 | Measurement plan | `/lp-do-discovery-06-measurement-plan` | start-point=problem |
+| DISCOVERY-07 | Operator evidence | `/lp-do-discovery-07-our-stance` | start-point=problem |
+| DISCOVERY | Intake | `/startup-loop start` | — |
+| BRAND-01 | Brand strategy | `/lp-do-brand-01-brand-strategy` | — |
+| BRAND-02 | Brand identity | `/lp-do-brand-02-brand-identity` | — |
+| BRAND | Brand (container) | — | — |
+| S1 | Readiness check | `/lp-readiness` | — |
+| S1B | Measure | prompt handoff (pre-website) | — |
+| S2A | Results | prompt handoff (website-live) | — |
+| S2 | Market intelligence | Deep Research prompt handoff | — |
+| S2B | Offer design | `/lp-offer` | — |
+| S3 | Forecast (parallel with S6B) | `/lp-forecast` | — |
+| S3B | Adjacent product research | `/lp-other-products` | growth_intent=product_range |
+| S6B | Channel strategy + GTM | `/lp-channels`, `/lp-seo`, `/draft-outreach` | — |
+| S4 | Baseline merge (join barrier) | `/lp-baseline-merge` | — |
+| S5A | Prioritize | `/lp-prioritize` | — |
+| S5B | BOS sync (sole mutation boundary) | `/lp-bos-sync` | — |
+| S6 | Site-upgrade synthesis | `/lp-site-upgrade` | — |
+| DO | Do | `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build` | — |
+| S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa` | — |
+| S10 | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) | — |
 
-### 1) `/startup-loop start`
+## Global Invariants
 
-Inputs:
-- `--business <BIZ>` required
-- `--mode <dry|live>` required
-- `--launch-surface <pre-website|website-live>` required
-
-Steps:
-1. Resolve the business context from canonical artifacts under `docs/business-os/`.
-2. Determine highest completed stage and next required stage.
-3. Apply hard gates (below).
-4. Return run packet with exact next action.
-
-### 2) `/startup-loop status`
-
-Inputs:
-- `--business <BIZ>` required
-
-Steps:
-1. Read latest stage artifacts for that business.
-2. Re-evaluate gates and sync requirements.
-3. Return run packet with current stage/status.
-
-### 3) `/startup-loop submit`
-
-Inputs:
-- `--business <BIZ>` required
-- `--stage <S#>` required
-- `--artifact <path>` required
-
-Steps:
-1. Verify artifact exists at provided path.
-2. Verify artifact satisfies expected stage output contract.
-3. If artifact is a `*.user.md` doc, render HTML companion:
-   - `pnpm docs:render-user-html -- <artifact>`
-4. Return run packet (usually `awaiting-input` until BOS sync actions are done, or `ready` to advance).
-
-### 4) `/startup-loop advance`
-
-Inputs:
-- `--business <BIZ>` required
-
-Advance only when both are true:
-1. Required stage artifact exists and is valid.
-2. Required `bos_sync_actions` are confirmed complete.
-
-If either fails: return `status: blocked` with exact reason and retry action.
-
-## Hard Gates
-
-### Gate A: Pre-website measurement bootstrap (S1B)
-
-Condition:
-- `launch-surface = pre-website`
-
-Rule:
-- Do not progress beyond S1 without S1B artifact.
-
-Prompt handoff:
-- `prompt_file`: `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-pre-website-measurement-setup.user.md`
-
-### Gate B: Existing-business historical baseline (S2A)
-
-Condition:
-- `launch-surface = website-live`
-
-Rule:
-- S2/S6 blocked until S2A baseline exists with `Status: Active`.
-
-If baseline blocked by missing data:
-- `prompt_file`: `docs/business-os/workflow-prompts/_templates/historical-data-request-prompt.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-historical-data-request-prompt.user.md`
-
-If data pack exists but baseline not consolidated:
-- `prompt_file`: `docs/business-os/workflow-prompts/_templates/existing-business-historical-baseline-prompt.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-historical-performance-baseline.user.md`
-
-### Gate C: S2/S6 deep research completion
-
-Rule:
-- If `latest.user.md` is missing, stale, or points to `Status: Draft`, stop and hand prompt.
-
-S2 handoff:
-- `prompt_file`: `docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md`
-- `required_output_path`: `docs/business-os/market-research/<BIZ>/<YYYY-MM-DD>-market-intelligence.user.md`
-
-S6 handoff:
-- `prompt_file`: `docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md`
-- `required_output_path`: `docs/business-os/site-upgrades/<BIZ>/<YYYY-MM-DD>-upgrade-brief.user.md`
-
-## Business OS Sync Contract (Required Before Advance)
-
-For each stage, require appropriate sync actions:
-
-- `S0`: update `docs/business-os/strategy/<BIZ>/plan.user.md` scope and constraints.
-- `S1/S1B/S2/S3/S10`: persist strategy/readiness artifacts under `docs/business-os/...` and update any `latest.user.md` pointers.
-- `S5`: create/update ideas/cards via Business OS API (`/api/agent/ideas`, `/api/agent/cards`).
-- `S7/S8/S9`: upsert stage docs and lane transitions via `/api/agent/stage-docs` and `/api/agent/cards`.
-
-Never allow stage advance when BOS sync has failed.
-
-## Failure Handling
-
-When blocked, always provide:
-1. Exact failing gate.
-2. Exact prompt file.
-3. Exact required output path.
-4. One command-like next step.
-
-Example blocked `next_action`:
-- `Run Deep Research with prompt_file and save output to required_output_path, then run /startup-loop submit --business <BIZ> --stage S2 --artifact <path>.`
-
-## Recommended Operator Sequence
-
-1. `/startup-loop start --business <BIZ> --mode dry --launch-surface <...>`
-2. `/startup-loop status --business <BIZ>` after each major output
-3. `/startup-loop submit --business <BIZ> --stage <S#> --artifact <path>` after producing artifact
-4. `/startup-loop advance --business <BIZ>` when ready to move
-
-## Red Flags (invalid operation)
-
-1. Advancing a stage while required output is missing.
-2. Advancing a stage while required BOS sync action is incomplete.
-3. Skipping S1B for pre-website businesses.
-4. Skipping S2A for website-live businesses.
-5. Continuing S2/S6 with stale/draft research artifacts.
+- Never allow silent stage skipping.
+- BOS sync must be confirmed complete before advance. See `modules/cmd-advance.md` for sync contract.
+- Canonical source of truth is always `loop-spec.yaml` — not markdown mirrors of cards or ideas.
+- All stage references are resolved via stage-addressing.ts — never guess stage IDs.

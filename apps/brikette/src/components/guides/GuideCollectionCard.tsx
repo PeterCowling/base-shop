@@ -195,7 +195,7 @@ export const GuideCollectionCard = ({
         href,
       };
     });
-  }, [directionLinks, lang, howToBase, guide.key]);
+  }, [directionLinks, lang, howToBase]);
 
   return (
     <article className={clsx(CARD_CLASSES)}>

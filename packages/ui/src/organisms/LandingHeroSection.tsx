@@ -217,7 +217,7 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
     );
   }, [ready, t]);
 
-  const handleReserve = useCallback(() => openModal("booking"), [openModal]);
+  const handleReserve = useCallback(() => {}, []);
   const handlePrimaryCta = useCallback(() => {
     if (onPrimaryCtaClick) {
       onPrimaryCtaClick();

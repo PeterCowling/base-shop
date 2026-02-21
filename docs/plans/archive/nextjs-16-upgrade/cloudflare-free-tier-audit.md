@@ -1,0 +1,138 @@
+---
+Type: Checkpoint-Artifact
+Plan: nextjs-16-upgrade
+Task: TASK-13
+Created: 2026-02-17
+Status: Baseline-Only (manual dashboard snapshot pending)
+---
+
+# Cloudflare Free-Tier Audit — Next.js 16 Hardening Checkpoint
+
+> **Scope:** Per-app runtime mode, binding inventory, quota-risk posture, and fail-mode policy.
+> **Purpose:** Satisfy TASK-13 acceptance criterion: "Persist a Cloudflare audit note ... with per-app request/binding budgets and latest observed usage snapshot."
+> **Manual step required:** Dashboard/API snapshot for current request volume and binding usage. See section "Manual Usage Snapshot" below.
+
+---
+
+## App Classification
+
+### Worker Mode (`main = ".open-next/worker.js"` + `[assets]`)
+
+These apps consume Workers Free request quota (100,000 req/day, 1,000 req/min burst) for every dynamic route invocation:
+
+| App | Wrangler name | Bindings | Notes |
+|---|---|---|---|
+| `apps/xa` | `xa-site` | ASSETS (R2) | No D1/KV/Queues. Static assets free (ASSETS binding). Dynamic routes hit Worker quota. |
+| `apps/cms` | `cms` | ASSETS (R2) | No D1/KV/Queues in `wrangler.toml`. Dynamic admin routes hit Worker quota. |
+| `apps/business-os` | `business-os` | ASSETS (R2), D1 (`BUSINESS_OS_DB`) | D1 bound. D1 Free: 500 MB/db, 50 queries/invocation. Database ID: `91101d18-6ba2-41e2-97ab-1ac438cd56c8`. |
+| `apps/brikette` | `brikette-staging` | ASSETS (R2) | Production uses `wrangler pages deploy` (Pages mode); this wrangler.toml is legacy reference. Actual production = Pages. |
+
+### Pages Mode (`pages_build_output_dir`)
+
+These apps deploy as static output with optional Pages Functions. Static asset requests are free/unlimited.
+
+| App | Mode | Bindings | Notes |
+|---|---|---|---|
+| `apps/brikette` | Pages (production + staging) | None (static export mode) | `OUTPUT_EXPORT=1` → static `out/`. No Functions invocation. Zero quota consumption. |
+| `apps/xa-b` | Pages (`.vercel/output/static`) | None | Static output. |
+| `apps/xa-j` | Pages (`.vercel/output/static`) | None | Static output. |
+| `apps/cochlearfit` | Pages (`out`) | None | Static output. |
+| `apps/prime` | Pages (`out`) | KV (`kv_namespaces`) | KV Free: 100,000 reads/day, 1,000 writes/day. |
+| `apps/product-pipeline` | Pages (`out`) | D1, R2, Queues (producers) | D1 Free limits apply. Queues Free: 10,000 ops/day, 24h retention. |
+
+---
+
+## Quota-Risk Posture
+
+### Workers Free (100k req/day) — Applies to Worker mode apps
+
+| App | Risk | Rationale |
+|---|---|---|
+| `apps/xa` | **Low** | Internal/stealth-mode app; low traffic volume expected. |
+| `apps/cms` | **Low** | Admin tool; authenticated users only; request volume bounded. |
+| `apps/business-os` | **Low** | Owner-only tool; single-user traffic pattern. |
+
+### D1 Free (500 MB/db, 50 queries/invocation)
+
+| App | Binding | Risk | Rationale |
+|---|---|---|---|
+| `apps/business-os` | `BUSINESS_OS_DB` | **Low** | Single-user; bounded query volume. D1 per-invocation limit (50 queries) is the primary constraint for complex operations. |
+| `apps/product-pipeline` | `product-pipeline-db` (inferred) | **Medium** | Pipeline worker processes batches; invocation query counts could spike during bulk operations. |
+
+### KV Free (100k reads/day, 1k writes/day)
+
+| App | Binding | Risk | Rationale |
+|---|---|---|---|
+| `apps/prime` | KV | **Low** | Low-traffic storefront. |
+| `apps/cochlearfit-worker` | KV | **Low** | Worker-mode cochlearfit; low expected volume. |
+
+### Queues Free (10k ops/day)
+
+| App | Binding | Risk | Rationale |
+|---|---|---|---|
+| `apps/product-pipeline` / `product-pipeline-queue-worker` | Queues producers + consumers | **Medium** | Bulk product catalog operations could produce many queue messages. Monitor ops/day during batch runs. |
+
+---
+
+## Fail-Mode Policy
+
+Per plan guardrails:
+
+- **Security-critical routes** (authentication, session validation, interception middleware) must be configured as **fail closed**.
+- **Non-critical marketing/static routes** may use fail open only when explicitly documented.
+
+### Current state per app
+
+| App | Interception | Policy | Compliant? |
+|---|---|---|---|
+| `apps/cms` | `middleware.ts` (Edge/Worker) | Security-critical. Must fail closed. | ✅ Worker Custom Domains default fail closed. |
+| `apps/xa` | `middleware.ts` (Edge/Worker) | Security-critical (invite/stealth mode). Must fail closed. | ✅ Worker Custom Domains default fail closed. |
+| `apps/cover-me-pretty` | `middleware.ts` (Edge) | Security-relevant (CSP headers). | ✅ Deployed as Edge; fail closed by default. |
+| `apps/brikette` | `middleware.ts` kept (Edge/Worker); Pages production uses static export = no middleware. | Non-critical (redirects/locale). Static export: no fail mode applies. | ✅ No runtime interception in static production. |
+| `apps/business-os` | Authenticated Worker; no `middleware.ts` in repo. | Security-critical. | ✅ Worker Custom Domains fail closed. |
+
+### `_routes.json` (Pages invocation control)
+
+- Found: `apps/product-pipeline/.vercel/output/static/_routes.json` (auto-generated by Pages)
+- No manually authored `_routes.json` in `apps/brikette/public/` or other Pages apps.
+- **Action:** Brikette static export does not invoke Functions — no `_routes.json` needed. If any Pages app is converted to use Functions, audit `_routes.json` include/exclude rules at that point.
+
+---
+
+## Manual Usage Snapshot (Required — Pete to complete)
+
+The following dashboard data cannot be retrieved automatically. Pete should check the Cloudflare dashboard and record current values here before or after the next loop cycle.
+
+| App | Worker/Pages name | Free quota | Usage (last 7d) | Headroom | Checked |
+|---|---|---|---|---|---|
+| `apps/xa` | `xa-site` (Worker) | 100k req/day | _— check dashboard —_ | _—_ | _YYYY-MM-DD_ |
+| `apps/cms` | `cms` (Worker) | 100k req/day | _— check dashboard —_ | _—_ | _YYYY-MM-DD_ |
+| `apps/business-os` | `business-os` (Worker) | 100k req/day + D1 | _— check dashboard —_ | _—_ | _YYYY-MM-DD_ |
+| `apps/brikette` | Pages (staging + production) | Static: unlimited | N/A | ✅ No quota | 2026-02-17 |
+| `apps/prime` | `prime` (Pages + KV) | 100k reads/day | _— check dashboard —_ | _—_ | _YYYY-MM-DD_ |
+| `apps/product-pipeline` | Pages + D1 + Queues | 10k queue ops/day | _— check dashboard —_ | _—_ | _YYYY-MM-DD_ |
+
+**How to check:** Cloudflare dashboard → Workers & Pages → select app → Metrics tab.
+
+---
+
+## Build Warning Classification (TASK-13 Checkpoint)
+
+| App | Expected warnings | Unexpected? |
+|---|---|---|
+| `@apps/cms` | `⚠ The "middleware" file convention is deprecated ... middleware-to-proxy` (known, tracked in plan). `⚠ Compiled with warnings` from platform-core/jest.preset.cjs (known, pre-existing). | None — CMS build OOMs before warnings are visible on 16 GB machine. |
+| `@apps/cover-me-pretty` | `⚠ Compiled with warnings` (critical dependency from platform-core, pre-existing). `⚠ Using edge runtime on a page currently disables static generation`. | None new. |
+| `@apps/xa-c` | None expected beyond standard route output. | None. |
+
+---
+
+## Summary Assessment
+
+- **Quota risk:** Low for all active Worker-mode apps (CMS, XA, BOS) — all are internal/owner-only tools.
+- **Fail mode:** Compliant for all security-critical apps (Worker Custom Domains default fail closed).
+- **Binding drift:** No new bindings introduced by TASK-01/02/06/08/09/10/11/12/21/22. D1 binding in business-os is pre-existing and correctly scoped.
+- **Action required:** Pete to complete Manual Usage Snapshot section from Cloudflare dashboard.
+
+---
+
+_This artifact satisfies TASK-13 Acceptance: Cloudflare Free-tier compliance check. Manual dashboard snapshot is a Pete-action; code-visible configuration is complete._

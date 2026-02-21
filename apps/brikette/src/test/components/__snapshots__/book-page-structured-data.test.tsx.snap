@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Book Page Structured Data TC-01: Hostel JSON-LD with required fields, no aggregateRating should render valid Hostel JSON-LD with required fields and no third-party aggregateRating 1`] = `
+{
+  "@context": "https://schema.org",
+  "@id": "https://hostel-positano.com/#hotel",
+  "@type": "Hostel",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "IT",
+    "addressLocality": "Positano SA",
+    "postalCode": "84017",
+    "streetAddress": "Via Guglielmo Marconi 358",
+  },
+  "amenityFeature": [
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Free Wi-Fi",
+      "value": true,
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Air-Conditioning",
+      "value": true,
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Panoramic Terrace",
+      "value": true,
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Bar & Café",
+      "value": true,
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Secure Lockers",
+      "value": true,
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Concierge / Digital Assistant",
+      "value": true,
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Luggage Storage",
+      "value": true,
+    },
+  ],
+  "availableLanguage": [
+    "en",
+    "de",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh",
+  ],
+  "checkinTime": "15:30",
+  "checkoutTime": "10:30",
+  "description": "Positano's only hostel—cliff-top terraces with sweeping Amalfi Coast views, 100 m from the SITA bus stop.",
+  "email": "hostelpositano@gmail.com",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 40.629634,
+    "longitude": 14.480818,
+  },
+  "hasMap": "https://maps.google.com/maps?cid=17733313080460471781",
+  "image": [
+    "https://hostel-positano.com/images/7/landing.webp",
+    "https://hostel-positano.com/images/10/landing.webp",
+    "https://hostel-positano.com/images/11/landing.webp",
+    "https://hostel-positano.com/images/12/landing.webp",
+  ],
+  "inLanguage": "en",
+  "isPartOf": {
+    "@id": "https://hostel-positano.com/#website",
+  },
+  "mainEntityOfPage": "https://hostel-positano.com/en/book",
+  "name": "Hostel Brikette",
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "closes": "23:59",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      "opens": "00:00",
+    },
+  ],
+  "priceRange": "€55 – €300",
+  "sameAs": [
+    "https://maps.google.com/maps?cid=17733313080460471781",
+    "https://maps.apple.com/?q=Hostel+Brikette&ll=40.629634,14.480818",
+    "https://www.instagram.com/brikettepositano",
+  ],
+  "url": "https://hostel-positano.com",
+}
+`;

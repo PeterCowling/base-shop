@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK Weekly K/P/C/S Decision</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>BRIK Weekly K/P/C/S Decision</h1>
+<h2>A) KPI Delta Summary</h2>
+<p>Measured this week:</p>
+<ul>
+<li>GA4 production instrumentation is live (<code>G-2ZSYXG8R7T</code>) and collect hits (<code>page_view</code>, <code>user_engagement</code>) are observed.</li>
+<li>Search Console verification prerequisites are in place (DNS TXT, sitemap discovery/reachability).</li>
+<li>GA4 Data API access is now enabled; first 7-day measured baseline is locked in canonical plan.</li>
+<li>Production booking bundle was redeployed and verified to emit <code>begin_checkout</code> on CTA intent before confirm-link availability.</li>
+<li>Forecast and operating guardrails are now defined in S3 (<code>2026-02-13-startup-loop-90-day-forecast-v1.user.md</code>).</li>
+</ul>
+<p>Measured baseline snapshot (<code>7daysAgo..today</code>, extracted 2026-02-13):</p>
+<ul>
+<li>sessions: 73</li>
+<li>users: 53</li>
+<li>page_view: 258</li>
+<li>user_engagement: 145</li>
+<li>conversions: 0</li>
+<li>begin_checkout: 0</li>
+<li>web_vitals: 0</li>
+</ul>
+<p>Not yet measured to decision-grade quality:</p>
+<ul>
+<li>non-zero booking-intent signal (<code>begin_checkout</code>),</li>
+<li>non-zero performance telemetry signal (<code>web_vitals</code>),</li>
+<li>paid CAC,</li>
+<li>weekly direct-share trend,</li>
+<li>cancellation reason distribution.</li>
+</ul>
+<p>Delta vs last week:</p>
+<ul>
+<li>Last week had no BRIK weekly K/P/C/S artifact.</li>
+<li>This week establishes week-0 measured baseline and first explicit telemetry-quality diagnosis.</li>
+</ul>
+<p>Delta vs target:</p>
+<ul>
+<li>Day-14 thresholds from S3 exist, but cannot be scored yet because report-layer conversion and vitals streams are still zero in the current 7-day window.</li>
+</ul>
+<h2>B) Decision</h2>
+<p>Decision: <strong>Continue</strong>.</p>
+<p>Rationale:</p>
+<ul>
+<li>Core upstream artifacts are active for BRIK (S2 market intelligence, S3 forecast, S4 seed, S5 scorecard, S6 brief).</li>
+<li>Measurement baseline is now partially measured, but conversion/performance telemetry quality is still insufficient for scale/pivot decisions.</li>
+<li>Strategy change (Pivot/Scale/Kill) is not warranted until event-level signal integrity is restored.</li>
+</ul>
+<h2>C) What Changed This Week</h2>
+<p>Signal:</p>
+<ul>
+<li>First startup-loop forecast published (<code>2026-02-13-startup-loop-90-day-forecast-v1.user.md</code>).</li>
+<li>Forecast seed created (<code>docs/business-os/startup-baselines/BRIK-forecast-seed.user.md</code>).</li>
+<li>Prioritization scorecard published (<code>2026-02-13-prioritization-scorecard.user.md</code>).</li>
+<li>Production measurement verification document published and updated with Data API extraction (<code>2026-02-13-measurement-verification.user.md</code>).</li>
+<li>P1 execution routing packet activated for GA4 verification + baseline lock:
+<ul>
+<li><code>docs/plans/brik-ga4-baseline-lock/fact-find.md</code></li>
+<li><code>docs/plans/brik-ga4-baseline-lock/plan.md</code></li>
+</ul>
+</li>
+</ul>
+<p>Noise:</p>
+<ul>
+<li>Traffic baseline exists, but funnel/performance events are still zero.</li>
+<li>No complete week of measured conversion and cancellation quality data yet.</li>
+</ul>
+<h2>D) Next-Week Action Plan</h2>
+<ol>
+<li>Deploy production booking flow version that emits <code>begin_checkout</code> on CTA intent (not only when <code>confirmUrl</code> exists).
+<ul>
+<li>Owner: Pete</li>
+<li>Pass criteria: Complete (2026-02-13). Production bundle/hash aligned and click-path probe captured <code>en=begin_checkout</code> collect hit.</li>
+</ul>
+</li>
+<li>Re-run GA4 extraction and lock refreshed 7-day baseline in <code>docs/business-os/strategy/BRIK/plan.user.md</code>.
+<ul>
+<li>Owner: Pete</li>
+<li>Pass criteria: refreshed baseline reflects post-deploy window; <code>begin_checkout</code> and <code>web_vitals</code> statuses are explicitly verified.</li>
+</ul>
+</li>
+<li>Ship policy/fee clarity module and booking-step performance hardening on top conversion routes.
+<ul>
+<li>Owner: Pete</li>
+<li>Pass criteria: policy/fee block live and booking-step p75 &#x3C;=2.5s for 7 consecutive days.</li>
+</ul>
+</li>
+<li>Launch cancellation reason coding taxonomy and weekly review.
+<ul>
+<li>Owner: Pete</li>
+<li>Pass criteria: >=90% of cancellations in the week have standardized reason codes.</li>
+</ul>
+</li>
+<li>Run day-14 gate review and publish first recalibration artifact if any hard threshold fails.
+<ul>
+<li>Owner: Pete</li>
+<li>Pass criteria: keep/pivot/scale posture documented with threshold evidence in recalibration doc (if triggered).</li>
+</ul>
+</li>
+</ol>
+<h2>E) Risk Watchlist and Mitigations</h2>
+<ul>
+<li>Risk: report-layer conversion/performance streams remain zero despite live collect evidence.
+<ul>
+<li>Mitigation: re-run bounded extracts after propagation delay and keep click-path probe evidence attached.</li>
+</ul>
+</li>
+<li>Risk: conversion assumptions drift without measured correction.
+<ul>
+<li>Mitigation: enforce day-14 gates from S3 and trigger recalibration on hard-gate failure.</li>
+</ul>
+</li>
+<li>Risk: cancellation leakage remains opaque.
+<ul>
+<li>Mitigation: mandatory reason coding + weekly leakage review before any spend expansion.</li>
+</ul>
+</li>
+<li>Risk: booking-step performance regressions suppress conversion.
+<ul>
+<li>Mitigation: p75 performance guardrail with rollback policy for high-latency deployments.</li>
+</ul>
+</li>
+</ul>
+<h2>F) Data Quality Issues to Fix Before Next Week</h2>
+<ul>
+<li><code>begin_checkout</code> is still zero in current 7-day GA4 report window (despite post-deploy live collect hit evidence).</li>
+<li><code>web_vitals</code> is still zero in current 7-day GA4 window.</li>
+<li>No stable week-over-week direct-share trend yet.</li>
+<li>Cancellation reason dataset is not yet complete enough for root-cause prioritization.</li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md</code></div>
+      <div>Generated: 2026-02-13T23:46:57.249Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

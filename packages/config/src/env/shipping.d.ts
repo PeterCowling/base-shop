@@ -1,7 +1,5 @@
 import "@acme/zod-utils/initZod";
-
 import { z } from "zod";
-
 export declare const shippingEnvSchema: z.ZodEffects<z.ZodObject<{
     TAXJAR_KEY: z.ZodOptional<z.ZodString>;
     UPS_KEY: z.ZodOptional<z.ZodString>;
@@ -16,7 +14,7 @@ export declare const shippingEnvSchema: z.ZodEffects<z.ZodObject<{
     TAXJAR_KEY?: string | undefined;
     UPS_KEY?: string | undefined;
     DHL_KEY?: string | undefined;
-    SHIPPING_PROVIDER?: "external" | "none" | "shippo" | "ups" | "dhl" | undefined;
+    SHIPPING_PROVIDER?: "none" | "external" | "shippo" | "ups" | "dhl" | undefined;
     ALLOWED_COUNTRIES?: string[] | undefined;
     LOCAL_PICKUP_ENABLED?: boolean | undefined;
     DEFAULT_COUNTRY?: string | undefined;
@@ -26,7 +24,7 @@ export declare const shippingEnvSchema: z.ZodEffects<z.ZodObject<{
     TAXJAR_KEY?: string | undefined;
     UPS_KEY?: string | undefined;
     DHL_KEY?: string | undefined;
-    SHIPPING_PROVIDER?: "external" | "none" | "shippo" | "ups" | "dhl" | undefined;
+    SHIPPING_PROVIDER?: "none" | "external" | "shippo" | "ups" | "dhl" | undefined;
     ALLOWED_COUNTRIES?: unknown;
     LOCAL_PICKUP_ENABLED?: unknown;
     DEFAULT_COUNTRY?: unknown;
@@ -36,7 +34,7 @@ export declare const shippingEnvSchema: z.ZodEffects<z.ZodObject<{
     TAXJAR_KEY?: string | undefined;
     UPS_KEY?: string | undefined;
     DHL_KEY?: string | undefined;
-    SHIPPING_PROVIDER?: "external" | "none" | "shippo" | "ups" | "dhl" | undefined;
+    SHIPPING_PROVIDER?: "none" | "external" | "shippo" | "ups" | "dhl" | undefined;
     ALLOWED_COUNTRIES?: string[] | undefined;
     LOCAL_PICKUP_ENABLED?: boolean | undefined;
     DEFAULT_COUNTRY?: string | undefined;
@@ -46,7 +44,7 @@ export declare const shippingEnvSchema: z.ZodEffects<z.ZodObject<{
     TAXJAR_KEY?: string | undefined;
     UPS_KEY?: string | undefined;
     DHL_KEY?: string | undefined;
-    SHIPPING_PROVIDER?: "external" | "none" | "shippo" | "ups" | "dhl" | undefined;
+    SHIPPING_PROVIDER?: "none" | "external" | "shippo" | "ups" | "dhl" | undefined;
     ALLOWED_COUNTRIES?: unknown;
     LOCAL_PICKUP_ENABLED?: unknown;
     DEFAULT_COUNTRY?: unknown;
@@ -58,7 +56,7 @@ export declare const shippingEnv: {
     TAXJAR_KEY?: string | undefined;
     UPS_KEY?: string | undefined;
     DHL_KEY?: string | undefined;
-    SHIPPING_PROVIDER?: "external" | "none" | "shippo" | "ups" | "dhl" | undefined;
+    SHIPPING_PROVIDER?: "none" | "external" | "shippo" | "ups" | "dhl" | undefined;
     ALLOWED_COUNTRIES?: string[] | undefined;
     LOCAL_PICKUP_ENABLED?: boolean | undefined;
     DEFAULT_COUNTRY?: string | undefined;
@@ -66,3 +64,4 @@ export declare const shippingEnv: {
     FREE_SHIPPING_THRESHOLD?: number | undefined;
 };
 export type ShippingEnv = z.infer<typeof shippingEnvSchema>;
+//# sourceMappingURL=shipping.d.ts.map

@@ -109,7 +109,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
       <fieldset className="flex flex-col gap-2">
         <legend className="font-medium">Return Carriers</legend>
         {form.returnCarrier.map((carrier, i) => (
-          <div key={i} className="flex items-center gap-2">
+          <div key={`carrier-${carrier || 'empty'}-${i}`} className="flex items-center gap-2">
             <Input
               value={carrier}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -150,7 +150,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
       <fieldset className="flex flex-col gap-2">
         <legend className="font-medium">Home Pickup ZIPs</legend>
         {form.homePickupZipCodes.map((zip, i) => (
-          <div key={i} className="flex items-center gap-2">
+          <div key={`zip-${zip || 'empty'}-${i}`} className="flex items-center gap-2">
             <Input
               value={zip}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>

@@ -47,6 +47,67 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  turbopack-smoke:
+    name: Turbopack smoke (Brikette dev)
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+
+      - name: Build workspace UI artifacts for smoke
+        run: |
+          pnpm --filter @acme/design-system build
+          pnpm --filter @acme/design-tokens build
+          pnpm --filter @acme/i18n build
+          pnpm --filter @acme/ui build
+
+      - name: Run Turbopack route smoke
+        timeout-minutes: 8
+        run: node apps/brikette/scripts/e2e/brikette-smoke.mjs --mode=turbopack
+
+  static-export-check:
+    name: Static export check (Brikette)
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+
+      - name: Build Brikette workspace dependencies
+        run: pnpm exec turbo run build --filter=@apps/brikette^...
+
+      - name: Static export build (route hide/restore + Turbopack)
+        # Mirrors the deploy build-cmd shape. Route is hidden before the build
+        # and restored unconditionally, even on build failure.
+        shell: bash
+        run: |
+          cd apps/brikette
+          mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off"
+          build_exit=0
+          OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm exec next build --turbopack || build_exit=$?
+          if [ "$build_exit" -eq 0 ]; then
+            pnpm --filter @apps/brikette generate:static-aliases || build_exit=$?
+          fi
+          mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]"
+          exit "$build_exit"
+
   staging:
     name: Deploy (staging)
     if: >-
@@ -65,7 +126,7 @@ jobs:
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
         mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
-        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build &&
+        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
         pnpm --filter @apps/brikette generate:static-aliases; e=$?;
         mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
         exit $e)
@@ -97,7 +158,7 @@ jobs:
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
         mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
-        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build &&
+        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
         pnpm --filter @apps/brikette generate:static-aliases; e=$?;
         mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
         exit $e)

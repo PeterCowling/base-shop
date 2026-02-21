@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename -- Test helpers that load locale data from filesystem; paths constructed from known directory structure */
 /**
  * i18n Render Audit Test Suite
  *

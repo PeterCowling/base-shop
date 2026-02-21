@@ -17,7 +17,7 @@ export function LanguageToggle({
   return (
     <div className={rootClassName}>
       <span className="sr-only">{t("languageLabel")}</span>
-      <div className="inline-flex overflow-hidden rounded-md border border-border-2 bg-white text-[10px] uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
+      <div className="inline-flex overflow-hidden rounded-md border border-border-2 bg-surface text-[10px] uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
         <button
           type="button"
           onClick={() => setLocale("en")}

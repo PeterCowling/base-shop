@@ -25,7 +25,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 ## Goals
 
 - Create single coordinated system for opportunity management across all businesses (existing + new)
-- Enable humans and agents to generate, work up, lp-fact-find, plan, execute, and reflect on ideas/opportunities
+- Enable humans and agents to generate, work up, lp-do-fact-find, plan, execute, and reflect on ideas/opportunities
 - Provide evidence-gated, risk-managed workflow for non-coding work matching engineering rigor
 - Make business plans, people responsibilities, and execution status visible and queryable in-repo
 - Support progressive elaboration: raw ideas → worked ideas → cards → staged execution → reflection → plan updates
@@ -99,14 +99,14 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Renders only `.user.md` files (agent files not shown in UI)
 - **Agent layer:** Extends existing `.claude/skills/` pattern
   - New skills: `/idea-develop`, `/idea-advance`, `/idea-scan`, `/biz-update-plan`, `/biz-update-people`
-  - Reuses existing `/lp-fact-find`, `/lp-plan`, `/lp-build`, `/reflect` for engineering cards
+  - Reuses existing `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`, `/reflect` for engineering cards
   - All agent runs are Pete-triggered in Phase 0; outputs commit to repo
 
 ### Data flow
 
 1. User submits raw idea → `docs/business-os/ideas/inbox/<ID>.user.md` created
 2. Agent works up idea → `ideas/worked/<ID>.user.md` + card created in `cards/<ID>.user.md`
-3. Card progresses through lanes → stage docs (`lp-fact-find.md`, `plan.md`, `build.md`, `reflect.md`) maintained
+3. Card progresses through lanes → stage docs (`lp-do-fact-find.md`, `plan.md`, `build.md`, `reflect.md`) maintained
 4. Lane moves proposed via `Proposed-Lane` frontmatter field → Pete/agent approves → lane updated
 5. Reflection output updates business plans and people docs
 6. Archive: Dropped/Retired items moved to `archive/` subdirectories; hidden from UI
@@ -761,7 +761,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Impact: 65% — Core write path now has safety mechanism (auto-PR + CI gates); governance aligned; local runtime proven; hosted deployment still partial (BOS-00-A at 40%)
 
 #### Re-plan Update (2026-01-28) - MAJOR BLOCKERS RESOLVED
-- **Previous confidence:** 85% (initial lp-replan), then 45% (after review), then 30% (after adding BOS-00-F blocker)
+- **Previous confidence:** 85% (initial lp-do-replan), then 45% (after review), then 30% (after adding BOS-00-F blocker)
 - **Updated confidence:** 70% 🟡 BUILD-ELIGIBLE (major blockers resolved)
 - **Resolved blockers (2 of 4 existential blockers now complete):**
   - **BOS-00-B (✅ RESOLVED):** Governance resolved via auto-PR workflow. App commits to work/* branches → auto-PR creates PR → auto-merge after CI passes. Preserves audit trail, rollback capability, and repo governance.
@@ -1165,17 +1165,17 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Previous confidence:** 75%
 - **Updated confidence:** 85%
   - Implementation: 88% — Simple logic: map lane to stage doc filename, check existence, create from template if missing
-  - Approach: 85% — Minimal placeholder approach confirmed: frontmatter + 1-2 sentence placeholder body; agent skill populates details during lp-fact-find/plan/build/reflect phases
+  - Approach: 85% — Minimal placeholder approach confirmed: frontmatter + 1-2 sentence placeholder body; agent skill populates details during lp-do-fact-find/plan/build/reflect phases
   - Impact: 82% — Always-on requirement enforced at BOS-10 (write operations); UI assumes stage docs exist; validation prevents missing docs
 - **Decision / resolution:**
   - **Stage doc templates (minimal placeholders):**
-    - `lp-fact-find.(user|agent).md`: Frontmatter: Type: Fact-Find, Status: Draft, Card-ID: <ID>. Body: "Fact-finding in progress."
+    - `lp-do-fact-find.(user|agent).md`: Frontmatter: Type: Fact-Find, Status: Draft, Card-ID: <ID>. Body: "Fact-finding in progress."
     - `plan.(user|agent).md`: Frontmatter: Type: Plan, Status: Draft, Card-ID: <ID>. Body: "Planning in progress."
     - `build.(user|agent).md`: Frontmatter: Type: Build-Log, Status: Draft, Card-ID: <ID>. Body: "Work in progress."
     - `reflect.(user|agent).md`: Frontmatter: Type: Reflection, Status: Draft, Card-ID: <ID>. Body: "Reflection pending."
   - **Validation rules (prerequisite checks):**
     - No prerequisite checks in Phase 0; always-on means stage docs created automatically on lane entry
-    - Future: could add "can't move to Planned without completing lp-fact-find" validation if needed
+    - Future: could add "can't move to Planned without completing lp-do-fact-find" validation if needed
 - **Changes to task:**
   - Acceptance: Removed prerequisite validation (not required in Phase 0; always-on is sufficient)
   - Acceptance: Added specific template structure (frontmatter + placeholder body)
@@ -1256,7 +1256,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Affects:** `.claude/skills/idea-develop/SKILL.md`
 - **Depends on:** BOS-07
 - **Confidence:** 88%
-  - Implementation: 90% — Skill structure clear from `.claude/skills/lp-fact-find/SKILL.md` (100 lines; name, description, workflow sections); logic straightforward
+  - Implementation: 90% — Skill structure clear from `.claude/skills/lp-do-fact-find/SKILL.md` (100 lines; name, description, workflow sections); logic straightforward
   - Approach: 88% — Reusing existing skill structure is proven; "worked up" = validate required fields + clarify scope (defined below)
   - Impact: 85% — Agent creates cards; BOS-07 validates via docs:lint; malformed cards caught before commit
 
@@ -1267,7 +1267,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Approach: 88% — "Worked up to standard" defined as: (1) all required fields populated per BOS-07 validation, (2) scope clarified (1-3 sentence summary), (3) business code assigned, (4) owner assigned
   - Impact: 85% — Validation via docs:lint (BOS-07) catches malformed cards; agent runs are Pete-supervised in Phase 0; low blast radius
 - **Investigation performed:**
-  - Repo: `.claude/skills/lp-fact-find/SKILL.md` (template: frontmatter, Operating Mode, Workflow, Outputs)
+  - Repo: `.claude/skills/lp-do-fact-find/SKILL.md` (template: frontmatter, Operating Mode, Workflow, Outputs)
   - Repo: 19 existing skills in `.claude/skills/` (consistent structure)
   - Requirements: lines 209-227 (raw idea → worked idea → card workflow)
 - **Decision / resolution:**

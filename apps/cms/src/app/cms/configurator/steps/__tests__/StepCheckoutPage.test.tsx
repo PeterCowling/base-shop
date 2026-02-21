@@ -11,6 +11,11 @@ jest.mock("../../hooks/useStepCompletion", () => ({
   default: () => [false, markComplete],
 }));
 
+const toastSuccessMock = jest.fn();
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => ({ success: toastSuccessMock, error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn() }),
+}));
+
 const pushMock = jest.fn();
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock }),
@@ -21,12 +26,12 @@ jest.mock("../../lib/api", () => ({
   apiRequest: (...args: any[]) => apiRequest(...args),
 }));
 
-jest.mock("../components/TemplateSelector", () => ({
+jest.mock("../../components/TemplateSelector", () => ({
   __esModule: true,
   default: ({ pageTemplates, onConfirm }: any) => (
     <div>
       <button
-        data-testid="mock-template-confirm"
+        data-cy="mock-template-confirm"
         onClick={() => onConfirm(pageTemplates[0].id, pageTemplates[0].components, pageTemplates[0])}
       >
         choose template
@@ -37,7 +42,7 @@ jest.mock("../components/TemplateSelector", () => ({
 
 jest.mock("@/components/atoms/shadcn", () => ({
   __esModule: true,
-  Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+  Button: ({ children, asChild: _asChild, variant: _variant, ...props }: any) => <button {...props}>{children}</button>,
   Card: ({ children }: any) => <div>{children}</div>,
   CardContent: ({ children }: any) => <div>{children}</div>,
 }));
@@ -50,6 +55,8 @@ jest.mock("@/components/atoms", () => ({
 jest.mock("@acme/i18n", () => ({
   __esModule: true,
   useTranslations: () => (key: string) => key,
+  LOCALES: ["en", "de", "it"],
+  fillLocales: (_: unknown, defaultValue: string) => ({ en: defaultValue, de: defaultValue, it: defaultValue }),
 }));
 
 function renderWithContext(
@@ -95,6 +102,7 @@ describe("StepCheckoutPage", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     apiRequest.mockResolvedValue({ data: undefined, error: undefined });
+    toastSuccessMock.mockReset();
   });
 
   it("creates a checkout page when a template is chosen", async () => {
@@ -110,18 +118,23 @@ describe("StepCheckoutPage", () => {
       draftPreviewPath: "/checkout?preview=draft",
       templateId: "tpl1",
     };
+    // First call: initial GET on mount (no existing page)
+    apiRequest.mockResolvedValueOnce({ data: null, error: null });
+    // Second call: POST when template is confirmed
     apiRequest.mockResolvedValueOnce({ data: summary, error: null });
 
-    render(
-      <StepCheckoutPage
-        pageTemplates={[{ id: "tpl1", name: "Checkout", components: [{ type: "CheckoutSection" } as any] }]}
-        checkoutLayout=""
-        setCheckoutLayout={setCheckoutLayout}
-        checkoutPageId={null}
-        setCheckoutPageId={setCheckoutPageId}
-        shopId="shop1"
-      />,
-    );
+    await act(async () => {
+      render(
+        <StepCheckoutPage
+          pageTemplates={[{ id: "tpl1", name: "Checkout", components: [{ type: "CheckoutSection" } as any] }]}
+          checkoutLayout=""
+          setCheckoutLayout={setCheckoutLayout}
+          checkoutPageId={null}
+          setCheckoutPageId={setCheckoutPageId}
+          shopId="shop1"
+        />,
+      );
+    });
 
     await act(async () => {
       fireEvent.click(screen.getByTestId("mock-template-confirm"));
@@ -136,7 +149,7 @@ describe("StepCheckoutPage", () => {
     );
     expect(setCheckoutLayout).toHaveBeenCalledWith("tpl1");
     expect(setCheckoutPageId).toHaveBeenCalledWith("p1");
-    await screen.findByText("cms.configurator.shopPage.draftSaved");
+    expect(toastSuccessMock).toHaveBeenCalled();
   });
 
   it("blocks completion until checkout dependencies are met", () => {
@@ -149,15 +162,31 @@ describe("StepCheckoutPage", () => {
     expect(screen.getByTestId("save-return")).toBeDisabled();
   });
 
-  it("allows completion when template, page, and settings are ready", () => {
-    renderWithContext(
-      {
-        checkoutLayout: "tpl1",
-        checkoutPageId: "page-1",
-        completed: { "payment-provider": "complete", shipping: "complete" },
+  it("allows completion when template, page, and settings are ready", async () => {
+    // The initial GET returns the existing checkout page as published so isPublished = true
+    apiRequest.mockResolvedValueOnce({
+      data: {
+        id: "page-1",
+        slug: "checkout",
+        status: "published" as const,
+        updatedAt: "2025-01-01T00:00:00.000Z",
+        previewPath: "/checkout",
+        draftPreviewPath: "/checkout?preview=draft",
+        templateId: "tpl1",
       },
-      { checkoutLayout: "tpl1", checkoutPageId: "page-1" },
-    );
+      error: null,
+    });
+
+    await act(async () => {
+      renderWithContext(
+        {
+          checkoutLayout: "tpl1",
+          checkoutPageId: "page-1",
+          completed: { "payment-provider": "complete", shipping: "complete" },
+        },
+        { checkoutLayout: "tpl1", checkoutPageId: "page-1" },
+      );
+    });
 
     fireEvent.click(screen.getByTestId("save-return"));
     expect(markComplete).toHaveBeenCalledWith(true);

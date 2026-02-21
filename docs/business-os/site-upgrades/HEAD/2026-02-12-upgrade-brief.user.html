@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HEAD Site Upgrade Brief</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>HEAD Site Upgrade Brief</h1>
+<h2>1) Business Outcome Frame</h2>
+<ul>
+<li>Convert cochlear-implant headband demand into reliable first sales in Italy, then repeatable weekly sales.</li>
+<li>Reduce wrong-fit/wrong-device purchases through compatibility and sizing clarity.</li>
+<li>Decision links unlocked:
+<ul>
+<li><code>DEC-HEAD-01</code>: scale paid demand generation beyond precision/retargeting.</li>
+<li><code>DEC-HEAD-02</code>: expand into add-ons (jewellery/retention accessories) after core PDP conversion is stable.</li>
+</ul>
+</li>
+</ul>
+<h2>2) Existing Site Baseline</h2>
+<ul>
+<li>Launch-surface mode: <code>pre-website</code>.</li>
+<li>Core constraint: speed-to-first-sales; avoid heavy CMS dependency in first cycle.</li>
+<li>Current friction risks to remove before scale:
+<ul>
+<li>compatibility ambiguity,</li>
+<li>size/fit uncertainty,</li>
+<li>weak trust signals for a medical-adjacent category,</li>
+<li>checkout/payment friction for Italian buyers.</li>
+</ul>
+</li>
+</ul>
+<h2>3) Reference Sites</h2>
+<ul>
+<li>PowerAid (Italy): direct local benchmark for pricing, sizing tables, and CI-retention copy.</li>
+<li>SmartEar (EU): strong compatibility-led PDP structure with clear trust stack.</li>
+<li>hearinghenry: CI-specific story-led positioning, especially caregiver/toddler segment.</li>
+<li>Deafmetal: identity-plus-retention framing for adult/teen confidence and add-on economics.</li>
+<li>BAHA Accessories UK: robust options architecture (single/bilateral, age/size tiers, add-ons).</li>
+<li>CI Retention Solutions: bundle and multi-buy mechanics.</li>
+<li>MED-EL / Advanced Bionics: manufacturer-grade compatibility and functional language benchmark.</li>
+</ul>
+<h2>4) Pattern Decomposition</h2>
+<table>
+<thead>
+<tr>
+<th>Reference site</th>
+<th>Pattern</th>
+<th>Why it matters</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PowerAid</td>
+<td>Head-circumference sizing table with explicit size choices</td>
+<td>Reduces fit confusion and returns</td>
+<td>Italy PDP includes sizing and direct add-to-cart flow</td>
+</tr>
+<tr>
+<td>SmartEar</td>
+<td>Processor compatibility list on PDP</td>
+<td>Removes top purchase blocker ("will it fit my processor?")</td>
+<td>Compatible-processor pattern visible on product pages</td>
+</tr>
+<tr>
+<td>SmartEar</td>
+<td>Trust stack near purchase CTA</td>
+<td>Increases conversion confidence in medical-adjacent category</td>
+<td>14-day returns, safe shopping, and review confirmation patterns</td>
+</tr>
+<tr>
+<td>hearinghenry</td>
+<td>Caregiver-first narrative for newly implanted children</td>
+<td>Aligns with highest-urgency buyer segment</td>
+<td>Child/toddler retention narrative is prominent</td>
+</tr>
+<tr>
+<td>BAHA Accessories UK</td>
+<td>Option architecture (single vs bilateral; age-tier sizes)</td>
+<td>Lowers wrong-order risk and improves conversion</td>
+<td>Structured option choices on PDP</td>
+</tr>
+<tr>
+<td>CI Retention Solutions</td>
+<td>Multi-buy economics</td>
+<td>Raises AOV and supports spare/backup usage behavior</td>
+<td>Bundle and discount cues</td>
+</tr>
+<tr>
+<td>Deafmetal</td>
+<td>Retention plus style/jewellery lane</td>
+<td>Opens adult/teen segment and add-on revenue</td>
+<td>How-it-works and style-led retention framing</td>
+</tr>
+<tr>
+<td>MED-EL / Advanced Bionics</td>
+<td>Manufacturer-style compatibility precision</td>
+<td>Sets quality bar for language and fit certainty</td>
+<td>Accessory pages with structured model references</td>
+</tr>
+</tbody>
+</table>
+<h2>5) Best-Of Synthesis Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Source reference</th>
+<th align="right">User value</th>
+<th align="right">Conversion impact</th>
+<th align="right">Platform fit</th>
+<th align="right">Effort</th>
+<th align="right">Risk</th>
+<th>Classification (Adopt/Adapt/Defer/Reject)</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Compatibility matrix by processor model</td>
+<td>SmartEar, Advanced Bionics</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Adopt</td>
+<td>Highest-impact uncertainty reducer for first purchase</td>
+</tr>
+<tr>
+<td>Sizing guide by head circumference</td>
+<td>PowerAid, BAHA Accessories</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Fast to implement; direct impact on returns and support</td>
+</tr>
+<tr>
+<td>Compatibility quiz flow</td>
+<td>SmartEar-like compatibility UX</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Adapt</td>
+<td>Start lightweight; expand after observed support data</td>
+</tr>
+<tr>
+<td>Mobile sticky add-to-basket</td>
+<td>DTC best-practice pattern</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Low effort with direct mobile funnel benefit</td>
+</tr>
+<tr>
+<td>Trust stack near CTA</td>
+<td>SmartEar, Deafmetal</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Needed for confidence in CI-adjacent buying context</td>
+</tr>
+<tr>
+<td>Italy payments mix (wallets/cards/prepaid-friendly)</td>
+<td>Italy ecommerce expectations</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Adopt</td>
+<td>Conversion-critical for Italy checkout behavior</td>
+</tr>
+<tr>
+<td>Delivery ETA + tracking promise</td>
+<td>Ecommerce leaders</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Reduces buyer anxiety and support load</td>
+</tr>
+<tr>
+<td>14-day withdrawal/returns clarity</td>
+<td>Italy consumer rights context</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Compliance plus conversion trust requirement</td>
+</tr>
+<tr>
+<td>Bundles (2-pack + spare)</td>
+<td>CI Retention Solutions style mechanics</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Lifts AOV and resilience for daily-use buyers</td>
+</tr>
+<tr>
+<td>Jewellery add-ons lane</td>
+<td>Deafmetal</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Defer</td>
+<td>Valuable after core headband funnel stabilizes</td>
+</tr>
+<tr>
+<td>Clinic/provider partner page</td>
+<td>Manufacturer/provider patterns</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Adapt</td>
+<td>Good referral channel; stage after core PDP reliability</td>
+</tr>
+</tbody>
+</table>
+<h2>6) Design Implications</h2>
+<ul>
+<li>Information architecture:
+<ul>
+<li>Home with ICP split (<code>Caregivers/Kids</code>, <code>Sport/Active</code>, <code>Daily Comfort</code>).</li>
+<li>Core PDP with compatibility + sizing above the fold.</li>
+<li>Dedicated compatibility guide and sizing guide pages.</li>
+<li>Support/FAQ, legal/returns, and provider page.</li>
+</ul>
+</li>
+<li>Page/component implications:
+<ul>
+<li>Compatibility matrix component.</li>
+<li>Size selector with circumference helper.</li>
+<li>Trust strip near CTA (payments, returns, shipping, reviews).</li>
+<li>Sticky mobile purchase CTA.</li>
+</ul>
+</li>
+<li>Copy/messaging implications:
+<ul>
+<li>Use-case language: loss prevention, fit stability, sweat/sport stability.</li>
+<li>Avoid medical efficacy claims.</li>
+<li>Clarify microphone-safe wear guidance where true.</li>
+</ul>
+</li>
+<li>Trust/support implications:
+<ul>
+<li>Fast support entrypoint (including messaging channel).</li>
+<li>Clear delivery windows and returns workflow.</li>
+</ul>
+</li>
+</ul>
+<h2>7) Technical Implications</h2>
+<ul>
+<li>Reusable platform primitives to use:
+<ul>
+<li>product option components,</li>
+<li>trust/payment iconography blocks,</li>
+<li>FAQ/accordion patterns,</li>
+<li>analytics event hooks for funnel steps.</li>
+</ul>
+</li>
+<li>New build requirements:
+<ul>
+<li>compatibility data model keyed by processor family/model,</li>
+<li>sizing helper logic + content management for fit guides,</li>
+<li>event instrumentation for compatibility/sizing interactions.</li>
+</ul>
+</li>
+<li>Testing and observability implications:
+<ul>
+<li>Unit tests for compatibility and size logic.</li>
+<li>Integration tests for add-to-cart with options.</li>
+<li>E2E tests for checkout path and policy visibility.</li>
+<li>KPI logging for CVR, checkout drop-off, and return reasons.</li>
+</ul>
+</li>
+</ul>
+<h2>8) Prioritized Backlog Candidates</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Item</th>
+<th>Why now</th>
+<th>Acceptance criteria</th>
+<th>Dependencies</th>
+<th>Evidence refs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>Build compatibility matrix on PDP</td>
+<td>Top conversion blocker</td>
+<td>Users can select processor type and see fit status; no broken states</td>
+<td>Processor model list</td>
+<td>SmartEar, Advanced Bionics</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Add circumference-based sizing guide</td>
+<td>Top return-risk blocker</td>
+<td>Sizing guide visible from PDP; size selection assist works on mobile/desktop</td>
+<td>Size chart content</td>
+<td>PowerAid, BAHA Accessories</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Add trust stack + returns/delivery summary near CTA</td>
+<td>Purchase confidence + compliance</td>
+<td>Payment, shipping ETA, and returns summary visible before checkout</td>
+<td>Policy copy, payment config</td>
+<td>SmartEar, Italy rights</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Implement sticky mobile add-to-basket</td>
+<td>Mobile conversion uplift</td>
+<td>Sticky CTA appears on scroll and preserves selected options</td>
+<td>PDP option state</td>
+<td>DTC best-practice pattern</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Add bundles (2-pack + spare)</td>
+<td>AOV and convenience</td>
+<td>Bundle option on PDP and tracked in analytics</td>
+<td>Pricing rules</td>
+<td>CI Retention Solutions</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Add compatibility quiz page</td>
+<td>Pre-qualification</td>
+<td>Quiz routes users to right variant and logs outcomes</td>
+<td>Compatibility data model</td>
+<td>SmartEar pattern</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Add clinic/provider landing page</td>
+<td>Referral channel</td>
+<td>Provider page live with contact/referral flow</td>
+<td>Ops readiness</td>
+<td>MED-EL/provider model</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Add jewellery add-on lane</td>
+<td>Expansion after core proof</td>
+<td>Add-on page integrated and purchasable</td>
+<td>Add-on SKU readiness</td>
+<td>Deafmetal</td>
+</tr>
+</tbody>
+</table>
+<h2>9) Open Questions</h2>
+<ul>
+<li>Which processor models are guaranteed supported at launch (exact compatibility table)?</li>
+<li>Which payment methods will be live on day one in Italy (cards, PayPal, wallet set)?</li>
+<li>What is the final delivery SLA promise for Italy and how is tracking communicated?</li>
+<li>Which support channel SLA is realistic for first 30 days?</li>
+<li>Which bundle configuration is preferred for first test (<code>2-pack</code>, <code>3-pack</code>, mixed)?</li>
+</ul>
+<h2>10) Source List</h2>
+<p>Accessed 2026-02-12:</p>
+<ul>
+<li><a href="https://www.poweraid.it/apparecchi-acustici/protesi-acustiche-digitali/sistemi-anticaduta/smartear-fascia-universale-per-impianti-cocleari-grigio-l.html">https://www.poweraid.it/apparecchi-acustici/protesi-acustiche-digitali/sistemi-anticaduta/smartear-fascia-universale-per-impianti-cocleari-grigio-l.html</a></li>
+<li><a href="https://smartear.eu/en/products/med-el-sports-headband-for-audio-processor-1421">https://smartear.eu/en/products/med-el-sports-headband-for-audio-processor-1421</a></li>
+<li><a href="https://smartear.eu/en/delivery">https://smartear.eu/en/delivery</a></li>
+<li><a href="https://smartear.eu/en/payments">https://smartear.eu/en/payments</a></li>
+<li><a href="https://hearinghenry.com/products/standard-junior-headband">https://hearinghenry.com/products/standard-junior-headband</a></li>
+<li><a href="https://hearinghenry.com/pages/shipping-information">https://hearinghenry.com/pages/shipping-information</a></li>
+<li><a href="https://deafmetalusa.com/">https://deafmetalusa.com/</a></li>
+<li><a href="https://deafmetalusa.com/products/holster">https://deafmetalusa.com/products/holster</a></li>
+<li><a href="https://www.bahaaccessoriesuk.com/product/aligator-baha-headband-cochlear-baha-oticon-ponto-medel-adhear/">https://www.bahaaccessoriesuk.com/product/aligator-baha-headband-cochlear-baha-oticon-ponto-medel-adhear/</a></li>
+<li><a href="https://www.ciretentionsolutions.com/product-page/retention-bows">https://www.ciretentionsolutions.com/product-page/retention-bows</a></li>
+<li><a href="https://www.medel.com/hearing-solutions/accessories/fixations">https://www.medel.com/hearing-solutions/accessories/fixations</a></li>
+<li><a href="https://www.advancedbionics.com/us/en/portals/consumer-portal/shop/accessories.html">https://www.advancedbionics.com/us/en/portals/consumer-portal/shop/accessories.html</a></li>
+<li><a href="https://www.osservatori.net/comunicato/ecommerce-b2c/ecommerce-b2c-in-italia-cresce-netcomm/">https://www.osservatori.net/comunicato/ecommerce-b2c/ecommerce-b2c-in-italia-cresce-netcomm/</a></li>
+<li><a href="https://www.mimit.gov.it/it/mercato-e-consumatori/tutela-del-consumatore/diritti-del-consumatore/diritto-di-recesso">https://www.mimit.gov.it/it/mercato-e-consumatori/tutela-del-consumatore/diritti-del-consumatore/diritto-di-recesso</a></li>
+</ul>
+<h2>11) HTML Companion (Required)</h2>
+<pre><code class="language-bash">pnpm docs:render-user-html -- docs/business-os/site-upgrades/HEAD/2026-02-12-upgrade-brief.user.md
+</code></pre>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/site-upgrades/HEAD/2026-02-12-upgrade-brief.user.md</code></div>
+      <div>Generated: 2026-02-12T10:12:46.922Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

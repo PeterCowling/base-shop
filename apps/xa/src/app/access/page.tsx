@@ -98,7 +98,7 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
         </div>
 
         <div className={`mt-10 grid gap-8 md:grid-cols-[1.1fr_0.9fr] ${styles.gateFade} ${styles.gateDelay}`}>
-          <section className="rounded-xl border border-border-2 bg-white p-6 shadow-elevation-1">
+          <section className="rounded-xl border border-border-2 bg-panel p-6 shadow-elevation-1">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <div className={`text-xs uppercase tracking-[0.35em] ${mono.className}`}>
@@ -125,7 +125,7 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
             />
 
             {errorMessage ? (
-              <div className="mt-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+              <div className="mt-4 rounded-md border border-danger bg-danger-soft p-3 text-sm text-danger-fg">
                 {errorMessage}
               </div>
             ) : null}
@@ -136,7 +136,7 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
                 <input
                   name="code"
                   placeholder="XXXX-XXXX"
-                  className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-3 text-sm uppercase tracking-[0.35em] text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+                  className="mt-2 w-full rounded-md border border-border-2 bg-panel px-3 py-3 text-sm uppercase tracking-[0.35em] text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
                   autoComplete="off"
                   required
                 />
@@ -145,7 +145,7 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
+                  className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-fg-inverse transition hover:opacity-90"
                 >
                   Unlock
                 </button>
@@ -156,7 +156,7 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
             </form>
           </section>
 
-          <section className="rounded-xl border border-border-2 bg-white p-6 shadow-elevation-1">
+          <section className="rounded-xl border border-border-2 bg-panel p-6 shadow-elevation-1">
             <AccessGateClient monoClassName={mono.className} />
           </section>
         </div>

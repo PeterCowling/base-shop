@@ -30,7 +30,7 @@
  */
 
 // Vector types and operations
-export type { Vector2, Vector3 } from "./vector";
+export type { Vector2, Vector3 } from "./vector.js";
 export {
   // Vector2 Arithmetic
   add,
@@ -81,10 +81,10 @@ export {
   // Constants
   ZERO2,
   ZERO3,
-} from "./vector";
+} from "./vector.js";
 
 // Rectangle types and operations
-export type { Bounds,Rect } from "./rect";
+export type { Bounds,Rect } from "./rect.js";
 export {
   area,
   boundsFromRect,
@@ -110,10 +110,10 @@ export {
   scale as scaleRect,
   translate as translateRect,
   union,
-} from "./rect";
+} from "./rect.js";
 
 // Matrix types and operations
-export type { Matrix3x3, TransformComponents } from "./matrix";
+export type { Matrix3x3, TransformComponents } from "./matrix.js";
 export {
   // Decomposition
   decompose,
@@ -134,4 +134,4 @@ export {
   // Construction
   translate,
   transpose,
-} from "./matrix";
+} from "./matrix.js";

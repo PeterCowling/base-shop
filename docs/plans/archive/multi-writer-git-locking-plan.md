@@ -45,7 +45,7 @@ Coordination strategy:
 
 ## Repo State Alignment
 
-This plan previously described certain “current workflow” elements (writer lock scripts + Merge Gate workflow) as if they were present in the committed repo. The review-fact-check audit confirmed:
+This plan previously described certain “current workflow” elements (writer lock scripts + Merge Gate workflow) as if they were present in the committed repo. The lp-do-factcheck audit confirmed:
 
 ### Verified in HEAD (`82825687…`)
 
@@ -603,5 +603,5 @@ In v1:
 
 ## Decision Log
 
-- 2026-02-01: Revised plan to align with review-fact-check audit; writer-lock and Merge Gate are no longer described as present in HEAD unless explicitly landed.
+- 2026-02-01: Revised plan to align with lp-do-factcheck audit; writer-lock and Merge Gate are no longer described as present in HEAD unless explicitly landed.
 

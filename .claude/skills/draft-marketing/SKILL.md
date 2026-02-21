@@ -21,14 +21,69 @@ Use this skill when a plan task outputs campaign-ready content (email campaign c
 
 ## Inputs
 
-- Channel (`email`, `ads`, `landing`, `social`, etc.)
+- Mode (`--mode brief|final`, default: `final`)
+- Channel (`email`, `ads`, `landing`, `landing-page-copy`, `social`, etc.)
 - Audience segment
 - Offer/value proposition
 - Evidence/proof points available
 - CTA and conversion event
 - Tone/brand constraints
 
+### Mode Behavior
+
+**brief** - Produces a creative brief (strategy + messaging hierarchy + key visuals + CTA variants) before final assets are drafted. Output: `docs/marketing/<slug>-creative-brief.md`
+
+**final** (default) - Produces campaign-ready copy with variants. Output: `docs/marketing/<slug>-asset-pack.md`
+
 ## Output
+
+### Brief Mode
+
+Create/update:
+
+`docs/marketing/<slug>-creative-brief.md`
+
+Required sections:
+
+```markdown
+# <Campaign Name> - Creative Brief
+
+## Objective
+- What this campaign must achieve
+- Success metric
+
+## Target Audience
+- Primary segment
+- Pain points/motivations
+- Language/tone expectations
+
+## Core Message
+- Positioning statement
+- Key benefit hierarchy (1-3 bullets)
+- Proof points available
+
+## Visual Direction
+- Mood/style references
+- Key visual concepts
+- Brand constraints
+
+## CTA Strategy
+- Primary CTA
+- Secondary CTA (if applicable)
+- Conversion path
+
+## Channel Considerations
+- Format constraints
+- Platform-specific requirements
+- Distribution plan
+
+## Next Steps
+- [ ] Stakeholder approval
+- [ ] Final asset drafting
+- [ ] Asset testing plan
+```
+
+### Final Mode (Default)
 
 Create/update:
 
@@ -65,6 +120,16 @@ Required sections:
 
 ## Workflow
 
+### Brief Mode
+
+1. Lock objective, audience, and channel.
+2. Define core message and positioning.
+3. Map visual direction and CTA strategy.
+4. Document channel considerations.
+5. Save brief with clear next steps.
+
+### Final Mode
+
 1. Lock channel + audience + objective.
 2. Draft primary asset with one clear CTA.
 3. Add one to two variants only when strategically justified.
@@ -73,4 +138,8 @@ Required sections:
 
 ## Completion Message
 
+**Brief mode:**
+> "Creative brief ready: `docs/marketing/<slug>-creative-brief.md` with strategy, messaging hierarchy, visual direction, and CTA variants."
+
+**Final mode:**
 > "Marketing asset pack ready: `docs/marketing/<slug>-asset-pack.md` with primary draft, variants, and measurement plan."

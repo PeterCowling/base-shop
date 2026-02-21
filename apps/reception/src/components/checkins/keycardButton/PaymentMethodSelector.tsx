@@ -31,7 +31,7 @@ function PaymentMethodSelector({
           label="Cash"
           value={KeycardPayType.CASH}
           icon={faMoneyBill}
-          iconClass="text-green-600"
+          iconClass="text-success-main"
           currentValue={payType}
           onChange={() => setPayType(KeycardPayType.CASH)}
         />
@@ -39,7 +39,7 @@ function PaymentMethodSelector({
           label="Doc"
           value={KeycardPayType.DOCUMENT}
           icon={faFileAlt}
-          iconClass="text-yellow-600"
+          iconClass="text-warning-main"
           currentValue={payType}
           onChange={() => setPayType(KeycardPayType.DOCUMENT)}
         />

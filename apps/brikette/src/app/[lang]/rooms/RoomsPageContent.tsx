@@ -2,7 +2,7 @@
 
 // src/app/[lang]/rooms/RoomsPageContent.tsx
 // Client component for rooms listing page
-import { Fragment, memo } from "react";
+import { Fragment, memo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
@@ -11,8 +11,10 @@ import { DirectBookingPerks } from "@acme/ui/molecules";
 import AlsoHelpful from "@/components/common/AlsoHelpful";
 import RoomsSection, { type RoomsSectionBookingQuery } from "@/components/rooms/RoomsSection";
 import RoomsStructuredData from "@/components/seo/RoomsStructuredData";
+import { roomsData } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { fireViewItemList } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
@@ -47,6 +49,13 @@ function RoomsPageContent({ lang, bookingQuery }: Props) {
     ""
   );
 
+  useEffect(() => {
+    fireViewItemList({
+      itemListId: "rooms_index",
+      rooms: roomsData,
+    });
+  }, []);
+
   return (
     <Fragment>
       <RoomsStructuredData />
@@ -62,7 +71,7 @@ function RoomsPageContent({ lang, bookingQuery }: Props) {
       </Section>
 
       {/* Rooms Grid */}
-      <RoomsSection lang={lang} bookingQuery={bookingQuery} />
+      <RoomsSection lang={lang} bookingQuery={bookingQuery} itemListId="rooms_index" />
 
       {/* Direct Booking Perks */}
       <Section padding="default">

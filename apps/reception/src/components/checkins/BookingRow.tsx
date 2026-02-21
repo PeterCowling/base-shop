@@ -14,12 +14,14 @@ import BookingRowView from "./view/BookingRow";
  * @param booking       Full checkin data for a single occupant
  * @param selectedDate  The date for which we are viewing/managing checkins
  * @param onRowClick    Optional callback for when the row is clicked
+ * @param isCancelled   Whether this booking is cancelled (shows badge)
  */
 interface BookingRowProps {
   booking: CheckInRow;
   selectedDate: string;
   allGuests: CheckInRow[];
   onRowClick?: (booking: CheckInRow) => void;
+  isCancelled?: boolean;
 }
 
 /**
@@ -41,6 +43,7 @@ const BookingRow: FC<BookingRowProps> = ({
   selectedDate,
   allGuests,
   onRowClick,
+  isCancelled,
 }) => {
   const { draftValue, setDraftValue, handleBlur, handleKeyDown } =
     useRoomAllocation({ booking, selectedDate, allGuests });
@@ -101,6 +104,7 @@ const BookingRow: FC<BookingRowProps> = ({
       notesText={notesText}
       notesOpen={notesOpen}
       closeNotes={() => setNotesOpen(false)}
+      isCancelled={isCancelled}
     />
   );
 };

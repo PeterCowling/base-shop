@@ -184,7 +184,7 @@ function VirtualListInner<T>(
         };
         result.push(
           <div
-            key={i}
+            key={`virtual-row-${i}`}
             className={cn("virtual-list-row", rowClassName)}
             style={style}
             role="listitem"
@@ -397,7 +397,7 @@ export function VariableVirtualList<T>({
         const pos = itemPositions[i];
         result.push(
           <div
-            key={i}
+            key={`virtual-row-${i}`}
             style={{
               position: "absolute",
               top: pos.offset,

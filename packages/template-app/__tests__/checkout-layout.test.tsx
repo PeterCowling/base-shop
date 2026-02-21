@@ -36,7 +36,7 @@ describe("[lang]/checkout/layout", () => {
     const { default: Layout } = await import("../src/app/[lang]/checkout/layout");
     const ui = (await Layout({
       children: <div data-cy="child" />,
-      params: Promise.resolve({ lang: ["en"] }),
+      params: Promise.resolve({ lang: ["en"] }) as any,
     })) as ReactElement;
     render(ui);
 

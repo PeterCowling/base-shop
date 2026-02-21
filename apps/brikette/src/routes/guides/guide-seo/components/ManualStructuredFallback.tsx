@@ -88,7 +88,7 @@ export function computeManualStructuredFallback({
           {intro.length > 0 ? (
             <div className="space-y-4">
               {intro.map((paragraph, idx) => (
-                <p key={idx}>{renderGuideLinkTokens(paragraph, lang, `intro-${idx}`, undefined)}</p>
+                <p key={`intro-${idx}`}>{renderGuideLinkTokens(paragraph, lang, `intro-${idx}`, undefined)}</p>
               ))}
             </div>
           ) : null}

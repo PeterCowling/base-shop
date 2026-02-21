@@ -8,6 +8,8 @@ import { createRawEmail } from "../utils/email-mime.js";
 import { stripLegacySignatureBlock } from "../utils/email-signature.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 
+import { appendTelemetryEvent,applyDraftOutcomeLabelsStrict } from "./gmail.js";
+
 function resolveDataRoot(): string {
   const candidates = [
     join(process.cwd(), "packages", "mcp-server", "data"),
@@ -109,6 +111,9 @@ function resolveTemplateSubject(
       return { subject: "Prepayment - Cancelled post 3rd Attempt" };
     case 8:
       return { subject: "Prepayment Successful" };
+    case 27:
+      // TASK-04: Wire activity code 27 (CANCELLED) to cancellation confirmation template
+      return { subject: "Cancellation Confirmation" };
     case 2:
     case 3:
     case 4:
@@ -136,6 +141,14 @@ export async function sendGuestEmailActivity(
   const selection = resolveTemplateSubject(activityCode, resolvedProvider);
 
   if (!selection.subject) {
+    appendTelemetryEvent({
+      ts: new Date().toISOString(),
+      event_key: "email_draft_deferred",
+      source_path: "reception",
+      tool_name: "guest_email_activity",
+      actor: "system",
+      reason: selection.reason ?? "unsupported-activity-code",
+    });
     return {
       success: true,
       status: "deferred",
@@ -152,6 +165,14 @@ export async function sendGuestEmailActivity(
   const template = findTemplateBySubject(templates, selection.subject);
 
   if (!template) {
+    appendTelemetryEvent({
+      ts: new Date().toISOString(),
+      event_key: "email_draft_deferred",
+      source_path: "reception",
+      tool_name: "guest_email_activity",
+      actor: "system",
+      reason: "template-not-found",
+    });
     return {
       success: true,
       status: "deferred",
@@ -212,6 +233,24 @@ export async function sendGuestEmailActivity(
     requestBody: {
       message: { raw },
     },
+  });
+  const draftMessageId = response.data?.message?.id;
+  await applyDraftOutcomeLabelsStrict(clientResult.client, {
+    draftMessageId: draftMessageId ?? "",
+    sourcePath: "reception",
+    actor: "human",
+    outboundCategory: "operations",
+    toolName: "guest_email_activity",
+  });
+
+  appendTelemetryEvent({
+    ts: new Date().toISOString(),
+    event_key: "email_draft_created",
+    source_path: "reception",
+    tool_name: "guest_email_activity",
+    message_id: draftMessageId || null,
+    draft_id: response.data?.id || null,
+    actor: "system",
   });
 
   return {

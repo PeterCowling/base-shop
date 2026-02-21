@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
-import { createBreaker } from "../providers/circuitBreaker";
+import { createBreaker } from "../providers/circuitBreaker.js";
 
 jest.mock(
   "@acme/i18n/en.json",

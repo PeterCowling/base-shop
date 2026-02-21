@@ -10,7 +10,7 @@ describe("subscriptionUsage delegate stub", () => {
 
     await expect(delegate.findUnique({ where })).resolves.toBeNull();
 
-    await delegate.upsert({ where, create: { ...where, shipments: 1 }, update: { shipments: 2 } });
+    await delegate.upsert({ where, create: { ...where, shipments: 1 } as any, update: { shipments: 2 } });
 
     await expect(delegate.findUnique({ where })).resolves.toEqual({
       ...where,
@@ -20,7 +20,7 @@ describe("subscriptionUsage delegate stub", () => {
     const otherWhere = { ...where, customerId: "cust2" };
     await delegate.upsert({
       where: otherWhere,
-      create: { ...otherWhere, shipments: 3 },
+      create: { ...otherWhere, shipments: 3 } as any,
       update: { shipments: 4 },
     });
 
@@ -39,15 +39,15 @@ describe("subscriptionUsage delegate stub", () => {
 
     const created = await delegate.upsert({
       where,
-      create: { ...where, shipments: 1, returns: 2, notes: "orig" },
-      update: { shipments: 0, returns: 0, notes: "" },
+      create: { ...where, shipments: 1, returns: 2, notes: "orig" } as any,
+      update: { shipments: 0, returns: 0, notes: "" } as any,
     });
     expect(created).toEqual({ ...where, shipments: 1, returns: 2, notes: "orig" });
 
     const updated = await delegate.upsert({
       where,
-      create: { ...where, shipments: 0, returns: 0, notes: "" },
-      update: { shipments: 5, notes: "updated" },
+      create: { ...where, shipments: 0, returns: 0, notes: "" } as any,
+      update: { shipments: 5, notes: "updated" } as any,
     });
     expect(updated).toEqual({ ...where, shipments: 5, returns: 2, notes: "updated" });
   });

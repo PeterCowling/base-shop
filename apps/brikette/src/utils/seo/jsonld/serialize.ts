@@ -1,4 +1,4 @@
-import { serializeJsonLd } from "@acme/ui/lib/seo/serializeJsonLd";
+import { serializeJsonLdValue as serializeJsonLd } from "@acme/seo/jsonld";
 
 const escapeJsonLdString = (value: string): string =>
   value

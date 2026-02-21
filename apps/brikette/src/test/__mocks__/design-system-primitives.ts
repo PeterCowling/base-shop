@@ -53,7 +53,7 @@ export const Cluster = ({ children, asChild, ...props }: any) => {
 };
 
 export const Inline = ({ children, asChild, ...props }: any) => {
-  const { gap: _g, align: _a, ...rest } = props;
+  const { gap: _g, align: _a, wrap: _w, ...rest } = props;
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(children, rest);
   }

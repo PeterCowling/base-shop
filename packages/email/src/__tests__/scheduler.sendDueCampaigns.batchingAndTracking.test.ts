@@ -1,13 +1,24 @@
-// Mock i18n to avoid dynamic import issues (Jest hoists this above imports)
-import { sendDueCampaigns } from "../scheduler";
-
-import { sendCampaignEmail,setupTest, shop, teardown } from "./testUtils";
-
+// Mocks for modules the scheduler imports dynamically.
+// testUtils also mocks ../send and ../hooks, but the i18n and lib mocks must
+// live here so Jest hoists them before the scheduler module loads.
 jest.mock("@acme/i18n/useTranslations.server", () => ({
+  __esModule: true,
   useTranslations: jest.fn(() =>
     Promise.resolve((key: string) => key === "email.unsubscribe" ? "Unsubscribe" : key)
   ),
 }));
+jest.mock("@acme/lib", () => ({
+  validateShopName: jest.fn((s: string) => s),
+}));
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
+  listEvents: jest.fn().mockResolvedValue([]),
+}));
+
+// eslint-disable-next-line import/first
+import { sendDueCampaigns } from "../scheduler";
+
+// eslint-disable-next-line import/first
+import { sendCampaignEmail, setupTest, shop, teardown } from "./testUtils";
 
 describe("sendDueCampaigns – batching and tracking URLs", () => {
   let ctx: ReturnType<typeof setupTest>;

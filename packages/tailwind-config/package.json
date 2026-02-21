@@ -21,6 +21,6 @@
     "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint .",
-    "test": "pnpm exec jest --config ./jest.config.cjs"
+    "test": "pnpm -w run test:governed -- jest -- --config packages/tailwind-config/jest.config.cjs"
   }
 }

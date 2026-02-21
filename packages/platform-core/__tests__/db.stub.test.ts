@@ -1,4 +1,4 @@
-import { createTestPrismaStub } from "../src/db";
+import { createTestPrismaStub } from "../src/db/testStub";
 
 describe("createTestPrismaStub", () => {
   it("supports rentalOrder CRUD operations", async () => {
@@ -261,7 +261,7 @@ describe("createTestPrismaStub", () => {
 
   it("wraps multiple mutations in $transaction", async () => {
     const db = createTestPrismaStub();
-    await db.$transaction(async (tx) => {
+    await db.$transaction(async (tx: any) => {
       await tx.rentalOrder.create({
         data: { shop: "shop1", sessionId: "t1" },
       });

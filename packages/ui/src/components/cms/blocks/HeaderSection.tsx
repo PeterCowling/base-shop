@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 
 import { useTranslations } from "@acme/i18n";
 import { resolveLocale } from "@acme/i18n/locales";
@@ -128,7 +129,7 @@ export default function HeaderSection({
       ) : null}
       <div className="relative mx-auto px-4 py-3">
         <Cluster alignY="center" gap={4}>
-          <a className="font-bold inline-flex items-center min-h-10 min-w-10" href="/">{t("header.brand")}</a>
+          <Link className="font-bold inline-flex items-center min-h-10 min-w-10" href="/">{t("header.brand")}</Link>
           {variant === "centerLogo" ? <div className="mx-auto" /> : null}
           <nav className="ms-auto">
             <Cluster alignY="center" gap={3}>
@@ -151,7 +152,7 @@ export default function HeaderSection({
             <ol>
               {breadcrumbs.map((c: { href: string; label: string }, i: number) => (
                 <li key={c.href} className="inline-block align-middle me-2 last:me-0">
-                  <a href={c.href} className="inline-flex items-center min-h-10 min-w-10 hover:underline px-1">{c.label}</a> {/* i18n-exempt -- DS-1024: dynamic route labels provided by router [ttl=2026-12-31] */}
+                  <Link href={c.href} className="inline-flex items-center min-h-10 min-w-10 hover:underline px-1">{c.label}</Link> {/* i18n-exempt -- DS-1024: dynamic route labels provided by router [ttl=2026-12-31] */}
                   {i < breadcrumbs.length - 1 ? <span className="mx-1" aria-hidden>/</span> : null} {/* i18n-exempt -- DS-1027: separator glyph only [ttl=2026-12-31] */}
                 </li>
               ))}

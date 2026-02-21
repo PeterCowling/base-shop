@@ -10,7 +10,7 @@ const SingleDisabled: FC<TDaysProps> = ({ topColor }) => {
       viewBox="0 0 26 26"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      data-testid="single.disabled"
+      data-cy="single.disabled"
     >
       <g clipPath="url(#clip0_383_3078)">
         <path

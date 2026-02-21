@@ -67,6 +67,16 @@
       "import": "./dist/themeTokens/index.js",
       "default": "./dist/themeTokens/index.js"
     },
+    "./themeTokens/index": {
+      "types": "./dist/themeTokens/index.d.ts",
+      "import": "./dist/themeTokens/index.js",
+      "default": "./dist/themeTokens/index.js"
+    },
+    "./themeTokens/browser": {
+      "types": "./dist/themeTokens/browser.d.ts",
+      "import": "./dist/themeTokens/browser.js",
+      "default": "./dist/themeTokens/browser.js"
+    },
     "./products": {
       "types": "./dist/products/index.d.ts",
       "import": "./dist/products/index.js",
@@ -230,9 +240,9 @@
     "@acme/config": "workspace:^",
     "@acme/date-utils": "workspace:^",
     "@acme/i18n": "workspace:^",
+    "@acme/lib": "workspace:^",
     "@acme/page-builder-core": "workspace:^",
     "@acme/plugin-sanity": "workspace:^",
-    "@acme/lib": "workspace:^",
     "@acme/stripe": "workspace:^",
     "@acme/templates": "workspace:^",
     "@acme/types": "workspace:^",
@@ -240,11 +250,12 @@
     "@themes/base": "workspace:^",
     "@types/node": "^20.19.4",
     "aws4fetch": "^1.0.20",
-    "next": "^15.3.9",
+    "next": "16.1.6",
     "ulid": "^3.0.1"
   },
   "devDependencies": {
     "@prisma/client": "6.14.0",
+    "memfs": "3.5.3",
     "prisma": "6.14.0",
     "react-test-renderer": "19.2.1"
   }

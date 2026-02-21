@@ -26,7 +26,7 @@ Add a periodic `/kanban-sweep` skill that reads a snapshot of the entire Busines
 - Single-file sweep report output at `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`
 - Constraint-first bottleneck diagnosis with numeric 0-10 confidence scoring
 - Ranked interventions using Priority = (Impact × Confidence × Time-to-signal) / (Effort × (1 + Risk))
-- Concrete next-step skill invocations (e.g., `/idea-develop X`, `/lp-fact-find Y`) in every recommendation
+- Concrete next-step skill invocations (e.g., `/idea-develop X`, `/lp-do-fact-find Y`) in every recommendation
 - Reflection against previous sweep when one exists
 
 ## Non-goals
@@ -57,7 +57,7 @@ Add a periodic `/kanban-sweep` skill that reads a snapshot of the entire Busines
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/kanban-sweep-agent-lp-fact-find.md`
+- Related brief: `docs/plans/kanban-sweep-agent-lp-do-fact-find.md`
 - Key findings:
   - 29 existing skills all follow single-SKILL.md-per-directory convention
   - Agent API routes are well-tested (cards, ideas, stage-docs all have TC-XX test suites)
@@ -96,7 +96,7 @@ The feature is built in 5 ordered tasks: two prerequisite API endpoints, the swe
 3. **SKILL.md** — Single file containing: operating mode, inputs, full workflow (8 steps from ingest to reflection), constitution invariants, scoring rubric, bottleneck categories, evaluation rubric, red flags, edge cases, integration with other skills, Phase 0 constraints, completion messages. Embeds the sweep report template as a section.
 4. **Directory + prototype** — Create `docs/business-os/sweeps/` with `.gitkeep`, then manually invoke the skill to validate output quality.
 
-No alternatives considered — the approach was fully resolved during the lp-fact-find critique walkthrough.
+No alternatives considered — the approach was fully resolved during the lp-do-fact-find critique walkthrough.
 
 ## Active tasks
 
@@ -278,7 +278,7 @@ No alternatives considered — the approach was fully resolved during the lp-fac
   - 7 red flags listed as guardrails
   - Sweep report template embedded with YAML frontmatter
   - Edge cases section (4+ cases)
-  - Integration with other skills section (references `/idea-develop`, `/lp-fact-find`, `/idea-advance`, `/idea-scan`)
+  - Integration with other skills section (references `/idea-develop`, `/lp-do-fact-find`, `/idea-advance`, `/idea-scan`)
   - Phase 0 constraints section
   - Completion messages section
 - **Test contract:**
@@ -310,8 +310,8 @@ No alternatives considered — the approach was fully resolved during the lp-fac
 - **Notes / references:**
   - Convention source: `.claude/skills/idea-scan/SKILL.md` (closest analogue — reads BoS, generates ideas)
   - Draft pack sources: `~/Downloads/kanban-sweep-agent-draft/` (constitution, playbooks, evaluation, templates)
-  - Fact-find "keep vs drop" table: `docs/plans/kanban-sweep-agent-lp-fact-find.md` lines 114-131
-  - Key design decisions (all resolved in lp-fact-find):
+  - Fact-find "keep vs drop" table: `docs/plans/kanban-sweep-agent-lp-do-fact-find.md` lines 114-131
+  - Key design decisions (all resolved in lp-do-fact-find):
     - Portfolio-wide scope with per-business sections
     - Single-file output at `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`
     - Opt-in idea creation via `--create-ideas` flag
@@ -392,7 +392,7 @@ No alternatives considered — the approach was fully resolved during the lp-fac
 - **Depends on:** TASK-03, TASK-04
 - **Effort:** M (no code changes, but requires running the Business OS API locally, invoking the sweep skill, and evaluating output against the 6-dimension rubric. Crosses 1 integration boundary: skill ↔ live API.)
 - **Confidence:** 80%
-  - Implementation: 82% — Invoking `/kanban-sweep` is straightforward. The main risk is whether the Business OS API will be running locally when this task is attempted (it wasn't during the lp-fact-find session).
+  - Implementation: 82% — Invoking `/kanban-sweep` is straightforward. The main risk is whether the Business OS API will be running locally when this task is attempted (it wasn't during the lp-do-fact-find session).
   - Approach: 82% — Evaluate using the embedded 6-dimension rubric (constraint quality, actionability, deletion-first bias, measurement discipline, flow literacy, people/system framing). Score 0-5 per dimension, total /30. Threshold: ≥18/30 for Phase 0 acceptance.
   - Impact: 78% — If the prototype reveals the SKILL.md instructions are inadequate, TASK-03 needs revision. This is expected and healthy — the prototype is a validation step.
 - **Acceptance:**
@@ -419,7 +419,7 @@ No alternatives considered — the approach was fully resolved during the lp-fac
 - **Planning validation:**
   - Tests run: N/A (requires live API — cannot validate during planning)
   - Test stubs written: N/A (M effort, manual validation)
-  - Unexpected findings: Business OS API was not running locally during lp-fact-find. Must ensure it's running before attempting this task.
+  - Unexpected findings: Business OS API was not running locally during lp-do-fact-find. Must ensure it's running before attempting this task.
 - **What would make this ≥90%:**
   - Successful prototype with score ≥22/30
   - Pete confirms the bottleneck diagnosis matches his intuition

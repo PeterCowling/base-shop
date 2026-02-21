@@ -9,11 +9,12 @@ import MarketingOverview, {
 
 import ShopEmailComposerClient from "./shop-email-composer.client";
 
-export default async function ShopEmailMarketingPage({
-  params,
-}: {
-  params: { shop: string };
-}) {
+export default async function ShopEmailMarketingPage(
+  props: {
+    params: Promise<{ shop: string }>;
+  }
+) {
+  const params = await props.params;
   const shop = params.shop;
 
   // Build analytics for just this shop (server-side)

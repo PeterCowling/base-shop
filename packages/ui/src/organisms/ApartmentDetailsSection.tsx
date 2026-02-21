@@ -5,20 +5,19 @@ import Link from "next/link";
 import { Check } from "lucide-react";
 
 import { Heading } from "../atoms/Typography";
-import { Button, Card, CardContent } from "../components/atoms/shadcn";
-import { useModal } from "../context/ModalContext";
+import { Card, CardContent } from "../components/atoms/shadcn";
 import { i18nConfig } from "../i18n.config";
 import { resolveBookingCtaLabel } from "../shared";
 
 interface DetailsSectionProps {
   bookingUrl?: string;
   lang?: string;
+  onBookingCtaClick?: () => void;
 }
 
-function ApartmentDetailsSection({ bookingUrl, lang }: DetailsSectionProps): JSX.Element {
+function ApartmentDetailsSection({ bookingUrl, lang, onBookingCtaClick }: DetailsSectionProps): JSX.Element {
   const { t, ready } = useTranslation("apartmentPage", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
-  const { openModal } = useModal();
   const raw = t("detailsList", { returnObjects: true });
   const items = Array.isArray(raw) ? (raw as string[]) : [];
 
@@ -41,7 +40,7 @@ function ApartmentDetailsSection({ bookingUrl, lang }: DetailsSectionProps): JSX
   }, [t, tTokens, ready, tokensReady]);
 
   return (
-    <section aria-labelledby="details-heading" className="space-y-4">
+    <section aria-labelledby="details-heading" className="flex flex-col items-center space-y-4">
       <Heading
         level={2}
         id={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] id attribute */ "details-heading"}
@@ -49,7 +48,7 @@ function ApartmentDetailsSection({ bookingUrl, lang }: DetailsSectionProps): JSX
       >
         {t("detailsHeading")}
       </Heading>
-      <Card className="mx-auto text-start">
+      <Card className="w-full max-w-lg text-start">
         <CardContent>
           <ul className="space-y-2">
             {items.map((item) => (
@@ -60,24 +59,17 @@ function ApartmentDetailsSection({ bookingUrl, lang }: DetailsSectionProps): JSX
             ))}
           </ul>
           <div className="mt-4">
-            {(() => {
-              if (bookingUrl) {
-                return (
-                  <Button asChild className="cta-light dark:cta-dark">
-                    {bookingUrl.startsWith("/") ? (
-                      <Link href={bookingUrl}>{ctaLabel}</Link>
-                    ) : (
-                      <a href={bookingUrl}>{ctaLabel}</a>
-                    )}
-                  </Button>
-                );
-              }
-              return (
-                <Button onClick={() => openModal("booking")} className="cta-light dark:cta-dark">
-                  {ctaLabel}
-                </Button>
-              );
-            })()}
+            {bookingUrl ? (
+              bookingUrl.startsWith("/") ? (
+                <Link href={bookingUrl} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-primary/90">{ctaLabel}</Link>
+              ) : (
+                <a href={bookingUrl} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-primary/90">{ctaLabel}</a>
+              )
+            ) : (
+              <button type="button" onClick={() => onBookingCtaClick?.()} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-primary/90">
+                {ctaLabel}
+              </button>
+            )}
           </div>
         </CardContent>
       </Card>

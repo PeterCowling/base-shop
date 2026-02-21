@@ -39,6 +39,11 @@
       "reason": "LICENSE.txt contains standard MIT text; package.json missing SPDX field",
       "resolvedAs": "MIT"
     },
+    "buffers": {
+      "license": "Unknown",
+      "reason": "Legacy transitive dependency of exceljs->unzipper->binary; package metadata lacks SPDX despite being in the substack MIT/X11 family",
+      "resolvedAs": "MIT"
+    },
     "@vercel/gatsby-plugin-vercel-builder": {
       "license": "Unknown",
       "reason": "LICENSE file contains Apache-2.0; part of github.com/vercel/vercel monorepo; package.json missing SPDX field",

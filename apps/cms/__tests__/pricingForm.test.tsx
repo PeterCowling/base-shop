@@ -1,12 +1,12 @@
 import "@testing-library/jest-dom";
 
 import React, { act } from "react";
-import { fireEvent,render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
-import { checkShopExists } from "@acme/lib";
 import { readPricing } from "@acme/platform-core/repositories/pricing.server";
+import { checkShopExists } from "@acme/platform-core/shops";
 
-jest.mock("@acme/lib", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   checkShopExists: jest.fn(),
 }));
 
@@ -44,6 +44,8 @@ const initial = {
   coverage: {},
 };
 
+jest.setTimeout(30000);
+
 afterEach(() => {
   jest.clearAllMocks();
 });
@@ -71,7 +73,7 @@ describe("PricingForm", () => {
       "/api/data/s1/rental/pricing",
       expect.objectContaining({ method: "POST" })
     );
-    expect(await screen.findByText("Saved!")).toBeInTheDocument();
+    expect(await screen.findByText("Pricing saved")).toBeInTheDocument();
   });
 
   it("shows error for invalid JSON", async () => {
@@ -132,4 +134,3 @@ describe("PricingForm", () => {
     expect(schemaErrors.length).toBeGreaterThan(0);
   });
 });
-

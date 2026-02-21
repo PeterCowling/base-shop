@@ -1,5 +1,5 @@
 import { memo, useCallback } from "react";
-import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 import { ModalFooterButton, ModalFrame, ModalPanel } from "./primitives";
 import type { ContactModalCopy } from "./types";
@@ -61,6 +61,7 @@ function ContactModal({
       isOpen={isOpen}
       onClose={onClose}
       testId={testId}
+      title={copy.title}
       overlayClassName="flex items-center justify-center"
     >
       <ModalPanel
@@ -71,9 +72,9 @@ function ContactModal({
           <CloseIcon />
         </button>
 
-        <DialogTitle className="mb-4 text-2xl font-bold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
+        <h2 className="mb-4 text-2xl font-bold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
           {copy.title}
-        </DialogTitle>
+        </h2>
         <DialogDescription className="mb-6 text-brand-text/80">{copy.description}</DialogDescription>
 
         <button

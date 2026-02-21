@@ -20,6 +20,9 @@ jest.mock("../src/lib/telemetry", () => ({
 const { useRouter } = require("next/router");
 
 describe("Upgrade page accessibility (color-contrast)", () => {
+  // Generous timeout: module compilation + async fetch + re-render can be slow in CI.
+  jest.setTimeout(30_000);
+
   const originalFetch = global.fetch;
   let Upgrade: typeof import("../src/pages/Upgrade").default;
 
@@ -58,8 +61,8 @@ describe("Upgrade page accessibility (color-contrast)", () => {
 
     const { container } = render(<Upgrade />);
 
-    // Ensure content is present before running axe
-    await screen.findByText("core");
+    // Ensure content is present before running axe (longer timeout for CI)
+    await screen.findByText("shop1", {}, { timeout: 15_000 });
 
     const results = await axe(container, {
       runOnly: { type: "rule", values: ["color-contrast"] },

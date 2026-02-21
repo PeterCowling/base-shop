@@ -32,7 +32,7 @@ describe('createShop', () => {
       theme: 'base',
       navItems: [{ label: 'Parent', url: '/parent', children: [{ label: 'Child', url: '/child' }] }]
     }, { deploy: false });
-    const nav = prismaMock.shop.create.mock.calls[0][0].data.data.navigation;
+    const nav = (prismaMock.shop.create.mock.calls[0] as any)[0].data.data.navigation;
     expect(nav).toEqual([
       { label: 'Parent', url: '/parent', children: [{ label: 'Child', url: '/child' }] }
     ]);
@@ -57,7 +57,7 @@ describe('createShop', () => {
       { deploy: false }
     );
     const stored =
-      prismaMock.shop.create.mock.calls[0][0].data.data.sanityBlog;
+      (prismaMock.shop.create.mock.calls[0] as any)[0].data.data.sanityBlog;
     expect(stored).toEqual(sanity);
     expect(result).toEqual({ status: 'pending' });
     fs.rmSync(path.join('data', 'shops', id), { recursive: true, force: true });

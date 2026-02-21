@@ -74,7 +74,8 @@ describe("default analytics listeners", () => {
     const { trackEvent } = await import("@acme/platform-core/analytics");
     (trackEvent as jest.Mock).mockClear();
 
-    const { [emitName as string]: emit } = await import("../hooks");
+    const hooksModA = await import("../hooks");
+    const emit = hooksModA[emitName as keyof typeof hooksModA] as (shop: string, p: any) => Promise<void>;
     await emit(shop, payload);
 
     expect(trackEvent).toHaveBeenCalledTimes(1);
@@ -91,7 +92,8 @@ describe("analytics errors", () => {
       const { trackEvent } = await import("@acme/platform-core/analytics");
       (trackEvent as jest.Mock).mockRejectedValue(error);
 
-      const { [emitName as string]: emit } = await import("../hooks");
+      const hooksModB = await import("../hooks");
+      const emit = hooksModB[emitName as keyof typeof hooksModB] as (shop: string, p: any) => Promise<void>;
       await expect(emit(shop, payload)).rejects.toThrow(error);
     },
   );

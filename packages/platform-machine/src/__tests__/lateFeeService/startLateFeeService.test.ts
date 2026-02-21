@@ -1,5 +1,4 @@
 /** @jest-environment node */
-import * as lateFeeService from "../../lateFeeService";
 
 import * as testSetup from "./testSetup";
 
@@ -13,7 +12,9 @@ const {
   NOW,
 } = testSetup;
 
-const { startLateFeeService } = lateFeeService;
+async function loadLateFeeService() {
+  return import("../../lateFeeService");
+}
 
 describe("startLateFeeService", () => {
   beforeEach(() => {
@@ -33,6 +34,8 @@ describe("startLateFeeService", () => {
   });
 
   it("returns early for sale type shops", async () => {
+    const { startLateFeeService } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockImplementation((p: string) => {
       if (p.endsWith("settings.json"))
@@ -54,6 +57,8 @@ describe("startLateFeeService", () => {
   });
 
   it("skips shops without late fee policy", async () => {
+    const { startLateFeeService } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockImplementation((p: string) => {
       if (p.endsWith("settings.json"))
@@ -72,6 +77,8 @@ describe("startLateFeeService", () => {
   });
 
   it("skips shops when policy fails to load", async () => {
+    const lateFeeService = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockImplementation((p: string) => {
       if (p.endsWith("settings.json"))
@@ -87,7 +94,7 @@ describe("startLateFeeService", () => {
       .spyOn(lateFeeService, "chargeLateFeesOnce")
       .mockResolvedValue(undefined);
 
-    await startLateFeeService({}, "/data");
+    await lateFeeService.startLateFeeService({}, "/data");
 
     expect(chargeSpy).not.toHaveBeenCalled();
     expect(global.setInterval as jest.Mock).not.toHaveBeenCalled();
@@ -95,6 +102,8 @@ describe("startLateFeeService", () => {
   });
 
   it("schedules runs and allows cleanup", async () => {
+    const { startLateFeeService } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockImplementation((p: string) => {
       if (p.endsWith("settings.json"))
@@ -138,6 +147,8 @@ describe("startLateFeeService", () => {
   });
 
   it("logs errors from chargeLateFeesOnce", async () => {
+    const { startLateFeeService } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockImplementation((p: string) => {
       if (p.endsWith("settings.json"))

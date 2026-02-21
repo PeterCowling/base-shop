@@ -10,7 +10,7 @@ Feature-Slug: prime-design-refresh
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Related-Plan: docs/plans/prime-design-refresh-plan.md
 Business-OS-Integration: on
@@ -207,7 +207,7 @@ Refresh the visual design of the Prime guest portal to better resonate with its 
 
 None — all decisions resolved.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 90%
   - Token system is well-understood. Change points are clearly identified. The pipeline (`build-tokens.ts` → `tokens.css` → Tailwind) is proven. Hardcoded color locations are enumerated. Only gap: need to verify `build-tokens.ts` input format for any new tokens (e.g., font override).
@@ -258,7 +258,7 @@ None — all decisions resolved.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
+- Primary execution skill: `/lp-do-build`
 - Supporting skills: `/lp-design-system`
 - Deliverable acceptance package:
   - Updated `packages/themes/prime/tokens.css` with new palette
@@ -276,4 +276,4 @@ None — all decisions resolved.
 
 - Status: Ready-for-planning
 - Blocking items: None — all decisions resolved (coral palette + Plus Jakarta Sans confirmed)
-- Recommended next step: Proceed to `/lp-plan`
+- Recommended next step: Proceed to `/lp-do-plan`

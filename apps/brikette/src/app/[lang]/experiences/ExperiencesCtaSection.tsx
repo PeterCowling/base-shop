@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 
+import { Section } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/primitives";
+
+import { Inline } from "@/components/ui/flex";
 
 type Props = {
   title?: string;
@@ -41,7 +44,7 @@ export function ExperiencesCtaSection({
   if (!hasContent) return null;
 
   return (
-    <div className="mx-auto w-full max-w-6xl">
+    <Section as="div" padding="none" className="mx-auto w-full max-w-6xl">
       <div className="rounded-3xl border border-brand-outline/30 bg-gradient-to-br from-brand-primary/10 via-brand-surface to-brand-primary/5 p-8 text-center shadow-sm dark:border-brand-outline/55 dark:from-brand-secondary/10 dark:via-brand-bg dark:to-brand-secondary/5">
         {title ? (
           <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-heading sm:text-3xl">
@@ -49,11 +52,11 @@ export function ExperiencesCtaSection({
           </h2>
         ) : null}
         {subtitle ? (
-          <p className="mx-auto mt-3 max-w-3xl text-base text-brand-paragraph dark:text-brand-paragraph">
-            {subtitle}
-          </p>
+          <Section as="div" padding="none" className="mx-auto mt-3 max-w-3xl">
+            <p className="text-base text-brand-paragraph dark:text-brand-paragraph">{subtitle}</p>
+          </Section>
         ) : null}
-        <div className="mt-7 flex flex-wrap justify-center gap-3">
+        <Inline className="mt-7 flex-wrap justify-center gap-3">
           {bookLabel ? (
             <Button onClick={onBookClick} size="lg">
               {bookLabel}
@@ -74,9 +77,9 @@ export function ExperiencesCtaSection({
               {conciergeLabel}
             </Button>
           ) : null}
-        </div>
+        </Inline>
       </div>
-    </div>
+    </Section>
   );
 }
 

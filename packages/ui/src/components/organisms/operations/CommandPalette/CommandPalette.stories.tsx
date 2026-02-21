@@ -227,43 +227,44 @@ export const CustomFooter: Story = {
 };
 
 // Theme toggle example
-export const ThemeToggle: Story = {
-  render: () => {
-    const [isDark, setIsDark] = useState(false);
-    const [open, setOpen] = useState(false);
+function ThemeToggleStory() {
+  const [isDark, setIsDark] = useState(false);
+  const [open, setOpen] = useState(false);
 
-    const commands: CommandItem[] = [
-      {
-        id: 'toggle-theme',
-        label: isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode',
-        icon: isDark ? Sun : Moon,
-        shortcut: '⌘T',
-        onSelect: () => setIsDark(!isDark),
-      },
-      ...basicCommands,
-    ];
+  const commands: CommandItem[] = [
+    {
+      id: 'toggle-theme',
+      label: isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+      icon: isDark ? Sun : Moon,
+      shortcut: '⌘T',
+      onSelect: () => setIsDark(!isDark),
+    },
+    ...basicCommands,
+  ];
 
-    return (
-      <div className={`min-h-[400px] p-8 ${isDark ? 'dark bg-slate-900' : 'bg-gray-50'}`}>
-        <div className="text-center">
-          <button
-            onClick={() => setOpen(true)}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
-          >
-            Open Command Palette
-          </button>
-          <p className={`mt-4 text-sm ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
-            Current theme: {isDark ? 'Dark' : 'Light'}
-          </p>
-        </div>
-        <CommandPalette
-          open={open}
-          onOpenChange={setOpen}
-          commands={commands}
-        />
+  return (
+    <div className={`min-h-[400px] p-8 ${isDark ? 'dark bg-slate-900' : 'bg-gray-50'}`}>
+      <div className="text-center">
+        <button
+          onClick={() => setOpen(true)}
+          className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+        >
+          Open Command Palette
+        </button>
+        <p className={`mt-4 text-sm ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
+          Current theme: {isDark ? 'Dark' : 'Light'}
+        </p>
       </div>
-    );
-  },
+      <CommandPalette
+        open={open}
+        onOpenChange={setOpen}
+        commands={commands}
+      />
+    </div>
+  );
+}
+export const ThemeToggle: Story = {
+  render: () => <ThemeToggleStory />,
 };
 
 // Many commands (scrollable)

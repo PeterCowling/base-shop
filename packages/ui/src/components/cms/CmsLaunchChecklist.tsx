@@ -1,6 +1,7 @@
 // packages/ui/src/components/cms/CmsLaunchChecklist.tsx
 
 import type { ReactElement } from "react";
+import Link from "next/link";
 
 import { Button, Tag } from "../../components/atoms";
 import { Inline } from "../../components/atoms/primitives/Inline";
@@ -102,9 +103,9 @@ export function CmsLaunchChecklist({
                   onClick={item.onFix}
                 >
                   {item.href ? (
-                    <a href={item.href}>
+                    <Link href={item.href}>
                       {item.fixLabel}
-                    </a>
+                    </Link>
                   ) : (
                     <span>{item.fixLabel}</span>
                   )}

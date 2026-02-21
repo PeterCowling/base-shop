@@ -18,7 +18,7 @@ jest.mock("@acme/design-system/primitives", () => ({
 type HeroImageProps = ComponentPropsWithoutRef<"img"> & { priority?: boolean };
 
 jest.mock("@acme/ui/atoms/CfHeroImage", () => ({
-  CfHeroImage: ({ priority: _priority, ...props }: HeroImageProps) => <img {...props} />,
+  CfHeroImage: ({ priority: _priority, ...props }: HeroImageProps) => <img {...props} alt={props.alt ?? ""} />,
 }));
 
 const openModalSpy = jest.fn();

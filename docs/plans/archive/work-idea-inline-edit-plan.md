@@ -53,7 +53,7 @@ Add inline editing functionality to the "Work Idea" button on idea detail pages.
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/idea-develop-inline-edit-lp-fact-find.md`
+- Related brief: `docs/plans/idea-develop-inline-edit-lp-do-fact-find.md`
 - Key findings:
   - `RepoWriter.updateCard()` provides proven pattern for `updateIdea()` implementation
   - `ConvertToCardButton` provides proven client component pattern
@@ -465,7 +465,7 @@ Add inline editing functionality to the "Work Idea" button on idea detail pages.
   - Spike: Write test stubs first to validate acceptance criteria are testable
   - Evidence: Run tests after implementation to confirm ≥80% coverage
 - **Rollout / rollback:**
-  - Rollout: Commit tests with implementation (TDD workflow during lp-build)
+  - Rollout: Commit tests with implementation (TDD workflow during lp-do-build)
   - Rollback: N/A (test-only changes)
 - **Documentation impact:**
   - None — test code only

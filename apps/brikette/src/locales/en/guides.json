@@ -8,6 +8,11 @@
     "alsoSee": "Also see",
     "sectionFallback": "Section {{position}}"
   },
+  "search": {
+    "noResults": "No guides found",
+    "resultsCount_one": "Found {{count}} guide",
+    "resultsCount_other": "Found {{count}} guides"
+  },
   "meta": {
     "index": {
       "title": "Positano travel guides",

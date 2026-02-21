@@ -28,6 +28,6 @@
     "@acme/ui": "workspace:*"
   },
   "devDependencies": {
-    "next": "^15.3.9"
+    "next": "16.1.6"
   }
 }

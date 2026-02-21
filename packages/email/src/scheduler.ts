@@ -1,5 +1,6 @@
 import "server-only"; // i18n-exempt: module side-effect import [EMAIL-1000]
 
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import { validateShopName } from "@acme/lib";
 import { logger } from "@acme/lib/logger";
 import type { AnalyticsEvent } from "@acme/platform-core/analytics";
@@ -91,17 +92,14 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
     process.env.EMAIL_BATCH_DELAY_MS === undefined
       ? 1000
       : Number(process.env.EMAIL_BATCH_DELAY_MS);
+  const t = await getServerTranslations("en");
+  const { sendCampaignEmail } = await import("./send");
   const failures: { recipient: string; error: unknown }[] = [];
   for (let i = 0; i < recipients.length; i += batchSize) {
     const batch = recipients.slice(i, i + batchSize);
     for (const r of batch) {
       const url = unsubscribeUrl(shop, c.id, r);
       let html = baseHtml;
-      // Load server-side translator (default to English).
-      const { useTranslations: getServerTranslations } = await import(
-        "@acme/i18n/useTranslations.server" // i18n-exempt -- EMAIL-201 module specifier [ttl=2026-03-31]
-      );
-      const t = await getServerTranslations("en");
       if (hasPlaceholder) {
         html = baseHtml.replace(
           /%%UNSUBSCRIBE%%/g,
@@ -110,7 +108,6 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
       } else {
         html = `${baseHtml}<p><a href="${url}">${t("email.unsubscribe")}</a></p>`;
       }
-      const { sendCampaignEmail } = await import("./send");
       try {
         await sendCampaignEmail({
           to: r,

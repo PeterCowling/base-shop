@@ -57,8 +57,7 @@ interface TranslatorMeta {
  * Tag a translator with language/namespace metadata used by tests.
  * Mutates the function in-place; no-op if the function is frozen.
  */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type -- accepts any TFunction variant
-export function tagTranslator(fn: Function, lang: string, ns: string): void {
+export function tagTranslator(fn: TFunction, lang: string, ns: string): void {
   try {
     const meta = fn as unknown as TranslatorMeta;
     meta.__lang = lang;

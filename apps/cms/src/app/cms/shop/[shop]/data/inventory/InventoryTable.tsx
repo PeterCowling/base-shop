@@ -67,7 +67,7 @@ export function InventoryTable({
           <TableBody>
             {items.map((item, idx) => (
               <InventoryRow
-                key={idx}
+                key={item.sku || `inventory-row-${idx}`}
                 item={item}
                 index={idx}
                 attributes={attributes}

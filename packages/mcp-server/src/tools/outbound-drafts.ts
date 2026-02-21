@@ -25,10 +25,14 @@ import {
 // Schema
 // ---------------------------------------------------------------------------
 
+const ACTOR_VALUES = ["human", "claude", "codex"] as const;
+type OutboundActor = (typeof ACTOR_VALUES)[number];
+
 const processOutboundDraftsSchema = z.object({
   firebaseUrl: z.string().url(),
   firebaseApiKey: z.string().optional(),
   dryRun: z.boolean().optional().default(false),
+  actor: z.enum(ACTOR_VALUES).optional().default("human"),
 });
 
 // ---------------------------------------------------------------------------
@@ -49,6 +53,11 @@ interface OutboundDraftRecord {
   gmailMessageId?: string;
   draftedAt?: string;
   error?: string;
+}
+
+interface FirebaseOptions {
+  url: string;
+  apiKey?: string;
 }
 
 interface ProcessedDraftResult {
@@ -113,8 +122,28 @@ async function firebasePatch(
 // Label resolution per category
 // ---------------------------------------------------------------------------
 
-function categoryToLabelNames(category: string): string[] {
-  const labels: string[] = [LABELS.READY_FOR_REVIEW];
+function actorToOutboundLabelName(actor: OutboundActor): string | undefined {
+  switch (actor) {
+    case "human":
+      return LABELS.AGENT_HUMAN;
+    case "claude":
+      return LABELS.AGENT_CLAUDE;
+    case "codex":
+      return LABELS.AGENT_CODEX;
+    default:
+      // Guard: unknown actor — skip label rather than crash
+      return undefined;
+  }
+}
+
+function categoryToLabelNames(category: string, actor: OutboundActor): string[] {
+  const labels: string[] = [LABELS.READY_FOR_REVIEW, LABELS.PROCESSED_DRAFTED];
+
+  const agentLabel = actorToOutboundLabelName(actor);
+  if (agentLabel !== undefined) {
+    labels.push(agentLabel);
+  }
+
   switch (category) {
     case "pre-arrival":
       labels.push(LABELS.OUTBOUND_PRE_ARRIVAL);
@@ -135,8 +164,8 @@ async function processOneDraft(
   record: OutboundDraftRecord,
   gmail: gmail_v1.Gmail,
   labelMap: Map<string, string>,
-  firebaseUrl: string,
-  firebaseApiKey?: string,
+  firebase: FirebaseOptions,
+  actor: OutboundActor = "human",
 ): Promise<ProcessedDraftResult> {
   try {
     const bodyHtml = generateEmailHtml({
@@ -157,7 +186,7 @@ async function processOneDraft(
 
     // Apply labels to the draft message
     if (gmailMessageId) {
-      const labelNames = categoryToLabelNames(record.category);
+      const labelNames = categoryToLabelNames(record.category, actor);
       const labelIds = collectLabelIds(labelMap, labelNames);
       if (labelIds.length > 0) {
         try {
@@ -174,7 +203,7 @@ async function processOneDraft(
 
     // Update Firebase record
     await firebasePatch(
-      firebaseUrl,
+      firebase.url,
       `outboundDrafts/${id}`,
       {
         status: "drafted",
@@ -182,7 +211,7 @@ async function processOneDraft(
         gmailMessageId,
         draftedAt: new Date().toISOString(),
       },
-      firebaseApiKey,
+      firebase.apiKey,
     );
 
     return {
@@ -199,10 +228,10 @@ async function processOneDraft(
 
     try {
       await firebasePatch(
-        firebaseUrl,
+        firebase.url,
         `outboundDrafts/${id}`,
         { status: "failed", error: errorMessage },
-        firebaseApiKey,
+        firebase.apiKey,
       );
     } catch {
       // Best-effort status update
@@ -246,6 +275,12 @@ export const outboundDraftTools = [
           type: "boolean",
           description: "If true, list pending drafts without creating Gmail drafts",
         },
+        actor: {
+          type: "string",
+          enum: ["human", "claude", "codex"],
+          description:
+            "The actor responsible for drafting. Determines the Agent/* label applied. Defaults to 'human'.",
+        },
       },
       required: ["firebaseUrl"],
     },
@@ -257,7 +292,7 @@ export const outboundDraftTools = [
 // ---------------------------------------------------------------------------
 
 async function handleProcessOutboundDrafts(args: unknown) {
-  const { firebaseUrl, firebaseApiKey, dryRun } =
+  const { firebaseUrl, firebaseApiKey, dryRun, actor } =
     processOutboundDraftsSchema.parse(args);
 
   // Fetch all outbound drafts from Firebase
@@ -324,8 +359,8 @@ async function handleProcessOutboundDrafts(args: unknown) {
       record,
       gmail,
       labelMap,
-      firebaseUrl,
-      firebaseApiKey,
+      { url: firebaseUrl, apiKey: firebaseApiKey },
+      actor,
     );
     results.push(result);
   }

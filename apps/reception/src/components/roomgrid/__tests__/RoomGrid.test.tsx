@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-raw-color -- test fixtures */
 import "@testing-library/jest-dom";
 
 import type { TClickCellEventData } from "@daminort/reservation-grid";

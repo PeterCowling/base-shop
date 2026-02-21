@@ -1,8 +1,7 @@
 import { type ComponentPropsWithoutRef, memo } from "react";
-import { DialogTitle } from "@radix-ui/react-dialog";
 import clsx from "clsx";
 
-import { ModalFooterButton, ModalFrame, ModalPanel } from "./primitives";
+import { ModalFooterButton, ModalFrame, ModalPanel, ModalScrollArea } from "./primitives";
 import type { LanguageModalCopy, LanguageOption } from "./types";
 
 const DEFAULT_TEST_ID = "language-modal";
@@ -65,10 +64,11 @@ export interface LanguageModalProps {
   readonly testId?: string;
 }
 
+// Cluster: layout wrapper for language options — scroll handled by ModalScrollArea (TASK-07)
 const Cluster = memo(function Cluster({ className, ...rest }: ComponentPropsWithoutRef<"div">): JSX.Element {
   const base =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "flex max-h-[50svh] flex-wrap gap-2 overflow-y-auto pr-1 sm:max-h-[60svh]";
+    "flex flex-wrap gap-2 pr-1";
   return <div className={className ? `${base} ${className}` : base} {...rest} />;
 });
 
@@ -89,6 +89,7 @@ function LanguageModal({
       isOpen={isOpen}
       onClose={onClose}
       testId={testId}
+      title={copy.title}
       overlayClassName="layer-modal-backdrop motion-safe:animate-in motion-safe:animate-fade-in duration-200"
       contentClassName="layer-modal-container"
     >
@@ -96,12 +97,14 @@ function LanguageModal({
         <ModalPanel
           widthClassName={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "w-full sm:w-96"}
           data-theme={theme}
-          className="layer-modal-panel transform p-6 text-start motion-safe:animate-in motion-safe:animate-fade-in motion-safe:animate-zoom-in-95 duration-200"
+          className="layer-modal-panel transform p-6 text-start motion-safe:animate-in motion-safe:animate-fade-in motion-safe:animate-zoom-in-95 duration-200 flex max-h-[90dvh] flex-col"
         >
-          <DialogTitle className="mb-4 text-xl font-semibold text-brand-heading">
+          <h2 className="mb-4 text-xl font-semibold text-brand-heading">
             {copy.title}
-          </DialogTitle>
+          </h2>
 
+          {/* ModalScrollArea enforces single-container scroll contract (TASK-07) */}
+          <ModalScrollArea className="flex-1">
           <Cluster>
             {options.map(({ code, label }) => (
               <button
@@ -119,6 +122,7 @@ function LanguageModal({
               </button>
             ))}
           </Cluster>
+          </ModalScrollArea>
 
           <div className="mt-6 text-end">
             <ModalFooterButton

@@ -431,7 +431,7 @@ export default function StageKLaneCompareCard({
                   </div>
                 </Grid>
                 {warningMessage ? (
-                  <div className="mt-3 text-xs text-amber-600">
+                  <div className="mt-3 text-xs text-warning-fg">
                     {warningMessage}
                   </div>
                 ) : null}

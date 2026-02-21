@@ -2,8 +2,6 @@
 
 import { File as NodeFile } from 'node:buffer';
 
-import { getMediaOverview,listMedia, uploadMedia } from '../media.server';
-
 import {
   ensureHasPermission,
   getMediaOverviewForShop,
@@ -16,10 +14,14 @@ import {
 const File = NodeFile as unknown as typeof globalThis.File;
 
 describe('media.server wrappers', () => {
-  beforeEach(resetMediaMocks);
+  beforeEach(() => {
+    jest.resetModules();
+    resetMediaMocks();
+  });
   afterEach(restoreMediaMocks);
 
   it('listMedia enforces auth and handles missing directories', async () => {
+    const { listMedia } = await import("../media.server");
     listMediaFiles.mockRejectedValueOnce(Object.assign(new Error('missing'), { code: 'ENOENT' }));
 
     await expect(listMedia('shop')).resolves.toEqual([]);
@@ -28,6 +30,7 @@ describe('media.server wrappers', () => {
   });
 
   it('uploadMedia parses form data and delegates to service', async () => {
+    const { uploadMedia } = await import("../media.server");
     const result = { url: '/uploads/shop/file.jpg' };
     uploadMediaFile.mockResolvedValueOnce(result);
 
@@ -46,6 +49,7 @@ describe('media.server wrappers', () => {
   });
 
   it('getMediaOverview logs failures from the service layer', async () => {
+    const { getMediaOverview } = await import("../media.server");
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     getMediaOverviewForShop.mockRejectedValueOnce(new Error('boom'));
 

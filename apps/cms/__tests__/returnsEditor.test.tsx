@@ -1,12 +1,24 @@
 import "@testing-library/jest-dom";
 
 import React, { act } from "react";
-import { fireEvent,render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
-import ReturnsEditor from "../src/app/cms/shop/[shop]/settings/returns/ReturnsEditor";
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => ({
+    success: jest.fn(),
+    warning: jest.fn(),
+    error: jest.fn(),
+  }),
+}));
 
-const updateUpsReturns = jest.fn();
-jest.mock("@cms/actions/shops.server", () => ({ updateUpsReturns }));
+jest.mock("@cms/actions/shops.server", () => ({
+  updateUpsReturns: jest.fn(),
+}));
+
+const { updateUpsReturns } = jest.requireMock("@cms/actions/shops.server") as {
+  updateUpsReturns: jest.Mock;
+};
+
 jest.mock("@/components/atoms", () => ({
   Toast: ({ open, message, role = "status" }: any) =>
     open ? (
@@ -23,11 +35,19 @@ jest.mock("@/components/atoms", () => ({
   ),
   Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
 }));
+
 jest.mock("@/components/atoms/shadcn", () => ({
   Button: (props: any) => <button {...props} />,
   Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
+
+async function loadReturnsEditor() {
+  const mod = await import(
+    "../src/app/cms/shop/[shop]/settings/returns/ReturnsEditor"
+  );
+  return mod.default;
+}
 
 describe("ReturnsEditor", () => {
   it("submits form and updates state", async () => {
@@ -40,6 +60,9 @@ describe("ReturnsEditor", () => {
         },
       },
     });
+
+    const ReturnsEditor = await loadReturnsEditor();
+
     render(
       <ReturnsEditor
         shop="s1"
@@ -50,14 +73,17 @@ describe("ReturnsEditor", () => {
         }}
       />,
     );
+
     const save = screen.getByRole("button", { name: /save/i });
     const form = save.closest("form")!;
     const returnsToggle = screen.getByLabelText("UPS returns");
+
     fireEvent.click(returnsToggle);
 
     await act(async () => {
       fireEvent.submit(form);
     });
+
     expect(updateUpsReturns).toHaveBeenCalledWith("s1", expect.any(FormData));
     expect(screen.getByLabelText("UPS returns")).toBeChecked();
     expect(screen.getByLabelText("Return bags")).toBeChecked();

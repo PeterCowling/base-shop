@@ -1,0 +1,38 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationDir": null,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "types": ["jest", "node", "react", "react-dom", "@testing-library/jest-dom"],
+    "paths": {
+      "@jest/globals": ["../../test/jest-globals-compat.d.ts"],
+      "@/*": ["src/*", "dist/*", "../../packages/ui/dist/*"],
+      "@tests/*": ["src/test/*"],
+      "~test/*": ["../../test/*"],
+      "@acme/ui": ["../../packages/ui/dist/index.d.ts", "../../packages/ui/src/index.ts"],
+      "@acme/ui/*": ["../../packages/ui/dist/*", "../../packages/ui/src/*"],
+      "@acme/seo": ["../../packages/seo/dist/index.d.ts", "../../packages/seo/src/index.ts"],
+      "@acme/seo/*": ["../../packages/seo/dist/*", "../../packages/seo/src/*"],
+      "@acme/guides-core": ["../../packages/guides-core/dist/index.d.ts", "../../packages/guides-core/src/index.ts"],
+      "@acme/guides-core/*": ["../../packages/guides-core/dist/*", "../../packages/guides-core/src/*"],
+      "@acme/telemetry": ["../../packages/telemetry/dist/index.d.ts"],
+      "@acme/telemetry/*": ["../../packages/telemetry/dist/*"],
+      "@ui": ["../../packages/ui/dist/index.d.ts", "../../packages/ui/src/index.ts"],
+      "@ui/*": ["../../packages/ui/dist/*", "../../packages/ui/src/*"]
+    }
+  },
+  "include": ["src/test/**/*.ts", "src/test/**/*.tsx", "src/types/**/*.d.ts"],
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "src/test/routes/guides/__tests__/coverage/**",
+    "src/test/lib/buildCfImageUrl.test.ts",
+    "src/test/lib/cfLibImage.test.ts",
+    "src/test/utils/loadI18nNs.test.ts",
+    "src/test/utils/loadI18nNs.client-and-preload.test.ts"
+  ]
+}

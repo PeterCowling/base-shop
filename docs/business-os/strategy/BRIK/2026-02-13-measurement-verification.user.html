@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK Production Measurement Verification (2026-02-13)</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>BRIK Production Measurement Verification (2026-02-13)</h1>
+<h2>1) Objective</h2>
+<p>Verify that GA4 + Search Console production setup is live for <code>hostel-positano.com</code> and that telemetry capture has started.</p>
+<h2>2) Verification Results</h2>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Result</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GA4 script present on production homepage</td>
+<td>Pass</td>
+<td><code>https://hostel-positano.com/en/</code> contains <code>gtag/js?id=G-2ZSYXG8R7T</code> and <code>gtag('config', 'G-2ZSYXG8R7T')</code></td>
+</tr>
+<tr>
+<td>GA collect endpoint receives production hits</td>
+<td>Pass</td>
+<td>Headless browser capture observed <code>https://region1.google-analytics.com/g/collect</code> with <code>tid=G-2ZSYXG8R7T</code> and events <code>page_view</code>, <code>user_engagement</code></td>
+</tr>
+<tr>
+<td><code>web_vitals</code> events reach GA collect endpoint</td>
+<td>Pass (collect-level)</td>
+<td>2026-02-14: Playwright capture on Pages deploy <code>https://6aa817b6.brikette-website.pages.dev/en/</code> observed <code>en=web_vitals</code> (2 hits)</td>
+</tr>
+<tr>
+<td><code>robots.txt</code> advertises sitemap index</td>
+<td>Pass</td>
+<td><code>https://hostel-positano.com/robots.txt</code> includes <code>Sitemap: https://hostel-positano.com/sitemap_index.xml</code></td>
+</tr>
+<tr>
+<td>Sitemap index is reachable</td>
+<td>Pass</td>
+<td><code>https://hostel-positano.com/sitemap_index.xml</code> returns valid XML with <code>https://hostel-positano.com/sitemap.xml</code></td>
+</tr>
+<tr>
+<td>Search Console DNS verification tokens exist</td>
+<td>Pass</td>
+<td>DNS TXT for <code>hostel-positano.com</code> / <code>www.hostel-positano.com</code> includes <code>google-site-verification=...</code> records</td>
+</tr>
+<tr>
+<td>Booking-flow <code>begin_checkout</code> payload tests (repo)</td>
+<td>Pass</td>
+<td><code>apps/brikette/src/test/components/ga4-08-book-checkout-payload.test.tsx</code> and <code>apps/brikette/src/test/components/ga4-07-apartment-checkout.test.tsx</code></td>
+</tr>
+</tbody>
+</table>
+<h2>3) Open Verification Items</h2>
+<ol>
+<li>Resolve why <code>begin_checkout</code> and <code>web_vitals</code> are zero in the current 7-day GA4 window.</li>
+<li>Confirm <code>web_vitals</code> is visible in GA4 UI (Realtime/DebugView) and becomes non-zero in the rolling 7-day Data API extract.</li>
+<li>Continue weekly baseline refresh with date-bounded extracts.</li>
+</ol>
+<h2>4) Instrumentation Hardening Completed in Repo</h2>
+<p>To reduce event-loss risk when confirm-link API calls fail, the shared booking flow now emits <code>begin_checkout</code> on CTA intent before network resolution:</p>
+<ul>
+<li>Code: <code>apps/brikette/src/app/[lang]/book/BookPageContent.tsx</code></li>
+<li>Tests:
+<ul>
+<li><code>apps/brikette/src/test/components/ga4-08-book-checkout-payload.test.tsx</code></li>
+<li><code>apps/brikette/src/test/components/ga4-07-apartment-checkout.test.tsx</code></li>
+</ul>
+</li>
+</ul>
+<h2>5) Command Evidence (Executed 2026-02-13)</h2>
+<pre><code class="language-bash">curl -sL https://hostel-positano.com/en/
+curl -sL https://hostel-positano.com/robots.txt
+curl -sL https://hostel-positano.com/sitemap_index.xml
+dig +short TXT hostel-positano.com
+dig +short TXT www.hostel-positano.com
+pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-08-book-checkout-payload.test.tsx --maxWorkers=2
+pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-07-apartment-checkout.test.tsx --maxWorkers=2
+</code></pre>
+<h2>6) Data API Status (Resolved: 2026-02-13)</h2>
+<p>GA4 Data API is now enabled and queryable for project <code>brikette-web</code> (<code>98263641014</code>).</p>
+<p>Latest extract (<code>runReport</code>, window <code>7daysAgo..today</code>, executed 2026-02-13):</p>
+<ul>
+<li>sessions: <strong>73</strong></li>
+<li>users: <strong>53</strong></li>
+<li>conversions: <strong>0</strong></li>
+<li>eventCount: <strong>563</strong></li>
+<li>page_view: <strong>258</strong></li>
+<li>user_engagement: <strong>145</strong></li>
+<li>begin_checkout: <strong>0</strong></li>
+<li>web_vitals: <strong>0</strong></li>
+</ul>
+<p>Interpretation:</p>
+<ul>
+<li>Baseline extraction is now unblocked and first measured window is captured.</li>
+<li>Conversion/performance instrumentation quality is still not decision-grade because both target events remain zero.</li>
+</ul>
+<h2>7) Production Click-Path Probe (Re-run After Deploy, 2026-02-13)</h2>
+<p>Production booking flow was rebuilt/exported and deployed to Cloudflare Pages <code>main</code>:</p>
+<pre><code class="language-bash">pnpm exec turbo run build --filter=@apps/brikette^...
+cd apps/brikette
+OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-2ZSYXG8R7T pnpm exec next build
+pnpm --filter @apps/brikette generate:static-aliases
+pnpm exec wrangler pages deploy out --project-name brikette-website --branch main
+</code></pre>
+<p>Deployment result:</p>
+<ul>
+<li>Upload/deploy completed successfully with deployment URL <code>https://231eabad.brikette-website.pages.dev</code>.</li>
+<li>Production and deployment now serve the same book chunk:
+<ul>
+<li><code>/_next/static/chunks/app/%5Blang%5D/book/page-83b1318a0a463a3b.js</code></li>
+</ul>
+</li>
+</ul>
+<p>Bundle behavior check:</p>
+<ul>
+<li>The deployed chunk now calls the checkout event function before <code>confirm-link</code> fetch in <code>handleConfirmClick</code>.</li>
+<li>The GA emit guard is now <code>typeof gtag === "function"</code> (no <code>confirmUrl</code> requirement).</li>
+</ul>
+<p>Live click-path probe (Playwright):</p>
+<ul>
+<li>Stubbed <code>/api/octorate/confirm-link</code> to return <code>{"status":"unavailable"}</code> to force fallback path.</li>
+<li>Clicked <code>Flexible – Go to checkout</code> on <code>https://www.hostel-positano.com/en/book</code>.</li>
+<li>Captured GA collect request:
+<ul>
+<li><code>https://region1.google-analytics.com/g/collect?...&#x26;en=begin_checkout&#x26;...</code></li>
+</ul>
+</li>
+<li>Probe counters:
+<ul>
+<li><code>confirmCallCount: 1</code></li>
+<li><code>beginCheckoutCount: 1</code></li>
+</ul>
+</li>
+</ul>
+<p>Implication:</p>
+<ul>
+<li>Production deployment alignment for unconditional CTA-intent <code>begin_checkout</code> is complete.</li>
+<li>Remaining measurement gap is report-layer freshness/non-zero confirmation in the rolling 7-day GA4 extract and <code>web_vitals</code> event verification.</li>
+</ul>
+<h2>8) Routed Execution Packet</h2>
+<p>Active routing artifacts for this P1 item:</p>
+<ul>
+<li>Fact-find: <code>docs/plans/brik-ga4-baseline-lock/fact-find.md</code></li>
+<li>Plan: <code>docs/plans/brik-ga4-baseline-lock/plan.md</code></li>
+</ul>
+<p>Owner checkpoint:</p>
+<ul>
+<li>Re-run GA4 7-day extract after deployment propagation to confirm non-zero <code>begin_checkout</code> in report output and verify <code>web_vitals</code> status.</li>
+<li>Continue weekly baseline refresh in <code>docs/business-os/strategy/BRIK/plan.user.md</code> and mirror status into weekly decision + workflow docs.</li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code></div>
+      <div>Generated: 2026-02-14T12:31:52.070Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

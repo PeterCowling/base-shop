@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { resolveChromeLaunch, resolveDesktopConfig, resolveLighthouse } from "../seoAudit";
+import { resolveChromeLaunch, resolveDesktopConfig, resolveLighthouse } from "../seoAudit.js";
 
 describe("seoAudit resolution helpers", () => {
   it("resolves lighthouse functions from default export", () => {

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prime App — Design & Branding Policy</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>Prime App — Design &#x26; Branding Policy</h1>
+<p>Prime-specific projection of the BRIK brand. Governs all guest-facing surfaces for the Prime
+guest portal. For cross-cutting brand decisions (voice, personality, audience), see the Brand Dossier.</p>
+<blockquote>
+<p>Token values are not duplicated here. The single source of truth is
+<code>packages/themes/prime/src/tokens.ts</code>. Refer to the Token Rationale in <code>brand-dossier.user.md</code>
+for the design reasoning behind each token choice.</p>
+</blockquote>
+<h2>Governed Surfaces</h2>
+<ul>
+<li>Prime guest portal (all guest-facing pages)</li>
+<li>Brikette website (booking and guide pages) — to be aligned in a future pass</li>
+<li>Email templates sent to guests</li>
+</ul>
+<h2>Surfaces NOT Governed (Internal)</h2>
+<ul>
+<li>Reception app (staff-facing, operational)</li>
+<li>Business OS (internal admin)</li>
+<li>Owner/admin dashboards within Prime</li>
+</ul>
+<h2>Target Demographic</h2>
+<table>
+<thead>
+<tr>
+<th>Segment</th>
+<th>Share</th>
+<th>Design implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Female</td>
+<td>~99%</td>
+<td>Avoid cold/corporate palettes. Favor warm, expressive, lifestyle-aligned aesthetics.</td>
+</tr>
+<tr>
+<td>Age 18-25</td>
+<td>~60%</td>
+<td>Mobile-native generation. Expect app-quality design (Instagram, Airbnb, Pinterest level). High sensitivity to visual polish and micro-interactions.</td>
+</tr>
+<tr>
+<td>Age 26-35</td>
+<td>~39%</td>
+<td>Similar expectations, slightly more tolerance for functional design. Still mobile-first.</td>
+</tr>
+<tr>
+<td>Age 35+</td>
+<td>~1%</td>
+<td>Not a design driver.</td>
+</tr>
+<tr>
+<td>Mobile-only</td>
+<td>100%</td>
+<td>Prime is accessed on guests' phones during their stay. No desktop/tablet use case.</td>
+</tr>
+</tbody>
+</table>
+<h2>Design Principles</h2>
+<ol>
+<li><strong>Warm over cold</strong> — Primary palette uses warm hues (coral, rose, warm violet, sage) rather than cold corporate blues/teals.</li>
+<li><strong>Approachable typography</strong> — Friendly geometric sans-serifs (Plus Jakarta Sans) over developer-oriented fonts (Geist Sans). Rounded terminals signal warmth.</li>
+<li><strong>Expressive but not noisy</strong> — Subtle gradients, soft shadows, and gentle motion. Avoid flat gray backgrounds. Slight warm tints on surfaces.</li>
+<li><strong>Mobile-only, thumb-first</strong> — Prime is a phone-only app. Design exclusively for mobile viewports. Optimize for one-handed use, thumb-zone reachability, handheld viewing distance. Primary actions belong in the bottom half of the screen.</li>
+<li><strong>Mobile-native quality bar</strong> — Benchmarks against Airbnb, Pinterest, Hostelworld, and Instagram. Card-based layouts, generous radius, smooth transitions, high-quality imagery.</li>
+<li><strong>Inclusive, not stereotyped</strong> — Warm, polished, photography-forward, emotionally resonant. Not "pink everything."</li>
+<li><strong>Token-driven</strong> — All visual changes flow through <code>packages/themes/prime/src/tokens.ts</code>. No hardcoded Tailwind colors. Ensures dark mode, accessibility, and future theme variants work automatically.</li>
+</ol>
+<h2>Token Rationale</h2>
+<p>See <code>docs/business-os/strategy/BRIK/brand-dossier.user.md</code> § Token Rationale for the full table.
+Key Prime-specific decisions:</p>
+<ul>
+<li><code>--color-primary</code>: Warm coral (replaces cold teal) — aligned to Airbnb/Glossier aesthetic for 18-25 female demographic</li>
+<li><code>--font-sans</code>: Plus Jakarta Sans — geometric warmth, high x-height for mobile legibility</li>
+<li><code>--radius-md</code> / <code>--radius-lg</code>: Softer than base — friendlier feel at card and section level</li>
+</ul>
+<h2>Signature Patterns</h2>
+<h3>Gradient Cards</h3>
+<p><strong>When:</strong> Hero sections, feature highlights, social proof cards.
+<strong>Implementation:</strong> <code>bg-gradient-to-br from-primary-soft to-accent-soft</code> with <code>rounded-2xl shadow-sm</code>.
+<strong>Example:</strong> <code>apps/prime/src/components/SocialHighlightsCard.tsx</code></p>
+<h3>Warm CTA Buttons</h3>
+<p><strong>When:</strong> Primary actions (book, explore, confirm).
+<strong>Implementation:</strong> <code>bg-primary text-primary-foreground hover:bg-primary-hover rounded-md px-4 py-2 font-medium</code>.
+<strong>Example:</strong> Standard across Prime app.</p>
+<p><em>More patterns will be added as <code>/lp-design-spec</code> identifies them during feature work.</em></p>
+<h2>References</h2>
+<ul>
+<li>Brand Dossier (cross-cutting brand decisions): <code>docs/business-os/strategy/BRIK/brand-dossier.user.md</code></li>
+<li>Prime theme tokens (source of truth): <code>packages/themes/prime/src/tokens.ts</code></li>
+<li>Base theme tokens: <code>packages/themes/base/src/tokens.ts</code></li>
+<li>Design system handbook: <code>docs/design-system-handbook.md</code></li>
+<li>Design refresh fact-find: <code>docs/plans/prime-design-refresh-fact-find.md</code></li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/BRIK/prime-app-design-branding.user.md</code></div>
+      <div>Generated: 2026-02-17T09:55:13.657Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

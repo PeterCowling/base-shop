@@ -92,7 +92,7 @@ export default function ThemeEditorForm({
                       .slice(0, 6)
                       .map((c, i) => (
                         <span
-                          key={i}
+                          key={`color-swatch-${i}-${c}`}
                           className="h-full w-full"
                           style={{ backgroundColor: `hsl(${c})` }}
                         />

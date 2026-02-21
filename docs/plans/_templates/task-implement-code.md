@@ -1,0 +1,40 @@
+---
+Type: Reference
+Status: Reference
+---
+### TASK-XX: <description>
+- **Type:** IMPLEMENT
+- **Deliverable:** <code-change + output location>
+- **Execution-Skill:** <lp-do-build or specialized>
+- **Execution-Track:** <code | mixed>
+- **Startup-Deliverable-Alias:** <none | startup-* alias>
+- **Effort:** <S | M | L>
+- **Status:** <Pending | In-Progress | Complete (YYYY-MM-DD) | Blocked | Superseded | Needs-Input>
+- **Affects:** `path/to/file.ts`, `[readonly] path/to/dependency.ts`
+- **Depends on:** <TASK-IDs or "-">
+- **Blocks:** <TASK-IDs or "-">
+- **Confidence:** <0-100>%
+  - Implementation: <0-100>% - <reason>
+  - Approach: <0-100>% - <reason>
+  - Impact: <0-100>% - <reason>
+- **Acceptance:**
+  - ...
+- **Validation contract (TC-XX):**
+  - TC-01: <scenario> -> <expected outcome>
+  - TC-02: <error/edge case> -> <expected outcome>
+- **Execution plan:** Red -> Green -> Refactor
+- **Planning validation (required for M/L):**
+  - Checks run:
+  - Validation artifacts:
+  - Unexpected findings:
+- **Scouts:** <assumption probes or `None: <reason>`>
+- **Edge Cases & Hardening:** <edge case handling or `None: <reason>`>
+- **What would make this >=90%:**
+  - ...
+- **Rollout / rollback:**
+  - Rollout:
+  - Rollback:
+- **Documentation impact:**
+  - ...
+- **Notes / references:**
+  - ...

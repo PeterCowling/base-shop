@@ -1,0 +1,1132 @@
+/** @jest-environment node */
+
+import { promises as fs } from "fs";
+import os from "os";
+import path from "path";
+
+import { projectZoneTrafficMetrics } from "../../../mcp-cloudflare/src/tools/analytics";
+import {
+  parseMetricsRegistry,
+  parseWave2MetricRecord,
+  validateMetricRecordAgainstRegistry,
+} from "../lib/wave2-contracts";
+import { preflightAnalyticsSunsetGate } from "../tools/analytics-sunset";
+import { handleBosTool } from "../tools/bos";
+import { handleLoopTool } from "../tools/loop";
+
+const FIXTURE_ROOT = path.join(process.cwd(), "packages/mcp-server/src/__tests__/fixtures");
+const BOS_FIXTURES = path.join(FIXTURE_ROOT, "bos-api");
+const LOOP_FIXTURES = path.join(FIXTURE_ROOT, "startup-loop");
+
+type BosStatusCase = "success" | "auth" | "not-found" | "conflict" | "unavailable";
+
+describe("octorate-export args parsing", () => {
+  const { parseOctorateExportArgs, timeFilterToOptionLabel } = require("../../octorate-export-args.cjs") as {
+    parseOctorateExportArgs: (argv: string[], now: Date) => {
+      timeFilter: "create_time" | "check_in";
+      startIso: string;
+      endIso: string;
+    };
+    timeFilterToOptionLabel: (timeFilter: "create_time" | "check_in") => string;
+  };
+
+  it("parses explicit time filter and date range", () => {
+    const parsed = parseOctorateExportArgs(
+      ["--time-filter", "check_in", "--start", "2025-02-01", "--end", "2026-01-31"],
+      new Date("2026-02-15T12:00:00Z"),
+    );
+    expect(parsed).toEqual({
+      timeFilter: "check_in",
+      startIso: "2025-02-01",
+      endIso: "2026-01-31",
+    });
+    expect(timeFilterToOptionLabel(parsed.timeFilter)).toBe("Check in");
+  });
+
+  it("uses stable defaults when args are omitted", () => {
+    const parsed = parseOctorateExportArgs([], new Date("2026-02-15T12:00:00Z"));
+    expect(parsed.timeFilter).toBe("create_time");
+    expect(parsed.endIso).toBe("2026-02-15");
+    // Default is last 90 days.
+    expect(parsed.startIso).toBe("2025-11-17");
+    expect(timeFilterToOptionLabel(parsed.timeFilter)).toBe("Create time");
+  });
+
+  it("rejects invalid time filter values", () => {
+    expect(() =>
+      parseOctorateExportArgs(["--time-filter", "bad_value"], new Date("2026-02-15T12:00:00Z")),
+    ).toThrow(/invalid_time_filter/i);
+  });
+});
+
+type MockResponse = {
+  ok: boolean;
+  status: number;
+  statusText: string;
+  url: string;
+  headers: {
+    get: (name: string) => string | null;
+  };
+  text: () => Promise<string>;
+  json: () => Promise<unknown>;
+};
+
+function makeTextResponse(status: number, body: string, contentType: string, url: string): MockResponse {
+  return {
+    ok: status >= 200 && status < 300,
+    status,
+    statusText:
+      status === 200
+        ? "OK"
+        : status === 401
+          ? "Unauthorized"
+          : status === 404
+            ? "Not Found"
+          : status === 409
+              ? "Conflict"
+              : "Service Unavailable",
+    url,
+    headers: {
+      get: (name: string) => (name.toLowerCase() === "content-type" ? contentType : null),
+    },
+    text: async () => body,
+    json: async () => {
+      try {
+        return JSON.parse(body);
+      } catch {
+        return {};
+      }
+    },
+  };
+}
+
+function makeJsonResponse(status: number, body: unknown, url = "http://localhost/mock"): MockResponse {
+  return makeTextResponse(status, JSON.stringify(body), "application/json; charset=utf-8", url);
+}
+
+async function readFixtureJson<T>(directory: string, fileName: string): Promise<T> {
+  const content = await fs.readFile(path.join(directory, fileName), "utf-8");
+  return JSON.parse(content) as T;
+}
+
+async function writeFixtureFile(sourcePath: string, targetPath: string) {
+  await fs.mkdir(path.dirname(targetPath), { recursive: true });
+  const content = await fs.readFile(sourcePath, "utf-8");
+  await fs.writeFile(targetPath, content, "utf-8");
+}
+
+async function writeMetricsFile(
+  targetPath: string,
+  rows: Array<{ timestamp: string; metric_name: string; value: number; run_id?: string }>
+) {
+  await fs.mkdir(path.dirname(targetPath), { recursive: true });
+  const content = rows
+    .map((row) =>
+      JSON.stringify({
+        timestamp: row.timestamp,
+        run_id: row.run_id ?? "run-001",
+        metric_name: row.metric_name,
+        value: row.value,
+      })
+    )
+    .join("\n");
+  await fs.writeFile(targetPath, `${content}\n`, "utf-8");
+}
+
+async function writeSourceMetricsArtifact(
+  runRoot: string,
+  source: "stripe" | "d1_prisma" | "cloudflare" | "ga4_search_console" | "email_support",
+  observedAt: string,
+  points: Array<{
+    metric: string;
+    value: number;
+    valueType: "currency" | "count" | "ratio" | "duration";
+    unit: string;
+    segments?: Record<string, string | number | boolean>;
+  }>
+) {
+  const artifactPath = path.join(runRoot, "collectors", `${source}.metrics.json`);
+  await fs.mkdir(path.dirname(artifactPath), { recursive: true });
+  await fs.writeFile(
+    artifactPath,
+    JSON.stringify(
+      {
+        schemaVersion: "measure.source.metrics.v1",
+        source,
+        observedAt,
+        points,
+      },
+      null,
+      2
+    ),
+    "utf-8"
+  );
+}
+
+function parseResultPayload(result: { content: Array<{ text: string }> }) {
+  return JSON.parse(result.content[0].text) as Record<string, unknown>;
+}
+
+async function runTc08RefreshLifecycle(tempRoot: string): Promise<void> {
+  const runRoot = path.join(
+    tempRoot,
+    "docs/business-os/startup-baselines/BRIK/runs/run-001"
+  );
+  const businessRoot = path.join(tempRoot, "docs/business-os/startup-baselines/BRIK");
+
+  await writeFixtureFile(
+    path.join(LOOP_FIXTURES, "manifest.complete.json"),
+    path.join(runRoot, "baseline.manifest.json")
+  );
+  await writeFixtureFile(
+    path.join(LOOP_FIXTURES, "metrics.partial.jsonl"),
+    path.join(runRoot, "metrics.jsonl")
+  );
+
+  const enqueueFirst = await handleLoopTool("refresh_enqueue_guarded", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "DO",
+    collector: "metrics",
+    requestId: "req-refresh-001",
+    write_reason: "manual refresh request from startup loop",
+    reason: "collector stale",
+    requestedBy: "startup-loop",
+  });
+  const enqueueFirstPayload = parseResultPayload(enqueueFirst);
+  expect(enqueueFirst.isError).toBeUndefined();
+  expect(enqueueFirstPayload.refreshRequest).toEqual(
+    expect.objectContaining({
+      requestId: "req-refresh-001",
+      state: "enqueued",
+    })
+  );
+
+  const queuePath = String(enqueueFirstPayload.queuePath);
+  const queueStatBefore = await fs.stat(queuePath);
+
+  const enqueueDuplicate = await handleLoopTool("refresh_enqueue_guarded", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "DO",
+    collector: "metrics",
+    requestId: "req-refresh-001",
+    write_reason: "duplicate enqueue should be idempotent",
+    reason: "collector stale",
+    requestedBy: "startup-loop",
+  });
+  const enqueueDuplicatePayload = parseResultPayload(enqueueDuplicate);
+  expect(enqueueDuplicatePayload.idempotent).toBe(true);
+  expect(enqueueDuplicatePayload.refreshRequest).toEqual(
+    expect.objectContaining({
+      requestId: "req-refresh-001",
+      state: "enqueued",
+    })
+  );
+
+  const queueStatAfter = await fs.stat(queuePath);
+  expect(queueStatAfter.mtimeMs).toBe(queueStatBefore.mtimeMs);
+
+  const transitionPending = await handleLoopTool("refresh_enqueue_guarded", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "DO",
+    collector: "metrics",
+    requestId: "req-refresh-001",
+    write_reason: "collector accepted refresh request",
+    reason: "collector queue accepted",
+    requestedBy: "startup-loop",
+    transitionTo: "pending",
+  });
+  const transitionPendingPayload = parseResultPayload(transitionPending);
+  expect(transitionPendingPayload.refreshRequest.state).toBe("pending");
+
+  const transitionRunning = await handleLoopTool("refresh_enqueue_guarded", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "DO",
+    collector: "metrics",
+    requestId: "req-refresh-001",
+    write_reason: "collector running request",
+    reason: "collector worker started",
+    requestedBy: "startup-loop",
+    transitionTo: "running",
+  });
+  const transitionRunningPayload = parseResultPayload(transitionRunning);
+  expect(transitionRunningPayload.refreshRequest.state).toBe("running");
+
+  const collectorStatusPath = path.join(
+    businessRoot,
+    "refresh",
+    "collectors",
+    "metrics.status.json"
+  );
+  await fs.mkdir(path.dirname(collectorStatusPath), { recursive: true });
+  await fs.writeFile(
+    collectorStatusPath,
+    JSON.stringify(
+      {
+        schemaVersion: "refresh.collector.status.v1",
+        collector: "metrics",
+        state: "failed",
+        lastRunAt: "2026-01-01T00:00:00Z",
+        updatedAt: "2026-01-01T00:00:00Z",
+        error: {
+          code: "UPSTREAM_TIMEOUT",
+          message: "collector timed out waiting for upstream",
+        },
+      },
+      null,
+      2
+    ),
+    "utf-8"
+  );
+
+  process.env.REFRESH_STATUS_STALE_THRESHOLD_SECONDS = "60";
+
+  const refreshStatus = await handleLoopTool("refresh_status_get", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "DO",
+    collector: "metrics",
+  });
+  const refreshStatusPayload = parseResultPayload(refreshStatus);
+  expect(refreshStatusPayload.freshness).toEqual(
+    expect.objectContaining({
+      status: "stale",
+    })
+  );
+  expect(Number(refreshStatusPayload.lagSeconds)).toBeGreaterThan(60);
+  expect(refreshStatusPayload.collector).toEqual(
+    expect.objectContaining({
+      state: "failed",
+    })
+  );
+  expect(refreshStatusPayload.collector.error).toEqual(
+    expect.objectContaining({
+      code: "UPSTREAM_TIMEOUT",
+    })
+  );
+}
+
+async function runTc09AnomalyDetectors(tempRoot: string): Promise<void> {
+  const runRoot = path.join(
+    tempRoot,
+    "docs/business-os/startup-baselines/BRIK/runs/run-001"
+  );
+  const metricsPath = path.join(runRoot, "metrics.jsonl");
+
+  await writeFixtureFile(
+    path.join(LOOP_FIXTURES, "manifest.complete.json"),
+    path.join(runRoot, "baseline.manifest.json")
+  );
+
+  await writeMetricsFile(metricsPath, [
+    { timestamp: "2026-02-01T00:00:00Z", metric_name: "traffic_requests", value: 100 },
+    { timestamp: "2026-02-02T00:00:00Z", metric_name: "traffic_requests", value: 101 },
+    { timestamp: "2026-02-03T00:00:00Z", metric_name: "traffic_requests", value: 99 },
+  ]);
+
+  const coldStart = await handleLoopTool("anomaly_detect_traffic", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "DO",
+    grain: "day",
+  });
+  const coldStartPayload = parseResultPayload(coldStart);
+  expect(coldStartPayload.quality).toBe("blocked");
+  expect(coldStartPayload.severity).toBeNull();
+  expect(coldStartPayload.qualityNotes).toContain("insufficient-history");
+
+  const fullSeries = Array.from({ length: 30 }).map((_, index) => ({
+    timestamp: new Date(Date.UTC(2026, 0, index + 1)).toISOString(),
+    metric_name: "traffic_requests",
+    value: index === 29 ? 280 : 100 + (index % 3),
+  }));
+  await writeMetricsFile(metricsPath, fullSeries);
+
+  const warmSeries = await handleLoopTool("anomaly_detect_traffic", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "DO",
+    grain: "day",
+  });
+  const warmSeriesPayload = parseResultPayload(warmSeries);
+  expect(warmSeriesPayload.quality).toBe("ok");
+  expect(["moderate", "critical"]).toContain(String(warmSeriesPayload.severity));
+  expect(warmSeriesPayload.detector).toEqual(
+    expect.objectContaining({
+      schemaVersion: "anomaly.detector.v1",
+      primary: "ewma-zscore.v1",
+    })
+  );
+  expect(warmSeriesPayload.detector.methods).toEqual(
+    expect.arrayContaining(["ewma", "zscore"])
+  );
+}
+
+function setupStartupLoopIntegrationEnvironment() {
+  const originalFetch = global.fetch;
+  const originalBaseUrl = process.env.BOS_AGENT_API_BASE_URL;
+  const originalApiKey = process.env.BOS_AGENT_API_KEY;
+  const originalArtifactRoot = process.env.STARTUP_LOOP_ARTIFACT_ROOT;
+  const originalStaleThreshold = process.env.STARTUP_LOOP_STALE_THRESHOLD_SECONDS;
+  const originalRefreshStatusStaleThreshold = process.env.REFRESH_STATUS_STALE_THRESHOLD_SECONDS;
+
+  let tempRoot = "";
+  let bosStatusCase: BosStatusCase = "success";
+
+  beforeEach(async () => {
+    tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "mcp-startup-loop-integration-"));
+    process.env.BOS_AGENT_API_BASE_URL = "http://localhost:3020";
+    process.env.BOS_AGENT_API_KEY = "bos_test_key_1234567890";
+    process.env.STARTUP_LOOP_ARTIFACT_ROOT = tempRoot;
+    process.env.STARTUP_LOOP_STALE_THRESHOLD_SECONDS = "2592000";
+    bosStatusCase = "success";
+
+    const fixtures = {
+      cards: await readFixtureJson<Record<string, unknown>>(BOS_FIXTURES, "cards-list.success.json"),
+      stageDocGet: await readFixtureJson<Record<string, unknown>>(BOS_FIXTURES, "stage-doc.get.success.json"),
+      stageDocPatch: await readFixtureJson<Record<string, unknown>>(BOS_FIXTURES, "stage-doc.patch.success.json"),
+      conflict: await readFixtureJson<Record<string, unknown>>(
+        BOS_FIXTURES,
+        "stage-doc.patch.conflict.json"
+      ),
+      error401: await readFixtureJson<Record<string, unknown>>(BOS_FIXTURES, "error.401.json"),
+      error404: await readFixtureJson<Record<string, unknown>>(BOS_FIXTURES, "error.404.json"),
+      error500: await readFixtureJson<Record<string, unknown>>(BOS_FIXTURES, "error.500.json"),
+    };
+
+    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = typeof input === "string" ? input : input.toString();
+      const method = (init?.method ?? "GET").toUpperCase();
+
+      if (method === "GET" && url.startsWith("https://content.example/")) {
+        if (url.includes("/ok")) {
+          return makeTextResponse(
+            200,
+            "# Market Pulse\n\n- Competitor price update\n- Channel shift to short-video ads",
+            "text/markdown; charset=utf-8",
+            url
+          );
+        }
+        if (url.includes("/html")) {
+          return makeTextResponse(200, "<html>fallback</html>", "text/html; charset=utf-8", url);
+        }
+        return makeTextResponse(404, "not found", "text/plain; charset=utf-8", url);
+      }
+
+      if (bosStatusCase === "auth") {
+        return makeJsonResponse(401, fixtures.error401);
+      }
+      if (bosStatusCase === "unavailable") {
+        return makeJsonResponse(503, fixtures.error500);
+      }
+
+      if (method === "GET" && url.includes("/api/agent/cards")) {
+        return makeJsonResponse(200, fixtures.cards);
+      }
+
+      if (method === "GET" && url.includes("/api/agent/stage-docs/")) {
+        if (bosStatusCase === "not-found") {
+          return makeJsonResponse(404, fixtures.error404);
+        }
+        return makeJsonResponse(200, fixtures.stageDocGet);
+      }
+
+      if (method === "PATCH" && url.includes("/api/agent/stage-docs/")) {
+        if (bosStatusCase === "conflict") {
+          return makeJsonResponse(409, fixtures.conflict);
+        }
+        return makeJsonResponse(200, fixtures.stageDocPatch);
+      }
+
+      return makeJsonResponse(404, fixtures.error404);
+    }) as unknown as typeof fetch;
+  });
+
+  afterEach(async () => {
+    process.env.BOS_AGENT_API_BASE_URL = originalBaseUrl;
+    process.env.BOS_AGENT_API_KEY = originalApiKey;
+    process.env.STARTUP_LOOP_ARTIFACT_ROOT = originalArtifactRoot;
+    process.env.STARTUP_LOOP_STALE_THRESHOLD_SECONDS = originalStaleThreshold;
+    process.env.REFRESH_STATUS_STALE_THRESHOLD_SECONDS = originalRefreshStatusStaleThreshold;
+    global.fetch = originalFetch;
+    await fs.rm(tempRoot, { recursive: true, force: true });
+    jest.resetAllMocks();
+  });
+
+  return {
+    getTempRoot: () => tempRoot,
+    setBosStatusCase: (value: BosStatusCase) => {
+      bosStatusCase = value;
+    },
+  };
+}
+
+describe("startup-loop MCP integration suite: BOS + baseline flows", () => {
+  const env = setupStartupLoopIntegrationEnvironment();
+
+  it("TC-01: BOS read tools succeed with fixture-backed API stubs", async () => {
+    const cards = await handleBosTool("bos_cards_list", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+    });
+
+    const stageDoc = await handleBosTool("bos_stage_doc_get", {
+      business: "BRIK",
+      cardId: "BRIK-ENG-0001",
+      stage: "plan",
+      runId: "run-001",
+      current_stage: "DO",
+    });
+
+    const cardsPayload = parseResultPayload(cards);
+    const stageDocPayload = parseResultPayload(stageDoc);
+
+    expect(cardsPayload.count).toBe(1);
+    expect(stageDocPayload.stageDoc).toEqual(
+      expect.objectContaining({
+        cardId: "BRIK-ENG-0001",
+        entitySha: "sha-plan-current",
+      })
+    );
+  });
+
+  it("TC-02: guarded write success path returns updated entitySha", async () => {
+    const result = await handleBosTool("bos_stage_doc_patch_guarded", {
+      business: "BRIK",
+      cardId: "BRIK-ENG-0001",
+      stage: "plan",
+      runId: "run-001",
+      current_stage: "DO",
+      write_reason: "sync plan stage doc",
+      baseEntitySha: "sha-plan-current",
+      patch: { content: "# Planned\n\nUpdated from MCP write." },
+    });
+
+    const payload = parseResultPayload(result);
+    expect(payload.stageDoc).toEqual(
+      expect.objectContaining({
+        entitySha: "sha-plan-next",
+      })
+    );
+  });
+
+  it("TC-03: guarded write stale-sha path returns CONFLICT_ENTITY_SHA", async () => {
+    env.setBosStatusCase("conflict");
+
+    const result = await handleBosTool("bos_stage_doc_patch_guarded", {
+      business: "BRIK",
+      cardId: "BRIK-ENG-0001",
+      stage: "plan",
+      runId: "run-001",
+      current_stage: "DO",
+      write_reason: "sync plan stage doc",
+      baseEntitySha: "sha-stale",
+      patch: { content: "# Planned\n\nUpdated from MCP write." },
+    });
+
+    const payload = parseResultPayload(result);
+    expect(result.isError).toBe(true);
+    expect(payload.error).toEqual(
+      expect.objectContaining({
+        code: "CONFLICT_ENTITY_SHA",
+      })
+    );
+  });
+
+  it("TC-04: stage-forbidden write returns FORBIDDEN_STAGE without side effects", async () => {
+    const fetchMock = global.fetch as unknown as jest.Mock;
+
+    const result = await handleBosTool("bos_stage_doc_patch_guarded", {
+      business: "BRIK",
+      cardId: "BRIK-ENG-0001",
+      stage: "plan",
+      runId: "run-001",
+      current_stage: "S2A",
+      write_reason: "sync plan stage doc",
+      baseEntitySha: "sha-plan-current",
+      patch: { content: "# Planned\n\nUpdated from MCP write." },
+    });
+
+    const payload = parseResultPayload(result);
+    expect(result.isError).toBe(true);
+    expect(payload.error).toEqual(
+      expect.objectContaining({
+        code: "FORBIDDEN_STAGE",
+      })
+    );
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-05: loop tools cover missing + complete + stale fixture states", async () => {
+    const missing = await handleLoopTool("loop_manifest_status", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+    });
+    const missingPayload = parseResultPayload(missing);
+    expect(missing.isError).toBe(true);
+    expect(missingPayload.error).toEqual(
+      expect.objectContaining({
+        code: "MISSING_ARTIFACT",
+      })
+    );
+
+    const runRoot = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK/runs/run-001"
+    );
+    const businessRoot = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK"
+    );
+
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "manifest.complete.json"),
+      path.join(runRoot, "baseline.manifest.json")
+    );
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "learning-ledger.complete.jsonl"),
+      path.join(businessRoot, "learning-ledger.jsonl")
+    );
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "metrics.partial.jsonl"),
+      path.join(runRoot, "metrics.jsonl")
+    );
+
+    const complete = await handleLoopTool("loop_manifest_status", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+    });
+    const completePayload = parseResultPayload(complete);
+    expect(complete.isError).toBeUndefined();
+    expect(completePayload.freshness).toEqual(
+      expect.objectContaining({
+        status: expect.any(String),
+      })
+    );
+
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "manifest.stale.json"),
+      path.join(runRoot, "baseline.manifest.json")
+    );
+    process.env.STARTUP_LOOP_STALE_THRESHOLD_SECONDS = "60";
+
+    const stale = await handleLoopTool("loop_manifest_status", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+    });
+    const stalePayload = parseResultPayload(stale);
+    expect(stalePayload.freshness).toEqual(
+      expect.objectContaining({
+        status: "stale",
+      })
+    );
+  });
+});
+
+describe("startup-loop MCP integration suite: packets, anomalies, and sunset gating", () => {
+  const env = setupStartupLoopIntegrationEnvironment();
+
+  it("TC-06: startup-loop Jest wrapper config captures stable ignore patterns", async () => {
+    const configPath = path.join(process.cwd(), "packages/mcp-server/jest.startup-loop.config.cjs");
+    const configText = await fs.readFile(configPath, "utf-8");
+
+    expect(configText).toContain(".open-next");
+    expect(configText).toContain(".worktrees");
+    expect(configText).toContain(".ts-jest");
+    expect(configText).toContain("startup-loop-tools.integration.test.ts");
+  });
+
+  it("TC-07: wave-2 vertical slice builds deterministic packet and pack artifacts", async () => {
+    const runRoot = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK/runs/run-001"
+    );
+
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "manifest.complete.json"),
+      path.join(runRoot, "baseline.manifest.json")
+    );
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "metrics.partial.jsonl"),
+      path.join(runRoot, "metrics.jsonl")
+    );
+
+    const measure = await handleLoopTool("measure_snapshot_get", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+    });
+    const measurePayload = parseResultPayload(measure);
+    expect(measurePayload.recordCount).toBeGreaterThan(0);
+
+    const packetOne = await handleLoopTool("app_run_packet_build", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+    });
+    const packetTwo = await handleLoopTool("app_run_packet_build", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+    });
+
+    const packetOnePayload = parseResultPayload(packetOne);
+    const packetTwoPayload = parseResultPayload(packetTwo);
+    expect(packetOnePayload.packetId).toBe(packetTwoPayload.packetId);
+    expect(packetOnePayload.sizeBytes).toBe(packetTwoPayload.sizeBytes);
+    expect(packetOnePayload.provenance).toEqual(packetTwoPayload.provenance);
+
+    const packetGet = await handleLoopTool("app_run_packet_get", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+      packetId: packetOnePayload.packetId,
+    });
+    const packetGetPayload = parseResultPayload(packetGet);
+    expect(packetGetPayload.packetId).toBe(packetOnePayload.packetId);
+
+    const packOne = await handleLoopTool("pack_weekly_s10_build", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+      packetId: packetOnePayload.packetId,
+    });
+    const packTwo = await handleLoopTool("pack_weekly_s10_build", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+      packetId: packetOnePayload.packetId,
+    });
+
+    const packOnePayload = parseResultPayload(packOne);
+    const packTwoPayload = parseResultPayload(packTwo);
+    expect(packOnePayload.provenance).toEqual(packTwoPayload.provenance);
+    expect(packOnePayload.packJsonPath).toBe(packTwoPayload.packJsonPath);
+    expect(packOnePayload.packMarkdownPath).toBe(packTwoPayload.packMarkdownPath);
+
+    const packJsonPath = String(packOnePayload.packJsonPath);
+    const packMarkdownPath = String(packOnePayload.packMarkdownPath);
+    const jsonOne = await fs.readFile(packJsonPath, "utf-8");
+    const jsonTwo = await fs.readFile(String(packTwoPayload.packJsonPath), "utf-8");
+    const markdownOne = await fs.readFile(packMarkdownPath, "utf-8");
+    const markdownTwo = await fs.readFile(String(packTwoPayload.packMarkdownPath), "utf-8");
+    expect(jsonOne).toBe(jsonTwo);
+    expect(markdownOne).toBe(markdownTwo);
+  });
+
+  it("TC-08: refresh lifecycle is idempotent and stale collector status includes lag/error detail", async () => {
+    await runTc08RefreshLifecycle(env.getTempRoot());
+  });
+
+  it("TC-09: anomaly detectors enforce cold-start baseline gate and emit detector metadata", async () => {
+    await runTc09AnomalyDetectors(env.getTempRoot());
+  });
+
+  it("TC-10: measure_snapshot_get emits normalized records across required connector sources", async () => {
+    const runRoot = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK/runs/run-001"
+    );
+
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "manifest.complete.json"),
+      path.join(runRoot, "baseline.manifest.json")
+    );
+    await writeMetricsFile(path.join(runRoot, "metrics.jsonl"), [
+      { timestamp: "2026-01-10T00:00:00Z", metric_name: "traffic_requests", value: 100 },
+    ]);
+
+    await writeSourceMetricsArtifact(runRoot, "stripe", "2026-01-10T00:00:00Z", [
+      { metric: "stripe_revenue_total", value: 1200, valueType: "currency", unit: "EUR" },
+    ]);
+    await writeSourceMetricsArtifact(runRoot, "d1_prisma", "2026-01-10T00:00:00Z", [
+      { metric: "d1_bookings_total", value: 24, valueType: "count", unit: "count" },
+    ]);
+    await writeSourceMetricsArtifact(runRoot, "cloudflare", "2026-01-10T00:00:00Z", [
+      { metric: "traffic_requests_total", value: 5000, valueType: "count", unit: "count" },
+    ]);
+    await writeSourceMetricsArtifact(runRoot, "ga4_search_console", "2026-01-10T00:00:00Z", [
+      { metric: "ga4_queries_total", value: 340, valueType: "count", unit: "count" },
+    ]);
+    await writeSourceMetricsArtifact(runRoot, "email_support", "2026-01-10T00:00:00Z", [
+      { metric: "support_ticket_volume_total", value: 14, valueType: "count", unit: "count" },
+    ]);
+
+    const measure = await handleLoopTool("measure_snapshot_get", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+    });
+    const payload = parseResultPayload(measure);
+    const records = payload.records as Array<{ source: string }>;
+    const sourceSet = new Set(records.map((record) => record.source));
+
+    expect(payload.fullConnectorCoverage).toBe(true);
+    expect(payload.quality).toBe("ok");
+    expect(sourceSet).toEqual(
+      new Set([
+        "startup_loop_metrics",
+        "stripe",
+        "d1_prisma",
+        "cloudflare",
+        "ga4_search_console",
+        "email_support",
+      ])
+    );
+  });
+});
+
+describe("startup-loop MCP integration suite: sunset + content source collection", () => {
+  const env = setupStartupLoopIntegrationEnvironment();
+
+  it("TC-11: analytics_* sunset blocks startup-loop calls after two full-coverage S10 runs but allows non-loop callers", async () => {
+    const runs = [
+      { runId: "run-001", observedAt: "2026-01-01T00:00:00Z" },
+      { runId: "run-002", observedAt: "2026-01-08T00:00:00Z" },
+    ];
+
+    for (const run of runs) {
+      const runRoot = path.join(
+        env.getTempRoot(),
+        "docs/business-os/startup-baselines/BRIK/runs",
+        run.runId
+      );
+      await writeFixtureFile(
+        path.join(LOOP_FIXTURES, "manifest.complete.json"),
+        path.join(runRoot, "baseline.manifest.json")
+      );
+      await writeMetricsFile(path.join(runRoot, "metrics.jsonl"), [
+        { timestamp: run.observedAt, metric_name: "traffic_requests", value: 100 },
+      ]);
+
+      await writeSourceMetricsArtifact(runRoot, "stripe", run.observedAt, [
+        { metric: "stripe_revenue_total", value: 1000, valueType: "currency", unit: "EUR" },
+      ]);
+      await writeSourceMetricsArtifact(runRoot, "d1_prisma", run.observedAt, [
+        { metric: "d1_bookings_total", value: 20, valueType: "count", unit: "count" },
+      ]);
+      await writeSourceMetricsArtifact(runRoot, "cloudflare", run.observedAt, [
+        { metric: "traffic_requests_total", value: 4000, valueType: "count", unit: "count" },
+      ]);
+      await writeSourceMetricsArtifact(runRoot, "ga4_search_console", run.observedAt, [
+        { metric: "ga4_queries_total", value: 300, valueType: "count", unit: "count" },
+      ]);
+      await writeSourceMetricsArtifact(runRoot, "email_support", run.observedAt, [
+        { metric: "support_ticket_volume_total", value: 8, valueType: "count", unit: "count" },
+      ]);
+
+      await handleLoopTool("app_run_packet_build", {
+        business: "BRIK",
+        runId: run.runId,
+        current_stage: "S10",
+      });
+      await handleLoopTool("pack_weekly_s10_build", {
+        business: "BRIK",
+        runId: run.runId,
+        current_stage: "S10",
+      });
+    }
+
+    const sunsetStatusPath = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK/coverage/analytics-sunset-status.json"
+    );
+    const sunsetStatus = JSON.parse(await fs.readFile(sunsetStatusPath, "utf-8")) as {
+      sunsetActive: boolean;
+      consecutiveFullCoverageRuns: number;
+    };
+    expect(sunsetStatus.consecutiveFullCoverageRuns).toBeGreaterThanOrEqual(2);
+    expect(sunsetStatus.sunsetActive).toBe(true);
+
+    const blocked = await preflightAnalyticsSunsetGate("analytics_summary", {
+      shopId: "shop",
+      business: "BRIK",
+      runId: "run-002",
+      current_stage: "S10",
+    });
+    expect(blocked).not.toBeNull();
+    const blockedPayload = parseResultPayload(
+      blocked as { content: Array<{ text: string }>; isError?: boolean }
+    );
+    expect(blocked?.isError).toBe(true);
+    expect(blockedPayload.error.code).toBe("FORBIDDEN_STAGE");
+    expect(String(blockedPayload.error.details.requiredToolFamily)).toBe("measure_*");
+
+    const gateForNonLoop = await preflightAnalyticsSunsetGate("analytics_summary", {
+      shopId: "shop",
+    });
+    expect(gateForNonLoop).toBeNull();
+  });
+
+  it("TC-12: content source collector persists markdown artifacts and exposes them via list/status/pack evidence", async () => {
+    const runRoot = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK/runs/run-001"
+    );
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "manifest.complete.json"),
+      path.join(runRoot, "baseline.manifest.json")
+    );
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "metrics.partial.jsonl"),
+      path.join(runRoot, "metrics.jsonl")
+    );
+
+    const collectResult = await handleLoopTool("loop_content_sources_collect", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+      sources: [
+        {
+          sourceId: "market_pulse",
+          url: "https://content.example/ok",
+        },
+      ],
+    });
+    const collectPayload = parseResultPayload(collectResult);
+    expect(collectResult.isError).toBeUndefined();
+    expect(collectPayload.schemaVersion).toBe("content.sources.index.v1");
+    expect(collectPayload.sourceCount).toBe(1);
+
+    const indexPath = String(collectPayload.contentSourcesIndexPath);
+    const sourcePath = String((collectPayload.sources as Array<{ markdownPath: string }>)[0].markdownPath);
+    await expect(fs.readFile(indexPath, "utf-8")).resolves.toContain("content.sources.index.v1");
+    await expect(fs.readFile(sourcePath, "utf-8")).resolves.toContain("# Market Pulse");
+
+    const listResult = await handleLoopTool("loop_content_sources_list", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+    });
+    const listPayload = parseResultPayload(listResult);
+    expect(listPayload.sourceCount).toBe(1);
+    expect(listPayload.sources).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          sourceId: "market_pulse",
+          markdownPath: sourcePath,
+        }),
+      ])
+    );
+
+    const statusResult = await handleLoopTool("refresh_status_get", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+      collector: "content_sources",
+    });
+    const statusPayload = parseResultPayload(statusResult);
+    expect(statusPayload.contentSources).toEqual(
+      expect.objectContaining({
+        sourceCount: 1,
+        indexPath,
+      })
+    );
+
+    const packetResult = await handleLoopTool("app_run_packet_build", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "S10",
+    });
+    const packetPayload = parseResultPayload(packetResult);
+
+    const packResult = await handleLoopTool("pack_weekly_s10_build", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "S10",
+      packetId: String(packetPayload.packetId),
+    });
+    const packPayload = parseResultPayload(packResult);
+    expect(packPayload.evidenceRefs).toEqual(expect.arrayContaining([indexPath, sourcePath]));
+    await expect(fs.readFile(String(packPayload.packMarkdownPath), "utf-8")).resolves.toContain(
+      "Content sources: 1"
+    );
+  });
+
+  it("TC-13: content source collector returns structured markdown classifications and avoids partial writes", async () => {
+    const runRoot = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK/runs/run-001"
+    );
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "manifest.complete.json"),
+      path.join(runRoot, "baseline.manifest.json")
+    );
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "metrics.partial.jsonl"),
+      path.join(runRoot, "metrics.jsonl")
+    );
+
+    const unavailable = await handleLoopTool("loop_content_sources_collect", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+      sources: [{ sourceId: "missing_page", url: "https://content.example/missing" }],
+    });
+    const unavailablePayload = parseResultPayload(unavailable);
+    expect(unavailable.isError).toBe(true);
+    expect(unavailablePayload.error.code).toBe("CONTRACT_MISMATCH");
+    expect(String(unavailablePayload.error.message)).toContain("MARKDOWN_UNAVAILABLE");
+
+    await expect(
+      fs.access(
+        path.join(
+          env.getTempRoot(),
+          "docs/business-os/startup-baselines/BRIK/runs/run-001/collectors/content/sources.index.json"
+        )
+      )
+    ).rejects.toBeTruthy();
+
+    const mismatch = await handleLoopTool("loop_content_sources_collect", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "DO",
+      sources: [{ sourceId: "html_fallback", url: "https://content.example/html" }],
+    });
+    const mismatchPayload = parseResultPayload(mismatch);
+    expect(mismatch.isError).toBe(true);
+    expect(String(mismatchPayload.error.message)).toContain("MARKDOWN_CONTRACT_MISMATCH");
+  });
+});
+
+describe("cloudflare adapter contract harness", () => {
+  it("TC-14: projected Cloudflare metrics pass registry validation and fail on mismatches", () => {
+    const registry = parseMetricsRegistry({
+      schemaVersion: "metrics-registry.v1",
+      metrics: [
+        {
+          metric: "traffic_requests_total",
+          valueType: "count",
+          unit: "count",
+          preferredGrains: ["day"],
+          defaultWindow: "7d",
+          allowedDimensions: ["provider", "zoneId"],
+          aggregationMethod: "sum",
+          sourcePriority: ["cloudflare"],
+          piiRisk: "low",
+        },
+        {
+          metric: "traffic_requests_cached",
+          valueType: "count",
+          unit: "count",
+          preferredGrains: ["day"],
+          defaultWindow: "7d",
+          allowedDimensions: ["provider", "zoneId"],
+          aggregationMethod: "sum",
+          sourcePriority: ["cloudflare"],
+          piiRisk: "low",
+        },
+        {
+          metric: "traffic_bandwidth_total_bytes",
+          valueType: "count",
+          unit: "bytes",
+          preferredGrains: ["day"],
+          defaultWindow: "7d",
+          allowedDimensions: ["provider", "zoneId"],
+          aggregationMethod: "sum",
+          sourcePriority: ["cloudflare"],
+          piiRisk: "low",
+        },
+        {
+          metric: "traffic_threats_total",
+          valueType: "count",
+          unit: "count",
+          preferredGrains: ["day"],
+          defaultWindow: "7d",
+          allowedDimensions: ["provider", "zoneId"],
+          aggregationMethod: "sum",
+          sourcePriority: ["cloudflare"],
+          piiRisk: "low",
+        },
+        {
+          metric: "traffic_cache_hit_ratio",
+          valueType: "ratio",
+          unit: "ratio",
+          preferredGrains: ["day"],
+          defaultWindow: "7d",
+          allowedDimensions: ["provider", "zoneId"],
+          aggregationMethod: "ratio",
+          sourcePriority: ["cloudflare"],
+          piiRisk: "low",
+        },
+      ],
+    });
+
+    const projected = projectZoneTrafficMetrics({
+      zoneId: "zone_123",
+      totals: {
+        requests: 1000,
+        cachedRequests: 700,
+        bytes: 900000,
+        cachedBytes: 600000,
+        threats: 8,
+        pageViews: 420,
+        uniques: 300,
+      },
+    });
+
+    const validRecord = parseWave2MetricRecord({
+      schemaVersion: "measure.record.v1",
+      business: "BRIK",
+      source: "cloudflare",
+      metric: projected[0].metric,
+      window: {
+        startAt: "2026-02-01T00:00:00Z",
+        endAt: "2026-02-01T00:00:00Z",
+        grain: projected[0].grain,
+        timezone: "UTC",
+      },
+      segmentSchemaVersion: "segments.v1",
+      segments: projected[0].segments,
+      valueType: projected[0].valueType,
+      value: projected[0].value,
+      unit: projected[0].unit,
+      quality: "ok",
+      qualityNotes: [],
+      coverage: {
+        expectedPoints: 1,
+        observedPoints: 1,
+        samplingFraction: 1,
+      },
+      refreshedAt: "2026-02-01T00:00:00Z",
+      provenance: {
+        schemaVersion: "provenance.v1",
+        querySignature: "sha256:cloudflare-contract",
+        generatedAt: "2026-02-01T00:00:00Z",
+        datasetId: "cloudflare-zone-123",
+        sourceRef: "analytics_zone_traffic",
+        artifactRefs: ["artifact://cloudflare/zone_123/traffic"],
+        quality: "ok",
+      },
+    });
+
+    expect(() => validateMetricRecordAgainstRegistry(validRecord, registry)).not.toThrow();
+
+    const invalidUnitRecord = {
+      ...validRecord,
+      unit: "ratio",
+    };
+    expect(() =>
+      validateMetricRecordAgainstRegistry(parseWave2MetricRecord(invalidUnitRecord), registry)
+    ).toThrow(/unit/i);
+
+    const invalidDimensionRecord = {
+      ...validRecord,
+      segments: {
+        provider: "cloudflare",
+        zoneId: "zone_123",
+        colo: "LHR",
+      },
+    };
+    expect(() =>
+      validateMetricRecordAgainstRegistry(parseWave2MetricRecord(invalidDimensionRecord), registry)
+    ).toThrow(/dimension/i);
+  });
+});

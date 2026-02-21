@@ -1,8 +1,7 @@
 /* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
-import { IS_SERVER } from "@/config/env";
-import { IS_DEV } from "@/config/env";
+import { IS_DEV, IS_SERVER } from "@/config/env";
 import i18n from "@/i18n";
-import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import { type AppLanguage, i18nConfig } from "@/i18n.config";
 import { loadLocaleResource } from "@/locales/locale-loader";
 
 import type { GuidesNamespace } from "../locales/guides.types";
@@ -56,10 +55,18 @@ async function ensureNodeFs() {
     return { fs: nodeFs, path: nodePath };
   }
 
-  const { createRequire } = (await import("module")) as unknown as typeof import("module");
-  const req = createRequire(import.meta.url);
-  nodeFs = req("fs") as typeof import("fs");
-  nodePath = req("path") as typeof import("path");
+  const getBuiltinModule = (process as typeof process & {
+    getBuiltinModule?: (id: string) => unknown;
+  }).getBuiltinModule;
+  if (typeof getBuiltinModule !== "function") {
+    throw new Error("Node builtins are unavailable in this runtime.");
+  }
+
+  nodeFs = getBuiltinModule("fs") as typeof import("fs") | undefined;
+  nodePath = getBuiltinModule("path") as typeof import("path") | undefined;
+  if (!nodeFs || !nodePath) {
+    throw new Error("Failed to resolve Node fs/path builtins.");
+  }
 
   return { fs: nodeFs, path: nodePath };
 }
@@ -90,38 +97,65 @@ async function loadBundleFromFs(lang: string, ns: string): Promise<unknown | und
   return undefined;
 }
 
+function getHasExistingResourceBundle(lang: string, ns: string): boolean {
+  if (typeof i18n.hasResourceBundle !== "function") return false;
+  try {
+    return i18n.hasResourceBundle(lang, ns);
+  } catch {
+    return false;
+  }
+}
+
+function getExistingBundle(lang: string, ns: string): Record<string, unknown> | undefined {
+  if (typeof i18n.getResourceBundle !== "function") return undefined;
+  try {
+    return i18n.getResourceBundle(lang, ns) as Record<string, unknown> | undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function hasValidExistingBundle(params: {
+  ns: string;
+  existing: Record<string, unknown> | undefined;
+  hasExistingResource: boolean;
+}): boolean {
+  const { ns, existing, hasExistingResource } = params;
+  return (
+    (existing &&
+      typeof existing === "object" &&
+      Object.keys(existing).length > 0 &&
+      !isSeededBundle(ns, existing)) ||
+    (hasExistingResource && existing === undefined)
+  );
+}
+
+function addBundleAndCache(params: {
+  lang: string;
+  ns: string;
+  bundle: unknown;
+  onceKey: string;
+  nodeKey?: string;
+  forceReload: boolean;
+}): void {
+  const { lang, ns, bundle, onceKey, nodeKey, forceReload } = params;
+  i18n.addResourceBundle(lang, ns, bundle, true, true);
+  if (!forceReload) {
+    if (nodeKey) nodeCache.add(nodeKey);
+    onceCache.add(onceKey);
+  }
+}
+
 /**
  * Load one (lang, ns) bundle exactly once.
  */
 export async function loadI18nNs(lang: string, ns: string): Promise<void> {
   const onceKey = `${lang}/${ns}`;
   const forceReload = shouldReloadEveryTimeInDev(ns);
-  const hasExistingResource = (() => {
-    if (typeof i18n.hasResourceBundle !== "function") return false;
-    try {
-      return i18n.hasResourceBundle(lang, ns);
-    } catch {
-      return false;
-    }
-  })();
 
-  const existing = (() => {
-    if (typeof i18n.getResourceBundle !== "function") return undefined;
-    try {
-      return i18n.getResourceBundle(lang, ns) as Record<string, unknown> | undefined;
-    } catch {
-      return undefined;
-    }
-  })();
-
-  const hasValidExisting =
-    (existing &&
-      typeof existing === "object" &&
-      Object.keys(existing).length > 0 &&
-      !isSeededBundle(ns, existing)) ||
-    (hasExistingResource && existing === undefined);
-
-  if (hasValidExisting && !forceReload) {
+  const existing = getExistingBundle(lang, ns);
+  const hasExistingResource = getHasExistingResourceBundle(lang, ns);
+  if (hasValidExistingBundle({ ns, existing, hasExistingResource }) && !forceReload) {
     onceCache.add(onceKey);
     return;
   }
@@ -129,37 +163,26 @@ export async function loadI18nNs(lang: string, ns: string): Promise<void> {
   if (onceCache.has(onceKey) && !forceReload) return;
 
   if (isServerRuntime()) {
-    const key = `${lang}/${ns}`;
-    if (nodeCache.has(key) && !forceReload) return;
+    const nodeKey = `${lang}/${ns}`;
+    if (nodeCache.has(nodeKey) && !forceReload) return;
 
     if (ns === "guides") {
       const guidesBundle = await loadGuidesNamespace(lang);
       if (guidesBundle) {
-        i18n.addResourceBundle(lang, ns, guidesBundle, true, true);
-        if (!forceReload) {
-          nodeCache.add(key);
-          onceCache.add(onceKey);
-        }
+        addBundleAndCache({ lang, ns, bundle: guidesBundle, onceKey, nodeKey, forceReload });
         return;
       }
     }
+
     const dataFromImport = await loadBundleViaImport(lang, ns);
     if (typeof dataFromImport !== "undefined") {
-      i18n.addResourceBundle(lang, ns, dataFromImport, true, true);
-      if (!forceReload) {
-        nodeCache.add(key);
-        onceCache.add(onceKey);
-      }
+      addBundleAndCache({ lang, ns, bundle: dataFromImport, onceKey, nodeKey, forceReload });
       return;
     }
 
     const fsData = await loadBundleFromFs(lang, ns);
     if (typeof fsData !== "undefined") {
-      i18n.addResourceBundle(lang, ns, fsData, true, true);
-      if (!forceReload) {
-        nodeCache.add(key);
-        onceCache.add(onceKey);
-      }
+      addBundleAndCache({ lang, ns, bundle: fsData, onceKey, nodeKey, forceReload });
       return;
     }
 
@@ -168,10 +191,7 @@ export async function loadI18nNs(lang: string, ns: string): Promise<void> {
     if (ns === "guides") {
       const guidesBundle = await loadGuidesNamespace(lang);
       if (guidesBundle) {
-        i18n.addResourceBundle(lang, ns, guidesBundle, true, true);
-        if (!forceReload) {
-          onceCache.add(onceKey);
-        }
+        addBundleAndCache({ lang, ns, bundle: guidesBundle, onceKey, forceReload });
         return;
       }
     }
@@ -183,19 +203,13 @@ export async function loadI18nNs(lang: string, ns: string): Promise<void> {
     if (typeof data === "undefined") {
       const fsData = await loadBundleFromFs(lang, ns);
       if (typeof fsData !== "undefined") {
-        i18n.addResourceBundle(lang, ns, fsData, true, true);
-        if (!forceReload) {
-          onceCache.add(onceKey);
-        }
+        addBundleAndCache({ lang, ns, bundle: fsData, onceKey, forceReload });
         return;
       }
       throw new Error(`Missing i18n namespace bundle for ${lang}/${ns}`);
     }
 
-    i18n.addResourceBundle(lang, ns, data, true, true);
-    if (!forceReload) {
-      onceCache.add(onceKey);
-    }
+    addBundleAndCache({ lang, ns, bundle: data, onceKey, forceReload });
   }
 }
 

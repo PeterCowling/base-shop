@@ -20,11 +20,26 @@ import useEmailProgressData from "../useEmailProgressData";
 /* ------------------------------------------------------------------ */
 /*  Register data‑hook mocks first – hoist‑safe for Vitest            */
 /* ------------------------------------------------------------------ */
-jest.mock("../../../data/useActivitiesData", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useActivitiesByCodeData", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useBookingsData", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useFinancialsRoom", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useGuestDetails", () => ({ default: jest.fn() }));
+jest.mock("../../../data/useActivitiesData", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+jest.mock("../../../data/useActivitiesByCodeData", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+jest.mock("../../../data/useBookingsData", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+jest.mock("../../../data/useFinancialsRoom", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+jest.mock("../../../data/useGuestDetails", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
 
 const useActivitiesDataMock = jest.mocked(useActivitiesData);
 const useActivitiesByCodeDataMock = jest.mocked(useActivitiesByCodeData);

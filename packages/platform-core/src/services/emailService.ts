@@ -34,8 +34,9 @@ export async function sendSystemEmail(data: {
   type EmailModule = {
     sendEmail(to: string, subject: string, html: string): Promise<unknown>;
   };
-  // Dynamic require hidden from webpack static analysis to avoid cyclic dependency
-  const pkg = ["@acme", "email"].join("/");
-  const mod = req(pkg) as EmailModule;
+  // Keep module id runtime-resolved to avoid forcing a hard workspace
+  // dependency edge from platform-core -> email (which creates graph cycles).
+  const moduleId = process.env.ACME_EMAIL_MODULE_ID || "@acme/email";
+  const mod = req(moduleId) as EmailModule;
   return mod.sendEmail(data.to, data.subject, data.html);
 }

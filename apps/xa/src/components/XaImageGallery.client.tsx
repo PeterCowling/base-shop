@@ -43,7 +43,7 @@ export function XaImageGallery({
                   aria-label={`View image ${idx + 1} of ${images.length}`} // i18n-exempt -- XA-0012: demo a11y label
                   onClick={() => setActiveIndex(idx)}
                   className={[
-                    "relative aspect-[4/5] w-full cursor-zoom-in overflow-hidden rounded-none bg-white",
+                    "relative aspect-[4/5] w-full cursor-zoom-in overflow-hidden rounded-none bg-panel",
                     shouldSpan ? "sm:row-span-2" : "",
                   ].join(" ")}
                 >
@@ -62,7 +62,7 @@ export function XaImageGallery({
           </div>
           <DialogContent className="max-w-4xl border-none bg-transparent p-0 shadow-none">
             <DialogTitle className="sr-only">{title}</DialogTitle>
-            <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-black/90">
+            <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-overlay-scrim-2">
               {active ? (
                 <XaFadeImage
                   src={active.url}
@@ -76,7 +76,7 @@ export function XaImageGallery({
           </DialogContent>
         </Dialog>
       ) : (
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-none border border-border-1 bg-white">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-none border border-border-1 bg-panel">
           <Cluster
             alignY="center"
             justify="center"

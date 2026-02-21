@@ -4,7 +4,7 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { runInNewContext } from "node:vm";
 
 import ts from "typescript";
@@ -20,7 +20,6 @@ export type TokenMap = Record<`--${string}`, Token>;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const require = createRequire(import.meta.url);
 
 /* -------------------------------------------------------------------------- */
 /*  Base theme                                                                */
@@ -166,6 +165,7 @@ if (process.argv[1] === __filename) {
         compilerOptions: { module: ts.ModuleKind.CommonJS },
       }).outputText;
 
+      const moduleRequire = createRequire(pathToFileURL(modPath).href);
       const sandbox: {
         module: { exports: Record<string, unknown> };
         exports: Record<string, unknown>;
@@ -173,7 +173,7 @@ if (process.argv[1] === __filename) {
       } = {
         module: { exports: {} },
         exports: {},
-        require,
+        require: moduleRequire,
       };
       sandbox.exports = sandbox.module.exports;
       runInNewContext(transpiled, sandbox);

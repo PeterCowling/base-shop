@@ -6,6 +6,7 @@ import Script from "next/script";
 
 import { initTheme } from "@acme/platform-core/utils";
 
+import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { CookieConsentBanner } from "@/components/consent/CookieConsent";
 import { GA_MEASUREMENT_ID, IS_PROD, NOINDEX_PREVIEW, PUBLIC_DOMAIN, SITE_DOMAIN } from "@/config/env";
 import { BASE_URL } from "@/config/site";
@@ -119,6 +120,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         ) : null}
       </head>
       <body className="antialiased">
+        {/* SPA page_view tracking — fires gtag('config') on every client-side
+            route change. The inline snippet above handles the initial hard-load.
+            Pattern B: skips first render to avoid double-counting on hard load. */}
+        {gaMeasurementId ? <PageViewTracker /> : null}
         {children}
         <CookieConsentBanner />
       </body>

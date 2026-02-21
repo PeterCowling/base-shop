@@ -4,7 +4,6 @@ import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
 import { buildStructuredFromTranslator } from "./fallbacks/buildStructuredFromTranslator";
 import { legacyGuideKeyCandidates } from "./fallbacks/legacyKeys";
-import { probeHasLocalizedStructuredContent } from "./fallbacks/probe";
 import {
   getFallbackTranslatorCandidates,
   resolveTranslator,

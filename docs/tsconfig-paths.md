@@ -5,7 +5,7 @@ Last-reviewed: 2025-12-02
 
 # TypeScript Workspace Path Mapping
 
-Apps must map workspace packages to both raw sources (`src`) and built outputs (`dist`) so imports resolve whether or not packages have been built.
+Apps should usually map workspace packages to both raw sources (`src`) and built outputs (`dist`) so imports resolve whether or not packages have been built.
 
 ## Why
 - During development, editors and TS server should resolve from `src`.
@@ -60,6 +60,35 @@ Ensure the app extends the base config and, if needed, adds local aliases that i
 ```
 
 ## Guidelines
-- Always list the `src` path(s) first, followed by the built `dist` equivalents.
+- For most workspace packages, list `src` path(s) first, followed by built `dist` equivalents.
 - For package‑level imports, map both the entrypoint and the `/*` wildcard.
 - Keep `references` up to date to enable project builds (`tsc -b`).
+
+## i18n Exception (Required)
+`@acme/i18n` is a resolver-contract exception: consumers must use a **dist-only** mapping (do not map to `packages/i18n/src/*` in app tsconfigs).
+
+Required shape:
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@acme/i18n": [
+        "packages/i18n/dist/index.js",
+        "packages/i18n/dist/index.d.ts"
+      ],
+      "@acme/i18n/*": [
+        "packages/i18n/dist/*"
+      ]
+    }
+  }
+}
+```
+
+Rationale:
+- Keeps webpack, Turbopack, and Node runtime resolution aligned for i18n imports.
+- Prevents recurrence of source-resolution failures tied to i18n source specifier behavior.
+
+Enforcement:
+- Resolver contract is checked via `node scripts/check-i18n-resolver-contract.mjs`.
+- CI wiring runs this command in `scripts/validate-changes.sh` and `.github/workflows/merge-gate.yml` for relevant config/path changes.

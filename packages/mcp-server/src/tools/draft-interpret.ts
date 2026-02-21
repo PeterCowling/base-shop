@@ -60,8 +60,22 @@ export type EmailActionPlan = {
   };
   agreement: AgreementDetection;
   workflow_triggers: WorkflowTriggers;
+  /** Legacy singular classification; always equals scenarios[0] when scenarios[] is present. */
   scenario: ScenarioClassification;
+  /** v1.1.0+: all matched scenario categories, ordered by confidence descending.
+   *  Absent on v1.0.0 (legacy) payloads. */
+  scenarios?: ScenarioClassification[];
+  /** Semver string. "1.1.0" when scenarios[] is populated; absent/"1.0.0" for legacy. */
+  actionPlanVersion?: string;
   escalation: EscalationClassification;
+  /**
+   * True when the escalation tier and confidence meet the threshold for mandatory human review:
+   * - CRITICAL tier → always true
+   * - HIGH tier + confidence >= 0.80 → true
+   * - HIGH tier + confidence < 0.80 → false
+   * - NONE tier → false
+   */
+  escalation_required: boolean;
   thread_summary?: ThreadSummary;
 };
 
@@ -283,13 +297,28 @@ function extractQuestions(text: string): IntentItem[] {
 }
 
 function extractRequests(text: string): IntentItem[] {
+  // TASK-08: expanded from 3 → 9 patterns; matchAll + dedup guard.
+  const patterns = [
+    /please\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /(can|could|would) you\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /i would like\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /i was wondering\s+(?:if\s+)?([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /we would like\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /we need\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /i need\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /would it be possible\s+(?:to\s+)?([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /please could you\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+  ];
+  const seen = new Set<string>();
   const requests: IntentItem[] = [];
-  const patterns = [/please\s+([^\.\n\r\?]+)[\.\n\r\?]?/i, /(can|could|would) you\s+([^\.\n\r\?]+)[\.\n\r\?]?/i, /i would like\s+([^\.\n\r\?]+)[\.\n\r\?]?/i];
   for (const pattern of patterns) {
-    const match = text.match(pattern);
-    if (match) {
+    for (const match of text.matchAll(pattern)) {
       const textMatch = match[0].trim();
-      requests.push({ text: textMatch, evidence: textMatch });
+      const key = textMatch.toLowerCase().trim();
+      if (!seen.has(key)) {
+        seen.add(key);
+        requests.push({ text: textMatch, evidence: textMatch });
+      }
     }
   }
   return requests;
@@ -426,7 +455,10 @@ function detectWorkflowTriggers(text: string): WorkflowTriggers {
   };
 }
 
-function classifyScenario(text: string): ScenarioClassification {
+/** Categories that suppress all other scenarios when present (dominant/exclusive). */
+const DOMINANT_CATEGORIES: Set<ScenarioCategory> = new Set(["cancellation", "prepayment"]);
+
+function classifyAllScenarios(text: string): ScenarioClassification[] {
   const lower = text.toLowerCase();
   const rules: Array<{ category: ScenarioCategory; confidence: number; pattern: RegExp }> = [
     {
@@ -531,19 +563,34 @@ function classifyScenario(text: string): ScenarioClassification {
     },
   ];
 
+  // Collect all matched rules into a Map, deduplicating by category and keeping highest confidence
+  const matched = new Map<ScenarioCategory, number>();
   for (const rule of rules) {
     if (rule.pattern.test(lower)) {
-      return {
-        category: rule.category,
-        confidence: rule.confidence,
-      };
+      const existing = matched.get(rule.category);
+      if (existing === undefined || rule.confidence > existing) {
+        matched.set(rule.category, rule.confidence);
+      }
     }
   }
 
-  return {
-    category: "general",
-    confidence: 0.6,
-  };
+  if (matched.size === 0) {
+    return [{ category: "general", confidence: 0.6 }];
+  }
+
+  // Sort by confidence descending
+  let sorted: ScenarioClassification[] = Array.from(matched.entries())
+    .map(([category, confidence]) => ({ category, confidence }))
+    .sort((a, b) => b.confidence - a.confidence);
+
+  // Apply dominant-category promotion: if any DOMINANT_CATEGORIES member is present, move it to position 0
+  const dominantIndex = sorted.findIndex((s) => DOMINANT_CATEGORIES.has(s.category));
+  if (dominantIndex > 0) {
+    const [dominant] = sorted.splice(dominantIndex, 1);
+    sorted = [dominant, ...sorted];
+  }
+
+  return sorted;
 }
 
 const DEFAULT_HIGH_VALUE_DISPUTE_THRESHOLD_EUR = 500;
@@ -683,18 +730,25 @@ export async function handleDraftInterpretTool(name: string, args: unknown) {
     const threadSummary = summarizeThreadContext(threadContext, normalized);
     const escalation = classifyEscalation(`${subject ?? ""}\n${normalized}`, threadSummary);
 
+    const classifyText = `${subject ?? ""}\n${normalized}`;
+    const scenarios = classifyAllScenarios(classifyText);
+    const primaryScenario = scenarios[0];
+
+    const escalation_required =
+      escalation.tier === "CRITICAL" ||
+      (escalation.tier === "HIGH" && escalation.confidence >= 0.80);
+
     const plan: EmailActionPlan = {
       normalized_text: normalized,
       language,
-      intents: {
-        questions,
-        requests,
-        confirmations,
-      },
+      intents: { questions, requests, confirmations },
       agreement,
-      workflow_triggers: detectWorkflowTriggers(`${subject ?? ""}\n${normalized}`),
-      scenario: classifyScenario(`${subject ?? ""}\n${normalized}`),
+      workflow_triggers: detectWorkflowTriggers(classifyText),
+      scenario: primaryScenario,
+      scenarios,
+      actionPlanVersion: "1.1.0",
       escalation,
+      escalation_required,
     };
 
     if (threadSummary) {

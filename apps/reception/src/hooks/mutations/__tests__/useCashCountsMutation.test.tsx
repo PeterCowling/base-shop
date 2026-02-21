@@ -121,6 +121,9 @@ describe("useCashCountsMutations", () => {
 
   it("addCashCount does nothing when user missing", async () => {
     user = null;
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
     const { result } = renderHook(() => useCashCountsMutations());
 
     await act(async () => {
@@ -129,6 +132,10 @@ describe("useCashCountsMutations", () => {
 
     expect(pushMock).not.toHaveBeenCalled();
     expect(setMock).not.toHaveBeenCalled();
+    expect(errorSpy).toHaveBeenCalledWith(
+      "No user is logged in; cannot add to cashCounts."
+    );
+    errorSpy.mockRestore();
   });
 
   it("addFloatEntry delegates to addCashCount", async () => {
@@ -195,7 +202,7 @@ describe("useCashCountsMutations", () => {
 
   it("shows toast and skips write on validation failure", async () => {
     const { result } = renderHook(() => useCashCountsMutations());
-    const errorSpy = vi
+    const errorSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => undefined);
 
@@ -216,7 +223,7 @@ describe("useCashCountsMutations", () => {
 
   it("shows toast when firebase write fails", async () => {
     setMock.mockRejectedValue(new Error("fail"));
-    const errorSpy = vi
+    const errorSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => undefined);
     const { result } = renderHook(() => useCashCountsMutations());

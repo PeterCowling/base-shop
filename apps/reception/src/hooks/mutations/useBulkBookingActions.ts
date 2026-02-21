@@ -9,7 +9,7 @@ import { useCallback, useState } from "react";
 
 import { showToast } from "../../utils/toastUtils";
 
-import useDeleteBooking from "./useDeleteBooking";
+import useArchiveBooking from "./useArchiveBooking";
 
 export interface BulkActionResult {
   success: string[];
@@ -102,12 +102,13 @@ function downloadCsv(csv: string, filename: string): void {
 }
 
 export default function useBulkBookingActions(): UseBulkBookingActionsReturn {
-  const { deleteBooking } = useDeleteBooking();
+  const { archiveBooking } = useArchiveBooking();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
   /**
-   * Cancels multiple bookings in sequence.
+   * Cancels multiple bookings in sequence using soft-delete (status flag).
+   * Preserves booking history by archiving instead of deleting.
    * Returns lists of successful and failed booking refs.
    */
   const cancelBookings = useCallback(
@@ -119,7 +120,7 @@ export default function useBulkBookingActions(): UseBulkBookingActionsReturn {
 
       for (const bookingRef of bookingRefs) {
         try {
-          await deleteBooking(bookingRef);
+          await archiveBooking(bookingRef);
           success.push(bookingRef);
         } catch (err) {
           failed.push(bookingRef);
@@ -141,7 +142,7 @@ export default function useBulkBookingActions(): UseBulkBookingActionsReturn {
 
       return { success, failed };
     },
-    [deleteBooking]
+    [archiveBooking]
   );
 
   /**

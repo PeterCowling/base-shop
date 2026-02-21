@@ -158,16 +158,6 @@ function looksLikeRawKey(value: string, options: DetectOptions): boolean {
 /**
  * Check if a string is a known placeholder phrase.
  */
-function isKnownPlaceholderPhrase(value: string): boolean {
-  const trimmed = value.trim();
-  if (!trimmed) return false;
-
-  // Use the existing isPlaceholderString function's phrase detection
-  // We pass an empty key since we only want phrase detection here
-  const normalised = trimmed.replace(/[.!?…]+$/u, "").toLowerCase();
-  return PLACEHOLDER_PHRASES.some((phrase) => normalised === phrase);
-}
-
 /**
  * Extract text content from a DOM element or use string directly.
  */
@@ -209,6 +199,7 @@ function createSnippet(
  */
 function tokenizeForKeyDetection(text: string): string[] {
   // Match potential dot-notation keys: word.word.word patterns
+  // eslint-disable-next-line security/detect-unsafe-regex -- LINT-1023: Static pattern matching i18n key format; no user input in pattern [ttl=2026-12-31]
   const keyPattern = /[a-zA-Z_][a-zA-Z0-9_-]*(?:\.[a-zA-Z_][a-zA-Z0-9_-]*)+/g;
   const matches = text.match(keyPattern) ?? [];
   return matches;
@@ -260,6 +251,7 @@ export function detectRenderedI18nPlaceholders(
   for (const phrase of PLACEHOLDER_PHRASES) {
     // Create a case-insensitive pattern that matches the phrase with optional trailing punctuation
     const escapedPhrase = phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    // eslint-disable-next-line security/detect-non-literal-regexp -- LINT-1023: Building regex from known safe PLACEHOLDER_PHRASES constant array [ttl=2026-12-31]
     const phrasePattern = new RegExp(escapedPhrase + "[.!?…]*", "gi");
     const matches = text.match(phrasePattern);
     if (matches) {

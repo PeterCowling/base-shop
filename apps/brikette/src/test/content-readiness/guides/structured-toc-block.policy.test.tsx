@@ -7,7 +7,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 
 import StructuredTocBlock from "@/routes/guides/guide-seo/components/StructuredTocBlock";
-import type { GuideSeoTemplateContext, NormalisedSection, TocItem } from "@/routes/guides/guide-seo/types";
+import type { GuideSeoTemplateContext, NormalisedSection, TocItem, Translator } from "@/routes/guides/guide-seo/types";
 
 jest.mock("@/i18n", () => ({
   __esModule: true,
@@ -41,12 +41,12 @@ jest.mock("@/routes/guides/guide-seo/utils/toc", () => ({
 jest.mock("@/utils/debug", () => ({ debugGuide: () => {} }));
 jest.mock("@/utils/errors", () => ({ logError: () => {} }));
 
-const makeTranslator = (entries: Record<string, unknown> = {}) => {
-  return (key: string, options?: Record<string, unknown>) => {
+const makeTranslator = (entries: Record<string, unknown> = {}): Translator => {
+  return ((key: string, options?: Record<string, unknown>) => {
     if (key in entries) return entries[key];
     if (options?.["returnObjects"]) return [];
     return key;
-  };
+  }) as unknown as Translator;
 };
 
 const makeContext = (

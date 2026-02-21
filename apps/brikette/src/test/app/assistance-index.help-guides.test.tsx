@@ -107,6 +107,7 @@ describe("/help assistance index", () => {
       "Best time to visit",
     ];
     for (const label of expected) {
+      // eslint-disable-next-line security/detect-non-literal-regexp -- Building test regex from escaped label strings; test code only
       expect(scoped.getByRole("link", { name: new RegExp(escapeRegex(label), "i") })).toBeInTheDocument();
     }
 

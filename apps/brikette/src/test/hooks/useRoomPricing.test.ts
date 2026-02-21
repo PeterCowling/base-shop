@@ -19,7 +19,7 @@ jest.mock("@/rooms/pricing", () => ({
 }));
 
 const room = roomsData[0]!;
-const mockedUseRates = useRates as unknown as Mock;
+const mockedUseRates = useRates as unknown as jest.Mock;
 
 describe("useRoomPricing", () => {
   beforeEach(() => {
@@ -69,7 +69,7 @@ describe("useRoomPricing", () => {
 
   it("treats rooms without a base price as unavailable when no rate is returned", () => {
     getPriceForDateMock.mockReturnValue(undefined);
-    const roomWithoutBasePrice = { ...room, basePrice: undefined } as typeof room;
+    const roomWithoutBasePrice = { ...room, basePrice: undefined } as unknown as typeof room;
 
     const { result } = renderHook(() => useRoomPricing(roomWithoutBasePrice));
 

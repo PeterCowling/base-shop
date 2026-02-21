@@ -241,12 +241,12 @@ Guides should replicate this:
 5. **CMS guide management** -- Replace the Sanity blog pages with guide management pages in `apps/cms/` under `cms/shop/[shop]/guides/`. Move the draft dashboard, editor, SEO audit, and publish workflow here.
 6. **Storefront rendering** -- Each app imports guide data from the centralised store at build/request time. Rendering components stay in the app, content comes from one place.
 
-### Architectural decisions to make during lp-fact-find
+### Architectural decisions to make during lp-do-fact-find
 
 **Content-as-code vs CMS-first:** File-based JSON (mirroring the product pattern) works well for read-heavy, single-author workflows. Guides are more editorial and collaborative, which may need: concurrency handling, version history, review audit trails, partial saves. Two options:
 - **Option A (content-as-code):** CMS writes commits/PRs; review is Git-based; publishing is merge-based. Simple, auditable, but clunky UX for non-developers.
 - **Option B (CMS-first):** Store drafts + revisions in DB; export to JSON for build/runtime consumption. Better UX, but more infrastructure.
-Decide during lp-fact-find based on who the editors are and how often they edit.
+Decide during lp-do-fact-find based on who the editors are and how often they edit.
 
 **Locale atomicity:** Translating to 17 locales is a batch operation. Either the translation set is complete and valid, or it's not published. Partial locale failures need retry mechanics and clear status visibility. The locale failure policy (publish passing locales, flag failures, retry once, then EN fallback) needs to be enforced at the repository level.
 

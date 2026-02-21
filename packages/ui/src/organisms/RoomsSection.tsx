@@ -6,7 +6,6 @@ import Link from "next/link";
 
 import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
-import { useModal } from "../context/ModalContext";
 import { roomsData } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import RoomCard from "../molecules/RoomCard";
@@ -106,14 +105,22 @@ function buildRoomInventorySummary(room: (typeof roomsData)[number], title: stri
 function RoomsSection({
   lang: explicitLang,
   bookingQuery,
+  itemListId,
+  onRoomSelect,
 }: {
   lang?: string;
   bookingQuery?: RoomsSectionBookingQuery;
+  /** Optional analytics context for room-card CTA clicks (GA4-agnostic). */
+  itemListId?: string;
+  /**
+   * Optional hook invoked before opening Booking2 modal when a room/rate CTA is clicked.
+   * Kept GA4-agnostic; app callers can emit analytics using their own contract layer.
+   */
+  onRoomSelect?: (ctx: { roomSku: string; plan: "nr" | "flex"; index: number; itemListId?: string }) => void;
 }): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
   const { t } = useTranslation("roomsPage", { lng: lang });
-  const { openModal } = useModal();
   const [clientBookingQuery, setClientBookingQuery] = useState<RoomsSectionBookingQuery | null>(
     bookingQuery ?? null
   );
@@ -124,8 +131,8 @@ function RoomsSection({
   }, [bookingQuery]);
   const resolvedBookingQuery = bookingQuery ?? clientBookingQuery;
   const checkIn = resolvedBookingQuery?.checkIn?.trim() || getTodayIso();
-  const checkOut = resolvedBookingQuery?.checkOut?.trim() || getDatePlusTwoDays(checkIn);
-  const adults = parseInt(resolvedBookingQuery?.pax ?? "1", 10) || 1;
+  const _checkOut = resolvedBookingQuery?.checkOut?.trim() || getDatePlusTwoDays(checkIn);
+  const _adults = parseInt(resolvedBookingQuery?.pax ?? "1", 10) || 1;
   const normalizedQueryString = (resolvedBookingQuery?.queryString ?? "").trim().replace(/^\?/, "");
   const searchString = normalizedQueryString ? `?${normalizedQueryString}` : "";
 
@@ -170,7 +177,7 @@ function RoomsSection({
         <RoomFilters selected={filter} onChange={setFilter} lang={lang} />
 
         <Grid cols={1} gap={8} className="sm:grid-cols-2">
-          {filteredRooms.map((room) => {
+          {filteredRooms.map((room, index) => {
             const href = `/${lang}/${roomsSlug}/${room.id}`;
             const title = resolveTranslatedCopy(
               t(`rooms.${room.id}.title`, {
@@ -189,16 +196,10 @@ function RoomsSection({
             const roomSummary = buildRoomInventorySummary(room, title);
 
             const openBooking = (rateType: "nonRefundable" | "refundable") => {
-              openModal("booking2", {
-                checkIn,
-                checkOut,
-                adults,
-                rateType,
-                room: {
-                  nonRefundableCode: room.rateCodes.direct.nr,
-                  refundableCode: room.rateCodes.direct.flex,
-                },
-              });
+              const plan = rateType === "nonRefundable" ? "nr" : "flex";
+              onRoomSelect?.({ roomSku: room.id, plan, index, itemListId });
+              // Booking modal removed (TASK-24). Navigation is handled by the app layer
+              // via RoomCard props (brikette: TASK-27 direct Octorate link).
             };
             return (
               <div key={room.id} className="flex flex-col">

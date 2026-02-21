@@ -7,13 +7,13 @@ describe("cartStore wrapper functions", () => {
 
   it("delegates operations to the default store", async () => {
     const store = {
-      createCart: jest.fn().mockResolvedValue("id"),
-      getCart: jest.fn().mockResolvedValue({}),
-      setCart: jest.fn().mockResolvedValue(undefined),
-      deleteCart: jest.fn().mockResolvedValue(undefined),
-      incrementQty: jest.fn().mockResolvedValue({}),
-      setQty: jest.fn().mockResolvedValue(null),
-      removeItem: jest.fn().mockResolvedValue(null),
+      createCart: (jest.fn() as any).mockResolvedValue("id"),
+      getCart: (jest.fn() as any).mockResolvedValue({}),
+      setCart: (jest.fn() as any).mockResolvedValue(undefined),
+      deleteCart: (jest.fn() as any).mockResolvedValue(undefined),
+      incrementQty: (jest.fn() as any).mockResolvedValue({}),
+      setQty: (jest.fn() as any).mockResolvedValue(null),
+      removeItem: (jest.fn() as any).mockResolvedValue(null),
     };
 
     const mod: any = await import("../../src/cartStore");
@@ -48,7 +48,7 @@ describe("cartStore wrapper functions", () => {
 
   it("recreates default store when cleared", async () => {
     const store = {
-      createCart: jest.fn().mockResolvedValue("id"),
+      createCart: (jest.fn() as any).mockResolvedValue("id"),
       getCart: jest.fn(),
       setCart: jest.fn(),
       deleteCart: jest.fn(),

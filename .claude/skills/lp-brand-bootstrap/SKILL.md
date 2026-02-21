@@ -1,6 +1,6 @@
 ---
 name: lp-brand-bootstrap
-description: Bootstrap a brand-language.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at S7 before /lp-design-spec.
+description: Bootstrap a brand-dossier.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec.
 operating_mode: EXECUTE
 ---
 
@@ -8,10 +8,12 @@ operating_mode: EXECUTE
 
 Initialize brand language documentation for a business in the startup loop.
 
+> **Note**: In the startup loop BRAND stage, use `/lp-do-brand-02-brand-identity` instead. `lp-brand-bootstrap` remains available for standalone Draft dossier creation outside the loop. It does **not** promote Status to Active — that requires operator review and explicit confirmation.
+
 ## When to Use
 
-- **S0/S1 gate**: Startup loop detects missing `docs/business-os/strategy/<BIZ>/brand-language.user.md`
-- **S7 prerequisite**: `/lp-fact-find` flags `Design-Spec-Required: yes` but no brand language exists
+- **S0/S1 gate**: Startup loop detects missing `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
+- **DO prerequisite**: `/lp-do-fact-find` flags `Design-Spec-Required: yes` but no brand language exists
 - **Manual**: Operator invokes `/lp-brand-bootstrap <BIZ>` at any time
 
 ## Inputs
@@ -21,10 +23,11 @@ Initialize brand language documentation for a business in the startup loop.
 | Strategy plan | `docs/business-os/strategy/<BIZ>/plan.user.md` | Yes |
 | Business registry | `docs/business-os/strategy/businesses.json` | Yes |
 | Brand language template | `.claude/skills/_shared/brand-language-template.md` | Yes |
+| Naming shortlist | `docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md` | No — read if present; provides `recommended_business_name` via YAML front matter |
 | Launch forecast | `docs/business-os/strategy/<BIZ>/*-launch-forecast*.user.md` | No |
 | Theme package | `packages/themes/<theme>/src/tokens.ts` | No — only if app exists |
 | Existing app UI | `apps/<app>/src/app/layout.tsx`, key pages | No — only if app exists |
-| Existing brand doc (BRIK) | `docs/business-os/strategy/BRIK/brand-language.user.md` | No — reference example |
+| Existing brand doc (BRIK) | `docs/business-os/strategy/BRIK/brand-dossier.user.md` | No — reference example |
 
 ## Workflow
 
@@ -33,6 +36,14 @@ Initialize brand language documentation for a business in the startup loop.
 1. Read `businesses.json` to get business name, apps, and theme mappings
 2. Read strategy plan for audience, positioning, and product description
 3. Read launch forecast (if exists) for demographic data and channel strategy
+4. Check for naming shortlist (GATE-BD-00 output):
+   - If `docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md` exists:
+     - Parse YAML front matter to extract `recommended_business_name` and `shortlist` array
+     - Use `recommended_business_name` as the primary name input when filling the brand dossier template
+     - Include `shortlist` as context when writing the Audience and Personality sections
+     - If front matter is absent or malformed: emit advisory and continue without pre-fill:
+       `Advisory: Naming shortlist found at latest-naming-shortlist.user.md but front matter could not be parsed — fill business name in brand dossier manually.`
+   - If file absent: skip gracefully, no message needed
 
 ### Step 2: Gather Design Evidence
 
@@ -54,7 +65,7 @@ If the business has no app yet:
 
 ### Step 4: Write and Report
 
-1. Save to `docs/business-os/strategy/<BIZ>/brand-language.user.md`
+1. Save to `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
 2. Report completion status:
    - Sections complete vs TBD
    - Recommended next actions to resolve TBDs
@@ -73,8 +84,8 @@ If the business has no app yet:
 
 - **Consumed by**: `/lp-design-spec` (reads brand language for token bindings and component decisions)
 - **Updated by**: `/lp-design-spec` (writes back stable patterns to Signature Patterns section)
-- **Referenced by**: `/lp-build` (for UI implementation guidance)
-- **Loop position**: S0/S1 (setup) or S7 (pre-design-spec)
+- **Referenced by**: `/lp-do-build` (for UI implementation guidance)
+- **Loop position**: S0/S1 (setup) or DO (pre-design-spec)
 
 ## Example Invocation
 

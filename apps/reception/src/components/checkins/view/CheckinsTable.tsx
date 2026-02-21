@@ -36,6 +36,11 @@ interface Props {
   closeArchiveModal: () => void;
   /** Callback after archiving completes */
   onArchiveComplete: () => void;
+  /** Show/hide cancelled bookings toggle */
+  showCancelled: boolean;
+  onToggleCancelled: () => void;
+  /** Booking statuses map (bookingRef -> status) */
+  bookingStatuses: Record<string, string | undefined>;
 }
 
 const CheckinsTableView: React.FC<Props> = ({
@@ -64,6 +69,9 @@ const CheckinsTableView: React.FC<Props> = ({
   closeBookingToDelete,
   closeArchiveModal,
   onArchiveComplete,
+  showCancelled,
+  onToggleCancelled,
+  bookingStatuses,
 }) => (
   <div className="min-h-screen flex flex-col p-5 dark:bg-darkBg dark:text-darkAccentGreen">
     <CheckinsHeader
@@ -75,11 +83,22 @@ const CheckinsTableView: React.FC<Props> = ({
     />
     <div className="flex-grow bg-white rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
       <div className="flex items-center justify-between">
-        <DateSelector
-          selectedDate={selectedDate}
-          onDateChange={onDateChange}
-          username={username}
-        />
+        <div className="flex items-center gap-4">
+          <DateSelector
+            selectedDate={selectedDate}
+            onDateChange={onDateChange}
+            username={username}
+          />
+          <label className="flex items-center gap-2 text-sm cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showCancelled}
+              onChange={onToggleCancelled}
+              className="w-4 h-4 cursor-pointer"
+            />
+            <span>Show cancelled</span>
+          </label>
+        </div>
         {roomsReady ? (
           <span className="ms-4 text-green-600 font-semibold dark:text-darkAccentGreen">
             Rooms are Set
@@ -139,6 +158,7 @@ const CheckinsTableView: React.FC<Props> = ({
                       ? onRowClick
                       : undefined
                   }
+                  isCancelled={bookingStatuses[guestRow.bookingRef] === "cancelled"}
                 />
               ))}
           </tbody>

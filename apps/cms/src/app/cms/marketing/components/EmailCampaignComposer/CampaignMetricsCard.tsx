@@ -34,7 +34,7 @@ export function CampaignMetricsCard({ campaigns, loading }: CampaignMetricsCardP
           <Skeleton className="h-5 w-40" />
           <Grid cols={1} gap={3} className="sm:grid-cols-2">
             {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="space-y-2">
+              <div key={`skeleton-metric-${index}`} className="space-y-2">
                 <Skeleton className="h-3 w-20" />
                 <Skeleton className="h-8 w-24" />
                 <Skeleton className="h-2 w-full" />

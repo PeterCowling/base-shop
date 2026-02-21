@@ -1,3 +1,4 @@
+import { readdir, readFile } from "fs/promises";
 import { join } from "path";
 
 import { coreEnv } from "@acme/config/env/core";
@@ -24,7 +25,6 @@ export async function chargeLateFeesOnce(
   dataRoot: string = DATA_ROOT,
 ): Promise<void> {
   const stripe = await getStripe();
-  const { readdir, readFile } = await import("fs/promises");
   const shops = shopId ? [shopId] : await readdir(dataRoot);
   for (const shop of shops) {
     let policy: { gracePeriodDays: number; feeAmount: number } | undefined;
@@ -111,7 +111,6 @@ export async function resolveConfig(
   let hasFileEnabled = false;
   let hasFileInterval = false;
   try {
-    const { readFile } = await import("fs/promises");
     const file = join(dataRoot, shop, "settings.json");
     const json = JSON.parse(await readFile(file, "utf8"));
     const cfg = json.lateFeeService;
@@ -175,7 +174,6 @@ export async function startLateFeeService(
   configs: Record<string, Partial<LateFeeConfig>> = {},
   dataRoot: string = DATA_ROOT,
 ): Promise<() => void> {
-  const { readdir, readFile } = await import("fs/promises");
   const shops = await readdir(dataRoot);
   const timers: NodeJS.Timeout[] = [];
 

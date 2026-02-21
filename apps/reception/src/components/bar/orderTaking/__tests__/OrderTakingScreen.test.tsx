@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-raw-tailwind-color -- test fixtures */
 import "@testing-library/jest-dom";
 
 import { render, screen } from "@testing-library/react";
@@ -40,7 +41,7 @@ describe("OrderTakingScreen", () => {
   it("renders children", () => {
     render(
       <OrderTakingScreen {...baseProps}>
-        <div data-testid="child" />
+        <div data-cy="child" />
       </OrderTakingScreen>
     );
     expect(screen.getByTestId("child")).toBeInTheDocument();

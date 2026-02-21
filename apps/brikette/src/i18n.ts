@@ -22,10 +22,10 @@ import { asResourceKey } from "./utils/i18n-types";
 type I18nextModule = import("i18next").Module;
 let initReactI18next: I18nextModule | null = null;
 try {
-   
+  // eslint-disable-next-line @typescript-eslint/no-require-imports -- LINT-1307 Runtime guard avoids loading react-i18next when React context API is unavailable.
   const react = require("react") as { createContext?: unknown };
   if (typeof react.createContext === "function") {
-     
+    // eslint-disable-next-line @typescript-eslint/no-require-imports -- LINT-1307 Runtime guard for server contexts that cannot initialize react-i18next safely.
     const reactI18next = require("react-i18next") as { initReactI18next?: unknown };
     const candidate = reactI18next.initReactI18next as unknown;
     if (
@@ -89,7 +89,7 @@ i18n.use(
       const overrideBundle = overrides?.[lng];
       if (overrideBundle) {
         if (process.env["DEBUG_GUIDE_TRANSLATIONS"] === "1") {
-          // eslint-disable-next-line no-console -- Localised debug helper for guide coverage tests
+          // eslint-disable-next-line no-console -- LINT-1307 Localised debug helper for guide coverage tests
           console.log(`[i18n] using guides override for ${lng}`);
         }
         cb(null, asResourceKey(overrideBundle));
@@ -127,11 +127,20 @@ i18n.use(
     // 2) Plain Node fallback via fs (prioritised under Node/vitest)
     if (canUseNodeFs) {
       try {
-        const mod = await import("module");
-        const { createRequire } = mod as unknown as typeof import("module");
-        const req = createRequire(import.meta.url);
-        const fs = req("fs") as typeof import("fs");
-        const path = req("path") as typeof import("path");
+        const getBuiltinModule = (process as typeof process & {
+          getBuiltinModule?: (id: string) => unknown;
+        }).getBuiltinModule;
+        if (typeof getBuiltinModule !== "function") {
+          cb(null, {});
+          return;
+        }
+
+        const fs = getBuiltinModule("fs") as typeof import("fs") | undefined;
+        const path = getBuiltinModule("path") as typeof import("path") | undefined;
+        if (!fs || !path) {
+          cb(null, {});
+          return;
+        }
         const candidates: string[] = [
           path.resolve(process.cwd(), "src/locales", lng, `${ns}.json`),
           path.resolve(process.cwd(), "apps/brikette/src/locales", lng, `${ns}.json`),

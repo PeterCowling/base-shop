@@ -6,8 +6,8 @@ describe("subscriptionUsage", () => {
   });
 
   it("calls findUniqueOrThrow with composite key", async () => {
-    await jest.isolateModulesAsync(async () => {
-      const findUniqueOrThrow = jest.fn().mockResolvedValue({});
+    await (jest as any).isolateModulesAsync(async () => {
+      const findUniqueOrThrow = (jest.fn() as any).mockResolvedValue({});
       jest.doMock("@acme/platform-core/db", () => ({
         prisma: { subscriptionUsage: { findUniqueOrThrow } },
       }));
@@ -26,8 +26,8 @@ describe("subscriptionUsage", () => {
   });
 
   it("upserts and increments shipments", async () => {
-    await jest.isolateModulesAsync(async () => {
-      const upsert = jest.fn().mockResolvedValue(undefined);
+    await (jest as any).isolateModulesAsync(async () => {
+      const upsert = (jest.fn() as any).mockResolvedValue(undefined);
       jest.doMock("@acme/platform-core/db", () => ({
         prisma: { subscriptionUsage: { upsert } },
       }));

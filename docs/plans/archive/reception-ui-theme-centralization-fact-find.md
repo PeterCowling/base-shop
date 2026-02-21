@@ -9,7 +9,7 @@ Last-updated: 2026-02-10
 Feature-Slug: reception-ui-theme-centralization
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: create-ui-component
 Related-Plan: docs/plans/archive/reception-ui-theme-centralization-plan.md
 ---
@@ -186,7 +186,7 @@ Centralize Reception UI primitives, theme state, and token usage onto shared pla
 ### Open (User Input Needed)
 - None currently blocking planning.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - **Implementation:** 76%
   - Why: migration path is clear but broad; Reception surface area is large and mostly app-local.
   - Raise to >=80: define phased slices (theme/provider, modal stack, form controls, route clusters) with explicit file lists.
@@ -230,7 +230,7 @@ Centralize Reception UI primitives, theme state, and token usage onto shared pla
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `lp-build`
+  - `lp-do-build`
 - Supporting skills:
   - `create-ui-component`
 - Deliverable acceptance package (what must exist before task can be marked complete):
@@ -248,4 +248,4 @@ Centralize Reception UI primitives, theme state, and token usage onto shared pla
 - Blocking items (if any):
   - None.
 - Recommended next step:
-  - Proceed to `/lp-plan` using this brief as the execution baseline.
+  - Proceed to `/lp-do-plan` using this brief as the execution baseline.

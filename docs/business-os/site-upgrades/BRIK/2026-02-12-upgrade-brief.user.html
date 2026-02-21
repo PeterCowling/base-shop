@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK Site Upgrade Brief (Decision-Grade)</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>BRIK Site Upgrade Brief (Decision-Grade)</h1>
+<h2>A) Executive Summary</h2>
+<ul>
+<li>(observed) BRIK is a live site with meaningful historical booking value but a softer recent trend, so conversion-quality work should lead the queue.</li>
+<li>(observed) Italy/EU demand context remains supportive; downside pressure is likely execution quality more than total market absence.</li>
+<li>(observed) Reference competitors consistently use loyalty-discount framing, policy clarity, and mobile-first booking UX.</li>
+<li>(observed) Direct-booking brands (MEININGER/a&#x26;o/St Christopher's) use explicit member incentives (5-25% discount/perks) to shift channel mix.</li>
+<li>(observed) OTA patterns emphasize transparent fee/policy communication and tiered deal mechanics.</li>
+<li>(inferred) BRIK should prioritize booking-flow reliability, policy/fee clarity, and offer instrumentation before visual redesign work.</li>
+<li>(inferred) A conversion-system sprint can be delivered within existing platform constraints and create measurable outcome movement in &#x3C;=30 days.</li>
+<li>(inferred) Priority backlog should focus on four levers: mobile speed, trust/policy clarity, offer mechanics, and cancellation control instrumentation.</li>
+<li>(observed) <code>generatorhostels.com</code> and <code>selina.com</code> were partially crawlable in this run; visual UX sampling is required as follow-up before cloning any detailed pattern.</li>
+</ul>
+<h2>B) Business Outcome Frame and Constraints</h2>
+<p>Outcome frame:</p>
+<ul>
+<li>Establish reliable, measurable booking-funnel performance and improve realized booking value through weekly evidence-led decisions.</li>
+</ul>
+<p>Startup constraints / non-negotiables:</p>
+<ul>
+<li>Do not optimize blindly while attribution is incomplete.</li>
+<li>Prioritize conversion + reliability outcomes over cosmetic-only work.</li>
+<li>Preserve multilingual trust and usability in high-intent booking journeys.</li>
+<li>Keep implementation aligned with existing monorepo/platform patterns.</li>
+</ul>
+<p>Decision links unlocked by this brief:</p>
+<ul>
+<li><code>DEC-BRIK-01</code>: whether to scale traffic spend after conversion instrumentation quality is acceptable.</li>
+<li><code>DEC-BRIK-02</code>: whether direct-offer mechanics should be expanded into persistent member program behavior.</li>
+</ul>
+<h2>C) Existing Site Baseline Assessment</h2>
+<p>Observed baseline:</p>
+<ul>
+<li>Historical baseline exists and is active (<code>2026-02-12-historical-performance-baseline.user.md</code>).</li>
+<li>Trailing 24-month net value and seasonality are available.</li>
+<li>Cloudflare proxy coverage is partial (11/24 months with request totals).</li>
+<li>GA4/Search Console setup remains an active instrumentation gap in canonical strategy docs.</li>
+</ul>
+<p>Current UX/product implications:</p>
+<ul>
+<li>Booking optimization decisions are currently under-instrumented.</li>
+<li>Conversion and cancellation quality improvements are still actionable with current evidence.</li>
+<li>Weekly operator cadence should combine net-value trend + proxy traffic + cancellation reason signals.</li>
+</ul>
+<h2>D) Reference-Site Pattern Decomposition</h2>
+<table>
+<thead>
+<tr>
+<th>Reference site</th>
+<th>Pattern</th>
+<th>Why it matters for BRIK</th>
+<th>Evidence (observed/inferred)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hostelworld</td>
+<td>App-first + short booking lead-time behavior</td>
+<td>BRIK booking UX should optimize for high mobile usage and near-term booking windows</td>
+<td>observed (Hostelworld FY24 annual report)</td>
+</tr>
+<tr>
+<td>Booking.com</td>
+<td>Tiered loyalty discount (<code>Genius</code>) and benefit stack</td>
+<td>Direct-booking incentive ladder can reduce dependence on OTA-like comparison behavior</td>
+<td>observed (<code>Genius</code> levels/perks)</td>
+</tr>
+<tr>
+<td>Airbnb</td>
+<td>Clear service-fee framework</td>
+<td>Fee transparency reduces checkout trust friction</td>
+<td>observed (Airbnb fee model help page)</td>
+</tr>
+<tr>
+<td>MEININGER</td>
+<td>Member-club discount for direct bookings</td>
+<td>Lightweight member-rate pattern can be adopted without large platform rework</td>
+<td>observed (MEININGER Club page)</td>
+</tr>
+<tr>
+<td>a&#x26;o Hostels</td>
+<td>Club discount + perk combination</td>
+<td>Combining economic and convenience perks can increase direct conversion intent</td>
+<td>observed (a&#x26;o CLUB page)</td>
+</tr>
+<tr>
+<td>St Christopher's</td>
+<td>Strong direct booking reward signal (up to 25% off)</td>
+<td>Supports segmented offer-depth testing by booking urgency/segment</td>
+<td>observed (Rewards page)</td>
+</tr>
+<tr>
+<td>Generator</td>
+<td>Network-led hostel brand surface</td>
+<td>Useful for IA benchmarking, but detailed pattern extraction needs manual visual audit due script-heavy pages</td>
+<td>observed/inferred (partial crawlability in this run)</td>
+</tr>
+<tr>
+<td>Selina</td>
+<td>Brand surface unavailable for reliable pattern extraction in this run</td>
+<td>Treat as low-confidence reference; defer until manual review confirms current product model</td>
+<td>observed/inferred (partial/unstable accessibility in this run)</td>
+</tr>
+</tbody>
+</table>
+<h2>E) Best-Of Synthesis Matrix (Adopt / Adapt / Defer / Reject)</h2>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Source reference</th>
+<th align="right">User value</th>
+<th align="right">Conversion impact</th>
+<th align="right">Platform fit</th>
+<th align="right">Effort</th>
+<th align="right">Risk</th>
+<th>Classification</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Member-rate offer ladder (5-15% cohorts)</td>
+<td>Booking Genius, MEININGER, a&#x26;o</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Adopt</td>
+<td>Proven conversion lever in accommodation context with manageable implementation effort</td>
+</tr>
+<tr>
+<td>Fee + cancellation clarity block near CTA</td>
+<td>Airbnb fee model, OTA conventions</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Direct reduction of late-stage trust drop-off</td>
+</tr>
+<tr>
+<td>Mobile speed + short-lead-time booking UX</td>
+<td>Hostelworld annual report behavior</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Adopt</td>
+<td>Matches observed booking behavior and mobile dominance patterns</td>
+</tr>
+<tr>
+<td>Direct booking perks (late checkout / add-on perks)</td>
+<td>a&#x26;o CLUB, MEININGER Club</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adapt</td>
+<td>Good retention/conversion support when tied to margin guardrails</td>
+</tr>
+<tr>
+<td>High-depth discounting (20-25% broad)</td>
+<td>Booking L3 / St Christopher's rewards</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td align="right">High</td>
+<td>Adapt</td>
+<td>Use only for targeted cohorts to avoid margin compression</td>
+</tr>
+<tr>
+<td>Social/community heavy product layer</td>
+<td>Hostelworld social pass direction</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td align="right">Medium</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td>Defer</td>
+<td>Potential upside, but not first-cycle critical for BRIK conversion recovery</td>
+</tr>
+<tr>
+<td>Generator/Selina detailed UI patterns</td>
+<td>Generator / Selina websites</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Defer</td>
+<td>Insufficient crawl evidence in this run; requires manual follow-up before adoption</td>
+</tr>
+<tr>
+<td>Cosmetic-only homepage redesign</td>
+<td>N/A</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Reject</td>
+<td>Does not address current conversion/instrumentation constraints</td>
+</tr>
+</tbody>
+</table>
+<h2>F) Design Implications Checklist</h2>
+<ul>
+<li><code>Must</code>: mobile-first booking path with fast date/guest selection and resilient step transitions.</li>
+<li><code>Must</code>: clear total-price display and unavoidable fee visibility before payment step.</li>
+<li><code>Must</code>: cancellation/refund policy summary colocated with primary booking CTA.</li>
+<li><code>Must</code>: multilingual parity checks on booking-critical routes (<code>search</code>, <code>room</code>, <code>checkout</code>, <code>policy</code>).</li>
+<li><code>Must</code>: direct-offer module (member rate/perk visibility) with transparent eligibility logic.</li>
+<li><code>Must</code>: trust stack near CTA (support channel, policy access, payment confidence cues).</li>
+<li><code>Should</code>: urgency and near-date UX tuned for short-lead-time behavior without dark patterns.</li>
+<li><code>Should</code>: repeat-booking shortcut components for returning travelers.</li>
+</ul>
+<h2>G) Technical Implications Checklist</h2>
+<ul>
+<li><code>Must</code>: instrument booking funnel with consistent event schema across web surfaces.</li>
+<li><code>Must</code>: add structured policy/fee data model for deterministic rendering in all locales.</li>
+<li><code>Must</code>: support offer-experiment framework (cohort assignment + exposure logging + margin impact).</li>
+<li><code>Must</code>: add cancellation reason-coding hooks and weekly export/report pipeline.</li>
+<li><code>Must</code>: performance budget for booking-critical pages (mobile p75 targets with alerting).</li>
+<li><code>Should</code>: feature flags for rapid A/B testing of offer and policy modules.</li>
+<li><code>Should</code>: automated parity checks for booking/policy translation consistency.</li>
+</ul>
+<p>Validation implications:</p>
+<ul>
+<li>unit tests for policy/fee rendering logic,</li>
+<li>integration tests for offer eligibility and checkout state retention,</li>
+<li>E2E tests for mobile checkout, payment authentication recovery, and policy visibility,</li>
+<li>weekly KPI board combining conversion + cancellation + realized value.</li>
+</ul>
+<h2>H) Prioritized Backlog Candidates (P1 / P2 / P3)</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Item</th>
+<th>Why now</th>
+<th>Acceptance criteria</th>
+<th>Dependencies</th>
+<th>Evidence refs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>Add policy/fee clarity panel in booking flow</td>
+<td>Trust and late-stage drop-off control</td>
+<td>Panel visible pre-payment on all target locales; no missing fee states</td>
+<td>Policy copy normalization</td>
+<td>Airbnb fee model; OTA patterns</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Implement member-rate experiment module</td>
+<td>Direct-conversion and share improvement</td>
+<td>Two offer cohorts live with tracked conversion + margin metrics</td>
+<td>Offer rules + feature flag infra</td>
+<td>Booking Genius; MEININGER; a&#x26;o</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Mobile booking performance hardening</td>
+<td>High impact on near-term conversion</td>
+<td>p75 mobile booking-step load &#x3C;=2.5s; alerting configured</td>
+<td>Frontend perf pass + monitoring</td>
+<td>Hostelworld mobile/last-minute behavior</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Cancellation reason instrumentation</td>
+<td>Needed for realized-value optimization</td>
+<td>>=90% cancellation events reason-coded weekly</td>
+<td>Event taxonomy + ops workflow</td>
+<td>BRIK historical baseline gap</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Repeat-booking quick path</td>
+<td>Increases returning-user conversion</td>
+<td>Returning users can rebook in &#x3C;=3 steps</td>
+<td>Identity/session handling</td>
+<td>Direct-booking competitor patterns</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Direct-perk packaging (non-discount perks)</td>
+<td>Margin-safer conversion support</td>
+<td>At least one perk cohort tested with margin impact report</td>
+<td>Ops policy support</td>
+<td>a&#x26;o and MEININGER club-style perks</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Community/social booking assist primitives</td>
+<td>Potential retention upside after core fixes</td>
+<td>Pilot feature launched and measured</td>
+<td>Product bandwidth + moderation guardrails</td>
+<td>Hostelworld social product direction</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Generator/Selina pattern audit follow-up</td>
+<td>Close evidence gap from this pass</td>
+<td>Manual visual audit notes saved and classification updated</td>
+<td>Analyst pass</td>
+<td>Partial crawlability note</td>
+</tr>
+</tbody>
+</table>
+<h2>I) Open Questions and Risk Notes</h2>
+<p>Open questions:</p>
+<ul>
+<li>Which booking routes/locales drive highest net booking value today (once instrumentation is restored)?</li>
+<li>What margin floor is acceptable for member-rate offer experiments?</li>
+<li>Which cancellation reasons are currently most value-destructive?</li>
+<li>Which support channel SLA is feasible during demand spikes?</li>
+</ul>
+<p>Risk notes:</p>
+<ul>
+<li>Instrumentation delays can invalidate experiment learnings.</li>
+<li>Over-discounting can increase booking counts but reduce realized value.</li>
+<li>Policy inconsistency across locales can create trust/legal exposure.</li>
+<li>Partial reference-site coverage (Generator/Selina) leaves a small blind spot for pattern benchmarking.</li>
+</ul>
+<h2>J) Source List (URLs + access dates)</h2>
+<p>Accessed 2026-02-13 unless noted.</p>
+<p>Internal evidence:</p>
+<ul>
+<li><code>docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code></li>
+<li><code>docs/business-os/strategy/BRIK/data/net_value_by_month.csv</code></li>
+<li><code>docs/business-os/strategy/BRIK/data/cloudflare_monthly_proxies.csv</code></li>
+<li><code>docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md</code></li>
+</ul>
+<p>Reference-site and market/legal evidence:</p>
+<ul>
+<li><a href="https://www.hostelworldgroup.com/sites/default/files/2025-03/Hostelworld%20FY24%20Annual%20Report.pdf">https://www.hostelworldgroup.com/sites/default/files/2025-03/Hostelworld%20FY24%20Annual%20Report.pdf</a></li>
+<li><a href="https://www.booking.com/genius.html">https://www.booking.com/genius.html</a></li>
+<li><a href="https://www.airbnb.com/help/article/1857">https://www.airbnb.com/help/article/1857</a></li>
+<li><a href="https://www.meininger-hotels.com/en/meininger-club/">https://www.meininger-hotels.com/en/meininger-club/</a></li>
+<li><a href="https://www.aohostels.com/en/aoclub/">https://www.aohostels.com/en/aoclub/</a></li>
+<li><a href="https://www.st-christophers.co.uk/rewards">https://www.st-christophers.co.uk/rewards</a></li>
+<li><a href="https://www.generatorhostels.com/">https://www.generatorhostels.com/</a></li>
+<li><a href="https://www.selina.com/">https://www.selina.com/</a></li>
+<li><a href="https://www.istat.it/en/archivio/299062">https://www.istat.it/en/archivio/299062</a></li>
+<li><a href="https://www.bancaditalia.it/pubblicazioni/indagine-turismo-internazionale/2025-indagine-turismo-internazionale/statistiche_ITI_04072025.pdf?language_id=1">https://www.bancaditalia.it/pubblicazioni/indagine-turismo-internazionale/2025-indagine-turismo-internazionale/statistiche_ITI_04072025.pdf?language_id=1</a></li>
+<li><a href="https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20251020-1">https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20251020-1</a></li>
+<li><a href="https://www.mimit.gov.it/it/mercato-e-consumatori/tutela-del-consumatore/diritti-del-consumatore/diritto-di-recesso">https://www.mimit.gov.it/it/mercato-e-consumatori/tutela-del-consumatore/diritti-del-consumatore/diritto-di-recesso</a></li>
+<li><a href="https://www.eba.europa.eu/legacy/regulation-and-policy/payment-services-and-electronic-money/regulatory-technical-standards-strong-customer-authentication-and-common-and-secure">https://www.eba.europa.eu/legacy/regulation-and-policy/payment-services-and-electronic-money/regulatory-technical-standards-strong-customer-authentication-and-common-and-secure</a></li>
+<li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">https://eur-lex.europa.eu/eli/reg/2016/679/oj</a></li>
+<li><a href="https://eur-lex.europa.eu/eli/dir/2015/2302/oj">https://eur-lex.europa.eu/eli/dir/2015/2302/oj</a></li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md</code></div>
+      <div>Generated: 2026-02-13T22:20:06.071Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

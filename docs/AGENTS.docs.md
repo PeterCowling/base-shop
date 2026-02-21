@@ -25,9 +25,9 @@ It builds on the existing structure (`AGENTS.md`, `docs/index.md`, `docs/cms-pla
   - An AI should be able to decide *how to use* a doc (canonical vs historical vs backlog) from the header alone.
 
 - **Planning lives in Plan docs**
-  - Plan‑type docs (`IMPLEMENTATION_PLAN.md`, `docs/*-plan/*.md`) are the primary “interface into planning”.
+  - Plan‑type docs (`IMPLEMENTATION_PLAN.md`, `docs/plans/<slug>/plan.md`, or domain plan directories) are the primary “interface into planning”.
   - Agents and humans should pick, add, or update work items by editing the relevant Plan doc, not by inventing ad‑hoc checklists elsewhere.
-  - If a user explicitly asks for a plan and no relevant Plan doc exists, create one (default: `docs/plans/<name>-plan.md`, or the domain’s plan directory) and write the planning/audit output into it.
+  - If a user explicitly asks for a plan and no relevant Plan doc exists, create one (default: `docs/plans/<slug>/plan.md`, or the domain’s plan directory) and write the planning/audit output into it.
 
 - **Plan docs follow a shared pattern**
   - Every Plan must declare:
@@ -69,7 +69,7 @@ It builds on the existing structure (`AGENTS.md`, `docs/index.md`, `docs/cms-pla
   - Overall confidence = min(Implementation, Approach, Impact)
   - Document in "Re-plan Update" section
 
-  **Example (from brikette-seo lp-replan session):**
+  **Example (from brikette-seo lp-do-replan session):**
   ```
   Task: Align canonical/trailing-slash policy
   Before: 52% (Approach unknown: keep or remove slashes?)
@@ -248,17 +248,20 @@ Contracts should stick to **current behaviour**. Ideas and future variations bel
     - Dependencies.
     - Definition of done.
 
-- **Confidence (CI) conventions**
-  - In Plans, **CI** means **Confidence Index** (plan confidence), not CI/CD.
-  - **CI ≥90 is a motivation, not a quota.** Plans should preserve breadth; do not delete planned work just to raise CI.
-  - If a task’s CI is <90, include a short **“What would make this ≥90%”** note (evidence/tests/spike needed to raise confidence).
-  - Build/implementation should still be confidence-gated (for example: only implement tasks that are ≥80% confidence and unblocked).
+- **Plan confidence conventions**
+  - In Plans, use `confidence` / `Overall-confidence` for planning confidence terms.
+  - **Confidence ≥90 is a motivation, not a quota.** Plans should preserve breadth; do not delete planned work just to raise confidence.
+  - If a task’s confidence is <90, include a short **“What would make this ≥90%”** note (evidence/tests/spike needed to raise confidence).
+  - Build/implementation should still be confidence-gated:
+    - `IMPLEMENT` and `SPIKE` tasks require ≥80 and unblocked.
+    - `INVESTIGATE` tasks require ≥60 and unblocked.
+    - `CHECKPOINT` is procedural and follows build checkpoint contract.
 
 Plans are the source of truth for **status**, not for **exact behaviour** (that is code + Contracts).
 
 - **Lifecycle and archiving**
   - **Current / maintained plans:** keep in `docs/plans/` (or the domain’s plan directory, like `docs/cms-plan/`).
-  - **Completed plans:** move to `docs/plans/archive/` and set `Status: Archived`.
+  - **Completed plans:** set `Status: Complete`; keep in place or move to `docs/plans/archive/` as storage policy while retaining `Status: Complete`.
   - **Superseded plans:** move to `docs/historical/plans/` and set `Status: Superseded` with a `Superseded-by: ...` pointer.
   - **Filename stability:** prefer keeping the canonical plan path stable; when you need disambiguation, append `-superseded-YYYY-MM-DD` (preferred) rather than adding `-v2` to the current plan.
 

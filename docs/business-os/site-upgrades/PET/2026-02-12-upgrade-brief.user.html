@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PET Site Upgrade Brief</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>PET Site Upgrade Brief</h1>
+<h2>1) Business Outcome Frame</h2>
+<ul>
+<li>Convert first PET demand into reliable sales using a fast pre-website surface, then harden into repeatable DTC.</li>
+<li>Maximize conversion on a style-led but utility-critical product (poop bag holder) while minimizing returns and support load.</li>
+<li>Decision links unlocked:
+<ul>
+<li><code>DEC-PET-01</code>: scale traffic and channel investment after first conversion proof.</li>
+<li><code>DEC-PET-02</code>: expand bundle/recurring bag economics once holder conversion is stable.</li>
+</ul>
+</li>
+</ul>
+<h2>2) Existing Site Baseline</h2>
+<ul>
+<li>Launch-surface mode: <code>pre-website</code>.</li>
+<li>Core constraint: speed-to-first-sales; avoid heavy build before proof.</li>
+<li>Current friction risks to remove before scale:
+<ul>
+<li>weak trust signals for a new brand,</li>
+<li>unclear fit/compatibility on bag roll formats,</li>
+<li>weak bundle and quick-add UX,</li>
+<li>checkout/payment friction for Italy.</li>
+</ul>
+</li>
+</ul>
+<h2>3) Reference Sites</h2>
+<ul>
+<li>MiaCara: premium-accessory PDP discipline (fit/details/trust).</li>
+<li>Labbvenn: material quality framing + incentives.</li>
+<li>Poldo Dog Couture: Italian premium signal and origin trust.</li>
+<li>A.Mici&#x26;Co Boutique: quick-cart and localized merchandising.</li>
+<li>Sezane, Missoma, Astrid &#x26; Miyu, Monica Vinader: fashion-grade DTC trust, quick-add, bundles/sets, and post-purchase confidence patterns.</li>
+</ul>
+<h2>4) Pattern Decomposition</h2>
+<table>
+<thead>
+<tr>
+<th>Reference site</th>
+<th>Pattern</th>
+<th>Why it matters</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MiaCara</td>
+<td>Strong PDP structure (dimensions, promise, accessory context)</td>
+<td>Reduces uncertainty on a functional accessory sold at premium aesthetics</td>
+<td>Deep research pattern code: <code>V>F>T>B>P>Q</code></td>
+</tr>
+<tr>
+<td>Labbvenn</td>
+<td>Material-quality framing + offer nudge</td>
+<td>Supports premium positioning while retaining conversion intent</td>
+<td>Deep research pattern code: <code>I>F>P>T>B>Q</code></td>
+</tr>
+<tr>
+<td>Poldo Dog Couture</td>
+<td>Made-in-Italy trust and premium signal</td>
+<td>Helps PET if origin/story is part of offer</td>
+<td>Deep research pattern code: <code>O>T>Q>I>C>B</code></td>
+</tr>
+<tr>
+<td>A.Mici&#x26;Co</td>
+<td>Quick-cart behavior in localized pet context</td>
+<td>Faster purchase path and less PDP drop-off</td>
+<td>Deep research pattern code: <code>Q>V>T>B>I>F</code></td>
+</tr>
+<tr>
+<td>Sezane</td>
+<td>Trust strip + payment confidence patterns</td>
+<td>Strong checkout confidence and reduced hesitation</td>
+<td>Deep research pattern code: <code>T>C>Q>V>P>I</code></td>
+</tr>
+<tr>
+<td>Missoma</td>
+<td>Bundle/set mechanics + warranty/returns confidence</td>
+<td>Direct AOV and repeat-buy leverage</td>
+<td>Deep research pattern code: <code>I>B>P>T>C>Q</code></td>
+</tr>
+<tr>
+<td>Astrid &#x26; Miyu</td>
+<td>Quick-add and loyalty cues</td>
+<td>Supports repeat purchase economics in accessory category</td>
+<td>Deep research pattern code: <code>Q>L>T>B>I>C</code></td>
+</tr>
+<tr>
+<td>Monica Vinader</td>
+<td>Strong policy promises (warranty/returns)</td>
+<td>Improves trust for first-time buyers</td>
+<td>Deep research pattern code: <code>P>T>I>C>Q>L</code></td>
+</tr>
+</tbody>
+</table>
+<h2>5) Best-Of Synthesis Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Source reference</th>
+<th align="right">User value</th>
+<th align="right">Conversion impact</th>
+<th align="right">Platform fit</th>
+<th align="right">Effort</th>
+<th align="right">Risk</th>
+<th>Classification (Adopt/Adapt/Defer/Reject)</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trust strip near CTA</td>
+<td>Sezane, Monica Vinader</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Fastest confidence uplift for new-brand purchase</td>
+</tr>
+<tr>
+<td>Fit and compatibility clarity (roll size and holder dimensions)</td>
+<td>MiaCara, Labbvenn</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Prevents wrong-buy and return-heavy orders</td>
+</tr>
+<tr>
+<td>Quick add / sticky add-to-cart</td>
+<td>A.Mici&#x26;Co, Astrid &#x26; Miyu</td>
+<td align="right">Medium</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Direct mobile conversion gain with low implementation effort</td>
+</tr>
+<tr>
+<td>Bundles (holder + bags, multi-buy)</td>
+<td>Missoma bundle logic + pet category patterns</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Improves AOV and supports early repeat economics</td>
+</tr>
+<tr>
+<td>Incentive framing (starter offer / first-order nudge)</td>
+<td>Labbvenn, Missoma</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td align="right">Medium</td>
+<td>Adapt</td>
+<td>Use lightly to avoid discount-led brand positioning</td>
+</tr>
+<tr>
+<td>Origin/craft signal</td>
+<td>Poldo Dog Couture</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adapt</td>
+<td>Useful if truthful and core to PET brand story</td>
+</tr>
+<tr>
+<td>Chat-assisted purchase</td>
+<td>Sezane/Poldo style support cues</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Reduces pre-purchase hesitation and support cycle time</td>
+</tr>
+<tr>
+<td>Delivery/returns promise block</td>
+<td>Monica Vinader-like confidence pattern</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Core trust and legal clarity requirement</td>
+</tr>
+<tr>
+<td>Loyalty points layer</td>
+<td>Astrid &#x26; Miyu</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Defer</td>
+<td>Useful later, not first-cycle critical</td>
+</tr>
+</tbody>
+</table>
+<h2>6) Design Implications</h2>
+<ul>
+<li>Information architecture:
+<ul>
+<li>Home (style + utility split),</li>
+<li>Core holder PDP,</li>
+<li>Bundle PDP (<code>holder + bags</code>),</li>
+<li>Support/FAQ,</li>
+<li>Shipping/returns/legal.</li>
+</ul>
+</li>
+<li>Page/component implications:
+<ul>
+<li>trust strip near CTA,</li>
+<li>explicit fit block (dimensions + compatible roll format),</li>
+<li>quick add / sticky mobile add-to-cart,</li>
+<li>bundle selector.</li>
+</ul>
+</li>
+<li>Copy/messaging implications:
+<ul>
+<li>combine aesthetic language with reliability claims (<code>secure closure</code>, <code>easy dispense</code>, <code>clean carry</code>),</li>
+<li>avoid vague green claims for bags without substantiation.</li>
+</ul>
+</li>
+<li>Trust/support implications:
+<ul>
+<li>clear delivery window and tracking promise,</li>
+<li>clear returns/withdrawal workflow,</li>
+<li>visible support channel for pre-purchase questions.</li>
+</ul>
+</li>
+</ul>
+<h2>7) Technical Implications</h2>
+<ul>
+<li>Reusable platform primitives to use:
+<ul>
+<li>product option controls,</li>
+<li>quick-cart/sticky CTA component,</li>
+<li>trust strip block,</li>
+<li>FAQ and policy components.</li>
+</ul>
+</li>
+<li>New build requirements:
+<ul>
+<li>explicit fit/compatibility field model (<code>holder dimensions</code>, <code>roll format compatibility</code>),</li>
+<li>bundle pricing rule engine for holder+bags packs,</li>
+<li>event instrumentation for quick add, bundle selection, and checkout drop-off.</li>
+</ul>
+</li>
+<li>Testing and observability implications:
+<ul>
+<li>unit tests for bundle/price logic,</li>
+<li>integration tests for option and quick-add flows,</li>
+<li>E2E tests for checkout and policy visibility,</li>
+<li>funnel analytics with conversion by message/offer variant.</li>
+</ul>
+</li>
+</ul>
+<h2>8) Prioritized Backlog Candidates</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Item</th>
+<th>Why now</th>
+<th>Acceptance criteria</th>
+<th>Dependencies</th>
+<th>Evidence refs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>Add trust strip + delivery/returns block on purchase surface</td>
+<td>New-brand trust gap is critical</td>
+<td>Trust/payment/returns signals visible before checkout on mobile and desktop</td>
+<td>Policy copy and payment setup</td>
+<td>Sezane, Monica Vinader</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Add explicit fit/compat block (dimensions + roll format)</td>
+<td>Major wrong-order/return risk</td>
+<td>Fit block present on PDP; no missing product-size fields; support FAQ linked</td>
+<td>Product spec finalization</td>
+<td>MiaCara, Labbvenn</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Implement quick-add and sticky mobile ATC</td>
+<td>Direct conversion uplift</td>
+<td>Quick-add works from list/PDP; sticky CTA retains selection state</td>
+<td>PDP option state handling</td>
+<td>A.Mici&#x26;Co, Astrid &#x26; Miyu</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Add holder + bags bundle option</td>
+<td>AOV and repeat path</td>
+<td>Bundle is selectable, price verified, and tracked in analytics</td>
+<td>Bag SKU readiness</td>
+<td>Missoma-inspired bundle logic</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Add chat-assisted pre-purchase support</td>
+<td>Reduces hesitation and support delays</td>
+<td>Contact channel visible on PDP/FAQ; response SLA defined</td>
+<td>Ops support owner</td>
+<td>Sezane/Poldo support cues</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Add origin/craft signal block (if true)</td>
+<td>Premium differentiation</td>
+<td>Origin claims are factual and displayed consistently</td>
+<td>Verified sourcing narrative</td>
+<td>Poldo Dog Couture</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Add loyalty/reward mechanic</td>
+<td>Repeat economics after proof</td>
+<td>Loyalty config live and measured</td>
+<td>Stable baseline conversion</td>
+<td>Astrid &#x26; Miyu</td>
+</tr>
+</tbody>
+</table>
+<h2>9) Open Questions</h2>
+<ul>
+<li>What exact roll formats will be guaranteed compatible at launch?</li>
+<li>Will bags be included in-box by default or only as bundle add-on?</li>
+<li>What first-cycle shipping SLA can be promised reliably in Italy?</li>
+<li>Which payment methods are confirmed day one (cards, wallets, PayPal, prepaid-friendly)?</li>
+<li>Which support channel SLA can be maintained in week 1-4?</li>
+</ul>
+<h2>10) Source List</h2>
+<p>Accessed 2026-02-12:</p>
+<ul>
+<li><a href="https://miacara.com/en/products/pisa">https://miacara.com/en/products/pisa</a></li>
+<li><a href="https://labbvenn.com/product/saku">https://labbvenn.com/product/saku</a></li>
+<li><a href="https://poldodogcouture.com/collections/dog-bag-holder">https://poldodogcouture.com/collections/dog-bag-holder</a></li>
+<li><a href="https://amicieco.com/collections/porta-sacchetti">https://amicieco.com/collections/porta-sacchetti</a></li>
+<li><a href="https://www.sezane.com/eu-en">https://www.sezane.com/eu-en</a></li>
+<li><a href="https://www.missoma.com">https://www.missoma.com</a></li>
+<li><a href="https://www.astridandmiyu.com/collections/necklaces">https://www.astridandmiyu.com/collections/necklaces</a></li>
+<li><a href="https://www.monicavinader.com">https://www.monicavinader.com</a></li>
+</ul>
+<h2>11) HTML Companion (Required)</h2>
+<pre><code class="language-bash">pnpm docs:render-user-html -- docs/business-os/site-upgrades/PET/2026-02-12-upgrade-brief.user.md
+</code></pre>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/site-upgrades/PET/2026-02-12-upgrade-brief.user.md</code></div>
+      <div>Generated: 2026-02-12T10:14:46.417Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

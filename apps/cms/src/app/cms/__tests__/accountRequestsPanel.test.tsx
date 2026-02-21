@@ -29,17 +29,25 @@ jest.mock("@/components/atoms", () => {
   const React = require("react");
   return {
     __esModule: true,
-    Toast: ({ open, message, className }: any) =>
-      open
-        ? React.createElement(
-            "div",
-            { role: "status", className },
-            message
-          )
-        : null,
     Tooltip: ({ children }: any) => React.createElement(React.Fragment, null, children),
   };
 });
+
+const mockToast = {
+  success: jest.fn(),
+  error: jest.fn(),
+  warning: jest.fn(),
+  info: jest.fn(),
+  loading: jest.fn(),
+  dismiss: jest.fn(),
+  update: jest.fn(),
+  promise: jest.fn(async (promise: Promise<unknown>) => promise),
+};
+
+jest.mock("@acme/ui/operations", () => ({
+  __esModule: true,
+  useToast: () => mockToast,
+}));
 
 const roles: Role[] = [
   "admin",
@@ -50,6 +58,10 @@ const roles: Role[] = [
 ];
 
 describe("AccountRequestsPanel", () => {
+  beforeEach(() => {
+    Object.values(mockToast).forEach((fn) => fn.mockClear());
+  });
+
   const request: PendingUser = {
     id: "req-1",
     name: "Avery Banner",
@@ -96,11 +108,11 @@ describe("AccountRequestsPanel", () => {
     fireEvent.click(screen.getByRole("button", { name: /approve request/i }));
 
     expect(approve).not.toHaveBeenCalled();
-    expect(
-      await screen.findByRole("status", {
-        name: "",
-      })
-    ).toHaveTextContent(/select at least one role/i);
+    await waitFor(() =>
+      expect(mockToast.error).toHaveBeenCalledWith(
+        expect.stringMatching(/select at least one role/i),
+      ),
+    );
   });
 
   it("submits selected roles and removes the card on success", async () => {
@@ -131,6 +143,6 @@ describe("AccountRequestsPanel", () => {
     await waitFor(() =>
       expect(screen.queryByTestId("account-request-card")).toBeNull()
     );
-    expect(await screen.findByRole("status")).toHaveTextContent(/approved/i);
+    expect(mockToast.success).toHaveBeenCalledWith("Approved");
   });
 });

@@ -1,0 +1,376 @@
+{
+  "meta": {
+    "url": "data:text/html,%3C!doctype%20html%3E%3Chtml%20lang%3D%22en%22%3E%3Chead%3E%3Ctitle%3ECheckout%3C%2Ftitle%3E%3C%2Fhead%3E%3Cbody%3E%0A%3Cmain%3E%0A%3Ch1%3ECheckout%3C%2Fh1%3E%0A%3Clabel%20for%3D%22email%22%3EEmail%3C%2Flabel%3E%0A%3Cinput%20id%3D%22email%22%20name%3D%22email%22%20type%3D%22email%22%20value%3D%22test%40example.com%22%20%2F%3E%0A%3Cbutton%20id%3D%22place-order%22%3EPlace%20order%3C%2Fbutton%3E%0A%3Cbutton%20data-testid%3D%22confirm-button%22%3EConfirm%3C%2Fbutton%3E%0A%3Cbutton%3EPlain%3C%2Fbutton%3E%0A%3C%2Fmain%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E"
+  },
+  "backendNodeIds": [
+    1,
+    11,
+    12,
+    13
+  ],
+  "nodeIds": [
+    13,
+    17,
+    19,
+    21
+  ],
+  "document": {
+    "root": {
+      "nodeId": 1,
+      "backendNodeId": 2,
+      "nodeType": 9,
+      "nodeName": "#document",
+      "localName": "",
+      "nodeValue": "",
+      "childNodeCount": 2,
+      "children": [
+        {
+          "nodeId": 2,
+          "parentId": 1,
+          "backendNodeId": 20,
+          "nodeType": 10,
+          "nodeName": "html",
+          "localName": "",
+          "nodeValue": "",
+          "publicId": "",
+          "systemId": ""
+        },
+        {
+          "nodeId": 3,
+          "parentId": 1,
+          "backendNodeId": 3,
+          "nodeType": 1,
+          "nodeName": "HTML",
+          "localName": "html",
+          "nodeValue": "",
+          "childNodeCount": 2,
+          "children": [
+            {
+              "nodeId": 4,
+              "parentId": 3,
+              "backendNodeId": 4,
+              "nodeType": 1,
+              "nodeName": "HEAD",
+              "localName": "head",
+              "nodeValue": "",
+              "childNodeCount": 1,
+              "children": [
+                {
+                  "nodeId": 5,
+                  "parentId": 4,
+                  "backendNodeId": 5,
+                  "nodeType": 1,
+                  "nodeName": "TITLE",
+                  "localName": "title",
+                  "nodeValue": "",
+                  "childNodeCount": 1,
+                  "children": [
+                    {
+                      "nodeId": 6,
+                      "parentId": 5,
+                      "backendNodeId": 21,
+                      "nodeType": 3,
+                      "nodeName": "#text",
+                      "localName": "",
+                      "nodeValue": "Checkout"
+                    }
+                  ],
+                  "attributes": []
+                }
+              ],
+              "attributes": []
+            },
+            {
+              "nodeId": 7,
+              "parentId": 3,
+              "backendNodeId": 6,
+              "nodeType": 1,
+              "nodeName": "BODY",
+              "localName": "body",
+              "nodeValue": "",
+              "childNodeCount": 1,
+              "children": [
+                {
+                  "nodeId": 8,
+                  "parentId": 7,
+                  "backendNodeId": 7,
+                  "nodeType": 1,
+                  "nodeName": "MAIN",
+                  "localName": "main",
+                  "nodeValue": "",
+                  "childNodeCount": 6,
+                  "children": [
+                    {
+                      "nodeId": 9,
+                      "parentId": 8,
+                      "backendNodeId": 8,
+                      "nodeType": 1,
+                      "nodeName": "H1",
+                      "localName": "h1",
+                      "nodeValue": "",
+                      "childNodeCount": 1,
+                      "children": [
+                        {
+                          "nodeId": 10,
+                          "parentId": 9,
+                          "backendNodeId": 14,
+                          "nodeType": 3,
+                          "nodeName": "#text",
+                          "localName": "",
+                          "nodeValue": "Checkout"
+                        }
+                      ],
+                      "attributes": []
+                    },
+                    {
+                      "nodeId": 11,
+                      "parentId": 8,
+                      "backendNodeId": 9,
+                      "nodeType": 1,
+                      "nodeName": "LABEL",
+                      "localName": "label",
+                      "nodeValue": "",
+                      "childNodeCount": 1,
+                      "children": [
+                        {
+                          "nodeId": 12,
+                          "parentId": 11,
+                          "backendNodeId": 15,
+                          "nodeType": 3,
+                          "nodeName": "#text",
+                          "localName": "",
+                          "nodeValue": "Email"
+                        }
+                      ],
+                      "attributes": [
+                        "for",
+                        "email"
+                      ]
+                    },
+                    {
+                      "nodeId": 13,
+                      "parentId": 8,
+                      "backendNodeId": 1,
+                      "nodeType": 1,
+                      "nodeName": "INPUT",
+                      "localName": "input",
+                      "nodeValue": "",
+                      "childNodeCount": 0,
+                      "children": [],
+                      "attributes": [
+                        "id",
+                        "email",
+                        "name",
+                        "email",
+                        "type",
+                        "email",
+                        "value",
+                        "test@example.com"
+                      ],
+                      "shadowRoots": [
+                        {
+                          "nodeId": 14,
+                          "backendNodeId": 22,
+                          "nodeType": 11,
+                          "nodeName": "#document-fragment",
+                          "localName": "",
+                          "nodeValue": "",
+                          "childNodeCount": 1,
+                          "children": [
+                            {
+                              "nodeId": 15,
+                              "parentId": 14,
+                              "backendNodeId": 10,
+                              "nodeType": 1,
+                              "nodeName": "DIV",
+                              "localName": "div",
+                              "nodeValue": "",
+                              "childNodeCount": 1,
+                              "children": [
+                                {
+                                  "nodeId": 16,
+                                  "parentId": 15,
+                                  "backendNodeId": 16,
+                                  "nodeType": 3,
+                                  "nodeName": "#text",
+                                  "localName": "",
+                                  "nodeValue": "test@example.com"
+                                }
+                              ],
+                              "attributes": []
+                            }
+                          ],
+                          "shadowRootType": "user-agent"
+                        }
+                      ]
+                    },
+                    {
+                      "nodeId": 17,
+                      "parentId": 8,
+                      "backendNodeId": 11,
+                      "nodeType": 1,
+                      "nodeName": "BUTTON",
+                      "localName": "button",
+                      "nodeValue": "",
+                      "childNodeCount": 1,
+                      "children": [
+                        {
+                          "nodeId": 18,
+                          "parentId": 17,
+                          "backendNodeId": 17,
+                          "nodeType": 3,
+                          "nodeName": "#text",
+                          "localName": "",
+                          "nodeValue": "Place order"
+                        }
+                      ],
+                      "attributes": [
+                        "id",
+                        "place-order"
+                      ]
+                    },
+                    {
+                      "nodeId": 19,
+                      "parentId": 8,
+                      "backendNodeId": 12,
+                      "nodeType": 1,
+                      "nodeName": "BUTTON",
+                      "localName": "button",
+                      "nodeValue": "",
+                      "childNodeCount": 1,
+                      "children": [
+                        {
+                          "nodeId": 20,
+                          "parentId": 19,
+                          "backendNodeId": 18,
+                          "nodeType": 3,
+                          "nodeName": "#text",
+                          "localName": "",
+                          "nodeValue": "Confirm"
+                        }
+                      ],
+                      "attributes": [
+                        "data-testid",
+                        "confirm-button"
+                      ]
+                    },
+                    {
+                      "nodeId": 21,
+                      "parentId": 8,
+                      "backendNodeId": 13,
+                      "nodeType": 1,
+                      "nodeName": "BUTTON",
+                      "localName": "button",
+                      "nodeValue": "",
+                      "childNodeCount": 1,
+                      "children": [
+                        {
+                          "nodeId": 22,
+                          "parentId": 21,
+                          "backendNodeId": 19,
+                          "nodeType": 3,
+                          "nodeName": "#text",
+                          "localName": "",
+                          "nodeValue": "Plain"
+                        }
+                      ],
+                      "attributes": []
+                    }
+                  ],
+                  "attributes": []
+                }
+              ],
+              "attributes": []
+            }
+          ],
+          "attributes": [
+            "lang",
+            "en"
+          ],
+          "frameId": "81D068B2C726F6AD68B2F2F187738F12"
+        }
+      ],
+      "documentURL": "data:text/html,%3C!doctype%20html%3E%3Chtml%20lang%3D%22en%22%3E%3Chead%3E%3Ctitle%3ECheckout%3C%2Ftitle%3E%3C%2Fhead%3E%3Cbody%3E%0A%3Cmain%3E%0A%3Ch1%3ECheckout%3C%2Fh1%3E%0A%3Clabel%20for%3D%22email%22%3EEmail%3C%2Flabel%3E%0A%3Cinput%20id%3D%22email%22%20name%3D%22email%22%20type%3D%22email%22%20value%3D%22test%40example.com%22%20%2F%3E%0A%3Cbutton%20id%3D%22place-order%22%3EPlace%20order%3C%2Fbutton%3E%0A%3Cbutton%20data-testid%3D%22confirm-button%22%3EConfirm%3C%2Fbutton%3E%0A%3Cbutton%3EPlain%3C%2Fbutton%3E%0A%3C%2Fmain%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E",
+      "baseURL": "data:text/html,%3C!doctype%20html%3E%3Chtml%20lang%3D%22en%22%3E%3Chead%3E%3Ctitle%3ECheckout%3C%2Ftitle%3E%3C%2Fhead%3E%3Cbody%3E%0A%3Cmain%3E%0A%3Ch1%3ECheckout%3C%2Fh1%3E%0A%3Clabel%20for%3D%22email%22%3EEmail%3C%2Flabel%3E%0A%3Cinput%20id%3D%22email%22%20name%3D%22email%22%20type%3D%22email%22%20value%3D%22test%40example.com%22%20%2F%3E%0A%3Cbutton%20id%3D%22place-order%22%3EPlace%20order%3C%2Fbutton%3E%0A%3Cbutton%20data-testid%3D%22confirm-button%22%3EConfirm%3C%2Fbutton%3E%0A%3Cbutton%3EPlain%3C%2Fbutton%3E%0A%3C%2Fmain%3E%0A%3C%2Fbody%3E%3C%2Fhtml%3E",
+      "xmlVersion": "",
+      "compatibilityMode": "NoQuirksMode"
+    }
+  },
+  "described": [
+    {
+      "node": {
+        "nodeId": 13,
+        "backendNodeId": 1,
+        "nodeType": 1,
+        "nodeName": "INPUT",
+        "localName": "input",
+        "nodeValue": "",
+        "childNodeCount": 0,
+        "attributes": [
+          "id",
+          "email",
+          "name",
+          "email",
+          "type",
+          "email",
+          "value",
+          "test@example.com"
+        ],
+        "shadowRoots": [
+          {
+            "nodeId": 14,
+            "backendNodeId": 22,
+            "nodeType": 11,
+            "nodeName": "#document-fragment",
+            "localName": "",
+            "nodeValue": "",
+            "childNodeCount": 1,
+            "shadowRootType": "user-agent"
+          }
+        ]
+      }
+    },
+    {
+      "node": {
+        "nodeId": 17,
+        "backendNodeId": 11,
+        "nodeType": 1,
+        "nodeName": "BUTTON",
+        "localName": "button",
+        "nodeValue": "",
+        "childNodeCount": 1,
+        "attributes": [
+          "id",
+          "place-order"
+        ]
+      }
+    },
+    {
+      "node": {
+        "nodeId": 19,
+        "backendNodeId": 12,
+        "nodeType": 1,
+        "nodeName": "BUTTON",
+        "localName": "button",
+        "nodeValue": "",
+        "childNodeCount": 1,
+        "attributes": [
+          "data-testid",
+          "confirm-button"
+        ]
+      }
+    },
+    {
+      "node": {
+        "nodeId": 21,
+        "backendNodeId": 13,
+        "nodeType": 1,
+        "nodeName": "BUTTON",
+        "localName": "button",
+        "nodeValue": "",
+        "childNodeCount": 1,
+        "attributes": []
+      }
+    }
+  ]
+}

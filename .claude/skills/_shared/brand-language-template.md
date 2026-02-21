@@ -3,7 +3,7 @@
 Shared template for per-business brand language documents. These live at:
 
 ```
-docs/business-os/strategy/<BIZ>/brand-language.user.md
+docs/business-os/strategy/<BIZ>/brand-dossier.user.md
 ```
 
 Each operating business should have one. The `/lp-design-spec` skill reads these as input and writes back stable new patterns as output.
@@ -13,11 +13,14 @@ Each operating business should have one. The `/lp-design-spec` skill reads these
 ```markdown
 ---
 Type: Brand-Language
+Stage: BRAND-02
 Business-Unit: {BIZ}
 Business-Name: {name}
 Status: Draft | Active
 Created: {DATE}
+Updated: {DATE}
 Last-reviewed: {DATE}
+Owner: {operator}
 ---
 
 # {Business Name} — Brand Language
@@ -49,12 +52,19 @@ Last-reviewed: {DATE}
 
 **Palette mood:** {1 sentence — warm/cool/neutral, high/low contrast, etc.}
 
+**Canonical token names** (from `packages/themes/base/src/tokens.ts`):
+`--color-primary` (+ `-fg`, `-soft`, `-hover`, `-active`), `--color-accent` (+ `-fg`, `-soft`), `--color-bg`, `--color-fg`, `--color-fg-muted`, `--color-border`.
+
 ### Typography
 
-| Role | Token | Font Family | Rationale |
-|------|-------|-------------|-----------|
-| Body | `--font-sans` | {family} | {Why this font} |
-| Headings | `--font-heading-1` | {family or "inherits body"} | {Why} |
+> **Constraint:** All fonts must be freely available — Google Fonts or system stacks only. No paid or licensed typefaces.
+
+| Role | Token | Font Family | Source | Rationale |
+|------|-------|-------------|--------|-----------|
+| Body | `--font-sans` | {family} | [Google Fonts]({url}) | {Why this font} |
+| Headings | `--font-heading-1` | {family or "inherits body"} | {same or link} | {Why} |
+
+**Google Fonts URL:** `https://fonts.googleapis.com/css2?family={Family}:wght@{weights}&display=swap`
 
 **Type personality:** {1 sentence — geometric/humanist, formal/casual, etc.}
 
@@ -79,7 +89,7 @@ Last-reviewed: {DATE}
 - **Sentence length:** {short/medium/long}
 - **Formality:** {casual/conversational/professional/formal}
 - **Technical level:** {avoid jargon | some jargon OK | technical audience}
-- **Humor:** {none | light | frequent}
+- **Humour:** {none | light and dry | warm and playful | frequent}
 
 ### Key Phrases
 
@@ -102,6 +112,8 @@ Theme package: `packages/themes/{theme}/src/tokens.ts`
 |-------|-----------|----------------|--------|
 | `--color-primary` | {base} | {override} | {reason} |
 | ... | ... | ... | ... |
+
+**Dark mode:** {inherits base dark tokens | requires bespoke overrides — list below}
 
 ## Signature Patterns
 

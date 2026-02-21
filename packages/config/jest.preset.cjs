@@ -294,6 +294,10 @@ function createJestPreset(options = {}) {
     modulePathIgnorePatterns: [
       "<rootDir>/.worktrees/",
       "<rootDir>/.ts-jest/",
+      "<rootDir>/.next/",
+      "<rootDir>/.open-next/",
+      "/\.next/",
+      "/\.open-next/",
     ],
     moduleNameMapper,
     testMatch: ["**/?(*.)+(spec|test).ts?(x)"],

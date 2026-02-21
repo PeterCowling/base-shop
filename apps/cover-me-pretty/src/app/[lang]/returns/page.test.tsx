@@ -40,7 +40,7 @@ describe("ReturnPolicyPage", () => {
       returnService: { bagEnabled: true, homePickupEnabled: true },
     });
 
-    const element = await ReturnPolicyPage({ params: { lang: "en" } });
+    const element = await ReturnPolicyPage({ params: Promise.resolve({ lang: "en" }) });
     const html = renderToStaticMarkup(element);
 
     expect(html).toContain(
@@ -68,7 +68,7 @@ describe("ReturnPolicyPage", () => {
       returnService: { bagEnabled: false, homePickupEnabled: false },
     });
 
-    const element = await ReturnPolicyPage({ params: { lang: "en" } });
+    const element = await ReturnPolicyPage({ params: Promise.resolve({ lang: "en" }) });
     const html = renderToStaticMarkup(element);
 
     expect(html).not.toContain("Please reuse");

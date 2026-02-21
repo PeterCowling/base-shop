@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HEAD Prioritization Scorecard</title>
+  <title>HEAD Prioritization Scorecard (Refresh 2026-02-20)</title>
   <style>
     :root {
       --bg: #ffffff;
@@ -80,18 +80,50 @@
       font-size: 0.9rem;
       color: var(--muted);
     }
+    /* Audience toggle — Model A: single engineering appendix wrapper */
+    [data-audience="engineering"] {
+      display: none;
+    }
+    body.show-engineering [data-audience="engineering"] {
+      display: block;
+    }
+    .audience-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 0 24px;
+      padding: 8px 16px;
+      background: var(--header);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-family: inherit;
+    }
+    .audience-toggle:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+    }
   </style>
 </head>
 <body>
   <main>
-<h1>HEAD Prioritization Scorecard</h1>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
+<h1>HEAD Prioritization Scorecard (Refresh 2026-02-20)</h1>
 <h2>A) Scoring Rubric</h2>
 <p>Scale: 0-5 per criterion.</p>
 <ul>
 <li>Outcome impact</li>
 <li>Speed to value</li>
 <li>Confidence</li>
-<li>Dependency complexity (inverse: higher score = lower complexity)</li>
+<li>Dependency complexity (inverse: higher = lower complexity)</li>
 <li>Risk if delayed</li>
 <li>Validation leverage</li>
 </ul>
@@ -112,47 +144,69 @@
 </thead>
 <tbody>
 <tr>
-<td>Launch analytics + payment reliability baseline</td>
-<td align="right">5</td>
+<td>Launch school-ready multi-pack headbands (MVP)</td>
 <td align="right">5</td>
 <td align="right">4</td>
 <td align="right">4</td>
+<td align="right">4</td>
 <td align="right">5</td>
 <td align="right">5</td>
-<td align="right">28</td>
+<td align="right">27</td>
 <td>P1</td>
 </tr>
 <tr>
-<td>Publish compatibility/fit guidance and assisted support path</td>
+<td>Launch activity organiser pouch (MVP)</td>
 <td align="right">5</td>
 <td align="right">4</td>
 <td align="right">4</td>
 <td align="right">3</td>
-<td align="right">5</td>
 <td align="right">4</td>
+<td align="right">5</td>
 <td align="right">25</td>
 <td>P1</td>
 </tr>
 <tr>
-<td>Run capped week-1 acquisition experiment with daily CAC/CVR reviews</td>
-<td align="right">4</td>
-<td align="right">4</td>
-<td align="right">3</td>
-<td align="right">3</td>
+<td>Launch identity patch packs (MVP)</td>
 <td align="right">4</td>
 <td align="right">5</td>
-<td align="right">23</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">24</td>
 <td>P1</td>
 </tr>
 <tr>
-<td>Week-2 recalibration decision and re-forecast remaining 10 weeks</td>
-<td align="right">4</td>
-<td align="right">3</td>
-<td align="right">4</td>
-<td align="right">3</td>
-<td align="right">4</td>
+<td>Keep analytics/payment reliability baseline decision-grade</td>
 <td align="right">5</td>
-<td align="right">23</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">26</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>Complete naming clearance and lock masterbrand</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">19</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>Safety engineering + governance pack for tether-class lane</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">18</td>
 <td>P2</td>
 </tr>
 </tbody>
@@ -172,57 +226,106 @@
 <tbody>
 <tr>
 <td>P1</td>
+<td>Multi-pack headbands MVP</td>
+<td>Highest demand fit with low claim-drift risk</td>
+<td>SKU set live with size guidance and wash-cycle QA signoff</td>
+<td>Existing headband pattern + packaging</td>
+<td><code>docs/business-os/strategy/HEAD/lp-other-products-results.user.md</code></td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Organiser pouch MVP</td>
+<td>Strong AOV and routine-friction reducer</td>
+<td>2-size pouch line live; compartment/zip QA complete</td>
+<td>Pattern sampling + content assets</td>
+<td><code>docs/business-os/strategy/HEAD/lp-other-products-results.user.md</code></td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Patch packs MVP</td>
+<td>Fast attach-rate and repeat mechanism</td>
+<td>3 themed packs live with age-safe attachment controls</td>
+<td>Patch supplier + attachment QA</td>
+<td><code>docs/business-os/strategy/HEAD/lp-other-products-results.user.md</code></td>
+</tr>
+<tr>
+<td>P1</td>
 <td>Analytics + payment reliability baseline</td>
-<td>Required for all downstream decisions</td>
-<td>End-to-end events and payment success metrics available and reviewed daily</td>
-<td>Checkout + analytics hooks</td>
-<td><code>HEAD-forecast-seed.user.md</code></td>
-</tr>
-<tr>
-<td>P1</td>
-<td>Compatibility/fit guidance + support path</td>
-<td>Reduces wrong-buy/return risk</td>
-<td>Compatibility guide live and linked from PDP; support route visible</td>
-<td>Compatibility matrix confirmation</td>
-<td><code>2026-02-12-upgrade-brief.user.md</code></td>
-</tr>
-<tr>
-<td>P1</td>
-<td>Week-1 acquisition experiment (capped)</td>
-<td>Needed to convert assumptions into observed data</td>
-<td>Daily CAC/CVR report produced for 7 days with capped spend</td>
-<td>Inventory + pricing + payment readiness</td>
-<td><code>headband-90-day-launch-forecast-v2.user.md</code></td>
+<td>Protects denominator quality for all channel decisions</td>
+<td>Daily KPI set includes CVR/CAC/payment success/returns and is reviewed</td>
+<td>Tracking + checkout verification</td>
+<td><code>docs/business-os/contracts/HEAD/outcome-contract.user.md</code></td>
 </tr>
 <tr>
 <td>P2</td>
-<td>Week-2 recalibration</td>
-<td>Converts first data into updated decision</td>
-<td>Recalibrated forecast doc published with Keep/Pivot recommendation</td>
-<td>Week-1 observed data</td>
-<td><code>headband-90-day-launch-forecast-v2.user.md</code></td>
+<td>Naming clearance lane</td>
+<td>Required before final brand lock and scale creative</td>
+<td>One shortlisted coined mark passes TM/domain gate with fallback</td>
+<td>Shortlist + counsel input</td>
+<td><code>docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md</code></td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Tether safety/governance lane</td>
+<td>High customer impact but high safety/intent risk</td>
+<td>Safety design spec + warning language + legal review complete</td>
+<td>Engineering + legal review</td>
+<td><code>docs/business-os/strategy/HEAD/lp-other-products-results.user.md</code></td>
 </tr>
 </tbody>
 </table>
 <h2>D) Deferred Items and Rationale</h2>
 <ul>
-<li>Jewellery add-on lane (defer until core headband conversion is stable).</li>
-<li>Provider/clinic expansion lane (defer until base funnel reliability is established).</li>
+<li>Amazon expansion lane: deferred until own-site + Etsy contribution comparison clears trigger thresholds.</li>
+<li>Tether-class consumer launch: deferred until safety and copy-governance gate is complete.</li>
+<li>Additional seasonal variants (water-day and winter): deferred to month 3+ after MVP execution data.</li>
 </ul>
 <h2>E) Execution Recommendation</h2>
-<p>Run <code>fact-find -> plan-feature -> build-feature</code> first on:</p>
+<p>Run <code>lp-do-fact-find -> lp-do-plan -> lp-do-build</code> first on:</p>
 <ol>
-<li>Analytics + payment reliability baseline.</li>
-<li>Compatibility/fit guidance and support path.</li>
+<li>MVP productisation for multi-pack headbands, organiser pouch, and patch packs.</li>
+<li>Analytics/payment reliability and returns taxonomy hardening.</li>
+<li>Naming clearance decision memo and final masterbrand lock.</li>
 </ol>
     <div class="meta">
       <div>Source: <code>docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md</code></div>
-      <div>Generated: 2026-02-12T11:31:58.139Z</div>
+      <div>Generated: 2026-02-20T13:28:09.560Z</div>
     </div>
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+    // startOnLoad: false — we render manually so hidden engineering diagrams
+    // (inside display:none) are not attempted on load, which causes spurious
+    // "Syntax error in text" failures in Mermaid v11.
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    // Render only the visible (operator) diagrams immediately.
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    // Audience toggle — Model A.
+    // Engineering diagrams are rendered on first reveal (not on load).
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          // Render engineering diagrams now that they are visible.
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
   </script>
 </body>
 </html>

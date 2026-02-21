@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Agent safety wrapper for npm.
+# In warn-only mode, surfaces ungoverned npm-based Jest invocations.
+
+wrapper_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+real_npm=""
+real_pnpm=""
+
+IFS=":" read -r -a path_entries <<< "${PATH:-}"
+for dir in "${path_entries[@]}"; do
+  [[ -z "$dir" ]] && continue
+  if [[ "$(cd "$dir" 2>/dev/null && pwd)" == "$wrapper_dir" ]]; then
+    continue
+  fi
+  if [[ -z "$real_npm" && -x "${dir}/npm" ]]; then
+    real_npm="${dir}/npm"
+  fi
+  if [[ -z "$real_pnpm" && -x "${dir}/pnpm" ]]; then
+    real_pnpm="${dir}/pnpm"
+  fi
+  if [[ -n "$real_npm" && -n "$real_pnpm" ]]; then
+    break
+  fi
+done
+
+if [[ -z "$real_npm" ]]; then
+  echo "ERROR: unable to locate real npm binary on PATH" >&2
+  exit 127
+fi
+
+emit_bypass_event() {
+  local event_class="$1"
+  local mode="${2:-enforce}"
+  local repo_root="${BASESHOP_GUARD_REPO_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
+  local telemetry_script="${repo_root}/scripts/tests/telemetry-log.sh"
+
+  if [[ -x "$telemetry_script" ]]; then
+    "$telemetry_script" emit \
+      --governed false \
+      --policy-mode "$mode" \
+      --class "$event_class" \
+      --normalized-sig "$event_class" \
+      --pressure-level unknown \
+      --workers 0 \
+      --override-policy-used "${BASESHOP_ALLOW_BYPASS_POLICY:-0}" \
+      --override-overload-used "${BASESHOP_ALLOW_OVERLOAD:-0}" >/dev/null 2>&1 || true
+  fi
+}
+
+block_bypass() {
+  local event_class="$1"
+  local preview="$2"
+  echo "BLOCKED: ungoverned Jest invocation detected (${event_class})." >&2
+  echo "Command: ${preview}" >&2
+  echo "Recommended: pnpm -w run test:governed -- jest -- <args>" >&2
+  if [[ "${BASESHOP_ALLOW_OVERLOAD:-0}" == "1" ]]; then
+    echo "Note: BASESHOP_ALLOW_OVERLOAD=1 does not bypass command-policy blocking." >&2
+  fi
+  echo "Set BASESHOP_ALLOW_BYPASS_POLICY=1 to reroute through the governed runner." >&2
+  emit_bypass_event "$event_class" "enforce"
+  exit 1
+}
+
+reroute_to_governed() {
+  shift
+  if [[ -z "$real_pnpm" ]]; then
+    echo "ERROR: BASESHOP_ALLOW_BYPASS_POLICY=1 requires pnpm on PATH." >&2
+    exit 127
+  fi
+  echo "BYPASS POLICY OVERRIDE: rerouting npm exec jest through governed runner." >&2
+  emit_bypass_event "npm-exec-jest" "enforce"
+  local -a cmd=("$real_pnpm" "-w" "run" "test:governed" "--" "jest")
+  if [[ $# -gt 0 ]]; then
+    cmd+=("--" "$@")
+  fi
+  exec "${cmd[@]}"
+}
+
+is_exec_jest="0"
+declare -a npm_exec_jest_args=()
+for ((i=1; i<=$#; i++)); do
+  arg="${!i}"
+  if [[ "$arg" == "exec" || "$arg" == "x" ]]; then
+    next_i=$((i + 1))
+    if [[ $next_i -le $# && "${!next_i}" == "--" ]]; then
+      next_i=$((next_i + 1))
+    fi
+    if [[ $next_i -le $# && "${!next_i}" == "jest" ]]; then
+      is_exec_jest="1"
+      args_i=$((next_i + 1))
+      if [[ $args_i -le $# && "${!args_i}" == "--" ]]; then
+        args_i=$((args_i + 1))
+      fi
+      for ((j=args_i; j<=$#; j++)); do
+        npm_exec_jest_args+=("${!j}")
+      done
+    fi
+    break
+  fi
+done
+
+if [[ "$is_exec_jest" == "1" && "${BASESHOP_GOVERNED_CONTEXT:-0}" != "1" ]]; then
+  if [[ "${BASESHOP_ALLOW_BYPASS_POLICY:-0}" == "1" ]]; then
+    reroute_to_governed "npm-exec-jest" "${npm_exec_jest_args[@]}"
+  fi
+  block_bypass "npm-exec-jest" "npm $*"
+fi
+
+exec "$real_npm" "$@"

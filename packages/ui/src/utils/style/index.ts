@@ -1,5 +1,7 @@
 /**
- * @deprecated Import style utils from "@acme/design-system/utils/style" instead.
- * This barrel re-export exists for backward compatibility and will be removed.
+ * @deprecated Prefer direct imports from "@acme/design-system/utils/style" in new code.
+ * This local barrel remains for Turbopack-safe backward compatibility in @acme/ui.
  */
-export * from "@acme/design-system/utils/style";
+export * from "./boxProps";
+export * from "./cn";
+export * from "./cssVars";

@@ -40,7 +40,7 @@ const activityCodes: Record<number, string> = {
   22: "System generated cancellation",
   23: "Bags dropped",
   24: "Departure date change",
-  25: "Cancelled",
+  25: "Deleted",
   26: "App email draft created",
 };
 

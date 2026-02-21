@@ -3,7 +3,11 @@
     "title": "Book dit ophold – Officiel side",
     "description": "Fleksible og ikke‑refunderbare priser. Sikker betaling i vores officielle bookingmotor."
   },
-  "heading": "Book dit ophold",
+  "heading": "Book direkte på Hostel Brikette, Positano",
+  "subheading": "Vælg dine datoer, og vælg derefter et værelse.",
+  "dealBanner": {
+    "applied": "Tilbud anvendt: {{code}}"
+  },
   "roomLabel": "Værelse",
   "cta": {
     "flex": "Fleksibel – Gå til betaling",

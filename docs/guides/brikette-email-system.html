@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brikette Email Workflow — Your Guide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #f9f8f6;
+      --surface:     #ffffff;
+      --border:      #e4e2de;
+      --border-soft: #eeece9;
+      --text:        #1a1918;
+      --text-muted:  #6b6762;
+      --accent:      #2d6a4f;
+      --accent-soft: #e8f4ee;
+      --warn:        #92400e;
+      --warn-soft:   #fef3c7;
+      --danger:      #991b1b;
+      --danger-soft: #fee2e2;
+      --code-bg:     #f3f1ee;
+      --code-border: #dbd9d4;
+      --radius:      6px;
+      --radius-lg:   10px;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2rem 1rem 6rem;
+    }
+
+    .page { max-width: 860px; margin: 0 auto; }
+
+    /* ── Header ── */
+    .doc-header {
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.4rem;
+    }
+    .doc-header h1 { font-size: 2rem; font-weight: 700; line-height: 1.2; }
+    .doc-header .meta { margin-top: 0.6rem; font-size: 0.85rem; color: var(--text-muted); }
+
+    /* ── Section headings ── */
+    h2 {
+      font-size: 1.3rem; font-weight: 700;
+      margin: 2.5rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.8rem 0 0.5rem; }
+
+    /* ── Body copy ── */
+    p { margin-bottom: 0.8rem; }
+    p:last-child { margin-bottom: 0; }
+    strong { font-weight: 600; }
+    em { font-style: italic; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; }
+    li:last-child { margin-bottom: 0; }
+
+    /* ── Inline labels (Gmail paths) ── */
+    code {
+      font-family: "SF Mono", "Fira Code", Menlo, monospace;
+      font-size: 0.82rem;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 3px;
+      padding: 0.1em 0.35em;
+      color: var(--accent);
+    }
+
+    /* ── Callouts ── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+    }
+    .callout.green  { background: var(--accent-soft); border-left: 3px solid var(--accent); }
+    .callout.amber  { background: var(--warn-soft);   border-left: 3px solid #d97706; }
+    .callout.red    { background: var(--danger-soft); border-left: 3px solid var(--danger); }
+    .callout p { margin-bottom: 0.5rem; }
+    .callout p:last-child { margin-bottom: 0; }
+
+    /* ── Invariant box ── */
+    .invariant {
+      background: #1a1918; color: #f5f3f0;
+      border-radius: var(--radius-lg);
+      padding: 1.4rem 1.6rem; margin: 1.5rem 0;
+    }
+    .invariant .invariant-label {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #a3e635; margin-bottom: 0.5rem;
+    }
+    .invariant p { color: #e5e3df; font-size: 0.95rem; margin-bottom: 0; }
+    .invariant strong { color: #fff; }
+
+    /* ── Numbered action steps ── */
+    .steps { counter-reset: step; list-style: none; padding-left: 0; margin: 0.5rem 0 1.2rem; }
+    .steps > li {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.7rem;
+      margin-bottom: 1.1rem;
+      align-items: start;
+    }
+    .steps > li::before {
+      content: counter(step);
+      display: flex; align-items: center; justify-content: center;
+      width: 2rem; height: 2rem;
+      background: var(--accent); color: #fff;
+      font-size: 0.8rem; font-weight: 700;
+      border-radius: 50%; flex-shrink: 0; margin-top: 0.1rem;
+    }
+    .steps > li .step-body { min-width: 0; }
+    .steps > li .step-title { font-weight: 600; margin-bottom: 0.15rem; }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; margin: 0.8rem 0 1rem; border-radius: var(--radius); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; background: var(--surface); }
+    thead tr { background: var(--accent); color: #fff; }
+    thead th { text-align: left; padding: 0.65rem 1rem; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.03em; }
+    tbody tr { border-bottom: 1px solid var(--border-soft); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { padding: 0.65rem 1rem; vertical-align: top; }
+    tbody tr:nth-child(even) { background: #fafaf9; }
+
+    /* ── Divider ── */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+    /* ── Status pills ── */
+    .pill {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 0.15em 0.55em; border-radius: 3px;
+      vertical-align: middle; margin-left: 0.3em;
+    }
+    .pill.action { background: #fee2e2; color: #991b1b; }
+    .pill.auto   { background: var(--accent-soft); color: var(--accent); }
+
+    /* ── Mermaid containers ── */
+    .mermaid-wrap {
+      position: relative;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.2rem 1rem;
+      overflow: auto; margin: 1rem 0 1.5rem;
+      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    }
+    .mermaid-wrap .mermaid { transition: transform 0.2s ease; transform-origin: top center; }
+    .zoom-controls {
+      position: absolute; top: 8px; right: 8px;
+      display: flex; gap: 2px; z-index: 10;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2px;
+    }
+    .zoom-controls button {
+      width: 26px; height: 26px; border: none; background: transparent;
+      color: var(--text-muted); font-family: "SF Mono", monospace;
+      font-size: 13px; cursor: pointer; border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .zoom-controls button:hover { background: var(--border); color: var(--text); }
+    .mermaid-wrap.is-zoomed  { cursor: grab; }
+    .mermaid-wrap.is-panning { cursor: grabbing; user-select: none; }
+    .mermaid .nodeLabel  { color: var(--text) !important; }
+    .mermaid .edgeLabel  { color: var(--text-muted) !important; }
+    .mermaid .edgeLabel rect { fill: var(--bg) !important; }
+    .diagram-caption {
+      font-size: 0.78rem; color: var(--text-muted);
+      text-align: center; margin-top: -0.8rem; margin-bottom: 1rem; font-style: italic;
+    }
+    @media (prefers-reduced-motion: reduce) { .mermaid-wrap .mermaid { transition: none; } }
+  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    mermaid.initialize({
+      startOnLoad: true, theme: 'base', look: 'classic',
+      themeVariables: {
+        primaryColor:        dark ? '#1e3d30' : '#e8f4ee',
+        primaryBorderColor:  dark ? '#2d6a4f' : '#2d6a4f',
+        primaryTextColor:    dark ? '#f5f3f0' : '#1a1918',
+        secondaryColor:      dark ? '#1a1918' : '#f9f8f6',
+        secondaryBorderColor: dark ? '#6b6762' : '#e4e2de',
+        tertiaryColor:       dark ? '#27201a' : '#fef3c7',
+        tertiaryBorderColor: dark ? '#d97706' : '#d97706',
+        lineColor:           dark ? '#6b6762' : '#9ca3af',
+        edgeLabelBackground: dark ? '#1a1918' : '#f9f8f6',
+        fontSize: '14px',
+      }
+    });
+  </script>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="doc-header">
+    <div class="eyebrow">Workflow Guide · Brikette Operations</div>
+    <h1>Email Workflow — Your Guide</h1>
+    <div class="meta">For reception, email management &amp; Gmail &nbsp;·&nbsp; Last updated: 2026-02-20 &nbsp;·&nbsp; Now with self-improving templates</div>
+  </header>
+
+
+  <!-- HOW IT WORKS -->
+  <h2>How it works</h2>
+  <p>
+    Brikette receives three types of email, each handled slightly differently. In every case,
+    a draft lands in your Gmail — <strong>ready for you to review and send.</strong>
+    Nothing is ever sent on your behalf without you seeing it first.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Type of email</th><th>What triggers it</th><th>What you see in Gmail</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Guest inquiry</strong></td>
+          <td>A guest emails Brikette with a question</td>
+          <td>AI-drafted reply ready for you to review</td>
+        </tr>
+        <tr>
+          <td><strong>Pre-arrivals &amp; ops</strong></td>
+          <td>System schedules a pre-arrival or operations message</td>
+          <td>Pre-written email ready for you to review</td>
+        </tr>
+        <tr>
+          <td><strong>Check-in links</strong></td>
+          <td>Booking confirmed, online check-in links available</td>
+          <td>Link email ready for you to review</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mermaid-wrap">
+    <div class="zoom-controls">
+      <button onclick="zoomDiagram(this,1.2)" title="Zoom in">+</button>
+      <button onclick="zoomDiagram(this,0.8)" title="Zoom out">&minus;</button>
+      <button onclick="resetZoom(this)" title="Reset zoom">&#8634;</button>
+    </div>
+    <pre class="mermaid">
+flowchart TD
+    G1["Guest emails Brikette
+with a question or request"]
+    G2["System schedules
+a pre-arrival or ops email"]
+    G3["Booking confirmed
+or payment received"]
+
+    AI["AI reads the email
+understands the questions
+writes a draft reply using our FAQs
+and policies"]
+    PRE["Pre-written email
+prepared from template"]
+    LINK["Check-in link email
+prepared"]
+
+    DRAFT["Your Gmail
+Brikette / Drafts / Ready for Review"]
+    YOU["You read · edit if needed · press Send"]
+
+    G1 --> AI
+    G2 --> PRE
+    G3 --> LINK
+    AI --> DRAFT
+    PRE --> DRAFT
+    LINK --> DRAFT
+    DRAFT --> YOU
+
+    classDef source fill:#f0efed,stroke:#9ca3af,stroke-width:1px
+    classDef auto   fill:#e8f4ee,stroke:#2d6a4f,stroke-width:1.5px
+    classDef action fill:#fee2e2,stroke:#991b1b,stroke-width:1.5px
+    class G1,G2,G3 source
+    class AI,PRE,LINK,DRAFT auto
+    class YOU action
+    </pre>
+  </div>
+  <p class="diagram-caption">All three paths end at a Gmail draft that waits for you. The AI never sends on its own.</p>
+
+  <div class="invariant">
+    <div class="invariant-label">The one rule that never changes</div>
+    <p>
+      <strong>No email is ever sent automatically.</strong> Every draft lands in
+      <code>Brikette / Drafts / Ready for Review</code> in your Gmail.
+      You decide when — and whether — to send it.
+    </p>
+  </div>
+
+  <hr class="divider">
+
+
+  <!-- DAILY ROUTINE -->
+  <h2>Your daily routine</h2>
+  <p>
+    The inbox is typically triaged twice a day — around <strong>09:00</strong> and
+    <strong>17:00</strong> Italy time. Here is what that looks like end-to-end.
+  </p>
+
+  <ol class="steps">
+
+    <li>
+      <div class="step-body">
+        <div class="step-title">Run the inbox triage</div>
+        <p>
+          Open Claude Code and run <code>/ops-inbox</code>. The system scans Gmail for new
+          guest emails that haven't been processed yet and shows you a summary list.
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="step-body">
+        <div class="step-title">Choose which emails to handle</div>
+        <p>
+          You'll see a table of waiting emails — sender, subject, how long they've been waiting.
+          Say "process all" or pick specific ones.
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="step-body">
+        <div class="step-title">Watch the AI work (it's quick)</div>
+        <p>
+          For each email you selected, the AI reads the full conversation history,
+          looks up FAQs, room details, and policies, then writes a draft reply.
+          It checks its own work before finishing.
+        </p>
+        <div class="callout amber">
+          <p><strong>Complaints and difficult situations are flagged — not drafted.</strong>
+          If an email looks like a serious complaint, refund dispute, or legal threat,
+          the AI skips writing a draft and moves it to a separate folder for you to
+          handle personally. It won't attempt a reply in these cases.</p>
+        </div>
+      </div>
+    </li>
+
+    <li>
+      <div class="step-body">
+        <div class="step-title">Open Gmail and go to your drafts</div>
+        <p>
+          In Gmail, look under <code>Brikette → Drafts → Ready for Review</code>.
+          Every draft from this triage run is there, already threaded to the correct conversation.
+        </p>
+      </div>
+    </li>
+
+    <li>
+      <div class="step-body">
+        <div class="step-title">Read, edit if needed, and send</div>
+        <p>
+          Read each draft as you would any email you'd written yourself. If everything
+          looks right, press Send. If you want to change something, edit first —
+          it's a normal Gmail draft. See <em>Reviewing drafts</em> below for what to check.
+        </p>
+      </div>
+    </li>
+
+  </ol>
+
+  <hr class="divider">
+
+
+  <!-- REVIEWING DRAFTS -->
+  <h2>Reviewing and sending drafts</h2>
+  <p>
+    You are the last pair of eyes before a draft goes to a guest. A few things worth checking:
+  </p>
+
+  <ul>
+    <li>
+      <strong>Does it answer what the guest actually asked?</strong> Re-read their
+      email, then check the draft covers each point. The AI is generally thorough,
+      but it can occasionally miss a secondary question buried in a longer email.
+    </li>
+    <li>
+      <strong>Is the tone right for this guest?</strong> If they were upset, does the
+      reply acknowledge that? If they were friendly, does the reply feel warm?
+    </li>
+    <li>
+      <strong>Are specific details correct?</strong> Room names, dates, prices, check-in
+      times. The AI draws from our FAQs and policies, but double-check anything
+      time-sensitive or guest-specific.
+    </li>
+    <li>
+      <strong>Does the sign-off look right?</strong> The draft should close with the
+      usual Brikette sign-off.
+    </li>
+  </ul>
+
+  <div class="callout green">
+    <p><strong>The draft is already threaded to the guest's email.</strong> When you press Send,
+    it goes as a reply in the same conversation — the guest sees it as a normal reply
+    to their email, not a separate message.</p>
+  </div>
+
+  <h3>Editing before you send</h3>
+  <p>
+    Click into the draft in Gmail and type. It is a normal draft — you can change anything.
+    The AI's version is a starting point, not a constraint.
+  </p>
+
+  <h3>If a draft is clearly wrong</h3>
+  <p>
+    Delete it and write your own reply. Or move the email to
+    <code>Brikette / Queue / Deferred</code> to track it as needing manual attention.
+    Don't leave a bad draft sitting in Ready for Review — it won't send itself, but
+    it is easy to accidentally send later.
+  </p>
+
+  <div class="callout amber">
+    <p><strong>Watch for the "follow-up needed" line.</strong> If the AI couldn't find a
+    confident answer to one of the guest's questions, it inserts a sentence like:
+    <em>"For this specific question we want to give you the most accurate answer — Pete
+    or Cristiana will follow up with you directly."</em> When you see this, make sure
+    someone actually does follow up on that point.</p>
+  </div>
+
+  <hr class="divider">
+
+
+  <!-- GMAIL LABELS -->
+  <h2>Your Gmail labels — what they mean</h2>
+  <p>
+    All Brikette emails are organised under the <code>Brikette/</code> label in Gmail.
+    These labels show you exactly where each email is in the workflow. You don't apply
+    them manually — the system does — but knowing what they mean helps you navigate quickly.
+  </p>
+  <p>
+    <strong>Labels are only visible to your team — guests never see them.</strong>
+    When you send a reply, the guest receives a normal email with nothing to indicate
+    how it was organised or processed on your side.
+  </p>
+
+  <div class="mermaid-wrap">
+    <div class="zoom-controls">
+      <button onclick="zoomDiagram(this,1.2)" title="Zoom in">+</button>
+      <button onclick="zoomDiagram(this,0.8)" title="Zoom out">&minus;</button>
+      <button onclick="resetZoom(this)" title="Reset zoom">&#8634;</button>
+    </div>
+    <pre class="mermaid">
+flowchart LR
+    IN(["New email
+arrives"])
+    PROC["Being processed
+AI is working on it"]
+    DECIDE["⚠ Needs your decision
+T&amp;C confirmation required"]
+    DEFER["⚠ Needs your attention
+complex · complaint · escalated"]
+    READY["Ready for Review
+AI draft waiting for you"]
+    SENT["Sent
+you pressed Send"]
+    ACK["Acknowledged
+no reply needed"]
+
+    IN --> PROC
+    PROC --> DECIDE
+    PROC --> DEFER
+    PROC --> READY
+    PROC --> ACK
+    READY --> SENT
+    DECIDE -->|"you confirm"| READY
+
+    classDef entry   fill:#f0efed,stroke:#9ca3af,stroke-width:1px
+    classDef yours   fill:#fee2e2,stroke:#991b1b,stroke-width:2px
+    classDef good    fill:#e8f4ee,stroke:#2d6a4f,stroke-width:1px
+    classDef neutral fill:#f5f3f0,stroke:#c4c0bb,stroke-width:1px
+    class IN entry
+    class DECIDE,DEFER yours
+    class READY,SENT good
+    class PROC,ACK neutral
+    </pre>
+  </div>
+  <p class="diagram-caption">Red borders mean you need to act. Green means a draft is ready and waiting.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Gmail label</th><th>What it means</th><th>Your action</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Queue / Needs-Processing</code></td>
+          <td>In the queue, waiting for the next triage run</td>
+          <td>None — handled automatically</td>
+        </tr>
+        <tr>
+          <td><code>Queue / In-Progress</code></td>
+          <td>AI is actively working on this email right now</td>
+          <td>None — wait for it to finish</td>
+        </tr>
+        <tr>
+          <td><code>Queue / Needs-Decision</code> <span class="pill action">Act</span></td>
+          <td>Guest seems to have accepted T&amp;C but the phrasing wasn't clear enough to be certain. Payment is paused until you confirm.</td>
+          <td><strong>Confirm or decline</strong> — see below</td>
+        </tr>
+        <tr>
+          <td><code>Queue / Deferred</code> <span class="pill action">Act</span></td>
+          <td>Complaint, dispute, or complex situation. No AI draft was created. Needs personal attention.</td>
+          <td><strong>Write a manual reply</strong></td>
+        </tr>
+        <tr>
+          <td><code>Drafts / Ready-For-Review</code> <span class="pill action">Act</span></td>
+          <td>An AI draft is waiting for you to read and send</td>
+          <td><strong>Review and send</strong></td>
+        </tr>
+        <tr>
+          <td><code>Drafts / Sent</code></td>
+          <td>The draft was sent by you</td>
+          <td>None — done</td>
+        </tr>
+        <tr>
+          <td><code>Outcome / Acknowledged</code></td>
+          <td>Informational email that doesn't need a reply (e.g. payment confirmation from an OTA)</td>
+          <td>None — noted and archived</td>
+        </tr>
+        <tr>
+          <td><code>Outcome / Promotional</code></td>
+          <td>OTA newsletter or marketing email</td>
+          <td>None — archived</td>
+        </tr>
+        <tr>
+          <td><code>Outcome / Skipped</code></td>
+          <td>Not a real guest email (system notification or similar)</td>
+          <td>None — safely ignored</td>
+        </tr>
+        <tr>
+          <td><code>Outcome / Error</code></td>
+          <td>Something went wrong mid-process. Will be automatically retried at the next triage run.</td>
+          <td>None usually. If it keeps appearing, flag to Pete.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+
+  <!-- WHEN YOU NEED TO STEP IN -->
+  <h2>When you need to step in</h2>
+
+  <h3>T&amp;C confirmations — Needs-Decision</h3>
+  <p>
+    Sometimes a guest replies in a way that looks like they're accepting the terms and
+    conditions, but the phrasing isn't clear enough for the system to be certain.
+    Rather than guess, it pauses and puts the email in <code>Queue / Needs-Decision</code>.
+  </p>
+  <p>
+    <strong>What to do:</strong> Open the email and read the guest's reply. If they've
+    clearly agreed — even informally, like "Yes, that's fine" or "OK, go ahead" — confirm
+    it in the triage tool. The system will then continue with the payment workflow.
+    If you're genuinely unsure, treat it as not confirmed and follow up with the guest
+    directly asking them to clarify.
+  </p>
+
+  <h3>Escalated emails — Deferred</h3>
+  <p>The AI will not draft a reply for:</p>
+  <ul>
+    <li>Serious complaints or repeated grievances</li>
+    <li>Refund disputes or chargeback threats</li>
+    <li>Legal language or fraud accusations</li>
+    <li>High-value disputes (generally over €500)</li>
+  </ul>
+  <p>
+    These go to <code>Queue / Deferred</code> with no draft created.
+    <strong>You write the reply.</strong> Take time with these — they need a personal,
+    considered response, not a quick template.
+  </p>
+
+  <div class="callout amber">
+    <p><strong>Tip:</strong> Reply directly from within the Gmail thread so the conversation
+    stays together. After you send, you can move the email to
+    <code>Outcome / Drafted</code> manually to keep the label history tidy.</p>
+  </div>
+
+  <hr class="divider">
+
+
+  <!-- BOOKING PAYMENTS -->
+  <h2>Booking payment emails</h2>
+  <p>
+    When a new booking notification arrives, the system automatically prepares a payment
+    request email to send to the guest. If payment isn't received, it follows up
+    automatically — always placing a draft in your Gmail for you to send.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Stage</th><th>What happens</th><th>Gmail label</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>New booking</strong></td>
+          <td>First payment request drafted and placed in Ready for Review. You review and send.</td>
+          <td><code>Workflow / Prepayment-Chase-1</code></td>
+        </tr>
+        <tr>
+          <td><strong>No payment — 2nd request</strong></td>
+          <td>Second payment request drafted for you to review and send.</td>
+          <td><code>Workflow / Prepayment-Chase-2</code></td>
+        </tr>
+        <tr>
+          <td><strong>Still no payment — final notice</strong></td>
+          <td>Cancellation notice drafted. After you send this, the booking is treated as cancelled.</td>
+          <td><code>Workflow / Prepayment-Chase-3</code></td>
+        </tr>
+        <tr>
+          <td><strong>Payment received</strong></td>
+          <td>Payment confirmation email drafted for you to review and send.</td>
+          <td>(outcome label)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout red">
+    <p><strong>Do not edit the payment terms or cancellation conditions.</strong>
+    These emails have fixed, legally-reviewed wording. If you'd like to add a personal
+    note, add it <em>after</em> the standard text — not within it.</p>
+  </div>
+
+  <h3>T&amp;C agreement during the payment process</h3>
+  <p>
+    Guests often reply to the payment email with something like "Yes, I accept"
+    alongside their payment details. The system detects this automatically.
+    If the wording is ambiguous, it moves to <code>Needs-Decision</code> for you to confirm
+    before payment proceeds.
+  </p>
+
+  <hr class="divider">
+
+
+  <!-- CANCELLATIONS -->
+  <h2>Cancellations</h2>
+  <p>
+    When a cancellation notification arrives from the property management system, it's
+    handled separately. The system:
+  </p>
+  <ul>
+    <li>Reads the cancellation details (guest name, dates, booking reference)</li>
+    <li>Prepares a cancellation acknowledgement draft for you to review and send</li>
+    <li>Labels the email <code>Workflow / Cancellation-Received</code> (and
+        <code>Cancellation-Processed</code> once complete)</li>
+  </ul>
+  <p>
+    If the cancellation notice is in an unexpected format, it's labelled
+    <code>Cancellation-Parse-Failed</code> and you'll need to handle it manually.
+  </p>
+
+  <hr class="divider">
+
+
+  <!-- WHAT THE AI KNOWS -->
+  <h2>How the AI writes replies</h2>
+  <p>
+    The AI doesn't write emails from scratch — it works from a library of pre-approved
+    templates (over 50, covering the most common guest scenarios). When an email arrives,
+    it picks the best matching template, then personalises it with the guest's name,
+    dates, and other details from the inquiry.
+  </p>
+  <p>To personalise accurately, it draws on:</p>
+  <ul>
+    <li><strong>Our FAQ</strong> — frequently asked questions and their approved answers</li>
+    <li><strong>Room details</strong> — configurations, capacity, amenities</li>
+    <li><strong>Policies</strong> — check-in rules, age restrictions, house rules</li>
+    <li><strong>Bar &amp; breakfast prices</strong> — current menu pricing</li>
+    <li><strong>Writing style guide</strong> — so replies sound like Brikette, not a generic bot</li>
+    <li><strong>The conversation history</strong> — so it doesn't repeat things already said or contradict earlier promises</li>
+  </ul>
+
+  <h3>Personalised greetings and in-line knowledge</h3>
+  <p>
+    Templates now use <em>slots</em> — named placeholders that are filled at send time.
+    The greeting slot is filled with the guest's name when known
+    (<em>"Dear Maria,"</em> rather than <em>"Dear Guest,"</em>).
+    A knowledge-injection slot lets the AI add relevant FAQ snippets or policy details
+    at exactly the right point in the email — not tacked on at the end.
+  </p>
+  <p>
+    Because replies are template-based, the core content — pricing, policies, house rules —
+    is always consistent. The personalisation on top is what makes them feel natural.
+  </p>
+
+  <div class="callout green">
+    <p><strong>If no template fits, or the AI can't fill in a detail confidently, it says so.</strong>
+    Rather than guess, it inserts: <em>"For this specific question we want to give you
+    the most accurate answer — Pete or Cristiana will follow up with you directly."</em>
+    When you see this line in a draft, make sure someone follows up on that point.</p>
+  </div>
+
+  <hr class="divider">
+
+
+  <!-- SELF-IMPROVING SYSTEM -->
+  <h2>How the system gets smarter over time</h2>
+  <p>
+    The email system doesn't stay static. Every triage session quietly collects
+    signals about which templates worked well and which needed rewriting.
+    Over time, this helps the AI pick better templates — and flag ones that need updating.
+    <strong>You don't need to do anything to make this work.</strong> It runs in the background.
+  </p>
+
+  <div class="mermaid-wrap">
+    <div class="zoom-controls">
+      <button onclick="zoomDiagram(this,1.2)" title="Zoom in">+</button>
+      <button onclick="zoomDiagram(this,0.8)" title="Zoom out">&minus;</button>
+      <button onclick="resetZoom(this)" title="Reset zoom">&#8634;</button>
+    </div>
+    <pre class="mermaid">
+flowchart LR
+    SESS["Triage session
+runs normally"]
+    SIG["Signal captured
+which template was used
+how much it was rewritten"]
+    RANK["Ranker learns
+templates that needed big rewrites
+ranked lower next time"]
+    PROP["Improvement proposal
+generated for review"]
+    APPR["Pete reviews
+&amp; approves or rejects"]
+    TMPL["Template updated
+future drafts are better"]
+
+    SESS --> SIG
+    SIG --> RANK
+    SIG --> PROP
+    PROP --> APPR
+    APPR -->|approved| TMPL
+    TMPL --> SESS
+
+    classDef auto   fill:#e8f4ee,stroke:#2d6a4f,stroke-width:1.5px
+    classDef action fill:#fee2e2,stroke:#991b1b,stroke-width:1.5px
+    class SESS,SIG,RANK auto
+    class PROP,APPR,TMPL action
+    </pre>
+  </div>
+  <p class="diagram-caption">Signals flow from every session. Template updates require human approval before anything changes.</p>
+
+  <h3>Signal capture — what's recorded</h3>
+  <p>
+    At the end of each triage session, the system knows which template was used for
+    each email, and whether the AI rewrote it significantly before creating the draft.
+    A template that needs a big rewrite every time it's used is a sign it's out of date
+    or being selected for the wrong type of question.
+  </p>
+  <p>
+    These signals are stored privately and are never visible to guests. They include
+    no personally identifiable information — just which template category was used and
+    how much editing was required.
+  </p>
+
+  <h3>Template proposals — human approval always required</h3>
+  <p>
+    When the system notices a pattern — for example, the "transportation" template was
+    heavily rewritten 8 times in a row — it generates an <em>improvement proposal</em>.
+    This proposal sits in a queue until Pete reviews it.
+  </p>
+
+  <div class="invariant">
+    <div class="invariant-label">Human approval gate</div>
+    <p>
+      <strong>No template is ever changed without Pete reviewing and approving the change.</strong>
+      Proposals describe what changed and why. Pete can approve, reject, or ignore them.
+      If a proposal isn't reviewed within 30 days, it expires automatically.
+    </p>
+  </div>
+
+  <h3>Ranker calibration — better template matching</h3>
+  <p>
+    Separately from proposals, the system periodically recalibrates which templates
+    it prefers for which types of question. Templates that consistently work well
+    (minimal rewriting needed) get a small ranking boost. Templates that consistently
+    require heavy rewrites get a small ranking penalty.
+  </p>
+  <p>
+    The adjustment is intentionally gentle — the ranking never swings more than 30 points
+    in either direction, and it takes at least 20 real sessions to trigger a recalibration.
+    This prevents the system from over-learning from a handful of unusual emails.
+  </p>
+
+  <h3>Session summary — signal health</h3>
+  <p>
+    At the end of each triage session (when the queue is empty), the summary now includes
+    a <em>signal health</em> block alongside the usual processed counts:
+  </p>
+  <ul>
+    <li>How many selection and refinement signals were captured this session</li>
+    <li>How many template improvement proposals are currently pending review</li>
+    <li>A reminder to run the ranker calibration when enough signals have accumulated</li>
+  </ul>
+  <div class="callout amber">
+    <p><strong>If the summary shows &gt;10 pending proposals,</strong> that's a backlog warning.
+    It's worth spending a few minutes reviewing and approving or rejecting them — stale proposals
+    expire after 30 days so they won't pile up indefinitely, but frequent backlogs suggest
+    templates need more attention.</p>
+  </div>
+
+  <hr class="divider">
+
+
+  <!-- TROUBLESHOOTING -->
+  <h2>If something seems wrong</h2>
+
+  <h3>An email is stuck with no draft appearing</h3>
+  <p>
+    Occasionally a crash or interruption can leave an email in a processing state with
+    no draft appearing. The system detects and fixes this automatically at the start of
+    the next triage run — usually within 30 minutes. If it has been stuck for more than
+    an hour, flag it to Pete.
+  </p>
+
+  <h3>A draft looks completely wrong</h3>
+  <p>
+    Delete it and write your own reply. Note the subject line and date so the FAQ or
+    knowledge base can be checked and updated if the AI was working from outdated
+    information.
+  </p>
+
+  <h3>An email keeps appearing with an Error label</h3>
+  <p>
+    The next triage run retries automatically. If the same email keeps showing up as
+    an Error, flag it to Pete — there may be something unusual about that email's format.
+  </p>
+
+</div>
+
+  <script>
+    function zoomDiagram(btn, factor) {
+      var wrap = btn.closest('.mermaid-wrap');
+      var el   = wrap.querySelector('.mermaid');
+      var z    = Math.min(Math.max((parseFloat(el.dataset.zoom || '1')) * factor, 0.3), 5);
+      el.dataset.zoom = z;
+      el.style.transform = 'scale(' + z + ')';
+      wrap.classList.toggle('is-zoomed', z > 1);
+    }
+    function resetZoom(btn) {
+      var wrap = btn.closest('.mermaid-wrap');
+      var el   = wrap.querySelector('.mermaid');
+      el.dataset.zoom = '1';
+      el.style.transform = '';
+      wrap.classList.remove('is-zoomed');
+    }
+    document.querySelectorAll('.mermaid-wrap').forEach(function(wrap) {
+      wrap.addEventListener('wheel', function(e) {
+        if (!e.ctrlKey && !e.metaKey) return;
+        e.preventDefault();
+        var el = wrap.querySelector('.mermaid');
+        var z  = Math.min(Math.max((parseFloat(el.dataset.zoom || '1')) * (e.deltaY < 0 ? 1.1 : 0.9), 0.3), 5);
+        el.dataset.zoom = z;
+        el.style.transform = 'scale(' + z + ')';
+        wrap.classList.toggle('is-zoomed', z > 1);
+      }, { passive: false });
+      var sx, sy, sl, st;
+      wrap.addEventListener('mousedown', function(e) {
+        if (e.target.closest('.zoom-controls')) return;
+        if (parseFloat(wrap.querySelector('.mermaid').dataset.zoom || '1') <= 1) return;
+        wrap.classList.add('is-panning');
+        sx = e.clientX; sy = e.clientY;
+        sl = wrap.scrollLeft; st = wrap.scrollTop;
+      });
+      window.addEventListener('mousemove', function(e) {
+        if (!wrap.classList.contains('is-panning')) return;
+        wrap.scrollLeft = sl - (e.clientX - sx);
+        wrap.scrollTop  = st - (e.clientY - sy);
+      });
+      window.addEventListener('mouseup', function() { wrap.classList.remove('is-panning'); });
+    });
+  </script>
+</body>
+</html>

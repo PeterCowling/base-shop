@@ -1,5 +1,4 @@
 import { memo, useCallback, useMemo, useState } from "react";
-import { DialogTitle } from "@radix-ui/react-dialog";
 import clsx from "clsx";
 
 import { ModalFrame, ModalPanel } from "./primitives";
@@ -13,6 +12,7 @@ export interface LocationModalProps {
   readonly onClose: () => void;
   readonly copy: LocationModalCopy;
   readonly hostelAddress: string;
+  readonly mapsEmbedKey?: string;
   readonly testId?: string;
 }
 
@@ -21,6 +21,7 @@ function LocationModal({
   onClose,
   copy,
   hostelAddress,
+  mapsEmbedKey,
   testId = DEFAULT_TEST_ID,
 }: LocationModalProps): JSX.Element | null {
   const [currentLocation, setCurrentLocation] = useState<string>("");
@@ -28,16 +29,18 @@ function LocationModal({
 
   const pinnedMap = useMemo(
     () =>
-      `https://maps.google.com/maps?q=${encodeURIComponent(hostelAddress)}&t=&z=13&ie=UTF8&iwloc=&output=embed`,
-    [hostelAddress],
+      mapsEmbedKey && mapsEmbedKey.length > 0
+        ? `https://www.google.com/maps/embed/v1/place?key=${mapsEmbedKey}&q=${encodeURIComponent(hostelAddress)}&zoom=13`
+        : null,
+    [mapsEmbedKey, hostelAddress],
   );
 
   const directions = useMemo(
     () =>
-      `https://maps.google.com/maps?saddr=${encodeURIComponent(
-        currentLocation,
-      )}&daddr=${encodeURIComponent(hostelAddress)}&output=embed`,
-    [currentLocation, hostelAddress],
+      mapsEmbedKey && mapsEmbedKey.length > 0
+        ? `https://www.google.com/maps/embed/v1/directions?key=${mapsEmbedKey}&origin=${encodeURIComponent(currentLocation)}&destination=${encodeURIComponent(hostelAddress)}`
+        : null,
+    [mapsEmbedKey, currentLocation, hostelAddress],
   );
 
   const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -54,11 +57,15 @@ function LocationModal({
 
   if (!isOpen) return null;
 
+  const iframeSrc = showDirections ? directions : pinnedMap;
+  const fallbackHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hostelAddress)}`;
+
   return (
     <ModalFrame
       isOpen={isOpen}
       onClose={onClose}
       testId={testId}
+      title={copy.title}
       overlayClassName="pointer-coarse:p-6 bg-black/50 p-6 backdrop-blur-sm dark:bg-black/80"
     >
       <ModalPanel
@@ -92,9 +99,9 @@ function LocationModal({
           ×
         </button>
 
-        <DialogTitle className="mb-4 text-2xl font-bold text-brand-heading">
+        <h2 className="mb-4 text-2xl font-bold text-brand-heading">
           {copy.title}
-        </DialogTitle>
+        </h2>
 
         <div className="mb-4">
           <label htmlFor={CURRENT_LOCATION_INPUT_ID} className="mb-1 block font-semibold text-brand-text">
@@ -128,14 +135,25 @@ function LocationModal({
         </div>
 
         <div className="relative aspect-video w-full">
-          <iframe
-            title={copy.title}
-            data-aspect="16:9"
-            className="aspect-video size-full border-0"
-            loading="lazy"
-            allowFullScreen
-            src={showDirections ? directions : pinnedMap}
-          />
+          {iframeSrc ? (
+            <iframe
+              title={copy.title}
+              data-aspect="16:9"
+              className="aspect-video size-full border-0"
+              loading="lazy"
+              allowFullScreen
+              src={iframeSrc}
+            />
+          ) : (
+            <a
+              href={fallbackHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex aspect-video size-full items-center justify-center rounded border border-brand-surface text-brand-primary underline-offset-4 hover:underline"
+            >
+              {copy.title}
+            </a>
+          )}
         </div>
       </ModalPanel>
     </ModalFrame>

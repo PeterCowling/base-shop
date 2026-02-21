@@ -1,0 +1,124 @@
+{
+  "_comment": "Static [OCT-CFG] room configuration. Source: Octorate admin UI + owner confirmation. NOT derived from automated exports. Update whenever Octorate room config changes.",
+  "_lastUpdated": "2026-02-17",
+  "_updatedBy": "Pete (owner confirmation)",
+  "rooms": [
+    {
+      "octorateId": "433940",
+      "octorateLabel": "OTA, Refundable, Room 3",
+      "displayName": "Room 3",
+      "type": "dorm",
+      "genderPolicy": "female-only",
+      "capacity": 8,
+      "sellable": true,
+      "notes": "Largest female-only dorm"
+    },
+    {
+      "octorateId": "434397",
+      "octorateLabel": "OTA, Refundable, Room 4",
+      "displayName": "Room 4",
+      "type": "dorm",
+      "genderPolicy": "mixed",
+      "capacity": 8,
+      "sellable": true,
+      "notes": "Largest mixed dorm"
+    },
+    {
+      "octorateId": "434401",
+      "octorateLabel": "OTA, Refundable, Room 5",
+      "displayName": "Room 5",
+      "type": "dorm",
+      "genderPolicy": "female-only",
+      "capacity": 6,
+      "sellable": true,
+      "notes": ""
+    },
+    {
+      "octorateId": "434402",
+      "octorateLabel": "OTA, Refundable, Room 6",
+      "displayName": "Room 6",
+      "type": "dorm",
+      "genderPolicy": "female-only",
+      "capacity": 7,
+      "sellable": true,
+      "notes": "7-bed female-only dorm"
+    },
+    {
+      "octorateId": "434398",
+      "octorateLabel": "OTA, Refundable, 2022-7",
+      "displayName": "Room 7",
+      "type": "private",
+      "genderPolicy": "n/a",
+      "capacity": 2,
+      "sellable": true,
+      "notes": "Private room, max 2 guests. Octorate label: 2022-7 (year added)"
+    },
+    {
+      "octorateId": "614929",
+      "octorateLabel": "OTA, Refundable, Room 8",
+      "displayName": "Room 8",
+      "type": "dorm",
+      "genderPolicy": "n/a",
+      "capacity": null,
+      "sellable": false,
+      "notes": "Staff accommodation 2026. Not for sale. Should be blocked in Octorate to prevent OTA availability showing."
+    },
+    {
+      "octorateId": "434403",
+      "octorateLabel": "OTA, Refundable, Room 9",
+      "displayName": "Room 9",
+      "type": "dorm",
+      "genderPolicy": "mixed",
+      "capacity": 3,
+      "sellable": true,
+      "notes": "Smallest dorm"
+    },
+    {
+      "octorateId": "434404",
+      "octorateLabel": "OTA, Refundable, Room 10",
+      "displayName": "Room 10",
+      "type": "dorm",
+      "genderPolicy": "mixed",
+      "capacity": 6,
+      "sellable": true,
+      "notes": ""
+    },
+    {
+      "octorateId": "434405",
+      "octorateLabel": "OTA, Refundable, Room 11",
+      "displayName": "Room 11",
+      "type": "dorm",
+      "genderPolicy": "female-only",
+      "capacity": 6,
+      "sellable": true,
+      "notes": ""
+    },
+    {
+      "octorateId": "434406",
+      "octorateLabel": "OTA, Refundable, Room 12",
+      "displayName": "Room 12",
+      "type": "dorm",
+      "genderPolicy": "mixed",
+      "capacity": 6,
+      "sellable": true,
+      "notes": ""
+    },
+    {
+      "octorateId": "804932",
+      "octorateLabel": "OTA, Refundable, 2025-14",
+      "displayName": "Apartment (StepFree Chiesa Nuova)",
+      "type": "apartment",
+      "genderPolicy": "n/a",
+      "capacity": 4,
+      "sellable": true,
+      "notes": "100sqm apartment adjacent to hostel. Octorate label: 2025-14. Not yet configured in Octorate price calendar as of 2026-02-14 — needs setup."
+    }
+  ],
+  "sellableCapacitySummary": {
+    "dormBeds": 52,
+    "privateRoomMax": 2,
+    "apartmentMax": 4,
+    "totalSellableMax": 58,
+    "notes": "Room 8 excluded (staff). Apartment not yet confirmed in Octorate calendar — monitor until configured."
+  }
+}

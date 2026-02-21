@@ -274,3 +274,111 @@ Type: Idea
     });
   });
 });
+
+// ── VC-01: Stage-label adjacency lint rule ────────────────────────────────────
+
+describe("checkBareStageIds (VC-01)", () => {
+  it("VC-01: bare stage ID in prose triggers violation", async () => {
+    const { checkBareStageIds } = await import("./docs-lint-helpers");
+    const content = `---
+Type: Plan
+Status: Draft
+---
+
+# Workflow
+
+The business is in S6B and needs to proceed.
+`;
+    const violations = checkBareStageIds(content);
+    expect(violations.length).toBeGreaterThan(0);
+    expect(violations[0]).toContain("S6B");
+  });
+
+  it("VC-01: corrected form 'S6B — label' does not trigger violation", async () => {
+    const { checkBareStageIds } = await import("./docs-lint-helpers");
+    const content = `---
+Type: Plan
+Status: Draft
+---
+
+# Workflow
+
+The current stage is S6B — Channel strategy + GTM.
+`;
+    const violations = checkBareStageIds(content);
+    expect(violations.length).toBe(0);
+  });
+
+  it("VC-01: corrected form 'label (S6B)' does not trigger violation", async () => {
+    const { checkBareStageIds } = await import("./docs-lint-helpers");
+    const content = `The business has entered Channel strategy + GTM (S6B).`;
+    const violations = checkBareStageIds(content);
+    expect(violations.length).toBe(0);
+  });
+
+  it("VC-01: stage ID inside fenced code block is not flagged", async () => {
+    const { checkBareStageIds } = await import("./docs-lint-helpers");
+    const content = `# Workflow
+
+\`\`\`yaml
+current_stage: S6B
+\`\`\`
+`;
+    const violations = checkBareStageIds(content);
+    expect(violations.length).toBe(0);
+  });
+
+  it("VC-01: stage ID in inline code is not flagged", async () => {
+    const { checkBareStageIds } = await import("./docs-lint-helpers");
+    const content = `Run \`--stage S6B\` to target the channel strategy stage.`;
+    const violations = checkBareStageIds(content);
+    expect(violations.length).toBe(0);
+  });
+
+  it("VC-01: stage ID in YAML frontmatter is not flagged", async () => {
+    const { checkBareStageIds } = await import("./docs-lint-helpers");
+    const content = `---
+Type: Plan
+Status: Draft
+current_stage: S3
+---
+
+# Forecast stage
+`;
+    const violations = checkBareStageIds(content);
+    expect(violations.length).toBe(0);
+  });
+
+  it("VC-01: stage transition notation S2B→S6B is not flagged", async () => {
+    const { checkBareStageIds } = await import("./docs-lint-helpers");
+    const content = `Gate evaluated at the S2B→S6B fan-out.`;
+    const violations = checkBareStageIds(content);
+    expect(violations.length).toBe(0);
+  });
+
+  it("VC-01: multiple bare IDs on separate lines produces one violation per line", async () => {
+    const { checkBareStageIds } = await import("./docs-lint-helpers");
+    const content = `First go to S3.
+Then advance to DO.
+`;
+    const violations = checkBareStageIds(content);
+    expect(violations.length).toBe(2);
+    expect(violations[0]).toContain("S3");
+    expect(violations[1]).toContain("DO");
+  });
+
+  it("VC-01: 'S10' (two-digit) is recognised as a canonical ID", async () => {
+    const { checkBareStageIds } = await import("./docs-lint-helpers");
+    const content = `The weekly review runs at S10.`;
+    const violations = checkBareStageIds(content);
+    expect(violations.length).toBeGreaterThan(0);
+    expect(violations[0]).toContain("S10");
+  });
+
+  it("VC-01: 'S10 — Weekly decision' is not flagged", async () => {
+    const { checkBareStageIds } = await import("./docs-lint-helpers");
+    const content = `Advance to S10 — Weekly decision for go/no-go.`;
+    const violations = checkBareStageIds(content);
+    expect(violations.length).toBe(0);
+  });
+});

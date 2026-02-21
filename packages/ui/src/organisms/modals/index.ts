@@ -1,7 +1,3 @@
-export type { BookingModalProps } from "./BookingModal";
-export { default as BookingModal } from "./BookingModal";
-export type { BookingModal2Props } from "./BookingModal2";
-export { default as BookingModal2 } from "./BookingModal2";
 export type { ContactModalProps } from "./ContactModal";
 export { default as ContactModal } from "./ContactModal";
 export type { FacilitiesModalProps } from "./FacilitiesModal";

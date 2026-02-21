@@ -1,15 +1,10 @@
 // apps/cms/src/actions/deployShop.server.ts
 "use server";
 
-import fs from "fs/promises";
-import path from "path";
-
-import { deployShop, type DeployShopResult } from "@acme/platform-core/createShop";
-import { resolveDataRoot } from "@acme/platform-core/dataRoot";
-import { validateShopName } from "@acme/platform-core/shops";
+import type { DeployShopResult } from "@acme/platform-core/createShop";
 import type { Environment } from "@acme/types";
 
-import { withFileLock,writeJsonFile } from "@/lib/server/jsonIO";
+import { withFileLock, writeJsonFile } from "@/lib/server/jsonIO";
 import { recordStageTests } from "@/lib/server/launchGate";
 
 import { ensureAuthorized } from "./common/auth";
@@ -24,6 +19,8 @@ export async function deployShopHosting(
   env?: Environment
 ): Promise<DeployShopResult> {
   await ensureAuthorized();
+
+  const { deployShop } = await import("@acme/platform-core/createShop");
   const result = await deployShop(id, domain);
 
   const effectiveEnv: Environment = env ?? "stage";
@@ -53,8 +50,7 @@ export async function deployShopHosting(
   } catch (err) {
     result.env = effectiveEnv;
     result.testsStatus = "failed";
-    result.testsError =
-      (err as Error).message || "post-deploy verification failed";
+    result.testsError = (err as Error).message || "post-deploy verification failed";
     result.lastTestedAt = timestamp;
     if (effectiveEnv === "stage") {
       try {
@@ -89,11 +85,18 @@ export async function getDeployStatus(
   id: string
 ): Promise<DeployShopResult | { status: "pending"; error?: string }> {
   await ensureAuthorized();
+
   try {
+    const [{ validateShopName }, { resolveDataRoot }, path, fs] = await Promise.all([
+      import("@acme/platform-core/shops"),
+      import("@acme/platform-core/dataRoot"),
+      import("node:path"),
+      import("node:fs/promises"),
+    ]);
+
     const safe = validateShopName(id);
     const file = path.join(resolveDataRoot(), safe, "deploy.json");
     // Path constrained to workspace data root and validated shop id
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
     const content = await fs.readFile(file, "utf8");
     return JSON.parse(content) as DeployShopResult;
   } catch (err) {
@@ -111,11 +114,19 @@ export async function updateDeployStatus(
   }
 ): Promise<void> {
   await ensureAuthorized();
+
+  const [{ validateShopName }, { resolveDataRoot }, path, fs] = await Promise.all([
+    import("@acme/platform-core/shops"),
+    import("@acme/platform-core/dataRoot"),
+    import("node:path"),
+    import("node:fs/promises"),
+  ]);
+
   const safe = validateShopName(id);
   const file = path.join(resolveDataRoot(), safe, "deploy.json");
+
   try {
     await withFileLock(file, async () => {
-      // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
       const existing = await fs.readFile(file, "utf8").catch(() => "{}");
       const parsed = JSON.parse(existing) as Record<string, unknown>;
       const updated = { ...parsed, ...data };

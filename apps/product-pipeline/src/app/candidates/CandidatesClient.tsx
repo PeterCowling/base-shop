@@ -830,7 +830,7 @@ export default function CandidatesClient({
                       {strings.effortLabel}: {effort}
                     </span>
                     {gateLabel ? (
-                      <span className="rounded-full border border-border-2 bg-amber-50 px-3 py-1 text-amber-800">
+                      <span className="rounded-full border border-border-2 bg-warning-soft px-3 py-1 text-warning-fg">
                         {gateLabel}
                       </span>
                     ) : null}

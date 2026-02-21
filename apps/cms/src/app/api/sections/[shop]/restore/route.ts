@@ -6,7 +6,8 @@ import type { SectionTemplate } from "@acme/types";
 
 export const runtime = "nodejs";
 
-export async function POST(req: Request, { params }: { params: { shop: string } }) {
+export async function POST(req: Request, props: { params: Promise<{ shop: string }> }) {
+  const params = await props.params;
   try {
     await requirePermission("manage_pages");
   } catch {

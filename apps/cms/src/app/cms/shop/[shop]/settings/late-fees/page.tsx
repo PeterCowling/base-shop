@@ -21,10 +21,10 @@ export default async function LateFeesSettingsPage({
 }) {
   const { shop } = await params;
   const settings = await getSettings(shop);
-  const lateFeeService = settings.lateFeeService ?? {
+  const lateFeeService = (settings.lateFeeService ?? {
     enabled: false,
     intervalMinutes: 60,
-  };
+  }) as { enabled: boolean; intervalMinutes: number };
 
   return (
     <div>

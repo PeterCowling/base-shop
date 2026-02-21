@@ -24,8 +24,7 @@ Monorepo: Turborepo + pnpm workspaces.
 
 ## Model Usage Policy
 
-Always pass `model: "sonnet"` on every Task tool call. Never inherit the parent model (opus) for subagents.
-If a task appears too complex for sonnet, pause and ask the user before switching to a heavier model.
+Always pass `model: "opus"` on every Task tool call. Opus is the default model for all occasions.
 
 ## Subagent Usage Policy
 
@@ -54,7 +53,7 @@ If a task appears too complex for sonnet, pause and ask the user before switchin
 
 ## Workflow
 
-Feature flow: `/lp-fact-find` → `/lp-plan` → `/lp-sequence` → `/lp-build` → `/lp-replan` (if confidence <80%).
+Feature flow: `/lp-do-fact-find` → `/lp-do-plan` → `/lp-sequence` → `/lp-do-build` → `/lp-do-replan` (if confidence <80%).
 Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guide.md`.
 
 ## Type Intelligence (MCP)

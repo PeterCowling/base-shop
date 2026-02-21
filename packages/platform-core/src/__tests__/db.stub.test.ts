@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-import { createTestPrismaStub } from "../db";
+import { createTestPrismaStub } from "../db/testStub";
 
 describe("createTestPrismaStub inventoryItem", () => {
   it("throws when deleting a nonexistent inventory item", async () => {

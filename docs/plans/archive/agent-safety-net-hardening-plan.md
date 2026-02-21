@@ -67,8 +67,8 @@ All tasks complete. See Build Completion section below.
 
 ## Fact-Find Reference
 
-- Brief: `docs/plans/agent-safety-net-hardening-lp-fact-find.md` (rev3, Ready-for-planning)
-- Confidence inputs from lp-fact-find: Implementation 92%, Approach 90%, Impact 95%, Testability 75%
+- Brief: `docs/plans/agent-safety-net-hardening-lp-do-fact-find.md` (rev3, Ready-for-planning)
+- Confidence inputs from lp-do-fact-find: Implementation 92%, Approach 90%, Impact 95%, Testability 75%
 
 ## Existing System Notes (code truth)
 

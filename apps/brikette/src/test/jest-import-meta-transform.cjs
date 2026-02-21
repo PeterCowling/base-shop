@@ -21,7 +21,6 @@ const IMPORT_META_PATTERN = /\bimport\.meta\b/;
  * - import.meta.env → (process.env)
  * - import.meta.vitest → undefined
  * - import.meta.url → ""
- * - remaining import.meta → ({})
  */
 function stripImportMeta(source) {
   if (!IMPORT_META_PATTERN.test(source)) return source;
@@ -30,8 +29,7 @@ function stripImportMeta(source) {
     .replace(/typeof\s+import\.meta\b/g, "typeof undefined")
     .replace(/\bimport\.meta\.env\b/g, "(process.env)")
     .replace(/\bimport\.meta\.vitest\b/g, "undefined")
-    .replace(/\bimport\.meta\.url\b/g, '""')
-    .replace(/\bimport\.meta\b/g, "({})");
+    .replace(/\bimport\.meta\.url\b/g, '""');
 }
 
 module.exports = {

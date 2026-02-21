@@ -1,4 +1,10 @@
 // apps/cover-me-pretty/__tests__/shipping-rate.test.ts
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { getShippingRate } from "@acme/platform-core/shipping/index";
+import type { ShopSettings } from "@acme/types";
+
+import { POST } from "../src/app/api/shipping-rate/route";
+
 jest.mock("@acme/platform-core/shipping/index", () => ({
   __esModule: true,
   getShippingRate: jest.fn(),
@@ -8,11 +14,6 @@ jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   __esModule: true,
   getShopSettings: jest.fn().mockResolvedValue({}),
 }));
-
-import { getShippingRate } from "@acme/platform-core/shipping/index";
-import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
-import { POST } from "../src/app/api/shipping-rate/route";
-import type { ShopSettings } from "@acme/types";
 
 type ShippingRateBody = {
   provider: "ups" | "dhl" | "premier-shipping";
@@ -72,6 +73,7 @@ test("validates required fields for premier-shipping", async () => {
 });
 
 test("returns 500 when provider throws", async () => {
+  const errorSpy = jest.spyOn(console, "error").mockImplementation(() => undefined);
   (getShippingRate as jest.Mock).mockRejectedValueOnce(new Error("oops"));
   const res = await POST(
     makeRequest({
@@ -82,7 +84,8 @@ test("returns 500 when provider throws", async () => {
     }),
   );
   expect(res.status).toBe(500);
-  await expect(res.json()).resolves.toEqual({ error: "oops" });
+  await expect(res.json()).resolves.toEqual({ error: "Failed to calculate shipping rate" });
+  errorSpy.mockRestore();
 });
 
 test("uses premierDelivery when enabled and region allowed", async () => {

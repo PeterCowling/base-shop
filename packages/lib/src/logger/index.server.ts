@@ -1,1 +1,1 @@
-export { logger, type LogMeta } from "./logger.server";
+export { logger, type LogMeta } from "./logger.server.js";

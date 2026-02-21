@@ -1,6 +1,7 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
 
+import { readActiveFaqPromotions } from "../tools/reviewed-ledger.js";
 import { BRIKETTE_ROOT } from "../utils/data-root.js";
 
 // Cache for knowledge base content with TTL
@@ -80,6 +81,51 @@ const POLICY_KEYWORDS = [
   "restriction",
 ];
 
+type FaqItem = {
+  question: string;
+  answer: string;
+  source?: string;
+  promoted_key?: string;
+};
+
+function mergeFaqWithPromotions(
+  baseFaq: unknown,
+  promotedItems: FaqItem[],
+): { items: FaqItem[] } & Record<string, unknown> {
+  if (!baseFaq || typeof baseFaq !== "object") {
+    return { items: promotedItems };
+  }
+
+  const faq = baseFaq as { items?: unknown };
+  const existingItems = Array.isArray(faq.items)
+    ? faq.items.filter((item): item is FaqItem =>
+      Boolean(
+        item &&
+        typeof item === "object" &&
+        typeof (item as { question?: unknown }).question === "string" &&
+        typeof (item as { answer?: unknown }).answer === "string",
+      ))
+    : [];
+
+  const dedupe = new Set(
+    existingItems.map((item) => `${item.question.toLowerCase()}::${item.answer.toLowerCase()}`),
+  );
+  const merged = [...existingItems];
+  for (const item of promotedItems) {
+    const key = `${item.question.toLowerCase()}::${item.answer.toLowerCase()}`;
+    if (dedupe.has(key)) {
+      continue;
+    }
+    dedupe.add(key);
+    merged.push(item);
+  }
+
+  return {
+    ...(baseFaq as Record<string, unknown>),
+    items: merged,
+  };
+}
+
 /**
  * Handle reading a Brikette knowledge resource
  */
@@ -87,13 +133,21 @@ export async function handleBriketteResourceRead(uri: string) {
   try {
     switch (uri) {
       case "brikette://faq": {
-        const data = await loadCached(uri, async () => {
+        const baseFaq = await loadCached(uri, async () => {
           const content = await readFile(
             join(BRIKETTE_ROOT, "locales", "en", "faq.json"),
             "utf-8"
           );
           return JSON.parse(content);
         });
+        const promotions = await readActiveFaqPromotions();
+        const promotedItems = promotions.map((record) => ({
+          question: record.question,
+          answer: record.answer,
+          source: "reviewed-ledger",
+          promoted_key: record.key,
+        }));
+        const data = mergeFaqWithPromotions(baseFaq, promotedItems);
         return {
           contents: [
             {

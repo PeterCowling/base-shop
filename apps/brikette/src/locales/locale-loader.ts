@@ -1,14 +1,7 @@
 // src/locales/locale-loader.ts
 // ---------------------------------------------------------------------------
-// Runtime-safe locale loader that works in Next (webpack) and Node contexts.
+// Runtime-safe locale loader that works in Next (Turbopack) and Node contexts.
 // ---------------------------------------------------------------------------
-
-import { getWebpackContext as getWebpackContextFromMeta } from "../utils/webpackGlob";
-
-type WebpackContext = {
-  keys(): string[];
-  <T = unknown>(id: string): T;
-};
 
 const unwrapDefault = (mod: unknown): unknown => {
   if (mod && typeof mod === "object" && "default" in mod) {
@@ -16,28 +9,6 @@ const unwrapDefault = (mod: unknown): unknown => {
   }
   return mod;
 };
-
-let cachedContext: WebpackContext | null | undefined;
-
-const getWebpackContext = (): WebpackContext | null => {
-  if (cachedContext !== undefined) return cachedContext;
-  try {
-    const context = getWebpackContextFn();
-    if (context) {
-      cachedContext = context;
-    } else {
-      cachedContext = null;
-    }
-  } catch {
-    cachedContext = null;
-  }
-  return cachedContext;
-};
-
-const getWebpackContextFn = (): WebpackContext | undefined =>
-  // Only include top-level locale JSON (./<lang>/<ns>.json) to avoid bundling
-  // nested content trees (e.g. guides/content/*) into the always-on layout chunk.
-  getWebpackContextFromMeta("./", true, /^\.\/[a-z]{2}\/[^/]+\.json$/) as WebpackContext | undefined;
 
 export const loadLocaleResource = async (
   lang: string,
@@ -49,22 +20,9 @@ export const loadLocaleResource = async (
   if (ns.includes("/")) {
     return undefined;
   }
-  const key = `./${lang}/${ns}.json`;
-  const context = getWebpackContext();
-
-  if (context) {
-    try {
-      return unwrapDefault(context(key));
-    } catch {
-      // Fall through to dynamic import below.
-    }
-  }
 
   try {
-    const mod = await import(
-      /* webpackInclude: /(^|\/)[a-z]{2}\/[^/]+\.json$/ */
-      `./${lang}/${ns}.json`
-    );
+    const mod = await import(`./${lang}/${ns}.json`);
     return unwrapDefault(mod);
   } catch {
     return undefined;

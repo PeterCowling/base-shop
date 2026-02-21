@@ -3,21 +3,21 @@
   letter-spacing: 0.4em;
   text-transform: uppercase;
   font-size: 0.85rem;
-  color: rgba(247, 213, 114, 0.85);
+  color: hsl(var(--zh-gold-bright) / 0.85);
 }
 
 .zh-card__title {
   margin: 0;
   font-size: 1.5rem;
   letter-spacing: 0.3em;
-  color: #ffd060;
+  color: hsl(45 100% 69%);
 }
 
 .zh-card__subtitle {
   margin: 0;
   font-size: 0.9rem;
   letter-spacing: 0.18em;
-  color: rgba(247, 231, 193, 0.75);
+  color: hsl(41 85% 86% / 0.75);
 }
 
 .zh-card__body {
@@ -40,8 +40,8 @@
   align-self: flex-start;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  border-bottom: 1px solid rgba(247, 213, 114, 0.5);
+  border-bottom: 1px solid hsl(var(--zh-gold-bright) / 0.5);
   padding-bottom: 0.2rem;
-  color: #f6dfb4;
+  color: hsl(var(--zh-gold));
 }
 

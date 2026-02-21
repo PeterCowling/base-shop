@@ -250,6 +250,7 @@ export function ComboboxItem({
       )}
       {...props}
     >
+      {/* eslint-disable-next-line ds/enforce-layout-primitives -- Checkmark icon container requires flex layout for precise centering in combobox item [DS-01] */}
       <span className="absolute start-2 flex h-3.5 w-3.5 items-center justify-center">
         {isSelected && <CheckIcon className="h-4 w-4" />}
       </span>

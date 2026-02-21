@@ -72,170 +72,144 @@ block_with_guidance() {
 }
 
 # ============================================================================
-# DENY PATTERNS (evaluate before allow patterns)
+# Shared evaluator (single semantics)
 # ============================================================================
 
-# SKIP_* bypass env vars should never be used in agent flows.
+# Keep this explicit check even for compound commands: SKIP_* bypass flags should
+# never be used in agent flows.
 if [[ "$command_str" =~ (^|[[:space:]])SKIP_(WRITER_LOCK|SIMPLE_GIT_HOOKS)= ]]; then
   block_with_guidance \
     "SKIP_* bypass flags are forbidden for agent workflows. Fix lock/hook state instead." \
     "scripts/agents/integrator-shell.sh -- git status"
 fi
 
-# git reset --hard/--merge/--keep
-if [[ "$normalized" =~ git[[:space:]]+reset[[:space:]]+(--(hard|merge|keep)|.*[[:space:]]--(hard|merge|keep)) ]]; then
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+policy_json="${repo_root}/.agents/safety/generated/git-safety-policy.json"
+evaluator="${repo_root}/scripts/agents/evaluate-git-safety.mjs"
+
+if [[ ! -f "$policy_json" || ! -f "$evaluator" ]]; then
   block_with_guidance \
-    "git reset --hard/--merge/--keep destroys working tree content. Use a checkpoint commit instead." \
-    "scripts/agents/integrator-shell.sh -- git reset HEAD <file>"
+    "Missing git safety evaluator/policy artifacts (fail-closed). Regenerate and retry." \
+    "scripts/agents/generate-git-safety-policy --write"
 fi
 
-# git clean -f (any variant with -f flag, but not dry-run)
-if [[ "$normalized" =~ git[[:space:]]+clean[[:space:]].*-[a-z]*f ]] && \
-   [[ ! "$normalized" =~ (--dry-run|-n) ]]; then
-  block_with_guidance \
-    "git clean -f removes untracked files. Use --dry-run first or commit your changes." \
-    "scripts/agents/integrator-shell.sh -- git clean --dry-run"
-fi
+set +e
+eval_stderr="$(
+  node "$evaluator" \
+    --policy "$policy_json" \
+    --mode hook \
+    --command "$command_str" \
+    2>&1 >/dev/null
+)"
+eval_status="$?"
+set -e
 
-# git checkout -f / --force
-if [[ "$normalized" =~ git[[:space:]]+checkout[[:space:]]+(-f|--force) ]]; then
-  block_with_guidance \
-    "git checkout -f/--force discards uncommitted changes. Use a checkpoint commit instead." \
-    "scripts/agents/integrator-shell.sh -- git status"
-fi
-
-# git checkout -- . or -- <dir>/ or -- <glob-with-*>
-if [[ "$normalized" =~ git[[:space:]]+checkout[[:space:]]+--[[:space:]]+(\.|\*|.*/) ]]; then
-  block_with_guidance \
-    "git checkout -- . (or broad pathspecs) discards uncommitted changes. Use a checkpoint commit instead." \
-    "scripts/agents/integrator-shell.sh -- git checkout -- <single-file>"
-fi
-
-# git restore . or <dir>/ or -- <glob-with-*>
-if [[ "$normalized" =~ git[[:space:]]+restore[[:space:]]+(\.|\*|.*/|--[[:space:]]+(\.|\*)) ]]; then
-  block_with_guidance \
-    "git restore . (or broad pathspecs) discards uncommitted changes. Use a checkpoint commit instead." \
-    "scripts/agents/integrator-shell.sh -- git restore -- <single-file>"
-fi
-
-# git restore --worktree with broad pathspecs
-if [[ "$normalized" =~ git[[:space:]]+restore[[:space:]]+.*--worktree ]]; then
-  block_with_guidance \
-    "git restore --worktree discards working tree changes. Use a checkpoint commit instead." \
-    "scripts/agents/integrator-shell.sh -- git restore --staged <file>"
-fi
-
-# git switch --discard-changes or -f
-if [[ "$normalized" =~ git[[:space:]]+switch[[:space:]]+.*(-f|--discard-changes|--force) ]]; then
-  block_with_guidance \
-    "git switch -f/--discard-changes discards uncommitted changes. Use a checkpoint commit instead." \
-    "scripts/agents/integrator-shell.sh -- git switch <branch>"
-fi
-
-# git push --force / -f / --force-with-lease / --mirror
-if [[ "$normalized" =~ git[[:space:]]+push[[:space:]]+.*(-f[[:space:]]|--force([[:space:]]|$)|--force-with-lease|--mirror) ]]; then
-  block_with_guidance \
-    "git push --force/--force-with-lease/--mirror can overwrite remote history. Coordinate with team first." \
-    "scripts/agents/integrator-shell.sh -- git push origin <branch>"
-fi
-
-# git commit/push --no-verify (-n) bypass
-if [[ "$normalized" =~ git[[:space:]]+commit[[:space:]]+.*([[:space:]])(--no-verify|-n)($|[[:space:]]) ]]; then
-  block_with_guidance \
-    "git commit --no-verify/-n bypasses safety hooks." \
-    "scripts/agents/integrator-shell.sh -- git commit -m \"<message>\""
-fi
-
-if [[ "$normalized" =~ git[[:space:]]+push[[:space:]]+.*([[:space:]])(--no-verify|-n)($|[[:space:]]) ]]; then
-  block_with_guidance \
-    "git push --no-verify/-n bypasses safety hooks." \
-    "scripts/agents/integrator-shell.sh -- git push origin <branch>"
-fi
-
-# git rebase (all variants)
-if [[ "$normalized" =~ git[[:space:]]+rebase ]]; then
-  block_with_guidance \
-    "git rebase rewrites history and can cause data loss. Use merge or coordinate with team." \
-    "scripts/agents/integrator-shell.sh -- git merge --no-ff <target-branch>"
-fi
-
-# git commit --amend
-if [[ "$normalized" =~ git[[:space:]]+commit[[:space:]]+.*--amend ]]; then
-  block_with_guidance \
-    "git commit --amend rewrites history. Create a new commit instead (especially after hook failures)." \
-    "scripts/agents/integrator-shell.sh -- git commit -m \"<message>\""
-fi
-
-# git stash (bare) defaults to push and creates hidden debt for agent workflows
-if [[ "$normalized" =~ git[[:space:]]+stash([[:space:]]*($|[;&|])) ]]; then
-  block_with_guidance \
-    "bare git stash defaults to push and is forbidden in agent workflows. Use stage-only commits or ask for guidance." \
-    "scripts/agents/integrator-shell.sh -- git stash list"
-fi
-
-# git stash mutations
-if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(push|pop|apply|drop|clear)([[:space:]]|$) ]]; then
-  block_with_guidance \
-    "git stash mutations (push/pop/apply/drop/clear) are forbidden in agent workflows. Keep stash read-only (list/show)." \
-    "scripts/agents/integrator-shell.sh -- git stash list"
-fi
-
-# git worktree (all operations)
-if [[ "$normalized" =~ git[[:space:]]+worktree ]]; then
-  block_with_guidance \
-    "git worktree operations can cause repository state issues. Use branches instead." \
-    "scripts/agents/integrator-shell.sh -- git switch -c <branch>"
-fi
-
-# git -c core.hooksPath=... (hook bypass)
-if [[ "$normalized" =~ git[[:space:]]+-c[[:space:]]+core\.hooksPath ]]; then
-  block_with_guidance \
-    "git -c core.hooksPath bypasses safety hooks. Remove this flag." \
-    "scripts/agents/integrator-shell.sh -- git commit -m \"<message>\""
-fi
-
-# git config core.hooksPath
-if [[ "$normalized" =~ git[[:space:]]+config[[:space:]]+.*core\.hooksPath ]]; then
-  block_with_guidance \
-    "git config core.hooksPath bypasses safety hooks. Do not modify hook configuration." \
-    "scripts/agents/integrator-shell.sh -- git config --get core.hooksPath"
-fi
-
-# ============================================================================
-# ALLOW PATTERNS
-# ============================================================================
-
-# Dry-run clean operations
-if [[ "$normalized" =~ git[[:space:]]+clean[[:space:]].*(--dry-run|-n) ]] && [[ ! "$normalized" =~ -[a-z]*f ]]; then
+if [[ "$eval_status" -eq 0 ]]; then
   exit 0
 fi
 
-# Safe reset (unstage only, no mode flags like --hard/--merge/--keep)
-if [[ "$normalized" =~ git[[:space:]]+reset[[:space:]]+HEAD[[:space:]]+[^-] ]] && \
-   [[ ! "$normalized" =~ --(hard|merge|keep|mixed|soft) ]]; then
-  exit 0
-fi
+rule_id="$(printf '%s\n' "$eval_stderr" | sed -nE 's/^Rule:[[:space:]]+//p' | head -n 1)"
 
-# Safe restore (--staged only, unstage)
-if [[ "$normalized" =~ git[[:space:]]+restore[[:space:]]+--staged ]] && \
-   [[ ! "$normalized" =~ --worktree ]]; then
-  exit 0
-fi
-
-# Read-only stash operations
-if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(list|show)([[:space:]]|$) ]]; then
-  exit 0
-fi
-
-# Read-only operations
-if [[ "$normalized" =~ git[[:space:]]+(status|log|diff|show|branch|remote|fetch|describe|tag|ls-files|ls-remote|rev-parse|symbolic-ref) ]]; then
-  exit 0
-fi
-
-# Safe write operations
-if [[ "$normalized" =~ git[[:space:]]+(add|commit[[:space:]]+-m|push[[:space:]]+[^-]|pull[[:space:]]+--ff-only) ]]; then
-  exit 0
-fi
-
-# If we got here, allow by default.
-exit 0
+case "$rule_id" in
+  deny.reset_modes)
+    block_with_guidance \
+      "reset --hard/--merge/--keep" \
+      "scripts/agents/integrator-shell.sh -- git reset HEAD <file>"
+    ;;
+  deny.clean_force)
+    block_with_guidance \
+      "clean" \
+      "scripts/agents/integrator-shell.sh -- git clean --dry-run"
+    ;;
+  deny.force_push)
+    if [[ "$normalized" =~ git[[:space:]]+push[[:space:]]+.*--mirror ]]; then
+      block_with_guidance \
+        "--mirror" \
+        "scripts/agents/integrator-shell.sh -- git push origin <branch>"
+    else
+      block_with_guidance \
+        "push --force" \
+        "scripts/agents/integrator-shell.sh -- git push origin <branch>"
+    fi
+    ;;
+  deny.push_no_verify)
+    block_with_guidance \
+      "push --no-verify" \
+      "scripts/agents/integrator-shell.sh -- git push origin <branch>"
+    ;;
+  deny.commit_no_verify)
+    block_with_guidance \
+      "commit --no-verify" \
+      "scripts/agents/integrator-shell.sh -- git commit -m \"<message>\""
+    ;;
+  deny.rebase)
+    block_with_guidance \
+      "rebase" \
+      "scripts/agents/integrator-shell.sh -- git merge --no-ff <target-branch>"
+    ;;
+  deny.commit_amend)
+    block_with_guidance \
+      "commit --amend" \
+      "scripts/agents/integrator-shell.sh -- git commit -m \"<message>\""
+    ;;
+  deny.worktree)
+    block_with_guidance \
+      "worktree" \
+      "scripts/agents/integrator-shell.sh -- git switch -c <branch>"
+    ;;
+  deny.hooks_path_bypass|deny.config_set_hooks_path)
+    block_with_guidance \
+      "core.hooksPath" \
+      "scripts/agents/integrator-shell.sh -- git config --get core.hooksPath"
+    ;;
+  deny.checkout_force)
+    block_with_guidance \
+      "checkout -f/--force" \
+      "scripts/agents/integrator-shell.sh -- git status"
+    ;;
+  deny.restore_worktree)
+    block_with_guidance \
+      "restore --worktree" \
+      "scripts/agents/integrator-shell.sh -- git restore --staged <file>"
+    ;;
+  deny.switch_discard)
+    block_with_guidance \
+      "switch -f/--discard-changes" \
+      "scripts/agents/integrator-shell.sh -- git switch <branch>"
+    ;;
+  deny.stash_mutations)
+    # The legacy tests look for either "stash mutations" or "bare git stash".
+    if [[ "$normalized" =~ git[[:space:]]+stash([[:space:]]*($|[;&|])) ]]; then
+      block_with_guidance \
+        "bare git stash" \
+        "scripts/agents/integrator-shell.sh -- git stash list"
+    else
+      block_with_guidance \
+        "stash mutations" \
+        "scripts/agents/integrator-shell.sh -- git stash list"
+    fi
+    ;;
+  deny.checkout_restore_bulk_discards)
+    # Maintain the legacy reason substrings used by tests.
+    if [[ "$normalized" =~ git[[:space:]]+checkout ]]; then
+      if [[ "$normalized" =~ git[[:space:]]+checkout[[:space:]]+--[[:space:]]+\. ]]; then
+        block_with_guidance \
+          "checkout -- ." \
+          "scripts/agents/integrator-shell.sh -- git checkout -- <single-file>"
+      else
+        block_with_guidance \
+          "checkout" \
+          "scripts/agents/integrator-shell.sh -- git checkout -- <single-file>"
+      fi
+    else
+      block_with_guidance \
+        "restore ." \
+        "scripts/agents/integrator-shell.sh -- git restore -- <single-file>"
+    fi
+    ;;
+  *)
+    block_with_guidance \
+      "policy evaluator denied this command (${rule_id:-unknown})" \
+      "scripts/agents/integrator-shell.sh -- git status"
+    ;;
+esac

@@ -9,7 +9,7 @@ describe("createCartStore backend selection", () => {
   });
 
   it("honors explicit backend=memory", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       const memoryInstance = { backend: "memory" } as const;
       const memoryCtor = jest.fn().mockReturnValue(memoryInstance);
       const redisCtor = jest.fn();
@@ -30,7 +30,7 @@ describe("createCartStore backend selection", () => {
   });
 
   it("uses redis when UPSTASH env vars exist", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       const memoryInstance = { backend: "memory" } as const;
       const memoryCtor = jest.fn().mockReturnValue(memoryInstance);
       const redisInstance = { backend: "redis" } as const;
@@ -65,7 +65,7 @@ describe("createCartStore backend selection", () => {
   });
 
   it("falls back to memory when @upstash/redis import fails", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       const memoryInstance = { backend: "memory" } as const;
       const memoryCtor = jest.fn().mockReturnValue(memoryInstance);
       const redisCtor = jest.fn();
@@ -101,7 +101,7 @@ describe("getDefaultCartStore", () => {
   });
 
   it("lazily creates and can reset the default store", async () => {
-    await jest.isolateModulesAsync(async () => {
+    await (jest as any).isolateModulesAsync(async () => {
       jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
       const mod = await import("@acme/platform-core/cartStore");
       const createSpy = jest

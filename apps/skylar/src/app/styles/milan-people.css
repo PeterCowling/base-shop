@@ -1,8 +1,8 @@
 .milan-person-card {
-  border: 1px solid rgba(47, 34, 30, 0.2);
+  border: 1px solid hsl(var(--it-secondary) / 0.2);
   border-radius: 0.85rem;
   padding: clamp(1.75rem, 3vw, 2.5rem);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), var(--it-ground));
+  background: linear-gradient(180deg, hsl(0 0% 100% / 0.92), var(--it-ground));
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -29,7 +29,7 @@
   width: 68px;
   height: 68px;
   border-radius: 50%;
-  border: 1px solid rgba(216, 176, 114, 0.8);
+  border: 1px solid hsl(var(--it-gold) / 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,7 +37,7 @@
   letter-spacing: 0.35em;
   font-size: 1rem;
   color: var(--it-ink);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 233, 214, 0.85));
+  background: linear-gradient(145deg, hsl(0 0% 100% / 0.95), hsl(34 59% 91% / 0.85));
   position: absolute;
   top: clamp(1.25rem, 3vw, 1.75rem);
   right: clamp(1.25rem, 3vw, 1.75rem);
@@ -57,14 +57,14 @@
   letter-spacing: 0.35em;
   font-size: 0.7rem;
   text-transform: uppercase;
-  color: rgba(47, 34, 30, 0.6);
+  color: hsl(var(--it-secondary) / 0.6);
   overflow-wrap: anywhere;
 }
 
 .milan-person-card__tagline {
   font-style: italic;
   font-size: 1rem;
-  color: rgba(47, 34, 30, 0.8);
+  color: hsl(var(--it-secondary) / 0.8);
   overflow-wrap: anywhere;
   hyphens: auto;
 }
@@ -81,7 +81,7 @@
 
 .milan-person-card__contact {
   padding-top: 1.25rem;
-  border-top: 1px solid rgba(47, 34, 30, 0.2);
+  border-top: 1px solid hsl(var(--it-secondary) / 0.2);
   overflow-wrap: anywhere;
 }
 
@@ -96,7 +96,7 @@
   flex-direction: column;
   gap: 0.35rem;
   padding-bottom: 0.35rem;
-  border-bottom: 0.5px solid rgba(216, 176, 114, 0.35);
+  border-bottom: 0.5px solid hsl(var(--it-gold) / 0.35);
 }
 
 .milan-person-card__contact-row:last-child {
@@ -113,7 +113,7 @@
   letter-spacing: 0.35em;
   font-size: 0.62rem;
   text-transform: uppercase;
-  color: rgba(47, 34, 30, 0.55);
+  color: hsl(var(--it-secondary) / 0.55);
 }
 
 .milan-person-card__value {
@@ -125,10 +125,10 @@
 }
 
 .milan-people-hero {
-  border: 1px solid rgba(47, 34, 30, 0.2);
+  border: 1px solid hsl(var(--it-secondary) / 0.2);
   border-radius: 1.1rem;
   padding: clamp(1.5rem, 3vw, 2.5rem);
-  background: linear-gradient(150deg, rgba(255, 255, 255, 0.95), var(--it-ground));
+  background: linear-gradient(150deg, hsl(0 0% 100% / 0.95), var(--it-ground));
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
@@ -151,7 +151,7 @@
   margin: 0;
   font-size: 1rem;
   line-height: 1.8;
-  color: rgba(47, 34, 30, 0.8);
+  color: hsl(var(--it-secondary) / 0.8);
   overflow-wrap: anywhere;
   hyphens: auto;
 }

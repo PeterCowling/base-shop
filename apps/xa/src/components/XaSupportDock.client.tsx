@@ -180,7 +180,7 @@ export function XaSupportDock() {
             type="button"
             size="md"
             variant="secondary"
-            className="border border-border-2 bg-white text-black shadow-sm hover:bg-white"
+            className="border border-border-2 bg-panel text-fg shadow-sm hover:bg-panel"
             aria-label="WhatsApp" // i18n-exempt -- XA-0014 [ttl=2026-12-31] channel label
             onClick={() => {
               if (!whatsappWithText) return;
@@ -196,7 +196,7 @@ export function XaSupportDock() {
             type="button"
             size="md"
             variant="secondary"
-            className="border border-border-2 bg-white text-black shadow-sm hover:bg-white"
+            className="border border-border-2 bg-panel text-fg shadow-sm hover:bg-panel"
             aria-label="Instagram" // i18n-exempt -- XA-0014 [ttl=2026-12-31] channel label
             onClick={() => openExternal(siteConfig.instagramUrl)}
           >
@@ -209,7 +209,7 @@ export function XaSupportDock() {
             type="button"
             size="md"
             variant="secondary"
-            className="border border-border-2 bg-white text-black shadow-sm hover:bg-white"
+            className="border border-border-2 bg-panel text-fg shadow-sm hover:bg-panel"
             aria-label="Email" // i18n-exempt -- XA-0014 [ttl=2026-12-31] channel label
             onClick={() => {
               if (!mailtoHref) return;
@@ -227,7 +227,7 @@ export function XaSupportDock() {
                 type="button"
                 size="md"
                 variant="secondary"
-                className="border border-border-2 bg-white text-black shadow-sm hover:bg-white"
+                className="border border-border-2 bg-panel text-fg shadow-sm hover:bg-panel"
                 aria-label="Help" // i18n-exempt -- XA-0014 [ttl=2026-12-31] channel label
               >
                 <ChatIcon className="h-5 w-5" aria-hidden />

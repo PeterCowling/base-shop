@@ -1,8 +1,6 @@
 /** @jest-environment node */
 import path from "node:path";
 
-import { processReverseLogisticsEventsOnce } from "../processReverseLogisticsEventsOnce";
-
 import {
   logger,
   markAvailable,
@@ -17,6 +15,10 @@ import {
   unlink,
 } from "./reverseLogisticsTestHelpers";
 
+async function loadProcessReverseLogisticsEventsOnce() {
+  return import("../processReverseLogisticsEventsOnce");
+}
+
 describe("processReverseLogisticsEventsOnce", () => {
   beforeEach(() => {
     resetReverseLogisticsMocks();
@@ -28,8 +30,16 @@ describe("processReverseLogisticsEventsOnce", () => {
       markReceived as jest.Mock,
       reverseLogisticsEvents.received as jest.Mock,
     ],
-    ["cleaning", markCleaning as jest.Mock, reverseLogisticsEvents.cleaning as jest.Mock],
-    ["repair", markRepair as jest.Mock, reverseLogisticsEvents.repair as jest.Mock],
+    [
+      "cleaning",
+      markCleaning as jest.Mock,
+      reverseLogisticsEvents.cleaning as jest.Mock,
+    ],
+    [
+      "repair",
+      markRepair as jest.Mock,
+      reverseLogisticsEvents.repair as jest.Mock,
+    ],
     ["qa", markQa as jest.Mock, reverseLogisticsEvents.qa as jest.Mock],
     [
       "available",
@@ -39,6 +49,9 @@ describe("processReverseLogisticsEventsOnce", () => {
   ];
 
   it("processes events for all shops when shopId is omitted", async () => {
+    const { processReverseLogisticsEventsOnce } =
+      await loadProcessReverseLogisticsEventsOnce();
+
     readdir
       .mockResolvedValueOnce(["shop"]) // list shops
       .mockResolvedValueOnce(["e.json"]); // list events
@@ -56,6 +69,9 @@ describe("processReverseLogisticsEventsOnce", () => {
   });
 
   it("rejects when listing shops fails", async () => {
+    const { processReverseLogisticsEventsOnce } =
+      await loadProcessReverseLogisticsEventsOnce();
+
     const err = new Error("nope");
     readdir.mockRejectedValueOnce(err);
 
@@ -67,10 +83,11 @@ describe("processReverseLogisticsEventsOnce", () => {
   });
 
   it.each(cases)("handles %s events", async (status, mark, evt) => {
+    const { processReverseLogisticsEventsOnce } =
+      await loadProcessReverseLogisticsEventsOnce();
+
     readdir.mockResolvedValueOnce(["e.json"]);
-    readFile.mockResolvedValueOnce(
-      JSON.stringify({ sessionId: "abc", status })
-    );
+    readFile.mockResolvedValueOnce(JSON.stringify({ sessionId: "abc", status }));
 
     await processReverseLogisticsEventsOnce("shop", "/data");
 
@@ -82,6 +99,9 @@ describe("processReverseLogisticsEventsOnce", () => {
   });
 
   it("skips unsupported statuses", async () => {
+    const { processReverseLogisticsEventsOnce } =
+      await loadProcessReverseLogisticsEventsOnce();
+
     readdir.mockResolvedValueOnce(["e.json"]);
     readFile.mockResolvedValueOnce(
       JSON.stringify({ sessionId: "abc", status: "unknown" })
@@ -105,44 +125,47 @@ describe("processReverseLogisticsEventsOnce", () => {
   });
 
   it("logs and removes file on parse error", async () => {
+    const { processReverseLogisticsEventsOnce } =
+      await loadProcessReverseLogisticsEventsOnce();
+
     readdir.mockResolvedValueOnce(["bad.json"]);
     readFile.mockResolvedValueOnce("not json");
 
     await processReverseLogisticsEventsOnce("shop", "/data");
 
-    expect(logger.error).toHaveBeenCalledWith(
-      "reverse logistics event failed",
-      {
-        shopId: "shop",
-        file: "bad.json",
-        err: expect.anything(),
-      }
-    );
+    expect(logger.error).toHaveBeenCalledWith("reverse logistics event failed", {
+      shopId: "shop",
+      file: "bad.json",
+      err: expect.anything(),
+    });
     expect(unlink).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "bad.json")
     );
   });
 
   it("logs and removes file on read error", async () => {
+    const { processReverseLogisticsEventsOnce } =
+      await loadProcessReverseLogisticsEventsOnce();
+
     readdir.mockResolvedValueOnce(["bad.json"]);
     readFile.mockRejectedValueOnce(new Error("nope"));
 
     await processReverseLogisticsEventsOnce("shop", "/data");
 
-    expect(logger.error).toHaveBeenCalledWith(
-      "reverse logistics event failed",
-      {
-        shopId: "shop",
-        file: "bad.json",
-        err: expect.anything(),
-      }
-    );
+    expect(logger.error).toHaveBeenCalledWith("reverse logistics event failed", {
+      shopId: "shop",
+      file: "bad.json",
+      err: expect.anything(),
+    });
     expect(unlink).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "bad.json")
     );
   });
 
   it("logs and removes file on handler error", async () => {
+    const { processReverseLogisticsEventsOnce } =
+      await loadProcessReverseLogisticsEventsOnce();
+
     readdir.mockResolvedValueOnce(["e.json"]);
     readFile.mockResolvedValueOnce(
       JSON.stringify({ sessionId: "abc", status: "received" })
@@ -151,20 +174,20 @@ describe("processReverseLogisticsEventsOnce", () => {
 
     await processReverseLogisticsEventsOnce("shop", "/data");
 
-    expect(logger.error).toHaveBeenCalledWith(
-      "reverse logistics event failed",
-      {
-        shopId: "shop",
-        file: "e.json",
-        err: expect.anything(),
-      }
-    );
+    expect(logger.error).toHaveBeenCalledWith("reverse logistics event failed", {
+      shopId: "shop",
+      file: "e.json",
+      err: expect.anything(),
+    });
     expect(unlink).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "e.json")
     );
   });
 
   it("skips processing when readdir fails", async () => {
+    const { processReverseLogisticsEventsOnce } =
+      await loadProcessReverseLogisticsEventsOnce();
+
     readdir.mockRejectedValueOnce(new Error("nope"));
 
     await expect(
@@ -176,6 +199,9 @@ describe("processReverseLogisticsEventsOnce", () => {
   });
 
   it("swallows unlink errors", async () => {
+    const { processReverseLogisticsEventsOnce } =
+      await loadProcessReverseLogisticsEventsOnce();
+
     readdir.mockResolvedValueOnce(["e.json"]);
     readFile.mockResolvedValueOnce(
       JSON.stringify({ sessionId: "abc", status: "received" })
@@ -203,4 +229,3 @@ afterAll(() => {
   jest.unmock("@acme/platform-core/utils");
   jest.unmock("crypto");
 });
-

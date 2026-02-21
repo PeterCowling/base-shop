@@ -10,8 +10,8 @@ Audit-Ref: be62852bb0 (working-tree)
 Feature-Slug: git-enforcement-gap-hardening
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-replan, ops-ship
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-replan, ops-ship
 Related-Plan: none
 Business-OS-Integration: off
 Business-Unit: PLAT
@@ -24,16 +24,16 @@ Card-ID:
 
 ### Summary
 
-The repo's git safety system has strong mechanistic enforcement for destructive commands (reset, force-push, rebase, etc.) but leaves four conflict-resolution safeguards as documentation-only guidance. This lp-fact-find audits the enforcement landscape, identifies the highest-value gaps, and provides task-ready evidence for a hardening plan.
+The repo's git safety system has strong mechanistic enforcement for destructive commands (reset, force-push, rebase, etc.) but leaves four conflict-resolution safeguards as documentation-only guidance. This lp-do-fact-find audits the enforcement landscape, identifies the highest-value gaps, and provides task-ready evidence for a hardening plan.
 
-This lp-fact-find is intentionally standalone and can seed a new active plan without relying on archived planning artifacts.
+This lp-do-fact-find is intentionally standalone and can seed a new active plan without relying on archived planning artifacts.
 
 ### Goals
 
 - Map every git safety control to its enforcement layer(s) with composition semantics.
 - Identify controls that are documented as policy but lack mechanistic enforcement.
 - Produce task-ready gap descriptions with concrete implementation targets and effort estimates.
-- Feed directly into `/lp-plan` for prioritized execution.
+- Feed directly into `/lp-do-plan` for prioritized execution.
 
 ### Non-goals
 
@@ -366,7 +366,7 @@ No API changes. Hook exit-code contracts:
   - A: No. The incident timeline shows stash/reset operations, not a merge-without-anchor event.
   - Evidence: `docs/historical/RECOVERY-PLAN-2026-01-14.md` lines 23-29.
 
-- Q: Is this lp-fact-find coupled to an existing active plan?
+- Q: Is this lp-do-fact-find coupled to an existing active plan?
   - A: No. It is standalone and intended to seed a fresh plan.
   - Evidence: `Related-Plan: none` in this document header.
 
@@ -380,7 +380,7 @@ No API changes. Hook exit-code contracts:
   - Default: Start wrapper-only (agent-scoped), then evaluate universal config after usage data.
   - Why: Lower blast radius for initial rollout.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 82%
   - Most changes are well-understood shell script and config modifications. The deletion-anomaly heuristic (2c) is the only research-grade item.
@@ -430,8 +430,8 @@ Recommended execution order: (1, 2 in doc lane) + (3, 4, 5, 6 in implementation 
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/lp-build`
-- Supporting skills: `/lp-replan` (for Finding 2c spike if needed), `/ops-ship`
+- Primary execution skill: `/lp-do-build`
+- Supporting skills: `/lp-do-replan` (for Finding 2c spike if needed), `/ops-ship`
 - Deliverable acceptance package:
   - All doc changes pass markdown lint
   - All script changes have corresponding automated tests: use `git-safety-policy.test.ts` for policy-pattern changes, and dedicated fixture/integration tests when policy-table tests are insufficient
@@ -446,4 +446,4 @@ Recommended execution order: (1, 2 in doc lane) + (3, 4, 5, 6 in implementation 
 
 - Status: **Ready-for-planning**
 - Blocking items: None for planning. Implementation defaults are preselected in this document.
-- Recommended next step: Proceed to `/lp-plan`
+- Recommended next step: Proceed to `/lp-do-plan`

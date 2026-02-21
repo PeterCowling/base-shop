@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 
 import { clearAdminCookie } from "../../../../lib/accessAdmin";
 
-export const runtime = "edge";
+// Uses node:crypto via accessAdmin.
+export const runtime = "nodejs";
 
 export async function POST() {
   const response = NextResponse.json({ ok: true });

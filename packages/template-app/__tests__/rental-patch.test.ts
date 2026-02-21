@@ -44,16 +44,16 @@ describe("/api/rental PATCH", () => {
     const retrieve = jest
       .fn<Promise<{ payment_intent: string }>, [string, any]>()
       .mockResolvedValue({ payment_intent: "pi_1" });
-    const refundCreate = jest.fn();
+    const refundCreate = jest.fn() as any;
     const computeDamageFee = jest.fn(async () => 30);
     mockStripe({
-      checkout: { sessions: { retrieve } },
+      checkout: { sessions: { retrieve: retrieve as any } },
       refunds: { create: refundCreate },
       paymentIntents: {
-        create: jest.fn().mockResolvedValue({ client_secret: undefined }),
+        create: (jest.fn() as any).mockResolvedValue({ client_secret: undefined }),
       },
     });
-    mockRentalRepo({ markReturned });
+    mockRentalRepo({ markReturned: markReturned as any });
     jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
     jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
@@ -92,11 +92,11 @@ describe("/api/rental PATCH", () => {
       .mockResolvedValue({ client_secret: "cs_123" });
     const computeDamageFee = jest.fn(async () => 150);
     mockStripe({
-      checkout: { sessions: { retrieve } },
-      refunds: { create: jest.fn() },
-      paymentIntents: { create: paymentIntentsCreate },
+      checkout: { sessions: { retrieve: retrieve as any } },
+      refunds: { create: jest.fn() as any },
+      paymentIntents: { create: paymentIntentsCreate as any },
     });
-    mockRentalRepo({ markReturned });
+    mockRentalRepo({ markReturned: markReturned as any });
     jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
     jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
@@ -119,7 +119,7 @@ describe("/api/rental PATCH", () => {
       .fn<Promise<null>, [string]>()
       .mockResolvedValue(null);
     mockStripe();
-    mockRentalRepo({ markReturned });
+    mockRentalRepo({ markReturned: markReturned as any });
     jest.doMock("@acme/platform-core/pricing", () => ({
       computeDamageFee: jest.fn(),
     }));
@@ -137,14 +137,14 @@ describe("/api/rental PATCH", () => {
     const retrieve = jest
       .fn<Promise<{ payment_intent: string }>, [string, any]>()
       .mockResolvedValue({ payment_intent: "pi" });
-    const refundCreate = jest.fn();
+    const refundCreate = jest.fn() as any;
     const computeDamageFee = jest.fn(async () => 25);
     mockStripe({
-      checkout: { sessions: { retrieve } },
+      checkout: { sessions: { retrieve: retrieve as any } },
       refunds: { create: refundCreate },
-      paymentIntents: { create: jest.fn().mockResolvedValue({ client_secret: undefined }) },
+      paymentIntents: { create: (jest.fn() as any).mockResolvedValue({ client_secret: undefined }) },
     });
-    mockRentalRepo({ markReturned });
+    mockRentalRepo({ markReturned: markReturned as any });
     jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
     jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
@@ -164,13 +164,13 @@ describe("/api/rental PATCH", () => {
     const retrieve = jest
       .fn<Promise<{ payment_intent: string }>, [string, any]>()
       .mockResolvedValue({ payment_intent: "pi" });
-    const refundCreate = jest.fn();
+    const refundCreate = jest.fn() as any;
     const computeDamageFee = jest.fn(async () => 0);
     mockStripe({
-      checkout: { sessions: { retrieve } },
+      checkout: { sessions: { retrieve: retrieve as any } },
       refunds: { create: refundCreate },
     });
-    mockRentalRepo({ markReturned });
+    mockRentalRepo({ markReturned: markReturned as any });
     jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
     jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
@@ -192,14 +192,14 @@ describe("/api/rental PATCH", () => {
     const retrieve = jest
       .fn<Promise<{ payment_intent: { id: string } }>, [string, any]>()
       .mockResolvedValue({ payment_intent: { id: "pi_obj" } });
-    const refundCreate = jest.fn();
+    const refundCreate = jest.fn() as any;
     const computeDamageFee = jest.fn(async () => 30);
     mockStripe({
-      checkout: { sessions: { retrieve } },
+      checkout: { sessions: { retrieve: retrieve as any } },
       refunds: { create: refundCreate },
-      paymentIntents: { create: jest.fn().mockResolvedValue({ client_secret: undefined }) },
+      paymentIntents: { create: (jest.fn() as any).mockResolvedValue({ client_secret: undefined }) },
     });
-    mockRentalRepo({ markReturned });
+    mockRentalRepo({ markReturned: markReturned as any });
     jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
     jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
@@ -219,13 +219,13 @@ describe("/api/rental PATCH", () => {
     const markReturned = jest
       .fn<Promise<{ deposit: number } | null>, [string, string?]>()
       .mockResolvedValue({ deposit: 100 });
-    const markRefunded = jest.fn();
+    const markRefunded = jest.fn() as any;
     const retrieve = jest
       .fn<Promise<{ payment_intent: string }>, [string, any]>()
       .mockResolvedValue({ payment_intent: "pi" });
     const computeDamageFee = jest.fn(async () => 30);
-    mockStripe({ checkout: { sessions: { retrieve } }, refunds: undefined });
-    mockRentalRepo({ markReturned, markRefunded });
+    mockStripe({ checkout: { sessions: { retrieve: retrieve as any } }, refunds: undefined });
+    mockRentalRepo({ markReturned: markReturned as any, markRefunded });
     jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
     jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,

@@ -26,6 +26,7 @@ export const Slider = ({
     {(props.defaultValue ?? props.value ?? [0]).map((_: number, i: number) => (
       <SliderPrimitive.Thumb
         key={i}
+        // eslint-disable-next-line ds/enforce-focus-ring-token -- Radix slider thumb uses custom focus ring pattern with ring-offset-background for proper visual separation [DS-01]
         className="block h-5 w-5 rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 motion-reduce:transition-none"
       />
     ))}

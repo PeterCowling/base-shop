@@ -10,7 +10,7 @@ const readFileMock = readFile as jest.MockedFunction<typeof readFile>;
 
 describe("fillLocales with filesystem", () => {
   it("merges keys and skips missing locale files", async () => {
-    readFileMock.mockImplementation(async (file: string) => {
+    (readFileMock as any).mockImplementation(async (file: string) => {
       if (file.endsWith("en.json")) {
         return JSON.stringify({ greet: "Hello", bye: "Bye" });
       }

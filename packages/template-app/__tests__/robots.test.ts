@@ -10,6 +10,6 @@ describe("robots", () => {
       "https://example.com/sitemap.xml",
       "https://example.com/ai-sitemap.xml",
     ]);
-    expect(data.rules[0]).toEqual({ userAgent: "*", allow: "/" });
+    expect((data.rules as any)[0]).toEqual({ userAgent: "*", allow: "/" });
   });
 });

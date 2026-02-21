@@ -10,6 +10,22 @@ jest.mock("@cms/actions/accounts.server", () => ({
   approveAccount: jest.fn(),
 }));
 
+const mockToast = {
+  success: jest.fn(),
+  error: jest.fn(),
+  warning: jest.fn(),
+  info: jest.fn(),
+  loading: jest.fn(),
+  dismiss: jest.fn(),
+  update: jest.fn(),
+  promise: jest.fn(async (promise: Promise<unknown>) => promise),
+};
+
+jest.mock("@acme/ui/operations", () => ({
+  __esModule: true,
+  useToast: () => mockToast,
+}));
+
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
 
@@ -64,6 +80,7 @@ describe("PendingRequestsPanel", () => {
 
   beforeEach(() => {
     mockApproveAccount.mockReset();
+    Object.values(mockToast).forEach((fn) => fn.mockClear());
   });
 
   it("displays the empty state when there are no pending requests", () => {
@@ -141,9 +158,9 @@ describe("PendingRequestsPanel", () => {
       expect(screen.queryByText(pendingUser.name)).not.toBeInTheDocument(),
     );
 
-    expect(
-      await screen.findByText(`${pendingUser.name} is now approved.`),
-    ).toBeInTheDocument();
+    expect(mockToast.success).toHaveBeenCalledWith(
+      expect.stringContaining(pendingUser.name),
+    );
     focusSpy.mockRestore();
   });
 
@@ -182,7 +199,7 @@ describe("PendingRequestsPanel", () => {
     await waitFor(() => expect(mockApproveAccount).toHaveBeenCalledTimes(1));
     await waitFor(() => expect(focusSpy).toHaveBeenCalled());
 
-    expect(await screen.findByText(error.message)).toBeInTheDocument();
+    expect(mockToast.error).toHaveBeenCalledWith(error.message);
     expect(screen.getByText(pendingUser.name)).toBeInTheDocument();
 
     focusSpy.mockRestore();

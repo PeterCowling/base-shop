@@ -14,6 +14,7 @@
     "rootDir": "../..",
     "types": ["node", "jest", "@testing-library/jest-dom", "react", "react-dom"],
     "paths": {
+      "@jest/globals": ["../../test/jest-globals-compat.d.ts"],
       "@/*": ["src/*"],
       "@acme/ui": ["./src/index", "./dist/index.d.ts"],
       "@acme/ui/*": ["./src/*", "./dist/*"],
@@ -53,7 +54,6 @@
     "node_modules",
     "**/*.stories.*",
     "src/story-utils/**",
-    "src/components/story-utils/**",
-    "__tests__/**"
+    "src/components/story-utils/**"
   ]
 }

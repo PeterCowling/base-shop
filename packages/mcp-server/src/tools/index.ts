@@ -1,23 +1,39 @@
 import { errorResult } from "../utils/validation.js";
 
 import { analyticsTools, handleAnalyticsTool } from "./analytics.js";
+import { preflightAnalyticsSunsetGate } from "./analytics-sunset.js";
 import { bookingEmailTools, handleBookingEmailTool } from "./booking-email.js";
+import { bosToolPoliciesRaw, bosTools, handleBosTool } from "./bos.js";
+import { browserTools, handleBrowserTool } from "./browser.js";
 import { discountTools, handleDiscountTool } from "./discounts.js";
 import { draftGenerateTools, handleDraftGenerateTool } from "./draft-generate.js";
 import { draftInterpretTools, handleDraftInterpretTool } from "./draft-interpret.js";
 import { draftQualityTools, handleDraftQualityTool } from "./draft-quality-check.js";
+import {
+  draftRankerCalibrateTools,
+  handleDraftRankerCalibrateTool,
+} from "./draft-ranker-calibrate.js";
+import { draftRefineTools, handleDraftRefineTool } from "./draft-refine.js";
+import { draftSignalStatsTools, handleDraftSignalStatsTool } from "./draft-signal-stats.js";
+import {
+  draftTemplateReviewTools,
+  handleDraftTemplateReviewTool,
+} from "./draft-template-review.js";
 import { gmailTools, handleGmailTool } from "./gmail.js";
-import { handleHealthTool,healthTools } from "./health.js";
-import { handleInventoryTool,inventoryTools } from "./inventory.js";
-import { handleOrderTool,orderTools } from "./orders.js";
+import { handleHealthTool, healthTools } from "./health.js";
+import { handleInventoryTool, inventoryTools } from "./inventory.js";
+import { handleLoopTool, loopToolPoliciesRaw, loopTools } from "./loop.js";
+import { handleOctorateTool, octorateTools } from "./octorate.js";
+import { handleOrderTool, orderTools } from "./orders.js";
 import { handleOutboundDraftTool, outboundDraftTools } from "./outbound-drafts.js";
-import { handlePageTool,pageTools } from "./pages.js";
-import { handleProductTool,productTools } from "./products.js";
-import { handleSectionTool,sectionTools } from "./sections.js";
-import { handleSeoTool,seoTools } from "./seo.js";
-import { handleSettingsTool,settingsTools } from "./settings.js";
-import { handleShopTool,shopTools } from "./shops.js";
-import { handleThemeTool,themeTools } from "./themes.js";
+import { handlePageTool, pageTools } from "./pages.js";
+import { parsePolicyMap, preflightToolCallPolicy } from "./policy.js";
+import { handleProductTool, productTools } from "./products.js";
+import { handleSectionTool, sectionTools } from "./sections.js";
+import { handleSeoTool, seoTools } from "./seo.js";
+import { handleSettingsTool, settingsTools } from "./settings.js";
+import { handleShopTool, shopTools } from "./shops.js";
+import { handleThemeTool, themeTools } from "./themes.js";
 
 export const toolDefinitions = [
   ...shopTools,
@@ -29,16 +45,33 @@ export const toolDefinitions = [
   ...productTools,
   ...analyticsTools,
   ...healthTools,
+  ...browserTools,
   ...seoTools,
   ...discountTools,
   ...themeTools,
+  ...bosTools,
+  ...loopTools,
   ...gmailTools,
+  ...octorateTools,
   ...bookingEmailTools,
   ...draftInterpretTools,
   ...draftGenerateTools,
   ...draftQualityTools,
+  ...draftRankerCalibrateTools,
+  ...draftRefineTools,
+  ...draftSignalStatsTools,
+  ...draftTemplateReviewTools,
   ...outboundDraftTools,
 ];
+
+const knownToolNames = new Set(toolDefinitions.map((tool) => tool.name));
+
+// Strict metadata enforcement is scoped to startup-loop tools in phase 1 (`bos_*`, `loop_*`).
+// Existing legacy tools run through compatibility mode until a dedicated annotation wave.
+const toolPolicyMap = parsePolicyMap({
+  ...bosToolPoliciesRaw,
+  ...loopToolPoliciesRaw,
+});
 
 const shopToolNames = new Set(shopTools.map((t) => t.name));
 const orderToolNames = new Set(orderTools.map((t) => t.name));
@@ -49,17 +82,41 @@ const settingsToolNames = new Set(settingsTools.map((t) => t.name));
 const productToolNames = new Set(productTools.map((t) => t.name));
 const analyticsToolNames = new Set(analyticsTools.map((t) => t.name));
 const healthToolNames = new Set(healthTools.map((t) => t.name));
+const browserToolNames = new Set(browserTools.map((t) => t.name));
 const seoToolNames = new Set(seoTools.map((t) => t.name));
 const discountToolNames = new Set(discountTools.map((t) => t.name));
 const themeToolNames = new Set(themeTools.map((t) => t.name));
+const bosToolNames = new Set(bosTools.map((t) => t.name));
+const loopToolNames = new Set(loopTools.map((t) => t.name));
 const gmailToolNames = new Set(gmailTools.map((t) => t.name));
+const octorateToolNames = new Set(octorateTools.map((t) => t.name));
 const bookingEmailToolNames = new Set(bookingEmailTools.map((t) => t.name));
 const draftInterpretToolNames = new Set(draftInterpretTools.map((t) => t.name));
 const draftGenerateToolNames = new Set(draftGenerateTools.map((t) => t.name));
 const draftQualityToolNames = new Set(draftQualityTools.map((t) => t.name));
+const draftRankerCalibrateToolNames = new Set(draftRankerCalibrateTools.map((t) => t.name));
+const draftRefineToolNames = new Set(draftRefineTools.map((t) => t.name));
+const draftSignalStatsToolNames = new Set(draftSignalStatsTools.map((t) => t.name));
+const draftTemplateReviewToolNames = new Set(draftTemplateReviewTools.map((t) => t.name));
 const outboundDraftToolNames = new Set(outboundDraftTools.map((t) => t.name));
 
 export async function handleToolCall(name: string, args: unknown) {
+  const analyticsSunsetError = await preflightAnalyticsSunsetGate(name, args);
+  if (analyticsSunsetError) {
+    return analyticsSunsetError;
+  }
+
+  const preflightError = preflightToolCallPolicy({
+    toolName: name,
+    args,
+    knownToolNames,
+    policyMap: toolPolicyMap,
+  });
+
+  if (preflightError) {
+    return preflightError;
+  }
+
   if (shopToolNames.has(name as never)) {
     return handleShopTool(name, args);
   }
@@ -87,6 +144,9 @@ export async function handleToolCall(name: string, args: unknown) {
   if (healthToolNames.has(name as never)) {
     return handleHealthTool(name, args);
   }
+  if (browserToolNames.has(name as never)) {
+    return handleBrowserTool(name, args);
+  }
   if (seoToolNames.has(name as never)) {
     return handleSeoTool(name, args);
   }
@@ -96,8 +156,17 @@ export async function handleToolCall(name: string, args: unknown) {
   if (themeToolNames.has(name as never)) {
     return handleThemeTool(name, args);
   }
+  if (bosToolNames.has(name as never)) {
+    return handleBosTool(name, args);
+  }
+  if (loopToolNames.has(name as never)) {
+    return handleLoopTool(name, args);
+  }
   if (gmailToolNames.has(name as never)) {
     return handleGmailTool(name, args);
+  }
+  if (octorateToolNames.has(name as never)) {
+    return handleOctorateTool(name, args);
   }
   if (bookingEmailToolNames.has(name as never)) {
     return handleBookingEmailTool(name, args);
@@ -110,6 +179,18 @@ export async function handleToolCall(name: string, args: unknown) {
   }
   if (draftQualityToolNames.has(name as never)) {
     return handleDraftQualityTool(name, args);
+  }
+  if (draftRankerCalibrateToolNames.has(name as never)) {
+    return handleDraftRankerCalibrateTool(name, args);
+  }
+  if (draftRefineToolNames.has(name as never)) {
+    return handleDraftRefineTool(name, args);
+  }
+  if (draftSignalStatsToolNames.has(name as never)) {
+    return handleDraftSignalStatsTool(name, args);
+  }
+  if (draftTemplateReviewToolNames.has(name as never)) {
+    return handleDraftTemplateReviewTool(name, args);
   }
   if (outboundDraftToolNames.has(name as never)) {
     return handleOutboundDraftTool(name, args);

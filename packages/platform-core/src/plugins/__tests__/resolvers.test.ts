@@ -99,7 +99,7 @@ describe("resolvePluginEntry", () => {
     );
     const realStat = jest.requireActual("fs/promises").stat;
     const statMock = fs.stat as jest.MockedFunction<typeof fs.stat>;
-    statMock.mockImplementation(async (p: string) => {
+    (statMock as any).mockImplementation(async (p: string) => {
       if (p.endsWith("index.mjs") || p.endsWith(path.join("dist", "index.js"))) {
         return { isFile: () => true } as any;
       }

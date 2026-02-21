@@ -2,10 +2,11 @@
   "name": "@apps/cover-me-pretty",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3004",
-    "build": "pnpm exec next build",
+    "dev": "next dev --webpack -p 3004",
+    "build": "node --max-old-space-size=8192 ./node_modules/next/dist/bin/next build --webpack",
     "start": "next start -p 3004",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --cache --cache-location .eslintcache --max-warnings=0",
+    "typecheck": "pnpm exec tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {
@@ -13,12 +14,14 @@
     "@acme/config": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/design-system": "workspace:*",
+    "@acme/editorial": "workspace:*",
     "@acme/email": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/lib": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/page-builder-core": "workspace:*",
     "@acme/sanity": "workspace:*",
+    "@acme/seo": "workspace:*",
     "@acme/stripe": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",
@@ -30,6 +33,6 @@
     "react-dom": "19.2.1"
   },
   "devDependencies": {
-    "next": "^15.3.9"
+    "next": "^16.1.6"
   }
 }

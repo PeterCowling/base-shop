@@ -6,7 +6,7 @@ type Mode = 'light' | 'dark';
 
 function tokenToHsl(key: keyof typeof tokens, mode: Mode): string {
   const entry = tokens[key];
-  const value = mode === 'dark' ? entry.dark ?? entry.light : entry.light;
+  const value = mode === 'dark' ? ((entry as any).dark ?? entry.light) : entry.light;
   return `hsl(${value})`;
 }
 

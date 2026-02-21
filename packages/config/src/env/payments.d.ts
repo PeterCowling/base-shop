@@ -1,7 +1,5 @@
 import "@acme/zod-utils/initZod";
-
 import { z } from "zod";
-
 export declare const paymentsEnvSchema: z.ZodObject<{
     PAYMENTS_PROVIDER: z.ZodOptional<z.ZodEnum<["stripe"]>>;
     PAYMENTS_SANDBOX: z.ZodEffects<z.ZodEffects<z.ZodOptional<z.ZodString>, string | undefined, string | undefined>, boolean, string | undefined>;
@@ -34,3 +32,4 @@ export declare const paymentsEnv: {
     STRIPE_WEBHOOK_SECRET: string;
     PAYMENTS_PROVIDER?: "stripe" | undefined;
 };
+//# sourceMappingURL=payments.d.ts.map

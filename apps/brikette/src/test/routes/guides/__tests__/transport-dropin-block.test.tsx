@@ -37,12 +37,12 @@ describe("transportDropIn block handler (TASK-04)", () => {
       blocks: [],
       relatedGuides: [],
       contentKey: "testGuide",
-    } as GuideManifestEntry;
+    } as unknown as GuideManifestEntry;
 
     mockContext = {
       guideKey: "testGuide",
       lang: "en",
-    } as GuideSeoTemplateContext;
+    } as unknown as GuideSeoTemplateContext;
   });
 
   it("renders Chiesa Nuova arrivals drop-in", () => {
@@ -106,7 +106,7 @@ describe("transportDropIn block handler (TASK-04)", () => {
   it("renders no drop-in for unsupported component", () => {
     const options = {
       component: "unsupportedComponent",
-    } as TransportDropInBlockOptions;
+    } as unknown as TransportDropInBlockOptions;
 
     const acc = new BlockAccumulator(mockManifest);
     applyTransportDropInBlock(acc, options);

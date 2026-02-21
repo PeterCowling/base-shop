@@ -56,7 +56,7 @@ Phase 1 delivers 10 interconnected features: persistent navigation header, bread
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/business-os-card-presentation-lp-fact-find.md` (Revised 2026-01-29)
+- Related brief: `docs/plans/business-os-card-presentation-lp-do-fact-find.md` (Revised 2026-01-29)
 - Key findings:
   - Original user requirements: card info hierarchy, lane visibility, blocked state, lane header colors
   - UX audit identified critical gaps: no search, no persistent nav, no breadcrumbs, no feedback toasts

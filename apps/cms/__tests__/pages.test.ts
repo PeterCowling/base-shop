@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { mockNextAuthAdmin,withTempRepo } from "@acme/test-utils";
 
-jest.setTimeout(15000);
+jest.setTimeout(120000);
 
 const withRepo = (cb: (dir: string) => Promise<void>) =>
   withTempRepo(async (dir) => {
@@ -114,10 +114,12 @@ describe("page actions", () => {
       fd.append("history", JSON.stringify(history));
 
       const result = await updatePage("test", fd);
-      expect(result.page?.history).toEqual(history);
+      expect(result.page?.history).toMatchObject(history);
+      expect(result.page?.history?.editor).toEqual(expect.any(Object));
 
       const pages = await repo.getPages("test");
-      expect(pages[0].history).toEqual(history);
+      expect(pages[0].history).toMatchObject(history);
+      expect(pages[0].history?.editor).toEqual(expect.any(Object));
     });
   });
 

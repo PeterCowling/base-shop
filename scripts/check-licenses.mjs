@@ -39,6 +39,7 @@ const exceptions = policy.exceptions || {};
  */
 const LICENSE_ALIASES = {
   "MIT License": "MIT",
+  "MIT/X11": "MIT",
   "BSD": "BSD-2-Clause",
   "Apache 2.0": "Apache-2.0",
   "Apache License 2.0": "Apache-2.0",

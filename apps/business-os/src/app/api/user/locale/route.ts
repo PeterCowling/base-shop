@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -62,7 +63,6 @@ export async function GET(request: Request) {
   try {
     void request;
 
-    const { cookies } = await import("next/headers");
     const cookieStore = await cookies();
     const localeCookie = cookieStore.get("business_os_locale")?.value;
     const locale = localeCookie === "it" ? "it" : "en";

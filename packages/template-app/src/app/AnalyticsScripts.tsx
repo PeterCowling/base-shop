@@ -1,3 +1,5 @@
+import Script from "next/script";
+
 import { coreEnv } from "@acme/config/env/core";
 import {
   getShopSettings,
@@ -16,11 +18,13 @@ export default async function AnalyticsScripts() {
   if (analytics.provider === "ga" && analytics.id) {
     return (
       <>
-        <script
-          async
+        <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${analytics.id}`}
-        ></script>
-        <script
+          strategy="afterInteractive"
+        />
+        <Script
+          id="ga-inline-init"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '${analytics.id}');`,
           }}

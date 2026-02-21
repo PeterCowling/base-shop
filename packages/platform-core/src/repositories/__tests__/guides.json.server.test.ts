@@ -39,7 +39,7 @@ describe("jsonGuidesRepository", () => {
   });
 
   it("reads parsed guides from metadata file", async () => {
-    const readFile = jest.fn().mockResolvedValue(JSON.stringify([guide]));
+    const readFile = (jest.fn() as any).mockResolvedValue(JSON.stringify([guide]));
     const writeFile = jest.fn();
     const rename = jest.fn();
     const mkdir = jest.fn();
@@ -68,7 +68,7 @@ describe("jsonGuidesRepository", () => {
   });
 
   it("getById and getByKey return matching guides or null", async () => {
-    const readFile = jest.fn().mockResolvedValue(JSON.stringify([guide]));
+    const readFile = (jest.fn() as any).mockResolvedValue(JSON.stringify([guide]));
     const writeFile = jest.fn();
     const rename = jest.fn();
     const mkdir = jest.fn();
@@ -82,7 +82,7 @@ describe("jsonGuidesRepository", () => {
   });
 
   it("update increments row_version and merges patch", async () => {
-    const readFile = jest.fn().mockResolvedValue(JSON.stringify([guide]));
+    const readFile = (jest.fn() as any).mockResolvedValue(JSON.stringify([guide]));
     const writeFile = jest.fn();
     const rename = jest.fn();
     const mkdir = jest.fn();
@@ -92,9 +92,9 @@ describe("jsonGuidesRepository", () => {
     const updated = await jsonGuidesRepository.update(shop, {
       id: "g1",
       status: "review",
-    });
+    } as any);
 
-    expect(updated.status).toBe("review");
+    expect((updated as any).status).toBe("review");
     expect(updated.row_version).toBe(3);
     const written = JSON.parse(writeFile.mock.calls[0][1] as string);
     expect(written[0].status).toBe("review");
@@ -102,7 +102,7 @@ describe("jsonGuidesRepository", () => {
   });
 
   it("update throws when guide is missing", async () => {
-    const readFile = jest.fn().mockResolvedValue("[]");
+    const readFile = (jest.fn() as any).mockResolvedValue("[]");
     const writeFile = jest.fn();
     const rename = jest.fn();
     const mkdir = jest.fn();
@@ -115,8 +115,7 @@ describe("jsonGuidesRepository", () => {
   });
 
   it("delete removes a guide and throws when missing", async () => {
-    const readFile = jest
-      .fn()
+    const readFile = (jest.fn() as any)
       .mockResolvedValueOnce(JSON.stringify([guide]))
       .mockResolvedValueOnce(JSON.stringify([guide]));
     const writeFile = jest.fn();
@@ -135,7 +134,7 @@ describe("jsonGuidesRepository", () => {
   });
 
   it("duplicate creates draft copy with new id and timestamps", async () => {
-    const readFile = jest.fn().mockResolvedValue(JSON.stringify([guide]));
+    const readFile = (jest.fn() as any).mockResolvedValue(JSON.stringify([guide]));
     const writeFile = jest.fn();
     const rename = jest.fn();
     const mkdir = jest.fn();
@@ -156,7 +155,7 @@ describe("jsonGuidesRepository", () => {
   });
 
   it("duplicate throws when guide is missing", async () => {
-    const readFile = jest.fn().mockResolvedValue("[]");
+    const readFile = (jest.fn() as any).mockResolvedValue("[]");
     const writeFile = jest.fn();
     const rename = jest.fn();
     const mkdir = jest.fn();
@@ -185,7 +184,7 @@ describe("jsonGuidesRepository", () => {
 
   it("reads content from split content store", async () => {
     const content = { seo: { title: "Title", description: "Description" } };
-    const readFile = jest.fn().mockResolvedValue(JSON.stringify(content));
+    const readFile = (jest.fn() as any).mockResolvedValue(JSON.stringify(content));
     const writeFile = jest.fn();
     const rename = jest.fn();
     const mkdir = jest.fn();

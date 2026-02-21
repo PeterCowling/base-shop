@@ -41,7 +41,7 @@ Overhaul the `guide-translate` skill to implement a "structure-first, translate-
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/translation-workflow-improvements-lp-fact-find.md`
+- Related brief: `docs/plans/translation-workflow-improvements-lp-do-fact-find.md`
 - Key findings:
   - Agent-only workflow: 0% success (Batches 1-2, 102 locale files all wrong)
   - Structure-first workflow: 100% success (Batch 3 travelHelp, 12 locales)
@@ -72,7 +72,7 @@ Overhaul the `guide-translate` skill to implement a "structure-first, translate-
 Single approach (no alternatives needed — the structure-first pattern is empirically validated):
 
 1. **Rewrite the skill workflow** to enforce a three-phase pattern: Phase 1 (structural repair via Python) → Gate 1 → Phase 2 (translation-only agents) → Gate 2 → Phase 3 (completion with persistence proof)
-2. **Replace the weak post-translation validation** (L167-189, line count ±5) with precise Phase 1 + Phase 2 gates from the lp-fact-find's validation contracts
+2. **Replace the weak post-translation validation** (L167-189, line count ±5) with precise Phase 1 + Phase 2 gates from the lp-do-fact-find's validation contracts
 3. **Add persistence verification** to the completion report requirements
 4. **Extract validation into a reusable script** so both the skill and manual runs use the same checks
 5. **Add merge policy documentation** to the skill so structural repair scripts have a defined contract
@@ -164,8 +164,8 @@ Tasks are ordered to build incrementally: validation script first (foundational 
   - `[readonly] apps/brikette/scripts/validate-guide-structure.sh` (referenced in gate commands)
 - **Depends on:** TASK-01
 - **Confidence:** 90%
-  - Implementation: 92% — modifying existing markdown with well-defined content from lp-fact-find runbook; all workflow steps are documented
-  - Approach: 90% — structure-first pattern validated in production (Batch 3: 100% success); workflow v2 runbook in lp-fact-find is deterministic
+  - Implementation: 92% — modifying existing markdown with well-defined content from lp-do-fact-find runbook; all workflow steps are documented
+  - Approach: 90% — structure-first pattern validated in production (Batch 3: 100% success); workflow v2 runbook in lp-do-fact-find is deterministic
   - Impact: 88% — affects all future translation work using this skill; guide-improve orchestrator doesn't need changes (it just invokes guide-translate)
 - **Effort:** M (1 file modified but significant rewrite of workflow section ~100 lines; crosses 1 integration boundary: references validation script from TASK-01)
 - **Acceptance:**
@@ -230,7 +230,7 @@ Tasks are ordered to build incrementally: validation script first (foundational 
 - **Affects:** `.claude/skills/guide-translate/SKILL.md` (add Phase 2 gate + rewrite completion report section)
 - **Depends on:** TASK-02
 - **Confidence:** 90%
-  - Implementation: 92% — completion report template is defined in lp-fact-find; Gate 2 references same validation script
+  - Implementation: 92% — completion report template is defined in lp-do-fact-find; Gate 2 references same validation script
   - Approach: 90% — persistence verification directly addresses the "reported complete but didn't persist" failure class
   - Impact: 88% — same blast radius as TASK-02 (skill markdown only)
 - **Effort:** S (1 file, same file as TASK-02 but different sections; additive content)
@@ -289,7 +289,7 @@ Tasks are ordered to build incrementally: validation script first (foundational 
 - **Affects:** `/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/memory/MEMORY.md`
 - **Depends on:** -
 - **Confidence:** 95%
-  - Implementation: 98% — adding a new section to an existing markdown file; content is well-defined from lp-fact-find
+  - Implementation: 98% — adding a new section to an existing markdown file; content is well-defined from lp-do-fact-find
   - Approach: 95% — MEMORY.md is the right place for cross-session workflow patterns; 31 lines currently, well under 200-line limit
   - Impact: 90% — affects only personal agent sessions; no production code impact
 - **Effort:** S (1 file, additive content, 0 integration boundaries)

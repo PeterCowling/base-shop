@@ -2,8 +2,10 @@
 // Adapter that composes app-specific data/hooks and renders the shared UI RoomCard.
 /* eslint-disable ds/no-hardcoded-copy, max-lines-per-function -- LINT-1007 [ttl=2026-12-31] Fallback copy and adapter complexity retained while i18n + extraction follow-up is scheduled. */
 
-import { isValidElement, memo, useCallback, useState } from "react";
+import type { RefObject } from "react";
+import { isValidElement, memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 import { RoomCard as UiRoomCard } from "@acme/ui/molecules";
 import type { FacilityKey } from "@acme/ui/types/facility";
@@ -18,10 +20,11 @@ import type {
 import FacilityIcon from "@/components/rooms/FacilityIcon";
 import FullscreenImage from "@/components/rooms/FullscreenImage";
 import { IS_TEST } from "@/config/env";
-import { useModal } from "@/context/ModalContext";
+import { BOOKING_CODE } from "@/context/modal/constants";
 import type { Room } from "@/data/roomsData";
 import { useRoomPricing } from "@/hooks/useRoomPricing";
 import { i18nConfig } from "@/i18n.config";
+import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 
 const PRICE_LOADING_TEST_ID = "price-loading" as const; // legacy test id consumed by app unit tests
@@ -32,6 +35,10 @@ interface RoomCardProps {
   checkOut?: string;
   adults?: number;
   lang?: string;
+  /** Controls CTA behavior. Defaults to "absent" (→ navigate to /book). */
+  queryState?: "valid" | "invalid" | "absent";
+  /** Ref to date picker element for scroll-to on invalid state. */
+  datePickerRef?: RefObject<HTMLElement | null>;
 }
 
 type FacilityIconRenderer = (props: { facility: FacilityKey }) => JSX.Element;
@@ -125,13 +132,15 @@ export default memo(function RoomCard({
   checkOut: checkOutProp,
   adults: adultsProp,
   lang,
+  queryState,
+  datePickerRef,
 }: RoomCardProps): JSX.Element {
   const resolvedLang = (lang ?? i18nConfig.fallbackLng) as string;
   const { t, ready: readyRaw } = useTranslation("roomsPage", { lng: resolvedLang });
   const ready = readyRaw !== false;
   const { t: tTokens, ready: tokensReadyRaw } = useTranslation("_tokens", { lng: resolvedLang });
   const tokensReady = tokensReadyRaw !== false;
-  const { openModal } = useModal();
+  const router = useRouter();
 
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
 
@@ -180,25 +189,64 @@ export default memo(function RoomCard({
     };
   })();
 
-  const openNonRefundable = useCallback(() => {
-    openModal("booking2", {
-      rateType: "nonRefundable",
-      room,
-      checkIn,
-      checkOut,
-      adults,
+  // Precompute Octorate URLs when queryState === "valid"
+  const nrOctorateUrl = useMemo(() => {
+    if (queryState !== "valid") return null;
+    const result = buildOctorateUrl({
+      checkin: checkIn,
+      checkout: checkOut,
+      pax: adults,
+      plan: "nr",
+      roomSku: room.sku,
+      octorateRateCode: room.rateCodes.direct.nr,
+      bookingCode: BOOKING_CODE,
     });
-  }, [openModal, room, checkIn, checkOut, adults]);
+    return result.ok ? result.url : null;
+  }, [queryState, checkIn, checkOut, adults, room]);
+
+  const flexOctorateUrl = useMemo(() => {
+    if (queryState !== "valid") return null;
+    const result = buildOctorateUrl({
+      checkin: checkIn,
+      checkout: checkOut,
+      pax: adults,
+      plan: "flex",
+      roomSku: room.sku,
+      octorateRateCode: room.rateCodes.direct.flex,
+      bookingCode: BOOKING_CODE,
+    });
+    return result.ok ? result.url : null;
+  }, [queryState, checkIn, checkOut, adults, room]);
+
+  const openNonRefundable = useCallback(() => {
+    if (queryState === "invalid") {
+      // Button is disabled; scroll to date picker if ref provided
+      if (datePickerRef?.current) {
+        datePickerRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+      return;
+    }
+    if (nrOctorateUrl) {
+      window.location.href = nrOctorateUrl;
+      return;
+    }
+    // absent or valid-but-url-failed → navigate to /book
+    router.push(`/${resolvedLang}/book`);
+  }, [queryState, nrOctorateUrl, datePickerRef, router, resolvedLang]);
 
   const openFlexible = useCallback(() => {
-    openModal("booking2", {
-      rateType: "refundable",
-      room,
-      checkIn,
-      checkOut,
-      adults,
-    });
-  }, [openModal, room, checkIn, checkOut, adults]);
+    if (queryState === "invalid") {
+      if (datePickerRef?.current) {
+        datePickerRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+      return;
+    }
+    if (flexOctorateUrl) {
+      window.location.href = flexOctorateUrl;
+      return;
+    }
+    router.push(`/${resolvedLang}/book`);
+  }, [queryState, flexOctorateUrl, datePickerRef, router, resolvedLang]);
 
   const resolveToken = useCallback(
     (key: "reserveNow" | "bookNow", lngOverride?: string) => {
@@ -271,19 +319,20 @@ export default memo(function RoomCard({
     if (!ready) return [];
     const rawNonRef = coerceString(t("checkRatesNonRefundable")).trim();
     const rawFlexible = coerceString(t("checkRatesFlexible")).trim();
+    const isInvalid = queryState === "invalid";
 
     return [
       {
         id: "nonRefundable",
         label: buildLabel(rawNonRef, "checkRatesNonRefundable", "nonRefundable"),
         onSelect: openNonRefundable,
-        disabled: soldOut,
+        disabled: soldOut || isInvalid || (queryState === "valid" && nrOctorateUrl === null),
       },
       {
         id: "flexible",
         label: buildLabel(rawFlexible, "checkRatesFlexible", "flexible"),
         onSelect: openFlexible,
-        disabled: soldOut,
+        disabled: soldOut || isInvalid || (queryState === "valid" && flexOctorateUrl === null),
       },
     ];
   })();

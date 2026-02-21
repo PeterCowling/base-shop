@@ -57,7 +57,7 @@ beforeEach(() => {
   });
   (markReturned as jest.Mock).mockResolvedValue({});
   (setReturnTracking as jest.Mock).mockResolvedValue(undefined);
-  global.fetch = jest.fn().mockResolvedValue(new Response()) as any;
+  global.fetch = (jest.fn() as any).mockResolvedValue(new Response());
 });
 
 afterEach(() => {

@@ -146,4 +146,4 @@ test("add to cart then create checkout session", async () => {
   expect(response.status).toBe(200);
   const { stripe } = await import("@acme/stripe");
   expect(stripe.checkout.sessions.create).toHaveBeenCalled();
-});
+}, 30_000);

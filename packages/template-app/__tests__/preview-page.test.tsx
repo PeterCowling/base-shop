@@ -29,7 +29,8 @@ describe("preview/[pageId]/page", () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    // Keep mocked module implementations (notFound throwing, PreviewClient stub, etc.).
+    jest.clearAllMocks();
   });
 
   it("calls notFound on 404", async () => {
@@ -39,18 +40,20 @@ describe("preview/[pageId]/page", () => {
     await expect(
       Page({ params: Promise.resolve({ pageId: "x" }), searchParams: Promise.resolve({}) })
     ).rejects.toThrow('not-found');
-    expect((notFound as jest.Mock)).toHaveBeenCalled();
+    expect((notFound as unknown as jest.Mock)).toHaveBeenCalled();
   });
 
-  it("returns a 401 Response when unauthorized", async () => {
-    (fetch as jest.Mock).mockResolvedValue({ status: 401, ok: false, json: async () => ({}) });
+  it("calls notFound on 401 (unauthorized)", async () => {
+    (fetch as jest.Mock).mockResolvedValue({ status: 401, ok: false });
     const { default: Page } = await import("../src/app/preview/[pageId]/page");
-    const res = (await Page({
-      params: Promise.resolve({ pageId: "x" }),
-      searchParams: Promise.resolve({ token: "bad" }),
-    })) as Response;
-    expect(res).toBeInstanceOf(Response);
-    expect(res.status).toBe(401);
+    const { notFound } = await import("next/navigation");
+    await expect(
+      Page({
+        params: Promise.resolve({ pageId: "x" }),
+        searchParams: Promise.resolve({ token: "bad" }),
+      })
+    ).rejects.toThrow("not-found");
+    expect((notFound as unknown as jest.Mock)).toHaveBeenCalled();
   });
 
   it("renders PreviewClient with initialDeviceId derived from legacy preset", async () => {

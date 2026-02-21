@@ -1,9 +1,13 @@
 {
   "meta": {
-    "title": "Book your stay – Official site",
-    "description": "Flexible and Non‑Refundable rates. Secure checkout on our official booking engine."
+    "title": "Book Direct at Hostel Brikette Positano | Best Price + Free Breakfast",
+    "description": "Book direct and get our best rate with free breakfast, a complimentary evening drink, and no third-party fees. Official booking engine for Hostel Brikette, Positano."
   },
-  "heading": "Book your stay",
+  "heading": "Book Direct at Hostel Brikette, Positano",
+  "subheading": "Choose your dates, then pick a room.",
+  "dealBanner": {
+    "applied": "Deal applied: {{code}}"
+  },
   "roomLabel": "Room",
   "cta": {
     "flex": "Flexible – Go to checkout",
@@ -41,5 +45,47 @@
     ],
     "footer": "Final availability and payment are completed on our official booking engine."
   },
-  "backToRooms": "Back to rooms"
+  "backToRooms": "Back to rooms",
+  "apartment": {
+    "heading": "Book the Private Apartment",
+    "subheading": "Select your dates and number of guests, then choose a rate.",
+    "guestLabel": "Number of guests",
+    "guests": {
+      "2": "2 guests",
+      "3": "3 guests"
+    },
+    "flex": {
+      "title": "Flexible Rate",
+      "saving": "Save 21% vs OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "Non-Refundable",
+      "saving": "Save 26% vs OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "{{count}} night — availability confirmed in the next step.",
+    "nightsSummary_other": "{{count}} nights — availability confirmed in the next step.",
+    "rateLabel": "Choose your rate",
+    "ratePrompt": "Select a rate above to continue",
+    "cta": {
+      "unselected": "Select a rate to continue →",
+      "flex": "Flexible – Continue to checkout",
+      "nr": "Non-Refundable – Continue to checkout"
+    },
+    "policies": {
+      "title": "Policies & fees",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
+  }
 }

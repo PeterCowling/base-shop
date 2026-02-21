@@ -49,7 +49,7 @@ const FaqStrip = memo(function FaqStrip({ lang }: { lang?: AppLanguage }): JSX.E
           {items.map((item) => (
             <li
               key={item.question}
-              className="rounded-2xl border border-brand-outline/30 bg-brand-bg p-4 shadow-sm dark:border-white/10 dark:bg-brand-surface"
+              className="rounded-2xl border border-brand-outline/30 bg-brand-bg p-4 shadow-sm border-fg-inverse/10 dark:bg-brand-surface"
             >
               <h3 className="text-sm font-semibold text-brand-heading dark:text-brand-text">
                 {item.question}

@@ -8,8 +8,8 @@ Last-updated: 2026-02-09
 Feature-Slug: ci-integration-speed-control
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-replan, ops-ship
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-replan, ops-ship
 Related-Plan: docs/plans/ci-integration-speed-control-plan.md
 Business-Unit: PLAT
 Card-ID:
@@ -20,8 +20,8 @@ Card-ID:
 ## Execution Profile
 - Deliverable-Type: `code-change`
 - Execution-Track: `code`
-- Primary-Execution-Skill: `lp-build`
-- Supporting-Skills: `lp-replan`, `ops-ship`
+- Primary-Execution-Skill: `lp-do-build`
+- Supporting-Skills: `lp-do-replan`, `ops-ship`
 
 ## Scope
 ### Summary
@@ -37,7 +37,7 @@ Re-audit the integration CI path for speed vs control tradeoffs, with explicit f
 - Produce planning-ready implementation tasks.
 
 ### Non-goals
-- Implementing workflow changes in this lp-fact-find step.
+- Implementing workflow changes in this lp-do-fact-find step.
 - Lowering quality standards or reducing required checks.
 - Replacing the branch flow (`dev -> staging -> main`).
 

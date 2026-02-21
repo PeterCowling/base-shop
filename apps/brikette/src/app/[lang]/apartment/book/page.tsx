@@ -51,5 +51,18 @@ export default async function ApartmentBookPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  return <ApartmentBookContent lang={validLang} />;
+  return (
+    <>
+      <ApartmentBookContent lang={validLang} />
+      {/* No-JS fallback (TASK-08): direct Octorate link rendered in RSC layer so it
+          is always present in server HTML, visible only when JavaScript is disabled.
+          Satisfies TASK-08 TC-04 gate (no dead-end pre-hydration for /{lang}/apartment/book). */}
+      <noscript>
+        {/* eslint-disable-next-line ds/no-hardcoded-copy -- i18n-exempt: noscript-only technical fallback for no-JS users, not rendered in normal UI. TASK-08 [ttl=2026-12-31] */}
+        <a href="https://book.octorate.com/octobook/site/reservation/result.xhtml?codice=45111">
+          Check availability
+        </a>
+      </noscript>
+    </>
+  );
 }

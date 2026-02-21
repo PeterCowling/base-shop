@@ -1,5 +1,3 @@
-import { jest } from "@jest/globals";
-
 describe("design tokens preset", () => {
   const assertTokens = (config: any) => {
     expect(config.theme?.colors?.bg).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
@@ -35,7 +33,7 @@ describe("design tokens preset", () => {
   it("exports preset configuration", async () => {
     jest.resetModules();
     const presetModule = await import("../src/index.ts");
-    const preset = presetModule.default;
+    const preset = (presetModule as any).default;
 
     // Skip test if no default export (implementation uses named exports only)
     if (!preset) {

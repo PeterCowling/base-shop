@@ -114,6 +114,51 @@ describe("middleware", () => {
     });
   });
 
+  describe("redirect cross-locale and legacy aliases (Search Console 404 sample)", () => {
+    it("redirects cross-locale help roots to localized help index and drops child segment", () => {
+      const request = createRequest("/it/aide/checkin-checkout?utm_source=test");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      const location = response?.headers.get("location");
+      expect(location).toContain("/it/assistenza/");
+      expect(location).not.toContain("checkin-checkout");
+      expect(location).toContain("utm_source=test");
+    });
+
+    it("redirects legacy alias /it/hilfezentrum/* to /it/assistenza/", () => {
+      const request = createRequest("/it/hilfezentrum/checkin-checkout");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/it/assistenza/");
+    });
+
+    it("redirects legacy alias /fr/pomosh/* to /fr/aide/", () => {
+      const request = createRequest("/fr/pomosh/securite");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/fr/aide/");
+    });
+
+    it("redirects cross-locale top-level room slug /ja/zimmer to /ja/heya/", () => {
+      const request = createRequest("/ja/zimmer");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/ja/heya/");
+    });
+
+    it("redirects explicit malformed path /de/da to /de/", () => {
+      const request = createRequest("/de/da");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/de/");
+    });
+  });
+
   describe("preserve language-agnostic child segments (no redirect)", () => {
     it("allows /en/rooms/double_room (room ID is language-agnostic)", () => {
       const request = createRequest("/en/rooms/double_room");

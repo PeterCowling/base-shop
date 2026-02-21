@@ -1,0 +1,330 @@
+{
+  "schemaVersion": 1,
+  "skills": [
+    {
+      "name": "biz-product-brief",
+      "description": "Produce a concise product brief artifact that is decision-ready, scoped, and measurable.",
+      "path": ".claude/skills/biz-product-brief/SKILL.md"
+    },
+    {
+      "name": "biz-spreadsheet",
+      "description": "Define an operations spreadsheet deliverable with schema, formula logic, ownership, and a starter CSV template.",
+      "path": ".claude/skills/biz-spreadsheet/SKILL.md"
+    },
+    {
+      "name": "biz-update-people",
+      "description": "Update People doc based on code attribution, reflection learnings, and role changes.",
+      "path": ".claude/skills/biz-update-people/SKILL.md"
+    },
+    {
+      "name": "biz-update-plan",
+      "description": "Update Business Plan based on scan evidence, card reflections, and strategic decisions.",
+      "path": ".claude/skills/biz-update-plan/SKILL.md"
+    },
+    {
+      "name": "lp-do-assessment-04-business-name",
+      "description": "Produce a deep research prompt for business name exploration (ASSESSMENT-04). Reads the target business's startup loop docs, encodes product, ICP, market, regulatory constraints, and competitive landscape, then outputs a structured research prompt ready to paste into Perplexity Deep Research or equivalent.",
+      "path": ".claude/skills/lp-do-assessment-04-business-name/SKILL.md"
+    },
+    {
+      "name": "draft-email",
+      "description": "Draft a decision-ready outbound or response email artifact with channel-safe structure, clear CTA, and review checklist.",
+      "path": ".claude/skills/draft-email/SKILL.md"
+    },
+    {
+      "name": "draft-marketing",
+      "description": "Create channel-specific marketing asset drafts with clear positioning, CTA, and measurable campaign intent.",
+      "path": ".claude/skills/draft-marketing/SKILL.md"
+    },
+    {
+      "name": "draft-outreach",
+      "description": "Draft sales and partnership outreach scripts (DMs, cold emails, follow-ups, objection handlers) for 1:1 relationship building.",
+      "path": ".claude/skills/draft-outreach/SKILL.md"
+    },
+    {
+      "name": "draft-whatsapp",
+      "description": "Draft WhatsApp-ready business messages with concise structure, clear CTA, and compliance-aware guardrails.",
+      "path": ".claude/skills/draft-whatsapp/SKILL.md"
+    },
+    {
+      "name": "frontend-design",
+      "description": "Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. Combines bold creative direction with token-constrained implementation.",
+      "path": ".claude/skills/frontend-design/SKILL.md"
+    },
+    {
+      "name": "guide-translate",
+      "description": "Propagate updated EN guide content to all locales using parallel translation. Requires EN audit to be clean first.",
+      "path": ".claude/skills/guide-translate/SKILL.md"
+    },
+    {
+      "name": "idea-advance",
+      "description": "Propose lane transitions for Business OS cards based on stage document evidence and completion criteria.",
+      "path": ".claude/skills/idea-advance/SKILL.md"
+    },
+    {
+      "name": "idea-develop",
+      "description": "Convert a raw idea from inbox to a worked idea with card and initial Fact-find stage doc using agent APIs.",
+      "path": ".claude/skills/idea-develop/SKILL.md"
+    },
+    {
+      "name": "idea-forecast",
+      "description": "Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research (competitor analysis, price bands, channel benchmarks, demand signals). Use when a user provides idea/product inputs and wants the agent to set most targets, assumptions, risks, and validation metrics before SFS-00 or idea-generate.",
+      "path": ".claude/skills/idea-forecast/SKILL.md"
+    },
+    {
+      "name": "idea-generate",
+      "description": "Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking.",
+      "path": ".claude/skills/idea-generate/SKILL.md"
+    },
+    {
+      "name": "idea-readiness",
+      "description": "Readiness gate for idea generation. Use before /idea-generate, or whenever plans/context may be stale. Audit business-plan freshness, outcome clarity, code-to-plan traceability, tooling/data availability, and market-research freshness; fail closed on critical gaps; ask targeted questions to collect missing information and update source docs before allowing idea generation.",
+      "path": ".claude/skills/idea-readiness/SKILL.md"
+    },
+    {
+      "name": "idea-scan",
+      "description": "Scan docs/business-os/ for changes and create business-relevant ideas from findings.",
+      "path": ".claude/skills/idea-scan/SKILL.md"
+    },
+    {
+      "name": "ideas-go-faster",
+      "description": "Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking.",
+      "path": ".claude/skills/ideas-go-faster/SKILL.md"
+    },
+    {
+      "name": "lp-baseline-merge",
+      "description": "Join parallel fan-out outputs (S2B + S3 + S6B) into a single baseline snapshot and draft manifest.",
+      "path": ".claude/skills/lp-baseline-merge/SKILL.md"
+    },
+    {
+      "name": "lp-bos-sync",
+      "description": "S5B BOS sync stage worker. Persists prioritized baseline outputs to Business OS (D1) via agent API, then emits S5B stage-result.json to signal control plane commit.",
+      "path": ".claude/skills/lp-bos-sync/SKILL.md"
+    },
+    {
+      "name": "lp-do-assessment-10-brand-profiling",
+      "path": ".claude/skills/lp-do-assessment-10-brand-profiling/SKILL.md",
+      "description": "Brand profiling for new startups (ASSESSMENT-10). Confirms business name, defines audience, personality, and voice & tone."
+    },
+    {
+      "name": "lp-do-assessment-11-brand-identity",
+      "path": ".claude/skills/lp-do-assessment-11-brand-identity/SKILL.md",
+      "description": "Visual brand identity for new startups (ASSESSMENT-11). Produces brand-dossier with colour palette, typography, imagery direction, and token overrides."
+    },
+    {
+      "name": "lp-assessment-bootstrap",
+      "description": "Standalone brand dossier bootstrap outside the startup loop. Superseded by lp-do-assessment-11-brand-identity for the ASSESSMENT stage within the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template.",
+      "path": ".claude/skills/lp-assessment-bootstrap/SKILL.md"
+    },
+    {
+      "name": "lp-channels",
+      "description": "Startup channel strategy + GTM skill (S6B). Analyzes channel-customer fit, selects 2-3 launch channels with rationale, and produces a 30-day GTM timeline. Consumes lp-offer output (ICP, positioning, objections) and feeds channel selection to draft-marketing and lp-seo.",
+      "path": ".claude/skills/lp-channels/SKILL.md"
+    },
+    {
+      "name": "lp-design-qa",
+      "description": "Audit a built UI against the design spec and design system for visual/UI regression, accessibility, responsive behavior, and token compliance. Produces structured issues ready for lp-do-build fixes.",
+      "path": ".claude/skills/lp-design-qa/SKILL.md"
+    },
+    {
+      "name": "lp-design-spec",
+      "description": "Translate a feature requirement into a concrete frontend design specification mapped to the design system, theme tokens, and per-business brand language. Sits between fact-find and plan.",
+      "path": ".claude/skills/lp-design-spec/SKILL.md"
+    },
+    {
+      "name": "lp-design-system",
+      "description": "Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.",
+      "path": ".claude/skills/lp-design-system/SKILL.md"
+    },
+    {
+      "name": "lp-do-build",
+      "description": "Thin build orchestrator. Executes one runnable task per cycle from an approved plan using canonical gates, track-specific executors, and shared ops utilities.",
+      "path": ".claude/skills/lp-do-build/SKILL.md"
+    },
+    {
+      "name": "lp-do-critique",
+      "description": "Hardnosed critic for lp-do-fact-find, lp-do-plan, lp-offer, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.",
+      "path": ".claude/skills/lp-do-critique/SKILL.md"
+    },
+    {
+      "name": "lp-do-fact-find",
+      "description": "Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits planning or briefing artifacts with a shared schema.",
+      "path": ".claude/skills/lp-do-fact-find/SKILL.md"
+    },
+    {
+      "name": "lp-do-factcheck",
+      "description": "Verify the accuracy of statements in markdown documents by auditing the actual repository state. Directly fix inaccuracies in-place rather than producing a separate report.",
+      "path": ".claude/skills/lp-do-factcheck/SKILL.md"
+    },
+    {
+      "name": "lp-do-plan",
+      "description": "Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and optionally hands off to /lp-do-build when explicit auto-build intent is present.",
+      "path": ".claude/skills/lp-do-plan/SKILL.md"
+    },
+    {
+      "name": "lp-do-replan",
+      "description": "Thin orchestrator for resolving low-confidence plan tasks with evidence, explicit precursor tasks, stable task IDs, and checkpoint-aware reassessment.",
+      "path": ".claude/skills/lp-do-replan/SKILL.md"
+    },
+    {
+      "name": "lp-experiment",
+      "description": "Startup experiment design and weekly readout for the S8/S10 build-measure-decide loop.",
+      "path": ".claude/skills/lp-experiment/SKILL.md"
+    },
+    {
+      "name": "lp-forecast",
+      "description": "S3 startup 90-day forecaster — build P10/P50/P90 scenario bands from zero operational data",
+      "path": ".claude/skills/lp-forecast/SKILL.md"
+    },
+    {
+      "name": "lp-guide-audit",
+      "description": "Run SEO audit and iteratively fix all issues for English guide content only. No translation.",
+      "path": ".claude/skills/lp-guide-audit/SKILL.md"
+    },
+    {
+      "name": "lp-guide-improve",
+      "description": "Main entry point for guide improvement - interactive workflow selection for audit, translation, or both",
+      "path": ".claude/skills/lp-guide-improve/SKILL.md"
+    },
+    {
+      "name": "lp-launch-qa",
+      "description": "Pre-launch quality assurance gate for startup loop (S9B). Validates conversion flows, SEO technical readiness, performance budget, and legal compliance before a site goes live.",
+      "path": ".claude/skills/lp-launch-qa/SKILL.md"
+    },
+    {
+      "name": "lp-measure",
+      "description": "Bootstrap measurement infrastructure for a startup before or just after website launch.",
+      "path": ".claude/skills/lp-measure/SKILL.md"
+    },
+    {
+      "name": "lp-offer",
+      "description": "Startup offer design skill (S2B). Consolidates ICP, positioning, pricing, and offer design into one artifact with 6 sections. Produces a validated offer hypothesis ready for forecasting and channel selection.",
+      "path": ".claude/skills/lp-offer/SKILL.md"
+    },
+    {
+      "name": "lp-onboarding-audit",
+      "description": "Audit an app's onboarding flow against the \"Onboarding Done Right\" checklist. Customizes the generic checklist for the app's purpose and audience, then audits actual code using lp-do-fact-find's Outcome A process. Produces a planning-ready brief.",
+      "path": ".claude/skills/lp-onboarding-audit/SKILL.md"
+    },
+    {
+      "name": "lp-do-assessment-06-distribution-profiling",
+      "description": "Distribution profiling for new startups (ASSESSMENT-06). Elicits >=2 launch channels with cost/effort estimates and ICP fit rationale. Produces a distribution-plan artifact ready for measurement profiling. Upstream of lp-do-assessment-07-measurement-profiling.",
+      "path": ".claude/skills/lp-do-assessment-06-distribution-profiling/SKILL.md"
+    },
+    {
+      "name": "lp-do-assessment-07-measurement-profiling",
+      "description": "Measurement profiling for new startups (ASSESSMENT-07). Elicits tracking setup, >=2 key metrics, success thresholds, and data collection feasibility. Produces a measurement-plan artifact ready for current situation capture. Upstream of lp-do-assessment-08-current-situation.",
+      "path": ".claude/skills/lp-do-assessment-07-measurement-profiling/SKILL.md"
+    },
+    {
+      "name": "lp-do-assessment-08-current-situation",
+      "description": "Current situation for new startups (ASSESSMENT-08). Elicits operator-direct knowledge: launch surface, inventory readiness, commercial architecture, and pre-locked channel decisions. Mandatory final sub-stage before ASSESSMENT GATE.",
+      "path": ".claude/skills/lp-do-assessment-08-current-situation"
+    },
+    {
+      "name": "lp-do-assessment-03-solution-selection",
+      "description": "Solution selection gate for new startups (ASSESSMENT-03). Reads solution-space research results, builds an evaluation matrix, and produces a shortlist of 1-2 options with elimination rationale. Explicit kill gate — decision record required to continue to ASSESSMENT-04.",
+      "path": ".claude/skills/lp-do-assessment-03-solution-selection/SKILL.md"
+    },
+    {
+      "name": "lp-other-products",
+      "description": "Produce a deep research prompt for adjacent product range exploration. Reads the target business's startup loop docs (offer, ICP, market intel, brand dossier) and outputs a structured Perplexity-ready prompt covering customer JTBD, manufacturer accessory landscape, product candidate set with one-page cards, prioritisation rubric, 90-day MVP plan, and bundling strategy.",
+      "path": ".claude/skills/lp-other-products/SKILL.md"
+    },
+    {
+      "name": "lp-prioritize",
+      "description": "S5 startup go-item ranking - score and select top 2-3 items to pursue",
+      "path": ".claude/skills/lp-prioritize/SKILL.md"
+    },
+    {
+      "name": "lp-do-assessment-01-problem-framing",
+      "description": "Problem framing for new startups (ASSESSMENT-01). Produces a falsifiable problem statement artifact before entering ASSESSMENT intake. Upstream of lp-do-assessment-02-solution-space-scan.",
+      "path": ".claude/skills/lp-do-assessment-01-problem-framing/SKILL.md"
+    },
+    {
+      "name": "lp-readiness",
+      "description": "Startup preflight gate (S1). Lightweight readiness check before entering the offer-building stage. Validates offer clarity, distribution feasibility, and measurement plan against minimal startup criteria.",
+      "path": ".claude/skills/lp-readiness/SKILL.md"
+    },
+    {
+      "name": "lp-refactor",
+      "description": "Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition.",
+      "path": ".claude/skills/lp-refactor/SKILL.md"
+    },
+    {
+      "name": "lp-seo",
+      "description": "S6B phased SEO strategy skill - keyword research, content clustering, SERP analysis, technical audit, and snippet optimization for any business",
+      "path": ".claude/skills/lp-seo/SKILL.md"
+    },
+    {
+      "name": "lp-sequence",
+      "description": "Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata to enable parallel subagent execution.",
+      "path": ".claude/skills/lp-sequence/SKILL.md"
+    },
+    {
+      "name": "lp-signal-review",
+      "description": "Weekly signal strengthening review for startup loop runs. Audits a run against ten structural signal-strengthening principles, scores each on Severity × Support axes, identifies top findings, and emits a Signal Review artifact with ranked Finding Briefs (quality check — what went wrong this run) and Process-Improvement Stubs (continuous improvement — which process artifact caused it and what to change).",
+      "path": ".claude/skills/lp-signal-review/SKILL.md"
+    },
+    {
+      "name": "lp-site-upgrade",
+      "description": "Build website-upgrade strategy in three layers: (1) periodic platform capability baseline, (2) per-business upgrade brief from reference sites, and (3) lp-do-fact-find handoff packet for prioritized implementation backlog. Use when upgrading an existing site by synthesizing best-of patterns with platform-fit constraints.",
+      "path": ".claude/skills/lp-site-upgrade/SKILL.md"
+    },
+    {
+      "name": "lp-do-assessment-02-solution-space-scan",
+      "description": "Solution space scanning for new startups (ASSESSMENT-02). Produces a structured deep-research-ready prompt covering 5-10 candidate product-type options with feasibility flags. Feasibility only — no demand scoring until S2.",
+      "path": ".claude/skills/lp-do-assessment-02-solution-space-scan/SKILL.md"
+    },
+    {
+      "name": "lp-visual",
+      "description": "Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js KPI dashboards). Supports multiple color palettes, brand-derived theming, and rich templates. Use when asked to add diagrams to a guide, visualise a system or workflow, build a KPI dashboard, or improve documentation readability with visuals.",
+      "path": ".claude/skills/lp-visual/SKILL.md"
+    },
+    {
+      "name": "lp-weekly",
+      "description": "S10 weekly orchestration wrapper. Coordinates the full weekly decision, audit/CI, measurement compilation, and experiment lane flows into one deterministic sequence. Additive-first; never replaces canonical S10 authorities. No new hard stage blocks in first iteration.",
+      "path": ".claude/skills/lp-weekly/SKILL.md"
+    },
+    {
+      "name": "meta-loop-efficiency",
+      "description": "Weekly startup-loop skill efficiency audit. Scans lp-* + startup-loop + draft-outreach skills with deterministic heuristics (wc-l, grep, ls), emits a ranked opportunity artifact, and fires a planning anchor only on new-to-HIGH findings.",
+      "path": ".claude/skills/meta-loop-efficiency/SKILL.md"
+    },
+    {
+      "name": "meta-reflect",
+      "description": "Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only - no theoretical improvements. Closes the feedback loop directly by updating existing files.",
+      "path": ".claude/skills/meta-reflect/SKILL.md"
+    },
+    {
+      "name": "meta-user-test",
+      "description": "Run a repeatable two-layer site audit: full sitemap JS-off coverage for complete issue inventory, then focused JS-on flow checks for hydration/booking UX. Emit dated markdown+JSON artifacts with prioritized findings and acceptance criteria.",
+      "path": ".claude/skills/meta-user-test/SKILL.md"
+    },
+    {
+      "name": "ops-git-recover",
+      "description": "Recover from confusing git states. Use when git status is unexpected, commits seem lost, you have a detached HEAD, or merge conflicts are overwhelming.",
+      "path": ".claude/skills/ops-git-recover/SKILL.md"
+    },
+    {
+      "name": "ops-inbox",
+      "description": "Process pending Brikette customer emails and generate draft responses using MCP tools",
+      "path": ".claude/skills/ops-inbox/SKILL.md"
+    },
+    {
+      "name": "ops-ship",
+      "description": "Ship local changes to origin/dev with hard-enforced git safety policy, integrator-shell lock/guard flow, validate-changes gating, and CI watch-fix loops until required checks pass.",
+      "path": ".claude/skills/ops-ship/SKILL.md"
+    },
+    {
+      "name": "review-plan-status",
+      "description": "Report on the status of incomplete plans — how many tasks remain in each. Optionally lp-do-factcheck plans before reporting.",
+      "path": ".claude/skills/review-plan-status/SKILL.md"
+    },
+    {
+      "name": "startup-loop",
+      "description": "Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks. Routes to lp-* stage skills at each stage.",
+      "path": ".claude/skills/startup-loop/SKILL.md"
+    }
+  ]
+}

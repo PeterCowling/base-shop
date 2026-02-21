@@ -7,7 +7,7 @@ description: Capture session learnings and propose targeted improvements to docs
 
 Capture evidence-based learnings from the current session (or a clearly identified recent session) and propose targeted, atomic improvements to existing documentation, skills, or core instructions. There is no separate learnings store: improvements are applied directly to the best existing target(s).
 
-This skill is a post-step that closes the loop after `/lp-fact-find`, `/lp-plan`, `/lp-replan`, and `/lp-build`.
+This skill is a post-step that closes the loop after `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-replan`, and `/lp-do-build`.
 
 ## Operating Mode
 
@@ -26,7 +26,7 @@ This skill is a post-step that closes the loop after `/lp-fact-find`, `/lp-plan`
 
 At trigger time, establish the minimum context (without derailing the user):
 
-**What session/workstream are we reflecting on?** (e.g., "the feature build we just completed", "the lp-replan for TASK-07", "the briefing request")
+**What session/workstream are we reflecting on?** (e.g., "the feature build we just completed", "the lp-do-replan for TASK-07", "the briefing request")
 
 **Where is the authoritative artifact?**
 
@@ -43,7 +43,7 @@ Prompt the user to run reflection when any of these occurred:
 
 ### Planning pipeline signals
 
-- A task was forced into `/lp-replan` due to <80% confidence.
+- A task was forced into `/lp-do-replan` due to <80% confidence.
 - A build stop occurred due to confidence regression or unexpected blast radius.
 - Plan task boundaries proved inaccurate (needed new files or new dependencies).
 - Acceptance criteria or test plan was missing/insufficient and had to be invented mid-build.
@@ -89,7 +89,7 @@ Use the smallest-layer change that solves the problem.
 
 Pick from:
 
-**Quantitative cost:** minutes lost, number of retries, number of CI failures, number of lp-replans, number of times user corrected behavior
+**Quantitative cost:** minutes lost, number of retries, number of CI failures, number of lp-do-replans, number of times user corrected behavior
 
 **Concrete session artifacts:** failing command output, specific error message, impacted file paths, plan task IDs, decision points recorded, discovered dependency chain
 
@@ -171,10 +171,10 @@ Use this exact structure when presenting changes:
 
 When reflecting on work that involved your planning skills, prefer these targets:
 
-- If the issue was unclear intent / insufficient initial user context → update `/lp-fact-find` intake gates (L1).
-- If the issue was task confidence inflation or missing evidence → update `/lp-plan` confidence rubric / evidence requirements (L1).
-- If the issue was mid-build surprises → update `/lp-build` stopping conditions and preflight/baseline checks (L1).
-- If the issue was tasks under-specified (missing acceptance/test/rollout) → update `/lp-replan` plan-repair requirements (L1).
+- If the issue was unclear intent / insufficient initial user context → update `/lp-do-fact-find` intake gates (L1).
+- If the issue was task confidence inflation or missing evidence → update `/lp-do-plan` confidence rubric / evidence requirements (L1).
+- If the issue was mid-build surprises → update `/lp-do-build` stopping conditions and preflight/baseline checks (L1).
+- If the issue was tasks under-specified (missing acceptance/test/rollout) → update `/lp-do-replan` plan-repair requirements (L1).
 - If the issue was subsystem-specific (e.g., auth edge case) → update a domain doc (L2), and optionally reference it from the plan template.
 
 ## Anti-Patterns (Explicitly Forbidden)

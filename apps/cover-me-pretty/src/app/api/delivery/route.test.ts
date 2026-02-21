@@ -159,7 +159,7 @@ it("returns provider errors as 400 responses", async () => {
 
   expect(response.status).toBe(400);
   expect(nextResponseJson).toHaveBeenLastCalledWith(
-    { error: "boom" },
+    { error: "Failed to schedule pickup" },
     { status: 400 }
   );
   existsSpy.mockRestore();

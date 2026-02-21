@@ -5,16 +5,24 @@ import type { GuideKey } from "@/routes.guides-helpers";
 import { debugGuide } from "@/utils/debug";
 import { allowEnglishGuideFallback } from "@/utils/guideFallbackPolicy";
 
-import { resolveSections, toListSection } from "./sections";
-import { looksLikePlaceholderTranslation, toStringArray, toTrimmedString } from "./strings";
+import {
+  applyAliasKeyLabel,
+  applyFallbackIfGeneric,
+  applyLegacyFaqAlias,
+  resolveInitialFaqsTitle,
+} from "./faqsTitleHelpers";
+import { buildCostsSection, buildEssentialsSection } from "./listSectionBuilders";
+import { applyBackCompatTocLabels, resolveSectionsWithAlias } from "./sectionResolvers";
+import { resolveSections } from "./sections";
+import { looksLikePlaceholderTranslation, toStringArray } from "./strings";
+import { resolveTipsTitle, resolveTocTitle, resolveWarningsTitle } from "./titleResolvers";
 import { normaliseTocOverrides } from "./toc";
-import { resolveLabelFallback, resolveTitle } from "./translations";
+import { resolveLabelFallback } from "./translations";
 import type {
   FAQ,
   GenericContentTranslator,
   ListSectionConfig,
   ResolvedSection,
-  Section,
   SupplementalNavEntry,
   TocOverrides,
 } from "./types";
@@ -101,70 +109,42 @@ function buildIntro(
   return tryEnglishFallback(guideKey, `content.${guideKey}.intro`, baseMeaningful);
 }
 
-export function buildGenericContentData(
+function normaliseFaq(entry: unknown): FAQ | null {
+  try {
+    if (!entry || typeof entry !== "object") return null;
+    const obj = entry as Record<string, unknown>;
+    const qRaw =
+      ("q" in obj ? obj["q"] : undefined) ?? ("question" in obj ? obj["question"] : undefined);
+    const aRaw =
+      ("a" in obj ? obj["a"] : undefined) ?? ("answer" in obj ? obj["answer"] : undefined);
+    const q = typeof qRaw === "string" ? qRaw.trim() : "";
+    if (!q) return null;
+    const answers = toStringArray(aRaw);
+    if (answers.length === 0) return null;
+    return { q, a: answers };
+  } catch {
+    return null;
+  }
+}
+
+function dedupFaqs(faqs: FAQ[]): FAQ[] {
+  const seen = new Set<string>();
+  return faqs.filter((item) => {
+    const key = `${item.q}::${Array.isArray(item.a) ? item.a.join("\u0001") : String(item.a)}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function buildFaqs(
   t: GenericContentTranslator,
   guideKey: GuideKey,
-): GenericContentData | null {
-  const introRaw = t(`content.${guideKey}.intro`, { returnObjects: true });
-  const sectionsRaw = t(`content.${guideKey}.sections`, { returnObjects: true });
-  const faqsRaw = t(`content.${guideKey}.faqs`, { returnObjects: true });
-  const faqRaw = t(`content.${guideKey}.faq`, { returnObjects: true });
-  const tocRaw = t(`content.${guideKey}.toc`, { returnObjects: true });
-  const tipsRaw = t(`content.${guideKey}.tips`, { returnObjects: true });
-  const warningsRaw = t(`content.${guideKey}.warnings`, { returnObjects: true });
-  const warningsContentKey = `content.${guideKey}.warnings` as const;
-  const aliasKey = getContentAlias(guideKey);
-  const mergeAliasFaqs = shouldMergeAliasFaqs(guideKey);
-
-  const intro = buildIntro(t, guideKey, introRaw, aliasKey);
-
-  const sections = (() => {
-    if (Array.isArray(sectionsRaw)) {
-      const base = sectionsRaw as Section[];
-      if (aliasKey && (!Array.isArray(base) || base.length === 0)) {
-        try {
-          const aliasSections = t(`content.${aliasKey}.sections`, { returnObjects: true }) as unknown;
-          if (Array.isArray(aliasSections)) return aliasSections as Section[];
-        } catch { /* noop */ }
-      }
-      return base;
-    }
-    if (aliasKey) {
-      try {
-        const aliasSections = t(`content.${aliasKey}.sections`, { returnObjects: true }) as unknown;
-        if (Array.isArray(aliasSections)) return aliasSections as Section[];
-      } catch { /* noop */ }
-    }
-    return [] as Section[];
-  })();
-  const tocOverrides = normaliseTocOverrides(tocRaw);
-  // Back-compat: allow translators to provide base labels outside the `toc` object
-  // e.g., `content.<key>.toc.section` and `content.<key>.toc.faqs`.
-  try {
-    const sectionBase = t(`content.${guideKey}.toc.section`) as string;
-    if (typeof sectionBase === "string") {
-      const trimmed = sectionBase.trim();
-      const k = `content.${guideKey}.toc.section` as const;
-      if (trimmed && trimmed !== k && !tocOverrides.labels.has("section")) {
-        tocOverrides.labels.set("section", trimmed);
-      }
-    }
-  } catch {
-    void 0;
-  }
-  try {
-    const faqsBase = t(`content.${guideKey}.toc.faqs`) as string;
-    if (typeof faqsBase === "string") {
-      const trimmed = faqsBase.trim();
-      const k = `content.${guideKey}.toc.faqs` as const;
-      if (trimmed && trimmed !== k && !tocOverrides.labels.has("faqs")) {
-        tocOverrides.labels.set("faqs", trimmed);
-      }
-    }
-  } catch {
-    void 0;
-  }
-
+  faqsRaw: unknown,
+  faqRaw: unknown,
+  aliasKey: GuideKey | null | undefined,
+  mergeAliasFaqs: boolean,
+): FAQ[] {
   // Prefer route-specific alias FAQs when present
   const aliasFaqsA = aliasKey && mergeAliasFaqs
     ? ((): FAQ[] => {
@@ -184,36 +164,12 @@ export function buildGenericContentData(
     : [];
   const faqsA = Array.isArray(faqsRaw) ? (faqsRaw as FAQ[]) : [];
   const faqsB = Array.isArray(faqRaw) ? (faqRaw as FAQ[]) : [];
-  // Normalise and deduplicate FAQs across both shapes (faqs/faq)
-  const normaliseFaq = (entry: unknown): FAQ | null => {
-    try {
-      if (!entry || typeof entry !== "object") return null;
-      const obj = entry as Record<string, unknown>;
-      const qRaw =
-        ("q" in obj ? obj["q"] : undefined) ?? ("question" in obj ? obj["question"] : undefined);
-      const aRaw =
-        ("a" in obj ? obj["a"] : undefined) ?? ("answer" in obj ? obj["answer"] : undefined);
-      const q = typeof qRaw === "string" ? qRaw.trim() : "";
-      if (!q) return null;
-      const answers = toStringArray(aRaw);
-      if (answers.length === 0) return null;
-      return { q, a: answers };
-    } catch {
-      return null;
-    }
-  };
 
   const combinedFaqs = [...aliasFaqsA, ...aliasFaqsB, ...faqsA, ...faqsB]
     .map((e) => normaliseFaq(e))
     .filter((e): e is FAQ => e != null);
 
-  const seen = new Set<string>();
-  let faqs = combinedFaqs.filter((item) => {
-    const key = `${item.q}::${Array.isArray(item.a) ? item.a.join("\u0001") : String(item.a)}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  let faqs = dedupFaqs(combinedFaqs);
 
   if (faqs.length === 0) {
     try {
@@ -227,94 +183,90 @@ export function buildGenericContentData(
           const merged = [...toArr(enA), ...toArr(enB)]
             .map((e) => normaliseFaq(e))
             .filter((e): e is FAQ => e != null);
-          const dedup = new Set<string>();
-          const unique = merged.filter((item) => {
-            const key = `${item.q}::${Array.isArray(item.a) ? item.a.join('\u0001') : String(item.a)}`;
-            if (dedup.has(key)) return false;
-            dedup.add(key);
-            return true;
-          });
-          if (unique.length > 0) faqs = unique;
+          if (merged.length > 0) faqs = dedupFaqs(merged);
         }
       }
     } catch { /* noop */ }
   }
 
-  const tocTitle = resolveTocTitle(t, guideKey, tocOverrides);
+  return faqs;
+}
 
+function resolveFaqsTitle(
+  t: GenericContentTranslator,
+  guideKey: GuideKey,
+  aliasKey: GuideKey | null | undefined,
+  mergeAliasFaqs: boolean,
+  tocOverrides: TocOverrides,
+): { faqsTitle: string; faqsTitleSuppressed: boolean } {
   const faqsTitleKey = `content.${guideKey}.faqsTitle` as const;
-  const faqsFallback = resolveLabelFallback(t, "labels.faqsHeading");
+  const faqsFallback = resolveLabelFallback(t, "labels.faqsHeading") ?? '';
   const faqsTitleRaw = t(faqsTitleKey) as unknown;
   const faqsRawTrimmed = typeof faqsTitleRaw === 'string' ? faqsTitleRaw.trim() : '';
-  let faqsTitleSuppressed = false;
-  let faqsTitle = ((): string => {
-    if (typeof faqsTitleRaw === 'string' && faqsRawTrimmed.length === 0) {
-      // When the localized title is deliberately blank, prefer an explicit EN
-      // fallback if one exists; otherwise mark the heading as suppressed so the
-      // section renders without an H2 and the ToC omits the FAQs anchor.
-      try {
-        const enRaw = t(faqsTitleKey, { lng: 'en' }) as unknown;
-        const en = typeof enRaw === 'string' ? enRaw.trim() : '';
-        if (en && en !== faqsTitleKey) {
-          return en;
-        }
-      } catch { /* noop */ }
-      faqsTitleSuppressed = true;
-      return '';
-    }
-    return resolveTitle(
-      faqsTitleRaw as string,
-      faqsTitleKey,
-      faqsFallback,
-      tocOverrides.labels.get("faqs"),
-    );
-  })();
-  // Accept legacy alias: treat content.<key>.faqHeading as the FAQs section
-  // title when faqsTitle is missing or generic. This keeps older content
-  // bundles compatible with GenericContent.
-  try {
-    const aliasKey = `content.${guideKey}.faqHeading` as const;
-    const alias = toTrimmedString(t(aliasKey) as unknown);
-    const current = toTrimmedString(faqsTitle);
-    const isGeneric = current ? current.toLowerCase() === "faqs" || current === faqsTitleKey : false;
-    if (alias && alias !== aliasKey && (!current || isGeneric)) {
-      faqsTitle = alias;
-    }
-  } catch {
-    /* noop */
-  }
-  // If the resolved FAQs title is the generic default (e.g. "FAQs") but a
-  // localized fallback exists for the heading label, prefer that value so the
-  // ToC entry matches the section heading expected by tests and UX.
-  if (
-    faqsFallback &&
-    faqsTitle &&
-    faqsTitle.trim().toLowerCase() === "faqs" &&
-    faqsFallback.trim().length > 0 &&
-    faqsFallback.trim().toLowerCase() !== "faqs"
-  ) {
-    faqsTitle = faqsFallback;
-  }
 
+  // 1) Resolve initial title
+  const { title: initialTitle, suppressed: initialSuppressed } = resolveInitialFaqsTitle({
+    t,
+    faqsTitleKey,
+    faqsTitleRaw,
+    faqsRawTrimmed,
+    faqsFallback,
+    tocOverrides,
+  });
+
+  let faqsTitle = initialTitle;
+  let faqsTitleSuppressed = initialSuppressed;
+
+  // 2) Apply legacy alias
+  faqsTitle = applyLegacyFaqAlias(t, guideKey, faqsTitleKey, faqsTitle);
+
+  // 3) Apply fallback if generic
+  faqsTitle = applyFallbackIfGeneric(faqsTitle, faqsFallback);
+
+  // 4) Update suppressed flag
   if (typeof faqsTitle === 'string' && faqsTitle.trim().length > 0) {
     faqsTitleSuppressed = false;
   }
 
-  // Route-specific alias support: prefer the alias key's ToC FAQs label when
-  // present. This allows `content.<alias>.toc.faqs` to define the FAQs section
-  // heading even when the primary guide key is used. Always prefer the alias
-  // when provided to match tests/UX.
-  if (aliasKey && mergeAliasFaqs) {
-    try {
-      const aliasKeyPath = `content.${aliasKey}.toc.faqs` as const;
-      const aliasLabel = toTrimmedString(t(aliasKeyPath) as unknown);
-      if (aliasLabel && aliasLabel !== aliasKeyPath) {
-        faqsTitle = aliasLabel;
-      }
-    } catch {
-      void 0;
-    }
-  }
+  // 5) Apply alias key label
+  faqsTitle = applyAliasKeyLabel(t, aliasKey, mergeAliasFaqs, faqsTitle);
+
+  return { faqsTitle, faqsTitleSuppressed };
+}
+
+export function buildGenericContentData(
+  t: GenericContentTranslator,
+  guideKey: GuideKey,
+): GenericContentData | null {
+  const introRaw = t(`content.${guideKey}.intro`, { returnObjects: true });
+  const sectionsRaw = t(`content.${guideKey}.sections`, { returnObjects: true });
+  const faqsRaw = t(`content.${guideKey}.faqs`, { returnObjects: true });
+  const faqRaw = t(`content.${guideKey}.faq`, { returnObjects: true });
+  const tocRaw = t(`content.${guideKey}.toc`, { returnObjects: true });
+  const tipsRaw = t(`content.${guideKey}.tips`, { returnObjects: true });
+  const warningsRaw = t(`content.${guideKey}.warnings`, { returnObjects: true });
+  const warningsContentKey = `content.${guideKey}.warnings` as const;
+  const aliasKey = getContentAlias(guideKey);
+  const mergeAliasFaqs = shouldMergeAliasFaqs(guideKey);
+
+  const intro = buildIntro(t, guideKey, introRaw, aliasKey);
+
+  const sections = resolveSectionsWithAlias(sectionsRaw, t, guideKey, aliasKey);
+
+  const tocOverrides = normaliseTocOverrides(tocRaw);
+  applyBackCompatTocLabels(t, guideKey, tocOverrides);
+
+  const faqs = buildFaqs(t, guideKey, faqsRaw, faqRaw, aliasKey, mergeAliasFaqs);
+
+  const tocTitle = resolveTocTitle(t, guideKey, tocOverrides);
+
+  const { faqsTitle, faqsTitleSuppressed } = resolveFaqsTitle(
+    t,
+    guideKey,
+    aliasKey,
+    mergeAliasFaqs,
+    tocOverrides,
+  );
 
   const tipsContentKey = `content.${guideKey}.tips` as const;
   const tips = toStringArray(tipsRaw).filter((value) =>
@@ -324,64 +276,11 @@ export function buildGenericContentData(
     !looksLikePlaceholderTranslation(value, warningsContentKey, guideKey),
   );
 
-  const tipsKey = "labels.tipsHeading" as const;
-  const warningsKey = "labels.warningsHeading" as const;
-  const defaultTipsTitle = resolveLabelFallback(t, tipsKey);
-  const defaultWarningsTitle = resolveLabelFallback(t, warningsKey);
+  const tipsTitle = resolveTipsTitle(t, guideKey, tocOverrides);
+  const warningsTitle = resolveWarningsTitle(t, guideKey, tocOverrides);
 
-  const tipsTitleKey = `content.${guideKey}.tipsTitle` as const;
-  const tipsTitle = resolveTitle(
-    t(tipsTitleKey) as string,
-    tipsTitleKey,
-    defaultTipsTitle,
-    tocOverrides.labels.get("tips"),
-  );
-
-  const warningsTitleKey = `content.${guideKey}.warningsTitle` as const;
-  const warningsTitle = resolveTitle(
-    t(warningsTitleKey) as string,
-    warningsTitleKey,
-    defaultWarningsTitle,
-    tocOverrides.labels.get("warnings"),
-  );
-
-  const essentialsTitleKey = `content.${guideKey}.essentialsTitle` as const;
-  const essentialsFallback = resolveLabelFallback(t, "labels.essentialsHeading");
-  const essentialsTitle = resolveTitle(
-    t(essentialsTitleKey) as string,
-    essentialsTitleKey,
-    essentialsFallback,
-    tocOverrides.labels.get("essentials"),
-  );
-
-  const essentialsSection = toListSection(
-    t(`content.${guideKey}.essentials`, { returnObjects: true }),
-    essentialsTitle,
-    "essentials",
-    {
-      expectedKey: `content.${guideKey}.essentials`,
-      guideKey,
-    },
-  );
-
-  const costsTitleKey = `content.${guideKey}.typicalCostsTitle` as const;
-  const costsFallback = resolveLabelFallback(t, "labels.typicalCostsHeading");
-  const costsTitle = resolveTitle(
-    t(costsTitleKey) as string,
-    costsTitleKey,
-    costsFallback,
-    tocOverrides.labels.get("costs"),
-  );
-
-  const costsSection = toListSection(
-    t(`content.${guideKey}.typicalCosts`, { returnObjects: true }),
-    costsTitle,
-    "costs",
-    {
-      expectedKey: `content.${guideKey}.typicalCosts`,
-      guideKey,
-    },
-  );
+  const essentialsSection = buildEssentialsSection(t, guideKey, tocOverrides);
+  const costsSection = buildCostsSection(t, guideKey, tocOverrides);
 
   const resolvedSections = resolveSections(sections, tocOverrides);
 
@@ -427,29 +326,6 @@ export function buildGenericContentData(
     supplementalNav,
     ...(tocTitle !== undefined ? { tocTitle } : {}),
   };
-}
-
-function resolveTocTitle(
-  t: GenericContentTranslator,
-  guideKey: string,
-  tocOverrides: TocOverrides,
-): string | undefined {
-  const tocTitleKey = `content.${guideKey}.tocTitle` as const;
-  const tocTitleRaw = t(tocTitleKey) as string;
-
-  if (
-    typeof tocTitleRaw === "string" &&
-    tocTitleRaw.trim().length > 0 &&
-    tocTitleRaw !== tocTitleKey
-  ) {
-    return tocTitleRaw;
-  }
-
-  if (tocOverrides.title && tocOverrides.title.trim().length > 0) {
-    return tocOverrides.title;
-  }
-
-  return undefined;
 }
 
 function buildSupplementalNav(entries: Array<{ id: string; label: string } | null>): SupplementalNavEntry[] {

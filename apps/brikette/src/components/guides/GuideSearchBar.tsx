@@ -118,6 +118,7 @@ export interface GuideSearchBarProps {
 function SearchIcon({ className }: { className?: string }) {
   return (
     <svg
+      // eslint-disable-next-line ds/no-hardcoded-copy -- TASK-29: SVG namespace URL is not user-facing copy
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       fill="currentColor"

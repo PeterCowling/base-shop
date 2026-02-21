@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationDir": null,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "rootDir": "../..",
+    "types": ["node", "react", "jest", "@testing-library/jest-dom"],
+    "verbatimModuleSyntax": false
+  },
+  "include": [
+    "src/__tests__/**/*.ts",
+    "src/__tests__/**/*.tsx"
+  ],
+  "exclude": ["**/node_modules/**", "**/dist/**"]
+}

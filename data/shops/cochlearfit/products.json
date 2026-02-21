@@ -1,0 +1,120 @@
+[
+  {
+    "id": "cochlearfit-classic",
+    "sku": "classic",
+    "status": "active",
+    "title": {
+      "en": "product.classic.name"
+    },
+    "description": {
+      "en": "product.classic.shortDescription"
+    },
+    "style": {
+      "en": "product.classic.style"
+    },
+    "shortDescription": {
+      "en": "product.classic.shortDescription"
+    },
+    "longDescription": {
+      "en": "product.classic.longDescription"
+    },
+    "featureBullets": {
+      "en": [
+        "product.classic.feature1",
+        "product.classic.feature2",
+        "product.classic.feature3"
+      ]
+    },
+    "materials": {
+      "en": [
+        "product.classic.material1",
+        "product.classic.material2"
+      ]
+    },
+    "careInstructions": {
+      "en": [
+        "product.classic.care1",
+        "product.classic.care2",
+        "product.classic.care3"
+      ]
+    },
+    "compatibilityNotes": {
+      "en": [
+        "product.classic.compatibility1",
+        "product.classic.compatibility2",
+        "product.classic.compatibility3"
+      ]
+    },
+    "media": [
+      {
+        "url": "/images/classic-hero.svg",
+        "type": "image",
+        "altText": "product.classic.image1Alt"
+      },
+      {
+        "url": "/images/classic-detail.svg",
+        "type": "image",
+        "altText": "product.classic.image2Alt"
+      }
+    ]
+  },
+  {
+    "id": "cochlearfit-sport",
+    "sku": "sport",
+    "status": "active",
+    "title": {
+      "en": "product.sport.name"
+    },
+    "description": {
+      "en": "product.sport.shortDescription"
+    },
+    "style": {
+      "en": "product.sport.style"
+    },
+    "shortDescription": {
+      "en": "product.sport.shortDescription"
+    },
+    "longDescription": {
+      "en": "product.sport.longDescription"
+    },
+    "featureBullets": {
+      "en": [
+        "product.sport.feature1",
+        "product.sport.feature2",
+        "product.sport.feature3"
+      ]
+    },
+    "materials": {
+      "en": [
+        "product.sport.material1",
+        "product.sport.material2"
+      ]
+    },
+    "careInstructions": {
+      "en": [
+        "product.sport.care1",
+        "product.sport.care2",
+        "product.sport.care3"
+      ]
+    },
+    "compatibilityNotes": {
+      "en": [
+        "product.sport.compatibility1",
+        "product.sport.compatibility2",
+        "product.sport.compatibility3"
+      ]
+    },
+    "media": [
+      {
+        "url": "/images/sport-hero.svg",
+        "type": "image",
+        "altText": "product.sport.image1Alt"
+      },
+      {
+        "url": "/images/sport-detail.svg",
+        "type": "image",
+        "altText": "product.sport.image2Alt"
+      }
+    ]
+  }
+]

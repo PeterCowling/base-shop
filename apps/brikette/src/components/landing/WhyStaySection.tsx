@@ -39,11 +39,11 @@ const WhyStaySection = memo(function WhyStaySection({ lang }: { lang?: AppLangua
             return (
               <Stack
                 key={item.title}
-                className="h-full gap-3 rounded-2xl border border-brand-outline/30 bg-brand-bg p-5 shadow-sm dark:border-white/10 dark:bg-brand-surface"
+                className="h-full gap-3 rounded-2xl border border-brand-outline/30 bg-brand-bg p-5 shadow-sm border-fg-inverse/10 dark:bg-brand-surface"
               >
                 <Inline
                   as="span"
-                  className="size-10 justify-center rounded-full bg-brand-surface/70 text-brand-primary dark:bg-white/10"
+                  className="size-10 justify-center rounded-full bg-brand-surface/70 text-brand-primary bg-fg-inverse/10"
                 >
                   <Icon className="size-5" aria-hidden />
                 </Inline>

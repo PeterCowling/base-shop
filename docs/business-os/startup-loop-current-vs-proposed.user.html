@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Startup Loop: Current System vs Proposed Upgrade (Standalone Briefing)</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>Startup Loop: Current System vs Proposed Upgrade (Standalone Briefing)</h1>
+<h2>1) Purpose of This Document</h2>
+<p>This document explains, in plain language:</p>
+<ol>
+<li>What the Startup Loop system does today.</li>
+<li>Where it is currently fragile.</li>
+<li>What is being proposed to fix it.</li>
+<li>What will change for operators and reviewers.</li>
+</ol>
+<p>This is written so a reader can assess the system without needing access to any internal repository.
+<code>BOS</code> means <code>Business Operating System</code> (the system of record for ideas/cards/stage docs).</p>
+<h2>2) Audience Scope and Reading Path</h2>
+<p>Primary audience:</p>
+<ol>
+<li>External reviewers assessing architecture soundness, autonomy safety, and scalability.</li>
+</ol>
+<p>Secondary audience:</p>
+<ol>
+<li>Internal implementers using the appendices for concrete contract shapes.</li>
+</ol>
+<p>Recommended reading path:</p>
+<ol>
+<li>Read Sections <code>1</code> to <code>15</code> for decision-grade review.</li>
+<li>Use Sections <code>16</code> to <code>18</code> only if you need implementation-oriented contract examples and disposition history.</li>
+</ol>
+<h2>3) Executive Summary</h2>
+<p>The system already has strong capability coverage. It can:</p>
+<ol>
+<li>Intake business ideas.</li>
+<li>Run readiness checks.</li>
+<li>Bring in market research.</li>
+<li>Build forecasts.</li>
+<li>Prioritize execution items.</li>
+<li>Route items into fact-find -> plan -> build.</li>
+<li>Run launch QA and weekly experiments.</li>
+</ol>
+<p>The main weakness is contract drift, not missing capability. In practical terms, different parts of the system disagree on:</p>
+<ol>
+<li>Stage names and stage order.</li>
+<li>Input/output file locations.</li>
+<li>Fact-find/plan/build handoff naming.</li>
+<li>Which step is responsible for writing to the business system of record.</li>
+</ol>
+<p>The proposal is to treat the loop like a versioned API:</p>
+<ol>
+<li>One canonical loop specification.</li>
+<li>One artifact manifest per business.</li>
+<li>One canonical workspace for feature delivery artifacts.</li>
+<li>Explicit split between reasoning steps and persistence steps.</li>
+<li>Explicit fan-out/fan-in barriers for safe parallel execution.</li>
+<li>Automated contract lint checks so drift is caught in CI, not by manual audits.</li>
+</ol>
+<h2>4) Decisions Required to Proceed</h2>
+<p>These are explicit closure points. The proposal should not move to build until each item has an owner and decision date.</p>
+<table>
+<thead>
+<tr>
+<th>Decision area</th>
+<th>Decision to make</th>
+<th>Recommended direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Canonical stage set</td>
+<td>Confirm final stage list, including <code>S2B</code>, <code>S6B</code>, <code>S9B</code>, and whether <code>S4</code> is a stage or only a barrier</td>
+<td>Keep <code>S2B/S6B/S9B</code>; define <code>S4</code> as a first-class stage that also acts as a join barrier</td>
+</tr>
+<tr>
+<td>Canonical artifact roots</td>
+<td>Confirm exact allowed directory classes for baseline artifacts and feature workspaces</td>
+<td>Baseline: one canonical <code>&#x3C;baseline_root></code>; feature delivery: one canonical <code>&#x3C;feature_workspace_root>/&#x3C;feature_id>/</code></td>
+</tr>
+<tr>
+<td>Canonical stage-doc keys</td>
+<td>Confirm final key names and legacy alias policy</td>
+<td>Use canonical keys and time-box alias support with a clear sunset date</td>
+</tr>
+<tr>
+<td>S10 primitive</td>
+<td>Confirm whether to unify on one route or keep multiple launch routes</td>
+<td>Unify on <code>/lp-experiment</code>; treat launch as a state transition inside derived run-state</td>
+</tr>
+<tr>
+<td>Migration window</td>
+<td>Confirm compatibility window length and exit criteria</td>
+<td>Set a defined migration period plus hard exit checks before removing legacy paths</td>
+</tr>
+<tr>
+<td>Locking model</td>
+<td>Confirm whether shared-output writer locks are mandatory, including TTL and recovery rules</td>
+<td>Prefer lock-free single-writer updates; use TTL lock only as exceptional recovery/fallback mechanism</td>
+</tr>
+<tr>
+<td>Run concurrency policy</td>
+<td>Confirm whether multiple concurrent runs per business are allowed</td>
+<td>Start with one active run per business (queue additional runs), then relax only after explicit health criteria are met</td>
+</tr>
+<tr>
+<td>Baseline semantics</td>
+<td>Confirm run-level baseline vs business-level current baseline and commit point</td>
+<td>Keep run baseline immutable; update business-current baseline only at explicit commit stage (<code>S4</code> or <code>S5B</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2>5) What the Current System Is Trying to Do</h2>
+<h3>Core objective</h3>
+<p>Take a business from idea and constraints to repeatable execution decisions, while continuously learning from outcomes.</p>
+<h3>Current high-level loop</h3>
+<ol>
+<li>Intake: capture business idea, product direction, constraints.</li>
+<li>Readiness: check whether enough context exists to proceed.</li>
+<li>Research: gather market and channel intelligence.</li>
+<li>Forecasting: model expected outcomes and guardrails.</li>
+<li>Prioritization: select the best next go-items.</li>
+<li>Delivery chain: fact-find -> plan -> build.</li>
+<li>QA and measurement: validate before launch.</li>
+<li>Weekly decision loop: Keep, Pivot, Scale, or Kill.</li>
+</ol>
+<h3>Current strengths</h3>
+<ol>
+<li>Broad skill coverage across strategy, delivery, quality, and measurement.</li>
+<li>Good operator-facing workflow documentation.</li>
+<li>Clear intent to support both startup and existing-business paths.</li>
+<li>Strong emphasis on evidence and documented outputs.</li>
+<li>Parallelization potential already identified in key branches.</li>
+</ol>
+<h2>6) Where the Current System Breaks Down</h2>
+<p>These are reliability issues, not idea-quality issues.</p>
+<h3>Contract drift (three truths problem)</h3>
+<p>Today, the system has three separate sources of truth:</p>
+<ol>
+<li>Human workflow guide.</li>
+<li>Orchestration wrapper.</li>
+<li>Individual skill contracts.</li>
+</ol>
+<p>When these drift, the operator sees one sequence while automation executes another.</p>
+<h3>Stage graph mismatch</h3>
+<p>Some stages exist in automation but are not consistently modeled in the human workflow and prompt index. This causes ambiguity in:</p>
+<ol>
+<li>What is “current stage”.</li>
+<li>What must be completed before advancing.</li>
+<li>Which outputs are mandatory.</li>
+</ol>
+<h3>Artifact path mismatch</h3>
+<p>Different skills currently expect different artifact shapes (flat naming vs nested stage folders). This causes consumer skills to miss producer outputs.</p>
+<h3>Handoff naming mismatch</h3>
+<p>Fact-find to plan/build handoff uses inconsistent naming conventions, which breaks fast-path automation and requires manual intervention.</p>
+<h3>Reasoning vs persistence mixed contracts</h3>
+<p>A prioritization step is expected (in workflow) to also persist cards/items to the system of record, while the skill itself defines no side effects. This is a clean architecture split that has not yet been formalized.</p>
+<h3>Launch primitive ambiguity</h3>
+<p>The loop references two different end-of-build transitions for post-build progression, causing uncertainty in what “ready to launch” actually means.</p>
+<h3>Parallelization without explicit join contracts</h3>
+<p>Parallel branches are identified, but some merges are still implied rather than explicitly enforced by a merge barrier contract.</p>
+<h2>7) Proposed System (What Changes)</h2>
+<h3>Design principles</h3>
+<ol>
+<li>Single source of truth for stage contracts.</li>
+<li>Artifact resolution by manifest, not hardcoded file guesses.</li>
+<li>Deterministic fan-out/fan-in for parallel work.</li>
+<li>Single-writer control plane for shared state updates.</li>
+<li>Clear separation of pure reasoning and side effects.</li>
+<li>Backward compatibility during migration.</li>
+<li>CI guardrails to prevent future drift.</li>
+<li>Controlled velocity: explicit breakage containment plus stabilization triggers.</li>
+</ol>
+<h3>Proposed architecture changes</h3>
+<h4>Change A: Canonical Loop Spec</h4>
+<p>Introduce one machine-readable loop contract (<code>versioned</code>) that defines:</p>
+<ol>
+<li>Stages and ordering.</li>
+<li>Gate rules.</li>
+<li>Allowed parallel branches.</li>
+<li>Required artifacts in/out.</li>
+<li>Join points.</li>
+</ol>
+<p>All human docs and orchestration routes must match this spec.
+The orchestrator must consume this spec at runtime (or generate its routing table from it), not just reference it in documentation.
+Each run should record the exact loop spec version used.</p>
+<h4>Change B: Baseline Manifest + Resolver</h4>
+<p>For each business, maintain one manifest that points to canonical artifacts by logical key (for example <code>offer</code>, <code>channels</code>, <code>forecast</code>, <code>loop_state</code>).</p>
+<p>Consumer steps must resolve artifacts through the manifest first, with legacy fallback allowed during migration.
+Parallel workers should not update the manifest directly. They write only stage-owned outputs; a single writer (or merge stage) updates the manifest after validation.
+Manifest entries should include minimal integrity metadata (for example timestamp + fingerprint/hash) to reduce stale-pointer risk.</p>
+<h4>Change C: Feature Workspace Standard</h4>
+<p>Replace filename-convention handoffs with one canonical per-feature workspace:</p>
+<ol>
+<li>Fact-find artifact.</li>
+<li>Plan artifact.</li>
+<li>Sequence/parallelism artifact.</li>
+<li>Build log artifact.</li>
+<li>QA artifact.</li>
+</ol>
+<p>This eliminates naming ambiguity and keeps all feature lifecycle artifacts together.</p>
+<h4>Change D: Split S5 into Reasoning and Persistence</h4>
+<p>Formalize two separate responsibilities:</p>
+<ol>
+<li>Prioritize (pure ranking, no writes).</li>
+<li>BOS sync (create/update cards and stage docs in the system of record).</li>
+</ol>
+<p>This removes contract contradiction and makes prioritization reusable in dry-run mode.
+Prioritize can run in dry-run mode on any baseline snapshot; BOS sync is the sole step allowed to mutate the system of record.</p>
+<h4>Change E: Canonical Stage-Doc Keys + Aliases</h4>
+<p>Use canonical keys for stage docs (fact-find, plan, build, QA, experiment) and keep a temporary alias map for legacy names during migration.</p>
+<h4>Change F: Run-state convergence primitive</h4>
+<p>Define one run-state ledger per business that records:</p>
+<ol>
+<li>Active stage.</li>
+<li>Stage status (<code>NotStarted</code>, <code>Active</code>, <code>Done</code>, <code>Blocked</code>).</li>
+<li>Blocking reasons.</li>
+<li>Artifact pointers.</li>
+<li>Writer-lock metadata for shared outputs.</li>
+</ol>
+<p>Preferred model for scale:</p>
+<ol>
+<li>Append-only run events (<code>events.jsonl</code>) as source of truth.</li>
+<li>Derived run state (<code>state.json</code>) generated from events.</li>
+<li>Single writer updates derived shared state pointers.</li>
+</ol>
+<p>This becomes the gating input for launch QA and post-build progression.</p>
+<h4>Change F2: Baseline Commit Semantics</h4>
+<p>To avoid partial-strategy contamination:</p>
+<ol>
+<li>Run-level baseline is immutable and scoped to the run.</li>
+<li>Business-level “current baseline” is a controlled pointer.</li>
+<li>Only explicit commit stages (<code>S4</code> or <code>S5B</code>, per final decision) can update that business-level pointer.</li>
+</ol>
+<h4>Change G: S10 primitive unification</h4>
+<p>Pick one canonical post-build continuation route for weekly experimentation and remove unresolved alternate paths.</p>
+<h4>Change H: Contract lint in CI</h4>
+<p>Add automated checks for:</p>
+<ol>
+<li>Stage graph mismatch.</li>
+<li>Missing/stale skill references.</li>
+<li>Non-canonical artifact root usage.</li>
+<li>Legacy names reintroduced by mistake.</li>
+</ol>
+<p>Minimum rule set for “contract lint”:</p>
+<ol>
+<li>Wrapper stage graph matches loop spec.</li>
+<li>Prompt index covers loop-spec stages, or explicitly marks <code>no-prompt-required</code>.</li>
+<li>Every referenced skill exists.</li>
+<li>Skills write only under canonical artifact roots.</li>
+<li>Produced artifacts are registered in the business baseline manifest.</li>
+<li>Legacy naming fails lint after sunset date.</li>
+</ol>
+<h4>Change I: Explicit Baseline Merge Barrier</h4>
+<p>Make baseline merge a first-class stage (<code>S4</code>) that joins parallel branch outputs deterministically before prioritization and writes a canonical baseline snapshot.</p>
+<h4>Change J: Autonomy Policy + Blast Radius Controls</h4>
+<p>Add explicit execution policy modes so autonomy can be high without uncontrolled side effects:</p>
+<ol>
+<li>Autonomous actions (safe by default).</li>
+<li>Guarded actions (require stricter checks or explicit approval mode).</li>
+<li>Prohibited actions (unless explicit override path is used).</li>
+</ol>
+<p>This keeps speed high while containing failure impact.</p>
+<p>Minimum classification examples:</p>
+<table>
+<thead>
+<tr>
+<th>Policy mode</th>
+<th>Example actions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Autonomous</td>
+<td>Generate stage artifacts, write stage result files, run analysis/lint/planning tasks</td>
+</tr>
+<tr>
+<td>Guarded</td>
+<td>Update business-current baseline pointer, apply <code>bos-sync</code>, deploy or publish changes</td>
+</tr>
+<tr>
+<td>Prohibited by default</td>
+<td>Delete run history, destructive bulk mutations, irreversible data rewrites</td>
+</tr>
+</tbody>
+</table>
+<h4>Change K: Observability for Autonomy Health</h4>
+<p>Track operational autonomy quality, not just output artifacts. Minimum metrics:</p>
+<ol>
+<li>Manual intervention rate per run.</li>
+<li>Replan loop frequency.</li>
+<li>Join-block frequency and causes.</li>
+<li>Time to reach S9B.</li>
+<li>Contract-lint failure trend.</li>
+</ol>
+<h2>8) Current vs Proposed Comparison</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Current</th>
+<th>Proposed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stage model</td>
+<td>Defined in multiple places, can drift</td>
+<td>One canonical loop spec, all views validated against it</td>
+</tr>
+<tr>
+<td>Artifact lookup</td>
+<td>Skill-specific hardcoded paths</td>
+<td>Manifest-driven resolution with legacy fallback</td>
+</tr>
+<tr>
+<td>Fact-find -> plan -> build handoff</td>
+<td>File naming conventions, inconsistent</td>
+<td>Canonical per-feature workspace</td>
+</tr>
+<tr>
+<td>Prioritization and BOS writes</td>
+<td>Mixed expectations, conflicting contracts</td>
+<td>Explicit split: prioritize vs bos-sync</td>
+</tr>
+<tr>
+<td>Stage-doc naming</td>
+<td>Inconsistent keys in some contracts</td>
+<td>Canonical keys + alias bridge</td>
+</tr>
+<tr>
+<td>Shared state ownership</td>
+<td>Multiple skills may contend on shared pointers</td>
+<td>Single-writer control plane for manifest + run state</td>
+</tr>
+<tr>
+<td>Parallel execution</td>
+<td>Identified but partially informal</td>
+<td>Explicit fan-out/fan-in with merge barrier</td>
+</tr>
+<tr>
+<td>Launch progression</td>
+<td>Ambiguous primitive in parts of system</td>
+<td>Unified post-build route</td>
+</tr>
+<tr>
+<td>Drift detection</td>
+<td>Manual audit required</td>
+<td>CI lint checks catch contract regressions</td>
+</tr>
+<tr>
+<td>Autonomy risk control</td>
+<td>Implicit and inconsistent</td>
+<td>Explicit autonomy policy + blast-radius controls</td>
+</tr>
+<tr>
+<td>Autonomy observability</td>
+<td>Not explicitly tracked</td>
+<td>Manual-intervention and stability metrics tracked per run</td>
+</tr>
+</tbody>
+</table>
+<h2>9) Proposed Stage Flow (Conceptual)</h2>
+<h3>Normal path</h3>
+<ol>
+<li>S0 Intake.</li>
+<li>S1 Readiness.</li>
+<li>Conditional gate: run <code>S1B</code> only when launch surface is pre-website and measurement is missing/insufficient.</li>
+<li>Conditional gate: run <code>S2A</code> only for website-live businesses with existing operating history.</li>
+<li>S2 Market intelligence.</li>
+<li>S2B Offer definition.</li>
+<li>Fan-out:
+<ul>
+<li>S3 Forecast.</li>
+<li>S6B Channels/SEO/Outreach.</li>
+</ul>
+</li>
+<li>S4 Baseline merge stage (<code>/lp-baseline-merge</code>): explicit join barrier that writes <code>baseline.snapshot</code> and updates the manifest.</li>
+<li>S5A Prioritize.</li>
+<li>S5B BOS sync.</li>
+<li>S6 Site-upgrade synthesis (when in scope).</li>
+<li>S7 Fact-find.</li>
+<li>S8 Plan.</li>
+<li>S9 Build.</li>
+<li>S9B QA gates.</li>
+<li>S10 Weekly experiment/readout loop.</li>
+</ol>
+<h3>Existing-business path additions</h3>
+<p>For website-live businesses, S2 and downstream strategy are blocked until S2A historical baseline is active and decision-grade.
+S1B and S2A are conditional gates, not mandatory paired steps. Some runs will execute only one of them.</p>
+<h2>10) Parallelization Model (Proposed)</h2>
+<h3>Safe parallel branches</h3>
+<ol>
+<li>Forecast and channels branch after offer.</li>
+<li>SEO and outreach branch after channel strategy.</li>
+<li>Multi-item fact-find branch for top-ranked items (after BOS IDs are stable).</li>
+<li>Build waves through dependency sequencing.</li>
+</ol>
+<h3>Required join barriers</h3>
+<ol>
+<li>Baseline merge must join forecast + channels outputs.</li>
+<li>Prioritization must not run until baseline merge is complete.</li>
+<li>Delivery chain must not fan out into multiple items until persistence mapping is complete.</li>
+</ol>
+<h3>Canonical fan-out/join DAG</h3>
+<pre class="mermaid">flowchart LR
+  S2B[S2B Offer /lp-offer] --> S3[S3 Forecast /lp-forecast]
+  S2B --> S6B[S6B Channels /lp-channels]
+  S6B --> SEO[SEO /lp-seo]
+  S6B --> OUT[Outreach /draft-outreach]
+  S3 --> S4[S4 Baseline Merge /lp-baseline-merge]
+  SEO --> S4
+  OUT --> S4
+  S4 --> S5A[S5A Prioritize /lp-prioritize]
+  S5A --> S5B[S5B BOS Sync /lp-bos-sync]</pre>
+<h3>Runtime Discipline (Non-Negotiables)</h3>
+<ol>
+<li>Parallel workers write only to stage-owned outputs.</li>
+<li>Shared control artifacts (<code>manifest</code>, run-state pointers, stage transitions) are single-writer updates.</li>
+<li>Join stages are mechanical and deterministic; they validate and compose, they do not silently reinterpret.</li>
+<li>If required upstream artifacts are missing or invalid, join stages block with explicit reasons.</li>
+</ol>
+<h2>11) What This Means for External Reviewers</h2>
+<p>If you are reviewing this system without repository access, the key question is:</p>
+<p>“Do the proposed contracts make this loop deterministic, auditable, and safe for parallel scale?”</p>
+<p>You should specifically test whether the proposal:</p>
+<ol>
+<li>Prevents stage ambiguity.</li>
+<li>Prevents artifact lookup ambiguity.</li>
+<li>Prevents side-effect confusion.</li>
+<li>Prevents branch-merge confusion.</li>
+<li>Detects regressions automatically.</li>
+</ol>
+<h3>Acceptance Criteria (“Done Means”)</h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Acceptance test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Determinism</td>
+<td>Given loop spec + baseline manifest, consumer stages resolve required inputs without manual path hints</td>
+</tr>
+<tr>
+<td>Runtime authority</td>
+<td>Orchestrator routes from loop spec (or generated artifact) and records <code>loop_spec_version</code> on every run</td>
+</tr>
+<tr>
+<td>Auditability</td>
+<td>Every stage has status + artifact pointers + blocking reason (if blocked) recorded in derived run-state</td>
+</tr>
+<tr>
+<td>Parallel safety</td>
+<td>Fan-out stages write disjoint outputs (or acquire lock) and join stages cannot complete until all required upstream artifacts exist</td>
+</tr>
+<tr>
+<td>Shared-state safety</td>
+<td>Manifest and run-state transitions are written by a single writer path only</td>
+</tr>
+<tr>
+<td>Side-effect safety</td>
+<td><code>bos-sync</code> is idempotent and can be retried without duplicate state mutation</td>
+</tr>
+<tr>
+<td>Regression resistance</td>
+<td>CI fails when stage graphs diverge, skill refs are stale, non-canonical roots are used, or legacy names reappear after sunset</td>
+</tr>
+</tbody>
+</table>
+<h2>12) Migration Approach (Recommended)</h2>
+<h3>Migration strategy</h3>
+<p>Use compatibility-first migration (no hard cutover):</p>
+<ol>
+<li>Add canonical contracts first.</li>
+<li>Read legacy + write canonical for a transition window.</li>
+<li>Turn on lint checks.</li>
+<li>Remove legacy support after stability window.</li>
+</ol>
+<h3>Practical sequence</h3>
+<ol>
+<li>Introduce loop spec.</li>
+<li>Introduce baseline manifest + resolver.</li>
+<li>Enforce single-writer control path for manifest and run-state transitions.</li>
+<li>Enforce initial run-concurrency policy (one active run per business).</li>
+<li>Canonicalize feature workspace.</li>
+<li>Split S5 into prioritize + bos-sync.</li>
+<li>Canonicalize stage-doc keys + aliases.</li>
+<li>Introduce run-events + derived run-state schema and gates.</li>
+<li>Lock baseline commit semantics (run baseline vs business-current baseline pointer).</li>
+<li>Unify S10 primitive.</li>
+<li>Add CI contract lint.</li>
+<li>Add explicit baseline merge step.</li>
+</ol>
+<h3>Why this order</h3>
+<p>The sequence is dependency-first, not preference-first:</p>
+<ol>
+<li>Spec before orchestration: without a runtime-authoritative spec, later controls can drift immediately.</li>
+<li>Resolver and single-writer before broad parallelism: path and state safety must exist before fan-out.</li>
+<li>Workspace and S5 split before large-scale execution: this isolates reasoning from side effects and removes naming ambiguity.</li>
+<li>Run events/derived state before strict gates: recovery and auditability need a reliable runtime ledger.</li>
+<li>Lint after canonical contracts exist: lint should enforce known-good rules, not shifting drafts.</li>
+<li>Baseline merge hardening before scale-up: deterministic joins are required before increasing concurrent throughput.</li>
+</ol>
+<h3>Migration Window and Exit Criteria</h3>
+<p>Recommended migration window:</p>
+<ol>
+<li>Time-boxed compatibility period (for example 2-4 weeks).</li>
+<li>Legacy path reads allowed during this window only.</li>
+<li>Canonical writes required from day 1 of migration.</li>
+</ol>
+<p>Recommended exit criteria:</p>
+<ol>
+<li>All active businesses have valid baseline manifests and derived run-state ledgers.</li>
+<li>No unresolved legacy-path reads in recent runs.</li>
+<li>Legacy alias reads are zero for N consecutive runs (example threshold: 10 runs).</li>
+<li>Contract lint passes with legacy rules switched from warning to error.</li>
+<li>Two full supervised runs complete without manual path intervention.</li>
+</ol>
+<h3>Run failure and recovery semantics</h3>
+<p>Recovery model:</p>
+<ol>
+<li>Resume by default: restart from last <code>Done</code> stage in derived run-state.</li>
+<li>Restart only when control-plane integrity is compromised (for example missing/corrupt events chain).</li>
+<li>Partial stage outputs are not treated as complete unless stage result file is <code>status: Done</code>.</li>
+<li>Join stage re-checks all required upstream keys on resume; missing keys keep run <code>Blocked</code> with explicit reason.</li>
+<li><code>bos-sync</code> retries must be idempotent and safe; duplicate side effects are treated as severity-1 defects.</li>
+</ol>
+<p>Operational handling:</p>
+<ol>
+<li>Failed run remains auditable in run events and derived state.</li>
+<li>Recovery action is recorded as explicit run event (<code>resume</code>, <code>restart</code>, <code>abort</code>).</li>
+<li>No hidden cleanup of partial artifacts; cleanup, if needed, is an explicit controlled action.</li>
+</ol>
+<h3>Run-concurrency relaxation criteria</h3>
+<p>Default mode:</p>
+<ol>
+<li>One active run per business.</li>
+</ol>
+<p>Relaxation gate (all required, assessed over rolling 20 runs):</p>
+<ol>
+<li>Median manual interventions &#x3C;= 1 per run.</li>
+<li>Shared-state contention incidents = 0.</li>
+<li>Join-stage state-race failures = 0.</li>
+<li>Resume success rate >= 95%.</li>
+<li>Contract-lint failure rate &#x3C; 10% of merges.</li>
+</ol>
+<h3>Operator Impact (Day-to-Day)</h3>
+<table>
+<thead>
+<tr>
+<th>Current operator friction</th>
+<th>Operator experience after proposal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Operators hunt for the right filename/path</td>
+<td>Operators resolve by manifest keys, not filename guessing</td>
+</tr>
+<tr>
+<td>Blockers are scattered across docs</td>
+<td>Stage status and blockers are visible in one derived run-state ledger</td>
+</tr>
+<tr>
+<td>Side effects can occur in reasoning steps</td>
+<td>BOS mutation is isolated to explicit <code>bos-sync</code> step</td>
+</tr>
+<tr>
+<td>Parallel branches are hard to merge safely</td>
+<td>Fan-out and join barriers are explicit and enforced</td>
+</tr>
+</tbody>
+</table>
+<h3>Breakage Ledger (Controlled Velocity)</h3>
+<p>Maintain a single breakage ledger for intentional shortcuts. Each entry should include:</p>
+<ol>
+<li>What is knowingly broken (contract/path/naming/semantics).</li>
+<li>Why it was accepted.</li>
+<li>Blast radius.</li>
+<li>Workaround.</li>
+<li>Exit criterion.</li>
+<li>Owner.</li>
+</ol>
+<p>This converts “move fast and break things” into explicit and reviewable risk decisions.</p>
+<h3>Stabilization Triggers</h3>
+<p>Pause expansion work and prioritize control-system hardening when threshold triggers are hit.
+Initial thresholds (calibrate after first 20 production-like runs):</p>
+<ol>
+<li>Manual interventions > 2 per run (rolling median over last 10 runs).</li>
+<li>Same join-stage blocking root cause appears in >= 3 of last 10 runs.</li>
+<li>Contract-lint failure rate > 10% over last 20 merges.</li>
+<li>Replan-loop count median > 2 per run over last 10 runs.</li>
+</ol>
+<h3>Process-Contract Error Budget</h3>
+<p>Treat process debt like an error budget. Define a small set of measurable limits for “acceptable controlled breakage” and force stabilization work when exceeded.</p>
+<p>Suggested minimum signals:</p>
+<ol>
+<li>Manual intervention rate per run.</li>
+<li>Join-block recurrence rate by root cause.</li>
+<li>Replan-loop count per run.</li>
+<li>Contract-lint failure rate over recent merges.</li>
+<li>Resume success rate.</li>
+</ol>
+<p>Suggested operating rule:</p>
+<ol>
+<li>Within budget: continue feature velocity.</li>
+<li>Out of budget: pause expansion and pay down breakage-ledger/control-debt items until back in budget.</li>
+</ol>
+<h2>13) Risks and Tradeoffs</h2>
+<table>
+<thead>
+<tr>
+<th>Tradeoff</th>
+<th>Benefit</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>More explicit contracts</td>
+<td>Higher reliability, easier automation</td>
+<td>More upfront documentation and migration work</td>
+</tr>
+<tr>
+<td>Manifest + resolver layer</td>
+<td>Path drift resistance, easier refactors</td>
+<td>Added maintenance of manifest updates</td>
+</tr>
+<tr>
+<td>Split reasoning and persistence</td>
+<td>Cleaner architecture, safer dry-runs</td>
+<td>One additional step/skill in sequence</td>
+</tr>
+<tr>
+<td>Backward compatibility period</td>
+<td>Lower rollout risk</td>
+<td>Temporary dual-mode complexity</td>
+</tr>
+<tr>
+<td>CI contract lint</td>
+<td>Fast regression detection</td>
+<td>Initial setup effort and occasional strictness</td>
+</tr>
+</tbody>
+</table>
+<h3>Risk Register (Failure Modes + Mitigations)</h3>
+<table>
+<thead>
+<tr>
+<th>Failure mode</th>
+<th>Why it matters</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loop spec exists but is not runtime-authoritative</td>
+<td>Stage drift returns despite documentation quality</td>
+<td>Orchestrator reads spec (or generated routing from spec) and logs <code>loop_spec_version</code> per run</td>
+</tr>
+<tr>
+<td>Stage output completes but shared pointers are not updated</td>
+<td>Downstream stages fail to resolve inputs</td>
+<td>Workers emit stage result files; single-writer orchestrator derives and updates manifest/state pointers</td>
+</tr>
+<tr>
+<td>Multiple workers mutate shared control files</td>
+<td>Merge conflicts and nondeterministic stage progression</td>
+<td>Enforce single-writer control plane for manifest + run-state transitions</td>
+</tr>
+<tr>
+<td>Optional fallback lock is abandoned during recovery</td>
+<td>Recovery can stall and delay run progression</td>
+<td>TTL + explicit stale-lock recovery event in run events</td>
+</tr>
+<tr>
+<td>Dual-mode migration confusion</td>
+<td>Operators may mix old/new paths</td>
+<td>Time-box migration, publish sunset date, escalate lint from warning to error</td>
+</tr>
+<tr>
+<td>CI strictness slows iteration early</td>
+<td>Teams may bypass checks</td>
+<td>Phased rollout: observe mode first, then enforce mode</td>
+</tr>
+<tr>
+<td>Over-specification overhead</td>
+<td>Process could become bureaucratic</td>
+<td>Keep loop spec minimal: stages, requires/produces, fan-out/join rules only</td>
+</tr>
+<tr>
+<td>Alias policy never sunsets</td>
+<td>Legacy names persist indefinitely</td>
+<td>Fixed deprecation date and explicit “remove alias” gate in migration plan</td>
+</tr>
+<tr>
+<td>Split S5 introduces perceived extra step</td>
+<td>Teams might bypass persistence discipline</td>
+<td>Make <code>bos-sync</code> the only write path and include in stage completion criteria</td>
+</tr>
+<tr>
+<td>Run-level baseline leaks into business-current baseline prematurely</td>
+<td>Downstream work uses partial strategy and diverges</td>
+<td>Update business-current baseline pointer only at explicit commit stage (<code>S4</code>/<code>S5B</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2>14) Decision Checklist for “Proceed / Pause”</h2>
+<p>Proceed if:</p>
+<ol>
+<li>You agree reliability and scale risk are contract problems, not capability problems.</li>
+<li>You agree one canonical loop spec should govern all stage contracts.</li>
+<li>You agree persistence should be separated from prioritization.</li>
+<li>You agree to enforce drift checks in CI.</li>
+</ol>
+<p>Pause if:</p>
+<ol>
+<li>You want to keep manual operator supervision as the primary long-term mode.</li>
+<li>You do not want a compatibility migration window.</li>
+<li>You prefer lightweight docs over deterministic orchestration guarantees.</li>
+</ol>
+<h3>Hard No Items (If Goal Is World-Class Autonomy + Parallelism)</h3>
+<ol>
+<li>Multiple parallel writers mutating shared control state (<code>manifest</code>, run-state pointers).</li>
+<li>Loop spec existing only as documentation, not used at runtime.</li>
+<li>Locking as primary concurrency strategy instead of output partitioning + single-writer control updates.</li>
+<li>Alias/legacy support without measurable sunset criteria.</li>
+<li>Any stage that both produces strategy artifacts and mutates BOS/production state in the same step.</li>
+</ol>
+<h2>15) Glossary (Plain Language)</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Startup Loop</td>
+<td>The recurring process from idea to delivery to learning decisions</td>
+</tr>
+<tr>
+<td>Stage</td>
+<td>A named step in the loop</td>
+</tr>
+<tr>
+<td>Gate</td>
+<td>A must-pass condition before advancing</td>
+</tr>
+<tr>
+<td>Artifact</td>
+<td>A saved output from a stage (document, report, mapping)</td>
+</tr>
+<tr>
+<td>Manifest</td>
+<td>A pointer file that tells other steps where artifacts are</td>
+</tr>
+<tr>
+<td>Resolver</td>
+<td>Logic that finds artifacts through the manifest</td>
+</tr>
+<tr>
+<td>BOS sync</td>
+<td>Writing approved decisions into the business system of record</td>
+</tr>
+<tr>
+<td>Decision-grade</td>
+<td>Good enough quality/evidence to make irreversible or high-cost next-step decisions</td>
+</tr>
+<tr>
+<td>Blast radius</td>
+<td>The scope of impact if a failure occurs (single run, single business, or system-wide)</td>
+</tr>
+<tr>
+<td>Controlled velocity</td>
+<td>Move fast while explicitly tracking breakage and triggering stabilization when thresholds are exceeded</td>
+</tr>
+<tr>
+<td>Fan-out</td>
+<td>Running independent branches in parallel</td>
+</tr>
+<tr>
+<td>Join barrier</td>
+<td>A mandatory merge step before moving on</td>
+</tr>
+<tr>
+<td>Contract lint</td>
+<td>Automated checks that enforce stage/path/reference consistency</td>
+</tr>
+</tbody>
+</table>
+<h2>16) Optional Implementation Mapping (for Internal Teams)</h2>
+<p>This section is internal-only and can be ignored by external reviewers.</p>
+<ol>
+<li>Loop contract is intended to map to <code>loop-spec.yaml</code>.</li>
+<li>Per-business artifacts are intended to map to startup baseline manifests and derived run-state ledgers.</li>
+<li>Delivery handoff is intended to map to canonical per-feature plan workspaces.</li>
+</ol>
+<h2>17) Minimal Contract Examples (Technical Appendix)</h2>
+<p>These examples are intentionally small and pattern-based. They use placeholder roots rather than repository-specific paths.</p>
+<h3>Loop spec (minimal example)</h3>
+<pre><code class="language-yaml">version: "2026-02-13"
+stages:
+  S2B:
+    name: Offer Design
+    primary_skill: /lp-offer
+    produces:
+      - key: offer
+        path: &#x3C;baseline_root>/{biz}/S2B-offer/offer.md
+    next: [S3, S6B]
+  S3:
+    name: Forecast
+    primary_skill: /lp-forecast
+    requires: [offer]
+    produces:
+      - key: forecast
+        path: &#x3C;baseline_root>/{biz}/S3-forecast/forecast.md
+    next: [S4]
+  S6B:
+    name: Channels
+    primary_skill: /lp-channels
+    requires: [offer]
+    produces:
+      - key: channels
+        path: &#x3C;baseline_root>/{biz}/S6B-channels/channels.md
+    parallel: [/lp-seo, /draft-outreach]
+    next: [S4]
+  S4:
+    name: Baseline Merge
+    primary_skill: /lp-baseline-merge
+    requires: [forecast, channels]
+    produces:
+      - key: baseline_snapshot
+        path: &#x3C;baseline_root>/{biz}/S4-baseline-merge/baseline.snapshot.md
+</code></pre>
+<h3>Baseline manifest (minimal example)</h3>
+<pre><code class="language-json">{
+  "schema_version": 1,
+  "biz": "HEAD",
+  "updated_at": "2026-02-13T12:00:00Z",
+  "artifacts": {
+    "offer": "S2B-offer/offer.md",
+    "forecast": "S3-forecast/forecast.md",
+    "channels": "S6B-channels/channels.md",
+    "baseline_snapshot": "S4-baseline-merge/baseline.snapshot.md",
+    "loop_state": "loop-state.json"
+  }
+}
+</code></pre>
+<h3>Stage result file (data-plane handoff, minimal example)</h3>
+<pre><code class="language-json">{
+  "schema_version": 1,
+  "run_id": "SFS-HEAD-20260213-1200",
+  "stage": "S3",
+  "status": "Done",
+  "produced_keys": ["forecast"],
+  "artifacts": {
+    "forecast": "runs/SFS-HEAD-20260213-1200/stages/S3/forecast.md"
+  }
+}
+</code></pre>
+<h3>Run events (append-only, minimal example)</h3>
+<pre><code class="language-json">{"ts":"2026-02-13T12:00:00Z","run_id":"SFS-HEAD-20260213-1200","event":"stage_completed","stage":"S2B","artifact_key":"offer"}
+{"ts":"2026-02-13T12:04:00Z","run_id":"SFS-HEAD-20260213-1200","event":"stage_completed","stage":"S3","artifact_key":"forecast"}
+{"ts":"2026-02-13T12:05:00Z","run_id":"SFS-HEAD-20260213-1200","event":"stage_completed","stage":"S6B","artifact_key":"channels"}
+{"ts":"2026-02-13T12:06:00Z","run_id":"SFS-HEAD-20260213-1200","event":"stage_started","stage":"S4"}
+</code></pre>
+<h3>Derived run-state (single-writer, minimal example)</h3>
+<pre><code class="language-json">{
+  "schema_version": 1,
+  "biz": "HEAD",
+  "run_id": "SFS-HEAD-20260213-1200",
+  "loop_spec_version": "2026-02-13",
+  "active_stage": "S4",
+  "stages": {
+    "S2B": {"status": "Done", "artifact_key": "offer"},
+    "S3": {"status": "Done", "artifact_key": "forecast"},
+    "S6B": {"status": "Done", "artifact_key": "channels"},
+    "S4": {"status": "Active"},
+    "S5A": {"status": "NotStarted"}
+  }
+}
+</code></pre>
+<h3>Canonical feature workspace (minimal example)</h3>
+<pre><code class="language-text">&#x3C;feature_workspace_root>/&#x3C;feature-id>/
+  fact-find.md
+  plan.md
+  sequence.json
+  build-log.md
+  qa.md
+</code></pre>
+<h2>18) External Review Disposition History</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Disposition</th>
+<th>Incorporated adjustment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A. Canonical loop spec</td>
+<td>Keep</td>
+<td>Runtime-authoritative requirement added; run records <code>loop_spec_version</code></td>
+</tr>
+<tr>
+<td>B. Manifest + resolver</td>
+<td>Keep (modified)</td>
+<td>Single-writer manifest updates + integrity metadata</td>
+</tr>
+<tr>
+<td>C. Feature workspace</td>
+<td>Keep</td>
+<td>Stable identity expectations reinforced via canonical workspace contract</td>
+</tr>
+<tr>
+<td>D. Split prioritize/persist</td>
+<td>Keep</td>
+<td>Explicit dry-run reasoning + idempotent side-effect boundary via <code>bos-sync</code></td>
+</tr>
+<tr>
+<td>E. Canonical keys + aliasing</td>
+<td>Keep</td>
+<td>Alias sunset treated as measurable run-based exit, not open-ended</td>
+</tr>
+<tr>
+<td>F. Run-state convergence</td>
+<td>Keep (modified)</td>
+<td>Preferred append-only run events + derived state model</td>
+</tr>
+<tr>
+<td>G. S10 primitive</td>
+<td>Keep</td>
+<td>Unified post-build continuation model retained</td>
+</tr>
+<tr>
+<td>H. Contract lint</td>
+<td>Keep (modified)</td>
+<td>Minimum high-signal lint rules explicitly defined</td>
+</tr>
+<tr>
+<td>I. Baseline merge stage</td>
+<td>Keep</td>
+<td>S4 defined as deterministic first-class stage with explicit outputs</td>
+</tr>
+<tr>
+<td>J. Autonomy policy + blast radius</td>
+<td>Added</td>
+<td>New architecture control layer included</td>
+</tr>
+<tr>
+<td>K. Autonomy observability</td>
+<td>Added</td>
+<td>Manual-intervention and stability metrics added</td>
+</tr>
+<tr>
+<td>Single-writer discipline</td>
+<td>Added (non-negotiable)</td>
+<td>Shared control state writes restricted to one writer path</td>
+</tr>
+<tr>
+<td>Breakage ledger + stabilization triggers</td>
+<td>Added</td>
+<td>Move-fast mode now has explicit containment and escalation controls</td>
+</tr>
+<tr>
+<td>Third-pass runtime semantics hardening</td>
+<td>Added</td>
+<td>Recovery semantics, concurrency-relaxation gates, baseline commit rules, and concrete error-budget thresholds now explicit</td>
+</tr>
+</tbody>
+</table>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/startup-loop-current-vs-proposed.user.md</code></div>
+      <div>Generated: 2026-02-13T12:12:03.631Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

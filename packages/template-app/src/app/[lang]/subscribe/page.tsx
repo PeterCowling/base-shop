@@ -14,11 +14,12 @@ import { setStripeSubscriptionId } from "@acme/platform-core/repositories/users"
 import { stripe } from "@acme/stripe";
 import type { SubscriptionPlan } from "@acme/types";
 
-export default async function SubscribePage({
-  params,
-}: {
-  params: Promise<{ lang?: string }>;
-}) {
+export default async function SubscribePage(
+  props: {
+    params: Promise<{ lang?: string }>;
+  }
+) {
+  const params = await props.params;
   const { lang } = await params;
   const locale: Locale = resolveLocale(lang);
   const t = await getServerTranslations(locale);

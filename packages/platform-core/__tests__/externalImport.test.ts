@@ -2,7 +2,7 @@ import { jest } from "@jest/globals";
 
 import { importExternalOrder } from "../src/orders/externalImport";
 
-const addOrder = jest.fn();
+const addOrder = jest.fn() as any;
 
 jest.mock("../src/orders/creation", () => ({
   addOrder: (...args: unknown[]) => (addOrder as any)(...args),
@@ -14,7 +14,7 @@ describe("importExternalOrder", () => {
   });
 
   it("normalizes amounts and strings and passes through to addOrder", async () => {
-    addOrder.mockResolvedValue({ id: "ord_1" });
+    addOrder.mockResolvedValue({ id: "ord_1" } as any);
 
     const result = await importExternalOrder({
       shop: "shop-1",
@@ -46,7 +46,7 @@ describe("importExternalOrder", () => {
   });
 
   it("defaults missing/invalid amounts to zero", async () => {
-    addOrder.mockResolvedValue({ id: "ord_2" });
+    addOrder.mockResolvedValue({ id: "ord_2" } as any);
     await importExternalOrder({
       shop: "shop-1",
       sessionId: "cs_test",

@@ -5,18 +5,20 @@ Domain: Business-OS
 Workstream: Mixed
 Created: 2026-02-10
 Last-updated: 2026-02-10
-Last-reviewed: 2026-02-10
+Last-reviewed: 2026-02-14
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: idea-generate-deliberation-upgrade
-Related-Fact-Find: docs/plans/idea-generate-deliberation-upgrade-fact-find.md
+Related-Fact-Find: docs/plans/ideas-go-faster-deliberation-upgrade-fact-find.md
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-replan
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-replan
 Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact) after scope right-sizing + mechanism hardening
 Business-OS-Integration: off
 Business-Unit: BOS
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # Ideas-Go-Faster Deliberation Upgrade Plan (Right-Sized v2)
@@ -57,7 +59,7 @@ The only deliberate pushback retained is unchanged: a pure report-only patch is 
 
 ## Active tasks
 
-- IGF-RS-01 - Capture 5-run baseline using existing metrics and baseline rubric scores.
+- IGF-RS-01 - Capture 5-run baseline using existing metrics and baseline rubric scores. (2 of 5 runs complete: 2026-02-10, 2026-02-11)
 - IGF-RS-01B - Add lightweight run metrics if RS-01 finds missing fields.
 - IGF-RS-05 - Enforce default-vs-debug artifact policy and retention/prune behavior.
 
@@ -134,7 +136,7 @@ Add:
 Still in monolithic orchestrator, but split commit behavior:
 
 - 3A Prepare:
-  - generate card payloads + lp-fact-find templates + dependency manifest.
+  - generate card payloads + lp-do-fact-find templates + dependency manifest.
   - perform zero writes.
 - 3B Commit/Reconcile:
   - apply dependency-ordered writes.
@@ -248,7 +250,7 @@ Debug mode may emit separate supporting files:
 
 Immediate rollback if any occur:
 
-- one write-safety defect (duplicate create or broken card->lp-fact-find linkage).
+- one write-safety defect (duplicate create or broken card->lp-do-fact-find linkage).
 - two rubric categories at `baseline - 2` or worse in a single live run.
 - mean rubric delta < -0.5 across two consecutive live runs.
 
@@ -256,7 +258,7 @@ Immediate rollback if any occur:
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| IGF-RS-01 | CHECKPOINT | Capture 5-run baseline using existing metrics and baseline rubric scores | 88% | S | Pending | - | IGF-RS-07, IGF-RS-06 |
+| IGF-RS-01 | CHECKPOINT | Capture 5-run baseline using existing metrics and baseline rubric scores | 88% | S | In-Progress | - | IGF-RS-07, IGF-RS-06 |
 | IGF-RS-01B | IMPLEMENT | Add lightweight run metrics only if RS-01 finds missing fields | 82% | S | Conditional | IGF-RS-01 | IGF-RS-07 |
 | IGF-RS-02A | IMPLEMENT | Add additive F1/F2/F4/F6 report sections in monolithic output | 86% | M | Completed | - | IGF-RS-04, IGF-RS-07 |
 | IGF-RS-02B | IMPLEMENT | Add F3/F5 behavioral gates (assumption challenge + economics blocker) | 79% | M | Completed | IGF-RS-02C | IGF-RS-03, IGF-RS-04, IGF-RS-07 |
@@ -283,6 +285,10 @@ Immediate rollback if any occur:
 ### IGF-RS-01: Baseline Capture
 
 - **Type:** CHECKPOINT
+- **Status:** In-Progress (2 of 5 runs complete)
+- **Evidence:**
+  - 2026-02-10 sweep: dry-run, 100% coverage, 6 promoted ideas
+  - 2026-02-11 sweep: dry-run, 100% coverage, 6 promoted ideas, 3A/3B artifacts verified
 - **Acceptance:**
   - 5 dry-run sweeps captured with existing coverage/degradation signals.
   - baseline rubric scores computed from 3 recent pre-change sweeps.
@@ -298,6 +304,10 @@ Immediate rollback if any occur:
 ### IGF-RS-02A: Additive Transparency
 
 - **Type:** IMPLEMENT
+- **Status:** Completed (2026-02-10)
+- **Evidence:**
+  - F1 (Who Said What), F2 (Tool-Gap Register), F4 (Kill/Hold Rationale), F6 (Delta/Coverage) sections present in `.claude/skills/ideas-go-faster/SKILL.md`
+  - Verified in 2026-02-11 sweep report output
 - **Acceptance:**
   - F1/F2/F4/F6 appear as deterministic sections inside `sweep-report.user.md`.
   - no write behavior changes.
@@ -305,6 +315,10 @@ Immediate rollback if any occur:
 ### IGF-RS-02B: Behavioral Gates
 
 - **Type:** IMPLEMENT
+- **Status:** Completed (2026-02-10)
+- **Evidence:**
+  - F3 (Assumption Challenge) and F5 (Economics Gate) contracts present in SKILL.md
+  - Economics-Gate field and blocking logic implemented in Stage 5
 - **Acceptance:**
   - F3 assumption challenge supports accept/condition/reject with rationale.
   - F5 economics gate blocks promotion when required fields are missing.
@@ -313,6 +327,11 @@ Immediate rollback if any occur:
 ### IGF-RS-02C: Input and UX Controls
 
 - **Type:** IMPLEMENT
+- **Status:** Completed (2026-02-10)
+- **Evidence:**
+  - Assumptions precedence (file > inline) contract present in SKILL.md
+  - Verbosity mode (compact/standard/extended) with word limits documented
+  - Technical cabinet `applies_to` semantics implemented
 - **Acceptance:**
   - assumptions precedence behavior implemented and documented.
   - verbosity limits implemented:
@@ -324,17 +343,28 @@ Immediate rollback if any occur:
 ### IGF-RS-03: 3A/3B Write-Safety Split
 
 - **Type:** IMPLEMENT
+- **Status:** Completed (2026-02-10)
+- **Evidence:**
+  - Stage 5.5 (3A) and Stage 6/7 (3B) contracts present in SKILL.md
+  - Manifest files exist: `2026-02-10-commit-manifest.json`, `2026-02-11-commit-manifest.json`
+  - Ledger files exist: `2026-02-10-write-ledger.jsonl`, `2026-02-11-write-ledger.jsonl`
+  - Card-id-map files exist with proper structure
 - **Acceptance:**
   - manifest and ledger include required fields defined above.
-  - card->lp-fact-find dependency injection is enforced and testable.
+  - card->lp-do-fact-find dependency injection is enforced and testable.
   - rerun skip behavior uses `operation_id + payload_fingerprint`.
   - dry-run emits `would_create` entries with zero writes.
 
 ### IGF-RS-04: Validators and Legacy Controls
 
 - **Type:** IMPLEMENT
+- **Status:** Completed (2026-02-10)
+- **Evidence:**
+  - Contract checker exists: `scripts/check-ideas-go-faster-contracts.sh`
+  - Output validator exists: `scripts/check-ideas-go-faster-output.sh`
+  - Legacy control mapping exists: `docs/business-os/ideas-go-faster-legacy-control-mapping.md` (24 checklist items + 20 red flags mapped)
 - **Acceptance:**
-  - extend `scripts/check-idea-generate-contracts.sh` for new SKILL contract checks.
+  - extend `scripts/check-ideas-go-faster-contracts.sh` for new SKILL contract checks.
   - add output validator for report sections + 3A/3B artifacts.
   - add mapping matrix for legacy 24 checklist items + 20 red flags to revised flow.
   - deliberate-failure checks cover at least 5 defect types.
@@ -342,6 +372,9 @@ Immediate rollback if any occur:
 ### IGF-RS-05: Artifact Policy and Retention
 
 - **Type:** IMPLEMENT
+- **Status:** Pending
+- **Evidence:** No implementation found
+- **Gap:** Debug mode distinction and prune/retention scripts not yet implemented
 - **Acceptance:**
   - default mode keeps F1-F6 in report (not split files).
   - debug mode can emit separate detail files.
@@ -386,13 +419,15 @@ Immediate rollback if any occur:
 
 ## Decision Log
 
+- 2026-02-14: Fact-check corrections: Fixed file path references (idea-generate → ideas-go-faster), updated IGF-RS-01 status to In-Progress with evidence (2 of 5 baseline runs complete), added completion evidence for RS-02A/B/C/03/04, confirmed RS-05 remains pending.
 - 2026-02-10: Initial full-rewrite plan created.
 - 2026-02-10: Scope reduced to right-sized staged rollout.
 - 2026-02-10: Retained pushback: 3A/3B required for write safety.
 - 2026-02-10: Latest critique integrated: RS-02 split, RS-03 hard-spec, report-first artifacts, anchored rubric, validator scope clarified, legacy controls restored, dependency fixes applied.
-- 2026-02-10: Implementation progress: RS-02A/RS-02B/RS-02C contract updates applied in `.claude/skills/idea-generate/SKILL.md`; checker extended for F1-F6 + assumptions/verbosity/applies_to/economics gate contracts.
-- 2026-02-10: Implementation progress: RS-03 3A/3B contract applied in `.claude/skills/idea-generate/SKILL.md` (Stage 5.5 prepare manifest, Stage 6/7 commit with write ledger + card-id map + rerun skip guard); checker extended with F22 persistence-split assertions.
-- 2026-02-10: Implementation progress: RS-04 completed with new output validator (`scripts/check-idea-generate-output.sh`), deliberate-failure self-test suite (1 pass + 6 failure fixtures), legacy control mapping (`docs/business-os/idea-generate-legacy-control-mapping.md`), and checker integration (F23).
+- 2026-02-10: Implementation progress: RS-02A/RS-02B/RS-02C contract updates applied in `.claude/skills/ideas-go-faster/SKILL.md`; checker extended for F1-F6 + assumptions/verbosity/applies_to/economics gate contracts.
+- 2026-02-10: Implementation progress: RS-03 3A/3B contract applied in `.claude/skills/ideas-go-faster/SKILL.md` (Stage 5.5 prepare manifest, Stage 6/7 commit with write ledger + card-id map + rerun skip guard); checker extended with F22 persistence-split assertions.
+- 2026-02-10: Implementation progress: RS-04 completed with new output validator (`scripts/check-ideas-go-faster-output.sh`), deliberate-failure self-test suite (1 pass + 6 failure fixtures), legacy control mapping (`docs/business-os/ideas-go-faster-legacy-control-mapping.md`), and checker integration (F23).
+- 2026-02-11: Baseline evidence: 2 dry-run sweeps completed (2026-02-10, 2026-02-11) with full sub-expert coverage (100%), quality metrics recorded, 3A/3B artifacts generated (`commit-manifest.json`, `write-ledger.jsonl`, `card-id-map.json`).
 
 ## Overall-confidence Calculation
 

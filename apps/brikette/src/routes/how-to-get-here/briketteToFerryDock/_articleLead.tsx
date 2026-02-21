@@ -1,5 +1,6 @@
 import { type ReactNode } from "react";
 import Link from "next/link";
+import type { TFunction } from "i18next";
 
 import TableOfContents from "@/components/guides/TableOfContents";
 import i18n from "@/i18n";
@@ -14,62 +15,98 @@ import type { GuideExtras } from "./types";
 
 const FIGURE_PATTERN = /^\s*\[\[figure:([a-z0-9-]+)\]\]\s*$/i;
 
-const FIGURES = {
+// Namespace for route-specific translations
+const ROUTE_NAMESPACE = "briketteToFerryDock" as const;
+
+// Image paths (static, not user-facing copy)
+const FIGURE_PATHS = {
   map: {
     src: "/img/directions/hostel-brikette-to-ferry-dock/step-01.jpg",
-    alt: "Map showing the walking route from Hostel Brikette to Positano port with points 1–5.",
-    caption: "Route overview: Hostel → Port (points 1–5).",
     aspect: "16/9",
   },
   "point-1": {
     src: "/img/directions/hostel-brikette-to-ferry-dock/step-02.jpg",
-    alt: "Intersection near Viale Pasitea with a marked route and a label: “1 Turn Right”.",
-    caption: "Point 1: turn right.",
     aspect: "16/9",
   },
   tabacchi: {
     src: "/img/directions/hostel-brikette-to-ferry-dock/step-03.png",
-    alt: "Tabacchi storefront with an ATM next to it.",
-    caption: "Tabacchi near point 1 (good landmark).",
     aspect: "16/9",
   },
   "point-2": {
     src: "/img/directions/hostel-brikette-to-ferry-dock/step-04.jpg",
-    alt: "Road switchback with a marked line toward stairs and a label: “2 Take the stairs straight ahead”.",
-    caption: "Point 2: leave the road and take the stairs straight ahead.",
     aspect: "16/9",
   },
   "point-3": {
     src: "/img/directions/hostel-brikette-to-ferry-dock/step-05.jpg",
-    alt: "Narrow alley with steps and a marked path, labelled “3 Take the stairs straight ahead”.",
-    caption: "Point 3: continue straight down the stairs.",
     aspect: "4/3",
   },
   "point-4": {
     src: "/img/directions/hostel-brikette-to-ferry-dock/step-06.jpg",
-    alt: "Crosswalk and road with a marked route toward stairs on the right, labelled “4”.",
-    caption: "Point 4: cross the road, turn left briefly, then take the stairs down on the right.",
     aspect: "16/9",
   },
   "point-5": {
     src: "/img/directions/hostel-brikette-to-ferry-dock/step-07.jpg",
-    alt: "Small square near the port with a marked route, labelled “5”.",
-    caption: "Point 5: continue under the archway toward the port.",
     aspect: "2/3",
   },
   tickets: {
     src: "/img/directions/hostel-brikette-to-ferry-dock/step-08.jpg",
-    alt: "Ferry ticket booths at Positano port with timetable boards.",
-    caption: "Ticket booths: check the sign for the next departure.",
     aspect: "16/9",
   },
   port: {
     src: "/img/directions/hostel-brikette-to-ferry-dock/step-09.jpg",
-    alt: "View of Positano port with a ferry in the foreground and Positano hillside behind.",
-    caption: "Positano port: wait near the end of the pier for boarding calls.",
     aspect: "16/9",
   },
 } as const;
+
+function buildFigures(tRoute: TFunction<typeof ROUTE_NAMESPACE>) {
+  return {
+    map: {
+      ...FIGURE_PATHS.map,
+      alt: tRoute("figures.map.alt"),
+      caption: tRoute("figures.map.caption"),
+    },
+    "point-1": {
+      ...FIGURE_PATHS["point-1"],
+      alt: tRoute("figures.point1.alt"),
+      caption: tRoute("figures.point1.caption"),
+    },
+    tabacchi: {
+      ...FIGURE_PATHS.tabacchi,
+      alt: tRoute("figures.tabacchi.alt"),
+      caption: tRoute("figures.tabacchi.caption"),
+    },
+    "point-2": {
+      ...FIGURE_PATHS["point-2"],
+      alt: tRoute("figures.point2.alt"),
+      caption: tRoute("figures.point2.caption"),
+    },
+    "point-3": {
+      ...FIGURE_PATHS["point-3"],
+      alt: tRoute("figures.point3.alt"),
+      caption: tRoute("figures.point3.caption"),
+    },
+    "point-4": {
+      ...FIGURE_PATHS["point-4"],
+      alt: tRoute("figures.point4.alt"),
+      caption: tRoute("figures.point4.caption"),
+    },
+    "point-5": {
+      ...FIGURE_PATHS["point-5"],
+      alt: tRoute("figures.point5.alt"),
+      caption: tRoute("figures.point5.caption"),
+    },
+    tickets: {
+      ...FIGURE_PATHS.tickets,
+      alt: tRoute("figures.tickets.alt"),
+      caption: tRoute("figures.tickets.caption"),
+    },
+    port: {
+      ...FIGURE_PATHS.port,
+      alt: tRoute("figures.port.alt"),
+      caption: tRoute("figures.port.caption"),
+    },
+  } as const;
+}
 
 export function renderArticleLead(
   context: GuideSeoTemplateContext,
@@ -94,6 +131,8 @@ export function renderArticleLead(
 
   const readLabel = createGuideLabelReader(context, labels);
   const tHowTo = i18n.getFixedT(context.lang, "howToGetHere");
+  const tRoute = i18n.getFixedT(context.lang, ROUTE_NAMESPACE) as TFunction<typeof ROUTE_NAMESPACE>;
+  const FIGURES = buildFigures(tRoute);
 
   const renderBodyLine = (value: string, keyPrefix: string): ReactNode => {
     const match = value.match(FIGURE_PATTERN);
@@ -123,6 +162,7 @@ export function renderArticleLead(
         alt={figure.alt}
         caption={figure.caption}
         aspect={figure.aspect}
+        // eslint-disable-next-line ds/container-widths-only-at -- LINT-1009 [ttl=2026-12-31] figure inside article; not a page-level container
         className="max-w-3xl"
       />
     );
@@ -138,7 +178,7 @@ export function renderArticleLead(
       {intro.length > 0 ? (
         <div className="space-y-4">
           {intro.map((paragraph, index) => (
-            <p key={index} className="leading-relaxed">
+            <p key={`intro-${index}`} className="leading-relaxed">
               {renderInlineLinks(paragraph, `intro-${index}`, context)}
             </p>
           ))}
@@ -167,7 +207,7 @@ export function renderArticleLead(
           </h2>
           <ul className="list-disc space-y-2 pl-5">
             {beforeList.map((item, index) => (
-              <li key={index} className="leading-relaxed">
+              <li key={`before-${index}`} className="leading-relaxed">
                 {renderInlineLinks(item, `before-${index}`, context)}
               </li>
             ))}
@@ -182,7 +222,7 @@ export function renderArticleLead(
           </h2>
           <ol className="list-decimal space-y-2 pl-5">
             {stepsList.map((item, index) => (
-              <li key={index} className="leading-relaxed">
+              <li key={`steps-${index}`} className="leading-relaxed">
                 {renderInlineLinks(item, `steps-${index}`, context)}
               </li>
             ))}
@@ -197,7 +237,7 @@ export function renderArticleLead(
           </h2>
           <ul className="list-disc space-y-2 pl-5">
             {kneesList.map((item, index) => (
-              <li key={index} className="leading-relaxed">
+              <li key={`knees-${index}`} className="leading-relaxed">
                 {renderInlineLinks(item, `knees-${index}`, context)}
               </li>
             ))}
@@ -235,7 +275,7 @@ export function renderArticleLead(
           <div className="space-y-3">
             {faqs.map((faq, index) => (
               <details
-                key={index}
+                key={faq.q}
                 className="rounded-lg border border-brand-outline/20 bg-brand-surface/80 p-4 shadow-sm transition hover:border-brand-primary/40 dark:border-brand-outline/40 dark:bg-brand-surface/30"
               >
                 <summary className="cursor-pointer text-base font-semibold text-brand-heading outline-none transition focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 dark:text-brand-text">
@@ -243,7 +283,7 @@ export function renderArticleLead(
                 </summary>
                 <div className="mt-3 space-y-3">
                   {faq.a.map((answer, answerIndex) => (
-                    <p key={answerIndex} className="leading-relaxed">
+                    <p key={`faq-${index}-${answerIndex}`} className="leading-relaxed">
                       {renderInlineLinks(answer, `faq-${index}-${answerIndex}`, context)}
                     </p>
                   ))}

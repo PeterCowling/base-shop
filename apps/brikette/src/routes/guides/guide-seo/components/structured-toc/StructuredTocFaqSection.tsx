@@ -10,22 +10,28 @@ export function FaqSectionBlock({
   tGuides: Translator;
   faqTitleResolved: ReturnType<typeof resolveFaqTitle>;
 }) {
+  const flatten = (input: unknown): Array<Record<string, unknown>> => {
+    const out: Array<Record<string, unknown>> = [];
+    const walk = (val: unknown) => {
+      if (Array.isArray(val)) {
+        for (const v of val) walk(v);
+      } else if (val && typeof val === "object") {
+        out.push(val as Record<string, unknown>);
+      }
+    };
+    walk(input);
+    return out;
+  };
+
+  const faqsHeading = (() => {
+    if (faqTitleResolved.suppressed && !faqTitleResolved.title) return "";
+    return typeof faqTitleResolved.title === "string" ? faqTitleResolved.title.trim() : "";
+  })();
+
+  let items: Array<{ q: string; a: string[] }> = [];
   try {
     const rawA = tGuides(`content.${guideKey}.faqs`, { returnObjects: true }) as unknown;
     const rawB = tGuides(`content.${guideKey}.faq`, { returnObjects: true }) as unknown;
-
-    const flatten = (input: unknown): Array<Record<string, unknown>> => {
-      const out: Array<Record<string, unknown>> = [];
-      const walk = (val: unknown) => {
-        if (Array.isArray(val)) {
-          for (const v of val) walk(v);
-        } else if (val && typeof val === "object") {
-          out.push(val as Record<string, unknown>);
-        }
-      };
-      walk(input);
-      return out;
-    };
 
     const merged = [...flatten(rawA), ...flatten(rawB)];
     const itemsRaw = merged
@@ -51,45 +57,35 @@ export function FaqSectionBlock({
 
     // Deduplicate by q + answers signature
     const seen = new Set<string>();
-    const items = itemsRaw.filter((it) => {
+    items = itemsRaw.filter((it) => {
       const key = `${it.q}::${it.a.join("\u0001")}`;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
     });
-
-    if (items.length === 0) return null;
-
-    const faqsHeading = (() => {
-      if (faqTitleResolved.suppressed && !faqTitleResolved.title) return "";
-      const resolved =
-        typeof faqTitleResolved.title === "string" ? faqTitleResolved.title.trim() : "";
-      return resolved;
-    })();
-
-    return (
-      <section id="faqs" className="space-y-3">
-        {faqsHeading.trim().length > 0 ? (
-          <h2
-            // eslint-disable-next-line ds/no-arbitrary-tailwind -- TASK-DS-26: 30px spacing ensures proper visual separation from content above
-            className="mt-[30px] text-pretty text-2xl font-semibold tracking-tight text-brand-heading"
-          >
-            {faqsHeading}
-          </h2>
-        ) : null}
-        {items.map((f, idx) => (
-          <details key={`faq-${idx}`}>
-            <summary role="button" className="font-medium">
-              {f.q}
-            </summary>
-            {f.a.map((ans, i) => (
-              <p key={`faq-${idx}-${i}`}>{ans}</p>
-            ))}
-          </details>
-        ))}
-      </section>
-    );
   } catch {
-    return null;
+    items = [];
   }
+
+  if (items.length === 0) return null;
+
+  return (
+    <section id="faqs" className="space-y-3">
+      {faqsHeading.trim().length > 0 ? (
+        <h2 className="mt-8 text-pretty text-2xl font-semibold tracking-tight text-brand-heading">
+          {faqsHeading}
+        </h2>
+      ) : null}
+      {items.map((f, idx) => (
+        <details key={`faq-${idx}`}>
+          <summary role="button" className="font-medium">
+            {f.q}
+          </summary>
+          {f.a.map((ans, i) => (
+            <p key={`faq-${idx}-${i}`}>{ans}</p>
+          ))}
+        </details>
+      ))}
+    </section>
+  );
 }

@@ -201,7 +201,7 @@ function Search(): JSX.Element {
         <button
           onClick={setBookingsTab}
           className={`px-4 py-1 rounded ${
-            activeTab === "bookings" ? "bg-blue-600 text-white" : "bg-gray-200"
+            activeTab === "bookings" ? "bg-primary-main text-primary-fg" : "bg-surface-2"
           } dark:bg-darkSurface dark:text-darkAccentGreen`}
         >
           Bookings
@@ -210,8 +210,8 @@ function Search(): JSX.Element {
           onClick={setTransactionsTab}
           className={`px-4 py-1 rounded ${
             activeTab === "transactions"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200"
+              ? "bg-primary-main text-primary-fg"
+              : "bg-surface-2"
           } dark:bg-darkSurface dark:text-darkAccentGreen`}
         >
           Transactions
@@ -219,7 +219,7 @@ function Search(): JSX.Element {
         <button
           onClick={setAuditsTab}
           className={`px-4 py-1 rounded ${
-            activeTab === "audits" ? "bg-blue-600 text-white" : "bg-gray-200"
+            activeTab === "audits" ? "bg-primary-main text-primary-fg" : "bg-surface-2"
           } dark:bg-darkSurface dark:text-darkAccentGreen`}
         >
           Audits

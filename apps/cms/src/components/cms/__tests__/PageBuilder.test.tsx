@@ -12,7 +12,7 @@ jest.mock("@acme/page-builder-ui", () => ({
 
 describe("cms PageBuilder re-export", () => {
   it("renders underlying ui component", () => {
-    render(<PageBuilder />);
+    render(<PageBuilder {...({} as any)} />);
     expect(screen.getByTestId("ui-page-builder")).toBeInTheDocument();
     expect(UiPageBuilder).toHaveBeenCalled();
   });

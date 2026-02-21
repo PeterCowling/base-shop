@@ -91,7 +91,7 @@ describe("LayoutContext", () => {
   });
 
   it("handles SSR with null pathname and still toggles nav", () => {
-    mockPathname.mockReturnValue(null);
+    mockPathname.mockReturnValue(null as any);
 
     const { getByTestId } = render(
       <LayoutProvider>
@@ -127,7 +127,7 @@ describe("LayoutContext", () => {
   });
 
   it("sets and clears configurator progress", () => {
-    mockPathname.mockReturnValue(null);
+    mockPathname.mockReturnValue(null as any);
 
     const { getByTestId } = render(
       <LayoutProvider>

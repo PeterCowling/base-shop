@@ -5,9 +5,9 @@ import userEvent from "@testing-library/user-event";
 
 import DateSelectorAllo from "../DateSelectorAllo";
 
-const useAuthMock = jest.fn();
+const authMock = jest.fn();
 jest.mock("../../../context/AuthContext", () => ({
-  useAuth: useAuthMock,
+  useAuth: (...args: unknown[]) => authMock(...args),
 }));
 
 describe("DateSelectorAllo", () => {
@@ -16,7 +16,7 @@ describe("DateSelectorAllo", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    useAuthMock.mockReturnValue({ user: { user_name: "Pete" } });
+    authMock.mockReturnValue({ user: { user_name: "Pete" } });
   });
 
   it("allows Pete to change date and toggle test mode", async () => {
@@ -44,7 +44,7 @@ describe("DateSelectorAllo", () => {
   });
 
   it("hides test mode toggle for non-Pete", () => {
-    useAuthMock.mockReturnValue({ user: { user_name: "Alice" } });
+    authMock.mockReturnValue({ user: { user_name: "Alice" } });
     render(
       <DateSelectorAllo
         selectedDate="2024-05-01"

@@ -3,6 +3,8 @@ Type: Measurement-Setup-Note
 Status: Active
 Business: BRIK
 Date: 2026-02-12
+Updated: 2026-02-13
+Last-reviewed: 2026-02-13
 Owner: Pete
 ---
 
@@ -26,7 +28,7 @@ Tracking hooks already exist in app code and only require runtime configuration:
 - Web Vitals events are wired in `apps/brikette/src/performance/reportWebVitals.ts`.
 - Booking intent event (`begin_checkout`) is wired in `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`.
 
-Current blocker: production does not yet have `NEXT_PUBLIC_GA_MEASUREMENT_ID` configured.
+Current status: production has `NEXT_PUBLIC_GA_MEASUREMENT_ID` configured (`G-2ZSYXG8R7T`) and GA collect traffic is visible. See verification artifact: `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md`.
 
 ## 3) External inputs required from operator
 
@@ -66,12 +68,23 @@ Current blocker: production does not yet have `NEXT_PUBLIC_GA_MEASUREMENT_ID` co
 3. Start booking flow and confirm `begin_checkout` event appears in GA4.
 4. Confirm Search Console receives sitemap and begins URL discovery.
 
+### 4.4 2026-02-13 execution status
+
+- Completed:
+  - GA4 script/config confirmed live on production.
+  - GA collect requests observed (`page_view`, `user_engagement`) for `tid=G-2ZSYXG8R7T`.
+  - Search Console DNS verification TXT records present.
+  - `robots.txt` sitemap directive and `sitemap_index.xml` confirmed live.
+- Remaining:
+  - Confirm `web_vitals` and `begin_checkout` in GA4 Realtime/DebugView with property access.
+  - Confirm Search Console URL discovery status in property UI.
+
 ## 5) Definition of done
 
-- `NEXT_PUBLIC_GA_MEASUREMENT_ID` set in production and deployed.
-- GA4 receiving `web_vitals` and `begin_checkout`.
-- Search Console property verified with sitemap submitted.
-- BRIK plan metrics section can be updated from "Not measured" to observed baseline values.
+- [x] `NEXT_PUBLIC_GA_MEASUREMENT_ID` set in production and deployed.
+- [ ] GA4 receiving `web_vitals` and `begin_checkout` (property-level UI verification still required).
+- [x] Search Console verification records + sitemap endpoint confirmed live.
+- [ ] BRIK plan metrics section updated with first observed baseline window.
 
 ## 6) Immediate follow-up once done
 

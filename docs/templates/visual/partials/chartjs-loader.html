@@ -1,0 +1,68 @@
+<!-- Chart.js KPI Dashboard Loader -->
+<!-- Include this partial in HTML docs that use ```chart code fences. -->
+<!-- Depends on: <pre class="chart" style="display:none"> blocks in the document body. -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script>
+  (function() {
+    var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var style = getComputedStyle(document.documentElement);
+    var textColor = style.getPropertyValue('--text').trim() || (dark ? '#f5f3f0' : '#1a1918');
+    var mutedColor = style.getPropertyValue('--text-muted').trim() || (dark ? '#a39e98' : '#6b6762');
+    var borderColor = style.getPropertyValue('--border').trim() || (dark ? '#3d3a37' : '#e4e2de');
+    var surfaceColor = style.getPropertyValue('--surface').trim() || (dark ? '#242220' : '#ffffff');
+
+    // Set Chart.js global defaults for dark/light mode
+    Chart.defaults.color = mutedColor;
+    Chart.defaults.borderColor = borderColor;
+    Chart.defaults.backgroundColor = surfaceColor;
+    Chart.defaults.plugins.legend.labels.color = textColor;
+    Chart.defaults.plugins.title.color = textColor;
+    Chart.defaults.scale.grid = Chart.defaults.scale.grid || {};
+    Chart.defaults.scale.grid.color = borderColor;
+    Chart.defaults.scale.ticks = Chart.defaults.scale.ticks || {};
+    Chart.defaults.scale.ticks.color = mutedColor;
+
+    function renderChartBlocks() {
+      var blocks = document.querySelectorAll('pre.chart');
+      blocks.forEach(function(pre) {
+        try {
+          var config = JSON.parse(pre.textContent);
+
+          // Create responsive container
+          var container = document.createElement('div');
+          container.style.position = 'relative';
+          container.style.height = config.height || '300px';
+          container.style.marginBottom = '1.5rem';
+
+          // Ensure responsive behaviour
+          config.options = config.options || {};
+          config.options.responsive = true;
+          config.options.maintainAspectRatio = false;
+
+          // Remove non-Chart.js keys
+          delete config.height;
+
+          var canvas = document.createElement('canvas');
+          container.appendChild(canvas);
+          pre.replaceWith(container);
+
+          new Chart(canvas, config);
+        } catch (err) {
+          pre.style.display = 'block';
+          pre.style.color = '#991b1b';
+          pre.style.background = '#fee2e2';
+          pre.style.padding = '1rem';
+          pre.style.borderRadius = '6px';
+          pre.textContent = 'Chart render error: ' + err.message;
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', renderChartBlocks);
+    } else {
+      renderChartBlocks();
+    }
+  })();
+</script>

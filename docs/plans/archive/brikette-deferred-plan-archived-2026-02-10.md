@@ -245,7 +245,7 @@ Decide the fate of 24 extra root route-guide JSON files present in 10 locales bu
 - Either:
   - Unused files are removed safely with no runtime regressions, or
   - Files are retained intentionally with clear documentation of why
-- Follow-up evidence captured in this plan or a linked lp-fact-find
+- Follow-up evidence captured in this plan or a linked lp-do-fact-find
 
 ## Parking Lot (Nice-to-Have)
 

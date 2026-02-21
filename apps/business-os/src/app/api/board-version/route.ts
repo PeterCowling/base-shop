@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- server-side API route — error messages and status strings, not customer-facing UI copy [DS-02] */
 /**
  * Board Version Endpoint
  * BOS-D1-07: Returns version signal for board auto-refresh

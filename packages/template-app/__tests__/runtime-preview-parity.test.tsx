@@ -75,7 +75,7 @@ async function setupPreviewFixture() {
     version: "1.0.0",
     kind: "page",
     label: "Preview parity",
-    category: "Test",
+    category: "Test" as any,
     pageType: "marketing",
     components: [
       {
@@ -158,9 +158,9 @@ describe("runtime preview parity", () => {
       })) as ReactElement;
       render(
         <DynamicRenderer
-          components={ui.props.components}
-          locale={ui.props.locale}
-          editor={ui.props.editor}
+          components={(ui as any).props.components}
+          locale={(ui as any).props.locale}
+          editor={(ui as any).props.editor}
         />,
       );
       const textarea = document.querySelector(

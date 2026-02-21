@@ -6,7 +6,7 @@ import {
   ReservoirSampler,
   SeededRandom,
   uniformSample,
-} from "../index";
+} from "../index.js";
 
 describe("SeededRandom", () => {
   describe("determinism", () => {

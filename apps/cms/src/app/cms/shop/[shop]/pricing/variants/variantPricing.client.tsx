@@ -157,7 +157,7 @@ export default function VariantPricingClient({ shop, initial }: Props) {
           </TableHeader>
           <TableBody>
             {rows.map((row, idx) => (
-              <TableRow key={idx}>
+              <TableRow key={row.id || `row-${idx}`}>
                 <TableCell>
                   <Input
                     value={row.id}

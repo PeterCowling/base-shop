@@ -1,4 +1,3 @@
-import type { Mock } from "jest-mock";
 
 describe("getDefaultSender", () => {
   const OLD_ENV = process.env;
@@ -64,7 +63,7 @@ describe("sendEmail", () => {
       default: { createTransport },
       createTransport,
     }));
-    const getDefaultSender: Mock = jest.fn(() => "sender@example.com");
+    const getDefaultSender = jest.fn(() => "sender@example.com");
     jest.doMock("../src/config", () => ({ getDefaultSender }));
 
     const { sendEmail } = await import("../src/sendEmail");
@@ -91,7 +90,7 @@ describe("sendEmail", () => {
       default: { createTransport },
       createTransport,
     }));
-    const getDefaultSender: Mock = jest.fn(() => "sender@example.com");
+    const getDefaultSender = jest.fn(() => "sender@example.com");
     jest.doMock("../src/config", () => ({ getDefaultSender }));
 
     const { sendEmail } = await import("../src/sendEmail");

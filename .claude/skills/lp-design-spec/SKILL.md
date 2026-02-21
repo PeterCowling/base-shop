@@ -5,19 +5,19 @@ description: Translate a feature requirement into a concrete frontend design spe
 
 # Design Spec
 
-Produce a design specification that maps a feature requirement to concrete design-system components, semantic tokens, and layout decisions — grounded in the business's brand language. Feeds directly into `/lp-plan` to raise confidence on UI tasks.
+Produce a design specification that maps a feature requirement to concrete design-system components, semantic tokens, and layout decisions — grounded in the business's brand language. Feeds directly into `/lp-do-plan` to raise confidence on UI tasks.
 
 ## Operating Mode
 
 **ALLOWED:** Read codebase, read docs, read theme tokens, create/update design spec docs, create/update brand language docs.
-**NOT ALLOWED:** Write application code, modify components, change tokens, run builds. Design only — implementation is `/lp-build`'s job.
+**NOT ALLOWED:** Write application code, modify components, change tokens, run builds. Design only — implementation is `/lp-do-build`'s job.
 
 ## When to Use
 
 - New page, section, or significant UI component
 - Visual refresh or rebrand work
 - Any feature where fact-find flags `Design-Spec-Required: yes`
-- When `/lp-plan` produces low-confidence UI tasks (design decisions unmade)
+- When `/lp-do-plan` produces low-confidence UI tasks (design decisions unmade)
 - Standalone brand language bootstrapping for a new business
 
 ## Invocation
@@ -44,14 +44,14 @@ No argument — presents the app-to-business mapping and asks what you're design
 /lp-design-spec --bootstrap <BIZ-CODE>
 ```
 
-Creates or updates the brand language doc for a business unit without producing a feature design spec. Use when onboarding a new business or after a brand pivot.
+Runs GATE-BD-07 pre-flight for the business unit without producing a feature design spec. Blocks and redirects to `/lp-brand-bootstrap <BIZ>` if Brand Dossier is not Active. Use when checking brand-dossier readiness before onboarding a new business.
 
 ## Inputs
 
 | Source | Path | Purpose |
 |--------|------|---------|
 | Business registry | `docs/business-os/strategy/businesses.json` | Resolve app → business unit → theme package |
-| Brand language | `docs/business-os/strategy/<BIZ>/brand-language.user.md` | Per-business visual identity, tone, audience |
+| Brand language | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | Per-business visual identity, tone, audience |
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | Concrete token values for the target app |
 | Base tokens | `packages/themes/base/src/tokens.ts` | Default token system (overridden by theme) |
 | Design system handbook | `docs/design-system-handbook.md` | Component catalog, atomic design layers |
@@ -62,22 +62,11 @@ Creates or updates the brand language doc for a business unit without producing 
 ### App-to-Business Resolution
 
 Use `businesses.json` to resolve which business owns the target app, then locate:
-1. **Brand language doc**: `docs/business-os/strategy/<BIZ>/brand-language.user.md`
+1. **Brand language doc**: `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
 2. **Theme package**: `packages/themes/<theme>/` (mapped from app name)
 3. **Strategy context**: `docs/business-os/strategy/<BIZ>/plan.user.md`
 
-**Current mapping:**
-
-| Business | Code | Apps | Theme Package |
-|----------|------|------|---------------|
-| Brikette | BRIK | brikette, prime, reception | `base` (brikette), `prime` (prime) |
-| Headband | HEAD | cochlearfit | _(needs creation)_ |
-| Pet Product | PET | _(none yet)_ | _(needs creation)_ |
-| Handbag Accessory | HBAG | cover-me-pretty | _(TBD)_ |
-| XA | XA | xa | _(TBD)_ |
-| Platform | PLAT | design-system, storybook, etc. | `base` |
-
-**When theme package doesn't exist:** Note this in the spec as a prerequisite task for `/lp-plan`.
+**Resolution:** Read `docs/business-os/strategy/businesses.json` to resolve app → business unit → theme package. Do not use hardcoded mappings.
 
 ## Workflow
 
@@ -85,10 +74,9 @@ Use `businesses.json` to resolve which business owns the target app, then locate
 
 1. **Identify the target app** from the feature slug, fact-find, or user input.
 2. **Resolve business unit** via `businesses.json`.
-3. **Load brand language** doc. If it doesn't exist:
-   - Ask: _"No brand language exists for {BIZ}. Create one now (recommended) or proceed without?"_
-   - If yes → run **Brand Bootstrap** (Step 6) first, then return here.
-   - If no → proceed using base design system defaults only. Note this as a risk.
+3. **Load brand language** doc. If it doesn't exist or Status ≠ Active:
+   - **STOP.** Emit GATE-BD-07 error (see Step 6).
+   - Do NOT offer to proceed without brand language.
 4. **Load theme tokens** for the target app's theme package.
 5. **Load fact-find** if a feature slug was provided.
 
@@ -146,6 +134,8 @@ For each visual property in the design, specify the exact semantic token:
 - If a needed token doesn't exist, document it as a prerequisite (new token to add to theme package).
 - Dark mode: verify every chosen token has a dark variant. Flag gaps.
 
+**Evidence requirement:** For each token binding, cite the source file and token key where the value is defined (e.g., `packages/themes/prime/src/tokens.ts → --color-primary`). If no theme package exists, cite `packages/themes/base/src/tokens.ts`.
+
 ### Step 5: Layout and Behavior
 
 Define:
@@ -162,21 +152,22 @@ Define:
    - Touch target sizes (`min-h-11 min-w-11` for interactive elements).
 4. **Animation** — only if required. Use `motion-safe:` prefix. Respect `prefers-reduced-motion`.
 
-### Step 6: Brand Bootstrap (when brand language doc is missing)
+### Step 6: Brand Dossier Pre-flight (GATE-BD-07)
 
-When creating a new brand language doc for a business:
+**Before writing the design spec**, verify the Brand Dossier is Active:
 
-1. **Gather inputs:**
-   - Read `docs/business-os/strategy/<BIZ>/plan.user.md` for business context.
-   - Read any existing launch forecast (`*-launch-forecast*.user.md`) for demographic data.
-   - Read existing theme tokens if a theme package exists.
-   - Read the app's current UI (layout.tsx, key pages) for implicit brand choices.
+1. **Check** `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` exists AND frontmatter `Status: Active`.
+2. **Check** the strategy index `docs/business-os/strategy/<BIZ>/index.user.md` — Brand Dossier row must show `Active`.
 
-2. **Create** `docs/business-os/strategy/<BIZ>/brand-language.user.md` using the template from `.claude/skills/_shared/brand-language-template.md`.
+**Gate result:**
 
-3. **Fill in what's known**, mark unknowns with `TBD — {what's needed to resolve}`.
+- **PASS** (Status == Active): proceed to Step 7.
+- **FAIL** (missing or Status != Active): **STOP immediately.**
+  - Error: `GATE-BD-07: Brand Dossier must be Active before running design spec.`
+  - Remediation: `Run /lp-do-brand-02-brand-identity --business <BIZ> to create the Brand Dossier, then have the operator promote it to Active before re-running /lp-design-spec.`
+  - Do NOT create or populate brand-dossier.user.md from within this skill. That is the job of `/lp-brand-bootstrap`.
 
-4. **Present to user** for review before proceeding.
+**Note:** GATE-BD-01 at S1 advance requires brand-dossier at Draft minimum. GATE-BD-07 here requires Active. The gap (Draft → Active) is the operator's responsibility before running lp-design-spec.
 
 ### Step 7: Write Design Spec
 
@@ -202,8 +193,10 @@ Feature-Slug: {slug}
 Business-Unit: {BIZ}
 Target-App: {app-name}
 Theme-Package: {theme-package}
-Brand-Language: docs/business-os/strategy/{BIZ}/brand-language.user.md
+Brand-Language: docs/business-os/strategy/{BIZ}/brand-dossier.user.md
 Created: {DATE}
+Updated: {DATE}
+Owner: {operator}
 ---
 
 # Design Spec: {Feature Title}
@@ -292,7 +285,7 @@ PageLayout
 
 ## Prerequisites for Plan
 
-- [ ] Brand language doc exists: `docs/business-os/strategy/{BIZ}/brand-language.user.md`
+- [ ] Brand language doc exists: `docs/business-os/strategy/{BIZ}/brand-dossier.user.md`
 - [ ] Theme package exists: `packages/themes/{theme}/`
 - [ ] All required tokens exist (see "New tokens required" above)
 - [ ] All reused components verified in component catalog
@@ -309,13 +302,13 @@ PageLayout
 - [ ] Layout specifies all three breakpoints (mobile, tablet, desktop)
 - [ ] Dark mode addressed for every token binding
 - [ ] Accessibility section is non-empty with concrete ARIA/focus/contrast items
-- [ ] Brand language doc consulted (or bootstrapped)
+- [ ] Brand Dossier Active (GATE-BD-07 pre-flight passed: Status == Active in brand-dossier.user.md)
 - [ ] Token bindings match actual values in theme package (not invented)
-- [ ] Prerequisites list is complete — no hidden assumptions for `/lp-plan`
+- [ ] Prerequisites list is complete — no hidden assumptions for `/lp-do-plan`
 
 ## Integration
 
-### With `/lp-fact-find`
+### With `/lp-do-fact-find`
 
 When a fact-find classifies a feature as UI-heavy, it should add to its output:
 
@@ -323,9 +316,9 @@ When a fact-find classifies a feature as UI-heavy, it should add to its output:
 Design-Spec-Required: yes
 ```
 
-This signals that `/lp-design-spec` should run before `/lp-plan`.
+This signals that `/lp-design-spec` should run before `/lp-do-plan`.
 
-### With `/lp-plan`
+### With `/lp-do-plan`
 
 Plan reads the design spec and uses it to:
 - Pre-populate `Affects` lists with component file paths from the component map
@@ -333,7 +326,7 @@ Plan reads the design spec and uses it to:
 - Create concrete validation contracts referencing the spec's token bindings
 - Generate prerequisite tasks for missing tokens or components
 
-### With `/lp-build`
+### With `/lp-do-build`
 
 During build, the design spec serves as a reference:
 - Exact token classes to use (no guessing)
@@ -342,7 +335,7 @@ During build, the design spec serves as a reference:
 
 ### With Brand Language Docs
 
-**Reads from:** `docs/business-os/strategy/<BIZ>/brand-language.user.md`
+**Reads from:** `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
 **Writes back to:** Same file, when stable new patterns emerge (Step 8).
 
 This creates a virtuous cycle: each design spec strengthens the brand language, which makes future specs faster and more consistent.
@@ -356,22 +349,23 @@ This creates a virtuous cycle: each design spec strengthens the brand language, 
 > **Component map:** {N} reused, {M} new components needed.
 > **Prerequisites:** {list any blockers for plan}.
 >
-> Ready for `/lp-plan {slug}`. The plan should reference this spec for UI task confidence.
+> Ready for `/lp-do-plan {slug}`. The plan should reference this spec for UI task confidence.
 
 ### Spec Complete (standalone)
 
 > Design spec complete: `docs/plans/{slug}-design-spec.md`
 >
 > This is a standalone spec (no fact-find). To proceed:
-> 1. `/lp-fact-find {slug}` — if the feature needs broader investigation
-> 2. `/lp-plan {slug}` — if scope is clear and you want to go straight to planning
+> 1. `/lp-do-fact-find {slug}` — if the feature needs broader investigation
+> 2. `/lp-do-plan {slug}` — if scope is clear and you want to go straight to planning
 
-### Brand Bootstrap Complete
+### GATE-BD-07 Blocked (Brand Dossier not Active)
 
-> Brand language created: `docs/business-os/strategy/{BIZ}/brand-language.user.md`
+> **GATE-BD-07:** Brand Dossier must be Active before running design spec.
 >
-> **Status:** {N} sections complete, {M} marked TBD.
-> Review the doc and fill in TBD items before using it for design specs.
+> **Current Status:** `docs/business-os/strategy/{BIZ}/brand-dossier.user.md` is missing or Status ≠ Active.
+>
+> **Remediation:** Run `/lp-do-brand-02-brand-identity --business {BIZ}` to create the Brand Dossier, then promote to Active before re-running `/lp-design-spec`.
 
 ## Red Flags (Invalid Run)
 

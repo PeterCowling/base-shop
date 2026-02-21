@@ -19,11 +19,12 @@ type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog">;
 const shop: BlogShop = shopJson;
 export const revalidate = 60;
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: { lang: string; slug: string };
-}) {
+export default async function BlogPostPage(
+  props: {
+    params: Promise<{ lang: string; slug: string }>;
+  }
+) {
+  const params = await props.params;
   if (!shop.luxuryFeatures.blog) {
     return notFound();
   }
@@ -70,17 +71,18 @@ export default async function BlogPostPage({
       ) : null}
       {provider.kind === "editorial" && typeof (post as { body?: unknown }).body === "string" ? (
         // Render Markdown/MDX body as HTML for now
-        <EditorialHtml body={(post as { body?: string }).body || ""} />
+        (<EditorialHtml body={(post as { body?: string }).body || ""} />)
       ) : null}
     </article>
   );
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: string; slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string; slug: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const provider = await getBlogProvider(shop);
   const post = await provider.fetchPostBySlug(shop.id, params.slug);
   const lang = resolveLocale(params.lang);

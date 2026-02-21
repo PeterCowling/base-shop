@@ -12,15 +12,15 @@ function ProsConsTable({ rows, className = "" }: Props): JSX.Element | null {
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr>
-            <th className="border border-slate-300 bg-slate-50 p-2 text-start dark:border-slate-700 dark:bg-slate-800">Option</th>
-            <th className="border border-slate-300 bg-slate-50 p-2 text-start dark:border-slate-700 dark:bg-slate-800">Pros</th>
-            <th className="border border-slate-300 bg-slate-50 p-2 text-start dark:border-slate-700 dark:bg-slate-800">Cons</th>
+            <th className="border border-2 bg-surface-1 p-2 text-start">Option</th>
+            <th className="border border-2 bg-surface-1 p-2 text-start">Pros</th>
+            <th className="border border-2 bg-surface-1 p-2 text-start">Cons</th>
           </tr>
         </thead>
         <tbody>
-          {rows.map((r, i) => (
-            <tr key={i}>
-              <td className="border border-slate-300 p-2 align-top dark:border-slate-700">
+          {rows.map((r) => (
+            <tr key={r.title}>
+              <td className="border border-2 p-2 align-top">
                 <strong>
                   {r.href ? (
                     <Link
@@ -35,17 +35,17 @@ function ProsConsTable({ rows, className = "" }: Props): JSX.Element | null {
                   )}
                 </strong>
               </td>
-              <td className="border border-slate-300 p-2 align-top dark:border-slate-700">
+              <td className="border border-2 p-2 align-top">
                 <ul className="list-disc pl-4">
-                  {r.pros.map((p, j) => (
-                    <li key={j}>{p}</li>
+                  {r.pros.map((p) => (
+                    <li key={p}>{p}</li>
                   ))}
                 </ul>
               </td>
-              <td className="border border-slate-300 p-2 align-top dark:border-slate-700">
+              <td className="border border-2 p-2 align-top">
                 <ul className="list-disc pl-4">
-                  {r.cons.map((c, j) => (
-                    <li key={j}>{c}</li>
+                  {r.cons.map((c) => (
+                    <li key={c}>{c}</li>
                   ))}
                 </ul>
               </td>

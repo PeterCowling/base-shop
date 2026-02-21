@@ -73,6 +73,7 @@ export default function RealTimeDashboard(): JSX.Element {
         {
           label: "Sales (€)",
           data: entries.map(([, v]) => v),
+          /* eslint-disable-next-line ds/no-raw-color -- REC-02: chart colour config; tokens not applicable to chart.js/recharts datasets */
           backgroundColor: "#4f46e5",
         },
       ],
@@ -81,6 +82,7 @@ export default function RealTimeDashboard(): JSX.Element {
 
   const tenderChartData = useMemo(() => {
     const entries = Object.entries(tenderTotals);
+    /* eslint-disable-next-line ds/no-raw-color -- REC-02: chart colour config; tokens not applicable to chart.js/recharts datasets */
     const colors = ["#4f46e5", "#22c55e", "#f97316", "#e11d48", "#14b8a6"];
     return {
       labels: entries.map(([m]) => m),
@@ -102,6 +104,7 @@ export default function RealTimeDashboard(): JSX.Element {
           {
             label: "Variance (€)",
           data: varianceArr.map((v) => v.difference),
+          /* eslint-disable-next-line ds/no-raw-color -- REC-02: chart colour config; tokens not applicable to chart.js/recharts datasets */
           borderColor: "#e11d48",
           backgroundColor: "rgba(225,29,72,0.3)",
           fill: true,
@@ -123,21 +126,21 @@ export default function RealTimeDashboard(): JSX.Element {
   }
 
   return (
-    <div className="min-h-screen p-5 space-y-8 bg-gray-100 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-screen p-5 space-y-8 bg-surface-2 dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         REAL TIME DASHBOARD
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white rounded shadow p-4 dark:bg-darkSurface">
+        <div className="bg-surface rounded shadow p-4 dark:bg-darkSurface">
           <h2 className="text-xl font-semibold mb-2">Sales Totals</h2>
           <Bar data={salesChartData} options={{ responsive: true }} />
         </div>
-        <div className="bg-white rounded shadow p-4 dark:bg-darkSurface">
+        <div className="bg-surface rounded shadow p-4 dark:bg-darkSurface">
           <h2 className="text-xl font-semibold mb-2">Tender Mix</h2>
           <Pie data={tenderChartData} />
         </div>
       </div>
-      <div className="bg-white rounded shadow p-4 dark:bg-darkSurface">
+      <div className="bg-surface rounded shadow p-4 dark:bg-darkSurface">
         <h2 className="text-xl font-semibold mb-2">Current Variances</h2>
         <Line data={varianceChartData} options={{ responsive: true }} />
       </div>

@@ -2,8 +2,15 @@ import { NextResponse } from "next/server";
 
 import { sendGuestEmailActivity } from "@acme/mcp-server/guest-email-activity";
 
+import { requireStaffAuth } from "../_shared/staff-auth";
+
 export async function POST(request: Request) {
   try {
+    const auth = await requireStaffAuth(request);
+    if ("response" in auth) {
+      return auth.response;
+    }
+
     const payload = await request.json();
     const result = await sendGuestEmailActivity(payload);
     return NextResponse.json(result);

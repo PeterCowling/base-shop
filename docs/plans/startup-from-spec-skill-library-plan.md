@@ -5,25 +5,27 @@ Domain: Business-OS
 Workstream: Venture-Studio
 Created: 2026-02-11
 Last-updated: 2026-02-11
-Last-reviewed: 2026-02-11
+Last-reviewed: 2026-02-14
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: startup-from-spec-skill-library
 Related-Fact-Find: docs/plans/startup-from-spec-skill-library-fact-find.md
 Deliverable-Type: multi-deliverable
 Execution-Track: mixed
-Primary-Execution-Skill: lp-build
-Supporting-Skills: lp-fact-find, lp-plan, idea-generate, idea-readiness
+Primary-Execution-Skill: lp-do-build
+Supporting-Skills: lp-do-fact-find, lp-do-plan, idea-generate, idea-readiness
 Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact) with confidence-raising DECISION/CHECKPOINT tasks
 Business-OS-Integration: on
 Business-Unit: BOS
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # Startup-From-Spec Skill Library Plan
 
 ## Summary
 
-Implement a startup-native, high-contribution skill library that converts a product specification directly into a 90-day execution system for B2C startup businesses. This plan keeps existing delivery discipline (`lp-fact-find -> lp-plan -> lp-build`) while replacing fixed seeding behavior with adaptive context-budget seeding.
+Implement a startup-native, high-contribution skill library that converts a product specification directly into a 90-day execution system for B2C startup businesses. This plan keeps existing delivery discipline (`lp-do-fact-find -> lp-do-plan -> lp-do-build`) while replacing fixed seeding behavior with adaptive context-budget seeding.
 
 ## Locked Decisions
 
@@ -33,7 +35,7 @@ Implement a startup-native, high-contribution skill library that converts a prod
 4. Launch geography is Italy.
 5. Preorders are allowed before stock arrives.
 6. Product order-to-availability planning assumes ~60 days.
-7. Startup flow may bypass ideas generation, but any approved build work must enter `lp-fact-find -> lp-plan -> lp-build`.
+7. Startup flow may bypass ideas generation, but any approved build work must enter `lp-do-fact-find -> lp-do-plan -> lp-do-build`.
 
 ## Goals
 
@@ -59,7 +61,7 @@ Implement a startup-native, high-contribution skill library that converts a prod
 - SFS-03 - Implement Italy-first budget/channel/economics/supply modules.
 - SFS-04 - Implement weekly K/P/C/S governance pack.
 - SFS-05 - Implement adaptive context-budget seeding (`K_dynamic`).
-- SFS-06 - Implement delivery handoff contract to `lp-fact-find -> lp-plan -> lp-build`.
+- SFS-06 - Implement delivery handoff contract to `lp-do-fact-find -> lp-do-plan -> lp-do-build`.
 - SFS-07 - Implement dry-run + progress visibility + degraded handling contract.
 - SFS-08 - Build validation harness for HEAD/PET paired runs.
 - SFS-09 - Update skill docs/runbooks and integration references.
@@ -107,7 +109,7 @@ Per business, compute:
   - bounds: min 1 (if valid Go exists), max 20
 
 ### Stage 5: Handoff
-- Convert approved Go items into `lp-fact-find` seeds and planning-ready manifests.
+- Convert approved Go items into `lp-do-fact-find` seeds and planning-ready manifests.
 - No direct build bypass.
 
 ## Task Summary
@@ -228,11 +230,11 @@ Per business, compute:
 ### SFS-06: Handoff to Existing Delivery Gates
 - **Type:** IMPLEMENT
 - **Deliverables:**
-  - Handoff mapping from approved Go-items to `lp-fact-find` seeds.
-  - Routing contract to `lp-plan` and `lp-build`.
+  - Handoff mapping from approved Go-items to `lp-do-fact-find` seeds.
+  - Routing contract to `lp-do-plan` and `lp-do-build`.
 - **Acceptance:**
   - [ ] Every approved Go-item maps to one concrete handoff entry.
-  - [ ] No implementation item bypasses `lp-fact-find -> lp-plan -> lp-build`.
+  - [ ] No implementation item bypasses `lp-do-fact-find -> lp-do-plan -> lp-do-build`.
   - [ ] Handoff payloads include business, priority, evidence, and decision context.
 
 ### SFS-08: Validation Checkpoint (HEAD/PET)

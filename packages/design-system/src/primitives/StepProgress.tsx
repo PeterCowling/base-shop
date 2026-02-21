@@ -29,6 +29,7 @@ export function StepProgress({
         {isComplete ? "Almost done" : `Step ${safeCurrent} of ${safeTotal}`}
       </div>
       <div
+        // eslint-disable-next-line ds/enforce-layout-primitives -- Step progress bar uses flex layout for horizontal progress indicators, acceptable in primitive component [DS-01]
         className="flex gap-1.5"
         role="progressbar"
         aria-label={label}

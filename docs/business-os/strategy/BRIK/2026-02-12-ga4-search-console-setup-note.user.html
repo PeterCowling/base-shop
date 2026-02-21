@@ -101,7 +101,7 @@
 <li>Web Vitals events are wired in <code>apps/brikette/src/performance/reportWebVitals.ts</code>.</li>
 <li>Booking intent event (<code>begin_checkout</code>) is wired in <code>apps/brikette/src/app/[lang]/book/BookPageContent.tsx</code>.</li>
 </ul>
-<p>Current blocker: production does not yet have <code>NEXT_PUBLIC_GA_MEASUREMENT_ID</code> configured.</p>
+<p>Current status: production has <code>NEXT_PUBLIC_GA_MEASUREMENT_ID</code> configured (<code>G-2ZSYXG8R7T</code>) and GA collect traffic is visible. See verification artifact: <code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code>.</p>
 <h2>3) External inputs required from operator</h2>
 <ol>
 <li>Google account with access to create GA4 property and Search Console property.</li>
@@ -148,12 +148,29 @@
 <li>Start booking flow and confirm <code>begin_checkout</code> event appears in GA4.</li>
 <li>Confirm Search Console receives sitemap and begins URL discovery.</li>
 </ol>
-<h2>5) Definition of done</h2>
+<h3>4.4 2026-02-13 execution status</h3>
 <ul>
-<li><code>NEXT_PUBLIC_GA_MEASUREMENT_ID</code> set in production and deployed.</li>
-<li>GA4 receiving <code>web_vitals</code> and <code>begin_checkout</code>.</li>
-<li>Search Console property verified with sitemap submitted.</li>
-<li>BRIK plan metrics section can be updated from "Not measured" to observed baseline values.</li>
+<li>Completed:
+<ul>
+<li>GA4 script/config confirmed live on production.</li>
+<li>GA collect requests observed (<code>page_view</code>, <code>user_engagement</code>) for <code>tid=G-2ZSYXG8R7T</code>.</li>
+<li>Search Console DNS verification TXT records present.</li>
+<li><code>robots.txt</code> sitemap directive and <code>sitemap_index.xml</code> confirmed live.</li>
+</ul>
+</li>
+<li>Remaining:
+<ul>
+<li>Confirm <code>web_vitals</code> and <code>begin_checkout</code> in GA4 Realtime/DebugView with property access.</li>
+<li>Confirm Search Console URL discovery status in property UI.</li>
+</ul>
+</li>
+</ul>
+<h2>5) Definition of done</h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" checked disabled> <code>NEXT_PUBLIC_GA_MEASUREMENT_ID</code> set in production and deployed.</li>
+<li class="task-list-item"><input type="checkbox" disabled> GA4 receiving <code>web_vitals</code> and <code>begin_checkout</code> (property-level UI verification still required).</li>
+<li class="task-list-item"><input type="checkbox" checked disabled> Search Console verification records + sitemap endpoint confirmed live.</li>
+<li class="task-list-item"><input type="checkbox" disabled> BRIK plan metrics section updated with first observed baseline window.</li>
 </ul>
 <h2>6) Immediate follow-up once done</h2>
 <ol>
@@ -162,7 +179,7 @@
 </ol>
     <div class="meta">
       <div>Source: <code>docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md</code></div>
-      <div>Generated: 2026-02-12T12:59:45.649Z</div>
+      <div>Generated: 2026-02-13T22:21:42.482Z</div>
     </div>
   </main>
   <script type="module">

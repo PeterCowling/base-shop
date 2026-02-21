@@ -1,4 +1,5 @@
 /** @jest-environment node */
+export {};
 
 interface OrderItem {
   id: string;

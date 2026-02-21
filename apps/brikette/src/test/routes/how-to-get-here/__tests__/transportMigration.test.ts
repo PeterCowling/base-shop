@@ -12,14 +12,14 @@
 import { describe, expect, it } from "@jest/globals";
 
 import type { RouteDefinition } from "@/lib/how-to-get-here/definitions";
-import type { RouteContent } from "@/lib/how-to-get-here/schema";
+import type { ContentKey, RouteContent } from "@/lib/how-to-get-here/schema";
 import { transformRouteToGuide } from "@/routes/how-to-get-here/transformRouteToGuide";
 
 describe("transportMigration", () => {
   describe("linkBindings.placeholder pattern", () => {
     it("should transform capri-positano-ferry with placeholder link tags", () => {
       const routeDefinition: Partial<RouteDefinition> = {
-        contentKey: "capriPositanoFerry",
+        contentKey: "capriPositanoFerry" as ContentKey,
         linkBindings: [
           {
             key: "tip.copy",
@@ -104,7 +104,7 @@ describe("transportMigration", () => {
   describe("linkBindings.linkObject pattern", () => {
     it("should transform amalfi-positano-ferry with linkObject split text", () => {
       const routeDefinition: Partial<RouteDefinition> = {
-        contentKey: "howToGetHereAmalfiPositanoFerry",
+        contentKey: "howToGetHereAmalfiPositanoFerry" as ContentKey,
         linkBindings: [
           {
             key: "tip.body",
@@ -180,7 +180,7 @@ describe("transportMigration", () => {
   describe("galleries", () => {
     it("should merge gallery metadata with content", () => {
       const routeDefinition: Partial<RouteDefinition> = {
-        contentKey: "capriPositanoFerry",
+        contentKey: "capriPositanoFerry" as ContentKey,
         galleries: [
           {
             key: "photoGuide.items",
@@ -263,7 +263,7 @@ describe("transportMigration", () => {
   describe("hero pattern support", () => {
     it("should transform routes with hero field (fallback for header)", () => {
       const routeDefinition: Partial<RouteDefinition> = {
-        contentKey: "positanoAmalfiFerry",
+        contentKey: "positanoAmalfiFerry" as ContentKey,
         linkBindings: [
           {
             key: "tip.copy",

@@ -7,7 +7,7 @@ import { buildCanonicalUrl } from "@acme/ui/lib/seo";
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { guideSlug } from "@/routes.guides-helpers";
-import NEARBY from "@/schema/travel-help/en-nearby.jsonld?raw";
+import NEARBY from "@/schema/travel-help/en-nearby";
 import { buildFaqJsonLd } from "@/utils/buildFaqJsonLd";
 import { HOTEL_ID } from "@/utils/schema";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
@@ -100,7 +100,6 @@ export default function TravelHelpStructuredData() {
     : null;
   // Parse and normalize NEARBY to use the canonical HOTEL_ID and inLanguage
   let nearbyJson = "";
-  let nearbyParsed: NearbyGraph | undefined;
   try {
     const parsed = JSON.parse(NEARBY) as unknown;
     if (isNearbyGraph(parsed)) {
@@ -116,7 +115,6 @@ export default function TravelHelpStructuredData() {
 
       parsed.inLanguage = lang;
       parsed.url = pageUrl;
-      nearbyParsed = parsed;
       nearbyJson = serializeJsonLdValue(parsed);
     }
   } catch {

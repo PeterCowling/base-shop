@@ -5,6 +5,7 @@ import { promises as fs } from "node:fs";
 import * as fsSync from "node:fs";
 import * as path from "node:path";
 
+import { products as fallbackProducts } from "@/data/products";
 import type { Locale } from "@/types/locale";
 import type { Product, ProductColor, ProductSize, ProductVariant } from "@/types/product";
 
@@ -108,6 +109,15 @@ async function readJsonFile<T>(filePath: string, fallback: T): Promise<T> {
   }
 }
 
+function resolveShopFilePath(filename: string): string {
+  const dataRoot = resolveDataRoot();
+  return path.join(dataRoot, SHOP_ID, filename);
+}
+
+function shopFileExists(filename: string): boolean {
+  return fsSync.existsSync(resolveShopFilePath(filename));
+}
+
 function buildVariants(args: {
   productSlug: string;
   pricing: VariantPricingRecord[];
@@ -152,7 +162,7 @@ function buildVariants(args: {
         colorLabel: colorMeta.label,
         colorHex: colorMeta.hex,
         price: typeof row.price === "number" ? row.price : 0,
-        currency: "USD",
+        currency: typeof row.currency === "string" ? row.currency : "USD",
         stripePriceId: typeof row.stripePriceId === "string" ? row.stripePriceId : "",
         inStock: typeof quantity === "number" ? quantity > 0 : true,
       } satisfies ProductVariant;
@@ -166,22 +176,19 @@ function buildVariants(args: {
 }
 
 async function readShopProducts(): Promise<CochlearfitProductRecord[]> {
-  const dataRoot = resolveDataRoot();
-  const productsPath = path.join(dataRoot, SHOP_ID, "products.json");
+  const productsPath = resolveShopFilePath("products.json");
   const raw = await readJsonFile<unknown>(productsPath, []);
   return Array.isArray(raw) ? (raw as CochlearfitProductRecord[]) : [];
 }
 
 async function readVariantPricing(): Promise<VariantPricingRecord[]> {
-  const dataRoot = resolveDataRoot();
-  const variantsPath = path.join(dataRoot, SHOP_ID, "variants.json");
+  const variantsPath = resolveShopFilePath("variants.json");
   const raw = await readJsonFile<unknown>(variantsPath, []);
   return Array.isArray(raw) ? (raw as VariantPricingRecord[]) : [];
 }
 
 async function readStockMap(): Promise<Map<string, number>> {
-  const dataRoot = resolveDataRoot();
-  const inventoryPath = path.join(dataRoot, SHOP_ID, "inventory.json");
+  const inventoryPath = resolveShopFilePath("inventory.json");
   const raw = await readJsonFile<unknown>(inventoryPath, []);
   const rows = Array.isArray(raw) ? (raw as InventoryRecord[]) : [];
   const map = new Map<string, number>();
@@ -196,7 +203,18 @@ async function readStockMap(): Promise<Map<string, number>> {
   return map;
 }
 
+function shouldUseFallbackCatalog(): boolean {
+  // If there is no data-backed catalog present, fall back to the in-repo product list.
+  // This keeps the storefront non-empty while preserving the ability to switch to
+  // data/shops-driven catalogs later.
+  return !shopFileExists("products.json");
+}
+
 export async function listCochlearfitProducts(locale: Locale): Promise<Product[]> {
+  if (shouldUseFallbackCatalog()) {
+    return fallbackProducts;
+  }
+
   const [products, pricing, stockByVariantId] = await Promise.all([
     readShopProducts(),
     readVariantPricing(),
@@ -213,10 +231,7 @@ export async function listCochlearfitProducts(locale: Locale): Promise<Product[]
         .filter((item) => item?.type === "image" && typeof item.url === "string")
         .map((item) => ({
           src: item.url,
-          alt:
-            item.altText ??
-            pickLocalized(product.title, locale) ??
-            slug,
+          alt: item.altText ?? pickLocalized(product.title, locale) ?? slug,
           width: 820,
           height: 520,
         }));
@@ -257,6 +272,10 @@ export async function getCochlearfitProductBySlug(
 }
 
 export async function listCochlearfitProductSlugs(): Promise<string[]> {
+  if (shouldUseFallbackCatalog()) {
+    return fallbackProducts.map((product) => product.slug);
+  }
+
   const products = await readShopProducts();
   return products
     .filter((product) => (product.status ?? "active") === "active")

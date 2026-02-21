@@ -40,7 +40,7 @@ describe("settings repository", () => {
       expect(settings.currency).toBe("USD");
       expect(settings.languages).toEqual(["en"]);
       expect(settings.depositService).toEqual({ enabled: false, intervalMinutes: 60 });
-      expect(settings.stockAlert.recipients).toEqual(["a@example.com"]);
+      expect(settings.stockAlert!.recipients).toEqual(["a@example.com"]);
       expect(settings.freezeTranslations).toBe(false);
     });
   });

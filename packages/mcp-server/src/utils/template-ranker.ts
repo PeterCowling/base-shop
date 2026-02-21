@@ -1,3 +1,6 @@
+import { readFileSync } from "fs";
+import { join } from "path";
+
 import { BM25Index, type SearchResult, stemmedTokenizer } from "@acme/lib";
 
 import {
@@ -5,6 +8,44 @@ import {
   type PrepaymentStep,
   selectPrepaymentTemplate,
 } from "./workflow-triggers.js";
+
+// ---------------------------------------------------------------------------
+// Ranker priors — synchronous cache for use in synchronous rankTemplates()
+// ---------------------------------------------------------------------------
+
+interface RankerPriors {
+  calibrated_at: string | null;
+  priors: Record<string, Record<string, number>>;
+}
+
+const RANKER_PRIORS_PATH = join(
+  process.cwd(),
+  "packages",
+  "mcp-server",
+  "data",
+  "ranker-template-priors.json",
+);
+
+// undefined = not yet attempted; null = load failed / file absent
+let _priorsCache: RankerPriors | null | undefined = undefined;
+
+function getPriorsSync(): RankerPriors | null {
+  if (_priorsCache !== undefined) {
+    return _priorsCache;
+  }
+  try {
+    const raw = readFileSync(RANKER_PRIORS_PATH, "utf-8");
+    _priorsCache = JSON.parse(raw) as RankerPriors;
+  } catch {
+    _priorsCache = null;
+  }
+  return _priorsCache;
+}
+
+/** Reset the module-level priors cache. Used in tests and after calibration. */
+export function invalidatePriorsCache(): void {
+  _priorsCache = undefined;
+}
 
 export const SCENARIO_CATEGORIES = [
   "access",
@@ -85,6 +126,9 @@ export interface TemplateCandidate {
   confidence: number;
   evidence: string[];
   matches: Record<string, string[]>;
+  // TASK-05: set when ranker priors are applied; absent when no priors file exists.
+  adjustedScore?: number;
+  adjustedConfidence?: number;
 }
 
 export interface TemplateRankResult {
@@ -92,6 +136,11 @@ export interface TemplateRankResult {
   confidence: number;
   candidates: TemplateCandidate[];
   reason: string;
+}
+
+export interface PerQuestionRankEntry {
+  question: string;
+  candidates: TemplateCandidate[];
 }
 
 const DEFAULT_LIMIT = 3;
@@ -223,7 +272,7 @@ function applyThresholds(candidates: TemplateCandidate[]): TemplateRankResult {
     };
   }
 
-  const topConfidence = candidates[0].confidence;
+  const topConfidence = candidates[0].adjustedConfidence ?? candidates[0].confidence;
   const selection =
     topConfidence >= AUTO_THRESHOLD
       ? "auto"
@@ -324,5 +373,61 @@ export function rankTemplates(
     })
     .filter((candidate): candidate is TemplateCandidate => candidate !== null);
 
+  // TASK-05: apply ranker priors to adjust scores and confidences.
+  const priors = getPriorsSync();
+  if (priors && Object.keys(priors.priors).length > 0) {
+    const priorsKey = categoryHint ?? "general";
+    const categoryPriors = priors.priors[priorsKey] ?? {};
+    for (const candidate of candidates) {
+      const delta = categoryPriors[candidate.template.subject] ?? 0;
+      if (delta !== 0) {
+        const clamped = Math.max(-30, Math.min(30, delta));
+        candidate.adjustedScore = candidate.score * (1 + clamped / 100);
+        candidate.adjustedConfidence = Math.max(0, Math.min(100, candidate.confidence + clamped));
+      }
+    }
+    // Re-sort by adjustedScore (descending) when priors were applied.
+    candidates.sort((a, b) => (b.adjustedScore ?? b.score) - (a.adjustedScore ?? a.score));
+  }
+
   return applyThresholds(candidates);
+}
+
+/**
+ * Rank templates independently for each question/request text.
+ * Returns one entry per question with its BM25 candidate list.
+ * Uses the same expandQuery + BM25 index as rankTemplates but builds
+ * a fresh query for each question independently, enabling per-topic
+ * template selection rather than a single combined-intent query.
+ *
+ * A single shared BM25 index is built once from all templates (not rebuilt
+ * per question) to avoid redundant work. The limit parameter caps how many
+ * candidates are returned per question (defaults to DEFAULT_LIMIT).
+ */
+export function rankTemplatesPerQuestion(
+  questions: Array<{ text: string }>,
+  templates: EmailTemplate[],
+  limit?: number
+): PerQuestionRankEntry[] {
+  const effectiveLimit = limit ?? DEFAULT_LIMIT;
+  const index = buildIndex(templates);
+  const templatesBySubject = new Map(
+    templates.map((template) => [template.subject, template])
+  );
+
+  return questions.map((question) => {
+    const query = expandQuery(question.text);
+    const queryTerms = new Set(stemmedTokenizer.tokenize(query));
+    const results = index.search(query, effectiveLimit);
+
+    const candidates = results
+      .map((result) => {
+        const template = templatesBySubject.get(result.id);
+        if (!template) return null;
+        return buildCandidate(template, result, queryTerms);
+      })
+      .filter((candidate): candidate is TemplateCandidate => candidate !== null);
+
+    return { question: question.text, candidates };
+  });
 }

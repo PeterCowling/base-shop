@@ -3,8 +3,8 @@ Type: Business-Plan
 Status: Active
 Business: PET
 Created: 2026-02-11
-Updated: 2026-02-12
-Last-reviewed: 2026-02-12
+Updated: 2026-02-17
+Last-reviewed: 2026-02-17
 Owner: Pete
 ---
 
@@ -12,68 +12,44 @@ Owner: Pete
 
 ## Strategy
 
-### Current Focus (2026-02-12)
+### Current Focus (2026-02-17)
 
-1. **Active Outcome Contract (Locked)** (Priority: High)
-   - Outcome-ID: `PET-OUT-2026Q1-01`
-   - Outcome: Achieve first reliable PET sales in Italy via pre-website execution, then stabilize contribution-positive growth with bundle/attach economics.
-   - Baseline (2026-02-12): orders 0, gross revenue EUR 0, blended CAC unmeasured, returns unmeasured.
-   - Target by 2026-05-13: 178 orders, EUR 5,874 gross revenue incl VAT.
-   - CAC guardrail: blended CAC <= EUR 12 by day 60; maintain blended CAC <=70% of observed contribution/order pre-ads.
-   - Owner: Pete
-   - Decision Link: `DEC-PET-01` (scale spend/channel breadth vs hold and fix).
+1. **Dog Accessories PMF — Product 1: Dog Poop Bag Holder** (Priority: High)
+   - Status: Plan active. Card: PET-001. Plan: `docs/plans/pets-dog-accessories-pmf/plan.md`
+   - Product: Premium dog poop bag holder at €80. Mini Birkin-style body + leash clip.
+     Same supplier as HBAG. Leash clip confirmed to fit — Pete, 2026-02-17.
+   - Brand: TBD — brand name selection pending from `/lp-offer` output
+     (Options: **Mio** [recommended], Rue & Hound, Passi).
+   - Offer artifact: `docs/business-os/startup-baselines/PET-offer.md`
+   - Next: Pete selects brand name → TASK-01 closes → TASK-04 (photography) + TASK-05 (social) unblock.
 
-2. **Category and Segment Prioritization** (Priority: High)
-   - Status: Initial category options exist but no ranked decision set.
-   - Next: Rank target segment and define primary offer scope for first validation cycle.
-   - Artifact: `docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md`
-   - Exec Summary: `docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2-exec-summary.user.md`
-
-3. **Evidence and Tooling Baseline** (Priority: Medium)
-   - Status: Baseline contract is now frozen; observed channel economics and operations reliability still need week-1/week-2 data.
-   - Next: Enforce weekly scorecard and run mandatory recalibration gates.
-   - Dry-run Evidence: `docs/business-os/strategy/PET/2026-02-11-week2-gate-dry-run.user.md`
-   - Action Backlog: `docs/business-os/strategy/PET/launch-readiness-action-backlog.user.md`
-
-### 90-Day Outcome Contract (Frozen on 2026-02-12)
-
-- Sales target: 178 orders and EUR 5,874 gross revenue incl VAT by 2026-05-13.
-- CAC guardrail: blended CAC <= EUR 12 by day 60; blended CAC must stay <=70% of observed contribution/order pre-ads.
-
-#### Weekly leading indicators
-
-| Indicator | Definition | Weekly guardrail |
-|---|---|---|
-| Sessions (all channels) | Total tracked sessions | >=900 sessions by week 4 |
-| CVR (7-day trailing) | Orders / sessions | >=1.5% target; 1.2% floor |
-| Blended CAC (7-day trailing) | Paid spend / all orders | <=EUR 12 |
-| Contribution guardrail | Blended CAC / contribution per order pre-ads | <=70% |
-| Payment success rate | Successful payments / attempts | >=97% (decision-valid at >=100 attempts) |
-| On-time ship rate | On-time shipments / shipments | >=95% |
-| Return rate (30-day trailing) | Returned orders / shipped orders | <=8% (decision-valid at >=25 shipped orders) |
-
-#### Kill/Pivot thresholds (enforced)
-
-1. If CVR is below 1.2% after >=500 sessions and >=10 orders in a 7-day window, switch to fix-first mode before adding spend.
-2. If blended CAC exceeds 70% of observed contribution/order pre-ads, stop cold expansion and keep retargeting only.
-3. If return rate exceeds 8% after >=25 shipped orders, hold growth and remediate offer/operations quality.
-4. If on-time ship rate drops below 95%, hold growth until SLA recovers.
-5. If payment success drops below 97% after >=100 attempts, pause traffic increases until checkout reliability recovers.
-6. If denominator thresholds are not met, mark gates `insufficient-sample` and extend observation before scale decisions.
+2. **Category Lock** (Priority: Complete)
+   - Status: ✅ Resolved 2026-02-17. Category = dog lifestyle accessories. Product 1 = poop bag holder.
+   - Scope: Broad over time — full dog lifestyle accessories line (lead charms, collar accessories,
+     travel pouches, grooming, apparel add-ons). Holder is product 1 and the demand signal test.
+   - No crossover with HBAG at launch: separate brand identity, ICP, and channels.
 
 ## Risks
 
 ### Active Risks
 
-- **Category Dilution** (Severity: High, Added: 2026-02-11)
-  - Source: Broad category exploration without a constrained first bet.
-  - Impact: Slow learning and fragmented execution.
-  - Mitigation: Narrow scope to one primary segment and one validation channel.
+- **Channel cold-start — new social account** (Severity: High, Added: 2026-02-17)
+  - Source: PETS Instagram/TikTok account launches from 0 followers.
+  - Impact: Insufficient organic reach to measure demand signal in 2-week probe.
+  - Mitigation: Reels/TikTok format for organic reach; VC-02 (1,000 impressions in 14 days)
+    flags insufficient reach before concluding demand is absent.
 
-- **Unmeasured Unit Economics** (Severity: Medium, Added: 2026-02-11)
-  - Source: Contract is frozen but observed unit economics are still week-0.
-  - Impact: Risk of scaling low-margin work.
-  - Mitigation: Enforce contribution/CAC gate before expansion decisions.
+- **€80 premium ceiling on Etsy dog accessories** (Severity: Medium, Added: 2026-02-17)
+  - Source: Etsy artisan dog accessories typically top out at $50–60; €80 is at the boundary.
+  - Impact: Listing views but no conversion if Etsy buyers won't pay €80 without brand context.
+  - Mitigation: Instagram/TikTok probe provides brand context that Etsy listing alone cannot.
+    If VC-01 (3 Etsy sales in 28 days) fails, test Instagram-first DM-to-buy before concluding
+    pricing is wrong.
+
+- **Single operator bandwidth** (Severity: High, Added: 2026-02-17)
+  - Source: Pete running HBAG and PETS demand tests in parallel.
+  - Impact: Neither test gets adequate attention; signal quality degrades.
+  - Mitigation: Stagger PETS launch 1–2 weeks behind HBAG. Never run both active probes in same week.
 
 ## Opportunities
 
@@ -87,22 +63,36 @@ _None yet_
 
 _No learnings recorded yet. This section is append-only — learnings are added after card reflections._
 
+## Outcome Contracts
+
+### PET-OUT-2026Q1-02
+
+| Field | Value |
+|---|---|
+| **Outcome-ID** | `PET-OUT-2026Q1-02` |
+| **Outcome** | Achieve first paid demand signal for the dog holder: 10 sales or €800 revenue across active channels, validating premium €80 positioning |
+| **Baseline** | Dog holder Revenue: €0. Sales: 0. Date: 2026-02-17. |
+| **Target** | 10 paid sales OR €800 cumulative revenue — whichever comes first |
+| **By** | 2026-05-17 (90 days) |
+| **Owner** | Pete |
+| **Leading-Indicator-1** | Weekly Etsy listing views + add-to-cart count (tracked in `docs/plans/pets-dog-accessories-pmf/demand-log.md`) |
+| **Leading-Indicator-2** | Weekly Instagram/TikTok DM purchase inquiries (tracked in demand-log) |
+| **Decision-Link** | `DEC-PET-02` — if 0 sales by 2026-04-17 (60-day gate): pause channel spend, run `/lp-do-replan` on pricing and variant selection before continuing |
+| **Stop/Pivot Threshold** | 0 sales across all active channels after 60 days → halt, replan. Fewer than 3 Etsy views/day after 14 days → investigate tags/title before waiting full 28 days |
+| **Evidence-Pointers** | `docs/plans/pets-dog-accessories-pmf/fact-find.md`, `docs/plans/pets-dog-accessories-pmf/plan.md` |
+
 ## Metrics
 
-### Commercial Signals (Established: 2026-02-12)
+### Dog Holder Demand Test Signals (From: 2026-02-17 — active on listing launch)
 
-- **Qualified Demand:** Week-0 baseline
-  - Target: >=900 sessions/week by week 4
-  - Measurement: Sessions by channel (weekly)
+- **First-Purchase Signal:** Not yet measured (TASK-06 Etsy listing + TASK-07 social probe pending)
+  - Target: 10 sales or €800 by 2026-05-17
+  - Measurement: Weekly — `docs/plans/pets-dog-accessories-pmf/demand-log.md`
 
-- **Conversion Signal:** Week-0 baseline
-  - Target: >=1.5% CVR (7-day trailing), hard floor 1.2%
-  - Measurement: Orders / sessions (weekly)
+- **Etsy Engagement Signal:** Not yet measured
+  - Target: ≥30 unique listing views + ≥3 favourites per listing within 14 days of going live
+  - Measurement: Etsy Shop Manager analytics
 
-- **Economics Signal:** Week-0 baseline
-  - Target: blended CAC <=EUR 12 and <=70% of contribution/order pre-ads
-  - Measurement: Paid spend, orders, contribution tracker (weekly)
-
-- **Reliability Signal:** Week-0 baseline
-  - Target: payment success >=97%, on-time ship >=95%, return rate <=8%
-  - Measurement: Checkout + operations logs (weekly)
+- **Social DM Signal:** Not yet measured
+  - Target: ≥3 genuine purchase DM inquiries within 14 days of first post
+  - Measurement: DM log in `docs/plans/pets-dog-accessories-pmf/demand-log.md`

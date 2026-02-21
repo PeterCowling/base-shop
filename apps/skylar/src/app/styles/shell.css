@@ -11,33 +11,33 @@
     sans-serif
   );
   --skylar-accent: 11.7 85% 48%;
-  --skylar-gold: #d5b169;
-  --skylar-cream: #f8f4ed;
-  --skylar-charcoal: #080808;
-  --skylar-charcoal-soft: #111;
-  --skylar-en-cream: #EBE9E1;
-  --skylar-en-panel: #fff8f0;
-  --skylar-en-accent: #E43D12;
-  --skylar-en-secondary: #D6536D;
-  --skylar-en-soft: #FFA2B6;
-  --skylar-en-gold: #EFB11D;
-  --skylar-en-ink: #9B2C0C;
-  --skylar-en-body: rgba(46, 36, 30, 0.92);
-  --skylar-en-dark: #181818;
-  --it-ink: #941F1E;
-  --it-secondary: #2F221E;
-  --it-ground: #F6F0E6;
-  --it-ground-soft: #FCF8F1;
-  --it-gold: #D8B072;
-  --it-sage: #5F6F52;
-  --it-parchment: #FFFDF7;
-  --it-shadow-soft: 0 40px 70px -50px rgba(52, 41, 33, 0.35);
-  --skylar-shadow-soft: rgba(0, 0, 0, 0.06);
-  --skylar-shadow-strong: rgba(0, 0, 0, 0.18);
+  --skylar-gold: 39 57% 62%;
+  --skylar-cream: 37 52% 95%;
+  --skylar-charcoal: 0 0% 3%;
+  --skylar-charcoal-soft: 0 0% 7%;
+  --skylar-en-cream: 45 20% 90%;
+  --skylar-en-panel: 30 100% 97%;
+  --skylar-en-accent: 12 85% 48%;
+  --skylar-en-secondary: 348 58% 52%;
+  --skylar-en-soft: 348 100% 82%;
+  --skylar-en-gold: 42 87% 53%;
+  --skylar-en-ink: 13 87% 33%;
+  --skylar-en-body: 22 21% 15%;
+  --skylar-en-dark: 0 0% 9%;
+  --it-ink: 0 66% 35%;
+  --it-secondary: 14 26% 15%;
+  --it-ground: 37 49% 93%;
+  --it-ground-soft: 38 65% 97%;
+  --it-gold: 36 56% 65%;
+  --it-sage: 93 14% 38%;
+  --it-parchment: 45 100% 98%;
+  --it-shadow-soft: 0 40px 70px -50px hsl(var(--it-secondary) / 0.35);
+  --skylar-shadow-soft: hsl(0 0% 0% / 0.06);
+  --skylar-shadow-strong: hsl(0 0% 0% / 0.18);
 }
 
 body {
-  background-color: var(--skylar-cream);
+  background-color: hsl(var(--skylar-cream));
   color: hsl(var(--color-fg));
   font-family: var(--font-sans);
   min-height: 100vh;
@@ -51,35 +51,35 @@ a:hover {
 .skylar-shell-root {
   min-height: 100vh;
   transition: background-color 0.3s ease;
-  --skylar-language-link-color: hsla(0, 0%, 25%, 0.8);
+  --skylar-language-link-color: hsl(0 0% 25% / 0.8);
   --skylar-language-link-active-color: hsl(var(--skylar-accent));
-  --skylar-pill-border-color: hsla(0, 0%, 12%, 0.4);
-  --skylar-pill-text-color: hsla(0, 0%, 9%, 0.92);
-  --skylar-pill-primary-bg: hsla(0, 0%, 9%, 0.92);
-  --skylar-pill-primary-text: #fff;
-  --skylar-card-bg: #fff;
-  --skylar-card-border: hsla(0, 0%, 12%, 0.12);
-  --skylar-card-shadow: none;
+  --skylar-pill-border-color: hsl(0 0% 12% / 0.4);
+  --skylar-pill-text-color: hsl(0 0% 9% / 0.92);
+  --skylar-pill-primary-bg: hsl(0 0% 9% / 0.92);
+  --skylar-pill-primary-text: hsl(var(--surface-1));
+  --skylar-card-bg: hsl(var(--surface-1));
+  --skylar-card-border: hsl(var(--border-1));
+  --skylar-card-shadow: var(--elevation-0);
   --skylar-card-text: inherit;
 }
 
 .skylar-shell-root[data-locale="en"] {
-  background: var(--skylar-en-cream);
-  color: var(--skylar-en-body);
+  background: hsl(var(--skylar-en-cream));
+  color: hsl(var(--skylar-en-body) / 0.92);
   --font-display: var(
     --font-poppins,
     "Poppins",
     "Times New Roman",
     serif
   );
-  --skylar-language-link-color: rgba(24, 24, 24, 0.7);
-  --skylar-card-border: rgba(0, 0, 0, 0.12);
-  --skylar-card-shadow: 0 25px 40px -38px rgba(0, 0, 0, 0.18);
+  --skylar-language-link-color: hsl(var(--skylar-en-dark) / 0.7);
+  --skylar-card-border: hsl(0 0% 0% / 0.12);
+  --skylar-card-shadow: 0 25px 40px -38px hsl(0 0% 0% / 0.18);
 }
 
 .skylar-shell-root[data-locale="it"] {
-  background: radial-gradient(circle at top, #fffdf6 0%, var(--it-ground) 45%, #f2e8dc 100%);
-  color: var(--it-secondary);
+  background: radial-gradient(circle at top, hsl(var(--it-parchment)) 0%, hsl(var(--it-ground)) 45%, hsl(33 46% 91%) 100%);
+  color: hsl(var(--it-secondary));
   --font-display: var(--font-fraunces, "Fraunces", "Times New Roman", serif);
   --font-sans: var(
     --font-space-grotesk,
@@ -90,27 +90,30 @@ a:hover {
     system-ui,
     sans-serif
   );
-  --skylar-language-link-color: rgba(47, 34, 30, 0.55);
-  --skylar-language-link-active-color: var(--it-ink);
-  --skylar-pill-border-color: rgba(47, 34, 30, 0.25);
-  --skylar-pill-text-color: var(--it-secondary);
-  --skylar-pill-primary-bg: var(--it-ink);
-  --skylar-pill-primary-text: #fff6ef;
-  --skylar-card-bg: var(--it-parchment);
-  --skylar-card-border: rgba(47, 34, 30, 0.12);
-  --skylar-card-shadow: 0 45px 80px -60px rgba(26, 17, 12, 0.35);
-  --skylar-card-text: var(--it-secondary);
+  --skylar-language-link-color: hsl(var(--it-secondary) / 0.55);
+  --skylar-language-link-active-color: hsl(var(--it-ink));
+  --skylar-pill-border-color: hsl(var(--it-secondary) / 0.25);
+  --skylar-pill-text-color: hsl(var(--it-secondary));
+  --skylar-pill-primary-bg: hsl(var(--it-ink));
+  --skylar-pill-primary-text: hsl(26 100% 97%);
+  --skylar-card-bg: hsl(var(--it-parchment));
+  --skylar-card-border: hsl(var(--it-secondary) / 0.12);
+  --skylar-card-shadow: 0 45px 80px -60px hsl(var(--it-secondary) / 0.35);
+  --skylar-card-text: hsl(var(--it-secondary));
 }
 
 .skylar-shell-root[data-locale="it"] .skylar-shell {
-  color: var(--it-secondary);
+  color: hsl(var(--it-secondary));
   max-width: 1180px;
   padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3.5rem) clamp(3rem, 5vw, 5rem);
 }
 
 .skylar-shell-root[data-locale="zh"] {
-  background: radial-gradient(120% 120% at 0% 0%, #141313 0%, #050505 80%);
-  color: #f7dfb0;
+  --zh-gold: 40 83% 83%;
+  --zh-gold-bright: 43 91% 71%;
+  --zh-dark: 0 3% 8%;
+  background: radial-gradient(120% 120% at 0% 0%, hsl(var(--zh-dark)) 0%, hsl(0 0% 2%) 80%);
+  color: hsl(var(--zh-gold));
   --font-display: var(
     --font-noto,
     "Noto Sans SC",
@@ -131,14 +134,14 @@ a:hover {
       sans-serif
     )
   );
-  --skylar-language-link-color: hsla(0, 0%, 100%, 0.6);
-  --skylar-pill-border-color: rgba(213, 177, 105, 0.3);
-  --skylar-pill-text-color: #f6dfb4;
-  --skylar-pill-primary-bg: var(--skylar-gold);
-  --skylar-pill-primary-text: #0b0a07;
-  --skylar-card-bg: #0b0b0b;
-  --skylar-card-border: rgba(213, 177, 105, 0.25);
-  --skylar-card-text: #f7e5c3;
+  --skylar-language-link-color: hsl(var(--surface-1) / 0.6);
+  --skylar-pill-border-color: hsl(var(--skylar-gold) / 0.3);
+  --skylar-pill-text-color: hsl(var(--zh-gold));
+  --skylar-pill-primary-bg: hsl(var(--skylar-gold));
+  --skylar-pill-primary-text: hsl(var(--color-fg));
+  --skylar-card-bg: hsl(0 0% 4%);
+  --skylar-card-border: hsl(var(--skylar-gold) / 0.25);
+  --skylar-card-text: hsl(39 80% 87%);
 }
 
 .skylar-shell {
@@ -165,19 +168,19 @@ a:hover {
 
 .skylar-hero {
   border-radius: 42px;
-  border: 1px solid hsla(0, 0%, 12%, 0.15);
+  border: 1px solid hsl(0 0% 12% / 0.15);
   padding: 2.5rem;
-  background: linear-gradient(135deg, #fffefc, #fbeedc);
+  background: linear-gradient(135deg, hsl(40 100% 99%), hsl(35 84% 92%));
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  box-shadow: 0 45px 70px -50px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 45px 70px -50px hsl(0 0% 0% / 0.35);
 }
 
 .skylar-shell-root[data-locale="zh"] .skylar-hero {
-  background: #0f0f0f;
-  border-color: rgba(213, 177, 105, 0.35);
-  color: #f6dfb4;
+  background: hsl(0 0% 6%);
+  border-color: hsl(var(--skylar-gold) / 0.35);
+  color: hsl(var(--zh-gold));
 }
 
 .skylar-hero-logo {
@@ -238,7 +241,7 @@ a:hover {
 .skylar-shell-root[data-locale="en"] .skylar-section-title {
   letter-spacing: clamp(0.25em, 0.7vw, 0.4em);
   font-size: clamp(1.25rem, 2vw, 2rem);
-  color: var(--skylar-en-accent);
+  color: hsl(var(--skylar-en-accent));
 }
 
 .skylar-heading-tracking {
@@ -295,11 +298,11 @@ a:hover {
 .skylar-typo--en dt {
   font-size: var(--en-body-size);
   line-height: var(--en-body-line);
-  color: var(--skylar-en-body);
+  color: hsl(var(--skylar-en-body) / 0.92);
 }
 
 .skylar-properties {
-  color: #141414;
+  color: hsl(var(--skylar-charcoal-soft));
 }
 
 .skylar-properties li {

@@ -11,7 +11,7 @@ export default async function LateFeesTable({ shop }: { shop: string }) {
     return <p className="text-sm">No late fees charged.</p>;
   }
 
-  const rows = mapLateFeeRows(charges);
+  const rows = mapLateFeeRows(charges as { sessionId: string; lateFeeCharged?: number }[]);
 
   return <LateFeesTableClient rows={rows} />;
 }

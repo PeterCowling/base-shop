@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Discovery Document</title>
+  <!-- Font link injected dynamically from CONFIG by injectFontLink() -->
+</head>
+<body>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// BUSINESS CONFIG — to reproduce this document for another
+// business, change ONLY the values in this CONFIG object.
+// The rendering code below is business-agnostic.
+// ═══════════════════════════════════════════════════════════════
+
+const CONFIG = {
+  meta: {
+    businessCode: "BUSINESS_CODE",
+    businessName: "BUSINESS_NAME",
+    tagline: "TAGLINE",
+    coreClaim: "CORE_CLAIM",
+    date: "DOC_DATE",
+    stage: "STAGE_LABEL",
+    market: "PRIMARY_MARKET → SECONDARY_MARKET",
+    tamNote: "TAM_NOTE",
+    priceRange: "CURRENCY MIN–MAX",
+  },
+
+  colours: {
+    // Each entry: hsl string (no "hsl()" wrapper), label, role description
+    primary:       { hsl: "HSL_PRIMARY",        label: "Primary",       role: "PRIMARY_ROLE"       },
+    primarySoft:   { hsl: "HSL_PRIMARY_SOFT",   label: "Primary Soft",  role: "PRIMARY_SOFT_ROLE"  },
+    primaryHover:  { hsl: "HSL_PRIMARY_HOVER",  label: "Primary Hover", role: "PRIMARY_HOVER_ROLE" },
+    accent:        { hsl: "HSL_ACCENT",         label: "Accent",        role: "ACCENT_ROLE"        },
+    accentSoft:    { hsl: "HSL_ACCENT_SOFT",    label: "Accent Soft",   role: "ACCENT_SOFT_ROLE"   },
+    background:    { hsl: "HSL_BACKGROUND",     label: "Background",    role: "BACKGROUND_ROLE"    },
+    text:          { hsl: "HSL_TEXT",           label: "Text",          role: "TEXT_ROLE"          },
+    textMuted:     { hsl: "HSL_TEXT_MUTED",     label: "Text Muted",    role: "TEXT_MUTED_ROLE"    },
+    border:        { hsl: "HSL_BORDER",         label: "Border",        role: "BORDER_ROLE"        },
+    surface:       { hsl: "HSL_SURFACE",        label: "Surface",       role: "SURFACE_ROLE"       },
+  },
+
+  // Which 5 swatches to display in the palette section (key references into colours above)
+  // Must be exactly 5 keys from the colours object above
+  paletteDisplay: ["primary", "accent", "background", "text", "primarySoft"],
+
+  font: {
+    family: "FONT_FAMILY_NAME",
+    googleUrl: "GOOGLE_FONTS_URL",
+    weights: [
+      { weight: 300, label: "Light 300",    sample: "SAMPLE_TEXT_LIGHT"    },
+      { weight: 400, label: "Regular 400",  sample: "SAMPLE_TEXT_REGULAR"  },
+      { weight: 500, label: "Medium 500",   sample: "SAMPLE_TEXT_MEDIUM"   },
+      { weight: 600, label: "SemiBold 600", sample: "SAMPLE_TEXT_SEMIBOLD" },
+      { weight: 700, label: "Bold 700",     sample: "SAMPLE_TEXT_BOLD"     },
+    ],
+  },
+
+  radius: { md: "RADIUS_MD", lg: "RADIUS_LG" },
+
+  problem: "PROBLEM_STATEMENT",
+
+  solution: "SOLUTION_STATEMENT",
+
+  icps: [
+    {
+      id: "ICP-A",
+      title: "ICP_A_TITLE",
+      description: "ICP_A_DESCRIPTION",
+      details: "ICP_A_DETAILS",
+      buyingFor: ["ICP_A_BUYING_1", "ICP_A_BUYING_2", "ICP_A_BUYING_3"],
+    },
+    {
+      id: "ICP-B",
+      title: "ICP_B_TITLE",
+      description: "ICP_B_DESCRIPTION",
+      details: "ICP_B_DETAILS",
+      buyingFor: ["ICP_B_BUYING_1", "ICP_B_BUYING_2", "ICP_B_BUYING_3"],
+    },
+  ],
+
+  forecast: [
+    { label: "FORECAST_LABEL_1", value: "FORECAST_VALUE_1", note: "FORECAST_NOTE_1" },
+    { label: "FORECAST_LABEL_2", value: "FORECAST_VALUE_2", note: "FORECAST_NOTE_2" },
+    { label: "FORECAST_LABEL_3", value: "FORECAST_VALUE_3", note: "FORECAST_NOTE_3" },
+    { label: "FORECAST_LABEL_4", value: "FORECAST_VALUE_4", note: "FORECAST_NOTE_4" },
+    { label: "FORECAST_LABEL_5", value: "FORECAST_VALUE_5", note: "FORECAST_NOTE_5" },
+  ],
+
+  personality: [
+    // 5 pairs: positive trait vs. what the brand rejects
+    { positive: "PERSONALITY_POSITIVE_1", negative: "PERSONALITY_NEGATIVE_1" },
+    { positive: "PERSONALITY_POSITIVE_2", negative: "PERSONALITY_NEGATIVE_2" },
+    { positive: "PERSONALITY_POSITIVE_3", negative: "PERSONALITY_NEGATIVE_3" },
+    { positive: "PERSONALITY_POSITIVE_4", negative: "PERSONALITY_NEGATIVE_4" },
+    { positive: "PERSONALITY_POSITIVE_5", negative: "PERSONALITY_NEGATIVE_5" },
+  ],
+
+  keyPhrases: [
+    { phrase: "KEY_PHRASE_1", note: "KEY_PHRASE_NOTE_1" },
+    { phrase: "KEY_PHRASE_2", note: "KEY_PHRASE_NOTE_2" },
+    { phrase: "KEY_PHRASE_3", note: "KEY_PHRASE_NOTE_3" },
+    { phrase: "KEY_PHRASE_4", note: "KEY_PHRASE_NOTE_4" },
+    { phrase: "KEY_PHRASE_5", note: "KEY_PHRASE_NOTE_5" },
+  ],
+
+  wordsToAvoid: [
+    { term: "AVOID_TERM_1", reason: "AVOID_REASON_1" },
+    { term: "AVOID_TERM_2", reason: "AVOID_REASON_2" },
+    { term: "AVOID_TERM_3", reason: "AVOID_REASON_3" },
+    { term: "AVOID_TERM_4", reason: "AVOID_REASON_4" },
+  ],
+
+  products: [
+    // status options: "Launch hero" | "Range extension" | "90-day extension" | "Post-safety gate"
+    { name: "PRODUCT_NAME_1", status: "Launch hero",      description: "PRODUCT_DESC_1" },
+    { name: "PRODUCT_NAME_2", status: "Range extension",  description: "PRODUCT_DESC_2" },
+    { name: "PRODUCT_NAME_3", status: "90-day extension", description: "PRODUCT_DESC_3" },
+    { name: "PRODUCT_NAME_4", status: "90-day extension", description: "PRODUCT_DESC_4" },
+    { name: "PRODUCT_NAME_5", status: "Range extension",  description: "PRODUCT_DESC_5" },
+    { name: "PRODUCT_NAME_6", status: "Post-safety gate", description: "PRODUCT_DESC_6" },
+  ],
+
+  namingJourney: {
+    baseline: {
+      label: "Baseline",
+      name: "BASELINE_NAME",
+      outcome: "Rejected",
+      note: "BASELINE_REJECTION_REASON",
+    },
+    rounds: [
+      {
+        label: "Round 1",
+        count: 0,          // number of names researched
+        eliminated: 0,     // number eliminated
+        reason: "ROUND_1_ELIMINATION_REASON",
+        survivors: ["SURVIVOR_1", "SURVIVOR_2", "SURVIVOR_3"],
+        rejected: ["REJECTED_1", "REJECTED_2", "REJECTED_3"],
+      },
+      {
+        label: "Round 2",
+        count: 0,
+        eliminated: 0,
+        reason: "ROUND_2_ELIMINATION_REASON",
+        survivors: ["FINALIST_1", "FINALIST_2", "FINALIST_3"],
+        rejected: [],
+      },
+    ],
+    selected: {
+      name: "SELECTED_NAME",
+      rationale: "SELECTION_RATIONALE",
+    },
+  },
+
+  nextSteps: [
+    { id: 1, action: "NEXT_STEP_ACTION_1", detail: "NEXT_STEP_DETAIL_1" },
+    { id: 2, action: "NEXT_STEP_ACTION_2", detail: "NEXT_STEP_DETAIL_2" },
+    { id: 3, action: "NEXT_STEP_ACTION_3", detail: "NEXT_STEP_DETAIL_3" },
+    { id: 4, action: "NEXT_STEP_ACTION_4", detail: "NEXT_STEP_DETAIL_4" },
+    { id: 5, action: "NEXT_STEP_ACTION_5", detail: "NEXT_STEP_DETAIL_5" },
+    { id: 6, action: "NEXT_STEP_ACTION_6", detail: "NEXT_STEP_DETAIL_6" },
+  ],
+};
+
+// ═══════════════════════════════════════════════════════════════
+// RENDERING ENGINE — business-agnostic from here down.
+// Do NOT edit below this line unless fixing a rendering bug.
+// ═══════════════════════════════════════════════════════════════
+
+function hsl(token) {
+  return `hsl(${token})`;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function injectFontLink() {
+  document.title = `Brand Discovery Document — ${CONFIG.meta.businessName}`;
+  if (CONFIG.font.googleUrl) {
+    const preconnect1 = document.createElement("link");
+    preconnect1.rel = "preconnect";
+    preconnect1.href = "https://fonts.googleapis.com";
+    document.head.appendChild(preconnect1);
+
+    const preconnect2 = document.createElement("link");
+    preconnect2.rel = "preconnect";
+    preconnect2.href = "https://fonts.gstatic.com";
+    preconnect2.crossOrigin = "anonymous";
+    document.head.appendChild(preconnect2);
+
+    const fontLink = document.createElement("link");
+    fontLink.rel = "stylesheet";
+    fontLink.href = CONFIG.font.googleUrl;
+    document.head.appendChild(fontLink);
+  }
+}
+
+function injectStyles() {
+  const c = CONFIG.colours;
+  const r = CONFIG.radius;
+  const style = document.createElement("style");
+  style.textContent = `
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-primary:       hsl(${c.primary.hsl});
+      --color-primary-soft:  hsl(${c.primarySoft.hsl});
+      --color-primary-hover: hsl(${c.primaryHover.hsl});
+      --color-accent:        hsl(${c.accent.hsl});
+      --color-accent-soft:   hsl(${c.accentSoft.hsl});
+      --color-bg:            hsl(${c.background.hsl});
+      --color-text:          hsl(${c.text.hsl});
+      --color-text-muted:    hsl(${c.textMuted.hsl});
+      --color-border:        hsl(${c.border.hsl});
+      --color-surface:       hsl(${c.surface.hsl});
+      --radius-md: ${r.md};
+      --radius-lg: ${r.lg};
+      --font: '${CONFIG.font.family}', system-ui, sans-serif;
+      --max-w: 1100px;
+      --section-gap: 5rem;
+      --color-on-primary: 0 0% 100%;
+      --color-danger: 0 70% 45%;
+    }
+
+    html {
+      font-family: var(--font);
+      background: var(--color-bg);
+      color: var(--color-text);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--color-primary);
+      color: hsl(var(--color-on-primary));
+      padding: 6rem 2rem 5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 120%, hsl(${c.primaryHover.hsl}) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 1.25rem;
+    }
+    .hero-name {
+      font-size: clamp(5rem, 14vw, 10rem);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-tagline {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      font-style: italic;
+      opacity: 0.9;
+      max-width: 540px;
+      margin: 0 auto 2rem;
+      line-height: 1.5;
+    }
+    .hero-meta {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0.7;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+    .hero-meta span::before {
+      content: '·';
+      margin-right: 0.5rem;
+      opacity: 0.5;
+    }
+    .hero-meta span:first-child::before { display: none; }
+
+    /* ── LAYOUT ── */
+    .page-body {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section {
+      padding: var(--section-gap) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--color-text-muted);
+      max-width: 600px;
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── PROBLEM / SOLUTION ── */
+    .ps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 680px) { .ps-grid { grid-template-columns: 1fr; } }
+
+    .ps-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+    }
+    .ps-card.problem { border-top: 4px solid hsl(${c.textMuted.hsl}); }
+    .ps-card.solution { border-top: 4px solid var(--color-primary); }
+    .ps-card-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .ps-card.solution .ps-card-label { color: var(--color-primary); }
+    .ps-card-text {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--color-text);
+    }
+
+    /* ── COLOUR PALETTE ── */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 800px) {
+      .palette-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .palette-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .swatch-card {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 1px 3px hsl(0 0% 0% / 0.06);
+    }
+    .swatch-rect {
+      height: 90px;
+      width: 100%;
+    }
+    .swatch-info {
+      padding: 0.85rem 0.9rem;
+    }
+    .swatch-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 0.2rem;
+    }
+    .swatch-hsl {
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--color-text-muted);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 0.3rem;
+    }
+    .swatch-role {
+      font-size: 0.68rem;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .type-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .type-table th {
+      text-align: left;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: var(--color-primary-soft);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .type-table td {
+      padding: 1.25rem 1.25rem;
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: middle;
+    }
+    .type-table tr:last-child td { border-bottom: none; }
+    .type-weight-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      white-space: nowrap;
+      padding-right: 1.5rem;
+      width: 130px;
+    }
+    .type-sample {
+      font-size: 1.15rem;
+      color: var(--color-text);
+      line-height: 1.4;
+    }
+
+    /* ── PERSONALITY ── */
+    .personality-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .personality-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .pill-positive {
+      background: var(--color-primary);
+      color: hsl(var(--color-on-primary));
+    }
+    .pill-negative {
+      background: var(--color-primary-soft);
+      color: var(--color-text-muted);
+      text-decoration: line-through;
+      text-decoration-color: hsl(${c.textMuted.hsl});
+    }
+    .pill-not {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── MESSAGING ── */
+    .phrases-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .phrase-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .phrase-row:last-child { border-bottom: none; }
+    .phrase-quote {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      flex: 0 0 auto;
+      min-width: 220px;
+    }
+    .phrase-note {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.55;
+      padding-top: 0.1rem;
+    }
+    @media (max-width: 680px) {
+      .phrase-row { flex-direction: column; gap: 0.3rem; }
+      .phrase-quote { min-width: unset; }
+    }
+
+    .avoid-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+    .avoid-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .avoid-row:last-child { border-bottom: none; }
+    .avoid-icon {
+      font-size: 0.9rem;
+      margin-top: 0.1rem;
+      color: hsl(var(--color-danger));
+      flex-shrink: 0;
+    }
+    .avoid-term {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 0.15rem;
+    }
+    .avoid-reason {
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+    }
+
+    /* ── ICP CARDS ── */
+    .icp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 680px) { .icp-grid { grid-template-columns: 1fr; } }
+
+    .icp-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-left: 4px solid var(--color-accent);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+    }
+    .icp-card:nth-child(2) { border-left-color: var(--color-primary); }
+    .icp-id {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 0.4rem;
+    }
+    .icp-card:nth-child(2) .icp-id { color: var(--color-primary); }
+    .icp-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.3rem;
+    }
+    .icp-desc {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.25rem;
+    }
+    .icp-details {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1.1rem;
+      line-height: 1.55;
+    }
+    .icp-buying-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.6rem;
+    }
+    .icp-buying-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .icp-buying-list li {
+      font-size: 0.88rem;
+      color: var(--color-text);
+      padding-left: 1.1rem;
+      position: relative;
+      line-height: 1.5;
+    }
+    .icp-buying-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--color-accent);
+      font-size: 0.8rem;
+    }
+    .icp-card:nth-child(2) .icp-buying-list li::before { color: var(--color-primary); }
+
+    /* ── FORECAST STATS ── */
+    .forecast-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 900px) { .forecast-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 560px) { .forecast-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .stat-box {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      letter-spacing: -0.03em;
+      margin-bottom: 0.25rem;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 0.2rem;
+    }
+    .stat-note {
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+    }
+
+    /* ── PRODUCTS ── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 760px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px) { .products-grid { grid-template-columns: 1fr; } }
+
+    .product-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.35rem;
+      transition: box-shadow 0.15s;
+    }
+    .product-card:hover {
+      box-shadow: 0 4px 16px hsl(0 0% 0% / 0.07);
+    }
+    .product-status {
+      display: inline-flex;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+    }
+    .product-status.launch {
+      background: var(--color-primary);
+      color: hsl(var(--color-on-primary));
+    }
+    .product-status.extension {
+      background: var(--color-accent-soft);
+      color: var(--color-accent);
+    }
+    .product-status.gate {
+      background: hsl(${c.border.hsl});
+      color: var(--color-text-muted);
+    }
+    .product-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.4rem;
+    }
+    .product-desc {
+      font-size: 0.87rem;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── NAMING JOURNEY ── */
+    .naming-timeline {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+    .naming-node {
+      flex: 1;
+      min-width: 170px;
+      position: relative;
+    }
+    .naming-node:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      right: -1px;
+      width: calc(100% - 140px);
+      height: 2px;
+      background: var(--color-border);
+      z-index: 0;
+      left: 140px;
+    }
+    .naming-bubble {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1.1rem;
+      position: relative;
+      z-index: 1;
+      margin-right: 1.5rem;
+    }
+    .naming-node.selected .naming-bubble {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: hsl(var(--color-on-primary));
+    }
+    .naming-step-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .naming-node.selected .naming-step-label { color: hsl(var(--color-on-primary) / 0.75); }
+    .naming-step-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.3rem;
+    }
+    .naming-node.selected .naming-step-name { color: hsl(var(--color-on-primary)); }
+    .naming-step-outcome {
+      font-size: 0.72rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .naming-step-outcome.rejected { color: hsl(var(--color-danger)); }
+    .naming-step-outcome.selected-outcome { color: hsl(var(--color-on-primary) / 0.9); }
+    .naming-step-note {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+    }
+    .naming-node.selected .naming-step-note { color: hsl(var(--color-on-primary) / 0.8); }
+    .naming-survivors {
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .naming-tag {
+      font-size: 0.68rem;
+      font-weight: 500;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      background: var(--color-primary-soft);
+      color: var(--color-primary);
+    }
+
+    /* ── NEXT STEPS ── */
+    .next-steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .next-step-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .next-step-row:last-child { border-bottom: none; }
+    .step-num {
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: hsl(var(--color-on-primary));
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+    .step-action {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 0.2rem;
+    }
+    .step-detail {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      line-height: 1.55;
+    }
+
+    /* ── FOOTER ── */
+    .doc-footer {
+      background: var(--color-primary);
+      color: hsl(var(--color-on-primary) / 0.85);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+    .doc-footer strong { color: hsl(var(--color-on-primary)); }
+
+    /* ── UTILITIES ── */
+    .claim-block {
+      background: var(--color-primary-soft);
+      border-left: 4px solid var(--color-primary);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 1.25rem 1.5rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--color-text);
+      font-style: italic;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+
+    .two-col-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+
+    @media print {
+      .hero { padding: 2rem 1rem; }
+      .hero-name { font-size: 3rem; }
+      .section { break-inside: avoid; }
+      .page-body { max-width: 100%; }
+      .product-card, .swatch-card, .stat-box, .icp-card { break-inside: avoid; }
+      .doc-footer { background: none; color: var(--color-text); border-top: 1px solid var(--color-border); }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function renderHero() {
+  const m = CONFIG.meta;
+  return `
+    <header class="hero">
+      <div class="hero-eyebrow">Brand Discovery Document · ${escapeHtml(m.businessCode)} · ${escapeHtml(m.stage)}</div>
+      <h1 class="hero-name">${escapeHtml(m.businessName)}</h1>
+      <div class="hero-tagline">${escapeHtml(m.tagline)}</div>
+      <div class="hero-meta">
+        <span>${escapeHtml(m.date)}</span>
+        <span>${escapeHtml(m.market)}</span>
+        <span>${escapeHtml(m.priceRange)}</span>
+        <span>${escapeHtml(m.tamNote)}</span>
+      </div>
+    </header>
+  `;
+}
+
+function renderProblemSolution() {
+  return `
+    <section class="section">
+      <div class="section-label">Foundation</div>
+      <h2 class="section-title">Problem &amp; Solution</h2>
+      <div class="claim-block">"${escapeHtml(CONFIG.meta.coreClaim)}"</div>
+      <div class="ps-grid">
+        <div class="ps-card problem">
+          <div class="ps-card-label">The Problem</div>
+          <p class="ps-card-text">${escapeHtml(CONFIG.problem)}</p>
+        </div>
+        <div class="ps-card solution">
+          <div class="ps-card-label">The Solution</div>
+          <p class="ps-card-text">${escapeHtml(CONFIG.solution)}</p>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderPalette() {
+  const colours = CONFIG.colours;
+  const swatches = CONFIG.paletteDisplay.map(key => {
+    const c = colours[key];
+    return `
+      <div class="swatch-card">
+        <div class="swatch-rect" style="background: hsl(${c.hsl});"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">${escapeHtml(c.label)}</div>
+          <div class="swatch-hsl">hsl(${escapeHtml(c.hsl)})</div>
+          <div class="swatch-role">${escapeHtml(c.role)}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <section class="section">
+      <div class="section-label">Visual Identity</div>
+      <h2 class="section-title">Colour Palette</h2>
+      <p class="section-subtitle">Five core tokens define the brand's visual register.</p>
+      <div class="palette-grid">
+        ${swatches}
+      </div>
+    </section>
+  `;
+}
+
+function renderTypography() {
+  const rows = CONFIG.font.weights.map(w => `
+    <tr>
+      <td class="type-weight-label">${escapeHtml(w.label)}</td>
+      <td class="type-sample" style="font-weight: ${w.weight}; font-family: '${CONFIG.font.family}', sans-serif;">${escapeHtml(w.sample)}</td>
+    </tr>
+  `).join('');
+
+  return `
+    <section class="section">
+      <div class="section-label">Visual Identity</div>
+      <h2 class="section-title">Typography — ${escapeHtml(CONFIG.font.family)}</h2>
+      <p class="section-subtitle">A single variable sans-serif used across all weights.</p>
+      <table class="type-table">
+        <thead>
+          <tr>
+            <th>Weight</th>
+            <th>Specimen</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+        </tbody>
+      </table>
+    </section>
+  `;
+}
+
+function renderPersonality() {
+  const rows = CONFIG.personality.map(p => `
+    <div class="personality-row">
+      <span class="pill pill-positive">${escapeHtml(p.positive)}</span>
+      <span class="pill-not">not</span>
+      <span class="pill pill-negative">${escapeHtml(p.negative)}</span>
+    </div>
+  `).join('');
+
+  return `
+    <section class="section">
+      <div class="section-label">Brand Character</div>
+      <h2 class="section-title">Personality Pairs</h2>
+      <p class="section-subtitle">Five tension pairs define what the brand is — and what it deliberately refuses to become.</p>
+      <div class="personality-grid">
+        ${rows}
+      </div>
+    </section>
+  `;
+}
+
+function renderIcps() {
+  const cards = CONFIG.icps.map(icp => `
+    <div class="icp-card">
+      <div class="icp-id">${escapeHtml(icp.id)}</div>
+      <div class="icp-title">${escapeHtml(icp.title)}</div>
+      <div class="icp-desc">${escapeHtml(icp.description)}</div>
+      <div class="icp-details">${escapeHtml(icp.details)}</div>
+      <div class="icp-buying-label">Buying for</div>
+      <ul class="icp-buying-list">
+        ${icp.buyingFor.map(b => `<li>${escapeHtml(b)}</li>`).join('')}
+      </ul>
+    </div>
+  `).join('');
+
+  return `
+    <section class="section">
+      <div class="section-label">Audience</div>
+      <h2 class="section-title">Ideal Customer Profiles</h2>
+      <p class="section-subtitle">Two primary profiles with distinct purchase drivers.</p>
+      <div class="icp-grid">
+        ${cards}
+      </div>
+    </section>
+  `;
+}
+
+function renderForecast() {
+  const stats = CONFIG.forecast.map(s => `
+    <div class="stat-box">
+      <div class="stat-value">${escapeHtml(s.value)}</div>
+      <div class="stat-label">${escapeHtml(s.label)}</div>
+      <div class="stat-note">${escapeHtml(s.note)}</div>
+    </div>
+  `).join('');
+
+  return `
+    <section class="section">
+      <div class="section-label">Performance</div>
+      <h2 class="section-title">Launch Forecast</h2>
+      <p class="section-subtitle">P50 targets for the initial launch window.</p>
+      <div class="forecast-grid">
+        ${stats}
+      </div>
+    </section>
+  `;
+}
+
+function renderMessaging() {
+  const phrases = CONFIG.keyPhrases.map(p => `
+    <div class="phrase-row">
+      <div class="phrase-quote">"${escapeHtml(p.phrase)}"</div>
+      <div class="phrase-note">${escapeHtml(p.note)}</div>
+    </div>
+  `).join('');
+
+  const avoids = CONFIG.wordsToAvoid.map(a => `
+    <div class="avoid-row">
+      <div class="avoid-icon">✕</div>
+      <div>
+        <div class="avoid-term">"${escapeHtml(a.term)}"</div>
+        <div class="avoid-reason">${escapeHtml(a.reason)}</div>
+      </div>
+    </div>
+  `).join('');
+
+  return `
+    <section class="section">
+      <div class="section-label">Messaging</div>
+      <h2 class="section-title">Key Phrases &amp; Language Rules</h2>
+      <p class="section-subtitle">Anchor phrases for all copy and hard stops that must never appear in customer-facing text.</p>
+      <div class="two-col-label">
+        <span style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-text-muted);">Use these</span>
+      </div>
+      <div class="phrases-list">
+        ${phrases}
+      </div>
+      <div class="two-col-label" style="margin-top:2rem;">
+        <span style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:hsl(var(--color-danger));">Never use</span>
+      </div>
+      <div class="avoid-list">
+        ${avoids}
+      </div>
+    </section>
+  `;
+}
+
+function productStatusClass(status) {
+  if (status === "Launch hero") return "launch";
+  if (status.includes("safety gate")) return "gate";
+  return "extension";
+}
+
+function renderProducts() {
+  const cards = CONFIG.products.map(p => `
+    <div class="product-card">
+      <div class="product-status ${productStatusClass(p.status)}">${escapeHtml(p.status)}</div>
+      <div class="product-name">${escapeHtml(p.name)}</div>
+      <div class="product-desc">${escapeHtml(p.description)}</div>
+    </div>
+  `).join('');
+
+  return `
+    <section class="section">
+      <div class="section-label">Product Range</div>
+      <h2 class="section-title">Product Lineup</h2>
+      <p class="section-subtitle">Products across launch, extension, and safety-gate phases.</p>
+      <div class="products-grid">
+        ${cards}
+      </div>
+    </section>
+  `;
+}
+
+function renderNamingJourney() {
+  const nj = CONFIG.namingJourney;
+
+  const nodes = [
+    `<div class="naming-node">
+      <div class="naming-bubble">
+        <div class="naming-step-label">${escapeHtml(nj.baseline.label)}</div>
+        <div class="naming-step-name">${escapeHtml(nj.baseline.name)}</div>
+        <div class="naming-step-outcome rejected">${escapeHtml(nj.baseline.outcome)}</div>
+        <div class="naming-step-note">${escapeHtml(nj.baseline.note)}</div>
+      </div>
+    </div>`,
+    `<div class="naming-node">
+      <div class="naming-bubble">
+        <div class="naming-step-label">${escapeHtml(nj.rounds[0].label)} · ${escapeHtml(String(nj.rounds[0].count))} names</div>
+        <div class="naming-step-name">${escapeHtml(String(nj.rounds[0].eliminated))} eliminated</div>
+        <div class="naming-step-outcome rejected">${escapeHtml(nj.rounds[0].reason)}</div>
+        <div class="naming-step-note">${nj.rounds[0].survivors.length} survived</div>
+        <div class="naming-survivors">
+          ${nj.rounds[0].survivors.map(s => `<span class="naming-tag">${escapeHtml(s)}</span>`).join('')}
+        </div>
+      </div>
+    </div>`,
+    `<div class="naming-node">
+      <div class="naming-bubble">
+        <div class="naming-step-label">${escapeHtml(nj.rounds[1].label)} · ${escapeHtml(String(nj.rounds[1].count))} names</div>
+        <div class="naming-step-name">${escapeHtml(String(nj.rounds[1].eliminated))} eliminated</div>
+        <div class="naming-step-outcome rejected">${escapeHtml(nj.rounds[1].reason)}</div>
+        <div class="naming-step-note">${nj.rounds[1].survivors.length} passed</div>
+        <div class="naming-survivors">
+          ${nj.rounds[1].survivors.map(s => `<span class="naming-tag">${escapeHtml(s)}</span>`).join('')}
+        </div>
+      </div>
+    </div>`,
+    `<div class="naming-node selected">
+      <div class="naming-bubble">
+        <div class="naming-step-label">Selected</div>
+        <div class="naming-step-name">${escapeHtml(nj.selected.name)} ✓</div>
+        <div class="naming-step-outcome selected-outcome">Confirmed</div>
+        <div class="naming-step-note">${escapeHtml(nj.selected.rationale)}</div>
+      </div>
+    </div>`,
+  ];
+
+  return `
+    <section class="section">
+      <div class="section-label">Naming</div>
+      <h2 class="section-title">Naming Journey</h2>
+      <p class="section-subtitle">From rejected baseline through systematic research rounds to a confirmed, ownable name.</p>
+      <div class="naming-timeline">
+        ${nodes.join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderNextSteps() {
+  const rows = CONFIG.nextSteps.map(s => `
+    <div class="next-step-row">
+      <div class="step-num">${s.id}</div>
+      <div>
+        <div class="step-action">${escapeHtml(s.action)}</div>
+        <div class="step-detail">${escapeHtml(s.detail)}</div>
+      </div>
+    </div>
+  `).join('');
+
+  return `
+    <section class="section">
+      <div class="section-label">Execution</div>
+      <h2 class="section-title">Next Steps</h2>
+      <p class="section-subtitle">Actions required to move from current stage to launch-ready state.</p>
+      <div class="next-steps-list">
+        ${rows}
+      </div>
+    </section>
+  `;
+}
+
+function renderFooter() {
+  const m = CONFIG.meta;
+  return `
+    <footer class="doc-footer">
+      <strong>${escapeHtml(m.businessName)}</strong> · Brand Discovery Document · ${escapeHtml(m.stage)}<br/>
+      ${escapeHtml(m.date)} · Business code: ${escapeHtml(m.businessCode)} · Market: ${escapeHtml(m.market)}<br/>
+      <span style="opacity:0.6;font-size:0.75rem;">Generated by Base-Shop Business OS · Confidential</span>
+    </footer>
+  `;
+}
+
+function render() {
+  injectStyles();
+  injectFontLink();
+
+  const app = document.getElementById("app");
+  app.innerHTML = `
+    ${renderHero()}
+    <main class="page-body">
+      ${renderProblemSolution()}
+      ${renderPalette()}
+      ${renderTypography()}
+      ${renderPersonality()}
+      ${renderIcps()}
+      ${renderForecast()}
+      ${renderMessaging()}
+      ${renderProducts()}
+      ${renderNamingJourney()}
+      ${renderNextSteps()}
+    </main>
+    ${renderFooter()}
+  `;
+}
+
+document.addEventListener("DOMContentLoaded", render);
+</script>
+
+<div id="app"></div>
+
+</body>
+</html>

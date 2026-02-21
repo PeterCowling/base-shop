@@ -69,3 +69,12 @@ export const CORE_LAYOUT_I18N_NAMESPACES = [
 ] as const;
 
 export type CoreLayoutI18nNamespace = (typeof CORE_LAYOUT_I18N_NAMESPACES)[number];
+
+/**
+ * Namespaces required by modal-scoped UI (e.g. PolicyFeeClarityPanel).
+ * Loaded eagerly by ModalProvider on mount (TASK-03 Option B — modal-scoped preload).
+ * Not in CORE_LAYOUT_I18N_NAMESPACES: bookPage would exceed the startup delta budget.
+ */
+export const MODAL_I18N_PRELOAD_NAMESPACES = ["bookPage"] as const;
+
+export type ModalI18nPreloadNamespace = (typeof MODAL_I18N_PRELOAD_NAMESPACES)[number];

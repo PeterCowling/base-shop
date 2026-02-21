@@ -13,47 +13,40 @@ interface Props {
 
 /** Simple string fallback under content.{guideKey}.fallback */
 export default function RenderManualString({ translations, hookI18n, guideKey, lang }: Props): JSX.Element | null {
+  const keyExpect = `content.${guideKey}.fallback` as const;
+
+	  const pickMeaningful = (value: unknown): string => {
+	    const s = typeof value === "string" ? value.trim() : "";
+	    if (!s) return "";
+	    if (s === keyExpect) return "";
+	    return s;
+	  };
+
+  const getFixedGuides = (): TFunction<"guides"> | undefined => {
+    try {
+      const fromHook = hookI18n?.getFixedT?.("en", "guides");
+      if (typeof fromHook === "function") return fromHook as TFunction<"guides">;
+      const fromGlobal = i18n.getFixedT?.("en", "guides");
+      return typeof fromGlobal === "function" ? (fromGlobal as TFunction<"guides">) : undefined;
+    } catch {
+      return undefined;
+    }
+  };
+
+  let fb = "";
   try {
-    const keyExpect = `content.${guideKey}.fallback` as const;
-    const fbLocalRaw = translations.tGuides(keyExpect) as unknown;
-    const fbLocal = typeof fbLocalRaw === "string" ? fbLocalRaw.trim() : "";
-
-    const isObjectWarning = (s: string) => /returned an object instead of string/i.test(s);
-
-    const getFixedGuides = () => {
-      try {
-        return hookI18n?.getFixedT?.("en", "guides") ?? i18n.getFixedT?.("en", "guides");
-      } catch {
-        // fallback to undefined if fixed translator cannot be resolved
-        return undefined;
-      }
-    };
-    const fbEn = (() => {
-      try {
-        const tEn = getFixedGuides();
-        const v = typeof tEn === "function" ? tEn(keyExpect) : undefined;
-        const s = typeof v === "string" ? v.trim() : "";
-        // Treat i18n's object-warning string as not meaningful
-        if (s && s !== keyExpect && !isObjectWarning(s)) return s;
-        return "";
-      } catch {
-        return "";
-      }
-    })();
-
-    const pickMeaningful = (s: string) => (s && s !== keyExpect && !isObjectWarning(s) ? s : "");
-    const fb = pickMeaningful(fbLocal) || pickMeaningful(fbEn);
-    if (fb && fb.length > 0) {
-      return (
-        <>
-          <div className="space-y-4">
-            {renderBodyBlocks([fb], lang, `manual-string-${guideKey}`, guideKey)}
-          </div>
-        </>
-      );
+    const fbLocal = pickMeaningful(translations.tGuides(keyExpect) as unknown);
+    if (fbLocal) {
+      fb = fbLocal;
+    } else {
+      const tEn = getFixedGuides();
+      const fbEn = typeof tEn === "function" ? pickMeaningful(tEn(keyExpect) as unknown) : "";
+      fb = fbEn;
     }
   } catch {
-    void 0;
+    fb = "";
   }
-  return null;
+
+  if (!fb) return null;
+  return <div className="space-y-4">{renderBodyBlocks([fb], lang, `manual-string-${guideKey}`, guideKey)}</div>;
 }

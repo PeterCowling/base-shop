@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationDir": null,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "rootDir": ".",
+    "types": ["node", "jest"],
+    "verbatimModuleSyntax": false,
+    "allowJs": true
+  },
+  "include": [
+    "__tests__/**/*.ts",
+    "__tests__/**/*.tsx"
+  ],
+  "exclude": ["**/node_modules/**", "**/dist/**"]
+}

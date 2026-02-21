@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { draftMode } from "next/headers";
 
@@ -71,7 +72,9 @@ export default async function ShopIndexPage({
   return (
     <>
       {latestPost && <BlogListing posts={[latestPost]} />}
-      <ShopClient skus={skus} />
+      <Suspense fallback={null}>
+        <ShopClient skus={skus} />
+      </Suspense>
     </>
   );
 }

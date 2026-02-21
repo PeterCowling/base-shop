@@ -26,8 +26,8 @@ jest.mock("@acme/platform-core/components/shop/ProductGrid", () => ({
 }));
 
 const skus: SKU[] = [
-  { id: "1", title: "Red Shoe", slug: "red-shoe", price: 10, sizes: ["M"], deposit: 0, media: [] },
-  { id: "2", title: "Blue Shoe", slug: "blue-shoe", price: 20, sizes: ["L"], deposit: 0, media: [] },
+  { id: "1", title: "Red Shoe", slug: "red-shoe", price: 10, sizes: ["M"], deposit: 0, media: [] } as any,
+  { id: "2", title: "Blue Shoe", slug: "blue-shoe", price: 20, sizes: ["L"], deposit: 0, media: [] } as any,
 ];
 
 describe("ShopClient filters – branch coverage", () => {

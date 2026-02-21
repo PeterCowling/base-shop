@@ -57,7 +57,8 @@
         "coverage/**"
       ],
       "env": [
-        "CI"
+        "CI",
+        "BASESHOP_ALLOW_BROAD_TESTS"
       ]
     }
   }

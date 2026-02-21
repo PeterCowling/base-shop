@@ -12,7 +12,7 @@ describe("/api/return partial refund", () => {
       payment_intent: "pi_1",
     } as SessionSubset;
     const { computeDamageFee, refundCreate, markReturned } = setupReturnMocks({ session });
-    computeDamageFee.mockResolvedValue(30);
+    (computeDamageFee as any).mockResolvedValue(30);
 
     const { POST } = await import("../src/api/return/route");
     const res = await POST({
@@ -24,7 +24,7 @@ describe("/api/return partial refund", () => {
       payment_intent: "pi_1",
       amount: 50 * 100,
     });
-    expect(markReturned.mock.calls[1][2]).toBe(30);
+    expect((markReturned.mock.calls as any)[1][2]).toBe(30);
     expect(await res.json()).toEqual({ ok: true });
   });
 });

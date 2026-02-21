@@ -63,8 +63,8 @@ export function DecisionSummary({ top, className }: DecisionSummaryProps) {
             )}
           </div>
           <ul className="mt-1 list-disc pl-5 text-sm text-brand-text/80 dark:text-brand-text/70">
-            {top.reasonKeys.map((key, index) => (
-              <li key={index}>{resolveTranslatedCopy(t(key), key)}</li>
+            {top.reasonKeys.map((key) => (
+              <li key={key}>{resolveTranslatedCopy(t(key), key)}</li>
             ))}
           </ul>
         </div>

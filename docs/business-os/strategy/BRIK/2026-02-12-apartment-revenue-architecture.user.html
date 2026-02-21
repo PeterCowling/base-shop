@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fact-Find: Apartment Revenue Architecture — Dual-Intent Landing System (2026)</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>Fact-Find: Apartment Revenue Architecture — Dual-Intent Landing System (2026)</h1>
+<h2>1) Objective</h2>
+<p>Maximize apartment revenue (ADR x occupancy) while minimizing cancellation/review risk from expectation mismatch (noise + internal stairs). Prioritize speed-to-impact and measurable iteration.</p>
+<h2>2) Known Facts (Inputs)</h2>
+<ul>
+<li>We operate the only hostel in Positano (<code>observed</code>).</li>
+<li>We own an apartment next door to the hostel; it is operated by hostel reception staff (<code>observed</code>).</li>
+<li>Apartment spec: sleeps 4 (double bed upstairs + sofa bed downstairs), kitchen, washer/dryer, 100sqm, 2 bathrooms (<code>observed</code>).</li>
+<li>In-season pricing: €495–€550/night; shoulder season from €265/night (<code>observed</code>).</li>
+<li>Pricing model: two tiers — pre-paid non-refundable (lower) and flexible (higher) (<code>observed</code>).</li>
+<li>Hostel inventory: 1 private room; rest dorms (<code>observed</code>).</li>
+<li>Current channels:
+<ul>
+<li>Hostel listed on Hostelworld + Booking.com (<code>observed</code>).</li>
+<li>Apartment listed separately on Booking.com only (<code>observed</code>).</li>
+</ul>
+</li>
+<li>Hostel website performance: hostel-positano.com ~12k unique visitors/month; site recently relaunched with more content (<code>observed</code>).</li>
+<li>Apartment guests can access hostel: terrace, breakfast, bar, reception support, events (<code>observed</code>).</li>
+<li>Channel manager: Octorate (shared with hostel, deep-link booking pattern proven in Brikette) (<code>observed</code>).</li>
+<li>Standalone domain decided: stepfreepositano.com (pending registration) (<code>observed</code>).</li>
+<li>Target guest: couples (<code>observed</code>).</li>
+<li>Brand: StepFree Positano — own identity, cross-linked with Brikette/hostel (<code>observed</code>).</li>
+</ul>
+<h3>Noise reality</h3>
+<ul>
+<li>Some road noise (<code>observed</code>).</li>
+<li>Some noise from the hostel terrace (apartment roof = hostel terrace) (<code>observed</code>).</li>
+<li>Noise restriction in place from midnight regarding terrace noise (<code>observed</code>).</li>
+</ul>
+<h3>Access/stairs reality</h3>
+<ul>
+<li>Step-free from the street to the apartment entrance (<code>observed</code>).</li>
+<li>The apartment interior has steps; not particularly easy to navigate (<code>observed</code>).</li>
+<li>Split-level: sofa bed downstairs, double bed upstairs (<code>observed</code>).</li>
+<li>Families with children / older guests are only a clean fit if stair-avoidant guests sleep downstairs (sofa bed) (<code>observed</code>).</li>
+</ul>
+<h2>3) Core Risks</h2>
+<h3>R1: "StepFree" brand name vs interior stairs (HIGH)</h3>
+<p><strong>This is the single biggest messaging risk.</strong></p>
+<p>The brand name "StepFree Positano" and domain <code>stepfreepositano.com</code> create a strong implication of full accessibility. The property IS step-free from street to entrance — a genuine and rare USP in Positano. But the interior has stairs between levels.</p>
+<p>If a guest books expecting a fully step-free experience and encounters internal stairs, the result is:</p>
+<ul>
+<li>Negative review ("misleading", "not actually step-free")</li>
+<li>Cancellation/refund pressure at €500+/night</li>
+<li>Reputational damage that compounds (reviews are permanent)</li>
+</ul>
+<p><strong>Mitigation (mandatory):</strong></p>
+<ul>
+<li>Brand positioning must always be "step-free <strong>arrival</strong>" — never "step-free apartment"</li>
+<li>The Fit Check truth layer (section 7) is non-negotiable on every page and in pre-arrival comms</li>
+<li>SEO targeting: "step-free arrival Positano", "no street stairs Positano" — NOT "accessible apartment Positano" or "wheelchair Positano"</li>
+<li>Booking.com description must mirror the truth layer</li>
+<li>Mobility-limited / accessibility-first travelers are explicitly a <strong>poor-fit segment</strong> unless interior is adapted (it is not)</li>
+</ul>
+<h3>R2: Expectation mismatch — noise (MEDIUM)</h3>
+<p>At €550/night, noise sensitivity generates low-star reviews, cancellation/refund pressure, and reputational damage.</p>
+<p><strong>Mitigation:</strong></p>
+<ul>
+<li>Fit Check module discloses ambient sound + quiet hours</li>
+<li>Pre-arrival message repeats noise reality</li>
+<li>Operational: treat 23:00–24:00 as wind-down (chair pads, signage, staff reminders)</li>
+</ul>
+<h3>R3: Hostel-averse buyers (MEDIUM — partially mitigated)</h3>
+<p>A non-trivial portion of premium apartment buyers are hostel-averse. The content lives on <code>hostel-positano.com/apartment/...</code> which exposes "hostel" in the URL. However:</p>
+<ul>
+<li><strong>stepfreepositano.com</strong> redirects to these pages — hostel-averse buyers arriving via ads, WhatsApp, or word-of-mouth see a clean URL initially</li>
+<li>Once they land, the URL bar shows <code>hostel-positano.com</code> — this is visible but not prominently branded as "hostel"</li>
+<li>Page content frames the hostel as "hospitality team next door" / "optional amenities", never "hostel staff"</li>
+</ul>
+<p><strong>Mitigation:</strong></p>
+<ul>
+<li>Use <code>stepfreepositano.com</code> in all outbound marketing, WhatsApp messages, and paid ads</li>
+<li>Monitor GA4: compare conversion rate for <code>stepfreepositano.com</code> referral vs organic hostel-positano.com arrivals</li>
+<li>If data shows material conversion drag from the hostname, escalate to a standalone microsite (section 14)</li>
+</ul>
+<h2>4) Strategic Hypothesis</h2>
+<p>Users arrive with different "primary reasons to buy." Forcing a single page to satisfy all intents leads to diluted messaging (lower conversion) and/or hidden constraints (higher mismatch risk).</p>
+<p>Therefore: build distinct intent-targeted pages while enforcing a shared truth layer on every route.</p>
+<h2>5) Information Architecture</h2>
+<p>Content lives on <strong>hostel-positano.com</strong> under <code>/apartment/...</code>, leveraging existing domain authority and 12k monthly visitors. <strong>stepfreepositano.com</strong> redirects to the hub page — used as the clean URL for ads, WhatsApp, and word-of-mouth sharing.</p>
+<h3>Hosting architecture</h3>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hostel-positano.com/apartment/...</code></td>
+<td>All content pages — SEO-indexed, canonical</td>
+</tr>
+<tr>
+<td><code>stepfreepositano.com</code></td>
+<td>Redirect → <code>hostel-positano.com/apartment/</code> — premium front door for outbound marketing</td>
+</tr>
+</tbody>
+</table>
+<h3>Launch set (3 content pages + booking)</h3>
+<table>
+<thead>
+<tr>
+<th>Route (on hostel-positano.com)</th>
+<th>Role</th>
+<th>Primary audience</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/apartment/</code></td>
+<td>Hub / intent router with early Fit Check disclosure</td>
+<td>All visitors</td>
+</tr>
+<tr>
+<td><code>/apartment/street-level-arrival/</code></td>
+<td>Intent page: "no street stairs" — arrival friction elimination</td>
+<td>Travelers anxious about Positano stairs, luggage, strollers</td>
+</tr>
+<tr>
+<td><code>/apartment/private-stay/</code></td>
+<td>Intent page: "serviced private apartment with optional amenities next door"</td>
+<td>Couples seeking privacy + reliability; hostel-averse buyers</td>
+</tr>
+<tr>
+<td><code>/apartment/book/</code></td>
+<td>Booking page with Octorate deep-link (reuse Brikette pattern)</td>
+<td>High-intent visitors ready to convert</td>
+</tr>
+</tbody>
+</table>
+<h3>Supporting content (can be minimal at launch)</h3>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/apartment/contact/</code></td>
+<td>WhatsApp CTA + email + location map</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> Original concept used <code>/apartment/hostel-benefits/</code> — replaced with <code>/apartment/private-stay/</code> to avoid "hostel" in slug while still communicating optional amenities in body content.</p>
+</blockquote>
+<h3>Why hostel-positano.com, not a standalone site</h3>
+<ul>
+<li>12k unique visitors/month already — immediate audience for cross-sell</li>
+<li>Existing domain authority compounds SEO for apartment pages faster than a new domain</li>
+<li>Shared Octorate integration, GA4 property, and Cloudflare deployment</li>
+<li>stepfreepositano.com as redirect gives a clean outbound URL without maintaining two sites</li>
+<li>If data later shows hostel-domain conversion drag, can escalate to standalone microsite (section 14)</li>
+</ul>
+<h2>6) Page Roles and Differentiation</h2>
+<h3>A) <code>/apartment/</code> (Hub)</h3>
+<p><strong>Purpose:</strong> Fast self-selection + early constraint disclosure. Also the redirect target for stepfreepositano.com.</p>
+<p><strong>Above-the-fold structure:</strong></p>
+<ul>
+<li>Hero: premium interior photography with warm, homely feel</li>
+<li>Two primary cards/buttons routing to intent pages:
+<ul>
+<li>"Street-level arrival (no street stairs)" → <code>/apartment/street-level-arrival/</code></li>
+<li>"Private serviced stay (with optional terrace, bar &#x26; breakfast next door)" → <code>/apartment/private-stay/</code></li>
+</ul>
+</li>
+<li>Fit Check strip visible immediately (section 7)</li>
+<li>Primary CTA: "Check availability"</li>
+</ul>
+<p><strong>SEO role:</strong> Hub targets brand + generic "apartment Positano" terms. Intent pages target specific long-tail queries.</p>
+<h3>B) <code>/apartment/street-level-arrival/</code></h3>
+<p><strong>Primary promise:</strong> "No street stairs from road to entrance" + luggage/stroller friction elimination.
+<strong>Required proof:</strong> Continuous street-to-door video (single shot) + clear phrasing of what IS and ISN'T step-free.
+<strong>Primary audience:</strong> Groups, travelers with luggage, anyone anxious about Positano stairs <em>for arrival</em> (not inside the apartment).
+<strong>Critical messaging:</strong> "Step-free arrival — the apartment interior is split-level with internal stairs" (truth layer prominent, not buried).</p>
+<h3>C) <code>/apartment/private-stay/</code></h3>
+<p><strong>Primary promise:</strong> "Private apartment with hospitality-grade support next door."
+<strong>Secondary value:</strong> Optional terrace/bar/breakfast access (explicitly framed as optional, governed by hours/capacity).
+<strong>Primary audience:</strong> Couples seeking reliability and privacy; hostel-averse buyers who still want professional ops.
+<strong>Hostel framing:</strong> "Professionally managed by the hospitality team next door" — never "hostel staff."</p>
+<h2>7) Non-Negotiable "Fit Check" Truth Layer</h2>
+<p>A standardized disclosure block included on:</p>
+<ul>
+<li><code>/apartment/</code> hub (visible immediately)</li>
+<li>Both intent pages (before final CTA)</li>
+<li><code>/apartment/book/</code> page (before Octorate handoff)</li>
+<li>Pre-arrival WhatsApp/email message</li>
+<li>Booking.com description (adapted wording)</li>
+</ul>
+<h3>Fit Check — Canonical Content</h3>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Disclosure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Arrival</strong></td>
+<td>"No street stairs from the road to the apartment entrance."</td>
+</tr>
+<tr>
+<td><strong>Inside</strong></td>
+<td>"Split-level interior with internal stairs between living area and bedroom."</td>
+</tr>
+<tr>
+<td><strong>Sleeping</strong></td>
+<td>"Sofa bed downstairs; double bed upstairs."</td>
+</tr>
+<tr>
+<td><strong>Sound</strong></td>
+<td>"Some road and terrace ambience; terrace quiet hours from midnight."</td>
+</tr>
+<tr>
+<td><strong>Best fit</strong></td>
+<td>"Ideal for couples. If anyone in your group prefers to avoid stairs, the downstairs sofa bed is a comfortable alternative. Not recommended for very light sleepers."</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rationale:</strong> Reduces cancellations and review negativity. Avoids "hidden gotcha" perception. At €500+/night, a single bad review from mismatch costs more than any lost conversion from honesty.</p>
+<h2>8) CTA and Funnel Mechanics</h2>
+<h3>Primary CTA (all pages)</h3>
+<ul>
+<li>"Check availability" → <code>/apartment/book/</code> page with Octorate deep-link</li>
+<li>Octorate integration: same deep-link pattern as Brikette; apartment added to Octorate with own rate plan IDs (nr + flex); filter to show only apartment</li>
+</ul>
+<h3>Secondary CTA</h3>
+<ul>
+<li>"WhatsApp for quick answers" (high intent; handles qualification on stairs/noise quickly)</li>
+</ul>
+<h3>Cross-site routing (hostel → apartment)</h3>
+<ul>
+<li>If hostel private room unavailable, or party size ≥ 3, promote apartment from hostel booking flow</li>
+<li>Cross-link from Brikette site: "Looking for a private apartment? → stepfreepositano.com"</li>
+<li>Cross-link from StepFree site: "Traveling with a group? Our hostel is next door → hostel-positano.com"</li>
+</ul>
+<h2>9) SEO Strategy</h2>
+<h3>Target keywords (aligned with brand positioning)</h3>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Keyword cluster</th>
+<th>Intent page</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>"step-free positano", "no stairs positano apartment"</td>
+<td><code>/apartment/street-level-arrival/</code></td>
+</tr>
+<tr>
+<td>P1</td>
+<td>"private apartment positano", "serviced apartment positano"</td>
+<td><code>/apartment/private-stay/</code></td>
+</tr>
+<tr>
+<td>P2</td>
+<td>"apartment positano amalfi coast", "holiday apartment positano"</td>
+<td><code>/apartment/</code></td>
+</tr>
+<tr>
+<td>P2</td>
+<td>"positano apartment couples"</td>
+<td><code>/apartment/private-stay/</code></td>
+</tr>
+<tr>
+<td>P3</td>
+<td>"positano accommodation with breakfast", "positano apartment with terrace"</td>
+<td><code>/apartment/private-stay/</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Duplication control</h3>
+<ul>
+<li>Different hero media per intent page (street-to-door video vs premium interior)</li>
+<li>Different first 200 words, FAQs, and emphasis</li>
+<li>Homepage absorbs generic overview; intent pages go deep on one primary promise</li>
+<li><code>rel=canonical</code> on each page pointing to itself (no cross-canonicalization)</li>
+</ul>
+<h2>10) Measurement Plan (GA4)</h2>
+<h3>Content grouping</h3>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>Content group</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/apartment/</code></td>
+<td><code>apartment_hub</code></td>
+</tr>
+<tr>
+<td><code>/apartment/street-level-arrival/</code></td>
+<td><code>apartment_street_access</code></td>
+</tr>
+<tr>
+<td><code>/apartment/private-stay/</code></td>
+<td><code>apartment_serviced</code></td>
+</tr>
+<tr>
+<td><code>/apartment/book/</code></td>
+<td><code>apartment_booking</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Key events</h3>
+<ul>
+<li><code>page_view</code> (with content group)</li>
+<li><code>click_check_availability</code> (with source page)</li>
+<li><code>click_whatsapp</code></li>
+<li><code>outbound_click_bookingcom</code> (with UTMs)</li>
+<li><code>begin_checkout</code> / <code>purchase</code> (via Octorate)</li>
+<li><code>video_play_stepfree_route</code></li>
+<li>Scroll depth (25/50/75/100)</li>
+</ul>
+<h3>Success metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Target</th>
+<th>Measurement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CTA CTR (page → availability click)</td>
+<td>>5%</td>
+<td>GA4 event ratio</td>
+</tr>
+<tr>
+<td>Booking conversion (direct)</td>
+<td>Track from launch</td>
+<td>Octorate + GA4</td>
+</tr>
+<tr>
+<td>Cancellation rate</td>
+<td>Lower than Booking.com-only baseline</td>
+<td>Octorate data</td>
+</tr>
+<tr>
+<td>Review mentions: "stairs", "noise", "not as expected"</td>
+<td>Zero</td>
+<td>Manual review monitoring</td>
+</tr>
+<tr>
+<td>Direct vs OTA booking ratio</td>
+<td>Increasing over time</td>
+<td>Octorate channel report</td>
+</tr>
+</tbody>
+</table>
+<h2>11) Operational Guardrails</h2>
+<h3>Noise control</h3>
+<ul>
+<li>Treat 23:00–24:00 as wind-down operationally, even if formal quiet time is midnight</li>
+<li>Reduce scraping/impact noise sources (chair pads, signage, staff reminders)</li>
+<li>Pre-arrival message repeats Fit Check highlights (stairs + ambient sound + quiet hours)</li>
+</ul>
+<h3>Pre-arrival communication sequence</h3>
+<ol>
+<li>Booking confirmation: Fit Check summary + WhatsApp contact</li>
+<li>48h pre-arrival: Directions (emphasizing step-free street access), check-in process, quiet hours reminder</li>
+<li>Check-in: In-person Fit Check walkthrough (show stairs, show sofa bed setup, explain terrace hours)</li>
+</ol>
+<h2>12) Decisions Already Made</h2>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Status</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content on hostel-positano.com/apartment/...</td>
+<td>Decided</td>
+<td>Leverages 12k visitors/month, existing domain authority, shared infra</td>
+</tr>
+<tr>
+<td>stepfreepositano.com as redirect front door</td>
+<td>Decided — pending registration</td>
+<td>Clean URL for ads/sharing; mitigates hostel-aversion for outbound traffic</td>
+</tr>
+<tr>
+<td>Octorate as booking engine</td>
+<td>Decided</td>
+<td>Already in use for Brikette; proven deep-link pattern; handles OTA sync</td>
+</tr>
+<tr>
+<td>Own brand identity (StepFree Positano)</td>
+<td>Decided</td>
+<td>Distinct from hostel brand; cross-linked but independent</td>
+</tr>
+<tr>
+<td>Target demographic: couples</td>
+<td>Decided</td>
+<td>Distinct from hostel (young female travelers)</td>
+</tr>
+<tr>
+<td>Business code: POSAPT</td>
+<td>Decided</td>
+<td>Separate tracking in startup loop</td>
+</tr>
+</tbody>
+</table>
+<h2>13) Open Questions (Remaining)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Why it matters</th>
+<th>Owner</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Noise mitigations available? (double glazing, shutters, AC enabling windows closed)</td>
+<td>Determines how confidently we can address noise concern</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Exact internal layout: number of steps, handrail presence, stair steepness</td>
+<td>Truthful Fit Check messaging needs specifics</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Reception hours and check-in process for apartment guests</td>
+<td>Avoid implying 24/7 if not available</td>
+<td>Pete</td>
+<td>medium</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Which hostel amenities are truly available to apartment guests without capacity issues? (breakfast, events, terrace)</td>
+<td>Determines what we can promise on <code>/private-stay/</code></td>
+<td>Pete</td>
+<td>medium</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Street-to-door proof video — does it exist or need filming?</td>
+<td>Required content for <code>/street-level-arrival/</code></td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Photography / interior visual assets — current state?</td>
+<td>Homepage and all pages need premium imagery</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+</tbody>
+</table>
+<h2>14) Follow-On Options (Conditional on Data)</h2>
+<h3>A) Paid acquisition test</h3>
+<p>If organic traction is slow after 30 days, test Google Ads on "apartment Positano" keywords with landing page via <code>stepfreepositano.com</code> (redirects to <code>/apartment/private-stay/</code>). Low budget (€10/day) to validate conversion rate before scaling.</p>
+<h3>B) Standalone microsite escalation</h3>
+<p>If GA4 data shows material conversion drag from the <code>hostel-positano.com</code> hostname among premium buyers, build a standalone site on <code>stepfreepositano.com</code> instead of redirecting. Mark <code>noindex</code> initially to avoid SEO duplication; use for paid/referrals/retargeting only. Requires cross-domain GA4 setup.</p>
+<h3>C) Hostel cross-sell module</h3>
+<p>Add an apartment promotion module to the hostel booking flow when private room is unavailable. Requires Octorate availability check integration (already built for Brikette).</p>
+<h3>D) Additional OTA channels</h3>
+<p>List on Airbnb / VRBO via Octorate channel manager. Separate decision — increases exposure but adds commission cost and review surface area.</p>
+<h2>15) Immediate Next Actions</h2>
+<ol>
+<li>Register <code>stepfreepositano.com</code> (Pete — tomorrow)</li>
+<li>Add apartment to Octorate; get rate plan IDs (nr + flex)</li>
+<li>Film street-to-door proof video (single continuous shot)</li>
+<li>Gather interior photography (prioritize: living area, kitchen, bedroom, bathroom, view)</li>
+<li>Answer open questions (section 13)</li>
+<li>Proceed to S1 Readiness in startup loop</li>
+</ol>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/BRIK/2026-02-12-apartment-revenue-architecture.user.md</code></div>
+      <div>Generated: 2026-02-12T19:11:21.034Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

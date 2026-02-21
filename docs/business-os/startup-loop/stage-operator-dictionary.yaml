@@ -1,0 +1,362 @@
+# Startup Loop Stage Operator Dictionary
+# Canonical naming source for operator-facing stage labels, aliases, and display fields.
+# Generated views (stage-operator-map.json, stage-operator-table.md) are derived from this file.
+#
+# INVARIANTS:
+#   - List order must match stages array order in loop-spec.yaml exactly (VC-03).
+#   - Aliases must be globally unique across all entries (VC-02).
+#   - label_operator_short must be <=28 characters.
+#   - Validated against: stage-operator-dictionary.schema.json
+#
+# Decision reference: docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md (TASK-14)
+# TASK-02 decision: S6B retains stage key; split into GATE-S6B-STRAT-01 and GATE-S6B-ACT-01.
+
+schema_version: 1
+loop_spec_version: "3.0.0"
+
+stages:
+
+  - id: DISCOVERY-01
+    name_machine: problem-framing
+    label_operator_short: "Problem framing"
+    label_operator_long: "DISCOVERY-01 — Problem framing"
+    outcome_operator: "Clear problem statement with articulated pain, affected customer, and evidence of real demand."
+    aliases:
+      - problem-framing
+      - discovery-01
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to DISCOVERY-02 Solution-space scan."
+
+  - id: DISCOVERY-02
+    name_machine: solution-space-scan
+    label_operator_short: "Solution-space scan"
+    label_operator_long: "DISCOVERY-02 — Solution-space scan"
+    outcome_operator: "Mapped solution space with at least three distinct options and comparative feasibility notes."
+    aliases:
+      - solution-space
+      - discovery-02
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to DISCOVERY-03 Option selection."
+
+  - id: DISCOVERY-03
+    name_machine: option-selection
+    label_operator_short: "Option selection"
+    label_operator_long: "DISCOVERY-03 — Option selection"
+    outcome_operator: "Selected solution option with rationale, key assumptions, and handoff brief for DISCOVERY intake."
+    aliases:
+      - option-selection
+      - discovery-03
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to DISCOVERY-04 Naming handoff if a business name is still needed, otherwise proceed to DISCOVERY Intake."
+
+  - id: DISCOVERY-04
+    name_machine: naming-handoff
+    label_operator_short: "Naming handoff"
+    label_operator_long: "DISCOVERY-04 — Naming handoff"
+    outcome_operator: "Validated business or product name with brand-safety check and domain availability confirmed."
+    aliases:
+      - naming-handoff
+      - discovery-04
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to DISCOVERY-05 Distribution planning."
+
+  - id: DISCOVERY-05
+    name_machine: distribution-planning
+    label_operator_short: "Channel Plan"
+    label_operator_long: "DISCOVERY-05 — Channel Plan"
+    outcome_operator: "Distribution plan with ≥2 launch channels, cost/effort estimates, and ICP fit rationale."
+    aliases:
+      - distribution-planning
+      - discovery-05
+      - channel-plan
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to DISCOVERY-06 Measurement plan."
+
+  - id: DISCOVERY-06
+    name_machine: measurement-plan
+    label_operator_short: "Measure Plan"
+    label_operator_long: "DISCOVERY-06 — Measure Plan"
+    outcome_operator: "Measurement plan with tracking method, ≥2 key metrics, success thresholds, and data collection feasibility confirmed."
+    aliases:
+      - measurement-plan
+      - discovery-06
+      - measure-plan
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to DISCOVERY-07 Operator evidence."
+
+  - id: DISCOVERY-07
+    name_machine: operator-evidence
+    label_operator_short: "Operator evidence"
+    label_operator_long: "DISCOVERY-07 — Operator evidence"
+    outcome_operator: "Operator evidence packet: launch surface, stock status, pricing model, channel pre-decisions, and open evidence gaps documented."
+    aliases:
+      - operator-evidence
+      - our-stance
+      - discovery-07
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to DISCOVERY Intake with all seven precursors complete."
+
+  - id: DISCOVERY
+    name_machine: intake
+    label_operator_short: "Intake"
+    label_operator_long: "DISCOVERY — Intake"
+    outcome_operator: "Structured startup context packet ready for all downstream stages."
+    aliases:
+      - intake
+      - discovery
+    display_order: 1
+    operator_next_prompt: "Run /lp-readiness to check gate readiness before moving to S1."
+
+  - id: BRAND-01
+    name_machine: brand-strategy
+    label_operator_short: "Brand-01"
+    label_operator_long: "BRAND-01 — Brand strategy"
+    outcome_operator: "Business name confirmed; personality adjective pairs, audience, voice & tone documented."
+    aliases:
+      - brand-strategy
+      - brand-01
+    display_order: 1
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Run /lp-do-brand-02-brand-identity to create brand-dossier."
+
+  - id: BRAND-02
+    name_machine: brand-identity
+    label_operator_short: "Brand-02"
+    label_operator_long: "BRAND-02 — Brand identity"
+    outcome_operator: "Visual language: colour palette, typography, imagery direction, token overrides. Brand dossier at Draft+."
+    aliases:
+      - brand-identity
+      - brand-02
+      - brand-dossier
+    display_order: 1
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "BRAND complete. Run /startup-loop advance to proceed to S1."
+
+  - id: BRAND
+    name_machine: brand
+    label_operator_short: "Brand"
+    label_operator_long: "BRAND — Brand"
+    outcome_operator: "Brand stage complete. Proceeds to S1 (no gate)."
+    aliases:
+      - brand
+      - brand-intake
+    display_order: 1
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Run /lp-readiness to check launch readiness before entering offer design."
+
+  - id: S1
+    name_machine: readiness
+    label_operator_short: "Readiness check"
+    label_operator_long: "S1 — Readiness"
+    outcome_operator: "Readiness report with blocker list. All 7 gates checked."
+    aliases:
+      - readiness
+      - s1
+    display_order: 2
+    operator_next_prompt: "Resolve any blockers, then proceed to Measure (pre-website) or Results (website-live)."
+
+  - id: S1B
+    name_machine: measure
+    stage_group: MEASURE
+    label_operator_short: "Measure"
+    label_operator_long: "S1B — Measure (pre-website)"
+    outcome_operator: "Analytics stack live with GA4, Search Console, and conversion events verified before any paid traffic."
+    aliases:
+      - measure
+      - measurement-bootstrap  # backward compat
+      - measurement-setup      # backward compat
+      - s1b
+    display_order: 3
+    conditional: true
+    condition: "launch-surface = pre-website"
+    operator_next_prompt: "Confirm Measure stage is Active, then proceed to S2 Market intelligence."
+
+  - id: S2A
+    name_machine: results
+    stage_group: MEASURE
+    label_operator_short: "Results"
+    label_operator_long: "S2A — Results (website-live)"
+    outcome_operator: "Consolidated business history document with net value, booking data, and traffic logs as a decision baseline."
+    aliases:
+      - results
+      - historical-baseline  # backward compat
+      - baseline-history     # backward compat
+      - s2a
+    display_order: 4
+    conditional: true
+    condition: "launch-surface = website-live"
+    operator_next_prompt: "Proceed to S2 Market intelligence once Results baseline is Active."
+
+  - id: S2
+    name_machine: market-intelligence
+    label_operator_short: "Market intelligence"
+    label_operator_long: "S2 — Market intelligence"
+    outcome_operator: "Decision-grade market intelligence pack covering competitors, demand, pricing, and channels."
+    aliases:
+      - market-intelligence
+      - market-intel
+      - s2
+    display_order: 5
+    operator_next_prompt: "Proceed to S2B Offer design once market intelligence is Active."
+
+  - id: S2B
+    name_machine: offer-design
+    label_operator_short: "Offer design"
+    label_operator_long: "S2B — Offer design"
+    outcome_operator: "Offer artifact: target customer, positioning, pricing model, and messaging hierarchy."
+    aliases:
+      - offer-design
+      - offer
+      - s2b
+    display_order: 6
+    operator_next_prompt: "S3 Forecast and S6B Channel strategy can now run in parallel."
+
+  - id: S3
+    name_machine: forecast
+    label_operator_short: "Forecast"
+    label_operator_long: "S3 — Forecast"
+    outcome_operator: "90-day P10/P50/P90 revenue forecast with assumption register and sparse-evidence guardrails."
+    aliases:
+      - forecast
+      - s3
+    display_order: 7
+    operator_next_prompt: "Forecast and S6B Channel strategy must both complete before S4 Baseline merge."
+
+  - id: S3B
+    name_machine: adjacent-product-research
+    label_operator_short: "Adjacent product research"
+    label_operator_long: "S3B — Adjacent product research"
+    outcome_operator: "Adjacent product research results: 5-10 candidate product types with feasibility flags and ICP fit scoring for product range expansion."
+    aliases:
+      - adjacent-product-research
+      - adjacent-products
+      - s3b
+    display_order: 7
+    conditional: true
+    condition: "growth_intent includes product_range OR operator_invoked"
+    operator_next_prompt: "S3B is non-blocking at S4. Share results artifact as optional go-item candidates with S5A Prioritize."
+
+  - id: S6B
+    name_machine: channel-strategy
+    label_operator_short: "Channel strategy + GTM"
+    label_operator_long: "S6B — Channel strategy + GTM"
+    outcome_operator: "Channel plan with 2-3 selected launch channels, 30-day GTM timeline, and SEO strategy."
+    aliases:
+      - channel-strategy
+      - channels
+      - gtm
+      - s6b
+    display_order: 8
+    operator_next_prompt: "Both S3 Forecast and S6B must complete before S4 Baseline merge."
+    operator_microsteps:
+      - id: GATE-S6B-STRAT-01
+        label: "Strategy design complete"
+        gate: Hard
+        description: "Channel hypothesis and strategy design are complete. Requires S2B offer artifact. Allows channel plan artifact generation. Does not require measurement verification."
+      - id: GATE-S6B-ACT-01
+        label: "Spend authorization"
+        gate: Hard
+        description: "Spend activation gate. Requires decision-grade measurement signal verified (GATE-MEAS-01 pass). Blocks any live spend or channel activation until measurement thresholds are met."
+
+  - id: S4
+    name_machine: baseline-merge
+    label_operator_short: "Baseline merge"
+    label_operator_long: "S4 — Baseline merge"
+    outcome_operator: "Candidate baseline snapshot and draft manifest combining offer, forecast, and channel artifacts."
+    aliases:
+      - baseline-merge
+      - s4
+    display_order: 9
+    operator_next_prompt: "Proceed to S5A Prioritize."
+
+  - id: S5A
+    name_machine: prioritize
+    label_operator_short: "Prioritize"
+    label_operator_long: "S5A — Prioritize"
+    outcome_operator: "Scored and ranked action list — top 2-3 items to work on next."
+    aliases:
+      - prioritize
+      - s5a
+    display_order: 10
+    operator_next_prompt: "Proceed to S5B BOS sync to persist prioritization outputs."
+
+  - id: S5B
+    name_machine: bos-sync
+    label_operator_short: "BOS sync"
+    label_operator_long: "S5B — BOS sync"
+    outcome_operator: "Business OS cards and stage docs persisted to D1. Manifest pointer committed."
+    aliases:
+      - bos-sync
+      - s5b
+    display_order: 11
+    operator_next_prompt: "S6 Site-upgrade and DO can now proceed."
+
+  - id: S6
+    name_machine: site-upgrade
+    label_operator_short: "Site-upgrade synthesis"
+    label_operator_long: "S6 — Site-upgrade synthesis"
+    outcome_operator: "Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis."
+    aliases:
+      - site-upgrade
+      - site-upgrade-synthesis
+      - s6
+    display_order: 12
+    operator_next_prompt: "Proceed to DO."
+
+  - id: DO
+    name_machine: do
+    label_operator_short: "Do"
+    label_operator_long: "DO — Do (/lp-do-fact-find / /lp-do-plan / /lp-do-build)"
+    outcome_operator: "Feature or artifact delivered: fact-find brief, sequenced plan, and implementation with validation evidence."
+    aliases:
+      - do
+      - fact-find
+      - plan
+      - build
+      - s7    # backward compat
+      - s8    # backward compat
+      - s9    # backward compat
+    display_order: 13
+    operator_next_prompt: "Proceed to S9B QA gates before launch."
+
+  - id: S9B
+    name_machine: qa-gates
+    label_operator_short: "QA gates"
+    label_operator_long: "S9B — QA gates"
+    outcome_operator: "QA gate pass evidence: conversion flows, SEO readiness, performance budget, and legal compliance verified."
+    aliases:
+      - qa-gates
+      - qa
+      - s9b
+    display_order: 14
+    operator_next_prompt: "Proceed to S10 Weekly decision loop."
+
+  - id: S10
+    name_machine: weekly-readout
+    label_operator_short: "Weekly decision"
+    label_operator_long: "S10 — Weekly readout + experiments"
+    outcome_operator: "Weekly K/P/C/S decision document with denominator-valid KPI assessment and next actions."
+    aliases:
+      - weekly-readout
+      - weekly-decision
+      - weekly
+      - s10
+    display_order: 15
+    operator_next_prompt: "Repeat weekly. Run standing refresh prompts on monthly/quarterly cadence."

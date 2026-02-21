@@ -1,11 +1,11 @@
-export type { BloomFilterOptions } from "./bloom-filter";
-export { BloomFilter } from "./bloom-filter";
+export type { BloomFilterOptions } from "./bloom-filter.js";
+export { BloomFilter } from "./bloom-filter.js";
 export type {
   CountMinSketchOptions,
   TrendingTrackerOptions,
-} from "./count-min-sketch";
-export { CountMinSketch, TrendingTracker } from "./count-min-sketch";
-export type { HyperLogLogOptions } from "./hyperloglog";
-export { HyperLogLog } from "./hyperloglog";
-export type { TDigestOptions } from "./t-digest";
-export { TDigest } from "./t-digest";
+} from "./count-min-sketch.js";
+export { CountMinSketch, TrendingTracker } from "./count-min-sketch.js";
+export type { HyperLogLogOptions } from "./hyperloglog.js";
+export { HyperLogLog } from "./hyperloglog.js";
+export type { TDigestOptions } from "./t-digest.js";
+export { TDigest } from "./t-digest.js";

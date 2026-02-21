@@ -53,7 +53,9 @@
       "@acme/page-builder-core/*": [
         "../page-builder-core/src/*",
         "../page-builder-core/dist/*"
-      ]
+      ],
+      "@acme/seo": ["../seo/src/index", "../seo/dist/index.d.ts"],
+      "@acme/seo/*": ["../seo/src/*", "../seo/dist/*"]
     }
   },
   "references": [
@@ -86,6 +88,9 @@
     },
     {
       "path": "../page-builder-core"
+    },
+    {
+      "path": "../seo"
     }
   ],
   "include": [

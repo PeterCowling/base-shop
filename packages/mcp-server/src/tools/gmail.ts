@@ -10,12 +10,18 @@
  * - gmail_reconcile_in_progress: Resolve stale in-progress items via policy
  */
 
+import * as fs from "node:fs";
+import * as nodePath from "node:path";
+
 import type { gmail_v1 } from "googleapis";
 import { z } from "zod";
 
 import { getGmailClient } from "../clients/gmail.js";
 import { createRawEmail } from "../utils/email-mime.js";
 import { generateEmailHtml } from "../utils/email-template.js";
+import { withRetry } from "../utils/gmail-retry.js";
+import { createLockStore, type LockStore } from "../utils/lock-store.js";
+import { buildOrganizeQuery } from "../utils/organize-query.js";
 import {
   errorResult,
   formatError,
@@ -26,6 +32,8 @@ import {
   prepaymentStepFromAction,
   resolvePrepaymentWorkflow,
 } from "../utils/workflow-triggers.js";
+
+import { processCancellationEmail } from "./process-cancellation-email.js";
 
 // =============================================================================
 // Constants
@@ -49,6 +57,10 @@ export const LABELS = {
   WORKFLOW_PREPAYMENT_CHASE_2: "Brikette/Workflow/Prepayment-Chase-2",
   WORKFLOW_PREPAYMENT_CHASE_3: "Brikette/Workflow/Prepayment-Chase-3",
   WORKFLOW_AGREEMENT_RECEIVED: "Brikette/Workflow/Agreement-Received",
+  WORKFLOW_CANCELLATION_RECEIVED: "Brikette/Workflow/Cancellation-Received",
+  WORKFLOW_CANCELLATION_PROCESSED: "Brikette/Workflow/Cancellation-Processed",
+  WORKFLOW_CANCELLATION_PARSE_FAILED: "Brikette/Workflow/Cancellation-Parse-Failed",
+  WORKFLOW_CANCELLATION_BOOKING_NOT_FOUND: "Brikette/Workflow/Cancellation-Booking-Not-Found",
   PROMOTIONAL: "Brikette/Outcome/Promotional",
   SPAM: "Brikette/Outcome/Spam",
   AGENT_CODEX: "Brikette/Agent/Codex",
@@ -82,6 +94,33 @@ const LEGACY_TO_CURRENT_LABEL_MAP: Record<string, string> = {
   [LEGACY_LABELS.SPAM]: LABELS.SPAM,
 };
 
+/**
+ * Labels that represent a "done" or "in-flight" state for the organize-inbox
+ * label-absence query. Emails already bearing any of these labels are excluded
+ * from the scan so they are not re-processed.
+ *
+ * Excluded intentionally:
+ *   - NEEDS_PROCESSING: entry-point label (emails awaiting triage are the
+ *     target of the scan, not the exclusion)
+ *   - AGENT_*: actor labels, not state labels
+ *   - WORKFLOW_* (prepayment/cancellation): mid-flight workflow labels that
+ *     should still be visible if re-scanning is needed; err on inclusion if
+ *     unsure — these are left out since they are transient workflow markers,
+ *     not final outcomes.
+ */
+const TERMINAL_LABELS: string[] = [
+  LABELS.PROCESSING,           // Brikette/Queue/In-Progress — actively being processed
+  LABELS.AWAITING_AGREEMENT,   // Brikette/Queue/Needs-Decision — waiting for Pete's decision
+  LABELS.DEFERRED,             // Brikette/Queue/Deferred — consciously deferred
+  LABELS.READY_FOR_REVIEW,     // Brikette/Drafts/Ready-For-Review — draft waiting review
+  LABELS.SENT,                 // Brikette/Drafts/Sent — draft was sent
+  LABELS.PROCESSED_DRAFTED,    // Brikette/Outcome/Drafted — final outcome: drafted
+  LABELS.PROCESSED_ACKNOWLEDGED, // Brikette/Outcome/Acknowledged — final outcome: acknowledged
+  LABELS.PROCESSED_SKIPPED,    // Brikette/Outcome/Skipped — final outcome: skipped
+  LABELS.PROMOTIONAL,          // Brikette/Outcome/Promotional — classified as promotional
+  LABELS.SPAM,                 // Brikette/Outcome/Spam — classified as spam
+];
+
 type AgentActor = "codex" | "claude" | "human";
 
 export const REQUIRED_LABELS = [
@@ -98,6 +137,10 @@ export const REQUIRED_LABELS = [
   LABELS.WORKFLOW_PREPAYMENT_CHASE_2,
   LABELS.WORKFLOW_PREPAYMENT_CHASE_3,
   LABELS.WORKFLOW_AGREEMENT_RECEIVED,
+  LABELS.WORKFLOW_CANCELLATION_RECEIVED,
+  LABELS.WORKFLOW_CANCELLATION_PROCESSED,
+  LABELS.WORKFLOW_CANCELLATION_PARSE_FAILED,
+  LABELS.WORKFLOW_CANCELLATION_BOOKING_NOT_FOUND,
   LABELS.PROMOTIONAL,
   LABELS.SPAM,
   LABELS.AGENT_CODEX,
@@ -108,7 +151,229 @@ export const REQUIRED_LABELS = [
 ];
 
 const PROCESSING_TIMEOUT_MS = 30 * 60 * 1000;
-const processingLocks = new Map<string, number>();
+
+// Default lock store instance (file-backed). Replaceable in tests via setLockStore().
+let lockStoreRef: LockStore = createLockStore();
+
+/**
+ * Replaces the module-level lock store instance.
+ * Use in tests to inject a mock or a store backed by a temp directory.
+ */
+export function setLockStore(store: LockStore): void {
+  lockStoreRef = store;
+}
+
+// =============================================================================
+// Audit log
+// =============================================================================
+
+/**
+ * An entry in the append-only email processing audit log.
+ * Written as JSON-lines (one JSON object per line) to data/email-audit-log.jsonl.
+ */
+export interface AuditEntry {
+  ts: string;           // ISO 8601 UTC timestamp
+  messageId: string;
+  action: "lock-acquired" | "lock-released" | "outcome";
+  actor: string;
+  result?: string;      // only present for action === "outcome"
+}
+
+export type EmailSourcePath = "queue" | "reception" | "outbound" | "unknown";
+
+export type TelemetryEventKey =
+  | "email_draft_created"
+  | "email_draft_deferred"
+  | "email_outcome_labeled"
+  | "email_queue_transition"
+  | "email_fallback_detected";
+
+export interface TelemetryEvent {
+  ts: string;
+  event_key: TelemetryEventKey;
+  source_path: EmailSourcePath;
+  actor: string;
+  tool_name?: string;
+  message_id?: string | null;
+  draft_id?: string | null;
+  action?: string;
+  reason?: string;
+  classification?: string;
+  queue_from?: string | null;
+  queue_to?: string | null;
+}
+
+// TASK-04: Zod schema for TelemetryEvent validation on read.
+const TelemetryEventSchema = z.object({
+  ts: z.string(),
+  event_key: z.enum([
+    "email_draft_created",
+    "email_draft_deferred",
+    "email_outcome_labeled",
+    "email_queue_transition",
+    "email_fallback_detected",
+  ]),
+  source_path: z.enum(["queue", "reception", "outbound", "unknown"]),
+  actor: z.string(),
+  tool_name: z.string().optional(),
+  message_id: z.string().nullable().optional(),
+  draft_id: z.string().nullable().optional(),
+  action: z.string().optional(),
+  reason: z.string().optional(),
+  classification: z.string().optional(),
+  queue_from: z.string().nullable().optional(),
+  queue_to: z.string().nullable().optional(),
+}).passthrough();
+
+/**
+ * Resolves the default audit log path.
+ * Priority:
+ *   1. AUDIT_LOG_PATH env var (used in tests to redirect to a temp directory)
+ *   2. mcp-server package root (cwd = packages/mcp-server) → data/email-audit-log.jsonl
+ *   3. monorepo root (cwd = repo root) → packages/mcp-server/data/email-audit-log.jsonl
+ */
+function resolveDefaultAuditLogPath(): string {
+  if (process.env.AUDIT_LOG_PATH) {
+    return process.env.AUDIT_LOG_PATH;
+  }
+  const fromMonorepoRoot = nodePath.join(
+    process.cwd(),
+    "packages",
+    "mcp-server",
+    "data",
+    "email-audit-log.jsonl"
+  );
+  const fromPackageRoot = nodePath.join(
+    process.cwd(),
+    "data",
+    "email-audit-log.jsonl"
+  );
+  // Prefer the candidate whose parent data/ dir exists, else fall back to monorepo-root path.
+  if (fs.existsSync(nodePath.dirname(fromPackageRoot))) {
+    return fromPackageRoot;
+  }
+  return fromMonorepoRoot;
+}
+
+/**
+ * Appends a single JSON-lines audit entry to the audit log.
+ *
+ * - Creates the data/ directory if it does not exist.
+ * - Never throws — audit failure must not break tool flow.
+ *
+ * @param entry   The audit entry to write.
+ * @param logPath Override for the log file path (used in tests).
+ */
+export function appendAuditEntry(entry: AuditEntry, logPath?: string): void {
+  const filePath = logPath ?? resolveDefaultAuditLogPath();
+  try {
+    fs.mkdirSync(nodePath.dirname(filePath), { recursive: true });
+    fs.appendFileSync(filePath, JSON.stringify(entry) + "\n");
+  } catch (err) {
+    // Audit failure must never break tool flow — log to stderr and continue.
+    process.stderr.write(
+      `[audit-log] Failed to write audit entry: ${String(err)}\n`
+    );
+  }
+}
+
+export function appendTelemetryEvent(
+  event: TelemetryEvent,
+  logPath?: string,
+): void {
+  const filePath = logPath ?? resolveDefaultAuditLogPath();
+  try {
+    fs.mkdirSync(nodePath.dirname(filePath), { recursive: true });
+    fs.appendFileSync(filePath, JSON.stringify(event) + "\n");
+  } catch (err) {
+    process.stderr.write(
+      `[audit-log] Failed to write telemetry event: ${String(err)}\n`,
+    );
+  }
+}
+
+function readTelemetryEvents(logPath?: string): TelemetryEvent[] {
+  const filePath = logPath ?? resolveDefaultAuditLogPath();
+  if (!fs.existsSync(filePath)) {
+    return [];
+  }
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const lines = raw.split("\n");
+  const events: TelemetryEvent[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    try {
+      const parsed = JSON.parse(line);
+      const result = TelemetryEventSchema.safeParse(parsed);
+      if (result.success) {
+        events.push(result.data as TelemetryEvent);
+      } else {
+        console.warn(
+          `[telemetry] Skipped invalid event at line ${i + 1}: ${result.error.issues[0]?.message ?? "unknown"}`,
+        );
+      }
+    } catch {
+      console.warn(`[telemetry] Skipped malformed JSON at line ${i + 1}`);
+    }
+  }
+  return events;
+}
+
+interface DailyRollupBucket {
+  day: string;
+  drafted: number;
+  deferred: number;
+  requeued: number;
+  fallback: number;
+}
+
+function computeDailyTelemetryRollup(
+  events: TelemetryEvent[],
+  start: Date,
+  endExclusive: Date,
+): DailyRollupBucket[] {
+  const buckets = new Map<string, DailyRollupBucket>();
+  const getBucket = (day: string): DailyRollupBucket => {
+    const existing = buckets.get(day);
+    if (existing) return existing;
+    const created: DailyRollupBucket = {
+      day,
+      drafted: 0,
+      deferred: 0,
+      requeued: 0,
+      fallback: 0,
+    };
+    buckets.set(day, created);
+    return created;
+  };
+
+  for (const event of events) {
+    const ts = new Date(event.ts);
+    if (Number.isNaN(ts.getTime())) continue;
+    if (ts < start || ts >= endExclusive) continue;
+    const day = ts.toISOString().slice(0, 10);
+    const bucket = getBucket(day);
+
+    if (event.event_key === "email_draft_created") {
+      bucket.drafted += 1;
+      continue;
+    }
+    if (event.event_key === "email_draft_deferred") {
+      bucket.deferred += 1;
+      continue;
+    }
+    if (event.event_key === "email_fallback_detected") {
+      bucket.fallback += 1;
+      continue;
+    }
+    if (event.event_key === "email_queue_transition" && event.queue_to === LABELS.NEEDS_PROCESSING) {
+      bucket.requeued += 1;
+    }
+  }
+
+  return Array.from(buckets.values()).sort((a, b) => a.day.localeCompare(b.day));
+}
 
 const GARBAGE_FROM_PATTERNS = [
   "promotion-it@amazon.it",
@@ -126,6 +391,18 @@ const BOOKING_MONITOR_FROM_PATTERNS = [
 
 const BOOKING_MONITOR_SUBJECT_PATTERNS = [
   /^new reservation\b/i,
+  /^reservation\s+[a-z0-9_-]+\s+confirmed\b/i,
+  /^new modification\b/i,
+  /^reservation\s+[a-z0-9_-]+\s+has been changed\b/i,
+];
+
+const CANCELLATION_MONITOR_FROM_PATTERNS = [
+  "noreply@smtp.octorate.com",
+];
+
+const CANCELLATION_MONITOR_SUBJECT_PATTERNS = [
+  /^new cancellation\b/i,
+  /^reservation\s+[a-z0-9_-]+\s+cancelled\b/i,
 ];
 
 const TERMS_AND_CONDITIONS_URL =
@@ -290,7 +567,16 @@ const markProcessedSchema = z.object({
     "prepayment_chase_3",
   ]),
   actor: z.enum(["codex", "claude", "human"]).optional().default("codex"),
+  sourcePath: z
+    .enum(["queue", "reception", "outbound", "unknown"])
+    .optional()
+    .default("queue"),
   prepaymentProvider: z.enum(["octorate", "hostelworld"]).optional(),
+});
+
+const telemetryDailyRollupSchema = z.object({
+  startDate: z.string().optional(),
+  days: z.number().int().min(1).max(90).optional().default(7),
 });
 
 const migrateLabelsSchema = z.object({
@@ -300,7 +586,7 @@ const migrateLabelsSchema = z.object({
 
 const reconcileInProgressSchema = z.object({
   dryRun: z.boolean().optional().default(true),
-  staleHours: z.number().min(1).max(24 * 30).optional().default(24),
+  staleHours: z.number().min(1).max(24 * 30).optional().default(2),
   limit: z.number().min(1).max(200).optional().default(100),
   actor: z.enum(["codex", "claude", "human"]).optional().default("codex"),
 });
@@ -405,6 +691,12 @@ export const gmailTools = [
           description: "Actor applying the state transition for Agent/* labels.",
           default: "codex",
         },
+        sourcePath: {
+          type: "string",
+          enum: ["queue", "reception", "outbound", "unknown"],
+          description: "Telemetry source path for outcome attribution.",
+          default: "queue",
+        },
         action: {
           type: "string",
           enum: [
@@ -428,6 +720,17 @@ export const gmailTools = [
     },
   },
   {
+    name: "gmail_telemetry_daily_rollup",
+    description: "Read daily telemetry rollups from the append-only audit log (drafted, deferred, requeued, fallback).",
+    inputSchema: {
+      type: "object",
+      properties: {
+        startDate: { type: "string", description: "Optional UTC start date (YYYY-MM-DD)." },
+        days: { type: "number", description: "Number of days to summarize (1-90).", default: 7 },
+      },
+    },
+  },
+  {
     name: "gmail_migrate_labels",
     description: "Migrate legacy Brikette label taxonomy (Inbox/Processed) to Queue/Outcome labels.",
     inputSchema: {
@@ -445,7 +748,7 @@ export const gmailTools = [
       type: "object",
       properties: {
         dryRun: { type: "boolean", description: "Preview only; do not modify labels.", default: true },
-        staleHours: { type: "number", description: "Age threshold in hours before reconciliation applies.", default: 24 },
+        staleHours: { type: "number", description: "Age threshold in hours before reconciliation applies.", default: 2 },
         limit: { type: "number", description: "Maximum in-progress messages to inspect.", default: 100 },
         actor: {
           type: "string",
@@ -663,6 +966,90 @@ export function collectLabelIds(
     .filter((labelId): labelId is string => !!labelId);
 }
 
+type DraftOutcomeOutboundCategory = "pre-arrival" | "operations";
+
+export interface ApplyDraftOutcomeLabelsInput {
+  draftMessageId: string;
+  sourcePath: EmailSourcePath;
+  actor?: AgentActor;
+  outboundCategory?: DraftOutcomeOutboundCategory;
+  toolName?: string;
+}
+
+function resolveDraftOutcomeLabelNames(
+  actor: AgentActor,
+  outboundCategory?: DraftOutcomeOutboundCategory
+): string[] {
+  const labelNames = [
+    LABELS.READY_FOR_REVIEW,
+    LABELS.PROCESSED_DRAFTED,
+    actorToLabelName(actor),
+  ];
+
+  if (outboundCategory === "pre-arrival") {
+    labelNames.push(LABELS.OUTBOUND_PRE_ARRIVAL);
+  } else if (outboundCategory === "operations") {
+    labelNames.push(LABELS.OUTBOUND_OPERATIONS);
+  }
+
+  return labelNames;
+}
+
+export async function applyDraftOutcomeLabelsStrict(
+  gmail: gmail_v1.Gmail,
+  input: ApplyDraftOutcomeLabelsInput
+): Promise<{ appliedLabelNames: string[] }> {
+  const {
+    draftMessageId,
+    sourcePath,
+    actor = "human",
+    outboundCategory,
+    toolName = "unknown_tool",
+  } = input;
+
+  const normalizedMessageId = draftMessageId.trim();
+  if (!normalizedMessageId) {
+    throw new Error("Draft created but Gmail did not return message ID; cannot apply outcome labels.");
+  }
+
+  const labelNames = resolveDraftOutcomeLabelNames(actor, outboundCategory);
+  const labelMap = await ensureLabelMap(gmail, labelNames);
+  const missingLabels = labelNames.filter((labelName) => !labelMap.get(labelName));
+  if (missingLabels.length > 0) {
+    throw new Error(
+      `Missing required Gmail labels for drafted outcome: ${missingLabels.join(", ")}`
+    );
+  }
+
+  const addLabelIds = collectLabelIds(labelMap, labelNames);
+  try {
+    await gmail.users.messages.modify({
+      userId: "me",
+      id: normalizedMessageId,
+      requestBody: {
+        addLabelIds,
+      },
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(
+      `Failed to apply draft outcome labels (${labelNames.join(", ")}): ${errorMessage}`
+    );
+  }
+
+  appendTelemetryEvent({
+    ts: new Date().toISOString(),
+    event_key: "email_outcome_labeled",
+    source_path: sourcePath,
+    actor,
+    tool_name: toolName,
+    message_id: normalizedMessageId,
+    action: "drafted",
+  });
+
+  return { appliedLabelNames: labelNames };
+}
+
 function actorToLabelName(actor: AgentActor): string {
   switch (actor) {
     case "claude":
@@ -675,20 +1062,8 @@ function actorToLabelName(actor: AgentActor): string {
   }
 }
 
-function isProcessingLockStale(
-  lockTimestamp: number | undefined,
-  internalDate: string | null | undefined
-): boolean {
-  if (lockTimestamp) {
-    return Date.now() - lockTimestamp > PROCESSING_TIMEOUT_MS;
-  }
-  if (internalDate) {
-    const parsed = Number(internalDate);
-    if (!Number.isNaN(parsed)) {
-      return Date.now() - parsed > PROCESSING_TIMEOUT_MS;
-    }
-  }
-  return false;
+function isProcessingLockStale(messageId: string): boolean {
+  return lockStoreRef.isStale(messageId, PROCESSING_TIMEOUT_MS);
 }
 
 function formatGmailQueryDate(date: Date): string {
@@ -789,6 +1164,7 @@ function shouldTrashAsGarbage(fromRaw: string, subject: string): boolean {
 type OrganizeDecision =
   | "needs_processing"
   | "booking_reservation"
+  | "cancellation"
   | "promotional"
   | "spam"
   | "deferred"
@@ -829,6 +1205,16 @@ function classifyOrganizeDecision(
   );
   if (matchesBookingMonitorSender && matchesBookingMonitorSubject) {
     return { decision: "booking_reservation", reason: "new-reservation-notification", senderEmail };
+  }
+
+  const matchesCancellationMonitorSender = CANCELLATION_MONITOR_FROM_PATTERNS.some((pattern) =>
+    fromLower.includes(pattern)
+  );
+  const matchesCancellationMonitorSubject = CANCELLATION_MONITOR_SUBJECT_PATTERNS.some((pattern) =>
+    pattern.test(subject)
+  );
+  if (matchesCancellationMonitorSender && matchesCancellationMonitorSubject) {
+    return { decision: "cancellation", reason: "new-cancellation-notification", senderEmail };
   }
 
   const hasNoReplySender = isNoReplySender(senderEmail);
@@ -1447,13 +1833,150 @@ async function processBookingReservationNotification({
 // Tool Case Handlers
 // =============================================================================
 
+/**
+ * Handle cancellation email processing.
+ * Extracts the cancellation workflow logic from the main organize inbox switch case.
+ */
+async function handleCancellationCase({
+  gmail,
+  labelMap,
+  latestMessage,
+  dryRun,
+  fromRaw,
+}: {
+  gmail: gmail_v1.Gmail;
+  labelMap: Map<string, string>;
+  latestMessage: gmail_v1.Schema$Message;
+  dryRun: boolean;
+  fromRaw: string;
+}): Promise<{ processed: boolean }> {
+  const cancellationReceivedLabelId = labelMap.get(LABELS.WORKFLOW_CANCELLATION_RECEIVED);
+  const cancellationProcessedLabelId = labelMap.get(LABELS.WORKFLOW_CANCELLATION_PROCESSED);
+  const cancellationParseFailedLabelId = labelMap.get(LABELS.WORKFLOW_CANCELLATION_PARSE_FAILED);
+  const cancellationBookingNotFoundLabelId = labelMap.get(
+    LABELS.WORKFLOW_CANCELLATION_BOOKING_NOT_FOUND
+  );
+
+  if (!cancellationReceivedLabelId) {
+    throw new Error(`Missing required label: ${LABELS.WORKFLOW_CANCELLATION_RECEIVED}`);
+  }
+
+  // Apply Cancellation-Received label immediately
+  if (!dryRun) {
+    await gmail.users.messages.modify({
+      userId: "me",
+      id: latestMessage.id!,
+      requestBody: {
+        addLabelIds: [cancellationReceivedLabelId],
+        removeLabelIds: [],
+      },
+    });
+  }
+
+  // Extract email body for processing
+  const extractedBody = extractBody(latestMessage.payload as Parameters<typeof extractBody>[0]);
+  const emailHtml = extractedBody.html || extractedBody.plain;
+
+  // Invoke processCancellationEmail tool (mock in tests, real in production)
+  const firebaseUrl = process.env.FIREBASE_DATABASE_URL || "";
+  const firebaseApiKey = process.env.FIREBASE_API_KEY;
+
+  try {
+    const result = await processCancellationEmail(
+      latestMessage.id!,
+      emailHtml,
+      fromRaw,
+      firebaseUrl,
+      firebaseApiKey
+    );
+
+    // Apply status-specific label based on tool result
+    let statusLabelId: string | undefined;
+    if (result.status === "success" && cancellationProcessedLabelId) {
+      statusLabelId = cancellationProcessedLabelId;
+    } else if (result.status === "parse-failed" && cancellationParseFailedLabelId) {
+      statusLabelId = cancellationParseFailedLabelId;
+    } else if (result.status === "booking-not-found" && cancellationBookingNotFoundLabelId) {
+      statusLabelId = cancellationBookingNotFoundLabelId;
+    }
+
+    if (statusLabelId && !dryRun) {
+      await gmail.users.messages.modify({
+        userId: "me",
+        id: latestMessage.id!,
+        requestBody: {
+          addLabelIds: [statusLabelId],
+          removeLabelIds: ["INBOX", "UNREAD"],
+        },
+      });
+    }
+
+    return { processed: true };
+  } catch (error) {
+    // Log error but don't throw - we've already marked it as received
+    console.error(`Failed to process cancellation email ${latestMessage.id}:`, error);
+    return { processed: false };
+  }
+}
+
+/**
+ * Startup recovery: scan Gmail for In-Progress emails whose lock file is
+ * absent or stale. Requeues them to Needs-Processing so they are not lost.
+ * Called at the start of each handleOrganizeInbox run.
+ */
+async function runStartupRecovery(
+  gmail: gmail_v1.Gmail,
+  labelMap: Map<string, string>,
+  needsProcessingLabelId: string,
+  dryRun: boolean
+): Promise<void> {
+  const processingLabelIds = collectLabelIds(labelMap, [
+    LABELS.PROCESSING,
+    LEGACY_LABELS.PROCESSING,
+  ]);
+  if (processingLabelIds.length === 0) return;
+
+  const inProgressResponse = await gmail.users.messages.list({
+    userId: "me",
+    labelIds: processingLabelIds.slice(0, 1), // check first matching label only
+    maxResults: 50,
+  });
+  const inProgressMessages = inProgressResponse.data.messages || [];
+  for (const inProgressMsg of inProgressMessages) {
+    if (!inProgressMsg.id) continue;
+    const lockEntry = lockStoreRef.get(inProgressMsg.id);
+    const isStale = lockEntry
+      ? lockStoreRef.isStale(inProgressMsg.id, PROCESSING_TIMEOUT_MS)
+      : true; // no lock file → treat as stale (orphaned)
+    if (isStale) {
+      if (!dryRun) {
+        await gmail.users.messages.modify({
+          userId: "me",
+          id: inProgressMsg.id,
+          requestBody: {
+            addLabelIds: [needsProcessingLabelId],
+            removeLabelIds: processingLabelIds,
+          },
+        });
+      }
+      lockStoreRef.release(inProgressMsg.id);
+      appendAuditEntry({
+        ts: new Date().toISOString(),
+        messageId: inProgressMsg.id,
+        action: "lock-released",
+        actor: "system",
+        result: "startup-recovery",
+      });
+    }
+  }
+}
+
 async function handleOrganizeInbox(
   gmail: gmail_v1.Gmail,
   args: unknown
 ): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
   const { testMode, specificStartDate, limit, dryRun } = organizeInboxSchema.parse(args);
 
-  let query = "is:unread in:inbox";
   let startDateString: string | null = null;
   let tomorrowDateString: string | null = null;
 
@@ -1464,8 +1987,16 @@ async function handleOrganizeInbox(
     }
     startDateString = formatGmailQueryDate(parsed);
     tomorrowDateString = formatGmailQueryDate(new Date(Date.now() + 24 * 60 * 60 * 1000));
-    query = `${query} after:${startDateString} before:${tomorrowDateString}`;
   }
+
+  // Transitional fix (TASK-06): label-absence query covers emails read before the bot runs.
+  // Long-term: Gmail filter or users.history.list + lastHistoryId ingestion.
+  // Validated via dryRun before live deployment (see TASK-08 decision log).
+  const query = buildOrganizeQuery(
+    TERMINAL_LABELS,
+    "label-absence",
+    startDateString ? { startDate: startDateString } : undefined,
+  );
 
   const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
   const needsProcessingLabelId = labelMap.get(LABELS.NEEDS_PROCESSING);
@@ -1483,11 +2014,15 @@ async function handleOrganizeInbox(
     Array.from(labelMap.entries()).map(([name, id]) => [id, name])
   );
 
-  const response = await gmail.users.threads.list({
-    userId: "me",
-    q: query,
-    maxResults: limit,
-  });
+  await runStartupRecovery(gmail, labelMap, needsProcessingLabelId, dryRun);
+
+  const response = await withRetry(() =>
+    gmail.users.threads.list({
+      userId: "me",
+      q: query,
+      maxResults: limit,
+    }),
+  );
 
   const threads = response.data.threads || [];
   let scannedThreads = 0;
@@ -1496,6 +2031,7 @@ async function handleOrganizeInbox(
   let labeledSpam = 0;
   let labeledDeferred = 0;
   let processedBookingReservations = 0;
+  let processedCancellations = 0;
   let trashed = 0;
   let skippedAlreadyManaged = 0;
   let skippedNoAction = 0;
@@ -1631,6 +2167,19 @@ async function handleOrganizeInbox(
         }
         break;
       }
+      case "cancellation": {
+        const result = await handleCancellationCase({
+          gmail,
+          labelMap,
+          latestMessage,
+          dryRun,
+          fromRaw,
+        });
+        if (result.processed) {
+          processedCancellations += 1;
+        }
+        break;
+      }
       case "promotional": {
         labeledPromotional += 1;
         if (!dryRun) {
@@ -1718,7 +2267,7 @@ async function handleOrganizeInbox(
       beforeDate: tomorrowDateString,
       testMode,
       specificStartDate: specificStartDate ?? null,
-      mode: specificStartDate ? "from-date" : "all-unread",
+      mode: specificStartDate ? "from-date" : "label-absence",
     },
     counts: {
       scannedThreads,
@@ -1727,6 +2276,7 @@ async function handleOrganizeInbox(
       labeledSpam,
       labeledDeferred,
       processedBookingReservations,
+      processedCancellations,
       routedBookingMonitor: 0,
       trashed,
       skippedAlreadyManaged,
@@ -1919,10 +2469,7 @@ async function handleGetEmail(
 
   const messageLabelIds = msg.labelIds || [];
   if (messageLabelIds.some(labelId => processingLabelIds.includes(labelId))) {
-    const isStale = isProcessingLockStale(
-      processingLocks.get(emailId),
-      msg.internalDate
-    );
+    const isStale = isProcessingLockStale(emailId);
     if (isStale) {
       await gmail.users.messages.modify({
         userId: "me",
@@ -1931,7 +2478,8 @@ async function handleGetEmail(
           removeLabelIds: processingLabelIds,
         },
       });
-      processingLocks.delete(emailId);
+      lockStoreRef.release(emailId);
+      appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system" });
     } else {
       return errorResult(`Email ${emailId} is already being processed.`);
     }
@@ -1947,11 +2495,12 @@ async function handleGetEmail(
       ],
       removeLabelIds: [
         ...needsProcessingLabelIds,
-        ...allAgentLabelIds,
+        ...allAgentLabelIds.filter(id => id !== agentLabelId),
       ],
     },
   });
-  processingLocks.set(emailId, Date.now());
+  lockStoreRef.acquire(emailId, actor || "unknown");
+  appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-acquired", actor });
 
   const headers = (msg.payload?.headers || []) as EmailHeader[];
   const from = parseEmailAddress(getHeader(headers, "From"));
@@ -2066,6 +2615,16 @@ async function handleCreateDraft(
     }
   }
 
+  appendTelemetryEvent({
+    ts: new Date().toISOString(),
+    event_key: "email_draft_created",
+    source_path: "queue",
+    tool_name: "gmail_create_draft",
+    message_id: emailId,
+    draft_id: draft.data.id ?? null,
+    actor: "system",
+  });
+
   return jsonResult({
     success: true,
     draftId: draft.data.id,
@@ -2074,13 +2633,96 @@ async function handleCreateDraft(
   });
 }
 
+/**
+ * Attempts to remove the In-Progress label from an email and release the
+ * processing lock.  This is called on the error path of handleMarkProcessed
+ * (and potentially other handlers) when the main Gmail API call throws, to
+ * avoid leaving an email stuck with In-Progress label indefinitely.
+ *
+ * Never throws — always returns a status string so the caller can include it
+ * in the errorResult message.
+ */
+async function cleanupInProgress(emailId: string, gmail: gmail_v1.Gmail): Promise<string> {
+  const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
+  const inProgressLabelIds = collectLabelIds(labelMap, [
+    LABELS.PROCESSING,
+    LEGACY_LABELS.PROCESSING,
+  ]);
+  try {
+    await gmail.users.messages.modify({
+      userId: "me",
+      id: emailId,
+      requestBody: {
+        removeLabelIds: inProgressLabelIds.length > 0 ? inProgressLabelIds : undefined,
+      },
+    });
+    lockStoreRef.release(emailId);
+    appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system" });
+    return "cleanup succeeded";
+  } catch (cleanupError) {
+    lockStoreRef.release(emailId);
+    appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system" });
+    const msg = cleanupError instanceof Error ? cleanupError.message : String(cleanupError);
+    return `cleanup failed: ${msg}`;
+  }
+}
+
+function resolveQueueStateFromLabels(
+  labelIds: string[],
+  labelMap: Map<string, string>,
+): string | null {
+  const queueOrder = [
+    LABELS.NEEDS_PROCESSING,
+    LABELS.PROCESSING,
+    LABELS.AWAITING_AGREEMENT,
+    LABELS.DEFERRED,
+    LEGACY_LABELS.NEEDS_PROCESSING,
+    LEGACY_LABELS.PROCESSING,
+    LEGACY_LABELS.AWAITING_AGREEMENT,
+    LEGACY_LABELS.DEFERRED,
+  ];
+  for (const labelName of queueOrder) {
+    const labelId = labelMap.get(labelName);
+    if (labelId && labelIds.includes(labelId)) {
+      return labelName;
+    }
+  }
+  return null;
+}
+
+function resolveQueueTargetForAction(action: z.infer<typeof markProcessedSchema>["action"]): string | null {
+  if (action === "deferred") {
+    return LABELS.DEFERRED;
+  }
+  if (action === "requeued") {
+    return LABELS.NEEDS_PROCESSING;
+  }
+  if (
+    action === "awaiting_agreement" ||
+    action === "agreement_received" ||
+    action === "prepayment_chase_1" ||
+    action === "prepayment_chase_2" ||
+    action === "prepayment_chase_3"
+  ) {
+    return LABELS.AWAITING_AGREEMENT;
+  }
+  return null;
+}
+
 async function handleMarkProcessed(
   gmail: gmail_v1.Gmail,
   args: unknown
-): Promise<ReturnType<typeof jsonResult>> {
-  const { emailId, action, actor, prepaymentProvider } = markProcessedSchema.parse(args);
+): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
+  const { emailId, action, actor, sourcePath, prepaymentProvider } = markProcessedSchema.parse(args);
 
   const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
+  const preModify = await gmail.users.messages.get({
+    userId: "me",
+    id: emailId,
+    format: "metadata",
+  });
+  const queueFrom = resolveQueueStateFromLabels(preModify.data.labelIds || [], labelMap);
+  const queueTo = resolveQueueTargetForAction(action);
   const actorLabelId = labelMap.get(actorToLabelName(actor));
   const queueLabelIds = collectLabelIds(labelMap, [
     LABELS.NEEDS_PROCESSING,
@@ -2237,15 +2879,41 @@ async function handleMarkProcessed(
     new Set(removeLabelIds.filter(labelId => !uniqueAddLabelIds.includes(labelId)))
   );
 
-  await gmail.users.messages.modify({
-    userId: "me",
-    id: emailId,
-    requestBody: {
-      addLabelIds: uniqueAddLabelIds.length > 0 ? uniqueAddLabelIds : undefined,
-      removeLabelIds: uniqueRemoveLabelIds.length > 0 ? uniqueRemoveLabelIds : undefined,
-    },
+  try {
+    await gmail.users.messages.modify({
+      userId: "me",
+      id: emailId,
+      requestBody: {
+        addLabelIds: uniqueAddLabelIds.length > 0 ? uniqueAddLabelIds : undefined,
+        removeLabelIds: uniqueRemoveLabelIds.length > 0 ? uniqueRemoveLabelIds : undefined,
+      },
+    });
+  } catch (error) {
+    const cleanupStatus = await cleanupInProgress(emailId, gmail);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return errorResult(`Failed to apply labels: ${errorMessage}. ${cleanupStatus}`);
+  }
+  lockStoreRef.release(emailId);
+  const ts = new Date().toISOString();
+  appendAuditEntry({ ts, messageId: emailId, action: "lock-released", actor: "system" });
+  appendAuditEntry({ ts, messageId: emailId, action: "outcome", actor, result: action });
+  appendTelemetryEvent({
+    ts,
+    event_key: "email_outcome_labeled",
+    source_path: sourcePath,
+    message_id: emailId,
+    actor,
+    action,
   });
-  processingLocks.delete(emailId);
+  appendTelemetryEvent({
+    ts,
+    event_key: "email_queue_transition",
+    source_path: sourcePath,
+    message_id: emailId,
+    actor,
+    queue_from: queueFrom,
+    queue_to: queueTo,
+  });
 
   const workflow = isPrepaymentAction(action)
     ? {
@@ -2262,6 +2930,57 @@ async function handleMarkProcessed(
     action,
     actor,
     workflow,
+  });
+}
+
+async function handleTelemetryDailyRollup(
+  args: unknown,
+): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
+  const { startDate, days } = telemetryDailyRollupSchema.parse(args ?? {});
+  const now = new Date();
+  const endExclusive = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate() + 1,
+    0,
+    0,
+    0,
+    0,
+  ));
+  const start = startDate
+    ? new Date(`${startDate}T00:00:00.000Z`)
+    : new Date(endExclusive.getTime() - days * 24 * 60 * 60 * 1000);
+
+  if (Number.isNaN(start.getTime())) {
+    return errorResult("Invalid startDate. Expected YYYY-MM-DD.");
+  }
+  if (start >= endExclusive) {
+    return errorResult("startDate must be before today (UTC).");
+  }
+
+  const events = readTelemetryEvents();
+  const buckets = computeDailyTelemetryRollup(events, start, endExclusive);
+  const totals = buckets.reduce(
+    (acc, bucket) => {
+      acc.drafted += bucket.drafted;
+      acc.deferred += bucket.deferred;
+      acc.requeued += bucket.requeued;
+      acc.fallback += bucket.fallback;
+      return acc;
+    },
+    { drafted: 0, deferred: 0, requeued: 0, fallback: 0 },
+  );
+
+  return jsonResult({
+    success: true,
+    source: "packages/mcp-server/data/email-audit-log.jsonl",
+    window: {
+      start: start.toISOString().slice(0, 10),
+      endExclusive: endExclusive.toISOString().slice(0, 10),
+      days: buckets.length,
+    },
+    totals,
+    daily: buckets,
   });
 }
 
@@ -2555,6 +3274,10 @@ async function handleReconcileInProgress(
 // =============================================================================
 
 export async function handleGmailTool(name: string, args: unknown) {
+  if (name === "gmail_telemetry_daily_rollup") {
+    return handleTelemetryDailyRollup(args);
+  }
+
   // Get Gmail client
   const clientResult = await getGmailClient();
   if (!clientResult.success) {
@@ -2596,6 +3319,10 @@ export async function handleGmailTool(name: string, args: unknown) {
 
       case "gmail_mark_processed": {
         return await handleMarkProcessed(gmail, args);
+      }
+
+      case "gmail_telemetry_daily_rollup": {
+        return await handleTelemetryDailyRollup(args);
       }
 
       case "gmail_migrate_labels": {

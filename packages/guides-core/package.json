@@ -10,6 +10,11 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./url-helpers": {
+      "import": "./dist/url-helpers.js",
+      "default": "./dist/url-helpers.js",
+      "types": "./dist/url-helpers.d.ts"
     }
   },
   "files": [

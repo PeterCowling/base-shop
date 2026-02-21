@@ -57,6 +57,10 @@ export const baseConfig = {
   // dynamic /_next/image route, which does not exist on Cloudflare Pages.
   images: {
     unoptimized: Boolean(coreEnv.OUTPUT_EXPORT),
+    // Next 16 defaults `images.qualities` to `[75]`. Several apps explicitly
+    // request higher qualities, so allow those values to avoid unexpected
+    // coercion or runtime errors.
+    qualities: [75, 80, 85, 90],
   },
 
   // Keep the existing "static export in CI only" logic

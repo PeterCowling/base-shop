@@ -1,18 +1,18 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import { z } from "zod";
 
-import { stemmedTokenizer } from "@acme/lib";
-
+import {
+  evaluateQuestionCoverage,
+  extractQuestionKeywords,
+  type QuestionCoverageEntry,
+} from "../utils/coverage.js";
 import {
   normalizeScenarioCategory,
   type ScenarioCategory,
-  SYNONYMS,
 } from "../utils/template-ranker.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 
-
-function tokenize(text: string): string[] {
-  return stemmedTokenizer.tokenize(text);
-}
 
 type QualityResult = {
   passed: boolean;
@@ -20,14 +20,6 @@ type QualityResult = {
   warnings: string[];
   confidence: number;
   question_coverage: QuestionCoverageEntry[];
-};
-
-type QuestionCoverageEntry = {
-  question: string;
-  matched_count: number;
-  required_matches: number;
-  coverage_score: number;
-  status: "covered" | "partial" | "missing";
 };
 
 type EmailActionPlanInput = {
@@ -42,6 +34,9 @@ type EmailActionPlanInput = {
   scenario: {
     category: ScenarioCategory | string;
   };
+  // TASK-04: v1.1.0 additive multi-scenario fields (optional for backward compat)
+  scenarios?: Array<{ category: ScenarioCategory | string; confidence: number }>;
+  actionPlanVersion?: string;
   thread_summary?: {
     prior_commitments: string[];
   };
@@ -62,6 +57,32 @@ type PolicyDecisionInput = {
   };
 };
 
+type StoredTemplateReference = {
+  category: string;
+  reference_scope?: "reference_required" | "reference_optional_excluded";
+  canonical_reference_url?: string | null;
+};
+
+type CategoryReferencePolicy = {
+  requiresReference: boolean;
+  canonicalUrls: string[];
+};
+
+const TEMPLATE_DATA_PATH = join(
+  process.cwd(),
+  "packages",
+  "mcp-server",
+  "data",
+  "email-templates.json"
+);
+
+const BOOKING_MONITOR_REFERENCE_HOSTS = new Set<string>([
+  "hostelworld.com",
+  "www.hostelworld.com",
+]);
+
+let categoryReferencePolicyCache: Map<string, CategoryReferencePolicy> | null = null;
+
 const qualityCheckSchema = z.object({
   actionPlan: z.object({
     language: z.enum(["EN", "IT", "ES", "UNKNOWN"]),
@@ -75,6 +96,16 @@ const qualityCheckSchema = z.object({
     scenario: z.object({
       category: z.string().min(1),
     }),
+    // TASK-04: v1.1.0 additive multi-scenario fields (optional for backward compat)
+    scenarios: z
+      .array(
+        z.object({
+          category: z.string().min(1),
+          confidence: z.number().min(0).max(1),
+        })
+      )
+      .optional(),
+    actionPlanVersion: z.string().optional(),
     thread_summary: z
       .object({
         prior_commitments: z.array(z.string()).default([]),
@@ -204,71 +235,147 @@ function hasLink(text: string): boolean {
   return /(https?:\/\/\S+)/i.test(text);
 }
 
-const STOP_WORDS = new Set([
-  "that", "this", "from", "with", "what", "when", "where", "which",
-  "have", "does", "will", "would", "could", "should", "there", "their",
-  "they", "them", "been", "being", "also", "just", "about", "than",
-  "your", "some", "each", "were", "more", "very",
-]);
-
-function extractQuestionKeywords(question: string): string[] {
-  return question
-    .replace(/\?/g, "")
-    .split(/\s+/)
-    .map(w => w.toLowerCase())
-    .filter(w => w.length > 2 && !STOP_WORDS.has(w))
-    .slice(0, 5);
+function extractLinks(text: string): string[] {
+  const matches = text.match(/https?:\/\/[^\s<>"')]+/gi) ?? [];
+  return matches.map((url) => url.replace(/[.,;:!?]+$/g, ""));
 }
 
-function evaluateQuestionCoverage(
-  body: string,
-  questions: Array<{ text: string }>
-): QuestionCoverageEntry[] {
-  const bodyTokens = tokenize(body.toLowerCase());
-  const bodySet = new Set(bodyTokens);
+function normalizeUrlForMatch(url: string): string {
+  return url.trim().toLowerCase().replace(/\/+$/g, "");
+}
 
-  return questions.map((question) => {
-    const keywords = extractQuestionKeywords(question.text);
-    if (keywords.length === 0) {
-      return {
-        question: question.text,
-        matched_count: 0,
-        required_matches: 0,
-        coverage_score: 1,
-        status: "covered",
+function parseHostname(url: string): string | null {
+  try {
+    return new URL(url).hostname.toLowerCase();
+  } catch {
+    return null;
+  }
+}
+
+function loadCategoryReferencePolicy(): Map<string, CategoryReferencePolicy> {
+  if (categoryReferencePolicyCache) {
+    return categoryReferencePolicyCache;
+  }
+
+  try {
+    const raw = readFileSync(TEMPLATE_DATA_PATH, "utf8");
+    const templates = JSON.parse(raw) as StoredTemplateReference[];
+    const grouped = new Map<string, { requiresReference: boolean; canonicalUrls: Set<string> }>();
+
+    for (const template of templates) {
+      const normalizedCategory =
+        normalizeScenarioCategory(template.category) ?? template.category.toLowerCase();
+      const existing = grouped.get(normalizedCategory) ?? {
+        requiresReference: false,
+        canonicalUrls: new Set<string>(),
       };
+
+      if (template.reference_scope === "reference_required") {
+        existing.requiresReference = true;
+        if (template.canonical_reference_url) {
+          existing.canonicalUrls.add(
+            normalizeUrlForMatch(template.canonical_reference_url)
+          );
+        }
+      }
+
+      grouped.set(normalizedCategory, existing);
     }
 
-    const matchedKeywords: string[] = [];
-    for (const keyword of keywords) {
-      const variants = [keyword, ...(SYNONYMS[keyword] ?? [])];
-      const matched = variants.some((variant) => {
-        const stems = tokenize(variant.toLowerCase());
-        return stems.some((stem) => bodySet.has(stem));
+    categoryReferencePolicyCache = new Map<string, CategoryReferencePolicy>();
+    for (const [category, policy] of grouped.entries()) {
+      categoryReferencePolicyCache.set(category, {
+        requiresReference: policy.requiresReference,
+        canonicalUrls: Array.from(policy.canonicalUrls),
       });
-      if (matched) {
-        matchedKeywords.push(keyword);
+    }
+    return categoryReferencePolicyCache;
+  } catch {
+    categoryReferencePolicyCache = new Map<string, CategoryReferencePolicy>();
+    return categoryReferencePolicyCache;
+  }
+}
+
+function resolveScenarioCategories(actionPlan: EmailActionPlanInput): string[] {
+  const categories =
+    actionPlan.actionPlanVersion === "1.1.0" &&
+    actionPlan.scenarios &&
+    actionPlan.scenarios.length > 0
+      ? actionPlan.scenarios.map((scenario) => scenario.category)
+      : [actionPlan.scenario.category];
+
+  return Array.from(
+    new Set(
+      categories.map((category) =>
+        normalizeScenarioCategory(category) ?? category.toLowerCase()
+      )
+    )
+  );
+}
+
+function requiresReferenceForActionPlan(actionPlan: EmailActionPlanInput): {
+  requiresReference: boolean;
+  canonicalUrls: string[];
+} {
+  const policyByCategory = loadCategoryReferencePolicy();
+  const categories = resolveScenarioCategories(actionPlan);
+
+  let requiresReference = false;
+  const canonicalUrls = new Set<string>();
+
+  for (const category of categories) {
+    // Broad buckets (`faq`, `general`) mix link-required and link-optional intents.
+    // Keep strict enforcement for specific scenario categories to avoid false fails.
+    if (category === "faq" || category === "general") {
+      continue;
+    }
+
+    const policy = policyByCategory.get(category);
+    if (!policy) {
+      continue;
+    }
+    if (policy.requiresReference) {
+      requiresReference = true;
+    }
+    for (const url of policy.canonicalUrls) {
+      canonicalUrls.add(url);
+    }
+  }
+
+  return {
+    requiresReference,
+    canonicalUrls: Array.from(canonicalUrls),
+  };
+}
+
+function hasApplicableReference(
+  links: string[],
+  canonicalUrls: string[],
+  allowBookingMonitorLinks: boolean
+): boolean {
+  for (const rawLink of links) {
+    const normalizedLink = normalizeUrlForMatch(rawLink);
+
+    if (
+      canonicalUrls.some(
+        (canonicalUrl) =>
+          normalizedLink === canonicalUrl ||
+          normalizedLink.startsWith(`${canonicalUrl}/`) ||
+          normalizedLink.startsWith(`${canonicalUrl}?`)
+      )
+    ) {
+      return true;
+    }
+
+    if (allowBookingMonitorLinks) {
+      const hostname = parseHostname(normalizedLink);
+      if (hostname && BOOKING_MONITOR_REFERENCE_HOSTS.has(hostname)) {
+        return true;
       }
     }
+  }
 
-    const required_matches = keywords.length >= 2 ? 2 : 1;
-    const matched_count = matchedKeywords.length;
-    const coverage_score = Number((matched_count / keywords.length).toFixed(2));
-    const status =
-      matched_count === 0
-        ? "missing"
-        : matched_count < required_matches
-          ? "partial"
-          : "covered";
-
-    return {
-      question: question.text,
-      matched_count,
-      required_matches,
-      coverage_score,
-      status,
-    };
-  });
+  return false;
 }
 
 function contradictsCommitments(body: string, commitments: string[]): boolean {
@@ -367,8 +474,27 @@ function runChecks(
     failed_checks.push("missing_signature");
   }
 
-  if (actionPlan.workflow_triggers.booking_monitor && !hasLink(draft.bodyPlain + " " + (draft.bodyHtml ?? ""))) {
+  const draftText = `${draft.bodyPlain} ${draft.bodyHtml ?? ""}`;
+  const draftLinks = extractLinks(draftText);
+  const containsAnyLink = hasLink(draftText);
+
+  if (actionPlan.workflow_triggers.booking_monitor && !containsAnyLink) {
     failed_checks.push("missing_required_link");
+  }
+
+  const referencePolicy = requiresReferenceForActionPlan(actionPlan);
+  if (referencePolicy.requiresReference) {
+    if (draftLinks.length === 0) {
+      failed_checks.push("missing_required_reference");
+    } else if (
+      !hasApplicableReference(
+        draftLinks,
+        referencePolicy.canonicalUrls,
+        actionPlan.workflow_triggers.booking_monitor
+      )
+    ) {
+      warnings.push("reference_not_applicable");
+    }
   }
 
   if (actionPlan.thread_summary?.prior_commitments?.length) {
@@ -397,7 +523,12 @@ function runChecks(
     warnings.push("language_mismatch");
   }
 
-  const target = scenarioTarget(actionPlan.scenario.category);
+  // TASK-04: resolve primary scenario category — prefer scenarios[0] (v1.1.0) over singular scenario (v1.0.0)
+  const primaryScenarioCategory =
+    (actionPlan.actionPlanVersion === "1.1.0" && actionPlan.scenarios && actionPlan.scenarios.length > 0)
+      ? actionPlan.scenarios[0].category
+      : actionPlan.scenario.category;
+  const target = scenarioTarget(primaryScenarioCategory);
   const count = wordCount(draft.bodyPlain);
   if (count < target.min * 0.8 || count > target.max * 1.2) {
     warnings.push("length_out_of_range");

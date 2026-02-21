@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{TITLE}}</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Palette (substituted by render pipeline) ── */
+    {{PALETTE_CSS}}
+
+    /* ── Fallback: operational palette if PALETTE_CSS is empty ── */
+    :root {
+      --bg:          var(--bg, #f9f8f6);
+      --surface:     var(--surface, #ffffff);
+      --border:      var(--border, #e4e2de);
+      --border-soft: var(--border-soft, #eeece9);
+      --text:        var(--text, #1a1918);
+      --text-muted:  var(--text-muted, #6b6762);
+      --accent:      var(--accent, #2d6a4f);
+      --accent-soft: var(--accent-soft, #e8f4ee);
+      --warn:        var(--warn, #92400e);
+      --warn-soft:   var(--warn-soft, #fef3c7);
+      --danger:      var(--danger, #991b1b);
+      --danger-soft: var(--danger-soft, #fee2e2);
+      --code-bg:     var(--code-bg, #f3f1ee);
+      --code-border: var(--code-border, #dbd9d4);
+      --radius:      var(--radius, 6px);
+      --radius-lg:   var(--radius-lg, 10px);
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2rem 1rem 6rem;
+    }
+
+    /* ── Page wrapper ── */
+    .page { max-width: 860px; margin: 0 auto; }
+
+    /* ── Document header ── */
+    .doc-header {
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.4rem;
+    }
+    .doc-header h1 { font-size: 2rem; font-weight: 700; line-height: 1.2; }
+    .doc-header .meta { margin-top: 0.6rem; font-size: 0.85rem; color: var(--text-muted); }
+
+    /* ── Section headings ── */
+    h2 {
+      font-size: 1.3rem; font-weight: 700;
+      margin: 2.5rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.8rem 0 0.5rem; }
+
+    /* ── Body copy ── */
+    p { margin-bottom: 0.8rem; }
+    p:last-child { margin-bottom: 0; }
+    strong { font-weight: 600; }
+    em { font-style: italic; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; }
+    li:last-child { margin-bottom: 0; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote {
+      border-left: 3px solid var(--border);
+      margin: 0.8rem 0; padding: 0.5rem 1rem;
+      color: var(--text-muted);
+    }
+    pre {
+      background: var(--code-bg); border: 1px solid var(--code-border);
+      border-radius: var(--radius); padding: 1rem;
+      overflow-x: auto; margin: 0.8rem 0;
+    }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; color: var(--text); }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "SF Mono", "Fira Code", Menlo, monospace;
+      font-size: 0.82rem;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 3px;
+      padding: 0.1em 0.35em;
+      color: var(--accent);
+    }
+
+    /* ── Callout boxes ── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+    }
+    .callout.green  { background: var(--accent-soft); border-left: 3px solid var(--accent); }
+    .callout.amber  { background: var(--warn-soft);   border-left: 3px solid #d97706; }
+    .callout.red    { background: var(--danger-soft); border-left: 3px solid var(--danger); }
+    .callout p { margin-bottom: 0.5rem; }
+    .callout p:last-child { margin-bottom: 0; }
+
+    /* ── Invariant box ── */
+    .invariant {
+      background: #1a1918; color: #f5f3f0;
+      border-radius: var(--radius-lg);
+      padding: 1.4rem 1.6rem; margin: 1.5rem 0;
+    }
+    .invariant .invariant-label {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #a3e635; margin-bottom: 0.5rem;
+    }
+    .invariant p { color: #e5e3df; font-size: 0.95rem; margin-bottom: 0; }
+    .invariant strong { color: #fff; }
+
+    /* ── Numbered action steps ── */
+    .steps { counter-reset: step; list-style: none; padding-left: 0; margin: 0.5rem 0 1.2rem; }
+    .steps > li {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.7rem;
+      margin-bottom: 1.1rem;
+      align-items: start;
+    }
+    .steps > li::before {
+      content: counter(step);
+      display: flex; align-items: center; justify-content: center;
+      width: 2rem; height: 2rem;
+      background: var(--accent); color: #fff;
+      font-size: 0.8rem; font-weight: 700;
+      border-radius: 50%; flex-shrink: 0; margin-top: 0.1rem;
+    }
+    .steps > li .step-body { min-width: 0; }
+    .steps > li .step-title { font-weight: 600; margin-bottom: 0.15rem; }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; margin: 0.8rem 0 1rem; border-radius: var(--radius); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; background: var(--surface); }
+    thead tr { background: var(--accent); color: #fff; }
+    thead th {
+      text-align: left; padding: 0.65rem 1rem;
+      font-weight: 600; font-size: 0.8rem; letter-spacing: 0.03em;
+    }
+    tbody tr { border-bottom: 1px solid var(--border-soft); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { padding: 0.65rem 1rem; vertical-align: top; }
+    tbody tr:nth-child(even) { background: var(--surface); }
+    tbody tr:nth-child(odd)  { background: var(--bg); }
+
+    /* ── Status pills ── */
+    .pill {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 0.15em 0.55em; border-radius: 3px;
+      vertical-align: middle; margin-left: 0.3em;
+    }
+    .pill.action { background: var(--danger-soft); color: var(--danger); }
+    .pill.auto   { background: var(--accent-soft); color: var(--accent); }
+
+    /* ── Divider ── */
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+    /* ── Mermaid diagram containers ── */
+    .mermaid-wrap {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.2rem 1rem;
+      overflow: auto;
+      margin: 1rem 0 1.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .mermaid-wrap .mermaid {
+      transition: transform 0.2s ease;
+      transform-origin: top center;
+    }
+    .zoom-controls {
+      position: absolute; top: 8px; right: 8px;
+      display: flex; gap: 2px; z-index: 10;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2px;
+    }
+    .zoom-controls button {
+      width: 26px; height: 26px;
+      border: none; background: transparent;
+      color: var(--text-muted);
+      font-family: "SF Mono", monospace;
+      font-size: 13px; cursor: pointer;
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .zoom-controls button:hover { background: var(--border); color: var(--text); }
+    .mermaid-wrap.is-zoomed  { cursor: grab; }
+    .mermaid-wrap.is-panning { cursor: grabbing; user-select: none; }
+
+    /* Force node/edge text to match page colour scheme */
+    .mermaid .nodeLabel  { color: var(--text) !important; }
+    .mermaid .edgeLabel  { color: var(--text-muted) !important; }
+    .mermaid .edgeLabel rect { fill: var(--bg) !important; }
+
+    .diagram-caption {
+      font-size: 0.78rem; color: var(--text-muted);
+      text-align: center; margin-top: -0.8rem; margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    /* ── Chart.js containers ── */
+    .chart-wrap {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.2rem 1rem;
+      margin: 1rem 0 1.5rem;
+    }
+
+    /* ── Engineering appendix toggle ── */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
+
+    .audience-toggle {
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--text-muted);
+      cursor: pointer; z-index: 100;
+    }
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
+
+    /* ── Meta footer ── */
+    .meta-footer {
+      margin-top: 3rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem; color: var(--text-muted);
+    }
+
+    /* ── Reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      .mermaid-wrap .mermaid { transition: none; }
+      .zoom-controls button { transition: none; }
+    }
+
+    /* ── Print ── */
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+      .zoom-controls { display: none !important; }
+      .mermaid-wrap { border: 1px solid #ccc; break-inside: avoid; }
+      .chart-wrap { break-inside: avoid; }
+      .meta-footer { break-before: auto; }
+      body { padding: 0; }
+      .page { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
+
+{{BODY}}
+
+    <div class="meta-footer">
+      <div>Source: <code>{{SOURCE}}</code></div>
+      <div>Generated: {{GENERATED_AT}}</div>
+    </div>
+  </div>
+
+  <!-- ── Mermaid: Rich mode with theme:'base', dark-mode detection, ELK conditional loader ── -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Conditionally load ELK layout engine if any diagram uses it
+    const allDiagramEls = Array.from(document.querySelectorAll('.mermaid'));
+    const hasElk = allDiagramEls.some(function(el) {
+      return el.textContent && el.textContent.includes('defaultRenderer');
+    });
+    if (hasElk) {
+      const { default: elkLayouts } = await import(
+        'https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0/dist/mermaid-layout-elk.esm.min.mjs'
+      );
+      mermaid.registerLayoutLoaders(elkLayouts);
+    }
+
+    // Read palette CSS variables so Mermaid theme matches the active palette
+    var cs = getComputedStyle(document.documentElement);
+    var v = function(name, fb) { return cs.getPropertyValue(name).trim() || fb; };
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'antiscript',
+      theme: 'base',
+      look: 'classic',
+      themeVariables: {
+        primaryColor:         v('--accent-soft', dark ? '#1e3d30' : '#e8f4ee'),
+        primaryBorderColor:   v('--accent',      '#2d6a4f'),
+        primaryTextColor:     v('--text',        dark ? '#f5f3f0' : '#1a1918'),
+        secondaryColor:       v('--bg',          dark ? '#1a1918' : '#f9f8f6'),
+        secondaryBorderColor: v('--border',      dark ? '#6b6762' : '#e4e2de'),
+        tertiaryColor:        v('--warn-soft',   dark ? '#27201a' : '#fef3c7'),
+        tertiaryBorderColor:  v('--warn',        '#d97706'),
+        lineColor:            v('--text-muted',  dark ? '#6b6762' : '#9ca3af'),
+        edgeLabelBackground:  v('--bg',          dark ? '#1a1918' : '#f9f8f6'),
+        fontSize: '14px',
+      }
+    });
+
+    // Render only visible (operator) diagrams immediately
+    var operatorDiagrams = allDiagramEls.filter(function(el) {
+      return !el.closest("[data-audience='engineering']");
+    });
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    // Audience toggle with lazy engineering diagram rendering
+    var engineeringRendered = false;
+    var toggleBtn = document.getElementById('audience-toggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', function() {
+        var isShowing = document.body.classList.toggle('show-engineering');
+        toggleBtn.textContent = isShowing ? 'Hide technical details' : 'Show technical details';
+        toggleBtn.setAttribute('aria-pressed', String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          var nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes: nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
+  </script>
+
+  <!-- ── Zoom/Pan controls for interactive Mermaid diagrams ── -->
+  <script>
+    function zoomDiagram(btn, factor) {
+      var wrap = btn.closest('.mermaid-wrap');
+      var el   = wrap.querySelector('.mermaid');
+      var z    = Math.min(Math.max((parseFloat(el.dataset.zoom || '1')) * factor, 0.3), 5);
+      el.dataset.zoom = z;
+      el.style.transform = 'scale(' + z + ')';
+      wrap.classList.toggle('is-zoomed', z > 1);
+    }
+    function resetZoom(btn) {
+      var wrap = btn.closest('.mermaid-wrap');
+      var el   = wrap.querySelector('.mermaid');
+      el.dataset.zoom = '1';
+      el.style.transform = '';
+      wrap.classList.remove('is-zoomed');
+    }
+    document.querySelectorAll('.mermaid-wrap').forEach(function(wrap) {
+      /* Ctrl/Cmd + scroll to zoom */
+      wrap.addEventListener('wheel', function(e) {
+        if (!e.ctrlKey && !e.metaKey) return;
+        e.preventDefault();
+        var el = wrap.querySelector('.mermaid');
+        var z  = Math.min(Math.max((parseFloat(el.dataset.zoom || '1')) * (e.deltaY < 0 ? 1.1 : 0.9), 0.3), 5);
+        el.dataset.zoom = z;
+        el.style.transform = 'scale(' + z + ')';
+        wrap.classList.toggle('is-zoomed', z > 1);
+      }, { passive: false });
+      /* Click-and-drag panning when zoomed */
+      var sx, sy, sl, st;
+      wrap.addEventListener('mousedown', function(e) {
+        if (e.target.closest('.zoom-controls')) return;
+        if (parseFloat(wrap.querySelector('.mermaid').dataset.zoom || '1') <= 1) return;
+        wrap.classList.add('is-panning');
+        sx = e.clientX; sy = e.clientY;
+        sl = wrap.scrollLeft; st = wrap.scrollTop;
+      });
+      window.addEventListener('mousemove', function(e) {
+        if (!wrap.classList.contains('is-panning')) return;
+        wrap.scrollLeft = sl - (e.clientX - sx);
+        wrap.scrollTop  = st - (e.clientY - sy);
+      });
+      window.addEventListener('mouseup', function() { wrap.classList.remove('is-panning'); });
+    });
+  </script>
+
+  <!-- ── Chart.js: conditional loading + renderChartBlocks() ── -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <script>
+    (function() {
+      var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var style = getComputedStyle(document.documentElement);
+      var textColor    = style.getPropertyValue('--text').trim()       || (dark ? '#f5f3f0' : '#1a1918');
+      var mutedColor   = style.getPropertyValue('--text-muted').trim() || (dark ? '#a39e98' : '#6b6762');
+      var borderColor  = style.getPropertyValue('--border').trim()     || (dark ? '#3d3a37' : '#e4e2de');
+      var surfaceColor = style.getPropertyValue('--surface').trim()    || (dark ? '#242220' : '#ffffff');
+
+      // Set Chart.js global defaults for dark/light mode
+      Chart.defaults.color = mutedColor;
+      Chart.defaults.borderColor = borderColor;
+      Chart.defaults.backgroundColor = surfaceColor;
+      Chart.defaults.plugins.legend.labels.color = textColor;
+      Chart.defaults.plugins.title.color = textColor;
+      Chart.defaults.scale.grid = Chart.defaults.scale.grid || {};
+      Chart.defaults.scale.grid.color = borderColor;
+      Chart.defaults.scale.ticks = Chart.defaults.scale.ticks || {};
+      Chart.defaults.scale.ticks.color = mutedColor;
+
+      function renderChartBlocks() {
+        var blocks = document.querySelectorAll('pre.chart');
+        blocks.forEach(function(pre) {
+          try {
+            var config = JSON.parse(pre.textContent);
+
+            // Create responsive container
+            var container = document.createElement('div');
+            container.className = 'chart-wrap';
+            container.style.height = config.height || '300px';
+
+            // Ensure responsive behaviour
+            config.options = config.options || {};
+            config.options.responsive = true;
+            config.options.maintainAspectRatio = false;
+
+            // Remove non-Chart.js keys
+            delete config.height;
+
+            var canvas = document.createElement('canvas');
+            container.appendChild(canvas);
+            pre.replaceWith(container);
+
+            new Chart(canvas, config);
+          } catch (err) {
+            pre.style.display = 'block';
+            pre.style.color = '#991b1b';
+            pre.style.background = '#fee2e2';
+            pre.style.padding = '1rem';
+            pre.style.borderRadius = '6px';
+            pre.textContent = 'Chart render error: ' + err.message;
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderChartBlocks);
+      } else {
+        renderChartBlocks();
+      }
+    })();
+  </script>
+</body>
+</html>

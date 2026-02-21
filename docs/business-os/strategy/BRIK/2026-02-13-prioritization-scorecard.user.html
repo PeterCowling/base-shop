@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK Prioritization Scorecard</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>BRIK Prioritization Scorecard</h1>
+<h2>A) Scoring Rubric</h2>
+<p>Scale: 0-5 per criterion.</p>
+<ul>
+<li>Outcome impact</li>
+<li>Speed to value</li>
+<li>Confidence</li>
+<li>Dependency complexity (inverse: higher score = lower complexity)</li>
+<li>Risk if delayed</li>
+<li>Validation leverage</li>
+</ul>
+<h2>B) Scored Item Table</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th align="right">Impact</th>
+<th align="right">Speed</th>
+<th align="right">Confidence</th>
+<th align="right">Dependency</th>
+<th align="right">Delay risk</th>
+<th align="right">Validation leverage</th>
+<th align="right">Weighted score</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Complete GA4 UI event verification + lock first 7-day KPI baseline</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">28</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>Implement booking policy/fee clarity + mobile performance hardening</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">26</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>Implement cancellation reason coding and reach >=90% coverage</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">26</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>Run day-14 gate review and publish first forecast recalibration</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">25</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>Launch member-rate cohort test with margin guardrails</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">22</td>
+<td>P2</td>
+</tr>
+</tbody>
+</table>
+<h2>C) Top Backlog (P1/P2/P3)</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Item</th>
+<th>Why now</th>
+<th>Acceptance criteria</th>
+<th>Dependencies</th>
+<th>Evidence refs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>GA4 event verification + 7-day baseline lock</td>
+<td>All scale/re-prioritization decisions depend on measured conversion truth</td>
+<td><code>web_vitals</code>, <code>begin_checkout</code>, and booking-confirmation event checks are verified; first 7-day KPI baseline is persisted in <code>plan.user.md</code></td>
+<td>GA4 property access + production capture</td>
+<td><code>2026-02-13-measurement-verification.user.md</code>, <code>BRIK-forecast-seed.user.md</code></td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Policy/fee clarity + booking-step performance hardening</td>
+<td>Fastest conversion-quality and trust improvement lever</td>
+<td>Policy/fee block shipped on booking-critical routes; booking-step p75 &#x3C;=2.5s sustained for 7 days</td>
+<td>UI implementation + performance instrumentation</td>
+<td><code>2026-02-12-upgrade-brief.user.md</code>, <code>2026-02-13-startup-loop-90-day-forecast-v1.user.md</code></td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Cancellation reason coding instrumentation</td>
+<td>Required to improve realized value and validate margin assumptions</td>
+<td>>=90% cancellation events coded with standardized reasons and reviewed weekly</td>
+<td>Event taxonomy + ops workflow</td>
+<td><code>2026-02-13-startup-loop-90-day-forecast-v1.user.md</code>, <code>BRIK-forecast-seed.user.md</code></td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Day-14 gate review + forecast recalibration artifact</td>
+<td>Converts first observed data into actionable keep/pivot thresholds</td>
+<td>Recalibration doc published with revised P10/P50/P90 and explicit Keep/Pivot/Scale recommendation</td>
+<td>14-day observed KPI pack</td>
+<td><code>2026-02-13-startup-loop-90-day-forecast-v1.user.md</code></td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Member-rate cohort test with margin guardrails</td>
+<td>Supports direct-share target but should follow baseline lock</td>
+<td>One controlled member-rate cohort run; conversion and margin delta reported against control</td>
+<td>Offer module + tracking integrity</td>
+<td><code>2026-02-12-market-intelligence.user.md</code>, <code>2026-02-12-upgrade-brief.user.md</code></td>
+</tr>
+</tbody>
+</table>
+<h2>D) Deferred Items and Rationale</h2>
+<ul>
+<li>Full S6B channel strategy artifact (defer until day-14 measured baseline is locked and S5 top P1 tasks are complete).</li>
+<li>Community/social booking-assist lane (defer until core conversion and cancellation-control signals stabilize).</li>
+</ul>
+<h2>E) Execution Recommendation</h2>
+<p>Run <code>lp-do-fact-find -> lp-do-plan -> lp-do-build</code> first on:</p>
+<ol>
+<li>GA4 event verification + first 7-day KPI baseline lock.</li>
+<li>Policy/fee clarity + booking-step performance hardening.</li>
+<li>Cancellation reason coding instrumentation and weekly reporting.</li>
+</ol>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md</code></div>
+      <div>Generated: 2026-02-13T22:35:54.215Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

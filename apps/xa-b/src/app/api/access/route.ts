@@ -15,7 +15,8 @@ import {
   resolveInviteCodes,
 } from "../../../lib/stealth";
 
-export const runtime = "edge";
+// Uses node:crypto/fs via accessStore.
+export const runtime = "nodejs";
 
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
 

@@ -4,15 +4,18 @@ import { runInNewContext } from 'node:vm';
 
 import ts from 'typescript';
 
+import * as themeTokensBrowser from '../browser';
 import * as themeTokens from '../index';
 
 jest.mock('node:fs', () => ({
   existsSync: jest.fn(),
   readFileSync: jest.fn(),
 }));
+
 jest.mock('node:vm', () => ({
   runInNewContext: jest.fn(),
 }));
+
 jest.mock('typescript', () => ({
   __esModule: true,
   default: {
@@ -69,6 +72,7 @@ describe('loadThemeTokensNode', () => {
       .spyOn(process, 'cwd')
       .mockReturnValue(join(rootDir, 'packages', 'platform-core'));
     let workspaceFound = false;
+
     (fs.existsSync as jest.Mock).mockImplementation((p: string) => {
       if (p === join(rootDir, 'packages', 'platform-core', 'pnpm-workspace.yaml'))
         return false;
@@ -80,6 +84,7 @@ describe('loadThemeTokensNode', () => {
       if (candidates.includes(p)) return workspaceFound;
       return false;
     });
+
     (fs.readFileSync as jest.Mock).mockReturnValue('src');
     (ts.transpileModule as jest.Mock).mockReturnValue({ outputText: transpiled });
     (runInNewContext as jest.Mock).mockImplementation((_code, sandbox) => {
@@ -106,90 +111,93 @@ describe('loadThemeTokensBrowser', () => {
 
   it('uses tokens from theme package', async () => {
     const realFs = jest.requireActual('node:fs') as typeof fs;
-    const dir = join(
-      __dirname,
-      '../../../../../packages/themes/withTokens/src'
-    );
+    const dir = join(__dirname, '../../../../../packages/themes/withTokens/src');
     realFs.mkdirSync(dir, { recursive: true });
     realFs.writeFileSync(
       join(dir, 'index.ts'),
-      "export const tokens = { '--bar': { light: 'baz' } } as const;"
+      "export const tokens = { '--bar': { light: 'baz' } } as const;",
     );
 
-    await expect(themeTokens.loadThemeTokensBrowser('withTokens')).resolves.toEqual({
+    await expect(themeTokensBrowser.loadThemeTokensBrowser('withTokens')).resolves.toEqual({
       '--bar': 'baz',
     });
 
-    realFs.rmSync(
-      join(__dirname, '../../../../../packages/themes/withTokens'),
-      { recursive: true, force: true }
-    );
+    realFs.rmSync(join(__dirname, '../../../../../packages/themes/withTokens'), {
+      recursive: true,
+      force: true,
+    });
   });
 
   it.each([undefined, 'base'])('returns base tokens for %s theme', async (t) => {
-    await expect(themeTokens.loadThemeTokensBrowser(t as any)).resolves.toEqual(
-      themeTokens.baseTokens
+    await expect(themeTokensBrowser.loadThemeTokensBrowser(t as any)).resolves.toEqual(
+      themeTokensBrowser.baseTokens,
     );
   });
 
   it('falls back to base tokens when imports fail', async () => {
-    await expect(themeTokens.loadThemeTokensBrowser('missing')).resolves.toEqual(
-      themeTokens.baseTokens
+    await expect(themeTokensBrowser.loadThemeTokensBrowser('missing')).resolves.toEqual(
+      themeTokensBrowser.baseTokens,
     );
   });
 
   it.each([
     ['missing module', 'fallback-missing', undefined],
-    [
-      'module without tokens',
-      'fallback-no-tokens',
-      "export const foo = 'bar';",
-    ],
-  ])(
-    'uses tailwind tokens when %s',
-    async (_label, theme, indexSource) => {
-      const realFs = jest.requireActual('node:fs') as typeof fs;
-      const baseDir = join(
-        __dirname,
-        `../../../../../packages/themes/${theme}`
-      );
-      if (indexSource) {
-        const indexDir = join(baseDir, 'src');
-        realFs.mkdirSync(indexDir, { recursive: true });
-        realFs.writeFileSync(join(indexDir, 'index.ts'), indexSource);
-      }
-      const tailwindDir = join(baseDir, 'tailwind-tokens', 'src');
-      realFs.mkdirSync(tailwindDir, { recursive: true });
-      realFs.writeFileSync(
-        join(tailwindDir, 'index.ts'),
-        "export const tokens = { '--baz': 'qux' } as const;"
-      );
-
-      await expect(themeTokens.loadThemeTokensBrowser(theme)).resolves.toEqual({
-        '--baz': 'qux',
-      });
-
-      realFs.rmSync(baseDir, { recursive: true, force: true });
+    ['module without tokens', 'fallback-no-tokens', "export const foo = 'bar';"],
+  ])('uses tailwind tokens when %s', async (_label, theme, indexSource) => {
+    const realFs = jest.requireActual('node:fs') as typeof fs;
+    const baseDir = join(__dirname, `../../../../../packages/themes/${theme}`);
+    if (indexSource) {
+      const indexDir = join(baseDir, 'src');
+      realFs.mkdirSync(indexDir, { recursive: true });
+      realFs.writeFileSync(join(indexDir, 'index.ts'), indexSource);
     }
-  );
+    const tailwindDir = join(baseDir, 'tailwind-tokens', 'src');
+    realFs.mkdirSync(tailwindDir, { recursive: true });
+    realFs.writeFileSync(
+      join(tailwindDir, 'index.ts'),
+      "export const tokens = { '--baz': 'qux' } as const;",
+    );
+
+    await expect(themeTokensBrowser.loadThemeTokensBrowser(theme)).resolves.toEqual({
+      '--baz': 'qux',
+    });
+
+    realFs.rmSync(baseDir, { recursive: true, force: true });
+  });
 });
 
 describe('loadThemeTokens', () => {
-  const realWindow = global.window as any;
+  it('node entrypoint delegates to node loader', async () => {
+    (fs.existsSync as jest.Mock).mockReturnValueOnce(true);
+    (fs.readFileSync as jest.Mock).mockReturnValue("export const tokens = { '--color-bg': '#bcd' };");
+    (ts.transpileModule as jest.Mock).mockReturnValue({
+      outputText: "module.exports.tokens = { '--color-bg': '#bcd' };",
+    });
+    (runInNewContext as jest.Mock).mockImplementation((_code, sandbox) => {
+      sandbox.module.exports.tokens = { '--color-bg': '#bcd' };
+    });
 
-  afterEach(() => {
-    (global as any).window = realWindow;
+    await expect(themeTokens.loadThemeTokens('dark')).resolves.toEqual({
+      '--color-bg': '#bcd',
+    });
   });
 
-  it('delegates to node loader when window is undefined', async () => {
-    delete (global as any).window;
-    await expect(themeTokens.loadThemeTokens('base')).resolves.toEqual({});
-  });
-
-  it('delegates to browser loader when window exists', async () => {
-    (global as any).window = {};
-    await expect(themeTokens.loadThemeTokens('base')).resolves.toEqual(
-      themeTokens.baseTokens
+  it('browser entrypoint delegates to browser loader', async () => {
+    const realFs = jest.requireActual('node:fs') as typeof fs;
+    const dir = join(__dirname, '../../../../../packages/themes/delegation/src');
+    realFs.mkdirSync(dir, { recursive: true });
+    realFs.writeFileSync(
+      join(dir, 'index.ts'),
+      "export const tokens = { '--color-bg': { light: '#def' } } as const;",
     );
+
+    await expect(themeTokensBrowser.loadThemeTokens('delegation')).resolves.toEqual({
+      '--color-bg': '#def',
+    });
+
+    realFs.rmSync(join(__dirname, '../../../../../packages/themes/delegation'), {
+      recursive: true,
+      force: true,
+    });
   });
 });

@@ -16,30 +16,44 @@ export function createInventoryHoldDelegate() {
   const holds = new Map<string, InventoryHold>();
 
   return {
-    async findUnique({ where: { id } }: { where: { id: string } }) {
+    async findUnique({ where }: { where: { id?: string; shopId_holdId?: { shopId: string; holdId: string } } }) {
+      const id = where.id ?? where.shopId_holdId?.holdId;
+      if (!id) return null;
       const row = holds.get(id);
+      // If querying by composite key, also check shopId matches
+      if (where.shopId_holdId && row && row.shopId !== where.shopId_holdId.shopId) {
+        return null;
+      }
       return row ? { ...row } : null;
     },
     async findMany({
       where,
       take,
       orderBy,
+      select,
     }: {
-      where: { shopId: string; status: HoldStatus; expiresAt: { lte: Date } };
-      select: { id: true };
-      orderBy: { expiresAt: "asc" };
-      take: number;
+      where: { shopId?: string; status?: HoldStatus; expiresAt?: { lte?: Date; lt?: Date } };
+      select?: { id: true };
+      orderBy?: { expiresAt?: "asc" };
+      take?: number;
     }) {
       const filtered = Array.from(holds.values()).filter((h) => {
-        if (h.shopId !== where.shopId) return false;
-        if (h.status !== where.status) return false;
-        if (h.expiresAt > where.expiresAt.lte) return false;
+        if (where.shopId && h.shopId !== where.shopId) return false;
+        if (where.status && h.status !== where.status) return false;
+        if (where.expiresAt?.lte && h.expiresAt > where.expiresAt.lte) return false;
+        if (where.expiresAt?.lt && h.expiresAt >= where.expiresAt.lt) return false;
         return true;
       });
-      if (orderBy.expiresAt === "asc") {
+      if (orderBy?.expiresAt === "asc") {
         filtered.sort((a, b) => a.expiresAt.getTime() - b.expiresAt.getTime());
       }
-      return filtered.slice(0, take).map((h) => ({ id: h.id }));
+      const results = filtered.slice(0, take);
+      // Return all fields if no select specified, otherwise only selected fields
+      if (select) {
+        return results.map((h) => ({ id: h.id }));
+      }
+      // Return shopId and holdId for the service
+      return results.map((h) => ({ shopId: h.shopId, holdId: h.id })) as unknown as InventoryHold[];
     },
     async create({ data }: { data: InventoryHold }) {
       if (holds.has(data.id)) {

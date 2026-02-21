@@ -221,7 +221,7 @@ User can intervene at any point. Each skill is independently useful. Business-os
 
 ### Patterns & Conventions Observed
 
-- **AI edits TypeScript directly** — all existing skills (lp-build, guide-audit, etc.) edit TS files. No AST manipulation needed — the AI understands the file structure.
+- **AI edits TypeScript directly** — all existing skills (lp-do-build, guide-audit, etc.) edit TS files. No AST manipulation needed — the AI understands the file structure.
 - **Validation-gated workflows** — every skill runs validation scripts before and after changes. Evidence: `/lp-guide-audit` runs `baseline-validate-and-fix-json.ts` first, `audit-guide-seo.ts` after each edit.
 - **Structure-first, translate-second** — translation must never happen alongside structural changes. Evidence: 0% success rate for combined approach vs 100% for structure-first. Memory note in `MEMORY.md`.
 - **Snapshot-safe editing** — skills take snapshots before modifying content files. Evidence: `/lp-guide-audit` SKILL.md safety protocol.
@@ -318,8 +318,8 @@ User can intervene at any point. Each skill is independently useful. Business-os
   - Evidence: `create-guide.ts` source code
 
 - Q: Are there existing patterns for skills that edit multiple files atomically?
-  - A: Yes — `/lp-build` routinely edits multiple files, runs validation, and commits. The writer lock prevents concurrent clobbering. Pre-commit hooks catch errors.
-  - Evidence: `scripts/agents/with-writer-lock.sh`, all lp-build task executions
+  - A: Yes — `/lp-do-build` routinely edits multiple files, runs validation, and commits. The writer lock prevents concurrent clobbering. Pre-commit hooks catch errors.
+  - Evidence: `scripts/agents/with-writer-lock.sh`, all lp-do-build task executions
 
 - Q: Should `/create-guide` generate full initial content or just structural scaffolding?
   - A: Full initial content (AI-written sections, FAQs, intro). The AI generates content, `/lp-guide-audit` refines it, the user can review/adjust in business-os before translation. Draft status + user review step mitigates risk of inaccurate local knowledge.
@@ -329,13 +329,13 @@ User can intervene at any point. Each skill is independently useful. Business-os
 
 None — all questions resolved.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 - **Implementation:** 85%
   - Strong existing patterns — skills already edit TS files, run validation scripts, and use parallel subagents. The main new work is a `/create-guide` skill and a `/publish-guide` skill. The AI knows how to edit `guide-manifest.ts` (proven this session). Dashboard search is straightforward React. What would raise to 90%: run a dry-run of the `/create-guide` workflow manually (add one guide via AI) and verify all validation passes.
 
 - **Approach:** 88%
-  - AI-driven via CLI skills is the right architecture — it's how the existing guide workflow works, it's how the entire lp-build system works, and it avoids building complex web UI forms. Business-os as monitoring surface is the right split. What would raise to 90%: confirm the user is happy with this architecture (answered — they explicitly asked for CLI/skill-driven).
+  - AI-driven via CLI skills is the right architecture — it's how the existing guide workflow works, it's how the entire lp-do-build system works, and it avoids building complex web UI forms. Business-os as monitoring surface is the right split. What would raise to 90%: confirm the user is happy with this architecture (answered — they explicitly asked for CLI/skill-driven).
 
 - **Impact:** 85%
   - Blast radius is well-understood — new skills are isolated, file edits are validated by existing toolchain (typecheck, eslint, validation scripts). Business-os dashboard changes are internal only. What would raise to 90%: verify that a full create→improve→translate→publish cycle produces correct output end-to-end.
@@ -386,4 +386,4 @@ None — all questions resolved.
 
 - Status: Ready-for-planning
 - Blocking items: None — all questions resolved
-- Recommended next step: Proceed to `/lp-plan guide-production-unified-experience`
+- Recommended next step: Proceed to `/lp-do-plan guide-production-unified-experience`

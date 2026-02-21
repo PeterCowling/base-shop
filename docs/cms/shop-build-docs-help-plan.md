@@ -2,7 +2,7 @@ Type: Guide
 Status: Active
 Domain: CMS
 Last-reviewed: 2025-12-03
-File: docs/cms/shop-build-docs-help-plan.md
+File: docs/cms/shop-build-docs-help-do-plan.md
 Primary code entrypoints:
 - `docs/cms/build-shop-guide.md`
 - `docs/cms/configurator-contract.md`
@@ -59,7 +59,7 @@ Use this doc as the single source of truth for the “docs + help” work in CMS
   - **Should** reference `track` calls (see `apps/cms/src/app/cms/shop/[shop]/wizard/new/page.tsx` for an existing example) so future developers know how to add instrumentation, and recommend the `build_flow_*` naming family for events scoped to the build journey.
 
 - **`docs/cms/shop-build-plan.md`**
-  - **Must** link to this spec (`docs/cms/shop-build-docs-help-plan.md`) from the plan introduction so implementers know where to look for doc/help/telemetry details.
+  - **Must** link to this spec (`docs/cms/shop-build-docs-help-do-plan.md`) from the plan introduction so implementers know where to look for doc/help/telemetry details.
   - **Must** promote `docs/cms/shop-build-gap-analysis.md` and `docs/cms/shop-build-journey-map.md` as supporting artifacts for the tasks, ensuring the plan’s Definitions of Done mention the doc updates explicitly (e.g., CMS-BUILD-04 now references the new “Starter kits” subsection, CMS-BUILD-11 is responsible for the documentation updates and inline help).
 
 ### 1.1 Minimal first-product fields (canonical list)

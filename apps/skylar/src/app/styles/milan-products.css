@@ -4,9 +4,9 @@
   align-items: flex-end;
   gap: 1.5rem;
   padding: clamp(1.5rem, 3vw, 2.5rem);
-  border: 1px solid rgba(216, 176, 114, 0.35);
+  border: 1px solid hsl(var(--it-gold) / 0.35);
   border-radius: 1rem;
-  background: linear-gradient(130deg, rgba(255, 255, 255, 0.9), var(--it-ground));
+  background: linear-gradient(130deg, hsl(0 0% 100% / 0.9), var(--it-ground));
   overflow: hidden;
 }
 
@@ -24,7 +24,7 @@
 .milan-products-hero__copy {
   margin: 0.75rem 0 0;
   line-height: 1.8;
-  color: rgba(47, 34, 30, 0.8);
+  color: hsl(var(--it-secondary) / 0.8);
   overflow-wrap: anywhere;
   hyphens: auto;
 }
@@ -37,7 +37,7 @@
 }
 
 .milan-products-card {
-  border: 1px solid rgba(47, 34, 30, 0.15);
+  border: 1px solid hsl(var(--it-secondary) / 0.15);
   border-radius: 1.25rem;
   padding: clamp(1.5rem, 3vw, 2.5rem);
   background: var(--it-parchment);
@@ -70,7 +70,7 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   font-size: 0.7rem;
-  color: rgba(47, 34, 30, 0.6);
+  color: hsl(var(--it-secondary) / 0.6);
   overflow-wrap: anywhere;
   hyphens: auto;
 }
@@ -94,7 +94,7 @@
 }
 
 .milan-catalog-card {
-  border: 1px solid rgba(47, 34, 30, 0.15);
+  border: 1px solid hsl(var(--it-secondary) / 0.15);
   border-radius: 1.25rem;
   padding: clamp(1.5rem, 3vw, 2.25rem);
   background: var(--it-ground);
@@ -107,7 +107,7 @@
 }
 
 .milan-catalog-card.is-primary {
-  background: linear-gradient(180deg, rgba(216, 176, 114, 0.15), var(--it-ground));
+  background: linear-gradient(180deg, hsl(var(--it-gold) / 0.15), var(--it-ground));
 }
 
 .milan-catalog-card:hover {
@@ -125,17 +125,17 @@
 .milan-catalog-card__body {
   margin: 0;
   line-height: 1.7;
-  color: rgba(47, 34, 30, 0.8);
+  color: hsl(var(--it-secondary) / 0.8);
   overflow-wrap: anywhere;
   hyphens: auto;
 }
 
 .milan-catalog-card__media {
-  border: 1px solid rgba(216, 176, 114, 0.35);
+  border: 1px solid hsl(var(--it-gold) / 0.35);
   border-radius: 1rem;
   padding: 0.65rem;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(252, 245, 233, 0.85));
-  box-shadow: 0 20px 40px -32px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(160deg, hsl(0 0% 100% / 0.9), hsl(38 73% 95% / 0.85));
+  box-shadow: 0 20px 40px -32px hsl(0 0% 0% / 0.35);
   aspect-ratio: 4 / 3;
   display: flex;
   align-items: stretch;

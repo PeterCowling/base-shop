@@ -1,13 +1,22 @@
 // Mock i18n to avoid dynamic import issues (Jest hoists this above imports)
-import { sendDueCampaigns } from "../scheduler";
-
-import { sendCampaignEmail,setupTest, shop, teardown } from "./testUtils";
-
 jest.mock("@acme/i18n/useTranslations.server", () => ({
+  __esModule: true,
   useTranslations: jest.fn(() =>
     Promise.resolve((key: string) => key === "email.unsubscribe" ? "Unsubscribe" : key)
   ),
 }));
+jest.mock("@acme/lib", () => ({
+  validateShopName: jest.fn((s: string) => s),
+}));
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
+  listEvents: jest.fn().mockResolvedValue([]),
+}));
+
+// eslint-disable-next-line import/first
+import { sendDueCampaigns } from "../scheduler";
+
+// eslint-disable-next-line import/first
+import { sendCampaignEmail, setupTest, shop, teardown } from "./testUtils";
 
 describe("sendDueCampaigns – shops and writes", () => {
   let ctx: ReturnType<typeof setupTest>;
@@ -84,7 +93,7 @@ describe("sendDueCampaigns – shops and writes", () => {
   test("sendDueCampaigns delivers due campaigns per shop", async () => {
     const past = new Date(ctx.now.getTime() - 1000).toISOString();
     const future = new Date(ctx.now.getTime() + 60000).toISOString();
-    ctx.memory["shopA"] = [
+    ctx.memory["shop-a"] = [
       {
         id: "a1",
         recipients: ["a1@example.com"],
@@ -104,7 +113,7 @@ describe("sendDueCampaigns – shops and writes", () => {
         templateId: null,
       },
     ];
-    ctx.memory["shopB"] = [
+    ctx.memory["shop-b"] = [
       {
         id: "b1",
         recipients: ["b1@example.com"],
@@ -118,11 +127,11 @@ describe("sendDueCampaigns – shops and writes", () => {
     await sendDueCampaigns();
     expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
     expect(ctx.writeCampaigns).toHaveBeenCalledTimes(2);
-    expect(ctx.writeCampaigns).toHaveBeenCalledWith("shopA", ctx.memory["shopA"]);
-    expect(ctx.writeCampaigns).toHaveBeenCalledWith("shopB", ctx.memory["shopB"]);
-    expect(ctx.memory["shopA"][0].sentAt).toBeDefined();
-    expect(ctx.memory["shopA"][1].sentAt).toBeUndefined();
-    expect(ctx.memory["shopB"][0].sentAt).toBeDefined();
+    expect(ctx.writeCampaigns).toHaveBeenCalledWith("shop-a", ctx.memory["shop-a"]);
+    expect(ctx.writeCampaigns).toHaveBeenCalledWith("shop-b", ctx.memory["shop-b"]);
+    expect(ctx.memory["shop-a"][0].sentAt).toBeDefined();
+    expect(ctx.memory["shop-a"][1].sentAt).toBeUndefined();
+    expect(ctx.memory["shop-b"][0].sentAt).toBeDefined();
   });
 
   test("sendDueCampaigns skips campaigns already sent", async () => {

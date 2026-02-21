@@ -39,4 +39,4 @@ The original split plan's motivation included CI parallelization (running tests 
 - Tests run sequentially, not parallelized by package
 - Timeout: 20 minutes
 
-[... see full plan in docs/plans/ci-test-parallelization-plan.md]
+[... see full plan in docs/plans/archive/ci-test-parallelization-plan-archived-2026-02-14.md]

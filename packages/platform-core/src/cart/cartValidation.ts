@@ -8,6 +8,7 @@ import {
 } from "../inventoryHolds";
 import {
   cartToInventoryRequests,
+  type InventoryValidationFailure,
   type InventoryValidationRequest,
   validateInventoryAvailability,
   validateInventoryFromCentral,
@@ -267,7 +268,7 @@ async function validateReadOnly(
 
     // Validation failed - build detailed response
     const insufficientItems: CartValidationInsufficientItem[] =
-      result.insufficient.map((item) => ({
+      (result as { ok: false; insufficient: InventoryValidationFailure[] }).insufficient.map((item) => ({
         sku: item.sku,
         variantKey: item.variantKey,
         variantAttributes: item.variantAttributes,
@@ -315,7 +316,7 @@ export async function releaseCartHold(
     return { released: true };
   }
 
-  return { released: false, reason: result.reason };
+  return { released: false, reason: (result as { ok: false; reason?: string }).reason };
 }
 
 // ============================================================

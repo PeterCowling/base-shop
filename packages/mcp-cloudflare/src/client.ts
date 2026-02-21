@@ -14,6 +14,14 @@ interface CloudflareResponse<T> {
   };
 }
 
+export interface CloudflareTextResponse {
+  ok: boolean;
+  status: number;
+  finalUrl: string;
+  contentType: string | null;
+  body: string;
+}
+
 export function getAccountId(): string {
   const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
   if (!accountId) {
@@ -80,4 +88,24 @@ export async function cfFetchWithInfo<T>(
   }
 
   return { result: data.result, resultInfo: data.result_info };
+}
+
+export async function cfFetchText(
+  url: string,
+  options: RequestInit = {}
+): Promise<CloudflareTextResponse> {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      ...options.headers,
+    },
+  });
+
+  return {
+    ok: response.ok,
+    status: response.status,
+    finalUrl: response.url || url,
+    contentType: response.headers.get("content-type"),
+    body: await response.text(),
+  };
 }

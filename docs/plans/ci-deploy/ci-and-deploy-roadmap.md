@@ -2,10 +2,12 @@
 Type: Plan
 Status: Active
 Domain: CI-Deploy
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-02-14
 Relates-to charter: docs/runtime/runtime-charter.md
-Last-updated: 2026-01-20
-Last-updated-by: Claude
+Last-updated: 2026-02-14
+Last-updated-by: Codex (lp-do-factcheck)
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 ## CI & Deploy Roadmap — Apps vs Platform

@@ -26,7 +26,7 @@ Define BOS outcomes around coordination effectiveness and decision throughput, n
 ### Goals
 - Establish one active BOS outcome that measures whether coordination system improves delivery decisions.
 - Link BOS outcome to explicit operating decisions (cadence, process strictness, tooling investment).
-- Define quantitative leading indicators for cabinet/lp-fact-find/plan/build flow quality.
+- Define quantitative leading indicators for cabinet/lp-do-fact-find/plan/build flow quality.
 
 ### Non-goals
 - Expanding BOS scope before outcome measurement exists.

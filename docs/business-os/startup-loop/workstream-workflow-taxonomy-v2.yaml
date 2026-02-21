@@ -1,0 +1,114 @@
+schema_version: "2.0"
+taxonomy_ref: "docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.md"
+decision_record: "docs/plans/startup-loop-orchestrated-os-comparison-v2/decisions/v2-scope-boundary-decision.md"
+research_source: "docs/briefs/orchestrated-business-startup-loop-operating-system-research.md"
+
+workstreams:
+  - id: CDI
+    name: "Customer Discovery and Market Intelligence"
+    description: >
+      Processes for understanding customers, markets, and the competitive landscape.
+      Covers weekly signal intake, field validation interviews, market and competitor
+      scanning, and experiment backlog design.
+  - id: "OFF"
+    name: "Offering and Pricing"
+    description: >
+      Processes for iterating the product or service offer, setting and reviewing
+      pricing, refreshing listing and merchandising content, and managing channel
+      policy and conflict.
+  - id: GTM
+    name: "Go-to-Market and Growth"
+    description: >
+      Processes for planning and executing demand generation campaigns, operating
+      distribution channels, managing sales and account pipeline, and automating
+      conversion and lifecycle sequences.
+  - id: OPS
+    name: "Operations and Tooling"
+    description: >
+      Processes for capacity and inventory planning, delivery or stay execution,
+      handling returns and refunds, and quality assurance and maintenance management.
+  - id: CX
+    name: "Customer Experience and Retention"
+    description: >
+      Processes for support triage and service recovery, review and reputation
+      management, retention and loyalty loop execution, and SOP and training
+      maintenance.
+  - id: FIN
+    name: "Finance and Sustainability"
+    description: >
+      Processes for weekly cash and unit economics review, billing payouts and
+      reconciliation, risk register and compliance readiness, and vendor and
+      procurement management.
+  - id: DATA
+    name: "Data Capture and Continuous Improvement"
+    description: >
+      Processes for KPI refresh and data integrity, leading indicator monitoring
+      and alerting, incident post-mortems and corrective actions, and weekly review
+      facilitation and decision logging.
+
+workflow_phases:
+  - id: Sense
+    name: "Sense and Diagnose"
+    description: >
+      Pull KPI pack, refresh leading indicators, scan market and operational signals.
+      Weekly orientation before decisions are made.
+    order: 1
+  - id: Decide/Plan
+    name: "Decide and Plan"
+    description: >
+      Set weekly priorities, allocate budgets, commit capacity, update experiment
+      backlog. Highest-orchestration moment of the weekly cycle.
+    order: 2
+  - id: Build/Prepare
+    name: "Build and Prepare"
+    description: >
+      Execute content updates, SOP changes, listing refreshes, and maintenance
+      schedules. Prepare delivery capability for the coming cycle.
+    order: 3
+  - id: Sell/Acquire
+    name: "Sell and Acquire Demand"
+    description: >
+      Run campaigns, operate distribution channels, manage sales pipeline, execute
+      retention and lifecycle outreach.
+    order: 4
+  - id: Deliver/Support
+    name: "Deliver and Support"
+    description: >
+      Fulfil orders or stays, triage and resolve support issues, process returns
+      and refunds, perform quality assurance.
+    order: 5
+  - id: Measure/Learn
+    name: "Measure and Learn"
+    description: >
+      Review cycle results, run post-mortems, conduct cohort analysis, reconcile
+      billing, verify data integrity.
+    order: 6
+  - id: Weekly Review
+    name: "Weekly Review"
+    description: >
+      DATA-4 facilitation: cross-workstream KPC review, decision log capture,
+      next-cycle intent setting.
+    order: 7
+
+activation_tokens:
+  - token: always
+    description: >
+      Process runs every weekly cycle without exception, regardless of business
+      profile or startup-loop stage.
+    companion_field_required: false
+  - token: conditional
+    description: >
+      Process runs when a specified condition is met — business profile flag
+      (e.g. inventory_present, wholesale_heavy), stage gate (CAP-05, CAP-06),
+      or metric threshold. activation_condition field must state the triggering
+      condition.
+    companion_field_required: true
+    companion_field: activation_condition
+  - token: exception_only
+    description: >
+      Process runs only when triggered by an active exception state (Demand Shock,
+      Cash Constraint, Quality Incident, or Compliance/Safety Incident). Has no
+      regular weekly cadence. activation_condition field must name the triggering
+      exception state(s).
+    companion_field_required: true
+    companion_field: activation_condition

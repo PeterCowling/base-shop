@@ -58,6 +58,7 @@ const ActivityList: React.FC<ActivityListProps> = ({ activities }) => {
           key={`${act.timestamp ?? "no-time"}-${act.code}-${act.who ?? ""}`}
           className="flex gap-1"
         >
+          {/* eslint-disable-next-line ds/no-raw-typography -- POS display custom text size [DS-05] */}
           <span className="font-mono text-[11px] text-gray-700 dark:text-darkAccentGreen">
             {act.timestamp?.slice(0, 19) ?? ""}
           </span>
@@ -88,6 +89,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
     <ul className="space-y-1 text-sm leading-relaxed">
       {sorted.map((tx) => (
         <li key={`${tx.timestamp}-${tx.type}-${tx.amount}`} className="flex gap-1">
+          {/* eslint-disable-next-line ds/no-raw-typography -- POS display custom text size [DS-05] */}
           <span className="font-mono text-[11px] text-gray-700 dark:text-darkAccentGreen">
             {tx.timestamp.slice(0, 19)}
           </span>
@@ -263,6 +265,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
 
       <div className="w-full overflow-x-auto rounded-md border border-gray-400 bg-white shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
         <table className="min-w-full border-collapse text-sm">
+          {/* eslint-disable-next-line ds/no-raw-zindex -- sticky table header requires z-index [DS-05] */}
           <thead className="sticky top-0 z-[1] bg-gray-50/90 backdrop-blur dark:bg-darkSurface">
             <tr>
               {/* Select all checkbox */}

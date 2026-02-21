@@ -1,6 +1,6 @@
 "use client";
 
-import { CfImage } from "@acme/ui/atoms/CfImage";
+import Image from "next/image";
 
 import { Check } from "@/icons";
 
@@ -25,11 +25,10 @@ export function ExperienceFeatureSection({
   if (!title && !description && highlights.length === 0) return null;
 
   const media = (
-    <div className="relative overflow-hidden rounded-3xl border border-brand-outline/30 bg-brand-surface shadow-sm dark:border-brand-outline/40 dark:bg-brand-text/10">
+      <div className="relative overflow-hidden rounded-3xl border border-brand-outline/30 bg-brand-surface shadow-sm dark:border-brand-outline/40 dark:bg-brand-text/10">
       <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/10 via-transparent to-brand-primary/20" />
-      <CfImage
+      <Image
         src={imageSrc}
-        preset="gallery"
         alt={copy.imageAlt?.trim() ?? ""}
         // eslint-disable-next-line ds/no-arbitrary-tailwind -- TASK-DS-26: 4/3 aspect ratio is a specific design requirement
         className="relative aspect-[4/3] w-full object-cover"
@@ -44,8 +43,7 @@ export function ExperienceFeatureSection({
     <div className="space-y-4">
       {copy.eyebrow?.trim() ? (
         <p
-          // eslint-disable-next-line ds/no-arbitrary-tailwind -- TASK-DS-26: Wide letter-spacing (0.25em) is a design requirement for eyebrow text
-          className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-muted dark:text-brand-muted"
+          className="text-xs font-semibold uppercase tracking-widest text-brand-muted dark:text-brand-muted"
         >
           {copy.eyebrow}
         </p>

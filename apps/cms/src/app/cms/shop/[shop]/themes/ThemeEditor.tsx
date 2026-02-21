@@ -105,8 +105,8 @@ export default function ThemeEditor(props: Props) {
       {Object.keys(contrastWarnings).length > 0 && (
         <Alert variant="warning" tone="soft" heading={String(t("cms.themes.contrastWarnings"))}>
           <ul className="list-disc pl-4">
-            {Object.values(contrastWarnings).map((w, i) => (
-              <li key={i}>{w}</li>
+            {Object.values(contrastWarnings).map((w) => (
+              <li key={w}>{w}</li>
             ))}
           </ul>
         </Alert>

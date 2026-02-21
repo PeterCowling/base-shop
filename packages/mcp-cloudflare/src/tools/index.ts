@@ -3,6 +3,7 @@ import { errorResult } from "../utils/validation.js";
 import { analyticsTools, handleAnalyticsTool } from "./analytics.js";
 import { auditTools, handleAuditTool } from "./audit.js";
 import { cacheTools, handleCacheTool } from "./cache.js";
+import { contentTools, handleContentTool } from "./content.js";
 import { d1Tools, handleD1Tool } from "./d1.js";
 import { dnsTools, handleDnsTool } from "./dns.js";
 import { handleHealthTool,healthTools } from "./health.js";
@@ -18,6 +19,7 @@ export const toolDefinitions = [
   ...r2Tools,
   ...kvTools,
   ...analyticsTools,
+  ...contentTools,
   ...auditTools,
   ...cacheTools,
   ...securityTools,
@@ -26,11 +28,14 @@ export const toolDefinitions = [
   ...d1Tools,
 ];
 
+export const CLOUD_FLARE_ANALYTICS_CONTRACT_VERSION = "measure.cloudflare.v1";
+
 const pagesToolNames = new Set(pagesTools.map((t) => t.name));
 const dnsToolNames = new Set(dnsTools.map((t) => t.name));
 const r2ToolNames = new Set(r2Tools.map((t) => t.name));
 const kvToolNames = new Set(kvTools.map((t) => t.name));
 const analyticsToolNames = new Set(analyticsTools.map((t) => t.name));
+const contentToolNames = new Set(contentTools.map((t) => t.name));
 const auditToolNames = new Set(auditTools.map((t) => t.name));
 const cacheToolNames = new Set(cacheTools.map((t) => t.name));
 const securityToolNames = new Set(securityTools.map((t) => t.name));
@@ -53,6 +58,9 @@ export async function handleToolCall(name: string, args: unknown) {
   }
   if (analyticsToolNames.has(name as never)) {
     return handleAnalyticsTool(name, args);
+  }
+  if (contentToolNames.has(name as never)) {
+    return handleContentTool(name, args);
   }
   if (auditToolNames.has(name as never)) {
     return handleAuditTool(name, args);

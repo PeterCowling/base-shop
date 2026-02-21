@@ -29,7 +29,7 @@ export const RatingStars = React.forwardRef<HTMLDivElement, RatingStarsProps>(
 
       return (
         <svg
-          key={index}
+          key={`star-${index}`}
           aria-hidden="true"
           viewBox="0 0 24 24"
           width={size}

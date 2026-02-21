@@ -48,7 +48,7 @@ This plan focuses on documentation + local agent guardrails (not CI/CD infrastru
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/agent-git-instructions-update-lp-fact-find.md`
+- Related brief: `docs/plans/agent-git-instructions-update-lp-do-fact-find.md`
 
 ## Existing System Notes
 
@@ -178,7 +178,7 @@ This plan focuses on documentation + local agent guardrails (not CI/CD infrastru
 
 ## Decision Log
 
-- 2026-02-02: Plan expanded to address accidental work loss from bulk `git restore -- <paths>` operations (see lp-fact-find brief).
+- 2026-02-02: Plan expanded to address accidental work loss from bulk `git restore -- <paths>` operations (see lp-do-fact-find brief).
 - 2026-02-07: Completed. Final policy outcome aligns with Option B: single-file restore pathspecs may pass in guarded flows; bulk, directory, glob, repo-wide, and force/worktree discard patterns are blocked.
 
 ## Risks and Mitigations

@@ -96,10 +96,13 @@ describe('TASK-11: DS lint regression guard', () => {
     for (const block of blanketBlocks) {
       for (const rule of colorRules) {
         // Color rules should not be turned off in any blanket Prime block
-        const offPattern = new RegExp(
-          `["']${rule.replace(/\//g, '\\/')}["']\\s*:\\s*["']off["']`,
-        );
-        expect(block.blockText).not.toMatch(offPattern);
+        const offForms = [
+          `'${rule}': 'off'`,
+          `'${rule}': "off"`,
+          `"${rule}": 'off'`,
+          `"${rule}": "off"`,
+        ];
+        expect(offForms.some((form) => block.blockText.includes(form))).toBe(false);
       }
     }
   });
@@ -109,23 +112,18 @@ describe('TASK-11: DS lint regression guard', () => {
     expect(eslintConfig).toMatch(/const\s+offAllDsRules\s*=/);
   });
 
-  it('TC-01e: progressive hardening block exists for Prime', () => {
-    // Verify the "warn"-level non-color DS rules are present for Prime
+  it('TC-01e: Prime blanket block preserves DS justification ticket pattern', () => {
     const primeBlocks = extractPrimeConfigBlocks(eslintConfig);
-    const blanketBlocks = primeBlocks.filter(
+    const blanketBlock = primeBlocks.find(
       (b) =>
         b.filesLine.includes('"apps/prime/**"') ||
         b.filesLine.includes("'apps/prime/**'"),
     );
 
-    // At least one blanket Prime block should have DS rules at "warn"
-    const hasProgressiveHardening = blanketBlocks.some(
-      (b) =>
-        b.blockText.includes('"ds/no-raw-spacing"') &&
-        b.blockText.includes('"warn"'),
-    );
-
-    expect(hasProgressiveHardening).toBe(true);
+    expect(blanketBlock).toBeDefined();
+    expect(blanketBlock?.blockText).toContain('ds/require-disable-justification');
+    expect(blanketBlock?.blockText).toContain('ticketPattern');
+    expect(blanketBlock?.blockText).not.toContain('...offAllDsRules');
   });
 
   it('TC-02: guard would detect blanket bypass if re-introduced', () => {

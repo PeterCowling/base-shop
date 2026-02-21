@@ -6,12 +6,40 @@ export type EmailTemplate = {
 
 export type TemplateLintIssue = {
   subject: string;
-  code: "broken_link" | "placeholder" | "policy_mismatch";
+  code: "broken_link" | "placeholder" | "policy_mismatch" | "here_without_url";
   details: string;
 };
 
 const URL_REGEX = /https?:\/\/[^\s)]+/g;
-const PLACEHOLDER_REGEX = /\{[^}]+\}/g;
+/**
+ * Matches unfilled placeholders in three common forms:
+ *   {var}        — single-brace (original)
+ *   {{var}}      — double-brace (Handlebars-style), excluding {{SLOT:*}} markers
+ *   [PLACEHOLDER] — bracket-upper convention
+ *
+ * {{SLOT:*}} patterns (e.g. {{SLOT:GREETING}}) are intentional template
+ * composability markers and are NOT treated as unfilled placeholders.
+ */
+const PLACEHOLDER_REGEX = /\{\{(?!SLOT:)[^}]+\}\}|\{(?!\{|SLOT:)[^}]+\}|\[[A-Z][A-Z0-9_\s]*\]/g;
+
+/**
+ * Sentence-level pattern: a sentence that contains "here" or "click here" as a
+ * link anchor but does not contain an http/https URL.
+ */
+function findHereWithoutUrl(text: string): string[] {
+  const sentences = text.split(/(?<=[.!?\n])\s+/);
+  const issues: string[] = [];
+  for (const sentence of sentences) {
+    const lower = sentence.toLowerCase();
+    if (/\bclick\s+here\b|\bfind.*\bhere\b|\bsee.*\bhere\b|\bprocess\s+here\b/.test(lower)) {
+      const urlRegexLocal = /https?:\/\/[^\s)]+/;
+      if (!urlRegexLocal.test(sentence)) {
+        issues.push(sentence.trim());
+      }
+    }
+  }
+  return issues;
+}
 
 const STOPWORDS = new Set([
   "the",
@@ -79,6 +107,51 @@ function hasPolicyKeyword(text: string, keywords: Set<string>): boolean {
   return false;
 }
 
+/**
+ * Synchronous lint pass: checks placeholders and here-without-URL issues.
+ * Does not perform live link checks. Suitable for CI template validation.
+ */
+export function lintTemplatesSync(
+  templates: EmailTemplate[],
+  options?: { policyKeywords?: Set<string> }
+): TemplateLintIssue[] {
+  const issues: TemplateLintIssue[] = [];
+  const policyKeywords = options?.policyKeywords ?? new Set<string>();
+
+  for (const template of templates) {
+    const placeholders = findPlaceholders(template.body);
+    for (const placeholder of placeholders) {
+      issues.push({
+        subject: template.subject,
+        code: "placeholder",
+        details: `Unfilled placeholder: ${placeholder}`,
+      });
+    }
+
+    const hereIssues = findHereWithoutUrl(template.body);
+    for (const sentence of hereIssues) {
+      issues.push({
+        subject: template.subject,
+        code: "here_without_url",
+        details: `Template uses 'here' as link anchor without a URL: "${sentence}"`,
+      });
+    }
+
+    if (template.category === "policies" && policyKeywords.size > 0) {
+      const text = `${template.subject}\n${template.body}`;
+      if (!hasPolicyKeyword(text, policyKeywords)) {
+        issues.push({
+          subject: template.subject,
+          code: "policy_mismatch",
+          details: "Policy template missing any known policy keywords.",
+        });
+      }
+    }
+  }
+
+  return issues;
+}
+
 export async function lintTemplates(
   templates: EmailTemplate[],
   options: {
@@ -95,6 +168,15 @@ export async function lintTemplates(
         subject: template.subject,
         code: "placeholder",
         details: `Unfilled placeholder: ${placeholder}`,
+      });
+    }
+
+    const hereIssues = findHereWithoutUrl(template.body);
+    for (const sentence of hereIssues) {
+      issues.push({
+        subject: template.subject,
+        code: "here_without_url",
+        details: `Template uses 'here' as link anchor without a URL: "${sentence}"`,
       });
     }
 

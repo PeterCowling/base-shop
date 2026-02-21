@@ -6,10 +6,10 @@
 }
 
 .milan-realestate-hero-card {
-  border: 1px solid rgba(47, 34, 30, 0.15);
+  border: 1px solid hsl(var(--it-secondary) / 0.15);
   border-radius: 1.25rem;
   padding: clamp(1.5rem, 3vw, 2.75rem);
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.95), var(--it-ground));
+  background: linear-gradient(120deg, hsl(0 0% 100% / 0.95), var(--it-ground));
   box-shadow: var(--it-shadow-soft);
   display: flex;
   flex-direction: column;
@@ -19,10 +19,10 @@
 
 .milan-realestate-hero__image {
   grid-column: 1 / -1;
-  border: 1px solid rgba(47, 34, 30, 0.15);
+  border: 1px solid hsl(var(--it-secondary) / 0.15);
   border-radius: 1.25rem;
   padding: clamp(0.75rem, 2vw, 1.5rem);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), var(--it-ground));
+  background: linear-gradient(160deg, hsl(0 0% 100% / 0.9), var(--it-ground));
   box-shadow: var(--it-shadow-soft);
 }
 
@@ -49,16 +49,16 @@
 .milan-realestate-hero-card .milan-realestate-hero__copy {
   margin: clamp(0.75rem, 2vw, 1.25rem) 0 0;
   line-height: 1.7;
-  color: rgba(47, 34, 30, 0.78);
+  color: hsl(var(--it-secondary) / 0.78);
   overflow-wrap: anywhere;
   hyphens: auto;
 }
 
 .milan-realestate-legend {
-  border: 1px solid rgba(47, 34, 30, 0.12);
+  border: 1px solid hsl(var(--it-secondary) / 0.12);
   border-radius: 1.25rem;
   padding: clamp(1.25rem, 3vw, 2rem);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), var(--it-ground));
+  background: linear-gradient(145deg, hsl(0 0% 100% / 0.92), var(--it-ground));
   box-shadow: var(--it-shadow-soft);
   display: flex;
   flex-direction: column;
@@ -76,7 +76,7 @@
 .milan-realestate-page-hero .milan-realestate-stat {
   padding: 0.85rem 0.5rem;
   border-radius: 0.95rem;
-  border: 1px solid rgba(47, 34, 30, 0.12);
+  border: 1px solid hsl(var(--it-secondary) / 0.12);
   background: var(--it-parchment);
   min-height: 120px;
 }
@@ -86,7 +86,7 @@
   font-size: 0.6rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: rgba(47, 34, 30, 0.55);
+  color: hsl(var(--it-secondary) / 0.55);
 }
 
 .milan-realestate-page-hero .milan-realestate-stat__value {
@@ -103,7 +103,7 @@
   align-items: center;
   margin-top: clamp(2rem, 4vw, 3.5rem);
   padding: clamp(1.75rem, 4vw, 3rem);
-  border: 1px solid rgba(47, 34, 30, 0.15);
+  border: 1px solid hsl(var(--it-secondary) / 0.15);
   border-radius: 1.25rem;
   background: var(--it-parchment);
   box-shadow: var(--it-shadow-soft);
@@ -112,7 +112,7 @@
 
 .milan-blueprint__media {
   position: relative;
-  border: 1px dashed rgba(216, 176, 114, 0.4);
+  border: 1px dashed hsl(var(--it-gold) / 0.4);
   border-radius: 1rem;
   padding: 1rem;
 }
@@ -121,7 +121,7 @@
   content: "";
   position: absolute;
   inset: 0.5rem;
-  border: 1px solid rgba(95, 111, 82, 0.25);
+  border: 1px solid hsl(var(--it-sage) / 0.25);
   border-radius: 0.75rem;
   pointer-events: none;
 }
@@ -152,7 +152,7 @@
 .milan-blueprint__body {
   margin: 0;
   line-height: 1.8;
-  color: rgba(47, 34, 30, 0.82);
+  color: hsl(var(--it-secondary) / 0.82);
   overflow-wrap: anywhere;
   hyphens: auto;
 }
@@ -165,7 +165,7 @@
 }
 
 .milan-stack-card {
-  border: 1px solid rgba(47, 34, 30, 0.15);
+  border: 1px solid hsl(var(--it-secondary) / 0.15);
   border-radius: 1.25rem;
   padding: clamp(1.5rem, 3vw, 2.5rem);
   display: flex;
@@ -178,7 +178,7 @@
 }
 
 .milan-stack-card--highlight {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), var(--it-ground));
+  background: linear-gradient(135deg, hsl(0 0% 100% / 0.95), var(--it-ground));
 }
 
 .milan-stack-card__title {
@@ -194,23 +194,23 @@
 .milan-stack-card__body {
   margin: 0;
   line-height: 1.75;
-  color: rgba(47, 34, 30, 0.8);
+  color: hsl(var(--it-secondary) / 0.8);
   overflow-wrap: anywhere;
   hyphens: auto;
 }
 
 .milan-stack-card__media {
-  border: 1px solid rgba(216, 176, 114, 0.35);
+  border: 1px solid hsl(var(--it-gold) / 0.35);
   border-radius: 1rem;
   padding: 0.5rem;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(252, 244, 229, 0.85));
+  background: linear-gradient(160deg, hsl(0 0% 100% / 0.9), hsl(39 77% 94% / 0.85));
 }
 
 .milan-realestate-gallery__item {
-  border: 1px solid rgba(216, 176, 114, 0.35);
+  border: 1px solid hsl(var(--it-gold) / 0.35);
   border-radius: 1.25rem;
   padding: 0.55rem;
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.92), rgba(252, 242, 227, 0.9));
+  background: linear-gradient(140deg, hsl(0 0% 100% / 0.92), hsl(36 68% 94% / 0.9));
   transition: transform 0.3s ease;
 }
 
@@ -233,9 +233,9 @@
 
 .milan-stack-card__media {
   border-radius: 0.9rem;
-  border: 1px solid rgba(216, 176, 114, 0.4);
+  border: 1px solid hsl(var(--it-gold) / 0.4);
   padding: 0.75rem;
-  background: #fff;
+  background: hsl(0 0% 100%);
   margin-top: 0.5rem;
 }
 
@@ -249,7 +249,7 @@
 .milan-stack-card__cta {
   margin-top: auto;
   padding-top: 0.85rem;
-  border-top: 1px solid rgba(47, 34, 30, 0.2);
+  border-top: 1px solid hsl(var(--it-secondary) / 0.2);
   width: fit-content;
 }
 

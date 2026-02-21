@@ -15,7 +15,9 @@ jest.mock(require.resolve("@dnd-kit/core"), () => ({
 }));
 
 // Stub heavy child components to simple markers
-const stub = (name: string) => ({ __esModule: true, default: () => <div data-cy={name} /> });
+function stub(name: string) {
+  return { __esModule: true, default: () => <div data-cy={name} /> };
+}
 jest.mock(require.resolve("@acme/ui/components/cms/page-builder/SelectionBreadcrumb"), () => stub("selection-breadcrumb"));
 jest.mock(require.resolve("@acme/ui/components/cms/page-builder/CommentsHelpLauncher"), () => stub("comments-help"));
 jest.mock(require.resolve("@acme/ui/components/cms/page-builder/PeerSelectionsOverlay"), () => stub("peer-overlay"));

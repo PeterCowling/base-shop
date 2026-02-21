@@ -1,7 +1,7 @@
 // file path: src/locales/guides.imports.ts
 // -----------------------------------------------------------------------------
 // Client/runtime loader that assembles the guides namespace from split JSON
-// files when import.meta.webpackContext is unavailable (e.g. Turbopack).
+// files at runtime using fetch (Turbopack-compatible).
 // -----------------------------------------------------------------------------
 
 import { GENERATED_GUIDE_SLUGS } from "../data/generate-guide-slugs";

@@ -1,0 +1,40 @@
+{
+  "figures": {
+    "map": {
+      "alt": "Map showing the walking route from Hostel Brikette to Positano port with points 1–5.",
+      "caption": "Route overview: Hostel → Port (points 1–5)."
+    },
+    "point1": {
+      "alt": "Intersection near Viale Pasitea with a marked route and a label: '1 Turn Right'.",
+      "caption": "Point 1: turn right."
+    },
+    "tabacchi": {
+      "alt": "Tabacchi storefront with an ATM next to it.",
+      "caption": "Tabacchi near point 1 (good landmark)."
+    },
+    "point2": {
+      "alt": "Road switchback with a marked line toward stairs and a label: '2 Take the stairs straight ahead'.",
+      "caption": "Point 2: leave the road and take the stairs straight ahead."
+    },
+    "point3": {
+      "alt": "Narrow alley with steps and a marked path, labelled '3 Take the stairs straight ahead'.",
+      "caption": "Point 3: continue straight down the stairs."
+    },
+    "point4": {
+      "alt": "Crosswalk and road with a marked route toward stairs on the right, labelled '4'.",
+      "caption": "Point 4: cross the road, turn left briefly, then take the stairs down on the right."
+    },
+    "point5": {
+      "alt": "Small square near the port with a marked route, labelled '5'.",
+      "caption": "Point 5: continue under the archway toward the port."
+    },
+    "tickets": {
+      "alt": "Ferry ticket booths at Positano port with timetable boards.",
+      "caption": "Ticket booths: check the sign for the next departure."
+    },
+    "port": {
+      "alt": "View of Positano port with a ferry in the foreground and Positano hillside behind.",
+      "caption": "Positano port: wait near the end of the pier for boarding calls."
+    }
+  }
+}

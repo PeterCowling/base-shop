@@ -8,8 +8,10 @@
     "noEmit": true,
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "verbatimModuleSyntax": false,
+    "allowImportingTsExtensions": true,
     "allowJs": true,
     "paths": {
+      "@jest/globals": ["../../test/jest-globals-compat.d.ts"],
       "@/*": ["./src/*"],
       "@cms/*": ["./src/*"],
       "@/components/atoms/shadcn": ["../../test/__mocks__/shadcnDialogStub.tsx"],
@@ -82,6 +84,7 @@
     "__tests__/**/*.ts",
     "__tests__/**/*.tsx",
     "__tests__/**/*.d.ts",
+    "src/auth/**/*.d.ts",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "src/**/*.spec.ts",

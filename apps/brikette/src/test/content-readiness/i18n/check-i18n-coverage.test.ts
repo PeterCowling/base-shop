@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename -- Test helpers that load/write locale data from filesystem; paths constructed from known directory structure */
 import { execSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";

@@ -464,7 +464,7 @@ export default function StockInflowsClient({
                     ? matchedInventory.quantity + parsedQty
                     : null;
                 return (
-                  <TableRow key={idx}>
+                  <TableRow key={row.inventoryKey ?? `draft-${row.sku || 'empty'}-${idx}`}>
                     <TableCell>
                       <div className="space-y-2">
                         {inventory.length ? (

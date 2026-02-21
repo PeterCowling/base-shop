@@ -44,7 +44,7 @@ export function renderArticleLead(
       {intro.length > 0 ? (
         <div className="space-y-4">
           {intro.map((paragraph, index) => (
-            <p key={index} className="leading-relaxed">
+            <p key={`intro-${index}`} className="leading-relaxed">
               {renderInlineLinks(paragraph, `intro-${index}`, context)}
             </p>
           ))}
@@ -60,7 +60,7 @@ export function renderArticleLead(
           <h2 className="text-pretty text-3xl font-semibold tracking-tight">{section.title}</h2>
           <div className="space-y-4">
             {section.body.map((paragraph, index) => (
-              <p key={index} className="leading-relaxed">
+              <p key={`${section.id}-body-${index}`} className="leading-relaxed">
                 {renderInlineLinks(paragraph, `${section.id}-body-${index}`, context)}
               </p>
             ))}
@@ -97,7 +97,7 @@ export function renderArticleLead(
           </h2>
           <ul className="list-disc space-y-2 pl-5">
             {beforeList.map((item, index) => (
-              <li key={index} className="leading-relaxed">
+              <li key={`before-${index}`} className="leading-relaxed">
                 {renderInlineLinks(item, `before-${index}`, context)}
               </li>
             ))}
@@ -112,7 +112,7 @@ export function renderArticleLead(
           </h2>
           <ol className="list-decimal space-y-2 pl-5">
             {stepsList.map((item, index) => (
-              <li key={index} className="leading-relaxed">
+              <li key={`steps-${index}`} className="leading-relaxed">
                 {renderInlineLinks(item, `steps-${index}`, context)}
               </li>
             ))}
@@ -127,7 +127,7 @@ export function renderArticleLead(
           </h2>
           <ul className="list-disc space-y-2 pl-5">
             {kneesList.map((item, index) => (
-              <li key={index} className="leading-relaxed">
+              <li key={`knees-${index}`} className="leading-relaxed">
                 {renderInlineLinks(item, `knees-${index}`, context)}
               </li>
             ))}
@@ -165,7 +165,7 @@ export function renderArticleLead(
           <div className="space-y-3">
             {faqs.map((faq, index) => (
               <details
-                key={index}
+                key={faq.q}
                 className="rounded-lg border border-brand-outline/20 bg-brand-surface/80 p-4 shadow-sm transition hover:border-brand-primary/40 dark:border-brand-outline/40 dark:bg-brand-surface/30"
               >
                 <summary className="cursor-pointer text-base font-semibold text-brand-heading outline-none transition focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 dark:text-brand-text">
@@ -173,7 +173,7 @@ export function renderArticleLead(
                 </summary>
                 <div className="mt-3 space-y-3">
                   {faq.a.map((answer, answerIndex) => (
-                    <p key={answerIndex} className="leading-relaxed">
+                    <p key={`faq-${index}-${answerIndex}`} className="leading-relaxed">
                       {renderInlineLinks(answer, `faq-${index}-${answerIndex}`, context)}
                     </p>
                   ))}

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-raw-color -- test fixtures */
 import "@testing-library/jest-dom";
 
 import { act, renderHook } from "@testing-library/react";

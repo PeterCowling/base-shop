@@ -34,7 +34,7 @@ export default function InventoryRow({
   onShowHistory,
 }: Props) {
   return (
-    <TableRow key={index} className="border-border-1 bg-surface-2 text-foreground/90">
+    <TableRow className="border-border-1 bg-surface-2 text-foreground/90">
       <TableCell className="min-w-40">
         <Input
           className="border-border-1 bg-surface-2 text-foreground shadow-inner"

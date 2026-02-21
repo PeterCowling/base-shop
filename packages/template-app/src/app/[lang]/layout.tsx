@@ -10,11 +10,10 @@ import { getSeo, serializeJsonLd } from "../../lib/seo";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang?: string[] | string }>;
+  params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
-  const raw = (await params).lang;
-  const code = Array.isArray(raw) ? raw[0] : raw;
-  const lang: Locale = resolveLocale(code);
+  const { lang: raw } = await params;
+  const lang: Locale = resolveLocale(raw);
   const seo = await getSeo(lang);
 
   // Convert next-seo images to Next.js Metadata format, filtering out nulls
@@ -58,11 +57,10 @@ export default async function LocaleLayout({
   params,
 }: {
   children: ReactNode;
-  params: Promise<{ lang?: string[] | string }>;
+  params: Promise<{ lang: string }>;
 }) {
-  const raw = (await params).lang;
-  const code = Array.isArray(raw) ? raw[0] : raw;
-  const lang: Locale = resolveLocale(code);
+  const { lang: raw } = await params;
+  const lang: Locale = resolveLocale(raw);
   const messages = (
     await import(
       /* webpackInclude: /(en|de|it)\.json$/ */

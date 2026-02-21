@@ -88,14 +88,14 @@ const COUNT_BADGE_CLASSES = [
   "items-center",
   "gap-1.5",
   "rounded-full",
-  "bg-white/20",
+  "bg-panel/20",
   "px-3",
   "py-1",
   "text-xs",
   "font-semibold",
   "uppercase",
   "tracking-wider",
-  "text-white",
+  "text-fg-inverse",
   "backdrop-blur-sm",
   "lg:mb-3",
 ] as const;
@@ -103,7 +103,7 @@ const COUNT_BADGE_CLASSES = [
 const TITLE_CLASSES = [
   "text-2xl",
   "font-bold",
-  "text-white",
+  "text-fg-inverse",
   "drop-shadow-md",
   "sm:text-3xl",
   "lg:text-4xl",
@@ -113,7 +113,7 @@ const DESCRIPTION_CLASSES = [
   "mt-2",
   "text-sm",
   "leading-relaxed",
-  "text-white/90",
+  "text-fg-inverse/90",
   "drop-shadow-sm",
   "sm:text-base",
   "lg:mt-3",
@@ -189,7 +189,7 @@ function GroupedGuideSection({
 
         {/* Content */}
         <div className={clsx(CONTENT_CLASSES)}>
-          <div className="inline-flex flex-col rounded-2xl bg-black/60 px-4 py-3 shadow-lg backdrop-blur-sm sm:px-5 sm:py-4">
+          <div className="inline-flex flex-col rounded-2xl bg-overlay-scrim-1 px-4 py-3 shadow-lg backdrop-blur-sm sm:px-5 sm:py-4">
             <span className={clsx(COUNT_BADGE_CLASSES)}>
               <svg
                 className="size-3.5"

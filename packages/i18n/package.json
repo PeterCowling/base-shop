@@ -9,6 +9,7 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
+    "./dist/index.js": "./dist/index.js",
     "./package.json": "./package.json",
     "./Translations": {
       "types": "./dist/Translations.d.ts",
@@ -34,7 +35,7 @@
     "@acme/types": "workspace:^"
   },
   "devDependencies": {
-    "next": "^15.3.9"
+    "next": "16.1.6"
   },
   "files": [
     "dist"

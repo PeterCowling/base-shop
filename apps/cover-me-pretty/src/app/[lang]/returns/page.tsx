@@ -11,16 +11,18 @@ import {
 
 import shop from "../../../../shop.json";
 
-export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const t = await getTranslations(resolveLocale(params.lang));
   return { title: t("returns.title") };
 }
 
-export default async function ReturnPolicyPage({
-  params,
-}: {
-  params: { lang: string };
-}) {
+export default async function ReturnPolicyPage(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+) {
+  const params = await props.params;
   const t = await getTranslations(resolveLocale(params.lang));
   const [cfg, info, settings] = await Promise.all([
     getReturnLogistics(),

@@ -1,5 +1,7 @@
 import "server-only";
 
+import { cookies } from "next/headers";
+
 import type { User } from "./current-user";
 import { USERS } from "./current-user";
 
@@ -13,7 +15,6 @@ import { USERS } from "./current-user";
 export async function getCurrentUserServer(): Promise<User> {
   // Try to read from cookie (Next.js server components / route handlers)
   try {
-    const { cookies } = await import("next/headers");
     const cookieStore = await cookies();
     const userIdCookie = cookieStore.get("current_user_id");
 
@@ -28,4 +29,3 @@ export async function getCurrentUserServer(): Promise<User> {
   const userId = process.env.CURRENT_USER_ID || "pete";
   return USERS[userId] || USERS.pete;
 }
-

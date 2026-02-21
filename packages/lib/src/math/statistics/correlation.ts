@@ -10,7 +10,7 @@
  * - Price elasticity analysis (how does price affect demand?)
  */
 
-import { mean } from "./descriptive";
+import { mean } from "./descriptive.js";
 
 /**
  * Calculate the covariance between two arrays.

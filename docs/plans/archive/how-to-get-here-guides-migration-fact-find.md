@@ -350,7 +350,7 @@ None required — all patterns established in the codebase.
 
 ---
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 
 | Dimension | Score | Rationale |
 |-----------|-------|-----------|
@@ -407,7 +407,7 @@ None required — all patterns established in the codebase.
 
 - **Status:** Ready-for-planning
 - **Blocking items:** None — all open questions have safe defaults
-- **Recommended next step:** Proceed to `/lp-plan` to create the cleanup task breakdown
+- **Recommended next step:** Proceed to `/lp-do-plan` to create the cleanup task breakdown
 
 ---
 

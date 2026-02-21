@@ -46,7 +46,7 @@ describe("products repository", () => {
   test("updateProductInRepo updates record and increments version", async () => {
     const { updateProductInRepo } = await import("@acme/platform-core/repositories/products.server");
     files.set(file, JSON.stringify([{ id: "p1", row_version: 1 }]));
-    const updated = await updateProductInRepo(shop, { id: "p1", title: "New" });
+    const updated = await updateProductInRepo(shop, { id: "p1", title: "New" } as any);
     expect(updated).toMatchObject({ id: "p1", title: "New", row_version: 2 });
     const written = JSON.parse(files.get(file)!);
     expect(written[0]).toMatchObject({ id: "p1", title: "New", row_version: 2 });

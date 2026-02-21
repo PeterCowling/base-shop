@@ -1,0 +1,243 @@
+schema_version: "2.0"
+taxonomy_ref: "docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml"
+process_id_source: "docs/business-os/startup-loop/process-registry-v1.md"
+
+processes:
+
+  # ── CDI: Customer Discovery and Market Intelligence ───────────────────────
+
+  - process_id: "CDI-1"
+    process_name: "Weekly Signal Intake and Insight Synthesis"
+    workstream_id: "CDI"
+    workflow_phases: ["Sense", "Decide/Plan"]
+    primary_workflow_phase: "Sense"
+    activation: "always"
+    activation_condition: null
+
+  - process_id: "CDI-2"
+    process_name: "Customer Development Interviews and Field Validation"
+    workstream_id: "CDI"
+    workflow_phases: ["Sense", "Decide/Plan"]
+    primary_workflow_phase: "Sense"
+    activation: "conditional"
+    activation_condition: "Weekly pre-PMF; biweekly at PMF/scaling; mandatory when top assumptions unvalidated"
+
+  - process_id: "CDI-3"
+    process_name: "Market and Competitor Scan"
+    workstream_id: "CDI"
+    workflow_phases: ["Sense", "Decide/Plan"]
+    primary_workflow_phase: "Sense"
+    activation: "conditional"
+    activation_condition: "Weekly in high season or wholesale-heavy; biweekly/monthly for digital-only; mandatory during Demand Shock exception"
+
+  - process_id: "CDI-4"
+    process_name: "Experiment Backlog Design and Prioritisation"
+    workstream_id: "CDI"
+    workflow_phases: ["Decide/Plan", "Measure/Learn"]
+    primary_workflow_phase: "Decide/Plan"
+    activation: "always"
+    activation_condition: null
+
+  # ── OFF: Offering and Pricing ─────────────────────────────────────────────
+
+  - process_id: "OFF-1"
+    process_name: "Offer and Value Proposition Iteration"
+    workstream_id: "OFF"
+    workflow_phases: ["Decide/Plan", "Build/Prepare"]
+    primary_workflow_phase: "Decide/Plan"
+    activation: "always"
+    activation_condition: null
+
+  - process_id: "OFF-2"
+    process_name: "Pricing and Revenue Management Review"
+    workstream_id: "OFF"
+    workflow_phases: ["Decide/Plan", "Sell/Acquire"]
+    primary_workflow_phase: "Decide/Plan"
+    activation: "conditional"
+    activation_condition: "Always weekly for hospitality; product: only on price-sensitivity flag or Demand Shock exception"
+
+  - process_id: "OFF-3"
+    process_name: "Product / Listing Content and Merchandising Refresh"
+    workstream_id: "OFF"
+    workflow_phases: ["Build/Prepare"]
+    primary_workflow_phase: "Build/Prepare"
+    activation: "always"
+    activation_condition: null
+
+  - process_id: "OFF-4"
+    process_name: "Channel Policy and Conflict Management"
+    workstream_id: "OFF"
+    workflow_phases: ["Decide/Plan"]
+    primary_workflow_phase: "Decide/Plan"
+    activation: "conditional"
+    activation_condition: "Mandatory for wholesale_heavy / OTA_mix_high; monthly for all; weekly only on exception"
+
+  # ── GTM: Go-to-Market and Growth ─────────────────────────────────────────
+
+  - process_id: "GTM-1"
+    process_name: "Weekly Demand Plan and Campaign Sprint"
+    workstream_id: "GTM"
+    workflow_phases: ["Decide/Plan", "Sell/Acquire"]
+    primary_workflow_phase: "Decide/Plan"
+    activation: "always"
+    activation_condition: null
+
+  - process_id: "GTM-2"
+    process_name: "Distribution Channel Ops (Retail/Wholesale/OTAs)"
+    workstream_id: "GTM"
+    workflow_phases: ["Sell/Acquire"]
+    primary_workflow_phase: "Sell/Acquire"
+    activation: "conditional"
+    activation_condition: "Mandatory for wholesale_heavy, OTA_mix_high, hospitality; daily cadence in high season"
+
+  - process_id: "GTM-3"
+    process_name: "Sales / Account Pipeline and Booking Deals"
+    workstream_id: "GTM"
+    workflow_phases: ["Sell/Acquire"]
+    primary_workflow_phase: "Sell/Acquire"
+    activation: "conditional"
+    activation_condition: "Mandatory when wholesale_accounts > 0; activates at CAP-05 gate"
+
+  - process_id: "GTM-4"
+    process_name: "Conversion and Lifecycle Automation"
+    workstream_id: "GTM"
+    workflow_phases: ["Sell/Acquire", "Measure/Learn"]
+    primary_workflow_phase: "Sell/Acquire"
+    activation: "conditional"
+    activation_condition: "Post-launch only; activates at CAP-06 gate when first transaction data available"
+
+  # ── OPS: Operations and Tooling ───────────────────────────────────────────
+
+  - process_id: "OPS-1"
+    process_name: "Capacity and Inventory Planning"
+    workstream_id: "OPS"
+    workflow_phases: ["Decide/Plan", "Deliver/Support"]
+    primary_workflow_phase: "Decide/Plan"
+    activation: "conditional"
+    activation_condition: "Mandatory for inventory_present and hospitality; optional for pure digital-only"
+
+  - process_id: "OPS-2"
+    process_name: "Fulfilment or Stay Delivery Execution"
+    workstream_id: "OPS"
+    workflow_phases: ["Deliver/Support"]
+    primary_workflow_phase: "Deliver/Support"
+    activation: "conditional"
+    activation_condition: "Activates post-DO launch; mandatory for inventory_present / hospitality"
+
+  - process_id: "OPS-3"
+    process_name: "Returns, Refunds, Cancellations and Chargebacks"
+    workstream_id: "OPS"
+    workflow_phases: ["Deliver/Support", "Measure/Learn"]
+    primary_workflow_phase: "Deliver/Support"
+    activation: "conditional"
+    activation_condition: "Activates after first transactions; mandatory for returns_enabled / hospitality"
+
+  - process_id: "OPS-4"
+    process_name: "Quality Assurance and Maintenance Management"
+    workstream_id: "OPS"
+    workflow_phases: ["Build/Prepare", "Deliver/Support"]
+    primary_workflow_phase: "Deliver/Support"
+    activation: "conditional"
+    activation_condition: "Mandatory for inventory_present / hospitality; safety-critical issues trigger Compliance/Safety Incident exception"
+
+  # ── CX: Customer Experience and Retention ────────────────────────────────
+
+  - process_id: "CX-1"
+    process_name: "Support Triage and Service Recovery"
+    workstream_id: "CX"
+    workflow_phases: ["Deliver/Support", "Measure/Learn"]
+    primary_workflow_phase: "Deliver/Support"
+    activation: "always"
+    activation_condition: null
+
+  - process_id: "CX-2"
+    process_name: "Reviews and Reputation Management"
+    workstream_id: "CX"
+    workflow_phases: ["Deliver/Support", "Measure/Learn"]
+    primary_workflow_phase: "Measure/Learn"
+    activation: "conditional"
+    activation_condition: "Mandatory for hospitality / OTA_mix_high; activates from first review received"
+
+  - process_id: "CX-3"
+    process_name: "Retention and Loyalty Loops"
+    workstream_id: "CX"
+    workflow_phases: ["Sell/Acquire", "Measure/Learn"]
+    primary_workflow_phase: "Sell/Acquire"
+    activation: "conditional"
+    activation_condition: "PMF+ only; activates at CAP-06 gate; OFF-4 channel conflict compliance required"
+
+  - process_id: "CX-4"
+    process_name: "SOP and Training Updates"
+    workstream_id: "CX"
+    workflow_phases: ["Build/Prepare"]
+    primary_workflow_phase: "Build/Prepare"
+    activation: "always"
+    activation_condition: null
+
+  # ── FIN: Finance and Sustainability ──────────────────────────────────────
+
+  - process_id: "FIN-1"
+    process_name: "Weekly Cash and Unit Economics Review"
+    workstream_id: "FIN"
+    workflow_phases: ["Sense", "Decide/Plan"]
+    primary_workflow_phase: "Sense"
+    activation: "always"
+    activation_condition: null
+
+  - process_id: "FIN-2"
+    process_name: "Billing, Payouts and Reconciliation"
+    workstream_id: "FIN"
+    workflow_phases: ["Measure/Learn"]
+    primary_workflow_phase: "Measure/Learn"
+    activation: "conditional"
+    activation_condition: "Activates after first transactions; mandatory for wholesale_heavy / hospitality / any payment processor"
+
+  - process_id: "FIN-3"
+    process_name: "Risk Register, Compliance, and Incident Readiness"
+    workstream_id: "FIN"
+    workflow_phases: ["Sense", "Weekly Review"]
+    primary_workflow_phase: "Sense"
+    activation: "always"
+    activation_condition: null
+
+  - process_id: "FIN-4"
+    process_name: "Vendor and Procurement Management"
+    workstream_id: "FIN"
+    workflow_phases: ["Decide/Plan"]
+    primary_workflow_phase: "Decide/Plan"
+    activation: "conditional"
+    activation_condition: "Mandatory for hospitality / inventory_present; monthly review; weekly only on exception; activates post-S5B"
+
+  # ── DATA: Data Capture and Continuous Improvement ────────────────────────
+
+  - process_id: "DATA-1"
+    process_name: "KPI Refresh and Data Integrity Checks"
+    workstream_id: "DATA"
+    workflow_phases: ["Sense"]
+    primary_workflow_phase: "Sense"
+    activation: "always"
+    activation_condition: null
+
+  - process_id: "DATA-2"
+    process_name: "Leading Indicator Monitoring and Alerting"
+    workstream_id: "DATA"
+    workflow_phases: ["Sense"]
+    primary_workflow_phase: "Sense"
+    activation: "always"
+    activation_condition: null
+
+  - process_id: "DATA-3"
+    process_name: "Incident Post-Mortems and Corrective Actions"
+    workstream_id: "DATA"
+    workflow_phases: ["Measure/Learn"]
+    primary_workflow_phase: "Measure/Learn"
+    activation: "exception_only"
+    activation_condition: "Triggered by exception state resolution or DATA-2 alert at severity >= threshold; required for Quality Incident / Compliance/Safety Incident / material Cash Constraint"
+
+  - process_id: "DATA-4"
+    process_name: "Weekly Review Facilitation and Decision Log"
+    workstream_id: "DATA"
+    workflow_phases: ["Weekly Review"]
+    primary_workflow_phase: "Weekly Review"
+    activation: "always"
+    activation_condition: null

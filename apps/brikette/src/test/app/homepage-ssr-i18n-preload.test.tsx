@@ -1,6 +1,6 @@
 import React from "react";
 
-const getTranslationsMock = jest.fn(async () => {
+const getTranslationsMock = jest.fn<Promise<(key: string) => string>, unknown[]>(async () => {
   return (key: string) => key;
 });
 

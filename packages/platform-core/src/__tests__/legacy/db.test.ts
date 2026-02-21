@@ -1,19 +1,17 @@
 /** @jest-environment node */
 
-import type { PrismaClient } from "@prisma/client";
-
 describe("db", () => {
   afterEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
     jest.unmock("module");
     jest.unmock("@prisma/client");
-    delete process.env.NODE_ENV;
+    delete (process.env as any).NODE_ENV;
     delete process.env.DATABASE_URL;
   });
 
   it("uses stub when NODE_ENV=test and no DATABASE_URL", async () => {
-    process.env.NODE_ENV = "test";
+    (process.env as any).NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",
@@ -23,7 +21,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: any };
 
     const shop = "stub-shop";
     expect(await prisma.rentalOrder.findMany({ where: { shop } })).toEqual([]);
@@ -62,7 +60,7 @@ describe("db", () => {
   });
 
   it("findMany filters by shop and customerId", async () => {
-    process.env.NODE_ENV = "test";
+    (process.env as any).NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",
@@ -72,7 +70,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: any };
 
     await prisma.rentalOrder.create({
       data: {
@@ -114,7 +112,7 @@ describe("db", () => {
   });
 
   it("throws when updating a nonexistent order", async () => {
-    process.env.NODE_ENV = "test";
+    (process.env as any).NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",
@@ -124,7 +122,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: any };
 
     await expect(
       prisma.rentalOrder.update({
@@ -137,7 +135,7 @@ describe("db", () => {
   });
 
   it("updates orders by trackingNumber", async () => {
-    process.env.NODE_ENV = "test";
+    (process.env as any).NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",
@@ -147,7 +145,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: any };
 
     await prisma.rentalOrder.create({
       data: {
@@ -171,7 +169,7 @@ describe("db", () => {
   });
 
   it("uses stub when NODE_ENV=test even with DATABASE_URL", async () => {
-    process.env.NODE_ENV = "test";
+    (process.env as any).NODE_ENV = "test";
     process.env.DATABASE_URL = "postgres://example";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
@@ -184,7 +182,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: any };
 
     const shop = "shop2";
     await prisma.rentalOrder.create({
@@ -194,8 +192,8 @@ describe("db", () => {
     expect(orders).toHaveLength(1);
   });
 
-  it("uses stub when NODE_ENV=production and no DATABASE_URL", async () => {
-    process.env.NODE_ENV = "production";
+  it("throws when NODE_ENV=production and no DATABASE_URL", async () => {
+    (process.env as any).NODE_ENV = "production";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",
@@ -205,19 +203,13 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: any };
 
-    const shop = "prod-shop";
-    expect(await prisma.rentalOrder.findMany({ where: { shop } })).toEqual([]);
-    await prisma.rentalOrder.create({
-      data: { shop, sessionId: "s1", trackingNumber: "t1" },
-    });
-    const orders = await prisma.rentalOrder.findMany({ where: { shop } });
-    expect(orders).toHaveLength(1);
+    expect(() => prisma.rentalOrder).toThrow("Prisma client unavailable");
   });
 
-  it("falls back to stub when @prisma/client fails to load", async () => {
-    process.env.NODE_ENV = "production";
+  it("throws when @prisma/client fails to load", async () => {
+    (process.env as any).NODE_ENV = "production";
     process.env.DATABASE_URL = "postgres://example";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
@@ -230,17 +222,13 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: any };
 
-    await prisma.rentalOrder.create({
-      data: { shop: "s", sessionId: "1", trackingNumber: "t1" },
-    });
-    const orders = await prisma.rentalOrder.findMany({ where: { shop: "s" } });
-    expect(orders).toHaveLength(1);
+    expect(() => prisma.rentalOrder).toThrow("Prisma client unavailable");
   });
 
-  it("falls back to stub when createRequire throws", async () => {
-    process.env.NODE_ENV = "production";
+  it("throws when createRequire throws", async () => {
+    (process.env as any).NODE_ENV = "production";
     process.env.DATABASE_URL = "postgres://example";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
@@ -250,18 +238,14 @@ describe("db", () => {
     });
     jest.doMock("module", () => ({ createRequire: createRequireMock }));
 
-    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: any };
 
-    await prisma.rentalOrder.create({
-      data: { shop: "s", sessionId: "1", trackingNumber: "t1" },
-    });
-    const orders = await prisma.rentalOrder.findMany({ where: { shop: "s" } });
-    expect(orders).toHaveLength(1);
+    expect(() => prisma.rentalOrder).toThrow("Prisma client unavailable");
     expect(createRequireMock).toHaveBeenCalled();
   });
 
   it("passes DATABASE_URL to PrismaClient", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as any).NODE_ENV = "production";
     const databaseUrl = "postgres://from-core-env";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({ DATABASE_URL: databaseUrl }),

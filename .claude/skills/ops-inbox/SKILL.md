@@ -19,8 +19,41 @@ Run this skill when you want to process customer inquiry emails for Brikette:
 - MCP server running locally with Gmail tools enabled
 - Gmail API credentials configured for Pete's account
 - Network access to Gmail API
+- Fallback CLI available: `scripts/ops/create-brikette-drafts.py`
 
 ## Workflow
+
+### 0. Mandatory MCP Preflight (Fail Fast)
+
+Before any inbox processing, run:
+
+```typescript
+health_check({ strict: false })
+```
+
+Then enforce these rules:
+
+1. If this call fails with tool-resolution/transport errors (for example `Tool not found`, unknown tool, or MCP disconnect), stop immediately.
+2. Do not continue to `gmail_organize_inbox` or any other MCP call in that session.
+3. Tell the user this is a stale/continued session with a dead MCP registry and require a fresh Claude Code session.
+4. Recovery command:
+   ```bash
+   claude
+   ```
+   Then rerun `/ops-inbox`.
+5. If preflight returns `status: "unhealthy"`, stop and show the failing checks/remediation.
+6. If preflight returns `status: "degraded"`, continue only with explicit user approval.
+
+If the user wants dry-run fallback (or MCP remains unavailable), queue drafts locally instead of writing Gmail drafts:
+
+```bash
+python3 scripts/ops/create-brikette-drafts.py \
+  --input <path-to-drafts.json> \
+  --dry-run \
+  --queue-file data/email-fallback-queue/<timestamp>-ops-inbox.jsonl
+```
+
+> **NOTE:** Dry-run and Python-fallback sessions produce no signal events. This is expected — those sessions are excluded from calibration data and will not appear in `draft_signal_stats` counts.
 
 ### 1. Run Inbox Organize Cycle
 
@@ -120,6 +153,7 @@ When user selects an email to process:
    - Check detected language
    - Inspect agreement detection status
    - Note workflow triggers (prepayment, T&C, booking monitor)
+   - **Check `escalation_required`**: if `true`, do NOT proceed to `draft_generate`. Instead, move the email to `Brikette/Queue/Deferred` via `gmail_mark_processed({ emailId, action: "deferred" })` and stop the pipeline for this email. Inform the user that the email requires human review before a draft can be generated.
    - If classification is ambiguous or context looks odd, default to `deferred` (manual review)
 
 4. **Run Composition stage** using `draft_generate`:
@@ -138,9 +172,85 @@ When user selects an email to process:
    ```typescript
    draft_quality_check({ actionPlan, draft })
    ```
-   If `passed=false`, present failed checks and ask how to proceed (edit or regenerate).
+   Capture the full result including `quality.question_coverage[]`.
 
-6. **Present to user**:
+   **Gap-Patch Loop** — run this before presenting to the user:
+
+   a. Inspect every entry in `quality.question_coverage[]`:
+      - `status: "covered"` → no action needed for that question.
+      - `status: "missing"` → the question received zero keyword matches; a patch is required.
+      - `status: "partial"` → the question was touched but under the required match threshold; a patch attempt is required.
+
+   b. For each `missing` or `partial` entry, look up the question text against
+      `knowledge_summaries` returned by `draft_generate`.
+      - If a relevant snippet exists in `knowledge_summaries`: rewrite the relevant
+        paragraph to include a source-backed answer. Cite the snippet URI inline
+        if helpful. **NEVER invent an answer that has no source snippet.**
+      - If no relevant snippet exists for that question: insert the following
+        escalation sentence in place of an invented answer:
+        > "For this specific question we want to give you the most accurate
+        >  answer — Pete or Cristiana will follow up with you directly."
+        Do not attempt to paraphrase, guess, or approximate the missing information.
+
+   c. **Hard-rule categories — do NOT modify under any circumstance:**
+      - `prepayment` category text (1st/2nd/3rd attempt, cancelled, successful templates)
+      - `cancellation` category text (non-refundable, no-show templates)
+      These paragraphs are legally and operationally fixed. If a `missing`/`partial`
+      entry belongs to a question about prepayment or cancellation policy, escalate
+      using the sentence above rather than touching the template wording.
+
+   d. **Partial-subset rule:** When an email contains multiple questions and only
+      *some* can be source-backed, patch what can be sourced and escalate the rest
+      individually. Do not withhold the draft because one question lacks a snippet —
+      produce the best partial draft and flag each unanswered question explicitly
+      in the user-facing summary.
+
+   e. After applying all patches (or escalation insertions), re-render `bodyPlain`
+      and `bodyHtml`.
+
+6. **LLM Refinement Stage** — after gap-patching, Claude (not a tool call) assesses
+   the draft holistically and optionally rewrites it to improve tone, flow, and coverage.
+   Then call `draft_refine` to submit and attest the result:
+
+   ```typescript
+   draft_refine({
+     actionPlan,
+     draft_id: draftGenerateResult.draft_id,  // links this refinement to the selection signal event
+     rewrite_reason: "<reason>",  // "none" | "style" | "language-adapt" | "light-edit" | "heavy-rewrite" | "missing-info" | "wrong-template"
+     originalBodyPlain: patchedBodyPlain,  // post-gap-patch plain text
+     refinedBodyPlain: claudeRefinedBodyPlain,  // Claude's rewrite (or same text if no improvement)
+   })
+   ```
+
+   **Refinement rules:**
+   - **Claude is the refinement actor** — Claude rewrites the body; `draft_refine` is the commit
+     step only. Never invoke an external model from inside this skill.
+   - If Claude judges the draft already strong, pass `refinedBodyPlain === originalBodyPlain` —
+     `draft_refine` will return `refinement_applied: false, refinement_source: 'none'`.
+   - If Claude rewrites: `refinement_applied: true, refinement_source: 'claude-cli'`.
+   - **Hard rules — do NOT modify in refinement:**
+     - `prepayment` category text (1st/2nd/3rd attempt, cancelled, successful templates)
+     - `cancellation` category text (non-refundable, no-show templates)
+     - Never invent policy facts not present in `knowledge_summaries`.
+   - If `quality.passed: false` after refinement: inspect `failed_checks`. If resolvable
+     by a targeted patch, patch and call `draft_refine` again (max one retry). If still
+     failing, escalate to the user with `failed_checks` listed and ask how to proceed.
+   - Note: `refinement_source: 'codex'` is reserved for future CLI-based LLMs; it is
+     not an active path in this workflow.
+
+7. **Mandatory second quality gate** — always run before creating the Gmail draft:
+   ```typescript
+   draft_quality_check({ actionPlan, draft: { bodyPlain: refinedBodyPlain, bodyHtml: refinedBodyHtml } })
+   ```
+   - If `passed=true` and no `question_coverage` entries remain `missing`: proceed
+     to creating the draft.
+   - If `passed=false` after patching: surface the remaining `failed_checks` and
+     `question_coverage` entries to the user and ask how to proceed (manual edit,
+     defer, or flag for owner review). Do **not** silently skip this gate.
+   - `partial_question_coverage` warnings after patching are acceptable to proceed
+     if the escalation sentence has been inserted; note them in the session summary.
+
+8. **Present to user**:
    ```markdown
    ## Email #1: Availability Inquiry
 
@@ -186,6 +296,23 @@ gmail_create_draft({
 })
 gmail_mark_processed({ emailId: "...", action: "drafted" })
 ```
+
+**Create draft (dry-run fallback queue):**
+
+Use this path when:
+- MCP tools are unavailable in the current session, or
+- user explicitly requests dry-run/no Gmail mutation.
+
+Steps:
+1. Build JSON input payload with draft candidates (`emailId`, `to`, `subject`, `recipientName`, `bodyPlain`).
+2. Run:
+   ```bash
+   python3 scripts/ops/create-brikette-drafts.py \
+     --input <path-to-drafts.json> \
+     --dry-run \
+     --queue-file data/email-fallback-queue/<timestamp>-ops-inbox.jsonl
+   ```
+3. Report the queue file path and do not call `gmail_mark_processed` in dry-run mode.
 
 **Edit request:**
 - User provides feedback: "Make it shorter", "More formal", etc.
@@ -307,6 +434,10 @@ When user requests batch processing ("Process all FAQ emails"):
 
 When user says "Done" or queue is empty:
 
+1. Call `draft_signal_stats` to retrieve event counts for this session.
+2. Call `draft_template_review` with `action: "list"` to get pending proposal count.
+3. Output the summary block below.
+
 ```markdown
 ## Session Complete
 
@@ -328,7 +459,22 @@ When user says "Done" or queue is empty:
 Remember to review and send drafts in Gmail!
 
 **Deferred for manual review:** 1 email
+
+**Signal health:**
+- N selection events · N refinement events · N joined signals this session
+- N template proposals pending review
+  - [one-line summary per pending proposal, e.g. "T05 check-in: wrong-template (2026-02-20)"]
+
+> ⚠️ **Backlog warning:** >10 pending proposals — run `draft_template_review list` and review.
+> _(Remove this line if ≤10 proposals pending.)_
+
+> 💡 **Calibration prompt:** ≥20 joined signals since last calibration — consider running `draft_ranker_calibrate`.
+> _(Remove this line if events_since_last_calibration < 20.)_
 ```
+
+**Graceful fallback:** If `draft-signal-events.jsonl` or `template-proposals.jsonl` are missing, show `"0 events"` / `"0 proposals pending"` — do not error.
+
+> **NOTE:** Dry-run and Python-fallback sessions produce no signal events. Show `"0 events"` for those sessions.
 
 ## Email Classification Guide
 
@@ -520,6 +666,16 @@ Before creating each draft, verify:
 | `brikette://draft-guide` | Draft quality framework |
 | `brikette://voice-examples` | Voice/tone examples |
 | `brikette://email-examples` | Classification examples |
+
+## MCP Signal & Improvement Tools
+
+| Tool | Action/Params | Purpose |
+|------|--------------|---------|
+| `draft_signal_stats` | (none) | Returns `{selection_count, refinement_count, joined_count, events_since_last_calibration}` — used in Session Summary |
+| `draft_template_review` | `action: "list"` | Lists pending template improvement proposals with one-line summaries |
+| `draft_template_review` | `action: "approve", proposal_id, expected_file_hash` | Approves a proposal and writes to `email-templates.json` (optimistic concurrency) |
+| `draft_template_review` | `action: "reject", proposal_id` | Rejects and archives a proposal |
+| `draft_ranker_calibrate` | `dry_run?: boolean` | Computes and persists ranker priors from ≥20 joined events; use when `events_since_last_calibration ≥ 20` |
 
 ## Email Templates
 

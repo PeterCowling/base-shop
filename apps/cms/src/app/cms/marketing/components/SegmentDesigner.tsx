@@ -216,7 +216,7 @@ export function SegmentDesigner({ saveSegment, onNotify }: SegmentDesignerProps)
               {filters.map((filter, index) => {
                 const helper = filterOptions.find((option) => option.value === filter.field)?.helper;
                 return (
-                  <Grid key={index} gap={4} className="md:grid-cols-3">
+                  <Grid key={`filter-${filter.field}-${index}`} gap={4} className="md:grid-cols-3">
                     <FormField
                       label={String(t("cms.marketing.segmentDesigner.filters.field.label"))}
                       htmlFor={`segment-filter-field-${index}`}

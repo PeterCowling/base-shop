@@ -21,9 +21,9 @@
 import { execSync } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import matter from "gray-matter";
 
 import type { D1Database } from "@cloudflare/workers-types";
+import matter from "gray-matter";
 
 interface Card {
   id: string;
@@ -276,7 +276,7 @@ async function exportCards(
     const markdown = formatCardMarkdown(card);
 
     if (dryRun) {
-      console.log(`[DRY-RUN] Would write: ${path.relative(repoRoot, filePath)}`);
+      console.info(`[DRY-RUN] Would write: ${path.relative(repoRoot, filePath)}`);
       filesWritten.push(filePath);
     } else {
       await writeFile(filePath, markdown, "utf-8");
@@ -302,7 +302,7 @@ async function exportIdeas(
     const markdown = formatIdeaMarkdown(idea);
 
     if (dryRun) {
-      console.log(`[DRY-RUN] Would write: ${path.relative(repoRoot, filePath)}`);
+      console.info(`[DRY-RUN] Would write: ${path.relative(repoRoot, filePath)}`);
       filesWritten.push(filePath);
     } else {
       // Ensure directory exists
@@ -331,7 +331,7 @@ async function exportStageDocs(
     const markdown = formatStageDocMarkdown(stageDoc);
 
     if (dryRun) {
-      console.log(`[DRY-RUN] Would write: ${path.relative(repoRoot, filePath)}`);
+      console.info(`[DRY-RUN] Would write: ${path.relative(repoRoot, filePath)}`);
       filesWritten.push(filePath);
     } else {
       // Ensure directory exists
@@ -352,7 +352,7 @@ function commitAndPush(repoRoot: string, filesWritten: number): void {
   const branchName = "work/business-os-export";
   const timestamp = new Date().toISOString();
 
-  console.log("\nCommitting changes to git...");
+  console.info("\nCommitting changes to git...");
 
   try {
     // Check if we're on the right branch
@@ -362,12 +362,12 @@ function commitAndPush(repoRoot: string, filesWritten: number): void {
     }).trim();
 
     if (currentBranch !== branchName) {
-      console.log(`Switching to branch: ${branchName}`);
+      console.info(`Switching to branch: ${branchName}`);
       try {
         execSync(`git checkout ${branchName}`, { cwd: repoRoot });
       } catch {
         // Branch doesn't exist, create it
-        console.log(`Creating new branch: ${branchName}`);
+        console.info(`Creating new branch: ${branchName}`);
         execSync(`git checkout -b ${branchName}`, { cwd: repoRoot });
       }
     }
@@ -382,7 +382,7 @@ function commitAndPush(repoRoot: string, filesWritten: number): void {
     });
 
     if (!status.trim()) {
-      console.log("No changes to commit (D1 and git are in sync)");
+      console.info("No changes to commit (D1 and git are in sync)");
       return;
     }
 
@@ -398,14 +398,14 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>`;
       cwd: repoRoot,
     });
 
-    console.log("✓ Committed changes");
+    console.info("✓ Committed changes");
 
     // Push to remote
-    console.log(`Pushing to remote: ${branchName}`);
+    console.info(`Pushing to remote: ${branchName}`);
     execSync(`git push -u origin ${branchName}`, { cwd: repoRoot });
 
-    console.log("✓ Pushed to remote");
-    console.log(
+    console.info("✓ Pushed to remote");
+    console.info(
       "\nAuto-PR workflow will create/update PR for review and auto-merge"
     );
   } catch (err) {
@@ -441,12 +441,12 @@ async function main(): Promise<void> {
   const { dryRun, commit } = parseArgs();
   const mode = dryRun ? "dry-run" : commit ? "commit" : "dry-run";
 
-  console.log(`Business OS D1 Export (mode: ${mode})`);
-  console.log("=".repeat(60));
+  console.info(`Business OS D1 Export (mode: ${mode})`);
+  console.info("=".repeat(60));
 
   // Find repo root
   const repoRoot = path.resolve(__dirname, "../../..");
-  console.log(`Repo root: ${repoRoot}`);
+  console.info(`Repo root: ${repoRoot}`);
 
   // Get D1 database
   let db: D1Database | null = null;
@@ -461,7 +461,7 @@ async function main(): Promise<void> {
     if (!dryRun && commit) {
       process.exit(1);
     }
-    console.log("\nProceeding in dry-run mode with placeholder data...");
+    console.info("\nProceeding in dry-run mode with placeholder data...");
   }
 
   // Query entities from D1
@@ -470,24 +470,24 @@ async function main(): Promise<void> {
   let stageDocs: StageDoc[] = [];
 
   if (db) {
-    console.log("\nQuerying D1 database...");
+    console.info("\nQuerying D1 database...");
     [cards, ideas, stageDocs] = await Promise.all([
       queryCards(db),
       queryIdeas(db),
       queryStageDocs(db),
     ]);
-    console.log(`Found ${cards.length} cards`);
-    console.log(`Found ${ideas.length} ideas`);
-    console.log(`Found ${stageDocs.length} stage docs`);
+    console.info(`Found ${cards.length} cards`);
+    console.info(`Found ${ideas.length} ideas`);
+    console.info(`Found ${stageDocs.length} stage docs`);
   } else {
-    console.log("\n[DRY-RUN] No D1 connection - using placeholder counts");
-    console.log("Found 0 cards (placeholder)");
-    console.log("Found 0 ideas (placeholder)");
-    console.log("Found 0 stage docs (placeholder)");
+    console.info("\n[DRY-RUN] No D1 connection - using placeholder counts");
+    console.info("Found 0 cards (placeholder)");
+    console.info("Found 0 ideas (placeholder)");
+    console.info("Found 0 stage docs (placeholder)");
   }
 
   // Export entities to markdown files
-  console.log("\nExporting entities to markdown...");
+  console.info("\nExporting entities to markdown...");
   const [cardFiles, ideaFiles, stageDocFiles] = await Promise.all([
     exportCards(cards, repoRoot, dryRun),
     exportIdeas(ideas, repoRoot, dryRun),
@@ -504,28 +504,28 @@ async function main(): Promise<void> {
     filesWritten: [...cardFiles, ...ideaFiles, ...stageDocFiles],
   };
 
-  console.log("\n" + "=".repeat(60));
-  console.log(`Business OS Export Report (${mode.toUpperCase()})`);
-  console.log("=".repeat(60));
-  console.log(`\nCards exported: ${result.cardsExported}`);
-  console.log(`Ideas exported: ${result.ideasExported}`);
-  console.log(`Stage docs exported: ${result.stageDocsExported}`);
-  console.log(`Total files: ${totalFiles}`);
+  console.info("\n" + "=".repeat(60));
+  console.info(`Business OS Export Report (${mode.toUpperCase()})`);
+  console.info("=".repeat(60));
+  console.info(`\nCards exported: ${result.cardsExported}`);
+  console.info(`Ideas exported: ${result.ideasExported}`);
+  console.info(`Stage docs exported: ${result.stageDocsExported}`);
+  console.info(`Total files: ${totalFiles}`);
 
   // Commit and push if requested
   if (commit && !dryRun && totalFiles > 0) {
     commitAndPush(repoRoot, totalFiles);
 
-    // Update export timestamp in D1
-    if (db) {
-      await updateExportTimestamp(db);
-      console.log("\n✓ Updated last_export_at timestamp in D1");
-    }
+      // Update export timestamp in D1
+      if (db) {
+        await updateExportTimestamp(db);
+        console.info("\n✓ Updated last_export_at in D1");
+      }
   } else if (commit && dryRun) {
-    console.log("\n[DRY-RUN] Would commit and push to work/business-os-export");
+    console.info("\n[DRY-RUN] Would commit and push to work/business-os-export");
   }
 
-  console.log("\n" + "=".repeat(60));
+  console.info("\n" + "=".repeat(60));
 }
 
 // Run main function

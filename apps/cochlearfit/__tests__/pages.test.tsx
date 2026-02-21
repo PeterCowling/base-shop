@@ -57,6 +57,29 @@ const getLocaleMetadata = async (
   return generateMetadata({ params: Promise.resolve({ lang: "en" }) });
 };
 
+const findFirstElement = (
+  node: unknown,
+  predicate: (el: React.ReactElement) => boolean
+): React.ReactElement | null => {
+  if (React.isValidElement(node)) {
+    if (predicate(node)) return node;
+    const children = React.Children.toArray(node.props?.children);
+    for (const child of children) {
+      const found = findFirstElement(child, predicate);
+      if (found) return found;
+    }
+  }
+
+  if (Array.isArray(node)) {
+    for (const child of node) {
+      const found = findFirstElement(child, predicate);
+      if (found) return found;
+    }
+  }
+
+  return null;
+};
+
 describe("root pages", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
@@ -81,8 +104,10 @@ describe("root pages", () => {
   it("renders root layout and metadata", () => {
     const element = RootLayout({ children: <div>Root child</div> });
     expect(element.type).toBe("html");
-    const body = element.props.children;
-    const bodyChildren = React.Children.toArray(body.props.children);
+
+    const body = findFirstElement(element, (el) => el.type === "body");
+    expect(body).not.toBeNull();
+    const bodyChildren = React.Children.toArray(body?.props?.children);
     const hasChild = bodyChildren.some(
       (child) => React.isValidElement(child) && child.props.children === "Root child"
     );

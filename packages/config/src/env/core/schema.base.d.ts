@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 export declare const baseEnvSchema: z.ZodObject<{
     NODE_ENV: z.ZodOptional<z.ZodEnum<["development", "test", "production"]>>;
     OUTPUT_EXPORT: z.ZodOptional<z.ZodBoolean>;
@@ -115,3 +114,4 @@ export declare const baseEnvSchema: z.ZodObject<{
     R2_ACCESS_KEY_ID: z.ZodOptional<z.ZodString>;
     R2_SECRET_ACCESS_KEY: z.ZodOptional<z.ZodString>;
 }, z.ZodTypeAny, "passthrough">>;
+//# sourceMappingURL=schema.base.d.ts.map

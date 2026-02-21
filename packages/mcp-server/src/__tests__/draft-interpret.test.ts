@@ -190,6 +190,67 @@ wrote:
   });
 });
 
+describe("draft_interpret TASK-04 multi-scenario", () => {
+  it("TC-04-01: legacy consumer path — singular scenario field always present", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "What time is check-in?",
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      scenario: { category: string; confidence: number };
+    };
+    expect(payload.scenario).toBeDefined();
+    expect(payload.scenario.category).toBeDefined();
+    expect(payload.scenario.confidence).toBeGreaterThan(0);
+  });
+
+  it("TC-04-02: multi-question input yields ordered scenarios[] with deterministic confidence ordering", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Is breakfast included? Can we store our luggage? Do you have WiFi?",
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      scenario: { category: string; confidence: number };
+      scenarios?: Array<{ category: string; confidence: number }>;
+      actionPlanVersion?: string;
+    };
+    expect(payload.scenarios).toBeDefined();
+    expect(Array.isArray(payload.scenarios)).toBe(true);
+    expect(payload.scenarios!.length).toBeGreaterThanOrEqual(2);
+    expect(payload.actionPlanVersion).toBe("1.1.0");
+    const confidences = payload.scenarios!.map((s) => s.confidence);
+    for (let i = 1; i < confidences.length; i++) {
+      expect(confidences[i]).toBeLessThanOrEqual(confidences[i - 1]);
+    }
+    expect(payload.scenario.category).toBe(payload.scenarios![0].category);
+  });
+
+  it("TC-04-03: hard-rule dominance — cancellation is always scenarios[0]", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I need to cancel my booking, request a refund for the card payment, and also ask about breakfast.",
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      scenario: { category: string };
+      scenarios?: Array<{ category: string; confidence: number }>;
+    };
+    expect(payload.scenarios).toBeDefined();
+    expect(payload.scenarios!.length).toBeGreaterThanOrEqual(2);
+    expect(payload.scenarios![0].category).toBe("cancellation");
+    expect(payload.scenario.category).toBe("cancellation");
+  });
+
+  it("TC-04-03b: hard-rule dominance — prepayment is always scenarios[0] when present", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Please send the prepayment link. I also have a card payment question and want to confirm my check-in time.",
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      scenario: { category: string };
+      scenarios?: Array<{ category: string; confidence: number }>;
+    };
+    expect(payload.scenarios).toBeDefined();
+    expect(payload.scenarios![0].category).toBe("prepayment");
+    expect(payload.scenario.category).toBe("prepayment");
+  });
+});
+
 describe("draft_interpret TASK-03 escalation", () => {
   it("TASK-03 TC-01: refund + dispute escalates to HIGH", async () => {
     const result = await handleDraftInterpretTool("draft_interpret", {
@@ -305,5 +366,166 @@ describe("draft_interpret TASK-03 escalation", () => {
     expect(payload.scenario.category).toBeDefined();
     expect(payload.escalation.tier).toBe("NONE");
     expect(payload.escalation.confidence).toBe(0);
+  });
+});
+
+describe("draft_interpret TASK-05 escalation_required field", () => {
+  it("TC-05-01: CRITICAL tier → escalation_required: true", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "If this is not resolved I will contact my lawyer and take legal action.",
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      escalation: { tier: string; confidence: number };
+      escalation_required: boolean;
+    };
+    expect(payload.escalation.tier).toBe("CRITICAL");
+    expect(payload.escalation_required).toBe(true);
+  });
+
+  it("TC-05-02: HIGH tier + confidence >= 0.80 → escalation_required: true (boundary 0.80, then 0.95)", async () => {
+    // Single HIGH trigger yields confidence 0.74 (base), two yields 0.80.
+    // Use two distinct HIGH triggers to reach exactly 0.80.
+    const resultTwoTriggers = await handleDraftInterpretTool("draft_interpret", {
+      body: "I need a refund for this cancellation dispute and we had a medical emergency.",
+    });
+    const payloadTwo = JSON.parse(resultTwoTriggers.content[0].text) as {
+      escalation: { tier: string; confidence: number };
+      escalation_required: boolean;
+    };
+    expect(payloadTwo.escalation.tier).toBe("HIGH");
+    expect(payloadTwo.escalation.confidence).toBeGreaterThanOrEqual(0.80);
+    expect(payloadTwo.escalation_required).toBe(true);
+
+    // Three HIGH triggers yields 0.86 (> 0.80), still true.
+    const resultThreeTriggers = await handleDraftInterpretTool("draft_interpret", {
+      body: "I need a refund for this cancellation, I will chargeback, and we had a medical emergency.",
+      threadContext: {
+        messages: [
+          {
+            from: "Hostel Brikette <info@hostel-positano.com>",
+            date: "Mon, 01 Jan 2026 09:00:00 +0000",
+            snippet: "We are checking your request.",
+          },
+          {
+            from: "Hostel Brikette <info@hostel-positano.com>",
+            date: "Mon, 01 Jan 2026 12:00:00 +0000",
+            snippet: "We will send an update soon.",
+          },
+          {
+            from: "Hostel Brikette <info@hostel-positano.com>",
+            date: "Tue, 02 Jan 2026 08:00:00 +0000",
+            snippet: "Thanks for your patience while we verify details.",
+          },
+        ],
+      },
+    });
+    const payloadThree = JSON.parse(resultThreeTriggers.content[0].text) as {
+      escalation: { tier: string; confidence: number };
+      escalation_required: boolean;
+    };
+    expect(payloadThree.escalation.tier).toBe("HIGH");
+    expect(payloadThree.escalation.confidence).toBeGreaterThanOrEqual(0.80);
+    expect(payloadThree.escalation_required).toBe(true);
+  });
+
+  it("TC-05-03: HIGH tier + confidence < 0.80 → escalation_required: false (single trigger confidence 0.74)", async () => {
+    // A single HIGH trigger (cancellation_refund_dispute) yields confidence 0.74.
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I want a refund and I am disputing this cancellation charge.",
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      escalation: { tier: string; confidence: number };
+      escalation_required: boolean;
+    };
+    expect(payload.escalation.tier).toBe("HIGH");
+    expect(payload.escalation.confidence).toBeLessThan(0.80);
+    expect(payload.escalation_required).toBe(false);
+  });
+
+  it("TC-05-04: NONE tier → escalation_required: false", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "What time is check-in?",
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      escalation: { tier: string; confidence: number };
+      escalation_required: boolean;
+    };
+    expect(payload.escalation.tier).toBe("NONE");
+    expect(payload.escalation_required).toBe(false);
+  });
+});
+
+describe("draft_interpret TASK-08 — expanded request extraction", () => {
+  it("TC-08-01a: captures 'I was wondering' phrasing as a request", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I was wondering if breakfast is included for direct bookings.",
+    });
+    const payload = parseResult(result);
+    expect(payload.intents.requests.length).toBeGreaterThan(0);
+    const texts = payload.intents.requests.map((r) => r.text.toLowerCase());
+    expect(texts.some((t) => t.includes("wondering"))).toBe(true);
+  });
+
+  it("TC-08-01b: captures 'we need' phrasing as a request", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "We need to store our bags before check-in.",
+    });
+    const payload = parseResult(result);
+    expect(payload.intents.requests.length).toBeGreaterThan(0);
+    const texts = payload.intents.requests.map((r) => r.text.toLowerCase());
+    expect(texts.some((t) => t.includes("need"))).toBe(true);
+  });
+
+  it("TC-08-01c: captures 'would it be possible' phrasing as a request", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Would it be possible to arrange an early check-in?",
+    });
+    const payload = parseResult(result);
+    expect(payload.intents.requests.length).toBeGreaterThan(0);
+    const texts = payload.intents.requests.map((r) => r.text.toLowerCase());
+    expect(texts.some((t) => t.includes("possible"))).toBe(true);
+  });
+
+  it("TC-08-01d: dedup prevents identical extractions from overlapping patterns", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Please could you confirm our booking details?",
+    });
+    const payload = parseResult(result);
+    const texts = payload.intents.requests.map((r) => r.text.toLowerCase().trim());
+    const uniqueTexts = [...new Set(texts)];
+    expect(uniqueTexts.length).toBe(texts.length);
+  });
+
+  it("TC-08-02: snippet-only thread context populates resolved_questions for answered question", async () => {
+    const threadContext = {
+      messages: [
+        {
+          from: "Guest <guest@example.com>",
+          date: "Mon, 01 Jan 2026 10:00:00 +0000",
+          snippet: "Is breakfast included for direct bookings?",
+        },
+        {
+          from: "Hostel Brikette <info@hostel-positano.com>",
+          date: "Mon, 01 Jan 2026 12:00:00 +0000",
+          snippet: "Yes, breakfast is included for direct bookings.",
+        },
+        {
+          from: "Guest <guest@example.com>",
+          date: "Tue, 02 Jan 2026 08:00:00 +0000",
+          snippet: "Great, and what time is check-in?",
+        },
+      ],
+    };
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Great, and what time is check-in?",
+      threadContext,
+    });
+    const payload = parseResult(result);
+    expect(payload.thread_summary?.resolved_questions.some(
+      (q) => q.toLowerCase().includes("breakfast"),
+    )).toBe(true);
+    expect(payload.thread_summary?.open_questions.some(
+      (q) => q.toLowerCase().includes("check-in") || q.toLowerCase().includes("check in"),
+    )).toBe(true);
   });
 });

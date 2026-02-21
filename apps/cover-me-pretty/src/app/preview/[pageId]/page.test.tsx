@@ -36,10 +36,10 @@ afterEach(() => {
 });
 
 describe("PreviewPage", () => {
-  const baseParams = {
-    params: { pageId: "1" },
-    searchParams: {},
-  } as Parameters<typeof PreviewPage>[0];
+  const baseParams: Parameters<typeof PreviewPage>[0] = {
+    params: Promise.resolve({ pageId: "1" }),
+    searchParams: Promise.resolve({}),
+  };
   const makeSuccess = () =>
     new Response(
       JSON.stringify({ components: [], seo: { title: { en: "T" } } }),
@@ -67,7 +67,7 @@ describe("PreviewPage", () => {
     global.fetch = jest.fn().mockResolvedValue(makeSuccess());
     const element = (await PreviewPage({
       ...baseParams,
-      searchParams: { device: "preset2" },
+      searchParams: Promise.resolve({ device: "preset2" }),
     })) as ReactElement<PreviewClientProps>;
     expect(element.props.initialDeviceId).toBe("preset2");
   });
@@ -76,7 +76,7 @@ describe("PreviewPage", () => {
     global.fetch = jest.fn().mockResolvedValue(makeSuccess());
     const element = (await PreviewPage({
       ...baseParams,
-      searchParams: { view: "mobile" },
+      searchParams: Promise.resolve({ view: "mobile" }),
     })) as ReactElement<PreviewClientProps>;
     expect(getLegacyPreset).toHaveBeenCalledWith("mobile");
     expect(element.props.initialDeviceId).toBe("mobile-id");

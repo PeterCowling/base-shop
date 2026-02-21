@@ -1,5 +1,5 @@
 import { setupMocks } from "../src/__tests__/analyticsTestUtils";
-import type { EmailAnalyticsEvent } from "../src/analytics";
+import type { EmailAnalyticsEvent, EmailEventType } from "../src/analytics";
 
 describe("mapResendEvent", () => {
   it.each([
@@ -19,7 +19,7 @@ describe("mapResendEvent", () => {
       },
     } as const;
     expect(mapResendEvent(ev)).toEqual<EmailAnalyticsEvent>({
-      type,
+      type: type as EmailEventType,
       campaign: undefined,
       messageId: "r1",
       recipient: "user@example.com",

@@ -57,6 +57,13 @@
     "BOS-UX-12": {},
     "BOS-UX-13": {},
     "BOS-UX-14": {},
+    "BOS-422": {
+      "allow": [
+        "apps/business-os/src/components/board/GrowthLedgerCard.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Business OS: Growth Ledger board DS/i18n cleanup follow-up referenced in eslint-disable justifications."
+    },
     "BRIK-002": {
       "allow": [
         "apps/prime/src/**"
@@ -70,10 +77,28 @@
       "expires": "2026-12-31",
       "notes": "CMP configuration strings; i18n via vanilla-cookieconsent translations API is a future task."
     },
+    "BRIK-0": {
+      "expires": "2026-12-31",
+      "notes": "Internal developer invariant logger and i18n-exempt non-user-facing strings in brikette (console.error, ModalProvider nesting guard)."
+    },
     "BRK-001": {},
     "BRIK-DS-001": {},
     "BRIK-ENG-0017": {},
     "BRIK-ENG-0020": {},
+    "BRIK-BK-001": {
+      "allow": [
+        "apps/brikette/src/app/*/apartment/book/ApartmentBookContent.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "max-lines-per-function exception for ApartmentBookContent apartment booking form; sub-component extraction follow-up."
+    },
+    "BRIK-2145": {
+      "allow": [
+        "apps/brikette/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Brikette SEO audit, CTA, guide, routes, and schema lint exceptions (security/detect-non-literal-regexp, max-params, complexity) pending refactor."
+    },
     "CAR-1432": {},
     "CF-1001": {},
     "CF-1002": {},
@@ -81,6 +106,13 @@
     "CF-1004": {},
     "CF-1005": {},
     "CF-1006": {},
+    "CFL-99": {
+      "allow": [
+        "apps/brikette/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Brikette customer-facing lint escalation: temporary eslint-disable exceptions while migrating legacy code."
+    },
     "CGW-0001": {},
     "CHORE-0000": {},
     "CMP-0001": {},
@@ -149,6 +181,42 @@
     "DS-1026": {},
     "DS-1027": {},
     "DS-1028": {},
+    "DS-01": {
+      "allow": [
+        "packages/design-system/src/primitives/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Design-system primitives: targeted eslint-disable justifications for Radix and layout edge cases."
+    },
+    "DS-02": {
+      "allow": [
+        "apps/business-os/src/**",
+        "packages/guide-system/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Design-system catalog/import guidance follow-ups referenced in eslint-disable justifications."
+    },
+    "DS-03": {
+      "allow": [
+        "apps/business-os/src/components/card-detail/CardActionsPanel.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Business OS: card detail panel DS lint exceptions pending refactor."
+    },
+    "DS-05": {
+      "allow": [
+        "apps/reception/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Reception: DS migration follow-ups referenced in eslint-disable justifications."
+    },
+    "DS-06": {
+      "allow": [
+        "apps/reception/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Reception: DS migration follow-ups referenced in eslint-disable justifications."
+    },
     "DS-1234": {},
     "DS-2504": {},
     "DS-3471": {},
@@ -228,6 +296,25 @@
     "LINT-1005": {},
     "LINT-1006": {},
     "LINT-1007": {},
+    "LINT-1008": {
+      "expires": "2026-12-31",
+      "notes": "Legacy fallback renderer complexity; refactor tracked separately."
+    },
+    "LINT-1009": {
+      "expires": "2026-12-31",
+      "notes": "figure-inside-article and text-width containers; not page-level layout containers."
+    },
+    "LINT-1023": {
+      "expires": "2026-12-31",
+      "notes": "Static regex patterns for i18n key format detection in test utilities; no user input involved."
+    },
+    "LINT-1307": {
+      "allow": [
+        "apps/brikette/src/i18n.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "i18n.ts runtime require-imports and console exceptions for server-context guards and guide coverage debug helper."
+    },
     "LOG-1001": {},
     "OPS-000": {},
     "OPS-001": {},
@@ -280,6 +367,13 @@
     "PP-1100": {},
     "PP-1310": {},
     "QA-1234": {},
+    "REC-09": {
+      "allow": [
+        "apps/reception/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Reception DS migration: temporary eslint-disable exceptions during rule escalation."
+    },
     "SEC-0001": {},
     "SEC-002": {},
     "SEC-003": {},
@@ -316,6 +410,14 @@
         "apps/prime/src/components/quests/TierCompletionModal.tsx"
       ],
       "notes": "Confetti particle CSS variable color usage in quest completion modal."
+    },
+    "TASK-29": {
+      "expires": "2026-12-31",
+      "notes": "Brikette DS rule exceptions in guide components (container widths, hardcoded copy, z-index) pending design-system roadmap."
+    },
+    "TASK-30": {
+      "expires": "2026-12-31",
+      "notes": "ExperiencesHero DS rule exceptions (CfImage not yet exported, hero max-width pattern, image path, z-index overlay) pending DS update."
     },
     "TASK-DS-26": {},
     "TEAM-42": {},

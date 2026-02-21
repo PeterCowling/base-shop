@@ -13,6 +13,7 @@ module.exports = [
   "packages/auth/dist/",
   "packages/configurator/bin/**",
   "**/.next/**",
+  "**/.open-next/**",
   "**/.vercel/**",
   "**/.wrangler/**",
   "**/storybook-static/**",

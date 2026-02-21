@@ -24,7 +24,7 @@ describe("shop.server delegation", () => {
   const originalInventoryBackend = process.env.INVENTORY_BACKEND;
 
   beforeEach(() => {
-    globalThis.__shopServerDelegationResolveRepoMock.mockReset();
+    globalThis.__shopServerDelegationResolveRepoMock!.mockReset();
     (resolveRepo as jest.Mock).mockResolvedValue(repo);
     repo.getShopById.mockReset();
     repo.updateShopInRepo.mockReset();
@@ -89,7 +89,7 @@ describe("shop.server delegation", () => {
 
   it("clears repoPromise in test env and forwards params", async () => {
     const originalNodeEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = "test";
+    (process.env as any).NODE_ENV = "test";
 
     const repo1 = {
       getShopById: jest.fn().mockResolvedValue({ id: "shop1" }),
@@ -119,9 +119,9 @@ describe("shop.server delegation", () => {
     expect(updated).toEqual({ id: "shop1", name: "Updated" });
 
     if (originalNodeEnv === undefined) {
-      delete process.env.NODE_ENV;
+      delete (process.env as any).NODE_ENV;
     } else {
-      process.env.NODE_ENV = originalNodeEnv;
+      (process.env as any).NODE_ENV = originalNodeEnv;
     }
   });
 });

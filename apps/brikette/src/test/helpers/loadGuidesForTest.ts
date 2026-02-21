@@ -1,5 +1,6 @@
 // Test helper to load actual guide content from filesystem
 // This ensures guides namespace is properly initialized for tests
+/* eslint-disable security/detect-non-literal-fs-filename -- BRIK-2145 Test helper that loads locale data from filesystem; paths constructed from known directory structure. [ttl=2026-12-31] */
 
 import fs from "fs";
 import path from "path";

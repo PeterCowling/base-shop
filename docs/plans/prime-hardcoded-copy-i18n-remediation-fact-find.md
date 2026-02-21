@@ -11,7 +11,7 @@ Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: prime-hardcoded-copy-i18n-remediation
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: lp-build
+Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/prime-hardcoded-copy-i18n-remediation-plan.md
 Business-OS-Integration: on
@@ -35,7 +35,7 @@ Prime currently has large lint volume from ds/no-hardcoded-copy and partial i18n
 - Produce planning-ready remediation seeds.
 
 ### Non-goals
-- Applying code migrations in this lp-fact-find.
+- Applying code migrations in this lp-do-fact-find.
 - Rewriting the lint rule implementation in this step.
 - Shipping translation content in this step.
 
@@ -289,7 +289,7 @@ Interpretation:
   - Recommended default: Agent-assisted translation using existing `/guide-translate` workflow, phased by locale priority (it first, then top-5 guest languages).
   - Risk: If no translation ops path is defined, code work ships but guests see untranslated keys or stale English.
 
-## Confidence Inputs (for /lp-plan)
+## Confidence Inputs (for /lp-do-plan)
 - Implementation: 76%
   - Strong evidence for root causes and change points; some uncertainty remains on locale contract scope.
   - To reach >=80: lock locale scope and canonical translation source.
@@ -374,7 +374,7 @@ Interpretation:
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - lp-build
+  - lp-do-build
 - Supporting skills:
   - none
 - Deliverable acceptance package:
@@ -395,4 +395,4 @@ Interpretation:
   - Q2: Canonical translation source decision (shared package vs app-local runtime files).
   - Q3: Translation ops ownership and delivery timeline.
 - Recommended next step:
-  - Answer open questions (all owned by Pete), then proceed to /lp-plan.
+  - Answer open questions (all owned by Pete), then proceed to /lp-do-plan.

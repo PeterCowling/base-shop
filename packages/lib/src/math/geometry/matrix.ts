@@ -23,8 +23,8 @@
  * @module math/geometry/matrix
  */
 
-import type { Vector2 } from "./vector";
-import { vec2 } from "./vector";
+import type { Vector2 } from "./vector.js";
+import { vec2 } from "./vector.js";
 
 // =============================================================================
 // Types

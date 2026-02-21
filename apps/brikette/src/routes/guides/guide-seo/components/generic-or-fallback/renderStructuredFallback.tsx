@@ -50,7 +50,7 @@ export function renderStructuredFallback(params: {
     showTocWhenUnlocalized,
     suppressTocTitle,
     hasStructuredLocal,
-    hasStructuredEnEffective,
+    hasStructuredEnEffective: _hasStructuredEnEffective,
     genericContentOptions,
     structuredTocItems,
     customTocProvided,

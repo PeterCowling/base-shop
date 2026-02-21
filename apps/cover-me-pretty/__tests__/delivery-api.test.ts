@@ -1,5 +1,7 @@
 // apps/cover-me-pretty/__tests__/delivery-api.test.ts
 
+import { jsonRequest } from "@acme/test-utils";
+
 jest.mock("next/server", () => ({
   NextResponse: {
     json: <T>(data: T, init?: ResponseInit) =>
@@ -12,7 +14,6 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-import { jsonRequest } from "@acme/test-utils";
 const createRequest = (body: Record<string, unknown> = {}) => jsonRequest(body);
 
 describe("/api/delivery", () => {
@@ -91,6 +92,6 @@ describe("/api/delivery", () => {
     const res = await POST(createRequest());
     expect(schedulePickup).toHaveBeenCalled();
     expect(res.status).toBe(400);
-    expect(await res.json()).toEqual({ error: "boom" });
+    expect(await res.json()).toEqual({ error: "Failed to schedule pickup" });
   });
 });

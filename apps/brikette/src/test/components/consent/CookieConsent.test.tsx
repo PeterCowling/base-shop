@@ -104,8 +104,8 @@ describe("updateGtagConsent", () => {
   });
 
   it("does not throw when gtag is not available", () => {
-    // @ts-expect-error -- testing missing gtag
-    delete window.gtag;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (window as any).gtag;
     expect(() => updateGtagConsent(["analytics"])).not.toThrow();
   });
 

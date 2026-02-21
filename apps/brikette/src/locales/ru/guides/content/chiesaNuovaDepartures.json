@@ -182,7 +182,7 @@
     "Для Амальфи/Салерно: стойте в очереди на противоположной (с видом на море) стороне дороги",
     "Для Сорренто: стойте в очереди прямо у входа в бар на горной стороне"
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!5e0!3m2!1sen!2sit!4v1700000000000",
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed/v1/directions?origin=Hostel+Brikette%2C+Positano%2C+Italy&destination=Bar+Internazionale%2C+Positano%2C+Italy&mode=walking",
   "kneesList": [
     "Вся прогулка представляет собой пологий спуск по мощёному тротуару—никаких лестниц до достижения остановки",
     "Если у вас проблемы с коленями и тяжёлый багаж, рассмотрите возможность использования носильщика (забронируйте на стойке регистрации)"

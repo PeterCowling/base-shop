@@ -67,7 +67,7 @@ const product: SKU = {
   media: [],
   sizes: ["S", "M"],
   slug: "sneaker",
-};
+} as any;
 
 describe("Pdp components", () => {
   it("renders product and updates size and quantity", () => {
@@ -84,7 +84,7 @@ describe("Pdp components", () => {
     const ui = (await ProductPage({
       params: Promise.resolve({ lang: "en", slug: "sneaker" }),
     })) as ReactElement;
-    const [script, pdp, clean] = ui.props.children;
+    const [script, pdp, clean] = (ui as any).props.children;
     expect(pdp.props.product).toEqual(product);
     expect(clean).toBeTruthy();
   });

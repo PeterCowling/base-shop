@@ -9,10 +9,10 @@ import type { Page } from "@acme/types";
 // Prisma mock with adjustable behaviors
 const prisma = {
   page: {
-    findMany: jest.fn(),
-    upsert: jest.fn(),
-    deleteMany: jest.fn(),
-    update: jest.fn(),
+    findMany: jest.fn() as any,
+    upsert: jest.fn() as any,
+    deleteMany: jest.fn() as any,
+    update: jest.fn() as any,
   },
 };
 
@@ -84,7 +84,7 @@ describe("pages repository filesystem fallbacks", () => {
     await fs.mkdir(shopDir, { recursive: true });
     await fs.writeFile(path.join(shopDir, "pages.json"), JSON.stringify([]), "utf8");
 
-    prisma.page.deleteMany.mockResolvedValue({ count: 0 });
+    prisma.page.deleteMany.mockResolvedValue({ count: 0 } as any);
     prisma.page.findMany.mockRejectedValue(new Error("db"));
 
     await expect(repo.deletePage(shop, "nope")).rejects.toThrow(

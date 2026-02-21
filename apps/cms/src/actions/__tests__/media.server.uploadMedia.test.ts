@@ -4,8 +4,6 @@ import { File as NodeFile } from "node:buffer";
 
 import { MediaError } from "@acme/platform-core/repositories/media.errors";
 
-import { uploadMedia } from "../media.server";
-
 import {
   ensureHasPermission,
   resetMediaMocks,
@@ -16,21 +14,27 @@ import {
 const File = NodeFile as unknown as typeof globalThis.File;
 
 describe("uploadMedia", () => {
-  beforeEach(resetMediaMocks);
+  beforeEach(() => {
+    jest.resetModules();
+    resetMediaMocks();
+  });
   afterEach(restoreMediaMocks);
 
   it("throws when no file entry is provided", async () => {
+    const { uploadMedia } = await import("../media.server");
     const formData = new FormData();
     await expect(uploadMedia("shop", formData)).rejects.toThrow("No file provided");
   });
 
   it("throws for invalid file entry type", async () => {
+    const { uploadMedia } = await import("../media.server");
     const formData = new FormData();
     formData.append("file", "not a file");
     await expect(uploadMedia("shop", formData)).rejects.toThrow("No file provided");
   });
 
   it("delegates to platform-core and parses tags", async () => {
+    const { uploadMedia } = await import("../media.server");
     const result = { url: "/uploads/shop/file.jpg", type: "image" };
     uploadMediaFile.mockResolvedValueOnce(result);
 
@@ -54,6 +58,7 @@ describe("uploadMedia", () => {
   });
 
   it("translates MediaError messages", async () => {
+    const { uploadMedia } = await import("../media.server");
     uploadMediaFile.mockRejectedValueOnce(new MediaError("INVALID_FILE_TYPE"));
     const formData = new FormData();
     formData.append("file", new File(["txt"], "note.txt", { type: "text/plain" }));
@@ -61,10 +66,10 @@ describe("uploadMedia", () => {
   });
 
   it("passes through non-media errors", async () => {
+    const { uploadMedia } = await import("../media.server");
     uploadMediaFile.mockRejectedValueOnce(new Error("boom"));
     const formData = new FormData();
     formData.append("file", new File(["img"], "photo.jpg", { type: "image/jpeg" }));
     await expect(uploadMedia("shop", formData)).rejects.toThrow("boom");
   });
 });
-

@@ -5,6 +5,7 @@
 // Client component for experiences listing page
 import { Fragment, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 
@@ -110,6 +111,7 @@ function buildGuideCopy(
 function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryString = "" }: Props) {
   const { t } = useTranslation("experiencesPage", { lng: lang });
   useTranslation("guides", { lng: lang });
+  const router = useRouter();
   const { openModal } = useOptionalModal();
   usePagePreload({
     lang,
@@ -120,7 +122,7 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
 
   const experiencesEnT = useEnglishFallback("experiencesPage");
 
-  const handleOpenBooking = useCallback(() => openModal("booking"), [openModal]);
+  const handleOpenBooking = useCallback(() => router.push(`/${lang}/book`), [router, lang]);
   const handleOpenConcierge = useCallback(() => openModal("contact"), [openModal]);
 
   const [clientTopicParam, setClientTopicParam] = useState(topicParam);

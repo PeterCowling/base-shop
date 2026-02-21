@@ -19,20 +19,22 @@ This file contains Codex-specific guidance. For universal commands, see `AGENTS.
 
 ### Destructive / History-Rewriting Commands — STOP (Do Not Run)
 
-Codex has no tool-level safety hooks in this repo. Treat the following as **forbidden for agents** (even if the user asks).
+Codex has no tool-level safety hooks in this repo. Treat the following as **forbidden for agents** (even if the user asks):
 
-| Command/Pattern | Why Dangerous | Required Action |
-|-----------------|---------------|-----------------|
-| `git reset --hard` | Loses uncommitted work; often used during “git is confusing” moments | STOP. Do not run. Ask for human guidance. |
-| `git clean -fd` | Permanently deletes untracked files (often includes new work) | STOP. Do not run. Ask for human guidance. |
-| `git push --force`, `git push -f`, `git push --force-with-lease` | Overwrites remote history; can destroy teammates’ commits | STOP. Do not run. Ask for human guidance. |
-| `git checkout -- .`, `git restore .` | Discards local modifications across the repo | STOP. Do not run. Ask for human guidance. |
-| `git restore -- <pathspec...>`, `git checkout -- <pathspec...>` (bulk discard) | Discards local modifications across many files (multiple paths, directories, or globs) | STOP. Do not run. Ask for human guidance. |
-| `git stash` mutations (`push`, `pop`, `apply`, `drop`, `clear`, including bare `git stash`) | Creates hidden stash debt, conflict risk, or permanent stash loss | STOP. Do not run. Ask for human guidance. |
-| `git rebase` (incl. `-i`), `git commit --amend` | Rewrites history; often leads to force-push pressure | STOP. Do not run. Ask for human guidance. |
-| `rm -rf` on project directories | Irreversible deletion | STOP. Do not run. Ask for human guidance. |
-| `pnpm test` (unfiltered) | Spawns too many Jest workers; can crash the machine | Use targeted tests instead. |
-| Any commit to `main` / `staging` | Protected branches; bypasses the release pipeline | Commit on `dev` only. |
+**Git commands that MUST NOT be run:**
+- `git reset --hard/--merge/--keep` (loses work)
+- `git clean -fd` (deletes untracked files permanently)
+- `git push --force`, `-f`, `--force-with-lease`, `--mirror` (overwrites remote history)
+- `git checkout -- .` / `git restore .` / bulk pathspecs (discards modifications)
+- `git stash` mutations: `push`, `pop`, `apply`, `drop`, `clear`, bare `git stash` (hidden debt/loss)
+- `git rebase`, `git commit --amend` (rewrites history)
+- `git checkout -f`, `git switch --discard-changes` (forces discards)
+- Bypasses: `--no-verify`, `SKIP_WRITER_LOCK=1`, `-c core.hooksPath=...` (disables safety)
+- `rm -rf` on project directories (irreversible deletion)
+
+**Other restrictions:**
+- `pnpm test` (unfiltered) → Use targeted tests instead
+- Commits to `main`/`staging` → Commit on `dev` only
 
 ### How to STOP and Hand Off
 
@@ -161,7 +163,7 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌───────────────┐
-│  lp-fact-find   │────▶│ lp-plan  │────▶│ lp-build  │
+│  lp-do-fact-find   │────▶│ lp-do-plan  │────▶│ lp-do-build  │
 │             │     │              │     │               │
 │ Audit repo  │     │ Tasks with   │     │ Only builds   │
 │ Map impact  │     │ confidence % │     │ tasks ≥80%    │
@@ -169,7 +171,7 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 └─────────────┘     └──────────────┘     └───────┬───────┘
        ▲                    ▲                     │
        │              ┌─────┴─────┐               │
-       └──────────────│  lp-replan   │◀──────────────┘
+       └──────────────│  lp-do-replan   │◀──────────────┘
                       │            │  confidence <80%
                       └────────────┘
 ```
@@ -178,10 +180,10 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 
 | Phase | Action | Skill file |
 |-------|--------|-----------|
-| Fact-find | Read and follow | `.claude/skills/lp-fact-find/SKILL.md` |
-| Plan | Read and follow | `.claude/skills/lp-plan/SKILL.md` |
-| Build | Read and follow | `.claude/skills/lp-build/SKILL.md` |
-| Re-plan | Read and follow | `.claude/skills/lp-replan/SKILL.md` |
+| Fact-find | Read and follow | `.claude/skills/lp-do-fact-find/SKILL.md` |
+| Plan | Read and follow | `.claude/skills/lp-do-plan/SKILL.md` |
+| Build | Read and follow | `.claude/skills/lp-do-build/SKILL.md` |
+| Re-plan | Read and follow | `.claude/skills/lp-do-replan/SKILL.md` |
 
 ### Confidence System
 
@@ -211,46 +213,31 @@ When uncertain about the right approach:
 ### Example Session
 
 ```
-1. Read `.claude/skills/lp-fact-find/SKILL.md`
+1. Read `.claude/skills/lp-do-fact-find/SKILL.md`
 2. Audit the affected codebase areas, produce a brief
-3. Read `.claude/skills/lp-plan/SKILL.md`
+3. Read `.claude/skills/lp-do-plan/SKILL.md`
 4. Create plan at `docs/plans/<feature>-plan.md` with confidence scores
 5. If all tasks ≥80%:
-   - Read `.claude/skills/lp-build/SKILL.md`
+   - Read `.claude/skills/lp-do-build/SKILL.md`
    - Build tasks one at a time
 6. If any task <80%:
-   - Read `.claude/skills/lp-replan/SKILL.md`
+   - Read `.claude/skills/lp-do-replan/SKILL.md`
    - Investigate, update confidence, loop back to step 5
 ```
 
 ### Other Available Skills
 
-**Core Workflow Skills:**
+**Complete skill catalog:**
+```bash
+scripts/agents/list-skills
+```
 
-| Skill | Purpose | Location |
-|-------|---------|----------|
-| `lp-fact-find` | Gather evidence before planning or as standalone briefing | `.claude/skills/lp-fact-find/SKILL.md` |
-| `lp-plan` | Create confidence-gated implementation plan | `.claude/skills/lp-plan/SKILL.md` |
-| `lp-build` | Implement tasks from approved plan with confidence gating | `.claude/skills/lp-build/SKILL.md` |
-| `lp-replan` | Resolve low-confidence tasks in existing plan | `.claude/skills/lp-replan/SKILL.md` |
-
-**Specialized Skills:**
-
-| Skill | Purpose | Location |
-|-------|---------|----------|
-| `review-fact-check` | Verify documentation accuracy against repo state | `.claude/skills/review-fact-check/SKILL.md` |
-| `jest-esm-issues` | Fix ESM/CJS test errors | `.claude/skills/jest-esm-issues/SKILL.md` |
-| `ops-git-recover` | Recover from confusing git state | `.claude/skills/ops-git-recover/SKILL.md` |
-| `code-fix-deps` | Resolve pnpm workspace issues | `.claude/skills/code-fix-deps/SKILL.md` |
-| `meta-reflect` | Capture learnings and improve docs/skills | `.claude/skills/meta-reflect/SKILL.md` |
-| `lp-guide-improve` | Main entry point for guide improvement (audit, translation, or both) | `.claude/skills/lp-guide-improve/SKILL.md` |
-| `lp-guide-audit` | Run SEO audit for English guide content only | `.claude/skills/lp-guide-audit/SKILL.md` |
-| `guide-translate` | Propagate EN guide content to all locales | `.claude/skills/guide-translate/SKILL.md` |
+The skill registry (`.agents/registry/skills.json`) lists all available skills with descriptions. Core workflow skills: `lp-do-fact-find`, `lp-do-plan`, `lp-do-build`, `lp-do-replan`. Read each skill's `SKILL.md` file for instructions.
 
 ## What Stays the Same
 
 - Read `AGENTS.md` for commands and rules
 - Follow `docs/plans/` workflow
-- Use the lp-fact-find → plan → build → lp-replan loop (see above)
+- Use the lp-do-fact-find → plan → build → lp-do-replan loop (see above)
 - Run validation before committing (when possible)
 - Never take shortcuts on large-scale fixes

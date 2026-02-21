@@ -105,6 +105,112 @@ describe("lane-transitions", () => {
       expect(exists).toBe(true);
     });
 
+    it("treats legacy fact-finding.user.md as satisfying fact-find.user.md during window", async () => {
+      jest.useFakeTimers();
+      // Within window: dual-read enabled through 2026-02-14 (inclusive).
+      jest.setSystemTime(new Date("2026-02-14T12:00:00.000Z"));
+
+      const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
+
+      const cardDir = path.join(repoPath, "docs/business-os/cards/TEST-LEGACY");
+      await mkdirWithinRoot(repoPath, cardDir, { recursive: true });
+      await writeFileWithinRoot(
+        repoPath,
+        path.join(cardDir, "fact-finding.user.md"),
+        "test content",
+        "utf-8"
+      );
+
+      const exists = await stageDocExists(repoPath, "TEST-LEGACY", "fact-find", "user");
+      expect(exists).toBe(true);
+
+      expect(infoSpy).toHaveBeenCalledWith(
+        "bos.stage_doc_filename_alias_used",
+        expect.objectContaining({
+          cardId: "TEST-LEGACY",
+          stage: "fact-find",
+          audience: "user",
+        })
+      );
+
+      infoSpy.mockRestore();
+      jest.useRealTimers();
+    });
+
+    it("does not create canonical fact-find.user.md when legacy exists (but still creates agent doc)", async () => {
+      jest.useFakeTimers();
+      // Within window: dual-read enabled through 2026-02-14 (inclusive).
+      jest.setSystemTime(new Date("2026-02-14T12:00:00.000Z"));
+
+      const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
+
+      const cardDir = path.join(repoPath, "docs/business-os/cards/TEST-LEGACY-2");
+      await mkdirWithinRoot(repoPath, cardDir, { recursive: true });
+
+      // Legacy user doc only.
+      await writeFileWithinRoot(
+        repoPath,
+        path.join(cardDir, "fact-finding.user.md"),
+        "legacy user",
+        "utf-8"
+      );
+
+      const created = await ensureStageDocsForLane(repoPath, "TEST-LEGACY-2", "Fact-finding");
+
+      // Should create only the agent doc; user is satisfied by legacy alias.
+      expect(created).toHaveLength(1);
+      expect(created[0]).toContain("TEST-LEGACY-2/fact-find.agent.md");
+
+      const canonicalUserExists = await accessWithinRoot(
+        repoPath,
+        path.join(cardDir, "fact-find.user.md")
+      )
+        .then(() => true)
+        .catch(() => false);
+
+      expect(canonicalUserExists).toBe(false);
+
+      expect(infoSpy).toHaveBeenCalledWith(
+        "bos.stage_doc_filename_alias_used",
+        expect.objectContaining({
+          cardId: "TEST-LEGACY-2",
+          stage: "fact-find",
+          audience: "user",
+        })
+      );
+
+      infoSpy.mockRestore();
+      jest.useRealTimers();
+    });
+
+    it("does not treat legacy fact-finding.user.md as satisfying fact-find.user.md after window end", async () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date("2026-02-15T12:00:00.000Z"));
+
+      const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
+
+      const cardDir = path.join(repoPath, "docs/business-os/cards/TEST-POST-WINDOW");
+      await mkdirWithinRoot(repoPath, cardDir, { recursive: true });
+      await writeFileWithinRoot(
+        repoPath,
+        path.join(cardDir, "fact-finding.user.md"),
+        "legacy user",
+        "utf-8"
+      );
+
+      const exists = await stageDocExists(
+        repoPath,
+        "TEST-POST-WINDOW",
+        "fact-find",
+        "user"
+      );
+      expect(exists).toBe(false);
+      expect(infoSpy).not.toHaveBeenCalled();
+
+      infoSpy.mockRestore();
+      jest.useRealTimers();
+    });
+
     it("should check both user and agent docs independently", async () => {
       const cardDir = path.join(repoPath, "docs/business-os/cards/TEST-001");
       await mkdirWithinRoot(repoPath, cardDir, { recursive: true });

@@ -9,7 +9,7 @@ Feature-Slug: ds-business-os-migration
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
+Primary-Execution-Skill: /lp-do-build
 Supporting-Skills: /lp-design-system
 Overall-confidence: 88%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -114,7 +114,7 @@ Migrate `apps/business-os/` from raw Tailwind palette colours and a duplicate CS
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/business-os/src/styles/global.css`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/business-os/src/styles/global.css`
   - **[readonly]** `packages/themes/base/tokens.css`
@@ -161,7 +161,7 @@ Migrate `apps/business-os/` from raw Tailwind palette colours and a duplicate CS
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 4 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/business-os/src/components/navigation/NavigationHeader.tsx`
   - **Primary:** `apps/business-os/src/components/board/BoardLane.tsx`
@@ -189,7 +189,7 @@ Migrate `apps/business-os/` from raw Tailwind palette colours and a duplicate CS
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 3 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/business-os/src/components/ideas/IdeasList.tsx`
   - **Primary:** `apps/business-os/src/components/ideas/IdeasFilters.tsx`
@@ -217,7 +217,7 @@ Migrate `apps/business-os/` from raw Tailwind palette colours and a duplicate CS
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 6 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/business-os/src/components/card-detail/CardMetadata.tsx`
   - **Primary:** `apps/business-os/src/components/card-detail/CardDetail.tsx`
@@ -250,7 +250,7 @@ Migrate `apps/business-os/` from raw Tailwind palette colours and a duplicate CS
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 8 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/business-os/src/app/ideas/[id]/page.tsx`
   - **Primary:** `apps/business-os/src/app/ideas/page.tsx`
@@ -284,7 +284,7 @@ Migrate `apps/business-os/` from raw Tailwind palette colours and a duplicate CS
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 7 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/business-os/src/app/guides/validation/ValidationDashboard.tsx`
   - **Primary:** `apps/business-os/src/app/guides/edit/[guideKey]/tabs/ValidationTab.tsx`
@@ -321,7 +321,7 @@ Migrate `apps/business-os/` from raw Tailwind palette colours and a duplicate CS
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 2 files
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `apps/business-os/src/components/comments/CommentThread.tsx`
   - **Primary:** `apps/business-os/src/components/my-work/MyWorkView.tsx`
@@ -347,7 +347,7 @@ Migrate `apps/business-os/` from raw Tailwind palette colours and a duplicate CS
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `eslint.config.mjs`
-- **Execution-Skill:** /lp-build
+- **Execution-Skill:** /lp-do-build
 - **Affects:**
   - **Primary:** `eslint.config.mjs`
 - **Depends on:** BOS-02, BOS-03, BOS-04, BOS-05, BOS-06, BOS-07

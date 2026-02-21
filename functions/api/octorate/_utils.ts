@@ -22,10 +22,12 @@ const ROOM_RATEPLANS: Record<string, { nr: string; flex: string }> = {
   room_11: { nr: "433888", flex: "433899" },
   room_12: { nr: "433889", flex: "433900" },
   room_14: { nr: "804934", flex: "804933" }, // v1 primary mapping only
+  apartment: { nr: "TODO_NR", flex: "TODO_FLEX" }, // TODO: Get actual rate plan IDs from Octorate
 };
 
 // Preferred order for suggesting alternatives. Private rooms first, then larger dorms.
 export const PREFERRED_SKU_ORDER: readonly string[] = [
+  "apartment",
   "double_room",
   "room_7",
   "room_8",

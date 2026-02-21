@@ -11,11 +11,11 @@ const readFileMock = readFile as jest.MockedFunction<typeof readFile>;
 
 describe("fillLocales with filesystem", () => {
   it("merges keys and skips missing locale files", async () => {
-    readFileMock.mockImplementation(async (file: string) => {
-      if (file.endsWith("en.json")) {
+    readFileMock.mockImplementation(async (file) => {
+      if (String(file).endsWith("en.json")) {
         return JSON.stringify({ greet: "Hello", bye: "Bye" });
       }
-      if (file.endsWith("de.json")) {
+      if (String(file).endsWith("de.json")) {
         return JSON.stringify({ greet: "Hallo" });
       }
       const err: NodeJS.ErrnoException = new Error("not found");
@@ -53,8 +53,8 @@ describe("fillLocales with filesystem", () => {
   });
 
   it("applies fallback when default locale file is missing", async () => {
-    readFileMock.mockImplementation(async (file: string) => {
-      if (file.endsWith("de.json")) {
+    readFileMock.mockImplementation(async (file) => {
+      if (String(file).endsWith("de.json")) {
         return JSON.stringify({ greet: "Hallo" });
       }
       const err: NodeJS.ErrnoException = new Error("not found");

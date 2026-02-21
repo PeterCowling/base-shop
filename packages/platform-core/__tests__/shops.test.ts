@@ -33,7 +33,7 @@ describe("sanity blog accessors", () => {
     localeOverrides: {},
     navigation: [],
     analyticsEnabled: false,
-  };
+  } as any as Shop;
 
   it("gets undefined when not set", () => {
     expect(getSanityConfig(baseShop)).toBeUndefined();
@@ -60,7 +60,7 @@ describe("theme overrides", () => {
     const merged = { ...defaults, ...overrides };
     expect(merged["--color-bg"]).toBe("255 0% 50%");
     // token missing from theme overrides falls back to base token
-    expect(merged["--color-danger"]).toBe(baseTokens["--color-danger"]);
+    expect((merged as any)["--color-danger"]).toBe((baseTokens as any)["--color-danger"]);
   });
 
   it("preserves overrides after theme changes", () => {

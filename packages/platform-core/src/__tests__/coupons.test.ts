@@ -52,7 +52,7 @@ describe("saveCoupons", () => {
     const data = [{ code: "SAVE" }];
     const fp = path.join(resolveDataRoot(), "demo", "discounts.json");
 
-    await coupons.saveCoupons("demo", data);
+    await coupons.saveCoupons("demo", data as any);
 
     expect(mkdirSpy).toHaveBeenCalledWith(path.dirname(fp), { recursive: true });
     expect(writeSpy).toHaveBeenCalledWith(fp, JSON.stringify(data, null, 2), "utf8");

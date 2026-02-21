@@ -1,6 +1,7 @@
 // src/test/migration/url-inventory.test.ts
 // Verifies that all legacy URLs are served by App Router or redirected
 //
+/* eslint-disable security/detect-non-literal-fs-filename -- Test helpers that load route data from filesystem; paths constructed from known directory structure */
 // IMPORTANT: This test uses static fixture files to avoid ESM/CJS issues.
 // Both fixture files are generated at build time:
 // - legacy-urls.txt: URLs from the compat shim (Pages Router)

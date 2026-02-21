@@ -64,7 +64,7 @@ describe("ReturnsPage", () => {
     (getReturnBagAndLabel as jest.Mock).mockResolvedValue({ bagType: "poly", tracking: true });
     (getShopSettings as jest.Mock).mockResolvedValue({ returnService: { bagEnabled: true } });
     const ui = (await ReturnsPage()) as ReactElement;
-    const [form, clean] = ui.props.children;
+    const [form, clean] = (ui as any).props.children;
     expect(form.props.bagType).toBe("poly");
     expect(form.props.tracking).toBe(true);
     expect(clean).toBeTruthy();

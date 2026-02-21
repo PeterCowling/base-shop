@@ -53,7 +53,7 @@ function NotFoundClientInner(): ReactElement {
         <p className="text-base opacity-80">{messages.description}</p>
         <Link
           href="/"
-          className="inline-block rounded-md border border-current px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 min-h-10 min-w-10"
+          className="inline-block rounded-md border border-current px-4 py-2 text-sm font-medium transition-colors hover:bg-muted dark:hover:bg-muted min-h-10 min-w-10"
         >
           {messages.cta}
         </Link>

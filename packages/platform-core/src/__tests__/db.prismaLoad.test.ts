@@ -6,12 +6,12 @@ describe("loadPrismaClient", () => {
   afterEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
-    delete process.env.NODE_ENV;
+    delete (process.env as any).NODE_ENV;
   });
 
-  it("returns undefined and falls back to stub when DATABASE_URL is missing", async () => {
+  it("returns undefined when DATABASE_URL is missing and createRequire throws", async () => {
     await jest.isolateModulesAsync(async () => {
-      process.env.NODE_ENV = "production";
+      (process.env as any).NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
       const createRequireMock = jest.fn(() => {
         throw new Error("cannot load");
@@ -20,25 +20,19 @@ describe("loadPrismaClient", () => {
 
       const { loadPrismaClient, prisma } = (await import("../db")) as {
         loadPrismaClient: () => any;
-        prisma: PrismaClient;
+        prisma: any;
       };
 
       expect(loadPrismaClient()).toBeUndefined();
       expect(createRequireMock).toHaveBeenCalled();
-
-      await prisma.rentalOrder.create({
-        data: { shop: "s", sessionId: "1", trackingNumber: "t1" },
-      });
-      const orders = await prisma.rentalOrder.findMany({ where: { shop: "s" } });
-      expect(orders).toEqual([
-        { shop: "s", sessionId: "1", trackingNumber: "t1" },
-      ]);
+      // prisma is missingPrismaClient() — throws on property access
+      expect(() => prisma.rentalOrder).toThrow("Prisma client unavailable");
     });
   });
 
   it("caches the Prisma client after first load", async () => {
     await jest.isolateModulesAsync(async () => {
-      process.env.NODE_ENV = "production";
+      (process.env as any).NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
       }));
@@ -56,7 +50,7 @@ describe("loadPrismaClient", () => {
 
   it("propagates errors from the Prisma constructor", async () => {
     await jest.isolateModulesAsync(async () => {
-      process.env.NODE_ENV = "production";
+      (process.env as any).NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
       }));

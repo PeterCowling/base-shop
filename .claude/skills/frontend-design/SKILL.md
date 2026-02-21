@@ -28,9 +28,9 @@ Load these before any design work:
 | What | Where | Load when |
 |------|-------|-----------|
 | Token quick-ref | `.claude/skills/lp-design-system/SKILL.md` | Always — first thing |
-| Brand dossier | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | Before any design |
+| Brand dossier | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | If it exists for the business |
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | Before any design |
-| Base tokens | `packages/themes/base/src/tokens.ts` | Fallback reference |
+| Base tokens | `packages/themes/base/src/tokens.ts` | Always (fallback + reference) |
 | Component catalog | `docs/design-system-handbook.md` | When composing layouts |
 | Typography & color | `docs/typography-and-color.md` | When choosing fonts/colors |
 | Business registry | `docs/business-os/strategy/businesses.json` | To resolve app → business |
@@ -69,15 +69,20 @@ The plugin's creative philosophy does NOT override:
 
 Read `docs/business-os/strategy/businesses.json` to find the target business for the work.
 
-| Business | Apps | Theme |
-|----------|------|-------|
-| BRIK | brikette, prime | `packages/themes/prime/` |
-| PLAT | reception, cms | `packages/themes/base/` |
+| Business | Key Apps | Theme |
+|----------|----------|-------|
+| BRIK | brikette, reception, prime | `packages/themes/prime/` |
+| PLAT | platform-core, design-system, cms, dashboard | `packages/themes/base/` |
 | BOS | business-os | `packages/themes/base/` |
+| PIPE | product-pipeline | `packages/themes/base/` |
+| XA | xa | `packages/themes/base/` |
+| HEAD | cochlearfit | `packages/themes/base/` |
+| PET | (no apps yet) | `packages/themes/base/` |
+| HBAG | cover-me-pretty, handbag-configurator | `packages/themes/base/` |
 
 Load the brand dossier: `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
 
-If no brand dossier exists or is not Active status, redirect to `/lp-assessment-bootstrap <BIZ>` first.
+**If no brand dossier exists** (common for PLAT, BOS, PIPE, XA): use base theme tokens directly from `packages/themes/base/src/tokens.ts` as the design reference. No redirection needed — the design system tokens provide a complete and correct palette. Reserve `/lp-assessment-bootstrap <BIZ>` for operating businesses that will have a distinct brand identity.
 
 ### Step 2: Load Design System Context
 

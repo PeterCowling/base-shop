@@ -2,44 +2,54 @@
 
 Two initialization modes depending on template type.
 
-## Rich Mode (`theme: 'base'`)
+## Rich Mode (`theme: 'base'`, palette-driven)
 
-Used in hand-crafted HTML and the `--template rich` pipeline output. Provides full dark mode support via per-variable ternaries.
+Used in hand-crafted HTML and the `--template rich` pipeline output. Reads CSS variables at runtime so Mermaid colors automatically match the active palette (including dark mode).
 
 ```html
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
   const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  // Read palette CSS variables — Mermaid theme matches whatever palette is active
+  var cs = getComputedStyle(document.documentElement);
+  var v = function(name, fb) { return cs.getPropertyValue(name).trim() || fb; };
+
   mermaid.initialize({
     startOnLoad: true,
     theme: 'base',
     look: 'classic',
     themeVariables: {
-      primaryColor:         dark ? '#1e3d30' : '#e8f4ee',
-      primaryBorderColor:   '#2d6a4f',
-      primaryTextColor:     dark ? '#f5f3f0' : '#1a1918',
-      secondaryColor:       dark ? '#1a1918' : '#f9f8f6',
-      secondaryBorderColor: dark ? '#6b6762' : '#e4e2de',
-      tertiaryColor:        dark ? '#27201a' : '#fef3c7',
-      tertiaryBorderColor:  '#d97706',
-      lineColor:            dark ? '#6b6762' : '#9ca3af',
-      edgeLabelBackground:  dark ? '#1a1918' : '#f9f8f6',
+      primaryColor:         v('--accent-soft', dark ? '#1e3d30' : '#e8f4ee'),
+      primaryBorderColor:   v('--accent',      '#2d6a4f'),
+      primaryTextColor:     v('--text',        dark ? '#f5f3f0' : '#1a1918'),
+      secondaryColor:       v('--bg',          dark ? '#1a1918' : '#f9f8f6'),
+      secondaryBorderColor: v('--border',      dark ? '#6b6762' : '#e4e2de'),
+      tertiaryColor:        v('--warn-soft',   dark ? '#27201a' : '#fef3c7'),
+      tertiaryBorderColor:  v('--warn',        '#d97706'),
+      lineColor:            v('--text-muted',  dark ? '#6b6762' : '#9ca3af'),
+      edgeLabelBackground:  v('--bg',          dark ? '#1a1918' : '#f9f8f6'),
       fontSize: '14px',
     }
   });
 </script>
 ```
 
-The values above are for the **operational** palette. For other palettes, substitute the primary/secondary/tertiary colours:
+### CSS variable → Mermaid themeVariable mapping
 
-| Palette | primaryColor (light) | primaryBorderColor | secondaryColor (light) | tertiaryColor (light) |
-|---------|---------------------|--------------------|------------------------|-----------------------|
-| operational | `#e8f4ee` | `#2d6a4f` | `#f9f8f6` | `#fef3c7` |
-| architecture | `#f5ebe4` | `#a0522d` | `#faf8f5` | `#fef3c7` |
-| workflow | `#e0f5f5` | `#0d7377` | `#f6fafa` | `#fef3c7` |
-| analytics | `#fce7f3` | `#9f1239` | `#fdf8f8` | `#fef3c7` |
+| Mermaid themeVariable | CSS variable | Fallback | Purpose |
+|-----------------------|-------------|----------|---------|
+| `primaryColor` | `--accent-soft` | `#e8f4ee` | Node fill for primary elements |
+| `primaryBorderColor` | `--accent` | `#2d6a4f` | Node border for primary elements |
+| `primaryTextColor` | `--text` | `#1a1918` | Text inside nodes |
+| `secondaryColor` | `--bg` | `#f9f8f6` | Background for secondary elements |
+| `secondaryBorderColor` | `--border` | `#e4e2de` | Border for secondary elements |
+| `tertiaryColor` | `--warn-soft` | `#fef3c7` | Fill for tertiary/warning elements |
+| `tertiaryBorderColor` | `--warn` | `#d97706` | Border for tertiary/warning elements |
+| `lineColor` | `--text-muted` | `#9ca3af` | Arrow/edge color |
+| `edgeLabelBackground` | `--bg` | `#f9f8f6` | Background behind edge labels |
 
-Dark variants follow the same darkening pattern: accent stays same or lightens; backgrounds darken to ~#1a-#28 range.
+Because these read from CSS variables, switching palettes (operational, architecture, workflow, analytics, or brand-derived) automatically updates the Mermaid diagram colors. No manual per-palette substitution needed.
 
 ## Basic Mode (`theme: 'neutral'`)
 

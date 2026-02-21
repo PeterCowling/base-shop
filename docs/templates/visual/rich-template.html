@@ -302,21 +302,25 @@
       mermaid.registerLayoutLoaders(elkLayouts);
     }
 
+    // Read palette CSS variables so Mermaid theme matches the active palette
+    var cs = getComputedStyle(document.documentElement);
+    var v = function(name, fb) { return cs.getPropertyValue(name).trim() || fb; };
+
     mermaid.initialize({
       startOnLoad: false,
       securityLevel: 'antiscript',
       theme: 'base',
       look: 'classic',
       themeVariables: {
-        primaryColor:         dark ? '#1e3d30' : '#e8f4ee',
-        primaryBorderColor:   '#2d6a4f',
-        primaryTextColor:     dark ? '#f5f3f0' : '#1a1918',
-        secondaryColor:       dark ? '#1a1918' : '#f9f8f6',
-        secondaryBorderColor: dark ? '#6b6762' : '#e4e2de',
-        tertiaryColor:        dark ? '#27201a' : '#fef3c7',
-        tertiaryBorderColor:  '#d97706',
-        lineColor:            dark ? '#6b6762' : '#9ca3af',
-        edgeLabelBackground:  dark ? '#1a1918' : '#f9f8f6',
+        primaryColor:         v('--accent-soft', dark ? '#1e3d30' : '#e8f4ee'),
+        primaryBorderColor:   v('--accent',      '#2d6a4f'),
+        primaryTextColor:     v('--text',        dark ? '#f5f3f0' : '#1a1918'),
+        secondaryColor:       v('--bg',          dark ? '#1a1918' : '#f9f8f6'),
+        secondaryBorderColor: v('--border',      dark ? '#6b6762' : '#e4e2de'),
+        tertiaryColor:        v('--warn-soft',   dark ? '#27201a' : '#fef3c7'),
+        tertiaryBorderColor:  v('--warn',        '#d97706'),
+        lineColor:            v('--text-muted',  dark ? '#6b6762' : '#9ca3af'),
+        edgeLabelBackground:  v('--bg',          dark ? '#1a1918' : '#f9f8f6'),
         fontSize: '14px',
       }
     });

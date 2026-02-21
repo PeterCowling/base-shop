@@ -278,7 +278,7 @@
     },
     {
       "name": "lp-visual",
-      "description": "Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams). Prompts for the target document and produces self-contained HTML with interactive, zoomable diagrams. Use when asked to add diagrams to a guide, visualise a system or workflow, or improve documentation readability with visuals.",
+      "description": "Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js KPI dashboards). Supports multiple color palettes, brand-derived theming, and rich templates. Use when asked to add diagrams to a guide, visualise a system or workflow, build a KPI dashboard, or improve documentation readability with visuals.",
       "path": ".claude/skills/lp-visual/SKILL.md"
     },
     {

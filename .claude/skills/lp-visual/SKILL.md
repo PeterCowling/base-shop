@@ -12,6 +12,9 @@ Ask the user which document to produce visuals for. Present known documents, plu
 > Which document should I generate visuals for?
 > 1. **email** — Brikette email system architecture (`docs/guides/brikette-email-system.html`)
 > 2. **new document** — provide a file path and I will create or enhance it
+>
+> **Optional:** Which business is this for? (BRIK, PLAT, BOS, HEAD, PET, HBAG, PIPE, XA)
+> If specified, palettes and Mermaid colors will be derived from the brand dossier.
 
 Wait for the user's choice.
 

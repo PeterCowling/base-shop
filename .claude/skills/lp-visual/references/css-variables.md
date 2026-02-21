@@ -212,10 +212,10 @@ Map design system tokens (from `packages/themes/<theme>/src/tokens.ts`) to visua
 | `--text-muted` | `--color-fg-muted` or computed | Secondary text |
 | `--accent` | `--color-primary` | Brand primary color |
 | `--accent-soft` | `--color-primary-soft` | Light primary tint |
-| `--warn` | `--color-warning` | Warning state |
-| `--warn-soft` | `--color-warning-soft` | Light warning |
-| `--danger` | `--color-danger` | Error/danger state |
-| `--danger-soft` | `--color-danger-soft` | Light danger |
+| `--warn` | `--color-warning-fg` | Warning foreground (strong contrast text) |
+| `--warn-soft` | `--color-warning` or `--color-warning-soft` | Light warning background tint |
+| `--danger` | `--color-danger-fg` | Danger foreground (strong contrast text) |
+| `--danger-soft` | `--color-danger` or `--color-danger-soft` | Light danger background tint |
 | `--code-bg` | `--surface-2` | Code block background |
 | `--code-border` | `--color-border` | Code block border |
 
@@ -226,13 +226,15 @@ Map design system tokens (from `packages/themes/<theme>/src/tokens.ts`) to visua
 | BRIK | `packages/themes/prime/` | operational | Warm coral `hsl(6, 78%, 47%)` from prime tokens |
 | PLAT | `packages/themes/base/` | operational | Default green `#2d6a4f` |
 | BOS | `packages/themes/base/` | workflow | Default teal `#0d7377` |
+| PIPE | `packages/themes/base/` | operational | Default green `#2d6a4f` |
+| XA | `packages/themes/base/` | operational | Default green `#2d6a4f` |
 | HEAD | `packages/themes/base/` | analytics | TBD from brand dossier |
 | PET | `packages/themes/base/` | operational | TBD from brand dossier |
 | HBAG | `packages/themes/base/` | operational | TBD from brand dossier |
 
 ### Custom Palette Files
 
-For per-business palettes, create a `.css` file with only `:root` and dark-mode blocks, then pass it to the render pipeline via `--palette-file <path>`. The file contents replace `{{PALETTE_CSS}}` in the template.
+For per-business palettes, create a `.css` file with only `:root` and dark-mode blocks, then pass it to the render pipeline via `--palette-file <path>`. The file contents replace `{{PALETTE_CSS}}` in the template (works with both `basic` and `rich` templates).
 
 Example: `docs/templates/visual/palettes/brik.css` would contain the prime theme's colors mapped to the visual doc variable names.
 

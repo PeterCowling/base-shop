@@ -247,6 +247,9 @@ Top rules by count (warnings):
 | 1 | `ds/min-tap-size` |
 | 1 | `@next/next/no-img-element` |
 
+## Active tasks
+See `## Tasks` section for the active task list.
+
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|

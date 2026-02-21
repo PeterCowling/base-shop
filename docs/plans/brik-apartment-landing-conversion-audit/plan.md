@@ -108,6 +108,9 @@ Chosen approach: Option A.
 - Auto-build eligible: No
   - `plan-only` mode and Build Gate fail.
 
+## Active tasks
+See `## Tasks` section for the active task list.
+
 ## Task Summary
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |

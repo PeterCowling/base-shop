@@ -5,7 +5,9 @@ Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
 Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36, TASK-40, TASK-41 complete; TASK-20 + TASK-21 complete; TASK-14 complete — Tier 1 ContentStickyCta pages pre-implemented and tests confirmed; TASK-13 complete — /book page upgraded with conversion content + JSON-LD + deal banner; only TASK-38 + TASK-42 remain)
+Last-reviewed: 2026-02-18
 Feature-Slug: brikette-cta-sales-funnel-ga4
+Relates-to charter: docs/business-os/business-os-charter.md
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
@@ -158,6 +160,9 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - Sequenced: **Yes** (see Parallelism Guide)
 - Edge-case review complete: **Yes** — Decision A provisional pending TASK-22; all call sites documented; dates gate specified (Decision B/E); merge unit constraint documented for TASK-24–28
 - Auto-build eligible: **Yes** (TASK-22 at 90%, TASK-23 at 85%; all Track E tasks ≥80 with no blocking decision gates)
+
+## Active tasks
+See `## Tasks` section for the active task list.
 
 ## Task Summary
 

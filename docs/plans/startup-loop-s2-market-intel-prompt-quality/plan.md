@@ -5,7 +5,9 @@ Domain: Platform / Business-OS
 Workstream: Engineering
 Created: 2026-02-15
 Last-updated: 2026-02-15
+Last-reviewed: 2026-02-15
 Feature-Slug: startup-loop-s2-market-intel-prompt-quality
+Relates-to charter: docs/business-os/business-os-charter.md
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
@@ -74,6 +76,9 @@ Refactor S2 (Market Intelligence) prompt generation so Deep Research consistentl
 - Cons: more files touched, needs careful test coverage.
 
 Chosen: Option B.
+
+## Active tasks
+See `## Tasks` section for the active task list.
 
 ## Task Summary
 

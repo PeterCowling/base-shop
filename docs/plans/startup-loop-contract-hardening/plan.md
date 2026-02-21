@@ -5,7 +5,9 @@ Domain: Platform / Business-OS
 Workstream: Engineering
 Created: 2026-02-15
 Last-updated: 2026-02-15
+Last-reviewed: 2026-02-15
 Feature-Slug: startup-loop-contract-hardening
+Relates-to charter: docs/business-os/business-os-charter.md
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
@@ -74,6 +76,9 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 4. Add deterministic dual-read for legacy filenames (canonical wins) during the window.
 5. Harden lint/tests so drift is caught quickly, and so alias usage telemetry is visible.
 6. Timebox and remove legacy support after the window.
+
+## Active tasks
+See `## Tasks` section for the active task list.
 
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |

@@ -1,10 +1,12 @@
 ---
 Type: Plan
-Status: <Draft | Active | Complete | Superseded>
+Status: <Draft | Active | Archived | Superseded>
 Domain: <CMS | Platform | UI | API | Data | Infra | etc.>
 Workstream: <Engineering | Product | Marketing | Sales | Operations | Finance | Mixed>
 Created: YYYY-MM-DD
+Last-reviewed: YYYY-MM-DD
 Last-updated: YYYY-MM-DD
+Relates-to charter: <path | none>
 Feature-Slug: <kebab-case>
 Deliverable-Type: <code-change | email-message | product-brief | marketing-asset | spreadsheet | whatsapp-message | multi-deliverable>
 Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-upgrade-backlog>
@@ -23,6 +25,9 @@ Card-ID: <id | none>
 
 ## Summary
 <3-6 sentences>
+
+## Active tasks
+- [ ] TASK-01: <short title>
 
 ## Goals
 - ...

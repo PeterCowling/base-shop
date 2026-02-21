@@ -5,7 +5,9 @@ Domain: Data
 Workstream: Engineering
 Created: 2026-02-15
 Last-updated: 2026-02-16 (TASK-05 complete)
+Last-reviewed: 2026-02-16
 Feature-Slug: brik-s2-data-capture-automation
+Relates-to charter: docs/business-os/business-os-charter.md
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
@@ -72,6 +74,9 @@ The work is intentionally split into two phases: (1) Octorate channel economics 
   Trade-off: higher blast radius (strategy data consumers) and more chance of breaking `bookings_by_month.csv` assumptions.
 
 Chosen: Option A, while still refactoring shared logic into testable modules so both paths can reuse later without duplicating correctness-critical code.
+
+## Active tasks
+See `## Tasks` section for the active task list.
 
 ## Task Summary
 

@@ -1,10 +1,10 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-20
-Last-updated: 2026-02-20
+Last-updated: 2026-02-21
 Feature-Slug: brikette-webpack-removal
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -94,8 +94,8 @@ The brikette app contains webpack-specific APIs and config that create dead code
 | TASK-08 | IMPLEMENT | Migrate guides.state.ts | 85% | M | Complete (2026-02-20) | TASK-07 | TASK-10 |
 | TASK-09 | IMPLEMENT | Migrate moduleResolver.ts (accept-empty) | 90% | M | Complete (2026-02-20) | TASK-07 | TASK-10 |
 | TASK-10 | IMPLEMENT | Delete webpackGlob.ts and cleanup (mock, moduleNameMapper) | 85% | S | Complete (2026-02-21) | TASK-01, TASK-03, TASK-04, TASK-05, TASK-08, TASK-09 | TASK-11 |
-| TASK-11 | IMPLEMENT | Simplify jest-import-meta-transform.cjs | 80% | S | Pending | TASK-10 | TASK-12 |
-| TASK-12 | IMPLEMENT | End-to-end Turbopack build verification | 85% | S | Pending | TASK-11 | - |
+| TASK-11 | IMPLEMENT | Simplify jest-import-meta-transform.cjs | 80% | S | Complete (2026-02-21) | TASK-10 | TASK-12 |
+| TASK-12 | IMPLEMENT | End-to-end Turbopack build verification | 85% | S | Complete (2026-02-21) | TASK-11 | - |
 
 ## Parallelism Guide
 
@@ -537,8 +537,8 @@ The brikette app contains webpack-specific APIs and config that create dead code
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** `apps/brikette/jest-import-meta-transform.cjs`
+- **Status:** Complete (2026-02-21)
+- **Affects:** `apps/brikette/src/test/jest-import-meta-transform.cjs`
 - **Depends on:** TASK-10
 - **Blocks:** TASK-12
 - **Confidence:** 80%
@@ -574,7 +574,7 @@ The brikette app contains webpack-specific APIs and config that create dead code
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-21)
 - **Affects:** `docs/plans/brikette-webpack-removal/verification-report.md`
 - **Depends on:** TASK-11
 - **Blocks:** -

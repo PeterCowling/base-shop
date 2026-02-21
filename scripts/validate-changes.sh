@@ -271,6 +271,38 @@ $(pwd)/$candidate"
     echo "$adjacent_tests" | grep '^/' | sort -u | tr '\n' ' '
 }
 
+find_source_named_tests() {
+    pkg_path="$1"
+    pkg_type="$2"
+    pkg_name="$3"
+    source_files="$4"
+
+    named_tests=""
+    for sf in $source_files; do
+        rel_sf=$(echo "$sf" | sed "s|^${pkg_type}/${pkg_name}/||")
+        source_name=$(basename "$rel_sf")
+        source_stem=${source_name%.*}
+        test_root="$pkg_path/src/__tests__"
+        if [ ! -d "$test_root" ]; then
+            continue
+        fi
+
+        matches=$(find "$test_root" -type f \( \
+            -iname "*${source_stem}*.test.ts" -o \
+            -iname "*${source_stem}*.test.tsx" -o \
+            -iname "*${source_stem}*.spec.ts" -o \
+            -iname "*${source_stem}*.spec.tsx" \
+        \) 2>/dev/null || true)
+
+        if [ -n "$matches" ]; then
+            named_tests="$named_tests
+$matches"
+        fi
+    done
+
+    echo "$named_tests" | grep '^/' | sort -u | tr '\n' ' '
+}
+
 for pkg_file in "$PKG_MAP"/*; do
     [ -f "$pkg_file" ] || continue
 
@@ -387,13 +419,15 @@ for pkg_file in "$PKG_MAP"/*; do
                     exit 1
                 fi
             else
-                echo "    WARN: No source-adjacent tests found; running findRelatedTests with passWithNoTests."
-                if ! RAW_FALLBACK=$(JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --findRelatedTests $ABS_SOURCE_FILES --passWithNoTests --maxWorkers=2 2>&1); then
-                    echo "    FAIL: Tests failed in $PKG_PATH"
-                    echo "    Output: $RAW_FALLBACK"
-                    exit 1
-                fi
-                if printf '%s\n' "$RAW_FALLBACK" | grep -qi 'No tests found'; then
+                NAMED_TESTS=$(find_source_named_tests "$PKG_PATH" "$PKG_TYPE" "$PKG_NAME" "$SOURCE_FILES")
+                if [ -n "$NAMED_TESTS" ]; then
+                    echo "    Source-name matched tests:$NAMED_TESTS"
+                    if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --runTestsByPath $NAMED_TESTS --maxWorkers=2 2>&1; then
+                        echo "    FAIL: Source-name matched tests failed in $PKG_PATH"
+                        exit 1
+                    fi
+                else
+                    echo "    WARN: No source-adjacent or source-name matched tests found in $PKG_PATH."
                     for sf in $SOURCE_FILES; do
                         echo "    WARN: No tests found for: $sf"
                         MISSING_TESTS=$((MISSING_TESTS + 1))

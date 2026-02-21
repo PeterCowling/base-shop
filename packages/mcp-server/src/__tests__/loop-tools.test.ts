@@ -56,7 +56,7 @@ describe("loop tools", () => {
     const result = await handleLoopTool("loop_manifest_status", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
 
     const payload = JSON.parse(result.content[0].text);
@@ -76,7 +76,7 @@ describe("loop tools", () => {
     const result = await handleLoopTool("loop_manifest_status", {
       business: "BRIK",
       runId: "run-404",
-      current_stage: "S7",
+      current_stage: "DO",
     });
 
     const payload = JSON.parse(result.content[0].text);
@@ -101,7 +101,7 @@ describe("loop tools", () => {
     const result = await handleLoopTool("loop_learning_ledger_status", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
 
     const payload = JSON.parse(result.content[0].text);
@@ -128,7 +128,7 @@ describe("loop tools", () => {
     const result = await handleLoopTool("loop_metrics_summary", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
 
     const payload = JSON.parse(result.content[0].text);
@@ -165,7 +165,7 @@ describe("loop tools", () => {
     const result = await handleLoopTool("loop_manifest_status", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
 
     const payload = JSON.parse(result.content[0].text);
@@ -213,7 +213,7 @@ describe("loop tools", () => {
     const commonArgs = {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     };
 
     const manifestResult = JSON.parse((await handleLoopTool("loop_manifest_status", commonArgs)).content[0].text);

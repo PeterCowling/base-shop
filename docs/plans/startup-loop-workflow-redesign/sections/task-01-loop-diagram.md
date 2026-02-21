@@ -1,6 +1,8 @@
 Type: Reference
 Status: Active
 
+> **Note:** S7/S8/S9 stage IDs referenced below were consolidated into stage DO in loop-spec v3.0.0 (2026-02-21).
+
 ## The Loop in 8 steps
 
 Every week you run the same eight steps — gather data, design your offer, forecast, prioritise, act, then review — so the business gets sharper each time round.

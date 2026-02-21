@@ -94,7 +94,7 @@ export function checkBareStageIds(content: string): string[] {
 
     // Match canonical stage IDs
     const re =
-      /\bS(?:0|1B?|2[AB]?|3|4|5[AB]|6B?|7|8|9B?|10)\b/g;
+      /\b(?:S(?:0|1B?|2[AB]?|3B?|4|5[AB]|6B?|9B?|10)|DO)\b/g;
     let match: RegExpExecArray | null;
     while ((match = re.exec(stripped)) !== null) {
       const start = match.index;

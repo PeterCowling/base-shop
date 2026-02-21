@@ -45,7 +45,7 @@ Loop-spec-version: 1.7.0
 
 **Evidence**: `docs/business-os/startup-baselines/HEAD-channels.md` Section 2 and 4. Key metrics are named per channel: sessions by source, sitewide CVR and channel CVR, paid CAC and blended CAC, payment success rate, bundle attach rate (Channel A); referral sessions and assisted conversion share (Channel B); marketplace CVR and net contribution per order after fees (Channel C). Baseline approach: outcome-contract CAC/CVR guardrails referenced in Section 3 constraints; Week-2 pass/hold decision gate in GTM timeline (Section 4 critical path). Pre-launch GTM task: "Configure baseline tracking for bundle attach and returns reasons" establishes data collection intent before first spend.
 
-**Note**: Specific analytics tool (GA4 or equivalent) not yet formally documented — this is the scope of S1B (pre-website measurement bootstrap), which is the required next step. Tracking configuration is a pre-launch GTM dependency explicitly in the critical path; S1 readiness is hypothesis-tolerant per loop-spec §S1 scope.
+**Note**: Specific analytics tool (GA4 or equivalent) not yet formally documented — this is the scope of S1B (Measure stage, pre-website path), which is the required next step. Tracking configuration is a pre-launch GTM dependency explicitly in the critical path; S1 readiness is hypothesis-tolerant per loop-spec §S1 scope.
 
 **Reason**: N/A (PASS)
 
@@ -68,7 +68,7 @@ Note: DEP schema file (`demand-evidence-pack-schema.md`) not yet created. Schema
 
 ## Verdict
 
-✅ All gates pass. Ready to proceed to S1B (pre-website measurement bootstrap) then S2 (market intelligence / offer building).
+✅ All gates pass. Ready to proceed to S1B (Measure stage, pre-website) then S2 (market intelligence / offer building).
 
 **Mandatory next step — S1B (pre-website launch surface)**
 
@@ -79,7 +79,7 @@ prompt_file:     docs/business-os/workflow-prompts/_templates/pre-website-measur
 required_output: docs/business-os/strategy/HEAD/<YYYY-MM-DD>-pre-website-measurement-setup.user.md
 ```
 
-Run the S1B measurement bootstrap prompt before advancing to S2.
+Run the S1B Measure prompt before advancing to S2.
 
 ---
 

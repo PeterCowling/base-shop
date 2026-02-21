@@ -1,15 +1,15 @@
 ---
 name: lp-design-qa
-description: Audit a built UI against the design spec and design system for visual/UI regression, accessibility, responsive behavior, and token compliance. Produces structured issues ready for lp-do-build fixes.
+description: Audit a built UI against the design spec and design system for visual consistency (code-level), accessibility, responsive behavior, and token compliance. Produces structured issues ready for lp-do-build fixes.
 operating_mode: AUDIT
 ---
 
 # Design QA
 
-Audit a built UI against the design spec, design system standards, and brand language for visual regression, accessibility compliance, responsive behavior, and semantic token usage. Produces a structured issue list that feeds back into `/lp-do-build` for fixes.
+Audit a built UI against the design spec, design system standards, and brand language for visual consistency (code-level static analysis), accessibility compliance, responsive behavior, and semantic token usage. Produces a structured issue list that feeds back into `/lp-do-build` for fixes.
 
 **Key distinction from `/lp-launch-qa`:**
-- **lp-design-qa** focuses on visual/UI correctness — does it look right and meet design system standards?
+- **lp-design-qa** focuses on visual/UI consistency via static code analysis — do token bindings, component composition, and class usage match the design spec? (No browser rendering or screenshot capture.)
 - **lp-launch-qa** focuses on functional/compliance readiness — does it work and meet launch criteria?
 
 ## When to Use

@@ -1,14 +1,15 @@
 ---
 Type: Deep-Research-Output
-Status: Awaiting-Decision
+Status: Domain-Screened-Partially-Blocked
 Business: HEAD
 Date: 2026-02-20
+Domain-Screened: 2026-02-21
 Owner: Pete
 Source-Prompt: docs/business-os/strategy/HEAD/naming-research-prompt.md
 Generated-By: Consolidated range+naming synthesis
-Recommendation: Nidilo
+Recommendation: null
 Shortlist: [Nidilo, Telilo, Tessilo, Tramilo, Calafilo, Filocalma, Nuvafilo, Nidela]
-recommended_business_name: Nidilo
+recommended_business_name: null
 shortlist:
   - Nidilo
   - Telilo
@@ -20,14 +21,17 @@ shortlist:
   - Nidela
 business: HEAD
 artifact: naming_shortlist
-status: Awaiting-Decision
+status: Domain-Screened-Partially-Blocked
 owner: Pete
-last_updated: 2026-02-20
+last_updated: 2026-02-21
 source_of_truth: true
 depends_on:
   - docs/business-os/strategy/HEAD/naming-research-prompt.md
   - docs/business-os/strategy/HEAD/lp-other-products-results.user.md
-decisions: []
+decisions:
+  - date: 2026-02-21
+    decision: Domain screen complete. Nidilo, Telilo, Nidela eliminated as hard blockers. 5 survivors carried to round-2 naming research.
+    next: docs/business-os/strategy/HEAD/naming-research-prompt-v2.md
 ---
 
 # HEAD Naming Shortlist (Italy-first Lifestyle Masterbrand)
@@ -69,17 +73,36 @@ decisions: []
   - Parts Pods
   - Clip Kit (only after safety validation)
 
-## E) Mandatory clearance sequence
+## E) Domain availability screen — 2026-02-21
 
-1. TMview knock-out search for all shortlist candidates
-2. Domain availability check (`.com`, `.it`, `.eu`) and social handle availability
-3. Counsel-level trademark assessment (EU first; then UK/US expansion path)
-4. Final selection + update intake/brand dossier with confirmed name
+| Candidate | .com status | Decision |
+|---|---|---|
+| Nidilo | **BLOCKED** — nidilo.com is a parked/redirecting domain (redirects to searchhounds.com article) | Eliminated — hard blocker |
+| Telilo | **BLOCKED** — telilo.com listed for sale at ~$1,500 | Eliminated — hard blocker (treated same as unavailable) |
+| Nidela | **BLOCKED** — nidela.com listed for sale at ~$1,500 | Eliminated — hard blocker |
+| Tessilo | Available (free registration) | Survives to round 2 |
+| Tramilo | Available (free registration) | Survives to round 2 |
+| Calafilo | Available (free registration) | Survives to round 2 |
+| Filocalma | Available (free registration) | Survives to round 2 |
+| Nuvafilo | Available (free registration) | Survives to round 2 |
 
-## F) Current recommendation
+**Hard constraint confirmed:** `.com` must be freely available at standard registration cost. Parked domains and brokered domains at any premium are treated as hard blockers.
 
-**Recommended working name: `Nidilo`**
+**Survivors carried to round-2 research:** Tessilo, Tramilo, Calafilo, Filocalma, Nuvafilo — these are context anchors for round 2, not a shortlist. Round 2 will generate fresh candidates alongside these.
 
-Reason: strongest Italy-friendly phonetics, non-clinical feel, range-stretch potential beyond headbands, and clean fit with lifestyle-first positioning.
+**Next step:** See `docs/business-os/strategy/HEAD/naming-research-prompt-v2.md` for the round-2 deep research prompt.
+
+## F) Mandatory clearance sequence (updated)
+
+1. ~~Domain availability check~~ — **done 2026-02-21 (partial; 3 of 8 eliminated)**
+2. Round-2 naming research → new shortlist of candidates with confirmed .com availability
+3. TMview knock-out search for round-2 shortlist
+4. `.it` and `.eu` domain + social handle check
+5. Counsel-level trademark assessment (EU first; then UK/US expansion path)
+6. Final selection + update intake/brand dossier with confirmed name
+
+## G) Current recommendation
+
+**Recommendation withdrawn** — top two candidates (Nidilo, Telilo) eliminated on domain availability. Proceed to round-2 naming research.
 
 > This is a strategic recommendation only. No trademark or legal clearance is implied.

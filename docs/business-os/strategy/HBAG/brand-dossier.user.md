@@ -1,10 +1,13 @@
 ---
 Type: Brand-Dossier
+Stage: BRAND-02
 Business-Unit: HBAG
 Business-Name: Handbag Accessory
 Status: Draft
 Created: 2026-02-17
+Updated: 2026-02-21
 Last-reviewed: 2026-02-17
+Owner: Pete
 Token-Source: TBD — no app or theme package exists yet for Handbag Accessory
 ---
 
@@ -54,9 +57,9 @@ Token-Source: TBD — no app or theme package exists yet for Handbag Accessory
 
 ### Typography
 
-| Role | Token (proposed) | Rationale |
-|------|-----------------|-----------|
-| Body + headings | TBD | Fashion/accessory category: consider a slightly more editorial feel than Brikette. Humanist sans or elegant serif hybrid. Validate legibility at small sizes on mobile. |
+| Role | Token (proposed) | Source | Rationale |
+|------|-----------------|--------|-----------|
+| Body + headings | TBD | TBD | Fashion/accessory category: consider a slightly more editorial feel than Brikette. Humanist sans or elegant serif hybrid. Validate legibility at small sizes on mobile. |
 
 ### Shape & Elevation
 
@@ -69,6 +72,8 @@ Token-Source: TBD — no app or theme package exists yet for Handbag Accessory
 | Token | Design rationale |
 |-------|-----------------|
 | _(all TBD)_ | No app or theme package exists. Populate when created via `/lp-design-spec`. |
+
+**Dark mode:** TBD — decide when theme package is created.
 
 ### Imagery Direction
 

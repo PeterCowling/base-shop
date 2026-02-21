@@ -398,7 +398,7 @@ For each stage, require appropriate sync actions:
 - `S1/S1B/S2/S3/S10`: persist strategy/readiness artifacts under `docs/business-os/...` and update any `latest.user.md` pointers.
 - `S5A`: no BOS sync (pure ranking, no side effects).
 - `S5B`: create/update ideas/cards via Business OS API (`/api/agent/ideas`, `/api/agent/cards`); commit manifest pointer.
-- `S7/S8/S9`: upsert stage docs and lane transitions via `/api/agent/stage-docs` and `/api/agent/cards`.
+- `DO`: upsert stage docs and lane transitions via `/api/agent/stage-docs` and `/api/agent/cards`.
 
 Never allow stage advance when BOS sync has failed.
 
@@ -428,6 +428,6 @@ Example:
 
 1. Advancing a stage while required output is missing.
 2. Advancing a stage while required BOS sync action is incomplete.
-3. Skipping S1B for pre-website businesses.
-4. Skipping S2A for website-live businesses.
+3. Skipping S1B (Measure) for pre-website businesses.
+4. Skipping S2A (Results) for website-live businesses.
 5. Continuing S2/S6 with stale/draft research artifacts.

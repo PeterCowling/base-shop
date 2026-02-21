@@ -65,7 +65,7 @@ Plain-language names used in operator sections, with engineering details behind.
 |---|---|---|
 | Operational Confirmations Form (HEAD) | The structured set of 6 inputs needed to make the HEAD forecast decision-grade | `docs/business-os/startup-baselines/HEAD-forecast-seed.user.md` §"Still missing / needs confirmation" |
 | Operational Confirmations Form (PET) | The structured set of inputs needed to make the PET forecast decision-grade | `docs/business-os/startup-baselines/PET-forecast-seed.user.md` §"Required Data to Upgrade" |
-| Pre-website Measurement Setup checklist | Steps to configure GA4, Search Console, and event tracking before paid traffic starts | Template: `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md`; output: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-pre-website-measurement-setup.user.md` |
+| Pre-website Measure checklist | Steps to configure GA4, Search Console, and event tracking before paid traffic starts | Template: `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md`; output: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-pre-website-measurement-setup.user.md` |
 | GA4 Standard Report Verification | Opening GA4 standard reports (not Realtime) and confirming non-zero signal for web_vitals and begin_checkout over a 7-day window | `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md` |
 | Forecast Recalibration | Updating the 90-day forecast using measured week-1/2 actuals to replace seed assumptions | Template: `docs/business-os/workflow-prompts/_templates/forecast-recalibration-prompt.md`; output: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-forecast-recalibration.user.md` |
 | Weekly K/P/C/S Decision | The weekly Keep/Pivot/Scale/Kill review for a business | Template: `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`; output: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-weekly-kpcs-decision.user.md` |
@@ -272,7 +272,7 @@ Plain-language names used in operator sections, with engineering details behind.
 - **Acceptance:**
   - Three panels: HEAD, PET, BRIK — each in a consistent format
   - Each panel contains exactly: current blocker statement, "Do this now" single action, "Done when" criterion
-  - HEAD panel: blocker = operational confirmations missing; action = fill Operational Confirmations form AND complete Pre-website Measurement Setup checklist; done when = all 6 fields confirmed and timestamped + measurement setup doc at Active status
+  - HEAD panel: blocker = operational confirmations missing; action = fill Operational Confirmations form AND complete Pre-website Measure checklist; done when = all 6 fields confirmed and timestamped + measure stage doc at Active status
   - PET panel: blocker = inventory reality and first measured CPC/CVR missing; action = confirm inventory units/arrival date + landed cost, then run 7-day acquisition test; done when = inventory confirmed + first measured CPC/CVR captured + forecast upgraded to decision-grade
   - BRIK panel: blocker = GA4 measurement signal quality gap (web_vitals + begin_checkout not confirmed in standard reports); action = run GA4 report verification for web_vitals + begin_checkout for last 7-day window in standard reports (not realtime); done when = non-zero signal confirmed in standard 7-day GA4 report for both events, then run day-14 forecast recalibration
   - Date stamp of 2026-02-17 on each panel
@@ -665,7 +665,7 @@ Plain-language names used in operator sections, with engineering details behind.
   - Impact: 85% — reduces cognitive load in the operator view; engineering agents get full paths from the preserved verbatim hand-off map in the appendix
 - **Acceptance:**
   - A NEW "Quick Actions" table is added to the operator body: columns are Action (plain-language label), Stage, Done when — NO repo paths, NO template filenames, NO `<details>` blocks with paths inside the operator table (paths would fail TASK-07 VC-04 jargon search)
-  - Each row's Action cell contains only a plain-language label (e.g., "Run: Pre-website Measurement Setup") and an anchor link to the corresponding row in the engineering appendix hand-off map (e.g., `[→ see details](#engineering-appendix)`) — the path itself lives only in the appendix
+  - Each row's Action cell contains only a plain-language label (e.g., "Run: Pre-website Measure checklist") and an anchor link to the corresponding row in the engineering appendix hand-off map (e.g., `[→ see details](#engineering-appendix)`) — the path itself lives only in the appendix
   - The ORIGINAL hand-off map (section 10) is preserved verbatim in the engineering appendix (not modified)
   - The new operator table and the original engineering table cover the same set of stages/triggers (coverage parity check)
   - TASK-07 VC-04 passes: search for `docs/` in sections 1–8 returns zero matches (no paths in operator body)

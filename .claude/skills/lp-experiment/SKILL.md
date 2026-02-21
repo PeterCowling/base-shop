@@ -1,6 +1,6 @@
 # lp-experiment
 
-Startup experiment design and weekly readout for the S8/S10 build-measure-decide loop.
+Startup experiment design and weekly readout for the DO/S10 build-measure-decide loop.
 
 ---
 
@@ -28,7 +28,7 @@ Startup experiment design and weekly readout for the S8/S10 build-measure-decide
 
 ## Purpose
 
-Design falsifiable experiments (S8) and produce weekly readouts with decision recommendations (S10). Absorbs CRO funnel diagnostics as a sub-workflow. Ensures experiments have pre-committed pass/fail criteria and produce actionable learning regardless of outcome.
+Design falsifiable experiments (DO, `/lp-do-plan`) and produce weekly readouts with decision recommendations (S10). Absorbs CRO funnel diagnostics as a sub-workflow. Ensures experiments have pre-committed pass/fail criteria and produce actionable learning regardless of outcome.
 
 ---
 
@@ -299,7 +299,7 @@ Use during design mode to identify where in the conversion funnel an experiment 
 
 **Upstream:**
 - **lp-measure (S1B):** Provides event taxonomy for metric selection in design mode
-- **lp-do-build (S9):** Experiments designed during build phase to test features being shipped
+- **`/lp-do-build` (DO):** Experiments designed during build phase to test features being shipped
 
 **Downstream:**
 - **lp-prioritize (S5A):** Readout decisions feed back into prioritization for next cycle

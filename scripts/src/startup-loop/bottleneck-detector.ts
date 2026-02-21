@@ -10,7 +10,7 @@
 
 // Type definitions
 export type MetricId = 'traffic' | 'cvr' | 'aov' | 'cac' | 'orders' | 'revenue';
-export type StageId = 'DISCOVERY-01' | 'DISCOVERY-02' | 'DISCOVERY-03' | 'DISCOVERY-04' | 'DISCOVERY-05' | 'DISCOVERY-06' | 'DISCOVERY-07' | 'DISCOVERY' | 'BRAND-01' | 'BRAND-02' | 'BRAND' | 'S1' | 'S1B' | 'S2A' | 'S2' | 'S2B' | 'S3' | 'S3B' | 'S6B' | 'S4' | 'S5A' | 'S5B' | 'S6' | 'S7' | 'S8' | 'S9' | 'S9B' | 'S10';
+export type StageId = 'DISCOVERY-01' | 'DISCOVERY-02' | 'DISCOVERY-03' | 'DISCOVERY-04' | 'DISCOVERY-05' | 'DISCOVERY-06' | 'DISCOVERY-07' | 'DISCOVERY' | 'BRAND-01' | 'BRAND-02' | 'BRAND' | 'S1' | 'S1B' | 'S2A' | 'S2' | 'S2B' | 'S3' | 'S3B' | 'S6B' | 'S4' | 'S5A' | 'S5B' | 'S6' | 'DO' | 'S9B' | 'S10';
 export type MetricDirection = 'higher_is_better' | 'lower_is_better';
 export type MetricClass = 'primitive' | 'derived';
 export type DiagnosisStatus = 'ok' | 'no_bottleneck' | 'insufficient_data' | 'partial_data';
@@ -86,7 +86,7 @@ export interface BottleneckDiagnosis {
 }
 
 // Constants
-const UPSTREAM_PRIORITY_ORDER: StageId[] = ['DISCOVERY-01', 'DISCOVERY-02', 'DISCOVERY-03', 'DISCOVERY-04', 'DISCOVERY-05', 'DISCOVERY-06', 'DISCOVERY-07', 'DISCOVERY', 'BRAND-01', 'BRAND-02', 'BRAND', 'S1', 'S1B', 'S2A', 'S2', 'S2B', 'S3', 'S3B', 'S6B', 'S4', 'S5A', 'S5B', 'S6', 'S7', 'S8', 'S9', 'S9B', 'S10'];
+const UPSTREAM_PRIORITY_ORDER: StageId[] = ['DISCOVERY-01', 'DISCOVERY-02', 'DISCOVERY-03', 'DISCOVERY-04', 'DISCOVERY-05', 'DISCOVERY-06', 'DISCOVERY-07', 'DISCOVERY', 'BRAND-01', 'BRAND-02', 'BRAND', 'S1', 'S1B', 'S2A', 'S2', 'S2B', 'S3', 'S3B', 'S6B', 'S4', 'S5A', 'S5B', 'S6', 'DO', 'S9B', 'S10'];
 
 const SEVERITY_THRESHOLDS = {
   CRITICAL: 0.50,

@@ -1,7 +1,5 @@
 import "@acme/zod-utils/initZod";
-
 import { z } from "zod";
-
 export declare const emailEnvSchema: z.ZodEffects<z.ZodObject<{
     EMAIL_FROM: z.ZodOptional<z.ZodEffects<z.ZodString, string, string>>;
     EMAIL_SENDER_NAME: z.ZodOptional<z.ZodString>;
@@ -79,3 +77,4 @@ export declare const emailEnvSchema: z.ZodEffects<z.ZodObject<{
     EMAIL_BATCH_DELAY_MS?: number | undefined;
 }>;
 export type EmailEnv = z.infer<typeof emailEnvSchema>;
+//# sourceMappingURL=email.schema.d.ts.map

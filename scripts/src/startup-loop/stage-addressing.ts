@@ -69,7 +69,7 @@ export function resolveById(input: string): ResolveResult {
   const suggestions: string[] = aliasMatch
     ? [`--stage ${aliasMatch}`, `--stage-alias ${input.toLowerCase().trim()}`]
     : [
-        "Use a canonical stage ID: DISCOVERY-01, DISCOVERY-02, DISCOVERY-03, DISCOVERY-04, DISCOVERY-05, DISCOVERY-06, DISCOVERY-07, DISCOVERY, BRAND-01, BRAND-02, BRAND, S1, S1B, S2A, S2, S2B, S3, S3B, S4, S5A, S5B, S6, S6B, S7, S8, S9, S9B, S10",
+        "Use a canonical stage ID: DISCOVERY-01, DISCOVERY-02, DISCOVERY-03, DISCOVERY-04, DISCOVERY-05, DISCOVERY-06, DISCOVERY-07, DISCOVERY, BRAND-01, BRAND-02, BRAND, S1, S1B, S2A, S2, S2B, S3, S3B, S4, S5A, S5B, S6, S6B, DO, S9B, S10",
         "Or use --stage-alias <slug> for deterministic alias resolution",
       ];
 

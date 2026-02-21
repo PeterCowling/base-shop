@@ -37,9 +37,7 @@ const STARTUP_LOOP_STAGES = [
   "S5B",
   "S6",
   "S6B",
-  "S7",
-  "S8",
-  "S9",
+  "DO",
   "S9B",
   "S10",
 ] as const;
@@ -189,7 +187,7 @@ export const bosToolPoliciesRaw = {
   bos_stage_doc_patch_guarded: {
     permission: "guarded_write",
     sideEffects: "bos_write",
-    allowedStages: ["S5B", "S7", "S8", "S9", "S9B", "S10"],
+    allowedStages: ["S5B", "DO", "S9B", "S10"],
     auditTag: "bos:stage-doc:patch",
     contextRequired: ["business", "cardId", "runId", "current_stage"],
     requiresEntitySha: true,
@@ -206,7 +204,7 @@ export const bosToolPoliciesRaw = {
   exp_register: {
     permission: "guarded_write",
     sideEffects: "bos_write",
-    allowedStages: ["S7", "S8", "S9", "S9B", "S10"],
+    allowedStages: ["DO", "S9B", "S10"],
     auditTag: "exp:register:guarded",
     contextRequired: ["business", "cardId", "runId", "current_stage"],
     requiresEntitySha: true,
@@ -231,7 +229,7 @@ export const bosToolPoliciesRaw = {
   ops_update_price_guarded: {
     permission: "guarded_write",
     sideEffects: "bos_write",
-    allowedStages: ["S8", "S9", "S9B", "S10"],
+    allowedStages: ["DO", "S9B", "S10"],
     auditTag: "ops:update-price:guarded",
     contextRequired: ["business", "cardId", "runId", "current_stage"],
     requiresEntitySha: true,

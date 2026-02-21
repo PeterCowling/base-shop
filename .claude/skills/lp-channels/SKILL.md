@@ -74,7 +74,7 @@ Produces single file: `docs/business-os/startup-baselines/<BIZ>-channels.md`
 - `draft-marketing`: selected channels, positioning, success metrics
 - `lp-seo`: organic channel context, keyword intent from ICP
 - `lp-do-fact-find`: channel strategy to scope go-items
-- `startup-loop`: S6B validation gate before S7
+- `startup-loop`: S6B validation gate before DO
 
 ## Integration
 
@@ -83,12 +83,12 @@ Produces single file: `docs/business-os/startup-baselines/<BIZ>-channels.md`
 - `/lp-readiness --business <BIZ>` (S1) — MUST pass RG-02 distribution feasibility gate
 - May consume market research from `docs/business-os/market-research/`
 
-### Downstream (S7, S8, S9)
+### Downstream (DO)
 - `/draft-marketing` — channel selection for asset targeting
 - `/lp-seo` — organic channel context and ICP keyword intent
 - `/lp-do-fact-find` — scopes go-items from GTM timeline
-- `startup-loop` — S6B validation before S7
+- `startup-loop` — S6B validation before DO
 
 ### Parallel Skills
 - Can run in parallel with `/lp-forecast` (S2C) if both consume same lp-offer input
-- Does NOT depend on `/lp-measure` (measurement setup), but measurement feeds into success metrics tracking
+- Does NOT depend on `/lp-measure` (Measure stage), but measurement feeds into success metrics tracking

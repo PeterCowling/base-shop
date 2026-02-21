@@ -1,7 +1,5 @@
 import "@acme/zod-utils/initZod";
-
 import { z } from "zod";
-
 export declare const cmsEnvSchema: z.ZodObject<{
     CMS_SPACE_URL: z.ZodString | z.ZodDefault<z.ZodString>;
     CMS_ACCESS_TOKEN: z.ZodString | z.ZodDefault<z.ZodString>;
@@ -49,3 +47,4 @@ export declare const cmsEnvSchema: z.ZodObject<{
     CMS_SEARCH_DISABLED_PATHS?: string | undefined;
 }>;
 export type CmsEnv = z.infer<typeof cmsEnvSchema>;
+//# sourceMappingURL=cms.schema.d.ts.map

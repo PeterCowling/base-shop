@@ -9,7 +9,7 @@ Skill: /lp-do-discovery-01-problem-framing
 Business: HBAG
 Created: 2026-02-20
 Status: Active
-Back-propagated-from: S7 (mini-handbag-pmf fact-find), S8 (plan), S2B (offer), S3 (forecast), S6B (demand evidence pack)
+Back-propagated-from: DO (`/lp-do-fact-find`, mini-handbag-pmf), DO (`/lp-do-plan`), S2B (offer), S3 (forecast), S6B (demand evidence pack)
 Research-appendix: docs/business-os/strategy/HBAG/s0a-research-appendix.user.md
 ---
 

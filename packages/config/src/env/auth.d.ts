@@ -1,7 +1,5 @@
 import "@acme/zod-utils/initZod";
-
 import { z } from "zod";
-
 export declare const authEnvSchema: z.ZodEffects<z.ZodObject<{
     NEXTAUTH_SECRET: z.ZodEffects<z.ZodString, string, string> | z.ZodDefault<z.ZodEffects<z.ZodString, string, string>>;
     PREVIEW_TOKEN_SECRET: z.ZodOptional<z.ZodEffects<z.ZodString, string, string>>;
@@ -30,10 +28,10 @@ export declare const authEnvSchema: z.ZodEffects<z.ZodObject<{
     ALLOW_GUEST: z.ZodDefault<z.ZodEffects<z.ZodBoolean, boolean, unknown>>;
     ENFORCE_2FA: z.ZodDefault<z.ZodEffects<z.ZodBoolean, boolean, unknown>>;
 }, "strip", z.ZodTypeAny, {
-    AUTH_TOKEN_TTL: number;
     NEXTAUTH_SECRET: string;
     SESSION_SECRET: string;
     AUTH_PROVIDER: "local" | "jwt" | "oauth";
+    AUTH_TOKEN_TTL: number;
     TOKEN_ALGORITHM: "HS256" | "RS256";
     TOKEN_AUDIENCE: string;
     TOKEN_ISSUER: string;
@@ -57,7 +55,6 @@ export declare const authEnvSchema: z.ZodEffects<z.ZodObject<{
     OAUTH_REDIRECT_ORIGIN?: string | undefined;
     OAUTH_ENFORCE_PKCE?: boolean | undefined;
 }, {
-    AUTH_TOKEN_TTL?: unknown;
     NEXTAUTH_SECRET?: string | undefined;
     PREVIEW_TOKEN_SECRET?: string | undefined;
     UPGRADE_PREVIEW_TOKEN_SECRET?: string | undefined;
@@ -78,16 +75,17 @@ export declare const authEnvSchema: z.ZodEffects<z.ZodObject<{
     OAUTH_CLIENT_SECRET?: string | undefined;
     OAUTH_REDIRECT_ORIGIN?: string | undefined;
     OAUTH_ENFORCE_PKCE?: unknown;
+    AUTH_TOKEN_TTL?: unknown;
     TOKEN_ALGORITHM?: "HS256" | "RS256" | undefined;
     TOKEN_AUDIENCE?: string | undefined;
     TOKEN_ISSUER?: string | undefined;
     ALLOW_GUEST?: unknown;
     ENFORCE_2FA?: unknown;
 }>, {
-    AUTH_TOKEN_TTL: number;
     NEXTAUTH_SECRET: string;
     SESSION_SECRET: string;
     AUTH_PROVIDER: "local" | "jwt" | "oauth";
+    AUTH_TOKEN_TTL: number;
     TOKEN_ALGORITHM: "HS256" | "RS256";
     TOKEN_AUDIENCE: string;
     TOKEN_ISSUER: string;
@@ -111,7 +109,6 @@ export declare const authEnvSchema: z.ZodEffects<z.ZodObject<{
     OAUTH_REDIRECT_ORIGIN?: string | undefined;
     OAUTH_ENFORCE_PKCE?: boolean | undefined;
 }, {
-    AUTH_TOKEN_TTL?: unknown;
     NEXTAUTH_SECRET?: string | undefined;
     PREVIEW_TOKEN_SECRET?: string | undefined;
     UPGRADE_PREVIEW_TOKEN_SECRET?: string | undefined;
@@ -132,6 +129,7 @@ export declare const authEnvSchema: z.ZodEffects<z.ZodObject<{
     OAUTH_CLIENT_SECRET?: string | undefined;
     OAUTH_REDIRECT_ORIGIN?: string | undefined;
     OAUTH_ENFORCE_PKCE?: unknown;
+    AUTH_TOKEN_TTL?: unknown;
     TOKEN_ALGORITHM?: "HS256" | "RS256" | undefined;
     TOKEN_AUDIENCE?: string | undefined;
     TOKEN_ISSUER?: string | undefined;
@@ -147,3 +145,4 @@ export declare function loadAuthEnv(raw?: NodeJS.ProcessEnv, opts?: {
 }): AuthEnv;
 export declare const authEnv: AuthEnv;
 export {};
+//# sourceMappingURL=auth.d.ts.map

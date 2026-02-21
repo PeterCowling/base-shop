@@ -1,10 +1,13 @@
 ---
 Type: Brand-Dossier
+Stage: BRAND-02
 Business-Unit: BRIK
 Business-Name: Brikette
 Status: Active
 Created: 2026-02-12
+Updated: 2026-02-21
 Last-reviewed: 2026-02-17
+Owner: Pete
 Token-Source: packages/themes/prime/src/tokens.ts
 ---
 
@@ -44,12 +47,19 @@ Token-Source: packages/themes/prime/src/tokens.ts
 
 **Palette mood:** Warm, high-saturation, Mediterranean. Coral + gold evokes sunset tones — emotional, not utilitarian.
 
+**Canonical token names** (from `packages/themes/base/src/tokens.ts`):
+`--color-primary` (+ `-fg`, `-soft`, `-hover`, `-active`), `--color-accent` (+ `-fg`, `-soft`), `--color-bg`, `--color-fg`, `--color-fg-muted`, `--color-border`.
+
 ### Typography
 
-| Role | Token | Font Family | Rationale |
-|------|-------|-------------|-----------|
-| Body + headings | `--font-sans` | Plus Jakarta Sans | Geometric with high x-height for mobile legibility. Warm and approachable — replaces Geist Sans (too developer/SaaS). |
-| Monospace | `--font-mono` | _(inherits base)_ | Rarely used in guest-facing UI |
+> **Constraint:** All fonts must be freely available — Google Fonts or system stacks only. No paid or licensed typefaces.
+
+| Role | Token | Font Family | Source | Rationale |
+|------|-------|-------------|--------|-----------|
+| Body + headings | `--font-sans` | Plus Jakarta Sans | [Google Fonts](https://fonts.google.com/specimen/Plus+Jakarta+Sans) | Geometric with high x-height for mobile legibility. Warm and approachable — replaces Geist Sans (too developer/SaaS). |
+| Monospace | `--font-mono` | _(inherits base)_ | System stack | Rarely used in guest-facing UI |
+
+**Google Fonts URL:** `https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap`
 
 **Type personality:** Friendly geometric. Approachable without being playful. High legibility at small sizes on mobile screens.
 
@@ -80,6 +90,8 @@ Token-Source: packages/themes/prime/src/tokens.ts
 | `--radius-md` | Slightly larger than base to feel friendlier, not sharper/corporate |
 | `--radius-lg` | Same philosophy as radius-md at section level |
 
+**Dark mode:** inherits base dark tokens
+
 ### Imagery Direction
 
 - **Do:** Warm, candid lifestyle photography. Natural lighting. People enjoying experiences (not posing). Mediterranean color tones. User-generated content aesthetic.
@@ -92,7 +104,7 @@ Token-Source: packages/themes/prime/src/tokens.ts
 - **Sentence length:** Short. One idea per sentence on mobile.
 - **Formality:** Casual-conversational. Like a friend who knows the area.
 - **Technical level:** Zero jargon. Plain language for international travelers (many non-native English speakers).
-- **Humor:** Light and situational — never forced.
+- **Humour:** light and dry — situational, never forced.
 
 ### Key Phrases
 

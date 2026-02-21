@@ -130,8 +130,8 @@ The derived state is compatible with the existing `loop-state.json` contract:
 | DISCOVERY-05 | Operator evidence |
 | DISCOVERY | Intake |
 | S1 | Readiness check |
-| S1B | Measurement setup |
-| S2A | Historical baseline |
+| S1B | Measure |
+| S2A | Results |
 | S2 | Market intelligence |
 | S2B | Offer design |
 | S3 | Forecast |
@@ -140,9 +140,7 @@ The derived state is compatible with the existing `loop-state.json` contract:
 | S5A | Prioritize |
 | S5B | BOS sync |
 | S6 | Site-upgrade synthesis |
-| S7 | Fact-find |
-| S8 | Plan |
-| S9 | Build |
+| DO | Do |
 | S9B | QA gates |
 | S10 | Weekly decision |
 

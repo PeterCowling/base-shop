@@ -10,17 +10,19 @@ Use design tokens exclusively. Never use arbitrary values (`[#hex]`, `[16px]`, e
 ## Color Tokens
 
 ### Backgrounds
-`bg-background`, `bg-card`, `bg-popover`, `bg-primary`, `bg-secondary`, `bg-muted`, `bg-accent`, `bg-destructive`
+`bg-bg`, `bg-primary`, `bg-accent`, `bg-muted`, `bg-primary-soft`, `bg-accent-soft`
+
+Layered surfaces: `bg-[hsl(var(--surface-1))]`, `bg-[hsl(var(--surface-2))]`, `bg-[hsl(var(--surface-3))]`
 
 ### Text
-`text-foreground`, `text-muted-foreground`, `text-primary-foreground`, `text-secondary-foreground`, `text-accent-foreground`, `text-destructive-foreground`
+`text-fg`, `text-fg-muted`, `text-primary-foreground`, `text-accent-foreground`
 
 ### Borders
-`border` (default), `border-input`, `border-ring`
+`border-[hsl(var(--color-border))]`, `border-[hsl(var(--color-border-strong))]`, `border-[hsl(var(--color-border-muted))]`
 
 ## Spacing (Padding/Margin/Gap)
 
-`0, 1, 2, 4, 6, 8, 12, 16, 20, 24` — e.g., `p-4`, `gap-6`, `space-y-4`
+8-pt rhythm: `0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16` — e.g., `p-4`, `gap-6`, `space-y-4`
 
 ## Typography
 
@@ -30,17 +32,17 @@ Use design tokens exclusively. Never use arbitrary values (`[#hex]`, `[16px]`, e
 
 ## Borders & Radius
 
-`rounded-sm`, `rounded`, `rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-full`
+`rounded-none`, `rounded-xs`, `rounded-sm`, `rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-2xl`, `rounded-3xl`, `rounded-4xl`, `rounded-full`
 
 ## Shadows
 
-`shadow-sm`, `shadow`, `shadow-md`, `shadow-lg`, `shadow-xl`
+`shadow-sm`, `shadow-md`, `shadow-lg` (mapped to `var(--shadow-*)` tokens)
 
 ## Common Patterns
 
-**Card:** `bg-card text-card-foreground rounded-lg border shadow-sm p-6`
+**Card:** `bg-[hsl(var(--surface-2))] text-fg rounded-lg border-[hsl(var(--color-border))] shadow-sm p-6`
 
-**Primary button:** `bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md font-medium`
+**Primary button:** `bg-primary text-primary-foreground hover:bg-[hsl(var(--color-primary-hover))] px-4 py-2 rounded-md font-medium`
 
 **Input:** `flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm`
 

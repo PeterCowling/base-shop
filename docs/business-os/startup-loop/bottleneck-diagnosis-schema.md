@@ -143,7 +143,7 @@ Severity is classified based on the normalized `miss` value:
 The `upstream_priority_order` defines stage precedence for tie-breaking and multi-block selection. This ordering is derived from startup-loop dependency flow (not stage-ID numeric sorting).
 
 ```
-DISCOVERY-01, DISCOVERY-02, DISCOVERY-03, DISCOVERY-04, DISCOVERY-05, DISCOVERY, S1, S1B, S2A, S2, S2B, S3, S3B, S6B, S4, S5A, S5B, S6, S7, S8, S9, S9B, S10
+DISCOVERY-01, DISCOVERY-02, DISCOVERY-03, DISCOVERY-04, DISCOVERY-05, DISCOVERY, S1, S1B, S2A, S2, S2B, S3, S3B, S6B, S4, S5A, S5B, S6, DO, S9B, S10
 ```
 
 **Note:** `S6B` intentionally precedes `S4` because `S4` (Baseline merge) consumes S6B outputs as dependencies. `DISCOVERY-01–DISCOVERY-05` precede `DISCOVERY` because they form the conditional problem-first pre-intake sequence (v1.7.0, renamed v1.9.0). `S3B` follows `S3` as a conditional parallel fan-out sibling (v1.6.0).
@@ -186,8 +186,8 @@ Constraints are identified using stable, deterministic keys:
 
 **Examples:**
 - `S4/stage_blocked/deps_blocked` — Baseline merge blocked due to missing dependencies
-- `S7/stage_blocked/data_missing` — Fact-find blocked due to missing data
-- `S9/stage_blocked/compliance` — Build blocked due to compliance review
+- `DO/stage_blocked/data_missing` — Do stage blocked due to missing data
+- `DO/stage_blocked/compliance` — Do stage blocked due to compliance review
 
 ### Persistence and Trigger Logic
 
@@ -247,7 +247,7 @@ If multiple blocked constraints exist, select the primary by:
 2. **Latest timestamp** (if same stage has multiple blocked events)
 3. **Lexical `reason_code`** (if tied on stage and timestamp)
 
-**Example:** If both `S4/stage_blocked/deps_blocked` and `S7/stage_blocked/data_missing` exist, `S4` is selected because it precedes `S7` in `upstream_priority_order`.
+**Example:** If both `S4/stage_blocked/deps_blocked` and `DO/stage_blocked/data_missing` exist, `S4` is selected because it precedes `DO` in `upstream_priority_order`.
 
 ## 9) Blocked Reason Taxonomy (v1)
 
@@ -1281,17 +1281,17 @@ The trigger auto-resolves after `autoResolveAfterNonPersistentRuns` consecutive 
 - `cvr`: target 0.04, actual 0.038, miss 0.05 (minor)
 - **Blocked stages:**
   - `S4/stage_blocked/deps_blocked` (timestamp `2026-02-13T10:00:00Z`)
-  - `S7/stage_blocked/data_missing` (timestamp `2026-02-13T10:30:00Z`)
+  - `DO/stage_blocked/data_missing` (timestamp `2026-02-13T10:30:00Z`)
 
 **Multi-block selection:**
 1. Both blocked stages have `miss = 1.0` and severity `critical`.
 2. Apply tiebreaker: earliest stage in `upstream_priority_order`.
-3. `upstream_priority_order`: `..., S4, S5A, S5B, S6, S7, ...`
-4. `S4` precedes `S7` → select `S4`.
+3. `upstream_priority_order`: `..., S4, S5A, S5B, S6, DO, ...`
+4. `S4` precedes `DO` → select `S4`.
 
 **Final ranking:**
 1. **`S4/stage_blocked/deps_blocked`** (1.0, critical) — primary blocker (upstream)
-2. `S7/stage_blocked/data_missing` (1.0, critical) — secondary blocker
+2. `DO/stage_blocked/data_missing` (1.0, critical) — secondary blocker
 3. `S3/cvr` (0.05, minor) — metric concern
 
 ## 15) Relationship to Other Schemas

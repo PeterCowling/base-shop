@@ -61,12 +61,12 @@ Read the intake packet and any optional sources listed above. Extract:
 
 Assemble a pre-populated draft from what was found. For each field, mark:
 - `confirmed` — if already documented and explicitly operator-confirmed
-- `pending` — if inferred from research but not confirmed by operator
-- blank — if no evidence found
+- `provisional` — if inferred from research but not confirmed by operator
+- `missing` — if no evidence found
 
 ### Step 3: Elicit missing or unconfirmed fields
 
-Present the pre-populated draft and ask the operator to confirm or complete each section. The operator may provide a value, `TBD`, or `unknown` — all are valid initial responses.
+Present the pre-populated draft and ask the operator to confirm or complete each section. The operator may respond `TBD` or `unknown` — these are tagged `provisional` in the artifact and must be resolved before BRAND-02. Fields with real content must have ≥ the minimum counts listed in the quality gate.
 
 **Elicitation questions:**
 
@@ -77,17 +77,23 @@ Present the pre-populated draft and ask the operator to confirm or complete each
 *B) Audience — brand perspective:*
 3. Describe the primary audience in brand terms: who are they beyond demographics? (e.g., mindset, aspiration, relationship with the product category)
 4. Is there a secondary audience that buys for or gifts to the primary audience?
-5. What device and context do they typically use when discovering this brand? (e.g., mobile while commuting, desktop during research)
+5. What is their primary device posture? (mobile-only / mobile-first / responsive / desktop-first)
+6. What is the discovery context? (When and where do they encounter the brand, and what is their mindset?)
 
 *C) Personality — adjective pairs:*
-6. Provide 3–5 adjective pairs that define the brand personality in the format "We are X, not Y." (e.g., "We are precise, not pedantic.") — If the operator struggles, offer 3 example pairs based on the product context and ask them to adjust.
+7. Provide 3–5 adjective pairs that define the brand personality in the format "We are X, not Y." (e.g., "We are precise, not pedantic.") — If the operator struggles, offer 3 example pairs based on the product context and ask them to adjust.
 
 *D) Voice & Tone:*
-7. What is the overall formality level? (casual / conversational / professional / formal)
-8. Should sentences be short and punchy, medium length, or longer and explanatory?
-9. How much humour, if any? (none / light and dry / warm and playful / frequent)
-10. Name 2–5 key phrases or vocabulary choices this brand would consistently use (e.g., "your hearing" not "your ears", "find your fit" not "buy now").
-11. Name any words or phrases to avoid and why (e.g., avoid "cheap" — sounds low quality).
+8. What is the overall formality level? (casual / conversational / professional / formal)
+9. Should sentences be short and punchy, medium length, or longer and explanatory?
+10. How much humour, if any? (none / light and dry / warm and playful / frequent)
+11. What is the expected technical level? (avoid jargon / some jargon OK / technical audience)
+12. Name 2–5 key phrases or vocabulary choices this brand would consistently use (e.g., "your hearing" not "your ears", "find your fit" not "buy now").
+13. Name any words or phrases to avoid and why (e.g., avoid "cheap" — sounds low quality).
+
+*E) Positioning Constraints (optional but recommended):*
+14. Are there any aesthetic or competitive constraints to note? (e.g., "avoid tech-bro neon," "do not look clinical/hospital-like")
+15. Name 2–3 cultural or brand inspirations in the format "like X but not Y." (e.g., "like Aesop's clarity but not their price positioning")
 
 ### Step 4: Resolve open gaps
 
@@ -109,7 +115,8 @@ Assemble confirmed values into the output format below. Save to the output path.
 ---
 Type: Brand-Strategy
 Stage: BRAND-01
-Business: <BIZ>
+Business-Unit: <BIZ>
+Business-Name: <confirmed operating name>
 Status: Draft | Active
 Created: <date>
 Updated: <date>
@@ -148,7 +155,7 @@ Owner: <operator>
 
 - **Formality:** casual | conversational | professional | formal
 - **Sentence length:** short | medium | long
-- **Humour:** none | light | frequent
+- **Humour:** none | light and dry | warm and playful | frequent
 - **Technical level:** avoid jargon | some jargon OK | technical audience
 
 ### Key Phrases
@@ -161,6 +168,16 @@ Owner: <operator>
 ### Words to Avoid
 
 - <word or phrase> — <why>
+
+## E) Positioning Constraints
+
+<!-- Optional but recommended. Feeds BRAND-02 visual decisions. -->
+
+**Aesthetic constraints:**
+- <e.g., "avoid tech-bro neon," "do not look clinical">
+
+**Brand inspirations** ("like X but not Y"):
+- <e.g., "like Aesop's clarity but not their price positioning">
 ```
 
 ---
@@ -169,11 +186,12 @@ Owner: <operator>
 
 Before saving, verify:
 
-- [ ] All four sections A–D present (empty values are acceptable if genuinely no data, but section heading must exist)
+- [ ] All five sections A–E present (section heading must exist; E may be empty if operator declines)
 - [ ] Section A: name is either confirmed or explicitly marked provisional — never left blank
-- [ ] Section C: at least 3 adjective pairs present
-- [ ] Section D: formality level set; at least 2 key phrases present
-- [ ] Frontmatter fields all present: Type, Stage, Business, Status, Created, Updated, Owner
+- [ ] Section C: at least 3 adjective pairs with real content (not TBD placeholders)
+- [ ] Section D: formality level set; at least 2 key phrases with real content; humour and technical level set
+- [ ] Any TBD/unknown values are marked `provisional` — not counted toward minimum content requirements
+- [ ] Frontmatter fields all present: Type, Stage, Business-Unit, Business-Name, Status, Created, Updated, Owner
 - [ ] Artifact saved to correct path before completion message
 
 ## Red Flags

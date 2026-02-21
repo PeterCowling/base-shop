@@ -3,7 +3,7 @@
 # All other documents (SKILL.md, workflow guide, prompt index) MUST align to this spec.
 # Version bumps require downstream alignment check (VC-02).
 
-spec_version: "2.1.0"
+spec_version: "3.0.0"
 created: "2026-02-13"
 decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 # v1.1.0: Added BD-3 sub-deliverable annotation on S2B (see docs/plans/startup-loop-branding-design-module/plan.md)
@@ -64,6 +64,10 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 #         lp-option-select→lp-do-discovery-03-option-picking,
 #         brand-naming-research→lp-do-discovery-04-business-name-options,
 #         lp-operator-evidence→lp-do-discovery-05-our-stance. Decision: 2026-02-20.
+# v3.0.0: Consolidated S7 (Fact-find), S8 (Plan), S9 (Build) into single stage DO.
+#         S7/S8/S9 stage IDs removed. Fact-find, plan, build become processes within DO,
+#         each retaining their skill (/lp-do-fact-find, /lp-do-plan, /lp-do-build).
+#         S9B and S10 unchanged. Decision: 2026-02-21.
 
 # Capability contract: docs/business-os/startup-loop/marketing-sales-capability-contract.md
 # Defines the 7 canonical marketing/sales capabilities (CAP-01 through CAP-07), their artifact paths,
@@ -214,7 +218,8 @@ stages:
     bos_sync: "Record blockers/warnings in readiness docs + strategy plan risk section"
 
   - id: S1B
-    name: Measurement bootstrap
+    name: Measure
+    stage_group: MEASURE
     skill: prompt-handoff
     prompt_required: true
     prompt_template: pre-website-measurement-bootstrap-prompt.md
@@ -226,16 +231,17 @@ stages:
     # For website-live businesses: use measurement-quality-audit-prompt.md (separate template, S2A path).
     conditional: true
     condition: "launch-surface = pre-website"
-    bos_sync: "Record measurement setup status under docs/business-os/strategy/<BIZ>/"
+    bos_sync: "Record measure stage status under docs/business-os/strategy/<BIZ>/"
 
   - id: S2A
-    name: Historical baseline
+    name: Results
+    stage_group: MEASURE
     skill: prompt-handoff
     prompt_required: true
     prompt_template: existing-business-historical-baseline-prompt.md
     conditional: true
     condition: "launch-surface = website-live"
-    bos_sync: "Persist baseline under docs/business-os/strategy/<BIZ>/"
+    bos_sync: "Persist results baseline under docs/business-os/strategy/<BIZ>/"
 
   - id: S2
     name: Market intelligence
@@ -353,26 +359,21 @@ stages:
     conditional: false
     bos_sync: "Update latest.user.md pointer"
 
-  - id: S7
-    name: Fact-find
-    skill: /lp-do-fact-find
+  - id: DO
+    name: Do
+    processes:
+      - process: fact-find
+        skill: /lp-do-fact-find
+        bos_sync: "Upsert fact-find stage doc via /api/agent/stage-docs/:cardId/fact-find"
+      - process: plan
+        skill: /lp-do-plan
+        bos_sync: "Upsert plan stage doc + lane transition Fact-finding -> Planned"
+      - process: build
+        skill: /lp-do-build
+        bos_sync: "Upsert build stage doc + lane transitions to In progress / Done"
     prompt_required: false
     conditional: false
-    bos_sync: "Upsert fact-find stage doc via /api/agent/stage-docs/:cardId/fact-find"
-
-  - id: S8
-    name: Plan
-    skill: /lp-do-plan
-    prompt_required: false
-    conditional: false
-    bos_sync: "Upsert plan stage doc + lane transition Fact-finding -> Planned"
-
-  - id: S9
-    name: Build
-    skill: /lp-do-build
-    prompt_required: false
-    conditional: false
-    bos_sync: "Upsert build stage doc + lane transitions to In progress / Done"
+    bos_sync: "Upsert fact-find, plan, and build stage docs via /api/agent/stage-docs"
 
   - id: S9B
     name: QA gates
@@ -422,11 +423,9 @@ ordering:
     - [S4, S5A]
     - [S5A, S5B]
     - [S5B, S6]
-    - [S5B, S7]          # S7 can start after S5B (or after S6 if site-upgrade in scope)
-    - [S6, S7]
-    - [S7, S8]
-    - [S8, S9]
-    - [S9, S9B]
+    - [S5B, DO]          # DO can start after S5B (or after S6 if site-upgrade in scope)
+    - [S6, DO]
+    - [DO, S9B]
     - [S9B, S10]
 
   parallel_groups:

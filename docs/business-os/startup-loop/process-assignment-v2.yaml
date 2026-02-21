@@ -122,7 +122,7 @@ processes:
     workflow_phases: ["Deliver/Support"]
     primary_workflow_phase: "Deliver/Support"
     activation: "conditional"
-    activation_condition: "Activates post-S9 launch; mandatory for inventory_present / hospitality"
+    activation_condition: "Activates post-DO launch; mandatory for inventory_present / hospitality"
 
   - process_id: "OPS-3"
     process_name: "Returns, Refunds, Cancellations and Chargebacks"

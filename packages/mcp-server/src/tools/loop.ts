@@ -52,9 +52,7 @@ const STARTUP_LOOP_STAGES = [
   "S5B",
   "S6",
   "S6B",
-  "S7",
-  "S8",
-  "S9",
+  "DO",
   "S9B",
   "S10",
 ] as const;

@@ -186,7 +186,7 @@ async function runTc08RefreshLifecycle(tempRoot: string): Promise<void> {
   const enqueueFirst = await handleLoopTool("refresh_enqueue_guarded", {
     business: "BRIK",
     runId: "run-001",
-    current_stage: "S7",
+    current_stage: "DO",
     collector: "metrics",
     requestId: "req-refresh-001",
     write_reason: "manual refresh request from startup loop",
@@ -208,7 +208,7 @@ async function runTc08RefreshLifecycle(tempRoot: string): Promise<void> {
   const enqueueDuplicate = await handleLoopTool("refresh_enqueue_guarded", {
     business: "BRIK",
     runId: "run-001",
-    current_stage: "S7",
+    current_stage: "DO",
     collector: "metrics",
     requestId: "req-refresh-001",
     write_reason: "duplicate enqueue should be idempotent",
@@ -230,7 +230,7 @@ async function runTc08RefreshLifecycle(tempRoot: string): Promise<void> {
   const transitionPending = await handleLoopTool("refresh_enqueue_guarded", {
     business: "BRIK",
     runId: "run-001",
-    current_stage: "S7",
+    current_stage: "DO",
     collector: "metrics",
     requestId: "req-refresh-001",
     write_reason: "collector accepted refresh request",
@@ -244,7 +244,7 @@ async function runTc08RefreshLifecycle(tempRoot: string): Promise<void> {
   const transitionRunning = await handleLoopTool("refresh_enqueue_guarded", {
     business: "BRIK",
     runId: "run-001",
-    current_stage: "S7",
+    current_stage: "DO",
     collector: "metrics",
     requestId: "req-refresh-001",
     write_reason: "collector running request",
@@ -287,7 +287,7 @@ async function runTc08RefreshLifecycle(tempRoot: string): Promise<void> {
   const refreshStatus = await handleLoopTool("refresh_status_get", {
     business: "BRIK",
     runId: "run-001",
-    current_stage: "S7",
+    current_stage: "DO",
     collector: "metrics",
   });
   const refreshStatusPayload = parseResultPayload(refreshStatus);
@@ -330,7 +330,7 @@ async function runTc09AnomalyDetectors(tempRoot: string): Promise<void> {
   const coldStart = await handleLoopTool("anomaly_detect_traffic", {
     business: "BRIK",
     runId: "run-001",
-    current_stage: "S7",
+    current_stage: "DO",
     grain: "day",
   });
   const coldStartPayload = parseResultPayload(coldStart);
@@ -348,7 +348,7 @@ async function runTc09AnomalyDetectors(tempRoot: string): Promise<void> {
   const warmSeries = await handleLoopTool("anomaly_detect_traffic", {
     business: "BRIK",
     runId: "run-001",
-    current_stage: "S7",
+    current_stage: "DO",
     grain: "day",
   });
   const warmSeriesPayload = parseResultPayload(warmSeries);
@@ -471,7 +471,7 @@ describe("startup-loop MCP integration suite: BOS + baseline flows", () => {
     const cards = await handleBosTool("bos_cards_list", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
 
     const stageDoc = await handleBosTool("bos_stage_doc_get", {
@@ -479,7 +479,7 @@ describe("startup-loop MCP integration suite: BOS + baseline flows", () => {
       cardId: "BRIK-ENG-0001",
       stage: "plan",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
 
     const cardsPayload = parseResultPayload(cards);
@@ -500,7 +500,7 @@ describe("startup-loop MCP integration suite: BOS + baseline flows", () => {
       cardId: "BRIK-ENG-0001",
       stage: "plan",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
       write_reason: "sync plan stage doc",
       baseEntitySha: "sha-plan-current",
       patch: { content: "# Planned\n\nUpdated from MCP write." },
@@ -522,7 +522,7 @@ describe("startup-loop MCP integration suite: BOS + baseline flows", () => {
       cardId: "BRIK-ENG-0001",
       stage: "plan",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
       write_reason: "sync plan stage doc",
       baseEntitySha: "sha-stale",
       patch: { content: "# Planned\n\nUpdated from MCP write." },
@@ -565,7 +565,7 @@ describe("startup-loop MCP integration suite: BOS + baseline flows", () => {
     const missing = await handleLoopTool("loop_manifest_status", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
     const missingPayload = parseResultPayload(missing);
     expect(missing.isError).toBe(true);
@@ -600,7 +600,7 @@ describe("startup-loop MCP integration suite: BOS + baseline flows", () => {
     const complete = await handleLoopTool("loop_manifest_status", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
     const completePayload = parseResultPayload(complete);
     expect(complete.isError).toBeUndefined();
@@ -619,7 +619,7 @@ describe("startup-loop MCP integration suite: BOS + baseline flows", () => {
     const stale = await handleLoopTool("loop_manifest_status", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
     const stalePayload = parseResultPayload(stale);
     expect(stalePayload.freshness).toEqual(
@@ -661,7 +661,7 @@ describe("startup-loop MCP integration suite: packets, anomalies, and sunset gat
     const measure = await handleLoopTool("measure_snapshot_get", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
     const measurePayload = parseResultPayload(measure);
     expect(measurePayload.recordCount).toBeGreaterThan(0);
@@ -669,12 +669,12 @@ describe("startup-loop MCP integration suite: packets, anomalies, and sunset gat
     const packetOne = await handleLoopTool("app_run_packet_build", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
     const packetTwo = await handleLoopTool("app_run_packet_build", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
 
     const packetOnePayload = parseResultPayload(packetOne);
@@ -686,7 +686,7 @@ describe("startup-loop MCP integration suite: packets, anomalies, and sunset gat
     const packetGet = await handleLoopTool("app_run_packet_get", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
       packetId: packetOnePayload.packetId,
     });
     const packetGetPayload = parseResultPayload(packetGet);
@@ -695,13 +695,13 @@ describe("startup-loop MCP integration suite: packets, anomalies, and sunset gat
     const packOne = await handleLoopTool("pack_weekly_s10_build", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
       packetId: packetOnePayload.packetId,
     });
     const packTwo = await handleLoopTool("pack_weekly_s10_build", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
       packetId: packetOnePayload.packetId,
     });
 
@@ -762,7 +762,7 @@ describe("startup-loop MCP integration suite: packets, anomalies, and sunset gat
     const measure = await handleLoopTool("measure_snapshot_get", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
     const payload = parseResultPayload(measure);
     const records = payload.records as Array<{ source: string }>;
@@ -882,7 +882,7 @@ describe("startup-loop MCP integration suite: sunset + content source collection
     const collectResult = await handleLoopTool("loop_content_sources_collect", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
       sources: [
         {
           sourceId: "market_pulse",
@@ -903,7 +903,7 @@ describe("startup-loop MCP integration suite: sunset + content source collection
     const listResult = await handleLoopTool("loop_content_sources_list", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
     });
     const listPayload = parseResultPayload(listResult);
     expect(listPayload.sourceCount).toBe(1);
@@ -919,7 +919,7 @@ describe("startup-loop MCP integration suite: sunset + content source collection
     const statusResult = await handleLoopTool("refresh_status_get", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
       collector: "content_sources",
     });
     const statusPayload = parseResultPayload(statusResult);
@@ -967,7 +967,7 @@ describe("startup-loop MCP integration suite: sunset + content source collection
     const unavailable = await handleLoopTool("loop_content_sources_collect", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
       sources: [{ sourceId: "missing_page", url: "https://content.example/missing" }],
     });
     const unavailablePayload = parseResultPayload(unavailable);
@@ -987,7 +987,7 @@ describe("startup-loop MCP integration suite: sunset + content source collection
     const mismatch = await handleLoopTool("loop_content_sources_collect", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S7",
+      current_stage: "DO",
       sources: [{ sourceId: "html_fallback", url: "https://content.example/html" }],
     });
     const mismatchPayload = parseResultPayload(mismatch);

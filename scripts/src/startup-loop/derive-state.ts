@@ -53,7 +53,7 @@ const STAGE_NAMES: Record<string, string> = Object.fromEntries(
   stageOperatorMap.stages.map((s) => [s.id, s.label_operator_short]),
 );
 
-/** All 22 stage IDs, sorted alphabetically for deterministic output. */
+/** All stage IDs, sorted alphabetically for deterministic output. */
 const ALL_STAGE_IDS = Object.keys(STAGE_NAMES).sort();
 
 // -- Derivation --

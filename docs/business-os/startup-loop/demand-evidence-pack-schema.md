@@ -192,4 +192,4 @@ For each selected channel in the channel plan, the following fields are required
 - Capability plan: `docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md` (TASK-05)
 - Consumer: `.claude/skills/lp-channels/SKILL.md` (GATE-S6B-ACT-01 enforcement)
 - Consumer: `.claude/skills/lp-readiness/SKILL.md` (capture initiation advisory)
-- Consumer: `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md` (S1B demand signal section)
+- Consumer: `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md` (S1B Measure stage demand signal section)

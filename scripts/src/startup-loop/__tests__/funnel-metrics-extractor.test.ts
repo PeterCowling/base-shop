@@ -334,7 +334,7 @@ describe("extractFunnelMetrics", () => {
           schema_version: 1,
           event: "stage_blocked",
           run_id: "SFS-TEST-20260213-1200",
-          stage: "S7",
+          stage: "DO",
           timestamp: "2026-02-13T12:10:00Z",
           loop_spec_version: "1.0.0",
           artifacts: null,
@@ -358,7 +358,7 @@ describe("extractFunnelMetrics", () => {
       expect(result.blocked_stages[0].timestamp).toBe("2026-02-13T12:05:00Z");
 
       // Second blocked stage
-      expect(result.blocked_stages[1].stage).toBe("S7");
+      expect(result.blocked_stages[1].stage).toBe("DO");
       expect(result.blocked_stages[1].reason_code).toBe("data_missing");
       expect(result.blocked_stages[1].blocking_reason).toContain("Missing customer interview");
       expect(result.blocked_stages[1].timestamp).toBe("2026-02-13T12:10:00Z");

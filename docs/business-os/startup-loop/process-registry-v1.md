@@ -14,6 +14,8 @@ Boundary-decision: docs/plans/startup-loop-orchestrated-os-comparison/decisions/
 > **ARCHIVED:** Superseded by `docs/business-os/startup-loop/process-registry-v2.md` as of 2026-02-18.
 > This file is frozen — no new edits. All process definitions and assignments are now authoritative in v2.
 > Decision record: `docs/plans/startup-loop-orchestrated-os-comparison-v2/decisions/v2-scope-boundary-decision.md`
+>
+> **ARCHIVED:** S7/S8/S9 stage IDs referenced in this document were consolidated into stage DO in loop-spec v3.0.0.
 
 # Startup Loop Process Registry v1
 

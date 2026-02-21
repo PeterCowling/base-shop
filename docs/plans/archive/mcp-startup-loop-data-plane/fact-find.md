@@ -20,6 +20,8 @@ Business-Unit: PLAT
 Card-ID:
 ---
 
+> **Note:** S7/S8/S9 stage IDs referenced below were consolidated into stage DO in loop-spec v3.0.0 (2026-02-21).
+
 # MCP Startup Loop Data Plane Fact-Find Brief
 
 ## Scope

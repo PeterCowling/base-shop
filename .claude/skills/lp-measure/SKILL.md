@@ -15,7 +15,7 @@ Bootstrap measurement infrastructure for a startup before or just after website 
 
 **Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
 
-- `--mode`: Operating mode. Defaults to `website-live`. Use `pre-website` for measurement setup before a production site exists.
+- `--mode`: Operating mode. Defaults to `website-live`. Use `pre-website` for measure before a production site exists.
 
 **Example:**
 ```bash
@@ -41,7 +41,7 @@ This skill audits existing measurement state, produces setup checklists for anal
 ## Two Modes
 
 ### pre-website
-Measurement setup before a production site exists. Focus on:
+Measure before a production site exists. Focus on:
 - Form tracking (if landing page or social media lead gen)
 - Social DM tracking (manual log or CRM entry)
 - Manual sales log (spreadsheet or lightweight CRM)
@@ -51,7 +51,7 @@ Measurement setup before a production site exists. Focus on:
 **Omits:** GA4 property setup, GSC verification, pixel/tag installation (unless landing page exists).
 
 ### website-live
-Full measurement setup for a live site. Focus on:
+Full measure for a live site. Focus on:
 - GA4 property setup (property naming, data streams, enhanced measurement, conversions)
 - GSC setup (property verification, sitemap submission, coverage monitoring)
 - Pixel/tag setup (Meta Pixel, Google Ads tag, any other channel pixels)
@@ -69,7 +69,7 @@ Full measurement setup for a live site. Focus on:
    - Products/services offered
    - Key conversion actions (purchase, lead form, signup, etc.)
 
-2. **Existing measurement setup (if any):**
+2. **Existing measure (if any):**
    - GA4 property ID (if exists)
    - GSC property URL (if exists)
    - Pixel/tag IDs (Meta, Google Ads, etc.)
@@ -155,7 +155,7 @@ Full measurement setup for a live site. Focus on:
 
 ## Output Contract
 
-Produce a **Measurement Setup Document** with the following sections:
+Produce a **Measure Document** with the following sections:
 
 ### 1. Mode and Scope
 - Operating mode (`pre-website` or `website-live`)
@@ -230,4 +230,4 @@ This skill feeds into:
 - **lp-channel (S4):** UTM governance ensures channel performance can be measured
 - **lp-content (S5):** Content performance tracking relies on event taxonomy (e.g., `video_play`, `download_guide`)
 
-The measurement setup document becomes the single source of truth for analytics infrastructure and is referenced by all downstream measurement tasks.
+The measure document becomes the single source of truth for analytics infrastructure and is referenced by all downstream measurement tasks.

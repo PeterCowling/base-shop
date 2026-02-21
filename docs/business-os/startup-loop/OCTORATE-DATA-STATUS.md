@@ -142,9 +142,9 @@ node octorate-export-final-working.mjs
 
 ### S6: Channel Strategy
 - Use Batch 2 for pricing analysis, occupancy forecasting, rate optimization
-- Weekly refresh during S6-S9 loop
+- Weekly refresh during S6-DO loop
 
-### S9: Post-Launch Monitoring
+### Post-DO: Post-Launch Monitoring
 - Weekly: Batch 2 (calendar/inventory)
 - Monthly: Batch 1 (booking value)
 - Integration with GA4 baseline comparison

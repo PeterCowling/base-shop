@@ -85,7 +85,7 @@ Business: ${BIZ}
 
 # Measurement Verification
 
-Measurement setup verified in production.
+Measure stage verified in production.
 `;
 
 const MEAS_DRAFT = `---

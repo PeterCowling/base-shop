@@ -33,7 +33,7 @@ describe("tool policy gates", () => {
       bos_stage_doc_get: {
         permission: "read",
         sideEffects: "none",
-        allowedStages: ["S7"],
+        allowedStages: ["DO"],
         auditTag: "bos:stage-doc:get",
         contextRequired: ["business", "cardId", "runId"],
         sensitiveFields: ["baseEntitySha"],
@@ -64,7 +64,7 @@ describe("tool policy gates", () => {
       bos_stage_doc_get: {
         permission: "read",
         sideEffects: "none",
-        allowedStages: ["S5B", "S7", "S8"],
+        allowedStages: ["S5B", "DO"],
         auditTag: "bos:stage-doc:get",
         contextRequired: ["business", "cardId", "runId"],
         sensitiveFields: ["baseEntitySha"],
@@ -77,7 +77,7 @@ describe("tool policy gates", () => {
         business: "BRIK",
         cardId: "BRIK-ENG-0001",
         runId: "2026-02-13-run-01",
-        current_stage: "S7",
+        current_stage: "DO",
       },
       knownToolNames: new Set(["bos_stage_doc_get"]),
       policyMap,
@@ -91,7 +91,7 @@ describe("tool policy gates", () => {
       bos_stage_doc_patch_guarded: {
         permission: "guarded_write",
         sideEffects: "bos_write",
-        allowedStages: ["S5B", "S7", "S8", "S9"],
+        allowedStages: ["S5B", "DO"],
         auditTag: "bos:stage-doc:patch",
         contextRequired: ["business", "cardId", "runId"],
         requiresEntitySha: true,
@@ -165,7 +165,7 @@ describe("tool policy gates", () => {
         bos_stage_doc_get: {
           permission: "legacy",
           sideEffects: "none",
-          allowedStages: ["S7"],
+          allowedStages: ["DO"],
           auditTag: "bos:stage-doc:get",
           contextRequired: ["business", "cardId", "runId"],
           sensitiveFields: ["baseEntitySha"],
@@ -179,7 +179,7 @@ describe("tool policy gates", () => {
       bos_stage_doc_get: {
         permission: "read",
         sideEffects: "none",
-        allowedStages: ["S7"],
+        allowedStages: ["DO"],
         auditTag: "bos:stage-doc:get",
         contextRequired: ["business", "cardId", "runId"],
         sensitiveFields: [],

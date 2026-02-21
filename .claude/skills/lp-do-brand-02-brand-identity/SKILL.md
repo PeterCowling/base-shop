@@ -75,10 +75,22 @@ For each visual identity dimension below, reason from the brand strategy inputs 
 - Express each as HSL values with token names matching the base theme schema.
 - Write a one-sentence palette mood summary.
 
+**Canonical colour token names** (use these exact keys — see `packages/themes/base/src/tokens.ts`):
+- `--color-primary` (+ `-fg`, `-soft`, `-hover`, `-active`)
+- `--color-accent` (+ `-fg`, `-soft`)
+- `--color-bg`, `--color-fg`, `--color-fg-muted`
+- `--color-border`, `--color-border-strong`, `--color-border-muted`
+- `--color-danger`, `--color-success`, `--color-warning`, `--color-info`
+
+If your chosen palette requires a token not in this list, note it as a "New token required" in the Token Overrides section.
+
 **Typography:**
-- Select body font family (system stack, Google Font, or self-hosted). Reason from formality and audience (e.g., humanist sans for approachable brands; geometric for precision).
-- Determine heading treatment (same family or distinct).
+- Select body font family from **Google Fonts or system stacks only** (no paid/licensed fonts).
+  Choose from well-known Google Fonts families (e.g., Inter, DM Sans, Plus Jakarta Sans, Nunito, Lato, Raleway, Work Sans, Source Sans 3, Outfit, Manrope). If selecting a less common family, note `font-availability: unverified` in the dossier for manual confirmation.
+  Reason from formality and audience (e.g., humanist sans for approachable brands; geometric for precision).
+- Determine heading treatment (same family or distinct). If a distinct heading font, it must also be free (Google Fonts or system).
 - Write a one-sentence type personality summary.
+- Include the Google Fonts URL for loading (weights needed for body + headings).
 
 **Shape and elevation:**
 - Select a corner radius token value. Reason from personality (sharper = more corporate; softer = more friendly).
@@ -92,7 +104,9 @@ For each visual identity dimension below, reason from the brand strategy inputs 
 
 Compare chosen palette and typography against base theme token values. For each token that differs from base, record: token name, base value, override value, reason.
 
-If no theme package exists yet, note `TBD — theme package not yet created` and leave the table with column headers only.
+If no theme package exists yet:
+1. Leave the overrides table with column headers only.
+2. Add a "Theme Prerequisites" subsection listing: create theme package at `packages/themes/<theme>/src/tokens.ts`, apply the Visual Identity overrides from this dossier, and run `pnpm build:tokens`.
 
 ### Step 4: Fill and save brand dossier
 
@@ -111,7 +125,7 @@ Using the template at `.claude/skills/_shared/brand-language-template.md` as the
 Report:
 - Sections complete vs TBD
 - Any design decisions the operator may want to review or override
-- Whether the dossier is sufficient for `/lp-design-spec` to proceed at S7
+- Whether the dossier is sufficient for `/lp-design-spec` to proceed at DO
 
 ---
 
@@ -131,6 +145,7 @@ Status: Draft
 Created: <date>
 Updated: <date>
 Last-reviewed: <date>
+Owner: <operator>
 ---
 ```
 
@@ -155,9 +170,11 @@ Before saving, verify:
 - [ ] Token Overrides section present (may be empty table if no overrides or no theme yet)
 - [ ] Imagery Direction has ≥2 Do items and ≥2 Don't items
 - [ ] Signature Patterns and App Coverage may be TBD — both sections must still be present
-- [ ] Frontmatter fields all present: Type, Stage, Business-Unit, Business-Name, Status, Created, Updated, Last-reviewed
+- [ ] Frontmatter fields all present: Type, Stage, Business-Unit, Business-Name, Status, Created, Updated, Last-reviewed, Owner
 - [ ] Status is `Draft` (not Active — operator review required before promoting)
 - [ ] Artifact saved to correct path before completion message
+- [ ] Colour palette: primary+primary-fg pairing documented (foreground on primary surface must meet WCAG AA)
+- [ ] Dark mode: explicitly noted whether business uses base dark tokens or requires bespoke dark overrides
 
 ## Red Flags
 
@@ -183,6 +200,6 @@ Invalid outputs — do not emit:
 
 **Downstream (S1):** After BRAND-02 saves the brand dossier, the operator proceeds to S1 (`/lp-readiness`). There is no BRAND gate.
 
-**Later consumption:** `/lp-design-spec` reads `brand-dossier.user.md` at S7+ and writes back stable new patterns to the Signature Patterns section. `/lp-do-build` references it for UI implementation guidance.
+**Later consumption:** `/lp-design-spec` reads `brand-dossier.user.md` at DO+ and writes back stable new patterns to the Signature Patterns section. `/lp-do-build` references it for UI implementation guidance.
 
 **Replaces:** This skill supersedes `/lp-brand-bootstrap` as the canonical brand identity skill within the startup loop BRAND stage. `lp-brand-bootstrap` remains available for standalone use outside the loop.

@@ -131,7 +131,7 @@ A skill is a local instruction set stored in `.claude/skills/<name>/SKILL.md`.
 - `lp-design-qa`: Audit implemented UI against design spec/system, accessibility, and responsiveness. (file: `.claude/skills/lp-design-qa/SKILL.md`)
 - `lp-design-spec`: Convert requirements into concrete frontend design specs mapped to design tokens/system. (file: `.claude/skills/lp-design-spec/SKILL.md`)
 - `lp-design-system`: Apply design tokens/system patterns correctly and avoid arbitrary UI values. (file: `.claude/skills/lp-design-system/SKILL.md`)
-- `lp-experiment`: Run startup experiment design/readout workflow for S8/S10 build-measure-decide loops. (file: `.claude/skills/lp-experiment/SKILL.md`)
+- `lp-experiment`: Run startup experiment design/readout workflow for DO/S10 build-measure-decide loops. (file: `.claude/skills/lp-experiment/SKILL.md`)
 - `lp-do-fact-find`: Gather evidence/context before planning or as a standalone briefing. (file: `.claude/skills/lp-do-fact-find/SKILL.md`)
 - `lp-forecast`: Produce startup 90-day P10/P50/P90 scenario forecasts. (file: `.claude/skills/lp-forecast/SKILL.md`)
 - `lp-guide-audit`: Run English-guide SEO audit and iterative fixes. (file: `.claude/skills/lp-guide-audit/SKILL.md`)

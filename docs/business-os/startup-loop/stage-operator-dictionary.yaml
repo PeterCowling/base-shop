@@ -12,7 +12,7 @@
 # TASK-02 decision: S6B retains stage key; split into GATE-S6B-STRAT-01 and GATE-S6B-ACT-01.
 
 schema_version: 1
-loop_spec_version: "2.1.0"
+loop_spec_version: "3.0.0"
 
 stages:
 
@@ -170,35 +170,39 @@ stages:
       - readiness
       - s1
     display_order: 2
-    operator_next_prompt: "Resolve any blockers, then proceed to measurement setup (pre-website) or historical baseline (website-live)."
+    operator_next_prompt: "Resolve any blockers, then proceed to Measure (pre-website) or Results (website-live)."
 
   - id: S1B
-    name_machine: measurement-bootstrap
-    label_operator_short: "Measurement setup"
-    label_operator_long: "S1B — Measurement bootstrap (pre-website)"
+    name_machine: measure
+    stage_group: MEASURE
+    label_operator_short: "Measure"
+    label_operator_long: "S1B — Measure (pre-website)"
     outcome_operator: "Analytics stack live with GA4, Search Console, and conversion events verified before any paid traffic."
     aliases:
-      - measurement-bootstrap
-      - measurement-setup
+      - measure
+      - measurement-bootstrap  # backward compat
+      - measurement-setup      # backward compat
       - s1b
     display_order: 3
     conditional: true
     condition: "launch-surface = pre-website"
-    operator_next_prompt: "Confirm measurement setup is Active, then proceed to S2 Market intelligence."
+    operator_next_prompt: "Confirm Measure stage is Active, then proceed to S2 Market intelligence."
 
   - id: S2A
-    name_machine: historical-baseline
-    label_operator_short: "Historical baseline"
-    label_operator_long: "S2A — Historical baseline (website-live)"
+    name_machine: results
+    stage_group: MEASURE
+    label_operator_short: "Results"
+    label_operator_long: "S2A — Results (website-live)"
     outcome_operator: "Consolidated business history document with net value, booking data, and traffic logs as a decision baseline."
     aliases:
-      - historical-baseline
-      - baseline-history
+      - results
+      - historical-baseline  # backward compat
+      - baseline-history     # backward compat
       - s2a
     display_order: 4
     conditional: true
     condition: "launch-surface = website-live"
-    operator_next_prompt: "Proceed to S2 Market intelligence once baseline is Active."
+    operator_next_prompt: "Proceed to S2 Market intelligence once Results baseline is Active."
 
   - id: S2
     name_machine: market-intelligence
@@ -302,7 +306,7 @@ stages:
       - bos-sync
       - s5b
     display_order: 11
-    operator_next_prompt: "S6 Site-upgrade and S7 Fact-find can now proceed."
+    operator_next_prompt: "S6 Site-upgrade and DO can now proceed."
 
   - id: S6
     name_machine: site-upgrade
@@ -314,39 +318,22 @@ stages:
       - site-upgrade-synthesis
       - s6
     display_order: 12
-    operator_next_prompt: "Proceed to S7 Fact-find."
+    operator_next_prompt: "Proceed to DO."
 
-  - id: S7
-    name_machine: fact-find
-    label_operator_short: "Fact-find"
-    label_operator_long: "S7 — Fact-find"
-    outcome_operator: "Planning-grade fact-find brief with evidence, open questions, and routing packet."
+  - id: DO
+    name_machine: do
+    label_operator_short: "Do"
+    label_operator_long: "DO — Do (/lp-do-fact-find / /lp-do-plan / /lp-do-build)"
+    outcome_operator: "Feature or artifact delivered: fact-find brief, sequenced plan, and implementation with validation evidence."
     aliases:
+      - do
       - fact-find
-      - s7
-    display_order: 13
-    operator_next_prompt: "Proceed to S8 Plan."
-
-  - id: S8
-    name_machine: plan
-    label_operator_short: "Plan"
-    label_operator_long: "S8 — Plan"
-    outcome_operator: "Sequenced implementation plan with confidence-gated tasks and validation contracts."
-    aliases:
       - plan
-      - s8
-    display_order: 14
-    operator_next_prompt: "Proceed to S9 Build when plan confidence is sufficient."
-
-  - id: S9
-    name_machine: build
-    label_operator_short: "Build"
-    label_operator_long: "S9 — Build"
-    outcome_operator: "Implemented feature or artifact with validation evidence and plan task statuses updated."
-    aliases:
       - build
-      - s9
-    display_order: 15
+      - s7    # backward compat
+      - s8    # backward compat
+      - s9    # backward compat
+    display_order: 13
     operator_next_prompt: "Proceed to S9B QA gates before launch."
 
   - id: S9B
@@ -358,7 +345,7 @@ stages:
       - qa-gates
       - qa
       - s9b
-    display_order: 16
+    display_order: 14
     operator_next_prompt: "Proceed to S10 Weekly decision loop."
 
   - id: S10
@@ -371,5 +358,5 @@ stages:
       - weekly-decision
       - weekly
       - s10
-    display_order: 17
+    display_order: 15
     operator_next_prompt: "Repeat weekly. Run standing refresh prompts on monthly/quarterly cadence."

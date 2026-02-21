@@ -133,33 +133,6 @@ const nextConfig = {
       "@acme/design-system/utils/style": designSystemStylePath,
     },
   },
-  webpack: (config, context) => {
-    if (typeof sharedConfig.webpack === "function") {
-      config = sharedConfig.webpack(config, context);
-    }
-
-    config.resolve ??= {};
-    config.resolve.alias = {
-      ...(config.resolve.alias ?? {}),
-      "@": path.resolve(__dirname, "src"),
-      "@acme/design-system/utils/style": designSystemStylePath,
-    };
-
-    // The brikette app still has a few Node-only helpers (fs loaders, createRequire).
-    // Those are guarded at runtime, but webpack needs explicit "no polyfill" fallbacks
-    // for the client build to avoid "Module not found" errors.
-    if (!context.isServer) {
-      config.resolve.fallback = {
-        ...(config.resolve.fallback ?? {}),
-        fs: false,
-        module: false,
-        path: false,
-        url: false,
-      };
-    }
-
-    return config;
-  },
 };
 
 export default nextConfig;

@@ -3,7 +3,7 @@
 **Goal**: Verify measurement infrastructure is correctly separated (staging/production), properly configured, and instrumented before live traffic hits the site.
 **Required output schema**: `{ domain: "measurement", status: "pass|fail|warn", checks: [{ id: "<M1>", status: "pass|fail|warn", evidence: "<string>" }] }`
 
-> **Pre-flight note:** If the business did not go through S1B (pre-website measurement bootstrap) — e.g. an existing-site business on the `website-live` path — checks M1 and M2 may reveal a gap. In that case, produce a gap advisory and recommend routing to `measurement-quality-audit-prompt.md` rather than blocking launch.
+> **Pre-flight note:** If the business did not go through S1B (Measure stage, pre-website path) — e.g. an existing-site business on the `website-live` path — checks M1 and M2 may reveal a gap. In that case, produce a gap advisory and recommend routing to `measurement-quality-audit-prompt.md` rather than blocking launch.
 
 > **Delayed checks (DV-series):** Checks marked `(DELAYED)` cannot be verified at T+0 because GA4 Data API has 24-72 hour data latency. Failures on delayed checks are **warnings only** — they do not block launch. Document as "Deferred to T+1/T+7 post-deploy verification (`post-deploy-measurement-verification-prompt.md`)."
 

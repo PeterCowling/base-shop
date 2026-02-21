@@ -1,6 +1,6 @@
 ---
 name: lp-brand-bootstrap
-description: Bootstrap a brand-dossier.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at S7 before /lp-design-spec.
+description: Bootstrap a brand-dossier.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec.
 operating_mode: EXECUTE
 ---
 
@@ -8,12 +8,12 @@ operating_mode: EXECUTE
 
 Initialize brand language documentation for a business in the startup loop.
 
-> **Note**: In the startup loop BRAND stage, use `/lp-do-brand-02-brand-identity` instead. `lp-brand-bootstrap` remains available for standalone brand dossier creation outside the loop.
+> **Note**: In the startup loop BRAND stage, use `/lp-do-brand-02-brand-identity` instead. `lp-brand-bootstrap` remains available for standalone Draft dossier creation outside the loop. It does **not** promote Status to Active — that requires operator review and explicit confirmation.
 
 ## When to Use
 
 - **S0/S1 gate**: Startup loop detects missing `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
-- **S7 prerequisite**: `/lp-do-fact-find` flags `Design-Spec-Required: yes` but no brand language exists
+- **DO prerequisite**: `/lp-do-fact-find` flags `Design-Spec-Required: yes` but no brand language exists
 - **Manual**: Operator invokes `/lp-brand-bootstrap <BIZ>` at any time
 
 ## Inputs
@@ -85,7 +85,7 @@ If the business has no app yet:
 - **Consumed by**: `/lp-design-spec` (reads brand language for token bindings and component decisions)
 - **Updated by**: `/lp-design-spec` (writes back stable patterns to Signature Patterns section)
 - **Referenced by**: `/lp-do-build` (for UI implementation guidance)
-- **Loop position**: S0/S1 (setup) or S7 (pre-design-spec)
+- **Loop position**: S0/S1 (setup) or DO (pre-design-spec)
 
 ## Example Invocation
 

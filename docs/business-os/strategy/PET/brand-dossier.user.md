@@ -1,10 +1,13 @@
 ---
 Type: Brand-Dossier
+Stage: BRAND-02
 Business-Unit: PET
 Business-Name: Pet Product
 Status: Draft
 Created: 2026-02-17
+Updated: 2026-02-21
 Last-reviewed: 2026-02-17
+Owner: Pete
 Token-Source: TBD — no app or theme package exists yet for Pet Product
 ---
 
@@ -60,13 +63,13 @@ Common to all candidate directions:
 
 ### Typography
 
-| Role | Token (proposed) | Rationale |
-|------|-----------------|-----------|
-| Body + headings | TBD | Friendly, readable, not corporate. Italian shoppers respond well to warm geometric sans-serif. |
+| Role | Token (proposed) | Source | Rationale |
+|------|-----------------|--------|-----------|
+| Body + headings | TBD | TBD | Friendly, readable, not corporate. Italian shoppers respond well to warm geometric sans-serif. |
 
 ### Shape & Elevation
 
-> TBD — follow decision on category and app design after S7.
+> TBD — follow decision on category and app design after DO.
 
 ### Token Rationale
 
@@ -75,6 +78,8 @@ Common to all candidate directions:
 | Token | Design rationale |
 |-------|-----------------|
 | _(all TBD)_ | No app or theme package exists. Populate when created via `/lp-design-spec`. |
+
+**Dark mode:** TBD — decide when theme package is created.
 
 ### Imagery Direction
 

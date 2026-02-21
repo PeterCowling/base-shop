@@ -1,6 +1,8 @@
 Type: Reference
 Status: Active
 
+> **Note:** S7/S8/S9 stage IDs referenced below were consolidated into stage DO in loop-spec v3.0.0 (2026-02-21).
+
 ## Business Operator Actions
 
 These are the actions owned by Pete as venture-studio operator. Each row is a concrete next step — not a platform task.
@@ -12,8 +14,8 @@ These are the actions owned by Pete as venture-studio operator. Each row is a co
 | Run a 7-day paid acquisition test for PET | PET has no measured CPC or CVR yet — the forecast relies on seed assumptions until real data is captured. | First measured CPC and CVR documented from a 7-day live test. |
 | Verify GA4 standard report signal for BRIK (begin_checkout + web_vitals) | The weekly BRIK decision loop needs confirmed non-zero signal in 7-day standard reports, not just realtime. | Non-zero begin_checkout and web_vitals in standard 7-day GA4 report. |
 | Run the day-14 forecast recalibration for BRIK | BRIK v1 forecast is based on seed assumptions; first two weeks of measured data must replace them for reliable scaling decisions. | Day-14 recalibration document produced and integrated into the BRIK strategy plan. |
-| Complete the Pre-website Measurement Setup checklist for HEAD | HEAD is pre-website; paid traffic cannot start without GA4, Search Console, and conversion event setup. | Measurement setup document at Active status. |
-| Complete the Pre-website Measurement Setup checklist for PET | PET is pre-website; same measurement requirement as HEAD. | Measurement setup document at Active status. |
+| Complete the Pre-website Measure checklist for HEAD | HEAD is pre-website; paid traffic cannot start without GA4, Search Console, and conversion event setup. | Measure stage document at Active status. |
+| Complete the Pre-website Measure checklist for PET | PET is pre-website; same measurement requirement as HEAD. | Measure stage document at Active status. |
 | Run the weekly K/P/C/S decision for each active business | Loop health depends on weekly cadence — decisions go stale within days without the weekly review. | Weekly K/P/C/S decision document produced and dated this week. |
 | Run standing refresh prompts when cadence triggers | Market/channel/regulatory inputs go stale without periodic refresh. | Monthly market-pulse, channel-economics, and quarterly regulatory-watch documents up to date. |
 

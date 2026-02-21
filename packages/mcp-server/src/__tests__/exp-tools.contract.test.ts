@@ -11,7 +11,7 @@ describe("experiment runtime contract tools", () => {
     const args = {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S8",
+      current_stage: "DO",
       hypothesisId: "HYP-001",
       seed: "baseline-a",
     };
@@ -30,7 +30,7 @@ describe("experiment runtime contract tools", () => {
     const result = await handleBosTool("exp_rollout_status", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S8",
+      current_stage: "DO",
       experimentId: "EXP-1234567890",
       requestedBy: "startup-loop",
       plannedRolloutPercent: 15,
@@ -60,7 +60,7 @@ describe("experiment runtime contract tools", () => {
     const result = await handleBosTool("exp_results_snapshot", {
       business: "BRIK",
       runId: "run-001",
-      current_stage: "S8",
+      current_stage: "DO",
       experimentId: "EXP-1234567890",
       control: {
         exposures: 1000,

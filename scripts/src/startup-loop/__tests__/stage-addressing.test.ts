@@ -19,7 +19,7 @@ import {
 
 describe("resolveById (--stage <ID>)", () => {
   it("VC-04: resolves known canonical stage IDs", () => {
-    const ids = ["DISCOVERY-01", "DISCOVERY-02", "DISCOVERY-03", "DISCOVERY-04", "DISCOVERY-05", "DISCOVERY-06", "DISCOVERY-07", "DISCOVERY", "BRAND-01", "BRAND-02", "BRAND", "S1", "S1B", "S2A", "S2", "S2B", "S3", "S3B", "S4", "S5A", "S5B", "S6", "S6B", "S7", "S8", "S9", "S9B", "S10"];
+    const ids = ["DISCOVERY-01", "DISCOVERY-02", "DISCOVERY-03", "DISCOVERY-04", "DISCOVERY-05", "DISCOVERY-06", "DISCOVERY-07", "DISCOVERY", "BRAND-01", "BRAND-02", "BRAND", "S1", "S1B", "S2A", "S2", "S2B", "S3", "S3B", "S4", "S5A", "S5B", "S6", "S6B", "DO", "S9B", "S10"];
     for (const id of ids) {
       const result = resolveById(id);
       expect(result.ok).toBe(true);
@@ -232,7 +232,7 @@ describe("resolveByLabel (--stage-label <text>)", () => {
 
 describe("resolveStageId (entry point)", () => {
   it("dispatches id mode correctly", () => {
-    expect(resolveStageId("S7", "id")).toEqual({ ok: true, stageId: "S7", mode: "id" });
+    expect(resolveStageId("DO", "id")).toEqual({ ok: true, stageId: "DO", mode: "id" });
   });
 
   it("dispatches alias mode correctly", () => {

@@ -1,9 +1,5 @@
----
-Type: Reference
-Status: Active
----
 <!-- AUTO-GENERATED — do not edit directly. Edit stage-operator-dictionary.yaml and re-run: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts -->
-<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 2.1.0 -->
+<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 3.0.0 -->
 
 # Startup Loop — Stage Operator Reference
 
@@ -17,12 +13,12 @@ Status: Active
 | 1 | `DISCOVERY-06` | Measure Plan | Measurement plan with tracking method, ≥2 key metrics, success thresholds, and data collection feasibility confirmed. | `measurement-plan`, `discovery-06`, `measure-plan` | start-point = problem |
 | 1 | `DISCOVERY-07` | Operator evidence | Operator evidence packet: launch surface, stock status, pricing model, channel pre-decisions, and open evidence gaps documented. | `operator-evidence`, `our-stance`, `discovery-07` | start-point = problem |
 | 1 | `DISCOVERY` | Intake | Structured startup context packet ready for all downstream stages. | `intake`, `discovery` | — |
-| 1 | `BRAND-01` | Brand strategy | Brand name confirmed; personality adjective pairs, audience, voice & tone documented. | `brand-strategy`, `brand-01` | always |
-| 1 | `BRAND-02` | Brand identity | Visual language: colour palette, typography, imagery direction, token overrides. Brand dossier at Draft+. | `brand-identity`, `brand-02`, `brand-dossier` | always |
-| 1 | `BRAND` | Brand | Brand stage complete. Proceeds to S1 (no gate). | `brand`, `brand-intake` | always |
+| 1 | `BRAND-01` | Brand-01 | Business name confirmed; personality adjective pairs, audience, voice & tone documented. | `brand-strategy`, `brand-01` | — |
+| 1 | `BRAND-02` | Brand-02 | Visual language: colour palette, typography, imagery direction, token overrides. Brand dossier at Draft+. | `brand-identity`, `brand-02`, `brand-dossier` | — |
+| 1 | `BRAND` | Brand | Brand stage complete. Proceeds to S1 (no gate). | `brand`, `brand-intake` | — |
 | 2 | `S1` | Readiness check | Readiness report with blocker list. All 7 gates checked. | `readiness`, `s1` | — |
-| 3 | `S1B` | Measurement setup | Analytics stack live with GA4, Search Console, and conversion events verified before any paid traffic. | `measurement-bootstrap`, `measurement-setup`, `s1b` | launch-surface = pre-website |
-| 4 | `S2A` | Historical baseline | Consolidated business history document with net value, booking data, and traffic logs as a decision baseline. | `historical-baseline`, `baseline-history`, `s2a` | launch-surface = website-live |
+| 3 | `S1B` | Measure | Analytics stack live with GA4, Search Console, and conversion events verified before any paid traffic. | `measure`, `measurement-bootstrap`, `measurement-setup`, `s1b` | launch-surface = pre-website |
+| 4 | `S2A` | Results | Consolidated business history document with net value, booking data, and traffic logs as a decision baseline. | `results`, `historical-baseline`, `baseline-history`, `s2a` | launch-surface = website-live |
 | 5 | `S2` | Market intelligence | Decision-grade market intelligence pack covering competitors, demand, pricing, and channels. | `market-intelligence`, `market-intel`, `s2` | — |
 | 6 | `S2B` | Offer design | Offer artifact: target customer, positioning, pricing model, and messaging hierarchy. | `offer-design`, `offer`, `s2b` | — |
 | 7 | `S3` | Forecast | 90-day P10/P50/P90 revenue forecast with assumption register and sparse-evidence guardrails. | `forecast`, `s3` | — |
@@ -32,11 +28,9 @@ Status: Active
 | 10 | `S5A` | Prioritize | Scored and ranked action list — top 2-3 items to work on next. | `prioritize`, `s5a` | — |
 | 11 | `S5B` | BOS sync | Business OS cards and stage docs persisted to D1. Manifest pointer committed. | `bos-sync`, `s5b` | — |
 | 12 | `S6` | Site-upgrade synthesis | Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis. | `site-upgrade`, `site-upgrade-synthesis`, `s6` | — |
-| 13 | `S7` | Fact-find | Planning-grade fact-find brief with evidence, open questions, and routing packet. | `fact-find`, `s7` | — |
-| 14 | `S8` | Plan | Sequenced implementation plan with confidence-gated tasks and validation contracts. | `plan`, `s8` | — |
-| 15 | `S9` | Build | Implemented feature or artifact with validation evidence and plan task statuses updated. | `build`, `s9` | — |
-| 16 | `S9B` | QA gates | QA gate pass evidence: conversion flows, SEO readiness, performance budget, and legal compliance verified. | `qa-gates`, `qa`, `s9b` | — |
-| 17 | `S10` | Weekly decision | Weekly K/P/C/S decision document with denominator-valid KPI assessment and next actions. | `weekly-readout`, `weekly-decision`, `weekly`, `s10` | — |
+| 13 | `DO` | Do | Feature or artifact delivered: fact-find brief, sequenced plan, and implementation with validation evidence. | `do`, `fact-find`, `plan`, `build`, `s7`, `s8`, `s9` | — |
+| 14 | `S9B` | QA gates | QA gate pass evidence: conversion flows, SEO readiness, performance budget, and legal compliance verified. | `qa-gates`, `qa`, `s9b` | — |
+| 15 | `S10` | Weekly decision | Weekly K/P/C/S decision document with denominator-valid KPI assessment and next actions. | `weekly-readout`, `weekly-decision`, `weekly`, `s10` | — |
 
 ### `S6B` microsteps
 

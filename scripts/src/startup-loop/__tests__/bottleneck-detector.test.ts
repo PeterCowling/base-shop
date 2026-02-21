@@ -759,9 +759,9 @@ describe('identifyBottleneck', () => {
       },
       blocked_stages: [
         {
-          stage: 'S7',
+          stage: 'DO',
           reason_code: 'data_missing',
-          blocking_reason: 'Fact-find data unavailable',
+          blocking_reason: 'Do stage data unavailable',
           timestamp: '2026-02-13T10:30:00Z',
         },
         {
@@ -787,14 +787,14 @@ describe('identifyBottleneck', () => {
 
     expect(result.diagnosis_status).toBe('ok');
     expect(result.identified_constraint).not.toBeNull();
-    // S4 precedes S7 in upstream_priority_order
+    // S4 precedes DO in upstream_priority_order
     expect(result.identified_constraint?.constraint_key).toBe('S4/stage_blocked/deps_blocked');
     expect(result.identified_constraint?.stage).toBe('S4');
     expect(result.identified_constraint?.severity).toBe('critical');
     expect(result.identified_constraint?.miss).toBe(1.0);
 
-    // Verify S7 is in ranked constraints as secondary
+    // Verify DO is in ranked constraints as secondary
     expect(result.ranked_constraints.length).toBeGreaterThanOrEqual(2);
-    expect(result.ranked_constraints[1].constraint_key).toBe('S7/stage_blocked/data_missing');
+    expect(result.ranked_constraints[1].constraint_key).toBe('DO/stage_blocked/data_missing');
   });
 });

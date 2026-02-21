@@ -146,7 +146,7 @@ Evidence:
 - `docs/business-os/startup-loop/loop-spec.yaml`
 - `.claude/skills/lp-readiness/SKILL.md`
 
-### S1B - Measurement Bootstrap (conditional)
+### S1B - Measure (conditional)
 Stage type: Type C (Prompt-handoff), with an adjacent Type B skill (`/lp-measure`) that does not map cleanly.
 
 Intended:
@@ -160,7 +160,7 @@ Evidence:
 - `docs/business-os/startup-loop/loop-spec.yaml`
 - `.claude/skills/lp-measure/SKILL.md`
 
-### S2A - Historical Baseline (conditional)
+### S2A - Results (conditional)
 Stage type: Type C (Prompt-handoff).
 
 Intended:
@@ -280,7 +280,7 @@ Gaps observed:
 Evidence:
 - `.claude/skills/lp-site-upgrade/SKILL.md`
 
-### S7 - Fact-Find
+### DO - Fact-Find (`/lp-do-fact-find`)
 Stage type: Type B (Skill stage).
 
 Intended:
@@ -298,7 +298,7 @@ Evidence:
 - `apps/business-os/src/app/api/agent/stage-docs/route.ts` (StageTypeSchema validation)
 - `packages/platform-core/src/repositories/businessOsStageDocs.server.ts` (StageTypeSchema definition)
 
-### S8 - Plan
+### DO - Plan (`/lp-do-plan`)
 Stage type: Type B (Skill stage).
 
 Intended:
@@ -312,7 +312,7 @@ Evidence:
 - `.claude/skills/lp-design-spec/SKILL.md`
 - `.claude/skills/lp-design-qa/SKILL.md`
 
-### S9 - Build
+### DO - Build (`/lp-do-build`)
 Stage type: Type B (Skill stage), with Type A validation scripts/tooling.
 
 Intended:

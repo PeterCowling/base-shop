@@ -2108,7 +2108,7 @@
   {
     "path": "docs/business-os/strategy/HEAD/latest-naming-shortlist.user.md",
     "type": "Deep-Research-Output",
-    "status": "Awaiting-Decision",
+    "status": "Domain-Screened-Partially-Blocked",
     "domain": null
   },
   {
@@ -4852,6 +4852,36 @@
     "type": "Reference",
     "status": "Reference",
     "domain": null
+  },
+  {
+    "path": "docs/plans/brikette-webpack-removal/critique-history.md",
+    "type": "Critique-History",
+    "status": "Reference",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/brikette-webpack-removal/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/brikette-webpack-removal/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/brikette-webpack-removal/spike-results.md",
+    "type": "Spike-Results",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/brikette-webpack-removal/verification-report.md",
+    "type": "Verification-Report",
+    "status": "Reference",
+    "domain": "Platform"
   },
   {
     "path": "docs/plans/business-os-card-presentation-fact-find.md",

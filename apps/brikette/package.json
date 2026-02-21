@@ -5,7 +5,7 @@
     "dev": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next dev -p 3012",
     "prebuild": "pnpm run generate:guide-link-labels && pnpm --filter @acme/telemetry build",
     "postbuild": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-public-seo.ts",
-    "build": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next build",
+    "build": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next build --turbopack",
     "start": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next start -p 3012",
     "lint": "echo 'Lint temporarily disabled - see eslint.config.mjs ignores'",
     "pretypecheck": "pnpm --filter @acme/telemetry build && pnpm --filter @acme/guides-core build && pnpm --filter @acme/guide-system build && pnpm --filter @acme/platform-core build",

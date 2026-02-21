@@ -324,15 +324,15 @@ Track operational autonomy quality, not just output artifacts. Minimum metrics:
 9. S5A Prioritize.
 10. S5B BOS sync.
 11. S6 Site-upgrade synthesis (when in scope).
-12. S7 Fact-find.
-13. S8 Plan.
-14. S9 Build.
+12. DO Fact-find (`/lp-do-fact-find`).
+13. DO Plan (`/lp-do-plan`).
+14. DO Build (`/lp-do-build`).
 15. S9B QA gates.
 16. S10 Weekly experiment/readout loop.
 
 ### Existing-business path additions
 
-For website-live businesses, S2 and downstream strategy are blocked until S2A historical baseline is active and decision-grade.
+For website-live businesses, S2 and downstream strategy are blocked until S2A Results baseline is active and decision-grade.
 S1B and S2A are conditional gates, not mandatory paired steps. Some runs will execute only one of them.
 
 ## 10) Parallelization Model (Proposed)

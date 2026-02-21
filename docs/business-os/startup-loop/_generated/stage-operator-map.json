@@ -1,6 +1,6 @@
 {
   "_generated_from": "docs/business-os/startup-loop/stage-operator-dictionary.yaml",
-  "_loop_spec_version": "2.1.0",
+  "_loop_spec_version": "3.0.0",
   "_schema_version": 1,
   "_note": "AUTO-GENERATED — do not edit directly. Edit stage-operator-dictionary.yaml and re-run: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts",
   "stages": [
@@ -127,21 +127,49 @@
     },
     {
       "id": "BRAND-01",
+      "name_machine": "brand-strategy",
       "label_operator_short": "Brand-01",
       "label_operator_long": "BRAND-01 — Brand strategy",
-      "condition": "always"
+      "outcome_operator": "Business name confirmed; personality adjective pairs, audience, voice & tone documented.",
+      "aliases": [
+        "brand-strategy",
+        "brand-01"
+      ],
+      "display_order": 1,
+      "conditional": false,
+      "condition": "always",
+      "operator_next_prompt": "Run /lp-do-brand-02-brand-identity to create brand-dossier."
     },
     {
       "id": "BRAND-02",
+      "name_machine": "brand-identity",
       "label_operator_short": "Brand-02",
       "label_operator_long": "BRAND-02 — Brand identity",
-      "condition": "always"
+      "outcome_operator": "Visual language: colour palette, typography, imagery direction, token overrides. Brand dossier at Draft+.",
+      "aliases": [
+        "brand-identity",
+        "brand-02",
+        "brand-dossier"
+      ],
+      "display_order": 1,
+      "conditional": false,
+      "condition": "always",
+      "operator_next_prompt": "BRAND complete. Run /startup-loop advance to proceed to S1."
     },
     {
       "id": "BRAND",
+      "name_machine": "brand",
       "label_operator_short": "Brand",
       "label_operator_long": "BRAND — Brand",
-      "condition": "always"
+      "outcome_operator": "Brand stage complete. Proceeds to S1 (no gate).",
+      "aliases": [
+        "brand",
+        "brand-intake"
+      ],
+      "display_order": 1,
+      "conditional": false,
+      "condition": "always",
+      "operator_next_prompt": "Run /lp-readiness to check launch readiness before entering offer design."
     },
     {
       "id": "S1",
@@ -154,15 +182,17 @@
         "s1"
       ],
       "display_order": 2,
-      "operator_next_prompt": "Resolve any blockers, then proceed to measurement setup (pre-website) or historical baseline (website-live)."
+      "operator_next_prompt": "Resolve any blockers, then proceed to Measure (pre-website) or Results (website-live)."
     },
     {
       "id": "S1B",
-      "name_machine": "measurement-bootstrap",
-      "label_operator_short": "Measurement setup",
-      "label_operator_long": "S1B — Measurement bootstrap (pre-website)",
+      "name_machine": "measure",
+      "stage_group": "MEASURE",
+      "label_operator_short": "Measure",
+      "label_operator_long": "S1B — Measure (pre-website)",
       "outcome_operator": "Analytics stack live with GA4, Search Console, and conversion events verified before any paid traffic.",
       "aliases": [
+        "measure",
         "measurement-bootstrap",
         "measurement-setup",
         "s1b"
@@ -170,15 +200,17 @@
       "display_order": 3,
       "conditional": true,
       "condition": "launch-surface = pre-website",
-      "operator_next_prompt": "Confirm measurement setup is Active, then proceed to S2 Market intelligence."
+      "operator_next_prompt": "Confirm Measure stage is Active, then proceed to S2 Market intelligence."
     },
     {
       "id": "S2A",
-      "name_machine": "historical-baseline",
-      "label_operator_short": "Historical baseline",
-      "label_operator_long": "S2A — Historical baseline (website-live)",
+      "name_machine": "results",
+      "stage_group": "MEASURE",
+      "label_operator_short": "Results",
+      "label_operator_long": "S2A — Results (website-live)",
       "outcome_operator": "Consolidated business history document with net value, booking data, and traffic logs as a decision baseline.",
       "aliases": [
+        "results",
         "historical-baseline",
         "baseline-history",
         "s2a"
@@ -186,7 +218,7 @@
       "display_order": 4,
       "conditional": true,
       "condition": "launch-surface = website-live",
-      "operator_next_prompt": "Proceed to S2 Market intelligence once baseline is Active."
+      "operator_next_prompt": "Proceed to S2 Market intelligence once Results baseline is Active."
     },
     {
       "id": "S2",
@@ -311,7 +343,7 @@
         "s5b"
       ],
       "display_order": 11,
-      "operator_next_prompt": "S6 Site-upgrade and S7 Fact-find can now proceed."
+      "operator_next_prompt": "S6 Site-upgrade and DO can now proceed."
     },
     {
       "id": "S6",
@@ -325,45 +357,24 @@
         "s6"
       ],
       "display_order": 12,
-      "operator_next_prompt": "Proceed to S7 Fact-find."
+      "operator_next_prompt": "Proceed to DO."
     },
     {
-      "id": "S7",
-      "name_machine": "fact-find",
-      "label_operator_short": "Fact-find",
-      "label_operator_long": "S7 — Fact-find",
-      "outcome_operator": "Planning-grade fact-find brief with evidence, open questions, and routing packet.",
+      "id": "DO",
+      "name_machine": "do",
+      "label_operator_short": "Do",
+      "label_operator_long": "DO — Do (/lp-do-fact-find / /lp-do-plan / /lp-do-build)",
+      "outcome_operator": "Feature or artifact delivered: fact-find brief, sequenced plan, and implementation with validation evidence.",
       "aliases": [
+        "do",
         "fact-find",
-        "s7"
-      ],
-      "display_order": 13,
-      "operator_next_prompt": "Proceed to S8 Plan."
-    },
-    {
-      "id": "S8",
-      "name_machine": "plan",
-      "label_operator_short": "Plan",
-      "label_operator_long": "S8 — Plan",
-      "outcome_operator": "Sequenced implementation plan with confidence-gated tasks and validation contracts.",
-      "aliases": [
         "plan",
-        "s8"
-      ],
-      "display_order": 14,
-      "operator_next_prompt": "Proceed to S9 Build when plan confidence is sufficient."
-    },
-    {
-      "id": "S9",
-      "name_machine": "build",
-      "label_operator_short": "Build",
-      "label_operator_long": "S9 — Build",
-      "outcome_operator": "Implemented feature or artifact with validation evidence and plan task statuses updated.",
-      "aliases": [
         "build",
+        "s7",
+        "s8",
         "s9"
       ],
-      "display_order": 15,
+      "display_order": 13,
       "operator_next_prompt": "Proceed to S9B QA gates before launch."
     },
     {
@@ -377,7 +388,7 @@
         "qa",
         "s9b"
       ],
-      "display_order": 16,
+      "display_order": 14,
       "operator_next_prompt": "Proceed to S10 Weekly decision loop."
     },
     {
@@ -392,7 +403,7 @@
         "weekly",
         "s10"
       ],
-      "display_order": 17,
+      "display_order": 15,
       "operator_next_prompt": "Repeat weekly. Run standing refresh prompts on monthly/quarterly cadence."
     }
   ],
@@ -425,9 +436,11 @@
     "brand-intake": "BRAND",
     "readiness": "S1",
     "s1": "S1",
+    "measure": "S1B",
     "measurement-bootstrap": "S1B",
     "measurement-setup": "S1B",
     "s1b": "S1B",
+    "results": "S2A",
     "historical-baseline": "S2A",
     "baseline-history": "S2A",
     "s2a": "S2A",
@@ -455,12 +468,13 @@
     "site-upgrade": "S6",
     "site-upgrade-synthesis": "S6",
     "s6": "S6",
-    "fact-find": "S7",
-    "s7": "S7",
-    "plan": "S8",
-    "s8": "S8",
-    "build": "S9",
-    "s9": "S9",
+    "do": "DO",
+    "fact-find": "DO",
+    "plan": "DO",
+    "build": "DO",
+    "s7": "DO",
+    "s8": "DO",
+    "s9": "DO",
     "qa-gates": "S9B",
     "qa": "S9B",
     "s9b": "S9B",

@@ -52,27 +52,27 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 | Process ID | Name | Workstream | Stage Anchor | Cadence | Profile / Branch Conditions |
 |---|---|---|---|---|---|
 | CDI-1 | Weekly signal intake and insight synthesis | CDI | S10 | Weekly | All profiles |
-| CDI-2 | Customer development interviews and field validation | CDI | S2, S7, recurring | Weekly (pre-PMF) / Biweekly (PMF+) | All profiles |
+| CDI-2 | Customer development interviews and field validation | CDI | S2, DO, recurring | Weekly (pre-PMF) / Biweekly (PMF+) | All profiles |
 | CDI-3 | Market and competitor scan | CDI | S2, recurring | Weekly (hospitality, high season) / Biweekly (product) | All |
 | CDI-4 | Experiment backlog design and prioritisation | CDI | S5A, S10 | Weekly | All |
 | OFF-1 | Offer and value proposition iteration | OFF | S2B, recurring | Weekly (pre-PMF/PMF) / Monthly (scaling) | All |
 | OFF-2 | Pricing and revenue management review | OFF | S2B, S10 | Weekly (hospitality always; product if volatile) | All |
 | OFF-3 | Product / listing content and merchandising refresh | OFF | S6, recurring | Weekly (top assets) / Monthly full audit | All |
 | OFF-4 | Channel policy and conflict management | OFF | S6B, recurring | Monthly review; weekly exceptions | `wholesale_heavy`, `OTA_mix_high` (conditional others) |
-| GTM-1 | Weekly demand plan and campaign sprint | GTM | S8, S10 | Weekly | All |
+| GTM-1 | Weekly demand plan and campaign sprint | GTM | DO, S10 | Weekly | All |
 | GTM-2 | Distribution channel ops (retail/wholesale/OTAs) | GTM | S6B, recurring | Weekly / Daily (high season or volume) | `wholesale_heavy`, `OTA_mix_high`, hospitality |
 | GTM-3 | Sales / account pipeline and booking deals | GTM | S6B→S10 (CAP-05 gate) | Weekly | `wholesale_accounts>0`, group bookings, `hospitality` |
-| GTM-4 | Conversion and lifecycle automation | GTM | S9→S10 (CAP-06 gate) | Weekly optimisation / Monthly flow audit | All post-launch |
-| OPS-1 | Capacity and inventory planning | OPS | S8, S10 | Weekly; Daily peaks | `inventory_present`, `hospitality` |
-| OPS-2 | Fulfilment or stay delivery execution | OPS | Post-S9 launch | Daily | `inventory_present`, `hospitality` (activates post-launch) |
-| OPS-3 | Returns, refunds, cancellations and chargebacks | OPS | Post-S9 launch | Daily processing / Weekly review | `returns_enabled`, `hospitality` (activates after first transactions) |
+| GTM-4 | Conversion and lifecycle automation | GTM | DO→S10 (CAP-06 gate) | Weekly optimisation / Monthly flow audit | All post-launch |
+| OPS-1 | Capacity and inventory planning | OPS | DO, S10 | Weekly; Daily peaks | `inventory_present`, `hospitality` |
+| OPS-2 | Fulfilment or stay delivery execution | OPS | Post-DO launch | Daily | `inventory_present`, `hospitality` (activates post-launch) |
+| OPS-3 | Returns, refunds, cancellations and chargebacks | OPS | Post-DO launch | Daily processing / Weekly review | `returns_enabled`, `hospitality` (activates after first transactions) |
 | OPS-4 | Quality assurance and maintenance management | OPS | S9B, recurring | Weekly schedule + Daily urgent; Monthly deep | `inventory_present`, `hospitality` |
-| CX-1 | Support triage and service recovery | CX | Post-S9 launch | Daily triage / Weekly synthesis | All (activates from first customer contact) |
+| CX-1 | Support triage and service recovery | CX | Post-DO launch | Daily triage / Weekly synthesis | All (activates from first customer contact) |
 | CX-2 | Reviews and reputation management | CX | S10, recurring | Daily monitoring (hospitality) / Weekly batches (product) | `OTA_mix_high`, `hospitality` |
 | CX-3 | Retention and loyalty loops | CX | S10 (CAP-06 gate) | Weekly optimisation / Monthly cohort | PMF+ (see retention-schema.md) |
-| CX-4 | SOP and training updates | CX | S9, recurring | Weekly as needed; Monthly SOP audit | All (scales with team) |
+| CX-4 | SOP and training updates | CX | DO, recurring | Weekly as needed; Monthly SOP audit | All (scales with team) |
 | FIN-1 | Weekly cash and unit economics review | FIN | S3, S10 | Weekly | All |
-| FIN-2 | Billing, payouts and reconciliation | FIN | Post-S9 launch | Weekly / Daily (high volume) | All (activates after first transactions) |
+| FIN-2 | Billing, payouts and reconciliation | FIN | Post-DO launch | Weekly / Daily (high volume) | All (activates after first transactions) |
 | FIN-3 | Risk register, compliance, and incident readiness | FIN | S1, recurring | Weekly light / Monthly deep | All (see exception-runbooks-v1.md) |
 | FIN-4 | Vendor and procurement management | FIN | Post-S5B, recurring | Monthly; Weekly exceptions | `inventory_present`, `hospitality`, scaling stage |
 | DATA-1 | KPI refresh and data integrity checks | DATA | S1B/S2A, S3, S10 | Weekly + Daily key metrics | All |
@@ -90,8 +90,8 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 |---|---|---|
 | DISCOVERY | Intake | FIN-3 (initial risk scan), DATA-1 (KPI setup start) |
 | S1 | Readiness | FIN-3 (compliance readiness), CDI-2 (customer evidence review) |
-| S1B | Measurement bootstrap | DATA-1 (KPI infrastructure setup) |
-| S2A | Historical baseline | DATA-1 (baseline KPI data collection) |
+| S1B | Measure | DATA-1 (Agent-Capability) |
+| S2A | Results | DATA-1 (baseline KPI data collection) |
 | S2 | Market intelligence | CDI-3 (market/competitor scan), CDI-2 (customer interviews) |
 | S2B | Offer design | OFF-1 (offer iteration), OFF-2 (initial pricing hypothesis) |
 | S3 | Forecast | FIN-1 (unit economics baseline), DATA-1 (KPI modeling) |
@@ -100,9 +100,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | S5A | Prioritize | CDI-4 (experiment backlog prioritisation) |
 | S5B | BOS sync | DATA-4 (decision log state sync) |
 | S6 | Site-upgrade synthesis | OFF-3 (content/listing refresh) |
-| S7 | Fact-find | CDI-2 (field validation), CDI-4 (hypothesis design) |
-| S8 | Plan | GTM-1 (demand plan inputs), OPS-1 (capacity planning inputs) |
-| S9 | Build | OPS-2 (delivery execution preparation), CX-4 (SOP updates), OPS-4 (build QA) |
+| DO | Do | CDI-2 (field validation), CDI-4 (hypothesis design), GTM-1 (demand plan inputs), OPS-1 (capacity planning inputs), OPS-2 (delivery execution preparation), CX-4 (SOP updates), OPS-4 (build QA) |
 | S9B | QA gates | OPS-4 (quality assurance), DATA-1 (tracking verification) |
 | S10 | Weekly readout | CDI-1 (signal intake), CDI-4 (experiments), OFF-2 (pricing), GTM-1 (demand), FIN-1 (cash), DATA-2 (alerting), DATA-3 (CAPAs) — DATA-4 (weekly review) is the primary S10 process anchor |
 
@@ -140,7 +138,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Primary phase** | Sense |
 | **Activation** | conditional — Weekly pre-PMF; biweekly at PMF/scaling; mandatory when top assumptions unvalidated |
 | **Purpose** | Validate (or falsify) the highest-risk assumptions about customer/guest problems, willingness to pay, and buying/booking behaviour. |
-| **Stage anchor** | S2 (initial), S7 (per-idea fact-find), recurring thereafter |
+| **Stage anchor** | S2 (initial), DO (`/lp-do-fact-find`), recurring thereafter |
 | **Cadence** | Weekly (pre-PMF); biweekly (PMF/scaling) |
 | **Owner role** | Founder/GM or Product/Experience Lead |
 | **Inputs** | Hypothesis list (CDI-1 / CDI-4); target segment list; recruitment script; prior interview notes |
@@ -292,7 +290,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Primary phase** | Decide/Plan |
 | **Activation** | always |
 | **Purpose** | Produce a weekly "demand sprint" plan linking actions to targets and capacity constraints. |
-| **Stage anchor** | S8 (plan inputs), S10 (recurring weekly demand planning) |
+| **Stage anchor** | DO (`/lp-do-plan` inputs), S10 (recurring weekly demand planning) |
 | **Cadence** | Weekly |
 | **Owner role** | Growth Lead; approval: Founder/GM |
 | **Inputs** | Weekly insights (CDI-1); pricing (OFF-2); capacity/inventory (OPS-1); OKRs/targets |
@@ -353,7 +351,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Primary phase** | Sell/Acquire |
 | **Activation** | conditional — Post-launch only; activates at CAP-06 gate when first transaction data available |
 | **Purpose** | Systematically improve conversion and repeat behaviour using messaging, follow-ups, and lifecycle journeys. |
-| **Stage anchor** | S9→S10 recurring; activated when CAP-06 gate is met (see `retention-schema.md`) |
+| **Stage anchor** | DO→S10 recurring; activated when CAP-06 gate is met (see `retention-schema.md`) |
 | **Cadence** | Weekly optimisation; monthly flow audit |
 | **Owner role** | Growth Ops / CRM Manager |
 | **Inputs** | Funnel analytics; email/SMS performance; abandoned cart/enquiry lists; guest pre-arrival messages |
@@ -378,7 +376,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Primary phase** | Decide/Plan |
 | **Activation** | conditional — Mandatory for inventory_present and hospitality; optional for pure digital-only |
 | **Purpose** | Ensure what you plan to sell can be delivered profitably (inventory availability, staffing, turnover capacity). |
-| **Stage anchor** | S8 (plan inputs); S10 (weekly capacity review) |
+| **Stage anchor** | DO (`/lp-do-plan` inputs); S10 (weekly capacity review) |
 | **Cadence** | Weekly; daily adjustments during peaks |
 | **Owner role** | Ops Lead; finance partner for constraints |
 | **Inputs** | Demand plan (GTM-1); bookings/orders forecast; current inventory or room/bed availability; maintenance constraints (OPS-4) |
@@ -396,9 +394,9 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Workstream** | OPS — Operations and Tooling |
 | **Workflow phases** | Deliver/Support |
 | **Primary phase** | Deliver/Support |
-| **Activation** | conditional — Activates post-S9 launch; mandatory for inventory_present / hospitality |
+| **Activation** | conditional — Activates post-DO launch; mandatory for inventory_present / hospitality |
 | **Purpose** | Execute the promised delivery reliably: ship orders or deliver stays (check-in/out, housekeeping, issue resolution). |
-| **Stage anchor** | Post-S9 launch activation; daily recurring thereafter |
+| **Stage anchor** | Post-DO launch activation; daily recurring thereafter |
 | **Cadence** | Daily |
 | **Owner role** | Fulfilment Lead (product) or Front Office/Property Ops Lead (hospitality) |
 | **Inputs** | Orders or arrivals/departures list; SOPs (CX-4); staffing plan; maintenance status (OPS-4) |
@@ -408,7 +406,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Exit criteria** | Completion confirmed; exceptions logged with owners and routed to CX-1 |
 | **Exception linkage** | Exception log is a primary trigger source for Quality Incident exception and DATA-2 alerts |
 | **Profile / branch** | Mandatory for `inventory_present` and hospitality. For pure `digital_only`: activates if digital delivery operations are required (service delivery, access fulfilment). |
-| **Pre-PMF note** | This process activates post-launch. Pre-launch: capacity and delivery SOPs should be designed in S8/S9 but not yet executed. |
+| **Pre-PMF note** | This process activates post-launch. Pre-launch: capacity and delivery SOPs should be designed during DO (`/lp-do-plan` and `/lp-do-build`) but not yet executed. |
 
 ### OPS-3 — Returns, Refunds, Cancellations and Chargebacks
 
@@ -419,7 +417,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Primary phase** | Deliver/Support |
 | **Activation** | conditional — Activates after first transactions; mandatory for returns_enabled / hospitality |
 | **Purpose** | Manage reverse flows and cancellations in a controlled way that protects cash, compliance, and reputation. |
-| **Stage anchor** | Post-S9 launch; activates after first transactions |
+| **Stage anchor** | Post-DO launch; activates after first transactions |
 | **Cadence** | Daily processing; weekly review |
 | **Owner role** | CX Lead + Finance Ops; approval thresholds by amount |
 | **Inputs** | Return/refund requests; cancellation reasons; payment processor disputes; policy documents (OFF-3) |
@@ -464,7 +462,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Primary phase** | Deliver/Support |
 | **Activation** | always |
 | **Purpose** | Resolve issues quickly and consistently; prevent reputational damage through a defined service recovery pathway. |
-| **Stage anchor** | Post-S9 launch; activates from first customer contact |
+| **Stage anchor** | Post-DO launch; activates from first customer contact |
 | **Cadence** | Daily triage; weekly synthesis |
 | **Owner role** | CX Lead; escalation: Ops Lead or Founder/GM |
 | **Inputs** | Support tickets; escalation rules; SOPs (CX-4); refund/cancellation policy (OFF-3) |
@@ -525,7 +523,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Primary phase** | Build/Prepare |
 | **Activation** | always |
 | **Purpose** | Keep operational standards current and reduce variation/defects by updating SOPs and training as products/offers change. |
-| **Stage anchor** | S9 (initial SOP creation); recurring thereafter |
+| **Stage anchor** | DO (`/lp-do-build`, initial SOP creation); recurring thereafter |
 | **Cadence** | Weekly updates as needed; monthly SOP audit |
 | **Owner role** | Ops Lead + CX Lead; at scaling: Process Owner per SOP |
 | **Inputs** | Process change log (OFF-1/OFF-3); incident learnings (DATA-3); quality failures (OPS-4) |
@@ -569,7 +567,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Primary phase** | Measure/Learn |
 | **Activation** | conditional — Activates after first transactions; mandatory for wholesale_heavy / hospitality / any payment processor |
 | **Purpose** | Ensure revenue recognition inputs, payouts, and cash movements match source systems; detect anomalies early. |
-| **Stage anchor** | Post-S9 launch; activates after first transactions |
+| **Stage anchor** | Post-DO launch; activates after first transactions |
 | **Cadence** | Weekly (daily in high volume) |
 | **Owner role** | Finance Ops |
 | **Inputs** | Bank statement; payment processor exports; OTA payouts; wholesale invoices; refunds list (OPS-3) |
@@ -634,7 +632,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Primary phase** | Sense |
 | **Activation** | always |
 | **Purpose** | Produce a trusted weekly KPI pack, with integrity checks so decisions are based on reliable data. |
-| **Stage anchor** | S1B/S2A (initial measurement setup); S3 (KPI modeling); S10 (weekly refresh) |
+| **Stage anchor** | S1B/S2A (initial agent-capability setup); S3 (KPI modeling); S10 (weekly refresh) |
 | **Cadence** | Weekly KPI pack + daily key metrics for ops |
 | **Owner role** | Data Owner / Ops Analyst; in small teams: Founder/GM |
 | **Inputs** | Source exports (shop/CRM/OTA/PMS/channel manager); financial reconciliation pack (FIN-2); metric dictionary |
@@ -644,7 +642,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Exit criteria** | Dashboard published; anomalies assigned owners; data confidence level stated |
 | **Exception linkage** | Anomalies above threshold trigger DATA-2 alerting; data integrity failure blocks decision-grade decisions in S10 |
 | **Profile / branch** | All profiles and stages |
-| **CAP reference** | CAP-07 (Measurement and inference) — initial measurement setup is owned by S1B/S2A prompt handoff. DATA-1 is the recurring weekly data quality process that sustains CAP-07. These are complementary; DATA-1 does not replace the CAP-07 setup gate. |
+| **CAP reference** | CAP-07 (Measurement and inference) — initial agent-capability setup is owned by S1B/S2A prompt handoff. DATA-1 is the recurring weekly data quality process that sustains CAP-07. These are complementary; DATA-1 does not replace the CAP-07 setup gate. |
 
 ### DATA-2 — Leading Indicator Monitoring and Alerting
 

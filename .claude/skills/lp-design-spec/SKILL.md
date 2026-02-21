@@ -66,18 +66,7 @@ Use `businesses.json` to resolve which business owns the target app, then locate
 2. **Theme package**: `packages/themes/<theme>/` (mapped from app name)
 3. **Strategy context**: `docs/business-os/strategy/<BIZ>/plan.user.md`
 
-**Current mapping:**
-
-| Business | Code | Apps | Theme Package |
-|----------|------|------|---------------|
-| Brikette | BRIK | brikette, prime, reception | `base` (brikette), `prime` (prime) |
-| Headband | HEAD | cochlearfit | _(needs creation)_ |
-| Pet Product | PET | _(none yet)_ | _(needs creation)_ |
-| Handbag Accessory | HBAG | cover-me-pretty | _(TBD)_ |
-| XA | XA | xa | _(TBD)_ |
-| Platform | PLAT | design-system, storybook, etc. | `base` |
-
-**When theme package doesn't exist:** Note this in the spec as a prerequisite task for `/lp-do-plan`.
+**Resolution:** Read `docs/business-os/strategy/businesses.json` to resolve app → business unit → theme package. Do not use hardcoded mappings.
 
 ## Workflow
 
@@ -85,10 +74,9 @@ Use `businesses.json` to resolve which business owns the target app, then locate
 
 1. **Identify the target app** from the feature slug, fact-find, or user input.
 2. **Resolve business unit** via `businesses.json`.
-3. **Load brand language** doc. If it doesn't exist:
-   - Ask: _"No brand language exists for {BIZ}. Create one now (recommended) or proceed without?"_
-   - If yes → run **Brand Bootstrap** (Step 6) first, then return here.
-   - If no → proceed using base design system defaults only. Note this as a risk.
+3. **Load brand language** doc. If it doesn't exist or Status ≠ Active:
+   - **STOP.** Emit GATE-BD-07 error (see Step 6).
+   - Do NOT offer to proceed without brand language.
 4. **Load theme tokens** for the target app's theme package.
 5. **Load fact-find** if a feature slug was provided.
 
@@ -146,6 +134,8 @@ For each visual property in the design, specify the exact semantic token:
 - If a needed token doesn't exist, document it as a prerequisite (new token to add to theme package).
 - Dark mode: verify every chosen token has a dark variant. Flag gaps.
 
+**Evidence requirement:** For each token binding, cite the source file and token key where the value is defined (e.g., `packages/themes/prime/src/tokens.ts → --color-primary`). If no theme package exists, cite `packages/themes/base/src/tokens.ts`.
+
 ### Step 5: Layout and Behavior
 
 Define:
@@ -174,7 +164,7 @@ Define:
 - **PASS** (Status == Active): proceed to Step 7.
 - **FAIL** (missing or Status != Active): **STOP immediately.**
   - Error: `GATE-BD-07: Brand Dossier must be Active before running design spec.`
-  - Remediation: `Run /lp-brand-bootstrap <BIZ> to create or advance the Brand Dossier to Active, then re-run /lp-design-spec.`
+  - Remediation: `Run /lp-do-brand-02-brand-identity --business <BIZ> to create the Brand Dossier, then have the operator promote it to Active before re-running /lp-design-spec.`
   - Do NOT create or populate brand-dossier.user.md from within this skill. That is the job of `/lp-brand-bootstrap`.
 
 **Note:** GATE-BD-01 at S1 advance requires brand-dossier at Draft minimum. GATE-BD-07 here requires Active. The gap (Draft → Active) is the operator's responsibility before running lp-design-spec.
@@ -205,6 +195,8 @@ Target-App: {app-name}
 Theme-Package: {theme-package}
 Brand-Language: docs/business-os/strategy/{BIZ}/brand-dossier.user.md
 Created: {DATE}
+Updated: {DATE}
+Owner: {operator}
 ---
 
 # Design Spec: {Feature Title}
@@ -373,7 +365,7 @@ This creates a virtuous cycle: each design spec strengthens the brand language, 
 >
 > **Current Status:** `docs/business-os/strategy/{BIZ}/brand-dossier.user.md` is missing or Status ≠ Active.
 >
-> **Remediation:** Run `/lp-brand-bootstrap {BIZ}` to create or advance the Brand Dossier to Active, then re-run `/lp-design-spec`.
+> **Remediation:** Run `/lp-do-brand-02-brand-identity --business {BIZ}` to create the Brand Dossier, then promote to Active before re-running `/lp-design-spec`.
 
 ## Red Flags (Invalid Run)
 

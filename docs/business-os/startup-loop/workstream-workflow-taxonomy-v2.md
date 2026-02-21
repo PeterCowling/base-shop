@@ -182,7 +182,7 @@ Three allowed activation tokens. Any token not in this list is invalid and valid
 ### `conditional` activation
 
 When `activation: conditional`, the `activation_condition` field must state:
-- The triggering condition: a business profile flag (e.g. `inventory_present`, `wholesale_heavy`, `OTA_mix_high`), a stage gate (e.g. `CAP-05`, `CAP-06`, post-S9 launch), or a metric threshold.
+- The triggering condition: a business profile flag (e.g. `inventory_present`, `wholesale_heavy`, `OTA_mix_high`), a stage gate (e.g. `CAP-05`, `CAP-06`, post-DO launch), or a metric threshold.
 - Whether the default is "always run unless suppressed" (reduced cadence) or "skip unless triggered" (profile-conditional).
 
 **Cadence reduction rule:** A process with a reduced-frequency cadence (biweekly, monthly) is classified as `conditional`, not `always`. The `activation_condition` must state the reduced frequency and the triggering profile or stage.

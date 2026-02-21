@@ -20,7 +20,7 @@ function makeEvent(overrides: Partial<RunEvent>): RunEvent {
     schema_version: 1,
     event: "stage_started",
     run_id: "SFS-TEST-20260213-1200",
-    stage: "S0",
+    stage: "DISCOVERY",
     timestamp: "2026-02-13T12:00:00Z",
     loop_spec_version: "1.0.0",
     artifacts: null,
@@ -30,9 +30,9 @@ function makeEvent(overrides: Partial<RunEvent>): RunEvent {
 }
 
 const HAPPY_PATH_EVENTS: RunEvent[] = [
-  // S0 → S2B → S3 (parallel) → S6B (parallel) → S4 → S5A → S5B
-  makeEvent({ event: "stage_started", stage: "S0", timestamp: "2026-02-13T12:00:00Z" }),
-  makeEvent({ event: "stage_completed", stage: "S0", timestamp: "2026-02-13T12:01:00Z", artifacts: {} }),
+  // DISCOVERY → S2B → S3 (parallel) → S6B (parallel) → S4 → S5A → S5B
+  makeEvent({ event: "stage_started", stage: "DISCOVERY", timestamp: "2026-02-13T12:00:00Z" }),
+  makeEvent({ event: "stage_completed", stage: "DISCOVERY", timestamp: "2026-02-13T12:01:00Z", artifacts: {} }),
   makeEvent({ event: "stage_started", stage: "S2B", timestamp: "2026-02-13T12:01:30Z" }),
   makeEvent({ event: "stage_completed", stage: "S2B", timestamp: "2026-02-13T12:02:00Z", artifacts: { offer: "stages/S2B/offer.md" } }),
   makeEvent({ event: "stage_started", stage: "S3", timestamp: "2026-02-13T12:02:30Z" }),
@@ -60,7 +60,7 @@ describe("deriveState", () => {
     it("derives correct statuses from a multi-stage event stream", () => {
       const state = deriveState(HAPPY_PATH_EVENTS, STATE_OPTIONS);
 
-      expect(state.stages.S0.status).toBe("Done");
+      expect(state.stages.DISCOVERY.status).toBe("Done");
       expect(state.stages.S2B.status).toBe("Done");
       expect(state.stages.S3.status).toBe("Done");
       expect(state.stages.S6B.status).toBe("Done");
@@ -70,7 +70,7 @@ describe("deriveState", () => {
 
       // Stages not in the event stream remain Pending
       expect(state.stages.S6.status).toBe("Pending");
-      expect(state.stages.S7.status).toBe("Pending");
+      expect(state.stages.DO.status).toBe("Pending");
       expect(state.stages.S10.status).toBe("Pending");
     });
 
@@ -136,10 +136,10 @@ describe("deriveState", () => {
       }
     });
 
-    it("includes all 22 stages from loop-spec", () => {
+    it("includes all 26 stages from loop-spec", () => {
       const state = deriveState([], STATE_OPTIONS);
       const stageIds = Object.keys(state.stages);
-      expect(stageIds).toHaveLength(22);
+      expect(stageIds).toHaveLength(26);
       expect(stageIds).toContain("DISCOVERY");
       expect(stageIds).toContain("DISCOVERY-01");
       expect(stageIds).toContain("DISCOVERY-02");
@@ -180,7 +180,7 @@ describe("deriveState", () => {
   describe("VC-04A-05: run_aborted handling", () => {
     it("clears active_stage on run_aborted event", () => {
       const events: RunEvent[] = [
-        makeEvent({ event: "stage_started", stage: "S0", timestamp: "2026-02-13T12:00:00Z" }),
+        makeEvent({ event: "stage_started", stage: "DISCOVERY", timestamp: "2026-02-13T12:00:00Z" }),
         makeEvent({ event: "run_aborted", stage: "*", timestamp: "2026-02-13T12:01:00Z" }),
       ];
 
@@ -188,13 +188,13 @@ describe("deriveState", () => {
 
       expect(state.active_stage).toBeNull();
       // Stage status is not reverted by run_aborted
-      expect(state.stages.S0.status).toBe("Active");
+      expect(state.stages.DISCOVERY.status).toBe("Active");
     });
 
     it("preserves completed stage statuses on mid-run abort", () => {
       const events: RunEvent[] = [
-        makeEvent({ event: "stage_started", stage: "S0", timestamp: "2026-02-13T12:00:00Z" }),
-        makeEvent({ event: "stage_completed", stage: "S0", timestamp: "2026-02-13T12:01:00Z", artifacts: {} }),
+        makeEvent({ event: "stage_started", stage: "DISCOVERY", timestamp: "2026-02-13T12:00:00Z" }),
+        makeEvent({ event: "stage_completed", stage: "DISCOVERY", timestamp: "2026-02-13T12:01:00Z", artifacts: {} }),
         makeEvent({ event: "stage_started", stage: "S1", timestamp: "2026-02-13T12:01:30Z" }),
         makeEvent({ event: "run_aborted", stage: "*", timestamp: "2026-02-13T12:02:00Z" }),
       ];
@@ -204,7 +204,7 @@ describe("deriveState", () => {
       // active_stage cleared — run is terminated
       expect(state.active_stage).toBeNull();
       // Completed stages retain their Done status
-      expect(state.stages.S0.status).toBe("Done");
+      expect(state.stages.DISCOVERY.status).toBe("Done");
       // In-progress stage retains Active status; run_aborted does not revert stages
       expect(state.stages.S1.status).toBe("Active");
     });

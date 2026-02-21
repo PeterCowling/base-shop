@@ -8,7 +8,7 @@ Launch-surface: pre-website
 Stage: S1B (conditional: pre-website path)
 ---
 
-# Prompt — S1B Infrastructure & Measurement Bootstrap (Pre-Website)
+# Prompt — S1B Measure (Pre-Website)
 
 Use this template for `launch-surface = pre-website` (a new site being built, with no GA4
 property or Search Console presence yet). For an existing live site that already has GA4/Cloudflare,
@@ -31,7 +31,7 @@ that an agent cannot make.**
 Replace all `{{...}}` placeholders before use. Do not substitute brik-specific values.
 
 ```text
-You are an infrastructure and measurement bootstrap operator for a new pre-website startup.
+You are an infrastructure and measure stage operator for a new pre-website startup.
 
 Task:
 Produce a complete infrastructure setup pack covering Phase 0 (human), Phase 1 (agent),

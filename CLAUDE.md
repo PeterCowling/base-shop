@@ -24,7 +24,7 @@ Monorepo: Turborepo + pnpm workspaces.
 
 ## Model Usage Policy
 
-Always pass `model: "sonnet"` on every Task tool call. Never use opus or haiku — sonnet is the only permitted model for all occasions.
+Always pass `model: "opus"` on every Task tool call. Opus is the default model for all occasions.
 
 ## Subagent Usage Policy
 

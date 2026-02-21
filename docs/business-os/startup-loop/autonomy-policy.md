@@ -36,8 +36,8 @@ BOS sync actions write only to local files (docs, strategy plans, startup baseli
 |-------|------|-----------------|------|
 | DISCOVERY | Intake | Update `docs/business-os/strategy/<BIZ>/plan.user.md` | Autonomous |
 | S1 | Readiness | Record blockers/warnings in readiness docs + strategy risk section | Autonomous |
-| S1B | Measurement bootstrap | Record measurement setup status under `docs/business-os/strategy/<BIZ>/` | Autonomous |
-| S2A | Historical baseline | Persist baseline under `docs/business-os/strategy/<BIZ>/` | Autonomous |
+| S1B | Measure | Record measure stage status under `docs/business-os/strategy/<BIZ>/` | Autonomous |
+| S2A | Results | Persist results baseline under `docs/business-os/strategy/<BIZ>/` | Autonomous |
 | S2 | Market intelligence | Update `latest.user.md` pointer + strategy assumptions | Autonomous |
 | S2B | Offer design | Persist offer artifact under `docs/business-os/startup-baselines/<BIZ>/` | Autonomous |
 | S3 | Forecast | Update latest pointer + strategy assumptions/targets | Autonomous |
@@ -55,9 +55,7 @@ or performs lane transitions.
 | Stage | Name | BOS Sync Action | Side-Effect Type |
 |-------|------|-----------------|------------------|
 | S5B | BOS sync | Persist cards/stage-docs to D1 via `/api/agent/*`; commit manifest pointer (candidate → current) | D1 write + manifest commit |
-| S7 | Fact-find | Upsert fact-find stage doc via `/api/agent/stage-docs/:cardId/fact-find` | D1 write |
-| S8 | Plan | Upsert plan stage doc + lane transition (Fact-finding → Planned) | D1 write + lane transition |
-| S9 | Build | Upsert build stage doc + lane transitions (→ In progress / Done) | D1 write + lane transition |
+| DO | Do | Upsert fact-find, plan, and build stage docs + lane transitions | D1 write + lane transition |
 | S9B | QA gates | Record QA results in build stage doc | D1 write |
 | S10 | Weekly readout | Record K/P/C/S decision + update card/plan state | D1 write + state change |
 
@@ -130,13 +128,13 @@ Use these criteria when adding new stages or actions to the loop:
 
 ## 5) Tier Coverage Verification
 
-All 17 stages from loop-spec.yaml v1.0.0 are classified:
+All 15 stages from loop-spec.yaml are classified:
 
 - **Autonomous:** 11 stages — DISCOVERY, S1, S1B, S2A, S2, S2B, S3, S6B, S4, S5A, S6
-- **Guarded (BOS sync):** 6 stages — S5B, S7, S8, S9, S9B, S10
+- **Guarded (BOS sync):** 4 stages — S5B, DO, S9B, S10
 - **Prohibited:** 0 stages (prohibited applies to actions, not stages)
 
-Total classified: 17/17 stages. No stage is unclassified.
+Total classified: 15/15 stages. No stage is unclassified.
 
 Stages with `side_effects` field in loop-spec.yaml:
 - S5A: `side_effects: none` → classified Autonomous ✓

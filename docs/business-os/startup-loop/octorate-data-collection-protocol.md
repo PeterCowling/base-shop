@@ -18,7 +18,7 @@ Establish repeatable data collection from Octorate to support BRIK startup loop 
 | Data Type | Frequency | Trigger | Script | Output |
 |---|---|---|---|---|
 | **Historical booking value** | One-time + monthly refresh | S0/S3 baseline establishment | Manual export + processing (script TBD) | `docs/business-os/strategy/BRIK/data/net_value_by_month.csv` |
-| **Calendar/inventory** | Weekly | S3-S9 operational monitoring | `packages/mcp-server/octorate-export-final-working.mjs` | `data/octorate/octorate-calendar-YYYY-MM-DD.xlsx` |
+| **Calendar/inventory** | Weekly | S3-DO operational monitoring | `packages/mcp-server/octorate-export-final-working.mjs` | `data/octorate/octorate-calendar-YYYY-MM-DD.xlsx` |
 
 ## Batch 1: Historical Booking Value Data
 
@@ -147,9 +147,9 @@ node octorate-export-final-working.mjs
 ### S6: Channel Strategy
 - **Use Case**: Pricing analysis, occupancy forecasting, rate optimization
 - **Data Source**: Batch 2 (price matrix, availability)
-- **Refresh**: Weekly during active S6-S9 loop
+- **Refresh**: Weekly during active S6-DO loop
 
-### S9: Post-Launch Monitoring
+### Post-DO: Post-Launch Monitoring
 - **Weekly Refresh**: Calendar/inventory data (Batch 2)
 - **Monthly Refresh**: Booking value data (Batch 1)
 - **Integration**: Feed into GA4 baseline comparison (sessions vs bookings vs occupancy)

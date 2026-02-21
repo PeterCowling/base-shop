@@ -359,12 +359,12 @@ current_stage: S3
   it("VC-01: multiple bare IDs on separate lines produces one violation per line", async () => {
     const { checkBareStageIds } = await import("./docs-lint-helpers");
     const content = `First go to S3.
-Then advance to S9.
+Then advance to DO.
 `;
     const violations = checkBareStageIds(content);
     expect(violations.length).toBe(2);
     expect(violations[0]).toContain("S3");
-    expect(violations[1]).toContain("S9");
+    expect(violations[1]).toContain("DO");
   });
 
   it("VC-01: 'S10' (two-digit) is recognised as a canonical ID", async () => {

@@ -20,6 +20,8 @@ Business-OS-Integration: on
 Business-Unit: PLAT
 ---
 
+> **Note:** S7/S8/S9 stage IDs referenced below were consolidated into stage DO in loop-spec v3.0.0 (2026-02-21).
+
 # Bottleneck Locator + Replan Signal Plan
 
 ## Summary

@@ -10,7 +10,7 @@ Audit an app's onboarding experience against the universal "Onboarding Done Righ
 
 ## When to Use
 
-- **S7 (Fact-find)**: When a startup loop card targets onboarding improvement
+- **DO (`/lp-do-fact-find`)**: When a startup loop card targets onboarding improvement
 - **L2→L3 readiness**: When a business is launching and onboarding is a critical activation lever
 - **Standalone**: Operator invokes `/lp-onboarding-audit <BIZ>` at any time to audit an existing onboarding flow
 - **Post-launch**: Periodic re-audit to check regression or measure improvement
@@ -244,7 +244,7 @@ Onboarding audit complete for <app> (<BIZ>).
 - **Consumed by**: `/lp-do-plan` (reads fact-find brief to generate improvement plan)
 - **Feeds into**: `/lp-do-build` (via lp-do-plan's task list)
 - **References**: `.claude/skills/_shared/onboarding-done-right-checklist.md` (generic checklist)
-- **Loop position**: S7 (Fact-find) — specialized fact-find for onboarding audits
+- **Loop position**: DO (`/lp-do-fact-find`) — specialized fact-find for onboarding audits
 - **Trigger conditions**:
   - Card targets onboarding improvement
   - Business at L2→L3 transition (launch readiness)

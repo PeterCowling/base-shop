@@ -5,7 +5,7 @@ description: Chat command wrapper for operating Startup Loop runs. Supports /sta
 
 # Startup Loop
 
-Operate the Startup Loop through a single chat command surface. This skill is an operator wrapper. It does not replace `/lp-do-fact-find`, `/lp-do-plan`, or `/lp-do-build`.
+Operate the Startup Loop through a single chat command surface. This skill is an operator wrapper. It does not replace the DO processes (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`).
 
 ## Operating Mode
 
@@ -88,7 +88,7 @@ When a stage reference cannot be resolved, return fail-closed with deterministic
 Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.9.0).
 Stage labels: `docs/business-os/startup-loop/_generated/stage-operator-map.json`.
 
-Stages DISCOVERY-01..S10 (27 stages total):
+Stages DISCOVERY-01..S10 (25 stages total):
 
 | Stage | Name | Skill | Conditional |
 |---|---|---|---|
@@ -104,8 +104,8 @@ Stages DISCOVERY-01..S10 (27 stages total):
 | BRAND-02 | Brand identity | `/lp-do-brand-02-brand-identity` | — |
 | BRAND | Brand (container) | — | — |
 | S1 | Readiness check | `/lp-readiness` | — |
-| S1B | Measurement setup | prompt handoff (pre-website) | — |
-| S2A | Historical baseline | prompt handoff (website-live) | — |
+| S1B | Measure | prompt handoff (pre-website) | — |
+| S2A | Results | prompt handoff (website-live) | — |
 | S2 | Market intelligence | Deep Research prompt handoff | — |
 | S2B | Offer design | `/lp-offer` | — |
 | S3 | Forecast (parallel with S6B) | `/lp-forecast` | — |
@@ -115,9 +115,7 @@ Stages DISCOVERY-01..S10 (27 stages total):
 | S5A | Prioritize | `/lp-prioritize` | — |
 | S5B | BOS sync (sole mutation boundary) | `/lp-bos-sync` | — |
 | S6 | Site-upgrade synthesis | `/lp-site-upgrade` | — |
-| S7 | Fact-find | `/lp-do-fact-find` | — |
-| S8 | Plan | `/lp-do-plan` | — |
-| S9 | Build | `/lp-do-build` | — |
+| DO | Do | `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build` | — |
 | S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa` | — |
 | S10 | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) | — |
 

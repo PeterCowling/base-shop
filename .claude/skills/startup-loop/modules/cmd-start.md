@@ -102,7 +102,7 @@ When both completion artifacts exist:
 
 ---
 
-## Gate A: Pre-website measurement bootstrap (S1B)
+## Gate A: Pre-website Measure stage (S1B)
 
 **Condition**: `launch-surface = pre-website`
 
@@ -136,11 +136,11 @@ When both completion artifacts exist:
 
 ---
 
-## Gate B: Existing-business historical baseline (S2A)
+## Gate B: Existing-business Results (S2A)
 
 **Condition**: `launch-surface = website-live`
 
-**Rule**: S2/S6 blocked until S2A baseline exists with `Status: Active`.
+**Rule**: S2/S6 blocked until S2A Results baseline exists with `Status: Active`.
 
 **If baseline blocked by missing data**:
 - `prompt_file`: `docs/business-os/workflow-prompts/_templates/historical-data-request-prompt.md`

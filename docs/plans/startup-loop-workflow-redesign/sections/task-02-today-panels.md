@@ -5,11 +5,11 @@ Status: Active
 
 ### HEAD
 
-**Current blocker:** Operational confirmations are missing — in-stock date, sellable units, pricing, compatibility, payment flow readiness, and returns SLA have not been confirmed. Measurement setup is also not yet in place.
+**Current blocker:** Operational confirmations are missing — in-stock date, sellable units, pricing, compatibility, payment flow readiness, and returns SLA have not been confirmed. Measure stage is also not yet in place.
 
-**Do this now:** Fill in the Operational Confirmations form for HEAD (all 6 fields). Then complete the Pre-website Measurement Setup checklist.
+**Do this now:** Fill in the Operational Confirmations form for HEAD (all 6 fields). Then complete the Pre-website Measure checklist.
 
-**Done when:** All 6 operational fields are confirmed and timestamped. Measurement setup document is at Active status.
+**Done when:** All 6 operational fields are confirmed and timestamped. Measure stage document is at Active status.
 
 ---
 

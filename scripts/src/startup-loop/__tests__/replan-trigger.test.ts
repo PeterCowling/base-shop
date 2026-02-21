@@ -524,12 +524,12 @@ describe("replan-trigger", () => {
 
     it("should provide default recommendation for unknown constraint", () => {
       setupBottleneckHistory(tempDir, "HEAD", [
-        { runId: "R001", constraintKey: "S9/unknown", severity: "moderate" },
-        { runId: "R002", constraintKey: "S9/unknown", severity: "moderate" },
-        { runId: "R003", constraintKey: "S9/unknown", severity: "moderate" },
+        { runId: "R001", constraintKey: "DO/unknown", severity: "moderate" },
+        { runId: "R002", constraintKey: "DO/unknown", severity: "moderate" },
+        { runId: "R003", constraintKey: "DO/unknown", severity: "moderate" },
       ]);
 
-      const diagnosis = createMockDiagnosis("R003", "HEAD", "S9/unknown", "moderate", "S9", "unknown");
+      const diagnosis = createMockDiagnosis("R003", "HEAD", "DO/unknown", "moderate", "DO", "unknown");
       const trigger = checkAndTriggerReplan("HEAD", diagnosis, { baseDir: tempDir });
 
       expect(trigger!.recommended_focus).toBe(

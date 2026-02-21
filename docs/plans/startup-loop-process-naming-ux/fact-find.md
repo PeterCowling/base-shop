@@ -21,6 +21,8 @@ Business-Unit: BOS
 Card-ID: none
 ---
 
+> **Note:** S7/S8/S9 stage IDs referenced below were consolidated into stage DO in loop-spec v3.0.0 (2026-02-21).
+
 # Startup Loop Process Naming UX — Fact-Find Brief
 
 ## Scope
@@ -135,8 +137,8 @@ Audit startup-loop process naming from an operator UX perspective, focusing on i
 |---|---|---|---|---|
 | S0 | Intake | Capture Context | Capture Business Context | `capture-context` |
 | S1 | Readiness | Check Readiness | Check Launch Readiness | `check-readiness` |
-| S1B | Measurement bootstrap | Set Up Tracking | Set Up Tracking (Pre-website) | `setup-tracking-prewebsite` |
-| S2A | Historical baseline | Load Baseline | Load Existing Performance Baseline | `load-existing-baseline` |
+| S1B | Measure | Set Up Tracking | Set Up Tracking (Pre-website) | `setup-tracking-prewebsite` |
+| S2A | Results | Load Baseline | Load Existing Performance Baseline | `load-existing-baseline` |
 | S2 | Market intelligence | Research Market | Research Market and Competitors | `research-market` |
 | S2B | Offer design | Define Offer | Define Offer and Positioning | `define-offer` |
 | S3 | Forecast | Model Outcomes | Model 90-Day Outcomes | `model-outcomes` |

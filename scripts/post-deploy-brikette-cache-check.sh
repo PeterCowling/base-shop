@@ -31,21 +31,25 @@ echo "  URL: $URL"
 echo "========================================"
 
 fetch_headers() {
-  curl -sS -D - -o /dev/null -I "$1" 2>/dev/null | tr -d '\r'
+  # Follow redirects and evaluate final response headers.
+  curl -sS -D - -o /dev/null -I -L "$1" 2>/dev/null | tr -d '\r'
 }
 
 header_value() {
   # header_value <headers> <header-name>
-  # Prints first matching header value (case-insensitive) or empty string.
+  # Prints last matching header value (case-insensitive) or empty string.
+  # With curl -L, this returns the final response header value.
   printf "%s" "$1" | awk -F':' -v name="$2" '
     function trim(s) { gsub(/^[[:space:]]+|[[:space:]]+$/, "", s); return s }
     {
       key = trim($1)
       if (tolower(key) == tolower(name)) {
         sub(/^[^:]+:[[:space:]]*/, "", $0)
-        print $0
-        exit
+        found = $0
       }
+    }
+    END {
+      if (found != "") print found
     }
   '
 }
@@ -133,7 +137,7 @@ must_have_immutable_static_assets() {
   html_url="$1"
   label="$2"
 
-  html="$(curl -sS "$html_url" 2>/dev/null || true)"
+  html="$(curl -sSL "$html_url" 2>/dev/null || true)"
   asset_path="$(printf "%s" "$html" | grep -Eo '/_next/static/[^\" ]+\\.js' | head -n 1 || true)"
   if [ -z "$asset_path" ]; then
     echo "FAIL: $label could not find a /_next/static/*.js asset in HTML (is this a Next build?)"

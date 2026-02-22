@@ -43,7 +43,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - [x] TASK-03: Update idea-backlog.schema.md (Complete 2026-02-22)
 - [x] TASK-04: Create scan-proposals.schema.md (Complete 2026-02-22)
 - [x] TASK-05: Remove IDEAS from UPSTREAM_PRIORITY_ORDER (bottleneck-detector.ts) (Complete 2026-02-22)
-- [ ] TASK-06: Update HTML process map
+- [x] TASK-06: Update HTML process map (Complete 2026-02-22)
 - [ ] TASK-07: Update startup-loop/SKILL.md + rewrite idea-scan/SKILL.md
 
 ## Goals
@@ -114,7 +114,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 | TASK-03 | IMPLEMENT | Update idea-backlog.schema.md | 85% | S | Complete (2026-02-22) | — | — |
 | TASK-04 | IMPLEMENT | Create scan-proposals.schema.md | 82% | M | Complete (2026-02-22) | TASK-INV-01 | — |
 | TASK-05 | IMPLEMENT | Remove IDEAS from UPSTREAM_PRIORITY_ORDER | 90% | S | Complete (2026-02-22) | — | — |
-| TASK-06 | IMPLEMENT | Update HTML process map | 80% | M | Pending | — | — |
+| TASK-06 | IMPLEMENT | Update HTML process map | 80% | M | Complete (2026-02-22) | — | — |
 | TASK-07 | IMPLEMENT | Update startup-loop/SKILL.md + rewrite idea-scan/SKILL.md | 80% | M | Pending | TASK-INV-01 | — |
 
 ## Parallelism Guide
@@ -485,7 +485,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Artifact-Destination:** `docs/business-os/startup-loop-containers-process-map.html`
 - **Reviewer:** operator
 - **Approval-Evidence:** None: internal documentation; operator views in browser
@@ -512,6 +512,10 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
   - Red evidence plan: IDEAS currently rendered as a container block inside the main `.flow` sequential layout; it appears between ASSESSMENT and MEASURE sections
   - Green evidence plan: Remove IDEAS block from `.flow`; add `.standing-pipelines` section below main flow with IDEAS panel; add CSS for new section; update nav
   - Refactor evidence plan: Verify responsive behavior; verify nav links all work; open in browser
+- **Build/validation evidence (2026-02-22):**
+  - `if rg -n "id=\\\"s-ideas\\\"|#s-ideas" docs/business-os/startup-loop-containers-process-map.html; then ...` — PASS (`VC-01`: no `s-ideas` anchor remains in main sequential flow)
+  - `rg -n "id=\\\"s-standing\\\"|Standing Pipelines|pack-trigger|diff-scan|operator-inject|MARKET-11 / SELL-07 / PRODUCTS-07 / LOGISTICS-07|Promote to DO" docs/business-os/startup-loop-containers-process-map.html` — PASS (`VC-02`: standing panel + both trigger paths + DO output labels present)
+  - Browser sanity check (MCP): `browser_session_open(file:///.../startup-loop-containers-process-map.html)` + `browser_observe` confirmed page title `v3.9.4`, no blocking overlay, and nav link `Standing Pipelines` pointing to `#s-standing`.
 - **Planning validation (required for M/L):**
   - Checks run: HTML file read (first 50 lines) + written/edited extensively this session
   - Validation artifacts: `docs/business-os/startup-loop-containers-process-map.html`
@@ -607,7 +611,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - [x] `idea-backlog.schema.md` contains `last_scanned_pack_versions` field definition
 - [x] `scan-proposals.schema.md` exists with all 6 impact types and quality bar
 - [x] `bottleneck-detector.ts` `UPSTREAM_PRIORITY_ORDER` contains no IDEAS entries; tests pass
-- [ ] HTML process map shows IDEAS as a standing pipeline panel with both trigger paths visible
+- [x] HTML process map shows IDEAS as a standing pipeline panel with both trigger paths visible
 - [ ] `startup-loop/SKILL.md` IDEAS table rows updated
 - [ ] `idea-scan/SKILL.md` output schema references `scan-proposals.md` (not `last-scan.json`)
 - [ ] No other skill or code references old `docs/business-os/scans/` IDEAS pipeline output

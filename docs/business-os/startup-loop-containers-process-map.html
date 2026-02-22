@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Startup Loop — Container Process Map v3.9.4</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: #0d1117;
+  color: #c9d1d9;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  padding-top: 52px;
+}
+
+/* ── STICKY NAV ── */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(13,17,23,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #21262d;
+  height: 52px;
+  display: flex; align-items: center;
+  padding: 0 20px; gap: 4px;
+  overflow-x: auto; overflow-y: hidden;
+}
+.topnav::-webkit-scrollbar { display: none; }
+.topnav-brand {
+  font-size: 11px; font-weight: 700; color: #484f58;
+  white-space: nowrap; margin-right: 10px; letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+.topnav-link {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 500; color: #8b949e;
+  text-decoration: none; padding: 5px 10px;
+  border-radius: 6px; white-space: nowrap; flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+.topnav-link:hover { background: #21262d; color: #e6edf3; }
+.topnav-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.topnav-sep { width: 1px; height: 20px; background: #21262d; flex-shrink: 0; margin: 0 4px; }
+
+/* ── PAGE WRAPPER ── */
+.page { padding: 28px 24px 80px; }
+.flow {
+  display: flex; flex-direction: column; align-items: center;
+  max-width: 1360px; margin: 0 auto; gap: 0;
+}
+
+/* ── PAGE HEADER ── */
+.page-header { width: 100%; margin-bottom: 24px; }
+h1 { font-size: 22px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
+.doc-meta { color: #6e7681; font-size: 12px; }
+
+/* ── LEGEND ── */
+.legend {
+  width: 100%;
+  display: flex; flex-wrap: wrap; gap: 8px 18px;
+  background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+  padding: 12px 16px; margin-bottom: 28px;
+}
+.legend-title { width: 100%; font-size: 10px; font-weight: 700; color: #484f58; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #8b949e; }
+.ls { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+.ls-hard { background: #3d0000; border: 2px solid #f85149; }
+.ls-soft { background: #2d1f00; border: 2px solid #d29922; }
+
+/* ── CONTAINERS ── */
+.cbox {
+  width: 100%; border-radius: 10px; border: 1px solid;
+  overflow: hidden; margin-bottom: 14px;
+}
+.cbox-head {
+  padding: 13px 18px 11px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.cbox-icon { font-size: 22px; line-height: 1.3; flex-shrink: 0; margin-top: 1px; }
+.cbox-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; line-height: 1;
+}
+.cbox-meta { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 4px; }
+.cbox-cond { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 3px; font-style: italic; }
+.cbox-body { padding: 16px; }
+
+/* per-container colors */
+.c-assessment { border-color: #6d28d9; }
+.c-assessment .cbox-head { background: rgba(109,40,217,0.14); }
+.c-assessment .cbox-title { color: #a78bfa; }
+.c-assessment .stage { border-left: 3px solid #6d28d9; }
+
+.c-ideas { border-color: #7e22ce; }
+.c-ideas .cbox-head { background: rgba(126,34,206,0.14); }
+.c-ideas .cbox-title { color: #c084fc; }
+.c-ideas .stage { border-left: 3px solid #7e22ce; }
+
+.c-measure { border-color: #0e7490; }
+.c-measure .cbox-head { background: rgba(14,116,144,0.14); }
+.c-measure .cbox-title { color: #38bdf8; }
+.c-measure .stage { border-left: 3px solid #0e7490; }
+
+.c-product { border-color: #92400e; }
+.c-product .cbox-head { background: rgba(146,64,14,0.14); }
+.c-product .cbox-title { color: #fbbf24; }
+.c-product .stage { border-left: 3px solid #92400e; }
+
+.c-products { border-color: #9a3412; }
+.c-products .cbox-head { background: rgba(154,52,18,0.14); }
+.c-products .cbox-title { color: #fb923c; }
+.c-products .stage { border-left: 3px solid #9a3412; }
+
+.c-logistics { border-color: #374151; border-style: dashed; }
+.c-logistics .cbox-head { background: rgba(55,65,81,0.12); }
+.c-logistics .cbox-title { color: #6b7280; }
+.c-logistics .stage { border-left: 3px solid #374151; }
+
+.c-market { border-color: #991b1b; }
+.c-market .cbox-head { background: rgba(153,27,27,0.14); }
+.c-market .cbox-title { color: #f87171; }
+.c-market .stage { border-left: 3px solid #991b1b; }
+
+.c-sell { border-color: #166534; }
+.c-sell .cbox-head { background: rgba(22,101,52,0.14); }
+.c-sell .cbox-title { color: #4ade80; }
+.c-sell .stage { border-left: 3px solid #166534; }
+
+.c-do { border-color: #6b21a8; }
+.c-do .cbox-head { background: rgba(107,33,168,0.14); }
+.c-do .cbox-title { color: #c084fc; }
+.c-do .stage { border-left: 3px solid #6b21a8; }
+
+/* ── STAGE LIST ── */
+.stage-list { display: flex; flex-direction: column; gap: 8px; }
+.stage-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.stage-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+/* ── STAGE CARD ── */
+.stage {
+  background: #1c2128; border: 1px solid #2d333b;
+  border-radius: 7px; padding: 13px 15px 13px 13px;
+  display: flex; flex-direction: column; gap: 5px;
+  /* border-left is set per-container above */
+}
+.stage.conditional { border-style: dashed; border-color: #374151; opacity: 0.9; }
+.stage.highlight { background: #1a0d00; }
+
+.sid {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #484f58;
+}
+.sname {
+  font-size: 14px; font-weight: 600; color: #e6edf3; line-height: 1.3;
+}
+.sskill {
+  font-size: 11px; color: #58a6ff;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+.sout {
+  font-size: 11px; color: #3fb950;
+}
+.sctrl {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-top: 6px; padding-top: 8px;
+  border-top: 1px solid #21262d;
+}
+.ctrl {
+  font-size: 10px; padding: 2px 7px; border-radius: 4px;
+  border: 1px solid; white-space: nowrap; line-height: 1.5;
+}
+.ctrl-rule  { background: #1c2128; border-color: #4b5563; color: #9ca3af; }
+.ctrl-guard { background: #1e1b4b; border-color: #4338ca; color: #a5b4fc; }
+.ctrl-cond  { background: #0c1a2e; border-color: #1e3a8a; color: #93c5fd; }
+.ctrl-art   { background: #0d2318; border-color: #14532d; color: #86efac; }
+.ctrl-auton { background: #0c1c17; border-color: #065f46; color: #6ee7b7; }
+
+/* ── ARROWS ── */
+.arrow {
+  display: flex; flex-direction: column; align-items: center;
+  width: 100%; padding: 0;
+}
+.arrow-line { width: 2px; height: 28px; background: #30363d; }
+.arrow-head {
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 9px solid #30363d;
+}
+.arrow.red .arrow-line  { background: #f85149; }
+.arrow.red .arrow-head  { border-top-color: #f85149; }
+.arrow.amber .arrow-line { background: #d29922; }
+.arrow.amber .arrow-head { border-top-color: #d29922; }
+
+/* ── GATEWAYS ── */
+.gw {
+  width: 100%; border-radius: 8px; border: 0;
+  border-left: 6px solid; padding: 14px 18px;
+  margin: 0;
+  position: relative;
+}
+.gw.hard {
+  border-left-color: #f85149; background: #160000;
+  outline: 1px solid #3d0000; outline-offset: -1px;
+  border-radius: 0 8px 8px 0;
+}
+.gw.soft {
+  border-left-color: #d29922; background: #140f00;
+  outline: 1px solid #2d1f00; outline-offset: -1px;
+  border-radius: 0 8px 8px 0;
+}
+.gw-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.gw-diamond {
+  width: 18px; height: 18px; transform: rotate(45deg);
+  border: 2px solid; border-radius: 2px; flex-shrink: 0;
+}
+.gw.hard .gw-diamond { background: #3d0000; border-color: #f85149; }
+.gw.soft .gw-diamond { background: #2d1f00; border-color: #d29922; }
+.gw-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  padding: 2px 8px; border-radius: 4px; border: 1px solid;
+}
+.gw.hard .gw-tag { background: #3d0000; color: #f85149; border-color: #f85149; }
+.gw.soft .gw-tag { background: #2d1f00; color: #d29922; border-color: #d29922; }
+.gw-id { font-size: 13px; font-weight: 700; color: #e6edf3; }
+.gw-trigger { font-size: 11px; color: #8b949e; margin-bottom: 8px; }
+.gw-body { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.gw-pass { font-size: 11px; color: #3fb950; line-height: 1.5; }
+.gw-fail { font-size: 11px; color: #f87171; line-height: 1.5; }
+.gw-note { font-size: 11px; color: #d29922; line-height: 1.5; }
+.gw-full { font-size: 11px; color: #e6edf3; line-height: 1.5; margin-top: 4px; }
+.gw-checks { font-size: 11px; color: #e6edf3; line-height: 1.7; margin-top: 4px; }
+
+/* ── CONDITIONAL PATH WRAPPER ── */
+.cond-path {
+  border: 1px dashed #374151; border-radius: 8px;
+  background: rgba(15,20,28,0.6);
+  padding: 12px 14px 14px; margin-bottom: 8px; position: relative;
+}
+.cond-path-banner {
+  display: flex; align-items: center; gap: 8px;
+  background: #1c2128; border: 1px solid #374151;
+  border-radius: 6px; padding: 7px 12px; margin-bottom: 12px;
+}
+.cond-path-banner-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  background: #0c1a2e; color: #93c5fd; border: 1px solid #1e3a8a;
+  padding: 2px 7px; border-radius: 4px; white-space: nowrap;
+}
+.cond-path-banner-text { font-size: 11px; color: #8b949e; }
+
+/* ── FAN-OUT ── */
+.fanout {
+  width: 100%; background: #10151c;
+  border: 1px solid #30363d; border-radius: 10px;
+  padding: 16px; margin-bottom: 14px;
+}
+.fanout-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px; padding-bottom: 12px;
+  border-bottom: 1px solid #21262d;
+}
+.fanout-diamond {
+  width: 18px; height: 18px; transform: rotate(45deg);
+  border: 2px solid #854d0e; background: #291400;
+  border-radius: 2px; flex-shrink: 0;
+}
+.fanout-title { font-size: 12px; font-weight: 700; color: #fb923c; }
+.fanout-subtitle { font-size: 11px; color: #6e7681; margin-top: 2px; }
+.fanout-grid { display: grid; gap: 12px; }
+.fanout-2 { grid-template-columns: 3fr 2fr; }
+.fanout-3 { grid-template-columns: 1fr 1fr 1fr; }
+.fanout-col {
+  background: #161b22; border: 1px solid #21262d;
+  border-radius: 8px; padding: 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.fanout-col-head {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding-bottom: 8px;
+  border-bottom: 1px solid #21262d;
+}
+
+/* ── JOIN BARRIER ── */
+.join-barrier {
+  width: 100%; background: #0a1628;
+  border: 1px solid #1d4ed8; border-radius: 10px;
+  padding: 16px; margin-bottom: 14px;
+}
+.join-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+}
+.join-icon {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #1d3a7a; border: 2px solid #3b82f6;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #60a5fa; flex-shrink: 0;
+}
+.join-title { font-size: 13px; font-weight: 700; color: #60a5fa; }
+.join-subtitle { font-size: 11px; color: #4b6ea8; margin-top: 1px; }
+.join-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
+.join-input {
+  border-radius: 6px; padding: 7px 10px;
+  font-size: 11px; border: 1px solid; line-height: 1.5;
+}
+.join-input.req { background: #0d1e3d; border-color: #1d4ed8; color: #93c5fd; }
+.join-input.opt { background: #0d1117; border-color: #21262d; color: #6b7280; }
+.join-input strong { display: block; margin-bottom: 1px; }
+
+/* ── ORCHESTRATION STAGES ── */
+.orch {
+  background: #0a1628; border: 1px solid #1d4ed8;
+  border-radius: 8px; padding: 13px 16px;
+  width: 100%; margin-bottom: 14px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.orch.guarded { border-color: #f85149; background: #140000; }
+.orch.teal { border-color: #0e7490; background: #041117; }
+.orch.weekly { border-color: #0f766e; background: #041117; }
+.orch .sid { color: #4b6ea8; }
+.orch.guarded .sid { color: #7f1d1d; }
+.orch.teal .sid { color: #0e7490; }
+.orch.weekly .sid { color: #0f766e; }
+.orch .sname { color: #93c5fd; }
+.orch.guarded .sname { color: #f87171; }
+.orch.teal .sname { color: #38bdf8; }
+.orch.weekly .sname { color: #2dd4bf; }
+
+/* ── DO GRID ── */
+.do-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  width: 100%;
+}
+
+/* ── LOOP INDICATOR ── */
+.loop-indicator {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 8px; margin-top: 10px;
+  color: #484f58; font-size: 12px;
+  border-top: 1px solid #21262d;
+}
+
+/* ── GATE TABLE ── */
+.gate-table-wrap {
+  width: 100%; background: #161b22; border: 1px solid #30363d;
+  border-radius: 10px; overflow: hidden; margin-bottom: 14px;
+}
+.gate-table-head {
+  padding: 14px 18px; border-bottom: 1px solid #21262d;
+  font-size: 13px; font-weight: 700; color: #f0f6fc;
+}
+.gate-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.gate-table th {
+  background: #0d1117; color: #6e7681;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+  font-weight: 700; padding: 8px 12px; text-align: left;
+  border-bottom: 1px solid #21262d;
+}
+.gate-table td { padding: 10px 12px; vertical-align: top; border-bottom: 1px solid #161b22; }
+.gate-table tr:nth-child(odd) td { background: #0d1117; }
+.gate-table tr:nth-child(even) td { background: #161b22; }
+.gate-table tr:last-child td { border-bottom: none; }
+.gate-id-cell { font-weight: 700; white-space: nowrap; }
+.gate-hard { color: #f85149; }
+.gate-soft { color: #d29922; }
+.gate-type-hard { background: #3d0000; color: #f85149; border: 1px solid #7f1d1d; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+.gate-type-soft { background: #2d1f00; color: #d29922; border: 1px solid #713f12; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+.gate-pass-cell { color: #3fb950; }
+.gate-fail-cell { color: #f87171; }
+.gate-trigger-cell { color: #8b949e; }
+
+/* ── AUTONOMY TABLE ── */
+.autonomy-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  width: 100%; margin-bottom: 14px;
+}
+.autonomy-card {
+  border-radius: 8px; border: 1px solid; padding: 14px 16px;
+}
+.autonomy-card-title { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+.autonomy-card-desc { font-size: 11px; color: #8b949e; margin-bottom: 8px; line-height: 1.5; }
+.autonomy-card-stages { font-size: 11px; line-height: 1.6; }
+.aut-green { background: #0c1c17; border-color: #065f46; }
+.aut-green .autonomy-card-title { color: #6ee7b7; }
+.aut-green .autonomy-card-stages { color: #4ade80; }
+.aut-blue { background: #0d1429; border-color: #1e3a8a; }
+.aut-blue .autonomy-card-title { color: #a5b4fc; }
+.aut-blue .autonomy-card-stages { color: #818cf8; }
+.aut-red { background: #160000; border-color: #7f1d1d; }
+.aut-red .autonomy-card-title { color: #f85149; }
+.aut-red .autonomy-card-stages { color: #fca5a5; }
+
+/* ── SECTION HEADER ── */
+.section-label {
+  width: 100%; font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #30363d;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px; margin-top: 4px;
+}
+.section-label::before, .section-label::after {
+  content: ''; flex: 1; height: 1px; background: #21262d;
+}
+
+/* ── STANDING PIPELINES ── */
+.standing-wrap {
+  max-width: 1360px;
+  margin: 0 auto 28px;
+}
+.standing-shell {
+  border: 1px solid #4c1d95;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(76,29,149,0.14), rgba(17,24,39,0.9));
+  overflow: hidden;
+}
+.standing-head {
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.standing-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #c4b5fd;
+}
+.standing-meta { font-size: 12px; color: rgba(255,255,255,0.48); margin-top: 4px; }
+.standing-body {
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+}
+.standing-row {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 10px;
+  align-items: stretch;
+}
+.standing-card {
+  background: #181d26;
+  border: 1px solid #2d333b;
+  border-left: 3px solid #7e22ce;
+  border-radius: 8px;
+  padding: 12px 13px;
+}
+.standing-card.op { border-left-color: #0e7490; }
+.standing-card-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #c084fc;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.standing-card.op .standing-card-title { color: #67e8f9; }
+.standing-line { font-size: 12px; color: #c9d1d9; margin-top: 4px; }
+.standing-pipe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.standing-pipe .arrow-line { height: 100%; min-height: 44px; background: #7e22ce; }
+.standing-pipe .arrow-head { border-top-color: #7e22ce; }
+.stage-badges { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 6px; }
+.badge {
+  font-size: 10px;
+  line-height: 1.4;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+.badge-auto { background: #0d2318; border-color: #14532d; color: #86efac; }
+.badge-semi { background: #1f2937; border-color: #4b5563; color: #d1d5db; }
+.badge-gate { background: #1e1b4b; border-color: #4338ca; color: #a5b4fc; }
+.standing-stage-list { display: grid; gap: 8px; }
+.standing-arrow-row {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.standing-arrow-row .standing-line {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1000px) {
+  .fanout-2 { grid-template-columns: 1fr; }
+  .fanout-3 { grid-template-columns: 1fr; }
+  .do-grid { grid-template-columns: 1fr 1fr; }
+  .join-inputs { grid-template-columns: 1fr 1fr; }
+  .autonomy-grid { grid-template-columns: 1fr; }
+  .stage-grid-3 { grid-template-columns: 1fr; }
+  .stage-grid-2 { grid-template-columns: 1fr; }
+  .gw-body { grid-template-columns: 1fr; }
+  .standing-row { grid-template-columns: 1fr; }
+  .standing-arrow-row { grid-template-columns: 1fr; }
+  .standing-pipe { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav class="topnav">
+  <span class="topnav-brand">Startup Loop v3.9.4</span>
+  <div class="topnav-sep"></div>
+  <a href="#s-assessment" class="topnav-link"><span class="topnav-dot" style="background:#6d28d9"></span>Assessment</a>
+  <a href="#s-measure" class="topnav-link"><span class="topnav-dot" style="background:#0e7490"></span>Measure</a>
+  <a href="#s-product" class="topnav-link"><span class="topnav-dot" style="background:#92400e"></span>Product</a>
+  <a href="#s-products" class="topnav-link"><span class="topnav-dot" style="background:#9a3412"></span>Products</a>
+  <a href="#s-logistics" class="topnav-link"><span class="topnav-dot" style="background:#4b5563"></span>Logistics</a>
+  <a href="#s-market" class="topnav-link"><span class="topnav-dot" style="background:#991b1b"></span>Market</a>
+  <a href="#s-standing" class="topnav-link"><span class="topnav-dot" style="background:#7e22ce"></span>Standing Pipelines</a>
+  <div class="topnav-sep"></div>
+  <a href="#s-fanout" class="topnav-link"><span class="topnav-dot" style="background:#854d0e"></span>Fan-out</a>
+  <div class="topnav-sep"></div>
+  <a href="#s-s4" class="topnav-link"><span class="topnav-dot" style="background:#1d4ed8"></span>S4 Join</a>
+  <a href="#s-s5" class="topnav-link"><span class="topnav-dot" style="background:#1d4ed8"></span>S5</a>
+  <a href="#s-do" class="topnav-link"><span class="topnav-dot" style="background:#6b21a8"></span>DO</a>
+  <a href="#s-s9b" class="topnav-link"><span class="topnav-dot" style="background:#0e7490"></span>S9B</a>
+  <a href="#s-s10" class="topnav-link"><span class="topnav-dot" style="background:#0f766e"></span>S10</a>
+  <div class="topnav-sep"></div>
+  <a href="#s-gates" class="topnav-link"><span class="topnav-dot" style="background:#f85149"></span>All Gates</a>
+  <a href="#s-autonomy" class="topnav-link"><span class="topnav-dot" style="background:#065f46"></span>Autonomy</a>
+</nav>
+
+<div class="page">
+<div class="flow">
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <h1>Startup Loop — Container Process Map</h1>
+  <p class="doc-meta">spec_version 3.9.4 &nbsp;·&nbsp; 2026-02-22 &nbsp;·&nbsp; Two-layer model: Layer A (standing intelligence) + Layer B (DO implementation loop)</p>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-title">Legend</div>
+  <div class="legend-item"><div class="ls" style="background:#1c2128;border:1px solid #2d333b;border-left:3px solid #6d28d9"></div> Stage / Process card (left border = container colour)</div>
+  <div class="legend-item"><div class="ls" style="background:#1c2128;border:1px dashed #374151;border-left:3px solid #374151"></div> Conditional stage</div>
+  <div class="legend-item"><div class="ls ls-hard"></div> Hard gate — blocks advance</div>
+  <div class="legend-item"><div class="ls ls-soft"></div> Soft gate — advisory / warning</div>
+  <div class="legend-item"><span class="ctrl ctrl-auton">AUTONOMOUS</span> No external calls, local artifacts only</div>
+  <div class="legend-item"><span class="ctrl ctrl-guard">GUARDED</span> External API / D1 / manifest write</div>
+  <div class="legend-item"><span class="ctrl ctrl-cond">CONDITIONAL</span> Stage condition</div>
+  <div class="legend-item"><span class="ctrl ctrl-art">ARTIFACT</span> Named output artifact</div>
+  <div class="legend-item"><span class="ctrl ctrl-rule">RULE</span> Control constraint</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     ASSESSMENT
+     ══════════════════════════════════════════════════ -->
+<div id="s-assessment" class="cbox c-assessment">
+  <div class="cbox-head">
+    <div class="cbox-icon">🔍</div>
+    <div>
+      <div class="cbox-title">Assessment · Layer A · Intake &amp; Brand</div>
+      <div class="cbox-meta">ASSESSMENT-01 → ASSESSMENT-11 · 11 stages</div>
+      <div class="cbox-cond">Full container unconditional · ASSESSMENT-01..08 only run when start-point=problem (bypass entirely for start-point=product)</div>
+    </div>
+  </div>
+  <div class="cbox-body">
+    <div class="stage-list">
+
+      <!-- Conditional problem-start path -->
+      <div class="cond-path">
+        <div class="cond-path-banner">
+          <span class="cond-path-banner-tag">CONDITIONAL PATH</span>
+          <span class="cond-path-banner-text">ASSESSMENT-01 through ASSESSMENT-08 — only when <strong>start-point=problem</strong>. Skip entirely for start-point=product.</span>
+        </div>
+        <div class="stage-list">
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-01</div>
+            <div class="sname">Problem Framing</div>
+            <div class="sskill">/lp-do-assessment-01-problem-statement</div>
+            <div class="sout">→ problem-statement.user.md</div>
+            <div class="sctrl">
+              <span class="ctrl ctrl-cond">start-point=problem</span>
+              <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+              <span class="ctrl ctrl-rule">Status: Active required</span>
+              <span class="ctrl ctrl-rule">Problem + Customer + Evidence sections</span>
+            </div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-02</div>
+            <div class="sname">Solution-Space Scan</div>
+            <div class="sskill">/lp-do-assessment-02-solution-profiling</div>
+            <div class="sout">→ YYYY-MM-DD-solution-profile-results.user.md</div>
+            <div class="sctrl">
+              <span class="ctrl ctrl-cond">start-point=problem</span>
+              <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+              <span class="ctrl ctrl-rule">≥3 candidate options required</span>
+              <span class="ctrl ctrl-rule">Feasibility only — no demand scoring</span>
+            </div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-03</div>
+            <div class="sname">Solution Selection</div>
+            <div class="sskill">/lp-do-assessment-03-solution-selection</div>
+            <div class="sout">→ solution-select.user.md</div>
+            <div class="sctrl">
+              <span class="ctrl ctrl-cond">start-point=problem</span>
+              <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+              <span class="ctrl ctrl-rule">Selected + Rationale + Assumption sections required</span>
+              <span class="ctrl ctrl-rule">Explicit kill gate — decision record required to continue</span>
+            </div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-04</div>
+            <div class="sname">Candidate Names</div>
+            <div class="sskill">/lp-do-assessment-04-candidate-names</div>
+            <div class="sout">→ YYYY-MM-DD-candidate-names.user.md</div>
+            <div class="sctrl">
+              <span class="ctrl ctrl-cond">start-point=problem</span>
+              <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+              <span class="ctrl ctrl-rule">Naming pipeline part 1 of 4 (spec → generate → RDAP → rank)</span>
+            </div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-05</div>
+            <div class="sname">Name Selection Spec</div>
+            <div class="sskill">/lp-do-assessment-05-name-selection</div>
+            <div class="sout">→ name-selection-spec.md (250 scored candidates spec)</div>
+            <div class="sctrl">
+              <span class="ctrl ctrl-cond">start-point=problem</span>
+              <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+              <span class="ctrl ctrl-rule">Reads: ICP + product + brand personality + competitive set + eliminated names</span>
+              <span class="ctrl ctrl-rule">Naming pipeline part 2 of 4</span>
+            </div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-06</div>
+            <div class="sname">Distribution Profiling</div>
+            <div class="sskill">/lp-do-assessment-06-distribution-profiling</div>
+            <div class="sout">→ distribution-profiling.user.md</div>
+            <div class="sctrl">
+              <span class="ctrl ctrl-cond">start-point=problem</span>
+              <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+              <span class="ctrl ctrl-rule">≥2 launch channels required</span>
+              <span class="ctrl ctrl-rule">Primary channel: cost/effort + ICP fit rationale</span>
+              <span class="ctrl ctrl-rule">DTC baseline: Etsy + Instagram/TikTok</span>
+            </div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-07</div>
+            <div class="sname">Measurement Profiling</div>
+            <div class="sskill">/lp-do-assessment-07-measurement-profiling</div>
+            <div class="sout">→ measurement-profiling.user.md</div>
+            <div class="sctrl">
+              <span class="ctrl ctrl-cond">start-point=problem</span>
+              <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+              <span class="ctrl ctrl-rule">Tracking method required</span>
+              <span class="ctrl ctrl-rule">≥2 key metrics + success thresholds required</span>
+              <span class="ctrl ctrl-rule">Data collection feasibility confirmed</span>
+            </div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-08</div>
+            <div class="sname">Current Situation</div>
+            <div class="sskill">/lp-do-assessment-08-current-situation</div>
+            <div class="sout">→ current-situation.user.md</div>
+            <div class="sctrl">
+              <span class="ctrl ctrl-cond">start-point=problem</span>
+              <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+              <span class="ctrl ctrl-rule">Status: Active required</span>
+              <span class="ctrl ctrl-rule">Sections A–E present + gap logging</span>
+            </div>
+          </div>
+
+          <!-- GATE-A08-00 -->
+          <div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+          <div class="gw hard">
+            <div class="gw-header">
+              <div class="gw-diamond"></div>
+              <span class="gw-tag">HARD GATE</span>
+              <span class="gw-id">GATE-A08-00</span>
+            </div>
+            <div class="gw-trigger">Trigger: ASSESSMENT-08 → ASSESSMENT-09 (start-point=problem only)</div>
+            <div class="gw-body">
+              <div class="gw-pass">✔ Pass: current-situation.user.md exists with Status: Active</div>
+              <div class="gw-fail">✖ Fail: run /lp-do-assessment-08-current-situation to produce artifact</div>
+            </div>
+          </div>
+          <div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        </div><!-- end conditional stage-list -->
+      </div><!-- end cond-path -->
+
+      <!-- Universal path from ASSESSMENT-09 -->
+      <div class="stage">
+        <div class="sid">ASSESSMENT-09 · Universal (all start-points)</div>
+        <div class="sname">Intake Normalisation</div>
+        <div class="sskill">/startup-loop start + intake-normalizer-prompt.md</div>
+        <div class="sout">→ docs/business-os/startup-baselines/&lt;BIZ&gt;-intake-packet.user.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+          <span class="ctrl ctrl-rule">Validates all 7 ASSESSMENT-01..08 precursors</span>
+          <span class="ctrl ctrl-rule">Copies previous run next_seed → new current manifest pointer</span>
+        </div>
+      </div>
+
+      <!-- GATE-ASSESSMENT-00 -->
+      <div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="gw hard">
+        <div class="gw-header">
+          <div class="gw-diamond"></div>
+          <span class="gw-tag">HARD GATE</span>
+          <span class="gw-id">GATE-ASSESSMENT-00</span>
+        </div>
+        <div class="gw-trigger">Trigger: ASSESSMENT-09 → ASSESSMENT-10 · all 7 precursor artifacts must be present and meet quality minimums</div>
+        <div class="gw-body">
+          <div class="gw-pass">✔ Pass: A-01,02,03,04,06,07,08 all exist + quality minimums: ≥2 channels (A-06) · tracking+≥2 metrics+threshold (A-07) · Status: Active (A-08) · shortlist quality (A-04)</div>
+          <div class="gw-fail">✖ Fail: fix each failing artifact quality gap before intake can proceed</div>
+        </div>
+      </div>
+      <div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage">
+        <div class="sid">ASSESSMENT-10</div>
+        <div class="sname">Brand Profiling</div>
+        <div class="sskill">/lp-do-assessment-10-brand-profiling</div>
+        <div class="sout">→ brand-profiling.user.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+          <span class="ctrl ctrl-rule">Confirms business name · defines audience, personality, voice &amp; tone</span>
+          <span class="ctrl ctrl-rule">Sections A–E required: ICP · Brand Personality · Voice &amp; Tone · Competitive Positioning · Messaging</span>
+        </div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage">
+        <div class="sid">ASSESSMENT-11</div>
+        <div class="sname">Brand Identity</div>
+        <div class="sskill">/lp-do-assessment-11-brand-identity + /lp-do-assessment-12-promote</div>
+        <div class="sout">→ brand-identity.user.md · brand-dossier with colour palette, typography, imagery, token overrides</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+          <span class="ctrl ctrl-rule">Reads brand-strategy artifact from ASSESSMENT-10</span>
+          <span class="ctrl ctrl-rule">Required sections: Color · Typography · Imagery · Token overrides</span>
+        </div>
+      </div>
+
+    </div><!-- end stage-list -->
+  </div><!-- end cbox-body -->
+</div><!-- end ASSESSMENT -->
+
+<!-- GATE-ASSESSMENT-01 -->
+<div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+<div class="gw hard" style="width:100%;margin-bottom:14px">
+  <div class="gw-header">
+    <div class="gw-diamond"></div>
+    <span class="gw-tag">HARD GATE</span>
+    <span class="gw-id">GATE-ASSESSMENT-01</span>
+  </div>
+  <div class="gw-trigger">Trigger: ASSESSMENT container done → MEASURE-01</div>
+  <div class="gw-body">
+    <div class="gw-pass">✔ Pass: brand-profiling.user.md Draft/Active with sections A–E + voice/personality content<br>AND brand-identity.user.md Draft/Active with Color · Typography · Imagery · Token sections</div>
+    <div class="gw-fail">✖ Fail: run /lp-do-assessment-10-brand-profiling and/or /lp-do-assessment-11-brand-identity</div>
+  </div>
+</div>
+<div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<!-- ══════════════════════════════════════════════════
+     MEASURE
+     ══════════════════════════════════════════════════ -->
+<div id="s-measure" class="cbox c-measure">
+  <div class="cbox-head">
+    <div class="cbox-icon">📊</div>
+    <div>
+      <div class="cbox-title">Measure · Layer A · Measurement Setup</div>
+      <div class="cbox-meta">MEASURE-01 → MEASURE-02 · 2 stages</div>
+      <div class="cbox-cond">Unconditional · establishes tracking infrastructure before market intelligence</div>
+    </div>
+  </div>
+  <div class="cbox-body">
+    <div class="stage-list">
+
+      <div class="stage">
+        <div class="sid">MEASURE-01</div>
+        <div class="sname">Agent Setup</div>
+        <div class="sskill">prompt-handoff → measurement-agent-setup-prompt.md</div>
+        <div class="sout">→ YYYY-MM-DD-agent-setup.user.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+          <span class="ctrl ctrl-rule">Phase 0 (human ~30–60 min): GCP · GA4 · Cloudflare · GitHub access bundle</span>
+          <span class="ctrl ctrl-rule">Phase 1 (agent after P0): GA4 streams · key events · custom dimensions · internal traffic filter · Search Console · DNS · gtag.js · Consent Mode v2</span>
+          <span class="ctrl ctrl-rule">Phase 2 (agent+human): tag presence · DebugView · CTA events · redirect health · staging GA4 isolation</span>
+          <span class="ctrl ctrl-rule">DV-03: GA4 cross-domain linking deferred to S9B</span>
+          <span class="ctrl ctrl-rule">CAP-07 anchor: Measure stage doc Active + ≥1 confirmed conversion event</span>
+        </div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage">
+        <div class="sid">MEASURE-02</div>
+        <div class="sname">Historical Performance Results</div>
+        <div class="sskill">prompt-handoff → existing-business-historical-baseline-prompt.md</div>
+        <div class="sout">→ YYYY-MM-DD-historical-performance.user.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+          <span class="ctrl ctrl-rule">New businesses: placeholder with zeroed denominators is valid</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<!-- ══════════════════════════════════════════════════
+     PRODUCT
+     ══════════════════════════════════════════════════ -->
+<div id="s-product" class="cbox c-product">
+  <div class="cbox-head">
+    <div class="cbox-icon">📦</div>
+    <div>
+      <div class="cbox-title">Product · Layer A · Initial Product Capture</div>
+      <div class="cbox-meta">PRODUCT-01 always runs · PRODUCT-02 is a conditional fan-out stage after MARKET-06</div>
+      <div class="cbox-cond">PRODUCT-01 unconditional · PRODUCT-02 conditional (growth_intent includes product_range OR operator_invoked)</div>
+    </div>
+  </div>
+  <div class="cbox-body">
+    <div class="stage-list">
+      <div class="stage">
+        <div class="sid">PRODUCT-01</div>
+        <div class="sname">Product From Photo</div>
+        <div class="sskill">prompt-handoff → product-from-photo-prompt.md</div>
+        <div class="sout">→ YYYY-MM-DD-product-from-photo.user.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+          <span class="ctrl ctrl-rule">Initial product record from visual reference</span>
+          <span class="ctrl ctrl-rule">PRODUCT-02 (adjacent research) deferred to post-MARKET-06 fan-out</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<!-- ══════════════════════════════════════════════════
+     PRODUCTS (Standing Intelligence)
+     ══════════════════════════════════════════════════ -->
+<div id="s-products" class="cbox c-products">
+  <div class="cbox-head">
+    <div class="cbox-icon">🗂</div>
+    <div>
+      <div class="cbox-title">Products · Layer A · Product Portfolio Standing Intelligence</div>
+      <div class="cbox-meta">PRODUCTS-01 → PRODUCTS-07 · 7 stages · PRODUCTS-07 aggregate pack consumed optionally at S4</div>
+      <div class="cbox-cond">Unconditional</div>
+    </div>
+  </div>
+  <div class="cbox-body">
+    <div class="stage-list">
+
+      <div class="stage-grid-3">
+        <div class="stage">
+          <div class="sid">PRODUCTS-01</div>
+          <div class="sname">Product Line Mapping</div>
+          <div class="sskill">prompt-handoff</div>
+          <div class="sout">→ products-line-mapping.user.md</div>
+          <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Current SKU inventory + positioning map</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">PRODUCTS-02</div>
+          <div class="sname">Competitor Product Scan</div>
+          <div class="sskill">prompt-handoff</div>
+          <div class="sout">→ products-competitor-scan.user.md</div>
+          <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Adjacent SKUs + pricing benchmarks</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">PRODUCTS-03</div>
+          <div class="sname">Product Performance Baseline</div>
+          <div class="sskill">prompt-handoff</div>
+          <div class="sout">→ products-performance-baseline.user.md</div>
+          <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Sell-through rates + margin by SKU</span></div>
+        </div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage-grid-3">
+        <div class="stage">
+          <div class="sid">PRODUCTS-04</div>
+          <div class="sname">Bundle &amp; Packaging Hypotheses</div>
+          <div class="sskill">prompt-handoff</div>
+          <div class="sout">→ products-bundle-hypotheses.user.md</div>
+          <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Standing bundle options</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">PRODUCTS-05</div>
+          <div class="sname">Product-Market Fit Signals</div>
+          <div class="sskill">prompt-handoff</div>
+          <div class="sout">→ products-pmf-signals.user.md</div>
+          <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Reviews + return rates + demand signals</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">PRODUCTS-06</div>
+          <div class="sname">Product Roadmap Snapshot</div>
+          <div class="sskill">prompt-handoff</div>
+          <div class="sout">→ products-roadmap-snapshot.user.md</div>
+          <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Next 90-day product decisions</span></div>
+        </div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage highlight" style="border-left-color:#9a3412">
+        <div class="sid">PRODUCTS-07 · ★ Standing artifact</div>
+        <div class="sname">Aggregate Product Pack</div>
+        <div class="sskill">prompt-handoff</div>
+        <div class="sout">→ product-pack.user.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+          <span class="ctrl ctrl-art">artifact: product-pack</span>
+          <span class="ctrl ctrl-rule">Consumed optionally at S4 join (absent-safe)</span>
+          <span class="ctrl ctrl-rule">Stale: after 90 days or confidence &lt; 0.6</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<!-- ══════════════════════════════════════════════════
+     LOGISTICS (Conditional)
+     ══════════════════════════════════════════════════ -->
+<div id="s-logistics" class="cbox c-logistics">
+  <div class="cbox-head">
+    <div class="cbox-icon">🚚</div>
+    <div>
+      <div class="cbox-title">Logistics · Layer A · Conditional Standing Intelligence</div>
+      <div class="cbox-meta">LOGISTICS-01 → LOGISTICS-07 · 7 stages · entire container is conditional</div>
+      <div class="cbox-cond">Condition: business_profile includes logistics-heavy OR physical-product · Absence is NOT an error · all consumers must implement absent-file safety</div>
+    </div>
+  </div>
+  <div class="cbox-body">
+    <div class="stage-list">
+
+      <div class="stage-grid-2">
+        <div class="stage conditional">
+          <div class="sid">LOGISTICS-01</div>
+          <div class="sname">Supplier &amp; Manufacturer Mapping</div>
+          <div class="sskill">prompt-handoff</div>
+          <div class="sout">→ logistics-supplier-mapping.user.md</div>
+          <div class="sctrl"><span class="ctrl ctrl-cond">logistics-heavy OR physical-product</span><span class="ctrl ctrl-rule">Supplier list · MOQ · lead times</span></div>
+        </div>
+        <div class="stage conditional">
+          <div class="sid">LOGISTICS-02</div>
+          <div class="sname">Lead Time &amp; MOQ Baseline</div>
+          <div class="sskill">prompt-handoff</div>
+          <div class="sout">→ logistics-lead-time-moq.user.md</div>
+          <div class="sctrl"><span class="ctrl ctrl-cond">logistics-heavy OR physical-product</span><span class="ctrl ctrl-rule">Consolidated constraints per SKU</span></div>
+        </div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage-grid-3">
+        <div class="stage conditional">
+          <div class="sid">LOGISTICS-03</div>
+          <div class="sname">Fulfillment Channel Options</div>
+          <div class="sskill">prompt-handoff</div>
+          <div class="sout">→ logistics-fulfillment-options.user.md</div>
+          <div class="sctrl"><span class="ctrl ctrl-cond">conditional</span><span class="ctrl ctrl-rule">3PL vs self-fulfillment vs dropship</span></div>
+        </div>
+        <div class="stage conditional">
+          <div class="sid">LOGISTICS-04</div>
+          <div class="sname">Cost &amp; Margin by Route</div>
+          <div class="sskill">prompt-handoff</div>
+          <div class="sout">→ logistics-cost-margin-by-route.user.md</div>
+          <div class="sctrl"><span class="ctrl ctrl-cond">conditional</span><span class="ctrl ctrl-rule">Fulfillment cost stack per channel</span></div>
+        </div>
+        <div class="stage conditional">
+          <div class="sid">LOGISTICS-05</div>
+          <div class="sname">Returns &amp; Quality Baseline</div>
+          <div class="sskill">prompt-handoff</div>
+          <div class="sout">→ logistics-returns-quality.user.md</div>
+          <div class="sctrl"><span class="ctrl ctrl-cond">conditional</span><span class="ctrl ctrl-rule">Return rates + quality failure modes</span></div>
+        </div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage conditional">
+        <div class="sid">LOGISTICS-06</div>
+        <div class="sname">Inventory Policy Snapshot</div>
+        <div class="sskill">prompt-handoff</div>
+        <div class="sout">→ logistics-inventory-policy.user.md</div>
+        <div class="sctrl"><span class="ctrl ctrl-cond">conditional</span><span class="ctrl ctrl-rule">Reorder points · safety stock</span></div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage conditional highlight" style="border-left-color:#374151">
+        <div class="sid">LOGISTICS-07 · ★ Standing artifact</div>
+        <div class="sname">Aggregate Logistics Pack</div>
+        <div class="sskill">prompt-handoff</div>
+        <div class="sout">→ logistics-pack.user.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-cond">logistics-heavy OR physical-product</span>
+          <span class="ctrl ctrl-art">artifact: logistics-pack · conditional: true in frontmatter</span>
+          <span class="ctrl ctrl-rule">Consumed optionally at S4 (conditional + absent-safe)</span>
+          <span class="ctrl ctrl-rule">Stale: after 90 days or confidence &lt; 0.6</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<!-- ══════════════════════════════════════════════════
+     MARKET
+     ══════════════════════════════════════════════════ -->
+<div id="s-market" class="cbox c-market">
+  <div class="cbox-head">
+    <div class="cbox-icon">📈</div>
+    <div>
+      <div class="cbox-title">Market · Layer A · Market Intelligence + Offer Design</div>
+      <div class="cbox-meta">MARKET-01 → MARKET-11 · 11 stages · Core chain (M-01..06) triggers fan-out · Post-offer chain (M-07..11) runs in parallel with S3 + SELL</div>
+      <div class="cbox-cond">Unconditional</div>
+    </div>
+  </div>
+  <div class="cbox-body">
+    <div class="stage-list">
+
+      <div class="section-label">Core intelligence chain</div>
+
+      <div class="stage-grid-2">
+        <div class="stage">
+          <div class="sid">MARKET-01</div>
+          <div class="sname">Competitor Mapping</div>
+          <div class="sskill">prompt-handoff → deep-research-competitor-mapping-prompt.md</div>
+          <div class="sout">→ market-research/&lt;BIZ&gt;/</div>
+          <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Competitor landscape with differentiators</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">MARKET-02</div>
+          <div class="sname">Demand Evidence</div>
+          <div class="sskill">prompt-handoff → deep-research-demand-evidence-prompt.md</div>
+          <div class="sout">→ market-research/&lt;BIZ&gt;/</div>
+          <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Demand shape · audience pull · confidence tags</span></div>
+        </div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage-grid-3">
+        <div class="stage">
+          <div class="sid">MARKET-03</div>
+          <div class="sname">Pricing Benchmarks</div>
+          <div class="sskill">prompt-handoff → deep-research-pricing-benchmarks-prompt.md</div>
+          <div class="sout">→ market-research/&lt;BIZ&gt;/</div>
+          <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Benchmark ranges by competitor set</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">MARKET-04</div>
+          <div class="sname">Channel Landscape</div>
+          <div class="sskill">prompt-handoff → deep-research-channel-landscape-prompt.md</div>
+          <div class="sout">→ market-research/&lt;BIZ&gt;/</div>
+          <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Channel options · constraints · channel-fit notes</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">MARKET-05</div>
+          <div class="sname">Assumptions &amp; Risk Register</div>
+          <div class="sskill">prompt-handoff → market-assumptions-risk-register-prompt.md</div>
+          <div class="sout">→ market-research/&lt;BIZ&gt;/ + update latest.user.md pointer</div>
+          <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Consolidated assumptions + risk register</span></div>
+        </div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage highlight" style="border-left-color:#991b1b;border-color:#7f1d1d">
+        <div class="sid">MARKET-06 · ⊕ Fan-out trigger</div>
+        <div class="sname">Offer Design</div>
+        <div class="sskill">/lp-offer</div>
+        <div class="sout">→ docs/business-os/startup-baselines/&lt;BIZ&gt;-offer.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+          <span class="ctrl ctrl-art">artifact: offer-design</span>
+          <span class="ctrl ctrl-rule">6 mandatory sections: ICP Segmentation · Pain/Promise Mapping · Offer Structure · Positioning One-Pager · Pricing/Packaging Hypothesis · Objection Map + Risk Reversal</span>
+          <span class="ctrl ctrl-rule">Parallel subagent per competitor (Mode A, 200 word max)</span>
+          <span class="ctrl ctrl-rule">CAP-01: ICP + positioning + ≥1 switching trigger with evidence source</span>
+          <span class="ctrl ctrl-rule">CAP-03: Pricing hypothesis with confidence score + validation plan · ≥1 objection entry per primary objection</span>
+          <span class="ctrl ctrl-rule">Consumers: lp-forecast · lp-channels · lp-seo · lp-do-critique</span>
+        </div>
+      </div>
+
+      <!-- GATE-BD-03 -->
+      <div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="gw hard">
+        <div class="gw-header">
+          <div class="gw-diamond"></div>
+          <span class="gw-tag">HARD GATE</span>
+          <span class="gw-id">GATE-BD-03</span>
+        </div>
+        <div class="gw-trigger">Trigger: blocks MARKET-06 from being marked Done</div>
+        <div class="gw-body">
+          <div class="gw-pass">✔ Pass: messaging-hierarchy.user.md exists at Draft minimum (checked via index.user.md Status column)</div>
+          <div class="gw-fail">✖ Fail: create messaging-hierarchy.user.md at Draft using BRAND-DR-03/04 prompts</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     FAN-OUT
+     ══════════════════════════════════════════════════ -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<div id="s-fanout" class="fanout">
+  <div class="fanout-header">
+    <div class="fanout-diamond"></div>
+    <div>
+      <div class="fanout-title">Fan-out after MARKET-06 Done — two parallel tracks</div>
+      <div class="fanout-subtitle">All tracks run simultaneously · S3 Forecast + SELL-01 start in parallel within Track 1 · MARKET post-offer + PRODUCT-02 contribute optional inputs · all converge at S4 join barrier</div>
+    </div>
+  </div>
+
+  <div class="fanout-grid fanout-2">
+
+    <!-- Track 1: SELL + S3 Forecast -->
+    <div class="fanout-col" style="border-color:#166534">
+      <div class="fanout-col-head" style="color:#4ade80">Track 1 · SELL Channel Strategy + Forecast + Standing Chain</div>
+
+      <!-- S3 + SELL-01 parallel sub-grid -->
+      <div style="font-size:10px;color:#484f58;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Starts in parallel at fan-out</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+
+        <!-- S3 -->
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="stage" style="border-left-color:#1d4ed8;background:#0a1628;border-color:#1d4ed8;flex:1">
+            <div class="sid">S3 · parallel group: fan-out-1</div>
+            <div class="sname">Forecast — P10 / P50 / P90</div>
+            <div class="sskill">/lp-forecast</div>
+            <div class="sout">→ startup-baselines/&lt;BIZ&gt;/S3-forecast/YYYY-MM-DD-lp-forecast.user.md</div>
+            <div class="sctrl">
+              <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+              <span class="ctrl ctrl-art">artifact: forecast</span>
+              <span class="ctrl ctrl-rule">Required sections: Scenario Summary · Unit Economics (CAC/AOV/margin/CVR) · Channel Ranges · First-14-Day Validation Plan · Assumption Register · Source List</span>
+              <span class="ctrl ctrl-rule">9 mandatory assumption fields per entry: assumption_id · statement · prior_range · sensitivity · evidence_source · confidence_level · kill_trigger · owner · next_review_date</span>
+              <span class="ctrl ctrl-rule">Confidence tiers — low &lt;60: 10% spend cap, ≤5h/wk · medium 60–79: 30% cap, ≤10h/wk · high ≥80: full budget</span>
+              <span class="ctrl ctrl-rule">Required input: lp-offer artifact · Optional: lp-channels artifact</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#1d4ed8;text-align:center;font-weight:600;padding:4px 0">✔ REQUIRED at S4 join</div>
+        </div>
+
+        <!-- SELL-01 -->
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="gw hard" style="margin:0">
+            <div class="gw-header">
+              <div class="gw-diamond"></div>
+              <span class="gw-tag">HARD GATE</span>
+              <span class="gw-id">GATE-SELL-STRAT-01</span>
+            </div>
+            <div class="gw-trigger">MARKET-06 Done → SELL-01 start</div>
+            <div class="gw-pass" style="margin-top:4px">✔ Pass: valid DEP at startup-baselines/&lt;BIZ&gt;/demand-evidence-pack.md passes schema floor (≥2 variants · denominator+source_tag · ≥5 tagged objections · speed-to-lead sample≥1)</div>
+            <div class="gw-fail" style="margin-top:4px">✖ Fail: complete DEP capture and verify pass floor</div>
+          </div>
+          <div class="stage" style="border-left-color:#166534;background:#001a0d;border-color:#166534;flex:1">
+            <div class="sid">SELL-01 · parallel group: fan-out-1</div>
+            <div class="sname">Channel Strategy + GTM</div>
+            <div class="sskill">/lp-channels → then /lp-seo + /draft-outreach (parallel)</div>
+            <div class="sout">→ startup-baselines/&lt;BIZ&gt;-channels.md</div>
+            <div class="sctrl">
+              <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+              <span class="ctrl ctrl-art">artifact: channels</span>
+              <span class="ctrl ctrl-rule">2–3 launch channels with viability constraints + stop conditions + 30-day GTM timeline</span>
+              <span class="ctrl ctrl-rule">CAP-04: each channel has viability constraint · stop condition · ≥1 30-day execution line</span>
+              <span class="ctrl ctrl-rule">/lp-seo + /draft-outreach dispatched in parallel after lp-channels · both must complete before SELL-01 marked Done</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#166534;text-align:center;font-weight:600;padding:4px 0">✔ REQUIRED at S4 join</div>
+        </div>
+
+      </div><!-- end parallel sub-grid -->
+
+      <div style="font-size:10px;color:#484f58;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">SELL-01 done → sequential standing chain</div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage">
+        <div class="sid">SELL-02</div><div class="sname">Channel Performance Baseline</div>
+        <div class="sskill">prompt-handoff</div><div class="sout">→ sell-channel-performance-baseline.user.md</div>
+        <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">CVR · CAC · channel-level ROI by channel</span></div>
+      </div>
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="stage">
+        <div class="sid">SELL-03</div><div class="sname">Outreach &amp; Content Standing</div>
+        <div class="sskill">prompt-handoff</div><div class="sout">→ sell-outreach-content-standing.user.md</div>
+        <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Outreach cadence · content calendar · engagement metrics</span></div>
+      </div>
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="stage">
+        <div class="sid">SELL-04</div><div class="sname">SEO Standing</div>
+        <div class="sskill">prompt-handoff</div><div class="sout">→ sell-seo-standing.user.md</div>
+        <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Organic rankings · keyword gaps · backlink profile</span></div>
+      </div>
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="stage">
+        <div class="sid">SELL-05</div><div class="sname">Paid Channel Standing</div>
+        <div class="sskill">prompt-handoff</div><div class="sout">→ sell-paid-channel-standing.user.md</div>
+        <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Spend by channel · ROAS · creative fatigue signals</span></div>
+      </div>
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="stage">
+        <div class="sid">SELL-06</div><div class="sname">Partnership &amp; Referral Standing</div>
+        <div class="sskill">prompt-handoff</div><div class="sout">→ sell-partnership-referral-standing.user.md</div>
+        <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Partnership pipeline · referral programmes · affiliate activity</span></div>
+      </div>
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage highlight" style="border-left-color:#166534;border-color:#166534">
+        <div class="sid">SELL-07 · ★ Standing artifact</div>
+        <div class="sname">Sell Aggregate Pack</div>
+        <div class="sskill">prompt-handoff</div>
+        <div class="sout">→ sell-pack.user.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+          <span class="ctrl ctrl-art">artifact: sell-pack · producer_stage: SELL-07</span>
+          <span class="ctrl ctrl-rule">Consumed optionally at S4 join</span>
+          <span class="ctrl ctrl-rule">Stale: after 90 days or confidence &lt; 0.6</span>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid #21262d;margin-top:8px;padding-top:8px">
+        <div style="font-size:11px;color:#d29922;margin-bottom:6px;font-weight:600">⤷ SELL-08 conditional branch (paid_spend_requested)</div>
+        <div class="stage conditional" style="border-color:#d29922;border-left-color:#d29922">
+          <div class="sid">SELL-08 · conditional: paid_spend_requested</div>
+          <div class="sname">Activation Readiness</div>
+          <div class="sskill">/startup-loop advance</div>
+          <div class="sout">→ activation-readiness doc</div>
+          <div class="sctrl">
+            <span class="ctrl ctrl-cond">paid_spend_requested</span>
+            <span class="ctrl ctrl-rule">Does NOT block S4 — only blocks paid spend activation</span>
+          </div>
+        </div>
+
+        <div class="arrow amber"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="gw hard">
+          <div class="gw-header">
+            <div class="gw-diamond"></div>
+            <span class="gw-tag">HARD GATE</span>
+            <span class="gw-id">GATE-SELL-ACT-01</span>
+          </div>
+          <div class="gw-trigger">Trigger: SELL-08 · before any paid spend</div>
+          <div class="gw-checks">
+            All three must pass:<br>
+            ① measurement-verification*.user.md exists with Status: Active<br>
+            ② No active Severity: High or Critical risks in plan.user.md<br>
+            ③ Conversion-intent events (begin_checkout, add_to_cart or equiv.) non-zero in production
+          </div>
+          <div class="gw-fail" style="margin-top:6px">✖ Fail: resolve measurement risks · verify conversion events · update verification artifact</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Track 2: PRODUCT-02 + MARKET post-offer -->
+    <div class="fanout-col" style="border-color:#374151">
+      <div class="fanout-col-head" style="color:#9ca3af">Track 2 · PRODUCT-02 (conditional) + MARKET post-offer chain</div>
+
+      <div class="stage conditional" style="border-left-color:#92400e;border-color:#92400e">
+        <div class="sid">PRODUCT-02 · conditional · parallel group: fan-out-1</div>
+        <div class="sname">Adjacent Product Research</div>
+        <div class="sskill">/lp-other-products</div>
+        <div class="sout">→ lp-other-products-results.user.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-cond">growth_intent includes product_range OR operator_invoked</span>
+          <span class="ctrl ctrl-art">artifact: adjacent_product_research</span>
+          <span class="ctrl ctrl-rule">Non-blocking at S4 — optional input</span>
+        </div>
+      </div>
+
+      <div class="gw soft" style="margin:8px 0">
+        <div class="gw-header">
+          <div class="gw-diamond"></div>
+          <span class="gw-tag">SOFT GATE</span>
+          <span class="gw-id">GATE-PRODUCT-02-01</span>
+        </div>
+        <div class="gw-trigger">Advisory at MARKET-06 Done when growth_intent includes product range expansion</div>
+        <div class="gw-note" style="margin-top:4px">⚠ Advisory: dispatches /lp-other-products · does NOT block S3/SELL-01 fan-out or S4 join</div>
+      </div>
+
+      <div style="border-top:1px solid #21262d;margin-top:4px;padding-top:12px">
+        <div style="font-size:10px;color:#484f58;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">MARKET post-offer standing chain (parallel)</div>
+
+        <div class="stage-list">
+          <div class="stage" style="border-left-color:#991b1b">
+            <div class="sid">MARKET-07</div><div class="sname">Post-Offer Synthesis</div>
+            <div class="sskill">prompt-handoff</div><div class="sout">→ market-post-offer-synthesis.user.md</div>
+            <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Offer contract integrated back into market intelligence · updated assumptions</span></div>
+          </div>
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+          <div class="stage" style="border-left-color:#991b1b">
+            <div class="sid">MARKET-08</div><div class="sname">Demand Evidence Pack Assembly</div>
+            <div class="sskill">prompt-handoff</div><div class="sout">→ market-demand-evidence-pack.user.md</div>
+            <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Compiled DEP from MARKET-01..07 signals — single standing artifact</span></div>
+          </div>
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+          <div class="stage" style="border-left-color:#991b1b">
+            <div class="sid">MARKET-09</div><div class="sname">ICP Refinement</div>
+            <div class="sskill">prompt-handoff</div><div class="sout">→ market-icp-refinement.user.md</div>
+            <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span><span class="ctrl ctrl-rule">Narrowed ICP based on offer feedback + observed demand signals</span></div>
+          </div>
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+          <div class="stage" style="border-left-color:#991b1b">
+            <div class="sid">MARKET-10</div><div class="sname">Market Aggregate Pack (Draft)</div>
+            <div class="sskill">prompt-handoff</div><div class="sout">→ market-aggregate-pack-draft.user.md</div>
+            <div class="sctrl"><span class="ctrl ctrl-auton">AUTONOMOUS</span></div>
+          </div>
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+          <div class="stage highlight" style="border-left-color:#991b1b;border-color:#991b1b">
+            <div class="sid">MARKET-11 · ★ Standing artifact</div>
+            <div class="sname">Market Aggregate Pack (Validated)</div>
+            <div class="sskill">prompt-handoff</div>
+            <div class="sout">→ strategy/&lt;BIZ&gt;/market-pack.user.md</div>
+            <div class="sctrl">
+              <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+              <span class="ctrl ctrl-art">artifact: market-pack · status: Active|Stale|Draft</span>
+              <span class="ctrl ctrl-rule">Sections: ICP Summary · Key Assumptions · Confidence (0–1) · Evidence Sources · Open Questions · Change-log</span>
+              <span class="ctrl ctrl-rule">Stale: after 90 days or confidence &lt; 0.6</span>
+              <span class="ctrl ctrl-rule">Consumed: S4 (optional) · Layer B fact-find · S10 freshness check</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end fanout-grid -->
+</div><!-- end fanout -->
+
+<!-- ══════════════════════════════════════════════════
+     S4 JOIN BARRIER
+     ══════════════════════════════════════════════════ -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<div id="s-s4" class="join-barrier">
+  <div class="join-header">
+    <div class="join-icon">⊗</div>
+    <div>
+      <div class="join-title">S4 — Baseline Merge · Join Barrier</div>
+      <div class="join-subtitle">/lp-baseline-merge · join_barrier: true · all fan-out tracks must complete before this stage begins</div>
+    </div>
+  </div>
+
+  <div class="stage" style="border-left-color:#1d4ed8;border-color:#1d4ed8;background:#071428">
+    <div class="sid">S4</div>
+    <div class="sname">Baseline Merge</div>
+    <div class="sskill">/lp-baseline-merge</div>
+    <div class="sout">→ candidate baseline snapshot + draft manifest (status: candidate)</div>
+    <div class="sctrl">
+      <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+      <span class="ctrl ctrl-rule">Manifest lifecycle: S4 writes status:candidate → S5B promotes → current → S10 writes next_seed</span>
+      <span class="ctrl ctrl-rule">S4 is sole writer of current manifest pointer</span>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:#4b6ea8;margin:12px 0 6px">Artifact inputs at join barrier:</div>
+  <div class="join-inputs">
+    <div class="join-input req"><strong>✔ REQUIRED · offer (MARKET-06)</strong>startup-baselines/&lt;BIZ&gt;-offer.md</div>
+    <div class="join-input req"><strong>✔ REQUIRED · forecast (S3)</strong>startup-baselines/&lt;BIZ&gt;/S3-forecast/*.user.md</div>
+    <div class="join-input req"><strong>✔ REQUIRED · channels (SELL-01)</strong>startup-baselines/&lt;BIZ&gt;-channels.md</div>
+    <div class="join-input opt"><strong>○ optional · seo (SELL-01)</strong>strategy/&lt;BIZ&gt;/seo/*.user.md</div>
+    <div class="join-input opt"><strong>○ optional · outreach (SELL-01)</strong>strategy/&lt;BIZ&gt;/outreach/</div>
+    <div class="join-input opt"><strong>○ optional · adjacent_product_research (PRODUCT-02)</strong>strategy/&lt;BIZ&gt;/lp-other-products-results.user.md</div>
+    <div class="join-input opt"><strong>○ optional · product-pack (PRODUCTS-07)</strong>strategy/&lt;BIZ&gt;/product-pack.user.md</div>
+    <div class="join-input opt"><strong>○ optional · logistics-pack (LOGISTICS-07, absent-safe)</strong>strategy/&lt;BIZ&gt;/logistics-pack.user.md</div>
+    <div class="join-input opt"><strong>○ optional · market-pack (MARKET-11)</strong>strategy/&lt;BIZ&gt;/market-pack.user.md</div>
+    <div class="join-input opt"><strong>○ optional · sell-pack (SELL-07)</strong>strategy/&lt;BIZ&gt;/sell-pack.user.md</div>
+  </div>
+</div>
+
+<!-- S5A + S5B -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<div id="s-s5" style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+  <div class="orch">
+    <div class="sid">S5A</div>
+    <div class="sname">Prioritize</div>
+    <div class="sskill">/lp-prioritize → prioritization-scorer-prompt.md</div>
+    <div class="sout">→ stages/S5A/prioritized-items.md</div>
+    <div class="sctrl">
+      <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+      <span class="ctrl ctrl-rule">Top 2–3 scored and ranked action items · no BOS sync at this stage</span>
+    </div>
+  </div>
+  <div class="orch guarded">
+    <div class="sid">S5B · GUARDED · Highest-risk stage</div>
+    <div class="sname">BOS Sync — Sole Mutation Boundary</div>
+    <div class="sskill">/lp-bos-sync</div>
+    <div class="sout">→ Cards + stage-docs persisted to D1 · manifest pointer committed candidate → current</div>
+    <div class="sctrl">
+      <span class="ctrl ctrl-guard">GUARDED</span>
+      <span class="ctrl ctrl-rule">Dual write: D1 mutation + manifest pointer commit</span>
+      <span class="ctrl ctrl-rule">Must emit stage_started to events.jsonl before execution</span>
+      <span class="ctrl ctrl-rule">Control plane is sole writer for manifest, state.json, events.jsonl</span>
+    </div>
+  </div>
+</div>
+
+<!-- S6 -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+<div class="orch" style="margin-bottom:14px">
+  <div class="sid">S6</div>
+  <div class="sname">Site-Upgrade Synthesis</div>
+  <div class="sskill">/lp-site-upgrade → deep-research-business-upgrade-prompt.md</div>
+  <div class="sout">→ Site upgrade brief with prioritised improvement backlog</div>
+  <div class="sctrl">
+    <span class="ctrl ctrl-auton">AUTONOMOUS</span>
+    <span class="ctrl ctrl-rule">3-layer synthesis: platform capability baseline → per-business upgrade brief → lp-do-fact-find handoff packet</span>
+  </div>
+</div>
+
+<!-- DO -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<div id="s-do" class="cbox c-do">
+  <div class="cbox-head">
+    <div class="cbox-icon">🔨</div>
+    <div>
+      <div class="cbox-title">DO · Layer B · Implementation Loop</div>
+      <div class="cbox-meta">Per promoted idea card · fact-find → plan → build → results-review · reads from Layer A packs · writes back via results-review.user.md</div>
+      <div class="cbox-cond">GUARDED · idea_card_id from IDEAS-03 required (or direct-inject: true with rationale)</div>
+    </div>
+  </div>
+  <div class="cbox-body">
+    <div class="do-grid">
+
+      <div class="stage">
+        <div class="sid">DO / 1</div>
+        <div class="sname">Fact-Find</div>
+        <div class="sskill">/lp-do-fact-find</div>
+        <div class="sout">→ docs/plans/&lt;slug&gt;/fact-find.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-guard">GUARDED</span>
+          <span class="ctrl ctrl-rule">Required frontmatter: Status · Outcome · Execution-Track · Deliverable-Type · Feature-Slug · artifact: fact-find</span>
+          <span class="ctrl ctrl-rule">Must cite layer_a_inputs with artifact paths + last_updated dates</span>
+          <span class="ctrl ctrl-rule">Sections: Scope · Evidence Audit · Confidence Inputs · Planning Readiness</span>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="sid">DO / 2</div>
+        <div class="sname">Plan</div>
+        <div class="sskill">/lp-do-plan</div>
+        <div class="sout">→ docs/plans/&lt;slug&gt;/plan.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-guard">GUARDED</span>
+          <span class="ctrl ctrl-rule">Required frontmatter: Status · Feature-Slug · Execution-Track · Last-updated · artifact: plan</span>
+          <span class="ctrl ctrl-rule">Tasks: ID · Type · Status · Confidence · Execution-Skill · Affects · Depends-on</span>
+          <span class="ctrl ctrl-rule">Sections: Summary · Tasks · Parallelism Guide · Validation Contracts · Open Decisions</span>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="sid">DO / 3</div>
+        <div class="sname">Build</div>
+        <div class="sskill">/lp-do-build</div>
+        <div class="sout">→ docs/plans/&lt;slug&gt;/build-record.user.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-guard">GUARDED</span>
+          <span class="ctrl ctrl-rule">Sections: What Was Built · Tests Run · Validation Evidence · Scope Deviations</span>
+          <span class="ctrl ctrl-rule">HARD GATE: cannot set plan Status: Archived until results-review.user.md exists</span>
+        </div>
+      </div>
+
+      <div class="stage conditional">
+        <div class="sid">DO / 4 · operator-produced</div>
+        <div class="sname">Results Review</div>
+        <div class="sskill">Written by operator</div>
+        <div class="sout">→ docs/plans/&lt;slug&gt;/results-review.user.md</div>
+        <div class="sctrl">
+          <span class="ctrl ctrl-rule">Hard gate for plan archival — build cycle not complete without this</span>
+          <span class="ctrl ctrl-rule">Sections: Observed Outcomes · Standing Updates (or No standing updates: reason) · New Idea Candidates</span>
+          <span class="ctrl ctrl-rule">Layer B → Layer A feedback: Standing Updates triggers refresh of relevant Layer A artifacts</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- S9B -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+<div id="s-s9b" class="orch teal" style="margin-bottom:14px">
+  <div class="sid">S9B · GUARDED</div>
+  <div class="sname">Pre-Launch QA Gates</div>
+  <div class="sskill">/lp-launch-qa + /lp-design-qa (dispatched in parallel)</div>
+  <div class="sout">→ QA gate pass evidence (conversion flows · SEO readiness · performance budget · legal compliance)</div>
+  <div class="sctrl">
+    <span class="ctrl ctrl-guard">GUARDED</span>
+    <span class="ctrl ctrl-rule">DV-03: GA4 cross-domain linking completed here (deferred from MEASURE-01)</span>
+    <span class="ctrl ctrl-rule">GATE-LOOP-GAP-03 (Soft/advisory): dispatches /lp-do-fact-find gap-fill if no audit for today exists</span>
+  </div>
+</div>
+
+<!-- S10 -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+<div id="s-s10" class="orch weekly" style="margin-bottom:14px">
+  <div class="sid">S10 · GUARDED · cadence: weekly · repeating</div>
+  <div class="sname">Weekly Decision</div>
+  <div class="sskill">/lp-weekly --biz &lt;BIZ&gt; --week &lt;YYYY-Www&gt; (Phase 1) · /lp-experiment (Phase 0 fallback)</div>
+  <div class="sout">→ Weekly KPCS decision · experiment lane updates · manifest next_seed pointer</div>
+  <div class="sctrl">
+    <span class="ctrl ctrl-guard">GUARDED</span>
+    <span class="ctrl ctrl-rule">Orchestrates: GATE-BD-08 check → signal-review → feedback-audit → KPCS decision → experiment lane</span>
+    <span class="ctrl ctrl-rule">Process anchor: DATA-4 (Weekly Review) governed by weekly-kpcs-decision-prompt.md</span>
+    <span class="ctrl ctrl-rule">S10 is sole writer of manifest next_seed pointers</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+    <div class="gw soft" style="margin:0">
+      <div class="gw-header">
+        <div class="gw-diamond"></div>
+        <span class="gw-tag">SOFT GATE</span>
+        <span class="gw-id">GATE-BD-08</span>
+      </div>
+      <div class="gw-trigger">S10 weekly · Brand Dossier freshness</div>
+      <div class="gw-pass" style="margin-top:4px">✔ Pass: Last-reviewed ≤ 90 days</div>
+      <div class="gw-note" style="margin-top:2px">⚠ Warning only: "Brand Dossier not reviewed in &gt;90 days" — no block</div>
+    </div>
+    <div class="gw soft" style="margin:0">
+      <div class="gw-header">
+        <div class="gw-diamond"></div>
+        <span class="gw-tag">SOFT → HARD</span>
+        <span class="gw-id">GATE-LOOP-GAP-02</span>
+      </div>
+      <div class="gw-trigger">Any advance call · bottleneck-diagnosis.json new constraints</div>
+      <div class="gw-pass" style="margin-top:4px">✔ Advisory when replan-trigger.json status: none/acknowledged</div>
+      <div class="gw-fail" style="margin-top:2px">✖ HARD BLOCK when status: open — must run /lp-do-replan</div>
+    </div>
+  </div>
+
+  <div class="loop-indicator">
+    <span style="font-size:20px;color:#0f766e">↺</span>
+    S10 repeats weekly until business exits the loop or begins a new run
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     GATE REGISTRY
+     ══════════════════════════════════════════════════ -->
+<div class="section-label" id="s-gates">Complete Gate Registry</div>
+
+<div class="gate-table-wrap">
+  <div class="gate-table-head">All Gates — Trigger Points, Pass Conditions &amp; Fail Actions</div>
+  <table class="gate-table">
+    <thead>
+      <tr>
+        <th style="width:140px">Gate ID</th>
+        <th style="width:80px">Type</th>
+        <th>Trigger Point</th>
+        <th>Pass Condition</th>
+        <th>Fail Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="gate-id-cell gate-hard">GATE-A08-00</td>
+        <td><span class="gate-type-hard">HARD</span></td>
+        <td class="gate-trigger-cell">ASSESSMENT-08 → ASSESSMENT-09 (start-point=problem)</td>
+        <td class="gate-pass-cell">current-situation.user.md exists with Status: Active</td>
+        <td class="gate-fail-cell">Run /lp-do-assessment-08-current-situation</td>
+      </tr>
+      <tr>
+        <td class="gate-id-cell gate-hard">GATE-ASSESSMENT-00</td>
+        <td><span class="gate-type-hard">HARD</span></td>
+        <td class="gate-trigger-cell">ASSESSMENT-09 → ASSESSMENT-10</td>
+        <td class="gate-pass-cell">All 7 precursors (A-01,02,03,04,06,07,08) present + quality minimums: ≥2 channels · tracking+≥2 metrics+threshold · Active current-situation · shortlist quality</td>
+        <td class="gate-fail-cell">Fix each failing artifact quality gap</td>
+      </tr>
+      <tr>
+        <td class="gate-id-cell gate-hard">GATE-ASSESSMENT-01</td>
+        <td><span class="gate-type-hard">HARD</span></td>
+        <td class="gate-trigger-cell">ASSESSMENT container → MEASURE-01</td>
+        <td class="gate-pass-cell">brand-profiling.user.md Draft/Active (sections A–E + voice/personality) AND brand-identity.user.md Draft/Active (Color · Typography · Imagery · Token)</td>
+        <td class="gate-fail-cell">Run /lp-do-assessment-10-brand-profiling and/or /lp-do-assessment-11-brand-identity</td>
+      </tr>
+      <tr>
+        <td class="gate-id-cell gate-hard">GATE-BD-03</td>
+        <td><span class="gate-type-hard">HARD</span></td>
+        <td class="gate-trigger-cell">MARKET-06 completion</td>
+        <td class="gate-pass-cell">messaging-hierarchy.user.md exists at Draft minimum (checked via index.user.md Status column)</td>
+        <td class="gate-fail-cell">Create messaging-hierarchy.user.md at Draft using BRAND-DR-03/04 prompts</td>
+      </tr>
+      <tr>
+        <td class="gate-id-cell gate-soft">GATE-PRODUCT-02-01</td>
+        <td><span class="gate-type-soft">SOFT</span></td>
+        <td class="gate-trigger-cell">MARKET-06 Done</td>
+        <td class="gate-pass-cell">Advisory — dispatches /lp-other-products when growth_intent includes product range expansion</td>
+        <td class="gate-fail-cell" style="color:#d29922">Advisory only — does NOT block S3/SELL-01 fan-out or S4 join</td>
+      </tr>
+      <tr>
+        <td class="gate-id-cell gate-hard">GATE-SELL-STRAT-01</td>
+        <td><span class="gate-type-hard">HARD</span></td>
+        <td class="gate-trigger-cell">MARKET-06 → SELL-01 fan-out</td>
+        <td class="gate-pass-cell">Valid DEP at startup-baselines/&lt;BIZ&gt;/demand-evidence-pack.md passes schema pass floor (≥2 variants · denominator+source_tag · ≥5 tagged objections · speed-to-lead sample≥1)</td>
+        <td class="gate-fail-cell">Complete DEP capture · verify pass floor per demand-evidence-pack-schema.md §2</td>
+      </tr>
+      <tr>
+        <td class="gate-id-cell gate-hard">GATE-SELL-ACT-01</td>
+        <td><span class="gate-type-hard">HARD</span></td>
+        <td class="gate-trigger-cell">SELL-08 · before any paid spend</td>
+        <td class="gate-pass-cell">① measurement-verification Active ② no High/Critical risks in plan ③ conversion events non-zero in production</td>
+        <td class="gate-fail-cell">Resolve measurement risks · verify conversion events · update verification artifact</td>
+      </tr>
+      <tr>
+        <td class="gate-id-cell gate-soft">GATE-BD-08</td>
+        <td><span class="gate-type-soft">SOFT</span></td>
+        <td class="gate-trigger-cell">S10 weekly</td>
+        <td class="gate-pass-cell">Brand Dossier Last-reviewed ≤ 90 days</td>
+        <td class="gate-fail-cell" style="color:#d29922">Warning only: "Brand Dossier not reviewed in &gt;90 days"</td>
+      </tr>
+      <tr>
+        <td class="gate-id-cell gate-soft">GATE-LOOP-GAP-01</td>
+        <td><span class="gate-type-soft">SOFT</span></td>
+        <td class="gate-trigger-cell">Any advance call</td>
+        <td class="gate-pass-cell">events.jsonl stage_blocked entry has corresponding block-brief-&lt;stage&gt;.md</td>
+        <td class="gate-fail-cell" style="color:#d29922">Advisory: dispatches /lp-do-fact-find --startup-loop-gap-fill --trigger block</td>
+      </tr>
+      <tr>
+        <td class="gate-id-cell gate-hard">GATE-LOOP-GAP-02</td>
+        <td><span class="gate-type-soft">SOFT→HARD</span></td>
+        <td class="gate-trigger-cell">Any advance call</td>
+        <td class="gate-pass-cell">No new critical/moderate constraints in bottleneck-diagnosis.json vs prior snapshot</td>
+        <td class="gate-fail-cell">Advisory when status: none/acknowledged · HARD BLOCK when status: open — must run /lp-do-replan</td>
+      </tr>
+      <tr>
+        <td class="gate-id-cell gate-soft">GATE-LOOP-GAP-03</td>
+        <td><span class="gate-type-soft">SOFT</span></td>
+        <td class="gate-trigger-cell">S9B → S10 transition</td>
+        <td class="gate-pass-cell">feedback-loop-audit-YYYY-MM-DD.md exists for today</td>
+        <td class="gate-fail-cell" style="color:#d29922">Advisory: dispatches /lp-do-fact-find --startup-loop-gap-fill --trigger feedback</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- AUTONOMY POLICY -->
+<div class="section-label" id="s-autonomy">Autonomy Policy</div>
+
+<div class="autonomy-grid">
+  <div class="autonomy-card aut-green">
+    <div class="autonomy-card-title">AUTONOMOUS · Local artifacts only</div>
+    <div class="autonomy-card-desc">No external API calls · no shared state mutation · no guarded execution required</div>
+    <div class="autonomy-card-stages">ASSESSMENT-01..11 · IDEAS-01..03 · MEASURE-01..02 · PRODUCT-01..02 · PRODUCTS-01..07 · LOGISTICS-01..07 · MARKET-01..11 · S3 · S4 · S5A · S6 · SELL-01..07</div>
+  </div>
+  <div class="autonomy-card aut-blue">
+    <div class="autonomy-card-title">GUARDED · External API / D1 / Manifest</div>
+    <div class="autonomy-card-desc">Must emit stage_started to events.jsonl before execution. External API call OR D1 mutation OR manifest commit OR lane transition.</div>
+    <div class="autonomy-card-stages">S5B (highest risk — D1 write + manifest commit) · DO (fact-find · plan · build) · S9B · S10</div>
+  </div>
+  <div class="autonomy-card aut-red">
+    <div class="autonomy-card-title">PROHIBITED · Never by agents</div>
+    <div class="autonomy-card-desc">Destructive / irreversible actions — never permitted regardless of operator instruction</div>
+    <div class="autonomy-card-stages">Delete events.jsonl or state.json · Overwrite completed stage artifacts · Force-promote manifest (skip S5B) · Destructive bulk D1 mutation · Rollback manifest without new run · Modify existing lines in events.jsonl</div>
+  </div>
+</div>
+
+<div style="text-align:center;color:#21262d;font-size:11px;margin-top:12px">
+  loop-spec.yaml v3.9.4 · stage-operator-dictionary.yaml schema_version 1 · two-layer-model.md · autonomy-policy.md
+</div>
+
+</div><!-- end flow -->
+
+<!-- STANDING PIPELINES -->
+<div class="section-label" id="s-standing">Standing Pipelines</div>
+<div class="standing-wrap">
+  <div class="standing-shell">
+    <div class="standing-head">
+      <div class="standing-title">IDEAS · Standing Pipeline</div>
+      <div class="standing-meta">Event-driven (not sequential) · recurrence: per trigger event</div>
+    </div>
+    <div class="standing-body">
+      <div class="standing-row">
+        <div class="standing-card">
+          <div class="standing-card-title">Trigger Path A · Pack Diff</div>
+          <div class="standing-line">MARKET-11 / SELL-07 / PRODUCTS-07 / LOGISTICS-07 changes</div>
+          <div class="stage-badges">
+            <span class="badge badge-auto">pack-trigger</span>
+            <span class="badge badge-auto">diff-scan</span>
+          </div>
+        </div>
+        <div class="standing-pipe">
+          <div class="arrow-line"></div>
+          <div class="arrow-head"></div>
+        </div>
+        <div class="standing-card op">
+          <div class="standing-card-title">Trigger Path B · Operator Inject</div>
+          <div class="standing-line">Manual run request for IDEAS review outside pack refresh cadence</div>
+          <div class="stage-badges">
+            <span class="badge badge-gate">operator-inject</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="standing-arrow-row">
+        <div class="standing-line">Both triggers dispatch the same IDEAS stage chain.</div>
+        <div class="standing-pipe">
+          <div class="arrow-line"></div>
+          <div class="arrow-head"></div>
+        </div>
+        <div class="standing-line">Chain runs per event; independent from the ASSESSMENT→MEASURE sequence.</div>
+      </div>
+
+      <div class="standing-stage-list">
+        <div class="stage">
+          <div class="sid">IDEAS-01</div>
+          <div class="sname">Pack diff scan</div>
+          <div class="sskill">/idea-scan</div>
+          <div class="sout">→ scan-proposals.md</div>
+          <div class="sctrl">
+            <span class="badge badge-auto">automated</span>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="sid">IDEAS-02</div>
+          <div class="sname">Backlog update</div>
+          <div class="sskill">/idea-develop + /idea-advance</div>
+          <div class="sout">→ updated idea-backlog/user artifacts</div>
+          <div class="sctrl">
+            <span class="badge badge-semi">semi-auto</span>
+            <span class="ctrl ctrl-rule">MERGE/SPLIT requires operator confirmation</span>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="sid">IDEAS-03</div>
+          <div class="sname">Promote to DO</div>
+          <div class="sskill">/lp-do-fact-find</div>
+          <div class="sout">→ fact-find handoff into DO</div>
+          <div class="sctrl">
+            <span class="badge badge-gate">gate</span>
+            <span class="ctrl ctrl-rule">promotion criteria + idea linkage required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end page -->
+</body>
+</html>

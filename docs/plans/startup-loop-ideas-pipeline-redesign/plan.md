@@ -42,7 +42,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - [ ] TASK-02: Update stage-operator-dictionary.yaml
 - [x] TASK-03: Update idea-backlog.schema.md (Complete 2026-02-22)
 - [ ] TASK-04: Create scan-proposals.schema.md
-- [ ] TASK-05: Remove IDEAS from UPSTREAM_PRIORITY_ORDER (bottleneck-detector.ts)
+- [x] TASK-05: Remove IDEAS from UPSTREAM_PRIORITY_ORDER (bottleneck-detector.ts) (Complete 2026-02-22)
 - [ ] TASK-06: Update HTML process map
 - [ ] TASK-07: Update startup-loop/SKILL.md + rewrite idea-scan/SKILL.md
 
@@ -113,7 +113,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 | TASK-02 | IMPLEMENT | Update stage-operator-dictionary.yaml | 85% | M | Pending | TASK-01 | — |
 | TASK-03 | IMPLEMENT | Update idea-backlog.schema.md | 85% | S | Complete (2026-02-22) | — | — |
 | TASK-04 | IMPLEMENT | Create scan-proposals.schema.md | 82% | M | Pending | TASK-INV-01 | — |
-| TASK-05 | IMPLEMENT | Remove IDEAS from UPSTREAM_PRIORITY_ORDER | 90% | S | Pending | — | — |
+| TASK-05 | IMPLEMENT | Remove IDEAS from UPSTREAM_PRIORITY_ORDER | 90% | S | Complete (2026-02-22) | — | — |
 | TASK-06 | IMPLEMENT | Update HTML process map | 80% | M | Pending | — | — |
 | TASK-07 | IMPLEMENT | Update startup-loop/SKILL.md + rewrite idea-scan/SKILL.md | 80% | M | Pending | TASK-INV-01 | — |
 
@@ -413,7 +413,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Artifact-Destination:** `scripts/src/startup-loop/bottleneck-detector.ts`
 - **Reviewer:** operator
 - **Approval-Evidence:** None: internal tooling change
@@ -438,9 +438,16 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
   - Red: UPSTREAM_PRIORITY_ORDER currently includes IDEAS/IDEAS-01/IDEAS-02/IDEAS-03 at lines ~89; represents false sequential position
   - Green: Remove the 4 entries from the array (surgery only; no logic changes)
   - Refactor: Verify StageId type is unchanged; verify STARTUP_LOOP_STAGES in loop.ts is unchanged; run tests
+- **Build/validation evidence (2026-02-22):**
+  - `rg -n "UPSTREAM_PRIORITY_ORDER.*IDEAS" scripts/src/startup-loop/bottleneck-detector.ts` — PASS (no matches; IDEAS removed from priority order)
+  - `rg -n "UPSTREAM_PRIORITY_ORDER|indexOf\\('IDEAS'\\)|indexOf\\(\\\"IDEAS\\\"\\)" scripts/src/startup-loop/bottleneck-detector.ts` — PASS (only generic index lookup remains)
+  - `pnpm exec jest --runTestsByPath scripts/src/startup-loop/__tests__/bottleneck-detector.test.ts --maxWorkers=2` — PASS (9/9)
+  - `pnpm exec jest --runTestsByPath scripts/src/startup-loop/__tests__/s10-weekly-routing.test.ts --maxWorkers=2` — PASS (17/17; includes stage-count 66 assertion)
+  - Guard note: plan’s root `pnpm -w test -- --testPathPattern=...` command is blocked by repo policy (`scripts/guard-broad-test-run.cjs`); targeted `jest --runTestsByPath` used as policy-compliant equivalent.
 - **Planning validation (required for M/L):** None: S effort
 - **Scouts:** Does any code access `UPSTREAM_PRIORITY_ORDER.indexOf('IDEAS')` or similar? If yes, that code needs updating too.
   Check: `grep -n "UPSTREAM_PRIORITY_ORDER" scripts/src/startup-loop/bottleneck-detector.ts`
+- Scout result (2026-02-22): no IDEAS-specific index lookups found; no additional code updates required.
 - **Edge Cases & Hardening:**
   - Do not remove IDEAS from `StageId` type — existing manifests reference these IDs
   - Confirm tests still expect 66 in s10-weekly-routing.test.ts (this test counts dict entries, not UPSTREAM_PRIORITY_ORDER entries — should be unaffected)
@@ -581,7 +588,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - [ ] TASK-01 and TASK-02 committed atomically in one git operation
 - [x] `idea-backlog.schema.md` contains `last_scanned_pack_versions` field definition
 - [ ] `scan-proposals.schema.md` exists with all 6 impact types and quality bar
-- [ ] `bottleneck-detector.ts` `UPSTREAM_PRIORITY_ORDER` contains no IDEAS entries; tests pass
+- [x] `bottleneck-detector.ts` `UPSTREAM_PRIORITY_ORDER` contains no IDEAS entries; tests pass
 - [ ] HTML process map shows IDEAS as a standing pipeline panel with both trigger paths visible
 - [ ] `startup-loop/SKILL.md` IDEAS table rows updated
 - [ ] `idea-scan/SKILL.md` output schema references `scan-proposals.md` (not `last-scan.json`)

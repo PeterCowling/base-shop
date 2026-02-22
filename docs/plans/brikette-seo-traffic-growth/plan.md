@@ -34,7 +34,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 - [ ] TASK-01c: Pages Functions preflight check (INVESTIGATE)
 - [ ] DECISION-01: Confirm slashless canonical policy (operator checkpoint)
 - [ ] TASK-02: Align trailing-slash canonical policy across canonicals, hreflang, sitemap, and tests
-- [ ] TASK-03a: GSC URL Inspection canonical sample — pre-change baseline
+- [x] TASK-03a: GSC URL Inspection canonical sample — pre-change baseline (Complete 2026-02-22)
 - [ ] TASK-03b: GSC URL Inspection canonical sample — post-change validation
 - [ ] TASK-04: hreflang reciprocity sampling
 - [ ] TASK-05: Structured-data validation sample
@@ -116,7 +116,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 | TASK-01c | INVESTIGATE | Pages Functions preflight check | 90% | S | Pending | - | TASK-01a, TASK-01b |
 | TASK-01a | IMPLEMENT | Cloudflare Bulk Redirects — www→apex | 85% | S | Pending | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
 | TASK-01b | IMPLEMENT | Fix root redirect in _redirects (302→301) | 80% | S | Pending | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
-| TASK-03a | INVESTIGATE | GSC URL Inspection — pre-change baseline | 85% | S | Pending | - | TASK-01a, TASK-01b, DECISION-01, TASK-02, TASK-07 |
+| TASK-03a | INVESTIGATE | GSC URL Inspection — pre-change baseline | 85% | S | Complete (2026-02-22) | - | TASK-01a, TASK-01b, DECISION-01, TASK-02, TASK-07 |
 | DECISION-01 | DECISION | Confirm slashless canonical policy (operator checkpoint) | 95% | S | Pending | TASK-03a | TASK-02 |
 | TASK-02 | IMPLEMENT | Trailing-slash canonical policy alignment | 75% | M | Pending | TASK-03a, DECISION-01 | CHECKPOINT-01, TASK-03b, TASK-07, TASK-08, TASK-12 |
 | TASK-03b | INVESTIGATE | GSC URL Inspection — post-change validation | 90% | S | Pending | TASK-01a, TASK-01b, TASK-02 | - |
@@ -386,7 +386,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-03a-gsc-canonical-baseline.md`
 - **Depends on:** -
 - **Blocks:** TASK-01a, TASK-01b, DECISION-01, TASK-02, TASK-07
@@ -408,11 +408,18 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Validation contract:** Investigation complete when: (a) artifact written with sample results table, (b) decision output stated, (c) mismatch rate quantified, (d) inspection timestamp pre-dates any TASK-01a/01b deploy
 - **Planning validation:** GSC URL Inspection API confirmed available via service account with `webmasters.readonly` scope (fact-find Phase 3)
 - **Rollout / rollback:** None: non-implementation task
-- **Documentation impact:** Write artifact at `docs/plans/brikette-seo-traffic-growth/task-03a-gsc-canonical-baseline.md`; update fact-find Confidence Adjustments section with findings
+- **Documentation impact:** Write artifact at `docs/plans/brikette-seo-traffic-growth/task-03a-gsc-canonical-baseline.md`; use findings to calibrate TASK-02/TASK-11 execution priority
 - **Notes / references:**
   - Auth pattern: see `memory/data-access.md` Search Console section
   - API: `POST https://searchconsole.googleapis.com/v1/urlInspection/index:inspect` with `siteUrl: sc-domain:hostel-positano.com`
   - Critical timing: must complete before TASK-01a or TASK-01b deploys; if deployment races with this task, baseline is invalidated
+
+**Build completion evidence (2026-02-22):**
+- Artifact created: `docs/plans/brikette-seo-traffic-growth/task-03a-gsc-canonical-baseline.md`
+- Required 8-URL pre-change sample captured via URL Inspection API on `2026-02-22T21:08:36Z -> 2026-02-22T21:09:28Z`
+- Canonical mismatch measured at `50%` on rows with both canonicals exposed (`2/4`; mismatches on `/en` and `/en/rooms`)
+- Non-indexed signals observed in same sample (`URL is unknown to Google` on 4 category/guide URLs), feeding TASK-11 indexing diagnostics
+- Decision output: TASK-02 remains high priority; no confidence uplift applied to TASK-02 because DECISION-01 dependency and policy-choice uncertainty remain active
 
 ---
 

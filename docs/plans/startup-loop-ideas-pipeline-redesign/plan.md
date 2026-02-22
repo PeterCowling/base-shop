@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: BOS / Startup Loop
 Workstream: Operations
 Created: 2026-02-22
@@ -44,7 +44,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - [x] TASK-04: Create scan-proposals.schema.md (Complete 2026-02-22)
 - [x] TASK-05: Remove IDEAS from UPSTREAM_PRIORITY_ORDER (bottleneck-detector.ts) (Complete 2026-02-22)
 - [x] TASK-06: Update HTML process map (Complete 2026-02-22)
-- [ ] TASK-07: Update startup-loop/SKILL.md + rewrite idea-scan/SKILL.md
+- [x] TASK-07: Update startup-loop/SKILL.md + rewrite idea-scan/SKILL.md (Complete 2026-02-22)
 
 ## Goals
 
@@ -115,7 +115,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 | TASK-04 | IMPLEMENT | Create scan-proposals.schema.md | 82% | M | Complete (2026-02-22) | TASK-INV-01 | — |
 | TASK-05 | IMPLEMENT | Remove IDEAS from UPSTREAM_PRIORITY_ORDER | 90% | S | Complete (2026-02-22) | — | — |
 | TASK-06 | IMPLEMENT | Update HTML process map | 80% | M | Complete (2026-02-22) | — | — |
-| TASK-07 | IMPLEMENT | Update startup-loop/SKILL.md + rewrite idea-scan/SKILL.md | 80% | M | Pending | TASK-INV-01 | — |
+| TASK-07 | IMPLEMENT | Update startup-loop/SKILL.md + rewrite idea-scan/SKILL.md | 80% | M | Complete (2026-02-22) | TASK-INV-01 | — |
 
 ## Parallelism Guide
 
@@ -543,7 +543,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Artifact-Destination:** `.claude/skills/startup-loop/SKILL.md`, `.claude/skills/idea-scan/SKILL.md`
 - **Reviewer:** operator
 - **Approval-Evidence:** None: internal skill docs
@@ -573,6 +573,12 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
   - Checks run: Full read of `.claude/skills/idea-scan/SKILL.md`; repository-wide grep for `last-scan.json`/`scans/` references in skills and startup-loop docs
   - Validation artifacts: `.claude/skills/idea-scan/SKILL.md`, `.claude/skills/biz-update-plan/SKILL.md`, `.claude/skills/idea-advance/SKILL.md`, `.claude/skills/biz-update-people/SKILL.md`, `.claude/skills/_shared/cabinet/lens-code-review.md`
   - Unexpected findings: multiple skill docs reference the legacy scan artifact paths and/or semantics; TASK-07 must clean these references as part of rollout
+- **Build/validation evidence (2026-02-22):**
+  - `rg -n "loop_spec_version:|spec_version 3\\.9\\.4|\\| IDEAS-01 \\| Pack diff scan \\| /idea-scan \\||\\| IDEAS-02 \\| Backlog update \\| /idea-develop, /idea-advance \\||\\| IDEAS-03 \\| Promote to DO \\| /lp-do-fact-find \\|" .claude/skills/startup-loop/SKILL.md` — PASS
+  - `rg -n "scan-proposals\\.md|scan-proposals\\.schema\\.md|CREATE \\| STRENGTHEN \\| WEAKEN \\| INVALIDATE \\| MERGE \\| SPLIT|docs/business-os/scans/" .claude/skills/idea-scan/SKILL.md` — PASS (`scan-proposals` references present; `docs/business-os/scans/` only appears in deprecation block)
+  - `rg -n "docs/business-os/scans/|last-scan\\.json" .claude/skills -S` — PASS (matches only in `.claude/skills/idea-scan/SKILL.md` deprecation notes)
+  - `rg -n "docs/business-os/scans/|last-scan\\.json" .claude/skills -S -g '!**/idea-scan/SKILL.md'` — PASS (no matches)
+  - `rg -n "/idea-scan|scan-proposals\\.md" .claude/skills/biz-update-plan/SKILL.md .claude/skills/idea-advance/SKILL.md .claude/skills/biz-update-people/SKILL.md .claude/skills/_shared/cabinet/lens-code-review.md -S` — PASS
 - **Scouts:** Resolved via TASK-INV-01. Remaining work is implementation cleanup in listed `Affects` files, not additional discovery.
 - **Edge Cases & Hardening:**
   - idea-scan/SKILL.md "Not allowed" section currently says "Modifying existing cards or ideas" — in the new model, IDEAS-02 (not idea-scan itself) modifies cards. Keep this restriction in idea-scan/SKILL.md; scan only produces proposals, never applies them.
@@ -612,9 +618,9 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - [x] `scan-proposals.schema.md` exists with all 6 impact types and quality bar
 - [x] `bottleneck-detector.ts` `UPSTREAM_PRIORITY_ORDER` contains no IDEAS entries; tests pass
 - [x] HTML process map shows IDEAS as a standing pipeline panel with both trigger paths visible
-- [ ] `startup-loop/SKILL.md` IDEAS table rows updated
-- [ ] `idea-scan/SKILL.md` output schema references `scan-proposals.md` (not `last-scan.json`)
-- [ ] No other skill or code references old `docs/business-os/scans/` IDEAS pipeline output
+- [x] `startup-loop/SKILL.md` IDEAS table rows updated
+- [x] `idea-scan/SKILL.md` output schema references `scan-proposals.md` (not `last-scan.json`)
+- [x] No other skill or code references old `docs/business-os/scans/` IDEAS pipeline output (except explicit deprecation notes in `idea-scan/SKILL.md`)
 
 ## Decision Log
 

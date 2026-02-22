@@ -40,7 +40,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - [x] TASK-INV-01: Investigate idea-scan/SKILL.md scope (Complete 2026-02-22)
 - [ ] TASK-01: Update loop-spec.yaml to v3.9.4
 - [ ] TASK-02: Update stage-operator-dictionary.yaml
-- [ ] TASK-03: Update idea-backlog.schema.md
+- [x] TASK-03: Update idea-backlog.schema.md (Complete 2026-02-22)
 - [ ] TASK-04: Create scan-proposals.schema.md
 - [ ] TASK-05: Remove IDEAS from UPSTREAM_PRIORITY_ORDER (bottleneck-detector.ts)
 - [ ] TASK-06: Update HTML process map
@@ -111,7 +111,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 | TASK-INV-01 | INVESTIGATE | Audit idea-scan/SKILL.md scope for TASK-04/07 | 85% | S | Complete (2026-02-22) | — | TASK-04, TASK-07 |
 | TASK-01 | IMPLEMENT | Update loop-spec.yaml to v3.9.4 | 85% | M | Pending | — | TASK-02 |
 | TASK-02 | IMPLEMENT | Update stage-operator-dictionary.yaml | 85% | M | Pending | TASK-01 | — |
-| TASK-03 | IMPLEMENT | Update idea-backlog.schema.md | 85% | S | Pending | — | — |
+| TASK-03 | IMPLEMENT | Update idea-backlog.schema.md | 85% | S | Complete (2026-02-22) | — | — |
 | TASK-04 | IMPLEMENT | Create scan-proposals.schema.md | 82% | M | Pending | TASK-INV-01 | — |
 | TASK-05 | IMPLEMENT | Remove IDEAS from UPSTREAM_PRIORITY_ORDER | 90% | S | Pending | — | — |
 | TASK-06 | IMPLEMENT | Update HTML process map | 80% | M | Pending | — | — |
@@ -308,7 +308,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Artifact-Destination:** `docs/business-os/startup-loop/ideas/idea-backlog.schema.md`
 - **Reviewer:** operator
 - **Approval-Evidence:** None: internal schema doc
@@ -332,8 +332,14 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
   - Red evidence plan: Schema has `Review-trigger` but no `last_scanned_pack_versions` field
   - Green evidence plan: Add field definition to frontmatter section; update example; update trigger note
   - Refactor evidence plan: None: S effort
+- **Build/validation evidence (2026-02-22):**
+  - `rg -n "last_scanned_pack_versions|scan-proposals\\.md|first-run|Related-stage|Related-skill" docs/business-os/startup-loop/ideas/idea-backlog.schema.md` — PASS
+  - `sed -n '1,220p' docs/business-os/startup-loop/ideas/idea-backlog.schema.md` — PASS (field definition, absence behavior, and example frontmatter verified)
+  - VC-01 pass: frontmatter schema now defines `last_scanned_pack_versions` with explicit pack keys and date format placeholder.
+  - Trigger contract update present: IDEAS-01 output `scan-proposals.md` is now the stated input trigger for IDEAS-02 backlog updates.
 - **Planning validation (required for M/L):** None: S effort
 - **Scouts:** Does `idea-portfolio.schema.md` or `idea-card.schema.md` need similar tracking fields? Note finding but do not act — out of scope.
+  - Scout result (2026-02-22): no `last_scanned_pack_versions`/`Review-trigger` fields found in those schemas; no action taken (out of scope).
 - **Edge Cases & Hardening:**
   - The field should default gracefully (absence = first scan is full); document this in schema
 - **What would make this >=90%:**
@@ -573,7 +579,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - [ ] `loop-spec.yaml` at `spec_version: "3.9.4"` with IDEAS as `type: standing_pipeline` and absent from `ordering.sequential`
 - [ ] `stage-operator-dictionary.yaml` at `loop_spec_version: "3.9.4"` with IDEAS entries updated
 - [ ] TASK-01 and TASK-02 committed atomically in one git operation
-- [ ] `idea-backlog.schema.md` contains `last_scanned_pack_versions` field definition
+- [x] `idea-backlog.schema.md` contains `last_scanned_pack_versions` field definition
 - [ ] `scan-proposals.schema.md` exists with all 6 impact types and quality bar
 - [ ] `bottleneck-detector.ts` `UPSTREAM_PRIORITY_ORDER` contains no IDEAS entries; tests pass
 - [ ] HTML process map shows IDEAS as a standing pipeline panel with both trigger paths visible

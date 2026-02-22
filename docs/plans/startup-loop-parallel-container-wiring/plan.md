@@ -32,7 +32,7 @@ The startup loop spec v3.9.6 models post-MEASURE containers as a strict sequenti
 - [x] TASK-01: Update loop-spec.yaml ordering — Complete (2026-02-22)
 - [x] TASK-02: Update stage-operator-dictionary.yaml prompts — Complete (2026-02-22)
 - [x] TASK-03: Prototype swim-lane CSS approach (SPIKE) — Complete (2026-02-22)
-- [ ] TASK-04: HTML swim-lane redesign
+- [x] TASK-04: HTML swim-lane redesign — Complete (2026-02-22)
 
 ## Goals
 - Correct the dependency violations (PRODUCTS-02 before MARKET-01; PRODUCTS-04 before MARKET-03) by introducing parallel streams with cross-stream ordering constraints
@@ -84,7 +84,7 @@ The startup loop spec v3.9.6 models post-MEASURE containers as a strict sequenti
 | TASK-01 | IMPLEMENT | Update loop-spec.yaml ordering | 85% | M | Complete (2026-02-22) | - | TASK-04 |
 | TASK-02 | IMPLEMENT | Update stage-operator-dictionary.yaml prompts | 85% | S | Complete (2026-02-22) | - | TASK-04 |
 | TASK-03 | SPIKE | Prototype swim-lane CSS + cross-stream arrows | 90% | S | Complete (2026-02-22) | - | TASK-04 |
-| TASK-04 | IMPLEMENT | HTML swim-lane redesign | 82% | L | Pending | TASK-01, TASK-02, TASK-03 | - |
+| TASK-04 | IMPLEMENT | HTML swim-lane redesign | 82% | L | Complete (2026-02-22) | TASK-01, TASK-02, TASK-03 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |

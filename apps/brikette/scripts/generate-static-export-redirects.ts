@@ -23,14 +23,23 @@ async function main(): Promise<void> {
     "# https://developers.cloudflare.com/pages/configuration/redirects/",
     "# This file is deployed alongside static HTML for edge-level redirects",
     "",
-    "# Root URL -> English homepage (no middleware on static deploy)",
-    "/  /en/  302",
+    "# Root URL -> English homepage (permanent, slashless target)",
+    "/  /en  301",
     "",
     "# Health check endpoint -> homepage (no API routes on static deploy)",
     "/api/health  /en/  302",
     "",
     "# Legacy /directions/* URLs (no lang prefix) -> English how-to-get-here routes",
     "/directions/:slug  /en/how-to-get-here/:slug  301",
+    "",
+    "# stepfreepositano.com -> apartment hub (requires custom domain on Pages project)",
+    "# Once DNS is configured, these catch requests to the custom domain.",
+    "https://stepfreepositano.com  /en/apartment/  301",
+    "https://stepfreepositano.com/  /en/apartment/  301",
+    "https://stepfreepositano.com/*  /en/apartment/:splat  301",
+    "https://www.stepfreepositano.com  /en/apartment/  301",
+    "https://www.stepfreepositano.com/  /en/apartment/  301",
+    "https://www.stepfreepositano.com/*  /en/apartment/:splat  301",
     "",
     `${START_MARKER}`,
     ...generatedRules,
@@ -39,7 +48,9 @@ async function main(): Promise<void> {
   ];
 
   await writeFile(REDIRECTS_PATH, `${fileLines.join("\n")}`, "utf8");
-  console.log(`Updated ${REDIRECTS_PATH} with ${generatedRules.length} generated redirect rules.`);
+  process.stdout.write(
+    `Updated ${REDIRECTS_PATH} with ${generatedRules.length} generated redirect rules.\n`,
+  );
 }
 
 main().catch((error: unknown) => {

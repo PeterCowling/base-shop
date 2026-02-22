@@ -30,7 +30,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 
 ## Active tasks
 - [ ] TASK-01a: Cloudflare Bulk Redirects — www→apex host redirect
-- [ ] TASK-01b: Fix root redirect in _redirects (302→301, slashless target)
+- [x] TASK-01b: Fix root redirect in _redirects (302→301, slashless target) (Complete 2026-02-22)
 - [x] TASK-01c: Pages Functions preflight check (Complete 2026-02-22)
 - [x] DECISION-01: Confirm slashless canonical policy (Complete 2026-02-22)
 - [x] TASK-02: Align trailing-slash canonical policy across canonicals, hreflang, sitemap, and tests (Complete 2026-02-22)
@@ -115,7 +115,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 |---|---|---|---:|---:|---|---|---|
 | TASK-01c | INVESTIGATE | Pages Functions preflight check | 90% | S | Complete (2026-02-22) | - | TASK-01a, TASK-01b |
 | TASK-01a | IMPLEMENT | Cloudflare Bulk Redirects — www→apex | 85% | S | Pending | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
-| TASK-01b | IMPLEMENT | Fix root redirect in _redirects (302→301) | 80% | S | Pending | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
+| TASK-01b | IMPLEMENT | Fix root redirect in _redirects (302→301) | 80% | S | Complete (2026-02-22) | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
 | TASK-03a | INVESTIGATE | GSC URL Inspection — pre-change baseline | 85% | S | Complete (2026-02-22) | - | TASK-01a, TASK-01b, DECISION-01, TASK-02, TASK-07 |
 | DECISION-01 | DECISION | Confirm slashless canonical policy (operator checkpoint) | 95% | S | Complete (2026-02-22) | TASK-03a | TASK-02 |
 | TASK-02 | IMPLEMENT | Trailing-slash canonical policy alignment | 80% | M | Complete (2026-02-22) | TASK-03a, DECISION-01 | CHECKPOINT-01, TASK-03b, TASK-07, TASK-08, TASK-12 |
@@ -263,7 +263,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Affects:** `apps/brikette/public/_redirects`
 - **Depends on:** TASK-01c, TASK-03a
 - **Blocks:** TASK-07, TASK-08, TASK-03b
@@ -295,6 +295,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollback: Revert the single changed line in `_redirects`; redeploy
 - **Documentation impact:**
   - Update `docs/plans/brikette-seo-traffic-growth/fact-find.md` Technical SEO State table (root redirect row) post-deploy
+
+**Build completion evidence (2026-02-22):**
+- Root rule updated in generator source: `apps/brikette/scripts/generate-static-export-redirects.ts` (`/  /en/  302` -> `/  /en  301`)
+- Redirect file regenerated via `pnpm --filter @apps/brikette generate:static-redirects`
+- Generated output now contains slashless permanent root redirect: `apps/brikette/public/_redirects` line 6 = `/  /en  301`
+- Generator hardening: preserved existing `stepfreepositano.com` host rules in script output to avoid accidental rule loss on future regeneration
+- Environment limitation: live external `curl -IL https://hostel-positano.com/` verification could not be completed in this runtime (DNS resolution failure observed previously)
 
 ---
 
@@ -1200,6 +1207,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-22: **DECISION-01 confirmed** — operator approved slashless canonical policy (Option A). Decision artifact: `docs/plans/brikette-seo-traffic-growth/decision-01-canonical-policy.md`.
 - 2026-02-22: **TASK-02 completed** — slashless canonical/hreflang/sitemap rollout implemented, sitemap regenerated, and targeted `@acme/seo` + Brikette SEO tests passed.
 - 2026-02-22: **TASK-01c completed** — no Brikette Pages Functions shadowing detected in repo-managed deploy path; TASK-01a/TASK-01b remain valid and unblocked by Functions risk.
+- 2026-02-22: **TASK-01b completed** — root redirect updated to permanent slashless target in generator source and regenerated `_redirects` output (`/  /en  301`).
 - 2026-02-22: Wave 3 gated on CHECKPOINT-01 (TASK-05, TASK-10, TASK-11 must complete). Rationale: fact-find risk table — high risk of thin-content penalty on translated guide corpus; confirmation required before investing in content activation.
 - 2026-02-22: TASK-13, TASK-14, and TASK-17 are deferred to Phase B and excluded from current-phase confidence scope. Rationale: each is checkpoint-dependent or below IMPLEMENT confidence threshold; defer until CHECKPOINT-01 replan confirms viability.
 

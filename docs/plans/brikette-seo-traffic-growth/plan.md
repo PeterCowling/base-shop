@@ -31,7 +31,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 ## Active tasks
 - [ ] TASK-01a: Cloudflare Bulk Redirects — www→apex host redirect
 - [ ] TASK-01b: Fix root redirect in _redirects (302→301, slashless target)
-- [ ] TASK-01c: Pages Functions preflight check (INVESTIGATE)
+- [x] TASK-01c: Pages Functions preflight check (Complete 2026-02-22)
 - [x] DECISION-01: Confirm slashless canonical policy (Complete 2026-02-22)
 - [x] TASK-02: Align trailing-slash canonical policy across canonicals, hreflang, sitemap, and tests (Complete 2026-02-22)
 - [x] TASK-03a: GSC URL Inspection canonical sample — pre-change baseline (Complete 2026-02-22)
@@ -113,7 +113,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01c | INVESTIGATE | Pages Functions preflight check | 90% | S | Pending | - | TASK-01a, TASK-01b |
+| TASK-01c | INVESTIGATE | Pages Functions preflight check | 90% | S | Complete (2026-02-22) | - | TASK-01a, TASK-01b |
 | TASK-01a | IMPLEMENT | Cloudflare Bulk Redirects — www→apex | 85% | S | Pending | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
 | TASK-01b | IMPLEMENT | Fix root redirect in _redirects (302→301) | 80% | S | Pending | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
 | TASK-03a | INVESTIGATE | GSC URL Inspection — pre-change baseline | 85% | S | Complete (2026-02-22) | - | TASK-01a, TASK-01b, DECISION-01, TASK-02, TASK-07 |
@@ -172,7 +172,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-01c-pages-functions-check.md`
 - **Depends on:** -
 - **Blocks:** TASK-01a, TASK-01b
@@ -191,6 +191,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Planning validation:** None: S investigate task
 - **Rollout / rollback:** None: non-implementation task
 - **Documentation impact:** Write artifact; if Functions shadow concern found, raise DECISION task via `/lp-do-replan`
+
+**Build completion evidence (2026-02-22):**
+- Artifact created: `docs/plans/brikette-seo-traffic-growth/task-01c-pages-functions-check.md`
+- Repo scan found no Brikette `functions/` directory; `functions/` paths exist only under `apps/prime/`
+- Deploy pipeline evidence confirms static Pages deploy (`wrangler pages deploy out`) from `apps/brikette/out`
+- Conclusion recorded: no Functions shadowing blocker for TASK-01a/TASK-01b in repo-managed deploy path
 
 ---
 
@@ -1193,6 +1199,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-22: Canonical URL policy recommendation = slashless (Option A). Rationale: matches runtime 308 behavior; eliminates canonical-to-redirect mismatch with no new infrastructure needed. Execution is blocked by DECISION-01 until operator confirmation is recorded.
 - 2026-02-22: **DECISION-01 confirmed** — operator approved slashless canonical policy (Option A). Decision artifact: `docs/plans/brikette-seo-traffic-growth/decision-01-canonical-policy.md`.
 - 2026-02-22: **TASK-02 completed** — slashless canonical/hreflang/sitemap rollout implemented, sitemap regenerated, and targeted `@acme/seo` + Brikette SEO tests passed.
+- 2026-02-22: **TASK-01c completed** — no Brikette Pages Functions shadowing detected in repo-managed deploy path; TASK-01a/TASK-01b remain valid and unblocked by Functions risk.
 - 2026-02-22: Wave 3 gated on CHECKPOINT-01 (TASK-05, TASK-10, TASK-11 must complete). Rationale: fact-find risk table — high risk of thin-content penalty on translated guide corpus; confirmation required before investing in content activation.
 - 2026-02-22: TASK-13, TASK-14, and TASK-17 are deferred to Phase B and excluded from current-phase confidence scope. Rationale: each is checkpoint-dependent or below IMPLEMENT confidence threshold; defer until CHECKPOINT-01 replan confirms viability.
 

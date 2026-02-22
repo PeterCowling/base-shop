@@ -527,6 +527,43 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
   opacity: 0.4;
 }
 
+/* ── SYNC GATE BADGE ── */
+.sync-gate {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  padding: 2px 7px;
+  background: rgba(210, 153, 34, 0.10);
+  border: 1px solid rgba(210, 153, 34, 0.28);
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #d29922;
+}
+
+/* ── CROSS-STREAM BEZIER CONNECTOR ── */
+.cs-path {
+  fill: none;
+  stroke: #d29922;
+  stroke-width: 2;
+  stroke-dasharray: 6, 3;
+}
+.cs-label {
+  font-size: 10px;
+  font-weight: 700;
+  fill: #d29922;
+  stroke: #0d1117;
+  stroke-width: 3px;
+  paint-order: stroke fill;
+  letter-spacing: 0.06em;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
 /* ── RESPONSIVE: stack lanes vertically on small screens ── */
 @media (max-width: 1000px) {
   .lane-container {
@@ -800,8 +837,20 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
 
 <!-- MEASURE EXIT: fans out into parallel swim lanes -->
 <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
-<div style="width:100%;text-align:center;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#484f58;margin-bottom:8px">
-  &#x21C4; Three streams run in parallel from here &mdash; converge at MARKET-06 Offer Design
+<div style="width:100%;margin-bottom:12px;display:flex;align-items:stretch;gap:0;border:1px solid #21262d;border-radius:8px;overflow:hidden">
+  <div style="background:#0d1117;padding:10px 14px;display:flex;align-items:center;justify-content:center;border-right:1px solid #21262d;font-size:22px;line-height:1;flex-shrink:0">&#x21C6;</div>
+  <div style="flex:1;padding:9px 14px;display:flex;flex-direction:column;gap:4px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8b949e">Fan-out &mdash; three parallel streams from MEASURE exit</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;line-height:1.4">
+      <span style="color:#f87171">&#x2193; Market intelligence (MARKET-01&ndash;05)</span>
+      <span style="color:#fb923c">&#x2193; Products &amp; Logistics</span>
+      <span style="color:#4ade80;opacity:0.55">&#x23F3; SELL waits for MARKET-06 offer</span>
+    </div>
+  </div>
+  <div style="background:#0d1117;padding:10px 14px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;border-left:1px solid #21262d;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#484f58;gap:2px;flex-shrink:0">
+    <span>Converges at</span>
+    <span style="color:#f87171">MARKET-06</span>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════
@@ -893,6 +942,7 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
             <div class="sname">Competitor Product Scan</div>
             <div class="sproduce">What competitors sell and at what price points</div>
             <div class="sfrom"><span class="sfrom-live">&#x21BA; Informed by</span> MARKET-01 competitor map &mdash; run after MARKET-01 where possible</div>
+            <div class="sync-gate">&#x21E6; Sync point &mdash; wait for MARKET-01</div>
             <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
           </div>
           <div class="stage conditional">
@@ -911,6 +961,7 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
             <div class="sname">Bundle &amp; Packaging Hypotheses</div>
             <div class="sproduce">Ideas for product bundles or packaging changes worth testing</div>
             <div class="sfrom"><span class="sfrom-live">&#x21BA; Informed by</span> MARKET-03 pricing benchmarks &mdash; run after MARKET-03 where possible</div>
+            <div class="sync-gate">&#x21E6; Sync point &mdash; wait for MARKET-03</div>
             <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
           </div>
           <div class="stage conditional">
@@ -1027,24 +1078,20 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
 
   </div><!-- end lane-container -->
 
-  <!-- SVG cross-stream dependency arrows -->
+  <!-- SVG cross-stream dependency connectors (bezier S-curves) -->
   <svg class="lane-arrows-svg" id="laneArrowsSvg" aria-hidden="true">
     <defs>
-      <marker id="arrow-cross-stream" markerWidth="8" markerHeight="8"
-              refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L8,3 z" fill="#d29922" />
+      <marker id="cs-arrow" markerWidth="10" markerHeight="8" refX="9" refY="4"
+              orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0,1 L0,7 L9,4 z" fill="#d29922" />
       </marker>
     </defs>
-    <!-- MARKET-01 → PRODUCTS-02 cross-stream arrow -->
-    <line id="arrow-m01-p02"
-          stroke="#d29922" stroke-width="1.5" stroke-dasharray="5,3"
-          marker-end="url(#arrow-cross-stream)"
-          x1="0" y1="0" x2="0" y2="0" />
-    <!-- MARKET-03 → PRODUCTS-04 cross-stream arrow -->
-    <line id="arrow-m03-p04"
-          stroke="#d29922" stroke-width="1.5" stroke-dasharray="5,3"
-          marker-end="url(#arrow-cross-stream)"
-          x1="0" y1="0" x2="0" y2="0" />
+    <!-- MARKET-01 → PRODUCTS-02: competitor map informs product scan -->
+    <path id="arrow-m01-p02" class="cs-path" marker-end="url(#cs-arrow)" d="" />
+    <text id="label-m01-p02" class="cs-label"></text>
+    <!-- MARKET-03 → PRODUCTS-04: pricing benchmarks inform bundle hypotheses -->
+    <path id="arrow-m03-p04" class="cs-path" marker-end="url(#cs-arrow)" d="" />
+    <text id="label-m03-p04" class="cs-label"></text>
   </svg>
 
 </div><!-- end lane-wrapper -->
@@ -1527,28 +1574,44 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
     var containerRect = container.getBoundingClientRect();
 
     var pairs = [
-      { lineId: 'arrow-m01-p02', srcId: 'stage-market-01', tgtId: 'stage-products-02' },
-      { lineId: 'arrow-m03-p04', srcId: 'stage-market-03', tgtId: 'stage-products-04' }
+      { pathId: 'arrow-m01-p02', labelId: 'label-m01-p02',
+        srcId: 'stage-market-01', tgtId: 'stage-products-02',
+        label: 'Competitor map \u2192 product scan' },
+      { pathId: 'arrow-m03-p04', labelId: 'label-m03-p04',
+        srcId: 'stage-market-03', tgtId: 'stage-products-04',
+        label: 'Pricing benchmarks \u2192 bundle ideas' }
     ];
 
     pairs.forEach(function(pair) {
-      var line = document.getElementById(pair.lineId);
-      var src  = document.getElementById(pair.srcId);
-      var tgt  = document.getElementById(pair.tgtId);
-      if (!line || !src || !tgt) return;
+      var path  = document.getElementById(pair.pathId);
+      var label = document.getElementById(pair.labelId);
+      var src   = document.getElementById(pair.srcId);
+      var tgt   = document.getElementById(pair.tgtId);
+      if (!path || !src || !tgt) return;
 
       var srcRect = src.getBoundingClientRect();
       var tgtRect = tgt.getBoundingClientRect();
 
-      var x1 = srcRect.right  - containerRect.left;
+      /* Exit right-center of source; enter left-center of target */
+      var x1 = srcRect.right  - containerRect.left + 2;
       var y1 = (srcRect.top + srcRect.bottom) / 2 - containerRect.top;
-      var x2 = tgtRect.left   - containerRect.left;
+      var x2 = tgtRect.left   - containerRect.left - 2;
       var y2 = (tgtRect.top  + tgtRect.bottom) / 2 - containerRect.top;
 
-      line.setAttribute('x1', x1.toFixed(1));
-      line.setAttribute('y1', y1.toFixed(1));
-      line.setAttribute('x2', x2.toFixed(1));
-      line.setAttribute('y2', y2.toFixed(1));
+      /* Cubic bezier: horizontal tangents at both ends — smooth S-curve */
+      var cp = Math.max(40, Math.abs(x2 - x1) * 0.45);
+      var d = 'M' + x1.toFixed(1) + ',' + y1.toFixed(1)
+            + ' C' + (x1 + cp).toFixed(1) + ',' + y1.toFixed(1)
+            + ' '  + (x2 - cp).toFixed(1) + ',' + y2.toFixed(1)
+            + ' '  + x2.toFixed(1) + ',' + y2.toFixed(1);
+      path.setAttribute('d', d);
+
+      /* Label at bezier midpoint (t=0.5 ≈ arithmetic mean for symmetric cubic) */
+      if (label) {
+        label.setAttribute('x', ((x1 + x2) / 2).toFixed(1));
+        label.setAttribute('y', ((y1 + y2) / 2 - 9).toFixed(1));
+        label.textContent = pair.label;
+      }
     });
   }
 

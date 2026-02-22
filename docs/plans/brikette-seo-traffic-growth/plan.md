@@ -42,6 +42,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 - [ ] TASK-07: Homepage title/H1/meta optimization
 - [ ] TASK-08: /en/rooms meta description optimization
 - [x] TASK-09: Sitemap lastmod timestamp source feasibility (Complete 2026-02-22)
+- [ ] TASK-19: Lastmod eligibility matrix and URL-source mapping (INVESTIGATE)
 - [ ] TASK-10: Internal link coverage audit
 - [ ] TASK-11: GSC Page indexing + guide coverage sample
 - [ ] CHECKPOINT-01: Wave 3 gate — reassess downstream plan
@@ -117,19 +118,20 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 | TASK-01b | IMPLEMENT | Fix root redirect in _redirects (302→301) | 80% | S | Pending | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
 | TASK-03a | INVESTIGATE | GSC URL Inspection — pre-change baseline | 85% | S | Pending | - | TASK-01a, TASK-01b, DECISION-01, TASK-02, TASK-07 |
 | DECISION-01 | DECISION | Confirm slashless canonical policy (operator checkpoint) | 95% | S | Pending | TASK-03a | TASK-02 |
-| TASK-02 | IMPLEMENT | Trailing-slash canonical policy alignment | 75% | M | Pending | TASK-03a, DECISION-01 | CHECKPOINT-01, TASK-12, TASK-03b |
+| TASK-02 | IMPLEMENT | Trailing-slash canonical policy alignment | 75% | M | Pending | TASK-03a, DECISION-01 | CHECKPOINT-01, TASK-03b, TASK-07, TASK-08, TASK-12 |
 | TASK-03b | INVESTIGATE | GSC URL Inspection — post-change validation | 90% | S | Pending | TASK-01a, TASK-01b, TASK-02 | - |
 | TASK-04 | INVESTIGATE | hreflang reciprocity sampling (pre/post TASK-02) | 80% | S | Pending | - | CHECKPOINT-01 |
 | TASK-05 | INVESTIGATE | Structured-data validation | 80% | S | Pending | - | CHECKPOINT-01 |
 | TASK-06 | INVESTIGATE | /en/help bounce query pull | 75% | S | Pending | - | - |
 | TASK-07 | IMPLEMENT | Homepage title/H1/meta for "hostel positano" | 75% | S | Pending | TASK-01a, TASK-01b, TASK-02, TASK-03a | TASK-08 |
 | TASK-08 | IMPLEMENT | /en/rooms meta description optimization | 75% | S | Pending | TASK-01a, TASK-01b, TASK-02, TASK-07 | - |
-| TASK-09 | INVESTIGATE | Sitemap lastmod timestamp source feasibility | 85% | S | Complete (2026-02-22) | - | TASK-12 |
+| TASK-09 | INVESTIGATE | Sitemap lastmod timestamp source feasibility | 85% | S | Complete (2026-02-22) | - | TASK-19 |
+| TASK-19 | INVESTIGATE | Lastmod eligibility matrix + URL-source mapping | 85% | S | Pending | TASK-09 | TASK-12 |
 | TASK-10 | INVESTIGATE | Internal link coverage audit | 85% | S | Pending | - | CHECKPOINT-01 |
 | TASK-11 | INVESTIGATE | GSC Page indexing + guide coverage | 85% | S | Pending | - | CHECKPOINT-01 |
 | TASK-18 | INVESTIGATE | GSC Links baseline pull | 85% | S | Pending | - | TASK-17 |
 | CHECKPOINT-01 | CHECKPOINT | Wave 3 gate — reassess downstream plan | 95% | S | Pending | TASK-02, TASK-04, TASK-05, TASK-10, TASK-11 | TASK-13, TASK-14, TASK-15 |
-| TASK-12 | IMPLEMENT | Sitemap lastmod implementation | 75% | M | Blocked (replan required) | TASK-09, TASK-02 | - |
+| TASK-12 | IMPLEMENT | Sitemap lastmod implementation | 75% | M | Blocked (replan required) | TASK-02, TASK-19 | - |
 | TASK-13 | IMPLEMENT | Content quality pass — top transportation guides | 60% | M | Deferred (Phase B) | CHECKPOINT-01 | - |
 | TASK-14 | IMPLEMENT | Homepage featured guides section | 65% | M | Deferred (Phase B) | CHECKPOINT-01 | - |
 | TASK-15 | IMPLEMENT | Italian locale meta/title quality pass | 75% | S | Pending | CHECKPOINT-01 | - |
@@ -145,17 +147,17 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 |---|---|---|---|
 | 1 | TASK-01c, TASK-03a, TASK-04 (pre-pass), TASK-05, TASK-06, TASK-09, TASK-10, TASK-11, TASK-18 | None | All independent; run in parallel. TASK-04 captures pre-TASK-02 hreflang baseline in this wave. TASK-01c and TASK-03a must both complete before Wave 2 can start. TASK-18 runs alongside Wave 1 to establish backlink baseline. |
 | Ongoing | TASK-16 | None | Manual GBP ops; start any time; no code dependency |
-| 2 | DECISION-01 | TASK-03a | Explicit operator checkpoint: confirm slashless canonical policy before TASK-02 execution |
+| 2 | DECISION-01, TASK-19 | DECISION-01: TASK-03a; TASK-19: TASK-09 | DECISION-01 is operator checkpoint for TASK-02. TASK-19 converts TASK-09 findings into an actionable URL-class eligibility contract for TASK-12. |
 | 3 | TASK-01a, TASK-01b, TASK-02 | TASK-01a+01b: after TASK-01c AND TASK-03a; TASK-02: after TASK-03a + DECISION-01 | TASK-01a and TASK-01b deploy together. TASK-02 is blocked until DECISION-01 is recorded. |
 | 4 | TASK-03b, TASK-04 (post-pass), TASK-07 | TASK-03b: after TASK-01a + TASK-01b + TASK-02 and no earlier than T+7 days or verified recrawl; TASK-04 post-pass: after TASK-02 (with pre-pass already captured in Wave 1); TASK-07: after TASK-01a + TASK-01b + TASK-02 + TASK-03a | TASK-07 now waits for canonical rollout to avoid attribution ambiguity. TASK-03b validates canonical consolidation after recrawl window. TASK-04 post-pass verifies hreflang format/reciprocity after slashless rollout. |
 | 5 | TASK-08 | TASK-01a, TASK-01b, TASK-02, TASK-07 (file overlap: metadata.ts) | TASK-08 must not run concurrently with TASK-07; start after TASK-07 completes |
 | CHECKPOINT | CHECKPOINT-01 | TASK-02, TASK-04, TASK-05, TASK-10, TASK-11 | Gate enforces post-indexing reassessment before Phase B content activation |
-| 6 | TASK-12, TASK-15 | TASK-12: after TASK-09 + TASK-02 (file overlap: generate-public-seo.ts); TASK-15: after CHECKPOINT-01 | Wave 6 remains executable inside Phase A scope |
+| 6 | TASK-12, TASK-15 | TASK-12: after TASK-02 + TASK-19 (file overlap: generate-public-seo.ts); TASK-15: after CHECKPOINT-01 | TASK-12 remains blocked until precursor evidence from TASK-19 is complete. |
 | Deferred (Phase B) | TASK-13, TASK-14, TASK-17 | TASK-13/14: after CHECKPOINT-01; TASK-17: after TASK-18 | Out of current-phase confidence scope; execute only after CHECKPOINT-01 replan confirms viability |
 
 **Max parallelism:** 9 tasks (Wave 1: TASK-01c, TASK-03a, TASK-04, TASK-05, TASK-06, TASK-09, TASK-10, TASK-11, TASK-18)
 **Critical path:** TASK-03a → DECISION-01 → TASK-02 → CHECKPOINT-01 → TASK-15 (6 waves minimum)
-**Total tasks:** 23 tasks + 1 checkpoint (DECISION-01, TASK-01a, TASK-01b, TASK-01c, TASK-02, TASK-03a, TASK-03b, TASK-04–TASK-18)
+**Total tasks:** 24 tasks + 1 checkpoint (DECISION-01, TASK-01a, TASK-01b, TASK-01c, TASK-02, TASK-03a, TASK-03b, TASK-04–TASK-19)
 
 ---
 
@@ -327,7 +329,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Status:** Pending
 - **Affects:** `apps/brikette/src/utils/seo.ts`, `apps/brikette/src/app/_lib/metadata.ts`, `packages/seo/src/metadata/buildMetadata.ts`, `packages/seo/src/metadata/buildAlternates.ts`, `apps/brikette/scripts/generate-public-seo.ts`, `apps/brikette/src/test/lib/metadata.test.ts`, `[readonly] packages/seo/src/metadata/ensureTrailingSlash.ts`
 - **Depends on:** TASK-03a, DECISION-01
-- **Blocks:** CHECKPOINT-01, TASK-12 (file overlap: generate-public-seo.ts), TASK-03b
+- **Blocks:** CHECKPOINT-01, TASK-03b, TASK-07, TASK-08, TASK-12 (file overlap: generate-public-seo.ts)
 - **Confidence:** 75%
   - Implementation: 75% — 8 call-sites of `ensureTrailingSlash` confirmed in 4 source files (critique round 3 grep); M effort due to breadth (4 source files + tests + shared package + normalizePathname rewrite in generate-public-seo.ts); gap: packages/seo test files also assert trailing-slash URLs and need updating (not yet enumerated in full)
   - Approach: 75% — slashless matches runtime 308 behavior (recommended in fact-find); but operator confirmation required before execution; if operator selects Option B (trailing-slash), execution plan changes substantially
@@ -640,7 +642,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Status:** Complete (2026-02-22)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-09-lastmod-feasibility.md`, `[readonly] apps/brikette/src/data/generate-guide-slugs.ts`, `[readonly] apps/brikette/scripts/generate-public-seo.ts`
 - **Depends on:** -
-- **Blocks:** TASK-12
+- **Blocks:** TASK-19
 - **Confidence:** 85%
   - Implementation: 90% — read guide definition files and sitemap generator; straightforward investigation
   - Approach: 90% — evaluation criteria clear: does a stable, content-meaningful timestamp exist per URL?
@@ -667,7 +669,39 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Filesystem mtime is unreliable in this checkout (all 168 EN guide files share one mtime date).
   - Git history can produce per-file dates in current repo (`is-shallow=false`, multiple commit-date buckets).
 - Decision output: conclusion **(c)** — no reliable all-URL timestamp source in current pipeline; route TASK-12 to replan before implementation.
-- Downstream propagation: TASK-12 marked `Blocked (replan required)` pending CHECKPOINT-01 `/lp-do-replan`.
+- Downstream propagation: TASK-12 remains `Blocked (replan required)` and now gates through TASK-19 precursor evidence.
+
+---
+
+### TASK-19: Lastmod eligibility matrix and URL-source mapping
+
+- **Type:** INVESTIGATE
+- **Deliverable:** `docs/plans/brikette-seo-traffic-growth/task-19-lastmod-eligibility-matrix.md` — URL-class eligibility matrix for sitemap `lastmod`, source-of-truth mapping, and go/no-go recommendation for TASK-12 scope
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** code
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/brikette-seo-traffic-growth/task-19-lastmod-eligibility-matrix.md`, `[readonly] apps/brikette/scripts/generate-public-seo.ts`, `[readonly] apps/brikette/src/routing/routeInventory.ts`, `[readonly] apps/brikette/src/locales/en/guides/content/*.json`
+- **Depends on:** TASK-09
+- **Blocks:** TASK-12
+- **Confidence:** 85%
+  - Implementation: 90% — read-only mapping/audit work on known route inventory and content files
+  - Approach: 85% — turns TASK-09 conclusion into explicit eligibility policy instead of all-or-nothing implementation
+  - Impact: 85% — removes core uncertainty that keeps TASK-12 blocked and prevents untrusted `<lastmod>` output
+- **Questions to answer:**
+  - Which sitemap URL classes have authoritative date sources today? (guides, routes, static pages, rooms)
+  - What date fields are available per class (`lastUpdated`, `seo.lastUpdated`, git commit date), and what normalization rules are needed?
+  - What % of current sitemap URLs are eligible for trustworthy `lastmod` under strict rules?
+  - Should TASK-12 proceed as scoped implementation, or be cancelled/deferred?
+- **Acceptance:**
+  - URL-class matrix with source mapping and reliability rating (`authoritative`, `weak`, `none`)
+  - Eligibility coverage quantified with exact counts and percentages
+  - Explicit recommendation: `Proceed with scoped TASK-12` OR `Cancel/defer TASK-12`
+  - If proceed: include implementation spec inputs (field precedence, parser rules, fallback prohibition)
+- **Validation contract:** Artifact written with matrix + coverage + decision; TASK-12 dependency gate can be evaluated from this artifact alone
+- **Planning validation:** Seed evidence from TASK-09 artifact (`docs/plans/brikette-seo-traffic-growth/task-09-lastmod-feasibility.md`)
+- **Rollout / rollback:** None: non-implementation task
+- **Documentation impact:** Write artifact and update TASK-12 replan update block with resolved conditional confidence
 
 ---
 
@@ -779,13 +813,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Effort:** M
 - **Status:** Blocked (replan required)
 - **Affects:** `apps/brikette/scripts/generate-public-seo.ts`, `apps/brikette/public/sitemap.xml`
-- **Depends on:** TASK-09, TASK-02 (file overlap: apps/brikette/scripts/generate-public-seo.ts)
+- **Depends on:** TASK-02, TASK-19 (file overlap: apps/brikette/scripts/generate-public-seo.ts)
 - **Blocks:** -
 - **Confidence:** 75%
   - Implementation: 80% — implementation approach comes from TASK-09; M effort due to timestamp source integration and guard test. Held-back test: "What if TASK-09 concludes no reliable source exists?" — then TASK-12 would be cancelled. Held-back test: this is a real scenario → score to 75%.
   - Approach: 80% — approach defined in TASK-09 output; conditional on TASK-09 conclusion (a) or (b). Held-back test: same scenario — if TASK-09 finds no reliable source, approach is moot. → 75%.
   - Impact: 75% — accurate lastmod improves recrawl prioritization; Google ignores inaccurate timestamps; net neutral if implemented cautiously
-  - Overall: min(75, 75, 75) = 75%. Covered by TASK-09 upstream. ✓
+  - Overall: min(75, 75, 75) = 75%. Covered by TASK-19 upstream (fed by TASK-09 evidence). ✓
 - **Acceptance:**
   - All `<loc>` entries in sitemap.xml have `<lastmod>` in ISO 8601 format
   - Guard test asserts: if >90% of URLs have the same lastmod date, CI fails (blocks bulk-"today" accident)
@@ -796,19 +830,26 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - TC-13: Guard test: generate sitemap with mocked "all today" timestamps; assert test fails
 - **Execution plan:** Red → Green → Refactor
   - Red: Current sitemap has no `<lastmod>`; document baseline with TC-12 run (expected fail)
-  - Green: Integrate timestamp source from TASK-09 spec; regenerate sitemap; TC-12 passes; TC-13 passes
+  - Green: Integrate timestamp source from TASK-19 eligibility spec; regenerate sitemap; TC-12 passes; TC-13 passes
   - Refactor: Add to CI build validation; resubmit sitemap to GSC; monitor for errors
 - **Planning validation (M task):**
   - Checks run: Confirmed `generate-public-seo.ts` is the sitemap generation script; `normalizePathname` function at lines 21–26 handles URL format
   - Validation artifacts: E5 (fact-find): sitemap.xml has 4,093 entries and no `<lastmod>` tags
-  - Unexpected findings: Timestamp source TBD pending TASK-09
-- **Scouts:** TASK-09 output is the precursor; do not start TASK-12 until TASK-09 decision artifact is written
+  - Unexpected findings: Timestamp source TBD pending TASK-19
+- **Scouts:** TASK-19 output is the precursor; do not start TASK-12 until TASK-19 decision artifact is written
 - **Edge Cases & Hardening:**
   - Guard test is mandatory (blocking risky bulk-today accidents)
   - **Shallow clone risk:** If TASK-09 chooses git-log approach, Cloudflare Pages builds use shallow clones. A shallow clone with `--depth=1` returns only the latest commit for all files, making `git log --follow <file>` return a single identical date for everything. Before adopting git-log in TASK-12, verify in the build environment that `git log --follow --format=%ai <data-file>` returns file-specific dates (not a single date), or choose a static timestamp field approach from option (a) instead.
 - **What would make this ≥90%:** Post-deploy GSC Sitemap coverage report showing no errors; 7-day monitoring confirms Google accepts the timestamps
 - **Rollout / rollback:** Rollout: regenerate sitemap at build time; Rollback: remove lastmod from sitemap generator; redeploy
 - **Documentation impact:** Update fact-find OPP-06 status
+
+#### Re-plan Update (2026-02-22)
+- Confidence: 75% (-> 85% conditional on TASK-19 completion)
+- Key change: TASK-12 no longer proceeds directly from TASK-09; it now requires explicit URL-class eligibility evidence before implementation
+- Dependencies: updated to TASK-02 + TASK-19 (TASK-09 replaced by formal precursor output)
+- Validation contract: unchanged for implementation execution; precursor gate added via TASK-19 artifact
+- Notes: replan derived from `docs/plans/brikette-seo-traffic-growth/task-09-lastmod-feasibility.md`
 
 ---
 
@@ -1117,6 +1158,7 @@ Current-phase confidence includes executable Wave 1–6 tasks and excludes defer
 | TASK-07 | IMPLEMENT | 75 | S=1 | 75 |
 | TASK-08 | IMPLEMENT | 75 | S=1 | 75 |
 | TASK-09 | INVESTIGATE | 85 | S=1 | 85 |
+| TASK-19 | INVESTIGATE | 85 | S=1 | 85 |
 | TASK-10 | INVESTIGATE | 85 | S=1 | 85 |
 | TASK-11 | INVESTIGATE | 85 | S=1 | 85 |
 | TASK-18 | INVESTIGATE | 85 | S=1 | 85 |
@@ -1124,11 +1166,11 @@ Current-phase confidence includes executable Wave 1–6 tasks and excludes defer
 | TASK-12 | IMPLEMENT | 75 | M=2 | 150 |
 | TASK-15 | IMPLEMENT | 75 | S=1 | 75 |
 | TASK-16 | IMPLEMENT | 75 | S=1 | 75 |
-| **Total (Phase A scope)** | | | **22** | **1,795** |
+| **Total (Phase A scope)** | | | **23** | **1,880** |
 
-**Overall-confidence (Phase A) = 1,795 / 22 = 82%**
+**Overall-confidence (Phase A) = 1,880 / 23 = 82%**
 
 Phase-B sensitivity (if deferred tasks are included now):
-- Add TASK-13 (120), TASK-14 (130), TASK-17 (120) => full-roadmap confidence `2,165 / 28 = 77%`.
+- Add TASK-13 (120), TASK-14 (130), TASK-17 (120) => full-roadmap confidence `2,250 / 29 = 78%`.
 
-Critique trigger: Phase-A Trigger 1 clears (`82% >= 80%`). Remaining sub-80 IMPLEMENT tasks (TASK-02, TASK-07, TASK-08, TASK-12) are backed by upstream investigate gates (TASK-03a, TASK-01c, TASK-09). Phase-B tasks remain intentionally deferred until CHECKPOINT-01-driven replan.
+Critique trigger: Phase-A Trigger 1 clears (`82% >= 80%`). Remaining sub-80 IMPLEMENT tasks (TASK-02, TASK-07, TASK-08, TASK-12) are backed by upstream investigate gates (TASK-03a, TASK-01c, TASK-09, TASK-19). Phase-B tasks remain intentionally deferred until CHECKPOINT-01-driven replan.

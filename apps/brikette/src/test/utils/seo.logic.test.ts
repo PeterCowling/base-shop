@@ -40,7 +40,7 @@ describe("document head logic", () => {
     const links = buildLinks({ lang: "xx", origin, path });
 
     const canonical = links.find((link) => link.rel === "canonical");
-    const normalizedPath = path.endsWith("/") ? path : `${path}/`;
+    const normalizedPath = path === "/" ? "/" : path.replace(/\/+$/, "");
     expect(canonical?.href).toBe(`${origin}${normalizedPath}`);
   });
 });

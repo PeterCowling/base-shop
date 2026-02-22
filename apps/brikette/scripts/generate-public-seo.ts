@@ -20,9 +20,8 @@ const PUBLIC_DIR = path.join(APP_ROOT, "public");
 
 const normalizePathname = (value: string): string => {
   const withLeadingSlash = value.startsWith("/") ? value : `/${value}`;
-  // Ensure trailing slash for all paths except root
   if (withLeadingSlash === "/") return withLeadingSlash;
-  return withLeadingSlash.endsWith("/") ? withLeadingSlash : `${withLeadingSlash}/`;
+  return withLeadingSlash.replace(/\/+$/, "");
 };
 
 const escapeXml = (value: string): string =>
@@ -52,11 +51,12 @@ const shouldExcludeFromSitemap = (pathname: string): boolean => {
 };
 
 const buildSitemapXml = (paths: string[]): string => {
-  const entries = paths
+  const entries = [...new Set(
+    paths
     .map((pathname) => normalizePathname(pathname))
     .filter((pathname) => !shouldExcludeFromSitemap(pathname))
-    .map((pathname) => `${baseUrl}${pathname}`)
-    .sort();
+    .map((pathname) => `${baseUrl}${pathname}`),
+  )].sort();
 
   const body = entries.map((loc) => `  <url><loc>${escapeXml(loc)}</loc></url>`).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n` +

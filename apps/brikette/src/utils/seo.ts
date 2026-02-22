@@ -81,6 +81,13 @@ const normalizeHref = (href: string): string => {
   return `${proto}://${rest.replace(/\/{2,}/g, "/")}`;
 };
 
+const toSlashlessPath = (value: string): string => {
+  const withLeadingSlash = value.startsWith("/") ? value : `/${value}`;
+  if (withLeadingSlash === "/") return withLeadingSlash;
+  const trimmed = withLeadingSlash.replace(/\/+$/, "");
+  return trimmed === "" ? "/" : trimmed;
+};
+
 /* ------------------------------------------------------------------ */
 /* buildLinks – canonical + hreflang                                  */
 /* ------------------------------------------------------------------ */
@@ -157,7 +164,7 @@ export function buildLinks({
   const lang: AppLanguage = urlLang;
 
   /* ── Canonical link ── */
-  const canonicalPath = ensureTrailingSlash(path);
+  const canonicalPath = toSlashlessPath(path);
   const canonical: HtmlLinkDescriptor = {
     rel: "canonical",
     href: `${origin}${canonicalPath === "/" ? "" : canonicalPath}`,
@@ -235,8 +242,8 @@ export function buildBreadcrumb({
     },
   ];
 
-  const normalized = ensureTrailingSlash(path);
-  if (normalized !== `/${lang}/`) {
+  const normalized = toSlashlessPath(path);
+  if (normalized !== "/" && normalized !== `/${lang}`) {
     items.push({
       "@type": "ListItem",
       position: 2,

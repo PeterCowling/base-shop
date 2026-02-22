@@ -32,8 +32,8 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 - [ ] TASK-01a: Cloudflare Bulk Redirects — www→apex host redirect
 - [ ] TASK-01b: Fix root redirect in _redirects (302→301, slashless target)
 - [ ] TASK-01c: Pages Functions preflight check (INVESTIGATE)
-- [ ] DECISION-01: Confirm slashless canonical policy (operator checkpoint)
-- [ ] TASK-02: Align trailing-slash canonical policy across canonicals, hreflang, sitemap, and tests
+- [x] DECISION-01: Confirm slashless canonical policy (Complete 2026-02-22)
+- [x] TASK-02: Align trailing-slash canonical policy across canonicals, hreflang, sitemap, and tests (Complete 2026-02-22)
 - [x] TASK-03a: GSC URL Inspection canonical sample — pre-change baseline (Complete 2026-02-22)
 - [ ] TASK-03b: GSC URL Inspection canonical sample — post-change validation
 - [ ] TASK-04: hreflang reciprocity sampling
@@ -46,7 +46,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 - [ ] TASK-10: Internal link coverage audit
 - [ ] TASK-11: GSC Page indexing + guide coverage sample
 - [ ] CHECKPOINT-01: Wave 3 gate — reassess downstream plan
-- [ ] TASK-12: Implement scoped sitemap lastmod for eligible guide URLs (Pending; blocked by TASK-02)
+- [ ] TASK-12: Implement scoped sitemap lastmod for eligible guide URLs (Pending)
 - [ ] TASK-13: Content quality pass on top transportation guides (Phase B, post-CHECKPOINT-01)
 - [ ] TASK-14: Homepage featured guides section (Phase B, post-CHECKPOINT-01)
 - [ ] TASK-15: Italian locale meta/title quality pass
@@ -80,7 +80,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
   - `public/_redirects` is the edge-layer redirect mechanism (Cloudflare Pages); middleware handles slug rewrites only
 - Assumptions:
   - Canonical URL policy: **slashless** (matches runtime 308 redirect behavior) — see Proposed Approach
-  - Operator confirmation required before TASK-02 executes (policy choice is architectural), captured as DECISION-01
+  - Operator confirmation was required before TASK-02 execution (policy choice is architectural), captured as DECISION-01
   - Guide pages at hostel-positano.com are not currently ranking due to indexation quality and authority gaps, not crawler access (Cloudflare confirms active crawling)
   - `ensureTrailingSlash` production call-sites: 8 calls in 4 source files — `seo.ts:160,238`, `metadata.ts:46,61`, `buildMetadata.ts:49,67`, `buildAlternates.ts:30,37` (confirmed via critique-round-3 grep). `generate-public-seo.ts` uses an independent `normalizePathname` function (lines 21-26), not `ensureTrailingSlash` — scope is a function body rewrite in that file, not a call-site removal.
 
@@ -99,7 +99,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 
 - **Option A — Slashless policy** (recommended): Remove trailing-slash enforcement from canonical/hreflang/sitemap generation; update metadata tests to assert slashless URLs; no changes to runtime (308 already produces slashless). This makes canonical targets match runtime final URLs.
 - **Option B — Trailing-slash policy**: Add a 308 redirect rule to `public/_redirects` for all `/path` → `/path/`; keep `ensureTrailingSlash` calls in metadata/sitemap. Requires testing redirect interaction with existing rules and roughly doubles the variant surface per URL path (slash and non-slash forms for all locales).
-- **Chosen approach: Option A — Slashless.** Simpler, fewer moving parts, matches existing runtime behavior. **Operator confirmation required before TASK-02 executes (DECISION-01 gate).**
+- **Chosen approach: Option A — Slashless.** Simpler, fewer moving parts, matches existing runtime behavior. Operator confirmation captured in DECISION-01.
 - www→apex (Cloudflare Bulk Redirects dashboard) and root 302→301 fixes are policy-independent and can ship immediately after pre-change canonical baseline capture (TASK-03a); canonical-policy approval (DECISION-01) gates only TASK-02.
 
 ## Plan Gates
@@ -117,8 +117,8 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 | TASK-01a | IMPLEMENT | Cloudflare Bulk Redirects — www→apex | 85% | S | Pending | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
 | TASK-01b | IMPLEMENT | Fix root redirect in _redirects (302→301) | 80% | S | Pending | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
 | TASK-03a | INVESTIGATE | GSC URL Inspection — pre-change baseline | 85% | S | Complete (2026-02-22) | - | TASK-01a, TASK-01b, DECISION-01, TASK-02, TASK-07 |
-| DECISION-01 | DECISION | Confirm slashless canonical policy (operator checkpoint) | 95% | S | Pending | TASK-03a | TASK-02 |
-| TASK-02 | IMPLEMENT | Trailing-slash canonical policy alignment | 75% | M | Pending | TASK-03a, DECISION-01 | CHECKPOINT-01, TASK-03b, TASK-07, TASK-08, TASK-12 |
+| DECISION-01 | DECISION | Confirm slashless canonical policy (operator checkpoint) | 95% | S | Complete (2026-02-22) | TASK-03a | TASK-02 |
+| TASK-02 | IMPLEMENT | Trailing-slash canonical policy alignment | 80% | M | Complete (2026-02-22) | TASK-03a, DECISION-01 | CHECKPOINT-01, TASK-03b, TASK-07, TASK-08, TASK-12 |
 | TASK-03b | INVESTIGATE | GSC URL Inspection — post-change validation | 90% | S | Pending | TASK-01a, TASK-01b, TASK-02 | - |
 | TASK-04 | INVESTIGATE | hreflang reciprocity sampling (pre/post TASK-02) | 80% | S | Pending | - | CHECKPOINT-01 |
 | TASK-05 | INVESTIGATE | Structured-data validation | 80% | S | Pending | - | CHECKPOINT-01 |
@@ -148,11 +148,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 | 1 | TASK-01c, TASK-03a, TASK-04 (pre-pass), TASK-05, TASK-06, TASK-09, TASK-10, TASK-11, TASK-18 | None | All independent; run in parallel. TASK-04 captures pre-TASK-02 hreflang baseline in this wave. TASK-01c and TASK-03a must both complete before Wave 2 can start. TASK-18 runs alongside Wave 1 to establish backlink baseline. |
 | Ongoing | TASK-16 | None | Manual GBP ops; start any time; no code dependency |
 | 2 | DECISION-01, TASK-19 | DECISION-01: TASK-03a; TASK-19: TASK-09 | DECISION-01 is operator checkpoint for TASK-02. TASK-19 converts TASK-09 findings into an actionable URL-class eligibility contract for TASK-12. |
-| 3 | TASK-01a, TASK-01b, TASK-02 | TASK-01a+01b: after TASK-01c AND TASK-03a; TASK-02: after TASK-03a + DECISION-01 | TASK-01a and TASK-01b deploy together. TASK-02 is blocked until DECISION-01 is recorded. |
+| 3 | TASK-01a, TASK-01b, TASK-02 | TASK-01a+01b: after TASK-01c AND TASK-03a; TASK-02: after TASK-03a + DECISION-01 | TASK-01a and TASK-01b deploy together. TASK-02 gate was satisfied by DECISION-01 and is now complete. |
 | 4 | TASK-03b, TASK-04 (post-pass), TASK-07 | TASK-03b: after TASK-01a + TASK-01b + TASK-02 and no earlier than T+7 days or verified recrawl; TASK-04 post-pass: after TASK-02 (with pre-pass already captured in Wave 1); TASK-07: after TASK-01a + TASK-01b + TASK-02 + TASK-03a | TASK-07 now waits for canonical rollout to avoid attribution ambiguity. TASK-03b validates canonical consolidation after recrawl window. TASK-04 post-pass verifies hreflang format/reciprocity after slashless rollout. |
 | 5 | TASK-08 | TASK-01a, TASK-01b, TASK-02, TASK-07 (file overlap: metadata.ts) | TASK-08 must not run concurrently with TASK-07; start after TASK-07 completes |
 | CHECKPOINT | CHECKPOINT-01 | TASK-02, TASK-04, TASK-05, TASK-10, TASK-11 | Gate enforces post-indexing reassessment before Phase B content activation |
-| 6 | TASK-12, TASK-15 | TASK-12: after TASK-02 + TASK-19 (file overlap: generate-public-seo.ts); TASK-15: after CHECKPOINT-01 | TASK-19 is complete; TASK-12 is now re-scoped and waits only on TASK-02 dependency completion. |
+| 6 | TASK-12, TASK-15 | TASK-12: after TASK-02 + TASK-19 (file overlap: generate-public-seo.ts); TASK-15: after CHECKPOINT-01 | TASK-19 and TASK-02 are complete; TASK-12 is unblocked and ready for `/lp-do-build`. |
 | Deferred (Phase B) | TASK-13, TASK-14, TASK-17 | TASK-13/14: after CHECKPOINT-01; TASK-17: after TASK-18 | Out of current-phase confidence scope; execute only after CHECKPOINT-01 replan confirms viability |
 
 **Max parallelism:** 9 tasks (Wave 1: TASK-01c, TASK-03a, TASK-04, TASK-05, TASK-06, TASK-09, TASK-10, TASK-11, TASK-18)
@@ -299,7 +299,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/decision-01-canonical-policy.md`
 - **Depends on:** TASK-03a
 - **Blocks:** TASK-02
@@ -316,6 +316,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Rollout / rollback:** None: control gate only
 - **Documentation impact:** Adds durable audit trail for canonical policy choice
 
+**Build completion evidence (2026-02-22):**
+- Decision artifact created: `docs/plans/brikette-seo-traffic-growth/decision-01-canonical-policy.md`
+- Operator confirmation recorded: `Approved: slashless (Option A)` via chat instruction ("go with option a")
+- Approver identity recorded in artifact: Peter Cowling (operator)
+- Downstream effect: TASK-02 policy-choice uncertainty removed; confidence uplift completed (`75% -> 80%`) and execution unblocked
+
 ---
 
 ### TASK-02: Align trailing-slash canonical policy (slashless)
@@ -326,14 +332,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `apps/brikette/src/utils/seo.ts`, `apps/brikette/src/app/_lib/metadata.ts`, `packages/seo/src/metadata/buildMetadata.ts`, `packages/seo/src/metadata/buildAlternates.ts`, `apps/brikette/scripts/generate-public-seo.ts`, `apps/brikette/src/test/lib/metadata.test.ts`, `[readonly] packages/seo/src/metadata/ensureTrailingSlash.ts`
+- **Status:** Complete (2026-02-22)
+- **Affects:** `apps/brikette/src/utils/seo.ts`, `apps/brikette/src/app/_lib/metadata.ts`, `packages/seo/src/metadata/buildMetadata.ts`, `packages/seo/src/metadata/buildAlternates.ts`, `packages/seo/src/metadata/ensureNoTrailingSlash.ts`, `packages/seo/src/metadata/index.ts`, `packages/seo/src/index.ts`, `apps/brikette/scripts/generate-public-seo.ts`, `apps/brikette/public/sitemap.xml`, `apps/brikette/src/test/lib/metadata.test.ts`, `apps/brikette/src/test/utils/seo.test.ts`, `apps/brikette/src/test/utils/seo.logic.test.ts`, `apps/brikette/src/test/seo-extraction-contract.test.ts`, `packages/seo/src/__tests__/metadata.test.ts`, `[readonly] packages/seo/src/metadata/ensureTrailingSlash.ts`
 - **Depends on:** TASK-03a, DECISION-01
 - **Blocks:** CHECKPOINT-01, TASK-03b, TASK-07, TASK-08, TASK-12 (file overlap: generate-public-seo.ts)
-- **Confidence:** 75%
-  - Implementation: 75% — 8 call-sites of `ensureTrailingSlash` confirmed in 4 source files (critique round 3 grep); M effort due to breadth (4 source files + tests + shared package + normalizePathname rewrite in generate-public-seo.ts); gap: packages/seo test files also assert trailing-slash URLs and need updating (not yet enumerated in full)
-  - Approach: 75% — slashless matches runtime 308 behavior (recommended in fact-find); but operator confirmation required before execution; if operator selects Option B (trailing-slash), execution plan changes substantially
+- **Confidence:** 80%
+  - Implementation: 80% — 8 call-sites of `ensureTrailingSlash` confirmed in 4 source files and key regression test surfaces are now explicitly identified (`packages/seo/src/__tests__/metadata.test.ts`, `apps/brikette/src/test/lib/metadata.test.ts`, `apps/brikette/src/test/utils/seo.test.ts`, `apps/brikette/src/test/seo-extraction-contract.test.ts`). Scope remains M, but uncertainty about where slash assertions live is reduced.
+  - Approach: 85% — DECISION-01 is now approved for slashless policy (Option A), removing policy ambiguity while retaining the same execution approach.
   - Impact: 80% — E1/E3 confirms canonical-to-redirect mismatch is actively causing signal split (5 URL variants in GSC); slashless canonicals will eliminate the redirect hop from canonical target. Held-back test: "Would Google already handle this via the 308?" — E1 shows 5 variants including both `/en` and `/en/` each with independent impressions/clicks, proving the 308 is NOT consolidating GSC signals. Held-back test passes.
+  - Overall: min(80, 85, 80) = 80%.
 - **Acceptance:**
   - `<link rel="canonical">` for all pages returns slashless URL (e.g. `https://hostel-positano.com/en`, not `/en/`)
   - hreflang alternates use slashless URLs for all 18 locales
@@ -359,12 +366,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - New behavior: `generate-public-seo.ts` will output slashless `<loc>` → consumed by: `apps/brikette/public/sitemap.xml` (static file); GSC sitemap submission
   - `ensureTrailingSlash` itself is NOT deleted — it remains in `packages/seo/src/metadata/` for potential future use; its call-sites are updated, not the function itself
   - `apps/brikette/src/utils/seo.ts` re-exports `ensureTrailingSlash` — if other consumers import it via this re-export and are not in the enumerated list, they could silently continue using it; must verify no other callers before marking complete
-- **Scouts:** DECISION-01 must be complete before starting; if operator selects trailing-slash, stop and route to `/lp-do-replan`
+- **Scouts:** DECISION-01 completed with Option A (slashless). If policy is later reversed, stop and route to `/lp-do-replan` before execution.
 - **Edge Cases & Hardening:**
   - Ensure `packages/seo` changes don't affect other apps in the monorepo that may import from `@acme/seo` and rely on trailing-slash behavior
   - Add a regression test that asserts no `<canonical>` href ends in `/` (guards against future re-introduction)
 - **What would make this ≥90%:**
-  - Operator confirmation that slashless policy is approved
   - Full enumeration of `packages/seo` test files asserting trailing-slash URLs
   - Post-deploy GSC URL Inspection confirming declared = selected canonical for 5 sample URLs
 - **Rollout / rollback:**
@@ -376,6 +382,37 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Depends on TASK-03 (GSC URL Inspection) to confirm policy benefits before investing in M-effort change
   - `ensureTrailingSlash` source: `packages/seo/src/metadata/ensureTrailingSlash.ts`
   - Runtime 308 behavior: `apps/brikette/src/middleware.ts` handles slug rewrites only (uses 301). The 308 stripping slashes is empirically confirmed via E3 (live curl: `/en/ → 308 → /en`); `apps/brikette/next.config.mjs` contains no explicit `trailingSlash` config, so the 308 likely originates from Cloudflare Pages file-serving behavior for directory-form static paths rather than a Next.js configuration setting. The fix (slashless canonicals) is correct regardless of the mechanism source.
+
+#### Re-plan Update (2026-02-22)
+- Confidence: `75% -> 80%` after DECISION-01 completion and explicit test-surface enumeration
+- Key change: policy uncertainty removed (Option A approved) and implementation risk narrowed to known files/tests
+- Dependencies: unchanged (`TASK-03a`, `DECISION-01`) and both are complete
+
+**Build completion evidence (2026-02-22):**
+- Slashless canonical/hreflang rollout shipped in code:
+  - `apps/brikette/src/utils/seo.ts`
+  - `apps/brikette/src/app/_lib/metadata.ts`
+  - `packages/seo/src/metadata/buildAlternates.ts`
+  - `packages/seo/src/metadata/buildMetadata.ts`
+  - `apps/brikette/scripts/generate-public-seo.ts`
+- Shared slashless helper added and exported:
+  - `packages/seo/src/metadata/ensureNoTrailingSlash.ts`
+  - `packages/seo/src/metadata/index.ts`
+  - `packages/seo/src/index.ts`
+- Slashless assertions updated:
+  - `apps/brikette/src/test/lib/metadata.test.ts`
+  - `apps/brikette/src/test/utils/seo.test.ts`
+  - `apps/brikette/src/test/utils/seo.logic.test.ts`
+  - `apps/brikette/src/test/seo-extraction-contract.test.ts`
+  - `packages/seo/src/__tests__/metadata.test.ts`
+- Sitemap regenerated with slashless `<loc>` values: `apps/brikette/public/sitemap.xml`
+- Validation passed:
+  - `pnpm --filter @acme/seo test -- src/__tests__/metadata.test.ts`
+  - `pnpm --filter @apps/brikette test -- src/test/lib/metadata.test.ts src/test/utils/seo.test.ts src/test/utils/seo.logic.test.ts src/test/seo-extraction-contract.test.ts`
+  - `pnpm --filter @acme/seo lint`
+  - `pnpm --filter @apps/brikette typecheck`
+  - `pnpm --filter @apps/brikette lint`
+- Environment limitation: live `curl -I https://hostel-positano.com/...` checks were attempted but DNS resolution failed in this runtime (`curl: (6) Could not resolve host`).
 
 ---
 
@@ -852,7 +889,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Checks run: Confirmed `generate-public-seo.ts` is the sitemap generation script; `normalizePathname` function at lines 21–26 handles URL format
   - Validation artifacts: E5 (fact-find): sitemap.xml has 4,093 entries and no `<lastmod>` tags
   - Unexpected findings: TASK-19 confirmed full-sitemap coverage is unsupported; scope now narrowed to authoritative guide subset
-- **Scouts:** TASK-19 is complete. TASK-12 now waits only on TASK-02 dependency completion.
+- **Scouts:** TASK-19 and TASK-02 are complete; TASK-12 is now executable.
 - **Edge Cases & Hardening:**
   - Guard test is mandatory (blocking risky bulk-today accidents on emitted subset)
   - Date conflict handling is mandatory where both `lastUpdated` and `seo.lastUpdated` exist and disagree
@@ -864,8 +901,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 #### Re-plan Update (2026-02-22)
 - Confidence: **85%** (conditional uplift from TASK-19 now resolved)
 - Key change: scope shifted from full-sitemap `<lastmod>` to **eligible-guide-only** emission based on TASK-19 matrix (`681/4093` URLs currently eligible)
-- Dependencies: unchanged (`TASK-02`, `TASK-19`), with TASK-19 now complete
-- Status change: `Blocked (replan required)` -> `Pending` (blocked only by outstanding dependency TASK-02)
+- Dependencies: unchanged (`TASK-02`, `TASK-19`), both now complete
+- Status change: `Blocked (replan required)` -> `Pending` (dependencies cleared; ready for build scheduling)
 - Validation contract: updated for scoped eligibility assertions (eligible URLs include `<lastmod>`, non-eligible URLs do not)
 - Notes: replan derived from `docs/plans/brikette-seo-traffic-growth/task-19-lastmod-eligibility-matrix.md`
 
@@ -1154,6 +1191,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ## Decision Log
 
 - 2026-02-22: Canonical URL policy recommendation = slashless (Option A). Rationale: matches runtime 308 behavior; eliminates canonical-to-redirect mismatch with no new infrastructure needed. Execution is blocked by DECISION-01 until operator confirmation is recorded.
+- 2026-02-22: **DECISION-01 confirmed** — operator approved slashless canonical policy (Option A). Decision artifact: `docs/plans/brikette-seo-traffic-growth/decision-01-canonical-policy.md`.
+- 2026-02-22: **TASK-02 completed** — slashless canonical/hreflang/sitemap rollout implemented, sitemap regenerated, and targeted `@acme/seo` + Brikette SEO tests passed.
 - 2026-02-22: Wave 3 gated on CHECKPOINT-01 (TASK-05, TASK-10, TASK-11 must complete). Rationale: fact-find risk table — high risk of thin-content penalty on translated guide corpus; confirmation required before investing in content activation.
 - 2026-02-22: TASK-13, TASK-14, and TASK-17 are deferred to Phase B and excluded from current-phase confidence scope. Rationale: each is checkpoint-dependent or below IMPLEMENT confidence threshold; defer until CHECKPOINT-01 replan confirms viability.
 
@@ -1167,7 +1206,7 @@ Current-phase confidence includes executable Wave 1–6 tasks and excludes defer
 | TASK-01a | IMPLEMENT | 85 | S=1 | 85 |
 | TASK-01b | IMPLEMENT | 80 | S=1 | 80 |
 | DECISION-01 | DECISION | 95 | S=1 | 95 |
-| TASK-02 | IMPLEMENT | 75 | M=2 | 150 |
+| TASK-02 | IMPLEMENT | 80 | M=2 | 160 |
 | TASK-03a | INVESTIGATE | 85 | S=1 | 85 |
 | TASK-03b | INVESTIGATE | 90 | S=1 | 90 |
 | TASK-04 | INVESTIGATE | 80 | S=1 | 80 |
@@ -1184,11 +1223,11 @@ Current-phase confidence includes executable Wave 1–6 tasks and excludes defer
 | TASK-12 | IMPLEMENT | 85 | M=2 | 170 |
 | TASK-15 | IMPLEMENT | 75 | S=1 | 75 |
 | TASK-16 | IMPLEMENT | 75 | S=1 | 75 |
-| **Total (Phase A scope)** | | | **23** | **1,900** |
+| **Total (Phase A scope)** | | | **23** | **1,910** |
 
-**Overall-confidence (Phase A) = 1,900 / 23 = 83%**
+**Overall-confidence (Phase A) = 1,910 / 23 = 83%**
 
 Phase-B sensitivity (if deferred tasks are included now):
-- Add TASK-13 (120), TASK-14 (130), TASK-17 (120) => full-roadmap confidence `2,270 / 29 = 78%`.
+- Add TASK-13 (120), TASK-14 (130), TASK-17 (120) => full-roadmap confidence `2,280 / 29 = 79%`.
 
-Critique trigger: Phase-A Trigger 1 clears (`83% >= 80%`). Remaining sub-80 IMPLEMENT tasks (TASK-02, TASK-07, TASK-08) are backed by upstream investigate gates (TASK-03a, TASK-01c, TASK-09, TASK-19). Phase-B tasks remain intentionally deferred until CHECKPOINT-01-driven replan.
+Critique trigger: Phase-A Trigger 1 clears (`83% >= 80%`). Remaining sub-80 IMPLEMENT tasks (TASK-07, TASK-08) are backed by upstream investigate gates (TASK-03a, TASK-01c, TASK-09, TASK-19). Phase-B tasks remain intentionally deferred until CHECKPOINT-01-driven replan.

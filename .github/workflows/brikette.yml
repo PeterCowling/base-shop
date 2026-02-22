@@ -103,12 +103,12 @@ jobs:
           build_exit=0
           export OUTPUT_EXPORT=1
           export NEXT_PUBLIC_OUTPUT_EXPORT=1
-          # Cloudflare Pages free plan caps deployments at 20k files.
-          # Export only priority locales to keep the static artifact under cap.
-          export BRIKETTE_EXPORT_LOCALES=en,it,es,de
           pnpm exec next build --turbopack || build_exit=$?
           if [ "$build_exit" -eq 0 ]; then
             pnpm --filter @apps/brikette generate:static-redirects || build_exit=$?
+            # Cloudflare Pages free tier caps deployments at 20k files.
+            # Keep top locales and prune the rest from static export output.
+            rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh}
           fi
           mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]"
           exit "$build_exit"
@@ -117,6 +117,9 @@ jobs:
         run: |
           test -f apps/brikette/out/en.html
           test -d apps/brikette/out/_next/static
+          file_count=$(find apps/brikette/out -type f | wc -l | tr -d ' ')
+          echo "Static export files: $file_count"
+          test "$file_count" -le 20000
 
   staging:
     name: Deploy (staging)
@@ -138,8 +141,9 @@ jobs:
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
         mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
-        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 BRIKETTE_EXPORT_LOCALES=en,it,es,de NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
-        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 BRIKETTE_EXPORT_LOCALES=en,it,es,de pnpm --filter @apps/brikette generate:static-redirects; e=$?;
+        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
+        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects &&
+        rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh}; e=$?;
         mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
         exit $e)
       artifact-path: "apps/brikette/out"
@@ -170,8 +174,9 @@ jobs:
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
         mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
-        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 BRIKETTE_EXPORT_LOCALES=en,it,es,de NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
-        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 BRIKETTE_EXPORT_LOCALES=en,it,es,de pnpm --filter @apps/brikette generate:static-redirects; e=$?;
+        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
+        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects &&
+        rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh}; e=$?;
         mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
         exit $e)
       artifact-path: "apps/brikette/out"

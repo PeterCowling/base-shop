@@ -438,14 +438,18 @@ for pkg_file in "$PKG_MAP"/*; do
         else
             # Single batched probe: find related tests for ALL source files at once
             # (replaces per-file jest --listTests loop for speed)
-            if ! RAW_RELATED=$(run_jest_exec "$PKG_PATH" --listTests --findRelatedTests $ABS_SOURCE_FILES --passWithNoTests 2>&1); then
+            RELATED_PROBE_LOG="$TMPDIR/validate-related-tests-${PKG_TYPE}-${PKG_NAME}-$$.log"
+            if ! run_jest_exec "$PKG_PATH" --listTests --findRelatedTests $ABS_SOURCE_FILES --passWithNoTests >"$RELATED_PROBE_LOG" 2>&1; then
+                RAW_RELATED="$(cat "$RELATED_PROBE_LOG" 2>/dev/null || true)"
+                rm -f "$RELATED_PROBE_LOG"
                 echo "    ERROR: Jest failed while probing tests for package: $PKG_PATH"
                 echo "    Output: $RAW_RELATED"
                 exit 1
             fi
 
             # Filter to only actual file paths (lines starting with /)
-            RELATED=$(echo "$RAW_RELATED" | grep '^/' || true)
+            RELATED=$(grep '^/' "$RELATED_PROBE_LOG" || true)
+            rm -f "$RELATED_PROBE_LOG"
 
             if [ -z "$RELATED" ]; then
                 # No tests found for any file in this package batch

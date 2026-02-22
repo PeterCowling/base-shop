@@ -42,7 +42,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 - [ ] TASK-07: Homepage title/H1/meta optimization
 - [ ] TASK-08: /en/rooms meta description optimization
 - [x] TASK-09: Sitemap lastmod timestamp source feasibility (Complete 2026-02-22)
-- [ ] TASK-19: Lastmod eligibility matrix and URL-source mapping (INVESTIGATE)
+- [x] TASK-19: Lastmod eligibility matrix and URL-source mapping (Complete 2026-02-22)
 - [ ] TASK-10: Internal link coverage audit
 - [ ] TASK-11: GSC Page indexing + guide coverage sample
 - [ ] CHECKPOINT-01: Wave 3 gate — reassess downstream plan
@@ -126,7 +126,7 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 | TASK-07 | IMPLEMENT | Homepage title/H1/meta for "hostel positano" | 75% | S | Pending | TASK-01a, TASK-01b, TASK-02, TASK-03a | TASK-08 |
 | TASK-08 | IMPLEMENT | /en/rooms meta description optimization | 75% | S | Pending | TASK-01a, TASK-01b, TASK-02, TASK-07 | - |
 | TASK-09 | INVESTIGATE | Sitemap lastmod timestamp source feasibility | 85% | S | Complete (2026-02-22) | - | TASK-19 |
-| TASK-19 | INVESTIGATE | Lastmod eligibility matrix + URL-source mapping | 85% | S | Pending | TASK-09 | TASK-12 |
+| TASK-19 | INVESTIGATE | Lastmod eligibility matrix + URL-source mapping | 85% | S | Complete (2026-02-22) | TASK-09 | TASK-12 |
 | TASK-10 | INVESTIGATE | Internal link coverage audit | 85% | S | Pending | - | CHECKPOINT-01 |
 | TASK-11 | INVESTIGATE | GSC Page indexing + guide coverage | 85% | S | Pending | - | CHECKPOINT-01 |
 | TASK-18 | INVESTIGATE | GSC Links baseline pull | 85% | S | Pending | - | TASK-17 |
@@ -680,7 +680,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-19-lastmod-eligibility-matrix.md`, `[readonly] apps/brikette/scripts/generate-public-seo.ts`, `[readonly] apps/brikette/src/routing/routeInventory.ts`, `[readonly] apps/brikette/src/locales/en/guides/content/*.json`
 - **Depends on:** TASK-09
 - **Blocks:** TASK-12
@@ -702,6 +702,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Planning validation:** Seed evidence from TASK-09 artifact (`docs/plans/brikette-seo-traffic-growth/task-09-lastmod-feasibility.md`)
 - **Rollout / rollback:** None: non-implementation task
 - **Documentation impact:** Write artifact and update TASK-12 replan update block with resolved conditional confidence
+
+**Build completion evidence (2026-02-22):**
+- Artifact created: `docs/plans/brikette-seo-traffic-growth/task-19-lastmod-eligibility-matrix.md`
+- URL-class matrix completed for all `4,093` sitemap URLs with reliability ratings (`authoritative` / `none`)
+- Strict eligibility quantified: `681 / 4,093 = 16.64%` (all eligible URLs are guide-detail class)
+- Decision output: proceed only as scoped TASK-12 implementation; full-sitemap `<lastmod>` remains unsupported by current data coverage
+- Downstream propagation: TASK-12 remains blocked until `/lp-do-replan` updates scope/validation to align with TASK-19 findings
 
 ---
 

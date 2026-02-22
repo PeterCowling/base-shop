@@ -38,8 +38,8 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 ## Active Tasks
 
 - [x] TASK-INV-01: Investigate idea-scan/SKILL.md scope (Complete 2026-02-22)
-- [ ] TASK-01: Update loop-spec.yaml to v3.9.4
-- [ ] TASK-02: Update stage-operator-dictionary.yaml
+- [x] TASK-01: Update loop-spec.yaml to v3.9.4 (Complete 2026-02-22)
+- [x] TASK-02: Update stage-operator-dictionary.yaml (Complete 2026-02-22)
 - [x] TASK-03: Update idea-backlog.schema.md (Complete 2026-02-22)
 - [ ] TASK-04: Create scan-proposals.schema.md
 - [x] TASK-05: Remove IDEAS from UPSTREAM_PRIORITY_ORDER (bottleneck-detector.ts) (Complete 2026-02-22)
@@ -109,8 +109,8 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-INV-01 | INVESTIGATE | Audit idea-scan/SKILL.md scope for TASK-04/07 | 85% | S | Complete (2026-02-22) | — | TASK-04, TASK-07 |
-| TASK-01 | IMPLEMENT | Update loop-spec.yaml to v3.9.4 | 85% | M | Pending | — | TASK-02 |
-| TASK-02 | IMPLEMENT | Update stage-operator-dictionary.yaml | 85% | M | Pending | TASK-01 | — |
+| TASK-01 | IMPLEMENT | Update loop-spec.yaml to v3.9.4 | 85% | M | Complete (2026-02-22) | — | TASK-02 |
+| TASK-02 | IMPLEMENT | Update stage-operator-dictionary.yaml | 85% | M | Complete (2026-02-22) | TASK-01 | — |
 | TASK-03 | IMPLEMENT | Update idea-backlog.schema.md | 85% | S | Complete (2026-02-22) | — | — |
 | TASK-04 | IMPLEMENT | Create scan-proposals.schema.md | 82% | M | Pending | TASK-INV-01 | — |
 | TASK-05 | IMPLEMENT | Remove IDEAS from UPSTREAM_PRIORITY_ORDER | 90% | S | Complete (2026-02-22) | — | — |
@@ -194,7 +194,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Artifact-Destination:** `docs/business-os/startup-loop/loop-spec.yaml`
 - **Reviewer:** operator
 - **Approval-Evidence:** None: internal spec doc; operator is author
@@ -224,6 +224,10 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
   - Red evidence plan: Current file has `type: container` for IDEAS; IDEAS-01..03 all `skill: prompt-handoff`; no trigger/automation fields; ordering has `[ASSESSMENT, MEASURE-01]` (IDEAS absent but no comment explaining why)
   - Green evidence plan: Edit IDEAS container block; edit IDEAS-01..03 stage blocks; add ordering comment; bump spec_version; add changelog entry
   - Refactor evidence plan: Verify ordering.sequential is clean; verify no orphaned references to old IDEAS-01..03 fields
+- **Build/validation evidence (2026-02-22):**
+  - `rg -n "^spec_version:|^- id: IDEAS$|type: standing_pipeline|trigger:|automation:|recurrence:|impact_categories:|skill: /idea-scan|output_artifact: scan-proposals.md|skill: /idea-develop|secondary_skills: \\[/idea-advance\\]|skill: /lp-do-fact-find|operator_gate" docs/business-os/startup-loop/loop-spec.yaml` — PASS
+  - `sed -n '996,1065p' docs/business-os/startup-loop/loop-spec.yaml | rg -n "IDEAS|ASSESSMENT, MEASURE-01|standing_pipeline"` — PASS (`IDEAS` absent from sequential ordering; explanatory comment present on ASSESSMENT→MEASURE edge)
+  - `pnpm exec jest --runTestsByPath scripts/src/startup-loop/__tests__/s10-weekly-routing.test.ts --maxWorkers=2` — PASS (17/17; includes stage count 66 assertion)
 - **Planning validation (required for M/L):**
   - Checks run: Full read of loop-spec.yaml this session; verified ordering.sequential section; verified IDEAS block structure
   - Validation artifacts: loop-spec.yaml lines 283-345 (IDEAS section); lines 996-1058 (ordering)
@@ -254,12 +258,12 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Artifact-Destination:** `docs/business-os/startup-loop/stage-operator-dictionary.yaml`
 - **Reviewer:** operator
 - **Approval-Evidence:** None: internal spec doc
 - **Measurement-Readiness:** Validation: run `generate-stage-operator-views.ts` post-commit to confirm generated views are consistent
-- **Affects:** `docs/business-os/startup-loop/stage-operator-dictionary.yaml`, `[readonly] docs/business-os/startup-loop/_generated/stage-operator-map.json`, `[readonly] docs/business-os/startup-loop/_generated/stage-operator-table.md`
+- **Affects:** `docs/business-os/startup-loop/stage-operator-dictionary.yaml`, `docs/business-os/startup-loop/_generated/stage-operator-map.json`, `docs/business-os/startup-loop/_generated/stage-operator-table.md`
 - **Depends on:** TASK-01
 - **Blocks:** —
 - **Confidence:** 85%
@@ -281,10 +285,19 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
   - Red evidence plan: `loop_spec_version: "3.9.0"` stale; IDEAS operator prompts say "proceed to MEASURE-01"; IDEAS-01 `label_operator_short: "Idea backlog capture"` (old label)
   - Green evidence plan: Edit all 4 IDEAS entries + IDEAS container entry + ASSESSMENT-11 next prompt; bump `loop_spec_version`
   - Refactor evidence plan: Run `generate-stage-operator-views.ts` to confirm consistency; verify VC-03
+- **Build/validation evidence (2026-02-22):**
+  - `rg -n "^loop_spec_version:|ASSESSMENT-11|IDEAS-01|IDEAS-02|IDEAS-03|pack-diff-scan|Backlog update|Promote to DO|operator_next_prompt" docs/business-os/startup-loop/stage-operator-dictionary.yaml` — PASS
+  - `node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts` — PASS (generated map/table refreshed)
+  - `node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts --check` — PASS (no drift)
+  - `pnpm exec jest --runTestsByPath scripts/src/startup-loop/__tests__/generate-stage-operator-views.test.ts --maxWorkers=2` — PASS (19/19)
+  - Generated view verification:
+    - `_loop_spec_version: "3.9.4"` present in `stage-operator-map.json`
+    - IDEAS labels/names updated in generated map/table (`Pack diff scan`, `Backlog update`, `Promote to DO`)
 - **Planning validation (required for M/L):**
   - Checks run: Read stage-operator-dictionary.yaml lines 170-235 this session; confirmed all entries to change
   - Validation artifacts: dictionary lines 176-234
   - Unexpected findings: `loop_spec_version` was 3.9.0, not 3.9.3 — will jump to 3.9.4 directly
+- **Scope expansion note:** Generated outputs were refreshed via canonical generator to satisfy VC-02/VC-03 consistency checks; no manual edits were made to `_generated/*`.
 - **Scouts:** Confirm ASSESSMENT-11 `operator_next_prompt` is the only reference to IDEAS in the "proceed to" pattern in the dictionary.
   Check: `grep -n "IDEAS-01\|Idea backlog" docs/business-os/startup-loop/stage-operator-dictionary.yaml`
 - **Edge Cases & Hardening:**
@@ -583,9 +596,9 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 
 ## Acceptance Criteria (overall)
 
-- [ ] `loop-spec.yaml` at `spec_version: "3.9.4"` with IDEAS as `type: standing_pipeline` and absent from `ordering.sequential`
-- [ ] `stage-operator-dictionary.yaml` at `loop_spec_version: "3.9.4"` with IDEAS entries updated
-- [ ] TASK-01 and TASK-02 committed atomically in one git operation
+- [x] `loop-spec.yaml` at `spec_version: "3.9.4"` with IDEAS as `type: standing_pipeline` and absent from `ordering.sequential`
+- [x] `stage-operator-dictionary.yaml` at `loop_spec_version: "3.9.4"` with IDEAS entries updated
+- [x] TASK-01 and TASK-02 committed atomically in one git operation
 - [x] `idea-backlog.schema.md` contains `last_scanned_pack_versions` field definition
 - [ ] `scan-proposals.schema.md` exists with all 6 impact types and quality bar
 - [x] `bottleneck-detector.ts` `UPSTREAM_PRIORITY_ORDER` contains no IDEAS entries; tests pass

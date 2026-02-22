@@ -9,268 +9,857 @@
 #   - Validated against: stage-operator-dictionary.schema.json
 #
 # Decision reference: docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md (TASK-14)
-# TASK-02 decision: S6B retains stage key; split into GATE-S6B-STRAT-01 and GATE-S6B-ACT-01.
+# TASK-01 decision: Replace legacy marketing/sales stage IDs with MARKET/SELL stage family.
+# Migration aliases may be retained only when they do not collide with active canonical IDs.
 
 schema_version: 1
-loop_spec_version: "3.0.0"
+loop_spec_version: "3.9.4"
 
 stages:
 
-  - id: DISCOVERY-01
+  - id: ASSESSMENT-01
     name_machine: problem-framing
     label_operator_short: "Problem framing"
-    label_operator_long: "DISCOVERY-01 — Problem framing"
+    label_operator_long: "ASSESSMENT-01 — Problem framing"
     outcome_operator: "Clear problem statement with articulated pain, affected customer, and evidence of real demand."
     aliases:
       - problem-framing
-      - discovery-01
+      - assessment-01
     display_order: 1
     conditional: true
     condition: "start-point = problem"
-    operator_next_prompt: "Proceed to DISCOVERY-02 Solution-space scan."
+    operator_next_prompt: "Proceed to ASSESSMENT-02 Solution-profiling scan."
 
-  - id: DISCOVERY-02
-    name_machine: solution-space-scan
-    label_operator_short: "Solution-space scan"
-    label_operator_long: "DISCOVERY-02 — Solution-space scan"
+  - id: ASSESSMENT-02
+    name_machine: solution-profiling-scan
+    label_operator_short: "Solution-profiling scan"
+    label_operator_long: "ASSESSMENT-02 — Solution-profiling scan"
     outcome_operator: "Mapped solution space with at least three distinct options and comparative feasibility notes."
     aliases:
-      - solution-space
-      - discovery-02
+      - solution-profiling
+      - assessment-02
     display_order: 1
     conditional: true
     condition: "start-point = problem"
-    operator_next_prompt: "Proceed to DISCOVERY-03 Option selection."
+    operator_next_prompt: "Proceed to ASSESSMENT-03 Solution selection."
 
-  - id: DISCOVERY-03
-    name_machine: option-selection
-    label_operator_short: "Option selection"
-    label_operator_long: "DISCOVERY-03 — Option selection"
-    outcome_operator: "Selected solution option with rationale, key assumptions, and handoff brief for DISCOVERY intake."
+  - id: ASSESSMENT-03
+    name_machine: solution-selection
+    label_operator_short: "Solution selection"
+    label_operator_long: "ASSESSMENT-03 — Solution selection"
+    outcome_operator: "Selected solution option with rationale, key assumptions, and handoff brief for ASSESSMENT-09 intake."
     aliases:
-      - option-selection
-      - discovery-03
+      - solution-selection
+      - assessment-03
     display_order: 1
     conditional: true
     condition: "start-point = problem"
-    operator_next_prompt: "Proceed to DISCOVERY-04 Naming handoff if a business name is still needed, otherwise proceed to DISCOVERY Intake."
+    operator_next_prompt: "Proceed to ASSESSMENT-04 Naming handoff if a business name is still needed, otherwise proceed to ASSESSMENT-09 Intake."
 
-  - id: DISCOVERY-04
-    name_machine: naming-handoff
-    label_operator_short: "Naming handoff"
-    label_operator_long: "DISCOVERY-04 — Naming handoff"
+  - id: ASSESSMENT-04
+    name_machine: candidate-names
+    label_operator_short: "Candidate names"
+    label_operator_long: "ASSESSMENT-04 — Candidate names"
     outcome_operator: "Validated business or product name with brand-safety check and domain availability confirmed."
     aliases:
-      - naming-handoff
-      - discovery-04
+      - candidate-names
+      - naming-handoff  # backward compat
+      - assessment-04
     display_order: 1
     conditional: true
     condition: "start-point = problem"
-    operator_next_prompt: "Proceed to DISCOVERY-05 Distribution planning."
+    operator_next_prompt: "Proceed to ASSESSMENT-05 Name selection."
 
-  - id: DISCOVERY-05
-    name_machine: distribution-planning
-    label_operator_short: "Channel Plan"
-    label_operator_long: "DISCOVERY-05 — Channel Plan"
+  - id: ASSESSMENT-05
+    name_machine: name-selection
+    label_operator_short: "Name selection"
+    label_operator_long: "ASSESSMENT-05 — Name selection"
+    outcome_operator: "Naming generation spec with ICP, brand personality, competitive set, and 250 scored candidate names."
+    aliases:
+      - name-selection
+      - business-name-shaping  # backward compat
+      - assessment-05
+    display_order: 1
+    conditional: true
+    condition: "start-point = problem"
+    operator_next_prompt: "Proceed to ASSESSMENT-06 Distribution profiling."
+
+  - id: ASSESSMENT-06
+    name_machine: distribution-profiling
+    label_operator_short: "Distribution profiling"
+    label_operator_long: "ASSESSMENT-06 — Distribution profiling"
     outcome_operator: "Distribution plan with ≥2 launch channels, cost/effort estimates, and ICP fit rationale."
     aliases:
-      - distribution-planning
-      - discovery-05
+      - distribution-profiling
+      - assessment-06
       - channel-plan
     display_order: 1
     conditional: true
     condition: "start-point = problem"
-    operator_next_prompt: "Proceed to DISCOVERY-06 Measurement plan."
+    operator_next_prompt: "Proceed to ASSESSMENT-07 Measurement profiling."
 
-  - id: DISCOVERY-06
-    name_machine: measurement-plan
-    label_operator_short: "Measure Plan"
-    label_operator_long: "DISCOVERY-06 — Measure Plan"
+  - id: ASSESSMENT-07
+    name_machine: measurement-profiling
+    label_operator_short: "Measurement profiling"
+    label_operator_long: "ASSESSMENT-07 — Measurement profiling"
     outcome_operator: "Measurement plan with tracking method, ≥2 key metrics, success thresholds, and data collection feasibility confirmed."
     aliases:
-      - measurement-plan
-      - discovery-06
+      - measurement-profiling
+      - assessment-07
       - measure-plan
     display_order: 1
     conditional: true
     condition: "start-point = problem"
-    operator_next_prompt: "Proceed to DISCOVERY-07 Operator evidence."
+    operator_next_prompt: "Proceed to ASSESSMENT-08 Current situation."
 
-  - id: DISCOVERY-07
-    name_machine: operator-evidence
-    label_operator_short: "Operator evidence"
-    label_operator_long: "DISCOVERY-07 — Operator evidence"
-    outcome_operator: "Operator evidence packet: launch surface, stock status, pricing model, channel pre-decisions, and open evidence gaps documented."
+  - id: ASSESSMENT-08
+    name_machine: current-situation
+    label_operator_short: "Current situation"
+    label_operator_long: "ASSESSMENT-08 — Current situation"
+    outcome_operator: "Current situation packet: launch surface, stock status, pricing model, channel pre-decisions, and open evidence gaps documented."
     aliases:
-      - operator-evidence
-      - our-stance
-      - discovery-07
+      - current-situation
+      - assessment-08
     display_order: 1
     conditional: true
     condition: "start-point = problem"
-    operator_next_prompt: "Proceed to DISCOVERY Intake with all seven precursors complete."
+    operator_next_prompt: "Proceed to ASSESSMENT-09 Intake with all eight precursors complete."
 
-  - id: DISCOVERY
+  - id: ASSESSMENT-09
     name_machine: intake
     label_operator_short: "Intake"
-    label_operator_long: "DISCOVERY — Intake"
-    outcome_operator: "Structured startup context packet ready for all downstream stages."
+    label_operator_long: "ASSESSMENT-09 — Intake"
+    outcome_operator: "Required ASSESSMENT precursors validated; intake packet produced/refreshed for downstream stages."
     aliases:
       - intake
-      - discovery
+      - assessment-09
     display_order: 1
-    operator_next_prompt: "Run /lp-readiness to check gate readiness before moving to S1."
+    operator_next_prompt: "Proceed to ASSESSMENT-10 Brand profiling."
 
-  - id: BRAND-01
-    name_machine: brand-strategy
-    label_operator_short: "Brand-01"
-    label_operator_long: "BRAND-01 — Brand strategy"
+  - id: ASSESSMENT
+    name_machine: assessment
+    label_operator_short: "Assessment"
+    label_operator_long: "ASSESSMENT — Assessment"
+    outcome_operator: "Assessment container complete. Proceeds to Measure entry only after completeness + quality gate passes."
+    aliases:
+      - assessment
+      - assessment-intake
+    display_order: 1
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Run /startup-loop advance to evaluate ASSESSMENT completeness + quality gate, then proceed to MEASURE-01 Agent-Setup."
+
+  - id: ASSESSMENT-10
+    name_machine: brand-profiling
+    label_operator_short: "Brand profiling"
+    label_operator_long: "ASSESSMENT-10 — Brand profiling"
     outcome_operator: "Business name confirmed; personality adjective pairs, audience, voice & tone documented."
     aliases:
-      - brand-strategy
-      - brand-01
+      - brand-profiling
+      - assessment-10
     display_order: 1
     conditional: false
     condition: "always"
-    operator_next_prompt: "Run /lp-do-brand-02-brand-identity to create brand-dossier."
+    operator_next_prompt: "Run /lp-do-assessment-11-brand-identity to create brand-identity.user.md."
 
-  - id: BRAND-02
+  - id: ASSESSMENT-11
     name_machine: brand-identity
-    label_operator_short: "Brand-02"
-    label_operator_long: "BRAND-02 — Brand identity"
-    outcome_operator: "Visual language: colour palette, typography, imagery direction, token overrides. Brand dossier at Draft+."
+    label_operator_short: "Brand identity"
+    label_operator_long: "ASSESSMENT-11 — Brand identity"
+    outcome_operator: "Visual language: colour palette, typography, imagery direction, token overrides. Brand identity artifact at Draft+."
     aliases:
       - brand-identity
-      - brand-02
-      - brand-dossier
+      - assessment-11
     display_order: 1
     conditional: false
     condition: "always"
-    operator_next_prompt: "BRAND complete. Run /startup-loop advance to proceed to S1."
+    operator_next_prompt: "ASSESSMENT complete. Run /startup-loop advance toward MEASURE-01 Agent-Setup. IDEAS runs as a standing pipeline on pack-diff or operator injection, not as a required sequential next step."
 
-  - id: BRAND
-    name_machine: brand
-    label_operator_short: "Brand"
-    label_operator_long: "BRAND — Brand"
-    outcome_operator: "Brand stage complete. Proceeds to S1 (no gate)."
+  - id: IDEAS
+    name_machine: ideas
+    label_operator_short: "Ideas"
+    label_operator_long: "IDEAS — Ideas"
+    outcome_operator: "Standing pipeline state: pack diff scans reviewed, backlog updates applied, and promotion-ready ideas handed to DO fact-find when criteria are met."
     aliases:
-      - brand
-      - brand-intake
-    display_order: 1
-    conditional: false
-    condition: "always"
-    operator_next_prompt: "Run /lp-readiness to check launch readiness before entering offer design."
-
-  - id: S1
-    name_machine: readiness
-    label_operator_short: "Readiness check"
-    label_operator_long: "S1 — Readiness"
-    outcome_operator: "Readiness report with blocker list. All 7 gates checked."
-    aliases:
-      - readiness
-      - s1
+      - ideas
+      - idea-pipeline
     display_order: 2
-    operator_next_prompt: "Resolve any blockers, then proceed to Measure (pre-website) or Results (website-live)."
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "IDEAS is standing (event-driven). Trigger IDEAS-01 when Layer A packs change or when operator injects a review request."
 
-  - id: S1B
-    name_machine: measure
-    stage_group: MEASURE
-    label_operator_short: "Measure"
-    label_operator_long: "S1B — Measure (pre-website)"
-    outcome_operator: "Analytics stack live with GA4, Search Console, and conversion events verified before any paid traffic."
+  - id: IDEAS-01
+    name_machine: pack-diff-scan
+    stage_group: IDEAS
+    label_operator_short: "Pack diff scan"
+    label_operator_long: "IDEAS-01 — Pack diff scan"
+    outcome_operator: "Automated diff scan completed; scan-proposals.md produced with CREATE/STRENGTHEN/WEAKEN/INVALIDATE/MERGE/SPLIT proposals."
     aliases:
+      - pack-diff-scan
+      - idea-backlog
+      - idea-backlog-capture
+      - ideas-01
+    display_order: 2
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Review scan-proposals.md and confirm applicability/quality. Route accepted proposals to IDEAS-02 Backlog update."
+
+  - id: IDEAS-02
+    name_machine: backlog-update
+    stage_group: IDEAS
+    label_operator_short: "Backlog update"
+    label_operator_long: "IDEAS-02 — Backlog update"
+    outcome_operator: "Semi-automated apply complete: accepted scan proposals reconciled into idea backlog/cards. MERGE/SPLIT changes confirmed by operator."
+    aliases:
+      - backlog-update
+      - idea-card-review
+      - idea-scoring
+      - ideas-02
+    display_order: 2
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Apply accepted proposals to idea-backlog/user artifacts. Require explicit operator confirmation for MERGE/SPLIT before committing structural changes. Then proceed to IDEAS-03 Promote to DO."
+
+  - id: IDEAS-03
+    name_machine: promotion-gate
+    stage_group: IDEAS
+    label_operator_short: "Promote to DO"
+    label_operator_long: "IDEAS-03 — Promote to DO"
+    outcome_operator: "Promotion decision complete: selected idea handed off to /lp-do-fact-find with traceable idea linkage."
+    aliases:
+      - promotion-gate
+      - idea-promotion
+      - ideas-03
+    display_order: 2
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Run /lp-do-fact-find with the selected idea as input. Ensure fact-find.md includes idea linkage in frontmatter and the handoff criteria in handoff-to-fact-find.md are satisfied."
+
+  - id: MEASURE-01
+    name_machine: agent-setup
+    stage_group: MEASURE
+    label_operator_short: "Agent-Setup"
+    label_operator_long: "MEASURE-01 — Agent-Setup"
+    outcome_operator: "Agent setup artifact captured for measurement/ops readiness with required integration details."
+    aliases:
+      - agent-setup
       - measure
       - measurement-bootstrap  # backward compat
       - measurement-setup      # backward compat
-      - s1b
+      - measure-01
+      - s1b                    # backward compat legacy stage alias
     display_order: 3
-    conditional: true
-    condition: "launch-surface = pre-website"
-    operator_next_prompt: "Confirm Measure stage is Active, then proceed to S2 Market intelligence."
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Confirm MEASURE-01 is Active, then proceed to MEASURE-02 Results."
 
-  - id: S2A
+  - id: MEASURE-02
     name_machine: results
     stage_group: MEASURE
     label_operator_short: "Results"
-    label_operator_long: "S2A — Results (website-live)"
-    outcome_operator: "Consolidated business history document with net value, booking data, and traffic logs as a decision baseline."
+    label_operator_long: "MEASURE-02 — Results"
+    outcome_operator: "Historical performance baseline captured as decision-grade context."
     aliases:
       - results
       - historical-baseline  # backward compat
       - baseline-history     # backward compat
-      - s2a
+      - measure-02
+      - s2a                  # backward compat legacy alias
     display_order: 4
-    conditional: true
-    condition: "launch-surface = website-live"
-    operator_next_prompt: "Proceed to S2 Market intelligence once Results baseline is Active."
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to PRODUCT-01 Product from photo once Results baseline is Active."
 
-  - id: S2
-    name_machine: market-intelligence
-    label_operator_short: "Market intelligence"
-    label_operator_long: "S2 — Market intelligence"
-    outcome_operator: "Decision-grade market intelligence pack covering competitors, demand, pricing, and channels."
+  - id: PRODUCT
+    name_machine: product
+    label_operator_short: "Product"
+    label_operator_long: "PRODUCT — Product container"
+    outcome_operator: "Product container complete: product-from-photo specification is captured, and adjacent product research is available when triggered."
     aliases:
-      - market-intelligence
-      - market-intel
-      - s2
+      - product
+      - product-container
     display_order: 5
-    operator_next_prompt: "Proceed to S2B Offer design once market intelligence is Active."
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Run PRODUCT-01 Product from photo, then proceed to MARKET-01 Competitor mapping. PRODUCT-02 is optional after MARKET-06."
 
-  - id: S2B
+  - id: PRODUCT-01
+    name_machine: product-from-photo
+    stage_group: PRODUCT
+    label_operator_short: "Product from photo"
+    label_operator_long: "PRODUCT-01 — Product from photo"
+    outcome_operator: "Manufacturing-ready product family spec from image evidence with controlled variation and uncertainty discipline."
+    aliases:
+      - product-from-photo
+      - product-01
+    display_order: 5
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to MARKET-01 Competitor mapping after PRODUCT-01 is complete."
+
+  - id: PRODUCTS
+    name_machine: products
+    label_operator_short: "Products"
+    label_operator_long: "PRODUCTS — Products container"
+    outcome_operator: "Products container complete: standing product line intelligence is captured including SKU map, competitor scan, performance baseline, bundle hypotheses, PMF signals, roadmap snapshot, and aggregate pack."
+    aliases:
+      - products
+      - products-container
+    display_order: 6
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Run PRODUCTS-01 through PRODUCTS-07 in order. Aggregate pack (PRODUCTS-07) is optional at S4."
+
+  - id: PRODUCTS-01
+    name_machine: product-line-mapping
+    stage_group: PRODUCTS
+    label_operator_short: "Product line mapping"
+    label_operator_long: "PRODUCTS-01 — Product line mapping"
+    outcome_operator: "Current SKU inventory and positioning map documenting the full product line with differentiation notes."
+    aliases:
+      - product-line-mapping
+      - products-01
+    display_order: 6
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to PRODUCTS-02 Competitor product scan."
+
+  - id: PRODUCTS-02
+    name_machine: competitor-product-scan
+    stage_group: PRODUCTS
+    label_operator_short: "Competitor product scan"
+    label_operator_long: "PRODUCTS-02 — Competitor product scan"
+    outcome_operator: "Adjacent SKU landscape with pricing benchmarks and competitive differentiation notes."
+    aliases:
+      - competitor-product-scan
+      - products-02
+    display_order: 6
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to PRODUCTS-03 Product performance baseline."
+
+  - id: PRODUCTS-03
+    name_machine: product-performance-baseline
+    stage_group: PRODUCTS
+    label_operator_short: "Product performance baseline"
+    label_operator_long: "PRODUCTS-03 — Product performance baseline"
+    outcome_operator: "Sell-through rates and margin by SKU, establishing a decision-grade performance baseline."
+    aliases:
+      - product-performance-baseline
+      - products-03
+    display_order: 6
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to PRODUCTS-04 Bundle and packaging hypotheses."
+
+  - id: PRODUCTS-04
+    name_machine: bundle-and-packaging-hypotheses
+    stage_group: PRODUCTS
+    label_operator_short: "Bundle hypotheses"
+    label_operator_long: "PRODUCTS-04 — Bundle and packaging hypotheses"
+    outcome_operator: "Standing bundle options with pricing rationale and packaging format notes."
+    aliases:
+      - bundle-and-packaging-hypotheses
+      - products-04
+    display_order: 6
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to PRODUCTS-05 Product-market fit signals."
+
+  - id: PRODUCTS-05
+    name_machine: product-market-fit-signals
+    stage_group: PRODUCTS
+    label_operator_short: "Product-market fit signals"
+    label_operator_long: "PRODUCTS-05 — Product-market fit signals"
+    outcome_operator: "Compiled PMF signals: review sentiment, return rates, and demand indicators by SKU."
+    aliases:
+      - product-market-fit-signals
+      - pmf-signals
+      - products-05
+    display_order: 6
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to PRODUCTS-06 Product roadmap snapshot."
+
+  - id: PRODUCTS-06
+    name_machine: product-roadmap-snapshot
+    stage_group: PRODUCTS
+    label_operator_short: "Product roadmap snapshot"
+    label_operator_long: "PRODUCTS-06 — Product roadmap snapshot"
+    outcome_operator: "Next 90-day product decisions with rationale, priorities, and open dependencies."
+    aliases:
+      - product-roadmap-snapshot
+      - products-06
+    display_order: 6
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to PRODUCTS-07 Aggregate product pack."
+
+  - id: PRODUCTS-07
+    name_machine: aggregate-product-pack
+    stage_group: PRODUCTS
+    label_operator_short: "Aggregate product pack"
+    label_operator_long: "PRODUCTS-07 — Aggregate product pack"
+    outcome_operator: "Aggregate product pack combining line map, performance baseline, PMF signals, and roadmap snapshot into one standing artifact."
+    aliases:
+      - aggregate-product-pack
+      - products-07
+    display_order: 6
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "PRODUCTS container complete. Proceed to LOGISTICS (if applicable) or MARKET-01 Competitor mapping."
+
+  - id: LOGISTICS
+    name_machine: logistics
+    label_operator_short: "Logistics"
+    label_operator_long: "LOGISTICS — Logistics container"
+    outcome_operator: "Logistics container complete: supplier mapping, lead time/MOQ baseline, fulfillment options, cost/margin by route, returns baseline, inventory policy, and aggregate pack are captured."
+    aliases:
+      - logistics
+      - logistics-container
+    display_order: 7
+    conditional: true
+    condition: "business_profile includes logistics-heavy OR physical-product"
+    operator_next_prompt: "Run LOGISTICS-01 through LOGISTICS-07 in order. Aggregate pack (LOGISTICS-07) is optional at S4. Skip entire container if business_profile does not include logistics-heavy or physical-product."
+
+  - id: LOGISTICS-01
+    name_machine: supplier-and-manufacturer-mapping
+    stage_group: LOGISTICS
+    label_operator_short: "Supplier mapping"
+    label_operator_long: "LOGISTICS-01 — Supplier and manufacturer mapping"
+    outcome_operator: "Supplier list with MOQ and lead time data for each key supplier and manufacturer."
+    aliases:
+      - supplier-and-manufacturer-mapping
+      - supplier-mapping
+      - logistics-01
+    display_order: 7
+    conditional: true
+    condition: "business_profile includes logistics-heavy OR physical-product"
+    operator_next_prompt: "Proceed to LOGISTICS-02 Lead time and MOQ baseline."
+
+  - id: LOGISTICS-02
+    name_machine: lead-time-and-moq-baseline
+    stage_group: LOGISTICS
+    label_operator_short: "Lead time and MOQ baseline"
+    label_operator_long: "LOGISTICS-02 — Lead time and MOQ baseline"
+    outcome_operator: "Consolidated lead time and MOQ constraints per SKU with bottleneck flags."
+    aliases:
+      - lead-time-and-moq-baseline
+      - lead-time-moq
+      - logistics-02
+    display_order: 7
+    conditional: true
+    condition: "business_profile includes logistics-heavy OR physical-product"
+    operator_next_prompt: "Proceed to LOGISTICS-03 Fulfillment channel options."
+
+  - id: LOGISTICS-03
+    name_machine: fulfillment-channel-options
+    stage_group: LOGISTICS
+    label_operator_short: "Fulfillment channel options"
+    label_operator_long: "LOGISTICS-03 — Fulfillment channel options"
+    outcome_operator: "Comparison of 3PL, self-fulfillment, and dropship options with cost and lead-time tradeoffs."
+    aliases:
+      - fulfillment-channel-options
+      - fulfillment-options
+      - logistics-03
+    display_order: 7
+    conditional: true
+    condition: "business_profile includes logistics-heavy OR physical-product"
+    operator_next_prompt: "Proceed to LOGISTICS-04 Cost and margin by route."
+
+  - id: LOGISTICS-04
+    name_machine: cost-and-margin-by-route
+    stage_group: LOGISTICS
+    label_operator_short: "Cost and margin by route"
+    label_operator_long: "LOGISTICS-04 — Cost and margin by route"
+    outcome_operator: "Fulfillment cost stack per channel with contribution margin impact and route-level comparison."
+    aliases:
+      - cost-and-margin-by-route
+      - logistics-cost-margin
+      - logistics-04
+    display_order: 7
+    conditional: true
+    condition: "business_profile includes logistics-heavy OR physical-product"
+    operator_next_prompt: "Proceed to LOGISTICS-05 Returns and quality baseline."
+
+  - id: LOGISTICS-05
+    name_machine: returns-and-quality-baseline
+    stage_group: LOGISTICS
+    label_operator_short: "Returns and quality baseline"
+    label_operator_long: "LOGISTICS-05 — Returns and quality baseline"
+    outcome_operator: "Return rate by SKU and quality failure mode register with remediation notes."
+    aliases:
+      - returns-and-quality-baseline
+      - returns-quality
+      - logistics-05
+    display_order: 7
+    conditional: true
+    condition: "business_profile includes logistics-heavy OR physical-product"
+    operator_next_prompt: "Proceed to LOGISTICS-06 Inventory policy snapshot."
+
+  - id: LOGISTICS-06
+    name_machine: inventory-policy-snapshot
+    stage_group: LOGISTICS
+    label_operator_short: "Inventory policy snapshot"
+    label_operator_long: "LOGISTICS-06 — Inventory policy snapshot"
+    outcome_operator: "Inventory policy with reorder points, safety stock assumptions, and stockout risk notes."
+    aliases:
+      - inventory-policy-snapshot
+      - inventory-policy
+      - logistics-06
+    display_order: 7
+    conditional: true
+    condition: "business_profile includes logistics-heavy OR physical-product"
+    operator_next_prompt: "Proceed to LOGISTICS-07 Aggregate logistics pack."
+
+  - id: LOGISTICS-07
+    name_machine: aggregate-logistics-pack
+    stage_group: LOGISTICS
+    label_operator_short: "Aggregate logistics pack"
+    label_operator_long: "LOGISTICS-07 — Aggregate logistics pack"
+    outcome_operator: "Aggregate logistics pack combining supplier mapping, cost/margin, returns baseline, and inventory policy into one standing artifact."
+    aliases:
+      - aggregate-logistics-pack
+      - logistics-07
+    display_order: 7
+    conditional: true
+    condition: "business_profile includes logistics-heavy OR physical-product"
+    operator_next_prompt: "LOGISTICS container complete. Proceed to MARKET-01 Competitor mapping."
+
+  - id: MARKET
+    name_machine: market
+    label_operator_short: "Market"
+    label_operator_long: "MARKET — Market container"
+    outcome_operator: "Market container complete: competitor, demand, pricing, channel, and risk intelligence are consolidated into an offer contract."
+    aliases:
+      - market
+      - market-container
+    display_order: 8
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Run MARKET-01 through MARKET-06 in order."
+
+  - id: MARKET-01
+    name_machine: competitor-mapping
+    label_operator_short: "Competitor mapping"
+    label_operator_long: "MARKET-01 — Competitor mapping"
+    outcome_operator: "Competitor landscape map with direct/indirect alternatives, differentiators, and evidence references."
+    aliases:
+      - competitor-mapping
+      - competitors
+      - market-01
+    display_order: 8
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to MARKET-02 Demand evidence once competitor mapping is complete."
+
+  - id: MARKET-02
+    name_machine: demand-evidence
+    label_operator_short: "Demand evidence"
+    label_operator_long: "MARKET-02 — Demand evidence"
+    outcome_operator: "Demand evidence pack with demand shape, audience pull indicators, and confidence tags."
+    aliases:
+      - demand-evidence
+      - demand
+      - market-02
+    display_order: 9
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to MARKET-03 Pricing benchmarks."
+
+  - id: MARKET-03
+    name_machine: pricing-benchmarks
+    label_operator_short: "Pricing benchmarks"
+    label_operator_long: "MARKET-03 — Pricing benchmarks"
+    outcome_operator: "Pricing benchmark ranges by competitor set, positioning tier, and confidence notes."
+    aliases:
+      - pricing-benchmarks
+      - pricing
+      - market-03
+    display_order: 10
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to MARKET-04 Channel landscape."
+
+  - id: MARKET-04
+    name_machine: channel-landscape
+    label_operator_short: "Channel landscape"
+    label_operator_long: "MARKET-04 — Channel landscape"
+    outcome_operator: "Channel landscape with acquisition options, constraints, and channel-fit notes."
+    aliases:
+      - channel-landscape
+      - channel-research
+      - market-04
+    display_order: 11
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to MARKET-05 Assumptions and risk register."
+
+  - id: MARKET-05
+    name_machine: assumptions-risk-register
+    label_operator_short: "Assumptions and risk"
+    label_operator_long: "MARKET-05 — Assumptions and risk register"
+    outcome_operator: "Consolidated assumptions and risk register covering open unknowns, conflicts, and required follow-up evidence."
+    aliases:
+      - assumptions-risk-register
+      - risks
+      - market-05
+    display_order: 12
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to MARKET-06 Offer design."
+
+  - id: MARKET-06
     name_machine: offer-design
     label_operator_short: "Offer design"
-    label_operator_long: "S2B — Offer design"
+    label_operator_long: "MARKET-06 — Offer design"
     outcome_operator: "Offer artifact: target customer, positioning, pricing model, and messaging hierarchy."
     aliases:
       - offer-design
       - offer
-      - s2b
-    display_order: 6
-    operator_next_prompt: "S3 Forecast and S6B Channel strategy can now run in parallel."
+      - market-06
+    display_order: 13
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "SELL container fan-out begins: S3 Forecast and SELL-01 Channel strategy run in parallel. PRODUCT-02 is optional. MARKET-07..11 capture post-offer standing intelligence in parallel."
+
+  - id: MARKET-07
+    name_machine: post-offer-synthesis
+    stage_group: MARKET
+    label_operator_short: "Post-offer synthesis"
+    label_operator_long: "MARKET-07 — Post-offer synthesis"
+    outcome_operator: "Offer contract integrated back into market intelligence with updated assumptions and conflict resolution notes."
+    aliases:
+      - post-offer-synthesis
+      - market-07
+    display_order: 13
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to MARKET-08 Demand evidence pack assembly."
+
+  - id: MARKET-08
+    name_machine: demand-evidence-pack-assembly
+    stage_group: MARKET
+    label_operator_short: "Demand evidence pack"
+    label_operator_long: "MARKET-08 — Demand evidence pack assembly"
+    outcome_operator: "Compiled demand evidence pack (DEP) from MARKET-01..07 signals into a single standing artifact."
+    aliases:
+      - demand-evidence-pack-assembly
+      - demand-evidence-pack
+      - dep
+      - market-08
+    display_order: 13
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to MARKET-09 ICP refinement."
+
+  - id: MARKET-09
+    name_machine: icp-refinement
+    stage_group: MARKET
+    label_operator_short: "ICP refinement"
+    label_operator_long: "MARKET-09 — ICP refinement"
+    outcome_operator: "Narrowed ICP profile based on offer feedback and observed demand signals with confidence annotations."
+    aliases:
+      - icp-refinement
+      - icp
+      - market-09
+    display_order: 13
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to MARKET-10 Market aggregate pack (draft)."
+
+  - id: MARKET-10
+    name_machine: market-aggregate-pack-draft
+    stage_group: MARKET
+    label_operator_short: "Market pack (draft)"
+    label_operator_long: "MARKET-10 — Market aggregate pack (draft)"
+    outcome_operator: "Draft market-pack standing artifact assembled from intelligence stack."
+    aliases:
+      - market-aggregate-pack-draft
+      - market-pack-draft
+      - market-10
+    display_order: 13
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to MARKET-11 Market aggregate pack (validated)."
+
+  - id: MARKET-11
+    name_machine: market-aggregate-pack-validated
+    stage_group: MARKET
+    label_operator_short: "Market aggregate pack"
+    label_operator_long: "MARKET-11 — Market aggregate pack (validated)"
+    outcome_operator: "Validated market-pack: DEP and ICP refinement signed off. Standing artifact for downstream consumption."
+    aliases:
+      - market-aggregate-pack-validated
+      - market-pack
+      - market-aggregate-pack
+      - market-11
+    display_order: 13
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "MARKET container standing stages complete. Proceed to the SELL container fan-out: S3 Forecast and SELL-01 Channel strategy run in parallel."
 
   - id: S3
     name_machine: forecast
+    stage_group: SELL
     label_operator_short: "Forecast"
     label_operator_long: "S3 — Forecast"
     outcome_operator: "90-day P10/P50/P90 revenue forecast with assumption register and sparse-evidence guardrails."
     aliases:
       - forecast
       - s3
-    display_order: 7
-    operator_next_prompt: "Forecast and S6B Channel strategy must both complete before S4 Baseline merge."
+    display_order: 14
+    operator_next_prompt: "S3 Forecast runs in parallel with SELL-01 Channel strategy within the SELL container. Both must complete before S4 Baseline merge."
 
-  - id: S3B
+  - id: PRODUCT-02
     name_machine: adjacent-product-research
+    stage_group: PRODUCT
     label_operator_short: "Adjacent product research"
-    label_operator_long: "S3B — Adjacent product research"
+    label_operator_long: "PRODUCT-02 — Adjacent product research"
     outcome_operator: "Adjacent product research results: 5-10 candidate product types with feasibility flags and ICP fit scoring for product range expansion."
     aliases:
       - adjacent-product-research
       - adjacent-products
-      - s3b
-    display_order: 7
+      - product-02
+    display_order: 14
     conditional: true
     condition: "growth_intent includes product_range OR operator_invoked"
-    operator_next_prompt: "S3B is non-blocking at S4. Share results artifact as optional go-item candidates with S5A Prioritize."
+    operator_next_prompt: "PRODUCT-02 (PRODUCT container) is non-blocking at S4. Share results artifact as optional go-item candidates with S5A Prioritize."
 
-  - id: S6B
+  - id: SELL
+    name_machine: sell
+    label_operator_short: "Sell"
+    label_operator_long: "SELL — Sell container"
+    outcome_operator: "Sell container strategy outputs are complete; standing sales intelligence captured; paid activation readiness is tracked separately."
+    aliases:
+      - sell
+      - sell-container
+    display_order: 15
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Complete SELL-01 Channel strategy, then SELL-02..07 standing intelligence. SELL-08 is required before any paid spend."
+
+  - id: SELL-01
     name_machine: channel-strategy
     label_operator_short: "Channel strategy + GTM"
-    label_operator_long: "S6B — Channel strategy + GTM"
+    label_operator_long: "SELL-01 — Channel strategy + GTM"
     outcome_operator: "Channel plan with 2-3 selected launch channels, 30-day GTM timeline, and SEO strategy."
     aliases:
       - channel-strategy
       - channels
       - gtm
-      - s6b
-    display_order: 8
-    operator_next_prompt: "Both S3 Forecast and S6B must complete before S4 Baseline merge."
+      - sell-01
+    display_order: 15
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Both S3 Forecast and SELL-01 must complete before S4 Baseline merge. SELL-08 remains required before paid spend."
     operator_microsteps:
-      - id: GATE-S6B-STRAT-01
+      - id: GATE-SELL-STRAT-01
         label: "Strategy design complete"
         gate: Hard
-        description: "Channel hypothesis and strategy design are complete. Requires S2B offer artifact. Allows channel plan artifact generation. Does not require measurement verification."
-      - id: GATE-S6B-ACT-01
+        description: "Channel hypothesis and strategy design are complete. Requires MARKET-06 offer artifact. Allows channel plan artifact generation. Does not require measurement verification."
+
+  - id: SELL-02
+    name_machine: channel-performance-baseline
+    stage_group: SELL
+    label_operator_short: "Channel performance baseline"
+    label_operator_long: "SELL-02 — Channel performance baseline"
+    outcome_operator: "Standing baseline of active channel performance: conversion rates, CAC, and channel-level ROI by channel."
+    aliases:
+      - channel-performance-baseline
+      - sell-02
+    display_order: 15
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to SELL-03 Outreach and content standing."
+
+  - id: SELL-03
+    name_machine: outreach-and-content-standing
+    stage_group: SELL
+    label_operator_short: "Outreach + content standing"
+    label_operator_long: "SELL-03 — Outreach and content standing"
+    outcome_operator: "Standing record of outreach cadence, content calendar status, and engagement metrics."
+    aliases:
+      - outreach-and-content-standing
+      - outreach-standing
+      - sell-03
+    display_order: 15
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to SELL-04 SEO standing."
+
+  - id: SELL-04
+    name_machine: seo-standing
+    stage_group: SELL
+    label_operator_short: "SEO standing"
+    label_operator_long: "SELL-04 — SEO standing"
+    outcome_operator: "Standing SEO intelligence: organic rankings, keyword gaps, and backlink profile with priority actions."
+    aliases:
+      - seo-standing
+      - sell-04
+    display_order: 15
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to SELL-05 Paid channel standing."
+
+  - id: SELL-05
+    name_machine: paid-channel-standing
+    stage_group: SELL
+    label_operator_short: "Paid channel standing"
+    label_operator_long: "SELL-05 — Paid channel standing"
+    outcome_operator: "Standing paid channel performance: spend by channel, ROAS, and creative fatigue signals."
+    aliases:
+      - paid-channel-standing
+      - sell-05
+    display_order: 15
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to SELL-06 Partnership and referral standing."
+
+  - id: SELL-06
+    name_machine: partnership-and-referral-standing
+    stage_group: SELL
+    label_operator_short: "Partnership and referral"
+    label_operator_long: "SELL-06 — Partnership and referral standing"
+    outcome_operator: "Standing record of partnership pipeline, referral programmes, and affiliate activity with performance notes."
+    aliases:
+      - partnership-and-referral-standing
+      - partnership-standing
+      - sell-06
+    display_order: 15
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "Proceed to SELL-07 Sell aggregate pack."
+
+  - id: SELL-07
+    name_machine: sell-aggregate-pack
+    stage_group: SELL
+    label_operator_short: "Sell aggregate pack"
+    label_operator_long: "SELL-07 — Sell aggregate pack"
+    outcome_operator: "Aggregate sell pack combining channel performance, outreach/content, SEO, paid channel, and partnership standing into one artifact."
+    aliases:
+      - sell-aggregate-pack
+      - sell-07
+    display_order: 15
+    conditional: false
+    condition: "always"
+    operator_next_prompt: "SELL standing intelligence complete. SELL-08 required before any paid spend."
+
+  - id: SELL-08
+    name_machine: activation-readiness
+    label_operator_short: "Activation readiness"
+    label_operator_long: "SELL-08 — Activation readiness"
+    outcome_operator: "Paid-spend authorization state documented from measurement/risk/conversion checks."
+    aliases:
+      - activation-readiness
+      - spend-authorization
+      - sell-08
+    display_order: 15
+    conditional: true
+    condition: "paid_spend_requested"
+    operator_next_prompt: "Paid spend remains blocked until SELL-08 passes the activation gate."
+    operator_microsteps:
+      - id: GATE-SELL-ACT-01
         label: "Spend authorization"
         gate: Hard
         description: "Spend activation gate. Requires decision-grade measurement signal verified (GATE-MEAS-01 pass). Blocks any live spend or channel activation until measurement thresholds are met."
@@ -283,7 +872,7 @@ stages:
     aliases:
       - baseline-merge
       - s4
-    display_order: 9
+    display_order: 16
     operator_next_prompt: "Proceed to S5A Prioritize."
 
   - id: S5A
@@ -294,7 +883,7 @@ stages:
     aliases:
       - prioritize
       - s5a
-    display_order: 10
+    display_order: 17
     operator_next_prompt: "Proceed to S5B BOS sync to persist prioritization outputs."
 
   - id: S5B
@@ -305,7 +894,7 @@ stages:
     aliases:
       - bos-sync
       - s5b
-    display_order: 11
+    display_order: 18
     operator_next_prompt: "S6 Site-upgrade and DO can now proceed."
 
   - id: S6
@@ -317,7 +906,7 @@ stages:
       - site-upgrade
       - site-upgrade-synthesis
       - s6
-    display_order: 12
+    display_order: 19
     operator_next_prompt: "Proceed to DO."
 
   - id: DO
@@ -333,7 +922,7 @@ stages:
       - s7    # backward compat
       - s8    # backward compat
       - s9    # backward compat
-    display_order: 13
+    display_order: 20
     operator_next_prompt: "Proceed to S9B QA gates before launch."
 
   - id: S9B
@@ -345,7 +934,7 @@ stages:
       - qa-gates
       - qa
       - s9b
-    display_order: 14
+    display_order: 21
     operator_next_prompt: "Proceed to S10 Weekly decision loop."
 
   - id: S10
@@ -358,5 +947,5 @@ stages:
       - weekly-decision
       - weekly
       - s10
-    display_order: 15
+    display_order: 22
     operator_next_prompt: "Repeat weekly. Run standing refresh prompts on monthly/quarterly cadence."

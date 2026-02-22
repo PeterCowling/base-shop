@@ -255,6 +255,23 @@
       "operator_next_prompt": "Run /lp-do-fact-find with the selected idea as input. Ensure fact-find.md includes idea linkage in frontmatter and the handoff criteria in handoff-to-fact-find.md are satisfied."
     },
     {
+      "id": "MEASURE-00",
+      "name_machine": "problem-framing-and-icp",
+      "stage_group": "MEASURE",
+      "label_operator_short": "Problem framing & ICP",
+      "label_operator_long": "MEASURE-00 — Problem framing and ICP",
+      "outcome_operator": "Current problem framing and ICP seeded from intake packet. Live document — updated directly when framing evolves or a pivot occurs. Consumers: MARKET-01 (always reads), SELL-01 (seed only), DO (build context).",
+      "aliases": [
+        "problem-framing-and-icp",
+        "current-problem-framing",
+        "measure-00"
+      ],
+      "display_order": 3,
+      "conditional": false,
+      "condition": "always",
+      "operator_next_prompt": "Proceed to MEASURE-01 Agent-Setup."
+    },
+    {
       "id": "MEASURE-01",
       "name_machine": "agent-setup",
       "stage_group": "MEASURE",
@@ -291,7 +308,7 @@
       "display_order": 4,
       "conditional": false,
       "condition": "always",
-      "operator_next_prompt": "Proceed to PRODUCT-01 Product from photo once Results baseline is Active."
+      "operator_next_prompt": "Two parallel streams start from MEASURE exit: (1) PRODUCT-01 Product from photo — Products stream starts now. (2) MARKET-01 Competitor mapping — Market intelligence stream also starts now, in parallel. Both streams converge at MARKET-06 Offer Design. Run PRODUCT-01 and MARKET-01 concurrently."
     },
     {
       "id": "PRODUCT",
@@ -306,7 +323,7 @@
       "display_order": 5,
       "conditional": false,
       "condition": "always",
-      "operator_next_prompt": "Run PRODUCT-01 Product from photo, then proceed to MARKET-01 Competitor mapping. PRODUCT-02 is optional after MARKET-06."
+      "operator_next_prompt": "Run PRODUCT-01 Product from photo, then continue to PRODUCTS-01 Product line mapping (Products stream). MARKET-01 runs in parallel from MEASURE exit — it is NOT downstream of PRODUCT-01. PRODUCT-02 is optional after MARKET-06."
     },
     {
       "id": "PRODUCT-01",
@@ -322,7 +339,7 @@
       "display_order": 5,
       "conditional": false,
       "condition": "always",
-      "operator_next_prompt": "Proceed to MARKET-01 Competitor mapping after PRODUCT-01 is complete."
+      "operator_next_prompt": "Proceed to PRODUCTS-01 Product line mapping (next in Products stream). MARKET-01 is running concurrently in the Market intelligence stream — it is not the next step from PRODUCT-01."
     },
     {
       "id": "PRODUCTS",
@@ -353,7 +370,7 @@
       "display_order": 6,
       "conditional": false,
       "condition": "always",
-      "operator_next_prompt": "Proceed to PRODUCTS-02 Competitor product scan."
+      "operator_next_prompt": "Proceed to PRODUCTS-02 Competitor product scan. Cross-stream sync required: PRODUCTS-02 cannot start until MARKET-01 Competitor mapping (Market intelligence stream) is complete."
     },
     {
       "id": "PRODUCTS-02",
@@ -369,7 +386,7 @@
       "display_order": 6,
       "conditional": false,
       "condition": "always",
-      "operator_next_prompt": "Proceed to PRODUCTS-03 Product performance baseline."
+      "operator_next_prompt": "Cross-stream sync point: this stage required MARKET-01 Competitor mapping to be complete before starting. If business_profile includes post-launch, proceed to PRODUCTS-03 Product performance baseline. Otherwise skip to PRODUCTS-04 Bundle and packaging hypotheses."
     },
     {
       "id": "PRODUCTS-03",
@@ -383,9 +400,9 @@
         "products-03"
       ],
       "display_order": 6,
-      "conditional": false,
-      "condition": "always",
-      "operator_next_prompt": "Proceed to PRODUCTS-04 Bundle and packaging hypotheses."
+      "conditional": true,
+      "condition": "business_profile includes post-launch",
+      "operator_next_prompt": "Proceed to PRODUCTS-04 Bundle and packaging hypotheses. Cross-stream sync required: PRODUCTS-04 cannot start until MARKET-03 Pricing benchmarks (Market intelligence stream) is complete."
     },
     {
       "id": "PRODUCTS-04",
@@ -401,7 +418,7 @@
       "display_order": 6,
       "conditional": false,
       "condition": "always",
-      "operator_next_prompt": "Proceed to PRODUCTS-05 Product-market fit signals."
+      "operator_next_prompt": "If business_profile includes post-launch, proceed to PRODUCTS-05 Product-market fit signals. Otherwise skip to PRODUCTS-07 Aggregate product pack."
     },
     {
       "id": "PRODUCTS-05",
@@ -416,8 +433,8 @@
         "products-05"
       ],
       "display_order": 6,
-      "conditional": false,
-      "condition": "always",
+      "conditional": true,
+      "condition": "business_profile includes post-launch",
       "operator_next_prompt": "Proceed to PRODUCTS-06 Product roadmap snapshot."
     },
     {
@@ -432,8 +449,8 @@
         "products-06"
       ],
       "display_order": 6,
-      "conditional": false,
-      "condition": "always",
+      "conditional": true,
+      "condition": "business_profile includes post-launch",
       "operator_next_prompt": "Proceed to PRODUCTS-07 Aggregate product pack."
     },
     {
@@ -450,7 +467,7 @@
       "display_order": 6,
       "conditional": false,
       "condition": "always",
-      "operator_next_prompt": "PRODUCTS container complete. Proceed to LOGISTICS (if applicable) or MARKET-01 Competitor mapping."
+      "operator_next_prompt": "PRODUCTS container complete. Proceed to LOGISTICS (if applicable). Once LOGISTICS is complete (or skipped), both the Products stream and the Market intelligence stream converge at MARKET-06 Offer Design."
     },
     {
       "id": "LOGISTICS",
@@ -465,7 +482,7 @@
       "display_order": 7,
       "conditional": true,
       "condition": "business_profile includes logistics-heavy OR physical-product",
-      "operator_next_prompt": "Run LOGISTICS-01 through LOGISTICS-07 in order. Aggregate pack (LOGISTICS-07) is optional at S4. Skip entire container if business_profile does not include logistics-heavy or physical-product."
+      "operator_next_prompt": "Run LOGISTICS-01 through LOGISTICS-07 in order. Aggregate pack (LOGISTICS-07) is optional at S4. Skip entire container if business_profile does not include logistics-heavy or physical-product. LOGISTICS feeds MARKET-06 Offer Design (synthesis join), not MARKET-01."
     },
     {
       "id": "LOGISTICS-01",
@@ -583,7 +600,7 @@
       "display_order": 7,
       "conditional": true,
       "condition": "business_profile includes logistics-heavy OR physical-product",
-      "operator_next_prompt": "LOGISTICS container complete. Proceed to MARKET-01 Competitor mapping."
+      "operator_next_prompt": "LOGISTICS container complete. Proceed to MARKET-06 Offer Design (synthesis join). LOGISTICS intelligence feeds the offer design stage directly."
     },
     {
       "id": "MARKET",
@@ -1118,6 +1135,9 @@
     "promotion-gate": "IDEAS-03",
     "idea-promotion": "IDEAS-03",
     "ideas-03": "IDEAS-03",
+    "problem-framing-and-icp": "MEASURE-00",
+    "current-problem-framing": "MEASURE-00",
+    "measure-00": "MEASURE-00",
     "agent-setup": "MEASURE-01",
     "measure": "MEASURE-01",
     "measurement-bootstrap": "MEASURE-01",

@@ -41,7 +41,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - [x] TASK-01: Update loop-spec.yaml to v3.9.4 (Complete 2026-02-22)
 - [x] TASK-02: Update stage-operator-dictionary.yaml (Complete 2026-02-22)
 - [x] TASK-03: Update idea-backlog.schema.md (Complete 2026-02-22)
-- [ ] TASK-04: Create scan-proposals.schema.md
+- [x] TASK-04: Create scan-proposals.schema.md (Complete 2026-02-22)
 - [x] TASK-05: Remove IDEAS from UPSTREAM_PRIORITY_ORDER (bottleneck-detector.ts) (Complete 2026-02-22)
 - [ ] TASK-06: Update HTML process map
 - [ ] TASK-07: Update startup-loop/SKILL.md + rewrite idea-scan/SKILL.md
@@ -112,7 +112,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 | TASK-01 | IMPLEMENT | Update loop-spec.yaml to v3.9.4 | 85% | M | Complete (2026-02-22) | — | TASK-02 |
 | TASK-02 | IMPLEMENT | Update stage-operator-dictionary.yaml | 85% | M | Complete (2026-02-22) | TASK-01 | — |
 | TASK-03 | IMPLEMENT | Update idea-backlog.schema.md | 85% | S | Complete (2026-02-22) | — | — |
-| TASK-04 | IMPLEMENT | Create scan-proposals.schema.md | 82% | M | Pending | TASK-INV-01 | — |
+| TASK-04 | IMPLEMENT | Create scan-proposals.schema.md | 82% | M | Complete (2026-02-22) | TASK-INV-01 | — |
 | TASK-05 | IMPLEMENT | Remove IDEAS from UPSTREAM_PRIORITY_ORDER | 90% | S | Complete (2026-02-22) | — | — |
 | TASK-06 | IMPLEMENT | Update HTML process map | 80% | M | Pending | — | — |
 | TASK-07 | IMPLEMENT | Update startup-loop/SKILL.md + rewrite idea-scan/SKILL.md | 80% | M | Pending | TASK-INV-01 | — |
@@ -372,12 +372,12 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Artifact-Destination:** `docs/business-os/startup-loop/ideas/scan-proposals.schema.md`
 - **Reviewer:** operator
 - **Approval-Evidence:** None: internal schema doc
 - **Measurement-Readiness:** None: schema doc; operational validation deferred to /idea-scan implementation
-- **Affects:** `[new] docs/business-os/startup-loop/ideas/scan-proposals.schema.md`
+- **Affects:** `[new] docs/business-os/startup-loop/ideas/scan-proposals.schema.md`, `docs/business-os/startup-loop/ideas/handoff-to-fact-find.md`
 - **Depends on:** TASK-INV-01
 - **Blocks:** —
 - **Confidence:** 82%
@@ -398,10 +398,15 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
   - Red evidence plan: File does not exist; no schema defined for scan-proposals artifact
   - Green evidence plan: Create file with all proposal types; include quality bar; add artifact location; add complete example
   - Refactor evidence plan: Cross-reference with idea-backlog.schema.md and idea-card.schema.md for terminology consistency
+- **Build/validation evidence (2026-02-22):**
+  - `rg -n "^Schema: scan-proposals|^Version: 1\\.0\\.0|^Stage: IDEAS-01|^Status: Draft|CREATE|STRENGTHEN|WEAKEN|INVALIDATE|MERGE|SPLIT|evidence_ref|reasoning|confidence|merge_target|split_from|Artifact location|docs/business-os/strategy/<BIZ>/scan-proposals\\.md" docs/business-os/startup-loop/ideas/scan-proposals.schema.md` — PASS
+  - `sed -n '1,260p' docs/business-os/startup-loop/ideas/scan-proposals.schema.md` — PASS (frontmatter contract + six-type matrix + quality bar + complete six-type example verified)
+  - `rg -n "scan-proposals\\.schema\\.md|Schema Cross-Reference" docs/business-os/startup-loop/ideas/handoff-to-fact-find.md` — PASS (cross-reference added)
 - **Planning validation (required for M/L):**
   - Checks run: Reviewed existing ideas/ schema files (idea-backlog.schema.md, handoff-to-fact-find.md) for pattern consistency
   - Validation artifacts: `docs/business-os/startup-loop/ideas/` (4 files read this session)
   - Unexpected findings: TASK-INV-01 confirmed legacy output is scan JSON files, not proposal markdown; schema must define a new canonical artifact.
+- **Scope expansion note:** Added `handoff-to-fact-find.md` schema cross-reference row to keep IDEAS contracts discoverable from the handoff contract.
 - **Scouts:** Resolved via TASK-INV-01: no existing proposal schema to align with; create new schema and explicitly reference deprecation of legacy scan JSON outputs in TASK-07.
 - **Edge Cases & Hardening:**
   - MERGE proposals: `merge_target` must be an existing idea card ID; schema must define this constraint
@@ -600,7 +605,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - [x] `stage-operator-dictionary.yaml` at `loop_spec_version: "3.9.4"` with IDEAS entries updated
 - [x] TASK-01 and TASK-02 committed atomically in one git operation
 - [x] `idea-backlog.schema.md` contains `last_scanned_pack_versions` field definition
-- [ ] `scan-proposals.schema.md` exists with all 6 impact types and quality bar
+- [x] `scan-proposals.schema.md` exists with all 6 impact types and quality bar
 - [x] `bottleneck-detector.ts` `UPSTREAM_PRIORITY_ORDER` contains no IDEAS entries; tests pass
 - [ ] HTML process map shows IDEAS as a standing pipeline panel with both trigger paths visible
 - [ ] `startup-loop/SKILL.md` IDEAS table rows updated

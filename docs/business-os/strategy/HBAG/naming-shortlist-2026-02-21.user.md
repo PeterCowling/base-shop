@@ -1,5 +1,6 @@
 ---
 Type: Naming-Shortlist
+Status: Draft
 Business-Unit: HBAG
 Round: 3
 Created: 2026-02-21
@@ -7,6 +8,8 @@ Domain-check: RDAP via Verisign, 2026-02-21
 Total candidates generated: 250
 Total .com available: 188
 Presented: top 20 by score
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HBAG Naming Shortlist — 2026-02-21

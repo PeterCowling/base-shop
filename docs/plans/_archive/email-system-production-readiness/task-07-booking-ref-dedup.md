@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-07: Booking-Reference Deduplication
 
 **Status:** Complete

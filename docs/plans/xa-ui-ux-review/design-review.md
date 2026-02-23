@@ -1,3 +1,8 @@
+---
+Type: Design-Review
+Status: Draft
+---
+
 # XA Storefronts — UI/UX Design Review
 **Date:** 2026-02-22
 **Scope:** `apps/xa`, `apps/xa-b`, `apps/xa-j` (all share the same component tree)

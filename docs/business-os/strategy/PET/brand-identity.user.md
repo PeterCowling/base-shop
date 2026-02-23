@@ -9,6 +9,7 @@ Updated: 2026-02-21
 Last-reviewed: 2026-02-17
 Owner: Pete
 Token-Source: TBD — no app or theme package exists yet for Pet Product
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Pet Product — Brand Dossier

@@ -1,3 +1,8 @@
+---
+Type: Critique-History
+Status: Reference
+---
+
 # Critique History: jest-runaway-process-prevention
 
 ## Round 1 — 2026-02-21

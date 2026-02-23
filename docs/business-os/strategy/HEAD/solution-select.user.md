@@ -8,6 +8,8 @@ Method: back-propagated, confirmed by live ASSESSMENT-02 research run (2026-02-2
 Input: docs/business-os/strategy/HEAD/2026-02-20-solution-profile-results.user.md
 Input: docs/business-os/strategy/HEAD/problem-statement.user.md
 Downstream: docs/business-os/strategy/HEAD/candidate-names-prompt.md
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Option Selection Decision — HEAD (ASSESSMENT-03)

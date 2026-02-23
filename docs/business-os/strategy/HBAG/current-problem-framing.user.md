@@ -10,6 +10,7 @@ Last-reviewed: 2026-02-23
 Owner: Pete
 Seed-Source: docs/business-os/startup-baselines/HBAG-intake-packet.user.md
 Seed-Date: 2026-02-23
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Caryina (HBAG) — Current Problem Framing

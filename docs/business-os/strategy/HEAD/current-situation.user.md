@@ -7,6 +7,7 @@ Created: 2026-02-20
 Updated: 2026-02-20
 Last-reviewed: 2026-02-20
 Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Operator Evidence — HEAD (ASSESSMENT-06)

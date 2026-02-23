@@ -7,6 +7,7 @@ Overall: GO
 Created: 2026-02-20
 Last-reviewed: 2026-02-20
 Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Startup Readiness Verdict — HBAG

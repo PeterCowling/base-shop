@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-12 — Scoped Sitemap lastmod (Eligible Guide URLs)
 
 Date: 2026-02-22  

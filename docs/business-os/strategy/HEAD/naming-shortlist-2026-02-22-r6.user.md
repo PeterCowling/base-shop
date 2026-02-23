@@ -1,5 +1,6 @@
 ---
 Type: Naming-Shortlist
+Status: Draft
 Business-Unit: HEAD
 Round: 6
 Created: 2026-02-22
@@ -9,6 +10,8 @@ Total scored (post-I-gate): 244
 Total .com available: 81
 Presented: top 20 by score (territory-balanced)
 Max score this round: 23 (note: down from 25 in R5 — new territory vocabulary harder to coin from)
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Naming Shortlist — Round 6 (2026-02-22)

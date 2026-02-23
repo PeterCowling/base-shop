@@ -1,3 +1,8 @@
+---
+Type: Build-Record
+Status: Draft
+---
+
 # Build Record: hostel-email-template-expansion
 
 **Plan:** `docs/plans/hostel-email-template-expansion/plan.md`

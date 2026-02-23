@@ -9,6 +9,7 @@ Last-reviewed: 2026-02-12
 Owner: Pete
 Card-ID: BRIK-ENG-0021
 Related-Intake: docs/business-os/startup-baselines/BRIK-intake-packet.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Fact-Find: Apartment Revenue Architecture — Dual-Intent Landing System (2026)

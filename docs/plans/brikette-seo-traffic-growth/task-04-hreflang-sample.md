@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-04 — Hreflang Reciprocity Sampling (Pre/Post TASK-02)
 
 Date: 2026-02-22

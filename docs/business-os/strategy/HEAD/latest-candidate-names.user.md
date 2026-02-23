@@ -32,6 +32,7 @@ decisions:
   - date: 2026-02-21
     decision: Domain screen complete. Nidilo, Telilo, Nidela eliminated as hard blockers. 5 survivors carried to round-2 naming research.
     next: docs/business-os/strategy/HEAD/candidate-names-prompt-v2.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Naming Shortlist (Italy-first Lifestyle Masterbrand)

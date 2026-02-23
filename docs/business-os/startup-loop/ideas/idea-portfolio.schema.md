@@ -1,4 +1,5 @@
 ---
+Type: Schema
 Schema: idea-portfolio
 Version: 1.0.0
 Stage: IDEAS-03 (updated on each promotion)

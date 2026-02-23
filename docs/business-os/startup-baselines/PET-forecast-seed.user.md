@@ -8,6 +8,7 @@ Last-reviewed: 2026-02-12
 Owner: Pete
 Seed-Source: docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md
 Market-Source: docs/business-os/market-research/PET/2026-02-12-market-intelligence.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # PET Forecast Seed for SFS-00

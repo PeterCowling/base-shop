@@ -33,6 +33,7 @@ decisions:
   - date: 2026-02-21
     decision: Solena selected as working brand name. Proceeding to ASSESSMENT-10 and ASSESSMENT-11.
     owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Naming Shortlist — Round 2 (Domain-Gated, 2026-02-21)

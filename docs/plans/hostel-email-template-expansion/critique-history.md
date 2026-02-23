@@ -1,3 +1,8 @@
+---
+Type: Critique-History
+Status: Reference
+---
+
 # Critique History: hostel-email-template-expansion
 
 ## Round 1 — 2026-02-22

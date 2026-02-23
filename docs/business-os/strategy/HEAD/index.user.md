@@ -3,6 +3,8 @@ Type: Strategy-Index
 Business-Unit: HEAD
 Last-updated: 2026-02-20
 Status: Active
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Brand & Strategy Index — HEAD

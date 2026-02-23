@@ -6,6 +6,8 @@ Created: 2026-02-21
 Timezone: Europe/Rome
 Scope: Brand naming — premium artisan Italian-origin accessory brand
 Next: Run candidate-names-prompt-r2.md in deep research tool (OpenAI Deep Research or equivalent)
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HBAG Naming Research Summary + Preferred Approach (Round 2)

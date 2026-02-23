@@ -7,6 +7,7 @@ Updated: 2026-02-20
 Last-reviewed: 2026-02-20
 Owner: Pete
 Seed-Source: docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Forecast Seed for SFS-00

@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-14 — Homepage Featured Guides Section
 
 Date: 2026-02-22  

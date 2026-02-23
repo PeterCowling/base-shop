@@ -9,6 +9,7 @@ Updated: 2026-02-21 (palette revised to pastel — imagery prominence high)
 Last-reviewed: 2026-02-21
 Owner: Pete
 Token-Source: TBD — no theme package exists yet. See Token Overrides § Theme Prerequisites.
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Caryina — Brand Language

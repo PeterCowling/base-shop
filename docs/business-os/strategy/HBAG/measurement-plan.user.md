@@ -6,6 +6,7 @@ Status: Draft
 Created: 2026-02-21
 Updated: 2026-02-21
 Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Measurement Plan — Caryina (HBAG)

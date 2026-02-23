@@ -1,5 +1,6 @@
 ---
 Type: Critique-History
+Status: Reference
 Target: docs/plans/prime-main-door-access/fact-find.md
 Critique-Date: 2026-02-21
 Critique-Scope: full

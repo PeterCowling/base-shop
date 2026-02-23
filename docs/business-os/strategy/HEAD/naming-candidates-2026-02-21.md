@@ -1,5 +1,6 @@
 ---
 Type: Naming-Candidates
+Status: Draft
 Business-Unit: HEAD
 Created: 2026-02-21
 Generated-by: lp-do-assessment-04-candidate-names (Part 2)

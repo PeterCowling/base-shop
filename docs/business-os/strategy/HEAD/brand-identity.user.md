@@ -9,6 +9,7 @@ Updated: 2026-02-21
 Last-reviewed: 2026-02-21
 Owner: Pete
 Token-Source: packages/themes/solena/src/tokens.ts (theme package not yet created — see App Coverage)
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Solena — Brand Language

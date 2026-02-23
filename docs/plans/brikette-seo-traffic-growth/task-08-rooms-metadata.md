@@ -1,5 +1,6 @@
 ---
 Type: Task-Artifact
+Status: Draft
 Task-ID: TASK-08
 Plan: docs/plans/brikette-seo-traffic-growth/plan.md
 Created: 2026-02-22

@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-19 — Lastmod Eligibility Matrix and URL-Source Mapping
 
 Date: 2026-02-22

@@ -1,5 +1,6 @@
 ---
 Type: Naming-Shortlist
+Status: Draft
 Business-Unit: HEAD
 Round: 3
 Created: 2026-02-21
@@ -7,6 +8,8 @@ Domain-check: RDAP via Verisign, 2026-02-21
 Total candidates generated: 250
 Total .com available: 150
 Presented: top 20 by score
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Naming Shortlist — 2026-02-21

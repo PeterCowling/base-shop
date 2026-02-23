@@ -1,5 +1,6 @@
 ---
 Type: Naming-Candidates
+Status: Draft
 Business-Unit: HEAD
 Round: 6
 Generated: 2026-02-22

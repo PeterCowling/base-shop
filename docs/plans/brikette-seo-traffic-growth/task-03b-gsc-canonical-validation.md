@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-03b — GSC URL Inspection Post-Change Canonical Validation
 
 Date: 2026-02-22

@@ -4,6 +4,8 @@ Business-Unit: HBAG
 Last-updated: 2026-02-22
 Business-Name: Caryina
 Status: Active
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Brand & Strategy Index — HBAG

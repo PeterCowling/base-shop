@@ -1,4 +1,5 @@
 ---
+Type: Schema
 Schema: idea-card
 Version: 1.0.0
 Stage: IDEAS-01, IDEAS-02, IDEAS-03

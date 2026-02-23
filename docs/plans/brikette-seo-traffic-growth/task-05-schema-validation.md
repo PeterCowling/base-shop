@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-05 — Structured Data Validation Sample
 
 Date: 2026-02-22

@@ -1,4 +1,5 @@
 ---
+Type: Schema
 Schema: scan-proposals
 Version: 1.0.0
 Stage: IDEAS-01

@@ -1,4 +1,5 @@
 ---
+Type: Schema
 Schema: idea-backlog
 Version: 1.0.0
 Stage: IDEAS-01

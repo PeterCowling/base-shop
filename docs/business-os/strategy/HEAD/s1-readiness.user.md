@@ -9,6 +9,7 @@ Last-reviewed: 2026-02-20
 Owner: Pete
 Verdict: GO
 Loop-spec-version: 1.7.0
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Startup Readiness Verdict — HEAD

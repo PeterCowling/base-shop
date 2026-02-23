@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-01c — Pages Functions Preflight Check
 
 Date: 2026-02-22  

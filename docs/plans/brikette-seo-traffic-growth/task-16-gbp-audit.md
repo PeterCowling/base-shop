@@ -1,3 +1,7 @@
+---
+Type: Task-Artifact
+---
+
 # TASK-16 — Google Business Profile Audit and Refresh
 
 Date: 2026-02-23  

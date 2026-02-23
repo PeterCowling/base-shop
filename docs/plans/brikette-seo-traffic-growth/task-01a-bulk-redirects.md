@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-01a — Cloudflare Bulk Redirects (www -> apex)
 
 Date: 2026-02-22  

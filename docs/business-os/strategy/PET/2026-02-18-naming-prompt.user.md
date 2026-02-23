@@ -7,6 +7,7 @@ Owner: Pete
 Target-Output: docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md
 Data-Richness: S0+S2B
 Template: docs/business-os/market-research/_templates/deep-research-naming-prompt.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # PET Dog Accessories — Brand Naming Deep Research Prompt

@@ -1,3 +1,8 @@
+---
+Type: Critique-History
+Status: Reference
+---
+
 # Critique History: startup-loop-ideas-pipeline-redesign
 
 ## Round 1 — 2026-02-22

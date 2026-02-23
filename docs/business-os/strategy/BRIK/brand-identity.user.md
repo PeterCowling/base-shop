@@ -9,6 +9,7 @@ Updated: 2026-02-21
 Last-reviewed: 2026-02-17
 Owner: Pete
 Token-Source: packages/themes/prime/src/tokens.ts
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Brikette — Brand Dossier

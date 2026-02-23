@@ -7,6 +7,8 @@ Created: 2026-02-17
 Last-reviewed: 2026-02-17
 Token-Source: packages/themes/prime/src/tokens.ts
 Related-Brand-Identity: docs/business-os/strategy/BRIK/brand-identity.user.md
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Prime App — Design & Branding Policy

@@ -4,6 +4,7 @@ Status: Active
 Business: BRIK
 Week-Ending: 2026-02-13
 Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # BRIK Weekly K/P/C/S Decision

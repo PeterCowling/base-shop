@@ -5,6 +5,7 @@ Business: BRIK
 Date: 2026-02-13
 Owner: Pete
 Relates-to: docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # BRIK Production Measurement Verification (2026-02-13)

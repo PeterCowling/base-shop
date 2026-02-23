@@ -1,3 +1,8 @@
+---
+Type: Artifact-Readme
+Status: Draft
+---
+
 # TASK-18 Exports
 
 Search Console Links report CSV exports were captured on 2026-02-23 for property `sc-domain:hostel-positano.com`.

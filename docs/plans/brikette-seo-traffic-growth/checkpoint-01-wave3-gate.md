@@ -1,3 +1,8 @@
+---
+Type: Checkpoint
+Status: Draft
+---
+
 # CHECKPOINT-01 — Wave 3 Gate Decision
 
 Date: 2026-02-22

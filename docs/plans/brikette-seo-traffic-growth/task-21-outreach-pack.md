@@ -1,3 +1,7 @@
+---
+Type: Task-Artifact
+---
+
 # TASK-21 — Outreach Pack Rehearsal + Approval Gate
 
 Date: 2026-02-23  

@@ -1,5 +1,6 @@
 ---
 Type: Naming-Shortlist
+Status: Draft
 Business-Unit: HEAD
 Round: 5
 Created: 2026-02-21
@@ -8,6 +9,8 @@ Total candidates generated: 250
 Total scored (post-I-gate): 180
 Total .com available: 38
 Presented: top 20 by score (territory-balanced)
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Naming Shortlist — Round 5 (2026-02-21)

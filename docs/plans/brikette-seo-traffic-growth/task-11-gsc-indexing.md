@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-11 — GSC Page Indexing and Guide Coverage Sample
 
 Date: 2026-02-22

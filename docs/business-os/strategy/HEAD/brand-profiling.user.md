@@ -10,6 +10,7 @@ Source-Name: docs/business-os/strategy/HEAD/2026-02-21-candidate-names-r2.user.m
 Source-Audience: docs/business-os/startup-baselines/HEAD-intake-packet.user.md
 Source-Personality: docs/business-os/strategy/HEAD/brand-identity.user.md
 Source-Voice: docs/business-os/strategy/HEAD/messaging-hierarchy.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Brand Strategy — HEAD (ASSESSMENT-10)

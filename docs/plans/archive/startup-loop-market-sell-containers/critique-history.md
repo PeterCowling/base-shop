@@ -1,3 +1,8 @@
+---
+Type: Critique-History
+Status: Reference
+---
+
 # Critique History: startup-loop-market-sell-containers
 
 ## Round 1 - 2026-02-21

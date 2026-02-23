@@ -9,6 +9,7 @@ Generated-By: Deep Research
 Recommendation: Vellara
 Shortlist: [Vellara, Lunera, Civana, Passea, Tressa]
 Next-Action: Manual TM/domain/handle clearance on Vellara before confirming
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # PET Dog Accessories — Brand Naming Shortlist

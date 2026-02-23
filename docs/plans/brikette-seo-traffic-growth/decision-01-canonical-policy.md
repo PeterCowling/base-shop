@@ -1,3 +1,8 @@
+---
+Type: Decision
+Status: Draft
+---
+
 # DECISION-01 — Canonical URL Policy Approval
 
 Date: 2026-02-22

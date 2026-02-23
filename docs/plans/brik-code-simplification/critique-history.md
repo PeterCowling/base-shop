@@ -1,3 +1,8 @@
+---
+Type: Critique-History
+Status: Reference
+---
+
 # Critique History: brik-code-simplification
 
 ## Round 1 — 2026-02-23

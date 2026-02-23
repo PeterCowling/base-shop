@@ -21,6 +21,7 @@ Source-ASSESSMENT-04: docs/business-os/strategy/HEAD/2026-02-20-candidate-names.
 Source-ASSESSMENT-06: docs/business-os/strategy/HEAD/distribution-profiling.user.md
 Source-ASSESSMENT-07: docs/business-os/strategy/HEAD/measurement-profiling.user.md
 Source-ASSESSMENT-08: docs/business-os/strategy/HEAD/current-situation.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Intake Packet

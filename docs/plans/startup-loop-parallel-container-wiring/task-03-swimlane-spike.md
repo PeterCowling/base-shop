@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-03 Spike: Swim-Lane CSS + Cross-Stream Arrows
 
 **Plan:** startup-loop-parallel-container-wiring

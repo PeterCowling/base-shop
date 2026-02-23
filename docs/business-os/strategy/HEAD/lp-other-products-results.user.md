@@ -20,6 +20,7 @@ depends_on:
   - docs/business-os/strategy/HEAD/adjacent-product-research-prompt.md
 decisions:
   - DEC-HEAD-CH-01
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Italy-first Range + Naming Strategy (Non-Medical CI Processor Retention Brand)

@@ -7,6 +7,7 @@ Created: 2026-02-11
 Updated: 2026-02-11
 Last-reviewed: 2026-02-11
 Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # PET Italy 90-Day Launch Forecast (v2)

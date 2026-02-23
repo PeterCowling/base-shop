@@ -7,6 +7,8 @@ Created: 2026-02-20
 Updated: 2026-02-20
 Method: back-propagated from DISCOVERY intake packet + S2B offer + S2 market intel + brand dossier; enriched with external research (CI demographics, community evidence, comfort failure modes, WTP signals)
 Downstream: docs/business-os/strategy/HEAD/2026-02-20-solution-profiling-prompt.md
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Problem Statement — HEAD

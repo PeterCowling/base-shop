@@ -18,6 +18,7 @@ depends_on:
   - docs/business-os/strategy/HEAD/lp-other-products-results.user.md
 decisions:
   - DEC-HEAD-CH-01
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Prioritization Scorecard (Refresh 2026-02-20)

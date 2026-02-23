@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-09 — Sitemap `lastmod` Feasibility
 
 Date: 2026-02-22

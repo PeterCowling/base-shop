@@ -1,3 +1,8 @@
+---
+Type: Critique-History
+Status: Reference
+---
+
 # Critique History: brikette-seo-traffic-growth
 
 ## Round 1 — 2026-02-22

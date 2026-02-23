@@ -1,3 +1,8 @@
+---
+Type: Critique-History
+Status: Reference
+---
+
 # Critique History: email-system-production-readiness
 
 ## Round 1 — 2026-02-21

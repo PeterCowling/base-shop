@@ -1,3 +1,8 @@
+---
+Type: Critique-History
+Status: Reference
+---
+
 # Critique History: startup-loop-standing-info-gap-analysis
 
 ## Round 1 — 2026-02-22

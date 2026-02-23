@@ -5,6 +5,7 @@ Business: BRIK
 Date: 2026-02-14
 Owner: Pete
 Relates-to: docs/business-os/strategy/BRIK/plan.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # BRIK Octorate Operational Data Baseline (2026-02-14)

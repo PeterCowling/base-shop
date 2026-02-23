@@ -1,3 +1,8 @@
+---
+Type: Artifact-Readme
+Status: Draft
+---
+
 # TASK-16 GBP Audit Evidence
 
 Store TASK-16 screenshot evidence files here.

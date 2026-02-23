@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-15 — Italian Meta/Title Quality Pass
 
 Date: 2026-02-22  

@@ -1,3 +1,7 @@
+---
+Type: Task-Artifact
+---
+
 # TASK-18 — GSC Links Baseline Pull
 
 Date: 2026-02-23

@@ -9,6 +9,7 @@ Updated: 2026-02-22
 Owner: Pete
 Images-Used: 15
 Variants-Identified: V1, V2, V3
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 1) PRODUCT FAMILY OVERVIEW (for Product Dev / Marketing / Sales)

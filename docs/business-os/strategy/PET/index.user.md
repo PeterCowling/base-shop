@@ -3,6 +3,8 @@ Type: Strategy-Index
 Business-Unit: PET
 Last-updated: 2026-02-17
 Status: Active
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Brand & Strategy Index — PET

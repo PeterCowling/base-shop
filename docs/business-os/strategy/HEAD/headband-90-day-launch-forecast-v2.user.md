@@ -8,6 +8,7 @@ Updated: 2026-02-12
 Last-reviewed: 2026-02-12
 Owner: Pete
 Source: Deep Research output (2026-02-12)
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD 90-Day Launch Forecast (v2)

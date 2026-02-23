@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-03a — GSC URL Inspection Pre-Change Canonical Baseline
 
 Date: 2026-02-22

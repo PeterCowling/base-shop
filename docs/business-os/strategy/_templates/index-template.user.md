@@ -3,6 +3,8 @@ Type: Strategy-Index
 Business-Unit: <BRIK|HEAD|PET|HBAG>
 Last-updated: <YYYY-MM-DD>
 Status: Reference
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Brand & Strategy Index — <BIZ>

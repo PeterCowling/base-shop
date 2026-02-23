@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Draft
+---
+
 # TASK-10 — Internal Link Coverage Audit
 
 Date: 2026-02-22

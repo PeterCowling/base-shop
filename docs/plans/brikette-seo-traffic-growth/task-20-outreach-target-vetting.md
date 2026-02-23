@@ -1,3 +1,7 @@
+---
+Type: Task-Artifact
+---
+
 # TASK-20 — Backlink Target Vetting + Contactability Matrix
 
 Date: 2026-02-23  

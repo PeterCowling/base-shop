@@ -77,7 +77,7 @@ Last-reviewed: 2026-02-21
 | 19 | `S6` | Site-upgrade synthesis | Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis. | `site-upgrade`, `site-upgrade-synthesis`, `s6` | — |
 | 20 | `DO` | Do | Feature or artifact delivered: fact-find brief, sequenced plan, and implementation with validation evidence. | `do`, `fact-find`, `plan`, `build`, `s7`, `s8`, `s9` | — |
 | 21 | `S9B` | QA gates | QA gate pass evidence: conversion flows, SEO readiness, performance budget, and legal compliance verified. | `qa-gates`, `qa`, `s9b` | — |
-| 22 | `S10` | Weekly decision | Weekly K/P/C/S decision document with denominator-valid KPI assessment and next actions. | `weekly-readout`, `weekly-decision`, `weekly`, `s10` | — |
+| 22 | `S10` | Signals | Weekly K/P/C/S decision document with denominator-valid KPI assessment and next actions. | `signals`, `weekly-readout`, `weekly-decision`, `weekly`, `s10` | — |
 
 ### `SELL-01` microsteps
 

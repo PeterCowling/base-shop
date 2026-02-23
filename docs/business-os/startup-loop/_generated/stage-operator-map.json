@@ -1075,15 +1075,16 @@
         "s9b"
       ],
       "display_order": 21,
-      "operator_next_prompt": "Proceed to S10 Weekly decision loop."
+      "operator_next_prompt": "Proceed to S10 Signals loop."
     },
     {
       "id": "S10",
       "name_machine": "weekly-readout",
-      "label_operator_short": "Weekly decision",
-      "label_operator_long": "S10 — Weekly readout + experiments",
+      "label_operator_short": "Signals",
+      "label_operator_long": "S10 — Signals",
       "outcome_operator": "Weekly K/P/C/S decision document with denominator-valid KPI assessment and next actions.",
       "aliases": [
+        "signals",
         "weekly-readout",
         "weekly-decision",
         "weekly",
@@ -1275,6 +1276,7 @@
     "qa-gates": "S9B",
     "qa": "S9B",
     "s9b": "S9B",
+    "signals": "S10",
     "weekly-readout": "S10",
     "weekly-decision": "S10",
     "weekly": "S10",

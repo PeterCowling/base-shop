@@ -1589,41 +1589,36 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
       var tgt   = document.getElementById(pair.tgtId);
       if (!path || !src || !tgt) return;
 
-      var srcRect = src.getBoundingClientRect();
-      var tgtRect = tgt.getBoundingClientRect();
-
-      /* Exit right-center of source card; enter left-center of target card */
-      var x1 = srcRect.right  - containerRect.left + 2;
-      var y1 = (srcRect.top + srcRect.bottom) / 2 - containerRect.top;
-      var x2 = tgtRect.left   - containerRect.left - 2;
-      var y2 = (tgtRect.top  + tgtRect.bottom) / 2 - containerRect.top;
-
-      /* Route through the lane gap — find horizontal midpoint between
-         the right edge of the source lane and the left edge of the target lane.
-         The vertical segment runs only through this narrow gap, never over card text. */
       var srcLane = src.closest('.lane');
       var tgtLane = tgt.closest('.lane');
-      var xmid = (x1 + x2) / 2;
-      if (srcLane && tgtLane) {
-        var slr = srcLane.getBoundingClientRect().right - containerRect.left;
-        var tll = tgtLane.getBoundingClientRect().left  - containerRect.left;
-        xmid = (slr + tll) / 2;
-      }
+      if (!srcLane || !tgtLane) return;
 
-      /* Orthogonal elbow with rounded corners: H → gap → V → gap → H */
-      var r  = 7;
+      var srcRect     = src.getBoundingClientRect();
+      var tgtRect     = tgt.getBoundingClientRect();
+      var srcLaneRect = srcLane.getBoundingClientRect();
+      var tgtLaneRect = tgtLane.getBoundingClientRect();
+
+      /* Anchors on the LANE WALLS at each card's vertical centre.
+         x1 = right wall of source lane  (start of gap)
+         x2 = left wall of target lane   (end of gap)
+         The entire connector lives in the inter-lane gap — never inside a lane. */
+      var x1   = srcLaneRect.right - containerRect.left;
+      var y1   = (srcRect.top  + srcRect.bottom)  / 2 - containerRect.top;
+      var x2   = tgtLaneRect.left  - containerRect.left;
+      var y2   = (tgtRect.top  + tgtRect.bottom)  / 2 - containerRect.top;
+      var xmid = (x1 + x2) / 2;
+
+      /* Orthogonal elbow with rounded corners, contained within the gap */
+      var r  = 5;
       var dy = y2 - y1;
       var rs = dy >= 0 ? 1 : -1;
       var ra = Math.min(r, Math.abs(dy) / 2);
 
       var d;
       if (Math.abs(dy) < 4) {
-        /* Cards at nearly the same height — straight horizontal line */
         d = 'M' + x1.toFixed(1) + ',' + y1.toFixed(1)
           + ' L' + x2.toFixed(1) + ',' + y2.toFixed(1);
       } else {
-        /* Right from card → rounded bend into gap → vertical through gap →
-           rounded bend out of gap → horizontal into target card */
         d = 'M'  + x1.toFixed(1)         + ',' + y1.toFixed(1)
           + ' L' + (xmid - ra).toFixed(1) + ',' + y1.toFixed(1)
           + ' Q' + xmid.toFixed(1)        + ',' + y1.toFixed(1)
@@ -1635,7 +1630,6 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
       }
       path.setAttribute('d', d);
 
-      /* Clear SVG label — card sync-gate badges communicate the dependency */
       if (label) { label.textContent = ''; }
     });
   }

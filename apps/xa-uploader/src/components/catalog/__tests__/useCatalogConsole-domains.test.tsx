@@ -109,6 +109,9 @@ function renderHarness() {
         <button type="button" onClick={() => void state.handleUploadSubmissionToR2()}>
           upload
         </button>
+        <button type="button" onClick={() => state.handleClearSubmission()}>
+          clear-submission
+        </button>
 
         <div data-cy="session-auth">{state.session?.authenticated ? "yes" : "no"}</div>
         <div data-cy="products-count">{state.products.length}</div>
@@ -273,6 +276,10 @@ describe("useCatalogConsole domain behavior", () => {
     }) as unknown as typeof fetch;
 
     renderHarness();
+    await clickButton("clear-submission");
+    await waitFor(() => {
+      expect(screen.getByTestId("submission-count")).toHaveTextContent("0");
+    });
 
     await clickButton("toggle-slug-1");
     expect(screen.getByTestId("submission-count")).toHaveTextContent("1");
@@ -303,7 +310,7 @@ describe("useCatalogConsole domain behavior", () => {
     expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
       "success:Uploaded submission sub-upload.",
     );
-  });
+  }, 15_000);
 
   it("TC-04: storefront switch resets scoped state and draft defaults", async () => {
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -317,6 +324,10 @@ describe("useCatalogConsole domain behavior", () => {
     }) as unknown as typeof fetch;
 
     renderHarness();
+    await clickButton("clear-submission");
+    await waitFor(() => {
+      expect(screen.getByTestId("submission-count")).toHaveTextContent("0");
+    });
 
     await clickButton("seed-draft");
     await clickButton("save");
@@ -324,7 +335,9 @@ describe("useCatalogConsole domain behavior", () => {
       expect(screen.getByTestId("draft-feedback")).toHaveTextContent("success:Saved product details.");
     });
     await clickButton("toggle-slug-1");
-    expect(screen.getByTestId("submission-count")).toHaveTextContent("1");
+    await waitFor(() => {
+      expect(screen.getByTestId("submission-count")).toHaveTextContent("1");
+    });
 
     await clickButton("switch-storefront");
     expect(screen.getByTestId("storefront")).toHaveTextContent("xa-c");

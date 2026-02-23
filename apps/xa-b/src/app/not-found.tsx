@@ -14,7 +14,7 @@ export default function NotFound() {
         <div>
           <Link
             href="/"
-            className="inline-flex items-center rounded-md border border-border-2 bg-surface px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-foreground"
+            className="inline-flex items-center rounded-md border border-border-2 bg-surface px-4 py-2 text-xs font-semibold uppercase xa-tracking-030 text-foreground"
           >
             Back home
           </Link>

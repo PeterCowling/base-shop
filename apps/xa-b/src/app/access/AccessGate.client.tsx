@@ -5,6 +5,8 @@ import * as React from "react";
 
 import { Button, Input, Textarea } from "@acme/design-system/atoms";
 
+import { gateClassNames } from "./gateClasses";
+
 type RequestState = "idle" | "loading" | "success" | "error";
 
 type AccessGateProps = {
@@ -67,47 +69,47 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <div className={`text-xs uppercase tracking-[0.35em] ${monoClassName ?? ""}`}>
+          <div className={`text-xs uppercase xa-tracking-035 ${monoClassName ?? ""}`}>
             Request invite
           </div>
-          <div className="mt-2 text-sm text-[color:var(--gate-muted)]">
+          <div className={`mt-2 text-sm ${gateClassNames.mutedText}`}>
             No email. No outbound links. Just a quiet signal.
           </div>
         </div>
-        <div className="hidden rounded-full border border-border-2 bg-muted px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-[color:var(--gate-muted)] md:inline-flex">
+        <div className={gateClassNames.chip}>
           Offline review
         </div>
       </div>
 
       <form onSubmit={submitRequest} className="space-y-4">
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className={gateClassNames.fieldLabel}>
           Alias
           <Input
             value={handle}
             onChange={(event) => setHandle(event.target.value)}
             placeholder="Handle or collective name"
-            className="mt-2 h-auto w-full rounded-md border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
+            className={gateClassNames.fieldInput}
             autoComplete="off"
           />
         </label>
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className={gateClassNames.fieldLabel}>
           Sent by
           <Input
             value={referredBy}
             onChange={(event) => setReferredBy(event.target.value)}
             placeholder="Who sent you?"
-            className="mt-2 h-auto w-full rounded-md border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
+            className={gateClassNames.fieldInput}
             autoComplete="off"
           />
         </label>
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className={gateClassNames.fieldLabel}>
           Why you
           <Textarea
             value={note}
             onChange={(event) => setNote(event.target.value)}
             placeholder="What pulls you into the underground?"
             rows={4}
-            className="mt-2 w-full resize-none rounded-md border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
+            className={gateClassNames.fieldInput}
           />
         </label>
 
@@ -115,27 +117,27 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
           <Button
             type="submit"
             disabled={state === "loading"}
-            className="h-auto inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className={gateClassNames.primaryButton}
           >
             {state === "loading" ? "Transmitting..." : "Request access"}
           </Button>
-          <div className="text-xs text-[color:var(--gate-muted)]">
+          <div className={`text-xs ${gateClassNames.mutedText}`}>
             We do not send email. Keys move hand to hand.
           </div>
         </div>
 
         {state === "success" ? (
           <div className="rounded-md border border-border-2 bg-muted p-3 text-sm">
-            <div className="text-[color:var(--gate-ink)]">
+            <div className={gateClassNames.inkText}>
               Request logged. Your receipt:{" "}
               <span className={monoClassName}>{receipt}</span>
             </div>
             {displayReferredBy ? (
-              <div className="mt-1 text-[color:var(--gate-muted)]">
+              <div className={`mt-1 ${gateClassNames.mutedText}`}>
                 Sent by: <span className={monoClassName}>{displayReferredBy}</span>
               </div>
             ) : null}
-            <div className="mt-1 text-[color:var(--gate-muted)]">
+            <div className={`mt-1 ${gateClassNames.mutedText}`}>
               If approved, you will receive a key from the person who sent you here.
             </div>
           </div>

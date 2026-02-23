@@ -50,6 +50,7 @@
     "next-env.d.ts",
     "src/**/*",
     "src/**/*.json",
+    "e2e/helpers/**/*.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": [

@@ -13,7 +13,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   NotificationContainer,
   NotificationProviderWithGlobal,
-} from "@acme/ui/components/organisms/operations/NotificationCenter/NotificationCenter";
+} from "@acme/ui/operations";
 
 import AuthenticatedApp from "./components/AuthenticatedApp";
 import LoadingSpinner from "./components/LoadingSpinner";

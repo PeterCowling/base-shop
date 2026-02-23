@@ -258,18 +258,18 @@ function useBrandMarkMetrics(
 function buildParticleTimings(mode: Trigger): ParticleTimings {
   if (mode === "hover") {
     return {
-      dissolveEndMs: 280,
-      funnelEndMs: 900,
-      settleEndMs: 1700,
-      completeMs: 2000,
+      dissolveEndMs: 180,
+      funnelEndMs: 640,
+      settleEndMs: 1200,
+      completeMs: 1450,
     };
   }
 
   return {
-    dissolveEndMs: 800,
-    funnelEndMs: 2200,
-    settleEndMs: 3500,
-    completeMs: 4000,
+    dissolveEndMs: 260,
+    funnelEndMs: 1100,
+    settleEndMs: 2100,
+    completeMs: 2500,
   };
 }
 
@@ -287,13 +287,13 @@ function buildParticlePoints(
   const sourceSample = sampleTextPixels({
     text: "y",
     font: buildFontString(sourceStyle),
-    sampleStep: 2,
+    sampleStep: 1,
     alphaThreshold: 100,
   });
   const targetSample = sampleTextPixels({
     text: tagline,
     font: buildFontString(taglineStyle),
-    sampleStep: 2,
+    sampleStep: 1,
     alphaThreshold: 100,
   });
 
@@ -302,7 +302,7 @@ function buildParticlePoints(
   const targetOffsetX = taglineRect.left - rootRect.left;
   const targetOffsetY = taglineRect.top - rootRect.top;
 
-  const sourcePoints =
+  const rawSourcePoints =
     sourceSample.points.length > 0
       ? sourceSample.points.map((point) => ({
           x: sourceOffsetX + point.x,
@@ -315,7 +315,7 @@ function buildParticlePoints(
           },
         ];
 
-  const targetPoints =
+  const rawTargetPoints =
     targetSample.points.length > 0
       ? targetSample.points
           .map((point) => ({
@@ -329,6 +329,15 @@ function buildParticlePoints(
             y: targetOffsetY + taglineRect.height * 0.5,
           },
         ];
+
+  const targetPoints = [...rawTargetPoints].sort((a, b) => a.x - b.x || a.y - b.y);
+  const sourceSorted = [...rawSourcePoints].sort((a, b) => a.x - b.x || a.y - b.y);
+  const sourcePoints = targetPoints.map((_, index) => {
+    const ratio =
+      targetPoints.length <= 1 ? 0 : index / (targetPoints.length - 1);
+    const sourceIndex = Math.round(ratio * Math.max(0, sourceSorted.length - 1));
+    return sourceSorted[sourceIndex] ?? sourceSorted[0];
+  });
 
   return { sourcePoints, targetPoints };
 }
@@ -411,9 +420,11 @@ async function runParticleAnimation(params: {
   );
 
   const area = cssWidth * cssHeight;
-  let particleCount = clamp(Math.round(area / 55), 220, 700);
+  const densityCap = clamp(Math.round(area / 22), 260, 1400);
+  const requiredForTagline = targetPoints.length;
+  let particleCount = clamp(requiredForTagline, 220, densityCap);
   if (window.innerWidth < 480) {
-    particleCount = Math.round(particleCount * 0.7);
+    particleCount = clamp(requiredForTagline, 200, 960);
   }
 
   const timings = buildParticleTimings(mode);
@@ -431,6 +442,8 @@ async function runParticleAnimation(params: {
     funnelEndMs: timings.funnelEndMs,
     settleEndMs: timings.settleEndMs,
     completeMs: timings.completeMs,
+    viewportWidth: cssWidth,
+    viewportHeight: cssHeight,
   });
 
   const rootStyle = window.getComputedStyle(root);
@@ -442,6 +455,7 @@ async function runParticleAnimation(params: {
   );
 
   let lastFrameAt = performance.now();
+  root.style.setProperty("--tagline-reveal", "0");
   setCanvasActive(true);
   setParticleVisualState("dissolving");
 
@@ -453,6 +467,14 @@ async function runParticleAnimation(params: {
 
     const next = engine.tick(deltaMs);
     setParticleVisualState(next.phase);
+
+    const reveal =
+      next.phase === "settling"
+        ? clamp(next.settledCount / Math.max(1, next.particleCount), 0, 1)
+        : next.phase === "done"
+          ? 1
+          : 0;
+    root.style.setProperty("--tagline-reveal", reveal.toFixed(3));
 
     context.clearRect(0, 0, cssWidth, cssHeight);
     const blend = clamp(
@@ -468,12 +490,13 @@ async function runParticleAnimation(params: {
     context.fillStyle = `rgba(${red}, ${green}, ${blue}, 0.9)`;
 
     for (let index = 0; index < next.particleCount; index += 1) {
+      if (next.active[index] !== 1) continue;
       const x = next.x[index];
       const y = next.y[index];
       if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
 
       context.beginPath();
-      context.arc(x, y, 1.2 + (index % 3) * 0.25, 0, Math.PI * 2);
+      context.arc(x, y, 0.85 + (index % 4) * 0.14, 0, Math.PI * 2);
       context.fill();
     }
 
@@ -539,9 +562,13 @@ function useBrandMarkAnimationController(options: {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     }
+    const root = refs.rootRef.current;
+    if (root) {
+      root.style.setProperty("--tagline-reveal", nextState === "done" ? "1" : "0");
+    }
     setCanvasActive(false);
     setParticleVisualState(nextState);
-  }, [setParticleVisualState]);
+  }, [refs.rootRef, setParticleVisualState]);
 
   React.useEffect(() => {
     if (!ready || !metrics) return;
@@ -650,6 +677,35 @@ function useBrandMarkAnimationController(options: {
   };
 }
 
+function buildBrandInlineStyle(params: {
+  durationMs: number;
+  delayMs: number;
+  shouldAnimate: boolean;
+  metrics: Metrics | null;
+}): React.CSSProperties {
+  const { durationMs, delayMs, shouldAnimate, metrics } = params;
+  const base: React.CSSProperties = {
+    "--dur": `${durationMs}ms`,
+    "--delay": `${delayMs}ms`,
+    "--tagline-reveal": shouldAnimate ? 0 : 1,
+  } as React.CSSProperties;
+
+  if (!metrics) {
+    return base;
+  }
+
+  return {
+    ...base,
+    "--pos-y": `${metrics.posY}px`,
+    "--pos-i-final": `${metrics.posIFinal}px`,
+    "--shift": `${metrics.shift}px`,
+  } as React.CSSProperties;
+}
+
+function resolveFallbackText(shouldAnimate: boolean, trigger: Trigger): string {
+  return shouldAnimate && trigger === "mount" ? "Caryina" : "Carina";
+}
+
 export function BrandMark({
   className,
   trigger = "mount",
@@ -689,7 +745,13 @@ export function BrandMark({
       },
     });
 
-  const fallbackText = shouldAnimate && trigger === "mount" ? "Caryina" : "Carina";
+  const fallbackText = resolveFallbackText(shouldAnimate, trigger);
+  const rootStyle = buildBrandInlineStyle({
+    durationMs,
+    delayMs,
+    shouldAnimate,
+    metrics,
+  });
 
   return (
     <span
@@ -700,20 +762,7 @@ export function BrandMark({
       data-particle-state={particleState}
       data-particle-active={canvasActive ? "true" : "false"}
       data-reserve={reserveWidth}
-      style={
-        metrics
-          ? ({
-              "--dur": `${durationMs}ms`,
-              "--delay": `${delayMs}ms`,
-              "--pos-y": `${metrics.posY}px`,
-              "--pos-i-final": `${metrics.posIFinal}px`,
-              "--shift": `${metrics.shift}px`,
-            } as React.CSSProperties)
-          : ({
-              "--dur": `${durationMs}ms`,
-              "--delay": `${delayMs}ms`,
-            } as React.CSSProperties)
-      }
+      style={rootStyle}
       role="img"
       aria-label={ariaLabel}
       onPointerEnter={onPointerEnter}

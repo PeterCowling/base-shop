@@ -78,7 +78,7 @@
 /* Target state: Carina */
 .brand[data-state="to"] .y {
   opacity: 0;
-  transform: translateY(0.22em) rotate(-8deg);
+  transform: translateY(0.2em);
   color: var(--brand-accent-color, hsl(130 18% 72%));
 }
 
@@ -127,19 +127,23 @@
 
   color: hsl(var(--color-fg-muted, 355 8% 52%));
 
-  opacity: 1;
-  transform: translateY(0);
+  opacity: var(--tagline-reveal, 1);
+  transform: translateY(calc((1 - var(--tagline-reveal, 1)) * -0.15em));
   transition:
-    opacity 220ms ease,
-    transform 220ms ease;
+    opacity 160ms linear,
+    transform 180ms ease;
 }
 
 .brand[data-particle-state="idle"] .tagline,
 .brand[data-particle-state="dissolving"] .tagline,
-.brand[data-particle-state="funneling"] .tagline,
-.brand[data-particle-state="settling"] .tagline {
+.brand[data-particle-state="funneling"] .tagline {
   opacity: 0;
   transform: translateY(-0.15em);
+}
+
+.brand[data-particle-state="settling"] .tagline {
+  opacity: var(--tagline-reveal, 0);
+  transform: translateY(calc((1 - var(--tagline-reveal, 0)) * -0.15em));
 }
 
 .brand[data-particle-state="done"] .tagline {

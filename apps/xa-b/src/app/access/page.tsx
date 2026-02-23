@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { IBM_Plex_Mono, Work_Sans } from "next/font/google";
 import Link from "next/link";
 
@@ -10,6 +9,7 @@ import { siteConfig } from "../../lib/siteConfig";
 import styles from "./access.module.css";
 import AccessGateClient from "./AccessGate.client";
 import AccessSignals from "./AccessSignals.client";
+import { gateClassNames } from "./gateClasses";
 
 const display = Work_Sans({
   subsets: ["latin"],
@@ -74,47 +74,37 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
     .filter(Boolean);
 
   return (
-    <main
-      className={`${display.className} relative min-h-dvh overflow-hidden bg-[color:var(--gate-bg)] text-[color:var(--gate-ink)]`}
-      style={
-        {
-          "--gate-bg": "#ffffff",
-          "--gate-ink": "#111111",
-          "--gate-muted": "#6b6b6b",
-          "--gate-accent": "#111111",
-        } as CSSProperties
-      }
-    >
-      <div className="relative mx-auto flex min-h-dvh max-w-5xl flex-col justify-center px-6 py-16">
+    <main className={`${display.className} ${gateClassNames.pageRoot}`}>
+      <div className={gateClassNames.pageFrame}>
         <div className={`space-y-6 ${styles.gateFade}`}>
-          <div className={`text-xs uppercase tracking-[0.45em] ${mono.className}`}>
+          <div className={`text-xs uppercase xa-tracking-045 ${mono.className}`}>
             Invite only // Private network
           </div>
           <div className="space-y-3">
             <h1 className="text-4xl font-semibold leading-tight md:text-5xl">
               {siteConfig.brandName}
             </h1>
-            <p className="max-w-xl text-base text-[color:var(--gate-muted)] md:text-lg">
+            <p className={`max-w-xl text-base md:text-lg ${gateClassNames.mutedText}`}>
               Underground preview access. Keys are issued sparingly and move hand to hand.
             </p>
           </div>
         </div>
 
-        <div className={`mt-10 grid gap-8 md:grid-cols-[1.1fr_0.9fr] ${styles.gateFade} ${styles.gateDelay}`}>
+        <div className={`mt-10 xa-grid-access-panels ${styles.gateFade} ${styles.gateDelay}`}>
           <ElevatedPanel>
             <div className="flex items-center justify-between gap-4">
               <div>
-                <div className={`text-xs uppercase tracking-[0.35em] ${mono.className}`}>
+                <div className={`text-xs uppercase xa-tracking-035 ${mono.className}`}>
                   Access key
                 </div>
-                <p className="mt-2 text-sm text-[color:var(--gate-muted)]">
+                <p className={`mt-2 text-sm ${gateClassNames.mutedText}`}>
                   {hasKeysRemaining
                     ? "Enter a valid key to unlock the drop."
                     : "Keys are offline. Requests only."}
                 </p>
               </div>
-              <div className="inline-flex items-center gap-2 text-xs text-[color:var(--gate-muted)]">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-[color:var(--gate-ink)]" />
+              <div className={`inline-flex items-center gap-2 text-xs ${gateClassNames.mutedText}`}>
+                <span className={gateClassNames.statusDot} />
                 Signal live
               </div>
             </div>
@@ -134,12 +124,12 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
             ) : null}
 
             <form action="/api/access" method="post" className="mt-6 space-y-4">
-              <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+              <label className={gateClassNames.fieldLabel}>
                 Key slot
                 <Input
                   name="code"
                   placeholder="XXXX-XXXX"
-                  className="mt-2 h-auto w-full rounded-md border-border-2 bg-surface px-3 py-3 text-sm uppercase tracking-[0.35em] text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
+                  className={`${gateClassNames.fieldInput} uppercase xa-tracking-035`}
                   autoComplete="off"
                   required
                 />
@@ -148,11 +138,11 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
               <div className="flex flex-wrap items-center gap-3">
                 <Button
                   type="submit"
-                  className="h-auto inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90"
+                  className={gateClassNames.primaryButton}
                 >
                   Unlock
                 </Button>
-                <div className="text-xs text-[color:var(--gate-muted)]">
+                <div className={`text-xs ${gateClassNames.mutedText}`}>
                   Keys are case-insensitive. Do not share in public.
                 </div>
               </div>
@@ -164,13 +154,13 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
           </ElevatedPanel>
         </div>
 
-        <div className={`mt-12 flex flex-wrap items-center gap-6 text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)] ${mono.className}`}>
+        <div className={`mt-12 flex flex-wrap items-center gap-6 text-xs uppercase xa-tracking-035 ${gateClassNames.mutedText} ${mono.className}`}>
           <span>Silent launch</span>
           <span>Closed loop</span>
           <span>Zero indexing</span>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-[color:var(--gate-ink)] hover:underline"
+            className={`inline-flex items-center gap-2 ${gateClassNames.inkText} hover:underline`}
           >
             Return to gate
           </Link>

@@ -15,10 +15,8 @@
 #   1 - One or more packages failed coverage
 #   2 - Script error (missing deps, etc.)
 #
-# Tiers:
-#   CRITICAL (90%): @acme/stripe, @acme/auth, @acme/platform-core
-#   STANDARD (80%): All other packages (default)
-#   MINIMAL  (0%):  @acme/types, @acme/templates, scripts
+# Tier names and per-metric thresholds are loaded directly from
+# packages/config/coverage-tiers.cjs (single source of truth).
 
 set -e
 
@@ -57,36 +55,23 @@ if [ ! -f "packages/config/coverage-tiers.cjs" ]; then
     exit 2
 fi
 
-# Define tier thresholds (matching coverage-tiers.cjs)
-# We duplicate here for shell script simplicity; source of truth is the .cjs file
-get_tier_threshold() {
+# Resolve tier metadata from coverage-tiers.cjs.
+# Output format: "<tier> <lines> <branches> <functions> <statements>"
+get_tier_metadata() {
     pkg="$1"
-    case "$pkg" in
-        "@acme/stripe"|"@acme/auth"|"@acme/platform-core")
-            echo "90"
-            ;;
-        "@acme/types"|"@acme/templates"|"@acme/template-app"|"@acme/tailwind-config"|"scripts")
-            echo "0"
-            ;;
-        *)
-            echo "80"
-            ;;
-    esac
-}
-
-get_tier_name() {
-    pkg="$1"
-    case "$pkg" in
-        "@acme/stripe"|"@acme/auth"|"@acme/platform-core")
-            echo "CRITICAL"
-            ;;
-        "@acme/types"|"@acme/templates"|"@acme/template-app"|"@acme/tailwind-config"|"scripts")
-            echo "MINIMAL"
-            ;;
-        *)
-            echo "STANDARD"
-            ;;
-    esac
+    node - "$pkg" <<'NODE'
+const pkg = process.argv[2];
+const { PACKAGE_TIERS, TIERS } = require('./packages/config/coverage-tiers.cjs');
+const tier = PACKAGE_TIERS[pkg] || 'STANDARD';
+const global = TIERS[tier]?.global || TIERS.STANDARD.global;
+console.log([
+  tier,
+  global.lines ?? 0,
+  global.branches ?? 0,
+  global.functions ?? 0,
+  global.statements ?? 0,
+].join(' '));
+NODE
 }
 
 # Find packages to check
@@ -100,6 +85,60 @@ find_packages() {
             dirname "$pjson"
         done
     fi
+}
+
+resolve_package_path() {
+    pkg_name="$1"
+    node - "$pkg_name" <<'NODE'
+const fs = require('fs');
+const path = require('path');
+
+const target = process.argv[2];
+const roots = ['packages', 'apps'];
+
+function findPackagePath(root, maxDepth) {
+  const queue = [{ dir: root, depth: 0 }];
+  while (queue.length > 0) {
+    const { dir, depth } = queue.shift();
+    let entries = [];
+    try {
+      entries = fs.readdirSync(dir, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      const child = path.join(dir, entry.name);
+      const pkgJsonPath = path.join(child, 'package.json');
+      if (fs.existsSync(pkgJsonPath)) {
+        try {
+          const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+          if (pkg && pkg.name === target) {
+            return child;
+          }
+        } catch {
+          // ignore malformed package.json and continue search
+        }
+      }
+      if (depth < maxDepth) {
+        queue.push({ dir: child, depth: depth + 1 });
+      }
+    }
+  }
+  return '';
+}
+
+let found = '';
+for (const root of roots) {
+  if (!fs.existsSync(root)) continue;
+  found = findPackagePath(root, 2);
+  if (found) break;
+}
+
+if (found) {
+  process.stdout.write(found);
+}
+NODE
 }
 
 # Extract coverage from Jest JSON output
@@ -137,8 +176,16 @@ echo "${BLUE}> Finding packages to check...${NC}"
 echo ""
 
 for pkg_path in $(find_packages); do
-    # Skip if path doesn't exist
-    [ -d "$pkg_path" ] || continue
+    if [ -d "$pkg_path" ]; then
+        resolved_pkg_path="$pkg_path"
+    else
+        resolved_pkg_path=$(resolve_package_path "$pkg_path")
+        if [ -z "$resolved_pkg_path" ] || [ ! -d "$resolved_pkg_path" ]; then
+            echo "${YELLOW}SKIP:${NC}    Unable to resolve package path for filter '$pkg_path'"
+            continue
+        fi
+    fi
+    pkg_path="$resolved_pkg_path"
 
     # Get package name from package.json
     if [ -f "$pkg_path/package.json" ]; then
@@ -152,12 +199,22 @@ for pkg_path in $(find_packages); do
         pkg_name="$pkg_path"
     fi
 
-    tier_name=$(get_tier_name "$pkg_name")
-    threshold=$(get_tier_threshold "$pkg_name")
+    tier_metadata=$(get_tier_metadata "$pkg_name")
+    if [ -z "$tier_metadata" ]; then
+        echo "${RED}ERROR:${NC}   Unable to resolve tier metadata for $pkg_name"
+        exit 2
+    fi
+
+    set -- $tier_metadata
+    tier_name="$1"
+    threshold_lines="$2"
+    threshold_branches="$3"
+    threshold_functions="$4"
+    threshold_statements="$5"
 
     echo "----------------------------------------"
     echo "${BLUE}Package:${NC} $pkg_name"
-    echo "${BLUE}Tier:${NC}    $tier_name ($threshold%)"
+    echo "${BLUE}Tier:${NC}    $tier_name (lines=${threshold_lines}% branches=${threshold_branches}% functions=${threshold_functions}% statements=${threshold_statements}%)"
 
     # Skip MINIMAL tier packages (no coverage needed)
     if [ "$tier_name" = "MINIMAL" ]; then
@@ -181,14 +238,16 @@ for pkg_path in $(find_packages); do
     fi
 
     # Run tests with coverage
-    echo "${BLUE}Running:${NC} pnpm --filter \"$pkg_name\" test --coverage --maxWorkers=2"
+    # Do not force --maxWorkers here because some package test scripts already
+    # pin --runInBand, and Jest rejects using both flags together.
+    echo "${BLUE}Running:${NC} pnpm --filter \"$pkg_name\" test --coverage"
 
     # Create temp dir for coverage output
     COVERAGE_DIR="coverage/$(echo "$pkg_name" | sed 's/@//' | sed 's/\//-/g')"
 
     # Run Jest with coverage, capture exit code
     set +e
-    pnpm --filter "$pkg_name" test --coverage --maxWorkers=2 --coverageReporters=json-summary 2>&1
+    pnpm --filter "$pkg_name" test --coverage --coverageReporters=json-summary 2>&1
     TEST_EXIT=$?
     set -e
 
@@ -219,29 +278,29 @@ for pkg_path in $(find_packages); do
 
     echo "${BLUE}Coverage:${NC} lines=$lines% branches=$branches% functions=$functions% statements=$statements%"
 
-    # Check against threshold
+    # Check against per-metric thresholds
     FAILED=0
-    if [ "$lines" -lt "$threshold" ]; then
-        echo "${RED}  FAIL: lines $lines% < $threshold%${NC}"
+    if [ "$lines" -lt "$threshold_lines" ]; then
+        echo "${RED}  FAIL: lines $lines% < $threshold_lines%${NC}"
         FAILED=1
     fi
-    if [ "$branches" -lt "$threshold" ]; then
-        echo "${RED}  FAIL: branches $branches% < $threshold%${NC}"
+    if [ "$branches" -lt "$threshold_branches" ]; then
+        echo "${RED}  FAIL: branches $branches% < $threshold_branches%${NC}"
         FAILED=1
     fi
-    if [ "$functions" -lt "$threshold" ]; then
-        echo "${RED}  FAIL: functions $functions% < $threshold%${NC}"
+    if [ "$functions" -lt "$threshold_functions" ]; then
+        echo "${RED}  FAIL: functions $functions% < $threshold_functions%${NC}"
         FAILED=1
     fi
-    if [ "$statements" -lt "$threshold" ]; then
-        echo "${RED}  FAIL: statements $statements% < $threshold%${NC}"
+    if [ "$statements" -lt "$threshold_statements" ]; then
+        echo "${RED}  FAIL: statements $statements% < $threshold_statements%${NC}"
         FAILED=1
     fi
 
     if [ $FAILED -eq 1 ]; then
         FAILED_PACKAGES="$FAILED_PACKAGES $pkg_name"
     else
-        echo "${GREEN}PASS:${NC}    All metrics meet $tier_name tier ($threshold%)"
+        echo "${GREEN}PASS:${NC}    All metrics meet $tier_name tier"
         PASSED_PACKAGES="$PASSED_PACKAGES $pkg_name"
     fi
 done

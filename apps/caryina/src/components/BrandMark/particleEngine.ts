@@ -26,6 +26,8 @@ export type ParticleEngineOptions = {
   funnelEndMs?: number;
   settleEndMs?: number;
   completeMs?: number;
+  viewportWidth?: number;
+  viewportHeight?: number;
 };
 
 export type ParticleEngineState = {
@@ -39,6 +41,8 @@ export type ParticleEngineState = {
   vy: Float32Array;
   tx: Float32Array;
   ty: Float32Array;
+  releaseMs: Float32Array;
+  active: Uint8Array;
   settled: Uint8Array;
 };
 
@@ -51,10 +55,10 @@ export type ParticleEngine = {
 const DEFAULTS = {
   seed: 20260223,
   sourceJitterPx: 2,
-  gravity: 220,
-  damping: 0.985,
+  gravity: 165,
+  damping: 0.975,
   attractorStrength: 9.8,
-  funnelStrength: 0.85,
+  funnelStrength: 1.05,
   baselineY: 0,
   neckX: 0,
   neckHalfWidth: 12,
@@ -62,6 +66,8 @@ const DEFAULTS = {
   funnelEndMs: 2200,
   settleEndMs: 3500,
   completeMs: 4000,
+  viewportWidth: Number.POSITIVE_INFINITY,
+  viewportHeight: Number.POSITIVE_INFINITY,
 } as const;
 
 function clamp(value: number, min: number, max: number): number {
@@ -140,8 +146,125 @@ function createState(particleCount: number): ParticleEngineState {
     vy: new Float32Array(particleCount),
     tx: new Float32Array(particleCount),
     ty: new Float32Array(particleCount),
+    releaseMs: new Float32Array(particleCount),
+    active: new Uint8Array(particleCount),
     settled: new Uint8Array(particleCount),
   };
+}
+
+type ParticleBounds = {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+};
+
+function resolveParticleBounds(
+  options: Required<ParticleEngineOptions>,
+): ParticleBounds {
+  return {
+    left: -10,
+    right: Number.isFinite(options.viewportWidth)
+      ? options.viewportWidth + 10
+      : Number.POSITIVE_INFINITY,
+    top: -10,
+    bottom: Number.isFinite(options.viewportHeight)
+      ? options.viewportHeight + 10
+      : Number.POSITIVE_INFINITY,
+  };
+}
+
+function applyFunnelVelocity(params: {
+  phase: ParticlePhase;
+  x: number;
+  y: number;
+  vx: number;
+  dtSec: number;
+  options: Required<ParticleEngineOptions>;
+  neckMin: number;
+  neckMax: number;
+}): number {
+  const { phase, x, y, vx, dtSec, options, neckMin, neckMax } = params;
+  if (phase !== "funneling" && phase !== "settling") {
+    return vx;
+  }
+
+  const corridorTop = options.baselineY - 42;
+  const corridorBottom = options.baselineY + 28;
+  const corridorRange = Math.max(1, corridorBottom - corridorTop);
+  const corridorInfluence = clamp((corridorBottom - y) / corridorRange, 0, 1);
+  const phaseMultiplier = phase === "funneling" ? 1 : 0.45;
+  const neckInfluence = (0.35 + corridorInfluence * 0.9) * phaseMultiplier;
+
+  if (x < neckMin) {
+    return vx + (neckMin - x) * options.funnelStrength * neckInfluence * dtSec;
+  }
+  if (x > neckMax) {
+    return vx - (x - neckMax) * options.funnelStrength * neckInfluence * dtSec;
+  }
+
+  return (
+    vx +
+    (options.neckX - x) * options.funnelStrength * neckInfluence * dtSec
+  );
+}
+
+function clampParticlePosition(params: {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  bounds: ParticleBounds;
+}): { x: number; y: number; vx: number; vy: number } {
+  let { x, y, vx, vy } = params;
+  const { bounds } = params;
+
+  if (x < bounds.left) {
+    x = bounds.left;
+    vx *= 0.35;
+  } else if (x > bounds.right) {
+    x = bounds.right;
+    vx *= 0.35;
+  }
+
+  if (y < bounds.top) {
+    y = bounds.top;
+    vy = Math.abs(vy) * 0.35;
+  } else if (y > bounds.bottom) {
+    y = bounds.bottom;
+    vy *= 0.2;
+  }
+
+  return { x, y, vx, vy };
+}
+
+function computeReleaseDelayMs(params: {
+  sourceY: number;
+  baselineY: number;
+  dissolveEndMs: number;
+  random: () => number;
+}): number {
+  const { sourceY, baselineY, dissolveEndMs, random } = params;
+  const verticalSpan = 62;
+  const normalized = clamp(
+    (sourceY - (baselineY - verticalSpan)) / Math.max(1, verticalSpan),
+    0,
+    1,
+  );
+  const directional = normalized * dissolveEndMs * 0.75;
+  const jitter = random() * dissolveEndMs * 0.25;
+  return directional + jitter;
+}
+
+function shouldActivateParticle(state: ParticleEngineState, index: number): boolean {
+  if (state.active[index] === 1) {
+    return true;
+  }
+  if (state.elapsedMs < state.releaseMs[index]) {
+    return false;
+  }
+  state.active[index] = 1;
+  return true;
 }
 
 export function createParticleEngine(options: ParticleEngineOptions): ParticleEngine {
@@ -166,6 +289,8 @@ export function createParticleEngine(options: ParticleEngineOptions): ParticleEn
     funnelEndMs: options.funnelEndMs ?? DEFAULTS.funnelEndMs,
     settleEndMs: options.settleEndMs ?? DEFAULTS.settleEndMs,
     completeMs: options.completeMs ?? DEFAULTS.completeMs,
+    viewportWidth: options.viewportWidth ?? DEFAULTS.viewportWidth,
+    viewportHeight: options.viewportHeight ?? DEFAULTS.viewportHeight,
   };
 
   let state = createState(resolvedOptions.particleCount);
@@ -185,16 +310,24 @@ export function createParticleEngine(options: ParticleEngineOptions): ParticleEn
     }
 
     for (let index = 0; index < count; index += 1) {
-      const sourcePoint = source[(index * 7) % source.length];
+      const sourcePoint = source[index % source.length];
       const targetPoint = target[index % target.length];
       const jitter = resolvedOptions.sourceJitterPx;
 
       state.x[index] = sourcePoint.x + (random() - 0.5) * jitter;
       state.y[index] = sourcePoint.y + (random() - 0.5) * jitter;
-      state.vx[index] = (random() - 0.5) * 18;
-      state.vy[index] = -random() * 15;
+      // Start with gentle downward drift so particles read as falling sand.
+      state.vx[index] = (random() - 0.5) * 8;
+      state.vy[index] = 12 + random() * 10;
       state.tx[index] = targetPoint.x;
       state.ty[index] = targetPoint.y;
+      state.releaseMs[index] = computeReleaseDelayMs({
+        sourceY: sourcePoint.y,
+        baselineY: resolvedOptions.baselineY,
+        dissolveEndMs: resolvedOptions.dissolveEndMs,
+        random,
+      });
+      state.active[index] = 0;
       state.settled[index] = 0;
     }
   };
@@ -239,6 +372,7 @@ export function createParticleEngine(options: ParticleEngineOptions): ParticleEn
         state.y[index] = state.ty[index];
         state.vx[index] = 0;
         state.vy[index] = 0;
+        state.active[index] = 1;
         state.settled[index] = 1;
       }
       state.settledCount = count;
@@ -250,8 +384,13 @@ export function createParticleEngine(options: ParticleEngineOptions): ParticleEn
     const dampingFrame = Math.pow(resolvedOptions.damping, dtSec * 60);
     const neckMin = resolvedOptions.neckX - resolvedOptions.neckHalfWidth;
     const neckMax = resolvedOptions.neckX + resolvedOptions.neckHalfWidth;
+    const bounds = resolveParticleBounds(resolvedOptions);
 
     for (let index = 0; index < count; index += 1) {
+      if (!shouldActivateParticle(state, index)) {
+        continue;
+      }
+
       let vx = state.vx[index];
       let vy = state.vy[index];
       let x = state.x[index];
@@ -259,19 +398,16 @@ export function createParticleEngine(options: ParticleEngineOptions): ParticleEn
 
       vy += resolvedOptions.gravity * dtSec;
 
-      if (state.phase === "funneling" || state.phase === "settling") {
-        const baselineDistance = Math.abs(y - resolvedOptions.baselineY);
-        const neckInfluence = clamp(1 - baselineDistance / 48, 0, 1);
-        if (neckInfluence > 0) {
-          if (x < neckMin) {
-            vx +=
-              (neckMin - x) * resolvedOptions.funnelStrength * neckInfluence * dtSec;
-          } else if (x > neckMax) {
-            vx -=
-              (x - neckMax) * resolvedOptions.funnelStrength * neckInfluence * dtSec;
-          }
-        }
-      }
+      vx = applyFunnelVelocity({
+        phase: state.phase,
+        x,
+        y,
+        vx,
+        dtSec,
+        options: resolvedOptions,
+        neckMin,
+        neckMax,
+      });
 
       if (state.phase === "settling") {
         const tx = state.tx[index];
@@ -285,6 +421,12 @@ export function createParticleEngine(options: ParticleEngineOptions): ParticleEn
 
       x += vx * dtSec;
       y += vy * dtSec;
+
+      const bounded = clampParticlePosition({ x, y, vx, vy, bounds });
+      x = bounded.x;
+      y = bounded.y;
+      vx = bounded.vx;
+      vy = bounded.vy;
 
       state.vx[index] = vx;
       state.vy[index] = vy;

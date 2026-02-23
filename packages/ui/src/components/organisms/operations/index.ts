@@ -4,4 +4,5 @@ export * from './DataTable';
 export * from './MetricsCard';
 export * from './NotificationCenter';
 export * from './QuickActionBar';
+export * from './ReceptionCompatibility';
 export * from './Timeline';

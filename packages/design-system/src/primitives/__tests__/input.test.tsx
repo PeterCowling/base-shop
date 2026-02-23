@@ -11,6 +11,49 @@ describe("Input primitive", () => {
 
   });
 
+  it("renders bare input in compatibility mode and preserves className", () => {
+    const { container } = render(
+      <Input
+        compatibilityMode="no-wrapper"
+        aria-label="Compat input"
+        className="compat-class"
+        wrapperClassName="wrapper-should-not-apply"
+      />
+    );
+
+    const input = screen.getByRole("textbox", { name: "Compat input" });
+    expect(input).toBe(container.firstElementChild);
+    expect(input).toHaveClass("compat-class");
+    expect(input).not.toHaveClass("wrapper-should-not-apply");
+    expect(container.querySelector("label")).toBeNull();
+  });
+
+  it("preserves aria and focus handlers in compatibility mode", () => {
+    const handleFocus = jest.fn();
+    const handleBlur = jest.fn();
+
+    render(
+      <Input
+        compatibilityMode="no-wrapper"
+        aria-label="Compat input"
+        error="Required"
+        aria-describedby="compat-help"
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
+    );
+
+    const input = screen.getByRole("textbox", { name: "Compat input" });
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("aria-describedby", "compat-help");
+    expect(screen.queryByText("Required")).not.toBeInTheDocument();
+
+    fireEvent.focus(input);
+    fireEvent.blur(input);
+    expect(handleFocus).toHaveBeenCalledTimes(1);
+    expect(handleBlur).toHaveBeenCalledTimes(1);
+  });
+
   it("renders without floating label and applies error styles", async () => {
     const { container } = render(<Input label="Email" error="Required" />);
     const input = screen.getByLabelText("Email");

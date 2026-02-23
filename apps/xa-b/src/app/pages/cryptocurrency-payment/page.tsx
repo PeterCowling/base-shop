@@ -12,6 +12,7 @@ import { LegalEntityCard } from "@acme/ui/components/organisms/LegalEntityCard";
 import { PolicyContent } from "@acme/ui/components/organisms/PolicyContent";
 import { PolicyPageIntro } from "@acme/ui/components/organisms/PolicyPageIntro";
 
+import { XaInlineLink } from "../../../components/XaInlineLink";
 import { siteConfig } from "../../../lib/siteConfig";
 
 const LAST_UPDATED = "29 December 2025";
@@ -219,9 +220,9 @@ function CryptocurrencyPaymentBody({
 export default function CryptocurrencyPaymentPage() {
   const brandName = siteConfig.brandName;
   const contactEmailLink = siteConfig.showContactInfo && siteConfig.supportEmail ? (
-    <a className="underline" href={`mailto:${siteConfig.supportEmail}`}>
+    <XaInlineLink href={`mailto:${siteConfig.supportEmail}`} className="underline">
       {siteConfig.supportEmail}
-    </a>
+    </XaInlineLink>
   ) : null;
 
   return (

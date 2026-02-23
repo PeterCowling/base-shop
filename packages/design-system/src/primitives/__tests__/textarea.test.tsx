@@ -15,6 +15,49 @@ describe("Textarea", () => {
 
   });
 
+  it("renders bare textarea in compatibility mode and preserves className", () => {
+    const { container } = render(
+      <Textarea
+        compatibilityMode="no-wrapper"
+        aria-label="Compat textarea"
+        className="compat-class"
+        wrapperClassName="wrapper-should-not-apply"
+      />
+    );
+
+    const textarea = screen.getByRole("textbox", { name: "Compat textarea" });
+    expect(textarea).toBe(container.firstElementChild);
+    expect(textarea).toHaveClass("compat-class");
+    expect(textarea).not.toHaveClass("wrapper-should-not-apply");
+    expect(container.querySelector("label")).toBeNull();
+  });
+
+  it("preserves aria and focus handlers in compatibility mode", () => {
+    const handleFocus = jest.fn();
+    const handleBlur = jest.fn();
+
+    render(
+      <Textarea
+        compatibilityMode="no-wrapper"
+        aria-label="Compat textarea"
+        error="Required"
+        aria-describedby="compat-help"
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
+    );
+
+    const textarea = screen.getByRole("textbox", { name: "Compat textarea" });
+    expect(textarea).toHaveAttribute("aria-invalid", "true");
+    expect(textarea).toHaveAttribute("aria-describedby", "compat-help");
+    expect(screen.queryByText("Required")).toBeNull();
+
+    fireEvent.focus(textarea);
+    fireEvent.blur(textarea);
+    expect(handleFocus).toHaveBeenCalledTimes(1);
+    expect(handleBlur).toHaveBeenCalledTimes(1);
+  });
+
   it("renders label above textarea in standard mode and merges className", async () => {
     const { container } = render(
       <Textarea label="Notes" className="custom" />

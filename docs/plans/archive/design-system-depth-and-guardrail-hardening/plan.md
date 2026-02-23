@@ -1,11 +1,12 @@
 ---
 Type: Plan
-Status: Complete
+Status: Archived
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-23
 Last-reviewed: 2026-02-23
 Last-updated: 2026-02-23
+Archived-on: 2026-02-23
 Audit-Ref: working-tree (HEAD b1fe18b84f1c88e059dceb9c4f6fc87745bcfcd0)
 Relates-to charter: docs/theming-charter.md
 Feature-Slug: design-system-depth-and-guardrail-hardening
@@ -66,7 +67,7 @@ This plan hardens the design system in three layers: component depth, safety gua
   - Existing token and lint infrastructure is sufficient to enforce the new baseline once configured.
 
 ## Fact-Find Reference
-- Related brief: `docs/plans/design-system-depth-and-guardrail-hardening/fact-find.md`
+- Related brief: `docs/plans/archive/design-system-depth-and-guardrail-hardening/fact-find.md`
 - Key findings used:
   - Operations components currently carry broad DS rule exemptions: `eslint.config.mjs:1795`.
   - Raw palette usage in operations surfaces is non-trivial (current regex probe count: `247` matches across operations TSX).
@@ -202,7 +203,7 @@ None: TASK-01 and TASK-02 were resolved on 2026-02-23 using default Option B rec
 - **Execution-Track:** code
 - **Effort:** M
 - **Status:** Complete (2026-02-23)
-- **Affects:** `eslint.config.mjs`, `packages/ui/src/components/organisms/operations/**/*.{ts,tsx}`, `[readonly] docs/plans/design-system-depth-and-guardrail-hardening/fact-find.md`
+- **Affects:** `eslint.config.mjs`, `packages/ui/src/components/organisms/operations/**/*.{ts,tsx}`, `[readonly] docs/plans/archive/design-system-depth-and-guardrail-hardening/fact-find.md`
 - **Depends on:** TASK-01, TASK-02
 - **Blocks:** TASK-04, TASK-05, TASK-07, TASK-08
 - **Confidence:** 85%
@@ -257,7 +258,7 @@ None: TASK-01 and TASK-02 were resolved on 2026-02-23 using default Option B rec
     - Outcome classification: **Neutral-to-affirming** for TASK-04/TASK-05/TASK-07/TASK-08.
     - Confidence scores unchanged in this cycle; no threshold transitions required.
 - **Notes / references:**
-  - `docs/plans/design-system-depth-and-guardrail-hardening/fact-find.md`
+  - `docs/plans/archive/design-system-depth-and-guardrail-hardening/fact-find.md`
   - `eslint.config.mjs:1795`
 
 ### TASK-04: Implement primitive shape/radius variant contracts
@@ -646,7 +647,7 @@ None: TASK-01 and TASK-02 were resolved on 2026-02-23 using default Option B rec
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Complete (2026-02-23)
-- **Affects:** `docs/plans/design-system-depth-and-guardrail-hardening/plan.md`
+- **Affects:** `docs/plans/archive/design-system-depth-and-guardrail-hardening/plan.md`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-10, TASK-11
 - **Confidence:** 95%
@@ -839,7 +840,7 @@ None: TASK-01 and TASK-02 were resolved on 2026-02-23 using default Option B rec
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Complete (2026-02-23)
-- **Affects:** `docs/plans/design-system-depth-and-guardrail-hardening/plan.md`, `[readonly] changed package files`
+- **Affects:** `docs/plans/archive/design-system-depth-and-guardrail-hardening/plan.md`, `[readonly] changed package files`
 - **Depends on:** TASK-06, TASK-10, TASK-11
 - **Blocks:** -
 - **Confidence:** 85%

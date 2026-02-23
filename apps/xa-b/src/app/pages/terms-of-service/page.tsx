@@ -4,6 +4,7 @@ import { PolicyContent } from "@acme/ui/components/organisms/PolicyContent";
 import { PolicyPageIntro } from "@acme/ui/components/organisms/PolicyPageIntro";
 import { PolicySection } from "@acme/ui/components/organisms/PolicySection";
 
+import { XaInlineLink } from "../../../components/XaInlineLink";
 import { siteConfig } from "../../../lib/siteConfig";
 
 export default function TermsOfServicePage() {
@@ -20,7 +21,7 @@ export default function TermsOfServicePage() {
 
   const contactBlock = siteConfig.showContactInfo && siteConfig.supportEmail ? (
     <p>
-      Contact: <a className="underline" href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a>
+      Contact: <XaInlineLink className="underline" href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</XaInlineLink>
     </p>
   ) : (
     <p>For assistance, reach our customer care team via the contact channels listed in the footer.</p>

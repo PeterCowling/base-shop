@@ -16,7 +16,7 @@ Startup-Deliverable-Alias: none
 Loop-Gap-Trigger: none
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-design-system, lp-design-qa
-Related-Plan: docs/plans/design-system-depth-and-guardrail-hardening/plan.md
+Related-Plan: docs/plans/archive/design-system-depth-and-guardrail-hardening/plan.md
 Business-OS-Integration: off
 Business-Unit: PLAT
 Card-ID: none

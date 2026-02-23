@@ -69,6 +69,8 @@ const messages = {
 
     loginIntro: "Admin access requires the console token.",
     loginTokenLabel: "Console token",
+    loginShowToken: "Show token",
+    loginHideToken: "Hide token",
     loginButtonIdle: "Enter console",
     loginButtonBusy: "Verifying...",
 
@@ -250,6 +252,8 @@ const messages = {
 
     loginIntro: "管理员访问需要控制台令牌。",
     loginTokenLabel: "控制台令牌",
+    loginShowToken: "显示令牌",
+    loginHideToken: "隐藏令牌",
     loginButtonIdle: "进入控制台",
     loginButtonBusy: "验证中…",
 

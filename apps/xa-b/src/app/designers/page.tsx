@@ -57,13 +57,13 @@ export default function DesignersIndexPage() {
           <div className="space-y-8">
             <div className="flex flex-wrap gap-2">
               {letters.map((letter) => (
-                <a
+                <Link
                   key={`nav-${letter}`}
                   href={`#designer-${letter}`}
                   className="rounded-full border px-3 py-1 text-xs font-medium hover:bg-muted"
                 >
                   {letter}
-                </a>
+                </Link>
               ))}
             </div>
 

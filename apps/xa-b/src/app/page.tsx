@@ -42,7 +42,7 @@ export default function HomePage() {
   return (
     <main className="sf-content">
       <Section padding="wide" className="pt-10">
-        <div className="grid items-center gap-12 md:grid-cols-[minmax(0,0.48fr)_minmax(0,0.52fr)]">
+        <div className="xa-grid-home-primary">
           <div className="space-y-6">
             <div className="space-y-4">
               <h1 className="xa-hero-title">
@@ -59,9 +59,9 @@ export default function HomePage() {
               <Link href="/account/register">Join Us</Link>
             </Button>
           </div>
-          <div className="xa-hero-media w-full md:justify-self-end md:max-w-[560px]">
+          <div className="xa-hero-media w-full md:justify-self-end xa-hero-media-max">
             <div className="p-6 md:p-10">
-              <div className="relative aspect-[4/5] w-full">
+              <div className="relative xa-aspect-4-5 w-full">
                 <XaFadeImage
                   src={heroImage}
                   alt="Two models in seasonal looks"

@@ -381,7 +381,7 @@ pnpm --filter @apps/storybook dev
 
 - [Design System README](../packages/design-system/README.md) — Package overview and exports
 - [Theme Customization Guide](./theming-customization-guide.md) — Token overrides and branding
-- [Design System Hardening Plan](./plans/design-system-depth-and-guardrail-hardening/plan.md) — Current guardrail and migration roadmap
+- [Design System Hardening Plan (Archived)](./plans/archive/design-system-depth-and-guardrail-hardening/plan.md) — Completed guardrail and migration record
 - [Architecture](./architecture.md) — Package layering rules
 
 ---

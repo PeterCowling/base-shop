@@ -2,6 +2,8 @@
 
 /* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy uploader submission panel pending design/i18n overhaul */
 
+import * as React from "react";
+
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 import type { ActionFeedback } from "./useCatalogConsole.client";
 
@@ -35,11 +37,18 @@ export function CatalogSubmissionPanel({
   onClear: () => void;
 }) {
   const { t } = useUploaderI18n();
+  const exportButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const disabled = busy || selectedCount < 1 || selectedCount > maxProducts;
   const uploadFieldValue = uploadUrl ?? "";
   const uploadSectionEnabled = Boolean(onUploadUrlChange && onUploadToR2);
   const uploadDisabled = !uploadSectionEnabled || disabled || !uploadFieldValue.trim();
   const maxMb = Math.max(1, Math.round(maxBytes / 1024 / 1024));
+
+  React.useEffect(() => {
+    if (feedback?.kind === "error") {
+      exportButtonRef.current?.focus();
+    }
+  }, [feedback?.kind]);
 
   return (
     <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
@@ -62,10 +71,12 @@ export function CatalogSubmissionPanel({
             {t("clearSelection")}
           </button>
           <button
+            ref={exportButtonRef}
             type="button"
             onClick={onExport}
             disabled={disabled}
             className="rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-primary-fg disabled:opacity-60"
+            data-testid="catalog-export-zip"
           >
             {submissionAction === "export" ? t("exporting") : t("exportZip")}
           </button>
@@ -117,9 +128,11 @@ export function CatalogSubmissionPanel({
             {feedback ? (
               <div
                 role={feedback.kind === "error" ? "alert" : "status"}
+                aria-live={feedback.kind === "error" ? "assertive" : "polite"}
                 className={
                   feedback.kind === "error" ? "text-sm text-danger-fg" : "text-sm text-success-fg"
                 }
+                data-testid="catalog-submission-feedback"
               >
                 {feedback.message}
               </div>

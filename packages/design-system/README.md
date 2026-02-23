@@ -117,4 +117,4 @@ The `@acme/ui` package maintains backward-compatible shims that delegate to desi
 - [Architecture](../../docs/architecture.md) – Package layering and import rules
 - [Theme Customization Guide](../../docs/theming-customization-guide.md) – Token overrides and branding
 - [API Reference](../../docs/api/) – Generated TypeDoc reference (`pnpm doc:api`)
-- [Design System Hardening Plan](../../docs/plans/design-system-depth-and-guardrail-hardening/plan.md) – Current guardrail and migration roadmap
+- [Design System Hardening Plan (Archived)](../../docs/plans/archive/design-system-depth-and-guardrail-hardening/plan.md) – Completed guardrail and migration record

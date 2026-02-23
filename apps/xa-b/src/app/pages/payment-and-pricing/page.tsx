@@ -3,15 +3,16 @@ import { PolicyContent } from "@acme/ui/components/organisms/PolicyContent";
 import { PolicyPageIntro } from "@acme/ui/components/organisms/PolicyPageIntro";
 import { PolicySection } from "@acme/ui/components/organisms/PolicySection";
 
+import { XaInlineLink } from "../../../components/XaInlineLink";
 import { siteConfig } from "../../../lib/siteConfig";
 
 export default function PaymentAndPricingPage() {
   const productDescriptor = siteConfig.catalog.productDescriptor;
   const contactEmailLink =
     siteConfig.showContactInfo && siteConfig.supportEmail ? (
-      <a className="underline" href={`mailto:${siteConfig.supportEmail}`}>
+      <XaInlineLink href={`mailto:${siteConfig.supportEmail}`} className="underline">
         {siteConfig.supportEmail}
-      </a>
+      </XaInlineLink>
     ) : null;
 
   return (

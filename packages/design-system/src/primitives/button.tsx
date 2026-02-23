@@ -15,6 +15,7 @@ type LegacyVariant = "default" | "outline" | "ghost" | "destructive";
 type ButtonTone = "solid" | "soft" | "outline" | "ghost" | "quiet";
 type ButtonColor = "default" | "primary" | "accent" | "success" | "info" | "warning" | "danger";
 type ButtonSize = "sm" | "md" | "lg";
+type ButtonCompatibilityMode = "default" | "passthrough";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -43,6 +44,8 @@ export interface ButtonProps
   shape?: PrimitiveShape;
   /** Explicit radius token override. */
   radius?: PrimitiveRadius;
+  /** Compatibility mode for migration scenarios that require style-neutral passthrough behavior. */
+  compatibilityMode?: ButtonCompatibilityMode;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -224,6 +227,10 @@ function buildButtonClassName({
   );
 }
 
+function buildPassthroughClassName(className?: string): string {
+  return cn(className);
+}
+
 function renderSpinner({
   isLoading,
   iconSize,
@@ -272,6 +279,7 @@ export const Button = (
     size = "md",
     shape,
     radius,
+    compatibilityMode = "default",
     disabled,
     "aria-busy": ariaBusy,
     asChild = false,
@@ -296,16 +304,19 @@ export const Button = (
     radius,
     defaultRadius: "md",
   });
-  const computedClasses = buildButtonClassName({
-    size,
-    tone: effTone,
-    color: effColor,
-    variant,
-    iconOnly,
-    isLoading,
-    shapeRadiusClass,
-    className,
-  });
+  const computedClasses =
+    compatibilityMode === "passthrough"
+      ? buildPassthroughClassName(className)
+      : buildButtonClassName({
+          size,
+          tone: effTone,
+          color: effColor,
+          variant,
+          iconOnly,
+          isLoading,
+          shapeRadiusClass,
+          className,
+        });
 
   // When using asChild, Slot must receive exactly one valid element child.
   if (asChild) {
@@ -323,10 +334,22 @@ export const Button = (
     );
   }
 
-  const spinner = renderSpinner({ isLoading, iconSize });
-  const leading = isLoading ? null : renderIcon({ icon: leadingIcon, className: "me-2", iconSize });
-  const trailing = isLoading ? null : renderIcon({ icon: trailingIcon, className: "ms-2", iconSize });
-  const content = renderContent({ iconOnly, children });
+  const spinner =
+    compatibilityMode === "passthrough"
+      ? null
+      : renderSpinner({ isLoading, iconSize });
+  const leading =
+    compatibilityMode === "passthrough" || isLoading
+      ? null
+      : renderIcon({ icon: leadingIcon, className: "me-2", iconSize });
+  const trailing =
+    compatibilityMode === "passthrough" || isLoading
+      ? null
+      : renderIcon({ icon: trailingIcon, className: "ms-2", iconSize });
+  const content =
+    compatibilityMode === "passthrough"
+      ? children
+      : renderContent({ iconOnly, children });
 
   // Default: render a real button with internal layout helpers
   return (

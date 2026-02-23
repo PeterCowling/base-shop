@@ -3,7 +3,7 @@
 
 import * as React from "react";
 
-import { Button, Checkbox, Input , OverlayScrim } from "@acme/design-system/atoms";
+import { Button, Checkbox, Input, OverlayScrim } from "@acme/design-system/atoms";
 import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 import {
   Drawer,
@@ -19,6 +19,7 @@ import {
   getDesignerName,
   getTrendingDesigners,
   XA_COLOR_SWATCHES,
+  XA_FILTER_SWATCH_FALLBACK,
 } from "../lib/xaCatalog";
 import type { FilterConfig, FilterKey } from "../lib/xaFilters";
 
@@ -126,7 +127,7 @@ export function XaFiltersDrawer({
         <Button>
           All filters
           {appliedCount > 0 && (
-            <span className="ms-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 text-[10px] font-semibold text-primary-fg">
+            <span className="ms-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 xa-text-10 font-semibold text-primary-fg">
               {appliedCount}
             </span>
           )}
@@ -292,7 +293,10 @@ export function XaFiltersDrawer({
                             <span
                               aria-hidden
                               className={`h-6 w-6 rounded-full border ${selected ? "ring-2 ring-foreground" : ""}`}
-                              style={{ backgroundColor: XA_COLOR_SWATCHES[color] ?? "#f5f5f5" }}
+                              style={{
+                                backgroundColor:
+                                  XA_COLOR_SWATCHES[color] ?? XA_FILTER_SWATCH_FALLBACK,
+                              }}
                             />
                             <span>{formatLabel(color)}</span>
                           </Button>

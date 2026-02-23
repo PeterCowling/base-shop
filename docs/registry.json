@@ -5772,15 +5772,15 @@
     "domain": "Dashboard / Upgrade"
   },
   {
-    "path": "docs/plans/design-system-depth-and-guardrail-hardening/fact-find.md",
+    "path": "docs/plans/archive/design-system-depth-and-guardrail-hardening/fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
     "domain": "UI"
   },
   {
-    "path": "docs/plans/design-system-depth-and-guardrail-hardening/plan.md",
+    "path": "docs/plans/archive/design-system-depth-and-guardrail-hardening/plan.md",
     "type": "Plan",
-    "status": "Draft",
+    "status": "Archived",
     "domain": "UI"
   },
   {

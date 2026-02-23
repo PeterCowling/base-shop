@@ -27,11 +27,15 @@ export interface InputProps
   floatingLabel?: boolean;
   /** Extra class on the outer wrapper */
   wrapperClassName?: string;
+  /** Compatibility mode for migration scenarios that require bare input semantics. */
+  compatibilityMode?: InputCompatibilityMode;
   /** Semantic control shape. Ignored when `radius` is provided. */
   shape?: PrimitiveShape;
   /** Explicit radius token override. */
   radius?: PrimitiveRadius;
 }
+
+export type InputCompatibilityMode = "default" | "no-wrapper";
 
 /* ──────────────────────────────────────────────────────────────────────────────
  * Component
@@ -46,6 +50,7 @@ export const Input = (
     description,
     floatingLabel,
     wrapperClassName,
+    compatibilityMode = "default",
     shape,
     radius,
     id,
@@ -58,6 +63,8 @@ export const Input = (
 ) => {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
+  const useFloatingLabel =
+    compatibilityMode === "default" && Boolean(floatingLabel);
   const [focused, setFocused] = React.useState(false);
   const shapeRadiusClass = resolveShapeRadiusClass({
     shape,
@@ -78,7 +85,7 @@ export const Input = (
     "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     "disabled:cursor-not-allowed disabled:opacity-50",
     // floating-label tweak
-    floatingLabel && "peer pt-5",
+    useFloatingLabel && "peer pt-5",
     // error border leverages semantic color token
     error ? "border-danger" : undefined,
     // user-supplied
@@ -107,6 +114,23 @@ export const Input = (
       : Boolean(props.defaultValue);
   const required = props.required;
   const formClassName = wrapperClassName;
+  const compatibilityAriaInvalid =
+    props["aria-invalid"] ?? (Boolean(error) || undefined);
+
+  if (compatibilityMode === "no-wrapper") {
+    return (
+      <input
+        id={inputId}
+        ref={ref}
+        data-token="--color-bg"
+        className={baseClasses}
+        aria-invalid={compatibilityAriaInvalid}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        {...props}
+      />
+    );
+  }
 
   /* ------------------------------------------------------------------ *
    *  Render
@@ -115,7 +139,7 @@ export const Input = (
     <FormField
       id={inputId}
       label={
-        !floatingLabel && (label || labelSuffix) ? (
+        !useFloatingLabel && (label || labelSuffix) ? (
           <Inline wrap={false} gap={1}>
             {label && <span>{label}</span>}
             {labelSuffix}
@@ -128,7 +152,7 @@ export const Input = (
       {...(formClassName !== undefined ? { className: formClassName } : {})}
        
       input={({ id: controlId, describedBy, ariaInvalid }) =>
-        floatingLabel ? (
+        useFloatingLabel ? (
           <div className="relative">
             <input
               id={controlId}

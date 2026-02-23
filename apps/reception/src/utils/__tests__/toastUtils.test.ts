@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
 
-import { toast } from "@acme/ui/components/organisms/operations/NotificationCenter/NotificationCenter";
+import { toast } from "@acme/ui/operations";
 
 import { showToast, type ToastMessageType } from "../toastUtils";
 
-jest.mock("@acme/ui/components/organisms/operations/NotificationCenter/NotificationCenter", () => {
+jest.mock("@acme/ui/operations", () => {
   return {
     toast: {
       success: jest.fn(),

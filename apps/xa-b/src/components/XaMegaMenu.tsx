@@ -122,7 +122,7 @@ export function XaMegaMenu({
               href={`/products/${featuredProduct.slug}`}
               className="hidden w-52 shrink-0 lg:block"
             >
-              <div className="relative aspect-[3/4] overflow-hidden bg-surface">
+              <div className="relative xa-aspect-3-4 overflow-hidden bg-surface">
                 <XaFadeImage
                   src={featuredMedia.url}
                   alt={featuredMedia.altText ?? featuredProduct.title}

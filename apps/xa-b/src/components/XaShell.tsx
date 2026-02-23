@@ -71,7 +71,7 @@ export function XaShell({ children }: { children: ReactNode }) {
       <header className="border-b bg-surface-1">
         <Section as="div" padding="none" className="px-4">
           <Stack gap={2} className="py-3">
-            <div className="grid min-h-14 grid-cols-[1fr_auto_1fr] items-center gap-4">
+            <div className="grid min-h-14 xa-grid-shell-primary items-center gap-4">
               <nav aria-label="Primary" className="justify-self-start">
                 <Inline gap={5} className="flex-wrap">
                   {XA_ALLOWED_DEPARTMENTS.map((department) => (
@@ -101,7 +101,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                   >
                     <HeartIcon className="h-4 w-4" />
                     {wishlistCount ? (
-                      <span className="absolute -end-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 text-[10px] font-semibold text-background">
+                      <span className="absolute -end-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 xa-text-10 font-semibold text-background">
                         {wishlistCount}
                       </span>
                     ) : null}
@@ -133,7 +133,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                   >
                     <BackpackIcon className="h-4 w-4" />
                     {cartCount ? (
-                      <span className="absolute -end-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 text-[10px] font-semibold text-background">
+                      <span className="absolute -end-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 xa-text-10 font-semibold text-background">
                         {cartCount}
                       </span>
                     ) : null}
@@ -199,17 +199,17 @@ export function XaShell({ children }: { children: ReactNode }) {
         <Section as="div" padding="none" className="px-6 py-12 md:px-12">
           <Grid columns={{ base: 2, md: 4 }} gap={8}>
             <div className="col-span-2 md:col-span-1">
-                <div className="text-xl font-semibold uppercase tracking-[0.18em] text-foreground">
-                  {siteConfig.brandName}
-                </div>
+              <div className="text-xl font-semibold uppercase xa-tracking-018 text-foreground">
+                {siteConfig.brandName}
               </div>
+            </div>
 
             <div>
               <Stack gap={2}>
                 {showSupportLinks ? (
                   <Link
                     href="/service-center"
-                    className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground hover:text-foreground"
+                    className="text-xs font-semibold uppercase xa-tracking-012 text-foreground hover:text-foreground"
                   >
                     Service center
                   </Link>
@@ -257,7 +257,7 @@ export function XaShell({ children }: { children: ReactNode }) {
 
             <div>
               <Stack gap={2}>
-                <div className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground">
+                <div className="text-xs font-semibold uppercase xa-tracking-012 text-foreground">
                   Company info
                 </div>
                 <Stack gap={1}>
@@ -287,7 +287,7 @@ export function XaShell({ children }: { children: ReactNode }) {
 
             <div>
               <Stack gap={2}>
-                <div className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground">
+                <div className="text-xs font-semibold uppercase xa-tracking-012 text-foreground">
                   Currency
                 </div>
                 <CurrencySwitcher />

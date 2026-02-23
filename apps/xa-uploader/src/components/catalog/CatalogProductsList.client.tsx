@@ -93,6 +93,8 @@ export function CatalogProductsList({
                   type="checkbox"
                   checked={inSubmission}
                   disabled={disableAdd}
+                  aria-label={t("selectForSubmission")}
+                  data-testid={slug ? `catalog-submission-checkbox-${slug}` : undefined}
                   onChange={() => {
                     if (!slug) return;
                     onToggleSubmissionSlug(slug);

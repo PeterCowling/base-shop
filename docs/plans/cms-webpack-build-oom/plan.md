@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
-Overall-confidence: 81.4%
+Overall-confidence: 83.4%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort (S=1, M=2, L=3)
 Auto-Build-Intent: plan-only
 Business-OS-Integration: off
@@ -27,8 +27,8 @@ Card-ID: none
 This plan addresses recurring `@apps/cms` webpack build OOM failures that currently block completion of `turbopack-full-migration` TASK-07 validation. The plan separates policy choice from technical mitigation: collect fresh profiling and build-surface evidence, apply the selected gate policy, implement one bounded mitigation slice, then checkpoint before broader rollout. This keeps high-risk CMS config changes incremental and reversible while preserving strict migration gating. The near-term objective is to produce a reliable, explicit validation contract for CMS on current machine classes and CI paths.
 
 ## Active tasks
-- [ ] TASK-01: Capture profiled CMS webpack OOM baseline artifact
-- [ ] TASK-02: Map CMS build-surface blast radius and gate consumers
+- [x] TASK-01: Capture profiled CMS webpack OOM baseline artifact
+- [x] TASK-02: Map CMS build-surface blast radius and gate consumers
 - [x] TASK-03: Decide CMS gate policy for dependent migrations
 - [ ] TASK-04: Implement one bounded CMS graph-reduction mitigation slice
 - [ ] TASK-05: Horizon checkpoint - reassess downstream plan
@@ -74,7 +74,7 @@ This plan addresses recurring `@apps/cms` webpack build OOM failures that curren
 
 ## Plan Gates
 - Foundation Gate: Pass
-- Build Gate: Fail (no unblocked `IMPLEMENT` task with confidence >=80 yet)
+- Build Gate: Pass (TASK-04 is now unblocked at >=80 after replan evidence review)
 - Auto-Continue Gate: Fail (mode is `plan-only`; no explicit auto-build intent)
 - Sequenced: Yes
 - Edge-case review complete: Yes
@@ -83,10 +83,10 @@ This plan addresses recurring `@apps/cms` webpack build OOM failures that curren
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | INVESTIGATE | Capture profiled CMS webpack OOM baseline with reproducible command matrix | 80% | S | Pending | - | TASK-04 |
-| TASK-02 | INVESTIGATE | Map CMS build-gate blast radius across migration and CI surfaces | 80% | S | Pending | - | TASK-06 |
+| TASK-01 | INVESTIGATE | Capture profiled CMS webpack OOM baseline with reproducible command matrix | 80% | S | Complete (2026-02-23) | - | TASK-04 |
+| TASK-02 | INVESTIGATE | Map CMS build-gate blast radius across migration and CI surfaces | 80% | S | Complete (2026-02-23) | - | TASK-06 |
 | TASK-03 | DECISION | Choose CMS gate policy (hard blocker vs machine-class best-effort) | 85% | S | Complete (2026-02-23) | - | TASK-04 |
-| TASK-04 | IMPLEMENT | Apply one bounded graph-reduction mitigation in CMS webpack path | 75% | M | Pending | TASK-01, TASK-03 | TASK-05 |
+| TASK-04 | IMPLEMENT | Apply one bounded graph-reduction mitigation in CMS webpack path | 82% | M | Pending | TASK-01, TASK-03 | TASK-05 |
 | TASK-05 | CHECKPOINT | Reassess confidence and sequencing from mitigation evidence | 95% | S | Pending | TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Update dependent migration gate contracts from validated checkpoint output | 80% | S | Pending | TASK-02, TASK-05 | - |
 
@@ -106,7 +106,7 @@ This plan addresses recurring `@apps/cms` webpack build OOM failures that curren
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `docs/plans/cms-webpack-build-oom/artifacts/profiling-baseline.md`, `[readonly] apps/cms/package.json`, `[readonly] apps/cms/next.config.mjs`
 - **Depends on:** -
 - **Blocks:** TASK-04
@@ -124,8 +124,18 @@ This plan addresses recurring `@apps/cms` webpack build OOM failures that curren
 - **Validation contract:**
   - Evidence artifact exists and is referenced in TASK-04 planning validation.
 - **Planning validation:**
-  - Checks run: `docs/plans/cms-webpack-build-oom/fact-find.md` evidence review.
-  - Unexpected findings: None: task is purpose-built to discover them.
+  - Checks run:
+    - `pnpm --filter @apps/cms build`
+    - `NODE_OPTIONS=--max-old-space-size=8192 pnpm --filter @apps/cms build`
+    - `NEXT_BUILD_CPUS=1 NODE_OPTIONS=--max-old-space-size=8192 pnpm --filter @apps/cms build`
+  - Validation artifact: `docs/plans/cms-webpack-build-oom/artifacts/profiling-baseline.md`
+  - Unexpected findings: `NEXT_BUILD_CPUS=1` increased wall-clock time materially but still failed with the same OOM signature.
+- **Build evidence (2026-02-23):**
+  - Created `docs/plans/cms-webpack-build-oom/artifacts/profiling-baseline.md` with machine metadata, required probe matrix results, and log pointers.
+  - Captured reproducible OOM failures for all required variants in `docs/plans/cms-webpack-build-oom/artifacts/raw/2026-02-23-task-01-r4/`.
+- **Downstream confidence propagation:**
+  - Classification: Neutral for `TASK-04`.
+  - `TASK-04` remains at 75% because this task confirms reproducibility but does not yet isolate dominant memory contributors.
 - **Rollout / rollback:** `None: non-implementation task`
 - **Documentation impact:** add one artifact under `docs/plans/cms-webpack-build-oom/artifacts/`.
 - **Notes / references:**
@@ -137,7 +147,7 @@ This plan addresses recurring `@apps/cms` webpack build OOM failures that curren
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `docs/plans/cms-webpack-build-oom/artifacts/build-surface-matrix.md`, `[readonly] docs/plans/turbopack-full-migration/plan.md`, `[readonly] .github/workflows/*.yml`
 - **Depends on:** -
 - **Blocks:** TASK-06
@@ -154,8 +164,18 @@ This plan addresses recurring `@apps/cms` webpack build OOM failures that curren
 - **Validation contract:**
   - Every item in matrix includes at least one repo pointer.
 - **Planning validation:**
-  - Checks run: fact-find references and targeted workflow/path scan already establish seed list.
-  - Unexpected findings: None: to be captured in artifact.
+  - Checks run:
+    - `rg -n "@apps/cms build|--filter @apps/cms build|CMS validation blocker|TASK-07|hard blocker" docs/plans/turbopack-full-migration/plan.md docs/plans/turbopack-full-migration/artifacts/migration-matrix.md docs/plans/cms-webpack-build-oom/plan.md`
+    - `rg -n "@apps/cms|pnpm --filter .*cms.* build|turbo run build --filter=@apps/cms|cms_deploy|cms_e2e|promote-app:cms" .github/workflows/*.yml`
+  - Validation artifact: `docs/plans/cms-webpack-build-oom/artifacts/build-surface-matrix.md`
+  - Unexpected findings: no active consumer currently supports machine-class best-effort semantics for CMS build status.
+- **Build evidence (2026-02-23):**
+  - Created `docs/plans/cms-webpack-build-oom/artifacts/build-surface-matrix.md` with six active consumer surfaces across plans/workflows and explicit policy-sensitivity mapping.
+  - Confirmed merge gating requires both `cms.yml` and `cypress.yml` when CMS scopes are active.
+  - Confirmed `ci.yml` is path-ignored for CMS and is not an active CMS build-status consumer.
+- **Downstream confidence propagation:**
+  - Classification: Neutral for `TASK-06`.
+  - `TASK-06` remains at 80% because contract-update confidence still depends on `TASK-05` checkpoint output.
 - **Rollout / rollback:** `None: non-implementation task`
 - **Documentation impact:** add one artifact under `docs/plans/cms-webpack-build-oom/artifacts/`.
 
@@ -202,10 +222,10 @@ This plan addresses recurring `@apps/cms` webpack build OOM failures that curren
 - **Affects:** `apps/cms/next.config.mjs`, `apps/cms/package.json`, `docs/plans/cms-webpack-build-oom/artifacts/profiling-baseline.md`
 - **Depends on:** TASK-01, TASK-03
 - **Blocks:** TASK-05
-- **Confidence:** 75%
-  - Implementation: 75% - mitigation mechanics are known but effect size is uncertain.
-  - Approach: 80% - bounded one-slice change limits blast radius.
-  - Impact: 75% - may reduce pressure but may not clear OOM alone.
+- **Confidence:** 82%
+  - Implementation: 82% - baseline OOM reproduction matrix and timing envelope are now captured in lane-specific artifact (`E2` evidence).
+  - Approach: 82% - mitigation remains bounded to one slice with explicit rollback and validation contracts.
+  - Impact: 82% - pass/fail signals and gate consumers are now explicit, so a mitigation attempt can be judged without policy ambiguity.
 - **Acceptance:**
   - One clearly-scoped mitigation slice is implemented and documented.
   - Standardized probe matrix rerun with before/after comparison.
@@ -216,9 +236,9 @@ This plan addresses recurring `@apps/cms` webpack build OOM failures that curren
   - TC-03: targeted config-dependent validations pass (no new alias/fallback errors).
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
-  - Checks run: reviewed historical OOM evidence in `docs/plans/archive/nextjs-16-upgrade/build-oom-notes.md` and current blocker evidence in `docs/plans/turbopack-full-migration/artifacts/migration-matrix.md`.
+  - Checks run: reviewed historical OOM evidence in `docs/plans/archive/nextjs-16-upgrade/build-oom-notes.md`, current blocker evidence in `docs/plans/turbopack-full-migration/artifacts/migration-matrix.md`, and lane-specific baseline in `docs/plans/cms-webpack-build-oom/artifacts/profiling-baseline.md`.
   - Validation artifacts: `docs/plans/cms-webpack-build-oom/artifacts/profiling-baseline.md` (TASK-01 prerequisite).
-  - Unexpected findings: None yet; task is capped at 75 pending fresh profiling.
+  - Unexpected findings: `NEXT_BUILD_CPUS=1` increases wall-clock time substantially without changing fail outcome on current machine class.
 - **Scouts:**
   - Confirm chosen slice does not invalidate CMS runtime aliases or node built-in handling.
 - **Edge Cases & Hardening:**
@@ -233,6 +253,12 @@ This plan addresses recurring `@apps/cms` webpack build OOM failures that curren
   - update mitigation evidence artifact and plan decision/checkpoint notes.
 - **Notes / references:**
   - Consumer tracing (preliminary): modified build-graph knobs are consumed by Next webpack compiler and all CMS module-resolution call-sites; downstream safety relies on targeted alias/fallback checks in TC-03.
+#### Re-plan Update (2026-02-23)
+- Confidence: 75% -> 82% (Evidence: E2 from `docs/plans/cms-webpack-build-oom/artifacts/profiling-baseline.md`; E1 from `docs/plans/cms-webpack-build-oom/artifacts/build-surface-matrix.md`)
+- Key change: baseline and gate-consumer unknowns are now converted into explicit artifacts, so TASK-04 can run as a bounded mitigation attempt.
+- Dependencies: unchanged (`TASK-01`, `TASK-03` complete)
+- Validation contract: unchanged (TC-01..TC-03 already complete)
+- Notes: no topology change; `/lp-sequence` not required
 
 ### TASK-05: Horizon checkpoint - reassess downstream plan
 - **Type:** CHECKPOINT
@@ -318,22 +344,26 @@ This plan addresses recurring `@apps/cms` webpack build OOM failures that curren
   - None: artifact-based observability in plan docs is sufficient for this lane.
 
 ## Acceptance Criteria (overall)
-- [ ] Profile baseline artifact exists and is reproducible.
-- [ ] CMS gate policy is explicitly decided with scope boundaries.
+- [x] Profile baseline artifact exists and is reproducible.
+- [x] Build-surface matrix exists with consumer, policy-sensitivity, and owner-role mapping.
+- [x] CMS gate policy is explicitly decided with scope boundaries.
 - [ ] One mitigation slice is implemented and validated with before/after probe evidence.
 - [ ] Checkpoint recalibrates downstream confidence and dependencies.
 - [ ] Dependent migration gate contracts are updated and non-contradictory.
 
 ## Decision Log
 - 2026-02-23: Initialized standalone CMS OOM mitigation plan from `docs/plans/cms-webpack-build-oom/fact-find.md` in plan-only mode.
+- 2026-02-23: TASK-01 completed. Baseline profiling artifact captured at `docs/plans/cms-webpack-build-oom/artifacts/profiling-baseline.md` with reproducible OOM failures across `default`, `8GB`, and `8GB+cpus=1`.
+- 2026-02-23: TASK-02 completed. Build-surface consumer matrix captured at `docs/plans/cms-webpack-build-oom/artifacts/build-surface-matrix.md`; hard-gate consumers confirmed across migration docs, CMS/Cypress workflows, and merge-gate workflow requirements.
 - 2026-02-23: TASK-03 completed. Selected Option A: CMS build remains a hard blocker for dependent migration gates (user input: `option a`).
+- 2026-02-23: `/lp-do-replan` delta applied for TASK-04. Confidence promoted from 75% to 82% using E2 lane-specific probe evidence plus E1 consumer-matrix evidence; task is now build-eligible.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3
-- Task confidences (effort-weighted): 80×1, 80×1, 85×1, 75×2, 95×1, 80×1
-- Total weighted = 80 + 80 + 85 + 150 + 95 + 80 = 570
+- Task confidences (effort-weighted): 80×1, 80×1, 85×1, 82×2, 95×1, 80×1
+- Total weighted = 80 + 80 + 85 + 164 + 95 + 80 = 584
 - Total weights = 1 + 1 + 1 + 2 + 1 + 1 = 7
-- Overall-confidence = 570 / 7 = 81.4%
+- Overall-confidence = 584 / 7 = 83.4%
 - Trigger checks:
   - Trigger 1 (Overall-confidence <4.0 / <80%): not triggered.
-  - Trigger 2 (uncovered low-confidence task <80): not triggered (`TASK-04` is covered by upstream INVESTIGATE task `TASK-01`).
+  - Trigger 2 (uncovered low-confidence task <80): not triggered (no runnable IMPLEMENT task remains below 80).

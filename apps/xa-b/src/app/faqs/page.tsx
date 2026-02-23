@@ -7,6 +7,7 @@ import Accordion from "@acme/design-system/molecules/Accordion";
 import { FeedbackPreferenceCard } from "@acme/ui/components/organisms/FeedbackPreferenceCard";
 import { NewsletterSignupCard } from "@acme/ui/components/organisms/NewsletterSignupCard";
 
+import { XaInlineLink } from "../../components/XaInlineLink";
 import { siteConfig } from "../../lib/siteConfig";
 
 type FaqItem = {
@@ -39,12 +40,12 @@ const faqSections: FaqSection[] = [
               unlimited free shipping, and styling help.
             </p>
             <p>
-              <a
+              <XaInlineLink
                 href="/account/register"
                 className="text-foreground underline"
               >
                 Learn more about the Access loyalty programme
-              </a>
+              </XaInlineLink>
               .
             </p>
           </div>
@@ -110,17 +111,17 @@ const faqSections: FaqSection[] = [
                 Orders &amp; Returns
               </Link>
               , or if you checked out as a guest,{" "}
-              <a href="/account/trackingorder" className="underline">
+              <XaInlineLink href="/account/trackingorder" className="underline">
                 enter your guest order details
-              </a>
+              </XaInlineLink>
               .
             </p>
             <p>
               You cannot add items to an existing order. Place a new order for anything else. For
               more details,{" "}
-              <a href="/pages/shipping-policy" className="underline">
+              <XaInlineLink href="/pages/shipping-policy" className="underline">
                 view the Orders &amp; Deliveries page
-              </a>
+              </XaInlineLink>
               .
             </p>
           </div>
@@ -180,12 +181,12 @@ const faqSections: FaqSection[] = [
               </li>
               <li>
                 Cryptocurrency (
-                <a
+                <XaInlineLink
                   href="/pages/cryptocurrency-payment"
                   className="underline text-foreground"
                 >
                   see the supported list
-                </a>
+                </XaInlineLink>
                 )
               </li>
             </ul>
@@ -209,9 +210,9 @@ const faqSections: FaqSection[] = [
             <p className="text-sm text-muted-foreground">
               Yes. We keep your personal data private and confidential and only share it with your
               consent or when legally permitted.{" "}
-              <a href="/pages/privacy-policy" className="underline">
+              <XaInlineLink href="/pages/privacy-policy" className="underline">
               View the {brandName} Privacy Policy
-              </a>
+              </XaInlineLink>
               .
             </p>
         ),
@@ -310,9 +311,9 @@ const faqSections: FaqSection[] = [
               We email tracking and an estimated delivery date for each shipment. You can also track
               in <Link href="/account" className="underline">Orders &amp; Returns</Link> or, for
               guest checkout,{" "}
-              <a href="/account/trackingorder" className="underline">
+              <XaInlineLink href="/account/trackingorder" className="underline">
                 track your guest order
-              </a>
+              </XaInlineLink>
               .
             </p>
           </div>
@@ -338,9 +339,9 @@ const faqSections: FaqSection[] = [
               US customers: {brandName} does not collect sales or use tax in all states. You may need to
               file a year-end return for taxable purchases that were not taxed. Check with your tax
               authority or{" "}
-              <a href="/pages/shipping-policy" className="underline">
+              <XaInlineLink href="/pages/shipping-policy" className="underline">
                 view Duties and Taxes information
-              </a>
+              </XaInlineLink>
               .
             </p>
           </div>
@@ -353,9 +354,9 @@ const faqSections: FaqSection[] = [
             Brands control where their items are distributed, so some styles are unavailable in all
             regions. Certain materials or finishes may also be restricted by customs.
             If you have questions,{" "}
-            <a href="/pages/contact-us" className="underline">
+            <XaInlineLink href="/pages/contact-us" className="underline">
               contact Customer Service
-            </a>
+            </XaInlineLink>
             .
           </p>
         ),
@@ -366,9 +367,9 @@ const faqSections: FaqSection[] = [
           <p className="text-sm text-muted-foreground">
             Invoices have been removed to reduce waste. Sign in to download a digital invoice or, if
             you checked out as a guest,{" "}
-            <a href="/account/trackingorder" className="underline">
+            <XaInlineLink href="/account/trackingorder" className="underline">
               enter your guest order details
-            </a>
+            </XaInlineLink>
             .
           </p>
         ),
@@ -388,24 +389,24 @@ const faqSections: FaqSection[] = [
             </p>
             <p>
               Cryptocurrency refunds are processed by{" "}
-              <a href="https://triple-a.io/" className="underline">
+              <XaInlineLink href="https://triple-a.io/" className="underline">
                 TripleA
-              </a>{" "}
+              </XaInlineLink>{" "}
               in the original cryptocurrency at the current exchange rate once the return is
               accepted.
             </p>
             <p>
               Start a return in <Link href="/account" className="underline">Orders &amp; Returns</Link>{" "}
               or, for guests,{" "}
-              <a href="/account/trackingorder" className="underline">
+              <XaInlineLink href="/account/trackingorder" className="underline">
                 enter your guest order details
-              </a>
+              </XaInlineLink>
               . Book collection within 7 days of delivery to stay within the window. Items must be
               unworn, undamaged, unused, with tags and any designer {packagingItems} included. Missing
               or damaged items may void the refund.{" "}
-              <a href="/pages/return-policy" className="underline">
+              <XaInlineLink href="/pages/return-policy" className="underline">
                 Read the full Returns Policy
-              </a>
+              </XaInlineLink>
               .
             </p>
           </div>
@@ -418,9 +419,9 @@ const faqSections: FaqSection[] = [
             <p>
               Request a return in <Link href="/account" className="underline">Orders &amp; Returns</Link>{" "}
               or, for guests,{" "}
-              <a href="/account/trackingorder" className="underline">
+              <XaInlineLink href="/account/trackingorder" className="underline">
                 enter your guest order details
-              </a>
+              </XaInlineLink>
               .
             </p>
             <p>
@@ -449,9 +450,9 @@ const faqSections: FaqSection[] = [
               <li>
                 Go to <Link href="/account" className="underline">Orders &amp; Returns</Link> or, for
                 guests,{" "}
-                <a href="/account/trackingorder" className="underline">
+                <XaInlineLink href="/account/trackingorder" className="underline">
                   enter your guest order details
-                </a>
+                </XaInlineLink>
                 .
               </li>
               <li>Find the order, click Return Item(s), and select each item with a return reason.</li>
@@ -508,9 +509,9 @@ const faqSections: FaqSection[] = [
             <p>
               If returning to multiple locations, pack items separately and attach the corresponding Return
               Label to each.{" "}
-              <a href="/pages/return-policy" className="underline">
+              <XaInlineLink href="/pages/return-policy" className="underline">
                 Learn more about preparing your package
-              </a>
+              </XaInlineLink>
               .
             </p>
           </div>
@@ -531,9 +532,9 @@ const faqSections: FaqSection[] = [
           <p className="text-sm text-muted-foreground">
             Yes, the courier may collect multiple packages. If returning items to multiple boutiques, request
             a separate collection for each package in your account or{" "}
-            <a href="/account/trackingorder" className="underline">
+            <XaInlineLink href="/account/trackingorder" className="underline">
               guest order lookup
-            </a>
+            </XaInlineLink>
             .
           </p>
         ),
@@ -607,9 +608,9 @@ const faqSections: FaqSection[] = [
             <ol className="list-decimal space-y-1 pl-5">
               <li>
                 Go to <Link href="/account" className="underline">Orders &amp; Returns</Link> or, for guests,{" "}
-                <a href="/account/trackingorder" className="underline">
+                <XaInlineLink href="/account/trackingorder" className="underline">
                   enter your guest order number and email
-                </a>
+                </XaInlineLink>
                 .
               </li>
               <li>Select the items to cancel and provide a reason.</li>
@@ -635,9 +636,9 @@ const faqSections: FaqSection[] = [
         content: (
           <p className="text-sm text-muted-foreground">
             Yes, if they meet the conditions in the{" "}
-            <a href="/pages/return-policy" className="underline">
+            <XaInlineLink href="/pages/return-policy" className="underline">
               Returns Policy
-            </a>
+            </XaInlineLink>
             .
           </p>
         ),
@@ -705,9 +706,9 @@ const faqSections: FaqSection[] = [
         content: (
           <p className="text-sm text-muted-foreground">
             Use free returns if it does not fit. To order a different size you can place a new order or{" "}
-            <a href="/pages/contact-us" className="underline">
+            <XaInlineLink href="/pages/contact-us" className="underline">
               contact Customer Service
-            </a>
+            </XaInlineLink>
             .
           </p>
         ),
@@ -721,9 +722,9 @@ const faqSections: FaqSection[] = [
         question: "How do I find out about the latest promotions?",
         content: (
           <p className="text-sm text-muted-foreground">
-            <a href="#newsletter" className="underline">
+            <XaInlineLink href="#newsletter" className="underline">
               Sign up to emails
-            </a>{" "}
+            </XaInlineLink>{" "}
             for promotions, new arrivals, and early sale access.
           </p>
         ),
@@ -734,9 +735,9 @@ const faqSections: FaqSection[] = [
           <div className="space-y-2 text-sm text-muted-foreground">
             <p>
               See all promotions on the{" "}
-              <a href="/pages/payment-and-pricing#promotions" className="underline">
+              <XaInlineLink href="/pages/payment-and-pricing#promotions" className="underline">
                 Promotion Terms &amp; Conditions page
-              </a>
+              </XaInlineLink>
               .
             </p>
             <p>If you are an Access member, check your Access dashboard for promotional rewards.</p>
@@ -749,9 +750,9 @@ const faqSections: FaqSection[] = [
           <p className="text-sm text-muted-foreground">
             Add eligible items to your bag. Some promo codes apply automatically; others can be entered at
             checkout. If you need help,{" "}
-            <a href="/pages/contact-us" className="underline">
+            <XaInlineLink href="/pages/contact-us" className="underline">
               contact Customer Service
-            </a>
+            </XaInlineLink>
             .
           </p>
         ),
@@ -762,9 +763,9 @@ const faqSections: FaqSection[] = [
           <p className="text-sm text-muted-foreground">
             Yes. Promotions apply only to selected brands and items. Items labelled for promotions may be
             eligible. See the{" "}
-            <a href="/pages/payment-and-pricing#promotions" className="underline">
+            <XaInlineLink href="/pages/payment-and-pricing#promotions" className="underline">
               Promotion Terms &amp; Conditions
-            </a>{" "}
+            </XaInlineLink>{" "}
             for details.
           </p>
         ),
@@ -857,12 +858,12 @@ const faqSections: FaqSection[] = [
         content: (
           <p className="text-sm text-muted-foreground">
             You can consult the {brandName} Tax Strategy{" "}
-            <a
+            <XaInlineLink
               href="/pages/terms-of-service"
               className="underline"
             >
               here
-            </a>
+            </XaInlineLink>
             .
           </p>
         ),
@@ -975,7 +976,7 @@ export default function FaqPage() {
   return (
     <main className="sf-content">
       <Section padding="wide" className="space-y-3">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Help &amp; support</p>
+        <p className="text-xs uppercase xa-tracking-020 text-muted-foreground">Help &amp; support</p>
         <h1 className="text-3xl font-semibold">FAQs</h1>
         <p className="max-w-3xl text-sm text-muted-foreground">
           All the essentials for shopping, delivery, returns, payments, sizing, promotions, and more for{" "}
@@ -992,13 +993,13 @@ export default function FaqPage() {
                 {faqSections.map((section) => {
                   const id = toSlug(section.title);
                   return (
-                    <a
+                    <XaInlineLink
                       key={section.title}
                       href={`#${id}`}
                       className="rounded border px-3 py-2 text-sm hover:border-foreground hover:text-foreground"
                     >
                       {section.title}
-                    </a>
+                    </XaInlineLink>
                   );
                 })}
               </div>
@@ -1043,9 +1044,9 @@ export default function FaqPage() {
             legalNote={
               <>
                 By signing up, you agree to receive marketing emails and acknowledge the{" "}
-                <a href="/pages/privacy-policy" className="underline">
+                <XaInlineLink href="/pages/privacy-policy" className="underline">
                   Privacy Policy
-                </a>
+                </XaInlineLink>
                 . Unsubscribe anytime.
               </>
             }

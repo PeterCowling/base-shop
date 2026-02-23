@@ -14,7 +14,7 @@ import { useWishlist } from "../contexts/XaWishlistContext";
 import type { XaProduct } from "../lib/demoData";
 import { XA_PRODUCTS } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
-import { formatLabel,XA_COLOR_SWATCHES } from "../lib/xaCatalog";
+import { formatLabel, XA_COLOR_SWATCHES, XA_DEFAULT_SWATCH } from "../lib/xaCatalog";
 
 import { XaFadeImage } from "./XaFadeImage";
 
@@ -161,7 +161,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
 
       <div className="flex flex-wrap gap-2">
         <Button
-          className="xa-pdp-action flex-[2] h-11 rounded-none bg-foreground text-primary-fg hover:bg-foreground/90"
+          className="xa-pdp-action xa-flex-2 h-11 rounded-none bg-foreground text-primary-fg hover:bg-foreground/90"
           disabled={soldOut}
           onClick={() => void addToCart()}
         >
@@ -203,7 +203,9 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
               {variantProducts.map((variant) => {
                 const color = variant.taxonomy.color?.[0] ?? "";
                 const label = color ? formatLabel(color) : variant.title;
-                const swatch = color ? (XA_COLOR_SWATCHES[color] ?? "#e5e5e5") : "#e5e5e5";
+                const swatch = color
+                  ? (XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH)
+                  : XA_DEFAULT_SWATCH;
                 const media = variant.media.find((item) => item.type === "image" && item.url.trim());
                 const isCurrent = variant.id === product.id;
                 return (
@@ -237,7 +239,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
           ) : (
             <div className="flex gap-2">
               {colorOptions.map((color, idx) => {
-                const swatch = XA_COLOR_SWATCHES[color] ?? "#e5e5e5";
+                const swatch = XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH;
                 const media = colorMedia[idx % Math.max(1, colorMedia.length)];
                 return (
                   <div

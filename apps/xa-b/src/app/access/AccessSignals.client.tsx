@@ -4,6 +4,7 @@
 import * as React from "react";
 
 import styles from "./access.module.css";
+import { gateClassNames } from "./gateClasses";
 
 type AccessSignalsProps = {
   dropLabel?: string;
@@ -84,7 +85,7 @@ export default function AccessSignals({
   if (!shouldRender) return null;
 
   return (
-    <div className="mt-5 grid gap-3 rounded-lg border border-border-2 bg-muted p-4 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+    <div className={`mt-5 grid gap-3 rounded-lg border border-border-2 bg-muted p-4 text-xs uppercase xa-tracking-030 ${gateClassNames.mutedText}`}>
       {hasDrop ? (
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span>{dropLabel || "Next drop"}</span>

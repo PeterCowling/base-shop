@@ -30,8 +30,8 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - [x] TASK-01: Build migration inventory + lock parity contract
 - [x] TASK-02: Create parity harness for locked routes
 - [x] TASK-03: Add table compatibility surface in design-system
-- [ ] TASK-04: Add text-field compatibility surface in design-system
-- [ ] TASK-05: Add button compatibility surface in design-system
+- [x] TASK-04: Add text-field compatibility surface in design-system
+- [x] TASK-05: Add button compatibility surface in design-system
 - [ ] TASK-06: Publish Reception compatibility exports + remove deep NotificationCenter imports
 - [ ] TASK-07: Horizon checkpoint - reassess downstream migration assumptions
 - [ ] TASK-08: Wave 1 migration - parity route set
@@ -92,8 +92,8 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 | TASK-01 | INVESTIGATE | Build migration inventory + lock parity contract | 85% | S | Complete (2026-02-23) | - | TASK-02, TASK-08, TASK-09, TASK-10, TASK-11 |
 | TASK-02 | IMPLEMENT | Create parity harness for locked routes | 85% | S | Complete (2026-02-23) | TASK-01 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11 |
 | TASK-03 | IMPLEMENT | Add table compatibility surface in DS | 85% | S | Complete (2026-02-23) | - | TASK-06 |
-| TASK-04 | IMPLEMENT | Add text-field compatibility surface in DS | 85% | S | Pending | - | TASK-06 |
-| TASK-05 | IMPLEMENT | Add button compatibility surface in DS | 85% | S | Pending | - | TASK-06 |
+| TASK-04 | IMPLEMENT | Add text-field compatibility surface in DS | 85% | S | Complete (2026-02-23) | - | TASK-06 |
+| TASK-05 | IMPLEMENT | Add button compatibility surface in DS | 85% | S | Complete (2026-02-23) | - | TASK-06 |
 | TASK-06 | IMPLEMENT | Publish Reception compatibility exports + deep import cleanup | 85% | S | Pending | TASK-03, TASK-04, TASK-05 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint - reassess downstream migration assumptions | 95% | S | Pending | TASK-02, TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | Wave 1 migration - parity route set | 75% | S | Pending | TASK-01, TASK-02, TASK-06, TASK-07 | TASK-09 |
@@ -282,7 +282,7 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `packages/design-system/src/primitives/input.tsx`, `packages/design-system/src/primitives/textarea.tsx`, `packages/design-system/src/primitives/__tests__/input.test.tsx`, `packages/design-system/src/primitives/__tests__/textarea.test.tsx`
 - **Depends on:** -
 - **Blocks:** TASK-06
@@ -313,6 +313,28 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Notes / references:**
   - `packages/design-system/src/primitives/input.tsx`
   - `packages/design-system/src/primitives/textarea.tsx`
+- **Build evidence (2026-02-23):**
+  - Deliverables updated:
+    - `packages/design-system/src/primitives/input.tsx`
+    - `packages/design-system/src/primitives/textarea.tsx`
+    - `packages/design-system/src/primitives/__tests__/input.test.tsx`
+    - `packages/design-system/src/primitives/__tests__/textarea.test.tsx`
+  - Acceptance coverage:
+    - Explicit compatibility surface added on both primitives:
+      - `InputProps.compatibilityMode` and `TextareaProps.compatibilityMode` with values `"default"` and `"no-wrapper"`.
+    - Default FormField behavior preserved for `"default"` mode.
+    - Compatibility mode renders bare control semantics (`<input>` / `<textarea>` without FormField wrapper).
+  - `TC-04` validation:
+    - `pnpm --filter @acme/design-system test -- src/primitives/__tests__/input.test.tsx src/primitives/__tests__/textarea.test.tsx` -> pass (`25` tests).
+    - Added no-wrapper assertions in both suites covering:
+      - wrapper omission + className passthrough (`TC-02`)
+      - `aria-invalid`, `aria-describedby`, and focus/blur handlers in compatibility mode (`TC-03`)
+      - existing default-mode tests unchanged (`TC-01`)
+    - `pnpm --filter @acme/design-system typecheck` -> pass.
+    - `pnpm --filter @acme/design-system lint` -> pass (non-blocking pre-existing warning in `packages/design-system/src/molecules/MediaSelector.tsx:47`).
+  - Downstream confidence propagation:
+    - TASK-06 reviewed with TASK-04 evidence.
+    - Outcome: affirming but confidence unchanged until TASK-05 completes.
 
 ### TASK-05: Add button compatibility surface in design-system
 - **Type:** IMPLEMENT
@@ -321,7 +343,7 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `packages/design-system/src/primitives/button.tsx`, `packages/design-system/src/primitives/__tests__/button.test.tsx`
 - **Depends on:** -
 - **Blocks:** TASK-06
@@ -351,6 +373,21 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Documentation impact:** update DS button docs.
 - **Notes / references:**
   - `packages/design-system/src/primitives/button.tsx`
+- **Build evidence (2026-02-23):**
+  - Deliverables updated:
+    - `packages/design-system/src/primitives/button.tsx`
+    - `packages/design-system/src/primitives/__tests__/button.test.tsx`
+  - Acceptance coverage:
+    - Explicit compatibility surface added: `ButtonProps.compatibilityMode` with values `"default"` and `"passthrough"`.
+    - `"passthrough"` mode preserves caller-supplied classes without DS style injection (style-neutral path for migration).
+    - Default mode behavior remains unchanged for existing button styling and variants.
+  - `TC-05` validation:
+    - `pnpm --filter @acme/design-system test -- src/primitives/__tests__/button.test.tsx` -> pass (`6` tests, including passthrough class preservation and loading/disabled semantics).
+    - `pnpm --filter @acme/design-system typecheck` -> pass.
+    - `pnpm --filter @acme/design-system lint` -> pass (non-blocking pre-existing warning in `packages/design-system/src/molecules/MediaSelector.tsx:47`).
+  - Downstream confidence propagation:
+    - TASK-06 reviewed with TASK-05 evidence.
+    - Outcome: affirming; prerequisites for TASK-06 now complete (TASK-03, TASK-04, TASK-05).
 
 ### TASK-06: Publish Reception compatibility exports + deep import cleanup
 - **Type:** IMPLEMENT

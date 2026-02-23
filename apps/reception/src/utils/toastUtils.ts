@@ -1,5 +1,5 @@
 /* src/utils/toastUtils.ts */
-import { toast } from "@acme/ui/components/organisms/operations/NotificationCenter/NotificationCenter";
+import { toast } from "@acme/ui/operations";
 
 export type ToastMessageType = "success" | "error" | "info" | "warning";
 

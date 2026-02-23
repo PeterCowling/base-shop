@@ -55,7 +55,7 @@ export default async function ProductPage({
   return (
     <main className="sf-content xa-pdp">
       <Section padding="wide">
-        <div className="grid gap-16 md:grid-cols-[minmax(0,1.6fr)_minmax(0,0.8fr)]">
+        <div className="xa-grid-pdp-primary">
           <div className="space-y-6">
             <XaImageGallery title={product.title} media={product.media} />
             <Breadcrumbs
@@ -270,7 +270,7 @@ export default async function ProductPage({
             </div>
           </div>
 
-          <div className="space-y-8 self-start md:sticky md:top-28 md:max-w-[360px] md:justify-self-end">
+          <div className="space-y-8 self-start md:sticky md:top-28 xa-pdp-sidebar-max md:justify-self-end">
             <div className="space-y-1">
               <div className="xa-pdp-brand">{designerName}</div>
               <div className="xa-pdp-title text-muted-foreground">{product.title}</div>

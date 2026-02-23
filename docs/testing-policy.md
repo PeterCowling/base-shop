@@ -81,6 +81,12 @@ jest                                # Runs all tests in current directory
   ```
 - Use `--coverage=false` for single-file runs to avoid tripping the global coverage thresholds.
 
+### Coverage Tier Source Of Truth
+
+- Coverage tier assignments and per-metric thresholds are defined in `packages/config/coverage-tiers.cjs`.
+- `@acme/types` now uses `SCHEMA_BASELINE` (`lines:70`, `branches:0`, `functions:50`, `statements:70`) instead of `MINIMAL`.
+- `scripts/check-coverage.sh` resolves tier metadata directly from `coverage-tiers.cjs`; do not maintain duplicated threshold tables elsewhere.
+
 ---
 
 ## Rule 2: Always Use Targeted Test Commands
@@ -111,12 +117,16 @@ pnpm --filter @apps/xa-uploader run test:api
 
 # Uploader-local operator surface (API + catalog console tests only)
 pnpm --filter @apps/xa-uploader run test:local
+
+# Uploader-local operator E2E (Playwright; includes app boot + temp fixtures)
+pnpm --filter @apps/xa-uploader run test:e2e
 ```
 
 Scope caveat:
 - `test:local` intentionally covers only `src/app/api/**` and `src/components/catalog/**`.
 - It does not run all uploader tests (for example `src/lib/**`), and it is not a monorepo-wide gate.
 - For package-wide coverage, use `pnpm --filter @apps/xa-uploader test` with additional file/pattern scoping where possible.
+- `test:e2e` is intentionally scoped to `apps/xa-uploader/e2e/catalog-console.spec.ts` and spins up an isolated uploader dev server with temp CSV/image fixtures.
 
 ### Growth Accounting Kernel (Targeted)
 

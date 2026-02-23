@@ -55,7 +55,7 @@ export function XaImageGallery({
                   aria-label={`View image ${idx + 1} of ${images.length}`} // i18n-exempt -- XA-0012: demo a11y label
                   onClick={() => setActiveIndex(idx)}
                   className={[
-                    "relative h-auto aspect-[4/5] w-full cursor-zoom-in overflow-hidden rounded-none bg-surface p-0 hover:bg-surface",
+                    "relative h-auto xa-aspect-4-5 w-full cursor-zoom-in overflow-hidden rounded-none bg-surface p-0 hover:bg-surface",
                     shouldSpan ? "sm:row-span-2" : "",
                   ].join(" ")}
                 >
@@ -123,7 +123,7 @@ export function XaImageGallery({
           </DialogContent>
         </Dialog>
       ) : (
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-none border border-border-1 bg-surface">
+        <div className="relative xa-aspect-4-5 w-full overflow-hidden rounded-none border border-border-1 bg-surface">
           <Cluster
             alignY="center"
             justify="center"

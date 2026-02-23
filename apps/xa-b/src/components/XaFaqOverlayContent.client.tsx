@@ -136,7 +136,7 @@ export function XaFaqOverlayContent() {
     <div className="space-y-10">
       {qaSections.map((section) => (
         <div key={section.title} className="space-y-3">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          <h2 className="text-sm font-semibold uppercase xa-tracking-018 text-muted-foreground">
             {section.title}
           </h2>
           <Accordion type="multiple">

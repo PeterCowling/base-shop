@@ -3,8 +3,8 @@ Type: Operator-Guide
 Status: Active
 Domain: Venture-Studio
 Created: 2026-02-12
-Updated: 2026-02-22
-Last-reviewed: 2026-02-22
+Updated: 2026-02-23
+Last-reviewed: 2026-02-23
 Owner: Pete
 ---
 
@@ -27,7 +27,7 @@ Use these ranked lists to pick your next action. Tasks are ordered — complete 
 | # | Task | Why this comes first | Done when |
 |---|---|---|---|
 | 1 | Fill Operational Confirmations (6 fields): in-stock date, units, pricing, compatibility, payment readiness, returns SLA | Nothing else for HEAD can advance until these are confirmed. The forecast, offer design, and channel selection all depend on known inventory and operational reality. | All 6 fields confirmed and timestamped. |
-| 2 | Complete Pre-website Measurement Setup | HEAD is pre-website. Paid traffic without GA4, Search Console, and conversion event setup produces data you cannot use. | Measurement setup document at Active status. |
+| 2 | Complete Pre-website Measurement Setup | HEAD is pre-website. Paid traffic without GA4, Search Console, Cloudflare measurement prerequisites, GBP API entitlement checks, and conversion event setup produces data you cannot use. | Measurement setup document at Active status. |
 | 3 | Produce the HEAD offer artifact (MARKET-06) | Requires the operational inputs from task 1. Without the offer, the forecast and channel plan have no anchor. | Offer artifact exists with target customer profile, positioning, and pricing model. |
 | 4 | Advance HEAD forecast to decision-grade (S3) | A draft forecast exists from 12 Feb based on assumptions. Rebuild it once operational inputs are confirmed. | Forecast document at Active status with confirmed inputs replacing assumptions. |
 | 5 | Run this week's K/P/C/S decision | First decision is dated 12 Feb. The loop loses signal without weekly continuation. | This week's decision document exists and is dated. |
@@ -92,7 +92,7 @@ Each week the S10 review gives you one of three verdicts: Continue (loop back to
 The same open tasks as above, grouped by type for when you want to tackle one theme across all three businesses at once.
 
 ### Measurement setup
-- **HEAD** — Complete Pre-website Measurement Setup (GA4 + Search Console + conversion events).
+- **HEAD** — Complete Pre-website Measurement Setup (GA4 + Search Console + Cloudflare + GBP API entitlement + conversion events).
 - **PET** — Complete Pre-website Measurement Setup (same requirement as HEAD).
 - **BRIK** — Verify GA4 standard report signal: check begin_checkout and web_vitals in standard 7-day reports (not Realtime).
 
@@ -173,7 +173,7 @@ These are the actions owned by Pete as venture-studio operator. Each row is a co
 | Run a 7-day paid acquisition test for PET | PET has no measured CPC or CVR yet — the forecast relies on seed assumptions until real data is captured. | First measured CPC and CVR documented from a 7-day live test. |
 | Verify GA4 standard report signal for BRIK (begin_checkout + web_vitals) | The weekly BRIK decision loop needs confirmed non-zero signal in 7-day standard reports, not just realtime. | Non-zero begin_checkout and web_vitals in standard 7-day GA4 report. |
 | Run the day-14 forecast recalibration for BRIK | BRIK v1 forecast is based on seed assumptions; first two weeks of measured data must replace them for reliable scaling decisions. | Day-14 recalibration document produced and integrated into the BRIK strategy plan. |
-| Complete the Pre-website Measurement Setup checklist for HEAD | HEAD is pre-website; paid traffic cannot start without GA4, Search Console, and conversion event setup. | Measurement setup document at Active status. |
+| Complete the Pre-website Measurement Setup checklist for HEAD | HEAD is pre-website; paid traffic cannot start without GA4, Search Console, Cloudflare measurement prerequisites, GBP API entitlement checks, and conversion event setup. | Measurement setup document at Active status. |
 | Complete the Pre-website Measurement Setup checklist for PET | PET is pre-website; same measurement requirement as HEAD. | Measurement setup document at Active status. |
 | Run the weekly K/P/C/S decision for each active business | Loop health depends on weekly cadence — decisions go stale within days without the weekly review. | Weekly K/P/C/S decision document produced and dated this week. |
 | Run standing refresh prompts when cadence triggers | Market/channel/regulatory inputs go stale without periodic refresh. | Monthly market-pulse, channel-economics, and quarterly regulatory-watch documents up to date. |
@@ -317,7 +317,7 @@ Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 3
 |---|---|---|---|
 | S0. Intake | Business idea, product spec, channels, constraints, stock timeline | Normalize raw user intent into structured startup context | Intake packet per business |
 | S1. Readiness preflight | Strategy plan, people profile, path-business mapping, prior cards/ideas | Run readiness gates (`RG-01..RG-07`) and detect blockers | Readiness report + missing-context register + blocker questions/prompts |
-| S1B. Pre-website measurement bootstrap (conditional: pre-website) | Launch-surface mode = `pre-website` + intake packet + business plan | Run mandatory analytics/measurement setup gate and operator handoff (GA4/Search Console/API prereqs) | Measurement setup note + verification checklist + blocker list |
+| S1B. Pre-website measurement bootstrap (conditional: pre-website) | Launch-surface mode = `pre-website` + intake packet + business plan | Run mandatory analytics/measurement setup gate and operator handoff (GA4/Search Console/Cloudflare + GBP API entitlement prereqs) | Measurement setup note + verification checklist + blocker list |
 | S2A. Historical performance baseline (conditional: website-live) | Monthly net booking value exports + Cloudflare analytics + ops logs + Octorate data collection (Batch 1: booking value, Batch 2: calendar/inventory) | Consolidate internal history into decision baseline with data-quality notes | Historical baseline pack (`Status: Active` required before MARKET-01/S6 for existing businesses) + Octorate data collection protocol active |
 | MARKET-01. Competitor mapping | Deep Research prompt template + business intake packet (+ S2A baseline for existing businesses) | Map direct/indirect competitors and positioning cues | Competitor mapping artifact |
 | MARKET-02. Demand evidence | MARKET-01 output + intake packet | Capture demand signals, segment pull, and counter-signals | Demand evidence artifact |

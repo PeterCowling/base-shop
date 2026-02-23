@@ -3,7 +3,7 @@ Type: Template
 Status: Reference
 Domain: Business-OS
 Created: 2026-02-12
-Last-reviewed: 2026-02-17 (expanded from thin template — startup-loop-infra-measurement-bootstrap plan)
+Last-reviewed: 2026-02-23 (added GBP API entitlement gate to Phase 0 bootstrap)
 Launch-surface: pre-website
 Stage: S1B (conditional: pre-website path)
 ---
@@ -20,7 +20,8 @@ This template covers three phases:
   and access grants so agents can run Phase 1 unattended. Do not skip or reorder Phase 0 steps —
   they have strict dependencies. The ordering is enforced.
 - **Phase 1 (Agent, after Phase 0 complete):** All GA4, Search Console, DNS, GitHub, and code
-  integration steps that can be executed via API/CLI once access is granted.
+  integration steps that can be executed via API/CLI once access is granted, plus GBP
+  readiness checks when API entitlement is approved.
 - **Phase 2 (Agent + Human, before production):** Staging verification. Confirms the full setup
   is working before any production deploy.
 
@@ -80,6 +81,15 @@ throughout Phase 1 steps and template variables below.
 | Project ID (string) | Google Cloud Console → project selector dropdown |
 | Project Number (numeric) | Google Cloud Console → IAM & Admin → Settings |
 
+### Google Business Profile (GBP)
+
+| Name | Example format | Where to find |
+|---|---|---|
+| GBP account resource name | `accounts/1234567890123456789` | Business Profile Account Management API (`accounts.list`) or API Explorer output |
+| GBP location resource name | `locations/1234567890123456789` | Business Profile Business Information API (`locations.list`) or profile URL metadata |
+| GBP API support case ID | `1-1234567890123` | Google Business Profile support email confirmation |
+| GBP entitlement status | `approved` / `pending` + QPM values | Google Cloud Console → APIs & Services → Quotas (filter: "My Business" / "Business Profile") |
+
 ### GitHub
 
 | Kind | How it is set | Encrypted? | Environment-scoped? |
@@ -116,7 +126,7 @@ build-time vars and not stored in GitHub Environment variables.
 
 ## DERIVED POLICIES
 
-These 7 policies are derived from real startup failures and are enforced by the startup loop.
+These 8 policies are derived from real startup failures and are enforced by the startup loop.
 Each agent and human step below references the relevant policy by number.
 
 Policy-01: Cloudflare API tokens must be split by capability — DNS-Edit token separate from
@@ -143,15 +153,20 @@ Policy-07: External checkout businesses (e.g. Octorate, Booking.com) use `handof
   as the canonical funnel conversion event. Revenue is reconciled probabilistically, not via
   pixel, because external booking engines have no callback or webhook mechanism.
 
+Policy-08: GBP API setup is mandatory for every business baseline. If GBP quotas are zero,
+  log the support case ID, mark GBP API automation blocked, and proceed with manual GBP UI
+  operations until entitlement is approved.
+
 ---
 
 ## PHASE 0 — ACCESS BUNDLE (Human-First, One Session)
 
-Time estimate: 30-60 minutes.
+Time estimate: 45-75 minutes.
 
 Complete all steps below in a single session before asking agents to run Phase 1.
 Steps are in strict dependency order — do not reorder. P0-04 must precede P0-04b.
-P0-05 must precede P0-05b. P0-11 must precede SC-01 (which precedes P0-11a and P0-11b).
+P0-05 must precede P0-05b. P0-01a must precede P0-01b. P0-11 must precede SC-01
+(which precedes P0-11a and P0-11b).
 
 Classification key:
   (H)   Human-gated: requires UI action, owner credential, or non-automatable judgment
@@ -163,6 +178,8 @@ Classification key:
 | # | Step | Owner | What it unlocks |
 |---|---|---|---|
 | P0-01 | Create GCP project (`{{GCP_PROJECT_NAME}}`); enable APIs: `analyticsadmin.googleapis.com`, `analyticsdata.googleapis.com`, `searchconsole.googleapis.com` | (H) Google Cloud Console | All GA4 Admin API + GSC API agent calls |
+| P0-01a | Enable GBP APIs in the same GCP project: `mybusinessaccountmanagement.googleapis.com`, `mybusinessbusinessinformation.googleapis.com`, `businessprofileperformance.googleapis.com` | (H) Google Cloud Console | GBP account/location/performance API surfaces available for automation |
+| P0-01b | Open Google Cloud Console quota pages for GBP APIs; record Requests/minute (QPM) for Account Management, Business Information, and Business Profile Performance APIs. If any required GBP API shows `0` QPM, submit GBP API access request and record support case ID in IDS Glossary | (H) Google Cloud Console + GBP support — Policy-08 | Confirms entitlement state and prevents silent API-blocked automation |
 | P0-02 | Create GCP service account; download JSON key file; note the service account email (`name@{{GCP_PROJECT_NAME}}.iam.gserviceaccount.com`); store key at `.secrets/ga4/{{GCP_PROJECT_NAME}}.json`; confirm `.gitignore` covers `.secrets/ga4/*.json` — no key material in repo docs | (H) | Agent API identity. Do NOT grant property access yet — GA4 properties do not exist yet |
 | P0-03 | Verify `.secrets/ga4/*.json` is in `.gitignore`; confirm no credential in any markdown or plan file | (H) security check | Safe credential storage; required before any agent API call |
 | P0-04 | Create GA4 **production** property in GA4 UI (Admin → Create property): name = `{{BUSINESS_NAME}} Production`, timezone = `{{TIMEZONE}}`, currency = `{{CURRENCY}}`; record Property ID in IDs Glossary | (H) GA4 UI | Production GA4 property exists |
@@ -192,6 +209,8 @@ Complete these AFTER Phase 1 SC-01 completes and DNS propagates (usually within 
 Before handing over to agent for Phase 1, confirm ALL of the following:
 
 - [ ] P0-01: GCP project created; all three APIs enabled
+- [ ] P0-01a: GBP APIs enabled in same project (Account Management, Business Information, Business Profile Performance)
+- [ ] P0-01b: GBP API quota values recorded; if any are 0 QPM, support case ID logged
 - [ ] P0-02: Service account created; JSON key downloaded and stored at `.secrets/ga4/{{GCP_PROJECT_NAME}}.json`
 - [ ] P0-03: `.gitignore` covers `.secrets/ga4/*.json`; no credential in any doc
 - [ ] P0-04 + P0-04b: Production GA4 property created; service account has Analytics Editor role
@@ -362,6 +381,8 @@ Deferred steps (P0-11a, P0-11b) complete after Phase 1 SC-01 + DNS propagation.
 
 Complete Phase 0 status:
 - [ ] P0-01 GCP project + APIs
+- [ ] P0-01a GBP APIs enabled
+- [ ] P0-01b GBP quotas checked + case ID logged if pending
 - [ ] P0-02 Service account + key downloaded + stored
 - [ ] P0-03 .gitignore verified
 - [ ] P0-04 Production GA4 property
@@ -412,6 +433,7 @@ A) SETUP SCOPE AND ASSUMPTIONS
    - Phase 0 completion confirmed (list any incomplete items as blockers)
    - Service account key path and email confirmed (no key values in output)
    - IDs Glossary populated with all discovered IDs
+   - GBP entitlement status recorded (QPM values + support case ID if pending)
 
 B) PHASE 0 STATUS TABLE
    | Item | Status | Notes |
@@ -451,6 +473,8 @@ RULES:
 - Every DNS write step (SC-01, D-01, D-02) must name CLOUDFLARE_API_TOKEN_DNS_EDIT explicitly.
 - G-08 is (H) only — no GA4 Admin API exists for cross-domain linking configuration.
 - SC-03b is (H) only — no GSC Coverage/Pages bulk API exists.
+- GBP API setup is mandatory: if any required API remains at 0 QPM, mark GBP automation blocked and include support case ID in blockers.
+- Do not plan GBP Q&A API automation in this template; handle Q&A updates manually in GBP UI.
 - V-05 must check both: different Measurement ID AND different property ID.
 - For V-02/V-03: remind operator that analytics_storage must be granted before DebugView shows events.
 - Do not use ?gtag_debug=1 — not a standardised GA4 parameter. Use Tag Assistant or debug_mode:true.

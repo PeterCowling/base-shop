@@ -1,0 +1,22 @@
+{
+  "name": "@apps/caryina",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack -p 3018",
+    "build": "next build --webpack",
+    "start": "next start -p 3018",
+    "lint": "eslint . --no-error-on-unmatched-pattern",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@acme/design-system": "workspace:*",
+    "@acme/next-config": "workspace:*",
+    "@acme/platform-core": "workspace:*",
+    "@acme/ui": "workspace:*",
+    "@themes/base": "workspace:*",
+    "@themes/caryina": "workspace:*",
+    "next": "^16.1.6",
+    "react": "19.2.1",
+    "react-dom": "19.2.1"
+  }
+}

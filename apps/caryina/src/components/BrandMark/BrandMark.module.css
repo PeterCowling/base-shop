@@ -1,0 +1,113 @@
+.brand {
+  --dur: 900ms;
+  --delay: 280ms;
+
+  display: inline-block;
+  position: relative;
+
+  font-family: var(--font-cormorant-garamond, "Cormorant Garamond", serif);
+  font-weight: 500;
+
+  font-size: 1.6rem;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+
+  color: var(--brand-mark-color, hsl(355 55% 75%));
+}
+
+.fallback {
+  display: inline-block;
+}
+
+.composed {
+  display: inline-block;
+  position: relative;
+}
+
+/* While not ready, show fallback only */
+.brand[data-ready="false"] .composed {
+  display: none;
+}
+.brand[data-ready="true"] .fallback {
+  display: none;
+}
+
+/* Invisible text that sets baseline + reserves width */
+.baseline {
+  visibility: hidden;
+  white-space: pre;
+  display: inline-block;
+}
+
+/* Layer sits atop baseline */
+.layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Segments */
+.car,
+.y,
+.ina {
+  position: absolute;
+  top: 0;
+  white-space: pre;
+}
+
+/* y and suffix transitions */
+.y {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
+  transition:
+    opacity var(--dur) ease,
+    transform var(--dur) cubic-bezier(0.2, 0.9, 0.25, 1),
+    color var(--dur) ease;
+  transition-delay: var(--delay);
+  will-change: transform, opacity;
+}
+
+.ina {
+  transform: translateX(var(--shift, 0px));
+  transition: transform var(--dur) cubic-bezier(0.2, 0.9, 0.25, 1);
+  transition-delay: var(--delay);
+  will-change: transform;
+}
+
+/* Target state: Carina */
+.brand[data-state="to"] .y {
+  opacity: 0;
+  transform: translateY(0.22em) rotate(-8deg);
+  color: var(--brand-accent-color, hsl(130 18% 72%));
+}
+
+.brand[data-state="to"] .ina {
+  transform: translateX(0px);
+}
+
+/* Offscreen measurement probes */
+.measure {
+  position: absolute;
+  left: -10000px;
+  top: 0;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: pre;
+}
+.measure > span {
+  display: inline-block;
+}
+
+/* Reduced motion: show final state, no transitions */
+@media (prefers-reduced-motion: reduce) {
+  .y,
+  .ina {
+    transition: none !important;
+  }
+  .y {
+    opacity: 0 !important;
+    transform: none !important;
+  }
+  .ina {
+    transform: translateX(0px) !important;
+  }
+}

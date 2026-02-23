@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-02-13
+Last-reviewed: 2026-02-23
 ---
 
 # AGENTS.md — Operational Runbook
@@ -262,6 +262,56 @@ Error: Cannot use import statement outside a module
 | No matching skill exists | Ask user, then consider creating skill |
 | Ambiguous user intent | Ask user for clarification |
 
+## User-Facing Step-by-Step Standard (Required)
+
+When the user asks for setup help, manual operations, or any "step-by-step" guidance, instructions must be executable without interpretation.
+
+### Hard requirements for every procedural step
+
+Each step must include all of the following sections:
+
+1. `DO` — exact action and click path
+   - Include exact URLs to open
+   - Include exact menu/button path (for example: `Settings -> Environments -> production -> Variables`)
+2. `SAVE` — exact output artifact
+   - Exact filename(s), destination folder/path, or field value to record
+3. `DONE WHEN` — objective completion check
+   - Observable state that confirms success
+4. `IF BLOCKED` — fallback path
+   - What to do if UI labels differ, permissions are missing, or the control is unavailable
+
+### Non-negotiable quality rules
+
+- Never provide output filenames without explicit actions to produce them.
+- Never use vague verbs like "review", "update", or "check" without exact click path and expected result.
+- Always include copy/paste-ready URLs for external tools or dashboards.
+- When text must be entered, provide exact text in a copy block.
+- When evidence is required, list the complete required artifact set and destination path.
+- If sequence matters, state strict order and do-not-skip dependencies.
+
+### Required response template for procedural guidance
+
+Use this structure in user-facing instructions:
+
+```md
+### Step <N> — <Outcome>
+DO:
+1. Open: <URL>
+2. Click: <exact path>
+3. Enter: <exact value>
+
+SAVE:
+- <filename-or-value> -> <destination path>
+
+DONE WHEN:
+- <observable success condition>
+
+IF BLOCKED:
+- <fallback action>
+```
+
+If any required section above is missing, the instructions are incomplete.
+
 ## Plan Documentation
 
 - **Current / maintained plans** live in `docs/plans/` (or the domain’s plan directory like `docs/cms-plan/`) and should follow canonical path `docs/plans/<slug>/plan.md` (legacy flat path is read-only compatibility).
@@ -342,6 +392,7 @@ Prompting policy for shared worktrees:
 | Tests failing | Fix before commit. Never skip validation |
 | Need to undo | Use `git revert`, never `reset --hard` |
 | Large-scale fix needed | Create plan in `docs/plans/`, don't take shortcuts |
+| User asks for "step-by-step" help | Use mandatory `DO`/`SAVE`/`DONE WHEN`/`IF BLOCKED` format with exact URLs and click paths |
 | MCP TypeScript intelligence | See `docs/ide/agent-language-intelligence-guide.md` |
 | Asked to check types | Use MCP TypeScript tools first; run `pnpm --filter <pkg> typecheck` for affected packages (full `pnpm typecheck` only if explicitly requested) |
 

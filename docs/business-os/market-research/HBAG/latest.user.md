@@ -10,7 +10,29 @@ Owner: Pete
 
 # HBAG Market Intelligence — Latest
 
-## MARKET-02 — Demand evidence (current)
+## MARKET-04 — Channel landscape (current)
+
+`docs/business-os/market-research/HBAG/market-04-channel-landscape.user.md`
+
+**Status: Draft** — Created 2026-02-23.
+Key finding: Etsy Day 1 + TikTok/Instagram organic discovery is the 90-day channel stack.
+Pinterest at Day 30 for evergreen support. Tourist channel (Positano boutique + Brikette hostel)
+seasonal June–Sept parallel. TikTok Shop optional Day 60+ only after Etsy traction proven.
+Critical constraint: US de minimis suspension (20 Feb 2026 executive order) creates duty friction
+for US-bound orders — treat carrier choice and duty disclosure as conversion variables, not logistics detail.
+
+## MARKET-03 — Pricing benchmarks
+
+`docs/business-os/market-research/HBAG/market-03-pricing-benchmarks.user.md`
+
+**Status: Draft** — Created 2026-02-23.
+Key finding: Etsy's volume cliff sits at ~$79–$80 (high-velocity artisan-premium band). Above $100,
+conversion is viability-proven but requires "art object" framing (favourites > reviews). H1 recommended
+launch price: €99. H2 recommended launch price: €89 (framed as micro-bag charm, not tech cover).
+Amalfi tourist channel range: €110–€140 H1 / €90–€120 H2. Italian-leather + brass claims are
+commoditised on Etsy — photography and craft proof are the true differentiators at €95–€120.
+
+## MARKET-02 — Demand evidence
 
 `docs/business-os/market-research/HBAG/market-02-demand-evidence.user.md`
 
@@ -38,5 +60,5 @@ for H1/H2 market signals; now supplemented by MARKET-01 and MARKET-02 above.
 
 ## Next action
 
-MARKET-03 (Pricing benchmarks) — run prompt at:
-`docs/business-os/market-research/HBAG/market-03-pricing-benchmarks-prompt.md`
+MARKET-05 (Assumptions and risk register) — run prompt at:
+`docs/business-os/market-research/HBAG/market-05-assumptions-risk-register-prompt.md` (to be created)

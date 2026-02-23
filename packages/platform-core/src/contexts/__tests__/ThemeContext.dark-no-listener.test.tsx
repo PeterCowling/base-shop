@@ -50,8 +50,7 @@ describe("ThemeContext: dark theme does not register matchMedia listener", () =>
     );
 
     expect(getByTestId("theme").textContent).toBe("dark");
-    expect(matchMedia).toHaveBeenCalledTimes(1);
+    expect(matchMedia).not.toHaveBeenCalled();
     expect(addListener).not.toHaveBeenCalled();
   });
 });
-

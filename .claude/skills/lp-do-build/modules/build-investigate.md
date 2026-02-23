@@ -27,6 +27,34 @@ When evidence sources = 1, or questions are tightly coupled (each answer depends
 4. Validate against task acceptance criteria.
 5. Update plan task status and notes.
 
+## Approval-Gated Artifact Contract (Required)
+
+When an INVESTIGATE task is `Execution-Track: business-artifact` and the plan task includes
+reviewer-gate fields (`Reviewer`, `Approval-Evidence`) or blocks another task pending sign-off
+(for example outreach rehearsal gates like TASK-21), the output artifact must include the
+following sections in order:
+
+1. `Execution Status` (explicitly states blocked/complete gate state)
+2. `Inputs` (upstream artifacts referenced by path)
+3. `Scope` (what this task does and does not cover)
+4. `Guardrails` (content and compliance constraints)
+5. `Final Templates` (ready-to-send templates with subject variants + body)
+6. `Personalized Draft Entries` (target-mapped rows, expected count enforced by task contract)
+7. `Rehearsal Checklist` (pass/pending checks)
+8. `Reviewer Approval Block` (checkboxes + timestamp + evidence pointer)
+9. `Gate Result` (single sentence: why task remains blocked or is complete)
+
+Additional hard requirements:
+
+- Do not mark task complete without reviewer approval evidence when the approval block is required.
+- Approval block must include:
+  - reviewer identity
+  - explicit approval checkboxes
+  - approval timestamp field
+  - approval evidence path/link field
+- If reviewer sign-off is missing, set task status to blocked and state exact missing fields.
+- Keep language operational and copy-paste ready; avoid abstract guidance.
+
 ## Downstream Confidence Propagation
 
 After producing and validating the deliverable artifact, assess impact on dependent tasks:

@@ -3,6 +3,7 @@
 import { type FC, useMemo, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
+import { ReceptionInput } from "@acme/ui/operations";
 
 import { canAccess, Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
@@ -160,7 +161,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
           >
             Drawer Limit
           </label>
-          <input
+          <ReceptionInput
             id="drawerLimit"
             type="number"
             className="border rounded p-1 w-24 dark:bg-darkBg dark:text-darkAccentGreen"
@@ -170,7 +171,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
           <Button
             type="button"
             onClick={handleDrawerLimitSubmit}
-            className="px-3 py-1 rounded bg-primary-main text-white hover:bg-primary-dark dark:bg-darkAccentGreen dark:text-darkBg"
+            className="px-3 py-1 rounded bg-primary-main text-primary-fg hover:bg-primary-dark dark:bg-darkAccentGreen dark:text-darkBg"
           >
             Update
           </Button>

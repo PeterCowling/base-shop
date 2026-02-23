@@ -32,4 +32,17 @@ describe("Popover", () => {
     expect(element.props.sideOffset).toBe(4);
     expect(element.props.align).toBe("center");
   });
+
+  it("supports shape/radius overrides", async () => {
+    render(
+      <Popover>
+        <PopoverTrigger>Open shape</PopoverTrigger>
+        <PopoverContent data-testid="content" shape="square">
+          Hello
+        </PopoverContent>
+      </Popover>,
+    );
+    await userEvent.click(screen.getByText("Open shape"));
+    expect(screen.getByTestId("content").className).toContain("rounded-none");
+  });
 });

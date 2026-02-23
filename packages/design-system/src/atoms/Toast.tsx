@@ -4,6 +4,11 @@ import * as React from "react";
 import { useTranslations } from "@acme/i18n";
 
 import { Inline } from "../primitives/Inline";
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 type ToastVariant = "default" | "success" | "info" | "warning" | "danger" | "error";
@@ -22,6 +27,10 @@ export interface ToastProps extends React.HTMLAttributes<HTMLDivElement> {
   message: string;
   variant?: ToastVariant;
   tone?: ToastTone;
+  /** Semantic surface shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
   /**
    * Optional action button.
    */
@@ -96,6 +105,8 @@ export const Toast = (
     className,
     variant = "default",
     tone = "soft",
+    shape,
+    radius,
     actionLabel,
     onAction,
     duration,
@@ -120,11 +131,17 @@ export const Toast = (
   const token = TOKEN_BG[v];
   const tokenFg = TOKEN_FG[v];
   const closeLabel = t("actions.close") as string;
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
   return (
     <div
       ref={ref}
       className={cn(
-        "fixed z-toast rounded-md border border-border-2 px-4 py-2 shadow-elevation-3 w-full sm:w-96 break-words", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+        "fixed z-toast border border-border-2 px-4 py-2 shadow-elevation-3 w-full sm:w-96 break-words", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+        shapeRadiusClass,
         PLACEMENT_CLASSES[placement],
         bgClass,
         fgClass,
@@ -137,7 +154,7 @@ export const Toast = (
       {...props}
     >
       <Inline gap={3} alignY="start" wrap={false} className="items-start">
-        <span className="grow" data-token={tokenFg}>{message}</span>
+        <span className="grow min-w-0 break-words" data-token={tokenFg}>{message}</span>
         <Inline gap={2} wrap={false} alignY="center" className="shrink-0">
           {onAction && actionLabel ? (
             <button

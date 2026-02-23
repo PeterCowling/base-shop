@@ -16,11 +16,11 @@ const config = [
     files: ["src/**/*.{ts,tsx}"],
     rules: {
       "ds/no-hardcoded-copy": "off",
-      "ds/min-tap-size": "off",
+      "ds/min-tap-size": "warn",
       "ds/enforce-layout-primitives": "off",
       "ds/container-widths-only-at": "off",
       "ds/no-physical-direction-classes-in-rtl": "off",
-      "ds/no-arbitrary-tailwind": "off",
+      "ds/no-arbitrary-tailwind": "warn",
       complexity: ["error", 70],
       "max-lines-per-function": [
         "error",

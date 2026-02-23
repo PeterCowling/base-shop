@@ -7,9 +7,9 @@ import {
   InformationCircleIcon,
 } from "@heroicons/react/24/solid";
 
-import { Button } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 export type AlertType = "info" | "success" | "warning" | "error";
 
@@ -31,24 +31,24 @@ const iconMap = {
 
 const colorMap = {
   info: {
-    bg: "bg-blue-100 dark:bg-blue-900/30",
-    icon: "text-blue-600 dark:text-blue-400",
-    button: "bg-blue-600 hover:bg-blue-700",
+    bg: "bg-info-light dark:bg-blue-900/30",
+    icon: "text-info-main dark:text-blue-400",
+    button: "bg-info-main hover:bg-blue-700",
   },
   success: {
-    bg: "bg-green-100 dark:bg-green-900/30",
-    icon: "text-green-600 dark:text-green-400",
-    button: "bg-green-600 hover:bg-green-700",
+    bg: "bg-success-light dark:bg-green-900/30",
+    icon: "text-success-main dark:text-success-main",
+    button: "bg-success-main hover:bg-green-700",
   },
   warning: {
-    bg: "bg-amber-100 dark:bg-amber-900/30",
-    icon: "text-amber-600 dark:text-amber-400",
-    button: "bg-amber-600 hover:bg-amber-700",
+    bg: "bg-warning-light dark:bg-amber-900/30",
+    icon: "text-warning-main dark:text-amber-400",
+    button: "bg-warning-main hover:bg-amber-700",
   },
   error: {
-    bg: "bg-red-100 dark:bg-red-900/30",
-    icon: "text-red-600 dark:text-red-400",
-    button: "bg-red-600 hover:bg-red-700",
+    bg: "bg-error-light dark:bg-red-900/30",
+    icon: "text-error-main dark:text-red-400",
+    button: "bg-error-main hover:bg-red-700",
   },
 };
 
@@ -82,7 +82,7 @@ function AlertModal({
             type="button"
             onClick={onClose}
             autoFocus
-            className={`min-h-11 min-w-11 rounded-md px-4 py-2 text-sm font-medium text-white ${colors.button}`}
+            className={`min-h-11 min-w-11 rounded-md px-4 py-2 text-sm font-medium text-primary-fg ${colors.button}`}
           >
             {buttonLabel}
           </Button>
@@ -94,7 +94,7 @@ function AlertModal({
       </div>
       <p
         id="alert-message"
-        className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400"
+        className="mt-2 text-center text-sm text-muted-foreground dark:text-muted-foreground"
       >
         {message}
       </p>

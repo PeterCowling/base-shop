@@ -10,6 +10,7 @@ import { NewsletterSignupCard } from "@acme/ui/components/organisms/NewsletterSi
 
 import { XaInlineLink } from "../../components/XaInlineLink";
 import { siteConfig } from "../../lib/siteConfig";
+import { xaI18n } from "../../lib/xaI18n";
 
 type FaqItem = {
   question: string;
@@ -27,102 +28,69 @@ const packagingItems = siteConfig.catalog.packagingItems;
 
 const faqSections: FaqSection[] = [
   {
-    title: "How to shop and place an order",
+    title: xaI18n.t("xaB.src.app.faqs.page.l30c12"),
     items: [
       {
-        question: "Do I need an account to place an order?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l33c19"),
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>No, all you need is an email address to place and track orders.</p>
-            <p>
-              If you want faster checkout, wishlist access, and order updates, set up a {brandName}
-              account. When you create an account and place an order you are automatically enrolled
-              in the Access loyalty programme for perks like early sale access, priority support,
-              unlimited free shipping, and styling help.
-            </p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l36c16")}</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l37c16")}{brandName}{xaI18n.t("xaB.src.app.faqs.page.l38c100")}</p>
             <p>
               <XaInlineLink
                 href="/account/register"
                 className="text-foreground underline"
-              >
-                Learn more about the Access loyalty programme
-              </XaInlineLink>
+              >{xaI18n.t("xaB.src.app.faqs.page.l47c16")}</XaInlineLink>
               .
             </p>
           </div>
         ),
       },
       {
-        question: "I've forgotten my password, what should I do?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l56c19"),
         content: (
           <p className="text-sm text-muted-foreground">
             Follow the{" "}
-            <Link href="/account/login" className="underline">
-              forgot your password
-            </Link>{" "}
-            link on the Sign In page and enter your email address. You will get an email to reset
-            your password.
-          </p>
+            <Link href="/account/login" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l60c63")}</Link>{" "}{xaI18n.t("xaB.src.app.faqs.page.l62c25")}</p>
         ),
       },
       {
         question: `How do I receive ${brandName} email updates?`,
         content: (
-          <p className="text-sm text-muted-foreground">
-            Enter your email address at the bottom of our homepage to get new arrivals, trends, and
-            exclusive promotions. You can update preferences in your account.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l71c56")}</p>
         ),
       },
       {
-        question: "How do I place an order on your website?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l78c19"),
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
             <div className="font-medium text-foreground">Here is how:</div>
             <ol className="list-decimal space-y-1 pl-5">
-              <li>Choose a category or brand or search for a specific style.</li>
-              <li>
-                Select your item and click <span className="font-semibold">Add To Bag</span>. When
-                everything is in the bag, start checkout.
-              </li>
-              <li>Sign in or continue as a guest.</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l83c19")}</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l84c19")}<span className="font-semibold">Add To Bag</span>{xaI18n.t("xaB.src.app.faqs.page.l85c93")}</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l88c19")}</li>
             </ol>
-            <p>
-              Add your address, payment method, and delivery details to place the order. We will
-              confirm it and prepare it with updates along the way.
-            </p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l90c16")}</p>
           </div>
         ),
       },
       {
-        question: "Can I place an order over the phone?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l98c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Yes. Our global Customer Service advisors can place orders for you.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l100c56")}</p>
         ),
       },
       {
         question: `Can I cancel my ${brandName} order or make changes to it?`,
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>
-              You may be able to cancel items before we prepare the order. Go to{" "}
-              <Link href="/account" className="underline">
-                Orders &amp; Returns
-              </Link>
-              , or if you checked out as a guest,{" "}
-              <XaInlineLink href="/account/trackingorder" className="underline">
-                enter your guest order details
-              </XaInlineLink>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l109c16")}{" "}
+              <Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l111c59")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l113c22")}{" "}
+              <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l115c81")}</XaInlineLink>
               .
             </p>
-            <p>
-              You cannot add items to an existing order. Place a new order for anything else. For
-              more details,{" "}
-              <XaInlineLink href="/pages/shipping-policy" className="underline">
-                view the Orders &amp; Deliveries page
-              </XaInlineLink>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l120c16")}{" "}
+              <XaInlineLink href="/pages/shipping-policy" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l123c81")}</XaInlineLink>
               .
             </p>
           </div>
@@ -137,83 +105,50 @@ const faqSections: FaqSection[] = [
         question: `Why is ${brandName} pricing different?`,
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>
-              You are shopping items from luxury brands and partner boutiques worldwide. Prices are
-              set by each brand or boutique, so the same item can vary by origin and your
-              destination. Adding to bag or wishlist does not reserve a price.
-            </p>
-            <p>
-              We will always show the best price available to your destination at checkout. Select
-              your delivery destination to see accurate prices.
-            </p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l140c16")}</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l145c16")}</p>
           </div>
         ),
       },
       {
-        question: "Which currencies can I shop in?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l153c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            The currency depends on your delivery destination and is shown at checkout. If your
-            local currency is unavailable, you will be charged in USD using a competitive exchange
-            rate.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l155c56")}</p>
         ),
       },
       {
-        question: "When will my card be charged?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l163c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            For debit card, cryptocurrency, or PayPal payments, {brandName} charges when you place the
-            order.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l165c56")}{brandName}{xaI18n.t("xaB.src.app.faqs.page.l166c76")}</p>
         ),
       },
       {
-        question: "Which payment methods do you accept?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l172c19"),
         content: (
           <div className="space-y-3 text-sm text-muted-foreground">
             <ul className="list-disc space-y-1 pl-5">
-              <li>Visa, MasterCard, Maestro, American Express, Discover, Diners, JCB</li>
-              <li>JDpay (China Mainland only), PayPal, Tamara, Apple Pay, Afterpay (US and AU)</li>
-              <li>
-                Alipay (US, Canada, China Mainland, Hong Kong SAR, Macau SAR), HB Pay (China
-                Mainland and Hong Kong), Klarna (selected countries), WeChat (China Mainland, Hong
-                Kong SAR, Macau SAR), UnionPay, iDEAL (Netherlands), Boleto (Brazil)
-              </li>
-              <li>
-                Cryptocurrency (
-                <XaInlineLink
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l176c19")}</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l177c19")}</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l178c19")}</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l183c19")}<XaInlineLink
                   href="/pages/cryptocurrency-payment"
                   className="underline text-foreground"
-                >
-                  see the supported list
-                </XaInlineLink>
+                >{xaI18n.t("xaB.src.app.faqs.page.l188c18")}</XaInlineLink>
                 )
               </li>
             </ul>
-            <p>
-              We accept Klarna, Afterpay, and Tamara in selected countries. Credit card instalments
-              are available only in Brazil and Mexico.
-            </p>
-            <p>
-              Maximum spends: France (1500 EUR), Italy (2000 EUR), United Kingdom (1500 GBP), United
-              States (1500 USD), Germany/Austria/Switzerland/Belgium (5000 EUR or CHF), Sweden
-              (16500 SEK), Netherlands (1500 EUR). CA resident loans are subject to the California
-              Financing Law license.
-            </p>
-            <p>Security checks are performed on all payments.</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l194c16")}</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l198c16")}</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l204c16")}</p>
           </div>
         ),
       },
       {
-        question: "Will my personal details stay safe?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l209c19"),
         content: (
-            <p className="text-sm text-muted-foreground">
-              Yes. We keep your personal data private and confidential and only share it with your
-              consent or when legally permitted.{" "}
+            <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l211c58")}{" "}
               <XaInlineLink href="/pages/privacy-policy" className="underline">
-              View the {brandName} Privacy Policy
-              </XaInlineLink>
+              View the {brandName}{xaI18n.t("xaB.src.app.faqs.page.l215c35")}</XaInlineLink>
               .
             </p>
         ),
@@ -221,66 +156,48 @@ const faqSections: FaqSection[] = [
     ],
   },
   {
-    title: "Product availability, authenticity and pre-owned items",
+    title: xaI18n.t("xaB.src.app.faqs.page.l224c12"),
     items: [
       {
-        question: "Are you going to have my size again?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l227c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            On the product page, select your size and choose{" "}
-            <span className="font-semibold text-foreground">size missing</span>, then enter your
-            email address and size to get notified when it is back in stock.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l229c56")}{" "}
+            <span className="font-semibold text-foreground">size missing</span>{xaI18n.t("xaB.src.app.faqs.page.l231c80")}</p>
         ),
       },
       {
-        question: "Can I reserve an item to buy later?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l237c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            No. To keep things fair on limited items, we do not offer reservations.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l239c56")}</p>
         ),
       },
       {
         question: `Are ${brandName} items guaranteed authentic?`,
         content: (
-          <p className="text-sm text-muted-foreground">
-            Yes. The assortment is curated by luxury brands and boutiques worldwide and all items
-            are guaranteed authentic.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l247c56")}</p>
         ),
       },
       {
-        question: "How will my order be packaged?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l254c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Orders are prepared in protective {brandName} packaging. If the designer provides branded{" "}
-            {packagingItems}, they will be included.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l256c56")}{brandName}{xaI18n.t("xaB.src.app.faqs.page.l257c58")}{" "}
+            {packagingItems}{xaI18n.t("xaB.src.app.faqs.page.l258c29")}</p>
         ),
       },
       {
-        question: "Do your pre-owned items come in different conditions?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l263c19"),
         content: (
           <div className="space-y-1 text-sm text-muted-foreground">
-            <p>Yes. Pre-owned items are graded:</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l266c16")}</p>
             <ul className="list-disc space-y-1 pl-5">
               <li>
-                <span className="font-semibold text-foreground">Unworn with tags:</span> previously
-                owned, never used, original condition with tags.
-              </li>
+                <span className="font-semibold text-foreground">{xaI18n.t("xaB.src.app.faqs.page.l269c65")}</span>{xaI18n.t("xaB.src.app.faqs.page.l269c89")}</li>
               <li>
-                <span className="font-semibold text-foreground">Unworn:</span> previously owned,
-                never used, original condition without tags.
-              </li>
+                <span className="font-semibold text-foreground">Unworn:</span>{xaI18n.t("xaB.src.app.faqs.page.l273c79")}</li>
               <li>
-                <span className="font-semibold text-foreground">Excellent:</span> previously worn,
-                like new with almost no signs of use.
-              </li>
+                <span className="font-semibold text-foreground">Excellent:</span>{xaI18n.t("xaB.src.app.faqs.page.l277c82")}</li>
               <li>
-                <span className="font-semibold text-foreground">Good:</span> previously worn with
-                signs of use such as fading, patina, or scratches.
-              </li>
+                <span className="font-semibold text-foreground">Good:</span>{xaI18n.t("xaB.src.app.faqs.page.l281c77")}</li>
             </ul>
           </div>
         ),
@@ -288,89 +205,54 @@ const faqSections: FaqSection[] = [
     ],
   },
   {
-    title: "Delivery, duties and taxes",
+    title: xaI18n.t("xaB.src.app.faqs.page.l291c12"),
     items: [
       {
-        question: "How much will I be charged for delivery?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l294c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Delivery cost depends on size, weight, and destination. Orders above the One Delivery
-            Fee threshold can ship multiple pieces from multiple locations for a single fee shown at
-            checkout.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l296c56")}</p>
         ),
       },
       {
-        question: "When will I receive my item and how can I track delivery?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l304c19"),
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>
-              Once confirmed, orders are sent within 2 business days. Delivery takes 2-7 business
-              days depending on location and method. Items from multiple brands arrive separately.
-            </p>
-            <p>
-              We email tracking and an estimated delivery date for each shipment. You can also track
-              in <Link href="/account" className="underline">Orders &amp; Returns</Link> or, for
-              guest checkout,{" "}
-              <XaInlineLink href="/account/trackingorder" className="underline">
-                track your guest order
-              </XaInlineLink>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l307c16")}</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l311c16")}<Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l313c62")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l313c89")}{" "}
+              <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l315c81")}</XaInlineLink>
               .
             </p>
           </div>
         ),
       },
       {
-        question: "Will I need to pay duties and taxes?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l324c19"),
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
             <p>
-              {brandName} ships Delivery Duties Paid (DDP) to: European Union (excluding Canary
-              Islands), United Kingdom, USA, Canada, China Mainland, Australia, New Zealand, Puerto
-              Rico, Switzerland, Singapore, Republic of Korea, Kuwait, Mexico, Qatar, India, Norway,
-              Saudi Arabia, Taiwan Region, Thailand, U.A.E, Japan, Brazil, Isle of Man, San Marino,
-              Colombia, Chile, Argentina, Egypt, Lebanon, Hong Kong SAR, and Bahrain. Duties and
-              taxes are included in the final price and no extra costs are due on delivery.
-            </p>
-            <p>
-              For Delivery At Place (DAP) destinations, prices exclude import duties and sales taxes
-              which you pay to the courier to clear customs.
-            </p>
-            <p>
-              US customers: {brandName} does not collect sales or use tax in all states. You may need to
-              file a year-end return for taxable purchases that were not taxed. Check with your tax
-              authority or{" "}
-              <XaInlineLink href="/pages/shipping-policy" className="underline">
-                view Duties and Taxes information
-              </XaInlineLink>
+              {brandName}{xaI18n.t("xaB.src.app.faqs.page.l328c26")}</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l335c16")}</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l339c16")}{brandName}{xaI18n.t("xaB.src.app.faqs.page.l340c40")}{" "}
+              <XaInlineLink href="/pages/shipping-policy" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l343c81")}</XaInlineLink>
               .
             </p>
           </div>
         ),
       },
       {
-        question: "Why can't certain items be delivered to me?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l352c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Brands control where their items are distributed, so some styles are unavailable in all
-            regions. Certain materials or finishes may also be restricted by customs.
-            If you have questions,{" "}
-            <XaInlineLink href="/pages/contact-us" className="underline">
-              contact Customer Service
-            </XaInlineLink>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l354c56")}{" "}
+            <XaInlineLink href="/pages/contact-us" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l358c74")}</XaInlineLink>
             .
           </p>
         ),
       },
       {
-        question: "I didn't receive my invoice with my order. Where can I find it?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l366c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Invoices have been removed to reduce waste. Sign in to download a digital invoice or, if
-            you checked out as a guest,{" "}
-            <XaInlineLink href="/account/trackingorder" className="underline">
-              enter your guest order details
-            </XaInlineLink>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l368c56")}{" "}
+            <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l371c79")}</XaInlineLink>
             .
           </p>
         ),
@@ -378,141 +260,91 @@ const faqSections: FaqSection[] = [
     ],
   },
   {
-    title: "Returns and refunds",
+    title: xaI18n.t("xaB.src.app.faqs.page.l381c12"),
     items: [
       {
         question: `What is the ${brandName} returns policy?`,
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>
-              Returns are accepted within 30 days of delivery, excluding delivery costs. Free
-              Collection is available.
-            </p>
-            <p>
-              Cryptocurrency refunds are processed by{" "}
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l387c16")}</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l391c16")}{" "}
               <XaInlineLink href="https://triple-a.io/" className="underline">
                 TripleA
-              </XaInlineLink>{" "}
-              in the original cryptocurrency at the current exchange rate once the return is
-              accepted.
-            </p>
-            <p>
-              Start a return in <Link href="/account" className="underline">Orders &amp; Returns</Link>{" "}
-              or, for guests,{" "}
-              <XaInlineLink href="/account/trackingorder" className="underline">
-                enter your guest order details
-              </XaInlineLink>
-              . Book collection within 7 days of delivery to stay within the window. Items must be
-              unworn, undamaged, unused, with tags and any designer {packagingItems} included. Missing
-              or damaged items may void the refund.{" "}
-              <XaInlineLink href="/pages/return-policy" className="underline">
-                Read the full Returns Policy
-              </XaInlineLink>
+              </XaInlineLink>{" "}{xaI18n.t("xaB.src.app.faqs.page.l395c35")}</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l399c16")}<Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l400c77")}</Link>{" "}{xaI18n.t("xaB.src.app.faqs.page.l400c109")}{" "}
+              <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l402c81")}</XaInlineLink>{xaI18n.t("xaB.src.app.faqs.page.l404c30")}{packagingItems}{xaI18n.t("xaB.src.app.faqs.page.l406c85")}{" "}
+              <XaInlineLink href="/pages/return-policy" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l408c79")}</XaInlineLink>
               .
             </p>
           </div>
         ),
       },
       {
-        question: "How do I book a free collection or return in store?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l417c19"),
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>
-              Request a return in <Link href="/account" className="underline">Orders &amp; Returns</Link>{" "}
-              or, for guests,{" "}
-              <XaInlineLink href="/account/trackingorder" className="underline">
-                enter your guest order details
-              </XaInlineLink>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l420c16")}<Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l421c79")}</Link>{" "}{xaI18n.t("xaB.src.app.faqs.page.l421c111")}{" "}
+              <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l423c81")}</XaInlineLink>
               .
             </p>
-            <p>
-              Choose courier collection, pick a date, and we will email next steps. You can reschedule
-              in Orders &amp; Returns. For drop-off, choose the option, prepare your package, and
-              take it to your selected location with the confirmation email.
-            </p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l428c16")}</p>
           </div>
         ),
       },
       {
-        question: "I want to return my order but I need my invoice for customs clearance. Will it still be included?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l437c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Yes. Invoices for customs clearance are still included. When preparing the return, place
-            the Return Note outside the {brandName} package.
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l439c56")}{brandName} package.
           </p>
         ),
       },
       {
-        question: "How do I return my item?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l446c19"),
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <div className="font-medium text-foreground">Here is what you need to do:</div>
+            <div className="font-medium text-foreground">{xaI18n.t("xaB.src.app.faqs.page.l449c58")}</div>
             <ol className="list-decimal space-y-1 pl-5">
               <li>
-                Go to <Link href="/account" className="underline">Orders &amp; Returns</Link> or, for
-                guests,{" "}
-                <XaInlineLink href="/account/trackingorder" className="underline">
-                  enter your guest order details
-                </XaInlineLink>
+                Go to <Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l452c67")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l452c94")}{" "}
+                <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l454c83")}</XaInlineLink>
                 .
               </li>
-              <li>Find the order, click Return Item(s), and select each item with a return reason.</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l459c19")}</li>
             </ol>
-            <p className="font-medium text-foreground">
-              There are two ways to return items. Depending on your location, one will always be available.
-            </p>
+            <p className="font-medium text-foreground">{xaI18n.t("xaB.src.app.faqs.page.l461c56")}</p>
             <div className="space-y-1">
-              <div className="font-semibold text-foreground">1. Book a free returns collection</div>
-              <p>Select your collection address, number of packages, date, and time, then book.</p>
+              <div className="font-semibold text-foreground">{xaI18n.t("xaB.src.app.faqs.page.l465c62")}</div>
+              <p>{xaI18n.t("xaB.src.app.faqs.page.l466c18")}</p>
             </div>
             <div className="space-y-1">
-              <div className="font-semibold text-foreground">2. Return for free at a drop-off point</div>
-              <p>
-                Select the in-store or drop-off option and take the return to your chosen partner boutique
-                or courier drop-off point.
-              </p>
+              <div className="font-semibold text-foreground">{xaI18n.t("xaB.src.app.faqs.page.l469c62")}</div>
+              <p>{xaI18n.t("xaB.src.app.faqs.page.l470c18")}</p>
             </div>
             <div className="space-y-1">
-              <div className="font-semibold text-foreground">Prepare your return</div>
+              <div className="font-semibold text-foreground">{xaI18n.t("xaB.src.app.faqs.page.l476c62")}</div>
               <ol className="list-decimal space-y-1 pl-5">
-                <li>
-                  Place the item and any brand {packagingItems} inside the {brandName} packaging.
+                <li>{xaI18n.t("xaB.src.app.faqs.page.l478c21")}{packagingItems} inside the {brandName} packaging.
                 </li>
-                <li>Attach the Return Label to the outside of the package.</li>
-                <li>
-                  If you received a Return Note, attach it to the outside of the package. For multiple items
-                  shipped separately, re-use the packaging setup with new Return Labels.
-                </li>
+                <li>{xaI18n.t("xaB.src.app.faqs.page.l481c21")}</li>
+                <li>{xaI18n.t("xaB.src.app.faqs.page.l482c21")}</li>
               </ol>
-              <p>
-                Ask the courier to scan the label at pickup or drop-off so you can track the return. Items
-                from different boutiques should be packaged separately with the correct
-                Return Label on each parcel.
-              </p>
+              <p>{xaI18n.t("xaB.src.app.faqs.page.l487c18")}</p>
             </div>
           </div>
         ),
       },
       {
-        question: "How do I package my item for return?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l497c19"),
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>Follow these steps:</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l500c16")}</p>
             <ol className="list-decimal space-y-1 pl-5">
-              <li>
-                Place unwanted items with any brand {packagingItems} inside the reusable {brandName} packaging.
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l502c19")}{packagingItems}{xaI18n.t("xaB.src.app.faqs.page.l503c69")}{brandName} packaging.
               </li>
-              <li>
-                Attach the Return Label and Return Note to the outside. Do not attach labels to designer
-                packaging.
-              </li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l505c19")}</li>
             </ol>
-            <p>
-              If returning to multiple locations, pack items separately and attach the corresponding Return
-              Label to each.{" "}
-              <XaInlineLink href="/pages/return-policy" className="underline">
-                Learn more about preparing your package
-              </XaInlineLink>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l510c16")}{" "}
+              <XaInlineLink href="/pages/return-policy" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l513c79")}</XaInlineLink>
               .
             </p>
           </div>
@@ -521,56 +353,38 @@ const faqSections: FaqSection[] = [
       {
         question: `Does my order need to be returned in the ${brandName} package it arrived in?`,
         content: (
-          <p className="text-sm text-muted-foreground">
-            We recommend using the reusable {brandName} package, but you can use another sturdy box if needed.
-            Items must be returned undamaged, unused, with all tags and original packaging or branded boxes.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l524c56")}{brandName}{xaI18n.t("xaB.src.app.faqs.page.l525c56")}</p>
         ),
       },
       {
-        question: "Will the delivery partner collect multiple packages?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l531c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Yes, the delivery partner may collect multiple packages. If returning items to multiple boutiques, request
-            a separate collection for each package in your account or{" "}
-            <XaInlineLink href="/account/trackingorder" className="underline">
-              guest order lookup
-            </XaInlineLink>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l533c56")}{" "}
+            <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l536c79")}</XaInlineLink>
             .
           </p>
         ),
       },
       {
-        question: "When will I receive my refund?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l544c19"),
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>
-              Track returns using the Return Label tracking number. Once received, returns can take up to 6
-              calendar days to process. We email confirmation when accepted.
-            </p>
-            <p>
-              Refunds go to your original payment method and can take up to 14 days to appear depending on your
-              provider.
-            </p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l547c16")}</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l551c16")}</p>
           </div>
         ),
       },
       {
-        question: "Will delivery costs and duties be refunded on return?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l559c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            The original delivery cost is not refunded. For DAP destinations, taxes and duties are not
-            refundable through {brandName} (check with customs). For DDP destinations, taxes and duties are
-            refundable through {brandName}.
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l561c56")}{brandName}{xaI18n.t("xaB.src.app.faqs.page.l563c43")}{brandName}.
           </p>
         ),
       },
       {
-        question: "Can I return my made-to-order item?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l569c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            No. Customised items are created to your specification and are not eligible for return.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l571c56")}</p>
         ),
       },
     ],
@@ -579,85 +393,66 @@ const faqSections: FaqSection[] = [
     title: "Pre-order",
     items: [
       {
-        question: "What does pre-order mean?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l582c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            You can buy next season&apos;s pieces before release and receive them once available.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l584c56")}</p>
         ),
       },
       {
-        question: "When will my pre-order item arrive?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l590c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            We email you with an estimated delivery date as soon as the item is released and ready to
-            send.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l592c56")}</p>
         ),
       },
       {
-        question: "When do I have to pay?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l599c19"),
         content: (
-          <p className="text-sm text-muted-foreground">Pre-order items require full payment at checkout.</p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l601c56")}</p>
         ),
       },
       {
-        question: "Can I cancel a pre-order?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l605c19"),
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>Some brands and boutiques allow cancellation before we prepare your order.</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l608c16")}</p>
             <ol className="list-decimal space-y-1 pl-5">
               <li>
-                Go to <Link href="/account" className="underline">Orders &amp; Returns</Link> or, for guests,{" "}
-                <XaInlineLink href="/account/trackingorder" className="underline">
-                  enter your guest order number and email
-                </XaInlineLink>
+                Go to <Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l611c67")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l611c94")}{" "}
+                <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l612c83")}</XaInlineLink>
                 .
               </li>
-              <li>Select the items to cancel and provide a reason.</li>
-              <li>We will email confirmation of the cancelled order.</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l617c19")}</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l618c19")}</li>
             </ol>
-            <p>
-              If the order has been prepared, it cannot be cancelled, but you can use the Free Returns service.
-            </p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l620c16")}</p>
           </div>
         ),
       },
       {
-        question: "Can I change my delivery address?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l627c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Check Order Details in your {brandName} account. You may not be able to change it if the item has been
-            sent.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l629c56")}{brandName}{xaI18n.t("xaB.src.app.faqs.page.l630c52")}</p>
         ),
       },
       {
-        question: "Are pre-order items refundable?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l636c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Yes, if they meet the conditions in the{" "}
-            <XaInlineLink href="/pages/return-policy" className="underline">
-              Returns Policy
-            </XaInlineLink>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l638c56")}{" "}
+            <XaInlineLink href="/pages/return-policy" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l640c77")}</XaInlineLink>
             .
           </p>
         ),
       },
       {
-        question: "Will pre-order items be delivered with my other orders?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l648c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            No. Pre-order items ship separately based on their expected release date.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l650c56")}</p>
         ),
       },
       {
-        question: "Is there a limit on purchasing pre-order items?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l656c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Some pre-order items have limits so everyone has a chance to purchase.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l658c56")}</p>
         ),
       },
     ],
@@ -666,50 +461,36 @@ const faqSections: FaqSection[] = [
     title: "Size and fit",
     items: [
       {
-        question: "Where can I find size conversion charts?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l669c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            On the product page, select <span className="font-semibold text-foreground">Size Guide</span> above
-            the size menu to view conversions.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l671c56")}<span className="font-semibold text-foreground">Size Guide</span>{xaI18n.t("xaB.src.app.faqs.page.l672c106")}</p>
         ),
       },
       {
-        question: "How can I get a better understanding on how a piece will fit?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l678c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            On the product page, open the <span className="font-semibold text-foreground">Size &amp; Fit</span>{" "}
-            tab for size, fit, cut, and model measurements. Material and care instructions are in{" "}
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l680c56")}<span className="font-semibold text-foreground">Size &amp; Fit</span>{" "}{xaI18n.t("xaB.src.app.faqs.page.l681c117")}{" "}
             <span className="font-semibold text-foreground">The Details</span> tab.
           </p>
         ),
       },
       {
-        question: "What's the difference between size, fit, cut and material?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l688c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Size is the designer label size. Fit describes how it wears, cut is the silhouette, and material is
-            what the item is made from. Check The Details and Size &amp; Fit tabs on the product page.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l690c56")}</p>
         ),
       },
       {
-        question: "Why do designer sizes vary?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l697c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            International sizing differs and designers fit differently. That is why we provide item-specific
-            guidance.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l699c56")}</p>
         ),
       },
       {
-        question: "What if my item doesn't fit?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l706c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Use free returns if it does not fit. To order a different size you can place a new order or{" "}
-            <XaInlineLink href="/pages/contact-us" className="underline">
-              contact Customer Service
-            </XaInlineLink>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l708c56")}{" "}
+            <XaInlineLink href="/pages/contact-us" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l710c74")}</XaInlineLink>
             .
           </p>
         ),
@@ -720,116 +501,85 @@ const faqSections: FaqSection[] = [
     title: "Promotions",
     items: [
       {
-        question: "How do I find out about the latest promotions?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l723c19"),
         content: (
           <p className="text-sm text-muted-foreground">
-            <XaInlineLink href="#newsletter" className="underline">
-              Sign up to emails
-            </XaInlineLink>{" "}
-            for promotions, new arrivals, and early sale access.
-          </p>
+            <XaInlineLink href="#newsletter" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l726c68")}</XaInlineLink>{" "}{xaI18n.t("xaB.src.app.faqs.page.l728c33")}</p>
         ),
       },
       {
-        question: "What different types of promotions are there?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l734c19"),
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>
-              See all promotions on the{" "}
-              <XaInlineLink href="/pages/payment-and-pricing#promotions" className="underline">
-                Promotion Terms &amp; Conditions page
-              </XaInlineLink>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l737c16")}{" "}
+              <XaInlineLink href="/pages/payment-and-pricing#promotions" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l739c96")}</XaInlineLink>
               .
             </p>
-            <p>If you are an Access member, check your Access dashboard for promotional rewards.</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l744c16")}</p>
           </div>
         ),
       },
       {
-        question: "How do I apply a promo code?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l749c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Add eligible items to your bag. Some promo codes apply automatically; others can be entered at
-            checkout. If you need help,{" "}
-            <XaInlineLink href="/pages/contact-us" className="underline">
-              contact Customer Service
-            </XaInlineLink>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l751c56")}{" "}
+            <XaInlineLink href="/pages/contact-us" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l754c74")}</XaInlineLink>
             .
           </p>
         ),
       },
       {
-        question: "Are there any brands excluded from promotional discounts?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l762c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Yes. Promotions apply only to selected brands and items. Items labelled for promotions may be
-            eligible. See the{" "}
-            <XaInlineLink href="/pages/payment-and-pricing#promotions" className="underline">
-              Promotion Terms &amp; Conditions
-            </XaInlineLink>{" "}
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l764c56")}{" "}
+            <XaInlineLink href="/pages/payment-and-pricing#promotions" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l767c94")}</XaInlineLink>{" "}
             for details.
           </p>
         ),
       },
       {
-        question: "How do I know if my item is eligible for a promotion?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l775c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Items labelled or shown on the promotions page may be eligible. If a minimum spend applies, it must
-            be met in a single transaction. Check the Promotion Terms &amp; Conditions for each campaign.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l777c56")}</p>
         ),
       },
       {
-        question: "The item I want is part of the promotion but my size isn't discounted. Why does this happen?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l784c19"),
         content: (
           <p className="text-sm text-muted-foreground">
-            {brandName} sources from global brands and boutiques. If your size comes from a boutique that is not
-            participating in the promotion, it will not be discounted.
-          </p>
+            {brandName}{xaI18n.t("xaB.src.app.faqs.page.l787c24")}</p>
         ),
       },
       {
-        question: "My promo code has expired. Can I request another one?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l793c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Promotional discounts cannot be reactivated and are non-transferable with no cash alternative.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l795c56")}</p>
         ),
       },
       {
-        question: "Can I combine two promotions simultaneously?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l801c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Some promotions cannot be combined. If two offers are available, choose which to apply. If a
-            campaign is auto-applied at checkout, adding another promo code will overwrite it.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l803c56")}</p>
         ),
       },
     ],
   },
   {
-    title: 'European Union Digital Services Act ("DSA")',
+    title: xaI18n.t("xaB.src.app.faqs.page.l812c12"),
     items: [
       {
         question: `Who is the ${brandName} Legal Representative for the purposes of the DSA?`,
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
             <p>
-              {brandName} Portugal Unipessoal, Lda is the appointed legal representative under Article 13 of the
-              EU DSA. Communications about the DSA can be sent:
-            </p>
+              {brandName}{xaI18n.t("xaB.src.app.faqs.page.l819c26")}</p>
             <ul className="list-disc space-y-1 pl-5">
-              <li>Email: dsa@xa.com</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l823c19")}</li>
               <li>
-                Post: {brandName} at Rua da Lionesa, no 446, Edificio G12 4465-671, Leca do Balio, Porto – Portugal
-              </li>
-              <li>Phone: +351 220430530</li>
+                Post: {brandName}{xaI18n.t("xaB.src.app.faqs.page.l825c34")}</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l827c19")}</li>
             </ul>
-            <p>
-              Please indicate that your communication relates to the DSA and provide an English translation if
-              possible. For urgent queries, email is fastest.
-            </p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l829c16")}</p>
           </div>
         ),
       },
@@ -837,28 +587,25 @@ const faqSections: FaqSection[] = [
         question: `What is the average number of active recipients of services on the ${brandName} Marketplace in the EEA?`,
         content: (
           <div className="space-y-1 text-sm text-muted-foreground">
-            <p>Over the past 6 months, the average number of active recipients in the EEA is:</p>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l840c16")}</p>
             <ul className="list-disc space-y-1 pl-5">
-              <li>Website: Below 15 million</li>
-              <li>App: Below 5 million</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l842c19")}</li>
+              <li>{xaI18n.t("xaB.src.app.faqs.page.l843c19")}</li>
             </ul>
           </div>
         ),
       },
       {
-        question: "Compliance with all laws",
+        question: xaI18n.t("xaB.src.app.faqs.page.l849c19"),
         content: (
           <p className="text-sm text-muted-foreground">
-            {brandName} requires marketplace sellers to offer products that comply with applicable EU product
-            safety and compliance rules.
-          </p>
+            {brandName}{xaI18n.t("xaB.src.app.faqs.page.l852c24")}</p>
         ),
       },
       {
         question: "Tax Strategy",
         content: (
-          <p className="text-sm text-muted-foreground">
-            You can consult the {brandName} Tax Strategy{" "}
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l860c56")}{brandName} Tax Strategy{" "}
             <XaInlineLink
               href="/pages/terms-of-service"
               className="underline"
@@ -872,95 +619,66 @@ const faqSections: FaqSection[] = [
     ],
   },
   {
-    title: "Fashion Concierge",
+    title: xaI18n.t("xaB.src.app.faqs.page.l875c12"),
     items: [
       {
-        question: "What is Fashion Concierge On Demand?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l878c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Fashion Concierge On Demand is an exclusive service for premium {brandName} customers to source rare,
-            unique, or sold-out pieces. Access it through the Membership section of your profile.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l880c56")}{brandName}{xaI18n.t("xaB.src.app.faqs.page.l881c88")}</p>
         ),
       },
       {
-        question: "How does Fashion Concierge work?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l887c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Dedicated teams in the US, UK, Hong Kong, France, and the Middle East source the items you want.
-            Timing and pricing vary by location. Communication happens via email after your request.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l889c56")}</p>
         ),
       },
       {
-        question: "How is pricing determined?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l896c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Pricing depends on the supplier&apos;s location. Import taxes and partnerships with luxury brands may
-            affect cost, and it can exceed retail in some cases.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l898c56")}</p>
         ),
       },
       {
-        question: "What is the delivery time for Fashion Concierge orders?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l905c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            All items are inspected before delivery, which impacts processing time. Delivery depends on both
-            item and customer location, and may take longer than usual.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l907c56")}</p>
         ),
       },
       {
-        question: "What is the returns policy for Fashion Concierge orders?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l914c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Returns depend on brand, supplier, and location. You are notified by email about final sale status.
-            Read and confirm agreement; without your response, Fashion Concierge will not proceed.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l916c56")}</p>
         ),
       },
       {
-        question: "Can I place pre-orders through Fashion Concierge?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l923c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Yes. Pre-orders require full payment upfront. You will receive details on ETA, return policy, and
-            price before confirming.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l925c56")}</p>
         ),
       },
       {
-        question: "Is there a minimum order value for Fashion Concierge?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l932c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Yes. The service focuses on rare pieces with a minimum order value of 1,000 USD. Requests below that
-            threshold should use the Fashion Concierge edit for curated items.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l934c56")}</p>
         ),
       },
       {
-        question: "Are there restrictions on hazardous or regulated materials?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l941c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            Some materials require special export documentation or carrier approval that can add time to
-            processing. Customs clearance may involve risk or delays, but we handle the process.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l943c56")}</p>
         ),
       },
       {
-        question: "What about items made from regulated materials?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l950c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            These items may require additional documentation or approvals before shipment. We will confirm
-            timelines during the order process.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l952c56")}</p>
         ),
       },
       {
-        question: "Can items be held for purchase at a later time?",
+        question: xaI18n.t("xaB.src.app.faqs.page.l959c19"),
         content: (
-          <p className="text-sm text-muted-foreground">
-            No. Items cannot be held; availability is not guaranteed without purchase.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l961c56")}</p>
         ),
       },
     ],
@@ -977,11 +695,10 @@ export default function FaqPage() {
   return (
     <main className="sf-content">
       <Section padding="wide" className="max-w-3xl space-y-3">
-        <p className="text-xs uppercase xa-tracking-020 text-muted-foreground">Help &amp; support</p>
+        <p className="text-xs uppercase xa-tracking-020 text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l980c80")}</p>
         <h1 className="text-3xl font-semibold">FAQs</h1>
-        <p className="text-sm text-muted-foreground">
-          All the essentials for shopping, delivery, returns, payments, sizing, promotions, and more for{" "}
-          {productDescriptor}. Browse by topic or expand a question to see the details exactly as on {brandName}.
+        <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l982c54")}{" "}
+          {productDescriptor}{xaI18n.t("xaB.src.app.faqs.page.l984c30")}{brandName}.
         </p>
       </Section>
 
@@ -989,7 +706,7 @@ export default function FaqPage() {
         <Grid columns={{ base: 1, md: 4 }} gap={10}>
           <aside className="md:col-span-1">
             <div className="sticky top-28 space-y-3">
-              <div className="text-sm font-semibold text-muted-foreground">Browse topics</div>
+              <div className="text-sm font-semibold text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l992c76")}</div>
               <Stack gap={2}>
                 {faqSections.map((section) => {
                   const id = toSlug(section.title);
@@ -1032,7 +749,7 @@ export default function FaqPage() {
             id="newsletter"
             className="p-5"
             title="Tell us what you think"
-            question="Was this content helpful?"
+            question={xaI18n.t("xaB.src.app.faqs.page.l1035c22")}
             options={[
               { id: "yes", label: "Yes" },
               { id: "not-really", label: "Not really" },
@@ -1041,15 +758,10 @@ export default function FaqPage() {
           <NewsletterSignupCard
             className="p-5"
             title="Never miss a thing"
-            description="Sign up for promotions, new arrivals, stock updates, and more."
+            description={xaI18n.t("xaB.src.app.faqs.page.l1044c25")}
             legalNote={
-              <>
-                By signing up, you agree to receive marketing emails and acknowledge the{" "}
-                <XaInlineLink href="/pages/privacy-policy" className="underline">
-                  Privacy Policy
-                </XaInlineLink>
-                . Unsubscribe anytime.
-              </>
+              <>{xaI18n.t("xaB.src.app.faqs.page.l1046c17")}{" "}
+                <XaInlineLink href="/pages/privacy-policy" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l1048c82")}</XaInlineLink>{xaI18n.t("xaB.src.app.faqs.page.l1050c32")}</>
             }
           />
         </Grid>

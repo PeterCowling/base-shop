@@ -7,6 +7,8 @@ import React, {
   useState,
 } from "react";
 
+import { ReceptionInput, ReceptionSelect } from "@acme/ui/operations";
+
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
 /**
@@ -209,7 +211,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           >
             First Name
           </label>
-          <input
+          <ReceptionInput
             id="firstName"
             className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
               isFirstNamePlaceholder
@@ -232,7 +234,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           >
             Last Name
           </label>
-          <input
+          <ReceptionInput
             id="lastName"
             className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
               isLastNamePlaceholder
@@ -255,7 +257,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           >
             Gender
           </label>
-          <select
+          <ReceptionSelect
             id="gender"
             className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
               isGenderPopulated ? "bg-success-light/50" : ""
@@ -267,7 +269,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
             <option value="">(select one)</option>
             <option value="F">F</option>
             <option value="M">M</option>
-          </select>
+          </ReceptionSelect>
         </div>
       </div>
     </>

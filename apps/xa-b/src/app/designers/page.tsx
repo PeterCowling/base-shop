@@ -10,6 +10,7 @@ import { Breadcrumbs } from "@acme/design-system/molecules";
 import { Inline } from "@acme/design-system/primitives/Inline";
 
 import { XA_BRANDS } from "../../lib/demoData";
+import { xaI18n } from "../../lib/xaI18n";
 
 export default function DesignersIndexPage() {
   const [query, setQuery] = React.useState("");
@@ -38,16 +39,14 @@ export default function DesignersIndexPage() {
         <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-2xl font-semibold">Designers</h1>
-            <p className="text-sm text-muted-foreground">
-              Browse the A-Z directory and search within designers.
-            </p>
+            <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.designers.page.l41c58")}</p>
           </div>
           <div className="w-full sm:w-80">
-            <div className="text-xs text-muted-foreground">Search designers</div>
+            <div className="text-xs text-muted-foreground">{xaI18n.t("xaB.src.app.designers.page.l46c60")}</div>
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Type a designer name"
+              placeholder={xaI18n.t("xaB.src.app.designers.page.l50c27")}
             />
           </div>
         </div>
@@ -79,7 +78,7 @@ export default function DesignersIndexPage() {
                       className="rounded-lg border p-4 hover:shadow-sm"
                     >
                       <div className="font-medium">{designer.name}</div>
-                      <div className="text-sm text-muted-foreground">View designer</div>
+                      <div className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.designers.page.l82c70")}</div>
                     </Link>
                   ))}
                 </Grid>
@@ -88,10 +87,8 @@ export default function DesignersIndexPage() {
           </div>
         ) : (
           <div className="rounded-lg border p-6">
-            <div className="font-medium">No designers found.</div>
-            <div className="mt-2 text-sm text-muted-foreground">
-              Try a different name or clear the search.
-            </div>
+            <div className="font-medium">{xaI18n.t("xaB.src.app.designers.page.l91c42")}</div>
+            <div className="mt-2 text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.designers.page.l92c65")}</div>
           </div>
         )}
       </Section>

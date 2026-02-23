@@ -1,6 +1,7 @@
 import { type FormEvent, memo, useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
+import { ReceptionInput, ReceptionTextarea } from "@acme/ui/operations";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
 import { getUserDisplayName } from "../../lib/roles";
@@ -95,34 +96,34 @@ function VarianceSignoffModalBase({
       <h2 className="mb-2 text-center text-xl font-semibold dark:text-darkAccentGreen">
         Manager Sign-off Required
       </h2>
-      <p className="mb-4 text-center text-sm text-gray-700 dark:text-darkAccentGreen">
+      <p className="mb-4 text-center text-sm text-foreground dark:text-darkAccentGreen">
         Variance detected: €{varianceAmount.toFixed(2)}. A manager must sign off
         before closing this shift.
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <input
+        <ReceptionInput
           ref={emailRef}
           type="email"
           autoComplete="username"
           placeholder="Manager email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-center focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
+          className="w-full rounded-lg border border-border-2 px-4 py-2 text-center focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
         />
-        <input
+        <ReceptionInput
           type="password"
           autoComplete="current-password"
           placeholder="Manager password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-center focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
+          className="w-full rounded-lg border border-border-2 px-4 py-2 text-center focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
         />
-        <textarea
+        <ReceptionTextarea
           rows={3}
           placeholder="Variance note"
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
+          className="w-full rounded-lg border border-border-2 px-4 py-2 text-sm focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
         />
         {error && (
           <div className="text-sm text-error-main" role="alert">
@@ -133,14 +134,14 @@ function VarianceSignoffModalBase({
           <Button
             type="button"
             onClick={onCancel}
-            className="min-h-11 min-w-11 rounded bg-gray-300 px-4 py-2 text-gray-800 dark:bg-darkSurface dark:text-darkAccentOrange"
+            className="min-h-11 min-w-11 rounded bg-surface-3 px-4 py-2 text-foreground dark:bg-darkSurface dark:text-darkAccentOrange"
           >
             Cancel
           </Button>
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="min-h-11 min-w-11 rounded bg-primary-main px-4 py-2 text-white disabled:opacity-50 dark:bg-darkAccentGreen"
+            className="min-h-11 min-w-11 rounded bg-primary-main px-4 py-2 text-primary-fg disabled:opacity-50 dark:bg-darkAccentGreen"
           >
             {isSubmitting ? "Verifying..." : "Sign off"}
           </Button>

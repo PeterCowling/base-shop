@@ -3,7 +3,8 @@
 
 import React, { type FC, useCallback, useMemo } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import { type CategoryType } from "../../../types/bar/BarTypes";
 
@@ -25,91 +26,91 @@ const CATEGORY_STYLES: Record<
     bg: "bg-pinkShades-row1",
     darkBg: "bg-pinkShades-row2",
     hover: "hover:bg-pinkShades-row2",
-    text: "text-black dark:text-darkAccentGreen",
+    text: "text-foreground dark:text-darkAccentGreen",
   },
   Savory: {
     bg: "bg-greenShades-row1",
     darkBg: "bg-greenShades-row2",
     hover: "hover:bg-greenShades-row2",
-    text: "text-black dark:text-darkAccentGreen",
+    text: "text-foreground dark:text-darkAccentGreen",
   },
   Gelato: {
     bg: "bg-pinkShades-row3",
     darkBg: "bg-pinkShades-row4",
     hover: "hover:bg-pinkShades-row4",
-    text: "text-black dark:text-darkAccentGreen",
+    text: "text-foreground dark:text-darkAccentGreen",
   },
 
   Coffee: {
     bg: "bg-coffeeShades-row1",
     darkBg: "bg-coffeeShades-row2",
     hover: "hover:bg-coffeeShades-row2",
-    text: "text-black dark:text-darkAccentGreen",
+    text: "text-foreground dark:text-darkAccentGreen",
   },
   Tea: {
     bg: "bg-teaShades-row1",
     darkBg: "bg-teaShades-row2",
     hover: "hover:bg-teaShades-row2",
-    text: "text-black dark:text-darkAccentGreen",
+    text: "text-foreground dark:text-darkAccentGreen",
   },
 
   Beer: {
     bg: "bg-beerShades-row1",
     darkBg: "bg-beerShades-row2",
     hover: "hover:bg-beerShades-row2",
-    text: "text-white dark:text-white",
+    text: "text-primary-fg dark:text-primary-fg",
   },
   Wine: {
     bg: "bg-wineShades-row1",
     darkBg: "bg-wineShades-row2",
     hover: "hover:bg-wineShades-row2",
-    text: "text-white dark:text-white",
+    text: "text-primary-fg dark:text-primary-fg",
   },
 
   Spritz: {
     bg: "bg-spritzShades-row1",
     darkBg: "bg-spritzShades-row2",
     hover: "hover:bg-spritzShades-row2",
-    text: "text-white dark:text-white",
+    text: "text-primary-fg dark:text-primary-fg",
   },
 
   "Mixed Drinks": {
     bg: "bg-blueShades-row1",
     darkBg: "bg-blueShades-row2",
     hover: "hover:bg-blueShades-row2",
-    text: "text-black dark:text-darkAccentGreen",
+    text: "text-foreground dark:text-darkAccentGreen",
   },
   Cocktails: {
     bg: "bg-purpleShades-row1",
     darkBg: "bg-purpleShades-row2",
     hover: "hover:bg-purpleShades-row2",
-    text: "text-white dark:text-white",
+    text: "text-primary-fg dark:text-primary-fg",
   },
 
   Other: {
     bg: "bg-grayishShades-row1",
     darkBg: "bg-grayishShades-row2",
     hover: "hover:bg-grayishShades-row2",
-    text: "text-black dark:text-darkAccentGreen",
+    text: "text-foreground dark:text-darkAccentGreen",
   },
 
   Juices: {
     bg: "bg-orangeShades-row1",
     darkBg: "bg-orangeShades-row2",
     hover: "hover:bg-orangeShades-row2",
-    text: "text-black dark:text-darkAccentGreen",
+    text: "text-foreground dark:text-darkAccentGreen",
   },
   Smoothies: {
     bg: "bg-orangeShades-row3",
     darkBg: "bg-orangeShades-row2",
     hover: "hover:bg-orangeShades-row4",
-    text: "text-black dark:text-darkAccentGreen",
+    text: "text-foreground dark:text-darkAccentGreen",
   },
   Soda: {
     bg: "bg-orangeShades-row5",
     darkBg: "bg-orangeShades-row2",
     hover: "hover:bg-orangeShades-row1",
-    text: "text-black dark:text-darkAccentGreen",
+    text: "text-foreground dark:text-darkAccentGreen",
   },
 };
 
@@ -144,7 +145,7 @@ const CategoryHeader: FC<CategoryHeaderProps> = React.memo(
             bg: "bg-neutral-400",
             darkBg: "bg-neutral-500",
             hover: "hover:bg-neutral-500",
-            text: "text-black dark:text-darkAccentGreen",
+            text: "text-foreground dark:text-darkAccentGreen",
           };
 
           return (
@@ -173,13 +174,15 @@ const CategoryHeader: FC<CategoryHeaderProps> = React.memo(
 
     /* ------------------------------ RENDER ------------------------------- */
     return (
-      <div
-        className="flex w-full gap-2 overflow-x-auto overflow-y-hidden border-b border-black/10 bg-gradient-to-b from-stone-100 via-stone-200 to-stone-300 px-2 py-1 scrollbar-none scroll-smooth snap-x snap-mandatory shadow-md dark:border-neutral-700 dark:from-neutral-700 dark:via-neutral-800 dark:to-neutral-900"
+      <Inline
+        wrap={false}
+        gap={2}
+        className="w-full overflow-x-auto overflow-y-hidden border-b border-foreground/10 bg-gradient-to-b from-stone-100 via-stone-200 to-stone-300 px-2 py-1 scrollbar-none scroll-smooth snap-x snap-mandatory shadow-md dark:border-neutral-700 dark:from-neutral-700 dark:via-neutral-800 dark:to-neutral-900"
         role="tablist"
         aria-label="Menu categories"
       >
         {buttons}
-      </div>
+      </Inline>
     );
   }
 );

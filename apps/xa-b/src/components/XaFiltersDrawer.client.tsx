@@ -23,6 +23,7 @@ import {
   XA_FILTER_SWATCH_FALLBACK,
 } from "../lib/xaCatalog";
 import type { FilterConfig, FilterKey } from "../lib/xaFilters";
+import { xaI18n } from "../lib/xaI18n";
 
 const PRICE_PRESETS = [
   { label: "Under 100", min: 0, max: 100 },
@@ -144,9 +145,7 @@ export function XaFiltersDrawer({
           <div className="mb-4 flex items-center justify-between gap-4">
             <div>
               <DrawerTitle className="text-lg font-semibold">All filters</DrawerTitle>
-              <DrawerDescription className="text-sm text-muted-foreground">
-                Select filters then press APPLY.
-              </DrawerDescription>
+              <DrawerDescription className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.components.xafiltersdrawer.client.l147c76")}</DrawerDescription>
             </div>
             <Button
               type="button"
@@ -237,7 +236,7 @@ export function XaFiltersDrawer({
                       <Input
                         value={designerQuery}
                         onChange={(event) => setDesignerQuery(event.target.value)}
-                        placeholder="Search designers"
+                        placeholder={xaI18n.t("xaB.src.components.xafiltersdrawer.client.l240c37")}
                       />
                       <Inline gap={2} className="flex-wrap">
                         {trendingDesigners.map((designer) => (

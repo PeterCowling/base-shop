@@ -61,7 +61,7 @@ const DocInsertButton: React.FC<DocInsertButtonProps> = ({
 
   /* ---------- styling --------------------------------------------------- */
   const baseClass =
-    "min-h-55px px-4 flex items-center justify-center rounded-md text-white transition-colors focus:outline-none";
+    "min-h-55px px-4 flex items-center justify-center rounded-md text-primary-fg transition-colors focus:outline-none";
 
   const colorClass = (() => {
     switch (status) {

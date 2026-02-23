@@ -21,11 +21,11 @@ function LiveInner() {
   }
 
   return (
-    <div className="min-h-80vh p-4 bg-gray-100 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-surface-2 dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         LIVE SHIFT
       </h1>
-      <div className="bg-white rounded-lg shadow p-6 space-y-8 dark:bg-darkSurface">
+      <div className="bg-surface rounded-lg shadow p-6 space-y-8 dark:bg-darkSurface">
         <SummaryAndTransactions
           shiftOpenTime={props.shiftOpenTime}
           shiftOwner={props.shiftOwner}

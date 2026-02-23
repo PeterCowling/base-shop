@@ -2,6 +2,11 @@
 
 import * as React from "react";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export type ThemeOption = "base" | "dark" | "system";
@@ -17,6 +22,14 @@ export interface ThemeToggleProps {
   size?: "sm" | "md";
   /** Show labels next to icons */
   showLabels?: boolean;
+  /** Semantic container shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit container radius token override. */
+  radius?: PrimitiveRadius;
+  /** Semantic item shape. Ignored when `itemRadius` is provided. */
+  itemShape?: PrimitiveShape;
+  /** Explicit item radius token override. */
+  itemRadius?: PrimitiveRadius;
 }
 
 const SunIcon = ({ className }: { className?: string }) => (
@@ -97,7 +110,11 @@ export const ThemeToggle = (
     onThemeChange,
     className,
     size = "sm",
-    showLabels = false
+    showLabels = false,
+    shape,
+    radius,
+    itemShape,
+    itemRadius,
   }: ThemeToggleProps & {
     ref?: React.Ref<HTMLDivElement>;
   }
@@ -119,6 +136,16 @@ export const ThemeToggle = (
     sm: showLabels ? "px-2.5 gap-1.5" : "px-2",
     md: showLabels ? "px-3 gap-2" : "px-2.5",
   };
+  const containerShapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "lg",
+  });
+  const itemShapeRadiusClass = resolveShapeRadiusClass({
+    shape: itemShape,
+    radius: itemRadius,
+    defaultRadius: "md",
+  });
 
   return (
     <div
@@ -127,7 +154,8 @@ export const ThemeToggle = (
       aria-label="Theme selection"
       className={cn(
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-        "inline-flex items-center rounded-lg border border-border bg-muted/50 p-0.5",
+        "inline-flex items-center border border-border bg-muted/50 p-0.5",
+        containerShapeRadiusClass,
         sizeClasses[size],
         className
       )}
@@ -144,7 +172,8 @@ export const ThemeToggle = (
             onClick={() => onThemeChange(value)}
             className={cn(
               // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-              "inline-flex h-full items-center justify-center rounded-md transition-colors transition-shadow motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+              "inline-flex h-full items-center justify-center transition-colors transition-shadow motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+              itemShapeRadiusClass,
               buttonPaddingClasses[size],
               isActive
                 ? // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names

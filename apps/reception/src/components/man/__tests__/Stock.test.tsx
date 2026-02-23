@@ -4,14 +4,16 @@ import { render, screen } from "@testing-library/react";
 
 import Stock from "../Stock";
 
-const useProductsMock = jest.fn();
+const productsHookMock = jest.fn();
 jest.mock("../../../hooks/data/bar/useProducts", () => ({
-  useProducts: useProductsMock,
+  __esModule: true,
+  useProducts: (...args: unknown[]) => productsHookMock(...args),
+  default: (...args: unknown[]) => productsHookMock(...args),
 }));
 
 describe("Stock", () => {
   beforeEach(() => {
-    useProductsMock.mockReturnValue({
+    productsHookMock.mockReturnValue({
       getProductsByCategory: (id: number) => {
         if (id === 1) return [["Beer"], ["Wine"]];
         if (id === 2) return [["Beer"], ["Soda"]];
@@ -30,7 +32,7 @@ describe("Stock", () => {
   });
 
   it("handles empty results", () => {
-    useProductsMock.mockReturnValueOnce({ getProductsByCategory: () => [] });
+    productsHookMock.mockReturnValueOnce({ getProductsByCategory: () => [] });
     render(<Stock />);
     expect(screen.queryAllByRole("spinbutton")).toHaveLength(0);
   });

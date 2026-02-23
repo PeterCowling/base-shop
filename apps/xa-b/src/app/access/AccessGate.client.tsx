@@ -5,6 +5,8 @@ import * as React from "react";
 
 import { Button, Input, Textarea } from "@acme/design-system/atoms";
 
+import { xaI18n } from "../../lib/xaI18n";
+
 import { gateClassNames } from "./gateClasses";
 
 type RequestState = "idle" | "loading" | "success" | "error";
@@ -43,7 +45,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
         body: JSON.stringify(payload),
       });
       if (!response.ok) {
-        let message = "Request failed";
+        let message = xaI18n.t("xaB.src.app.access.accessgate.client.l46c23");
         try {
           const data = (await response.json()) as { error?: string };
           if (data?.error === "rate_limited") {
@@ -60,7 +62,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
       setReceipt(`RQ-${id}`);
       setState("success");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Request failed");
+      setError(err instanceof Error ? err.message : xaI18n.t("xaB.src.app.access.accessgate.client.l63c53"));
       setState("error");
     }
   };
@@ -69,16 +71,10 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <div className={`text-xs uppercase xa-tracking-035 ${monoClassName ?? ""}`}>
-            Request invite
-          </div>
-          <div className={`mt-2 text-sm ${gateClassNames.mutedText}`}>
-            No email. No outbound links. Just a quiet signal.
-          </div>
+          <div className={`text-xs uppercase xa-tracking-035 ${monoClassName ?? ""}`}>{xaI18n.t("xaB.src.app.access.accessgate.client.l72c87")}</div>
+          <div className={`mt-2 text-sm ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.accessgate.client.l75c71")}</div>
         </div>
-        <div className={gateClassNames.chip}>
-          Offline review
-        </div>
+        <div className={gateClassNames.chip}>{xaI18n.t("xaB.src.app.access.accessgate.client.l79c46")}</div>
       </div>
 
       <form onSubmit={submitRequest} className="space-y-4">
@@ -87,7 +83,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
           <Input
             value={handle}
             onChange={(event) => setHandle(event.target.value)}
-            placeholder="Handle or collective name"
+            placeholder={xaI18n.t("xaB.src.app.access.accessgate.client.l90c25")}
             className={gateClassNames.fieldInput}
             autoComplete="off"
           />
@@ -97,7 +93,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
           <Input
             value={referredBy}
             onChange={(event) => setReferredBy(event.target.value)}
-            placeholder="Who sent you?"
+            placeholder={xaI18n.t("xaB.src.app.access.accessgate.client.l100c25")}
             className={gateClassNames.fieldInput}
             autoComplete="off"
           />
@@ -107,7 +103,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
           <Textarea
             value={note}
             onChange={(event) => setNote(event.target.value)}
-            placeholder="What pulls you into the underground?"
+            placeholder={xaI18n.t("xaB.src.app.access.accessgate.client.l110c25")}
             rows={4}
             className={gateClassNames.fieldInput}
           />
@@ -119,17 +115,14 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
             disabled={state === "loading"}
             className={gateClassNames.primaryButton}
           >
-            {state === "loading" ? "Transmitting..." : "Request access"}
+            {state === "loading" ? "Transmitting..." : xaI18n.t("xaB.src.app.access.accessgate.client.l122c56")}
           </Button>
-          <div className={`text-xs ${gateClassNames.mutedText}`}>
-            We do not send email. Keys move hand to hand.
-          </div>
+          <div className={`text-xs ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.accessgate.client.l124c66")}</div>
         </div>
 
         {state === "success" ? (
           <div className="rounded-md border border-border-2 bg-muted p-3 text-sm">
-            <div className={gateClassNames.inkText}>
-              Request logged. Your receipt:{" "}
+            <div className={gateClassNames.inkText}>{xaI18n.t("xaB.src.app.access.accessgate.client.l131c53")}{" "}
               <span className={monoClassName}>{receipt}</span>
             </div>
             {displayReferredBy ? (
@@ -137,9 +130,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
                 Sent by: <span className={monoClassName}>{displayReferredBy}</span>
               </div>
             ) : null}
-            <div className={`mt-1 ${gateClassNames.mutedText}`}>
-              If approved, you will receive a key from the person who sent you here.
-            </div>
+            <div className={`mt-1 ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.accessgate.client.l140c65")}</div>
           </div>
         ) : null}
         {state === "error" ? (

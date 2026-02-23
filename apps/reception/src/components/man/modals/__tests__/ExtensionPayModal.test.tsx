@@ -27,7 +27,7 @@ jest.mock("../../../../hooks/mutations/useCityTaxMutation", () => ({
 
 jest.mock("../../../../hooks/mutations/useActivitiesMutations", () => ({
   __esModule: true,
-  useActivitiesMutations: () => ({
+  default: () => ({
     saveActivity: saveActivityMock,
   }),
 }));

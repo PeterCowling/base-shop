@@ -9,7 +9,8 @@ import React, {
   useState,
 } from "react";
 
-import { Button, TableCell } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/atoms";
+import { ReceptionTableCell as TableCell } from "@acme/ui/operations";
 
 import useFinancialsRoomMutations from "../../hooks/mutations/useFinancialsRoomMutations";
 import { getCurrentIsoTimestamp } from "../../utils/dateUtils";
@@ -156,7 +157,7 @@ const EditableBalanceCell: React.FC<EditableBalanceCellProps> = ({
         <input
           ref={inputRef}
           type="number"
-          className="w-full focus:outline-none bg-white border p-1 rounded dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="w-full focus:outline-none bg-surface border p-1 rounded dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
           value={editValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}

@@ -17,6 +17,7 @@ import {
   XA_CATEGORY_LABELS,
   XA_SUBCATEGORIES,
 } from "../lib/xaCatalog";
+import { xaI18n } from "../lib/xaI18n";
 import type { XaDepartment } from "../lib/xaTypes";
 
 import { XaFadeImage } from "./XaFadeImage";
@@ -113,9 +114,7 @@ export function XaMegaMenu({
                     {designer.name}
                   </Link>
                 ))}
-                <Link href="/designers" className="text-sm font-semibold hover:underline">
-                  All brands A-Z
-                </Link>
+                <Link href="/designers" className="text-sm font-semibold hover:underline">{xaI18n.t("xaB.src.components.xamegamenu.l116c91")}</Link>
               </Stack>
             </div>
           </div>

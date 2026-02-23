@@ -6,6 +6,7 @@ import * as React from "react";
 import { Button, Input } from "@acme/design-system/atoms";
 import { ElevatedPanel } from "@acme/ui/components/organisms/ElevatedPanel";
 
+import { xaI18n } from "../../../lib/xaI18n";
 import { gateClassNames } from "../gateClasses";
 
 type SessionState = {
@@ -113,7 +114,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
       await fetch("/api/access-admin/logout", { method: "POST" });
       setSession({ authenticated: false });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Logout failed");
+      setError(err instanceof Error ? err.message : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l116c53"));
     } finally {
       setBusy(false);
     }
@@ -141,14 +142,14 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
       setLastIssuedLabel(label || "Manual issue");
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Invite creation failed");
+      setError(err instanceof Error ? err.message : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l144c53"));
     } finally {
       setBusy(false);
     }
   };
 
   const handleRevokeInvite = async (inviteId: string) => {
-    if (!confirm("Revoke this key?")) return;
+    if (!confirm(xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l151c18"))) return;
     setBusy(true);
     setError(null);
     try {
@@ -160,7 +161,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
       }
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Revoke failed");
+      setError(err instanceof Error ? err.message : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l163c53"));
     } finally {
       setBusy(false);
     }
@@ -178,7 +179,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
       }
       const data = (await response.json()) as { code?: string };
       setLastIssued(data.code ?? null);
-      setLastIssuedLabel(handle ? `Request: ${handle}` : "Request issue");
+      setLastIssuedLabel(handle ? `Request: ${handle}` : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l181c58"));
       await loadData();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Issue failed");
@@ -199,7 +200,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
       }
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Dismiss failed");
+      setError(err instanceof Error ? err.message : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l202c53"));
     } finally {
       setBusy(false);
     }
@@ -216,20 +217,16 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
 
   if (session === null) {
     return (
-      <div className={`text-sm ${gateClassNames.mutedText}`}>Checking console access...</div>
+      <div className={`text-sm ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l219c62")}</div>
     );
   }
 
   if (!session.authenticated) {
     return (
       <div className="space-y-6">
-        <div className={`text-sm ${gateClassNames.mutedText}`}>
-          Admin access requires the console token.
-        </div>
+        <div className={`text-sm ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l226c64")}</div>
         <form onSubmit={handleLogin} className="space-y-4">
-          <label className={gateClassNames.fieldLabel}>
-            Console token
-            <Input
+          <label className={gateClassNames.fieldLabel}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l230c56")}<Input
               value={token}
               onChange={(event) => setToken(event.target.value)}
               className={gateClassNames.fieldInput}
@@ -241,7 +238,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
             disabled={busy}
             className={gateClassNames.primaryButton}
           >
-            {busy ? "Verifying..." : "Enter console"}
+            {busy ? "Verifying..." : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l244c38")}
           </Button>
           {error ? <div className="text-sm text-danger-fg">{error}</div> : null}
         </form>
@@ -253,9 +250,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
     <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="space-y-1">
-          <div className={gateClassNames.eyebrow}>
-            Console active
-          </div>
+          <div className={gateClassNames.eyebrow}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l256c51")}</div>
           <div className={`text-sm ${gateClassNames.inkText}`}>
             Storage: {session?.storeMode ?? "unknown"}
           </div>
@@ -272,9 +267,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
 
       {lastIssued ? (
         <div className="rounded-md border border-border-2 bg-muted p-4 text-sm">
-          <div className={gateClassNames.eyebrow}>
-            Latest key issued
-          </div>
+          <div className={gateClassNames.eyebrow}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l275c51")}</div>
           <div className={`mt-2 flex flex-wrap items-center gap-3 ${gateClassNames.inkText}`}>
             <span className={monoClassName}>{lastIssued}</span>
             {lastIssuedLabel ? (
@@ -299,9 +292,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
             <div className={gateClassNames.eyebrowWide}>
               Issue a key
             </div>
-            <div className={`mt-2 text-sm ${gateClassNames.mutedText}`}>
-              Create single-use or multi-use keys with optional expiry.
-            </div>
+            <div className={`mt-2 text-sm ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l302c73")}</div>
           </div>
           <Button
             type="button"
@@ -339,7 +330,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
             <Input
               value={expiresAt}
               onChange={(event) => setExpiresAt(event.target.value)}
-              type="datetime-local"
+              type={xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l342c20")}
               className={gateClassNames.fieldInputCompact}
             />
           </label>
@@ -354,12 +345,10 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
       </ElevatedPanel>
 
       <ElevatedPanel>
-        <div className={gateClassNames.eyebrowWide}>
-          Pending requests
-        </div>
+        <div className={gateClassNames.eyebrowWide}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l357c53")}</div>
         <div className="mt-4 space-y-4">
           {requests.length === 0 ? (
-            <div className={`text-sm ${gateClassNames.mutedText}`}>No pending signals.</div>
+            <div className={`text-sm ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l362c68")}</div>
           ) : null}
           {requests.map((request) => (
             <div
@@ -418,7 +407,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
         </div>
         <div className="mt-4 space-y-3 text-sm">
           {invites.length === 0 ? (
-            <div className={gateClassNames.mutedText}>No issued keys.</div>
+            <div className={gateClassNames.mutedText}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l421c55")}</div>
           ) : null}
           {invites.map((invite) => (
             <div

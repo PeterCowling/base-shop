@@ -1,7 +1,8 @@
 /* File: src/components/bar/orderTaking/ProductGrid.tsx */
 import React, { type FC, useCallback, useMemo } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import { Grid as LayoutGrid } from "@acme/design-system/primitives";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import useGridColumns from "../../../hooks/orchestrations/bar/actions/clientActions/useGridColumns";
 import { type Product, type ProductGridProps } from "../../../types/bar/BarTypes";
@@ -34,12 +35,12 @@ const ProductItem: FC<ProductItemProps> = React.memo(({ product, onAdd }) => {
         "dark:bg-darkSurface",
       ].join(" ")}
     >
-      <span className="whitespace-pre-line break-words px-1 text-sm leading-5 text-white drop-shadow">
+      <span className="whitespace-pre-line break-words px-1 text-sm leading-5 text-primary-fg drop-shadow">
         {product.name.replace(/\s+/g, "\n")}
       </span>
 
       {/* Price badge */}
-      <span className="absolute bottom-1 right-1 rounded bg-black/50 px-1.5 py-0.5 text-0_65rem font-bold text-white">
+      <span className="absolute bottom-1 right-1 rounded bg-foreground/50 px-1.5 py-0.5 text-0_65rem font-bold text-primary-fg">
         €{product.price.toFixed(2)}
       </span>
     </Button>
@@ -66,14 +67,16 @@ const ProductGrid: FC<ProductGridProps> = React.memo(
     );
 
     return (
-      <div
-        className="grid max-h-38rem gap-2 overflow-y-auto overscroll-contain py-3 dark:bg-darkBg"
+      <LayoutGrid
+        cols={1}
+        gap={2}
+        className="max-h-38rem overflow-y-auto overscroll-contain py-3 dark:bg-darkBg"
         style={gridTemplate}
       >
         {products.map((p) => (
           <ProductItem key={p.name} product={p} onAdd={handleAdd} />
         ))}
-      </div>
+      </LayoutGrid>
     );
   }
 );

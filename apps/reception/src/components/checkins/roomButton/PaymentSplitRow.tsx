@@ -5,6 +5,7 @@ import { faCreditCard, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Button } from "@acme/design-system/atoms";
+import { ReceptionInput } from "@acme/ui/operations";
 
 import type {
   PaymentSplit,
@@ -50,9 +51,9 @@ function PaymentSplitRow({
   return (
     <>
       {/* Amount input */}
-      <input
+      <ReceptionInput
         type="number"
-        className="border border-gray-300 rounded px-2 py-1 w-24 focus:outline-none dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+        className="border border-border-2 rounded px-2 py-1 w-24 focus:outline-none dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         placeholder="Amount"
         value={sp.amount || ""}
         onChange={handleAmountInput}
@@ -62,7 +63,7 @@ function PaymentSplitRow({
 
       {/* Toggle pay type */}
       <Button
-        className="flex items-center justify-center border border-gray-300 rounded px-2 py-1 focus:outline-none dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+        className="flex items-center justify-center border border-border-2 rounded px-2 py-1 focus:outline-none dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         onClick={togglePayType}
         disabled={isDisabled}
       >

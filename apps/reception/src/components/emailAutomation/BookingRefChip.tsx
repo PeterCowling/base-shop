@@ -1,7 +1,7 @@
 // src/components/emailAutomation/BookingRefChip.tsx
 import { type FC, memo, useCallback } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import { showToast } from "../../utils/toastUtils";
 
@@ -55,7 +55,7 @@ const BookingRefChipComponent: FC<BookingRefChipProps> = ({ bookingRef }) => {
     <Button
       type="button"
       onClick={handleCopyBookingRef}
-      className="relative cursor-pointer inline-flex items-center justify-center bg-info-main text-white pr-4 py-2 text-sm rounded focus:outline-none min-w-225px dark:bg-darkSurface dark:text-darkAccentGreen"
+      className="relative cursor-pointer inline-flex items-center justify-center bg-info-main text-primary-fg pr-4 py-2 text-sm rounded focus:outline-none min-w-225px dark:bg-darkSurface dark:text-darkAccentGreen"
       aria-label={`Copy booking reference ${bookingRef}`}
     >
       <i className="fas fa-copy absolute left-2 top-1/2 transform -translate-y-1/2"></i>

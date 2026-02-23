@@ -6,7 +6,7 @@ import {
   ChevronUpIcon,
 } from "@heroicons/react/24/solid";
 
-import { TableHead } from "@acme/design-system/atoms";
+import { ReceptionTableHead as TableHead } from "@acme/ui/operations";
 
 import clsx from "../../utils/clsx";
 
@@ -44,8 +44,8 @@ const SortableHeader: React.FC<SortableHeaderProps> = ({
       scope="col"
       onClick={() => onSort(field)}
       className={clsx(
-        "select-none whitespace-nowrap px-3 py-2 font-semibold text-sm text-gray-700 " +
-          "border-b border-gray-200 cursor-pointer transition-colors hover:text-primary-600 dark:border-darkSurface dark:text-darkAccentGreen",
+        "select-none whitespace-nowrap px-3 py-2 font-semibold text-sm text-foreground " +
+          "border-b border-border cursor-pointer transition-colors hover:text-primary-600 dark:border-darkSurface dark:text-darkAccentGreen",
         className
       )}
     >

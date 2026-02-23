@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import { ReceptionButton as Button, ReceptionInput } from "@acme/ui/operations";
 
 import { type PrepaymentData } from "../../hooks/client/checkin/usePrepaymentData";
 import DeleteButton from "../checkins/header/DeleteButton";
@@ -82,25 +82,25 @@ function PrepaymentsView({
   setBookingToDelete,
 }: PrepaymentsViewProps): JSX.Element {
   return (
-    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
       <div>
         <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
           PRE-PAYMENTS
         </h1>
-        <div className="flex-grow bg-white rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
+        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
           <>
             <div className="w-full flex justify-end mb-4 gap-2">
               <div className="w-72">
                 <label
                   htmlFor="filterInput"
-                  className="block text-sm font-heading text-gray-700 mb-1 dark:text-darkAccentGreen"
+                  className="block text-sm font-heading text-foreground mb-1 dark:text-darkAccentGreen"
                 >
                   Booking Ref or Surname
                 </label>
-                <input
+                <ReceptionInput
                   id="filterInput"
                   type="text"
-                  className="w-full border border-gray-400 rounded px-3 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main font-body dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+                  className="w-full border border-border-2 rounded px-3 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main font-body dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
                   placeholder="Type to filter..."
                   value={filterText}
                   onChange={(e) => setFilterText(e.target.value)}
@@ -110,14 +110,14 @@ function PrepaymentsView({
                 type="button"
                 onClick={handleRecallLast}
                 disabled={!lastCompletedBooking}
-                className="px-3 py-2 bg-secondary-main text-white rounded hover:bg-secondary-dark transition-colors disabled:opacity-50"
+                className="px-3 py-2 bg-secondary-main text-primary-fg rounded hover:bg-secondary-dark transition-colors disabled:opacity-50"
               >
                 Recall Last
               </Button>
               {isPete && <DeleteButton onClick={handleDeleteClick} />}
             </div>
             {isDeleteMode && (
-              <div className="text-red-600 text-sm font-semibold text-center">
+              <div className="text-error-main text-sm font-semibold text-center">
                 Click a row to delete the booking
               </div>
             )}
@@ -128,8 +128,8 @@ function PrepaymentsView({
                 role="status"
                 aria-live="polite"
               >
-                <div className="w-8 h-8 border-4 border-gray-400 border-t-primary-main rounded-full animate-spin dark:border-darkSurface" />
-                <p className="ms-2 text-gray-600 dark:text-darkAccentGreen">Loading prepayment data...</p>
+                <div className="w-8 h-8 border-4 border-border-2 border-t-primary-main rounded-full animate-spin dark:border-darkSurface" />
+                <p className="ms-2 text-muted-foreground dark:text-darkAccentGreen">Loading prepayment data...</p>
               </div>
             )}
 
@@ -146,7 +146,7 @@ function PrepaymentsView({
             {!loading && !error && (
               <>
                 {relevantData.length === 0 && (
-                  <div className="text-gray-700 font-medium mt-4 text-center dark:text-darkAccentGreen">
+                  <div className="text-foreground font-medium mt-4 text-center dark:text-darkAccentGreen">
                     No prepayment data was found.
                   </div>
                 )}
@@ -155,7 +155,7 @@ function PrepaymentsView({
                   code5List.length === 0 &&
                   code6List.length === 0 &&
                   filterText && (
-                    <div className="text-gray-700 font-medium mt-4 text-center dark:text-darkAccentGreen">
+                    <div className="text-foreground font-medium mt-4 text-center dark:text-darkAccentGreen">
                       No prepayments match your filter &apos;{filterText}&apos;.
                     </div>
                   )}

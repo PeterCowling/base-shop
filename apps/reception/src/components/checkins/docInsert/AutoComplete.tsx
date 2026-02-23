@@ -10,7 +10,10 @@ import {
   useState,
 } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import {
+  ReceptionButton as Button,
+  ReceptionInput,
+} from "@acme/ui/operations";
 
 import type { AutoCompleteProps } from "../../../types/component/autoComplete";
 
@@ -168,12 +171,12 @@ function AutoComplete({
       {label && (
         <label
           htmlFor={id}
-          className="block font-semibold text-gray-700 mb-1 dark:text-darkAccentGreen"
+          className="block font-semibold text-foreground mb-1 dark:text-darkAccentGreen"
         >
           {label}
         </label>
       )}
-      <input
+      <ReceptionInput
         ref={inputRef}
         id={id}
         type="text"
@@ -184,13 +187,13 @@ function AutoComplete({
         placeholder={placeholder}
         className={
           inputClassName ||
-          "w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          "w-full border border-border-2 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         }
       />
 
       {isOpen && filteredSuggestions.length > 0 && (
         <ul
-          className="absolute left-0 right-0 max-h-52 overflow-y-auto border border-gray-400 bg-white list-none p-0 m-0 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="absolute left-0 right-0 max-h-52 overflow-y-auto border border-border-2 bg-surface list-none p-0 m-0 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
           style={dropdownStyle}
         >
           {filteredSuggestions.map((suggestion) => (
@@ -200,7 +203,7 @@ function AutoComplete({
                 data-suggestion-button="true"
                 onClick={createSuggestionClickHandler(suggestion)}
                 onKeyDown={createSuggestionKeyDownHandler(suggestion)}
-                className="w-full text-start py-2 px-3 hover:bg-gray-100 focus:bg-gray-100"
+                className="w-full text-start py-2 px-3 hover:bg-surface-2 focus:bg-surface-2"
               >
                 {suggestion}
               </Button>

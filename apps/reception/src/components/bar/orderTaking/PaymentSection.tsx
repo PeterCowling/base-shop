@@ -2,6 +2,8 @@
 
 import React, { type FC, useCallback, useMemo } from "react";
 
+import { ReceptionInput as Input } from "@acme/ui/operations";
+
 import { useBleepersData } from "../../../hooks/data/bar/useBleepersData";
 
 interface PaymentSectionProps {
@@ -37,17 +39,17 @@ const PaymentSection: FC<PaymentSectionProps> = React.memo(
 
     /* ------------------------------ render ------------------------------- */
     return (
-      <section className="space-y-5 border-t border-black/10 bg-stone-50/60 p-4 backdrop-blur-md dark:bg-darkSurface dark:text-darkAccentGreen">
+      <section className="space-y-5 border-t border-foreground/10 bg-surface-2/60 p-4 backdrop-blur-md dark:bg-darkSurface dark:text-darkAccentGreen">
         {/* ─────── Bleep input ─────── */}
         <div className="flex flex-col gap-1">
           <label
             htmlFor="bleepInput"
-            className="text-sm font-medium leading-none text-stone-800"
+            className="text-sm font-medium leading-none text-foreground"
           >
             Bleep&nbsp;#
           </label>
 
-          <input
+          <Input
             id="bleepInput"
             type="text"
             inputMode="numeric"
@@ -55,13 +57,13 @@ const PaymentSection: FC<PaymentSectionProps> = React.memo(
             value={displayNumber}
             onChange={handleChange}
             placeholder='Leave blank for "go"'
-            className="w-full rounded-md border border-stone-300 bg-white/60 py-2 px-3 text-sm shadow-inner focus:border-primary-main focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main/40 dark:bg-darkBg dark:text-darkAccentGreen"
+            className="w-full rounded-md border border-border-2 bg-surface/60 py-2 px-3 text-sm shadow-inner focus:border-primary-main focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main/40 dark:bg-darkBg dark:text-darkAccentGreen"
           />
         </div>
 
         {/* ─────── Total ─────── */}
         <p
-          className="text-end text-2xl font-extrabold tracking-tight text-stone-900 tabular-nums dark:text-darkAccentGreen"
+          className="text-end text-2xl font-extrabold tracking-tight text-foreground tabular-nums dark:text-darkAccentGreen"
           aria-live="polite"
         >
           Total:&nbsp;{totalPrice.toFixed(2)}&nbsp;€

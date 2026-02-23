@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Detail placeholder">
+  <defs>
+    <pattern id="weave" width="24" height="24" patternUnits="userSpaceOnUse">
+      <rect width="24" height="24" fill="#f0e5da"/>
+      <path d="M0 12h24M12 0v24" stroke="#d6c2b0" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="1000" fill="#fbf7f2"/>
+  <rect x="80" y="140" width="640" height="720" rx="42" fill="url(#weave)"/>
+  <circle cx="240" cy="360" r="48" fill="none" stroke="#8c6b58" stroke-width="12"/>
+  <rect x="440" y="320" width="120" height="80" rx="16" fill="#8c6b58"/>
+  <text x="400" y="930" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#6f5142">Hardware Detail</text>
+</svg>

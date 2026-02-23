@@ -62,6 +62,17 @@ This artifact closes TASK-01 by locking a route-to-wave inventory for all Recept
 - Wave 3: 6 routes
 - Wave 4: 6 routes
 
+## Migration completion status (2026-02-23)
+
+| Wave | Route coverage | Status | Completion task | Evidence artifact |
+|---|---:|---|---|---|
+| Wave 1 | 8/8 | Complete | `TASK-08` | `docs/plans/reception-ds-centralization-growth-first/artifacts/wave-1-results.md` |
+| Wave 2 | 6/6 | Complete | `TASK-09` | `docs/plans/reception-ds-centralization-growth-first/artifacts/wave-2-results.md` |
+| Wave 3 | 6/6 | Complete | `TASK-10` | `docs/plans/reception-ds-centralization-growth-first/artifacts/wave-3-results.md` |
+| Wave 4 | 6/6 | Complete | `TASK-11` | `docs/plans/reception-ds-centralization-growth-first/artifacts/wave-4-results.md` |
+
+Overall route completion: `26/26` complete.
+
 ## Locked Parity Contract
 
 Locked parity set (minimum contract): unauthenticated `/bar` login state, `/checkin`, `/checkout`, `/till-reconciliation`, `/safe-management`.
@@ -147,4 +158,3 @@ Counting method for each wave scope:
 - Locked parity contract is now explicit and testable.
 - Wave boundaries align with task architecture, with one explicit scope note:
   - TASK-11 must include `apps/reception/src/components/analytics/**/*` and `apps/reception/src/components/prepare/**/*` to fully cover `/menu-performance` and `/prepare-dashboard`.
-

@@ -97,11 +97,11 @@ function SafeReconciliation(): JSX.Element {
   };
 
   return (
-    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         SAFE MANAGEMENT
       </h1>
-      <div className="bg-white rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
+      <div className="bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
         <p className="text-lg">
           Expected Balance: <strong>€{safeBalance.toFixed(2)}</strong>
         </p>
@@ -109,20 +109,20 @@ function SafeReconciliation(): JSX.Element {
           <div className="flex gap-2">
             <Button
               onClick={() => openForm("reconcile")}
-              className="px-4 py-2 bg-warning-main text-white rounded hover:bg-warning-dark"
+              className="px-4 py-2 bg-warning-main text-primary-fg rounded hover:bg-warning-dark"
             >
               Reconcile Safe
             </Button>
             <Button
               onClick={() => openForm("deposit")}
-              className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             >
               Bank Deposit
             </Button>
           </div>
           <Button
             onClick={() => openForm("petty")}
-            className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+            className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
           >
             Petty Cash
           </Button>

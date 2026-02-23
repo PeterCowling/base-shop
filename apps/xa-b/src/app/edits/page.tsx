@@ -4,15 +4,14 @@ import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 
 import { XA_EDITS } from "../../lib/xaEdits";
+import { xaI18n } from "../../lib/xaI18n";
 
 export default function EditsPage() {
   return (
     <main className="sf-content">
       <Section padding="wide">
         <h1 className="text-2xl font-semibold">Edits</h1>
-        <p className="text-muted-foreground">
-          Curated product selections with the same filters and grid.
-        </p>
+        <p className="text-muted-foreground">{xaI18n.t("xaB.src.app.edits.page.l13c46")}</p>
       </Section>
 
       <Section padding="default">

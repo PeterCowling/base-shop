@@ -56,13 +56,43 @@ export type BrandMarkProps = {
 
 const PARTICLE_SAMPLING_TIMEOUT_MS = 500;
 const HOVER_REPLAY_COOLDOWN_MS = 1200;
+const PARTICLE_SAMPLE_SEED = 20260223;
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
+function xorshift32(seed: number): () => number {
+  let x = seed | 0;
+  if (x === 0) x = 1;
+
+  return () => {
+    x ^= x << 13;
+    x ^= x >>> 17;
+    x ^= x << 5;
+    return ((x >>> 0) % 1_000_000) / 1_000_000;
+  };
+}
+
 function lerp(start: number, end: number, t: number): number {
   return start + (end - start) * t;
+}
+
+function hashUnit(value: number): number {
+  const raw = Math.sin(value * 12.9898) * 43758.5453;
+  return raw - Math.floor(raw);
+}
+
+function mixRgb(
+  from: [number, number, number],
+  to: [number, number, number],
+  amount: number
+): [number, number, number] {
+  return [
+    Math.round(lerp(from[0], to[0], amount)),
+    Math.round(lerp(from[1], to[1], amount)),
+    Math.round(lerp(from[2], to[2], amount)),
+  ];
 }
 
 function parseRgbColor(input: string): [number, number, number] | null {
@@ -267,17 +297,58 @@ function buildParticleTimings(mode: Trigger): ParticleTimings {
   if (mode === "hover") {
     return {
       dissolveEndMs: 180,
-      funnelEndMs: 640,
-      settleEndMs: 1200,
-      completeMs: 1450,
+      funnelEndMs: 950,
+      settleEndMs: 1800,
+      completeMs: 2100,
     };
   }
 
   return {
-    dissolveEndMs: 260,
-    funnelEndMs: 1100,
-    settleEndMs: 2100,
-    completeMs: 2500,
+    dissolveEndMs: 280,
+    funnelEndMs: 1700,
+    settleEndMs: 3200,
+    completeMs: 3600,
+  };
+}
+
+function downsamplePairedPoints(params: {
+  sourcePoints: ParticlePoint[];
+  targetPoints: ParticlePoint[];
+  count: number;
+  seed: number;
+}): { sourcePoints: ParticlePoint[]; targetPoints: ParticlePoint[] } {
+  const { sourcePoints, targetPoints, count, seed } = params;
+  const upperBound = Math.min(sourcePoints.length, targetPoints.length);
+  const cappedCount = Math.max(0, Math.min(Math.floor(count), upperBound));
+
+  if (cappedCount === 0) {
+    return { sourcePoints: [], targetPoints: [] };
+  }
+
+  if (upperBound <= cappedCount) {
+    return {
+      sourcePoints: sourcePoints.slice(0, upperBound),
+      targetPoints: targetPoints.slice(0, upperBound),
+    };
+  }
+
+  const random = xorshift32(seed);
+  const stride = upperBound / cappedCount;
+  const sampledSource: ParticlePoint[] = new Array(cappedCount);
+  const sampledTarget: ParticlePoint[] = new Array(cappedCount);
+
+  for (let index = 0; index < cappedCount; index += 1) {
+    const start = Math.floor(index * stride);
+    const end = Math.min(upperBound, Math.floor((index + 1) * stride));
+    const span = Math.max(1, end - start);
+    const chosen = start + Math.floor(random() * span);
+    sampledSource[index] = sourcePoints[chosen];
+    sampledTarget[index] = targetPoints[chosen];
+  }
+
+  return {
+    sourcePoints: sampledSource,
+    targetPoints: sampledTarget,
   };
 }
 
@@ -307,9 +378,10 @@ function resolveParticleTargetBounds(
 
 function computeTaglineRevealFromParticles(params: {
   state: ParticleEngineState;
-  targetBounds: ParticleTargetBounds;
+  settleStartMs: number;
+  settleEndMs: number;
 }): number {
-  const { state, targetBounds } = params;
+  const { state, settleStartMs, settleEndMs } = params;
   if (state.phase === "done") {
     return 1;
   }
@@ -317,27 +389,10 @@ function computeTaglineRevealFromParticles(params: {
     return 0;
   }
 
-  const horizontalPadding = 6;
-  const minX = targetBounds.left - horizontalPadding;
-  const maxX = targetBounds.right + horizontalPadding;
-  let flowFrontY = Number.NEGATIVE_INFINITY;
-
-  for (let index = 0; index < state.particleCount; index += 1) {
-    if (state.active[index] !== 1) continue;
-    if (state.settled[index] !== 1) continue;
-    const x = state.x[index];
-    const y = state.y[index];
-    if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
-    if (x < minX || x > maxX) continue;
-    if (y > flowFrontY) flowFrontY = y;
-  }
-
-  if (!Number.isFinite(flowFrontY)) {
-    return 0;
-  }
-
-  const span = Math.max(1, targetBounds.bottom - targetBounds.top);
-  return clamp((flowFrontY - targetBounds.top) / span, 0, 1);
+  const settleSpanMs = Math.max(1, settleEndMs - settleStartMs);
+  const settleProgress = clamp((state.elapsedMs - settleStartMs) / settleSpanMs, 0, 1);
+  const normalized = clamp((settleProgress - 0.06) / 0.88, 0, 1);
+  return normalized * normalized * (3 - 2 * normalized);
 }
 
 function buildParticlePoints(
@@ -352,12 +407,24 @@ function buildParticlePoints(
   targetBounds: ParticleTargetBounds;
 } {
   const taglineStyle = window.getComputedStyle(taglineElement);
+  const fontSizePx = Number.parseFloat(taglineStyle.fontSize) || 16;
+  const parsedLineHeight = Number.parseFloat(taglineStyle.lineHeight);
+  const lineHeightPx =
+    Number.isFinite(parsedLineHeight) && parsedLineHeight > 0
+      ? parsedLineHeight
+      : fontSizePx * 1.4;
+  const parsedLetterSpacing = Number.parseFloat(taglineStyle.letterSpacing);
+  const letterSpacingPx = Number.isFinite(parsedLetterSpacing) ? parsedLetterSpacing : 0;
 
   const targetSample = sampleTextPixels({
     text: tagline,
     font: buildFontString(taglineStyle),
     sampleStep: 1,
+    padding: 0,
     alphaThreshold: 100,
+    maxWidthPx: taglineRect.width,
+    lineHeightPx,
+    letterSpacingPx,
   });
 
   const targetOffsetX = taglineRect.left - rootRect.left;
@@ -487,13 +554,30 @@ async function runParticleAnimation(params: {
   );
 
   const area = cssWidth * cssHeight;
-  const densityCap = clamp(Math.round(area / 14), 420, 1800);
+  const densityCap = clamp(Math.round(area / 22), 260, 900);
   const requiredForTagline = targetPoints.length;
-  let particleCount = clamp(requiredForTagline, 360, densityCap);
+  let particleCount = clamp(requiredForTagline, 180, densityCap);
   if (window.innerWidth < 360) {
-    particleCount = clamp(requiredForTagline, 220, 900);
+    particleCount = clamp(requiredForTagline, 140, 520);
   } else if (window.innerWidth < 480) {
-    particleCount = clamp(requiredForTagline, 280, 1200);
+    particleCount = clamp(requiredForTagline, 170, 680);
+  }
+  particleCount = Math.min(particleCount, targetPoints.length);
+  if (particleCount <= 0) {
+    stopParticleLoop("done");
+    return;
+  }
+
+  const sampled = downsamplePairedPoints({
+    sourcePoints,
+    targetPoints,
+    count: particleCount,
+    seed: PARTICLE_SAMPLE_SEED + runId,
+  });
+  particleCount = sampled.targetPoints.length;
+  if (particleCount <= 0) {
+    stopParticleLoop("done");
+    return;
   }
 
   const timings = buildParticleTimings(mode);
@@ -502,15 +586,18 @@ async function runParticleAnimation(params: {
 
   const engine = createParticleEngine({
     particleCount,
-    sourcePoints,
-    targetPoints,
-    sourceJitterPx: 1.1,
-    gravity: 145,
-    attractorStrength: 11.8,
-    funnelStrength: 1.42,
+    sourcePoints: sampled.sourcePoints,
+    targetPoints: sampled.targetPoints,
+    sourceJitterPx: 0.85,
+    gravity: 58,
+    damping: 0.94,
+    attractorStrength: 7.8,
+    funnelStrength: 1.92,
     baselineY,
     neckX,
-    neckHalfWidth: Math.max(8, yRect.width * 0.25),
+    neckHalfWidth: Math.max(14, yRect.width * 0.62),
+    neckMode: "split",
+    splitLaneOffsetFactor: 0.82,
     dissolveEndMs: timings.dissolveEndMs,
     funnelEndMs: timings.funnelEndMs,
     settleEndMs: timings.settleEndMs,
@@ -521,13 +608,11 @@ async function runParticleAnimation(params: {
 
   const rootStyle = window.getComputedStyle(root);
   const primaryColor = resolveCssColorToRgb(rootStyle.color, [224, 142, 149]);
-  const accentToken = rootStyle.getPropertyValue("--brand-accent-color").trim();
-  const accentColor = resolveCssColorToRgb(
-    accentToken ? `hsl(${accentToken})` : "hsl(130 18% 72%)",
-    [167, 198, 174]
-  );
+  const sandStartColor = mixRgb(primaryColor, [220, 169, 144], 0.36);
+  const sandEndColor = mixRgb(primaryColor, [156, 116, 96], 0.56);
 
   let lastFrameAt = performance.now();
+  let revealProgress = 0;
   root.style.setProperty("--tagline-reveal", "0");
   setCanvasActive(true);
   setParticleVisualState("dissolving");
@@ -543,9 +628,11 @@ async function runParticleAnimation(params: {
 
     const reveal = computeTaglineRevealFromParticles({
       state: next,
-      targetBounds,
+      settleStartMs: timings.funnelEndMs,
+      settleEndMs: timings.settleEndMs,
     });
-    root.style.setProperty("--tagline-reveal", reveal.toFixed(3));
+    revealProgress = Math.max(revealProgress, reveal);
+    root.style.setProperty("--tagline-reveal", revealProgress.toFixed(3));
 
     context.clearRect(0, 0, cssWidth, cssHeight);
     const blend = clamp(
@@ -555,19 +642,30 @@ async function runParticleAnimation(params: {
       1
     );
 
-    const red = Math.round(lerp(primaryColor[0], accentColor[0], blend));
-    const green = Math.round(lerp(primaryColor[1], accentColor[1], blend));
-    const blue = Math.round(lerp(primaryColor[2], accentColor[2], blend));
-    context.fillStyle = `rgba(${red}, ${green}, ${blue}, 0.9)`;
+    const sandBlend = clamp(blend * 0.74 + revealProgress * 0.26, 0, 1);
+    const red = Math.round(lerp(sandStartColor[0], sandEndColor[0], sandBlend));
+    const green = Math.round(lerp(sandStartColor[1], sandEndColor[1], sandBlend));
+    const blue = Math.round(lerp(sandStartColor[2], sandEndColor[2], sandBlend));
+    const particleAlpha =
+      next.phase === "settling" ? lerp(0.22, 0.06, revealProgress) : lerp(0.52, 0.38, blend);
+    context.fillStyle = `rgba(${red}, ${green}, ${blue}, ${particleAlpha.toFixed(3)})`;
+    const revealFrontY =
+      targetBounds.top + (targetBounds.bottom - targetBounds.top) * revealProgress;
 
     for (let index = 0; index < next.particleCount; index += 1) {
       if (next.active[index] !== 1) continue;
+      if (next.phase === "settling" && next.settled[index] === 1) continue;
       const x = next.x[index];
       const y = next.y[index];
       if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+      if (next.phase === "settling" && y <= revealFrontY - 1.5) continue;
+
+      const grain = hashUnit((index + 1) * 1.618);
+      const baseRadius = lerp(0.34, 0.78, grain);
+      const phaseScale = next.phase === "settling" ? lerp(1, 0.72, revealProgress) : 1;
 
       context.beginPath();
-      context.arc(x, y, 0.85 + (index % 4) * 0.14, 0, Math.PI * 2);
+      context.arc(x, y, baseRadius * phaseScale, 0, Math.PI * 2);
       context.fill();
     }
 
@@ -750,14 +848,12 @@ function useBrandMarkAnimationController(options: {
 
 function buildBrandInlineStyle(params: {
   durationMs: number;
-  delayMs: number;
   shouldAnimate: boolean;
   metrics: Metrics | null;
 }): React.CSSProperties {
-  const { durationMs, delayMs, shouldAnimate, metrics } = params;
+  const { durationMs, shouldAnimate, metrics } = params;
   const base: React.CSSProperties = {
     "--dur": `${durationMs}ms`,
-    "--delay": `${delayMs}ms`,
     "--tagline-reveal": shouldAnimate ? 0 : 1,
   } as React.CSSProperties;
 
@@ -819,7 +915,6 @@ export function BrandMark({
   const fallbackText = resolveFallbackText(shouldAnimate, trigger);
   const rootStyle = buildBrandInlineStyle({
     durationMs,
-    delayMs,
     shouldAnimate,
     metrics,
   });

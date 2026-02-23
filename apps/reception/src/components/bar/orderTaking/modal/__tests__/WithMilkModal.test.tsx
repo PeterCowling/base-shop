@@ -5,6 +5,10 @@ import userEvent from "@testing-library/user-event";
 
 import WithMilkModal from "../WithMilkModal";
 
+jest.mock("../../../../../hoc/withModalBackground", () => ({
+  withModalBackground: (Comp: React.ComponentType) => Comp,
+}));
+
 describe("WithMilkModal", () => {
   it("renders milk options and selects each", async () => {
     const onSelectMilkOption = jest.fn();
@@ -44,4 +48,3 @@ describe("WithMilkModal", () => {
     expect(onCancel).toHaveBeenCalled();
   });
 });
-

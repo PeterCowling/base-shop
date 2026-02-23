@@ -43,3 +43,15 @@ body {
     transition: none;
   }
 }
+
+.media-card-secondary {
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .media-card:hover .media-card-secondary,
+  .media-card:focus-within .media-card-secondary {
+    opacity: 1;
+  }
+}

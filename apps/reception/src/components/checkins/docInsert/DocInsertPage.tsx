@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { Button } from "@acme/design-system/atoms";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import useSingleGuestDetails from "../../../hooks/data/useSingleGuestDetails";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
@@ -125,14 +125,14 @@ const DocInsertPage: React.FC = () => {
       <div className="flex justify-end mb-4">
         <Button
           onClick={handleBack}
-          className="inline-flex items-center px-3 py-2 bg-primary-main text-white rounded hover:bg-primary-dark transition-colors"
+          className="inline-flex items-center px-3 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark transition-colors"
         >
           <span className="me-2">&larr;</span>
           Back
         </Button>
       </div>
 
-      <div className="bg-white rounded-lg shadow px-8 py-12 dark:bg-darkSurface dark:text-darkAccentGreen">
+      <div className="bg-surface rounded-lg shadow px-8 py-12 dark:bg-darkSurface dark:text-darkAccentGreen">
         {/* BookingRef component */}
         <div className="mb-50px">
           <BookingRef bookingRef={bookingRef} />
@@ -159,12 +159,12 @@ const DocInsertPage: React.FC = () => {
             flex items-center justify-between w-72
             ${
               snackbar.severity === "success"
-                ? "bg-success-light/50 text-white"
+                ? "bg-success-light/50 text-primary-fg"
                 : snackbar.severity === "error"
-                ? "bg-error-main/50 text-white"
+                ? "bg-error-main/50 text-primary-fg"
                 : snackbar.severity === "warning"
-                ? "bg-warning-main/50 text-black"
-                : "bg-info-main/50 text-white"
+                ? "bg-warning-main/50 text-foreground"
+                : "bg-info-main/50 text-primary-fg"
             }`}
         >
           <span>{snackbar.message}</span>

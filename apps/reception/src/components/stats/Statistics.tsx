@@ -3,7 +3,7 @@
 
 import React, { useCallback, useState } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 /**
  * Statistics component provides a button to test connection
@@ -36,15 +36,15 @@ const Statistics: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-6 text-center bg-gray-50 rounded border border-gray-200 dark:bg-darkSurface dark:text-darkAccentGreen">
+    <div className="p-6 text-center bg-surface-2 rounded border border-border dark:bg-darkSurface dark:text-darkAccentGreen">
       <h2 className="text-2xl font-semibold mb-2">Connection Test</h2>
-      <p className="text-gray-700 mb-4 dark:text-darkAccentGreen">
+      <p className="text-foreground mb-4 dark:text-darkAccentGreen">
         {message ||
           "Press the button to test connection to the Google Apps Script endpoint with bookingRef 4382244000."}
       </p>
       <Button
         type="button"
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
         onClick={handleTestConnection}
         disabled={loading}
       >

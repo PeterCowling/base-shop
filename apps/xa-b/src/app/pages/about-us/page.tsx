@@ -2,6 +2,7 @@ import { Section } from "@acme/design-system/atoms/Section";
 import { PolicyPageIntro } from "@acme/ui/components/organisms/PolicyPageIntro";
 
 import { siteConfig } from "../../../lib/siteConfig";
+import { xaI18n } from "../../../lib/xaI18n";
 
 export default function AboutUsPage() {
   const productDescriptor = siteConfig.catalog.productDescriptor;
@@ -16,19 +17,15 @@ export default function AboutUsPage() {
               ? "This site is in private preview."
               : `${siteConfig.brandName} is a demo storefront app focused on ${productDescriptor}.`
           }
-          descriptionClassName="mt-2 text-sm text-muted-foreground max-w-none"
+          descriptionClassName={xaI18n.t("xaB.src.app.pages.about.us.page.l19c32")}
         />
       </Section>
 
       <Section padding="default">
         <div className="space-y-4 text-sm text-muted-foreground">
-          <p>
-            This page intentionally avoids placeholder template text (like “.%s”) and is meant
-            to be replaced with your real brand story.
-          </p>
+          <p>{xaI18n.t("xaB.src.app.pages.about.us.page.l25c14")}</p>
           {siteConfig.stealthMode ? null : (
-            <p>
-              Update legal details in <code>apps/xa/src/lib/siteConfig.ts</code>.
+            <p>{xaI18n.t("xaB.src.app.pages.about.us.page.l30c16")}<code>{xaI18n.t("xaB.src.app.pages.about.us.page.l31c45")}</code>.
             </p>
           )}
         </div>

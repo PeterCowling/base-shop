@@ -162,6 +162,7 @@ When both completion artifacts exist:
 - For `launch-surface=pre-website` (WEBSITE-01): if `site-v1-builder-prompt.user.md` is missing, stale, or `Status: Draft`, stop and hand WEBSITE-01 prompt.
 - For `launch-surface=pre-website` (WEBSITE-01): once `site-v1-builder-prompt.user.md` is `Status: Active`, auto-handover to DO using mandatory sequence `lp-do-fact-find -> lp-do-plan -> lp-do-build`.
 - For `launch-surface=website-live` (WEBSITE-02): if `latest.user.md` is missing, stale, or points to `Status: Draft`, stop and hand WEBSITE-02 prompt.
+- For `launch-surface=website-live` (WEBSITE-02): treat first WEBSITE-02 cycle as **L1 Build 2** and auto-apply Image-First Merchandising Mode for visual-heavy physical-product catalogs (for example bags/fashion/accessories/footwear/jewelry/beauty, or ~40+ launch variants).
 
 **S2 handoff**:
 - `prompt_file`: `docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md`
@@ -174,6 +175,7 @@ When both completion artifacts exist:
 **WEBSITE-02 handoff** (`launch-surface=website-live`):
 - `prompt_file`: `docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md`
 - `required_output_path`: `docs/business-os/site-upgrades/<BIZ>/<YYYY-MM-DD>-upgrade-brief.user.md`
+- `required_output_contract`: if Image-First Merchandising Mode is active, returned brief must include exemplar image shot-board + image-heavy launch contract sections.
 
 **WEBSITE-01 -> DO auto-handover** (`launch-surface=pre-website`, WEBSITE-01 is `Status: Active`):
 - `next_action_1`: `Run /lp-do-fact-find --website-first-build-backlog --biz <BIZ> --feature-slug <biz>-website-v1-first-build --source docs/business-os/strategy/<BIZ>/site-v1-builder-prompt.user.md`

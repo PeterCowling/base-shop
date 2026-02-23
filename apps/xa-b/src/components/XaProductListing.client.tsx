@@ -21,6 +21,7 @@ import type { XaProduct } from "../lib/demoData";
 import { siteConfig } from "../lib/siteConfig";
 import { useXaListingFilters } from "../lib/useXaListingFilters";
 import { ALL_FILTER_KEYS, type SortKey } from "../lib/xaFilters";
+import { xaI18n } from "../lib/xaI18n";
 import type { XaCategory } from "../lib/xaTypes";
 
 import { XaFilterChip } from "./XaFilterChip";
@@ -32,7 +33,7 @@ const SORT_LABELS: Record<string, string> = {
   "price-asc": "Price (low to high)",
   "price-desc": "Price (high to low)",
   "best-sellers": "Best sellers",
-  "biggest-discount": "Biggest discount",
+  "biggest-discount": xaI18n.t("xaB.src.components.xaproductlisting.client.l35c23"),
 };
 
 export function XaProductListing({
@@ -141,10 +142,10 @@ export function XaProductListing({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="newest">Newest</SelectItem>
-                    <SelectItem value="price-asc">Price (low to high)</SelectItem>
-                    <SelectItem value="price-desc">Price (high to low)</SelectItem>
+                    <SelectItem value="price-asc">{xaI18n.t("xaB.src.components.xaproductlisting.client.l144c51")}</SelectItem>
+                    <SelectItem value="price-desc">{xaI18n.t("xaB.src.components.xaproductlisting.client.l145c52")}</SelectItem>
                     <SelectItem value="best-sellers">Best sellers</SelectItem>
-                    <SelectItem value="biggest-discount">Biggest discount</SelectItem>
+                    <SelectItem value={xaI18n.t("xaB.src.components.xaproductlisting.client.l147c39")}>{xaI18n.t("xaB.src.components.xaproductlisting.client.l147c58")}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -164,16 +165,14 @@ export function XaProductListing({
       <Section padding="default">
         {filteredProducts.length === 0 ? (
           <div className="col-span-full flex flex-col items-center gap-4 py-16 text-center">
-            <p className="text-sm text-muted-foreground">No items match your current filters.</p>
+            <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.components.xaproductlisting.client.l167c58")}</p>
             <Button
               type="button"
               onClick={clearAppliedFilters}
               variant="outline"
               size="sm"
               className="h-auto min-h-0 rounded-none border border-border-2 px-4 py-2 text-xs uppercase tracking-widest hover:bg-muted"
-            >
-              Clear filters
-            </Button>
+            >{xaI18n.t("xaB.src.components.xaproductlisting.client.l174c14")}</Button>
           </div>
         ) : (
           <LayoutGrid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>

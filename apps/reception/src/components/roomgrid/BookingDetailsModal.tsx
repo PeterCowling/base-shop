@@ -10,7 +10,8 @@
 import type { FC } from "react";
 import { memo, useCallback, useState } from "react";
 
-import { Button, ConfirmDialog } from "@acme/design-system/atoms";
+import { ConfirmDialog } from "@acme/design-system/atoms";
+import { ReceptionButton as Button, ReceptionSelect } from "@acme/ui/operations";
 
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useGuestByRoomData from "../../hooks/data/roomgrid/useGuestByRoomData";
@@ -163,7 +164,7 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
               >
                 Move booking to room:
               </label>
-              <select
+              <ReceptionSelect
                 id="target-room"
                 className="w-full border rounded p-2 text-foreground"
                 value={targetRoom}
@@ -175,7 +176,7 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
                     {r}
                   </option>
                 ))}
-              </select>
+              </ReceptionSelect>
               <Button
                 type="button"
                 onClick={handleMoveBooking}

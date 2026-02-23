@@ -2,7 +2,16 @@
 
 import React, { type FC, useCallback, useState } from "react";
 
-import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
+import {
+  ReceptionButton as Button,
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 import { type AggregatedOrder } from "../../../types/bar/BarTypes";
 
@@ -51,7 +60,7 @@ const OrderList: FC<OrderListProps> = React.memo(
           {orders.length ? (
             <Table className="w-full flex-1 border-separate border-spacing-0">
               <TableHeader className="sticky top-0 z-10 bg-primary-main/95 backdrop-blur-md dark:bg-darkAccentGreen dark:text-darkBg">
-                <TableRow className="text-sm font-semibold uppercase tracking-wider text-white">
+                <TableRow className="text-sm font-semibold uppercase tracking-wider text-primary-fg">
                   <TableHead className="px-4 py-2 text-start">Product</TableHead>
                   <TableHead className="px-4 py-2 text-end">Total&nbsp;€</TableHead>
                 </TableRow>
@@ -61,7 +70,7 @@ const OrderList: FC<OrderListProps> = React.memo(
                   <TableRow
                     key={o.product}
                     onClick={makeRowHandler(o.product)}
-                    className="group cursor-pointer bg-white hover:bg-info-main/10 motion-safe:transition-colors dark:bg-darkSurface"
+                    className="group cursor-pointer bg-surface hover:bg-info-main/10 motion-safe:transition-colors dark:bg-darkSurface"
                   >
                     <TableCell className="whitespace-pre-wrap px-4 py-2">
                       {o.count > 1 ? `${o.count}× ${o.product}` : o.product}
@@ -74,13 +83,18 @@ const OrderList: FC<OrderListProps> = React.memo(
               </TableBody>
             </Table>
           ) : (
-            <p className="flex flex-1 items-center justify-center px-6 text-center text-sm text-stone-400">
-              No items yet&nbsp;– tap a product to add it
-            </p>
+            <Cluster
+              asChild
+              justify="center"
+              wrap={false}
+              className="flex-1 px-6 text-center text-sm text-muted-foreground"
+            >
+              <p>No items yet&nbsp;– tap a product to add it</p>
+            </Cluster>
           )}
 
           {/* ─────── Action buttons ─────── */}
-          <div className="space-y-3 bg-gradient-to-t from-stone-50 via-white/90 to-transparent p-4 dark:from-darkBg dark:via-darkSurface">
+          <div className="space-y-3 bg-gradient-to-t from-surface-2 via-surface/90 to-transparent p-4 dark:from-darkBg dark:via-darkSurface">
             <Button
               type="button"
               disabled={!orders.length}
@@ -88,7 +102,7 @@ const OrderList: FC<OrderListProps> = React.memo(
               className={[
                 "w-full rounded-lg py-2 text-center text-sm font-semibold shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-light",
                 !orders.length
-                  ? "cursor-not-allowed bg-stone-300 text-stone-600 dark:bg-darkSurface"
+                  ? "cursor-not-allowed bg-surface-3 text-muted-foreground dark:bg-darkSurface"
                   : "bg-success-main text-success-foreground hover:bg-success-hover active:scale-97 motion-safe:transition-transform dark:bg-darkAccentGreen dark:text-darkBg",
               ].join(" ")}
             >

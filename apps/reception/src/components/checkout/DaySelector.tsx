@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
 import { Button } from "@acme/design-system/atoms";
+import { Cluster, Inline } from "@acme/design-system/primitives";
 
 // Import your existing date utilities
 import {
@@ -64,7 +65,7 @@ function DateSelector({
    * Render the quick date selection buttons (yesterday, today, plus next 5 days).
    */
   const daySelectors: ReactElement = (
-    <div className="flex items-center flex-wrap gap-2">
+    <Cluster gap={2}>
       {renderButton("Yesterday", yesterday)}
       {renderButton("Today", today)}
       {nextFiveDays.map((day) => {
@@ -72,7 +73,7 @@ function DateSelector({
         const shortLabel = getWeekdayShortLabel(day);
         return renderButton(shortLabel, day);
       })}
-    </div>
+    </Cluster>
   );
 
   // For "pete": show an optional toggleable calendar
@@ -125,7 +126,7 @@ function DateSelector({
         {isCalendarOpen && (
           <div
             ref={calendarRef}
-            className="absolute z-50 mt-2 bg-white shadow-lg rounded p-5 dark:bg-darkSurface"
+            className="absolute z-50 mt-2 bg-surface shadow-lg rounded p-5 dark:bg-darkSurface"
             style={{ top: "100%", right: 0 }}
           >
             <DayPicker
@@ -158,10 +159,10 @@ function DateSelector({
   // The final layout, combining quick selectors and the optional calendar.
   return (
     <div className="relative pb-5 bg-surface-2 rounded border border-border-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface">
-      <div className="flex items-center gap-2">
+      <Inline wrap={false} gap={2}>
         {daySelectors}
         {toggleAndCalendar}
-      </div>
+      </Inline>
     </div>
   );
 }

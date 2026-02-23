@@ -43,7 +43,7 @@ Canonical source:
 | `S5A` | Prioritize | `prioritization-scorer-prompt.md` | all | Required prompt stage |
 | `S5B` | BOS sync | no-prompt-required | all | Skill/system-managed |
 | `WEBSITE-01` | L1 first build framework | `website-first-build-framework-prompt.md` | pre-website | Required prompt stage |
-| `WEBSITE-02` | Site-upgrade synthesis | `docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md` | website-live | Required prompt stage |
+| `WEBSITE-02` | Site-upgrade synthesis | `docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md` | website-live | Required prompt stage. L1 Build 2 auto-mode: image-first merchandising for visual-heavy catalogs. |
 | `DO` | Delivery execution | no-prompt-required | all | Skill-driven: `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build` |
 | `S9B` | Post-deploy verification | `post-deploy-measurement-verification-prompt.md` | all | Run after deploy |
 | `S9B` | QA gates | no-prompt-required | all | Skill-driven: `/lp-launch-qa` |

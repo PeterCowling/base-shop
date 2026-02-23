@@ -6,6 +6,7 @@ import {
   listAccessRequests,
   updateAccessRequest,
 } from "../../../../../../lib/accessStore";
+import { xaI18n } from "../../../../../../lib/xaI18n";
 
 // Uses node:crypto/fs via accessStore + accessAdmin.
 export const runtime = "nodejs";
@@ -105,7 +106,7 @@ export async function POST(
 
   const maxUses = sanitizeMaxUses(payload.maxUses, 1);
   const expiresAt = sanitizeExpiresAt(payload.expiresAt);
-  const label = entry.handle ? `Request: ${entry.handle}` : "Invite request";
+  const label = entry.handle ? `Request: ${entry.handle}` : xaI18n.t("xaB.src.app.api.access.admin.requests.requestid.issue.route.l108c61");
 
   const { code, invite, storeMode } = await createInvite({
     label,

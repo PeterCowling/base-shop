@@ -20,4 +20,16 @@ describe("ColorSwatch", () => {
     expect(button).toHaveClass("ring-offset-2");
     expect(button).toHaveAttribute("aria-pressed", "true");
   });
+
+  it("supports shape/radius overrides", () => {
+    const { rerender } = render(
+      <ColorSwatch color="red" shape="square" data-cy="swatch" />,
+    );
+    expect(screen.getByTestId("swatch")).toHaveClass("rounded-none");
+
+    rerender(
+      <ColorSwatch color="red" shape="square" radius="xl" data-cy="swatch" />,
+    );
+    expect(screen.getByTestId("swatch")).toHaveClass("rounded-xl");
+  });
 });

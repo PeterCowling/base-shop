@@ -2,6 +2,8 @@
 import type { ChangeEvent, FC } from "react";
 import { memo, useState } from "react";
 
+import { ReceptionInput as Input } from "@acme/ui/operations";
+
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useGridData from "../../hooks/data/roomgrid/useGridData";
 import { addDays, formatDateForInput, getYesterday } from "../../utils/dateUtils";
@@ -87,7 +89,7 @@ const RoomsGrid: FC = () => {
           <label className="font-semibold" htmlFor="start-date">
             Start:
           </label>
-          <input
+          <Input
             id="start-date"
             type="date"
             className="border rounded px-2 py-1 text-foreground dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
@@ -97,7 +99,7 @@ const RoomsGrid: FC = () => {
           <label className="font-semibold" htmlFor="end-date">
             End:
           </label>
-          <input
+          <Input
             id="end-date"
             type="date"
             className="border rounded px-2 py-1 text-foreground dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"

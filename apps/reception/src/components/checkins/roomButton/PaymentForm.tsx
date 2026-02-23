@@ -79,12 +79,12 @@ function PaymentForm({
     return "Paid";
   }, [outstanding, splitPayments]);
 
-  const activeClass = "bg-primary-main hover:bg-primary-dark text-white dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80";
+  const activeClass = "bg-primary-main hover:bg-primary-dark text-primary-fg dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80";
   const disabledClass =
-    "bg-success-light text-white cursor-not-allowed opacity-70";
+    "bg-success-light text-primary-fg cursor-not-allowed opacity-70";
   const leftButtonClass = isDisabled
     ? disabledClass
-    : `${activeClass} border-r border-gray-200/20`;
+    : `${activeClass} border-r border-border/20`;
   const rightButtonClass = isDisabled ? disabledClass : activeClass;
 
   return (

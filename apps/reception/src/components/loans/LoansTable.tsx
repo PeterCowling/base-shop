@@ -1,7 +1,14 @@
 // File: /src/components/loans/LoansTable.tsx
 import { memo, type ReactElement, useCallback, useMemo, useState } from "react";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import {
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
@@ -174,7 +181,7 @@ function LoansTableComponent({
       <div className="overflow-auto">
         <Table className="min-w-full border-collapse text-sm">
           <TableHeader>
-            <TableRow className="bg-gray-200 dark:bg-darkSurface">
+            <TableRow className="bg-surface-3 dark:bg-darkSurface">
               <TableHead className="p-2 text-start border-b">Booking Ref</TableHead>
               <TableHead className="p-2 text-start border-b">Guest Name</TableHead>
               <TableHead className="p-2 text-start border-b">New Loan</TableHead>
@@ -187,7 +194,7 @@ function LoansTableComponent({
               <TableRow>
                 <TableCell
                   colSpan={4}
-                  className="p-2 text-center border-b italic text-gray-600"
+                  className="p-2 text-center border-b italic text-muted-foreground"
                 >
                   Loading...
                 </TableCell>
@@ -239,7 +246,7 @@ function LoansTableComponent({
                     buttonDisabled={buttonDisabled}
                     openModal={openModal}
                     openKeycardsModal={openKeycardsModal}
-                    rowBg="hover:bg-gray-50 dark:hover:bg-darkSurface cursor-pointer"
+                    rowBg="hover:bg-surface-2 dark:hover:bg-darkSurface cursor-pointer"
                   />
                 );
               })}

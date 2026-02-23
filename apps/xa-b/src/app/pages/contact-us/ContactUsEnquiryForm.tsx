@@ -11,6 +11,8 @@ import {
 import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 import { Stack } from "@acme/design-system/primitives/Stack";
 
+import { xaI18n } from "../../../lib/xaI18n";
+
 import { contactPreferences, countries, queryTypes } from "./content";
 
 export function ContactUsEnquiryForm({ supportEmail }: { supportEmail: string }) {
@@ -18,11 +20,8 @@ export function ContactUsEnquiryForm({ supportEmail }: { supportEmail: string })
     <div className="rounded-lg border p-6">
       <Stack gap={4}>
         <div>
-          <h2 className="text-lg font-semibold">Help &amp; Contact Us</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Complete the form and click send to submit an enquiry. We’ll follow up using your preferred contact
-            method.
-          </p>
+          <h2 className="text-lg font-semibold">{xaI18n.t("xaB.src.app.pages.contact.us.contactusenquiryform.l21c49")}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.pages.contact.us.contactusenquiryform.l22c61")}</p>
         </div>
 
         <form className="space-y-4">
@@ -37,9 +36,9 @@ export function ContactUsEnquiryForm({ supportEmail }: { supportEmail: string })
           >
             <Input id="email" name="email" type="email" autoComplete="email" />
           </FormField>
-          <FormField label="Contact preferences" htmlFor="contact-preference" required>
+          <FormField label={xaI18n.t("xaB.src.app.pages.contact.us.contactusenquiryform.l40c28")} htmlFor={xaI18n.t("xaB.src.app.pages.contact.us.contactusenquiryform.l40c58")} required>
             <Select defaultValue={contactPreferences[0]?.value}>
-              <SelectTrigger id="contact-preference">
+              <SelectTrigger id={xaI18n.t("xaB.src.app.pages.contact.us.contactusenquiryform.l42c33")}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -51,7 +50,7 @@ export function ContactUsEnquiryForm({ supportEmail }: { supportEmail: string })
               </SelectContent>
             </Select>
           </FormField>
-          <FormField label="Country/region" htmlFor="country" required>
+          <FormField label={xaI18n.t("xaB.src.app.pages.contact.us.contactusenquiryform.l54c28")} htmlFor="country" required>
             <Select defaultValue={countries[0]}>
               <SelectTrigger id="country">
                 <SelectValue />

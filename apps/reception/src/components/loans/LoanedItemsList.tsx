@@ -2,7 +2,8 @@
 
 import { memo, type ReactElement, useCallback, useMemo } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import {
   type LoanItem,
@@ -133,15 +134,15 @@ function LoanedItemsListComponent({
   }, [occupantLoans]);
 
   if (loading) {
-    return <span className="text-gray-600 italic dark:text-darkAccentGreen">Loading...</span>;
+    return <span className="text-muted-foreground italic dark:text-darkAccentGreen">Loading...</span>;
   }
   if (error) {
     return (
-      <span className="text-red-500 italic dark:text-darkAccentOrange">Error loading occupant loans.</span>
+      <span className="text-error-main italic dark:text-darkAccentOrange">Error loading occupant loans.</span>
     );
   }
   if (!loanItems.length) {
-    return <span className="text-gray-600 italic dark:text-darkAccentGreen">None</span>;
+    return <span className="text-muted-foreground italic dark:text-darkAccentGreen">None</span>;
   }
 
   return (
@@ -154,10 +155,10 @@ function LoanedItemsListComponent({
             <div>
               {itemName} (x{count}) - {getDepositLabel(depositType)}
             </div>
-            <div className="flex gap-2">
+            <Inline wrap={false} gap={2}>
               {showReturnButton && (
                 <Button
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded disabled:bg-gray-300 dark:bg-darkAccentOrange dark:text-darkSurface dark:hover:bg-darkAccentOrange/80 dark:disabled:bg-darkSurface/50"
+                  className="bg-error-main hover:bg-error-main text-primary-fg px-3 py-1 rounded disabled:bg-surface-3 dark:bg-darkAccentOrange dark:text-darkSurface dark:hover:bg-darkAccentOrange/80 dark:disabled:bg-darkSurface/50"
                   disabled={buttonDisabled}
                   onClick={() =>
                     onReturnLoan(
@@ -171,7 +172,7 @@ function LoanedItemsListComponent({
                   Return
                 </Button>
               )}
-            </div>
+            </Inline>
           </div>
         );
       })}

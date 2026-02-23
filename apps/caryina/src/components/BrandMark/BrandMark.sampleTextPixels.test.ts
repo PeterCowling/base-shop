@@ -138,4 +138,37 @@ describe("BrandMark sampleTextPixels", () => {
     expect(sampled.width).toBe(0);
     expect(sampled.height).toBe(0);
   });
+
+  it("samples wrapped lines when maxWidth is constrained", () => {
+    const ctx = makeContext(8);
+    ctx.measureText = jest.fn((text: string) => ({ width: Math.max(1, text.length * 7) }));
+    const originalCreateElement = document.createElement.bind(document);
+
+    jest
+      .spyOn(document, "createElement")
+      .mockImplementation(((tagName: string) => {
+        if (tagName.toLowerCase() === "canvas") {
+          const canvas = originalCreateElement("canvas") as HTMLCanvasElement;
+          Object.defineProperty(canvas, "getContext", {
+            configurable: true,
+            value: jest.fn(() => ctx),
+          });
+          return canvas;
+        }
+        return originalCreateElement(tagName as keyof HTMLElementTagNameMap);
+      }) as typeof document.createElement);
+
+    const sampled = sampleTextPixels({
+      text: "Un solo dettaglio",
+      font: "400 20px 'DM Sans'",
+      maxWidthPx: 56,
+      lineHeightPx: 24,
+      padding: 0,
+      sampleStep: 2,
+    });
+
+    expect(sampled.width).toBe(56);
+    expect(sampled.height).toBeGreaterThan(24);
+    expect(ctx.fillText.mock.calls.length).toBeGreaterThan(1);
+  });
 });

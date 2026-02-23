@@ -5,6 +5,7 @@ import { PolicyPageIntro } from "@acme/ui/components/organisms/PolicyPageIntro";
 import { PolicySection } from "@acme/ui/components/organisms/PolicySection";
 
 import { siteConfig } from "../../../lib/siteConfig";
+import { xaI18n } from "../../../lib/xaI18n";
 
 export default function ShippingPolicyPage() {
   const brandName = siteConfig.brandName;
@@ -16,7 +17,7 @@ export default function ShippingPolicyPage() {
         <PolicyPageIntro
           title="Shipping policy"
           description={`This page outlines how ${brandName} ships ${productDescriptor}. Replace placeholders with your legal entity details.`}
-          descriptionClassName="mt-2 text-sm text-muted-foreground max-w-none"
+          descriptionClassName={xaI18n.t("xaB.src.app.pages.shipping.policy.page.l19c32")}
         />
       </Section>
 
@@ -26,7 +27,7 @@ export default function ShippingPolicyPage() {
             <LegalEntityCard
               title="Company"
               className="rounded-lg border p-4 text-sm"
-              titleClassName="font-semibold text-inherit"
+              titleClassName={xaI18n.t("xaB.src.app.pages.shipping.policy.page.l29c30")}
               bodyClassName="space-y-0"
             >
               {siteConfig.showLegalInfo && siteConfig.legalEntityName ? (
@@ -44,26 +45,23 @@ export default function ShippingPolicyPage() {
             </LegalEntityCard>
           ) : null}
 
-          <PolicySection title="Order processing" titleClassName="text-lg font-semibold">
-            <p className="text-sm text-muted-foreground">
-              2–7 business days.
-            </p>
+          <PolicySection title="Order processing" titleClassName={xaI18n.t("xaB.src.app.pages.shipping.policy.page.l47c66")}>
+            <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l48c58")}</p>
           </PolicySection>
 
-          <PolicySection title="Shipping methods" titleClassName="text-lg font-semibold">
+          <PolicySection title="Shipping methods" titleClassName={xaI18n.t("xaB.src.app.pages.shipping.policy.page.l53c66")}>
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-              <li>Express (DHL): 7–20 business days</li>
-              <li>Standard: 12–25 business days</li>
+              <li>{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l55c19")}</li>
+              <li>{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l56c19")}</li>
             </ul>
           </PolicySection>
 
-          <PolicySection title="Notes" titleClassName="text-lg font-semibold">
+          <PolicySection title="Notes" titleClassName={xaI18n.t("xaB.src.app.pages.shipping.policy.page.l60c55")}>
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-              <li>Delivery timelines vary by destination and peak periods.</li>
-              <li>Please double-check your address at checkout.</li>
+              <li>{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l62c19")}</li>
+              <li>{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l63c19")}</li>
               {siteConfig.showSocialLinks && siteConfig.whatsappNumber ? (
-                <li>
-                  If you need help, contact us on WhatsApp: {siteConfig.whatsappNumber}
+                <li>{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l65c21")}{siteConfig.whatsappNumber}
                 </li>
               ) : null}
             </ul>

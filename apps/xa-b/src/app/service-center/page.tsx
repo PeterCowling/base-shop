@@ -10,6 +10,7 @@ import { SupportSidebarNav } from "@acme/ui/components/organisms/SupportSidebarN
 
 import { siteConfig } from "../../lib/siteConfig";
 import { toWhatsappHref } from "../../lib/support";
+import { xaI18n } from "../../lib/xaI18n";
 
 export default function ServiceCenterPage() {
   const productLabelPlural = siteConfig.catalog.labelPlural;
@@ -18,24 +19,23 @@ export default function ServiceCenterPage() {
     : null;
   const showContactCard = siteConfig.showContactInfo || siteConfig.showSocialLinks;
   const navLinks = [
-    { href: "#orders", label: "Orders & contact" },
+    { href: "#orders", label: xaI18n.t("xaB.src.app.service.center.page.l21c31") },
     { href: "#shipping", label: "Shipping" },
     { href: "#returns", label: "Returns" },
-    { href: "#company", label: "Company & legal" },
+    { href: "#company", label: xaI18n.t("xaB.src.app.service.center.page.l24c32") },
   ];
 
   return (
     <main className="sf-content">
       <Section padding="default">
         <Breadcrumbs
-          items={[{ label: "Home", href: "/" }, { label: "Service center" }]}
+          items={[{ label: "Home", href: "/" }, { label: xaI18n.t("xaB.src.app.service.center.page.l31c58") }]}
         />
       </Section>
 
       <Section padding="wide">
-        <h1 className="text-3xl font-semibold">Service center</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Quick help with orders, shipping, returns, and support for {productLabelPlural}.
+        <h1 className="text-3xl font-semibold">{xaI18n.t("xaB.src.app.service.center.page.l36c48")}</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.service.center.page.l37c59")}{productLabelPlural}.
         </p>
       </Section>
 
@@ -50,21 +50,19 @@ export default function ServiceCenterPage() {
           </aside>
 
           <div className="md:col-span-3 space-y-6 scroll-mt-28" id="orders">
-            <ResourceCard title="Order help" description="Track your order without logging in.">
+            <ResourceCard title="Order help" description={xaI18n.t("xaB.src.app.service.center.page.l53c58")}>
               <Button asChild>
-                <Link href="/account/trackingorder">Check order status</Link>
+                <Link href="/account/trackingorder">{xaI18n.t("xaB.src.app.service.center.page.l55c53")}</Link>
               </Button>
               {siteConfig.showContactInfo ? (
-                <div className="text-xs text-muted-foreground">
-                  Prefer email? Include your order number and email address.
-                </div>
+                <div className="text-xs text-muted-foreground">{xaI18n.t("xaB.src.app.service.center.page.l58c64")}</div>
               ) : null}
             </ResourceCard>
 
             {showContactCard ? (
               <ResourceCard
                 title="Contact"
-                description="Choose a channel and we’ll route you to the right team."
+                description={xaI18n.t("xaB.src.app.service.center.page.l67c29")}
               >
                 <Inline gap={3} className="flex-wrap">
                     {whatsappHref ? (
@@ -88,21 +86,20 @@ export default function ServiceCenterPage() {
                     ) : null}
                 </Inline>
                   {siteConfig.showContactInfo && siteConfig.businessHours ? (
-                    <div className="text-xs text-muted-foreground">
-                      Business hours: {siteConfig.businessHours}
+                    <div className="text-xs text-muted-foreground">{xaI18n.t("xaB.src.app.service.center.page.l91c68")}{siteConfig.businessHours}
                     </div>
                   ) : null}
               </ResourceCard>
             ) : (
               <ResourceCard
                 title="Contact"
-                description="Contact details are available on request."
+                description={xaI18n.t("xaB.src.app.service.center.page.l99c29")}
               />
             )}
 
             <ResourceCard
               title="How to shop"
-              description="Browse, order, and pay following our step-by-step guide."
+              description={xaI18n.t("xaB.src.app.service.center.page.l105c27")}
             >
               <Button variant="outline" asChild>
                 <Link href="/pages/how-to-shop">View guide</Link>
@@ -113,10 +110,10 @@ export default function ServiceCenterPage() {
               id="shipping"
               className="scroll-mt-28"
               title="Shipping"
-              description="Processing timelines, methods, and delivery windows."
+              description={xaI18n.t("xaB.src.app.service.center.page.l116c27")}
             >
               <Button variant="outline" asChild>
-                <Link href="/pages/shipping-policy">Shipping policy</Link>
+                <Link href="/pages/shipping-policy">{xaI18n.t("xaB.src.app.service.center.page.l119c53")}</Link>
               </Button>
             </ResourceCard>
 
@@ -124,16 +121,16 @@ export default function ServiceCenterPage() {
               id="returns"
               className="scroll-mt-28"
               title="Returns"
-              description="What’s refundable, timelines, and how to start a return."
+              description={xaI18n.t("xaB.src.app.service.center.page.l127c27")}
             >
               <Button variant="outline" asChild>
-                <Link href="/pages/return-policy">Return policy</Link>
+                <Link href="/pages/return-policy">{xaI18n.t("xaB.src.app.service.center.page.l130c51")}</Link>
               </Button>
             </ResourceCard>
 
             <ResourceCard
               title="FAQs"
-              description="Detailed answers for shopping, delivery, payments, and returns."
+              description={xaI18n.t("xaB.src.app.service.center.page.l136c27")}
             >
               <Button variant="outline" asChild>
                 <Link href="/faqs">View FAQs</Link>
@@ -150,10 +147,10 @@ export default function ServiceCenterPage() {
               <Link href="/pages/about-us">About us</Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="/pages/privacy-policy">Privacy policy</Link>
+              <Link href="/pages/privacy-policy">{xaI18n.t("xaB.src.app.service.center.page.l153c50")}</Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="/pages/terms-of-service">Terms of service</Link>
+              <Link href="/pages/terms-of-service">{xaI18n.t("xaB.src.app.service.center.page.l156c52")}</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/pages/contact-us">Contact us</Link>

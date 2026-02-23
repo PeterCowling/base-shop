@@ -1,5 +1,7 @@
 import { memo, type ReactElement } from "react";
 
+import { ReceptionInput } from "@acme/ui/operations";
+
 import DateSelector from "./DateSel";
 
 interface LoanFiltersProps {
@@ -28,7 +30,7 @@ function LoanFiltersComponent({
         <label htmlFor="guestFilter" className="font-semibold dark:text-darkAccentGreen">
           Filter by guest name:
         </label>
-        <input
+        <ReceptionInput
           id="guestFilter"
           type="text"
           value={guestFilter}

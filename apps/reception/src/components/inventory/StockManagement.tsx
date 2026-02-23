@@ -1,6 +1,14 @@
 import { useMemo, useState } from "react";
 
-import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/atoms";
+import {
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 import {
   STOCK_ADJUSTMENT_REAUTH_THRESHOLD,
@@ -169,7 +177,7 @@ function StockManagement() {
   if (!canManageStock) {
     return (
       <div className="p-4">
-        <p className="text-sm text-gray-600 dark:text-darkAccentGreen">
+        <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
           You do not have access to stock management.
         </p>
       </div>
@@ -485,7 +493,7 @@ function StockManagement() {
     <div className="p-4 dark:bg-darkBg dark:text-darkAccentGreen space-y-6">
       <div>
         <h1 className="text-3xl font-bold mb-2">Stock Management</h1>
-        <p className="text-sm text-gray-600 dark:text-darkAccentGreen">
+        <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
           Track inventory with ledger-based movements and accountability.
         </p>
       </div>
@@ -517,7 +525,7 @@ function StockManagement() {
               </p>
               <Button
                 type="button"
-                className="px-3 py-1 rounded bg-warning-main text-white hover:bg-warning-dark"
+                className="px-3 py-1 rounded bg-warning-main text-primary-fg hover:bg-warning-dark"
                 onClick={handleMigrateLegacyRecipes}
               >
                 Migrate Legacy Recipes
@@ -527,7 +535,7 @@ function StockManagement() {
         </section>
       )}
 
-      <section className="border border-gray-200 rounded p-4 dark:border-darkBorder">
+      <section className="border border-border rounded p-4 dark:border-darkBorder">
         <h2 className="text-xl font-semibold mb-3">Add Inventory Item</h2>
         <div className="grid gap-3 md:grid-cols-5">
           <input
@@ -585,7 +593,7 @@ function StockManagement() {
         <Button
           type="button"
           onClick={handleAddItem}
-          className="mt-3 inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+          className="mt-3 inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
         >
           Add Item
         </Button>
@@ -594,14 +602,14 @@ function StockManagement() {
       <section>
         <h2 className="text-xl font-semibold mb-3">Inventory Ledger</h2>
         {items.length === 0 ? (
-          <p className="text-sm text-gray-600 dark:text-darkAccentGreen">
+          <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
             No inventory items added yet.
           </p>
         ) : (
           <div className="overflow-x-auto">
-            <Table className="min-w-full text-sm dark:bg-darkSurface border border-gray-200 dark:border-darkBorder">
+            <Table className="min-w-full text-sm dark:bg-darkSurface border border-border dark:border-darkBorder">
               <TableHeader>
-                <TableRow className="bg-gray-100 dark:bg-darkSurface">
+                <TableRow className="bg-surface-2 dark:bg-darkSurface">
                   <TableHead className="p-2 text-start">Item</TableHead>
                   <TableHead className="p-2 text-start">Unit</TableHead>
                   <TableHead className="p-2 text-end">On Hand</TableHead>
@@ -627,7 +635,7 @@ function StockManagement() {
                   return (
                     <TableRow
                       key={item.id ?? item.name}
-                      className={lowStock ? "bg-red-50 dark:bg-darkSurface" : ""}
+                      className={lowStock ? "bg-error-light/20 dark:bg-darkSurface" : ""}
                     >
                       <TableCell className="p-2 border-b">{item.name}</TableCell>
                       <TableCell className="p-2 border-b">{item.unit}</TableCell>
@@ -720,7 +728,7 @@ function StockManagement() {
                         <Button
                           type="button"
                           onClick={() => handleRecordAction(item.id ?? "")}
-                          className="inline-flex min-h-11 min-w-11 items-center justify-center px-3 py-1 rounded bg-primary-main text-white hover:bg-primary-dark"
+                          className="inline-flex min-h-11 min-w-11 items-center justify-center px-3 py-1 rounded bg-primary-main text-primary-fg hover:bg-primary-dark"
                         >
                           Record
                         </Button>
@@ -734,10 +742,10 @@ function StockManagement() {
         )}
       </section>
 
-      <section className="border border-gray-200 rounded p-4 dark:border-darkBorder">
+      <section className="border border-border rounded p-4 dark:border-darkBorder">
         <h2 className="text-xl font-semibold mb-3">Alerts</h2>
         {lowStockItems.length === 0 ? (
-          <p className="text-sm text-gray-600 dark:text-darkAccentGreen">
+          <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
             No low stock items.
           </p>
         ) : (
@@ -752,7 +760,7 @@ function StockManagement() {
         <div className="mt-4">
           <h3 className="font-semibold mb-2">Shrinkage</h3>
           {shrinkageAlerts.length === 0 ? (
-            <p className="text-sm text-gray-600 dark:text-darkAccentGreen">
+            <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
               No abnormal shrinkage detected in the last 24 hours.
             </p>
           ) : (
@@ -768,37 +776,37 @@ function StockManagement() {
         </div>
       </section>
 
-      <section className="border border-gray-200 rounded p-4 dark:border-darkBorder">
+      <section className="border border-border rounded p-4 dark:border-darkBorder">
         <h2 className="text-xl font-semibold mb-3">Exports</h2>
         <div className="flex flex-wrap gap-2">
           <Button
             type="button"
             onClick={handleExportLedger}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
           >
             Export Ledger CSV
           </Button>
           <Button
             type="button"
             onClick={handleExportVariance}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
           >
             Export Variance CSV
           </Button>
         </div>
       </section>
 
-      <section className="border border-gray-200 rounded p-4 dark:border-darkBorder">
+      <section className="border border-border rounded p-4 dark:border-darkBorder">
         <h2 className="text-xl font-semibold mb-3">Count Variance Report</h2>
         {countEntries.length === 0 ? (
-          <p className="text-sm text-gray-600 dark:text-darkAccentGreen">
+          <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
             No count adjustments recorded yet.
           </p>
         ) : (
           <>
-            <Table className="min-w-full text-sm dark:bg-darkSurface border border-gray-200 dark:border-darkBorder">
+            <Table className="min-w-full text-sm dark:bg-darkSurface border border-border dark:border-darkBorder">
               <TableHeader>
-                <TableRow className="bg-gray-100 dark:bg-darkSurface">
+                <TableRow className="bg-surface-2 dark:bg-darkSurface">
                   <TableHead className="p-2 text-start">Time</TableHead>
                   <TableHead className="p-2 text-start">Item</TableHead>
                   <TableHead className="p-2 text-end">Variance</TableHead>
@@ -823,9 +831,9 @@ function StockManagement() {
 
             <div className="mt-4">
               <h3 className="font-semibold mb-2">Variance by Item</h3>
-              <Table className="min-w-full text-sm dark:bg-darkSurface border border-gray-200 dark:border-darkBorder">
+              <Table className="min-w-full text-sm dark:bg-darkSurface border border-border dark:border-darkBorder">
                 <TableHeader>
-                  <TableRow className="bg-gray-100 dark:bg-darkSurface">
+                  <TableRow className="bg-surface-2 dark:bg-darkSurface">
                     <TableHead className="p-2 text-start">Item</TableHead>
                     <TableHead className="p-2 text-end">Total Variance</TableHead>
                   </TableRow>
@@ -846,7 +854,7 @@ function StockManagement() {
         )}
       </section>
 
-      <p className="text-xs text-gray-600 dark:text-darkAccentGreen">
+      <p className="text-xs text-muted-foreground dark:text-darkAccentGreen">
         Changes of {STOCK_ADJUSTMENT_REAUTH_THRESHOLD}+ units require re-authentication.
       </p>
 

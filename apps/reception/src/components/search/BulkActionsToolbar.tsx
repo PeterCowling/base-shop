@@ -67,15 +67,15 @@ function BulkActionsToolbar({
 
   return (
     <>
-      <div className="sticky top-0 z-10 mb-4 flex items-center justify-between gap-4 rounded-lg bg-blue-50 px-4 py-3 shadow-sm dark:bg-blue-900/30">
+      <div className="sticky top-0 z-10 mb-4 flex items-center justify-between gap-4 rounded-lg bg-info-light/20 px-4 py-3 shadow-sm dark:bg-blue-900/30">
         <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+          <span className="text-sm font-medium text-info-main dark:text-blue-300">
             {selectedCount} booking{selectedCount !== 1 ? "s" : ""} selected
           </span>
           <Button
             type="button"
             onClick={onClearSelection}
-            className="inline-flex min-h-9 min-w-9 items-center justify-center gap-1 rounded-md px-2 py-1 text-sm text-blue-600 hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-800/50"
+            className="inline-flex min-h-9 min-w-9 items-center justify-center gap-1 rounded-md px-2 py-1 text-sm text-info-main hover:bg-info-light dark:text-blue-300 dark:hover:bg-blue-800/50"
           >
             <XMarkIcon className="h-4 w-4" />
             Clear
@@ -87,7 +87,7 @@ function BulkActionsToolbar({
           <Button
             type="button"
             onClick={handleExportCsv}
-            className="inline-flex min-h-9 items-center gap-2 rounded-md bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-gray-300 hover:bg-gray-50 dark:bg-darkSurface dark:text-darkAccentGreen focus-visible:dark:ring-gray-600 dark:hover:bg-gray-700"
+            className="inline-flex min-h-9 items-center gap-2 rounded-md bg-surface px-3 py-1.5 text-sm font-medium text-foreground shadow-sm focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-gray-300 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen focus-visible:dark:ring-gray-600 dark:hover:bg-surface-3"
           >
             <ArrowDownTrayIcon className="h-4 w-4" />
             Export CSV
@@ -99,7 +99,7 @@ function BulkActionsToolbar({
               type="button"
               onClick={handleCancelClick}
               disabled={loading}
-              className="inline-flex min-h-9 items-center gap-2 rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700 disabled:opacity-50 dark:bg-red-700 dark:hover:bg-red-600"
+              className="inline-flex min-h-9 items-center gap-2 rounded-md bg-error-main px-3 py-1.5 text-sm font-medium text-primary-fg shadow-sm hover:bg-red-700 disabled:opacity-50 dark:bg-red-700 dark:hover:bg-error-main"
             >
               <TrashIcon className="h-4 w-4" />
               {loading ? "Cancelling..." : "Cancel Selected"}

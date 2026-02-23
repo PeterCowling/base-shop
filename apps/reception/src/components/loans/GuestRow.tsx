@@ -1,6 +1,9 @@
 import { memo, type ReactElement, useCallback, useMemo } from "react";
 
-import { TableCell, TableRow } from "@acme/design-system/atoms";
+import {
+  ReceptionTableCell as TableCell,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
@@ -89,13 +92,13 @@ function GuestRowComponent({
 
   return (
     <TableRow className={rowBg} onDoubleClick={handleDoubleClick}>
-      <TableCell className="p-3 border-b border-gray-300 dark:border-darkSurface">{guest.bookingRef}</TableCell>
-      <TableCell className="p-3 border-b border-gray-300 dark:border-darkSurface">
+      <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">{guest.bookingRef}</TableCell>
+      <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
         {guest.firstName} {guest.lastName}
       </TableCell>
 
       {/* "New Loan" Column */}
-      <TableCell className="p-3 border-b border-gray-300 dark:border-darkSurface">
+      <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
         <LoanableItemSelectorComp
           guest={guest}
           guestSelectedItem={guestSelectedItem}
@@ -106,7 +109,7 @@ function GuestRowComponent({
       </TableCell>
 
       {/* "Change Existing Loan" Column */}
-      <TableCell className="p-3 border-b border-gray-300 dark:border-darkSurface">
+      <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
         <LoanedItemsListComp
           occupantId={guest.guestId}
           guest={guest}

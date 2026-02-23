@@ -15,6 +15,7 @@ import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 
 import type { XaProduct } from "../lib/demoData";
+import { xaI18n } from "../lib/xaI18n";
 
 import { XaFadeImage } from "./XaFadeImage";
 
@@ -64,7 +65,7 @@ export function XaImageGallery({
                     src={img.url}
                     alt={img.altText ?? title}
                     fill
-                    sizes="(min-width: 1024px) 45vw, 100vw"
+                    sizes={xaI18n.t("xaB.src.components.xaimagegallery.client.l67c27")}
                     className="object-contain"
                     priority={idx < 2}
                   />
@@ -88,7 +89,7 @@ export function XaImageGallery({
                   src={active.url}
                   alt={active.altText ?? title}
                   fill
-                  sizes="(max-width: 768px) 100vw, 55vw"
+                  sizes={xaI18n.t("xaB.src.components.xaimagegallery.client.l91c25")}
                   className="object-contain"
                 />
               ) : null}

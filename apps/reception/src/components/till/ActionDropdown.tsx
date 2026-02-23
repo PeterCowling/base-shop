@@ -38,7 +38,7 @@ const ActionDropdown: FC<ActionDropdownProps> = ({
     >
       <DropdownMenuTrigger asChild>
         <Button
-          className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark dark:bg-darkSurface"
+          className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark dark:bg-darkSurface"
         >
           {label}
         </Button>

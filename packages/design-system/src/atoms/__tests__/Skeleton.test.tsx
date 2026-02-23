@@ -23,4 +23,13 @@ describe("Skeleton", () => {
       "p-2",
     );
   });
+
+  it("supports shape/radius overrides", () => {
+    const { container, rerender } = render(<Skeleton shape="square" />);
+    const skeleton = container.firstChild as HTMLElement;
+    expect(skeleton).toHaveClass("rounded-none");
+
+    rerender(<Skeleton shape="square" radius="xl" />);
+    expect(container.firstChild as HTMLElement).toHaveClass("rounded-xl");
+  });
 });

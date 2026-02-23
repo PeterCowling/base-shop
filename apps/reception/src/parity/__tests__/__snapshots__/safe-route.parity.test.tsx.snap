@@ -3,7 +3,7 @@
 exports[`/safe-management parity matches baseline safe selectors and DOM snapshot 1`] = `
 <div>
   <div
-    class="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen"
+    class="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen"
   >
     <h1
       class="text-5xl font-heading text-primary-main w-full text-center mb-6"
@@ -11,7 +11,7 @@ exports[`/safe-management parity matches baseline safe selectors and DOM snapsho
       SAFE MANAGEMENT
     </h1>
     <div
-      class="bg-white rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface"
+      class="bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface"
     >
       <p
         class="text-lg"
@@ -37,25 +37,25 @@ exports[`/safe-management parity matches baseline safe selectors and DOM snapsho
           class="flex gap-2 flex-wrap"
         >
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             data-token="--color-primary"
           >
             Open
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             data-token="--color-primary"
           >
             Deposit
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             data-token="--color-primary"
           >
             Withdraw
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             data-token="--color-primary"
           >
             Exchange
@@ -65,31 +65,31 @@ exports[`/safe-management parity matches baseline safe selectors and DOM snapsho
           class="flex gap-2 flex-wrap"
         >
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             data-token="--color-primary"
           >
             Bank Deposit
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             data-token="--color-primary"
           >
             Petty Cash
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             data-token="--color-primary"
           >
             Reset Safe
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             data-token="--color-primary"
           >
             Return Keycards
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-warning-main text-white rounded hover:bg-warning-dark"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-warning-main text-primary-fg rounded hover:bg-warning-dark"
             data-token="--color-primary"
           >
             Reconcile
@@ -112,7 +112,7 @@ exports[`/safe-management parity matches baseline safe selectors and DOM snapsho
             class="text-foreground text-left text-sm w-full border-collapse"
           >
             <thead
-              class="border-b border-border-2 bg-gray-100 dark:bg-darkSurface"
+              class="border-b border-border-2 bg-surface-2 dark:bg-darkSurface"
             >
               <tr
                 class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3"
@@ -153,7 +153,7 @@ exports[`/safe-management parity matches baseline safe selectors and DOM snapsho
               class=""
             >
               <tr
-                class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3 bg-white dark:bg-darkSurface"
+                class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3 bg-surface dark:bg-darkSurface"
               >
                 <td
                   class="align-middle p-2"

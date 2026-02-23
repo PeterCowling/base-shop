@@ -5,6 +5,7 @@ import { Button, Input } from "@acme/design-system/atoms";
 import { ElevatedPanel } from "@acme/ui/components/organisms/ElevatedPanel";
 
 import { siteConfig } from "../../lib/siteConfig";
+import { xaI18n } from "../../lib/xaI18n";
 
 import styles from "./access.module.css";
 import AccessGateClient from "./AccessGate.client";
@@ -38,7 +39,7 @@ function resolveErrorMessage(error?: string) {
     return "Enter an access key to continue.";
   }
   if (error === "rate_limited") {
-    return "Too many attempts. Pause, then try again.";
+    return xaI18n.t("xaB.src.app.access.page.l41c12");
   }
   return null;
 }
@@ -77,16 +78,12 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
     <main className={`${display.className} ${gateClassNames.pageRoot}`}>
       <div className={gateClassNames.pageFrame}>
         <div className={`space-y-6 ${styles.gateFade}`}>
-          <div className={`text-xs uppercase xa-tracking-045 ${mono.className}`}>
-            Invite only // Private network
-          </div>
+          <div className={`text-xs uppercase xa-tracking-045 ${mono.className}`}>{xaI18n.t("xaB.src.app.access.page.l80c82")}</div>
           <div className="space-y-3">
             <h1 className="text-4xl font-semibold leading-tight md:text-5xl">
               {siteConfig.brandName}
             </h1>
-            <p className={`max-w-xl text-base md:text-lg ${gateClassNames.mutedText}`}>
-              Underground preview access. Keys are issued sparingly and move hand to hand.
-            </p>
+            <p className={`max-w-xl text-base md:text-lg ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.page.l87c88")}</p>
           </div>
         </div>
 
@@ -142,9 +139,7 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
                 >
                   Unlock
                 </Button>
-                <div className={`text-xs ${gateClassNames.mutedText}`}>
-                  Keys are case-insensitive. Do not share in public.
-                </div>
+                <div className={`text-xs ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.page.l145c72")}</div>
               </div>
             </form>
           </ElevatedPanel>
@@ -155,15 +150,13 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
         </div>
 
         <div className={`mt-12 flex flex-wrap items-center gap-6 text-xs uppercase xa-tracking-035 ${gateClassNames.mutedText} ${mono.className}`}>
-          <span>Silent launch</span>
+          <span>{xaI18n.t("xaB.src.app.access.page.l158c17")}</span>
           <span>Closed loop</span>
-          <span>Zero indexing</span>
+          <span>{xaI18n.t("xaB.src.app.access.page.l160c17")}</span>
           <Link
             href="/"
             className={`inline-flex items-center gap-2 ${gateClassNames.inkText} hover:underline`}
-          >
-            Return to gate
-          </Link>
+          >{xaI18n.t("xaB.src.app.access.page.l164c12")}</Link>
         </div>
       </div>
     </main>

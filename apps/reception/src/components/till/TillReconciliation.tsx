@@ -35,11 +35,11 @@ function TillReconciliation(): JSX.Element {
   }
 
   return (
-    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         TILL MANAGEMENT
       </h1>
-      <div className="flex-grow bg-white rounded-lg shadow p-6 space-y-8 dark:bg-darkSurface">
+      <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-8 dark:bg-darkSurface">
         <DrawerLimitWarning
           show={props.isDrawerOverLimit}
           onLift={props.handleLiftClick}
@@ -62,12 +62,12 @@ function TillReconciliation(): JSX.Element {
           handleLiftClick={props.handleLiftClick}
         />
         {props.isEditMode && (
-          <div className="text-blue-600 text-sm font-semibold text-center">
+          <div className="text-info-main text-sm font-semibold text-center">
             Click a row to edit the transaction
           </div>
         )}
         {props.isDeleteMode && (
-          <div className="text-red-600 text-sm font-semibold text-center">
+          <div className="text-error-main text-sm font-semibold text-center">
             Click a row to delete the transaction
           </div>
         )}

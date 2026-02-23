@@ -13,13 +13,13 @@ const HoursChip: React.FC<HoursChipProps> = ({
 }) => {
   const chipLabel =
     hoursElapsed !== null ? `${Math.floor(hoursElapsed)}h` : "N/A";
-  let chipStyle = "bg-info-main text-white";
+  let chipStyle = "bg-info-main text-primary-fg";
 
   if (hoursElapsed !== null && thresholdHours !== null) {
     if (Math.floor(hoursElapsed) >= thresholdHours) {
-      chipStyle = "bg-warning-main text-white";
+      chipStyle = "bg-warning-main text-primary-fg";
     } else {
-      chipStyle = "bg-success-main text-white";
+      chipStyle = "bg-success-main text-primary-fg";
     }
   }
 

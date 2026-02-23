@@ -5676,21 +5676,21 @@
     "domain": "CI-Deploy"
   },
   {
-    "path": "docs/plans/cms-webpack-build-oom/critique-history.md",
+    "path": "docs/plans/_archive/cms-webpack-build-oom/critique-history.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Repo"
   },
   {
-    "path": "docs/plans/cms-webpack-build-oom/fact-find.md",
+    "path": "docs/plans/_archive/cms-webpack-build-oom/fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
     "domain": "Infra"
   },
   {
-    "path": "docs/plans/cms-webpack-build-oom/plan.md",
+    "path": "docs/plans/_archive/cms-webpack-build-oom/plan.md",
     "type": "Plan",
-    "status": "Draft",
+    "status": "Archived",
     "domain": "Infra"
   },
   {

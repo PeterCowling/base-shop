@@ -20,6 +20,7 @@ import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 import { useCart } from "../contexts/XaCartContext";
 import { siteConfig } from "../lib/siteConfig";
 import { toWhatsappTextHref } from "../lib/support";
+import { xaI18n } from "../lib/xaI18n";
 
 const XaFaqOverlayContent = dynamic(
   () => import("./XaFaqOverlayContent.client").then((m) => m.XaFaqOverlayContent),
@@ -32,7 +33,7 @@ const XaFaqOverlayContent = dynamic(
 );
 
 function openExternal(href: string) {
-  window.open(href, "_blank", "noopener,noreferrer");
+  window.open(href, "_blank", xaI18n.t("xaB.src.components.xasupportdock.client.l35c31"));
 }
 
 function WhatsappIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -40,7 +41,7 @@ function WhatsappIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns={xaI18n.t("xaB.src.components.xasupportdock.client.l43c13")}
       {...props}
     >
       <path
@@ -56,7 +57,7 @@ function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns={xaI18n.t("xaB.src.components.xasupportdock.client.l59c13")}
       {...props}
     >
       <path
@@ -72,7 +73,7 @@ function EmailIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns={xaI18n.t("xaB.src.components.xasupportdock.client.l75c13")}
       {...props}
     >
       <path
@@ -96,7 +97,7 @@ function ChatIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns={xaI18n.t("xaB.src.components.xasupportdock.client.l99c13")}
       {...props}
     >
       <path

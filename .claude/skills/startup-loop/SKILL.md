@@ -108,6 +108,7 @@ Stages (canonical IDs from loop-spec):
 | IDEAS-01 | Pack diff scan | `/idea-scan` | layer_a_pack_diff OR operator_inject |
 | IDEAS-02 | Backlog update | `/idea-develop`, `/idea-advance` | semi-automated; operator confirms MERGE/SPLIT |
 | IDEAS-03 | Promote to DO | `/lp-do-fact-find` | operator gate |
+| MEASURE-00 | Problem framing and ICP | prompt handoff | — |
 | MEASURE-01 | Agent-Setup | prompt handoff | — |
 | MEASURE-02 | Results | prompt handoff | — |
 | PRODUCT | Product (container) | — | — |
@@ -156,7 +157,7 @@ Stages (canonical IDs from loop-spec):
 | S5B | BOS sync (sole mutation boundary) | `/lp-bos-sync` | — |
 | WEBSITE | Website (container) | — | — |
 | WEBSITE-01 | L1 first build framework | `/lp-site-upgrade` (auto-handover to DO sequence `/lp-do-fact-find --website-first-build-backlog` -> `/lp-do-plan` -> `/lp-do-build` once Active) | launch-surface=pre-website |
-| WEBSITE-02 | Site-upgrade synthesis | `/lp-site-upgrade` | launch-surface=website-live |
+| WEBSITE-02 | Site-upgrade synthesis | `/lp-site-upgrade` (L1 Build 2 auto-mode: image-first merchandising for visual-heavy catalogs) | launch-surface=website-live |
 | DO | Do | `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build` | — |
 | S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa` | — |
 | S10 | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) | — |

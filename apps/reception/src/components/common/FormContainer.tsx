@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 export interface FormContainerProps {
   title: string;
@@ -27,7 +27,7 @@ const FormContainer: FC<FormContainerProps> = ({
         <Button
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-error-main text-white dark:bg-darkAccentOrange dark:text-darkSurface"
+          className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-error-main text-primary-fg dark:bg-darkAccentOrange dark:text-darkSurface"
         >
           <span aria-hidden="true">&times;</span>
         </Button>

@@ -76,7 +76,7 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
         <Button
           onClick={onCancel}
           aria-label="Close"
-          className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-error-main text-white"
+          className="absolute right-2 top-2 h-6 w-6 rounded-full bg-error-main text-primary-fg"
         >
           x
         </Button>
@@ -85,7 +85,7 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
           title="Reconcile Safe"
           borderClass="border-warning-main"
           textClass="text-warning-main"
-          confirmClass="bg-warning-main text-white rounded hover:bg-warning-dark dark:bg-darkAccentOrange dark:text-darkBg"
+          confirmClass="bg-warning-main text-primary-fg rounded hover:bg-warning-dark dark:bg-darkAccentOrange dark:text-darkBg"
           confirmLabel="Go"
           expectedCash={expectedSafe}
           expectedKeycards={expectedKeycards}

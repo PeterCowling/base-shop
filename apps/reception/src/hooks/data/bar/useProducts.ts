@@ -1,5 +1,4 @@
 // File: /src/hooks/data/bar/useProducts.ts
-/* eslint-disable ds/no-raw-tailwind-color -- product category colours are domain data constants, not UI theme values [REC-09] */
 
 import { useCallback, useMemo } from "react";
 

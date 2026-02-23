@@ -9,7 +9,8 @@ import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
-import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+import { ReceptionButton as Button, ReceptionInput } from "@acme/ui/operations";
 
 // We'll derive the logged-in user from AuthContext.
 import { useAuth } from "../../context/AuthContext";
@@ -148,15 +149,15 @@ export default function DateSelectorCI({
     <div className="relative pb-5">
       {/* A single-row flex: quick-date buttons + daypicker + test-mode toggle */}
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
+        <Inline wrap={false} gap={2}>
           {daySelectors}
           {datePickerToggle}
-        </div>
+        </Inline>
 
         {/* Show test mode toggle on far right, but only if user is Pete */}
         {isPete && (
           <label className="inline-flex items-center space-x-2">
-            <input
+            <ReceptionInput
               type="checkbox"
               checked={testMode}
               onChange={(e) => onTestModeChange(e.target.checked)}

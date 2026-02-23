@@ -5,6 +5,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { ReceptionInput } from "@acme/ui/operations";
 
 import { TillDataProvider, useTillData } from "../../context/TillDataContext";
 import usePmsPostings from "../../hooks/data/till/usePmsPostings";
@@ -57,7 +58,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
     <div className="flex items-end gap-2 flex-wrap">
       <div>
         <label className="block text-xs mb-1">Amount</label>
-        <input
+        <ReceptionInput
           type="number"
           inputMode="decimal"
           className="w-28 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
@@ -81,7 +82,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
       </div>
       <div>
         <label className="block text-xs mb-1">Note</label>
-        <input
+        <ReceptionInput
           type="text"
           className="w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
           placeholder="Optional"
@@ -93,7 +94,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
       <Button
         onClick={handleSubmit}
         disabled={submitting}
-        className="rounded bg-primary-main px-3 py-1 text-sm text-white hover:opacity-90 disabled:opacity-50"
+        className="rounded bg-primary-main px-3 py-1 text-sm text-primary-fg hover:opacity-90 disabled:opacity-50"
       >
         {submitting ? "Saving…" : "Add PMS Posting"}
       </Button>
@@ -130,7 +131,7 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
     <div className="flex items-end gap-2 flex-wrap">
       <div>
         <label className="block text-xs mb-1">Amount</label>
-        <input
+        <ReceptionInput
           type="number"
           inputMode="decimal"
           className="w-28 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
@@ -142,7 +143,7 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
       </div>
       <div>
         <label className="block text-xs mb-1">Note</label>
-        <input
+        <ReceptionInput
           type="text"
           className="w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
           placeholder="Optional"
@@ -154,7 +155,7 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
       <Button
         onClick={handleSubmit}
         disabled={submitting}
-        className="rounded bg-primary-main px-3 py-1 text-sm text-white hover:opacity-90 disabled:opacity-50"
+        className="rounded bg-primary-main px-3 py-1 text-sm text-primary-fg hover:opacity-90 disabled:opacity-50"
       >
         {submitting ? "Saving…" : "Add Terminal Batch"}
       </Button>
@@ -278,7 +279,7 @@ const ReconciliationWorkbenchContent = memo(
         )}
 
         <Table className="w-full border-collapse text-sm dark:text-darkAccentGreen">
-          <TableHeader className="bg-gray-100 dark:bg-darkSurface">
+          <TableHeader className="bg-surface-2 dark:bg-darkSurface">
             <TableRow className="dark:border-darkSurface">
               <TableHead className="p-2 text-start border dark:border-darkSurface">Source</TableHead>
               <TableHead className="p-2 text-end border dark:border-darkSurface">Cash</TableHead>
@@ -308,7 +309,7 @@ const ReconciliationWorkbenchContent = memo(
               >
                 {format(safeDrawerTotal)}
               </TableCell>
-              <TableCell className="p-2 text-end text-gray-600 dark:text-darkAccentGreen">-</TableCell>
+              <TableCell className="p-2 text-end text-muted-foreground dark:text-darkAccentGreen">-</TableCell>
               <TableCell
                 className={`p-2 text-right ${diffClass(
                   safeDrawerTotal - safePosCashTotal
@@ -343,7 +344,7 @@ const ReconciliationWorkbenchContent = memo(
             {/* Terminal Batch */}
             <TableRow className="dark:bg-darkSurface dark:border-darkSurface">
               <TableCell className="p-2">Terminal Batch</TableCell>
-              <TableCell className="p-2 text-end text-gray-600 dark:text-darkAccentGreen">-</TableCell>
+              <TableCell className="p-2 text-end text-muted-foreground dark:text-darkAccentGreen">-</TableCell>
               <TableCell className="p-2 text-end">{format(safeTerminalTotal)}</TableCell>
               <TableCell className="p-2" />
               <TableCell

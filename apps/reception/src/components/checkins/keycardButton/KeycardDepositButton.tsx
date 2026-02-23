@@ -164,7 +164,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
       case KeycardPayType.DOCUMENT:
         return {
           icon: faFileAlt,
-          className: "text-yellow-400 dark:text-darkAccentOrange",
+          className: "text-warning-main dark:text-darkAccentOrange",
         };
       case KeycardPayType.NO_CARD:
         return { icon: faBan, className: "dark:text-darkAccentGreen" };
@@ -172,7 +172,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
       default:
         return {
           icon: faMoneyBill,
-          className: "text-green-400 dark:text-darkAccentGreen",
+          className: "text-success-main dark:text-darkAccentGreen",
         };
     }
   }, [payType]);
@@ -203,17 +203,17 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     "min-h-55px px-4 flex items-center justify-center transition-colors focus:outline-none";
 
   const activeClass =
-    "bg-primary-main hover:bg-primary-dark text-white dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80";
+    "bg-primary-main hover:bg-primary-dark text-primary-fg dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80";
   const successDisabledClass =
-    "bg-success-light text-white cursor-not-allowed opacity-70";
+    "bg-success-light text-primary-fg cursor-not-allowed opacity-70";
   const greyDisabledClass =
-    "bg-gray-400 text-white cursor-not-allowed opacity-70 dark:bg-darkSurface dark:text-darkAccentGreen";
+    "bg-surface-3 text-primary-fg cursor-not-allowed opacity-70 dark:bg-darkSurface dark:text-darkAccentGreen";
 
   const leftButtonClass = disabledDueToKeycard
-    ? `${successDisabledClass} border-r border-gray-200/20 dark:border-darkSurface`
+    ? `${successDisabledClass} border-r border-border/20 dark:border-darkSurface`
     : isDisabled
     ? greyDisabledClass
-    : `${activeClass} border-r border-gray-200/20 dark:border-darkSurface`;
+    : `${activeClass} border-r border-border/20 dark:border-darkSurface`;
 
   const rightButtonClass = disabledDueToKeycard
     ? successDisabledClass

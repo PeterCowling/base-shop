@@ -1,3 +1,3 @@
 // apps/cms/tailwind.config.ts
 
-export { default } from "../../tailwind.config";
+export { default } from "../../tailwind.config.mjs";

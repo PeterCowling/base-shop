@@ -5,6 +5,10 @@ import userEvent from "@testing-library/user-event";
 
 import IcedCoffeeSweetnessModal from "../IcedCoffeeSweetnessModal";
 
+jest.mock("../../../../../hoc/withModalBackground", () => ({
+  withModalBackground: (Comp: React.ComponentType) => Comp,
+}));
+
 describe("IcedCoffeeSweetnessModal", () => {
   it("renders options and selects Sweetened or Unsweetened", async () => {
     const onSelectSweetness = jest.fn();
@@ -45,4 +49,3 @@ describe("IcedCoffeeSweetnessModal", () => {
     expect(onCancel).toHaveBeenCalled();
   });
 });
-

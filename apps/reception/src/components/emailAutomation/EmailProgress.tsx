@@ -2,6 +2,8 @@
 
 import React, { type ChangeEvent, useMemo, useState } from "react";
 
+import { ReceptionInput as Input } from "@acme/ui/operations";
+
 import useEmailProgressData, {
   type EmailProgressData,
 } from "../../hooks/client/checkin/useEmailProgressData";
@@ -53,17 +55,17 @@ const EmailProgress: React.FC<EmailProgressProps> = ({
 
   // Render
   return (
-    <div className="min-h-80vh p-4 bg-gray-100 dark:bg-darkBg font-sans text-gray-800 dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-surface-2 dark:bg-darkBg font-sans text-foreground dark:text-darkAccentGreen">
       {/* Title */}
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         EMAIL OPT-IN
       </h1>
 
-      <div className="flex-grow bg-white dark:bg-darkSurface rounded-lg shadow p-6 space-y-4">
+      <div className="flex-grow bg-surface dark:bg-darkSurface rounded-lg shadow p-6 space-y-4">
         {/* Loading or Error State */}
         {loading ? (
           <div className="flex justify-center items-center my-6">
-            <div className="w-8 h-8 border-4 border-gray-400 border-t-transparent rounded-full animate-spin dark:border-darkSurface" />
+            <div className="w-8 h-8 border-4 border-border-2 border-t-transparent rounded-full animate-spin dark:border-darkSurface" />
           </div>
         ) : error ? (
           <div className="text-error-main font-semibold text-center mt-8">
@@ -77,11 +79,11 @@ const EmailProgress: React.FC<EmailProgressProps> = ({
               <div className="w-72">
                 <label
                   htmlFor="filterInput"
-                  className="block text-sm font-semibold text-gray-700 mb-1 dark:text-darkAccentGreen"
+                  className="block text-sm font-semibold text-foreground mb-1 dark:text-darkAccentGreen"
                 >
                   Booking Ref or Surname
                 </label>
-                <input
+                <Input
                   id="filterInput"
                   type="text"
                   className="w-full border border-primary-light rounded px-3 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main"

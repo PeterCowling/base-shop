@@ -14,6 +14,7 @@ import {
   XA_CATEGORY_LABELS,
   XA_SUBCATEGORIES,
 } from "../lib/xaCatalog";
+import { xaI18n } from "../lib/xaI18n";
 import type { XaDepartment } from "../lib/xaTypes";
 
 import { XaProductCard } from "./XaProductCard";
@@ -38,8 +39,7 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
         <div className="space-y-2">
           <h1 className="text-3xl font-semibold">{departmentLabel}</h1>
           <p className="text-muted-foreground">
-            New in {siteConfig.catalog.labelPlural}, trending designers, and category highlights.
-          </p>
+            New in {siteConfig.catalog.labelPlural}{xaI18n.t("xaB.src.components.xadepartmentlanding.l41c52")}</p>
         </div>
       </Section>
 
@@ -60,7 +60,7 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
       </Section>
 
       <Section padding="default">
-        <h2 className="text-xl font-semibold">Trending designers</h2>
+        <h2 className="text-xl font-semibold">{xaI18n.t("xaB.src.components.xadepartmentlanding.l63c47")}</h2>
         <Inline gap={3} className="mt-4 flex-wrap">
           {trendingDesigners.map((designer) => (
             <Link
@@ -75,7 +75,7 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
       </Section>
 
       <Section padding="default">
-        <h2 className="text-xl font-semibold">Key categories</h2>
+        <h2 className="text-xl font-semibold">{xaI18n.t("xaB.src.components.xadepartmentlanding.l78c47")}</h2>
         <Grid columns={{ base: 1, md: 3 }} gap={6} className="mt-6">
           {categoryCards.map((card) => (
             <Link

@@ -1,59 +1,86 @@
 'use client'
 
-import {
-  Button,
-  type ButtonProps,
-  Input,
-  type InputProps,
-  Table,
-  TableBody,
-  type TableBodyProps,
-  TableCell,
-  type TableCellProps,
-  TableHead,
-  TableHeader,
-  type TableHeaderProps,
-  type TableHeadProps,
-  type TableProps,
-  TableRow,
-  type TableRowProps,
-  Textarea,
-  type TextareaProps,
-} from '@acme/design-system/primitives'
+import * as React from 'react'
+
+import { Button, type ButtonProps } from '@acme/design-system/primitives'
 
 export type ReceptionButtonProps = Omit<ButtonProps, 'compatibilityMode'>
-export type ReceptionInputProps = Omit<InputProps, 'compatibilityMode'>
-export type ReceptionTextareaProps = Omit<TextareaProps, 'compatibilityMode'>
-export type ReceptionTableProps = Omit<TableProps, 'compatibilityMode'>
+export type ReceptionInputProps = React.InputHTMLAttributes<HTMLInputElement>
+export type ReceptionSelectProps = React.SelectHTMLAttributes<HTMLSelectElement>
+export type ReceptionTextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>
+export type ReceptionTableProps = React.TableHTMLAttributes<HTMLTableElement>
+export type ReceptionTableHeaderProps = React.HTMLAttributes<HTMLTableSectionElement>
+export type ReceptionTableBodyProps = React.HTMLAttributes<HTMLTableSectionElement>
+export type ReceptionTableRowProps = React.HTMLAttributes<HTMLTableRowElement>
+export type ReceptionTableHeadProps = React.ThHTMLAttributes<HTMLTableCellElement>
+export type ReceptionTableCellProps = React.TdHTMLAttributes<HTMLTableCellElement>
 
-export function ReceptionButton(props: ReceptionButtonProps) {
-  return <Button compatibilityMode='passthrough' {...props} />
-}
+export const ReceptionButton = React.forwardRef<
+  HTMLButtonElement,
+  ReceptionButtonProps
+>(function ReceptionButton(props, ref) {
+  return <Button compatibilityMode='passthrough' ref={ref} {...props} />
+})
 
-export function ReceptionInput(props: ReceptionInputProps) {
-  return <Input compatibilityMode='no-wrapper' {...props} />
-}
+export const ReceptionInput = React.forwardRef<
+  HTMLInputElement,
+  ReceptionInputProps
+>(function ReceptionInput(props, ref) {
+  return <input ref={ref} {...props} />
+})
 
-export function ReceptionTextarea(props: ReceptionTextareaProps) {
-  return <Textarea compatibilityMode='no-wrapper' {...props} />
-}
+export const ReceptionSelect = React.forwardRef<
+  HTMLSelectElement,
+  ReceptionSelectProps
+>(function ReceptionSelect(props, ref) {
+  return <select ref={ref} {...props} />
+})
 
-export function ReceptionTable(props: ReceptionTableProps) {
-  return <Table compatibilityMode='no-wrapper' {...props} />
-}
+export const ReceptionTextarea = React.forwardRef<
+  HTMLTextAreaElement,
+  ReceptionTextareaProps
+>(function ReceptionTextarea(props, ref) {
+  return <textarea ref={ref} {...props} />
+})
 
-export {
-  TableBody as ReceptionTableBody,
-  TableCell as ReceptionTableCell,
-  TableHead as ReceptionTableHead,
-  TableHeader as ReceptionTableHeader,
-  TableRow as ReceptionTableRow,
-}
+export const ReceptionTable = React.forwardRef<
+  HTMLTableElement,
+  ReceptionTableProps
+>(function ReceptionTable(props, ref) {
+  return <table ref={ref} {...props} />
+})
 
-export type {
-  TableBodyProps as ReceptionTableBodyProps,
-  TableCellProps as ReceptionTableCellProps,
-  TableHeaderProps as ReceptionTableHeaderProps,
-  TableHeadProps as ReceptionTableHeadProps,
-  TableRowProps as ReceptionTableRowProps,
-}
+export const ReceptionTableHeader = React.forwardRef<
+  HTMLTableSectionElement,
+  ReceptionTableHeaderProps
+>(function ReceptionTableHeader(props, ref) {
+  return <thead ref={ref} {...props} />
+})
+
+export const ReceptionTableBody = React.forwardRef<
+  HTMLTableSectionElement,
+  ReceptionTableBodyProps
+>(function ReceptionTableBody(props, ref) {
+  return <tbody ref={ref} {...props} />
+})
+
+export const ReceptionTableRow = React.forwardRef<
+  HTMLTableRowElement,
+  ReceptionTableRowProps
+>(function ReceptionTableRow(props, ref) {
+  return <tr ref={ref} {...props} />
+})
+
+export const ReceptionTableHead = React.forwardRef<
+  HTMLTableCellElement,
+  ReceptionTableHeadProps
+>(function ReceptionTableHead(props, ref) {
+  return <th ref={ref} {...props} />
+})
+
+export const ReceptionTableCell = React.forwardRef<
+  HTMLTableCellElement,
+  ReceptionTableCellProps
+>(function ReceptionTableCell(props, ref) {
+  return <td ref={ref} {...props} />
+})

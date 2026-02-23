@@ -33,6 +33,7 @@ import {
   XA_ALLOWED_DEPARTMENTS,
   XA_CATEGORY_LABELS,
 } from "../lib/xaCatalog";
+import { xaI18n } from "../lib/xaI18n";
 
 import { XaMegaMenu } from "./XaMegaMenu";
 import { XaSupportDock } from "./XaSupportDock.client";
@@ -115,7 +116,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                     variant="ghost"
                     size="md"
                     className="min-h-11 min-w-11 rounded-none hover:bg-transparent"
-                    aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+                    aria-label={isDark ? xaI18n.t("xaB.src.components.xashell.l118c42") : xaI18n.t("xaB.src.components.xashell.l118c67")}
                     title={isDark ? "Light mode" : "Dark mode"}
                   >
                     {isDark ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
@@ -215,9 +216,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                   <Link
                     href="/service-center"
                     className="text-xs font-semibold uppercase xa-tracking-012 text-foreground hover:text-foreground"
-                  >
-                    Service center
-                  </Link>
+                  >{xaI18n.t("xaB.src.components.xashell.l218c20")}</Link>
                 ) : null}
                 <Stack gap={1}>
                   <Link
@@ -229,9 +228,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                   <Link
                     href="/pages/cryptocurrency-payment"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm uppercase tracking-wide text-foreground/80 hover:text-foreground"
-                  >
-                    Cryptocurrency payments
-                  </Link>
+                  >{xaI18n.t("xaB.src.components.xashell.l232c20")}</Link>
                   <Link
                     href="/pages/shipping-policy"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm uppercase tracking-wide text-foreground/80 hover:text-foreground"
@@ -283,9 +280,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                   <Link
                     href="/pages/payment-and-pricing"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm uppercase tracking-wide text-foreground/80 hover:text-foreground"
-                  >
-                    Payments and pricing
-                  </Link>
+                  >{xaI18n.t("xaB.src.components.xashell.l286c20")}</Link>
                 </Stack>
               </Stack>
             </div>

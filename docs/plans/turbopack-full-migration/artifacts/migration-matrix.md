@@ -29,7 +29,7 @@ Relates-to: docs/plans/turbopack-full-migration/plan.md
 |---|---|---|---|---|---|
 | business-os | `@apps/business-os` | `dev`, `build` | Shared + app callback (client fallback for `fs`, `child_process`, `path`) | `business-os-deploy.yml` | Wave S3 (high risk) |
 | caryina | `@apps/caryina` | `dev`, `build` | Shared callback inherited (no app callback) | None | Wave S1 (low risk) |
-| cms | `@apps/cms` | `dev`, `build`, `dev:debug` | High-complexity app callback (`~174` lines) + preset callback | `cms.yml`, `cypress.yml`, `ci.yml` | Wave S3 (high risk) |
+| cms | `@apps/cms` | `dev`, `build`, `dev:debug` | High-complexity app callback (`~174` lines) + preset callback | `cms.yml`, `cypress.yml` | Wave S3 (high risk) |
 | cochlearfit | `@apps/cochlearfit` | `dev`, `build`, `preview`, `preview:pages` | Shared + app callback (cache toggle, `@` alias) | None | Wave S2 (medium risk) |
 | cover-me-pretty | `@apps/cover-me-pretty` | `dev`, `build` | Shared callback inherited (no app callback) | `ci-lighthouse.yml`, `ci.yml` | Wave S2 (medium risk) |
 | handbag-configurator | `@apps/handbag-configurator` | `dev`, `build` | Shared + app callback (cache toggle) | None | Wave S2 (medium risk) |
@@ -45,6 +45,7 @@ Relates-to: docs/plans/turbopack-full-migration/plan.md
 Notes:
 - All rows are additionally coupled to global policy checks via `scripts/check-next-webpack-flag.mjs` (merge-gate + local validation).
 - S3 is intentionally delayed until callback-parity evidence from TASK-07 is complete.
+- `ci.yml` is path-ignored for `apps/cms/**` and is not an active CMS build-status consumer in the current split-pipeline model.
 
 ## Callback Responsibility Map (TASK-07 Input)
 
@@ -86,6 +87,16 @@ Prime-specific note:
   - `NODE_OPTIONS=--max-old-space-size=8192`,
   - `NEXT_BUILD_CPUS=1 NODE_OPTIONS=--max-old-space-size=8192`.
 - Result: TASK-07 callback parity work is implemented, but CMS representative-build validation remains blocked by pre-existing webpack memory pressure in current environment.
+
+### Checkpoint Addendum (2026-02-23)
+
+Dedicated mitigation lane evidence from `docs/plans/_archive/cms-webpack-build-oom/` confirms the blocker remains active after one bounded graph-reduction slice:
+- Post-mitigation probe matrix (`docs/plans/_archive/cms-webpack-build-oom/artifacts/raw/2026-02-23-task-04-r1/`):
+  - `pnpm --filter @apps/cms build` -> `exit 134` in `441s` (`SIGABRT` OOM)
+  - `NODE_OPTIONS=--max-old-space-size=8192 pnpm --filter @apps/cms build` -> `exit 134` in `558s` (`SIGABRT` OOM)
+  - `NEXT_BUILD_CPUS=1 NODE_OPTIONS=--max-old-space-size=8192 pnpm --filter @apps/cms build` -> `exit 134` in `431s` (`SIGABRT` OOM)
+- Contract implication:
+  - Option A hard-blocker policy remains in force; TASK-08 script-surface migration remains blocked by TASK-07 until CMS representative build validation can pass under the agreed gate contract.
 
 ## Script Wave Validation Commands
 

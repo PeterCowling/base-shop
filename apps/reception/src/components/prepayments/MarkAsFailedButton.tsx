@@ -1,6 +1,6 @@
 import React, { type FC } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 interface MarkAsFailedButtonProps {
   /**
@@ -52,7 +52,7 @@ const MarkAsFailedButton: FC<MarkAsFailedButtonProps> = ({
   return (
     <Button
       onClick={handleMarkAsFailed}
-      className="px-3 py-1 bg-error-main text-white text-sm rounded hover:bg-error-dark transition-colors font-body dark:bg-darkAccentOrange dark:text-darkSurface dark:hover:bg-darkAccentOrange/80"
+      className="px-3 py-1 bg-error-main text-primary-fg text-sm rounded hover:bg-error-dark transition-colors font-body dark:bg-darkAccentOrange dark:text-darkSurface dark:hover:bg-darkAccentOrange/80"
     >
       Mark as Failed
     </Button>

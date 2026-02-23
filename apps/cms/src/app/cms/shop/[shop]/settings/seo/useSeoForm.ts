@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useCallback, useState } from "react";
-import { updateSeo } from "@cms/actions/shops.server";
+import { updateSeo } from "@cms/actions/shops-seo.server";
 
 import type { Locale } from "@acme/types";
 

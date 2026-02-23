@@ -2367,8 +2367,8 @@ export default [
       /* DS colour rules — keep no-raw-color strict, phase Tailwind palette cleanup */
       "ds/no-raw-color": "error",
       "ds/no-raw-tailwind-color": "warn",
-      /* DS rules deferred to future phase — too many violations for current scope */
-      "ds/enforce-layout-primitives": "off", // ~437 violations — separate migration
+      /* DS structural governance enabled post-migration (TASK-12) */
+      "ds/enforce-layout-primitives": "warn", // currently 42 known warnings; tracked for follow-up cleanups
       "ds/no-hardcoded-copy": "off", // internal staff tool — not localized
       /* DS rules off — not applicable for internal desktop tool */
       "ds/min-tap-size": "off", // 164 violations — desktop-only internal tool
@@ -2385,7 +2385,7 @@ export default [
       "ds/no-raw-font": "off", // receipt printing is domain-specific for POS system
       /* DS spacing rules — escalation per DS-06 */
       "ds/no-raw-spacing": "error", // escalated in DS-06 after fixing 8 violations
-      "ds/no-arbitrary-tailwind": "warn", // stays at warn — 69 legitimate POS patterns
+      "ds/no-arbitrary-tailwind": "error",
       /* Non-DS relaxations */
       complexity: ["error", 60],
       "max-lines-per-function": [

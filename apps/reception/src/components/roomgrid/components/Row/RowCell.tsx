@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier } from "dnd-core";
 
-import { TableCell } from "@acme/design-system/atoms";
+import { ReceptionTableCell as TableCell } from "@acme/ui/operations";
 
 import {
   ItemTypes,

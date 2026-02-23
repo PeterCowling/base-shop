@@ -11,7 +11,14 @@ import "./rvg.css";
 import type { ReactElement } from "react";
 import { memo, useMemo } from "react";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import {
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 import { createDaysRange } from "../../utils/dateUtils";
 

@@ -44,8 +44,8 @@ const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-        <div className="bg-white w-full max-w-sm p-6 rounded shadow-lg dark:bg-darkSurface dark:text-darkAccentGreen">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 p-4">
+        <div className="bg-surface w-full max-w-sm p-6 rounded shadow-lg dark:bg-darkSurface dark:text-darkAccentGreen">
           <h2 className="text-lg font-semibold mb-4">Confirm Deletion</h2>
           <p className="mb-4">
             Are you sure you want to delete{" "}
@@ -54,25 +54,25 @@ const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
             </strong>{" "}
             from booking <strong>{booking.bookingRef}</strong>?
           </p>
-          <p className="text-red-600 text-sm mb-6">
+          <p className="text-error-main text-sm mb-6">
             This action cannot be undone.
           </p>
           {Boolean(error) && (
-            <p className="text-red-500 text-sm mb-4">
+            <p className="text-error-main text-sm mb-4">
               An error occurred while deleting. Please try again.
             </p>
           )}
           <div className="flex justify-end space-x-3">
             <Button
               onClick={onClose}
-              className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
+              className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-3 text-foreground dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
             >
               Cancel
             </Button>
             <Button
               onClick={handleConfirmDelete}
               disabled={loading}
-              className="px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white"
+              className="px-4 py-2 rounded bg-error-main hover:bg-red-700 text-primary-fg"
             >
               {loading ? "Deleting..." : "Delete"}
             </Button>

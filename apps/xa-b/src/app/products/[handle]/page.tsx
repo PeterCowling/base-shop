@@ -14,6 +14,7 @@ import { getXaProductByHandle, XA_PRODUCTS } from "../../../lib/demoData";
 import { siteConfig } from "../../../lib/siteConfig";
 import { toWhatsappHref } from "../../../lib/support";
 import { formatLabel, getDesignerName } from "../../../lib/xaCatalog";
+import { xaI18n } from "../../../lib/xaI18n";
 
 export default async function ProductPage({
   params,
@@ -100,7 +101,7 @@ export default async function ProductPage({
                   </div>
 
                   <div className="space-y-2">
-                    <div className="text-sm font-semibold">Fabric & care</div>
+                    <div className="text-sm font-semibold">{xaI18n.t("xaB.src.app.products.handle.page.l103c60")}</div>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {product.details?.fabricFeel ? (
                         <div>{product.details.fabricFeel}</div>
@@ -148,7 +149,7 @@ export default async function ProductPage({
               {isJewelry ? (
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <div className="text-sm font-semibold">Materials & size</div>
+                    <div className="text-sm font-semibold">{xaI18n.t("xaB.src.app.products.handle.page.l151c60")}</div>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {product.taxonomy.metal ? (
                         <div>Metal: {formatLabel(product.taxonomy.metal)}</div>
@@ -160,13 +161,13 @@ export default async function ProductPage({
                         <div>Size: {formatLabel(product.taxonomy.jewelrySize)}</div>
                       ) : null}
                       {product.details?.sizeGuide ? (
-                        <div>Sizing guidance: {product.details.sizeGuide}</div>
+                        <div>{xaI18n.t("xaB.src.app.products.handle.page.l163c30")}{product.details.sizeGuide}</div>
                       ) : null}
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <div className="text-sm font-semibold">Care & warranty</div>
+                    <div className="text-sm font-semibold">{xaI18n.t("xaB.src.app.products.handle.page.l169c60")}</div>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {product.details?.care ? <div>{product.details.care}</div> : null}
                       {product.details?.warranty ? <div>{product.details.warranty}</div> : null}
@@ -262,7 +263,7 @@ export default async function ProductPage({
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {siteConfig.wechatId ? <div>WeChat: {siteConfig.wechatId}</div> : null}
                       {siteConfig.businessHours ? (
-                        <div>Business hours: {siteConfig.businessHours}</div>
+                        <div>{xaI18n.t("xaB.src.app.products.handle.page.l265c30")}{siteConfig.businessHours}</div>
                       ) : null}
                     </div>
                   ) : null}
@@ -284,7 +285,7 @@ export default async function ProductPage({
 
       {completeLook.length ? (
         <Section padding="default">
-          <h2 className="text-xl font-semibold">Complete the look</h2>
+          <h2 className="text-xl font-semibold">{xaI18n.t("xaB.src.app.products.handle.page.l287c49")}</h2>
           <div className="mt-6">
             <Grid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>
               {completeLook.map((item) => (

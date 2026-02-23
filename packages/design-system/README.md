@@ -70,7 +70,7 @@ Core primitives expose a shared shape/radius contract:
 - `shape`: `square` | `soft` | `pill`
 - `radius`: `none` | `xs` | `sm` | `md` | `lg` | `xl` | `2xl` | `3xl` | `4xl` | `full`
 
-Supported components: `Button`, `Input`, `Select`, `Textarea`, `Card`.
+Supported components: `Button`, `Input`, `Select`, `Textarea`, `Card`, `IconButton`, `Tag`, `Chip`, `Alert`, `Toast`, `Avatar`, `Skeleton`, `OptionPill`, `OptionTile`, `ColorSwatch`, `Progress`, `VideoPlayer`, `Switch`, `Tooltip`, `PopoverContent`, `PaginationDot`, `ThemeToggle`, `FileSelector`, `StatusIndicator`.
 
 Rules:
 - `radius` overrides `shape` when both are provided.
@@ -82,8 +82,11 @@ Rules:
 Overlay/menu primitives must use the shared containment helper from `@acme/design-system/utils/style`:
 - `overflowContainmentClass("dialogContent")` -> `overflow-x-hidden`
 - `overflowContainmentClass("menuSurface")` -> `overflow-hidden`
+- `overflowContainmentClass("popoverSurface")` -> `overflow-hidden`
+- `overflowContainmentClass("comboboxSurface")` -> `overflow-hidden`
+- `overflowContainmentClass("tooltipSurface")` -> `overflow-hidden`
 
-Current adopters: `DialogContent`, `DropdownMenuContent`, `DropdownMenuSubContent`, `SelectContent`.
+Current adopters: `DialogContent`, `DropdownMenuContent`, `DropdownMenuSubContent`, `SelectContent`, `PopoverContent`, `ComboboxContent`, `Tooltip`.
 
 ## Operations Consumer Baseline
 

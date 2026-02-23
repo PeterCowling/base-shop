@@ -3,6 +3,8 @@
 
 import * as React from "react";
 
+import { xaI18n } from "../../lib/xaI18n";
+
 import styles from "./access.module.css";
 import { gateClassNames } from "./gateClasses";
 
@@ -94,13 +96,13 @@ export default function AccessSignals({
       ) : null}
       {hasKeysRemaining ? (
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span>Keys remaining</span>
+          <span>{xaI18n.t("xaB.src.app.access.accesssignals.client.l97c17")}</span>
           <span className={monoClassName}>{keysRemaining}</span>
         </div>
       ) : null}
       {hasSeries ? (
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span>Series in circulation</span>
+          <span>{xaI18n.t("xaB.src.app.access.accesssignals.client.l103c17")}</span>
           <span className={`${monoClassName ?? ""} ${styles.signalSwap}`} key={seriesLabel}>
             {seriesLabel}
           </span>

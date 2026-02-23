@@ -2,7 +2,15 @@
 
 import React, { useState } from "react";
 
-import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/atoms";
+import {
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 import useIngredients from "../../hooks/data/inventory/useIngredients";
 
@@ -47,7 +55,7 @@ function IngredientStock() {
             inventory ledger to enable audit trails.
           </p>
           <Button
-            className="mt-2 px-3 py-1 rounded bg-warning-main text-white hover:bg-warning-dark"
+            className="mt-2 px-3 py-1 rounded bg-warning-main text-primary-fg hover:bg-warning-dark"
             onClick={() => {
               if (
                 window.confirm(
@@ -63,7 +71,7 @@ function IngredientStock() {
         </div>
       )}
       {migrationComplete && (
-        <div className="mb-4 rounded border border-green-600 bg-green-50 p-3 text-sm text-green-700">
+        <div className="mb-4 rounded border border-success-main bg-success-light/20 p-3 text-sm text-success-main">
           Legacy ingredients migrated successfully.
         </div>
       )}
@@ -88,7 +96,7 @@ function IngredientStock() {
                   onChange={(e) => handleChange(ing.name, e.target.value)}
                 />
                 <Button
-                  className="ms-2 px-2 py-1 bg-blue-500 text-white rounded dark:bg-darkAccentGreen dark:text-darkBg"
+                  className="ms-2 px-2 py-1 bg-info-main text-primary-fg rounded dark:bg-darkAccentGreen dark:text-darkBg"
                   onClick={() => handleSave(ing.name)}
                 >
                   Save

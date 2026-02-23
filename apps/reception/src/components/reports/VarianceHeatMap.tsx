@@ -2,7 +2,15 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/atoms";
+import {
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 import { useAuth } from "../../context/AuthContext";
 import { useCashCountsData } from "../../hooks/data/useCashCountsData";
@@ -20,9 +28,9 @@ interface UserShiftMap {
 function getVarianceClass(diff: number | undefined): string {
   if (diff === undefined) return "";
   const abs = Math.abs(diff);
-  if (abs < 1) return "bg-green-100 dark:bg-darkAccentGreen";
-  if (abs < 5) return "bg-yellow-200 dark:bg-darkAccentOrange";
-  return "bg-red-300 dark:bg-darkAccentOrange";
+  if (abs < 1) return "bg-success-light dark:bg-darkAccentGreen";
+  if (abs < 5) return "bg-warning-light dark:bg-darkAccentOrange";
+  return "bg-error-light dark:bg-darkAccentOrange";
 }
 
 export default function VarianceHeatMap() {
@@ -82,9 +90,9 @@ export default function VarianceHeatMap() {
   return (
     <div className="space-y-6 dark:bg-darkBg dark:text-darkAccentGreen">
       {canManageThresholds && (
-        <div className="rounded border border-gray-200 bg-white p-4 shadow-sm dark:border-darkSurface dark:bg-darkSurface">
+        <div className="rounded border border-border bg-surface p-4 shadow-sm dark:border-darkSurface dark:bg-darkSurface">
           <h2 className="text-lg font-semibold mb-3">Variance Thresholds</h2>
-          <p className="text-sm text-gray-600 dark:text-darkAccentGreen">
+          <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
             Update the cash variance threshold (in euros) and optional keycard
             variance threshold. Leave keycards empty to disable keycard sign-off.
           </p>
@@ -148,7 +156,7 @@ export default function VarianceHeatMap() {
                 setPendingSave(true);
                 setShowReauth(true);
               }}
-              className="h-9 rounded bg-primary-main px-4 text-sm text-white hover:bg-primary-dark disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
+              className="h-9 rounded bg-primary-main px-4 text-sm text-primary-fg hover:bg-primary-dark disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
             >
               Save thresholds
             </Button>

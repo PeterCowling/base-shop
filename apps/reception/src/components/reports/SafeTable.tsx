@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import {
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 export interface Column<T> {
   header: string;
@@ -24,9 +31,9 @@ export function SafeTable<T>({
   getRowKey,
 }: SafeTableProps<T>): JSX.Element {
   return (
-    <Table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
+    <Table className="min-w-full border border-border-2 text-sm dark:border-darkSurface">
       <TableHeader>
-        <TableRow className="bg-gray-100 dark:bg-darkSurface">
+        <TableRow className="bg-surface-2 dark:bg-darkSurface">
           {columns.map((col) => (
             <TableHead key={col.header} className="p-2 text-start border-b">
               {col.header}
@@ -43,7 +50,7 @@ export function SafeTable<T>({
             (candidate.timestamp as string | number | undefined) ??
             idx;
           return (
-            <TableRow key={rowKey} className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+            <TableRow key={rowKey} className="odd:bg-surface-2 dark:odd:bg-darkSurface">
               {columns.map((col) => (
                 <TableCell key={`${rowKey}-${col.header}`} className="p-2">
                   {col.render(row)}

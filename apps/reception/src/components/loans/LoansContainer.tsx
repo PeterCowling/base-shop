@@ -206,13 +206,13 @@ function LoansContainer({ username }: { username: string }): ReactElement {
     [handleReturnLoanTransaction]
   );
   return (
-    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         LOANS
       </h1>
-      <div className="bg-white rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
+      <div className="bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
         {error && (
-          <div className="p-4 text-red-600 font-semibold">
+          <div className="p-4 text-error-main font-semibold">
             Error loading loan data: {String(error)}
           </div>
         )}
@@ -224,17 +224,17 @@ function LoansContainer({ username }: { username: string }): ReactElement {
           onGuestFilterChange={setGuestFilter}
         />
         {loading && (
-          <div className="italic text-gray-600 dark:text-darkAccentGreen">
+          <div className="italic text-muted-foreground dark:text-darkAccentGreen">
             Loading loan information...
           </div>
         )}
         {!loading && guests?.length === 0 && (
-          <div className="italic text-gray-600 dark:text-darkAccentGreen">
+          <div className="italic text-muted-foreground dark:text-darkAccentGreen">
             No guests found for this date.
           </div>
         )}
         {!loading && filteredData.length === 0 && (guests?.length ?? 0) > 0 && (
-          <div className="italic text-gray-600 dark:text-darkAccentGreen">
+          <div className="italic text-muted-foreground dark:text-darkAccentGreen">
             No guests match your search.
           </div>
         )}

@@ -8,6 +8,8 @@ import React, {
 } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import { Stack } from "@acme/design-system/primitives";
+
 import BookingRefChipPrepayComponent from "./BookingRefChipPrepay";
 import CheckInDateChip from "./CheckInDateChip";
 import HoursChip from "./HoursChip";
@@ -123,10 +125,10 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
         >
           <div
             ref={containerRef}
-            className="mb-8 w-full bg-white border border-gray-400 rounded dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="mb-8 w-full bg-surface border border-border-2 rounded dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
           >
             {/* Subheader */}
-            <div className="p-4 bg-primary-main text-white border-b border-primary-main font-heading text-lg font-bold uppercase">
+            <div className="p-4 bg-primary-main text-primary-fg border-b border-primary-main font-heading text-lg font-bold uppercase">
               {title}
             </div>
 
@@ -187,7 +189,7 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
                             }
                           }
                         }}
-                        className="w-full text-start cursor-pointer transition-colors p-4 rounded hover:bg-gray-50 dark:hover:bg-darkSurface font-body flex flex-wrap items-center justify-between gap-3"
+                        className="w-full text-start cursor-pointer transition-colors p-4 rounded hover:bg-surface-2 dark:hover:bg-darkSurface font-body flex flex-wrap items-center justify-between gap-3"
                       >
                         {/* Left side: Check-In Date, Booking Ref, Guest Name */}
                         <div className="flex flex-wrap items-center gap-3">
@@ -248,7 +250,7 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center font-body w-full">
+    <Stack gap={0} align="center" className="font-body w-full">
       {sections.map(({ data, title }) => {
         const content = renderListSection(data, title);
 
@@ -258,7 +260,7 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
       })}
       {/* If you have more arrays (e.g. "Cancelled"), do a similar call:
           {renderListSection(cancelledList, "Cancelled")} */}
-    </div>
+    </Stack>
   );
 };
 

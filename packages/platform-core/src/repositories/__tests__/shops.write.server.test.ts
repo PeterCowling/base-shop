@@ -30,16 +30,16 @@ describe("shops.repository — writeShop", () => {
       catalogFilters: [],
       themeId: "base",
       filterMappings: {},
-      themeDefaults: { color: "red" },
-      themeOverrides: { spacing: "8px" },
+      themeDefaults: { "--radius-sm": "4px" },
+      themeOverrides: { "--radius-md": "8px" },
     });
 
     jest.spyOn(shops, "readShop").mockResolvedValue(current);
 
     const patch = {
       id: "shop1",
-      themeDefaults: { spacing: "10px" },
-      themeOverrides: { color: "green", margin: "1px" },
+      themeDefaults: { "--radius-md": "10px" },
+      themeOverrides: { "--radius-sm": "6px", "--radius-lg": "12px" },
     };
 
     await writeShop("shop1", patch);
@@ -47,9 +47,17 @@ describe("shops.repository — writeShop", () => {
     expect(updateRepo).toHaveBeenCalledWith(
       "shop1",
       expect.objectContaining({
-        themeDefaults: { color: "red", spacing: "10px" },
-        themeOverrides: { spacing: "8px", color: "green", margin: "1px" },
-        themeTokens: { color: "green", spacing: "8px", margin: "1px" },
+        themeDefaults: { "--radius-sm": "4px", "--radius-md": "10px" },
+        themeOverrides: {
+          "--radius-md": "8px",
+          "--radius-sm": "6px",
+          "--radius-lg": "12px",
+        },
+        themeTokens: {
+          "--radius-md": "8px",
+          "--radius-sm": "6px",
+          "--radius-lg": "12px",
+        },
       })
     );
 
@@ -63,20 +71,20 @@ describe("shops.repository — writeShop", () => {
       catalogFilters: [],
       themeId: "base",
       filterMappings: {},
-      themeDefaults: { color: "red" },
-      themeOverrides: { color: "blue", spacing: "10px" },
+      themeDefaults: { "--radius-sm": "4px" },
+      themeOverrides: { "--radius-sm": "6px", "--radius-md": "10px" },
     });
 
     jest.spyOn(shops, "readShop").mockResolvedValue(current);
 
     const patch = {
       id: "shop1",
-      themeDefaults: { spacing: "10px", extraDefault: "value" },
+      themeDefaults: { "--radius-md": "10px", "--radius-lg": "12px" },
       themeOverrides: {
-        color: null,
-        spacing: "10px",
-        extraDefault: "value",
-        newOverride: "15px",
+        "--radius-sm": null,
+        "--radius-md": "10px",
+        "--radius-lg": "12px",
+        "--radius-xl": "16px",
       } as any,
     };
 
@@ -87,21 +95,21 @@ describe("shops.repository — writeShop", () => {
       expect.objectContaining({
         id: "shop1",
         themeDefaults: {
-          color: "red",
-          spacing: "10px",
-          extraDefault: "value",
+          "--radius-sm": "4px",
+          "--radius-md": "10px",
+          "--radius-lg": "12px",
         },
-        themeOverrides: { newOverride: "15px" },
+        themeOverrides: { "--radius-xl": "16px" },
         themeTokens: {
-          color: "red",
-          spacing: "10px",
-          extraDefault: "value",
-          newOverride: "15px",
+          "--radius-sm": "4px",
+          "--radius-md": "10px",
+          "--radius-lg": "12px",
+          "--radius-xl": "16px",
         },
       }),
     );
 
-    expect(result.themeOverrides).toEqual({ newOverride: "15px" });
+    expect(result.themeOverrides).toEqual({ "--radius-xl": "16px" });
 
     (shops.readShop as jest.Mock).mockRestore();
   });
@@ -113,7 +121,7 @@ describe("shops.repository — writeShop", () => {
       catalogFilters: [],
       themeId: "base",
       filterMappings: {},
-      themeDefaults: { color: "red", spacing: "8px" },
+      themeDefaults: { "--radius-sm": "4px", "--radius-md": "8px" },
       themeOverrides: {},
     });
 
@@ -121,8 +129,8 @@ describe("shops.repository — writeShop", () => {
 
     const patch = {
       id: "shop2",
-      themeDefaults: { spacing: "10px" },
-      themeOverrides: { color: "red", spacing: null } as any,
+      themeDefaults: { "--radius-md": "10px" },
+      themeOverrides: { "--radius-sm": "4px", "--radius-md": null } as any,
     };
 
     const result = await writeShop("shop2", patch);
@@ -130,14 +138,41 @@ describe("shops.repository — writeShop", () => {
     expect(updateRepo).toHaveBeenCalledWith(
       "shop2",
       expect.objectContaining({
-        themeDefaults: { color: "red", spacing: "10px" },
+        themeDefaults: { "--radius-sm": "4px", "--radius-md": "10px" },
         themeOverrides: {},
-        themeTokens: { color: "red", spacing: "10px" },
+        themeTokens: { "--radius-sm": "4px", "--radius-md": "10px" },
       })
     );
     expect(result.themeOverrides).toEqual({});
 
     (shops.readShop as jest.Mock).mockRestore();
   });
-});
 
+  it("rejects unresolved color references in theme writes", async () => {
+    const current = shopSchema.parse({
+      id: "shop3",
+      name: "Shop",
+      catalogFilters: [],
+      themeId: "base",
+      filterMappings: {},
+      themeDefaults: {
+        "--color-bg": "0 0% 100%",
+        "--color-fg": "0 0% 10%",
+      },
+      themeOverrides: {},
+    });
+
+    jest.spyOn(shops, "readShop").mockResolvedValue(current);
+
+    await expect(
+      writeShop("shop3", {
+        id: "shop3",
+        themeOverrides: { "--color-fg": "var(--missing-token)" },
+      } as any),
+    ).rejects.toThrow("Theme validation failed");
+
+    expect(updateRepo).not.toHaveBeenCalled();
+
+    (shops.readShop as jest.Mock).mockRestore();
+  });
+});

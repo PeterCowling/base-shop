@@ -21,6 +21,7 @@ Defaults:
 - `baseline-max-age-days=30`
 - `brief-max-age-days=21`
 - `launch-surface=website-live` unless site is not launch-ready
+- `WEBSITE-02` first cycle is treated as **L1 Build 2** (auto-mode contract below)
 
 ## Canonical Artifacts
 
@@ -66,20 +67,26 @@ Business upgrade brief:
 ### Stage 2B: Business Brief Mode
 
 1. Require active platform baseline first.
-2. Check business brief pointer at:
+2. Determine WEBSITE-02 phase:
+   - If `launch-surface=website-live` and no dated upgrade brief exists for the business, classify as `L1 Build 2`.
+3. Apply **Image-First Merchandising Auto-Mode** when either is true:
+   - `L1 Build 2` and catalog is visual-first physical product.
+   - category cues indicate bags/fashion/accessories/footwear/jewelry/beauty, or launch assortment is high-variant (about 40+ SKUs/variants).
+   In this mode, require world-class exemplar analysis and shot-board outputs (see Output Contract).
+4. Check business brief pointer at:
    - `docs/business-os/site-upgrades/<BIZ>/latest.user.md`
-3. Treat brief as stale if:
+5. Treat brief as stale if:
    - file missing,
    - `Status` is not `Active`, or
    - `Last-reviewed` older than `brief-max-age-days`, or
    - reference-site list changed materially.
-4. If stale/missing, present a fully filled Deep Research prompt using:
+6. If stale/missing, present a fully filled Deep Research prompt using:
    - `docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md`
-5. Pause until Deep Research output is provided.
-6. Save output to:
+7. Pause until Deep Research output is provided.
+8. Save output to:
    - `docs/business-os/site-upgrades/<BIZ>/<YYYY-MM-DD>-upgrade-brief.user.md`
-7. Update `docs/business-os/site-upgrades/<BIZ>/latest.user.md` to `Status: Active`.
-8. Render HTML companions (required):
+9. Update `docs/business-os/site-upgrades/<BIZ>/latest.user.md` to `Status: Active`.
+10. Render HTML companions (required):
    - `pnpm docs:render-user-html -- docs/business-os/site-upgrades/<BIZ>/<YYYY-MM-DD>-upgrade-brief.user.md docs/business-os/site-upgrades/<BIZ>/latest.user.md`
 
 ### Stage 3: Build Fact-Find Handoff Packet
@@ -100,6 +107,7 @@ When baseline/brief is stale or missing, output must include:
 2. exact template path
 3. fully filled copy-paste prompt block for Deep Research
 4. exact save path for returned output
+5. explicit mode declaration: `L1 Build 2` or `post-Build 2`, plus whether Image-First Merchandising Auto-Mode is active
 
 ## Quality Rules
 
@@ -108,6 +116,7 @@ When baseline/brief is stale or missing, output must include:
 3. Every backlog candidate must map to a business outcome.
 4. Each P1/P2 candidate must include acceptance criteria and evidence refs.
 5. If confidence is low on a claim, mark it explicitly and attach a validation test.
+6. In Image-First Merchandising Auto-Mode, never ship generic visual advice; require measurable media contracts for homepage, PLP, PDP, and mobile gallery behavior.
 
 ## Output Contract
 
@@ -127,7 +136,9 @@ Must include:
 - existing site baseline
 - reference-site pattern decomposition
 - best-of synthesis matrix
+- exemplar image shot-board (required when Image-First Merchandising Auto-Mode is active)
 - website and technical implications
+- image-heavy launch contract with measurable acceptance criteria (required when Image-First Merchandising Auto-Mode is active)
 - prioritized backlog candidates
 - open questions
 - source list
@@ -147,3 +158,4 @@ Must include:
 4. Omits source evidence for competitor/reference claims.
 5. Continues despite stale prerequisites without presenting Deep Research prompt.
 6. Writes/updates `.user.md` artifacts but does not render matching `.user.html` companions.
+7. Marks an L1 Build 2 brief complete for a visual-heavy catalog without exemplar shot-board and image-heavy launch contract sections.

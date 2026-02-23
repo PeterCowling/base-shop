@@ -1,6 +1,14 @@
 import React, { useCallback, useMemo, useState } from "react";
 
-import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/atoms";
+import {
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 import useFinancialTransactionAuditsData from "../../hooks/data/useFinancialTransactionAuditsData";
 
@@ -26,7 +34,7 @@ function AuditRowDetails({
   };
 }) {
   return (
-    <div className="flex flex-col gap-1 text-xs text-gray-700 dark:text-darkAccentGreen">
+    <div className="flex flex-col gap-1 text-xs text-foreground dark:text-darkAccentGreen">
       <div className="font-semibold">{label}</div>
       <div>Amount: {formatAmount(txn.amount)}</div>
       <div>Method: {txn.method}</div>
@@ -91,7 +99,7 @@ function FinancialTransactionAuditSearch(): JSX.Element {
       </h2>
       <div className="flex flex-wrap gap-4 items-end mb-4">
         <div className="flex flex-col">
-          <label htmlFor="createdBy" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="createdBy" className="font-semibold text-foreground dark:text-darkAccentGreen">
             Corrected By:
           </label>
           <input
@@ -99,12 +107,12 @@ function FinancialTransactionAuditSearch(): JSX.Element {
             type="text"
             value={filters.createdBy}
             onChange={(e) => handleChange("createdBy", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="bookingRef" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="bookingRef" className="font-semibold text-foreground dark:text-darkAccentGreen">
             Booking Ref:
           </label>
           <input
@@ -112,12 +120,12 @@ function FinancialTransactionAuditSearch(): JSX.Element {
             type="text"
             value={filters.bookingRef}
             onChange={(e) => handleChange("bookingRef", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="shiftId" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="shiftId" className="font-semibold text-foreground dark:text-darkAccentGreen">
             Shift ID:
           </label>
           <input
@@ -125,12 +133,12 @@ function FinancialTransactionAuditSearch(): JSX.Element {
             type="text"
             value={filters.shiftId}
             onChange={(e) => handleChange("shiftId", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="sourceTxnId" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="sourceTxnId" className="font-semibold text-foreground dark:text-darkAccentGreen">
             Source Txn ID:
           </label>
           <input
@@ -138,12 +146,12 @@ function FinancialTransactionAuditSearch(): JSX.Element {
             type="text"
             value={filters.sourceTxnId}
             onChange={(e) => handleChange("sourceTxnId", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="reason" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="reason" className="font-semibold text-foreground dark:text-darkAccentGreen">
             Reason:
           </label>
           <input
@@ -151,53 +159,53 @@ function FinancialTransactionAuditSearch(): JSX.Element {
             type="text"
             value={filters.reason}
             onChange={(e) => handleChange("reason", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
           />
         </div>
 
         <Button
           onClick={handleSearch}
-          className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors dark:bg-darkSurface dark:text-darkAccentGreen"
+          className="px-4 py-1 bg-info-main text-primary-fg rounded hover:bg-blue-700 transition-colors dark:bg-darkSurface dark:text-darkAccentGreen"
         >
           Search
         </Button>
       </div>
 
       {errorMessage && (
-        <div className="text-red-600 font-medium">Error: {errorMessage}</div>
+        <div className="text-error-main font-medium">Error: {errorMessage}</div>
       )}
-      {loading && <div className="text-gray-600 dark:text-darkAccentGreen">Loading data ...</div>}
+      {loading && <div className="text-muted-foreground dark:text-darkAccentGreen">Loading data ...</div>}
 
       {searchTriggered && !loading && filteredAudits.length === 0 && (
-        <div className="bg-white border border-gray-400 rounded p-4 text-center italic text-gray-600 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+        <div className="bg-surface border border-border-2 rounded p-4 text-center italic text-muted-foreground dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
           No matching results.
         </div>
       )}
 
       {filteredAudits.length > 0 && (
-        <div className="overflow-x-auto w-full bg-white border border-gray-400 rounded shadow dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+        <div className="overflow-x-auto w-full bg-surface border border-border-2 rounded shadow dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
           <Table className="table-fixed w-full border-collapse">
-            <TableHeader className="bg-gray-100 sticky top-0 dark:bg-darkSurface">
+            <TableHeader className="bg-surface-2 sticky top-0 dark:bg-darkSurface">
               <TableRow>
-                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Timestamp
                 </TableHead>
-                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Source Txn
                 </TableHead>
-                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Booking
                 </TableHead>
-                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Shift
                 </TableHead>
-                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Corrected By
                 </TableHead>
-                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Reason
                 </TableHead>
-                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Details
                 </TableHead>
               </TableRow>
@@ -206,35 +214,35 @@ function FinancialTransactionAuditSearch(): JSX.Element {
               {filteredAudits.map(([id, audit], index) => {
                 const rowBg =
                   index % 2 === 0
-                    ? "bg-white dark:bg-darkSurface"
-                    : "bg-gray-50 dark:bg-darkSurface";
+                    ? "bg-surface dark:bg-darkSurface"
+                    : "bg-surface-2 dark:bg-darkSurface";
                 const isExpanded = expandedRows.includes(id);
                 return (
                   <React.Fragment key={id}>
                     <TableRow className={rowBg}>
-                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      <TableCell className="border-b border-border-2 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.createdAt}
                       </TableCell>
-                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      <TableCell className="border-b border-border-2 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.sourceTxnId}
                       </TableCell>
-                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      <TableCell className="border-b border-border-2 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.before.bookingRef}
                       </TableCell>
-                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      <TableCell className="border-b border-border-2 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.shiftId ?? "-"}
                       </TableCell>
-                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      <TableCell className="border-b border-border-2 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.createdBy}
                       </TableCell>
-                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      <TableCell className="border-b border-border-2 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.reason}
                       </TableCell>
-                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      <TableCell className="border-b border-border-2 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         <Button
                           type="button"
                           onClick={() => toggleExpanded(id)}
-                          className="text-blue-600 hover:underline dark:text-darkAccentGreen"
+                          className="text-info-main hover:underline dark:text-darkAccentGreen"
                         >
                           {isExpanded ? "Hide" : "Show"}
                         </Button>
@@ -243,14 +251,14 @@ function FinancialTransactionAuditSearch(): JSX.Element {
                     {isExpanded && (
                       <TableRow className={rowBg}>
                         <TableCell
-                          className="border-b border-gray-400 py-3 px-3 dark:border-darkSurface dark:text-darkAccentGreen"
+                          className="border-b border-border-2 py-3 px-3 dark:border-darkSurface dark:text-darkAccentGreen"
                           colSpan={7}
                         >
                           <div className="grid gap-4 md:grid-cols-2">
                             <AuditRowDetails label="Before" txn={audit.before} />
                             <AuditRowDetails label="After" txn={audit.after} />
                           </div>
-                          <div className="mt-3 text-xs text-gray-500 dark:text-darkAccentGreen">
+                          <div className="mt-3 text-xs text-muted-foreground dark:text-darkAccentGreen">
                             Correction Txns: {audit.correctionTxnIds.join(", ") || "-"}
                           </div>
                         </TableCell>

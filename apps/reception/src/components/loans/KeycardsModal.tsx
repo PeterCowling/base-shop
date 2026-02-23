@@ -1,6 +1,9 @@
 import { memo, type ReactElement, useCallback, useMemo, useState } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import {
+  ReceptionButton as Button,
+  ReceptionSelect,
+} from "@acme/ui/operations";
 
 import { useLoanData } from "../../context/LoanDataContext";
 import { type LoanMethod } from "../../types/hooks/data/loansData";
@@ -98,29 +101,29 @@ function KeycardsModalComponent({
   if (!isOpen || !occupant) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 z-50">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-md dark:bg-darkSurface">
+    <div className="fixed inset-0 bg-foreground bg-opacity-50 flex items-center justify-center px-4 z-50">
+      <div className="bg-surface rounded-lg shadow-lg w-full max-w-md dark:bg-darkSurface">
         <div className="px-4 py-2 border-b flex justify-between items-center">
           <h2 className="font-bold text-lg dark:text-darkAccentGreen">Keycards on Loan</h2>
           <Button
             onClick={onClose}
             aria-label="Close"
-            className="text-gray-600 hover:text-gray-700 dark:text-darkAccentGreen"
+            className="text-muted-foreground hover:text-foreground dark:text-darkAccentGreen"
           >
             &times;
           </Button>
         </div>
         <div className="p-4 space-y-2">
           <>
-            <div className="text-sm text-gray-700 dark:text-darkAccentGreen">
+            <div className="text-sm text-foreground dark:text-darkAccentGreen">
               {`${occupant.firstName} ${occupant.lastName} - Ref: ${occupant.bookingRef}`}
             </div>
-            {loading && <div className="italic text-gray-600 dark:text-darkAccentGreen">Loading...</div>}
+            {loading && <div className="italic text-muted-foreground dark:text-darkAccentGreen">Loading...</div>}
             {error && (
               <div className="text-error-main">Error loading keycards.</div>
             )}
             {!loading && !error && keycardTxns.length === 0 && (
-              <div className="italic text-gray-600 dark:text-darkAccentGreen">
+              <div className="italic text-muted-foreground dark:text-darkAccentGreen">
                 No keycards currently loaned.
               </div>
             )}
@@ -134,7 +137,7 @@ function KeycardsModalComponent({
                       className="flex items-center justify-between gap-2"
                     >
                       <span>Card {idx + 1}</span>
-                      <select
+                      <ReceptionSelect
                         value={current}
                         onChange={(e) =>
                           handleTypeChange(txn.id, e.target.value as LoanMethod)
@@ -145,11 +148,11 @@ function KeycardsModalComponent({
                         <option value="PASSPORT">Passport</option>
                         <option value="LICENSE">License</option>
                         <option value="ID">ID</option>
-                      </select>
+                      </ReceptionSelect>
                       {current !== txn.depositType && (
                         <Button
                           onClick={() => handleSave(txn.id)}
-                          className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded"
+                          className="bg-info-main hover:bg-blue-700 text-primary-fg px-2 py-1 rounded"
                         >
                           Save
                         </Button>

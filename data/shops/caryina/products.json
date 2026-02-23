@@ -14,7 +14,44 @@
     },
     "price": 16900,
     "currency": "EUR",
-    "media": [],
+    "media": [
+      {
+        "url": "/images/hbag/hero.svg",
+        "type": "image",
+        "altText": "HBAG Product 01 hero image",
+        "tags": ["slot:hero", "family:top-handle"]
+      },
+      {
+        "url": "/images/hbag/angle.svg",
+        "type": "image",
+        "altText": "HBAG Product 01 alternate angle",
+        "tags": ["slot:angle", "family:top-handle"]
+      },
+      {
+        "url": "/images/hbag/detail.svg",
+        "type": "image",
+        "altText": "HBAG Product 01 hardware detail",
+        "tags": ["slot:detail", "family:top-handle"]
+      },
+      {
+        "url": "/images/hbag/on_body.svg",
+        "type": "image",
+        "altText": "HBAG Product 01 on-body context",
+        "tags": ["slot:on_body", "family:top-handle"]
+      },
+      {
+        "url": "/images/hbag/scale.svg",
+        "type": "image",
+        "altText": "HBAG Product 01 scale reference",
+        "tags": ["slot:scale", "family:top-handle"]
+      },
+      {
+        "url": "/images/hbag/alternate.svg",
+        "type": "image",
+        "altText": "HBAG Product 01 alternate framing",
+        "tags": ["slot:alternate", "family:top-handle"]
+      }
+    ],
     "shop": "caryina",
     "status": "active",
     "row_version": 1,
@@ -39,7 +76,44 @@
     },
     "price": 12900,
     "currency": "EUR",
-    "media": [],
+    "media": [
+      {
+        "url": "/images/hbag/hero.svg",
+        "type": "image",
+        "altText": "HBAG Product 02 hero image",
+        "tags": ["slot:hero", "family:shoulder"]
+      },
+      {
+        "url": "/images/hbag/angle.svg",
+        "type": "image",
+        "altText": "HBAG Product 02 alternate angle",
+        "tags": ["slot:angle", "family:shoulder"]
+      },
+      {
+        "url": "/images/hbag/detail.svg",
+        "type": "image",
+        "altText": "HBAG Product 02 hardware detail",
+        "tags": ["slot:detail", "family:shoulder"]
+      },
+      {
+        "url": "/images/hbag/on_body.svg",
+        "type": "image",
+        "altText": "HBAG Product 02 on-body context",
+        "tags": ["slot:on_body", "family:shoulder"]
+      },
+      {
+        "url": "/images/hbag/scale.svg",
+        "type": "image",
+        "altText": "HBAG Product 02 scale reference",
+        "tags": ["slot:scale", "family:shoulder"]
+      },
+      {
+        "url": "/images/hbag/alternate.svg",
+        "type": "image",
+        "altText": "HBAG Product 02 alternate framing",
+        "tags": ["slot:alternate", "family:shoulder"]
+      }
+    ],
     "shop": "caryina",
     "status": "active",
     "row_version": 1,
@@ -64,7 +138,44 @@
     },
     "price": 13900,
     "currency": "EUR",
-    "media": [],
+    "media": [
+      {
+        "url": "/images/hbag/hero.svg",
+        "type": "image",
+        "altText": "HBAG Product 03 hero image",
+        "tags": ["slot:hero", "family:mini"]
+      },
+      {
+        "url": "/images/hbag/angle.svg",
+        "type": "image",
+        "altText": "HBAG Product 03 alternate angle",
+        "tags": ["slot:angle", "family:mini"]
+      },
+      {
+        "url": "/images/hbag/detail.svg",
+        "type": "image",
+        "altText": "HBAG Product 03 hardware detail",
+        "tags": ["slot:detail", "family:mini"]
+      },
+      {
+        "url": "/images/hbag/on_body.svg",
+        "type": "image",
+        "altText": "HBAG Product 03 on-body context",
+        "tags": ["slot:on_body", "family:mini"]
+      },
+      {
+        "url": "/images/hbag/scale.svg",
+        "type": "image",
+        "altText": "HBAG Product 03 scale reference",
+        "tags": ["slot:scale", "family:mini"]
+      },
+      {
+        "url": "/images/hbag/alternate.svg",
+        "type": "image",
+        "altText": "HBAG Product 03 alternate framing",
+        "tags": ["slot:alternate", "family:mini"]
+      }
+    ],
     "shop": "caryina",
     "status": "active",
     "row_version": 1,

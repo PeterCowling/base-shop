@@ -20,7 +20,7 @@ const TicketItems: FC<Props> = memo(({ order, removeSingleItem }) => {
       {order.items.map((it, i) => (
         <li
           key={it.id ?? crypto.randomUUID()}
-          className="cursor-pointer rounded px-2 py-1 font-medium text-zinc-800 dark:text-darkAccentGreen transition hover:bg-zinc-100 active:bg-zinc-200 dark:hover:bg-darkSurface dark:active:bg-darkBg"
+          className="cursor-pointer rounded px-2 py-1 font-medium text-foreground dark:text-darkAccentGreen transition hover:bg-zinc-100 active:bg-zinc-200 dark:hover:bg-darkSurface dark:active:bg-darkBg"
           onDoubleClick={() => removeLine(i)}
         >
           {it.count === 1 ? it.product : `${it.count} × ${it.product}`}

@@ -21,8 +21,8 @@ const AuthenticatedApp = memo(function AuthenticatedApp({
   children,
 }: AuthenticatedAppProps) {
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-darkBg">
-      <div className="w-full max-w-6xl mx-auto border-l-4 border-r-4 border-indigo-300 shadow-lg">
+    <div className="min-h-screen bg-surface-2 dark:bg-darkBg">
+      <div className="w-full max-w-6xl mx-auto border-l-4 border-r-4 border-border-2 shadow-lg">
         <div className="p-6">
           <nav className="mb-4 flex justify-end">
             <DarkModeToggle />

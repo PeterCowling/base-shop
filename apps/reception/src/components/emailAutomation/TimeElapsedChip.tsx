@@ -18,29 +18,29 @@ const TimeElapsedChip: FC<TimeElapsedChipProps> = ({
   if (currentCode === 1) {
     // Booking Created stage
     if (hoursElapsed >= 48) {
-      chipColorClasses = "bg-error-main text-white";
+      chipColorClasses = "bg-error-main text-primary-fg";
     } else {
-      chipColorClasses = "bg-primary-main text-white";
+      chipColorClasses = "bg-primary-main text-primary-fg";
     }
   } else if (currentCode === 2) {
     // First Reminder Sent stage
     if (hoursElapsed >= 24) {
-      chipColorClasses = "bg-warning-main text-white";
+      chipColorClasses = "bg-warning-main text-primary-fg";
     } else {
-      chipColorClasses = "bg-secondary-main text-white";
+      chipColorClasses = "bg-secondary-main text-primary-fg";
     }
   } else if (currentCode === 3) {
     // Second Reminder Sent stage
     if (hoursElapsed >= 24) {
-      chipColorClasses = "bg-warning-dark text-white";
+      chipColorClasses = "bg-warning-dark text-primary-fg";
     } else {
-      chipColorClasses = "bg-secondary-main text-white";
+      chipColorClasses = "bg-secondary-main text-primary-fg";
     }
   } else if (currentCode === 4) {
     // Cancelled stage
-    chipColorClasses = "bg-error-main text-white";
+    chipColorClasses = "bg-error-main text-primary-fg";
   } else {
-    chipColorClasses = "bg-info-main text-white";
+    chipColorClasses = "bg-info-main text-primary-fg";
   }
 
   return (

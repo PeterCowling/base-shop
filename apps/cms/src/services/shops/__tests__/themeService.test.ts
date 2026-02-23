@@ -12,15 +12,20 @@ import {
   mergeThemePatch,
   removeThemeToken,
 } from "../theme";
-import { patchTheme, resetThemeOverride,updateShop } from "../themeService";
+import { patchTheme, resetThemeOverride, updateShop } from "../themeService";
 
 jest.mock("@acme/platform-core/createShop", () => ({
   listThemes: jest.fn().mockReturnValue(["base", "bcd"]),
 }));
 
 jest.mock("@acme/platform-core/themeTokens", () => ({
-  baseTokens: { base: "z" },
-  loadThemeTokens: jest.fn().mockResolvedValue({ a: "1" }),
+  baseTokens: {
+    "--color-bg": "0 0% 100%",
+    "--color-fg": "0 0% 10%",
+  },
+  loadThemeTokens: jest.fn().mockResolvedValue({
+    "--color-primary": "220 90% 56%",
+  }),
 }));
 
 jest.mock("../helpers", () => ({
@@ -101,9 +106,12 @@ describe("theme service", () => {
     const savedShop = { id: "test", name: "Shop" };
     mockPersistShop.mockResolvedValue(savedShop);
     mockBuildThemeData.mockResolvedValue({
-      themeDefaults: { a: "b" },
-      overrides: { c: "d" },
-      themeTokens: { a: "b", c: "d" },
+      themeDefaults: { "--color-bg": "0 0% 100%" },
+      overrides: { "--radius-md": "10px" },
+      themeTokens: {
+        "--color-bg": "0 0% 100%",
+        "--radius-md": "10px",
+      },
     });
     const fd = new FormData();
     fd.append("id", "test");
@@ -116,9 +124,12 @@ describe("theme service", () => {
         id: "test",
         name: "Shop",
         themeId: "base",
-        themeDefaults: { a: "b" },
-        themeOverrides: { c: "d" },
-        themeTokens: { a: "b", c: "d" },
+        themeDefaults: { "--color-bg": "0 0% 100%" },
+        themeOverrides: { "--radius-md": "10px" },
+        themeTokens: {
+          "--color-bg": "0 0% 100%",
+          "--radius-md": "10px",
+        },
       }),
     );
     expect(mockPersistSettings).toHaveBeenCalledWith(
@@ -135,25 +146,31 @@ describe("theme service", () => {
     const current = { id: "test" };
     mockFetchShop.mockResolvedValue(current);
     mockMergeThemePatch.mockReturnValue({
-      themeDefaults: { a: "1" },
-      overrides: { b: "2" },
-      themeTokens: { c: "3" },
+      themeDefaults: { "--color-bg": "0 0% 100%" },
+      overrides: { "--radius-md": "10px" },
+      themeTokens: {
+        "--color-bg": "0 0% 100%",
+        "--radius-md": "10px",
+      },
     });
     const savedShop = {
       id: "test",
-      themeDefaults: { a: "1" },
-      themeOverrides: { b: "2" },
-      themeTokens: { c: "3" },
+      themeDefaults: { "--color-bg": "0 0% 100%" },
+      themeOverrides: { "--radius-md": "10px" },
+      themeTokens: {
+        "--color-bg": "0 0% 100%",
+        "--radius-md": "10px",
+      },
     };
     mockPersistShop.mockResolvedValue(savedShop);
     const result = await patchTheme("test", {
-      themeOverrides: { b: "2" },
-      themeDefaults: { a: "1" },
+      themeOverrides: { "--radius-md": "10px" },
+      themeDefaults: { "--color-bg": "0 0% 100%" },
     });
     expect(mockMergeThemePatch).toHaveBeenCalledWith(
       current,
-      { b: "2" },
-      { a: "1" },
+      { "--radius-md": "10px" },
+      { "--color-bg": "0 0% 100%" },
     );
     expect(mockPersistShop).toHaveBeenCalledWith("test", savedShop);
     expect(result.shop).toEqual(savedShop);
@@ -163,16 +180,24 @@ describe("theme service", () => {
     const current = {
       id: "test",
       themeId: "base",
-      themeDefaults: { x: "old" },
-      themeOverrides: { y: "override" },
+      themeDefaults: { "--color-bg": "0 0% 90%" },
+      themeOverrides: { "--radius-md": "12px" },
     };
     mockFetchShop.mockResolvedValue(current);
     const savedShop = {
       id: "test",
       themeId: "bcd",
-      themeDefaults: { base: "z", a: "1" },
+      themeDefaults: {
+        "--color-bg": "0 0% 100%",
+        "--color-fg": "0 0% 10%",
+        "--color-primary": "220 90% 56%",
+      },
       themeOverrides: {},
-      themeTokens: { base: "z", a: "1" },
+      themeTokens: {
+        "--color-bg": "0 0% 100%",
+        "--color-fg": "0 0% 10%",
+        "--color-primary": "220 90% 56%",
+      },
     };
     mockPersistShop.mockResolvedValue(savedShop);
     const result = await patchTheme("test", { themeId: "bcd" });
@@ -194,20 +219,20 @@ describe("theme service", () => {
   it("removes theme token and revalidates path", async () => {
     const current = {
       id: "test",
-      themeOverrides: { x: "y" },
-      themeDefaults: { x: "y" },
+      themeOverrides: { "--radius-md": "10px" },
+      themeDefaults: { "--radius-md": "8px" },
     };
     mockFetchShop.mockResolvedValue(current);
     mockRemoveThemeToken.mockReturnValue({
       overrides: {},
-      themeTokens: { x: "y" },
+      themeTokens: { "--radius-md": "8px" },
     });
-    await resetThemeOverride("test", "x");
-    expect(mockRemoveThemeToken).toHaveBeenCalledWith(current, "x");
+    await resetThemeOverride("test", "--radius-md");
+    expect(mockRemoveThemeToken).toHaveBeenCalledWith(current, "--radius-md");
     expect(mockPersistShop).toHaveBeenCalledWith("test", {
       id: "test",
       themeOverrides: {},
-      themeTokens: { x: "y" },
+      themeTokens: { "--radius-md": "8px" },
     });
     expect(mockRevalidatePath).toHaveBeenCalledWith("/cms/shop/test/settings");
   });

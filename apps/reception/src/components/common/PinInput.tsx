@@ -8,6 +8,9 @@ import {
   useState,
 } from "react";
 
+import { Grid } from "@acme/design-system/primitives";
+import { ReceptionInput } from "@acme/ui/operations";
+
 interface PinInputProps {
   onChange: (pin: string) => void;
   placeholder?: string;
@@ -18,15 +21,15 @@ interface PinInputProps {
 const PIN_LENGTH = 6 as const;
 
 const PIN_BG_CLASSES: readonly string[] = [
-  "bg-pink-300 focus:bg-pink-400",
-  "bg-purple-300 focus:bg-purple-400",
-  "bg-indigo-300 focus:bg-indigo-400",
-  "bg-sky-300 focus:bg-sky-400",
-  "bg-teal-300 focus:bg-teal-400",
-  "bg-amber-300 focus:bg-amber-400",
+  "bg-accent-soft focus:bg-pink-400",
+  "bg-accent-soft focus:bg-purple-400",
+  "bg-primary-light focus:bg-indigo-400",
+  "bg-info-light focus:bg-sky-400",
+  "bg-success-light focus:bg-teal-400",
+  "bg-warning-light focus:bg-amber-400",
 ];
 
-const EMPTY_BG_CLASS = "bg-gray-200 focus:bg-gray-300";
+const EMPTY_BG_CLASS = "bg-surface-3 focus:bg-surface-3";
 
 function PinInput({
   onChange,
@@ -103,9 +106,9 @@ function PinInput({
       {title && (
         <h2 className="mb-2 text-xl font-semibold text-center dark:text-darkAccentGreen">{title}</h2>
       )}
-      <div className="grid grid-cols-6 justify-center gap-4">
+      <Grid cols={6} gap={4} className="justify-center">
         {Array.from({ length: PIN_LENGTH }, (_, i) => (
-          <input
+          <ReceptionInput
             key={i}
             ref={(el) => { inputRefs.current[i] = el; }}
             type="password"
@@ -115,7 +118,7 @@ function PinInput({
             maxLength={1}
             placeholder={i === 0 ? placeholder : undefined}
             aria-label={`PIN digit ${i + 1}`}
-            className={`aspect-square w-14 rounded-lg text-center text-3xl font-semibold text-gray-800 caret-transparent transition-transform duration-150 focus:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:text-darkAccentGreen dark:ring-offset-darkSurface ${
+            className={`aspect-square w-14 rounded-lg text-center text-3xl font-semibold text-foreground caret-transparent transition-transform duration-150 focus:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:text-darkAccentGreen dark:ring-offset-darkSurface ${
               pin[i] !== " " ? PIN_BG_CLASSES[i] : EMPTY_BG_CLASS
             }`}
             value={pin[i] === " " ? "" : pin[i]}
@@ -123,7 +126,7 @@ function PinInput({
             onKeyDown={keyDownHandlers[i]}
           />
         ))}
-      </div>
+      </Grid>
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import React, { type FC } from "react";
 
 import { TableCell, TableRow } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
+import { ReceptionInput } from "@acme/ui/operations";
 
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import type { Activity } from "../../../types/hooks/data/activitiesData";
@@ -64,7 +66,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
 }) => (
   <>
     <TableRow
-      className={`border-b border-gray-200 hover:bg-gray-50 transition-colors text-sm text-gray-700 ${
+      className={`border-b border-border hover:bg-surface-2 transition-colors text-sm text-foreground ${
         onRowClick ? "cursor-pointer" : ""
       } dark:border-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen`}
       onClick={onRowClick}
@@ -87,7 +89,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             onDoubleClick={onNameDoubleClick}
           />
           {isCancelled && (
-            <span className="px-2 py-0.5 text-xs font-bold text-white bg-error-main rounded">
+            <span className="px-2 py-0.5 text-xs font-bold text-primary-fg bg-error-main rounded">
               CANCELLED
             </span>
           )}
@@ -95,9 +97,9 @@ const BookingRowView: FC<BookingRowViewProps> = ({
       </TableCell>
       <TableCell className="p-4">
         <div className="flex items-center justify-center">
-          <input
+          <ReceptionInput
             type="text"
-            className="w-16 px-1 py-0.5 border border-gray-300 rounded text-center dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="w-16 px-1 py-0.5 border border-border-2 rounded text-center dark:bg-darkSurface dark:text-darkAccentGreen"
             value={draftValue}
             onChange={(e) => onDraftChange(e.target.value)}
             onBlur={onBlur}
@@ -107,13 +109,13 @@ const BookingRowView: FC<BookingRowViewProps> = ({
         </div>
       </TableCell>
       <TableCell className="p-4">
-        <div className="flex justify-center items-center">
+        <Cluster justify="center" wrap={false}>
           {booking.isFirstForBooking ? (
             <RoomPaymentButton booking={booking} />
           ) : (
             <em className="text-muted-foreground">—</em>
           )}
-        </div>
+        </Cluster>
       </TableCell>
       <TableCell className="p-4">
         <div className="flex justify-center items-center">

@@ -12,7 +12,16 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 
-import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+import {
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 import useActivitiesData from "../../hooks/data/useActivitiesData";
 import type { CsvExportRow } from "../../hooks/mutations/useBulkBookingActions";
@@ -51,7 +60,7 @@ const ActivityList: React.FC<ActivityListProps> = ({ activities }) => {
   );
 
   if (activities.length === 0)
-    return <p className="italic text-gray-600 dark:text-darkAccentGreen">No activities.</p>;
+    return <p className="italic text-muted-foreground dark:text-darkAccentGreen">No activities.</p>;
 
   return (
     <ul className="space-y-1 text-sm leading-relaxed">
@@ -60,11 +69,11 @@ const ActivityList: React.FC<ActivityListProps> = ({ activities }) => {
           key={`${act.timestamp ?? "no-time"}-${act.code}-${act.who ?? ""}`}
           className="flex gap-1"
         >
-          <span className="font-mono text-11px text-gray-700 dark:text-darkAccentGreen">
+          <span className="font-mono text-11px text-foreground dark:text-darkAccentGreen">
             {act.timestamp?.slice(0, 19) ?? ""}
           </span>
           <span className="font-medium">code {act.code}</span>
-          {act.who && <span className="text-gray-600 dark:text-darkAccentGreen">— {act.who}</span>}
+          {act.who && <span className="text-muted-foreground dark:text-darkAccentGreen">— {act.who}</span>}
         </li>
       ))}
     </ul>
@@ -84,13 +93,13 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
   );
 
   if (transactions.length === 0)
-    return <p className="italic text-gray-600 dark:text-darkAccentGreen">No transactions.</p>;
+    return <p className="italic text-muted-foreground dark:text-darkAccentGreen">No transactions.</p>;
 
   return (
     <ul className="space-y-1 text-sm leading-relaxed">
       {sorted.map((tx) => (
         <li key={`${tx.timestamp}-${tx.type}-${tx.amount}`} className="flex gap-1">
-          <span className="font-mono text-11px text-gray-700 dark:text-darkAccentGreen">
+          <span className="font-mono text-11px text-foreground dark:text-darkAccentGreen">
             {tx.timestamp.slice(0, 19)}
           </span>
           <span className="font-medium">{tx.type}</span>
@@ -240,14 +249,14 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
   if (!searchTriggered) return null;
   if (loading)
     return (
-      <div className="rounded-md border border-gray-400 bg-white p-6 text-center shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+      <div className="rounded-md border border-border-2 bg-surface p-6 text-center shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
         <SmallSpinner />
       </div>
     );
   if (error) return null;
   if (!extendedGuests.length)
     return (
-      <p className="rounded-md border border-gray-400 bg-white p-6 text-center italic text-gray-600 shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+      <p className="rounded-md border border-border-2 bg-surface p-6 text-center italic text-muted-foreground shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
         No matching results.
       </p>
     );
@@ -263,21 +272,21 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
         onCancelComplete={onBulkCancelComplete}
       />
 
-      <div className="w-full overflow-x-auto rounded-md border border-gray-400 bg-white shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+      <div className="w-full overflow-x-auto rounded-md border border-border-2 bg-surface shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
         <Table className="min-w-full border-collapse text-sm">
-          <TableHeader className="sticky top-0 z-1 bg-gray-50/90 backdrop-blur dark:bg-darkSurface">
+          <TableHeader className="sticky top-0 z-1 bg-surface-2/90 backdrop-blur dark:bg-darkSurface">
             <TableRow>
               {/* Select all checkbox */}
-              <TableHead scope="col" className="w-10 border-b border-gray-400 px-3 py-2 dark:border-darkSurface">
+              <TableHead scope="col" className="w-10 border-b border-border-2 px-3 py-2 dark:border-darkSurface">
                 <input
                   type="checkbox"
                   checked={allSelected}
                   onChange={toggleSelectAll}
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus-visible:focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
+                  className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
                   aria-label="Select all rows"
                 />
               </TableHead>
-              <TableHead scope="col" className="w-10 border-b border-gray-400 dark:border-darkSurface" />
+              <TableHead scope="col" className="w-10 border-b border-border-2 dark:border-darkSurface" />
               <SortableHeader
               label="Name"
               field="name"
@@ -343,14 +352,14 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
               return (
                 <Fragment key={guest._key ?? guest.guestId}>
                   {/* -------  Main row  ------- */}
-                  <TableRow className={`transition-colors ${isSelected ? "bg-blue-50 dark:bg-blue-900/20" : "odd:bg-white even:bg-gray-50 hover:bg-primary-50 dark:odd:bg-darkSurface dark:even:bg-darkSurface"}`}>
+                  <TableRow className={`transition-colors ${isSelected ? "bg-info-light/20 dark:bg-blue-900/20" : "odd:bg-surface even:bg-surface-2 hover:bg-primary-50 dark:odd:bg-darkSurface dark:even:bg-darkSurface"}`}>
                     {/* Row selection checkbox */}
                     <TableCell className="px-3 py-2 text-center">
                       <input
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => toggleRowSelection(guest.bookingRef)}
-                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus-visible:focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
+                        className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
                         aria-label={`Select booking ${guest.bookingRef}`}
                       />
                     </TableCell>
@@ -359,7 +368,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                       <Button
                       type="button"
                       onClick={() => toggleRow(guest.guestId)}
-                      className="rounded-full p-0.5 hover:bg-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600"
+                      className="rounded-full p-0.5 hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600"
                     >
                       {isExpanded ? (
                         <ChevronDownIcon className="h-4 w-4" />
@@ -388,11 +397,11 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                   {/* Refund status badge */}
                   <TableCell className="px-3 py-2">
                     {guest.refundStatus === "Non-Refundable" ? (
-                      <span className="inline-flex rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+                      <span className="inline-flex rounded-full bg-error-light px-2 py-0.5 text-xs font-medium text-error-main">
                         Non‑Refundable
                       </span>
                     ) : (
-                      <span className="inline-flex rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                      <span className="inline-flex rounded-full bg-success-light px-2 py-0.5 text-xs font-medium text-success-main">
                         Refundable
                       </span>
                     )}
@@ -417,32 +426,46 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
 
                   {/* -------  Expanded details  ------- */}
                   {isExpanded && (
-                    <TableRow className="bg-gray-50 even:bg-white dark:bg-darkSurface dark:even:bg-darkSurface">
+                    <TableRow className="bg-surface-2 even:bg-surface dark:bg-darkSurface dark:even:bg-darkSurface">
                       <TableCell colSpan={9} className="px-4 py-4">
                       <div className="flex flex-col gap-4 md:flex-row">
                         <section className="md:w-1/2">
-                          <h4 className="mb-1 flex items-center gap-1 text-sm font-semibold text-gray-700 dark:text-darkAccentGreen">
-                            Activities
-                            {activitiesForGuest.length === 0 && (
-                              <XMarkIcon
-                                className="h-4 w-4 text-gray-600 dark:text-darkAccentGreen"
-                                aria-hidden="true"
-                              />
-                            )}
-                          </h4>
+                          <Inline
+                            asChild
+                            gap={1}
+                            wrap={false}
+                            className="mb-1 text-sm font-semibold text-foreground dark:text-darkAccentGreen"
+                          >
+                            <h4>
+                              Activities
+                              {activitiesForGuest.length === 0 && (
+                                <XMarkIcon
+                                  className="h-4 w-4 text-muted-foreground dark:text-darkAccentGreen"
+                                  aria-hidden="true"
+                                />
+                              )}
+                            </h4>
+                          </Inline>
                           <ActivityList activities={activitiesForGuest} />
                         </section>
 
                         <section className="md:w-1/2">
-                          <h4 className="mb-1 flex items-center gap-1 text-sm font-semibold text-gray-700 dark:text-darkAccentGreen">
-                            Transactions
-                            {guest.transactions.length === 0 && (
-                              <XMarkIcon
-                                className="h-4 w-4 text-gray-600 dark:text-darkAccentGreen"
-                                aria-hidden="true"
-                              />
-                            )}
-                          </h4>
+                          <Inline
+                            asChild
+                            gap={1}
+                            wrap={false}
+                            className="mb-1 text-sm font-semibold text-foreground dark:text-darkAccentGreen"
+                          >
+                            <h4>
+                              Transactions
+                              {guest.transactions.length === 0 && (
+                                <XMarkIcon
+                                  className="h-4 w-4 text-muted-foreground dark:text-darkAccentGreen"
+                                  aria-hidden="true"
+                                />
+                              )}
+                            </h4>
+                          </Inline>
                           <TransactionList transactions={guest.transactions} />
                         </section>
                       </div>

@@ -96,7 +96,7 @@ function EmailBookingButton({
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className="min-h-55px px-4 bg-primary-main text-white rounded-md hover:bg-primary-dark transition-colors flex items-center justify-center"
+        className="min-h-55px px-4 bg-primary-main text-primary-fg rounded-md hover:bg-primary-dark transition-colors"
         title="Create booking email draft"
       >
         {loading ? "..." : <FontAwesomeIcon icon={faThLarge} size="lg" />}
@@ -112,7 +112,7 @@ function EmailBookingButton({
           className={[
             "absolute top-0 left-1/2",
             "-translate-x-8 -translate-y-8",
-            "w-4 h-4 rounded-full bg-warning-main text-white",
+            "w-4 h-4 rounded-full bg-warning-main text-primary-fg",
             "flex items-center justify-center text-10px cursor-default select-none",
           ].join(" ")}
         >

@@ -4,7 +4,7 @@ import * as React from "react";
 import { CheckIcon } from "@radix-ui/react-icons";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 
-import { cn } from "../utils/style";
+import { cn, overflowContainmentClass } from "../utils/style";
 
 interface ComboboxContextValue {
   value: string;
@@ -131,13 +131,14 @@ export function ComboboxContent({
         ref={ref}
         align="start"
         className={cn(
-          "w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-md border border-border-2 bg-panel p-1 text-foreground shadow-elevation-2",
+          "w-[var(--radix-popover-trigger-width)] rounded-md border border-border-2 bg-panel p-1 text-foreground shadow-elevation-2 break-words",
+          overflowContainmentClass("comboboxSurface"),
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
           className
         )}
         {...props}
       >
-        <div className="max-h-80 overflow-y-auto p-1">
+        <div className="max-h-80 min-w-0 overflow-y-auto p-1">
           {children}
         </div>
       </PopoverPrimitive.Content>

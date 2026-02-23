@@ -3,6 +3,11 @@
 import * as React from "react";
 import { CheckIcon } from "@radix-ui/react-icons";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export interface OptionTileProps
@@ -11,6 +16,10 @@ export interface OptionTileProps
   selectedLabel?: React.ReactNode;
   /** Extra cue for selection, independent of color. */
   showCheck?: boolean;
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 export const OptionTile = (
@@ -20,6 +29,8 @@ export const OptionTile = (
     selectedLabel,
     showCheck = true,
     className,
+    shape,
+    radius,
     type = "button",
     children,
     ...props
@@ -27,13 +38,20 @@ export const OptionTile = (
     ref?: React.Ref<HTMLButtonElement>;
   }
 ) => {
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "2xl",
+  });
+
   return (
     <button
       ref={ref}
       type={type}
       className={cn(
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — utility class names only
-        "group relative rounded-2xl border bg-surface-2 p-2 text-start transition-colors transition-shadow motion-reduce:transition-none",
+        "group relative border bg-surface-2 p-2 text-start transition-colors transition-shadow motion-reduce:transition-none",
+        shapeRadiusClass,
         // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         "focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-60",
         selected
@@ -78,4 +96,3 @@ export const OptionTile = (
     </button>
   );
 };
-

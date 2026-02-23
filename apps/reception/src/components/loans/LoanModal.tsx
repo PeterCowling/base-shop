@@ -11,7 +11,11 @@ import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faFileAlt, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { Button } from "@acme/design-system/atoms";
+import {
+  ReceptionButton as Button,
+  ReceptionInput,
+  ReceptionSelect,
+} from "@acme/ui/operations";
 
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
@@ -132,12 +136,12 @@ function LoanModalComponent({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 z-50"
+      className="fixed inset-0 bg-foreground bg-opacity-50 flex items-center justify-center px-4 z-50"
       role="dialog"
       aria-labelledby="loanModalTitle"
       aria-modal="true"
     >
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-lg dark:bg-darkSurface">
+      <div className="bg-surface rounded-lg shadow-lg w-full max-w-lg dark:bg-darkSurface">
         {/* Header Section */}
         <div className="px-6 py-4 border-b border-border flex justify-between items-center">
           <h2
@@ -207,7 +211,7 @@ function LoanModalComponent({
               {mode === "loan" ? "Quantity to Loan" : "Quantity to Return"}
             </label>
             <div className="flex items-center">
-              <input
+              <ReceptionInput
                 id="countInput"
                 type="number"
                 value={countInput}
@@ -235,7 +239,7 @@ function LoanModalComponent({
                   className={depositIcon.className}
                 />
               </label>
-              <select
+              <ReceptionSelect
                 id="depositMethod"
                 value={depositType}
                 onChange={handleDepositTypeChange}
@@ -245,7 +249,7 @@ function LoanModalComponent({
                 <option value="PASSPORT">Passport</option>
                 <option value="LICENSE">License</option>
                 <option value="ID">ID</option>
-              </select>
+              </ReceptionSelect>
             </div>
           )}
         </div>

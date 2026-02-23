@@ -86,7 +86,7 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({
         className={[
           "absolute",
           tooltipPosition,
-          "w-max max-w-xs px-3 py-2 rounded bg-black bg-opacity-75 text-white text-sm",
+          "w-max max-w-xs px-3 py-2 rounded bg-foreground bg-opacity-75 text-primary-fg text-sm",
           "opacity-0 invisible group-hover:visible group-hover:opacity-100",
           "transition-opacity z-10",
         ].join(" ")}

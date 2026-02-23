@@ -131,14 +131,14 @@ function StatusButton({ booking }: StatusButtonProps) {
   const getButtonStyle = useCallback((code: number): string => {
     if (code === 12) {
       // "Check-in complete" => greenish
-      return "bg-success-light text-white cursor-pointer hover:opacity-80";
+      return "bg-success-light text-primary-fg cursor-pointer hover:opacity-80";
     }
     if (code === 23) {
       // "Bags dropped" => a warning color
-      return "bg-warning-main text-white hover:opacity-80";
+      return "bg-warning-main text-primary-fg hover:opacity-80";
     }
     // default or no code => normal
-    return "bg-primary-main text-white hover:bg-primary-dark";
+    return "bg-primary-main text-primary-fg hover:bg-primary-dark";
   }, []);
 
   /**

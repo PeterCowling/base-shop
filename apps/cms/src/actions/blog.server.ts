@@ -61,5 +61,3 @@ export async function deletePost(
 ): Promise<{ message?: string; error?: string }> {
   return serviceDeletePost(shopId, id);
 }
-
-export type { SanityPost };

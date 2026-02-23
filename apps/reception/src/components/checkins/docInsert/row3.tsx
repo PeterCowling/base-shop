@@ -8,6 +8,8 @@ import React, {
 } from "react";
 import { ChevronDown } from "lucide-react";
 
+import { ReceptionInput, ReceptionSelect } from "@acme/ui/operations";
+
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
 import DOBSection from "./DOBSection";
@@ -169,7 +171,7 @@ function Row3({
         >
           Document Number
         </label>
-        <input
+        <ReceptionInput
           id="documentNumber"
           type="text"
           value={documentNumber}
@@ -178,7 +180,7 @@ function Row3({
           onKeyDown={handleDocNumberKeyDown}
           className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-2 focus:ring-primary-main ${
             isDocNumberPopulated ? "bg-success-light/50" : ""
-          } text-gray-900`}
+          } text-foreground`}
         />
       </div>
 
@@ -192,7 +194,7 @@ function Row3({
         </label>
         {/* Wrapper adds custom icon and positions it */}
         <div className="relative w-300px">
-          <select
+          <ReceptionSelect
             id="documentType"
             value={documentType}
             onChange={handleDocTypeChange}
@@ -200,8 +202,8 @@ function Row3({
             className={`appearance-none border border-info-light rounded px-3 py-2 pr-10 w-full focus:outline-none focus:ring-2 focus:ring-primary-main transition-shadow ${
               isDocTypePopulated
                 ? "bg-success-light/50"
-                : "bg-white dark:bg-darkSurface"
-            } text-gray-900 hover:border-primary-dark`}
+                : "bg-surface dark:bg-darkSurface"
+            } text-foreground hover:border-primary-dark`}
           >
             <option value="" disabled>
               Select document type
@@ -211,7 +213,7 @@ function Row3({
                 {option}
               </option>
             ))}
-          </select>
+          </ReceptionSelect>
           {/* Chevron icon */}
           <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-info-dark">
             <ChevronDown className="h-4 w-4" />

@@ -2,12 +2,21 @@
 
 import * as React from "react";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   value: number;
   label?: React.ReactNode;
   labelClassName?: string;
+  /** Semantic track shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit track radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 export const Progress = (
@@ -17,6 +26,8 @@ export const Progress = (
     label,
     className,
     labelClassName,
+    shape,
+    radius,
     style,
     ...props
   }: ProgressProps & {
@@ -27,6 +38,11 @@ export const Progress = (
     ? Math.min(100, Math.max(0, value))
     : 0;
   const scale = clampedValue / 100;
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
 
   return (
     <div
@@ -41,7 +57,10 @@ export const Progress = (
     >
       <div
         className={
-          "bg-muted h-2 w-full overflow-hidden rounded" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+          cn(
+            "bg-muted h-2 w-full overflow-hidden", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+            shapeRadiusClass,
+          )
         }
         data-token="--color-muted" // i18n-exempt -- UI-000: design token attribute, not user copy [ttl=2026-01-31]
       >

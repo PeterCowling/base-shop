@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { revertSeo } from "@cms/actions/shops.server";
+import { revertSeo } from "@cms/actions/shops-seo.server";
 
 import { formatTimestamp } from "@acme/date-utils";
 import { CodeBlock } from "@acme/design-system/molecules";

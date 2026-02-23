@@ -5,6 +5,7 @@ import { PolicyPageIntro } from "@acme/ui/components/organisms/PolicyPageIntro";
 import { PolicySection } from "@acme/ui/components/organisms/PolicySection";
 
 import { siteConfig } from "../../../lib/siteConfig";
+import { xaI18n } from "../../../lib/xaI18n";
 
 export default function ReturnPolicyPage() {
   const brandName = siteConfig.brandName;
@@ -16,7 +17,7 @@ export default function ReturnPolicyPage() {
         <PolicyPageIntro
           title="Return policy"
           description={`Returns for ${productDescriptor} purchased from ${brandName} are handled under this policy. This page is a starter template. Replace placeholders with your legal entity details.`}
-          descriptionClassName="mt-2 text-sm text-muted-foreground max-w-none"
+          descriptionClassName={xaI18n.t("xaB.src.app.pages.return.policy.page.l19c32")}
         />
       </Section>
 
@@ -26,7 +27,7 @@ export default function ReturnPolicyPage() {
             <LegalEntityCard
               title="Company"
               className="rounded-lg border p-4 text-sm"
-              titleClassName="font-semibold text-inherit"
+              titleClassName={xaI18n.t("xaB.src.app.pages.return.policy.page.l29c30")}
               bodyClassName="space-y-0"
             >
               {siteConfig.showLegalInfo && siteConfig.legalEntityName ? (
@@ -43,7 +44,7 @@ export default function ReturnPolicyPage() {
 
           <PolicySection
             title="Refundable vs non-refundable"
-            titleClassName="text-lg font-semibold"
+            titleClassName={xaI18n.t("xaB.src.app.pages.return.policy.page.l46c28")}
           >
             <div className="overflow-x-auto rounded-lg border">
               <table className="w-full text-sm">
@@ -55,23 +56,23 @@ export default function ReturnPolicyPage() {
                 </thead>
                 <tbody className="text-muted-foreground">
                   <tr className="border-b">
-                    <td className="p-3">Out of stock after purchase</td>
+                    <td className="p-3">{xaI18n.t("xaB.src.app.pages.return.policy.page.l58c41")}</td>
                     <td className="p-3">Refundable</td>
                   </tr>
                   <tr className="border-b">
-                    <td className="p-3">Pre-order cancellation</td>
-                    <td className="p-3">Non-refundable</td>
+                    <td className="p-3">{xaI18n.t("xaB.src.app.pages.return.policy.page.l62c41")}</td>
+                    <td className="p-3">{xaI18n.t("xaB.src.app.pages.return.policy.page.l63c41")}</td>
                   </tr>
                   <tr>
-                    <td className="p-3">Change of mind</td>
-                    <td className="p-3">Non-refundable</td>
+                    <td className="p-3">{xaI18n.t("xaB.src.app.pages.return.policy.page.l66c41")}</td>
+                    <td className="p-3">{xaI18n.t("xaB.src.app.pages.return.policy.page.l67c41")}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </PolicySection>
 
-          <PolicySection title="Contact" titleClassName="text-lg font-semibold">
+          <PolicySection title="Contact" titleClassName={xaI18n.t("xaB.src.app.pages.return.policy.page.l74c57")}>
             {siteConfig.showContactInfo ? (
               <p className="text-sm text-muted-foreground">
                 {siteConfig.showSocialLinks && siteConfig.whatsappNumber ? (
@@ -80,9 +81,7 @@ export default function ReturnPolicyPage() {
                 {siteConfig.supportEmail ? `Email: ${siteConfig.supportEmail}` : null}
               </p>
             ) : (
-              <p className="text-sm text-muted-foreground">
-                Contact details are available on request.
-              </p>
+              <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.pages.return.policy.page.l83c60")}</p>
             )}
           </PolicySection>
         </PolicyContent>

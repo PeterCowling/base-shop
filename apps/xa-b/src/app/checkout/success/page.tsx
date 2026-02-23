@@ -8,6 +8,7 @@ import { Button } from "@acme/design-system/atoms";
 import { Section } from "@acme/design-system/atoms/Section";
 
 import { findOrderByNumber } from "../../../lib/ordersStore";
+import { xaI18n } from "../../../lib/xaI18n";
 
 function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
@@ -17,7 +18,7 @@ function CheckoutSuccessContent() {
   return (
     <main className="sf-content">
       <Section padding="wide">
-        <h1 className="text-2xl font-semibold">Order confirmed</h1>
+        <h1 className="text-2xl font-semibold">{xaI18n.t("xaB.src.app.checkout.success.page.l20c48")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           {order ? (
             <>
@@ -25,7 +26,7 @@ function CheckoutSuccessContent() {
               <span className="font-medium">{order.status}</span>.
             </>
           ) : (
-            "We couldn’t load that order in this browser."
+            xaI18n.t("xaB.src.app.checkout.success.page.l28c13")
           )}
         </p>
       </Section>
@@ -38,13 +39,13 @@ function CheckoutSuccessContent() {
             </Button>
           ) : null}
           <Button variant="outline" asChild>
-            <Link href="/account/orders">Order history</Link>
+            <Link href="/account/orders">{xaI18n.t("xaB.src.app.checkout.success.page.l41c42")}</Link>
           </Button>
           <Button variant="outline" asChild>
             <Link href="/account/trackingorder">Track order</Link>
           </Button>
           <Button variant="outline" asChild>
-            <Link href="/collections/all">Continue shopping</Link>
+            <Link href="/collections/all">{xaI18n.t("xaB.src.app.checkout.success.page.l47c43")}</Link>
           </Button>
         </div>
       </Section>

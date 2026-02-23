@@ -14,7 +14,7 @@ jest.mock("../modal/PayModal", () => ({
   __esModule: true,
   default: (props: PayModalProps) => {
     capturedPayModalProps = props;
-    return <div data-testid="pay-modal" />;
+    return <div data-cy="pay-modal" />;
   },
 }));
 

@@ -37,6 +37,8 @@ const jsonRecord = z
   })
   .pipe(z.record(z.unknown()));
 
+const jsonStringRecord = jsonRecord.pipe(z.record(z.string()));
+
 export const shopSchema = z
   .object({
     id: z.string(),
@@ -84,9 +86,9 @@ export const shopSchema = z
       .preprocess((v) => v === "on", z.boolean())
       .optional()
       .default(false),
-    themeOverrides: jsonRecord,
-    themeDefaults: jsonRecord,
-    themeTokens: jsonRecord.optional(),
+    themeOverrides: jsonStringRecord,
+    themeDefaults: jsonStringRecord,
+    themeTokens: jsonStringRecord.optional(),
     filterMappings: jsonRecord,
     priceOverrides: jsonRecord,
     localeOverrides: jsonRecord,

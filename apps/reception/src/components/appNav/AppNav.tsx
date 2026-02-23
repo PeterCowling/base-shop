@@ -33,7 +33,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { Button } from "@acme/design-system/atoms";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import { canAccess,Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
@@ -140,7 +140,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
       {/* Nav Toggle Button */}
       <Button
         onClick={toggleNav}
-        className="fixed start-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg bg-primary-600 text-white shadow-lg hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg"
+        className="fixed start-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg bg-primary-600 text-primary-fg shadow-lg hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg"
         aria-label={isOpen ? "Close navigation" : "Open navigation"}
         aria-expanded={isOpen}
       >
@@ -150,7 +150,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
       {/* Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 bg-foreground/50 backdrop-blur-sm"
           onClick={closeNav}
           aria-hidden="true"
         />
@@ -158,24 +158,24 @@ function AppNav({ user, onLogout }: AppNavProps) {
 
       {/* Sidebar */}
       <nav
-        className={`fixed start-0 top-0 h-full w-64 transform bg-white shadow-xl transition-transform duration-300 dark:bg-darkSurface flex flex-col ${
+        className={`fixed start-0 top-0 h-full w-64 transform bg-surface shadow-xl transition-transform duration-300 dark:bg-darkSurface flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         aria-label="Main navigation"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-darkBorder">
+        <div className="flex items-center justify-between border-b border-border p-4 dark:border-darkBorder">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-darkAccentGreen">
+            <h2 className="text-lg font-semibold text-foreground dark:text-darkAccentGreen">
               Reception
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground dark:text-muted-foreground">
               {user.user_name}
             </p>
           </div>
           <Button
             onClick={closeNav}
-            className="min-h-11 min-w-11 rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-darkBorder"
+            className="min-h-11 min-w-11 rounded-lg p-2 text-muted-foreground hover:bg-surface-2 dark:text-muted-foreground dark:hover:bg-darkBorder"
             aria-label="Close navigation"
           >
             <FontAwesomeIcon icon={faTimes} />
@@ -189,7 +189,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
 
             return (
               <div key={section.label} className="mb-6">
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground dark:text-muted-foreground">
                   {section.label}
                 </h3>
                 <ul className="space-y-1">
@@ -205,7 +205,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
                           className={`flex min-h-11 w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
                             isActive
                               ? "bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-darkAccentGreen"
-                              : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-darkBorder"
+                              : "text-foreground hover:bg-surface-2 dark:text-gray-300 dark:hover:bg-darkBorder"
                           }`}
                         >
                           <FontAwesomeIcon
@@ -224,10 +224,10 @@ function AppNav({ user, onLogout }: AppNavProps) {
         </div>
 
         {/* Footer */}
-        <div className="mt-auto border-t border-gray-200 p-4 dark:border-darkBorder">
+        <div className="mt-auto border-t border-border p-4 dark:border-darkBorder">
           <Button
             onClick={onLogout}
-            className="flex min-h-11 min-w-11 w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+            className="flex min-h-11 min-w-11 w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-error-main hover:bg-error-light/20 dark:text-red-400 dark:hover:bg-red-900/20"
           >
             <FontAwesomeIcon icon={faSignOutAlt} className="w-4 text-center" />
             Sign out
@@ -237,8 +237,8 @@ function AppNav({ user, onLogout }: AppNavProps) {
 
       {/* Keyboard shortcut hint (only shown when nav is closed) */}
       {!isOpen && (
-        <div className="fixed bottom-4 left-4 z-30 rounded-lg bg-gray-800/80 px-3 py-1.5 text-xs text-white opacity-50 backdrop-blur-sm">
-          <kbd className="rounded bg-gray-700 px-1.5 py-0.5 font-mono">
+        <div className="fixed bottom-4 left-4 z-30 rounded-lg bg-foreground/80 px-3 py-1.5 text-xs text-primary-fg opacity-50 backdrop-blur-sm">
+          <kbd className="rounded bg-surface-3 px-1.5 py-0.5 font-mono">
             Arrow Up/Down
           </kbd>{" "}
           for modals

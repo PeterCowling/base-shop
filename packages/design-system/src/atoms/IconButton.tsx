@@ -2,6 +2,11 @@
 
 import * as React from "react";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export type IconButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "quiet";
@@ -11,11 +16,15 @@ export interface IconButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: IconButtonVariant;
   size?: IconButtonSize;
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 const baseClasses =
   // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-  "inline-flex items-center justify-center rounded-full transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
 
 const variantClasses: Record<IconButtonVariant, string> = {
   // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
@@ -46,6 +55,8 @@ export const IconButton = (
     className,
     variant = "ghost",
     size = "sm",
+    shape,
+    radius,
     type = "button",
     children,
     "aria-label": ariaLabel,
@@ -55,6 +66,12 @@ export const IconButton = (
     ref?: React.Ref<HTMLButtonElement>;
   }
 ) => {
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "full",
+  });
+
   const hasTextChild = React.Children.toArray(children).some(
     (child) => typeof child === "string" && child.trim().length > 0,
   );
@@ -73,7 +90,13 @@ export const IconButton = (
       ref={ref}
       type={type}
       data-token={tokenByVariant[variant]}
-      className={cn(baseClasses, variantClasses[variant], sizeClasses[size], className)}
+      className={cn(
+        baseClasses,
+        shapeRadiusClass,
+        variantClasses[variant],
+        sizeClasses[size],
+        className,
+      )}
       data-size={size}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}

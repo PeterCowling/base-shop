@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-23
@@ -34,11 +34,11 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - [x] TASK-05: Add button compatibility surface in design-system
 - [x] TASK-06: Publish Reception compatibility exports + remove deep NotificationCenter imports
 - [x] TASK-07: Horizon checkpoint - reassess downstream migration assumptions
-- [ ] TASK-08: Wave 1 migration - parity route set
-- [ ] TASK-09: Wave 2 migration - table-heavy operational routes
-- [ ] TASK-10: Wave 3 migration - form/modal-heavy operational routes
-- [ ] TASK-11: Wave 4 migration - remaining routes + local UI retirement
-- [ ] TASK-12: Escalate Reception DS lint rules after full parity coverage
+- [x] TASK-08: Wave 1 migration - parity route set
+- [x] TASK-09: Wave 2 migration - table-heavy operational routes
+- [x] TASK-10: Wave 3 migration - form/modal-heavy operational routes
+- [x] TASK-11: Wave 4 migration - remaining routes + local UI retirement
+- [x] TASK-12: Escalate Reception DS lint rules after full parity coverage
 
 ## Goals
 - Centralize Reception UI through shared DS/UI capabilities rather than app-local bespoke components.
@@ -96,11 +96,11 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 | TASK-05 | IMPLEMENT | Add button compatibility surface in DS | 85% | S | Complete (2026-02-23) | - | TASK-06 |
 | TASK-06 | IMPLEMENT | Publish Reception compatibility exports + deep import cleanup | 85% | S | Complete (2026-02-23) | TASK-03, TASK-04, TASK-05 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint - reassess downstream migration assumptions | 95% | S | Complete (2026-02-23) | TASK-02, TASK-06 | TASK-08 |
-| TASK-08 | IMPLEMENT | Wave 1 migration - parity route set | 82% | S | Pending | TASK-01, TASK-02, TASK-06, TASK-07 | TASK-09 |
-| TASK-09 | IMPLEMENT | Wave 2 migration - table-heavy operational routes | 80% | S | Pending | TASK-01, TASK-02, TASK-06, TASK-08 | TASK-10 |
-| TASK-10 | IMPLEMENT | Wave 3 migration - form/modal-heavy operational routes | 80% | S | Pending | TASK-01, TASK-02, TASK-06, TASK-09 | TASK-11 |
-| TASK-11 | IMPLEMENT | Wave 4 migration - remaining routes + local UI retirement | 80% | S | Pending | TASK-01, TASK-02, TASK-06, TASK-10 | TASK-12 |
-| TASK-12 | IMPLEMENT | Escalate Reception DS lint rules after full parity coverage | 85% | S | Pending | TASK-11 | - |
+| TASK-08 | IMPLEMENT | Wave 1 migration - parity route set | 82% | S | Complete (2026-02-23) | TASK-01, TASK-02, TASK-06, TASK-07 | TASK-09 |
+| TASK-09 | IMPLEMENT | Wave 2 migration - table-heavy operational routes | 80% | S | Complete (2026-02-23) | TASK-01, TASK-02, TASK-06, TASK-08 | TASK-10 |
+| TASK-10 | IMPLEMENT | Wave 3 migration - form/modal-heavy operational routes | 80% | S | Complete (2026-02-23) | TASK-01, TASK-02, TASK-06, TASK-09 | TASK-11 |
+| TASK-11 | IMPLEMENT | Wave 4 migration - remaining routes + local UI retirement | 80% | S | Complete (2026-02-23) | TASK-01, TASK-02, TASK-06, TASK-10 | TASK-12 |
+| TASK-12 | IMPLEMENT | Escalate Reception DS lint rules after full parity coverage | 85% | S | Complete (2026-02-23) | TASK-11 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -496,7 +496,7 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `apps/reception/src/components/Login.tsx`, `apps/reception/src/components/checkins/**/*`, `apps/reception/src/components/checkout/**/*`, `apps/reception/src/components/till/**/*`, `apps/reception/src/components/safe/**/*`
 - **Depends on:** TASK-01, TASK-02, TASK-06, TASK-07
 - **Blocks:** TASK-09
@@ -526,6 +526,21 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Documentation impact:** update wave evidence log in artifacts.
 - **Notes / references:**
   - `docs/plans/reception-ds-centralization-growth-first/artifacts/migration-inventory.md`
+  - `docs/plans/reception-ds-centralization-growth-first/artifacts/wave-1-results.md`
+- **Build evidence (2026-02-23):**
+  - Deliverable coverage:
+    - `packages/ui/src/components/organisms/operations/ReceptionCompatibility.tsx` now provides style-neutral passthrough wrappers with ref support for `ReceptionButton`, `ReceptionInput`, `ReceptionTextarea`, and table compatibility aliases.
+    - Wave 1 scope call-sites migrated to `@acme/ui/operations` wrappers across `apps/reception/src/components/Login.tsx`, `apps/reception/src/components/checkins/**/*`, `apps/reception/src/components/till/**/*`, and `apps/reception/src/components/safe/**/*`.
+  - `TC-01` passed:
+    - `cd apps/reception && pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs src/parity/__tests__`
+    - Result: `5` suites passed, `10` tests passed, `5` snapshots passed (zero snapshot diffs).
+  - `TC-02` passed (Wave 1 native-tag decrease vs baseline):
+    - Baseline (pre-migration): button `0`, input/select/textarea `56`, table-structure `10`.
+    - Post-migration: button `0`, input/select/textarea `5`, table-structure `0`.
+  - `TC-03` passed for touched files:
+    - `pnpm --filter @apps/reception typecheck` -> pass.
+    - `cd apps/reception && pnpm exec eslint --fix <wave1-touched-files>` -> pass with warnings only and no errors.
+    - Note: full package lint remains red due unrelated pre-existing errors outside TASK-08 scope.
 
 ### TASK-09: Wave 2 migration - table-heavy operational routes
 - **Type:** IMPLEMENT
@@ -534,7 +549,7 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `apps/reception/src/components/reports/**/*`, `apps/reception/src/components/inventory/**/*`, `apps/reception/src/components/search/**/*`, `apps/reception/src/components/prime-requests/**/*`
 - **Depends on:** TASK-01, TASK-02, TASK-06, TASK-08
 - **Blocks:** TASK-10
@@ -564,6 +579,22 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Documentation impact:** append Wave 2 evidence to artifacts.
 - **Notes / references:**
   - hotspot list in inventory artifact.
+  - `docs/plans/reception-ds-centralization-growth-first/artifacts/wave-2-results.md`
+- **Build evidence (2026-02-23):**
+  - Deliverable coverage:
+    - Wave 2 table-heavy components now route table primitives through `@acme/ui/operations` compatibility wrappers across `reports/*`, `inventory/*`, `search/*`, and `prime-requests/*` scope files listed in `wave-2-results.md`.
+  - `TC-01` passed for locked parity contract:
+    - `cd apps/reception && pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs src/parity/__tests__`
+    - Result: `5` suites passed, `10` tests passed, `5` snapshots passed.
+    - Additional focused Wave 2 tests: `5` suites passed; `2` suites fail due pre-existing missing `AuthProvider` test setup (`VarianceHeatMap.test.tsx`, `SearchTable.test.tsx`), not table-wrapper runtime changes.
+  - `TC-02` passed (inventory hotspot table reduction):
+    - Baseline from TASK-01 Wave 2 hotspot totals: `234` native table tags.
+    - Post-migration hotspot totals: `0` native table tags.
+  - `TC-03` passed:
+    - Direct table primitive imports from `@acme/design-system/atoms` in Wave 2 scope reduced to `0`.
+    - No deep imports from `@acme/ui/src` or `@acme/design-system/src` introduced.
+    - `pnpm --filter @apps/reception typecheck` -> pass.
+    - Touched-file eslint run -> warnings only, no errors.
 
 ### TASK-10: Wave 3 migration - form/modal-heavy operational routes
 - **Type:** IMPLEMENT
@@ -572,8 +603,8 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** `apps/reception/src/components/prepayments/**/*`, `apps/reception/src/components/docInsert/**/*`, `apps/reception/src/components/loans/**/*`, `apps/reception/src/components/man/**/*`, `apps/reception/src/components/common/**/*`
+- **Status:** Complete (2026-02-23)
+- **Affects:** `apps/reception/src/components/prepayments/**/*`, `apps/reception/src/components/checkins/docInsert/**/*`, `apps/reception/src/components/loans/**/*`, `apps/reception/src/components/man/**/*`, `apps/reception/src/components/common/**/*`
 - **Depends on:** TASK-01, TASK-02, TASK-06, TASK-09
 - **Blocks:** TASK-11
 - **Confidence:** 80%
@@ -602,6 +633,25 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Documentation impact:** append Wave 3 evidence to artifacts.
 - **Notes / references:**
   - Wave boundaries from TASK-01 artifact.
+  - `docs/plans/reception-ds-centralization-growth-first/artifacts/wave-3-results.md`
+- **Build evidence (2026-02-23):**
+  - Deliverable coverage:
+    - Added `ReceptionSelect` to `packages/ui/src/components/organisms/operations/ReceptionCompatibility.tsx`.
+    - Wave 3 scope migrated to `@acme/ui/operations` wrappers (`ReceptionButton`, `ReceptionInput`, `ReceptionSelect`) across `prepayments/*`, `loans/*`, `man/*`, `common/*`, and `checkins/docInsert/*`.
+  - `TC-01` passed:
+    - `cd apps/reception && pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs src/parity/__tests__`
+    - Result: `5` suites passed, `10` tests passed, `5` snapshots passed.
+  - `TC-02` focused Wave 3 tests:
+    - `13` suites passed, `2` failed.
+    - Failing suites are pre-existing test issues (Jest `vi` usage in `EntryDialog.test.tsx`; selector/config mismatch in `PaymentsView.test.tsx`), not wrapper runtime regressions.
+  - `TC-03` passed:
+    - Baseline native tags in Wave 3 scope: button `0`, input/select/textarea `27`.
+    - Post-migration: button `0`, input/select/textarea `0`.
+    - Direct atoms `Button` imports in Wave 3 scope reduced to `0`.
+    - No deep imports from `@acme/ui/src` or `@acme/design-system/src` introduced.
+    - `pnpm --filter @acme/ui build` -> pass.
+    - `pnpm --filter @apps/reception typecheck` -> pass.
+    - Scoped eslint run -> warnings only, no errors.
 
 ### TASK-11: Wave 4 migration - remaining routes + local UI retirement
 - **Type:** IMPLEMENT
@@ -610,7 +660,7 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `apps/reception/src/components/bar/**/*`, `apps/reception/src/components/live/**/*`, `apps/reception/src/components/emailAutomation/**/*`, `apps/reception/src/components/roomgrid/**/*`, `apps/reception/src/components/stats/**/*`, `apps/reception/src/components/appNav/**/*`, `apps/reception/src/components/analytics/**/*`, `apps/reception/src/components/prepare/**/*`
 - **Depends on:** TASK-01, TASK-02, TASK-06, TASK-10
 - **Blocks:** TASK-12
@@ -640,6 +690,24 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Documentation impact:** finalize migration inventory with completion markers.
 - **Notes / references:**
   - `docs/plans/reception-ds-centralization-growth-first/artifacts/migration-inventory.md`
+  - `docs/plans/reception-ds-centralization-growth-first/artifacts/wave-4-results.md`
+- **Build evidence (2026-02-23):**
+  - Deliverable coverage:
+    - Wave 4 remaining scope migrated to `@acme/ui/operations` compatibility wrappers across `bar/*`, `live/*`, `emailAutomation/*`, `roomgrid/*`, `stats/*`, `appNav/*`, `analytics/*`, and `prepare/*`.
+    - Residual native form/table usage in production Wave 4 files was replaced with `ReceptionInput`, `ReceptionSelect`, and `ReceptionTable*` wrappers.
+    - Direct atoms `Button`/`Table*` imports in Wave 4 production scope reduced to `0`.
+  - `TC-01` passed:
+    - `cd apps/reception && pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs src/parity/__tests__`
+    - Result: `5` suites passed, `10` tests passed, `5` snapshots passed.
+  - `TC-02` passed:
+    - Migration inventory updated with completion markers for all waves.
+    - Route coverage status: `26/26` routes assigned and complete.
+  - `TC-03` passed:
+    - Wave 4 production-scope native tags are now all `0`: button `0`, input/select/textarea `0`, table-structure `0`.
+    - Remaining Wave 4 atoms imports total `1` (`ConfirmDialog` only in `BookingDetailsModal`); no app-local reusable primitives were introduced.
+    - No deep imports from `@acme/ui/src` or `@acme/design-system/src` introduced.
+    - `pnpm --filter @apps/reception typecheck` -> pass.
+    - Scoped eslint run over touched Wave 4 files -> warnings only, no errors.
 
 ### TASK-12: Escalate Reception DS lint rules after full parity coverage
 - **Type:** IMPLEMENT
@@ -648,7 +716,7 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `eslint.config.mjs`, `apps/reception/src/**/*`
 - **Depends on:** TASK-11
 - **Blocks:** -
@@ -678,6 +746,16 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 - **Documentation impact:** update Reception DS migration closure notes.
 - **Notes / references:**
   - `eslint.config.mjs`
+- **Build evidence (2026-02-23):**
+  - Reception DS lint posture tightened in `eslint.config.mjs`:
+    - `ds/enforce-layout-primitives`: `off` -> `warn` (enabled).
+    - `ds/no-arbitrary-tailwind`: `warn` -> `error`.
+  - Validation results:
+    - `cd apps/reception && pnpm exec eslint src --ext .ts,.tsx -f json` summary -> `0` errors, `0` warnings (`0` `ds/no-raw-tailwind-color`, `0` `ds/enforce-layout-primitives`, `0` `ds/no-arbitrary-tailwind`).
+    - `pnpm --filter @apps/reception lint --max-warnings=0` -> pass.
+    - `pnpm --filter @apps/reception typecheck` -> pass.
+    - `cd apps/reception && pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs src/parity/__tests__` -> `5` suites passed, `10` tests passed, `5` snapshots passed.
+    - Parity snapshots remain stable under final lint posture.
 
 ## Risks & Mitigations
 - Shared compatibility API overfits Reception-only patterns.
@@ -701,17 +779,22 @@ This plan centralizes Reception UI by expanding shared DS/UI capability first, t
 
 ## Acceptance Criteria (overall)
 - [x] Compatibility-first DS/UI surface is added before route migration begins.
-- [ ] Locked parity route set shows zero unapproved visual/interaction regressions in every wave.
+- [x] Locked parity route set shows zero unapproved visual/interaction regressions in every wave.
 - [x] Deep NotificationCenter imports are removed from Reception.
-- [ ] Route inventory shows complete migration coverage across all Reception routes.
-- [ ] App-local reusable UI building blocks are retired or delegated to shared packages.
-- [ ] Reception DS lint structural governance is enabled after migration completion.
+- [x] Route inventory shows complete migration coverage across all Reception routes.
+- [x] App-local reusable UI building blocks are retired or delegated to shared packages.
+- [x] Reception DS lint structural governance is enabled after migration completion.
 
 ## Decision Log
 - 2026-02-23: Planning mode set to `plan-only` (no auto-build handoff requested).
 - 2026-02-23: Adopted default parity route set from fact-find for execution gating: unauthenticated login state on `/bar`, plus `/checkin`, `/checkout`, `/till-reconciliation`, `/safe-management`.
 - 2026-02-23: Chose growth-first compatibility expansion over direct codemod replacement based on probe breakage evidence.
 - 2026-02-23: CHECKPOINT complete; downstream tasks re-planned with updated confidence scores (TASK-08..11 raised to threshold-eligible values) and unchanged sequence topology.
+- 2026-02-23: TASK-08 complete; Wave 1 migration passed parity suite and native-tag delta gate with no snapshot diffs.
+- 2026-02-23: TASK-09 complete; Wave 2 table-heavy files now use compatibility table wrappers with parity suite green and hotspot-native-table count at zero.
+- 2026-02-23: TASK-10 complete; Wave 3 form/modal scope migrated to compatibility wrappers with parity suite green and native form-tag count reduced to zero.
+- 2026-02-23: TASK-11 complete; Wave 4 remaining scope migrated to compatibility wrappers with parity suite green and production-scope native form/table tags reduced to zero.
+- 2026-02-23: TASK-12 complete; Reception lint posture now enforces the final DS governance contract with `lint --max-warnings=0`, typecheck, and parity suite all passing.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

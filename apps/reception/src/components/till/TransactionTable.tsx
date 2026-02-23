@@ -30,31 +30,31 @@ const TransactionTable = memo(function TransactionTable({
     <Table className="min-w-full border-collapse text-xs sm:text-sm md:text-base dark:text-darkAccentGreen">
       <TableHeader>
         <TableRow>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
             TIMESTAMP
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
             AMOUNT
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
             METHOD
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
             TYPE
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
             STAFF
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
             ITEM CATEGORY
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
             OCCUPANT
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
             BOOKING
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
             DESCRIPTION
           </TableHead>
         </TableRow>
@@ -70,8 +70,8 @@ const TransactionTable = memo(function TransactionTable({
           const isCorrection = Boolean(t.sourceTxnId || t.correctionKind);
           const rowBg =
             index % 2 === 0
-              ? "bg-white dark:bg-darkBg"
-              : "bg-gray-50 dark:bg-darkSurface";
+              ? "bg-surface dark:bg-darkBg"
+              : "bg-surface-2 dark:bg-darkSurface";
           const rowTextClass = isVoided ? "opacity-60 line-through" : "";
           const category = t.type === "barSale" ? "Bar Sale" : t.itemCategory;
           const summary = summariseDescription(t.description);
@@ -86,7 +86,7 @@ const TransactionTable = memo(function TransactionTable({
                   ? () => onRowEdit(t)
                   : undefined
               }
-              className={`${rowBg} border-b border-gray-400 dark:border-darkSurface hover:bg-gray-100$${
+              className={`${rowBg} border-b border-border-2 dark:border-darkSurface hover:bg-surface-2$${
                 isDeleteMode || isEditMode ? " cursor-pointer" : ""
               } ${rowTextClass}`}
             >

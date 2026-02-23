@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import { useReceptionTheme } from "../../providers/ReceptionThemeProvider";
 
@@ -16,7 +16,7 @@ export default function DarkModeToggle(): JSX.Element {
       onClick={toggleDark}
       aria-label="Toggle dark mode"
       aria-pressed={dark}
-      className="px-3 py-2 text-sm font-semibold text-gray-600 dark:text-accent-hospitality"
+      className="px-3 py-2 text-sm font-semibold text-muted-foreground dark:text-accent-hospitality"
     >
       {dark ? "Light" : "Dark"} Mode
     </Button>

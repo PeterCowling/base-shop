@@ -1,7 +1,7 @@
 /* File: src/bar/orderTaking/modal/WithMilkModal.tsx */
 import React, { useCallback } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import { withModalBackground } from "../../../../hoc/withModalBackground";
 
@@ -37,20 +37,20 @@ function WithMilkModalBase(props: WithMilkModalProps): JSX.Element {
       <div className="flex flex-col space-y-3 mb-4">
         <Button
           onClick={handleWithMilk}
-          className="px-4 py-2 bg-primary-main text-white hover:bg-primary-dark transition-colors duration-200 rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+          className="px-4 py-2 bg-primary-main text-primary-fg hover:bg-primary-dark transition-colors duration-200 rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
         >
           With Milk
         </Button>
         <Button
           onClick={handleWithoutMilk}
-          className="px-4 py-2 bg-primary-main text-white hover:bg-primary-dark transition-colors duration-200 rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+          className="px-4 py-2 bg-primary-main text-primary-fg hover:bg-primary-dark transition-colors duration-200 rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
         >
           Without Milk
         </Button>
       </div>
       <Button
         onClick={onCancel}
-        className="px-4 py-2 w-full bg-gray-300 text-black hover:bg-gray-400 transition-colors duration-200 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
+        className="px-4 py-2 w-full bg-surface-3 text-foreground hover:bg-surface-3 transition-colors duration-200 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
       >
         Cancel
       </Button>

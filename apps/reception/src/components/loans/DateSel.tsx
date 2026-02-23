@@ -13,7 +13,8 @@ import {
 } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
-import { Button } from "@acme/design-system/atoms";
+import { Cluster, Inline } from "@acme/design-system/primitives";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import {
   buildQuickDateRange,
@@ -58,8 +59,8 @@ function DateSel({
             transition-colors
             ${
               isSelected
-              ? "bg-primary-main text-white border-primary-main"
-              : "bg-white text-gray-700 border-gray-400 hover:bg-gray-100 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface dark:hover:bg-darkSurface/70"
+              ? "bg-primary-main text-primary-fg border-primary-main"
+              : "bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface dark:hover:bg-darkSurface/70"
             }
           `}
           onClick={() => onDateChange(day)}
@@ -73,14 +74,14 @@ function DateSel({
 
   const daySelectors = useMemo(() => {
     return (
-      <div className="flex items-center flex-wrap gap-2">
+      <Cluster gap={2}>
         {renderButton("Yesterday", yesterday)}
         {renderButton("Today", today)}
         {nextFiveDays.map((day) => {
           const shortLabel = getWeekdayShortLabel(day);
           return renderButton(shortLabel, day);
         })}
-      </div>
+      </Cluster>
     );
   }, [yesterday, today, nextFiveDays, renderButton]);
 
@@ -139,9 +140,9 @@ function DateSel({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: `${defaultNames.root} bg-white shadow-lg p-5 rounded dark:bg-darkSurface dark:text-darkAccentGreen`,
+                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded dark:bg-darkSurface dark:text-darkAccentGreen`,
                 today: "border-amber-500",
-                selected: "bg-amber-500 border-amber-500 text-white",
+                selected: "bg-amber-500 border-amber-500 text-primary-fg",
                 chevron: `${defaultNames.chevron} fill-amber-500`,
               }}
             />
@@ -153,10 +154,10 @@ function DateSel({
 
   return (
     <div className="relative pb-5">
-      <div className="flex items-center gap-2">
+      <Inline wrap={false} gap={2}>
         {daySelectors}
         {toggleAndCalendar}
-      </div>
+      </Inline>
     </div>
   );
 }

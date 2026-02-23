@@ -17,8 +17,8 @@ const BookingRefChipPrepayComponent: FC<BookingRefChipPrepayProps> = ({
   hasCard,
 }) => {
   const chipStyle = hasCard
-    ? "bg-success-main text-white"
-    : "bg-info-main text-white";
+    ? "bg-success-main text-primary-fg"
+    : "bg-info-main text-primary-fg";
 
   const handleCopy = useCallback(async (): Promise<void> => {
     try {

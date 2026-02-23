@@ -3,15 +3,15 @@
 exports[`/bar unauthenticated login parity matches baseline login selectors and DOM snapshot 1`] = `
 <div>
   <div
-    class="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 px-4 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800"
+    class="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-surface-2 via-surface-2 to-surface-3 px-4 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800"
   >
     <div
-      class="relative w-full max-w-md rounded-2xl bg-white px-8 py-10 shadow-xl dark:bg-gray-900 dark:shadow-2xl dark:shadow-black/20"
+      class="relative w-full max-w-md rounded-2xl bg-surface px-8 py-10 shadow-xl dark:bg-gray-900 dark:shadow-2xl dark:shadow-black/20"
     >
       <button
         aria-label="Switch to dark mode"
         aria-pressed="false"
-        class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm bg-primary absolute right-4 top-4 rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300 focus-visible:dark:focus:ring-offset-gray-900"
+        class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm bg-primary absolute right-4 top-4 rounded-lg p-2 text-muted-foreground hover:bg-surface-2 hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:text-muted-foreground dark:hover:bg-gray-800 dark:hover:text-gray-300 focus-visible:dark:focus:ring-offset-gray-900"
         data-token="--color-primary"
         type="button"
       >
@@ -35,27 +35,27 @@ exports[`/bar unauthenticated login parity matches baseline login selectors and 
         class="flex items-center justify-center"
       >
         <div
-          class="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 dark:bg-indigo-500"
+          class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-main dark:bg-indigo-500"
         >
           <span
-            class="text-lg font-bold text-white"
+            class="text-lg font-bold text-primary-fg"
           >
             R
           </span>
         </div>
         <span
-          class="ms-3 text-xl font-semibold text-gray-900 dark:text-gray-100"
+          class="ms-3 text-xl font-semibold text-foreground dark:text-gray-100"
         >
           Reception
         </span>
       </div>
       <h1
-        class="mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100"
+        class="mt-6 text-xl font-semibold text-foreground dark:text-gray-100"
       >
         Sign in to Reception
       </h1>
       <p
-        class="mt-2 text-sm text-gray-600 dark:text-gray-400"
+        class="mt-2 text-sm text-muted-foreground dark:text-muted-foreground"
       >
         Enter your credentials to continue.
       </p>
@@ -64,14 +64,14 @@ exports[`/bar unauthenticated login parity matches baseline login selectors and 
       >
         <div>
           <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            class="block text-sm font-medium text-foreground dark:text-gray-300"
             for="email"
           >
             Email
           </label>
           <input
             autocomplete="email"
-            class="mt-1.5 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
+            class="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-muted-foreground"
             id="email"
             placeholder="name@company.com"
             required=""
@@ -84,13 +84,13 @@ exports[`/bar unauthenticated login parity matches baseline login selectors and 
             class="flex items-center justify-between"
           >
             <label
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              class="block text-sm font-medium text-foreground dark:text-gray-300"
               for="password"
             >
               Password
             </label>
             <button
-              class="inline-flex items-center justify-center py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-10 px-4 bg-primary hover:bg-primary/90 text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+              class="inline-flex items-center justify-center py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-10 px-4 bg-primary hover:bg-primary/90 text-sm font-medium text-primary-main hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
               data-token="--color-primary"
               type="button"
             >
@@ -102,7 +102,7 @@ exports[`/bar unauthenticated login parity matches baseline login selectors and 
           >
             <input
               autocomplete="current-password"
-              class="w-full rounded-lg border border-gray-300 px-4 py-2.5 pr-10 text-gray-900 focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+              class="w-full rounded-lg border border-border-2 px-4 py-2.5 pr-10 text-foreground focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
               id="password"
               required=""
               type="password"
@@ -110,7 +110,7 @@ exports[`/bar unauthenticated login parity matches baseline login selectors and 
             />
             <button
               aria-label="Show password"
-              class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-10 px-4 text-sm bg-primary hover:bg-primary/90 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:text-gray-500 dark:hover:text-gray-300 focus-visible:dark:focus:ring-offset-gray-900"
+              class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-10 px-4 text-sm bg-primary hover:bg-primary/90 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:text-muted-foreground dark:hover:text-gray-300 focus-visible:dark:focus:ring-offset-gray-900"
               data-token="--color-primary"
               type="button"
             >
@@ -138,7 +138,7 @@ exports[`/bar unauthenticated login parity matches baseline login selectors and 
           </div>
         </div>
         <button
-          class="inline-flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none h-10 text-sm w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus-visible:dark:focus:ring-offset-gray-900"
+          class="inline-flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none h-10 text-sm w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-primary-main focus-visible:dark:focus:ring-offset-gray-900"
           data-token="--color-primary"
           type="submit"
         >
@@ -146,15 +146,15 @@ exports[`/bar unauthenticated login parity matches baseline login selectors and 
         </button>
       </form>
       <div
-        class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700"
+        class="mt-8 border-t border-border pt-6 dark:border-gray-700"
       >
         <p
-          class="text-center text-xs text-gray-500 dark:text-gray-400"
+          class="text-center text-xs text-muted-foreground dark:text-muted-foreground"
         >
           Having trouble?
            
           <a
-            class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+            class="font-medium text-primary-main hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
             href="mailto:support@example.com"
           >
             Contact support

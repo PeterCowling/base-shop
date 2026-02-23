@@ -8,6 +8,7 @@ import { Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } 
 import { Section } from "@acme/design-system/atoms/Section";
 
 import { findOrderByNumber, orderTotal, type XaOrder } from "../../../../lib/ordersStore";
+import { xaI18n } from "../../../../lib/xaI18n";
 
 export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
   const [order, setOrder] = React.useState<XaOrder | null>(null);
@@ -38,15 +39,11 @@ export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
     return (
       <main className="sf-content">
         <Section padding="wide">
-          <h1 className="text-2xl font-semibold">Order not found</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            This order may not exist in this browser.
-          </p>
+          <h1 className="text-2xl font-semibold">{xaI18n.t("xaB.src.app.account.orders.orderid.orderdetail.client.l41c50")}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.account.orders.orderid.orderdetail.client.l42c61")}</p>
         </Section>
         <Section padding="default">
-          <Link href="/account/orders" className="underline">
-            Back to orders
-          </Link>
+          <Link href="/account/orders" className="underline">{xaI18n.t("xaB.src.app.account.orders.orderid.orderdetail.client.l47c62")}</Link>
         </Section>
       </main>
     );
@@ -100,12 +97,8 @@ export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link href="/account/orders" className="underline">
-            Back to orders
-          </Link>
-          <Link href="/account/trackingorder" className="underline">
-            Track another order
-          </Link>
+          <Link href="/account/orders" className="underline">{xaI18n.t("xaB.src.app.account.orders.orderid.orderdetail.client.l103c62")}</Link>
+          <Link href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.account.orders.orderid.orderdetail.client.l106c69")}</Link>
         </div>
       </Section>
     </main>

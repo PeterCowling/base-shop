@@ -3,6 +3,7 @@
 import { Fragment, memo, useEffect, useState } from "react";
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
 
 import { useAuth } from "../../context/AuthContext";
 import { useSafeData } from "../../context/SafeDataContext";
@@ -319,13 +320,13 @@ function SafeManagement(): JSX.Element {
     breakdown: NonNullable<SafeCount["denomBreakdown"]>
   ): JSX.Element => {
     const renderLines = (b: Record<string, number>) => (
-      <div className="flex flex-wrap gap-2">
+      <Cluster gap={2}>
         {Object.entries(b).map(([denom, qty]) => (
           <span key={denom}>
             €{parseFloat(denom).toFixed(2)} x {qty}
           </span>
         ))}
-      </div>
+      </Cluster>
     );
     type ExchangeBreakdown = {
       incoming: Record<string, number>;
@@ -356,11 +357,11 @@ function SafeManagement(): JSX.Element {
   };
 
   return (
-    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         SAFE MANAGEMENT
       </h1>
-      <div className="bg-white rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
+      <div className="bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
         <p className="text-lg">
           Safe Balance: <strong>€{safeBalance.toFixed(2)}</strong>
         </p>
@@ -372,26 +373,26 @@ function SafeManagement(): JSX.Element {
             {canOpenSafe && (
               <Button
                 onClick={() => setShowOpen(true)}
-                className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+                className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
               >
                 Open
               </Button>
             )}
             <Button
               onClick={() => setShowDeposit(true)}
-              className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             >
               Deposit
             </Button>
             <Button
               onClick={() => setShowWithdrawal(true)}
-              className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             >
               Withdraw
             </Button>
             <Button
               onClick={() => setShowExchange(true)}
-              className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             >
               Exchange
             </Button>
@@ -399,31 +400,31 @@ function SafeManagement(): JSX.Element {
           <div className="flex gap-2 flex-wrap">
             <Button
               onClick={() => setShowBankDeposit(true)}
-              className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             >
               Bank Deposit
             </Button>
             <Button
               onClick={() => setShowPettyCash(true)}
-              className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             >
               Petty Cash
             </Button>
             <Button
               onClick={() => setShowReset(true)}
-              className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             >
               Reset Safe
             </Button>
             <Button
               onClick={() => setShowReturn(true)}
-              className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
             >
               Return Keycards
             </Button>
             <Button
               onClick={() => setShowReconcile(true)}
-              className="px-4 py-2 bg-warning-main text-white rounded hover:bg-warning-dark"
+              className="px-4 py-2 bg-warning-main text-primary-fg rounded hover:bg-warning-dark"
             >
               Reconcile
             </Button>
@@ -491,7 +492,7 @@ function SafeManagement(): JSX.Element {
         <div className="border-t pt-4">
           <h2 className="text-xl font-semibold mb-2">Transactions</h2>
           {safeCounts.length === 0 ? (
-            <div className="italic text-gray-600 dark:text-darkAccentGreen">
+            <div className="italic text-muted-foreground dark:text-darkAccentGreen">
               No transactions recorded.
             </div>
           ) : (
@@ -499,7 +500,7 @@ function SafeManagement(): JSX.Element {
               className="w-full border-collapse"
               aria-label="safe transactions"
             >
-              <TableHeader className="bg-gray-100 dark:bg-darkSurface">
+              <TableHeader className="bg-surface-2 dark:bg-darkSurface">
                 <TableRow>
                   <TableHead className="text-start p-2 border-b">Timestamp</TableHead>
                   <TableHead className="text-start p-2 border-b">Type</TableHead>
@@ -515,8 +516,8 @@ function SafeManagement(): JSX.Element {
                     <TableRow
                       className={
                         idx % 2 === 0
-                          ? "bg-white dark:bg-darkSurface"
-                          : "bg-gray-50 dark:bg-darkSurface"
+                          ? "bg-surface dark:bg-darkSurface"
+                          : "bg-surface-2 dark:bg-darkSurface"
                       }
                     >
                       <TableCell className="p-2">
@@ -563,8 +564,8 @@ function SafeManagement(): JSX.Element {
                       <TableRow
                         className={
                           idx % 2 === 0
-                            ? "bg-white dark:bg-darkSurface"
-                            : "bg-gray-50 dark:bg-darkSurface"
+                            ? "bg-surface dark:bg-darkSurface"
+                            : "bg-surface-2 dark:bg-darkSurface"
                         }
                       >
                         <TableCell colSpan={6} className="p-2">

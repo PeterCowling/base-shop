@@ -3,7 +3,8 @@ import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
-import { Button } from "@acme/design-system/atoms";
+import { Cluster, Inline } from "@acme/design-system/primitives";
+import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import {
   buildQuickDateRange,
@@ -54,14 +55,14 @@ export default function DateSelector({
   }
 
   const daySelectors = (
-    <div className="flex items-center flex-wrap gap-2">
+    <Cluster gap={2}>
       {renderButton("Yesterday", yesterdayLocalStr)}
       {renderButton("Today", todayLocalStr)}
       {nextFiveDays.map((dayStr) => {
         const shortLabel = getWeekdayShortLabel(dayStr);
         return renderButton(shortLabel, dayStr);
       })}
-    </div>
+    </Cluster>
   );
 
   // For Pete only: display a popup calendar
@@ -133,10 +134,10 @@ export default function DateSelector({
 
   return (
     <div className="relative pb-5">
-      <div className="flex items-center gap-2">
+      <Inline wrap={false} gap={2}>
         {daySelectors}
         {toggleAndCalendar}
-      </div>
+      </Inline>
     </div>
   );
 }

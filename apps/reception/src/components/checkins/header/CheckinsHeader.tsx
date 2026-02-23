@@ -2,6 +2,8 @@
 
 import { type FC, type MouseEventHandler } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
+
 import { useAuth } from "../../../context/AuthContext";
 
 import ArchiveButton from "./ArchiveButton";
@@ -46,7 +48,7 @@ const CheckinsHeader: FC<CheckinsHeaderProps> = ({
         CHECKINS
       </h1>
       {/* Right cell with booking, edit, and delete buttons only if user is "Pete" */}
-      <div className="flex justify-end pr-5 space-x-2">
+      <Inline wrap={false} gap={0} className="justify-end pr-5 space-x-2">
         {user?.user_name === "Pete" && (
           <>
             <NewBookingButton onClick={onNewBookingClick} />
@@ -58,7 +60,7 @@ const CheckinsHeader: FC<CheckinsHeaderProps> = ({
             />
           </>
         )}
-      </div>
+      </Inline>
     </div>
   );
 };

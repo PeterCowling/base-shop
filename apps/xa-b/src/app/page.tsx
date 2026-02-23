@@ -10,6 +10,7 @@ import { XaFadeImage } from "../components/XaFadeImage";
 import { XaProductCard } from "../components/XaProductCard";
 import { XA_PRODUCTS } from "../lib/demoData";
 import { siteConfig } from "../lib/siteConfig";
+import { xaI18n } from "../lib/xaI18n";
 
 const heroImage =
   "https://images.unsplash.com/photo-1501348291533-cb233b7d4cc0?auto=format&fit=crop&w=1400&q=80";
@@ -66,7 +67,7 @@ export default function HomePage() {
                   src={heroImage}
                   alt="Two models in seasonal looks"
                   fill
-                  sizes="(min-width: 1024px) 45vw, 100vw"
+                  sizes={xaI18n.t("xaB.src.app.page.l69c25")}
                   className="object-contain"
                   priority
                 />
@@ -80,9 +81,7 @@ export default function HomePage() {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <h2 className="text-xl font-semibold">
             New in:{" "}
-            <span className="font-normal text-muted-foreground">
-              handpicked daily {catalog.labelPlural} from the world&apos;s best brands and boutiques
-            </span>
+            <span className="font-normal text-muted-foreground">{xaI18n.t("xaB.src.app.page.l83c65")}{catalog.labelPlural}{xaI18n.t("xaB.src.app.page.l84c53")}</span>
           </h2>
           <Button variant="outline" asChild>
             <Link href="/new-in">Shop now</Link>
@@ -110,9 +109,7 @@ export default function HomePage() {
             <div className="mt-2 text-sm font-semibold uppercase tracking-wide text-foreground">
               How to shop
             </div>
-            <div className="text-sm text-muted-foreground">
-              Your guide to shopping and placing orders
-            </div>
+            <div className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.page.l113c60")}</div>
           </Link>
 
           <Link
@@ -125,7 +122,7 @@ export default function HomePage() {
             <div className="mt-2 text-sm font-semibold uppercase tracking-wide text-foreground">
               FAQs
             </div>
-            <div className="text-sm text-muted-foreground">Your questions answered</div>
+            <div className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.page.l128c60")}</div>
           </Link>
 
           <Link
@@ -138,9 +135,7 @@ export default function HomePage() {
             <div className="mt-2 text-sm font-semibold uppercase tracking-wide text-foreground">
               Need help?
             </div>
-            <div className="text-sm text-muted-foreground">
-              Contact our global Customer Service team
-            </div>
+            <div className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.page.l141c60")}</div>
           </Link>
         </Grid>
       </Section>

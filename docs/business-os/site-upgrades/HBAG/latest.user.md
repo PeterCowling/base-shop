@@ -1,24 +1,20 @@
 ---
 Type: Site-Upgrade-Pointer
-Status: Missing
+Status: Active
 Business: HBAG
 Created: 2026-02-12
-Updated: 2026-02-12
-Last-reviewed: 2026-02-12
+Updated: 2026-02-23
+Last-reviewed: 2026-02-23
 Owner: Pete
+Source-Brief: docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md
 ---
 
 # HBAG Site Upgrade Brief - Latest
 
-No active site-upgrade brief is linked yet.
+Current active site-upgrade brief:
 
-## Next action
+- `docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md`
 
-1. Run Deep Research with:
-   docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md
-2. Save output as:
-   docs/business-os/site-upgrades/HBAG/<YYYY-MM-DD>-upgrade-brief.user.md
-3. Update this file with:
-   - Status: Active
-   - Source brief path
-   - Last-reviewed date
+## Operator note
+
+WEBSITE-02 first-cycle (L1 Build 2) brief is now active with Image-First Merchandising mode contract and exemplar shot-board evidence.

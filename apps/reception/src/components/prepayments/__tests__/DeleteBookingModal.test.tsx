@@ -30,7 +30,7 @@ it("applies dark mode classes", () => {
   const { container } = render(
     <DeleteBookingModal booking={booking} onClose={() => undefined} />
   );
-  const modal = container.querySelector("div > div.bg-white");
+  const modal = container.querySelector("div > div.bg-surface");
   expect(modal).toHaveClass("dark-surface");
   expect(modal).toHaveClass("dark:text-darkAccentGreen");
 });

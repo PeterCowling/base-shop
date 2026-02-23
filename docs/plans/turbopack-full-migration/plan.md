@@ -90,7 +90,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 | TASK-04 | IMPLEMENT | Update policy script/tests and validation hooks for migration mode | 85% | S | Complete | TASK-03 | - |
 | TASK-05 | CHECKPOINT | Reassess downstream plan after policy rollout | 95% | S | Complete | TASK-04 | - |
 | TASK-06 | IMPLEMENT | Replace remaining `webpackInclude` magic-comment pattern | 85% | S | Complete | TASK-05 | - |
-| TASK-07 | IMPLEMENT | Migrate/retire webpack callback behavior with Turbopack parity checks | 75%* | M | Pending (CMS validation blocker) | TASK-01, TASK-02, TASK-05 | TASK-08 |
+| TASK-07 | IMPLEMENT | Migrate/retire webpack callback behavior with Turbopack parity checks | 75% | M | Pending (CMS hard-blocker contract active) | TASK-01, TASK-02, TASK-05 | TASK-08 |
 | TASK-08 | IMPLEMENT | Migrate app/workflow webpack script surfaces in waves | 85% | S | Pending | TASK-02, TASK-05, TASK-06, TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | Final cleanup and hardening (policy tightening, optional dependency removal) | 85% | S | Pending | TASK-01, TASK-08 | - |
 
@@ -326,11 +326,11 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending (CMS validation blocker)
+- **Status:** Pending (CMS hard-blocker contract active)
 - **Affects:** `packages/next-config/next.config.mjs`, `apps/business-os/next.config.mjs`, `apps/cms/next.config.mjs`, `apps/cochlearfit/next.config.mjs`, `apps/handbag-configurator/next.config.mjs`, `apps/product-pipeline/next.config.mjs`, `apps/skylar/next.config.mjs`, `apps/xa-uploader/next.config.mjs`, `packages/template-app/next.config.mjs`
 - **Depends on:** TASK-01, TASK-02, TASK-05
 - **Blocks:** TASK-08
-- **Confidence:** 75%* _(provisional — pending TASK-02 callback responsibility map; will be recalibrated at TASK-05 checkpoint)_
+- **Confidence:** 75%
   - Implementation: 70% - files are known, but callback behavior varies significantly per app (CMS alone is ~174 lines of aliases, caching, React dedup, Sentry exclusion, and warning suppression). Turbopack equivalents are not yet verified per callback family.
   - Approach: 80% - parity-first migration with matrix guidance is clear.
   - Impact: 75% - callback regressions can break runtime/build paths; CMS and business-os have the highest blast radius due to client-side fallbacks and extensive alias mappings.
@@ -373,6 +373,10 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
     - TC-02: partial (passes: `@apps/business-os`, `@apps/skylar`; blocked: `@apps/cms` repeated webpack OOM).
     - TC-03: no new alias/fallback resolution errors surfaced in passing probes.
   - Blocker detail (cms): `pnpm --filter @apps/cms build` fails with Node heap OOM (`SIGABRT`) in this environment, including retries with `NODE_OPTIONS=--max-old-space-size=8192` and `NEXT_BUILD_CPUS=1`.
+- **Contract addendum (2026-02-23):**
+  - `cms-webpack-build-oom` TASK-05 checkpoint confirmed Option A hard-blocker policy remains active after one bounded mitigation slice (`TASK-04`) failed to clear OOM.
+  - TASK-08 remains blocked until TASK-07 can satisfy representative CMS build validation under the hard-blocker contract.
+  - Source of truth for current blocker evidence: `docs/plans/_archive/cms-webpack-build-oom/plan.md` and `docs/plans/_archive/cms-webpack-build-oom/artifacts/profiling-baseline.md`.
 
 ### TASK-08: Migrate remaining webpack-pinned app scripts and workflow build surfaces
 - **Type:** IMPLEMENT
@@ -459,7 +463,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - Scope ambiguity around Storybook:
   - Mitigation: TASK-01 explicit decision gate.
 - No Turbopack equivalent for webpack callback behavior:
-  - Mitigation: TASK-02 matrix must enumerate each callback behavior and verify Turbopack equivalent exists. If no equivalent, document as explicit exception and retain webpack callback for that app. CMS is highest risk (safe-hash guard, filesystem caching, warning suppression). Recalibrate TASK-07 confidence at TASK-05 checkpoint based on TASK-02 findings.
+  - Mitigation: TASK-02 matrix must enumerate each callback behavior and verify Turbopack equivalent exists. If no equivalent, document as explicit exception and retain webpack callback for that app. CMS is highest risk (safe-hash guard, filesystem caching, warning suppression). Recalibrate TASK-07 confidence when the CMS hard-blocker lane produces new mitigation or environment evidence.
 - Over-aggressive cleanup:
   - Mitigation: dependency removal only with positive consumer audit.
 
@@ -488,6 +492,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - 2026-02-23: TASK-05 checkpoint completed. No `/lp-do-replan` required; downstream tasks remain sequenced as planned.
 - 2026-02-23: TASK-06 completed. Active `webpackInclude` patterns removed from source and replaced with explicit loader maps; targeted locale/layout tests passed.
 - 2026-02-23: TASK-07 callback parity implementation completed across shared/app callback files and documented in migration matrix; task remains pending due CMS representative build probe OOM in current environment.
+- 2026-02-23: Cross-plan contract sync from `cms-webpack-build-oom` TASK-05/TASK-06 applied. Option A hard-blocker language is now explicit for TASK-07/TASK-08 dependency handling.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3
@@ -495,4 +500,4 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - Total weighted = 90 + 90 + 85 + 85 + 95 + 85 + 150 + 85 + 85 = 850
 - Total weights = 1 + 1 + 1 + 1 + 1 + 1 + 2 + 1 + 1 = 10
 - Overall-confidence = 850 / 10 = 85.0%
-- Note: TASK-07 confidence (75%*) is provisional pending TASK-02 output; will be recalibrated at TASK-05 checkpoint.
+- Note: TASK-07 confidence (75%) reflects active CMS hard-blocker evidence and should be recalibrated only when the dedicated CMS mitigation lane yields net-new pass/fail signal.

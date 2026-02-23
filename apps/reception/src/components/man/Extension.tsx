@@ -3,7 +3,16 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 
-import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import {
+  ReceptionButton as Button,
+  ReceptionInput,
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
@@ -327,7 +336,7 @@ function Extension() {
                 >
                   Search
                 </label>
-                <input
+                <ReceptionInput
                   id="extension-search"
                   type="search"
                   value={searchQuery}
@@ -387,7 +396,7 @@ function Extension() {
                             )}
                           </TableCell>
                           <TableCell className="p-2 border-b text-end">
-                            <input
+                            <ReceptionInput
                               type="number"
                               min="1"
                               value={

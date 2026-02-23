@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { Table, TableBody } from "@acme/design-system/atoms";
+import { ReceptionTable as Table, ReceptionTableBody as TableBody } from "@acme/ui/operations";
 
 import { MainProvider } from "../../context";
 import type { TMainContext } from "../../interfaces/mainContext.interface";

@@ -11,23 +11,13 @@ let loadingMock = false;
 let errorMock: unknown = null;
 let dbMock: unknown = null;
 
-const {
-  removeItemsMock,
-  removeSingleItemMock,
-  setBleeperAvailabilityMock,
-  setMock,
-  removeMock,
-  refMock,
-} = (() => {
-  return {
-    removeItemsMock: jest.fn(),
-    removeSingleItemMock: jest.fn(),
-    setBleeperAvailabilityMock: jest.fn(),
-    setMock: jest.fn().mockResolvedValue(null),
-    removeMock: jest.fn().mockResolvedValue(null),
-    refMock: jest.fn((db: unknown, path: string) => ({ db, path })),
-  };
-})();
+const removeItemsMock = jest.fn();
+const removeSingleItemMock = jest.fn();
+const setBleeperAvailabilityMock = jest.fn();
+const setMock = jest.fn().mockResolvedValue(null);
+const removeMock = jest.fn().mockResolvedValue(null);
+const refMock = jest.fn((db: unknown, path: string) => ({ db, path }));
+let uuidCounter = 0;
 
 jest.mock("../../../../hooks/data/bar/useSalesOrders", () => ({
   useSalesOrders: () => ({ orders: ordersMock, loading: loadingMock, error: errorMock }),
@@ -49,7 +39,11 @@ jest.mock("../../../../hooks/orchestrations/bar/actions/clientActions/useOrderAg
   useOrderAgeColor: () => "bg-test",
 }));
 
-jest.mock("firebase/database", () => ({ ref: refMock, set: setMock, remove: removeMock }));
+jest.mock("firebase/database", () => ({
+  ref: (...args: [unknown, string]) => refMock(...args),
+  set: (...args: [unknown, unknown]) => setMock(...args),
+  remove: (...args: [unknown]) => removeMock(...args),
+}));
 // ----------------------------------------------------------------------
 
 beforeEach(() => {
@@ -57,6 +51,11 @@ beforeEach(() => {
   loadingMock = false;
   errorMock = null;
   dbMock = null;
+  uuidCounter = 0;
+  Object.defineProperty(globalThis, "crypto", {
+    value: { randomUUID: jest.fn(() => `test-uuid-${++uuidCounter}`) },
+    configurable: true,
+  });
   removeItemsMock.mockReset();
   removeSingleItemMock.mockReset();
   setBleeperAvailabilityMock.mockReset();

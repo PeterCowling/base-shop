@@ -1,5 +1,10 @@
 'use client'
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from '../../primitives/shape-radius'
 import { cn } from '../../utils/style/cn'
 
 export type RoomStatus = 'available' | 'occupied' | 'cleaning' | 'maintenance'
@@ -18,6 +23,14 @@ export interface StatusIndicatorProps {
   dotOnly?: boolean
   /** Custom label override */
   label?: string
+  /** Semantic badge shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape
+  /** Explicit badge radius token override. */
+  radius?: PrimitiveRadius
+  /** Semantic status-dot shape. Ignored when `dotRadius` is provided. */
+  dotShape?: PrimitiveShape
+  /** Explicit status-dot radius token override. */
+  dotRadius?: PrimitiveRadius
   /** Additional CSS classes */
   className?: string
 }
@@ -177,16 +190,30 @@ export function StatusIndicator({
   size = 'md',
   dotOnly = false,
   label,
+  shape,
+  radius,
+  dotShape,
+  dotRadius,
   className,
 }: StatusIndicatorProps) {
   const statusStyle = getStatusStyle(status, variant)
   const statusLabel = getStatusLabel(status, variant, label)
   const sizes = sizeStyles[size]
+  const containerShapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: 'full',
+  })
+  const dotShapeRadiusClass = resolveShapeRadiusClass({
+    shape: dotShape,
+    radius: dotRadius,
+    defaultRadius: 'full',
+  })
 
   if (dotOnly) {
     return (
       <span
-        className={cn('inline-block rounded-full ring-2 ring-offset-2', statusStyle, sizes.dot, className)}
+        className={cn('inline-block ring-2 ring-offset-2', statusStyle, sizes.dot, dotShapeRadiusClass, className)}
         aria-label={statusLabel}
         title={statusLabel}
       />
@@ -196,14 +223,15 @@ export function StatusIndicator({
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full font-medium',
+        'inline-flex items-center font-medium',
         'bg-surface-2',
+        containerShapeRadiusClass,
         sizes.container,
         sizes.text,
         className
       )}
     >
-      <span className={cn('inline-block rounded-full', statusStyle, sizes.dot)} />
+      <span aria-hidden className={cn('inline-block', statusStyle, sizes.dot, dotShapeRadiusClass)} />
       <span className="text-muted-foreground">{statusLabel}</span>
     </span>
   )

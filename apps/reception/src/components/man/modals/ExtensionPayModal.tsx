@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import { ReceptionButton as Button, ReceptionInput } from "@acme/ui/operations";
 
 import { withModalBackground } from "../../../hoc/withModalBackground";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
@@ -189,7 +189,7 @@ function ExtensionPayModalBase({
       <div className="space-y-3 mb-6">
         {showSingleOption && (
           <label className="flex items-center space-x-2 cursor-pointer">
-            <input
+            <ReceptionInput
               type="radio"
               value="single"
               checked={extendType === "single"}
@@ -202,7 +202,7 @@ function ExtensionPayModalBase({
 
         {showAllOption && (
           <label className="flex items-center space-x-2 cursor-pointer">
-            <input
+            <ReceptionInput
               type="radio"
               value="all"
               checked={extendType === "all"}
@@ -232,7 +232,7 @@ function ExtensionPayModalBase({
 
       <div className="space-y-2 mb-6">
         <label className="flex items-center space-x-2 cursor-pointer">
-          <input
+          <ReceptionInput
             type="checkbox"
             checked={markCityTaxPaid}
             onChange={(event) => setMarkCityTaxPaid(event.target.checked)}
@@ -242,7 +242,7 @@ function ExtensionPayModalBase({
         </label>
 
         <label className="flex items-center space-x-2 cursor-pointer">
-          <input
+          <ReceptionInput
             type="checkbox"
             checked={markKeyExtended}
             onChange={(event) => setMarkKeyExtended(event.target.checked)}
@@ -255,14 +255,14 @@ function ExtensionPayModalBase({
       <div className="flex justify-center gap-2">
         <Button
           onClick={handleExtend}
-          className="px-4 py-2 rounded bg-primary-main text-white disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
+          className="px-4 py-2 rounded bg-primary-main text-primary-fg disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
           disabled={isSaving}
         >
           {isSaving ? "Saving..." : "Extend"}
         </Button>{" "}
         <Button
           onClick={handleClose}
-          className="px-4 py-2 rounded bg-gray-300 text-gray-800 dark:bg-darkSurface dark:text-darkAccentGreen"
+          className="px-4 py-2 rounded bg-surface-3 text-foreground dark:bg-darkSurface dark:text-darkAccentGreen"
           disabled={isSaving}
         >
           Close

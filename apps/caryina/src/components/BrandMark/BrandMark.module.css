@@ -1,6 +1,6 @@
 .brand {
   --dur: 900ms;
-  --delay: 280ms;
+  --y-fade-color: hsl(var(--color-fg-muted, 355 8% 52%) / 0.58);
 
   display: inline-flex;
   flex-direction: column;
@@ -64,26 +64,24 @@
     opacity var(--dur) ease,
     transform var(--dur) cubic-bezier(0.2, 0.9, 0.25, 1),
     color var(--dur) ease;
-  transition-delay: var(--delay);
   will-change: transform, opacity;
 }
 
 .ina {
   transform: translateX(var(--shift, 0px));
   transition: transform var(--dur) cubic-bezier(0.2, 0.9, 0.25, 1);
-  transition-delay: var(--delay);
   will-change: transform;
 }
 
 /* Target state: Carina */
 .brand[data-state="to"] .y {
-  opacity: 0;
-  transform: translateY(0.2em);
-  color: var(--brand-accent-color, hsl(130 18% 72%));
+  opacity: 1;
+  transform: translateY(0);
+  color: var(--y-fade-color);
 }
 
 .brand[data-state="to"] .ina {
-  transform: translateX(0px);
+  transform: translateX(var(--shift, 0px));
 }
 
 .particleCanvas {
@@ -175,11 +173,12 @@
     transition: none !important;
   }
   .y {
-    opacity: 0 !important;
+    opacity: 1 !important;
+    color: var(--y-fade-color) !important;
     transform: none !important;
   }
   .ina {
-    transform: translateX(0px) !important;
+    transform: translateX(var(--shift, 0px)) !important;
   }
   .tagline {
     opacity: 1 !important;

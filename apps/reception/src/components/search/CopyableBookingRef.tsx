@@ -40,7 +40,7 @@ const CopyableBookingRef: React.FC<CopyableBookingRefProps> = ({ text }) => {
       <span className="underline">{text}</span>
       {copied ? (
         <CheckIcon
-          className="h-4 w-4 text-green-600 transition-opacity duration-150 dark:text-darkAccentGreen"
+          className="h-4 w-4 text-success-main transition-opacity duration-150 dark:text-darkAccentGreen"
           aria-label="Copied!"
         />
       ) : (

@@ -1,7 +1,10 @@
 // File: /Users/petercowling/reception/src/components/loans/LoanableItemSelector.tsx
 import React, { memo, type ReactElement, useCallback } from "react";
 
-import { Button } from "@acme/design-system/atoms";
+import {
+  ReceptionButton as Button,
+  ReceptionSelect,
+} from "@acme/ui/operations";
 
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
@@ -64,7 +67,7 @@ function LoanableItemSelectorComponent({
 
   return (
     <div className="flex items-center gap-2">
-      <select
+      <ReceptionSelect
         value={guestSelectedItem}
         onChange={handleSelect}
         className="border px-2 py-1 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
@@ -74,10 +77,10 @@ function LoanableItemSelectorComponent({
         <option value="Steamer">Steamer</option>
         <option value="Padlock">Padlock</option>
         <option value="Keycard">Keycard</option>
-      </select>
+      </ReceptionSelect>
 
       <Button
-        className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+        className="bg-info-main hover:bg-blue-700 text-primary-fg px-3 py-1 rounded disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
         disabled={buttonDisabled}
         onClick={handleLoanClick}
       >

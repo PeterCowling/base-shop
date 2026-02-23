@@ -1,9 +1,9 @@
 ---
 Type: Process-Registry
 Status: Active
-Version: 2.0.1
+Version: 2.0.2
 Created: 2026-02-18
-Last-updated: 2026-02-21
+Last-updated: 2026-02-23
 Owner: startup-loop maintainers
 Taxonomy-Ref: docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml
 Assignment-Ref: docs/business-os/startup-loop/process-assignment-v2.yaml
@@ -57,7 +57,7 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 | CDI-4 | Experiment backlog design and prioritisation | CDI | S5A, S10 | Weekly | All |
 | OFF-1 | Offer and value proposition iteration | OFF | MARKET-06, recurring | Weekly (pre-PMF/PMF) / Monthly (scaling) | All |
 | OFF-2 | Pricing and revenue management review | OFF | MARKET-06, S10 | Weekly (hospitality always; product if volatile) | All |
-| OFF-3 | Product / listing content and merchandising refresh | OFF | WEBSITE-01 (bootstrap), WEBSITE-02 (recurring) | One-time at first build, then Weekly (top assets) / Monthly full audit | All |
+| OFF-3 | Product / listing content and merchandising refresh | OFF | WEBSITE-01 (bootstrap), WEBSITE-02 (recurring; L1 Build 2 image-first default for visual-heavy catalogs) | One-time at first build, then Weekly (top assets) / Monthly full audit | All |
 | OFF-4 | Channel policy and conflict management | OFF | SELL-01, recurring | Monthly review; weekly exceptions | `wholesale_heavy`, `OTA_mix_high` (conditional others) |
 | GTM-1 | Weekly demand plan and campaign sprint | GTM | DO, S10 | Weekly | All |
 | GTM-2 | Distribution channel ops (retail/wholesale/OTAs) | GTM | SELL-01, recurring | Weekly / Daily (high season or volume) | `wholesale_heavy`, `OTA_mix_high`, hospitality |
@@ -244,17 +244,17 @@ Every core startup-loop stage anchor has at least one linked workstream process 
 | **Workflow phases** | Build/Prepare |
 | **Primary phase** | Build/Prepare |
 | **Activation** | always |
-| **Purpose** | Keep "what customers/guests see" accurate and conversion-optimised (PDPs, listings, photos, policies), starting with WEBSITE-01 first-build framework assembly and continuing through WEBSITE-02 recurring upgrades. |
+| **Purpose** | Keep "what customers/guests see" accurate and conversion-optimised (PDPs, listings, photos, policies), starting with WEBSITE-01 first-build framework assembly and continuing through WEBSITE-02 recurring upgrades. For L1 Build 2 on visual-heavy physical-product catalogs, default to image-first merchandising with world-class exemplar evidence. |
 | **Stage anchor** | WEBSITE-01 (one-time first-build framework), WEBSITE-02 (site-upgrade synthesis); recurring thereafter |
 | **Cadence** | Weekly (top assets); monthly full audit |
 | **Owner role** | Content/Brand Lead (product) or Distribution/Marketing Lead (hospitality) |
-| **Inputs** | Insights (CDI-1/CDI-2); review themes (CX-2); pricing changes (OFF-2) |
-| **Outputs / artifacts** | WEBSITE-01 framework packet (first build) plus DO handover fact-find trigger packet, or updated PDP/listing change log + QA checklist result (recurring) |
+| **Inputs** | Insights (CDI-1/CDI-2); review themes (CX-2); pricing changes (OFF-2); catalog shape (SKU/variant count + image coverage baseline) |
+| **Outputs / artifacts** | WEBSITE-01 framework packet (first build) plus DO handover fact-find trigger packet, or updated PDP/listing change log + QA checklist result (recurring). For L1 Build 2 image-first mode: exemplar shot-board + image-heavy launch contract attached to WEBSITE-02 brief. |
 | **Artifact path** | WEBSITE-01: `docs/business-os/strategy/<BIZ>/site-v1-builder-prompt.user.md`; WEBSITE-02+: operator-maintained updates and site-upgrade artifacts under `docs/business-os/site-upgrades/<BIZ>/` |
-| **Entry criteria** | Identified gap or conversion hypothesis |
-| **Exit criteria** | QA passed (DATA-1 tracking verification); for WEBSITE-01 path, handover sequence `/lp-do-fact-find --website-first-build-backlog` -> `/lp-do-plan` is completed before `/lp-do-build`; impact tracked as experiment when feasible (CDI-4) |
+| **Entry criteria** | Identified gap or conversion hypothesis; for WEBSITE-02 path, catalog size/variant count and baseline media coverage are known |
+| **Exit criteria** | QA passed (DATA-1 tracking verification); for WEBSITE-01 path, handover sequence `/lp-do-fact-find --website-first-build-backlog` -> `/lp-do-plan` is completed before `/lp-do-build`; impact tracked as experiment when feasible (CDI-4). For L1 Build 2 image-first mode: WEBSITE-02 brief includes >=8 exemplar sites, >=24 shot-board references, and measurable homepage/PLP/PDP media acceptance criteria. |
 | **Exception linkage** | Quality Incident exception can trigger immediate content correction (OPS-4 + CX-4 co-trigger) |
-| **Profile / branch** | All profiles; hospitality must include OTA listing accuracy and cancellation policy updates |
+| **Profile / branch** | All profiles; hospitality must include OTA listing accuracy and cancellation policy updates. Visual-heavy physical-product profiles (bags/fashion/accessories/footwear/jewelry/beauty) default to image-first mode during L1 Build 2. |
 | **Collision note** | OFF-3 owns both WEBSITE-01 first-build framework baseline and WEBSITE-02 recurring maintenance. It does not change runtime stage authority in `loop-spec.yaml`. |
 
 ### OFF-4 — Channel Policy and Conflict Management

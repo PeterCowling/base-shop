@@ -313,12 +313,12 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
   }
 
   return (
-    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="w-full mb-6 text-5xl text-center font-heading text-primary-main">
         CHECKOUTS
       </h1>
 
-      <div className="flex-grow p-6 space-y-4 bg-white rounded-lg shadow dark:bg-darkSurface">
+      <div className="flex-grow p-6 space-y-4 bg-surface rounded-lg shadow dark:bg-darkSurface">
         <DateSelector
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}
@@ -326,12 +326,12 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
         />
 
         {!!error && (
-          <div className="font-semibold text-red-600">
+          <div className="font-semibold text-error-main">
             Error loading checkout data: {String(error)}
           </div>
         )}
 
-        {loading && <div className="italic text-gray-600 dark:text-darkAccentGreen">Loading...</div>}
+        {loading && <div className="italic text-muted-foreground dark:text-darkAccentGreen">Loading...</div>}
 
         {!loading && (
           <CheckoutTable

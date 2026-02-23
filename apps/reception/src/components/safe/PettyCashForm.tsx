@@ -2,6 +2,7 @@
 import { memo, useCallback, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
+import { ReceptionInput } from "@acme/ui/operations";
 
 import { showToast } from "../../utils/toastUtils";
 import PasswordReauthInline from "../common/PasswordReauthInline";
@@ -46,13 +47,13 @@ export const PettyCashForm = memo(function PettyCashForm({
   return (
     <>
       {/* Overlay */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/60 p-4">
         {/* Modal */}
-        <div className="relative w-full max-w-sm rounded-lg bg-white p-8 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
+        <div className="relative w-full max-w-sm rounded-lg bg-surface p-8 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
           {/* Close button */}
           <Button
             onClick={handleCancel}
-            className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
+            className="absolute right-3 top-3 h-7 w-7 rounded-full bg-error-main text-primary-fg transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
             aria-label="Close"
           >
             &times;
@@ -65,7 +66,7 @@ export const PettyCashForm = memo(function PettyCashForm({
 
           {/* Input */}
           <div className="flex flex-col gap-4">
-            <input
+            <ReceptionInput
               type="number"
               inputMode="decimal"
               className="w-32 rounded border px-3 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"

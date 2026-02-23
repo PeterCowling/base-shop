@@ -1,6 +1,12 @@
 // File: src/components/roomview/TableHeader.tsx
 
-import React from "react";
+import React from 'react'
+
+import {
+  ReceptionTableHead,
+  ReceptionTableHeader,
+  ReceptionTableRow,
+} from '@acme/ui/operations'
 
 /**
  * Static table header row using Font Awesome icons only.
@@ -8,77 +14,75 @@ import React from "react";
  */
 const TableHeader: React.FC = () => {
   return (
-    <thead
-      className="sticky top-0 bg-gray-100 text-gray-800 border-b border-gray-300 z-5 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
-    >
-      <tr className="h-12">
+    <ReceptionTableHeader className='sticky top-0 bg-surface-2 text-foreground border-b border-border-2 z-5 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface'>
+      <ReceptionTableRow className='h-12'>
         {/* Guest Name */}
-        <th className="px-4 py-2 w-200px font-semibold" title="Guest Name">
-          <div className="flex justify-center items-center">
-            <i className="fas fa-user" />
+        <ReceptionTableHead className='px-4 py-2 w-200px font-semibold' title='Guest Name'>
+          <div className='flex justify-center items-center'>
+            <i className='fas fa-user' />
           </div>
-        </th>
+        </ReceptionTableHead>
 
         {/* Room Allocated */}
-        <th
-          className="px-4 py-2 w-120px font-semibold"
-          title="Room Allocated"
+        <ReceptionTableHead
+          className='px-4 py-2 w-120px font-semibold'
+          title='Room Allocated'
         >
-          <div className="flex justify-center items-center">
-            <i className="fas fa-bed" />
+          <div className='flex justify-center items-center'>
+            <i className='fas fa-bed' />
           </div>
-        </th>
+        </ReceptionTableHead>
 
         {/* Room Payment */}
-        <th className="px-4 py-2 w-125px font-semibold" title="Room Payment">
-          <div className="flex justify-center items-center">
-            <i className="fas fa-credit-card" />
+        <ReceptionTableHead className='px-4 py-2 w-125px font-semibold' title='Room Payment'>
+          <div className='flex justify-center items-center'>
+            <i className='fas fa-credit-card' />
           </div>
-        </th>
+        </ReceptionTableHead>
 
         {/* City Tax */}
-        <th className="px-4 py-2 w-125px font-semibold" title="City Tax">
-          <div className="flex justify-center items-center">
-            <i className="fas fa-coins" />
+        <ReceptionTableHead className='px-4 py-2 w-125px font-semibold' title='City Tax'>
+          <div className='flex justify-center items-center'>
+            <i className='fas fa-coins' />
           </div>
-        </th>
+        </ReceptionTableHead>
 
         {/* Keycard Deposit */}
-        <th
-          className="px-4 py-2 w-125px font-semibold"
-          title="Keycard Deposit"
+        <ReceptionTableHead
+          className='px-4 py-2 w-125px font-semibold'
+          title='Keycard Deposit'
         >
-          <div className="flex justify-center items-center">
-            <i className="fas fa-key" />
+          <div className='flex justify-center items-center'>
+            <i className='fas fa-key' />
           </div>
-        </th>
+        </ReceptionTableHead>
 
         {/* Status */}
-        <th className="px-4 py-2 w-120px font-semibold" title="Status">
-          <div className="flex justify-center items-center">
-            <i className="fas fa-clock" />
+        <ReceptionTableHead className='px-4 py-2 w-120px font-semibold' title='Status'>
+          <div className='flex justify-center items-center'>
+            <i className='fas fa-clock' />
           </div>
-        </th>
+        </ReceptionTableHead>
 
         {/* Document Insert */}
-        <th
-          className="px-4 py-2 w-150px font-semibold"
-          title="Document Insert"
+        <ReceptionTableHead
+          className='px-4 py-2 w-150px font-semibold'
+          title='Document Insert'
         >
-          <div className="flex justify-center items-center">
-            <i className="fas fa-file-alt" />
+          <div className='flex justify-center items-center'>
+            <i className='fas fa-file-alt' />
           </div>
-        </th>
+        </ReceptionTableHead>
 
         {/* Email Booking */}
-        <th className="px-4 py-2 w-150px font-semibold" title="Email Booking">
-          <div className="flex justify-center items-center">
-            <i className="fas fa-envelope" />
+        <ReceptionTableHead className='px-4 py-2 w-150px font-semibold' title='Email Booking'>
+          <div className='flex justify-center items-center'>
+            <i className='fas fa-envelope' />
           </div>
-        </th>
-      </tr>
-    </thead>
-  );
-};
+        </ReceptionTableHead>
+      </ReceptionTableRow>
+    </ReceptionTableHeader>
+  )
+}
 
-export default TableHeader;
+export default TableHeader

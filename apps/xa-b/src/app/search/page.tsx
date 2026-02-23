@@ -10,6 +10,7 @@ import { Section } from "@acme/design-system/atoms/Section";
 
 import { XaProductListing } from "../../components/XaProductListing.client";
 import { useXaProductSearch } from "../../lib/search/useXaProductSearch";
+import { xaI18n } from "../../lib/xaI18n";
 
 function SearchContent() {
   const router = useRouter();
@@ -55,7 +56,7 @@ function SearchContent() {
               type="search"
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              placeholder="Search products"
+              placeholder={xaI18n.t("xaB.src.app.search.page.l58c27")}
             />
           </form>
         </div>

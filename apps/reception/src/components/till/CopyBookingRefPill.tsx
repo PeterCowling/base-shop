@@ -40,7 +40,7 @@ const CopyBookingRefPill: React.FC<CopyBookingRefPillProps> = ({
     <Button
       type="button"
       onClick={handleCopy}
-      className="inline-flex items-center rounded-full bg-gray-200 px-2 py-0.5 text-xs font-semibold text-gray-800 hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 dark:bg-darkSurface dark:text-darkAccentGreen"
+      className="inline-flex items-center rounded-full bg-surface-3 px-2 py-0.5 text-xs font-semibold text-foreground hover:bg-surface-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 dark:bg-darkSurface dark:text-darkAccentGreen"
       title="Copy booking reference"
     >
       {copied ? "Copied!" : "copy"}

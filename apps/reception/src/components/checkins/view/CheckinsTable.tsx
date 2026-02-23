@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Button, Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms";
+import { ReceptionInput } from "@acme/ui/operations";
 
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import BookingRow from "../BookingRow";
@@ -83,7 +84,7 @@ const CheckinsTableView: React.FC<Props> = ({
       onArchiveClick={onArchiveClick}
       eligibleCount={eligibleCount}
     />
-    <div className="flex-grow bg-white rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
+    <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <DateSelector
@@ -92,7 +93,7 @@ const CheckinsTableView: React.FC<Props> = ({
             username={username}
           />
           <label className="flex items-center gap-2 text-sm cursor-pointer">
-            <input
+            <ReceptionInput
               type="checkbox"
               checked={showCancelled}
               onChange={onToggleCancelled}
@@ -102,28 +103,28 @@ const CheckinsTableView: React.FC<Props> = ({
           </label>
         </div>
         {roomsReady ? (
-          <span className="ms-4 text-green-600 font-semibold dark:text-darkAccentGreen">
+          <span className="ms-4 text-success-main font-semibold dark:text-darkAccentGreen">
             Rooms are Set
           </span>
         ) : (
             <Button
             type="button"
             onClick={() => setRoomsReady(true)}
-            className="px-3 py-2 bg-green-600 text-white rounded dark:bg-darkAccentGreen dark:text-darkBg"
+            className="px-3 py-2 bg-success-main text-primary-fg rounded dark:bg-darkAccentGreen dark:text-darkBg"
           >
             Rooms Ready
           </Button>
         )}
       </div>
       <div className="overflow-x-auto">
-        <Table className="w-full table-auto border border-gray-400 text-sm">
+        <Table className="w-full table-auto border border-border-2 text-sm">
           <TableHeader />
           <TableBody>
             {loading && (
               <TableRow>
                 <TableCell
                   colSpan={12}
-                  className="p-4 text-center italic text-gray-600 dark:text-darkAccentGreen"
+                  className="p-4 text-center italic text-muted-foreground dark:text-darkAccentGreen"
                 >
                   Loading...
                 </TableCell>
@@ -140,7 +141,7 @@ const CheckinsTableView: React.FC<Props> = ({
               <TableRow>
                 <TableCell
                   colSpan={12}
-                  className="p-4 text-center italic text-gray-600 dark:text-darkAccentGreen"
+                  className="p-4 text-center italic text-muted-foreground dark:text-darkAccentGreen"
                 >
                   No checkins found for this date.
                 </TableCell>

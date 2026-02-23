@@ -114,4 +114,5 @@ Loop write paths rebuild `docs/business-os/_meta/discovery-index.json`. If rebui
   - ASSESSMENT-04 Candidate names → `/lp-do-assessment-04-candidate-names` → naming pipeline (spec, generate 250 candidates, RDAP check, rank shortlist → `<YYYY-MM-DD>-candidate-names.user.md`)
   - ASSESSMENT-05 Name selection → `/lp-do-assessment-05-name-selection` → naming generation spec (Part 1 of the pipeline, invoked by ASSESSMENT-04)
   - Default (`--start-point product` or flag absent) bypasses ASSESSMENT-01 to ASSESSMENT-04 entirely — no behavior change for existing operators.
+  - After ASSESSMENT completion, startup-loop advances through `MEASURE-00` (Problem framing and ICP) before `MEASURE-01`; this keeps MARKET-01 and DO context aligned with current problem framing.
   - See gate routing: `.claude/skills/startup-loop/modules/cmd-start.md` Gate D

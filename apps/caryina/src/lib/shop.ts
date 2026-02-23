@@ -4,6 +4,13 @@ import type { Locale, SKU } from "@acme/types";
 
 import shop from "../../shop.json";
 
+import {
+  type LaunchCatalogMediaValidationResult,
+  type LaunchSkuMediaValidationResult,
+  validateLaunchCatalogMedia,
+  validateLaunchSkuMedia,
+} from "./launchMediaContract";
+
 export const SHOP_ID = shop.id;
 
 export async function readShopSkus(locale: Locale): Promise<SKU[]> {
@@ -44,4 +51,16 @@ export function formatMoney(minorAmount: number, currency: string): string {
   } catch {
     return `${(minorAmount / 100).toFixed(2)} ${currency.toUpperCase()}`;
   }
+}
+
+export function validateLaunchSkuMediaContract(
+  sku: Pick<SKU, "id" | "slug" | "media">,
+): LaunchSkuMediaValidationResult {
+  return validateLaunchSkuMedia(sku);
+}
+
+export function validateLaunchCatalogMediaContract(
+  skus: ReadonlyArray<Pick<SKU, "id" | "slug" | "media">>,
+): LaunchCatalogMediaValidationResult {
+  return validateLaunchCatalogMedia(skus);
 }

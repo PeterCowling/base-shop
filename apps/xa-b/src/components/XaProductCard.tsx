@@ -15,6 +15,7 @@ import { useWishlist } from "../contexts/XaWishlistContext";
 import type { XaProduct } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
 import { formatLabel, getDesignerName } from "../lib/xaCatalog";
+import { xaI18n } from "../lib/xaI18n";
 
 import { XaFadeImage } from "./XaFadeImage";
 
@@ -59,7 +60,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
                   src={primaryImage.url}
                   alt={primaryImage.altText ?? product.title}
                   fill
-                  sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                  sizes={xaI18n.t("xaB.src.components.xaproductcard.l62c25")}
                   className={cn("object-cover transition-opacity duration-300 group-hover:opacity-0", touched ? "opacity-0" : "")}
                 />
                 {secondaryImage ? (
@@ -68,7 +69,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
                       src={secondaryImage.url}
                       alt=""
                       fill
-                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                      sizes={xaI18n.t("xaB.src.components.xaproductcard.l71c29")}
                       className="object-cover"
                     />
                   </div>
@@ -107,7 +108,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
 
         <div className="absolute end-2 top-2">
           <IconButton
-            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            aria-label={isWishlisted ? xaI18n.t("xaB.src.components.xaproductcard.l110c40") : xaI18n.t("xaB.src.components.xaproductcard.l110c65")}
             aria-pressed={isWishlisted}
             variant="secondary"
             size="sm"

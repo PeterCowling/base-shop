@@ -17,6 +17,7 @@ import type { XaProduct } from "../lib/demoData";
 import { XA_PRODUCTS } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
 import { formatLabel, XA_COLOR_SWATCHES, XA_DEFAULT_SWATCH } from "../lib/xaCatalog";
+import { xaI18n } from "../lib/xaI18n";
 
 import { XaFadeImage } from "./XaFadeImage";
 
@@ -173,7 +174,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
           variant="outline"
           className="xa-pdp-action h-11 w-11 min-w-11 rounded-none border-foreground text-foreground hover:bg-foreground hover:text-primary-fg"
           aria-pressed={isWishlisted}
-          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          aria-label={isWishlisted ? xaI18n.t("xaB.src.components.xabuybox.client.l176c38") : xaI18n.t("xaB.src.components.xabuybox.client.l176c63")}
           onClick={() => wishlistDispatch({ type: "toggle", sku: product })}
         >
           {isWishlisted ? (
@@ -185,21 +186,17 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
       </Inline>
 
       {soldOut ? (
-        <div className="xa-pdp-meta text-muted-foreground">Out of stock.</div>
+        <div className="xa-pdp-meta text-muted-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l188c60")}</div>
       ) : null}
 
       <div className="space-y-2">
-        <div className="xa-pdp-label text-muted-foreground">
-          Estimated delivery
-        </div>
+        <div className="xa-pdp-label text-muted-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l192c61")}</div>
         <div className="xa-pdp-meta">{getDeliveryWindow()}</div>
       </div>
 
       {showVariantStrip || showColorStrip ? (
         <div className="space-y-2">
-          <div className="xa-pdp-label text-muted-foreground">
-            Also available in
-          </div>
+          <div className="xa-pdp-label text-muted-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l200c63")}</div>
           {showVariantStrip ? (
             <Inline gap={2} wrap={false}>
               {variantProducts.map((variant) => {
@@ -273,9 +270,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
       ) : null}
 
       {/* i18n-exempt: XA-0001 */}
-      <div className="xa-pdp-meta rounded-none bg-muted/60 px-4 py-3 text-foreground">
-        Free returns for 30 days | We can collect from your home
-      </div>
+      <div className="xa-pdp-meta rounded-none bg-muted/60 px-4 py-3 text-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l276c87")}</div>
     </div>
   );
 }

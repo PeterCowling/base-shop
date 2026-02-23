@@ -224,7 +224,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
           <Button
             onClick={onCancel}
             aria-label="Close"
-            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-${isReconcile ? "warning" : "error"}-main text-white`}
+            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-${isReconcile ? "warning" : "error"}-main text-primary-fg`}
           >
             <span aria-hidden="true">&times;</span>
           </Button>
@@ -233,7 +233,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             title={isReconcile ? "Reconcile Shift - Cash" : "Close Shift - Cash"}
             borderClass={`border-${isReconcile ? "warning" : "error"}-main`}
             textClass={`text-${isReconcile ? "warning" : "error"}-main`}
-            confirmClass={`bg-${isReconcile ? "warning" : "error"}-main text-white rounded hover:bg-${isReconcile ? "warning" : "error"}-dark dark:bg-darkAccentGreen dark:text-darkBg`}
+            confirmClass={`bg-${isReconcile ? "warning" : "error"}-main text-primary-fg rounded hover:bg-${isReconcile ? "warning" : "error"}-dark dark:bg-darkAccentGreen dark:text-darkBg`}
             confirmLabel="Next"
             expectedCash={expectedCashAtClose}
             showExpected={showExpected}
@@ -242,7 +242,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             onCancel={onCancel}
           />
           <Button
-            className="mt-2 px-3 py-1 bg-info-main text-white rounded dark:bg-darkSurface dark:text-darkAccentOrange"
+            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded dark:bg-darkSurface dark:text-darkAccentOrange"
             onClick={saveProgress}
           >
             Save Progress
@@ -272,19 +272,19 @@ export const CloseShiftForm = memo(function CloseShiftForm({
           <div className="mt-4 flex gap-2">
             <Button
               onClick={() => setStep(0)}
-              className="px-4 py-2 bg-info-main text-white rounded dark:bg-darkSurface dark:text-darkAccentOrange"
+              className="px-4 py-2 bg-info-main text-primary-fg rounded dark:bg-darkSurface dark:text-darkAccentOrange"
             >
               Back
             </Button>
             <Button
               onClick={handleStep1Next}
-              className="px-4 py-2 bg-info-main text-white rounded dark:bg-darkSurface dark:text-darkAccentOrange"
+              className="px-4 py-2 bg-info-main text-primary-fg rounded dark:bg-darkSurface dark:text-darkAccentOrange"
             >
               Next
             </Button>
             <Button
               onClick={saveProgress}
-              className="px-4 py-2 bg-info-main text-white rounded dark:bg-darkSurface dark:text-darkAccentOrange"
+              className="px-4 py-2 bg-info-main text-primary-fg rounded dark:bg-darkSurface dark:text-darkAccentOrange"
             >
               Save Progress
             </Button>
@@ -316,7 +316,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
           <Button
             onClick={onCancel}
             aria-label="Close"
-            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-${isReconcile ? "warning" : "error"}-main text-white`}
+            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-${isReconcile ? "warning" : "error"}-main text-primary-fg`}
           >
             <span aria-hidden="true">&times;</span>
           </Button>
@@ -338,7 +338,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             </p>
           )}
           <Button
-            className="mt-2 px-3 py-1 bg-info-main text-white rounded dark:bg-darkSurface dark:text-darkAccentOrange"
+            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded dark:bg-darkSurface dark:text-darkAccentOrange"
             onClick={saveProgress}
           >
             Save Progress

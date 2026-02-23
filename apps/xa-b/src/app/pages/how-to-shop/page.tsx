@@ -13,6 +13,7 @@ import { SupportSidebarNav } from "@acme/ui/components/organisms/SupportSidebarN
 import { SupportTwoColumnLayout } from "@acme/ui/components/organisms/SupportTwoColumnLayout";
 
 import { siteConfig } from "../../../lib/siteConfig";
+import { xaI18n } from "../../../lib/xaI18n";
 
 export default function HowToShopPage() {
   const brandName = siteConfig.brandName;
@@ -20,18 +21,18 @@ export default function HowToShopPage() {
   const sidebarLinks = [
     { label: "Contact us", href: "/pages/contact-us" },
     { label: "How to shop", href: "#" },
-    { label: "Orders and delivery", href: "/pages/shipping-policy" },
-    { label: "Payment and pricing", href: "/pages/payment-and-pricing" },
-    { label: "Cryptocurrency payments", href: "/pages/cryptocurrency-payment" },
-    { label: "Returns and refunds", href: "/pages/return-policy" },
+    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l23c14"), href: "/pages/shipping-policy" },
+    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l24c14"), href: "/pages/payment-and-pricing" },
+    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l25c14"), href: "/pages/cryptocurrency-payment" },
+    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l26c14"), href: "/pages/return-policy" },
     { label: "FAQs", href: "/faqs" },
-    { label: "Terms and conditions", href: "/pages/terms-of-service" },
-    { label: "Privacy policy", href: "/pages/privacy-policy" },
-    { label: "Modern slavery statement", href: "/pages/terms-of-service" },
+    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l28c14"), href: "/pages/terms-of-service" },
+    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l29c14"), href: "/pages/privacy-policy" },
+    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l30c14"), href: "/pages/terms-of-service" },
     { label: "Accessibility", href: "/pages/contact-us" },
-    { label: "Cookie preferences", href: "/pages/privacy-policy#cookies" },
+    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l32c14"), href: "/pages/privacy-policy#cookies" },
     {
-      label: "Promotions terms & conditions",
+      label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l34c14"),
       href: "/pages/payment-and-pricing#promotions",
     },
   ];
@@ -57,63 +58,31 @@ export default function HowToShopPage() {
                   About us
                 </AccordionTrigger>
                 <AccordionContent className="space-y-2 pb-6 text-sm text-muted-foreground">
-                  <p>
-                    When you shop at {brandName}, you&apos;re shopping {productDescriptor} from luxury brands and
-                    boutiques around the globe.
-                  </p>
-                  <p>
-                    Our brand and partner boutiques are located worldwide, and our unique marketplace guarantees you a huge
-                    range of items to shop. From established luxury brands to the most interesting new designers, shop unique
-                    styles you won&apos;t find anywhere else. We deliver to over 190 countries worldwide so you&apos;ll receive your
-                    order before you know it.
-                  </p>
+                  <p>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l60c22")}{brandName}{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l61c49")}{productDescriptor}{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l61c91")}</p>
+                  <p>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l64c22")}</p>
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="find">
-                <AccordionTrigger className="w-full justify-between py-4 text-start text-lg font-semibold">
-                  How to find items
-                </AccordionTrigger>
+                <AccordionTrigger className="w-full justify-between py-4 text-start text-lg font-semibold">{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l74c108")}</AccordionTrigger>
                 <AccordionContent className="space-y-2 pb-6 text-sm text-muted-foreground">
-                  <p>
-                    The easiest way is to browse using the drop-down navigation menus at the top of the page, where you can
-                    find links to new items, brands, categories and edits. If you know what you are looking for, use the
-                    search box at the top right.
-                  </p>
+                  <p>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l78c22")}</p>
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="order">
-                <AccordionTrigger className="w-full justify-between py-4 text-start text-lg font-semibold">
-                  How to order and pay
-                </AccordionTrigger>
+                <AccordionTrigger className="w-full justify-between py-4 text-start text-lg font-semibold">{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l87c108")}</AccordionTrigger>
                 <AccordionContent className="space-y-3 pb-6 text-sm text-muted-foreground">
-                  <p>
-                    Once you&apos;ve found what you&apos;re looking for, select your size and click Add To Bag. You can
-                    continue shopping and add more items to your bag, or proceed straight to checkout.
-                  </p>
-                  <p>
-                    Our checkout process is quick and straightforward. You can either create an account or proceed using our
-                    guest checkout. No matter how many items you have in your shopping bag or how many brand or
-                    partner boutiques they are sourced from, you only need to check out once.
-                  </p>
-                  <p>
-                    We ship worldwide via DHL, with services from UPS in selected countries. Please choose your delivery
-                    preference for each brand or partner boutique, then proceed to payment and select your payment
-                    method. We accept all major credit and debit cards, as well as PayPal, Klarna, Afterpay and selected
-                    cryptocurrencies. For a full list of payment methods,{" "}
+                  <p>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l91c22")}</p>
+                  <p>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l95c22")}</p>
+                  <p>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l100c22")}{" "}
                     <Link
                       href="/pages/payment-and-pricing"
                       className="text-foreground underline"
-                    >
-                      go to Payment &amp; Pricing
-                    </Link>
+                    >{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l108c22")}</Link>
                     .
                   </p>
-                  <p>
-                    Once you have placed your order, you will receive a confirmation email. Your order will then be sent
-                    directly to you.
-                  </p>
+                  <p>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l113c22")}</p>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -122,31 +91,25 @@ export default function HowToShopPage() {
               interactive={false}
               className="space-y-2 border-0 p-0"
               title="Tell us what you think"
-              titleClassName="text-sm font-normal text-muted-foreground"
-              question="Was this content helpful?"
-              questionClassName="text-2xl font-semibold text-foreground"
+              titleClassName={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l125c30")}
+              question={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l126c24")}
+              questionClassName={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l127c33")}
               options={[
                 { id: "yes", label: "Yes" },
                 { id: "not-really", label: "Not really" },
               ]}
-              optionsClassName="text-xs font-semibold"
+              optionsClassName={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l132c32")}
             />
 
             <NewsletterInterestCard
               title="Never miss a thing"
-              description="Sign up for promotions, tailored new arrivals, stock updates and more - straight to your inbox"
-              channelLabel="Get updates by"
+              description={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l137c27")}
+              channelLabel={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l138c28")}
               channelValue="Email"
               ctaLabel="Sign Up"
               legalNote={
-                <>
-                  By signing up, you consent to receiving marketing by email and/or SMS and acknowledge you have read
-                  our{" "}
-                  <Link href="/pages/privacy-policy" className="text-foreground underline">
-                    Privacy Policy
-                  </Link>
-                  . Unsubscribe anytime at the bottom of our emails or by replying STOP to any of our SMS.
-                </>
+                <>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l142c19")}{" "}
+                  <Link href="/pages/privacy-policy" className="text-foreground underline">{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l145c92")}</Link>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l147c26")}</>
               }
             />
         </SupportTwoColumnLayout>

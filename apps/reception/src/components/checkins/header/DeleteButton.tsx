@@ -23,12 +23,12 @@ const DeleteButton: FC<DeleteButtonProps> = ({ onClick, disabled }) => {
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="flex items-center justify-center border border-red-400 rounded-md p-1 hover:bg-red-100 active:bg-red-200"
+      className="flex items-center justify-center border border-error-main rounded-md p-1 hover:bg-error-light active:bg-red-200"
       aria-label="Delete"
     >
       {/* Trash icon (24x24) */}
       <svg
-        className="w-6 h-6 text-red-700"
+        className="w-6 h-6 text-error-main"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}

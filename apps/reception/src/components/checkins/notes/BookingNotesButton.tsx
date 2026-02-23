@@ -18,7 +18,7 @@ function BookingNotesButton({ bookingRef }: Props) {
       <Button
         type="button"
         onClick={() => setOpen(true)}
-        className="min-h-55px px-4 bg-primary-main text-white rounded-md hover:bg-primary-dark transition-colors dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+        className="min-h-55px px-4 bg-primary-main text-primary-fg rounded-md hover:bg-primary-dark transition-colors dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
         title="View or add notes"
       >
         <FontAwesomeIcon icon={faNoteSticky} />

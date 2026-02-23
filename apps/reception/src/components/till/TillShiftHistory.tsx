@@ -15,7 +15,7 @@ const TillShiftHistory = memo(function TillShiftHistory() {
 
   if (loading) {
     return (
-      <div className="p-4 text-sm text-gray-600 dark:text-darkAccentGreen">
+      <div className="p-4 text-sm text-muted-foreground dark:text-darkAccentGreen">
         Loading recent shifts...
       </div>
     );
@@ -31,7 +31,7 @@ const TillShiftHistory = memo(function TillShiftHistory() {
 
   if (shifts.length === 0) {
     return (
-      <div className="p-4 text-sm text-gray-600 dark:text-darkAccentGreen">
+      <div className="p-4 text-sm text-muted-foreground dark:text-darkAccentGreen">
         No shift history yet.
       </div>
     );
@@ -42,7 +42,7 @@ const TillShiftHistory = memo(function TillShiftHistory() {
       <h2 className="text-xl font-semibold mb-3">Recent Shifts</h2>
       <div className="overflow-x-auto">
         <Table className="w-full border-collapse text-sm">
-          <TableHeader className="bg-gray-100 dark:bg-darkSurface">
+          <TableHeader className="bg-surface-2 dark:bg-darkSurface">
             <TableRow>
               <TableHead className="p-2 text-start border-b">Shift ID</TableHead>
               <TableHead className="p-2 text-start border-b">Status</TableHead>
@@ -61,8 +61,8 @@ const TillShiftHistory = memo(function TillShiftHistory() {
                 key={shift.id ?? shift.shiftId}
                 className={
                   idx % 2 === 0
-                    ? "bg-white dark:bg-darkSurface"
-                    : "bg-gray-50 dark:bg-darkSurface"
+                    ? "bg-surface dark:bg-darkSurface"
+                    : "bg-surface-2 dark:bg-darkSurface"
                 }
               >
                 <TableCell className="p-2 border-b">{shift.shiftId}</TableCell>

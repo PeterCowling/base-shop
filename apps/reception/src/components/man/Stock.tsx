@@ -2,7 +2,15 @@
 
 import React, { useMemo } from "react";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import {
+  ReceptionInput,
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
 
 import { useProducts } from "../../hooks/data/bar/useProducts";
 
@@ -20,15 +28,15 @@ function Stock() {
   }, [getProductsByCategory]);
 
   return (
-    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         STOCK
       </h1>
-      <div className="bg-white rounded-lg shadow p-6 dark:bg-darkSurface">
+      <div className="bg-surface rounded-lg shadow p-6 dark:bg-darkSurface">
         <div className="overflow-auto">
           <Table className="min-w-full border-collapse text-sm">
             <TableHeader>
-              <TableRow className="bg-gray-200 dark:bg-darkSurface">
+              <TableRow className="bg-surface-3 dark:bg-darkSurface">
                 <TableHead className="p-2 border-b text-start">Item</TableHead>
                 <TableHead className="p-2 border-b text-end">Expected</TableHead>
                 <TableHead className="p-2 border-b text-end">Add Purchase</TableHead>
@@ -41,16 +49,16 @@ function Stock() {
                 <TableRow key={name}>
                   <TableCell className="p-2 border-b">{name}</TableCell>
                   <TableCell className="p-2 border-b text-end">
-                    <input type="number" className="w-20 border p-1" />
+                    <ReceptionInput type="number" className="w-20 border p-1" />
                   </TableCell>
                   <TableCell className="p-2 border-b text-end">
-                    <input type="number" className="w-20 border p-1" />
+                    <ReceptionInput type="number" className="w-20 border p-1" />
                   </TableCell>
                   <TableCell className="p-2 border-b text-end">
-                    <input type="number" className="w-20 border p-1" />
+                    <ReceptionInput type="number" className="w-20 border p-1" />
                   </TableCell>
                   <TableCell className="p-2 border-b text-end">
-                    <input type="number" className="w-20 border p-1" />
+                    <ReceptionInput type="number" className="w-20 border p-1" />
                   </TableCell>
                 </TableRow>
               ))}

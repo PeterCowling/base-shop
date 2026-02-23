@@ -25,7 +25,7 @@ exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
       </div>
     </div>
     <div
-      class="flex-grow bg-white rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface"
+      class="flex-grow bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface"
     >
       <div
         class="flex items-center justify-between"
@@ -51,7 +51,7 @@ exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
           </label>
         </div>
         <button
-          class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm hover:bg-primary/90 px-3 py-2 bg-green-600 text-white rounded dark:bg-darkAccentGreen dark:text-darkBg"
+          class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm hover:bg-primary/90 px-3 py-2 bg-success-main text-primary-fg rounded dark:bg-darkAccentGreen dark:text-darkBg"
           data-token="--color-primary"
           type="button"
         >
@@ -65,7 +65,7 @@ exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
           class="w-full overflow-x-auto"
         >
           <table
-            class="text-foreground text-left w-full table-auto border border-gray-400 text-sm"
+            class="text-foreground text-left w-full table-auto border border-border-2 text-sm"
           >
             <thead>
               <tr>

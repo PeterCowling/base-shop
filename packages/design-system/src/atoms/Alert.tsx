@@ -7,6 +7,11 @@ import type { Locale } from "@acme/i18n/locales";
 import { resolveText } from "@acme/i18n/resolveText";
 import type { TranslatableText } from "@acme/types/i18n";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export type AlertVariant = "info" | "success" | "warning" | "danger";
@@ -15,6 +20,10 @@ export type AlertTone = "soft" | "solid";
 export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   variant?: AlertVariant;
   tone?: AlertTone;
+  /** Semantic surface shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
   // Prefer `heading`, but also accept legacy `title` for backwards compatibility
   heading?: TranslatableText;
   title?: TranslatableText | string;
@@ -55,6 +64,8 @@ export const Alert = (
     className,
     variant = "info",
     tone = "soft",
+    shape,
+    radius,
     heading,
     title,
     locale = "en",
@@ -70,13 +81,19 @@ export const Alert = (
   const resolvedTitle = titleSource ? resolveText(titleSource as TranslatableText, locale, t) : undefined;
   const bgClass = tone === "solid" ? SOLID_BG[variant] : SOFT_BG[variant];
   const fgClass = tone === "solid" ? FG[variant] : "text-fg";
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
   return (
     <div
       ref={ref}
       data-token={TOKEN_BG[variant]}
       role="status"
       className={cn(
-        "rounded-md border border-border-2 p-3", // i18n-exempt -- DEV-000 CSS utility class names
+        "border border-border-2 p-3 break-words", // i18n-exempt -- DEV-000 CSS utility class names
+        shapeRadiusClass,
         bgClass,
         fgClass,
         className,
@@ -84,7 +101,11 @@ export const Alert = (
       {...props}
     >
       {resolvedTitle && <div className="font-medium">{resolvedTitle}</div>}
-      {children && <div className={cn("text-sm", heading ? "pt-1" : undefined)}>{children}</div>}
+      {children && (
+        <div className={cn("text-sm break-words", resolvedTitle ? "pt-1" : undefined)}>
+          {children}
+        </div>
+      )}
     </div>
   );
 };

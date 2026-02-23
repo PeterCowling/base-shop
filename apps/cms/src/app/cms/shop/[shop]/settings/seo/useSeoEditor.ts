@@ -1,11 +1,11 @@
 "use client";
 
 import { type FormEvent, useCallback, useMemo, useState } from "react";
+import { setFreezeTranslations } from "@cms/actions/shops.server";
 import {
   generateSeo as runGenerateSeo,
-  setFreezeTranslations,
   updateSeo,
-} from "@cms/actions/shops.server";
+} from "@cms/actions/shops-seo.server";
 
 import en from "@acme/i18n/en.json";
 import { useTranslations } from "@acme/i18n/Translations";

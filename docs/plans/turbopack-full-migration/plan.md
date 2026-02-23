@@ -60,7 +60,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 ## Fact-Find Reference
 - Related brief: `docs/plans/turbopack-full-migration/fact-find.md`
 - Key findings used:
-  - `--webpack` remains in 26 script entries across 13 apps.
+  - `--webpack` remains in 28 package-script commands across 14 apps.
   - repo guard policy is fail-closed to webpack and enforced in CI/hooks.
   - active `import.meta.webpackContext` usage is already retired in source.
   - Storybook still uses webpack builder and webpack plugins.
@@ -354,7 +354,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Pending
-- **Affects:** `apps/business-os/package.json`, `apps/cms/package.json`, `apps/cochlearfit/package.json`, `apps/cover-me-pretty/package.json`, `apps/handbag-configurator/package.json`, `apps/prime/package.json`, `apps/product-pipeline/package.json`, `apps/skylar/package.json`, `apps/xa/package.json`, `apps/xa-b/package.json`, `apps/xa-j/package.json`, `apps/xa-uploader/package.json`, `packages/template-app/package.json`, `.github/workflows/*.yml` (where build-cmd assumptions require updates)
+- **Affects:** `apps/business-os/package.json`, `apps/caryina/package.json`, `apps/cms/package.json`, `apps/cochlearfit/package.json`, `apps/cover-me-pretty/package.json`, `apps/handbag-configurator/package.json`, `apps/prime/package.json`, `apps/product-pipeline/package.json`, `apps/skylar/package.json`, `apps/xa/package.json`, `apps/xa-b/package.json`, `apps/xa-j/package.json`, `apps/xa-uploader/package.json`, `packages/template-app/package.json`, `.github/workflows/*.yml` (where build-cmd assumptions require updates)
 - **Depends on:** TASK-02, TASK-05, TASK-06, TASK-07
 - **Blocks:** TASK-09
 - **Confidence:** 85%

@@ -50,7 +50,7 @@ This brief documents where webpack is still active in the repository after the b
 
 ## Evidence Audit (Current State)
 ### Entry Points
-- Next app scripts with explicit `--webpack` flags in `dev` and `build`.
+- Next app scripts with explicit `--webpack` flags in `dev`, `build`, and `preview` command surfaces.
 - Repo guardrails that enforce webpack defaults:
   - `scripts/check-next-webpack-flag.mjs`
   - `scripts/__tests__/next-webpack-flag-policy.test.ts`
@@ -157,8 +157,8 @@ This brief documents where webpack is still active in the repository after the b
 ## Questions
 ### Resolved
 - Q: Are there still explicit webpack flags in app scripts?
-  - A: Yes. `--webpack` remains in 26 `dev`/`build`/`preview` script entries across 13 apps (`skylar`, `cover-me-pretty`, `cochlearfit`, `xa-b`, `prime`, `xa-uploader`, `xa`, `business-os`, `product-pipeline`, `xa-j`, `cms`, `handbag-configurator`, `template-app`).
-  - Evidence: package script audit across `apps/*/package.json` and `packages/template-app/package.json`.
+  - A: Yes. As of 2026-02-23, 28 package-script commands across 14 apps still include `--webpack` (`business-os`, `caryina`, `cms`, `cochlearfit`, `cover-me-pretty`, `handbag-configurator`, `prime`, `product-pipeline`, `skylar`, `template-app`, `xa`, `xa-b`, `xa-j`, `xa-uploader`).
+  - Evidence: `rg --glob 'apps/*/package.json' --glob 'packages/template-app/package.json' 'next (dev|build|start)[^\n]*--webpack' apps packages`.
 
 - Q: Is webpack still enforced by repository policy gates?
   - A: Yes. Policy default is still fail-closed requiring `--webpack`, with narrow app/workflow exceptions (`brikette` and `reception` only).
@@ -187,16 +187,34 @@ This brief documents where webpack is still active in the repository after the b
 ## Confidence Inputs
 | Dimension | Score | Rationale |
 |---|---|---|
-| Implementation | 85% | All webpack surfaces are enumerated with file-level specificity. Callback complexity varies significantly per app (CMS ~174 lines vs skylar ~5 lines). |
+| Implementation | 80% | Inventory is mostly complete but still requires refresh checks as repo state evolves (for example, script count is currently 28 commands across 14 apps, including `caryina`). Callback complexity varies significantly per app (CMS ~174 lines vs skylar ~5 lines). |
 | Approach | 85% | Policy-first migration strategy is well-supported by existing exception matrix precedent (brikette/reception). Trade-off between matrix expansion and default inversion is well-characterized. |
 | Impact | 80% | Cross-app callback migration carries regression risk, especially for alias/fallback behavior. No existing parity test suite. |
 | Delivery-Readiness | 85% | Policy tests and validation infrastructure are already in place. Migration matrix artifact needed before implementation. |
 | Testability | 80% | Policy layer is well-tested. Callback parity and source-pattern replacement paths lack automated coverage. |
 
+## Risks
+- Inventory drift during planning:
+  - Likelihood: Medium
+  - Impact: High
+  - Mitigation: rerun script and callback audits at TASK-02 start and immediately before TASK-08 execution.
+- Callback parity gaps in high-complexity configs (especially `apps/cms`):
+  - Likelihood: Medium
+  - Impact: High
+  - Mitigation: require callback responsibility matrix + representative app parity probes before script migration.
+- Policy and app wave sequencing mismatch:
+  - Likelihood: Medium
+  - Impact: High
+  - Mitigation: keep policy-gate updates ahead of script flag removals and verify with policy tests each wave.
+- Storybook scope ambiguity remains unresolved:
+  - Likelihood: High
+  - Impact: Medium
+  - Mitigation: force explicit scope decision before final zero-webpack acceptance criteria.
+
 ## Planning Readiness
 - **Ready for planning:** Yes.
 - **Key planning inputs:**
-  - 26 script entries across 13 apps need `--webpack` removal.
+  - 28 package-script commands across 14 apps currently include `--webpack` and require migration handling.
   - Policy gate must be updated before or alongside app script changes.
   - 7 files contain `webpackInclude` magic comments requiring bundler-neutral replacement.
   - 9 config files contain webpack callbacks of varying complexity (CMS is highest risk).

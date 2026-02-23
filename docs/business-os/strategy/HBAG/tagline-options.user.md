@@ -7,6 +7,7 @@ Status: Decided
 Created: 2026-02-23
 Decided: 2026-02-23
 Owner: Pete
+Review-trigger: Revisit if positioning, ICP, or logo animation semantics change
 ---
 
 # Caryina — Tagline Selection

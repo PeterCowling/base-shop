@@ -27,7 +27,8 @@ const CONFIG = {
   meta: {
     businessCode: "HBAG",
     businessName: "Caryina",
-    tagline: "Made to be shown.",
+    tagline: "Un solo dettaglio. Quello carino.",
+    taglineEN: "One detail. The cute one.",
     coreClaim: "Made to be shown. Considered detail. Use every day.",
     date: "February 2026",
     stage: "ASSESSMENT-12 Complete",
@@ -140,6 +141,7 @@ const CONFIG = {
   ],
 
   keyPhrases: [
+    { phrase: "Un solo dettaglio. Quello carino.", note: "Header tagline — appears after Caryina→Carina logo animation. Italian: 'One detail. The cute one.' Encodes single-piece philosophy and brand-name wordplay.", primary: true },
     { phrase: "Made to be shown.",           note: "Visibility, display — the accessory belongs on the bag, not in a drawer. Core line for hero layouts." },
     { phrase: "Considered detail.",      note: "Positions against charm pile-on; curated restraint as a positive choice."          },
     { phrase: "Use every day.",              note: "Daily use, versatility — justifies €80–€150 as a keeper piece, not a trend buy." },
@@ -196,7 +198,7 @@ const CONFIG = {
   nextSteps: [
     { id: 1, action: "Register domain",                detail: "caryina.com (and caryina.it) — required before any public channel goes live"                         },
     { id: 2, action: "TM pre-screen",                  detail: "EUIPO Classes 18 (leather goods) and 14 (jewellery/accessories) for Caryina"                        },
-    { id: 3, action: "Create Caryina theme package",   detail: "packages/themes/caryina/src/tokens.ts — apply espresso/gold palette and both Google Fonts"          },
+    { id: 3, action: "Create Caryina theme package",   detail: "packages/themes/caryina/src/tokens.ts — ✅ Done. Theme + app scaffold live at apps/caryina/ (port 3018)", done: true },
     { id: 4, action: "Product photography (TASK-06)",  detail: "Shoot H1 bag charm hero. Perception test gate: ≥3/5 cold reviewers estimate ≥€80 before listing"   },
     { id: 5, action: "Etsy shop setup",                detail: "Create Caryina Etsy shop. Blocked until TASK-06 photography gate passes"                            },
     { id: 6, action: "Instagram + TikTok accounts",    detail: "Create @caryina accounts — separate from Brikette hostel. Required before social demand probe"      },
@@ -574,6 +576,12 @@ function injectStyles() {
       line-height: 1.55;
       padding-top: 0.1rem;
     }
+    .phrase-primary {
+      background: var(--color-primary-soft);
+      border-radius: var(--radius-md);
+      border-left: 3px solid var(--color-primary);
+    }
+    .phrase-primary .phrase-quote { font-size: 1.15rem; }
     @media (max-width: 680px) {
       .phrase-row { flex-direction: column; gap: 0.3rem; }
       .phrase-quote { min-width: unset; }
@@ -902,6 +910,13 @@ function injectStyles() {
       color: var(--color-text-muted);
       line-height: 1.55;
     }
+    .step-done { opacity: 0.55; }
+    .step-done .step-num {
+      background: var(--color-accent);
+      color: var(--color-primary-fg);
+      font-size: 0.9rem;
+    }
+    .step-done .step-action { text-decoration: line-through; }
 
     /* ── THEME TOGGLE ── */
     .theme-toggle {
@@ -1003,7 +1018,7 @@ function renderHero() {
     <header class="hero">
       <div class="hero-eyebrow">Brand Discovery Document · ${m.businessCode} · ${m.stage}</div>
       <div class="hero-name">${m.businessName}</div>
-      <div class="hero-tagline">${m.tagline}</div>
+      <div class="hero-tagline">${m.tagline}${m.taglineEN ? `<br/><span style="font-size:0.75em;opacity:0.7;font-style:normal;">${m.taglineEN}</span>` : ''}</div>
       <div class="hero-meta">
         <span>${m.date}</span>
         <span>${m.market}</span>
@@ -1236,7 +1251,7 @@ function renderForecast() {
 
 function renderMessaging() {
   const phrases = CONFIG.keyPhrases.map(p => `
-    <div class="phrase-row">
+    <div class="phrase-row${p.primary ? ' phrase-primary' : ''}">
       <div class="phrase-quote">"${p.phrase}"</div>
       <div class="phrase-note">${p.note}</div>
     </div>
@@ -1256,7 +1271,7 @@ function renderMessaging() {
     <section class="section">
       <div class="section-label">Messaging</div>
       <div class="section-title">Key Phrases &amp; Language Rules</div>
-      <p class="section-subtitle">Three core lines for all copy. Four hard stops that must never appear in customer-facing text.</p>
+      <p class="section-subtitle">Header tagline plus five supporting lines for all copy. Four hard stops that must never appear in customer-facing text.</p>
       <div class="two-col-label">
         <span style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-text-muted);">Use these</span>
       </div>
@@ -1362,8 +1377,8 @@ function renderNamingJourney() {
 
 function renderNextSteps() {
   const rows = CONFIG.nextSteps.map(s => `
-    <div class="next-step-row">
-      <div class="step-num">${s.id}</div>
+    <div class="next-step-row${s.done ? ' step-done' : ''}">
+      <div class="step-num">${s.done ? '✓' : s.id}</div>
       <div>
         <div class="step-action">${s.action}</div>
         <div class="step-detail">${s.detail}</div>
@@ -1375,7 +1390,7 @@ function renderNextSteps() {
     <section class="section">
       <div class="section-label">Execution</div>
       <div class="section-title">Next Steps</div>
-      <p class="section-subtitle">Seven actions required to move from ASSESSMENT-12 Complete to launch-ready state. Steps 1–3 unblock everything downstream.</p>
+      <p class="section-subtitle">Seven actions required to move from ASSESSMENT-12 Complete to launch-ready state. Step 3 complete — steps 1–2 unblock everything downstream.</p>
       <div class="next-steps-list">
         ${rows}
       </div>

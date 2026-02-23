@@ -1260,6 +1260,36 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/market-research/HBAG/market-03-pricing-benchmarks.user.md",
+    "type": "Market-Research",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/HBAG/market-04-channel-landscape-prompt.md",
+    "type": "Deep-Research-Prompt",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/HBAG/market-04-channel-landscape.user.md",
+    "type": "Market-Research",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/HBAG/market-05-assumptions-risk-register-prompt.md",
+    "type": "Deep-Research-Prompt",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/HBAG/market-05-assumptions-risk-register.user.md",
+    "type": "Market-Research",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md",
     "type": "Market-Intelligence-Pack",
     "status": "Active",
@@ -2190,6 +2220,30 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/strategy/HBAG/products-aggregate-pack.user.md",
+    "type": "Standing-Intelligence",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/products-bundle-hypotheses.user.md",
+    "type": "Standing-Intelligence",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/products-competitor-scan.user.md",
+    "type": "Standing-Intelligence",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/products-line-mapping.user.md",
+    "type": "Standing-Intelligence",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/strategy/HBAG/s0a-research-appendix.user.md",
     "type": "Reference",
     "status": "Active",
@@ -2205,6 +2259,12 @@
     "path": "docs/business-os/strategy/HBAG/solution-select.user.md",
     "type": "Reference",
     "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/tagline-options.user.md",
+    "type": "Decision",
+    "status": "Decided",
     "domain": null
   },
   {
@@ -5426,7 +5486,7 @@
   {
     "path": "docs/plans/brikette-seo-traffic-growth/task-16-gbp-audit.md",
     "type": "Task-Artifact",
-    "status": "**Blocked (awaiting operator GBP dashboard execution + screenshots)**",
+    "status": "**Complete (2026-02-23; operator-attested manual completion, API entitlement pending for automation only)**",
     "domain": null
   },
   {
@@ -5450,7 +5510,7 @@
   {
     "path": "docs/plans/brikette-seo-traffic-growth/task-21-outreach-pack.md",
     "type": "Task-Artifact",
-    "status": "**Blocked (awaiting reviewer sign-off evidence)**",
+    "status": "Blocked — reviewer sign-off evidence not yet recorded",
     "domain": null
   },
   {
@@ -6309,6 +6369,24 @@
     "path": "docs/plans/turbopack-brikette-build-flag-retirement/plan.md",
     "type": "Plan",
     "status": "Complete",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/turbopack-full-migration/critique-history.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/turbopack-full-migration/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/turbopack-full-migration/plan.md",
+    "type": "Plan",
+    "status": "Draft",
     "domain": "Infra"
   },
   {

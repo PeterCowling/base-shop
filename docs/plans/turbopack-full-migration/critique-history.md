@@ -1,4 +1,45 @@
+---
+Type: Plan
+Status: Active
+Domain: Repo
+Last-reviewed: 2026-02-23
+Relates-to: docs/plans/turbopack-full-migration/plan.md
+---
+
 # Critique History: turbopack-full-migration
+
+## Round 3 — 2026-02-23
+
+### Issues Opened This Round
+| ID | Severity | Target | Summary |
+|---|---|---|---|
+| 3-01 | Major | Questions / Planning Readiness | Script inventory was stale (`26/13`) while repo state was `28/14`, which weakens planning inputs and migration wave sizing |
+| 3-02 | Moderate | Fact-Find sections | Missing explicit `## Risks` section reduced decision-grade risk visibility |
+| 3-03 | Moderate | Confidence Inputs | Implementation confidence rationale overstated inventory completeness despite observable drift |
+
+### Issues Confirmed Resolved This Round
+| Prior ID | Severity | Summary | How resolved |
+|---|---|---|---|
+| 2-01 | Major | TASK-07 confidence premature | Plan now marks TASK-07 as `75%*` provisional and expands parity evidence expectations |
+| 2-02 | Moderate | TASK-04 TC-01 targeted wrong package | Validation command is now `pnpm -w test -- --testPathPattern=next-webpack-flag-policy` |
+| 2-03 | Moderate | TASK-07 effort underestimated | TASK-07 effort is now `M` and includes callback complexity detail |
+| 2-04 | Moderate | Confidence uniformity in task summary | High-risk callback task confidence is now differentiated (`75%*`) from lower-risk tasks |
+| 2-05 | Moderate | Missing callback-equivalent risk | Plan `Risks & Mitigations` now includes explicit "No Turbopack equivalent" risk |
+| 2-06 | Minor | Fact-find contained corrupted evidence output | Fact-find now contains clean sections only; no embedded gate-output artifact remains |
+
+### Issues Carried Open (not yet resolved)
+| Prior ID | Severity | Rounds Open | Summary |
+|---|---|---|---|
+| 1-01 | Moderate | 3 | Storybook in-scope/out-of-scope decision needed (tracked as decision gate) |
+
+### Autofix Applied This Round
+- Fact-find script inventory refreshed to current repo evidence (`28` package-script commands across `14` apps, including `caryina`)
+- Questions section updated with concrete command evidence for current inventory snapshot
+- Planning Readiness key input updated to match refreshed script inventory
+- Added explicit `## Risks` section with likelihood/impact/mitigations for migration-critical risks
+- Confidence Inputs (`Implementation`) recalibrated from `85%` to `80%` with drift-aware rationale
+
+---
 
 ## Round 2 — 2026-02-23
 

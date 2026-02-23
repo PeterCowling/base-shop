@@ -6,7 +6,7 @@ Workstream: <Engineering | Product | Marketing | Sales | Operations | Finance | 
 Created: YYYY-MM-DD
 Last-reviewed: YYYY-MM-DD
 Last-updated: YYYY-MM-DD
-Relates-to charter: <path | none>
+Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: <kebab-case>
 Deliverable-Type: <code-change | email-message | product-brief | marketing-asset | spreadsheet | whatsapp-message | multi-deliverable>
 Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-upgrade-backlog>

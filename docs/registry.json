@@ -1248,6 +1248,18 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/market-research/HBAG/market-02-demand-evidence.user.md",
+    "type": "Market-Research",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/HBAG/market-03-pricing-benchmarks-prompt.md",
+    "type": "Deep-Research-Prompt",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md",
     "type": "Market-Intelligence-Pack",
     "status": "Active",

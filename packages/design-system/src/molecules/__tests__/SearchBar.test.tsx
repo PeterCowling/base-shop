@@ -68,4 +68,32 @@ describe("SearchBar", () => {
     fireEvent.blur(input);
     expect(onSearch).toHaveBeenCalledWith("world");
   });
+
+  it("supports menu shape/radius overrides", async () => {
+    const { rerender } = render(
+      <SearchBar
+        suggestions={["apple", "banana"]}
+        label="Search"
+        menuShape="square"
+      />,
+    );
+    const input = screen.getByRole("searchbox", { name: "Search" });
+    await userEvent.type(input, "a");
+    let listbox = screen.getByRole("listbox");
+    expect(listbox).toHaveClass("rounded-none");
+
+    rerender(
+      <SearchBar
+        suggestions={["apple", "banana"]}
+        label="Search"
+        menuShape="square"
+        menuRadius="xl"
+      />,
+    );
+    const nextInput = screen.getByRole("searchbox", { name: "Search" });
+    await userEvent.clear(nextInput);
+    await userEvent.type(nextInput, "a");
+    listbox = screen.getByRole("listbox");
+    expect(listbox).toHaveClass("rounded-xl");
+  });
 });

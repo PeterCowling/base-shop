@@ -8,12 +8,13 @@ import SeoEditor from "../src/app/cms/shop/[shop]/settings/seo/SeoEditor";
 
 const setFreezeTranslationsMock = jest.fn();
 const updateSeoMock = jest.fn();
-const generateSeoMock = jest.fn();
 
 jest.mock("@cms/actions/shops.server", () => ({
   setFreezeTranslations: (...args: unknown[]) => setFreezeTranslationsMock(...args),
+}));
+
+jest.mock("@cms/actions/shops-seo.server", () => ({
   updateSeo: (...args: unknown[]) => updateSeoMock(...args),
-  generateSeo: (...args: unknown[]) => generateSeoMock(...args),
 }));
 
 jest.mock("@acme/ui/operations", () => ({
@@ -95,14 +96,15 @@ describe("SeoEditor", () => {
 
   it("generates metadata", async () => {
     const user = userEvent.setup();
-    generateSeoMock.mockResolvedValueOnce({
-      generated: {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
         title: "Gen title",
         description: "Gen description",
-        alt: "Gen alt",
         image: "img.png",
-      },
+      }),
     });
+    updateSeoMock.mockResolvedValueOnce({});
 
     render(
       <SeoEditor shop="s1" languages={["en"]} initialSeo={{ en: {} }} />,
@@ -111,10 +113,13 @@ describe("SeoEditor", () => {
     await user.click(screen.getByRole("button", { name: /generate with ai/i }));
 
     await waitFor(() =>
-      expect(generateSeoMock).toHaveBeenCalledWith(
-        "s1",
-        expect.any(FormData),
+      expect(global.fetch).toHaveBeenCalledWith(
+        "/api/seo/generate",
+        expect.objectContaining({ method: "POST" }),
       ),
+    );
+    await waitFor(() =>
+      expect(updateSeoMock).toHaveBeenCalledWith("s1", expect.any(FormData)),
     );
 
     await waitFor(() => {

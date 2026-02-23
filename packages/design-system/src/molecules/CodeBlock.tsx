@@ -5,9 +5,14 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 
 import { Button } from "../primitives";
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-const PRE_CLASSES = "bg-muted text-xs font-mono leading-relaxed overflow-x-auto rounded-md border border-border p-4 pe-16"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+const PRE_CLASSES = "bg-muted text-xs font-mono leading-relaxed overflow-x-auto border border-border p-4 pe-16"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
 
 export interface CodeBlockProps {
   code: string;
@@ -15,6 +20,10 @@ export interface CodeBlockProps {
   preClassName?: string;
   copyLabel?: string;
   copiedLabel?: string;
+  /** Semantic code block shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit code block radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 export default function CodeBlock({
@@ -23,9 +32,16 @@ export default function CodeBlock({
   preClassName,
   copyLabel,
   copiedLabel,
+  shape,
+  radius,
 }: CodeBlockProps) {
   const t = useTranslations();
   const [copied, setCopied] = useState(false);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
 
   useEffect(() => {
     if (!copied) return;
@@ -61,6 +77,7 @@ export default function CodeBlock({
       <pre
         className={cn(
           PRE_CLASSES,
+          shapeRadiusClass,
           preClassName,
         )}
       >

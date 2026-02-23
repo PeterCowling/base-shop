@@ -7,6 +7,7 @@ import iconButtonSize from "./rules/icon-button-size.js";
 import minTapSize from "./rules/min-tap-size.js";
 import noArbitraryTailwind from "./rules/no-arbitrary-tailwind.js";
 import noHardcodedCopy from "./rules/no-hardcoded-copy.js";
+import noHardcodedRoundedClass from "./rules/no-hardcoded-rounded-class.js";
 import noHeroPrimaryForeground from "./rules/no-hero-primary-foreground.js";
 import noHslVarInTests from "./rules/no-hsl-var-in-tests.js";
 import noImportant from "./rules/no-important.js";
@@ -29,6 +30,7 @@ import noTransitionAll from "./rules/no-transition-all.js";
 import noUnsafeViewportUnits from "./rules/no-unsafe-viewport-units.js";
 import requireAspectRatioOnMedia from "./rules/require-aspect-ratio-on-media.js";
 import requireBreakpointModifiers from "./rules/require-breakpoint-modifiers.js";
+import requireContentBleedGuards from "./rules/require-content-bleed-guards.js";
 import requireDisableJustification from "./rules/require-disable-justification.js";
 import requireMinW0InFlex from "./rules/require-min-w-0-in-flex.js";
 import requireSectionPadding from "./rules/require-section-padding.js";
@@ -56,6 +58,7 @@ export const rules = {
   "forbid-fixed-heights-on-text": forbidFixedHeightsOnText,
   "require-breakpoint-modifiers": requireBreakpointModifiers,
   "no-hardcoded-copy": noHardcodedCopy,
+  "no-hardcoded-rounded-class": noHardcodedRoundedClass,
   "no-physical-direction-classes-in-rtl": noPhysicalDirectionClassesInRtl,
   "enforce-focus-ring-token": enforceFocusRingToken,
   "min-tap-size": minTapSize,
@@ -67,6 +70,7 @@ export const rules = {
   "no-nonlayered-zindex": noNonlayeredZindex,
   "no-unsafe-viewport-units": noUnsafeViewportUnits,
   "require-disable-justification": requireDisableJustification,
+  "require-content-bleed-guards": requireContentBleedGuards,
   "require-section-padding": requireSectionPadding,
 };
 

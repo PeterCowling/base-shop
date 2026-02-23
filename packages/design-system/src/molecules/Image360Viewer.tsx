@@ -4,6 +4,11 @@
 import * as React from "react";
 
 import { ZoomImage } from "../atoms/ZoomImage";
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 /* ------------------------------------------------------------------ *
@@ -15,6 +20,10 @@ export interface Image360ViewerProps
   frames: string[];
   /** Alternate text for accessibility */
   alt?: string;
+  /** Semantic frame shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit frame radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 /* ------------------------------------------------------------------ *
@@ -25,6 +34,8 @@ export const Image360Viewer = (
     ref,
     frames,
     alt,
+    shape,
+    radius,
     className,
     ...props
   }: Image360ViewerProps & {
@@ -33,6 +44,11 @@ export const Image360Viewer = (
 ) => {
   const [index, setIndex] = React.useState(0);
   const startX = React.useRef<number | null>(null);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "lg",
+  });
 
   /* ------------------------------------------------------------------ *
    *  Pointer handlers
@@ -73,9 +89,8 @@ export const Image360Viewer = (
         src={frames[index]}
         alt={alt ?? ""}
         fill
-        className="rounded-lg object-cover"
+        className={cn("object-cover", shapeRadiusClass)}
       />
     </div>
   );
 };
-

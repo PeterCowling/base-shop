@@ -78,6 +78,11 @@ function lerp(start: number, end: number, t: number): number {
   return start + (end - start) * t;
 }
 
+function easeOutCubic(value: number): number {
+  const normalized = clamp(value, 0, 1);
+  return 1 - (1 - normalized) ** 3;
+}
+
 function hashUnit(value: number): number {
   const raw = Math.sin(value * 12.9898) * 43758.5453;
   return raw - Math.floor(raw);
@@ -391,8 +396,26 @@ function computeTaglineRevealFromParticles(params: {
 
   const settleSpanMs = Math.max(1, settleEndMs - settleStartMs);
   const settleProgress = clamp((state.elapsedMs - settleStartMs) / settleSpanMs, 0, 1);
-  const normalized = clamp((settleProgress - 0.06) / 0.88, 0, 1);
-  return normalized * normalized * (3 - 2 * normalized);
+  const normalized = clamp((settleProgress - 0.04) / 0.92, 0, 1);
+  const smooth = normalized * normalized * (3 - 2 * normalized);
+  return smooth ** 1.3;
+}
+
+function applyTaglineRevealStyle(root: HTMLSpanElement, revealProgress: number): void {
+  const clamped = clamp(revealProgress, 0, 1);
+  const revealPercent = clamped * 100;
+  const maskEnd = clamp(revealPercent + 2, 0, 100);
+  const featherStart = clamp(maskEnd - 12, 0, 100);
+  const solidEnd = clamp(featherStart - 7, 0, 100);
+  const opacity = 0.12 + easeOutCubic(clamped) * 0.88;
+  const blur = (1 - clamped) * 0.78;
+
+  root.style.setProperty("--tagline-reveal", clamped.toFixed(3));
+  root.style.setProperty("--tagline-mask-solid-end", `${solidEnd.toFixed(2)}%`);
+  root.style.setProperty("--tagline-mask-feather-start", `${featherStart.toFixed(2)}%`);
+  root.style.setProperty("--tagline-mask-end", `${maskEnd.toFixed(2)}%`);
+  root.style.setProperty("--tagline-opacity", opacity.toFixed(3));
+  root.style.setProperty("--tagline-blur", `${blur.toFixed(2)}px`);
 }
 
 function buildParticlePoints(
@@ -608,12 +631,12 @@ async function runParticleAnimation(params: {
 
   const rootStyle = window.getComputedStyle(root);
   const primaryColor = resolveCssColorToRgb(rootStyle.color, [224, 142, 149]);
-  const sandStartColor = mixRgb(primaryColor, [220, 169, 144], 0.36);
-  const sandEndColor = mixRgb(primaryColor, [156, 116, 96], 0.56);
+  const sandStartColor = mixRgb(primaryColor, [245, 210, 194], 0.44);
+  const sandEndColor = mixRgb(primaryColor, [192, 151, 141], 0.36);
 
   let lastFrameAt = performance.now();
   let revealProgress = 0;
-  root.style.setProperty("--tagline-reveal", "0");
+  applyTaglineRevealStyle(root, 0);
   setCanvasActive(true);
   setParticleVisualState("dissolving");
 
@@ -632,7 +655,7 @@ async function runParticleAnimation(params: {
       settleEndMs: timings.settleEndMs,
     });
     revealProgress = Math.max(revealProgress, reveal);
-    root.style.setProperty("--tagline-reveal", revealProgress.toFixed(3));
+    applyTaglineRevealStyle(root, revealProgress);
 
     context.clearRect(0, 0, cssWidth, cssHeight);
     const blend = clamp(
@@ -647,7 +670,9 @@ async function runParticleAnimation(params: {
     const green = Math.round(lerp(sandStartColor[1], sandEndColor[1], sandBlend));
     const blue = Math.round(lerp(sandStartColor[2], sandEndColor[2], sandBlend));
     const particleAlpha =
-      next.phase === "settling" ? lerp(0.22, 0.06, revealProgress) : lerp(0.52, 0.38, blend);
+      next.phase === "settling"
+        ? lerp(0.19, 0.08, revealProgress)
+        : lerp(0.56, 0.42, blend);
     context.fillStyle = `rgba(${red}, ${green}, ${blue}, ${particleAlpha.toFixed(3)})`;
     const revealFrontY =
       targetBounds.top + (targetBounds.bottom - targetBounds.top) * revealProgress;
@@ -661,8 +686,8 @@ async function runParticleAnimation(params: {
       if (next.phase === "settling" && y <= revealFrontY - 1.5) continue;
 
       const grain = hashUnit((index + 1) * 1.618);
-      const baseRadius = lerp(0.34, 0.78, grain);
-      const phaseScale = next.phase === "settling" ? lerp(1, 0.72, revealProgress) : 1;
+      const baseRadius = lerp(0.42, 0.96, grain);
+      const phaseScale = next.phase === "settling" ? lerp(1, 0.78, revealProgress) : 1.02;
 
       context.beginPath();
       context.arc(x, y, baseRadius * phaseScale, 0, Math.PI * 2);
@@ -733,7 +758,11 @@ function useBrandMarkAnimationController(options: {
     }
     const root = refs.rootRef.current;
     if (root) {
-      root.style.setProperty("--tagline-reveal", nextState === "done" ? "1" : "0");
+      applyTaglineRevealStyle(root, nextState === "done" ? 1 : 0);
+      if (nextState !== "settling") {
+        root.style.setProperty("--tagline-opacity", nextState === "done" ? "1" : "0");
+        root.style.setProperty("--tagline-blur", nextState === "done" ? "0px" : "0.8px");
+      }
     }
     setCanvasActive(false);
     setParticleVisualState(nextState);

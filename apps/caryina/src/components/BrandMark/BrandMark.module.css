@@ -1,6 +1,11 @@
 .brand {
   --dur: 900ms;
   --y-fade-color: hsl(var(--color-fg-muted, 355 8% 52%) / 0.58);
+  --tagline-mask-solid-end: 0%;
+  --tagline-mask-feather-start: 0%;
+  --tagline-mask-end: 0%;
+  --tagline-opacity: 0;
+  --tagline-blur: 0.8px;
 
   display: inline-flex;
   flex-direction: column;
@@ -125,20 +130,46 @@
 
   color: hsl(var(--color-fg-muted, 355 8% 52%));
 
-  opacity: 1;
+  opacity: var(--tagline-opacity);
   clip-path: inset(
     0
     0
     calc((1 - var(--tagline-reveal, 1)) * 100%)
     0
   );
-  transition: opacity 120ms linear;
-  will-change: clip-path;
+  filter: blur(var(--tagline-blur));
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0 0 0 / 1) 0%,
+    rgba(0 0 0 / 1) var(--tagline-mask-solid-end),
+    rgba(0 0 0 / 0.44) var(--tagline-mask-feather-start),
+    rgba(0 0 0 / 0) var(--tagline-mask-end),
+    rgba(0 0 0 / 0) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0 0 0 / 1) 0%,
+    rgba(0 0 0 / 1) var(--tagline-mask-solid-end),
+    rgba(0 0 0 / 0.44) var(--tagline-mask-feather-start),
+    rgba(0 0 0 / 0) var(--tagline-mask-end),
+    rgba(0 0 0 / 0) 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  transition:
+    opacity 120ms linear,
+    filter 120ms linear;
+  will-change: clip-path, opacity, filter;
 }
 
 .brand[data-particle-state="idle"] .tagline,
 .brand[data-particle-state="dissolving"] .tagline,
 .brand[data-particle-state="funneling"] .tagline {
+  --tagline-opacity: 0;
+  --tagline-blur: 0.8px;
+  --tagline-mask-solid-end: 0%;
+  --tagline-mask-feather-start: 0%;
+  --tagline-mask-end: 0%;
   opacity: 0;
   clip-path: inset(0 0 100% 0);
 }
@@ -154,12 +185,22 @@
 }
 
 .brand[data-particle-state="done"] .tagline {
+  --tagline-opacity: 1;
+  --tagline-blur: 0px;
+  --tagline-mask-solid-end: 100%;
+  --tagline-mask-feather-start: 100%;
+  --tagline-mask-end: 100%;
   opacity: 1;
   clip-path: inset(0 0 0 0);
 }
 
 /* Before measurement, hide the tagline too */
 .brand[data-ready="false"] .tagline {
+  --tagline-opacity: 0;
+  --tagline-blur: 0.8px;
+  --tagline-mask-solid-end: 0%;
+  --tagline-mask-feather-start: 0%;
+  --tagline-mask-end: 0%;
   opacity: 0;
   clip-path: inset(0 0 100% 0);
   transition: none;

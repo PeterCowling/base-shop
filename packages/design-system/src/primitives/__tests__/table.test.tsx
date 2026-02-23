@@ -149,6 +149,7 @@ describe("Table", () => {
       "px-4",
       "py-2",
       "font-semibold",
+      "break-words",
       "custom-head"
     );
   });
@@ -168,7 +169,14 @@ describe("Table", () => {
     );
     expect(ref.current).toBeInstanceOf(HTMLTableCellElement);
     const cell = container.querySelector("td");
-    expect(cell).toHaveClass("px-4", "py-2", "align-middle", "custom-cell");
+    expect(cell).toHaveClass(
+      "px-4",
+      "py-2",
+      "align-middle",
+      "min-w-0",
+      "break-words",
+      "custom-cell"
+    );
   });
 
   it("forwards refs to underlying DOM nodes", () => {

@@ -2,7 +2,6 @@ import "server-only";
 
 import { z } from "zod";
 
-import { nowIso } from "@acme/date-utils";
 import { LOCALES } from "@acme/i18n/locales";
 import {
   type Locale,
@@ -20,6 +19,7 @@ import {
 } from "../utils/safeFs";
 
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
+const nowIso = () => new Date().toISOString();
 
 export type Settings = ShopSettings;
 

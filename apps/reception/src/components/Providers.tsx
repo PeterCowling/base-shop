@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import App from "@/App";
 import { AuthProvider } from "@/context/AuthContext";
+import { LoanDataProvider } from "@/context/LoanDataContext";
 import { ReceptionThemeProvider } from "@/providers/ReceptionThemeProvider";
 
 interface ProvidersProps {
@@ -13,9 +14,11 @@ interface ProvidersProps {
 export default function Providers({ children }: ProvidersProps) {
   return (
     <AuthProvider>
-      <ReceptionThemeProvider>
-        <App>{children}</App>
-      </ReceptionThemeProvider>
+      <LoanDataProvider>
+        <ReceptionThemeProvider>
+          <App>{children}</App>
+        </ReceptionThemeProvider>
+      </LoanDataProvider>
     </AuthProvider>
   );
 }

@@ -70,7 +70,7 @@ Core primitives expose a shared shape/radius contract:
 - `shape`: `square` | `soft` | `pill`
 - `radius`: `none` | `xs` | `sm` | `md` | `lg` | `xl` | `2xl` | `3xl` | `4xl` | `full`
 
-Supported components: `Button`, `Input`, `Select`, `Textarea`, `Card`, `IconButton`, `Tag`, `Chip`, `Alert`, `Toast`, `Avatar`, `Skeleton`, `OptionPill`, `OptionTile`, `ColorSwatch`, `Progress`, `VideoPlayer`, `Switch`, `Tooltip`, `PopoverContent`, `PaginationDot`, `ThemeToggle`, `FileSelector`, `StatusIndicator`.
+Supported components: `Button`, `Input`, `Select`, `Textarea`, `Card`, `IconButton`, `Tag`, `Chip`, `Alert`, `Toast`, `Avatar`, `Skeleton`, `OptionPill`, `OptionTile`, `ColorSwatch`, `Progress`, `VideoPlayer`, `Switch`, `Tooltip`, `PopoverContent`, `PaginationDot`, `ThemeToggle`, `FileSelector`, `StatusIndicator`, `Loader`, `MediaSelector`, `DatePicker`, `DataGrid` (search input + selection checkboxes), `SearchBar` (menu), `CodeBlock`, `Stepper` (indicator), `Image360Viewer`, `ProductBadge`, `LinkText` (soft tone), `Accordion`, `QuantityInput`.
 
 Rules:
 - `radius` overrides `shape` when both are provided.
@@ -85,8 +85,11 @@ Overlay/menu primitives must use the shared containment helper from `@acme/desig
 - `overflowContainmentClass("popoverSurface")` -> `overflow-hidden`
 - `overflowContainmentClass("comboboxSurface")` -> `overflow-hidden`
 - `overflowContainmentClass("tooltipSurface")` -> `overflow-hidden`
+- `overflowContainmentClass("inlineNoticeSurface")` -> `overflow-hidden`
 
-Current adopters: `DialogContent`, `DropdownMenuContent`, `DropdownMenuSubContent`, `SelectContent`, `PopoverContent`, `ComboboxContent`, `Tooltip`.
+Current adopters: `DialogContent`, `DropdownMenuContent`, `DropdownMenuSubContent`, `SelectContent`, `PopoverContent`, `ComboboxContent`, `Tooltip`, `TrustCue`, `MilestoneToast`.
+
+Text-heavy table and menu options now default to `break-words` + `min-w-0` contracts to prevent long tokens/URLs from overflowing containers.
 
 ## Operations Consumer Baseline
 

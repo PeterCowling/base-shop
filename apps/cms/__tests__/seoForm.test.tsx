@@ -1,13 +1,13 @@
 import "@testing-library/jest-dom";
 
 import type React from "react";
-import { updateSeo } from "@cms/actions/shops.server";
+import { updateSeo } from "@cms/actions/shops-seo.server";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import SeoForm from "../src/app/cms/shop/[shop]/settings/seo/SeoForm.client";
 
-jest.mock("@cms/actions/shops.server", () => ({
+jest.mock("@cms/actions/shops-seo.server", () => ({
   updateSeo: jest.fn(),
 }));
 

@@ -20,6 +20,34 @@ import type { User, UserProfile, UserRole } from "../types/domains/userDomain";
 import { normalizeRoles, userProfileSchema } from "../types/domains/userDomain";
 
 let authInstance: Auth | null = null;
+const userProfileSnapshotSchema = userProfileSchema.partial({
+  uid: true,
+  email: true,
+  user_name: true,
+});
+const FIREBASE_KEY_UNSAFE_CHARS = /[.#$/\[\]]/g;
+
+function toSafeUserName(value: string | null | undefined): string | undefined {
+  const trimmed = value?.trim();
+  if (!trimmed) {
+    return undefined;
+  }
+  return trimmed.replace(FIREBASE_KEY_UNSAFE_CHARS, "_");
+}
+
+function resolveUserName(
+  profile: { user_name?: string; displayName?: string; email?: string },
+  firebaseUser: FirebaseUser
+): string {
+  const emailLocalPart = (firebaseUser.email ?? profile.email ?? "").split("@")[0];
+  return (
+    toSafeUserName(profile.user_name) ??
+    toSafeUserName(profile.displayName) ??
+    toSafeUserName(firebaseUser.displayName) ??
+    toSafeUserName(emailLocalPart) ??
+    firebaseUser.uid
+  );
+}
 
 export function getFirebaseAuth(app: FirebaseApp): Auth {
   if (!authInstance) {
@@ -121,7 +149,7 @@ export async function loadUserWithProfile(
     }
 
     const profileData = snapshot.val();
-    const parseResult = userProfileSchema.safeParse(profileData);
+    const parseResult = userProfileSnapshotSchema.safeParse(profileData);
 
     if (!parseResult.success) {
       console.error("Invalid user profile data:", parseResult.error);
@@ -129,17 +157,26 @@ export async function loadUserWithProfile(
     }
 
     const parsedProfile = parseResult.data;
+    const resolvedEmail = firebaseUser.email ?? parsedProfile.email;
+    if (!resolvedEmail) {
+      console.error(`Unable to resolve email for user ${firebaseUser.uid}`);
+      return null;
+    }
+
+    const resolvedUserName = resolveUserName(parsedProfile, firebaseUser);
+    const resolvedDisplayName = parsedProfile.displayName ?? firebaseUser.displayName ?? undefined;
+
     const profile: UserProfile = {
-      uid: parsedProfile.uid,
-      email: parsedProfile.email,
-      user_name: parsedProfile.user_name,
-      displayName: parsedProfile.displayName,
+      uid: parsedProfile.uid ?? firebaseUser.uid,
+      email: resolvedEmail,
+      user_name: resolvedUserName,
+      displayName: resolvedDisplayName,
       roles: normalizeRoles(parsedProfile.roles),
     };
 
     return {
       uid: firebaseUser.uid,
-      email: firebaseUser.email ?? "",
+      email: resolvedEmail,
       user_name: profile.user_name,
       displayName: profile.displayName,
       roles: profile.roles,

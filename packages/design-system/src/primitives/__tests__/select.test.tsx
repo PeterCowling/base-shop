@@ -137,8 +137,48 @@ describe("Select", () => {
     const user = userEvent.setup();
     await user.click(screen.getByTestId("trigger"));
     const item = await screen.findByRole("option", { name: "One" });
-    expect(item).toHaveClass("ps-8");
+    expect(item).toHaveClass("ps-8", "min-w-0");
     expect(item).toHaveClass("custom");
+    expect(item.querySelector("span.min-w-0.break-words")).not.toBeNull();
+  });
+
+  it("SelectItem supports shape variants", async () => {
+    render(
+      <Select>
+        <SelectTrigger data-testid="trigger">
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="one" shape="square">
+            One
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    );
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("trigger"));
+    const squareItem = await screen.findByRole("option", { name: "One" });
+    expect(squareItem).toHaveClass("rounded-none");
+  });
+
+  it("SelectItem supports radius overrides over shape defaults", async () => {
+    render(
+      <Select>
+        <SelectTrigger data-testid="trigger">
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="one" shape="pill" radius="lg">
+            One
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    );
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("trigger"));
+    const radiusItem = await screen.findByRole("option", { name: "One" });
+    expect(radiusItem).toHaveClass("rounded-lg");
+    expect(radiusItem).not.toHaveClass("rounded-full");
   });
 
   it("forwards refs and attributes to subcomponents", async () => {

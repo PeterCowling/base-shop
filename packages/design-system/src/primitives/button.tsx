@@ -239,10 +239,14 @@ function renderSpinner({
   iconSize: NonNullable<ButtonProps["iconSize"]>;
 }): React.ReactNode {
   if (!isLoading) return null;
+  const spinnerShapeRadiusClass = resolveShapeRadiusClass({
+    defaultRadius: "full",
+  });
   return (
     <span
       className={cn(
-        "me-2 inline-flex animate-spin motion-reduce:animate-none rounded-full border-2 border-current border-t-transparent",
+        "me-2 inline-flex animate-spin motion-reduce:animate-none border-2 border-current border-t-transparent",
+        spinnerShapeRadiusClass,
         iconDimensionClass(iconSize),
       )}
       aria-hidden="true"

@@ -26,6 +26,21 @@ describe("themeValidation", () => {
     expect(result.contrastChecksPerformed).toBeGreaterThan(0);
   });
 
+  it("does not hard-fail when muted/link pair debt is unchanged in baseline", () => {
+    const tokens = {
+      "--color-muted-fg": "0 0% 65%",
+      "--surface-2": "0 0% 100%",
+      "--color-link": "0 0% 65%",
+    };
+    const result = validateThemeTokens(tokens, {
+      baselineTokens: tokens,
+      changedTokenKeys: [],
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.warnings.some((issue) => issue.type === "low_contrast")).toBe(true);
+  });
+
   it("accepts valid token records", () => {
     const result = validateThemeTokens(
       {

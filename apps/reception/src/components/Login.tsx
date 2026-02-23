@@ -365,7 +365,6 @@ function Login({ onLoginSuccess }: LoginProps) {
           Back to sign in
         </Button>
 
-        <LoginFooter />
       </LoginContainer>
     );
   }
@@ -408,7 +407,6 @@ function Login({ onLoginSuccess }: LoginProps) {
           Skip for now
         </Button>
 
-        <LoginFooter />
       </LoginContainer>
     );
   }
@@ -463,7 +461,6 @@ function Login({ onLoginSuccess }: LoginProps) {
           Sign in with email instead
         </Button>
 
-        <LoginFooter />
       </LoginContainer>
     );
   }
@@ -563,7 +560,6 @@ function Login({ onLoginSuccess }: LoginProps) {
         </Button>
       </form>
 
-      <LoginFooter />
     </LoginContainer>
   );
 }
@@ -581,21 +577,6 @@ function ProductLogo() {
   );
 }
 
-function LoginFooter() {
-  return (
-    <div className="mt-8 border-t border-border pt-6 dark:border-gray-700">
-      <p className="text-center text-xs text-muted-foreground dark:text-muted-foreground">
-        Having trouble?{" "}
-        <a
-          href="mailto:support@example.com"
-          className="font-medium text-primary-main hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
-        >
-          Contact support
-        </a>
-      </p>
-    </div>
-  );
-}
 
 interface LoginContainerProps {
   children: React.ReactNode;

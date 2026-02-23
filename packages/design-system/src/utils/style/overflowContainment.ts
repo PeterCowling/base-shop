@@ -3,7 +3,8 @@ export type OverflowContainmentVariant =
   | "menuSurface"
   | "popoverSurface"
   | "comboboxSurface"
-  | "tooltipSurface";
+  | "tooltipSurface"
+  | "inlineNoticeSurface";
 
 const OVERFLOW_CONTAINMENT_CLASS: Record<OverflowContainmentVariant, string> = {
   dialogContent: "overflow-x-hidden",
@@ -11,6 +12,7 @@ const OVERFLOW_CONTAINMENT_CLASS: Record<OverflowContainmentVariant, string> = {
   popoverSurface: "overflow-hidden",
   comboboxSurface: "overflow-hidden",
   tooltipSurface: "overflow-hidden",
+  inlineNoticeSurface: "overflow-hidden",
 };
 
 export function overflowContainmentClass(variant: OverflowContainmentVariant): string {

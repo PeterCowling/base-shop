@@ -8,10 +8,10 @@ import {
   duplicateProductInRepo,
   getProductById,
   readRepo,
-  readSettings,
   updateProductInRepo,
   writeRepo,
-} from "@acme/platform-core/repositories/json.server";
+} from "@acme/platform-core/repositories/products.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 
 import { captureException } from "@/utils/sentry.server";
 
@@ -29,14 +29,17 @@ jest.mock("../actions/common/auth", () => ({
   ensureAuthorized: jest.fn(),
 }));
 
-jest.mock("@acme/platform-core/repositories/json.server", () => ({
+jest.mock("@acme/platform-core/repositories/products.server", () => ({
   readRepo: jest.fn(),
   writeRepo: jest.fn(),
-  readSettings: jest.fn(),
   updateProductInRepo: jest.fn(),
   getProductById: jest.fn(),
   duplicateProductInRepo: jest.fn(),
   deleteProductFromRepo: jest.fn(),
+}));
+
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
+  getShopSettings: jest.fn(),
 }));
 
 jest.mock("next/navigation", () => ({
@@ -55,7 +58,7 @@ const ensureAuthorizedMock = ensureAuthorized as jest.Mock;
 const redirectMock = redirect as unknown as jest.Mock;
 const readRepoMock = readRepo as jest.Mock;
 const writeRepoMock = writeRepo as jest.Mock;
-const readSettingsMock = readSettings as jest.Mock;
+const getShopSettingsMock = getShopSettings as jest.Mock;
 const updateProductInRepoMock = updateProductInRepo as jest.Mock;
 const getProductByIdMock = getProductById as jest.Mock;
 const duplicateProductInRepoMock = duplicateProductInRepo as jest.Mock;
@@ -67,7 +70,7 @@ describe("products server actions", () => {
     jest.clearAllMocks();
     readRepoMock.mockResolvedValue([]);
     writeRepoMock.mockResolvedValue(undefined);
-    readSettingsMock.mockResolvedValue({ languages: ["en"] });
+    getShopSettingsMock.mockResolvedValue({ languages: ["en"] });
     updateProductInRepoMock.mockImplementation(async (_shop: string, prod: any) => prod);
     getProductByIdMock.mockResolvedValue({
       id: "p1",
@@ -177,4 +180,3 @@ describe("products server actions", () => {
     expect(result.product?.row_version).toBe(2);
   });
 });
-

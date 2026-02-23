@@ -5,6 +5,20 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 
 import { cn } from "../utils/style";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "./shape-radius";
+
+export interface ScrollBarProps
+  extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> {
+  /** Semantic thumb shape. Ignored when `thumbRadius` is provided. */
+  thumbShape?: PrimitiveShape;
+  /** Explicit thumb radius token override. */
+  thumbRadius?: PrimitiveRadius;
+}
+
 export const ScrollArea = ({
   ref,
   className,
@@ -31,21 +45,33 @@ export const ScrollBar = ({
   ref,
   className,
   orientation = "vertical",
+  thumbShape,
+  thumbRadius,
   ...props
-}: React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> & {
+}: ScrollBarProps & {
   ref?: React.Ref<HTMLDivElement>;
-}) => (
-  <ScrollAreaPrimitive.ScrollAreaScrollbar
-    ref={ref}
-    orientation={orientation}
-    className={cn(
-      "flex touch-none select-none transition-colors",
-      orientation === "vertical" && "h-full w-2.5 border-l border-l-transparent p-[1px]",
-      orientation === "horizontal" && "h-2.5 flex-col border-t border-t-transparent p-[1px]",
-      className,
-    )}
-    {...props}
-  >
-    <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-border" />
-  </ScrollAreaPrimitive.ScrollAreaScrollbar>
-);
+}) => {
+  const thumbShapeRadiusClass = resolveShapeRadiusClass({
+    shape: thumbShape,
+    radius: thumbRadius,
+    defaultRadius: "full",
+  });
+
+  return (
+    <ScrollAreaPrimitive.ScrollAreaScrollbar
+      ref={ref}
+      orientation={orientation}
+      className={cn(
+        "flex touch-none select-none transition-colors",
+        orientation === "vertical" && "h-full w-2.5 border-l border-l-transparent p-[1px]",
+        orientation === "horizontal" && "h-2.5 flex-col border-t border-t-transparent p-[1px]",
+        className,
+      )}
+      {...props}
+    >
+      <ScrollAreaPrimitive.ScrollAreaThumb
+        className={cn("relative flex-1 bg-border", thumbShapeRadiusClass)}
+      />
+    </ScrollAreaPrimitive.ScrollAreaScrollbar>
+  );
+};

@@ -7,5 +7,6 @@ describe("overflowContainmentClass", () => {
     expect(overflowContainmentClass("popoverSurface")).toBe("overflow-hidden");
     expect(overflowContainmentClass("comboboxSurface")).toBe("overflow-hidden");
     expect(overflowContainmentClass("tooltipSurface")).toBe("overflow-hidden");
+    expect(overflowContainmentClass("inlineNoticeSurface")).toBe("overflow-hidden");
   });
 });

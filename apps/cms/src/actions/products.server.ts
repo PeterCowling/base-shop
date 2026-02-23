@@ -6,7 +6,6 @@ import type { ProductForm } from "@cms/actions/schemas";
 import { productSchema } from "@cms/actions/schemas";
 import { ulid } from "ulid";
 
-import { nowIso } from "@acme/date-utils";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import { updateInventoryItem } from "@acme/platform-core/repositories/inventory.server";
 import {
@@ -14,10 +13,10 @@ import {
   duplicateProductInRepo,
   getProductById,
   readRepo,
-  readSettings,
   updateProductInRepo,
   writeRepo,
-} from "@acme/platform-core/repositories/json.server";
+} from "@acme/platform-core/repositories/products.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import { track } from "@acme/telemetry";
 import type { Locale, MediaItem, ProductPublication, PublicationStatus } from "@acme/types";
 
@@ -27,12 +26,14 @@ import { formDataToObject } from "../utils/formData";
 
 import { ensureAuthorized } from "./common/auth";
 
+const nowIso = () => new Date().toISOString();
+
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                    */
 /* -------------------------------------------------------------------------- */
 
 async function getLocales(shop: string): Promise<readonly Locale[]> {
-  const settings = await readSettings(shop);
+  const settings = await getShopSettings(shop);
   return settings.languages;
 }
 /* -------------------------------------------------------------------------- */
@@ -84,7 +85,7 @@ export async function createMinimalFirstProduct(
   await ensureAuthorized();
 
   const now = nowIso();
-  const settings = await readSettings(shop);
+  const settings = await getShopSettings(shop);
   const locales = settings.languages;
   const primaryLocale = locales[0] ?? ("en" as Locale);
 

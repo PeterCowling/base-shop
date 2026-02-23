@@ -73,4 +73,14 @@ describe("CodeBlock copy-to-clipboard", () => {
     // Remains as 'Copy'
     expect(screen.getByRole("button", { name: /copy/i })).toBeInTheDocument();
   });
+
+  it("supports shape/radius overrides", () => {
+    const { container, rerender } = render(<CodeBlock code="const x = 1;" shape="square" />);
+    let pre = container.querySelector("pre");
+    expect(pre).toHaveClass("rounded-none");
+
+    rerender(<CodeBlock code="const x = 1;" shape="square" radius="xl" />);
+    pre = container.querySelector("pre");
+    expect(pre).toHaveClass("rounded-xl");
+  });
 });

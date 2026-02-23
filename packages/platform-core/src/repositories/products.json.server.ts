@@ -4,13 +4,13 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { ulid } from "ulid";
 
-import { nowIso } from "@acme/date-utils";
-
 import { DATA_ROOT } from "../dataRoot";
 import type { ProductPublication } from "../products/index";
 import { validateShopName } from "../shops/index";
 
 import type { ProductsRepository } from "./products.types";
+
+const nowIso = () => new Date().toISOString();
 
 function filePath(shop: string): string {
   shop = validateShopName(shop);

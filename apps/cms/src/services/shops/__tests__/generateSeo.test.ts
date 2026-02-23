@@ -1,7 +1,7 @@
 import { generateMeta } from "@acme/lib/server";
 
 import { authorize, fetchSettings, persistSettings } from "../helpers";
-import { generateSeo } from "../seoService";
+import { generateSeo } from "../seoGenerateService";
 
 jest.mock("../helpers", () => ({
   authorize: jest.fn().mockResolvedValue(undefined),
@@ -10,7 +10,7 @@ jest.mock("../helpers", () => ({
   fetchDiffHistory: jest.fn(),
 }));
 
-jest.mock("@acme/lib", () => ({
+jest.mock("@acme/lib/server", () => ({
   generateMeta: jest.fn(),
 }));
 

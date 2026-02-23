@@ -103,6 +103,42 @@ export const DEFAULT_THEME_CONTRAST_REQUIREMENTS: readonly ThemeContrastRequirem
     label: "Danger foreground on danger surface",
   },
   {
+    foregroundToken: "--color-primary-fg",
+    backgroundToken: "--color-primary-soft",
+    minimumContrast: 4.5,
+    label: "Primary foreground on primary-soft surface",
+  },
+  {
+    foregroundToken: "--color-accent-fg",
+    backgroundToken: "--color-accent-soft",
+    minimumContrast: 4.5,
+    label: "Accent foreground on accent-soft surface",
+  },
+  {
+    foregroundToken: "--color-success-fg",
+    backgroundToken: "--color-success-soft",
+    minimumContrast: 4.5,
+    label: "Success foreground on success-soft surface",
+  },
+  {
+    foregroundToken: "--color-info-fg",
+    backgroundToken: "--color-info-soft",
+    minimumContrast: 4.5,
+    label: "Info foreground on info-soft surface",
+  },
+  {
+    foregroundToken: "--color-warning-fg",
+    backgroundToken: "--color-warning-soft",
+    minimumContrast: 4.5,
+    label: "Warning foreground on warning-soft surface",
+  },
+  {
+    foregroundToken: "--color-danger-fg",
+    backgroundToken: "--color-danger-soft",
+    minimumContrast: 4.5,
+    label: "Danger foreground on danger-soft surface",
+  },
+  {
     foregroundToken: "--color-fg",
     backgroundToken: "--color-primary-soft",
     minimumContrast: 4.5,
@@ -140,6 +176,30 @@ export const DEFAULT_THEME_CONTRAST_REQUIREMENTS: readonly ThemeContrastRequirem
   },
   {
     foregroundToken: "--color-muted-fg",
+    backgroundToken: "--color-bg",
+    minimumContrast: 4.5,
+    label: "Muted text on page background",
+  },
+  {
+    foregroundToken: "--color-muted-fg",
+    backgroundToken: "--surface-1",
+    minimumContrast: 4.5,
+    label: "Muted text on surface-1",
+  },
+  {
+    foregroundToken: "--color-muted-fg",
+    backgroundToken: "--surface-2",
+    minimumContrast: 4.5,
+    label: "Muted text on surface-2",
+  },
+  {
+    foregroundToken: "--color-muted-fg",
+    backgroundToken: "--surface-3",
+    minimumContrast: 4.5,
+    label: "Muted text on surface-3",
+  },
+  {
+    foregroundToken: "--color-muted-fg",
     backgroundToken: "--color-muted",
     minimumContrast: 4.5,
     label: "Muted text on muted surface",
@@ -149,6 +209,24 @@ export const DEFAULT_THEME_CONTRAST_REQUIREMENTS: readonly ThemeContrastRequirem
     backgroundToken: "--color-bg",
     minimumContrast: 4.5,
     label: "Link text on page background",
+  },
+  {
+    foregroundToken: "--color-link",
+    backgroundToken: "--surface-1",
+    minimumContrast: 4.5,
+    label: "Link text on surface-1",
+  },
+  {
+    foregroundToken: "--color-link",
+    backgroundToken: "--surface-2",
+    minimumContrast: 4.5,
+    label: "Link text on surface-2",
+  },
+  {
+    foregroundToken: "--color-link",
+    backgroundToken: "--surface-3",
+    minimumContrast: 4.5,
+    label: "Link text on surface-3",
   },
   {
     foregroundToken: "--ring",

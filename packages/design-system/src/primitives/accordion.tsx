@@ -14,6 +14,12 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 
 import { cn } from "../utils/style";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "./shape-radius";
+
 type AccordionType = "single" | "multiple";
 
 interface AccordionContextValue {
@@ -112,12 +118,18 @@ export function Accordion({
 
 export interface AccordionItemProps extends HTMLAttributes<HTMLDivElement> {
   readonly value: string;
+  /** Semantic container shape. Ignored when `radius` is provided. */
+  readonly shape?: PrimitiveShape;
+  /** Explicit container radius token override. */
+  readonly radius?: PrimitiveRadius;
 }
 
 export const AccordionItem = (
   {
     ref,
     value,
+    shape,
+    radius,
     className,
     children,
     ...props
@@ -127,6 +139,11 @@ export const AccordionItem = (
 ) => {
   const { openValues } = useAccordionContext();
   const isOpen = openValues.includes(value);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
   return (
     <AccordionItemContext value={value}>
       <div
@@ -135,7 +152,8 @@ export const AccordionItem = (
         data-value={value}
         className={cn(
           // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          "rounded-md border border-border-3",
+          "border border-border-3",
+          shapeRadiusClass,
           className,
         )}
         {...props}
@@ -146,7 +164,12 @@ export const AccordionItem = (
   );
 };
 
-export type AccordionTriggerProps = ButtonHTMLAttributes<HTMLButtonElement>;
+export interface AccordionTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  /** Semantic trigger shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit trigger radius token override. */
+  radius?: PrimitiveRadius;
+}
 
 export const AccordionTrigger = (
   {
@@ -154,6 +177,8 @@ export const AccordionTrigger = (
     className,
     children,
     onClick,
+    shape,
+    radius,
     ...props
   }: AccordionTriggerProps & {
     ref?: Ref<HTMLButtonElement>;
@@ -162,6 +187,11 @@ export const AccordionTrigger = (
   const value = useAccordionItemValue();
   const { openValues, toggle } = useAccordionContext();
   const isOpen = openValues.includes(value);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     onClick?.(event);
@@ -178,7 +208,8 @@ export const AccordionTrigger = (
       onClick={handleClick}
       className={cn(
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-        "flex w-full items-center justify-between gap-2 rounded-md px-4 py-2 text-start text-sm font-semibold transition-colors motion-reduce:transition-none",
+        "flex w-full items-center justify-between gap-2 px-4 py-2 text-start text-sm font-semibold transition-colors motion-reduce:transition-none",
+        shapeRadiusClass,
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className,

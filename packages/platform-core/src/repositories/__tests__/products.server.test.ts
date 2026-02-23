@@ -5,7 +5,12 @@ describe("products repository", () => {
 
   beforeEach(() => {
     jest.resetModules();
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
     process.env.DATA_ROOT = "/tmp/data";
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it("readRepo returns empty array when products file is missing", async () => {
@@ -147,7 +152,6 @@ describe("products repository", () => {
       const rename = jest.fn();
       jest.doMock("fs", () => ({ promises: { readFile, writeFile, mkdir, rename } }));
       jest.doMock("ulid", () => ({ ulid: () => "new-id" }));
-      jest.doMock("@acme/date-utils", () => ({ nowIso: () => "2020-01-01T00:00:00Z" }));
       const { duplicateProductInRepo } = await import("../products.server");
       const copy = await duplicateProductInRepo(shop, "1");
       expect(copy).toMatchObject({
@@ -155,8 +159,8 @@ describe("products repository", () => {
         sku: "bcd-copy",
         status: "draft",
         row_version: 1,
-        created_at: "2020-01-01T00:00:00Z",
-        updated_at: "2020-01-01T00:00:00Z",
+        created_at: "2020-01-01T00:00:00.000Z",
+        updated_at: "2020-01-01T00:00:00.000Z",
       });
       const written = JSON.parse(writeFile.mock.calls[0][1] as string);
       expect(written[0]).toEqual(copy);
@@ -177,4 +181,3 @@ describe("products repository", () => {
     });
   });
 });
-

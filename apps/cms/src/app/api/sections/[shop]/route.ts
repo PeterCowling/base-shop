@@ -2,10 +2,11 @@ import { type NextRequest,NextResponse } from "next/server";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 import { ulid } from "ulid";
 
-import { nowIso } from "@acme/date-utils";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import { deleteSection,getSections, saveSection, updateSection } from "@acme/platform-core/repositories/sections/index.server";
 import { pageComponentSchema, type SectionTemplate } from "@acme/types";
+
+const nowIso = () => new Date().toISOString();
 
 export async function GET(
   req: NextRequest,

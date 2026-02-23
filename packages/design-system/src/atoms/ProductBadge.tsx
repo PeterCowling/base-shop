@@ -1,5 +1,10 @@
 import * as React from "react";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 type ProductBadgeColor =
@@ -119,6 +124,10 @@ export interface ProductBadgeProps extends React.HTMLAttributes<HTMLSpanElement>
   tone?: "solid" | "soft";
   /** Size scale */
   size?: "sm" | "md" | "lg";
+  /** Semantic badge shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit badge radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 export const ProductBadge = (
@@ -129,6 +138,8 @@ export const ProductBadge = (
     color,
     tone,
     size = "md",
+    shape,
+    radius,
     className,
     ...props
   }: ProductBadgeProps & {
@@ -137,13 +148,19 @@ export const ProductBadge = (
 ) => {
   const resolvedColor = resolveColor(variant, color);
   const resolvedTone = resolveTone(tone, color);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "sm",
+  });
 
   return (
     <span
       ref={ref}
       data-token={bgToken(resolvedColor, resolvedTone)}
       className={cn(
-        "rounded font-semibold", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+        "font-semibold", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+        shapeRadiusClass,
         SIZE_CLASSES[size],
         (resolvedTone === "solid" ? SOLID_BG : SOFT_BG)[resolvedColor],
         className

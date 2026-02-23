@@ -491,12 +491,6 @@ function advanceActiveParticles(params: {
     const guideDepthRatio = 0.06 + targetRatio * 0.42;
     const guideNoisePx = (hashUnit(index) - 0.5) * 3.2;
     const tyGuide = targetMinY + targetSpan * guideDepthRatio + guideNoisePx;
-    const laneCenterX =
-      options.neckMode === "split"
-        ? tx < options.neckX
-          ? options.neckX - options.neckHalfWidth * options.splitLaneOffsetFactor
-          : options.neckX + options.neckHalfWidth * options.splitLaneOffsetFactor
-        : options.neckX;
 
     if (state.phase === "funneling") {
       const releaseMs = state.releaseMs[index];

@@ -6,11 +6,9 @@ import {
   setEditorialBlog,
   setSanityConfig,
 } from "@acme/platform-core/shops";
-import { verifyCredentials } from "@acme/plugin-sanity";
 import type { Shop } from "@acme/types";
 
 import { ensureAuthorized } from "./common/auth";
-import { setupSanityBlog } from "./setupSanityBlog";
 
 export async function saveSanityConfig(
   shopId: string,
@@ -46,6 +44,7 @@ export async function saveSanityConfig(
   const config = { projectId, dataset, token };
 
   if (createDataset) {
+    const { setupSanityBlog } = await import("./setupSanityBlog");
     const setup = await setupSanityBlog(
       config,
       { enabled: editorialEnabled, ...(promoteSchedule ? { promoteSchedule } : {}) },
@@ -58,6 +57,7 @@ export async function saveSanityConfig(
       };
     }
   } else {
+    const { verifyCredentials } = await import("@acme/plugin-sanity");
     const valid = await verifyCredentials(config);
     if (!valid) {
       return { error: "Invalid Sanity credentials", errorCode: "INVALID_CREDENTIALS" };

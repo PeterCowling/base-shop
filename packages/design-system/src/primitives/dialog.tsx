@@ -7,6 +7,12 @@ import { useTranslations } from "@acme/i18n";
 
 import { cn, overflowContainmentClass } from "../utils/style";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "./shape-radius";
+
 export const Dialog = DialogPrimitive.Root;
 export const DialogTrigger = DialogPrimitive.Trigger;
 
@@ -34,13 +40,27 @@ export const DialogContent = (
     ref,
     className,
     children,
+    closeButtonShape,
+    closeButtonRadius,
     ...props
   }: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
     ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Content>>;
+    /** Semantic close-button shape. Ignored when `closeButtonRadius` is provided. */
+    closeButtonShape?: PrimitiveShape;
+    /** Explicit close-button radius token override. */
+    closeButtonRadius?: PrimitiveRadius;
   }
-) => (<DialogPortal>
-  <DialogOverlay />
-  <DialogPrimitive.Content
+) => {
+  const closeButtonShapeRadiusClass = resolveShapeRadiusClass({
+    shape: closeButtonShape,
+    radius: closeButtonRadius,
+    defaultRadius: "sm",
+  });
+
+  return (
+    <DialogPortal>
+      <DialogOverlay />
+      <DialogPrimitive.Content
       ref={ref}
       className={cn(
         // Shared containment pattern keeps horizontal bleed inside dialog bounds.
@@ -56,13 +76,20 @@ export const DialogContent = (
       {children}
       {/* Relative wrapper ensures absolute close button has a positioned ancestor */}
       <div className="relative"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
-        <DialogPrimitive.Close className="absolute top-4 me-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
+        <DialogPrimitive.Close
+          className={cn(
+            "absolute top-4 me-4 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none",
+            closeButtonShapeRadiusClass,
+          )}
+        > {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
           <Cross2Icon className="h-4 w-4" />
           <DialogCloseLabel />
         </DialogPrimitive.Close>
       </div>
     </DialogPrimitive.Content>
-</DialogPortal>);
+    </DialogPortal>
+  );
+};
 
 export const DialogHeader = ({
   className,

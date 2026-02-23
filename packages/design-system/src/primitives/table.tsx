@@ -104,7 +104,7 @@ export const TableHead = (
 ) => (<th
   ref={ref}
   // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-  className={cn("text-foreground px-4 py-2 font-semibold", className)}
+  className={cn("text-foreground px-4 py-2 font-semibold break-words", className)}
   {...props}
 />);
 
@@ -120,5 +120,9 @@ export const TableCell = (
   }
 ) => (<>
   {/* i18n-exempt: classes only */}
-  <td ref={ref} className={cn("px-4 py-2 align-middle", className)} {...props} />
+  <td
+    ref={ref}
+    className={cn("px-4 py-2 align-middle min-w-0 break-words", className)}
+    {...props}
+  />
 </>);

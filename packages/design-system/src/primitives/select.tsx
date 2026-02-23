@@ -28,6 +28,13 @@ export interface SelectContentProps extends React.ComponentPropsWithoutRef<typeo
   radius?: PrimitiveRadius;
 }
 
+export interface SelectItemProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> {
+  /** Semantic item shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
+}
+
 export const SelectTrigger = (
   {
     ref,
@@ -120,29 +127,44 @@ export const SelectItem = (
     ref,
     className,
     children,
+    shape,
+    radius,
     ...props
-  }: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> & {
+  }: SelectItemProps & {
     ref?: React.Ref<React.ElementRef<typeof SelectPrimitive.Item>>;
   }
-) => (<SelectPrimitive.Item
-  ref={ref}
-  className={cn(
-    "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pe-2 ps-8 text-sm text-fg outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-    "hover:bg-surface-3 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-    className
-  )}
-  {...props}
->
-  {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
-  <span className="relative ms-2 flex h-3.5 w-3.5 items-center justify-center">
-    <span className="absolute inset-0 flex items-center justify-center">
-      <SelectPrimitive.ItemIndicator>
-        <CheckIcon className="h-4 w-4" />
-      </SelectPrimitive.ItemIndicator>
-    </span>
-  </span>
-  <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-</SelectPrimitive.Item>);
+) => {
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "sm",
+  });
+
+  return (
+    <SelectPrimitive.Item
+      ref={ref}
+      className={cn(
+        "relative flex w-full min-w-0 cursor-default select-none items-center py-1.5 pe-2 ps-8 text-sm text-fg outline-none break-words data-[disabled]:pointer-events-none data-[disabled]:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+        shapeRadiusClass,
+        "hover:bg-surface-3 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+        className
+      )}
+      {...props}
+    >
+      {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
+      <span className="relative ms-2 flex h-3.5 w-3.5 items-center justify-center">
+        <span className="absolute inset-0 flex items-center justify-center">
+          <SelectPrimitive.ItemIndicator>
+            <CheckIcon className="h-4 w-4" />
+          </SelectPrimitive.ItemIndicator>
+        </span>
+      </span>
+      <SelectPrimitive.ItemText>
+        <span className="min-w-0 break-words">{children}</span>
+      </SelectPrimitive.ItemText>
+    </SelectPrimitive.Item>
+  );
+};
 
 export const SelectSeparator = (
   {

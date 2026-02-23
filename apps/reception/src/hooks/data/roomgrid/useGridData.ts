@@ -37,6 +37,29 @@ export type TBookingPeriod = TPeriod & {
   color: string; // For UI highlighting
 };
 
+type BookingDateRange = {
+  checkInDate: string;
+  checkOutDate: string;
+};
+
+function hasBookingDateRange(value: unknown): value is BookingDateRange {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as {
+    checkInDate?: unknown;
+    checkOutDate?: unknown;
+  };
+
+  return (
+    typeof candidate.checkInDate === "string" &&
+    candidate.checkInDate.length > 0 &&
+    typeof candidate.checkOutDate === "string" &&
+    candidate.checkOutDate.length > 0
+  );
+}
+
 /**
  * Each row for the Reservation Grid.
  */
@@ -217,25 +240,25 @@ export default function useGridData(startDate: string, endDate: string) {
       });
 
       Object.entries(bookingsData).forEach(([ref, occMap]) => {
-        Object.entries(occMap).forEach(([occId, data]) => {
-          if (guestByRoomData[occId]?.allocated !== room) return;
-
-          if (!data?.checkInDate || !data?.checkOutDate) {
-            console.error("[useGridData] Missing booking dates", {
-              bookingRef: ref,
-              occupantId: occId,
-              checkInDate: data?.checkInDate,
-              checkOutDate: data?.checkOutDate,
-            });
+        Object.entries(occMap as Record<string, unknown>).forEach(([occId, rawData]) => {
+          if (occId.startsWith("__")) {
             return;
           }
+
+          if (guestByRoomData[occId]?.allocated !== room) return;
+
+          if (!hasBookingDateRange(rawData)) {
+            return;
+          }
+
+          const data = rawData;
 
           if (data.checkOutDate < startDate || data.checkInDate > endDate) {
             return;
           }
 
           if (data.checkInDate >= data.checkOutDate) {
-            console.error("[useGridData] Invalid booking date range", {
+            console.warn("[useGridData] Invalid booking date range", {
               bookingRef: ref,
               occupantId: occId,
               checkInDate: data.checkInDate,

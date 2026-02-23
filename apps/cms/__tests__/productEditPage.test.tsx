@@ -18,8 +18,10 @@ jest.mock("next/dynamic", () => {
   MockEditor.displayName = "MockEditor";
   return () => MockEditor;
 });
-const notFound = jest.fn();
-jest.mock("next/navigation", () => ({ notFound }));
+jest.mock("next/navigation", () => ({ notFound: jest.fn() }));
+const { notFound: notFoundMock } = jest.requireMock("next/navigation") as {
+  notFound: jest.Mock;
+};
 
 describe("ProductEditPage", () => {
   it("renders editor when product found", async () => {
@@ -37,6 +39,6 @@ describe("ProductEditPage", () => {
     mockGetProductById.mockResolvedValue(null);
     mockReadSettings.mockResolvedValue({ languages: ["en"] });
     await ProductEditPage({ params: Promise.resolve({ shop: "s1", id: "p1" }) });
-    expect(notFound).toHaveBeenCalled();
+    expect(notFoundMock).toHaveBeenCalled();
   });
 });

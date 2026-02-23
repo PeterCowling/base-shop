@@ -1,7 +1,7 @@
 import { type NextRequest,NextResponse } from "next/server";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 
-import { sendCampaignEmail } from "@acme/email";
+import { sendEmail } from "@acme/email/sendEmail";
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await sendCampaignEmail({ to, subject, html: body });
+    await sendEmail(to, subject, body);
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Failed to send campaign email", err);

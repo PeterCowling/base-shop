@@ -2,8 +2,8 @@
   "name": "@apps/caryina",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack -p 3018",
-    "build": "next build --webpack",
+    "dev": "next dev -p 3018",
+    "build": "next build",
     "start": "next start -p 3018",
     "lint": "eslint . --no-error-on-unmatched-pattern",
     "typecheck": "tsc -p tsconfig.json --noEmit",

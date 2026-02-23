@@ -33,7 +33,7 @@ const RATING_SOURCES: Record<string, RatingSourceMeta> = {
     initials: "B",
     translationKey: "booking",
     defaultLabel: "Booking.com",
-    badgeTextClass: "text-brand-bg",
+    badgeTextClass: "text-brand-bg dark:text-brand-heading",
   },
 };
 

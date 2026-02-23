@@ -2,7 +2,8 @@
   --dur: 900ms;
   --delay: 280ms;
 
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
   position: relative;
 
   font-family: var(--font-cormorant-garamond, "Cormorant Garamond", serif);
@@ -97,10 +98,44 @@
   display: inline-block;
 }
 
+/* Tagline: fades in after the wordmark transformation */
+.tagline {
+  display: block;
+  margin-top: 0.25em;
+
+  font-family: var(--font-dm-sans, "DM Sans", system-ui, sans-serif);
+  font-weight: 400;
+  font-size: 0.55em;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+
+  color: hsl(var(--color-fg-muted, 355 8% 52%));
+
+  opacity: 0;
+  transform: translateY(-0.15em);
+  transition:
+    opacity calc(var(--dur) * 0.6) ease,
+    transform calc(var(--dur) * 0.6) ease;
+  /* Wait for the wordmark animation to finish, then fade in */
+  transition-delay: calc(var(--delay) + var(--dur));
+}
+
+.brand[data-state="to"] .tagline {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Before measurement, hide the tagline too */
+.brand[data-ready="false"] .tagline {
+  opacity: 0;
+  transition: none;
+}
+
 /* Reduced motion: show final state, no transitions */
 @media (prefers-reduced-motion: reduce) {
   .y,
-  .ina {
+  .ina,
+  .tagline {
     transition: none !important;
   }
   .y {
@@ -109,5 +144,9 @@
   }
   .ina {
     transform: translateX(0px) !important;
+  }
+  .tagline {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

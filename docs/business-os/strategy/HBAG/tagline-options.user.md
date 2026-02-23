@@ -3,8 +3,9 @@ Type: Decision
 Stage: Brand Identity
 Business-Unit: HBAG
 Business-Name: Caryina
-Status: Draft
+Status: Decided
 Created: 2026-02-23
+Decided: 2026-02-23
 Owner: Pete
 ---
 
@@ -92,13 +93,43 @@ These existing phrases define the brand voice. The tagline should complement the
 | E2 | Fatto per essere carino. Fatto per restare. | Made to be cute. Made to last. | Parallel structure. Connects "cute" to durability — justifies the €89–€119 price. |
 | E3 | Abbastanza carino da essere notato. | Cute enough to be noticed. | Quiet confidence. Echoes "Made to be noticed — quietly" from the approved variants. |
 
-## Recommendation
+## Decision
 
-No recommendation yet — this is the long list for review.
+### Winner: C4 — "Un solo dettaglio. Quello carino."
 
-## Next Steps
+*One detail. The cute one.*
 
-1. Pete selects 2–3 favourites from the list above
-2. Test the selected options against the live animation (running at `localhost:3018`)
-3. Native Italian speaker review for natural phrasing
-4. Final selection → implement in BrandMark component
+Selected by Pete on 2026-02-23.
+
+### Rationale
+
+**Why it works with the logo reveal:**
+The animation resolves Caryina → Carina (a familiar Italian compliment). The tagline immediately turns that meaning into a product promise without explaining it: there's one detail, and it's the "carino" one. The cadence (two short sentences) lands well in the micro-moment right after the transformation — clean, satisfying payoff.
+
+**Why it's right for the product and the category:**
+Caryina sells structured micro-bag accessories (charms/AirPods holders) that read like real handbags — architectural, hardware-led, designed to be seen. "Dettaglio" frames the product as a finishing touch, not a separate "thing" competing with the bag. It avoids calling the bag itself insufficient; it positions Caryina as the intentional accent.
+
+**Why it nails the single-piece positioning:**
+"Un solo" explicitly encodes the philosophy: one considered piece is enough. This protects the brand from looking like "pile-on charm culture" and aligns with curated restraint. It supports the buying logic: I don't need more — just the right one.
+
+**Why it fits the target customer's psychology:**
+The customer owns premium bags and wants personalization that feels effortless and composed, not try-hard. The line feels like a confident styling rule — editorial, not promotional — which matches fashion-aware behavior. It implicitly gives permission to choose Caryina as the single statement detail, rather than mixing multiple charms.
+
+**Why it matches the brand voice:**
+Direct alignment to existing phrases:
+- "Considered detail." → "Un solo dettaglio."
+- "Made to be shown." → "Quello carino." (the one worth noticing)
+- "Use every day." → restrained, non-seasonal tone; no trend language.
+
+**Italian language notes:**
+Natural, spoken Italian rhythm. "Quello carino" reads as knowing and understated, not childish. Uses "carino" in a way that feels adult and styled (because it's framed as the detail, not the person).
+
+**UI performance:**
+Short enough for mobile headers; easy to read at a glance. Two-sentence structure gives clean typographic hierarchy under the serif logotype. Strong memorability: it's a compact "rule" that users can repeat.
+
+**What it avoids (by design):**
+No "luxury/premium/exclusive" claims. No meta explanation of the wordplay. No implication the bag needs fixing or is less attractive than the accessory. No over-promising; it stays within a believable styling benefit.
+
+## Implementation
+
+Tagline implemented in the BrandMark component (`apps/caryina/src/components/BrandMark/`). Fades in beneath the wordmark after the Caryina → Carina animation completes. Uses DM Sans (body font) at a smaller size to contrast with the Cormorant Garamond wordmark above.

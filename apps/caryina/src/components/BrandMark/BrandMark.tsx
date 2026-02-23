@@ -32,6 +32,12 @@ export type BrandMarkProps = {
 
   /** Accessible label for the logo. */
   ariaLabel?: string;
+
+  /** Tagline displayed beneath the wordmark after animation completes. */
+  tagline?: string;
+
+  /** Set false to hide the tagline. */
+  showTagline?: boolean;
 };
 
 function usePrefersReducedMotion(): boolean {
@@ -66,6 +72,8 @@ export function BrandMark({
   durationMs = 900,
   reserveWidth = "max",
   ariaLabel = "Carina",
+  tagline = "Un solo dettaglio. Quello carino.", // i18n-exempt -- OPS-123 [ttl=2026-12-31] Italian brand tagline, not translatable copy
+  showTagline = true,
 }: BrandMarkProps) {
   const prefersReduced = usePrefersReducedMotion();
 
@@ -230,6 +238,12 @@ export function BrandMark({
         <span data-key="Cari">Cari</span>
         <span data-key="i">i</span>
       </span>
+
+      {showTagline && tagline && (
+        <span className={styles.tagline} aria-hidden="true">
+          {tagline}
+        </span>
+      )}
     </span>
   );
 }

@@ -311,6 +311,7 @@ for pkg_file in "$PKG_MAP"/*; do
     PKG_KEY=$(basename "$pkg_file")
     PKG_TYPE=$(echo "$PKG_KEY" | sed 's/__.*$//')
     PKG_NAME=$(echo "$PKG_KEY" | sed 's/^[^_]*__//' | tr '~' '/')
+    PKG_NAME_SAFE=$(echo "$PKG_NAME" | tr '/' '-')
     PKG_PATH="./${PKG_TYPE}/${PKG_NAME}"
 
     if [ ! -d "$PKG_PATH" ]; then
@@ -438,7 +439,7 @@ for pkg_file in "$PKG_MAP"/*; do
         else
             # Single batched probe: find related tests for ALL source files at once
             # (replaces per-file jest --listTests loop for speed)
-            RELATED_PROBE_LOG="$TMPDIR/validate-related-tests-${PKG_TYPE}-${PKG_NAME}-$$.log"
+            RELATED_PROBE_LOG="$TMPDIR/validate-related-tests-${PKG_TYPE}-${PKG_NAME_SAFE}-$$.log"
             if ! run_jest_exec "$PKG_PATH" --listTests --findRelatedTests $ABS_SOURCE_FILES --passWithNoTests >"$RELATED_PROBE_LOG" 2>&1; then
                 RAW_RELATED="$(cat "$RELATED_PROBE_LOG" 2>/dev/null || true)"
                 rm -f "$RELATED_PROBE_LOG"

@@ -5,16 +5,16 @@ Business-Unit: HBAG
 Business-Name: Caryina
 Status: Active
 Created: 2026-02-21
-Updated: 2026-02-21 (palette revised to pastel — imagery prominence high)
-Last-reviewed: 2026-02-21
+Updated: 2026-02-23 (theme package + app created; tagline decided)
+Last-reviewed: 2026-02-23
 Owner: Pete
-Token-Source: TBD — no theme package exists yet. See Token Overrides § Theme Prerequisites.
+Token-Source: packages/themes/caryina/src/tokens.ts
 Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Caryina — Brand Language
 
-> **Active.** Visual identity confirmed by Pete 2026-02-21. No app or theme package exists yet — see Token Overrides § Theme Prerequisites before running `/lp-design-spec`.
+> **Active.** Visual identity confirmed by Pete 2026-02-21. Theme package (`@themes/caryina`) and app scaffold (`apps/caryina`) created 2026-02-23. Tagline decided 2026-02-23.
 
 ## Audience
 
@@ -140,6 +140,14 @@ Carried forward from ASSESSMENT-10 aesthetic constraints — confirmed by Pete 2
 - **Humour:** None to light and dry — premium positioning; warmth over wit
 - **Technical level:** Some detail expected — dimensions, material composition, and compatibility matter to this buyer; state them clearly without making copy feel like a spec sheet
 
+### Header Tagline
+
+**Un solo dettaglio. Quello carino.** *(One detail. The cute one.)*
+
+Appears beneath the animated wordmark after the Caryina → Carina logo transformation. Decided 2026-02-23. Full rationale: `docs/business-os/strategy/HBAG/tagline-options.user.md`.
+
+The tagline completes the logo reveal: the animation shows the brand name contains "carina" (cute in Italian); the tagline turns that into a product promise — one considered accessory, and it's the cute one. Directly encodes the single-piece positioning ("un solo") and echoes "Considered detail" from the core phrases below.
+
 ### Key Phrases
 
 Three core lines. Use one per asset; use all three for hero layouts.
@@ -211,13 +219,13 @@ Theme package: `packages/themes/caryina/src/tokens.ts` *(not yet created)*
 
 ### Theme Prerequisites
 
-No theme package exists yet for Caryina. Before `/lp-design-spec` can run:
+All prerequisites completed 2026-02-23:
 
-1. Create `packages/themes/caryina/src/tokens.ts` extending `@themes/base`
-2. Apply all token overrides from the table above
-3. Add `Cormorant Garamond` + `DM Sans` to font loading in the app layout
-4. Run `pnpm build:tokens`
-5. Register theme in `packages/themes/index.ts` if applicable
+1. ~~Create `packages/themes/caryina/src/tokens.ts` extending `@themes/base`~~ — Done
+2. ~~Apply all token overrides from the table above~~ — Done (light + dark mode)
+3. ~~Add `Cormorant Garamond` + `DM Sans` to font loading in the app layout~~ — Done (`apps/caryina/src/app/layout.tsx`)
+4. ~~Run `pnpm build:tokens`~~ — Done (`packages/themes/caryina/tokens.css` generated)
+5. ~~Register theme in `packages/themes/index.ts` if applicable~~ — Auto-discovered via workspace glob
 
 ## Signature Patterns
 
@@ -227,7 +235,8 @@ TBD — patterns emerge through `/lp-design-spec` work. First pattern to define:
 
 | App | Theme | Status | Notes |
 |-----|-------|--------|-------|
-| cover-me-pretty | `packages/themes/caryina/` | Planned | App not yet built; theme package to be created before `/lp-design-spec` runs |
+| caryina | `@themes/caryina` | Active | Scaffold created 2026-02-23; BrandMark wordmark + tagline implemented; port 3018 |
+| cover-me-pretty | `@themes/caryina` | Legacy | Pre-rebrand app name; to be evaluated for migration or retirement |
 
 ## References
 

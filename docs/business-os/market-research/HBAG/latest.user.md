@@ -10,7 +10,18 @@ Owner: Pete
 
 # HBAG Market Intelligence — Latest
 
-## MARKET-04 — Channel landscape (current)
+## MARKET-05 — Assumptions and risk register (current)
+
+`docs/business-os/market-research/HBAG/market-05-assumptions-risk-register.user.md`
+
+**Status: Draft** — Created 2026-02-23.
+MARKET-06 unblocked. Three pre-launch blockers: (1) Etsy Italy seller verification + bank payout,
+(2) photography passing "reads €99" perception gate, (3) shipping/duties disclosure architecture
+(US de minimis suspension). Key risks: R-1b (sub-$30 anchor, High likelihood), R-3a (US duties,
+High likelihood), R-4a (photography gate, blocks launch). H2 €89 is Medium–Low confidence —
+treat as bundle/frame test rather than standalone price assumption.
+
+## MARKET-04 — Channel landscape
 
 `docs/business-os/market-research/HBAG/market-04-channel-landscape.user.md`
 
@@ -60,5 +71,7 @@ for H1/H2 market signals; now supplemented by MARKET-01 and MARKET-02 above.
 
 ## Next action
 
-MARKET-05 (Assumptions and risk register) — run prompt at:
-`docs/business-os/market-research/HBAG/market-05-assumptions-risk-register-prompt.md` (to be created)
+MARKET-01 through MARKET-05 complete. Pre-offer intelligence track is done.
+MARKET-06 (Offer design) is unblocked — use `/lp-offer --business HBAG`.
+Note: HBAG offer already backfilled at `docs/business-os/startup-baselines/HBAG-offer.md`;
+review and refresh against MARKET-01–05 findings before advancing to S4.

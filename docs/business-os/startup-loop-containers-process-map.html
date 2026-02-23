@@ -544,13 +544,14 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
   color: #d29922;
 }
 
-/* ── CROSS-STREAM BEZIER CONNECTOR ── */
+/* ── CROSS-STREAM CONNECTOR PATHS ── */
 .cs-path {
   fill: none;
-  stroke: #d29922;
   stroke-width: 2;
   stroke-dasharray: 6, 3;
 }
+.cs-path-1 { stroke: #f59e0b; }  /* amber  — MARKET-01 → PRODUCTS-02 */
+.cs-path-2 { stroke: #22d3ee; }  /* cyan   — MARKET-03 → PRODUCTS-04 */
 .cs-label {
   font-size: 10px;
   font-weight: 700;
@@ -942,7 +943,7 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
             <div class="sname">Competitor Product Scan</div>
             <div class="sproduce">What competitors sell and at what price points</div>
             <div class="sfrom"><span class="sfrom-live">&#x21BA; Informed by</span> MARKET-01 competitor map &mdash; run after MARKET-01 where possible</div>
-            <div class="sync-gate">&#x21E6; Sync point &mdash; wait for MARKET-01</div>
+            <div class="sync-gate" style="color:#f59e0b;background:rgba(245,158,11,0.10);border-color:rgba(245,158,11,0.28)">&#x21E6; Sync point &mdash; wait for MARKET-01</div>
             <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
           </div>
           <div class="stage conditional">
@@ -961,7 +962,7 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
             <div class="sname">Bundle &amp; Packaging Hypotheses</div>
             <div class="sproduce">Ideas for product bundles or packaging changes worth testing</div>
             <div class="sfrom"><span class="sfrom-live">&#x21BA; Informed by</span> MARKET-03 pricing benchmarks &mdash; run after MARKET-03 where possible</div>
-            <div class="sync-gate">&#x21E6; Sync point &mdash; wait for MARKET-03</div>
+            <div class="sync-gate" style="color:#22d3ee;background:rgba(34,211,238,0.10);border-color:rgba(34,211,238,0.28)">&#x21E6; Sync point &mdash; wait for MARKET-03</div>
             <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
           </div>
           <div class="stage conditional">
@@ -1078,19 +1079,25 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
 
   </div><!-- end lane-container -->
 
-  <!-- SVG cross-stream dependency connectors (bezier S-curves) -->
+  <!-- SVG cross-stream dependency connectors -->
   <svg class="lane-arrows-svg" id="laneArrowsSvg" aria-hidden="true">
     <defs>
-      <marker id="cs-arrow" markerWidth="10" markerHeight="8" refX="9" refY="4"
+      <!-- Amber arrowhead — MARKET-01 → PRODUCTS-02 -->
+      <marker id="cs-arrow-1" markerWidth="10" markerHeight="8" refX="9" refY="4"
               orient="auto" markerUnits="userSpaceOnUse">
-        <path d="M0,1 L0,7 L9,4 z" fill="#d29922" />
+        <path d="M0,1 L0,7 L9,4 z" fill="#f59e0b" />
+      </marker>
+      <!-- Cyan arrowhead — MARKET-03 → PRODUCTS-04 -->
+      <marker id="cs-arrow-2" markerWidth="10" markerHeight="8" refX="9" refY="4"
+              orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0,1 L0,7 L9,4 z" fill="#22d3ee" />
       </marker>
     </defs>
-    <!-- MARKET-01 → PRODUCTS-02: competitor map informs product scan -->
-    <path id="arrow-m01-p02" class="cs-path" marker-end="url(#cs-arrow)" d="" />
+    <!-- MARKET-01 → PRODUCTS-02 (amber — left track in gap) -->
+    <path id="arrow-m01-p02" class="cs-path cs-path-1" marker-end="url(#cs-arrow-1)" d="" />
     <text id="label-m01-p02" class="cs-label"></text>
-    <!-- MARKET-03 → PRODUCTS-04: pricing benchmarks inform bundle hypotheses -->
-    <path id="arrow-m03-p04" class="cs-path" marker-end="url(#cs-arrow)" d="" />
+    <!-- MARKET-03 → PRODUCTS-04 (cyan — right track in gap) -->
+    <path id="arrow-m03-p04" class="cs-path cs-path-2" marker-end="url(#cs-arrow-2)" d="" />
     <text id="label-m03-p04" class="cs-label"></text>
   </svg>
 
@@ -1576,10 +1583,10 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
     var pairs = [
       { pathId: 'arrow-m01-p02', labelId: 'label-m01-p02',
         srcId: 'stage-market-01', tgtId: 'stage-products-02',
-        label: 'Competitor map \u2192 product scan' },
+        trackFrac: 0.33 },   /* amber — left track in gap */
       { pathId: 'arrow-m03-p04', labelId: 'label-m03-p04',
         srcId: 'stage-market-03', tgtId: 'stage-products-04',
-        label: 'Pricing benchmarks \u2192 bundle ideas' }
+        trackFrac: 0.67 }    /* cyan  — right track in gap */
     ];
 
     pairs.forEach(function(pair) {
@@ -1606,7 +1613,8 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
       var y1   = (srcRect.top  + srcRect.bottom)  / 2 - containerRect.top;
       var x2   = tgtLaneRect.left  - containerRect.left;
       var y2   = (tgtRect.top  + tgtRect.bottom)  / 2 - containerRect.top;
-      var xmid = (x1 + x2) / 2;
+      /* Each connector gets its own vertical track — fraction of the gap width */
+      var xmid = x1 + (x2 - x1) * pair.trackFrac;
 
       /* Orthogonal elbow with rounded corners, contained within the gap */
       var r  = 5;

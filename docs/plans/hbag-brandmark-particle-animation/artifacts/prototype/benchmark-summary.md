@@ -1,3 +1,10 @@
+---
+Type: Reference
+Status: Active
+Domain: Repo
+Last-reviewed: 2026-02-23
+---
+
 # Prototype Benchmark Summary
 
 Generated: 2026-02-23T11:29:32.021Z

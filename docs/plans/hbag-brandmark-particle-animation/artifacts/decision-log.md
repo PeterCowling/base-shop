@@ -1,3 +1,10 @@
+---
+Type: Reference
+Status: Active
+Domain: Repo
+Last-reviewed: 2026-02-23
+---
+
 # Decision Log
 
 ## 2026-02-23 - Test Harness Decision
@@ -29,3 +36,15 @@
   - `docs/plans/hbag-brandmark-particle-animation/artifacts/prototype/benchmark-results.json`
   - `docs/plans/hbag-brandmark-particle-animation/artifacts/prototype/benchmark-summary.md`
 - Required follow-up: Real-device iPhone Safari and Android Chrome validation remains a planned execution task.
+
+## 2026-02-23 - Motion Defaults Decision (Operator Approved)
+
+- Decision: Approve Option C for implementation baseline.
+  - Primary -> accent color drift during dissolve/settle phases.
+  - Animation remains enabled across viewport sizes with adaptive particle cap.
+  - Hover replay uses abbreviated variant (fine-pointer devices only).
+- Decision owner: Pete (operator), confirmed via `proceed` instruction.
+- Why: Preserves the brand moment on mobile while keeping density/performance controls and avoids hidden engineering assumptions.
+- Implementation impact:
+  - Unblocks TASK-03 integration branches and TASK-04 validation assertions.
+  - Removes `Needs-Input` gate from plan execution.

@@ -1,3 +1,10 @@
+---
+Type: Reference
+Status: Active
+Domain: Repo
+Last-reviewed: 2026-02-23
+---
+
 # Critique History: hbag-brandmark-particle-animation
 
 ## Round 1 -- 2026-02-23

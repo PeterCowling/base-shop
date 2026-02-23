@@ -5,6 +5,7 @@ import React from "react";
 import styles from "./BrandMark.module.css";
 import {
   createParticleEngine,
+  type ParticleEngineState,
   type ParticlePhase,
   type ParticlePoint,
 } from "./particleEngine";
@@ -19,6 +20,13 @@ type ParticleTimings = {
   funnelEndMs: number;
   settleEndMs: number;
   completeMs: number;
+};
+
+type ParticleTargetBounds = {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
 };
 
 type Metrics = {
@@ -273,14 +281,76 @@ function buildParticleTimings(mode: Trigger): ParticleTimings {
   };
 }
 
+function resolveParticleTargetBounds(
+  points: ParticlePoint[],
+  fallback: ParticleTargetBounds
+): ParticleTargetBounds {
+  if (points.length === 0) {
+    return fallback;
+  }
+
+  let left = points[0].x;
+  let right = points[0].x;
+  let top = points[0].y;
+  let bottom = points[0].y;
+
+  for (let index = 1; index < points.length; index += 1) {
+    const point = points[index];
+    if (point.x < left) left = point.x;
+    if (point.x > right) right = point.x;
+    if (point.y < top) top = point.y;
+    if (point.y > bottom) bottom = point.y;
+  }
+
+  return { left, right, top, bottom };
+}
+
+function computeTaglineRevealFromParticles(params: {
+  state: ParticleEngineState;
+  targetBounds: ParticleTargetBounds;
+}): number {
+  const { state, targetBounds } = params;
+  if (state.phase === "done") {
+    return 1;
+  }
+  if (state.phase !== "settling") {
+    return 0;
+  }
+
+  const horizontalPadding = 6;
+  const minX = targetBounds.left - horizontalPadding;
+  const maxX = targetBounds.right + horizontalPadding;
+  let flowFrontY = Number.NEGATIVE_INFINITY;
+
+  for (let index = 0; index < state.particleCount; index += 1) {
+    if (state.active[index] !== 1) continue;
+    if (state.settled[index] !== 1) continue;
+    const x = state.x[index];
+    const y = state.y[index];
+    if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+    if (x < minX || x > maxX) continue;
+    if (y > flowFrontY) flowFrontY = y;
+  }
+
+  if (!Number.isFinite(flowFrontY)) {
+    return 0;
+  }
+
+  const span = Math.max(1, targetBounds.bottom - targetBounds.top);
+  return clamp((flowFrontY - targetBounds.top) / span, 0, 1);
+}
+
 function buildParticlePoints(
   tagline: string,
   rootRect: DOMRect,
   yRect: DOMRect,
   taglineRect: DOMRect,
-  yElement: HTMLSpanElement,
   taglineElement: HTMLSpanElement
-): { sourcePoints: ParticlePoint[]; targetPoints: ParticlePoint[] } {
+): {
+  sourcePoints: ParticlePoint[];
+  targetPoints: ParticlePoint[];
+  targetBounds: ParticleTargetBounds;
+} {
   const taglineStyle = window.getComputedStyle(taglineElement);
 
   const targetSample = sampleTextPixels({
@@ -330,7 +400,14 @@ function buildParticlePoints(
     return { x, y };
   });
 
-  return { sourcePoints, targetPoints };
+  const targetBounds = resolveParticleTargetBounds(targetPoints, {
+    left: targetOffsetX,
+    right: targetOffsetX + Math.max(1, taglineRect.width),
+    top: targetOffsetY,
+    bottom: targetOffsetY + Math.max(1, taglineRect.height),
+  });
+
+  return { sourcePoints, targetPoints, targetBounds };
 }
 
 async function runParticleAnimation(params: {
@@ -401,21 +478,22 @@ async function runParticleAnimation(params: {
   context.setTransform(dpr, 0, 0, dpr, 0, 0);
   context.clearRect(0, 0, cssWidth, cssHeight);
 
-  const { sourcePoints, targetPoints } = buildParticlePoints(
+  const { sourcePoints, targetPoints, targetBounds } = buildParticlePoints(
     tagline,
     rootRect,
     yRect,
     taglineRect,
-    yElement,
     taglineElement
   );
 
   const area = cssWidth * cssHeight;
-  const densityCap = clamp(Math.round(area / 22), 260, 1400);
+  const densityCap = clamp(Math.round(area / 14), 420, 1800);
   const requiredForTagline = targetPoints.length;
-  let particleCount = clamp(requiredForTagline, 220, densityCap);
-  if (window.innerWidth < 480) {
-    particleCount = clamp(requiredForTagline, 200, 960);
+  let particleCount = clamp(requiredForTagline, 360, densityCap);
+  if (window.innerWidth < 360) {
+    particleCount = clamp(requiredForTagline, 220, 900);
+  } else if (window.innerWidth < 480) {
+    particleCount = clamp(requiredForTagline, 280, 1200);
   }
 
   const timings = buildParticleTimings(mode);
@@ -426,6 +504,10 @@ async function runParticleAnimation(params: {
     particleCount,
     sourcePoints,
     targetPoints,
+    sourceJitterPx: 1.1,
+    gravity: 145,
+    attractorStrength: 11.8,
+    funnelStrength: 1.42,
     baselineY,
     neckX,
     neckHalfWidth: Math.max(8, yRect.width * 0.25),
@@ -459,12 +541,10 @@ async function runParticleAnimation(params: {
     const next = engine.tick(deltaMs);
     setParticleVisualState(next.phase);
 
-    const reveal =
-      next.phase === "settling"
-        ? clamp(next.settledCount / Math.max(1, next.particleCount), 0, 1)
-        : next.phase === "done"
-          ? 1
-          : 0;
+    const reveal = computeTaglineRevealFromParticles({
+      state: next,
+      targetBounds,
+    });
     root.style.setProperty("--tagline-reveal", reveal.toFixed(3));
 
     context.clearRect(0, 0, cssWidth, cssHeight);

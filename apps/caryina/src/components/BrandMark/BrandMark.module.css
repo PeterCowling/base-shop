@@ -127,33 +127,43 @@
 
   color: hsl(var(--color-fg-muted, 355 8% 52%));
 
-  opacity: var(--tagline-reveal, 1);
-  transform: translateY(calc((1 - var(--tagline-reveal, 1)) * -0.15em));
-  transition:
-    opacity 160ms linear,
-    transform 180ms ease;
+  opacity: 1;
+  clip-path: inset(
+    0
+    0
+    calc((1 - var(--tagline-reveal, 1)) * 100%)
+    0
+  );
+  transition: opacity 120ms linear;
+  will-change: clip-path;
 }
 
 .brand[data-particle-state="idle"] .tagline,
 .brand[data-particle-state="dissolving"] .tagline,
 .brand[data-particle-state="funneling"] .tagline {
   opacity: 0;
-  transform: translateY(-0.15em);
+  clip-path: inset(0 0 100% 0);
 }
 
 .brand[data-particle-state="settling"] .tagline {
-  opacity: var(--tagline-reveal, 0);
-  transform: translateY(calc((1 - var(--tagline-reveal, 0)) * -0.15em));
+  opacity: 1;
+  clip-path: inset(
+    0
+    0
+    calc((1 - var(--tagline-reveal, 0)) * 100%)
+    0
+  );
 }
 
 .brand[data-particle-state="done"] .tagline {
   opacity: 1;
-  transform: translateY(0);
+  clip-path: inset(0 0 0 0);
 }
 
 /* Before measurement, hide the tagline too */
 .brand[data-ready="false"] .tagline {
   opacity: 0;
+  clip-path: inset(0 0 100% 0);
   transition: none;
 }
 

@@ -238,22 +238,45 @@ function clampParticlePosition(params: {
   return { x, y, vx, vy };
 }
 
+function resolveTargetYRange(points: ParticlePoint[]): { minY: number; maxY: number } {
+  if (points.length === 0) {
+    return { minY: 0, maxY: 1 };
+  }
+
+  let minY = points[0].y;
+  let maxY = points[0].y;
+  for (let index = 1; index < points.length; index += 1) {
+    const pointY = points[index].y;
+    if (pointY < minY) minY = pointY;
+    if (pointY > maxY) maxY = pointY;
+  }
+
+  return { minY, maxY };
+}
+
 function computeReleaseDelayMs(params: {
-  sourceY: number;
-  baselineY: number;
+  targetY: number;
+  targetMinY: number;
+  targetMaxY: number;
   dissolveEndMs: number;
+  funnelEndMs: number;
   random: () => number;
 }): number {
-  const { sourceY, baselineY, dissolveEndMs, random } = params;
-  const verticalSpan = 62;
-  const normalized = clamp(
-    (sourceY - (baselineY - verticalSpan)) / Math.max(1, verticalSpan),
-    0,
-    1,
-  );
-  const directional = normalized * dissolveEndMs * 0.75;
-  const jitter = random() * dissolveEndMs * 0.25;
-  return directional + jitter;
+  const {
+    targetY,
+    targetMinY,
+    targetMaxY,
+    dissolveEndMs,
+    funnelEndMs,
+    random,
+  } = params;
+  const span = Math.max(1, targetMaxY - targetMinY);
+  const normalized = clamp((targetY - targetMinY) / span, 0, 1);
+  const stagedBase = dissolveEndMs * 0.08;
+  const releaseWindow = Math.max(140, (funnelEndMs - dissolveEndMs) * 0.82);
+  const directional = normalized * releaseWindow;
+  const jitter = random() * Math.max(12, dissolveEndMs * 0.12);
+  return stagedBase + directional + jitter;
 }
 
 function shouldActivateParticle(state: ParticleEngineState, index: number): boolean {
@@ -299,6 +322,7 @@ export function createParticleEngine(options: ParticleEngineOptions): ParticleEn
   const initializeParticles = () => {
     const source = normalizePoints(resolvedOptions.sourcePoints, fallbackPoint);
     const target = normalizePoints(resolvedOptions.targetPoints, source);
+    const targetYRange = resolveTargetYRange(target);
 
     state.phase = "dissolving";
     state.elapsedMs = 0;
@@ -322,9 +346,11 @@ export function createParticleEngine(options: ParticleEngineOptions): ParticleEn
       state.tx[index] = targetPoint.x;
       state.ty[index] = targetPoint.y;
       state.releaseMs[index] = computeReleaseDelayMs({
-        sourceY: sourcePoint.y,
-        baselineY: resolvedOptions.baselineY,
+        targetY: targetPoint.y,
+        targetMinY: targetYRange.minY,
+        targetMaxY: targetYRange.maxY,
         dissolveEndMs: resolvedOptions.dissolveEndMs,
+        funnelEndMs: resolvedOptions.funnelEndMs,
         random,
       });
       state.active[index] = 0;
@@ -408,6 +434,14 @@ export function createParticleEngine(options: ParticleEngineOptions): ParticleEn
         neckMin,
         neckMax,
       });
+
+      if (state.phase === "funneling") {
+        const tx = state.tx[index];
+        const ty = state.ty[index];
+        const guideStrength = resolvedOptions.attractorStrength * 0.42;
+        vx += (tx - x) * guideStrength * 0.22 * dtSec;
+        vy += (ty - y) * guideStrength * dtSec;
+      }
 
       if (state.phase === "settling") {
         const tx = state.tx[index];

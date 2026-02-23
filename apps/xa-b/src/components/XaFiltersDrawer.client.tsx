@@ -5,7 +5,6 @@ import * as React from "react";
 
 import { Button, Checkbox, Input, OverlayScrim } from "@acme/design-system/atoms";
 import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
-import { Inline } from "@acme/design-system/primitives/Inline";
 import {
   Drawer,
   DrawerContent,
@@ -14,6 +13,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@acme/design-system/primitives/drawer";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 import {
   formatLabel,

@@ -1179,6 +1179,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:** OPP-12: local SEO; "hostel positano" queries likely show Maps/local pack above organic
 - **Build completion evidence (2026-02-23):**
   - Artifact created: `docs/plans/brikette-seo-traffic-growth/task-16-gbp-audit.md` with Red/Green/Refactor checklist, repo photo shortlist, description/post drafts, VC-03 scoring rubric, and screenshot evidence contract.
+  - Upload-ready photo pack prepared for GBP ops: `/Users/petercowling/Downloads/task-16-gbp-photo-pack-2026-02-23` (12 files, jpg/png) to remove conversion friction during manual execution.
   - Task remains blocked pending authenticated GBP owner actions (photo uploads, description save, Q&A responses, post publish) and reviewer sign-off evidence in the artifact.
 
 ---

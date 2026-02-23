@@ -2592,7 +2592,11 @@ importers:
         specifier: ^3.25.73
         version: 3.25.73
 
-  scripts: {}
+  scripts:
+    dependencies:
+      js-yaml:
+        specifier: 4.1.1
+        version: 4.1.1
 
   tools/vscode-mcp-server:
     dependencies:

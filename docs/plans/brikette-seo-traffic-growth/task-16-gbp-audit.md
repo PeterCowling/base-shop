@@ -14,18 +14,44 @@ Status: **Blocked (awaiting operator GBP dashboard execution + screenshots)**
 
 This artifact is execution-ready, but completion requires authenticated owner actions inside Google Business Profile that cannot be performed from repo-only context.
 
+## Prepared Assets (Ready Now)
+
+Upload-ready photo pack (prepared on 2026-02-23):
+
+- Folder: `/Users/petercowling/Downloads/task-16-gbp-photo-pack-2026-02-23`
+- Includes 12 files (`.jpg`/`.png`) already suitable for GBP upload
+- File index: `/Users/petercowling/Downloads/task-16-gbp-photo-pack-2026-02-23/README.txt`
+
+Suggested upload set (minimum 10): `01` through `10` from that folder.
+
+## Fast Execution Sequence (Operator)
+
+1. Open GBP manager for Hostel Brikette and capture baseline screenshots (`01` to `06` evidence files).
+2. Upload at least 10 photos from `/Users/petercowling/Downloads/task-16-gbp-photo-pack-2026-02-23`.
+3. Update business description using the draft below; capture `08-description-after.png`.
+4. Review Q&A and answer unresolved high-intent items; capture `09-qna-after.png`.
+5. Publish one GBP post using the draft below; capture `10-post-published.png`.
+6. Save all screenshots in `docs/plans/brikette-seo-traffic-growth/artifacts/task-16-gbp-audit/`.
+7. Fill the VC-03 scorecard and complete reviewer sign-off at the bottom of this file.
+
 ## Red — Baseline Capture (Before Any Edits)
 
 Complete these fields first and attach screenshots in `docs/plans/brikette-seo-traffic-growth/artifacts/task-16-gbp-audit/`.
 
+Operator baseline update (from dashboard screenshot, 2026-02-23):
+- Total photos: `20`
+- Q&A: `13` (needs confirmation whether this is total questions vs unanswered)
+- Posts in last 30 days: `0`
+- Contact info: `Correct`
+
 | Baseline check | Current state (fill) | Evidence screenshot filename |
 |---|---|---|
-| Primary category includes `Hostel` |  | `01-category-baseline.png` |
-| Business description currently contains `hostel positano` and `amalfi coast` |  | `02-description-baseline.png` |
-| Total photos currently live |  | `03-photos-baseline.png` |
-| Unanswered Q&A count |  | `04-qna-baseline.png` |
-| Posts published in last 30 days |  | `05-posts-baseline.png` |
-| Phone, website, and address are correct |  | `06-contact-baseline.png` |
+| Primary category includes `Hostel` | `Yes` (visible as "Hostel in Positano") | `01-category-baseline.png` |
+| Business description currently contains `hostel positano` and `amalfi coast` | `Pending verification in Edit profile -> Business description` | `02-description-baseline.png` |
+| Total photos currently live | `20` | `03-photos-baseline.png` |
+| Unanswered Q&A count | `13` (confirm unanswered vs total) | `04-qna-baseline.png` |
+| Posts published in last 30 days | `0` | `05-posts-baseline.png` |
+| Phone, website, and address are correct | `Yes` (operator confirmed) | `06-contact-baseline.png` |
 
 ## Green — Required Changes
 
@@ -115,4 +141,3 @@ Reviewer: **Peter Cowling**
 
 Approval timestamp: `____________________`  
 Reviewer note: `____________________`
-

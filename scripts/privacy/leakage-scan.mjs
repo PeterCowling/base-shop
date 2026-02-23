@@ -4,9 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const DEFAULT_TARGETS = [
-  "apps/xa/wrangler.toml",
   "apps/xa-b/wrangler.toml",
-  "apps/xa-j/wrangler.toml",
 ];
 
 const BUILTIN_DENYLIST = ["thestylemarket.shop"];
@@ -162,17 +160,6 @@ async function main() {
   const publicPatterns = [...BUILTIN_DENYLIST, ...cliDenylist].filter(Boolean);
 
   const targets = cliPaths.length ? cliPaths : [...DEFAULT_TARGETS];
-  const xaBuildVercelOutput = "apps/xa/.vercel/output/static";
-  const xaBuildNextOutput = "apps/xa/.next";
-  const vercelStats = await statSafe(path.resolve(xaBuildVercelOutput));
-  if (vercelStats?.isDirectory()) {
-    targets.push(xaBuildVercelOutput);
-  } else {
-    const nextStats = await statSafe(path.resolve(xaBuildNextOutput));
-    if (nextStats?.isDirectory()) {
-      targets.push(xaBuildNextOutput);
-    }
-  }
 
   const files = [];
   const seen = new Set();

@@ -5,7 +5,7 @@ Business-Unit: HBAG
 Business-Name: Caryina
 Status: Active
 Created: 2026-02-21
-Updated: 2026-02-23 (theme package + app created; tagline decided)
+Updated: 2026-02-23
 Last-reviewed: 2026-02-23
 Owner: Pete
 Token-Source: packages/themes/caryina/src/tokens.ts
@@ -14,7 +14,7 @@ Review-trigger: After each completed build cycle touching this document.
 
 # Caryina — Brand Language
 
-> **Active.** Visual identity confirmed by Pete 2026-02-21. Theme package (`@themes/caryina`) and app scaffold (`apps/caryina`) created 2026-02-23. Tagline decided 2026-02-23.
+> **Active.** ASSESSMENT-12 promotion completed 2026-02-23 after dossier completeness validation.
 
 ## Audience
 
@@ -193,29 +193,52 @@ Three core lines. Use one per asset; use all three for hero layouts.
 
 ## Token Overrides
 
-Theme package: `packages/themes/caryina/src/tokens.ts` *(not yet created)*
+Theme package: `packages/themes/caryina/src/tokens.ts`
 
-**Tokens that differ from base:**
+**Tokens that differ from base (light mode):**
 
 | Token | Base Value | Override Value | Reason |
 |-------|-----------|----------------|--------|
 | `--color-primary` | `220 90% 56%` (blue) | `355 55% 75%` | Strawberry milk — warm soft pink; pastel-light but present; feminine and confident |
 | `--color-primary-fg` | `0 0% 100%` | `355 12% 20%` | Warm near-black with pink undertone; WCAG AA on strawberry milk |
-| `--color-primary-soft` | `220 90% 94%` | `355 40% 96%` | Barely-there strawberry tint |
-| `--color-primary-hover` | `220 90% 48%` | `355 55% 68%` | Deeper strawberry milk on hover |
-| `--color-primary-active` | `220 90% 40%` | `355 55% 61%` | Pressed strawberry state |
-| `--color-accent` | `262 83% 58%` (purple) | `130 18% 72%` | Light warm sage — pastel sage; clearly green; warm hue (130°) harmonises with strawberry milk; recessive at 72% lightness |
-| `--color-accent-fg` | `0 0% 100%` | `130 20% 18%` | Dark on warm sage for legibility |
-| `--color-accent-soft` | `262 83% 94%` | `130 15% 95%` | Barely-there warm sage tint |
+| `--color-primary-soft` | `220 90% 96%` | `355 40% 96%` | Barely-there strawberry tint |
+| `--color-primary-hover` | `220 90% 50%` | `355 55% 68%` | Deeper strawberry milk on hover |
+| `--color-primary-active` | `220 90% 45%` | `355 55% 61%` | Pressed strawberry state |
+| `--color-accent` | `260 83% 70%` | `130 18% 72%` | Light warm sage — pastel sage; clearly green; warm hue (130°) harmonises with strawberry milk; recessive at 72% lightness |
+| `--color-accent-fg` | `0 0% 10%` | `130 20% 18%` | Dark on warm sage for legibility |
+| `--color-accent-soft` | `260 83% 97%` | `130 15% 95%` | Barely-there warm sage tint |
 | `--color-bg` | `0 0% 100%` | `38 18% 98%` | Warm ivory — same 38° hue family as accent; unified warmth |
-| `--color-fg` | `222 47% 11%` | `355 12% 20%` | Warm near-black with pink undertone; consistent with primary-fg |
-| `--color-fg-muted` | `215 16% 47%` | `355 8% 52%` | Warm blush grey |
-| `--color-border` | `214 32% 91%` | `355 12% 90%` | Soft blush border |
-| `--color-border-muted` | `210 40% 96%` | `355 8% 95%` | Near-invisible warm blush divider |
-| `--font-sans` | Inter | DM Sans | Humanist sans better suited to fashion/lifestyle register |
+| `--color-fg` | `0 0% 10%` | `355 12% 20%` | Warm near-black with pink undertone; consistent with primary-fg |
+| `--color-fg-muted` | `0 0% 40%` | `355 8% 52%` | Warm blush grey |
+| `--color-border` | `0 0% 80%` | `355 12% 90%` | Soft blush border |
+| `--color-border-muted` | `0 0% 88%` | `355 8% 95%` | Near-invisible warm blush divider |
+| `--color-border-strong` | `0 0% 65%` | `355 15% 78%` | Emphasis borders/focus rings in warm blush family |
+| `--color-surface` | `N/A (new token required)` | `0 0% 100%` | Explicit card surface token for the discovery doc + card treatments |
+| `--font-sans` | `var(--font-geist-sans)` | `var(--font-dm-sans)` | Humanist sans better suited to fashion/lifestyle register |
+| `--font-heading` | `N/A (new token required)` | `var(--font-cormorant-garamond)` | Editorial heading family for premium fashion register |
+| `--radius-sm` | `4px` | `2px` | Tighter chip/badge corners for curated look |
 | `--radius-md` | `8px` | `4px` | Restrained radius aligns with "curated, not cluttered" |
+| `--radius-lg` | `12px` | `8px` | Keeps larger surfaces soft without becoming bubbly |
 
-**Dark mode:** Inherits base dark tokens at launch. Bespoke dark overrides deferred.
+**Dark mode overrides (tokens that differ from base dark):**
+
+| Token | Base Dark Value | Override Value | Reason |
+|-------|-----------------|----------------|--------|
+| `--color-bg` | `0 0% 4%` | `355 14% 10%` | Warm rose-espresso base instead of neutral black |
+| `--color-fg` | `0 0% 93%` | `355 8% 92%` | Keep foreground warm in the same hue family |
+| `--color-fg-muted` | `0 0% 75%` | `355 6% 55%` | Mid rose-grey for muted text hierarchy |
+| `--color-border` | `0 0% 30%` | `355 10% 22%` | Warm-toned dark dividers |
+| `--color-border-muted` | `0 0% 22%` | `355 8% 18%` | Subtle dark border tint |
+| `--color-border-strong` | `0 0% 45%` | `355 12% 32%` | Stronger border in the same warm family |
+| `--color-primary` | `220 90% 66%` | `355 55% 75%` | Maintain Strawberry Milk as unchanged brand anchor |
+| `--color-primary-fg` | `0 0% 10%` | `355 14% 10%` | Foreground on primary aligned with dark background tone |
+| `--color-primary-soft` | `220 90% 18%` | `355 30% 22%` | Dark strawberry tint for chips/badges |
+| `--color-primary-hover` | `220 90% 72%` | `355 55% 82%` | Lightened hover state with brand hue consistency |
+| `--color-primary-active` | `220 90% 78%` | `355 55% 85%` | Pressed state tuned for dark context |
+| `--color-accent` | `260 83% 70%` | `130 18% 62%` | Slightly richer sage for dark readability |
+| `--color-accent-fg` | `0 0% 10%` | `130 15% 88%` | Legible foreground on dark sage accent surfaces |
+| `--color-accent-soft` | `260 83% 20%` | `130 14% 18%` | Dark sage tint for low-emphasis accent surfaces |
+| `--color-surface` | `N/A (new token required)` | `355 12% 16%` | Lifted warm card face above dark background |
 
 ### Theme Prerequisites
 
@@ -229,7 +252,21 @@ All prerequisites completed 2026-02-23:
 
 ## Signature Patterns
 
-TBD — patterns emerge through `/lp-design-spec` work. First pattern to define: product-in-context imagery component (showing the accessory clipped onto a real bag strap in an editorial setting).
+### BrandMark Material Transformation
+
+**When:** Brand-defining reveal moments (initial header mount and curated hover replay) where the Caryina wordmark transitions into the tagline.
+
+**Implementation:** Keep `Car` + `ina` merge as DOM text motion; render the dissolving `y` as a Canvas 2D particle overlay using brand tokens `--color-primary` and `--color-accent`, with reduced-motion fallback to immediate final state.
+
+**Example:** `docs/plans/hbag-brandmark-particle-animation/design-spec.md`
+
+### Product-in-context Hero Framing
+
+**When:** PDP hero and listing hero shots that need to validate premium craft at first glance.
+
+**Implementation:** Editorial neutral backgrounds, one scale reference, one macro craft proof shot; no flat-lay clutter or high-saturation craft-fair lighting.
+
+**Example:** `docs/business-os/strategy/HBAG/brand-strategy.user.md` (Positioning Constraints / Product presentation)
 
 ## App Coverage
 

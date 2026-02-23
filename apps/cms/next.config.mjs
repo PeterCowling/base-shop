@@ -206,7 +206,52 @@ const nextConfig = {
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
 
+  turbopack: {
+    ...(preset.turbopack ?? {}),
+    resolveAlias: {
+      ...(preset.turbopack?.resolveAlias ?? {}),
+      "@": path.resolve(__dirname, "src"),
+      "@themes-local": path.resolve(__dirname, "../../packages/themes"),
+      "@themes/bcd/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/bcd/src/tailwind-tokens.ts",
+      ),
+      "@themes/brandx/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/brandx/src/tailwind-tokens.ts",
+      ),
+      "@themes/dark/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/dark/src/tailwind-tokens.ts",
+      ),
+      "@themes/dummy/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/dummy/src/tailwind-tokens.ts",
+      ),
+      "@themes/prime/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/prime/src/tailwind-tokens.ts",
+      ),
+      "@acme/configurator": path.resolve(
+        __dirname,
+        "../../packages/configurator/src",
+      ),
+      "@acme/configurator/providers": path.resolve(
+        __dirname,
+        "../../packages/configurator/src/providers.ts",
+      ),
+      "entities/decode": ENTITIES_DECODE_PATH,
+      "entities/lib/decode.js": ENTITIES_DECODE_PATH,
+      "entities/escape": ENTITIES_ESCAPE_PATH,
+      "entities/lib/escape.js": ENTITIES_ESCAPE_PATH,
+    },
+  },
+
   webpack: (config, { dev, isServer, webpack }) => {
+    // Keep the webpack callback as an explicit exception for CMS until all
+    // webpack-pinned scripts are migrated. Turbopack alias parity is provided
+    // above; hash guarding, dev filesystem cache, warning suppression, and
+    // runtime dependency aliasing remain webpack-path behavior for now.
     ensureSafeWebpackHash(webpack);
     // Run preset webpack mutations first, then apply CMS-specific ones
     if (typeof preset.webpack === "function") {

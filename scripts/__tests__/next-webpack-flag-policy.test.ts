@@ -137,6 +137,28 @@ describe("Next.js command policy matrix check", () => {
     expect(r.stderr).toBe("");
   });
 
+  test("passes for caryina package build without --webpack (migration wave S1)", () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
+    writeFile(
+      path.join(tmp, "apps/caryina/package.json"),
+      JSON.stringify(
+        {
+          name: "@apps/caryina",
+          scripts: {
+            dev: "next dev -p 3018",
+            build: "next build",
+          },
+        },
+        null,
+        2,
+      ),
+    );
+
+    const r = runCheck(["--paths", "apps/caryina/package.json"], tmp);
+    expect(r.status).toBe(0);
+    expect(r.stderr).toBe("");
+  });
+
   test("fails closed for template-app build without --webpack (TC-03: non-Brikette fail-closed)", () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
     writeFile(
@@ -197,6 +219,26 @@ describe("Next.js command policy matrix check", () => {
     );
 
     const r = runCheck(["--paths", ".github/workflows/brikette.yml"], tmp);
+    expect(r.status).toBe(0);
+    expect(r.stderr).toBe("");
+  });
+
+  test("passes for Prime workflow with next build without --webpack (migration wave S1 workflow mapping)", () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
+    writeFile(
+      path.join(tmp, ".github/workflows/prime.yml"),
+      [
+        "name: Prime",
+        "on: [push]",
+        "jobs:",
+        "  build:",
+        "    runs-on: ubuntu-latest",
+        "    steps:",
+        "      - run: pnpm exec next build",
+      ].join("\n"),
+    );
+
+    const r = runCheck(["--paths", ".github/workflows/prime.yml"], tmp);
     expect(r.status).toBe(0);
     expect(r.stderr).toBe("");
   });

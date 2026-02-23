@@ -83,7 +83,6 @@ const PACKAGE_TIERS = {
   "@apps/handbag-configurator-api": "MINIMAL",
   "@apps/cochlearfit": "MINIMAL",
   "@apps/product-pipeline": "MINIMAL",
-  "@apps/xa": "MINIMAL",
   "@apps/xa-drop-worker": "MINIMAL",
 
   // Packages: coverage not yet at STANDARD — will graduate as tests are added

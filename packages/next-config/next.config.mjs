@@ -20,14 +20,19 @@ export default withShopCode(coreEnv.SHOP_CODE, {
   // This prevents HMR boundary errors when dist files import src-resolved modules.
   turbopack: {
     resolveAlias: {
+      "@": path.resolve(__dirname, "../template-app/src"),
       "@acme/design-system": path.resolve(__dirname, "../design-system/src"),
       "@acme/cms-ui": path.resolve(__dirname, "../cms-ui/src"),
       "@acme/lib": path.resolve(__dirname, "../lib/src"),
       "@acme/seo": path.resolve(__dirname, "../seo/src"),
-"@themes-local": path.resolve(__dirname, "../themes"),
+      "@themes-local": path.resolve(__dirname, "../themes"),
     },
   },
   webpack(config, { isServer, nextRuntime }) {
+    // Retain webpack callback behavior while in-scope apps still execute
+    // `next --webpack` during phased migration (TASK-08). Turbopack alias
+    // parity is defined above; webpack-only extension and node:* handling
+    // remains here as an explicit exception until script migration completes.
     // Preserve existing tweaks from the base config
     if (typeof baseConfig.webpack === "function") {
       config = baseConfig.webpack(config, { isServer });

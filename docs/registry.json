@@ -5100,36 +5100,6 @@
     "domain": "Infra"
   },
   {
-    "path": "docs/plans/archive/xa-client-readiness-plan.md",
-    "type": "Plan",
-    "status": "Archived",
-    "domain": "Commerce"
-  },
-  {
-    "path": "docs/plans/archive/xa-coverage-80-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "Commerce"
-  },
-  {
-    "path": "docs/plans/archive/xa-deploy-readiness-fact-find.md",
-    "type": "Fact-Find",
-    "status": "Archived",
-    "domain": "Infra"
-  },
-  {
-    "path": "docs/plans/archive/xa-publish-privacy-fact-find.md",
-    "type": "Fact-Find",
-    "status": "Historical",
-    "domain": "Commerce / Deploy"
-  },
-  {
-    "path": "docs/plans/archive/xa-publish-privacy-plan.md",
-    "type": "Plan",
-    "status": "Archived",
-    "domain": "Commerce / Deploy"
-  },
-  {
     "path": "docs/plans/brik-activities-program/fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
@@ -5868,12 +5838,6 @@
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-xa-outcome-contract-fact-find.md",
-    "type": "Fact-Find",
-    "status": "Needs-input",
-    "domain": "Business-OS"
-  },
-  {
     "path": "docs/plans/jest-runaway-process-prevention/critique-history.md",
     "type": "Critique-History",
     "status": "Reference",
@@ -6436,18 +6400,6 @@
     "type": "Plan",
     "status": "Complete",
     "domain": "UI"
-  },
-  {
-    "path": "docs/plans/xa-ui-ux-review/design-review.md",
-    "type": "Design-Review",
-    "status": "Draft",
-    "domain": null
-  },
-  {
-    "path": "docs/plans/xa-v2-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Commerce"
   },
   {
     "path": "docs/product-pipeline/3pl-shipping-approach-decision-v0.md",

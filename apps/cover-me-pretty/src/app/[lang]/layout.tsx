@@ -15,6 +15,12 @@ import shop from "../../../shop.json";
 import { JsonLdScript, organizationJsonLd } from "../../lib/jsonld";
 import { getSeo } from "../../lib/seo";
 
+const localeMessagesLoaders: Record<Locale, () => Promise<Record<string, string>>> = {
+  en: async () => (await import("@acme/i18n/en.json")).default as Record<string, string>, // i18n-exempt -- TURBO-220 [ttl=2026-12-31] static locale module path
+  de: async () => (await import("@acme/i18n/de.json")).default as Record<string, string>, // i18n-exempt -- TURBO-220 [ttl=2026-12-31] static locale module path
+  it: async () => (await import("@acme/i18n/it.json")).default as Record<string, string>, // i18n-exempt -- TURBO-220 [ttl=2026-12-31] static locale module path
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -72,14 +78,8 @@ export default async function LocaleLayout({
     const { lang: langParam } = await params;
     const [raw] = langParam ?? [];
     const lang: Locale = resolveLocale(raw);
-
-    /* Dynamic import of the locale JSON. Webpack bundles only en/de/it.     */
-    const messages = (
-      await import(
-        /* webpackInclude: /(en|de|it|fr|es|ja|ko)\.json$/ */
-        `@acme/i18n/${lang}.json`
-      )
-    ).default;
+    const loadMessages = localeMessagesLoaders[lang] ?? localeMessagesLoaders.en;
+    const messages = await loadMessages();
 
     let logo: string | undefined;
     try {

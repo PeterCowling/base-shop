@@ -362,15 +362,6 @@ export default [
     },
   },
 
-  /* ▸ XA: disallow raw Tailwind palette colors (migrated to semantic tokens) */
-  {
-    files: ["apps/xa/**/*.{ts,tsx,js,jsx,mdx}"],
-    plugins: { ds: dsPlugin },
-    rules: {
-      "ds/no-raw-tailwind-color": "error",
-    },
-  },
-
   /* ▸ Skylar: disallow raw Tailwind palette colors (migrated to semantic tokens) */
   {
     files: ["apps/skylar/**/*.{ts,tsx,js,jsx,mdx}"],
@@ -383,15 +374,6 @@ export default [
   /* ▸ XA-uploader: disallow raw Tailwind palette colors (migrated to semantic tokens) */
   {
     files: ["apps/xa-uploader/**/*.{ts,tsx,js,jsx,mdx}"],
-    plugins: { ds: dsPlugin },
-    rules: {
-      "ds/no-raw-tailwind-color": "error",
-    },
-  },
-
-  /* ▸ XA-J: disallow raw Tailwind palette colors (migrated to semantic tokens) */
-  {
-    files: ["apps/xa-j/**/*.{ts,tsx,js,jsx,mdx}"],
     plugins: { ds: dsPlugin },
     rules: {
       "ds/no-raw-tailwind-color": "error",

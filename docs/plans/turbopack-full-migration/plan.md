@@ -28,11 +28,11 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 
 ## Active tasks
 - [x] TASK-01: Decide migration scope boundary (Next-only vs Next+Storybook)
-- [ ] TASK-02: Build canonical migration matrix for app/script/config surfaces
-- [ ] TASK-03: Decide policy strategy for `check-next-webpack-flag`
-- [ ] TASK-04: Implement policy and tests for Turbopack-first migration mode
-- [ ] TASK-05: Horizon checkpoint after policy-layer rollout
-- [ ] TASK-06: Retire `webpackInclude` magic-comment pattern in active i18n loaders
+- [x] TASK-02: Build canonical migration matrix for app/script/config surfaces
+- [x] TASK-03: Decide policy strategy for `check-next-webpack-flag`
+- [x] TASK-04: Implement policy and tests for Turbopack-first migration mode
+- [x] TASK-05: Horizon checkpoint after policy-layer rollout
+- [x] TASK-06: Retire `webpackInclude` magic-comment pattern in active i18n loaders
 - [ ] TASK-07: Migrate shared and app-level webpack callback behavior to Turbopack-safe surfaces
 - [ ] TASK-08: Migrate remaining webpack-pinned app scripts and workflow build surfaces
 - [ ] TASK-09: Cleanup and hardening (dependency and policy tightening)
@@ -85,11 +85,11 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | DECISION | Decide migration scope boundary | 90% | S | Complete | - | - |
-| TASK-02 | INVESTIGATE | Build canonical migration matrix and callback responsibility map | 90% | S | Pending | - | TASK-03, TASK-07, TASK-08 |
-| TASK-03 | DECISION | Select policy strategy (matrix expansion vs default inversion) | 85% | S | Pending | TASK-02 | TASK-04 |
-| TASK-04 | IMPLEMENT | Update policy script/tests and validation hooks for migration mode | 85% | S | Pending | TASK-03 | TASK-05 |
-| TASK-05 | CHECKPOINT | Reassess downstream plan after policy rollout | 95% | S | Pending | TASK-04 | TASK-06, TASK-07, TASK-08 |
-| TASK-06 | IMPLEMENT | Replace remaining `webpackInclude` magic-comment pattern | 85% | S | Pending | TASK-05 | TASK-08 |
+| TASK-02 | INVESTIGATE | Build canonical migration matrix and callback responsibility map | 90% | S | Complete | - | - |
+| TASK-03 | DECISION | Select policy strategy (matrix expansion vs default inversion) | 85% | S | Complete | TASK-02 | - |
+| TASK-04 | IMPLEMENT | Update policy script/tests and validation hooks for migration mode | 85% | S | Complete | TASK-03 | - |
+| TASK-05 | CHECKPOINT | Reassess downstream plan after policy rollout | 95% | S | Complete | TASK-04 | - |
+| TASK-06 | IMPLEMENT | Replace remaining `webpackInclude` magic-comment pattern | 85% | S | Complete | TASK-05 | - |
 | TASK-07 | IMPLEMENT | Migrate/retire webpack callback behavior with Turbopack parity checks | 75%* | M | Pending | TASK-01, TASK-02, TASK-05 | TASK-08 |
 | TASK-08 | IMPLEMENT | Migrate app/workflow webpack script surfaces in waves | 85% | S | Pending | TASK-02, TASK-05, TASK-06, TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | Final cleanup and hardening (policy tightening, optional dependency removal) | 85% | S | Pending | TASK-01, TASK-08 | - |
@@ -143,10 +143,10 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `docs/plans/turbopack-full-migration/artifacts/migration-matrix.md`, `[readonly] apps/*/package.json`, `[readonly] apps/*/next.config.mjs`, `[readonly] packages/next-config/next.config.mjs`
 - **Depends on:** -
-- **Blocks:** TASK-03, TASK-07, TASK-08
+- **Blocks:** `None: task complete, matrix artifact published`
 - **Confidence:** 90%
   - Implementation: 90% - data sources and extraction approach are straightforward.
   - Approach: 90% - artifact directly supports policy and rollout sequencing.
@@ -158,6 +158,8 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - **Acceptance:**
   - Matrix includes app, script surface, callback status, workflow impact, planned wave.
   - Matrix lists validation command(s) per app wave.
+- **Outcome (2026-02-23):**
+  - Published `docs/plans/turbopack-full-migration/artifacts/migration-matrix.md` with app script matrix, callback responsibility map, wave assignments (S1-S3 / C0-C2), and per-wave validation commands.
 - **Validation contract:** Artifact entries reconcile with repository grep/audit output and contain no missing in-scope app.
 - **Planning validation:** None: investigation artifact creation.
 - **Rollout / rollback:** `None: non-implementation task`
@@ -171,10 +173,10 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `docs/plans/turbopack-full-migration/plan.md`, `[readonly] scripts/check-next-webpack-flag.mjs`, `[readonly] scripts/__tests__/next-webpack-flag-policy.test.ts`
 - **Depends on:** TASK-02
-- **Blocks:** TASK-04
+- **Blocks:** `None: task complete, policy transition selected`
 - **Confidence:** 85%
   - Implementation: 90% - decision writes are straightforward.
   - Approach: 85% - trade-off between fast migration and fail-closed safety.
@@ -183,13 +185,18 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
   - Option A: Temporary matrix expansion (allow Turbopack app-by-app) before default inversion.
   - Option B: Immediate default inversion (`require-webpack` -> `allow-any` / `require-turbopack` policy model).
 - **Recommendation:** Option A for controlled rollout and lower regression risk, then invert default in TASK-09.
-- **Decision input needed:**
-  - question: prioritize conservative migration control (A) or faster one-shot policy inversion (B)?
-  - why it matters: impacts number of intermediate policy edits and CI stability.
-  - default + risk: default A; risk is longer mixed-policy period.
+- **Decision outcome (2026-02-23):**
+  - Selected option: Option A (temporary matrix expansion, then final default inversion).
+  - Transition rule-set accepted:
+    - Phase P1 (TASK-04): keep `DEFAULT_COMMAND_POLICY` fail-closed to `require-webpack`; add app/workflow `allow-any` exceptions only for migration waves being executed.
+    - Phase P2 (TASK-08): migrate scripts wave-by-wave using the matrix in `docs/plans/turbopack-full-migration/artifacts/migration-matrix.md`; expand exception matrix only as needed for active wave.
+    - Phase P3 (TASK-09): invert default policy to post-migration steady state and tighten regression protections for in-scope surfaces.
+  - Accepted risk: longer mixed-policy period during waves; mitigated by mandatory policy tests and merge-gate checks each wave.
 - **Acceptance:**
   - Selected option recorded with rationale and transition checkpoints.
   - TASK-04 acceptance criteria aligned to chosen strategy.
+- **Outcome (2026-02-23):**
+  - Option A selected; TASK-04 implementation will use phased matrix expansion with explicit per-wave exception updates and final default inversion deferred to TASK-09.
 - **Validation contract:** strategy is testable with existing policy unit tests and merge-gate behavior.
 - **Planning validation:** None: decision informed by TASK-02 artifact.
 - **Rollout / rollback:** `None: non-implementation task`
@@ -202,10 +209,10 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `scripts/check-next-webpack-flag.mjs`, `scripts/__tests__/next-webpack-flag-policy.test.ts`, `scripts/validate-changes.sh`, `scripts/git-hooks/pre-commit.sh`
 - **Depends on:** TASK-03
-- **Blocks:** TASK-05
+- **Blocks:** `None: task complete, policy rollout landed`
 - **Confidence:** 85%
   - Implementation: 85% - code paths are localized and already unit-tested.
   - Approach: 85% - strategy-selected update path is explicit.
@@ -214,8 +221,12 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
   - Policy script reflects selected strategy and no longer blocks intended migration wave.
   - Contract tests are updated and passing for fail/open cases.
   - Hook and validate script behavior remains consistent with merge-gate intent.
+- **Outcome (2026-02-23):**
+  - Updated `scripts/check-next-webpack-flag.mjs` for Phase P1 Option A rollout: retained fail-closed default and added `allow-any` app exceptions for S1 apps (`caryina`, `prime`, `xa`, `xa-b`, `xa-j`), plus workflow mappings for `prime.yml` and `xa.yml`.
+  - Extended `scripts/__tests__/next-webpack-flag-policy.test.ts` with S1 policy coverage for package/workflow exceptions.
+  - No hook contract change required; pre-commit and `validate-changes.sh` continue invoking the same policy entrypoint.
 - **Validation contract (TC-XX):**
-  - TC-01: `pnpm -w test -- --testPathPattern=next-webpack-flag-policy` passes with updated strategy cases.
+  - TC-01: `pnpm exec jest --runInBand --config ./jest.config.cjs scripts/__tests__/next-webpack-flag-policy.test.ts` passes with updated strategy cases.
   - TC-02: `node scripts/check-next-webpack-flag.mjs --all` exits 0 on current repo state after intentional rule update.
   - TC-03: negative fixture in policy tests still fails when policy violation is present.
 - **Execution plan:** Red -> Green -> Refactor
@@ -240,10 +251,10 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `docs/plans/turbopack-full-migration/plan.md`
 - **Depends on:** TASK-04
-- **Blocks:** TASK-06, TASK-07, TASK-08
+- **Blocks:** `None: task complete, downstream execution released`
 - **Confidence:** 95%
   - Implementation: 95% - process is defined
   - Approach: 95% - prevents deep dead-end execution
@@ -253,6 +264,11 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
   - `/lp-do-replan` run on downstream tasks if policy outcomes changed assumptions
   - confidence for downstream tasks recalibrated from latest evidence
   - plan updated and re-sequenced
+- **Outcome (2026-02-23):**
+  - Checkpoint review completed after TASK-04 policy rollout.
+  - Policy update introduced no new blockers for TASK-06/TASK-07/TASK-08 sequencing.
+  - Migration matrix (`artifacts/migration-matrix.md`) remains aligned with repo state for all in-scope app/package units.
+  - `/lp-do-replan` not required at this checkpoint; downstream confidence values retained.
 - **Horizon assumptions to validate:**
   - policy update did not create hidden blockers for app/workflow migration waves
   - migration matrix from TASK-02 still matches current repo state
@@ -268,10 +284,10 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `packages/i18n/src/loadMessages.server.ts`, `packages/template-app/src/app/[lang]/layout.tsx`, `packages/template-app/src/app/[lang]/checkout/layout.tsx`, `apps/cover-me-pretty/src/app/[lang]/layout.tsx`, `apps/skylar/src/app/[lang]/layout.tsx`, `apps/cochlearfit/src/lib/messages.ts`, `scripts/src/add-locale.ts`
 - **Depends on:** TASK-05
-- **Blocks:** TASK-08
+- **Blocks:** `None: task complete, source-pattern cleanup landed`
 - **Confidence:** 85%
   - Implementation: 85% - call sites are explicit and bounded.
   - Approach: 85% - neutral import patterns are known from prior Turbopack migrations.
@@ -280,6 +296,10 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
   - No active source files in scope contain `webpackInclude` comments.
   - Locale/message loading behavior remains functional in targeted app smoke tests.
   - `scripts/src/add-locale.ts` updated to stop rewriting webpack-specific comments.
+- **Outcome (2026-02-23):**
+  - Replaced dynamic `webpackInclude` import patterns with explicit locale loader maps in all in-scope files.
+  - Updated `scripts/src/add-locale.ts` to retire webpack comment rewrite behavior.
+  - Verified `rg 'webpackInclude' apps packages scripts --glob '!**/node_modules/**' --glob '!**/dist/**'` returns no active-source matches.
 - **Validation contract (TC-XX):**
   - TC-01: `rg -n 'webpackInclude|webpackPrefetch|webpackChunkName' apps packages scripts --glob '!**/_artifacts/**'` returns only out-of-scope/historical matches.
   - TC-02: targeted locale-loading tests for affected packages/apps pass.
@@ -454,6 +474,11 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 ## Decision Log
 - 2026-02-23: Initialized plan from `fact-find.md` in plan-only mode; selected policy-first migration shape pending TASK-03 confirmation.
 - 2026-02-23: TASK-01 decision recorded. Scope = Option A (Next runtime only). Storybook builder migration is out-of-scope for this plan and will be tracked as a separate follow-on lane.
+- 2026-02-23: TASK-02 completed. Canonical migration matrix published at `docs/plans/turbopack-full-migration/artifacts/migration-matrix.md`; downstream tasks (TASK-03/TASK-07/TASK-08) should execute from this matrix baseline.
+- 2026-02-23: TASK-03 completed. Policy strategy set to Option A phased matrix expansion (`require-webpack` default retained during migration waves), with final default inversion deferred to TASK-09.
+- 2026-02-23: TASK-04 completed. Policy rollout landed for S1 migration apps in `scripts/check-next-webpack-flag.mjs` with contract tests expanded and passing (`scripts/__tests__/next-webpack-flag-policy.test.ts`).
+- 2026-02-23: TASK-05 checkpoint completed. No `/lp-do-replan` required; downstream tasks remain sequenced as planned.
+- 2026-02-23: TASK-06 completed. Active `webpackInclude` patterns removed from source and replaced with explicit loader maps; targeted locale/layout tests passed.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

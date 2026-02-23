@@ -120,7 +120,7 @@ This brief documents where webpack is still active in the repository after the b
 #### Test Infrastructure
 - Frameworks: Jest-based policy tests + app-level build/test pipelines.
 - Relevant commands:
-  - `pnpm -w test -- --testPathPattern=next-webpack-flag-policy`
+  - `pnpm exec jest --runInBand --config ./jest.config.cjs scripts/__tests__/next-webpack-flag-policy.test.ts`
   - `node scripts/check-next-webpack-flag.mjs --all`
 
 #### Existing Test Coverage

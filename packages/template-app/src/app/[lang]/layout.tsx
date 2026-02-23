@@ -7,6 +7,12 @@ import { type Locale, resolveLocale } from "@acme/i18n/locales";
 
 import { getSeo, serializeJsonLd } from "../../lib/seo";
 
+const localeMessagesLoaders: Record<Locale, () => Promise<Record<string, string>>> = {
+  en: async () => (await import("@acme/i18n/en.json")).default as Record<string, string>, // i18n-exempt -- TURBO-220 [ttl=2026-12-31] static locale module path
+  de: async () => (await import("@acme/i18n/de.json")).default as Record<string, string>, // i18n-exempt -- TURBO-220 [ttl=2026-12-31] static locale module path
+  it: async () => (await import("@acme/i18n/it.json")).default as Record<string, string>, // i18n-exempt -- TURBO-220 [ttl=2026-12-31] static locale module path
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -61,12 +67,8 @@ export default async function LocaleLayout({
 }) {
   const { lang: raw } = await params;
   const lang: Locale = resolveLocale(raw);
-  const messages = (
-    await import(
-      /* webpackInclude: /(en|de|it)\.json$/ */
-      `@acme/i18n/${lang}.json`
-    )
-  ).default as Record<string, string>;
+  const loadMessages = localeMessagesLoaders[lang] ?? localeMessagesLoaders.en;
+  const messages = await loadMessages();
   const seo = await getSeo(lang);
 
   return (

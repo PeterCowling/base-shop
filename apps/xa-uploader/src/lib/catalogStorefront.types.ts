@@ -1,6 +1,6 @@
 import type { XaCategory } from "./xaTypes";
 
-export type XaCatalogStorefront = "xa-c" | "xa-b" | "xa-j";
+export type XaCatalogStorefront = "xa-b";
 
 export type XaCatalogStorefrontConfig = {
   id: XaCatalogStorefront;

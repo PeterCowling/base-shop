@@ -6,7 +6,8 @@
     "build": "next build --webpack",
     "start": "next start -p 3018",
     "lint": "eslint . --no-error-on-unmatched-pattern",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm -w run test:governed -- jest -- --config ./jest.config.cjs --passWithNoTests"
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",

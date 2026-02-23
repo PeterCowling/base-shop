@@ -15,11 +15,21 @@ const __dirname = path.dirname(__filename);
 const nextConfig = {
   ...sharedConfig,
   output: sharedConfig.output === "export" ? undefined : sharedConfig.output,
+  turbopack: {
+    ...(sharedConfig.turbopack ?? {}),
+    resolveAlias: {
+      ...(sharedConfig.turbopack?.resolveAlias ?? {}),
+      "@acme/i18n": path.resolve(__dirname, "../i18n/dist"),
+    },
+  },
   typescript: {
     ...(sharedConfig.typescript ?? {}),
     tsconfigPath: "./tsconfig.json",
   },
   webpack(config, ctx) {
+    // Legacy webpack path retained as an explicit exception while scripts still
+    // execute via `next --webpack`. Turbopack alias parity is configured above;
+    // cache handling remains webpack-path behavior for now.
     if (typeof sharedConfig.webpack === "function") {
       config = sharedConfig.webpack(config, ctx);
     }

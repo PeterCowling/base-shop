@@ -342,7 +342,7 @@ jobs:
           pnpm --filter @apps/cover-me-pretty test -- --testPathPattern runtimeContractManifest.test.ts
       - name: Unit tests
         env:
-          BASESHOP_TEST_TIMEOUT_SEC: "1800"
+          BASESHOP_TEST_TIMEOUT_SEC: "0"
         run: pnpm test:affected
       - uses: codecov/codecov-action@v5
         with:

@@ -1,5 +1,5 @@
 <!-- AUTO-GENERATED — do not edit directly. Edit stage-operator-dictionary.yaml and re-run: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts -->
-<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 3.11.0 -->
+<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 3.12.0 -->
 ---
 Type: Reference
 Status: Active
@@ -15,7 +15,7 @@ Last-reviewed: 2026-02-21
 | 1 | `ASSESSMENT-02` | Solution-profiling scan | Mapped solution space with at least three distinct options and comparative feasibility notes. | `solution-profiling`, `assessment-02` | start-point = problem |
 | 1 | `ASSESSMENT-03` | Solution selection | Selected solution option with rationale, key assumptions, and handoff brief for ASSESSMENT-09 intake. | `solution-selection`, `assessment-03` | start-point = problem |
 | 1 | `ASSESSMENT-04` | Candidate names | Validated business or product name with brand-safety check and domain availability confirmed. | `candidate-names`, `naming-handoff`, `assessment-04` | start-point = problem |
-| 1 | `ASSESSMENT-05` | Name selection | Naming generation spec with ICP, brand personality, competitive set, and 250 scored candidate names. | `name-selection`, `business-name-shaping`, `assessment-05` | start-point = problem |
+| 1 | `ASSESSMENT-05` | Name selection | Naming generation spec with ICP, brand personality, competitive set, and 250 scored candidate names. | `name-selection`, `business-name-shaping`, `assessment-05` | start-point = problem AND naming_refinement_requested |
 | 1 | `ASSESSMENT-06` | Distribution profiling | Distribution plan with ≥2 launch channels, cost/effort estimates, and ICP fit rationale. | `distribution-profiling`, `assessment-06`, `channel-plan` | start-point = problem |
 | 1 | `ASSESSMENT-07` | Measurement profiling | Measurement plan with tracking method, ≥2 key metrics, success thresholds, and data collection feasibility confirmed. | `measurement-profiling`, `assessment-07`, `measure-plan` | start-point = problem |
 | 1 | `ASSESSMENT-08` | Current situation | Current situation packet: launch surface, stock status, pricing model, channel pre-decisions, and open evidence gaps documented. | `current-situation`, `assessment-08` | start-point = problem |

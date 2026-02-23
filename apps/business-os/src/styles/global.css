@@ -12,6 +12,7 @@
 /* Base styles */
 @layer base {
   body {
-    @apply bg-bg text-fg;
+    background-color: hsl(var(--color-bg));
+    color: hsl(var(--color-fg));
   }
 }

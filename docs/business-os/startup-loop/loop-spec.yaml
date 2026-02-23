@@ -4,7 +4,20 @@
 # Version bumps require downstream alignment check (VC-02).
 # See also: docs/business-os/startup-loop/two-layer-model.md (Layer A standing intelligence / Layer B implementation loop contract)
 
-spec_version: "3.11.0"
+spec_version: "3.12.0"
+# v3.12.0: Promoted SIGNALS naming to canonical stage IDs in loop-spec.
+#          Renamed legacy IDs:
+#            S3  -> SIGNALS-01 (Forecast)
+#            S10 -> SIGNALS (Weekly readout + experiments)
+#          Legacy aliases remain supported in stage-addressing and state/event
+#          derivation for backward compatibility with existing run artifacts.
+#          Decision: 2026-02-23.
+# v3.11.1: ASSESSMENT-05 (Business name shaping) is now explicitly optional within
+#          the start-point=problem path. Canonical required precursor chain is
+#          ASSESSMENT-01 → 02 → 03 → 04 → 06 → 07 → 08 → 09.
+#          If naming refinement is needed, run optional branch
+#          ASSESSMENT-04 → ASSESSMENT-05 → ASSESSMENT-06.
+#          Decision: 2026-02-23.
 # v3.11.0: Replaced legacy S6 with WEBSITE container and named sub-stages:
 #          WEBSITE-01 (L1 first build framework, launch-surface=pre-website)
 #          WEBSITE-02 (site-upgrade synthesis, launch-surface=website-live).
@@ -230,7 +243,9 @@ stages:
     skill: /lp-do-assessment-05-name-selection
     prompt_required: false
     conditional: true
-    condition: "start-point = problem"
+    condition: "start-point = problem AND naming_refinement_requested"
+    # Optional within the problem-start path.
+    # Run only when ASSESSMENT-04 candidate shortlist requires additional shaping.
     bos_sync: "Persist name-selection-spec.md under docs/business-os/strategy/<BIZ>/"
 
   - id: ASSESSMENT-06
@@ -801,7 +816,7 @@ stages:
         # Read on every MARKET-06 run — positioning and voice informed by current brand strategy.
         # Updated via /lp-brand-refresh (standalone, outside ASSESSMENT sequence).
     # BD-3 sub-deliverable: messaging-hierarchy.user.md (Draft minimum) must exist before MARKET-06 is Done.
-    # This does NOT block the S3/SELL-01 parallel fan-out — both start after MARKET-06 completes.
+    # This does NOT block the SIGNALS-01/SELL-01 parallel fan-out — both start after MARKET-06 completes.
     # Gate policy: GATE-BD-03 (Hard, MARKET-06 Done gate). See: docs/business-os/strategy/_templates/index-template.user.md
     bos_sync: "Persist offer + messaging_hierarchy artifacts under docs/business-os/startup-baselines/<BIZ>/"
 
@@ -856,8 +871,8 @@ stages:
     bos_sync: "Persist market-aggregate-pack (validated) artifact under docs/business-os/market-research/<BIZ>/"
 
   # ── Parallel fan-out ──────────────────────────────────
-  # Within the SELL container, S3 and SELL-01 run in parallel (fan-out-1) after MARKET-06 completes.
-  # Both S3 and SELL-01 are required inputs at the S4 join barrier.
+  # Within the SELL container, SIGNALS-01 and SELL-01 run in parallel (fan-out-1) after MARKET-06 completes.
+  # Both SIGNALS-01 and SELL-01 are required inputs at the S4 join barrier.
   # PRODUCT-02 is conditional and non-blocking at S4 (optional artifact).
   # SELL-08 is a separate pre-spend readiness stage and does not block S4.
 
@@ -880,7 +895,7 @@ stages:
     name: Sell
     type: container
     stages:
-      - S3
+      - SIGNALS-01
       - SELL-01
       - SELL-02
       - SELL-03
@@ -891,8 +906,8 @@ stages:
       - SELL-08
     conditional: false
     ordering_constraints:
-      - S3 ∥ SELL-01 (parallel after MARKET-06, both required at S4 join)
-      - S3 → SELL
+      - SIGNALS-01 ∥ SELL-01 (parallel after MARKET-06, both required at S4 join)
+      - SIGNALS-01 → SELL
       - SELL-01 → SELL-02
       - SELL-02 → SELL-03
       - SELL-03 → SELL-04
@@ -903,12 +918,12 @@ stages:
       - SELL-01 → SELL-08 (if paid_spend_requested)
       - SELL-08 → SELL
     # SELL contains the full sell-readiness track including forecast.
-    # S3 (Forecast) and SELL-01 (Channel strategy + GTM) start in parallel after MARKET-06.
+    # SIGNALS-01 (Forecast) and SELL-01 (Channel strategy + GTM) start in parallel after MARKET-06.
     # Both are required inputs at S4 join barrier.
     # SELL-02..07 are standing sales intelligence stages, sequential after SELL-01.
     # SELL-08 is evaluated only when paid spend is requested.
 
-  - id: S3
+  - id: SIGNALS-01
     name: Forecast
     stage_group: SELL
     skill: /lp-forecast
@@ -1041,7 +1056,7 @@ stages:
       - stage: MARKET-06
         artifact_key: offer
         required: true
-      - stage: S3
+      - stage: SIGNALS-01
         artifact_key: forecast
         required: true
       - stage: SELL-01
@@ -1154,7 +1169,7 @@ stages:
     conditional: false
     bos_sync: "Record QA results in build stage doc"
 
-  - id: S10
+  - id: SIGNALS
     name: Weekly readout + experiments
     skill: /lp-experiment
     prompt_required: true
@@ -1171,8 +1186,9 @@ ordering:
     - [ASSESSMENT-01, ASSESSMENT-02]   # problem-first pre-intake: ASSESSMENT-01→ASSESSMENT-02 (conditional)
     - [ASSESSMENT-02, ASSESSMENT-03]   # problem-first pre-intake: ASSESSMENT-02→ASSESSMENT-03 (conditional)
     - [ASSESSMENT-03, ASSESSMENT-04]   # problem-first pre-intake: ASSESSMENT-03→ASSESSMENT-04 (conditional)
-    - [ASSESSMENT-04, ASSESSMENT-05]   # problem-first: ASSESSMENT-04→ASSESSMENT-05 business name shaping
-    - [ASSESSMENT-05, ASSESSMENT-06]   # problem-first: ASSESSMENT-05→ASSESSMENT-06 distribution profiling (mandatory within path)
+    - [ASSESSMENT-04, ASSESSMENT-05]   # problem-first optional branch: run ASSESSMENT-05 only when naming_refinement_requested
+    - [ASSESSMENT-04, ASSESSMENT-06]   # problem-first required path: proceed directly from ASSESSMENT-04 to ASSESSMENT-06
+    - [ASSESSMENT-05, ASSESSMENT-06]   # optional naming branch rejoins required path at ASSESSMENT-06
     - [ASSESSMENT-06, ASSESSMENT-07]   # problem-first: ASSESSMENT-06→ASSESSMENT-07 measurement profiling (mandatory within path)
     - [ASSESSMENT-07, ASSESSMENT-08]   # problem-first: ASSESSMENT-07→ASSESSMENT-08 current situation (mandatory within path)
     - [ASSESSMENT-08, ASSESSMENT-09]   # problem-first: ASSESSMENT-08 exits into standard ASSESSMENT-09 intake
@@ -1211,9 +1227,9 @@ ordering:
     - [MARKET-04, MARKET-05]
     - [MARKET-05, MARKET-06]
     - [MARKET-06, MARKET]
-    - [MARKET-06, S3]
+    - [MARKET-06, SIGNALS-01]
     - [MARKET-06, PRODUCT-02]  # fan-out: PRODUCT-02 starts after MARKET-06 (conditional)
-    - [MARKET-06, SELL-01]     # fan-out: S3 and SELL-01 both start after MARKET-06
+    - [MARKET-06, SELL-01]     # fan-out: SIGNALS-01 and SELL-01 both start after MARKET-06
     - [SELL-01, SELL-02]
     - [SELL-02, SELL-03]
     - [SELL-03, SELL-04]
@@ -1223,7 +1239,7 @@ ordering:
     - [SELL-07, SELL]
     - [SELL-01, SELL-08]      # optional pre-spend stage when paid_spend_requested
     - [SELL-08, SELL]
-    - [S3, S4]           # fan-in: S4 waits for S3
+    - [SIGNALS-01, S4]   # fan-in: S4 waits for SIGNALS-01
     - [PRODUCT-02, S4]   # fan-in: S4 waits for PRODUCT-02 if running (non-blocking — optional artifact)
     - [SELL-01, S4]      # fan-in: S4 waits for SELL-01 strategy outputs
     - [S4, S5A]
@@ -1231,11 +1247,11 @@ ordering:
     - [S5B, WEBSITE]
     - [WEBSITE, DO]
     - [DO, S9B]
-    - [S9B, S10]
+    - [S9B, SIGNALS]
 
   parallel_groups:
     fan-out-1:
-      members: [S3, PRODUCT-02, SELL-01]
+      members: [SIGNALS-01, PRODUCT-02, SELL-01]
       join_at: S4
       conditional_members: [PRODUCT-02]   # PRODUCT-02 only runs when condition is met; non-blocking at join
     fan-out-2:
@@ -1253,7 +1269,7 @@ run_packet:
     - business
     - current_stage
     - current_stage_label    # label_operator_short for current_stage (from stage-operator-map.json)
-    - current_stage_display  # label_operator_long for current_stage (e.g. "S3 — Forecast")
+    - current_stage_display  # label_operator_long for current_stage (e.g. "SIGNALS-01 — Forecast")
     - next_stage_label       # label_operator_short for next eligible stage; null if none
     - next_stage_display     # label_operator_long for next eligible stage; null if none
     - status          # ready | blocked | awaiting-input | complete

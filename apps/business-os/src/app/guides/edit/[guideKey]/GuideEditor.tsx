@@ -11,7 +11,7 @@ import {
   SUPPORTED_LANGUAGES,
 } from "@acme/guide-system";
 
-import { PREVIEW_TOKEN } from "@/lib/guide-authoring/config";
+import { PREVIEW_TOKEN } from "@/lib/guide-authoring/public-config";
 
 import EditorialSidebar from "./components/EditorialSidebar";
 import TabBar from "./components/TabBar";

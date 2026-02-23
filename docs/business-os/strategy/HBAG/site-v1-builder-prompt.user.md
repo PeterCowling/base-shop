@@ -102,6 +102,7 @@ These artifacts are source-of-truth inputs for the build. Consult them; do not r
 | Intake + constraints + missing data | `docs/business-os/startup-baselines/HBAG-intake-packet.user.md` |
 | Offer definition (ICP, positioning, pricing) | `docs/business-os/startup-baselines/HBAG-offer.md` |
 | Channel strategy | `docs/business-os/startup-baselines/HBAG-channels.md` |
+| Website content packet (SEO + launch copy) | `docs/business-os/startup-baselines/HBAG-content-packet.md` |
 | Measurement plan | `docs/business-os/strategy/HBAG/measurement-plan.user.md` |
 
 ### Brand and Design Language

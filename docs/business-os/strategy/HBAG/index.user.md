@@ -50,6 +50,7 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | S3 | Forecast seed | `docs/business-os/startup-baselines/HBAG-forecast-seed.user.md` | Active | 2026-02-20 |
 | S6B | Channels | `docs/business-os/startup-baselines/HBAG-channels.md` | Active | 2026-02-20 |
 | S6B gate | Demand evidence pack | `docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md` | Active | 2026-02-20 |
+| WEBSITE-CONTENT-01 | Website content packet | `docs/business-os/startup-baselines/HBAG-content-packet.md` | Active | 2026-02-23 |
 | S5A | Prioritization scorecard | — | — | — |
 | PRODUCT-01 | Product from photo | `docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md` | Draft | 2026-02-22 |
 

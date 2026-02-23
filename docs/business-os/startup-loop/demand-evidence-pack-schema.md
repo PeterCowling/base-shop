@@ -16,15 +16,15 @@ Related-plan: docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.
 
 ## Purpose
 
-Defines the minimum evidence an operator must collect before treating message or channel confidence as above `low`. Required prior to GATE-S6B-ACT-01 (spend authorization). Enforced by `lp-channels` at activation time and referenced by `lp-readiness` for early capture guidance.
+Defines the minimum evidence an operator must collect before treating message or channel confidence as above `low`. Required prior to GATE-SELL-ACT-01 (spend authorization). Enforced by `lp-channels` at activation time and referenced by `lp-readiness` for early capture guidance.
 
 ## When to Use
 
 | Gate | Action |
 |---|---|
 | ASSESSMENT / MEASURE-01 | Begin DEP capture — register hypotheses, set up message variant log |
-| Pre-S6B strategy design (GATE-S6B-STRAT-01) | DEP capture must be underway or completed |
-| S6B spend authorization (GATE-S6B-ACT-01) | Full DEP pass-floor check required — blocks spend without pass |
+| Pre-SELL strategy design (GATE-SELL-STRAT-01) | DEP capture must be underway or completed |
+| SELL spend authorization (GATE-SELL-ACT-01) | Full DEP pass-floor check required — blocks spend without pass |
 
 ## Schema Fields
 
@@ -175,7 +175,7 @@ Empty or null `source_tag` is always invalid regardless of channel type.
 
 ## Channel Viability Constraints (Pre-Scale)
 
-For each selected channel in the channel plan, the following fields are required before GATE-S6B-ACT-01:
+For each selected channel in the channel plan, the following fields are required before GATE-SELL-ACT-01:
 
 | Field | Required | Description |
 |---|---|---|
@@ -190,6 +190,6 @@ For each selected channel in the channel plan, the following fields are required
 
 - Marketing/sales capability contract: `docs/business-os/startup-loop/marketing-sales-capability-contract.md` (CAP-02)
 - Capability plan: `docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md` (TASK-05)
-- Consumer: `.claude/skills/lp-channels/SKILL.md` (GATE-S6B-ACT-01 enforcement)
+- Consumer: `.claude/skills/lp-channels/SKILL.md` (GATE-SELL-ACT-01 enforcement)
 - Consumer: `.claude/skills/lp-readiness/SKILL.md` (capture initiation advisory)
 - Consumer: `docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md` (MEASURE-01 demand signal section)

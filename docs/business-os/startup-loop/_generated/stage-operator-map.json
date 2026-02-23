@@ -1,6 +1,6 @@
 {
   "_generated_from": "docs/business-os/startup-loop/stage-operator-dictionary.yaml",
-  "_loop_spec_version": "3.11.0",
+  "_loop_spec_version": "3.12.0",
   "_schema_version": 1,
   "_note": "AUTO-GENERATED — do not edit directly. Edit stage-operator-dictionary.yaml and re-run: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts",
   "stages": [
@@ -63,7 +63,7 @@
       "display_order": 1,
       "conditional": true,
       "condition": "start-point = problem",
-      "operator_next_prompt": "Proceed to ASSESSMENT-05 Name selection."
+      "operator_next_prompt": "Proceed to ASSESSMENT-06 Distribution profiling. If naming refinement is needed, run optional ASSESSMENT-05 Name selection first."
     },
     {
       "id": "ASSESSMENT-05",
@@ -78,7 +78,7 @@
       ],
       "display_order": 1,
       "conditional": true,
-      "condition": "start-point = problem",
+      "condition": "start-point = problem AND naming_refinement_requested",
       "operator_next_prompt": "Proceed to ASSESSMENT-06 Distribution profiling."
     },
     {
@@ -126,7 +126,7 @@
       "display_order": 1,
       "conditional": true,
       "condition": "start-point = problem",
-      "operator_next_prompt": "Proceed to ASSESSMENT-09 Intake with all eight precursors complete."
+      "operator_next_prompt": "Proceed to ASSESSMENT-09 Intake with all required precursors complete (ASSESSMENT-05 is optional)."
     },
     {
       "id": "ASSESSMENT-09",

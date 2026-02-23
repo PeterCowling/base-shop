@@ -16,7 +16,7 @@ Canonical template directory:
 
 Canonical source:
 
-- `docs/business-os/startup-loop/loop-spec.yaml` (spec_version `3.11.0`)
+- `docs/business-os/startup-loop/loop-spec.yaml` (spec_version `3.12.0`)
 - `docs/business-os/startup-loop/_generated/stage-operator-map.json`
 
 ## Stage prompts
@@ -35,7 +35,7 @@ Canonical source:
 | `MARKET-04` | Channel landscape | `docs/business-os/market-research/_templates/deep-research-channel-landscape-prompt.md` | all | Required prompt stage |
 | `MARKET-05` | Assumptions and risk register | `docs/business-os/market-research/_templates/market-assumptions-risk-register-prompt.md` | all | Required prompt stage |
 | `MARKET-06` | Offer design | no-prompt-required | all | Skill-driven: `/lp-offer` |
-| `S3` | Forecast | no-prompt-required | all | Skill-driven: `/lp-forecast` |
+| `SIGNALS-01` | Forecast | no-prompt-required | all | Skill-driven: `/lp-forecast` |
 | `PRODUCT-02` | Adjacent product research | no-prompt-required | conditional | Skill-driven: `/lp-other-products` |
 | `SELL-01` | Channel strategy + GTM | no-prompt-required | all | Skill-driven: `/lp-channels` |
 | `SELL-02` | Activation readiness (pre-spend) | no-prompt-required | conditional | Gate-driven readiness checks |
@@ -47,7 +47,7 @@ Canonical source:
 | `DO` | Delivery execution | no-prompt-required | all | Skill-driven: `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build` |
 | `S9B` | Post-deploy verification | `post-deploy-measurement-verification-prompt.md` | all | Run after deploy |
 | `S9B` | QA gates | no-prompt-required | all | Skill-driven: `/lp-launch-qa` |
-| `S10` | Weekly decision | `weekly-kpcs-decision-prompt.md` | all | Required prompt stage |
+| `SIGNALS` | Weekly decision | `weekly-kpcs-decision-prompt.md` | all | Required prompt stage |
 
 ## Operator prompt
 

@@ -109,7 +109,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Gate ID in canonical format (e.g. GATE-S6B-STRAT-01).",
+          "description": "Gate ID in canonical format (e.g. GATE-SELL-STRAT-01).",
           "pattern": "^GATE-[A-Z0-9][A-Z0-9-]*$"
         },
         "label": {

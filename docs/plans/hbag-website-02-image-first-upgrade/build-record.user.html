@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HBAG Site Upgrade Brief - Latest</title>
+  <title>Build Record: hbag-website-02-image-first-upgrade</title>
   <style>
     /* ── Defaults (overridden when palette CSS is injected) ── */
     :root {
@@ -100,20 +100,75 @@
     <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
       Show technical details
     </button>
-<h1>HBAG Site Upgrade Brief - Latest</h1>
-<p>Current active site-upgrade brief:</p>
+<h1>Build Record: hbag-website-02-image-first-upgrade</h1>
+<h2>Completed Tasks</h2>
 <ul>
-<li><code>docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md</code></li>
+<li>TASK-01: locked Option A launch defaults (6 mandatory slots + 3 family anchors).</li>
+<li>TASK-02: implemented typed media contract + deterministic validator command.</li>
+<li>TASK-03: shipped image-first homepage and PLP card/grid implementation.</li>
+<li>TASK-04: shipped deterministic PDP gallery with keyboard/touch navigation.</li>
+<li>TASK-05: published media production/QA contract artifact with reviewer sign-off.</li>
+<li>TASK-06: captured media-focused validation and performance evidence package.</li>
+<li>TASK-07: executed checkpoint with <code>Go</code> verdict for launch packaging.</li>
 </ul>
-<h2>Operator note</h2>
-<p>WEBSITE-02 first-cycle (L1 Build 2) brief is now active with Image-First Merchandising mode contract and exemplar shot-board evidence.</p>
-<p>Related active operations artifact:</p>
+<h2>Files Added / Updated (Primary)</h2>
 <ul>
+<li><code>apps/caryina/src/app/[lang]/page.tsx</code></li>
+<li><code>apps/caryina/src/app/[lang]/shop/page.tsx</code></li>
+<li><code>apps/caryina/src/app/[lang]/product/[slug]/page.tsx</code></li>
+<li><code>apps/caryina/src/components/catalog/ProductMediaCard.tsx</code></li>
+<li><code>apps/caryina/src/components/catalog/ProductGallery.client.tsx</code></li>
+<li><code>apps/caryina/src/components/catalog/ProductGallery.client.test.tsx</code></li>
+<li><code>apps/caryina/src/lib/launchMediaContract.ts</code></li>
+<li><code>apps/caryina/src/lib/launchMediaContract.test.ts</code></li>
+<li><code>apps/caryina/src/lib/launchMerchandising.ts</code></li>
+<li><code>apps/caryina/src/lib/shop.ts</code></li>
+<li><code>apps/caryina/scripts/validate-launch-media-contract.ts</code></li>
+<li><code>apps/caryina/src/styles/global.css</code></li>
+<li><code>apps/caryina/package.json</code></li>
+<li><code>apps/caryina/public/images/hbag/*.svg</code></li>
+<li><code>data/shops/caryina/products.json</code></li>
 <li><code>docs/business-os/site-upgrades/HBAG/2026-02-23-image-production-contract.user.md</code></li>
+<li><code>docs/business-os/site-upgrades/HBAG/2026-02-23-image-production-contract.user.html</code></li>
+<li><code>docs/plans/hbag-website-02-image-first-upgrade/artifacts/fixtures/launch-media-missing-on-body.json</code></li>
+<li><code>docs/plans/hbag-website-02-image-first-upgrade/artifacts/performance-evidence.md</code></li>
+<li><code>docs/plans/hbag-website-02-image-first-upgrade/plan.md</code></li>
+</ul>
+<h2>Validation Commands &#x26; Results</h2>
+<ul>
+<li><code>pnpm --filter @apps/caryina test -- --runInBand --testPathPattern="launchMediaContract.test.ts|ProductGallery.client.test.tsx"</code> -> pass (5 tests).</li>
+<li><code>pnpm --filter @apps/caryina typecheck</code> -> pass.</li>
+<li><code>pnpm --filter @apps/caryina lint</code> -> pass.</li>
+<li><code>pnpm --filter @apps/caryina validate:launch-media</code> -> pass (<code>3/3</code> active SKUs valid).</li>
+<li><code>pnpm --filter @apps/caryina validate:launch-media --file ../../docs/plans/hbag-website-02-image-first-upgrade/artifacts/fixtures/launch-media-missing-on-body.json</code> -> expected fail (<code>missing on_body</code>).</li>
+<li><code>pnpm --filter @apps/caryina build</code> -> pass.</li>
+</ul>
+<h2>Performance Snapshot</h2>
+<ul>
+<li>Root main client JS gzip payload: <code>115668</code> bytes (threshold <code>&#x3C;=120000</code>, pass).</li>
+<li>Build stability: compiled successfully and generated <code>13/13</code> static pages (pass).</li>
+<li>Media completeness gate: <code>3/3</code> active SKUs valid (pass).</li>
+</ul>
+<p>See: <code>docs/plans/hbag-website-02-image-first-upgrade/artifacts/performance-evidence.md</code></p>
+<h2>Checkpoint Verdict</h2>
+<ul>
+<li>TASK-07 decision: <code>Go</code></li>
+<li>Rationale:
+<ul>
+<li>media contract gating is deterministic and passing for active catalog;</li>
+<li>homepage/PLP/PDP image-first implementation is complete;</li>
+<li>validation package passes with explicit threshold evidence.</li>
+</ul>
+</li>
+<li>Residual risk:
+<ul>
+<li>operator-run real-device UX/performance spot-check remains required as post-merge launch QA.</li>
+</ul>
+</li>
 </ul>
     <div class="meta">
-      <div>Source: <code>docs/business-os/site-upgrades/HBAG/latest.user.md</code></div>
-      <div>Generated: 2026-02-23T18:14:13.053Z</div>
+      <div>Source: <code>docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md</code></div>
+      <div>Generated: 2026-02-23T18:14:13.082Z</div>
     </div>
   </main>
   <script type="module">

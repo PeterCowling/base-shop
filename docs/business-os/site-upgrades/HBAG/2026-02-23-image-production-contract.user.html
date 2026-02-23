@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HBAG Site Upgrade Brief - Latest</title>
+  <title>HBAG Launch Media Production & QA Contract</title>
   <style>
     /* ── Defaults (overridden when palette CSS is injected) ── */
     :root {
@@ -100,20 +100,137 @@
     <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
       Show technical details
     </button>
-<h1>HBAG Site Upgrade Brief - Latest</h1>
-<p>Current active site-upgrade brief:</p>
+<h1>HBAG Launch Media Production &#x26; QA Contract</h1>
+<h2>Purpose</h2>
+<p>This artifact is the operating gate for launch SKU media readiness in WEBSITE-02 L1 Build 2.
+No SKU is launch-ready unless all mandatory shot slots are present and validated.</p>
+<h2>Contract Defaults (TASK-01 Decision Lock)</h2>
 <ul>
-<li><code>docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md</code></li>
+<li>Mandatory slot pack: 6 images per SKU (<code>hero</code>, <code>angle</code>, <code>detail</code>, <code>on_body</code>, <code>scale</code>, <code>alternate</code>)</li>
+<li>Optional slot: <code>video_optional</code> (not required for launch)</li>
+<li>Launch family anchors: <code>Top Handle</code>, <code>Shoulder</code>, <code>Mini</code></li>
+<li>Campaign video policy: deferred; static-image-first at launch</li>
 </ul>
-<h2>Operator note</h2>
-<p>WEBSITE-02 first-cycle (L1 Build 2) brief is now active with Image-First Merchandising mode contract and exemplar shot-board evidence.</p>
-<p>Related active operations artifact:</p>
+<h2>Mandatory Shot Checklist (per SKU)</h2>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Description</th>
+<th>Required quality check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hero</code></td>
+<td>Primary product framing</td>
+<td>Product silhouette fully visible and centered</td>
+</tr>
+<tr>
+<td><code>angle</code></td>
+<td>Alternate viewing angle</td>
+<td>Distinct from hero framing</td>
+</tr>
+<tr>
+<td><code>detail</code></td>
+<td>Hardware/craft macro</td>
+<td>Hardware or stitch proof clearly visible</td>
+</tr>
+<tr>
+<td><code>on_body</code></td>
+<td>Worn/in-hand context</td>
+<td>Scale and styling context obvious</td>
+</tr>
+<tr>
+<td><code>scale</code></td>
+<td>Reference scaling cue</td>
+<td>Relative size is legible</td>
+</tr>
+<tr>
+<td><code>alternate</code></td>
+<td>Supplemental alternate</td>
+<td>Adds distinct confidence view</td>
+</tr>
+</tbody>
+</table>
+<h2>Gate Command</h2>
+<pre><code class="language-bash">pnpm --filter @apps/caryina validate:launch-media
+</code></pre>
+<p>Gate rule:</p>
 <ul>
-<li><code>docs/business-os/site-upgrades/HBAG/2026-02-23-image-production-contract.user.md</code></li>
+<li>Pass: <code>PASS launch-media-contract: ...</code></li>
+<li>Fail: any <code>FAIL launch-media-contract</code> output blocks launch packaging for impacted SKUs.</li>
+</ul>
+<h2>Rehearsal Evidence (VC-05)</h2>
+<h3>VC-05-01 Deterministic Pass (Active Catalog)</h3>
+<p>DO:</p>
+<ol>
+<li>Run validator against active catalog:
+<ul>
+<li><code>pnpm --filter @apps/caryina validate:launch-media</code></li>
+</ul>
+</li>
+<li>Confirm all active SKUs pass.</li>
+</ol>
+<p>SAVE:</p>
+<ul>
+<li>Validator output summary in <code>docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md</code></li>
+</ul>
+<p>DONE WHEN:</p>
+<ul>
+<li>Command exits <code>0</code></li>
+<li>Report contains <code>PASS launch-media-contract</code></li>
+</ul>
+<p>IF BLOCKED:</p>
+<ul>
+<li>Re-run with <code>pnpm --filter @apps/caryina validate:launch-media -- --all-statuses</code> and inspect whether inactive records are misconfigured.</li>
+</ul>
+<h3>VC-05-02 Deterministic Fail + Fallback Path</h3>
+<p>DO:</p>
+<ol>
+<li>Run validator on fail fixture:
+<ul>
+<li><code>pnpm --filter @apps/caryina validate:launch-media -- --file ../../docs/plans/hbag-website-02-image-first-upgrade/artifacts/fixtures/launch-media-missing-on-body.json</code></li>
+</ul>
+</li>
+<li>Confirm missing slot is explicitly reported.</li>
+</ol>
+<p>SAVE:</p>
+<ul>
+<li>Fixture result summary in <code>docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md</code></li>
+</ul>
+<p>DONE WHEN:</p>
+<ul>
+<li>Command exits <code>1</code></li>
+<li>Output includes <code>missing required slot \</code>on_body``</li>
+</ul>
+<p>IF BLOCKED:</p>
+<ul>
+<li>Verify fixture path and JSON structure, then rerun with <code>--file</code> absolute path.</li>
+</ul>
+<h2>Fallback SLA for Failed SKUs</h2>
+<p>When validator fails for a launch SKU:</p>
+<ol>
+<li>Mark SKU as <code>hold-media</code> in launch tracker.</li>
+<li>Owner assigns reshoot to media producer within 1 business day.</li>
+<li>Updated media is ingested with slot tags.</li>
+<li>Validator is rerun; SKU is released only after pass.</li>
+</ol>
+<p>Ownership:</p>
+<ul>
+<li>Gate owner: Pete</li>
+<li>Media fulfillment owner: HBAG production lane</li>
+<li>Validation runner: build operator</li>
+</ul>
+<h2>Sign-off</h2>
+<ul>
+<li>Reviewer: Pete</li>
+<li>Review date: 2026-02-23</li>
+<li>Verdict: Approved as launch gate for WEBSITE-02 L1 Build 2</li>
 </ul>
     <div class="meta">
-      <div>Source: <code>docs/business-os/site-upgrades/HBAG/latest.user.md</code></div>
-      <div>Generated: 2026-02-23T18:14:13.053Z</div>
+      <div>Source: <code>docs/business-os/site-upgrades/HBAG/2026-02-23-image-production-contract.user.md</code></div>
+      <div>Generated: 2026-02-23T18:14:13.073Z</div>
     </div>
   </main>
   <script type="module">

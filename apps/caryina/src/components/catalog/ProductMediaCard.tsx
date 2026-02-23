@@ -26,7 +26,7 @@ export function ProductMediaCard({
     <article className="group media-card space-y-3">
       <Link href={href} className="block">
         <div
-          className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-solid bg-muted"
+          className="media-aspect-portrait relative overflow-hidden rounded-3xl border border-solid bg-muted"
           style={{ borderColor: "hsl(var(--color-border-default))" }}
         >
           <Image
@@ -48,7 +48,7 @@ export function ProductMediaCard({
         </div>
       </Link>
       <div className="space-y-1">
-        <p className="text-[11px] uppercase tracking-widest text-muted-foreground">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground">
           {slug}
         </p>
         <h2 className="text-lg font-display leading-tight">

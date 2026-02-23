@@ -18,3 +18,7 @@ Current active site-upgrade brief:
 ## Operator note
 
 WEBSITE-02 first-cycle (L1 Build 2) brief is now active with Image-First Merchandising mode contract and exemplar shot-board evidence.
+
+Related active operations artifact:
+
+- `docs/business-os/site-upgrades/HBAG/2026-02-23-image-production-contract.user.md`

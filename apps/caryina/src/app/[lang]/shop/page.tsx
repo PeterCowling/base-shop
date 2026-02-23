@@ -5,10 +5,10 @@ import { type Locale, resolveLocale } from "@acme/i18n/locales";
 
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
 import {
-  LAUNCH_FAMILY_ANCHORS,
   buildCatalogCardMedia,
   buildLaunchFamilyAnchors,
   filterSkusByLaunchFamily,
+  LAUNCH_FAMILY_ANCHORS,
   resolveLaunchFamily,
 } from "@/lib/launchMerchandising";
 import { formatMoney, readShopCurrency, readShopSkus } from "@/lib/shop";
@@ -53,7 +53,7 @@ export default async function ShopPage({
       <section className="space-y-10">
         <div className="space-y-4">
           <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground">
               Image-first product listing
             </p>
             <h1 className="text-5xl font-display">Shop all bags</h1>

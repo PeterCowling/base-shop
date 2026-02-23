@@ -42,9 +42,9 @@ export default async function LocaleHomePage({
 
   return (
     <section className="space-y-14">
-      <div className="grid gap-8 lg:grid-cols-[1.4fr_0.8fr] lg:items-end">
+      <div className="grid gap-8 lg:grid-cols-2 lg:items-end">
         <div className="space-y-4">
-          <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">
             Caryina Launch Edit
           </p>
           <h1 className="text-5xl font-display leading-none sm:text-6xl">
@@ -72,7 +72,7 @@ export default async function LocaleHomePage({
         </div>
 
         <div
-          className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-solid bg-muted"
+          className="media-aspect-portrait relative overflow-hidden rounded-3xl border border-solid bg-muted"
           style={{ borderColor: "hsl(var(--color-border-default))" }}
         >
           {heroMedia ? (
@@ -95,7 +95,7 @@ export default async function LocaleHomePage({
             <li key={family.key}>
               <Link href={family.href} className="group block space-y-3">
                 <div
-                  className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-solid bg-muted"
+                  className="media-aspect-portrait relative overflow-hidden rounded-3xl border border-solid bg-muted"
                   style={{ borderColor: "hsl(var(--color-border-default))" }}
                 >
                   <Image

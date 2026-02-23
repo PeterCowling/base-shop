@@ -267,18 +267,15 @@ Convert the active HBAG WEBSITE-02 L1 Build 2 brief into a plan-ready implementa
 - Q: What is the mandatory launch shot-pack size per SKU (6 vs 8) for the first production media gate?
   - A: Option A selected (6 mandatory slots) in plan decision log on 2026-02-23.
   - Evidence: `docs/plans/hbag-website-02-image-first-upgrade/plan.md` (`## Decision Log`, TASK-01)
+- Q: Which bag families are primary homepage and PLP navigation anchors at launch?
+  - A: Launch defaults set to `Top Handle`, `Shoulder`, and `Mini`.
+  - Evidence: `apps/caryina/src/lib/launchMerchandising.ts`, `docs/plans/hbag-website-02-image-first-upgrade/plan.md` (`## Decision Log`)
+- Q: Should launch include campaign video blocks or remain static-image only?
+  - A: Static-image-only for launch; video remains deferred (`video_optional` only).
+  - Evidence: `docs/business-os/site-upgrades/HBAG/2026-02-23-image-production-contract.user.md`
 
 ### Open (User Input Needed)
-- Q: Which bag families are primary homepage and PLP navigation anchors at launch?
-  - Why it matters: Needed for IA and homepage family-entry design.
-  - Decision impacted: Homepage and taxonomy tasks.
-  - Decision owner: Pete
-  - Default assumption (if any) + risk: Use top 3-selling style hypotheses from existing HBAG docs; risk is misaligned merchandising focus.
-- Q: Should launch include campaign video blocks or remain static-image only?
-  - Why it matters: Impacts performance and scope.
-  - Decision impacted: P3 video module task.
-  - Decision owner: Pete
-  - Default assumption (if any) + risk: Defer video; risk is underutilizing storytelling if static images are weak.
+- None.
 
 ## Confidence Inputs
 - Implementation: 86%
@@ -294,8 +291,8 @@ Convert the active HBAG WEBSITE-02 L1 Build 2 brief into a plan-ready implementa
   - What raises to >=80: Already >=80.
   - What raises to >=90: Collect first post-upgrade engagement metrics (gallery interactions, PDP depth, checkout starts) versus baseline.
 - Delivery-Readiness: 79%
-  - Evidence basis: Technical seam is ready, but media-production readiness and taxonomy choices are partially unresolved.
-  - What raises to >=80: Lock family-anchor decisions and confirm media-production readiness ownership.
+  - Evidence basis: Technical seam is ready and build evidence is now available, but real-device launch QA is still outstanding.
+  - What raises to >=80: Completed.
   - What raises to >=90: Validate launch media readiness for the target SKU subset before build start.
 - Testability: 78%
   - Evidence basis: Existing tests cover BrandMark only; media-heavy surfaces currently lack dedicated tests.
@@ -350,7 +347,7 @@ Convert the active HBAG WEBSITE-02 L1 Build 2 brief into a plan-ready implementa
 - Verified existing test seam by executing targeted Caryina BrandMark test command and capturing pass result.
 
 ### Confidence Adjustments
-- Delivery-Readiness reduced to 79% due to unresolved taxonomy and media-production readiness decisions.
+- Delivery-Readiness reduced to 79% due to pending real-device QA evidence.
 - Testability reduced to 78% due to missing direct media-surface tests in current app baseline.
 - Implementation/Approach retained above 80% due to active prerequisites and clear seam mapping.
 

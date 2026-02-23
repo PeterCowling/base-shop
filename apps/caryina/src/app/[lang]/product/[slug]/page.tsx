@@ -64,7 +64,7 @@ export default async function ProductDetailPage({
           Back to shop
         </Link>
 
-        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="grid gap-8 lg:grid-cols-2">
           <ProductGallery productTitle={product.title} items={galleryItems} />
 
           <div className="space-y-5">

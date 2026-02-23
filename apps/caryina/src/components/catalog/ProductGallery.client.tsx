@@ -79,15 +79,15 @@ export function ProductGallery({ productTitle, items }: ProductGalleryProps) {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       aria-label={`${productTitle} media gallery`}
-      data-testid="product-gallery"
+      data-cy="product-gallery"
     >
       <div
-        className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-solid bg-muted"
+        className="media-aspect-portrait relative overflow-hidden rounded-3xl border border-solid bg-muted"
         style={{ borderColor: "hsl(var(--color-border-default))" }}
       >
         {activeItem.type === "video" ? (
           <video
-            className="h-full w-full object-cover"
+            className="h-full w-full aspect-square object-cover"
             src={activeItem.src}
             controls
             playsInline
@@ -103,7 +103,7 @@ export function ProductGallery({ productTitle, items }: ProductGalleryProps) {
             priority
           />
         )}
-        <div className="absolute inset-x-0 bottom-0 bg-black/45 px-4 py-2 text-xs uppercase tracking-wider text-white">
+        <div className="gallery-role-label absolute inset-x-0 bottom-0 px-4 py-2 text-xs uppercase tracking-wider">
           {activeItem.roleLabel}
           {activeItem.isFallback ? " (placeholder)" : ""}
         </div>
@@ -114,20 +114,20 @@ export function ProductGallery({ productTitle, items }: ProductGalleryProps) {
           type="button"
           onClick={goPrevious}
           disabled={!canNavigate}
-          className="rounded-full border border-solid px-4 py-2 text-sm disabled:opacity-50"
+          className="min-h-12 min-w-12 rounded-full border border-solid px-4 py-2 text-sm disabled:opacity-50"
           style={{ borderColor: "hsl(var(--color-border-default))" }}
           aria-label="Previous media"
         >
           Previous
         </button>
-        <p className="text-sm text-muted-foreground" data-testid="gallery-position">
+        <p className="text-sm text-muted-foreground" data-cy="gallery-position">
           {activeIndex + 1} / {safeItems.length}
         </p>
         <button
           type="button"
           onClick={goNext}
           disabled={!canNavigate}
-          className="rounded-full border border-solid px-4 py-2 text-sm disabled:opacity-50"
+          className="min-h-12 min-w-12 rounded-full border border-solid px-4 py-2 text-sm disabled:opacity-50"
           style={{ borderColor: "hsl(var(--color-border-default))" }}
           aria-label="Next media"
         >
@@ -143,7 +143,7 @@ export function ProductGallery({ productTitle, items }: ProductGalleryProps) {
               <button
                 type="button"
                 onClick={() => goToIndex(index)}
-                className="w-full text-left"
+                className="min-h-12 min-w-12 w-full text-start"
                 aria-label={`Show ${item.roleLabel.toLowerCase()} image`}
                 aria-current={isActive ? "true" : undefined}
               >
@@ -152,7 +152,7 @@ export function ProductGallery({ productTitle, items }: ProductGalleryProps) {
                   style={{ borderColor: "hsl(var(--color-border-default))" }}
                 >
                   {item.type === "video" ? (
-                    <div className="flex h-full w-full items-center justify-center bg-muted text-[11px] uppercase tracking-wider text-muted-foreground">
+                    <div className="flex h-full w-full items-center justify-center bg-muted text-xs uppercase tracking-wider text-muted-foreground">
                       Video
                     </div>
                   ) : (

@@ -49,6 +49,15 @@ body {
   transition: opacity 250ms ease;
 }
 
+.media-aspect-portrait {
+  aspect-ratio: 4 / 5;
+}
+
+.gallery-role-label {
+  background-color: hsl(var(--color-fg) / 0.45);
+  color: hsl(var(--color-bg));
+}
+
 @media (hover: hover) and (pointer: fine) {
   .media-card:hover .media-card-secondary,
   .media-card:focus-within .media-card-secondary {

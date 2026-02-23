@@ -27,7 +27,7 @@ Card-ID: none
 This plan converts the repository from webpack-pinned Next app workflows to Turbopack-ready workflows in controlled waves. The fact-find shows the largest blocker is policy enforcement (`check-next-webpack-flag`) that currently requires `--webpack` by default, so policy and tests must move first. After policy changes, the plan migrates script surfaces, retires remaining webpack magic comments in i18n import paths, and then removes residual webpack-only callback/config surfaces where equivalent Turbopack behavior exists. Storybook builder scope is explicitly decision-gated because Turbopack is a Next bundler and does not directly replace Storybook's webpack builder.
 
 ## Active tasks
-- [ ] TASK-01: Decide migration scope boundary (Next-only vs Next+Storybook)
+- [x] TASK-01: Decide migration scope boundary (Next-only vs Next+Storybook)
 - [ ] TASK-02: Build canonical migration matrix for app/script/config surfaces
 - [ ] TASK-03: Decide policy strategy for `check-next-webpack-flag`
 - [ ] TASK-04: Implement policy and tests for Turbopack-first migration mode
@@ -44,7 +44,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - Finish with explicit zero-webpack acceptance criteria for in-scope runtime surfaces.
 
 ## Non-goals
-- Immediate migration of Storybook unless explicitly approved in TASK-01.
+- Storybook builder migration in this plan (explicitly excluded by TASK-01 decision; track as follow-on lane).
 - Unrelated feature work in app domains while migration is in progress.
 - Bulk refactors outside bundler/runtime surfaces.
 
@@ -84,7 +84,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | DECISION | Decide migration scope boundary | 90% | S | Pending | - | TASK-07, TASK-09 |
+| TASK-01 | DECISION | Decide migration scope boundary | 90% | S | Complete | - | - |
 | TASK-02 | INVESTIGATE | Build canonical migration matrix and callback responsibility map | 90% | S | Pending | - | TASK-03, TASK-07, TASK-08 |
 | TASK-03 | DECISION | Select policy strategy (matrix expansion vs default inversion) | 85% | S | Pending | TASK-02 | TASK-04 |
 | TASK-04 | IMPLEMENT | Update policy script/tests and validation hooks for migration mode | 85% | S | Pending | TASK-03 | TASK-05 |
@@ -113,10 +113,10 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `docs/plans/turbopack-full-migration/plan.md`, `[readonly] apps/storybook/.storybook/main.ts`, `[readonly] apps/storybook/.storybook-ci/main.ts`
 - **Depends on:** -
-- **Blocks:** TASK-07, TASK-09
+- **Blocks:** `None: task complete, downstream scope gate resolved`
 - **Confidence:** 90%
   - Implementation: 90% - required evidence is already present in fact-find and source pointers.
   - Approach: 90% - binary scope decision with clear downstream implications.
@@ -125,10 +125,10 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
   - Option A: Next runtime surfaces only; track Storybook as separate follow-on.
   - Option B: Include Storybook builder migration in this plan.
 - **Recommendation:** Option A unless explicit priority is placed on Storybook in the same migration window.
-- **Decision input needed:**
-  - question: Is Storybook migration in this plan's definition of done?
-  - why it matters: determines acceptance criteria for zero-webpack claim and dependency cleanup.
-  - default + risk: Default to Option A; risk is residual webpack usage in Storybook after Next migration.
+- **Decision outcome (2026-02-23):**
+  - Selected option: Option A (Next runtime surfaces only; Storybook excluded from this plan).
+  - Why: Turbopack migration scope in this plan is Next runtime; Storybook builder migration is a separate toolchain lane and would expand risk/scope without helping the immediate Next migration path.
+  - Residual risk accepted: root `webpack` dependency may remain while Storybook still uses webpack.
 - **Acceptance:**
   - Scope decision captured in Decision Log and reflected in Goals/Non-goals.
   - Downstream tasks updated (if needed) to match scope.
@@ -445,7 +445,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
   - None: use CI failures and merge-gate output as enforcement signal.
 
 ## Acceptance Criteria (overall)
-- [ ] Scope boundary is explicitly decided and documented.
+- [x] Scope boundary is explicitly decided and documented.
 - [ ] Policy gate supports planned Turbopack migration sequence.
 - [ ] In-scope Next app script surfaces no longer require `--webpack`.
 - [ ] In-scope webpack callback/magic-comment surfaces are retired or explicitly documented as intentional exceptions.
@@ -453,6 +453,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 
 ## Decision Log
 - 2026-02-23: Initialized plan from `fact-find.md` in plan-only mode; selected policy-first migration shape pending TASK-03 confirmation.
+- 2026-02-23: TASK-01 decision recorded. Scope = Option A (Next runtime only). Storybook builder migration is out-of-scope for this plan and will be tracked as a separate follow-on lane.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

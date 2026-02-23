@@ -177,12 +177,12 @@ This brief documents where webpack is still active in the repository after the b
   - A: Yes. Storybook config explicitly uses `@storybook/builder-webpack5`, `webpack.NormalModuleReplacementPlugin`, and resolve alias setup.
   - Evidence: `apps/storybook/.storybook/main.ts`, `apps/storybook/.storybook-ci/main.ts`.
 
-### Open (User Input Needed)
 - Q: Is Storybook builder migration included in full-migration scope?
-  - Decision owner: Pete
-  - Why it matters: Determines acceptance criteria for zero-webpack claim and whether root `webpack` devDependency can be removed.
-  - Default: Exclude Storybook (Next-only scope); track as follow-on.
-  - Risk of default: residual webpack usage in Storybook after Next migration; root `webpack` dependency retained.
+  - A: No for this plan. TASK-01 selected Option A (Next runtime only), and Storybook migration is a separate follow-on lane.
+  - Evidence: `docs/plans/turbopack-full-migration/plan.md` Decision Log entry dated 2026-02-23.
+
+### Open (User Input Needed)
+- None.
 
 ## Confidence Inputs
 | Dimension | Score | Rationale |
@@ -206,10 +206,10 @@ This brief documents where webpack is still active in the repository after the b
   - Likelihood: Medium
   - Impact: High
   - Mitigation: keep policy-gate updates ahead of script flag removals and verify with policy tests each wave.
-- Storybook scope ambiguity remains unresolved:
-  - Likelihood: High
+- Storybook excluded from this plan can leave cleanup coupling:
+  - Likelihood: Medium
   - Impact: Medium
-  - Mitigation: force explicit scope decision before final zero-webpack acceptance criteria.
+  - Mitigation: keep Storybook exclusion explicit in acceptance criteria and dependency-cleanup decisions.
 
 ## Planning Readiness
 - **Ready for planning:** Yes.
@@ -218,6 +218,6 @@ This brief documents where webpack is still active in the repository after the b
   - Policy gate must be updated before or alongside app script changes.
   - 7 files contain `webpackInclude` magic comments requiring bundler-neutral replacement.
   - 9 config files contain webpack callbacks of varying complexity (CMS is highest risk).
-  - Storybook scope decision is prerequisite for final acceptance criteria.
+  - Storybook is out-of-scope for this plan; final cleanup must preserve explicit rationale for any retained webpack dependency.
 - **Recommended sequencing:** Policy and matrix decisions first, then source-pattern cleanup and callback migration in parallel, then bulk script migration, then hardening.
-- **Open blockers:** Storybook scope decision (user input needed).
+- **Open blockers:** None.

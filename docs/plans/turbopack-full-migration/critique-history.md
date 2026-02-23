@@ -3,10 +3,13 @@ Type: Plan
 Status: Active
 Domain: Repo
 Last-reviewed: 2026-02-23
-Relates-to: docs/plans/turbopack-full-migration/plan.md
+Relates-to charter: none
 ---
 
 # Critique History: turbopack-full-migration
+
+## Active tasks
+No active tasks; this document records critique rounds only.
 
 ## Round 3 — 2026-02-23
 

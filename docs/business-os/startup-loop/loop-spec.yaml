@@ -422,7 +422,9 @@ stages:
     prompt_template: measurement-agent-setup-prompt.md
     # expanded 2026-02-17: thin template replaced in-place with comprehensive Phase 0-2 bootstrap
     # covering access bundle (P0-01..P0-12 + deferred P0-11a/b), Phase 1 agent steps (G,SC,D,GH,C),
-    # Phase 2 staging verification (V-01..V-06), 7 Derived Policies, IDs glossary, Consent Mode v2.
+    # Phase 2 staging verification (V-01..V-06), Derived Policies, IDs glossary, Consent Mode v2.
+    # updated 2026-02-23: Phase 0 now includes mandatory GBP API setup and entitlement checks
+    # (P0-01a/P0-01b). Policy set expanded to 8 Derived Policies.
     # Decision: Option A (in-place, same filename) — no spec_version bump for this change alone.
     # Reference: docs/plans/startup-loop-infra-measurement-bootstrap/plan.md
     # Unified setup stage for all launch surfaces.

@@ -170,8 +170,32 @@ jest.mock('../../hooks/dataOrchestrator/useGuestBookingSnapshot', () => ({
 // Mock useUnifiedBookingData
 jest.mock('../../hooks/dataOrchestrator/useUnifiedBookingData', () => ({
   useUnifiedBookingData: jest.fn(() => ({
-    data: { booking: { checkInDate: '2099-02-10' } },
+    occupantData: {
+      checkInDate: '2099-02-10',
+      checkOutDate: '2099-02-12',
+      firstName: 'Guest',
+      nights: 2,
+      cityTax: { totalDue: 10 },
+      completedTasks: {},
+    },
     isLoading: false,
+    error: null,
+    isCheckedIn: false,
+  })),
+}));
+
+// Mock useCheckInCode
+jest.mock('../../hooks/useCheckInCode', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    code: 'BRK-ABCDE',
+    isLoading: false,
+    isError: false,
+    errorMessage: null,
+    isStale: false,
+    isOffline: false,
+    refetch: jest.fn(),
+    generateCode: jest.fn(),
   })),
 }));
 
@@ -179,6 +203,22 @@ jest.mock('../../hooks/dataOrchestrator/useUnifiedBookingData', () => ({
 jest.mock('../../hooks/usePreArrivalState', () => ({
   usePreArrivalState: jest.fn(() => ({
     state: 'active',
+    preArrivalData: {
+      routeSaved: null,
+      cashReadyCityTax: false,
+      cashReadyDeposit: false,
+      etaWindow: null,
+      etaMethod: null,
+      etaNote: '',
+    },
+    cashAmounts: {
+      cityTax: 10,
+      deposit: 10,
+    },
+    saveRoute: jest.fn(),
+    updateChecklistItem: jest.fn(),
+    setCashReady: jest.fn(() => Promise.resolve()),
+    setEta: jest.fn(() => Promise.resolve()),
     isLoading: false,
   })),
 }));

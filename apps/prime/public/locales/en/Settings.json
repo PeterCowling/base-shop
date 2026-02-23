@@ -15,5 +15,15 @@
       "label": "Guest chat",
       "optedOutNote": "You won't appear in the guest directory or receive new messages. Existing conversations are still visible."
     }
+  },
+  "language": {
+    "title": "Language",
+    "subtitle": "Choose your preferred app language.",
+    "current": "Current language: {{language}}",
+    "returnHome": "Return Home",
+    "options": {
+      "en": "English",
+      "it": "Italiano"
+    }
   }
 }

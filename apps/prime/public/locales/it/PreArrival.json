@@ -213,5 +213,46 @@
     "tip1": "Completa ogni passaggio per sbloccare il codice di check-in.",
     "tip2": "Puoi tornare su questa pagina in qualsiasi momento.",
     "title": "Benvenuto su Prime"
+  },
+  "mainDoor": {
+    "title": "Accesso porta principale",
+    "subtitle": "Usa il tuo codice personale per entrare nell'edificio dopo l'orario.",
+    "loadError": "Non riusciamo a caricare ora i dettagli per l'accesso alla porta.",
+    "codeLabel": "Il tuo codice porta",
+    "codeUnavailable": "Codice non disponibile",
+    "codeCopied": "Codice copiato.",
+    "copyHint": "Tocca per copiare questo codice.",
+    "codeError": "Non riusciamo a caricare ora il tuo codice.",
+    "staleWarning": "Stai vedendo un codice in cache. Aggiorna quando torni online.",
+    "offlineNoCode": "Sei offline e non esiste un codice salvato in cache.",
+    "refreshCode": "Aggiorna codice",
+    "instructionsTitle": "Come entrare",
+    "instructions": {
+      "step1": "Attiva la tastiera e inserisci il codice completo esattamente come mostrato.",
+      "step2": "Attendi il segnale di sblocco prima di spingere la porta.",
+      "step3": "Se la porta non si apre, riprova una volta con lo stesso codice.",
+      "step4": "Se l'accesso continua a non funzionare, apri subito Problemi notturni."
+    },
+    "roomKeycardNote": "La keycard apre la camera. Usa questo codice per ingresso principale.",
+    "safetyNote": "Condividi questo codice solo con persone incluse nella tua prenotazione.",
+    "lateCheckinLink": "Guida check-in fuori orario",
+    "returnHome": "Torna alla home"
+  },
+  "lateCheckin": {
+    "title": "Check-in fuori orario",
+    "subtitle": "Segui questi passaggi se arrivi dopo la chiusura della reception.",
+    "loadError": "Non riusciamo a caricare ora le istruzioni per il check-in tardivo.",
+    "stepsTitle": "Cosa fare",
+    "steps": {
+      "step1": "Conferma di aver già ricevuto l'autorizzazione al check-in tardivo.",
+      "step2": "Apri la guida porta principale e usa il tuo codice personale.",
+      "step3": "Tieni il telefono carico durante tutta la procedura d'arrivo.",
+      "step4": "Se qualcosa non è chiaro, segnala subito il problema dall'app.",
+      "step5": "Passa in reception la mattina successiva per completare eventuali passaggi."
+    },
+    "nextActionsTitle": "Link rapidi",
+    "mainDoorCta": "Apri guida porta principale",
+    "issuesCta": "Segnala un problema notturno",
+    "returnHome": "Torna alla home"
   }
 }

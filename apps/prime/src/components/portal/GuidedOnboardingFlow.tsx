@@ -8,6 +8,7 @@ import { Skeleton, Toast } from '@acme/design-system/atoms';
 import { StepFlowShell } from '@acme/design-system/primitives';
 import ExperimentGate from '@acme/ui/components/ab/ExperimentGate';
 
+import { buildSupportMailto } from '../../config/supportContact';
 import { ROUTES_TO_POSITANO } from '../../data/routes';
 import { usePreArrivalMutator } from '../../hooks/mutator/usePreArrivalMutator';
 import { useFetchPreArrivalData } from '../../hooks/pureData/useFetchPreArrivalData';
@@ -783,7 +784,9 @@ export default function GuidedOnboardingFlow({
 
         {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 link text+padding exceeds 44px at runtime */}
         <a
-          href={`mailto:hostelbrikette@gmail.com?subject=Onboarding help (step-${step})`}
+          href={buildSupportMailto({
+            subject: `Onboarding help (step-${step})`,
+          })}
           onClick={() => {
             recordActivationFunnelEvent({
               type: 'utility_action_used',

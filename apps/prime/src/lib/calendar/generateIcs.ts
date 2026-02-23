@@ -1,3 +1,5 @@
+import { SUPPORT_CONTACT } from '../../config/supportContact';
+
 /**
  * Calendar invite generation (.ics files).
  *
@@ -30,7 +32,7 @@ const HOSTEL_INFO = {
   name: 'Hostel Brikette',
   address: 'Via Cristoforo Colombo 13, 84017 Positano SA, Italy',
   phone: '+39 089 123 4567', // TODO: Update with real phone
-  email: 'info@hostelbrikette.com', // TODO: Update with real email
+  email: SUPPORT_CONTACT.email,
   timezone: 'Europe/Rome',
 };
 

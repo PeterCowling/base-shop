@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { AlertTriangle, LifeBuoy } from 'lucide-react';
 
+import { buildSupportMailto } from '../../../config/supportContact';
 import { useUnifiedBookingData } from '../../../hooks/dataOrchestrator/useUnifiedBookingData';
 
 export default function OvernightIssuesPage() {
@@ -20,7 +21,7 @@ export default function OvernightIssuesPage() {
       bookingRef: bookingRef ?? t('overnightIssues.email.unknownBookingRef'),
     });
 
-    return `mailto:hostelbrikette@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    return buildSupportMailto({ subject, body });
   }, [occupantData?.reservationCode, t]);
 
   if (isLoading) {

@@ -254,5 +254,29 @@
     "mainDoorCta": "Open main door guide",
     "issuesCta": "Report an overnight issue",
     "returnHome": "Return Home"
+  },
+  "overnightIssues": {
+    "title": "Overnight Issues",
+    "subtitle": "Use this page if you need urgent help outside reception hours.",
+    "loadError": "We could not load your booking context right now.",
+    "priorityNotice": "If safety is at risk, contact local emergency services first.",
+    "whatToIncludeTitle": "When you report an issue",
+    "whatToInclude": {
+      "item1": "Describe exactly what happened and what you already tried.",
+      "item2": "Include your current location and room number if relevant.",
+      "item3": "Attach photos if they help explain the issue."
+    },
+    "actionsTitle": "Get help now",
+    "emailCta": "Email reception support",
+    "assistantCta": "Ask the digital assistant",
+    "followUpNote": "Reception will follow up as soon as possible.",
+    "safetyNote": "Keep your phone available after sending your report in case staff need more details.",
+    "returnHome": "Return Home",
+    "email": {
+      "subjectWithBooking": "Overnight issue - Booking {{bookingRef}}",
+      "subjectDefault": "Overnight issue - Prime app",
+      "unknownBookingRef": "Unknown",
+      "bodyTemplate": "Hi team,\\n\\nI need help with an overnight issue.\\nBooking: {{bookingRef}}\\nIssue details:\\n\\n\\nCurrent location:\\n\\n\\nThanks."
+    }
   }
 }

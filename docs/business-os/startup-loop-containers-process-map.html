@@ -1592,26 +1592,51 @@ h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
       var srcRect = src.getBoundingClientRect();
       var tgtRect = tgt.getBoundingClientRect();
 
-      /* Exit right-center of source; enter left-center of target */
+      /* Exit right-center of source card; enter left-center of target card */
       var x1 = srcRect.right  - containerRect.left + 2;
       var y1 = (srcRect.top + srcRect.bottom) / 2 - containerRect.top;
       var x2 = tgtRect.left   - containerRect.left - 2;
       var y2 = (tgtRect.top  + tgtRect.bottom) / 2 - containerRect.top;
 
-      /* Cubic bezier: horizontal tangents at both ends — smooth S-curve */
-      var cp = Math.max(40, Math.abs(x2 - x1) * 0.45);
-      var d = 'M' + x1.toFixed(1) + ',' + y1.toFixed(1)
-            + ' C' + (x1 + cp).toFixed(1) + ',' + y1.toFixed(1)
-            + ' '  + (x2 - cp).toFixed(1) + ',' + y2.toFixed(1)
-            + ' '  + x2.toFixed(1) + ',' + y2.toFixed(1);
+      /* Route through the lane gap — find horizontal midpoint between
+         the right edge of the source lane and the left edge of the target lane.
+         The vertical segment runs only through this narrow gap, never over card text. */
+      var srcLane = src.closest('.lane');
+      var tgtLane = tgt.closest('.lane');
+      var xmid = (x1 + x2) / 2;
+      if (srcLane && tgtLane) {
+        var slr = srcLane.getBoundingClientRect().right - containerRect.left;
+        var tll = tgtLane.getBoundingClientRect().left  - containerRect.left;
+        xmid = (slr + tll) / 2;
+      }
+
+      /* Orthogonal elbow with rounded corners: H → gap → V → gap → H */
+      var r  = 7;
+      var dy = y2 - y1;
+      var rs = dy >= 0 ? 1 : -1;
+      var ra = Math.min(r, Math.abs(dy) / 2);
+
+      var d;
+      if (Math.abs(dy) < 4) {
+        /* Cards at nearly the same height — straight horizontal line */
+        d = 'M' + x1.toFixed(1) + ',' + y1.toFixed(1)
+          + ' L' + x2.toFixed(1) + ',' + y2.toFixed(1);
+      } else {
+        /* Right from card → rounded bend into gap → vertical through gap →
+           rounded bend out of gap → horizontal into target card */
+        d = 'M'  + x1.toFixed(1)         + ',' + y1.toFixed(1)
+          + ' L' + (xmid - ra).toFixed(1) + ',' + y1.toFixed(1)
+          + ' Q' + xmid.toFixed(1)        + ',' + y1.toFixed(1)
+          + ' '  + xmid.toFixed(1)        + ',' + (y1 + ra * rs).toFixed(1)
+          + ' L' + xmid.toFixed(1)        + ',' + (y2 - ra * rs).toFixed(1)
+          + ' Q' + xmid.toFixed(1)        + ',' + y2.toFixed(1)
+          + ' '  + (xmid + ra).toFixed(1) + ',' + y2.toFixed(1)
+          + ' L' + x2.toFixed(1)          + ',' + y2.toFixed(1);
+      }
       path.setAttribute('d', d);
 
-      /* Label at bezier midpoint (t=0.5 ≈ arithmetic mean for symmetric cubic) */
-      if (label) {
-        label.setAttribute('x', ((x1 + x2) / 2).toFixed(1));
-        label.setAttribute('y', ((y1 + y2) / 2 - 9).toFixed(1));
-        label.textContent = pair.label;
-      }
+      /* Clear SVG label — card sync-gate badges communicate the dependency */
+      if (label) { label.textContent = ''; }
     });
   }
 

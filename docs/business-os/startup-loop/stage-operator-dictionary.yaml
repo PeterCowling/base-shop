@@ -956,7 +956,7 @@ stages:
     name_machine: weekly-readout
     label_operator_short: "Signals"
     label_operator_long: "S10 — Signals"
-    outcome_operator: "Weekly K/P/C/S decision document with denominator-valid KPI assessment and next actions."
+    outcome_operator: "Weekly signals container complete: KPIs compiled, K/P/C/S decision made, signal quality reviewed, experiments read out and next cycle specs updated."
     aliases:
       - signals
       - weekly-readout
@@ -965,3 +965,50 @@ stages:
       - s10
     display_order: 22
     operator_next_prompt: "Repeat weekly. Run standing refresh prompts on monthly/quarterly cadence."
+
+  - id: S10-01
+    name_machine: weekly-measure
+    label_operator_short: "Measure"
+    label_operator_long: "S10-01 — Measure"
+    outcome_operator: "Normalised KPI snapshot for the week: traffic, revenue, conversion rates, and denominator-valid metric set compiled from live analytics."
+    aliases:
+      - weekly-measure
+      - s10-01
+    display_order: 23
+    operator_next_prompt: "Proceed to S10-02 Decide (KPCS decision)."
+
+  - id: S10-02
+    name_machine: weekly-decide
+    label_operator_short: "Decide"
+    label_operator_long: "S10-02 — Decide"
+    outcome_operator: "K/P/C/S decision document: what to Keep, Pivot, Cut, and Scale this week, with rationale anchored to the KPI snapshot."
+    aliases:
+      - weekly-decide
+      - kpcs
+      - s10-02
+    display_order: 24
+    operator_next_prompt: "Proceed to S10-03 Signal review in parallel with S10-04 Experiments."
+
+  - id: S10-03
+    name_machine: weekly-signal-review
+    label_operator_short: "Signal review"
+    label_operator_long: "S10-03 — Signal review"
+    outcome_operator: "Signal quality audit for this run: top findings ranked by Severity × Support, with process-improvement stubs for any structural signal weaknesses."
+    aliases:
+      - weekly-signal-review
+      - signal-review
+      - s10-03
+    display_order: 25
+    operator_next_prompt: "Proceed to S10-04 Experiments, then close the weekly cycle."
+
+  - id: S10-04
+    name_machine: weekly-experiments
+    label_operator_short: "Experiments"
+    label_operator_long: "S10-04 — Experiments"
+    outcome_operator: "Experiment readout for active tests plus next-cycle backlog: new experiment specs added, completed experiments closed, carry-forward items noted."
+    aliases:
+      - weekly-experiments
+      - experiments
+      - s10-04
+    display_order: 26
+    operator_next_prompt: "Weekly cycle complete. Repeat from S10-01 next week."

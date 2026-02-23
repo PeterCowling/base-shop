@@ -77,7 +77,11 @@ Last-reviewed: 2026-02-21
 | 19 | `S6` | Site-upgrade synthesis | Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis. | `site-upgrade`, `site-upgrade-synthesis`, `s6` | — |
 | 20 | `DO` | Do | Feature or artifact delivered: fact-find brief, sequenced plan, and implementation with validation evidence. | `do`, `fact-find`, `plan`, `build`, `s7`, `s8`, `s9` | — |
 | 21 | `S9B` | QA gates | QA gate pass evidence: conversion flows, SEO readiness, performance budget, and legal compliance verified. | `qa-gates`, `qa`, `s9b` | — |
-| 22 | `S10` | Signals | Weekly K/P/C/S decision document with denominator-valid KPI assessment and next actions. | `signals`, `weekly-readout`, `weekly-decision`, `weekly`, `s10` | — |
+| 22 | `S10` | Signals | Weekly signals container complete: KPIs compiled, K/P/C/S decision made, signal quality reviewed, experiments read out and next cycle specs updated. | `signals`, `weekly-readout`, `weekly-decision`, `weekly`, `s10` | — |
+| 23 | `S10-01` | Measure | Normalised KPI snapshot for the week: traffic, revenue, conversion rates, and denominator-valid metric set compiled from live analytics. | `weekly-measure`, `s10-01` | — |
+| 24 | `S10-02` | Decide | K/P/C/S decision document: what to Keep, Pivot, Cut, and Scale this week, with rationale anchored to the KPI snapshot. | `weekly-decide`, `kpcs`, `s10-02` | — |
+| 25 | `S10-03` | Signal review | Signal quality audit for this run: top findings ranked by Severity × Support, with process-improvement stubs for any structural signal weaknesses. | `weekly-signal-review`, `signal-review`, `s10-03` | — |
+| 26 | `S10-04` | Experiments | Experiment readout for active tests plus next-cycle backlog: new experiment specs added, completed experiments closed, carry-forward items noted. | `weekly-experiments`, `experiments`, `s10-04` | — |
 
 ### `SELL-01` microsteps
 

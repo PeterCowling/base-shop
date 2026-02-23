@@ -4,6 +4,7 @@
 import Link from "next/link";
 
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
 import { Stack } from "@acme/design-system/primitives/Stack";
 
 import { XA_PRODUCTS } from "../lib/demoData";
@@ -56,9 +57,10 @@ export function XaMegaMenu({
       <PopoverContent
         align="center"
         sideOffset={0}
-        className="w-screen max-w-none rounded-none border-0 bg-surface px-0 pb-10 pt-8 shadow-none"
+        className="w-screen rounded-none border-0 bg-surface px-0 pb-10 pt-8 shadow-none"
+        style={{ maxWidth: "none" }}
       >
-        <div className="mx-auto flex w-full max-w-screen-2xl gap-10 px-6">
+        <Section as="div" padding="none" className="flex w-full gap-10 px-6">
           <div className="grid flex-1 gap-6 md:grid-cols-5">
             <div className="space-y-3">
               <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -137,7 +139,7 @@ export function XaMegaMenu({
               <div className="mt-1 text-sm">{featuredProduct.title}</div>
             </Link>
           ) : null}
-        </div>
+        </Section>
       </PopoverContent>
     </Popover>
   );

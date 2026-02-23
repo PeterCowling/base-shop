@@ -4,6 +4,7 @@ import { Button } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { Breadcrumbs } from "@acme/design-system/molecules";
+import { Inline } from "@acme/design-system/primitives/Inline";
 import { ResourceCard } from "@acme/ui/components/organisms/ResourceCard";
 import { SupportSidebarNav } from "@acme/ui/components/organisms/SupportSidebarNav";
 
@@ -65,7 +66,7 @@ export default function ServiceCenterPage() {
                 title="Contact"
                 description="Choose a channel and we’ll route you to the right team."
               >
-                  <div className="flex flex-wrap gap-3">
+                <Inline gap={3} className="flex-wrap">
                     {whatsappHref ? (
                       <Button variant="outline" asChild>
                         <a href={whatsappHref} target="_blank" rel="noreferrer noopener">
@@ -85,7 +86,7 @@ export default function ServiceCenterPage() {
                         </a>
                       </Button>
                     ) : null}
-                  </div>
+                </Inline>
                   {siteConfig.showContactInfo && siteConfig.businessHours ? (
                     <div className="text-xs text-muted-foreground">
                       Business hours: {siteConfig.businessHours}
@@ -112,7 +113,7 @@ export default function ServiceCenterPage() {
               id="shipping"
               className="scroll-mt-28"
               title="Shipping"
-              description="Processing times, methods, and delivery windows."
+              description="Processing timelines, methods, and delivery windows."
             >
               <Button variant="outline" asChild>
                 <Link href="/pages/shipping-policy">Shipping policy</Link>
@@ -144,7 +145,7 @@ export default function ServiceCenterPage() {
 
       <Section padding="default" id="company" className="scroll-mt-28">
         <ResourceCard title="Company & legal">
-          <div className="mt-3 flex flex-wrap gap-3">
+          <Inline gap={3} className="mt-3 flex-wrap">
             <Button variant="outline" asChild>
               <Link href="/pages/about-us">About us</Link>
             </Button>
@@ -157,7 +158,7 @@ export default function ServiceCenterPage() {
             <Button variant="outline" asChild>
               <Link href="/pages/contact-us">Contact us</Link>
             </Button>
-          </div>
+          </Inline>
         </ResourceCard>
       </Section>
     </main>

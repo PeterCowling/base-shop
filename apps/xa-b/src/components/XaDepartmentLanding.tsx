@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 import { XA_PRODUCTS } from "../lib/demoData";
 import { siteConfig } from "../lib/siteConfig";
@@ -43,12 +44,12 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
       </Section>
 
       <Section padding="default">
-        <div className="flex items-center justify-between">
+        <Inline gap={2} alignY="center" className="justify-between">
           <h2 className="text-xl font-semibold">New In</h2>
           <Link href={`/new-in?department=${department}`} className="text-sm underline">
             View all
           </Link>
-        </div>
+        </Inline>
         <div className="mt-6">
           <Grid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>
             {newIn.map((product) => (
@@ -60,7 +61,7 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
 
       <Section padding="default">
         <h2 className="text-xl font-semibold">Trending designers</h2>
-        <div className="mt-4 flex flex-wrap gap-3">
+        <Inline gap={3} className="mt-4 flex-wrap">
           {trendingDesigners.map((designer) => (
             <Link
               key={designer.handle}
@@ -70,7 +71,7 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
               {designer.name}
             </Link>
           ))}
-        </div>
+        </Inline>
       </Section>
 
       <Section padding="default">

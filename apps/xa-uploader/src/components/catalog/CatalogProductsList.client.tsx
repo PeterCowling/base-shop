@@ -59,6 +59,7 @@ export function CatalogProductsList({
       <label className="mt-3 block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
         {t("search")}
         <input
+          data-testid="catalog-search"
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
           className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"

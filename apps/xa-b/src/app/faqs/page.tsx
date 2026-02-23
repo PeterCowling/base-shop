@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import Accordion from "@acme/design-system/molecules/Accordion";
+import { Stack } from "@acme/design-system/primitives/Stack";
 import { FeedbackPreferenceCard } from "@acme/ui/components/organisms/FeedbackPreferenceCard";
 import { NewsletterSignupCard } from "@acme/ui/components/organisms/NewsletterSignupCard";
 
@@ -527,10 +528,10 @@ const faqSections: FaqSection[] = [
         ),
       },
       {
-        question: "Will the courier collect multiple packages?",
+        question: "Will the delivery partner collect multiple packages?",
         content: (
           <p className="text-sm text-muted-foreground">
-            Yes, the courier may collect multiple packages. If returning items to multiple boutiques, request
+            Yes, the delivery partner may collect multiple packages. If returning items to multiple boutiques, request
             a separate collection for each package in your account or{" "}
             <XaInlineLink href="/account/trackingorder" className="underline">
               guest order lookup
@@ -581,7 +582,7 @@ const faqSections: FaqSection[] = [
         question: "What does pre-order mean?",
         content: (
           <p className="text-sm text-muted-foreground">
-            You can buy next season's pieces before release and receive them once available.
+            You can buy next season&apos;s pieces before release and receive them once available.
           </p>
         ),
       },
@@ -895,7 +896,7 @@ const faqSections: FaqSection[] = [
         question: "How is pricing determined?",
         content: (
           <p className="text-sm text-muted-foreground">
-            Pricing depends on the supplier's location. Import taxes and partnerships with luxury brands may
+            Pricing depends on the supplier&apos;s location. Import taxes and partnerships with luxury brands may
             affect cost, and it can exceed retail in some cases.
           </p>
         ),
@@ -975,10 +976,10 @@ export default function FaqPage() {
 
   return (
     <main className="sf-content">
-      <Section padding="wide" className="space-y-3">
+      <Section padding="wide" className="max-w-3xl space-y-3">
         <p className="text-xs uppercase xa-tracking-020 text-muted-foreground">Help &amp; support</p>
         <h1 className="text-3xl font-semibold">FAQs</h1>
-        <p className="max-w-3xl text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground">
           All the essentials for shopping, delivery, returns, payments, sizing, promotions, and more for{" "}
           {productDescriptor}. Browse by topic or expand a question to see the details exactly as on {brandName}.
         </p>
@@ -989,7 +990,7 @@ export default function FaqPage() {
           <aside className="md:col-span-1">
             <div className="sticky top-28 space-y-3">
               <div className="text-sm font-semibold text-muted-foreground">Browse topics</div>
-              <div className="flex flex-col gap-2">
+              <Stack gap={2}>
                 {faqSections.map((section) => {
                   const id = toSlug(section.title);
                   return (
@@ -1002,7 +1003,7 @@ export default function FaqPage() {
                     </XaInlineLink>
                   );
                 })}
-              </div>
+              </Stack>
             </div>
           </aside>
 

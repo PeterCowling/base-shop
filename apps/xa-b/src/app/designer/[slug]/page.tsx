@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms/Section";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 import { XaProductListing } from "../../../components/XaProductListing.client";
 import { XA_BRANDS, XA_PRODUCTS } from "../../../lib/demoData";
@@ -80,7 +81,7 @@ export default async function DesignerPage({
     <main className="sf-content">
       <Section padding="default">
         <div className="space-y-3">
-          <div className="flex flex-wrap items-center gap-3">
+          <Inline gap={3} alignY="center" className="flex-wrap">
             {tabs.map((tab) => (
               <Link
                 key={tab.value}
@@ -90,7 +91,7 @@ export default async function DesignerPage({
                 {tab.label}
               </Link>
             ))}
-          </div>
+          </Inline>
         </div>
       </Section>
 

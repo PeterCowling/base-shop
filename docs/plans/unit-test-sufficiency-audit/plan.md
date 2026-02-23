@@ -644,6 +644,7 @@ This plan converts the fact-find gaps into an execution sequence that first rest
 - 2026-02-23: TASK-08 completed; graduation matrix artifact captured per-scope evidence, risks, and proposed tier outcomes at `artifacts/coverage-tier-graduation.md`.
 - 2026-02-23: TASK-09 completed; decision artifact approved Option B (partial promotion), promoting only `@acme/types` this cycle with explicit deferred scopes and rollback triggers.
 - 2026-02-23: TASK-10 completed; `SCHEMA_BASELINE` tier added, `@acme/types` promoted out of `MINIMAL`, `check-coverage.sh` aligned to policy source-of-truth, and testing policy docs updated.
+- 2026-02-23: Post-plan hardening removed `@acme/types` coverage-gate env override dependency by pinning package Jest preset to CJS mode (`packages/types/jest.config.cjs`), so `sh scripts/check-coverage.sh @acme/types` now passes without `JEST_FORCE_CJS=1`.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

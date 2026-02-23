@@ -119,7 +119,7 @@ export default function CheckoutPage() {
           </div>
         )}
 
-        <div className="max-w-md space-y-4">
+        <Section as="div" padding="none" width="full" className="max-w-md space-y-4">
           <form
             className="space-y-4"
             onSubmit={(e) => {
@@ -152,7 +152,7 @@ export default function CheckoutPage() {
               </Button>
             </div>
           </form>
-        </div>
+        </Section>
       </Section>
     </main>
   );

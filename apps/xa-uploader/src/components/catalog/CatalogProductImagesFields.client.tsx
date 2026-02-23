@@ -30,6 +30,7 @@ export function CatalogProductImagesFields({
         <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] md:col-span-2">
           {t("imageFiles")}
           <textarea
+            data-testid="catalog-field-image-files"
             value={draft.imageFiles ?? ""}
             onChange={(event) => onChange({ ...draft, imageFiles: event.target.value })}
             rows={3}

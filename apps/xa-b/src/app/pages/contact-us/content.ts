@@ -27,7 +27,7 @@ export const returnSteps = [
   "Open Orders & Returns in your account, or use guest order lookup with your order number and email address.",
   "Find the order and choose Return Item(s).",
   "Select each item and choose a reason for the return.",
-  "Choose a return method: book a collection or drop off at a courier point.",
+  "Choose a return method: book a collection or drop off at a carrier point.",
 ] as const;
 
 export const buildPrepareSteps = (packagingItems: string) =>

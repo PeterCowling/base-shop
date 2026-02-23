@@ -16,6 +16,7 @@ import { IconButton, Input } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { CurrencySwitcher } from "@acme/design-system/molecules";
+import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
 import { useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
@@ -101,9 +102,11 @@ export function XaShell({ children }: { children: ReactNode }) {
                   >
                     <HeartIcon className="h-4 w-4" />
                     {wishlistCount ? (
-                      <span className="absolute -end-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 xa-text-10 font-semibold text-background">
-                        {wishlistCount}
-                      </span>
+                      <Cluster asChild alignY="center" justify="center" wrap={false}>
+                        <span className="absolute -end-1 -top-1 h-4 min-w-4 rounded-full bg-foreground px-1 xa-text-10 font-semibold text-background">
+                          {wishlistCount}
+                        </span>
+                      </Cluster>
                     ) : null}
                   </Link>
                   <IconButton
@@ -133,9 +136,11 @@ export function XaShell({ children }: { children: ReactNode }) {
                   >
                     <BackpackIcon className="h-4 w-4" />
                     {cartCount ? (
-                      <span className="absolute -end-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 xa-text-10 font-semibold text-background">
-                        {cartCount}
-                      </span>
+                      <Cluster asChild alignY="center" justify="center" wrap={false}>
+                        <span className="absolute -end-1 -top-1 h-4 min-w-4 rounded-full bg-foreground px-1 xa-text-10 font-semibold text-background">
+                          {cartCount}
+                        </span>
+                      </Cluster>
                     ) : null}
                   </Link>
                 </Inline>
@@ -177,7 +182,7 @@ export function XaShell({ children }: { children: ReactNode }) {
 
               <div className="flex items-center gap-3">
                 <form action="/search" method="get" className="relative hidden md:block">
-                  <MagnifyingGlassIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <MagnifyingGlassIcon className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input name="q" placeholder="Search" className="w-44 pl-9 text-sm" />
                 </form>
                 <Link

@@ -36,8 +36,8 @@ This plan hardens the `apps/xa-uploader` operator experience by fixing broken sy
 - [x] TASK-06: Refactor `useCatalogConsole` domains and add hook/component tests (Complete 2026-02-23)
 - [x] TASK-07: Add API contract tests and test-runner scoping guardrails (Complete 2026-02-23)
 - [x] TASK-08: Horizon checkpoint before E2E rollout (Complete 2026-02-23)
-- [ ] TASK-09: Add E2E operator flows + accessibility/usability hardening
-- [ ] TASK-10: Final validation and KPI delta snapshot
+- [x] TASK-09: Add E2E operator flows + accessibility/usability hardening (Complete 2026-02-23)
+- [x] TASK-10: Final validation and KPI delta snapshot (Complete 2026-02-23)
 
 ## Goals
 - Remove known operator-facing breakage and friction in sync, save/delete, and submission flows.
@@ -96,8 +96,8 @@ This plan hardens the `apps/xa-uploader` operator experience by fixing broken sy
 | TASK-06 | IMPLEMENT | Hook domain refactor + behavior tests | 85% | L | Complete (2026-02-23) | TASK-04 | TASK-08 |
 | TASK-07 | IMPLEMENT | API contract tests + test-scope guardrails | 85% | M | Complete (2026-02-23) | TASK-03, TASK-05 | TASK-08 |
 | TASK-08 | CHECKPOINT | Re-assess downstream assumptions | 95% | S | Complete (2026-02-23) | TASK-03, TASK-04, TASK-05, TASK-06, TASK-07 | TASK-09 |
-| TASK-09 | IMPLEMENT | E2E flows + accessibility hardening | 80% | L | Pending | TASK-08 | TASK-10 |
-| TASK-10 | IMPLEMENT | Final validation + KPI delta snapshot | 90% | S | Pending | TASK-01, TASK-09 | - |
+| TASK-09 | IMPLEMENT | E2E flows + accessibility hardening | 80% | L | Complete (2026-02-23) | TASK-08 | TASK-10 |
+| TASK-10 | IMPLEMENT | Final validation + KPI delta snapshot | 90% | S | Complete (2026-02-23) | TASK-01, TASK-09 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -504,8 +504,9 @@ This plan hardens the `apps/xa-uploader` operator experience by fixing broken sy
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
-- **Affects:** `apps/xa-uploader/src/components/catalog/CatalogLoginForm.client.tsx`, `apps/xa-uploader/src/components/catalog/CatalogProductForm.client.tsx`, `apps/xa-uploader/src/components/catalog/CatalogSubmissionPanel.client.tsx`, `apps/xa-uploader/src/components/catalog/CatalogSyncPanel.client.tsx`, `apps/xa-uploader/src/components/catalog/CatalogProductsList.client.tsx`, `apps/xa-uploader/e2e/catalog-console.spec.ts`, `apps/xa-uploader/e2e/fixtures/**`, `apps/xa-uploader/e2e/helpers/**`, `apps/xa-uploader/package.json`, `docs/testing-policy.md`
+- **Status:** Complete (2026-02-23)
+- **Build evidence:** Implemented uploader-local Playwright E2E harness and flow specs at `apps/xa-uploader/e2e/catalog-console.spec.ts` with deterministic temp CSV/image fixtures from `apps/xa-uploader/e2e/helpers/uploaderHarness.ts`. Added package-scoped E2E command `pnpm --filter @apps/xa-uploader run test:e2e` and documented it in `docs/testing-policy.md`. Implemented targeted accessibility/usability hardening in login/product/submission/sync surfaces: token mask/reveal and autofocus, action feedback `role` + `aria-live`, retry-focus return for failed sync/submission actions, and stable test IDs for keyboard/focus assertions. Added deterministic non-production auth override path `XA_UPLOADER_E2E_ADMIN_TOKEN` in `uploaderAuth` so E2E login does not depend on operator secrets in `.env.local`. Validation results: `pnpm --filter @apps/xa-uploader typecheck` PASS; `pnpm --filter @apps/xa-uploader lint` PASS; `pnpm --filter @apps/xa-uploader run test:local` PASS (12 suites / 36 tests); `pnpm --filter @apps/xa-uploader run test:e2e` PASS (2 tests).
+- **Affects:** `apps/xa-uploader/src/components/catalog/CatalogLoginForm.client.tsx`, `apps/xa-uploader/src/components/catalog/CatalogProductForm.client.tsx`, `apps/xa-uploader/src/components/catalog/CatalogSubmissionPanel.client.tsx`, `apps/xa-uploader/src/components/catalog/CatalogSyncPanel.client.tsx`, `apps/xa-uploader/src/components/catalog/CatalogProductsList.client.tsx`, `apps/xa-uploader/src/components/catalog/CatalogProductBaseFields.client.tsx`, `apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx`, `apps/xa-uploader/src/components/catalog/__tests__/useCatalogConsole-domains.test.tsx`, `apps/xa-uploader/src/lib/uploaderAuth.ts`, `apps/xa-uploader/src/lib/uploaderI18n.ts`, `apps/xa-uploader/tsconfig.json`, `apps/xa-uploader/e2e/catalog-console.spec.ts`, `apps/xa-uploader/e2e/fixtures/**`, `apps/xa-uploader/e2e/helpers/**`, `apps/xa-uploader/package.json`, `docs/testing-policy.md`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-10
 - **Confidence:** 80%
@@ -549,6 +550,8 @@ This plan hardens the `apps/xa-uploader` operator experience by fixing broken sy
 - **Notes / references:**
   - `docs/plans/xa-uploader-usability-hardening/fact-find.md:167`
   - `apps/caryina/e2e/logo.visual.spec.ts`
+  - Scope expansion: included `uploaderAuth` non-production test-token override and stabilized hook-domain TC-06 test timing to keep local suite deterministic under broader scoped runs.
+  - Downstream confidence propagation: affirming. TASK-10 dependency gate from TASK-09 is now satisfied with passing scoped E2E evidence.
 
 ### TASK-10: Final validation and KPI delta snapshot
 - **Type:** IMPLEMENT
@@ -557,7 +560,8 @@ This plan hardens the `apps/xa-uploader` operator experience by fixing broken sy
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
+- **Build evidence:** Produced final validation and KPI evidence artifacts at `docs/plans/xa-uploader-usability-hardening/artifacts/validation-summary.md` and `docs/plans/xa-uploader-usability-hardening/artifacts/usability-kpi-delta.md`. Validation gate results recorded from scoped package commands: typecheck PASS, lint PASS, `test:local` PASS (12 suites / 36 tests), `test:e2e` PASS (2 tests). KPI remeasurement executed against TASK-01 formula and threshold: post-change `CJDBR` measured `1/2 = 50%` (unchanged from baseline) due unresolved sync script dependency while J1 journey is now E2E-confirmed pass.
 - **Affects:** `docs/plans/xa-uploader-usability-hardening/artifacts/validation-summary.md`, `docs/plans/xa-uploader-usability-hardening/artifacts/usability-kpi-delta.md`, `docs/plans/xa-uploader-usability-hardening/plan.md`
 - **Depends on:** TASK-01, TASK-09
 - **Blocks:** -
@@ -590,6 +594,7 @@ This plan hardens the `apps/xa-uploader` operator experience by fixing broken sy
   - final update to plan and linked artifacts
 - **Notes / references:**
   - `docs/plans/xa-uploader-usability-hardening/critique-history.md`
+  - `docs/plans/xa-uploader-usability-hardening/artifacts/usability-baseline.md`
 
 ## Validation Contracts
 - TC-03: Sync dependency preflight and failure contract
@@ -627,8 +632,8 @@ This plan hardens the `apps/xa-uploader` operator experience by fixing broken sy
 - [x] Known sync dependency failure is converted into deterministic, actionable operator feedback.
 - [x] Scoped feedback model prevents cross-action message collisions.
 - [x] EN/ZH error surfaces are consistent and operator-readable.
-- [ ] Hook/API/E2E coverage exists for core operator workflows.
-- [ ] KPI baseline and post-change delta are documented for impact claims.
+- [x] Hook/API/E2E coverage exists for core operator workflows.
+- [x] KPI baseline and post-change delta are documented for impact claims.
 
 ## Decision Log
 - 2026-02-23: Planning created from fact-find `docs/plans/xa-uploader-usability-hardening/fact-find.md`.
@@ -640,6 +645,8 @@ This plan hardens the `apps/xa-uploader` operator experience by fixing broken sy
 - 2026-02-23: TASK-06 completed; hook internals split into feedback/action domain modules with TC-06 transition/invariant coverage.
 - 2026-02-23: TASK-07 completed; uploader auth/session API contracts and governed uploader-scoped test command guardrails documented and validated.
 - 2026-02-23: TASK-08 completed; checkpoint-mode replan validated assumptions, resolved E2E runner strategy to Playwright, and cleared TASK-09 GO decision without topology changes.
+- 2026-02-23: TASK-09 completed; Playwright uploader-scoped E2E harness/command and accessibility hardening shipped with passing `test:e2e` + `test:local` validation.
+- 2026-02-23: TASK-10 completed; final validation and KPI delta artifacts published with explicit threshold result (`CJDBR` remains `50%` pending sync-script restoration).
 
 ## Overall-confidence Calculation
 - Effort weights: S=1, M=2, L=3

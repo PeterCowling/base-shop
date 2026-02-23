@@ -7,6 +7,7 @@ import { Input } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { Breadcrumbs } from "@acme/design-system/molecules";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 import { XA_BRANDS } from "../../lib/demoData";
 
@@ -55,7 +56,7 @@ export default function DesignersIndexPage() {
       <Section padding="default">
         {letters.length ? (
           <div className="space-y-8">
-            <div className="flex flex-wrap gap-2">
+            <Inline gap={2} className="flex-wrap">
               {letters.map((letter) => (
                 <Link
                   key={`nav-${letter}`}
@@ -65,7 +66,7 @@ export default function DesignersIndexPage() {
                   {letter}
                 </Link>
               ))}
-            </div>
+            </Inline>
 
             {letters.map((letter) => (
               <div key={letter} id={`designer-${letter}`} className="space-y-3">

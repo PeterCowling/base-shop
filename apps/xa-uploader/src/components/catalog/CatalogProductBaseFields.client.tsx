@@ -32,6 +32,7 @@ export function CatalogProductBaseFields({
       <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] md:col-span-2">
         {t("fieldTitle")}
         <input
+          data-testid="catalog-field-title"
           value={draft.title}
           onChange={(event) => {
             const title = event.target.value;
@@ -89,6 +90,7 @@ export function CatalogProductBaseFields({
       <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
         {t("fieldBrandHandle")}
         <input
+          data-testid="catalog-field-brand-handle"
           value={draft.brandHandle ?? ""}
           onChange={(event) => onChange({ ...draft, brandHandle: slugify(event.target.value) })}
           className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
@@ -110,6 +112,7 @@ export function CatalogProductBaseFields({
       <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
         {t("fieldCollectionHandle")}
         <input
+          data-testid="catalog-field-collection-handle"
           value={draft.collectionHandle ?? ""}
           onChange={(event) =>
             onChange({ ...draft, collectionHandle: slugify(event.target.value) })
@@ -143,6 +146,7 @@ export function CatalogProductBaseFields({
       <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] md:col-span-2">
         {t("fieldDescription")}
         <textarea
+          data-testid="catalog-field-description"
           value={draft.description ?? ""}
           onChange={(event) => onChange({ ...draft, description: event.target.value })}
           rows={3}
@@ -193,6 +197,7 @@ export function CatalogProductBaseFields({
       <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
         {t("fieldSubcategory")}
         <input
+          data-testid="catalog-field-subcategory"
           value={draft.taxonomy.subcategory ?? ""}
           onChange={(event) =>
             onChange({
@@ -210,6 +215,7 @@ export function CatalogProductBaseFields({
       <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
         {t("fieldColors")}
         <input
+          data-testid="catalog-field-colors"
           value={draft.taxonomy.color ?? ""}
           onChange={(event) =>
             onChange({ ...draft, taxonomy: { ...draft.taxonomy, color: event.target.value } })
@@ -224,6 +230,7 @@ export function CatalogProductBaseFields({
       <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
         {t("fieldMaterials")}
         <input
+          data-testid="catalog-field-materials"
           value={draft.taxonomy.material ?? ""}
           onChange={(event) =>
             onChange({ ...draft, taxonomy: { ...draft.taxonomy, material: event.target.value } })

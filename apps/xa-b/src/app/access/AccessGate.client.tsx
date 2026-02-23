@@ -143,7 +143,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
           </div>
         ) : null}
         {state === "error" ? (
-          <div className="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+          <div className="rounded-md border border-danger/30 bg-danger/5 p-3 text-sm text-danger-fg">
             {error ?? "Request failed. Try again."}
           </div>
         ) : null}

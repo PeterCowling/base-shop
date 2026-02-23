@@ -4,6 +4,7 @@ import { Button } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { Breadcrumbs } from "@acme/design-system/molecules";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 import { XaBuyBox } from "../../../components/XaBuyBox.client";
 import { XaImageGallery } from "../../../components/XaImageGallery.client";
@@ -232,7 +233,7 @@ export default async function ProductPage({
               {showContactInfo || showSocialLinks ? (
                 <div className="space-y-3">
                   <div className="text-sm font-semibold">Contact</div>
-                  <div className="flex flex-wrap gap-3">
+                  <Inline gap={3} className="flex-wrap">
                     {whatsappHref ? (
                       <Button variant="outline" size="sm" asChild>
                         <a href={whatsappHref} target="_blank" rel="noreferrer noopener">
@@ -256,7 +257,7 @@ export default async function ProductPage({
                         </a>
                       </Button>
                     ) : null}
-                  </div>
+                  </Inline>
                   {showContactInfo && (siteConfig.wechatId || siteConfig.businessHours) ? (
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {siteConfig.wechatId ? <div>WeChat: {siteConfig.wechatId}</div> : null}

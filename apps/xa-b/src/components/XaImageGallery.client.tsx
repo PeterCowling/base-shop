@@ -11,6 +11,7 @@ import {
   DialogTrigger,
   IconButton,
 } from "@acme/design-system/atoms";
+import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 
 import type { XaProduct } from "../lib/demoData";
@@ -44,7 +45,7 @@ export function XaImageGallery({
     <div className="space-y-4">
       {images.length ? (
         <Dialog>
-          <div className="grid gap-6 sm:grid-cols-2">
+          <LayoutGrid columns={{ base: 1, sm: 2 }} gap={6}>
             {images.map((img, idx) => {
               const shouldSpan = images.length > 2 && idx === 0;
               return (
@@ -71,9 +72,10 @@ export function XaImageGallery({
               </DialogTrigger>
               );
             })}
-          </div>
+          </LayoutGrid>
           <DialogContent
-            className="relative max-w-4xl border-none bg-transparent p-0 shadow-none"
+            className="relative border-none bg-transparent p-0 shadow-none"
+            style={{ maxWidth: "56rem" }}
             onKeyDown={(e) => {
               if (e.key === "ArrowLeft") handlePrev();
               if (e.key === "ArrowRight") handleNext();

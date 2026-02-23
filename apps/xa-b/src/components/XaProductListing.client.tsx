@@ -14,6 +14,7 @@ import {
 import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { Breadcrumbs } from "@acme/design-system/molecules";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 import { useCart } from "../contexts/XaCartContext";
 import type { XaProduct } from "../lib/demoData";
@@ -151,11 +152,11 @@ export function XaProductListing({
           </div>
 
           {appliedChips.length ? (
-            <div className="flex flex-wrap gap-2">
+            <Inline gap={2} className="flex-wrap">
               {appliedChips.map((chip) => (
                 <XaFilterChip key={chip.label} label={chip.label} onRemove={chip.onRemove} />
               ))}
-            </div>
+            </Inline>
           ) : null}
         </div>
       </Section>

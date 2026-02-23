@@ -309,7 +309,15 @@ export function useXaListingFilters({
     setDraftNewIn(appliedNewIn);
     setDraftMin(appliedMin?.toString() ?? "");
     setDraftMax(appliedMax?.toString() ?? "");
-  }, [filtersOpen]);
+  }, [
+    appliedInStock,
+    appliedMax,
+    appliedMin,
+    appliedNewIn,
+    appliedSale,
+    appliedValues,
+    filtersOpen,
+  ]);
 
   const filterConfigs = React.useMemo(
     () => getFilterConfigs(category, { showType: showTypeFilter }),
@@ -355,13 +363,16 @@ export function useXaListingFilters({
     sort,
   ]);
 
-  const setQuery = (next: URLSearchParams) => {
-    const qs = next.toString();
-    router.push(qs ? `${pathname}?${qs}` : pathname);
-  };
+  const setQuery = React.useCallback(
+    (next: URLSearchParams) => {
+      const qs = next.toString();
+      router.push(qs ? `${pathname}?${qs}` : pathname);
+    },
+    [pathname, router],
+  );
 
   const applySort = (nextSort: SortKey) => {
-    const next = new URLSearchParams(searchParams.toString());
+    const next = new URLSearchParams(queryKey);
     if (nextSort === "newest") {
       next.delete("sort");
     } else {
@@ -393,7 +404,7 @@ export function useXaListingFilters({
   const applyFilters = () =>
     setQuery(
       applyDraftFiltersToQuery({
-        searchParamsString: searchParams.toString(),
+        searchParamsString: queryKey,
         draftValues,
         draftInStock,
         draftSale,
@@ -404,7 +415,7 @@ export function useXaListingFilters({
     );
 
   const clearAppliedFilters = () =>
-    setQuery(clearAppliedFiltersFromQuery(searchParams.toString()));
+    setQuery(clearAppliedFiltersFromQuery(queryKey));
 
   const appliedChips = React.useMemo(() => {
     return buildAppliedChips({
@@ -416,7 +427,7 @@ export function useXaListingFilters({
       appliedWindow,
       appliedMin,
       appliedMax,
-      searchParamsString: searchParams.toString(),
+      searchParamsString: queryKey,
       setQuery,
     });
   }, [
@@ -428,7 +439,7 @@ export function useXaListingFilters({
     appliedMax,
     appliedValues,
     filterConfigs,
-    searchParams,
+    queryKey,
     setQuery,
   ]);
 

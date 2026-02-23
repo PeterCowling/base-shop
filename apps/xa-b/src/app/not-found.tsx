@@ -5,8 +5,8 @@ import { Stack } from "@acme/design-system/primitives/Stack";
 
 export default function NotFound() {
   return (
-    <Section as="div" padding="none" className="px-6 py-16 md:px-12">
-      <Stack gap={3} className="mx-auto max-w-2xl">
+    <Section as="div" padding="none" className="mx-auto max-w-2xl px-6 py-16 md:px-12">
+      <Stack gap={3}>
         <h1 className="text-2xl font-semibold">Not found</h1>
         <p className="text-sm text-muted-foreground">
           The page you requested doesn’t exist.

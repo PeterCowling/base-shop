@@ -7,6 +7,8 @@ import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
 import { Button, Price, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
 import { PriceCluster } from "@acme/design-system/molecules";
+import { Cluster } from "@acme/design-system/primitives/Cluster";
+import { Inline } from "@acme/design-system/primitives/Inline";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { useCart } from "../contexts/XaCartContext";
@@ -121,7 +123,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         sizeNote ? <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div> : null
       )}
 
-      <div className="flex items-center justify-between">
+      <Inline gap={2} alignY="center" className="justify-between">
         <span className="xa-pdp-label text-xs uppercase tracking-widest text-muted-foreground">
           Quantity
         </span>
@@ -137,9 +139,9 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
           >
             −
           </Button>
-          <span className="flex h-8 w-8 items-center justify-center text-sm tabular-nums">
-            {qty}
-          </span>
+          <Cluster asChild alignY="center" justify="center" wrap={false}>
+            <span className="h-8 w-8 text-sm tabular-nums">{qty}</span>
+          </Cluster>
           <Button
             type="button"
             variant="ghost"
@@ -151,7 +153,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
             +
           </Button>
         </div>
-      </div>
+      </Inline>
 
       {error ? (
         <div className="rounded-md border border-danger/30 bg-danger/5 p-3 text-sm">
@@ -159,7 +161,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         </div>
       ) : null}
 
-      <div className="flex flex-wrap gap-2">
+      <Inline gap={2} className="flex-wrap">
         <Button
           className="xa-pdp-action xa-flex-2 h-11 rounded-none bg-foreground text-primary-fg hover:bg-foreground/90"
           disabled={soldOut}
@@ -180,7 +182,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
             <HeartIcon className="h-4 w-4" />
           )}
         </Button>
-      </div>
+      </Inline>
 
       {soldOut ? (
         <div className="xa-pdp-meta text-muted-foreground">Out of stock.</div>
@@ -199,7 +201,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
             Also available in
           </div>
           {showVariantStrip ? (
-            <div className="flex gap-2">
+            <Inline gap={2} wrap={false}>
               {variantProducts.map((variant) => {
                 const color = variant.taxonomy.color?.[0] ?? "";
                 const label = color ? formatLabel(color) : variant.title;
@@ -235,9 +237,9 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
                   </Link>
                 );
               })}
-            </div>
+            </Inline>
           ) : (
-            <div className="flex gap-2">
+            <Inline gap={2} wrap={false}>
               {colorOptions.map((color, idx) => {
                 const swatch = XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH;
                 const media = colorMedia[idx % Math.max(1, colorMedia.length)];
@@ -265,7 +267,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
                   </div>
                 );
               })}
-            </div>
+            </Inline>
           )}
         </div>
       ) : null}

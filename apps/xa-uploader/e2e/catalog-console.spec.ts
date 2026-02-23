@@ -22,20 +22,14 @@ async function loginViaKeyboard(page: Page): Promise<void> {
 }
 
 async function fillRequiredProductFields(page: Page): Promise<void> {
-  await page.getByLabel("Title", { exact: true }).fill(PRODUCT_TITLE);
-  await page.getByLabel("Brand handle", { exact: true }).fill("e2e-brand");
-  await page.getByLabel("Collection handle", { exact: true }).fill("e2e-collection");
-  await page.getByLabel("Description", { exact: true }).fill(PRODUCT_DESCRIPTION);
-  await page.getByLabel("Subcategory", { exact: true }).fill("tote");
-  await page
-    .getByLabel("Colors (pipe, comma, or newline)", { exact: true })
-    .fill("black");
-  await page
-    .getByLabel("Materials (pipe, comma, or newline)", { exact: true })
-    .fill("leather");
-  await page
-    .getByLabel("Image files (paths, globs, or directories)", { exact: true })
-    .fill(harness.imageRelativePath);
+  await page.getByTestId("catalog-field-title").fill(PRODUCT_TITLE);
+  await page.getByTestId("catalog-field-brand-handle").fill("e2e-brand");
+  await page.getByTestId("catalog-field-collection-handle").fill("e2e-collection");
+  await page.getByTestId("catalog-field-description").fill(PRODUCT_DESCRIPTION);
+  await page.getByTestId("catalog-field-subcategory").fill("tote");
+  await page.getByTestId("catalog-field-colors").fill("black");
+  await page.getByTestId("catalog-field-materials").fill("leather");
+  await page.getByTestId("catalog-field-image-files").fill(harness.imageRelativePath);
 }
 
 test.describe("catalog console e2e", () => {
@@ -67,14 +61,14 @@ test.describe("catalog console e2e", () => {
     });
     await expect(saveButton).toBeEnabled({ timeout: 120_000 });
 
-    await page.getByLabel("Description", { exact: true }).fill(PRODUCT_DESCRIPTION_UPDATED);
+    await page.getByTestId("catalog-field-description").fill(PRODUCT_DESCRIPTION_UPDATED);
     await saveButton.click();
     await expect(draftFeedback).toContainText("Saved product details.", {
       timeout: 120_000,
     });
     await expect(saveButton).toBeEnabled({ timeout: 120_000 });
 
-    await page.getByLabel("Search").fill(PRODUCT_TITLE);
+    await page.getByTestId("catalog-search").fill(PRODUCT_TITLE);
     const submissionCheckbox = page.getByLabel("Select for submission").first();
     await submissionCheckbox.check();
 

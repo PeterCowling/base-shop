@@ -281,15 +281,8 @@ function buildParticlePoints(
   yElement: HTMLSpanElement,
   taglineElement: HTMLSpanElement
 ): { sourcePoints: ParticlePoint[]; targetPoints: ParticlePoint[] } {
-  const sourceStyle = window.getComputedStyle(yElement);
   const taglineStyle = window.getComputedStyle(taglineElement);
 
-  const sourceSample = sampleTextPixels({
-    text: "y",
-    font: buildFontString(sourceStyle),
-    sampleStep: 1,
-    alphaThreshold: 100,
-  });
   const targetSample = sampleTextPixels({
     text: tagline,
     font: buildFontString(taglineStyle),
@@ -297,23 +290,8 @@ function buildParticlePoints(
     alphaThreshold: 100,
   });
 
-  const sourceOffsetX = yRect.left - rootRect.left;
-  const sourceOffsetY = yRect.top - rootRect.top;
   const targetOffsetX = taglineRect.left - rootRect.left;
   const targetOffsetY = taglineRect.top - rootRect.top;
-
-  const rawSourcePoints =
-    sourceSample.points.length > 0
-      ? sourceSample.points.map((point) => ({
-          x: sourceOffsetX + point.x,
-          y: sourceOffsetY + point.y,
-        }))
-      : [
-          {
-            x: sourceOffsetX + yRect.width * 0.5,
-            y: sourceOffsetY + yRect.height * 0.5,
-          },
-        ];
 
   const rawTargetPoints =
     targetSample.points.length > 0
@@ -330,13 +308,26 @@ function buildParticlePoints(
           },
         ];
 
-  const targetPoints = [...rawTargetPoints].sort((a, b) => a.x - b.x || a.y - b.y);
-  const sourceSorted = [...rawSourcePoints].sort((a, b) => a.x - b.x || a.y - b.y);
+  // Sort by vertical position first so particles settle into the tagline top-to-bottom.
+  const targetPoints = [...rawTargetPoints].sort((a, b) => a.y - b.y || a.x - b.x);
+
+  // Emit all particles from the bottom tip of the disappearing `y`.
+  const sourceOffsetX = yRect.left - rootRect.left;
+  const sourceOffsetY = yRect.top - rootRect.top;
+  const emitterX = sourceOffsetX + yRect.width * 0.55;
+  const emitterY = sourceOffsetY + yRect.height * 0.96;
+  const emitterHalfWidth = Math.max(1, yRect.width * 0.1);
+  const emitterRows = 3;
+  const emitterCols = 9;
+  const emitterSpan = emitterHalfWidth * 2;
+
   const sourcePoints = targetPoints.map((_, index) => {
-    const ratio =
-      targetPoints.length <= 1 ? 0 : index / (targetPoints.length - 1);
-    const sourceIndex = Math.round(ratio * Math.max(0, sourceSorted.length - 1));
-    return sourceSorted[sourceIndex] ?? sourceSorted[0];
+    const col = index % emitterCols;
+    const row = Math.floor(index / emitterCols) % emitterRows;
+    const x =
+      emitterX - emitterHalfWidth + (col / Math.max(1, emitterCols - 1)) * emitterSpan;
+    const y = emitterY + row * 0.35;
+    return { x, y };
   });
 
   return { sourcePoints, targetPoints };

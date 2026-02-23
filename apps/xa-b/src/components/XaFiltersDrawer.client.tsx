@@ -5,6 +5,7 @@ import * as React from "react";
 
 import { Button, Checkbox, Input, OverlayScrim } from "@acme/design-system/atoms";
 import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
+import { Inline } from "@acme/design-system/primitives/Inline";
 import {
   Drawer,
   DrawerContent,
@@ -207,7 +208,7 @@ export function XaFiltersDrawer({
                         />
                       </div>
                     </LayoutGrid>
-                    <div className="flex flex-wrap gap-2">
+                    <Inline gap={2} className="flex-wrap">
                       {PRICE_PRESETS.map((preset) => (
                         <Button
                           key={preset.label}
@@ -222,7 +223,7 @@ export function XaFiltersDrawer({
                           {preset.label}
                         </Button>
                       ))}
-                    </div>
+                    </Inline>
                   </div>
                 );
               }
@@ -238,7 +239,7 @@ export function XaFiltersDrawer({
                         onChange={(event) => setDesignerQuery(event.target.value)}
                         placeholder="Search designers"
                       />
-                      <div className="flex flex-wrap gap-2">
+                      <Inline gap={2} className="flex-wrap">
                         {trendingDesigners.map((designer) => (
                           <Button
                             key={`trend-${designer.handle}`}
@@ -251,7 +252,7 @@ export function XaFiltersDrawer({
                             {designer.name}
                           </Button>
                         ))}
-                      </div>
+                      </Inline>
                       <div className="space-y-2">
                         {filteredDesigners.map((designer) => (
                           <label
@@ -276,7 +277,7 @@ export function XaFiltersDrawer({
                 return (
                   <div key="color" className="space-y-3">
                     <div className="text-sm font-semibold">Color</div>
-                    <div className="flex flex-wrap gap-3">
+                    <Inline gap={3} className="flex-wrap">
                       {facetValues.color.map((color) => {
                         const selected = draftValues.color.has(color);
                         return (
@@ -302,7 +303,7 @@ export function XaFiltersDrawer({
                           </Button>
                         );
                       })}
-                    </div>
+                    </Inline>
                   </div>
                 );
               }

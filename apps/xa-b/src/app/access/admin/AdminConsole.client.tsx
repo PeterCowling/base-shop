@@ -243,7 +243,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
           >
             {busy ? "Verifying..." : "Enter console"}
           </Button>
-          {error ? <div className="text-sm text-red-700">{error}</div> : null}
+          {error ? <div className="text-sm text-danger-fg">{error}</div> : null}
         </form>
       </div>
     );
@@ -451,7 +451,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
         </div>
       </ElevatedPanel>
 
-      {error ? <div className="text-sm text-red-700">{error}</div> : null}
+      {error ? <div className="text-sm text-danger-fg">{error}</div> : null}
     </div>
   );
 }

@@ -4,6 +4,8 @@ import path from "node:path";
 
 import { z } from "zod";
 
+import { mean as libMean, stddev as libStddev } from "@acme/lib";
+
 import {
   buildFreshnessEnvelope,
   readJsonFile,
@@ -1210,20 +1212,16 @@ function bucketTimestamp(isoTimestamp: string, grain: z.infer<typeof anomalyGrai
 }
 
 function mean(values: number[]): number {
-  if (values.length === 0) {
-    return 0;
-  }
-  return values.reduce((sum, value) => sum + value, 0) / values.length;
+  const result = libMean(values);
+  return Number.isNaN(result) ? 0 : result;
 }
 
 function standardDeviation(values: number[]): number {
   if (values.length <= 1) {
     return 0;
   }
-  const avg = mean(values);
-  const variance =
-    values.reduce((sum, value) => sum + (value - avg) ** 2, 0) / values.length;
-  return Math.sqrt(variance);
+  const result = libStddev(values);
+  return Number.isNaN(result) ? 0 : result;
 }
 
 async function writeJsonArtifact(filePath: string, value: unknown): Promise<void> {

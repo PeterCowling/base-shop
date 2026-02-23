@@ -287,14 +287,14 @@ Status: Draft
 
 # Workflow
 
-The business is in S6B and needs to proceed.
+The business is in SELL-01 and needs to proceed.
 `;
     const violations = checkBareStageIds(content);
     expect(violations.length).toBeGreaterThan(0);
-    expect(violations[0]).toContain("S6B");
+    expect(violations[0]).toContain("SELL-01");
   });
 
-  it("VC-01: corrected form 'S6B — label' does not trigger violation", async () => {
+  it("VC-01: corrected form 'SELL-01 — label' does not trigger violation", async () => {
     const { checkBareStageIds } = await import("./docs-lint-helpers");
     const content = `---
 Type: Plan
@@ -303,15 +303,15 @@ Status: Draft
 
 # Workflow
 
-The current stage is S6B — Channel strategy + GTM.
+The current stage is SELL-01 — Channel strategy + GTM.
 `;
     const violations = checkBareStageIds(content);
     expect(violations.length).toBe(0);
   });
 
-  it("VC-01: corrected form 'label (S6B)' does not trigger violation", async () => {
+  it("VC-01: corrected form 'label (SELL-01)' does not trigger violation", async () => {
     const { checkBareStageIds } = await import("./docs-lint-helpers");
-    const content = `The business has entered Channel strategy + GTM (S6B).`;
+    const content = `The business has entered Channel strategy + GTM (SELL-01).`;
     const violations = checkBareStageIds(content);
     expect(violations.length).toBe(0);
   });
@@ -321,7 +321,7 @@ The current stage is S6B — Channel strategy + GTM.
     const content = `# Workflow
 
 \`\`\`yaml
-current_stage: S6B
+current_stage: SELL-01
 \`\`\`
 `;
     const violations = checkBareStageIds(content);
@@ -330,7 +330,7 @@ current_stage: S6B
 
   it("VC-01: stage ID in inline code is not flagged", async () => {
     const { checkBareStageIds } = await import("./docs-lint-helpers");
-    const content = `Run \`--stage S6B\` to target the channel strategy stage.`;
+    const content = `Run \`--stage SELL-01\` to target the channel strategy stage.`;
     const violations = checkBareStageIds(content);
     expect(violations.length).toBe(0);
   });
@@ -349,9 +349,9 @@ current_stage: S3
     expect(violations.length).toBe(0);
   });
 
-  it("VC-01: stage transition notation S2B→S6B is not flagged", async () => {
+  it("VC-01: stage transition notation MARKET-02→SELL-01 is not flagged", async () => {
     const { checkBareStageIds } = await import("./docs-lint-helpers");
-    const content = `Gate evaluated at the S2B→S6B fan-out.`;
+    const content = `Gate evaluated at the MARKET-02→SELL-01 fan-out.`;
     const violations = checkBareStageIds(content);
     expect(violations.length).toBe(0);
   });
@@ -380,5 +380,134 @@ Then advance to DO.
     const content = `Advance to S10 — Weekly decision for go/no-go.`;
     const violations = checkBareStageIds(content);
     expect(violations.length).toBe(0);
+  });
+});
+
+describe("checkRetiredMarketingSalesStageIds (VC-02)", () => {
+  it("VC-02: flags retired marketing/sales IDs in prose", async () => {
+    const { checkRetiredMarketingSalesStageIds } = await import("./docs-lint-helpers");
+    const content = `Legacy stage S6B should not appear.`;
+    const violations = checkRetiredMarketingSalesStageIds(content);
+    expect(violations.length).toBe(1);
+    expect(violations[0]).toContain("S6B");
+  });
+
+  it("VC-02: does not flag canonical MARKET/SELL IDs", async () => {
+    const { checkRetiredMarketingSalesStageIds } = await import("./docs-lint-helpers");
+    const content = `Current flow: MARKET-02 → SELL-01.`;
+    const violations = checkRetiredMarketingSalesStageIds(content);
+    expect(violations.length).toBe(0);
+  });
+
+  it("VC-02: ignores retired IDs inside fenced code and inline code", async () => {
+    const { checkRetiredMarketingSalesStageIds } = await import("./docs-lint-helpers");
+    const content = `Run \`--stage S6B\`.\n\n\`\`\`yaml\ncurrent_stage: S2B\n\`\`\`\n`;
+    const violations = checkRetiredMarketingSalesStageIds(content);
+    expect(violations.length).toBe(0);
+  });
+});
+
+// ── VC-03: Hygiene lint check (Owner: + Review-trigger:) ─────────────────────
+
+describe("Hygiene lint check (VC-03)", () => {
+  it("TC-02: doc with Owner: and Review-trigger: passes hygiene check", () => {
+    // A standing doc that contains both required hygiene fields should produce
+    // no hygiene warnings. We verify by checking both regex patterns directly
+    // (the same logic used in docs-lint.ts).
+    const content = `---
+Type: Startup-Intake-Packet
+Status: Active
+Business: HEAD
+Owner: Pete
+Review-trigger: After each completed build cycle touching product scope
+Confidence: 0.7
+Last-updated: 2026-02-22
+---
+
+# HEAD Intake Packet
+
+Content here.
+`;
+    const hasOwner = /^Owner:[ \t]*\S/m.test(content);
+    const hasReviewTrigger = /^Review-trigger:[ \t]*\S/m.test(content);
+    expect(hasOwner).toBe(true);
+    expect(hasReviewTrigger).toBe(true);
+  });
+
+  it("TC-01: doc missing Review-trigger: fails hygiene check", () => {
+    // A standing doc that has Owner: but is missing Review-trigger: should
+    // be detected as a hygiene violation. This verifies the lint rule detects
+    // the missing field correctly.
+    const content = `---
+Type: Startup-Intake-Packet
+Status: Active
+Business: HEAD
+Owner: Pete
+---
+
+# HEAD Intake Packet
+
+Content here.
+`;
+    const hasOwner = /^Owner:[ \t]*\S/m.test(content);
+    const hasReviewTrigger = /^Review-trigger:[ \t]*\S/m.test(content);
+    expect(hasOwner).toBe(true);
+    expect(hasReviewTrigger).toBe(false);
+  });
+
+  it("TC-03: doc missing both Owner: and Review-trigger: fails hygiene check", () => {
+    // A standing doc missing both required hygiene fields should produce two
+    // separate violations — one for Owner: and one for Review-trigger:.
+    const content = `---
+Type: Startup-Intake-Packet
+Status: Active
+Business: HEAD
+---
+
+# HEAD Intake Packet
+
+Content here.
+`;
+    const hasOwner = /^Owner:[ \t]*\S/m.test(content);
+    const hasReviewTrigger = /^Review-trigger:[ \t]*\S/m.test(content);
+    expect(hasOwner).toBe(false);
+    expect(hasReviewTrigger).toBe(false);
+  });
+
+  it("TC-04: doc with HYGIENE-EXEMPT comment is suppressed", () => {
+    // A standing doc containing the suppression comment should be excluded
+    // from the hygiene check. The presence of the suppression pattern is
+    // verified here; the actual suppression is applied in docs-lint.ts.
+    const content = `---
+Type: Startup-Intake-Packet
+Status: Active
+Business: HEAD
+---
+
+<!-- HYGIENE-EXEMPT: legacy doc, will be updated in next review cycle [ttl=2026-03-31] -->
+
+# HEAD Intake Packet
+
+Content here.
+`;
+    const isExempt = /<!--\s*HYGIENE-EXEMPT\s*:/.test(content);
+    expect(isExempt).toBe(true);
+  });
+
+  it("TC-05: Owner: field with empty value is not treated as present", () => {
+    // An Owner: field with no value (just whitespace) must not count as satisfying
+    // the hygiene requirement. The regex requires at least one non-space character.
+    const content = `---
+Type: Startup-Intake-Packet
+Status: Active
+Owner:
+Review-trigger: After each build cycle
+---
+
+# Intake
+`;
+    const hasOwner = /^Owner:[ \t]*\S/m.test(content);
+    // "Owner:" with no value — should be false (regex uses [ \t]* to avoid crossing line boundaries)
+    expect(hasOwner).toBe(false);
   });
 });

@@ -71,4 +71,6 @@ export const siteConfig = {
   showContactInfo: !STEALTH_MODE,
   showLegalInfo: !STEALTH_MODE,
   showSocialLinks: !STEALTH_MODE,
+  heroHeadline: "The finest carry goods. By invitation.",
+  heroSubheadline: "Exclusive access to curated bags from established designers.",
 } as const;

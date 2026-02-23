@@ -31,7 +31,7 @@ Status: Active
 Compliant skills (no action needed): draft-outreach, lp-bos-sync, lp-design-system,
 lp-launch-qa, lp-prioritize, lp-refactor, lp-seo, startup-loop.
 
-H1-compliant but H2 dispatch-candidate: lp-brand-bootstrap, lp-do-fact-find, lp-do-replan,
+H1-compliant but H2 dispatch-candidate: lp-assessment-bootstrap, lp-do-fact-find, lp-do-replan,
 lp-signal-review, lp-site-upgrade.
 
 ---
@@ -117,7 +117,7 @@ Ranked tier-first, then phase_matches descending within tier.
 | lp-measure | 7 | 0 | dispatch-candidate | — | Also H1 monolith (230L) |
 | lp-onboarding-audit | 6 | 0 | dispatch-candidate | — | Also H1 monolith (268L) |
 | lp-signal-review | 5 | 0 | dispatch-candidate | — | H1 compliant (98L, has modules) |
-| lp-brand-bootstrap | 4 | 0 | dispatch-candidate | — | H1 compliant (94L); 4 phase headings |
+| lp-assessment-bootstrap | 4 | 0 | dispatch-candidate | — | H1 compliant (94L); 4 phase headings |
 | lp-readiness | 3 | 0 | dispatch-candidate | — | Also H1 monolith (223L) |
 | lp-guide-improve | 3 | 0 | dispatch-candidate | — | Also H1 monolith (226L, unlisted → low) |
 

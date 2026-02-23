@@ -4,7 +4,7 @@ Status: Ready
 Business: PET
 Date: 2026-02-18
 Owner: Pete
-Target-Output: docs/business-os/strategy/PET/2026-02-18-naming-shortlist.user.md
+Target-Output: docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md
 Data-Richness: S0+S2B
 Template: docs/business-os/market-research/_templates/deep-research-naming-prompt.md
 ---
@@ -14,7 +14,7 @@ Template: docs/business-os/market-research/_templates/deep-research-naming-promp
 Paste the prompt below directly into Deep Research (OpenAI Deep Research, Perplexity, or equivalent).
 When the research returns, save the full output to:
 
-  `docs/business-os/strategy/PET/2026-02-18-naming-shortlist.user.md`
+  `docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md`
 
 Then confirm the chosen name to close TASK-01 and unblock TASK-04 (photography) + TASK-05 (social accounts).
 

@@ -43,7 +43,7 @@ Establish repeatable data collection from Octorate to support BRIK startup loop 
 
 **Documented In**:
 - `packages/mcp-server/OCTORATE_EXPORT_README.md`
-- `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md`
+- `docs/business-os/strategy/BRIK/2026-02-12-historical-performance.user.md`
 - Baseline values promoted to `docs/business-os/strategy/BRIK/plan.user.md` (lines 38-47)
 
 ### Extraction Method (Automated)
@@ -200,7 +200,7 @@ ls -lh ../../data/octorate/
 5. Save to: `/Users/petercowling/Downloads/export_<timestamp>.xls`
 6. Process with ad-hoc script (or manually update CSVs)
 7. Commit updated CSVs to: `docs/business-os/strategy/BRIK/data/`
-8. Update baseline docs: `2026-02-12-historical-performance-baseline.user.md`
+8. Update baseline docs: `2026-02-12-historical-performance.user.md`
 
 ## Quality Gates
 
@@ -256,5 +256,5 @@ ls -lh ../../data/octorate/
 - MCP tools: `packages/mcp-server/src/tools/octorate.ts`
 - Documentation: `packages/mcp-server/OCTORATE_EXPORT_README.md`
 - Baseline docs: `docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md`
-- Historical baseline: `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md`
+- Historical baseline: `docs/business-os/strategy/BRIK/2026-02-12-historical-performance.user.md`
 - Business plan: `docs/business-os/strategy/BRIK/plan.user.md`

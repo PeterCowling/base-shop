@@ -71,7 +71,7 @@ Six medium-severity issues found (action required) and nine low-severity warning
 
 ### Patterns & Conventions Observed
 - Stage ID authority: `loop-spec.yaml` → `stage-operator-map.json` (generated) → TypeScript imports from `stage-addressing.ts` — evidence: `bottleneck-detector.ts` imports `StageId`
-- Prompt-handoff pattern (lp-solution-space, brand-naming-research): skill produces prompt; operator runs in a deep research tool (OpenAI Deep Research or equivalent); results saved to `*.user.md` — evidence: `lp-solution-space/SKILL.md`, `brand-naming-research/SKILL.md`
+- Prompt-handoff pattern (lp-solution-profiling, brand-naming-research): skill produces prompt; operator runs in a deep research tool (OpenAI Deep Research or equivalent); results saved to `*.user.md` — evidence: `lp-solution-profiling/SKILL.md`, `brand-naming-research/SKILL.md`
 - Fan-out-1 join barrier: S3, S3B (conditional, non-blocking), S6B run in parallel after S2B; all join at S4 — evidence: `loop-spec.yaml` edges
 - Gate enforcement pattern: gates defined in `cmd-advance.md` gate blocks with pass/fail conditions and exit actions
 
@@ -211,7 +211,7 @@ Six medium-severity issues found (action required) and nine low-severity warning
 1. TASK-01 (IMPLEMENT): Fix `bottleneck-diagnosis-schema.md` Section 5 `upstream_priority_order` — add S0A, S0B, S0C, S0D, S3B
 2. TASK-02 (IMPLEMENT): Fix `artifact-registry.md` dependency diagram — correct S3/S3B/S6B fan-out topology
 3. TASK-03 (IMPLEMENT): Fix changelog GATE-S3B-01 wrong skill name (`adjacent-product-research` → `lp-other-products`) in loop-spec.yaml + cmd-advance.md stub
-4. TASK-04 (IMPLEMENT): Fix `cmd-start.md` Gate D — add per-sub-stage prompt_file/required_output_path entries for S0B (lp-solution-space → solution-space-prompt.md), S0C (lp-option-select → s0c-option-select.user.md), and S0D (brand-naming-research → naming-research-prompt.md)
+4. TASK-04 (IMPLEMENT): Fix `cmd-start.md` Gate D — add per-sub-stage prompt_file/required_output_path entries for S0B (lp-solution-profiling → solution-profiling-prompt.md), S0C (lp-option-select → solution-select.user.md), and S0D (brand-naming-research → candidate-names-prompt.md)
 
 **Priority 2 (integrity hardening + investigation):**
 5. TASK-05 (IMPLEMENT): Apply `run_aborted` additive fix bundle — update `RunEvent` union, derive-state handling, and event schema docs to match validator/recovery behavior

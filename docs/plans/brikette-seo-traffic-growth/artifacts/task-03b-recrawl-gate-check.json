@@ -1,0 +1,64 @@
+{
+  "generatedAt": "2026-02-22T22:53:23.555Z",
+  "deployAt": "2026-02-22T22:24:52Z",
+  "rows": [
+    {
+      "url": "https://hostel-positano.com/",
+      "coverageState": "Page with redirect",
+      "lastCrawlTime": "2026-02-17T10:39:48Z",
+      "userCanonical": "https://hostel-positano.com/en/",
+      "googleCanonical": "https://hostel-positano.com/en/"
+    },
+    {
+      "url": "https://hostel-positano.com/en",
+      "coverageState": "Submitted and indexed",
+      "lastCrawlTime": "2026-02-12T12:27:52Z",
+      "userCanonical": "https://hostel-positano.com/en/",
+      "googleCanonical": "https://hostel-positano.com/en"
+    },
+    {
+      "url": "https://hostel-positano.com/en/rooms",
+      "coverageState": "Submitted and indexed",
+      "lastCrawlTime": "2026-02-17T02:39:45Z",
+      "userCanonical": "https://hostel-positano.com/en/rooms/",
+      "googleCanonical": "https://hostel-positano.com/en/rooms"
+    },
+    {
+      "url": "https://hostel-positano.com/en/experiences",
+      "coverageState": "URL is unknown to Google",
+      "lastCrawlTime": null,
+      "userCanonical": null,
+      "googleCanonical": null
+    },
+    {
+      "url": "https://hostel-positano.com/en/experiences/positano-beaches",
+      "coverageState": "URL is unknown to Google",
+      "lastCrawlTime": null,
+      "userCanonical": null,
+      "googleCanonical": null
+    },
+    {
+      "url": "https://hostel-positano.com/en/help/how-to-get-to-positano",
+      "coverageState": "URL is unknown to Google",
+      "lastCrawlTime": null,
+      "userCanonical": null,
+      "googleCanonical": null
+    },
+    {
+      "url": "https://hostel-positano.com/en/how-to-get-here/naples-to-positano",
+      "coverageState": "URL is unknown to Google",
+      "lastCrawlTime": null,
+      "userCanonical": null,
+      "googleCanonical": null
+    },
+    {
+      "url": "https://www.hostel-positano.com/",
+      "coverageState": "Page with redirect",
+      "lastCrawlTime": "2026-02-22T11:20:53Z",
+      "userCanonical": "https://hostel-positano.com/en/",
+      "googleCanonical": "https://hostel-positano.com/en/"
+    }
+  ],
+  "freshCount": 0,
+  "freshUrls": []
+}

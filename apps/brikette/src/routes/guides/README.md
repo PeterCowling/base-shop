@@ -535,7 +535,6 @@ Tests are located in:
 **Test Categories**:
 - **Block tests**: `__tests__/callout-block.test.tsx`, `__tests__/gallery-block-zoomable.test.tsx`
 - **Manifest tests**: `src/test/content-readiness/guides/guide-manifest.status.test.ts`
-- **Coverage tests**: `__tests__/coverage/{guide-name}.coverage.test.tsx`
 - **Integration tests**: `__tests__/block-template-wiring.test.tsx`
 
 ### Running Tests
@@ -550,8 +549,6 @@ pnpm --filter @apps/brikette test:content-readiness
 # Run specific test file
 pnpm --filter @apps/brikette test -- --testPathPattern="callout-block"
 
-# Run coverage tests
-pnpm --filter @apps/brikette test -- --testPathPattern="coverage"
 ```
 
 ### Test Harness

@@ -46,6 +46,37 @@ export const ROOM_CARD_ACTION_BUTTON_CLASS = clsx(
   "lg:text-lg"
 );
 
+export const ROOM_CARD_ACTION_BUTTON_CLASS_PRIMARY = clsx(
+  "inline-flex",
+  "min-h-11",
+  "min-w-11",
+  "items-center",
+  "justify-center",
+  "rounded-lg",
+  "bg-brand-primary",
+  "px-4",
+  "py-2",
+  "text-sm",
+  "font-medium",
+  "text-brand-bg",
+  "transition-colors",
+  "duration-200",
+  "hover:bg-brand-primary/85",
+  "hover:text-brand-bg",
+  "dark:bg-brand-primary",
+  "dark:text-brand-bg",
+  "dark:hover:bg-brand-primary/80",
+  "focus-visible:outline-2",
+  "focus-visible:outline-brand-primary",
+  "disabled:cursor-not-allowed",
+  "disabled:opacity-50",
+  "md:px-6",
+  "md:text-base",
+  "lg:px-8",
+  "lg:py-3",
+  "lg:text-lg"
+);
+
 export { ROOM_CARD_TEST_IDS } from "../shared/testIds";
 
 const DEFAULT_IMAGE_LABELS: RoomCardImageLabels = {
@@ -66,7 +97,7 @@ function FacilitiesList({ facilities }: { facilities?: RoomCardFacility[] }): JS
   if (!facilities?.length) return null;
 
   return (
-    <div className="my-4 space-y-2 text-sm">
+    <div className="my-4 grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
       {facilities.map(({ id, label, icon }) => (
         <div key={id} className="flex items-start gap-2">
           {icon}
@@ -140,7 +171,7 @@ function ActionButtons({ actions }: { actions?: RoomCardAction[] }): JSX.Element
 
   return (
     <Stack gap={2} className="mt-auto sm:flex-row">
-      {actions.map((action) => {
+      {actions.map((action, actionIndex) => {
         const trimmedLabel = action.label.trim();
         const normalisedLabel = trimmedLabel.replace(/\s+/g, " ");
         const lines = splitActionLabel(normalisedLabel || action.label);
@@ -154,7 +185,7 @@ function ActionButtons({ actions }: { actions?: RoomCardAction[] }): JSX.Element
             disabled={action.disabled}
             aria-disabled={action.disabled}
             aria-label={accessibleLabel}
-            className={ROOM_CARD_ACTION_BUTTON_CLASS}
+            className={actionIndex === 0 ? ROOM_CARD_ACTION_BUTTON_CLASS_PRIMARY : ROOM_CARD_ACTION_BUTTON_CLASS}
           >
             {lines.length > 1 ? (
               <>
@@ -272,7 +303,7 @@ function RoomCardComponent({
       )}
 
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="mb-1 text-lg font-semibold uppercase tracking-wide text-brand-primary dark:text-brand-secondary">{title}</h3>
+        <h3 className="mb-1 text-lg font-semibold tracking-wide text-brand-primary dark:text-brand-secondary">{title}</h3>
 
         <PriceBlock price={price} />
 

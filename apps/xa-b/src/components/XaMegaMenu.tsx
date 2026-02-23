@@ -55,7 +55,6 @@ export function XaMegaMenu({
         align="center"
         sideOffset={0}
         className="w-screen max-w-none rounded-none border-0 bg-surface px-0 pb-10 pt-8 shadow-none"
-        style={{ backgroundColor: "#ffffff" }}
       >
         <div className="mx-auto flex w-full max-w-screen-2xl gap-10 px-6">
           <div className="grid flex-1 gap-6 md:grid-cols-5">

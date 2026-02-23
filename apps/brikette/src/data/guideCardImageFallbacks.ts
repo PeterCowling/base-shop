@@ -12,7 +12,7 @@ const GUIDE_CARD_IMAGE_FALLBACKS: Readonly<Record<string, GuideCardImage>> = {
   "bestTimeToVisit": { src: "/img/hostel-coastal-horizon.webp", alt: "Coastal horizon view over the sea near Positano." },
   "bookingBasics": { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Iphone_calendar_screen.jpg/1280px-Iphone_calendar_screen.jpg", alt: "iPhone calendar screen with dates and events visible" },
   "capriDayTrip": { src: "/img/guides/capri-day-trip/capri-ferry-positano-marina.jpg", alt: "Passengers boarding early morning ferry from Positano to Capri at Marina Grande pier" },
-  "capriOnABudget": { src: "/img/guides/capri-on-a-budget/01-positano-ferry-dock-capri.jpg", alt: "Positano ferry dock departures board showing Capri routes and times" },
+  "capriOnABudget": { src: "/img/guides/capri-on-a-budget/01-positano-ferry-dock-capri.jpg", alt: "Positano ferry dock departures board showing Capri routes and schedules" },
   "capriPositanoFerry": { src: "/img/guides/capri-positano-ferry/05-capri-harbour.webp", alt: "Marina Grande ferry port in Capri with boats and ticket booths" },
   "changingCancelling": { src: "https://upload.wikimedia.org/wikipedia/commons/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg", alt: "Person using a smartphone and laptop" },
   "cheapEats": { src: "/img/guides/topics/cheapEats.jpg", alt: "Budget-friendly food options in Positano." },

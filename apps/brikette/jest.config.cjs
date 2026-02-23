@@ -138,17 +138,4 @@ config.transform = {
   ],
 };
 
-// Exclude tests that require import.meta (Vite/ESM-only features not available in Jest CJS)
-config.testPathIgnorePatterns = [
-  ...(config.testPathIgnorePatterns || []),
-  // Vitest-only coverage tests (use vitest APIs and import.meta.url)
-  "guides/__tests__/coverage/",
-  // Tests whose source modules use import.meta.url (createRequire pattern)
-  "loadI18nNs\\.test\\.ts$",
-  "loadI18nNs\\.client-and-preload\\.test\\.ts$",
-  // Tests that use import.meta.env (Vite environment variable access)
-  "cfLibImage\\.test\\.ts$",
-  "buildCfImageUrl\\.test\\.ts$",
-];
-
 module.exports = config;

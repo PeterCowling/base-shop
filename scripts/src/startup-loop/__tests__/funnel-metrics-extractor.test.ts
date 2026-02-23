@@ -141,7 +141,7 @@ describe("extractFunnelMetrics", () => {
       expect(result.funnel_metrics.traffic.actual).toBe(8500);
       expect(result.funnel_metrics.traffic.delta_pct).toBeCloseTo(-15.0, 1);
       expect(result.funnel_metrics.traffic.miss).toBeCloseTo(0.15, 2);
-      expect(result.funnel_metrics.traffic.stage).toBe("S6B");
+      expect(result.funnel_metrics.traffic.stage).toBe("SELL-01");
       expect(result.funnel_metrics.traffic.direction).toBe("higher_is_better");
       expect(result.funnel_metrics.traffic.metric_class).toBe("primitive");
 

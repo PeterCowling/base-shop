@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 import { z } from "zod";
@@ -53,6 +53,21 @@ interface GmailClientStatusSnapshot {
   tokenPath: string;
 }
 
+type GmailApiProbeResult = {
+  status: DependencyStatus;
+  detail: string;
+  remediation: string;
+  latency_ms?: number;
+  email?: string;
+};
+
+type TokenExpiryResult = {
+  status: DependencyStatus;
+  severity: DependencySeverity;
+  detail: string;
+  remediation: string;
+};
+
 interface EmailPreflightOptions {
   strict?: boolean;
   env?: NodeJS.ProcessEnv;
@@ -60,6 +75,8 @@ interface EmailPreflightOptions {
   fileExists?: (filePath: string) => boolean;
   gmailStatus?: GmailClientStatusSnapshot;
   databaseProbe?: () => Promise<DatabaseProbeResult>;
+  gmailApiProbe?: () => Promise<GmailApiProbeResult>;
+  tokenExpiryCheck?: () => TokenExpiryResult;
 }
 
 function readEnvValue(env: NodeJS.ProcessEnv, key: string): string {
@@ -161,6 +178,147 @@ async function probeDatabaseConnection(
   }
 }
 
+const GMAIL_API_PROBE_TIMEOUT_MS = 5_000;
+const TOKEN_EXPIRY_WARNING_HOURS = 24;
+const MS_PER_HOUR = 3_600_000;
+const MS_PER_DAY = 86_400_000;
+
+async function defaultGmailApiProbe(
+  gmailStatus: GmailClientStatusSnapshot
+): Promise<GmailApiProbeResult> {
+  if (!gmailStatus.hasCredentials || !gmailStatus.hasToken) {
+    return {
+      status: "fail",
+      detail: "Gmail client not available — missing credentials or token.",
+      remediation:
+        "Ensure credentials.json and token.json are present before running the Gmail API probe.",
+    };
+  }
+
+  try {
+    const { getGmailClient } = await import("../clients/gmail.js");
+    const clientResult = await getGmailClient();
+    if (!clientResult.success) {
+      return {
+        status: "fail",
+        detail: `Gmail client init failed: ${clientResult.error}`,
+        remediation:
+          "Check credentials.json and token.json validity, then re-run gmail:auth if needed.",
+      };
+    }
+
+    const { withRetry } = await import("../utils/gmail-retry.js");
+    const startMs = Date.now();
+    const profile = await withRetry(
+      () =>
+        Promise.race([
+          clientResult.client.users.getProfile({ userId: "me" }),
+          new Promise<never>((_resolve, reject) =>
+            setTimeout(
+              () => reject(new Error("Gmail API probe timed out")),
+              GMAIL_API_PROBE_TIMEOUT_MS
+            )
+          ),
+        ]),
+      { maxRetries: 2, baseDelay: 500 }
+    );
+    const latencyMs = Date.now() - startMs;
+    const email = profile.data.emailAddress || "unknown";
+
+    return {
+      status: "ok",
+      detail: `Gmail API reachable — authenticated as ${email} (${latencyMs}ms).`,
+      remediation: "No action required.",
+      latency_ms: latencyMs,
+      email,
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return {
+      status: "fail",
+      detail: `Gmail API probe failed: ${message}`,
+      remediation:
+        "Check network connectivity and OAuth token validity. Re-run gmail:auth if the token has expired.",
+    };
+  }
+}
+
+function defaultTokenExpiryCheck(
+  gmailStatus: GmailClientStatusSnapshot
+): TokenExpiryResult {
+  if (!gmailStatus.hasToken) {
+    return {
+      status: "fail",
+      severity: "warning",
+      detail: `Token file not found at ${gmailStatus.tokenPath}.`,
+      remediation:
+        "Run `cd packages/mcp-server && pnpm gmail:auth` to authorize Gmail API access.",
+    };
+  }
+
+  try {
+    const raw = readFileSync(gmailStatus.tokenPath, "utf-8");
+    const token = JSON.parse(raw) as Record<string, unknown>;
+    const expiryDate =
+      typeof token.expiry_date === "number" ? token.expiry_date : undefined;
+
+    if (expiryDate === undefined) {
+      return {
+        status: "fail",
+        severity: "warning",
+        detail:
+          "Token expiry date unknown — cannot monitor. Published app with 6-month inactivity window.",
+        remediation:
+          "Token was issued without an expiry_date field. The refresh token remains valid for 6 months of inactivity. No immediate action required.",
+      };
+    }
+
+    const now = Date.now();
+
+    if (expiryDate <= now) {
+      const expiredAt = new Date(expiryDate).toISOString();
+      return {
+        status: "fail",
+        severity: "warning",
+        detail: `Token expired at ${expiredAt}.`,
+        remediation:
+          "Re-run `cd packages/mcp-server && pnpm gmail:auth` to refresh the OAuth token.",
+      };
+    }
+
+    const remainingMs = expiryDate - now;
+    const remainingHours = remainingMs / MS_PER_HOUR;
+    const remainingDays = Math.floor(remainingMs / MS_PER_DAY);
+    const expiresAt = new Date(expiryDate).toISOString();
+
+    if (remainingHours < TOKEN_EXPIRY_WARNING_HOURS) {
+      return {
+        status: "fail",
+        severity: "warning",
+        detail: `Token expires within 24 hours (at ${expiresAt}).`,
+        remediation:
+          "Proactively re-run `cd packages/mcp-server && pnpm gmail:auth` to refresh the OAuth token before it expires.",
+      };
+    }
+
+    return {
+      status: "ok",
+      severity: "warning",
+      detail: `Token valid — expires at ${expiresAt} (${remainingDays} days remaining).`,
+      remediation: "No action required.",
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return {
+      status: "fail",
+      severity: "warning",
+      detail: `Failed to read token file: ${message}`,
+      remediation:
+        "Verify token.json is valid JSON. Re-run gmail:auth if corrupted.",
+    };
+  }
+}
+
 export async function runEmailSystemPreflight(
   options: EmailPreflightOptions = {}
 ): Promise<EmailPreflightSummary> {
@@ -176,6 +334,9 @@ export async function runEmailSystemPreflight(
   const databaseProbeResult = options.databaseProbe
     ? await options.databaseProbe()
     : await probeDatabaseConnection(env);
+  const tokenExpiryResult = options.tokenExpiryCheck
+    ? options.tokenExpiryCheck()
+    : defaultTokenExpiryCheck(gmailStatus);
 
   const checks: EmailPreflightCheck[] = [];
 
@@ -361,6 +522,52 @@ export async function runEmailSystemPreflight(
         "warning",
         databaseProbeResult.detail,
         databaseProbeResult.remediation
+      )
+    );
+  }
+
+  // Token expiry check (synchronous — reads token.json)
+  if (tokenExpiryResult.status === "ok") {
+    checks.push(
+      buildOkCheck(
+        "token_expiry",
+        "OAuth token expiry",
+        tokenExpiryResult.detail
+      )
+    );
+  } else {
+    checks.push(
+      buildFailedCheck(
+        "token_expiry",
+        "OAuth token expiry",
+        tokenExpiryResult.severity,
+        tokenExpiryResult.detail,
+        tokenExpiryResult.remediation
+      )
+    );
+  }
+
+  // Gmail API connectivity probe (async — network call)
+  const gmailApiProbeResult = options.gmailApiProbe
+    ? await options.gmailApiProbe()
+    : await defaultGmailApiProbe(gmailStatus);
+
+  if (gmailApiProbeResult.status === "ok") {
+    checks.push(
+      buildOkCheck(
+        "gmail_api_probe",
+        "Gmail API connectivity probe",
+        gmailApiProbeResult.detail
+      )
+    );
+  } else {
+    checks.push(
+      buildFailedCheck(
+        "gmail_api_probe",
+        "Gmail API connectivity probe",
+        "warning",
+        gmailApiProbeResult.detail,
+        gmailApiProbeResult.remediation
       )
     );
   }

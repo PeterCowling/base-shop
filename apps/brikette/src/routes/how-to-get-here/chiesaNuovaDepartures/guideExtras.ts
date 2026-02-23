@@ -138,7 +138,7 @@ function resolveFaqs(
   readArray: <T>(suffix: string, normaliser: (value: unknown) => T[], options?: { skipEnglishFallback?: boolean }) => T[],
   guidesFallbackEn: ReturnType<typeof getGuidesFallbackTranslator>,
 ): Array<{ q: string; a: string[] }> {
-  let faqs = readArray("faqs", normaliseFaqs, { skipEnglishFallback: true });
+  const faqs = readArray("faqs", normaliseFaqs, { skipEnglishFallback: true });
   if (faqs.length > 0) return faqs;
 
   const legacyFaq = readArray("faq", normaliseFaqs, { skipEnglishFallback: true });

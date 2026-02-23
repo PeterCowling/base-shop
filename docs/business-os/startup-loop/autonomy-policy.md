@@ -10,7 +10,7 @@ Last-reviewed: 2026-02-13
 Execution policy for the startup loop stage graph. Classifies every stage action
 into one of three tiers so autonomy can be high without uncontrolled side effects.
 
-**Authority:** `docs/business-os/startup-loop/loop-spec.yaml` v1.0.0
+**Authority:** `docs/business-os/startup-loop/loop-spec.yaml` v3.1.0
 **Decision reference:** `docs/plans/lp-skill-system-sequencing-plan.md` (LPSP-07)
 
 ## 1) Tier Definitions
@@ -34,10 +34,9 @@ BOS sync actions write only to local files (docs, strategy plans, startup baseli
 
 | Stage | Name | BOS Sync Action | Tier |
 |-------|------|-----------------|------|
-| DISCOVERY | Intake | Update `docs/business-os/strategy/<BIZ>/plan.user.md` | Autonomous |
-| S1 | Readiness | Record blockers/warnings in readiness docs + strategy risk section | Autonomous |
-| S1B | Measure | Record measure stage status under `docs/business-os/strategy/<BIZ>/` | Autonomous |
-| S2A | Results | Persist results baseline under `docs/business-os/strategy/<BIZ>/` | Autonomous |
+| ASSESSMENT-09 | Intake | Validate required ASSESSMENT precursors; write/refresh `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md` | Autonomous |
+| MEASURE-01 | Agent-Setup | Record agent setup stage status under `docs/business-os/strategy/<BIZ>/` | Autonomous |
+| MEASURE-02 | Results | Persist results baseline under `docs/business-os/strategy/<BIZ>/` | Autonomous |
 | S2 | Market intelligence | Update `latest.user.md` pointer + strategy assumptions | Autonomous |
 | S2B | Offer design | Persist offer artifact under `docs/business-os/startup-baselines/<BIZ>/` | Autonomous |
 | S3 | Forecast | Update latest pointer + strategy assumptions/targets | Autonomous |
@@ -128,13 +127,13 @@ Use these criteria when adding new stages or actions to the loop:
 
 ## 5) Tier Coverage Verification
 
-All 15 stages from loop-spec.yaml are classified:
+All 26 stages from loop-spec.yaml are classified:
 
-- **Autonomous:** 11 stages — DISCOVERY, S1, S1B, S2A, S2, S2B, S3, S6B, S4, S5A, S6
+- **Autonomous:** 10 stages — ASSESSMENT-09, MEASURE-01, MEASURE-02, S2, S2B, S3, S6B, S4, S5A, S6
 - **Guarded (BOS sync):** 4 stages — S5B, DO, S9B, S10
 - **Prohibited:** 0 stages (prohibited applies to actions, not stages)
 
-Total classified: 15/15 stages. No stage is unclassified.
+Total classified: 14 startup execution stages plus ASSESSMENT family container/sub-stages (26 stage IDs total). No stage is unclassified.
 
 Stages with `side_effects` field in loop-spec.yaml:
 - S5A: `side_effects: none` → classified Autonomous ✓

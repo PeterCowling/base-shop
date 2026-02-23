@@ -123,15 +123,20 @@ The derived state is compatible with the existing `loop-state.json` contract:
 
 | Stage ID | label_operator_short |
 |---|---|
-| DISCOVERY-01 | Problem framing |
-| DISCOVERY-02 | Solution-space scan |
-| DISCOVERY-03 | Option selection |
-| DISCOVERY-04 | Naming handoff |
-| DISCOVERY-05 | Operator evidence |
-| DISCOVERY | Intake |
-| S1 | Readiness check |
-| S1B | Measure |
-| S2A | Results |
+| ASSESSMENT-01 | Problem framing |
+| ASSESSMENT-02 | Solution-profiling scan |
+| ASSESSMENT-03 | Solution selection |
+| ASSESSMENT-04 | Candidate names |
+| ASSESSMENT-05 | Name selection |
+| ASSESSMENT-06 | Distribution profiling |
+| ASSESSMENT-07 | Measurement profiling |
+| ASSESSMENT-08 | Current situation |
+| ASSESSMENT-09 | Intake |
+| ASSESSMENT-10 | Brand profiling |
+| ASSESSMENT-11 | Brand identity |
+| ASSESSMENT | Assessment |
+| MEASURE-01 | Agent-Setup |
+| MEASURE-02 | Results |
 | S2 | Market intelligence |
 | S2B | Offer design |
 | S3 | Forecast |

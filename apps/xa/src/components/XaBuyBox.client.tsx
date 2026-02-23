@@ -18,12 +18,24 @@ import { getAvailableStock } from "../lib/inventoryStore";
 import { XA_COLOR_SWATCHES, formatLabel } from "../lib/xaCatalog";
 import { XaFadeImage } from "./XaFadeImage";
 
+function getDeliveryWindow(daysMin = 5, daysMax = 12): string {
+  const fmt = (d: Date) =>
+    d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  const now = new Date();
+  const min = new Date(now);
+  min.setDate(now.getDate() + daysMin);
+  const max = new Date(now);
+  max.setDate(now.getDate() + daysMax);
+  return `${fmt(min)} – ${fmt(max)}`;
+}
+
 export function XaBuyBox({ product }: { product: XaProduct }) {
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const [currency] = useCurrency();
 
   const [size, setSize] = React.useState<string>(product.sizes[0] ?? "");
+  const [qty, setQty] = React.useState(1);
   const [error, setError] = React.useState<string | null>(null);
   const isWishlisted = wishlist.includes(product.id);
   const sizeCount = product.sizes.length;
@@ -56,7 +68,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         type: "add",
         sku: product,
         size: product.sizes.length ? size : undefined,
-        qty: 1,
+        qty,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Cart update failed"); // i18n-exempt -- XA-0009: demo fallback error message
@@ -109,6 +121,34 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         sizeNote ? <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div> : null
       )}
 
+      <div className="flex items-center justify-between">
+        <span className="xa-pdp-label text-xs uppercase tracking-widest text-muted-foreground">
+          Quantity
+        </span>
+        <div className="flex items-center gap-0 border border-border-2">
+          <button
+            type="button"
+            aria-label="Decrease quantity"
+            disabled={qty <= 1}
+            onClick={() => setQty((q) => Math.max(1, q - 1))}
+            className="flex h-8 w-8 items-center justify-center text-sm hover:bg-muted disabled:opacity-40"
+          >
+            −
+          </button>
+          <span className="flex h-8 w-8 items-center justify-center text-sm tabular-nums">
+            {qty}
+          </span>
+          <button
+            type="button"
+            aria-label="Increase quantity"
+            onClick={() => setQty((q) => q + 1)}
+            className="flex h-8 w-8 items-center justify-center text-sm hover:bg-muted"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
       {error ? (
         <div className="rounded-md border border-danger/30 bg-danger/5 p-3 text-sm">
           {error}
@@ -146,7 +186,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         <div className="xa-pdp-label text-muted-foreground">
           Estimated delivery
         </div>
-        <div className="xa-pdp-meta">Jan 5 - Jan 12</div>
+        <div className="xa-pdp-meta">{getDeliveryWindow()}</div>
       </div>
 
       {showVariantStrip || showColorStrip ? (
@@ -224,6 +264,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         </div>
       ) : null}
 
+      {/* i18n-exempt: XA-0001 */}
       <div className="xa-pdp-meta rounded-none bg-muted/60 px-4 py-3 text-foreground">
         Free returns for 30 days | We can collect from your home
       </div>

@@ -1,0 +1,492 @@
+{
+  "generatedAt": "2026-02-22T22:43:51.769Z",
+  "sourceCounts": {
+    "enGuides": 54,
+    "itTransport": 31,
+    "enTransport": 31
+  },
+  "sample": [
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/arienzo-beach-guide"
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/boat-tours-positano"
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/bus-back-from-arienzo-beach"
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/bus-back-from-laurito-beach"
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach"
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/bus-down-to-positano-main-beach"
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/bus-to-arienzo-beach"
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/camping-on-the-amalfi-coast"
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/capri-on-a-budget"
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/cheap-eats-in-positano"
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/amalfi-positano-bus"
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/amalfi-positano-ferry"
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/capri-positano-ferry"
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/chiesa-nuova-bar-internazionale-to-hostel-brikette"
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/da-napoli-a-positano-come-arrivare"
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/da-salerno-a-positano-come-arrivare"
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/ferry-dock-to-hostel-brikette-with-luggage"
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/fornillo-beach-to-hostel-brikette"
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/hostel-brikette-to-chiesa-nuova-bar-internazionale"
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/hostel-brikette-to-ferry-dock-with-luggage"
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/amalfi-positano-bus"
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/amalfi-positano-ferry"
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/capri-positano-ferry"
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette"
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage"
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/fornillo-beach-to-hostel-brikette"
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale"
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage"
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/naples-airport-positano-bus"
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/naples-center-positano-ferry"
+    }
+  ],
+  "results": [
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/arienzo-beach-guide",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/boat-tours-positano",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/bus-back-from-arienzo-beach",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/bus-back-from-laurito-beach",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/bus-down-to-positano-main-beach",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/bus-to-arienzo-beach",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/camping-on-the-amalfi-coast",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/capri-on-a-budget",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_guides",
+      "url": "https://hostel-positano.com/en/experiences/cheap-eats-in-positano",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/amalfi-positano-bus",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/amalfi-positano-ferry",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/capri-positano-ferry",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/da-napoli-a-positano-come-arrivare",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/da-salerno-a-positano-come-arrivare",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/ferry-dock-to-hostel-brikette-with-luggage",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/fornillo-beach-to-hostel-brikette",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "it_transport",
+      "url": "https://hostel-positano.com/it/come-arrivare/hostel-brikette-to-ferry-dock-with-luggage",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/amalfi-positano-bus",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/amalfi-positano-ferry",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/capri-positano-ferry",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/naples-airport-positano-bus",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    },
+    {
+      "bucket": "en_transport",
+      "url": "https://hostel-positano.com/en/how-to-get-here/naples-center-positano-ferry",
+      "verdict": "NEUTRAL",
+      "coverageState": "URL is unknown to Google",
+      "indexingState": "INDEXING_STATE_UNSPECIFIED",
+      "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+      "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED",
+      "googleCanonical": null,
+      "userCanonical": null,
+      "lastCrawlTime": null
+    }
+  ]
+}

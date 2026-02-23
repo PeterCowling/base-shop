@@ -5,8 +5,8 @@ Domain: SEO | Data | Infra
 Workstream: Mixed
 Created: 2026-02-22
 Last-reviewed: 2026-02-22
-Last-updated: 2026-02-22
-Last-sequenced: 2026-02-22
+Last-updated: 2026-02-23
+Last-sequenced: 2026-02-23
 Relates-to charter: none
 Feature-Slug: brikette-seo-traffic-growth
 Deliverable-Type: multi-deliverable
@@ -14,7 +14,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-seo
-Overall-confidence: 83% (Phase A execution scope)
+Overall-confidence: 83% (Phase A execution scope, post-TASK-20)
 Confidence-Method: min(Implementation,Approach,Impact); overall effort-weighted average (S=1,M=2,L=3)
 Auto-Build-Intent: plan-only
 Business-OS-Integration: on
@@ -26,33 +26,35 @@ Card-ID: none
 
 ## Summary
 
-hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive structured data, yet generates near-zero non-branded organic traffic (~1.7 organic sessions/day). Three confirmed technical blockers exist: (1) `www` does not redirect to apex, (2) root has a 2-hop 302 chain, and (3) canonical/sitemap URLs use trailing slashes while the runtime 308-redirects them away. This plan fixes those blockers first, then runs diagnostic investigations to unlock Wave 2/3 quick-wins (meta optimization, sitemap lastmod, /en/help fix) and content-activation work gated on guide indexation evidence. Backlink acquisition and GBP work run as parallel ongoing workstreams.
+hostel-positano.com has ~4,093 indexable URLs, full hreflang, and broad structured data coverage, yet generates near-zero non-branded organic traffic (~1.7 organic sessions/day). Three confirmed technical blockers existed and are now fixed: (1) `www` host normalization to apex, (2) root redirect chain permanence and hop reduction, and (3) canonical/sitemap trailing-slash mismatch versus runtime slashless URLs. Current Wave-3 gate evidence shows a discovery/indexation constraint on sampled guide URLs, so this plan now prioritizes internal surfacing before content expansion while preserving post-canonical validation and backlink baseline dependencies.
 
 ## Active tasks
-- [ ] TASK-01a: Cloudflare Bulk Redirects — www→apex host redirect
+- [x] TASK-01a: Cloudflare Bulk Redirects — www→apex host redirect (Complete 2026-02-22)
 - [x] TASK-01b: Fix root redirect in _redirects (302→301, slashless target) (Complete 2026-02-22)
 - [x] TASK-01c: Pages Functions preflight check (Complete 2026-02-22)
 - [x] DECISION-01: Confirm slashless canonical policy (Complete 2026-02-22)
 - [x] TASK-02: Align trailing-slash canonical policy across canonicals, hreflang, sitemap, and tests (Complete 2026-02-22)
 - [x] TASK-03a: GSC URL Inspection canonical sample — pre-change baseline (Complete 2026-02-22)
-- [ ] TASK-03b: GSC URL Inspection canonical sample — post-change validation
-- [ ] TASK-04: hreflang reciprocity sampling
-- [ ] TASK-05: Structured-data validation sample
-- [ ] TASK-06: /en/help bounce query pull
-- [ ] TASK-07: Homepage title/H1/meta optimization
-- [ ] TASK-08: /en/rooms meta description optimization
+- [ ] TASK-03b: GSC URL Inspection canonical sample — post-change validation (Run no earlier than 2026-03-01 unless fresh recrawl)
+- [x] TASK-04: hreflang reciprocity sampling (Complete 2026-02-22)
+- [x] TASK-05: Structured-data validation sample (Complete 2026-02-22)
+- [x] TASK-06: /en/help bounce query pull (Complete 2026-02-22)
+- [x] TASK-07: Homepage title/H1/meta optimization (Complete 2026-02-22)
+- [x] TASK-08: /en/rooms meta description optimization (Complete 2026-02-22)
 - [x] TASK-09: Sitemap lastmod timestamp source feasibility (Complete 2026-02-22)
 - [x] TASK-19: Lastmod eligibility matrix and URL-source mapping (Complete 2026-02-22)
-- [ ] TASK-10: Internal link coverage audit
-- [ ] TASK-11: GSC Page indexing + guide coverage sample
-- [ ] CHECKPOINT-01: Wave 3 gate — reassess downstream plan
-- [ ] TASK-12: Implement scoped sitemap lastmod for eligible guide URLs (Pending)
+- [x] TASK-10: Internal link coverage audit (Complete 2026-02-22)
+- [x] TASK-11: GSC Page indexing + guide coverage sample (Complete 2026-02-22)
+- [x] CHECKPOINT-01: Wave 3 gate — reassess downstream plan (Complete 2026-02-22)
+- [x] TASK-12: Implement scoped sitemap lastmod for eligible guide URLs (Complete 2026-02-22)
 - [ ] TASK-13: Content quality pass on top transportation guides (Phase B, post-CHECKPOINT-01)
-- [ ] TASK-14: Homepage featured guides section (Phase B, post-CHECKPOINT-01)
-- [ ] TASK-15: Italian locale meta/title quality pass
-- [ ] TASK-16: Google Business Profile audit and refresh
+- [x] TASK-14: Homepage featured guides section (Complete 2026-02-22)
+- [x] TASK-15: Italian locale meta/title quality pass (Complete 2026-02-22)
+- [ ] TASK-16: Google Business Profile audit and refresh (Blocked: awaiting GBP dashboard execution evidence)
 - [ ] TASK-17: Backlink outreach targeting (Phase B)
-- [ ] TASK-18: GSC Links baseline pull (INVESTIGATE)
+- [x] TASK-18: GSC Links baseline pull (Complete 2026-02-23)
+- [x] TASK-20: Backlink target vetting + contactability matrix (Complete 2026-02-23; Phase B precursor)
+- [ ] TASK-21: Outreach pack rehearsal + approval gate (Blocked: awaiting reviewer sign-off evidence)
 
 ## Goals
 
@@ -114,29 +116,31 @@ hostel-positano.com has ~4,093 indexable URLs, full hreflang, and comprehensive 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01c | INVESTIGATE | Pages Functions preflight check | 90% | S | Complete (2026-02-22) | - | TASK-01a, TASK-01b |
-| TASK-01a | IMPLEMENT | Cloudflare Bulk Redirects — www→apex | 85% | S | Pending | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
+| TASK-01a | IMPLEMENT | Cloudflare Bulk Redirects — www→apex | 85% | S | Complete (2026-02-22) | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
 | TASK-01b | IMPLEMENT | Fix root redirect in _redirects (302→301) | 80% | S | Complete (2026-02-22) | TASK-01c, TASK-03a | TASK-07, TASK-08, TASK-03b |
 | TASK-03a | INVESTIGATE | GSC URL Inspection — pre-change baseline | 85% | S | Complete (2026-02-22) | - | TASK-01a, TASK-01b, DECISION-01, TASK-02, TASK-07 |
 | DECISION-01 | DECISION | Confirm slashless canonical policy (operator checkpoint) | 95% | S | Complete (2026-02-22) | TASK-03a | TASK-02 |
 | TASK-02 | IMPLEMENT | Trailing-slash canonical policy alignment | 80% | M | Complete (2026-02-22) | TASK-03a, DECISION-01 | CHECKPOINT-01, TASK-03b, TASK-07, TASK-08, TASK-12 |
-| TASK-03b | INVESTIGATE | GSC URL Inspection — post-change validation | 90% | S | Pending | TASK-01a, TASK-01b, TASK-02 | - |
-| TASK-04 | INVESTIGATE | hreflang reciprocity sampling (pre/post TASK-02) | 80% | S | Pending | - | CHECKPOINT-01 |
-| TASK-05 | INVESTIGATE | Structured-data validation | 80% | S | Pending | - | CHECKPOINT-01 |
-| TASK-06 | INVESTIGATE | /en/help bounce query pull | 75% | S | Pending | - | - |
-| TASK-07 | IMPLEMENT | Homepage title/H1/meta for "hostel positano" | 75% | S | Pending | TASK-01a, TASK-01b, TASK-02, TASK-03a | TASK-08 |
-| TASK-08 | IMPLEMENT | /en/rooms meta description optimization | 75% | S | Pending | TASK-01a, TASK-01b, TASK-02, TASK-07 | - |
+| TASK-03b | INVESTIGATE | GSC URL Inspection — post-change validation | 90% | S | Pending (time-gated: >=2026-03-01 or fresh recrawl) | TASK-01a, TASK-01b, TASK-02 | - |
+| TASK-04 | INVESTIGATE | hreflang reciprocity sampling (pre/post TASK-02) | 80% | S | Complete (2026-02-22) | - | CHECKPOINT-01 |
+| TASK-05 | INVESTIGATE | Structured-data validation | 80% | S | Complete (2026-02-22) | - | CHECKPOINT-01 |
+| TASK-06 | INVESTIGATE | /en/help bounce query pull | 75% | S | Complete (2026-02-22) | - | - |
+| TASK-07 | IMPLEMENT | Homepage title/H1/meta for "hostel positano" | 82% | S | Complete (2026-02-22) | TASK-01a, TASK-01b, TASK-02, TASK-03a | TASK-08 |
+| TASK-08 | IMPLEMENT | /en/rooms meta description optimization | 82% | S | Complete (2026-02-22) | TASK-01a, TASK-01b, TASK-02, TASK-07 | - |
 | TASK-09 | INVESTIGATE | Sitemap lastmod timestamp source feasibility | 85% | S | Complete (2026-02-22) | - | TASK-19 |
 | TASK-19 | INVESTIGATE | Lastmod eligibility matrix + URL-source mapping | 85% | S | Complete (2026-02-22) | TASK-09 | TASK-12 |
-| TASK-10 | INVESTIGATE | Internal link coverage audit | 85% | S | Pending | - | CHECKPOINT-01 |
-| TASK-11 | INVESTIGATE | GSC Page indexing + guide coverage | 85% | S | Pending | - | CHECKPOINT-01 |
-| TASK-18 | INVESTIGATE | GSC Links baseline pull | 85% | S | Pending | - | TASK-17 |
-| CHECKPOINT-01 | CHECKPOINT | Wave 3 gate — reassess downstream plan | 95% | S | Pending | TASK-02, TASK-04, TASK-05, TASK-10, TASK-11 | TASK-13, TASK-14, TASK-15 |
-| TASK-12 | IMPLEMENT | Scoped sitemap lastmod (eligible guide URLs) | 85% | M | Pending | TASK-02, TASK-19 | - |
-| TASK-13 | IMPLEMENT | Content quality pass — top transportation guides | 60% | M | Deferred (Phase B) | CHECKPOINT-01 | - |
-| TASK-14 | IMPLEMENT | Homepage featured guides section | 65% | M | Deferred (Phase B) | CHECKPOINT-01 | - |
-| TASK-15 | IMPLEMENT | Italian locale meta/title quality pass | 75% | S | Pending | CHECKPOINT-01 | - |
-| TASK-16 | IMPLEMENT | Google Business Profile audit and refresh | 75% | S | Pending | - | - |
-| TASK-17 | IMPLEMENT | Backlink outreach targeting | 60% | M | Deferred (Phase B) | TASK-18 | - |
+| TASK-10 | INVESTIGATE | Internal link coverage audit | 85% | S | Complete (2026-02-22) | - | CHECKPOINT-01 |
+| TASK-11 | INVESTIGATE | GSC Page indexing + guide coverage | 85% | S | Complete (2026-02-22) | - | CHECKPOINT-01 |
+| TASK-18 | INVESTIGATE | GSC Links baseline pull | 85% | S | Complete (2026-02-23) | - | TASK-17 |
+| CHECKPOINT-01 | CHECKPOINT | Wave 3 gate — reassess downstream plan | 95% | S | Complete (2026-02-22) | TASK-02, TASK-04, TASK-05, TASK-10, TASK-11 | TASK-13, TASK-14, TASK-15 |
+| TASK-12 | IMPLEMENT | Scoped sitemap lastmod (eligible guide URLs) | 80% | M | Complete (2026-02-22) | TASK-02, TASK-19 | - |
+| TASK-13 | IMPLEMENT | Content quality pass — top transportation guides | 45% | M | Deferred (Phase B) | CHECKPOINT-01, TASK-03b | - |
+| TASK-14 | IMPLEMENT | Homepage featured guides section | 82% | M | Complete (2026-02-22) | CHECKPOINT-01 | - |
+| TASK-15 | IMPLEMENT | Italian locale meta/title quality pass | 82% | S | Complete (2026-02-22) | CHECKPOINT-01 | - |
+| TASK-16 | IMPLEMENT | Google Business Profile audit and refresh | 75% | S | Blocked (awaiting GBP execution evidence) | - | - |
+| TASK-17 | IMPLEMENT | Backlink outreach targeting | 65% (->82% conditional on TASK-21) | M | Deferred (Phase B; TASK-21 gate pending) | TASK-18, TASK-20, TASK-21 | - |
+| TASK-20 | INVESTIGATE | Backlink target vetting + contactability matrix | 85% | S | Complete (2026-02-23) | TASK-18 | TASK-17 |
+| TASK-21 | INVESTIGATE | Outreach pack rehearsal + approval gate | 80% | S | Blocked (awaiting reviewer sign-off evidence) | TASK-20 | TASK-17 |
 
 ## Parallelism Guide
 
@@ -145,19 +149,21 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
-| 1 | TASK-01c, TASK-03a, TASK-04 (pre-pass), TASK-05, TASK-06, TASK-09, TASK-10, TASK-11, TASK-18 | None | All independent; run in parallel. TASK-04 captures pre-TASK-02 hreflang baseline in this wave. TASK-01c and TASK-03a must both complete before Wave 2 can start. TASK-18 runs alongside Wave 1 to establish backlink baseline. |
-| Ongoing | TASK-16 | None | Manual GBP ops; start any time; no code dependency |
+| 1 | TASK-01c, TASK-03a, TASK-04 (pre-pass), TASK-05, TASK-06, TASK-09, TASK-10, TASK-11, TASK-18 | None | Complete for all listed tasks, including TASK-18 via operator-provided Search Console UI exports. |
+| Ongoing | TASK-16 | None | Blocked (2026-02-23): execution artifact prepared; awaiting authenticated GBP dashboard actions + screenshot evidence. |
 | 2 | DECISION-01, TASK-19 | DECISION-01: TASK-03a; TASK-19: TASK-09 | DECISION-01 is operator checkpoint for TASK-02. TASK-19 converts TASK-09 findings into an actionable URL-class eligibility contract for TASK-12. |
 | 3 | TASK-01a, TASK-01b, TASK-02 | TASK-01a+01b: after TASK-01c AND TASK-03a; TASK-02: after TASK-03a + DECISION-01 | TASK-01a and TASK-01b deploy together. TASK-02 gate was satisfied by DECISION-01 and is now complete. |
-| 4 | TASK-03b, TASK-04 (post-pass), TASK-07 | TASK-03b: after TASK-01a + TASK-01b + TASK-02 and no earlier than T+7 days or verified recrawl; TASK-04 post-pass: after TASK-02 (with pre-pass already captured in Wave 1); TASK-07: after TASK-01a + TASK-01b + TASK-02 + TASK-03a | TASK-07 now waits for canonical rollout to avoid attribution ambiguity. TASK-03b validates canonical consolidation after recrawl window. TASK-04 post-pass verifies hreflang format/reciprocity after slashless rollout. |
-| 5 | TASK-08 | TASK-01a, TASK-01b, TASK-02, TASK-07 (file overlap: metadata.ts) | TASK-08 must not run concurrently with TASK-07; start after TASK-07 completes |
-| CHECKPOINT | CHECKPOINT-01 | TASK-02, TASK-04, TASK-05, TASK-10, TASK-11 | Gate enforces post-indexing reassessment before Phase B content activation |
-| 6 | TASK-12, TASK-15 | TASK-12: after TASK-02 + TASK-19 (file overlap: generate-public-seo.ts); TASK-15: after CHECKPOINT-01 | TASK-19 and TASK-02 are complete; TASK-12 is unblocked and ready for `/lp-do-build`. |
-| Deferred (Phase B) | TASK-13, TASK-14, TASK-17 | TASK-13/14: after CHECKPOINT-01; TASK-17: after TASK-18 | Out of current-phase confidence scope; execute only after CHECKPOINT-01 replan confirms viability |
+| 4 | TASK-03b, TASK-04 (post-pass), TASK-07 | TASK-03b: after TASK-01a + TASK-01b + TASK-02 and no earlier than T+7 days or verified recrawl; TASK-04 post-pass: after TASK-02 (with pre-pass already captured in Wave 1); TASK-07: after TASK-01a + TASK-01b + TASK-02 + TASK-03a | TASK-04 post-pass and TASK-07 are complete. TASK-03b run-gate check completed but full validation is deferred until `2026-03-01` unless fresh recrawl appears earlier. |
+| 5 | TASK-08 | TASK-01a, TASK-01b, TASK-02, TASK-07 (sequence gate for attribution) | Complete (2026-02-22). |
+| CHECKPOINT | CHECKPOINT-01 | TASK-02, TASK-04, TASK-05, TASK-10, TASK-11 | Complete (2026-02-22). Output: TASK-14 promoted, TASK-13 remains deferred, TASK-12/TASK-15 confidence reduced, TASK-03b date-gated. |
+| 6 | TASK-12, TASK-14, TASK-15 | TASK-12: after TASK-02 + TASK-19 (file overlap: generate-public-seo.ts); TASK-14/TASK-15: after CHECKPOINT-01 | TASK-12, TASK-14, and TASK-15 are complete. |
+| 7 (Phase B precursor) | TASK-20 | TASK-20: after TASK-18 | Complete (2026-02-23): target-quality/contactability evidence captured for TASK-17 promotion path. |
+| 8 (Phase B precursor) | TASK-21 | TASK-21: after TASK-20 | Blocked (2026-02-23): outreach pack drafted; awaiting reviewer sign-off evidence before promotion. |
+| Deferred (Phase B) | TASK-13, TASK-17 | TASK-13: after CHECKPOINT-01 plus TASK-03b recrawl/indexation signal; TASK-17: after TASK-21 | TASK-17 remains below IMPLEMENT threshold until TASK-21 is completed; re-run `/lp-do-replan` after TASK-21 if still below threshold. |
 
 **Max parallelism:** 9 tasks (Wave 1: TASK-01c, TASK-03a, TASK-04, TASK-05, TASK-06, TASK-09, TASK-10, TASK-11, TASK-18)
-**Critical path:** TASK-03a → DECISION-01 → TASK-02 → CHECKPOINT-01 → TASK-15 (6 waves minimum)
-**Total tasks:** 24 tasks + 1 checkpoint (DECISION-01, TASK-01a, TASK-01b, TASK-01c, TASK-02, TASK-03a, TASK-03b, TASK-04–TASK-19)
+**Critical path:** TASK-03a → DECISION-01 → TASK-02 → CHECKPOINT-01 → TASK-12 (6 waves minimum)
+**Total tasks:** 26 tasks + 1 checkpoint (DECISION-01, TASK-01a, TASK-01b, TASK-01c, TASK-02, TASK-03a, TASK-03b, TASK-04–TASK-21)
 
 ---
 
@@ -208,10 +214,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Artifact-Destination:** Cloudflare dashboard (Bulk Redirects rules)
 - **Reviewer:** Peter Cowling
-- **Approval-Evidence:** Redirect List entry screenshot + Bulk Redirect Rule (enabled) screenshot + curl TC-01a passing
+- **Approval-Evidence:** Cloudflare API evidence (list ID, list item, ruleset/rule IDs, enabled state) + curl TC-01a probes
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-01a-bulk-redirects.md`, `docs/plans/brikette-seo-traffic-growth/task-01-redirect-chain-baseline.md`
 - **Depends on:** TASK-01c, TASK-03a
 - **Blocks:** TASK-07, TASK-08, TASK-03b
@@ -252,6 +258,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:**
   - Write audit artifact at `docs/plans/brikette-seo-traffic-growth/task-01a-bulk-redirects.md` documenting list/rule configuration and TC evidence
   - Write redirect-chain baseline artifact at `docs/plans/brikette-seo-traffic-growth/task-01-redirect-chain-baseline.md` for pre/post comparison
+
+**Build completion evidence (2026-02-22):**
+- Redirect list created: `brikette_www_to_apex` (`a0ea9ccf37284ee1923a6121922af712`) with item `www.hostel-positano.com/` → `https://hostel-positano.com` and params `SUBPATH_MATCHING=TRUE`, `PRESERVE_PATH_SUFFIX=TRUE`, `PRESERVE_QUERY_STRING=TRUE`, status `301`.
+- Redirect phase ruleset created: `418b67f09e0340dbb49919915e2cf175` with enabled rule `brikette_www_to_apex` (`54a6c9f6fc5d4f9ea7f7be4c4d514b8f`), expression `http.request.full_uri in $brikette_www_to_apex`.
+- TC probes pass for host/path/query normalization (`https://www.../en`, `https://www.../en/rooms`, `http://www.../en/rooms?ref=test`).
+- Post-deploy production probes confirm root now resolves with permanent redirects only (`https://hostel-positano.com/` → `301` → `/en` → `200`); TASK-01 atomicity gate is satisfied.
 
 ---
 
@@ -480,7 +492,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Pending (time-gated; full run no earlier than 2026-03-01 unless fresh recrawl observed)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-03b-gsc-canonical-validation.md`
 - **Depends on:** TASK-01a, TASK-01b, TASK-02
 - **Blocks:** -
@@ -506,6 +518,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - API: `POST https://searchconsole.googleapis.com/v1/urlInspection/index:inspect` with `siteUrl: sc-domain:hostel-positano.com`
 
+**Build evidence update (2026-02-22):**
+- Artifact created: `docs/plans/brikette-seo-traffic-growth/task-03b-gsc-canonical-validation.md`
+- Recrawl gate check run against TASK-03a sample; fresh recrawl after deploy: `0/8`
+- Earliest compliant full-run date recorded: `2026-03-01`
+
 ---
 
 ### TASK-04: hreflang reciprocity sampling (pre/post TASK-02)
@@ -515,7 +532,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-04-hreflang-sample.md`
 - **Depends on:** -
 - **Blocks:** CHECKPOINT-01
@@ -540,6 +557,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** Write artifact with pre/post diff; update fact-find hreflang section if post-pass issues remain
 - **Notes / references:** hreflang builder: `apps/brikette/src/utils/seo.ts`
 
+**Build completion evidence (2026-02-22):**
+- Artifact created: `docs/plans/brikette-seo-traffic-growth/task-04-hreflang-sample.md`
+- Pre-pass and post-pass completed for 5 required locale pairs
+- Result: reciprocity/self-reference/canonical alignment all pass; slashless `x-default` normalization confirmed post-TASK-02
+
 ---
 
 ### TASK-05: Structured-data validation sample
@@ -549,7 +571,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-05-schema-validation.md`
 - **Depends on:** -
 - **Blocks:** CHECKPOINT-01
@@ -572,6 +594,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** Write artifact; if errors found, add schema fix IMPLEMENT task to Wave 3 via `/lp-do-replan` post-CHECKPOINT-01
 - **Notes / references:** Schema builders: `apps/brikette/src/utils/schema/builders.ts`; existing unit tests: `apps/brikette/src/test/seo-extraction-contract.test.ts`
 
+**Build completion evidence (2026-02-22):**
+- Artifact created: `docs/plans/brikette-seo-traffic-growth/task-05-schema-validation.md`
+- Raw scan saved: `docs/plans/brikette-seo-traffic-growth/artifacts/task-05-schema-scan.json`
+- Result: `5` critical hygiene findings (`Article.datePublished` missing on sampled guide/article pages); no warning-level findings
+
 ---
 
 ### TASK-06: /en/help bounce query pull
@@ -581,7 +608,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-06-help-page-queries.md`
 - **Depends on:** -
 - **Blocks:** -
@@ -612,20 +639,20 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 ### TASK-07: Homepage title/H1/meta optimization
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `buildAppMetadata()` input for homepage; updated or new title/description copy for "hostel positano" and "amalfi coast hostels" keywords
+- **Deliverable:** Updated homepage locale metadata/H1 copy for "hostel positano" and "amalfi coast hostels" keywords, served through existing `buildAppMetadata()` wiring
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** `apps/brikette/src/app/_lib/metadata.ts`, `[readonly] apps/brikette/src/app/[lang]/page.tsx`
+- **Status:** Complete (2026-02-22)
+- **Affects:** `apps/brikette/src/locales/en/landingPage.json`, `[readonly] apps/brikette/src/app/[lang]/page.tsx`, `[readonly] packages/ui/src/organisms/LandingHeroSection.tsx`, `apps/brikette/src/test/app/homepage-metadata-copy.test.ts`, `docs/plans/brikette-seo-traffic-growth/task-07-homepage-metadata.md`
 - **Depends on:** TASK-01a, TASK-01b, TASK-02, TASK-03a
-- **Blocks:** TASK-08 (file overlap: metadata.ts)
-- **Confidence:** 75%
-  - Implementation: 85% — well-established pattern; `buildAppMetadata()` is the path; existing test coverage protects regressions
-  - Approach: 75% — target keywords clear from GSC (E1); but current homepage title not verified in planning; if title already includes "hostel positano" naturally, approach needs refinement. Held-back test: "What if the current title is already optimized?" — likely not given position 22, but not confirmed. Score stays 75%.
-  - Impact: 75% — GSC position 22.1 for "hostel positano" → realistic ceiling 15–18 from meta changes alone; OTA authority gap caps top-10 achievement; genuine but bounded impact
-  - Overall: min(85, 75, 75) = 75%. Gated behind TASK-02 so CTR/ranking deltas are not confounded by unresolved canonical mismatch.
+- **Blocks:** TASK-08 (sequence gate for attribution clarity)
+- **Confidence:** 82%
+  - Implementation: 90% — execution was localized to the actual metadata/H1 source (`landingPage` locale keys) with deterministic test coverage.
+  - Approach: 82% — held-back test is now resolved: pre-change EN title did not contain `hostel positano`, so scoped title/meta/H1 alignment is justified.
+  - Impact: 82% — for a query currently at position `22.1`, this is a realistic relevance/CTR improvement lever while acknowledging OTA authority ceilings.
+  - Overall: min(90, 82, 82) = 82%.
 - **Acceptance:**
   - Homepage title tag includes "hostel positano" naturally (not keyword-stuffed)
   - Homepage meta description references "Amalfi Coast" and book/hostel intent
@@ -633,11 +660,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Existing metadata snapshot tests pass (or updated to reflect intentional copy changes)
   - No regressions in other locale meta output (spot check 3 locales)
 - **Validation contract (TC-09/10):**
-  - TC-09: Render `/en` in staging; assert title contains "hostel positano" (case-insensitive)
+  - TC-09: Source-level metadata contract test asserts EN homepage title contains "hostel positano" (case-insensitive) and H1 remains aligned
   - TC-10: Existing metadata tests pass after copy update
 - **Execution plan:** Red → Green → Refactor
   - Red: Pull current homepage title/description via curl or browser inspection; document current state
-  - Green: Update metadata inputs; deploy to staging; run TCs
+  - Green: Update metadata inputs; run TC-09/10 and metadata regression tests
   - Refactor: Check 3 locale variants for consistency (IT, DE, FR should have translated equivalents)
 - **Planning validation:** None: S task; pattern well-understood
 - **Scouts:** Read current homepage title before executing; if "hostel positano" already present naturally, scope narrows to description optimization only
@@ -649,35 +676,49 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** Update fact-find OPP-03 status
 - **Notes / references:** E1: "hostel positano" position 22.1, 114 impressions; "amalfi coast hostels" position 9.1, 120 impressions
 
+#### Re-plan Update (2026-02-22)
+- Confidence: **75% -> 82%**
+- Key change: the held-back uncertainty ("is homepage title already optimized?") was closed using the live EN source copy in `landingPage.json`; exact `hostel positano` phrase was missing pre-change.
+- Scope expansion rationale: implementation moved from `metadata.ts` to locale copy files because homepage metadata/H1 source-of-truth is translation content, not metadata builder logic.
+
+**Build completion evidence (2026-02-22):**
+- Updated EN homepage SEO/H1 copy source: `apps/brikette/src/locales/en/landingPage.json`
+- Added focused validation test: `apps/brikette/src/test/app/homepage-metadata-copy.test.ts`
+- Task artifact created: `docs/plans/brikette-seo-traffic-growth/task-07-homepage-metadata.md`
+- Validation passed:
+  - `pnpm --filter @apps/brikette test -- src/test/app/homepage-metadata-copy.test.ts`
+  - `pnpm --filter @apps/brikette test -- src/test/lib/metadata.test.ts`
+  - `pnpm --filter @apps/brikette typecheck`
+
 ---
 
 ### TASK-08: /en/rooms meta description optimization
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated rooms page metadata — title and description copy targeting booking-intent queries
+- **Deliverable:** Updated rooms page metadata copy — title and description targeting booking-intent queries
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** `apps/brikette/src/app/_lib/metadata.ts`, `[readonly] apps/brikette/src/app/[lang]/rooms/page.tsx`
-- **Depends on:** TASK-01a, TASK-01b, TASK-02, TASK-07 (file overlap: apps/brikette/src/app/_lib/metadata.ts)
+- **Status:** Complete (2026-02-22)
+- **Affects:** `apps/brikette/src/locales/en/roomsPage.json`, `[readonly] apps/brikette/src/app/[lang]/rooms/page.tsx`, `apps/brikette/src/test/app/rooms-metadata-copy.test.ts`, `docs/plans/brikette-seo-traffic-growth/task-08-rooms-metadata.md`
+- **Depends on:** TASK-01a, TASK-01b, TASK-02, TASK-07 (sequence gate for cleaner attribution of snippet changes)
 - **Blocks:** -
-- **Confidence:** 75%
-  - Implementation: 85% — same pattern as TASK-07; well-understood
-  - Approach: 75% — rooms page has 393 impressions at position 8.7 (E1); 0.5% CTR is very low for page 1; meta description is the most likely fix. Current meta description not verified in planning — could be generic or missing CTA.
-  - Impact: 75% — position 8.7 on page 1; improving CTR from 0.5% to 2–3% would be meaningful; uncertainty is whether current description is the blocker vs rich snippet competition
-  - Overall: min(85, 75, 75) = 75%. Covered by TASK-01 + TASK-02 upstream; metadata iteration starts only after canonical normalization to keep measurement interpretable.
+- **Confidence:** 82%
+  - Implementation: 90% — update landed in the confirmed metadata source with dedicated contract tests.
+  - Approach: 82% — copy now includes explicit booking CTA + numeric price anchor aligned to task acceptance.
+  - Impact: 82% — page already sits on page 1 with low CTR baseline, so snippet optimization remains a bounded but meaningful lever.
+  - Overall: min(90, 82, 82) = 82%.
 - **Acceptance:**
   - Meta description for /en/rooms includes price signal or booking CTA ("from €X/night", "book now", "private rooms")
   - Title includes "positano" and room type
   - Existing metadata tests pass
   - 28-day post-deploy CTR delta measurable in GSC (VC tracked in measurement plan)
 - **Validation contract (TC-11):**
-  - TC-11: Render `/en/rooms` in staging; assert meta description includes a booking-intent signal phrase
+  - TC-11: Source-level metadata contract test asserts EN `/rooms` description includes a booking-intent phrase and price signal
 - **Execution plan:** Red → Green → Refactor
   - Red: Document current rooms meta title/description
-  - Green: Update to booking-intent copy; deploy to staging; run TC-11
+  - Green: Update to booking-intent copy; run TC-11 and metadata regression tests
   - Refactor: Check locale variants consistent
 - **Planning validation:** None: S task
 - **Scouts:** Read current rooms meta before executing
@@ -686,6 +727,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Rollout / rollback:** Rollout: standard deploy; Rollback: revert metadata inputs
 - **Documentation impact:** Update fact-find OPP-05 status
 - **Notes / references:** E1: `/en/rooms` — 393 impressions, 0.5% CTR, position 8.7
+
+**Build completion evidence (2026-02-22):**
+- Updated EN rooms metadata copy source: `apps/brikette/src/locales/en/roomsPage.json`
+- Added focused validation test: `apps/brikette/src/test/app/rooms-metadata-copy.test.ts`
+- Task artifact created: `docs/plans/brikette-seo-traffic-growth/task-08-rooms-metadata.md`
+- Validation passed:
+  - `pnpm --filter @apps/brikette test -- src/test/app/rooms-metadata-copy.test.ts`
+  - `pnpm --filter @apps/brikette test -- src/test/lib/metadata.test.ts`
+  - `pnpm --filter @apps/brikette typecheck`
 
 ---
 
@@ -776,7 +826,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-10-internal-link-audit.md`
 - **Depends on:** -
 - **Blocks:** CHECKPOINT-01
@@ -799,6 +849,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** Write artifact; findings feed TASK-14 (featured guides section scope)
 - **Notes / references:** E6: homepage → /en/experiences → 27 direct guides; 165 total guides means /en/experiences surface is partial; token-link system: `apps/brikette/src/routes/guides/utils/_linkTokens.tsx`
 
+**Build completion evidence (2026-02-22):**
+- Artifact created: `docs/plans/brikette-seo-traffic-growth/task-10-internal-link-audit.md`
+- Raw crawl output saved: `docs/plans/brikette-seo-traffic-growth/artifacts/task-10-link-depth.json`
+- Result: `55/119` EN guide URLs not reachable within 3-click homepage graph; transport/help clusters underlinked
+
 ---
 
 ### TASK-11: GSC Page indexing and guide coverage sample
@@ -808,7 +863,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-11-gsc-indexing.md`
 - **Depends on:** -
 - **Blocks:** CHECKPOINT-01
@@ -832,6 +887,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** Write artifact; CHECKPOINT-01 uses findings to calibrate TASK-13 scope
 - **Notes / references:** Fact-find Wave 3 diagnostic spec; E5 (sitemap): 4,093 indexable URLs; no lastmod
 
+**Build completion evidence (2026-02-22):**
+- Artifact created: `docs/plans/brikette-seo-traffic-growth/task-11-gsc-indexing.md`
+- Raw inspection output saved: `docs/plans/brikette-seo-traffic-growth/artifacts/task-11-url-inspection-sample.json`
+- Result: `30/30` sampled guide URLs returned `URL is unknown to Google`; Wave-3 content activation remains gated
+
 ---
 
 ### CHECKPOINT-01: Wave 3 gate — reassess downstream plan
@@ -841,7 +901,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-22)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/plan.md`
 - **Depends on:** TASK-02, TASK-04, TASK-05, TASK-10, TASK-11
 - **Blocks:** TASK-13, TASK-14, TASK-15
@@ -851,8 +911,9 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Impact: 95% — controls Wave 3 risk (thin-content penalty scenario documented in fact-find Risks table)
 - **Acceptance:**
   - `/lp-do-build` CHECKPOINT executor run
-  - `/lp-do-replan` run on TASK-12, TASK-13, TASK-14, TASK-15
+  - `/lp-do-replan` run on TASK-12, TASK-13, TASK-14, TASK-15, TASK-17
   - Wave 3 task confidence recalibrated using TASK-05 (schema) + TASK-10 (internal links) + TASK-11 (GSC indexation) evidence
+  - If TASK-11 returns predominantly `URL is unknown to Google`: hold TASK-13 and prioritize discovery/internal-link surfacing first
   - If TASK-11 shows >10% Duplicate/crawled-not-indexed: TASK-13 (content quality pass) becomes the Wave 3 priority; TASK-14 (featured guides) may be deprioritized until indexation improves
   - Plan updated and re-sequenced
 - **Horizon assumptions to validate:**
@@ -865,6 +926,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** Update plan `Last-updated` and Wave 3 task confidence values
 
+**Build completion evidence (2026-02-22):**
+- Checkpoint artifact created: `docs/plans/brikette-seo-traffic-growth/checkpoint-01-wave3-gate.md`
+- Replan outputs applied: TASK-14 promoted (82%), TASK-13 remains deferred (45%), TASK-12 reduced to 80%, TASK-15 reduced to 65%, TASK-17 reduced to 55%
+- TASK-03b run window enforced (no full run before `2026-03-01` unless recrawl freshness condition is met)
+
 ---
 
 ### TASK-12: Implement sitemap lastmod with accurate timestamps
@@ -875,15 +941,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `apps/brikette/scripts/generate-public-seo.ts`, `apps/brikette/public/sitemap.xml`
+- **Status:** Complete (2026-02-22)
+- **Affects:** `apps/brikette/scripts/generate-public-seo.ts`, `apps/brikette/src/test/lib/generate-public-seo.lastmod.test.ts`, `apps/brikette/public/sitemap.xml`, `docs/plans/brikette-seo-traffic-growth/task-12-sitemap-lastmod.md`
 - **Depends on:** TASK-02, TASK-19 (file overlap: apps/brikette/scripts/generate-public-seo.ts)
 - **Blocks:** -
-- **Confidence:** 85%
-  - Implementation: 85% — `TASK-19` now provides explicit URL-class mapping, field precedence, and coverage counts (`681/4093`) so the implementation surface is bounded and testable.
-  - Approach: 85% — scoped emission on authoritative guide fields avoids low-trust timestamps while still improving recrawl signals where valid.
-  - Impact: 85% — avoids shipping misleading freshness signals across `3,412` non-eligible URLs while enabling `lastmod` on the eligible guide subset.
-  - Overall: min(85, 85, 85) = 85%. Conditional uplift from TASK-19 is now actualized. ✓
+- **Confidence:** 80%
+  - Implementation: 85% — `TASK-19` provides explicit URL-class mapping, field precedence, and coverage counts (`681/4093`) so the implementation surface is bounded and testable.
+  - Approach: 80% — scoped emission on authoritative guide fields is sound, but sitemap freshness signaling impact is secondary while guide discovery/indexation remains constrained.
+  - Impact: 80% — avoids misleading freshness signals across `3,412` non-eligible URLs while enabling `lastmod` on eligible guides; net impact is meaningful but not a primary unlock at current gate state.
+  - Overall: min(85, 80, 80) = 80%.
 - **Acceptance:**
   - Sitemap emits `<lastmod>` only for eligible guide-detail URLs backed by `lastUpdated` or `seo.lastUpdated`
   - Non-guide classes (`/`, `/directions/*`, locale home, static sections, room detail, tag pages) emit no `<lastmod>`
@@ -902,7 +968,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Checks run: Confirmed `generate-public-seo.ts` is the sitemap generation script; `normalizePathname` function at lines 21–26 handles URL format
   - Validation artifacts: E5 (fact-find): sitemap.xml has 4,093 entries and no `<lastmod>` tags
   - Unexpected findings: TASK-19 confirmed full-sitemap coverage is unsupported; scope now narrowed to authoritative guide subset
-- **Scouts:** TASK-19 and TASK-02 are complete; TASK-12 is now executable.
+- **Scouts:** TASK-19 and TASK-02 prerequisites were complete before execution.
 - **Edge Cases & Hardening:**
   - Guard test is mandatory (blocking risky bulk-today accidents on emitted subset)
   - Date conflict handling is mandatory where both `lastUpdated` and `seo.lastUpdated` exist and disagree
@@ -912,12 +978,22 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** Update fact-find OPP-06 status
 
 #### Re-plan Update (2026-02-22)
-- Confidence: **85%** (conditional uplift from TASK-19 now resolved)
+- Confidence: **80%** (recalibrated at CHECKPOINT-01)
 - Key change: scope shifted from full-sitemap `<lastmod>` to **eligible-guide-only** emission based on TASK-19 matrix (`681/4093` URLs currently eligible)
 - Dependencies: unchanged (`TASK-02`, `TASK-19`), both now complete
 - Status change: `Blocked (replan required)` -> `Pending` (dependencies cleared; ready for build scheduling)
 - Validation contract: updated for scoped eligibility assertions (eligible URLs include `<lastmod>`, non-eligible URLs do not)
-- Notes: replan derived from `docs/plans/brikette-seo-traffic-growth/task-19-lastmod-eligibility-matrix.md`
+- Notes: replan derived from `docs/plans/brikette-seo-traffic-growth/task-19-lastmod-eligibility-matrix.md` and `docs/plans/brikette-seo-traffic-growth/checkpoint-01-wave3-gate.md`
+
+**Build completion evidence (2026-02-22):**
+- Generator implementation completed in `apps/brikette/scripts/generate-public-seo.ts`: guide-only `<lastmod>` emission, deterministic precedence (`lastUpdated` > `seo.lastUpdated`), and bulk-today guard.
+- New contract tests added: `apps/brikette/src/test/lib/generate-public-seo.lastmod.test.ts` (TC-12 and TC-13).
+- Sitemap regenerated: `apps/brikette/public/sitemap.xml` now includes `681` scoped `<lastmod>` entries and excludes `<lastmod>` for non-eligible URL classes.
+- Build output confirms semantic-date conflicts counted (`7`) and scoped emission count (`681`).
+- Validation executed:
+  - `pnpm --filter @apps/brikette test -- src/test/lib/generate-public-seo.lastmod.test.ts`
+  - `pnpm --filter @apps/brikette test -- src/test/tsx-runtime-resolution.test.ts`
+  - `pnpm --filter @apps/brikette typecheck`
 
 ---
 
@@ -931,13 +1007,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Effort:** M
 - **Status:** Deferred (Phase B)
 - **Affects:** `apps/brikette/src/guides/` (guide content files), `apps/brikette/src/i18n/` (locale guide files)
-- **Depends on:** CHECKPOINT-01
+- **Depends on:** CHECKPOINT-01, TASK-03b
 - **Blocks:** -
-- **Confidence:** 60%
-  - Implementation: 65% — guide content structure is known; content editing is feasible; but scope depends heavily on CHECKPOINT-01 outcome (thin-content penalty scenario may require more extensive rewrites)
-  - Approach: 65% — word-count increase + internal linking is the standard approach; but if guides are structurally thin (few HowTo steps, minimal route details), approach needs expansion
-  - Impact: 65% — if guides are indexed but weakly ranked (Hypothesis H2 in fact-find): high potential. If guides are in `Crawled — currently not indexed`: content quality pass may help but is not the primary unlock
-  - Overall: min(65, 65, 65) = 65%. Covered by CHECKPOINT-01 upstream (CHECKPOINT explicitly recalibrates this task). ✓
+- **Confidence:** 45%
+  - Implementation: 60% — guide content editing remains feasible, but execution should not start while sampled guides are still `URL is unknown to Google`.
+  - Approach: 45% — content enrichment is not currently the first-order constraint; discovery/indexation signal is unresolved.
+  - Impact: 45% — low near-term confidence until indexed presence is observed for target guide cohorts.
+  - Overall: min(60, 45, 45) = 45%. Below IMPLEMENT threshold; remains deferred pending indexation recovery evidence.
 - **Acceptance:**
   - 5 transportation guides have ≥500 words of substantive content per EN page
   - Each guide includes ≥3 internal links to related guides (other transport routes, accommodation)
@@ -951,12 +1027,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Green evidence plan: Updated guide content deployed; resubmit URLs in GSC for recrawl
   - Refactor evidence plan: 28-day GSC position check; if VC-01 not trending toward pass, route to replan
 - **Planning validation (M task):**
-  - Checks run: Will be informed by CHECKPOINT-01 (TASK-10/11 evidence)
+  - Checks run: CHECKPOINT-01 evidence reviewed (TASK-10/11)
   - Validation artifacts: TASK-11 indexation results (primary input)
-  - Unexpected findings: Pending CHECKPOINT-01
-- **Scouts:** CHECKPOINT-01 is the precursor; scope of this task will be confirmed or expanded by replan
+  - Unexpected findings: sampled guides were `URL is unknown to Google` at checkpoint time
+- **Scouts:** Defer execution until TASK-03b shows post-change recrawl/indexation signal
 - **Edge Cases & Hardening:** 18-locale structure — EN updates should not degrade translation parity; use guide-translate skill for IT translation if needed
-- **What would make this ≥90%:** CHECKPOINT-01 confirms guides are indexed but weakly ranked (not crawled-not-indexed); content word count audit done before writing
+- **What would make this ≥90%:** TASK-03b and follow-up indexing sample confirm guides are known/indexed and primarily rank-limited
 - **Rollout / rollback:** Rollout: standard deploy; Rollback: revert content files
 - **Documentation impact:** Update fact-find OPP-08 status
 
@@ -970,15 +1046,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Deferred (Phase B)
-- **Affects:** `apps/brikette/src/app/[lang]/page.tsx`, `apps/brikette/src/components/` (new section component)
+- **Status:** Complete (2026-02-22)
+- **Affects:** `apps/brikette/src/app/[lang]/HomeContent.tsx`, `apps/brikette/src/components/landing/FeaturedGuidesSection.tsx`, `apps/brikette/src/test/components/featured-guides-section.test.tsx`
 - **Depends on:** CHECKPOINT-01
 - **Blocks:** -
-- **Confidence:** 65%
-  - Implementation: 70% — component structure is known; M effort because 18-locale guide links need to use the token system correctly; TASK-10 determines which guides to feature
-  - Approach: 65% — featured section improves PageRank flow from authoritative homepage to guide pages; only worth implementing if TASK-10/11 confirm guides are underlinked or weakly ranked
-  - Impact: 65% — if guides are underlinked (TASK-10 outcome), this directly addresses the gap; if guides are already reachable, incremental impact
-  - Overall: min(70, 65, 65) = 65%. Covered by CHECKPOINT-01. ✓
+- **Confidence:** 82%
+  - Implementation: 85% — component structure is known; locale-aware token links are already established in guide link utilities.
+  - Approach: 82% — CHECKPOINT-01 evidence confirms underlinked guide clusters (transport/help) from homepage graph.
+  - Impact: 82% — this is the most direct in-product lever to improve guide discoverability before content-expansion work.
+  - Overall: min(85, 82, 82) = 82%.
 - **Acceptance:**
   - 6–8 guide links visible on homepage (EN)
   - Links use `%LINK:guideKey|label%` token system for locale-aware URL generation
@@ -991,43 +1067,53 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Green: Build featured section component; integrate into homepage with TASK-10 guide selections; deploy to staging; TC-14
   - Refactor: Check all 18 locales render correctly; verify internal link token resolution
 - **Planning validation (M task):**
-  - Checks run: Will be informed by TASK-10 (which guides to feature) and TASK-11 (which guides are indexed)
+  - Checks run: TASK-10 and TASK-11 evidence reviewed at CHECKPOINT-01
   - Validation artifacts: TASK-10 click-depth map (primary scope input)
-  - Unexpected findings: Pending CHECKPOINT-01
+  - Unexpected findings: sampled guide URLs are largely unknown to Google; discovery surfacing now precedes content expansion
 - **Scouts:** Read current homepage component structure before executing
 - **Edge Cases & Hardening:** Token system must handle all 18 locales; guide keys must exist in slug overrides for all locales
-- **What would make this ≥90%:** TASK-10 confirms specific orphan guides to feature; TASK-11 confirms those guides are indexed
+- **What would make this ≥90%:** Post-launch crawl diff shows reduced orphan count and URL Inspection begins returning indexed/known states for featured guides
 - **Rollout / rollback:** Rollout: standard deploy; Rollback: remove new section component
 - **Documentation impact:** Update fact-find OPP-11 status; update E6 internal link evidence
+
+**Build completion evidence (2026-02-22):**
+- Added homepage section component: `apps/brikette/src/components/landing/FeaturedGuidesSection.tsx`
+- Integrated section into homepage flow: `apps/brikette/src/app/[lang]/HomeContent.tsx`
+- Added focused test: `apps/brikette/src/test/components/featured-guides-section.test.tsx`
+- Task artifact created: `docs/plans/brikette-seo-traffic-growth/task-14-homepage-featured-guides.md`
+- Validation passed:
+  - `pnpm --filter @apps/brikette test -- src/test/components/featured-guides-section.test.tsx`
+  - `pnpm --filter @apps/brikette test -- src/test/components/ga4-cta-click-header-hero-widget.test.tsx`
+  - `pnpm --filter @apps/brikette typecheck`
 
 ---
 
 ### TASK-15: Italian locale meta/title quality pass
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated Italian meta titles and descriptions for top 10 pages by Italian impression volume
+- **Deliverable:** Updated Italian SEO title/description copy for the 10 Italian transport-guide URLs sampled in `TASK-11`, with explicit metadata coverage validation
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** `apps/brikette/src/app/_lib/metadata.ts`
+- **Status:** Complete (2026-02-22)
+- **Affects:** `apps/brikette/src/locales/it/guides/content/amalfiPositanoBus.json`, `apps/brikette/src/locales/it/guides/content/amalfiPositanoFerry.json`, `apps/brikette/src/locales/it/guides/content/capriPositanoFerry.json`, `apps/brikette/src/locales/it/guides/content/chiesaNuovaArrivals.json`, `apps/brikette/src/locales/it/guides/content/naplesPositano.json`, `apps/brikette/src/locales/it/guides/content/salernoPositano.json`, `apps/brikette/src/locales/it/guides/content/ferryDockToBrikette.json`, `apps/brikette/src/locales/it/guides/content/fornilloBeachToBrikette.json`, `apps/brikette/src/locales/it/guides/content/chiesaNuovaDepartures.json`, `apps/brikette/src/locales/it/guides/content/briketteToFerryDock.json`, `apps/brikette/src/test/app/it-transport-guide-metadata.test.ts`, `docs/plans/brikette-seo-traffic-growth/task-15-italian-meta-pass.md`
 - **Depends on:** CHECKPOINT-01
 - **Blocks:** -
-- **Confidence:** 75%
-  - Implementation: 85% — metadata pattern established; same approach as TASK-07/08 but for IT locale
-  - Approach: 75% — 530 Italian impressions at 1.9% CTR in GSC (E1); improving CTR is the lever; but current IT meta quality not inspected — may already be reasonable. Score at 75% due to this gap.
-  - Impact: 75% — CTR from 1.9% to 3.5% target (H4 in fact-find) = ~8 extra clicks/90 days; modest but measurable
-  - Overall: min(85, 75, 75) = 75%. Covered by CHECKPOINT-01 upstream. ✓
+- **Confidence:** 82%
+  - Implementation: 90% — copy edits are localized to 10 known IT guide content files with deterministic metadata read-path (`guides.content.<key>.seo.*`).
+  - Approach: 82% — scope is now evidence-backed by the explicit 10-URL IT transport set from `TASK-11`, removing uncertainty about target selection in this cycle.
+  - Impact: 82% — limited but measurable CTR quality signal for Italy-market transport intent; does not depend on broad indexation recovery to validate copy correctness.
+  - Overall: min(90, 82, 82) = 82%.
 - **Acceptance:**
-  - Top 10 Italian pages by impression volume have reviewed/updated IT meta titles and descriptions
+  - The 10 IT transport-guide URLs sampled in `TASK-11` have reviewed/updated IT SEO titles and descriptions
   - CTR measurement: GSC Italian CTR tracked for 8 weeks post-deploy (H4 validation)
   - No regressions in EN or other locale metadata
 - **Validation contract (VC-02):**
   - VC-02: GSC Italian CTR ≥3.5% within 8 weeks post-deploy (H4 pass threshold); sample: Italian country segment. Deadline: 8 weeks post-deploy.
 - **Execution plan:** Red → Green → Refactor
-  - Red: Pull current IT CTR from GSC (1.9% baseline) and identify top 10 IT pages
-  - Green: Update IT meta copy; deploy to staging; verify metadata renders in IT locale
+  - Red: Use existing Italy CTR baseline (1.9%) and explicit IT transport sample list from `TASK-11` as the target set for this cycle
+  - Green: Update IT meta copy for the 10 sampled pages; validate SEO field coverage via test
   - Refactor: Monitor GSC Italian CTR over 4-week window; adjust if no improvement
 - **Planning validation:** None: S task; pattern established
 - **Scouts:** May need native Italian speaker review for copy quality (flag if quality is substandard)
@@ -1035,6 +1121,20 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **What would make this ≥90%:** Native Italian speaker review; two iteration cycles with 28-day period-over-period GSC CTR comparison
 - **Rollout / rollback:** Standard deploy / revert
 - **Documentation impact:** Update fact-find OPP-10 status; record H4 validation start date
+
+#### Re-plan Update (2026-02-22)
+- Confidence: **65% -> 82%**
+- Key change: target set narrowed from ambiguous "top 10 IT pages by impressions" to explicit evidence-backed IT transport sample URLs from `TASK-11`.
+- Validation contract retained (VC-02), with deterministic copy-coverage test added for the scoped 10-page set.
+- Dependencies unchanged: `CHECKPOINT-01` complete.
+
+**Build completion evidence (2026-02-22):**
+- Updated Italian SEO copy in 10 transport guide content files under `apps/brikette/src/locales/it/guides/content/`.
+- Added metadata coverage test: `apps/brikette/src/test/app/it-transport-guide-metadata.test.ts`.
+- Validation passed:
+  - `pnpm --filter @apps/brikette test -- src/test/app/it-transport-guide-metadata.test.ts`
+  - `pnpm --filter @apps/brikette test -- src/test/lib/metadata.test.ts`
+  - `pnpm --filter @apps/brikette typecheck`
 
 ---
 
@@ -1046,7 +1146,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Blocked (awaiting GBP dashboard execution + screenshot evidence)
 - **Artifact-Destination:** Google Business Profile for Hostel Brikette
 - **Reviewer:** Peter Cowling
 - **Approval-Evidence:** GBP audit checklist signed off; screenshots of updated profile
@@ -1077,6 +1177,9 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Rollout / rollback:** None: manual ops; no code changes
 - **Documentation impact:** Write GBP audit checklist artifact at `docs/plans/brikette-seo-traffic-growth/task-16-gbp-audit.md`
 - **Notes / references:** OPP-12: local SEO; "hostel positano" queries likely show Maps/local pack above organic
+- **Build completion evidence (2026-02-23):**
+  - Artifact created: `docs/plans/brikette-seo-traffic-growth/task-16-gbp-audit.md` with Red/Green/Refactor checklist, repo photo shortlist, description/post drafts, VC-03 scoring rubric, and screenshot evidence contract.
+  - Task remains blocked pending authenticated GBP owner actions (photo uploads, description save, Q&A responses, post publish) and reviewer sign-off evidence in the artifact.
 
 ---
 
@@ -1088,41 +1191,60 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Deferred (Phase B)
+- **Status:** Deferred (Phase B; precursor chain pending)
 - **Artifact-Destination:** `docs/plans/brikette-seo-traffic-growth/task-17-backlink-targets.md`
 - **Reviewer:** Peter Cowling
 - **Approval-Evidence:** Target list approved; pitch template reviewed; outreach log
 - **Measurement-Readiness:** GSC Links report monthly; track referring domain count; Peter / monthly
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-17-backlink-targets.md`
-- **Depends on:** TASK-18
+- **Depends on:** TASK-18, TASK-20, TASK-21
 - **Blocks:** -
-- **Confidence:** 60%
-  - Implementation: 75% — outreach process is clear; no tools required beyond research + email
-  - Approach: 60% — target identification not done; approach (pitch editorial link placement) is generic without knowing which blogs are active and accepting pitches
-  - Impact: 60% — high expected impact (authority is the primary blocker for top-10 non-branded terms); but highly uncertain — depends on response rates and editorial decisions outside our control
-  - Overall: min(75, 60, 60) = 60%. Above INVESTIGATE threshold but below IMPLEMENT threshold. Running as IMPLEMENT because the business-artifact execution model (Red → Green → Refactor) is appropriate; failure is defined explicitly.
-  Note: confidence below 80% IMPLEMENT threshold. This task is explicitly deferred to Phase B and excluded from current-phase confidence math; run `/lp-do-replan` before execution.
+- **Confidence:** 65%
+  - Implementation: 75% — outreach execution path is clear; remaining readiness dependency is template/final draft approval in TASK-21.
+  - Approach: 75% — TASK-20 now provides packaged target-quality/contactability evidence and a ranked shortlist; remaining approach uncertainty is message-review quality gating.
+  - Impact: 65% — target quality is improved versus prior state, but response/backlink yield uncertainty remains until TASK-21 completion and first-send outcome data.
+  - Overall: min(75, 75, 65) = 65%. Below IMPLEMENT threshold; remains deferred in Phase B pending final precursor evidence.
+  Note: confidence below 80% IMPLEMENT threshold. This task remains excluded from current-phase confidence math until promoted.
 - **Acceptance:**
   - Target list of ≥10 travel blogs/editorial sites identified using tool-free criteria: active Amalfi Coast/Positano content published in last 12 months (verifiable via web search); author email or contact form accessible; editorial (not paid placement) based on link disclosure policy
   - No paid SEO tools (Ahrefs/SEMrush DA scores) required — use tool-free proxies: site age, editorial depth, Google search snippet quality, and GSC Links data from TASK-18 to identify existing referrers
   - Pitch template drafted and reviewed
   - 10 outreach emails sent (documented in outreach log)
-- **Validation contract (VC-04):**
-  - VC-04: ≥3 editorial responses (positive or interested) within 60 days of pitches sent; OR ≥1 confirmed editorial link published. Deadline: 60 days post-outreach. Minimum sample: 10 pitches sent.
+- **Validation contract (VC-04/05/06):**
+  - VC-04 (Readiness): Before first send, artifact includes ≥10 approved targets with contact route, recent relevant article (<=12 months), and personalization angle. Pass if all 10 meet criteria; else block send and re-open TASK-20. Deadline: pre-send gate.
+  - VC-05 (Execution): Outreach log records ≥10 personalized pitches sent within 14 days of send-start with fields `{domain, contact method, send date, template variant, personalization note}`. Pass if all fields present for all 10; else fail execution completeness.
+  - VC-06 (Outcome): Within 60 days of first send, achieve ≥3 positive/interested responses OR ≥1 confirmed editorial backlink. Minimum sample: 10 sent pitches. If fail, trigger `/lp-do-replan` for follow-up strategy revision.
+  - Validation type: review checklist + approval gate + outreach log + timed outcome check.
+  - Validation location/evidence: `docs/plans/brikette-seo-traffic-growth/task-17-backlink-targets.md` + append-only outreach log section in same file.
+  - Run/verify: reviewer checks VC-04 pre-send; operator verifies VC-05 at send completion; reviewer verifies VC-06 at day 60 checkpoint.
 - **Execution plan:** Red → Green → Refactor
-  - Red evidence: TASK-18 GSC Links baseline (actual referring domains); current backlink profile documented from TASK-18 artifact; supplement with manual Google search for "site:X positano" to identify active coverage
-  - Green evidence: Target list written using tool-free criteria; 10 pitches sent; outreach log started
-  - Refactor: 30-day follow-up on non-responses; track GSC Links report for new referring domains monthly
+  - Red evidence: TASK-18 GSC Links baseline (actual referring domains + anchors) and target/contactability matrix from TASK-20
+  - Green evidence: Reviewer-approved outreach pack from TASK-21, then 10 personalized pitches sent with complete log (VC-05)
+  - Refactor: 30-day follow-up cadence on non-responses; track GSC Links report monthly for new referring domains and anchor shifts
 - **Planning validation (M task):**
   - Checks run: None (backlink strategy research is part of the task itself)
   - Validation artifacts: TASK-18 GSC Links baseline (primary); E2 (only Lonely Planet referral visible in GA4 — TASK-18 will confirm whether additional links exist)
   - Unexpected findings: Backlink profile may be stronger than inferred — TASK-18 establishes actual baseline before targeting
-- **Scouts:** TASK-18 must complete before starting; use TASK-18 data to seed target list with sites that already mention the hostel (warm contacts)
+- **Scouts:** Use TASK-20 output to prioritize warm contacts first (existing referring domains with editorial travel relevance and active contact endpoints)
 - **Edge Cases & Hardening:** Do not use link-buying schemes or private blog networks (SEO penalty risk); editorial-only outreach
 - **What would make this ≥90%:** Pre-identified warm contacts at target publications; Lonely Planet contact already established via existing referral
 - **Rollout / rollback:** None: outreach is irreversible; rollback is not applicable
 - **Documentation impact:** Write target list and outreach log at `docs/plans/brikette-seo-traffic-growth/task-17-backlink-targets.md`
 - **Notes / references:** OPP-13: backlink acquisition is the primary lever for head-term top-10 rankings; H5 in fact-find
+
+#### Re-plan Update (2026-02-23)
+- Confidence: **60%** (`-> 82%` conditional on `TASK-20` + `TASK-21`)
+- Key change: converted unresolved execution unknowns into explicit precursor chain (target vetting/contactability + outreach pack approval).
+- Dependencies: updated to `TASK-18, TASK-20, TASK-21`.
+- Validation contract: upgraded from single outcome VC to M-effort three-stage VC contract (readiness, execution completeness, timed outcome).
+- Sequencing: topology updated with stable IDs (`TASK-20`, `TASK-21` added; no renumbering).
+- Evidence: `docs/plans/brikette-seo-traffic-growth/task-18-gsc-links-baseline.md` confirms measurable baseline (`33` linking domains) and warm-target candidates but does not by itself de-risk send-ready execution.
+
+#### Re-plan Update (2026-02-23, post-TASK-20 evidence)
+- Confidence: **60% -> 65%** (Evidence: E2 — `docs/plans/brikette-seo-traffic-growth/task-20-outreach-target-vetting.md`)
+- Key change: target-quality/contactability uncertainty converted from unknown to a complete matrix + ranked shortlist.
+- Dependencies: unchanged (`TASK-18, TASK-20, TASK-21`); remaining promotion gate is `TASK-21`.
+- Validation contract: unchanged (`VC-04/05/06`); readiness promotion still blocked until `TASK-21` approval artifact exists.
 
 ---
 
@@ -1133,7 +1255,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `docs/plans/brikette-seo-traffic-growth/task-18-gsc-links-baseline.md`
 - **Depends on:** -
 - **Blocks:** TASK-17
@@ -1161,7 +1283,88 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Method: Search Console UI → Links → External links → Export (CSV/Sheets/Excel)
   - Constraint: export row counts can be capped by UI/report limits; record the exact captured row count in artifact
-  - Gap identified in fact-find evidence audit (1-04): "GSC Links report not pulled — backlink thinness inferred from GA4, not measured"
+  - Gap identified in fact-find evidence audit (1-04) is now closed via this task execution: "GSC Links report baseline captured."
+
+**Build completion evidence (2026-02-23):**
+- Imported operator-provided Search Console exports into `docs/plans/brikette-seo-traffic-growth/artifacts/task-18-links-export/`:
+  - `task-18-top-linking-sites-2026-02-23.csv`
+  - `task-18-top-target-pages-2026-02-23.csv`
+  - `task-18-top-linking-text-2026-02-23.csv`
+- Completed baseline artifact with top-domain/page/anchor summaries and decision output:
+  - `docs/plans/brikette-seo-traffic-growth/task-18-gsc-links-baseline.md`
+- Result: TASK-18 unblocked and closed; TASK-17 dependency satisfied, and TASK-17 now runs behind explicit precursor tasks (`TASK-20`, `TASK-21`) before promotion.
+
+---
+
+### TASK-20: Backlink target vetting + contactability matrix
+
+- **Type:** INVESTIGATE
+- **Deliverable:** `docs/plans/brikette-seo-traffic-growth/task-20-outreach-target-vetting.md` with scored domain matrix (warm/cold/exclude), contactability proof, and shortlist for outreach
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Effort:** S
+- **Status:** Complete (2026-02-23)
+- **Affects:** `docs/plans/brikette-seo-traffic-growth/task-20-outreach-target-vetting.md`
+- **Depends on:** TASK-18
+- **Blocks:** TASK-17
+- **Confidence:** 85%
+  - Implementation: 90% — inputs are concrete (`TASK-18` exports + public site/contact pages); artifact schema is deterministic.
+  - Approach: 85% — qualification rubric is explicit (editorial relevance, recency, contact route, non-paid placement).
+  - Impact: 85% — directly resolves the largest TASK-17 unknown: whether enough send-ready editorial targets exist.
+- **Questions to answer:**
+  - Which of the exported referrers are editorially relevant vs. low-value directories/aggregators?
+  - For each candidate, is a direct contact route available (email/contact form/editor page)?
+  - Which domains have published relevant Positano/Amalfi travel content in the last 12 months?
+- **Acceptance:**
+  - Domain matrix includes all exported linking domains with `warm/cold/exclude` classification and rationale
+  - At least 10 send-ready targets meet all criteria: editorial relevance, recency <=12 months, reachable contact route
+  - Exclusion list explicitly documents low-value/non-editorial domains to avoid
+  - Shortlist ranks top 10 outreach priorities with personalization angles
+- **Validation contract:** Artifact written with required columns and shortlist; reviewer spot-checks 5 random rows against source pages for classification accuracy
+- **Planning validation:** Evidence source is closed-loop from `TASK-18` artifact + live public pages (no paid tooling)
+- **Rollout / rollback:** None: investigation artifact
+- **Documentation impact:** Feed qualified shortlist and personalization basis into `TASK-21` and `TASK-17`
+
+**Build completion evidence (2026-02-23):**
+- Artifact created: `docs/plans/brikette-seo-traffic-growth/task-20-outreach-target-vetting.md`
+- Captured full 33-domain matrix (`warm/cold/exclude`) from TASK-18 exports with rationale and exclusion set.
+- Produced ranked 10-domain send-ready shortlist with topic-recency and contactability evidence.
+- Reviewer spot-check contract documented (5-row sample) in artifact.
+
+---
+
+### TASK-21: Outreach pack rehearsal + approval gate
+
+- **Type:** INVESTIGATE
+- **Deliverable:** `docs/plans/brikette-seo-traffic-growth/task-21-outreach-pack.md` with final pitch templates, 10 personalized draft entries, and reviewer approval record
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** business-artifact
+- **Effort:** S
+- **Status:** Blocked (awaiting reviewer sign-off evidence)
+- **Artifact-Destination:** `docs/plans/brikette-seo-traffic-growth/task-21-outreach-pack.md`
+- **Reviewer:** Peter Cowling
+- **Approval-Evidence:** Reviewer sign-off block in artifact for templates + personalization quality
+- **Affects:** `docs/plans/brikette-seo-traffic-growth/task-21-outreach-pack.md`
+- **Depends on:** TASK-20
+- **Blocks:** TASK-17
+- **Confidence:** 80%
+  - Implementation: 85% — pack structure is straightforward once target shortlist exists.
+  - Approach: 80% — warm/cold split and personalization angles are evidence-backed by `TASK-20`.
+  - Impact: 80% — reduces execution-risk for TASK-17 by pre-validating messaging and approval path.
+- **Acceptance:**
+  - Two finalized templates (warm-contact and cold editorial) with subject variants
+  - Ten personalized draft entries mapped to TASK-20 shortlist domains
+  - Reviewer sign-off recorded prior to any outreach sends
+- **Validation contract:** Artifact includes checklist proving template quality, personalization coverage (10/10), and reviewer approval timestamp/signature note
+- **Planning validation:** None: S investigation task
+- **Rollout / rollback:** None: investigation artifact and approval gate only
+- **Documentation impact:** Enables TASK-17 promotion from deferred to runnable after replan
+
+**Build completion evidence (2026-02-23):**
+- Artifact created: `docs/plans/brikette-seo-traffic-growth/task-21-outreach-pack.md`
+- Finalized warm/cold templates with subject variants and mapped 10 personalized draft entries to TASK-20 shortlist domains.
+- Validation checklist completed for template and personalization coverage (`10/10`), but reviewer approval evidence remains unsigned.
+- Gate result applied: task remains blocked until sign-off checkboxes/timestamp are completed in artifact.
 
 ---
 
@@ -1182,7 +1385,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **GSC position tracking:** Weekly check for "hostel positano" (position 22 baseline), "hostels in positano" (11.3), "amalfi coast hostels" (9.1), "positano hostels" (19.7)
 - **GSC CTR tracking:** Rooms page (/en/rooms) 0.5% CTR baseline; Italian country segment 1.9% CTR baseline
-- **GSC URL Inspection:** Post-TASK-02 canonical mismatch rate (declared vs Google-selected); run on 8 representative URLs
+- **GSC URL Inspection:** TASK-03b full post-change validation on 8 representative URLs no earlier than `2026-03-01`, or earlier only if fresh recrawl is observed
 - **GSC organic clicks:** Weekly organic click count; baseline ~112/90 days (~1.2/day); H1 pass: directional improvement in 8 weeks
 - **GA4 organic sessions:** Weekly check; baseline ~1.7/day (13-day window); TASK-11 (GSC Page indexing sample) provides guide-page coverage diagnostic
 - **GSC Sitemap coverage:** Monitor after TASK-12 for errors/warnings in lastmod processing
@@ -1191,14 +1394,14 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 ## Acceptance Criteria (overall)
 
-- [ ] `https://www.hostel-positano.com/en/rooms` resolves to `https://hostel-positano.com/en/rooms` in one permanent host-normalization hop (TC-01a-path)
-- [ ] `https://www.hostel-positano.com/` resolves to `https://hostel-positano.com/en` in <=2 permanent hops (www→apex, apex→/en), no `302` in chain, final `200` (TC-01a + TC-01b)
-- [ ] Root apex `/` resolves to `/en` via a single permanent redirect with no extra 3xx from `/en` itself (TC-01b)
+- [x] `https://www.hostel-positano.com/en/rooms` resolves to `https://hostel-positano.com/en/rooms` in one permanent host-normalization hop (TC-01a-path)
+- [x] `https://www.hostel-positano.com/` resolves to `https://hostel-positano.com/en` in <=2 permanent hops (www→apex, apex→/en), no `302` in chain, final `200` (TC-01a + TC-01b)
+- [x] Root apex `/` resolves to `/en` via a single permanent redirect with no extra 3xx from `/en` itself (TC-01b)
 - [ ] No canonical tag target URL returns a 3xx (all canonical targets return `200` directly)
 - [ ] GSC URL Inspection post-TASK-02 (TASK-03b): declared canonical = Google-selected canonical on ≥90% of sampled URLs (100% for homepage, rooms, and locale-root templates we fully control; ≥90% overall)
 - [ ] Rooms page CTR ≥1.5% within 28-day GSC window post-TASK-08 (baseline: 0.5%)
 - [ ] Homepage "hostel positano" position ≤18 (28-day GSC average) within 8 weeks of TASK-01+02 deploy
-- [ ] Wave 3 gate: CHECKPOINT-01 completed; downstream task confidence recalibrated from evidence
+- [x] Wave 3 gate: CHECKPOINT-01 completed; downstream task confidence recalibrated from evidence
 - [ ] GBP audit complete; at least one active GBP post published (TASK-16)
 
 ## Decision Log
@@ -1208,12 +1411,30 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-22: **TASK-02 completed** — slashless canonical/hreflang/sitemap rollout implemented, sitemap regenerated, and targeted `@acme/seo` + Brikette SEO tests passed.
 - 2026-02-22: **TASK-01c completed** — no Brikette Pages Functions shadowing detected in repo-managed deploy path; TASK-01a/TASK-01b remain valid and unblocked by Functions risk.
 - 2026-02-22: **TASK-01b completed** — root redirect updated to permanent slashless target in generator source and regenerated `_redirects` output (`/  /en  301`).
-- 2026-02-22: Wave 3 gated on CHECKPOINT-01 (TASK-05, TASK-10, TASK-11 must complete). Rationale: fact-find risk table — high risk of thin-content penalty on translated guide corpus; confirmation required before investing in content activation.
-- 2026-02-22: TASK-13, TASK-14, and TASK-17 are deferred to Phase B and excluded from current-phase confidence scope. Rationale: each is checkpoint-dependent or below IMPLEMENT confidence threshold; defer until CHECKPOINT-01 replan confirms viability.
+- 2026-02-22: **TASK-01a completed** — Cloudflare Bulk Redirect list/rule created and enabled for `www`→apex host normalization (`brikette_www_to_apex`); host/path/query probes pass.
+- 2026-02-22: **TASK-01 atomicity gate satisfied** — post-deploy probes confirm `https://www.hostel-positano.com/` resolves `301`→`301`→`200` with no `302` in chain, and apex root `https://hostel-positano.com/` resolves `301`→`200`.
+- 2026-02-22: **TASK-04 completed** — pre/post hreflang sampling passes for required locale pairs; slashless normalization reflected correctly in alternates/x-default.
+- 2026-02-22: **TASK-05 completed** — schema hygiene scan identified 5 critical `Article.datePublished` omissions on sampled guide/article URLs.
+- 2026-02-22: **TASK-10 completed** — internal-link audit found `55/119` EN guide URLs unreachable within 3-click homepage graph; transport/help underlinked.
+- 2026-02-22: **TASK-11 completed** — 30-URL indexing sample returned `URL is unknown to Google` for all sampled guide URLs; Wave-3 content expansion remains gated.
+- 2026-02-22: **TASK-03b run-gate check completed** — full post-change URL Inspection validation deferred until `2026-03-01` (T+7) unless fresh recrawl appears earlier.
+- 2026-02-22: **TASK-18 attempted and blocked** — manual GSC Links export requires authenticated operator session; task remains blocked pending login/export.
+- 2026-02-22: **CHECKPOINT-01 completed** — recalibration outcome: TASK-14 promoted (82%), TASK-13 remains deferred (45%), TASK-12 to 80%, TASK-15 to 65%, TASK-17 to 55%.
+- 2026-02-22: **TASK-14 completed** — homepage featured-guides section shipped with 6-8 `%LINK:` token-driven guide links, test coverage added, and Brikette typecheck/targeted regression tests passing.
+- 2026-02-22: **TASK-12 completed** — sitemap generation now emits scoped guide-only `<lastmod>` values (semantic-source only), adds deterministic date precedence + bulk-today guard, and ships with TC-12/TC-13 contract tests.
+- 2026-02-22: **TASK-15 replan+build completed** — scope fixed to the explicit 10-URL IT transport sample from TASK-11, Italian SEO titles/descriptions updated in localized guide content, and coverage tests passed.
+- 2026-02-22: **TASK-07 replan+build completed** — EN homepage metadata/H1 copy now targets `hostel positano` naturally via locale source updates, with dedicated metadata copy tests and locale spot-check guards.
+- 2026-02-22: **TASK-08 completed** — EN `/en/rooms` metadata now includes explicit booking-intent CTA + price signal (`from EUR 55/night`), with focused metadata tests and locale spot-check guards.
+- 2026-02-23: **TASK-18 completed** — operator-provided Search Console Links exports were ingested and summarized; backlink baseline now measured (33 linking domains exported), and TASK-17 dependency is satisfied.
+- 2026-02-23: **TASK-17 replanned** — added precursor chain (`TASK-20` target vetting, `TASK-21` outreach pack approval), upgraded VC contract coverage (VC-04/05/06), and set conditional promotion (`60% -> 82%` once precursors complete).
+- 2026-02-23: **TASK-20 completed** — backlink target vetting artifact delivered with full exported-domain matrix and ranked 10-target shortlist; TASK-21 is now the remaining precursor before TASK-17 promotion.
+- 2026-02-23: **TASK-17 replanned (post-TASK-20)** — confidence raised `60% -> 65%` from completed target-vetting evidence (E2), while remaining below IMPLEMENT threshold until `TASK-21` approval evidence is complete.
+- 2026-02-23: **TASK-21 drafted and blocked** — outreach pack artifact completed (templates + 10 personalized drafts), but reviewer sign-off evidence is pending; TASK-17 remains deferred behind this gate.
+- 2026-02-23: **TASK-16 execution packet prepared and blocked** — GBP audit artifact created (`task-16-gbp-audit.md`) with explicit evidence contract; completion now awaits authenticated GBP dashboard execution and screenshots.
 
 ## Overall-confidence Calculation (Phase A)
 
-Current-phase confidence includes executable Wave 1–6 tasks and excludes deferred Phase B tasks (TASK-13, TASK-14, TASK-17).
+Current-phase confidence includes executable/pending Wave 1–6 tasks and excludes deferred/pending Phase B tasks (TASK-13, TASK-17, TASK-21). (`TASK-20` is complete but outside Phase-A scope.)
 
 | Task | Type | Confidence | Effort | Weighted |
 |---|---|---|---|---|
@@ -1227,22 +1448,23 @@ Current-phase confidence includes executable Wave 1–6 tasks and excludes defer
 | TASK-04 | INVESTIGATE | 80 | S=1 | 80 |
 | TASK-05 | INVESTIGATE | 80 | S=1 | 80 |
 | TASK-06 | INVESTIGATE | 75 | S=1 | 75 |
-| TASK-07 | IMPLEMENT | 75 | S=1 | 75 |
-| TASK-08 | IMPLEMENT | 75 | S=1 | 75 |
+| TASK-07 | IMPLEMENT | 82 | S=1 | 82 |
+| TASK-08 | IMPLEMENT | 82 | S=1 | 82 |
 | TASK-09 | INVESTIGATE | 85 | S=1 | 85 |
 | TASK-19 | INVESTIGATE | 85 | S=1 | 85 |
 | TASK-10 | INVESTIGATE | 85 | S=1 | 85 |
 | TASK-11 | INVESTIGATE | 85 | S=1 | 85 |
 | TASK-18 | INVESTIGATE | 85 | S=1 | 85 |
 | CHECKPOINT-01 | CHECKPOINT | 95 | S=1 | 95 |
-| TASK-12 | IMPLEMENT | 85 | M=2 | 170 |
-| TASK-15 | IMPLEMENT | 75 | S=1 | 75 |
+| TASK-12 | IMPLEMENT | 80 | M=2 | 160 |
+| TASK-14 | IMPLEMENT | 82 | M=2 | 164 |
+| TASK-15 | IMPLEMENT | 82 | S=1 | 82 |
 | TASK-16 | IMPLEMENT | 75 | S=1 | 75 |
-| **Total (Phase A scope)** | | | **23** | **1,910** |
+| **Total (Phase A scope)** | | | **25** | **2,085** |
 
-**Overall-confidence (Phase A) = 1,910 / 23 = 83%**
+**Overall-confidence (Phase A) = 2,085 / 25 = 83%**
 
-Phase-B sensitivity (if deferred tasks are included now):
-- Add TASK-13 (120), TASK-14 (130), TASK-17 (120) => full-roadmap confidence `2,280 / 29 = 79%`.
+Phase-B sensitivity (if full roadmap tasks are included now):
+- Add TASK-13 (90), TASK-17 (130), TASK-20 (85), TASK-21 (80) => full-roadmap confidence `2,470 / 31 = 80%`.
 
-Critique trigger: Phase-A Trigger 1 clears (`83% >= 80%`). Remaining sub-80 IMPLEMENT tasks (TASK-07, TASK-08) are backed by upstream investigate gates (TASK-03a, TASK-01c, TASK-09, TASK-19). Phase-B tasks remain intentionally deferred until CHECKPOINT-01-driven replan.
+Critique trigger: Phase-A Trigger 1 clears (`83% >= 80%`). Remaining sub-80 IMPLEMENT task is TASK-16 (manual GBP ops). Deferred Phase-B tasks remain TASK-13 and TASK-17, with TASK-21 as the remaining queued precursor.

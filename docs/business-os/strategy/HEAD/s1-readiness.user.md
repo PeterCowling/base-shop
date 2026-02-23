@@ -75,7 +75,7 @@ Note: DEP schema file (`demand-evidence-pack-schema.md`) not yet created. Schema
 Launch surface is `pre-website`. Per loop-spec Gate A, S2 is blocked until S1B artifact exists.
 
 ```
-prompt_file:     docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md
+prompt_file:     docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md
 required_output: docs/business-os/strategy/HEAD/<YYYY-MM-DD>-pre-website-measurement-setup.user.md
 ```
 
@@ -91,7 +91,7 @@ Run the S1B Measure prompt before advancing to S2.
 - `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`
 - `docs/business-os/strategy/HEAD/index.user.md`
 - `docs/business-os/strategy/HEAD/plan.user.md`
-- `docs/business-os/strategy/HEAD/s0e-operator-evidence.user.md`
+- `docs/business-os/strategy/HEAD/current-situation.user.md`
 
 **Strategy docs found**: 4 (plan, index, s0e-operator-evidence, intake-packet)
 

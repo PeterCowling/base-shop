@@ -12,6 +12,7 @@ import { toWhatsappTextHref } from "../lib/support";
 
 import { IconButton } from "@acme/design-system/atoms";
 import { OverlayScrim } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import {
   Drawer,
   DrawerContent,
@@ -19,7 +20,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@acme/design-system/primitives/drawer";
-import { Stack } from "@acme/design-system/primitives/Stack";
 
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 import { useCart } from "../contexts/XaCartContext";
@@ -126,6 +126,7 @@ export function XaSupportDock() {
   const showContactInfo = siteConfig.showContactInfo;
 
   const [faqOpen, setFaqOpen] = React.useState(false);
+  const [dockOpen, setDockOpen] = React.useState(false);
 
   const cartSummary = React.useMemo(() => {
     const entries = Object.values(cart);
@@ -173,8 +174,16 @@ export function XaSupportDock() {
   }
 
   return (
-    <div className="fixed end-4 bottom-4 z-30">
-      <Stack gap={2}>
+    <div className="fixed bottom-6 end-6 z-50 flex flex-col items-end gap-2">
+      {/* Individual action buttons — only shown when dock is open */}
+      <div
+        className={cn(
+          "flex flex-col items-end gap-2 transition-all duration-200",
+          dockOpen
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none translate-y-2 opacity-0"
+        )}
+      >
         {showSocialLinks && whatsappWithText ? (
           <IconButton
             type="button"
@@ -264,7 +273,20 @@ export function XaSupportDock() {
             </DrawerPortal>
           </Drawer>
         ) : null}
-      </Stack>
+      </div>
+
+      {/* Primary toggle button — always visible */}
+      <button
+        type="button"
+        aria-label={dockOpen ? "Close support menu" : "Get support"} // i18n-exempt -- XA-0014 [ttl=2026-12-31] toggle label
+        aria-expanded={dockOpen}
+        onClick={() => setDockOpen(!dockOpen)}
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-foreground text-primary-fg shadow-elevation-3"
+      >
+        <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
+          <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v7a2 2 0 01-2 2H6l-4 4V5z"/>
+        </svg>
+      </button>
     </div>
   );
 }

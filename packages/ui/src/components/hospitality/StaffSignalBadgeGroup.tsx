@@ -26,6 +26,7 @@ export function StaffSignalBadgeGroup({
           <span
             key={signal.id}
             className={cn('mb-2 me-2 inline-block rounded-full px-3 py-1 text-xs font-medium')}
+            data-token={signal.ready ? 'hospitality-ready' : 'hospitality-warning'}
             style={{
               backgroundColor: signal.ready
                 ? 'hsl(var(--hospitality-ready))'

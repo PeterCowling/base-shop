@@ -11,6 +11,8 @@ import { generateLangParams } from "@/app/_lib/static-params";
 import { getSlug } from "@/utils/slug";
 import { slugify } from "@/utils/slugify";
 
+import { getSubsectionId } from "./getSubsectionId";
+
 type Props = {
   params: Promise<{ lang: string }>;
 };
@@ -112,16 +114,20 @@ export default async function TermsPage({ params }: Props) {
                   <h2 id={s.id} className="scroll-mt-28 text-2xl font-bold leading-tight">
                     {t(`sections.${s.key}.title`)}
                   </h2>
-                  {(t(`sections.${s.key}.body`, { returnObjects: true }) as string[]).map(
-                    (p, i) => (
+                  {(t(`sections.${s.key}.body`, { returnObjects: true }) as string[]).map((p, i) => {
+                    // Subsection anchors rely on leading N.M / A1. prefixes in locale paragraph text.
+                    const subsectionId = getSubsectionId(s.key, p);
+
+                    return (
                       <p
                         key={`${s.key}-${i}`}
+                        id={subsectionId ?? undefined}
                         className="text-base leading-7 text-fg sm:text-lg sm:leading-8"
                       >
                         {p}
                       </p>
-                    )
-                  )}
+                    );
+                  })}
                 </section>
               ))}
               <p className="mt-10 italic">

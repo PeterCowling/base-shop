@@ -47,11 +47,10 @@ export default function HomePage() {
           <div className="space-y-6">
             <div className="space-y-4">
               <h1 className="xa-hero-title">
-                Member rewards for {catalog.productDescriptor}
+                {siteConfig.heroHeadline}
               </h1>
               <p className="xa-hero-copy text-muted-foreground">
-                Get early access, member pricing, and curated edits across {catalog.labelPlural}. The more you shop,
-                the more you get.
+                {siteConfig.heroSubheadline}
               </p>
             </div>
             <Button

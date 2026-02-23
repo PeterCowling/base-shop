@@ -8,13 +8,20 @@ import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { Breadcrumbs } from "@acme/design-system/molecules";
 import {
-  Button,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@acme/design-system/atoms";
+
+const SORT_LABELS: Record<string, string> = {
+  newest: "Newest",
+  "price-asc": "Price (low to high)",
+  "price-desc": "Price (high to low)",
+  "best-sellers": "Best sellers",
+  "biggest-discount": "Biggest discount",
+};
 
 import { XaProductCard } from "./XaProductCard";
 import { XaFiltersDrawer } from "./XaFiltersDrawer.client";
@@ -128,7 +135,7 @@ export function XaProductListing({
               <div className="min-w-56">
                 <Select value={sort} onValueChange={(value) => applySort(value as SortKey)}>
                   <SelectTrigger className="w-full">
-                    <SelectValue aria-label={sort} />
+                    <SelectValue aria-label={SORT_LABELS[sort] ?? sort} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="newest">Newest</SelectItem>
@@ -153,26 +160,23 @@ export function XaProductListing({
       </Section>
 
       <Section padding="default">
-        {filteredProducts.length ? (
+        {filteredProducts.length === 0 ? (
+          <div className="col-span-full flex flex-col items-center gap-4 py-16 text-center">
+            <p className="text-sm text-muted-foreground">No items match your current filters.</p>
+            <button
+              type="button"
+              onClick={clearAppliedFilters}
+              className="rounded-none border border-border-2 px-4 py-2 text-xs uppercase tracking-widest hover:bg-muted"
+            >
+              Clear filters
+            </button>
+          </div>
+        ) : (
           <LayoutGrid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>
             {filteredProducts.map((product) => (
               <XaProductCard key={product.slug} product={product} />
             ))}
           </LayoutGrid>
-        ) : (
-          <div className="rounded-lg border p-6">
-            <div className="font-medium">No {siteConfig.catalog.productNounPlural} found.</div>
-            <div className="mt-2 text-sm text-muted-foreground">
-              Try adjusting filters, or clear them to see more results.
-            </div>
-            {hasAppliedFilters ? (
-              <div className="mt-4">
-                <Button variant="outline" onClick={clearAppliedFilters}>
-                  Clear filters
-                </Button>
-              </div>
-            ) : null}
-          </div>
         )}
       </Section>
     </main>

@@ -43,7 +43,7 @@ export function HeaderSection({
             <RoutePicker t={t} places={places} onSubmit={onRoutePick} />
           </div>
         </div>
-        <figure className="relative overflow-hidden rounded-3xl border border-brand-outline/10 bg-brand-surface/70 p-2 shadow-md backdrop-blur dark:border-brand-outline/30 dark:bg-brand-surface/60">
+        <figure className="relative aspect-video overflow-hidden rounded-3xl border border-brand-outline/10 bg-brand-surface/70 p-2 shadow-md backdrop-blur dark:border-brand-outline/30 dark:bg-brand-surface/60">
           <CfImage
             src={HERO_IMAGE_SRC}
             alt={heroImageAlt}

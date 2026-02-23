@@ -74,7 +74,7 @@ export interface ManifestUpdateOptions {
 // -- Constants --
 
 /** Required stage results for S4 barrier merge (per loop-spec.yaml). */
-const REQUIRED_STAGES = ["S2B", "S3", "S6B"] as const;
+const REQUIRED_STAGES = ["MARKET-06", "S3", "SELL-01"] as const;
 
 const VALID_STATUSES = new Set(["Done", "Failed", "Blocked"]);
 

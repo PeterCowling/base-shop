@@ -115,6 +115,28 @@ describe("Next.js command policy matrix check", () => {
     expect(r.stderr).toBe("");
   });
 
+  test("passes for reception dev without --webpack (Turbopack allowed)", () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
+    writeFile(
+      path.join(tmp, "apps/reception/package.json"),
+      JSON.stringify(
+        {
+          name: "@apps/reception",
+          scripts: {
+            dev: "next dev -p 3020",
+            build: "next build",
+          },
+        },
+        null,
+        2,
+      ),
+    );
+
+    const r = runCheck(["--paths", "apps/reception/package.json"], tmp);
+    expect(r.status).toBe(0);
+    expect(r.stderr).toBe("");
+  });
+
   test("fails closed for template-app build without --webpack (TC-03: non-Brikette fail-closed)", () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
     writeFile(

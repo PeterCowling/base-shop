@@ -68,6 +68,131 @@ function hasEnglishFallbackMeaningful(
   });
 }
 
+type EnglishHeaderValues = {
+  namespaceHook: unknown;
+  namespaceApp: unknown;
+  keyHook: unknown;
+  keyApp: unknown;
+};
+
+function resolveEnglishHeaderValues(hookI18n: HookI18n | undefined): EnglishHeaderValues {
+  const safeRead = (reader: () => unknown): unknown => {
+    try {
+      return reader();
+    } catch {
+      return undefined;
+    }
+  };
+  return {
+    namespaceHook: safeRead(() => hookI18n?.getFixedT?.("en", "header")?.("home")),
+    namespaceApp: safeRead(() => i18n.getFixedT?.("en", "header")?.("home")),
+    keyHook: safeRead(() => hookI18n?.getFixedT?.("en")?.("header:home")),
+    keyApp: safeRead(() => i18n.getFixedT?.("en")?.("header:home")),
+  };
+}
+
+function isMeaningfulEnglishHomeTranslatorValue(value: unknown, placeholders: readonly string[]): boolean {
+  if (typeof value !== "string") return false;
+  const trimmed = value.trim();
+  if (trimmed.length === 0 || trimmed.startsWith("［Stub］")) return false;
+  const normalized = trimmed.toLowerCase();
+  return !placeholders.some((placeholder) => normalized === placeholder.toLowerCase());
+}
+
+function collectEnglishHomeCandidates(
+  englishHomeTranslatorValue: unknown,
+  englishHomeResource: unknown,
+  englishHeaders: EnglishHeaderValues,
+): string[] {
+  const candidates: string[] = [];
+  const register = (value: unknown) => {
+    if (typeof value === "string") candidates.push(value);
+  };
+  register(englishHomeTranslatorValue);
+  register(englishHomeResource);
+  register(englishHeaders.namespaceHook);
+  register(englishHeaders.namespaceApp);
+  register(englishHeaders.keyHook);
+  register(englishHeaders.keyApp);
+  return candidates;
+}
+
+function resolveHomeFromEnglishCandidates(params: {
+  candidates: string[];
+  primaryKey: string;
+  allowEnglishFallback: boolean;
+  englishFallbacks: Set<string>;
+}): string | undefined {
+  const { candidates, primaryKey, allowEnglishFallback, englishFallbacks } = params;
+  for (const candidate of candidates) {
+    if (candidate === primaryKey) continue;
+    const trimmed = candidate.trim();
+    if (trimmed.length === 0) return "";
+    if (trimmed.startsWith("［Stub］")) continue;
+    const normalized = trimmed.toLowerCase();
+    if (!allowEnglishFallback && englishFallbacks.has(normalized)) continue;
+    if (normalized === "header:home") continue;
+    if (normalized === "home") {
+      if (allowEnglishFallback && trimmed === "Home") return trimmed;
+      continue;
+    }
+    if (allowEnglishFallback || !englishFallbacks.has(normalized)) return trimmed;
+  }
+  return undefined;
+}
+
+type HomeEnglishResolutionContext = {
+  englishHeaders: EnglishHeaderValues;
+  englishFallbacks: Set<string>;
+  allowEnglishFallback: boolean;
+};
+
+function buildHomeEnglishResolutionContext(params: {
+  lang: AppLanguage;
+  hookI18n: HookI18n | undefined;
+  englishHomeResource: unknown;
+  englishHomeTranslatorValue: unknown;
+  primaryKey: string;
+  altKey: string;
+}): HomeEnglishResolutionContext {
+  const { lang, hookI18n, englishHomeResource, englishHomeTranslatorValue, primaryKey, altKey } = params;
+  const englishHeaders = resolveEnglishHeaderValues(hookI18n);
+  const englishFallbacks = buildEnglishFallbacks(
+    englishHomeResource,
+    englishHomeTranslatorValue,
+    englishHeaders.namespaceHook,
+    englishHeaders.namespaceApp,
+    englishHeaders.keyHook,
+    englishHeaders.keyApp,
+  );
+  const englishPlaceholderSentinels = new Set<string>([
+    primaryKey.toLowerCase(),
+    altKey.toLowerCase(),
+    "home",
+    "header:home",
+  ]);
+  const englishFallbackHasMeaningful = hasEnglishFallbackMeaningful(
+    [
+      englishHomeResource,
+      englishHomeTranslatorValue,
+      englishHeaders.namespaceHook,
+      englishHeaders.namespaceApp,
+      englishHeaders.keyHook,
+      englishHeaders.keyApp,
+    ],
+    englishPlaceholderSentinels,
+  );
+  const englishTranslatorMeaningful = isMeaningfulEnglishHomeTranslatorValue(
+    englishHomeTranslatorValue,
+    [primaryKey, altKey, "header:home"],
+  );
+  return {
+    englishHeaders,
+    englishFallbacks,
+    allowEnglishFallback: lang === "en" || englishTranslatorMeaningful || englishFallbackHasMeaningful,
+  };
+}
+
 /**
  * Resolve the home breadcrumb label.
  */
@@ -82,94 +207,14 @@ export function resolveHomeLabel({
 }: HomeLabelResolverParams): string {
   const primaryKey = "labels.homeBreadcrumb" as const;
   const altKey = "breadcrumbs.home" as const;
-
-  // Fetch English header namespace values
-  const englishHeaderNamespaceHook = (() => {
-    try {
-      return hookI18n?.getFixedT?.("en", "header")?.("home");
-    } catch {
-      return undefined;
-    }
-  })();
-  const englishHeaderNamespaceApp = (() => {
-    try {
-      return i18n.getFixedT?.("en", "header")?.("home");
-    } catch {
-      return undefined;
-    }
-  })();
-  const englishHeaderKeyHook = (() => {
-    try {
-      return hookI18n?.getFixedT?.("en")?.("header:home");
-    } catch {
-      return undefined;
-    }
-  })();
-  const englishHeaderKeyApp = (() => {
-    try {
-      return i18n.getFixedT?.("en")?.("header:home");
-    } catch {
-      return undefined;
-    }
-  })();
-
-  const englishFallbacks = buildEnglishFallbacks(
+  const { englishHeaders, englishFallbacks, allowEnglishFallback } = buildHomeEnglishResolutionContext({
+    lang,
+    hookI18n,
     englishHomeResource,
     englishHomeTranslatorValue,
-    englishHeaderNamespaceHook,
-    englishHeaderNamespaceApp,
-    englishHeaderKeyHook,
-    englishHeaderKeyApp,
-  );
-
-  const englishPlaceholderSentinels = new Set<string>([
-    primaryKey.toLowerCase(),
-    altKey.toLowerCase(),
-    "home",
-    "header:home",
-  ]);
-
-  const englishFallbackHasMeaningful = hasEnglishFallbackMeaningful(
-    [
-      englishHomeResource,
-      englishHomeTranslatorValue,
-      englishHeaderNamespaceHook,
-      englishHeaderNamespaceApp,
-      englishHeaderKeyHook,
-      englishHeaderKeyApp,
-    ],
-    englishPlaceholderSentinels,
-  );
-
-  const englishTranslatorMeaningful =
-    typeof englishHomeTranslatorValue === "string" &&
-    (() => {
-      const trimmed = (englishHomeTranslatorValue as string).trim();
-      if (trimmed.length === 0) return false;
-      if (trimmed.startsWith("［Stub］")) return false;
-      const normalized = trimmed.toLowerCase();
-      if (normalized === primaryKey.toLowerCase()) return false;
-      if (normalized === altKey.toLowerCase()) return false;
-      if (normalized === "header:home") return false;
-      return true;
-    })();
-
-  const allowEnglishFallback = lang === "en" || englishTranslatorMeaningful || englishFallbackHasMeaningful;
-
-  // Try primary and alt keys from active locale
-  const primaryRaw = tGuides(primaryKey) as unknown;
-  const primaryCandidate = toCandidate(primaryRaw, primaryKey, {
-    allowEnglishFallback,
-    englishFallbacks,
+    primaryKey,
+    altKey,
   });
-  if (primaryCandidate !== null) return primaryCandidate;
-
-  const altRaw = tGuides(altKey) as unknown;
-  const altCandidate = toCandidate(altRaw, altKey, {
-    allowEnglishFallback,
-    englishFallbacks,
-  });
-  if (altCandidate !== null) return altCandidate;
 
   // Check for empty English resources
   const englishTranslatorMissing = typeof englishHomeTranslatorValue !== "string";
@@ -177,72 +222,61 @@ export function resolveHomeLabel({
     typeof englishHomeResource === "string" && (englishHomeResource as string).trim().length === 0;
   if (englishTranslatorMissing && englishResourceBlank) return primaryKey;
 
-  // Try header namespace
-  const headerRaw = tHeader("home") as unknown;
-  const headerCandidate = toCandidate(headerRaw, "home", {
-    disallowed: ["header:home"],
-    allowEnglishFallback,
-    englishFallbacks,
-  });
-  if (headerCandidate !== null) return headerCandidate;
-  if (typeof headerRaw === "string" && (headerRaw as string).trim().length === 0) return "";
-
-  // Try generic namespace
-  const genericRaw = tAny("header:home") as unknown;
-  const genericCandidate = toCandidate(genericRaw, "header:home", {
-    disallowed: ["home"],
-    allowEnglishFallback,
-    englishFallbacks,
-  });
-  if (genericCandidate !== null) return genericCandidate;
-  if (typeof genericRaw === "string" && (genericRaw as string).trim().length === 0) return "";
+  const localeChecks = [
+    { raw: tGuides(primaryKey) as unknown, key: primaryKey, disallowed: [] as string[], blankReturnsEmpty: false },
+    { raw: tGuides(altKey) as unknown, key: altKey, disallowed: [] as string[], blankReturnsEmpty: false },
+    { raw: tHeader("home") as unknown, key: "home", disallowed: ["header:home"], blankReturnsEmpty: true },
+    { raw: tAny("header:home") as unknown, key: "header:home", disallowed: ["home"], blankReturnsEmpty: true },
+  ];
+  for (const localeCheck of localeChecks) {
+    const candidate = toCandidate(localeCheck.raw, localeCheck.key, {
+      ...(localeCheck.disallowed.length > 0 ? { disallowed: localeCheck.disallowed } : {}),
+      allowEnglishFallback,
+      englishFallbacks,
+    });
+    if (candidate !== null) return candidate;
+    if (localeCheck.blankReturnsEmpty && typeof localeCheck.raw === "string" && localeCheck.raw.trim().length === 0) {
+      return "";
+    }
+  }
 
   // Check for placeholder strings in locale
-  const localeProvidedPlaceholder =
-    (typeof primaryRaw === "string" && (primaryRaw as string).trim() === primaryKey) ||
-    (typeof altRaw === "string" && (altRaw as string).trim() === altKey) ||
-    (typeof headerRaw === "string" && (headerRaw as string).trim() === "home") ||
-    (typeof genericRaw === "string" && (genericRaw as string).trim() === "header:home");
-
-  const hasLocaleCandidate = [
-    toCandidate(primaryRaw, primaryKey, { allowEnglishFallback, englishFallbacks }),
-    toCandidate(altRaw, altKey, { allowEnglishFallback, englishFallbacks }),
-    toCandidate(headerRaw, "home", { disallowed: ["header:home"], allowEnglishFallback, englishFallbacks }),
-    toCandidate(genericRaw, "header:home", { disallowed: ["home"], allowEnglishFallback, englishFallbacks }),
-  ].some((candidate): candidate is string => typeof candidate === "string" && candidate.length > 0);
+  const placeholderByKey = new Map<string, string>([
+    [primaryKey, primaryKey],
+    [altKey, altKey],
+    ["home", "home"],
+    ["header:home", "header:home"],
+  ]);
+  const localeProvidedPlaceholder = localeChecks.some((localeCheck) => {
+    if (typeof localeCheck.raw !== "string") return false;
+    const placeholder = placeholderByKey.get(localeCheck.key);
+    return typeof placeholder === "string" && localeCheck.raw.trim() === placeholder;
+  });
+  const hasLocaleCandidate = localeChecks.some((localeCheck) => {
+    const candidate = toCandidate(localeCheck.raw, localeCheck.key, {
+      ...(localeCheck.disallowed.length > 0 ? { disallowed: localeCheck.disallowed } : {}),
+      allowEnglishFallback,
+      englishFallbacks,
+    });
+    return typeof candidate === "string" && candidate.length > 0;
+  });
 
   if (!hasLocaleCandidate && localeProvidedPlaceholder && !allowEnglishFallback) {
     return primaryKey;
   }
 
-  // Try English candidates
-  const englishCandidates: string[] = [];
-  const registerCandidate = (value: unknown) => {
-    if (typeof value === "string") englishCandidates.push(value);
-  };
-  registerCandidate(englishHomeTranslatorValue);
-  registerCandidate(englishHomeResource);
-  registerCandidate(englishHeaderNamespaceHook);
-  registerCandidate(englishHeaderNamespaceApp);
-  registerCandidate(englishHeaderKeyHook);
-  registerCandidate(englishHeaderKeyApp);
-
-  for (const candidate of englishCandidates) {
-    if (candidate === primaryKey) continue;
-    const trimmed = candidate.trim();
-    if (trimmed.length === 0) return "";
-    if (trimmed.startsWith("［Stub］")) continue;
-    const normalized = trimmed.toLowerCase();
-    if (!allowEnglishFallback && englishFallbacks.has(normalized)) continue;
-    if (normalized === "header:home") continue;
-    if (normalized === "home") {
-      if (allowEnglishFallback && trimmed === "Home") return trimmed;
-      continue;
-    }
-    if (trimmed.length > 0 && (allowEnglishFallback || !englishFallbacks.has(normalized))) {
-      return trimmed;
-    }
-  }
+  const englishCandidates = collectEnglishHomeCandidates(
+    englishHomeTranslatorValue,
+    englishHomeResource,
+    englishHeaders,
+  );
+  const englishResolved = resolveHomeFromEnglishCandidates({
+    candidates: englishCandidates,
+    primaryKey,
+    allowEnglishFallback,
+    englishFallbacks,
+  });
+  if (typeof englishResolved !== "undefined") return englishResolved;
 
   return primaryKey;
 }

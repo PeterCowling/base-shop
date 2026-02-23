@@ -1,9 +1,9 @@
 ---
 name: lp-channels
-description: Startup channel strategy + GTM skill (S6B). Analyzes channel-customer fit, selects 2-3 launch channels with rationale, and produces a 30-day GTM timeline. Consumes lp-offer output (ICP, positioning, objections) and feeds channel selection to draft-marketing and lp-seo.
+description: Startup channel strategy + GTM skill (SELL-01). Analyzes channel-customer fit, selects 2-3 launch channels with rationale, and produces a 30-day GTM timeline. Consumes lp-offer output (ICP, positioning, objections) and feeds channel selection to draft-marketing and lp-seo.
 ---
 
-# lp-channels — Startup Channel Strategy + GTM (S6B)
+# lp-channels — Startup Channel Strategy + GTM (SELL-01)
 
 Produces a channel selection strategy and 30-day go-to-market (GTM) timeline for startups. Analyzes channel-customer fit, cost constraints, and cadence requirements to select 2-3 launch channels. Includes GTM execution plan with sequenced actions and resource allocation.
 
@@ -30,11 +30,15 @@ Required:
 - `lp-readiness` output: distribution feasibility from RG-02 gate
 - Business context from `docs/business-os/strategy/<BIZ>/`
 
-**Demand Evidence Pack (DEP) — pre-activation gate (GATE-S6B-ACT-01):**
+**Demand Evidence Pack (DEP) — strategy eligibility gate (GATE-SELL-STRAT-01):**
 
-Before authorizing spend on any selected channel, a valid DEP record must pass the floor defined in `docs/business-os/startup-loop/demand-evidence-pack-schema.md`. Full gate logic is in `modules/channel-strategy.md` (Stage 3). Summary:
-- DEP passes → channel eligible for spend authorization.
-- DEP missing or fails → mark channel `strategy-only`; do NOT authorize spend.
+Before SELL-01 starts, a valid DEP record must pass the floor defined in `docs/business-os/startup-loop/demand-evidence-pack-schema.md`. Full gate logic is in startup-loop advance gate docs. Summary:
+- DEP passes → SELL-01 strategy design is eligible.
+- DEP missing or fails → SELL-01 is blocked.
+
+**Paid spend activation gate (GATE-SELL-ACT-01):**
+
+Paid spend authorization is evaluated separately at SELL-08 after strategy output exists. This skill can produce a complete strategy artifact even when spend activation is still blocked.
 
 Optional (enhances quality):
 - Competitor channel analysis, budget/resource constraints, existing audiences, market research
@@ -52,7 +56,7 @@ Load `modules/channel-research.md`:
 ### Stages 3–4: Strategy and Cost Analysis
 
 Load `modules/channel-strategy.md`:
-- Stage 3: Select 2-3 Launch Channels — rationale, GATE-S6B-ACT-01 enforcement, success metrics
+- Stage 3: Select 2-3 Launch Channels — rationale, stop conditions, success metrics
 - Stage 4: Cost/Constraint Analysis — budget, resource, and risk tables
 
 ### Stages 5–6 + QC + Red Flags: GTM Output and Documentation
@@ -74,21 +78,21 @@ Produces single file: `docs/business-os/startup-baselines/<BIZ>-channels.md`
 - `draft-marketing`: selected channels, positioning, success metrics
 - `lp-seo`: organic channel context, keyword intent from ICP
 - `lp-do-fact-find`: channel strategy to scope go-items
-- `startup-loop`: S6B validation gate before DO
+- `startup-loop`: SELL-01 strategy output for S4 join + SELL-08 activation gate for paid spend
 
 ## Integration
 
-### Upstream (S2B, S1)
-- `/lp-offer --business <BIZ>` (S2B) — MUST consume ICP, positioning, and objections
-- `/lp-readiness --business <BIZ>` (S1) — MUST pass RG-02 distribution feasibility gate
+### Upstream (MARKET-06 + readiness context)
+- `/lp-offer --business <BIZ>` (MARKET-06) — MUST consume ICP, positioning, and objections
+- `/lp-readiness --business <BIZ>` (readiness context) — SHOULD pass RG-02 distribution feasibility gate
 - May consume market research from `docs/business-os/market-research/`
 
 ### Downstream (DO)
 - `/draft-marketing` — channel selection for asset targeting
 - `/lp-seo` — organic channel context and ICP keyword intent
 - `/lp-do-fact-find` — scopes go-items from GTM timeline
-- `startup-loop` — S6B validation before DO
+- `startup-loop` — SELL-01 validation before S4; SELL-08 activation gate before paid spend
 
 ### Parallel Skills
-- Can run in parallel with `/lp-forecast` (S2C) if both consume same lp-offer input
+- Can run in parallel with `/lp-forecast` (S3) after MARKET-06 if both consume the same lp-offer input
 - Does NOT depend on `/lp-measure` (Measure stage), but measurement feeds into success metrics tracking

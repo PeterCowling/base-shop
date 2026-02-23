@@ -256,7 +256,9 @@ function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
     if (directionFilter && directionFilter !== "all") {
       chips.push({
         key: "direction",
-                label: directionFilter === "to" ? "To Positano" : "From Positano",
+                label: directionFilter === "to"
+        ? t("routeCard.direction.to", { defaultValue: "To hostel" })
+        : t("routeCard.direction.from", { defaultValue: "From hostel" }),
         value: directionFilter,
       });
     }
@@ -357,7 +359,9 @@ function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
       </Section>
 
       {/* Before You Travel */}
-      <BeforeYouTravel t={t} parkingHref={parkingHref} />
+      <Section padding="default">
+        <BeforeYouTravel t={t} parkingHref={parkingHref} />
+      </Section>
 
       {/* Experience Guides */}
       <Section id={EXPERIENCE_SECTION_ID} padding="default">

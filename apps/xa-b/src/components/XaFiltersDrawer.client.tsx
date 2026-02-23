@@ -73,6 +73,8 @@ export function XaFiltersDrawer({
   onApply,
 }: XaFiltersDrawerProps) {
   const [designerQuery, setDesignerQuery] = React.useState("");
+  // FIX P-02: controlled disclosure state for generic filter sections
+  const [sectionOpen, setSectionOpen] = React.useState<Record<string, boolean>>({});
 
   const designerOptions = (facetValues.designer ?? []).map((handle) => ({
     handle,
@@ -85,6 +87,20 @@ export function XaFiltersDrawer({
       )
     : designerOptions;
   const trendingDesigners = getTrendingDesigners(4);
+
+  // FIX C-03: derive applied filter count for trigger badge
+  const appliedCount = React.useMemo(() => {
+    let count = 0;
+    for (const set of Object.values(draftValues)) {
+      count += set.size;
+    }
+    if (draftInStock) count += 1;
+    if (draftSale) count += 1;
+    if (draftNewIn) count += 1;
+    if (draftMin !== "") count += 1;
+    if (draftMax !== "") count += 1;
+    return count;
+  }, [draftValues, draftInStock, draftSale, draftNewIn, draftMin, draftMax]);
 
   const sections = React.useMemo(() => {
     const items: Array<{ kind: "filter"; config: FilterConfig } | { kind: "price" }> = [];
@@ -109,7 +125,14 @@ export function XaFiltersDrawer({
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerTrigger asChild>
-        <Button>All filters</Button>
+        <Button>
+          All filters
+          {appliedCount > 0 && (
+            <span className="ml-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 text-[10px] font-semibold text-primary-fg">
+              {appliedCount}
+            </span>
+          )}
+        </Button>
       </DrawerTrigger>
       <DrawerPortal>
         <OverlayScrim />
@@ -259,10 +282,13 @@ export function XaFiltersDrawer({
                           <button
                             key={`color-${color}`}
                             type="button"
+                            aria-pressed={selected}
+                            aria-label={`Filter by ${formatLabel(color)}`}
                             className="flex items-center gap-2 text-xs"
                             onClick={() => onToggleValue("color", color)}
                           >
                             <span
+                              aria-hidden
                               className={`h-6 w-6 rounded-full border ${selected ? "ring-2 ring-foreground" : ""}`}
                               style={{ backgroundColor: XA_COLOR_SWATCHES[color] ?? "#f5f5f5" }}
                             />
@@ -278,16 +304,38 @@ export function XaFiltersDrawer({
               const values = facetValues[config.key] ?? [];
               if (!values.length) return null;
               const openByDefault = config.key === "size";
+              const isOpen = sectionOpen[config.key] ?? openByDefault;
+              const panelId = `filter-panel-${config.key}`;
               return (
-                <details
+                <div
                   key={`filter-${config.key}`}
-                  open={openByDefault}
                   className="rounded-lg border p-3"
                 >
-                  <summary className="cursor-pointer text-sm font-semibold">
+                  <button
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() =>
+                      setSectionOpen((prev) => ({
+                        ...prev,
+                        [config.key]: !isOpen,
+                      }))
+                    }
+                    className="flex w-full items-center justify-between text-sm font-semibold"
+                  >
                     {config.label}
-                  </summary>
-                  <div className="mt-3 space-y-2">
+                    <svg
+                      aria-hidden
+                      className={`h-3 w-3 transition-transform${isOpen ? " rotate-180" : ""}`}
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path d="M2 4l4 4 4-4" />
+                    </svg>
+                  </button>
+                  <div id={panelId} hidden={!isOpen} className="mt-3 space-y-2">
                     {values.map((value) => (
                       <label
                         key={`${config.key}-${value}`}
@@ -301,7 +349,7 @@ export function XaFiltersDrawer({
                       </label>
                     ))}
                   </div>
-                </details>
+                </div>
               );
             })}
           </div>

@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { Section } from "../atoms/Section";
 import { Inline } from "../components/atoms/primitives/Inline";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
-import { useTheme } from "../hooks/useTheme";
 import type { AppLanguage } from "../i18n.config";
 import { i18nConfig } from "../i18n.config";
 import { LanguageSwitcher } from "../molecules/LanguageSwitcher";
@@ -53,8 +52,6 @@ function DesktopHeader({
   const headerT = useMemo(() => i18n.getFixedT(lang, "header"), [i18n, lang]);
   const hasHeaderBundle = i18n.hasResourceBundle(lang, "header");
   const pathname = usePathname();
-  const { theme } = useTheme();
-
   // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
   // booking page instead of opening the hostel booking modal.
   const apartmentPath = `/${translatePath("apartment", lang)}`;
@@ -116,7 +113,7 @@ function DesktopHeader({
 
   return (
     <div className="hidden lg:block bg-header-gradient">
-      <Section as="div" padding="none" className="max-w-7xl px-8 text-brand-heading">
+      <Section as="div" padding="none" className="max-w-6xl px-8 text-brand-heading">
         {/* Row 1 – logo • CTA • toggles */}
         <div className="header-row-1 flex items-center justify-between">
           <Link
@@ -166,16 +163,13 @@ function DesktopHeader({
 
         {/* Row 2 – primary navigation */}
         <nav aria-label="Primary navigation" className="header-row-2">
-          <Inline asChild gap={8} className="justify-end text-sm font-medium">
+          <Inline asChild gap={8} className="justify-start text-sm font-medium">
             <ul>
               {navLinks.map(({ key, to, label, prefetch }) => {
                 const current = pathname === `/${lang}${to}`;
                 const highlight = current
-                  ? theme === "dark"
-                    ? /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-                      "font-semibold text-brand-primary underline"
-                    : /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-                      "font-semibold text-brand-secondary underline"
+                  ? /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
+                    "font-semibold text-brand-secondary underline"
                   : "";
 
                 return (

@@ -1,7 +1,7 @@
 /**
  * Baseline merge — S4 join barrier (LPSP-06B).
  *
- * Reads upstream stage-result files (S2B, S3, S6B), validates required
+ * Reads upstream stage-result files (MARKET-06, S3, SELL-01), validates required
  * inputs, and composes a deterministic baseline snapshot.
  *
  * This is a data-plane stage worker. It writes ONLY to `stages/S4/`.
@@ -46,14 +46,19 @@ interface RequiredInput {
 }
 
 const REQUIRED_INPUTS: RequiredInput[] = [
-  { stage: "S2B", artifact_key: "offer", label: "offer" },
+  { stage: "MARKET-06", artifact_key: "offer", label: "offer" },
   { stage: "S3", artifact_key: "forecast", label: "forecast" },
-  { stage: "S6B", artifact_key: "channels", label: "channels" },
+  { stage: "SELL-01", artifact_key: "channels", label: "channels" },
 ];
 
 const OPTIONAL_INPUTS: RequiredInput[] = [
-  { stage: "S6B", artifact_key: "seo", label: "SEO strategy" },
-  { stage: "S6B", artifact_key: "outreach", label: "outreach plan" },
+  { stage: "SELL-01", artifact_key: "seo", label: "SEO strategy" },
+  { stage: "SELL-01", artifact_key: "outreach", label: "outreach plan" },
+  {
+    stage: "PRODUCT-02",
+    artifact_key: "adjacent_product_research",
+    label: "adjacent product research",
+  },
 ];
 
 // -- Main --
@@ -67,7 +72,10 @@ export async function baselineMerge(
 
   // 1. Discover and validate upstream stage results
   const stageResults = new Map<string, StageResult>();
-  for (const stage of ["S2B", "S3", "S6B"]) {
+  const stagesToRead = Array.from(
+    new Set([...REQUIRED_INPUTS, ...OPTIONAL_INPUTS].map((input) => input.stage)),
+  );
+  for (const stage of stagesToRead) {
     const resultPath = path.join(runDir, "stages", stage, "stage-result.json");
     try {
       const data = JSON.parse(await fs.readFile(resultPath, "utf-8"));
@@ -191,7 +199,7 @@ function composeSnapshot(
     `Generated: ${generatedTimestamp}`,
     `Loop spec version: ${options.loop_spec_version}`,
     "",
-    "## 1. Offer Design (S2B)",
+    "## 1. Offer Design (MARKET-06)",
     "",
     artifacts.offer ?? placeholder,
     "",
@@ -199,17 +207,21 @@ function composeSnapshot(
     "",
     artifacts.forecast ?? placeholder,
     "",
-    "## 3. Channel Strategy + GTM (S6B)",
+    "## 3. Channel Strategy + GTM (SELL-01)",
     "",
     artifacts.channels ?? placeholder,
     "",
-    "## 4. SEO Strategy (S6B, optional)",
+    "## 4. SEO Strategy (SELL-01, optional)",
     "",
     artifacts.seo ?? placeholder,
     "",
-    "## 5. Outreach Plan (S6B, optional)",
+    "## 5. Outreach Plan (SELL-01, optional)",
     "",
     artifacts.outreach ?? placeholder,
+    "",
+    "## 6. Adjacent Product Research (PRODUCT-02, optional)",
+    "",
+    artifacts.adjacent_product_research ?? placeholder,
     "",
     "---",
     "",

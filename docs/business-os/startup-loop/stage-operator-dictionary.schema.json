@@ -42,7 +42,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Canonical stage ID from loop-spec.yaml (e.g. S0, S1B, S6B). Must match exactly.",
+          "description": "Canonical stage ID from loop-spec.yaml (e.g. ASSESSMENT-09, MEASURE-01, S6B). Must match exactly.",
           "pattern": "^S[0-9]+[A-Z]*$"
         },
         "name_machine": {

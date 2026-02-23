@@ -1629,7 +1629,7 @@
     "path": "docs/business-os/startup-loop/_generated/stage-operator-table.md",
     "type": "Reference",
     "status": "Active",
-    "domain": null
+    "domain": "Business-OS"
   },
   {
     "path": "docs/business-os/startup-loop/artifact-registry.md",
@@ -1848,12 +1848,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/BRIK/brand-dossier.user.md",
-    "type": "Brand-Dossier",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/BRIK/data/bookings_by_month.meta.md",
     "type": "Reference",
     "status": "Active",
@@ -1920,27 +1914,15 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/2026-02-20-naming-shortlist.user.md",
-    "type": "Reference",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/2026-02-20-solution-space-prompt.md",
-    "type": "Reference",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/2026-02-20-solution-space-results.user.md",
-    "type": "Reference",
+    "path": "docs/business-os/strategy/HBAG/2026-02-21-naming-research-summary.user.md",
+    "type": "Research-Summary",
     "status": "Active",
     "domain": null
   },
   {
     "path": "docs/business-os/strategy/HBAG/brand-dossier.user.md",
-    "type": "Brand-Dossier",
-    "status": "Draft",
+    "type": "Brand-Language",
+    "status": "Active",
     "domain": null
   },
   {
@@ -1950,14 +1932,8 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/latest-naming-shortlist.user.md",
-    "type": "Reference",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/naming-research-prompt.md",
-    "type": "Reference",
+    "path": "docs/business-os/strategy/HBAG/naming-generation-spec.md",
+    "type": "Generation-Spec",
     "status": "Active",
     "domain": null
   },
@@ -1982,18 +1958,6 @@
   {
     "path": "docs/business-os/strategy/HBAG/s0a-research-appendix.user.md",
     "type": "Reference",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/s0c-option-select.user.md",
-    "type": "Reference",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/s0e-operator-evidence.user.md",
-    "type": "Operator-Evidence",
     "status": "Active",
     "domain": null
   },
@@ -2028,33 +1992,9 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md",
-    "type": "Deep-Research-Output",
-    "status": "Awaiting-Decision",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/2026-02-20-solution-space-prompt.md",
-    "type": "Solution-Space-Prompt",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/2026-02-20-solution-space-results.user.md",
-    "type": "Solution-Space-Results",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HEAD/adjacent-product-research-prompt.md",
     "type": "Reference",
     "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/brand-dossier.user.md",
-    "type": "Brand-Dossier",
-    "status": "Draft",
     "domain": null
   },
   {
@@ -2106,12 +2046,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/latest-naming-shortlist.user.md",
-    "type": "Deep-Research-Output",
-    "status": "Domain-Screened-Partially-Blocked",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HEAD/launch-readiness-action-backlog.agent.md",
     "type": "Action-Backlog",
     "status": "Active",
@@ -2136,12 +2070,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/naming-research-prompt.md",
-    "type": "Naming-Research-Prompt",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HEAD/plan.agent.md",
     "type": "Business-Plan",
     "status": "Active",
@@ -2156,18 +2084,6 @@
   {
     "path": "docs/business-os/strategy/HEAD/problem-statement.user.md",
     "type": "Problem-Statement",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/s0c-option-select.user.md",
-    "type": "Option-Selection-Decision",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/s0e-operator-evidence.user.md",
-    "type": "Operator-Evidence",
     "status": "Active",
     "domain": null
   },
@@ -2205,18 +2121,6 @@
     "path": "docs/business-os/strategy/PET/2026-02-18-naming-prompt.user.md",
     "type": "Deep-Research-Prompt",
     "status": "Ready",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/PET/2026-02-18-naming-shortlist.user.md",
-    "type": "Deep-Research-Output",
-    "status": "Awaiting-Decision",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/PET/brand-dossier.user.md",
-    "type": "Brand-Dossier",
-    "status": "Draft",
     "domain": null
   },
   {
@@ -2437,12 +2341,6 @@
   },
   {
     "path": "docs/business-os/workflow-prompts/_templates/post-deploy-measurement-verification-prompt.md",
-    "type": "Template",
-    "status": "Reference",
-    "domain": "Business-OS"
-  },
-  {
-    "path": "docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md",
     "type": "Template",
     "status": "Reference",
     "domain": "Business-OS"
@@ -2924,7 +2822,7 @@
   {
     "path": "docs/plans/_templates/plan.md",
     "type": "Plan",
-    "status": "<Draft | Active | Complete | Superseded>",
+    "status": "<Draft | Active | Archived | Superseded>",
     "domain": "<CMS | Platform | UI | API | Data | Infra | etc.>"
   },
   {
@@ -4588,6 +4486,24 @@
     "type": "Plan",
     "status": "Historical",
     "domain": "Platform/UI"
+  },
+  {
+    "path": "docs/plans/archive/webpack-removal-v2/critique-history.md",
+    "type": "Critique-History",
+    "status": "Reference",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/archive/webpack-removal-v2/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/archive/webpack-removal-v2/plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Platform"
   },
   {
     "path": "docs/plans/archive/work-idea-inline-edit-fact-find.md",

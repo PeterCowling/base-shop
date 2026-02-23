@@ -221,7 +221,7 @@ because HEAD combines routine-led bundle design, clear fit guidance, and non-med
 
 > Naming decision is **not final**.
 >
-> Current shortlist artifact: `docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md`
+> Current shortlist artifact: `docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md`
 > Recommended working candidate (not legally cleared): `Nidilo`
 
 ---

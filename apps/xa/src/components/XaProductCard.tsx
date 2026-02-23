@@ -2,6 +2,7 @@
 
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy product card pending design/i18n overhaul */
 
+import { useState } from "react";
 import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
@@ -15,8 +16,10 @@ import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
 import { getAvailableStock } from "../lib/inventoryStore";
 import { formatLabel, getDesignerName } from "../lib/xaCatalog";
+import { cn } from "@acme/design-system/utils/style";
 
 export function XaProductCard({ product }: { product: XaProduct }) {
+  const [touched, setTouched] = useState(false);
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const images = product.media.filter((m) => m.type === "image" && m.url.trim());
@@ -46,10 +49,10 @@ export function XaProductCard({ product }: { product: XaProduct }) {
   })();
 
   return (
-    <div className="xa-panel rounded-lg border border-border-1 bg-surface-2/60 p-4 shadow-elevation-1 backdrop-blur">
+    <div className="xa-panel rounded-sm border border-border-1 bg-surface-2 p-4 shadow-elevation-1">
       <div className="relative">
         <Link href={`/products/${product.slug}`} className="group block">
-          <div className="relative aspect-square overflow-hidden rounded-md bg-panel">
+          <div className="relative aspect-square overflow-hidden rounded-sm bg-panel" onTouchStart={() => setTouched(true)} onTouchEnd={() => setTouched(false)}>
             {primaryImage ? (
               <>
                 <XaFadeImage
@@ -57,10 +60,10 @@ export function XaProductCard({ product }: { product: XaProduct }) {
                   alt={primaryImage.altText ?? product.title}
                   fill
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-                  className="object-cover transition-opacity duration-300 group-hover:opacity-0"
+                  className={cn("object-cover transition-opacity duration-300 group-hover:opacity-0", touched ? "opacity-0" : "")}
                 />
                 {secondaryImage ? (
-                  <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <div className={cn("absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100", touched ? "opacity-100" : "")}>
                     <XaFadeImage
                       src={secondaryImage.url}
                       alt=""

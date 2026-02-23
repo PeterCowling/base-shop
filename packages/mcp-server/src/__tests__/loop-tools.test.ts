@@ -44,7 +44,11 @@ describe("loop tools", () => {
           status: "candidate",
           updated_at: new Date().toISOString(),
           stage_completions: {
-            S2B: { status: "Done", produced_keys: ["offer"], timestamp: "2026-02-13T00:00:00Z" },
+            "MARKET-02": {
+              status: "Done",
+              produced_keys: ["offer"],
+              timestamp: "2026-02-13T00:00:00Z",
+            },
             S3: { status: "Done", produced_keys: ["forecast"], timestamp: "2026-02-13T00:00:00Z" },
           },
         },
@@ -154,7 +158,11 @@ describe("loop tools", () => {
           status: "candidate",
           updated_at: "2020-01-01T00:00:00Z",
           stage_completions: {
-            S2B: { status: "Done", produced_keys: ["offer"], timestamp: "2020-01-01T00:00:00Z" },
+            "MARKET-02": {
+              status: "Done",
+              produced_keys: ["offer"],
+              timestamp: "2020-01-01T00:00:00Z",
+            },
           },
         },
         null,

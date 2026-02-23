@@ -49,7 +49,7 @@ decisions:
 4. **Naming Lock and Brand Finalization** (Priority: Medium)
    - Status: Naming shortlist returned, final legal clearance pending.
    - Next: complete TM/domain/counsel checks and confirm masterbrand.
-   - Shortlist artifact: `docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md`
+   - Shortlist artifact: `docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md`
 
 ### 90-Day Outcome Contract (Reference)
 

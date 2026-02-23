@@ -15,6 +15,7 @@ import QuickLinksSection from "@acme/ui/organisms/QuickLinksSection";
 
 import BookingWidget from "@/components/landing/BookingWidget";
 import FaqStrip from "@/components/landing/FaqStrip";
+import FeaturedGuidesSection from "@/components/landing/FeaturedGuidesSection";
 import IntroTextBox from "@/components/landing/IntroTextBox";
 import LocationMiniBlock from "@/components/landing/LocationMiniBlock";
 import SocialProofSection from "@/components/landing/SocialProofSection";
@@ -99,6 +100,9 @@ function HomeContent({ lang }: Props) {
 
       {/* Quick Links */}
       <QuickLinksSection lang={lang} />
+
+      {/* Featured Guides */}
+      <FeaturedGuidesSection lang={lang} />
 
       {/* Location */}
       <LocationMiniBlock lang={lang} />

@@ -157,6 +157,24 @@ if [[ $sq01b_fail -eq 0 ]]; then
   check_pass
 fi
 
+# SQ-01C: Retired marketing/sales IDs must not appear in active operator surfaces.
+# Hard-cut policy for startup-loop-market-sell-containers.
+
+sq01c_fail=0
+legacy_marketing_sales_pattern='\bS2\b|\bS2B\b|\bS3B\b|\bS6B\b|GATE-S6B-STRAT-01|GATE-S6B-ACT-01|GATE-S3B-01'
+
+for active_surface in "$WORKFLOW_GUIDE" "$PROMPT_INDEX"; do
+  if legacy_hits=$(rg -n -e "$legacy_marketing_sales_pattern" "$active_surface" 2>/dev/null); then
+    check_fail "Retired marketing/sales IDs found in ${active_surface} (SQ-01C)"
+    echo "$legacy_hits" >&2
+    sq01c_fail=1
+  fi
+done
+
+if [[ $sq01c_fail -eq 0 ]]; then
+  check_pass
+fi
+
 # ── SQ-02: Skill route resolution ──
 # Every skill referenced in loop-spec must have a SKILL.md file.
 

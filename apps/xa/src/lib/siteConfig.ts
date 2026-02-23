@@ -71,4 +71,6 @@ export const siteConfig = {
   showContactInfo: !STEALTH_MODE,
   showLegalInfo: !STEALTH_MODE,
   showSocialLinks: !STEALTH_MODE,
+  heroHeadline: "The finest ready-to-wear. By invitation.",
+  heroSubheadline: "Exclusive access to curated clothing from established designers.",
 } as const;

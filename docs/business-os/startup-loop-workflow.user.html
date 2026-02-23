@@ -869,8 +869,8 @@
 <tr>
 <td>BD-1 Brand Dossier bootstrap</td>
 <td>S1 advance</td>
-<td>GATE-BD-01 (Hard): check brand-dossier.user.md Draft/Active status in strategy index; block S1 advance if missing</td>
-<td>Run <code>/lp-brand-bootstrap &#x3C;BIZ></code> → <code>brand-dossier.user.md</code> at Draft minimum</td>
+<td>GATE-BD-01 (Hard): check brand-identity.user.md Draft/Active status in strategy index; block S1 advance if missing</td>
+<td>Run <code>/lp-brand-bootstrap &#x3C;BIZ></code> → <code>brand-identity.user.md</code> at Draft minimum</td>
 </tr>
 <tr>
 <td>BD-2 Competitive Positioning</td>
@@ -893,8 +893,8 @@
 <tr>
 <td>BD-5 Design Spec gate</td>
 <td>S7/S8 (lp-design-spec pre-flight)</td>
-<td>GATE-BD-07 (Hard): lp-design-spec requires Active brand-dossier; blocks design spec if Status ≠ Active</td>
-<td>Gate pass → lp-design-spec runs; gate block → advance brand-dossier to Active first</td>
+<td>GATE-BD-07 (Hard): lp-design-spec requires Active brand-identity; blocks design spec if Status ≠ Active</td>
+<td>Gate pass → lp-design-spec runs; gate block → advance brand-identity to Active first</td>
 </tr>
 <tr>
 <td>BD-6 Brand Copy QA</td>
@@ -1308,13 +1308,13 @@ After saving:
 <ul>
 <li>HEAD S1B pre-website measurement bootstrap:
 <ul>
-<li>Prompt file: <code>docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md</code></li>
+<li>Prompt file: <code>docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md</code></li>
 <li>Target output: <code>docs/business-os/strategy/HEAD/&#x3C;YYYY-MM-DD>-pre-website-measurement-setup.user.md</code></li>
 </ul>
 </li>
 <li>PET S1B pre-website measurement bootstrap:
 <ul>
-<li>Prompt file: <code>docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md</code></li>
+<li>Prompt file: <code>docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md</code></li>
 <li>Target output: <code>docs/business-os/strategy/PET/&#x3C;YYYY-MM-DD>-pre-website-measurement-setup.user.md</code></li>
 </ul>
 </li>
@@ -1369,7 +1369,7 @@ After saving:
 <tr>
 <td>S1B Pre-website measurement bootstrap</td>
 <td>Launch-surface mode is <code>pre-website</code> and measurement bootstrap doc is missing/stale</td>
-<td><code>docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md</code></td>
+<td><code>docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md</code></td>
 <td>intake packet + business plan + launch-surface mode + runtime/deploy details</td>
 <td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-pre-website-measurement-setup.user.md</code></td>
 </tr>
@@ -1436,16 +1436,16 @@ After saving:
 <p><strong>Retired.</strong> Design policy and brand decisions have been migrated to first-class artifacts with front matter schemas and gate enforcement.</p>
 <p>See:</p>
 <ul>
-<li><strong>Brand Dossier (BRIK):</strong> <code>docs/business-os/strategy/BRIK/brand-dossier.user.md</code> — audience, personality, visual identity, voice &#x26; tone</li>
+<li><strong>Brand Dossier (BRIK):</strong> <code>docs/business-os/strategy/BRIK/brand-identity.user.md</code> — audience, personality, visual identity, voice &#x26; tone</li>
 <li><strong>Prime App Design Branding:</strong> <code>docs/business-os/strategy/BRIK/prime-app-design-branding.user.md</code> — Prime-specific design principles, token rationale, signature patterns</li>
 <li><strong>Strategy Index (artifact status + gate table):</strong> <code>docs/business-os/strategy/BRIK/index.user.md</code></li>
 </ul>
-<p>For HEAD and PET: brand-dossier.user.md is bootstrapped by <code>/lp-brand-bootstrap &#x3C;BIZ></code> at S1 entry (GATE-BD-01).</p>
+<p>For HEAD and PET: brand-identity.user.md is bootstrapped by <code>/lp-brand-bootstrap &#x3C;BIZ></code> at S1 entry (GATE-BD-01).</p>
 </blockquote>
 <h3>11.1 BRIK Design Policy (Prime Guest Portal)</h3>
 <p>→ Migrated to <code>docs/business-os/strategy/BRIK/prime-app-design-branding.user.md</code></p>
 <h3>11.2 HEAD / PET Design Policies</h3>
-<p>→ Bootstrapped at S1 entry via <code>/lp-brand-bootstrap &#x3C;BIZ></code>. See <code>docs/business-os/strategy/&#x3C;BIZ>/brand-dossier.user.md</code> once created.</p>
+<p>→ Bootstrapped at S1 entry via <code>/lp-brand-bootstrap &#x3C;BIZ></code>. See <code>docs/business-os/strategy/&#x3C;BIZ>/brand-identity.user.md</code> once created.</p>
 <h2>Standing Refresh Prompts (Periodic) [Engineering Reference]</h2>
 <p>These are recurring research prompts for standing information refresh.</p>
 <table>
@@ -1492,7 +1492,7 @@ After saving:
 <td>Quarterly (90 days)</td>
 <td>GATE-BD-08 (Soft) warning at S10 if Last-reviewed > 90 days; review claim/proof ledger, voice and audience sections</td>
 <td><code>docs/business-os/workflow-prompts/_templates/brand-claim-proof-validation-prompt.md</code> (BRAND-DR-03)</td>
-<td>Update <code>docs/business-os/strategy/&#x3C;BIZ>/brand-dossier.user.md</code> in-place; bump <code>Last-reviewed</code> date</td>
+<td>Update <code>docs/business-os/strategy/&#x3C;BIZ>/brand-identity.user.md</code> in-place; bump <code>Last-reviewed</code> date</td>
 </tr>
 </tbody>
 </table>
@@ -1586,9 +1586,9 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
 <p>If either is missing, the run stays <code>blocked</code> at current stage.</p>
 <p><strong>Brand gates enforced on advance (see <code>.claude/skills/startup-loop/SKILL.md</code> for full gate definitions):</strong></p>
 <ul>
-<li><strong>GATE-BD-01</strong> (Hard): S1 advance blocked until <code>brand-dossier.user.md</code> exists at Draft minimum in strategy index.</li>
+<li><strong>GATE-BD-01</strong> (Hard): S1 advance blocked until <code>brand-identity.user.md</code> exists at Draft minimum in strategy index.</li>
 <li><strong>GATE-BD-03</strong> (Hard): S2B completion blocked until <code>messaging-hierarchy.user.md</code> exists at Draft minimum in strategy index.</li>
-<li><strong>GATE-BD-08</strong> (Soft — warning only): S10 emits a staleness warning if brand-dossier <code>Last-reviewed</code> > 90 days.</li>
+<li><strong>GATE-BD-08</strong> (Soft — warning only): S10 emits a staleness warning if brand-identity <code>Last-reviewed</code> > 90 days.</li>
 </ul>
 <h2>Business OS Sync Contract (No Loop-to-BOS Drift) [Engineering Reference]</h2>
 <p>Startup Loop artifacts and Business OS state must move together.</p>

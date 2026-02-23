@@ -117,8 +117,8 @@ node octorate-export-final-working.mjs
    - Updated timestamp to 2026-02-14
 
 3. **`docs/business-os/startup-loop-workflow.user.md`**
-   - Added Octorate data collection to S2A inputs
-   - Updated BRIK S2A gap status
+   - Added Octorate data collection to MEASURE-02 inputs
+   - Updated BRIK MEASURE-02 gap status
    - Linked to protocol and baseline docs
 
 ## Startup Loop Integration
@@ -213,7 +213,7 @@ node octorate-process-bookings.mjs /path/to/export.xls
 
 - Protocol: `docs/business-os/startup-loop/octorate-data-collection-protocol.md`
 - Batch 2 baseline: `docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md`
-- Batch 1 baseline: `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md`
+- Batch 1 baseline: `docs/business-os/strategy/BRIK/2026-02-12-historical-performance.user.md`
 - Business plan: `docs/business-os/strategy/BRIK/plan.user.md`
 - Startup loop workflow: `docs/business-os/startup-loop-workflow.user.md`
 - Automation script: `packages/mcp-server/octorate-export-final-working.mjs`

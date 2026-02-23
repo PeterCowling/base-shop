@@ -21,10 +21,10 @@ This is diagnosis + signaling only. It does not execute `/lp-do-replan` automati
 
 | Metric ID | Class | Direction | Default Stage | Candidate Priority |
 |---|---|---|---|---|
-| `traffic` | primitive | higher_is_better | `S6B` | primary |
+| `traffic` | primitive | higher_is_better | `SELL-01` | primary |
 | `cvr` | primitive | higher_is_better | `S3` | primary |
-| `aov` | primitive | higher_is_better | `S2B` | primary |
-| `cac` | primitive | lower_is_better | `S6B` | primary |
+| `aov` | primitive | higher_is_better | `MARKET-06` | primary |
+| `cac` | primitive | lower_is_better | `SELL-01` | primary |
 | `orders` | derived | higher_is_better | `S10` | secondary |
 | `revenue` | derived | higher_is_better | `S10` | secondary |
 
@@ -37,10 +37,10 @@ This is diagnosis + signaling only. It does not execute `/lp-do-replan` automati
 
 Each metric has a default stage assignment based on where the constraint is typically addressed:
 
-- `traffic` → `S6B` (Channel strategy + GTM)
+- `traffic` → `SELL-01` (Channel strategy + GTM)
 - `cvr` → `S3` (Forecast / conversion optimization)
-- `aov` → `S2B` (Offer design)
-- `cac` → `S6B` (Channel strategy + GTM)
+- `aov` → `MARKET-06` (Offer design)
+- `cac` → `SELL-01` (Channel strategy + GTM)
 - `orders` → `S10` (Derived outcome, not actionable as primary)
 - `revenue` → `S10` (Derived outcome, not actionable as primary)
 
@@ -64,14 +64,14 @@ Each profile metric has a `candidate_priority`:
 | Metric ID | Profile | Class | Direction | Default Stage | Candidate Priority |
 |---|---|---|---|---|---|
 | `inquiry_to_quote_rate` | hospitality-direct-booking | primitive | higher_is_better | `S3` | primary |
-| `quote_to_booking_rate` | hospitality-direct-booking | primitive | higher_is_better | `S6B` | primary |
-| `median_response_time` | hospitality-direct-booking | primitive | lower_is_better | `S6B` | primary |
-| `direct_ota_mix` | hospitality-direct-booking | primitive | higher_is_better | `S6B` | secondary |
+| `quote_to_booking_rate` | hospitality-direct-booking | primitive | higher_is_better | `SELL-01` | primary |
+| `median_response_time` | hospitality-direct-booking | primitive | lower_is_better | `SELL-01` | primary |
+| `direct_ota_mix` | hospitality-direct-booking | primitive | higher_is_better | `SELL-01` | secondary |
 | `cancellation_rate` | hospitality-direct-booking | derived | lower_is_better | `S10` | secondary |
 | `review_velocity` | hospitality-direct-booking | derived | higher_is_better | `S10` | secondary |
 | `page_to_atc_rate` | dtc-ecommerce | primitive | higher_is_better | `S3` | primary |
 | `checkout_completion_rate` | dtc-ecommerce | primitive | higher_is_better | `S3` | primary |
-| `cac_by_cohort` | dtc-ecommerce | primitive | lower_is_better | `S6B` | primary |
+| `cac_by_cohort` | dtc-ecommerce | primitive | lower_is_better | `SELL-01` | primary |
 | `refund_rate` | dtc-ecommerce | derived | lower_is_better | `S10` | secondary |
 | `support_load_per_100_orders` | dtc-ecommerce | derived | lower_is_better | `S10` | secondary |
 | `repeat_purchase_rate` | dtc-ecommerce | derived | higher_is_better | `S10` | secondary |
@@ -86,7 +86,7 @@ Profile metrics use the same constraint key format as base metrics: `<stage>/<me
 
 **Examples:**
 - `S3/inquiry_to_quote_rate` — inquiry-to-quote conversion at Forecast stage
-- `S6B/median_response_time` — response time at Channel strategy stage
+- `SELL-01/median_response_time` — response time at Channel strategy stage
 - `S3/page_to_atc_rate` — product page-to-add-to-cart at Forecast stage
 
 ## 3) Normalized Miss Formula
@@ -143,10 +143,10 @@ Severity is classified based on the normalized `miss` value:
 The `upstream_priority_order` defines stage precedence for tie-breaking and multi-block selection. This ordering is derived from startup-loop dependency flow (not stage-ID numeric sorting).
 
 ```
-DISCOVERY-01, DISCOVERY-02, DISCOVERY-03, DISCOVERY-04, DISCOVERY-05, DISCOVERY, S1, S1B, S2A, S2, S2B, S3, S3B, S6B, S4, S5A, S5B, S6, DO, S9B, S10
+ASSESSMENT-01, ASSESSMENT-02, ASSESSMENT-03, ASSESSMENT-04, ASSESSMENT-05, ASSESSMENT-06, ASSESSMENT-07, ASSESSMENT-08, ASSESSMENT-09, ASSESSMENT-10, ASSESSMENT-11, ASSESSMENT, MEASURE-01, MEASURE-02, PRODUCT, PRODUCT-01, MARKET, MARKET-01, MARKET-02, MARKET-03, MARKET-04, MARKET-05, MARKET-06, S3, PRODUCT-02, SELL-01, SELL-02, SELL-03, SELL-04, SELL-05, SELL-06, SELL-07, SELL-08, SELL, S4, S5A, S5B, S6, DO, S9B, S10
 ```
 
-**Note:** `S6B` intentionally precedes `S4` because `S4` (Baseline merge) consumes S6B outputs as dependencies. `DISCOVERY-01–DISCOVERY-05` precede `DISCOVERY` because they form the conditional problem-first pre-intake sequence (v1.7.0, renamed v1.9.0). `S3B` follows `S3` as a conditional parallel fan-out sibling (v1.6.0).
+**Note:** `SELL-01` intentionally precedes `S4` because `S4` (Baseline merge) consumes SELL-01 outputs as dependencies. `ASSESSMENT-01–ASSESSMENT-09` form the conditional problem-first pre-intake sequence; `ASSESSMENT-10–ASSESSMENT-11` are brand profiling stages; `ASSESSMENT` is the container stage (v1.7.0, renamed v1.9.0, consolidated v2.0). `PRODUCT-02` runs as a conditional parallel fan-out sibling of `S3` and `SELL-01` (non-blocking at S4).
 
 ### Upstream Attribution Rules
 
@@ -175,8 +175,8 @@ Constraints are identified using stable, deterministic keys:
 
 **Examples:**
 - `S3/cvr` — conversion rate constraint at Forecast stage
-- `S6B/cac` — customer acquisition cost constraint at Channel strategy stage
-- `S2B/aov` — average order value constraint at Offer design stage
+- `SELL-01/cac` — customer acquisition cost constraint at Channel strategy stage
+- `MARKET-06/aov` — average order value constraint at Offer design stage
 
 ### Blocked-Stage Constraint Key
 
@@ -428,7 +428,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
       "actual": 8500,
       "delta_pct": -15.0,
       "miss": 0.15,
-      "stage": "S6B",
+      "stage": "SELL-01",
       "direction": "higher_is_better",
       "metric_class": "primitive"
     },
@@ -446,7 +446,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
       "actual": 145,
       "delta_pct": -3.33,
       "miss": 0.033,
-      "stage": "S2B",
+      "stage": "MARKET-06",
       "direction": "higher_is_better",
       "metric_class": "primitive"
     },
@@ -455,7 +455,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
       "actual": 45,
       "delta_pct": -10.0,
       "miss": 0.0,
-      "stage": "S6B",
+      "stage": "SELL-01",
       "direction": "lower_is_better",
       "metric_class": "primitive"
     },
@@ -502,9 +502,9 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
     },
     {
       "rank": 2,
-      "constraint_key": "S6B/traffic",
+      "constraint_key": "SELL-01/traffic",
       "constraint_type": "metric",
-      "stage": "S6B",
+      "stage": "SELL-01",
       "metric": "traffic",
       "reason_code": null,
       "severity": "minor",
@@ -572,7 +572,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
       "actual": 4800,
       "delta_pct": -4.0,
       "miss": 0.04,
-      "stage": "S6B",
+      "stage": "SELL-01",
       "direction": "higher_is_better",
       "metric_class": "primitive"
     },
@@ -590,7 +590,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
       "actual": 210,
       "delta_pct": 5.0,
       "miss": 0.0,
-      "stage": "S2B",
+      "stage": "MARKET-06",
       "direction": "higher_is_better",
       "metric_class": "primitive"
     },
@@ -599,7 +599,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
       "actual": 55,
       "delta_pct": -8.33,
       "miss": 0.0,
-      "stage": "S6B",
+      "stage": "SELL-01",
       "direction": "lower_is_better",
       "metric_class": "primitive"
     },
@@ -694,7 +694,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
       "actual": 8200,
       "delta_pct": 2.5,
       "miss": 0.0,
-      "stage": "S6B",
+      "stage": "SELL-01",
       "direction": "higher_is_better",
       "metric_class": "primitive"
     },
@@ -712,7 +712,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
       "actual": 175,
       "delta_pct": -2.78,
       "miss": 0.028,
-      "stage": "S2B",
+      "stage": "MARKET-06",
       "direction": "higher_is_better",
       "metric_class": "primitive"
     },
@@ -721,7 +721,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
       "actual": 52,
       "delta_pct": -5.45,
       "miss": 0.0,
-      "stage": "S6B",
+      "stage": "SELL-01",
       "direction": "lower_is_better",
       "metric_class": "primitive"
     },
@@ -749,7 +749,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
   "comparison_to_prior_run": {
     "prior_run_id": "SFS-PET-20260206-1400",
     "constraint_changed": true,
-    "prior_constraint_key": "S2B/aov",
+    "prior_constraint_key": "MARKET-06/aov",
     "metric_trends": {
       "traffic": "improving",
       "cvr": "stable",
@@ -782,23 +782,23 @@ Profile primitive `median_response_time` (primary, miss=1.75) outranks base prim
     "excluded_metrics": []
   },
   "funnel_metrics": {
-    "traffic": { "target": 5000, "actual": 4800, "delta_pct": -4.0, "miss": 0.04, "stage": "S6B", "direction": "higher_is_better", "metric_class": "primitive" },
+    "traffic": { "target": 5000, "actual": 4800, "delta_pct": -4.0, "miss": 0.04, "stage": "SELL-01", "direction": "higher_is_better", "metric_class": "primitive" },
     "cvr": { "target": 0.05, "actual": 0.04, "delta_pct": -20.0, "miss": 0.20, "stage": "S3", "direction": "higher_is_better", "metric_class": "primitive" },
-    "aov": { "target": 300, "actual": 310, "delta_pct": 3.3, "miss": 0.0, "stage": "S2B", "direction": "higher_is_better", "metric_class": "primitive" },
-    "cac": { "target": 80, "actual": 72, "delta_pct": -10.0, "miss": 0.0, "stage": "S6B", "direction": "lower_is_better", "metric_class": "primitive" }
+    "aov": { "target": 300, "actual": 310, "delta_pct": 3.3, "miss": 0.0, "stage": "MARKET-06", "direction": "higher_is_better", "metric_class": "primitive" },
+    "cac": { "target": 80, "actual": 72, "delta_pct": -10.0, "miss": 0.0, "stage": "SELL-01", "direction": "lower_is_better", "metric_class": "primitive" }
   },
   "profile_funnel_metrics": {
     "inquiry_to_quote_rate": { "target": 0.60, "actual": 0.35, "delta_pct": -41.7, "miss": 0.417, "stage": "S3", "direction": "higher_is_better", "metric_class": "primitive" },
-    "quote_to_booking_rate": { "target": 0.45, "actual": 0.40, "delta_pct": -11.1, "miss": 0.111, "stage": "S6B", "direction": "higher_is_better", "metric_class": "primitive" },
-    "median_response_time": { "target": 2.0, "actual": 5.5, "delta_pct": 175.0, "miss": 1.75, "stage": "S6B", "direction": "lower_is_better", "metric_class": "primitive" },
-    "direct_ota_mix": { "target": 0.70, "actual": 0.58, "delta_pct": -17.1, "miss": 0.171, "stage": "S6B", "direction": "higher_is_better", "metric_class": "primitive" },
+    "quote_to_booking_rate": { "target": 0.45, "actual": 0.40, "delta_pct": -11.1, "miss": 0.111, "stage": "SELL-01", "direction": "higher_is_better", "metric_class": "primitive" },
+    "median_response_time": { "target": 2.0, "actual": 5.5, "delta_pct": 175.0, "miss": 1.75, "stage": "SELL-01", "direction": "lower_is_better", "metric_class": "primitive" },
+    "direct_ota_mix": { "target": 0.70, "actual": 0.58, "delta_pct": -17.1, "miss": 0.171, "stage": "SELL-01", "direction": "higher_is_better", "metric_class": "primitive" },
     "cancellation_rate": { "target": 0.05, "actual": 0.08, "delta_pct": 60.0, "miss": 0.60, "stage": "S10", "direction": "lower_is_better", "metric_class": "derived" },
     "review_velocity": { "target": 5.0, "actual": 3.0, "delta_pct": -40.0, "miss": 0.40, "stage": "S10", "direction": "higher_is_better", "metric_class": "derived" }
   },
   "identified_constraint": {
-    "constraint_key": "S6B/median_response_time",
+    "constraint_key": "SELL-01/median_response_time",
     "constraint_type": "metric",
-    "stage": "S6B",
+    "stage": "SELL-01",
     "metric": "median_response_time",
     "reason_code": null,
     "severity": "critical",
@@ -806,7 +806,7 @@ Profile primitive `median_response_time` (primary, miss=1.75) outranks base prim
     "reasoning": "Median response time is 175% worse than the 2-hour target (actual: 5.5 hours). This profile primary primitive has the highest miss in the candidate pool. Slow response time directly suppresses inquiry-to-quote conversion for direct-booking hospitality. Profile secondary metrics (cancellation_rate miss=0.60, review_velocity miss=0.40) are deprioritised because profile primary primitives exist with severity >= moderate. Profile: hospitality-direct-booking."
   },
   "ranked_constraints": [
-    { "rank": 1, "constraint_key": "S6B/median_response_time", "constraint_type": "metric", "stage": "S6B", "metric": "median_response_time", "reason_code": null, "severity": "critical", "miss": 1.75, "reasoning": "Primary — profile primary primitive: response time 175% above target" },
+    { "rank": 1, "constraint_key": "SELL-01/median_response_time", "constraint_type": "metric", "stage": "SELL-01", "metric": "median_response_time", "reason_code": null, "severity": "critical", "miss": 1.75, "reasoning": "Primary — profile primary primitive: response time 175% above target" },
     { "rank": 2, "constraint_key": "S3/inquiry_to_quote_rate", "constraint_type": "metric", "stage": "S3", "metric": "inquiry_to_quote_rate", "reason_code": null, "severity": "moderate", "miss": 0.417, "reasoning": "Secondary — profile primary primitive: inquiry-to-quote 41.7% below target" },
     { "rank": 3, "constraint_key": "S3/cvr", "constraint_type": "metric", "stage": "S3", "metric": "cvr", "reason_code": null, "severity": "moderate", "miss": 0.20, "reasoning": "Tertiary — base primitive: CVR 20% below target" }
   ],
@@ -839,15 +839,15 @@ Profile secondary `refund_rate` (miss=1.25, critical) is deprioritised because p
     "excluded_metrics": []
   },
   "funnel_metrics": {
-    "traffic": { "target": 15000, "actual": 12000, "delta_pct": -20.0, "miss": 0.20, "stage": "S6B", "direction": "higher_is_better", "metric_class": "primitive" },
+    "traffic": { "target": 15000, "actual": 12000, "delta_pct": -20.0, "miss": 0.20, "stage": "SELL-01", "direction": "higher_is_better", "metric_class": "primitive" },
     "cvr": { "target": 0.025, "actual": 0.019, "delta_pct": -24.0, "miss": 0.24, "stage": "S3", "direction": "higher_is_better", "metric_class": "primitive" },
-    "aov": { "target": 95, "actual": 92, "delta_pct": -3.2, "miss": 0.032, "stage": "S2B", "direction": "higher_is_better", "metric_class": "primitive" },
-    "cac": { "target": 35, "actual": 32, "delta_pct": -8.6, "miss": 0.0, "stage": "S6B", "direction": "lower_is_better", "metric_class": "primitive" }
+    "aov": { "target": 95, "actual": 92, "delta_pct": -3.2, "miss": 0.032, "stage": "MARKET-06", "direction": "higher_is_better", "metric_class": "primitive" },
+    "cac": { "target": 35, "actual": 32, "delta_pct": -8.6, "miss": 0.0, "stage": "SELL-01", "direction": "lower_is_better", "metric_class": "primitive" }
   },
   "profile_funnel_metrics": {
     "page_to_atc_rate": { "target": 0.12, "actual": 0.07, "delta_pct": -41.7, "miss": 0.417, "stage": "S3", "direction": "higher_is_better", "metric_class": "primitive" },
     "checkout_completion_rate": { "target": 0.70, "actual": 0.58, "delta_pct": -17.1, "miss": 0.171, "stage": "S3", "direction": "higher_is_better", "metric_class": "primitive" },
-    "cac_by_cohort": { "target": 45, "actual": 38, "delta_pct": -15.6, "miss": 0.0, "stage": "S6B", "direction": "lower_is_better", "metric_class": "primitive" },
+    "cac_by_cohort": { "target": 45, "actual": 38, "delta_pct": -15.6, "miss": 0.0, "stage": "SELL-01", "direction": "lower_is_better", "metric_class": "primitive" },
     "refund_rate": { "target": 0.04, "actual": 0.09, "delta_pct": 125.0, "miss": 1.25, "stage": "S10", "direction": "lower_is_better", "metric_class": "derived" },
     "support_load_per_100_orders": { "target": 8, "actual": 14, "delta_pct": 75.0, "miss": 0.75, "stage": "S10", "direction": "lower_is_better", "metric_class": "derived" },
     "repeat_purchase_rate": { "target": 0.30, "actual": 0.22, "delta_pct": -26.7, "miss": 0.267, "stage": "S10", "direction": "higher_is_better", "metric_class": "derived" }
@@ -870,7 +870,7 @@ Profile secondary `refund_rate` (miss=1.25, critical) is deprioritised because p
   "comparison_to_prior_run": {
     "prior_run_id": "SFS-HEAD-20260210-1400",
     "constraint_changed": true,
-    "prior_constraint_key": "S6B/traffic",
+    "prior_constraint_key": "SELL-01/traffic",
     "metric_trends": {
       "traffic": "improving",
       "cvr": "stable",
@@ -1120,9 +1120,9 @@ The trigger auto-resolves after `autoResolveAfterNonPersistentRuns` consecutive 
   "reopened_count": 0,
   "last_reopened_at": null,
   "constraint": {
-    "constraint_key": "S6B/cac",
+    "constraint_key": "SELL-01/cac",
     "constraint_type": "metric",
-    "stage": "S6B",
+    "stage": "SELL-01",
     "metric": "cac",
     "reason_code": null,
     "severity": "moderate"
@@ -1167,9 +1167,9 @@ The trigger auto-resolves after `autoResolveAfterNonPersistentRuns` consecutive 
   "reopened_count": 1,
   "last_reopened_at": "2026-02-13T14:20:00Z",
   "constraint": {
-    "constraint_key": "S2B/aov",
+    "constraint_key": "MARKET-06/aov",
     "constraint_type": "metric",
-    "stage": "S2B",
+    "stage": "MARKET-06",
     "metric": "aov",
     "reason_code": null,
     "severity": "moderate"
@@ -1195,7 +1195,7 @@ The trigger auto-resolves after `autoResolveAfterNonPersistentRuns` consecutive 
     }
   ],
   "reason": "Average order value (AOV) has returned as the primary bottleneck after previous resolution. This is the 2nd occurrence of this constraint pattern, suggesting the prior intervention may not have been sustainable or the constraint has new root causes.",
-  "recommended_focus": "Re-evaluate offer design and bundling strategy. Compare current AOV drivers to those from the previous occurrence. Consider whether market conditions or product mix have changed. See S2B (Offer design) artifacts for detailed analysis.",
+  "recommended_focus": "Re-evaluate offer design and bundling strategy. Compare current AOV drivers to those from the previous occurrence. Consider whether market conditions or product mix have changed. See MARKET-06 (Offer design) artifacts for detailed analysis.",
   "min_severity": "moderate",
   "persistence_threshold": 3
 }
@@ -1229,7 +1229,7 @@ The trigger auto-resolves after `autoResolveAfterNonPersistentRuns` consecutive 
 
 **Final ranking:**
 1. **`S3/cvr`** (0.50, critical) — primary bottleneck
-2. `S6B/traffic` (0.15, minor) — secondary concern
+2. `SELL-01/traffic` (0.15, minor) — secondary concern
 3. `S10/orders` (0.574, critical) — derived outcome (symptom)
 4. `S10/revenue` (0.588, critical) — derived outcome (symptom)
 
@@ -1266,13 +1266,13 @@ The trigger auto-resolves after `autoResolveAfterNonPersistentRuns` consecutive 
 **Ranking logic:**
 1. Both `traffic` and `cvr` have identical miss (0.30).
 2. Apply tiebreaker: earlier stage in `upstream_priority_order`.
-3. `upstream_priority_order`: `..., S3, S6B, ...`
-4. `cvr` is at stage `S3`, `traffic` is at stage `S6B`.
-5. `S3` precedes `S6B` → select `cvr`.
+3. `upstream_priority_order`: `..., S3, SELL-01, ...`
+4. `cvr` is at stage `S3`, `traffic` is at stage `SELL-01`.
+5. `S3` precedes `SELL-01` → select `cvr`.
 
 **Final ranking:**
 1. **`S3/cvr`** (0.30, moderate) — primary bottleneck (tiebreak by upstream priority)
-2. `S6B/traffic` (0.30, moderate) — alternative bottleneck
+2. `SELL-01/traffic` (0.30, moderate) — alternative bottleneck
 
 ### Example D: Multiple Blocked Stages
 

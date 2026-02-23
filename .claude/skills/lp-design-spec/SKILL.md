@@ -44,7 +44,7 @@ No argument — presents the app-to-business mapping and asks what you're design
 /lp-design-spec --bootstrap <BIZ-CODE>
 ```
 
-Runs GATE-BD-07 pre-flight for the business unit without producing a feature design spec. Blocks and redirects to `/lp-brand-bootstrap <BIZ>` if Brand Dossier is not Active. Use when checking brand-dossier readiness before onboarding a new business.
+Runs GATE-BD-07 pre-flight for the business unit without producing a feature design spec. Blocks and redirects to `/lp-assessment-bootstrap <BIZ>` if Brand Dossier is not Active. Use when checking brand-dossier readiness before onboarding a new business.
 
 ## Inputs
 
@@ -164,8 +164,8 @@ Define:
 - **PASS** (Status == Active): proceed to Step 7.
 - **FAIL** (missing or Status != Active): **STOP immediately.**
   - Error: `GATE-BD-07: Brand Dossier must be Active before running design spec.`
-  - Remediation: `Run /lp-do-brand-02-brand-identity --business <BIZ> to create the Brand Dossier, then have the operator promote it to Active before re-running /lp-design-spec.`
-  - Do NOT create or populate brand-dossier.user.md from within this skill. That is the job of `/lp-brand-bootstrap`.
+  - Remediation: `Run /lp-do-assessment-11-brand-identity --business <BIZ> to create the Brand Dossier, then have the operator promote it to Active before re-running /lp-design-spec.`
+  - Do NOT create or populate brand-dossier.user.md from within this skill. That is the job of `/lp-assessment-bootstrap`.
 
 **Note:** GATE-BD-01 at S1 advance requires brand-dossier at Draft minimum. GATE-BD-07 here requires Active. The gap (Draft → Active) is the operator's responsibility before running lp-design-spec.
 
@@ -365,7 +365,7 @@ This creates a virtuous cycle: each design spec strengthens the brand language, 
 >
 > **Current Status:** `docs/business-os/strategy/{BIZ}/brand-dossier.user.md` is missing or Status ≠ Active.
 >
-> **Remediation:** Run `/lp-do-brand-02-brand-identity --business {BIZ}` to create the Brand Dossier, then promote to Active before re-running `/lp-design-spec`.
+> **Remediation:** Run `/lp-do-assessment-11-brand-identity --business {BIZ}` to create the Brand Dossier, then promote to Active before re-running `/lp-design-spec`.
 
 ## Red Flags (Invalid Run)
 

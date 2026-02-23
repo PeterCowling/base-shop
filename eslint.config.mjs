@@ -148,6 +148,10 @@ export default [
       "react-hooks/unsupported-syntax": "off",
       "react-hooks/use-memo": "off",
       "react-hooks/preserve-manual-memoization": "off",
+      // React Compiler warns about libraries that return non-memoizable values (e.g. RHF watch(),
+      // tanstack-table). These are well-established libraries with intentional patterns; the
+      // warnings are informational, not actionable without replacing those libraries.
+      "react-hooks/incompatible-library": "off",
     },
   },
 
@@ -210,6 +214,30 @@ export default [
     ],
     rules: {
       "security/detect-non-literal-fs-filename": "off",
+    },
+  },
+  /* ▸ MCP server: suppress security plugin noise (all paths are internal/controlled; no user input) */
+  {
+    files: ["packages/mcp-server/**/*.{ts,tsx,mjs,js,cjs}"],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+      // Pattern `if (true === value)` is a Yoda-style guard, not a timing attack
+      "security/detect-possible-timing-attacks": "off",
+      // Regex patterns are constructed from known arrays/config, not user input
+      "security/detect-non-literal-regexp": "off",
+      "security/detect-unsafe-regex": "off",
+    },
+  },
+  /* ▸ guides-core, lib, guide-system: suppress fs filename noise (paths are internal/controlled) */
+  {
+    files: [
+      "packages/guides-core/**/*.{ts,tsx,js}",
+      "packages/lib/**/*.{ts,tsx,js}",
+      "packages/guide-system/**/*.{ts,tsx,js}",
+    ],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-unsafe-regex": "off",
     },
   },
 

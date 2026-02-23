@@ -22,13 +22,29 @@ Create/enable a Bulk Redirect Rule that references this list with permanent redi
 
 ## Execution Status
 
-- `TASK-01c` preflight is complete and found no Brikette Pages Functions shadowing risk in the repo-managed deployment path.
-- `TASK-01b` root redirect normalization is complete in source (`/  /en  301`).
-- Bulk Redirect configuration is still pending operator Cloudflare access.
+- `TASK-01a` completed on 2026-02-22 via Cloudflare API (account-level Bulk Redirects).
+- Redirect List created:
+  - `list_name=brikette_www_to_apex`
+  - `list_id=a0ea9ccf37284ee1923a6121922af712`
+  - `kind=redirect`
+- Redirect List item configured:
+  - `source_url=www.hostel-positano.com/`
+  - `target_url=https://hostel-positano.com`
+  - `status_code=301`
+  - `include_subdomains=false`
+  - `subpath_matching=true`
+  - `preserve_path_suffix=true`
+  - `preserve_query_string=true`
+- Redirect entrypoint rule created and enabled:
+  - `ruleset_id=418b67f09e0340dbb49919915e2cf175`
+  - `rule_id=54a6c9f6fc5d4f9ea7f7be4c4d514b8f`
+  - `rule_ref=brikette_www_to_apex`
+  - `expression=http.request.full_uri in $brikette_www_to_apex`
+  - `action_parameters.from_list={name: brikette_www_to_apex, key: http.request.full_uri}`
+- Task-level outcome: www host normalization is live.
+- TASK-01 atomicity status: satisfied in production after TASK-01b deployment; root chain now has no `302`.
 
 ## Validation Commands (post-change)
-
-Run after enabling the rule:
 
 ```bash
 curl -IL https://www.hostel-positano.com/
@@ -37,20 +53,44 @@ curl -IL https://www.hostel-positano.com/en/rooms
 curl -IL 'http://www.hostel-positano.com/en/rooms?ref=test'
 ```
 
-Expected:
+## Validation Output Excerpts (2026-02-22)
 
-- first hop is permanent host normalization to apex
-- path/query are preserved
-- no `302` in the chain
-- with TASK-01b live, `/` end-to-end resolves to `https://hostel-positano.com/en` in <=2 permanent hops and final `200`
+```text
+=== https://www.hostel-positano.com/ ===
+HTTP/2 301
+location: https://hostel-positano.com/
+HTTP/2 301
+location: /en
+HTTP/2 200
+```
+
+```text
+=== https://www.hostel-positano.com/en ===
+HTTP/2 301
+location: https://hostel-positano.com/en
+HTTP/2 200
+```
+
+```text
+=== https://www.hostel-positano.com/en/rooms ===
+HTTP/2 301
+location: https://hostel-positano.com/en/rooms
+HTTP/2 200
+```
+
+```text
+=== http://www.hostel-positano.com/en/rooms?ref=test ===
+HTTP/1.1 301 Moved Permanently
+Location: https://hostel-positano.com/en/rooms?ref=test
+HTTP/2 200
+```
 
 ## Evidence to Attach
 
-- screenshot of Bulk Redirect List entry
-- screenshot of enabled Bulk Redirect Rule
+- Cloudflare API evidence (list ID, list item values, ruleset ID, rule ID, enabled state)
 - command output excerpts for the four validation probes above
 
 ## Notes
 
 - This task is dashboard/API-driven and cannot be completed from repository edits alone.
-- `wrangler whoami` did not return a usable authenticated result in this runtime, so dashboard execution remains operator-side.
+- `wrangler whoami` is authenticated, but OAuth scopes did not include account ruleset/list write; execution used the account token that had required permissions.

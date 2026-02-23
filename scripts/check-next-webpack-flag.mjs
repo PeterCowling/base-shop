@@ -25,6 +25,10 @@ const APP_COMMAND_POLICY_MATRIX = Object.freeze({
     dev: RULE_ALLOW_ANY,
     build: RULE_ALLOW_ANY,
   }),
+  reception: Object.freeze({
+    dev: RULE_ALLOW_ANY,
+    build: RULE_ALLOW_ANY,
+  }),
 });
 
 const WORKFLOW_APP_MATRIX = Object.freeze({

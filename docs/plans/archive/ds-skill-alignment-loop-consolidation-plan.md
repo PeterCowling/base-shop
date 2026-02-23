@@ -406,7 +406,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **What would make this ≥90%:** Run on BRIK (website-live) and HEAD (pre-website) to validate both modes
 - **Rollout / rollback:** New file / delete directory
 - **Documentation impact:** None
-- **Notes:** Replaces the manual S1B template-based process. The existing template at `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md` should be referenced as input pattern.
+- **Notes:** Replaces the manual S1B template-based process. The existing template at `docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md` should be referenced as input pattern.
 
 #### Build Completion (2026-02-13)
 - **Status:** Complete

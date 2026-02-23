@@ -100,114 +100,133 @@ function sanitiseItems(
     .filter((e): e is TocItem => Boolean(e));
 }
 
-function buildFromTranslator(ctx: GuideSeoTemplateContext): TocItem[] {
-  let explicitEmptyPrimary = false;
-  let primary: unknown;
+function asRecord(value: unknown): Record<string, unknown> | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  return value as Record<string, unknown>;
+}
+
+function normalizeLabelValue(value: unknown): string {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function debugToc(tag: string, err: unknown): void {
+  if (IS_DEV) console.debug(`[toc] ${tag}`, err);
+}
+
+function getFallbackTocObject(ctx: GuideSeoTemplateContext, options: TOptions): Record<string, unknown> | null {
   try {
-    const opts: TOptions = { returnObjects: true };
-    primary = ctx.translator(`content.${ctx.guideKey}.toc`, opts);
-    if (Array.isArray(primary) && primary.length === 0) {
-      explicitEmptyPrimary = true;
-    }
-    // Support object-shaped toc configs (e.g., { onThisPage, overview, dayByDay, tips, faqs, ... })
-    // by converting them into an ordered array of items. This matches tests that
-    // seed toc objects instead of arrays for itinerary-style guides.
-    if (primary && typeof primary === 'object' && !Array.isArray(primary)) {
-      const obj = primary as Record<string, unknown>;
-      const fallbackRaw = (() => {
-        try {
-          if (typeof ctx.translateGuides === 'function') {
-            return ctx.translateGuides(`content.${ctx.guideKey}.toc`, opts) as unknown;
-          }
-        } catch (err) {
-          if (IS_DEV) console.debug("[toc] translateGuides toc", err);
-        }
-        return undefined;
-      })();
-      const fallbackObj = fallbackRaw && typeof fallbackRaw === 'object' && !Array.isArray(fallbackRaw)
-        ? (fallbackRaw as Record<string, unknown>)
-        : undefined;
-      const itemsFromObject: TocItem[] = Object.entries(obj)
-        .filter(([key]) => key !== 'onThisPage' && key !== 'title')
-        .map(([key, value], index) => {
-          const normalise = (input: unknown): string => (typeof input === 'string' ? input.trim() : '');
-          let label = normalise(value);
-          if (!label && fallbackObj && key in fallbackObj) {
-            label = normalise(fallbackObj[key]);
-          }
-          if (!label) return null;
-          // Use a stable synthetic anchor; downstream sanitisation will keep
-          // explicit anchors and only backfill derived anchors when valid.
-          const href = `#s-${index}`;
-          return { href, label } as TocItem;
-        })
-        .filter((x): x is TocItem => x != null);
-      if (fallbackObj) {
-        const normalise = (input: unknown): string => (typeof input === 'string' ? input.trim() : '');
-        const existingKeys = new Set(
-          Object.keys(obj).filter((key) => key !== 'onThisPage' && key !== 'title'),
-        );
-        const appended = Object.entries(fallbackObj)
-          .filter(([key]) => key !== 'onThisPage' && key !== 'title' && !existingKeys.has(key))
-          .map(([key, value]) => {
-            const label = normalise(value);
-            if (!label) return null;
-            return { href: `#fb-${key}`, label } as TocItem;
-          })
-          .filter((entry): entry is TocItem => entry != null);
-        if (appended.length > 0) {
-          itemsFromObject.push(...appended);
-        }
-      }
-      if (itemsFromObject.length > 0) return maybeAppendFaq(ctx, itemsFromObject);
-    }
-    const items = sanitiseItems(primary as unknown, ctx.sections);
-      if (items.length > 0) {
-        // Backfill any missing section anchors with meaningful titles/bodies
-        const anchors = new Set(items.map((i) => i.href));
-        const extras = (Array.isArray(ctx.sections) ? ctx.sections : [])
-          .filter(
-            (s) =>
-            isMeaningfulString(s?.id) &&
-            isMeaningfulString(s?.title) &&
-            Array.isArray(s?.body) &&
-            s.body.length > 0 &&
-            !anchors.has(`#${s.id!.trim()}`),
-        )
-        .map((s) => ({ href: `#${s.id!.trim()}`, label: s.title!.trim() } satisfies TocItem));
-      return dedupeTocItems(items.concat(extras));
-      }
-    } catch (err) {
-      if (IS_DEV) console.debug("[toc] localized toc", err);
-    }
-  if (explicitEmptyPrimary) return [];
-  // Only probe fallback sources when the active locale lacks structured
-  // content. When localized content exists, avoid invoking translateGuides
-  // so tests can assert no getFixedT usage for the active locale.
-  // Additionally, do not derive fallback ToC items for the English locale
-  // in test scenarios where translators return empty arrays; tests expect
-  // no ToC when EN provides no structured arrays.
-  if (!ctx.hasLocalizedContent) {
-    if (ctx.lang === 'en') {
-      return [];
-    }
-    let explicitEmptyFallback = false;
-    try {
-      const opts: TOptions = { returnObjects: true };
-      const fb = typeof ctx.translateGuides === "function"
-        ? ctx.translateGuides(`content.${ctx.guideKey}.toc`, opts)
-        : undefined;
-      if (Array.isArray(fb) && fb.length === 0) {
-        explicitEmptyFallback = true;
-      }
-      const items = sanitiseItems(fb as unknown, ctx.sections);
-      if (items.length > 0) return dedupeTocItems(items);
-    } catch (err) {
-      if (IS_DEV) console.debug("[toc] fallback toc", err);
-    }
-    if (explicitEmptyFallback) return [];
+    if (typeof ctx.translateGuides !== "function") return null;
+    return asRecord(ctx.translateGuides(`content.${ctx.guideKey}.toc`, options));
+  } catch (err) {
+    debugToc("translateGuides toc", err);
+    return null;
   }
-  return [];
+}
+
+function buildItemsFromObjectToc(
+  objectToc: Record<string, unknown>,
+  fallbackToc: Record<string, unknown> | null,
+): TocItem[] {
+  const objectEntries = Object.entries(objectToc).filter(([key]) => key !== "onThisPage" && key !== "title");
+  const items: TocItem[] = objectEntries
+    .map(([key, value], index) => {
+      let label = normalizeLabelValue(value);
+      if (!label && fallbackToc && key in fallbackToc) {
+        label = normalizeLabelValue(fallbackToc[key]);
+      }
+      if (!label) return null;
+      return { href: `#s-${index}`, label } as TocItem;
+    })
+    .filter((entry): entry is TocItem => entry != null);
+
+  if (!fallbackToc) return items;
+
+  const existingKeys = new Set(objectEntries.map(([key]) => key));
+  const fallbackOnlyItems = Object.entries(fallbackToc)
+    .filter(([key]) => key !== "onThisPage" && key !== "title" && !existingKeys.has(key))
+    .map(([key, value]) => {
+      const label = normalizeLabelValue(value);
+      if (!label) return null;
+      return { href: `#fb-${key}`, label } as TocItem;
+    })
+    .filter((entry): entry is TocItem => entry != null);
+
+  if (fallbackOnlyItems.length > 0) items.push(...fallbackOnlyItems);
+  return items;
+}
+
+function appendMissingSectionAnchors(ctx: GuideSeoTemplateContext, items: TocItem[]): TocItem[] {
+  if (items.length === 0) return items;
+  const anchors = new Set(items.map((item) => item.href));
+  const extras = (Array.isArray(ctx.sections) ? ctx.sections : [])
+    .filter(
+      (section) =>
+        isMeaningfulString(section?.id) &&
+        isMeaningfulString(section?.title) &&
+        Array.isArray(section?.body) &&
+        section.body.length > 0 &&
+        !anchors.has(`#${section.id!.trim()}`),
+    )
+    .map((section) => ({ href: `#${section.id!.trim()}`, label: section.title!.trim() } satisfies TocItem));
+  return dedupeTocItems(items.concat(extras));
+}
+
+function resolvePrimaryTranslatorToc(
+  ctx: GuideSeoTemplateContext,
+): { explicitEmptyPrimary: boolean; primary: unknown; objectItems: TocItem[] } {
+  const options: TOptions = { returnObjects: true };
+  let explicitEmptyPrimary = false;
+  const primary = ctx.translator(`content.${ctx.guideKey}.toc`, options);
+  if (Array.isArray(primary) && primary.length === 0) {
+    explicitEmptyPrimary = true;
+  }
+
+  const objectToc = asRecord(primary);
+  if (!objectToc) {
+    return { explicitEmptyPrimary, primary, objectItems: [] };
+  }
+
+  const fallbackObject = getFallbackTocObject(ctx, options);
+  const objectItems = buildItemsFromObjectToc(objectToc, fallbackObject);
+  return { explicitEmptyPrimary, primary, objectItems };
+}
+
+function resolveUnlocalizedFallbackToc(ctx: GuideSeoTemplateContext): TocItem[] {
+  if (ctx.hasLocalizedContent || ctx.lang === "en") return [];
+
+  let explicitEmptyFallback = false;
+  try {
+    const options: TOptions = { returnObjects: true };
+    const fallbackRaw =
+      typeof ctx.translateGuides === "function"
+        ? ctx.translateGuides(`content.${ctx.guideKey}.toc`, options)
+        : undefined;
+    if (Array.isArray(fallbackRaw) && fallbackRaw.length === 0) {
+      explicitEmptyFallback = true;
+    }
+    const fallbackItems = sanitiseItems(fallbackRaw as unknown, ctx.sections);
+    if (fallbackItems.length > 0) return dedupeTocItems(fallbackItems);
+  } catch (err) {
+    debugToc("fallback toc", err);
+  }
+  return explicitEmptyFallback ? [] : [];
+}
+
+function buildFromTranslator(ctx: GuideSeoTemplateContext): TocItem[] {
+  try {
+    const { explicitEmptyPrimary, primary, objectItems } = resolvePrimaryTranslatorToc(ctx);
+    if (objectItems.length > 0) return maybeAppendFaq(ctx, objectItems);
+
+    const itemsFromPrimary = sanitiseItems(primary as unknown, ctx.sections);
+    if (itemsFromPrimary.length > 0) {
+      return appendMissingSectionAnchors(ctx, itemsFromPrimary);
+    }
+
+    if (explicitEmptyPrimary) return [];
+  } catch (err) {
+    debugToc("localized toc", err);
+  }
+  return resolveUnlocalizedFallbackToc(ctx);
 }
 
 function buildFromSections(ctx: GuideSeoTemplateContext): TocItem[] {
@@ -226,125 +245,148 @@ function buildFromSections(ctx: GuideSeoTemplateContext): TocItem[] {
 
 function maybeAppendFaq(ctx: GuideSeoTemplateContext, items: TocItem[]): TocItem[] {
   const list = Array.isArray(items) ? items.slice() : [];
-  // Prefer localized FAQs presence first
-  let hasFaqs = Array.isArray(ctx.faqs) && ctx.faqs.length > 0;
-  // When there are no provided items (no custom ToC) and the page is
-  // unlocalized, allow a curated fallback FAQ summary/answer to trigger the
-  // FAQs anchor. This matches tests that expect a fallback-derived FAQ entry
-  // even when structured arrays are absent. Do not do this for English to
-  // respect tests that expect no ToC when EN translations are empty.
-  if (!hasFaqs && !ctx.hasLocalizedContent && list.length === 0 && ctx.lang !== 'en') {
-    try {
-      const summary = ctx.translateGuides(`content.${ctx.guideKey}.fallback.faq.summary`) as unknown;
-      const answer = ctx.translateGuides(`content.${ctx.guideKey}.fallback.faq.answer`) as unknown;
-      const isMeaningful = (val: unknown, key: string) => {
-        if (typeof val !== 'string') return false;
-        const s = val.trim();
-        return s.length > 0 && s !== key && s !== ctx.guideKey;
-      };
-      if (
-        isMeaningful(summary, `content.${ctx.guideKey}.fallback.faq.summary`) ||
-        isMeaningful(answer, `content.${ctx.guideKey}.fallback.faq.answer`)
-      ) {
-        hasFaqs = true;
-      }
-    } catch (err) {
-      if (IS_DEV) console.debug("[toc] hasFaqs check", err);
-    }
-  }
+  const hasFaqs = hasFaqContentForToc(ctx, list);
   if (!hasFaqs) return list;
   const already = list.some((it) => it.href === "#faqs");
   if (already) return list;
-  const label = (() => {
-    // Try per‑guide explicit FAQs title first (localized), then fall back to
-    // English per‑guide title when the localized key is blank or placeholder.
-    try {
-      const rLocal = ctx.translator(`content.${ctx.guideKey}.faqsTitle`) as unknown;
-      if (isMeaningfulString(rLocal) && rLocal !== `content.${ctx.guideKey}.faqsTitle`) return rLocal.trim();
-    } catch (err) { if (IS_DEV) console.debug("[toc] faqsTitle local", err); }
-    try {
-      const rEn = typeof ctx.translateGuides === "function"
-        ? (ctx.translateGuides(`content.${ctx.guideKey}.faqsTitle`) as unknown)
-        : undefined;
-      if (isMeaningfulString(rEn) && rEn !== `content.${ctx.guideKey}.faqsTitle`) return rEn.trim();
-    } catch (err) { if (IS_DEV) console.debug("[toc] faqsTitle EN", err); }
-    // When localized structured content exists, avoid probing per‑guide
-    // keys that might trigger fallback translators. Prefer a generic
-    // localized FAQs label or a simple default.
-    if (ctx.hasLocalizedContent) {
-      try {
-        const l1 = ctx.translator("labels.faqsHeading") as unknown;
-        if (isMeaningfulString(l1) && l1 !== "labels.faqsHeading") return l1.trim();
-      } catch (err) { if (IS_DEV) console.debug("[toc] faqsHeading", err); }
-      return "FAQs";
-    }
-    // Unlocalized path: consult per‑guide labels and fallbacks.
-    try {
-      const rawTitle = ctx.translator(`content.${ctx.guideKey}.faqsTitle`) as unknown;
-      if (
-        isMeaningfulString(rawTitle) &&
-        rawTitle !== `content.${ctx.guideKey}.faqsTitle` &&
-        rawTitle.trim() !== ctx.guideKey
-      )
-        return rawTitle.trim();
-    } catch (err) { if (IS_DEV) console.debug("[toc] faqsTitle unlocalized", err); }
-    try {
-      const rawTitleEn = typeof ctx.translateGuides === "function"
-        ? (ctx.translateGuides(`content.${ctx.guideKey}.faqsTitle`) as unknown)
-        : undefined;
-      if (
-        isMeaningfulString(rawTitleEn) &&
-        rawTitleEn !== `content.${ctx.guideKey}.faqsTitle` &&
-        rawTitleEn.trim() !== ctx.guideKey
-      )
-        return rawTitleEn.trim();
-    } catch (err) { if (IS_DEV) console.debug("[toc] faqsTitle EN unlocalized", err); }
-    // 0) Prefer per‑guide fallback label when provided
-    try {
-      const rawLocal = ctx.translator(`content.${ctx.guideKey}.fallback.faqLabel`) as unknown;
-      if (
-        isMeaningfulString(rawLocal) &&
-        rawLocal !== `content.${ctx.guideKey}.fallback.faqLabel` &&
-        rawLocal.trim() !== ctx.guideKey
-      )
-        return rawLocal.trim();
-    } catch (err) { if (IS_DEV) console.debug("[toc] fallback.faqLabel local", err); }
-    if (ctx.lang !== 'en') {
-      try {
-        const rawEn = typeof ctx.translateGuides === "function"
-          ? (ctx.translateGuides(`content.${ctx.guideKey}.fallback.faqLabel`) as unknown)
-          : undefined;
-        if (
-          isMeaningfulString(rawEn) &&
-          rawEn !== `content.${ctx.guideKey}.fallback.faqLabel` &&
-          rawEn.trim() !== ctx.guideKey
-        )
-          return rawEn.trim();
-      } catch (err) { if (IS_DEV) console.debug("[toc] fallback.faqLabel EN", err); }
-    }
-    try {
-      const raw = ctx.translator(`content.${ctx.guideKey}.toc.faqs`) as unknown;
-      if (isMeaningfulString(raw) && raw !== `content.${ctx.guideKey}.toc.faqs`) return raw.trim();
-    } catch (err) {
-      if (IS_DEV) console.debug("[toc] faqsTitle toc.faqs", err);
-    }
-    // Prefer a localized generic FAQs heading label when available
-    try {
-      const l1 = ctx.translator("labels.faqsHeading") as unknown;
-      if (isMeaningfulString(l1) && l1 !== "labels.faqsHeading") return l1.trim();
-    } catch (err) { if (IS_DEV) console.debug("[toc] faqsHeading label", err); }
-    if (!ctx.hasLocalizedContent) {
-      try {
-        const l2 = typeof ctx.translateGuides === "function"
-          ? (ctx.translateGuides("labels.faqsHeading") as unknown)
-          : undefined;
-        if (isMeaningfulString(l2) && l2 !== "labels.faqsHeading") return (l2 as string).trim();
-      } catch (err) { if (IS_DEV) console.debug("[toc] faqsHeading EN", err); }
-    }
-    return "FAQs";
-  })();
+  const label = resolveFaqTocLabel(ctx);
   list.push({ href: "#faqs", label });
   return list;
+}
+
+type FaqLabelCandidate = {
+  tag: string;
+  disallowGuideKey?: boolean;
+  disallowedValue?: string;
+  read: () => unknown;
+};
+
+function normalizeFaqLabelCandidate(
+  value: unknown,
+  guideKey: string,
+  disallowedValue?: string,
+  disallowGuideKey = false,
+): string | undefined {
+  if (!isMeaningfulString(value)) return undefined;
+  const trimmed = value.trim();
+  if (disallowedValue && trimmed === disallowedValue) return undefined;
+  if (disallowGuideKey && trimmed === guideKey) return undefined;
+  return trimmed;
+}
+
+function resolveFirstFaqLabel(
+  ctx: GuideSeoTemplateContext,
+  candidates: FaqLabelCandidate[],
+): string | undefined {
+  for (const candidate of candidates) {
+    try {
+      const resolved = normalizeFaqLabelCandidate(
+        candidate.read(),
+        ctx.guideKey,
+        candidate.disallowedValue,
+        candidate.disallowGuideKey,
+      );
+      if (resolved) return resolved;
+    } catch (err) {
+      debugToc(candidate.tag, err);
+    }
+  }
+  return undefined;
+}
+
+function resolveFaqTocLabel(ctx: GuideSeoTemplateContext): string {
+  const faqsTitleKey = `content.${ctx.guideKey}.faqsTitle`;
+  const fallbackFaqLabelKey = `content.${ctx.guideKey}.fallback.faqLabel`;
+  const tocFaqsKey = `content.${ctx.guideKey}.toc.faqs`;
+
+  const commonCandidates: FaqLabelCandidate[] = [
+    {
+      tag: "faqsTitle local",
+      disallowedValue: faqsTitleKey,
+      read: () => ctx.translator(faqsTitleKey),
+    },
+    {
+      tag: "faqsTitle EN",
+      disallowedValue: faqsTitleKey,
+      read: () => (typeof ctx.translateGuides === "function" ? ctx.translateGuides(faqsTitleKey) : undefined),
+    },
+  ];
+
+  if (ctx.hasLocalizedContent) {
+    const localized = resolveFirstFaqLabel(ctx, [
+      ...commonCandidates,
+      {
+        tag: "faqsHeading",
+        disallowedValue: "labels.faqsHeading",
+        read: () => ctx.translator("labels.faqsHeading"),
+      },
+    ]);
+    return localized ?? "FAQs";
+  }
+
+  const unlocalizedCandidates: FaqLabelCandidate[] = [
+    ...commonCandidates,
+    {
+      tag: "fallback.faqLabel local",
+      disallowedValue: fallbackFaqLabelKey,
+      disallowGuideKey: true,
+      read: () => ctx.translator(fallbackFaqLabelKey),
+    },
+    ...(ctx.lang !== "en"
+      ? [
+          {
+            tag: "fallback.faqLabel EN",
+            disallowedValue: fallbackFaqLabelKey,
+            disallowGuideKey: true,
+            read: () =>
+              typeof ctx.translateGuides === "function"
+                ? ctx.translateGuides(fallbackFaqLabelKey)
+                : undefined,
+          } satisfies FaqLabelCandidate,
+        ]
+      : []),
+    {
+      tag: "faqsTitle toc.faqs",
+      disallowedValue: tocFaqsKey,
+      read: () => ctx.translator(tocFaqsKey),
+    },
+    {
+      tag: "faqsHeading label",
+      disallowedValue: "labels.faqsHeading",
+      read: () => ctx.translator("labels.faqsHeading"),
+    },
+    {
+      tag: "faqsHeading EN",
+      disallowedValue: "labels.faqsHeading",
+      read: () => (typeof ctx.translateGuides === "function" ? ctx.translateGuides("labels.faqsHeading") : undefined),
+    },
+  ];
+
+  return resolveFirstFaqLabel(ctx, unlocalizedCandidates) ?? "FAQs";
+}
+
+function hasFallbackFaqSignals(ctx: GuideSeoTemplateContext): boolean {
+  try {
+    const summaryKey = `content.${ctx.guideKey}.fallback.faq.summary`;
+    const answerKey = `content.${ctx.guideKey}.fallback.faq.answer`;
+    const summary = ctx.translateGuides(summaryKey) as unknown;
+    const answer = ctx.translateGuides(answerKey) as unknown;
+    const isMeaningful = (value: unknown, key: string): boolean => {
+      if (!isMeaningfulString(value)) return false;
+      const trimmed = value.trim();
+      return trimmed.length > 0 && trimmed !== key && trimmed !== ctx.guideKey;
+    };
+    return isMeaningful(summary, summaryKey) || isMeaningful(answer, answerKey);
+  } catch (err) {
+    debugToc("hasFaqs check", err);
+    return false;
+  }
+}
+
+function hasFaqContentForToc(ctx: GuideSeoTemplateContext, items: TocItem[]): boolean {
+  if (Array.isArray(ctx.faqs) && ctx.faqs.length > 0) return true;
+  if (ctx.hasLocalizedContent || items.length > 0 || ctx.lang === "en") return false;
+  return hasFallbackFaqSignals(ctx);
 }
 
 export function normalizeGuideToc(ctx: GuideSeoTemplateContext, options?: Options): TocItem[] {

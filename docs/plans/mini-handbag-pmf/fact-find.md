@@ -79,7 +79,7 @@ status. No app or fulfillment path has been validated.
   - Three open strategic items: identity separation from XA, offer hypothesis definition,
     execution readiness baseline. All three remain open.
   - No validated opportunities, no metrics baseline, no learnings recorded.
-- Brand dossier: `docs/business-os/strategy/HBAG/brand-dossier.user.md` — Draft, 2026-02-17
+- Brand dossier: `docs/business-os/strategy/HBAG/brand-identity.user.md` — Draft, 2026-02-17
   - All fields TBD pending offer lock. App (cover-me-pretty) not yet built.
   - Audience: "women purchasing handbag accessories" — segment not defined.
   - Gate GATE-BD-01 (Draft minimum, Hard) passes; all other gates still open.

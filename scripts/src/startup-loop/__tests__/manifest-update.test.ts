@@ -9,8 +9,8 @@ import { updateManifest } from "../manifest-update";
  * LPSP-03B: Single-writer manifest update mechanism
  *
  * Tests cover:
- * - VC-03B-01: Parallel completion (S3 + S6B both Done → manifest updated)
- * - VC-03B-02: Upstream failure (S6B Failed → manifest rejected)
+ * - VC-03B-01: Parallel completion (S3 + SELL-01 both Done → manifest updated)
+ * - VC-03B-02: Upstream failure (SELL-01 Failed → manifest rejected)
  * - VC-03B-03: Idempotent re-derivation (same inputs → same manifest)
  */
 
@@ -31,11 +31,11 @@ function makeStageResult(overrides: Record<string, unknown> = {}) {
 }
 
 const S2B_DONE = makeStageResult({
-  stage: "S2B",
+  stage: "MARKET-06",
   status: "Done",
   timestamp: "2026-02-13T12:02:00Z",
   produced_keys: ["offer"],
-  artifacts: { offer: "stages/S2B/offer.md" },
+  artifacts: { offer: "stages/MARKET-06/offer.md" },
 });
 
 const S3_DONE = makeStageResult({
@@ -47,19 +47,19 @@ const S3_DONE = makeStageResult({
 });
 
 const S6B_DONE = makeStageResult({
-  stage: "S6B",
+  stage: "SELL-01",
   status: "Done",
   timestamp: "2026-02-13T12:05:00Z",
   produced_keys: ["channels", "seo", "outreach"],
   artifacts: {
-    channels: "stages/S6B/channels.md",
-    seo: "stages/S6B/seo.md",
-    outreach: "stages/S6B/outreach.md",
+    channels: "stages/SELL-01/channels.md",
+    seo: "stages/SELL-01/seo.md",
+    outreach: "stages/SELL-01/outreach.md",
   },
 });
 
 const S6B_FAILED = makeStageResult({
-  stage: "S6B",
+  stage: "SELL-01",
   status: "Failed",
   timestamp: "2026-02-13T12:05:00Z",
   error: "lp-channels failed: missing market intelligence input",
@@ -69,7 +69,7 @@ const S3_BLOCKED = makeStageResult({
   stage: "S3",
   status: "Blocked",
   timestamp: "2026-02-13T12:04:00Z",
-  blocking_reason: "Required input missing: S2B offer artifact",
+  blocking_reason: "Required input missing: MARKET-06 offer artifact",
 });
 
 // -- Test setup --
@@ -97,14 +97,14 @@ afterEach(async () => {
 });
 
 describe("updateManifest", () => {
-  // VC-03B-01: Simulated parallel completion — write S3 and S6B stage results
+  // VC-03B-01: Simulated parallel completion — write S3 and SELL-01 stage results
   // concurrently → S4 merge consumes both deterministically and manifest artifact
   // pointers are correct.
   describe("VC-03B-01: parallel completion", () => {
     it("creates manifest when all required stages are Done", async () => {
-      await writeStageResult("S2B", S2B_DONE);
+      await writeStageResult("MARKET-06", S2B_DONE);
       await writeStageResult("S3", S3_DONE);
-      await writeStageResult("S6B", S6B_DONE);
+      await writeStageResult("SELL-01", S6B_DONE);
 
       const result = await updateManifest(runDir, {
         run_id: "SFS-TEST-20260213-1200",
@@ -127,27 +127,27 @@ describe("updateManifest", () => {
 
       // All artifact pointers collected
       expect(manifest.artifacts).toEqual({
-        "S2B/offer": "stages/S2B/offer.md",
+        "MARKET-06/offer": "stages/MARKET-06/offer.md",
         "S3/forecast": "stages/S3/forecast.md",
-        "S6B/channels": "stages/S6B/channels.md",
-        "S6B/outreach": "stages/S6B/outreach.md",
-        "S6B/seo": "stages/S6B/seo.md",
+        "SELL-01/channels": "stages/SELL-01/channels.md",
+        "SELL-01/outreach": "stages/SELL-01/outreach.md",
+        "SELL-01/seo": "stages/SELL-01/seo.md",
       });
 
       // Stage completions recorded
-      expect(manifest.stage_completions.S2B.status).toBe("Done");
+      expect(manifest.stage_completions["MARKET-06"].status).toBe("Done");
       expect(manifest.stage_completions.S3.status).toBe("Done");
-      expect(manifest.stage_completions.S6B.status).toBe("Done");
+      expect(manifest.stage_completions["SELL-01"].status).toBe("Done");
     });
   });
 
-  // VC-03B-02: Simulated upstream failure — S3 completes, S6B fails → manifest
-  // update blocked with explicit reason referencing S6B failure.
+  // VC-03B-02: Simulated upstream failure — S3 completes, SELL-01 fails → manifest
+  // update blocked with explicit reason referencing SELL-01 failure.
   describe("VC-03B-02: upstream failure rejection", () => {
     it("rejects when a required stage has Failed", async () => {
-      await writeStageResult("S2B", S2B_DONE);
+      await writeStageResult("MARKET-06", S2B_DONE);
       await writeStageResult("S3", S3_DONE);
-      await writeStageResult("S6B", S6B_FAILED);
+      await writeStageResult("SELL-01", S6B_FAILED);
 
       const result = await updateManifest(runDir, {
         run_id: "SFS-TEST-20260213-1200",
@@ -158,14 +158,14 @@ describe("updateManifest", () => {
       expect(result.success).toBe(false);
       if (result.success) return;
 
-      expect(result.failed_stages).toContain("S6B");
-      expect(result.reason).toMatch(/S6B/);
+      expect(result.failed_stages).toContain("SELL-01");
+      expect(result.reason).toMatch(/SELL-01/);
     });
 
     it("rejects when a required stage is Blocked", async () => {
-      await writeStageResult("S2B", S2B_DONE);
+      await writeStageResult("MARKET-06", S2B_DONE);
       await writeStageResult("S3", S3_BLOCKED);
-      await writeStageResult("S6B", S6B_DONE);
+      await writeStageResult("SELL-01", S6B_DONE);
 
       const result = await updateManifest(runDir, {
         run_id: "SFS-TEST-20260213-1200",
@@ -180,9 +180,9 @@ describe("updateManifest", () => {
     });
 
     it("rejects when a required stage result is missing", async () => {
-      await writeStageResult("S2B", S2B_DONE);
+      await writeStageResult("MARKET-06", S2B_DONE);
       await writeStageResult("S3", S3_DONE);
-      // S6B missing entirely
+      // SELL-01 missing entirely
 
       const result = await updateManifest(runDir, {
         run_id: "SFS-TEST-20260213-1200",
@@ -193,15 +193,15 @@ describe("updateManifest", () => {
       expect(result.success).toBe(false);
       if (result.success) return;
 
-      expect(result.missing_stages).toContain("S6B");
+      expect(result.missing_stages).toContain("SELL-01");
     });
 
     it("rejects when a stage result is malformed", async () => {
-      await writeStageResult("S2B", S2B_DONE);
+      await writeStageResult("MARKET-06", S2B_DONE);
       await writeStageResult("S3", S3_DONE);
 
       // Write malformed JSON
-      const s6bDir = path.join(runDir, "stages", "S6B");
+      const s6bDir = path.join(runDir, "stages", "SELL-01");
       await fs.mkdir(s6bDir, { recursive: true });
       await fs.writeFile(
         path.join(s6bDir, "stage-result.json"),
@@ -217,13 +217,13 @@ describe("updateManifest", () => {
       expect(result.success).toBe(false);
       if (result.success) return;
 
-      expect(result.malformed_stages).toContain("S6B");
+      expect(result.malformed_stages).toContain("SELL-01");
     });
 
     it("does not write manifest file when rejected", async () => {
-      await writeStageResult("S2B", S2B_DONE);
+      await writeStageResult("MARKET-06", S2B_DONE);
       await writeStageResult("S3", S3_DONE);
-      await writeStageResult("S6B", S6B_FAILED);
+      await writeStageResult("SELL-01", S6B_FAILED);
 
       await updateManifest(runDir, {
         run_id: "SFS-TEST-20260213-1200",
@@ -240,9 +240,9 @@ describe("updateManifest", () => {
   // re-running manifest update produces byte-identical manifest pointers.
   describe("VC-03B-03: idempotent re-derivation", () => {
     it("produces identical manifests on repeated invocation", async () => {
-      await writeStageResult("S2B", S2B_DONE);
+      await writeStageResult("MARKET-06", S2B_DONE);
       await writeStageResult("S3", S3_DONE);
-      await writeStageResult("S6B", S6B_DONE);
+      await writeStageResult("SELL-01", S6B_DONE);
 
       const opts = {
         run_id: "SFS-TEST-20260213-1200",
@@ -270,9 +270,9 @@ describe("updateManifest", () => {
     });
 
     it("sorts artifact keys alphabetically for deterministic output", async () => {
-      await writeStageResult("S2B", S2B_DONE);
+      await writeStageResult("MARKET-06", S2B_DONE);
       await writeStageResult("S3", S3_DONE);
-      await writeStageResult("S6B", S6B_DONE);
+      await writeStageResult("SELL-01", S6B_DONE);
 
       await updateManifest(runDir, {
         run_id: "SFS-TEST-20260213-1200",

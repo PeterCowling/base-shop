@@ -81,5 +81,5 @@ DEP capture gaps before `GATE-S6B-ACT-01`:
 ## Context Summary
 
 **Files scanned**: 8
-**Strategy docs found**: 5 (`problem-statement.user.md`, `s0c-option-select.user.md`, `s0e-operator-evidence.user.md`, `2026-02-20-naming-shortlist.user.md`, `brand-dossier.user.md`)
+**Strategy docs found**: 5 (`problem-statement.user.md`, `solution-select.user.md`, `current-situation.user.md`, `2026-02-20-candidate-names.user.md`, `brand-identity.user.md`)
 **Baseline docs found**: 4 (`HBAG-offer.md`, `HBAG-channels.md`, `HBAG-intake-packet.user.md`, `HBAG/demand-evidence-pack.md`)

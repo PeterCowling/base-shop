@@ -36,6 +36,12 @@ import {
 } from "../lib/xaCatalog";
 import { useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
 
+const NAV_LABELS = {
+  newIn: "New In",
+  sale: "Sale",
+  brands: "Brands",
+} as const;
+
 export function XaShell({ children }: { children: ReactNode }) {
   const whatsappHref = siteConfig.showSocialLinks
     ? toWhatsappHref(siteConfig.whatsappNumber) ?? undefined
@@ -141,19 +147,19 @@ export function XaShell({ children }: { children: ReactNode }) {
                     href="/new-in"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
                   >
-                    New In
+                    {NAV_LABELS.newIn}
                   </Link>
                   <Link
                     href="/sale"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
                   >
-                    Sale
+                    {NAV_LABELS.sale}
                   </Link>
                   <Link
                     href="/designers"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
                   >
-                    Brands
+                    {NAV_LABELS.brands}
                   </Link>
                   {categoryLinks.map((link) => (
                     <Link

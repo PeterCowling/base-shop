@@ -33,6 +33,55 @@ interface GetGuideResourceOptions {
   includeFallback?: boolean;
 }
 
+function isMissingTranslationValue<T>(value: T | null | undefined, key: string): boolean {
+  return typeof value === "undefined" || (typeof value === "string" && value === key);
+}
+
+function readFromI18nStore<T>(
+  instance: I18nRuntime,
+  effectiveLang: string,
+  fallbackLang: string,
+  key: string,
+  includeFallback: boolean,
+): T | null | undefined {
+  if (typeof instance.getResource !== "function") return undefined;
+  const localized = instance.getResource(effectiveLang, "guides", key) as T | null | undefined;
+  if (localized === null) return null;
+  if (!isMissingTranslationValue(localized, key)) return localized;
+  if (!includeFallback || effectiveLang === fallbackLang) return undefined;
+  const fromFallback = instance.getResource(fallbackLang, "guides", key) as T | null | undefined;
+  return isMissingTranslationValue(fromFallback, key) ? undefined : fromFallback;
+}
+
+function readFromFixedTranslator<T>(
+  instance: I18nRuntime,
+  effectiveLang: string,
+  key: string,
+): T | undefined {
+  try {
+    const fixed = instance.getFixedT?.(effectiveLang, "guides");
+    if (typeof fixed !== "function") return undefined;
+    const value = fixed(key, { returnObjects: true });
+    return value !== undefined && value !== null && value !== key ? (value as T) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function readFromBundles<T>(
+  effectiveLang: string,
+  fallbackLang: string,
+  key: string,
+  includeFallback: boolean,
+): T | undefined {
+  const localBundle = getGuidesBundle(effectiveLang);
+  const local = readFromBundle<T>(localBundle, key);
+  if (typeof local !== "undefined") return local;
+  if (!includeFallback || effectiveLang === fallbackLang) return undefined;
+  const fallbackBundle = getGuidesBundle(fallbackLang);
+  return readFromBundle<T>(fallbackBundle, key);
+}
+
 const getGuideResource = <T = unknown>(
   lang: string | undefined,
   key: string,
@@ -44,45 +93,16 @@ const getGuideResource = <T = unknown>(
   const fb = getFallbackLanguage();
 
   // 1) Prefer direct i18next store access when available
-  if (typeof instance.getResource === "function") {
-    const localized = instance.getResource(effectiveLang, "guides", key) as T | null | undefined;
-    if (localized === null) return null;
-    // i18next returns the key string itself when translation is missing - treat that as undefined
-    const isKeyFallback = typeof localized === "string" && localized === key;
-    if (typeof localized !== "undefined" && !isKeyFallback) return localized;
-    // Only use English fallback if includeFallback is true
-    if (includeFallback && effectiveLang !== fb) {
-      const fromFb = instance.getResource(fb, "guides", key) as T | null | undefined;
-      const isFbKeyFallback = typeof fromFb === "string" && fromFb === key;
-      if (typeof fromFb !== "undefined" && !isFbKeyFallback) return fromFb;
-    }
-    // Don't return early - fall through to try bundle strategies
-    // This handles the case where the i18n namespace hasn't loaded yet
-  }
+  const fromStore = readFromI18nStore<T>(instance, effectiveLang, fb, key, includeFallback);
+  if (fromStore === null) return null;
+  if (typeof fromStore !== "undefined") return fromStore;
 
   // 2) Try react-i18next fixed translator (works with test mocks); honour returnObjects
-  try {
-    const fixed = instance.getFixedT?.(effectiveLang, "guides");
-    if (typeof fixed === "function") {
-      const value = fixed(key, { returnObjects: true });
-      // getFixedT also returns the key string when translation is missing
-      if (value !== undefined && value !== null && value !== key) return value as T;
-    }
-  } catch {
-    /* ignore and try bundles */
-  }
+  const fromFixedTranslator = readFromFixedTranslator<T>(instance, effectiveLang, key);
+  if (typeof fromFixedTranslator !== "undefined") return fromFixedTranslator;
 
   // 3) Fallback to eager guides bundles (used in tests and SSR environments)
-  const localBundle = getGuidesBundle(effectiveLang);
-  const local = readFromBundle<T>(localBundle, key);
-  if (typeof local !== "undefined") return local;
-  if (!includeFallback) return undefined;
-  if (effectiveLang !== fb) {
-    const enBundle = getGuidesBundle(fb);
-    const fromEn = readFromBundle<T>(enBundle, key);
-    if (typeof fromEn !== "undefined") return fromEn;
-  }
-  return undefined;
+  return readFromBundles<T>(effectiveLang, fb, key, includeFallback);
 };
 
 export default getGuideResource;

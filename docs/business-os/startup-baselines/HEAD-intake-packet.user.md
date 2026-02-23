@@ -6,28 +6,28 @@ Created: 2026-02-12
 Updated: 2026-02-20
 Last-reviewed: 2026-02-20
 Owner: Pete
-Precursor-DISCOVERY-01: 2026-02-20
-Precursor-DISCOVERY-02: 2026-02-20
-Precursor-DISCOVERY-03: 2026-02-20
-Precursor-DISCOVERY-04: 2026-02-20
-Precursor-DISCOVERY-05: (pending — new stage added 2026-02-20; not yet run for HEAD)
-Precursor-DISCOVERY-06: (pending — new stage added 2026-02-20; not yet run for HEAD)
-Precursor-DISCOVERY-07: 2026-02-20
+Precursor-ASSESSMENT-01: 2026-02-20
+Precursor-ASSESSMENT-02: 2026-02-20
+Precursor-ASSESSMENT-03: 2026-02-20
+Precursor-ASSESSMENT-04: 2026-02-20
+Precursor-ASSESSMENT-06: (pending — new stage added 2026-02-20; not yet run for HEAD)
+Precursor-ASSESSMENT-07: (pending — new stage added 2026-02-20; not yet run for HEAD)
+Precursor-ASSESSMENT-08: 2026-02-20
 Precursor-sync-date: 2026-02-20
-Source-DISCOVERY-01: docs/business-os/strategy/HEAD/problem-statement.user.md
-Source-DISCOVERY-02: docs/business-os/strategy/HEAD/2026-02-20-solution-space-results.user.md
-Source-DISCOVERY-03: docs/business-os/strategy/HEAD/s0c-option-select.user.md
-Source-DISCOVERY-04: docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md
-Source-DISCOVERY-05: docs/business-os/strategy/HEAD/distribution-plan.user.md
-Source-DISCOVERY-06: docs/business-os/strategy/HEAD/measurement-plan.user.md
-Source-DISCOVERY-07: docs/business-os/strategy/HEAD/s0e-operator-evidence.user.md
+Source-ASSESSMENT-01: docs/business-os/strategy/HEAD/problem-statement.user.md
+Source-ASSESSMENT-02: docs/business-os/strategy/HEAD/2026-02-20-solution-profile-results.user.md
+Source-ASSESSMENT-03: docs/business-os/strategy/HEAD/solution-select.user.md
+Source-ASSESSMENT-04: docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md
+Source-ASSESSMENT-06: docs/business-os/strategy/HEAD/distribution-profiling.user.md
+Source-ASSESSMENT-07: docs/business-os/strategy/HEAD/measurement-profiling.user.md
+Source-ASSESSMENT-08: docs/business-os/strategy/HEAD/current-situation.user.md
 ---
 
 # HEAD Intake Packet
 
 ## A) Intake Summary
 
-### Core Problem (DISCOVERY-01)
+### Core Problem (ASSESSMENT-01)
 
 Parents/caregivers of children who wear external cochlear implant (CI) sound processors, and active teen/adult wearers, lack a reliable, low-friction system to (a) keep processors secure on the head through normal activity and (b) keep small, mission-critical accessories (spare coil, batteries, pods, retention parts) organised and transferable across daily handovers.
 
@@ -38,16 +38,16 @@ This causes drops, near-loss events, and repeated "where is it / who has it" mom
 
 ### Key Facts
 
-- First product lane: cross-compatible textile CI retention headbands — launch hero (`DISCOVERY-03`).
-- 90-day extension lane: organiser pouch and patch packs (`DISCOVERY-03`).
-- Launch surface: pre-website (`DISCOVERY-05`).
-- Execution posture: speed-to-first-sales; direct sales before platform/CMS work (`DISCOVERY-05`).
-- Inventory: stock purchased; in-stock date and units pending (`DISCOVERY-05`).
-- Channel posture: own-site DTC primary; constrained marketplace probes for evidence capture (`DISCOVERY-05`).
-- Naming: unconfirmed; working recommendation is Nidilo; Territory B coined masterbrand; TM/domain clearance required (`DISCOVERY-04`).
-- Kill condition: **GO (provisional)** — three kill conditions pass; first-party WTP validation from Italian buyers is the primary open gap (`DISCOVERY-01`).
+- First product lane: cross-compatible textile CI retention headbands — launch hero (`ASSESSMENT-03`).
+- 90-day extension lane: organiser pouch and patch packs (`ASSESSMENT-03`).
+- Launch surface: pre-website (`ASSESSMENT-06`).
+- Execution posture: speed-to-first-sales; direct sales before platform/CMS work (`ASSESSMENT-06`).
+- Inventory: stock purchased; in-stock date and units pending (`ASSESSMENT-06`).
+- Channel posture: own-site DTC primary; constrained marketplace probes for evidence capture (`ASSESSMENT-06`).
+- Naming: unconfirmed; working recommendation is Nidilo; Territory B coined masterbrand; TM/domain clearance required (`ASSESSMENT-04`).
+- Kill condition: **GO (provisional)** — three kill conditions pass; first-party WTP validation from Italian buyers is the primary open gap (`ASSESSMENT-01`).
 
-### Current Workarounds (DISCOVERY-01)
+### Current Workarounds (ASSESSMENT-01)
 
 | Workaround | Structural gap |
 |---|---|
@@ -64,16 +64,16 @@ This causes drops, near-loss events, and repeated "where is it / who has it" mom
 | Field | Value | Source |
 |---|---|---|
 | Business code | HEAD | — |
-| Business name | Nidilo (working recommendation; not yet cleared) | DISCOVERY-04 |
-| Business name status | unconfirmed — shortlist returned; TM/domain clearance required before commitment | DISCOVERY-04 |
-| Naming territory | Territory B: lifestyle/everyday normalisation; coined masterbrand | DISCOVERY-04 |
-| Name shortlist | Nidilo, Telilo, Tessilo, Tramilo, Calafilo, Filocalma, Nuvafilo, Nidela | DISCOVERY-04 |
-| Region | Italy (primary); EU expansion path | DISCOVERY-01 |
-| Product 1 | Cross-compatible textile CI retention headband (launch hero) | DISCOVERY-03 |
-| Product 1 status | Inventory purchased; in-stock date and units TBD | DISCOVERY-05 |
-| Product 2 | Organiser pouch + patch packs (90-day extension lane) | DISCOVERY-03 |
-| Product constraints | Non-medical claim language only (EU MDR); tether-class products excluded from MVP | DISCOVERY-01/DISCOVERY-03 |
-| Launch feasibility signal | Textile manufacturing accessible MOQs; no specialist tooling; 3–6 month path to first sales | DISCOVERY-02/DISCOVERY-03 |
+| Business name | Nidilo (working recommendation; not yet cleared) | ASSESSMENT-04 |
+| Business name status | unconfirmed — shortlist returned; TM/domain clearance required before commitment | ASSESSMENT-04 |
+| Naming territory | Territory B: lifestyle/everyday normalisation; coined masterbrand | ASSESSMENT-04 |
+| Name shortlist | Nidilo, Telilo, Tessilo, Tramilo, Calafilo, Filocalma, Nuvafilo, Nidela | ASSESSMENT-04 |
+| Region | Italy (primary); EU expansion path | ASSESSMENT-01 |
+| Product 1 | Cross-compatible textile CI retention headband (launch hero) | ASSESSMENT-03 |
+| Product 1 status | Inventory purchased; in-stock date and units TBD | ASSESSMENT-06 |
+| Product 2 | Organiser pouch + patch packs (90-day extension lane) | ASSESSMENT-03 |
+| Product constraints | Non-medical claim language only (EU MDR); tether-class products excluded from MVP | ASSESSMENT-01/ASSESSMENT-03 |
+| Launch feasibility signal | Textile manufacturing accessible MOQs; no specialist tooling; 3–6 month path to first sales | ASSESSMENT-02/ASSESSMENT-03 |
 
 ---
 
@@ -81,11 +81,11 @@ This causes drops, near-loss events, and repeated "where is it / who has it" mom
 
 | Field | Value | Source |
 |---|---|---|
-| First-buyer ICP | Parents/caregivers of children wearing CI processors (~12 months–12 years); problem appears daily at morning setup, school handover, sport, bedtime, travel | DISCOVERY-01 |
-| Secondary ICP | Active teen/adult CI wearers (~16–45); slippage during movement and accessory loss in transit | DISCOVERY-01 |
-| Tertiary (awareness) | Gift/recommender purchasers (family, audiologists); not a primary ICP until first-party evidence exists | DISCOVERY-01 |
+| First-buyer ICP | Parents/caregivers of children wearing CI processors (~12 months–12 years); problem appears daily at morning setup, school handover, sport, bedtime, travel | ASSESSMENT-01 |
+| Secondary ICP | Active teen/adult CI wearers (~16–45); slippage during movement and accessory loss in transit | ASSESSMENT-01 |
+| Tertiary (awareness) | Gift/recommender purchasers (family, audiologists); not a primary ICP until first-party evidence exists | ASSESSMENT-01 |
 | Support expectation | Fast pre-purchase support for compatibility/fit uncertainty | inferred |
-| Channel posture | Own-site DTC primary; constrained marketplace probes for evidence capture; Amazon deferred | DISCOVERY-05 |
+| Channel posture | Own-site DTC primary; constrained marketplace probes for evidence capture; Amazon deferred | ASSESSMENT-06 |
 
 ---
 
@@ -93,16 +93,16 @@ This causes drops, near-loss events, and repeated "where is it / who has it" mom
 
 | Item | Source | Evidence / note | Confidence |
 |---|---|---|---|
-| Speed-to-first-sales is non-negotiable | DISCOVERY-05 | Confirmed primary time constraint (DISCOVERY-05 Section A) | High |
-| Pre-website launch surface is current mode | DISCOVERY-05 | Confirmed launch surface (DISCOVERY-05 Section A) | High |
-| Platform-cleanup work must not delay first sale | DISCOVERY-05 | Hard stop condition confirmed (DISCOVERY-05 Section A) | High |
-| Inventory is near-term available | DISCOVERY-05 | Stock purchased; in-stock date and units pending (DISCOVERY-05 Section B) | Medium |
-| First-buyer ICP is caregiver-led; broader expansion is secondary | DISCOVERY-01 | DISCOVERY-01 primary segment; confirmed by community and competitor evidence | Medium |
-| Kill condition: GO provisional — first-party Italian WTP is the primary open constraint | DISCOVERY-01 | All three kill conditions pass provisionally; first-party cohort not yet measured | Medium |
-| Naming remains provisional until TM/domain clearance | DISCOVERY-04 | Clearance sequence (TMview, domain, counsel) not yet run (DISCOVERY-04 Section E) | Medium |
-| EU MDR copy discipline: non-medical claim language only | DISCOVERY-03 | Intended-purpose is set by marketing claims, not materials; clinic-coded copy risks MDR accessory classification | High |
-| Tether-class accessories excluded from MVP | DISCOVERY-03 | EN 14682 and manufacturer strangulation warnings; child-safety engineering gate required before inclusion | High |
-| Eudamed actor registration mandatory from 28 May 2026 | DISCOVERY-03 | Launch window overlaps this deadline; monitor MDR classification decision; time-sensitive | High |
+| Speed-to-first-sales is non-negotiable | ASSESSMENT-06 | Confirmed primary time constraint (ASSESSMENT-06 Section A) | High |
+| Pre-website launch surface is current mode | ASSESSMENT-06 | Confirmed launch surface (ASSESSMENT-06 Section A) | High |
+| Platform-cleanup work must not delay first sale | ASSESSMENT-06 | Hard stop condition confirmed (ASSESSMENT-06 Section A) | High |
+| Inventory is near-term available | ASSESSMENT-06 | Stock purchased; in-stock date and units pending (ASSESSMENT-06 Section B) | Medium |
+| First-buyer ICP is caregiver-led; broader expansion is secondary | ASSESSMENT-01 | ASSESSMENT-01 primary segment; confirmed by community and competitor evidence | Medium |
+| Kill condition: GO provisional — first-party Italian WTP is the primary open constraint | ASSESSMENT-01 | All three kill conditions pass provisionally; first-party cohort not yet measured | Medium |
+| Naming remains provisional until TM/domain clearance | ASSESSMENT-04 | Clearance sequence (TMview, domain, counsel) not yet run (ASSESSMENT-04 Section E) | Medium |
+| EU MDR copy discipline: non-medical claim language only | ASSESSMENT-03 | Intended-purpose is set by marketing claims, not materials; clinic-coded copy risks MDR accessory classification | High |
+| Tether-class accessories excluded from MVP | ASSESSMENT-03 | EN 14682 and manufacturer strangulation warnings; child-safety engineering gate required before inclusion | High |
+| Eudamed actor registration mandatory from 28 May 2026 | ASSESSMENT-03 | Launch window overlaps this deadline; monitor MDR classification decision; time-sensitive | High |
 
 ---
 
@@ -115,7 +115,7 @@ This causes drops, near-loss events, and repeated "where is it / who has it" mom
 
 ## F) Missing-Data Checklist (to progress S1/S3)
 
-### Operator gaps (DISCOVERY-05)
+### Operator gaps (ASSESSMENT-06)
 
 | Missing field | Why needed | Owner | Priority |
 |---|---|---|---|
@@ -127,14 +127,14 @@ This causes drops, near-loss events, and repeated "where is it / who has it" mom
 | Payment provider for Italy | Required for checkout conversion confidence | Pete | high |
 | Returns policy and SLA | Required for trust, compliance, and support readiness | Pete | high |
 
-### Research gaps (DISCOVERY-01/DISCOVERY-03)
+### Research gaps (ASSESSMENT-01/ASSESSMENT-03)
 
 | Missing field | Why needed | Owner | Priority |
 |---|---|---|---|
-| First-party WTP validation from Italian buyers | DISCOVERY-03 caveat: EUR18–38 WTP confirmed via third-party only; Italian cohort unvalidated | Pete | critical |
+| First-party WTP validation from Italian buyers | ASSESSMENT-03 caveat: EUR18–38 WTP confirmed via third-party only; Italian cohort unvalidated | Pete | critical |
 | TM/domain clearance for shortlisted names | Required to confirm business name before brand commitment | Pete | high |
 
-### First-priority validation questions (DISCOVERY-01)
+### First-priority validation questions (ASSESSMENT-01)
 
 Must be answered with real buyer data before advancing to S1 readiness:
 

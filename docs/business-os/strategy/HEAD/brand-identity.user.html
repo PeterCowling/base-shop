@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Headband (Name Pending) — Brand Dossier</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    /* Audience toggle — Model A: single engineering appendix wrapper */
+    [data-audience="engineering"] {
+      display: none;
+    }
+    body.show-engineering [data-audience="engineering"] {
+      display: block;
+    }
+    .audience-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 0 24px;
+      padding: 8px 16px;
+      background: var(--header);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-family: inherit;
+    }
+    .audience-toggle:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
+<h1>Headband (Name Pending) — Brand Dossier</h1>
+<blockquote>
+<p><strong>Draft status.</strong> Token values are not duplicated in this document. When the theme package
+is created, the single source of truth will be <code>packages/themes/cochlearfit/src/tokens.ts</code>.
+This document records <em>why</em> tokens should be chosen, not what values they hold.
+All <code>TBD</code> fields require operator input or market research before this dossier can advance to Active.</p>
+</blockquote>
+<h2>Audience</h2>
+<p><strong>Primary:</strong> Adults and parents of children with cochlear implants in Italy. Age range TBD — cochlear implant users span from infants to elderly; the head-worn accessory category skews toward parents purchasing for children and adult women purchasing for themselves. Italy TAM estimate: ~17,000 cochlear-implant users (niche).</p>
+<p><strong>Secondary:</strong> TBD — gift purchasers (family members, audiologists recommending accessories).</p>
+<p><strong>Device:</strong> TBD — mobile-first assumed based on Italian e-commerce norms, but must be validated with first-party analytics once live.</p>
+<p><strong>Context:</strong> Likely discovery via search (high-intent, problem-aware) and peer community referral (cochlear implant communities, parenting forums). Purchasing decision is practical + emotional: does it fit my device? will it stay on? does it look good? Trust, compatibility evidence, and return policy clarity are decision-critical.</p>
+<p><strong>Key insight:</strong> The audience is defined by a medical device (cochlear implant), not purely by demographics. Compatibility and fit are purchase-blockers, not just preferences. Tone must be matter-of-fact and reassuring, not medicalized.</p>
+<h2>Personality</h2>
+<ul>
+<li><strong>Reassuring</strong>, not clinical</li>
+<li><strong>Practical</strong>, not purely aspirational</li>
+<li><strong>Approachable</strong>, not technical or jargon-heavy</li>
+<li><strong>Inclusive</strong>, not niche-stigmatizing (normalizes wearing a headband, doesn't over-emphasize disability)</li>
+<li><strong>Warm</strong>, not corporate</li>
+</ul>
+<blockquote>
+<p>TBD — Validate personality direction with 3–5 customer conversations or community feedback before advancing to Active.</p>
+</blockquote>
+<h2>Visual Identity</h2>
+<h3>Color Palette</h3>
+<blockquote>
+<p>TBD — No design work has been done for CochlearFit. The following are directional notes only.
+A dedicated <code>/lp-design-spec</code> session + theme package creation is required before Active status.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Token (proposed)</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary</td>
+<td>TBD</td>
+<td>Should feel warm and approachable without clinical/medical coldness. Avoid blue-white (medical). Consider soft earth tones or muted pastels. Validate against accessibility + competitor differentiation.</td>
+</tr>
+<tr>
+<td>Primary soft</td>
+<td>TBD</td>
+<td>Tinted background for cards and highlights</td>
+</tr>
+<tr>
+<td>Accent</td>
+<td>TBD</td>
+<td>Complementary to primary; avoid red/orange (urgency reads as alarm in medical contexts)</td>
+</tr>
+<tr>
+<td>Background</td>
+<td>TBD</td>
+<td>Clean, light — not stark white (cold), not cream (dated)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Palette mood:</strong> TBD — candidate direction: warm neutral + 1 distinctive accent. Avoid the cold clinical look of medical equipment. Avoid the aggressive energy of sports accessories. Aim for "everyday lifestyle that happens to accommodate a medical device."</p>
+<h3>Typography</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Token (proposed)</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Body + headings</td>
+<td>TBD</td>
+<td>Readable, friendly, not too geometric (engineer feel). Consider humanist sans-serif. Italian market: ensure good display at moderate sizes.</td>
+</tr>
+<tr>
+<td>Monospace</td>
+<td>N/A — no dev-facing UI</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Shape &#x26; Elevation</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Token (proposed)</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Card radius</td>
+<td>TBD</td>
+<td>Softer radius (friendlier) preferred over hard corners (clinical)</td>
+</tr>
+<tr>
+<td>Default shadow</td>
+<td>TBD</td>
+<td>Light elevation; product cards need to feel trustworthy, not flashy</td>
+</tr>
+</tbody>
+</table>
+<h3>Token Rationale</h3>
+<blockquote>
+<p>Token rationale will be populated when the theme package is created. This section is a placeholder.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Design rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>(all TBD)</em></td>
+<td>Theme package <code>packages/themes/cochlearfit/</code> does not yet exist. Populate when created via <code>/lp-design-spec</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3>Imagery Direction</h3>
+<ul>
+<li><strong>Do:</strong> Real product photography showing fit on head (over cochlear implant worn correctly). Lifestyle photography with natural lighting. Inclusive representation — show range of ages, hair types, and cochlear implant processor types.</li>
+<li><strong>Don't:</strong> Stock photography of generic hair accessories. Over-medicalized imagery (hospital settings, devices isolated on white). Imagery that emphasizes disability over lifestyle.</li>
+</ul>
+<blockquote>
+<p>TBD — Validate imagery direction against competitor positioning and community feedback.</p>
+</blockquote>
+<h2>Voice &#x26; Tone</h2>
+<h3>Writing Style</h3>
+<ul>
+<li><strong>Sentence length:</strong> Short and direct. Customers often have practical questions; answer them quickly.</li>
+<li><strong>Formality:</strong> Conversational but professional. Not casual-slang; not formal-medical.</li>
+<li><strong>Technical level:</strong> Acknowledge the device (cochlear implant) without jargon. Use plain names for processor brands (Cochlear Nucleus, Advanced Bionics, MED-EL) when compatibility is stated — customers know their own device.</li>
+<li><strong>Italian localization:</strong> Primary market is Italian. Italian copy should feel native, not translated. Warmth in Italian differs from English warmth — shorter sentences, direct address.</li>
+</ul>
+<h3>Key Phrases</h3>
+<blockquote>
+<p>TBD — Validate with customer interviews. Directional suggestions:</p>
+</blockquote>
+<ul>
+<li>"Fits your processor" (compatibility-first framing)</li>
+<li>"Made for everyday wear" (normalizes the use case)</li>
+<li>"Your fit, your style" (practical + personal)</li>
+</ul>
+<h3>Words to Avoid</h3>
+<blockquote>
+<p>TBD — Validate with customer/community feedback. Initial candidates:</p>
+</blockquote>
+<ul>
+<li>Medical jargon ("implant-compatible device interface")</li>
+<li>Stigmatizing language ("hide your processor", "disguise")</li>
+<li>Overpromising fit language without evidence ("fits all processors" if not verified)</li>
+</ul>
+<h2>Signature Patterns</h2>
+<blockquote>
+<p>TBD — No application has been built yet. Patterns will be added as <code>/lp-design-spec</code> identifies them during feature work.</p>
+</blockquote>
+<p><em>First pattern to define: product compatibility display component (which processor brands/models this headband fits — this is the primary conversion trust element).</em></p>
+<h2>App Coverage</h2>
+<table>
+<thead>
+<tr>
+<th>App</th>
+<th>Theme</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cochlearfit</td>
+<td><code>packages/themes/cochlearfit/</code></td>
+<td>Not created</td>
+<td>Main storefront — theme package must be created before <code>/lp-design-spec</code> can run</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Prerequisite for Active:</strong> theme package must exist and Token-Source must be a real file path.</p>
+</blockquote>
+<h2>References</h2>
+<ul>
+<li>Business strategy: <code>docs/business-os/strategy/HEAD/plan.user.md</code></li>
+<li>90-day forecast (canonical): <code>docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md</code></li>
+<li>Offer design (canonical): <code>docs/business-os/startup-baselines/HEAD-offer.md</code></li>
+<li>Naming shortlist: <code>docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md</code></li>
+<li>Strategy index (artifact status): <code>docs/business-os/strategy/HEAD/index.user.md</code></li>
+<li>Design system handbook: <code>docs/design-system-handbook.md</code></li>
+</ul>
+<h2>Proof Ledger</h2>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Evidence</th>
+<th>Source</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Italy TAM directional band ~17k-20k</td>
+<td>Consolidated market-intel refresh</td>
+<td><code>docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md</code></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Category supports low-risk textile + organisation expansion</td>
+<td>S3B synthesis top-3 MVP recommendation</td>
+<td><code>docs/business-os/strategy/HEAD/lp-other-products-results.user.md</code></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Primary market is Italy, high-intent + referral-acquisition mix</td>
+<td>Canonical strategy + channels backfill</td>
+<td><code>docs/business-os/strategy/HEAD/plan.user.md</code>, <code>docs/business-os/startup-baselines/HEAD-channels.md</code></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Fit/compatibility clarity is a primary conversion and returns driver</td>
+<td>Offer and forecast assumptions</td>
+<td><code>docs/business-os/startup-baselines/HEAD-offer.md</code>, <code>docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md</code></td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h2>Draft → Active Advancement Criteria</h2>
+<p>To advance this dossier from <code>Draft</code> to <code>Active</code>, the following must be complete:</p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Audience demographic validated with first-party or community evidence (not just forecast estimates)</li>
+<li class="task-list-item"><input type="checkbox" disabled> Personality direction validated with ≥3 customer/community inputs</li>
+<li class="task-list-item"><input type="checkbox" disabled> Color palette decided and theme package <code>packages/themes/cochlearfit/</code> created</li>
+<li class="task-list-item"><input type="checkbox" disabled> Token-Source updated from <code>TBD</code> to real file path</li>
+<li class="task-list-item"><input type="checkbox" disabled> Typography decided and added to theme</li>
+<li class="task-list-item"><input type="checkbox" disabled> Key Phrases validated — at least 3 non-TBD phrases with evidence</li>
+<li class="task-list-item"><input type="checkbox" disabled> Words to Avoid list validated</li>
+<li class="task-list-item"><input type="checkbox" disabled> Proof Ledger: ≥1 entry with Medium or High confidence per claim</li>
+<li class="task-list-item"><input type="checkbox" disabled> Reviewed by Pete</li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/HEAD/brand-identity.user.md</code></div>
+      <div>Generated: 2026-02-20T13:28:09.605Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    // startOnLoad: false — we render manually so hidden engineering diagrams
+    // (inside display:none) are not attempted on load, which causes spurious
+    // "Syntax error in text" failures in Mermaid v11.
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    // Render only the visible (operator) diagrams immediately.
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    // Audience toggle — Model A.
+    // Engineering diagrams are rendered on first reveal (not on load).
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          // Render engineering diagrams now that they are visible.
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -23,7 +23,7 @@ function makeEvent(overrides: Partial<RunEvent>): RunEvent {
     schema_version: 1,
     event: "stage_started",
     run_id: "SFS-TEST-20260213-1200",
-    stage: "S0",
+    stage: "ASSESSMENT-09",
     timestamp: "2026-02-13T12:00:00Z",
     loop_spec_version: "1.0.0",
     artifacts: null,
@@ -44,8 +44,8 @@ describe("recovery", () => {
     it("resume of blocked S4 re-derives state with S4 Active", () => {
       // Simulate run that reached S4 but blocked
       const events: RunEvent[] = [
-        makeEvent({ event: "stage_started", stage: "S0", timestamp: "T1" }),
-        makeEvent({ event: "stage_completed", stage: "S0", timestamp: "T2", artifacts: { intake: "stages/S0/intake.md" } }),
+        makeEvent({ event: "stage_started", stage: "ASSESSMENT-09", timestamp: "T1" }),
+        makeEvent({ event: "stage_completed", stage: "ASSESSMENT-09", timestamp: "T2", artifacts: { intake: "stages/ASSESSMENT-09/intake.md" } }),
         makeEvent({ event: "stage_started", stage: "S4", timestamp: "T3" }),
         makeEvent({ event: "stage_blocked", stage: "S4", timestamp: "T4", blocking_reason: "S3 not complete" }),
       ];
@@ -74,11 +74,11 @@ describe("recovery", () => {
     // VC-04B-01-02: Resume clears blocking_reason
     it("resume clears blocking_reason from previous block", () => {
       const events: RunEvent[] = [
-        makeEvent({ event: "stage_started", stage: "S1", timestamp: "T1" }),
-        makeEvent({ event: "stage_blocked", stage: "S1", timestamp: "T2", blocking_reason: "Missing readiness data" }),
+        makeEvent({ event: "stage_started", stage: "MEASURE-01", timestamp: "T1" }),
+        makeEvent({ event: "stage_blocked", stage: "MEASURE-01", timestamp: "T2", blocking_reason: "Missing agent setup" }),
       ];
 
-      const resumeEvents = createResumeEvents("S1", {
+      const resumeEvents = createResumeEvents("MEASURE-01", {
         operator: "operator",
         reason: "data now available",
         run_id: STATE_OPTIONS.run_id,
@@ -86,8 +86,8 @@ describe("recovery", () => {
       });
 
       const state = deriveState([...events, ...resumeEvents], STATE_OPTIONS);
-      expect(state.stages.S1.status).toBe("Active");
-      expect(state.stages.S1.blocking_reason).toBeNull();
+      expect(state.stages["MEASURE-01"].status).toBe("Active");
+      expect(state.stages["MEASURE-01"].blocking_reason).toBeNull();
     });
   });
 
@@ -108,7 +108,7 @@ describe("recovery", () => {
     it("recommends restart for Pending stage (never started)", () => {
       const state = deriveState([], STATE_OPTIONS);
 
-      const decision = recoveryDecision(state, "S0");
+      const decision = recoveryDecision(state, "ASSESSMENT-09");
 
       expect(decision.action).toBe("restart");
       expect(decision.reason).toContain("never started");
@@ -116,11 +116,11 @@ describe("recovery", () => {
 
     it("recommends no-action for Done stage", () => {
       const state = deriveState([
-        makeEvent({ event: "stage_started", stage: "S0", timestamp: "T1" }),
-        makeEvent({ event: "stage_completed", stage: "S0", timestamp: "T2", artifacts: { x: "y" } }),
+        makeEvent({ event: "stage_started", stage: "ASSESSMENT-09", timestamp: "T1" }),
+        makeEvent({ event: "stage_completed", stage: "ASSESSMENT-09", timestamp: "T2", artifacts: { x: "y" } }),
       ], STATE_OPTIONS);
 
-      const decision = recoveryDecision(state, "S0");
+      const decision = recoveryDecision(state, "ASSESSMENT-09");
 
       expect(decision.action).toBe("no-action");
       expect(decision.reason).toContain("already complete");
@@ -145,7 +145,7 @@ describe("recovery", () => {
     it("abort does not remove any stage artifacts (no cleanup)", async () => {
       // Create a temp run directory with partial artifacts
       const runDir = await fs.mkdtemp(path.join(os.tmpdir(), "recovery-test-"));
-      const s0Dir = path.join(runDir, "stages", "S0");
+      const s0Dir = path.join(runDir, "stages", "ASSESSMENT-09");
       const s4Dir = path.join(runDir, "stages", "S4");
       await fs.mkdir(s0Dir, { recursive: true });
       await fs.mkdir(s4Dir, { recursive: true });

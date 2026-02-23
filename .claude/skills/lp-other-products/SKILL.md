@@ -9,7 +9,7 @@ Produces a structured deep-research brief for evaluating what products to build 
 
 ## When to use
 
-Use after lp-offer (S2B) completes, when the operator intends product range expansion or when GATE-S3B-01 fires. Requires offer.user.md to exist for the target business (ICP and pain/promise map are essential inputs that naming research does not need but this skill does). Also operator-invocable at any time after offer exists.
+Use after lp-offer (MARKET-06) completes, when the operator intends product range expansion or when GATE-PRODUCT-02-01 fires. Requires offer.user.md to exist for the target business (ICP and pain/promise map are essential inputs that naming research does not need but this skill does). Also operator-invocable at any time after offer exists.
 
 ## Operating mode
 
@@ -29,7 +29,7 @@ Before writing the prompt, read and synthesize from the business's loop docs:
 - `docs/business-os/startup-baselines/<BIZ>-offer.md` OR `docs/business-os/strategy/<BIZ>/offer.user.md` — ICP segmentation, pain/promise map, objection map, positioning (required; this skill cannot run without it)
 - `docs/business-os/contracts/<BIZ>/outcome-contract.user.md` — 90-day targets and contract window (to anchor MVP roadmap dates)
 
-If the offer artifact is missing, halt and instruct the operator to complete lp-offer (S2B) first.
+If the offer artifact is missing, halt and instruct the operator to complete lp-offer (MARKET-06) first.
 
 If any other file is missing, note the gap in the output but proceed with available context.
 

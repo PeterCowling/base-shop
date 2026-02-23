@@ -72,3 +72,4 @@ See: `docs/plans/hbag-website-02-image-first-upgrade/artifacts/performance-evide
   - validation package passes with explicit threshold evidence.
 - Residual risk:
   - operator-run real-device UX/performance spot-check remains required as post-merge launch QA.
+  - execution template: `docs/plans/hbag-website-02-image-first-upgrade/artifacts/real-device-qa-matrix.md`.

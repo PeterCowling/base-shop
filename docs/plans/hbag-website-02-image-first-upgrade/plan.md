@@ -430,6 +430,7 @@ This plan translates the active HBAG WEBSITE-02 L1 Build 2 brief into an executa
   - Go decision: proceed with WEBSITE-02 launch packaging.
   - Rationale: media contract gate passes active catalog, PDP/PLP/home image-first behavior implemented, and performance contract thresholds pass in local production build evidence.
   - Residual risks: real-device UX/performance observations remain a post-merge operator QA step.
+  - Tracking artifact: `docs/plans/hbag-website-02-image-first-upgrade/artifacts/real-device-qa-matrix.md`.
 
 ## Risks & Mitigations
 - Risk: Media production cannot satisfy required slots before implementation completion.

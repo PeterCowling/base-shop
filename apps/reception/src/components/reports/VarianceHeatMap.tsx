@@ -2,15 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import {
-  ReceptionTable as Table,
-  ReceptionTableBody as TableBody,
-  ReceptionTableCell as TableCell,
-  ReceptionTableHead as TableHead,
-  ReceptionTableHeader as TableHeader,
-  ReceptionTableRow as TableRow,
-} from "@acme/ui/operations";
 
 import { useAuth } from "../../context/AuthContext";
 import { useCashCountsData } from "../../hooks/data/useCashCountsData";
@@ -28,9 +21,9 @@ interface UserShiftMap {
 function getVarianceClass(diff: number | undefined): string {
   if (diff === undefined) return "";
   const abs = Math.abs(diff);
-  if (abs < 1) return "bg-success-light dark:bg-darkAccentGreen";
-  if (abs < 5) return "bg-warning-light dark:bg-darkAccentOrange";
-  return "bg-error-light dark:bg-darkAccentOrange";
+  if (abs < 1) return "bg-success-light";
+  if (abs < 5) return "bg-warning-light";
+  return "bg-error-light";
 }
 
 export default function VarianceHeatMap() {
@@ -88,11 +81,11 @@ export default function VarianceHeatMap() {
   }
 
   return (
-    <div className="space-y-6 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="space-y-6">
       {canManageThresholds && (
-        <div className="rounded border border-border bg-surface p-4 shadow-sm dark:border-darkSurface dark:bg-darkSurface">
+        <div className="rounded border border-border bg-surface p-4 shadow-sm">
           <h2 className="text-lg font-semibold mb-3">Variance Thresholds</h2>
-          <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
+          <p className="text-sm text-muted-foreground">
             Update the cash variance threshold (in euros) and optional keycard
             variance threshold. Leave keycards empty to disable keycard sign-off.
           </p>
@@ -107,7 +100,7 @@ export default function VarianceHeatMap() {
                 placeholder={thresholdsLoading ? "Loading..." : currentCashThreshold}
                 value={cashThresholdInput}
                 onChange={(e) => setCashThresholdInput(e.target.value)}
-                className="mt-1 w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+                className="mt-1 w-40 rounded border px-2 py-1 text-sm"
               />
             </label>
             <label className="flex flex-col text-sm font-semibold">
@@ -120,7 +113,7 @@ export default function VarianceHeatMap() {
                 placeholder={thresholdsLoading ? "Loading..." : currentKeycardThreshold}
                 value={keycardThresholdInput}
                 onChange={(e) => setKeycardThresholdInput(e.target.value)}
-                className="mt-1 w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+                className="mt-1 w-40 rounded border px-2 py-1 text-sm"
               />
             </label>
             <Button
@@ -156,7 +149,7 @@ export default function VarianceHeatMap() {
                 setPendingSave(true);
                 setShowReauth(true);
               }}
-              className="h-9 rounded bg-primary-main px-4 text-sm text-primary-fg hover:bg-primary-dark disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
+              className="h-9 rounded bg-primary-main px-4 text-sm text-primary-fg hover:bg-primary-dark disabled:opacity-50"
             >
               Save thresholds
             </Button>
@@ -196,15 +189,15 @@ export default function VarianceHeatMap() {
           )}
         </div>
       )}
-      <div className="overflow-x-auto dark:bg-darkBg dark:text-darkAccentGreen">
-      <Table className="border-collapse w-full dark:bg-darkSurface dark:text-darkAccentGreen">
+      <div className="overflow-x-auto">
+      <Table className="border-collapse w-full">
         <TableHeader>
           <TableRow>
-            <TableHead className="p-2 border dark:border-darkSurface">Employee</TableHead>
+            <TableHead className="p-2 border">Employee</TableHead>
             {shiftLabels.map((label) => (
               <TableHead
                 key={label}
-                className="p-2 border whitespace-nowrap dark:border-darkSurface"
+                className="p-2 border whitespace-nowrap"
               >
                 {label}
               </TableHead>
@@ -214,7 +207,7 @@ export default function VarianceHeatMap() {
         <TableBody>
           {users.map((user) => (
             <TableRow key={user} className="text-center">
-              <TableCell className="p-2 border text-start font-medium dark:border-darkSurface">
+              <TableCell className="p-2 border text-start font-medium">
                 {user}
               </TableCell>
               {shiftLabels.map((label, idx) => {
@@ -223,7 +216,7 @@ export default function VarianceHeatMap() {
                 return (
                   <TableCell
                     key={`${user}-${label}`}
-                    className={`p-2 border dark:border-darkSurface ${cellClass}`}
+                    className={`p-2 border ${cellClass}`}
                   >
                     {diff !== undefined ? diff.toFixed(2) : "-"}
                   </TableCell>

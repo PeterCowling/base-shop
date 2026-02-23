@@ -9,8 +9,8 @@ import React, {
   useState,
 } from "react";
 
+import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { useBookingDatesMutator } from "../../../hooks/mutations/useChangeBookingDatesMutator";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
@@ -157,7 +157,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
           onKeyDown={handleKeyDown}
         />
         {/* Modal Content */}
-        <div className="bg-surface rounded-lg shadow-lg z-10 p-4 w-11/12 max-w-md dark:bg-darkSurface dark:text-darkAccentGreen">
+        <div className="bg-surface rounded-lg shadow-lg z-10 p-4 w-11/12 max-w-md">
           <h2 className="text-xl font-bold mb-4">Booking Details</h2>
 
           {/* Booking Reference */}
@@ -189,7 +189,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
             <label htmlFor="check-in-date" className="font-semibold me-2">
               Check-in Date:
             </label>
-            <ReceptionInput
+            <Input compatibilityMode="no-wrapper"
               id="check-in-date"
               type="date"
               className="border rounded px-2 py-1 text-foreground"
@@ -203,7 +203,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
             <label htmlFor="check-out-date" className="font-semibold me-2">
               Check-out Date:
             </label>
-            <ReceptionInput
+            <Input compatibilityMode="no-wrapper"
               id="check-out-date"
               type="date"
               className="border rounded px-2 py-1 text-foreground"
@@ -218,7 +218,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
               <label htmlFor="extension-price" className="font-semibold me-2">
                 Extension Charge:
               </label>
-              <ReceptionInput
+              <Input compatibilityMode="no-wrapper"
                 id="extension-price"
                 type="number"
                 step="0.01"
@@ -236,14 +236,14 @@ const BookingModal: FC<BookingModalProps> = React.memo(
           {/* Save & Cancel Buttons */}
           <div className="flex justify-end gap-2 mt-4">
             <Button
-              className="px-4 py-2 bg-surface-3 text-foreground rounded dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
+              className="px-4 py-2 bg-surface-3 text-foreground rounded"
               onClick={onClose}
               disabled={isLoading}
             >
               Cancel
             </Button>
             <Button
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded"
               onClick={handleSave}
               disabled={isLoading}
             >

@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 
+import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { showToast } from "../../utils/toastUtils";
 import { PasswordReauthInline } from "../common/PasswordReauthInline";
@@ -46,7 +46,7 @@ export const BankDepositForm = memo(function BankDepositForm({
       <h3 className="text-lg font-semibold text-primary-main mb-4">
         Bank Deposit
       </h3>
-      <p className="text-sm text-muted-foreground dark:text-muted-foreground mb-4">
+      <p className="text-sm text-muted-foreground mb-4">
         Record cash taken from the safe to deposit at the bank.
       </p>
 
@@ -58,14 +58,15 @@ export const BankDepositForm = memo(function BankDepositForm({
           >
             Amount (€)
           </label>
-          <ReceptionInput
+          <Input
+            compatibilityMode="no-wrapper"
             id="bankDeposit_amount"
             type="number"
             step="0.01"
             min="0"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full border border-border-2 rounded px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-main dark:bg-darkSurface dark:border-gray-600"
+            className="w-full border border-border-2 rounded px-3 py-2"
             placeholder="0.00"
           />
         </div>
@@ -77,13 +78,14 @@ export const BankDepositForm = memo(function BankDepositForm({
           >
             Keycards Deposited (optional)
           </label>
-          <ReceptionInput
+          <Input
+            compatibilityMode="no-wrapper"
             id="bankDeposit_keycards"
             type="number"
             step="1"
             value={keycardInput}
             onChange={(e) => setKeycardInput(e.target.value)}
-            className="w-full border border-border-2 rounded px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-main dark:bg-darkSurface dark:border-gray-600"
+            className="w-full border border-border-2 rounded px-3 py-2"
             placeholder="0"
           />
           <p className="text-xs text-muted-foreground mt-1">
@@ -99,7 +101,7 @@ export const BankDepositForm = memo(function BankDepositForm({
           <Button
             type="button"
             onClick={onCancel}
-            className="min-h-11 min-w-11 px-4 py-2 text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-gray-200"
+            className="min-h-11 min-w-11 px-4 py-2 text-muted-foreground hover:text-foreground"
           >
             Cancel
           </Button>

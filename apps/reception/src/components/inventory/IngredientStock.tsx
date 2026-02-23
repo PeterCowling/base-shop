@@ -2,15 +2,8 @@
 
 import React, { useState } from "react";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import {
-  ReceptionTable as Table,
-  ReceptionTableBody as TableBody,
-  ReceptionTableCell as TableCell,
-  ReceptionTableHead as TableHead,
-  ReceptionTableHeader as TableHeader,
-  ReceptionTableRow as TableRow,
-} from "@acme/ui/operations";
 
 import useIngredients from "../../hooks/data/inventory/useIngredients";
 
@@ -45,7 +38,7 @@ function IngredientStock() {
   };
 
   return (
-    <div className="p-4 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="p-4">
       <h1 className="text-3xl font-bold mb-4">Ingredient Stock</h1>
       {Object.keys(legacyIngredients).length > 0 && !migrationComplete && (
         <div className="mb-4 rounded border border-warning-main bg-warning-light/20 p-3 text-sm">
@@ -75,7 +68,7 @@ function IngredientStock() {
           Legacy ingredients migrated successfully.
         </div>
       )}
-      <Table className="min-w-full text-sm dark:bg-darkSurface">
+      <Table className="min-w-full text-sm">
         <TableHeader>
           <TableRow>
             <TableHead className="p-2 text-start">Ingredient</TableHead>
@@ -91,12 +84,12 @@ function IngredientStock() {
               <TableCell className="p-2 border-b">
                 <input
                   type="number"
-                  className="border p-1 w-20 dark:bg-darkSurface dark:text-darkAccentGreen"
+                  className="border p-1 w-20"
                   value={edits[ing.name] ?? ing.quantity}
                   onChange={(e) => handleChange(ing.name, e.target.value)}
                 />
                 <Button
-                  className="ms-2 px-2 py-1 bg-info-main text-primary-fg rounded dark:bg-darkAccentGreen dark:text-darkBg"
+                  className="ms-2 px-2 py-1 bg-info-main text-primary-fg rounded"
                   onClick={() => handleSave(ing.name)}
                 >
                   Save

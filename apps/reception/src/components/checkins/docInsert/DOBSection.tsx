@@ -7,8 +7,8 @@ import React, {
   useState,
 } from "react";
 
+import { Input } from "@acme/design-system";
 import { ConfirmDialog } from "@acme/design-system/atoms";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { useAuth } from "../../../context/AuthContext";
 import { occupantDetailsSchema } from "../../../schemas/occupantDetailsSchema";
@@ -215,7 +215,7 @@ function DOBSection({
       </label>
       <div className="flex gap-2 items-center">
         {/* YEAR */}
-        <ReceptionInput
+        <Input compatibilityMode="no-wrapper"
           id="dob-year"
           type="text"
           placeholder="YYYY"
@@ -230,7 +230,7 @@ function DOBSection({
         <span>/</span>
 
         {/* MONTH */}
-        <ReceptionInput
+        <Input compatibilityMode="no-wrapper"
           id="dob-month"
           type="text"
           placeholder="MM"
@@ -245,7 +245,7 @@ function DOBSection({
         <span>/</span>
 
         {/* DAY */}
-        <ReceptionInput
+        <Input compatibilityMode="no-wrapper"
           id="dob-day"
           type="text"
           placeholder="DD"

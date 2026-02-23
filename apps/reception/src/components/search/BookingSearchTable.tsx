@@ -12,16 +12,9 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
-import {
-  ReceptionTable as Table,
-  ReceptionTableBody as TableBody,
-  ReceptionTableCell as TableCell,
-  ReceptionTableHead as TableHead,
-  ReceptionTableHeader as TableHeader,
-  ReceptionTableRow as TableRow,
-} from "@acme/ui/operations";
 
 import useActivitiesData from "../../hooks/data/useActivitiesData";
 import type { CsvExportRow } from "../../hooks/mutations/useBulkBookingActions";
@@ -60,7 +53,7 @@ const ActivityList: React.FC<ActivityListProps> = ({ activities }) => {
   );
 
   if (activities.length === 0)
-    return <p className="italic text-muted-foreground dark:text-darkAccentGreen">No activities.</p>;
+    return <p className="italic text-muted-foreground">No activities.</p>;
 
   return (
     <ul className="space-y-1 text-sm leading-relaxed">
@@ -69,11 +62,11 @@ const ActivityList: React.FC<ActivityListProps> = ({ activities }) => {
           key={`${act.timestamp ?? "no-time"}-${act.code}-${act.who ?? ""}`}
           className="flex gap-1"
         >
-          <span className="font-mono text-11px text-foreground dark:text-darkAccentGreen">
+          <span className="font-mono text-11px text-foreground">
             {act.timestamp?.slice(0, 19) ?? ""}
           </span>
           <span className="font-medium">code {act.code}</span>
-          {act.who && <span className="text-muted-foreground dark:text-darkAccentGreen">— {act.who}</span>}
+          {act.who && <span className="text-muted-foreground">— {act.who}</span>}
         </li>
       ))}
     </ul>
@@ -93,13 +86,13 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
   );
 
   if (transactions.length === 0)
-    return <p className="italic text-muted-foreground dark:text-darkAccentGreen">No transactions.</p>;
+    return <p className="italic text-muted-foreground">No transactions.</p>;
 
   return (
     <ul className="space-y-1 text-sm leading-relaxed">
       {sorted.map((tx) => (
         <li key={`${tx.timestamp}-${tx.type}-${tx.amount}`} className="flex gap-1">
-          <span className="font-mono text-11px text-foreground dark:text-darkAccentGreen">
+          <span className="font-mono text-11px text-foreground">
             {tx.timestamp.slice(0, 19)}
           </span>
           <span className="font-medium">{tx.type}</span>
@@ -249,14 +242,14 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
   if (!searchTriggered) return null;
   if (loading)
     return (
-      <div className="rounded-md border border-border-2 bg-surface p-6 text-center shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+      <div className="rounded-md border border-border-2 bg-surface p-6 text-center shadow-sm">
         <SmallSpinner />
       </div>
     );
   if (error) return null;
   if (!extendedGuests.length)
     return (
-      <p className="rounded-md border border-border-2 bg-surface p-6 text-center italic text-muted-foreground shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+      <p className="rounded-md border border-border-2 bg-surface p-6 text-center italic text-muted-foreground shadow-sm">
         No matching results.
       </p>
     );
@@ -272,21 +265,21 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
         onCancelComplete={onBulkCancelComplete}
       />
 
-      <div className="w-full overflow-x-auto rounded-md border border-border-2 bg-surface shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+      <div className="w-full overflow-x-auto rounded-md border border-border-2 bg-surface shadow-sm">
         <Table className="min-w-full border-collapse text-sm">
-          <TableHeader className="sticky top-0 z-1 bg-surface-2/90 backdrop-blur dark:bg-darkSurface">
+          <TableHeader className="sticky top-0 z-1 bg-surface-2/90 backdrop-blur">
             <TableRow>
               {/* Select all checkbox */}
-              <TableHead scope="col" className="w-10 border-b border-border-2 px-3 py-2 dark:border-darkSurface">
+              <TableHead scope="col" className="w-10 border-b border-border-2 px-3 py-2">
                 <input
                   type="checkbox"
                   checked={allSelected}
                   onChange={toggleSelectAll}
-                  className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
+                  className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-blue-500"
                   aria-label="Select all rows"
                 />
               </TableHead>
-              <TableHead scope="col" className="w-10 border-b border-border-2 dark:border-darkSurface" />
+              <TableHead scope="col" className="w-10 border-b border-border-2" />
               <SortableHeader
               label="Name"
               field="name"
@@ -342,7 +335,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
           </TableRow>
         </TableHeader>
 
-          <TableBody className="divide-y divide-gray-100 dark:divide-darkSurface">
+          <TableBody className="divide-y divide-gray-100">
             {sortedGuests.map((guest) => {
               const isExpanded = !!expandedRows[guest.guestId];
               const isSelected = selectedRows.has(guest.bookingRef);
@@ -352,14 +345,14 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
               return (
                 <Fragment key={guest._key ?? guest.guestId}>
                   {/* -------  Main row  ------- */}
-                  <TableRow className={`transition-colors ${isSelected ? "bg-info-light/20 dark:bg-blue-900/20" : "odd:bg-surface even:bg-surface-2 hover:bg-primary-50 dark:odd:bg-darkSurface dark:even:bg-darkSurface"}`}>
+                  <TableRow className={`transition-colors ${isSelected ? "bg-info-light/20" : "odd:bg-surface even:bg-surface-2 hover:bg-primary-50"}`}>
                     {/* Row selection checkbox */}
                     <TableCell className="px-3 py-2 text-center">
                       <input
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => toggleRowSelection(guest.bookingRef)}
-                        className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
+                        className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-blue-500"
                         aria-label={`Select booking ${guest.bookingRef}`}
                       />
                     </TableCell>
@@ -426,7 +419,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
 
                   {/* -------  Expanded details  ------- */}
                   {isExpanded && (
-                    <TableRow className="bg-surface-2 even:bg-surface dark:bg-darkSurface dark:even:bg-darkSurface">
+                    <TableRow className="bg-surface-2 even:bg-surface">
                       <TableCell colSpan={9} className="px-4 py-4">
                       <div className="flex flex-col gap-4 md:flex-row">
                         <section className="md:w-1/2">
@@ -434,13 +427,13 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                             asChild
                             gap={1}
                             wrap={false}
-                            className="mb-1 text-sm font-semibold text-foreground dark:text-darkAccentGreen"
+                            className="mb-1 text-sm font-semibold text-foreground"
                           >
                             <h4>
                               Activities
                               {activitiesForGuest.length === 0 && (
                                 <XMarkIcon
-                                  className="h-4 w-4 text-muted-foreground dark:text-darkAccentGreen"
+                                  className="h-4 w-4 text-muted-foreground"
                                   aria-hidden="true"
                                 />
                               )}
@@ -454,13 +447,13 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                             asChild
                             gap={1}
                             wrap={false}
-                            className="mb-1 text-sm font-semibold text-foreground dark:text-darkAccentGreen"
+                            className="mb-1 text-sm font-semibold text-foreground"
                           >
                             <h4>
                               Transactions
                               {guest.transactions.length === 0 && (
                                 <XMarkIcon
-                                  className="h-4 w-4 text-muted-foreground dark:text-darkAccentGreen"
+                                  className="h-4 w-4 text-muted-foreground"
                                   aria-hidden="true"
                                 />
                               )}

@@ -1,8 +1,8 @@
 import { memo, useCallback, useState } from "react";
 import { z } from "zod";
 
+import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
 import { showToast } from "../../utils/toastUtils";
@@ -31,7 +31,7 @@ function ReturnKeycardsModalBase({ onConfirm, onCancel }: ReturnKeycardsModalPro
 
   return (
     <ModalContainer widthClasses="w-120">
-      <div className="relative rounded-lg bg-surface p-8 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
+      <div className="relative rounded-lg bg-surface p-8 shadow-xl">
         <Button
           onClick={onCancel}
           aria-label="Close"
@@ -42,10 +42,11 @@ function ReturnKeycardsModalBase({ onConfirm, onCancel }: ReturnKeycardsModalPro
         <h2 className="mb-6 text-center text-xl font-semibold">Return Keycards</h2>
         <label className="block text-center mt-12 mb-12">
           <span className="text-sm font-semibold">Count</span>
-          <ReceptionInput
+          <Input
+            compatibilityMode="no-wrapper"
             type="number"
             min={1}
-            className="w-60 rounded border mx-6 px-3 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+            className="w-60 rounded border mx-6 px-3 py-2 text-sm"
             value={countInput}
             onChange={(e) => setCountInput(e.target.value)}
           />

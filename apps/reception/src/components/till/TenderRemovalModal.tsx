@@ -1,9 +1,9 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { z } from "zod";
 
+import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
 import { Stack } from "@acme/design-system/primitives";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
 import type {
@@ -62,7 +62,7 @@ function TenderRemovalModalBase({
   return (
     <>
       <ModalContainer widthClasses="w-120">
-        <div className="relative rounded-lg bg-surface p-8 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
+        <div className="relative rounded-lg bg-surface p-8 shadow-xl">
           {/* Close */}
           <Button
             onClick={onClose}
@@ -79,16 +79,17 @@ function TenderRemovalModalBase({
 
           {/* Form row */}
           <div className="flex flex-wrap text-center items-center justify-center gap-12 mb-12">
-            <ReceptionInput
+            <Input
+              compatibilityMode="no-wrapper"
               type="number"
               inputMode="decimal"
-              className="w-32 rounded border px-3 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+              className="w-32 rounded border px-3 py-2 text-sm"
               placeholder="Amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
             <select
-              className="w-36 rounded border px-2 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+              className="w-36 rounded border px-2 py-2 text-sm"
               value={removalType}
               onChange={(e) => setRemovalType(e.target.value as RemovalType)}
             >
@@ -99,7 +100,7 @@ function TenderRemovalModalBase({
 
             {removalType !== "SAFE_DROP" && (
               <select
-                className="w-32 rounded border px-2 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+                className="w-32 rounded border px-2 py-2 text-sm"
                 value={destination}
                 onChange={(e) =>
                   setDestination(e.target.value as RemovalDestination)
@@ -122,7 +123,7 @@ function TenderRemovalModalBase({
               <Button
                 type="button"
                 onClick={handleConfirm}
-                className="min-h-11 min-w-32 rounded bg-primary-main px-4 py-2 text-primary-fg transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
+                className="min-h-11 min-w-32 rounded bg-primary-main px-4 py-2 text-primary-fg transition-opacity hover:opacity-90 disabled:opacity-50"
               >
                 Confirm removal
               </Button>

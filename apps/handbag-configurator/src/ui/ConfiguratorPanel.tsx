@@ -1,12 +1,19 @@
 "use client";
 
 import type { KeyboardEvent } from "react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
+import { Loader } from "@acme/design-system/atoms";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+} from "@acme/design-system/primitives";
 import {
   Card,
   CardContent,
 } from "@acme/design-system/shadcn";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
 import type {
   ProductConfigSchema,
@@ -30,7 +37,7 @@ type ConfiguratorPanelProps = {
   onSelect?: (key: string, value: string) => void;
 };
 
-export function ConfiguratorPanel({
+function PanelContent({
   schema,
   hotspotConfig,
   selections,
@@ -38,11 +45,11 @@ export function ConfiguratorPanel({
   validationStatus = "idle",
   onSelect,
 }: ConfiguratorPanelProps) {
-  const panelOpen = useModeStore((state) => state.panelOpen);
   const activeRegionId = useModeStore((state) => state.activeRegionId);
   const activeHotspotId = useModeStore((state) => state.activeHotspotId);
   const allowedDomains = validation?.allowedDomainsDelta ?? {};
   const blockedReasons = validation?.blockedReasons ?? [];
+  const t = useTranslations();
   const activeProperties = useMemo(() => {
     if (!schema || !activeRegionId) return [];
     const hotspot = hotspotConfig?.hotspots?.find(
@@ -59,26 +66,20 @@ export function ConfiguratorPanel({
 
   const getSectionTitle = (property: ProductConfigSchema["properties"][number]) => {
     const label = property.displayName.toLowerCase();
-    if (label.includes("material")) return "Materials";
-    if (label.includes("color")) return "Color";
-    if (label.includes("hardware")) return "Color";
-    if (label.includes("monogram")) return "Monogram";
+    if (label.includes("material")) return t("handbagConfigurator.section.materials");
+    if (label.includes("color")) return t("handbagConfigurator.section.color");
+    if (label.includes("hardware")) return t("handbagConfigurator.section.color");
+    if (label.includes("monogram")) return t("handbagConfigurator.section.monogram");
     return property.displayName;
   };
 
-  const t = useTranslations();
-
-  if (!panelOpen) return null;
-
   if (!schema) {
     return (
-      <div className="cfgFlyout" style={{ top: "16px" }}>
-        <Card className="cfgMiniCard cfgMiniCard--message">
-          <CardContent className="cfgMiniCard__message">
-            {t("handbagConfigurator.schemaMissing")}
-          </CardContent>
-        </Card>
-      </div>
+      <Card className="cfgMiniCard cfgMiniCard--message">
+        <CardContent className="cfgMiniCard__message">
+          {t("handbagConfigurator.schemaMissing")}
+        </CardContent>
+      </Card>
     );
   }
 
@@ -87,7 +88,12 @@ export function ConfiguratorPanel({
   }
 
   return (
-    <div className="cfgFlyout" style={{ top: "16px" }}>
+    <>
+      {validationStatus === "loading" ? (
+        <div className="flex items-center justify-center py-4">
+          <Loader size={24} label={t("handbagConfigurator.validating")} />
+        </div>
+      ) : null}
       {validationStatus === "error" ? (
         <Card className="cfgMiniCard cfgMiniCard--message">
           <CardContent className="cfgMiniCard__message">
@@ -102,12 +108,12 @@ export function ConfiguratorPanel({
           </CardContent>
         </Card>
       ) : null}
-      {activeProperties.length === 0 ? (
-          <Card className="cfgMiniCard cfgMiniCard--message">
-            <CardContent className="cfgMiniCard__message">
-              {t("handbagConfigurator.noOptionsYet")}
-            </CardContent>
-          </Card>
+      {activeProperties.length === 0 && validationStatus !== "loading" ? (
+        <Card className="cfgMiniCard cfgMiniCard--message">
+          <CardContent className="cfgMiniCard__message">
+            {t("handbagConfigurator.noOptionsYet")}
+          </CardContent>
+        </Card>
       ) : null}
       {activeProperties.map((property) => {
         const selectedValue = selections[property.key] ?? property.defaultValue;
@@ -186,9 +192,10 @@ export function ConfiguratorPanel({
                       id={swatchId}
                       key={value.value}
                       type="button"
-                      className={`cfgMiniSwatch ${
-                        selected ? "cfgMiniSwatch--selected" : ""
-                      }`}
+                      className={cn(
+                        "cfgMiniSwatch",
+                        selected && "cfgMiniSwatch--selected",
+                      )}
                       role="radio"
                       aria-checked={selected}
                       data-value={value.value}
@@ -210,6 +217,62 @@ export function ConfiguratorPanel({
           </Card>
         );
       })}
+    </>
+  );
+}
+
+export function ConfiguratorPanel(props: ConfiguratorPanelProps) {
+  const panelOpen = useModeStore((state) => state.panelOpen);
+  const activeRegionId = useModeStore((state) => state.activeRegionId);
+  const closePanel = useModeStore((state) => state.closePanel);
+  const clearActiveRegion = useModeStore((state) => state.clearActiveRegion);
+  const [isMobile, setIsMobile] = useState(false);
+  const t = useTranslations();
+
+  // Detect mobile viewport for drawer vs flyout
+  useState(() => {
+    if (typeof window === "undefined") return;
+    // i18n-exempt -- HAND-101 [ttl=2026-12-31]: media query string is technical configuration, not user-facing copy.
+    const mq = window.matchMedia("(max-width: 639px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  });
+
+  if (!panelOpen) return null;
+
+  if (isMobile) {
+    const isOpen = panelOpen && !!activeRegionId;
+    return (
+      <Drawer
+        open={isOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            closePanel();
+            clearActiveRegion();
+          }
+        }}
+      >
+        <DrawerContent
+          side="bottom"
+          className="max-h-dvh overflow-y-auto p-4"
+          radius="xl"
+        >
+          <DrawerTitle className="sr-only">
+            {t("handbagConfigurator.configuratorTitle")}
+          </DrawerTitle>
+          <div className="flex flex-col gap-3">
+            <PanelContent {...props} />
+          </div>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  return (
+    <div className="cfgFlyout" style={{ top: "16px" }}>
+      <PanelContent {...props} />
     </div>
   );
 }

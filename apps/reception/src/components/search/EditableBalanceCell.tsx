@@ -9,8 +9,8 @@ import React, {
   useState,
 } from "react";
 
+import { TableCell } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { ReceptionTableCell as TableCell } from "@acme/ui/operations";
 
 import useFinancialsRoomMutations from "../../hooks/mutations/useFinancialsRoomMutations";
 import { getCurrentIsoTimestamp } from "../../utils/dateUtils";
@@ -151,13 +151,13 @@ const EditableBalanceCell: React.FC<EditableBalanceCellProps> = ({
     <TableCell
       className={`border-b border-border py-2 px-3 ${
         justUpdated ? "bg-success-surface" : ""
-      } dark:border-darkSurface dark:text-darkAccentGreen`}
+      }`}
     >
       {isEditing ? (
         <input
           ref={inputRef}
           type="number"
-          className="w-full focus:outline-none bg-surface border p-1 rounded dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="w-full focus:outline-none bg-surface border p-1 rounded"
           value={editValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
@@ -166,7 +166,7 @@ const EditableBalanceCell: React.FC<EditableBalanceCellProps> = ({
       ) : (
         <Button
           type="button"
-          className="cursor-pointer p-0 m-0 bg-transparent border-none underline dark:text-darkAccentGreen"
+          className="cursor-pointer p-0 m-0 bg-transparent border-none underline"
           title="Click to edit"
           onClick={() => setIsEditing(true)}
         >

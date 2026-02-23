@@ -1,7 +1,7 @@
 import React from "react";
 
+import { Input } from "@acme/design-system";
 import { Button, Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import BookingRow from "../BookingRow";
@@ -76,7 +76,7 @@ const CheckinsTableView: React.FC<Props> = ({
   onToggleCancelled,
   bookingStatuses,
 }) => (
-  <div className="min-h-screen flex flex-col p-5 dark:bg-darkBg dark:text-darkAccentGreen">
+  <div className="min-h-screen flex flex-col p-5">
     <CheckinsHeader
       onNewBookingClick={onNewBookingClick}
       onEditClick={onEditClick}
@@ -84,7 +84,7 @@ const CheckinsTableView: React.FC<Props> = ({
       onArchiveClick={onArchiveClick}
       eligibleCount={eligibleCount}
     />
-    <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
+    <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <DateSelector
@@ -93,7 +93,7 @@ const CheckinsTableView: React.FC<Props> = ({
             username={username}
           />
           <label className="flex items-center gap-2 text-sm cursor-pointer">
-            <ReceptionInput
+            <Input compatibilityMode="no-wrapper"
               type="checkbox"
               checked={showCancelled}
               onChange={onToggleCancelled}
@@ -103,14 +103,14 @@ const CheckinsTableView: React.FC<Props> = ({
           </label>
         </div>
         {roomsReady ? (
-          <span className="ms-4 text-success-main font-semibold dark:text-darkAccentGreen">
+          <span className="ms-4 text-success-main font-semibold">
             Rooms are Set
           </span>
         ) : (
             <Button
             type="button"
             onClick={() => setRoomsReady(true)}
-            className="px-3 py-2 bg-success-main text-primary-fg rounded dark:bg-darkAccentGreen dark:text-darkBg"
+            className="px-3 py-2 bg-success-main text-primary-fg rounded"
           >
             Rooms Ready
           </Button>
@@ -124,7 +124,7 @@ const CheckinsTableView: React.FC<Props> = ({
               <TableRow>
                 <TableCell
                   colSpan={12}
-                  className="p-4 text-center italic text-muted-foreground dark:text-darkAccentGreen"
+                  className="p-4 text-center italic text-muted-foreground"
                 >
                   Loading...
                 </TableCell>
@@ -132,7 +132,7 @@ const CheckinsTableView: React.FC<Props> = ({
             )}
             {!loading && error != null && (
               <TableRow>
-                <TableCell colSpan={12} className="p-4 text-center text-error-main dark:text-darkAccentOrange">
+                <TableCell colSpan={12} className="p-4 text-center text-error-main">
                   Error: {String(error)}
                 </TableCell>
               </TableRow>
@@ -141,7 +141,7 @@ const CheckinsTableView: React.FC<Props> = ({
               <TableRow>
                 <TableCell
                   colSpan={12}
-                  className="p-4 text-center italic text-muted-foreground dark:text-darkAccentGreen"
+                  className="p-4 text-center italic text-muted-foreground"
                 >
                   No checkins found for this date.
                 </TableCell>

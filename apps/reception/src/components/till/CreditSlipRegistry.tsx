@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 
+import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { useCreditSlipsMutations } from "../../hooks/data/till/useCreditSlipsMutations";
 
@@ -22,27 +22,29 @@ export const CreditSlipRegistry = memo(function CreditSlipRegistry() {
   };
 
   return (
-    <div className="mt-6 border border-info-light rounded p-3 dark:bg-darkSurface dark:text-darkAccentGreen">
-      <h3 className="text-lg font-semibold mb-2 dark:text-darkAccentGreen">Credit Slip Registry</h3>
+    <div className="mt-6 border border-info-light rounded p-3">
+      <h3 className="text-lg font-semibold mb-2">Credit Slip Registry</h3>
       <div className="flex flex-wrap gap-2 mb-2">
-        <ReceptionInput
+        <Input
+          compatibilityMode="no-wrapper"
           type="text"
           placeholder="Slip #"
-          className="border rounded p-1 flex-1 dark:bg-darkBg dark:text-darkAccentGreen"
+          className="border rounded p-1 flex-1"
           value={slipNumber}
           onChange={(e) => setSlipNumber(e.target.value)}
         />
-        <ReceptionInput
+        <Input
+          compatibilityMode="no-wrapper"
           type="text"
           placeholder="Amount"
-          className="border rounded p-1 w-28 dark:bg-darkBg dark:text-darkAccentGreen"
+          className="border rounded p-1 w-28"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
       </div>
       <Button
         onClick={handleAdd}
-        className="px-3 py-1 bg-primary-main text-primary-fg rounded dark:bg-darkAccentGreen dark:text-darkBg"
+        className="px-3 py-1 bg-primary-main text-primary-fg rounded"
       >
         Add Slip
       </Button>

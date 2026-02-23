@@ -1,8 +1,8 @@
 import { memo, useCallback, useState } from "react";
 import { z } from "zod";
 
+import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
 import { showToast } from "../../utils/toastUtils";
@@ -38,7 +38,7 @@ function FloatEntryModalBase({ onConfirm, onClose }: FloatEntryModalProps) {
   return (
     <>
       <ModalContainer widthClasses="w-120">
-        <div className="relative rounded-lg bg-surface p-8 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
+        <div className="relative rounded-lg bg-surface p-8 shadow-xl">
           {/* Close */}
           <Button
             onClick={onClose}
@@ -55,10 +55,11 @@ function FloatEntryModalBase({ onConfirm, onClose }: FloatEntryModalProps) {
 
           {/* Amount */}
           <div className="flex flex-col text-center  items-center justify-center  mb-12 sm:flex-row sm:items-end">
-            <ReceptionInput
+            <Input
+              compatibilityMode="no-wrapper"
               type="number"
               inputMode="decimal"
-              className="w-60 rounded border px-3 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+              className="w-60 rounded border px-3 py-2 text-sm"
               placeholder="Amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}

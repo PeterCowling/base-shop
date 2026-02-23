@@ -1,14 +1,7 @@
 import { useMemo, useState } from "react";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import {
-  ReceptionTable as Table,
-  ReceptionTableBody as TableBody,
-  ReceptionTableCell as TableCell,
-  ReceptionTableHead as TableHead,
-  ReceptionTableHeader as TableHeader,
-  ReceptionTableRow as TableRow,
-} from "@acme/ui/operations";
 
 import {
   STOCK_ADJUSTMENT_REAUTH_THRESHOLD,
@@ -177,7 +170,7 @@ function StockManagement() {
   if (!canManageStock) {
     return (
       <div className="p-4">
-        <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
+        <p className="text-sm text-muted-foreground">
           You do not have access to stock management.
         </p>
       </div>
@@ -490,10 +483,10 @@ function StockManagement() {
   };
 
   return (
-    <div className="p-4 dark:bg-darkBg dark:text-darkAccentGreen space-y-6">
+    <div className="p-4 space-y-6">
       <div>
         <h1 className="text-3xl font-bold mb-2">Stock Management</h1>
-        <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
+        <p className="text-sm text-muted-foreground">
           Track inventory with ledger-based movements and accountability.
         </p>
       </div>
@@ -535,13 +528,13 @@ function StockManagement() {
         </section>
       )}
 
-      <section className="border border-border rounded p-4 dark:border-darkBorder">
+      <section className="border border-border rounded p-4 ">
         <h2 className="text-xl font-semibold mb-3">Add Inventory Item</h2>
         <div className="grid gap-3 md:grid-cols-5">
           <input
             type="text"
             placeholder="Name"
-            className="border px-2 py-1 dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="border px-2 py-1"
             value={newItem.name}
             onChange={(e) =>
               setNewItem((prev) => ({ ...prev, name: e.target.value }))
@@ -550,7 +543,7 @@ function StockManagement() {
           <input
             type="text"
             placeholder="Unit (e.g. kg)"
-            className="border px-2 py-1 dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="border px-2 py-1"
             value={newItem.unit}
             onChange={(e) =>
               setNewItem((prev) => ({ ...prev, unit: e.target.value }))
@@ -559,7 +552,7 @@ function StockManagement() {
           <input
             type="number"
             placeholder="Opening Count"
-            className="border px-2 py-1 dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="border px-2 py-1"
             value={newItem.openingCount}
             onChange={(e) =>
               setNewItem((prev) => ({
@@ -571,7 +564,7 @@ function StockManagement() {
           <input
             type="number"
             placeholder="Reorder Threshold"
-            className="border px-2 py-1 dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="border px-2 py-1"
             value={newItem.reorderThreshold}
             onChange={(e) =>
               setNewItem((prev) => ({
@@ -583,7 +576,7 @@ function StockManagement() {
           <input
             type="text"
             placeholder="Category"
-            className="border px-2 py-1 dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="border px-2 py-1"
             value={newItem.category}
             onChange={(e) =>
               setNewItem((prev) => ({ ...prev, category: e.target.value }))
@@ -602,14 +595,14 @@ function StockManagement() {
       <section>
         <h2 className="text-xl font-semibold mb-3">Inventory Ledger</h2>
         {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
+          <p className="text-sm text-muted-foreground">
             No inventory items added yet.
           </p>
         ) : (
           <div className="overflow-x-auto">
-            <Table className="min-w-full text-sm dark:bg-darkSurface border border-border dark:border-darkBorder">
+            <Table className="min-w-full text-sm border border-border ">
               <TableHeader>
-                <TableRow className="bg-surface-2 dark:bg-darkSurface">
+                <TableRow className="bg-surface-2">
                   <TableHead className="p-2 text-start">Item</TableHead>
                   <TableHead className="p-2 text-start">Unit</TableHead>
                   <TableHead className="p-2 text-end">On Hand</TableHead>
@@ -635,7 +628,7 @@ function StockManagement() {
                   return (
                     <TableRow
                       key={item.id ?? item.name}
-                      className={lowStock ? "bg-error-light/20 dark:bg-darkSurface" : ""}
+                      className={lowStock ? "bg-error-light/20" : ""}
                     >
                       <TableCell className="p-2 border-b">{item.name}</TableCell>
                       <TableCell className="p-2 border-b">{item.unit}</TableCell>
@@ -646,7 +639,7 @@ function StockManagement() {
                       <TableCell className="p-2 border-b">{lastMovement}</TableCell>
                       <TableCell className="p-2 border-b">
                         <select
-                          className="border px-2 py-1 dark:bg-darkSurface dark:text-darkAccentGreen"
+                          className="border px-2 py-1"
                           value={state.action}
                           onChange={(e) =>
                             handleActionChange(
@@ -668,7 +661,7 @@ function StockManagement() {
                         <input
                           type="number"
                           placeholder="Quantity"
-                          className="border px-2 py-1 w-24 dark:bg-darkSurface dark:text-darkAccentGreen"
+                          className="border px-2 py-1 w-24"
                           value={state.quantity}
                           onChange={(e) =>
                             handleActionChange(
@@ -683,7 +676,7 @@ function StockManagement() {
                         <input
                           type="text"
                           placeholder="Reason"
-                          className="border px-2 py-1 w-40 dark:bg-darkSurface dark:text-darkAccentGreen"
+                          className="border px-2 py-1 w-40"
                           value={state.reason}
                           onChange={(e) =>
                             handleActionChange(
@@ -698,7 +691,7 @@ function StockManagement() {
                         <input
                           type="text"
                           placeholder="Reference"
-                          className="border px-2 py-1 w-32 dark:bg-darkSurface dark:text-darkAccentGreen"
+                          className="border px-2 py-1 w-32"
                           value={state.reference}
                           onChange={(e) =>
                             handleActionChange(
@@ -713,7 +706,7 @@ function StockManagement() {
                         <input
                           type="text"
                           placeholder="Note"
-                          className="border px-2 py-1 w-32 dark:bg-darkSurface dark:text-darkAccentGreen"
+                          className="border px-2 py-1 w-32"
                           value={state.note}
                           onChange={(e) =>
                             handleActionChange(
@@ -742,10 +735,10 @@ function StockManagement() {
         )}
       </section>
 
-      <section className="border border-border rounded p-4 dark:border-darkBorder">
+      <section className="border border-border rounded p-4 ">
         <h2 className="text-xl font-semibold mb-3">Alerts</h2>
         {lowStockItems.length === 0 ? (
-          <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
+          <p className="text-sm text-muted-foreground">
             No low stock items.
           </p>
         ) : (
@@ -760,7 +753,7 @@ function StockManagement() {
         <div className="mt-4">
           <h3 className="font-semibold mb-2">Shrinkage</h3>
           {shrinkageAlerts.length === 0 ? (
-            <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
+            <p className="text-sm text-muted-foreground">
               No abnormal shrinkage detected in the last 24 hours.
             </p>
           ) : (
@@ -776,7 +769,7 @@ function StockManagement() {
         </div>
       </section>
 
-      <section className="border border-border rounded p-4 dark:border-darkBorder">
+      <section className="border border-border rounded p-4 ">
         <h2 className="text-xl font-semibold mb-3">Exports</h2>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -796,17 +789,17 @@ function StockManagement() {
         </div>
       </section>
 
-      <section className="border border-border rounded p-4 dark:border-darkBorder">
+      <section className="border border-border rounded p-4 ">
         <h2 className="text-xl font-semibold mb-3">Count Variance Report</h2>
         {countEntries.length === 0 ? (
-          <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
+          <p className="text-sm text-muted-foreground">
             No count adjustments recorded yet.
           </p>
         ) : (
           <>
-            <Table className="min-w-full text-sm dark:bg-darkSurface border border-border dark:border-darkBorder">
+            <Table className="min-w-full text-sm border border-border ">
               <TableHeader>
-                <TableRow className="bg-surface-2 dark:bg-darkSurface">
+                <TableRow className="bg-surface-2">
                   <TableHead className="p-2 text-start">Time</TableHead>
                   <TableHead className="p-2 text-start">Item</TableHead>
                   <TableHead className="p-2 text-end">Variance</TableHead>
@@ -831,9 +824,9 @@ function StockManagement() {
 
             <div className="mt-4">
               <h3 className="font-semibold mb-2">Variance by Item</h3>
-              <Table className="min-w-full text-sm dark:bg-darkSurface border border-border dark:border-darkBorder">
+              <Table className="min-w-full text-sm border border-border ">
                 <TableHeader>
-                  <TableRow className="bg-surface-2 dark:bg-darkSurface">
+                  <TableRow className="bg-surface-2">
                     <TableHead className="p-2 text-start">Item</TableHead>
                     <TableHead className="p-2 text-end">Total Variance</TableHead>
                   </TableRow>
@@ -854,7 +847,7 @@ function StockManagement() {
         )}
       </section>
 
-      <p className="text-xs text-muted-foreground dark:text-darkAccentGreen">
+      <p className="text-xs text-muted-foreground">
         Changes of {STOCK_ADJUSTMENT_REAUTH_THRESHOLD}+ units require re-authentication.
       </p>
 

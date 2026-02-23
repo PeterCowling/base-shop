@@ -4,8 +4,8 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
+import { Input } from "@acme/design-system";
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { TillDataProvider, useTillData } from "../../context/TillDataContext";
 import usePmsPostings from "../../hooks/data/till/usePmsPostings";
@@ -58,10 +58,11 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
     <div className="flex items-end gap-2 flex-wrap">
       <div>
         <label className="block text-xs mb-1">Amount</label>
-        <ReceptionInput
+        <Input
+          compatibilityMode="no-wrapper"
           type="number"
           inputMode="decimal"
-          className="w-28 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          className="w-28 rounded border px-2 py-1 text-sm"
           placeholder="0.00"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
@@ -71,7 +72,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
       <div>
         <label className="block text-xs mb-1">Method</label>
         <select
-          className="rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          className="rounded border px-2 py-1 text-sm"
           value={method}
           onChange={(e) => setMethod(e.target.value as "CASH" | "CC")}
           disabled={submitting}
@@ -82,9 +83,10 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
       </div>
       <div>
         <label className="block text-xs mb-1">Note</label>
-        <ReceptionInput
+        <Input
+          compatibilityMode="no-wrapper"
           type="text"
-          className="w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          className="w-40 rounded border px-2 py-1 text-sm"
           placeholder="Optional"
           value={note}
           onChange={(e) => setNote(e.target.value)}
@@ -131,10 +133,11 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
     <div className="flex items-end gap-2 flex-wrap">
       <div>
         <label className="block text-xs mb-1">Amount</label>
-        <ReceptionInput
+        <Input
+          compatibilityMode="no-wrapper"
           type="number"
           inputMode="decimal"
-          className="w-28 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          className="w-28 rounded border px-2 py-1 text-sm"
           placeholder="0.00"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
@@ -143,9 +146,10 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
       </div>
       <div>
         <label className="block text-xs mb-1">Note</label>
-        <ReceptionInput
+        <Input
+          compatibilityMode="no-wrapper"
           type="text"
-          className="w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          className="w-40 rounded border px-2 py-1 text-sm"
           placeholder="Optional"
           value={note}
           onChange={(e) => setNote(e.target.value)}
@@ -262,7 +266,7 @@ const ReconciliationWorkbenchContent = memo(
       <div className="p-4 space-y-4">
         <h2 className="text-2xl font-semibold">Reconciliation Workbench</h2>
         {hasParseError && (
-          <p className="text-sm text-warning-main dark:text-darkAccentGreen">
+          <p className="text-sm text-warning-main">
             Some values could not be parsed.
           </p>
         )}
@@ -278,20 +282,20 @@ const ReconciliationWorkbenchContent = memo(
           </p>
         )}
 
-        <Table className="w-full border-collapse text-sm dark:text-darkAccentGreen">
-          <TableHeader className="bg-surface-2 dark:bg-darkSurface">
-            <TableRow className="dark:border-darkSurface">
-              <TableHead className="p-2 text-start border dark:border-darkSurface">Source</TableHead>
-              <TableHead className="p-2 text-end border dark:border-darkSurface">Cash</TableHead>
-              <TableHead className="p-2 text-end border dark:border-darkSurface">CC</TableHead>
-              <TableHead className="p-2 text-end border dark:border-darkSurface">Cash Δ</TableHead>
-              <TableHead className="p-2 text-end border dark:border-darkSurface">CC Δ</TableHead>
+        <Table className="w-full border-collapse text-sm">
+          <TableHeader className="bg-surface-2">
+            <TableRow>
+              <TableHead className="p-2 text-start border">Source</TableHead>
+              <TableHead className="p-2 text-end border">Cash</TableHead>
+              <TableHead className="p-2 text-end border">CC</TableHead>
+              <TableHead className="p-2 text-end border">Cash Δ</TableHead>
+              <TableHead className="p-2 text-end border">CC Δ</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
             {/* POS Totals */}
-            <TableRow className="border-b dark:border-darkSurface dark:bg-darkSurface">
+            <TableRow className="border-b">
               <TableCell className="p-2">POS Totals</TableCell>
               <TableCell className="p-2 text-end">{format(safePosCashTotal)}</TableCell>
               <TableCell className="p-2 text-end">{format(safePosCcTotal)}</TableCell>
@@ -300,7 +304,7 @@ const ReconciliationWorkbenchContent = memo(
             </TableRow>
 
             {/* Cash Drawer */}
-            <TableRow className="border-b dark:border-darkSurface dark:bg-darkSurface">
+            <TableRow className="border-b">
               <TableCell className="p-2">Cash Drawer</TableCell>
               <TableCell
                 className={`p-2 text-right ${diffClass(
@@ -309,7 +313,7 @@ const ReconciliationWorkbenchContent = memo(
               >
                 {format(safeDrawerTotal)}
               </TableCell>
-              <TableCell className="p-2 text-end text-muted-foreground dark:text-darkAccentGreen">-</TableCell>
+              <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
               <TableCell
                 className={`p-2 text-right ${diffClass(
                   safeDrawerTotal - safePosCashTotal
@@ -321,7 +325,7 @@ const ReconciliationWorkbenchContent = memo(
             </TableRow>
 
             {/* PMS Postings */}
-            <TableRow className="border-b dark:border-darkSurface dark:bg-darkSurface">
+            <TableRow className="border-b">
               <TableCell className="p-2">PMS Postings</TableCell>
               <TableCell className="p-2 text-end">{format(safePmsCashTotal)}</TableCell>
               <TableCell className="p-2 text-end">{format(safePmsCcTotal)}</TableCell>
@@ -342,9 +346,9 @@ const ReconciliationWorkbenchContent = memo(
             </TableRow>
 
             {/* Terminal Batch */}
-            <TableRow className="dark:bg-darkSurface dark:border-darkSurface">
+            <TableRow>
               <TableCell className="p-2">Terminal Batch</TableCell>
-              <TableCell className="p-2 text-end text-muted-foreground dark:text-darkAccentGreen">-</TableCell>
+              <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
               <TableCell className="p-2 text-end">{format(safeTerminalTotal)}</TableCell>
               <TableCell className="p-2" />
               <TableCell

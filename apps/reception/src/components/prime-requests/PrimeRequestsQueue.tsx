@@ -3,16 +3,9 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives";
-import {
-  ReceptionTable as Table,
-  ReceptionTableBody as TableBody,
-  ReceptionTableCell as TableCell,
-  ReceptionTableHead as TableHead,
-  ReceptionTableHeader as TableHeader,
-  ReceptionTableRow as TableRow,
-} from "@acme/ui/operations";
 
 import usePrimeRequestsData from "../../hooks/data/usePrimeRequestsData";
 import usePrimeRequestResolution from "../../hooks/mutations/usePrimeRequestResolution";
@@ -136,13 +129,13 @@ export default function PrimeRequestsQueue() {
   }
 
   return (
-    <div className="min-h-80vh bg-surface-2 p-4 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh bg-surface-2 p-4 font-sans text-foreground">
       <h1 className="mb-6 w-full text-center font-heading text-5xl text-primary-main">
         PRIME REQUESTS
       </h1>
 
-      <div className="rounded-lg bg-surface p-6 shadow dark:bg-darkSurface">
-        <p className="mb-4 text-sm text-muted-foreground dark:text-darkAccentGreen">
+      <div className="rounded-lg bg-surface p-6 shadow">
+        <p className="mb-4 text-sm text-muted-foreground">
           Resolve Prime guest requests while keeping booking/preorder/check-out
           flows as the canonical source of truth.
         </p>
@@ -156,7 +149,7 @@ export default function PrimeRequestsQueue() {
               className={`rounded px-3 py-1.5 text-xs font-semibold ${
                 selectedStatusFilter === status
                   ? "bg-primary-main text-primary-fg"
-                  : "bg-surface-3 text-foreground dark:bg-darkBorder dark:text-darkAccentGreen"
+                  : "bg-surface-3 text-foreground"
               }`}
             >
               {STATUS_LABELS[status]}
@@ -165,7 +158,7 @@ export default function PrimeRequestsQueue() {
         </Cluster>
 
         {loading && (
-          <p className="italic text-muted-foreground dark:text-darkAccentGreen">
+          <p className="italic text-muted-foreground">
             Loading Prime requests...
           </p>
         )}
@@ -177,7 +170,7 @@ export default function PrimeRequestsQueue() {
         )}
 
         {!loading && !error && visibleRequests.length === 0 && (
-          <p className="italic text-muted-foreground dark:text-darkAccentGreen">
+          <p className="italic text-muted-foreground">
             No {STATUS_LABELS[selectedStatusFilter].toLowerCase()} requests.
           </p>
         )}
@@ -189,7 +182,7 @@ export default function PrimeRequestsQueue() {
               aria-label="Prime requests queue"
             >
               <TableHeader>
-                <TableRow className="bg-surface-3 dark:bg-darkBorder">
+                <TableRow className="bg-surface-3">
                   <TableHead className="border-b p-2 text-left">Type</TableHead>
                   <TableHead className="border-b p-2 text-left">Guest</TableHead>
                   <TableHead className="border-b p-2 text-left">Booking</TableHead>
@@ -207,22 +200,22 @@ export default function PrimeRequestsQueue() {
                     isResolving && activeRequestId === request.requestId;
 
                   return (
-                    <TableRow key={request.requestId} className="bg-surface dark:bg-darkSurface">
+                    <TableRow key={request.requestId} className="bg-surface">
                       <TableCell className="border-b p-2 align-top font-semibold">
                         {TYPE_LABELS[request.type]}
-                        <p className="mt-1 text-xs font-normal text-muted-foreground dark:text-muted-foreground">
+                        <p className="mt-1 text-xs font-normal text-muted-foreground">
                           Current: {STATUS_LABELS[request.status]}
                         </p>
                       </TableCell>
                       <TableCell className="border-b p-2 align-top">
                         <p className="font-medium">{request.guestName}</p>
-                        <p className="text-xs text-muted-foreground dark:text-muted-foreground">
+                        <p className="text-xs text-muted-foreground">
                           {request.guestUuid}
                         </p>
                       </TableCell>
                       <TableCell className="border-b p-2 align-top">
                         <p className="font-medium">{request.bookingId}</p>
-                        <p className="text-xs text-muted-foreground dark:text-muted-foreground">
+                        <p className="text-xs text-muted-foreground">
                           {request.requestId}
                         </p>
                       </TableCell>
@@ -232,7 +225,7 @@ export default function PrimeRequestsQueue() {
                       <TableCell className="border-b p-2 align-top">
                         <p>{renderContextSummary(request)}</p>
                         {request.note && (
-                          <p className="mt-1 text-xs text-muted-foreground dark:text-muted-foreground">
+                          <p className="mt-1 text-xs text-muted-foreground">
                             Guest note: {request.note}
                           </p>
                         )}
@@ -255,7 +248,7 @@ export default function PrimeRequestsQueue() {
                                   event.target.value as PrimeRequestStatus,
                               }))
                             }
-                            className="rounded border px-2 py-1 dark:bg-darkSurface dark:border-darkBorder"
+                            className="rounded border px-2 py-1"
                           >
                             {STATUS_ORDER.map((status) => (
                               <option key={status} value={status}>
@@ -274,7 +267,7 @@ export default function PrimeRequestsQueue() {
                               }))
                             }
                             placeholder="Optional operator note"
-                            className="rounded border px-2 py-1 dark:bg-darkSurface dark:border-darkBorder"
+                            className="rounded border px-2 py-1"
                           />
 
                           <Button
@@ -287,7 +280,7 @@ export default function PrimeRequestsQueue() {
                           </Button>
 
                           {request.resolution && (
-                            <p className="text-xs text-muted-foreground dark:text-muted-foreground">
+                            <p className="text-xs text-muted-foreground">
                               Last by {request.resolution.operatorName} at{" "}
                               {formatTimestamp(request.resolution.resolvedAt)}
                             </p>

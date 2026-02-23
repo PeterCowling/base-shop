@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 
+import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { showToast } from "../../utils/toastUtils";
 import FormContainer from "../common/FormContainer";
@@ -39,16 +39,17 @@ export const SafeOpenForm = memo(function SafeOpenForm({
     <FormContainer
       title="Open Safe"
       borderColor="border-info-main"
-      className="dark:bg-darkSurface"
     >
-      <ReceptionInput
+      <Input
+        compatibilityMode="no-wrapper"
         type="number"
         className="border rounded p-1 w-full"
         placeholder="Opening Count"
         value={count}
         onChange={(e) => setCount(e.target.value)}
       />
-      <ReceptionInput
+      <Input
+        compatibilityMode="no-wrapper"
         type="number"
         className="border rounded p-1 w-full mt-2"
         placeholder="Opening Keycards"
@@ -63,7 +64,7 @@ export const SafeOpenForm = memo(function SafeOpenForm({
         <Button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 rounded bg-info-main text-primary-fg hover:bg-info-dark dark:bg-darkSurface dark:text-darkAccentOrange"
+          className="px-4 py-2 rounded bg-info-main text-primary-fg hover:bg-info-dark"
         >
           Cancel
         </Button>

@@ -1,8 +1,8 @@
 // src/components/forms/PettyCashForm.tsx
 import { memo, useCallback, useState } from "react";
 
+import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { showToast } from "../../utils/toastUtils";
 import PasswordReauthInline from "../common/PasswordReauthInline";
@@ -49,7 +49,7 @@ export const PettyCashForm = memo(function PettyCashForm({
       {/* Overlay */}
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/60 p-4">
         {/* Modal */}
-        <div className="relative w-full max-w-sm rounded-lg bg-surface p-8 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
+        <div className="relative w-full max-w-sm rounded-lg bg-surface p-8 shadow-xl">
           {/* Close button */}
           <Button
             onClick={handleCancel}
@@ -66,10 +66,11 @@ export const PettyCashForm = memo(function PettyCashForm({
 
           {/* Input */}
           <div className="flex flex-col gap-4">
-            <ReceptionInput
+            <Input
+              compatibilityMode="no-wrapper"
               type="number"
               inputMode="decimal"
-              className="w-32 rounded border px-3 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+              className="w-32 rounded border px-3 py-2 text-sm"
               placeholder="Amount"
               value={amount}
               onChange={handleAmountChange}

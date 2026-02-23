@@ -1,8 +1,8 @@
 import React, { type FC } from "react";
 
+import { Input } from "@acme/design-system";
 import { TableCell, TableRow } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import type { Activity } from "../../../types/hooks/data/activitiesData";
@@ -68,7 +68,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
     <TableRow
       className={`border-b border-border hover:bg-surface-2 transition-colors text-sm text-foreground ${
         onRowClick ? "cursor-pointer" : ""
-      } dark:border-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen`}
+      }`}
       onClick={onRowClick}
     >
       <TableCell className="p-4">
@@ -97,9 +97,9 @@ const BookingRowView: FC<BookingRowViewProps> = ({
       </TableCell>
       <TableCell className="p-4">
         <div className="flex items-center justify-center">
-          <ReceptionInput
+          <Input compatibilityMode="no-wrapper"
             type="text"
-            className="w-16 px-1 py-0.5 border border-border-2 rounded text-center dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="w-16 px-1 py-0.5 border border-border-2 rounded text-center"
             value={draftValue}
             onChange={(e) => onDraftChange(e.target.value)}
             onBlur={onBlur}

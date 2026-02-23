@@ -1,7 +1,7 @@
 import { type FC, memo, useCallback, useState } from "react";
 
+import { Textarea } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { ReceptionTextarea } from "@acme/ui/operations";
 
 import useVoidTransaction from "../../hooks/mutations/useVoidTransaction";
 import { type Transaction } from "../../types/component/Till";
@@ -35,8 +35,8 @@ const VoidTransactionModal: FC<VoidTransactionModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/50 p-4">
-      <div className="w-full max-w-sm rounded bg-surface p-6 shadow-lg dark:bg-darkSurface">
-        <h2 className="text-lg font-semibold mb-4 dark:text-darkAccentGreen">
+      <div className="w-full max-w-sm rounded bg-surface p-6 shadow-lg">
+        <h2 className="text-lg font-semibold mb-4">
           Void Transaction
         </h2>
         <p className="mb-4">
@@ -45,7 +45,8 @@ const VoidTransactionModal: FC<VoidTransactionModalProps> = ({
         </p>
         <label className="block text-sm font-semibold mb-2">
           Reason
-          <ReceptionTextarea
+          <Textarea
+            compatibilityMode="no-wrapper"
             className="mt-1 w-full rounded border p-2 text-sm text-foreground"
             rows={3}
             value={reason}
@@ -64,7 +65,7 @@ const VoidTransactionModal: FC<VoidTransactionModalProps> = ({
         <div className="flex justify-end mb-4">
           <Button
             onClick={onClose}
-            className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-2 text-foreground dark:bg-darkBorder dark:text-darkAccentGreen"
+            className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-2 text-foreground"
           >
             Cancel
           </Button>

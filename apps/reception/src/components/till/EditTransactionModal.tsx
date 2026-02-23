@@ -1,8 +1,8 @@
 import { type FC, memo, useCallback, useState } from "react";
 import { z } from "zod";
 
+import { Input, Textarea } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { ReceptionInput, ReceptionTextarea } from "@acme/ui/operations";
 
 import useCorrectTransaction from "../../hooks/mutations/useCorrectTransaction";
 import { type Transaction } from "../../types/component/Till";
@@ -96,12 +96,13 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 p-4">
-      <div className="bg-surface w-full max-w-sm p-6 rounded shadow-lg dark:bg-darkSurface dark:text-darkAccentGreen">
+      <div className="bg-surface w-full max-w-sm p-6 rounded shadow-lg">
         <h2 className="text-lg font-semibold mb-4">Record Correction</h2>
 
         <label className="block mb-2">
           <span className="text-sm font-semibold">Amount</span>
-          <ReceptionInput
+          <Input
+            compatibilityMode="no-wrapper"
             type="text"
             className="w-full border rounded p-1 text-foreground"
             value={amount}
@@ -111,7 +112,8 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
 
         <label className="block mb-2">
           <span className="text-sm font-semibold">Method</span>
-          <ReceptionInput
+          <Input
+            compatibilityMode="no-wrapper"
             type="text"
             className="w-full border rounded p-1 text-foreground"
             value={method}
@@ -121,7 +123,8 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
 
         <label className="block mb-2">
           <span className="text-sm font-semibold">Item Category</span>
-          <ReceptionInput
+          <Input
+            compatibilityMode="no-wrapper"
             type="text"
             className="w-full border rounded p-1 text-foreground"
             value={itemCategory}
@@ -131,7 +134,8 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
 
         <label className="block mb-4">
           <span className="text-sm font-semibold">Description</span>
-          <ReceptionInput
+          <Input
+            compatibilityMode="no-wrapper"
             type="text"
             className="w-full border rounded p-1 text-foreground"
             value={description}
@@ -141,7 +145,8 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
 
         <label className="block mb-4">
           <span className="text-sm font-semibold">Correction Reason</span>
-          <ReceptionTextarea
+          <Textarea
+            compatibilityMode="no-wrapper"
             className="w-full border rounded p-2 text-foreground"
             value={reason}
             onChange={(e) => setReason(e.target.value)}
@@ -162,7 +167,7 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
           />
           <Button
             onClick={onClose}
-            className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-3 text-foreground dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-3 text-foreground"
           >
             Cancel
           </Button>

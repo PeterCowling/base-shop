@@ -636,7 +636,7 @@ stages:
     display_order: 13
     conditional: false
     condition: "always"
-    operator_next_prompt: "SELL container fan-out begins: S3 Forecast and SELL-01 Channel strategy run in parallel. PRODUCT-02 is optional. MARKET-07..11 capture post-offer standing intelligence in parallel."
+    operator_next_prompt: "SELL container fan-out begins: SELL-01 Channel strategy starts now. PRODUCT-02 is optional. MARKET-07..11 capture post-offer standing intelligence in parallel."
 
   - id: MARKET-07
     name_machine: post-offer-synthesis
@@ -712,19 +712,7 @@ stages:
     display_order: 13
     conditional: false
     condition: "always"
-    operator_next_prompt: "MARKET container standing stages complete. Proceed to the SELL container fan-out: S3 Forecast and SELL-01 Channel strategy run in parallel."
-
-  - id: S3
-    name_machine: forecast
-    stage_group: SELL
-    label_operator_short: "Forecast"
-    label_operator_long: "S3 — Forecast"
-    outcome_operator: "90-day P10/P50/P90 revenue forecast with assumption register and sparse-evidence guardrails."
-    aliases:
-      - forecast
-      - s3
-    display_order: 14
-    operator_next_prompt: "S3 Forecast runs in parallel with SELL-01 Channel strategy within the SELL container. Both must complete before S4 Baseline merge."
+    operator_next_prompt: "MARKET container standing stages complete. Proceed to the SELL container fan-out: SELL-01 Channel strategy starts now."
 
   - id: PRODUCT-02
     name_machine: adjacent-product-research
@@ -767,7 +755,7 @@ stages:
     display_order: 15
     conditional: false
     condition: "always"
-    operator_next_prompt: "Both S3 Forecast and SELL-01 must complete before S4 Baseline merge. SELL-08 remains required before paid spend."
+    operator_next_prompt: "SELL-01 must complete before S4 Baseline merge. SELL-08 remains required before paid spend."
     operator_microsteps:
       - id: GATE-SELL-STRAT-01
         label: "Strategy design complete"
@@ -950,13 +938,13 @@ stages:
       - qa
       - s9b
     display_order: 21
-    operator_next_prompt: "Proceed to S10 Signals loop."
+    operator_next_prompt: "Proceed to SIGNALS loop."
 
-  - id: S10
+  - id: SIGNALS
     name_machine: weekly-readout
     label_operator_short: "Signals"
-    label_operator_long: "S10 — Signals"
-    outcome_operator: "Weekly signals container complete: KPIs compiled, K/P/C/S decision made, signal quality reviewed, experiments read out and next cycle specs updated."
+    label_operator_long: "SIGNALS — Signals"
+    outcome_operator: "Weekly signals container complete: forecast refreshed, KPIs compiled, K/P/C/S decision made, signal quality reviewed, experiments read out and next cycle specs updated."
     aliases:
       - signals
       - weekly-readout
@@ -966,49 +954,61 @@ stages:
     display_order: 22
     operator_next_prompt: "Repeat weekly. Run standing refresh prompts on monthly/quarterly cadence."
 
-  - id: S10-01
+  - id: SIGNALS-01
+    name_machine: forecast
+    label_operator_short: "Forecast"
+    label_operator_long: "SIGNALS-01 — Forecast"
+    outcome_operator: "90-day P10/P50/P90 revenue forecast with assumption register and sparse-evidence guardrails. Refreshed each cycle as signals accumulate."
+    aliases:
+      - forecast
+      - s3
+      - signals-01
+    display_order: 23
+    operator_next_prompt: "Proceed to SIGNALS-02 Measure."
+
+  - id: SIGNALS-02
     name_machine: weekly-measure
     label_operator_short: "Measure"
-    label_operator_long: "S10-01 — Measure"
+    label_operator_long: "SIGNALS-02 — Measure"
     outcome_operator: "Normalised KPI snapshot for the week: traffic, revenue, conversion rates, and denominator-valid metric set compiled from live analytics."
     aliases:
       - weekly-measure
-      - s10-01
-    display_order: 23
-    operator_next_prompt: "Proceed to S10-02 Decide (KPCS decision)."
+      - signals-02
+    display_order: 24
+    operator_next_prompt: "Proceed to SIGNALS-03 Decide (KPCS decision)."
 
-  - id: S10-02
+  - id: SIGNALS-03
     name_machine: weekly-decide
     label_operator_short: "Decide"
-    label_operator_long: "S10-02 — Decide"
+    label_operator_long: "SIGNALS-03 — Decide"
     outcome_operator: "K/P/C/S decision document: what to Keep, Pivot, Cut, and Scale this week, with rationale anchored to the KPI snapshot."
     aliases:
       - weekly-decide
       - kpcs
-      - s10-02
-    display_order: 24
-    operator_next_prompt: "Proceed to S10-03 Signal review in parallel with S10-04 Experiments."
+      - signals-03
+    display_order: 25
+    operator_next_prompt: "Proceed to SIGNALS-04 Signal review in parallel with SIGNALS-05 Experiments."
 
-  - id: S10-03
+  - id: SIGNALS-04
     name_machine: weekly-signal-review
     label_operator_short: "Signal review"
-    label_operator_long: "S10-03 — Signal review"
+    label_operator_long: "SIGNALS-04 — Signal review"
     outcome_operator: "Signal quality audit for this run: top findings ranked by Severity × Support, with process-improvement stubs for any structural signal weaknesses."
     aliases:
       - weekly-signal-review
       - signal-review
-      - s10-03
-    display_order: 25
-    operator_next_prompt: "Proceed to S10-04 Experiments, then close the weekly cycle."
+      - signals-04
+    display_order: 26
+    operator_next_prompt: "Proceed to SIGNALS-05 Experiments, then close the weekly cycle."
 
-  - id: S10-04
+  - id: SIGNALS-05
     name_machine: weekly-experiments
     label_operator_short: "Experiments"
-    label_operator_long: "S10-04 — Experiments"
+    label_operator_long: "SIGNALS-05 — Experiments"
     outcome_operator: "Experiment readout for active tests plus next-cycle backlog: new experiment specs added, completed experiments closed, carry-forward items noted."
     aliases:
       - weekly-experiments
       - experiments
-      - s10-04
-    display_order: 26
-    operator_next_prompt: "Weekly cycle complete. Repeat from S10-01 next week."
+      - signals-05
+    display_order: 27
+    operator_next_prompt: "Weekly cycle complete. Repeat from SIGNALS-01 next week."

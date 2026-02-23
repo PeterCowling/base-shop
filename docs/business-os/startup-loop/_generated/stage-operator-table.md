@@ -60,7 +60,6 @@ Last-reviewed: 2026-02-21
 | 13 | `MARKET-09` | ICP refinement | Narrowed ICP profile based on offer feedback and observed demand signals with confidence annotations. | `icp-refinement`, `icp`, `market-09` | — |
 | 13 | `MARKET-10` | Market pack (draft) | Draft market-pack standing artifact assembled from intelligence stack. | `market-aggregate-pack-draft`, `market-pack-draft`, `market-10` | — |
 | 13 | `MARKET-11` | Market aggregate pack | Validated market-pack: DEP and ICP refinement signed off. Standing artifact for downstream consumption. | `market-aggregate-pack-validated`, `market-pack`, `market-aggregate-pack`, `market-11` | — |
-| 14 | `S3` | Forecast | 90-day P10/P50/P90 revenue forecast with assumption register and sparse-evidence guardrails. | `forecast`, `s3` | — |
 | 14 | `PRODUCT-02` | Adjacent product research | Adjacent product research results: 5-10 candidate product types with feasibility flags and ICP fit scoring for product range expansion. | `adjacent-product-research`, `adjacent-products`, `product-02` | growth_intent includes product_range OR operator_invoked |
 | 15 | `SELL` | Sell | Sell container strategy outputs are complete; standing sales intelligence captured; paid activation readiness is tracked separately. | `sell`, `sell-container` | — |
 | 15 | `SELL-01` | Channel strategy + GTM | Channel plan with 2-3 selected launch channels, 30-day GTM timeline, and SEO strategy. | `channel-strategy`, `channels`, `gtm`, `sell-01` | — |
@@ -77,11 +76,12 @@ Last-reviewed: 2026-02-21
 | 19 | `S6` | Site-upgrade synthesis | Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis. | `site-upgrade`, `site-upgrade-synthesis`, `s6` | — |
 | 20 | `DO` | Do | Feature or artifact delivered: fact-find brief, sequenced plan, and implementation with validation evidence. | `do`, `fact-find`, `plan`, `build`, `s7`, `s8`, `s9` | — |
 | 21 | `S9B` | QA gates | QA gate pass evidence: conversion flows, SEO readiness, performance budget, and legal compliance verified. | `qa-gates`, `qa`, `s9b` | — |
-| 22 | `S10` | Signals | Weekly signals container complete: KPIs compiled, K/P/C/S decision made, signal quality reviewed, experiments read out and next cycle specs updated. | `signals`, `weekly-readout`, `weekly-decision`, `weekly`, `s10` | — |
-| 23 | `S10-01` | Measure | Normalised KPI snapshot for the week: traffic, revenue, conversion rates, and denominator-valid metric set compiled from live analytics. | `weekly-measure`, `s10-01` | — |
-| 24 | `S10-02` | Decide | K/P/C/S decision document: what to Keep, Pivot, Cut, and Scale this week, with rationale anchored to the KPI snapshot. | `weekly-decide`, `kpcs`, `s10-02` | — |
-| 25 | `S10-03` | Signal review | Signal quality audit for this run: top findings ranked by Severity × Support, with process-improvement stubs for any structural signal weaknesses. | `weekly-signal-review`, `signal-review`, `s10-03` | — |
-| 26 | `S10-04` | Experiments | Experiment readout for active tests plus next-cycle backlog: new experiment specs added, completed experiments closed, carry-forward items noted. | `weekly-experiments`, `experiments`, `s10-04` | — |
+| 22 | `SIGNALS` | Signals | Weekly signals container complete: forecast refreshed, KPIs compiled, K/P/C/S decision made, signal quality reviewed, experiments read out and next cycle specs updated. | `signals`, `weekly-readout`, `weekly-decision`, `weekly`, `s10` | — |
+| 23 | `SIGNALS-01` | Forecast | 90-day P10/P50/P90 revenue forecast with assumption register and sparse-evidence guardrails. Refreshed each cycle as signals accumulate. | `forecast`, `s3`, `signals-01` | — |
+| 24 | `SIGNALS-02` | Measure | Normalised KPI snapshot for the week: traffic, revenue, conversion rates, and denominator-valid metric set compiled from live analytics. | `weekly-measure`, `signals-02` | — |
+| 25 | `SIGNALS-03` | Decide | K/P/C/S decision document: what to Keep, Pivot, Cut, and Scale this week, with rationale anchored to the KPI snapshot. | `weekly-decide`, `kpcs`, `signals-03` | — |
+| 26 | `SIGNALS-04` | Signal review | Signal quality audit for this run: top findings ranked by Severity × Support, with process-improvement stubs for any structural signal weaknesses. | `weekly-signal-review`, `signal-review`, `signals-04` | — |
+| 27 | `SIGNALS-05` | Experiments | Experiment readout for active tests plus next-cycle backlog: new experiment specs added, completed experiments closed, carry-forward items noted. | `weekly-experiments`, `experiments`, `signals-05` | — |
 
 ### `SELL-01` microsteps
 

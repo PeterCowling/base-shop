@@ -11,6 +11,8 @@ import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faFileAlt, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
 /**
@@ -144,7 +146,7 @@ function LoanModalComponent({
           >
             {mode === "loan" ? "Add Loan" : "Return Item"}
           </h2>
-          <button
+          <Button
             onClick={onClose}
             className="text-muted-foreground hover:text-foreground focus:outline-none dark:text-darkAccentGreen"
             aria-label="Close Modal"
@@ -163,7 +165,7 @@ function LoanModalComponent({
                 d="M6 18L18 6M6 6l12 12"
               />
             </svg>
-          </button>
+          </Button>
         </div>
 
         {/* Content Section */}
@@ -250,18 +252,18 @@ function LoanModalComponent({
 
         {/* Action Buttons */}
         <div className="px-6 py-4 border-t border-border flex justify-end items-center space-x-2 dark:border-darkAccentGreen">
-          <button
+          <Button
             className="bg-muted hover:bg-surface-2 text-foreground px-4 py-2 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
             onClick={onClose}
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             className="bg-primary-main hover:bg-primary-dark text-primary-fg px-4 py-2 rounded dark:bg-darkAccentGreen dark:text-darkBg"
             onClick={handleSubmit}
           >
             Confirm
-          </button>
+          </Button>
         </div>
       </div>
     </div>

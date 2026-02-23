@@ -1,11 +1,12 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy FAQ experience pending design/i18n overhaul */
-import Link from "next/link";
 import type { ReactNode } from "react";
+import Link from "next/link";
 
-import { Section } from "@acme/design-system/atoms/Section";
 import { Grid } from "@acme/design-system/atoms/Grid";
-import { Button } from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
 import Accordion from "@acme/design-system/molecules/Accordion";
+import { FeedbackPreferenceCard } from "@acme/ui/components/organisms/FeedbackPreferenceCard";
+import { NewsletterSignupCard } from "@acme/ui/components/organisms/NewsletterSignupCard";
+
 import { siteConfig } from "../../lib/siteConfig";
 
 type FaqItem = {
@@ -1025,37 +1026,30 @@ export default function FaqPage() {
 
       <Section padding="default">
         <Grid columns={{ base: 1, md: 2 }} gap={6}>
-          <div id="newsletter" className="rounded-lg border p-5 space-y-3">
-            <div className="text-lg font-semibold">Tell us what you think</div>
-            <p className="text-sm text-muted-foreground">
-              Was this content helpful?
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Button variant="outline">Yes</Button>
-              <Button variant="outline">Not really</Button>
-            </div>
-          </div>
-          <div className="rounded-lg border p-5 space-y-3">
-            <div className="text-lg font-semibold">Never miss a thing</div>
-            <p className="text-sm text-muted-foreground">
-              Sign up for promotions, new arrivals, stock updates, and more.
-            </p>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full rounded border px-3 py-2 text-sm"
-              />
-              <Button className="sm:w-auto">Sign up</Button>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              By signing up, you agree to receive marketing emails and acknowledge the{" "}
-              <a href="/pages/privacy-policy" className="underline">
-                Privacy Policy
-              </a>
-              . Unsubscribe anytime.
-            </p>
-          </div>
+          <FeedbackPreferenceCard
+            id="newsletter"
+            className="p-5"
+            title="Tell us what you think"
+            question="Was this content helpful?"
+            options={[
+              { id: "yes", label: "Yes" },
+              { id: "not-really", label: "Not really" },
+            ]}
+          />
+          <NewsletterSignupCard
+            className="p-5"
+            title="Never miss a thing"
+            description="Sign up for promotions, new arrivals, stock updates, and more."
+            legalNote={
+              <>
+                By signing up, you agree to receive marketing emails and acknowledge the{" "}
+                <a href="/pages/privacy-policy" className="underline">
+                  Privacy Policy
+                </a>
+                . Unsubscribe anytime.
+              </>
+            }
+          />
         </Grid>
       </Section>
     </main>

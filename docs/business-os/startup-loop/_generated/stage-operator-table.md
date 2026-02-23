@@ -1,5 +1,5 @@
 <!-- AUTO-GENERATED — do not edit directly. Edit stage-operator-dictionary.yaml and re-run: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts -->
-<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 3.9.4 -->
+<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 3.11.0 -->
 ---
 Type: Reference
 Status: Active
@@ -73,7 +73,9 @@ Last-reviewed: 2026-02-21
 | 16 | `S4` | Baseline merge | Candidate baseline snapshot and draft manifest combining offer, forecast, and channel artifacts. | `baseline-merge`, `s4` | — |
 | 17 | `S5A` | Prioritize | Scored and ranked action list — top 2-3 items to work on next. | `prioritize`, `s5a` | — |
 | 18 | `S5B` | BOS sync | Business OS cards and stage docs persisted to D1. Manifest pointer committed. | `bos-sync`, `s5b` | — |
-| 19 | `S6` | Site-upgrade synthesis | Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis. | `site-upgrade`, `site-upgrade-synthesis`, `s6` | — |
+| 19 | `WEBSITE` | Website | Website workstream complete via one named process: WEBSITE-01 (L1 first build) or WEBSITE-02 (site-upgrade synthesis). | `website`, `website-workstream`, `website-container` | — |
+| 19 | `WEBSITE-01` | L1 first build | Framework-first assembly contract for the first website build, mapping canonical assets, boundaries, and implementation order. | `website-01`, `l1-first-build`, `first-build-framework`, `site-v1-builder` | launch-surface = pre-website |
+| 19 | `WEBSITE-02` | Site-upgrade synthesis | Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis. | `website-02`, `site-upgrade`, `site-upgrade-synthesis` | launch-surface = website-live |
 | 20 | `DO` | Do | Feature or artifact delivered: fact-find brief, sequenced plan, and implementation with validation evidence. | `do`, `fact-find`, `plan`, `build`, `s7`, `s8`, `s9` | — |
 | 21 | `S9B` | QA gates | QA gate pass evidence: conversion flows, SEO readiness, performance budget, and legal compliance verified. | `qa-gates`, `qa`, `s9b` | — |
 | 22 | `SIGNALS` | Signals | Weekly signals container complete: forecast refreshed, KPIs compiled, K/P/C/S decision made, signal quality reviewed, experiments read out and next cycle specs updated. | `signals`, `weekly-readout`, `weekly-decision`, `weekly`, `s10` | — |

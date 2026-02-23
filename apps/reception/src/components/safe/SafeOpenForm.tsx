@@ -1,5 +1,7 @@
 import { memo, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { showToast } from "../../utils/toastUtils";
 import FormContainer from "../common/FormContainer";
 import PasswordReauthInline from "../common/PasswordReauthInline";
@@ -57,13 +59,13 @@ export const SafeOpenForm = memo(function SafeOpenForm({
           onSubmit={handleConfirm}
           submitLabel="Confirm opening"
         />
-        <button
+        <Button
           type="button"
           onClick={onCancel}
           className="px-4 py-2 rounded bg-info-main text-white hover:bg-info-dark dark:bg-darkSurface dark:text-darkAccentOrange"
         >
           Cancel
-        </button>
+        </Button>
       </div>
     </FormContainer>
   );

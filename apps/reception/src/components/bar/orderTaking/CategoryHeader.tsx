@@ -3,6 +3,8 @@
 
 import React, { type FC, useCallback, useMemo } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { type CategoryType } from "../../../types/bar/BarTypes";
 
 /* ──────────────────────────────────────────────────────────────────────
@@ -146,7 +148,7 @@ const CategoryHeader: FC<CategoryHeaderProps> = React.memo(
           };
 
           return (
-            <button
+            <Button
               /* a11y -------------------------------------------------------- */
               key={cat}
               role="tab"
@@ -163,7 +165,7 @@ const CategoryHeader: FC<CategoryHeaderProps> = React.memo(
                           data-[selected=true]:opacity-100`}
             >
               {cat}
-            </button>
+            </Button>
           );
         }),
       [categories, selectedCategory, handleSelect]

@@ -1,13 +1,21 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy gallery pending design/i18n overhaul */
 
 import * as React from "react";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@acme/design-system/atoms";
+
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+  IconButton,
+} from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 
-import { XaFadeImage } from "./XaFadeImage";
 import type { XaProduct } from "../lib/demoData";
+
+import { XaFadeImage } from "./XaFadeImage";
 
 type MediaItem = XaProduct["media"][number];
 
@@ -41,12 +49,13 @@ export function XaImageGallery({
               const shouldSpan = images.length > 2 && idx === 0;
               return (
               <DialogTrigger asChild key={img.url}>
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
                   aria-label={`View image ${idx + 1} of ${images.length}`} // i18n-exempt -- XA-0012: demo a11y label
                   onClick={() => setActiveIndex(idx)}
                   className={[
-                    "relative aspect-[4/5] w-full cursor-zoom-in overflow-hidden rounded-none bg-surface",
+                    "relative h-auto aspect-[4/5] w-full cursor-zoom-in overflow-hidden rounded-none bg-surface p-0 hover:bg-surface",
                     shouldSpan ? "sm:row-span-2" : "",
                   ].join(" ")}
                 >
@@ -58,7 +67,7 @@ export function XaImageGallery({
                     className="object-contain"
                     priority={idx < 2}
                   />
-                </button>
+                </Button>
               </DialogTrigger>
               );
             })}
@@ -82,28 +91,32 @@ export function XaImageGallery({
                 />
               ) : null}
             </div>
-            <button
+            <IconButton
               type="button"
               aria-label="Previous image"
               onClick={handlePrev}
               disabled={activeIndex === 0}
-              className="absolute start-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center border border-border-2 bg-surface-1 text-foreground hover:bg-muted disabled:opacity-30"
+              variant="secondary"
+              size="sm"
+              className="absolute start-3 top-1/2 h-8 w-8 -translate-y-1/2 rounded-none border border-border-2 bg-surface-1 text-foreground hover:bg-muted disabled:opacity-30"
             >
               <svg aria-hidden viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
                 <path d="M10 4L6 8l4 4"/>
               </svg>
-            </button>
-            <button
+            </IconButton>
+            <IconButton
               type="button"
               aria-label="Next image"
               onClick={handleNext}
               disabled={activeIndex === images.length - 1}
-              className="absolute end-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center border border-border-2 bg-surface-1 text-foreground hover:bg-muted disabled:opacity-30"
+              variant="secondary"
+              size="sm"
+              className="absolute end-3 top-1/2 h-8 w-8 -translate-y-1/2 rounded-none border border-border-2 bg-surface-1 text-foreground hover:bg-muted disabled:opacity-30"
             >
               <svg aria-hidden viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
                 <path d="M6 4l4 4-4 4"/>
               </svg>
-            </button>
+            </IconButton>
             <div className="mt-2 text-center text-xs text-muted-foreground tabular-nums">
               {activeIndex + 1} / {images.length}
             </div>

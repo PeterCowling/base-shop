@@ -13,7 +13,7 @@
 # Migration aliases may be retained only when they do not collide with active canonical IDs.
 
 schema_version: 1
-loop_spec_version: "3.9.4"
+loop_spec_version: "3.11.0"
 
 stages:
 
@@ -898,19 +898,50 @@ stages:
       - bos-sync
       - s5b
     display_order: 18
-    operator_next_prompt: "S6 Site-upgrade and DO can now proceed."
+    operator_next_prompt: "Website stage can now proceed. Run WEBSITE-01 (pre-website) or WEBSITE-02 (website-live), then continue to DO."
 
-  - id: S6
-    name_machine: site-upgrade
-    label_operator_short: "Site-upgrade synthesis"
-    label_operator_long: "S6 — Site-upgrade synthesis"
-    outcome_operator: "Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis."
+  - id: WEBSITE
+    name_machine: website
+    label_operator_short: "Website"
+    label_operator_long: "WEBSITE — Website"
+    outcome_operator: "Website workstream complete via one named process: WEBSITE-01 (L1 first build) or WEBSITE-02 (site-upgrade synthesis)."
     aliases:
-      - site-upgrade
-      - site-upgrade-synthesis
-      - s6
+      - website
+      - website-workstream
+      - website-container
     display_order: 19
     operator_next_prompt: "Proceed to DO."
+
+  - id: WEBSITE-01
+    name_machine: l1-first-build-framework
+    stage_group: WEBSITE
+    label_operator_short: "L1 first build"
+    label_operator_long: "WEBSITE-01 — L1 first build framework"
+    outcome_operator: "Framework-first assembly contract for the first website build, mapping canonical assets, boundaries, and implementation order."
+    aliases:
+      - website-01
+      - l1-first-build
+      - first-build-framework
+      - site-v1-builder
+    display_order: 19
+    conditional: true
+    condition: "launch-surface = pre-website"
+    operator_next_prompt: "Proceed to WEBSITE container completion, then DO."
+
+  - id: WEBSITE-02
+    name_machine: site-upgrade-synthesis
+    stage_group: WEBSITE
+    label_operator_short: "Site-upgrade synthesis"
+    label_operator_long: "WEBSITE-02 — Site-upgrade synthesis"
+    outcome_operator: "Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis."
+    aliases:
+      - website-02
+      - site-upgrade
+      - site-upgrade-synthesis
+    display_order: 19
+    conditional: true
+    condition: "launch-surface = website-live"
+    operator_next_prompt: "Proceed to WEBSITE container completion, then DO."
 
   - id: DO
     name_machine: do

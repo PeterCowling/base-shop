@@ -47,6 +47,9 @@ jest                                # Runs all tests in current directory
   - `intent=turbo` injects `--concurrency=2` unless overridden.
   - Watch flags are blocked unless using explicit `watch-exclusive` opt-in.
   - `CI=true` runs in governed compatibility mode (shaping enabled; scheduler/admission bypassed).
+- Governed config path rule:
+  - If a package test script uses `pnpm -w run test:governed`, `--config` must be repo-relative (for example `apps/prime/jest.config.cjs`), not package-relative (`./jest.config.cjs`).
+  - If a package needs `./jest.config.cjs`, invoke `scripts/tests/run-governed-test.sh` from package CWD (for example `bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs`).
 - Migrated package `test` scripts now route through `test:governed` (or documented delegated wrappers).
 - If a full monorepo run is explicitly required, use:
   - `BASESHOP_ALLOW_BROAD_TESTS=1 pnpm test:all`
@@ -97,6 +100,24 @@ pnpm --filter @acme/ui test -- --testNamePattern="renders correctly"
 # CORRECT: Combine file and test name patterns
 pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx -t "handles click"
 ```
+
+### XA Uploader (Targeted)
+
+Use the uploader package scoped governed commands:
+
+```bash
+# Route-contract suite only (API regressions)
+pnpm --filter @apps/xa-uploader run test:api
+
+# Uploader-local operator surface (API + catalog console tests only)
+pnpm --filter @apps/xa-uploader run test:local
+```
+
+Scope caveat:
+- `test:local` intentionally covers only `src/app/api/**` and `src/components/catalog/**`.
+- It does not run all uploader tests (for example `src/lib/**`), and it is not a monorepo-wide gate.
+- For package-wide coverage, use `pnpm --filter @apps/xa-uploader test` with additional file/pattern scoping where possible.
+
 ### Growth Accounting Kernel (Targeted)
 
 For growth-accounting verification, use these targeted commands:

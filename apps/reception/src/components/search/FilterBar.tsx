@@ -2,6 +2,8 @@
 import React from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
+import { Button } from "@acme/design-system/atoms";
+
 export interface FilterBarProps {
   firstName: string;
   lastName: string;
@@ -150,13 +152,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
     </div>
 
     {/* Search Button (spans full width on small screens) */}
-    <button
+    <Button
       type="submit"
       className="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 md:col-span-3 lg:col-span-1 dark:bg-darkSurface dark:text-darkAccentGreen"
     >
       <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
       Search
-    </button>
+    </Button>
   </form>
 );
 

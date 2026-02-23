@@ -2,6 +2,8 @@
 
 import { memo, type ReactElement, useCallback, useMemo } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import {
   type LoanItem,
   type LoanMethod,
@@ -154,7 +156,7 @@ function LoanedItemsListComponent({
             </div>
             <div className="flex gap-2">
               {showReturnButton && (
-                <button
+                <Button
                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded disabled:bg-gray-300 dark:bg-darkAccentOrange dark:text-darkSurface dark:hover:bg-darkAccentOrange/80 dark:disabled:bg-darkSurface/50"
                   disabled={buttonDisabled}
                   onClick={() =>
@@ -167,7 +169,7 @@ function LoanedItemsListComponent({
                   }
                 >
                   Return
-                </button>
+                </Button>
               )}
             </div>
           </div>

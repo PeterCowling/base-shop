@@ -1,5 +1,7 @@
 import { memo } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 export interface FormActionButtonsProps {
   onCancel: () => void;
   onConfirm: () => void;
@@ -24,11 +26,11 @@ export const FormActionButtons = memo(function FormActionButtons({
   return (
     <div className={className}>
       {!hideCancel && (
-        <button onClick={onCancel} className={cancelClassName}>
+        <Button onClick={onCancel} className={cancelClassName}>
           Cancel
-        </button>
+        </Button>
       )}
-      <button
+      <Button
         onClick={onConfirm}
         disabled={confirmDisabled}
         className={`${confirmClassName} ${
@@ -36,7 +38,7 @@ export const FormActionButtons = memo(function FormActionButtons({
         }`.trim()}
       >
         {confirmText}
-      </button>
+      </Button>
     </div>
   );
 });

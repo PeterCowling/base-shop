@@ -3,6 +3,8 @@
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import useBookingSearchClient from "../../hooks/client/useBookingSearchClient";
 import { type BookingSearchRow, type Guest } from "../../types/component/bookingSearch";
 import { showToast } from "../../utils/toastUtils";
@@ -198,15 +200,15 @@ function Search(): JSX.Element {
   return (
     <>
       <div className="flex gap-2 mb-4">
-        <button
+        <Button
           onClick={setBookingsTab}
           className={`px-4 py-1 rounded ${
             activeTab === "bookings" ? "bg-primary-main text-primary-fg" : "bg-surface-2"
           } dark:bg-darkSurface dark:text-darkAccentGreen`}
         >
           Bookings
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={setTransactionsTab}
           className={`px-4 py-1 rounded ${
             activeTab === "transactions"
@@ -215,15 +217,15 @@ function Search(): JSX.Element {
           } dark:bg-darkSurface dark:text-darkAccentGreen`}
         >
           Transactions
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={setAuditsTab}
           className={`px-4 py-1 rounded ${
             activeTab === "audits" ? "bg-primary-main text-primary-fg" : "bg-surface-2"
           } dark:bg-darkSurface dark:text-darkAccentGreen`}
         >
           Audits
-        </button>
+        </Button>
       </div>
 
       {activeTab === "bookings" && (

@@ -4,7 +4,13 @@
 # Version bumps require downstream alignment check (VC-02).
 # See also: docs/business-os/startup-loop/two-layer-model.md (Layer A standing intelligence / Layer B implementation loop contract)
 
-spec_version: "3.10.0"
+spec_version: "3.11.0"
+# v3.11.0: Replaced legacy S6 with WEBSITE container and named sub-stages:
+#          WEBSITE-01 (L1 first build framework, launch-surface=pre-website)
+#          WEBSITE-02 (site-upgrade synthesis, launch-surface=website-live).
+#          Added explicit post-S5B sequence S5B -> WEBSITE -> DO with child-to-container
+#          ordering constraints (WEBSITE-01 -> WEBSITE, WEBSITE-02 -> WEBSITE).
+#          Decision: 2026-02-23.
 # v3.10.0: Replaced broken sequential LOGISTICS→MARKET-01 and PRODUCTS→MARKET-01 chains with a
 #          parallel container model (fan-out-2). MEASURE-02 now fans out to both PRODUCT-01 and
 #          MARKET-01 in parallel. Added cross-stream sync constraints: [MARKET-01, PRODUCTS-02]
@@ -1085,13 +1091,39 @@ stages:
     side_effects: guarded
     bos_sync: "Persist cards/stage-docs to D1 via /api/agent/*; commit manifest pointer"
 
-  - id: S6
+  - id: WEBSITE
+    name: Website
+    type: container
+    stages:
+      - WEBSITE-01
+      - WEBSITE-02
+    conditional: false
+    ordering_constraints:
+      - WEBSITE-01 → WEBSITE
+      - WEBSITE-02 → WEBSITE
+    # WEBSITE unifies the website workstream into one container:
+    # - WEBSITE-01: first website build framework (L1 first build)
+    # - WEBSITE-02: existing-site upgrade synthesis
+
+  - id: WEBSITE-01
+    name: L1 first build framework
+    stage_group: WEBSITE
+    skill: /lp-site-upgrade
+    prompt_required: true
+    prompt_template: docs/business-os/workflow-prompts/_templates/website-first-build-framework-prompt.md
+    conditional: true
+    condition: "launch-surface = pre-website"
+    bos_sync: "Persist/refresh docs/business-os/strategy/<BIZ>/site-v1-builder-prompt.user.md and update strategy index status"
+
+  - id: WEBSITE-02
     name: Site-upgrade synthesis
+    stage_group: WEBSITE
     skill: /lp-site-upgrade
     prompt_required: true
     prompt_template: docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md
-    conditional: false
-    bos_sync: "Update latest.user.md pointer"
+    conditional: true
+    condition: "launch-surface = website-live"
+    bos_sync: "Update docs/business-os/site-upgrades/<BIZ>/latest.user.md pointer"
 
   # Build completion gate: results-review.user.md must exist before DO stage can be marked complete.
   # The ## Standing Updates section must name at least one standing pack (market/sell/product/logistics)
@@ -1196,9 +1228,8 @@ ordering:
     - [SELL-01, S4]      # fan-in: S4 waits for SELL-01 strategy outputs
     - [S4, S5A]
     - [S5A, S5B]
-    - [S5B, S6]
-    - [S5B, DO]          # DO can start after S5B (or after S6 if site-upgrade in scope)
-    - [S6, DO]
+    - [S5B, WEBSITE]
+    - [WEBSITE, DO]
     - [DO, S9B]
     - [S9B, S10]
 

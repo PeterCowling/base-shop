@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable react-hooks/exhaustive-deps -- XA-0001 [ttl=2026-12-31] legacy filter hooks pending refactor */
 
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

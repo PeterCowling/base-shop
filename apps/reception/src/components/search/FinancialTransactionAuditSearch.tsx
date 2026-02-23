@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import useFinancialTransactionAuditsData from "../../hooks/data/useFinancialTransactionAuditsData";
 
 function formatAmount(value: number) {
@@ -153,12 +155,12 @@ function FinancialTransactionAuditSearch(): JSX.Element {
           />
         </div>
 
-        <button
+        <Button
           onClick={handleSearch}
           className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors dark:bg-darkSurface dark:text-darkAccentGreen"
         >
           Search
-        </button>
+        </Button>
       </div>
 
       {errorMessage && (
@@ -174,33 +176,33 @@ function FinancialTransactionAuditSearch(): JSX.Element {
 
       {filteredAudits.length > 0 && (
         <div className="overflow-x-auto w-full bg-white border border-gray-400 rounded shadow dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
-          <table className="table-fixed w-full border-collapse">
-            <thead className="bg-gray-100 sticky top-0 dark:bg-darkSurface">
-              <tr>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+          <Table className="table-fixed w-full border-collapse">
+            <TableHeader className="bg-gray-100 sticky top-0 dark:bg-darkSurface">
+              <TableRow>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Timestamp
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Source Txn
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Booking
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Shift
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Corrected By
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Reason
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Details
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {filteredAudits.map(([id, audit], index) => {
                 const rowBg =
                   index % 2 === 0
@@ -209,38 +211,38 @@ function FinancialTransactionAuditSearch(): JSX.Element {
                 const isExpanded = expandedRows.includes(id);
                 return (
                   <React.Fragment key={id}>
-                    <tr className={rowBg}>
-                      <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    <TableRow className={rowBg}>
+                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.createdAt}
-                      </td>
-                      <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      </TableCell>
+                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.sourceTxnId}
-                      </td>
-                      <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      </TableCell>
+                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.before.bookingRef}
-                      </td>
-                      <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      </TableCell>
+                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.shiftId ?? "-"}
-                      </td>
-                      <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      </TableCell>
+                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.createdBy}
-                      </td>
-                      <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      </TableCell>
+                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                         {audit.reason}
-                      </td>
-                      <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
-                        <button
+                      </TableCell>
+                      <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                        <Button
                           type="button"
                           onClick={() => toggleExpanded(id)}
                           className="text-blue-600 hover:underline dark:text-darkAccentGreen"
                         >
                           {isExpanded ? "Hide" : "Show"}
-                        </button>
-                      </td>
-                    </tr>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
                     {isExpanded && (
-                      <tr className={rowBg}>
-                        <td
+                      <TableRow className={rowBg}>
+                        <TableCell
                           className="border-b border-gray-400 py-3 px-3 dark:border-darkSurface dark:text-darkAccentGreen"
                           colSpan={7}
                         >
@@ -251,14 +253,14 @@ function FinancialTransactionAuditSearch(): JSX.Element {
                           <div className="mt-3 text-xs text-gray-500 dark:text-darkAccentGreen">
                             Correction Txns: {audit.correctionTxnIds.join(", ") || "-"}
                           </div>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     )}
                   </React.Fragment>
                 );
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
     </>

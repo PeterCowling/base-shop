@@ -1,5 +1,7 @@
 import { memo } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { type PrepaymentData } from "../../hooks/client/checkin/usePrepaymentData";
 import DeleteButton from "../checkins/header/DeleteButton";
 
@@ -80,7 +82,7 @@ function PrepaymentsView({
   setBookingToDelete,
 }: PrepaymentsViewProps): JSX.Element {
   return (
-    <div className="min-h-[80vh] p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
       <div>
         <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
           PRE-PAYMENTS
@@ -104,14 +106,14 @@ function PrepaymentsView({
                   onChange={(e) => setFilterText(e.target.value)}
                 />
               </div>
-              <button
+              <Button
                 type="button"
                 onClick={handleRecallLast}
                 disabled={!lastCompletedBooking}
                 className="px-3 py-2 bg-secondary-main text-white rounded hover:bg-secondary-dark transition-colors disabled:opacity-50"
               >
                 Recall Last
-              </button>
+              </Button>
               {isPete && <DeleteButton onClick={handleDeleteClick} />}
             </div>
             {isDeleteMode && (

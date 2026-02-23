@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-raw-color -- XA-0001 [ttl=2026-12-31] XA theme palette uses raw swatches pending tokenization */
 import type { XaProduct } from "./demoData";
 import { XA_BRANDS, XA_PRODUCTS } from "./demoData";
 import { siteConfig } from "./siteConfig";

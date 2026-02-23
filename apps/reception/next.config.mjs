@@ -16,6 +16,8 @@ const nextConfig = {
         : false,
   },
   turbopack: {
+    // Pin workspace root to this repository to avoid lockfile-based mis-detection.
+    root: path.resolve(__dirname, "../.."),
     resolveAlias: {
       // Bare-specifier aliases only — resolve workspace packages to src to
       // avoid dual module identity (src vs dist) under Turbopack.

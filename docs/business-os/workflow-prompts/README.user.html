@@ -5,13 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Startup Loop Prompt Pack</title>
   <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
     :root {
       --bg: #ffffff;
+      --surface: #f5f8fb;
       --text: #101418;
-      --muted: #5a6570;
+      --text-muted: #5a6570;
       --border: #d9e0e7;
-      --header: #f5f8fb;
-      --link: #0b63ce;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
+
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
     }
     html, body {
       margin: 0;
@@ -23,137 +50,275 @@
     main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 2rem 1.5rem 4rem;
     }
-    h1, h2, h3 {
-      line-height: 1.25;
-    }
-    p, li {
-      line-height: 1.5;
-    }
-    a {
-      color: var(--link);
-    }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-    pre {
-      background: #f7f9fb;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 16px 0 24px;
-    }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
       background: var(--header);
-      font-weight: 700;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
     }
-    tr:nth-child(even) td {
-      background: #fcfdff;
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
+    .audience-toggle {
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
     }
-    hr {
-      border: 0;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
-    }
-    blockquote {
-      border-left: 4px solid var(--border);
-      margin: 16px 0;
-      padding: 0 12px;
-      color: var(--muted);
-    }
-    .meta {
-      margin-top: 24px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      font-size: 0.9rem;
-      color: var(--muted);
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
     }
   </style>
 </head>
 <body>
   <main>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
 <h1>Startup Loop Prompt Pack</h1>
 <p>Canonical template directory:</p>
 <ul>
 <li><code>docs/business-os/workflow-prompts/_templates/</code></li>
 </ul>
+<p>Canonical source:</p>
+<ul>
+<li><code>docs/business-os/startup-loop/loop-spec.yaml</code> (spec_version <code>3.11.0</code>)</li>
+<li><code>docs/business-os/startup-loop/_generated/stage-operator-map.json</code></li>
+</ul>
 <h2>Stage prompts</h2>
 <table>
 <thead>
 <tr>
-<th>Stage</th>
+<th>Stage ID</th>
+<th>Stage label</th>
 <th>Prompt template</th>
+<th>Launch-surface</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>S0 Intake</td>
+<td><code>ASSESSMENT-09</code></td>
+<td>Intake</td>
 <td><code>intake-normalizer-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
 </tr>
 <tr>
-<td>S1 Readiness</td>
-<td><code>readiness-blocker-interview-prompt.md</code></td>
+<td><code>ASSESSMENT-10</code></td>
+<td>Brand profiling</td>
+<td><code>brand-01-brand-profiling-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
 </tr>
 <tr>
-<td>S1B Pre-website measurement bootstrap</td>
+<td><code>ASSESSMENT-11</code></td>
+<td>Brand identity</td>
+<td><code>brand-02-brand-identity-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
+</tr>
+<tr>
+<td><code>MEASURE-01</code></td>
+<td>Agent-Setup</td>
 <td><code>measurement-agent-setup-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
 </tr>
 <tr>
-<td>S2A Existing-business data request</td>
-<td><code>historical-data-request-prompt.md</code></td>
-</tr>
-<tr>
-<td>S2A Existing-business baseline</td>
+<td><code>MEASURE-02</code></td>
+<td>Results</td>
 <td><code>existing-business-historical-baseline-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
 </tr>
 <tr>
-<td>S3 Forecast recalibration</td>
-<td><code>forecast-recalibration-prompt.md</code></td>
+<td><code>PRODUCT-01</code></td>
+<td>Product from photo</td>
+<td><code>product-from-photo-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
 </tr>
 <tr>
-<td>S5 Prioritization</td>
+<td><code>MARKET-01</code></td>
+<td>Competitor mapping</td>
+<td><code>docs/business-os/market-research/_templates/deep-research-competitor-mapping-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
+</tr>
+<tr>
+<td><code>MARKET-02</code></td>
+<td>Demand evidence</td>
+<td><code>docs/business-os/market-research/_templates/deep-research-demand-evidence-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
+</tr>
+<tr>
+<td><code>MARKET-03</code></td>
+<td>Pricing benchmarks</td>
+<td><code>docs/business-os/market-research/_templates/deep-research-pricing-benchmarks-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
+</tr>
+<tr>
+<td><code>MARKET-04</code></td>
+<td>Channel landscape</td>
+<td><code>docs/business-os/market-research/_templates/deep-research-channel-landscape-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
+</tr>
+<tr>
+<td><code>MARKET-05</code></td>
+<td>Assumptions and risk register</td>
+<td><code>docs/business-os/market-research/_templates/market-assumptions-risk-register-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
+</tr>
+<tr>
+<td><code>MARKET-06</code></td>
+<td>Offer design</td>
+<td>no-prompt-required</td>
+<td>all</td>
+<td>Skill-driven: <code>/lp-offer</code></td>
+</tr>
+<tr>
+<td><code>S3</code></td>
+<td>Forecast</td>
+<td>no-prompt-required</td>
+<td>all</td>
+<td>Skill-driven: <code>/lp-forecast</code></td>
+</tr>
+<tr>
+<td><code>PRODUCT-02</code></td>
+<td>Adjacent product research</td>
+<td>no-prompt-required</td>
+<td>conditional</td>
+<td>Skill-driven: <code>/lp-other-products</code></td>
+</tr>
+<tr>
+<td><code>SELL-01</code></td>
+<td>Channel strategy + GTM</td>
+<td>no-prompt-required</td>
+<td>all</td>
+<td>Skill-driven: <code>/lp-channels</code></td>
+</tr>
+<tr>
+<td><code>SELL-02</code></td>
+<td>Activation readiness (pre-spend)</td>
+<td>no-prompt-required</td>
+<td>conditional</td>
+<td>Gate-driven readiness checks</td>
+</tr>
+<tr>
+<td><code>S4</code></td>
+<td>Baseline merge</td>
+<td>no-prompt-required</td>
+<td>all</td>
+<td>Skill-driven: <code>/lp-baseline-merge</code></td>
+</tr>
+<tr>
+<td><code>S5A</code></td>
+<td>Prioritize</td>
 <td><code>prioritization-scorer-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
 </tr>
 <tr>
-<td>S10 Weekly decision</td>
+<td><code>S5B</code></td>
+<td>BOS sync</td>
+<td>no-prompt-required</td>
+<td>all</td>
+<td>Skill/system-managed</td>
+</tr>
+<tr>
+<td><code>WEBSITE-01</code></td>
+<td>L1 first build framework</td>
+<td><code>website-first-build-framework-prompt.md</code></td>
+<td>pre-website</td>
+<td>Required prompt stage</td>
+</tr>
+<tr>
+<td><code>WEBSITE-02</code></td>
+<td>Site-upgrade synthesis</td>
+<td><code>docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md</code></td>
+<td>website-live</td>
+<td>Required prompt stage</td>
+</tr>
+<tr>
+<td><code>DO</code></td>
+<td>Delivery execution</td>
+<td>no-prompt-required</td>
+<td>all</td>
+<td>Skill-driven: <code>/lp-do-fact-find</code>, <code>/lp-do-plan</code>, <code>/lp-do-build</code></td>
+</tr>
+<tr>
+<td><code>S9B</code></td>
+<td>Post-deploy verification</td>
+<td><code>post-deploy-measurement-verification-prompt.md</code></td>
+<td>all</td>
+<td>Run after deploy</td>
+</tr>
+<tr>
+<td><code>S9B</code></td>
+<td>QA gates</td>
+<td>no-prompt-required</td>
+<td>all</td>
+<td>Skill-driven: <code>/lp-launch-qa</code></td>
+</tr>
+<tr>
+<td><code>S10</code></td>
+<td>Weekly decision</td>
 <td><code>weekly-kpcs-decision-prompt.md</code></td>
+<td>all</td>
+<td>Required prompt stage</td>
 </tr>
 </tbody>
 </table>
-<h2>Operator prompts</h2>
+<h2>Operator prompt</h2>
 <table>
 <thead>
 <tr>
 <th>Purpose</th>
 <th>Prompt template</th>
+<th>Launch-surface</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Run-packet and next-step handoff (<code>start/status/submit/advance</code>)</td>
 <td><code>startup-loop-operator-handoff-prompt.md</code></td>
+<td>all</td>
 </tr>
 </tbody>
 </table>
 <p>Command wrapper that uses this operator prompt:</p>
 <ul>
 <li><code>.claude/skills/startup-loop/SKILL.md</code> (<code>/startup-loop</code>)</li>
-</ul>
-<p>Automatic flag rule:</p>
-<ul>
-<li>If launch-surface mode is <code>pre-website</code>, run S1B before S2 and do not start paid traffic until the S1B verification checklist passes.</li>
 </ul>
 <h2>Standing refresh prompts</h2>
 <table>
@@ -188,14 +353,6 @@
 </thead>
 <tbody>
 <tr>
-<td>S2 Market intelligence</td>
-<td><code>docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md</code></td>
-</tr>
-<tr>
-<td>S6 Site upgrade synthesis</td>
-<td><code>docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md</code></td>
-</tr>
-<tr>
 <td>Platform baseline refresh</td>
 <td><code>docs/business-os/platform-capability/_templates/deep-research-platform-capability-baseline-prompt.md</code></td>
 </tr>
@@ -203,12 +360,36 @@
 </table>
     <div class="meta">
       <div>Source: <code>docs/business-os/workflow-prompts/README.user.md</code></div>
-      <div>Generated: 2026-02-12T17:18:31.285Z</div>
+      <div>Generated: 2026-02-23T12:07:16.456Z</div>
     </div>
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
   </script>
 </body>
 </html>

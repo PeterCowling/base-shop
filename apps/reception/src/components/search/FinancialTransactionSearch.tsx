@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import useAllFinancialTransactionsData from "../../hooks/data/useAllFinancialTransactionsData";
 
 function FinancialTransactionSearch(): JSX.Element {
@@ -138,12 +140,12 @@ function FinancialTransactionSearch(): JSX.Element {
           />
         </div>
 
-        <button
+        <Button
           onClick={handleSearch}
           className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors dark:bg-darkSurface dark:text-darkAccentGreen"
         >
           Search
-        </button>
+        </Button>
       </div>
 
       {errorMessage && (
@@ -159,88 +161,88 @@ function FinancialTransactionSearch(): JSX.Element {
 
       {filteredTransactions.length > 0 && (
         <div className="overflow-x-auto w-full bg-white border border-gray-400 rounded shadow dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
-          <table className="table-fixed w-full border-collapse">
-            <thead className="bg-gray-100 sticky top-0 dark:bg-darkSurface">
-              <tr>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+          <Table className="table-fixed w-full border-collapse">
+            <TableHeader className="bg-gray-100 sticky top-0 dark:bg-darkSurface">
+              <TableRow>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Amount
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Category
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   User
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Booking
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Shift
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Source Txn
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Status
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Reason
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Description
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Timestamp
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {filteredTransactions.map(([id, txn], index) => {
                 const rowBg =
                   index % 2 === 0
                     ? "bg-white dark:bg-darkSurface"
                     : "bg-gray-50 dark:bg-darkSurface";
                 return (
-                  <tr key={id} className={rowBg}>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                  <TableRow key={id} className={rowBg}>
+                    <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.amount}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.itemCategory}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.user_name}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.bookingRef ?? "-"}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.shiftId ?? "-"}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.sourceTxnId ?? "-"}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.voidedAt
                         ? "Void"
                         : txn.correctionKind
                         ? `Correction (${txn.correctionKind})`
                         : "-"}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.voidReason ?? txn.correctionReason ?? "-"}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.description}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.timestamp}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
     </>

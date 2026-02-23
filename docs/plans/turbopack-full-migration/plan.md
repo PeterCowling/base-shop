@@ -90,7 +90,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 | TASK-04 | IMPLEMENT | Update policy script/tests and validation hooks for migration mode | 85% | S | Complete | TASK-03 | - |
 | TASK-05 | CHECKPOINT | Reassess downstream plan after policy rollout | 95% | S | Complete | TASK-04 | - |
 | TASK-06 | IMPLEMENT | Replace remaining `webpackInclude` magic-comment pattern | 85% | S | Complete | TASK-05 | - |
-| TASK-07 | IMPLEMENT | Migrate/retire webpack callback behavior with Turbopack parity checks | 75%* | M | Pending | TASK-01, TASK-02, TASK-05 | TASK-08 |
+| TASK-07 | IMPLEMENT | Migrate/retire webpack callback behavior with Turbopack parity checks | 75%* | M | Pending (CMS validation blocker) | TASK-01, TASK-02, TASK-05 | TASK-08 |
 | TASK-08 | IMPLEMENT | Migrate app/workflow webpack script surfaces in waves | 85% | S | Pending | TASK-02, TASK-05, TASK-06, TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | Final cleanup and hardening (policy tightening, optional dependency removal) | 85% | S | Pending | TASK-01, TASK-08 | - |
 
@@ -326,7 +326,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Pending (CMS validation blocker)
 - **Affects:** `packages/next-config/next.config.mjs`, `apps/business-os/next.config.mjs`, `apps/cms/next.config.mjs`, `apps/cochlearfit/next.config.mjs`, `apps/handbag-configurator/next.config.mjs`, `apps/product-pipeline/next.config.mjs`, `apps/skylar/next.config.mjs`, `apps/xa-uploader/next.config.mjs`, `packages/template-app/next.config.mjs`
 - **Depends on:** TASK-01, TASK-02, TASK-05
 - **Blocks:** TASK-08
@@ -365,6 +365,14 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
   - Update matrix artifact with callback parity outcomes.
 - **Notes / references:**
   - `docs/plans/turbopack-full-migration/artifacts/migration-matrix.md`
+- **Execution report (2026-02-23):**
+  - Added Turbopack alias parity blocks to callback configs that carried app-local aliases: `packages/next-config/next.config.mjs`, `apps/business-os/next.config.mjs`, `apps/cms/next.config.mjs`, `apps/cochlearfit/next.config.mjs`, `apps/product-pipeline/next.config.mjs`, `apps/skylar/next.config.mjs`, `packages/template-app/next.config.mjs`.
+  - Added explicit exception rationale comments to each retained `webpack()` callback in all callback-map files, including cache/snapshot/fallback/hash-guard paths that remain webpack-only until script migration.
+  - Validation status:
+    - TC-01: pass (callback parity/exception map captured in `docs/plans/turbopack-full-migration/artifacts/migration-matrix.md`).
+    - TC-02: partial (passes: `@apps/business-os`, `@apps/skylar`; blocked: `@apps/cms` repeated webpack OOM).
+    - TC-03: no new alias/fallback resolution errors surfaced in passing probes.
+  - Blocker detail (cms): `pnpm --filter @apps/cms build` fails with Node heap OOM (`SIGABRT`) in this environment, including retries with `NODE_OPTIONS=--max-old-space-size=8192` and `NEXT_BUILD_CPUS=1`.
 
 ### TASK-08: Migrate remaining webpack-pinned app scripts and workflow build surfaces
 - **Type:** IMPLEMENT
@@ -466,7 +474,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 
 ## Acceptance Criteria (overall)
 - [x] Scope boundary is explicitly decided and documented.
-- [ ] Policy gate supports planned Turbopack migration sequence.
+- [x] Policy gate supports planned Turbopack migration sequence.
 - [ ] In-scope Next app script surfaces no longer require `--webpack`.
 - [ ] In-scope webpack callback/magic-comment surfaces are retired or explicitly documented as intentional exceptions.
 - [ ] Final policy prevents regressions back to deprecated webpack patterns for in-scope surfaces.
@@ -479,6 +487,7 @@ This plan converts the repository from webpack-pinned Next app workflows to Turb
 - 2026-02-23: TASK-04 completed. Policy rollout landed for S1 migration apps in `scripts/check-next-webpack-flag.mjs` with contract tests expanded and passing (`scripts/__tests__/next-webpack-flag-policy.test.ts`).
 - 2026-02-23: TASK-05 checkpoint completed. No `/lp-do-replan` required; downstream tasks remain sequenced as planned.
 - 2026-02-23: TASK-06 completed. Active `webpackInclude` patterns removed from source and replaced with explicit loader maps; targeted locale/layout tests passed.
+- 2026-02-23: TASK-07 callback parity implementation completed across shared/app callback files and documented in migration matrix; task remains pending due CMS representative build probe OOM in current environment.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

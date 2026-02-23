@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 interface FilterBarProps {
   firstName: string;
   lastName: string;
@@ -139,12 +141,12 @@ const FilterBar: React.FC<FilterBarProps> = ({
       </div>
 
       {/* Search button */}
-      <button
+      <Button
         onClick={onSearch}
         className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
       >
         Search
-      </button>
+      </Button>
     </div>
   );
 };

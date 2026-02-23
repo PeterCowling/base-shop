@@ -1,5 +1,7 @@
 import { memo, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useCreditSlipsMutations } from "../../hooks/data/till/useCreditSlipsMutations";
 
 /**
@@ -37,12 +39,12 @@ export const CreditSlipRegistry = memo(function CreditSlipRegistry() {
           onChange={(e) => setAmount(e.target.value)}
         />
       </div>
-      <button
+      <Button
         onClick={handleAdd}
         className="px-3 py-1 bg-primary-main text-white rounded dark:bg-darkAccentGreen dark:text-darkBg"
       >
         Add Slip
-      </button>
+      </Button>
     </div>
   );
 });

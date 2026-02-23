@@ -6,6 +6,8 @@ import {
   ChevronUpIcon,
 } from "@heroicons/react/24/solid";
 
+import { TableHead } from "@acme/design-system/atoms";
+
 import clsx from "../../utils/clsx";
 
 export interface SortableHeaderProps {
@@ -19,7 +21,7 @@ export interface SortableHeaderProps {
   ascending: boolean;
   /** Callback to mutate parent sort state */
   onSort: (field: string) => void;
-  /** Additional <th> classes */
+  /** Additional <TableHead> classes */
   className?: string;
 }
 
@@ -38,7 +40,7 @@ const SortableHeader: React.FC<SortableHeaderProps> = ({
   }, [currentField, field, ascending]);
 
   return (
-    <th
+    <TableHead
       scope="col"
       onClick={() => onSort(field)}
       className={clsx(
@@ -51,7 +53,7 @@ const SortableHeader: React.FC<SortableHeaderProps> = ({
         {label}
         <Icon className="h-4 w-4 shrink-0 opacity-60" aria-hidden="true" />
       </span>
-    </th>
+    </TableHead>
   );
 };
 

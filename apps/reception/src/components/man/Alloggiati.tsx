@@ -3,6 +3,8 @@
 
 import { type FC, memo, useEffect, useMemo, useState } from "react";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
 import useAlloggiatiLogs from "../../hooks/data/useAlloggiatiLogs";
 import { useCheckins } from "../../hooks/data/useCheckins";
@@ -279,23 +281,23 @@ const AlloggiatiComponent: FC = () => {
 
       {occupantEntries.length > 0 && (
         <div className="overflow-x-auto mt-4">
-          <table className="table-auto w-full border border-gray-400 text-sm dark:border-darkSurface">
-            <thead className="bg-gray-100 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
-              <tr>
-                <th className="py-2 px-3 text-start">Occupant ID</th>
-                <th className="py-2 px-3 text-start">Reservation Code</th>
-                <th className="py-2 px-3 text-start">NAME</th>
-                <th className="py-2 px-3 text-center">
-                  <button
+          <Table className="table-auto w-full border border-gray-400 text-sm dark:border-darkSurface">
+            <TableHeader className="bg-gray-100 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+              <TableRow>
+                <TableHead className="py-2 px-3 text-start">Occupant ID</TableHead>
+                <TableHead className="py-2 px-3 text-start">Reservation Code</TableHead>
+                <TableHead className="py-2 px-3 text-start">NAME</TableHead>
+                <TableHead className="py-2 px-3 text-center">
+                  <Button
                     onClick={handleToggleAll}
                     className="px-3 py-2 text-sm border rounded"
                   >
                     Select / Deselect All
-                  </button>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                  </Button>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {occupantEntries.map((entry) => {
                 const occupantId = entry.occupantId;
                 const occupantLog = alloggiatiLogs?.[occupantId];
@@ -325,11 +327,11 @@ const AlloggiatiComponent: FC = () => {
                   : "";
 
                 return (
-                  <tr key={occupantId} className={rowClass}>
-                    <td className="py-2 px-3">{occupantId}</td>
-                    <td className="py-2 px-3">{entry.reservationCode}</td>
-                    <td className="py-2 px-3">{occupantName}</td>
-                    <td className="py-2 px-3 text-center">
+                  <TableRow key={occupantId} className={rowClass}>
+                    <TableCell className="py-2 px-3">{occupantId}</TableCell>
+                    <TableCell className="py-2 px-3">{entry.reservationCode}</TableCell>
+                    <TableCell className="py-2 px-3">{occupantName}</TableCell>
+                    <TableCell className="py-2 px-3 text-center">
                       {showCheckbox ? (
                         <input
                           type="checkbox"
@@ -338,12 +340,12 @@ const AlloggiatiComponent: FC = () => {
                           onChange={() => handleCheckboxChange(occupantId)}
                         />
                       ) : null}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
 
@@ -351,13 +353,13 @@ const AlloggiatiComponent: FC = () => {
       <div className="mt-6 p-3 border border-gray-400 rounded dark:border-darkSurface">
         <h3 className="font-semibold mb-2">Send to Alloggiati Web Service</h3>
 
-        <button
+        <Button
           onClick={handleSendAlloggiati}
           className="px-3 py-2 bg-blue-600 text-white rounded"
           disabled={isLoading || isSendLoading}
         >
           {isSendLoading ? "Sending..." : "Send Occupants"}
-        </button>
+        </Button>
 
         {sendError && (
           <p className="mt-2 text-red-600">Error Sending: {sendError}</p>

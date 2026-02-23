@@ -23,6 +23,7 @@
 .composed {
   display: inline-block;
   position: relative;
+  z-index: 1;
 }
 
 /* While not ready, show fallback only */
@@ -85,6 +86,21 @@
   transform: translateX(0px);
 }
 
+.particleCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms linear;
+}
+
+.brand[data-particle-active="true"] .particleCanvas {
+  opacity: 1;
+}
+
 /* Offscreen measurement probes */
 .measure {
   position: absolute;
@@ -98,7 +114,7 @@
   display: inline-block;
 }
 
-/* Tagline: fades in after the wordmark transformation */
+/* Tagline visibility is controlled by particle lifecycle */
 .tagline {
   display: block;
   margin-top: 0.25em;
@@ -111,16 +127,22 @@
 
   color: hsl(var(--color-fg-muted, 355 8% 52%));
 
-  opacity: 0;
-  transform: translateY(-0.15em);
+  opacity: 1;
+  transform: translateY(0);
   transition:
-    opacity calc(var(--dur) * 0.6) ease,
-    transform calc(var(--dur) * 0.6) ease;
-  /* Wait for the wordmark animation to finish, then fade in */
-  transition-delay: calc(var(--delay) + var(--dur));
+    opacity 220ms ease,
+    transform 220ms ease;
 }
 
-.brand[data-state="to"] .tagline {
+.brand[data-particle-state="idle"] .tagline,
+.brand[data-particle-state="dissolving"] .tagline,
+.brand[data-particle-state="funneling"] .tagline,
+.brand[data-particle-state="settling"] .tagline {
+  opacity: 0;
+  transform: translateY(-0.15em);
+}
+
+.brand[data-particle-state="done"] .tagline {
   opacity: 1;
   transform: translateY(0);
 }

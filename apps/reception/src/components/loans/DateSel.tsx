@@ -13,6 +13,8 @@ import {
 } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
+import { Button } from "@acme/design-system/atoms";
+
 import {
   buildQuickDateRange,
   formatDateForInput,
@@ -49,10 +51,10 @@ function DateSel({
     (label: string, day: string): ReactElement => {
       const isSelected = selectedDate === day;
       return (
-        <button
+        <Button
           key={day}
           className={`
-            px-4 py-2 border rounded text-sm font-medium w-[100px] text-center
+            px-4 py-2 border rounded text-sm font-medium w-100px text-center
             transition-colors
             ${
               isSelected
@@ -63,7 +65,7 @@ function DateSel({
           onClick={() => onDateChange(day)}
         >
           {label}
-        </button>
+        </Button>
       );
     },
     [onDateChange, selectedDate]
@@ -111,13 +113,13 @@ function DateSel({
     if (!isPete) return null;
     return (
       <div className="relative">
-        <button
+        <Button
           ref={toggleRef}
           className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate ? formatDateForInput(selectedDate) : "Select a date"}
-        </button>
+        </Button>
         {isCalendarOpen && (
           <div
             ref={calendarRef}

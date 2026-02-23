@@ -6,16 +6,18 @@ import * as React from "react";
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
+import type { ActionFeedback } from "./useCatalogConsole.client";
+
 export function CatalogLoginForm({
   token,
   busy,
-  error,
+  feedback,
   onTokenChange,
   onSubmit,
 }: {
   token: string;
   busy: boolean;
-  error: string | null;
+  feedback: ActionFeedback | null;
   onTokenChange: (value: string) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }) {
@@ -43,7 +45,11 @@ export function CatalogLoginForm({
         >
           {busy ? t("loginButtonBusy") : t("loginButtonIdle")}
         </button>
-        {error ? <div className="text-sm text-danger-fg">{error}</div> : null}
+        {feedback ? (
+          <div className={feedback.kind === "error" ? "text-sm text-danger-fg" : "text-sm text-success-fg"}>
+            {feedback.message}
+          </div>
+        ) : null}
       </form>
     </div>
   );

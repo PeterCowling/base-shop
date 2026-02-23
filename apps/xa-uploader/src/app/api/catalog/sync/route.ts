@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- XAUP-0001 [ttl=2026-12-31] temp paths derived from validated inputs */
 import { spawn } from "node:child_process";
+import { constants as fsConstants } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 
@@ -20,8 +21,24 @@ type SyncOptions = {
   recursive?: boolean;
 };
 
+type SyncScriptId = "validate" | "sync";
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+async function findMissingSyncScripts(
+  scripts: Array<{ id: SyncScriptId; scriptPath: string }>,
+): Promise<SyncScriptId[]> {
+  const missing: SyncScriptId[] = [];
+  for (const script of scripts) {
+    try {
+      await fs.access(script.scriptPath, fsConstants.F_OK);
+    } catch {
+      missing.push(script.id);
+    }
+  }
+  return missing;
 }
 
 async function runNodeTsx(repoRoot: string, scriptPath: string, args: string[]) {
@@ -90,6 +107,22 @@ export async function POST(request: Request) {
 
   const validateScript = path.join(repoRoot, "scripts", "src", "xa", "validate-xa-inputs.ts");
   const syncScript = path.join(repoRoot, "scripts", "src", "xa", "run-xa-pipeline.ts");
+  const missingScripts = await findMissingSyncScripts([
+    { id: "validate", scriptPath: validateScript },
+    { id: "sync", scriptPath: syncScript },
+  ]);
+  if (missingScripts.length > 0) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "sync_dependencies_missing",
+        recovery: "restore_sync_scripts",
+        missingScripts,
+        durationMs: Date.now() - startedAt,
+      },
+      { status: 500 },
+    );
+  }
 
   const validateArgs = ["--products", productsCsvPath];
   if (recursive) validateArgs.push("--recursive");
@@ -120,6 +153,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         error: "validation_failed",
+        recovery: "review_validation_logs",
         durationMs: Date.now() - startedAt,
         logs: { validate: validateResult },
       },
@@ -133,6 +167,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         error: "sync_failed",
+        recovery: "review_sync_logs",
         durationMs: Date.now() - startedAt,
         logs: { validate: validateResult, sync: syncResult },
       },

@@ -1,5 +1,6 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy about page pending design/i18n overhaul */
 import { Section } from "@acme/design-system/atoms/Section";
+import { PolicyPageIntro } from "@acme/ui/components/organisms/PolicyPageIntro";
+
 import { siteConfig } from "../../../lib/siteConfig";
 
 export default function AboutUsPage() {
@@ -8,12 +9,15 @@ export default function AboutUsPage() {
   return (
     <main className="sf-content">
       <Section padding="wide">
-        <h1 className="text-2xl font-semibold">About us</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {siteConfig.stealthMode
-            ? "This site is in private preview."
-            : `${siteConfig.brandName} is a demo storefront app focused on ${productDescriptor}.`}
-        </p>
+        <PolicyPageIntro
+          title="About us"
+          description={
+            siteConfig.stealthMode
+              ? "This site is in private preview."
+              : `${siteConfig.brandName} is a demo storefront app focused on ${productDescriptor}.`
+          }
+          descriptionClassName="mt-2 text-sm text-muted-foreground max-w-none"
+        />
       </Section>
 
       <Section padding="default">

@@ -3,6 +3,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { Button } from "@acme/design-system/atoms";
+
 import useSingleGuestDetails from "../../../hooks/data/useSingleGuestDetails";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 
@@ -121,19 +123,18 @@ const DocInsertPage: React.FC = () => {
 
       {/* Back button */}
       <div className="flex justify-end mb-4">
-        <button
+        <Button
           onClick={handleBack}
           className="inline-flex items-center px-3 py-2 bg-primary-main text-white rounded hover:bg-primary-dark transition-colors"
         >
           <span className="me-2">&larr;</span>
           Back
-        </button>
+        </Button>
       </div>
 
       <div className="bg-white rounded-lg shadow px-8 py-12 dark:bg-darkSurface dark:text-darkAccentGreen">
         {/* BookingRef component */}
-        {/* eslint-disable-next-line ds/no-raw-spacing -- internal POS layout spacing [DS-06] */}
-        <div className="mb-[50px]">
+        <div className="mb-50px">
           <BookingRef bookingRef={bookingRef} />
         </div>
 
@@ -167,9 +168,9 @@ const DocInsertPage: React.FC = () => {
             }`}
         >
           <span>{snackbar.message}</span>
-          <button onClick={closeSnackbar} className="ms-4 font-bold">
+          <Button onClick={closeSnackbar} className="ms-4 font-bold">
             ×
-          </button>
+          </Button>
         </div>
       )}
     </div>

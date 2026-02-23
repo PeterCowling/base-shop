@@ -1,11 +1,10 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy account login page pending i18n overhaul */
 
 import Link from "next/link";
 
-import { Section } from "@acme/design-system/atoms/Section";
 import { Button, Input } from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
 import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 
 export default function LoginPage() {

@@ -63,6 +63,30 @@ Notes:
 Prime-specific note:
 - `apps/prime/next.config.mjs` consumes `baseConfig` from `packages/next-config/index.mjs` and does not currently declare a webpack callback. Prime remains script-policy coupled but is not in the callback retirement map.
 
+## TASK-07 Callback Parity Outcomes (2026-02-23)
+
+| Callback file | Turbopack parity outcome | Webpack exception retained | Notes |
+|---|---|---|---|
+| `packages/next-config/next.config.mjs` | Shared `turbopack.resolveAlias` now includes `@`, `@themes-local`, and workspace package aliases used by app configs. | Yes | `webpack()` keeps extension aliasing and `node:*` alias mapping until webpack script surfaces are removed. |
+| `apps/business-os/next.config.mjs` | Added `turbopack.resolveAlias` parity for `@` app-source alias. | Yes | Client `resolve.fallback` (`fs`, `child_process`, `path`) remains webpack-path behavior. |
+| `apps/cms/next.config.mjs` | Added `turbopack.resolveAlias` parity for `@`, theme subpaths, `@acme/configurator`, and `entities/*` aliases. | Yes | Hash guard, dev filesystem cache, warning suppression, runtime dep aliasing, and node/react dedupe behavior remain webpack-path exceptions. |
+| `apps/cochlearfit/next.config.mjs` | Added `turbopack.resolveAlias` parity for `@` app-source alias. | Yes | Cache toggle remains webpack-path behavior. |
+| `apps/handbag-configurator/next.config.mjs` | Uses inherited shared Turbopack aliases (no app-local alias deltas needed). | Yes | Cache toggle remains webpack-path behavior. |
+| `apps/product-pipeline/next.config.mjs` | Added `turbopack.resolveAlias` parity for `@` and `@acme/ui`. | Yes | Snapshot/cache overrides remain webpack-path behavior. |
+| `apps/skylar/next.config.mjs` | Added `turbopack.resolveAlias` parity for `@` app-source alias. | Yes | Webpack callback retained only for migration-phase compatibility. |
+| `apps/xa-uploader/next.config.mjs` | Uses inherited shared Turbopack aliases (no app-local alias deltas needed). | Yes | Cache toggle remains webpack-path behavior. |
+| `packages/template-app/next.config.mjs` | Added `turbopack.resolveAlias` parity for `@acme/i18n`. | Yes | Webpack cache toggle and alias shim retained until script migration completes. |
+
+## TASK-07 Validation Snapshot (2026-02-23)
+
+- `pnpm --filter @apps/business-os build` -> pass (`next build --webpack`).
+- `pnpm --filter @apps/skylar build` -> pass (`next build --webpack`).
+- `pnpm --filter @apps/cms build` -> fail with Node heap OOM (`SIGABRT`) on three runs:
+  - default command,
+  - `NODE_OPTIONS=--max-old-space-size=8192`,
+  - `NEXT_BUILD_CPUS=1 NODE_OPTIONS=--max-old-space-size=8192`.
+- Result: TASK-07 callback parity work is implemented, but CMS representative-build validation remains blocked by pre-existing webpack memory pressure in current environment.
+
 ## Script Wave Validation Commands
 
 ### Wave S1 (low risk: `caryina`, `prime`, `xa`, `xa-b`, `xa-j`)

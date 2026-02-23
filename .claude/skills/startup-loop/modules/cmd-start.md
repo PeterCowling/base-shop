@@ -144,7 +144,7 @@ When both completion artifacts exist:
 
 **Condition**: unconditional
 
-**Rule**: MARKET deep research + S6 blocked until MEASURE-02 results artifact exists with `Status: Active`.
+**Rule**: MARKET deep research + WEBSITE blocked until MEASURE-02 results artifact exists with `Status: Active`.
 
 **If baseline blocked by missing data**:
 - `prompt_file`: `docs/business-os/workflow-prompts/_templates/historical-data-request-prompt.md`
@@ -156,14 +156,28 @@ When both completion artifacts exist:
 
 ---
 
-## Gate C: MARKET deep research + S6 site upgrade completion
+## Gate C: MARKET deep research + WEBSITE completion
 
-**Rule**: If `latest.user.md` is missing, stale, or points to `Status: Draft`, stop and hand prompt.
+**Rule**:
+- For `launch-surface=pre-website` (WEBSITE-01): if `site-v1-builder-prompt.user.md` is missing, stale, or `Status: Draft`, stop and hand WEBSITE-01 prompt.
+- For `launch-surface=pre-website` (WEBSITE-01): once `site-v1-builder-prompt.user.md` is `Status: Active`, auto-handover to DO using mandatory sequence `lp-do-fact-find -> lp-do-plan -> lp-do-build`.
+- For `launch-surface=website-live` (WEBSITE-02): if `latest.user.md` is missing, stale, or points to `Status: Draft`, stop and hand WEBSITE-02 prompt.
 
 **S2 handoff**:
 - `prompt_file`: `docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md`
 - `required_output_path`: `docs/business-os/market-research/<BIZ>/<YYYY-MM-DD>-market-intelligence.user.md`
 
-**S6 handoff**:
+**WEBSITE-01 handoff** (`launch-surface=pre-website`):
+- `prompt_file`: `docs/business-os/workflow-prompts/_templates/website-first-build-framework-prompt.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/site-v1-builder-prompt.user.md`
+
+**WEBSITE-02 handoff** (`launch-surface=website-live`):
 - `prompt_file`: `docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md`
 - `required_output_path`: `docs/business-os/site-upgrades/<BIZ>/<YYYY-MM-DD>-upgrade-brief.user.md`
+
+**WEBSITE-01 -> DO auto-handover** (`launch-surface=pre-website`, WEBSITE-01 is `Status: Active`):
+- `next_action_1`: `Run /lp-do-fact-find --website-first-build-backlog --biz <BIZ> --feature-slug <biz>-website-v1-first-build --source docs/business-os/strategy/<BIZ>/site-v1-builder-prompt.user.md`
+- `required_output_path_1`: `docs/plans/<biz>-website-v1-first-build/fact-find.md` (`Status: Ready-for-planning`)
+- `next_action_2`: `Run /lp-do-plan docs/plans/<biz>-website-v1-first-build/fact-find.md`
+- `required_output_path_2`: `docs/plans/<biz>-website-v1-first-build/plan.md` (`Status: Active`)
+- `next_action_3`: `Run /lp-do-build <biz>-website-v1-first-build` (only after `plan.md` is `Status: Active`)

@@ -7,6 +7,7 @@ import {
   InformationCircleIcon,
 } from "@heroicons/react/24/solid";
 
+import { Button } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
 
@@ -77,14 +78,14 @@ function AlertModal({
       backdropClassName=""
       footer={
         <Cluster justify="center" className="w-full">
-          <button
+          <Button
             type="button"
             onClick={onClose}
             autoFocus
             className={`min-h-11 min-w-11 rounded-md px-4 py-2 text-sm font-medium text-white ${colors.button}`}
           >
             {buttonLabel}
-          </button>
+          </Button>
         </Cluster>
       }
     >

@@ -12,6 +12,8 @@ import ReactDOM from "react-dom";
 import { faCreditCard, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { Button } from "@acme/design-system/atoms";
+
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../../hooks/mutations/useAllTransactionsMutations";
 import useCityTaxMutation from "../../../hooks/mutations/useCityTaxMutation";
@@ -254,7 +256,7 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
   const disabledClass =
     "bg-success-light text-white cursor-not-allowed opacity-70";
   const baseButtonClass =
-    "min-h-[55px] px-4 flex items-center justify-center focus:outline-none transition-colors";
+    "min-h-55px px-4 flex items-center justify-center focus:outline-none transition-colors";
 
   const leftButtonClass = isDisabled
     ? disabledClass
@@ -264,7 +266,7 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
   return (
     <div className="relative flex items-center">
       {/* Left button: choose payment type */}
-      <button
+      <Button
         ref={buttonRef}
         onClick={handleMenuToggle}
         disabled={isDisabled}
@@ -280,10 +282,10 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
           size="lg"
           title={payType === "CC" ? "Credit Card" : "Cash"}
         />
-      </button>
+      </Button>
 
       {/* Right button: immediate payment */}
-      <button
+      <Button
         onClick={handleImmediatePayment}
         disabled={isDisabled}
         className={`${baseButtonClass} rounded-r ${rightButtonClass}`}
@@ -294,7 +296,7 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
         }
       >
         {getButtonLabel()}
-      </button>
+      </Button>
 
       {/* Dropdown menu */}
       {menuVisible &&
@@ -308,20 +310,20 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
               ${menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
             onMouseLeave={handleMenuMouseLeave}
           >
-            <button
+            <Button
               onClick={handleMenuItemClickCash}
               className="w-full text-start px-3 py-1 focus:outline-none transition-colors hover:bg-gray-100"
             >
               <FontAwesomeIcon icon={faMoneyBill} className="me-2" />
               CASH
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleMenuItemClickCC}
               className="w-full text-start px-3 py-1 focus:outline-none transition-colors hover:bg-gray-100"
             >
               <FontAwesomeIcon icon={faCreditCard} className="me-2" />
               CC
-            </button>
+            </Button>
           </div>,
           document.body
         )}

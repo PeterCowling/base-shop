@@ -18,6 +18,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useLoanData } from "../../../context/LoanDataContext";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../../hooks/mutations/useAllTransactionsMutations";
@@ -198,7 +200,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
 
   /* ──────────────── styling helpers ────────────────────────────────────── */
   const baseButtonClass =
-    "min-h-[55px] px-4 flex items-center justify-center transition-colors focus:outline-none";
+    "min-h-55px px-4 flex items-center justify-center transition-colors focus:outline-none";
 
   const activeClass =
     "bg-primary-main hover:bg-primary-dark text-white dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80";
@@ -346,7 +348,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
   return (
     <div className="relative flex items-center">
       {/* Deposit-type selector */}
-      <button
+      <Button
         ref={buttonRef}
         onClick={handleMenuToggle}
         disabled={isDisabled}
@@ -364,10 +366,10 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
           className={depositIcon.className}
           size="lg"
         />
-      </button>
+      </Button>
 
       {/* Confirm action */}
-      <button
+      <Button
         ref={confirmButtonRef}
         onClick={handleConfirm}
         disabled={isDisabled}
@@ -382,7 +384,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
         }
       >
         <span className="ms-2 hidden md:inline">Keycard</span>
-      </button>
+      </Button>
 
       {/* Dropdown menu (portal) */}
       {menuVisible &&

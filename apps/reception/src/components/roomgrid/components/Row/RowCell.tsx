@@ -2,6 +2,8 @@ import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier } from "dnd-core";
 
+import { TableCell } from "@acme/design-system/atoms";
+
 import {
   ItemTypes,
   type ReservationDragItem,
@@ -133,7 +135,7 @@ const RowCell = <TCustomStatus extends string = never>({
   const bottomColor = theme["date.status"][dayStatus[1]];
 
   return (
-    <td
+    <TableCell
       ref={cellRef}
       key={cellDate}
       className={className}
@@ -147,7 +149,7 @@ const RowCell = <TCustomStatus extends string = never>({
       <div className="day">
         <Day type={dayType} topColor={topColor} bottomColor={bottomColor} />
       </div>
-    </td>
+    </TableCell>
   );
 };
 

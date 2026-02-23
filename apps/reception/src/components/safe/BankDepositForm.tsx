@@ -1,5 +1,7 @@
 import { memo, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { showToast } from "../../utils/toastUtils";
 import { PasswordReauthInline } from "../common/PasswordReauthInline";
 
@@ -93,13 +95,13 @@ export const BankDepositForm = memo(function BankDepositForm({
         </div>
 
         <div className="flex justify-end">
-          <button
+          <Button
             type="button"
             onClick={onCancel}
             className="min-h-11 min-w-11 px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
           >
             Cancel
-          </button>
+          </Button>
         </div>
       </div>
     </div>

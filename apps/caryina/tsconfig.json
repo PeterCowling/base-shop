@@ -23,7 +23,8 @@
   "include": [
     "next-env.d.ts",
     "src/**/*",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "shop.json"
   ],
   "exclude": [
     ".next/types/server.d.ts",

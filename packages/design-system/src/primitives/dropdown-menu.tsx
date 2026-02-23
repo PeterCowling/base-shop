@@ -10,7 +10,7 @@ import {
   DotFilledIcon,
 } from "@radix-ui/react-icons";
 
-import { cn } from "../utils/style";
+import { cn, overflowContainmentClass } from "../utils/style";
 
 export const DropdownMenu = DropdownMenuPrimitive.Root;
 export const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
@@ -54,7 +54,8 @@ export const DropdownMenuSubContent = (
 ) => (<DropdownMenuPrimitive.SubContent
   ref={ref}
   className={cn(
-    "bg-panel text-foreground z-50 min-w-32 overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
+    "bg-panel text-foreground z-50 min-w-32 rounded-md border p-1 shadow-elevation-3 border-border-2",
+    overflowContainmentClass("menuSurface"),
     className
   )}
   // Hard fallback ensures solid background even if tokens are missing
@@ -87,7 +88,8 @@ export const DropdownMenuContent = (
       ref={ref}
       sideOffset={sideOffset}
     className={cn(
-      "bg-panel text-foreground z-50 min-w-32 overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
+      "bg-panel text-foreground z-50 min-w-32 rounded-md border p-1 shadow-elevation-3 border-border-2",
+      overflowContainmentClass("menuSurface"),
       className
     )}
       // Hard fallback ensures solid background even if tokens are missing

@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import useIngredients from "../../hooks/data/inventory/useIngredients";
 
 function IngredientStock() {
@@ -44,7 +46,7 @@ function IngredientStock() {
             Migrate {Object.keys(legacyIngredients).length} items into the
             inventory ledger to enable audit trails.
           </p>
-          <button
+          <Button
             className="mt-2 px-3 py-1 rounded bg-warning-main text-white hover:bg-warning-dark"
             onClick={() => {
               if (
@@ -57,7 +59,7 @@ function IngredientStock() {
             }}
           >
             Migrate Legacy Ingredients
-          </button>
+          </Button>
         </div>
       )}
       {migrationComplete && (
@@ -65,37 +67,37 @@ function IngredientStock() {
           Legacy ingredients migrated successfully.
         </div>
       )}
-      <table className="min-w-full text-sm dark:bg-darkSurface">
-        <thead>
-          <tr>
-            <th className="p-2 text-start">Ingredient</th>
-            <th className="p-2 text-end">Quantity</th>
-            <th className="p-2">Update</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table className="min-w-full text-sm dark:bg-darkSurface">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="p-2 text-start">Ingredient</TableHead>
+            <TableHead className="p-2 text-end">Quantity</TableHead>
+            <TableHead className="p-2">Update</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {rows.map((ing) => (
-            <tr key={ing.name}>
-              <td className="p-2 border-b">{ing.name}</td>
-              <td className="p-2 border-b text-end">{ing.quantity}</td>
-              <td className="p-2 border-b">
+            <TableRow key={ing.name}>
+              <TableCell className="p-2 border-b">{ing.name}</TableCell>
+              <TableCell className="p-2 border-b text-end">{ing.quantity}</TableCell>
+              <TableCell className="p-2 border-b">
                 <input
                   type="number"
                   className="border p-1 w-20 dark:bg-darkSurface dark:text-darkAccentGreen"
                   value={edits[ing.name] ?? ing.quantity}
                   onChange={(e) => handleChange(ing.name, e.target.value)}
                 />
-                <button
+                <Button
                   className="ms-2 px-2 py-1 bg-blue-500 text-white rounded dark:bg-darkAccentGreen dark:text-darkBg"
                   onClick={() => handleSave(ing.name)}
                 >
                   Save
-                </button>
-              </td>
-            </tr>
+                </Button>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

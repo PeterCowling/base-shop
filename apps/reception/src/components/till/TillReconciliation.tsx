@@ -35,7 +35,7 @@ function TillReconciliation(): JSX.Element {
   }
 
   return (
-    <div className="min-h-[80vh] p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         TILL MANAGEMENT
       </h1>

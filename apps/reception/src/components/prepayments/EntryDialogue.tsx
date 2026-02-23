@@ -8,6 +8,8 @@ import React, {
   useState,
 } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { creditCardSchema } from "../../schemas/creditCardSchema";
 import { formatCreditCardNumber } from "../../utils/creditCardUtils"; // Adjust path as needed
 import { showToast } from "../../utils/toastUtils";
@@ -175,14 +177,14 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
                 ` | Amount: €${amountToCharge.toFixed(2)}`}
             </span>
           </h2>
-          <button
+          <Button
             onClick={onClose}
             disabled={isProcessing || isSaving}
             className="text-gray-700 hover:bg-gray-200 p-1 rounded transition-colors disabled:opacity-50 dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
             aria-label="Close dialog"
           >
             &times;
-          </button>
+          </Button>
         </div>
 
         {/* Content with optional loading overlay */}
@@ -247,30 +249,30 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
         <div className="p-4 flex flex-wrap gap-2 justify-end border-t border-gray-400 dark:border-darkSurface">
           {/* Process button only shows if card details already exist */}
           {hasExistingCard && (
-            <button
+            <Button
               onClick={handleProcessClick}
               disabled={isProcessing || isSaving || !cardNumber || !expiryDate} // Disable if processing or fields are empty
               className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark transition-colors font-body disabled:opacity-50 disabled:cursor-not-allowed dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
             >
               {isProcessing ? "Processing..." : "Process Payment"}
-            </button>
+            </Button>
           )}
           {/* Save/Update Button */}
-          <button
+          <Button
             onClick={handleSaveOrUpdate}
             disabled={isProcessing || isSaving || !cardNumber || !expiryDate} // Disable if processing or fields are empty
             className="px-4 py-2 bg-success-main text-white rounded hover:bg-success-dark transition-colors font-body disabled:opacity-50 disabled:cursor-not-allowed dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
           >
             {isSaving ? "Saving..." : saveButtonText}
-          </button>
+          </Button>
           {/* Optional Close/Cancel Button */}
-          <button
+          <Button
             onClick={onClose}
             disabled={isProcessing || isSaving}
             className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors font-body disabled:opacity-50 dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
           >
             Cancel
-          </button>
+          </Button>
         </div>
       </div>
     </div>

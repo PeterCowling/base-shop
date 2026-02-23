@@ -1,8 +1,9 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy gate UI pending design/i18n overhaul */
 
 import * as React from "react";
+
+import { Button, Input, Textarea } from "@acme/design-system/atoms";
 
 type RequestState = "idle" | "loading" | "success" | "error";
 
@@ -81,43 +82,43 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
       <form onSubmit={submitRequest} className="space-y-4">
         <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
           Alias
-          <input
+          <Input
             value={handle}
             onChange={(event) => setHandle(event.target.value)}
             placeholder="Handle or collective name"
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+            className="mt-2 h-auto w-full rounded-md border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
             autoComplete="off"
           />
         </label>
         <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
           Sent by
-          <input
+          <Input
             value={referredBy}
             onChange={(event) => setReferredBy(event.target.value)}
             placeholder="Who sent you?"
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+            className="mt-2 h-auto w-full rounded-md border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
             autoComplete="off"
           />
         </label>
         <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
           Why you
-          <textarea
+          <Textarea
             value={note}
             onChange={(event) => setNote(event.target.value)}
             placeholder="What pulls you into the underground?"
             rows={4}
-            className="mt-2 w-full resize-none rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+            className="mt-2 w-full resize-none rounded-md border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
           />
         </label>
 
         <div className="flex flex-wrap items-center gap-3">
-          <button
+          <Button
             type="submit"
             disabled={state === "loading"}
-            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className="h-auto inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {state === "loading" ? "Transmitting..." : "Request access"}
-          </button>
+          </Button>
           <div className="text-xs text-[color:var(--gate-muted)]">
             We do not send email. Keys move hand to hand.
           </div>

@@ -4,6 +4,8 @@ import { type ChangeEvent, memo, useCallback } from "react";
 import { faCreditCard, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { Button } from "@acme/design-system/atoms";
+
 import type {
   PaymentSplit,
   PaymentType,
@@ -59,7 +61,7 @@ function PaymentSplitRow({
       />
 
       {/* Toggle pay type */}
-      <button
+      <Button
         className="flex items-center justify-center border border-gray-300 rounded px-2 py-1 focus:outline-none dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         onClick={togglePayType}
         disabled={isDisabled}
@@ -69,7 +71,7 @@ function PaymentSplitRow({
           className="me-1"
         />
         {sp.payType}
-      </button>
+      </Button>
     </>
   );
 }

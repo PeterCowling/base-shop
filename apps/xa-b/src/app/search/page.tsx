@@ -1,13 +1,12 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy search page pending design/i18n overhaul */
 
 import * as React from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { Section } from "@acme/design-system/atoms/Section";
 import { Input } from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
 
 import { XaProductListing } from "../../components/XaProductListing.client";
 import { useXaProductSearch } from "../../lib/search/useXaProductSearch";

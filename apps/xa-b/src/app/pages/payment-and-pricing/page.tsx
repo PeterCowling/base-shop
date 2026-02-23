@@ -1,5 +1,7 @@
-/* eslint-disable ds/no-hardcoded-copy, ds/container-widths-only-at, ds/min-tap-size -- XA-123 [ttl=2026-12-31] XA marketing copy pending localization */
 import { Section } from "@acme/design-system/atoms/Section";
+import { PolicyContent } from "@acme/ui/components/organisms/PolicyContent";
+import { PolicyPageIntro } from "@acme/ui/components/organisms/PolicyPageIntro";
+import { PolicySection } from "@acme/ui/components/organisms/PolicySection";
 
 import { siteConfig } from "../../../lib/siteConfig";
 
@@ -15,17 +17,15 @@ export default function PaymentAndPricingPage() {
   return (
     <main className="sf-content">
       <Section padding="wide">
-        <h1 className="text-2xl font-semibold">Payments and pricing</h1>
-        <p className="mt-2 max-w-3xl text-sm text-muted-foreground">
-          Here’s how pricing works, what you’ll pay at checkout, and which payment options may be
-          available for your {productDescriptor} order.
-        </p>
+        <PolicyPageIntro
+          title="Payments and pricing"
+          description={`Here’s how pricing works, what you’ll pay at checkout, and which payment options may be available for your ${productDescriptor} order.`}
+        />
       </Section>
 
       <Section padding="default">
-        <div className="space-y-8 text-sm text-muted-foreground">
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold text-foreground">1. Pricing</h2>
+        <PolicyContent>
+          <PolicySection title="1. Pricing">
             <p>
               Prices can vary by item, availability, and delivery destination. The total shown at
               checkout is the price you pay for that order. Adding an item to your bag or wishlist
@@ -35,18 +35,16 @@ export default function PaymentAndPricingPage() {
               If a price changes between browsing and checkout, the checkout total will reflect the
               most up-to-date price for your destination.
             </p>
-          </div>
+          </PolicySection>
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold text-foreground">2. Currency</h2>
+          <PolicySection title="2. Currency">
             <p>
               Currency options depend on your delivery destination. If your local currency is not
               available, your card issuer or payment provider may apply an exchange rate and fees.
             </p>
-          </div>
+          </PolicySection>
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold text-foreground">3. Taxes and duties</h2>
+          <PolicySection title="3. Taxes and duties">
             <p>
               Taxes, import duties, and customs fees depend on where your order is shipped from and
               delivered to. Where applicable, we’ll show whether these costs are included in your
@@ -62,10 +60,9 @@ export default function PaymentAndPricingPage() {
                 before delivery.
               </li>
             </ul>
-          </div>
+          </PolicySection>
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold text-foreground">4. Accepted payment methods</h2>
+          <PolicySection title="4. Accepted payment methods">
             <p>
               Available payment methods vary by country and may change over time. The options shown
               at checkout are the payment methods available for your order.
@@ -76,46 +73,40 @@ export default function PaymentAndPricingPage() {
               <li>Alternative methods such as PayPal or local payment options (where supported)</li>
               <li>Buy now, pay later options (where supported)</li>
             </ul>
-          </div>
+          </PolicySection>
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold text-foreground">5. When you’ll be charged</h2>
+          <PolicySection title="5. When you’ll be charged">
             <p>
               We typically charge your selected payment method when you place an order. Some payment
               methods may authorize the amount first and capture it later (for example, when your
               order ships).
             </p>
-          </div>
+          </PolicySection>
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold text-foreground">6. Payment security</h2>
+          <PolicySection title="6. Payment security">
             <p>
               We use security checks to help protect customers and prevent fraud. In some cases, we
               may request additional verification or cancel an order if we cannot confirm payment
               details.
             </p>
-          </div>
+          </PolicySection>
 
-          <div className="space-y-2">
-            <h2 id="promotions" className="text-lg font-semibold text-foreground">
-              7. Promotions
-            </h2>
+          <PolicySection title="7. Promotions" titleId="promotions">
             <p>
               Promotional discounts may apply to selected items and may be subject to eligibility
               rules (such as minimum spend, exclusions, and time limits). If a promo code is
               available, you can apply it at checkout.
             </p>
-          </div>
+          </PolicySection>
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold text-foreground">8. Need help?</h2>
+          <PolicySection title="8. Need help?">
             {contactEmailLink ? (
               <p>For payment or pricing questions, contact us at {contactEmailLink}.</p>
             ) : (
               <p>For payment or pricing questions, use the contact channels listed in the footer.</p>
             )}
-          </div>
-        </div>
+          </PolicySection>
+        </PolicyContent>
       </Section>
     </main>
   );

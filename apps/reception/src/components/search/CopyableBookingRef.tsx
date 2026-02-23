@@ -2,6 +2,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CheckIcon, ClipboardIcon } from "@heroicons/react/24/solid";
 
+import { Button } from "@acme/design-system/atoms";
+
 /**
  * Display a booking reference that copies itself to clipboard on click.
  */
@@ -29,7 +31,7 @@ const CopyableBookingRef: React.FC<CopyableBookingRefProps> = ({ text }) => {
   }, []);
 
   return (
-    <button
+    <Button
       type="button"
       onClick={handleCopy}
       title="Copy booking reference"
@@ -47,7 +49,7 @@ const CopyableBookingRef: React.FC<CopyableBookingRefProps> = ({ text }) => {
           aria-hidden="true"
         />
       )}
-    </button>
+    </Button>
   );
 };
 

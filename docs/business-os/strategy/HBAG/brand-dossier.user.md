@@ -258,7 +258,7 @@ All prerequisites completed 2026-02-23:
 
 **Implementation:** Keep `Car` + `ina` merge as DOM text motion; render the dissolving `y` as a Canvas 2D particle overlay using brand tokens `--color-primary` and `--color-accent`, with reduced-motion fallback to immediate final state.
 
-**Example:** `docs/plans/hbag-brandmark-particle-animation/design-spec.md`
+**Example:** `docs/plans/_archive/hbag-brandmark-particle-animation/design-spec.md`
 
 ### Product-in-context Hero Framing
 

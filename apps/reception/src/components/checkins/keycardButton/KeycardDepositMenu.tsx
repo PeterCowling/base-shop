@@ -2,6 +2,8 @@
 
 import React, { memo, useCallback } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { type DocumentType, KeycardPayType } from "../../../types/keycards";
 
 import DocumentTypeSelector from "./DocumentTypeSelector";
@@ -92,7 +94,7 @@ function KeycardDepositMenu({
         <span className="text-lg font-bold">€{depositPreview}</span>
       </div>
 
-      <button
+      <Button
         onClick={handleConfirm}
         disabled={buttonDisabled}
         className={`w-full mt-4 py-2 rounded text-white ${
@@ -102,7 +104,7 @@ function KeycardDepositMenu({
         }`}
       >
         Confirm
-      </button>
+      </Button>
     </div>
   );
 }

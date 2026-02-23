@@ -1,4 +1,3 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy admin issue flow pending i18n overhaul */
 import { NextResponse } from "next/server";
 
 import { hasAdminSession } from "../../../../../../lib/accessAdmin";

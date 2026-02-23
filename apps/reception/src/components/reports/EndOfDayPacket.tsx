@@ -11,6 +11,8 @@ import {
   startAt as fbStartAt,
 } from "firebase/database";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { SafeDataProvider } from "../../context/SafeDataContext";
 import { TillDataProvider } from "../../context/TillDataContext";
@@ -345,29 +347,29 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
           {todaysIrregularities.length === 0 ? (
             <p className="italic text-sm text-gray-600 dark:text-darkAccentGreen">No irregularities.</p>
           ) : (
-            <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
-              <thead>
-                <tr className="bg-gray-100 dark:bg-darkSurface">
-                  <th className="p-2 text-start border-b">Time</th>
-                  <th className="p-2 text-start border-b">Action</th>
-                  <th className="p-2 text-start border-b">Missing</th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
+              <TableHeader>
+                <TableRow className="bg-gray-100 dark:bg-darkSurface">
+                  <TableHead className="p-2 text-start border-b">Time</TableHead>
+                  <TableHead className="p-2 text-start border-b">Action</TableHead>
+                  <TableHead className="p-2 text-start border-b">Missing</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {todaysIrregularities.map((irr) => (
-                  <tr
+                  <TableRow
                     key={irr.timestamp}
                     className="odd:bg-gray-50 dark:odd:bg-darkSurface"
                   >
-                    <td className="p-2">
+                    <TableCell className="p-2">
                       {formatEnGbDateTimeFromIso(irr.timestamp)}
-                    </td>
-                    <td className="p-2 capitalize">{irr.action}</td>
-                    <td className="p-2">{irr.missingCount}</td>
-                  </tr>
+                    </TableCell>
+                    <TableCell className="p-2 capitalize">{irr.action}</TableCell>
+                    <TableCell className="p-2">{irr.missingCount}</TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           )}
         </section>
 
@@ -489,46 +491,46 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
 
         <section>
           <h3 className="text-xl font-semibold mb-2">Keycard Movements</h3>
-          <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
-            <tbody>
-              <tr className="odd:bg-gray-50 dark:odd:bg-darkSurface">
-                <td className="p-2">Safe Inflows</td>
-                <td className="p-2">{safeKeycardInflowsTotal}</td>
-              </tr>
-              <tr className="odd:bg-gray-50 dark:odd:bg-darkSurface">
-                <td className="p-2">Transfers to Safe</td>
-                <td className="p-2">{keycardTransfersToSafe.total}</td>
-              </tr>
-              <tr className="odd:bg-gray-50 dark:odd:bg-darkSurface">
-                <td className="p-2">Safe Outflows</td>
-                <td className="p-2">{safeKeycardOutflowsTotal}</td>
-              </tr>
-              <tr className="odd:bg-gray-50 dark:odd:bg-darkSurface">
-                <td className="p-2">Transfers from Safe</td>
-                <td className="p-2">{keycardTransfersFromSafe.total}</td>
-              </tr>
-              <tr className="odd:bg-gray-50 dark:odd:bg-darkSurface">
-                <td className="p-2">Reconcile Adjustment</td>
-                <td className="p-2">{keycardReconcileAdjustment}</td>
-              </tr>
-              <tr className="odd:bg-gray-50 dark:odd:bg-darkSurface">
-                <td className="p-2">Expected</td>
-                <td className="p-2">{expectedKeycards}</td>
-              </tr>
-              <tr className="odd:bg-gray-50 dark:odd:bg-darkSurface">
-                <td className="p-2">Closing</td>
-                <td className="p-2">{closingKeycards}</td>
-              </tr>
-              <tr className="odd:bg-gray-50 dark:odd:bg-darkSurface">
-                <td className="p-2">Variance</td>
-                <td
+          <Table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
+            <TableBody>
+              <TableRow className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+                <TableCell className="p-2">Safe Inflows</TableCell>
+                <TableCell className="p-2">{safeKeycardInflowsTotal}</TableCell>
+              </TableRow>
+              <TableRow className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+                <TableCell className="p-2">Transfers to Safe</TableCell>
+                <TableCell className="p-2">{keycardTransfersToSafe.total}</TableCell>
+              </TableRow>
+              <TableRow className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+                <TableCell className="p-2">Safe Outflows</TableCell>
+                <TableCell className="p-2">{safeKeycardOutflowsTotal}</TableCell>
+              </TableRow>
+              <TableRow className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+                <TableCell className="p-2">Transfers from Safe</TableCell>
+                <TableCell className="p-2">{keycardTransfersFromSafe.total}</TableCell>
+              </TableRow>
+              <TableRow className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+                <TableCell className="p-2">Reconcile Adjustment</TableCell>
+                <TableCell className="p-2">{keycardReconcileAdjustment}</TableCell>
+              </TableRow>
+              <TableRow className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+                <TableCell className="p-2">Expected</TableCell>
+                <TableCell className="p-2">{expectedKeycards}</TableCell>
+              </TableRow>
+              <TableRow className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+                <TableCell className="p-2">Closing</TableCell>
+                <TableCell className="p-2">{closingKeycards}</TableCell>
+              </TableRow>
+              <TableRow className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+                <TableCell className="p-2">Variance</TableCell>
+                <TableCell
                   className={`p-2 ${
                     keycardVarianceMismatch ? "text-error-main font-semibold" : ""
                   }`}
-                >{`${keycardVariance >= 0 ? "+" : ""}${keycardVariance}`}</td>
-              </tr>
-            </tbody>
-          </table>
+                >{`${keycardVariance >= 0 ? "+" : ""}${keycardVariance}`}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </section>
 
         <section>
@@ -538,31 +540,31 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
               No credit slips recorded.
             </p>
           ) : (
-            <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
-              <thead>
-                <tr className="bg-gray-100 dark:bg-darkSurface">
-                  <th className="p-2 text-start border-b">Time</th>
-                  <th className="p-2 text-start border-b">Slip #</th>
-                  <th className="p-2 text-start border-b">User</th>
-                  <th className="p-2 text-start border-b">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
+              <TableHeader>
+                <TableRow className="bg-gray-100 dark:bg-darkSurface">
+                  <TableHead className="p-2 text-start border-b">Time</TableHead>
+                  <TableHead className="p-2 text-start border-b">Slip #</TableHead>
+                  <TableHead className="p-2 text-start border-b">User</TableHead>
+                  <TableHead className="p-2 text-start border-b">Amount</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {todaysCreditSlips.map((slip) => (
-                  <tr
+                  <TableRow
                     key={slip.slipNumber ?? slip.timestamp}
                     className="odd:bg-gray-50 dark:odd:bg-darkSurface"
                   >
-                    <td className="p-2">
+                    <TableCell className="p-2">
                       {formatEnGbDateTimeFromIso(slip.timestamp)}
-                    </td>
-                    <td className="p-2">{slip.slipNumber}</td>
-                    <td className="p-2">{slip.user}</td>
-                    <td className="p-2">{formatEuro(slip.amount)}</td>
-                  </tr>
+                    </TableCell>
+                    <TableCell className="p-2">{slip.slipNumber}</TableCell>
+                    <TableCell className="p-2">{slip.user}</TableCell>
+                    <TableCell className="p-2">{formatEuro(slip.amount)}</TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           )}
         </section>
 
@@ -585,26 +587,26 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
                   No keycard discrepancies.
                 </p>
               ) : (
-                <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
-                  <thead>
-                    <tr className="bg-gray-100 dark:bg-darkSurface">
-                      <th className="p-2 text-start border-b">Time</th>
-                      <th className="p-2 text-start border-b">User</th>
-                      <th className="p-2 text-start border-b">Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <Table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
+                  <TableHeader>
+                    <TableRow className="bg-gray-100 dark:bg-darkSurface">
+                      <TableHead className="p-2 text-start border-b">Time</TableHead>
+                      <TableHead className="p-2 text-start border-b">User</TableHead>
+                      <TableHead className="p-2 text-start border-b">Amount</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {todaysKeycardDiscrepancies.map((d, idx) => (
-                      <tr key={idx} className="odd:bg-gray-50 dark:odd:bg-darkSurface">
-                        <td className="p-2">
+                      <TableRow key={idx} className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+                        <TableCell className="p-2">
                           {formatEnGbDateTimeFromIso(d.timestamp)}
-                        </td>
-                        <td className="p-2">{d.user}</td>
-                        <td className="p-2">{d.amount}</td>
-                      </tr>
+                        </TableCell>
+                        <TableCell className="p-2">{d.user}</TableCell>
+                        <TableCell className="p-2">{d.amount}</TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               )}
             </div>
 
@@ -615,18 +617,18 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
                   No cash discrepancies.
                 </p>
               ) : (
-                <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
-                  <thead>
-                    <tr className="bg-gray-100 dark:bg-darkSurface">
-                      <th className="p-2 text-start border-b">User</th>
-                      <th className="p-2 text-start border-b">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <Table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
+                  <TableHeader>
+                    <TableRow className="bg-gray-100 dark:bg-darkSurface">
+                      <TableHead className="p-2 text-start border-b">User</TableHead>
+                      <TableHead className="p-2 text-start border-b">Total</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {Object.entries(discrepancySummary).map(([u, amt]) => (
-                      <tr key={u} className="odd:bg-gray-50 dark:odd:bg-darkSurface">
-                        <td className="p-2">{u}</td>
-                        <td
+                      <TableRow key={u} className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+                        <TableCell className="p-2">{u}</TableCell>
+                        <TableCell
                           className={`p-2 ${
                             Math.abs(amt) >= DISCREPANCY_LIMIT
                               ? "text-error-main font-semibold"
@@ -634,11 +636,11 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
                           }`}
                         >
                           {formatEuro(amt)}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               )}
             </div>
           </div>
@@ -665,35 +667,35 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
             </p>
           )}
           {!shiftsLoading && !shiftsError && pendingVarianceSignoffs.length > 0 && (
-            <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
-              <thead>
-                <tr className="bg-gray-100 dark:bg-darkSurface">
-                  <th className="p-2 text-start border-b">Shift ID</th>
-                  <th className="p-2 text-start border-b">Closed</th>
-                  <th className="p-2 text-start border-b">Closed By</th>
-                  <th className="p-2 text-start border-b">Variance</th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
+              <TableHeader>
+                <TableRow className="bg-gray-100 dark:bg-darkSurface">
+                  <TableHead className="p-2 text-start border-b">Shift ID</TableHead>
+                  <TableHead className="p-2 text-start border-b">Closed</TableHead>
+                  <TableHead className="p-2 text-start border-b">Closed By</TableHead>
+                  <TableHead className="p-2 text-start border-b">Variance</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {pendingVarianceSignoffs.map((shift) => (
-                  <tr
+                  <TableRow
                     key={shift.shiftId}
                     className="odd:bg-gray-50 dark:odd:bg-darkSurface"
                   >
-                    <td className="p-2">{shift.shiftId}</td>
-                    <td className="p-2">
+                    <TableCell className="p-2">{shift.shiftId}</TableCell>
+                    <TableCell className="p-2">
                       {shift.closedAt
                         ? formatEnGbDateTimeFromIso(shift.closedAt)
                         : "-"}
-                    </td>
-                    <td className="p-2">{shift.closedBy ?? "-"}</td>
-                    <td className="p-2 text-error-main font-semibold">
+                    </TableCell>
+                    <TableCell className="p-2">{shift.closedBy ?? "-"}</TableCell>
+                    <TableCell className="p-2 text-error-main font-semibold">
                       {shift.closeDifference ?? 0}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           )}
         </section>
 
@@ -715,13 +717,13 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
           safeVarianceMismatch={safeVarianceMismatch}
         />
 
-        <button
+        <Button
           type="button"
           onClick={handlePrint}
           className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
         >
           Print Packet
-        </button>
+        </Button>
       </div>
     );
   }

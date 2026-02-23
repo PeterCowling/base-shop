@@ -57,7 +57,7 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 | CDI-4 | Experiment backlog design and prioritisation | CDI | S5A, S10 | Weekly | All |
 | OFF-1 | Offer and value proposition iteration | OFF | MARKET-06, recurring | Weekly (pre-PMF/PMF) / Monthly (scaling) | All |
 | OFF-2 | Pricing and revenue management review | OFF | MARKET-06, S10 | Weekly (hospitality always; product if volatile) | All |
-| OFF-3 | Product / listing content and merchandising refresh | OFF | S6, recurring | Weekly (top assets) / Monthly full audit | All |
+| OFF-3 | Product / listing content and merchandising refresh | OFF | WEBSITE-01 (bootstrap), WEBSITE-02 (recurring) | One-time at first build, then Weekly (top assets) / Monthly full audit | All |
 | OFF-4 | Channel policy and conflict management | OFF | SELL-01, recurring | Monthly review; weekly exceptions | `wholesale_heavy`, `OTA_mix_high` (conditional others) |
 | GTM-1 | Weekly demand plan and campaign sprint | GTM | DO, S10 | Weekly | All |
 | GTM-2 | Distribution channel ops (retail/wholesale/OTAs) | GTM | SELL-01, recurring | Weekly / Daily (high season or volume) | `wholesale_heavy`, `OTA_mix_high`, hospitality |
@@ -73,7 +73,7 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 | CX-4 | SOP and training updates | CX | DO, recurring | Weekly as needed; Monthly SOP audit | All (scales with team) |
 | FIN-1 | Weekly cash and unit economics review | FIN | S3, S10 | Weekly | All |
 | FIN-2 | Billing, payouts and reconciliation | FIN | Post-DO launch | Weekly / Daily (high volume) | All (activates after first transactions) |
-| FIN-3 | Risk register, compliance, and incident readiness | FIN | S1, recurring | Weekly light / Monthly deep | All (see exception-runbooks-v1.md) |
+| FIN-3 | Risk register, compliance, and incident readiness | FIN | ASSESSMENT, recurring | Weekly light / Monthly deep | All (see exception-runbooks-v1.md) |
 | FIN-4 | Vendor and procurement management | FIN | Post-S5B, recurring | Monthly; Weekly exceptions | `inventory_present`, `hospitality`, scaling stage |
 | DATA-1 | KPI refresh and data integrity checks | DATA | MEASURE-01/MEASURE-02, S3, S10 | Weekly + Daily key metrics | All |
 | DATA-2 | Leading indicator monitoring and alerting | DATA | S10, recurring | Daily monitoring / Weekly summary | All (see exception-runbooks-v1.md) |
@@ -84,12 +84,12 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 
 ## Stage Coverage Map
 
-Every stage in `loop-spec.yaml` has at least one linked workstream process responsibility:
+Every core startup-loop stage anchor has at least one linked workstream process responsibility:
 
 | Stage | Name | Primary Process Activities |
 |---|---|---|
 | ASSESSMENT-09 | Intake | FIN-3 (initial risk scan), DATA-1 (KPI setup start) |
-| S1 | Readiness | FIN-3 (compliance readiness), CDI-2 (customer evidence review) |
+| ASSESSMENT | Assessment container and gate readiness | FIN-3 (compliance readiness), CDI-2 (customer evidence review) |
 | MEASURE-01 | Agent-Setup | DATA-1 (Agent-Capability) |
 | MEASURE-02 | Results | DATA-1 (baseline KPI data collection) |
 | MARKET-01 | Market intelligence | CDI-3 (market/competitor scan), CDI-2 (customer interviews) |
@@ -99,7 +99,8 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | S4 | Baseline merge | DATA-1 (artifact integrity audit) |
 | S5A | Prioritize | CDI-4 (experiment backlog prioritisation) |
 | S5B | BOS sync | DATA-4 (decision log state sync) |
-| S6 | Site-upgrade synthesis | OFF-3 (content/listing refresh) |
+| WEBSITE-01 | L1 first build framework | OFF-3 (first-build framework and content/listing baseline contract) |
+| WEBSITE-02 | Site-upgrade synthesis | OFF-3 (recurring content/listing refresh and merchandising iteration) |
 | DO | Do | CDI-2 (field validation), CDI-4 (hypothesis design), GTM-1 (demand plan inputs), OPS-1 (capacity planning inputs), OPS-2 (delivery execution preparation), CX-4 (SOP updates), OPS-4 (build QA) |
 | S9B | QA gates | OPS-4 (quality assurance), DATA-1 (tracking verification) |
 | S10 | Weekly readout | CDI-1 (signal intake), CDI-4 (experiments), OFF-2 (pricing), GTM-1 (demand), FIN-1 (cash), DATA-2 (alerting), DATA-3 (CAPAs) — DATA-4 (weekly review) is the primary S10 process anchor |
@@ -243,18 +244,18 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Workflow phases** | Build/Prepare |
 | **Primary phase** | Build/Prepare |
 | **Activation** | always |
-| **Purpose** | Keep "what customers/guests see" accurate and conversion-optimised (PDPs, listings, photos, policies). |
-| **Stage anchor** | S6 (site-upgrade synthesis); recurring thereafter |
+| **Purpose** | Keep "what customers/guests see" accurate and conversion-optimised (PDPs, listings, photos, policies), starting with WEBSITE-01 first-build framework assembly and continuing through WEBSITE-02 recurring upgrades. |
+| **Stage anchor** | WEBSITE-01 (one-time first-build framework), WEBSITE-02 (site-upgrade synthesis); recurring thereafter |
 | **Cadence** | Weekly (top assets); monthly full audit |
 | **Owner role** | Content/Brand Lead (product) or Distribution/Marketing Lead (hospitality) |
 | **Inputs** | Insights (CDI-1/CDI-2); review themes (CX-2); pricing changes (OFF-2) |
-| **Outputs / artifacts** | Updated PDP/listing; change log; QA checklist result |
-| **Artifact path** | Operator-maintained; canonical site-upgrade artifacts under `docs/business-os/strategy/<BIZ>/site-upgrades/` |
+| **Outputs / artifacts** | WEBSITE-01 framework packet (first build) plus DO handover fact-find trigger packet, or updated PDP/listing change log + QA checklist result (recurring) |
+| **Artifact path** | WEBSITE-01: `docs/business-os/strategy/<BIZ>/site-v1-builder-prompt.user.md`; WEBSITE-02+: operator-maintained updates and site-upgrade artifacts under `docs/business-os/site-upgrades/<BIZ>/` |
 | **Entry criteria** | Identified gap or conversion hypothesis |
-| **Exit criteria** | QA passed (DATA-1 tracking verification); impact tracked as experiment when feasible (CDI-4) |
+| **Exit criteria** | QA passed (DATA-1 tracking verification); for WEBSITE-01 path, handover sequence `/lp-do-fact-find --website-first-build-backlog` -> `/lp-do-plan` is completed before `/lp-do-build`; impact tracked as experiment when feasible (CDI-4) |
 | **Exception linkage** | Quality Incident exception can trigger immediate content correction (OPS-4 + CX-4 co-trigger) |
 | **Profile / branch** | All profiles; hospitality must include OTA listing accuracy and cancellation policy updates |
-| **Collision note** | Distinct from one-time S6 site-upgrade synthesis. OFF-3 is the recurring content maintenance cycle. |
+| **Collision note** | OFF-3 owns both WEBSITE-01 first-build framework baseline and WEBSITE-02 recurring maintenance. It does not change runtime stage authority in `loop-spec.yaml`. |
 
 ### OFF-4 — Channel Policy and Conflict Management
 
@@ -587,7 +588,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Primary phase** | Sense |
 | **Activation** | always |
 | **Purpose** | Maintain a living risk register and baseline compliance controls (data protection, safety plans, incident response). |
-| **Stage anchor** | S1 (initial compliance readiness check); recurring throughout |
+| **Stage anchor** | ASSESSMENT (initial compliance readiness check); recurring throughout |
 | **Cadence** | Weekly light review; monthly deep review |
 | **Owner role** | Founder/GM or Risk/Compliance Owner; Data Protection liaison; Safety Responsible Person (hospitality) |
 | **Inputs** | Risk register; incident logs (DATA-3); policy requirements; vendor contracts; staff training records |

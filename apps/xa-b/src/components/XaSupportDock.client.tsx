@@ -1,17 +1,12 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy support dock pending design/i18n overhaul */
 
 import * as React from "react";
-import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 import { Cross1Icon } from "@radix-ui/react-icons";
 
-import { siteConfig } from "../lib/siteConfig";
-import { toWhatsappTextHref } from "../lib/support";
-
 import { IconButton, OverlayScrim } from "@acme/design-system/atoms";
-import { cn } from "@acme/design-system/utils/style";
 import {
   Drawer,
   DrawerContent,
@@ -19,9 +14,12 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@acme/design-system/primitives/drawer";
-
+import { cn } from "@acme/design-system/utils/style";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
+
 import { useCart } from "../contexts/XaCartContext";
+import { siteConfig } from "../lib/siteConfig";
+import { toWhatsappTextHref } from "../lib/support";
 
 const XaFaqOverlayContent = dynamic(
   () => import("./XaFaqOverlayContent.client").then((m) => m.XaFaqOverlayContent),
@@ -275,17 +273,19 @@ export function XaSupportDock() {
       </div>
 
       {/* Primary toggle button — always visible */}
-      <button
+      <IconButton
         type="button"
         aria-label={dockOpen ? "Close support menu" : "Get support"} // i18n-exempt -- XA-0014 [ttl=2026-12-31] toggle label
         aria-expanded={dockOpen}
         onClick={() => setDockOpen(!dockOpen)}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-foreground text-primary-fg shadow-elevation-3"
+        variant="primary"
+        size="md"
+        className="h-12 w-12 bg-foreground text-primary-fg shadow-elevation-3 hover:bg-foreground/90"
       >
         <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
           <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v7a2 2 0 01-2 2H6l-4 4V5z"/>
         </svg>
-      </button>
+      </IconButton>
     </div>
   );
 }

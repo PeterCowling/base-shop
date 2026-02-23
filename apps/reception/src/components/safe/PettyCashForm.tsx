@@ -1,6 +1,8 @@
 // src/components/forms/PettyCashForm.tsx
 import { memo, useCallback, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { showToast } from "../../utils/toastUtils";
 import PasswordReauthInline from "../common/PasswordReauthInline";
 
@@ -48,13 +50,13 @@ export const PettyCashForm = memo(function PettyCashForm({
         {/* Modal */}
         <div className="relative w-full max-w-sm rounded-lg bg-white p-8 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
           {/* Close button */}
-          <button
+          <Button
             onClick={handleCancel}
             className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
             aria-label="Close"
           >
             &times;
-          </button>
+          </Button>
 
           {/* Title */}
           <h2 className="mb-6 text-center text-xl font-semibold">

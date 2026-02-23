@@ -4,6 +4,8 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import { TillDataProvider, useTillData } from "../../context/TillDataContext";
 import usePmsPostings from "../../hooks/data/till/usePmsPostings";
 import useTerminalBatches from "../../hooks/data/till/useTerminalBatches";
@@ -88,13 +90,13 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
           disabled={submitting}
         />
       </div>
-      <button
+      <Button
         onClick={handleSubmit}
         disabled={submitting}
         className="rounded bg-primary-main px-3 py-1 text-sm text-white hover:opacity-90 disabled:opacity-50"
       >
         {submitting ? "Saving…" : "Add PMS Posting"}
-      </button>
+      </Button>
     </div>
   );
 });
@@ -149,13 +151,13 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
           disabled={submitting}
         />
       </div>
-      <button
+      <Button
         onClick={handleSubmit}
         disabled={submitting}
         className="rounded bg-primary-main px-3 py-1 text-sm text-white hover:opacity-90 disabled:opacity-50"
       >
         {submitting ? "Saving…" : "Add Terminal Batch"}
-      </button>
+      </Button>
     </div>
   );
 });
@@ -275,85 +277,85 @@ const ReconciliationWorkbenchContent = memo(
           </p>
         )}
 
-        <table className="w-full border-collapse text-sm dark:text-darkAccentGreen">
-          <thead className="bg-gray-100 dark:bg-darkSurface">
-            <tr className="dark:border-darkSurface">
-              <th className="p-2 text-start border dark:border-darkSurface">Source</th>
-              <th className="p-2 text-end border dark:border-darkSurface">Cash</th>
-              <th className="p-2 text-end border dark:border-darkSurface">CC</th>
-              <th className="p-2 text-end border dark:border-darkSurface">Cash Δ</th>
-              <th className="p-2 text-end border dark:border-darkSurface">CC Δ</th>
-            </tr>
-          </thead>
+        <Table className="w-full border-collapse text-sm dark:text-darkAccentGreen">
+          <TableHeader className="bg-gray-100 dark:bg-darkSurface">
+            <TableRow className="dark:border-darkSurface">
+              <TableHead className="p-2 text-start border dark:border-darkSurface">Source</TableHead>
+              <TableHead className="p-2 text-end border dark:border-darkSurface">Cash</TableHead>
+              <TableHead className="p-2 text-end border dark:border-darkSurface">CC</TableHead>
+              <TableHead className="p-2 text-end border dark:border-darkSurface">Cash Δ</TableHead>
+              <TableHead className="p-2 text-end border dark:border-darkSurface">CC Δ</TableHead>
+            </TableRow>
+          </TableHeader>
 
-          <tbody>
+          <TableBody>
             {/* POS Totals */}
-            <tr className="border-b dark:border-darkSurface dark:bg-darkSurface">
-              <td className="p-2">POS Totals</td>
-              <td className="p-2 text-end">{format(safePosCashTotal)}</td>
-              <td className="p-2 text-end">{format(safePosCcTotal)}</td>
-              <td className="p-2" />
-              <td className="p-2" />
-            </tr>
+            <TableRow className="border-b dark:border-darkSurface dark:bg-darkSurface">
+              <TableCell className="p-2">POS Totals</TableCell>
+              <TableCell className="p-2 text-end">{format(safePosCashTotal)}</TableCell>
+              <TableCell className="p-2 text-end">{format(safePosCcTotal)}</TableCell>
+              <TableCell className="p-2" />
+              <TableCell className="p-2" />
+            </TableRow>
 
             {/* Cash Drawer */}
-            <tr className="border-b dark:border-darkSurface dark:bg-darkSurface">
-              <td className="p-2">Cash Drawer</td>
-              <td
+            <TableRow className="border-b dark:border-darkSurface dark:bg-darkSurface">
+              <TableCell className="p-2">Cash Drawer</TableCell>
+              <TableCell
                 className={`p-2 text-right ${diffClass(
                   safeDrawerTotal - safePosCashTotal
                 )}`}
               >
                 {format(safeDrawerTotal)}
-              </td>
-              <td className="p-2 text-end text-gray-600 dark:text-darkAccentGreen">-</td>
-              <td
+              </TableCell>
+              <TableCell className="p-2 text-end text-gray-600 dark:text-darkAccentGreen">-</TableCell>
+              <TableCell
                 className={`p-2 text-right ${diffClass(
                   safeDrawerTotal - safePosCashTotal
                 )}`}
               >
                 {format(safeDrawerTotal - safePosCashTotal)}
-              </td>
-              <td className="p-2" />
-            </tr>
+              </TableCell>
+              <TableCell className="p-2" />
+            </TableRow>
 
             {/* PMS Postings */}
-            <tr className="border-b dark:border-darkSurface dark:bg-darkSurface">
-              <td className="p-2">PMS Postings</td>
-              <td className="p-2 text-end">{format(safePmsCashTotal)}</td>
-              <td className="p-2 text-end">{format(safePmsCcTotal)}</td>
-              <td
+            <TableRow className="border-b dark:border-darkSurface dark:bg-darkSurface">
+              <TableCell className="p-2">PMS Postings</TableCell>
+              <TableCell className="p-2 text-end">{format(safePmsCashTotal)}</TableCell>
+              <TableCell className="p-2 text-end">{format(safePmsCcTotal)}</TableCell>
+              <TableCell
                 className={`p-2 text-right ${diffClass(
                   safePmsCashTotal - safePosCashTotal
                 )}`}
               >
                 {format(safePmsCashTotal - safePosCashTotal)}
-              </td>
-              <td
+              </TableCell>
+              <TableCell
                 className={`p-2 text-right ${diffClass(
                   safePmsCcTotal - safePosCcTotal
                 )}`}
               >
                 {format(safePmsCcTotal - safePosCcTotal)}
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
 
             {/* Terminal Batch */}
-            <tr className="dark:bg-darkSurface dark:border-darkSurface">
-              <td className="p-2">Terminal Batch</td>
-              <td className="p-2 text-end text-gray-600 dark:text-darkAccentGreen">-</td>
-              <td className="p-2 text-end">{format(safeTerminalTotal)}</td>
-              <td className="p-2" />
-              <td
+            <TableRow className="dark:bg-darkSurface dark:border-darkSurface">
+              <TableCell className="p-2">Terminal Batch</TableCell>
+              <TableCell className="p-2 text-end text-gray-600 dark:text-darkAccentGreen">-</TableCell>
+              <TableCell className="p-2 text-end">{format(safeTerminalTotal)}</TableCell>
+              <TableCell className="p-2" />
+              <TableCell
                 className={`p-2 text-right ${diffClass(
                   safeTerminalTotal - safePosCcTotal
                 )}`}
               >
                 {format(safeTerminalTotal - safePosCcTotal)}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
 
         {/* Entry forms */}
         <div className="space-y-4 pt-2">

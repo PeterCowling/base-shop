@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 export interface Column<T> {
   header: string;
   render: (row: T) => React.ReactNode;
@@ -22,17 +24,17 @@ export function SafeTable<T>({
   getRowKey,
 }: SafeTableProps<T>): JSX.Element {
   return (
-    <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
-      <thead>
-        <tr className="bg-gray-100 dark:bg-darkSurface">
+    <Table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
+      <TableHeader>
+        <TableRow className="bg-gray-100 dark:bg-darkSurface">
           {columns.map((col) => (
-            <th key={col.header} className="p-2 text-start border-b">
+            <TableHead key={col.header} className="p-2 text-start border-b">
               {col.header}
-            </th>
+            </TableHead>
           ))}
-        </tr>
-      </thead>
-      <tbody>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         {rows.map((row, idx) => {
           const candidate = row as Record<string, unknown>;
           const rowKey =
@@ -41,17 +43,17 @@ export function SafeTable<T>({
             (candidate.timestamp as string | number | undefined) ??
             idx;
           return (
-            <tr key={rowKey} className="odd:bg-gray-50 dark:odd:bg-darkSurface">
+            <TableRow key={rowKey} className="odd:bg-gray-50 dark:odd:bg-darkSurface">
               {columns.map((col) => (
-                <td key={`${rowKey}-${col.header}`} className="p-2">
+                <TableCell key={`${rowKey}-${col.header}`} className="p-2">
                   {col.render(row)}
-                </td>
+                </TableCell>
               ))}
-            </tr>
+            </TableRow>
           );
         })}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 }
 

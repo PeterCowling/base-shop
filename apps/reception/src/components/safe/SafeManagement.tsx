@@ -2,6 +2,8 @@
 
 import { Fragment, memo, useEffect, useState } from "react";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import { useAuth } from "../../context/AuthContext";
 import { useSafeData } from "../../context/SafeDataContext";
 import { useTillShiftActions } from "../../hooks/client/till/useTillShiftActions";
@@ -354,7 +356,7 @@ function SafeManagement(): JSX.Element {
   };
 
   return (
-    <div className="min-h-[80vh] p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         SAFE MANAGEMENT
       </h1>
@@ -368,63 +370,63 @@ function SafeManagement(): JSX.Element {
         <div className="space-y-4">
           <div className="flex gap-2 flex-wrap">
             {canOpenSafe && (
-              <button
+              <Button
                 onClick={() => setShowOpen(true)}
                 className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
               >
                 Open
-              </button>
+              </Button>
             )}
-            <button
+            <Button
               onClick={() => setShowDeposit(true)}
               className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
             >
               Deposit
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setShowWithdrawal(true)}
               className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
             >
               Withdraw
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setShowExchange(true)}
               className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
             >
               Exchange
-            </button>
+            </Button>
           </div>
           <div className="flex gap-2 flex-wrap">
-            <button
+            <Button
               onClick={() => setShowBankDeposit(true)}
               className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
             >
               Bank Deposit
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setShowPettyCash(true)}
               className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
             >
               Petty Cash
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setShowReset(true)}
               className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
             >
               Reset Safe
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setShowReturn(true)}
               className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
             >
               Return Keycards
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setShowReconcile(true)}
               className="px-4 py-2 bg-warning-main text-white rounded hover:bg-warning-dark"
             >
               Reconcile
-            </button>
+            </Button>
           </div>
         </div>
         {showOpen && (
@@ -493,35 +495,35 @@ function SafeManagement(): JSX.Element {
               No transactions recorded.
             </div>
           ) : (
-            <table
+            <Table
               className="w-full border-collapse"
               aria-label="safe transactions"
             >
-              <thead className="bg-gray-100 dark:bg-darkSurface">
-                <tr>
-                  <th className="text-start p-2 border-b">Timestamp</th>
-                  <th className="text-start p-2 border-b">Type</th>
-                  <th className="text-start p-2 border-b">Amount/Count</th>
-                  <th className="text-start p-2 border-b">Keycards</th>
-                  <th className="text-start p-2 border-b">User</th>
-                  <th className="text-start p-2 border-b">Details</th>
-                </tr>
-              </thead>
-              <tbody>
+              <TableHeader className="bg-gray-100 dark:bg-darkSurface">
+                <TableRow>
+                  <TableHead className="text-start p-2 border-b">Timestamp</TableHead>
+                  <TableHead className="text-start p-2 border-b">Type</TableHead>
+                  <TableHead className="text-start p-2 border-b">Amount/Count</TableHead>
+                  <TableHead className="text-start p-2 border-b">Keycards</TableHead>
+                  <TableHead className="text-start p-2 border-b">User</TableHead>
+                  <TableHead className="text-start p-2 border-b">Details</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {safeCounts.map((s, idx) => (
                   <Fragment key={s.id ?? `${s.timestamp}-${idx}`}>
-                    <tr
+                    <TableRow
                       className={
                         idx % 2 === 0
                           ? "bg-white dark:bg-darkSurface"
                           : "bg-gray-50 dark:bg-darkSurface"
                       }
                     >
-                      <td className="p-2">
+                      <TableCell className="p-2">
                         {formatEnGbDateTimeFromIso(s.timestamp)}
-                      </td>
-                      <td className="p-2">{s.type}</td>
-                      <td className="p-2">
+                      </TableCell>
+                      <TableCell className="p-2">{s.type}</TableCell>
+                      <TableCell className="p-2">
                         {s.amount !== undefined
                           ? `€${s.amount.toFixed(2)}`
                           : s.count !== undefined
@@ -531,8 +533,8 @@ function SafeManagement(): JSX.Element {
                                 : ""
                             }`
                           : "-"}
-                      </td>
-                      <td className="p-2">
+                      </TableCell>
+                      <TableCell className="p-2">
                         {s.keycardCount !== undefined
                           ? `${s.keycardCount}${
                               s.keycardDifference !== undefined
@@ -540,40 +542,40 @@ function SafeManagement(): JSX.Element {
                                 : ""
                             }`
                           : "-"}
-                      </td>
-                      <td className="p-2">{s.user}</td>
-                      <td className="p-2">
+                      </TableCell>
+                      <TableCell className="p-2">{s.user}</TableCell>
+                      <TableCell className="p-2">
                         {s.denomBreakdown ? (
-                          <button
+                          <Button
                             onClick={() => toggleDetails(idx)}
                             className="text-primary-main underline"
                           >
                             {expandedRows.includes(idx)
                               ? "Hide Details"
                               : "View Details"}
-                          </button>
+                          </Button>
                         ) : (
                           "-"
                         )}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                     {expandedRows.includes(idx) && s.denomBreakdown && (
-                      <tr
+                      <TableRow
                         className={
                           idx % 2 === 0
                             ? "bg-white dark:bg-darkSurface"
                             : "bg-gray-50 dark:bg-darkSurface"
                         }
                       >
-                        <td colSpan={6} className="p-2">
+                        <TableCell colSpan={6} className="p-2">
                           {renderBreakdown(s.denomBreakdown)}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     )}
                   </Fragment>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           )}
         </div>
       </div>

@@ -154,7 +154,9 @@ Stages (canonical IDs from loop-spec):
 | S4 | Baseline merge (join barrier) | `/lp-baseline-merge` | — |
 | S5A | Prioritize | `/lp-prioritize` | — |
 | S5B | BOS sync (sole mutation boundary) | `/lp-bos-sync` | — |
-| S6 | Site-upgrade synthesis | `/lp-site-upgrade` | — |
+| WEBSITE | Website (container) | — | — |
+| WEBSITE-01 | L1 first build framework | `/lp-site-upgrade` (auto-handover to DO sequence `/lp-do-fact-find --website-first-build-backlog` -> `/lp-do-plan` -> `/lp-do-build` once Active) | launch-surface=pre-website |
+| WEBSITE-02 | Site-upgrade synthesis | `/lp-site-upgrade` | launch-surface=website-live |
 | DO | Do | `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build` | — |
 | S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa` | — |
 | S10 | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) | — |

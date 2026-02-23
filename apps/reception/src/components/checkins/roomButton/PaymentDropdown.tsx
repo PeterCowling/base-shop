@@ -1,6 +1,8 @@
 // File: /src/components/checkins/roomButton/PaymentDropdown.tsx
 import { memo, type MouseEvent } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import type {
   PaymentSplit,
   PaymentType,
@@ -43,14 +45,14 @@ function PaymentDropdown({
         handleRemovePaymentRow={handleRemovePaymentRow}
       />
       {/* Confirm Payment inside the dropdown */}
-      <button
+      <Button
         onClick={handleImmediatePayment}
         disabled={isDisabled}
         className={`w-full bg-primary-dark hover:bg-primary-main text-white rounded px-3 py-1 mt-2 focus:outline-none transition-colors dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80
           ${isDisabled ? "cursor-not-allowed opacity-70" : ""}`}
       >
         Confirm Payment
-      </button>
+      </Button>
     </div>
   );
 }

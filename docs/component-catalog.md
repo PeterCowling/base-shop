@@ -1,6 +1,6 @@
 # Component Catalog
 
-> **Last updated**: 2026-02-07
+> **Last updated**: 2026-02-23
 > **Purpose**: Searchable catalog of all components in `@acme/design-system` and `@acme/ui`
 
 This catalog helps developers discover available components before building custom UI. Components are organized by layer (primitives → atoms → molecules → organisms → templates) and category.
@@ -330,6 +330,35 @@ import { Button, Input, Card } from "@acme/design-system/primitives";
 
 ---
 
+## Guardrail Contracts (Canonical)
+
+### Primitive depth variation
+
+Core primitives (`Button`, `Input`, `Select`, `Textarea`, `Card`) support:
+- `shape`: `square` | `soft` | `pill`
+- `radius`: `none` | `xs` | `sm` | `md` | `lg` | `xl` | `2xl` | `3xl` | `4xl` | `full`
+
+Use `shape` for consistent presets across screens; use `radius` for explicit per-instance overrides.
+
+### Containment and bleed safety
+
+Overlay/menu primitives use shared containment utilities from `@acme/design-system/utils/style`:
+- Dialog content -> `overflowContainmentClass("dialogContent")` (`overflow-x-hidden`)
+- Menu surfaces (dropdown/select/popover content) -> `overflowContainmentClass("menuSurface")` (`overflow-hidden`)
+
+Do not introduce bespoke overflow classes in those primitives unless an exception is documented and scoped.
+
+### Operations minimum safety baseline
+
+For internal admin UI (`packages/ui/src/components/organisms/operations/**`):
+- `ds/no-overflow-hazards` is enforced as `error`
+- `react/forbid-dom-props` (`style`) is `error` with explicit file-level runtime exceptions only
+- `ds/no-arbitrary-tailwind` stays `warn` with constrained allowlists
+
+This baseline guards against content bleed and unsafe style drift while preserving internal-tool velocity.
+
+---
+
 ## Storybook Links
 
 All design-system components now appear in the main Storybook (as of DS-01 completion, 2026-02-07):
@@ -352,7 +381,7 @@ pnpm --filter @apps/storybook dev
 
 - [Design System README](../packages/design-system/README.md) — Package overview and exports
 - [Theme Customization Guide](./theming-customization-guide.md) — Token overrides and branding
-- [Design System Plan](./plans/design-system-plan.md) — Roadmap and adoption strategy
+- [Design System Hardening Plan](./plans/design-system-depth-and-guardrail-hardening/plan.md) — Current guardrail and migration roadmap
 - [Architecture](./architecture.md) — Package layering rules
 
 ---

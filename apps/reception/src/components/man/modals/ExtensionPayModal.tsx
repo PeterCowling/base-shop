@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { withModalBackground } from "../../../hoc/withModalBackground";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import { useBookingDatesMutator } from "../../../hooks/mutations/useChangeBookingDatesMutator";
@@ -251,20 +253,20 @@ function ExtensionPayModalBase({
       </div>
 
       <div className="flex justify-center gap-2">
-        <button
+        <Button
           onClick={handleExtend}
           className="px-4 py-2 rounded bg-primary-main text-white disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
           disabled={isSaving}
         >
           {isSaving ? "Saving..." : "Extend"}
-        </button>{" "}
-        <button
+        </Button>{" "}
+        <Button
           onClick={handleClose}
           className="px-4 py-2 rounded bg-gray-300 text-gray-800 dark:bg-darkSurface dark:text-darkAccentGreen"
           disabled={isSaving}
         >
           Close
-        </button>
+        </Button>
       </div>
     </ModalContainer>
   );

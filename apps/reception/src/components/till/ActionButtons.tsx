@@ -2,6 +2,8 @@
 
 import { type FC, useMemo, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { canAccess, Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
 import PasswordReauthModal from "../common/PasswordReauthModal";
@@ -165,13 +167,13 @@ const ActionButtons: FC<ActionButtonsProps> = ({
             value={drawerLimitInput}
             onChange={(e) => setDrawerLimitInput(e.target.value)}
           />
-          <button
+          <Button
             type="button"
             onClick={handleDrawerLimitSubmit}
             className="px-3 py-1 rounded bg-primary-main text-white hover:bg-primary-dark dark:bg-darkAccentGreen dark:text-darkBg"
           >
             Update
-          </button>
+          </Button>
           {showDrawerReauth && (
             <PasswordReauthModal
               title="Confirm drawer limit"

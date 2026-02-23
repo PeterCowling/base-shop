@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy gate signals pending design/i18n overhaul */
 
 import * as React from "react";
 

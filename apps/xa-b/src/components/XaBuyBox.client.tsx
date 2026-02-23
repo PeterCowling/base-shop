@@ -1,21 +1,21 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] XA theme palette uses legacy patterns pending design/i18n overhaul */
 
 import * as React from "react";
 import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
-import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 import { Button, Price, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
 import { PriceCluster } from "@acme/design-system/molecules";
+import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
-import { XA_PRODUCTS } from "../lib/demoData";
-import type { XaProduct } from "../lib/demoData";
 import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
+import type { XaProduct } from "../lib/demoData";
+import { XA_PRODUCTS } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
-import { XA_COLOR_SWATCHES, formatLabel } from "../lib/xaCatalog";
+import { formatLabel,XA_COLOR_SWATCHES } from "../lib/xaCatalog";
+
 import { XaFadeImage } from "./XaFadeImage";
 
 function getDeliveryWindow(daysMin = 5, daysMax = 12): string {
@@ -126,26 +126,30 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
           Quantity
         </span>
         <div className="flex items-center gap-0 border border-border-2">
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             aria-label="Decrease quantity"
             disabled={qty <= 1}
             onClick={() => setQty((q) => Math.max(1, q - 1))}
-            className="flex h-8 w-8 items-center justify-center text-sm hover:bg-muted disabled:opacity-40"
+            className="h-8 w-8 rounded-none px-0 py-0 text-sm hover:bg-muted disabled:opacity-40"
           >
             −
-          </button>
+          </Button>
           <span className="flex h-8 w-8 items-center justify-center text-sm tabular-nums">
             {qty}
           </span>
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             aria-label="Increase quantity"
             onClick={() => setQty((q) => q + 1)}
-            className="flex h-8 w-8 items-center justify-center text-sm hover:bg-muted"
+            className="h-8 w-8 rounded-none px-0 py-0 text-sm hover:bg-muted"
           >
             +
-          </button>
+          </Button>
         </div>
       </div>
 

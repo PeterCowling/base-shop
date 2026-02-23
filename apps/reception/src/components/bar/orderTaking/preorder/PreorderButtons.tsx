@@ -18,6 +18,8 @@ import {
   remove,
 } from "firebase/database";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useAuth } from "../../../../context/AuthContext";
 import { useBleepersData } from "../../../../hooks/data/bar/useBleepersData";
 import { useBleeperMutations } from "../../../../hooks/mutations/useBleeperMutations";
@@ -96,23 +98,23 @@ interface ConfirmDeleteModalProps {
 const ConfirmDeleteModal: FC<ConfirmDeleteModalProps> = memo(
   ({ onConfirm, onCancel }) => (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="w-[300px] rounded-lg bg-white p-6 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
+      <div className="w-300px rounded-lg bg-white p-6 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
         <p className="mb-4 text-center text-sm font-medium text-gray-700 dark:text-darkAccentGreen">
           Are you sure you want to delete this preorder?
         </p>
         <div className="flex justify-evenly">
-          <button
+          <Button
             className="rounded bg-red-500 px-4 py-1 text-white outline-none transition-colors hover:bg-red-600 focus-visible:ring-2 focus-visible:ring-red-400 dark:bg-darkSurface dark:text-darkAccentGreen"
             onClick={onConfirm}
           >
             Yes
-          </button>
-          <button
+          </Button>
+          <Button
             className="rounded bg-gray-300 px-4 py-1 text-black outline-none transition-colors hover:bg-gray-400 focus-visible:ring-2 focus-visible:ring-gray-400 dark:bg-darkSurface dark:text-darkAccentGreen"
             onClick={onCancel}
           >
             No
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -260,22 +262,21 @@ const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
       data-removing={Boolean(data.isRemoving)}
       className={`
         relative select-none
-        transition-all duration-[800ms] ease-out
-        data-[removing=true]:scale-75
-        data-[removing=true]:opacity-0
+        transition-all duration-800 ease-out
+        ${data.isRemoving ? "scale-75 opacity-0" : ""}
       `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Main button */}
-      <button
+      <Button
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}
         className={`
-          group flex h-[80px] w-28 flex-col items-center justify-center gap-0.5
+          group flex h-80px w-28 flex-col items-center justify-center gap-0.5
           rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600
           text-center font-semibold text-white shadow-lg ring-1 ring-inset ring-black/10
-          transition-transform hover:scale-[1.02] active:scale-95
+          transition-transform hover:scale-102 active:scale-95
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300
         `}
       >
@@ -286,37 +287,34 @@ const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
         </span>
 
         {/* Badge with item count */}
-        {/* eslint-disable-next-line ds/no-raw-typography -- preorder badge custom text size [DS-05] */}
-        <span className="mt-0.5 rounded-full bg-white/20 px-2 text-[10px] font-bold backdrop-blur-sm dark:bg-darkSurface dark:text-darkAccentGreen">
+        <span className="mt-0.5 rounded-full bg-white/20 px-2 text-10px font-bold backdrop-blur-sm dark:bg-darkSurface dark:text-darkAccentGreen">
           {data.items.length} items
         </span>
-      </button>
+      </Button>
 
       {/* Delete “×” */}
-      <button
+      <Button
         type="button"
         aria-label="Delete preorder"
         onClick={openDeleteModal}
-        // eslint-disable-next-line ds/no-raw-typography -- delete button custom text size [DS-05]
         className={`
           absolute right-0 top-0 z-20 flex h-5 w-5 translate-x-1/2 -translate-y-1/2
-          items-center justify-center rounded-full bg-red-500 text-[11px] font-bold text-white
+          items-center justify-center rounded-full bg-red-500 text-11px font-bold text-white
           shadow-md ring-1 ring-inset ring-black/20 transition-colors
           hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300
         `}
       >
         ×
-      </button>
+      </Button>
 
       {/* Tooltip */}
       {isHovered && (
         <div
-          // eslint-disable-next-line ds/no-raw-typography -- tooltip custom text size [DS-05]
           className={`
             absolute bottom-full left-1/2 z-30 w-60 -translate-x-1/2
-            whitespace-pre-line rounded-md bg-black/90 px-3 py-2 text-[13px] font-medium text-white
+            whitespace-pre-line rounded-md bg-black/90 px-3 py-2 text-13px font-medium text-white
             shadow-lg backdrop-blur-md
-            before:absolute before:bottom-[-6px] before:left-1/2 before:-translate-x-1/2
+            before:absolute before:-bottom-1.5 before:left-1/2 before:-translate-x-1/2
             before:h-3 before:w-3 before:rotate-45 before:rounded-sm before:bg-black/90
             dark:bg-darkSurface dark:text-darkAccentGreen dark:before:bg-darkSurface
           `}
@@ -490,7 +488,7 @@ const PreorderButtons: FC<PreorderButtonsProps> = memo(() => {
         grid auto-rows-fr grid-flow-row gap-4 p-4
         border-t border-info-main/40 bg-gradient-to-b from-white to-slate-50
         dark:from-darkSurface dark:to-darkBg
-        transition-all duration-[800ms] md:grid-cols-[repeat(auto-fill,minmax(7rem,1fr))]
+        transition-all duration-800 md:grid-cols-auto-fill-7
       `}
       >
         {sortedDisplayData.map((data) => (

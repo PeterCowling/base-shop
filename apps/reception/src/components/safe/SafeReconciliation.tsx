@@ -2,6 +2,8 @@
 
 import { memo, useEffect, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useSafeData } from "../../context/SafeDataContext";
 import { useSafeKeycardCount } from "../../hooks/data/useSafeKeycardCount";
 import { getErrorMessage } from "../../utils/errorMessage";
@@ -95,7 +97,7 @@ function SafeReconciliation(): JSX.Element {
   };
 
   return (
-    <div className="min-h-[80vh] p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         SAFE MANAGEMENT
       </h1>
@@ -105,25 +107,25 @@ function SafeReconciliation(): JSX.Element {
         </p>
         <div className="flex gap-2">
           <div className="flex gap-2">
-            <button
+            <Button
               onClick={() => openForm("reconcile")}
               className="px-4 py-2 bg-warning-main text-white rounded hover:bg-warning-dark"
             >
               Reconcile Safe
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => openForm("deposit")}
               className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
             >
               Bank Deposit
-            </button>
+            </Button>
           </div>
-          <button
+          <Button
             onClick={() => openForm("petty")}
             className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
           >
             Petty Cash
-          </button>
+          </Button>
         </div>
         {activeForm === "reconcile" && (
           <SafeReconcileForm

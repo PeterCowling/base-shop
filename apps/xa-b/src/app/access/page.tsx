@@ -1,12 +1,15 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy gate experience pending design/i18n overhaul */
 import type { CSSProperties } from "react";
 import { IBM_Plex_Mono, Work_Sans } from "next/font/google";
 import Link from "next/link";
 
+import { Button, Input } from "@acme/design-system/atoms";
+import { ElevatedPanel } from "@acme/ui/components/organisms/ElevatedPanel";
+
 import { siteConfig } from "../../lib/siteConfig";
+
+import styles from "./access.module.css";
 import AccessGateClient from "./AccessGate.client";
 import AccessSignals from "./AccessSignals.client";
-import styles from "./access.module.css";
 
 const display = Work_Sans({
   subsets: ["latin"],
@@ -98,7 +101,7 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
         </div>
 
         <div className={`mt-10 grid gap-8 md:grid-cols-[1.1fr_0.9fr] ${styles.gateFade} ${styles.gateDelay}`}>
-          <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
+          <ElevatedPanel>
             <div className="flex items-center justify-between gap-4">
               <div>
                 <div className={`text-xs uppercase tracking-[0.35em] ${mono.className}`}>
@@ -133,32 +136,32 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
             <form action="/api/access" method="post" className="mt-6 space-y-4">
               <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
                 Key slot
-                <input
+                <Input
                   name="code"
                   placeholder="XXXX-XXXX"
-                  className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-3 text-sm uppercase tracking-[0.35em] text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+                  className="mt-2 h-auto w-full rounded-md border-border-2 bg-surface px-3 py-3 text-sm uppercase tracking-[0.35em] text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
                   autoComplete="off"
                   required
                 />
               </label>
-              <input type="hidden" name="next" value={nextValue} />
+              <Input type="hidden" name="next" value={nextValue} className="hidden" />
               <div className="flex flex-wrap items-center gap-3">
-                <button
+                <Button
                   type="submit"
-                  className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90"
+                  className="h-auto inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90"
                 >
                   Unlock
-                </button>
+                </Button>
                 <div className="text-xs text-[color:var(--gate-muted)]">
                   Keys are case-insensitive. Do not share in public.
                 </div>
               </div>
             </form>
-          </section>
+          </ElevatedPanel>
 
-          <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
+          <ElevatedPanel>
             <AccessGateClient monoClassName={mono.className} />
-          </section>
+          </ElevatedPanel>
         </div>
 
         <div className={`mt-12 flex flex-wrap items-center gap-6 text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)] ${mono.className}`}>

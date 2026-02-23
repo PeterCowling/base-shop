@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- XA-123 [ttl=2026-12-31] XA marketing copy pending localization */
 import type { XaCategory, XaDepartment } from "./xaTypes";
 
 const STEALTH_MODE = ["1", "true"].includes(

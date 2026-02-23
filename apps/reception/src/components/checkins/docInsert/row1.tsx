@@ -200,10 +200,9 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
 
   return (
     <>
-      {/* eslint-disable-next-line ds/no-raw-spacing -- internal POS layout spacing [DS-06] */}
-      <div className="flex flex-wrap gap-12 mt-[100px] mb-[75px] dark:text-darkAccentGreen">
+      <div className="flex flex-wrap gap-12 mt-100px mb-75px dark:text-darkAccentGreen">
         {/* First Name */}
-        <div className="flex flex-col w-[300px]">
+        <div className="flex flex-col w-300px">
           <label
             htmlFor="firstName"
             className="block mb-1 font-semibold text-info-dark dark:text-darkAccentGreen"
@@ -212,7 +211,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           </label>
           <input
             id="firstName"
-            className={`border border-info-light rounded px-3 py-2 w-[300px] focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
+            className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
               isFirstNamePlaceholder
                 ? "bg-warning-light/50"
                 : isFirstNamePopulated
@@ -226,7 +225,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
         </div>
 
         {/* Last Name */}
-        <div className="flex flex-col w-[300px]">
+        <div className="flex flex-col w-300px">
           <label
             htmlFor="lastName"
             className="block mb-1 font-semibold text-info-dark dark:text-darkAccentGreen"
@@ -235,7 +234,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           </label>
           <input
             id="lastName"
-            className={`border border-info-light rounded px-3 py-2 w-[300px] focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
+            className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
               isLastNamePlaceholder
                 ? "bg-warning-light/50"
                 : isLastNamePopulated
@@ -249,7 +248,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
         </div>
 
         {/* Gender */}
-        <div className="flex flex-col w-[300px]">
+        <div className="flex flex-col w-300px">
           <label
             htmlFor="gender"
             className="block mb-1 font-semibold text-info-dark dark:text-darkAccentGreen"
@@ -258,7 +257,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           </label>
           <select
             id="gender"
-            className={`border border-info-light rounded px-3 py-2 w-[300px] focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
+            className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
               isGenderPopulated ? "bg-success-light/50" : ""
             }`}
             value={localOccupant.gender ?? ""}

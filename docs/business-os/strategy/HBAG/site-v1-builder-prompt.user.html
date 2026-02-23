@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Caryina Website V1 Builder Prompt (Agent-Ready)</title>
+  <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f8fb;
+      --text: #101418;
+      --text-muted: #5a6570;
+      --border: #d9e0e7;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
+
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
+      background: var(--header);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
+    }
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
+    .audience-toggle {
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
+    }
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
+<h1>Caryina Website V1 Builder Prompt (Agent-Ready)</h1>
+<h2>Purpose</h2>
+<p>This is the assembly brief for building the <strong>first complete Caryina website version</strong> without re-running discovery.<br>
+It maps what exists, where it lives, what to reuse, and what must be created.</p>
+<p>Use this document as the single prompt source for any agent doing V1 build work.</p>
+<h2>What This Document Must Do</h2>
+<ul>
+<li>Provide a <strong>framework-first</strong> build contract (not feature-by-feature micro-specs).</li>
+<li>Map existing assets by layer and path so work can be slotted in.</li>
+<li>Define boundaries for V1 scope, build order, and acceptance.</li>
+<li>Prevent duplicate discovery by pointing to canonical source docs.</li>
+</ul>
+<h2>What This Document Must Not Do</h2>
+<ul>
+<li>Re-state business/brand/content details already captured in canonical docs.</li>
+<li>Replace detailed implementation specs for individual complex features.</li>
+<li>Override stage gates and artifact statuses from strategy index.</li>
+</ul>
+<h2>Non-Negotiable Build Guardrails</h2>
+<ul>
+<li>Do not drift from <code>brand-dossier.user.md</code> token/language constraints.</li>
+<li>Do not invent business facts when source artifacts are missing; mark unknowns and continue with safe defaults.</li>
+<li>No arbitrary colors/sizing; use theme/design-system tokens.</li>
+<li>Keep reduced-motion and accessibility behavior intact during visual enhancements.</li>
+<li>Keep scope to V1 framework; defer non-core experiments unless they unblock conversion.</li>
+</ul>
+<h2>Out of Scope for V1</h2>
+<ul>
+<li>Blog/editorial expansion and content merchandising beyond baseline wiring.</li>
+<li>Account-area expansion beyond what is required for core conversion flow.</li>
+<li>Reviews/UGC, wishlist, personalization engines.</li>
+<li>CMS/page-builder authoring enhancements.</li>
+<li>Multi-currency and advanced localization experiments not required for initial launch.</li>
+</ul>
+<h2>Build &#x26; Run Contract</h2>
+<h3>Toolchain</h3>
+<ul>
+<li>Package manager: <code>pnpm</code> (workspace root).</li>
+<li>Runtime baseline: use current repo defaults and existing app scripts; do not introduce alternate build systems.</li>
+</ul>
+<h3>Commands (minimum required)</h3>
+<ol>
+<li><code>pnpm install</code></li>
+<li><code>pnpm --filter @apps/caryina dev</code></li>
+<li><code>pnpm --filter @apps/caryina typecheck</code></li>
+<li><code>pnpm --filter @apps/caryina lint</code></li>
+<li><code>pnpm --filter @apps/caryina test -- --runInBand --testPathPattern=\"BrandMark.test.tsx\"</code></li>
+<li><code>pnpm --filter @apps/caryina build</code></li>
+</ol>
+<p>If touching legacy baseline code in <code>apps/cover-me-pretty</code>, also run:</p>
+<ol>
+<li><code>pnpm --filter @apps/cover-me-pretty typecheck</code></li>
+<li><code>pnpm --filter @apps/cover-me-pretty lint</code></li>
+<li>Targeted tests only (<code>pnpm --filter @apps/cover-me-pretty test -- &#x3C;pattern></code>) with <code>--runInBand</code> or <code>--maxWorkers=2</code>.</li>
+</ol>
+<h3>Environment baseline (expected keys in legacy flow)</h3>
+<ul>
+<li><code>NEXT_PUBLIC_SHOP_ID</code></li>
+<li><code>NEXT_PUBLIC_GA4_ID</code></li>
+<li><code>GA_API_SECRET</code></li>
+<li><code>NEXT_PUBLIC_LUXURY_FEATURES</code></li>
+<li><code>R2_ACCESS_KEY_ID</code></li>
+<li><code>R2_SECRET_ACCESS_KEY</code></li>
+<li><code>R2_BUCKET_TRYON</code></li>
+<li><code>R2_PUBLIC_BASE_URL</code></li>
+<li><code>CLOUDFLARE_ACCOUNT_ID</code></li>
+<li><code>INVENTORY_AUTHORITY_TOKEN</code></li>
+<li><code>TRYON_HEAVY_API_URL</code></li>
+</ul>
+<p>If any required secret/config is missing:</p>
+<ul>
+<li>Continue with framework build using safe stubs.</li>
+<li>Add explicit TODO markers with expected key names and source path references.</li>
+<li>Do not block route scaffolding on missing production secrets.</li>
+</ul>
+<h2>Canonical Source Map (Consult-Only Inputs)</h2>
+<p>These artifacts are source-of-truth inputs for the build. Consult them; do not rewrite them as part of framework implementation unless explicitly requested.</p>
+<h3>Strategy and Outcome (source of truth)</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Source path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Master artifact index + gate status</td>
+<td><code>docs/business-os/strategy/HBAG/index.user.md</code></td>
+</tr>
+<tr>
+<td>Business plan + outcome contracts</td>
+<td><code>docs/business-os/strategy/HBAG/plan.user.md</code></td>
+</tr>
+<tr>
+<td>Intake + constraints + missing data</td>
+<td><code>docs/business-os/startup-baselines/HBAG-intake-packet.user.md</code></td>
+</tr>
+<tr>
+<td>Offer definition (ICP, positioning, pricing)</td>
+<td><code>docs/business-os/startup-baselines/HBAG-offer.md</code></td>
+</tr>
+<tr>
+<td>Channel strategy</td>
+<td><code>docs/business-os/startup-baselines/HBAG-channels.md</code></td>
+</tr>
+<tr>
+<td>Measurement plan</td>
+<td><code>docs/business-os/strategy/HBAG/measurement-plan.user.md</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Brand and Design Language</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Source path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Active brand dossier (gating artifact)</td>
+<td><code>docs/business-os/strategy/HBAG/brand-dossier.user.md</code></td>
+</tr>
+<tr>
+<td>Brand strategy source</td>
+<td><code>docs/business-os/strategy/HBAG/brand-strategy.user.md</code></td>
+</tr>
+<tr>
+<td>Brand discovery render artifact</td>
+<td><code>docs/business-os/strategy/HBAG/brand-discovery-document.user.html</code></td>
+</tr>
+<tr>
+<td>Tagline decision rationale</td>
+<td><code>docs/business-os/strategy/HBAG/tagline-options.user.md</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Existing Implementation Assets</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Source path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Caryina app scaffold</td>
+<td><code>apps/caryina/</code></td>
+</tr>
+<tr>
+<td>Current Caryina layout</td>
+<td><code>apps/caryina/src/app/layout.tsx</code></td>
+</tr>
+<tr>
+<td>Current Caryina home route</td>
+<td><code>apps/caryina/src/app/page.tsx</code></td>
+</tr>
+<tr>
+<td>BrandMark component</td>
+<td><code>apps/caryina/src/components/BrandMark/BrandMark.tsx</code></td>
+</tr>
+<tr>
+<td>BrandMark styling</td>
+<td><code>apps/caryina/src/components/BrandMark/BrandMark.module.css</code></td>
+</tr>
+<tr>
+<td>BrandMark test seam</td>
+<td><code>apps/caryina/src/components/BrandMark/BrandMark.test.tsx</code></td>
+</tr>
+<tr>
+<td>Caryina global styles</td>
+<td><code>apps/caryina/src/styles/global.css</code></td>
+</tr>
+<tr>
+<td>Caryina theme package</td>
+<td><code>packages/themes/caryina/src/tokens.ts</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Full Storefront Baseline (legacy app to mine)</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Source path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Legacy app (full ecommerce route surface)</td>
+<td><code>apps/cover-me-pretty/</code></td>
+</tr>
+<tr>
+<td>Route tree</td>
+<td><code>apps/cover-me-pretty/src/app/</code></td>
+</tr>
+<tr>
+<td>Locale layout baseline</td>
+<td><code>apps/cover-me-pretty/src/app/[lang]/layout.tsx</code></td>
+</tr>
+<tr>
+<td>Home page server/client composition</td>
+<td><code>apps/cover-me-pretty/src/app/[lang]/page.tsx</code>, <code>apps/cover-me-pretty/src/app/[lang]/page.client.tsx</code></td>
+</tr>
+<tr>
+<td>Shop listing route</td>
+<td><code>apps/cover-me-pretty/src/app/[lang]/shop/page.tsx</code></td>
+</tr>
+<tr>
+<td>PDP route</td>
+<td><code>apps/cover-me-pretty/src/app/[lang]/product/[slug]/page.tsx</code></td>
+</tr>
+<tr>
+<td>Checkout route</td>
+<td><code>apps/cover-me-pretty/src/app/[lang]/checkout/page.tsx</code></td>
+</tr>
+<tr>
+<td>Success/cancel routes</td>
+<td><code>apps/cover-me-pretty/src/app/[lang]/success/page.tsx</code>, <code>apps/cover-me-pretty/src/app/[lang]/cancelled/page.tsx</code></td>
+</tr>
+<tr>
+<td>Shop config baseline</td>
+<td><code>apps/cover-me-pretty/shop.json</code></td>
+</tr>
+<tr>
+<td>Data baseline</td>
+<td><code>data/shops/cover-me-pretty/</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Existing Feature-Level Design Spec (do not re-solve)</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Source path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BrandMark particle animation fact-find</td>
+<td><code>docs/plans/_archive/hbag-brandmark-particle-animation/fact-find.md</code></td>
+</tr>
+<tr>
+<td>BrandMark particle animation design-spec</td>
+<td><code>docs/plans/_archive/hbag-brandmark-particle-animation/design-spec.md</code></td>
+</tr>
+<tr>
+<td>Prototype/perf evidence</td>
+<td><code>docs/plans/_archive/hbag-brandmark-particle-animation/artifacts/prototype/</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Operational Defaults (Use Unless Operator Overrides)</h2>
+<h3>Locale strategy (V1 default)</h3>
+<ul>
+<li>Default to <strong>retaining locale-segment parity</strong> with the proven baseline (<code>[lang]</code> route structure) to avoid hidden integration regressions.</li>
+<li>If locale scope is intentionally reduced, do it explicitly and document the collapse plan in the implementation PR notes.</li>
+</ul>
+<h3>Data strategy (V1 default)</h3>
+<ul>
+<li>Default to creating <code>data/shops/caryina/</code> by controlled bootstrap from <code>data/shops/cover-me-pretty/</code>.</li>
+<li>Minimum required files for route skeleton rendering:
+<ul>
+<li><code>shop.json</code></li>
+<li><code>settings.json</code></li>
+<li><code>products.json</code></li>
+<li><code>inventory.json</code></li>
+<li><code>pages.json</code></li>
+<li><code>sections.json</code></li>
+</ul>
+</li>
+<li>Unknown business values must be marked with TODO + source reference; never fabricated.</li>
+</ul>
+<h3>Analytics/measurement scope (V1 default)</h3>
+<ul>
+<li>Wire baseline event flow only:
+<ul>
+<li>page view</li>
+<li>product view</li>
+<li>checkout start</li>
+<li>purchase success</li>
+</ul>
+</li>
+<li>Reuse existing analytics route and client wiring patterns from:
+<ul>
+<li><code>apps/cover-me-pretty/src/app/api/analytics/event/route.ts</code></li>
+<li><code>apps/cover-me-pretty/src/app/[lang]/checkout/CheckoutAnalytics.client.tsx</code></li>
+<li><code>apps/cover-me-pretty/src/app/[lang]/success/SuccessAnalytics.client.tsx</code></li>
+</ul>
+</li>
+<li>If full analytics wiring is blocked, ship event stubs with explicit TODO markers and expected env keys.</li>
+</ul>
+<h3>Legal/support pages (V1 minimum set)</h3>
+<ul>
+<li>Terms</li>
+<li>Privacy</li>
+<li>Returns/Refunds</li>
+<li>Shipping</li>
+<li>Contact/Support</li>
+</ul>
+<h2>V1 Framework Contract (Not Per-Feature Detail)</h2>
+<h3>Site purpose (use source docs; do not reinterpret)</h3>
+<ul>
+<li>Build a brand-owned conversion surface for Caryina that can move demand from WhatsApp/social into structured web + checkout flow.</li>
+</ul>
+<h3>Required V1 surface (minimum framework)</h3>
+<ul>
+<li>App shell + theme + typography are Caryina-native.</li>
+<li>Core route framework exists for:
+<ul>
+<li>homepage</li>
+<li>shop/listing</li>
+<li>product detail</li>
+<li>checkout</li>
+<li>success/cancel</li>
+<li>legal/support minimum set listed above</li>
+</ul>
+</li>
+<li>Analytics/measurement hooks are wired to the V1 default scope listed above.</li>
+<li>BrandMark and header language follow active brand dossier.</li>
+</ul>
+<h3>Reuse policy</h3>
+<ul>
+<li>Reuse proven commerce wiring from <code>apps/cover-me-pretty</code> where possible.</li>
+<li>Re-skin and simplify to Caryina brand language; avoid inheriting unrelated legacy complexity by default.</li>
+<li>Keep HBAG-specific design decisions in Caryina app-level code unless clearly reusable platform-wide.</li>
+</ul>
+<h2>Known Gaps to Resolve During Build</h2>
+<ul>
+<li><code>apps/caryina</code> currently has scaffold-level UI only; route framework must be established.</li>
+<li>No <code>data/shops/caryina/</code> dataset currently exists; apply the default bootstrap strategy unless explicitly overridden.</li>
+<li>Feature specs exist for BrandMark animation, but not yet for all route-level UX details; create additional design-specs only where confidence is low.</li>
+</ul>
+<h2>Build Sequence (Framework-First)</h2>
+<ol>
+<li>Confirm gate status in <code>docs/business-os/strategy/HBAG/index.user.md</code> (consult only; do not edit gating artifacts during build).</li>
+<li>Lock visual language by consuming <code>docs/business-os/strategy/HBAG/brand-dossier.user.md</code>.</li>
+<li>Establish Caryina route framework using <code>apps/cover-me-pretty/src/app/</code> as structural baseline, preserving locale parity by default.</li>
+<li>Bind Caryina theme and brand primitives across reused routes/components.</li>
+<li>Bootstrap <code>data/shops/caryina/</code> using the default minimum dataset.</li>
+<li>Wire baseline analytics scope (or explicit stubs if blocked).</li>
+<li>Integrate already-specified BrandMark animation work per <code>docs/plans/_archive/hbag-brandmark-particle-animation/design-spec.md</code>.</li>
+<li>Validate with targeted typecheck/lint/tests for changed packages.</li>
+</ol>
+<h2>Traceability Convention (Required)</h2>
+<ul>
+<li>For TODOs tied to missing business inputs:
+<ul>
+<li>Format: <code>TODO(&#x3C;source-path>): &#x3C;required decision/data></code></li>
+<li>Example: <code>TODO(docs/business-os/startup-baselines/HBAG-intake-packet.user.md): confirm launch SKU color set</code></li>
+</ul>
+</li>
+<li>For seeded placeholder copy/data:
+<ul>
+<li>Add adjacent comment or note with <code>source:</code> path to originating artifact.</li>
+</ul>
+</li>
+<li>For implementation decisions that diverge from defaults:
+<ul>
+<li>Add an inline <code>Decision:</code> note in the touched file and cite the source artifact that justified it.</li>
+</ul>
+</li>
+</ul>
+<h2>Accessibility and Motion Verification (Required)</h2>
+<ul>
+<li>Keyboard focus order works through header, shop/listing, PDP, checkout.</li>
+<li>Visible focus state exists for interactive controls.</li>
+<li><code>prefers-reduced-motion</code> disables non-essential motion and preserves readability.</li>
+<li>BrandMark respects reduced-motion fallback behavior.</li>
+<li>Touch targets are usable on mobile baseline.</li>
+<li>Basic text/background contrast passes for primary reading surfaces.</li>
+</ul>
+<h2>Definition of Done (V1 Framework)</h2>
+<ul>
+<li><code>apps/caryina</code> contains a coherent route skeleton for the full commerce journey.</li>
+<li>Required V1 routes render in dev without runtime crashes:
+<ul>
+<li><code>/</code></li>
+<li><code>/[lang]/shop</code> (or chosen single-locale equivalent with documented rationale)</li>
+<li><code>/[lang]/product/[slug]</code></li>
+<li><code>/[lang]/checkout</code></li>
+<li><code>/[lang]/success</code></li>
+<li><code>/[lang]/cancelled</code></li>
+</ul>
+</li>
+<li>Brand language and tokens are consistently applied.</li>
+<li>Existing reusable platform modules are integrated without architectural shortcuts.</li>
+<li><code>pnpm --filter @apps/caryina typecheck</code>, <code>lint</code>, <code>test</code> (targeted), and <code>build</code> pass.</li>
+<li>Every imported business/content decision has a path reference via the traceability convention above.</li>
+<li>No hardcoded color tokens (hex/Tailwind palette shortcuts) outside documented exceptions.</li>
+<li>Reduced-motion behavior is verified.</li>
+<li>A follow-on plan can decompose page/content refinement without re-auditing baseline assets.</li>
+</ul>
+<h2>Copy-Paste Prompt for Builder Agent</h2>
+<pre><code class="language-md">Build the first full Caryina website version using `docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md` as the primary contract.
+
+Execution rules:
+1. Treat the Source Map in that file as authoritative; do not re-run broad discovery.
+2. Build framework first (app shell + route structure + shared commerce flow), not fine content polish.
+3. Reuse proven pieces from `apps/cover-me-pretty/src/app/` where appropriate, but enforce Caryina brand language from `docs/business-os/strategy/HBAG/brand-dossier.user.md` and `packages/themes/caryina/src/tokens.ts`.
+4. Use default operational decisions from this brief unless explicitly overridden (locale parity, data bootstrap, analytics scope).
+5. Preserve accessibility and reduced-motion behavior.
+6. Keep token-driven styling only; no arbitrary values.
+7. If data/content fields are missing, leave explicit TODO markers using the required traceability format instead of inventing facts.
+
+Required outputs:
+- Updated/created Caryina route framework in `apps/caryina/src/app/`.
+- Supporting Caryina components and wiring needed for the framework.
+- Bootstrapped `data/shops/caryina/` minimum dataset (or documented rationale for alternate approach).
+- Any new design-spec docs only where uncertainty blocks implementation confidence.
+- Validation evidence: targeted typecheck/lint/tests/build for touched packages.
+</code></pre>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md</code></div>
+      <div>Generated: 2026-02-23T12:57:22.815Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -9,6 +9,8 @@ import React, {
 } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import { Button } from "@acme/design-system/atoms";
+
 import type { EmailProgressData } from "../../schemas/emailProgressDataSchema";
 import { showToast } from "../../utils/toastUtils";
 
@@ -252,7 +254,7 @@ function ActivityCodeSection({
 
                   {item.currentCode < 4 && (
                     <div className="flex items-center gap-2">
-                      <button
+                      <Button
                         className="px-4 py-2 bg-secondary-main text-white text-sm rounded hover:bg-secondary-dark transition-colors"
                         onClick={() => onNext(item)}
                       >
@@ -261,13 +263,13 @@ function ActivityCodeSection({
                           : code === 2
                           ? "Send Second Reminder"
                           : "Cancel Booking"}
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         className="px-4 py-2 bg-success-main text-white text-sm rounded hover:bg-success-dark transition-colors"
                         onClick={() => onConfirm(item)}
                       >
                         Confirm
-                      </button>
+                      </Button>
                     </div>
                   )}
                 </li>

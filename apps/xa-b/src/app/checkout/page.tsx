@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy checkout page pending i18n overhaul */
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 

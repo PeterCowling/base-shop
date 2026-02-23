@@ -1,5 +1,7 @@
 import { type FormEvent, memo, useCallback, useEffect, useRef, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { withModalBackground } from "../../hoc/withModalBackground";
 import { getUserDisplayName } from "../../lib/roles";
 import { verifyManagerCredentials } from "../../services/managerReauth";
@@ -128,20 +130,20 @@ function VarianceSignoffModalBase({
           </div>
         )}
         <div className="mt-2 flex justify-center gap-2">
-          <button
+          <Button
             type="button"
             onClick={onCancel}
             className="min-h-11 min-w-11 rounded bg-gray-300 px-4 py-2 text-gray-800 dark:bg-darkSurface dark:text-darkAccentOrange"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
             disabled={isSubmitting}
             className="min-h-11 min-w-11 rounded bg-primary-main px-4 py-2 text-white disabled:opacity-50 dark:bg-darkAccentGreen"
           >
             {isSubmitting ? "Verifying..." : "Sign off"}
-          </button>
+          </Button>
         </div>
       </form>
     </ModalContainer>

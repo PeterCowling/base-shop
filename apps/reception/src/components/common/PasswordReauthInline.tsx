@@ -7,6 +7,8 @@ import {
   useState,
 } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useAuth } from "../../context/AuthContext";
 
 export interface PasswordReauthInlineProps {
@@ -72,13 +74,13 @@ export const PasswordReauthInline = memo(function PasswordReauthInline({
           {error}
         </p>
       )}
-      <button
+      <Button
         type="submit"
         disabled={!password.trim() || isSubmitting}
         className="min-h-11 min-w-11 w-full rounded-lg bg-primary-600 px-4 py-2 font-medium text-white hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/90"
       >
         {isSubmitting ? "Verifying..." : submitLabel}
-      </button>
+      </Button>
     </form>
   );
 });

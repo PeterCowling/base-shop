@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useReceptionTheme } from "../../providers/ReceptionThemeProvider";
 
 /**
@@ -9,7 +11,7 @@ export default function DarkModeToggle(): JSX.Element {
   const { dark, toggleDark } = useReceptionTheme();
 
   return (
-    <button
+    <Button
       type="button"
       onClick={toggleDark}
       aria-label="Toggle dark mode"
@@ -17,6 +19,6 @@ export default function DarkModeToggle(): JSX.Element {
       className="px-3 py-2 text-sm font-semibold text-gray-600 dark:text-accent-hospitality"
     >
       {dark ? "Light" : "Dark"} Mode
-    </button>
+    </Button>
   );
 }

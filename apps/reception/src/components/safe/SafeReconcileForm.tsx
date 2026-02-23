@@ -1,5 +1,7 @@
 import { memo, useRef, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { settings } from "../../constants/settings";
 import { showToast } from "../../utils/toastUtils";
 import { CashCountingForm } from "../common/CashCountingForm";
@@ -71,13 +73,13 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
   return (
     <>
       <div className="relative dark:bg-darkSurface">
-        <button
+        <Button
           onClick={onCancel}
           aria-label="Close"
           className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-error-main text-white"
         >
           x
-        </button>
+        </Button>
         <CashCountingForm
           idPrefix="safeRecon_"
           title="Reconcile Safe"

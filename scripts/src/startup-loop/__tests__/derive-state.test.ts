@@ -30,8 +30,18 @@ function makeEvent(overrides: Partial<RunEvent>): RunEvent {
   };
 }
 
+const FORECAST_STAGE_ID = stageOperatorMap.stages.some((stage) => stage.id === "S3")
+  ? "S3"
+  : "SIGNALS-01";
+
+const WEEKLY_STAGE_ID = stageOperatorMap.stages.some((stage) => stage.id === "S10")
+  ? "S10"
+  : "SIGNALS";
+
 const HAPPY_PATH_EVENTS: RunEvent[] = [
-  // ASSESSMENT-09 → MARKET-06 → S3 (parallel) → SELL-01 (parallel) → S4 → S5A → S5B
+  // ASSESSMENT-09 → MARKET-06 → forecast (parallel) → SELL-01 (parallel) → S4 → S5A → S5B
+  // Forecast stage ID is sourced from the generated operator map for compatibility.
+  // Some map versions model forecast as SIGNALS-01 instead of S3.
   makeEvent({ event: "stage_started", stage: "ASSESSMENT-09", timestamp: "2026-02-13T12:00:00Z" }),
   makeEvent({ event: "stage_completed", stage: "ASSESSMENT-09", timestamp: "2026-02-13T12:01:00Z", artifacts: {} }),
   makeEvent({ event: "stage_started", stage: "MARKET-06", timestamp: "2026-02-13T12:01:30Z" }),
@@ -41,9 +51,14 @@ const HAPPY_PATH_EVENTS: RunEvent[] = [
     timestamp: "2026-02-13T12:02:00Z",
     artifacts: { offer: "stages/MARKET-06/offer.md" },
   }),
-  makeEvent({ event: "stage_started", stage: "S3", timestamp: "2026-02-13T12:02:30Z" }),
+  makeEvent({ event: "stage_started", stage: FORECAST_STAGE_ID, timestamp: "2026-02-13T12:02:30Z" }),
   makeEvent({ event: "stage_started", stage: "SELL-01", timestamp: "2026-02-13T12:02:30Z" }),
-  makeEvent({ event: "stage_completed", stage: "S3", timestamp: "2026-02-13T12:04:00Z", artifacts: { forecast: "stages/S3/forecast.md" } }),
+  makeEvent({
+    event: "stage_completed",
+    stage: FORECAST_STAGE_ID,
+    timestamp: "2026-02-13T12:04:00Z",
+    artifacts: { forecast: `stages/${FORECAST_STAGE_ID}/forecast.md` },
+  }),
   makeEvent({
     event: "stage_completed",
     stage: "SELL-01",
@@ -73,16 +88,16 @@ describe("deriveState", () => {
 
       expect(state.stages["ASSESSMENT-09"].status).toBe("Done");
       expect(state.stages["MARKET-06"].status).toBe("Done");
-      expect(state.stages.S3.status).toBe("Done");
+      expect(state.stages[FORECAST_STAGE_ID].status).toBe("Done");
       expect(state.stages["SELL-01"].status).toBe("Done");
       expect(state.stages.S4.status).toBe("Done");
       expect(state.stages.S5A.status).toBe("Done");
       expect(state.stages.S5B.status).toBe("Done");
 
       // Stages not in the event stream remain Pending
-      expect(state.stages.S6.status).toBe("Pending");
+      expect(state.stages.WEBSITE.status).toBe("Pending");
       expect(state.stages.DO.status).toBe("Pending");
-      expect(state.stages.S10.status).toBe("Pending");
+      expect(state.stages[WEEKLY_STAGE_ID].status).toBe("Pending");
     });
 
     it("sets active_stage to the most recently started stage", () => {
@@ -95,7 +110,7 @@ describe("deriveState", () => {
       const state = deriveState(HAPPY_PATH_EVENTS, STATE_OPTIONS);
 
       expect(state.stages["MARKET-06"].artifacts).toEqual(["stages/MARKET-06/offer.md"]);
-      expect(state.stages.S3.artifacts).toEqual(["stages/S3/forecast.md"]);
+      expect(state.stages[FORECAST_STAGE_ID].artifacts).toEqual([`stages/${FORECAST_STAGE_ID}/forecast.md`]);
       expect(state.stages["SELL-01"].artifacts).toEqual(["stages/SELL-01/channels.md"]);
       expect(state.stages.S4.artifacts).toEqual(["stages/S4/baseline.snapshot.md"]);
     });
@@ -160,7 +175,7 @@ describe("deriveState", () => {
       expect(stageIds).toContain("PRODUCT-02");
       expect(stageIds).toContain("MARKET-06");
       expect(stageIds).toContain("SELL-01");
-      expect(stageIds).toContain("S10");
+      expect(stageIds).toContain(WEEKLY_STAGE_ID);
       expect(stageIds).toContain("S4");
       expect(stageIds).toContain("S5A");
       expect(stageIds).toContain("S5B");

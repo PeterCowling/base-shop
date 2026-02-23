@@ -144,7 +144,9 @@ The derived state is compatible with the existing `loop-state.json` contract:
 | S4 | Baseline merge |
 | S5A | Prioritize |
 | S5B | BOS sync |
-| S6 | Site-upgrade synthesis |
+| WEBSITE | Website |
+| WEBSITE-01 | L1 first build framework |
+| WEBSITE-02 | Site-upgrade synthesis |
 | DO | Do |
 | S9B | QA gates |
 | S10 | Weekly decision |

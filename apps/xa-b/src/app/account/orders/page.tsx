@@ -1,11 +1,10 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy orders page pending i18n overhaul */
-import Link from "next/link";
 import * as React from "react";
+import Link from "next/link";
 
-import { Section } from "@acme/design-system/atoms/Section";
 import { Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
 
 import { orderTotal, readOrders } from "../../../lib/ordersStore";
 

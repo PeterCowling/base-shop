@@ -9,7 +9,7 @@ Last-updated: YYYY-MM-DD
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: <kebab-case>
 Deliverable-Type: <code-change | email-message | product-brief | marketing-asset | spreadsheet | whatsapp-message | multi-deliverable>
-Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-upgrade-backlog>
+Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-first-build-backlog | website-upgrade-backlog>
 Execution-Track: <code | business-artifact | mixed>
 Primary-Execution-Skill: <lp-do-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>

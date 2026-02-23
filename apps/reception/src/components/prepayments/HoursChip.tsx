@@ -25,7 +25,7 @@ const HoursChip: React.FC<HoursChipProps> = ({
 
   return (
     <span
-      className={`inline-flex w-[100px] items-center justify-center px-4 py-2 text-sm rounded font-semibold ${chipStyle} dark:bg-darkSurface dark:text-darkAccentGreen`}
+      className={`inline-flex w-100px items-center justify-center px-4 py-2 text-sm rounded font-semibold ${chipStyle} dark:bg-darkSurface dark:text-darkAccentGreen`}
     >
       {chipLabel}
     </span>

@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- XAUP-0001 [ttl=2026-12-31] API responses pending i18n */
 import { NextResponse } from "next/server";
 
 import {
@@ -16,13 +15,20 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
     return NextResponse.json({ ok: false }, { status: 404 });
   }
 
-  const { slug } = await context.params;
-  const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
-  const product = await getCatalogDraftBySlug(slug, storefront);
-  if (!product) {
-    return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
+  try {
+    const { slug } = await context.params;
+    const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
+    const product = await getCatalogDraftBySlug(slug, storefront);
+    if (!product) {
+      return NextResponse.json({ ok: false, error: "not_found", reason: "product_not_found" }, { status: 404 });
+    }
+    return NextResponse.json({ ok: true, product });
+  } catch {
+    return NextResponse.json(
+      { ok: false, error: "internal_error", reason: "products_get_failed" },
+      { status: 500 },
+    );
   }
-  return NextResponse.json({ ok: true, product });
 }
 
 export async function DELETE(
@@ -39,11 +45,16 @@ export async function DELETE(
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
     const result = await deleteCatalogProduct(slug, storefront);
     if (!result.deleted) {
-      return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 }); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
+      return NextResponse.json(
+        { ok: false, error: "not_found", reason: "product_not_found" },
+        { status: 404 },
+      ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
     }
     return NextResponse.json({ ok: true, deleted: true });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Delete failed";
-    return NextResponse.json({ ok: false, error: message }, { status: 400 }); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
+  } catch {
+    return NextResponse.json(
+      { ok: false, error: "internal_error", reason: "products_delete_failed" },
+      { status: 500 },
+    ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
   }
 }

@@ -143,7 +143,7 @@ Severity is classified based on the normalized `miss` value:
 The `upstream_priority_order` defines stage precedence for tie-breaking and multi-block selection. This ordering is derived from startup-loop dependency flow (not stage-ID numeric sorting).
 
 ```
-ASSESSMENT-01, ASSESSMENT-02, ASSESSMENT-03, ASSESSMENT-04, ASSESSMENT-05, ASSESSMENT-06, ASSESSMENT-07, ASSESSMENT-08, ASSESSMENT-09, ASSESSMENT-10, ASSESSMENT-11, ASSESSMENT, MEASURE-01, MEASURE-02, PRODUCT, PRODUCT-01, MARKET, MARKET-01, MARKET-02, MARKET-03, MARKET-04, MARKET-05, MARKET-06, S3, PRODUCT-02, SELL-01, SELL-02, SELL-03, SELL-04, SELL-05, SELL-06, SELL-07, SELL-08, SELL, S4, S5A, S5B, S6, DO, S9B, S10
+ASSESSMENT-01, ASSESSMENT-02, ASSESSMENT-03, ASSESSMENT-04, ASSESSMENT-05, ASSESSMENT-06, ASSESSMENT-07, ASSESSMENT-08, ASSESSMENT-09, ASSESSMENT-10, ASSESSMENT-11, ASSESSMENT, MEASURE-01, MEASURE-02, PRODUCT, PRODUCT-01, MARKET, MARKET-01, MARKET-02, MARKET-03, MARKET-04, MARKET-05, MARKET-06, S3, PRODUCT-02, SELL-01, SELL-02, SELL-03, SELL-04, SELL-05, SELL-06, SELL-07, SELL-08, SELL, S4, S5A, S5B, WEBSITE-01, WEBSITE-02, WEBSITE, DO, S9B, S10
 ```
 
 **Note:** `SELL-01` intentionally precedes `S4` because `S4` (Baseline merge) consumes SELL-01 outputs as dependencies. `ASSESSMENT-01–ASSESSMENT-09` form the conditional problem-first pre-intake sequence; `ASSESSMENT-10–ASSESSMENT-11` are brand profiling stages; `ASSESSMENT` is the container stage (v1.7.0, renamed v1.9.0, consolidated v2.0). `PRODUCT-02` runs as a conditional parallel fan-out sibling of `S3` and `SELL-01` (non-blocking at S4).
@@ -1286,7 +1286,7 @@ The trigger auto-resolves after `autoResolveAfterNonPersistentRuns` consecutive 
 **Multi-block selection:**
 1. Both blocked stages have `miss = 1.0` and severity `critical`.
 2. Apply tiebreaker: earliest stage in `upstream_priority_order`.
-3. `upstream_priority_order`: `..., S4, S5A, S5B, S6, DO, ...`
+3. `upstream_priority_order`: `..., S4, S5A, S5B, WEBSITE-01, WEBSITE-02, WEBSITE, DO, ...`
 4. `S4` precedes `DO` → select `S4`.
 
 **Final ranking:**

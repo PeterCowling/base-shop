@@ -9,6 +9,8 @@ import React, {
   useState,
 } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useBookingDatesMutator } from "../../../hooks/mutations/useChangeBookingDatesMutator";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import { parseYMD } from "../../../utils/dateUtils";
@@ -232,20 +234,20 @@ const BookingModal: FC<BookingModalProps> = React.memo(
 
           {/* Save & Cancel Buttons */}
           <div className="flex justify-end gap-2 mt-4">
-            <button
+            <Button
               className="px-4 py-2 bg-gray-300 text-gray-800 rounded dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
               onClick={onClose}
               disabled={isLoading}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               className="px-4 py-2 bg-primary-main text-white rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
               onClick={handleSave}
               disabled={isLoading}
             >
               {isLoading ? "Saving..." : "Save"}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

@@ -61,6 +61,40 @@ import { Button } from "@acme/design-system/shadcn/Button";
 2. **No Domain Logic**: design-system must not contain e-commerce logic (cart, pricing, inventory), CMS/editor logic, or app-specific contexts.
 3. **Token-Based Styling**: All components use design tokens from `packages/themes/*` rather than hardcoded colors.
 
+## Primitive Contracts
+
+### Shape and radius depth
+
+Core primitives expose a shared shape/radius contract:
+
+- `shape`: `square` | `soft` | `pill`
+- `radius`: `none` | `xs` | `sm` | `md` | `lg` | `xl` | `2xl` | `3xl` | `4xl` | `full`
+
+Supported components: `Button`, `Input`, `Select`, `Textarea`, `Card`.
+
+Rules:
+- `radius` overrides `shape` when both are provided.
+- Preserve backward compatibility via default radius values per primitive.
+- Prefer contract props over hardcoded `rounded-*` utilities in component internals.
+
+### Containment safety
+
+Overlay/menu primitives must use the shared containment helper from `@acme/design-system/utils/style`:
+- `overflowContainmentClass("dialogContent")` -> `overflow-x-hidden`
+- `overflowContainmentClass("menuSurface")` -> `overflow-hidden`
+
+Current adopters: `DialogContent`, `DropdownMenuContent`, `DropdownMenuSubContent`, `SelectContent`.
+
+## Operations Consumer Baseline
+
+When `@acme/design-system` primitives are consumed in internal operations surfaces (`@acme/ui` operations components), a minimum safety baseline is enforced in root ESLint config:
+
+- `ds/no-overflow-hazards = error`
+- `react/forbid-dom-props` (`style`) defaults to `error` with explicit file-level runtime exceptions only
+- `ds/no-arbitrary-tailwind = warn` with constrained allowlists
+
+This protects against content bleed and style drift without forcing full customer-facing strictness on admin workflows.
+
 ## Migration from @acme/ui
 
 If you're importing presentation primitives from `@acme/ui`, migrate to `@acme/design-system`:
@@ -83,4 +117,4 @@ The `@acme/ui` package maintains backward-compatible shims that delegate to desi
 - [Architecture](../../docs/architecture.md) – Package layering and import rules
 - [Theme Customization Guide](../../docs/theming-customization-guide.md) – Token overrides and branding
 - [API Reference](../../docs/api/) – Generated TypeDoc reference (`pnpm doc:api`)
-- [UI Architecture Consolidation Plan](../../docs/plans/ui-architecture-consolidation-plan.md) – Migration strategy
+- [Design System Hardening Plan](../../docs/plans/design-system-depth-and-guardrail-hardening/plan.md) – Current guardrail and migration roadmap

@@ -2,6 +2,8 @@
 
 import { memo, type ReactElement, useCallback } from "react";
 
+import { TableCell, TableRow } from "@acme/design-system/atoms";
+
 import clsx from "../../../../utils/clsx";
 import { useMainContext } from "../../context";
 import { useTheme } from "../../hooks";
@@ -111,23 +113,23 @@ function RowComponent<TCustomStatus extends string = never>(
   const clsInfo = clsx("rvg-info", { selected });
 
   return (
-    <tr data-testid={`row-${rowId}`}>
-      <td
+    <TableRow data-testid={`row-${rowId}`}>
+      <TableCell
         className={clsTitle}
         onClick={onClickTitleLocal}
         data-testid={`title-${rowId}`}
       >
         {title}
-      </td>
+      </TableCell>
 
       {showInfo && (
-        <td className={clsInfo} data-testid={`info-${rowId}`}>
+        <TableCell className={clsInfo} data-testid={`info-${rowId}`}>
           {info}
-        </td>
+        </TableCell>
       )}
 
       {range.map(renderCell)}
-    </tr>
+    </TableRow>
   );
 }
 

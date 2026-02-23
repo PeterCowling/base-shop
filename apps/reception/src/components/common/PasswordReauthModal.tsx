@@ -1,5 +1,7 @@
 import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useAuth } from "../../context/AuthContext";
 import { withModalBackground } from "../../hoc/withModalBackground";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
@@ -81,21 +83,21 @@ function PasswordReauthModalBase({
         )}
         <div className="mt-2 flex justify-center gap-2">
           {!hideCancel && (
-            <button
+            <Button
               type="button"
               onClick={onCancel}
               className="min-h-11 min-w-11 rounded bg-gray-300 px-4 py-2 text-gray-800 dark:bg-darkSurface dark:text-darkAccentOrange"
             >
               Cancel
-            </button>
+            </Button>
           )}
-          <button
+          <Button
             type="submit"
             disabled={!password.trim() || isSubmitting}
             className="min-h-11 min-w-11 rounded bg-primary-main px-4 py-2 text-white disabled:opacity-50 dark:bg-darkAccentGreen"
           >
             {isSubmitting ? "Verifying..." : "Confirm"}
-          </button>
+          </Button>
         </div>
       </form>
     </ModalContainer>

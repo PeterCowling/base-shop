@@ -1,5 +1,7 @@
 import { type FC, memo, useCallback, useEffect } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import useArchiveCheckedOutGuests from "../../../hooks/mutations/useArchiveCheckedOutGuests";
 import useArchiveEligibleBookings from "../../../hooks/mutations/useArchiveEligibleBookings";
 
@@ -70,19 +72,19 @@ const ArchiveConfirmationModal: FC<ArchiveConfirmationModalProps> = ({
             </p>
           )}
           <div className="flex justify-end space-x-3">
-            <button
+            <Button
               onClick={onClose}
               className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleConfirm}
               disabled={loading}
               className="px-4 py-2 rounded bg-primary-main hover:bg-primary-dark text-white dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
             >
               {loading ? "Archiving..." : "Archive"}
-            </button>
+            </Button>
           </div>
         </>
       </div>

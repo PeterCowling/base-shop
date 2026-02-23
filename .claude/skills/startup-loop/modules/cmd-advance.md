@@ -208,6 +208,49 @@ ls docs/business-os/strategy/<BIZ>/lp-other-products-prompt.md 2>/dev/null
 
 ---
 
+### GATE-WEBSITE-DO-01: WEBSITE-01 Active handover to DO fact-find
+
+**Gate ID**: GATE-WEBSITE-DO-01 (Hard)
+**Trigger**: Before advancing from `WEBSITE` container to `DO` when `launch-surface=pre-website`.
+
+**Rule**: WEBSITE-01 is not considered handoff-complete until its active first-build contract has been converted into a DO fact-find artifact.
+
+**Check (filesystem-only):**
+
+```bash
+# Check 1: WEBSITE-01 first-build contract is Active
+grep -l "Status: Active" docs/business-os/strategy/<BIZ>/site-v1-builder-prompt.user.md 2>/dev/null
+
+# Check 2: strategy index row is also Active (authoritative gate row)
+grep "Site V1 Builder Prompt" docs/business-os/strategy/<BIZ>/index.user.md | grep "Active"
+
+# Check 3: DO handover fact-find exists and is ready
+grep -l "Status: Ready-for-planning" docs/plans/<biz>-website-v1-first-build/fact-find.md 2>/dev/null
+```
+
+**Decision table:**
+
+| WEBSITE-01 contract status | WEBSITE first-build fact-find status | Gate result | Action |
+|---|---|---|---|
+| Missing or `Draft` | — | `blocked` | Run WEBSITE-01 prompt handoff first |
+| `Active` | Missing or not `Ready-for-planning` | `blocked` | Dispatch `/lp-do-fact-find` with WEBSITE first-build alias |
+| `Active` | `Ready-for-planning` | `pass` | Continue DO progression (`/lp-do-plan`), then `/lp-do-build` only after `plan.md` is `Status: Active` |
+
+**When blocked (WEBSITE-01 missing/draft):**
+- `blocking_reason`: `GATE-WEBSITE-DO-01: WEBSITE-01 first-build contract is not Active. DO handover requires an active site-v1-builder-prompt artifact.`
+- `next_action`: `Run docs/business-os/workflow-prompts/_templates/website-first-build-framework-prompt.md and save docs/business-os/strategy/<BIZ>/site-v1-builder-prompt.user.md with Status: Active, then re-run /startup-loop advance --business <BIZ>.`
+
+**When blocked (needs DO fact-find handover):**
+- `blocking_reason`: `GATE-WEBSITE-DO-01: WEBSITE-01 is Active but DO fact-find handover has not been executed.`
+- `next_action`: `Run /lp-do-fact-find --website-first-build-backlog --biz <BIZ> --feature-slug <biz>-website-v1-first-build --source docs/business-os/strategy/<BIZ>/site-v1-builder-prompt.user.md, then re-run /startup-loop advance --business <BIZ>.`
+- `required_output_path`: `docs/plans/<biz>-website-v1-first-build/fact-find.md`
+
+**Pass contract note:**
+- Passing this gate authorizes DO planning entry (`/lp-do-plan`) only.
+- `/lp-do-build` remains blocked until `docs/plans/<biz>-website-v1-first-build/plan.md` exists and is `Status: Active`.
+
+---
+
 ### S10 Phase 1 Weekly Advance Dispatch
 
 **Trigger**: S10 weekly advance (Phase 1 default route).

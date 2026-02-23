@@ -2,6 +2,8 @@
 import React, { type FC, useCallback, useMemo, useState } from "react";
 import { ref, remove, set } from "firebase/database";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useSalesOrders } from "../../../hooks/data/bar/useSalesOrders";
 import { useBleeperMutations } from "../../../hooks/mutations/useBleeperMutations";
 import { useOrderActions } from "../../../hooks/orchestrations/bar/actions/mutations/useOrderActions";
@@ -113,8 +115,8 @@ const SalesScreen: FC = React.memo(() => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-50 via-zinc-100 to-zinc-200 font-body dark:bg-darkBg dark:text-darkAccentGreen dark:from-darkBg dark:via-darkBg dark:to-darkBg">
       {/* --- Top control bar --- */}
-      <div className="sticky top-0 z-10 flex items-center justify-end gap-2 bg-white/80 px-4 py-2 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-md dark:bg-darkSurface/80 dark:supports-[backdrop-filter]:bg-darkSurface/60">
-        <button
+      <div className="sticky top-0 z-10 flex items-center justify-end gap-2 bg-white/60 px-4 py-2 backdrop-blur shadow-md dark:bg-darkSurface/60">
+        <Button
           onClick={handleRecallLastOrder}
           disabled={!lastRemovedOrder}
           className="rounded px-4 py-2 text-sm font-semibold text-white shadow transition
@@ -122,9 +124,9 @@ const SalesScreen: FC = React.memo(() => {
                      disabled:cursor-not-allowed disabled:bg-indigo-300"
         >
           Recall
-        </button>
+        </Button>
         {filterButtons.map((btn) => (
-          <button
+          <Button
             key={btn}
             onClick={() => handleFilterChange(btn)}
             className={`rounded px-4 py-2 text-sm font-semibold text-white shadow transition
@@ -135,7 +137,7 @@ const SalesScreen: FC = React.memo(() => {
                         }`}
           >
             {btn}
-          </button>
+          </Button>
         ))}
       </div>
 
@@ -149,7 +151,7 @@ const SalesScreen: FC = React.memo(() => {
             removeSingleItem={handleRemoveSingleItem}
           />
         ) : (
-          <div className="flex h-[60vh] flex-col items-center justify-center">
+          <div className="flex h-60vh flex-col items-center justify-center">
             <p className="text-4xl font-semibold text-gray-700/70 text-shadow-sm dark:text-darkAccentGreen">
               No orders
             </p>

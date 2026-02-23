@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import { type LoanMethod } from "../../types/hooks/data/loansData";
 import { formatDdMm } from "../../utils/dateUtils";
 import { sortCheckoutsData } from "../../utils/sortCheckouts";
@@ -150,36 +152,36 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
 
     return (
       <div className="bg-white border border-gray-400 rounded shadow overflow-x-auto dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
-        <table className="w-full border-collapse" aria-label="checkout table">
-          <thead className="bg-gray-100 dark:bg-darkSurface">
-            <tr>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+        <Table className="w-full border-collapse" aria-label="checkout table">
+          <TableHeader className="bg-gray-100 dark:bg-darkSurface">
+            <TableRow>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
                 DATE
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
                 REF
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
                 NAME
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
                 ROOM
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface w-48">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface w-48">
                 LOANS
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
                 BAG STORAGE
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
                 FRIDGE
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface w-32">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface w-32">
                 COMPLETE
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {sortedGuests.map((guest, index) => {
               const loanEntries = guest.loans
                 ? Object.entries(guest.loans)
@@ -190,20 +192,20 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                   : "bg-gray-50 dark:bg-darkSurface";
 
               return (
-                <tr key={guest._key || guest.guestId} className={rowBg}>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface">
+                <TableRow key={guest._key || guest.guestId} className={rowBg}>
+                  <TableCell className="p-3 border-b border-gray-400 dark:border-darkSurface">
                     {formatDdMm(guest.checkoutDate)}
-                  </td>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface">
+                  </TableCell>
+                  <TableCell className="p-3 border-b border-gray-400 dark:border-darkSurface">
                     {guest.bookingRef}
-                  </td>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface">
+                  </TableCell>
+                  <TableCell className="p-3 border-b border-gray-400 dark:border-darkSurface">
                     {guest.firstName} {guest.lastName}
-                  </td>
-                  <td className="p-3 border-b text-center  border-gray-400 dark:border-darkSurface">
+                  </TableCell>
+                  <TableCell className="p-3 border-b text-center  border-gray-400 dark:border-darkSurface">
                     {guest.roomAllocated}
-                  </td>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface w-48">
+                  </TableCell>
+                  <TableCell className="p-3 border-b border-gray-400 dark:border-darkSurface w-48">
                     {loanEntries.map(([txnKey, loan]) => {
                       console.debug(
                         `[CheckoutTable] Loan entry ${txnKey}:`,
@@ -226,7 +228,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                         loanTitle
                       );
                       return (
-                        <button
+                        <Button
                           key={txnKey}
                           onClick={() =>
                             removeLoanItem(
@@ -242,12 +244,12 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                           title={loanTitle}
                         >
                           <i className={iconClass} aria-hidden="true" />
-                        </button>
+                        </Button>
                       );
                     })}
-                  </td>
+                  </TableCell>
                   {/* Show an icon if the occupant opted into bag storage */}
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface text-center">
+                  <TableCell className="p-3 border-b border-gray-400 dark:border-darkSurface text-center">
                     {guest.bagStorageOptedIn && (
                       <i
                         className="fas fa-suitcase fa-lg text-blue-600"
@@ -255,12 +257,12 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                         aria-hidden="true"
                       />
                     )}
-                  </td>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface">
+                  </TableCell>
+                  <TableCell className="p-3 border-b border-gray-400 dark:border-darkSurface">
                     {guest.fridge || ""}
-                  </td>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface text-center">
-                    <button
+                  </TableCell>
+                  <TableCell className="p-3 border-b border-gray-400 dark:border-darkSurface text-center">
+                    <Button
                       onClick={() =>
                         onComplete(
                           guest.bookingRef,
@@ -286,13 +288,13 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                       }
                     >
                       {guest.isCompleted ? "Completed" : "Complete"}
-                    </button>
-                  </td>
-                </tr>
+                    </Button>
+                  </TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     );
   }

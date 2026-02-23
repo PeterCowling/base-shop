@@ -1,40 +1,40 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy XA shell pending design/i18n overhaul */
 
 import { type ReactNode } from "react";
 import Link from "next/link";
 import {
   BackpackIcon,
   HeartIcon,
-  MoonIcon,
   MagnifyingGlassIcon,
+  MoonIcon,
   PersonIcon,
   SunIcon,
 } from "@radix-ui/react-icons";
 
-import AnnouncementBar from "@acme/ui/components/organisms/AnnouncementBar";
+import { IconButton, Input } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { CurrencySwitcher } from "@acme/design-system/molecules";
-import { Input } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
-import { Grid } from "@acme/design-system/atoms/Grid";
+import { useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
+import AnnouncementBar from "@acme/ui/components/organisms/AnnouncementBar";
 
-import { XaMegaMenu } from "./XaMegaMenu";
-import { XaSupportDock } from "./XaSupportDock.client";
 import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
 import { siteConfig } from "../lib/siteConfig";
 import { toWhatsappHref } from "../lib/support";
 import {
+  formatLabel,
+  getCategoryHref,
   XA_ALLOWED_CATEGORIES,
   XA_ALLOWED_DEPARTMENTS,
   XA_CATEGORY_LABELS,
-  formatLabel,
-  getCategoryHref,
 } from "../lib/xaCatalog";
-import { useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
+
+import { XaMegaMenu } from "./XaMegaMenu";
+import { XaSupportDock } from "./XaSupportDock.client";
 
 const NAV_LABELS = {
   newIn: "New In",
@@ -106,15 +106,17 @@ export function XaShell({ children }: { children: ReactNode }) {
                       </span>
                     ) : null}
                   </Link>
-                  <button
+                  <IconButton
                     type="button"
                     onClick={() => setMode(isDark ? "light" : "dark")}
-                    className="inline-flex min-h-11 min-w-11 items-center justify-center"
+                    variant="ghost"
+                    size="md"
+                    className="min-h-11 min-w-11 rounded-none hover:bg-transparent"
                     aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
                     title={isDark ? "Light mode" : "Dark mode"}
                   >
                     {isDark ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
-                  </button>
+                  </IconButton>
                   <Link
                     href="/account/login"
                     className="inline-flex min-h-11 min-w-11 items-center justify-center"

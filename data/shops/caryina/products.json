@@ -1,0 +1,77 @@
+[
+  {
+    "id": "01KCS72C6YV3PFWJQNF0A4T1P1",
+    "sku": "silk-midi-slip-dress",
+    "title": {
+      "en": "[Placeholder] HBAG Product 01",
+      "de": "[Placeholder] HBAG Product 01",
+      "it": "[Placeholder] HBAG Product 01"
+    },
+    "description": {
+      "en": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
+      "de": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
+      "it": "Placeholder catalog copy. Replace from approved HBAG product content packet."
+    },
+    "price": 16900,
+    "currency": "EUR",
+    "media": [],
+    "shop": "caryina",
+    "status": "active",
+    "row_version": 1,
+    "created_at": "2026-02-23T00:00:00.000Z",
+    "updated_at": "2026-02-23T00:00:00.000Z",
+    "deposit": 0,
+    "forSale": true,
+    "forRental": false
+  },
+  {
+    "id": "01KCS72C6YV3PFWJQNF0A4T1P2",
+    "sku": "cloud-knit-cardigan",
+    "title": {
+      "en": "[Placeholder] HBAG Product 02",
+      "de": "[Placeholder] HBAG Product 02",
+      "it": "[Placeholder] HBAG Product 02"
+    },
+    "description": {
+      "en": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
+      "de": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
+      "it": "Placeholder catalog copy. Replace from approved HBAG product content packet."
+    },
+    "price": 12900,
+    "currency": "EUR",
+    "media": [],
+    "shop": "caryina",
+    "status": "active",
+    "row_version": 1,
+    "created_at": "2026-02-23T00:00:00.000Z",
+    "updated_at": "2026-02-23T00:00:00.000Z",
+    "deposit": 0,
+    "forSale": true,
+    "forRental": false
+  },
+  {
+    "id": "01KCS72C6YV3PFWJQNF0A4T1P3",
+    "sku": "satin-wide-leg-trousers",
+    "title": {
+      "en": "[Placeholder] HBAG Product 03",
+      "de": "[Placeholder] HBAG Product 03",
+      "it": "[Placeholder] HBAG Product 03"
+    },
+    "description": {
+      "en": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
+      "de": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
+      "it": "Placeholder catalog copy. Replace from approved HBAG product content packet."
+    },
+    "price": 13900,
+    "currency": "EUR",
+    "media": [],
+    "shop": "caryina",
+    "status": "active",
+    "row_version": 1,
+    "created_at": "2026-02-23T00:00:00.000Z",
+    "updated_at": "2026-02-23T00:00:00.000Z",
+    "deposit": 0,
+    "forSale": true,
+    "forRental": false
+  }
+]

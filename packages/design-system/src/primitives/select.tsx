@@ -6,25 +6,51 @@ import * as React from "react";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import * as SelectPrimitive from "@radix-ui/react-select";
 
-import { cn } from "../utils/style";
+import { cn, overflowContainmentClass } from "../utils/style";
+
+import { type PrimitiveRadius, type PrimitiveShape, resolveShapeRadiusClass } from "./shape-radius";
 
 export const Select = SelectPrimitive.Root;
 export type SelectProps = SelectPrimitive.SelectProps;
 export const SelectGroup = SelectPrimitive.Group;
 export const SelectValue = SelectPrimitive.Value;
+export interface SelectTriggerProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> {
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
+}
+
+export interface SelectContentProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content> {
+  /** Semantic surface shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
+}
+
 export const SelectTrigger = (
   {
     ref,
     className,
     children,
+    shape,
+    radius,
     ...props
-  }: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
+  }: SelectTriggerProps & {
     ref?: React.Ref<React.ElementRef<typeof SelectPrimitive.Trigger>>;
   }
-) => (<SelectPrimitive.Trigger
+) => {
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
+
+  return (<SelectPrimitive.Trigger
   ref={ref}
   className={cn(
-    "flex h-10 w-full items-center justify-between rounded-md border border-input bg-input px-3 py-2 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    "flex h-10 w-full items-center justify-between border border-input bg-input px-3 py-2 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    shapeRadiusClass,
     "placeholder:text-muted-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     className
@@ -36,22 +62,33 @@ export const SelectTrigger = (
     <ChevronDownIcon className="ms-2 h-4 w-4 opacity-50" />
   </SelectPrimitive.Icon>
 </SelectPrimitive.Trigger>);
-export type SelectTriggerProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>;
+};
 
 export const SelectContent = (
   {
     ref,
     className,
     children,
+    shape,
+    radius,
     ...props
-  }: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content> & {
+  }: SelectContentProps & {
     ref?: React.Ref<React.ElementRef<typeof SelectPrimitive.Content>>;
   }
-) => (<SelectPrimitive.Portal>
+) => {
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
+
+  return (<SelectPrimitive.Portal>
   <SelectPrimitive.Content
     ref={ref}
     className={cn(
-      "min-w-32 overflow-hidden rounded-md border border-border-2 bg-panel p-1 text-foreground shadow-elevation-2", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+      "min-w-32 border border-border-2 bg-panel p-1 text-foreground shadow-elevation-2", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+      overflowContainmentClass("menuSurface"),
+      shapeRadiusClass,
       className
     )}
     {...props}
@@ -61,6 +98,7 @@ export const SelectContent = (
     </SelectPrimitive.Viewport>
   </SelectPrimitive.Content>
 </SelectPrimitive.Portal>);
+};
 
 export const SelectLabel = (
   {

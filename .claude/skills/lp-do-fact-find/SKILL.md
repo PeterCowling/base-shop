@@ -127,7 +127,7 @@ Deliverable-Family: <code-change | message | doc | spreadsheet | multi>
 Deliverable-Channel: <none | email | whatsapp>
 Deliverable-Subtype: <none | product-brief | marketing-asset>
 Deliverable-Type: <canonical downstream type>
-Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-upgrade-backlog | startup-loop-gap-fill>
+Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-first-build-backlog | website-upgrade-backlog | startup-loop-gap-fill>
 Loop-Gap-Trigger: <none | block | bottleneck | feedback>
 ```
 
@@ -139,6 +139,8 @@ Compatibility rule:
 - Family/channel/subtype exist to reduce intake branching, not to break existing consumers.
 
 Hard branches:
+- If invocation includes `--website-first-build-backlog`, set `Startup-Deliverable-Alias: website-first-build-backlog` before routing.
+- If `Startup-Deliverable-Alias: website-first-build-backlog`, route immediately to the website-first-build module and skip generic business/code checklists that do not apply.
 - If `Startup-Deliverable-Alias: website-upgrade-backlog`, route immediately to the website-upgrade module and skip generic business/code checklists that do not apply.
 - If `Startup-Deliverable-Alias: startup-loop-gap-fill`, route immediately to the loop-gap module. Set `Loop-Gap-Trigger` from the argument (block/bottleneck/feedback) or ask one targeted question. Output path and outcome (briefing vs planning) are determined by the module based on trigger type. Skip Phase 6 standard output paths — use trigger-specific paths defined in the module.
 
@@ -149,6 +151,7 @@ Load only the relevant module file(s):
 - Planning + `code` track: `modules/outcome-a-code.md`
 - Planning + `business-artifact` track: `modules/outcome-a-business.md`
 - Planning + `mixed` track: load both code and business modules; merge evidence
+- Planning + `website-first-build-backlog` alias: `modules/outcome-a-website-first-build.md`
 - Planning + `website-upgrade-backlog` alias: `modules/outcome-a-website-upgrade.md`
 - Any trigger + `startup-loop-gap-fill` alias: `modules/outcome-a-loop-gap.md` (outcome and output path determined by trigger type inside the module)
 - Briefing outcome: `modules/outcome-b-briefing.md`

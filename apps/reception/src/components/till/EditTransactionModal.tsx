@@ -1,6 +1,8 @@
 import { type FC, memo, useCallback, useState } from "react";
 import { z } from "zod";
 
+import { Button } from "@acme/design-system/atoms";
+
 import useCorrectTransaction from "../../hooks/mutations/useCorrectTransaction";
 import { type Transaction } from "../../types/component/Till";
 import { showToast } from "../../utils/toastUtils";
@@ -157,12 +159,12 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
             onSubmit={handleSave}
             submitLabel={loading ? "Saving..." : "Record correction"}
           />
-          <button
+          <Button
             onClick={onClose}
             className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-darkSurface dark:text-darkAccentGreen"
           >
             Cancel
-          </button>
+          </Button>
         </div>
       </div>
     </div>

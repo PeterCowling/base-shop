@@ -1,5 +1,9 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy return policy content pending design/i18n overhaul */
 import { Section } from "@acme/design-system/atoms/Section";
+import { LegalEntityCard } from "@acme/ui/components/organisms/LegalEntityCard";
+import { PolicyContent } from "@acme/ui/components/organisms/PolicyContent";
+import { PolicyPageIntro } from "@acme/ui/components/organisms/PolicyPageIntro";
+import { PolicySection } from "@acme/ui/components/organisms/PolicySection";
+
 import { siteConfig } from "../../../lib/siteConfig";
 
 export default function ReturnPolicyPage() {
@@ -9,18 +13,22 @@ export default function ReturnPolicyPage() {
   return (
     <main className="sf-content">
       <Section padding="wide">
-        <h1 className="text-2xl font-semibold">Return policy</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Returns for {productDescriptor} purchased from {brandName} are handled under this policy.
-          This page is a starter template. Replace placeholders with your legal entity details.
-        </p>
+        <PolicyPageIntro
+          title="Return policy"
+          description={`Returns for ${productDescriptor} purchased from ${brandName} are handled under this policy. This page is a starter template. Replace placeholders with your legal entity details.`}
+          descriptionClassName="mt-2 text-sm text-muted-foreground max-w-none"
+        />
       </Section>
 
       <Section padding="default">
-        <div className="space-y-6">
+        <PolicyContent className="space-y-6">
           {siteConfig.showLegalInfo || siteConfig.showContactInfo ? (
-            <div className="rounded-lg border p-4 text-sm">
-              <div className="font-semibold">Company</div>
+            <LegalEntityCard
+              title="Company"
+              className="rounded-lg border p-4 text-sm"
+              titleClassName="font-semibold text-inherit"
+              bodyClassName="space-y-0"
+            >
               {siteConfig.showLegalInfo && siteConfig.legalEntityName ? (
                 <div>{siteConfig.legalEntityName}</div>
               ) : null}
@@ -30,17 +38,19 @@ export default function ReturnPolicyPage() {
               {siteConfig.showContactInfo && siteConfig.supportEmail ? (
                 <div>Support: {siteConfig.supportEmail}</div>
               ) : null}
-            </div>
+            </LegalEntityCard>
           ) : null}
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Refundable vs non-refundable</h2>
+          <PolicySection
+            title="Refundable vs non-refundable"
+            titleClassName="text-lg font-semibold"
+          >
             <div className="overflow-x-auto rounded-lg border">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b bg-muted/30">
-                    <th className="p-3 text-left">Situation</th>
-                    <th className="p-3 text-left">Outcome</th>
+                    <th className="p-3 text-start">Situation</th>
+                    <th className="p-3 text-start">Outcome</th>
                   </tr>
                 </thead>
                 <tbody className="text-muted-foreground">
@@ -59,10 +69,9 @@ export default function ReturnPolicyPage() {
                 </tbody>
               </table>
             </div>
-          </div>
+          </PolicySection>
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Contact</h2>
+          <PolicySection title="Contact" titleClassName="text-lg font-semibold">
             {siteConfig.showContactInfo ? (
               <p className="text-sm text-muted-foreground">
                 {siteConfig.showSocialLinks && siteConfig.whatsappNumber ? (
@@ -75,8 +84,8 @@ export default function ReturnPolicyPage() {
                 Contact details are available on request.
               </p>
             )}
-          </div>
-        </div>
+          </PolicySection>
+        </PolicyContent>
       </Section>
     </main>
   );

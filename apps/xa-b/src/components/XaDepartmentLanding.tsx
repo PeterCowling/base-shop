@@ -1,21 +1,21 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy department landing pending design/i18n overhaul */
 import Link from "next/link";
 
-import { Section } from "@acme/design-system/atoms/Section";
 import { Grid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
 
-import { XaProductCard } from "./XaProductCard";
 import { XA_PRODUCTS } from "../lib/demoData";
+import { siteConfig } from "../lib/siteConfig";
 import {
-  XA_ALLOWED_CATEGORIES,
-  XA_CATEGORY_LABELS,
-  XA_SUBCATEGORIES,
   filterByDepartment,
   formatLabel,
   getTrendingDesigners,
+  XA_ALLOWED_CATEGORIES,
+  XA_CATEGORY_LABELS,
+  XA_SUBCATEGORIES,
 } from "../lib/xaCatalog";
 import type { XaDepartment } from "../lib/xaTypes";
-import { siteConfig } from "../lib/siteConfig";
+
+import { XaProductCard } from "./XaProductCard";
 
 export function XaDepartmentLanding({ department }: { department: XaDepartment }) {
   const departmentLabel = formatLabel(department);

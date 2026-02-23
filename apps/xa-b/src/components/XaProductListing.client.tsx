@@ -1,19 +1,30 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy listing page pending design/i18n overhaul */
 
 import { useState } from "react";
 
-import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
-import { Section } from "@acme/design-system/atoms/Section";
-import { Breadcrumbs } from "@acme/design-system/molecules";
 import {
+  Button,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@acme/design-system/atoms";
+import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Breadcrumbs } from "@acme/design-system/molecules";
+
+import { useCart } from "../contexts/XaCartContext";
+import type { XaProduct } from "../lib/demoData";
+import { siteConfig } from "../lib/siteConfig";
+import { useXaListingFilters } from "../lib/useXaListingFilters";
+import { ALL_FILTER_KEYS, type SortKey } from "../lib/xaFilters";
+import type { XaCategory } from "../lib/xaTypes";
+
+import { XaFilterChip } from "./XaFilterChip";
+import { XaFiltersDrawer } from "./XaFiltersDrawer.client";
+import { XaProductCard } from "./XaProductCard";
 
 const SORT_LABELS: Record<string, string> = {
   newest: "Newest",
@@ -22,16 +33,6 @@ const SORT_LABELS: Record<string, string> = {
   "best-sellers": "Best sellers",
   "biggest-discount": "Biggest discount",
 };
-
-import { XaProductCard } from "./XaProductCard";
-import { XaFiltersDrawer } from "./XaFiltersDrawer.client";
-import { XaFilterChip } from "./XaFilterChip";
-import type { XaProduct } from "../lib/demoData";
-import type { XaCategory } from "../lib/xaTypes";
-import { ALL_FILTER_KEYS, type SortKey } from "../lib/xaFilters";
-import { useCart } from "../contexts/XaCartContext";
-import { useXaListingFilters } from "../lib/useXaListingFilters";
-import { siteConfig } from "../lib/siteConfig";
 
 export function XaProductListing({
   title,
@@ -163,13 +164,15 @@ export function XaProductListing({
         {filteredProducts.length === 0 ? (
           <div className="col-span-full flex flex-col items-center gap-4 py-16 text-center">
             <p className="text-sm text-muted-foreground">No items match your current filters.</p>
-            <button
+            <Button
               type="button"
               onClick={clearAppliedFilters}
-              className="rounded-none border border-border-2 px-4 py-2 text-xs uppercase tracking-widest hover:bg-muted"
+              variant="outline"
+              size="sm"
+              className="h-auto min-h-0 rounded-none border border-border-2 px-4 py-2 text-xs uppercase tracking-widest hover:bg-muted"
             >
               Clear filters
-            </button>
+            </Button>
           </div>
         ) : (
           <LayoutGrid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>

@@ -5,8 +5,6 @@ import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 
 import { initTheme } from "@acme/platform-core/utils";
 
-import { Header } from "@/components/Header";
-
 const heading = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "500"],
@@ -23,8 +21,10 @@ const body = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  // i18n-exempt -- CARYINA-101 [ttl=2026-12-31]
   title: "Caryina",
-  description: "",
+  // i18n-exempt -- CARYINA-102 [ttl=2026-12-31]
+  description: "Caryina storefront V1 framework",
 };
 
 export default function RootLayout({
@@ -42,10 +42,7 @@ export default function RootLayout({
         <meta name="color-scheme" content="light dark" />
         <script dangerouslySetInnerHTML={{ __html: initTheme }} />
       </head>
-      <body className="min-h-dvh antialiased">
-        <Header />
-        {children}
-      </body>
+      <body className="min-h-dvh antialiased">{children}</body>
     </html>
   );
 }

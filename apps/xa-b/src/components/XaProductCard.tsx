@@ -1,22 +1,22 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy product card pending design/i18n overhaul */
 
 import { useState } from "react";
 import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
-import { IconButton, Price } from "@acme/design-system/atoms";
-import { ProductBadge } from "@acme/design-system/atoms";
+import { Button, IconButton, Price , ProductBadge } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { Inline } from "@acme/design-system/primitives/Inline";
-import { XaFadeImage } from "./XaFadeImage";
-import type { XaProduct } from "../lib/demoData";
+import { cn } from "@acme/design-system/utils/style";
+
 import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
+import type { XaProduct } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
 import { formatLabel, getDesignerName } from "../lib/xaCatalog";
-import { cn } from "@acme/design-system/utils/style";
+
+import { XaFadeImage } from "./XaFadeImage";
 
 export function XaProductCard({ product }: { product: XaProduct }) {
   const [touched, setTouched] = useState(false);
@@ -165,10 +165,12 @@ export function XaProductCard({ product }: { product: XaProduct }) {
             </div>
             <Inline gap={2} wrap>
               {product.sizes.map((size) => (
-                <button
+                <Button
                   key={`${product.slug}-size-${size}`}
                   type="button"
-                  className="rounded-full border px-2 py-1 text-[11px] font-medium hover:bg-muted"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto min-h-0 rounded-full border px-2 py-1 text-[11px] font-medium hover:bg-muted"
                   onClick={(event) => {
                     event.preventDefault();
                     void dispatch({
@@ -180,7 +182,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
                   }}
                 >
                   {size}
-                </button>
+                </Button>
               ))}
             </Inline>
           </div>

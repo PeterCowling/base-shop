@@ -43,7 +43,8 @@ BOS sync actions write only to local files (docs, strategy plans, startup baseli
 | S6B | Channel strategy + GTM | Persist channel artifact under `docs/business-os/startup-baselines/<BIZ>/` | Autonomous |
 | S4 | Baseline merge | Write candidate baseline snapshot (local only, no manifest commit) | Autonomous |
 | S5A | Prioritize | None (`side_effects: none` in loop-spec) | Autonomous |
-| S6 | Site-upgrade synthesis | Update `latest.user.md` pointer | Autonomous |
+| WEBSITE-01 | L1 first build framework | Persist/refresh `site-v1-builder-prompt.user.md` and strategy index status | Autonomous |
+| WEBSITE-02 | Site-upgrade synthesis | Update `latest.user.md` pointer | Autonomous |
 
 ### Guarded Stages
 
@@ -129,7 +130,7 @@ Use these criteria when adding new stages or actions to the loop:
 
 All 26 stages from loop-spec.yaml are classified:
 
-- **Autonomous:** 10 stages — ASSESSMENT-09, MEASURE-01, MEASURE-02, S2, S2B, S3, S6B, S4, S5A, S6
+- **Autonomous:** 11 stages — ASSESSMENT-09, MEASURE-01, MEASURE-02, S2, S2B, S3, S6B, S4, S5A, WEBSITE-01, WEBSITE-02
 - **Guarded (BOS sync):** 4 stages — S5B, DO, S9B, S10
 - **Prohibited:** 0 stages (prohibited applies to actions, not stages)
 

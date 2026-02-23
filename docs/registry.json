@@ -264,6 +264,12 @@
     "domain": "Repo"
   },
   {
+    "path": "docs/briefs/integration-testing-adequacy-briefing.md",
+    "type": "Briefing",
+    "status": "Active",
+    "domain": "Repo / Testing"
+  },
+  {
     "path": "docs/briefs/octorate-automation-solution.md",
     "type": "Solution Brief",
     "status": "Complete",
@@ -2256,6 +2262,12 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md",
+    "type": "Site-Build-Brief",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/strategy/HBAG/solution-select.user.md",
     "type": "Reference",
     "status": "Active",
@@ -2826,6 +2838,12 @@
     "domain": "Business-OS"
   },
   {
+    "path": "docs/business-os/workflow-prompts/_templates/website-first-build-framework-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
     "path": "docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md",
     "type": "Template",
     "status": "Reference",
@@ -3300,6 +3318,48 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/_archive/hbag-brandmark-particle-animation/artifacts/decision-log.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/_archive/hbag-brandmark-particle-animation/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/_archive/hbag-brandmark-particle-animation/critique-history.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/_archive/hbag-brandmark-particle-animation/design-spec.md",
+    "type": "Design-Spec",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/_archive/hbag-brandmark-particle-animation/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning (historical; build cycle closed 2026-02-23)",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/_archive/hbag-brandmark-particle-animation/plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/_archive/hbag-brandmark-particle-animation/results-review.user.md",
+    "type": "Results-Review",
+    "status": "Complete",
+    "domain": null
+  },
+  {
     "path": "docs/plans/_archive/reception-turbopack-migration/critique-history.md",
     "type": "Critique-History",
     "status": "Reference",
@@ -3339,6 +3399,42 @@
     "path": "docs/plans/_archive/startup-loop-standing-info-gap-analysis/proposed-target-model.md",
     "type": "Architecture-Decision-Record",
     "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/_archive/startup-loop-website-first-build-contract/artifacts/website-contract-drift-matrix.md",
+    "type": "Build-Artifact",
+    "status": "Complete",
+    "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/plans/_archive/startup-loop-website-first-build-contract/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/_archive/startup-loop-website-first-build-contract/decisions/website-01-process-registry-treatment.md",
+    "type": "Decision",
+    "status": "Approved",
+    "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/plans/_archive/startup-loop-website-first-build-contract/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/plans/_archive/startup-loop-website-first-build-contract/plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/plans/_archive/startup-loop-website-first-build-contract/results-review.user.md",
+    "type": "Results-Review",
+    "status": "Complete",
     "domain": null
   },
   {
@@ -5100,6 +5196,36 @@
     "domain": "Infra"
   },
   {
+    "path": "docs/plans/archive/xa-client-readiness-plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Commerce"
+  },
+  {
+    "path": "docs/plans/archive/xa-coverage-80-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Commerce"
+  },
+  {
+    "path": "docs/plans/archive/xa-deploy-readiness-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Archived",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/archive/xa-publish-privacy-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Historical",
+    "domain": "Commerce / Deploy"
+  },
+  {
+    "path": "docs/plans/archive/xa-publish-privacy-plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Commerce / Deploy"
+  },
+  {
     "path": "docs/plans/brik-activities-program/fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
@@ -5550,6 +5676,24 @@
     "domain": "CI-Deploy"
   },
   {
+    "path": "docs/plans/cms-webpack-build-oom/critique-history.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/cms-webpack-build-oom/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/cms-webpack-build-oom/plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "Infra"
+  },
+  {
     "path": "docs/plans/cochlearfit-deployment-readiness/email-setup.md",
     "type": "Setup-Runbook",
     "status": "Draft",
@@ -5626,6 +5770,18 @@
     "type": "Plan",
     "status": "Draft",
     "domain": "Dashboard / Upgrade"
+  },
+  {
+    "path": "docs/plans/design-system-depth-and-guardrail-hardening/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/design-system-depth-and-guardrail-hardening/plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/email-autodraft-workflow-design.md",
@@ -5728,6 +5884,18 @@
     "type": "Audit",
     "status": "Reference",
     "domain": null
+  },
+  {
+    "path": "docs/plans/hbag-website-v1-first-build/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/hbag-website-v1-first-build/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/head-pet-outcome-contract-plan.md",
@@ -5833,6 +6001,12 @@
   },
   {
     "path": "docs/plans/ideas-readiness-tooling-prerequisites-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-readiness-xa-outcome-contract-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
@@ -5986,6 +6160,30 @@
     "type": "Decision-Memo",
     "status": "Accepted",
     "domain": "Prime"
+  },
+  {
+    "path": "docs/plans/reception-ds-centralization-growth-first/artifacts/migration-inventory.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-ds-centralization-growth-first/artifacts/parity-results/README.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-ds-centralization-growth-first/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-ds-centralization-growth-first/plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
@@ -6336,6 +6534,12 @@
     "domain": "Infra"
   },
   {
+    "path": "docs/plans/turbopack-full-migration/artifacts/migration-matrix.md",
+    "type": "Plan-Artifact",
+    "status": "Draft",
+    "domain": "Infra"
+  },
+  {
     "path": "docs/plans/turbopack-full-migration/critique-history.md",
     "type": "Plan",
     "status": "Active",
@@ -6400,6 +6604,66 @@
     "type": "Plan",
     "status": "Complete",
     "domain": "UI"
+  },
+  {
+    "path": "docs/plans/unit-test-sufficiency-audit/artifacts/test-config-strategy.md",
+    "type": "Decision-Record",
+    "status": "Approved",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/unit-test-sufficiency-audit/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/unit-test-sufficiency-audit/plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/xa-ui-centralization-no-regression/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-ui-ux-review/design-review.md",
+    "type": "Design-Review",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/xa-uploader-usability-hardening/artifacts/scope-decision.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-usability-hardening/artifacts/usability-baseline.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-usability-hardening/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-usability-hardening/plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-v2-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Commerce"
   },
   {
     "path": "docs/product-pipeline/3pl-shipping-approach-decision-v0.md",

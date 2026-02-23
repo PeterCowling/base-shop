@@ -18,7 +18,7 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | Artifact | Path | Status | Last-reviewed |
 |----------|------|--------|---------------|
 | Brand Dossier | `docs/business-os/strategy/HBAG/brand-dossier.user.md` | Active | 2026-02-23 |
-| Site V1 Builder Prompt | `docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md` | Draft | 2026-02-23 |
+| Site V1 Builder Prompt | `docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md` | Active | 2026-02-23 |
 | Competitive Positioning | `docs/business-os/strategy/HBAG/competitive-positioning.user.md` | — | — |
 | Messaging Hierarchy | `docs/business-os/strategy/HBAG/messaging-hierarchy.user.md` | — | — |
 | Creative Voice Brief | `docs/business-os/strategy/HBAG/creative-voice-brief.user.md` | — | — |

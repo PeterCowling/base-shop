@@ -1,4 +1,3 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy middleware copy pending i18n overhaul */
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 

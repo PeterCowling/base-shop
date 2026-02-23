@@ -1,5 +1,7 @@
 import { memo, type ReactElement, useCallback, useMemo, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useLoanData } from "../../context/LoanDataContext";
 import { type LoanMethod } from "../../types/hooks/data/loansData";
 
@@ -100,13 +102,13 @@ function KeycardsModalComponent({
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md dark:bg-darkSurface">
         <div className="px-4 py-2 border-b flex justify-between items-center">
           <h2 className="font-bold text-lg dark:text-darkAccentGreen">Keycards on Loan</h2>
-          <button
+          <Button
             onClick={onClose}
             aria-label="Close"
             className="text-gray-600 hover:text-gray-700 dark:text-darkAccentGreen"
           >
             &times;
-          </button>
+          </Button>
         </div>
         <div className="p-4 space-y-2">
           <>
@@ -145,12 +147,12 @@ function KeycardsModalComponent({
                         <option value="ID">ID</option>
                       </select>
                       {current !== txn.depositType && (
-                        <button
+                        <Button
                           onClick={() => handleSave(txn.id)}
                           className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded"
                         >
                           Save
-                        </button>
+                        </Button>
                       )}
                     </li>
                   );

@@ -1,5 +1,7 @@
 import { memo } from "react";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import type { Transaction } from "../../types/component/Till";
 import { formatItalyDateTimeFromIso } from "../../utils/dateUtils";
 
@@ -25,39 +27,39 @@ const TransactionTable = memo(function TransactionTable({
   onRowDelete,
 }: TransactionTableProps) {
   return (
-    <table className="min-w-full border-collapse text-xs sm:text-sm md:text-base dark:text-darkAccentGreen">
-      <thead>
-        <tr>
-          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+    <Table className="min-w-full border-collapse text-xs sm:text-sm md:text-base dark:text-darkAccentGreen">
+      <TableHeader>
+        <TableRow>
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             TIMESTAMP
-          </th>
-          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          </TableHead>
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             AMOUNT
-          </th>
-          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          </TableHead>
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             METHOD
-          </th>
-          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          </TableHead>
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             TYPE
-          </th>
-          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          </TableHead>
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             STAFF
-          </th>
-          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          </TableHead>
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             ITEM CATEGORY
-          </th>
-          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          </TableHead>
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             OCCUPANT
-          </th>
-          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          </TableHead>
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             BOOKING
-          </th>
-          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          </TableHead>
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             DESCRIPTION
-          </th>
-        </tr>
-      </thead>
-      <tbody>
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         {transactions.map((t, index) => {
           const displayDate = t.timestamp
             ? formatItalyDateTimeFromIso(t.timestamp)
@@ -75,7 +77,7 @@ const TransactionTable = memo(function TransactionTable({
           const summary = summariseDescription(t.description);
           if (summary === null) return null;
           return (
-            <tr
+            <TableRow
               key={t.txnId}
               onClick={
                 isDeleteMode
@@ -88,8 +90,8 @@ const TransactionTable = memo(function TransactionTable({
                 isDeleteMode || isEditMode ? " cursor-pointer" : ""
               } ${rowTextClass}`}
             >
-              <td className="p-3">{displayDate}</td>
-              <td className="p-3">
+              <TableCell className="p-3">{displayDate}</TableCell>
+              <TableCell className="p-3">
                 {t.amount < 0 ? (
                   <span className="text-error-main">
                     €{t.amount.toFixed(2)}
@@ -99,14 +101,14 @@ const TransactionTable = memo(function TransactionTable({
                     €{t.amount.toFixed(2)}
                   </span>
                 )}
-              </td>
-              <td className="p-3">{t.method || "-"}</td>
-              <td className="p-3">{t.type || "-"}</td>
-              <td className="p-3">{t.user_name || shiftOwner || "-"}</td>
-              <td className="p-3 whitespace-pre-line">
+              </TableCell>
+              <TableCell className="p-3">{t.method || "-"}</TableCell>
+              <TableCell className="p-3">{t.type || "-"}</TableCell>
+              <TableCell className="p-3">{t.user_name || shiftOwner || "-"}</TableCell>
+              <TableCell className="p-3 whitespace-pre-line">
                 {formatItemCategory(category || "-")}
-              </td>
-              <td className="p-3">
+              </TableCell>
+              <TableCell className="p-3">
                 {t.occupantId ? (
                   t.occupantId.startsWith("occ_") ? (
                     <CopyOccupantIdPill occupantId={t.occupantId} />
@@ -116,36 +118,34 @@ const TransactionTable = memo(function TransactionTable({
                 ) : (
                   "-"
                 )}
-              </td>
-              <td className="p-3">
+              </TableCell>
+              <TableCell className="p-3">
                 {t.bookingRef ? (
                   <CopyBookingRefPill bookingRef={t.bookingRef} />
                 ) : (
                   "-"
                 )}
-              </td>
-              <td className="p-3 whitespace-pre-line">
+              </TableCell>
+              <TableCell className="p-3 whitespace-pre-line">
                 {summary ? summary.split(/\s+/).join("\n") : "-"}
                 {isVoided && (
-                  // eslint-disable-next-line ds/no-raw-typography -- transaction status badge custom text size [DS-05]
-                  <div className="text-[11px] text-error-main no-underline">
+                  <div className="text-11px text-error-main no-underline">
                     VOIDED{t.voidReason ? `: ${t.voidReason}` : ""}
                   </div>
                 )}
                 {isCorrection && (
-                  // eslint-disable-next-line ds/no-raw-typography -- transaction status badge custom text size [DS-05]
-                  <div className="text-[11px] text-warning-main no-underline">
+                  <div className="text-11px text-warning-main no-underline">
                     CORRECTION
                     {t.correctionKind ? ` (${t.correctionKind})` : ""}
                     {t.correctionReason ? `: ${t.correctionReason}` : ""}
                   </div>
                 )}
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           );
         })}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 });
 

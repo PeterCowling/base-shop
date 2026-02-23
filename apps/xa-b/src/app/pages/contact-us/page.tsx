@@ -1,12 +1,15 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy contact-us content pending design/i18n overhaul */
 import Link from "next/link";
 
-import { Section } from "@acme/design-system/atoms/Section";
-import { Grid } from "@acme/design-system/atoms/Grid";
 import { Button } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
 import { Stack } from "@acme/design-system/primitives/Stack";
+import { FeedbackPreferenceCard } from "@acme/ui/components/organisms/FeedbackPreferenceCard";
+import { NewsletterSignupCard } from "@acme/ui/components/organisms/NewsletterSignupCard";
+import { SupportTwoColumnLayout } from "@acme/ui/components/organisms/SupportTwoColumnLayout";
 
 import { siteConfig } from "../../../lib/siteConfig";
+
 import { ContactUsEnquiryForm } from "./ContactUsEnquiryForm";
 import { ContactUsGeneralContacts } from "./ContactUsGeneralContacts";
 import { ContactUsSidebar } from "./ContactUsSidebar";
@@ -37,10 +40,7 @@ export default function ContactUsPage() {
   return (
     <main className="sf-content">
       <Section padding="wide">
-        <div className="grid gap-12 md:grid-cols-[260px_1fr]">
-          <ContactUsSidebar activeHref="/pages/contact-us" />
-
-          <div className="min-w-0 space-y-10">
+        <SupportTwoColumnLayout sidebar={<ContactUsSidebar activeHref="/pages/contact-us" />}>
             <div className="space-y-3">
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 Customer Service
@@ -176,31 +176,20 @@ export default function ContactUsPage() {
             </Grid>
 
             <Grid columns={{ base: 1, md: 2 }} gap={6}>
-              <div className="rounded-lg border p-6 space-y-3">
-                <div className="text-lg font-semibold">Tell us what you think</div>
-                <p className="text-sm text-muted-foreground">Was this page helpful?</p>
-                <div className="flex flex-wrap gap-3">
-                  <Button variant="outline">Yes</Button>
-                  <Button variant="outline">Not really</Button>
-                </div>
-              </div>
-              <div className="rounded-lg border p-6 space-y-3">
-                <div className="text-lg font-semibold">Never miss a thing</div>
-                <p className="text-sm text-muted-foreground">
-                  Sign up for promotions, new arrivals in {siteConfig.catalog.labelPlural}, stock updates, and more.
-                </p>
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full rounded border px-3 py-2 text-sm"
-                  />
-                  <Button className="sm:w-auto">Sign up</Button>
-                </div>
-              </div>
+              <FeedbackPreferenceCard
+                title="Tell us what you think"
+                question="Was this page helpful?"
+                options={[
+                  { id: "yes", label: "Yes" },
+                  { id: "not-really", label: "Not really" },
+                ]}
+              />
+              <NewsletterSignupCard
+                title="Never miss a thing"
+                description={`Sign up for promotions, new arrivals in ${siteConfig.catalog.labelPlural}, stock updates, and more.`}
+              />
             </Grid>
-          </div>
-        </div>
+        </SupportTwoColumnLayout>
       </Section>
     </main>
   );

@@ -5,6 +5,7 @@ import {
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/solid";
 
+import { Button } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
 
@@ -59,15 +60,15 @@ function ConfirmModal({
       maxWidth="max-w-sm"
       footer={
         <Cluster gap={3} className="w-full">
-          <button
+          <Button
             type="button"
             onClick={onCancel}
             disabled={isProcessing}
             className="min-h-11 min-w-11 flex-1 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-gray-700"
           >
             {cancelLabel}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={handleConfirm}
             disabled={isProcessing}
@@ -78,7 +79,7 @@ function ConfirmModal({
             }`}
           >
             {isProcessing ? "Processing..." : confirmLabel}
-          </button>
+          </Button>
         </Cluster>
       }
     >

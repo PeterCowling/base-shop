@@ -144,10 +144,10 @@ node octorate-export-final-working.mjs
 - **Extraction Timing**: Run both before entering S3 workflow
 - **Validation**: Confirm data freshness (<7 days for calendar, <30 days for bookings)
 
-### S6: Channel Strategy
+### SELL-01: Channel Strategy
 - **Use Case**: Pricing analysis, occupancy forecasting, rate optimization
 - **Data Source**: Batch 2 (price matrix, availability)
-- **Refresh**: Weekly during active S6-DO loop
+- **Refresh**: Weekly during active SELL-DO loop
 
 ### Post-DO: Post-Launch Monitoring
 - **Weekly Refresh**: Calendar/inventory data (Batch 2)

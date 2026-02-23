@@ -1,12 +1,11 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy checkout success page pending i18n overhaul */
+import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 
-import { Section } from "@acme/design-system/atoms/Section";
 import { Button } from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
 
 import { findOrderByNumber } from "../../../lib/ordersStore";
 

@@ -1,4 +1,3 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] contact content uses legacy wording/palette pending design/i18n overhaul */
 export const customerServiceSidebarLinks = [
   { label: "Contact us", href: "/pages/contact-us" },
   { label: "How to shop", href: "/pages/how-to-shop" },

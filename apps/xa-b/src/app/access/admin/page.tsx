@@ -1,10 +1,9 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy gate palette and copy pending design/i18n overhaul */
 import type { CSSProperties } from "react";
 import { IBM_Plex_Mono, Work_Sans } from "next/font/google";
 import Link from "next/link";
 
-import AdminConsole from "./AdminConsole.client";
 import styles from "./admin.module.css";
+import AdminConsole from "./AdminConsole.client";
 
 const display = Work_Sans({
   subsets: ["latin"],

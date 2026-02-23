@@ -1,12 +1,11 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy tracking page pending i18n overhaul */
 
 import * as React from "react";
 import Link from "next/link";
 
-import { Section } from "@acme/design-system/atoms/Section";
 import { Button, Input, Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
 import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 
 import { findOrdersByNumberAndEmail, orderTotal } from "../../../lib/ordersStore";

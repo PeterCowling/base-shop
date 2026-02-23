@@ -140,9 +140,9 @@ node octorate-export-final-working.mjs
 - Calendar/inventory: <7 days freshness
 - Booking value: <30 days freshness
 
-### S6: Channel Strategy
+### SELL-01: Channel Strategy
 - Use Batch 2 for pricing analysis, occupancy forecasting, rate optimization
-- Weekly refresh during S6-DO loop
+- Weekly refresh during SELL-DO loop
 
 ### Post-DO: Post-Launch Monitoring
 - Weekly: Batch 2 (calendar/inventory)

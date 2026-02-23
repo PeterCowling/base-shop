@@ -1,6 +1,8 @@
 /* File: src/components/bar/orderTaking/ProductGrid.tsx */
 import React, { type FC, useCallback, useMemo } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import useGridColumns from "../../../hooks/orchestrations/bar/actions/clientActions/useGridColumns";
 import { type Product, type ProductGridProps } from "../../../types/bar/BarTypes";
 
@@ -22,12 +24,12 @@ const ProductItem: FC<ProductItemProps> = React.memo(({ product, onAdd }) => {
   );
 
   return (
-    <button
+    <Button
       type="button"
       onClick={handleClick}
       className={[
         "relative flex aspect-square w-full select-none items-center justify-center overflow-hidden rounded-lg text-center font-semibold shadow-md motion-safe:transition-transform",
-        "hover:scale-[1.03] active:scale-[0.97]",
+        "hover:scale-[1.03] active:scale-97",
         product.bgColor || "bg-surface-2",
         "dark:bg-darkSurface",
       ].join(" ")}
@@ -37,11 +39,10 @@ const ProductItem: FC<ProductItemProps> = React.memo(({ product, onAdd }) => {
       </span>
 
       {/* Price badge */}
-      {/* eslint-disable-next-line ds/no-raw-typography -- POS product badge custom text size [DS-05] */}
-      <span className="absolute bottom-1 right-1 rounded bg-black/50 px-1.5 py-0.5 text-[0.65rem] font-bold text-white">
+      <span className="absolute bottom-1 right-1 rounded bg-black/50 px-1.5 py-0.5 text-0_65rem font-bold text-white">
         €{product.price.toFixed(2)}
       </span>
-    </button>
+    </Button>
   );
 });
 ProductItem.displayName = "ProductItem";
@@ -66,7 +67,7 @@ const ProductGrid: FC<ProductGridProps> = React.memo(
 
     return (
       <div
-        className="grid max-h-[38rem] gap-2 overflow-y-auto overscroll-contain py-3 dark:bg-darkBg"
+        className="grid max-h-38rem gap-2 overflow-y-auto overscroll-contain py-3 dark:bg-darkBg"
         style={gridTemplate}
       >
         {products.map((p) => (

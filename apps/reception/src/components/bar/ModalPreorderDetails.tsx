@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useCompletedOrder } from "../../hooks/data/bar/useCompletedOrder";
 import { usePlacedPreorder } from "../../hooks/data/bar/usePlacedPreorder";
 import type { PlacedPreorder } from "../../types/bar/BarTypes";
@@ -324,12 +326,12 @@ const ModalPreorderDetails: React.FC<ModalPreorderDetailsProps> = ({
         role="dialog"
         aria-modal="true"
       >
-        <button
+        <Button
           onClick={onClose}
           className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 dark:text-darkAccentGreen"
         >
           ✕
-        </button>
+        </Button>
         <h2 className="text-xl font-bold mb-4">Preorders for {guestName}</h2>
         {!checkInDateObj && (
           <p className="text-red-500 mb-2 dark:text-darkAccentOrange">

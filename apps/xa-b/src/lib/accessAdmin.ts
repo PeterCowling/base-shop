@@ -1,5 +1,5 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy access admin utilities pending security review */
 import crypto from "node:crypto";
+
 import type { NextResponse } from "next/server";
 
 import { createAccessToken, verifyAccessToken } from "./accessTokens";

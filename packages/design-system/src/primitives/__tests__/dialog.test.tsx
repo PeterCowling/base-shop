@@ -5,6 +5,7 @@ import { configure,render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 
+import { overflowContainmentClass } from "../../utils/style";
 import {
   Dialog,
   DialogContent,
@@ -135,5 +136,28 @@ describe("Dialog", () => {
 
     await user.click(screen.getByRole("button", { name: /close/i }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("applies shared containment and keeps a bleed-prone fixture reproducible without it", () => {
+    render(
+      <Dialog open>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Containment title</DialogTitle>
+            <DialogDescription>Containment description</DialogDescription>
+          </DialogHeader>
+          Body
+        </DialogContent>
+      </Dialog>
+    );
+
+    const content = screen.getByRole("dialog");
+    expect(content).toHaveClass(overflowContainmentClass("dialogContent"));
+
+    // Failure fixture: no containment class applied.
+    const bleedFixture = "w-screen overflow-visible";
+    expect(bleedFixture).toContain("w-screen");
+    expect(bleedFixture).toContain("overflow-visible");
+    expect(bleedFixture).not.toContain(overflowContainmentClass("dialogContent"));
   });
 });

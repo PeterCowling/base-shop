@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import { useAuth } from "../../context/AuthContext";
 import { useCashCountsData } from "../../hooks/data/useCashCountsData";
 import { useVarianceThresholds } from "../../hooks/data/useVarianceThresholds";
@@ -113,7 +115,7 @@ export default function VarianceHeatMap() {
                 className="mt-1 w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
               />
             </label>
-            <button
+            <Button
               type="button"
               disabled={thresholdsLoading || pendingSave}
               onClick={() => {
@@ -149,7 +151,7 @@ export default function VarianceHeatMap() {
               className="h-9 rounded bg-primary-main px-4 text-sm text-white hover:bg-primary-dark disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
             >
               Save thresholds
-            </button>
+            </Button>
           </div>
           {showReauth && (
             <PasswordReauthModal
@@ -187,42 +189,42 @@ export default function VarianceHeatMap() {
         </div>
       )}
       <div className="overflow-x-auto dark:bg-darkBg dark:text-darkAccentGreen">
-      <table className="border-collapse w-full dark:bg-darkSurface dark:text-darkAccentGreen">
-        <thead>
-          <tr>
-            <th className="p-2 border dark:border-darkSurface">Employee</th>
+      <Table className="border-collapse w-full dark:bg-darkSurface dark:text-darkAccentGreen">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="p-2 border dark:border-darkSurface">Employee</TableHead>
             {shiftLabels.map((label) => (
-              <th
+              <TableHead
                 key={label}
                 className="p-2 border whitespace-nowrap dark:border-darkSurface"
               >
                 {label}
-              </th>
+              </TableHead>
             ))}
-          </tr>
-        </thead>
-        <tbody>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {users.map((user) => (
-            <tr key={user} className="text-center">
-              <td className="p-2 border text-start font-medium dark:border-darkSurface">
+            <TableRow key={user} className="text-center">
+              <TableCell className="p-2 border text-start font-medium dark:border-darkSurface">
                 {user}
-              </td>
+              </TableCell>
               {shiftLabels.map((label, idx) => {
                 const diff = userMap[user]?.[idx + 1];
                 const cellClass = getVarianceClass(diff);
                 return (
-                  <td
+                  <TableCell
                     key={`${user}-${label}`}
                     className={`p-2 border dark:border-darkSurface ${cellClass}`}
                   >
                     {diff !== undefined ? diff.toFixed(2) : "-"}
-                  </td>
+                  </TableCell>
                 );
               })}
-            </tr>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
       </div>
     </div>
   );

@@ -12,6 +12,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import useActivitiesData from "../../hooks/data/useActivitiesData";
 import type { CsvExportRow } from "../../hooks/mutations/useBulkBookingActions";
 import useExtendedGuestFinancialData from "../../hooks/orchestrations/useExtendedGuestFinancialData";
@@ -58,8 +60,7 @@ const ActivityList: React.FC<ActivityListProps> = ({ activities }) => {
           key={`${act.timestamp ?? "no-time"}-${act.code}-${act.who ?? ""}`}
           className="flex gap-1"
         >
-          {/* eslint-disable-next-line ds/no-raw-typography -- POS display custom text size [DS-05] */}
-          <span className="font-mono text-[11px] text-gray-700 dark:text-darkAccentGreen">
+          <span className="font-mono text-11px text-gray-700 dark:text-darkAccentGreen">
             {act.timestamp?.slice(0, 19) ?? ""}
           </span>
           <span className="font-medium">code {act.code}</span>
@@ -89,8 +90,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
     <ul className="space-y-1 text-sm leading-relaxed">
       {sorted.map((tx) => (
         <li key={`${tx.timestamp}-${tx.type}-${tx.amount}`} className="flex gap-1">
-          {/* eslint-disable-next-line ds/no-raw-typography -- POS display custom text size [DS-05] */}
-          <span className="font-mono text-[11px] text-gray-700 dark:text-darkAccentGreen">
+          <span className="font-mono text-11px text-gray-700 dark:text-darkAccentGreen">
             {tx.timestamp.slice(0, 19)}
           </span>
           <span className="font-medium">{tx.type}</span>
@@ -264,12 +264,11 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
       />
 
       <div className="w-full overflow-x-auto rounded-md border border-gray-400 bg-white shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
-        <table className="min-w-full border-collapse text-sm">
-          {/* eslint-disable-next-line ds/no-raw-zindex -- sticky table header requires z-index [DS-05] */}
-          <thead className="sticky top-0 z-[1] bg-gray-50/90 backdrop-blur dark:bg-darkSurface">
-            <tr>
+        <Table className="min-w-full border-collapse text-sm">
+          <TableHeader className="sticky top-0 z-1 bg-gray-50/90 backdrop-blur dark:bg-darkSurface">
+            <TableRow>
               {/* Select all checkbox */}
-              <th scope="col" className="w-10 border-b border-gray-400 px-3 py-2 dark:border-darkSurface">
+              <TableHead scope="col" className="w-10 border-b border-gray-400 px-3 py-2 dark:border-darkSurface">
                 <input
                   type="checkbox"
                   checked={allSelected}
@@ -277,8 +276,8 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                   className="h-4 w-4 rounded border-gray-300 text-blue-600 focus-visible:focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
                   aria-label="Select all rows"
                 />
-              </th>
-              <th scope="col" className="w-10 border-b border-gray-400 dark:border-darkSurface" />
+              </TableHead>
+              <TableHead scope="col" className="w-10 border-b border-gray-400 dark:border-darkSurface" />
               <SortableHeader
               label="Name"
               field="name"
@@ -331,10 +330,10 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
               onSort={handleHeaderClick}
               className="text-end"
             />
-          </tr>
-        </thead>
+          </TableRow>
+        </TableHeader>
 
-          <tbody className="divide-y divide-gray-100 dark:divide-darkSurface">
+          <TableBody className="divide-y divide-gray-100 dark:divide-darkSurface">
             {sortedGuests.map((guest) => {
               const isExpanded = !!expandedRows[guest.guestId];
               const isSelected = selectedRows.has(guest.bookingRef);
@@ -344,9 +343,9 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
               return (
                 <Fragment key={guest._key ?? guest.guestId}>
                   {/* -------  Main row  ------- */}
-                  <tr className={`transition-colors ${isSelected ? "bg-blue-50 dark:bg-blue-900/20" : "odd:bg-white even:bg-gray-50 hover:bg-primary-50 dark:odd:bg-darkSurface dark:even:bg-darkSurface"}`}>
+                  <TableRow className={`transition-colors ${isSelected ? "bg-blue-50 dark:bg-blue-900/20" : "odd:bg-white even:bg-gray-50 hover:bg-primary-50 dark:odd:bg-darkSurface dark:even:bg-darkSurface"}`}>
                     {/* Row selection checkbox */}
-                    <td className="px-3 py-2 text-center">
+                    <TableCell className="px-3 py-2 text-center">
                       <input
                         type="checkbox"
                         checked={isSelected}
@@ -354,10 +353,10 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                         className="h-4 w-4 rounded border-gray-300 text-blue-600 focus-visible:focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
                         aria-label={`Select booking ${guest.bookingRef}`}
                       />
-                    </td>
+                    </TableCell>
                     {/* Expand / collapse cell */}
-                    <td className="px-3 py-2 text-center">
-                      <button
+                    <TableCell className="px-3 py-2 text-center">
+                      <Button
                       type="button"
                       onClick={() => toggleRow(guest.guestId)}
                       className="rounded-full p-0.5 hover:bg-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600"
@@ -370,24 +369,24 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                       <span className="sr-only">
                         {isExpanded ? "Collapse" : "Expand"} row
                       </span>
-                    </button>
-                  </td>
+                    </Button>
+                  </TableCell>
 
                   {/* Name */}
-                  <td className="px-3 py-2">
+                  <TableCell className="px-3 py-2">
                     {guest.firstName} {guest.lastName}
-                  </td>
+                  </TableCell>
 
                   {/* Booking ref */}
-                  <td className="px-3 py-2">
+                  <TableCell className="px-3 py-2">
                     <CopyableBookingRef text={guest.bookingRef} />
-                  </td>
+                  </TableCell>
 
                   {/* Activity level */}
-                  <td className="px-3 py-2">{guest.activityLevel}</td>
+                  <TableCell className="px-3 py-2">{guest.activityLevel}</TableCell>
 
                   {/* Refund status badge */}
-                  <td className="px-3 py-2">
+                  <TableCell className="px-3 py-2">
                     {guest.refundStatus === "Non-Refundable" ? (
                       <span className="inline-flex rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
                         Non‑Refundable
@@ -397,7 +396,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                         Refundable
                       </span>
                     )}
-                  </td>
+                  </TableCell>
 
                   {/* Editable balance */}
                   <EditableBalanceCell
@@ -406,20 +405,20 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                   />
 
                   {/* Paid */}
-                  <td className="px-3 py-2 text-end">
+                  <TableCell className="px-3 py-2 text-end">
                     €{guest.totalPaid.toFixed(2)}
-                  </td>
+                  </TableCell>
 
                   {/* Adjust */}
-                  <td className="px-3 py-2 text-end">
+                  <TableCell className="px-3 py-2 text-end">
                     €{guest.totalAdjust.toFixed(2)}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
 
                   {/* -------  Expanded details  ------- */}
                   {isExpanded && (
-                    <tr className="bg-gray-50 even:bg-white dark:bg-darkSurface dark:even:bg-darkSurface">
-                      <td colSpan={9} className="px-4 py-4">
+                    <TableRow className="bg-gray-50 even:bg-white dark:bg-darkSurface dark:even:bg-darkSurface">
+                      <TableCell colSpan={9} className="px-4 py-4">
                       <div className="flex flex-col gap-4 md:flex-row">
                         <section className="md:w-1/2">
                           <h4 className="mb-1 flex items-center gap-1 text-sm font-semibold text-gray-700 dark:text-darkAccentGreen">
@@ -447,14 +446,14 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                           <TransactionList transactions={guest.transactions} />
                         </section>
                       </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 )}
               </Fragment>
             );
           })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </>
   );

@@ -1,7 +1,6 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy filters data pending i18n overhaul */
 import type { XaProduct } from "./demoData";
-import type { XaCategory } from "./xaTypes";
 import { formatLabel, getDesignerName } from "./xaCatalog";
+import type { XaCategory } from "./xaTypes";
 
 export type SortKey =
   | "newest"

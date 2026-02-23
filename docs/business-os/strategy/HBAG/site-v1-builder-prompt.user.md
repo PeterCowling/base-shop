@@ -1,6 +1,6 @@
 ---
 Type: Site-Build-Brief
-Status: Draft
+Status: Active
 Business-Unit: HBAG
 Business-Name: Caryina
 Created: 2026-02-23
@@ -145,9 +145,9 @@ These artifacts are source-of-truth inputs for the build. Consult them; do not r
 
 | Layer | Source path |
 |------|-------------|
-| BrandMark particle animation fact-find | `docs/plans/hbag-brandmark-particle-animation/fact-find.md` |
-| BrandMark particle animation design-spec | `docs/plans/hbag-brandmark-particle-animation/design-spec.md` |
-| Prototype/perf evidence | `docs/plans/hbag-brandmark-particle-animation/artifacts/prototype/` |
+| BrandMark particle animation fact-find | `docs/plans/_archive/hbag-brandmark-particle-animation/fact-find.md` |
+| BrandMark particle animation design-spec | `docs/plans/_archive/hbag-brandmark-particle-animation/design-spec.md` |
+| Prototype/perf evidence | `docs/plans/_archive/hbag-brandmark-particle-animation/artifacts/prototype/` |
 
 ## Operational Defaults (Use Unless Operator Overrides)
 
@@ -228,7 +228,7 @@ These artifacts are source-of-truth inputs for the build. Consult them; do not r
 4. Bind Caryina theme and brand primitives across reused routes/components.
 5. Bootstrap `data/shops/caryina/` using the default minimum dataset.
 6. Wire baseline analytics scope (or explicit stubs if blocked).
-7. Integrate already-specified BrandMark animation work per `docs/plans/hbag-brandmark-particle-animation/design-spec.md`.
+7. Integrate already-specified BrandMark animation work per `docs/plans/_archive/hbag-brandmark-particle-animation/design-spec.md`.
 8. Validate with targeted typecheck/lint/tests for changed packages.
 
 ## Traceability Convention (Required)

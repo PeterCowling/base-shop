@@ -1,4 +1,4 @@
-import { fireEvent,render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { ActionSheet } from '../ActionSheet';
 
@@ -89,6 +89,31 @@ describe('ActionSheet', () => {
     expect(dialog).toHaveAttribute('aria-labelledby', 'action-sheet-title');
   });
 
+  it('uses semantic token classes for sheet chrome', () => {
+    const { container } = render(<ActionSheet {...defaultProps} />);
+
+    const dialog = screen.getByRole('dialog');
+    const backdrop = container.querySelector('.bg-fg\\/50');
+    const sheet = screen.getByText('Sheet content').closest('div.relative');
+    const header = screen
+      .getByRole('heading', { name: 'Test Action Sheet' })
+      .closest('div.sticky');
+    const closeButton = screen.getByLabelText('Close');
+
+    expect(dialog).toHaveClass('fixed', 'inset-0', 'z-50');
+    expect(backdrop).toHaveClass('bg-fg/50');
+    expect(sheet).toHaveClass('overflow-hidden', 'rounded-t-2xl', 'bg-surface-2');
+    expect(header).toHaveClass('border-border-2', 'bg-surface-2');
+    expect(screen.getByText('Test description')).toHaveClass(
+      'text-muted-foreground'
+    );
+    expect(closeButton).toHaveClass(
+      'text-muted-foreground',
+      'hover:bg-surface-1',
+      'hover:text-foreground'
+    );
+  });
+
   it('applies custom className', () => {
     const { container } = render(
       <ActionSheet {...defaultProps} className="custom-class" />
@@ -96,5 +121,16 @@ describe('ActionSheet', () => {
 
     const sheet = container.querySelector('.custom-class');
     expect(sheet).toBeInTheDocument();
+  });
+
+  it('locks body scroll when open and restores it when closed', () => {
+    const { rerender, unmount } = render(<ActionSheet {...defaultProps} />);
+    expect(document.body.style.overflow).toBe('hidden');
+
+    rerender(<ActionSheet {...defaultProps} isOpen={false} />);
+    expect(document.body.style.overflow).toBe('');
+
+    unmount();
+    expect(document.body.style.overflow).toBe('');
   });
 });

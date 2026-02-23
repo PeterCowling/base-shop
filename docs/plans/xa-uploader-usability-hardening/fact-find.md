@@ -97,6 +97,9 @@ Investigate concrete improvements that make `apps/xa-uploader` easier and safer 
   - Local filesystem access for product CSV and images (`apps/xa-uploader/src/lib/catalogCsv.ts:118`, `apps/xa-uploader/src/lib/submissionZip.ts:117`).
   - External upload endpoint URL supplied by operator/env (`apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts:522`).
   - Sync route currently depends on script paths that are missing in the repo (`apps/xa-uploader/src/app/api/catalog/sync/route.ts:91` and `apps/xa-uploader/src/app/api/catalog/sync/route.ts:92`; no corresponding files under `scripts/src/xa/` as of 2026-02-23).
+- Security/performance boundaries:
+  - Auth boundary is cookie-token session validation (`apps/xa-uploader/src/lib/uploaderAuth.ts:86`).
+  - Hot path is submission ZIP generation: recursive file discovery + image dimension reads + compression in request flow (`apps/xa-uploader/src/lib/submissionZip.ts:94`, `apps/xa-uploader/src/lib/fileGlob.ts:28`, `apps/xa-uploader/src/lib/imageDimensions.ts:158`).
 - Downstream dependents:
   - Sync writes into storefront catalog outputs (`apps/xa-uploader/src/lib/catalogStorefront.server.ts:56`).
   - Submission ZIP handoff affects downstream upload/fulfillment process (`apps/xa-uploader/src/lib/submissionZip.ts:168`).
@@ -116,7 +119,7 @@ Investigate concrete improvements that make `apps/xa-uploader` easier and safer 
 - Compliance constraints:
   - Internal auth token/session controls must remain intact.
 - Measurement hooks:
-  - No instrumentation for task completion time, failed save rate, or sync retry rate found.
+  - No uploader telemetry hooks found for task completion time, failed save rate, or sync retry rate (`rg -n "\\b(logEvent|trackEvent|analytics|telemetry|metric|posthog|ga4|amplitude)\\b" apps/xa-uploader/src` returned no matches on 2026-02-23).
 
 ### Test Landscape
 #### Test Infrastructure
@@ -187,8 +190,8 @@ Investigate concrete improvements that make `apps/xa-uploader` easier and safer 
   - A: Not explicitly; only submission actions set positive status text.
   - Evidence: `apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts:285`, `apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts:329`, `apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts:423`.
 - Q: Can scoped package tests leak into unrelated workspaces via the default script path?
-  - A: Yes. Running package `test` with `--testPathPattern` matched unrelated suites and failed on `apps/xa-b` in this workspace.
-  - Evidence: `apps/xa-uploader/package.json:8` and observed command behavior on 2026-02-23.
+  - A: Yes. The package script executes workspace-level governed Jest (`pnpm -w run test:governed`), which invokes `pnpm exec jest` from repo root, so path patterns can match outside uploader if not tightly scoped.
+  - Evidence: `apps/xa-uploader/package.json:10`, `scripts/tests/run-governed-test.sh:189`.
 
 ### Open (User Input Needed)
 - Q: Should uploader remain token-only auth, or move to shared identity/session UX for operators?
@@ -258,6 +261,7 @@ Investigate concrete improvements that make `apps/xa-uploader` easier and safer 
 |---|---|---|---|
 | Sync remains nonfunctional due missing script dependencies | High | High | Decide sync ownership boundary, then enforce script path preflight + tests. |
 | UX hardening changes accidentally break CSV/schema compatibility | Medium | High | Keep schema as source of truth; add contract tests for mapping and save API. |
+| ZIP generation latency/memory spikes on large image sets degrade operator experience | Medium | Medium | Add timing/size telemetry and add guardrails/feedback for long-running exports. |
 | Error copy remains mixed machine/English in zh locale | High | Medium | Normalize API/user-facing error mapping and localize schema messages. |
 | Success feedback improvements become inconsistent across panels | Medium | Medium | Introduce unified status/notification model in hook + panel-level render contracts. |
 | Test commands continue to leak to unrelated packages in developer workflow | Medium | Medium | Document and enforce app-local jest invocation in validation contracts. |
@@ -303,7 +307,7 @@ Investigate concrete improvements that make `apps/xa-uploader` easier and safer 
 - Impact kept conservative due missing baseline instrumentation.
 
 ### Remaining Assumptions
-- Operator priorities for “most usable” are inferred, not directly captured.
+- Operator priorities for "most usable" are inferred, not directly captured.
 - Sync feature is assumed to remain in scope until owner confirms otherwise.
 
 ## Planning Readiness

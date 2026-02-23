@@ -1,24 +1,24 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] XA mega menu uses legacy patterns pending design/i18n overhaul */
 
 import Link from "next/link";
 
-import { Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
+import { Button, Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
 import { Stack } from "@acme/design-system/primitives/Stack";
 
-import { XaFadeImage } from "./XaFadeImage";
 import { XA_PRODUCTS } from "../lib/demoData";
+import { siteConfig } from "../lib/siteConfig";
 import {
-  XA_ALLOWED_CATEGORIES,
-  XA_CATEGORY_LABELS,
   formatLabel,
   getDesignerName,
   getTrendingDesigners,
+  XA_ALLOWED_CATEGORIES,
+  XA_CATEGORY_LABELS,
   XA_SUBCATEGORIES,
 } from "../lib/xaCatalog";
 import type { XaDepartment } from "../lib/xaTypes";
-import { siteConfig } from "../lib/siteConfig";
+
+import { XaFadeImage } from "./XaFadeImage";
 
 export function XaMegaMenu({
   label,
@@ -44,12 +44,14 @@ export function XaMegaMenu({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button
+        <Button
           type="button"
-          className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
+          variant="ghost"
+          size="lg"
+          className="inline-flex h-auto min-h-11 min-w-11 items-center rounded-none bg-transparent px-0 py-0 text-sm font-medium hover:bg-transparent hover:underline"
         >
           {label}
-        </button>
+        </Button>
       </PopoverTrigger>
       <PopoverContent
         align="center"

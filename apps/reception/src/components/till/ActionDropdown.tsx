@@ -1,5 +1,6 @@
 import { type FC } from "react";
 
+import { Button } from "@acme/design-system/atoms";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,11 +37,11 @@ const ActionDropdown: FC<ActionDropdownProps> = ({
       onOpenChange={(next) => setOpenId(next ? id : null)}
     >
       <DropdownMenuTrigger asChild>
-        <button
+        <Button
           className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark dark:bg-darkSurface"
         >
           {label}
-        </button>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         {options.map((opt) => (

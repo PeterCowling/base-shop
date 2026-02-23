@@ -1,6 +1,8 @@
 /* File: src/components/checkins/header/EditButton.tsx */
 import { type FC, memo, type MouseEventHandler } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 /**
  * This component renders a small edit icon button.
  * We keep it slightly smaller than the one in the provided screenshot
@@ -18,7 +20,7 @@ interface EditButtonProps {
 
 const EditButton: FC<EditButtonProps> = ({ onClick }) => {
   return (
-    <button
+    <Button
       type="button"
       onClick={onClick}
       className="flex items-center justify-center border border-gray-400 rounded-md p-1 hover:bg-gray-100 active:bg-gray-200"
@@ -41,7 +43,7 @@ const EditButton: FC<EditButtonProps> = ({ onClick }) => {
              3.732z"
         />
       </svg>
-    </button>
+    </Button>
   );
 };
 

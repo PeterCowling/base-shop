@@ -2,6 +2,8 @@ import type { ReactElement } from "react";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
+import { Button } from "@acme/design-system/atoms";
+
 // Import your existing date utilities
 import {
   buildQuickDateRange,
@@ -39,10 +41,10 @@ function DateSelector({
     (label: string, day: string): ReactElement => {
       const isSelected = selectedDate === day;
       return (
-        <button
+        <Button
           key={day}
           className={`
-            px-4 py-2 border rounded text-sm font-medium w-[100px] text-center transition-colors
+            px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors
             ${
               isSelected
                 ? "bg-primary-main text-primary-fg border-primary-main dark:bg-darkAccentGreen dark:text-darkBg dark:border-darkAccentGreen"
@@ -52,7 +54,7 @@ function DateSelector({
           onClick={() => onDateChange(day)}
         >
           {label}
-        </button>
+        </Button>
       );
     },
     [selectedDate, onDateChange]
@@ -113,13 +115,13 @@ function DateSelector({
   if (isPete) {
     toggleAndCalendar = (
       <div className="relative">
-        <button
+        <Button
           ref={toggleRef}
           className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate || "Select a date"}
-        </button>
+        </Button>
         {isCalendarOpen && (
           <div
             ref={calendarRef}

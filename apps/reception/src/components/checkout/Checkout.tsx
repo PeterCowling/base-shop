@@ -313,7 +313,7 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
   }
 
   return (
-    <div className="min-h-[80vh] p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="w-full mb-6 text-5xl text-center font-heading text-primary-main">
         CHECKOUTS
       </h1>

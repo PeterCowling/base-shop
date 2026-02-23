@@ -9,6 +9,8 @@ import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
+import { Button } from "@acme/design-system/atoms";
+
 // We'll derive the logged-in user from AuthContext.
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -44,10 +46,10 @@ export default function DateSelectorCI({
   function renderButton(label: string, day: string): ReactElement {
     const isSelected = selectedDate === day;
     return (
-      <button
+      <Button
         key={day}
         className={`
-          px-4 py-2 border rounded text-sm font-medium w-[100px] text-center
+          px-4 py-2 border rounded text-sm font-medium w-100px text-center
           transition-colors
           ${
             isSelected
@@ -58,7 +60,7 @@ export default function DateSelectorCI({
         onClick={() => onDateChange(day)}
       >
         {label}
-      </button>
+      </Button>
     );
   }
 
@@ -104,13 +106,13 @@ export default function DateSelectorCI({
   if (isPete) {
     datePickerToggle = (
       <div className="relative">
-        <button
+        <Button
           ref={toggleRef}
           className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate ? formatDateForInput(selectedDate) : "Select a date"}
-        </button>
+        </Button>
         {isCalendarOpen && (
           <div
             ref={calendarRef}

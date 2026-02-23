@@ -6,6 +6,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { Button } from "@acme/design-system/atoms";
+
 import useGuestDetails from "../../hooks/data/useGuestDetails";
 import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations";
 import useBookingEmail from "../../services/useBookingEmail";
@@ -90,15 +92,15 @@ function EmailBookingButton({
 
   return (
     <div className="relative flex items-center">
-      <button
+      <Button
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className="min-h-[55px] px-4 bg-primary-main text-white rounded-md hover:bg-primary-dark transition-colors flex items-center justify-center"
+        className="min-h-55px px-4 bg-primary-main text-white rounded-md hover:bg-primary-dark transition-colors flex items-center justify-center"
         title="Create booking email draft"
       >
         {loading ? "..." : <FontAwesomeIcon icon={faThLarge} size="lg" />}
-      </button>
+      </Button>
 
       {/* --- “i” badge centred horizontally at the top of the button --- */}
       <CustomTooltip
@@ -111,7 +113,7 @@ function EmailBookingButton({
             "absolute top-0 left-1/2",
             "-translate-x-8 -translate-y-8",
             "w-4 h-4 rounded-full bg-warning-main text-white",
-            "flex items-center justify-center text-[10px] cursor-default select-none",
+            "flex items-center justify-center text-10px cursor-default select-none",
           ].join(" ")}
         >
           i

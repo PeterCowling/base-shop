@@ -7,7 +7,7 @@
     "start": "next start -p 3018",
     "lint": "eslint . --no-error-on-unmatched-pattern",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "pnpm -w run test:governed -- jest -- --config ./jest.config.cjs --passWithNoTests"
+    "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs --passWithNoTests"
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",

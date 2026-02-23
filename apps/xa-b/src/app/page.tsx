@@ -1,11 +1,10 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy landing content pending design/i18n overhaul */
-import Link from "next/link";
 import type { SVGProps } from "react";
+import Link from "next/link";
 import { ChatBubbleIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 
-import { Section } from "@acme/design-system/atoms/Section";
-import { Grid } from "@acme/design-system/atoms/Grid";
 import { Button } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
 
 import { XaFadeImage } from "../components/XaFadeImage";
 import { XaProductCard } from "../components/XaProductCard";

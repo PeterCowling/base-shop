@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Button, Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms";
+
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import BookingRow from "../BookingRow";
 import DateSelector from "../DateSelector";
@@ -104,45 +106,45 @@ const CheckinsTableView: React.FC<Props> = ({
             Rooms are Set
           </span>
         ) : (
-            <button
+            <Button
             type="button"
             onClick={() => setRoomsReady(true)}
             className="px-3 py-2 bg-green-600 text-white rounded dark:bg-darkAccentGreen dark:text-darkBg"
           >
             Rooms Ready
-          </button>
+          </Button>
         )}
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full table-auto border border-gray-400 text-sm">
+        <Table className="w-full table-auto border border-gray-400 text-sm">
           <TableHeader />
-          <tbody>
+          <TableBody>
             {loading && (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   colSpan={12}
                   className="p-4 text-center italic text-gray-600 dark:text-darkAccentGreen"
                 >
                   Loading...
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )}
             {!loading && error != null && (
-              <tr>
-                <td colSpan={12} className="p-4 text-center text-error-main dark:text-darkAccentOrange">
+              <TableRow>
+                <TableCell colSpan={12} className="p-4 text-center text-error-main dark:text-darkAccentOrange">
                   Error: {String(error)}
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )}
             {!loading && error == null && finalSortedData.length === 0 && (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   colSpan={12}
                   className="p-4 text-center italic text-gray-600 dark:text-darkAccentGreen"
                 >
                   No checkins found for this date.
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )}
             {!loading &&
               error == null &&
@@ -161,8 +163,8 @@ const CheckinsTableView: React.FC<Props> = ({
                   isCancelled={bookingStatuses[guestRow.bookingRef] === "cancelled"}
                 />
               ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
     {selectedBooking && (

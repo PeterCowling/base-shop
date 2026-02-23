@@ -101,4 +101,22 @@ describe("Input primitive", () => {
     const input = screen.getByLabelText("Email");
     expect(input).toHaveAttribute("id", "custom-id");
   });
+
+  it("supports shape and radius variants with radius precedence", () => {
+    const { rerender } = render(<Input aria-label="Shape input" shape="square" />);
+    const input = screen.getByRole("textbox", { name: "Shape input" });
+    expect(input).toHaveClass("rounded-none");
+
+    rerender(<Input aria-label="Shape input" shape="pill" />);
+    expect(screen.getByRole("textbox", { name: "Shape input" })).toHaveClass(
+      "rounded-full",
+    );
+
+    rerender(<Input aria-label="Shape input" shape="square" radius="lg" />);
+    const radiusOverrideInput = screen.getByRole("textbox", {
+      name: "Shape input",
+    });
+    expect(radiusOverrideInput).toHaveClass("rounded-lg");
+    expect(radiusOverrideInput).not.toHaveClass("rounded-none");
+  });
 });

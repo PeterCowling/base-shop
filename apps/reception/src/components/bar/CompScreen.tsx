@@ -98,8 +98,8 @@ const TableSection: React.FC<TableSectionProps> = ({
   return (
     <section className="space-y-4">
       <h2 className="text-xl font-semibold text-primary-main dark:text-darkAccentGreen">{title}</h2>
-      <div className="max-h-[60vh] overflow-auto rounded-lg shadow focus-visible:ring-1 focus-visible:ring-info-main dark:bg-darkSurface">
-        <table className="min-w-[40rem] w-full table-auto text-start text-sm">
+      <div className="max-h-60vh overflow-auto rounded-lg shadow focus-visible:ring-1 focus-visible:ring-info-main dark:bg-darkSurface">
+        <table className="min-w-40rem w-full table-auto text-start text-sm">
           <thead
             className={`sticky top-0 bg-${accentBase} text-white uppercase ${accent === 'error' ? 'dark:bg-darkAccentOrange' : 'dark:bg-darkSurface'}`}
           >
@@ -248,7 +248,7 @@ const CompScreen: React.FC = React.memo(() => {
 
   if (allLoading) {
     return (
-      <div className="flex min-h-[30vh] items-center justify-center">
+      <div className="flex min-h-30vh items-center justify-center">
         <svg
           className="h-8 w-8 animate-spin text-primary-main"
           viewBox="0 0 24 24"

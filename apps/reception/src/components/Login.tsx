@@ -10,6 +10,8 @@ import {
   useState,
 } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useAuth } from "../context/AuthContext";
 import { readJson, removeItem,writeJson } from "../lib/offline/storage";
 import { useReceptionTheme } from "../providers/ReceptionThemeProvider";
@@ -336,13 +338,13 @@ function Login({ onLoginSuccess }: LoginProps) {
               </p>
             )}
 
-            <button
+            <Button
               type="submit"
               disabled={resetStatus === "sending"}
               className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus-visible:dark:focus:ring-offset-gray-900"
             >
               {resetStatus === "sending" ? "Sending..." : "Send reset link"}
-            </button>
+            </Button>
           </form>
         ) : (
           <div className="mt-6">
@@ -354,13 +356,13 @@ function Login({ onLoginSuccess }: LoginProps) {
           </div>
         )}
 
-        <button
+        <Button
           type="button"
           onClick={handleBackToLogin}
           className="mt-4 w-full text-center text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
         >
           Back to sign in
-        </button>
+        </Button>
 
         <LoginFooter />
       </LoginContainer>
@@ -397,13 +399,13 @@ function Login({ onLoginSuccess }: LoginProps) {
           />
         </div>
 
-        <button
+        <Button
           type="button"
           onClick={handleSkipPinSetup}
           className="mt-4 w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 focus-visible:dark:focus:ring-offset-gray-900"
         >
           Skip for now
-        </button>
+        </Button>
 
         <LoginFooter />
       </LoginContainer>
@@ -452,13 +454,13 @@ function Login({ onLoginSuccess }: LoginProps) {
           </p>
         )}
 
-        <button
+        <Button
           type="button"
           onClick={handleClearDevicePin}
           className="mt-4 w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 focus-visible:dark:focus:ring-offset-gray-900"
         >
           Sign in with email instead
-        </button>
+        </Button>
 
         <LoginFooter />
       </LoginContainer>
@@ -507,13 +509,13 @@ function Login({ onLoginSuccess }: LoginProps) {
             >
               Password
             </label>
-            <button
+            <Button
               type="button"
               onClick={handleShowForgotPassword}
               className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
             >
               Forgot password?
-            </button>
+            </Button>
           </div>
           <div className="relative mt-1.5">
             <input
@@ -526,7 +528,7 @@ function Login({ onLoginSuccess }: LoginProps) {
               aria-describedby={error ? loginErrorId : undefined}
               className="w-full rounded-lg border border-gray-300 px-4 py-2.5 pr-10 text-gray-900 focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
             />
-            <button
+            <Button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:text-gray-500 dark:hover:text-gray-300 focus-visible:dark:focus:ring-offset-gray-900"
@@ -537,7 +539,7 @@ function Login({ onLoginSuccess }: LoginProps) {
               ) : (
                 <EyeIcon className="h-5 w-5" />
               )}
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -551,13 +553,13 @@ function Login({ onLoginSuccess }: LoginProps) {
           </p>
         )}
 
-        <button
+        <Button
           type="submit"
           disabled={isSubmitting || status === "loading"}
           className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus-visible:dark:focus:ring-offset-gray-900"
         >
           {isSubmitting ? "Signing in..." : "Sign in"}
-        </button>
+        </Button>
       </form>
 
       <LoginFooter />
@@ -604,7 +606,7 @@ function LoginContainer({ children, dark, toggleDark }: LoginContainerProps) {
   return (
     <div className="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 px-4 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
       <div className="relative w-full max-w-md rounded-2xl bg-white px-8 py-10 shadow-xl dark:bg-gray-900 dark:shadow-2xl dark:shadow-black/20">
-        <button
+        <Button
           type="button"
           onClick={toggleDark}
           aria-pressed={dark}
@@ -616,7 +618,7 @@ function LoginContainer({ children, dark, toggleDark }: LoginContainerProps) {
           ) : (
             <MoonIcon className="h-5 w-5" />
           )}
-        </button>
+        </Button>
 
         {children}
       </div>

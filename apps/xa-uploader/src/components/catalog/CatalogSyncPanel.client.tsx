@@ -3,11 +3,13 @@
 /* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy uploader sync panel pending design/i18n overhaul */
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
+import type { ActionFeedback } from "./useCatalogConsole.client";
 
 export function CatalogSyncPanel({
   busy,
   syncOptions,
   monoClassName,
+  feedback,
   syncOutput,
   onSync,
   onChangeSyncOptions,
@@ -15,6 +17,7 @@ export function CatalogSyncPanel({
   busy: boolean;
   syncOptions: { strict: boolean; dryRun: boolean; replace: boolean; recursive: boolean };
   monoClassName?: string;
+  feedback: ActionFeedback | null;
   syncOutput: string | null;
   onSync: () => void;
   onChangeSyncOptions: (next: { strict: boolean; dryRun: boolean; replace: boolean; recursive: boolean }) => void;
@@ -59,6 +62,15 @@ export function CatalogSyncPanel({
           </label>
         ))}
       </div>
+
+      {feedback ? (
+        <p
+          role={feedback.kind === "error" ? "alert" : "status"}
+          className={feedback.kind === "error" ? "mt-4 text-sm text-danger-fg" : "mt-4 text-sm text-success-fg"}
+        >
+          {feedback.message}
+        </p>
+      ) : null}
 
       {syncOutput ? (
         <pre

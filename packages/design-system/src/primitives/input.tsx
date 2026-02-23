@@ -8,6 +8,7 @@ import { FormField } from "../atoms/FormField";
 import { cn } from "../utils/style";
 
 import { Inline } from "./Inline";
+import { type PrimitiveRadius, type PrimitiveShape, resolveShapeRadiusClass } from "./shape-radius";
 
 /* ──────────────────────────────────────────────────────────────────────────────
  * Props
@@ -26,6 +27,10 @@ export interface InputProps
   floatingLabel?: boolean;
   /** Extra class on the outer wrapper */
   wrapperClassName?: string;
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 /* ──────────────────────────────────────────────────────────────────────────────
@@ -41,6 +46,8 @@ export const Input = (
     description,
     floatingLabel,
     wrapperClassName,
+    shape,
+    radius,
     id,
     onFocus,
     onBlur,
@@ -52,13 +59,19 @@ export const Input = (
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
   const [focused, setFocused] = React.useState(false);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
 
   /* ------------------------------------------------------------------ *
    *  Dynamic classes
    * ------------------------------------------------------------------ */
   const baseClasses = cn(
     // base
-    "flex h-12 w-full rounded-md border border-input bg-input px-3 py-3 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    "flex h-12 w-full border border-input bg-input px-3 py-3 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    shapeRadiusClass,
     // placeholder + file input follow tokenized colors
     "placeholder:text-muted-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     // ring uses tokenized color and widths
@@ -168,4 +181,3 @@ export const Input = (
     />
   );
 };
-

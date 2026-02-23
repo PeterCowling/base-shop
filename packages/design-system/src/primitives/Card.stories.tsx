@@ -21,3 +21,19 @@ export const Default: Story = {
     </Card>
   ),
 };
+
+export const ShapeDepths: Story = {
+  render: () => (
+    <div className="grid max-w-sm gap-3">
+      <Card shape="square">
+        <CardContent>Square card</CardContent>
+      </Card>
+      <Card shape="soft">
+        <CardContent>Soft card</CardContent>
+      </Card>
+      <Card shape="pill">
+        <CardContent>Pill card</CardContent>
+      </Card>
+    </div>
+  ),
+};

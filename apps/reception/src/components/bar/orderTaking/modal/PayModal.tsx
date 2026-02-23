@@ -9,6 +9,8 @@ import {
   useState,
 } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { withModalBackground } from "../../../../hoc/withModalBackground";
 
 import ModalContainer from "./ModalContainer";
@@ -163,18 +165,18 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
 
         {/* Buttons (Centered) */}
         <div className="flex justify-center space-x-4">
-          <button
+          <Button
             onClick={handleCancelClick}
             className="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium dark:bg-darkSurface dark:text-darkAccentGreen"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleConfirmClick}
             className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 font-medium dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
           >
             Confirm
-          </button>
+          </Button>
         </div>
       </div>
     </ModalContainer>

@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import {
   STOCK_ADJUSTMENT_REAUTH_THRESHOLD,
   STOCK_SHRINKAGE_ALERT_THRESHOLD,
@@ -513,13 +515,13 @@ function StockManagement() {
                 {legacyRecipes.length} recipe entries are still keyed by product
                 name. Migrate them to inventory item IDs.
               </p>
-              <button
+              <Button
                 type="button"
                 className="px-3 py-1 rounded bg-warning-main text-white hover:bg-warning-dark"
                 onClick={handleMigrateLegacyRecipes}
               >
                 Migrate Legacy Recipes
-              </button>
+              </Button>
             </div>
           )}
         </section>
@@ -580,13 +582,13 @@ function StockManagement() {
             }
           />
         </div>
-        <button
+        <Button
           type="button"
           onClick={handleAddItem}
           className="mt-3 inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
         >
           Add Item
-        </button>
+        </Button>
       </section>
 
       <section>
@@ -597,23 +599,23 @@ function StockManagement() {
           </p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full text-sm dark:bg-darkSurface border border-gray-200 dark:border-darkBorder">
-              <thead>
-                <tr className="bg-gray-100 dark:bg-darkSurface">
-                  <th className="p-2 text-start">Item</th>
-                  <th className="p-2 text-start">Unit</th>
-                  <th className="p-2 text-end">On Hand</th>
-                  <th className="p-2 text-end">Reorder</th>
-                  <th className="p-2 text-start">Last Movement</th>
-                  <th className="p-2 text-start">Action</th>
-                  <th className="p-2 text-start">Details</th>
-                  <th className="p-2 text-start">Reason</th>
-                  <th className="p-2 text-start">Reference</th>
-                  <th className="p-2 text-start">Note</th>
-                  <th className="p-2 text-start">Record</th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table className="min-w-full text-sm dark:bg-darkSurface border border-gray-200 dark:border-darkBorder">
+              <TableHeader>
+                <TableRow className="bg-gray-100 dark:bg-darkSurface">
+                  <TableHead className="p-2 text-start">Item</TableHead>
+                  <TableHead className="p-2 text-start">Unit</TableHead>
+                  <TableHead className="p-2 text-end">On Hand</TableHead>
+                  <TableHead className="p-2 text-end">Reorder</TableHead>
+                  <TableHead className="p-2 text-start">Last Movement</TableHead>
+                  <TableHead className="p-2 text-start">Action</TableHead>
+                  <TableHead className="p-2 text-start">Details</TableHead>
+                  <TableHead className="p-2 text-start">Reason</TableHead>
+                  <TableHead className="p-2 text-start">Reference</TableHead>
+                  <TableHead className="p-2 text-start">Note</TableHead>
+                  <TableHead className="p-2 text-start">Record</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {items.map((item) => {
                   const onHand = snapshot[item.id ?? ""]?.onHand ?? item.openingCount;
                   const reorderThreshold = item.reorderThreshold ?? 0;
@@ -623,18 +625,18 @@ function StockManagement() {
                   const state = actionState[item.id ?? ""] ?? defaultActionState;
 
                   return (
-                    <tr
+                    <TableRow
                       key={item.id ?? item.name}
                       className={lowStock ? "bg-red-50 dark:bg-darkSurface" : ""}
                     >
-                      <td className="p-2 border-b">{item.name}</td>
-                      <td className="p-2 border-b">{item.unit}</td>
-                      <td className="p-2 border-b text-end">{onHand}</td>
-                      <td className="p-2 border-b text-end">
+                      <TableCell className="p-2 border-b">{item.name}</TableCell>
+                      <TableCell className="p-2 border-b">{item.unit}</TableCell>
+                      <TableCell className="p-2 border-b text-end">{onHand}</TableCell>
+                      <TableCell className="p-2 border-b text-end">
                         {item.reorderThreshold ?? "-"}
-                      </td>
-                      <td className="p-2 border-b">{lastMovement}</td>
-                      <td className="p-2 border-b">
+                      </TableCell>
+                      <TableCell className="p-2 border-b">{lastMovement}</TableCell>
+                      <TableCell className="p-2 border-b">
                         <select
                           className="border px-2 py-1 dark:bg-darkSurface dark:text-darkAccentGreen"
                           value={state.action}
@@ -653,8 +655,8 @@ function StockManagement() {
                           <option value="transferIn">Transfer In</option>
                           <option value="transferOut">Transfer Out</option>
                         </select>
-                      </td>
-                      <td className="p-2 border-b">
+                      </TableCell>
+                      <TableCell className="p-2 border-b">
                         <input
                           type="number"
                           placeholder="Quantity"
@@ -668,8 +670,8 @@ function StockManagement() {
                             )
                           }
                         />
-                      </td>
-                      <td className="p-2 border-b">
+                      </TableCell>
+                      <TableCell className="p-2 border-b">
                         <input
                           type="text"
                           placeholder="Reason"
@@ -683,8 +685,8 @@ function StockManagement() {
                             )
                           }
                         />
-                      </td>
-                      <td className="p-2 border-b">
+                      </TableCell>
+                      <TableCell className="p-2 border-b">
                         <input
                           type="text"
                           placeholder="Reference"
@@ -698,8 +700,8 @@ function StockManagement() {
                             )
                           }
                         />
-                      </td>
-                      <td className="p-2 border-b">
+                      </TableCell>
+                      <TableCell className="p-2 border-b">
                         <input
                           type="text"
                           placeholder="Note"
@@ -713,21 +715,21 @@ function StockManagement() {
                             )
                           }
                         />
-                      </td>
-                      <td className="p-2 border-b">
-                        <button
+                      </TableCell>
+                      <TableCell className="p-2 border-b">
+                        <Button
                           type="button"
                           onClick={() => handleRecordAction(item.id ?? "")}
                           className="inline-flex min-h-11 min-w-11 items-center justify-center px-3 py-1 rounded bg-primary-main text-white hover:bg-primary-dark"
                         >
                           Record
-                        </button>
-                      </td>
-                    </tr>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
                   );
                 })}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         )}
       </section>
@@ -769,20 +771,20 @@ function StockManagement() {
       <section className="border border-gray-200 rounded p-4 dark:border-darkBorder">
         <h2 className="text-xl font-semibold mb-3">Exports</h2>
         <div className="flex flex-wrap gap-2">
-          <button
+          <Button
             type="button"
             onClick={handleExportLedger}
             className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
           >
             Export Ledger CSV
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={handleExportVariance}
             className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"
           >
             Export Variance CSV
-          </button>
+          </Button>
         </div>
       </section>
 
@@ -794,51 +796,51 @@ function StockManagement() {
           </p>
         ) : (
           <>
-            <table className="min-w-full text-sm dark:bg-darkSurface border border-gray-200 dark:border-darkBorder">
-              <thead>
-                <tr className="bg-gray-100 dark:bg-darkSurface">
-                  <th className="p-2 text-start">Time</th>
-                  <th className="p-2 text-start">Item</th>
-                  <th className="p-2 text-end">Variance</th>
-                  <th className="p-2 text-start">User</th>
-                  <th className="p-2 text-start">Reason</th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table className="min-w-full text-sm dark:bg-darkSurface border border-gray-200 dark:border-darkBorder">
+              <TableHeader>
+                <TableRow className="bg-gray-100 dark:bg-darkSurface">
+                  <TableHead className="p-2 text-start">Time</TableHead>
+                  <TableHead className="p-2 text-start">Item</TableHead>
+                  <TableHead className="p-2 text-end">Variance</TableHead>
+                  <TableHead className="p-2 text-start">User</TableHead>
+                  <TableHead className="p-2 text-start">Reason</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {countEntries.slice(0, 25).map((entry) => (
-                  <tr key={entry.id ?? `${entry.itemId}-${entry.timestamp}`}>
-                    <td className="p-2 border-b">{entry.timestamp}</td>
-                    <td className="p-2 border-b">
+                  <TableRow key={entry.id ?? `${entry.itemId}-${entry.timestamp}`}>
+                    <TableCell className="p-2 border-b">{entry.timestamp}</TableCell>
+                    <TableCell className="p-2 border-b">
                       {itemsById[entry.itemId]?.name ?? entry.itemId}
-                    </td>
-                    <td className="p-2 border-b text-end">{entry.quantity}</td>
-                    <td className="p-2 border-b">{entry.user}</td>
-                    <td className="p-2 border-b">{entry.reason ?? "-"}</td>
-                  </tr>
+                    </TableCell>
+                    <TableCell className="p-2 border-b text-end">{entry.quantity}</TableCell>
+                    <TableCell className="p-2 border-b">{entry.user}</TableCell>
+                    <TableCell className="p-2 border-b">{entry.reason ?? "-"}</TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
 
             <div className="mt-4">
               <h3 className="font-semibold mb-2">Variance by Item</h3>
-              <table className="min-w-full text-sm dark:bg-darkSurface border border-gray-200 dark:border-darkBorder">
-                <thead>
-                  <tr className="bg-gray-100 dark:bg-darkSurface">
-                    <th className="p-2 text-start">Item</th>
-                    <th className="p-2 text-end">Total Variance</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <Table className="min-w-full text-sm dark:bg-darkSurface border border-gray-200 dark:border-darkBorder">
+                <TableHeader>
+                  <TableRow className="bg-gray-100 dark:bg-darkSurface">
+                    <TableHead className="p-2 text-start">Item</TableHead>
+                    <TableHead className="p-2 text-end">Total Variance</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {Object.entries(countVarianceSummary).map(([itemId, total]) => (
-                    <tr key={itemId}>
-                      <td className="p-2 border-b">
+                    <TableRow key={itemId}>
+                      <TableCell className="p-2 border-b">
                         {itemsById[itemId]?.name ?? itemId}
-                      </td>
-                      <td className="p-2 border-b text-end">{total}</td>
-                    </tr>
+                      </TableCell>
+                      <TableCell className="p-2 border-b text-end">{total}</TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </>
         )}

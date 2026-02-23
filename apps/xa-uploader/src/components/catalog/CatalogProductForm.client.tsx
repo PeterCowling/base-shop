@@ -6,6 +6,7 @@ import * as React from "react";
 
 import type { CatalogProductDraftInput } from "../../lib/catalogAdminSchema";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
+import type { ActionFeedback } from "./useCatalogConsole.client";
 
 import { CatalogProductBaseFields } from "./CatalogProductBaseFields.client";
 import { CatalogProductClothingFields } from "./CatalogProductClothingFields.client";
@@ -19,7 +20,7 @@ export function CatalogProductForm({
   fieldErrors,
   monoClassName,
   busy,
-  error,
+  feedback,
   onChangeDraft,
   onSave,
   onDelete,
@@ -29,7 +30,7 @@ export function CatalogProductForm({
   fieldErrors: Record<string, string>;
   monoClassName?: string;
   busy: boolean;
-  error: string | null;
+  feedback: ActionFeedback | null;
   onChangeDraft: (draft: CatalogProductDraftInput) => void;
   onSave: () => void;
   onDelete: () => void;
@@ -65,7 +66,11 @@ export function CatalogProductForm({
         </div>
       </div>
 
-      {error ? <div className="mt-4 text-sm text-danger-fg">{error}</div> : null}
+      {feedback ? (
+        <div className={feedback.kind === "error" ? "mt-4 text-sm text-danger-fg" : "mt-4 text-sm text-success-fg"}>
+          {feedback.message}
+        </div>
+      ) : null}
 
       <div className="mt-6">
         <CatalogProductBaseFields

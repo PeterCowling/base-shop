@@ -10,6 +10,8 @@ import {
   useState,
 } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import type { AutoCompleteProps } from "../../../types/component/autoComplete";
 
 /**
@@ -193,7 +195,7 @@ function AutoComplete({
         >
           {filteredSuggestions.map((suggestion) => (
             <li key={suggestion}>
-              <button
+              <Button
                 type="button"
                 data-suggestion-button="true"
                 onClick={createSuggestionClickHandler(suggestion)}
@@ -201,7 +203,7 @@ function AutoComplete({
                 className="w-full text-start py-2 px-3 hover:bg-gray-100 focus:bg-gray-100"
               >
                 {suggestion}
-              </button>
+              </Button>
             </li>
           ))}
         </ul>

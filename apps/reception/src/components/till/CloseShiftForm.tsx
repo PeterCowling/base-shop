@@ -4,6 +4,8 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { settings } from "../../constants/settings";
 import { useAuth } from "../../context/AuthContext";
@@ -219,13 +221,13 @@ export const CloseShiftForm = memo(function CloseShiftForm({
       <StepProgress step={step} onStepChange={setStep} user={user} />
       {step === 0 && (
         <div className="relative dark:bg-darkSurface dark:text-darkAccentGreen">
-          <button
+          <Button
             onClick={onCancel}
             aria-label="Close"
             className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-${isReconcile ? "warning" : "error"}-main text-white`}
           >
             <span aria-hidden="true">&times;</span>
-          </button>
+          </Button>
           <CashCountingForm
             idPrefix={isReconcile ? "denomRecon_" : "denomClose_"}
             title={isReconcile ? "Reconcile Shift - Cash" : "Close Shift - Cash"}
@@ -239,12 +241,12 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             onConfirm={handleStep0Next}
             onCancel={onCancel}
           />
-          <button
+          <Button
             className="mt-2 px-3 py-1 bg-info-main text-white rounded dark:bg-darkSurface dark:text-darkAccentOrange"
             onClick={saveProgress}
           >
             Save Progress
-          </button>
+          </Button>
         </div>
       )}
 
@@ -268,24 +270,24 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             )
           )}
           <div className="mt-4 flex gap-2">
-            <button
+            <Button
               onClick={() => setStep(0)}
               className="px-4 py-2 bg-info-main text-white rounded dark:bg-darkSurface dark:text-darkAccentOrange"
             >
               Back
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleStep1Next}
               className="px-4 py-2 bg-info-main text-white rounded dark:bg-darkSurface dark:text-darkAccentOrange"
             >
               Next
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={saveProgress}
               className="px-4 py-2 bg-info-main text-white rounded dark:bg-darkSurface dark:text-darkAccentOrange"
             >
               Save Progress
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -311,13 +313,13 @@ export const CloseShiftForm = memo(function CloseShiftForm({
 
       {step === 2 && !showReauthModal && (
         <div className="relative dark:bg-darkSurface dark:text-darkAccentGreen">
-          <button
+          <Button
             onClick={onCancel}
             aria-label="Close"
             className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-${isReconcile ? "warning" : "error"}-main text-white`}
           >
             <span aria-hidden="true">&times;</span>
-          </button>
+          </Button>
             <KeycardCountForm
               expectedCount={expectedKeycardsAtClose}
               onConfirm={(count) => {
@@ -335,12 +337,12 @@ export const CloseShiftForm = memo(function CloseShiftForm({
               Please recount and click Go again.
             </p>
           )}
-          <button
+          <Button
             className="mt-2 px-3 py-1 bg-info-main text-white rounded dark:bg-darkSurface dark:text-darkAccentOrange"
             onClick={saveProgress}
           >
             Save Progress
-          </button>
+          </Button>
         </div>
       )}
     </>

@@ -5,6 +5,7 @@ import * as React from "react";
 
 import { cn } from "../utils/style";
 
+import { type PrimitiveRadius, type PrimitiveShape, resolveShapeRadiusClass } from "./shape-radius";
 import { Slot } from "./slot";
 
 /* -------------------------------------------------------------------------- */
@@ -38,6 +39,10 @@ export interface ButtonProps
   asChild?: boolean;
   /** Size scale for padding/height/typography. */
   size?: ButtonSize;
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -50,7 +55,7 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
 };
 
 const BASE_CLASSES =
-  "inline-flex items-center justify-center rounded-md py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
 
 const LEGACY_VARIANT_MAP: Record<LegacyVariant, { color: ButtonColor; tone: ButtonTone }> = {
   default: { color: "primary", tone: "solid" },
@@ -195,6 +200,7 @@ function buildButtonClassName({
   variant,
   iconOnly,
   isLoading,
+  shapeRadiusClass,
   className,
 }: {
   size: ButtonSize;
@@ -203,10 +209,12 @@ function buildButtonClassName({
   variant: LegacyVariant;
   iconOnly: boolean;
   isLoading: boolean;
+  shapeRadiusClass: string;
   className?: string;
 }): string {
   return cn(
     BASE_CLASSES,
+    shapeRadiusClass,
     SIZE_CLASSES[size],
     CLASSES_BY_TONE[tone][color],
     legacyVariantClassName(variant, color),
@@ -262,6 +270,8 @@ export const Button = (
     iconSize = "md",
     iconOnly = false,
     size = "md",
+    shape,
+    radius,
     disabled,
     "aria-busy": ariaBusy,
     asChild = false,
@@ -281,6 +291,11 @@ export const Button = (
 
   const isLoading = coerceAriaBusy(ariaBusy);
   const isDisabled = computeIsDisabled(disabled, isLoading);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
   const computedClasses = buildButtonClassName({
     size,
     tone: effTone,
@@ -288,6 +303,7 @@ export const Button = (
     variant,
     iconOnly,
     isLoading,
+    shapeRadiusClass,
     className,
   });
 

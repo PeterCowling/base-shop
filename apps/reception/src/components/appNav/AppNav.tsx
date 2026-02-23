@@ -33,6 +33,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { canAccess,Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
 
@@ -136,14 +138,14 @@ function AppNav({ user, onLogout }: AppNavProps) {
   return (
     <div className="relative">
       {/* Nav Toggle Button */}
-      <button
+      <Button
         onClick={toggleNav}
         className="fixed start-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg bg-primary-600 text-white shadow-lg hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg"
         aria-label={isOpen ? "Close navigation" : "Open navigation"}
         aria-expanded={isOpen}
       >
         <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
-      </button>
+      </Button>
 
       {/* Backdrop */}
       {isOpen && (
@@ -171,13 +173,13 @@ function AppNav({ user, onLogout }: AppNavProps) {
               {user.user_name}
             </p>
           </div>
-          <button
+          <Button
             onClick={closeNav}
             className="min-h-11 min-w-11 rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-darkBorder"
             aria-label="Close navigation"
           >
             <FontAwesomeIcon icon={faTimes} />
-          </button>
+          </Button>
         </div>
 
         {/* Nav Sections */}
@@ -198,7 +200,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
 
                     return (
                       <li key={item.route}>
-                        <button
+                        <Button
                           onClick={() => navigateTo(item.route)}
                           className={`flex min-h-11 w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
                             isActive
@@ -211,7 +213,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
                             className="w-4 text-center"
                           />
                           {item.label}
-                        </button>
+                        </Button>
                       </li>
                     );
                   })}
@@ -223,13 +225,13 @@ function AppNav({ user, onLogout }: AppNavProps) {
 
         {/* Footer */}
         <div className="mt-auto border-t border-gray-200 p-4 dark:border-darkBorder">
-          <button
+          <Button
             onClick={onLogout}
             className="flex min-h-11 min-w-11 w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
           >
             <FontAwesomeIcon icon={faSignOutAlt} className="w-4 text-center" />
             Sign out
-          </button>
+          </Button>
         </div>
       </nav>
 

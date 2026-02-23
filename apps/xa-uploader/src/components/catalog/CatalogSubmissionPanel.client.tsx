@@ -3,6 +3,7 @@
 /* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy uploader submission panel pending design/i18n overhaul */
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
+import type { ActionFeedback } from "./useCatalogConsole.client";
 
 export function CatalogSubmissionPanel({
   busy,
@@ -13,7 +14,7 @@ export function CatalogSubmissionPanel({
   minImageEdge = 1600,
   r2Destination = "r2://<bucket>/submissions/",
   uploadUrl,
-  submissionStatus = null,
+  feedback = null,
   onUploadUrlChange,
   onUploadToR2,
   onExport,
@@ -27,7 +28,7 @@ export function CatalogSubmissionPanel({
   minImageEdge?: number;
   r2Destination?: string;
   uploadUrl?: string;
-  submissionStatus?: string | null;
+  feedback?: ActionFeedback | null;
   onUploadUrlChange?: (value: string) => void;
   onUploadToR2?: () => void;
   onExport: () => void;
@@ -113,8 +114,15 @@ export function CatalogSubmissionPanel({
             >
               {submissionAction === "upload" ? t("uploadingToR2") : t("uploadToR2")}
             </button>
-            {submissionStatus ? (
-              <div className="text-sm text-[color:var(--gate-muted)]">{submissionStatus}</div>
+            {feedback ? (
+              <div
+                role={feedback.kind === "error" ? "alert" : "status"}
+                className={
+                  feedback.kind === "error" ? "text-sm text-danger-fg" : "text-sm text-success-fg"
+                }
+              >
+                {feedback.message}
+              </div>
             ) : null}
           </div>
         </div>

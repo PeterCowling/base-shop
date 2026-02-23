@@ -2,10 +2,10 @@ import Link from "next/link";
 
 import { Button } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/atoms/Grid";
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy service center content pending design/i18n overhaul */
 import { Section } from "@acme/design-system/atoms/Section";
 import { Breadcrumbs } from "@acme/design-system/molecules";
-import { Stack } from "@acme/design-system/primitives/Stack";
+import { ResourceCard } from "@acme/ui/components/organisms/ResourceCard";
+import { SupportSidebarNav } from "@acme/ui/components/organisms/SupportSidebarNav";
 
 import { siteConfig } from "../../lib/siteConfig";
 import { toWhatsappHref } from "../../lib/support";
@@ -41,29 +41,15 @@ export default function ServiceCenterPage() {
       <Section padding="default">
         <Grid columns={{ base: 1, md: 4 }} gap={8}>
           <aside className="md:col-span-1">
-            <div className="sticky top-28 space-y-3">
-              <div className="text-sm font-semibold text-muted-foreground">Browse help</div>
-              <div className="flex flex-col gap-2">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="rounded border px-3 py-2 text-sm hover:border-foreground hover:text-foreground"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </div>
+            <SupportSidebarNav
+              title="Browse help"
+              items={navLinks}
+              variant="pill"
+            />
           </aside>
 
           <div className="md:col-span-3 space-y-6 scroll-mt-28" id="orders">
-            <div className="rounded-lg border p-5">
-            <Stack gap={3}>
-              <div className="text-sm font-semibold">Order help</div>
-              <div className="text-sm text-muted-foreground">
-                Track your order without logging in.
-              </div>
+            <ResourceCard title="Order help" description="Track your order without logging in.">
               <Button asChild>
                 <Link href="/account/trackingorder">Check order status</Link>
               </Button>
@@ -72,16 +58,13 @@ export default function ServiceCenterPage() {
                   Prefer email? Include your order number and email address.
                 </div>
               ) : null}
-            </Stack>
-          </div>
+            </ResourceCard>
 
             {showContactCard ? (
-              <div className="rounded-lg border p-5">
-                <Stack gap={3}>
-                  <div className="text-sm font-semibold">Contact</div>
-                  <div className="text-sm text-muted-foreground">
-                    Choose a channel and we’ll route you to the right team.
-                  </div>
+              <ResourceCard
+                title="Contact"
+                description="Choose a channel and we’ll route you to the right team."
+              >
                   <div className="flex flex-wrap gap-3">
                     {whatsappHref ? (
                       <Button variant="outline" asChild>
@@ -108,73 +91,59 @@ export default function ServiceCenterPage() {
                       Business hours: {siteConfig.businessHours}
                     </div>
                   ) : null}
-                </Stack>
-              </div>
+              </ResourceCard>
             ) : (
-              <div className="rounded-lg border p-5">
-                <Stack gap={3}>
-                  <div className="text-sm font-semibold">Contact</div>
-                  <div className="text-sm text-muted-foreground">
-                    Contact details are available on request.
-                  </div>
-                </Stack>
-              </div>
+              <ResourceCard
+                title="Contact"
+                description="Contact details are available on request."
+              />
             )}
 
-            <div className="rounded-lg border p-5">
-              <Stack gap={3}>
-                <div className="text-sm font-semibold">How to shop</div>
-                <div className="text-sm text-muted-foreground">
-                  Browse, order, and pay following our step-by-step guide.
-                </div>
-                <Button variant="outline" asChild>
-                  <Link href="/pages/how-to-shop">View guide</Link>
-                </Button>
-              </Stack>
-            </div>
+            <ResourceCard
+              title="How to shop"
+              description="Browse, order, and pay following our step-by-step guide."
+            >
+              <Button variant="outline" asChild>
+                <Link href="/pages/how-to-shop">View guide</Link>
+              </Button>
+            </ResourceCard>
 
-            <div className="rounded-lg border p-5 scroll-mt-28" id="shipping">
-              <Stack gap={3}>
-                <div className="text-sm font-semibold">Shipping</div>
-                <div className="text-sm text-muted-foreground">
-                  Processing times, methods, and delivery windows.
-                </div>
-                <Button variant="outline" asChild>
-                  <Link href="/pages/shipping-policy">Shipping policy</Link>
-                </Button>
-              </Stack>
-            </div>
+            <ResourceCard
+              id="shipping"
+              className="scroll-mt-28"
+              title="Shipping"
+              description="Processing times, methods, and delivery windows."
+            >
+              <Button variant="outline" asChild>
+                <Link href="/pages/shipping-policy">Shipping policy</Link>
+              </Button>
+            </ResourceCard>
 
-            <div className="rounded-lg border p-5 scroll-mt-28" id="returns">
-              <Stack gap={3}>
-                <div className="text-sm font-semibold">Returns</div>
-                <div className="text-sm text-muted-foreground">
-                  What’s refundable, timelines, and how to start a return.
-                </div>
-                <Button variant="outline" asChild>
-                  <Link href="/pages/return-policy">Return policy</Link>
-                </Button>
-              </Stack>
-            </div>
+            <ResourceCard
+              id="returns"
+              className="scroll-mt-28"
+              title="Returns"
+              description="What’s refundable, timelines, and how to start a return."
+            >
+              <Button variant="outline" asChild>
+                <Link href="/pages/return-policy">Return policy</Link>
+              </Button>
+            </ResourceCard>
 
-            <div className="rounded-lg border p-5">
-              <Stack gap={3}>
-                <div className="text-sm font-semibold">FAQs</div>
-                <div className="text-sm text-muted-foreground">
-                  Detailed answers for shopping, delivery, payments, and returns.
-                </div>
-                <Button variant="outline" asChild>
-                  <Link href="/faqs">View FAQs</Link>
-                </Button>
-              </Stack>
-            </div>
+            <ResourceCard
+              title="FAQs"
+              description="Detailed answers for shopping, delivery, payments, and returns."
+            >
+              <Button variant="outline" asChild>
+                <Link href="/faqs">View FAQs</Link>
+              </Button>
+            </ResourceCard>
           </div>
         </Grid>
       </Section>
 
       <Section padding="default" id="company" className="scroll-mt-28">
-        <div className="rounded-lg border p-5">
-          <div className="text-sm font-semibold">Company & legal</div>
+        <ResourceCard title="Company & legal">
           <div className="mt-3 flex flex-wrap gap-3">
             <Button variant="outline" asChild>
               <Link href="/pages/about-us">About us</Link>
@@ -189,7 +158,7 @@ export default function ServiceCenterPage() {
               <Link href="/pages/contact-us">Contact us</Link>
             </Button>
           </div>
-        </div>
+        </ResourceCard>
       </Section>
     </main>
   );

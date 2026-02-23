@@ -29,5 +29,12 @@ reorderedMapper["^@/(.*)$"] = [
 ];
 
 config.moduleNameMapper = reorderedMapper;
+config.rootDir = __dirname;
+config.roots = ["<rootDir>/src"];
+
+config.testPathIgnorePatterns = [
+  ...(config.testPathIgnorePatterns || []),
+  "/apps/caryina/e2e/",
+];
 
 module.exports = config;

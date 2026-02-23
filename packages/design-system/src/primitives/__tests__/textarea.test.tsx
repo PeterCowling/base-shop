@@ -129,4 +129,24 @@ describe("Textarea", () => {
       expect(label).toHaveClass("-translate-y-3", "text-xs");
     });
   });
+
+  it("supports shape and radius variants with radius precedence", () => {
+    const { rerender } = render(
+      <Textarea aria-label="Shape textarea" shape="square" />
+    );
+    const textarea = screen.getByRole("textbox", { name: "Shape textarea" });
+    expect(textarea).toHaveClass("rounded-none");
+
+    rerender(<Textarea aria-label="Shape textarea" shape="pill" />);
+    expect(screen.getByRole("textbox", { name: "Shape textarea" })).toHaveClass(
+      "rounded-full"
+    );
+
+    rerender(<Textarea aria-label="Shape textarea" shape="square" radius="lg" />);
+    const radiusOverrideTextarea = screen.getByRole("textbox", {
+      name: "Shape textarea",
+    });
+    expect(radiusOverrideTextarea).toHaveClass("rounded-lg");
+    expect(radiusOverrideTextarea).not.toHaveClass("rounded-none");
+  });
 });

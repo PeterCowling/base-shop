@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import MarkAsFailedButton from "./MarkAsFailedButton";
 import MarkAsPaidButton from "./MarkAsPaidButton";
 
@@ -97,13 +99,13 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b border-gray-400 dark:border-darkSurface">
           <h2 className="text-lg font-heading">Existing Payment Details</h2>
-          <button
+          <Button
             aria-label="close"
             onClick={onClose}
             className="text-error-main hover:bg-error-light p-2 rounded transition-colors dark:hover:bg-error-light/70"
           >
             &times;
-          </button>
+          </Button>
         </div>
 
         {/* Content */}
@@ -115,12 +117,12 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
           <div className="mb-3">
             <strong className="font-heading">Expiry (MM/YY):</strong> {expiry}
           </div>
-          <button
+          <Button
             className="px-3 py-1 bg-warning-light text-white rounded hover:bg-warning-main transition-colors font-body dark:bg-warning-main dark:hover:bg-warning-light"
             onClick={onEdit}
           >
             Edit Details
-          </button>
+          </Button>
         </div>
 
         {/* Actions */}
@@ -134,12 +136,12 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
               onSuccess={() => handlePaymentSuccess("failed")}
             />
           ) : (
-            <button
+            <Button
               className="px-3 py-1 bg-error-light text-white rounded cursor-not-allowed font-body"
               disabled
             >
               Mark as Failed
-            </button>
+            </Button>
           )}
 
           <MarkAsPaidButton

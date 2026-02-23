@@ -1,6 +1,8 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { useDenominationCalculator } from "../../hooks/client/till/useDenominationCalculator";
 import { type Denomination, DENOMINATIONS } from "../../types/component/Till";
@@ -154,20 +156,20 @@ export const CashCountingForm = memo(function CashCountingForm({
       )}
       <div className="mt-4 flex gap-2">
         {!hideCancel && (
-          <button
+          <Button
             onClick={onCancel}
             className="px-4 py-2 bg-info-main text-white rounded hover:bg-info-dark dark:bg-darkSurface dark:text-darkAccentOrange"
           >
             Cancel
-          </button>
+          </Button>
         )}
         {!hideConfirm && (
-          <button
+          <Button
             onClick={handleSubmit}
             className={`px-4 py-2 ${confirmClass} dark:bg-darkAccentGreen`}
           >
             {confirmLabel}
-          </button>
+          </Button>
         )}
       </div>
     </div>

@@ -1,17 +1,16 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy designer page pending i18n overhaul */
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
 import { Section } from "@acme/design-system/atoms/Section";
 
 import { XaProductListing } from "../../../components/XaProductListing.client";
 import { XA_BRANDS, XA_PRODUCTS } from "../../../lib/demoData";
 import {
+  formatLabel,
   XA_ALLOWED_CATEGORIES,
   XA_ALLOWED_DEPARTMENTS,
   XA_CATEGORY_LABELS,
-  formatLabel,
 } from "../../../lib/xaCatalog";
 import type { XaCategory, XaDepartment } from "../../../lib/xaTypes";
 

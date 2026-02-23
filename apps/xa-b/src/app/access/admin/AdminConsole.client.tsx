@@ -1,8 +1,10 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy admin console pending design/i18n overhaul */
 
 import * as React from "react";
+
+import { Button, Input } from "@acme/design-system/atoms";
+import { ElevatedPanel } from "@acme/ui/components/organisms/ElevatedPanel";
 
 type SessionState = {
   authenticated: boolean;
@@ -225,20 +227,20 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
         <form onSubmit={handleLogin} className="space-y-4">
           <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
             Console token
-            <input
+            <Input
               value={token}
               onChange={(event) => setToken(event.target.value)}
-              className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              className="mt-2 h-auto w-full rounded-md border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
               autoComplete="off"
             />
           </label>
-          <button
+          <Button
             type="submit"
             disabled={busy}
-            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className="h-auto inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {busy ? "Verifying..." : "Enter console"}
-          </button>
+          </Button>
           {error ? <div className="text-sm text-red-700">{error}</div> : null}
         </form>
       </div>
@@ -256,13 +258,14 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
             Storage: {session?.storeMode ?? "unknown"}
           </div>
         </div>
-        <button
+        <Button
           type="button"
           onClick={handleLogout}
-          className="rounded-md border border-border-2 px-4 py-2 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] transition hover:underline"
+          variant="ghost"
+          className="rounded-md border border-border-2 px-4 py-2 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] transition hover:bg-transparent hover:underline"
         >
           Exit console
-        </button>
+        </Button>
       </div>
 
       {lastIssued ? (
@@ -275,18 +278,20 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
             {lastIssuedLabel ? (
               <span className="text-xs text-[color:var(--gate-muted)]">{lastIssuedLabel}</span>
             ) : null}
-            <button
+            <Button
               type="button"
               onClick={copyLastIssued}
-              className="rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)]"
+              variant="outline"
+              size="sm"
+              className="h-auto min-h-0 rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] hover:bg-transparent"
             >
               Copy
-            </button>
+            </Button>
           </div>
         </div>
       ) : null}
 
-      <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
+      <ElevatedPanel>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
@@ -296,55 +301,57 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
               Create single-use or multi-use keys with optional expiry.
             </div>
           </div>
-          <button
+          <Button
             type="button"
             onClick={() => loadData().catch(() => null)}
-            className="rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)]"
+            variant="outline"
+            size="sm"
+            className="h-auto min-h-0 rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] hover:bg-transparent"
           >
             Refresh
-          </button>
+          </Button>
         </div>
 
         <form onSubmit={handleCreateInvite} className="mt-6 grid gap-4 md:grid-cols-3">
           <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
             Label
-            <input
+            <Input
               value={label}
               onChange={(event) => setLabel(event.target.value)}
               placeholder="Inner circle"
-              className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              className="mt-2 h-auto w-full rounded-md border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
             />
           </label>
           <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
             Max uses
-            <input
+            <Input
               value={maxUses}
               onChange={(event) => setMaxUses(event.target.value)}
               type="number"
               min="1"
-              className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              className="mt-2 h-auto w-full rounded-md border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
             />
           </label>
           <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
             Expires
-            <input
+            <Input
               value={expiresAt}
               onChange={(event) => setExpiresAt(event.target.value)}
               type="datetime-local"
-              className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              className="mt-2 h-auto w-full rounded-md border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:ring-[color:var(--gate-ink)]/20"
             />
           </label>
-          <button
+          <Button
             type="submit"
             disabled={busy}
-            className="md:col-span-3 inline-flex items-center justify-center rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className="h-auto md:col-span-3 inline-flex items-center justify-center rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {busy ? "Creating..." : "Generate key"}
-          </button>
+          </Button>
         </form>
-      </section>
+      </ElevatedPanel>
 
-      <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
+      <ElevatedPanel>
         <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
           Pending requests
         </div>
@@ -373,22 +380,25 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
               </div>
               <div className="mt-2 text-[color:var(--gate-ink)]">{request.note}</div>
               <div className="mt-3 flex flex-wrap items-center gap-2">
-                <button
+                <Button
                   type="button"
                   onClick={() => handleIssueRequest(request.id, request.handle)}
                   disabled={busy || request.status !== "pending"}
-                  className="rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-3 py-1 text-xs uppercase tracking-[0.3em] text-primary-fg transition hover:opacity-90 disabled:opacity-50"
+                  size="sm"
+                  className="h-auto min-h-0 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-3 py-1 text-xs uppercase tracking-[0.3em] text-primary-fg transition hover:opacity-90 disabled:opacity-50"
                 >
                   Issue key
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
                   onClick={() => handleDismissRequest(request.id)}
                   disabled={busy || request.status !== "pending"}
-                  className="rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] disabled:opacity-50"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto min-h-0 rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] hover:bg-transparent disabled:opacity-50"
                 >
                   Dismiss
-                </button>
+                </Button>
                 {request.requestIp ? (
                   <span className="text-[10px] uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
                     {request.requestIp}
@@ -398,9 +408,9 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
             </div>
           ))}
         </div>
-      </section>
+      </ElevatedPanel>
 
-      <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
+      <ElevatedPanel>
         <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
           Issued keys
         </div>
@@ -424,18 +434,20 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
                   {invite.uses}/{invite.maxUses ?? "∞"} uses · {invite.status}
                 </div>
               </div>
-              <button
+              <Button
                 type="button"
                 onClick={() => handleRevokeInvite(invite.id)}
                 disabled={busy || invite.status !== "active"}
-                className="rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] disabled:opacity-50"
+                variant="outline"
+                size="sm"
+                className="h-auto min-h-0 rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] hover:bg-transparent disabled:opacity-50"
               >
                 Revoke
-              </button>
+              </Button>
             </div>
           ))}
         </div>
-      </section>
+      </ElevatedPanel>
 
       {error ? <div className="text-sm text-red-700">{error}</div> : null}
     </div>

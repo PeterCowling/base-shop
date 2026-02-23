@@ -9,6 +9,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { Button } from "@acme/design-system/atoms";
+
 import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations";
 import { type CheckInRow } from "../../types/component/CheckinRow";
 
@@ -218,7 +220,7 @@ function StatusButton({ booking }: StatusButtonProps) {
     duration-300
     disabled:opacity-60
     disabled:cursor-not-allowed
-    min-h-[55px]
+    min-h-55px
     min-w-[55px]
   `;
 
@@ -227,7 +229,7 @@ function StatusButton({ booking }: StatusButtonProps) {
    */
   return (
     <>
-      <button
+      <Button
         onClick={handleStatusChange}
         disabled={isDisabled}
         className={buttonClass}
@@ -262,7 +264,7 @@ function StatusButton({ booking }: StatusButtonProps) {
             className="transition-opacity duration-300"
           />
         )}
-      </button>
+      </Button>
     </>
   );
 }

@@ -1,5 +1,7 @@
 import { memo } from "react";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import { useTillShiftsData } from "../../hooks/data/till/useTillShiftsData";
 import { formatEnGbDateTimeFromIso } from "../../utils/dateUtils";
 
@@ -39,23 +41,23 @@ const TillShiftHistory = memo(function TillShiftHistory() {
     <div className="border-t pt-6">
       <h2 className="text-xl font-semibold mb-3">Recent Shifts</h2>
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-sm">
-          <thead className="bg-gray-100 dark:bg-darkSurface">
-            <tr>
-              <th className="p-2 text-start border-b">Shift ID</th>
-              <th className="p-2 text-start border-b">Status</th>
-              <th className="p-2 text-start border-b">Opened</th>
-              <th className="p-2 text-start border-b">Opened By</th>
-              <th className="p-2 text-start border-b">Open Cash</th>
-              <th className="p-2 text-start border-b">Closed</th>
-              <th className="p-2 text-start border-b">Closed By</th>
-              <th className="p-2 text-start border-b">Close Cash</th>
-              <th className="p-2 text-start border-b">Variance</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table className="w-full border-collapse text-sm">
+          <TableHeader className="bg-gray-100 dark:bg-darkSurface">
+            <TableRow>
+              <TableHead className="p-2 text-start border-b">Shift ID</TableHead>
+              <TableHead className="p-2 text-start border-b">Status</TableHead>
+              <TableHead className="p-2 text-start border-b">Opened</TableHead>
+              <TableHead className="p-2 text-start border-b">Opened By</TableHead>
+              <TableHead className="p-2 text-start border-b">Open Cash</TableHead>
+              <TableHead className="p-2 text-start border-b">Closed</TableHead>
+              <TableHead className="p-2 text-start border-b">Closed By</TableHead>
+              <TableHead className="p-2 text-start border-b">Close Cash</TableHead>
+              <TableHead className="p-2 text-start border-b">Variance</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {shifts.map((shift, idx) => (
-              <tr
+              <TableRow
                 key={shift.id ?? shift.shiftId}
                 className={
                   idx % 2 === 0
@@ -63,31 +65,31 @@ const TillShiftHistory = memo(function TillShiftHistory() {
                     : "bg-gray-50 dark:bg-darkSurface"
                 }
               >
-                <td className="p-2 border-b">{shift.shiftId}</td>
-                <td className="p-2 border-b">{formatValue(shift.status)}</td>
-                <td className="p-2 border-b">
+                <TableCell className="p-2 border-b">{shift.shiftId}</TableCell>
+                <TableCell className="p-2 border-b">{formatValue(shift.status)}</TableCell>
+                <TableCell className="p-2 border-b">
                   {formatEnGbDateTimeFromIso(shift.openedAt)}
-                </td>
-                <td className="p-2 border-b">{shift.openedBy}</td>
-                <td className="p-2 border-b">{formatMoney(shift.openingCash)}</td>
-                <td className="p-2 border-b">
+                </TableCell>
+                <TableCell className="p-2 border-b">{shift.openedBy}</TableCell>
+                <TableCell className="p-2 border-b">{formatMoney(shift.openingCash)}</TableCell>
+                <TableCell className="p-2 border-b">
                   {shift.closedAt
                     ? formatEnGbDateTimeFromIso(shift.closedAt)
                     : "-"}
-                </td>
-                <td className="p-2 border-b">{formatValue(shift.closedBy)}</td>
-                <td className="p-2 border-b">{formatMoney(shift.closingCash)}</td>
-                <td className="p-2 border-b">
+                </TableCell>
+                <TableCell className="p-2 border-b">{formatValue(shift.closedBy)}</TableCell>
+                <TableCell className="p-2 border-b">{formatMoney(shift.closingCash)}</TableCell>
+                <TableCell className="p-2 border-b">
                   {typeof shift.closeDifference === "number"
                     ? `${shift.closeDifference >= 0 ? "+" : ""}${formatMoney(
                         shift.closeDifference
                       )}`
                     : "-"}
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

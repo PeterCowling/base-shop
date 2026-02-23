@@ -10,7 +10,7 @@
 import type { FC } from "react";
 import { memo, useCallback, useState } from "react";
 
-import { ConfirmDialog } from "@acme/design-system/atoms";
+import { Button, ConfirmDialog } from "@acme/design-system/atoms";
 
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useGuestByRoomData from "../../hooks/data/roomgrid/useGuestByRoomData";
@@ -103,13 +103,13 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 p-4">
         <div className="relative bg-surface w-full max-w-sm p-6 rounded shadow-lg dark:bg-darkSurface">
-          <button
+          <Button
             onClick={handleClose}
             className="absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-3 hover:bg-surface-3 flex items-center justify-center"
             aria-label="Close"
           >
             <span className="text-lg">&#x2715;</span>
-          </button>
+          </Button>
           <h2 className="text-lg font-semibold mb-4">Booking Details</h2>
           <div className="mb-4">
             <p>
@@ -176,13 +176,13 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
                   </option>
                 ))}
               </select>
-              <button
+              <Button
                 type="button"
                 onClick={handleMoveBooking}
                 className="w-full px-4 py-2 rounded bg-primary text-primary-fg hover:bg-primary"
               >
                 Move Booking
-              </button>
+              </Button>
             </div>
           )}
         </div>

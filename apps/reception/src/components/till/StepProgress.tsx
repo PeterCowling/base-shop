@@ -1,5 +1,7 @@
 import { type FC, useMemo } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { canAccess, Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
 
@@ -30,7 +32,7 @@ const StepProgress: FC<StepProgressProps> = ({ step, onStepChange, user }) => {
         const clickable = index < step || (canOverride && index > step);
         return (
           <li key={label} className="flex flex-1 flex-col items-center">
-            <button
+            <Button
               type="button"
               onClick={() => handleClick(index)}
               disabled={!clickable}
@@ -42,7 +44,7 @@ const StepProgress: FC<StepProgressProps> = ({ step, onStepChange, user }) => {
               } ${clickable ? 'hover:bg-primary-light' : 'cursor-default'}`}
             >
               {index + 1}
-            </button>
+            </Button>
             <span className="text-xs mt-1 dark:text-darkAccentGreen">{label}</span>
           </li>
         );

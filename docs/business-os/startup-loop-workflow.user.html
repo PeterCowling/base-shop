@@ -5,13 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Startup Loop: What to do next for HEAD, PET, and BRIK</title>
   <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
     :root {
       --bg: #ffffff;
+      --surface: #f5f8fb;
       --text: #101418;
-      --muted: #5a6570;
+      --text-muted: #5a6570;
       --border: #d9e0e7;
-      --header: #f5f8fb;
-      --link: #0b63ce;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
+
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
     }
     html, body {
       margin: 0;
@@ -23,88 +50,45 @@
     main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 2rem 1.5rem 4rem;
     }
-    h1, h2, h3 {
-      line-height: 1.25;
-    }
-    p, li {
-      line-height: 1.5;
-    }
-    a {
-      color: var(--link);
-    }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-    pre {
-      background: #f7f9fb;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 16px 0 24px;
-    }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
       background: var(--header);
-      font-weight: 700;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
     }
-    tr:nth-child(even) td {
-      background: #fcfdff;
-    }
-    hr {
-      border: 0;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
-    }
-    blockquote {
-      border-left: 4px solid var(--border);
-      margin: 16px 0;
-      padding: 0 12px;
-      color: var(--muted);
-    }
-    .meta {
-      margin-top: 24px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-    /* Audience toggle — Model A: single engineering appendix wrapper */
-    [data-audience="engineering"] {
-      display: none;
-    }
-    body.show-engineering [data-audience="engineering"] {
-      display: block;
-    }
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
     .audience-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 16px 0 24px;
-      padding: 8px 16px;
-      background: var(--header);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.875rem;
-      color: var(--muted);
-      font-family: inherit;
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
     }
-    .audience-toggle:hover {
-      background: var(--border);
-      color: var(--text);
-    }
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
     @media print {
       [data-audience="engineering"] { display: none !important; }
       .audience-toggle { display: none !important; }
@@ -119,7 +103,9 @@
 <h1>Startup Loop: What to do next for HEAD, PET, and BRIK</h1>
 <h2>1) Purpose</h2>
 <p>This page tells you what to do next for HEAD, PET, and BRIK — and how to do it.</p>
-<h2>Open tasks (updated 2026-02-17)</h2>
+<h2>Canonical stage IDs (loop-spec v3.11.0)</h2>
+<p><code>ASSESSMENT-01</code>, <code>ASSESSMENT-02</code>, <code>ASSESSMENT-03</code>, <code>ASSESSMENT-04</code>, <code>ASSESSMENT-05</code>, <code>ASSESSMENT-06</code>, <code>ASSESSMENT-07</code>, <code>ASSESSMENT-08</code>, <code>ASSESSMENT-09</code>, <code>ASSESSMENT</code>, <code>ASSESSMENT-10</code>, <code>ASSESSMENT-11</code>, <code>IDEAS</code>, <code>IDEAS-01</code>, <code>IDEAS-02</code>, <code>IDEAS-03</code>, <code>MEASURE-01</code>, <code>MEASURE-02</code>, <code>PRODUCT</code>, <code>PRODUCT-01</code>, <code>PRODUCTS</code>, <code>PRODUCTS-01</code>, <code>PRODUCTS-02</code>, <code>PRODUCTS-03</code>, <code>PRODUCTS-04</code>, <code>PRODUCTS-05</code>, <code>PRODUCTS-06</code>, <code>PRODUCTS-07</code>, <code>LOGISTICS</code>, <code>LOGISTICS-01</code>, <code>LOGISTICS-02</code>, <code>LOGISTICS-03</code>, <code>LOGISTICS-04</code>, <code>LOGISTICS-05</code>, <code>LOGISTICS-06</code>, <code>LOGISTICS-07</code>, <code>MARKET</code>, <code>MARKET-01</code>, <code>MARKET-02</code>, <code>MARKET-03</code>, <code>MARKET-04</code>, <code>MARKET-05</code>, <code>MARKET-06</code>, <code>MARKET-07</code>, <code>MARKET-08</code>, <code>MARKET-09</code>, <code>MARKET-10</code>, <code>MARKET-11</code>, <code>S3</code>, <code>PRODUCT-02</code>, <code>SELL</code>, <code>SELL-01</code>, <code>SELL-02</code>, <code>SELL-03</code>, <code>SELL-04</code>, <code>SELL-05</code>, <code>SELL-06</code>, <code>SELL-07</code>, <code>SELL-08</code>, <code>S4</code>, <code>S5A</code>, <code>S5B</code>, <code>WEBSITE</code>, <code>WEBSITE-01</code>, <code>WEBSITE-02</code>, <code>DO</code>, <code>S9B</code>, <code>S10</code>.</p>
+<h2>Open tasks (updated 2026-02-21)</h2>
 <p>Use these ranked lists to pick your next action. Tasks are ordered — complete from top to bottom, as each one unlocks the next.</p>
 <h3>HEAD</h3>
 <table>
@@ -141,12 +127,12 @@
 <tr>
 <td>2</td>
 <td>Complete Pre-website Measurement Setup</td>
-<td>HEAD is pre-website. Paid traffic without GA4, Search Console, and conversion event setup produces data you cannot use.</td>
+<td>HEAD is pre-website. Paid traffic without GA4, Search Console, Cloudflare measurement prerequisites, GBP API entitlement checks, and conversion event setup produces data you cannot use.</td>
 <td>Measurement setup document at Active status.</td>
 </tr>
 <tr>
 <td>3</td>
-<td>Produce the HEAD offer artifact (S2B)</td>
+<td>Produce the HEAD offer artifact (MARKET-06)</td>
 <td>Requires the operational inputs from task 1. Without the offer, the forecast and channel plan have no anchor.</td>
 <td>Offer artifact exists with target customer profile, positioning, and pricing model.</td>
 </tr>
@@ -201,7 +187,7 @@
 </tr>
 <tr>
 <td>4</td>
-<td>Produce the PET offer artifact (S2B)</td>
+<td>Produce the PET offer artifact (MARKET-06)</td>
 <td>Requires inventory inputs (task 1) and measurement setup (task 3). Without the offer, channel and forecast work has no input.</td>
 <td>Offer artifact exists with target customer profile, positioning, and pricing model.</td>
 </tr>
@@ -250,13 +236,13 @@
 </tr>
 <tr>
 <td>3</td>
-<td>Produce the BRIK offer artifact (S2B)</td>
+<td>Produce the BRIK offer artifact (MARKET-06)</td>
 <td>BRIK has not completed offer design. Channel strategy and refined forecasting both require it.</td>
 <td>Offer artifact exists with target customer profile, positioning, and pricing model.</td>
 </tr>
 <tr>
 <td>4</td>
-<td>Run Channel Strategy (S6B)</td>
+<td>Run Channel Strategy (SELL-01)</td>
 <td>No BRIK channel plan yet. Requires the offer artifact from task 3.</td>
 <td>Channel plan exists with 2-3 selected channels and a 30-day GTM timeline.</td>
 </tr>
@@ -277,13 +263,13 @@
 <h2>The Loop in 8 steps</h2>
 <p>Every week you run the same eight steps — gather data, design your offer, forecast, prioritise, act, then review — so the business gets sharper each time round.</p>
 <pre class="mermaid">flowchart LR
-    N1["Setup<br/>(S0–S1)"]
-    N2["Research<br/>(S2)"]
-    N3["Offer Design<br/>(S2B)"]
-    N4["Forecast + Channels<br/>(S3/S6B)"]
+    N1["Assessment + Measure<br/>(ASSESSMENT + MEASURE)"]
+    N2["Research<br/>(MARKET-01)"]
+    N3["Offer Design<br/>(MARKET-06)"]
+    N4["Forecast + Channels<br/>(S3/SELL-01)"]
     N5["Prioritise<br/>(S4–S5)"]
     N6["Pick top actions<br/>(S5A)"]
-    N7["Execute<br/>(S7–S9B)"]
+    N7["Execute<br/>(DO–S9B)"]
     N8["Weekly review<br/>(S10)"]
     NEND["End"]
 
@@ -303,7 +289,7 @@
 <p>The same open tasks as above, grouped by type for when you want to tackle one theme across all three businesses at once.</p>
 <h3>Measurement setup</h3>
 <ul>
-<li><strong>HEAD</strong> — Complete Pre-website Measurement Setup (GA4 + Search Console + conversion events).</li>
+<li><strong>HEAD</strong> — Complete Pre-website Measurement Setup (GA4 + Search Console + Cloudflare + GBP API entitlement + conversion events).</li>
 <li><strong>PET</strong> — Complete Pre-website Measurement Setup (same requirement as HEAD).</li>
 <li><strong>BRIK</strong> — Verify GA4 standard report signal: check begin_checkout and web_vitals in standard 7-day reports (not Realtime).</li>
 </ul>
@@ -326,7 +312,7 @@
 <ul>
 <li><strong>HEAD</strong> — Produce offer artifact: target customer profile, positioning, pricing model.</li>
 <li><strong>PET</strong> — Produce offer artifact: target customer profile, positioning, pricing model.</li>
-<li><strong>BRIK</strong> — Produce offer artifact, then produce channel strategy (S6B) with 2-3 launch channels and a 30-day GTM plan.</li>
+<li><strong>BRIK</strong> — Produce offer artifact, then produce channel strategy (SELL-01) with 2-3 launch channels and a 30-day GTM plan.</li>
 </ul>
 <h3>Weekly cadence</h3>
 <ul>
@@ -353,7 +339,7 @@
 </thead>
 <tbody>
 <tr>
-<td><strong>S0 — Intake</strong></td>
+<td><strong>ASSESSMENT-09 — Intake</strong></td>
 <td>Business idea, product spec, constraints</td>
 <td>Turns raw input into structured startup context</td>
 <td>Intake packet</td>
@@ -363,9 +349,9 @@
 <td>Feb 12 ✓</td>
 </tr>
 <tr>
-<td><strong>S1 — Readiness</strong></td>
+<td><strong>ASSESSMENT — Assessment gate readiness</strong></td>
 <td>Strategy plan, people profile</td>
-<td>Checks 7 gates; identifies blockers</td>
+<td>Checks readiness/completeness gates and identifies blockers before MEASURE</td>
 <td>Readiness report + blocker list</td>
 <td>Tells you what is missing before you spend time on research</td>
 <td>Feb 12 ✓</td>
@@ -373,7 +359,7 @@
 <td>Never</td>
 </tr>
 <tr>
-<td><strong>S1B — Measurement setup</strong> <em>(pre-website only)</em></td>
+<td><strong>MEASURE-01 — Agent-Setup</strong> <em>(pre-website emphasis)</em></td>
 <td>Launch surface confirmed as pre-website</td>
 <td>Sets up analytics before any traffic</td>
 <td>Measurement setup document</td>
@@ -383,7 +369,7 @@
 <td>Feb 13 ✓</td>
 </tr>
 <tr>
-<td><strong>S2A — Historical baseline</strong> <em>(website-live only)</em></td>
+<td><strong>MEASURE-02 — Results baseline</strong> <em>(website-live emphasis)</em></td>
 <td>Net value exports, booking data, traffic logs</td>
 <td>Consolidates business history into a decision baseline</td>
 <td>Historical baseline document</td>
@@ -393,7 +379,7 @@
 <td>Feb 12 ✓</td>
 </tr>
 <tr>
-<td><strong>S2 — Market intelligence</strong></td>
+<td><strong>MARKET-01 — Market intelligence</strong></td>
 <td>Intake packet, baseline (if existing)</td>
 <td>Researches competitors, demand, pricing, and channels</td>
 <td>Market intelligence pack</td>
@@ -403,8 +389,8 @@
 <td>Feb 15 ✓</td>
 </tr>
 <tr>
-<td><strong>S2B — Offer design</strong></td>
-<td>Market intel, intake packet</td>
+<td><strong>MARKET-06 — Offer design</strong></td>
+<td>MARKET-01..05 outputs + intake packet</td>
 <td>Defines target customer, positioning, and pricing model</td>
 <td>Offer artifact</td>
 <td>Without an offer, there is nothing to forecast or sell</td>
@@ -433,8 +419,8 @@
 <td><strong>Never</strong></td>
 </tr>
 <tr>
-<td><strong>S6B — Channel strategy</strong></td>
-<td>Offer artifact, market intel</td>
+<td><strong>SELL-01 — Channel strategy</strong></td>
+<td>Offer artifact, market intel, valid DEP (GATE-SELL-STRAT-01); measurement verified before spend (GATE-SELL-ACT-01)</td>
 <td>Selects 2-3 launch channels with 30-day GTM plan</td>
 <td>Channel plan + SEO strategy</td>
 <td>Without a channel plan, you are guessing where to spend</td>
@@ -443,7 +429,7 @@
 <td><strong>Never</strong></td>
 </tr>
 <tr>
-<td><strong>S4/S5 — Prioritise</strong></td>
+<td><strong>S4 + S5A — Baseline merge and Prioritise</strong></td>
 <td>Offer + forecast + channels</td>
 <td>Scores and ranks actions by impact</td>
 <td>Prioritised action list</td>
@@ -453,11 +439,11 @@
 <td>Feb 13 ✓</td>
 </tr>
 <tr>
-<td><strong>S6 — Site upgrade</strong></td>
-<td>Prioritised list, platform baseline</td>
-<td>Builds upgrade backlog from best-of analysis</td>
-<td>Site upgrade brief</td>
-<td>Turns competitor observations into a concrete improvement plan</td>
+<td><strong>WEBSITE — Website</strong></td>
+<td>Launch-surface selection + platform baseline + business context</td>
+<td>Routes to WEBSITE-01 (first build) or WEBSITE-02 (site upgrade synthesis)</td>
+<td>Website workstream artifact</td>
+<td>Keeps website work scoped to the correct launch surface path</td>
 <td>Feb 12 ✓</td>
 <td>Feb 12 ✓</td>
 <td>Feb 13 ✓</td>
@@ -497,6 +483,21 @@
 <blockquote>
 <p><strong>Note for engineers:</strong> The full gate specification (RG-01 through RG-07) with acceptance criteria and evidence paths is preserved verbatim in the Engineering appendix below.</p>
 </blockquote>
+<blockquote>
+<p><strong>Capability contract:</strong> The canonical marketing/sales capability registry — defining the seven capabilities required for decision-grade marketing and sales infrastructure — is at <code>docs/business-os/startup-loop/marketing-sales-capability-contract.md</code>.</p>
+</blockquote>
+<blockquote>
+<p><strong>Forecast guardrail contract:</strong> S3 forecast outputs must apply a confidence tier (low/medium/high) that controls spend cap, operator time cap, re-check cadence, and allowed decision class. Unknown confidence defaults to <code>low</code> tier (10% spend cap, ≤5 hrs/week/channel, Continue/Investigate only). Full tier table and assumption register requirements (9 mandatory fields including <code>kill_trigger</code>, <code>owner</code>, <code>next_review_date</code>) are defined in <code>.claude/skills/lp-forecast/SKILL.md</code> (§ Forecast Guardrails).</p>
+</blockquote>
+<blockquote>
+<p><strong>S10 denominator validity contract:</strong> Weekly K/P/C/S decisions require denominator validity checks before issuing Scale or Kill. Five KPI families have explicit minimum denominators (Traffic trend ≥200 sessions/week; Lead CVR ≥100 visits + 10 leads; Booking/Purchase CVR ≥150 visits + 8 orders; CAC ≥10 conversions; Revenue/AOV ≥10 orders). If any selected KPI fails its threshold, the decision class is restricted to <code>Continue</code> or <code>Investigate</code> — <code>Scale</code> and <code>Kill</code> require all relevant denominators to pass. Full table in <code>docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md</code> (§ KPI Denominator Minimums) and <code>.claude/skills/lp-launch-qa/SKILL.md</code> (§ KPI Denominator Validity).</p>
+</blockquote>
+<blockquote>
+<p><strong>Audit cadence contract:</strong> Every S10 session includes a weekly light-audit (8 items, ≤20 min) appended as Section H to the KPCs decision document. A monthly deep-audit (21 items, ≤120 min) runs in the first week of each month, producing a <code>&#x3C;YYYY-MM>-monthly-audit.user.md</code> per business. Any failed item creates a <code>REM-&#x3C;BIZ>-&#x3C;YYYYMMDD>-&#x3C;n></code> task with named owner and due date. If item A1 (Measurement active) fails, KPI signal is unreliable and decision class is restricted to <code>Continue</code> / <code>Investigate</code>. Full checklist: <code>docs/business-os/startup-loop/audit-cadence-contract-v1.md</code>.</p>
+</blockquote>
+<blockquote>
+<p><strong>Bottleneck profile adapter contract:</strong> S10 bottleneck diagnosis is business-model-aware when <code>business_model_profile</code> is set on the run context. Two profiles are supported: <code>hospitality-direct-booking</code> (adds <code>inquiry_to_quote_rate</code>, <code>quote_to_booking_rate</code>, <code>median_response_time</code>, <code>direct_ota_mix</code>, <code>cancellation_rate</code>, <code>review_velocity</code>) and <code>dtc-ecommerce</code> (adds <code>page_to_atc_rate</code>, <code>checkout_completion_rate</code>, <code>cac_by_cohort</code>, <code>refund_rate</code>, <code>support_load_per_100_orders</code>, <code>repeat_purchase_rate</code>). Profile primary primitives compete with base catalog metrics by miss magnitude; profile secondary derived metrics are deprioritised when a profile primary has severity ≥ moderate. Existing v1 snapshots without a profile remain valid. Full schema and examples in <code>docs/business-os/startup-loop/bottleneck-diagnosis-schema.md</code> (§§ 2A, 5, 11).</p>
+</blockquote>
 <h2>Business Operator Actions</h2>
 <p>These are the actions owned by Pete as venture-studio operator. Each row is a concrete next step — not a platform task.</p>
 <table>
@@ -535,7 +536,7 @@
 </tr>
 <tr>
 <td>Complete the Pre-website Measurement Setup checklist for HEAD</td>
-<td>HEAD is pre-website; paid traffic cannot start without GA4, Search Console, and conversion event setup.</td>
+<td>HEAD is pre-website; paid traffic cannot start without GA4, Search Console, Cloudflare measurement prerequisites, GBP API entitlement checks, and conversion event setup.</td>
 <td>Measurement setup document at Active status.</td>
 </tr>
 <tr>
@@ -638,32 +639,32 @@
 </thead>
 <tbody>
 <tr>
-<td>Starting a new business or major scope shift (S0)</td>
+<td>Starting a new business or major scope shift (ASSESSMENT-09)</td>
 <td>Run the Intake Normaliser prompt for this business</td>
 <td>Intake packet exists for the business</td>
 </tr>
 <tr>
-<td>Readiness check shows a block or warning (S1)</td>
+<td>Assessment gate shows a block or warning (ASSESSMENT)</td>
 <td>Run the Blocker Interview prompt to identify what is missing</td>
 <td>Blocker interview document exists; all blockers have an owner and a deadline</td>
 </tr>
 <tr>
-<td>Business is pre-website and measurement is not set up (S1B)</td>
+<td>Business is pre-website and measurement is not set up (MEASURE-01)</td>
 <td>Run the Pre-website Measurement Setup checklist</td>
 <td>Measurement setup document is at Active status</td>
 </tr>
 <tr>
-<td>Business is website-live and historical baseline is missing or blocked (S2A)</td>
+<td>Business is website-live and historical baseline is missing or blocked (MEASURE-02)</td>
 <td>Run the Historical Data Request prompt to identify what data is needed</td>
 <td>Data request document sent to the data owner</td>
 </tr>
 <tr>
-<td>Required S2A data pack has arrived</td>
+<td>Required MEASURE-02 data pack has arrived</td>
 <td>Run the Historical Baseline Consolidation prompt</td>
 <td>Historical baseline document is at Active status</td>
 </tr>
 <tr>
-<td>Market intelligence is missing, stale, or points to a Draft (S2)</td>
+<td>Market intelligence is missing, stale, or points to a Draft (MARKET-01)</td>
 <td>Run the Deep Research: Market Intelligence prompt</td>
 <td>Market intelligence document is at Active status with a valid latest pointer</td>
 </tr>
@@ -673,19 +674,24 @@
 <td>Forecast recalibration document exists and is dated</td>
 </tr>
 <tr>
-<td>3 or more candidate actions are competing for priority (S5)</td>
+<td>3 or more candidate actions are competing for priority (S5A)</td>
 <td>Run the Prioritisation Scorer prompt</td>
 <td>Prioritisation scorecard exists with top 2–3 items ranked</td>
 </tr>
 <tr>
-<td>Site upgrade brief is missing, stale, or points to a Draft (S6)</td>
-<td>Run the Deep Research: Site Upgrade prompt</td>
-<td>Site upgrade brief is at Active status with a valid latest pointer</td>
+<td>Website artifact is missing, stale, or points to a Draft (WEBSITE)</td>
+<td>Run the launch-surface-matched website prompt (WEBSITE-01 or WEBSITE-02)</td>
+<td>Website artifact is at Active status with a valid latest pointer; for WEBSITE-01 also complete auto-handover to <code>/lp-do-fact-find</code></td>
 </tr>
 <tr>
 <td>It is the weekly cadence checkpoint (S10)</td>
-<td>Run the Weekly K/P/C/S Decision prompt</td>
-<td>This week's K/P/C/S decision document is dated and saved</td>
+<td>Run the Weekly K/P/C/S Decision prompt (includes Section H weekly audit) via <code>/lp-weekly</code> (see <a href="docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md">S10 weekly orchestration contract</a>; packet schema: <a href="docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md">s10-weekly-packet-schema-v1</a>)</td>
+<td>This week's K/P/C/S decision document is dated and saved; Section H audit completed; S10 weekly packet published at <code>docs/business-os/strategy/&#x3C;BIZ>/s10-weekly-packet-&#x3C;YYYY-Www>.md</code>; latest pointer updated</td>
+</tr>
+<tr>
+<td>It is the first week of the month</td>
+<td>Run the monthly deep-audit checklist</td>
+<td><code>&#x3C;YYYY-MM>-monthly-audit.user.md</code> exists for each active business; all REM tasks have owners</td>
 </tr>
 </tbody>
 </table>
@@ -712,12 +718,12 @@
 </tr>
 <tr>
 <td>Complete MCP guarded BOS write rollout (TASK-06 in MCP plan)</td>
-<td>S5B/S7/S8/S9/S10 write paths need governed MCP write capability before BOS can be fully operationalised.</td>
+<td>S5B/DO/S10 write paths need governed MCP write capability before BOS can be fully operationalised.</td>
 <td>MCP guarded-write end-to-end test passes; TASK-06 marked complete.</td>
 </tr>
 <tr>
 <td>Implement wave-2 measure_* MCP connectors</td>
-<td>S2A/S3/S10 measurement stages need normalised cross-source measurement contracts — GA4, Search Console, and Cloudflare data accessible via MCP tools.</td>
+<td>MEASURE-02/S3/S10 measurement stages need normalised cross-source measurement contracts — GA4, Search Console, and Cloudflare data accessible via MCP tools.</td>
 <td>Wave-2 connector fact-find brief exists; at least one connector implemented and validated.</td>
 </tr>
 <tr>
@@ -740,7 +746,7 @@
     Q --> R[lp-do-plan/lp-do-build]</pre>
 <p>This sub-loop feeds the main startup loop at the lp-do-fact-find stage.</p>
 <h2>Stage-by-Stage Workflow [Engineering Reference]</h2>
-<p>Canonical source: <code>docs/business-os/startup-loop/loop-spec.yaml</code> (spec_version 1.1.0).</p>
+<p>Canonical source: <code>docs/business-os/startup-loop/loop-spec.yaml</code> (spec_version 3.11.0).</p>
 <table>
 <thead>
 <tr>
@@ -752,56 +758,152 @@
 </thead>
 <tbody>
 <tr>
-<td>S0. Intake</td>
+<td>ASSESSMENT-09. Intake</td>
 <td>Business idea, product spec, channels, constraints, stock timeline</td>
 <td>Normalize raw user intent into structured startup context</td>
 <td>Intake packet per business</td>
 </tr>
 <tr>
-<td>S1. Readiness preflight</td>
+<td>ASSESSMENT. Assessment gate support</td>
 <td>Strategy plan, people profile, path-business mapping, prior cards/ideas</td>
-<td>Run readiness gates (<code>RG-01..RG-07</code>) and detect blockers</td>
+<td>Run readiness/completeness checks and detect blockers before MEASURE entry</td>
 <td>Readiness report + missing-context register + blocker questions/prompts</td>
 </tr>
 <tr>
-<td>S1B. Pre-website measurement bootstrap (conditional: pre-website)</td>
+<td>MEASURE-01. Agent-Setup bootstrap (conditional: pre-website path)</td>
 <td>Launch-surface mode = <code>pre-website</code> + intake packet + business plan</td>
-<td>Run mandatory analytics/measurement setup gate and operator handoff (GA4/Search Console/API prereqs)</td>
+<td>Run mandatory analytics/measurement setup gate and operator handoff (GA4/Search Console/Cloudflare + GBP API entitlement prereqs)</td>
 <td>Measurement setup note + verification checklist + blocker list</td>
 </tr>
 <tr>
-<td>S2A. Historical performance baseline (conditional: website-live)</td>
+<td>MEASURE-02. Results baseline (conditional: website-live emphasis)</td>
 <td>Monthly net booking value exports + Cloudflare analytics + ops logs + Octorate data collection (Batch 1: booking value, Batch 2: calendar/inventory)</td>
 <td>Consolidate internal history into decision baseline with data-quality notes</td>
-<td>Historical baseline pack (<code>Status: Active</code> required before S2/S6 for existing businesses) + Octorate data collection protocol active</td>
+<td>Historical baseline pack (<code>Status: Active</code> required before MARKET-01/WEBSITE-02 for existing businesses) + Octorate data collection protocol active</td>
 </tr>
 <tr>
-<td>S2. Market intelligence</td>
-<td>Deep Research prompt template + business intake packet (+ S2A baseline for existing businesses)</td>
-<td>Competitor/demand/pricing/regulatory research, confidence tagging</td>
-<td>Market Intelligence Pack per business + <code>latest</code> pointer</td>
+<td>MARKET-01. Competitor mapping</td>
+<td>Deep Research prompt template + business intake packet (+ MEASURE-02 baseline for existing businesses)</td>
+<td>Map direct/indirect competitors and positioning cues</td>
+<td>Competitor mapping artifact</td>
 </tr>
 <tr>
-<td>S2B. Offer design</td>
-<td>Market intelligence + intake packet + constraints</td>
+<td>MARKET-02. Demand evidence</td>
+<td>MARKET-01 output + intake packet</td>
+<td>Capture demand signals, segment pull, and counter-signals</td>
+<td>Demand evidence artifact</td>
+</tr>
+<tr>
+<td>MARKET-03. Pricing benchmarks</td>
+<td>MARKET-01/02 outputs + intake packet</td>
+<td>Build benchmark price bands and pricing pattern matrix</td>
+<td>Pricing benchmarks artifact</td>
+</tr>
+<tr>
+<td>MARKET-04. Channel landscape</td>
+<td>MARKET-01/02/03 outputs + intake packet</td>
+<td>Map channel options, constraints, and feasibility</td>
+<td>Channel landscape artifact</td>
+</tr>
+<tr>
+<td>MARKET-05. Assumptions and risk register</td>
+<td>MARKET-01..04 outputs</td>
+<td>Consolidate assumptions, conflicts, and risk priorities</td>
+<td>Assumptions and risk register artifact</td>
+</tr>
+<tr>
+<td>MARKET-06. Offer design</td>
+<td>MARKET-01..05 outputs + intake packet + constraints</td>
 <td>Consolidate ICP, positioning, pricing, offer design into validated hypothesis</td>
-<td>Offer artifact (<code>/lp-offer</code> output); BD-3 sub-deliverable: messaging-hierarchy.user.md (Draft minimum required before S2B is Done — GATE-BD-03)</td>
+<td>Offer artifact (<code>/lp-offer</code> output); BD-3 sub-deliverable: messaging-hierarchy.user.md (Draft minimum required before MARKET-06 is Done — GATE-BD-03)</td>
 </tr>
 <tr>
-<td><em>S3. Forecast</em> (parallel with S6B)</td>
+<td>MARKET-07. Post-offer synthesis</td>
+<td>MARKET-06 offer + MARKET-01..05 intelligence stack</td>
+<td>Integrate offer contract back into market intelligence; update assumptions</td>
+<td>Post-offer synthesis artifact</td>
+</tr>
+<tr>
+<td>MARKET-08. Demand evidence pack assembly</td>
+<td>MARKET-01..07 outputs</td>
+<td>Compile DEP artifact from all market signal stages</td>
+<td>Demand evidence pack (DEP) artifact</td>
+</tr>
+<tr>
+<td>MARKET-09. ICP refinement</td>
+<td>MARKET-08 DEP + offer feedback</td>
+<td>Narrow ICP based on observed demand signals and offer feedback</td>
+<td>ICP refinement artifact</td>
+</tr>
+<tr>
+<td>MARKET-10. Market aggregate pack (draft)</td>
+<td>MARKET-01..09 outputs</td>
+<td>Assemble market-pack standing artifact draft</td>
+<td>Market aggregate pack (draft) artifact</td>
+</tr>
+<tr>
+<td>MARKET-11. Market aggregate pack (validated)</td>
+<td>MARKET-08 DEP + MARKET-09 ICP refinement + MARKET-10 draft</td>
+<td>Pack sign-off producing the validated standing market pack</td>
+<td>Market aggregate pack (validated) artifact</td>
+</tr>
+<tr>
+<td><em>S3. Forecast</em> (parallel with SELL-01)</td>
 <td>Business intake + fresh market intelligence + offer hypothesis</td>
 <td>Build P10/P50/P90 forecast, guardrails, assumptions, 14-day tests</td>
 <td>Forecast doc + exec summary + forecast seed</td>
 </tr>
 <tr>
-<td><em>S6B. Channel strategy + GTM</em> (parallel with S3)</td>
-<td>Offer hypothesis + market intelligence + launch surface</td>
+<td><em>SELL-01. Channel strategy + GTM</em> (parallel with S3)</td>
+<td>Offer hypothesis + market intelligence + valid DEP (GATE-SELL-STRAT-01 must pass before design begins; GATE-SELL-ACT-01 must pass before spend commitment)</td>
 <td>Channel-customer fit analysis, 2-3 launch channels, 30-day GTM timeline</td>
 <td>Channel plan + SEO strategy + outreach drafts</td>
 </tr>
 <tr>
+<td>SELL-02. Channel performance baseline</td>
+<td>SELL-01 outputs + live channel data</td>
+<td>Document standing baseline of active channel performance: CVR, CAC, ROI</td>
+<td>Channel performance baseline artifact</td>
+</tr>
+<tr>
+<td>SELL-03. Outreach and content standing</td>
+<td>SELL-01 outputs + outreach logs</td>
+<td>Document standing outreach cadence, content calendar status, engagement metrics</td>
+<td>Outreach and content standing artifact</td>
+</tr>
+<tr>
+<td>SELL-04. SEO standing</td>
+<td>SELL-01 SEO strategy + current rankings</td>
+<td>Document standing SEO intelligence: rankings, keyword gaps, backlink profile</td>
+<td>SEO standing artifact</td>
+</tr>
+<tr>
+<td>SELL-05. Paid channel standing</td>
+<td>SELL-01 channel plan + paid spend data</td>
+<td>Document standing paid channel performance: spend, ROAS, creative fatigue</td>
+<td>Paid channel standing artifact</td>
+</tr>
+<tr>
+<td>SELL-06. Partnership and referral standing</td>
+<td>SELL-01 outputs + partnership pipeline</td>
+<td>Document standing partnership pipeline, referral programmes, affiliate activity</td>
+<td>Partnership and referral standing artifact</td>
+</tr>
+<tr>
+<td>SELL-07. Sell aggregate pack</td>
+<td>SELL-02..06 outputs</td>
+<td>Aggregate sell pack combining all standing sales intelligence into one artifact</td>
+<td>Sell aggregate pack artifact</td>
+</tr>
+<tr>
+<td>SELL-08. Activation readiness (pre-spend gate)</td>
+<td>SELL-01 + measurement readiness</td>
+<td>Validate paid spend activation readiness (GATE-SELL-ACT-01); blocks live spend until measurement thresholds met</td>
+<td>Activation readiness decision + evidence refs</td>
+</tr>
+<tr>
 <td>S4. Baseline merge (join barrier)</td>
-<td>Offer (S2B) + forecast (S3) + channels (S6B)</td>
+<td>Offer (MARKET-06) + forecast (S3) + channels (SELL-01)</td>
 <td>Validate required upstream artifacts; compose deterministic baseline snapshot</td>
 <td>Candidate baseline snapshot + draft manifest</td>
 </tr>
@@ -818,25 +920,31 @@
 <td>BOS cards created/updated + manifest committed</td>
 </tr>
 <tr>
-<td>S6. Website upgrade synthesis</td>
+<td>WEBSITE-01. L1 first build framework</td>
+<td>Brand dossier + startup baseline + existing scaffold and legacy reference app</td>
+<td>Framework-first assembly mapping for first website build (route skeleton, reuse boundaries, implementation order) + auto-dispatch to <code>/lp-do-fact-find --website-first-build-backlog</code> once artifact is Active</td>
+<td>Agent-ready V1 builder prompt packet + first-build fact-find handover trigger</td>
+</tr>
+<tr>
+<td>WEBSITE-02. Website upgrade synthesis</td>
 <td>Platform baseline + business upgrade brief + reference sites</td>
 <td>Best-of decomposition and fit matrix (Adopt/Adapt/Defer/Reject)</td>
 <td>Fact-find-ready website backlog packet</td>
 </tr>
 <tr>
-<td>S7. Fact-find</td>
+<td>DO. Fact-find (<code>/lp-do-fact-find</code>)</td>
 <td>Chosen go-item(s), evidence docs, constraints</td>
 <td>Deep evidence audit and task seeds</td>
 <td>Fact-find brief (<code>Ready-for-planning</code> or <code>Needs-input</code>)</td>
 </tr>
 <tr>
-<td>S8. Plan</td>
+<td>DO. Plan (<code>/lp-do-plan</code>)</td>
 <td>Fact-find brief</td>
 <td>Confidence-gated implementation plan</td>
 <td>Plan doc with tasks/VCs/checkpoints</td>
 </tr>
 <tr>
-<td>S9. Build</td>
+<td>DO. Build (<code>/lp-do-build</code>)</td>
 <td>Approved plan tasks</td>
 <td>Implement + validate + track outputs</td>
 <td>Shipped work + validation evidence</td>
@@ -868,31 +976,31 @@
 <tbody>
 <tr>
 <td>BD-1 Brand Dossier bootstrap</td>
-<td>S1 advance</td>
-<td>GATE-BD-01 (Hard): check brand-identity.user.md Draft/Active status in strategy index; block S1 advance if missing</td>
-<td>Run <code>/lp-brand-bootstrap &#x3C;BIZ></code> → <code>brand-identity.user.md</code> at Draft minimum</td>
+<td>ASSESSMENT advance</td>
+<td>GATE-BD-01 (Hard): check brand-identity.user.md Draft/Active status in strategy index; block ASSESSMENT advance if missing</td>
+<td>Run <code>/lp-assessment-bootstrap &#x3C;BIZ></code> → <code>brand-identity.user.md</code> at Draft minimum</td>
 </tr>
 <tr>
 <td>BD-2 Competitive Positioning</td>
-<td>After S2</td>
+<td>After MARKET-01</td>
 <td>Competitive positioning research via BRAND-DR-01/02 prompts</td>
 <td><code>competitive-positioning.user.md</code>; evidence pack entries under <code>docs/business-os/evidence/&#x3C;BIZ>/</code></td>
 </tr>
 <tr>
-<td>BD-3 Messaging Hierarchy (S2B sub-deliverable)</td>
-<td>S2B completion</td>
-<td>GATE-BD-03 (Hard): messaging-hierarchy.user.md must exist at Draft minimum before S2B is Done</td>
-<td><code>messaging-hierarchy.user.md</code> at Draft minimum; S2B not Done without it</td>
+<td>BD-3 Messaging Hierarchy (MARKET-06 sub-deliverable)</td>
+<td>MARKET-06 completion</td>
+<td>GATE-BD-03 (Hard): messaging-hierarchy.user.md must exist at Draft minimum before MARKET-06 is Done</td>
+<td><code>messaging-hierarchy.user.md</code> at Draft minimum; MARKET-06 not Done without it</td>
 </tr>
 <tr>
 <td>BD-4 Creative Voice Brief</td>
-<td>After S6B</td>
+<td>After SELL-01</td>
 <td>Creative voice brief derived from channel angles and messaging decisions (BRAND-DR-04)</td>
 <td><code>creative-voice-brief.user.md</code></td>
 </tr>
 <tr>
 <td>BD-5 Design Spec gate</td>
-<td>S7/S8 (lp-design-spec pre-flight)</td>
+<td>DO (lp-design-spec pre-flight)</td>
 <td>GATE-BD-07 (Hard): lp-design-spec requires Active brand-identity; blocks design spec if Status ≠ Active</td>
 <td>Gate pass → lp-design-spec runs; gate block → advance brand-identity to Active first</td>
 </tr>
@@ -1009,7 +1117,7 @@
 </thead>
 <tbody>
 <tr>
-<td>S1 Readiness</td>
+<td>ASSESSMENT readiness</td>
 <td>Demand/conversion baselines still not measured</td>
 <td>Input missing</td>
 <td><code>docs/business-os/strategy/HEAD/plan.user.md</code> metrics section</td>
@@ -1052,7 +1160,7 @@
 </thead>
 <tbody>
 <tr>
-<td>S1 Readiness</td>
+<td>ASSESSMENT readiness</td>
 <td>Demand/margin baselines not measured in canonical plan</td>
 <td>Input missing</td>
 <td><code>docs/business-os/strategy/PET/plan.user.md</code> metrics section</td>
@@ -1089,31 +1197,31 @@
 </thead>
 <tbody>
 <tr>
-<td>S1 Readiness</td>
+<td>ASSESSMENT readiness</td>
 <td>Outcome contract is now in canonical startup-loop format; maintain weekly refresh against measured data</td>
 <td>Freshness/cadence risk</td>
 <td><code>docs/business-os/strategy/BRIK/plan.user.md</code>; <code>docs/business-os/startup-baselines/BRIK-forecast-seed.user.md</code></td>
 </tr>
 <tr>
-<td>S1 Readiness</td>
+<td>ASSESSMENT readiness</td>
 <td>First 7-day measured baseline is now locked (sessions/users/page_view); conversion and vitals signals remain zero in current window</td>
 <td>Signal-quality gap</td>
 <td><code>docs/business-os/strategy/BRIK/plan.user.md</code> metrics section; <code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code></td>
 </tr>
 <tr>
-<td>S2A Historical baseline</td>
+<td>MEASURE-02 Historical baseline</td>
 <td>Baseline is active; Octorate data collection protocol established with Batch 2 (calendar/inventory) fully automated; Batch 1 (booking value) requires automation; Cloudflare proxies are partial (11/24 months request totals only; no page/geo/device splits) and older months are unavailable under current access</td>
 <td>Data quality + automation gap</td>
 <td><code>docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code> (<code>Status: Active</code>); <code>docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md</code> (<code>Status: Active</code>); <code>docs/business-os/startup-loop/octorate-data-collection-protocol.md</code> (<code>Status: Active</code>); <code>docs/business-os/strategy/BRIK/data/cloudflare_monthly_proxies.csv</code>; <code>docs/business-os/strategy/BRIK/data/data_quality_notes.md</code></td>
 </tr>
 <tr>
-<td>S2A Measurement setup</td>
+<td>MEASURE-01 Agent-Setup verification</td>
 <td>Data API access is enabled, first extract is captured, and production click-path now verifies live <code>begin_checkout</code> collection after deployment alignment; <code>web_vitals</code> verification and refreshed report-window confirmation remain pending</td>
 <td>Signal-quality/verification gap</td>
 <td><code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code>; <code>docs/business-os/strategy/BRIK/plan.user.md</code>; setup note: <code>docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md</code></td>
 </tr>
 <tr>
-<td>S2 Market intelligence</td>
+<td>MARKET-01 Market intelligence</td>
 <td>Decision-grade pack is now active; enforce monthly freshness + change-trigger refresh</td>
 <td>Refresh cadence risk</td>
 <td><code>docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md</code> (<code>Status: Active</code>); handoff prompt retained at <code>docs/business-os/market-research/BRIK/2026-02-12-deep-research-market-intelligence-prompt.user.md</code></td>
@@ -1131,13 +1239,13 @@
 <td><code>docs/business-os/startup-baselines/BRIK-forecast-seed.user.md</code> (<code>Status: Active</code>) + <code>docs/business-os/strategy/BRIK/plan.user.md</code></td>
 </tr>
 <tr>
-<td>S5 Prioritization</td>
+<td>S5A Prioritization</td>
 <td>Scored prioritization artifact is active; P1-01 routing, baseline lock, and production checkout telemetry deployment alignment are complete, while report refresh verification and P1-02/P1-03 execution remain open</td>
 <td>Execution sequencing risk</td>
 <td><code>docs/plans/brik-ga4-baseline-lock/fact-find.md</code>; <code>docs/plans/brik-ga4-baseline-lock/plan.md</code>; <code>docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md</code> (<code>Status: Active</code>)</td>
 </tr>
 <tr>
-<td>S6 Website synthesis</td>
+<td>WEBSITE-02 Website synthesis</td>
 <td>Decision-grade brief is now active; enforce monthly freshness + change-trigger refresh</td>
 <td>Refresh cadence risk</td>
 <td><code>docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md</code> (<code>Status: Active</code>); handoff prompt retained at <code>docs/business-os/site-upgrades/BRIK/2026-02-12-deep-research-site-upgrade-prompt.user.md</code></td>
@@ -1162,31 +1270,31 @@
 </thead>
 <tbody>
 <tr>
-<td>S0 Intake</td>
+<td>ASSESSMENT-09 Intake</td>
 <td>Canonical intake packet active</td>
 <td>Canonical intake packet active</td>
 <td>Canonical intake packet active</td>
 </tr>
 <tr>
-<td>S1 Readiness</td>
+<td>ASSESSMENT readiness</td>
 <td>Mapping gate clear; business-level outcome/metrics gaps remain</td>
 <td>Mapping gate clear; business-level outcome/metrics gaps remain</td>
 <td>Mapping gate clear; outcome contract normalized, but measured baseline metrics remain incomplete</td>
 </tr>
 <tr>
-<td>S2A Historical baseline</td>
+<td>MEASURE-02 Historical baseline</td>
 <td>Not required (startup mode)</td>
 <td>Not required (startup mode)</td>
 <td>Baseline active with partial Cloudflare coverage; GA4/Search Console core setup verified, event-level verification pending</td>
 </tr>
 <tr>
-<td>S2 Market intelligence</td>
+<td>MARKET-01 Market intelligence</td>
 <td>Active canonical output (<code>latest</code> active)</td>
 <td>Active canonical output (<code>latest</code> active)</td>
 <td>Active canonical output (<code>latest</code> active; decision-grade)</td>
 </tr>
 <tr>
-<td>S2B Offer design</td>
+<td>MARKET-06 Offer design</td>
 <td>Not yet started</td>
 <td>Not yet started</td>
 <td>Not yet started</td>
@@ -1198,7 +1306,7 @@
 <td>Startup-loop forecast artifact active (<code>v1</code>); recalibration pending after first 14-day measured window</td>
 </tr>
 <tr>
-<td>S6B Channel strategy + GTM</td>
+<td>SELL-01 Channel strategy + GTM</td>
 <td>Not yet started</td>
 <td>Not yet started</td>
 <td>Not yet started</td>
@@ -1222,22 +1330,22 @@
 <td>Not yet started</td>
 </tr>
 <tr>
-<td>S6 Website best-of synthesis</td>
+<td>WEBSITE-02 Website best-of synthesis</td>
 <td>Active brief available</td>
 <td>Active brief available</td>
 <td>Active brief available (<code>latest</code> active; decision-grade)</td>
 </tr>
 <tr>
-<td>S7 Fact-find handoff quality</td>
+<td>DO Fact-find handoff quality</td>
 <td>Possible but weaker due missing upstream canonical artifacts</td>
 <td>Possible but weaker due missing upstream canonical artifacts</td>
-<td>Possible with improved quality; still constrained by measurement completeness and S6B artifact gaps</td>
+<td>Possible with improved quality; still constrained by measurement completeness and SELL-01 artifact gaps</td>
 </tr>
 <tr>
-<td>S8/S9 Plan/Build</td>
+<td>DO Plan/Build</td>
 <td>Available in process, but depends on stronger upstream inputs</td>
 <td>Available in process, but depends on stronger upstream inputs</td>
-<td>Available in process; confidence improved after S2/S3/S4/S5/S6 completion, still constrained by instrumentation completeness</td>
+<td>Available in process; confidence improved after MARKET-01/S3/S4/S5A/WEBSITE completion, still constrained by instrumentation completeness</td>
 </tr>
 <tr>
 <td>S9B QA gates</td>
@@ -1259,14 +1367,14 @@
 <li>HEAD and PET forecast recalibration artifacts from measured week-1/2 data are required.</li>
 <li>BRIK GA4 Realtime/DebugView verification for <code>web_vitals</code> and <code>begin_checkout</code> is required.</li>
 <li>BRIK weekly baseline refresh is required, with non-zero <code>begin_checkout</code>/<code>web_vitals</code> signal restoration or explicit root-cause evidence.</li>
-<li>BRIK S2/S6 Deep Research freshness checks (monthly or on major outcome/ICP/channel/product change) are required.</li>
+<li>BRIK MARKET-01/WEBSITE-02 Deep Research freshness checks (monthly or on major outcome/ICP/channel/product change) are required.</li>
 <li>BRIK sustained weekly decision cadence and first measured-data forecast recalibration are required.</li>
 <li>Standing refresh artifacts (market pulse, channel economics, regulatory watch) are required.</li>
 <li><code>HOLDCO</code> registration in business catalog is required (taxonomy hygiene item from readiness warning).</li>
 </ol>
-<h2>Deep Research Gate (S2 + S6) [Engineering Reference]</h2>
+<h2>Deep Research Gate (MARKET-01 + WEBSITE) [Engineering Reference]</h2>
 <h3>9.1 Mandatory hand-off rule</h3>
-<p>When either S2 (market intelligence) or S6 (site-upgrade brief) is in a seed/draft state, the workflow must:</p>
+<p>When either MARKET-01 (market intelligence) or WEBSITE-stage artifact (WEBSITE-01 first-build framework or WEBSITE-02 site-upgrade brief) is in a seed/draft state, the workflow must:</p>
 <ol>
 <li>Stop progression for that business at the affected stage.</li>
 <li>Hand the user a ready-to-run Deep Research prompt file (not a template with placeholders).</li>
@@ -1281,16 +1389,16 @@
 </ul>
 <p>Additional existing-business trigger:</p>
 <ul>
-<li>For <code>website-live</code> businesses, if S2A historical baseline is missing, <code>Draft</code>, or <code>Blocked</code>, S2/S6 must remain blocked.</li>
-<li>If S2A result is <code>Blocked</code> due to missing data, hand the user an S2A data-request prompt immediately and pause until data is supplied.</li>
+<li>For <code>website-live</code> businesses, if MEASURE-02 results baseline is missing, <code>Draft</code>, or <code>Blocked</code>, MARKET-01/WEBSITE-02 must remain blocked.</li>
+<li>If MEASURE-02 result is <code>Blocked</code> due to missing data, hand the user a MEASURE-02 data-request prompt immediately and pause until data is supplied.</li>
 </ul>
 <p>Pre-website measurement trigger:</p>
 <ul>
-<li>For <code>pre-website</code> businesses, S2 onward should be treated as <code>warning</code> quality unless S1B measurement bootstrap output exists and its verification checklist has passed.</li>
-<li>If S1B output is missing, hand the user the S1B measurement-bootstrap prompt immediately and pause paid-traffic launch planning until completed.</li>
+<li>For <code>pre-website</code> businesses, MARKET-01 onward should be treated as <code>warning</code> quality unless MEASURE-01 bootstrap output exists and its verification checklist has passed.</li>
+<li>If MEASURE-01 output is missing, hand the user the MEASURE-01 measurement-bootstrap prompt immediately and pause paid-traffic launch planning until completed.</li>
 </ul>
 <h3>9.2 Required operator hand-off message</h3>
-<pre><code class="language-text">Deep Research completion is required for {{BIZ}} at stage {{S2|S6}}.
+<pre><code class="language-text">Deep Research completion is required for {{BIZ}} at stage {{MARKET-01|WEBSITE-01|WEBSITE-02}}.
 
 Use this ready-to-run prompt file:
 {{PROMPT_FILE_PATH}}
@@ -1306,25 +1414,25 @@ After saving:
 </code></pre>
 <h3>9.3 Current required hand-offs (now)</h3>
 <ul>
-<li>HEAD S1B pre-website measurement bootstrap:
+<li>HEAD MEASURE-01 pre-website measurement bootstrap:
 <ul>
 <li>Prompt file: <code>docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md</code></li>
 <li>Target output: <code>docs/business-os/strategy/HEAD/&#x3C;YYYY-MM-DD>-pre-website-measurement-setup.user.md</code></li>
 </ul>
 </li>
-<li>PET S1B pre-website measurement bootstrap:
+<li>PET MEASURE-01 pre-website measurement bootstrap:
 <ul>
 <li>Prompt file: <code>docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md</code></li>
 <li>Target output: <code>docs/business-os/strategy/PET/&#x3C;YYYY-MM-DD>-pre-website-measurement-setup.user.md</code></li>
 </ul>
 </li>
-<li>BRIK S2 market intelligence:
+<li>BRIK MARKET-01 market intelligence:
 <ul>
 <li>Prompt file: <code>docs/business-os/market-research/BRIK/2026-02-12-deep-research-market-intelligence-prompt.user.md</code></li>
 <li>Target output: <code>docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md</code></li>
 </ul>
 </li>
-<li>BRIK S6 site-upgrade brief:
+<li>BRIK WEBSITE-02 site-upgrade brief:
 <ul>
 <li>Prompt file: <code>docs/business-os/site-upgrades/BRIK/2026-02-12-deep-research-site-upgrade-prompt.user.md</code></li>
 <li>Target output: <code>docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md</code></li>
@@ -1332,13 +1440,26 @@ After saving:
 </li>
 </ul>
 <h3>9.4 Output gate</h3>
-<p>S2/S6 is complete only when:</p>
+<p>MARKET-01/WEBSITE is complete only when:</p>
 <ul>
 <li>Target doc status is <code>Active</code> (not <code>Draft</code>).</li>
 <li><code>latest.user.md</code> points to that active doc.</li>
 <li>HTML companion exists.</li>
 <li>Source list and evidence sections are populated (decision-grade quality bar met).</li>
 </ul>
+<h3>9.5 WEBSITE-01 to DO automated handover</h3>
+<p>For <code>launch-surface=pre-website</code>, WEBSITE progression must auto-handover into DO once <code>site-v1-builder-prompt.user.md</code> is <code>Status: Active</code>.</p>
+<p>Required handover commands (in order):</p>
+<pre><code class="language-text">/lp-do-fact-find --website-first-build-backlog --biz &#x3C;BIZ> --feature-slug &#x3C;biz>-website-v1-first-build --source docs/business-os/strategy/&#x3C;BIZ>/site-v1-builder-prompt.user.md
+/lp-do-plan docs/plans/&#x3C;biz>-website-v1-first-build/fact-find.md
+/lp-do-build &#x3C;biz>-website-v1-first-build
+</code></pre>
+<p>Required handover outputs (in order):</p>
+<ul>
+<li><code>docs/plans/&#x3C;biz>-website-v1-first-build/fact-find.md</code> with <code>Status: Ready-for-planning</code></li>
+<li><code>docs/plans/&#x3C;biz>-website-v1-first-build/plan.md</code> with <code>Status: Active</code></li>
+</ul>
+<p>Without these handover artifacts, <code>WEBSITE</code> must not transition into DO build execution.</p>
 <h2>Prompt Hand-Off Map (By Stage) [Engineering Reference]</h2>
 <p>Use this map to decide when the user should be handed a prompt and what output must be produced.</p>
 <table>
@@ -1353,42 +1474,42 @@ After saving:
 </thead>
 <tbody>
 <tr>
-<td>S0 Intake</td>
+<td>ASSESSMENT-09 Intake</td>
 <td>New business/product idea enters loop or major scope shift</td>
 <td><code>docs/business-os/workflow-prompts/_templates/intake-normalizer-prompt.md</code></td>
 <td>Raw user idea + product spec + constraints</td>
 <td><code>docs/business-os/startup-baselines/&#x3C;BIZ>-intake-packet.user.md</code></td>
 </tr>
 <tr>
-<td>S1 Readiness</td>
-<td>Readiness has <code>block</code>/<code>warning</code> or missing-context register exists</td>
+<td>Non-stage triage: Readiness blocker interview</td>
+<td>Intake/readiness has <code>block</code>/<code>warning</code> or missing-context register exists (advisory support flow, not a canonical stage)</td>
 <td><code>docs/business-os/workflow-prompts/_templates/readiness-blocker-interview-prompt.md</code></td>
 <td>latest readiness report + plan + baseline seed</td>
 <td><code>docs/business-os/readiness/&#x3C;YYYY-MM-DD>-&#x3C;BIZ>-blocker-interview.user.md</code></td>
 </tr>
 <tr>
-<td>S1B Pre-website measurement bootstrap</td>
+<td>MEASURE-01 Agent-Setup (pre-website bootstrap path)</td>
 <td>Launch-surface mode is <code>pre-website</code> and measurement bootstrap doc is missing/stale</td>
 <td><code>docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md</code></td>
 <td>intake packet + business plan + launch-surface mode + runtime/deploy details</td>
 <td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-pre-website-measurement-setup.user.md</code></td>
 </tr>
 <tr>
-<td>S2A-1 Historical data request (existing businesses)</td>
+<td>MEASURE-02-1 Historical data request (existing businesses)</td>
 <td>Business is <code>website-live</code> and latest baseline is <code>Blocked</code> or unavailable fields prevent decision-grade output</td>
 <td><code>docs/business-os/workflow-prompts/_templates/historical-data-request-prompt.md</code> (or business-specific handoff prompt file)</td>
 <td>blocker summary + required metric list + known source systems</td>
 <td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-historical-data-request-prompt.user.md</code></td>
 </tr>
 <tr>
-<td>S2A-2 Historical baseline consolidation (existing businesses)</td>
-<td>Required S2A data pack has been supplied</td>
+<td>MEASURE-02-2 Historical baseline consolidation (existing businesses)</td>
+<td>Required MEASURE-02 data pack has been supplied</td>
 <td><code>docs/business-os/workflow-prompts/_templates/existing-business-historical-baseline-prompt.md</code> (or business-specific handoff prompt file)</td>
 <td>net booking value history + Cloudflare analytics + ops logs</td>
 <td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-historical-performance-baseline.user.md</code></td>
 </tr>
 <tr>
-<td>S2 Market intelligence</td>
+<td>MARKET-01 Market intelligence</td>
 <td><code>latest.user.md</code> missing, stale, or points to <code>Draft</code>; market conditions changed materially</td>
 <td><code>docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md</code> (or business-specific handoff prompt file)</td>
 <td>intake packet + current constraints + channel intent</td>
@@ -1402,14 +1523,42 @@ After saving:
 <td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-forecast-recalibration.user.md</code></td>
 </tr>
 <tr>
-<td>S5 Prioritization</td>
+<td>S5A Prioritization</td>
 <td>>=3 candidate go-items or conflicting priorities</td>
 <td><code>docs/business-os/workflow-prompts/_templates/prioritization-scorer-prompt.md</code></td>
 <td>baseline seed + forecast + constraints + candidate set</td>
 <td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-prioritization-scorecard.user.md</code></td>
 </tr>
 <tr>
-<td>S6 Site upgrade</td>
+<td>WEBSITE-01 L1 first build framework</td>
+<td><code>site-v1-builder-prompt.user.md</code> missing, stale, or points to <code>Draft</code>; business has no live website</td>
+<td><code>docs/business-os/workflow-prompts/_templates/website-first-build-framework-prompt.md</code></td>
+<td>strategy index + brand dossier + startup baselines + app scaffold + legacy storefront baseline</td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/site-v1-builder-prompt.user.md</code></td>
+</tr>
+<tr>
+<td>WEBSITE->DO first-build handover</td>
+<td><code>site-v1-builder-prompt.user.md</code> is <code>Status: Active</code> for a <code>pre-website</code> business and handover fact-find is missing</td>
+<td><code>/lp-do-fact-find --website-first-build-backlog</code></td>
+<td>active WEBSITE-01 artifact + strategy index status + baseline source pointers</td>
+<td><code>docs/plans/&#x3C;biz>-website-v1-first-build/fact-find.md</code></td>
+</tr>
+<tr>
+<td>DO planning handover (first-build)</td>
+<td><code>fact-find.md</code> exists with <code>Status: Ready-for-planning</code> and plan artifact is missing/inactive</td>
+<td><code>/lp-do-plan docs/plans/&#x3C;biz>-website-v1-first-build/fact-find.md</code></td>
+<td>ready first-build fact-find artifact</td>
+<td><code>docs/plans/&#x3C;biz>-website-v1-first-build/plan.md</code></td>
+</tr>
+<tr>
+<td>DO build dispatch (first-build)</td>
+<td><code>plan.md</code> exists with <code>Status: Active</code> and build execution has not started</td>
+<td><code>/lp-do-build &#x3C;biz>-website-v1-first-build</code></td>
+<td>active plan with executable tasks at threshold</td>
+<td>task-scoped implementation + validation evidence</td>
+</tr>
+<tr>
+<td>WEBSITE-02 Site upgrade</td>
 <td><code>latest.user.md</code> missing, stale, or points to <code>Draft</code>; outcome/ICP/channel/product changed</td>
 <td><code>docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md</code> (or business-specific handoff prompt file)</td>
 <td>platform baseline + market intel + plan + baseline seed</td>
@@ -1440,12 +1589,12 @@ After saving:
 <li><strong>Prime App Design Branding:</strong> <code>docs/business-os/strategy/BRIK/prime-app-design-branding.user.md</code> — Prime-specific design principles, token rationale, signature patterns</li>
 <li><strong>Strategy Index (artifact status + gate table):</strong> <code>docs/business-os/strategy/BRIK/index.user.md</code></li>
 </ul>
-<p>For HEAD and PET: brand-identity.user.md is bootstrapped by <code>/lp-brand-bootstrap &#x3C;BIZ></code> at S1 entry (GATE-BD-01).</p>
+<p>For HEAD and PET: brand-identity.user.md is bootstrapped by <code>/lp-assessment-bootstrap &#x3C;BIZ></code> at ASSESSMENT entry (GATE-BD-01).</p>
 </blockquote>
 <h3>11.1 BRIK Design Policy (Prime Guest Portal)</h3>
 <p>→ Migrated to <code>docs/business-os/strategy/BRIK/prime-app-design-branding.user.md</code></p>
 <h3>11.2 HEAD / PET Design Policies</h3>
-<p>→ Bootstrapped at S1 entry via <code>/lp-brand-bootstrap &#x3C;BIZ></code>. See <code>docs/business-os/strategy/&#x3C;BIZ>/brand-identity.user.md</code> once created.</p>
+<p>→ Bootstrapped at ASSESSMENT entry via <code>/lp-assessment-bootstrap &#x3C;BIZ></code>. See <code>docs/business-os/strategy/&#x3C;BIZ>/brand-identity.user.md</code> once created.</p>
 <h2>Standing Refresh Prompts (Periodic) [Engineering Reference]</h2>
 <p>These are recurring research prompts for standing information refresh.</p>
 <table>
@@ -1493,6 +1642,13 @@ After saving:
 <td>GATE-BD-08 (Soft) warning at S10 if Last-reviewed > 90 days; review claim/proof ledger, voice and audience sections</td>
 <td><code>docs/business-os/workflow-prompts/_templates/brand-claim-proof-validation-prompt.md</code> (BRAND-DR-03)</td>
 <td>Update <code>docs/business-os/strategy/&#x3C;BIZ>/brand-identity.user.md</code> in-place; bump <code>Last-reviewed</code> date</td>
+</tr>
+<tr>
+<td><code>/meta-loop-efficiency</code> skill audit</td>
+<td>Weekly</td>
+<td>Any <code>lp-*</code> skill file changed, OR >7 days since last audit artifact</td>
+<td><code>/meta-loop-efficiency</code> (chat command)</td>
+<td><code>docs/business-os/platform-capability/skill-efficiency-audit-YYYY-MM-DD-HHMM.md</code></td>
 </tr>
 </tbody>
 </table>
@@ -1549,7 +1705,7 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
 </tr>
 <tr>
 <td><code>current_stage</code></td>
-<td>Active stage (<code>S0..S10</code>)</td>
+<td>Canonical active stage ID (for example <code>ASSESSMENT-09</code>, <code>MEASURE-01</code>, <code>WEBSITE-01</code>, <code>DO</code>, <code>S10</code>)</td>
 </tr>
 <tr>
 <td><code>status</code></td>
@@ -1586,8 +1742,8 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
 <p>If either is missing, the run stays <code>blocked</code> at current stage.</p>
 <p><strong>Brand gates enforced on advance (see <code>.claude/skills/startup-loop/SKILL.md</code> for full gate definitions):</strong></p>
 <ul>
-<li><strong>GATE-BD-01</strong> (Hard): S1 advance blocked until <code>brand-identity.user.md</code> exists at Draft minimum in strategy index.</li>
-<li><strong>GATE-BD-03</strong> (Hard): S2B completion blocked until <code>messaging-hierarchy.user.md</code> exists at Draft minimum in strategy index.</li>
+<li><strong>GATE-BD-01</strong> (Hard): ASSESSMENT advance to MEASURE blocked until <code>brand-identity.user.md</code> exists at Draft minimum in strategy index.</li>
+<li><strong>GATE-BD-03</strong> (Hard): MARKET-06 completion blocked until <code>messaging-hierarchy.user.md</code> exists at Draft minimum in strategy index.</li>
 <li><strong>GATE-BD-08</strong> (Soft — warning only): S10 emits a staleness warning if brand-identity <code>Last-reviewed</code> > 90 days.</li>
 </ul>
 <h2>Business OS Sync Contract (No Loop-to-BOS Drift) [Engineering Reference]</h2>
@@ -1614,22 +1770,22 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
 </thead>
 <tbody>
 <tr>
-<td>S0 Intake</td>
+<td>ASSESSMENT-09 Intake</td>
 <td>Update business strategy context (intent, scope, constraints)</td>
 <td><code>docs/business-os/strategy/&#x3C;BIZ>/plan.user.md</code></td>
 </tr>
 <tr>
-<td>S1 Readiness</td>
+<td>ASSESSMENT readiness</td>
 <td>Record blockers/warnings and owner actions</td>
 <td><code>docs/business-os/readiness/&#x3C;YYYY-MM-DD>-*.user.md</code> + strategy plan risk section</td>
 </tr>
 <tr>
-<td>S1B Measurement bootstrap</td>
+<td>MEASURE-01 Measurement bootstrap</td>
 <td>Record measurement setup status and blockers</td>
 <td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-pre-website-measurement-setup.user.md</code></td>
 </tr>
 <tr>
-<td>S2/S3 Research + Forecast</td>
+<td>MARKET-01/S3 Research + Forecast</td>
 <td>Update canonical latest pointers and strategy assumptions/targets</td>
 <td><code>latest.user.md</code> pointer + <code>docs/business-os/strategy/&#x3C;BIZ>/plan.user.md</code></td>
 </tr>
@@ -1644,17 +1800,17 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
 <td><code>POST /api/agent/ideas</code>, <code>POST /api/agent/cards</code></td>
 </tr>
 <tr>
-<td>S7 Fact-find</td>
+<td>DO Fact-find</td>
 <td>Upsert <code>fact-find</code> stage doc for selected card</td>
 <td><code>GET/PATCH/POST /api/agent/stage-docs/:cardId/fact-find</code></td>
 </tr>
 <tr>
-<td>S8 Plan</td>
+<td>DO Plan</td>
 <td>Upsert <code>plan</code> stage doc + lane transition <code>Fact-finding -> Planned</code></td>
 <td><code>PATCH /api/agent/cards/:id</code> + <code>GET/PATCH/POST /api/agent/stage-docs/:cardId/plan</code></td>
 </tr>
 <tr>
-<td>S9 Build</td>
+<td>DO Build</td>
 <td>Upsert <code>build</code> stage doc + lane transitions to <code>In progress</code>/<code>Done</code></td>
 <td><code>PATCH /api/agent/cards/:id</code> + <code>GET/PATCH/POST /api/agent/stage-docs/:cardId/build</code></td>
 </tr>
@@ -1675,17 +1831,13 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
 </section>
     <div class="meta">
       <div>Source: <code>docs/business-os/startup-loop-workflow.user.md</code></div>
-      <div>Generated: 2026-02-17T13:26:30.927Z</div>
+      <div>Generated: 2026-02-23T13:29:45.053Z</div>
     </div>
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    // startOnLoad: false — we render manually so hidden engineering diagrams
-    // (inside display:none) are not attempted on load, which causes spurious
-    // "Syntax error in text" failures in Mermaid v11.
     mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
 
-    // Render only the visible (operator) diagrams immediately.
     const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
       (el) => !el.closest("[data-audience='engineering']")
     );
@@ -1693,8 +1845,6 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
       mermaid.run({ nodes: operatorDiagrams });
     }
 
-    // Audience toggle — Model A.
-    // Engineering diagrams are rendered on first reveal (not on load).
     let engineeringRendered = false;
     const toggleBtn = document.getElementById("audience-toggle");
     if (toggleBtn) {
@@ -1703,7 +1853,6 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
         toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
         toggleBtn.setAttribute("aria-pressed", String(isShowing));
         if (isShowing && !engineeringRendered) {
-          // Render engineering diagrams now that they are visible.
           const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
           if (nodes.length > 0) {
             mermaid.run({ nodes });

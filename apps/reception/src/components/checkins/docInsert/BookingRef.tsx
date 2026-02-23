@@ -1,5 +1,7 @@
 import { type FC, memo, useCallback } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { showToast } from "../../../utils/toastUtils";
 
 export interface BookingRefProps {
@@ -25,15 +27,15 @@ const BookingRefComponent: FC<BookingRefProps> = ({ bookingRef }) => {
 
   return (
     <div className="flex justify-center mb-6">
-      <button
+      <Button
         type="button"
         onClick={handleCopyBookingRef}
         title="Click to copy booking reference"
-        className="relative inline-flex items-center px-4 py-3 text-sm rounded leading-none bg-info-main text-white focus:outline-none min-w-[225px]"
+        className="relative inline-flex items-center px-4 py-3 text-sm rounded leading-none bg-info-main text-white focus:outline-none min-w-225px"
       >
         <i className="fas fa-copy absolute left-2 top-1/2 transform -translate-y-1/2" />
         <span className="ms-8">{bookingRef}</span>
-      </button>
+      </Button>
     </div>
   );
 };

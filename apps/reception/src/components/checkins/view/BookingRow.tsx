@@ -1,5 +1,7 @@
 import React, { type FC } from "react";
 
+import { TableCell, TableRow } from "@acme/design-system/atoms";
+
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import type { Activity } from "../../../types/hooks/data/activitiesData";
 import type { LoanMethod } from "../../../types/hooks/data/loansData";
@@ -61,13 +63,13 @@ const BookingRowView: FC<BookingRowViewProps> = ({
   isCancelled,
 }) => (
   <>
-    <tr
+    <TableRow
       className={`border-b border-gray-200 hover:bg-gray-50 transition-colors text-sm text-gray-700 ${
         onRowClick ? "cursor-pointer" : ""
       } dark:border-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen`}
       onClick={onRowClick}
     >
-      <td className="p-4">
+      <TableCell className="p-4">
         <div className="flex items-center gap-2 font-semibold">
           <TooltipComponent
             booking={{
@@ -90,8 +92,8 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             </span>
           )}
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex items-center justify-center">
           <input
             type="text"
@@ -103,8 +105,8 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             onClick={(e) => e.stopPropagation()}
           />
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex justify-center items-center">
           {booking.isFirstForBooking ? (
             <RoomPaymentButton booking={booking} />
@@ -112,13 +114,13 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             <em className="text-muted-foreground">—</em>
           )}
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex justify-center items-center">
           <CityTaxPaymentButton booking={booking} />
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex justify-center items-center gap-2">
           <KeycardDepositButton booking={booking} />
           {(hasKeycard || depositType === "NO_CARD") && depositType && (
@@ -134,18 +136,18 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             />
           )}
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex justify-center items-center">
           <StatusButton booking={booking} />
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex justify-center items-center">
           <DocInsertButton booking={booking} selectedDate={selectedDate} />
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex justify-center items-center">
           <EmailBookingButton
             bookingRef={booking.bookingRef}
@@ -153,22 +155,22 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             isFirstForBooking={Boolean(booking.isFirstForBooking)}
           />
         </div>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
     {notesOpen && booking.isFirstForBooking && (
-      <tr>
+      <TableRow>
         {/*
           Render the modal inside its own table row so that we keep valid
-          table semantics (a <div> directly under <tbody> triggers DOM nesting
+          table semantics (a <div> directly under <TableBody> triggers DOM nesting
           warnings during tests).
         */}
-        <td colSpan={8} className="p-0">
+        <TableCell colSpan={8} className="p-0">
           <BookingNotesModal
             bookingRef={booking.bookingRef}
             onClose={closeNotes}
           />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     )}
   </>
 );

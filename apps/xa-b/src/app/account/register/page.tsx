@@ -1,9 +1,8 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy registration page pending i18n overhaul */
 
-import { Section } from "@acme/design-system/atoms/Section";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
 import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 
 export default function RegisterPage() {

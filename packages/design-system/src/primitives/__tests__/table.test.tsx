@@ -38,6 +38,24 @@ describe("Table", () => {
 
   });
 
+  it("renders without wrapper in compatibility mode", () => {
+    const { container } = render(
+      <Table compatibilityMode="no-wrapper" aria-label="compat-table">
+        <TableBody>
+          <TableRow>
+            <TableCell>Cell</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
+
+    const root = container.firstElementChild as HTMLElement | null;
+    expect(root).not.toBeNull();
+    expect(root?.tagName).toBe("TABLE");
+    expect(root?.parentElement).toBe(container);
+    expect(screen.getByRole("table", { name: "compat-table" })).toBe(root);
+  });
+
   it("merges classes and forwards ref for Table", () => {
     const ref = React.createRef<HTMLTableElement>();
     render(

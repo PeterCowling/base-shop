@@ -1,4 +1,3 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy not-found page pending design/i18n overhaul */
 import Link from "next/link";
 
 import { Section } from "@acme/design-system/atoms/Section";

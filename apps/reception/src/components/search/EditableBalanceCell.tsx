@@ -9,6 +9,8 @@ import React, {
   useState,
 } from "react";
 
+import { Button, TableCell } from "@acme/design-system/atoms";
+
 import useFinancialsRoomMutations from "../../hooks/mutations/useFinancialsRoomMutations";
 import { getCurrentIsoTimestamp } from "../../utils/dateUtils";
 
@@ -33,11 +35,11 @@ interface EditableBalanceCellProps {
  *
  * Changes for improved accessibility:
  * - Removed `autoFocus` in favor of programmatic focus via ref/useEffect.
- * - Replaced non-interactive <span> + onClick with <button> to ensure proper keyboard
+ * - Replaced non-interactive <span> + onClick with <Button> to ensure proper keyboard
  *   accessibility and native focus handling.
  *
  * By removing `autoFocus`, we improve accessibility; the user can control focus with the keyboard
- * or screen reader effectively. By using a <button>, we gain native keyboard and screen reader support
+ * or screen reader effectively. By using a <Button>, we gain native keyboard and screen reader support
  * without needing extra role or tabIndex attributes.
  *
  * Note: The onBlur and onKeyDown logic remain the same, only the `autoFocus` is replaced with a ref-based approach.
@@ -145,7 +147,7 @@ const EditableBalanceCell: React.FC<EditableBalanceCellProps> = ({
   }, []);
 
   return (
-    <td
+    <TableCell
       className={`border-b border-border py-2 px-3 ${
         justUpdated ? "bg-success-surface" : ""
       } dark:border-darkSurface dark:text-darkAccentGreen`}
@@ -161,16 +163,16 @@ const EditableBalanceCell: React.FC<EditableBalanceCellProps> = ({
           onBlur={handleBlur}
         />
       ) : (
-        <button
+        <Button
           type="button"
           className="cursor-pointer p-0 m-0 bg-transparent border-none underline dark:text-darkAccentGreen"
           title="Click to edit"
           onClick={() => setIsEditing(true)}
         >
           {initialValue.toFixed(2)}
-        </button>
+        </Button>
       )}
-    </td>
+    </TableCell>
   );
 };
 

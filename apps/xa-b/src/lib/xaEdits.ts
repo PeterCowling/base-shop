@@ -1,4 +1,3 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy edits data pending i18n overhaul */
 export const XA_EDITS = [
   {
     slug: "atelier-essentials",

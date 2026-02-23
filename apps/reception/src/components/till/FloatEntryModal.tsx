@@ -1,6 +1,8 @@
 import { memo, useCallback, useState } from "react";
 import { z } from "zod";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { withModalBackground } from "../../hoc/withModalBackground";
 import { showToast } from "../../utils/toastUtils";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
@@ -37,13 +39,13 @@ function FloatEntryModalBase({ onConfirm, onClose }: FloatEntryModalProps) {
       <ModalContainer widthClasses="w-120">
         <div className="relative rounded-lg bg-white p-8 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
           {/* Close */}
-          <button
+          <Button
             onClick={onClose}
             aria-label="Close"
             className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
           >
             &times;
-          </button>
+          </Button>
 
           {/* Title */}
           <h2 className="mb-12 text-center text-xl font-semibold">

@@ -2,6 +2,8 @@
 
 import { type FC, memo, useCallback } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import useDeleteGuestFromBooking from "../../../hooks/mutations/useDeleteGuestFromBooking";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 
@@ -61,19 +63,19 @@ const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
             </p>
           )}
           <div className="flex justify-end space-x-3">
-            <button
+            <Button
               onClick={onClose}
               className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleConfirmDelete}
               disabled={loading}
               className="px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white"
             >
               {loading ? "Deleting..." : "Delete"}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

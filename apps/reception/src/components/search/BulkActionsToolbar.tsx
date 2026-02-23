@@ -12,6 +12,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useAuth } from "../../context/AuthContext";
 import useBulkBookingActions, {
   type CsvExportRow,
@@ -70,30 +72,30 @@ function BulkActionsToolbar({
           <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
             {selectedCount} booking{selectedCount !== 1 ? "s" : ""} selected
           </span>
-          <button
+          <Button
             type="button"
             onClick={onClearSelection}
             className="inline-flex min-h-9 min-w-9 items-center justify-center gap-1 rounded-md px-2 py-1 text-sm text-blue-600 hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-800/50"
           >
             <XMarkIcon className="h-4 w-4" />
             Clear
-          </button>
+          </Button>
         </div>
 
         <div className="flex items-center gap-2">
           {/* Export CSV - always available */}
-          <button
+          <Button
             type="button"
             onClick={handleExportCsv}
             className="inline-flex min-h-9 items-center gap-2 rounded-md bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-gray-300 hover:bg-gray-50 dark:bg-darkSurface dark:text-darkAccentGreen focus-visible:dark:ring-gray-600 dark:hover:bg-gray-700"
           >
             <ArrowDownTrayIcon className="h-4 w-4" />
             Export CSV
-          </button>
+          </Button>
 
           {/* Cancel - requires privileged access */}
           {canBulkAction && (
-            <button
+            <Button
               type="button"
               onClick={handleCancelClick}
               disabled={loading}
@@ -101,7 +103,7 @@ function BulkActionsToolbar({
             >
               <TrashIcon className="h-4 w-4" />
               {loading ? "Cancelling..." : "Cancel Selected"}
-            </button>
+            </Button>
           )}
         </div>
       </div>

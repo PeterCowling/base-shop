@@ -1,5 +1,7 @@
 import { type FC, type KeyboardEvent, memo, useCallback, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import useBookingNotes from "../../../hooks/data/useBookingNotes";
 import useBookingNotesMutation from "../../../hooks/mutations/useBookingNotesMutation";
 import { formatEnGbDateTimeFromIso } from "../../../utils/dateUtils";
@@ -81,7 +83,7 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
                     onChange={(e) => setEditText(e.target.value)}
                   />
                   <div className="flex justify-end gap-2">
-                    <button
+                    <Button
                       className="px-2 py-1 bg-gray-300 text-gray-800 rounded dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
                       onClick={() => {
                         setEditingId(null);
@@ -89,13 +91,13 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
                       }}
                     >
                       Cancel
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       className="px-2 py-1 bg-primary-main text-white rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
                       onClick={handleUpdate}
                     >
                       Save
-                    </button>
+                    </Button>
                   </div>
                 </>
               ) : (
@@ -104,7 +106,7 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
                     {note.text}
                   </div>
                   <div className="flex gap-2">
-                    <button
+                    <Button
                       className="text-blue-600 text-sm"
                       onClick={() => {
                         setEditingId(id);
@@ -112,13 +114,13 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
                       }}
                     >
                       Edit
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       className="text-red-600 text-sm"
                       onClick={() => handleDelete(id)}
                     >
                       Delete
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}
@@ -132,18 +134,18 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
           onChange={(e) => setText(e.target.value)}
         />
         <div className="flex justify-end gap-2">
-          <button
+          <Button
             className="px-4 py-2 bg-gray-300 text-gray-800 rounded dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
             onClick={onClose}
           >
             Close
-          </button>
-          <button
+          </Button>
+          <Button
             className="px-4 py-2 bg-primary-main text-white rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
             onClick={handleAdd}
           >
             Add Note
-          </button>
+          </Button>
         </div>
       </div>
     </div>

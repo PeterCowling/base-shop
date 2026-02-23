@@ -1,6 +1,8 @@
 // File: /Users/petercowling/reception/src/components/loans/LoanableItemSelector.tsx
 import React, { memo, type ReactElement, useCallback } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
 /**
@@ -74,13 +76,13 @@ function LoanableItemSelectorComponent({
         <option value="Keycard">Keycard</option>
       </select>
 
-      <button
+      <Button
         className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
         disabled={buttonDisabled}
         onClick={handleLoanClick}
       >
         Loan
-      </button>
+      </Button>
     </div>
   );
 }

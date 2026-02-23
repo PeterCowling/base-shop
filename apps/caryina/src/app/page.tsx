@@ -1,3 +1,8 @@
-export default function HomePage() {
-  return <main className="px-6 py-16" />;
+import { redirect } from "next/navigation";
+
+import { LOCALES } from "@acme/i18n/locales";
+
+export default function RootPage() {
+  const defaultLocale = LOCALES[0] ?? "en";
+  redirect(`/${defaultLocale}`);
 }

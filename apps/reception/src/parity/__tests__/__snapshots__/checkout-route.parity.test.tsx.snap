@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1`] = `
+<div>
+  <div
+    class="min-h-80vh p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen"
+  >
+    <h1
+      class="w-full mb-6 text-5xl text-center font-heading text-primary-main"
+    >
+      CHECKOUTS
+    </h1>
+    <div
+      class="flex-grow p-6 space-y-4 bg-white rounded-lg shadow dark:bg-darkSurface"
+    >
+      <div
+        class="relative pb-5 bg-surface-2 rounded border border-border-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+      >
+        <div
+          class="flex items-center gap-2"
+        >
+          <div
+            class="flex items-center flex-wrap gap-2"
+          >
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              data-token="--color-primary"
+            >
+              Yesterday
+            </button>
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 hover:bg-primary/90 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-primary-main text-primary-fg border-primary-main dark:bg-darkAccentGreen dark:text-darkBg dark:border-darkAccentGreen"
+              data-token="--color-primary"
+            >
+              Today
+            </button>
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              data-token="--color-primary"
+            >
+              Tue
+            </button>
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              data-token="--color-primary"
+            >
+              Wed
+            </button>
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              data-token="--color-primary"
+            >
+              Thu
+            </button>
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              data-token="--color-primary"
+            >
+              Fri
+            </button>
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              data-token="--color-primary"
+            >
+              Sat
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="bg-white border border-gray-400 rounded shadow overflow-x-auto dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+      >
+        <div
+          class="w-full overflow-x-auto"
+        >
+          <table
+            aria-label="checkout table"
+            class="text-foreground text-left text-sm w-full border-collapse"
+          >
+            <thead
+              class="border-b border-border-2 bg-gray-100 dark:bg-darkSurface"
+            >
+              <tr
+                class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3"
+              >
+                <th
+                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface"
+                >
+                  DATE
+                </th>
+                <th
+                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface"
+                >
+                  REF
+                </th>
+                <th
+                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface"
+                >
+                  NAME
+                </th>
+                <th
+                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface"
+                >
+                  ROOM
+                </th>
+                <th
+                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface w-48"
+                >
+                  LOANS
+                </th>
+                <th
+                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface"
+                >
+                  BAG STORAGE
+                </th>
+                <th
+                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface"
+                >
+                  FRIDGE
+                </th>
+                <th
+                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface w-32"
+                >
+                  COMPLETE
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class=""
+            >
+              <tr
+                class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3 bg-white dark:bg-darkSurface"
+              >
+                <td
+                  class="align-middle p-3 border-b border-gray-400 dark:border-darkSurface"
+                >
+                  01/01
+                </td>
+                <td
+                  class="align-middle p-3 border-b border-gray-400 dark:border-darkSurface"
+                >
+                  BR1
+                </td>
+                <td
+                  class="align-middle p-3 border-b border-gray-400 dark:border-darkSurface"
+                >
+                  Alice
+                   
+                  Smith
+                </td>
+                <td
+                  class="align-middle p-3 border-b text-center border-gray-400 dark:border-darkSurface"
+                >
+                  101
+                </td>
+                <td
+                  class="align-middle p-3 border-b border-gray-400 dark:border-darkSurface w-48"
+                >
+                  <button
+                    aria-label="Remove Umbrella"
+                    class="justify-center py-2 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-10 text-sm bg-primary hover:bg-primary/90 inline-flex items-center px-1 me-1 text-gray-700 hover:text-black transition-colors duration-200 dark:text-darkAccentGreen dark:hover:text-darkAccentGreen"
+                    data-token="--color-primary"
+                    title="Umbrella"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="fas fa-umbrella fa-lg text-blue-600"
+                    />
+                  </button>
+                </td>
+                <td
+                  class="align-middle p-3 border-b border-gray-400 dark:border-darkSurface text-center"
+                >
+                  <i
+                    aria-hidden="true"
+                    class="fas fa-suitcase fa-lg text-blue-600"
+                    title="Bag Storage"
+                  />
+                </td>
+                <td
+                  class="align-middle p-3 border-b border-gray-400 dark:border-darkSurface"
+                />
+                <td
+                  class="align-middle p-3 border-b border-gray-400 dark:border-darkSurface text-center"
+                >
+                  <button
+                    aria-label="Complete checkout"
+                    class="inline-flex items-center justify-center font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 rounded text-white transition-colors duration-200 bg-blue-500 hover:bg-blue-600"
+                    data-token="--color-primary"
+                    title="Complete checkout"
+                  >
+                    Complete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

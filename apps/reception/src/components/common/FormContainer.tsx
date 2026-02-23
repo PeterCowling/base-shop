@@ -1,5 +1,7 @@
 import type { FC, ReactNode } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 export interface FormContainerProps {
   title: string;
   borderColor: string;
@@ -22,13 +24,13 @@ const FormContainer: FC<FormContainerProps> = ({
       }`.trim()}
     >
       {onClose && (
-        <button
+        <Button
           onClick={onClose}
           aria-label="Close"
           className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-error-main text-white dark:bg-darkAccentOrange dark:text-darkSurface"
         >
           <span aria-hidden="true">&times;</span>
-        </button>
+        </Button>
       )}
       <h2 className="text-xl font-semibold mb-2 dark:text-darkAccentGreen">{title}</h2>
       {children}

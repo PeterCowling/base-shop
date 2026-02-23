@@ -7,7 +7,7 @@
     "start": "next start -p 3013",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "pnpm -w run test:governed -- jest -- --config ./jest.config.cjs"
+    "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs"
   },
   "dependencies": {
     "@acme/config": "workspace:*",

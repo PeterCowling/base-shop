@@ -6,6 +6,6 @@
     "build": "wrangler build",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "pnpm -w run test:governed -- jest -- --config ./jest.config.cjs"
+    "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs"
   }
 }

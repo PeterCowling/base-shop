@@ -1,5 +1,7 @@
 import React, { type FC } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 interface MarkAsPaidButtonProps {
   bookingRef: string;
   guestId: string;
@@ -42,12 +44,12 @@ const MarkAsPaidButton: FC<MarkAsPaidButtonProps> = ({
   };
 
   return (
-    <button
+    <Button
       onClick={handleMarkAsPaid}
-      className="inline-flex w-[100px] items-center justify-center font-semibold px-4 py-2 bg-primary-main text-white text-sm rounded hover:bg-primary-dark transition-colors font-body dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+      className="inline-flex w-100px items-center justify-center font-semibold px-4 py-2 bg-primary-main text-white text-sm rounded hover:bg-primary-dark transition-colors font-body dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
     >
       €{amount.toFixed(2)}
-    </button>
+    </Button>
   );
 };
 

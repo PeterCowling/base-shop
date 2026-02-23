@@ -1,0 +1,170 @@
+{
+  "generatedAt": "2026-02-23T12:57:09.838Z",
+  "nodeVersion": "v20.19.4",
+  "prototypePath": "/Users/petercowling/base-shop/docs/plans/_archive/hbag-brandmark-particle-animation/artifacts/prototype/hourglass-particle-prototype.html",
+  "particleCounts": [
+    300,
+    500,
+    800
+  ],
+  "profiles": [
+    {
+      "id": "desktop-chromium",
+      "note": "Desktop Chromium baseline"
+    },
+    {
+      "id": "android-chrome-emulated",
+      "note": "Mobile Chrome emulation via Pixel 7 device profile"
+    },
+    {
+      "id": "ios-webkit-emulated",
+      "note": "WebKit + iPhone 13 emulation (proxy for Safari engine)"
+    }
+  ],
+  "results": [
+    {
+      "profile": "desktop-chromium",
+      "particleCount": 300,
+      "metrics": {
+        "particleCount": 300,
+        "durationMs": 4205.400000035763,
+        "avgFrameMs": 8.327524752546065,
+        "avgFps": 120.08370190605066,
+        "p95FrameMs": 9.299999999999272,
+        "maxFrameMs": 9.400000000000546,
+        "longFramePct": 0
+      },
+      "screenshotRelPath": "screenshots/desktop-chromium-300.png",
+      "status": "ok",
+      "note": "Desktop Chromium baseline"
+    },
+    {
+      "profile": "desktop-chromium",
+      "particleCount": 500,
+      "metrics": {
+        "particleCount": 500,
+        "durationMs": 4205.10000001192,
+        "avgFrameMs": 8.326930693092912,
+        "avgFps": 120.09226891121934,
+        "p95FrameMs": 9.199999999999818,
+        "maxFrameMs": 9.399999999999636,
+        "longFramePct": 0
+      },
+      "screenshotRelPath": "screenshots/desktop-chromium-500.png",
+      "status": "ok",
+      "note": "Desktop Chromium baseline"
+    },
+    {
+      "profile": "desktop-chromium",
+      "particleCount": 800,
+      "metrics": {
+        "particleCount": 800,
+        "durationMs": 4206.10000001192,
+        "avgFrameMs": 8.328910891112713,
+        "avgFps": 120.06371698213756,
+        "p95FrameMs": 9.300000000000182,
+        "maxFrameMs": 9.400000000000546,
+        "longFramePct": 0
+      },
+      "screenshotRelPath": "screenshots/desktop-chromium-800.png",
+      "status": "ok",
+      "note": "Desktop Chromium baseline"
+    },
+    {
+      "profile": "android-chrome-emulated",
+      "particleCount": 300,
+      "metrics": {
+        "particleCount": 300,
+        "durationMs": 4201.799999999999,
+        "avgFrameMs": 8.30395256916996,
+        "avgFps": 120.42457994192966,
+        "p95FrameMs": 9.200000000000728,
+        "maxFrameMs": 9.400000000000546,
+        "longFramePct": 0
+      },
+      "screenshotRelPath": "screenshots/android-chrome-emulated-300.png",
+      "status": "ok",
+      "note": "Mobile Chrome emulation via Pixel 7 device profile"
+    },
+    {
+      "profile": "android-chrome-emulated",
+      "particleCount": 500,
+      "metrics": {
+        "particleCount": 500,
+        "durationMs": 4206.10000001192,
+        "avgFrameMs": 8.328910891112713,
+        "avgFps": 120.06371698213756,
+        "p95FrameMs": 9.300000000000182,
+        "maxFrameMs": 9.400000000000546,
+        "longFramePct": 0
+      },
+      "screenshotRelPath": "screenshots/android-chrome-emulated-500.png",
+      "status": "ok",
+      "note": "Mobile Chrome emulation via Pixel 7 device profile"
+    },
+    {
+      "profile": "android-chrome-emulated",
+      "particleCount": 800,
+      "metrics": {
+        "particleCount": 800,
+        "durationMs": 4206.500000011922,
+        "avgFrameMs": 8.329702970320637,
+        "avgFps": 120.05230001154612,
+        "p95FrameMs": 9.299999999999272,
+        "maxFrameMs": 9.400000000000546,
+        "longFramePct": 0
+      },
+      "screenshotRelPath": "screenshots/android-chrome-emulated-800.png",
+      "status": "ok",
+      "note": "Mobile Chrome emulation via Pixel 7 device profile"
+    },
+    {
+      "profile": "ios-webkit-emulated",
+      "particleCount": 300,
+      "metrics": {
+        "particleCount": 300,
+        "durationMs": 4205,
+        "avgFrameMs": 16.620553359683793,
+        "avgFps": 60.16646848989299,
+        "p95FrameMs": 18,
+        "maxFrameMs": 19,
+        "longFramePct": 59.28853754940712
+      },
+      "screenshotRelPath": "screenshots/ios-webkit-emulated-300.png",
+      "status": "ok",
+      "note": "WebKit + iPhone 13 emulation (proxy for Safari engine)"
+    },
+    {
+      "profile": "ios-webkit-emulated",
+      "particleCount": 500,
+      "metrics": {
+        "particleCount": 500,
+        "durationMs": 4213,
+        "avgFrameMs": 16.652173913043477,
+        "avgFps": 60.05221932114883,
+        "p95FrameMs": 17,
+        "maxFrameMs": 24,
+        "longFramePct": 64.42687747035573
+      },
+      "screenshotRelPath": "screenshots/ios-webkit-emulated-500.png",
+      "status": "ok",
+      "note": "WebKit + iPhone 13 emulation (proxy for Safari engine)"
+    },
+    {
+      "profile": "ios-webkit-emulated",
+      "particleCount": 800,
+      "metrics": {
+        "particleCount": 800,
+        "durationMs": 4214,
+        "avgFrameMs": 16.656126482213438,
+        "avgFps": 60.037968675842436,
+        "p95FrameMs": 18,
+        "maxFrameMs": 18,
+        "longFramePct": 62.055335968379445
+      },
+      "screenshotRelPath": "screenshots/ios-webkit-emulated-800.png",
+      "status": "ok",
+      "note": "WebKit + iPhone 13 emulation (proxy for Safari engine)"
+    }
+  ]
+}

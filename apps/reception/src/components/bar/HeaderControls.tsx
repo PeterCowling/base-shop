@@ -2,6 +2,8 @@
 
 import React, { useCallback, useMemo } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { type ScreenType } from "../../types/bar/BarTypes";
 
 /* -------------------------------------------------------------------------- *
@@ -114,7 +116,7 @@ const HeaderControls: React.FC<HeaderControlsProps> = React.memo(
             aria-label="Menu categories"
           >
             {menuButtons.map(({ key, label, onClick }) => (
-              <button
+              <Button
                 key={key}
                 type="button"
                 onClick={onClick}
@@ -124,18 +126,18 @@ const HeaderControls: React.FC<HeaderControlsProps> = React.memo(
                 className={MENU_BTN}
               >
                 {label}
-              </button>
+              </Button>
             ))}
           </div>
 
           {/* ────── Screen Actions ────── */}
           <div className="flex shrink-0 items-center gap-3">
-            <button type="button" onClick={handleSales} className={ACTION_BTN}>
+            <Button type="button" onClick={handleSales} className={ACTION_BTN}>
               Sales
-            </button>
-            <button type="button" onClick={handleComp} className={ACTION_BTN}>
+            </Button>
+            <Button type="button" onClick={handleComp} className={ACTION_BTN}>
               Comp
-            </button>
+            </Button>
           </div>
         </nav>
       </header>

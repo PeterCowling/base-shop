@@ -53,7 +53,7 @@ const EmailProgress: React.FC<EmailProgressProps> = ({
 
   // Render
   return (
-    <div className="min-h-[80vh] p-4 bg-gray-100 dark:bg-darkBg font-sans text-gray-800 dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-gray-100 dark:bg-darkBg font-sans text-gray-800 dark:text-darkAccentGreen">
       {/* Title */}
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         EMAIL OPT-IN

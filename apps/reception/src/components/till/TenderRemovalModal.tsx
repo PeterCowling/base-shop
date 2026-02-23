@@ -1,6 +1,8 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { z } from "zod";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { withModalBackground } from "../../hoc/withModalBackground";
 import type {
   RemovalDestination,
@@ -60,13 +62,13 @@ function TenderRemovalModalBase({
       <ModalContainer widthClasses="w-120">
         <div className="relative rounded-lg bg-white p-8 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
           {/* Close */}
-          <button
+          <Button
             onClick={onClose}
             aria-label="Close"
             className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
           >
             &times;
-          </button>
+          </Button>
 
           {/* Title */}
           <h2 className="mb-12 text-center text-xl font-semibold">
@@ -115,13 +117,13 @@ function TenderRemovalModalBase({
                 submitLabel="Confirm removal"
               />
             ) : (
-              <button
+              <Button
                 type="button"
                 onClick={handleConfirm}
                 className="min-h-11 min-w-32 rounded bg-primary-main px-4 py-2 text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
               >
                 Confirm removal
-              </button>
+              </Button>
             )}
           </div>
         </div>

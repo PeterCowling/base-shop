@@ -160,10 +160,9 @@ function Row3({
   }, [documentType, occupantDetails?.document?.type, saveField, setSnackbar]);
 
   return (
-    // eslint-disable-next-line ds/no-raw-spacing -- internal POS layout spacing [DS-06]
-    <div className="flex flex-wrap gap-12 mb-[75px]">
+    <div className="flex flex-wrap gap-12 mb-75px">
       {/* Document Number */}
-      <div className="flex flex-col w-[300px]">
+      <div className="flex flex-col w-300px">
         <label
           htmlFor="documentNumber"
           className="block mb-1 font-semibold text-info-dark"
@@ -177,14 +176,14 @@ function Row3({
           onChange={handleDocNumberChange}
           onBlur={saveDocNumber}
           onKeyDown={handleDocNumberKeyDown}
-          className={`border border-info-light rounded px-3 py-2 w-[300px] focus:outline-none focus:ring-2 focus:ring-primary-main ${
+          className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-2 focus:ring-primary-main ${
             isDocNumberPopulated ? "bg-success-light/50" : ""
           } text-gray-900`}
         />
       </div>
 
       {/* Document Type (Dropdown) */}
-      <div className="flex flex-col w-[300px]">
+      <div className="flex flex-col w-300px">
         <label
           htmlFor="documentType"
           className="block mb-1 font-semibold text-info-dark"
@@ -192,7 +191,7 @@ function Row3({
           Document Type
         </label>
         {/* Wrapper adds custom icon and positions it */}
-        <div className="relative w-[300px]">
+        <div className="relative w-300px">
           <select
             id="documentType"
             value={documentType}
@@ -221,7 +220,7 @@ function Row3({
       </div>
 
       {/* Date of Birth */}
-      <div className="flex flex-col w-[300px]">
+      <div className="flex flex-col w-300px">
         <DOBSection occupantDetails={occupantDetails} saveField={saveField} />
       </div>
     </div>

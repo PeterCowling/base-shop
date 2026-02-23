@@ -3,6 +3,8 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
 import useBookings from "../../hooks/data/useBookingsData";
@@ -298,7 +300,7 @@ function Extension() {
 
   return (
     <>
-      <div className="min-h-[80vh] p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
+      <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
         <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
           EXTENSION
         </h1>
@@ -341,41 +343,41 @@ function Extension() {
                 </p>
               ) : (
                 <div className="overflow-auto">
-                  <table className="min-w-full border-collapse text-sm">
-                    <thead>
-                      <tr className="bg-surface-3 dark:bg-darkSurface">
-                        <th
+                  <Table className="min-w-full border-collapse text-sm">
+                    <TableHeader>
+                      <TableRow className="bg-surface-3 dark:bg-darkSurface">
+                        <TableHead
                           className="p-2 border-b text-start cursor-pointer"
                           onClick={() => handleSort("roomNumber")}
                         >
                           Room
                           {sortField === "roomNumber" && (sortAsc ? " ↑" : " ↓")}
-                        </th>
-                        <th
+                        </TableHead>
+                        <TableHead
                           className="p-2 border-b text-start cursor-pointer"
                           onClick={() => handleSort("fullName")}
                         >
                           Guest
                           {sortField === "fullName" && (sortAsc ? " ↑" : " ↓")}
-                        </th>
-                        <th className="p-2 border-b text-start">Check-in</th>
-                        <th className="p-2 border-b text-start">Check-out</th>
-                        <th className="p-2 border-b text-end">Price</th>
-                        <th className="p-2 border-b text-end">Nights</th>
-                        <th className="p-2 border-b text-center">Pay</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                        </TableHead>
+                        <TableHead className="p-2 border-b text-start">Check-in</TableHead>
+                        <TableHead className="p-2 border-b text-start">Check-out</TableHead>
+                        <TableHead className="p-2 border-b text-end">Price</TableHead>
+                        <TableHead className="p-2 border-b text-end">Nights</TableHead>
+                        <TableHead className="p-2 border-b text-center">Pay</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
                       {filteredRows.map((r) => (
-                        <tr
+                        <TableRow
                           key={r.occupantId}
                           className={bookingColorMap[r.bookingRef]}
                         >
-                          <td className="p-2 border-b">{r.roomNumber}</td>
-                          <td className="p-2 border-b">{r.fullName}</td>
-                          <td className="p-2 border-b">{r.checkInDate}</td>
-                          <td className="p-2 border-b">{r.checkOutDate}</td>
-                          <td className="p-2 border-b text-end">
+                          <TableCell className="p-2 border-b">{r.roomNumber}</TableCell>
+                          <TableCell className="p-2 border-b">{r.fullName}</TableCell>
+                          <TableCell className="p-2 border-b">{r.checkInDate}</TableCell>
+                          <TableCell className="p-2 border-b">{r.checkOutDate}</TableCell>
+                          <TableCell className="p-2 border-b text-end">
                             {roundDownTo50Cents(r.nightlyRate).toLocaleString(
                               "it-IT",
                               {
@@ -383,8 +385,8 @@ function Extension() {
                                 maximumFractionDigits: 2,
                               }
                             )}
-                          </td>
-                          <td className="p-2 border-b text-end">
+                          </TableCell>
+                          <TableCell className="p-2 border-b text-end">
                             <input
                               type="number"
                               min="1"
@@ -401,10 +403,10 @@ function Extension() {
                               }
                               className="border rounded px-2 py-1 w-20 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
                             />
-                          </td>
-                          <td className="p-2 border-b text-center">
+                          </TableCell>
+                          <TableCell className="p-2 border-b text-center">
                             <div className="flex gap-2 justify-center">
-                              <button
+                              <Button
                                 className={`px-2 py-1 rounded ${
                                   availabilityMap[r.occupantId]
                                     ? "bg-primary-main text-primary-fg"
@@ -420,10 +422,10 @@ function Extension() {
                                 disabled={!availabilityMap[r.occupantId]}
                               >
                                 {availabilityMap[r.occupantId] ? "Guest" : "N/A"}
-                              </button>
+                              </Button>
                               {r.occupantId === r.occupantIds[0] &&
                                 r.occupantCount > 1 && (
-                                  <button
+                                  <Button
                                     className={`px-2 py-1 rounded ${
                                       availabilityMap[r.occupantId]
                                         ? "bg-primary-main text-primary-fg"
@@ -443,14 +445,14 @@ function Extension() {
                                     {availabilityMap[r.occupantId]
                                       ? "Booking"
                                       : "N/A"}
-                                  </button>
+                                  </Button>
                                 )}
                             </div>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       ))}
-                    </tbody>
-                  </table>
+                    </TableBody>
+                  </Table>
                 </div>
               )}
             </div>

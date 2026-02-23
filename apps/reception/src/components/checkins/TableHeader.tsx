@@ -13,7 +13,7 @@ const TableHeader: React.FC = () => {
     >
       <tr className="h-12">
         {/* Guest Name */}
-        <th className="px-4 py-2 w-[200px] font-semibold" title="Guest Name">
+        <th className="px-4 py-2 w-200px font-semibold" title="Guest Name">
           <div className="flex justify-center items-center">
             <i className="fas fa-user" />
           </div>
@@ -21,7 +21,7 @@ const TableHeader: React.FC = () => {
 
         {/* Room Allocated */}
         <th
-          className="px-4 py-2 w-[120px] font-semibold"
+          className="px-4 py-2 w-120px font-semibold"
           title="Room Allocated"
         >
           <div className="flex justify-center items-center">
@@ -30,14 +30,14 @@ const TableHeader: React.FC = () => {
         </th>
 
         {/* Room Payment */}
-        <th className="px-4 py-2 w-[125px] font-semibold" title="Room Payment">
+        <th className="px-4 py-2 w-125px font-semibold" title="Room Payment">
           <div className="flex justify-center items-center">
             <i className="fas fa-credit-card" />
           </div>
         </th>
 
         {/* City Tax */}
-        <th className="px-4 py-2 w-[125px] font-semibold" title="City Tax">
+        <th className="px-4 py-2 w-125px font-semibold" title="City Tax">
           <div className="flex justify-center items-center">
             <i className="fas fa-coins" />
           </div>
@@ -45,7 +45,7 @@ const TableHeader: React.FC = () => {
 
         {/* Keycard Deposit */}
         <th
-          className="px-4 py-2 w-[125px] font-semibold"
+          className="px-4 py-2 w-125px font-semibold"
           title="Keycard Deposit"
         >
           <div className="flex justify-center items-center">
@@ -54,7 +54,7 @@ const TableHeader: React.FC = () => {
         </th>
 
         {/* Status */}
-        <th className="px-4 py-2 w-[120px] font-semibold" title="Status">
+        <th className="px-4 py-2 w-120px font-semibold" title="Status">
           <div className="flex justify-center items-center">
             <i className="fas fa-clock" />
           </div>
@@ -62,7 +62,7 @@ const TableHeader: React.FC = () => {
 
         {/* Document Insert */}
         <th
-          className="px-4 py-2 w-[150px] font-semibold"
+          className="px-4 py-2 w-150px font-semibold"
           title="Document Insert"
         >
           <div className="flex justify-center items-center">
@@ -71,7 +71,7 @@ const TableHeader: React.FC = () => {
         </th>
 
         {/* Email Booking */}
-        <th className="px-4 py-2 w-[150px] font-semibold" title="Email Booking">
+        <th className="px-4 py-2 w-150px font-semibold" title="Email Booking">
           <div className="flex justify-center items-center">
             <i className="fas fa-envelope" />
           </div>

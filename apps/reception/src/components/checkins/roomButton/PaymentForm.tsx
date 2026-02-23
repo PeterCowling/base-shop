@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
+import { Button, Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
 
 import type {
   PaymentSplit,
@@ -91,7 +91,7 @@ function PaymentForm({
     <Popover open={menuOpen} onOpenChange={handleOpenChange}>
       <div className="relative flex items-center">
         <PopoverTrigger asChild>
-          <button
+          <Button
             disabled={isDisabled}
             style={{ height: "55px" }}
             className={`px-4 flex items-center justify-center focus:outline-none transition-colors rounded-l ${leftButtonClass}`}
@@ -106,12 +106,12 @@ function PaymentForm({
               size="lg"
               title={getPayTypeTooltip()}
             />
-          </button>
+          </Button>
         </PopoverTrigger>
-        <button
+        <Button
           onClick={handleImmediatePayment}
           disabled={isDisabled}
-          className={`min-h-[55px] px-[11px] flex items-center justify-center focus:outline-none transition-colors rounded-r ${rightButtonClass}`}
+          className={`min-h-55px px-[11px] flex items-center justify-center focus:outline-none transition-colors rounded-r ${rightButtonClass}`}
           title={
             isDisabled
               ? "Payment not possible (already paid)"
@@ -119,7 +119,7 @@ function PaymentForm({
           }
         >
           {getButtonLabel()}
-        </button>
+        </Button>
       </div>
 
       <PopoverContent align="start" sideOffset={6} className="p-0">

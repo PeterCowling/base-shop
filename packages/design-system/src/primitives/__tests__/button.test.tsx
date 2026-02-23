@@ -27,4 +27,20 @@ describe("Button", () => {
     expect(container.firstChild).toHaveClass("hover:bg-primary-soft/50");
 
   });
+
+  it("supports shape and radius variants with radius precedence", () => {
+    const { rerender, container } = render(<Button shape="square">Square</Button>);
+    expect(container.firstChild).toHaveClass("rounded-none");
+
+    rerender(<Button shape="pill">Pill</Button>);
+    expect(container.firstChild).toHaveClass("rounded-full");
+
+    rerender(
+      <Button shape="square" radius="2xl">
+        Radius wins
+      </Button>
+    );
+    expect(container.firstChild).toHaveClass("rounded-2xl");
+    expect(container.firstChild).not.toHaveClass("rounded-none");
+  });
 });

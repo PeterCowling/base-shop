@@ -2,6 +2,7 @@
 import { memo, useCallback, useState } from "react";
 import { ExclamationTriangleIcon,XMarkIcon } from "@heroicons/react/24/solid";
 
+import { Button } from "@acme/design-system/atoms";
 import { SimpleModal } from "@acme/ui/molecules";
 
 interface ConfirmCancelModalProps {
@@ -44,7 +45,7 @@ function ConfirmCancelModal({
       showCloseButton
     >
       <div className="flex justify-end">
-        <button
+        <Button
           type="button"
           onClick={onCancel}
           disabled={isProcessing}
@@ -52,7 +53,7 @@ function ConfirmCancelModal({
           aria-label="Close modal"
         >
           <XMarkIcon className="h-5 w-5" />
-        </button>
+        </Button>
       </div>
 
         {/* Warning icon */}
@@ -89,22 +90,22 @@ function ConfirmCancelModal({
 
         {/* Actions */}
       <div className="mt-6 flex gap-3">
-        <button
+        <Button
           type="button"
           onClick={onCancel}
           disabled={isProcessing}
           className="flex-1 min-h-11 min-w-11 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-gray-700"
         >
           Keep Bookings
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
           onClick={handleConfirm}
           disabled={isProcessing}
           className="flex-1 min-h-11 min-w-11 rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
         >
           {isProcessing ? "Cancelling..." : "Yes, Cancel"}
-        </button>
+        </Button>
       </div>
     </SimpleModal>
   );

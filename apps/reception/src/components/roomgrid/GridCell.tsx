@@ -7,6 +7,8 @@
 import type { ReactElement } from "react";
 import { memo, useCallback, useMemo } from "react";
 
+import { TableCell } from "@acme/design-system/atoms";
+
 import type { TReservedPeriod } from "./interfaces/reservedPeriod";
 import type { TClickCellEventData } from "./ReservationGrid";
 
@@ -127,9 +129,9 @@ function GridCellInner<TCustomStatus extends string = never>({
   }, [backgroundColor]);
 
   return (
-    <td className={cellClasses} style={style} onClick={handleClick}>
+    <TableCell className={cellClasses} style={style} onClick={handleClick}>
       <div className="day" />
-    </td>
+    </TableCell>
   );
 }
 

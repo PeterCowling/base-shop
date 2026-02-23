@@ -326,6 +326,12 @@ When to proceed normally:
 - Files exist that you didn't create (other agents' work)
 - Recent commits from other agents on `dev`
 - Untracked files outside your work scope
+- Unrelated modified files in the working tree that do not conflict with your task
+
+Prompting policy for shared worktrees:
+- Do **not** pause to ask for confirmation solely because unrelated/untracked files appeared.
+- Continue by default and keep your commit scope limited to files required for the current task.
+- Only stop and ask if there is a direct conflict with your intended edits or a git consistency issue.
 
 ## Quick Reference
 

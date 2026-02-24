@@ -4,6 +4,11 @@
 
 import type { ShopSettings } from "@acme/types";
 
+import { generateSeo as serviceGenerateSeoFromPrompt } from "../services/shops/seoGenerateService";
+import {
+  revertSeo as serviceRevertSeo,
+  updateSeo as serviceUpdateSeo,
+} from "../services/shops/seoService";
 import {
   getSettings as serviceGetSettings,
   setFreezeTranslations as serviceSetFreezeTranslations,
@@ -16,6 +21,10 @@ import {
   updateStockAlert as serviceUpdateStockAlert,
   updateUpsReturns as serviceUpdateUpsReturns,
 } from "../services/shops/settingsService";
+import {
+  resetThemeOverride as serviceResetThemeOverride,
+  updateShop as serviceUpdateShop,
+} from "../services/shops/themeService";
 
 export async function getSettings(shop: string): Promise<ShopSettings> {
   return serviceGetSettings(shop) as unknown as ShopSettings;
@@ -61,4 +70,26 @@ export async function updatePremierDelivery(
 
 export async function updateAiCatalog(shop: string, formData: FormData) {
   return serviceUpdateAiCatalog(shop, formData);
+}
+
+// Backward-compatible action exports used by existing tests/routes.
+export async function updateShop(shop: string, formData: FormData) {
+  return serviceUpdateShop(shop, formData);
+}
+
+export async function resetThemeOverride(shop: string, token: string) {
+  return serviceResetThemeOverride(shop, token);
+}
+
+export async function updateSeo(shop: string, formData: FormData) {
+  return serviceUpdateSeo(shop, formData);
+}
+
+export async function generateSeo(shop: string, formData: FormData) {
+  // Prefer dedicated generate service while preserving legacy action surface.
+  return serviceGenerateSeoFromPrompt(shop, formData);
+}
+
+export async function revertSeo(shop: string, timestamp: string) {
+  return serviceRevertSeo(shop, timestamp);
 }

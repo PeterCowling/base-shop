@@ -68,7 +68,7 @@ export default async function WorkflowsPage() {
           <iframe
             title="Platform Capability Baseline Workflow"
             srcDoc={workflowHtml}
-            className="w-full aspect-video rounded-md border border-border-2 bg-white"
+            className="w-full aspect-video rounded-md border border-border-2 bg-background"
           />
         </div>
       </div>

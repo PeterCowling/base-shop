@@ -259,7 +259,7 @@ export function QuickCaptureModal({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogPortal>
-        <DialogOverlay className="bg-black/50 backdrop-blur-sm" />
+        <DialogOverlay className="bg-surface-2/60 backdrop-blur-sm" />
         <DialogPrimitive.Content
           className="fixed top-1/2 start-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-background text-foreground shadow-lg focus:outline-none"
         >

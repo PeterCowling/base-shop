@@ -5,51 +5,25 @@
 // - packages/<group>/<pkg>/package.json (scripts)
 // - .github/workflows/*.yml / .github/workflows/*.yaml (run steps)
 //
-// Policy is fail-closed by default (`--webpack` required), with explicit
-// app/command exceptions via matrix rules.
+// Policy is fail-closed by default for Turbopack (`--webpack` forbidden),
+// with explicit app/command exceptions via matrix rules when needed.
 
 import { spawnSync } from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 
 const RULE_REQUIRE_WEBPACK = "require-webpack";
+const RULE_REQUIRE_TURBOPACK = "require-turbopack";
 const RULE_ALLOW_ANY = "allow-any";
 
 const DEFAULT_COMMAND_POLICY = Object.freeze({
-  dev: RULE_REQUIRE_WEBPACK,
-  build: RULE_REQUIRE_WEBPACK,
+  dev: RULE_REQUIRE_TURBOPACK,
+  build: RULE_REQUIRE_TURBOPACK,
 });
 
-const APP_COMMAND_POLICY_MATRIX = Object.freeze({
-  brikette: Object.freeze({
-    dev: RULE_ALLOW_ANY,
-    build: RULE_ALLOW_ANY,
-  }),
-  // TASK-04 (turbopack-full-migration): Phase P1 wave exceptions.
-  // Keep fail-closed default; open only active migration-wave apps.
-  caryina: Object.freeze({
-    dev: RULE_ALLOW_ANY,
-    build: RULE_ALLOW_ANY,
-  }),
-  prime: Object.freeze({
-    dev: RULE_ALLOW_ANY,
-    build: RULE_ALLOW_ANY,
-  }),
-  reception: Object.freeze({
-    dev: RULE_ALLOW_ANY,
-    build: RULE_ALLOW_ANY,
-  }),
-  "xa-b": Object.freeze({
-    dev: RULE_ALLOW_ANY,
-    build: RULE_ALLOW_ANY,
-  }),
-});
+const APP_COMMAND_POLICY_MATRIX = Object.freeze({});
 
-const WORKFLOW_APP_MATRIX = Object.freeze({
-  "brikette.yml": "brikette",
-  "brikette.yaml": "brikette",
-  "prime.yml": "prime",
-});
+const WORKFLOW_APP_MATRIX = Object.freeze({});
 
 const USAGE = `Usage:
   node scripts/check-next-webpack-flag.mjs [options] [--paths <p1> <p2> ...]
@@ -221,14 +195,13 @@ function resolveAppPolicy(relPath) {
   return DEFAULT_COMMAND_POLICY;
 }
 
-function shouldRequireWebpack({ relPath, kind }) {
+function resolveCommandRule({ relPath, kind }) {
   const policy = resolveAppPolicy(relPath);
-  const rule = policy[kind] || DEFAULT_COMMAND_POLICY[kind] || RULE_REQUIRE_WEBPACK;
-  return rule === RULE_REQUIRE_WEBPACK;
+  return policy[kind] || DEFAULT_COMMAND_POLICY[kind] || RULE_REQUIRE_TURBOPACK;
 }
 
 function findPolicyViolations(command, { relPath }) {
-  const missing = [];
+  const violations = [];
   const re = /\bnext\s+(dev|build)\b/g;
   let m;
   while ((m = re.exec(command)) !== null) {
@@ -236,14 +209,20 @@ function findPolicyViolations(command, { relPath }) {
     const rest = command.slice(start);
     const sepIdx = firstSeparatorIndex(rest);
     const segment = (sepIdx === -1 ? rest : rest.slice(0, sepIdx)).trim();
-    if (!shouldRequireWebpack({ relPath, kind: m[1] })) {
+    const kind = m[1];
+    const rule = resolveCommandRule({ relPath, kind });
+    if (rule === RULE_ALLOW_ANY) {
       continue;
     }
-    if (!hasWebpackFlag(segment)) {
-      missing.push({ segment, kind: m[1] });
+    const includesWebpack = hasWebpackFlag(segment);
+    if (rule === RULE_REQUIRE_WEBPACK && !includesWebpack) {
+      violations.push({ segment, kind, reason: "missing-webpack" });
+    }
+    if (rule === RULE_REQUIRE_TURBOPACK && includesWebpack) {
+      violations.push({ segment, kind, reason: "forbidden-webpack" });
     }
   }
-  return missing;
+  return violations;
 }
 
 function joinBackslashContinuations(lines) {
@@ -297,13 +276,19 @@ function checkPackageJson({ repoRoot, source, relPath, content }) {
 
   for (const [name, cmd] of Object.entries(scripts)) {
     if (typeof cmd !== "string") continue;
-    const missing = findPolicyViolations(cmd, { relPath });
-    if (!missing.length) continue;
+    const violations = findPolicyViolations(cmd, { relPath });
+    if (!violations.length) continue;
 
-    for (const seg of missing) {
-      errors.push(
-        `- ${relPath} (script "${name}"): found "next ${seg.kind}" without --webpack: ${JSON.stringify(seg.segment)}`,
-      );
+    for (const seg of violations) {
+      if (seg.reason === "missing-webpack") {
+        errors.push(
+          `- ${relPath} (script "${name}"): found "next ${seg.kind}" without required --webpack: ${JSON.stringify(seg.segment)}`,
+        );
+      } else {
+        errors.push(
+          `- ${relPath} (script "${name}"): found "next ${seg.kind}" with forbidden --webpack: ${JSON.stringify(seg.segment)}`,
+        );
+      }
     }
   }
 
@@ -320,15 +305,21 @@ function checkWorkflow({ relPath, content }) {
     const trimmed = line.trimStart();
     if (trimmed.startsWith("#")) continue;
 
-    const missing = findPolicyViolations(line, { relPath });
-    if (!missing.length) continue;
+    const violations = findPolicyViolations(line, { relPath });
+    if (!violations.length) continue;
 
     // Best-effort line number: map logical lines back to raw approx by counting newlines.
     const approxLineNo = rawLines.slice(0, rawLines.indexOf(line.split("\n")[0]) + 1).length || i + 1;
-    for (const seg of missing) {
-      errors.push(
-        `- ${relPath}:${approxLineNo}: found "next ${seg.kind}" without --webpack: ${JSON.stringify(seg.segment)}`,
-      );
+    for (const seg of violations) {
+      if (seg.reason === "missing-webpack") {
+        errors.push(
+          `- ${relPath}:${approxLineNo}: found "next ${seg.kind}" without required --webpack: ${JSON.stringify(seg.segment)}`,
+        );
+      } else {
+        errors.push(
+          `- ${relPath}:${approxLineNo}: found "next ${seg.kind}" with forbidden --webpack: ${JSON.stringify(seg.segment)}`,
+        );
+      }
     }
   }
   return errors;
@@ -380,10 +371,10 @@ async function main() {
     process.stderr.write("POLICY VIOLATION: Next.js command violates bundler policy matrix\n");
     process.stderr.write("------------------------------------------------------------------\n\n");
     process.stderr.write("This repo enforces an app/command policy matrix for `next dev` / `next build`.\n");
-    process.stderr.write("Default behavior is fail-closed: `--webpack` required unless explicitly allowed.\n\n");
+    process.stderr.write("Default behavior is fail-closed: `--webpack` is forbidden unless explicitly required.\n\n");
     process.stderr.write("Violations:\n");
     process.stderr.write(violations.map((v) => `  ${v}`).join("\n"));
-    process.stderr.write("\n\nFix: add `--webpack` to the affected command(s), or update matrix rules intentionally.\n");
+    process.stderr.write("\n\nFix: remove `--webpack` from the affected command(s), or update matrix rules intentionally.\n");
     process.exit(1);
   }
 

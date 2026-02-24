@@ -13,6 +13,7 @@
     "test:e2e": "pnpm exec playwright test e2e/catalog-console.spec.ts --reporter=list"
   },
   "dependencies": {
+    "@acme/lib": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",

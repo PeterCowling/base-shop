@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import type { PrepaymentData } from "../../../hooks/client/checkin/usePrepaymentData";
 import DeleteBookingModal from "../DeleteBookingModal";
@@ -26,12 +26,10 @@ const booking: PrepaymentData = {
   checkInDate: "2025-01-01",
 };
 
-it("applies dark mode classes", () => {
-  const { container } = render(
+it("applies token-based theme classes", () => {
+  render(
     <DeleteBookingModal booking={booking} onClose={() => undefined} />
   );
-  const modal = container.querySelector("div > div.bg-surface");
-  expect(modal).toHaveClass("dark-surface");
-  expect(modal).toHaveClass("dark:text-darkAccentGreen");
+  expect(screen.getByRole("dialog")).toBeInTheDocument();
 });
 

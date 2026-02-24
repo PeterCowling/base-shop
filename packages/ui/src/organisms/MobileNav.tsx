@@ -30,7 +30,7 @@ interface Props {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   lang?: AppLanguage;
   bannerHeight?: number;
-  onPrimaryCtaClick?: () => void;
+  onPrimaryCtaClick?: () => boolean | void;
 }
 
 function MobileNav({
@@ -66,9 +66,11 @@ function MobileNav({
     (event: MouseEvent<HTMLAnchorElement>) => {
       // On apartment routes let normal navigation handle the link — no modal.
       if (isApartmentRoute) return;
-      // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
-      onPrimaryCtaClick?.();
-      event.preventDefault();
+      // Preserve semantic link navigation unless the callback explicitly handles routing.
+      const handledByCallback = onPrimaryCtaClick?.() === true;
+      if (handledByCallback) {
+        event.preventDefault();
+      }
     },
     [onPrimaryCtaClick, isApartmentRoute]
   );

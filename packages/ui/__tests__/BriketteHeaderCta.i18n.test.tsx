@@ -1,6 +1,6 @@
 import React from "react";
 import { I18nextProvider, initReactI18next } from "react-i18next";
-import { act,render, screen } from "@testing-library/react";
+import { act, createEvent, fireEvent, render, screen } from "@testing-library/react";
 import i18next, { type i18n as I18nInstance } from "i18next";
 
 import DesktopHeader from "../src/organisms/DesktopHeader";
@@ -146,5 +146,61 @@ describe("Brikette header CTA translation", () => {
 
     const localizedRoomsLink = screen.getByRole("link", { name: "Rooms" });
     expect(localizedRoomsLink).toHaveAttribute("href", "/fr/chambres");
+  });
+
+  it("does not block desktop CTA link navigation when callback does not handle routing", async () => {
+    const i18n = await createI18n();
+    render(
+      <I18nextProvider i18n={i18n}>
+        <DesktopHeader onPrimaryCtaClick={jest.fn()} />
+      </I18nextProvider>
+    );
+
+    const link = screen.getByRole("link", { name: "Check availability" });
+    const click = createEvent.click(link);
+    fireEvent(link, click);
+    expect(click.defaultPrevented).toBe(false);
+  });
+
+  it("prevents desktop CTA default navigation when callback reports handled routing", async () => {
+    const i18n = await createI18n();
+    render(
+      <I18nextProvider i18n={i18n}>
+        <DesktopHeader onPrimaryCtaClick={() => true} />
+      </I18nextProvider>
+    );
+
+    const link = screen.getByRole("link", { name: "Check availability" });
+    const click = createEvent.click(link);
+    fireEvent(link, click);
+    expect(click.defaultPrevented).toBe(true);
+  });
+
+  it("does not block mobile CTA link navigation when callback does not handle routing", async () => {
+    const i18n = await createI18n();
+    render(
+      <I18nextProvider i18n={i18n}>
+        <MobileNav menuOpen={false} setMenuOpen={jest.fn()} onPrimaryCtaClick={jest.fn()} />
+      </I18nextProvider>
+    );
+
+    const link = screen.getByRole("link", { name: "Check availability" });
+    const click = createEvent.click(link);
+    fireEvent(link, click);
+    expect(click.defaultPrevented).toBe(false);
+  });
+
+  it("prevents mobile CTA default navigation when callback reports handled routing", async () => {
+    const i18n = await createI18n();
+    render(
+      <I18nextProvider i18n={i18n}>
+        <MobileNav menuOpen={false} setMenuOpen={jest.fn()} onPrimaryCtaClick={() => true} />
+      </I18nextProvider>
+    );
+
+    const link = screen.getByRole("link", { name: "Check availability" });
+    const click = createEvent.click(link);
+    fireEvent(link, click);
+    expect(click.defaultPrevented).toBe(true);
   });
 });

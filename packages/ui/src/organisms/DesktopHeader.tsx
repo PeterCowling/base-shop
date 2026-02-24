@@ -36,7 +36,7 @@ function DesktopHeader({
   onPrimaryCtaClick,
 }: {
   lang?: AppLanguage;
-  onPrimaryCtaClick?: () => void;
+  onPrimaryCtaClick?: () => boolean | void;
 }): React.JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n } = useTranslation();
@@ -63,9 +63,11 @@ function DesktopHeader({
     (event: MouseEvent<HTMLAnchorElement>) => {
       // On apartment routes let normal navigation handle the link — no modal.
       if (isApartmentRoute) return;
-      // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
-      onPrimaryCtaClick?.();
-      event.preventDefault();
+      // Preserve semantic link navigation unless the callback explicitly handles routing.
+      const handledByCallback = onPrimaryCtaClick?.() === true;
+      if (handledByCallback) {
+        event.preventDefault();
+      }
     },
     [onPrimaryCtaClick, isApartmentRoute]
   );

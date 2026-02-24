@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-import { ReceptionButton as Button } from "@acme/ui/operations";
+import { SimpleModal } from "@acme/ui/molecules";
 
 import { useCompletedOrder } from "../../hooks/data/bar/useCompletedOrder";
 import { usePlacedPreorder } from "../../hooks/data/bar/usePlacedPreorder";
@@ -283,73 +283,35 @@ const ModalPreorderDetails: React.FC<ModalPreorderDetailsProps> = ({
   preorder,
   onClose,
 }) => {
-  // Optionally close on "Escape" key
-  useEffect(() => {
-    function handleEsc(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    }
-    document.addEventListener("keydown", handleEsc);
-    return () => document.removeEventListener("keydown", handleEsc);
-  }, [onClose]);
-
-  // If occupant has no preorder node, show nothing.
-  if (!preorder) {
-    return null;
-  }
-
   // Parse occupantCheckIn once
   const checkInDateObj = parseLocalDate(occupantCheckIn);
 
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center bg-foreground bg-opacity-40 z-50 dark:bg-darkBg/80"
-      role="button"
-      tabIndex={0}
-      // Close only if the user clicked exactly on the backdrop
-      onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          onClose();
-        }
-      }}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          if (e.target === e.currentTarget) {
-            onClose();
-          }
-        }
-      }}
+    <SimpleModal
+      isOpen={!!preorder}
+      onClose={onClose}
+      title={`Preorders for ${guestName}`}
+      maxWidth="max-w-lg"
     >
-      <div
-        className="bg-surface p-6 rounded shadow-xl max-w-lg w-full relative max-h-screen overflow-y-auto dark:bg-darkSurface dark:text-darkAccentGreen"
-        role="dialog"
-        aria-modal="true"
-      >
-        <Button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-muted-foreground hover:text-foreground dark:text-darkAccentGreen"
-        >
-          ✕
-        </Button>
-        <h2 className="text-xl font-bold mb-4">Preorders for {guestName}</h2>
+      <div className="max-h-screen overflow-y-auto">
         {!checkInDateObj && (
-          <p className="text-error-main mb-2 dark:text-darkAccentOrange">
+          <p className="text-error-main mb-2">
             Invalid checkInDate: <strong>{occupantCheckIn}</strong>
           </p>
         )}
 
         {/* Render each night's details */}
-        {Object.entries(preorder).map(([nightKey, nightValue]) => (
-          <PreorderNightDetails
-            key={nightKey}
-            nightKey={nightKey}
-            nightValue={nightValue}
-            checkInDateObj={checkInDateObj}
-          />
-        ))}
+        {preorder &&
+          Object.entries(preorder).map(([nightKey, nightValue]) => (
+            <PreorderNightDetails
+              key={nightKey}
+              nightKey={nightKey}
+              nightValue={nightValue}
+              checkInDateObj={checkInDateObj}
+            />
+          ))}
       </div>
-    </div>
+    </SimpleModal>
   );
 };
 

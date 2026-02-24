@@ -8,13 +8,70 @@ import {
   computeGenericContentProps,
   getEnTranslatorCandidates,
   hasMeaningfulStructuredFallback,
+  type makeBaseGenericProps,
   prefersStructuredFallbackWhenEn,
   resolveEnglishTranslator,
 } from "../generic";
 
+type GuidesTranslations = Parameters<typeof makeBaseGenericProps>[0]["translations"];
+type HookI18n = Parameters<typeof makeBaseGenericProps>[0]["hookI18n"];
+type GenericContentBase = Parameters<typeof computeGenericContentProps>[0]["base"];
+type GenericContentMerged = ReturnType<typeof computeGenericContentProps>;
+
+function shouldRenderStructuredFallbackBlock(params: {
+  hasLocalizedContent: boolean;
+  suppressUnlocalizedFallback?: boolean;
+  preferManualWhenUnlocalized?: boolean;
+  fallbackStructured: StructuredFallback | null;
+  preferGenericWhenFallback?: boolean;
+  preferFallbackEvenWhenEn: boolean;
+}): boolean {
+  const {
+    hasLocalizedContent,
+    suppressUnlocalizedFallback,
+    preferManualWhenUnlocalized,
+    fallbackStructured,
+    preferGenericWhenFallback,
+    preferFallbackEvenWhenEn,
+  } = params;
+
+  return (
+    !hasLocalizedContent &&
+    !suppressUnlocalizedFallback &&
+    !preferManualWhenUnlocalized &&
+    Boolean(fallbackStructured) &&
+    (fallbackStructured?.source !== "guidesEn" || preferFallbackEvenWhenEn) &&
+    !preferGenericWhenFallback
+  );
+}
+
+function shouldRenderEnStructuredFastPath(params: {
+  hasLocalizedContent: boolean;
+  englishFallbackAllowed: boolean;
+  fallbackStructured: StructuredFallback | null;
+  renderGenericContent: boolean;
+  preferManualWhenUnlocalized?: boolean;
+}): boolean {
+  const {
+    hasLocalizedContent,
+    englishFallbackAllowed,
+    fallbackStructured,
+    renderGenericContent,
+    preferManualWhenUnlocalized,
+  } = params;
+  return (
+    !hasLocalizedContent &&
+    englishFallbackAllowed &&
+    Boolean(fallbackStructured) &&
+    fallbackStructured?.source === "guidesEn" &&
+    renderGenericContent &&
+    !preferManualWhenUnlocalized
+  );
+}
+
 export function renderStructuredFallback(params: {
   guideKey: string;
-  translations: any;
+  translations: GuidesTranslations;
   t: TFunction;
   context: GuideSeoTemplateContext;
   fallbackStructured: StructuredFallback | null;
@@ -31,7 +88,7 @@ export function renderStructuredFallback(params: {
   genericContentOptions?: { showToc?: boolean } | undefined;
   structuredTocItems?: TocItem[] | null | undefined;
   customTocProvided?: boolean;
-  hookI18n: any;
+  hookI18n: HookI18n;
   renderGenericOnce: (props: unknown) => JSX.Element | null;
   prepareProps: (props: unknown) => unknown;
 }): JSX.Element | null {
@@ -66,12 +123,14 @@ export function renderStructuredFallback(params: {
   const preferFallbackEvenWhenEn = prefersStructuredFallbackWhenEn(guideKey);
 
   if (
-    !hasLocalizedContent &&
-    !suppressUnlocalizedFallback &&
-    !preferManualWhenUnlocalized &&
-    fallbackStructured &&
-    (((fallbackStructured as any)?.source !== "guidesEn") || preferFallbackEvenWhenEn) &&
-    !preferGenericWhenFallback
+    shouldRenderStructuredFallbackBlock({
+      hasLocalizedContent,
+      suppressUnlocalizedFallback,
+      preferManualWhenUnlocalized,
+      fallbackStructured,
+      preferGenericWhenFallback,
+      preferFallbackEvenWhenEn,
+    })
   ) {
     const aliasBlockEarly = RenderInterrailAlias({
       guideKey,
@@ -81,9 +140,9 @@ export function renderStructuredFallback(params: {
       showTocWhenUnlocalized,
       ...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {}),
     });
-    if (aliasBlockEarly) return aliasBlockEarly as any;
+    if (aliasBlockEarly) return aliasBlockEarly;
 
-    if (hasMeaningfulStructuredFallback(fallbackStructured)) {
+    if (fallbackStructured && hasMeaningfulStructuredFallback(fallbackStructured)) {
       return (
         <RenderFallbackStructured
           fallback={fallbackStructured}
@@ -100,14 +159,15 @@ export function renderStructuredFallback(params: {
 
   // EN structured fallback fast-path
   if (
-    !hasLocalizedContent &&
-    englishFallbackAllowed &&
-    fallbackStructured &&
-    (fallbackStructured as any)?.source === "guidesEn" &&
-    renderGenericContent &&
-    !preferManualWhenUnlocalized
+    shouldRenderEnStructuredFastPath({
+      hasLocalizedContent,
+      englishFallbackAllowed,
+      fallbackStructured,
+      renderGenericContent,
+      preferManualWhenUnlocalized,
+    })
   ) {
-    if (hasMeaningfulStructuredFallback(fallbackStructured)) {
+    if (fallbackStructured && hasMeaningfulStructuredFallback(fallbackStructured)) {
       try {
         const { hookCandidate, appCandidate } = getEnTranslatorCandidates(hookI18n);
         const tEn = resolveEnglishTranslator({
@@ -116,18 +176,18 @@ export function renderStructuredFallback(params: {
           fallback: t as unknown as TFunction,
           guideKey,
         });
-        const baseFast = { t: tEn, guideKey } as const;
-        let propsFast = computeGenericContentProps({
-          base: baseFast as any,
+        const baseFast: GenericContentBase = { t: tEn, guideKey };
+        const propsFast = computeGenericContentProps({
+          base: baseFast,
           ...(typeof genericContentOptions !== "undefined" ? { genericContentOptions } : {}),
           structuredTocItems,
           ...(typeof customTocProvided === "boolean" ? { customTocProvided } : {}),
           hasLocalizedContent,
         });
-        if (hasStructuredLocal) {
-          propsFast = { ...(propsFast as any), suppressIntro: true } as any;
-        }
-        return renderGenericOnce(prepareProps(propsFast)) as any;
+        const preparedProps: GenericContentMerged = hasStructuredLocal
+          ? { ...propsFast, suppressIntro: true }
+          : propsFast;
+        return renderGenericOnce(prepareProps(preparedProps));
       } catch { /* fall through */ }
     }
   }

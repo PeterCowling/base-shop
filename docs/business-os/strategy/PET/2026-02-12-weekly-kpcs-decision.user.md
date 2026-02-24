@@ -4,6 +4,7 @@ Status: Active
 Business: PET
 Week-Ending: 2026-02-12
 Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # PET Weekly K/P/C/S Decision

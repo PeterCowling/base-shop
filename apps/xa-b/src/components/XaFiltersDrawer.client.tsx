@@ -1,11 +1,10 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] XA filters use legacy patterns pending design/i18n overhaul */
 
 import * as React from "react";
 
-import { Button, Checkbox, Input } from "@acme/design-system/atoms";
-import { OverlayScrim } from "@acme/design-system/atoms";
+import { Button, Checkbox, Input, OverlayScrim } from "@acme/design-system/atoms";
+import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 import {
   Drawer,
   DrawerContent,
@@ -14,15 +13,17 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@acme/design-system/primitives/drawer";
-import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 import {
-  XA_COLOR_SWATCHES,
   formatLabel,
   getDesignerName,
   getTrendingDesigners,
+  XA_COLOR_SWATCHES,
+  XA_FILTER_SWATCH_FALLBACK,
 } from "../lib/xaCatalog";
 import type { FilterConfig, FilterKey } from "../lib/xaFilters";
+import { xaI18n } from "../lib/xaI18n";
 
 const PRICE_PRESETS = [
   { label: "Under 100", min: 0, max: 100 },
@@ -73,6 +74,8 @@ export function XaFiltersDrawer({
   onApply,
 }: XaFiltersDrawerProps) {
   const [designerQuery, setDesignerQuery] = React.useState("");
+  // FIX P-02: controlled disclosure state for generic filter sections
+  const [sectionOpen, setSectionOpen] = React.useState<Record<string, boolean>>({});
 
   const designerOptions = (facetValues.designer ?? []).map((handle) => ({
     handle,
@@ -85,6 +88,20 @@ export function XaFiltersDrawer({
       )
     : designerOptions;
   const trendingDesigners = getTrendingDesigners(4);
+
+  // FIX C-03: derive applied filter count for trigger badge
+  const appliedCount = React.useMemo(() => {
+    let count = 0;
+    for (const set of Object.values(draftValues)) {
+      count += set.size;
+    }
+    if (draftInStock) count += 1;
+    if (draftSale) count += 1;
+    if (draftNewIn) count += 1;
+    if (draftMin !== "") count += 1;
+    if (draftMax !== "") count += 1;
+    return count;
+  }, [draftValues, draftInStock, draftSale, draftNewIn, draftMin, draftMax]);
 
   const sections = React.useMemo(() => {
     const items: Array<{ kind: "filter"; config: FilterConfig } | { kind: "price" }> = [];
@@ -109,7 +126,14 @@ export function XaFiltersDrawer({
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerTrigger asChild>
-        <Button>All filters</Button>
+        <Button>
+          All filters
+          {appliedCount > 0 && (
+            <span className="ms-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 xa-text-10 font-semibold text-primary-fg">
+              {appliedCount}
+            </span>
+          )}
+        </Button>
       </DrawerTrigger>
       <DrawerPortal>
         <OverlayScrim />
@@ -121,9 +145,7 @@ export function XaFiltersDrawer({
           <div className="mb-4 flex items-center justify-between gap-4">
             <div>
               <DrawerTitle className="text-lg font-semibold">All filters</DrawerTitle>
-              <DrawerDescription className="text-sm text-muted-foreground">
-                Select filters then press APPLY.
-              </DrawerDescription>
+              <DrawerDescription className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.components.xafiltersdrawer.client.l147c76")}</DrawerDescription>
             </div>
             <Button
               type="button"
@@ -185,7 +207,7 @@ export function XaFiltersDrawer({
                         />
                       </div>
                     </LayoutGrid>
-                    <div className="flex flex-wrap gap-2">
+                    <Inline gap={2} className="flex-wrap">
                       {PRICE_PRESETS.map((preset) => (
                         <Button
                           key={preset.label}
@@ -200,7 +222,7 @@ export function XaFiltersDrawer({
                           {preset.label}
                         </Button>
                       ))}
-                    </div>
+                    </Inline>
                   </div>
                 );
               }
@@ -214,20 +236,22 @@ export function XaFiltersDrawer({
                       <Input
                         value={designerQuery}
                         onChange={(event) => setDesignerQuery(event.target.value)}
-                        placeholder="Search designers"
+                        placeholder={xaI18n.t("xaB.src.components.xafiltersdrawer.client.l240c37")}
                       />
-                      <div className="flex flex-wrap gap-2">
+                      <Inline gap={2} className="flex-wrap">
                         {trendingDesigners.map((designer) => (
-                          <button
+                          <Button
                             key={`trend-${designer.handle}`}
                             type="button"
-                            className="rounded-full border px-3 py-1 text-xs font-medium hover:bg-muted"
+                            variant="outline"
+                            size="sm"
+                            className="h-auto min-h-0 rounded-full px-3 py-1 text-xs font-medium hover:bg-muted"
                             onClick={() => onToggleValue("designer", designer.handle)}
                           >
                             {designer.name}
-                          </button>
+                          </Button>
                         ))}
-                      </div>
+                      </Inline>
                       <div className="space-y-2">
                         {filteredDesigners.map((designer) => (
                           <label
@@ -252,25 +276,33 @@ export function XaFiltersDrawer({
                 return (
                   <div key="color" className="space-y-3">
                     <div className="text-sm font-semibold">Color</div>
-                    <div className="flex flex-wrap gap-3">
+                    <Inline gap={3} className="flex-wrap">
                       {facetValues.color.map((color) => {
                         const selected = draftValues.color.has(color);
                         return (
-                          <button
+                          <Button
                             key={`color-${color}`}
                             type="button"
-                            className="flex items-center gap-2 text-xs"
+                            variant="ghost"
+                            size="sm"
+                            aria-pressed={selected}
+                            aria-label={`Filter by ${formatLabel(color)}`}
+                            className="h-auto gap-2 rounded-none px-0 py-0 text-xs hover:bg-transparent"
                             onClick={() => onToggleValue("color", color)}
                           >
                             <span
+                              aria-hidden
                               className={`h-6 w-6 rounded-full border ${selected ? "ring-2 ring-foreground" : ""}`}
-                              style={{ backgroundColor: XA_COLOR_SWATCHES[color] ?? "#f5f5f5" }}
+                              style={{
+                                backgroundColor:
+                                  XA_COLOR_SWATCHES[color] ?? XA_FILTER_SWATCH_FALLBACK,
+                              }}
                             />
                             <span>{formatLabel(color)}</span>
-                          </button>
+                          </Button>
                         );
                       })}
-                    </div>
+                    </Inline>
                   </div>
                 );
               }
@@ -278,16 +310,40 @@ export function XaFiltersDrawer({
               const values = facetValues[config.key] ?? [];
               if (!values.length) return null;
               const openByDefault = config.key === "size";
+              const isOpen = sectionOpen[config.key] ?? openByDefault;
+              const panelId = `filter-panel-${config.key}`;
               return (
-                <details
+                <div
                   key={`filter-${config.key}`}
-                  open={openByDefault}
                   className="rounded-lg border p-3"
                 >
-                  <summary className="cursor-pointer text-sm font-semibold">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() =>
+                      setSectionOpen((prev) => ({
+                        ...prev,
+                        [config.key]: !isOpen,
+                      }))
+                    }
+                    className="h-auto w-full justify-between rounded-none px-0 py-0 text-sm font-semibold hover:bg-transparent"
+                  >
                     {config.label}
-                  </summary>
-                  <div className="mt-3 space-y-2">
+                    <svg
+                      aria-hidden
+                      className={`h-3 w-3 transition-transform${isOpen ? " rotate-180" : ""}`}
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path d="M2 4l4 4 4-4" />
+                    </svg>
+                  </Button>
+                  <div id={panelId} hidden={!isOpen} className="mt-3 space-y-2">
                     {values.map((value) => (
                       <label
                         key={`${config.key}-${value}`}
@@ -301,7 +357,7 @@ export function XaFiltersDrawer({
                       </label>
                     ))}
                   </div>
-                </details>
+                </div>
               );
             })}
           </div>

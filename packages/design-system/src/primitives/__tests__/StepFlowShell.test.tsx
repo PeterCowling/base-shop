@@ -68,4 +68,40 @@ describe("Step flow primitives", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("note", { name: "Why this helps" })).toBeInTheDocument();
   });
+
+  it("TC-04: shape/radius overrides propagate to shell primitives", () => {
+    const { container } = render(
+      <StepFlowShell
+        currentStep={1}
+        totalSteps={3}
+        title="Arrival onboarding"
+        description="Complete the quick steps below."
+        onBack={() => {}}
+        trustCue={{
+          title: "Privacy reassurance",
+          description: "Only used for your current stay.",
+        }}
+        milestoneMessage="Almost there"
+        backButtonShape="square"
+        progressSegmentShape="square"
+        trustCueRadius="2xl"
+        milestoneRadius="sm"
+      >
+        <button type="button">Continue</button>
+      </StepFlowShell>,
+    );
+
+    expect(screen.getByRole("button", { name: "Go back" })).toHaveClass("rounded-none");
+
+    const progressbar = screen.getByRole("progressbar", { name: "Step progress" });
+    const firstSegment = progressbar.querySelector("div");
+    expect(firstSegment).toHaveClass("rounded-none");
+
+    expect(
+      screen.getByRole("note", { name: "Privacy reassurance" }),
+    ).toHaveClass("rounded-2xl");
+    expect(screen.getByRole("note", { name: "Privacy reassurance" })).toHaveClass("overflow-hidden");
+    expect(screen.getByRole("status")).toHaveClass("rounded-sm", "overflow-hidden");
+    expect(screen.getByText("Almost there")).toHaveClass("min-w-0", "break-words");
+  });
 });

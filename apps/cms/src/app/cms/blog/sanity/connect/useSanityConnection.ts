@@ -2,13 +2,11 @@
 "use client";
 
 import {
-  useActionState,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { saveSanityConfig } from "@cms/actions/saveSanityConfig";
 
 import { defaultDataset } from "./constants";
 
@@ -24,11 +22,39 @@ export function useSanityConnection(
   shopId: string,
   initial?: { projectId: string; dataset: string; token?: string },
 ) {
-  const saveAction = saveSanityConfig.bind(null, shopId);
-  const [state, formAction] = useActionState<FormState, FormData>(
-    async (_prevState: FormState, formData: FormData) =>
-      saveAction(formData),
-    initialState,
+  const [state, setState] = useState<FormState>(initialState);
+  const formAction = useCallback(
+    async (formData: FormData) => {
+      const payload = {
+        shopId,
+        projectId: String(formData.get("projectId") ?? ""),
+        dataset: String(formData.get("dataset") ?? ""),
+        token: String(formData.get("token") ?? ""),
+        aclMode: String(formData.get("aclMode") ?? "public"),
+        createDataset: String(formData.get("createDataset") ?? "false") === "true",
+      };
+
+      try {
+        const res = await fetch("/api/sanity/connect", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const json = (await res.json().catch(() => ({}))) as FormState;
+        setState({
+          message: json.message ?? "",
+          error: json.error ?? "",
+          errorCode: json.errorCode ?? "",
+        });
+      } catch {
+        setState({
+          message: "",
+          error: "Failed to save Sanity configuration",
+          errorCode: "UNKNOWN_ERROR",
+        });
+      }
+    },
+    [shopId],
   );
 
   const [projectId, setProjectId] = useState(initial?.projectId ?? "");

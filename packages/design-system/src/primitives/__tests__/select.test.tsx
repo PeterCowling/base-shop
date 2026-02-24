@@ -5,6 +5,7 @@ import { configure,render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 
+import { overflowContainmentClass } from "../../utils/style";
 import {
   Select,
   SelectContent,
@@ -97,6 +98,29 @@ describe("Select", () => {
     expect(trigger).toHaveClass("custom");
   });
 
+  it("SelectTrigger supports shape and radius variants", () => {
+    const { rerender } = render(
+      <Select>
+        <SelectTrigger data-testid="trigger" shape="square">
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+      </Select>
+    );
+    const trigger = screen.getByTestId("trigger");
+    expect(trigger).toHaveClass("rounded-none");
+
+    rerender(
+      <Select>
+        <SelectTrigger data-testid="trigger" shape="pill" radius="lg">
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+      </Select>
+    );
+    const radiusOverrideTrigger = screen.getByTestId("trigger");
+    expect(radiusOverrideTrigger).toHaveClass("rounded-lg");
+    expect(radiusOverrideTrigger).not.toHaveClass("rounded-full");
+  });
+
   it("SelectItem merges custom classes", async () => {
     render(
       <Select>
@@ -113,8 +137,48 @@ describe("Select", () => {
     const user = userEvent.setup();
     await user.click(screen.getByTestId("trigger"));
     const item = await screen.findByRole("option", { name: "One" });
-    expect(item).toHaveClass("ps-8");
+    expect(item).toHaveClass("ps-8", "min-w-0");
     expect(item).toHaveClass("custom");
+    expect(item.querySelector("span.min-w-0.break-words")).not.toBeNull();
+  });
+
+  it("SelectItem supports shape variants", async () => {
+    render(
+      <Select>
+        <SelectTrigger data-testid="trigger">
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="one" shape="square">
+            One
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    );
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("trigger"));
+    const squareItem = await screen.findByRole("option", { name: "One" });
+    expect(squareItem).toHaveClass("rounded-none");
+  });
+
+  it("SelectItem supports radius overrides over shape defaults", async () => {
+    render(
+      <Select>
+        <SelectTrigger data-testid="trigger">
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="one" shape="pill" radius="lg">
+            One
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    );
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("trigger"));
+    const radiusItem = await screen.findByRole("option", { name: "One" });
+    expect(radiusItem).toHaveClass("rounded-lg");
+    expect(radiusItem).not.toHaveClass("rounded-full");
   });
 
   it("forwards refs and attributes to subcomponents", async () => {
@@ -180,6 +244,7 @@ describe("Select", () => {
     expect(contentRef.current).toBe(content);
     expect(content).toHaveAttribute("data-foo", "content");
     expect(content).toHaveClass("bg-panel");
+    expect(content).toHaveClass(overflowContainmentClass("menuSurface"));
 
     expect(labelRef.current).toBe(label);
     expect(label).toHaveAttribute("data-foo", "label");
@@ -210,5 +275,22 @@ describe("Select", () => {
     const content = await screen.findByRole("listbox");
     expect(container).not.toContainElement(content);
     expect(document.body).toContainElement(content);
+  });
+
+  it("SelectContent supports radius variants", async () => {
+    render(
+      <Select>
+        <SelectTrigger data-testid="trigger">
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+        <SelectContent data-testid="content" radius="2xl">
+          <SelectItem value="one">One</SelectItem>
+        </SelectContent>
+      </Select>
+    );
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("trigger"));
+    const content = await screen.findByTestId("content");
+    expect(content).toHaveClass("rounded-2xl");
   });
 });

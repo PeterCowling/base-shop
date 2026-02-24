@@ -1,40 +1,48 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy XA shell pending design/i18n overhaul */
 
 import { type ReactNode } from "react";
 import Link from "next/link";
 import {
   BackpackIcon,
   HeartIcon,
-  MoonIcon,
   MagnifyingGlassIcon,
+  MoonIcon,
   PersonIcon,
   SunIcon,
 } from "@radix-ui/react-icons";
 
-import AnnouncementBar from "@acme/ui/components/organisms/AnnouncementBar";
+import { IconButton, Input } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { CurrencySwitcher } from "@acme/design-system/molecules";
-import { Input } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
-import { Grid } from "@acme/design-system/atoms/Grid";
+import { useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
+import AnnouncementBar from "@acme/ui/components/organisms/AnnouncementBar";
 
-import { XaMegaMenu } from "./XaMegaMenu";
-import { XaSupportDock } from "./XaSupportDock.client";
 import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
 import { siteConfig } from "../lib/siteConfig";
 import { toWhatsappHref } from "../lib/support";
 import {
+  formatLabel,
+  getCategoryHref,
   XA_ALLOWED_CATEGORIES,
   XA_ALLOWED_DEPARTMENTS,
   XA_CATEGORY_LABELS,
-  formatLabel,
-  getCategoryHref,
 } from "../lib/xaCatalog";
-import { useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
+import { xaI18n } from "../lib/xaI18n";
+
+import { XaMegaMenu } from "./XaMegaMenu";
+import { XaSupportDock } from "./XaSupportDock.client";
+
+const NAV_LABELS = {
+  newIn: "New In",
+  sale: "Sale",
+  brands: "Brands",
+} as const;
 
 export function XaShell({ children }: { children: ReactNode }) {
   const whatsappHref = siteConfig.showSocialLinks
@@ -65,7 +73,7 @@ export function XaShell({ children }: { children: ReactNode }) {
       <header className="border-b bg-surface-1">
         <Section as="div" padding="none" className="px-4">
           <Stack gap={2} className="py-3">
-            <div className="grid min-h-14 grid-cols-[1fr_auto_1fr] items-center gap-4">
+            <div className="grid min-h-14 xa-grid-shell-primary items-center gap-4">
               <nav aria-label="Primary" className="justify-self-start">
                 <Inline gap={5} className="flex-wrap">
                   {XA_ALLOWED_DEPARTMENTS.map((department) => (
@@ -95,20 +103,24 @@ export function XaShell({ children }: { children: ReactNode }) {
                   >
                     <HeartIcon className="h-4 w-4" />
                     {wishlistCount ? (
-                      <span className="absolute -end-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 text-[10px] font-semibold text-background">
-                        {wishlistCount}
-                      </span>
+                      <Cluster asChild alignY="center" justify="center" wrap={false}>
+                        <span className="absolute -end-1 -top-1 h-4 min-w-4 rounded-full bg-foreground px-1 xa-text-10 font-semibold text-background">
+                          {wishlistCount}
+                        </span>
+                      </Cluster>
                     ) : null}
                   </Link>
-                  <button
+                  <IconButton
                     type="button"
                     onClick={() => setMode(isDark ? "light" : "dark")}
-                    className="inline-flex min-h-11 min-w-11 items-center justify-center"
-                    aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+                    variant="ghost"
+                    size="md"
+                    className="min-h-11 min-w-11 rounded-none hover:bg-transparent"
+                    aria-label={isDark ? xaI18n.t("xaB.src.components.xashell.l118c42") : xaI18n.t("xaB.src.components.xashell.l118c67")}
                     title={isDark ? "Light mode" : "Dark mode"}
                   >
                     {isDark ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
-                  </button>
+                  </IconButton>
                   <Link
                     href="/account/login"
                     className="inline-flex min-h-11 min-w-11 items-center justify-center"
@@ -125,9 +137,11 @@ export function XaShell({ children }: { children: ReactNode }) {
                   >
                     <BackpackIcon className="h-4 w-4" />
                     {cartCount ? (
-                      <span className="absolute -end-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 text-[10px] font-semibold text-background">
-                        {cartCount}
-                      </span>
+                      <Cluster asChild alignY="center" justify="center" wrap={false}>
+                        <span className="absolute -end-1 -top-1 h-4 min-w-4 rounded-full bg-foreground px-1 xa-text-10 font-semibold text-background">
+                          {cartCount}
+                        </span>
+                      </Cluster>
                     ) : null}
                   </Link>
                 </Inline>
@@ -141,19 +155,19 @@ export function XaShell({ children }: { children: ReactNode }) {
                     href="/new-in"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
                   >
-                    New In
+                    {NAV_LABELS.newIn}
                   </Link>
                   <Link
                     href="/sale"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
                   >
-                    Sale
+                    {NAV_LABELS.sale}
                   </Link>
                   <Link
                     href="/designers"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
                   >
-                    Brands
+                    {NAV_LABELS.brands}
                   </Link>
                   {categoryLinks.map((link) => (
                     <Link
@@ -169,7 +183,7 @@ export function XaShell({ children }: { children: ReactNode }) {
 
               <div className="flex items-center gap-3">
                 <form action="/search" method="get" className="relative hidden md:block">
-                  <MagnifyingGlassIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <MagnifyingGlassIcon className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input name="q" placeholder="Search" className="w-44 pl-9 text-sm" />
                 </form>
                 <Link
@@ -191,20 +205,18 @@ export function XaShell({ children }: { children: ReactNode }) {
         <Section as="div" padding="none" className="px-6 py-12 md:px-12">
           <Grid columns={{ base: 2, md: 4 }} gap={8}>
             <div className="col-span-2 md:col-span-1">
-                <div className="text-xl font-semibold uppercase tracking-[0.18em] text-foreground">
-                  {siteConfig.brandName}
-                </div>
+              <div className="text-xl font-semibold uppercase xa-tracking-018 text-foreground">
+                {siteConfig.brandName}
               </div>
+            </div>
 
             <div>
               <Stack gap={2}>
                 {showSupportLinks ? (
                   <Link
                     href="/service-center"
-                    className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground hover:text-foreground"
-                  >
-                    Service center
-                  </Link>
+                    className="text-xs font-semibold uppercase xa-tracking-012 text-foreground hover:text-foreground"
+                  >{xaI18n.t("xaB.src.components.xashell.l218c20")}</Link>
                 ) : null}
                 <Stack gap={1}>
                   <Link
@@ -216,9 +228,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                   <Link
                     href="/pages/cryptocurrency-payment"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm uppercase tracking-wide text-foreground/80 hover:text-foreground"
-                  >
-                    Cryptocurrency payments
-                  </Link>
+                  >{xaI18n.t("xaB.src.components.xashell.l232c20")}</Link>
                   <Link
                     href="/pages/shipping-policy"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm uppercase tracking-wide text-foreground/80 hover:text-foreground"
@@ -249,7 +259,7 @@ export function XaShell({ children }: { children: ReactNode }) {
 
             <div>
               <Stack gap={2}>
-                <div className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground">
+                <div className="text-xs font-semibold uppercase xa-tracking-012 text-foreground">
                   Company info
                 </div>
                 <Stack gap={1}>
@@ -270,16 +280,14 @@ export function XaShell({ children }: { children: ReactNode }) {
                   <Link
                     href="/pages/payment-and-pricing"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm uppercase tracking-wide text-foreground/80 hover:text-foreground"
-                  >
-                    Payments and pricing
-                  </Link>
+                  >{xaI18n.t("xaB.src.components.xashell.l286c20")}</Link>
                 </Stack>
               </Stack>
             </div>
 
             <div>
               <Stack gap={2}>
-                <div className="text-xs font-semibold uppercase tracking-[0.12em] text-foreground">
+                <div className="text-xs font-semibold uppercase xa-tracking-012 text-foreground">
                   Currency
                 </div>
                 <CurrencySwitcher />

@@ -1,4 +1,4 @@
-import { updateShop } from "@cms/actions/shops.server";
+import { updateShop } from "@cms/actions/shops-theme.server";
 import { act,renderHook } from "@testing-library/react";
 
 import type { MappingRow } from "@/hooks/useMappingRows";
@@ -16,7 +16,7 @@ jest.mock("@acme/ui/operations", () => ({
   useToast: () => mockToast,
 }));
 
-jest.mock("@cms/actions/shops.server", () => ({
+jest.mock("@cms/actions/shops-theme.server", () => ({
   updateShop: jest.fn(),
 }));
 

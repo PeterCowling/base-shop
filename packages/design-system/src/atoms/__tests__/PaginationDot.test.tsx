@@ -18,4 +18,12 @@ describe("PaginationDot", () => {
     const button = screen.getByRole("button");
     expect(button).toHaveClass("bg-muted");
   });
+
+  it("supports shape/radius overrides", () => {
+    const { rerender } = render(<PaginationDot shape="square" />);
+    expect(screen.getByRole("button")).toHaveClass("rounded-none");
+
+    rerender(<PaginationDot shape="square" radius="2xl" />);
+    expect(screen.getByRole("button")).toHaveClass("rounded-2xl");
+  });
 });

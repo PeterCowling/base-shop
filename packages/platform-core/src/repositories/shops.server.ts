@@ -12,6 +12,10 @@ import { prisma } from "../db";
 import { defaultFilterMappings } from "../defaultFilterMappings";
 import { validateShopName } from "../shops";
 import { baseTokens, loadThemeTokens } from "../themeTokens/index";
+import {
+  assertValidThemeTokens,
+  diffThemeTokenKeys,
+} from "../themeValidation";
 import { listShopsInDataRoot } from "../utils/safeFs";
 
 import { getShopById, updateShopInRepo } from "./shop.server";
@@ -161,6 +165,10 @@ export async function writeShop(
 ): Promise<Shop> {
   const { readShop } = await import("./shops.server");
   const current = await readShop(shop);
+  const previousThemeTokens = {
+    ...(current.themeDefaults ?? {}),
+    ...(current.themeOverrides ?? {}),
+  } as Record<string, string>;
   const themeDefaults = {
     ...(current.themeDefaults ?? {}),
     ...(patch.themeDefaults ?? {}),
@@ -173,6 +181,27 @@ export async function writeShop(
     if (v == null || v === themeDefaults[k]) delete themeOverrides[k];
   }
   const themeTokens = { ...themeDefaults, ...themeOverrides } as Record<string, string>;
+  assertValidThemeTokens(themeDefaults, {
+    context: "shop theme defaults",
+    contrastRequirements: [],
+    unresolvedColorReferenceSeverity: "error",
+    unresolvableContrastPairSeverity: "error",
+  });
+  assertValidThemeTokens(themeOverrides, {
+    context: "shop theme overrides",
+    allowedTokenKeys: Object.keys(themeDefaults),
+    contrastRequirements: [],
+    unresolvedColorReferenceSeverity: "error",
+    unresolvableContrastPairSeverity: "error",
+  });
+  assertValidThemeTokens(themeTokens, {
+    context: "shop merged theme tokens",
+    allowedTokenKeys: Object.keys(themeDefaults),
+    baselineTokens: previousThemeTokens,
+    changedTokenKeys: diffThemeTokenKeys(previousThemeTokens, themeTokens),
+    unresolvedColorReferenceSeverity: "error",
+    unresolvableContrastPairSeverity: "error",
+  });
   const updated = await updateShopInRepo<Shop>(shop, {
     ...patch,
     id: patch.id,

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
 import { type DerivedState, deriveState, type RunEvent } from "../derive-state";
+import stageOperatorMap from "../../../../docs/business-os/startup-loop/_generated/stage-operator-map.json";
 
 /**
  * LPSP-04A: Event schema + derived state + deterministic derivation
@@ -20,7 +21,7 @@ function makeEvent(overrides: Partial<RunEvent>): RunEvent {
     schema_version: 1,
     event: "stage_started",
     run_id: "SFS-TEST-20260213-1200",
-    stage: "DISCOVERY",
+    stage: "ASSESSMENT-09",
     timestamp: "2026-02-13T12:00:00Z",
     loop_spec_version: "1.0.0",
     artifacts: null,
@@ -29,16 +30,41 @@ function makeEvent(overrides: Partial<RunEvent>): RunEvent {
   };
 }
 
+const FORECAST_STAGE_ID = stageOperatorMap.stages.some((stage) => stage.id === "S3")
+  ? "S3"
+  : "SIGNALS-01";
+
+const WEEKLY_STAGE_ID = stageOperatorMap.stages.some((stage) => stage.id === "S10")
+  ? "S10"
+  : "SIGNALS";
+
 const HAPPY_PATH_EVENTS: RunEvent[] = [
-  // DISCOVERY → S2B → S3 (parallel) → S6B (parallel) → S4 → S5A → S5B
-  makeEvent({ event: "stage_started", stage: "DISCOVERY", timestamp: "2026-02-13T12:00:00Z" }),
-  makeEvent({ event: "stage_completed", stage: "DISCOVERY", timestamp: "2026-02-13T12:01:00Z", artifacts: {} }),
-  makeEvent({ event: "stage_started", stage: "S2B", timestamp: "2026-02-13T12:01:30Z" }),
-  makeEvent({ event: "stage_completed", stage: "S2B", timestamp: "2026-02-13T12:02:00Z", artifacts: { offer: "stages/S2B/offer.md" } }),
-  makeEvent({ event: "stage_started", stage: "S3", timestamp: "2026-02-13T12:02:30Z" }),
-  makeEvent({ event: "stage_started", stage: "S6B", timestamp: "2026-02-13T12:02:30Z" }),
-  makeEvent({ event: "stage_completed", stage: "S3", timestamp: "2026-02-13T12:04:00Z", artifacts: { forecast: "stages/S3/forecast.md" } }),
-  makeEvent({ event: "stage_completed", stage: "S6B", timestamp: "2026-02-13T12:05:00Z", artifacts: { channels: "stages/S6B/channels.md" } }),
+  // ASSESSMENT-09 → MARKET-06 → forecast (parallel) → SELL-01 (parallel) → S4 → S5A → S5B
+  // Forecast stage ID is sourced from the generated operator map for compatibility.
+  // Some map versions model forecast as SIGNALS-01 instead of S3.
+  makeEvent({ event: "stage_started", stage: "ASSESSMENT-09", timestamp: "2026-02-13T12:00:00Z" }),
+  makeEvent({ event: "stage_completed", stage: "ASSESSMENT-09", timestamp: "2026-02-13T12:01:00Z", artifacts: {} }),
+  makeEvent({ event: "stage_started", stage: "MARKET-06", timestamp: "2026-02-13T12:01:30Z" }),
+  makeEvent({
+    event: "stage_completed",
+    stage: "MARKET-06",
+    timestamp: "2026-02-13T12:02:00Z",
+    artifacts: { offer: "stages/MARKET-06/offer.md" },
+  }),
+  makeEvent({ event: "stage_started", stage: FORECAST_STAGE_ID, timestamp: "2026-02-13T12:02:30Z" }),
+  makeEvent({ event: "stage_started", stage: "SELL-01", timestamp: "2026-02-13T12:02:30Z" }),
+  makeEvent({
+    event: "stage_completed",
+    stage: FORECAST_STAGE_ID,
+    timestamp: "2026-02-13T12:04:00Z",
+    artifacts: { forecast: `stages/${FORECAST_STAGE_ID}/forecast.md` },
+  }),
+  makeEvent({
+    event: "stage_completed",
+    stage: "SELL-01",
+    timestamp: "2026-02-13T12:05:00Z",
+    artifacts: { channels: "stages/SELL-01/channels.md" },
+  }),
   makeEvent({ event: "stage_started", stage: "S4", timestamp: "2026-02-13T12:05:30Z" }),
   makeEvent({ event: "stage_completed", stage: "S4", timestamp: "2026-02-13T12:06:00Z", artifacts: { baseline_snapshot: "stages/S4/baseline.snapshot.md" } }),
   makeEvent({ event: "stage_started", stage: "S5A", timestamp: "2026-02-13T12:06:30Z" }),
@@ -55,23 +81,23 @@ const STATE_OPTIONS = {
 
 describe("deriveState", () => {
   // VC-04A-01: Happy-path derivation — given a valid event stream
-  // (S0→S2B→S3→S6B→S4→S5A→S5B) → derivation produces expected stage statuses.
+  // (ASSESSMENT-09→MARKET-06→S3→SELL-01→S4→S5A→S5B) → derivation produces expected stage statuses.
   describe("VC-04A-01: happy-path derivation", () => {
     it("derives correct statuses from a multi-stage event stream", () => {
       const state = deriveState(HAPPY_PATH_EVENTS, STATE_OPTIONS);
 
-      expect(state.stages.DISCOVERY.status).toBe("Done");
-      expect(state.stages.S2B.status).toBe("Done");
-      expect(state.stages.S3.status).toBe("Done");
-      expect(state.stages.S6B.status).toBe("Done");
+      expect(state.stages["ASSESSMENT-09"].status).toBe("Done");
+      expect(state.stages["MARKET-06"].status).toBe("Done");
+      expect(state.stages[FORECAST_STAGE_ID].status).toBe("Done");
+      expect(state.stages["SELL-01"].status).toBe("Done");
       expect(state.stages.S4.status).toBe("Done");
       expect(state.stages.S5A.status).toBe("Done");
       expect(state.stages.S5B.status).toBe("Done");
 
       // Stages not in the event stream remain Pending
-      expect(state.stages.S6.status).toBe("Pending");
+      expect(state.stages.WEBSITE.status).toBe("Pending");
       expect(state.stages.DO.status).toBe("Pending");
-      expect(state.stages.S10.status).toBe("Pending");
+      expect(state.stages[WEEKLY_STAGE_ID].status).toBe("Pending");
     });
 
     it("sets active_stage to the most recently started stage", () => {
@@ -83,9 +109,9 @@ describe("deriveState", () => {
     it("records artifact paths on completed stages", () => {
       const state = deriveState(HAPPY_PATH_EVENTS, STATE_OPTIONS);
 
-      expect(state.stages.S2B.artifacts).toEqual(["stages/S2B/offer.md"]);
-      expect(state.stages.S3.artifacts).toEqual(["stages/S3/forecast.md"]);
-      expect(state.stages.S6B.artifacts).toEqual(["stages/S6B/channels.md"]);
+      expect(state.stages["MARKET-06"].artifacts).toEqual(["stages/MARKET-06/offer.md"]);
+      expect(state.stages[FORECAST_STAGE_ID].artifacts).toEqual([`stages/${FORECAST_STAGE_ID}/forecast.md`]);
+      expect(state.stages["SELL-01"].artifacts).toEqual(["stages/SELL-01/channels.md"]);
       expect(state.stages.S4.artifacts).toEqual(["stages/S4/baseline.snapshot.md"]);
     });
   });
@@ -136,18 +162,20 @@ describe("deriveState", () => {
       }
     });
 
-    it("includes all 26 stages from loop-spec", () => {
+    it("includes all generated stages from stage-operator-map", () => {
       const state = deriveState([], STATE_OPTIONS);
       const stageIds = Object.keys(state.stages);
-      expect(stageIds).toHaveLength(26);
-      expect(stageIds).toContain("DISCOVERY");
-      expect(stageIds).toContain("DISCOVERY-01");
-      expect(stageIds).toContain("DISCOVERY-02");
-      expect(stageIds).toContain("DISCOVERY-03");
-      expect(stageIds).toContain("DISCOVERY-04");
-      expect(stageIds).toContain("DISCOVERY-05");
-      expect(stageIds).toContain("S3B");
-      expect(stageIds).toContain("S10");
+      expect(stageIds).toHaveLength(stageOperatorMap.stages.length);
+      expect(stageIds).toContain("ASSESSMENT-09");
+      expect(stageIds).toContain("ASSESSMENT-01");
+      expect(stageIds).toContain("ASSESSMENT-02");
+      expect(stageIds).toContain("ASSESSMENT-03");
+      expect(stageIds).toContain("ASSESSMENT-04");
+      expect(stageIds).toContain("ASSESSMENT-06");
+      expect(stageIds).toContain("PRODUCT-02");
+      expect(stageIds).toContain("MARKET-06");
+      expect(stageIds).toContain("SELL-01");
+      expect(stageIds).toContain(WEEKLY_STAGE_ID);
       expect(stageIds).toContain("S4");
       expect(stageIds).toContain("S5A");
       expect(stageIds).toContain("S5B");
@@ -180,7 +208,7 @@ describe("deriveState", () => {
   describe("VC-04A-05: run_aborted handling", () => {
     it("clears active_stage on run_aborted event", () => {
       const events: RunEvent[] = [
-        makeEvent({ event: "stage_started", stage: "DISCOVERY", timestamp: "2026-02-13T12:00:00Z" }),
+        makeEvent({ event: "stage_started", stage: "ASSESSMENT-09", timestamp: "2026-02-13T12:00:00Z" }),
         makeEvent({ event: "run_aborted", stage: "*", timestamp: "2026-02-13T12:01:00Z" }),
       ];
 
@@ -188,14 +216,14 @@ describe("deriveState", () => {
 
       expect(state.active_stage).toBeNull();
       // Stage status is not reverted by run_aborted
-      expect(state.stages.DISCOVERY.status).toBe("Active");
+      expect(state.stages["ASSESSMENT-09"].status).toBe("Active");
     });
 
     it("preserves completed stage statuses on mid-run abort", () => {
       const events: RunEvent[] = [
-        makeEvent({ event: "stage_started", stage: "DISCOVERY", timestamp: "2026-02-13T12:00:00Z" }),
-        makeEvent({ event: "stage_completed", stage: "DISCOVERY", timestamp: "2026-02-13T12:01:00Z", artifacts: {} }),
-        makeEvent({ event: "stage_started", stage: "S1", timestamp: "2026-02-13T12:01:30Z" }),
+        makeEvent({ event: "stage_started", stage: "ASSESSMENT-09", timestamp: "2026-02-13T12:00:00Z" }),
+        makeEvent({ event: "stage_completed", stage: "ASSESSMENT-09", timestamp: "2026-02-13T12:01:00Z", artifacts: {} }),
+        makeEvent({ event: "stage_started", stage: "MEASURE-01", timestamp: "2026-02-13T12:01:30Z" }),
         makeEvent({ event: "run_aborted", stage: "*", timestamp: "2026-02-13T12:02:00Z" }),
       ];
 
@@ -204,9 +232,9 @@ describe("deriveState", () => {
       // active_stage cleared — run is terminated
       expect(state.active_stage).toBeNull();
       // Completed stages retain their Done status
-      expect(state.stages.DISCOVERY.status).toBe("Done");
+      expect(state.stages["ASSESSMENT-09"].status).toBe("Done");
       // In-progress stage retains Active status; run_aborted does not revert stages
-      expect(state.stages.S1.status).toBe("Active");
+      expect(state.stages["MEASURE-01"].status).toBe("Active");
     });
   });
 });

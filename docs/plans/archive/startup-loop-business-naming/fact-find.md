@@ -53,7 +53,7 @@ This fact-find investigates where a naming step should be inserted, what intake 
 
 - Constraints:
   - The loop gate pattern must mirror the existing S2 (Market Intelligence) deep-research handoff — generate a prompt, block loop advance, user takes it externally, returns an artifact, loop resumes.
-  - Gate IDs are sequential within the brand-dossier family (GATE-BD-00 is the only slot available before GATE-BD-01).
+  - Gate IDs are sequential within the brand-identity family (GATE-BD-00 is the only slot available before GATE-BD-01).
   - The S0 intake packet template is the authoritative source of early business context — the naming prompt must draw from fields that are already collected there.
   - All `{{FIELD}}` placeholders in the prompt template must map 1:1 to fields in the **Naming Prompt Seed Contract** table below. No placeholder may reference a field not in that table.
   - The naming artifact path must follow the `docs/business-os/strategy/<BIZ>/` convention used by other S0/S1 outputs.
@@ -91,10 +91,10 @@ The gate does NOT regenerate the prompt if it already exists — idempotent on s
 
 - `.claude/skills/startup-loop/SKILL.md` — gate enforcement logic; needs new GATE-BD-00 check added at S0→S1 transition
 - `docs/business-os/startup-loop/loop-spec.yaml` — needs GATE-BD-00 entry; spec_version impact to be assessed in TASK-03b
-- `.claude/skills/lp-brand-bootstrap/SKILL.md` — GATE-BD-01 enforcer; needs to read `latest-naming-shortlist.user.md` if present
+- `.claude/skills/lp-brand-bootstrap/SKILL.md` — GATE-BD-01 enforcer; needs to read `latest-candidate-names.user.md` if present
 - `docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md` — canonical reference for the deep-research handoff pattern this step must mirror
 - `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md` — S0 intake packet; needs one new field (`business_name_status`)
-- `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` — downstream consumer; naming shortlist informs the name field here
+- `docs/business-os/strategy/<BIZ>/brand-identity.user.md` — downstream consumer; naming shortlist informs the name field here
 
 ### Patterns & Conventions Observed
 
@@ -138,7 +138,7 @@ Notes:
 - The generation date is the date of the `/startup-loop advance` call that triggered the gate.
 
 **Shortlist file (user-returned):**
-- Accepted path pattern (glob): `docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md`
+- Accepted path pattern (glob): `docs/business-os/strategy/<BIZ>/*-candidate-names.user.md`
 - Gate passes on any glob match — date in filename does not need to match prompt file date.
 - Required frontmatter (machine-readable, minimum):
   ```yaml
@@ -153,7 +153,7 @@ Notes:
   Without this frontmatter, `lp-brand-bootstrap` cannot reliably extract the recommended name.
 
 **Stable latest pointer (loop-written on gate pass):**
-- Path: `docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md`
+- Path: `docs/business-os/strategy/<BIZ>/latest-candidate-names.user.md`
 - Written by the gate logic when the gate passes (copy/symlink of the matched shortlist file).
 - `lp-brand-bootstrap` reads this stable path. Falls back gracefully if absent.
 - This replaces the previously proposed `latest_naming_shortlist` field in `loop-spec.yaml` — avoids schema creep and keeps the pointer in the filesystem (consistent with the `latest.user.md` pattern for market intelligence).
@@ -162,12 +162,12 @@ Notes:
 
 - Persistence:
   - Prompt: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-prompt.md` (idempotent — not overwritten if exists)
-  - Shortlist: `docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md` (glob accepted)
-  - Stable pointer: `docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md` (written by gate on pass)
+  - Shortlist: `docs/business-os/strategy/<BIZ>/*-candidate-names.user.md` (glob accepted)
+  - Stable pointer: `docs/business-os/strategy/<BIZ>/latest-candidate-names.user.md` (written by gate on pass)
 
 - API/contracts:
   - No API changes required.
-  - `lp-brand-bootstrap` reads `latest-naming-shortlist.user.md` front matter to extract `recommended_business_name` and optionally `shortlist`. Graceful skip if file absent.
+  - `lp-brand-bootstrap` reads `latest-candidate-names.user.md` front matter to extract `recommended_business_name` and optionally `shortlist`. Graceful skip if file absent.
   - `loop-spec.yaml` requires a new GATE-BD-00 gate entry. Schema impact assessed in TASK-03b.
 
 ### Dependency & Impact Map
@@ -177,8 +177,8 @@ Notes:
   - `business_name_status: unconfirmed` explicitly set in intake packet (trigger condition)
   - `business_code` assigned (precondition for all path derivation)
 - Downstream dependents:
-  - `lp-brand-bootstrap` (GATE-BD-01) — reads `latest-naming-shortlist.user.md` to pre-populate brand dossier name field
-  - `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` — the confirmed name flows into this document
+  - `lp-brand-bootstrap` (GATE-BD-01) — reads `latest-candidate-names.user.md` to pre-populate brand dossier name field
+  - `docs/business-os/strategy/<BIZ>/brand-identity.user.md` — the confirmed name flows into this document
   - All subsequent stages that reference `business_name` (offer copy, SEO, GTM) — benefit from a well-researched name
 - Likely blast radius:
   - Changes to `startup-loop/SKILL.md` affect all new loop runs. Existing businesses with `business_name_status` absent or `confirmed` are unaffected — the gate is skipped.
@@ -228,7 +228,7 @@ Notes:
   - Evidence: `.claude/skills/startup-loop/SKILL.md`, `.claude/skills/lp-brand-bootstrap/SKILL.md`
 
 - Q: What gate slot is available for the naming step?
-  - A: GATE-BD-00. The existing brand-dossier gate series starts at GATE-BD-01. The slot before it is unused.
+  - A: GATE-BD-00. The existing brand-identity gate series starts at GATE-BD-01. The slot before it is unused.
   - Evidence: `.claude/skills/startup-loop/SKILL.md` gate inventory
 
 - Q: What data fields are available at S0 to seed a naming prompt?
@@ -283,10 +283,10 @@ _None — all questions resolved._
 |---|---|---|---|
 | S0 data insufficient to produce differentiated name candidates | Low | Medium | Seed contract fields (offer, ICP, region, differentiator) match brand-consultant discovery inputs. Prompt instructs researcher to flag if more context is needed before completing the long-list. |
 | User sets `business_name_status: confirmed` prematurely to skip the gate | Medium | Low | Gate is process adherence only. Loop cannot validate name quality — that is a human decision. Accept as an intentional override. |
-| Shortlist artifact never returned; loop appears stuck | Low | High | Blocking message must include the resume instruction verbatim: "Place shortlist at `docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md` with required front matter, then run `/startup-loop advance`." Mirror S2 resume pattern exactly. |
+| Shortlist artifact never returned; loop appears stuck | Low | High | Blocking message must include the resume instruction verbatim: "Place shortlist at `docs/business-os/strategy/<BIZ>/*-candidate-names.user.md` with required front matter, then run `/startup-loop advance`." Mirror S2 resume pattern exactly. |
 | Prompt overwritten on repeated `/startup-loop advance` calls; original lost | Medium | Low | Gate checks for prompt file existence before generating. If prompt exists, skip regeneration. Idempotent behaviour must be explicit in TASK-03 implementation note. |
 | `business_name_status` parse fails silently (malformed YAML) | Low | Medium | Fail-open: treat parse errors as `confirmed` (gate skipped) and emit a warning. Consistent with backwards-compat constraint. Document the behaviour explicitly in TASK-01. |
-| Date in shortlist filename does not match prompt file date; gate appears stuck | Low | High | Gate check is glob-based (`*-naming-shortlist.user.md`), not exact-path. Date mismatch is not a failure condition. Explicitly documented in Artifact Spec above. |
+| Date in shortlist filename does not match prompt file date; gate appears stuck | Low | High | Gate check is glob-based (`*-candidate-names.user.md`), not exact-path. Date mismatch is not a failure condition. Explicitly documented in Artifact Spec above. |
 | `lp-brand-bootstrap` fails to extract recommended name from shortlist (brittle parse) | Medium | Medium | Required YAML front matter in shortlist (`recommended_business_name`, `shortlist`) provides a deterministic extraction target. If front matter absent, lp-brand-bootstrap skips gracefully and emits an advisory. |
 | `loop-spec.yaml` schema change forces a `spec_version` bump with wider team impact | Low | Medium | TASK-03b must assess before committing. If a bump is required, document it and communicate. If not, proceed. |
 | Multi-locale naming: region seed alone may miss linguistic/cultural collision risks | Medium | Medium | `target_languages` field in seed contract instructs the researcher to check top languages in the target region. Prompt template must explicitly request cultural/pronunciation review per language. |
@@ -300,8 +300,8 @@ _None — all questions resolved._
   - Gate ID must be GATE-BD-00 (before GATE-BD-01). Do not renumber existing gates.
   - Prompt template at `docs/business-os/market-research/_templates/deep-research-naming-prompt.md`.
   - All `{{FIELD}}` placeholders must map 1:1 to the Naming Prompt Seed Contract table. No straying.
-  - Shortlist detection: glob-based (`*-naming-shortlist.user.md`), not exact-path.
-  - Stable pointer: `latest-naming-shortlist.user.md` written on gate pass. Do not add pointer field to `loop-spec.yaml`.
+  - Shortlist detection: glob-based (`*-candidate-names.user.md`), not exact-path.
+  - Stable pointer: `latest-candidate-names.user.md` written on gate pass. Do not add pointer field to `loop-spec.yaml`.
   - Shortlist front matter schema (`recommended_business_name`, `shortlist`) is required for downstream consumption by `lp-brand-bootstrap`.
   - `loop-spec.yaml` must be updated to register GATE-BD-00 (TASK-03b). Assess spec_version impact before committing.
 - Rollout/rollback expectations:
@@ -319,9 +319,9 @@ _None — all questions resolved._
 
 - TASK-01: Add `business_name_status: confirmed | unconfirmed` and `target_languages` fields to S0 intake packet template; document semantics, fallback rules, and parse-error behaviour (fail-open = treat as `confirmed`, emit warning).
 - TASK-02: Create `docs/business-os/market-research/_templates/deep-research-naming-prompt.md` — full prompt template with `{{FIELD}}` placeholders mapped to Naming Prompt Seed Contract, research tasks (competitor landscape, 15-20 candidate long-list, shortlist of 5, single recommendation), output format spec including required front matter schema for the returned shortlist.
-- TASK-03: Add GATE-BD-00 check to `startup-loop/SKILL.md` at S0→S1 transition — reads `business_name_status`; if `unconfirmed` and prompt file absent, populates template fields from intake and writes prompt (idempotent); if `unconfirmed` and shortlist glob match exists, writes `latest-naming-shortlist.user.md` and passes gate with advisory; emits blocking message with verbatim resume instruction when blocked.
+- TASK-03: Add GATE-BD-00 check to `startup-loop/SKILL.md` at S0→S1 transition — reads `business_name_status`; if `unconfirmed` and prompt file absent, populates template fields from intake and writes prompt (idempotent); if `unconfirmed` and shortlist glob match exists, writes `latest-candidate-names.user.md` and passes gate with advisory; emits blocking message with verbatim resume instruction when blocked.
 - TASK-03b: Update `docs/business-os/startup-loop/loop-spec.yaml` — add GATE-BD-00 entry with `trigger_condition`, `pass_condition`, `blocking_message_template`, and `required_output_glob`. Assess whether `spec_version` must increment and document the decision.
-- TASK-04: Update `lp-brand-bootstrap/SKILL.md` — read `latest-naming-shortlist.user.md` front matter if present; extract `recommended_business_name` to pre-fill brand dossier name field; skip gracefully (with advisory) if file absent or front matter malformed.
+- TASK-04: Update `lp-brand-bootstrap/SKILL.md` — read `latest-candidate-names.user.md` front matter if present; extract `recommended_business_name` to pre-fill brand dossier name field; skip gracefully (with advisory) if file absent or front matter malformed.
 - TASK-05 (deferred — do not plan): Design optional second-pass naming prompt seeded from S2B offer-design output (full ICP psychographics, Moore positioning statement, competitive frame); triggered as soft recommendation at S2B completion.
 
 ---
@@ -356,7 +356,7 @@ _None — all questions resolved._
 - Confirmed GATE-BD-00 slot is available.
 - Confirmed prompt template directory convention from S2 and S6 implementations.
 - Resolved filename reliability trap: committed to glob-based shortlist detection (not exact-path).
-- Resolved latest-pointer approach: stable `latest-naming-shortlist.user.md` file (no loop-spec.yaml schema change).
+- Resolved latest-pointer approach: stable `latest-candidate-names.user.md` file (no loop-spec.yaml schema change).
 - Added explicit shortlist front matter schema to enable deterministic downstream extraction.
 - Added `target_languages` to seed contract to address multi-locale naming risk.
 - Added explicit `business_code` precondition to prevent misreading scope.
@@ -371,7 +371,7 @@ _None — all questions resolved._
 ### Remaining Assumptions
 
 - **`loop-spec.yaml` schema — resolved by TASK-03b (2026-02-17):** No `gates:` block exists. Gate registration is comment-based (inline YAML comment on stage entry + header changelog line). Fields `trigger_condition`, `pass_condition`, `blocking_message_template`, `required_output_glob` are SKILL.md-only — not YAML fields. **spec_version bump required**: `1.2.0` → `1.3.0` (established pattern). run_packet `loop_spec_version` must match; existing in-flight packets show mismatch but are functionally safe. No TASK-03c needed — loop-spec.yaml change is a comment addition + version bump only.
-- Glob-based gate check (`*-naming-shortlist.user.md`) is implementable in `startup-loop/SKILL.md` without new infrastructure — consistent with how other artifact checks work, but not directly confirmed by file read.
+- Glob-based gate check (`*-candidate-names.user.md`) is implementable in `startup-loop/SKILL.md` without new infrastructure — consistent with how other artifact checks work, but not directly confirmed by file read.
 - `lp-brand-bootstrap` front matter extraction will be straightforward — Medium confidence (H4). To be verified in TASK-04.
 
 ---

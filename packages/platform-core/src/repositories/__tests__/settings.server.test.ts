@@ -9,7 +9,7 @@ import { diffHistory,getShopSettings, saveShopSettings } from "../settings.serve
 const DATA_ROOT = path.join(os.tmpdir(), "settings-tests");
 
 jest.mock("../../dataRoot", () => ({
-  DATA_ROOT,
+  DATA_ROOT: path.join(os.tmpdir(), "settings-tests"),
 }));
 
 // Use globalThis to store test files - this avoids Jest hoisting issues
@@ -50,17 +50,18 @@ jest.mock("fs", () => {
   };
 });
 
-jest.mock("@acme/date-utils", () => ({
-  nowIso: jest.fn(() => "2020-01-01T00:00:00.000Z"),
-}));
-
 describe("settings repository", () => {
   const fsMock = fs as unknown as typeof fs & { __files: Map<string, string> };
   const appendFileMock = fs.appendFile as unknown as jest.Mock;
 
   beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
     globalThis.__settingsTestFiles?.clear();
     jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   afterAll(() => {
@@ -347,5 +348,3 @@ describe("settings.server sequential repository usage", () => {
     expect(repo.diffHistory).toHaveBeenCalledWith("shop");
   });
 });
-
-

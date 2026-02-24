@@ -91,6 +91,13 @@ if ! printf '%s\n' "$ALL_CHANGED" | node "$REPO_ROOT/scripts/check-next-webpack-
 fi
 echo "OK: Next.js command policy matrix check passed"
 
+echo "Checking Jest config path policy..."
+if ! printf '%s\n' "$ALL_CHANGED" | node "$REPO_ROOT/scripts/src/ci/check-jest-config-paths.mjs" --repo-root "$REPO_ROOT" --source "$WEBPACK_POLICY_SOURCE"; then
+    echo "FAIL: Jest config path policy check failed (${CHANGE_MODE})"
+    exit 1
+fi
+echo "OK: Jest config path policy check passed"
+
 I18N_RESOLVER_CHANGED=$(echo "$ALL_CHANGED" | grep -E '^(packages/i18n/|packages/next-config/)|(^|/)tsconfig[^/]*\.json$' || true)
 if [ -n "$I18N_RESOLVER_CHANGED" ]; then
     echo ""
@@ -102,6 +109,31 @@ if [ -n "$I18N_RESOLVER_CHANGED" ]; then
     echo "OK: i18n resolver contract check passed"
 else
     echo "Skipping i18n resolver contract check (no relevant path changes)"
+fi
+
+# 1b. Token checks (contrast + drift) for theme/token/UI style changes
+TOKEN_CHECK_CHANGED=$(echo "$ALL_CHANGED" | grep -E '^(package\.json|scripts/src/tokens/|packages/themes/|packages/design-tokens/|packages/tailwind-config/|packages/design-system/src/(primitives|styles|tokens)/|packages/ui/src/(components|styles)/|apps/[^/]+/tailwind\.config\.(js|cjs|mjs|ts)$|apps/[^/]+/src/(components|styles|app)/.*\.(ts|tsx|js|jsx|css|scss)$)' || true)
+if [ -n "$TOKEN_CHECK_CHANGED" ]; then
+    echo ""
+    echo "> Token checks (contrast + drift)"
+    echo "Token-check trigger paths:"
+    echo "$TOKEN_CHECK_CHANGED" | sed 's/^/  /'
+
+    echo "Running tokens:contrast:check..."
+    if ! pnpm run tokens:contrast:check; then
+        echo "FAIL: tokens:contrast:check failed (${CHANGE_MODE})"
+        exit 1
+    fi
+
+    echo "Running tokens:drift:check..."
+    if ! pnpm run tokens:drift:check; then
+        echo "FAIL: tokens:drift:check failed (${CHANGE_MODE})"
+        exit 1
+    fi
+
+    echo "OK: Token checks passed"
+else
+    echo "Skipping token checks (no theme/token/UI style path changes)"
 fi
 
 # 2. Typecheck + lint (scoped to changed workspace packages)
@@ -311,6 +343,7 @@ for pkg_file in "$PKG_MAP"/*; do
     PKG_KEY=$(basename "$pkg_file")
     PKG_TYPE=$(echo "$PKG_KEY" | sed 's/__.*$//')
     PKG_NAME=$(echo "$PKG_KEY" | sed 's/^[^_]*__//' | tr '~' '/')
+    PKG_NAME_SAFE=$(echo "$PKG_NAME" | tr '/' '-')
     PKG_PATH="./${PKG_TYPE}/${PKG_NAME}"
 
     if [ ! -d "$PKG_PATH" ]; then
@@ -438,7 +471,7 @@ for pkg_file in "$PKG_MAP"/*; do
         else
             # Single batched probe: find related tests for ALL source files at once
             # (replaces per-file jest --listTests loop for speed)
-            RELATED_PROBE_LOG="$TMPDIR/validate-related-tests-${PKG_TYPE}-${PKG_NAME}-$$.log"
+            RELATED_PROBE_LOG="$TMPDIR/validate-related-tests-${PKG_TYPE}-${PKG_NAME_SAFE}-$$.log"
             if ! run_jest_exec "$PKG_PATH" --listTests --findRelatedTests $ABS_SOURCE_FILES --passWithNoTests >"$RELATED_PROBE_LOG" 2>&1; then
                 RAW_RELATED="$(cat "$RELATED_PROBE_LOG" 2>/dev/null || true)"
                 rm -f "$RELATED_PROBE_LOG"

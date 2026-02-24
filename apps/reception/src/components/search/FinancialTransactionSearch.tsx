@@ -1,5 +1,8 @@
 import React, { useCallback, useMemo, useState } from "react";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import useAllFinancialTransactionsData from "../../hooks/data/useAllFinancialTransactionsData";
 
 function FinancialTransactionSearch(): JSX.Element {
@@ -45,10 +48,10 @@ function FinancialTransactionSearch(): JSX.Element {
 
   return (
     <>
-      <h2 className="text-xl font-semibold mb-4 dark:text-darkAccentGreen">Search Transactions</h2>
+      <h2 className="text-xl font-semibold mb-4">Search Transactions</h2>
       <div className="flex flex-wrap gap-4 items-end mb-4">
         <div className="flex flex-col">
-          <label htmlFor="amount" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="amount" className="font-semibold text-foreground">
             Amount:
           </label>
           <input
@@ -56,12 +59,12 @@ function FinancialTransactionSearch(): JSX.Element {
             type="number"
             value={filters.amount}
             onChange={(e) => handleChange("amount", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500"
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="itemCategory" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="itemCategory" className="font-semibold text-foreground">
             Item Category:
           </label>
           <input
@@ -69,12 +72,12 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.itemCategory}
             onChange={(e) => handleChange("itemCategory", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500"
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="userName" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="userName" className="font-semibold text-foreground">
             User Name:
           </label>
           <input
@@ -82,12 +85,12 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.userName}
             onChange={(e) => handleChange("userName", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500"
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="bookingRef" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="bookingRef" className="font-semibold text-foreground">
             Booking Ref:
           </label>
           <input
@@ -95,12 +98,12 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.bookingRef}
             onChange={(e) => handleChange("bookingRef", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500"
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="shiftId" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="shiftId" className="font-semibold text-foreground">
             Shift ID:
           </label>
           <input
@@ -108,12 +111,12 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.shiftId}
             onChange={(e) => handleChange("shiftId", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500"
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="sourceTxnId" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="sourceTxnId" className="font-semibold text-foreground">
             Source Txn ID:
           </label>
           <input
@@ -121,12 +124,12 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.sourceTxnId}
             onChange={(e) => handleChange("sourceTxnId", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500"
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="reason" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+          <label htmlFor="reason" className="font-semibold text-foreground">
             Reason:
           </label>
           <input
@@ -134,113 +137,113 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.reason}
             onChange={(e) => handleChange("reason", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500"
           />
         </div>
 
-        <button
+        <Button
           onClick={handleSearch}
-          className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors dark:bg-darkSurface dark:text-darkAccentGreen"
+          className="px-4 py-1 bg-info-main text-primary-fg rounded hover:bg-blue-700 transition-colors"
         >
           Search
-        </button>
+        </Button>
       </div>
 
       {errorMessage && (
-        <div className="text-red-600 font-medium">Error: {errorMessage}</div>
+        <div className="text-error-main font-medium">Error: {errorMessage}</div>
       )}
-      {loading && <div className="text-gray-600 dark:text-darkAccentGreen">Loading data ...</div>}
+      {loading && <div className="text-muted-foreground">Loading data ...</div>}
 
       {searchTriggered && !loading && filteredTransactions.length === 0 && (
-        <div className="bg-white border border-gray-400 rounded p-4 text-center italic text-gray-600 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+        <div className="bg-surface border border-border-2 rounded p-4 text-center italic text-muted-foreground">
           No matching results.
         </div>
       )}
 
       {filteredTransactions.length > 0 && (
-        <div className="overflow-x-auto w-full bg-white border border-gray-400 rounded shadow dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
-          <table className="table-fixed w-full border-collapse">
-            <thead className="bg-gray-100 sticky top-0 dark:bg-darkSurface">
-              <tr>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+        <div className="overflow-x-auto w-full bg-surface border border-border-2 rounded shadow">
+          <Table className="table-fixed w-full border-collapse">
+            <TableHeader className="bg-surface-2 sticky top-0">
+              <TableRow>
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start">
                   Amount
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start">
                   Category
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start">
                   User
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start">
                   Booking
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start">
                   Shift
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start">
                   Source Txn
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start">
                   Status
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start">
                   Reason
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start">
                   Description
-                </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                </TableHead>
+                <TableHead className="border-b border-border-2 py-2 px-3 text-start">
                   Timestamp
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {filteredTransactions.map(([id, txn], index) => {
                 const rowBg =
                   index % 2 === 0
-                    ? "bg-white dark:bg-darkSurface"
-                    : "bg-gray-50 dark:bg-darkSurface";
+                    ? "bg-surface"
+                    : "bg-surface-2";
                 return (
-                  <tr key={id} className={rowBg}>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                  <TableRow key={id} className={rowBg}>
+                    <TableCell className="border-b border-border-2 py-2 px-3">
                       {txn.amount}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-border-2 py-2 px-3">
                       {txn.itemCategory}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-border-2 py-2 px-3">
                       {txn.user_name}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-border-2 py-2 px-3">
                       {txn.bookingRef ?? "-"}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-border-2 py-2 px-3">
                       {txn.shiftId ?? "-"}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-border-2 py-2 px-3">
                       {txn.sourceTxnId ?? "-"}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-border-2 py-2 px-3">
                       {txn.voidedAt
                         ? "Void"
                         : txn.correctionKind
                         ? `Correction (${txn.correctionKind})`
                         : "-"}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-border-2 py-2 px-3">
                       {txn.voidReason ?? txn.correctionReason ?? "-"}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-border-2 py-2 px-3">
                       {txn.description}
-                    </td>
-                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                    </TableCell>
+                    <TableCell className="border-b border-border-2 py-2 px-3">
                       {txn.timestamp}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
     </>

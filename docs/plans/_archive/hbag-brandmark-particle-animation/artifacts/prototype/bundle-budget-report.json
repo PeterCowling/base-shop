@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-02-23T12:57:09.897Z",
+  "buildDir": "/Users/petercowling/base-shop/apps/caryina/.next",
+  "baselineMode": "existing",
+  "baselinePath": "/Users/petercowling/base-shop/docs/plans/_archive/hbag-brandmark-particle-animation/artifacts/prototype/bundle-budget-baseline.json",
+  "budgetBytes": 5120,
+  "measuredChunkCount": 8,
+  "currentTotalGzipBytes": 256965,
+  "baselineTotalGzipBytes": 256965,
+  "featureDeltaGzipBytes": 0,
+  "withinBudget": true,
+  "chunks": [
+    {
+      "chunk": "static/chunks/2737b92b-db58ea03a7e3c805.js",
+      "gzipBytes": 62316
+    },
+    {
+      "chunk": "static/chunks/403-4c45c296a35ced3c.js",
+      "gzipBytes": 3660
+    },
+    {
+      "chunk": "static/chunks/508-3938ca9853248be7.js",
+      "gzipBytes": 51498
+    },
+    {
+      "chunk": "static/chunks/framework-ea9b7102a54c6b3b.js",
+      "gzipBytes": 59731
+    },
+    {
+      "chunk": "static/chunks/main-8c69dcd13f48eb8a.js",
+      "gzipBytes": 38385
+    },
+    {
+      "chunk": "static/chunks/main-app-64bc1c884892a01f.js",
+      "gzipBytes": 222
+    },
+    {
+      "chunk": "static/chunks/polyfills-42372ed130431b0a.js",
+      "gzipBytes": 39520
+    },
+    {
+      "chunk": "static/chunks/webpack-7127221c9eaf2148.js",
+      "gzipBytes": 1633
+    }
+  ]
+}

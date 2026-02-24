@@ -28,7 +28,7 @@ const SafeTableSection: React.FC<SafeTableSectionProps> = ({
   <section>
     <h3 className="text-xl font-semibold mb-2">{title}</h3>
     {rows.length === 0 ? (
-      <p className="italic text-sm text-gray-600 dark:text-darkAccentGreen">
+      <p className="italic text-sm text-muted-foreground dark:text-darkAccentGreen">
         {emptyMessage}
       </p>
     ) : (

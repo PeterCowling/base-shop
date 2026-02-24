@@ -1,7 +1,5 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- XA-0001 [ttl=2026-12-31] filesystem-backed access store pending security/i18n overhaul */
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
-import path from "node:path";
 
 import { normalizeInviteCode, resolveInviteHashSecret } from "./stealth";
 
@@ -50,13 +48,6 @@ const REQUEST_LIMIT = 500;
 const INVITE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const INVITE_LENGTH = 8;
 
-function resolveStorePath() {
-  return (
-    process.env.XA_ACCESS_STORE_PATH ??
-    path.resolve(process.cwd(), "data/access/access-store.json")
-  );
-}
-
 function ensureStoreShape(data: Partial<AccessStore> | null): AccessStore {
   return {
     invites: Array.isArray(data?.invites) ? data?.invites ?? [] : [],
@@ -73,7 +64,7 @@ function getMemoryStore(): AccessStore {
 
 async function readStoreFile(): Promise<AccessStore | null> {
   try {
-    const data = await fs.readFile(resolveStorePath(), "utf-8");
+    const data = await fs.readFile("data/access/access-store.json", "utf-8");
     return ensureStoreShape(JSON.parse(data) as Partial<AccessStore>);
   } catch (error) {
     const err = error as NodeJS.ErrnoException;
@@ -84,12 +75,10 @@ async function readStoreFile(): Promise<AccessStore | null> {
 
 async function writeStoreFile(store: AccessStore): Promise<boolean> {
   try {
-    const storePath = resolveStorePath();
-    await fs.mkdir(path.dirname(storePath), { recursive: true });
+    await fs.mkdir("data/access", { recursive: true });
     const payload = JSON.stringify(store, null, 2);
-    const tempPath = `${storePath}.tmp`;
-    await fs.writeFile(tempPath, payload, "utf-8");
-    await fs.rename(tempPath, storePath);
+    await fs.writeFile("data/access/access-store.json.tmp", payload, "utf-8");
+    await fs.rename("data/access/access-store.json.tmp", "data/access/access-store.json");
     return true;
   } catch {
     return false;

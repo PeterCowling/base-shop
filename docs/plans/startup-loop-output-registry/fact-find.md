@@ -80,7 +80,7 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
 1. **Genuine outputs only**: research, plans, baselines, forecasts, scorecards,
    decision logs, briefs, feasibility studies, signal reviews.
 2. **No prompt/template files**: files whose primary purpose is to feed an AI
-   or human process (e.g. `naming-research-prompt.md`, `*-prompt.user.md`).
+   or human process (e.g. `candidate-names-prompt.md`, `*-prompt.user.md`).
 3. **Pointer-first deduplication**: where a `latest.user.md` pointer exists for
    market-research or site-upgrades, show only the pointer — not the dated
    source it references.
@@ -108,7 +108,7 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
 | S0 | Intake Packet | `docs/business-os/startup-baselines/HEAD-intake-packet.user.md` | Active | Business context, assumptions, and constraints |
 | S0 | Forecast Seed | `docs/business-os/startup-baselines/HEAD-forecast-seed.user.md` | Draft | Pre-loop revenue hypothesis |
 | S1 | Market Intelligence | `docs/business-os/market-research/HEAD/latest.user.md` | Active | Pointer → 2026-02-12 research report |
-| S1 | Brand Dossier | `docs/business-os/strategy/HEAD/brand-dossier.user.md` | Draft | Visual + voice identity |
+| S1 | Brand Dossier | `docs/business-os/strategy/HEAD/brand-identity.user.md` | Draft | Visual + voice identity |
 | S3 | 90-Day Forecast v2 | `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md` | Draft | P10/P50/P90 scenario model (v1 superseded) |
 | S5 | Prioritization Scorecard | `docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md` | Active | Go-item ranking |
 | S5B | Strategy Plan | `docs/business-os/strategy/HEAD/plan.user.md` | Active | Canonical strategy wrapper |
@@ -120,7 +120,7 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
 **Excluded from HEAD (with reason):**
 - `headband-90-day-launch-forecast-v1.user.md` — superseded by v2
 - `headband-90-day-launch-forecast-v1-exec-summary.user.md`, `headband-90-day-launch-forecast-v2-exec-summary.user.md` — derivative exec summaries
-- `naming-research-prompt.md` — prompt/input file, not an output
+- `candidate-names-prompt.md` — prompt/input file, not an output
 - `index.user.md` — navigation index
 
 ---
@@ -132,13 +132,13 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
 | S0 | Intake Packet | `docs/business-os/startup-baselines/PET-intake-packet.user.md` | Active | Business context and constraints |
 | S0 | Forecast Seed | `docs/business-os/startup-baselines/PET-forecast-seed.user.md` | Draft | Pre-loop revenue hypothesis |
 | S1 | Market Intelligence | `docs/business-os/market-research/PET/latest.user.md` | Active | Pointer → current research report |
-| S1 | Brand Dossier | `docs/business-os/strategy/PET/brand-dossier.user.md` | Draft | Visual + voice identity |
+| S1 | Brand Dossier | `docs/business-os/strategy/PET/brand-identity.user.md` | Draft | Visual + voice identity |
 | S2B | Offer Design | `docs/business-os/startup-baselines/PET-offer.md` | Hypothesis | ICP, positioning, pricing (€80), objection map; 6 sections complete |
 | S3 | 90-Day Forecast v2 | `docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md` | Draft | P10/P50/P90 scenario model |
 | S5 | Prioritization Scorecard | `docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.md` | Active | Go-item ranking |
 | S5B | Strategy Plan | `docs/business-os/strategy/PET/plan.user.md` | Active | Canonical strategy wrapper |
 | S6B | Site Upgrade Brief | `docs/business-os/site-upgrades/PET/latest.user.md` | Active | Pointer → 2026-02-12 upgrade brief |
-| S6B | Naming Shortlist | `docs/business-os/strategy/PET/2026-02-18-naming-shortlist.user.md` | Awaiting-Decision | Recommends "Vellara" — pending operator decision |
+| S6B | Naming Shortlist | `docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md` | Awaiting-Decision | Recommends "Vellara" — pending operator decision |
 | S9B | Launch Readiness Backlog | `docs/business-os/strategy/PET/launch-readiness-action-backlog.user.md` | Active | Pre-launch action items |
 | S10 | Week 2 Gate Dry-Run | `docs/business-os/strategy/PET/2026-02-11-week2-gate-dry-run.user.md` | Active | Gate assessment record |
 | S10 | Weekly K/P/C/S Decision | `docs/business-os/strategy/PET/2026-02-12-weekly-kpcs-decision.user.md` | Active | First weekly decision memo |
@@ -157,7 +157,7 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
 | S0 | Intake Packet | `docs/business-os/startup-baselines/BRIK-intake-packet.user.md` | Active | Business context and constraints |
 | S0 | Forecast Seed | `docs/business-os/startup-baselines/BRIK-forecast-seed.user.md` | Active | Pre-loop revenue hypothesis (Active + Integrated) |
 | S1 | Market Intelligence | `docs/business-os/market-research/BRIK/latest.user.md` | Active | Pointer → 2026-02-15 research report |
-| S1 | Brand Dossier | `docs/business-os/strategy/BRIK/brand-dossier.user.md` | Active | Visual + voice identity (Active, not Draft) |
+| S1 | Brand Dossier | `docs/business-os/strategy/BRIK/brand-identity.user.md` | Active | Visual + voice identity (Active, not Draft) |
 | S1B | Historical Performance Baseline | `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md` | Active | Historical occupancy + revenue data |
 | S1B | Octorate Operational Data Baseline | `docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md` | Active | PMS data snapshot |
 | S2A | GA4 + Search Console Setup Note | `docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md` | Active | Measurement stack configuration record |

@@ -77,6 +77,8 @@ describe("Combobox", () => {
     await user.click(trigger);
 
     const bananaOption = screen.getByRole("option", { name: "Banana" });
+    expect(bananaOption).toHaveClass("min-w-0");
+    expect(bananaOption.querySelector("span.min-w-0.break-words")).not.toBeNull();
     await user.click(bananaOption);
 
     expect(onValueChange).toHaveBeenCalledWith("banana");

@@ -2,6 +2,8 @@ import { memo, useState } from "react";
 import { faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { Button } from "@acme/design-system/atoms";
+
 import BookingNotesModal from "./BookingNotesModal";
 
 interface Props {
@@ -13,14 +15,14 @@ function BookingNotesButton({ bookingRef }: Props) {
 
   return (
     <div className="relative flex items-center dark:text-darkAccentGreen">
-      <button
+      <Button
         type="button"
         onClick={() => setOpen(true)}
-        className="min-h-[55px] px-4 bg-primary-main text-white rounded-md hover:bg-primary-dark transition-colors dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+        className="min-h-55px px-4 bg-primary-main text-primary-fg rounded-md hover:bg-primary-dark transition-colors dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
         title="View or add notes"
       >
         <FontAwesomeIcon icon={faNoteSticky} />
-      </button>
+      </Button>
       {open && (
         <BookingNotesModal
           bookingRef={bookingRef}

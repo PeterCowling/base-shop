@@ -81,6 +81,46 @@ function tryTranslate(
   }
 }
 
+function resolveLocalFaqTitle(
+  tGuides: TFunction,
+  sentinelBase: string,
+  sentinels: readonly string[],
+): { title?: string; explicitBlank: boolean } {
+  try {
+    const rawLocal = tGuides(sentinelBase) as unknown;
+    const explicitBlank = typeof rawLocal === "string" && rawLocal.trim().length === 0;
+    const title = pickMeaningful(rawLocal, sentinels);
+    return { title, explicitBlank };
+  } catch {
+    return { explicitBlank: false };
+  }
+}
+
+function resolveFallbackFaqTitle(
+  sentinelBase: string,
+  sentinels: readonly string[],
+  translators: TranslatorLike[],
+): string | undefined {
+  for (const translator of translators) {
+    const translated = tryTranslate(translator, sentinelBase, sentinels);
+    if (translated) return translated;
+  }
+  return undefined;
+}
+
+function resolveFaqTitleFromAppEnglish(
+  sentinelBase: string,
+  sentinels: readonly string[],
+): string | undefined {
+  try {
+    const getEn = i18nApp?.getFixedT?.("en", "guides");
+    if (typeof getEn !== "function") return undefined;
+    return pickMeaningful(getEn(sentinelBase) as unknown, sentinels);
+  } catch {
+    return undefined;
+  }
+}
+
 export function resolveFaqTitle(params: ResolveFaqTitleParams): ResolveFaqTitleResult {
   const {
     guideKey,
@@ -95,39 +135,23 @@ export function resolveFaqTitle(params: ResolveFaqTitleParams): ResolveFaqTitleR
   const sentinelBase = `content.${guideKey}.faqsTitle` as const;
   const sentinels = [sentinelBase, `${guideKey}.faqsTitle`, String(guideKey)];
   const labelSentinels = ["labels.faqsHeading"] as const;
-  let explicitBlank = false;
-
-  try {
-    const rawLocal = tGuides(sentinelBase) as unknown;
-    if (typeof rawLocal === "string" && rawLocal.trim().length === 0) {
-      explicitBlank = true;
-    }
-    const resolvedLocal = pickMeaningful(rawLocal, sentinels);
-    if (resolvedLocal) {
-      return { title: resolvedLocal, suppressed: false, explicitBlank };
-    }
-  } catch {
-    /* noop */
+  const local = resolveLocalFaqTitle(tGuides, sentinelBase, sentinels);
+  if (local.title) {
+    return { title: local.title, suppressed: false, explicitBlank: local.explicitBlank };
   }
 
-  const viaFallback =
-    tryTranslate(fallbackTranslator, sentinelBase, sentinels) ??
-    tryTranslate(translateGuides, sentinelBase, sentinels) ??
-    tryTranslate(translateGuidesEn, sentinelBase, sentinels);
+  const viaFallback = resolveFallbackFaqTitle(sentinelBase, sentinels, [
+    fallbackTranslator,
+    translateGuides,
+    translateGuidesEn,
+  ]);
   if (viaFallback) {
-    return { title: viaFallback, suppressed: false, explicitBlank };
+    return { title: viaFallback, suppressed: false, explicitBlank: local.explicitBlank };
   }
 
-  try {
-    const getEn = i18nApp?.getFixedT?.("en", "guides");
-    if (typeof getEn === "function") {
-      const resolvedEn = pickMeaningful(getEn(sentinelBase) as unknown, sentinels);
-      if (resolvedEn) {
-        return { title: resolvedEn, suppressed: false, explicitBlank };
-      }
-    }
-  } catch {
-    /* noop */
+  const resolvedEn = resolveFaqTitleFromAppEnglish(sentinelBase, sentinels);
+  if (resolvedEn) {
+    return { title: resolvedEn, suppressed: false, explicitBlank: local.explicitBlank };
   }
 
   const labelFallback =
@@ -136,14 +160,14 @@ export function resolveFaqTitle(params: ResolveFaqTitleParams): ResolveFaqTitleR
     tryTranslate(translateGuides, "labels.faqsHeading", labelSentinels) ??
     tryTranslate(translateGuidesEn, "labels.faqsHeading", labelSentinels);
   if (labelFallback) {
-    return { title: labelFallback, suppressed: false, explicitBlank };
+    return { title: labelFallback, suppressed: false, explicitBlank: local.explicitBlank };
   }
 
   if (fallbackToGeneric) {
-    return { title: "FAQs", suppressed: false, explicitBlank };
+    return { title: "FAQs", suppressed: false, explicitBlank: local.explicitBlank };
   }
 
-  return { suppressed: respectBlank && explicitBlank, explicitBlank };
+  return { suppressed: respectBlank && local.explicitBlank, explicitBlank: local.explicitBlank };
 }
 
 export type ComputeTocParams = {

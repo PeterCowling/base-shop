@@ -167,7 +167,7 @@ function RoomsSection({
   return (
     <section id="rooms" className={sectionClasses}>
       <Section as="div" padding="none" width="full" className="mx-auto max-w-7xl px-4">
-        <header className="mb-8 text-center sm:text-end">
+        <header className="mb-8 text-center sm:text-start">
           <h2 className="text-xl font-medium tracking-wide text-brand-primary dark:text-brand-secondary">
             {resolveTranslatedCopy(t("rooms.title", { defaultValue: "Rooms" }), "Rooms")}
           </h2>

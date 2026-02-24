@@ -315,74 +315,28 @@ export async function handleThemeTool(name: string, args: unknown) {
         const { readShop } = await import(
           "@acme/platform-core/repositories/shops.server"
         );
+        const { validateThemeTokens } = await import(
+          "@acme/platform-core/themeValidation"
+        );
 
         const shopData = await readShop(shop);
         const tokens = (shopData.themeTokens || {}) as Record<string, string>;
-
-        const issues: Array<{ type: string; message: string; token?: string }> = [];
-        const warnings: Array<{ type: string; message: string; token?: string }> = [];
-
-        // Check for common issues
-        const colorTokens = Object.entries(tokens).filter(
-          ([key]) =>
-            key.toLowerCase().includes("color") ||
-            key.toLowerCase().includes("background")
-        );
-
-        // Check for invalid hex colors
-        for (const [key, value] of colorTokens) {
-          if (value.startsWith("#")) {
-            if (!/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$/.test(value)) {
-              issues.push({
-                type: "invalid_color",
-                message: `Invalid hex color format: ${value}`,
-                token: key,
-              });
-            }
-          }
-        }
-
-        // Check for missing common tokens
-        const expectedTokens = [
-          "primaryColor",
-          "backgroundColor",
-          "textColor",
-        ];
-        for (const expected of expectedTokens) {
-          const found = Object.keys(tokens).some(
-            (k) => k.toLowerCase() === expected.toLowerCase()
-          );
-          if (!found) {
-            warnings.push({
-              type: "missing_common_token",
-              message: `Common token '${expected}' not found`,
-              token: expected,
-            });
-          }
-        }
-
-        // Check for empty values
-        for (const [key, value] of Object.entries(tokens)) {
-          if (!value || value.trim() === "") {
-            issues.push({
-              type: "empty_value",
-              message: "Token has empty value",
-              token: key,
-            });
-          }
-        }
-
-        const isValid = issues.length === 0;
+        const validation = validateThemeTokens(tokens, {
+          allowedTokenKeys: Object.keys((shopData.themeDefaults || {}) as Record<string, string>),
+        });
 
         return jsonResult({
           shop,
-          valid: isValid,
+          valid: validation.valid,
           tokenCount: Object.keys(tokens).length,
-          issues,
-          warnings,
+          issues: validation.errors,
+          warnings: validation.warnings,
           summary: {
-            issueCount: issues.length,
-            warningCount: warnings.length,
+            issueCount: validation.errors.length,
+            warningCount: validation.warnings.length,
+            lowContrastIssueCount: validation.issues.filter((issue) => issue.type === "low_contrast")
+              .length,
+            contrastChecksPerformed: validation.contrastChecksPerformed,
           },
         });
       }

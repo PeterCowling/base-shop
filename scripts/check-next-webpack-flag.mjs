@@ -25,11 +25,30 @@ const APP_COMMAND_POLICY_MATRIX = Object.freeze({
     dev: RULE_ALLOW_ANY,
     build: RULE_ALLOW_ANY,
   }),
+  // TASK-04 (turbopack-full-migration): Phase P1 wave exceptions.
+  // Keep fail-closed default; open only active migration-wave apps.
+  caryina: Object.freeze({
+    dev: RULE_ALLOW_ANY,
+    build: RULE_ALLOW_ANY,
+  }),
+  prime: Object.freeze({
+    dev: RULE_ALLOW_ANY,
+    build: RULE_ALLOW_ANY,
+  }),
+  reception: Object.freeze({
+    dev: RULE_ALLOW_ANY,
+    build: RULE_ALLOW_ANY,
+  }),
+  "xa-b": Object.freeze({
+    dev: RULE_ALLOW_ANY,
+    build: RULE_ALLOW_ANY,
+  }),
 });
 
 const WORKFLOW_APP_MATRIX = Object.freeze({
   "brikette.yml": "brikette",
   "brikette.yaml": "brikette",
+  "prime.yml": "prime",
 });
 
 const USAGE = `Usage:

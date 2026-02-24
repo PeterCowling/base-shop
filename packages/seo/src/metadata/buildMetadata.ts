@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import type { SeoSiteConfig } from "../config/index.js";
 
 import { buildAlternates } from "./buildAlternates.js";
-import { ensureTrailingSlash } from "./ensureTrailingSlash.js";
+import { ensureNoTrailingSlash } from "./ensureNoTrailingSlash.js";
 
 export interface PageSeo {
   title: string;
@@ -46,7 +46,7 @@ export function buildMetadata(config: SeoSiteConfig, pageSeo: PageSeo): Metadata
     isPublished = true,
   } = pageSeo;
 
-  const url = ensureTrailingSlash(`${siteUrl}${path}`);
+  const normalizedSiteUrl = ensureNoTrailingSlash(siteUrl);
 
   // Build hreflang alternates
   const alternates = buildAlternates(
@@ -64,7 +64,7 @@ export function buildMetadata(config: SeoSiteConfig, pageSeo: PageSeo): Metadata
   const metadata: Metadata = {
     title,
     description,
-    metadataBase: new URL(ensureTrailingSlash(siteUrl)),
+    metadataBase: new URL(`${normalizedSiteUrl}/`),
     alternates: {
       canonical: alternates.canonical,
       languages: Object.keys(alternates.languages).length > 0
@@ -75,7 +75,7 @@ export function buildMetadata(config: SeoSiteConfig, pageSeo: PageSeo): Metadata
       siteName,
       title,
       description,
-      url,
+      url: alternates.canonical,
       type: ogType,
       ...(locale ? { locale } : {}),
       ...(supportedLocales && locale

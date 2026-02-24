@@ -18,16 +18,27 @@ export type { FallbackTranslator, StructuredFallback, StructuredSection } from "
 /**
  * Pick the first viable fallback translator and return structured fallback content.
  */
-export function buildStructuredFallback(
-  guideKey: GuideKey,
-  lang: string,
-  hookI18n: I18nLike | undefined,
-  appI18n: I18nLike | undefined,
-  hasLocalizedContent: boolean,
-  suppressEnglishWhenUnlocalized: boolean = false,
+type BuildStructuredFallbackParams = {
+  guideKey: GuideKey;
+  lang: string;
+  hookI18n: I18nLike | undefined;
+  appI18n: I18nLike | undefined;
+  hasLocalizedContent: boolean;
+  suppressEnglishWhenUnlocalized?: boolean;
   /** Optional guides translator for the active locale to probe alternate keys. */
-  localGuidesTranslator?: FallbackTranslator,
-): StructuredFallback | null {
+  localGuidesTranslator?: FallbackTranslator;
+};
+
+export function buildStructuredFallback(params: BuildStructuredFallbackParams): StructuredFallback | null {
+  const {
+    guideKey,
+    lang,
+    hookI18n,
+    appI18n,
+    hasLocalizedContent,
+    suppressEnglishWhenUnlocalized = false,
+    localGuidesTranslator,
+  } = params;
   if (hasLocalizedContent) return null;
   // Allow routes to suppress synthesizing structured fallbacks for English.
   // This keeps EN pages that opt for manual handling from importing EN

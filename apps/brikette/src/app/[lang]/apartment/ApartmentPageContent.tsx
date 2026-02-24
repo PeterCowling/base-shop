@@ -143,7 +143,7 @@ function ApartmentPageContent({ lang }: Props) {
               <Link
                 href={`/${lang}/apartment/book/`}
                 onClick={() => trackApartmentEvent("click_check_availability", { source: "hub" })}
-                className="inline-flex w-full min-h-11 items-center justify-center rounded-lg bg-brand-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-brand-primary/90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2 sm:w-64"
+                className="inline-flex w-full min-h-11 items-center justify-center rounded-lg bg-brand-primary px-8 py-3 text-base font-semibold text-brand-on-primary shadow-sm transition-colors hover:bg-brand-primary/90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2 sm:w-64"
               >
                 {t("checkAvailability")}
               </Link>

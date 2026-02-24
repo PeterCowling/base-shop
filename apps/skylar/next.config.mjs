@@ -12,7 +12,16 @@ const nextConfig = {
   typescript: {
     tsconfigPath: "./tsconfig.next.json",
   },
+  turbopack: {
+    ...(sharedConfig.turbopack ?? {}),
+    resolveAlias: {
+      ...(sharedConfig.turbopack?.resolveAlias ?? {}),
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
   webpack(config, options) {
+    // Legacy webpack path retained as an explicit exception while scripts still
+    // execute via `next --webpack`. Turbopack alias parity is configured above.
     if (typeof sharedConfig.webpack === "function") {
       config = sharedConfig.webpack(config, options);
     }

@@ -2,6 +2,11 @@
 
 import * as React from "react";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 type TagColor =
@@ -120,6 +125,10 @@ export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   tone?: "solid" | "soft";
   /** Size scale */
   size?: "sm" | "md" | "lg";
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
   /** Back-compat alias for color: 'destructive' maps to 'danger' */
   variant?: "default" | "success" | "warning" | "destructive";
 }
@@ -132,6 +141,8 @@ export const Tag = (
     variant,
     tone,
     size = "md",
+    shape,
+    radius,
     children,
     ...props
   }: TagProps & {
@@ -140,6 +151,11 @@ export const Tag = (
 ) => {
   const resolvedColor = resolveColor(variant, color);
   const resolvedTone = resolveTone(tone, color, variant);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "full",
+  });
 
   return (
     <span
@@ -150,7 +166,8 @@ export const Tag = (
       data-token-fg={FG_TOKEN[resolvedColor]}
       className={cn(
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-        "inline-flex items-center rounded-full font-medium",
+        "inline-flex items-center font-medium",
+        shapeRadiusClass,
         SIZE_CLASSES[size],
         (resolvedTone === "solid" ? SOLID_BG : SOFT_BG)[resolvedColor],
         textClass(resolvedColor, resolvedTone),

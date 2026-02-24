@@ -87,6 +87,10 @@ export { Section, type SectionProps } from "./Section";
 export { SelectField } from "./SelectField";
 export { Skeleton } from "./Skeleton";
 export { StatCard } from "./StatCard";
+export {
+  StatusIndicator,
+  type StatusIndicatorProps,
+} from "./StatusIndicator";
 export { StockStatus } from "./StockStatus";
 export { Switch } from "./Switch";
 export { Tag, type TagProps } from "./Tag";

@@ -1,6 +1,6 @@
 import { type ChangeEvent, type FormEvent,useState } from "react";
 import { shopSchema } from "@cms/actions/schemas";
-import { updateShop } from "@cms/actions/shops.server";
+import { updateShop } from "@cms/actions/shops-theme.server";
 
 import type { Provider } from "@acme/configurator/providers";
 import en from "@acme/i18n/en.json";

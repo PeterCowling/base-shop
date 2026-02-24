@@ -8,6 +8,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { ReceptionInput } from "@acme/ui/operations";
+
 import { KeycardPayType } from "../../../types/keycards";
 
 /**
@@ -80,11 +82,11 @@ const RadioButton = memo(function RadioButton({
   const isActive = currentValue === value;
   return (
     <label
-      className={`flex items-center gap-2 p-2 rounded hover:bg-gray-100 dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen ${
-        isActive ? "bg-gray-200 font-semibold dark:bg-darkSurface" : ""
+      className={`flex items-center gap-2 p-2 rounded hover:bg-surface-2 dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen ${
+        isActive ? "bg-surface-3 font-semibold dark:bg-darkSurface" : ""
       }`}
     >
-      <input
+      <ReceptionInput
         type="radio"
         name="payType"
         value={value}

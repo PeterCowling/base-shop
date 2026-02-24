@@ -7,6 +7,7 @@ Updated: 2026-02-12
 Last-reviewed: 2026-02-12
 Owner: Pete
 Source-Plan: docs/business-os/strategy/BRIK/plan.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # BRIK Intake Packet

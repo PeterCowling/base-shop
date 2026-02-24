@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
+<div>
+  <div
+    class="min-h-screen flex flex-col p-5 dark:bg-darkBg dark:text-darkAccentGreen"
+  >
+    <div
+      class="grid grid-cols-3 items-center mb-6"
+    >
+      <div />
+      <h1
+        class="text-5xl font-heading text-primary-main text-center"
+      >
+        CHECKINS
+      </h1>
+      <div
+        class="flex justify-end pr-5 space-x-2"
+      >
+        <button
+          type="button"
+        >
+          Archive
+        </button>
+      </div>
+    </div>
+    <div
+      class="flex-grow bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface"
+    >
+      <div
+        class="flex items-center justify-between"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            data-cy="checkin-date-selector"
+          >
+            2025-01-03
+          </div>
+          <label
+            class="flex items-center gap-2 text-sm cursor-pointer"
+          >
+            <input
+              class="w-4 h-4 cursor-pointer"
+              type="checkbox"
+            />
+            <span>
+              Show cancelled
+            </span>
+          </label>
+        </div>
+        <button
+          class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm hover:bg-primary/90 px-3 py-2 bg-success-main text-primary-fg rounded dark:bg-darkAccentGreen dark:text-darkBg"
+          data-token="--color-primary"
+          type="button"
+        >
+          Rooms Ready
+        </button>
+      </div>
+      <div
+        class="overflow-x-auto"
+      >
+        <div
+          class="w-full overflow-x-auto"
+        >
+          <table
+            class="text-foreground text-left w-full table-auto border border-border-2 text-sm"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                >
+                  Guest
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class=""
+            >
+              <tr
+                data-cy="booking-row-O1"
+              >
+                <td>
+                  John
+                </td>
+                <td>
+                  <button
+                    type="button"
+                  >
+                    row-action
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

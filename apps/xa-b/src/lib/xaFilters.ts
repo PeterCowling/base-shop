@@ -1,7 +1,7 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy filters data pending i18n overhaul */
 import type { XaProduct } from "./demoData";
-import type { XaCategory } from "./xaTypes";
 import { formatLabel, getDesignerName } from "./xaCatalog";
+import { xaI18n } from "./xaI18n";
+import type { XaCategory } from "./xaTypes";
 
 export type SortKey =
   | "newest"
@@ -124,12 +124,12 @@ const filterLabels: Record<FilterKey, string> = {
   fit: "Fit",
   length: "Length",
   neckline: "Neckline",
-  sleeve: "Sleeve length",
+  sleeve: xaI18n.t("xaB.src.lib.xafilters.l126c11"),
   pattern: "Pattern",
   occasion: "Occasion",
   "size-class": "Size class",
   "strap-style": "Strap style",
-  "hardware-color": "Hardware color",
+  "hardware-color": xaI18n.t("xaB.src.lib.xafilters.l131c21"),
   "closure-type": "Closure type",
   fits: "Fits",
   metal: "Metal",

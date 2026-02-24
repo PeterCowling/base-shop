@@ -10,8 +10,10 @@ import { join } from "path";
 import { z } from "zod";
 
 import {
+  archiveEvents,
   countSignalEvents,
   joinEvents,
+  readSignalEvents,
   type RefinementEvent,
   type SelectionEvent,
 } from "../utils/signal-events.js";
@@ -104,36 +106,6 @@ function computePriors(
   return priors;
 }
 
-async function readSignalEvents(): Promise<{
-  selectionEvents: SelectionEvent[];
-  refinementEvents: RefinementEvent[];
-}> {
-  let raw: string;
-  try {
-    raw = await readFile(SIGNAL_EVENTS_PATH, "utf-8");
-  } catch {
-    return { selectionEvents: [], refinementEvents: [] };
-  }
-
-  const lines = raw.split("\n").filter(Boolean);
-  const selectionEvents: SelectionEvent[] = [];
-  const refinementEvents: RefinementEvent[] = [];
-
-  for (const line of lines) {
-    try {
-      const event = JSON.parse(line) as { event: string };
-      if (event.event === "selection") {
-        selectionEvents.push(event as SelectionEvent);
-      } else if (event.event === "refinement") {
-        refinementEvents.push(event as RefinementEvent);
-      }
-    } catch {
-      // Skip malformed lines.
-    }
-  }
-
-  return { selectionEvents, refinementEvents };
-}
 
 async function writePriorsAtomic(
   priors: Record<string, Record<string, number>>,
@@ -212,7 +184,7 @@ export async function handleDraftRankerCalibrateTool(
   }
 
   // Read raw events.
-  const { selectionEvents, refinementEvents } = await readSignalEvents();
+  const { selectionEvents, refinementEvents } = await readSignalEvents(SIGNAL_EVENTS_PATH);
   const pairs = joinEvents(selectionEvents, refinementEvents);
 
   // Filter to events since last calibration (already counted above — apply same filter).
@@ -238,6 +210,13 @@ export async function handleDraftRankerCalibrateTool(
     0,
   );
 
+  // TASK-08: Archival metadata — populated below if archival runs.
+  let archivalResult: {
+    archived_count: number;
+    retained_count: number;
+    archive_path: string | null;
+  } | null = null;
+
   if (!dry_run) {
     await writePriorsAtomic(priors, calibratedAt);
     // Invalidate the in-process priors cache so rankTemplates() picks up new values.
@@ -249,6 +228,24 @@ export async function handleDraftRankerCalibrateTool(
     } catch {
       // Not critical — cache will refresh on next server restart.
     }
+
+    // TASK-08: Best-effort archival — move calibrated events to archive.
+    // Uses calibratedAt as the cutoff so all events used in this calibration
+    // window are archived. Failures are logged but do not fail calibration.
+    try {
+      const result = await archiveEvents(calibratedAt, SIGNAL_EVENTS_PATH);
+      archivalResult = {
+        archived_count: result.archivedCount,
+        retained_count: result.retainedCount,
+        archive_path: result.archivePath,
+      };
+      if (result.error) {
+        console.warn(`[ranker-calibrate] Archival completed with error: ${result.error}`);
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.warn(`[ranker-calibrate] Archival failed (best-effort): ${msg}`);
+    }
   }
 
   return jsonResult({
@@ -259,6 +256,7 @@ export async function handleDraftRankerCalibrateTool(
     templates_calibrated: templatesCalibrated,
     priors_written: !dry_run,
     priors,
+    ...(archivalResult ? { archival: archivalResult } : {}),
   });
 }
 

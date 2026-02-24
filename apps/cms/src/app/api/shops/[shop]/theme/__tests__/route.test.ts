@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 
 const patchTheme = jest.fn();
 
-jest.mock("@cms/services/shops", () => ({ patchTheme }));
+jest.mock("@cms/services/shops/themeService", () => ({ patchTheme }));
 
 let PATCH: typeof import("../route").PATCH;
 
@@ -32,6 +32,7 @@ describe("PATCH", () => {
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ shop: "s1" });
     expect(patchTheme).toHaveBeenCalledWith("s1", {
+      themeId: undefined,
       themeOverrides: { color: "blue" },
       themeDefaults: {},
     });
@@ -46,6 +47,7 @@ describe("PATCH", () => {
     });
     await PATCH(nullReq, { params: Promise.resolve({ shop: "s1" }) });
     expect(patchTheme).toHaveBeenCalledWith("s1", {
+      themeId: undefined,
       themeOverrides: undefined,
       themeDefaults: undefined,
     });

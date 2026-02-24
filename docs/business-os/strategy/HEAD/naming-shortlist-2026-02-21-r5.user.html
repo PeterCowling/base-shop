@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEAD Naming Shortlist — Round 5 (2026-02-21)</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f12;
+    --surface: #1a1a20;
+    --surface2: #22222b;
+    --border: #2e2e3a;
+    --accent: #6c5ce7;
+    --accent2: #a29bfe;
+    --text: #e8e8f0;
+    --muted: #8888a0;
+    --score25: #00b894;
+    --score24: #55efc4;
+    --score23: #74b9ff;
+    --score22: #a29bfe;
+    --score21: #636380;
+    --t1: #fd79a8;
+    --t2: #fdcb6e;
+    --t3: #6c5ce7;
+    --t4: #00b894;
+    --t5: #e17055;
+    --p-a: #74b9ff;
+    --p-b: #a29bfe;
+    --p-c: #636380;
+    --p-e: #ffeaa7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 24px 64px;
+  }
+  .page { max-width: 1100px; margin: 0 auto; }
+
+  /* Header */
+  .header { margin-bottom: 40px; }
+  .header-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .header-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .meta-pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .meta-pill span { color: var(--text); font-weight: 600; }
+
+  /* Charts row */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .chart-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .chart-wrap { height: 160px; }
+
+  /* Territory filter chips */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.15s;
+    opacity: 0.55;
+  }
+  .chip.active { opacity: 1; border-color: currentColor; }
+  .chip-all { background: var(--surface2); color: var(--text); }
+  .chip-t1 { background: rgba(253,121,168,0.15); color: var(--t1); }
+  .chip-t2 { background: rgba(253,203,110,0.15); color: var(--t2); }
+  .chip-t3 { background: rgba(108,92,231,0.15); color: var(--t3); }
+  .chip-t4 { background: rgba(0,184,148,0.15); color: var(--t4); }
+  .chip-t5 { background: rgba(225,112,85,0.15); color: var(--t5); }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:hover { background: var(--surface2); }
+  tbody tr.hidden { display: none; }
+  td { padding: 14px 12px; vertical-align: middle; }
+
+  .rank-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    width: 36px;
+  }
+  .name-cell { min-width: 130px; }
+  .name-main {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  .name-domain {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .score-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .score-25 { background: rgba(0,184,148,0.2); color: var(--score25); border: 2px solid var(--score25); }
+  .score-24 { background: rgba(85,239,196,0.15); color: var(--score24); border: 2px solid rgba(85,239,196,0.5); }
+  .score-23 { background: rgba(116,185,255,0.15); color: var(--score23); border: 2px solid rgba(116,185,255,0.5); }
+  .score-22 { background: rgba(162,155,254,0.15); color: var(--score22); border: 2px solid rgba(162,155,254,0.5); }
+
+  .sub-scores {
+    display: flex;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+  .sub-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 24px;
+  }
+  .sub-score-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sub-score-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .sub-score-val.v5 { color: var(--score25); }
+  .sub-score-val.v4 { color: var(--score23); }
+  .sub-score-val.v3 { color: var(--muted); }
+
+  .pattern-tag {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    background: var(--surface2);
+    color: var(--muted);
+  }
+  .pat-A { color: var(--p-a); }
+  .pat-B { color: var(--p-b); }
+  .pat-C { color: var(--p-c); }
+  .pat-E { color: var(--p-e); }
+
+  .terr-bar {
+    width: 4px;
+    height: 40px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .t1 { background: var(--t1); }
+  .t2 { background: var(--t2); }
+  .t3 { background: var(--t3); }
+  .t4 { background: var(--t4); }
+  .t5 { background: var(--t5); }
+
+  .terr-name {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .provenance-cell {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    max-width: 200px;
+  }
+
+  /* Key card */
+  .key-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+  .key-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    border-left: 4px solid var(--border);
+  }
+  .key-card.t1 { border-left-color: var(--t1); }
+  .key-card.t2 { border-left-color: var(--t2); }
+  .key-card.t3 { border-left-color: var(--t3); }
+  .key-card.t4 { border-left-color: var(--t4); }
+  .key-card.t5 { border-left-color: var(--t5); }
+  .key-card-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .key-card.t1 .key-card-label { color: var(--t1); }
+  .key-card.t2 .key-card-label { color: var(--t2); }
+  .key-card.t3 .key-card-label { color: var(--t3); }
+  .key-card.t4 .key-card-label { color: var(--t4); }
+  .key-card.t5 .key-card-label { color: var(--t5); }
+  .key-card-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .key-card-anchor {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  .section-header {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 700px) {
+    .charts-row { grid-template-columns: 1fr; }
+    .sub-scores { gap: 4px; }
+    h1 { font-size: 22px; }
+    .name-main { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-tag">Business: HEAD &mdash; Naming Pipeline &mdash; Round 5</div>
+    <h1>Naming Shortlist — Round 5<br><span style="color:var(--muted);font-weight:400;font-size:20px">2026-02-21</span></h1>
+    <div class="header-meta">
+      <div class="meta-pill">Candidates generated <span>250</span></div>
+      <div class="meta-pill">Scored (I ≥ 4) <span>180</span></div>
+      <div class="meta-pill">.com available <span>38</span></div>
+      <div class="meta-pill">Presented <span>Top 20</span></div>
+      <div class="meta-pill">Domain check <span>RDAP Verisign</span></div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-label">Score distribution (38 available names)</div>
+      <div class="chart-wrap"><canvas id="scoreChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label">Territory distribution (top 20)</div>
+      <div class="chart-wrap"><canvas id="terrChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Territory legend -->
+  <div class="section-header">Territories — situation anchors</div>
+  <div class="key-grid">
+    <div class="key-card t1">
+      <div class="key-card-label">T1 — Unwatched Secure</div>
+      <div class="key-card-name">Child runs, parent doesn't tense</div>
+      <div class="key-card-anchor">States: steady, settled, held, certain</div>
+    </div>
+    <div class="key-card t2">
+      <div class="key-card-label">T2 — Handover-Ready Kit</div>
+      <div class="key-card-name">Into the bag at 7:58am, still there at 3pm</div>
+      <div class="key-card-anchor">Objects: kit, set, pack, found, complete</div>
+    </div>
+    <div class="key-card t3">
+      <div class="key-card-label">T3 — Part of the Outfit</div>
+      <div class="key-card-name">Headband on after shirt, before shoes</div>
+      <div class="key-card-anchor">Routines: wear, dressed, daily, habit</div>
+    </div>
+    <div class="key-card t4">
+      <div class="key-card-label">T4 — Free to Move</div>
+      <div class="key-card-name">PE lesson → forward rolls → tag → still on</div>
+      <div class="key-card-anchor">Motion: go, roam, move, through, light</div>
+    </div>
+    <div class="key-card t5">
+      <div class="key-card-label">T5 — Signature Kit</div>
+      <div class="key-card-name">Child picks patch, presses it on, looks in mirror</div>
+      <div class="key-card-anchor">Possession: own, chosen, mark, sign, badge</div>
+    </div>
+  </div>
+
+  <!-- Filter chips -->
+  <div class="section-header">Filter by territory</div>
+  <div class="filter-row">
+    <div class="chip chip-all active" onclick="filter('all')">All territories</div>
+    <div class="chip chip-t1" onclick="filter('t1')">Unwatched Secure</div>
+    <div class="chip chip-t2" onclick="filter('t2')">Handover-Ready Kit</div>
+    <div class="chip chip-t3" onclick="filter('t3')">Part of the Outfit</div>
+    <div class="chip chip-t4" onclick="filter('t4')">Free to Move</div>
+    <div class="chip chip-t5" onclick="filter('t5')">Signature Kit</div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Territory</th>
+          <th>Name</th>
+          <th>Score</th>
+          <th>D&nbsp;W&nbsp;P&nbsp;E&nbsp;I</th>
+          <th>Pat</th>
+          <th>Provenance</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr class="row-t1" data-terr="t1">
+          <td class="rank-num">1</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t1"></div><div class="terr-name">Unwatched<br>Secure</div></div></td>
+          <td class="name-cell"><div class="name-main">Fermova</div><div class="name-domain">fermova.com</div></td>
+          <td><div class="score-badge score-25">25</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">ferm+ova</td>
+        </tr>
+        <tr class="row-t1" data-terr="t1">
+          <td class="rank-num">2</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t1"></div><div class="terr-name">Unwatched<br>Secure</div></div></td>
+          <td class="name-cell"><div class="name-main">Settova</div><div class="name-domain">settova.com</div></td>
+          <td><div class="score-badge score-25">25</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-B">B</div></td>
+          <td class="provenance-cell">settled + -ova</td>
+        </tr>
+        <tr class="row-t4" data-terr="t4">
+          <td class="rank-num">3</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t4"></div><div class="terr-name">Free to<br>Move</div></div></td>
+          <td class="name-cell"><div class="name-main">Snellova</div><div class="name-domain">snellova.com</div></td>
+          <td><div class="score-badge score-25">25</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">snell+ova</td>
+        </tr>
+        <tr class="row-t1" data-terr="t1">
+          <td class="rank-num">4</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t1"></div><div class="terr-name">Unwatched<br>Secure</div></div></td>
+          <td class="name-cell"><div class="name-main">Sureiva</div><div class="name-domain">sureiva.com</div></td>
+          <td><div class="score-badge score-25">25</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-B">B</div></td>
+          <td class="provenance-cell">sure + -iva</td>
+        </tr>
+        <tr class="row-t5" data-terr="t5">
+          <td class="rank-num">5</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t5"></div><div class="terr-name">Signature<br>Kit</div></div></td>
+          <td class="name-cell"><div class="name-main">Badgiva</div><div class="name-domain">badgiva.com</div></td>
+          <td><div class="score-badge score-25">25</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-B">B</div></td>
+          <td class="provenance-cell">badge + -iva</td>
+        </tr>
+        <tr class="row-t2" data-terr="t2">
+          <td class="rank-num">6</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t2"></div><div class="terr-name">Handover-<br>Ready Kit</div></div></td>
+          <td class="name-cell"><div class="name-main">Allestita</div><div class="name-domain">allestita.com</div></td>
+          <td><div class="score-badge score-25">25</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-E">E</div></td>
+          <td class="provenance-cell">IT: rigged, set up, ready</td>
+        </tr>
+        <tr class="row-t5" data-terr="t5">
+          <td class="rank-num">7</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t5"></div><div class="terr-name">Signature<br>Kit</div></div></td>
+          <td class="name-cell"><div class="name-main">Chosenova</div><div class="name-domain">chosenova.com</div></td>
+          <td><div class="score-badge score-24">24</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-B">B</div></td>
+          <td class="provenance-cell">chosen + -ova</td>
+        </tr>
+        <tr class="row-t3" data-terr="t3">
+          <td class="rank-num">8</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t3"></div><div class="terr-name">Part of<br>the Outfit</div></div></td>
+          <td class="name-cell"><div class="name-main">Giorniva</div><div class="name-domain">giorniva.com</div></td>
+          <td><div class="score-badge score-24">24</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">giorn+iva</td>
+        </tr>
+        <tr class="row-t3" data-terr="t3">
+          <td class="rank-num">9</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t3"></div><div class="terr-name">Part of<br>the Outfit</div></div></td>
+          <td class="name-cell"><div class="name-main">Indossiva</div><div class="name-domain">indossiva.com</div></td>
+          <td><div class="score-badge score-24">24</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">indoss+iva</td>
+        </tr>
+        <tr class="row-t3" data-terr="t3">
+          <td class="rank-num">10</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t3"></div><div class="terr-name">Part of<br>the Outfit</div></div></td>
+          <td class="name-cell"><div class="name-main">Solitova</div><div class="name-domain">solitova.com</div></td>
+          <td><div class="score-badge score-24">24</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">solit+ova</td>
+        </tr>
+        <tr class="row-t3" data-terr="t3">
+          <td class="rank-num">11</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t3"></div><div class="terr-name">Part of<br>the Outfit</div></div></td>
+          <td class="name-cell"><div class="name-main">Giornova</div><div class="name-domain">giornova.com</div></td>
+          <td><div class="score-badge score-23">23</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">giorn+ova</td>
+        </tr>
+        <tr class="row-t3" data-terr="t3">
+          <td class="rank-num">12</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t3"></div><div class="terr-name">Part of<br>the Outfit</div></div></td>
+          <td class="name-cell"><div class="name-main">Indossova</div><div class="name-domain">indossova.com</div></td>
+          <td><div class="score-badge score-23">23</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">indoss+ova</td>
+        </tr>
+        <tr class="row-t4" data-terr="t4">
+          <td class="rank-num">13</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t4"></div><div class="terr-name">Free to<br>Move</div></div></td>
+          <td class="name-cell"><div class="name-main">Mossifera</div><div class="name-domain">mossifera.com</div></td>
+          <td><div class="score-badge score-23">23</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">moss+ifera</td>
+        </tr>
+        <tr class="row-t4" data-terr="t4">
+          <td class="rank-num">14</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t4"></div><div class="terr-name">Free to<br>Move</div></div></td>
+          <td class="name-cell"><div class="name-main">Moveella</div><div class="name-domain">moveella.com</div></td>
+          <td><div class="score-badge score-23">23</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v4">4</div></div></div></td>
+          <td><div class="pattern-tag pat-B">B</div></td>
+          <td class="provenance-cell">move + -ella</td>
+        </tr>
+        <tr class="row-t3" data-terr="t3">
+          <td class="rank-num">15</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t3"></div><div class="terr-name">Part of<br>the Outfit</div></div></td>
+          <td class="name-cell"><div class="name-main">Outfitiva</div><div class="name-domain">outfitiva.com</div></td>
+          <td><div class="score-badge score-23">23</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-B">B</div></td>
+          <td class="provenance-cell">outfit + -iva</td>
+        </tr>
+        <tr class="row-t1" data-terr="t1">
+          <td class="rank-num">16</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t1"></div><div class="terr-name">Unwatched<br>Secure</div></div></td>
+          <td class="name-cell"><div class="name-main">Posafera</div><div class="name-domain">posafera.com</div></td>
+          <td><div class="score-badge score-23">23</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">posa+fera</td>
+        </tr>
+        <tr class="row-t2" data-terr="t2">
+          <td class="rank-num">17</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t2"></div><div class="terr-name">Handover-<br>Ready Kit</div></div></td>
+          <td class="name-cell"><div class="name-main">Prontella</div><div class="name-domain">prontella.com</div></td>
+          <td><div class="score-badge score-23">23</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">pront+ella</td>
+        </tr>
+        <tr class="row-t4" data-terr="t4">
+          <td class="rank-num">18</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t4"></div><div class="terr-name">Free to<br>Move</div></div></td>
+          <td class="name-cell"><div class="name-main">Scattella</div><div class="name-domain">scattella.com</div></td>
+          <td><div class="score-badge score-23">23</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">scatt+ella</td>
+        </tr>
+        <tr class="row-t5" data-terr="t5">
+          <td class="rank-num">19</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t5"></div><div class="terr-name">Signature<br>Kit</div></div></td>
+          <td class="name-cell"><div class="name-main">Segnella</div><div class="name-domain">segnella.com</div></td>
+          <td><div class="score-badge score-23">23</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">segn+ella</td>
+        </tr>
+        <tr class="row-t2" data-terr="t2">
+          <td class="rank-num">20</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="terr-bar t2"></div><div class="terr-name">Handover-<br>Ready Kit</div></div></td>
+          <td class="name-cell"><div class="name-main">Tuttella</div><div class="name-domain">tuttella.com</div></td>
+          <td><div class="score-badge score-23">23</div></td>
+          <td><div class="sub-scores"><div class="sub-score"><div class="sub-score-label">D</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">W</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">P</div><div class="sub-score-val v5">5</div></div><div class="sub-score"><div class="sub-score-label">E</div><div class="sub-score-val v4">4</div></div><div class="sub-score"><div class="sub-score-label">I</div><div class="sub-score-val v5">5</div></div></div></td>
+          <td><div class="pattern-tag pat-A">A</div></td>
+          <td class="provenance-cell">tutt+ella</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:24px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:13px;color:var(--muted);line-height:1.6;">
+    <strong style="color:var(--text)">Next step:</strong> Review the top 20 above. Say which name you want to select, or say "none of these work" (optionally with a reason) to encode new constraints for Round 6.
+  </div>
+
+</div>
+
+<script>
+// Charts
+const scoreCtx = document.getElementById('scoreChart').getContext('2d');
+new Chart(scoreCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Score 25', 'Score 24', 'Score 23', 'Score 22', 'Score 21', 'Score 20'],
+    datasets: [{
+      data: [6, 4, 14, 6, 5, 3],
+      backgroundColor: [
+        'rgba(0,184,148,0.7)',
+        'rgba(85,239,196,0.6)',
+        'rgba(116,185,255,0.6)',
+        'rgba(162,155,254,0.5)',
+        'rgba(99,99,128,0.5)',
+        'rgba(99,99,128,0.3)',
+      ],
+      borderColor: [
+        '#00b894','#55efc4','#74b9ff','#a29bfe','#636380','#636380'
+      ],
+      borderWidth: 1.5,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8888a0', font: { size: 10 } } },
+      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8888a0', font: { size: 10 }, stepSize: 5 }, beginAtZero: true }
+    }
+  }
+});
+
+const terrCtx = document.getElementById('terrChart').getContext('2d');
+new Chart(terrCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Unwatched Secure', 'Handover-Ready Kit', 'Part of the Outfit', 'Free to Move', 'Signature Kit'],
+    datasets: [{
+      data: [4, 3, 6, 4, 3],
+      backgroundColor: [
+        'rgba(253,121,168,0.75)',
+        'rgba(253,203,110,0.75)',
+        'rgba(108,92,231,0.75)',
+        'rgba(0,184,148,0.75)',
+        'rgba(225,112,85,0.75)',
+      ],
+      borderColor: 'rgba(26,26,32,1)',
+      borderWidth: 2,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: { color: '#8888a0', font: { size: 10 }, boxWidth: 12, padding: 8 }
+      }
+    }
+  }
+});
+
+// Filter
+function filter(terr) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.chip-' + terr).forEach(c => c.classList.add('active'));
+  if (terr === 'all') document.querySelectorAll('.chip-all').forEach(c => c.classList.add('active'));
+
+  document.querySelectorAll('#tableBody tr').forEach(tr => {
+    if (terr === 'all' || tr.getAttribute('data-terr') === terr) {
+      tr.classList.remove('hidden');
+    } else {
+      tr.classList.add('hidden');
+    }
+  });
+}
+</script>
+</body>
+</html>

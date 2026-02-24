@@ -2,6 +2,9 @@ import type { ReactElement } from "react";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
+import { Button } from "@acme/design-system/atoms";
+import { Cluster, Inline } from "@acme/design-system/primitives";
+
 // Import your existing date utilities
 import {
   buildQuickDateRange,
@@ -39,10 +42,10 @@ function DateSelector({
     (label: string, day: string): ReactElement => {
       const isSelected = selectedDate === day;
       return (
-        <button
+        <Button
           key={day}
           className={`
-            px-4 py-2 border rounded text-sm font-medium w-[100px] text-center transition-colors
+            px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors
             ${
               isSelected
                 ? "bg-primary-main text-primary-fg border-primary-main dark:bg-darkAccentGreen dark:text-darkBg dark:border-darkAccentGreen"
@@ -52,7 +55,7 @@ function DateSelector({
           onClick={() => onDateChange(day)}
         >
           {label}
-        </button>
+        </Button>
       );
     },
     [selectedDate, onDateChange]
@@ -62,7 +65,7 @@ function DateSelector({
    * Render the quick date selection buttons (yesterday, today, plus next 5 days).
    */
   const daySelectors: ReactElement = (
-    <div className="flex items-center flex-wrap gap-2">
+    <Cluster gap={2}>
       {renderButton("Yesterday", yesterday)}
       {renderButton("Today", today)}
       {nextFiveDays.map((day) => {
@@ -70,7 +73,7 @@ function DateSelector({
         const shortLabel = getWeekdayShortLabel(day);
         return renderButton(shortLabel, day);
       })}
-    </div>
+    </Cluster>
   );
 
   // For "pete": show an optional toggleable calendar
@@ -113,17 +116,17 @@ function DateSelector({
   if (isPete) {
     toggleAndCalendar = (
       <div className="relative">
-        <button
+        <Button
           ref={toggleRef}
           className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate || "Select a date"}
-        </button>
+        </Button>
         {isCalendarOpen && (
           <div
             ref={calendarRef}
-            className="absolute z-50 mt-2 bg-white shadow-lg rounded p-5 dark:bg-darkSurface"
+            className="absolute z-50 mt-2 bg-surface shadow-lg rounded p-5 dark:bg-darkSurface"
             style={{ top: "100%", right: 0 }}
           >
             <DayPicker
@@ -156,10 +159,10 @@ function DateSelector({
   // The final layout, combining quick selectors and the optional calendar.
   return (
     <div className="relative pb-5 bg-surface-2 rounded border border-border-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface">
-      <div className="flex items-center gap-2">
+      <Inline wrap={false} gap={2}>
         {daySelectors}
         {toggleAndCalendar}
-      </div>
+      </Inline>
     </div>
   );
 }

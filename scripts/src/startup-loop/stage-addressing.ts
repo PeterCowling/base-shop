@@ -2,7 +2,7 @@
  * Stage Addressing Resolver
  *
  * Canonical hierarchy for startup-loop stage identification:
- *   1. --stage <ID>         Canonical stage ID (DISCOVERY-01..07, DISCOVERY, BRAND-01, BRAND-02, BRAND, S1–S10). Always primary; exact case-insensitive match.
+ *   1. --stage <ID>         Canonical stage ID from stage-operator-map.json. Always primary; exact case-insensitive match.
  *   2. --stage-alias <slug> Deterministic slug from stage-operator-map alias_index. Fail-closed on unknown.
  *   3. --stage-label <text> Exact-match against label_operator_short or label_operator_long. Fail-closed on near-match.
  *
@@ -34,6 +34,8 @@ export type ResolveResult = ResolveSuccess | ResolveFail;
 
 /** All canonical stage IDs (upper-case). */
 const CANONICAL_IDS = new Set(stageOperatorMap.stages.map((s) => s.id));
+const CANONICAL_ID_LIST = stageOperatorMap.stages.map((s) => s.id);
+const CANONICAL_ID_HELP = `Use a canonical stage ID: ${CANONICAL_ID_LIST.join(", ")}`;
 
 /** Flat alias → canonical ID index from generated map. */
 const ALIAS_INDEX: Record<string, string> =
@@ -42,7 +44,7 @@ const ALIAS_INDEX: Record<string, string> =
 /**
  * Exact label → canonical ID index.
  * Covers both label_operator_short (e.g. "Intake") and
- * label_operator_long (e.g. "DISCOVERY — Intake").
+ * label_operator_long (e.g. "ASSESSMENT — Intake").
  */
 const LABEL_INDEX: Record<string, string> = {};
 for (const stage of stageOperatorMap.stages) {
@@ -55,7 +57,7 @@ for (const stage of stageOperatorMap.stages) {
 /**
  * Resolve a stage identifier in --stage <ID> mode.
  *
- * Accepts canonical stage IDs (DISCOVERY-01..05, DISCOVERY, S1–S10). Case-insensitive.
+ * Accepts canonical stage IDs from stage-operator-map.json. Case-insensitive.
  * Returns fail with deterministic suggestions for unknown values.
  */
 export function resolveById(input: string): ResolveResult {
@@ -69,7 +71,7 @@ export function resolveById(input: string): ResolveResult {
   const suggestions: string[] = aliasMatch
     ? [`--stage ${aliasMatch}`, `--stage-alias ${input.toLowerCase().trim()}`]
     : [
-        "Use a canonical stage ID: DISCOVERY-01, DISCOVERY-02, DISCOVERY-03, DISCOVERY-04, DISCOVERY-05, DISCOVERY-06, DISCOVERY-07, DISCOVERY, BRAND-01, BRAND-02, BRAND, S1, S1B, S2A, S2, S2B, S3, S3B, S4, S5A, S5B, S6, S6B, DO, S9B, S10",
+        CANONICAL_ID_HELP,
         "Or use --stage-alias <slug> for deterministic alias resolution",
       ];
 
@@ -77,7 +79,7 @@ export function resolveById(input: string): ResolveResult {
     ok: false,
     input,
     mode: "id",
-    reason: `Unknown stage ID "${input}". Stage IDs are case-insensitive canonical identifiers (DISCOVERY-01..07, DISCOVERY, BRAND-01, BRAND-02, BRAND, S1–S10).`,
+    reason: `Unknown stage ID "${input}". Stage IDs are case-insensitive canonical identifiers defined in docs/business-os/startup-loop/_generated/stage-operator-map.json.`,
     suggestions,
   };
 }

@@ -7,6 +7,7 @@ Owner: Pete
 Relates-to:
   - docs/business-os/strategy/BRIK/2026-02-17-brikette-sales-funnel-external-brief.user.md
   - docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Octorate Process Reduction Feasibility (Playwright Exploration)

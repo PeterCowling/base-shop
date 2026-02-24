@@ -6,6 +6,7 @@ Date: 2026-02-12
 Updated: 2026-02-13
 Last-reviewed: 2026-02-13
 Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # BRIK GA4 + Search Console Setup Note

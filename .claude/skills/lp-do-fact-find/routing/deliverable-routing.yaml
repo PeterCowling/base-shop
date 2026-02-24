@@ -72,6 +72,9 @@ startup_alias_mapping:
   startup-weekly-kpcs-memo:
     canonical_type: product-brief
     primary_execution_skill: biz-product-brief
+  website-first-build-backlog:
+    canonical_type: multi-deliverable
+    primary_execution_skill: lp-do-build
   website-upgrade-backlog:
     canonical_type: multi-deliverable
     primary_execution_skill: lp-do-build

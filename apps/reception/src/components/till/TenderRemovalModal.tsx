@@ -1,6 +1,10 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { z } from "zod";
 
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
+
 import { withModalBackground } from "../../hoc/withModalBackground";
 import type {
   RemovalDestination,
@@ -58,15 +62,15 @@ function TenderRemovalModalBase({
   return (
     <>
       <ModalContainer widthClasses="w-120">
-        <div className="relative rounded-lg bg-white p-8 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
+        <div className="relative rounded-lg bg-surface p-8 shadow-xl">
           {/* Close */}
-          <button
+          <Button
             onClick={onClose}
             aria-label="Close"
-            className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
+            className="absolute right-0 top-0 h-7 w-7 rounded-full bg-error-main text-primary-fg transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
           >
             &times;
-          </button>
+          </Button>
 
           {/* Title */}
           <h2 className="mb-12 text-center text-xl font-semibold">
@@ -75,16 +79,17 @@ function TenderRemovalModalBase({
 
           {/* Form row */}
           <div className="flex flex-wrap text-center items-center justify-center gap-12 mb-12">
-            <input
+            <Input
+              compatibilityMode="no-wrapper"
               type="number"
               inputMode="decimal"
-              className="w-32 rounded border px-3 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+              className="w-32 rounded border px-3 py-2 text-sm"
               placeholder="Amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
             <select
-              className="w-36 rounded border px-2 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+              className="w-36 rounded border px-2 py-2 text-sm"
               value={removalType}
               onChange={(e) => setRemovalType(e.target.value as RemovalType)}
             >
@@ -95,7 +100,7 @@ function TenderRemovalModalBase({
 
             {removalType !== "SAFE_DROP" && (
               <select
-                className="w-32 rounded border px-2 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+                className="w-32 rounded border px-2 py-2 text-sm"
                 value={destination}
                 onChange={(e) =>
                   setDestination(e.target.value as RemovalDestination)
@@ -108,22 +113,22 @@ function TenderRemovalModalBase({
           </div>
 
           {/* Confirmation */}
-          <div className="mt-6 flex flex-col items-center gap-4">
+          <Stack gap={4} align="center" className="mt-6">
             {pinRequiredForTenderRemoval ? (
               <PasswordReauthInline
                 onSubmit={handleConfirm}
                 submitLabel="Confirm removal"
               />
             ) : (
-              <button
+              <Button
                 type="button"
                 onClick={handleConfirm}
-                className="min-h-11 min-w-32 rounded bg-primary-main px-4 py-2 text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
+                className="min-h-11 min-w-32 rounded bg-primary-main px-4 py-2 text-primary-fg transition-opacity hover:opacity-90 disabled:opacity-50"
               >
                 Confirm removal
-              </button>
+              </Button>
             )}
-          </div>
+          </Stack>
         </div>
       </ModalContainer>
 

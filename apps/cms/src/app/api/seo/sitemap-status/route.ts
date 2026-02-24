@@ -1,7 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 import { env } from "@acme/config";
-import { nowIso } from "@acme/date-utils";
+
+const nowIso = () => new Date().toISOString();
 
 async function fetchHead(url: string): Promise<{ lastModified?: string; contentLength?: number }> {
   try {

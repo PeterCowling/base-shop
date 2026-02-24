@@ -382,15 +382,18 @@ export function withTranslator(
 }
 
 // Helper to handle fallback translations
-function tryFallbackTranslation(
-  val: unknown,
-  key: string,
-  keyAsString: string | undefined,
-  shouldProbeFallback: boolean,
-  translations: TranslationsBundle,
-  baseT: TFunction,
-  opts: Record<string, unknown> | undefined,
-): unknown {
+type TryFallbackTranslationParams = {
+  val: unknown;
+  key: string;
+  keyAsString: string | undefined;
+  shouldProbeFallback: boolean;
+  translations: TranslationsBundle;
+  baseT: TFunction;
+  opts: Record<string, unknown> | undefined;
+};
+
+function tryFallbackTranslation(params: TryFallbackTranslationParams): unknown {
+  const { val, key, keyAsString, shouldProbeFallback, translations, baseT, opts } = params;
   if (!shouldProbeFallback || !isUnresolved(val, keyAsString)) {
     return val;
   }
@@ -490,7 +493,15 @@ function createWrappedTranslator(
       !hasLocalizedContent && typeof keyAsString === "string" && keyAsString.length > 0;
 
     // Try fallback translators if needed
-    val = tryFallbackTranslation(val, key, keyAsString, shouldProbeFallback, translations, baseT, opts);
+    val = tryFallbackTranslation({
+      val,
+      key,
+      keyAsString,
+      shouldProbeFallback,
+      translations,
+      baseT,
+      opts,
+    });
 
     const isIntroKey =
       typeof key === "string" &&

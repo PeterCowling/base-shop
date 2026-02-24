@@ -129,14 +129,13 @@ export function ActionSheet({
       aria-labelledby="action-sheet-title"
     >
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/50 transition-opacity dark:bg-black/70" />
+      <div className="fixed inset-0 bg-fg/50 transition-opacity" />
 
       {/* Sheet */}
       <div
         className={`
-          relative w-full max-w-lg transform overflow-hidden rounded-t-2xl bg-white shadow-xl
+          relative w-full max-w-lg transform overflow-hidden rounded-t-2xl bg-surface-2 shadow-xl
           transition-all sm:rounded-2xl
-          dark:bg-darkSurface
           ${className}
         `}
         style={{
@@ -145,16 +144,16 @@ export function ActionSheet({
         onClick={handleContentClick}
       >
         {/* Header */}
-        <div className="sticky top-0 z-10 flex items-start justify-between border-b border-gray-200 bg-white px-[var(--card-padding)] py-4 dark:border-darkSurface dark:bg-darkSurface">
+        <div className="sticky top-0 z-10 flex items-start justify-between border-b border-border-2 bg-surface-2 px-[var(--card-padding)] py-4">
           <div className="flex-1 pr-4">
             <h3
               id="action-sheet-title"
-              className="text-lg font-semibold text-gray-900 dark:text-darkAccentGreen"
+              className="text-lg font-semibold text-foreground"
             >
               {title}
             </h3>
             {description && (
-              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+              <p className="mt-1 text-sm text-muted-foreground">
                 {description}
               </p>
             )}
@@ -162,7 +161,7 @@ export function ActionSheet({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-500 dark:hover:bg-darkBg dark:hover:text-darkAccentGreen"
+            className="rounded-full p-1 text-muted-foreground hover:bg-surface-1 hover:text-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
             aria-label="Close"
           >
             <X className="h-5 w-5" />

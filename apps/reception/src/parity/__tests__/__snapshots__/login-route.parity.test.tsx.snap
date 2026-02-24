@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`/bar unauthenticated login parity matches baseline login selectors and DOM snapshot 1`] = `
+<div>
+  <div
+    class="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-surface-2 via-surface-2 to-surface-3 px-4 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800"
+  >
+    <div
+      class="relative w-full max-w-md rounded-2xl bg-surface px-8 py-10 shadow-xl dark:bg-gray-900 dark:shadow-2xl dark:shadow-black/20"
+    >
+      <button
+        aria-label="Switch to dark mode"
+        aria-pressed="false"
+        class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm bg-primary absolute right-4 top-4 rounded-lg p-2 text-muted-foreground hover:bg-surface-2 hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:text-muted-foreground dark:hover:bg-gray-800 dark:hover:text-gray-300 focus-visible:dark:focus:ring-offset-gray-900"
+        data-token="--color-primary"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <div
+        class="flex items-center justify-center"
+      >
+        <div
+          class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-main dark:bg-indigo-500"
+        >
+          <span
+            class="text-lg font-bold text-primary-fg"
+          >
+            R
+          </span>
+        </div>
+        <span
+          class="ms-3 text-xl font-semibold text-foreground dark:text-gray-100"
+        >
+          Reception
+        </span>
+      </div>
+      <h1
+        class="mt-6 text-xl font-semibold text-foreground dark:text-gray-100"
+      >
+        Sign in to Reception
+      </h1>
+      <p
+        class="mt-2 text-sm text-muted-foreground dark:text-muted-foreground"
+      >
+        Enter your credentials to continue.
+      </p>
+      <form
+        class="mt-6 space-y-5"
+      >
+        <div>
+          <label
+            class="block text-sm font-medium text-foreground dark:text-gray-300"
+            for="email"
+          >
+            Email
+          </label>
+          <input
+            autocomplete="email"
+            class="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-muted-foreground"
+            id="email"
+            placeholder="name@company.com"
+            required=""
+            type="email"
+            value=""
+          />
+        </div>
+        <div>
+          <div
+            class="flex items-center justify-between"
+          >
+            <label
+              class="block text-sm font-medium text-foreground dark:text-gray-300"
+              for="password"
+            >
+              Password
+            </label>
+            <button
+              class="inline-flex items-center justify-center py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-10 px-4 bg-primary hover:bg-primary/90 text-sm font-medium text-primary-main hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+              data-token="--color-primary"
+              type="button"
+            >
+              Forgot password?
+            </button>
+          </div>
+          <div
+            class="relative mt-1.5"
+          >
+            <input
+              autocomplete="current-password"
+              class="w-full rounded-lg border border-border-2 px-4 py-2.5 pr-10 text-foreground focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+              id="password"
+              required=""
+              type="password"
+              value=""
+            />
+            <button
+              aria-label="Show password"
+              class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-10 px-4 text-sm bg-primary hover:bg-primary/90 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:text-muted-foreground dark:hover:text-gray-300 focus-visible:dark:focus:ring-offset-gray-900"
+              data-token="--color-primary"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <button
+          class="inline-flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none h-10 text-sm w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-primary-main focus-visible:dark:focus:ring-offset-gray-900"
+          data-token="--color-primary"
+          type="submit"
+        >
+          Sign in
+        </button>
+      </form>
+      <div
+        class="mt-8 border-t border-border pt-6 dark:border-gray-700"
+      >
+        <p
+          class="text-center text-xs text-muted-foreground dark:text-muted-foreground"
+        >
+          Having trouble?
+           
+          <a
+            class="font-medium text-primary-main hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+            href="mailto:support@example.com"
+          >
+            Contact support
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

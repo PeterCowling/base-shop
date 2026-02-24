@@ -10,24 +10,41 @@ import { cn } from "../utils/style";
  * Each component forwards props / className so you can style with Tailwind.
  */
 
-export type TableProps = React.HTMLAttributes<HTMLTableElement>;
+export type TableCompatibilityMode = "default" | "no-wrapper";
+
+export interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
+  /**
+   * Compatibility mode for migration scenarios where an extra wrapper div would
+   * change layout contracts.
+   */
+  compatibilityMode?: TableCompatibilityMode;
+}
 
 export const Table = (
   {
     ref,
     className,
+    compatibilityMode = "default",
     ...props
   }: TableProps & {
     ref?: React.Ref<HTMLTableElement>;
   }
-) => (<div className="w-full overflow-x-auto">
-  <table
-    ref={ref}
-    // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-    className={cn("text-foreground w-full text-left text-sm", className)}
-    {...props}
-  />
-</div>);
+) => {
+  const tableNode = (
+    <table
+      ref={ref}
+      // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+      className={cn("text-foreground w-full text-left text-sm", className)}
+      {...props}
+    />
+  );
+
+  if (compatibilityMode === "no-wrapper") {
+    return tableNode;
+  }
+
+  return <div className="w-full overflow-x-auto">{tableNode}</div>;
+};
 
 export type TableHeaderProps = React.HTMLAttributes<HTMLTableSectionElement>;
 
@@ -87,7 +104,7 @@ export const TableHead = (
 ) => (<th
   ref={ref}
   // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-  className={cn("text-foreground px-4 py-2 font-semibold", className)}
+  className={cn("text-foreground px-4 py-2 font-semibold break-words", className)}
   {...props}
 />);
 
@@ -103,5 +120,9 @@ export const TableCell = (
   }
 ) => (<>
   {/* i18n-exempt: classes only */}
-  <td ref={ref} className={cn("px-4 py-2 align-middle", className)} {...props} />
+  <td
+    ref={ref}
+    className={cn("px-4 py-2 align-middle min-w-0 break-words", className)}
+    {...props}
+  />
 </>);

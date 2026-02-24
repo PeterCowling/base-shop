@@ -11,6 +11,49 @@ describe("Input primitive", () => {
 
   });
 
+  it("renders bare input in compatibility mode and preserves className", () => {
+    const { container } = render(
+      <Input
+        compatibilityMode="no-wrapper"
+        aria-label="Compat input"
+        className="compat-class"
+        wrapperClassName="wrapper-should-not-apply"
+      />
+    );
+
+    const input = screen.getByRole("textbox", { name: "Compat input" });
+    expect(input).toBe(container.firstElementChild);
+    expect(input).toHaveClass("compat-class");
+    expect(input).not.toHaveClass("wrapper-should-not-apply");
+    expect(container.querySelector("label")).toBeNull();
+  });
+
+  it("preserves aria and focus handlers in compatibility mode", () => {
+    const handleFocus = jest.fn();
+    const handleBlur = jest.fn();
+
+    render(
+      <Input
+        compatibilityMode="no-wrapper"
+        aria-label="Compat input"
+        error="Required"
+        aria-describedby="compat-help"
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
+    );
+
+    const input = screen.getByRole("textbox", { name: "Compat input" });
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("aria-describedby", "compat-help");
+    expect(screen.queryByText("Required")).not.toBeInTheDocument();
+
+    fireEvent.focus(input);
+    fireEvent.blur(input);
+    expect(handleFocus).toHaveBeenCalledTimes(1);
+    expect(handleBlur).toHaveBeenCalledTimes(1);
+  });
+
   it("renders without floating label and applies error styles", async () => {
     const { container } = render(<Input label="Email" error="Required" />);
     const input = screen.getByLabelText("Email");
@@ -100,5 +143,23 @@ describe("Input primitive", () => {
     render(<Input label="Email" id="custom-id" />);
     const input = screen.getByLabelText("Email");
     expect(input).toHaveAttribute("id", "custom-id");
+  });
+
+  it("supports shape and radius variants with radius precedence", () => {
+    const { rerender } = render(<Input aria-label="Shape input" shape="square" />);
+    const input = screen.getByRole("textbox", { name: "Shape input" });
+    expect(input).toHaveClass("rounded-none");
+
+    rerender(<Input aria-label="Shape input" shape="pill" />);
+    expect(screen.getByRole("textbox", { name: "Shape input" })).toHaveClass(
+      "rounded-full",
+    );
+
+    rerender(<Input aria-label="Shape input" shape="square" radius="lg" />);
+    const radiusOverrideInput = screen.getByRole("textbox", {
+      name: "Shape input",
+    });
+    expect(radiusOverrideInput).toHaveClass("rounded-lg");
+    expect(radiusOverrideInput).not.toHaveClass("rounded-none");
   });
 });

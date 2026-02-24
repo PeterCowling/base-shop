@@ -108,21 +108,21 @@ const HeroProofPanel = memo(function HeroProofPanel({
   if (!ratings.length && !highlights.length) return null;
 
   return (
-    <div className="rounded-2xl border border-white/20 bg-brand-primary/80 p-4 text-white shadow-md backdrop-blur-sm dark:border-white/20 dark:bg-black/60 dark:text-brand-text">
+    <div className="rounded-2xl border border-white/20 bg-brand-primary/80 p-4 text-brand-on-primary shadow-md backdrop-blur-sm dark:border-white/20 dark:bg-black/60 dark:text-brand-text">
       {ratings.length ? (
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-white/80 dark:text-brand-text/80">
-            <Star className="size-4 text-white/80" aria-hidden />
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-on-primary/80 dark:text-brand-text/80">
+            <Star className="size-4 text-brand-on-primary/80" aria-hidden />
             <span>{heading}</span>
           </div>
           <ul className="mt-3 divide-y divide-white/10 text-sm">
             {ratings.map((item) => (
               <li key={item.providerLabel} className="flex items-center justify-between py-2">
                 <div>
-                  <p className="font-semibold text-white dark:text-brand-text">{item.providerLabel}</p>
-                  <p className="text-xs text-white/70 dark:text-brand-text/70">{item.reviewText}</p>
+                  <p className="font-semibold text-brand-on-primary dark:text-brand-text">{item.providerLabel}</p>
+                  <p className="text-xs text-brand-on-primary/70 dark:text-brand-text/70">{item.reviewText}</p>
                 </div>
-                <span className="text-base font-semibold text-white dark:text-brand-text">
+                <span className="text-base font-semibold text-brand-on-primary dark:text-brand-text">
                   {item.score}
                 </span>
               </li>
@@ -132,11 +132,11 @@ const HeroProofPanel = memo(function HeroProofPanel({
       ) : null}
       {highlights.length ? (
         <ul
-          className={`mt-4 space-y-2 text-sm text-white/90 ${ratings.length ? "border-t border-white/10 pt-4" : ""} dark:text-brand-text/90`} // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
+          className={`mt-4 space-y-2 text-sm text-brand-on-primary/90 ${ratings.length ? "border-t border-white/10 pt-4" : ""} dark:text-brand-text/90`} // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
         >
           {highlights.map(({ label, Icon }) => (
             <li key={label} className="flex items-center gap-2">
-              <Icon className="size-4 text-white/70 dark:text-brand-text/70" aria-hidden />
+              <Icon className="size-4 text-brand-on-primary/70 dark:text-brand-text/70" aria-hidden />
               <span className="font-medium">{label}</span>
             </li>
           ))}
@@ -316,7 +316,7 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
                   <a
                     href="#booking"
                     onClick={handlePrimaryCta}
-                    className="min-h-12 min-w-11 rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-neutral-900 shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-white focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
+                    className="min-h-12 min-w-11 rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-brand-on-primary focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
                   >
                     {selectDatesLabel}
                   </a>
@@ -324,7 +324,7 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
                   <button
                     type="button"
                     onClick={handlePrimaryCta}
-                    className="min-h-12 min-w-11 rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-neutral-900 shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-white focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
+                    className="min-h-12 min-w-11 rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-brand-on-primary focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
                   >
                     {selectDatesLabel}
                   </button>

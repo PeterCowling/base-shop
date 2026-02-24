@@ -1,0 +1,29 @@
+[
+  {
+    "sku": "silk-midi-slip-dress-8",
+    "productId": "01KCS72C6YV3PFWJQNF0A4T1P1",
+    "quantity": 5,
+    "variantAttributes": {
+      "size": "8"
+    },
+    "lowStockThreshold": 1
+  },
+  {
+    "sku": "cloud-knit-cardigan-m",
+    "productId": "01KCS72C6YV3PFWJQNF0A4T1P2",
+    "quantity": 7,
+    "variantAttributes": {
+      "size": "M"
+    },
+    "lowStockThreshold": 2
+  },
+  {
+    "sku": "satin-wide-leg-trousers-10",
+    "productId": "01KCS72C6YV3PFWJQNF0A4T1P3",
+    "quantity": 4,
+    "variantAttributes": {
+      "size": "10"
+    },
+    "lowStockThreshold": 1
+  }
+]

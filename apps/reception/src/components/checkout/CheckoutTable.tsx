@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import { type LoanMethod } from "../../types/hooks/data/loansData";
 import { formatDdMm } from "../../utils/dateUtils";
 import { sortCheckoutsData } from "../../utils/sortCheckouts";
@@ -62,34 +64,34 @@ export function getLoanIconClass(
 
   switch (item) {
     case "Umbrella":
-      return "fas fa-umbrella fa-lg text-blue-600";
+      return "fas fa-umbrella fa-lg text-info-main";
     case "Hairdryer":
-      return "fas fa-hairdryer fa-lg text-pink-600";
+      return "fas fa-hairdryer fa-lg text-accent";
     case "Steamer":
-      return "fas fa-cloud fa-lg text-gray-600";
+      return "fas fa-cloud fa-lg text-muted-foreground";
     case "Padlock":
-      return "fas fa-lock fa-lg text-yellow-600";
+      return "fas fa-lock fa-lg text-warning-main";
     case "Keycard":
       if (normalized === "CASH") {
-        return "fas fa-id-card fa-lg text-green-600";
+        return "fas fa-id-card fa-lg text-success-main";
       }
       if (
         normalized === "PASSPORT" ||
         normalized === "LICENSE" ||
         normalized === "ID"
       ) {
-        return "fas fa-id-card fa-lg text-yellow-600";
+        return "fas fa-id-card fa-lg text-warning-main";
       }
       // Debug unknown deposit types
       console.warn(
         "[getLoanIconClass] Unrecognized deposit type for Keycard:",
         depositType
       );
-      return "fas fa-id-card fa-lg text-gray-700";
+      return "fas fa-id-card fa-lg text-foreground";
     case "No_card":
-      return "fas fa-ban fa-lg text-red-500";
+      return "fas fa-ban fa-lg text-error-main";
     default:
-      return "fas fa-question fa-lg text-gray-700";
+      return "fas fa-question fa-lg text-foreground";
   }
 }
 
@@ -136,7 +138,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
   ({ guests, removeLoanItem, onComplete }) => {
     if (!guests || guests.length === 0) {
       return (
-        <div className="bg-white border border-gray-400 rounded shadow p-8 text-center italic text-gray-600 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+        <div className="bg-surface border border-border-2 rounded shadow p-8 text-center italic text-muted-foreground dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
           No checkouts found for this date.
         </div>
       );
@@ -149,61 +151,61 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
     console.log("Final sorted guests for CheckoutTable:", sortedGuests);
 
     return (
-      <div className="bg-white border border-gray-400 rounded shadow overflow-x-auto dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
-        <table className="w-full border-collapse" aria-label="checkout table">
-          <thead className="bg-gray-100 dark:bg-darkSurface">
-            <tr>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+      <div className="bg-surface border border-border-2 rounded shadow overflow-x-auto dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+        <Table className="w-full border-collapse" aria-label="checkout table">
+          <TableHeader className="bg-surface-2 dark:bg-darkSurface">
+            <TableRow>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
                 DATE
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
                 REF
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
                 NAME
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
                 ROOM
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface w-48">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface w-48">
                 LOANS
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
                 BAG STORAGE
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
                 FRIDGE
-              </th>
-              <th className="sticky top-0 z-10 text-center p-3 border-b border-gray-400 dark:border-darkSurface w-32">
+              </TableHead>
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface w-32">
                 COMPLETE
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {sortedGuests.map((guest, index) => {
               const loanEntries = guest.loans
                 ? Object.entries(guest.loans)
                 : [];
               const rowBg =
                 index % 2 === 0
-                  ? "bg-white dark:bg-darkSurface"
-                  : "bg-gray-50 dark:bg-darkSurface";
+                  ? "bg-surface dark:bg-darkSurface"
+                  : "bg-surface-2 dark:bg-darkSurface";
 
               return (
-                <tr key={guest._key || guest.guestId} className={rowBg}>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface">
+                <TableRow key={guest._key || guest.guestId} className={rowBg}>
+                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
                     {formatDdMm(guest.checkoutDate)}
-                  </td>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface">
+                  </TableCell>
+                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
                     {guest.bookingRef}
-                  </td>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface">
+                  </TableCell>
+                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
                     {guest.firstName} {guest.lastName}
-                  </td>
-                  <td className="p-3 border-b text-center  border-gray-400 dark:border-darkSurface">
+                  </TableCell>
+                  <TableCell className="p-3 border-b text-center  border-border-2 dark:border-darkSurface">
                     {guest.roomAllocated}
-                  </td>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface w-48">
+                  </TableCell>
+                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface w-48">
                     {loanEntries.map(([txnKey, loan]) => {
                       console.debug(
                         `[CheckoutTable] Loan entry ${txnKey}:`,
@@ -226,7 +228,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                         loanTitle
                       );
                       return (
-                        <button
+                        <Button
                           key={txnKey}
                           onClick={() =>
                             removeLoanItem(
@@ -238,29 +240,29 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                             )
                           }
                           aria-label={`Remove ${loanTitle}`}
-                          className="inline-flex items-center px-1 me-1 text-gray-700 hover:text-black transition-colors duration-200 dark:text-darkAccentGreen dark:hover:text-darkAccentGreen"
+                          className="inline-flex items-center px-1 me-1 text-foreground hover:text-foreground transition-colors duration-200 dark:text-darkAccentGreen dark:hover:text-darkAccentGreen"
                           title={loanTitle}
                         >
                           <i className={iconClass} aria-hidden="true" />
-                        </button>
+                        </Button>
                       );
                     })}
-                  </td>
+                  </TableCell>
                   {/* Show an icon if the occupant opted into bag storage */}
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface text-center">
+                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface text-center">
                     {guest.bagStorageOptedIn && (
                       <i
-                        className="fas fa-suitcase fa-lg text-blue-600"
+                        className="fas fa-suitcase fa-lg text-info-main"
                         title="Bag Storage"
                         aria-hidden="true"
                       />
                     )}
-                  </td>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface">
+                  </TableCell>
+                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
                     {guest.fridge || ""}
-                  </td>
-                  <td className="p-3 border-b border-gray-400 dark:border-darkSurface text-center">
-                    <button
+                  </TableCell>
+                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface text-center">
+                    <Button
                       onClick={() =>
                         onComplete(
                           guest.bookingRef,
@@ -269,10 +271,10 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                           guest.checkoutDate
                         )
                       }
-                      className={`px-4 py-2 rounded text-white transition-colors duration-200 ${
+                      className={`px-4 py-2 rounded text-primary-fg transition-colors duration-200 ${
                         guest.isCompleted
-                          ? "bg-green-500 hover:bg-red-500"
-                          : "bg-blue-500 hover:bg-blue-600"
+                          ? "bg-success-main hover:bg-error-main"
+                          : "bg-info-main hover:bg-info-main"
                       }`}
                       title={
                         guest.isCompleted
@@ -286,13 +288,13 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                       }
                     >
                       {guest.isCompleted ? "Completed" : "Complete"}
-                    </button>
-                  </td>
-                </tr>
+                    </Button>
+                  </TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     );
   }

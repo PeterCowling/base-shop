@@ -107,10 +107,12 @@ Loop write paths rebuild `docs/business-os/_meta/discovery-index.json`. If rebui
 ## Special-Purpose Workflows
 
 - **Business OS coordination:** `docs/business-os/agent-workflows.md` (idea management, card lifecycle, plan updates)
-- **Pre-S0 problem-first entry:** Use when beginning a startup from a customer problem rather than a committed product. Add `--start-point problem` to `/startup-loop start`. This routes through DISCOVERY-01–DISCOVERY-04 before S0 intake:
-  - DISCOVERY-01 Problem framing → `/lp-do-discovery-01-problem-framing` → `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
-  - DISCOVERY-02 Solution-space scan → `/lp-do-discovery-02-solution-space-scan` → deep research prompt + operator-filled results artifact
-  - DISCOVERY-03 Option selection → `/lp-do-discovery-03-option-picking` → decision record with shortlist and elimination rationale; explicit kill gate if no viable option
-  - DISCOVERY-04 Naming handoff → `/lp-do-discovery-04-business-name-options` → naming research prompt (operator runs in deep research tool; save results as `<YYYY-MM-DD>-naming-shortlist.user.md` to satisfy GATE-BD-00 at S0→S1)
-  - Default (`--start-point product` or flag absent) bypasses DISCOVERY-01–DISCOVERY-04 entirely — no behavior change for existing operators.
+- **Pre-intake problem-first entry:** Use when beginning a startup from a customer problem rather than a committed product. Add `--start-point problem` to `/startup-loop start`. This routes through ASSESSMENT-01 to ASSESSMENT-04 before ASSESSMENT-09 intake:
+  - ASSESSMENT-01 Problem framing → `/lp-do-assessment-01-problem-statement` → `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
+  - ASSESSMENT-02 Solution-space scan → `/lp-do-assessment-02-solution-profiling` → deep research prompt + operator-filled results artifact
+  - ASSESSMENT-03 Solution selection → `/lp-do-assessment-03-solution-selection` → decision record with shortlist and elimination rationale; explicit kill gate if no viable option
+  - ASSESSMENT-04 Candidate names → `/lp-do-assessment-04-candidate-names` → naming pipeline (spec, generate 250 candidates, RDAP check, rank shortlist → `<YYYY-MM-DD>-candidate-names.user.md`)
+  - ASSESSMENT-05 Name selection → `/lp-do-assessment-05-name-selection` → naming generation spec (Part 1 of the pipeline, invoked by ASSESSMENT-04)
+  - Default (`--start-point product` or flag absent) bypasses ASSESSMENT-01 to ASSESSMENT-04 entirely — no behavior change for existing operators.
+  - After ASSESSMENT completion, startup-loop advances through `MEASURE-00` (Problem framing and ICP) before `MEASURE-01`; this keeps MARKET-01 and DO context aligned with current problem framing.
   - See gate routing: `.claude/skills/startup-loop/modules/cmd-start.md` Gate D

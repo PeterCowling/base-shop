@@ -1,15 +1,15 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy tracking page pending i18n overhaul */
 
 import * as React from "react";
 import Link from "next/link";
 
-import { Section } from "@acme/design-system/atoms/Section";
 import { Button, Input, Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
 import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 
 import { findOrdersByNumberAndEmail, orderTotal } from "../../../lib/ordersStore";
+import { xaI18n } from "../../../lib/xaI18n";
 
 type TrackRow = { order: string; status: string; total: number };
 
@@ -23,7 +23,7 @@ export default function TrackingOrderPage() {
   return (
     <main className="sf-content">
       <Section padding="wide">
-        <h1 className="text-2xl font-semibold">Check your order status</h1>
+        <h1 className="text-2xl font-semibold">{xaI18n.t("xaB.src.app.account.trackingorder.page.l25c48")}</h1>
       </Section>
 
       <Section padding="default" className="max-w-lg">

@@ -12,7 +12,7 @@ Deliverable-Family: <code-change | message | doc | spreadsheet | multi>
 Deliverable-Channel: <none | email | whatsapp>
 Deliverable-Subtype: <none | product-brief | marketing-asset>
 Deliverable-Type: <code-change | email-message | whatsapp-message | product-brief | marketing-asset | spreadsheet | multi-deliverable>
-Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-upgrade-backlog>
+Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-first-build-backlog | website-upgrade-backlog>
 Primary-Execution-Skill: <lp-do-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>
 Related-Plan: docs/plans/<feature-slug>/plan.md

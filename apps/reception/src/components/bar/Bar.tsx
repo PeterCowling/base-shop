@@ -44,7 +44,7 @@ const BarRoot: FC = React.memo(() => {
   }, [currentScreen, menuType]);
 
   return (
-    <div className="bg-gray-50 min-h-screen w-full font-body relative p-4 space-y-4 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="bg-surface-2 min-h-screen w-full font-body relative p-4 space-y-4 dark:bg-darkBg dark:text-darkAccentGreen">
       {user && (
         <HeaderControls
           currentUser={user.user_name}
@@ -53,7 +53,7 @@ const BarRoot: FC = React.memo(() => {
           onSelectMenuType={setMenuType}
         />
       )}
-      <div className="shadow bg-white p-4 rounded dark:bg-darkSurface">{content}</div>
+      <div className="shadow bg-surface p-4 rounded dark:bg-darkSurface">{content}</div>
     </div>
   );
 });

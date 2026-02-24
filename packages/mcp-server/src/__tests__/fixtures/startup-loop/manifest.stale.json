@@ -4,7 +4,7 @@
   "updated_at": "2020-01-01T00:00:00Z",
   "created_at": "2020-01-01T00:00:00Z",
   "stage_completions": {
-    "S2B": {
+    "MARKET-02": {
       "status": "Done",
       "timestamp": "2020-01-01T00:00:00Z",
       "produced_keys": [

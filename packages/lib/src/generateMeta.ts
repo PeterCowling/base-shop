@@ -149,9 +149,7 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   const buffer = Buffer.from(b64, "base64");
   const safeId = product.id.replace(/[^a-z0-9_-]/gi, "");
   const file = path.join(process.cwd(), "public", "og", `${safeId}.png`);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DEV-000: writing to controlled project path derived from sanitized id
   await fs.mkdir(path.dirname(file), { recursive: true });
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DEV-000: writing to controlled project path derived from sanitized id
   await fs.writeFile(file, buffer);
 
   return data;

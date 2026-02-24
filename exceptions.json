@@ -99,6 +99,13 @@
       "expires": "2026-12-31",
       "notes": "Brikette SEO audit, CTA, guide, routes, and schema lint exceptions (security/detect-non-literal-regexp, max-params, complexity) pending refactor."
     },
+    "BRIK-821": {
+      "allow": [
+        "apps/brikette/src/hooks/usePagePreload.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Brikette i18n preload hook dependency exception for stable namespace arrays used by page components."
+    },
     "CAR-1432": {},
     "CF-1001": {},
     "CF-1002": {},

@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
+import { ArrowUpRight } from "lucide-react";
 
 import { Button } from "@acme/design-system/primitives";
 import type { AssistanceQuickLinkRenderProps } from "@acme/ui/organisms/AssistanceQuickLinksSection";
@@ -263,11 +264,18 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
   return (
     <>
       <FaqStructuredData />
-      <h1 className="sr-only">
-        {t("heading", { defaultValue: "Help Centre" })}
-      </h1>
+      <Section className="mt-8 mb-2">
+        <h1 className="text-3xl font-bold tracking-tight text-brand-heading dark:text-brand-text sm:text-4xl">
+          {t("heading", { defaultValue: "Help Centre" })}
+        </h1>
+        <p className="mt-2 text-base text-brand-text/80 dark:text-brand-text/70">
+          {t("heroIntro", {
+            defaultValue: "Get instant answers from our team so you can plan your stay faster.",
+          })}
+        </p>
+      </Section>
 
-      <AssistanceQuickLinksSection lang={resolvedLang} className="mt-4" />
+      <AssistanceQuickLinksSection lang={resolvedLang} className="mt-2" />
 
       {/* Index of all assistance/help guides (excluding quick links above) */}
       <AssistanceQuickLinksSectionUi
@@ -276,12 +284,12 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
           defaultValue: tAssistanceEn("cta.readMore", { defaultValue: "Read more" }) as string,
         })}
         items={helpfulGuidesSectionItems}
-        className="mt-6"
+        className="mt-8"
         renderLink={renderAssistanceLink}
       />
 
-      <Section className="mt-10">
-        <div className="rounded-3xl border border-brand-outline/20 bg-gradient-to-br from-brand-bg via-brand-bg to-brand-bg/70 p-8 shadow-sm dark:border-brand-text/10 dark:from-brand-surface/90 dark:via-brand-surface/70 dark:to-brand-text/85">
+      <Section className="mt-8">
+        <div className="rounded-3xl border border-brand-outline/20 bg-gradient-to-br from-brand-surface/60 via-brand-bg to-brand-bg p-8 shadow-sm dark:border-brand-outline/20 dark:from-brand-surface/90 dark:via-brand-surface/70 dark:to-brand-surface/50">
           <Stack className="gap-6 lg:flex-row lg:items-start lg:justify-between">
             <Container className="max-w-xl space-y-4">
               <p className="text-sm font-semibold uppercase tracking-wide text-brand-primary dark:text-brand-secondary">
@@ -319,8 +327,9 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
                         size="sm"
                         className={BOOKING_BUTTON_CLASSNAME}
                       >
-                        <a href={href} target="_blank" rel="noopener noreferrer">
+                        <a href={href} target="_blank" rel="noopener noreferrer" aria-label={`${label} (opens in new tab)`}>
                           {label}
+                          <ArrowUpRight aria-hidden className="size-3.5 opacity-60" />
                         </a>
                       </Button>
                     );
@@ -338,7 +347,7 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
           defaultValue: tAssistanceEn("cta.readMore", { defaultValue: "Read more" }) as string,
         })}
         items={popularGuidesSectionItems}
-        className="mb-10 mt-6"
+        className="mb-10 mt-8"
         renderLink={renderAssistanceLink}
       />
 

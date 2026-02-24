@@ -87,7 +87,7 @@ Audit the startup-loop implementation for marketing and sales capability complet
 - `.claude/skills/lp-forecast/SKILL.md` - sparse-evidence forecast behavior and paths.
 - `.claude/skills/lp-seo/SKILL.md` - SEO consumer paths for upstream artifacts.
 - `.claude/skills/lp-measure/SKILL.md` - measurement bootstrap scope (infra-centric).
-- `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md` - S1B template requirements.
+- `docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md` - S1B template requirements.
 - `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` - weekly decision memo contract.
 - `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` - bottleneck metric catalog.
 

@@ -1,7 +1,12 @@
 import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 
-import { cn } from "../utils/style";
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
+import { cn, overflowContainmentClass } from "../utils/style";
 
 export const Popover = PopoverPrimitive.Root;
 export const PopoverTrigger = PopoverPrimitive.Trigger;
@@ -14,10 +19,16 @@ export const PopoverContent = (
     sideOffset = 4,
     align = "center",
     container,
+    shape,
+    radius,
     ...props
   }: React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content> & {
     ref?: React.Ref<React.ElementRef<typeof PopoverPrimitive.Content>>;
     container?: HTMLElement | null;
+    /** Semantic surface shape. Ignored when `radius` is provided. */
+    shape?: PrimitiveShape;
+    /** Explicit radius token override. */
+    radius?: PrimitiveRadius;
   }
 ) => {
   // Ensure a non-transparent background even if theme vars are missing by
@@ -30,6 +41,11 @@ export const PopoverContent = (
     color: /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */ "hsl(var(--color-fg, 0 0% 10%))",
     ...(styleFromProps as React.CSSProperties | undefined),
   };
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
   // If a container is provided, render within a Portal targeting it.
   if (container) {
     return (
@@ -40,7 +56,9 @@ export const PopoverContent = (
           align={align}
           className={cn(
             // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-            "bg-panel text-foreground z-popover rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2",
+            "bg-panel text-foreground z-popover border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2 break-words",
+            shapeRadiusClass,
+            overflowContainmentClass("popoverSurface"),
             className
           )}
           style={safeStyle}
@@ -58,7 +76,9 @@ export const PopoverContent = (
       align={align}
       className={cn(
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-        "bg-panel text-foreground z-popover rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2",
+        "bg-panel text-foreground z-popover border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2 break-words",
+        shapeRadiusClass,
+        overflowContainmentClass("popoverSurface"),
         className
       )}
       style={safeStyle}

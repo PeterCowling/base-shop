@@ -2,6 +2,11 @@ import * as React from "react";
 
 import { useTranslations } from "@acme/i18n";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export interface VideoPlayerProps
@@ -11,6 +16,10 @@ export interface VideoPlayerProps
   captionsLabel?: string;
   captionsLang?: string;
   fallbackText?: string;
+  /** Semantic media shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 const DEFAULT_CAPTIONS_LANG = "en"; // i18n-exempt -- UI-3001: language code default, not user-facing copy [ttl=2026-12-31]
@@ -23,6 +32,8 @@ export const VideoPlayer = (
     captionsLabel,
     captionsLang = DEFAULT_CAPTIONS_LANG,
     fallbackText,
+    shape,
+    radius,
     controls = true,
     "aria-label": ariaLabel,
     ...props
@@ -42,12 +53,17 @@ export const VideoPlayer = (
     captionsSrc ??
     "data:text/vtt,WEBVTT"; // i18n-exempt -- UI-3001: fallback empty captions track for accessibility conformance [ttl=2026-12-31]
   const warningId = React.useId();
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "lg",
+  });
 
   return (
     <div className="flex w-full flex-col gap-2">
       <video
         ref={ref}
-        className={cn("w-full rounded-lg", className)} // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+        className={cn("w-full", shapeRadiusClass, className)} // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
         data-aspect="16/9" // i18n-exempt -- UI-000: aspect ratio value; not user copy [ttl=2026-01-31]
         controls={controls}
         aria-label={resolvedAriaLabel}

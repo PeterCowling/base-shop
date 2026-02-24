@@ -4,63 +4,60 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { CheckInRow } from "../../../../types/component/CheckinRow";
+import CityTaxPaymentButton from "../CityTaxPaymentButton";
 
-async function loadComponent() {
-  jest.resetModules();
+const setPayTypeMock = jest.fn();
+const calculateCityTaxUpdateMock = jest.fn(() => ({
+  newTotalPaid: 5,
+  newBalance: 0,
+}));
+const buildCityTaxTransactionMock = jest.fn(() => ({
+  amount: 5,
+  type: "taxPayment",
+  timestamp: "t",
+}));
+const saveCityTaxMock = jest.fn(async () => undefined);
+const addActivityMock = jest.fn(async () => undefined);
+const addToAllTransactionsMock = jest.fn(async () => undefined);
+const showToastMock = jest.fn();
 
-  const setPayTypeMock = jest.fn();
-  const calculateCityTaxUpdateMock = jest.fn(() => ({ newTotalPaid: 5, newBalance: 0 }));
-  const buildCityTaxTransactionMock = jest.fn(() => ({ amount: 5, type: "taxPayment", timestamp: "t" }));
-  const saveCityTaxMock = jest.fn(async () => undefined);
-  const addActivityMock = jest.fn(async () => undefined);
-  const addToAllTransactionsMock = jest.fn(async () => undefined);
+jest.mock("../useCityTaxAmount", () => ({
+  __esModule: true,
+  default: () => ({
+    payType: "CASH",
+    setPayType: setPayTypeMock,
+    amount: 5,
+    loading: false,
+  }),
+}));
 
-  jest.doMock("../useCityTaxAmount", () => ({
-    __esModule: true,
-    default: () => ({
-      payType: "CASH",
-      setPayType: setPayTypeMock,
-      amount: 5,
-      loading: false,
-    }),
-  }));
+jest.mock("../useCityTaxPayment", () => ({
+  __esModule: true,
+  useCityTaxPayment: () => ({
+    calculateCityTaxUpdate: calculateCityTaxUpdateMock,
+    buildCityTaxTransaction: buildCityTaxTransactionMock,
+  }),
+}));
 
-  jest.doMock("../useCityTaxPayment", () => ({
-    __esModule: true,
-    useCityTaxPayment: () => ({
-      calculateCityTaxUpdate: calculateCityTaxUpdateMock,
-      buildCityTaxTransaction: buildCityTaxTransactionMock,
-    }),
-  }));
+jest.mock("../../../../hooks/mutations/useCityTaxMutation", () => ({
+  __esModule: true,
+  default: () => ({ saveCityTax: saveCityTaxMock }),
+}));
 
-  jest.doMock("../../../../hooks/mutations/useCityTaxMutation", () => ({
-    __esModule: true,
-    default: () => ({ saveCityTax: saveCityTaxMock }),
-  }));
+jest.mock("../../../../hooks/mutations/useActivitiesMutations", () => ({
+  __esModule: true,
+  default: () => ({ addActivity: addActivityMock }),
+}));
 
-  jest.doMock("../../../../hooks/mutations/useActivitiesMutations", () => ({
-    __esModule: true,
-    default: () => ({ addActivity: addActivityMock }),
-  }));
+jest.mock("../../../../hooks/mutations/useAllTransactionsMutations", () => ({
+  __esModule: true,
+  default: () => ({ addToAllTransactions: addToAllTransactionsMock }),
+}));
 
-  jest.doMock(
-    "../../../../hooks/mutations/useAllTransactionsMutations",
-    () => ({
-    __esModule: true,
-    default: () => ({ addToAllTransactions: addToAllTransactionsMock }),
-  }));
-
-  const mod = await import("../CityTaxPaymentButton");
-  return {
-    Comp: mod.default,
-    setPayTypeMock,
-    calculateCityTaxUpdateMock,
-    buildCityTaxTransactionMock,
-    saveCityTaxMock,
-    addActivityMock,
-    addToAllTransactionsMock,
-  };
-}
+jest.mock("../../../../utils/toastUtils", () => ({
+  __esModule: true,
+  showToast: (...args: [string, string]) => showToastMock(...args),
+}));
 
 const booking: CheckInRow = {
   bookingRef: "B1",
@@ -82,8 +79,7 @@ describe("CityTaxPaymentButton", () => {
   });
 
   it("calls setPayType on menu selection", async () => {
-    const { Comp, setPayTypeMock } = await loadComponent();
-    render(<Comp booking={booking} />);
+    render(<CityTaxPaymentButton booking={booking} />);
 
     await userEvent.click(screen.getByTitle("Click to choose payment type"));
     await userEvent.click(screen.getByText("CC"));
@@ -92,8 +88,7 @@ describe("CityTaxPaymentButton", () => {
   });
 
   it("triggers payment workflow on button click", async () => {
-    const { Comp, calculateCityTaxUpdateMock, buildCityTaxTransactionMock, saveCityTaxMock, addActivityMock, addToAllTransactionsMock } = await loadComponent();
-    render(<Comp booking={booking} />);
+    render(<CityTaxPaymentButton booking={booking} />);
 
     await userEvent.click(screen.getByTitle("Pay immediately with selected type"));
 

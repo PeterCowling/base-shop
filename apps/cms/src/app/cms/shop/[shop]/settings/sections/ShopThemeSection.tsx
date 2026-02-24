@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { resetThemeOverride } from "@cms/actions/shops.server";
+import { resetThemeOverride } from "@cms/actions/shops-theme.server";
 
 import DataTable from "@acme/cms-ui/DataTable";
 import { useTranslations } from "@acme/i18n";

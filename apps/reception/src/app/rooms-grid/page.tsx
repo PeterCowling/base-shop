@@ -1,4 +1,4 @@
-// Skip SSG - @daminort/reservation-grid has React internals incompatible with prerendering
+// Keep this dynamic to avoid static caching of rapidly changing booking data.
 import RoomsGridClient from "./RoomsGridClient";
 
 export const dynamic = "force-dynamic";

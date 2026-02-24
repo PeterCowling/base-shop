@@ -1,14 +1,17 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy reviews page pending design/i18n overhaul */
 import { Section } from "@acme/design-system/atoms/Section";
+import { PolicyPageIntro } from "@acme/ui/components/organisms/PolicyPageIntro";
+
+import { xaI18n } from "../../../lib/xaI18n";
 
 export default function ReviewsPage() {
   return (
     <main className="sf-content">
       <Section padding="wide">
-        <h1 className="text-2xl font-semibold">Reviews</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Reviews are optional in the merged spec; this page is a placeholder.
-        </p>
+        <PolicyPageIntro
+          title="Reviews"
+          description={xaI18n.t("xaB.src.app.pages.reviews.page.l10c23")}
+          descriptionClassName={xaI18n.t("xaB.src.app.pages.reviews.page.l11c32")}
+        />
       </Section>
     </main>
   );

@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-raw-tailwind-color -- test fixtures */
 import "@testing-library/jest-dom";
 
 import React from "react";
@@ -20,11 +19,11 @@ describe("CategoryHeader", () => {
     );
 
     const sweetBtn = screen.getByRole("tab", { name: "Sweet" });
-    expect(sweetBtn.className).toContain("text-black");
+    expect(sweetBtn.className).toContain("text-foreground");
     expect(sweetBtn.className).toContain("dark:text-darkAccentGreen");
 
     const beerBtn = screen.getByRole("tab", { name: "Beer" });
-    expect(beerBtn.className).toContain("text-white");
-    expect(beerBtn.className).toContain("dark:text-white");
+    expect(beerBtn.className).toContain("text-primary-fg");
+    expect(beerBtn.className).toContain("dark:text-primary-fg");
   });
 });

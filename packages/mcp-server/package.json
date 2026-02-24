@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@acme/config": "workspace:^",
+    "@acme/lib": "workspace:^",
     "@acme/platform-core": "workspace:^",
     "@acme/zod-utils": "workspace:^",
     "@google-cloud/local-auth": "^3.0.1",

@@ -5,6 +5,10 @@ import userEvent from "@testing-library/user-event";
 
 import MixerModal from "../MixerModal";
 
+jest.mock("../../../../../hoc/withModalBackground", () => ({
+  withModalBackground: (Comp: React.ComponentType) => Comp,
+}));
+
 const mixers = [
   "Mixer Tonic Water",
   "Mixer Soda Water",
@@ -37,4 +41,3 @@ describe("MixerModal", () => {
     expect(onCancel).toHaveBeenCalled();
   });
 });
-

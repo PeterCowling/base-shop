@@ -35,10 +35,10 @@ BD-3 (Messaging Hierarchy as S2B sub-deliverable), BD-4 (Creative Voice Brief af
 ## Goals
 
 1. Every brand artifact type has a defined front matter schema, Draft/Active DoD, and machine-readable gate.
-2. The startup-loop advance rules enforce brand-dossier existence at S1 and messaging-hierarchy at S2B Done.
+2. The startup-loop advance rules enforce brand-identity existence at S1 and messaging-hierarchy at S2B Done.
 3. The BRIK brand-language.user.md is renamed, deduplicated (no hand-copied token values), and all downstream skill references are updated.
 4. lp-launch-qa gains a Domain 5 Brand Copy Compliance section (BC-04/05/07).
-5. lp-design-spec is gated on Active brand-dossier (hard pre-flight, not soft quality check).
+5. lp-design-spec is gated on Active brand-identity (hard pre-flight, not soft quality check).
 6. 5 Deep Research prompt templates (BRAND-DR-01..05) are created in workflow-prompts/_templates/.
 7. Evidence Pack directory convention (`docs/business-os/evidence/<BIZ>/<YYYY-MM>/`) with compliance guardrails.
 
@@ -47,7 +47,7 @@ BD-3 (Messaging Hierarchy as S2B sub-deliverable), BD-4 (Creative Voice Brief af
 - Changing BRIK's existing brand decisions (palette, typeface, persona).
 - Implementing visual designs or selecting logo variants.
 - Running actual brand research (this plan builds the process; research runs inside the loop).
-- Creating brand-dossiers for HEAD/PET/HBAG before their loops start — those are bootstrapped at S1
+- Creating brand-identitys for HEAD/PET/HBAG before their loops start — those are bootstrapped at S1
   entry (lp-brand-bootstrap skill + GATE-BD-01).
 - Modifying lp-offer's core 6-section output contract.
 
@@ -70,9 +70,9 @@ BD-3 (Messaging Hierarchy as S2B sub-deliverable), BD-4 (Creative Voice Brief af
   - E-01: §11 has no stage key, artifact contract, or gate (prose appendix only)
   - E-03: S2B→S3+S6B fan-out is a hard invariant; BD-3 must be S2B sub-deliverable (Option A chosen)
   - E-04: brand-language not in startup-loop advance rules (Gate OG-01 confirmed)
-  - E-05 (extended): lp-offer has no brand-dossier in optional inputs (G-03 confirmed from full read)
+  - E-05 (extended): lp-offer has no brand-identity in optional inputs (G-03 confirmed from full read)
   - E-10: token value mismatch: brand-language.user.md says `6 78% 57%`; tokens.ts says `6 78% 47%`
-  - E-12 (confirmed): lp-channels has no brand inputs — brand-dossier and messaging-hierarchy absent
+  - E-12 (confirmed): lp-channels has no brand inputs — brand-identity and messaging-hierarchy absent
   - E-13 (confirmed + revised): lp-launch-qa has no brand compliance domain; lp-design-qa VR-05 + TC-01/02 already handle token/signature compliance; lp-design-qa requires brand-language.user.md as REQUIRED input
   - lp-design-spec: 6 references to brand-language.user.md (lines 54, 65, 175, 205, 295, 345, 371); currently CREATES brand-language if missing — must change to gate
 
@@ -86,7 +86,7 @@ BD-3 (Messaging Hierarchy as S2B sub-deliverable), BD-4 (Creative Voice Brief af
   - `.claude/skills/lp-design-spec/SKILL.md` — creates brand-language.user.md if missing (line 175); references it 6×
   - `.claude/skills/lp-design-qa/SKILL.md` — requires brand-language.user.md (line 80); VR-05 checks brand patterns; TC-01/02 check tokens
   - `.claude/skills/lp-launch-qa/SKILL.md` — 4 domains: Conversion/SEO/Performance/Legal; brand fully absent
-  - `.claude/skills/lp-offer/SKILL.md` — no brand-dossier in inputs; produces BRIK-offer.md with 6 sections
+  - `.claude/skills/lp-offer/SKILL.md` — no brand-identity in inputs; produces BRIK-offer.md with 6 sections
   - `.claude/skills/lp-channels/SKILL.md` — no brand inputs; consumes lp-offer output only
   - `docs/business-os/strategy/BRIK/brand-language.user.md` — Active; hand-copied token values (drift confirmed E-10)
   - `packages/themes/prime/src/tokens.ts` — source of truth; `--color-primary: { light: '6 78% 47%' }`
@@ -103,7 +103,7 @@ BD-3 as S2B sub-deliverable (Option A): S2B is not Done until both `offer` and `
 (Draft minimum) exist. This preserves the S2B→S3+S6B parallel fan-out invariant (E-03). The messaging
 hierarchy synthesis is a prompt-handoff step at end of S2B, not a new standalone stage.
 
-Brand Dossier consolidation: Each business gets `brand-dossier.user.md` (replaces `brand-language.user.md`
+Brand Dossier consolidation: Each business gets `brand-identity.user.md` (replaces `brand-language.user.md`
 for BRIK via rename; new artifact for HEAD/PET/HBAG via lp-brand-bootstrap). Competitive positioning and
 messaging hierarchy remain separate files (different lifecycle: monthly refresh vs. per-offer-version).
 `index.user.md` per business is the gate reference point — gates read status from the index.
@@ -112,14 +112,14 @@ BC-01/02/03 (token/typography/palette compliance) are already covered by lp-desi
 lp-launch-qa Domain 5 adds only BC-04 (voice/words-to-avoid), BC-05 (claims vs proof ledger), and BC-07
 (CTA language). BC-06 (imagery) is a soft warning in lp-design-qa VR-05 (brand patterns).
 
-Chosen: Single-rename approach (brand-language → brand-dossier everywhere). No backward-compat shim.
+Chosen: Single-rename approach (brand-language → brand-identity everywhere). No backward-compat shim.
 All 7 affected files updated in one task. docs/registry.json entry updated.
 
 ## Task Summary
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | INVESTIGATE | lp-offer: confirm brand-dossier absent; verify optional input add is safe | 95% | S | Complete (2026-02-17) | - | TASK-05 |
+| TASK-01 | INVESTIGATE | lp-offer: confirm brand-identity absent; verify optional input add is safe | 95% | S | Complete (2026-02-17) | - | TASK-05 |
 | TASK-02 | INVESTIGATE | lp-channels: confirm brand voice absent; verify optional inputs safe | 95% | S | Complete (2026-02-17) | - | TASK-05 |
 | TASK-03 | INVESTIGATE | lp-launch-qa: confirm no brand compliance domain; verify Domain 5 insertion point | 95% | S | Complete (2026-02-17) | - | TASK-05 |
 | TASK-04 | INVESTIGATE | lp-design-qa: confirm VR-05/TC-01/02 coverage; confirm brand-language required path | 95% | S | Complete (2026-02-17) | - | TASK-05 |
@@ -127,17 +127,17 @@ All 7 affected files updated in one task. docs/registry.json entry updated.
 | TASK-06 | IMPLEMENT | Create evidence dir convention + README template | 88% | S | Complete (2026-02-17) | TASK-05 | - |
 | TASK-07 | IMPLEMENT | Create 5 Deep Research prompt templates (BRAND-DR-01..05) | 85% | M | Complete (2026-02-17) | TASK-05 | - |
 | TASK-08 | IMPLEMENT | Create index.user.md template for strategy dir | 92% | S | Complete (2026-02-17) | TASK-05 | TASK-17,18,19 |
-| TASK-09 | IMPLEMENT | Rename BRIK brand-language → brand-dossier; update all 7 skill/doc refs; fix token mirroring | 84% | L | Complete (2026-02-17) | TASK-05 | TASK-10,12,13,14,15,16,17,18,19 |
+| TASK-09 | IMPLEMENT | Rename BRIK brand-language → brand-identity; update all 7 skill/doc refs; fix token mirroring | 84% | L | Complete (2026-02-17) | TASK-05 | TASK-10,12,13,14,15,16,17,18,19 |
 | TASK-10 | IMPLEMENT | Create prime-app-design-branding.user.md for BRIK (extract from §11.1, fix path) | 88% | S | Complete (2026-02-17) | TASK-09 | TASK-13 |
 | TASK-11 | IMPLEMENT | Update loop-spec.yaml: BD-3 sub-deliverable comment; version note | 88% | S | Complete (2026-02-17) | TASK-05 | TASK-12 |
 | TASK-12 | IMPLEMENT | Update startup-loop SKILL.md: add GATE-BD-01 + GATE-BD-03 + GATE-BD-08 advance rules | 85% | S | Complete (2026-02-17) | TASK-09,11 | TASK-13 |
 | TASK-13 | IMPLEMENT | Surgery on startup-loop-workflow.user.md: §4 BD-1..6 table, §11 retirement, §12 refresh | 82% | M | Complete (2026-02-17) | TASK-10,12 | - |
-| TASK-14 | IMPLEMENT | Add brand-dossier + messaging-hierarchy as optional inputs to lp-offer + lp-channels | 85% | S | Complete (2026-02-17) | TASK-09 | - |
+| TASK-14 | IMPLEMENT | Add brand-identity + messaging-hierarchy as optional inputs to lp-offer + lp-channels | 85% | S | Complete (2026-02-17) | TASK-09 | - |
 | TASK-15 | IMPLEMENT | Add Domain 5 Brand Copy Compliance (BC-04/05/07) to lp-launch-qa | 82% | M | Complete (2026-02-17) | TASK-09 | - |
 | TASK-16 | IMPLEMENT | Change lp-design-spec: replace "create if missing" with GATE-BD-07 hard pre-flight check | 82% | M | Complete (2026-02-17) | TASK-09 | - |
-| TASK-17 | IMPLEMENT | Run lp-brand-bootstrap for HEAD (creates HEAD brand-dossier.user.md at Draft) | 85% | S | Complete (2026-02-17) | TASK-08,09 | - |
-| TASK-18 | IMPLEMENT | Run lp-brand-bootstrap for PET (creates PET brand-dossier.user.md at Draft) | 85% | S | Complete (2026-02-17) | TASK-08,09 | - |
-| TASK-19 | IMPLEMENT | Run lp-brand-bootstrap for HBAG (creates HBAG brand-dossier.user.md at Draft) | 85% | S | Complete (2026-02-17) | TASK-08,09 | - |
+| TASK-17 | IMPLEMENT | Run lp-brand-bootstrap for HEAD (creates HEAD brand-identity.user.md at Draft) | 85% | S | Complete (2026-02-17) | TASK-08,09 | - |
+| TASK-18 | IMPLEMENT | Run lp-brand-bootstrap for PET (creates PET brand-identity.user.md at Draft) | 85% | S | Complete (2026-02-17) | TASK-08,09 | - |
+| TASK-19 | IMPLEMENT | Run lp-brand-bootstrap for HBAG (creates HBAG brand-identity.user.md at Draft) | 85% | S | Complete (2026-02-17) | TASK-08,09 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -174,14 +174,14 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Approach: 95% — reading official file is the correct way to verify
   - Impact: 95% — no writes; findings only update plan notes
 - **Blockers / questions to answer:**
-  - Q1: Is brand-dossier absent from optional inputs? (Planning evidence: confirmed absent — E-05 via first 80 lines)
+  - Q1: Is brand-identity absent from optional inputs? (Planning evidence: confirmed absent — E-05 via first 80 lines)
   - Q2: Does full file reveal any brand-consumption behavior beyond line 80?
-  - Q3: Is adding brand-dossier to optional inputs safe (no validation that rejects unknown optional fields)?
+  - Q3: Is adding brand-identity to optional inputs safe (no validation that rejects unknown optional fields)?
 - **Acceptance:**
   - Read all 228 lines of lp-offer SKILL.md
-  - Confirm: brand-dossier/brand-language absent from inputs (required AND optional)
+  - Confirm: brand-identity/brand-language absent from inputs (required AND optional)
   - Confirm: optional inputs are a freeform list (not schema-validated) — safe to add
-  - Confirm: Positioning One-Pager (Section 4) would benefit from brand-dossier context
+  - Confirm: Positioning One-Pager (Section 4) would benefit from brand-identity context
   - If findings differ from plan evidence, update TASK-14 confidence and approach before proceeding
 - **Notes / references:**
   - File at `.claude/skills/lp-offer/SKILL.md` (228 lines; first 80 read during fact-find)
@@ -198,8 +198,8 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Post-validation: 95% (confirmed)
   - Delta reason: validation confirmed all planning assumptions
 - **Implementation notes:**
-  - Q1 CONFIRMED: brand-dossier/brand-language completely absent from all inputs (required + optional)
-  - Q2 CONFIRMED: optional inputs are freeform prose bullet list — safe to extend with brand-dossier
+  - Q1 CONFIRMED: brand-identity/brand-language completely absent from all inputs (required + optional)
+  - Q2 CONFIRMED: optional inputs are freeform prose bullet list — safe to extend with brand-identity
   - Q3 NEW FINDING: lp-offer Section 4 (Positioning One-Pager) produces "key message" and "competitive frame" **without** brand-voice guidance; Section 6 (Objection Map) produces "logical/emotional counter" responses also without brand context — this strongly validates G-03 and the TASK-14 insertion
   - TASK-14 impact: no confidence change needed; findings match plan. Insertion point confirmed as both Section 4 (positioning) and Section 6 (objections) in the optional inputs block.
 
@@ -218,13 +218,13 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Approach: 95% — reading file is the authoritative source
   - Impact: 95% — no writes
 - **Blockers / questions to answer:**
-  - Q1: Is brand-language/brand-dossier absent from all inputs? (Planning: confirmed absent — E-12)
+  - Q1: Is brand-language/brand-identity absent from all inputs? (Planning: confirmed absent — E-12)
   - Q2: Does lp-channels already reference positioning/voice from brand documents?
-  - Q3: Is channel selection rationale (Section 3 "Why this channel fits the positioning") the right insertion point for brand-dossier context?
+  - Q3: Is channel selection rationale (Section 3 "Why this channel fits the positioning") the right insertion point for brand-identity context?
 - **Acceptance:**
   - Read complete lp-channels SKILL.md
   - Confirm: no brand document in required or optional inputs
-  - Confirm: insertion point for brand-dossier + messaging-hierarchy as optional inputs
+  - Confirm: insertion point for brand-identity + messaging-hierarchy as optional inputs
   - If already present (positive risk), update TASK-14 scope to remove lp-channels change
 - **Notes / references:**
   - File at `.claude/skills/lp-channels/SKILL.md`
@@ -241,10 +241,10 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Post-validation: 95% (confirmed)
   - Delta reason: validation confirmed all planning assumptions
 - **Implementation notes:**
-  - Q1 CONFIRMED: brand-dossier, brand-language, brand voice, "messaging" — none found in required or optional inputs
+  - Q1 CONFIRMED: brand-identity, brand-language, brand voice, "messaging" — none found in required or optional inputs
   - Q2 CONFIRMED: zero brand references anywhere in file
   - Q3 CONFIRMED: optional inputs are freeform descriptive prose (safe to extend)
-  - INSERTION POINT: Stage 3 "Selection Rationale" → "Why this channel fits the positioning" section (approx line 88-89). This is the natural location for brand-dossier + messaging-hierarchy as optional inputs.
+  - INSERTION POINT: Stage 3 "Selection Rationale" → "Why this channel fits the positioning" section (approx line 88-89). This is the natural location for brand-identity + messaging-hierarchy as optional inputs.
   - TASK-14 scope unchanged (lp-channels does need the brand inputs added)
 
 ---
@@ -342,9 +342,9 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Q1 CONFIRMED: brand-language.user.md is REQUIRED (not optional) at line 80 in inputs table. Exact path: `docs/business-os/strategy/<BIZ>/brand-language.user.md`
   - Q2 CONFIRMED: VR-05 "Brand Signature Patterns" explicitly reads brand-language "Signature Patterns" section and verifies application across components
   - Q3 CONFIRMED: TC-01 (arbitrary value audit — greps for `#`, `rgb(`, `hsl(`, `[`, `px` in className strings) + TC-02 (Tailwind palette audit — no non-semantic color classes) together cover token compliance (BC-01/02/03)
-  - Q4 PATH: `docs/business-os/strategy/<BIZ>/brand-language.user.md` — TASK-09 updates this to `brand-dossier.user.md`
+  - Q4 PATH: `docs/business-os/strategy/<BIZ>/brand-language.user.md` — TASK-09 updates this to `brand-identity.user.md`
   - CRITICAL NEW FINDING (TASK-16 impact): lp-design-qa has **no documented fallback** when brand-language.user.md is missing. The skill marks it REQUIRED and the "Red Flags" section doesn't cover missing brand-language as an early exit. lp-design-spec's current "create if missing" behavior is papering over a hard dependency in lp-design-qa. GATE-BD-07 in TASK-16 is therefore more critical than originally assessed — confidence for TASK-16 holds at 82% (no change needed; criticality was already understood).
-  - TASK-09 scope: needs to update lp-design-qa line 80 path (`brand-language.user.md` → `brand-dossier.user.md`) in addition to the 7 files already listed — this is within scope since lp-design-qa is in the 7-file list.
+  - TASK-09 scope: needs to update lp-design-qa line 80 path (`brand-language.user.md` → `brand-identity.user.md`) in addition to the 7 files already listed — this is within scope since lp-design-qa is in the 7-file list.
 
 ---
 
@@ -527,7 +527,7 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Template has: Strategy-Index frontmatter (Type, Business-Unit, Last-updated)
   - Template has: artifact table with columns: Artifact, Path, Status, Last-reviewed
   - Template includes BRIK example rows and placeholder rows for HEAD/PET/HBAG
-  - Note: BRIK's actual index.user.md populated in TASK-09 (alongside brand-dossier rename)
+  - Note: BRIK's actual index.user.md populated in TASK-09 (alongside brand-identity rename)
 - **Validation contract:**
   - VC-01: Template exists → `ls docs/business-os/strategy/_templates/index-template.user.md` returns file
   - VC-02: Frontmatter has correct Type field → `grep "Type: Strategy-Index" ...` returns match
@@ -553,18 +553,18 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 
 ---
 
-### TASK-09: Rename BRIK brand-language → brand-dossier; fix token mirroring; update all 7 skill/doc refs
+### TASK-09: Rename BRIK brand-language → brand-identity; fix token mirroring; update all 7 skill/doc refs
 
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — renamed artifact + updated skill files
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-do-build
-- **Artifact-Destination:** `docs/business-os/strategy/BRIK/brand-dossier.user.md` (renamed from brand-language.user.md)
+- **Artifact-Destination:** `docs/business-os/strategy/BRIK/brand-identity.user.md` (renamed from brand-language.user.md)
 - **Reviewer:** Pete
 - **Approval-Evidence:** `grep -r "brand-language.user.md" .claude/ docs/ apps/ packages/` returns 0 matches in skill/source files after completion
-- **Measurement-Readiness:** Next lp-design-spec run uses brand-dossier.user.md (testable immediately)
+- **Measurement-Readiness:** Next lp-design-spec run uses brand-identity.user.md (testable immediately)
 - **Affects:**
-  - `docs/business-os/strategy/BRIK/brand-language.user.md` → `docs/business-os/strategy/BRIK/brand-dossier.user.md` (rename + content fix)
+  - `docs/business-os/strategy/BRIK/brand-language.user.md` → `docs/business-os/strategy/BRIK/brand-identity.user.md` (rename + content fix)
   - `docs/business-os/strategy/BRIK/index.user.md` (new — create using template from TASK-08)
   - `.claude/skills/lp-brand-bootstrap/SKILL.md` (3 refs: description, trigger, output path)
   - `.claude/skills/lp-design-qa/SKILL.md` (2 refs: operating mode, inputs table)
@@ -578,32 +578,32 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Approach: 85% — single-rename approach with no backward-compat shim; aligns with "avoid backward-compatibility hacks" in CLAUDE.md
   - Impact: 85% — all 7 affected files identified; grep probe confirmed no others in .claude/, docs/ (lp-onboarding-audit is optional/enhancing only, not a gate)
 - **Acceptance:**
-  - `docs/business-os/strategy/BRIK/brand-dossier.user.md` exists with:
-    - Frontmatter: Type: Brand-Dossier, Token-Source: packages/themes/prime/src/tokens.ts
+  - `docs/business-os/strategy/BRIK/brand-identity.user.md` exists with:
+    - Frontmatter: Type: Brand-Identity, Token-Source: packages/themes/prime/src/tokens.ts
     - No hand-copied token values (HSL values removed from Color Palette section)
     - Token Rationale section added (token-name → rationale, not value)
     - Status remains Active
   - `docs/business-os/strategy/BRIK/index.user.md` created with BRIK artifact status table
-  - All 7 files updated: old `brand-language.user.md` path → `brand-dossier.user.md`
+  - All 7 files updated: old `brand-language.user.md` path → `brand-identity.user.md`
   - lp-design-spec: "Create brand-language.user.md if missing" replaced with GATE-BD-07 pre-flight text (see TASK-16 for full gate; here just update the path reference, not the gate logic)
-  - `.user.html` companion for brand-dossier.user.md regenerated via `pnpm docs:render-user-html`
+  - `.user.html` companion for brand-identity.user.md regenerated via `pnpm docs:render-user-html`
 - **Validation contract:**
-  - VC-01: brand-dossier.user.md exists, brand-language.user.md does not → `ls docs/business-os/strategy/BRIK/brand-dossier.user.md` pass; `ls docs/business-os/strategy/BRIK/brand-language.user.md` fail
+  - VC-01: brand-identity.user.md exists, brand-language.user.md does not → `ls docs/business-os/strategy/BRIK/brand-identity.user.md` pass; `ls docs/business-os/strategy/BRIK/brand-language.user.md` fail
   - VC-02: No remaining references to brand-language.user.md in skill files → `grep -r "brand-language.user.md" .claude/skills/` returns 0 matches
-  - VC-03: Token values absent from brand-dossier.user.md → `grep "78% 57\|78% 47" docs/business-os/strategy/BRIK/brand-dossier.user.md` returns 0 matches
-  - VC-04: Token-Source field present → `grep "Token-Source" docs/business-os/strategy/BRIK/brand-dossier.user.md` returns match
-  - VC-05: BRIK index.user.md exists with brand-dossier row → `grep "brand-dossier.user.md" docs/business-os/strategy/BRIK/index.user.md` returns match
-  - VC-06: docs/registry.json updated → `grep "brand-dossier.user.md" docs/registry.json` returns match; `grep "brand-language.user.md" docs/registry.json` returns 0 matches
+  - VC-03: Token values absent from brand-identity.user.md → `grep "78% 57\|78% 47" docs/business-os/strategy/BRIK/brand-identity.user.md` returns 0 matches
+  - VC-04: Token-Source field present → `grep "Token-Source" docs/business-os/strategy/BRIK/brand-identity.user.md` returns match
+  - VC-05: BRIK index.user.md exists with brand-identity row → `grep "brand-identity.user.md" docs/business-os/strategy/BRIK/index.user.md` returns match
+  - VC-06: docs/registry.json updated → `grep "brand-identity.user.md" docs/registry.json` returns match; `grep "brand-language.user.md" docs/registry.json` returns 0 matches
 - **Execution plan:**
   - Red evidence (already gathered during planning): grep probe surfaced all 13 references across 7 files. lp-design-spec creates brand-language.user.md if missing (line 175) — this confirms TASK-16 must change that behavior, not just rename the path.
-  - Green: Rename BRIK file, fix token values, create BRIK index.user.md, update all 7 files to reference brand-dossier.user.md
+  - Green: Rename BRIK file, fix token values, create BRIK index.user.md, update all 7 files to reference brand-identity.user.md
   - Refactor: Run VC-01..06 checks; regenerate .user.html; confirm no stale references remain
 - **Scouts:**
   - "docs/registry.json entry format" → checked via grep during planning → `"path": "docs/business-os/strategy/BRIK/brand-language.user.md"` confirmed at line 1599; format is simple path field update
   - "lp-onboarding-audit references brand-language" → confirmed optional/enhancing (not a gate); path update optional (not blocking)
   - "docs/plans/brik-activities-program/fact-find.md references brand-language" → read-only plan doc; update is documentation hygiene, not functional
 - **Edge Cases & Hardening:**
-  - lp-design-spec "create if missing" code: path update in TASK-09 only updates the path string; the create behavior is changed in TASK-16. If TASK-09 runs before TASK-16, lp-design-spec will attempt to create brand-dossier.user.md if missing — this is acceptable transitional state (creates the right file at the right path)
+  - lp-design-spec "create if missing" code: path update in TASK-09 only updates the path string; the create behavior is changed in TASK-16. If TASK-09 runs before TASK-16, lp-design-spec will attempt to create brand-identity.user.md if missing — this is acceptable transitional state (creates the right file at the right path)
   - docs/plans/brik-activities-program/fact-find.md is a read-only plan doc citing the old path: update for accuracy but not functional gate
 - **Planning validation:**
   - Checks run: `grep -r "brand-language.user.md" .claude/ docs/` — found 13 matches across 7 files (confirmed above)
@@ -631,19 +631,19 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Post-validation: 84%
   - Delta reason: All assumptions confirmed; lp-onboarding-audit had an additional ref (scouts noted it as optional/enhancing — updated it anyway for full cleanliness)
 - **Validation:**
-  - VC-01: `ls brand-dossier.user.md` PASS; `ls brand-language.user.md` exits 1 PASS
+  - VC-01: `ls brand-identity.user.md` PASS; `ls brand-language.user.md` exits 1 PASS
   - VC-02: `grep -r "brand-language.user.md" .claude/skills/` → exit 1 (0 matches) PASS
-  - VC-03: `grep "78% 57|78% 47" brand-dossier.user.md` → 0 matches PASS
-  - VC-04: `grep "Token-Source" brand-dossier.user.md` PASS
-  - VC-05: `grep "brand-dossier.user.md" index.user.md` PASS
-  - VC-06: registry.json updated to Brand-Dossier; brand-language.user.md absent PASS
+  - VC-03: `grep "78% 57|78% 47" brand-identity.user.md` → 0 matches PASS
+  - VC-04: `grep "Token-Source" brand-identity.user.md` PASS
+  - VC-05: `grep "brand-identity.user.md" index.user.md` PASS
+  - VC-06: registry.json updated to Brand-Identity; brand-language.user.md absent PASS
 - **Documentation updated:** docs/registry.json, docs/plans/brik-activities-program/fact-find.md
 - **Implementation notes:**
   - git mv used to preserve history; content edited to remove HSL values and add Token Rationale section
   - Token-Source frontmatter added pointing to packages/themes/prime/src/tokens.ts
-  - BRIK index.user.md created (Active status for brand-dossier, — for remaining artifacts)
+  - BRIK index.user.md created (Active status for brand-identity, — for remaining artifacts)
   - 8 skill files updated (lp-brand-bootstrap, lp-design-qa, lp-design-spec, _shared/brand-language-template, lp-onboarding-audit — plus registry.json and brik-activities fact-find)
-  - brand-dossier.user.html companion regenerated via pnpm docs:render-user-html
+  - brand-identity.user.html companion regenerated via pnpm docs:render-user-html
 
 ---
 
@@ -664,14 +664,14 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 - **Blocks:** TASK-13
 - **Confidence:** 88%
   - Implementation: 90% — extract §11.1 content from workflow doc; clear target structure from fact-find
-  - Approach: 88% — Prime-specific doc projection from brand-dossier is the right pattern for app-level specificity
+  - Approach: 88% — Prime-specific doc projection from brand-identity is the right pattern for app-level specificity
   - Impact: 88% — new file only; §11.1 source is read-only (not deleted here; retired in TASK-13)
 - **Acceptance:**
   - File exists at correct path
   - Contains: Scope declaration (governed surfaces), 7 design principles (migrated from §11.1)
   - Path corrected: references `packages/themes/prime/src/tokens.ts` (not `tokens.css` from §11)
   - Token Rationale section (no hand-copied values; rationale for coral, Plus Jakarta Sans, radius)
-  - Link to brand-dossier.user.md for non-Prime-specific decisions
+  - Link to brand-identity.user.md for non-Prime-specific decisions
   - Signature Patterns section (initially empty/placeholder; populated via lp-design-spec feature work)
   - Status: Active, Last-reviewed: today
   - `.user.html` companion generated
@@ -683,7 +683,7 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 - **Execution plan:**
   - Red: Confirm §11.1 content is in workflow doc with the path inconsistency (tokens.css) — confirms extraction task
   - Green: Create file with migrated §11.1 content + corrected path + token rationale section
-  - Refactor: Verify all prime-specific elements reference brand-dossier for cross-cutting brand context
+  - Refactor: Verify all prime-specific elements reference brand-identity for cross-cutting brand context
 - **Rollout / rollback:** New file; rollback is git rm
 - **Documentation impact:**
   - startup-loop-workflow.user.md §11 (retired and pointer added to this file in TASK-13)
@@ -764,9 +764,9 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Approach: 85% — gate IDs defined in fact-find Gate Policy table; S1 and S2B are correct insertion points
   - Impact: 83% — modifying the startup-loop SKILL.md advance rules affects every loop run; gate text must be precise to avoid false-blocking
 - **Acceptance:**
-  - GATE-BD-01 added to S1 advance rules: blocks if brand-dossier.user.md missing or Status != Draft/Active
+  - GATE-BD-01 added to S1 advance rules: blocks if brand-identity.user.md missing or Status != Draft/Active
   - GATE-BD-03 added to S2B Done rules: blocks if messaging-hierarchy.user.md missing or Status not Draft/Active
-  - GATE-BD-08 added to S10 standing refresh: warning if brand-dossier.user.md Last-reviewed > 90 days
+  - GATE-BD-08 added to S10 standing refresh: warning if brand-identity.user.md Last-reviewed > 90 days
   - Gate blocking messages match Gate Policy table (fact-find §Gate Policy)
   - Gate IDs referenced (GATE-BD-01, GATE-BD-03, GATE-BD-08) for cross-reference to Gate Policy table
   - Index.user.md used as the gate-check lookup point (not individual file frontmatter)
@@ -774,7 +774,7 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - VC-01: GATE-BD-01 present → `grep "GATE-BD-01" .claude/skills/startup-loop/SKILL.md` returns match
   - VC-02: GATE-BD-03 present → `grep "GATE-BD-03" .claude/skills/startup-loop/SKILL.md` returns match
   - VC-03: GATE-BD-08 present → `grep "GATE-BD-08" .claude/skills/startup-loop/SKILL.md` returns match
-  - VC-04: Gates reference brand-dossier.user.md (not brand-language.user.md) → `grep "brand-language" .../startup-loop/SKILL.md` returns 0
+  - VC-04: Gates reference brand-identity.user.md (not brand-language.user.md) → `grep "brand-language" .../startup-loop/SKILL.md` returns 0
 - **Execution plan:**
   - Red: Read current advance rules section — confirms Gate A/B/C structure; brand-language absent
   - Green: Add GATE-BD-01/03/08 using Gate A/B/C formatting pattern as template
@@ -810,19 +810,19 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Impact: 80% — this is the primary human-readable workflow reference; changes must be accurate and complete
 - **Acceptance:**
   - §4 stage table includes BD-1 (S1 gate), BD-2 (after S2), BD-3 (S2B sub-deliverable), BD-4 (after S6B), BD-5 (S7/S8 design spec gate), BD-6 (S9B QA)
-  - §11 "Design Policy" content is retired: header retained with "→ See: [prime-app-design-branding.user.md] and [brand-dossier.user.md]" redirect; body content removed (migrated in TASK-10)
+  - §11 "Design Policy" content is retired: header retained with "→ See: [prime-app-design-branding.user.md] and [brand-identity.user.md]" redirect; body content removed (migrated in TASK-10)
   - §11.1 `tokens.css` path inconsistency eliminated (no longer present after retirement)
-  - §12 Standing Refresh table gains: brand-dossier quarterly review entry (GATE-BD-08)
+  - §12 Standing Refresh table gains: brand-identity quarterly review entry (GATE-BD-08)
   - §13 Advance Rules section updated to reference new GATE-BD-01/03 (consistent with TASK-12)
   - `.user.html` companion regenerated (`pnpm docs:render-user-html`)
 - **Validation contract:**
   - VC-01: BD-1..BD-6 in §4 → `grep "BD-1\|BD-2\|BD-3\|BD-4\|BD-5\|BD-6" docs/business-os/startup-loop-workflow.user.md | wc -l` ≥ 6
   - VC-02: §11 body content removed (tokens.css gone) → `grep "tokens.css" docs/business-os/startup-loop-workflow.user.md` returns 0
   - VC-03: §11 has redirect pointers → `grep "prime-app-design-branding" docs/business-os/startup-loop-workflow.user.md` returns match
-  - VC-04: §12 has brand-dossier refresh entry → `grep "brand-dossier" docs/business-os/startup-loop-workflow.user.md | grep -i "quarterly\|refresh"` returns match
+  - VC-04: §12 has brand-identity refresh entry → `grep "brand-identity" docs/business-os/startup-loop-workflow.user.md | grep -i "quarterly\|refresh"` returns match
 - **Execution plan:**
   - Red: Read §4, §11, §12, §13 sections — confirm current state; identify exact insertion points for BD-1..6 in §4 table format
-  - Green: Add BD-1..6 rows to §4; retire §11 with redirects; add §12 brand-dossier entry; update §13 gate refs
+  - Green: Add BD-1..6 rows to §4; retire §11 with redirects; add §12 brand-identity entry; update §13 gate refs
   - Refactor: Re-read full doc for consistency; regenerate .user.html
 - **Edge Cases & Hardening:**
   - §11 retirement must not lose content permanently — TASK-10 must be complete first (content already migrated to prime-app-design-branding.user.md before §11 is retired)
@@ -846,13 +846,13 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - VC-01: `grep -c "BD-1|BD-2|BD-3|BD-4|BD-5|BD-6"` → 7 matches ≥ 6 — PASS
   - VC-02: `grep "tokens.css"` → 0 matches — PASS
   - VC-03: `grep "prime-app-design-branding"` → 2 matches — PASS
-  - VC-04: `grep "brand-dossier" | grep -i "quarterly|refresh|review"` → 2 matches — PASS
+  - VC-04: `grep "brand-identity" | grep -i "quarterly|refresh|review"` → 2 matches — PASS
 - **Documentation updated:** This file (startup-loop-workflow.user.md) is the primary output; companion .user.html regenerated
-- **Implementation notes:** §4 spec_version bumped 1.0.0→1.1.0; BD-1..BD-6 table added after S10 row; §11 body retired with redirect blockquote + stub 11.1/11.2 pointers; §12 brand-dossier quarterly review row added; §13.3 brand gate bullet list added.
+- **Implementation notes:** §4 spec_version bumped 1.0.0→1.1.0; BD-1..BD-6 table added after S10 row; §11 body retired with redirect blockquote + stub 11.1/11.2 pointers; §12 brand-identity quarterly review row added; §13.3 brand gate bullet list added.
 
 ---
 
-### TASK-14: Add brand-dossier + messaging-hierarchy as optional inputs to lp-offer and lp-channels
+### TASK-14: Add brand-identity + messaging-hierarchy as optional inputs to lp-offer and lp-channels
 
 - **Type:** IMPLEMENT
 - **Deliverable:** business-artifact — updated SKILL.md optional input sections
@@ -861,7 +861,7 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 - **Artifact-Destination:** `.claude/skills/lp-offer/SKILL.md`, `.claude/skills/lp-channels/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** Pete reviews git diff; confirms optional inputs do not require any structural change to skill workflow
-- **Measurement-Readiness:** Next lp-offer/lp-channels run will reference brand-dossier if present (passable with or without)
+- **Measurement-Readiness:** Next lp-offer/lp-channels run will reference brand-identity if present (passable with or without)
 - **Affects:**
   - `.claude/skills/lp-offer/SKILL.md`
   - `.claude/skills/lp-channels/SKILL.md`
@@ -869,21 +869,21 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 - **Blocks:** -
 - **Confidence:** 85%
   - Implementation: 88% — add 1-2 items to existing optional inputs list; confirmed safe from TASK-01/02 investigation
-  - Approach: 87% — optional (not required) is the correct stance: brand-dossier enhances quality but must not block businesses without it
+  - Approach: 87% — optional (not required) is the correct stance: brand-identity enhances quality but must not block businesses without it
   - Impact: 85% — 2 skill files; minimal change; no impact on existing lp-offer/channels outputs or QC checks
 - **Acceptance:**
-  - lp-offer optional inputs section includes: `brand-dossier.user.md` with note "enhances Positioning One-Pager (Section 4) voice and personality"
-  - lp-channels optional inputs section includes: `brand-dossier.user.md` (for channel voice) and `messaging-hierarchy.user.md` (for channel-specific messaging alignment)
+  - lp-offer optional inputs section includes: `brand-identity.user.md` with note "enhances Positioning One-Pager (Section 4) voice and personality"
+  - lp-channels optional inputs section includes: `brand-identity.user.md` (for channel voice) and `messaging-hierarchy.user.md` (for channel-specific messaging alignment)
   - Neither skill has brand inputs added to required inputs (must not block businesses without brand artifacts)
   - No QC-XX or red flag checks modified (optional inputs do not gate skill completion)
 - **Validation contract:**
-  - VC-01: brand-dossier in lp-offer optional → `grep "brand-dossier" .claude/skills/lp-offer/SKILL.md` returns match
-  - VC-02: brand-dossier in lp-channels optional → `grep "brand-dossier" .claude/skills/lp-channels/SKILL.md` returns match
+  - VC-01: brand-identity in lp-offer optional → `grep "brand-identity" .claude/skills/lp-offer/SKILL.md` returns match
+  - VC-02: brand-identity in lp-channels optional → `grep "brand-identity" .claude/skills/lp-channels/SKILL.md` returns match
   - VC-03: messaging-hierarchy in lp-channels optional → `grep "messaging-hierarchy" .claude/skills/lp-channels/SKILL.md` returns match
   - VC-04: brand inputs NOT in required section → `grep -A5 "Required:" .claude/skills/lp-offer/SKILL.md` does not contain "brand"
 - **Execution plan:**
   - Red: Read current optional inputs sections — confirm absence of brand references
-  - Green: Add brand-dossier (lp-offer), brand-dossier + messaging-hierarchy (lp-channels) to optional inputs
+  - Green: Add brand-identity (lp-offer), brand-identity + messaging-hierarchy (lp-channels) to optional inputs
   - Refactor: Verify added items follow existing optional input format (markdown list with path + description)
 - **Rollout / rollback:** 2-line additions; rollback is git revert
 - **Documentation impact:** None
@@ -898,12 +898,12 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 - **Confidence reassessment:**
   - Original: 85% — Post-validation: 85% — Delta: validation confirmed assumptions
 - **Validation:**
-  - VC-01: `grep "brand-dossier" .claude/skills/lp-offer/SKILL.md` — PASS
-  - VC-02: `grep "brand-dossier" .claude/skills/lp-channels/SKILL.md` — PASS
+  - VC-01: `grep "brand-identity" .claude/skills/lp-offer/SKILL.md` — PASS
+  - VC-02: `grep "brand-identity" .claude/skills/lp-channels/SKILL.md` — PASS
   - VC-03: `grep "messaging-hierarchy" .claude/skills/lp-channels/SKILL.md` — PASS
   - VC-04: `grep -A5 "Required:" .claude/skills/lp-offer/SKILL.md | grep -i "brand"` returned 0 matches — PASS
 - **Documentation updated:** None required
-- **Implementation notes:** Added 1 bullet to lp-offer optional inputs (brand-dossier), 2 bullets to lp-channels optional inputs (brand-dossier + messaging-hierarchy). All in the existing freeform list format.
+- **Implementation notes:** Added 1 bullet to lp-offer optional inputs (brand-identity), 2 bullets to lp-channels optional inputs (brand-identity + messaging-hierarchy). All in the existing freeform list format.
 
 ---
 
@@ -927,10 +927,10 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Impact: 80% — modifies lp-launch-qa; every future S9B run includes new domain; blocking only BC-04 claims with zero proof (soft behavior by default)
 - **Acceptance:**
   - Domain 5: Brand Copy Compliance added after Domain 4 (Legal), before Quality Checks section
-  - BC-04 [GATE-BD-06b Warn]: Copy reviewed against Words to Avoid list from brand-dossier
+  - BC-04 [GATE-BD-06b Warn]: Copy reviewed against Words to Avoid list from brand-identity
   - BC-05 [GATE-BD-06b Warn]: All substantive copy claims present in messaging-hierarchy Claims + Proof Ledger
-  - BC-07 [GATE-BD-06b Warn]: Primary CTA language matches brand-dossier Key Phrases
-  - Optional pre-flight: if brand-dossier.user.md missing, Domain 5 is skipped with note "Brand Dossier absent — skipping brand copy compliance checks"
+  - BC-07 [GATE-BD-06b Warn]: Primary CTA language matches brand-identity Key Phrases
+  - Optional pre-flight: if brand-identity.user.md missing, Domain 5 is skipped with note "Brand Dossier absent — skipping brand copy compliance checks"
   - Domain 5 pass criteria: all applicable checks pass; failures are warnings (not blockers) per GATE-BD-06b
   - QA report template updated to include Domain 5 section
   - Pass/fail table in completion message updated to include Domain 5 row
@@ -938,14 +938,14 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - VC-01: Domain 5 heading present → `grep "Domain 5\|Brand Copy" .claude/skills/lp-launch-qa/SKILL.md` returns match
   - VC-02: BC-04/05/07 present → `grep "BC-04\|BC-05\|BC-07" .../lp-launch-qa/SKILL.md` returns 3 matches
   - VC-03: Domain 5 severity is warning (not blocker) → `grep -A5 "Domain 5" ...` contains "warning"
-  - VC-04: Skip rule when brand-dossier absent → `grep "absent\|missing" .../lp-launch-qa/SKILL.md | grep -i "brand"` returns match
+  - VC-04: Skip rule when brand-identity absent → `grep "absent\|missing" .../lp-launch-qa/SKILL.md | grep -i "brand"` returns match
 - **Execution plan:**
   - Red: Read lp-launch-qa in full (or confirmed from TASK-03 findings) — confirm no Domain 5 exists; note exact insertion point (after L6 check)
   - Green: Add Domain 5 section following Domain 4 structure; update report template and completion message
-  - Refactor: Verify Domain 5 does not duplicate lp-design-qa TC-01/02 checks; confirm "skip if brand-dossier absent" path is clear
+  - Refactor: Verify Domain 5 does not duplicate lp-design-qa TC-01/02 checks; confirm "skip if brand-identity absent" path is clear
 - **Edge Cases & Hardening:**
   - Businesses without messaging-hierarchy (not yet at S2B completion): BC-05 must be skipped gracefully (not block launch)
-  - Ambiguous "Words to Avoid" absence (brand-dossier missing that section): skip BC-04 with note
+  - Ambiguous "Words to Avoid" absence (brand-identity missing that section): skip BC-04 with note
 - **Rollout / rollback:** Single skill file edit; rollback is git revert
 - **Documentation impact:** startup-loop-workflow.user.md §4 BD-6 entry (covered in TASK-13)
 
@@ -960,7 +960,7 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 - **Artifact-Destination:** `.claude/skills/lp-design-spec/SKILL.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** Pete reviews git diff; confirms gate error message is actionable
-- **Measurement-Readiness:** Next lp-design-spec run without brand-dossier emits GATE-BD-07 error (testable immediately)
+- **Measurement-Readiness:** Next lp-design-spec run without brand-identity emits GATE-BD-07 error (testable immediately)
 - **Affects:**
   - `.claude/skills/lp-design-spec/SKILL.md` (6 refs updated; "create if missing" behavior changed)
 - **Depends on:** TASK-09
@@ -968,18 +968,18 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 - **Confidence:** 82%
   - Implementation: 85% — all 6 reference locations confirmed (grep during planning); "create if missing" is at line 175; quality check at line 295 — both must be updated
   - Approach: 83% — changing from "create if missing" to "require Active" is a breaking change to lp-design-spec behavior; correct approach is to run /lp-brand-bootstrap first, then lp-design-spec
-  - Impact: 80% — any future lp-design-spec run without brand-dossier Active will now fail-closed; this is intentional but must have clear error message and remediation path
+  - Impact: 80% — any future lp-design-spec run without brand-identity Active will now fail-closed; this is intentional but must have clear error message and remediation path
 - **Acceptance:**
-  - All 6 `brand-language.user.md` references updated to `brand-dossier.user.md`
+  - All 6 `brand-language.user.md` references updated to `brand-identity.user.md`
   - Line 175 "Create brand-language.user.md" removed and replaced with GATE-BD-07 pre-flight check:
     - Error: "Brand Dossier must be Active before running design spec. Run /lp-brand-bootstrap <BIZ>."
-    - Checks: `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` exists AND Status == Active
+    - Checks: `docs/business-os/strategy/<BIZ>/brand-identity.user.md` exists AND Status == Active
   - Quality check at line 295 updated from "Brand language doc exists" to "Brand Dossier Active (GATE-BD-07)"
-  - Completion message (line 371) updated to reference brand-dossier.user.md
+  - Completion message (line 371) updated to reference brand-identity.user.md
   - No other behavioral changes to lp-design-spec workflow
 - **Validation contract:**
   - VC-01: No brand-language.user.md refs → `grep "brand-language.user.md" .claude/skills/lp-design-spec/SKILL.md` returns 0
-  - VC-02: GATE-BD-07 pre-flight present → `grep "GATE-BD-07\|brand-dossier.user.md" .../lp-design-spec/SKILL.md | wc -l` ≥ 6
+  - VC-02: GATE-BD-07 pre-flight present → `grep "GATE-BD-07\|brand-identity.user.md" .../lp-design-spec/SKILL.md | wc -l` ≥ 6
   - VC-03: Error message with remediation → `grep "lp-brand-bootstrap" .../lp-design-spec/SKILL.md` returns match
   - VC-04: "create" behavior removed → `grep -n "Create.*brand" .../lp-design-spec/SKILL.md` returns 0
 - **Execution plan:**
@@ -987,8 +987,8 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
   - Green: Update all 6 references; replace "create if missing" with GATE-BD-07 pre-flight
   - Refactor: Read updated skill from top to confirm consistent behavior narrative; verify gate message is actionable
 - **Edge Cases & Hardening:**
-  - lp-design-spec is run as part of S7 stage — if brand-dossier is Active by S7 (per GATE-BD-01 at S1), GATE-BD-07 should rarely fire; however it's a safety net for manual runs
-  - HEAD/PET/HBAG businesses: lp-brand-bootstrap runs at S1 create Draft brand-dossier; must be elevated to Active before S7 (this is a process gap, documented as a risk, not resolved in this task)
+  - lp-design-spec is run as part of S7 stage — if brand-identity is Active by S7 (per GATE-BD-01 at S1), GATE-BD-07 should rarely fire; however it's a safety net for manual runs
+  - HEAD/PET/HBAG businesses: lp-brand-bootstrap runs at S1 create Draft brand-identity; must be elevated to Active before S7 (this is a process gap, documented as a risk, not resolved in this task)
 - **Rollout / rollback:** Single skill file update; rollback is git revert
 - **Documentation impact:** startup-loop-workflow.user.md §4 BD-5 entry (covered in TASK-13)
 
@@ -997,36 +997,36 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 ### TASK-17: Run lp-brand-bootstrap for HEAD
 
 - **Type:** IMPLEMENT
-- **Deliverable:** business-artifact — HEAD brand-dossier.user.md at Draft status
+- **Deliverable:** business-artifact — HEAD brand-identity.user.md at Draft status
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-brand-bootstrap
-- **Artifact-Destination:** `docs/business-os/strategy/HEAD/brand-dossier.user.md`
+- **Artifact-Destination:** `docs/business-os/strategy/HEAD/brand-identity.user.md`
 - **Reviewer:** Pete
-- **Approval-Evidence:** Pete reviews brand-dossier Draft; confirms demographic hypothesis is reasonable
+- **Approval-Evidence:** Pete reviews brand-identity Draft; confirms demographic hypothesis is reasonable
 - **Measurement-Readiness:** GATE-BD-01 will pass at HEAD's next S1 entry
 - **Affects:**
-  - `docs/business-os/strategy/HEAD/brand-dossier.user.md` (new)
+  - `docs/business-os/strategy/HEAD/brand-identity.user.md` (new)
   - `docs/business-os/strategy/HEAD/index.user.md` (new — create alongside)
-  - `docs/business-os/strategy/HEAD/brand-dossier.user.html` (companion, generated)
+  - `docs/business-os/strategy/HEAD/brand-identity.user.html` (companion, generated)
 - **Depends on:** TASK-08, TASK-09
 - **Blocks:** -
 - **Confidence:** 85%
   - Implementation: 88% — lp-brand-bootstrap skill exists; runs for any business given strategy plan
-  - Approach: 85% — HEAD brand-dossier is best created now to unblock future S1 entry; Draft status is sufficient
+  - Approach: 85% — HEAD brand-identity is best created now to unblock future S1 entry; Draft status is sufficient
   - Impact: 82% — creates 2 new files for HEAD; no existing HEAD files modified
 - **Acceptance:**
-  - `docs/business-os/strategy/HEAD/brand-dossier.user.md` exists with Type: Brand-Dossier, Status: Draft
+  - `docs/business-os/strategy/HEAD/brand-identity.user.md` exists with Type: Brand-Identity, Status: Draft
   - Frontmatter has Token-Source field (pointing to HEAD theme tokens if exists, or TBD)
   - All TBD entries have rationale: `TBD — {specific thing needed}`
-  - HEAD index.user.md created with brand-dossier row (Status: Draft)
+  - HEAD index.user.md created with brand-identity row (Status: Draft)
   - .user.html companion generated
 - **Validation contract:**
-  - VC-01: brand-dossier.user.md exists → `ls docs/business-os/strategy/HEAD/brand-dossier.user.md` pass
-  - VC-02: Status is Draft → `grep "Status: Draft" docs/business-os/strategy/HEAD/brand-dossier.user.md` match
-  - VC-03: Token-Source present → `grep "Token-Source" docs/business-os/strategy/HEAD/brand-dossier.user.md` match
+  - VC-01: brand-identity.user.md exists → `ls docs/business-os/strategy/HEAD/brand-identity.user.md` pass
+  - VC-02: Status is Draft → `grep "Status: Draft" docs/business-os/strategy/HEAD/brand-identity.user.md` match
+  - VC-03: Token-Source present → `grep "Token-Source" docs/business-os/strategy/HEAD/brand-identity.user.md` match
 - **Execution plan:**
-  - Red: Confirm HEAD strategy dir has plan.user.md but no brand-dossier (confirmed E-07)
-  - Green: Run `/lp-brand-bootstrap HEAD`; update output to use brand-dossier.user.md path (not brand-language.user.md); create index.user.md
+  - Red: Confirm HEAD strategy dir has plan.user.md but no brand-identity (confirmed E-07)
+  - Green: Run `/lp-brand-bootstrap HEAD`; update output to use brand-identity.user.md path (not brand-language.user.md); create index.user.md
   - Refactor: Confirm all TBD fields have rationale; add Token-Source field if lp-brand-bootstrap doesn't add it
 - **Rollout / rollback:** New files; rollback is git rm
 - **Documentation impact:** index.user.md registers artifact
@@ -1041,28 +1041,28 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 - **Confidence reassessment:**
   - Original: 85%
   - Post-validation: 87%
-  - Delta reason: Pattern matched BRIK brand-dossier exactly; HEAD product context (cochlear implants, Italy TAM) was clear from forecast docs
+  - Delta reason: Pattern matched BRIK brand-identity exactly; HEAD product context (cochlear implants, Italy TAM) was clear from forecast docs
 - **Validation:**
-  - VC-01: `ls docs/business-os/strategy/HEAD/brand-dossier.user.md` — PASS
+  - VC-01: `ls docs/business-os/strategy/HEAD/brand-identity.user.md` — PASS
   - VC-02: `grep "Status: Draft" ...` — PASS
   - VC-03: `grep "Token-Source:" ...` — PASS
   - VC-04: index.user.md Brand Dossier row shows Draft — PASS
 - **Documentation updated:** index.user.md created (registers artifact)
-- **Implementation notes:** Created brand-dossier.user.md with Status: Draft; Token-Source: TBD (theme package does not exist); Draft→Active advancement criteria listed; Proof Ledger 4 entries from forecast/plan. Created index.user.md with full gate reference table.
+- **Implementation notes:** Created brand-identity.user.md with Status: Draft; Token-Source: TBD (theme package does not exist); Draft→Active advancement criteria listed; Proof Ledger 4 entries from forecast/plan. Created index.user.md with full gate reference table.
 
 ---
 
 ### TASK-18: Run lp-brand-bootstrap for PET
 
 - **Type:** IMPLEMENT
-- **Deliverable:** business-artifact — PET brand-dossier.user.md at Draft status
+- **Deliverable:** business-artifact — PET brand-identity.user.md at Draft status
 - **Execution-Skill:** /lp-brand-bootstrap
-- **Artifact-Destination:** `docs/business-os/strategy/PET/brand-dossier.user.md`
+- **Artifact-Destination:** `docs/business-os/strategy/PET/brand-identity.user.md`
 - **Reviewer:** Pete
-- **Approval-Evidence:** Pete reviews brand-dossier Draft
+- **Approval-Evidence:** Pete reviews brand-identity Draft
 - **Measurement-Readiness:** GATE-BD-01 will pass at PET's next S1 entry
 - **Affects:**
-  - `docs/business-os/strategy/PET/brand-dossier.user.md` (new)
+  - `docs/business-os/strategy/PET/brand-identity.user.md` (new)
   - `docs/business-os/strategy/PET/index.user.md` (new)
 - **Depends on:** TASK-08, TASK-09
 - **Blocks:** -
@@ -1093,21 +1093,21 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 ### TASK-19: Run lp-brand-bootstrap for HBAG
 
 - **Type:** IMPLEMENT
-- **Deliverable:** business-artifact — HBAG brand-dossier.user.md at Draft status
+- **Deliverable:** business-artifact — HBAG brand-identity.user.md at Draft status
 - **Execution-Skill:** /lp-brand-bootstrap
-- **Artifact-Destination:** `docs/business-os/strategy/HBAG/brand-dossier.user.md`
+- **Artifact-Destination:** `docs/business-os/strategy/HBAG/brand-identity.user.md`
 - **Reviewer:** Pete
-- **Approval-Evidence:** Pete reviews brand-dossier Draft
+- **Approval-Evidence:** Pete reviews brand-identity Draft
 - **Measurement-Readiness:** GATE-BD-01 will pass at HBAG's next S1 entry
 - **Affects:**
-  - `docs/business-os/strategy/HBAG/brand-dossier.user.md` (new)
+  - `docs/business-os/strategy/HBAG/brand-identity.user.md` (new)
   - `docs/business-os/strategy/HBAG/index.user.md` (new)
 - **Depends on:** TASK-08, TASK-09
 - **Blocks:** -
 - **Confidence:** 85%
   - Implementation: 88% — same pattern as TASK-17
   - Approach: 85% — same rationale
-  - Impact: 82% — new files only; HBAG has no apps yet so brand-dossier is forward-looking Draft
+  - Impact: 82% — new files only; HBAG has no apps yet so brand-identity is forward-looking Draft
 - **Acceptance:** Same pattern as TASK-17 with HBAG paths
 - **Validation contract:**
   - VC-01..03: Same as TASK-17 with HBAG paths
@@ -1130,7 +1130,7 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 
 ## Risks & Mitigations
 
-- **lp-design-spec gate (GATE-BD-07) breaks existing workflows for businesses without brand-dossier at Active:** Must run lp-brand-bootstrap before lp-design-spec. HEAD/PET/HBAG brand-dossiers will be Draft after TASK-17/18/19 — must be elevated to Active before S7. Mitigation: document in startup-loop-workflow.user.md that Draft → Active transition is a pre-S7 requirement.
+- **lp-design-spec gate (GATE-BD-07) breaks existing workflows for businesses without brand-identity at Active:** Must run lp-brand-bootstrap before lp-design-spec. HEAD/PET/HBAG brand-identitys will be Draft after TASK-17/18/19 — must be elevated to Active before S7. Mitigation: document in startup-loop-workflow.user.md that Draft → Active transition is a pre-S7 requirement.
 - **BRIK brand-language rename breaks docs/plans/brik-activities-program/fact-find.md reference:** Low-risk (read-only doc); update as hygiene step in TASK-09.
 - **loop-spec.yaml version bump (1.0.0 → 1.1.0) may affect loop-state.json files with pinned version:** Stage-result schema validates `stage` ID (not version compatibility); no existing run-state.json files pin the spec version. Risk is low.
 - **lp-launch-qa Domain 5 fires for businesses without messaging-hierarchy Active:** Skip rule explicitly handles this (BC-05 skipped if messaging-hierarchy absent). Mitigation: "skip if absent" logic in TASK-15 acceptance.
@@ -1144,24 +1144,24 @@ _Generated by `/lp-sequence` (step 10a). Tasks topologically sorted by dependenc
 
 ## Acceptance Criteria (overall)
 
-- [ ] GATE-BD-01 in startup-loop SKILL.md: S1 advance blocked without brand-dossier Draft
+- [ ] GATE-BD-01 in startup-loop SKILL.md: S1 advance blocked without brand-identity Draft
 - [ ] GATE-BD-03 in startup-loop SKILL.md: S2B Done blocked without messaging-hierarchy Draft
-- [ ] brand-dossier.user.md exists for BRIK (renamed, no hand-copied token values, Status: Active)
-- [ ] brand-dossier.user.md exists for HEAD, PET, HBAG (Status: Draft minimum)
+- [ ] brand-identity.user.md exists for BRIK (renamed, no hand-copied token values, Status: Active)
+- [ ] brand-identity.user.md exists for HEAD, PET, HBAG (Status: Draft minimum)
 - [ ] prime-app-design-branding.user.md exists for BRIK (Status: Active, correct path to tokens.ts)
 - [ ] index.user.md exists for BRIK, HEAD, PET, HBAG
 - [ ] 5 prompt templates at docs/business-os/workflow-prompts/_templates/brand-DR-0{1..5}-*.md
 - [ ] Evidence directory convention at docs/business-os/evidence/_templates/README-template.md
-- [ ] lp-design-spec GATE-BD-07: blocks if brand-dossier not Active (not "create if missing")
+- [ ] lp-design-spec GATE-BD-07: blocks if brand-identity not Active (not "create if missing")
 - [ ] lp-launch-qa Domain 5: BC-04/05/07 present as warnings
-- [ ] startup-loop-workflow.user.md §4 has BD-1..6; §11 retired; §12 has brand-dossier refresh entry
+- [ ] startup-loop-workflow.user.md §4 has BD-1..6; §11 retired; §12 has brand-identity refresh entry
 - [ ] All references to brand-language.user.md updated in skills (grep returns 0 in .claude/skills/)
 - [ ] loop-spec.yaml spec_version bumped to 1.1.0 with BD-3 comment
 
 ## Decision Log
 
 - 2026-02-17: BD-3 placement — Option A chosen (sub-deliverable of S2B, not S6B gate). Preserves fan-out invariant (E-03). S4 join barrier unaffected (only requires offer + forecast + channels).
-- 2026-02-17: Single-rename strategy (brand-language → brand-dossier everywhere). No backward-compat shim. All 7 files updated in TASK-09.
+- 2026-02-17: Single-rename strategy (brand-language → brand-identity everywhere). No backward-compat shim. All 7 files updated in TASK-09.
 - 2026-02-17: BC-01/02/03 not added to lp-launch-qa. Already covered by lp-design-qa TC-01/TC-02/VR-05. lp-launch-qa Domain 5 covers only copy compliance (BC-04/05/07).
 - 2026-02-17: lp-design-spec "create if missing" behavior changed to hard GATE-BD-07. Brand bootstrap is now a prerequisite for design spec, not an implicit fallback.
-- 2026-02-17: HEAD/PET/HBAG brand-dossiers created at Draft in this plan. XA excluded (no apps or loop entry imminent per fact-find).
+- 2026-02-17: HEAD/PET/HBAG brand-identitys created at Draft in this plan. XA excluded (no apps or loop entry imminent per fact-find).

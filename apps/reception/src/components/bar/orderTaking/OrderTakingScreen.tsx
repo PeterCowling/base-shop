@@ -48,7 +48,7 @@ const OrderTakingScreen: FC<OrderTakingScreenProps> = ({
   <>
     <div className="flex w-full h-auto font-body space-x-2">
       {/* LEFT panel */}
-      <div className="flex-1 flex flex-col bg-white shadow rounded dark:bg-darkSurface">
+      <div className="flex-1 flex flex-col bg-surface shadow rounded dark:bg-darkSurface">
         <CategoryHeader
           categories={categories}
           selectedCategory={selectedCategory}
@@ -59,7 +59,7 @@ const OrderTakingScreen: FC<OrderTakingScreenProps> = ({
       </div>
 
       {/* RIGHT panel */}
-      <div className="w-1/3 flex flex-col border border-info-main rounded shadow bg-white dark:bg-darkSurface">
+      <div className="w-1/3 flex flex-col border border-info-main rounded shadow bg-surface dark:bg-darkSurface">
         <OrderList
           orders={orders}
           onRemoveItem={onRemoveItem}

@@ -127,7 +127,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
       ref={setBannerRef}
       type="button"
       onClick={openDeals}
-      className="sticky top-0 z-50 flex min-h-10 min-w-10 w-full cursor-pointer items-center justify-center gap-2 overflow-hidden bg-brand-primary px-6 py-4 text-white shadow-md transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg motion-safe:animate-slide-down"
+      className="sticky top-0 z-50 flex min-h-10 min-w-10 w-full cursor-pointer items-center justify-center gap-2 overflow-hidden bg-brand-primary px-6 py-4 text-brand-on-primary shadow-md transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg motion-safe:animate-slide-down"
     >
       <span
         aria-hidden="true"
@@ -135,7 +135,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
           e.stopPropagation();
           close();
         }}
-        className="absolute end-2 top-2 inline-flex size-10 items-center justify-center rounded-full bg-white/15 text-white transition hover:bg-white/25"
+        className="absolute end-2 top-2 inline-flex size-10 items-center justify-center rounded-full bg-white/15 text-brand-on-primary transition hover:bg-white/25"
       >
         <X className="size-6" />
       </span>

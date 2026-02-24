@@ -7,6 +7,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { ReceptionInput } from "@acme/ui/operations";
+
 import { DocumentType } from "../../../types/keycards";
 
 /**
@@ -76,11 +78,11 @@ const DocRadioButton = memo(function DocRadioButton({
   const isActive = currentValue === value;
   return (
     <label
-      className={`flex items-center gap-2 border rounded p-2 hover:bg-gray-100 dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen ${
-        isActive ? "bg-gray-200 dark:bg-darkSurface" : ""
+      className={`flex items-center gap-2 border rounded p-2 hover:bg-surface-2 dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen ${
+        isActive ? "bg-surface-3 dark:bg-darkSurface" : ""
       }`}
     >
-      <input
+      <ReceptionInput
         type="radio"
         name="docType"
         value={value}

@@ -11,10 +11,6 @@ async function callFormAction(action: (formData: FormData) => unknown) {
   });
 }
 
-jest.mock("@cms/actions/saveSanityConfig", () => ({
-  saveSanityConfig: jest.fn().mockResolvedValue({ message: "ok" }),
-}));
-
 describe("useSanityConnection", () => {
   beforeEach(() => {
     global.fetch = jest.fn();
@@ -96,9 +92,11 @@ describe("useSanityConnection", () => {
   });
 
   it("captures save errors and codes", async () => {
-    const { saveSanityConfig } = require("@cms/actions/saveSanityConfig");
-    (saveSanityConfig as jest.Mock).mockResolvedValueOnce({
-      error: "bad", errorCode: "DATASET_CREATE_ERROR",
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      json: async () => ({
+        error: "bad",
+        errorCode: "DATASET_CREATE_ERROR",
+      }),
     });
     const { result } = renderHook(() => useSanityConnection("shop"));
     await act(async () => {

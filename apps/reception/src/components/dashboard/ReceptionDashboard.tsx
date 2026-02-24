@@ -56,17 +56,17 @@ export default function ReceptionDashboard() {
     <div className="space-y-6">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-accent-hospitality">
+          <h1 className="text-2xl font-semibold text-foreground dark:text-accent-hospitality">
             Reception Dashboard
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-muted-foreground dark:text-muted-foreground">
             Today - {todayLabel}
           </p>
         </div>
         {user && (
-          <div className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-sm text-muted-foreground dark:text-muted-foreground">
             Signed in as{" "}
-            <span className="font-medium text-gray-700 dark:text-gray-200">
+            <span className="font-medium text-foreground dark:text-gray-200">
               {user.displayName || user.email}
             </span>
           </div>
@@ -74,14 +74,14 @@ export default function ReceptionDashboard() {
       </header>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <h2 className="text-lg font-semibold text-foreground dark:text-gray-100">
           Performance
         </h2>
         <DashboardMetrics transactions={transactions} loading={transactionsLoading} />
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <h2 className="text-lg font-semibold text-foreground dark:text-gray-100">
           Arrivals and Departures
         </h2>
         <Grid cols={1} gap={4} className="md:grid-cols-3">
@@ -119,7 +119,7 @@ export default function ReceptionDashboard() {
       <DashboardQuickActions />
 
       {Boolean(summaryError || transactionsError) && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-200">
+        <div className="rounded-lg border border-error-light bg-error-light/20 p-3 text-sm text-error-main dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-200">
           There was an error loading dashboard data. Some metrics may be stale.
         </div>
       )}

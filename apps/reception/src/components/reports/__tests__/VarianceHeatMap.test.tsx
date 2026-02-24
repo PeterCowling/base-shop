@@ -4,6 +4,12 @@ import { render } from "@testing-library/react";
 
 import VarianceHeatMap from "../VarianceHeatMap";
 
+jest.mock("../../../context/AuthContext", () => ({
+  useAuth: () => ({
+    user: { user_name: "Pete", email: "pete@test.com", roles: ["staff"] },
+  }),
+}));
+
 jest.mock("../../../hooks/data/useCashCountsData", () => ({
   useCashCountsData: () => ({
     cashCounts: [
@@ -12,6 +18,20 @@ jest.mock("../../../hooks/data/useCashCountsData", () => ({
     ],
     loading: false,
     error: null,
+  }),
+}));
+
+jest.mock("../../../hooks/data/useVarianceThresholds", () => ({
+  useVarianceThresholds: () => ({
+    thresholds: { cash: 5, keycards: 3 },
+    loading: false,
+    error: null,
+  }),
+}));
+
+jest.mock("../../../hooks/mutations/useVarianceThresholdsMutations", () => ({
+  useVarianceThresholdsMutations: () => ({
+    updateThresholds: jest.fn(),
   }),
 }));
 

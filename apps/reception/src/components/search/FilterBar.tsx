@@ -2,6 +2,8 @@
 import React from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
+import { Button } from "@acme/design-system/atoms";
+
 export interface FilterBarProps {
   firstName: string;
   lastName: string;
@@ -16,7 +18,7 @@ export interface FilterBarProps {
 }
 
 const fieldStyles =
-  "rounded-md border border-gray-400 bg-white px-3 py-2 text-sm shadow-sm " +
+  "rounded-md border border-border-2 bg-surface px-3 py-2 text-sm shadow-sm " +
   "focus:outline-none focus:ring-2 focus:ring-primary-600 " +
   "dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen";
 
@@ -41,7 +43,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   >
     {/* First Name */}
     <div className="flex flex-col">
-      <label htmlFor="firstName" className="text-sm font-medium text-gray-700 dark:text-darkAccentGreen">
+      <label htmlFor="firstName" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
         First Name
       </label>
       <input
@@ -55,7 +57,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Last Name */}
     <div className="flex flex-col">
-      <label htmlFor="lastName" className="text-sm font-medium text-gray-700 dark:text-darkAccentGreen">
+      <label htmlFor="lastName" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
         Last Name
       </label>
       <input
@@ -69,7 +71,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Booking Ref */}
     <div className="flex flex-col">
-      <label htmlFor="bookingRef" className="text-sm font-medium text-gray-700 dark:text-darkAccentGreen">
+      <label htmlFor="bookingRef" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
         Booking Ref
       </label>
       <input
@@ -83,7 +85,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Activity Level */}
     <div className="flex flex-col">
-      <label htmlFor="status" className="text-sm font-medium text-gray-700 dark:text-darkAccentGreen">
+      <label htmlFor="status" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
         Activity Level
       </label>
       <select
@@ -105,7 +107,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     <div className="flex flex-col">
       <label
         htmlFor="nonRefundable"
-        className="text-sm font-medium text-gray-700 dark:text-darkAccentGreen"
+        className="text-sm font-medium text-foreground dark:text-darkAccentGreen"
       >
         Refundable Status
       </label>
@@ -123,7 +125,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Date */}
     <div className="flex flex-col">
-      <label htmlFor="searchDate" className="text-sm font-medium text-gray-700 dark:text-darkAccentGreen">
+      <label htmlFor="searchDate" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
         Date
       </label>
       <input
@@ -137,7 +139,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Room Number */}
     <div className="flex flex-col">
-      <label htmlFor="roomNumber" className="text-sm font-medium text-gray-700 dark:text-darkAccentGreen">
+      <label htmlFor="roomNumber" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
         Room Number
       </label>
       <input
@@ -150,13 +152,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
     </div>
 
     {/* Search Button (spans full width on small screens) */}
-    <button
+    <Button
       type="submit"
-      className="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 md:col-span-3 lg:col-span-1 dark:bg-darkSurface dark:text-darkAccentGreen"
+      className="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-primary-fg shadow-sm transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 md:col-span-3 lg:col-span-1 dark:bg-darkSurface dark:text-darkAccentGreen"
     >
       <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
       Search
-    </button>
+    </Button>
   </form>
 );
 

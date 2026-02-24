@@ -1,0 +1,93 @@
+# Variant: heap8
+# Command: NODE_OPTIONS=--max-old-space-size=8192 pnpm --filter @apps/cms build
+# Started (UTC): 2026-02-23T13:32:37Z
+
+
+> @apps/cms@ build /Users/petercowling/base-shop/apps/cms
+> next build --webpack
+
+▲ Next.js 16.1.6 (webpack)
+- Environments: .env.local, .env
+- Experiments (use with caution):
+  · cpus: 2
+  ✓ externalDir
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+
+<--- Last few GCs --->
+
+[89818:0x148008000]   461423 ms: Scavenge (reduce) 8109.0 (8238.8) -> 8108.8 (8239.5) MB, 6881.08 / 0.00 ms  (average mu = 0.215, current mu = 0.001) allocation failure; 
+[89818:0x148008000]   473713 ms: Mark-Compact (reduce) 8109.6 (8239.5) -> 8109.2 (8240.3) MB, 12285.42 / 0.00 ms  (average mu = 0.299, current mu = 0.360) allocation failure; scavenge might not succeed
+
+
+<--- JS stacktrace --->
+
+FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+----- Native stack trace -----
+
+ 1: 0x1030a15b8 node::OOMErrorHandler(char const*, v8::OOMDetails const&) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+ 2: 0x10325f968 v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, v8::OOMDetails const&) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+ 3: 0x10346d7bc v8::internal::Heap::GarbageCollectionReasonToString(v8::internal::GarbageCollectionReason) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+ 4: 0x10346c124 v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+ 5: 0x103461fc0 v8::internal::HeapAllocator::AllocateRawWithLightRetrySlowPath(int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+ 6: 0x103462818 v8::internal::HeapAllocator::AllocateRawWithRetryOrFailSlowPath(int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+ 7: 0x103446cf8 v8::internal::Factory::NewFillerObject(int, v8::internal::AllocationAlignment, v8::internal::AllocationType, v8::internal::AllocationOrigin) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+ 8: 0x103853e30 v8::internal::Runtime_AllocateInYoungGeneration(int, unsigned long*, v8::internal::Isolate*) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+ 9: 0x103be8c44 Builtins_CEntry_Return1_ArgvOnStack_NoBuiltinExit [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+10: 0x103b5fff4 Builtins_StringSubstring [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+11: 0x108ee30e0 
+12: 0x10911442c 
+13: 0x108b0fd40 
+14: 0x10908f308 
+15: 0x103b97210 Builtins_AsyncFunctionAwaitResolveClosure [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+16: 0x103c44fb8 Builtins_PromiseFulfillReactionJob [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+17: 0x103b86b94 Builtins_RunMicrotasks [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+18: 0x103b5e3f4 Builtins_JSRunMicrotasksEntry [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+19: 0x1033d822c v8::internal::(anonymous namespace)::Invoke(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+20: 0x1033d8b58 v8::internal::(anonymous namespace)::InvokeWithTryCatch(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+21: 0x1033d8d44 v8::internal::Execution::TryRunMicrotasks(v8::internal::Isolate*, v8::internal::MicrotaskQueue*) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+22: 0x103403a34 v8::internal::MicrotaskQueue::RunMicrotasks(v8::internal::Isolate*) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+23: 0x1034041c0 v8::internal::MicrotaskQueue::PerformCheckpoint(v8::Isolate*) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+24: 0x103b61ef0 Builtins_CallApiCallback [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+25: 0x10956cb20 
+26: 0x103b5e50c Builtins_JSEntryTrampoline [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+27: 0x103b5e1f4 Builtins_JSEntry [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+28: 0x1033d8274 v8::internal::(anonymous namespace)::Invoke(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+29: 0x1033d7b08 v8::internal::Execution::Call(v8::internal::Isolate*, v8::internal::Handle<v8::internal::Object>, v8::internal::Handle<v8::internal::Object>, int, v8::internal::Handle<v8::internal::Object>*) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+30: 0x10327b998 v8::Function::Call(v8::Local<v8::Context>, v8::Local<v8::Value>, int, v8::Local<v8::Value>*) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+31: 0x102fb8d5c node::InternalCallbackScope::Close() [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+32: 0x102fb8fb4 node::InternalMakeCallback(node::Environment*, v8::Local<v8::Object>, v8::Local<v8::Object>, v8::Local<v8::Function>, int, v8::Local<v8::Value>*, node::async_context) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+33: 0x102fb92d4 node::MakeCallback(v8::Isolate*, v8::Local<v8::Object>, v8::Local<v8::Function>, int, v8::Local<v8::Value>*, node::async_context) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+34: 0x103037e40 node::Environment::CheckImmediate(uv_check_s*) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+35: 0x103b43eec uv__run_check [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+36: 0x103b3d7e0 uv_run [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+37: 0x102fb97e8 node::SpinEventLoopInternal(node::Environment*) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+38: 0x1030e5eec node::NodeMainInstance::Run() [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+39: 0x103063cfc node::Start(int, char**) [/Users/petercowling/.nvm/versions/node/v20.19.4/bin/node]
+40: 0x19ce160e0 start [/usr/lib/dyld]
+/Users/petercowling/base-shop/apps/cms:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @apps/cms@ build: `next build --webpack`
+Command failed with signal "SIGABRT"
+time: command terminated abnormally
+real 475.24
+user 543.16
+sys 181.66
+          4650057728  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+            13256791  page reclaims
+                 712  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                  84  messages sent
+                  90  messages received
+                   1  signals received
+              162452  voluntary context switches
+            11531120  involuntary context switches
+         15875709547  instructions retired
+          6541745911  cycles elapsed
+           140428480  peak memory footprint
+bash: line 11: 89316 Abort trap: 6           /usr/bin/time -lp bash -lc "NODE_OPTIONS=--max-old-space-size=8192 pnpm --filter @apps/cms build"

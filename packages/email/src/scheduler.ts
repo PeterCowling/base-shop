@@ -1,8 +1,8 @@
 import "server-only"; // i18n-exempt: module side-effect import [EMAIL-1000]
 
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { validateShopName } from "@acme/lib";
 import { logger } from "@acme/lib/logger";
+import { validateShopName } from "@acme/lib/validateShopName";
 import type { AnalyticsEvent } from "@acme/platform-core/analytics";
 import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 

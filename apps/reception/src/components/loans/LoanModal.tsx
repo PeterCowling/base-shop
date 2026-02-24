@@ -11,6 +11,12 @@ import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faFileAlt, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import {
+  ReceptionButton as Button,
+  ReceptionInput,
+  ReceptionSelect,
+} from "@acme/ui/operations";
+
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
 /**
@@ -130,12 +136,12 @@ function LoanModalComponent({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 z-50"
+      className="fixed inset-0 bg-foreground bg-opacity-50 flex items-center justify-center px-4 z-50"
       role="dialog"
       aria-labelledby="loanModalTitle"
       aria-modal="true"
     >
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-lg dark:bg-darkSurface">
+      <div className="bg-surface rounded-lg shadow-lg w-full max-w-lg dark:bg-darkSurface">
         {/* Header Section */}
         <div className="px-6 py-4 border-b border-border flex justify-between items-center">
           <h2
@@ -144,7 +150,7 @@ function LoanModalComponent({
           >
             {mode === "loan" ? "Add Loan" : "Return Item"}
           </h2>
-          <button
+          <Button
             onClick={onClose}
             className="text-muted-foreground hover:text-foreground focus:outline-none dark:text-darkAccentGreen"
             aria-label="Close Modal"
@@ -163,7 +169,7 @@ function LoanModalComponent({
                 d="M6 18L18 6M6 6l12 12"
               />
             </svg>
-          </button>
+          </Button>
         </div>
 
         {/* Content Section */}
@@ -205,7 +211,7 @@ function LoanModalComponent({
               {mode === "loan" ? "Quantity to Loan" : "Quantity to Return"}
             </label>
             <div className="flex items-center">
-              <input
+              <ReceptionInput
                 id="countInput"
                 type="number"
                 value={countInput}
@@ -233,7 +239,7 @@ function LoanModalComponent({
                   className={depositIcon.className}
                 />
               </label>
-              <select
+              <ReceptionSelect
                 id="depositMethod"
                 value={depositType}
                 onChange={handleDepositTypeChange}
@@ -243,25 +249,25 @@ function LoanModalComponent({
                 <option value="PASSPORT">Passport</option>
                 <option value="LICENSE">License</option>
                 <option value="ID">ID</option>
-              </select>
+              </ReceptionSelect>
             </div>
           )}
         </div>
 
         {/* Action Buttons */}
         <div className="px-6 py-4 border-t border-border flex justify-end items-center space-x-2 dark:border-darkAccentGreen">
-          <button
+          <Button
             className="bg-muted hover:bg-surface-2 text-foreground px-4 py-2 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
             onClick={onClose}
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             className="bg-primary-main hover:bg-primary-dark text-primary-fg px-4 py-2 rounded dark:bg-darkAccentGreen dark:text-darkBg"
             onClick={handleSubmit}
           >
             Confirm
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 interface FilterBarProps {
   firstName: string;
   lastName: string;
@@ -33,7 +35,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     <div className="flex flex-wrap gap-4 items-end mb-4">
       {/* First Name */}
       <div className="flex flex-col">
-        <label htmlFor="firstName" className="font-semibold text-gray-700">
+        <label htmlFor="firstName" className="font-semibold text-foreground">
           First Name:
         </label>
         <input
@@ -41,13 +43,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
           type="text"
           value={firstName}
           onChange={(e) => onFilterChange("firstName", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         />
       </div>
 
       {/* Last Name */}
       <div className="flex flex-col">
-        <label htmlFor="lastName" className="font-semibold text-gray-700">
+        <label htmlFor="lastName" className="font-semibold text-foreground">
           Last Name:
         </label>
         <input
@@ -55,13 +57,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
           type="text"
           value={lastName}
           onChange={(e) => onFilterChange("lastName", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         />
       </div>
 
       {/* Booking Ref */}
       <div className="flex flex-col">
-        <label htmlFor="bookingRef" className="font-semibold text-gray-700">
+        <label htmlFor="bookingRef" className="font-semibold text-foreground">
           Booking Ref:
         </label>
         <input
@@ -69,20 +71,20 @@ const FilterBar: React.FC<FilterBarProps> = ({
           type="text"
           value={bookingRef}
           onChange={(e) => onFilterChange("bookingRef", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         />
       </div>
 
       {/* Activity Level (status) */}
       <div className="flex flex-col">
-        <label htmlFor="status" className="font-semibold text-gray-700">
+        <label htmlFor="status" className="font-semibold text-foreground">
           Activity Level:
         </label>
         <select
           id="status"
           value={status}
           onChange={(e) => onFilterChange("status", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         >
           <option value="">All</option>
           {Object.entries(activityCodes).map(([code, text]) => (
@@ -95,14 +97,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
       {/* Refundable Status */}
       <div className="flex flex-col">
-        <label htmlFor="nonRefundable" className="font-semibold text-gray-700">
+        <label htmlFor="nonRefundable" className="font-semibold text-foreground">
           Refundable Status:
         </label>
         <select
           id="nonRefundable"
           value={nonRefundable}
           onChange={(e) => onFilterChange("nonRefundable", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         >
           <option value="">All</option>
           <option value="true">Non-Refundable Only</option>
@@ -112,7 +114,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
       {/* Date */}
       <div className="flex flex-col">
-        <label htmlFor="searchDate" className="font-semibold text-gray-700">
+        <label htmlFor="searchDate" className="font-semibold text-foreground">
           Date:
         </label>
         <input
@@ -120,13 +122,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
           type="date"
           value={date}
           onChange={(e) => onFilterChange("date", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         />
       </div>
 
       {/* Room Number */}
       <div className="flex flex-col">
-        <label htmlFor="roomNumber" className="font-semibold text-gray-700">
+        <label htmlFor="roomNumber" className="font-semibold text-foreground">
           Room Number:
         </label>
         <input
@@ -134,17 +136,17 @@ const FilterBar: React.FC<FilterBarProps> = ({
           type="text"
           value={roomNumber}
           onChange={(e) => onFilterChange("roomNumber", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         />
       </div>
 
       {/* Search button */}
-      <button
+      <Button
         onClick={onSearch}
-        className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+        className="px-4 py-1 bg-info-main text-primary-fg rounded hover:bg-blue-700 transition-colors"
       >
         Search
-      </button>
+      </Button>
     </div>
   );
 };

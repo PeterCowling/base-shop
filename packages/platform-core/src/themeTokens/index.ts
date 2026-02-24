@@ -64,17 +64,26 @@ export function loadThemeTokensNode(theme: string): TokenMap {
   const localTokens = tryRoot(localRoot);
   if (localTokens) return localTokens;
 
-  // Fall back to resolving the workspace root from the process cwd. Jest can
-  // virtualize `__dirname`, so this ensures resolution still works.
-  let cwd = process.cwd();
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-1010 existence check on controlled workspace path
-  while (!existsSync(join(cwd, "pnpm-workspace.yaml"))) {
-    const parent = join(cwd, "..");
-    if (parent === cwd) return {};
-    cwd = parent;
+  // Fall back to a bounded set of candidate roots derived from cwd/env. This
+  // avoids unbounded parent traversal that can over-expand bundler file
+  // patterns in compile-time analysis.
+  const cwd = process.cwd();
+  const workspaceRootCandidates = [
+    process.env.PNPM_WORKSPACE_ROOT,
+    process.env.INIT_CWD,
+    process.env.PROJECT_CWD,
+    cwd,
+  ];
+
+  for (const candidate of workspaceRootCandidates) {
+    if (!candidate) continue;
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-1010 existence check on bounded, internal candidate roots
+    if (!existsSync(join(candidate, "pnpm-workspace.yaml"))) continue;
+    const tokens = tryRoot(candidate);
+    if (tokens) return tokens;
   }
-  const workspaceTokens = tryRoot(cwd);
-  return workspaceTokens ?? {};
+
+  return {};
 }
 
 export async function loadThemeTokens(theme: string): Promise<TokenMap> {

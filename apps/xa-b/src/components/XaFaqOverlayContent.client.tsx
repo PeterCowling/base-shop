@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy FAQ overlay pending design/i18n overhaul */
 
 import Link from "next/link";
 
@@ -10,6 +9,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@acme/design-system/atoms";
+
+import { xaI18n } from "../lib/xaI18n";
 
 type QaItem = {
   question: string;
@@ -26,15 +27,11 @@ const qaSections: QaSection[] = [
     title: "How to shop",
     items: [
       {
-        question: "How do I place an order?",
+        question: xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l28c19"),
         answer: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>
-              Browse categories or search for a specific item, select your size, then add it to your bag.
-              When you&apos;re ready, proceed to checkout.
-            </p>
-            <p>
-              For the full step-by-step guide, visit{" "}
+            <p>{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l31c16")}</p>
+            <p>{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l35c16")}{" "}
               <Link href="/pages/how-to-shop" className="underline text-foreground">
                 How to shop
               </Link>
@@ -44,39 +41,29 @@ const qaSections: QaSection[] = [
         ),
       },
       {
-        question: "Do I need an account to order?",
+        question: xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l46c19"),
         answer: (
-          <p className="text-sm text-muted-foreground">
-            No. You can check out as a guest, but creating an account makes tracking, returns, and wishlists
-            faster.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l48c56")}</p>
         ),
       },
     ],
   },
   {
-    title: "Orders & delivery",
+    title: xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l57c12"),
     items: [
       {
-        question: "How can I track my order?",
+        question: xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l60c19"),
         answer: (
           <p className="text-sm text-muted-foreground">
             Use the{" "}
-            <Link href="/account/trackingorder" className="underline text-foreground">
-              order tracking
-            </Link>{" "}
-            page to check status without logging in.
-          </p>
+            <Link href="/account/trackingorder" className="underline text-foreground">{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l64c87")}</Link>{" "}{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l66c25")}</p>
         ),
       },
       {
-        question: "How long does delivery take?",
+        question: xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l72c19"),
         answer: (
-          <p className="text-sm text-muted-foreground">
-            Timelines depend on your destination and the shipping method. See our{" "}
-            <Link href="/pages/shipping-policy" className="underline text-foreground">
-              Shipping policy
-            </Link>{" "}
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l74c56")}{" "}
+            <Link href="/pages/shipping-policy" className="underline text-foreground">{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l76c87")}</Link>{" "}
             for details.
           </p>
         ),
@@ -87,15 +74,10 @@ const qaSections: QaSection[] = [
     title: "Returns",
     items: [
       {
-        question: "How do I start a return?",
+        question: xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l89c19"),
         answer: (
-          <p className="text-sm text-muted-foreground">
-            Review eligibility and timelines on our{" "}
-            <Link href="/pages/return-policy" className="underline text-foreground">
-              Return policy
-            </Link>{" "}
-            and start the process from your orders page.
-          </p>
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l91c56")}{" "}
+            <Link href="/pages/return-policy" className="underline text-foreground">{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l93c85")}</Link>{" "}{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l95c25")}</p>
         ),
       },
     ],
@@ -104,10 +86,9 @@ const qaSections: QaSection[] = [
     title: "More help",
     items: [
       {
-        question: "Where can I find more answers?",
+        question: xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l106c19"),
         answer: (
-          <p className="text-sm text-muted-foreground">
-            Visit the full{" "}
+          <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l108c56")}{" "}
             <Link href="/faqs" className="underline text-foreground">
               FAQs page
             </Link>{" "}
@@ -137,7 +118,7 @@ export function XaFaqOverlayContent() {
     <div className="space-y-10">
       {qaSections.map((section) => (
         <div key={section.title} className="space-y-3">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          <h2 className="text-sm font-semibold uppercase xa-tracking-018 text-muted-foreground">
             {section.title}
           </h2>
           <Accordion type="multiple">

@@ -1,11 +1,11 @@
 ---
 name: biz-update-plan
-description: Update Business Plan based on scan evidence, card reflections, and strategic decisions.
+description: Update Business Plan based on standing-pipeline evidence, card reflections, and strategic decisions.
 ---
 
 # Update Business Plan
 
-Extract learnings from completed cards, scan evidence, and strategic decisions to update the corresponding Business Plan. Keeps business strategy aligned with execution reality.
+Extract learnings from completed cards, standing-pipeline evidence, and strategic decisions to update the corresponding Business Plan. Keeps business strategy aligned with execution reality.
 
 ## Operating Mode
 
@@ -13,7 +13,7 @@ Extract learnings from completed cards, scan evidence, and strategic decisions t
 
 **Allowed:**
 - Read card reflection stage docs (`reflect.agent.md`)
-- Read scan results from `docs/business-os/scans/`
+- Read `scan-proposals.md` and related idea backlog artifacts under `docs/business-os/strategy/<BIZ>/`
 - Update business plan files (`strategy/<BIZ>/plan.user.md` and `.agent.md`)
 - Commit plan updates with agent identity
 
@@ -28,7 +28,7 @@ Extract learnings from completed cards, scan evidence, and strategic decisions t
 - Business code (e.g., `BRIK`, `SKYL`, `PLAT`)
 
 **Optional:**
-- Source: `reflection` (from card) or `scan` (from repo scan) or `manual` (Pete-provided insights)
+- Source: `reflection` (from card) or `scan-proposals` (from IDEAS pipeline) or `manual` (Pete-provided insights)
 - Card ID: If updating from specific card reflection
 
 ## Business Plan Structure
@@ -49,7 +49,7 @@ Business plans are located at: `docs/business-os/strategy/<BIZ>/plan.user.md` an
 
 3. **Opportunities** (Ideas worth pursuing)
    - Validated ideas from completed Fact-finding
-   - Market observations from scans
+   - Market observations from standing-pack proposal cycles
    - Customer feedback themes
 
 4. **Learnings** (Append-only log)
@@ -80,16 +80,15 @@ const reflectDoc = await reader.getStageDoc(cardId, "reflect");
 // - Metrics/outcomes
 ```
 
-**From Repo Scan:**
+**From IDEAS Scan Proposals:**
 ```typescript
-const scanResults = JSON.parse(
-  await fs.readFile("docs/business-os/scans/last-scan.json", "utf-8")
-);
+const proposalsPath = `docs/business-os/strategy/${businessCode}/scan-proposals.md`;
+const proposalsDoc = await fs.readFile(proposalsPath, "utf-8");
 
 // Analyze:
-// - Cards blocked (emerging risks)
-// - Cards completed (learnings, metrics)
-// - Ideas patterns (opportunities)
+// - Proposal mix (CREATE/STRENGTHEN/WEAKEN/INVALIDATE/MERGE/SPLIT)
+// - Repeated risk signals (WEAKEN/INVALIDATE)
+// - Opportunity themes (CREATE/STRENGTHEN)
 ```
 
 **From Manual Input:**
@@ -102,7 +101,7 @@ const scanResults = JSON.parse(
 
 ### 2. Extract Structured Information
 
-Parse reflection or scan for:
+Parse reflection or proposal outcomes for:
 
 **Decisions:**
 - Strategic pivots
@@ -291,14 +290,14 @@ Update BRIK business plan: User auth learnings + new risks
 - Learnings: User auth fact-finding insights
 - Metrics: Booking completion +4pp from perf optimization
 
-Source: Card BRIK-ENG-0001 reflection + scan SCAN-2026-01-28
+Source: Card BRIK-ENG-0001 reflection + scan-proposals 2026-02-22
 ```
 
 ## Evidence Requirements
 
 Every plan update must include:
 
-- **Source:** Card ID, scan timestamp, or manual decision reference
+- **Source:** Card ID, scan-proposals timestamp, or manual decision reference
 - **Evidence type:** customer-input, measurement, repo-diff, experiment, etc.
 - **Data:** Specific numbers, quotes, or file references
 - **Date:** When evidence was gathered
@@ -307,7 +306,7 @@ Every plan update must include:
 
 - **After `/idea-develop`:** Update Opportunities section with new validated ideas
 - **After `/idea-advance` to Done:** Trigger reflection and plan update
-- **After `/idea-scan`:** Aggregate scan findings into plan updates
+- **After IDEAS-02 backlog update:** Aggregate accepted proposal outcomes into plan updates
 - **After `/idea-generate`:** Sweep reads plans and flags gaps/staleness — use this skill to act on sweep recommendations for plan bootstrapping or updates
 - **Before planning sessions:** Review plan to inform priority decisions
 
@@ -366,7 +365,7 @@ Done! Plan updated. Pete can review diff:
 ## Frequency Recommendations
 
 - **After card reflection:** Update plan with learnings (every completed card)
-- **After scans:** Aggregate findings into plan (weekly scans)
+- **After IDEAS-01/IDEAS-02 cycles:** Aggregate proposal-driven findings into plan (weekly or per trigger)
 - **Before planning sessions:** Comprehensive review and update (monthly)
 - **Strategic decisions:** Immediate plan update (ad-hoc)
 

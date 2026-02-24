@@ -45,6 +45,7 @@ describe("pages.json.server", () => {
       present: [],
       future: [],
       gridCols: 12,
+      editor: {},
     } as HistoryState;
 
     const updated = await repo.updatePage(

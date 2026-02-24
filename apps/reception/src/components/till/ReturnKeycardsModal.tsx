@@ -1,6 +1,9 @@
 import { memo, useCallback, useState } from "react";
 import { z } from "zod";
 
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import { withModalBackground } from "../../hoc/withModalBackground";
 import { showToast } from "../../utils/toastUtils";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
@@ -28,21 +31,22 @@ function ReturnKeycardsModalBase({ onConfirm, onCancel }: ReturnKeycardsModalPro
 
   return (
     <ModalContainer widthClasses="w-120">
-      <div className="relative rounded-lg bg-white p-8 shadow-xl dark:bg-darkSurface dark:text-darkAccentGreen">
-        <button
+      <div className="relative rounded-lg bg-surface p-8 shadow-xl">
+        <Button
           onClick={onCancel}
           aria-label="Close"
-          className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
+          className="absolute right-0 top-0 h-7 w-7 rounded-full bg-error-main text-primary-fg transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
         >
           &times;
-        </button>
+        </Button>
         <h2 className="mb-6 text-center text-xl font-semibold">Return Keycards</h2>
         <label className="block text-center mt-12 mb-12">
           <span className="text-sm font-semibold">Count</span>
-          <input
+          <Input
+            compatibilityMode="no-wrapper"
             type="number"
             min={1}
-            className="w-60 rounded border mx-6 px-3 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+            className="w-60 rounded border mx-6 px-3 py-2 text-sm"
             value={countInput}
             onChange={(e) => setCountInput(e.target.value)}
           />

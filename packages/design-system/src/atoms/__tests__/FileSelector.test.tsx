@@ -48,4 +48,26 @@ describe("FileSelector", () => {
     input = screen.getByLabelText("Upload") as HTMLInputElement;
     expect(input.multiple).toBe(true);
   });
+
+  it("supports shape/radius overrides for input and file trigger", () => {
+    const { rerender } = render(
+      <FileSelector label="Upload" shape="square" fileButtonShape="square" />,
+    );
+    let input = screen.getByLabelText("Upload");
+    expect(input).toHaveClass("rounded-none");
+    expect(input).toHaveClass("file:rounded-none");
+
+    rerender(
+      <FileSelector
+        label="Upload"
+        shape="square"
+        radius="xl"
+        fileButtonShape="square"
+        fileButtonRadius="2xl"
+      />,
+    );
+    input = screen.getByLabelText("Upload");
+    expect(input).toHaveClass("rounded-xl");
+    expect(input).toHaveClass("file:rounded-2xl");
+  });
 });

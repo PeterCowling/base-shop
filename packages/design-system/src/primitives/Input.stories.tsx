@@ -20,3 +20,13 @@ export const WithLongValue: Story = {
     defaultValue: "averyverylongunbrokensequencewithoutspaces@example.com",
   },
 };
+
+export const ShapeDepths: Story = {
+  render: (args) => (
+    <div className="grid max-w-xl gap-3">
+      <Input {...args} shape="square" placeholder="Square input" />
+      <Input {...args} shape="soft" placeholder="Soft input" />
+      <Input {...args} shape="pill" placeholder="Pill input" />
+    </div>
+  ),
+};

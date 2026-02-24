@@ -288,6 +288,7 @@ export function BreakfastMenuContent({ lang }: Props) {
           </Fragment>
         ))}
       </Section>
+      {/* i18n-exempt -- BRIK-822 [ttl=2026-12-31] Analytics ctaLocation identifier, not user-facing copy. */}
       <ContentStickyCta lang={lang} ctaLocation="breakfast_menu" />
     </Fragment>
   );

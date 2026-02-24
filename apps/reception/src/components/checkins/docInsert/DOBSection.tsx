@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 
+import { Input } from "@acme/design-system";
 import { ConfirmDialog } from "@acme/design-system/atoms";
 
 import { useAuth } from "../../../context/AuthContext";
@@ -214,14 +215,14 @@ function DOBSection({
       </label>
       <div className="flex gap-2 items-center">
         {/* YEAR */}
-        <input
+        <Input compatibilityMode="no-wrapper"
           id="dob-year"
           type="text"
           placeholder="YYYY"
           maxLength={4}
           className={`w-[70px] border border-info-light rounded px-3 py-2 
             focus:outline-none focus:ring-1 focus:ring-primary-main 
-            ${bgSuccess ? "bg-success-light/50" : ""} text-gray-900`}
+            ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
           value={yyyy}
           onChange={(e) => handleNumericChange(e, setYyyy, 4)}
           onBlur={handleBlur}
@@ -229,14 +230,14 @@ function DOBSection({
         <span>/</span>
 
         {/* MONTH */}
-        <input
+        <Input compatibilityMode="no-wrapper"
           id="dob-month"
           type="text"
           placeholder="MM"
           maxLength={2}
           className={`w-[50px] border border-info-light rounded px-3 py-2 
             focus:outline-none focus:ring-1 focus:ring-primary-main 
-            ${bgSuccess ? "bg-success-light/50" : ""} text-gray-900`}
+            ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
           value={mm}
           onChange={(e) => handleNumericChange(e, setMm, 2)}
           onBlur={handleBlur}
@@ -244,14 +245,14 @@ function DOBSection({
         <span>/</span>
 
         {/* DAY */}
-        <input
+        <Input compatibilityMode="no-wrapper"
           id="dob-day"
           type="text"
           placeholder="DD"
           maxLength={2}
           className={`w-[50px] border border-info-light rounded px-3 py-2 
             focus:outline-none focus:ring-1 focus:ring-primary-main 
-            ${bgSuccess ? "bg-success-light/50" : ""} text-gray-900`}
+            ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
           value={dd}
           onChange={(e) => handleNumericChange(e, setDd, 2)}
           onBlur={handleBlur}

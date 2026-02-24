@@ -8,6 +8,7 @@ Updated: 2026-02-13
 Last-reviewed: 2026-02-13
 Owner: Pete
 Source: S2 market intelligence + S6 site-upgrade synthesis + S2A historical baseline + S1B measurement verification
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # BRIK Startup-Loop 90-Day Forecast (v1)

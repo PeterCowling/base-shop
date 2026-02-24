@@ -15,26 +15,26 @@ describe("formatDdMm", () => {
 describe("getLoanIconClass", () => {
   it("returns correct icon for Umbrella", () => {
     expect(getLoanIconClass("Umbrella")).toBe(
-      "fas fa-umbrella fa-lg text-blue-600"
+      "fas fa-umbrella fa-lg text-info-main"
     );
   });
 
   it("returns keycard cash icon", () => {
     expect(getLoanIconClass("Keycard", "cash")).toBe(
-      "fas fa-id-card fa-lg text-green-600"
+      "fas fa-id-card fa-lg text-success-main"
     );
   });
 
   it("returns keycard document icon", () => {
     expect(getLoanIconClass("Keycard", "passport")).toBe(
-      "fas fa-id-card fa-lg text-yellow-600"
+      "fas fa-id-card fa-lg text-warning-main"
     );
   });
 
   it("warns on unknown keycard deposit", () => {
     const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
     expect(getLoanIconClass("Keycard")).toBe(
-      "fas fa-id-card fa-lg text-gray-700"
+      "fas fa-id-card fa-lg text-foreground"
     );
     expect(warn).toHaveBeenCalled();
     warn.mockRestore();

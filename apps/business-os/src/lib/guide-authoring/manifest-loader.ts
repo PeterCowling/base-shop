@@ -11,6 +11,8 @@
  * The approach avoids cross-app TypeScript imports which require complex
  * webpack alias configuration.
  */
+import "server-only";
+
 import fs from "fs";
 import path from "path";
 

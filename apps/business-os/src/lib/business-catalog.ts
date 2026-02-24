@@ -107,7 +107,7 @@ export const BUSINESSES: Business[] = [
     status: "active",
     created: "2026-02-11",
     tags: ["fashion", "accessories", "consumer"],
-    apps: ["cover-me-pretty", "handbag-configurator", "handbag-configurator-api"],
+    apps: ["cover-me-pretty", "handbag-configurator", "handbag-configurator-api", "caryina"],
   },
 ];
 

@@ -73,7 +73,7 @@ describe("SEO Extraction: seo.ts re-export contract", () => {
     // Canonical
     expect(links[0]).toEqual({
       rel: "canonical",
-      href: `${origin}/en/rooms/`,
+      href: `${origin}/en/rooms`,
     });
 
     // At least 10 hreflang alternates + x-default
@@ -114,7 +114,7 @@ describe("SEO Extraction: seo.ts re-export contract", () => {
       "@type": "ListItem",
       position: 2,
       name: "Rooms",
-      item: `${origin}/en/rooms/`,
+      item: `${origin}/en/rooms`,
     });
   });
 });

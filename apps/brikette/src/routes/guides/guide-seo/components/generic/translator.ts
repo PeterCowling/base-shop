@@ -69,27 +69,12 @@ export function makeBaseGenericProps(params: {
     tagTranslator(fn, "en", "guides");
     return fn;
   };
-  if (preferGenericWhenFallback) {
-    const tEnFromHook = hookI18n?.getFixedT?.("en", "guides");
-    if (typeof tEnFromHook === "function") {
-      return { t: tagAsEn(tEnFromHook as GuidesTranslator), guideKey } as const;
-    }
-    const tEnFromApp = i18n?.getFixedT?.("en", "guides");
-    if (typeof tEnFromApp === "function") {
-      return { t: tagAsEn(tEnFromApp as GuidesTranslator), guideKey } as const;
-    }
-  } else {
-    // When the route does not explicitly request GenericContent in fallback
-    // scenarios, still try to honour an explicit EN translator before falling
-    // back to helpers so behaviour remains predictable in tests.
-    const tEnFromHook = hookI18n?.getFixedT?.("en", "guides");
-    if (typeof tEnFromHook === "function") {
-      return { t: tagAsEn(tEnFromHook as GuidesTranslator), guideKey } as const;
-    }
-    const tEnFromApp = i18n?.getFixedT?.("en", "guides");
-    if (typeof tEnFromApp === "function") {
-      return { t: tagAsEn(tEnFromApp as GuidesTranslator), guideKey } as const;
-    }
+  // When the route does not explicitly request GenericContent in fallback
+  // scenarios, still try to honour an explicit EN translator before falling
+  // back to helpers so behaviour remains predictable in tests.
+  const tEn = resolveEnGuidesTranslator(hookI18n);
+  if (typeof tEn === "function") {
+    return { t: tagAsEn(tEn), guideKey } as const;
   }
   // Fall back to the translateGuides helper which can synthesize values from
   // guidesFallback, bundles and store resources when explicit EN is not available.

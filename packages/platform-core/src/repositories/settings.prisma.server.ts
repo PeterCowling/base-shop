@@ -1,6 +1,5 @@
 import "server-only";
 
-import { nowIso } from "@acme/date-utils";
 import { shopSettingsSchema } from "@acme/types";
 
 import { prisma } from "../db";
@@ -9,6 +8,8 @@ import type {
   Settings,
   SettingsDiffEntry,
 } from "./settings.json.server";
+
+const nowIso = () => new Date().toISOString();
 
 function setPatchValue<T extends object, K extends keyof T>(
   patch: Partial<T>,

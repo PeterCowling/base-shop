@@ -2,6 +2,9 @@
 
 import React, { useCallback, useMemo } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+
 import { type ScreenType } from "../../types/bar/BarTypes";
 
 /* -------------------------------------------------------------------------- *
@@ -34,14 +37,14 @@ const BTN_BASE =
   "focus-visible:ring-2 focus-visible:ring-white/70";
 
 const MENU_BTN =
-  `${BTN_BASE} text-white/70 hover:text-white/90 dark:text-darkAccentGreen ` +
-  "relative data-[active=true]:text-white " +
+  `${BTN_BASE} text-primary-fg/70 hover:text-primary-fg/90 ` +
+  "relative data-[active=true]:text-primary-fg " +
   "after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 " +
-  "after:bg-white/90 after:rounded-full after:origin-left after:scale-x-0 " +
+  "after:bg-surface/90 after:rounded-full after:origin-left after:scale-x-0 " +
   "after:transition-transform after:duration-200 " +
   "data-[active=true]:after:scale-x-100";
 
-const ACTION_BTN = `${BTN_BASE} bg-white/10 text-white hover:bg-white/20 disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg`;
+const ACTION_BTN = `${BTN_BASE} bg-surface/10 text-primary-fg hover:bg-surface/20 disabled:opacity-50`;
 
 /* -------------------------------------------------------------------------- *
  *                                COMPONENT                                   *
@@ -102,40 +105,43 @@ const HeaderControls: React.FC<HeaderControlsProps> = React.memo(
 
     /* ------------------------------ RENDER -------------------------------- */
     return (
-      <header className="sticky top-0 z-20 w-full bg-blue-600/95 backdrop-blur-md shadow-lg dark:bg-darkSurface">
+      <header className="sticky top-0 z-20 w-full bg-info-main/95 backdrop-blur-md shadow-lg">
         <nav
-          className="mx-auto flex max-w-screen-lg items-center justify-between gap-4 px-4 py-2 font-body dark:text-darkAccentGreen"
+          className="mx-auto flex max-w-screen-lg items-center justify-between gap-4 px-4 py-2 font-body"
           aria-label="Bar navigation"
         >
           {/* ────── Menu Tabs ────── */}
-          <div
-            className="flex flex-1 space-x-4 overflow-x-auto whitespace-nowrap scrollbar-none"
+          <Inline
+            wrap={false}
+            gap={0}
+            className="flex-1 space-x-4 overflow-x-auto whitespace-nowrap scrollbar-none"
             role="tablist"
             aria-label="Menu categories"
           >
             {menuButtons.map(({ key, label, onClick }) => (
-              <button
+              <Button
                 key={key}
                 type="button"
                 onClick={onClick}
                 data-active={menuType === key}
                 aria-pressed={menuType === key}
                 aria-current={menuType === key ? "page" : undefined}
+                compatibilityMode="passthrough"
                 className={MENU_BTN}
               >
                 {label}
-              </button>
+              </Button>
             ))}
-          </div>
+          </Inline>
 
           {/* ────── Screen Actions ────── */}
           <div className="flex shrink-0 items-center gap-3">
-            <button type="button" onClick={handleSales} className={ACTION_BTN}>
+            <Button type="button" onClick={handleSales} compatibilityMode="passthrough" className={ACTION_BTN}>
               Sales
-            </button>
-            <button type="button" onClick={handleComp} className={ACTION_BTN}>
+            </Button>
+            <Button type="button" onClick={handleComp} compatibilityMode="passthrough" className={ACTION_BTN}>
               Comp
-            </button>
+            </Button>
           </div>
         </nav>
       </header>

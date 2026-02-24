@@ -1,6 +1,6 @@
 import type { SeoSiteConfig } from "../config/index.js";
 
-import { ensureTrailingSlash } from "./ensureTrailingSlash.js";
+import { ensureNoTrailingSlash } from "./ensureNoTrailingSlash.js";
 
 export interface AlternatesOptions {
   canonicalPath: string;
@@ -26,19 +26,26 @@ export function buildAlternates(
 ): AlternatesResult {
   const { siteUrl } = config;
   const { canonicalPath, locales, defaultLocale } = options;
+  const normalizedSiteUrl = ensureNoTrailingSlash(siteUrl);
+  const normalizedCanonicalPath = (() => {
+    const withLeadingSlash = canonicalPath.startsWith("/") ? canonicalPath : `/${canonicalPath}`;
+    return ensureNoTrailingSlash(withLeadingSlash);
+  })();
 
-  const canonical = ensureTrailingSlash(`${siteUrl}${canonicalPath}`);
+  const canonical = `${normalizedSiteUrl}${normalizedCanonicalPath === "/" ? "" : normalizedCanonicalPath}`;
 
   const languages: Record<string, string> = {};
 
   if (locales && locales.length > 0) {
     for (const locale of locales) {
-      const suffix = canonicalPath === "/" ? "/" : canonicalPath;
-      languages[locale] = ensureTrailingSlash(`${siteUrl}/${locale}${suffix}`);
+      const localizedPath = normalizedCanonicalPath === "/" ?
+        `/${locale}` :
+        `/${locale}${normalizedCanonicalPath}`;
+      languages[locale] = `${normalizedSiteUrl}${localizedPath}`;
     }
 
     // x-default points to the default locale variant
-    if (defaultLocale) {
+    if (defaultLocale && languages[defaultLocale]) {
       languages["x-default"] = languages[defaultLocale];
     }
   }

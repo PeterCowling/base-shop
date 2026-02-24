@@ -1,0 +1,540 @@
+{
+  "generatedAt": "2026-02-22T22:50:50.717Z",
+  "commit": "2a72c9506f",
+  "pages": {
+    "en": {
+      "locale": "en",
+      "canonical": "https://hostel-positano.com/en/",
+      "alternates": [
+        {
+          "hreflang": "en",
+          "href": "https://hostel-positano.com/en/"
+        },
+        {
+          "hreflang": "es",
+          "href": "https://hostel-positano.com/es/"
+        },
+        {
+          "hreflang": "de",
+          "href": "https://hostel-positano.com/de/"
+        },
+        {
+          "hreflang": "fr",
+          "href": "https://hostel-positano.com/fr/"
+        },
+        {
+          "hreflang": "it",
+          "href": "https://hostel-positano.com/it/"
+        },
+        {
+          "hreflang": "ja",
+          "href": "https://hostel-positano.com/ja/"
+        },
+        {
+          "hreflang": "ko",
+          "href": "https://hostel-positano.com/ko/"
+        },
+        {
+          "hreflang": "pt",
+          "href": "https://hostel-positano.com/pt/"
+        },
+        {
+          "hreflang": "ru",
+          "href": "https://hostel-positano.com/ru/"
+        },
+        {
+          "hreflang": "zh",
+          "href": "https://hostel-positano.com/zh/"
+        },
+        {
+          "hreflang": "ar",
+          "href": "https://hostel-positano.com/ar/"
+        },
+        {
+          "hreflang": "hi",
+          "href": "https://hostel-positano.com/hi/"
+        },
+        {
+          "hreflang": "vi",
+          "href": "https://hostel-positano.com/vi/"
+        },
+        {
+          "hreflang": "pl",
+          "href": "https://hostel-positano.com/pl/"
+        },
+        {
+          "hreflang": "sv",
+          "href": "https://hostel-positano.com/sv/"
+        },
+        {
+          "hreflang": "no",
+          "href": "https://hostel-positano.com/no/"
+        },
+        {
+          "hreflang": "da",
+          "href": "https://hostel-positano.com/da/"
+        },
+        {
+          "hreflang": "hu",
+          "href": "https://hostel-positano.com/hu/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://hostel-positano.com/en/"
+        }
+      ]
+    },
+    "it": {
+      "locale": "it",
+      "canonical": "https://hostel-positano.com/it/",
+      "alternates": [
+        {
+          "hreflang": "en",
+          "href": "https://hostel-positano.com/en/"
+        },
+        {
+          "hreflang": "es",
+          "href": "https://hostel-positano.com/es/"
+        },
+        {
+          "hreflang": "de",
+          "href": "https://hostel-positano.com/de/"
+        },
+        {
+          "hreflang": "fr",
+          "href": "https://hostel-positano.com/fr/"
+        },
+        {
+          "hreflang": "it",
+          "href": "https://hostel-positano.com/it/"
+        },
+        {
+          "hreflang": "ja",
+          "href": "https://hostel-positano.com/ja/"
+        },
+        {
+          "hreflang": "ko",
+          "href": "https://hostel-positano.com/ko/"
+        },
+        {
+          "hreflang": "pt",
+          "href": "https://hostel-positano.com/pt/"
+        },
+        {
+          "hreflang": "ru",
+          "href": "https://hostel-positano.com/ru/"
+        },
+        {
+          "hreflang": "zh",
+          "href": "https://hostel-positano.com/zh/"
+        },
+        {
+          "hreflang": "ar",
+          "href": "https://hostel-positano.com/ar/"
+        },
+        {
+          "hreflang": "hi",
+          "href": "https://hostel-positano.com/hi/"
+        },
+        {
+          "hreflang": "vi",
+          "href": "https://hostel-positano.com/vi/"
+        },
+        {
+          "hreflang": "pl",
+          "href": "https://hostel-positano.com/pl/"
+        },
+        {
+          "hreflang": "sv",
+          "href": "https://hostel-positano.com/sv/"
+        },
+        {
+          "hreflang": "no",
+          "href": "https://hostel-positano.com/no/"
+        },
+        {
+          "hreflang": "da",
+          "href": "https://hostel-positano.com/da/"
+        },
+        {
+          "hreflang": "hu",
+          "href": "https://hostel-positano.com/hu/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://hostel-positano.com/en/"
+        }
+      ]
+    },
+    "de": {
+      "locale": "de",
+      "canonical": "https://hostel-positano.com/de/",
+      "alternates": [
+        {
+          "hreflang": "en",
+          "href": "https://hostel-positano.com/en/"
+        },
+        {
+          "hreflang": "es",
+          "href": "https://hostel-positano.com/es/"
+        },
+        {
+          "hreflang": "de",
+          "href": "https://hostel-positano.com/de/"
+        },
+        {
+          "hreflang": "fr",
+          "href": "https://hostel-positano.com/fr/"
+        },
+        {
+          "hreflang": "it",
+          "href": "https://hostel-positano.com/it/"
+        },
+        {
+          "hreflang": "ja",
+          "href": "https://hostel-positano.com/ja/"
+        },
+        {
+          "hreflang": "ko",
+          "href": "https://hostel-positano.com/ko/"
+        },
+        {
+          "hreflang": "pt",
+          "href": "https://hostel-positano.com/pt/"
+        },
+        {
+          "hreflang": "ru",
+          "href": "https://hostel-positano.com/ru/"
+        },
+        {
+          "hreflang": "zh",
+          "href": "https://hostel-positano.com/zh/"
+        },
+        {
+          "hreflang": "ar",
+          "href": "https://hostel-positano.com/ar/"
+        },
+        {
+          "hreflang": "hi",
+          "href": "https://hostel-positano.com/hi/"
+        },
+        {
+          "hreflang": "vi",
+          "href": "https://hostel-positano.com/vi/"
+        },
+        {
+          "hreflang": "pl",
+          "href": "https://hostel-positano.com/pl/"
+        },
+        {
+          "hreflang": "sv",
+          "href": "https://hostel-positano.com/sv/"
+        },
+        {
+          "hreflang": "no",
+          "href": "https://hostel-positano.com/no/"
+        },
+        {
+          "hreflang": "da",
+          "href": "https://hostel-positano.com/da/"
+        },
+        {
+          "hreflang": "hu",
+          "href": "https://hostel-positano.com/hu/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://hostel-positano.com/en/"
+        }
+      ]
+    },
+    "fr": {
+      "locale": "fr",
+      "canonical": "https://hostel-positano.com/fr/",
+      "alternates": [
+        {
+          "hreflang": "en",
+          "href": "https://hostel-positano.com/en/"
+        },
+        {
+          "hreflang": "es",
+          "href": "https://hostel-positano.com/es/"
+        },
+        {
+          "hreflang": "de",
+          "href": "https://hostel-positano.com/de/"
+        },
+        {
+          "hreflang": "fr",
+          "href": "https://hostel-positano.com/fr/"
+        },
+        {
+          "hreflang": "it",
+          "href": "https://hostel-positano.com/it/"
+        },
+        {
+          "hreflang": "ja",
+          "href": "https://hostel-positano.com/ja/"
+        },
+        {
+          "hreflang": "ko",
+          "href": "https://hostel-positano.com/ko/"
+        },
+        {
+          "hreflang": "pt",
+          "href": "https://hostel-positano.com/pt/"
+        },
+        {
+          "hreflang": "ru",
+          "href": "https://hostel-positano.com/ru/"
+        },
+        {
+          "hreflang": "zh",
+          "href": "https://hostel-positano.com/zh/"
+        },
+        {
+          "hreflang": "ar",
+          "href": "https://hostel-positano.com/ar/"
+        },
+        {
+          "hreflang": "hi",
+          "href": "https://hostel-positano.com/hi/"
+        },
+        {
+          "hreflang": "vi",
+          "href": "https://hostel-positano.com/vi/"
+        },
+        {
+          "hreflang": "pl",
+          "href": "https://hostel-positano.com/pl/"
+        },
+        {
+          "hreflang": "sv",
+          "href": "https://hostel-positano.com/sv/"
+        },
+        {
+          "hreflang": "no",
+          "href": "https://hostel-positano.com/no/"
+        },
+        {
+          "hreflang": "da",
+          "href": "https://hostel-positano.com/da/"
+        },
+        {
+          "hreflang": "hu",
+          "href": "https://hostel-positano.com/hu/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://hostel-positano.com/en/"
+        }
+      ]
+    },
+    "es": {
+      "locale": "es",
+      "canonical": "https://hostel-positano.com/es/",
+      "alternates": [
+        {
+          "hreflang": "en",
+          "href": "https://hostel-positano.com/en/"
+        },
+        {
+          "hreflang": "es",
+          "href": "https://hostel-positano.com/es/"
+        },
+        {
+          "hreflang": "de",
+          "href": "https://hostel-positano.com/de/"
+        },
+        {
+          "hreflang": "fr",
+          "href": "https://hostel-positano.com/fr/"
+        },
+        {
+          "hreflang": "it",
+          "href": "https://hostel-positano.com/it/"
+        },
+        {
+          "hreflang": "ja",
+          "href": "https://hostel-positano.com/ja/"
+        },
+        {
+          "hreflang": "ko",
+          "href": "https://hostel-positano.com/ko/"
+        },
+        {
+          "hreflang": "pt",
+          "href": "https://hostel-positano.com/pt/"
+        },
+        {
+          "hreflang": "ru",
+          "href": "https://hostel-positano.com/ru/"
+        },
+        {
+          "hreflang": "zh",
+          "href": "https://hostel-positano.com/zh/"
+        },
+        {
+          "hreflang": "ar",
+          "href": "https://hostel-positano.com/ar/"
+        },
+        {
+          "hreflang": "hi",
+          "href": "https://hostel-positano.com/hi/"
+        },
+        {
+          "hreflang": "vi",
+          "href": "https://hostel-positano.com/vi/"
+        },
+        {
+          "hreflang": "pl",
+          "href": "https://hostel-positano.com/pl/"
+        },
+        {
+          "hreflang": "sv",
+          "href": "https://hostel-positano.com/sv/"
+        },
+        {
+          "hreflang": "no",
+          "href": "https://hostel-positano.com/no/"
+        },
+        {
+          "hreflang": "da",
+          "href": "https://hostel-positano.com/da/"
+        },
+        {
+          "hreflang": "hu",
+          "href": "https://hostel-positano.com/hu/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://hostel-positano.com/en/"
+        }
+      ]
+    },
+    "ja": {
+      "locale": "ja",
+      "canonical": "https://hostel-positano.com/ja/",
+      "alternates": [
+        {
+          "hreflang": "en",
+          "href": "https://hostel-positano.com/en/"
+        },
+        {
+          "hreflang": "es",
+          "href": "https://hostel-positano.com/es/"
+        },
+        {
+          "hreflang": "de",
+          "href": "https://hostel-positano.com/de/"
+        },
+        {
+          "hreflang": "fr",
+          "href": "https://hostel-positano.com/fr/"
+        },
+        {
+          "hreflang": "it",
+          "href": "https://hostel-positano.com/it/"
+        },
+        {
+          "hreflang": "ja",
+          "href": "https://hostel-positano.com/ja/"
+        },
+        {
+          "hreflang": "ko",
+          "href": "https://hostel-positano.com/ko/"
+        },
+        {
+          "hreflang": "pt",
+          "href": "https://hostel-positano.com/pt/"
+        },
+        {
+          "hreflang": "ru",
+          "href": "https://hostel-positano.com/ru/"
+        },
+        {
+          "hreflang": "zh",
+          "href": "https://hostel-positano.com/zh/"
+        },
+        {
+          "hreflang": "ar",
+          "href": "https://hostel-positano.com/ar/"
+        },
+        {
+          "hreflang": "hi",
+          "href": "https://hostel-positano.com/hi/"
+        },
+        {
+          "hreflang": "vi",
+          "href": "https://hostel-positano.com/vi/"
+        },
+        {
+          "hreflang": "pl",
+          "href": "https://hostel-positano.com/pl/"
+        },
+        {
+          "hreflang": "sv",
+          "href": "https://hostel-positano.com/sv/"
+        },
+        {
+          "hreflang": "no",
+          "href": "https://hostel-positano.com/no/"
+        },
+        {
+          "hreflang": "da",
+          "href": "https://hostel-positano.com/da/"
+        },
+        {
+          "hreflang": "hu",
+          "href": "https://hostel-positano.com/hu/"
+        },
+        {
+          "hreflang": "x-default",
+          "href": "https://hostel-positano.com/en/"
+        }
+      ]
+    }
+  },
+  "checks": [
+    {
+      "pair": "en-it",
+      "aSelf": true,
+      "bSelf": true,
+      "reciprocity": true,
+      "canonicalAligned": true,
+      "xDefault": "https://hostel-positano.com/en/"
+    },
+    {
+      "pair": "en-de",
+      "aSelf": true,
+      "bSelf": true,
+      "reciprocity": true,
+      "canonicalAligned": true,
+      "xDefault": "https://hostel-positano.com/en/"
+    },
+    {
+      "pair": "en-fr",
+      "aSelf": true,
+      "bSelf": true,
+      "reciprocity": true,
+      "canonicalAligned": true,
+      "xDefault": "https://hostel-positano.com/en/"
+    },
+    {
+      "pair": "en-es",
+      "aSelf": true,
+      "bSelf": true,
+      "reciprocity": true,
+      "canonicalAligned": true,
+      "xDefault": "https://hostel-positano.com/en/"
+    },
+    {
+      "pair": "en-ja",
+      "aSelf": true,
+      "bSelf": true,
+      "reciprocity": true,
+      "canonicalAligned": true,
+      "xDefault": "https://hostel-positano.com/en/"
+    }
+  ]
+}

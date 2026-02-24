@@ -2,6 +2,9 @@
 
 import React, { memo, useCallback } from "react";
 
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import { type DocumentType, KeycardPayType } from "../../../types/keycards";
 
 import DocumentTypeSelector from "./DocumentTypeSelector";
@@ -40,7 +43,7 @@ function KeycardDepositMenu({
   closeMenu,
 }: KeycardDepositMenuProps) {
   const containerClass = `
-    z-50 w-72 border border-gray-400 rounded shadow-lg bg-white p-4 dark:bg-darkSurface dark:text-darkAccentGreen
+    z-50 w-72 border border-border-2 rounded shadow-lg bg-surface p-4
     transition-opacity duration-200 transform-gpu
     ${menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}
   `;
@@ -74,7 +77,7 @@ function KeycardDepositMenu({
           <label htmlFor="keycardNumber" className="block font-semibold mb-1">
             Keycard #
           </label>
-          <input
+          <Input compatibilityMode="no-wrapper"
             id="keycardNumber"
             type="text"
             inputMode="numeric"
@@ -82,7 +85,7 @@ function KeycardDepositMenu({
             maxLength={3}
             value={keycardNumber}
             onChange={(e) => setKeycardNumber(e.target.value)}
-            className="w-full border rounded px-2 py-1 dark:bg-darkBg dark:border-darkSurface dark:text-darkAccentGreen"
+            className="w-full border rounded px-2 py-1"
           />
         </div>
       )}
@@ -92,17 +95,17 @@ function KeycardDepositMenu({
         <span className="text-lg font-bold">€{depositPreview}</span>
       </div>
 
-      <button
+      <Button
         onClick={handleConfirm}
         disabled={buttonDisabled}
-        className={`w-full mt-4 py-2 rounded text-white ${
+        className={`w-full mt-4 py-2 rounded text-primary-fg ${
           buttonDisabled
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-600 hover:bg-blue-700 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+            ? "bg-surface-3 cursor-not-allowed"
+            : "bg-info-main hover:bg-blue-700"
         }`}
       >
         Confirm
-      </button>
+      </Button>
     </div>
   );
 }

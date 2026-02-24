@@ -5,6 +5,7 @@ Business: BRIK
 Date: 2026-02-12
 Owner: Pete
 Target-Data-Dir: docs/business-os/strategy/BRIK/data
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # BRIK Historical Data Request Prompt

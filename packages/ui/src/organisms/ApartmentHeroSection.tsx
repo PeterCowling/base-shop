@@ -70,14 +70,14 @@ function ApartmentHeroSection({ bookingUrl, lang, onBookingCtaClick }: HeroSecti
                 bookingUrl.startsWith("/") ? (
                   <Link
                     href={bookingUrl}
-                    className="inline-flex min-h-12 items-center justify-center rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-neutral-900 shadow-lg transition-colors hover:bg-brand-primary hover:text-white"
+                    className="inline-flex min-h-12 items-center justify-center rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors hover:bg-brand-primary hover:text-brand-on-primary"
                   >
                     {ctaLabel}
                   </Link>
                 ) : (
                   <a
                     href={bookingUrl}
-                    className="inline-flex min-h-12 items-center justify-center rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-neutral-900 shadow-lg transition-colors hover:bg-brand-primary hover:text-white"
+                    className="inline-flex min-h-12 items-center justify-center rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors hover:bg-brand-primary hover:text-brand-on-primary"
                   >
                     {ctaLabel}
                   </a>
@@ -86,7 +86,7 @@ function ApartmentHeroSection({ bookingUrl, lang, onBookingCtaClick }: HeroSecti
                 <button
                   type="button"
                   onClick={() => onBookingCtaClick?.()}
-                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-neutral-900 shadow-lg transition-colors hover:bg-brand-primary hover:text-white"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors hover:bg-brand-primary hover:text-brand-on-primary"
                 >
                   {ctaLabel}
                 </button>

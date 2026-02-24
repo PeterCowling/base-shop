@@ -22,3 +22,13 @@ export const WithLongUnbroken: Story = {
       "supercalifragilisticexpialidocioussupercalifragilisticexpialidociouswithoutspaces",
   },
 };
+
+export const ShapeDepths: Story = {
+  render: (args) => (
+    <div className="grid max-w-xl gap-3">
+      <Textarea {...args} shape="square" placeholder="Square textarea" />
+      <Textarea {...args} shape="soft" placeholder="Soft textarea" />
+      <Textarea {...args} shape="pill" placeholder="Pill textarea" />
+    </div>
+  ),
+};

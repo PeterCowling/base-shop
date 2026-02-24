@@ -8,6 +8,7 @@ import { FormField } from "../atoms/FormField";
 import { cn } from "../utils/style";
 
 import { Inline } from "./Inline";
+import { type PrimitiveRadius, type PrimitiveShape, resolveShapeRadiusClass } from "./shape-radius";
 
 /* ──────────────────────────────────────────────────────────────────────────────
  * Props
@@ -26,7 +27,15 @@ export interface InputProps
   floatingLabel?: boolean;
   /** Extra class on the outer wrapper */
   wrapperClassName?: string;
+  /** Compatibility mode for migration scenarios that require bare input semantics. */
+  compatibilityMode?: InputCompatibilityMode;
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
 }
+
+export type InputCompatibilityMode = "default" | "no-wrapper";
 
 /* ──────────────────────────────────────────────────────────────────────────────
  * Component
@@ -41,6 +50,9 @@ export const Input = (
     description,
     floatingLabel,
     wrapperClassName,
+    compatibilityMode = "default",
+    shape,
+    radius,
     id,
     onFocus,
     onBlur,
@@ -51,21 +63,29 @@ export const Input = (
 ) => {
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
+  const useFloatingLabel =
+    compatibilityMode === "default" && Boolean(floatingLabel);
   const [focused, setFocused] = React.useState(false);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
 
   /* ------------------------------------------------------------------ *
    *  Dynamic classes
    * ------------------------------------------------------------------ */
   const baseClasses = cn(
     // base
-    "flex h-12 w-full rounded-md border border-input bg-input px-3 py-3 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    "flex h-12 w-full border border-input bg-input px-3 py-3 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    shapeRadiusClass,
     // placeholder + file input follow tokenized colors
     "placeholder:text-muted-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     // ring uses tokenized color and widths
     "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     "disabled:cursor-not-allowed disabled:opacity-50",
     // floating-label tweak
-    floatingLabel && "peer pt-5",
+    useFloatingLabel && "peer pt-5",
     // error border leverages semantic color token
     error ? "border-danger" : undefined,
     // user-supplied
@@ -94,6 +114,23 @@ export const Input = (
       : Boolean(props.defaultValue);
   const required = props.required;
   const formClassName = wrapperClassName;
+  const compatibilityAriaInvalid =
+    props["aria-invalid"] ?? (Boolean(error) || undefined);
+
+  if (compatibilityMode === "no-wrapper") {
+    return (
+      <input
+        id={inputId}
+        ref={ref}
+        data-token="--color-bg"
+        className={baseClasses}
+        aria-invalid={compatibilityAriaInvalid}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        {...props}
+      />
+    );
+  }
 
   /* ------------------------------------------------------------------ *
    *  Render
@@ -102,7 +139,7 @@ export const Input = (
     <FormField
       id={inputId}
       label={
-        !floatingLabel && (label || labelSuffix) ? (
+        !useFloatingLabel && (label || labelSuffix) ? (
           <Inline wrap={false} gap={1}>
             {label && <span>{label}</span>}
             {labelSuffix}
@@ -115,7 +152,7 @@ export const Input = (
       {...(formClassName !== undefined ? { className: formClassName } : {})}
        
       input={({ id: controlId, describedBy, ariaInvalid }) =>
-        floatingLabel ? (
+        useFloatingLabel ? (
           <div className="relative">
             <input
               id={controlId}
@@ -168,4 +205,3 @@ export const Input = (
     />
   );
 };
-

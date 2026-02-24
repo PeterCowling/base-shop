@@ -53,12 +53,12 @@ describe("ensureTrailingSlash (TC-04)", () => {
 });
 
 describe("buildAlternates (TC-03)", () => {
-  it("returns canonical with trailing slash", () => {
+  it("returns slashless canonical URL", () => {
     const result = buildAlternates(
       { siteUrl: "https://example.com" },
       { canonicalPath: "/rooms", locales: ["en", "it", "de"] },
     );
-    expect(result.canonical).toBe("https://example.com/rooms/");
+    expect(result.canonical).toBe("https://example.com/rooms");
   });
 
   it("generates hreflang entries for all locales", () => {
@@ -71,10 +71,10 @@ describe("buildAlternates (TC-03)", () => {
       },
     );
     expect(result.languages).toEqual({
-      en: "https://example.com/en/rooms/",
-      it: "https://example.com/it/rooms/",
-      de: "https://example.com/de/rooms/",
-      "x-default": "https://example.com/en/rooms/",
+      en: "https://example.com/en/rooms",
+      it: "https://example.com/it/rooms",
+      de: "https://example.com/de/rooms",
+      "x-default": "https://example.com/en/rooms",
     });
   });
 
@@ -83,9 +83,9 @@ describe("buildAlternates (TC-03)", () => {
       { siteUrl: "https://example.com" },
       { canonicalPath: "/", locales: ["en", "it"], defaultLocale: "en" },
     );
-    expect(result.canonical).toBe("https://example.com/");
-    expect(result.languages.en).toBe("https://example.com/en/");
-    expect(result.languages.it).toBe("https://example.com/it/");
+    expect(result.canonical).toBe("https://example.com");
+    expect(result.languages.en).toBe("https://example.com/en");
+    expect(result.languages.it).toBe("https://example.com/it");
   });
 
   it("returns empty languages when no locales provided", () => {
@@ -93,7 +93,7 @@ describe("buildAlternates (TC-03)", () => {
       { siteUrl: "https://example.com" },
       { canonicalPath: "/rooms" },
     );
-    expect(result.canonical).toBe("https://example.com/rooms/");
+    expect(result.canonical).toBe("https://example.com/rooms");
     expect(result.languages).toEqual({});
   });
 });
@@ -128,7 +128,7 @@ describe("buildMetadata (TC-02)", () => {
     expect(og).toBeDefined();
     expect((og as Record<string, unknown>).siteName).toBe("Test Site");
     expect((og as Record<string, unknown>).url).toBe(
-      "https://example.com/rooms/",
+      "https://example.com/rooms",
     );
   });
 
@@ -190,7 +190,7 @@ describe("buildMetadata (TC-02)", () => {
       locale: "en",
     });
     const alternates = meta.alternates as Record<string, unknown>;
-    expect(alternates.canonical).toBe("https://example.com/rooms/");
+    expect(alternates.canonical).toBe("https://example.com/rooms");
     const languages = alternates.languages as Record<string, string>;
     expect(languages.en).toBeDefined();
     expect(languages.it).toBeDefined();

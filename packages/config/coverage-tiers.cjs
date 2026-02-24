@@ -27,8 +27,12 @@
  * STANDARD (80%): Core domain logic and shared libraries. The baseline
  *   for world-class repositories. All packages default to this.
  *
- * MINIMAL (0%): Type definitions, config, templates, scripts. No runtime
- *   logic that could fail in production.
+ * SCHEMA_BASELINE (70/0/50/70): Schema-heavy packages where branch coverage
+ *   is not a meaningful signal, but non-zero line/function/statement floors
+ *   still enforce regression detection.
+ *
+ * MINIMAL (0%): Type definitions, config, templates, scripts, or explicitly
+ *   deferred runtime scopes that have not yet established stable coverage.
  */
 const TIERS = {
   CRITICAL: {
@@ -47,6 +51,14 @@ const TIERS = {
       statements: 80,
     },
   },
+  SCHEMA_BASELINE: {
+    global: {
+      lines: 70,
+      branches: 0,
+      functions: 50,
+      statements: 70,
+    },
+  },
   MINIMAL: {
     global: {
       lines: 0,
@@ -61,7 +73,7 @@ const TIERS = {
  * Package-to-tier assignments.
  *
  * Packages not listed here default to STANDARD (80%).
- * Add packages explicitly when they need CRITICAL or MINIMAL tiers.
+ * Add packages explicitly when they need CRITICAL, SCHEMA_BASELINE, or MINIMAL tiers.
  */
 const PACKAGE_TIERS = {
   // CRITICAL: Revenue and security-critical
@@ -69,8 +81,9 @@ const PACKAGE_TIERS = {
   "@acme/auth": "CRITICAL",
   "@acme/platform-core": "CRITICAL",
 
+  // SCHEMA_BASELINE: Schema-heavy packages with enforced non-zero coverage
+  "@acme/types": "SCHEMA_BASELINE",
   // MINIMAL: No runtime logic, config, or coverage not yet established
-  "@acme/types": "MINIMAL",
   "@acme/templates": "MINIMAL",
   "@acme/template-app": "MINIMAL",
   "@acme/tailwind-config": "MINIMAL",
@@ -83,7 +96,6 @@ const PACKAGE_TIERS = {
   "@apps/handbag-configurator-api": "MINIMAL",
   "@apps/cochlearfit": "MINIMAL",
   "@apps/product-pipeline": "MINIMAL",
-  "@apps/xa": "MINIMAL",
   "@apps/xa-drop-worker": "MINIMAL",
 
   // Packages: coverage not yet at STANDARD — will graduate as tests are added
@@ -102,7 +114,7 @@ const PACKAGE_TIERS = {
  * @example
  *   getTier("@acme/stripe")     // Returns TIERS.CRITICAL
  *   getTier("@acme/ui")         // Returns TIERS.STANDARD (default)
- *   getTier("@acme/types")      // Returns TIERS.MINIMAL
+ *   getTier("@acme/types")      // Returns TIERS.SCHEMA_BASELINE
  */
 function getTier(packageName) {
   const tierName = PACKAGE_TIERS[packageName] || "STANDARD";
@@ -113,7 +125,7 @@ function getTier(packageName) {
  * Get the tier name for a package (for logging/debugging).
  *
  * @param {string} packageName - Package name
- * @returns {string} Tier name ("CRITICAL", "STANDARD", or "MINIMAL")
+ * @returns {string} Tier name ("CRITICAL", "STANDARD", "SCHEMA_BASELINE", or "MINIMAL")
  */
 function getTierName(packageName) {
   return PACKAGE_TIERS[packageName] || "STANDARD";
@@ -122,7 +134,7 @@ function getTierName(packageName) {
 /**
  * List all packages assigned to a specific tier.
  *
- * @param {"CRITICAL" | "STANDARD" | "MINIMAL"} tierName
+ * @param {"CRITICAL" | "STANDARD" | "SCHEMA_BASELINE" | "MINIMAL"} tierName
  * @returns {string[]} Package names in that tier
  */
 function getPackagesInTier(tierName) {

@@ -54,6 +54,22 @@ export const Sizes: Story = {
   ),
 };
 
+export const ShapeDepths: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-3">
+      <Button {...args} shape="square">
+        Square
+      </Button>
+      <Button {...args} shape="soft">
+        Soft
+      </Button>
+      <Button {...args} shape="pill">
+        Pill
+      </Button>
+    </div>
+  ),
+};
+
 export const AsChildLink: Story = {
   render: (args) => (
     <Button {...args} asChild tone="solid" color="primary">

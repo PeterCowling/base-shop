@@ -8,6 +8,8 @@ import React, {
   useState,
 } from "react";
 
+import { ReceptionButton as Button, ReceptionInput } from "@acme/ui/operations";
+
 import { creditCardSchema } from "../../schemas/creditCardSchema";
 import { formatCreditCardNumber } from "../../utils/creditCardUtils"; // Adjust path as needed
 import { showToast } from "../../utils/toastUtils";
@@ -159,59 +161,59 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
   // const showSpinner = isFetchingDetails || isProcessing || isSaving; // Combine loading states
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-body p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 font-body p-4">
       {/* Dialog container */}
-      <div className="bg-white w-full max-w-md rounded shadow-lg dark-surface dark:text-darkAccentGreen">
+      <div className="bg-surface w-full max-w-md rounded shadow-lg dark-surface dark:text-darkAccentGreen">
         {/* Header */}
-        <div className="flex justify-between items-center p-4 border-b border-gray-400 dark:border-darkSurface">
+        <div className="flex justify-between items-center p-4 border-b border-border-2 dark:border-darkSurface">
           <h2 className="text-lg font-heading">
             {hasExistingCard
               ? "Update or Process Payment"
               : "Enter Payment Details"}{" "}
             <br />
-            <span className="text-sm font-normal text-gray-600 dark:text-darkAccentGreen">
+            <span className="text-sm font-normal text-muted-foreground dark:text-darkAccentGreen">
               {bookingRef && `Ref: ${bookingRef}`}
               {amountToCharge !== undefined &&
                 ` | Amount: €${amountToCharge.toFixed(2)}`}
             </span>
           </h2>
-          <button
+          <Button
             onClick={onClose}
             disabled={isProcessing || isSaving}
-            className="text-gray-700 hover:bg-gray-200 p-1 rounded transition-colors disabled:opacity-50 dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
+            className="text-foreground hover:bg-surface-3 p-1 rounded transition-colors disabled:opacity-50 dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
             aria-label="Close dialog"
           >
             &times;
-          </button>
+          </Button>
         </div>
 
         {/* Content with optional loading overlay */}
         <div className="relative">
           {/* Loading indicator */}
           {(isProcessing || isSaving) && (
-            <div className="absolute inset-0 bg-white bg-opacity-75 flex flex-col items-center justify-center z-10 dark:bg-darkBg dark:bg-opacity-80">
-              <div className="w-8 h-8 border-4 border-gray-400 border-t-primary-main rounded-full animate-spin dark:border-darkSurface" />
-              <p className="mt-2 text-gray-700 font-medium dark:text-darkAccentGreen">
+            <div className="absolute inset-0 bg-surface bg-opacity-75 flex flex-col items-center justify-center z-10 dark:bg-darkBg dark:bg-opacity-80">
+              <div className="w-8 h-8 border-4 border-border-2 border-t-primary-main rounded-full animate-spin dark:border-darkSurface" />
+              <p className="mt-2 text-foreground font-medium dark:text-darkAccentGreen">
                 {isSaving ? "Saving..." : "Processing..."}
               </p>
             </div>
           )}
 
-          <div className="p-4 border-b border-gray-400 space-y-4 dark:border-darkSurface">
+          <div className="p-4 border-b border-border-2 space-y-4 dark:border-darkSurface">
             {/* CC Number Input */}
             <div>
               <label
                 htmlFor="creditCardNumber"
-                className="block text-sm font-heading text-gray-700 mb-1 dark:text-darkAccentGreen"
+                className="block text-sm font-heading text-foreground mb-1 dark:text-darkAccentGreen"
               >
                 Credit Card Number
               </label>
-              <input
+              <ReceptionInput
                 id="creditCardNumber"
                 type="text" // Use text to allow formatted input
                 inputMode="numeric" // Hint for mobile keyboards
                 autoComplete="cc-number"
-                className="w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main font-mono text-lg dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen" // Use mono font for CC
+                className="w-full border border-border-2 rounded px-3 py-2 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main font-mono text-lg dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen" // Use mono font for CC
                 placeholder="XXXX XXXX XXXX XXXX"
                 value={cardNumber}
                 onChange={handleCreditCardChange}
@@ -224,16 +226,16 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
             <div>
               <label
                 htmlFor="expiryDate"
-                className="block text-sm font-heading text-gray-700 mb-1 dark:text-darkAccentGreen"
+                className="block text-sm font-heading text-foreground mb-1 dark:text-darkAccentGreen"
               >
                 Expiry (MM/YY)
               </label>
-              <input
+              <ReceptionInput
                 id="expiryDate"
                 type="text" // Use text to allow formatting like "MM/YY"
                 inputMode="numeric"
                 autoComplete="cc-exp"
-                className="w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main font-mono text-lg dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+                className="w-full border border-border-2 rounded px-3 py-2 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main font-mono text-lg dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
                 placeholder="MM/YY"
                 value={expiryDate}
                 onChange={handleExpiryChange}
@@ -244,33 +246,33 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
         </div>
 
         {/* Actions */}
-        <div className="p-4 flex flex-wrap gap-2 justify-end border-t border-gray-400 dark:border-darkSurface">
+        <div className="p-4 flex flex-wrap gap-2 justify-end border-t border-border-2 dark:border-darkSurface">
           {/* Process button only shows if card details already exist */}
           {hasExistingCard && (
-            <button
+            <Button
               onClick={handleProcessClick}
               disabled={isProcessing || isSaving || !cardNumber || !expiryDate} // Disable if processing or fields are empty
-              className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark transition-colors font-body disabled:opacity-50 disabled:cursor-not-allowed dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark transition-colors font-body disabled:opacity-50 disabled:cursor-not-allowed dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
             >
               {isProcessing ? "Processing..." : "Process Payment"}
-            </button>
+            </Button>
           )}
           {/* Save/Update Button */}
-          <button
+          <Button
             onClick={handleSaveOrUpdate}
             disabled={isProcessing || isSaving || !cardNumber || !expiryDate} // Disable if processing or fields are empty
-            className="px-4 py-2 bg-success-main text-white rounded hover:bg-success-dark transition-colors font-body disabled:opacity-50 disabled:cursor-not-allowed dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+            className="px-4 py-2 bg-success-main text-primary-fg rounded hover:bg-success-dark transition-colors font-body disabled:opacity-50 disabled:cursor-not-allowed dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
           >
             {isSaving ? "Saving..." : saveButtonText}
-          </button>
+          </Button>
           {/* Optional Close/Cancel Button */}
-          <button
+          <Button
             onClick={onClose}
             disabled={isProcessing || isSaving}
-            className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors font-body disabled:opacity-50 dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
+            className="px-4 py-2 bg-surface-3 text-foreground rounded hover:bg-surface-3 transition-colors font-body disabled:opacity-50 dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
           >
             Cancel
-          </button>
+          </Button>
         </div>
       </div>
     </div>

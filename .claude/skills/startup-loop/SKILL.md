@@ -28,7 +28,7 @@ Not allowed:
 - `/startup-loop start --business <BIZ> --mode <dry|live> --launch-surface <pre-website|website-live> [--start-point <problem|product>]`
   - `--start-point` is optional. Default is `product`. Existing runs that omit this flag are unaffected.
 - `/startup-loop status --business <BIZ>`
-- `/startup-loop submit --business <BIZ> --stage <S#> --artifact <path>`
+- `/startup-loop submit --business <BIZ> --stage <STAGE_ID> --artifact <path>`
 - `/startup-loop advance --business <BIZ>`
 
 **Business resolution pre-flight:** If `--business` is absent or the directory `docs/business-os/strategy/<BIZ>/` does not exist, apply `_shared/business-resolution.md` before any other step.
@@ -48,7 +48,7 @@ Load the relevant module per command:
 
 | Module | Trigger |
 |---|---|
-| `modules/discovery-intake-sync.md` | Called by `cmd-start` at Gate D pass-through AND by `cmd-advance` at GATE-DISCOVERY-00 complete. Writes or refreshes `<BIZ>-intake-packet.user.md` from DISCOVERY-01–DISCOVERY-07 precursors. No-op when precursors are unchanged. |
+| `modules/assessment-intake-sync.md` | Called by `cmd-start` and `cmd-advance` as part of ASSESSMENT-09 Intake contract validation (`GATE-ASSESSMENT-00`). Writes or refreshes `<BIZ>-intake-packet.user.md` from ASSESSMENT-01–ASSESSMENT-08 precursors. No-op when precursors are unchanged. |
 
 ## Required Output Contract
 
@@ -57,14 +57,14 @@ For `start`, `status`, and `advance`, return this exact packet:
 ```text
 run_id: SFS-<BIZ>-<YYYYMMDD>-<hhmm>
 business: <BIZ>
-loop_spec_version: 1.9.0
-current_stage: <S#>
+loop_spec_version: 3.9.4
+current_stage: <STAGE_ID>
 status: <ready|blocked|awaiting-input|complete>
 blocking_reason: <none or exact reason>
 next_action: <single sentence command/action>
 prompt_file: <path or none>
 required_output_path: <path or none>
-naming_gate: <skipped|blocked|complete>
+naming_gate: <null>  # deprecated field; retained for backwards-compat
 bos_sync_actions:
   - <required sync action 1>
   - <required sync action 2>
@@ -85,36 +85,79 @@ When a stage reference cannot be resolved, return fail-closed with deterministic
 
 ## Stage Model
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.9.0).
+Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 3.9.4).
 Stage labels: `docs/business-os/startup-loop/_generated/stage-operator-map.json`.
 
-Stages DISCOVERY-01..S10 (25 stages total):
+Stages (canonical IDs from loop-spec):
 
 | Stage | Name | Skill | Conditional |
 |---|---|---|---|
-| DISCOVERY-01 | Problem framing | `/lp-do-discovery-01-problem-framing` | start-point=problem |
-| DISCOVERY-02 | Solution-space scan | `/lp-do-discovery-02-solution-space-scan` | start-point=problem |
-| DISCOVERY-03 | Option selection | `/lp-do-discovery-03-option-picking` | start-point=problem |
-| DISCOVERY-04 | Naming handoff | `/lp-do-discovery-04-business-name-options` | start-point=problem |
-| DISCOVERY-05 | Distribution planning | `/lp-do-discovery-05-distribution-planning` | start-point=problem |
-| DISCOVERY-06 | Measurement plan | `/lp-do-discovery-06-measurement-plan` | start-point=problem |
-| DISCOVERY-07 | Operator evidence | `/lp-do-discovery-07-our-stance` | start-point=problem |
-| DISCOVERY | Intake | `/startup-loop start` | — |
-| BRAND-01 | Brand strategy | `/lp-do-brand-01-brand-strategy` | — |
-| BRAND-02 | Brand identity | `/lp-do-brand-02-brand-identity` | — |
-| BRAND | Brand (container) | — | — |
-| S1 | Readiness check | `/lp-readiness` | — |
-| S1B | Measure | prompt handoff (pre-website) | — |
-| S2A | Results | prompt handoff (website-live) | — |
-| S2 | Market intelligence | Deep Research prompt handoff | — |
-| S2B | Offer design | `/lp-offer` | — |
-| S3 | Forecast (parallel with S6B) | `/lp-forecast` | — |
-| S3B | Adjacent product research | `/lp-other-products` | growth_intent=product_range |
-| S6B | Channel strategy + GTM | `/lp-channels`, `/lp-seo`, `/draft-outreach` | — |
+| ASSESSMENT-01 | Problem framing | `/lp-do-assessment-01-problem-statement` | start-point=problem |
+| ASSESSMENT-02 | Solution-profiling scan | `/lp-do-assessment-02-solution-profiling` | start-point=problem |
+| ASSESSMENT-03 | Solution selection | `/lp-do-assessment-03-solution-selection` | start-point=problem |
+| ASSESSMENT-04 | Candidate names | `/lp-do-assessment-04-candidate-names` | start-point=problem |
+| ASSESSMENT-05 | Name selection | `/lp-do-assessment-05-name-selection` | start-point=problem |
+| ASSESSMENT-06 | Distribution profiling | `/lp-do-assessment-06-distribution-profiling` | start-point=problem |
+| ASSESSMENT-07 | Measurement profiling | `/lp-do-assessment-07-measurement-profiling` | start-point=problem |
+| ASSESSMENT-08 | Current situation | `/lp-do-assessment-08-current-situation` | start-point=problem |
+| ASSESSMENT-09 | Intake | `/startup-loop start` | — |
+| ASSESSMENT-10 | Brand profiling | `/lp-do-assessment-10-brand-profiling` | — |
+| ASSESSMENT-11 | Brand identity | `/lp-do-assessment-11-brand-identity` | — |
+| ASSESSMENT | Brand (container) | — | — |
+| IDEAS | Ideas pipeline (standing) | — | event-driven trigger paths |
+| IDEAS-01 | Pack diff scan | `/idea-scan` | layer_a_pack_diff OR operator_inject |
+| IDEAS-02 | Backlog update | `/idea-develop`, `/idea-advance` | semi-automated; operator confirms MERGE/SPLIT |
+| IDEAS-03 | Promote to DO | `/lp-do-fact-find` | operator gate |
+| MEASURE-00 | Problem framing and ICP | prompt handoff | — |
+| MEASURE-01 | Agent-Setup | prompt handoff | — |
+| MEASURE-02 | Results | prompt handoff | — |
+| PRODUCT | Product (container) | — | — |
+| PRODUCT-01 | Product from photo | prompt handoff | — |
+| PRODUCTS | Products (container, standing intelligence) | — | — |
+| PRODUCTS-01 | Product line mapping | prompt handoff | — |
+| PRODUCTS-02 | Competitor product scan | prompt handoff | — |
+| PRODUCTS-03 | Product performance baseline | prompt handoff | — |
+| PRODUCTS-04 | Bundle and packaging hypotheses | prompt handoff | — |
+| PRODUCTS-05 | Product-market fit signals | prompt handoff | — |
+| PRODUCTS-06 | Product roadmap snapshot | prompt handoff | — |
+| PRODUCTS-07 | Aggregate product pack | prompt handoff | — |
+| LOGISTICS | Logistics (container, conditional) | — | business_profile=logistics-heavy OR physical-product |
+| LOGISTICS-01 | Supplier and manufacturer mapping | prompt handoff | business_profile=logistics-heavy OR physical-product |
+| LOGISTICS-02 | Lead time and MOQ baseline | prompt handoff | business_profile=logistics-heavy OR physical-product |
+| LOGISTICS-03 | Fulfillment channel options | prompt handoff | business_profile=logistics-heavy OR physical-product |
+| LOGISTICS-04 | Cost and margin by route | prompt handoff | business_profile=logistics-heavy OR physical-product |
+| LOGISTICS-05 | Returns and quality baseline | prompt handoff | business_profile=logistics-heavy OR physical-product |
+| LOGISTICS-06 | Inventory policy snapshot | prompt handoff | business_profile=logistics-heavy OR physical-product |
+| LOGISTICS-07 | Aggregate logistics pack | prompt handoff | business_profile=logistics-heavy OR physical-product |
+| MARKET | Market (container) | — | — |
+| MARKET-01 | Competitor mapping | prompt handoff | — |
+| MARKET-02 | Demand evidence | prompt handoff | — |
+| MARKET-03 | Pricing benchmarks | prompt handoff | — |
+| MARKET-04 | Channel landscape | prompt handoff | — |
+| MARKET-05 | Assumptions and risk register | prompt handoff | — |
+| MARKET-06 | Offer design | `/lp-offer` | — |
+| MARKET-07 | Post-offer synthesis | prompt handoff | — |
+| MARKET-08 | Demand evidence pack assembly | prompt handoff | — |
+| MARKET-09 | ICP refinement | prompt handoff | — |
+| MARKET-10 | Market aggregate pack (draft) | prompt handoff | — |
+| MARKET-11 | Market aggregate pack (validated) | prompt handoff | — |
+| S3 | Forecast (parallel with SELL-01) | `/lp-forecast` | — |
+| PRODUCT-02 | Adjacent product research (PRODUCT container, post-offer) | `/lp-other-products` | growth_intent=product_range |
+| SELL | Sell (container) | — | — |
+| SELL-01 | Channel strategy + GTM | `/lp-channels`, `/lp-seo`, `/draft-outreach` | — |
+| SELL-02 | Channel performance baseline | prompt handoff | — |
+| SELL-03 | Outreach and content standing | prompt handoff | — |
+| SELL-04 | SEO standing | prompt handoff | — |
+| SELL-05 | Paid channel standing | prompt handoff | — |
+| SELL-06 | Partnership and referral standing | prompt handoff | — |
+| SELL-07 | Sell aggregate pack | prompt handoff | — |
+| SELL-08 | Activation readiness (pre-spend) | `/startup-loop advance` | paid_spend_requested |
 | S4 | Baseline merge (join barrier) | `/lp-baseline-merge` | — |
 | S5A | Prioritize | `/lp-prioritize` | — |
 | S5B | BOS sync (sole mutation boundary) | `/lp-bos-sync` | — |
-| S6 | Site-upgrade synthesis | `/lp-site-upgrade` | — |
+| WEBSITE | Website (container) | — | — |
+| WEBSITE-01 | L1 first build framework | `/lp-site-upgrade` (auto-handover to DO sequence `/lp-do-fact-find --website-first-build-backlog` -> `/lp-do-plan` -> `/lp-do-build` once Active) | launch-surface=pre-website |
+| WEBSITE-02 | Site-upgrade synthesis | `/lp-site-upgrade` (L1 Build 2 auto-mode: image-first merchandising for visual-heavy catalogs) | launch-surface=website-live |
 | DO | Do | `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build` | — |
 | S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa` | — |
 | S10 | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) | — |

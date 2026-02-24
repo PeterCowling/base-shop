@@ -6,6 +6,7 @@ Created: 2026-02-11
 Updated: 2026-02-17
 Last-reviewed: 2026-02-17
 Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Pet Product — Business Plan

@@ -13,13 +13,16 @@ jest.mock("../../primitives/button", () => ({
 describe("Button (shadcn)", () => {
   it("renders destructive variant without BaseButton and supports asChild", () => {
     render(
-      <Button variant="destructive" asChild>
+      <Button variant="destructive" asChild shape="square" radius="lg">
         <a href="/">Delete</a>
       </Button>
     );
 
     const link = screen.getByRole("link");
     expect(link).toHaveClass("bg-destructive", "text-destructive-foreground");
+    expect(link).toHaveClass("rounded-lg");
+    expect(link).not.toHaveAttribute("shape");
+    expect(link).not.toHaveAttribute("radius");
     expect(link).not.toHaveAttribute("data-token");
     expect(BaseButton).not.toHaveBeenCalled();
     expect(screen.queryByTestId("base-button")).toBeNull();

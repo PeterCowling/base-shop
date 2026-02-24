@@ -16,44 +16,50 @@ jest.mock("../DateSelectorAllo", () => ({
 
 const sendMock = jest.fn();
 const saveMock = jest.fn();
+const showToastMock = jest.fn();
 
-const useCheckinsMock = jest.fn();
+const checkinsHookMock = jest.fn();
 jest.mock("../../../hooks/data/useCheckins", () => ({
   __esModule: true,
-  useCheckins: useCheckinsMock,
+  useCheckins: (...args: unknown[]) => checkinsHookMock(...args),
 }));
 
-const useActivitiesByCodeDataMock = jest.fn();
+const activitiesByCodeDataHookMock = jest.fn();
 jest.mock("../../../hooks/data/useActivitiesByCodeData", () => ({
   __esModule: true,
-  default: useActivitiesByCodeDataMock,
+  default: (...args: unknown[]) => activitiesByCodeDataHookMock(...args),
 }));
 
-const useGuestDetailsMock = jest.fn();
+const guestDetailsHookMock = jest.fn();
 jest.mock("../../../hooks/data/useGuestDetails", () => ({
   __esModule: true,
-  default: useGuestDetailsMock,
+  default: (...args: unknown[]) => guestDetailsHookMock(...args),
 }));
 
-const useAlloggiatiLogsMock = jest.fn();
+const alloggiatiLogsHookMock = jest.fn();
 jest.mock("../../../hooks/data/useAlloggiatiLogs", () => ({
   __esModule: true,
-  default: useAlloggiatiLogsMock,
+  default: (...args: unknown[]) => alloggiatiLogsHookMock(...args),
 }));
 
-const useAlloggiatiSenderMock = jest.fn();
+const alloggiatiSenderHookMock = jest.fn();
 jest.mock("../../../hooks/mutations/useAlloggiatiSender", () => ({
   __esModule: true,
-  useAlloggiatiSender: useAlloggiatiSenderMock,
+  useAlloggiatiSender: (...args: unknown[]) => alloggiatiSenderHookMock(...args),
 }));
 
-const useSaveAlloggiatiResultMock = jest.fn();
+const saveAlloggiatiResultHookMock = jest.fn();
 jest.mock("../../../hooks/mutations/useSaveAlloggiatiResult", () => ({
   __esModule: true,
-  default: useSaveAlloggiatiResultMock,
+  default: (...args: unknown[]) => saveAlloggiatiResultHookMock(...args),
 }));
 
-jest.mock("../../../utils/dateUtils", async () => {
+jest.mock("../../../utils/toastUtils", () => ({
+  __esModule: true,
+  showToast: (...args: [string, string]) => showToastMock(...args),
+}));
+
+jest.mock("../../../utils/dateUtils", () => {
   const actual = jest.requireActual("../../../utils/dateUtils");
   return {
     __esModule: true,
@@ -80,33 +86,33 @@ describe("Alloggiati", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    useCheckinsMock.mockReturnValue({
+    checkinsHookMock.mockReturnValue({
       checkins: defaultCheckins,
       loading: false,
       error: null,
     });
-    useActivitiesByCodeDataMock.mockReturnValue({
+    activitiesByCodeDataHookMock.mockReturnValue({
       activitiesByCodes: defaultActivities,
       loading: false,
       error: null,
     });
-    useGuestDetailsMock.mockReturnValue({
+    guestDetailsHookMock.mockReturnValue({
       guestsDetails: defaultGuestDetails,
       loading: false,
       error: null,
       validationError: null,
     });
-    useAlloggiatiLogsMock.mockReturnValue({
+    alloggiatiLogsHookMock.mockReturnValue({
       logs: defaultLogs,
       loading: false,
       error: null,
     });
-    useAlloggiatiSenderMock.mockReturnValue({
+    alloggiatiSenderHookMock.mockReturnValue({
       isLoading: false,
       error: null,
       sendAlloggiatiRecords: sendMock,
     });
-    useSaveAlloggiatiResultMock.mockReturnValue({
+    saveAlloggiatiResultHookMock.mockReturnValue({
       saveAlloggiatiResult: saveMock,
       error: null,
     });
@@ -170,7 +176,7 @@ describe("Alloggiati", () => {
   });
 
   it("shows loading state", () => {
-    useCheckinsMock.mockReturnValue({
+    checkinsHookMock.mockReturnValue({
       checkins: {},
       loading: true,
       error: null,
@@ -182,7 +188,7 @@ describe("Alloggiati", () => {
   });
 
   it("shows error state", () => {
-    useCheckinsMock.mockReturnValue({
+    checkinsHookMock.mockReturnValue({
       checkins: {},
       loading: false,
       error: "boom",
@@ -192,7 +198,7 @@ describe("Alloggiati", () => {
   });
 
   it("handles no occupants", () => {
-    useCheckinsMock.mockReturnValue({
+    checkinsHookMock.mockReturnValue({
       checkins: {},
       loading: false,
       error: null,
@@ -204,21 +210,18 @@ describe("Alloggiati", () => {
   });
 
   it("alerts when no occupant details", async () => {
-    useGuestDetailsMock.mockReturnValue({
+    guestDetailsHookMock.mockReturnValue({
       guestsDetails: {},
       loading: false,
       error: null,
       validationError: null,
     });
-    const alertMock = vi
-      .spyOn(window, "alert")
-      .mockImplementation(() => {
-        return undefined;
-      });
     render(<Alloggiati />);
     await userEvent.click(screen.getByRole("button", { name: /send occupants/i }));
     expect(sendMock).not.toHaveBeenCalled();
-    expect(alertMock).toHaveBeenCalledWith("No occupant details available to send.");
-    alertMock.mockRestore();
+    expect(showToastMock).toHaveBeenCalledWith(
+      "No occupant details available to send.",
+      "warning"
+    );
   });
 });

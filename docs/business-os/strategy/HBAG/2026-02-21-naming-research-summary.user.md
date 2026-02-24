@@ -5,7 +5,9 @@ Status: Active
 Created: 2026-02-21
 Timezone: Europe/Rome
 Scope: Brand naming — premium artisan Italian-origin accessory brand
-Next: Run naming-research-prompt-r2.md in deep research tool (OpenAI Deep Research or equivalent)
+Next: Run candidate-names-prompt-r2.md in deep research tool (OpenAI Deep Research or equivalent)
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HBAG Naming Research Summary + Preferred Approach (Round 2)
@@ -126,11 +128,11 @@ For coherent brand architecture once a name is chosen:
 
 ## 6. Next Step
 
-Run `naming-research-prompt-r2.md` in a deep research tool (OpenAI Deep Research or equivalent).
+Run `candidate-names-prompt-r2.md` in a deep research tool (OpenAI Deep Research or equivalent).
 
 The prompt instructs the tool to generate a pipeline of ~50 coined candidates, apply the .com hard-blocker gate at time of check (RDAP/registrar, dated), and return only a shortlist of 5–8 names with confirmed .com availability, TM pre-screen, and cross-language risk flags.
 
-Save output to: `docs/business-os/strategy/HBAG/<YYYY-MM-DD>-naming-shortlist-r2-deep.user.md`
+Save output to: `docs/business-os/strategy/HBAG/<YYYY-MM-DD>-candidate-names-r2-deep.user.md`
 
 ---
 
@@ -138,8 +140,8 @@ Save output to: `docs/business-os/strategy/HBAG/<YYYY-MM-DD>-naming-shortlist-r2
 
 | Document | Purpose |
 |----------|---------|
-| `naming-research-prompt-r2.md` | Full structured prompt for deep research tool (Round 2) |
-| `naming-research-prompt.md` | Round 1 prompt (reference only — all outputs eliminated) |
-| `2026-02-20-naming-shortlist.user.md` | Round 1 shortlist (all names eliminated — domain unavailable) |
-| `2026-02-21-naming-shortlist-r2.user.md` | Round 2 agent shortlist (pre-deep-research; unverified) |
-| `brand-dossier.user.md` | Brand context and personality |
+| `candidate-names-prompt-r2.md` | Full structured prompt for deep research tool (Round 2) |
+| `candidate-names-prompt.md` | Round 1 prompt (reference only — all outputs eliminated) |
+| `2026-02-20-candidate-names.user.md` | Round 1 shortlist (all names eliminated — domain unavailable) |
+| `2026-02-21-candidate-names-r2.user.md` | Round 2 agent shortlist (pre-deep-research; unverified) |
+| `brand-identity.user.md` | Brand context and personality |

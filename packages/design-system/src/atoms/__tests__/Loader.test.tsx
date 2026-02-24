@@ -33,4 +33,14 @@ describe("Loader", () => {
     render(<Loader ref={ref} />);
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
+
+  it("supports shape/radius overrides", () => {
+    const { container, rerender } = render(<Loader shape="square" />);
+    let div = container.firstElementChild as HTMLDivElement;
+    expect(div).toHaveClass("rounded-none");
+
+    rerender(<Loader shape="square" radius="xl" />);
+    div = container.firstElementChild as HTMLDivElement;
+    expect(div).toHaveClass("rounded-xl");
+  });
 });

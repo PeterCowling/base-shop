@@ -1,6 +1,8 @@
 // File: /Users/petercowling/reception/src/components/loans/LoanableItemSelector.tsx
 import React, { memo, type ReactElement, useCallback } from "react";
 
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
+
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
 /**
@@ -47,8 +49,8 @@ function LoanableItemSelectorComponent({
    * Handle item selection from a dropdown.
    */
   const handleSelect = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      onSelectItem(e.target.value as LoanItem);
+    (value: string) => {
+      onSelectItem(value as LoanItem);
     },
     [onSelectItem]
   );
@@ -62,25 +64,26 @@ function LoanableItemSelectorComponent({
 
   return (
     <div className="flex items-center gap-2">
-      <select
-        value={guestSelectedItem}
-        onChange={handleSelect}
-        className="border px-2 py-1 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
-      >
-        <option value="Umbrella">Umbrella</option>
-        <option value="Hairdryer">Hairdryer</option>
-        <option value="Steamer">Steamer</option>
-        <option value="Padlock">Padlock</option>
-        <option value="Keycard">Keycard</option>
-      </select>
+      <Select value={guestSelectedItem} onValueChange={handleSelect}>
+        <SelectTrigger className="border px-2 py-1 rounded">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="Umbrella">Umbrella</SelectItem>
+          <SelectItem value="Hairdryer">Hairdryer</SelectItem>
+          <SelectItem value="Steamer">Steamer</SelectItem>
+          <SelectItem value="Padlock">Padlock</SelectItem>
+          <SelectItem value="Keycard">Keycard</SelectItem>
+        </SelectContent>
+      </Select>
 
-      <button
-        className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+      <Button
+        className="bg-info text-primary-fg px-3 py-1 rounded disabled:opacity-50"
         disabled={buttonDisabled}
         onClick={handleLoanClick}
       >
         Loan
-      </button>
+      </Button>
     </div>
   );
 }

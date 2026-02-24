@@ -18,4 +18,12 @@ describe("VideoPlayer", () => {
     expect(video).toHaveClass("rounded-md");
     expect(getByText("Captions are not available for this video.")).toBeInTheDocument();
   });
+
+  it("supports shape/radius overrides", () => {
+    const { container, rerender } = render(<VideoPlayer shape="square" />);
+    expect(container.querySelector("video")).toHaveClass("rounded-none");
+
+    rerender(<VideoPlayer shape="square" radius="2xl" />);
+    expect(container.querySelector("video")).toHaveClass("rounded-2xl");
+  });
 });

@@ -19,6 +19,11 @@ describe("jsonRecord", () => {
     }
   });
 
+  it("rejects non-string token values", () => {
+    const result = jsonRecord.safeParse('{"foo":1}');
+    expect(result.success).toBe(false);
+  });
+
   it("defaults to empty object when absent", () => {
     const result = jsonRecord.parse(undefined);
     expect(result).toEqual({});

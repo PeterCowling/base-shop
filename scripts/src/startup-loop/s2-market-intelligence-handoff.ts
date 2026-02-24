@@ -1377,7 +1377,7 @@ export async function buildS2MarketIntelligenceHandoff(
 }
 
 // Export internal functions for testing
-export { buildOperatorCapturedDataBlock, csvLooksEmptyOrHeaderOnly,findLatestDatedMarketResearchDataFile };
+export { buildOperatorCapturedDataBlock, csvLooksEmptyOrHeaderOnly };
 
 function parseCliArgs(argv: string[]): { business: string; asOfDate: string; owner: string; repoRoot: string } {
   const args = new Map<string, string>();

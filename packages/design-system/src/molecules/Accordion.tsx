@@ -1,6 +1,13 @@
 /* i18n-exempt file -- UI-000: Only non-user-facing literals (HTML attributes, class names, glyphs). Visible copy comes from props. */
 "use client";
-import { type ReactNode,useState } from "react";
+import { type ReactNode, useState } from "react";
+
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
+import { cn } from "../utils/style";
 
 export interface AccordionItem {
   title: ReactNode;
@@ -9,9 +16,13 @@ export interface AccordionItem {
 
 export interface AccordionProps {
   items: AccordionItem[];
+  /** Semantic item shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit item radius token override. */
+  radius?: PrimitiveRadius;
 }
 
-export function Accordion({ items }: AccordionProps) {
+export function Accordion({ items, shape, radius }: AccordionProps) {
   // Generate stable keys for items without relying on array index
   const keyMap = new WeakMap<AccordionItem, string>();
   let auto = 0;
@@ -28,6 +39,11 @@ export function Accordion({ items }: AccordionProps) {
     return k;
   };
   const [open, setOpen] = useState<number[]>([]);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "sm",
+  });
   // i18n-exempt -- UI-000: symbolic affordances (glyphs)
   const SYMBOL_MINUS = "-" as const; // i18n-exempt -- UI-000: glyph
   const SYMBOL_PLUS = "+" as const; // i18n-exempt -- UI-000: glyph
@@ -66,7 +82,7 @@ export function Accordion({ items }: AccordionProps) {
         };
 
         return (
-          <div key={getKey(item)} className="rounded border">
+          <div key={getKey(item)} className={cn("border", shapeRadiusClass)}>
             <button
               type="button"
               aria-expanded={isOpen}

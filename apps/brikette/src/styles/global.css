@@ -45,6 +45,8 @@
   --color-brand-secondary: #f4d35e;
   --color-brand-terra: #c4572e;
   --color-brand-bougainvillea: #9b1b33; /* ⬅︎ deepened for WCAG AAA     */
+  --color-brand-on-primary: #ffffff;
+  --color-brand-on-accent: #1b1b1b;
 
   /* gradients */
   --color-brand-gradient-start: #003d73;
@@ -74,6 +76,8 @@
   --rgb-brand-secondary: 244 211 94;
   --rgb-brand-terra: 196 87 46;
   --rgb-brand-bougainvillea: 155 27 51;
+  --rgb-brand-on-primary: 255 255 255;
+  --rgb-brand-on-accent: 27 27 27;
   --rgb-brand-outline: 27 27 27;
   --rgb-brand-muted: 100 100 100;
   --rgb-brand-paragraph: 60 60 60;
@@ -98,11 +102,13 @@
   /* semantic outline color for borders in dark mode (contrasts on light cards) */
   --color-brand-outline: var(--color-brand-surface);
 
-  /* accents — darker mustard guarantees ≥ 4.5 : 1 on white text */
-  --color-brand-primary: #8f5f00; /* darkened to keep text contrast on primary surfaces */
+  /* accents — hue-consistent dark theme variants */
+  --color-brand-primary: #4da8d4; /* teal-family dark primary */
   --color-brand-secondary: #d2b53f;
   --color-brand-terra: #ff5722;
-  --color-brand-bougainvillea: #ffeb3b;
+  --color-brand-bougainvillea: #e85070;
+  --color-brand-on-primary: #1b1b1b;
+  --color-brand-on-accent: #1b1b1b;
 
   /* gradients (subtle dark) */
   --color-brand-gradient-start: #000000;
@@ -125,10 +131,12 @@
   --rgb-brand-surface: 31 31 31;
   --rgb-brand-text: 247 247 247;
   --rgb-brand-heading: 255 255 255;
-  --rgb-brand-primary: 143 95 0;
+  --rgb-brand-primary: 77 168 212;
   --rgb-brand-secondary: 210 181 63;
   --rgb-brand-terra: 255 87 34;
-  --rgb-brand-bougainvillea: 255 235 59;
+  --rgb-brand-bougainvillea: 232 80 112;
+  --rgb-brand-on-primary: 27 27 27;
+  --rgb-brand-on-accent: 27 27 27;
   --rgb-brand-outline: 31 31 31;
   --rgb-brand-muted: 180 180 180;
   --rgb-brand-paragraph: 210 210 210;
@@ -319,7 +327,7 @@
   /*  selected language chip — white text for ≥ 4.5 : 1 contrast */
   header button.lang-option[aria-current="true"] {
     background-color: var(--color-brand-primary);
-    color: #ffffff;
+    color: var(--color-brand-on-primary);
   }
 
   /* ── CTA pills for mobile header ───────────────────────────── */
@@ -334,15 +342,15 @@
     color: var(--color-brand-heading);
   }
   .cta-light:hover {
-    background-color: rgb(244 211 94 / 0.9);
+    background-color: rgb(var(--rgb-brand-secondary) / 0.9);
   }
 
   .cta-dark {
     background-color: var(--color-brand-primary);
-    color: #ffffff; /* high-contrast text   */
+    color: var(--color-brand-on-primary);
   }
   .cta-dark:hover {
-    background-color: rgb(159 107 0 / 0.9);
+    background-color: rgb(var(--rgb-brand-primary) / 0.9);
   }
 
   /* ── Drawer nav links & language chips ─────────────────────── */
@@ -371,7 +379,7 @@
   /* selected chip — white text on primary for both themes */
   #mobile-menu button.lang-option[aria-current="true"] {
     background-color: var(--color-brand-primary);
-    color: #ffffff;
+    color: var(--color-brand-on-primary);
   }
   .dark #mobile-menu button.lang-option:hover,
   .dark #mobile-menu button.lang-option:focus-visible {
@@ -383,7 +391,7 @@
     @apply h-16;
   }
   .header-row-2 {
-    @apply mt-2 pb-2;
+    @apply mt-2 pb-3;
   }
 
   .rooms-carousel-nav,
@@ -408,22 +416,6 @@
   .cv-auto {
     content-visibility: auto;
     contain-intrinsic-size: 1000px 700px;
-  }
-  /* Background helpers */
-  .bg-brand-primary {
-    background-color: var(--color-brand-primary);
-  }
-  .bg-brand-secondary {
-    background-color: var(--color-brand-secondary);
-  }
-  .bg-brand-bougainvillea {
-    background-color: var(--color-brand-bougainvillea);
-  }
-  .bg-brand-bg {
-    background-color: var(--color-brand-bg);
-  }
-  .bg-brand-surface {
-    background-color: var(--color-brand-surface);
   }
 
   .layer-modal {
@@ -451,51 +443,12 @@
     overflow-y: auto;
   }
 
-  /* Text helpers */
-  .text-brand-heading {
-    color: var(--color-brand-heading);
-  }
-  .text-brand-text {
-    color: var(--color-brand-text);
-  }
-  .text-brand-primary {
-    color: var(--color-brand-primary);
-  }
-  .text-brand-bougainvillea {
-    color: var(--color-brand-bougainvillea);
-  }
-  .text-brand-bg {
-    color: var(--color-brand-bg);
-  }
-  .text-brand-bg\/90 {
-    color: rgb(255 255 255 / 0.9);
-  }
-
   .tracking-eyebrow {
     letter-spacing: 0.3em;
   }
 
   .tracking-kicker {
     letter-spacing: 0.2em;
-  }
-
-  /* Border helpers */
-  .border-brand-bougainvillea {
-    border-color: var(--color-brand-bougainvillea);
-  }
-  .border-brand-primary {
-    border-color: var(--color-brand-primary);
-  }
-
-  /* Ring helpers */
-  .ring-brand-text {
-    --tw-ring-color: var(--color-brand-text);
-  }
-  .ring-brand-primary {
-    --tw-ring-color: var(--color-brand-primary);
-  }
-  .ring-brand-bougainvillea {
-    --tw-ring-color: var(--color-brand-bougainvillea);
   }
 
   /* Header gradient helper */
@@ -523,5 +476,20 @@
   }
   .dark .hero-gradient-overlay {
     @apply bg-none opacity-0;
+  }
+
+  /* Scenic theme toggle — star twinkle animation */
+  @keyframes scenic-twinkle {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 0.3; }
+  }
+}
+
+/* Scenic toggle — respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .scenic-toggle,
+  .scenic-toggle * {
+    transition-duration: 0ms !important;
+    animation: none !important;
   }
 }

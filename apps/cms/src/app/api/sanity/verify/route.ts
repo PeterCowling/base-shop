@@ -1,5 +1,3 @@
-import { verifyCredentials } from "@acme/plugin-sanity";
-
 export const runtime = "nodejs";
 
 interface VerifyRequest {
@@ -29,14 +27,16 @@ export async function POST(req: Request) {
     const list = (await resp.json()) as { datasets?: { name: string }[] };
     const datasets = list.datasets?.map((d) => d.name) ?? [];
 
-    if (dataset) {
-      const valid = await verifyCredentials({ projectId, dataset, token });
-      if (!valid) {
-        return Response.json(
-          { ok: false, error: "Invalid Sanity credentials", errorCode: "INVALID_CREDENTIALS", datasets },
-          { status: 401 },
-        );
-      }
+    if (dataset && !datasets.includes(dataset)) {
+      return Response.json(
+        {
+          ok: false,
+          error: "Invalid Sanity credentials",
+          errorCode: "INVALID_CREDENTIALS",
+          datasets,
+        },
+        { status: 401 },
+      );
     }
 
     return Response.json({ ok: true, datasets });
@@ -48,4 +48,3 @@ export async function POST(req: Request) {
     );
   }
 }
-

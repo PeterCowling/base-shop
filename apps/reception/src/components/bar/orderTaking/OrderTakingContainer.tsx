@@ -409,7 +409,7 @@ const OrderTakingContainer: FC<OrderTakingContainerProps> = memo(
 
         {/* ---------------------- Error banner ----------------- */}
         {!!addItemError && (
-          <div className="text-red-500 p-2">
+          <div className="text-error-main p-2">
             Error adding item to order: {String(addItemError)}
           </div>
         )}

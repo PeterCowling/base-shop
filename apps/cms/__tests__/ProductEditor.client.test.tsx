@@ -5,8 +5,10 @@ import { render } from "@testing-library/react";
 
 import ProductEditor from "../src/app/cms/shop/[shop]/products/[id]/edit/ProductEditor.client";
 
-const updateProduct = jest.fn();
-jest.mock("@cms/actions/products.server", () => ({ updateProduct }));
+jest.mock("@cms/actions/products.server", () => ({ updateProduct: jest.fn() }));
+const { updateProduct } = jest.requireMock("@cms/actions/products.server") as {
+  updateProduct: jest.Mock;
+};
 let receivedProps: any;
 jest.mock("@acme/cms-ui/ProductEditorForm", () => {
   const ProductEditorFormMock = (props: any) => {

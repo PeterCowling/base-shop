@@ -1,12 +1,16 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy gate experience pending design/i18n overhaul */
-import type { CSSProperties } from "react";
 import { IBM_Plex_Mono, Work_Sans } from "next/font/google";
 import Link from "next/link";
 
+import { Button, Input } from "@acme/design-system/atoms";
+import { ElevatedPanel } from "@acme/ui/components/organisms/ElevatedPanel";
+
 import { siteConfig } from "../../lib/siteConfig";
+import { xaI18n } from "../../lib/xaI18n";
+
+import styles from "./access.module.css";
 import AccessGateClient from "./AccessGate.client";
 import AccessSignals from "./AccessSignals.client";
-import styles from "./access.module.css";
+import { gateClassNames } from "./gateClasses";
 
 const display = Work_Sans({
   subsets: ["latin"],
@@ -35,7 +39,7 @@ function resolveErrorMessage(error?: string) {
     return "Enter an access key to continue.";
   }
   if (error === "rate_limited") {
-    return "Too many attempts. Pause, then try again.";
+    return xaI18n.t("xaB.src.app.access.page.l41c12");
   }
   return null;
 }
@@ -71,47 +75,33 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
     .filter(Boolean);
 
   return (
-    <main
-      className={`${display.className} relative min-h-dvh overflow-hidden bg-[color:var(--gate-bg)] text-[color:var(--gate-ink)]`}
-      style={
-        {
-          "--gate-bg": "#ffffff",
-          "--gate-ink": "#111111",
-          "--gate-muted": "#6b6b6b",
-          "--gate-accent": "#111111",
-        } as CSSProperties
-      }
-    >
-      <div className="relative mx-auto flex min-h-dvh max-w-5xl flex-col justify-center px-6 py-16">
+    <main className={`${display.className} ${gateClassNames.pageRoot}`}>
+      <div className={gateClassNames.pageFrame}>
         <div className={`space-y-6 ${styles.gateFade}`}>
-          <div className={`text-xs uppercase tracking-[0.45em] ${mono.className}`}>
-            Invite only // Private network
-          </div>
+          <div className={`text-xs uppercase xa-tracking-045 ${mono.className}`}>{xaI18n.t("xaB.src.app.access.page.l80c82")}</div>
           <div className="space-y-3">
             <h1 className="text-4xl font-semibold leading-tight md:text-5xl">
               {siteConfig.brandName}
             </h1>
-            <p className="max-w-xl text-base text-[color:var(--gate-muted)] md:text-lg">
-              Underground preview access. Keys are issued sparingly and move hand to hand.
-            </p>
+            <p className={`max-w-xl text-base md:text-lg ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.page.l87c88")}</p>
           </div>
         </div>
 
-        <div className={`mt-10 grid gap-8 md:grid-cols-[1.1fr_0.9fr] ${styles.gateFade} ${styles.gateDelay}`}>
-          <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
+        <div className={`mt-10 xa-grid-access-panels ${styles.gateFade} ${styles.gateDelay}`}>
+          <ElevatedPanel>
             <div className="flex items-center justify-between gap-4">
               <div>
-                <div className={`text-xs uppercase tracking-[0.35em] ${mono.className}`}>
+                <div className={`text-xs uppercase xa-tracking-035 ${mono.className}`}>
                   Access key
                 </div>
-                <p className="mt-2 text-sm text-[color:var(--gate-muted)]">
+                <p className={`mt-2 text-sm ${gateClassNames.mutedText}`}>
                   {hasKeysRemaining
                     ? "Enter a valid key to unlock the drop."
                     : "Keys are offline. Requests only."}
                 </p>
               </div>
-              <div className="inline-flex items-center gap-2 text-xs text-[color:var(--gate-muted)]">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-[color:var(--gate-ink)]" />
+              <div className={`inline-flex items-center gap-2 text-xs ${gateClassNames.mutedText}`}>
+                <span className={gateClassNames.statusDot} />
                 Signal live
               </div>
             </div>
@@ -125,52 +115,48 @@ export default async function AccessPage({ searchParams }: AccessPageProps) {
             />
 
             {errorMessage ? (
-              <div className="mt-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+              <div className="mt-4 rounded-md border border-danger/30 bg-danger/5 p-3 text-sm text-danger-fg">
                 {errorMessage}
               </div>
             ) : null}
 
             <form action="/api/access" method="post" className="mt-6 space-y-4">
-              <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+              <label className={gateClassNames.fieldLabel}>
                 Key slot
-                <input
+                <Input
                   name="code"
                   placeholder="XXXX-XXXX"
-                  className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-3 text-sm uppercase tracking-[0.35em] text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+                  className={`${gateClassNames.fieldInput} uppercase xa-tracking-035`}
                   autoComplete="off"
                   required
                 />
               </label>
-              <input type="hidden" name="next" value={nextValue} />
+              <Input type="hidden" name="next" value={nextValue} className="hidden" />
               <div className="flex flex-wrap items-center gap-3">
-                <button
+                <Button
                   type="submit"
-                  className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90"
+                  className={gateClassNames.primaryButton}
                 >
                   Unlock
-                </button>
-                <div className="text-xs text-[color:var(--gate-muted)]">
-                  Keys are case-insensitive. Do not share in public.
-                </div>
+                </Button>
+                <div className={`text-xs ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.page.l145c72")}</div>
               </div>
             </form>
-          </section>
+          </ElevatedPanel>
 
-          <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
+          <ElevatedPanel>
             <AccessGateClient monoClassName={mono.className} />
-          </section>
+          </ElevatedPanel>
         </div>
 
-        <div className={`mt-12 flex flex-wrap items-center gap-6 text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)] ${mono.className}`}>
-          <span>Silent launch</span>
+        <div className={`mt-12 flex flex-wrap items-center gap-6 text-xs uppercase xa-tracking-035 ${gateClassNames.mutedText} ${mono.className}`}>
+          <span>{xaI18n.t("xaB.src.app.access.page.l158c17")}</span>
           <span>Closed loop</span>
-          <span>Zero indexing</span>
+          <span>{xaI18n.t("xaB.src.app.access.page.l160c17")}</span>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-[color:var(--gate-ink)] hover:underline"
-          >
-            Return to gate
-          </Link>
+            className={`inline-flex items-center gap-2 ${gateClassNames.inkText} hover:underline`}
+          >{xaI18n.t("xaB.src.app.access.page.l164c12")}</Link>
         </div>
       </div>
     </main>

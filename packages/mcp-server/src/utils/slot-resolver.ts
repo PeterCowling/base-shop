@@ -9,7 +9,7 @@
  * - Pure passthrough if body contains no slot markers.
  * - Idempotent: calling twice with the same args produces the same output.
  *
- * Known slot names (by convention): GREETING, KNOWLEDGE_INJECTION, BOOKING_REF, CTA, POLICY_NOTE
+ * Known slot names (by convention): GREETING, KNOWLEDGE_INJECTION, BOOKING_REF, CTA, POLICY_NOTE, APP_LINK
  */
 export function resolveSlots(
   body: string,

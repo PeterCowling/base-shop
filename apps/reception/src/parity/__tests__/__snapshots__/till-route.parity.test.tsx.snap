@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`/till-reconciliation parity matches baseline heading and dropdown selector snapshot 1`] = `
+<div>
+  <div
+    class="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen"
+  >
+    <h1
+      class="text-5xl font-heading text-primary-main w-full text-center mb-6"
+    >
+      TILL MANAGEMENT
+    </h1>
+    <div
+      class="flex-grow bg-surface rounded-lg shadow p-6 space-y-8 dark:bg-darkSurface"
+    >
+      <div
+        class="flex flex-col gap-4 sm:flex-row"
+      >
+        <div
+          data-radix-mock="Root"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="menu"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark dark:bg-darkSurface"
+            data-token="--color-primary"
+          >
+            Shift
+          </button>
+        </div>
+        <div
+          data-radix-mock="Root"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="menu"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark dark:bg-darkSurface"
+            data-token="--color-primary"
+          >
+            Cash
+          </button>
+        </div>
+        <div
+          data-radix-mock="Root"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="menu"
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark dark:bg-darkSurface"
+            data-token="--color-primary"
+          >
+            Keycards
+          </button>
+        </div>
+      </div>
+      <div
+        data-testid="forms-container"
+      />
+      <div
+        data-testid="transaction-modals"
+      />
+      <div
+        data-testid="shift-history"
+      />
+    </div>
+  </div>
+</div>
+`;

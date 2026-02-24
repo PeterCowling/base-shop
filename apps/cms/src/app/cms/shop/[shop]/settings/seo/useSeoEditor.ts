@@ -1,11 +1,8 @@
 "use client";
 
 import { type FormEvent, useCallback, useMemo, useState } from "react";
-import {
-  generateSeo as runGenerateSeo,
-  setFreezeTranslations,
-  updateSeo,
-} from "@cms/actions/shops.server";
+import { setFreezeTranslations } from "@cms/actions/shops.server";
+import { updateSeo } from "@cms/actions/shops-seo.server";
 
 import en from "@acme/i18n/en.json";
 import { useTranslations } from "@acme/i18n/Translations";
@@ -248,28 +245,68 @@ export function useSeoEditor({
   const generate = useCallback(async (): Promise<GenerateResult> => {
     setGenerating(true);
     try {
-      const fd = new FormData();
-      fd.append("id", `${shop}-${locale}`);
-      fd.append("locale", locale);
-      fd.append("title", currentDraft.title ?? "");
-      fd.append("description", currentDraft.description ?? "");
-      const res = await runGenerateSeo(shop, fd);
-      if (res.errors || !res.generated) {
+      const response = await fetch("/api/seo/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          shop,
+          id: `${shop}-${locale}`,
+          title: currentDraft.title ?? "",
+          description: currentDraft.description ?? "",
+        }),
+      });
+
+      if (!response.ok) {
         return { status: "error", message: String(t("cms.seo.generate.error")) };
       }
 
-      updateField("title", res.generated.title);
-      updateField("description", res.generated.description);
-      if (res.generated.image) {
-        updateField("image", res.generated.image);
+      const generated = (await response.json()) as Partial<SeoData>;
+      if (!generated.title || !generated.description) {
+        return { status: "error", message: String(t("cms.seo.generate.error")) };
       }
+
+      const nextDraft: SeoData = {
+        ...currentDraft,
+        title: generated.title,
+        description: generated.description,
+        image: generated.image ?? currentDraft.image ?? "",
+      };
+
+      const persistFd = new FormData();
+      persistFd.append("locale", locale);
+      persistFd.append("title", nextDraft.title ?? "");
+      persistFd.append("description", nextDraft.description ?? "");
+      persistFd.append("image", nextDraft.image ?? "");
+      persistFd.append("alt", nextDraft.alt ?? "");
+      persistFd.append("canonicalBase", nextDraft.canonicalBase ?? "");
+      persistFd.append("ogUrl", nextDraft.ogUrl ?? "");
+      persistFd.append("twitterCard", nextDraft.twitterCard ?? "");
+      persistFd.append("brand", nextDraft.brand ?? "");
+      persistFd.append("offers", nextDraft.offers ?? "");
+      persistFd.append("aggregateRating", nextDraft.aggregateRating ?? "");
+      persistFd.append("structuredData", nextDraft.structuredData ?? "");
+
+      const persisted = await updateSeo(shop, persistFd);
+      if (persisted.errors) {
+        setErrors(persisted.errors);
+        setWarnings([]);
+        return { status: "error", message: String(t("cms.seo.generate.error")) };
+      }
+
+      updateField("title", nextDraft.title ?? "");
+      updateField("description", nextDraft.description ?? "");
+      if (nextDraft.image) {
+        updateField("image", nextDraft.image);
+      }
+      setErrors({});
+      setWarnings(persisted.warnings ?? []);
       return { status: "success", message: String(t("cms.seo.generate.success")) };
     } catch {
       return { status: "error", message: String(t("cms.seo.generate.error")) };
     } finally {
       setGenerating(false);
     }
-  }, [currentDraft.description, currentDraft.title, locale, shop, t, updateField]);
+  }, [currentDraft, locale, shop, t, updateField]);
 
   const errorFor = useCallback(
     (field: keyof SeoData) => errors[field]?.join("; ") ?? "",

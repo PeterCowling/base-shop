@@ -1,0 +1,201 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`/safe-management parity matches baseline safe selectors and DOM snapshot 1`] = `
+<div>
+  <div
+    class="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen"
+  >
+    <h1
+      class="text-5xl font-heading text-primary-main w-full text-center mb-6"
+    >
+      SAFE MANAGEMENT
+    </h1>
+    <div
+      class="bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface"
+    >
+      <p
+        class="text-lg"
+      >
+        Safe Balance: 
+        <strong>
+          €
+          100.00
+        </strong>
+      </p>
+      <p
+        class="text-lg"
+      >
+        Keycards in Safe: 
+        <strong>
+          4
+        </strong>
+      </p>
+      <div
+        class="space-y-4"
+      >
+        <div
+          class="flex gap-2 flex-wrap"
+        >
+          <button
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            data-token="--color-primary"
+          >
+            Open
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            data-token="--color-primary"
+          >
+            Deposit
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            data-token="--color-primary"
+          >
+            Withdraw
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            data-token="--color-primary"
+          >
+            Exchange
+          </button>
+        </div>
+        <div
+          class="flex gap-2 flex-wrap"
+        >
+          <button
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            data-token="--color-primary"
+          >
+            Bank Deposit
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            data-token="--color-primary"
+          >
+            Petty Cash
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            data-token="--color-primary"
+          >
+            Reset Safe
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            data-token="--color-primary"
+          >
+            Return Keycards
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-warning-main text-primary-fg rounded hover:bg-warning-dark"
+            data-token="--color-primary"
+          >
+            Reconcile
+          </button>
+        </div>
+      </div>
+      <div
+        class="border-t pt-4"
+      >
+        <h2
+          class="text-xl font-semibold mb-2"
+        >
+          Transactions
+        </h2>
+        <div
+          class="w-full overflow-x-auto"
+        >
+          <table
+            aria-label="safe transactions"
+            class="text-foreground text-left text-sm w-full border-collapse"
+          >
+            <thead
+              class="border-b border-border-2 bg-surface-2 dark:bg-darkSurface"
+            >
+              <tr
+                class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3"
+              >
+                <th
+                  class="text-foreground font-semibold text-start p-2 border-b"
+                >
+                  Timestamp
+                </th>
+                <th
+                  class="text-foreground font-semibold text-start p-2 border-b"
+                >
+                  Type
+                </th>
+                <th
+                  class="text-foreground font-semibold text-start p-2 border-b"
+                >
+                  Amount/Count
+                </th>
+                <th
+                  class="text-foreground font-semibold text-start p-2 border-b"
+                >
+                  Keycards
+                </th>
+                <th
+                  class="text-foreground font-semibold text-start p-2 border-b"
+                >
+                  User
+                </th>
+                <th
+                  class="text-foreground font-semibold text-start p-2 border-b"
+                >
+                  Details
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class=""
+            >
+              <tr
+                class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3 bg-surface dark:bg-darkSurface"
+              >
+                <td
+                  class="align-middle p-2"
+                >
+                  03/01/2025, 11:00:00
+                </td>
+                <td
+                  class="align-middle p-2"
+                >
+                  deposit
+                </td>
+                <td
+                  class="align-middle p-2"
+                >
+                  €100.00
+                </td>
+                <td
+                  class="align-middle p-2"
+                >
+                  4 (+1)
+                </td>
+                <td
+                  class="align-middle p-2"
+                >
+                  Manager
+                </td>
+                <td
+                  class="align-middle p-2"
+                >
+                  <button
+                    class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-10 px-4 text-sm bg-primary hover:bg-primary/90 text-primary-main underline"
+                    data-token="--color-primary"
+                  >
+                    View Details
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

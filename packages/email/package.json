@@ -11,6 +11,16 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
+    "./send": {
+      "types": "./dist/send.d.ts",
+      "import": "./dist/send.js",
+      "default": "./dist/send.js"
+    },
+    "./sendEmail": {
+      "types": "./dist/sendEmail.d.ts",
+      "import": "./dist/sendEmail.js",
+      "default": "./dist/sendEmail.js"
+    },
     "./analytics": {
       "types": "./dist/analytics.d.ts",
       "import": "./dist/analytics.js",

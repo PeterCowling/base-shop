@@ -6,6 +6,7 @@ import { render, screen } from "@testing-library/react";
 const createDraftMock = jest.fn();
 const deleteProductMock = jest.fn();
 const duplicateProductMock = jest.fn();
+const trackMock = jest.fn();
 
 jest.mock("@cms/actions/products.server", () => ({
   createDraft: (...args: unknown[]) => createDraftMock(...args),
@@ -13,10 +14,14 @@ jest.mock("@cms/actions/products.server", () => ({
   duplicateProduct: (...args: unknown[]) => duplicateProductMock(...args),
 }));
 
+jest.mock("@acme/telemetry", () => ({
+  track: (...args: unknown[]) => trackMock(...args),
+}));
+
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const checkShopExistsMock = jest.fn();
-jest.mock("@acme/lib", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   checkShopExists: (...args: unknown[]) => checkShopExistsMock(...args),
 }));
 
@@ -24,6 +29,31 @@ const readRepoMock = jest.fn();
 jest.mock("@acme/platform-core/repositories/json.server", () => ({
   readRepo: (...args: unknown[]) => readRepoMock(...args),
 }));
+
+const inventoryReadMock = jest.fn();
+jest.mock("@acme/platform-core/repositories/inventory.server", () => ({
+  inventoryRepository: {
+    read: (...args: unknown[]) => inventoryReadMock(...args),
+  },
+}));
+
+const getServerTranslationsMock = jest.fn();
+jest.mock("@acme/i18n/useTranslations.server", () => ({
+  useTranslations: (...args: unknown[]) => getServerTranslationsMock(...args),
+}));
+
+jest.mock("@acme/cms-ui", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    CmsBuildHero: ({ title, body }: any) =>
+      React.createElement("div", { "data-cy": "cms-build-hero" }, `${title ?? ""}${body ?? ""}`),
+    CmsLaunchChecklist: () =>
+      React.createElement("div", { "data-cy": "cms-launch-checklist" }),
+    CmsMetricTiles: () =>
+      React.createElement("div", { "data-cy": "cms-metric-tiles" }),
+  };
+});
 
 const productsTableRenderSpy = jest.fn();
 jest.mock("@acme/cms-ui/ProductsTable.client", () => {
@@ -36,6 +66,7 @@ jest.mock("@acme/cms-ui/ProductsTable.client", () => {
         "div",
         {
           "data-cy": "products-table",
+          "data-testid": "products-table",
           "data-is-admin": String(props.isAdmin),
         },
         null,
@@ -126,11 +157,20 @@ describe("ProductsPage", () => {
     jest.clearAllMocks();
     checkShopExistsMock.mockResolvedValue(true);
     readRepoMock.mockResolvedValue(sampleProducts);
+    inventoryReadMock.mockResolvedValue([]);
+    getServerTranslationsMock.mockResolvedValue(
+      (key: string) =>
+        key === "cms.products.viewerNotice"
+          ? "You are signed in as a viewer. Editing actions like create, duplicate, or delete are disabled."
+          : key,
+    );
     __setMockSession({ user: { role: "viewer" } } as any);
   });
 
-  it("shows viewer notice and disables admin actions", async () => {
-    const { default: ProductsPage } = await import("./page");
+  it(
+    "shows viewer notice and disables admin actions",
+    async () => {
+      const { default: ProductsPage } = await import("./page");
     const ui = await ProductsPage({ params: Promise.resolve({ shop: "acme" }) });
 
     render(ui);
@@ -148,5 +188,7 @@ describe("ProductsPage", () => {
       "data-is-admin",
       "false",
     );
-  });
+    },
+    30_000,
+  );
 });

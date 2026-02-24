@@ -58,6 +58,7 @@
       ],
       "env": [
         "CI",
+        "BASESHOP_TEST_TIMEOUT_SEC",
         "BASESHOP_ALLOW_BROAD_TESTS"
       ]
     }

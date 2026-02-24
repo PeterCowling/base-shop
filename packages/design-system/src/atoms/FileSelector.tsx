@@ -1,7 +1,12 @@
 "use client";
 
-import { type ChangeEvent,useId, useRef, useState } from "react";
+import { type ChangeEvent, useId, useRef, useState } from "react";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 import { FormField } from "./FormField";
@@ -14,6 +19,14 @@ export interface FileSelectorProps
   description?: React.ReactNode;
   error?: React.ReactNode;
   inputClassName?: string;
+  /** Semantic input shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit input radius token override. */
+  radius?: PrimitiveRadius;
+  /** Semantic file trigger shape. Ignored when `fileButtonRadius` is provided. */
+  fileButtonShape?: PrimitiveShape;
+  /** Explicit file trigger radius token override. */
+  fileButtonRadius?: PrimitiveRadius;
 }
 
 export function FileSelector({
@@ -24,6 +37,10 @@ export function FileSelector({
   error,
   className,
   inputClassName,
+  shape,
+  radius,
+  fileButtonShape,
+  fileButtonRadius,
   id,
   accept,
   capture,
@@ -48,6 +65,16 @@ export function FileSelector({
   const errorId = error ? `${inputId}-error` : undefined;
   const describedBy = [descriptionId, errorId].filter(Boolean).join(" ") || undefined;
   const required = inputProps.required;
+  const inputShapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
+  const fileButtonShapeRadiusClass = resolveShapeRadiusClass({
+    shape: fileButtonShape,
+    radius: fileButtonRadius,
+    defaultRadius: "md",
+  }).replace(/^rounded-/, "file:rounded-");
 
   return (
     <FormField
@@ -57,7 +84,7 @@ export function FileSelector({
       error={error}
       {...(required !== undefined ? { required } : {})}
       className={cn("space-y-2", className)}
-       
+
       input={({ id: controlId, describedBy: fieldDescribedBy, ariaInvalid }) => (
         <>
           <input
@@ -73,7 +100,9 @@ export function FileSelector({
             aria-describedby={fieldDescribedBy ?? describedBy}
             aria-invalid={ariaInvalid}
             className={cn(
-              "block w-full rounded-md border border-input bg-input px-3 py-2 text-sm text-foreground shadow-sm file:me-3 file:rounded-md file:border-0 file:bg-muted file:px-3 file:py-2 file:text-sm", // i18n-exempt -- UI-000 utility classes
+              "block w-full border border-input bg-input px-3 py-2 text-sm text-foreground shadow-sm file:me-3 file:border-0 file:bg-muted file:px-3 file:py-2 file:text-sm", // i18n-exempt -- UI-000 utility classes
+              inputShapeRadiusClass,
+              fileButtonShapeRadiusClass,
               inputClassName,
             )}
             {...inputProps}

@@ -15,5 +15,15 @@
       "label": "Chat ospiti",
       "optedOutNote": "Non apparirai nell'elenco ospiti e non riceverai nuovi messaggi. Le conversazioni esistenti restano visibili."
     }
+  },
+  "language": {
+    "title": "Lingua",
+    "subtitle": "Scegli la lingua preferita dell'app.",
+    "current": "Lingua attuale: {{language}}",
+    "returnHome": "Torna alla home",
+    "options": {
+      "en": "English",
+      "it": "Italiano"
+    }
   }
 }

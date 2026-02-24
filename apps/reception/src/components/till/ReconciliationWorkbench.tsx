@@ -4,6 +4,9 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
+import { Input } from "@acme/design-system";
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+
 import { TillDataProvider, useTillData } from "../../context/TillDataContext";
 import usePmsPostings from "../../hooks/data/till/usePmsPostings";
 import useTerminalBatches from "../../hooks/data/till/useTerminalBatches";
@@ -55,10 +58,11 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
     <div className="flex items-end gap-2 flex-wrap">
       <div>
         <label className="block text-xs mb-1">Amount</label>
-        <input
+        <Input
+          compatibilityMode="no-wrapper"
           type="number"
           inputMode="decimal"
-          className="w-28 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          className="w-28 rounded border px-2 py-1 text-sm"
           placeholder="0.00"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
@@ -68,7 +72,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
       <div>
         <label className="block text-xs mb-1">Method</label>
         <select
-          className="rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          className="rounded border px-2 py-1 text-sm"
           value={method}
           onChange={(e) => setMethod(e.target.value as "CASH" | "CC")}
           disabled={submitting}
@@ -79,22 +83,23 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
       </div>
       <div>
         <label className="block text-xs mb-1">Note</label>
-        <input
+        <Input
+          compatibilityMode="no-wrapper"
           type="text"
-          className="w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          className="w-40 rounded border px-2 py-1 text-sm"
           placeholder="Optional"
           value={note}
           onChange={(e) => setNote(e.target.value)}
           disabled={submitting}
         />
       </div>
-      <button
+      <Button
         onClick={handleSubmit}
         disabled={submitting}
-        className="rounded bg-primary-main px-3 py-1 text-sm text-white hover:opacity-90 disabled:opacity-50"
+        className="rounded bg-primary-main px-3 py-1 text-sm text-primary-fg hover:opacity-90 disabled:opacity-50"
       >
         {submitting ? "Saving…" : "Add PMS Posting"}
-      </button>
+      </Button>
     </div>
   );
 });
@@ -128,10 +133,11 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
     <div className="flex items-end gap-2 flex-wrap">
       <div>
         <label className="block text-xs mb-1">Amount</label>
-        <input
+        <Input
+          compatibilityMode="no-wrapper"
           type="number"
           inputMode="decimal"
-          className="w-28 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          className="w-28 rounded border px-2 py-1 text-sm"
           placeholder="0.00"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
@@ -140,22 +146,23 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
       </div>
       <div>
         <label className="block text-xs mb-1">Note</label>
-        <input
+        <Input
+          compatibilityMode="no-wrapper"
           type="text"
-          className="w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          className="w-40 rounded border px-2 py-1 text-sm"
           placeholder="Optional"
           value={note}
           onChange={(e) => setNote(e.target.value)}
           disabled={submitting}
         />
       </div>
-      <button
+      <Button
         onClick={handleSubmit}
         disabled={submitting}
-        className="rounded bg-primary-main px-3 py-1 text-sm text-white hover:opacity-90 disabled:opacity-50"
+        className="rounded bg-primary-main px-3 py-1 text-sm text-primary-fg hover:opacity-90 disabled:opacity-50"
       >
         {submitting ? "Saving…" : "Add Terminal Batch"}
-      </button>
+      </Button>
     </div>
   );
 });
@@ -259,7 +266,7 @@ const ReconciliationWorkbenchContent = memo(
       <div className="p-4 space-y-4">
         <h2 className="text-2xl font-semibold">Reconciliation Workbench</h2>
         {hasParseError && (
-          <p className="text-sm text-warning-main dark:text-darkAccentGreen">
+          <p className="text-sm text-warning-main">
             Some values could not be parsed.
           </p>
         )}
@@ -275,85 +282,85 @@ const ReconciliationWorkbenchContent = memo(
           </p>
         )}
 
-        <table className="w-full border-collapse text-sm dark:text-darkAccentGreen">
-          <thead className="bg-gray-100 dark:bg-darkSurface">
-            <tr className="dark:border-darkSurface">
-              <th className="p-2 text-start border dark:border-darkSurface">Source</th>
-              <th className="p-2 text-end border dark:border-darkSurface">Cash</th>
-              <th className="p-2 text-end border dark:border-darkSurface">CC</th>
-              <th className="p-2 text-end border dark:border-darkSurface">Cash Δ</th>
-              <th className="p-2 text-end border dark:border-darkSurface">CC Δ</th>
-            </tr>
-          </thead>
+        <Table className="w-full border-collapse text-sm">
+          <TableHeader className="bg-surface-2">
+            <TableRow>
+              <TableHead className="p-2 text-start border">Source</TableHead>
+              <TableHead className="p-2 text-end border">Cash</TableHead>
+              <TableHead className="p-2 text-end border">CC</TableHead>
+              <TableHead className="p-2 text-end border">Cash Δ</TableHead>
+              <TableHead className="p-2 text-end border">CC Δ</TableHead>
+            </TableRow>
+          </TableHeader>
 
-          <tbody>
+          <TableBody>
             {/* POS Totals */}
-            <tr className="border-b dark:border-darkSurface dark:bg-darkSurface">
-              <td className="p-2">POS Totals</td>
-              <td className="p-2 text-end">{format(safePosCashTotal)}</td>
-              <td className="p-2 text-end">{format(safePosCcTotal)}</td>
-              <td className="p-2" />
-              <td className="p-2" />
-            </tr>
+            <TableRow className="border-b">
+              <TableCell className="p-2">POS Totals</TableCell>
+              <TableCell className="p-2 text-end">{format(safePosCashTotal)}</TableCell>
+              <TableCell className="p-2 text-end">{format(safePosCcTotal)}</TableCell>
+              <TableCell className="p-2" />
+              <TableCell className="p-2" />
+            </TableRow>
 
             {/* Cash Drawer */}
-            <tr className="border-b dark:border-darkSurface dark:bg-darkSurface">
-              <td className="p-2">Cash Drawer</td>
-              <td
+            <TableRow className="border-b">
+              <TableCell className="p-2">Cash Drawer</TableCell>
+              <TableCell
                 className={`p-2 text-right ${diffClass(
                   safeDrawerTotal - safePosCashTotal
                 )}`}
               >
                 {format(safeDrawerTotal)}
-              </td>
-              <td className="p-2 text-end text-gray-600 dark:text-darkAccentGreen">-</td>
-              <td
+              </TableCell>
+              <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
+              <TableCell
                 className={`p-2 text-right ${diffClass(
                   safeDrawerTotal - safePosCashTotal
                 )}`}
               >
                 {format(safeDrawerTotal - safePosCashTotal)}
-              </td>
-              <td className="p-2" />
-            </tr>
+              </TableCell>
+              <TableCell className="p-2" />
+            </TableRow>
 
             {/* PMS Postings */}
-            <tr className="border-b dark:border-darkSurface dark:bg-darkSurface">
-              <td className="p-2">PMS Postings</td>
-              <td className="p-2 text-end">{format(safePmsCashTotal)}</td>
-              <td className="p-2 text-end">{format(safePmsCcTotal)}</td>
-              <td
+            <TableRow className="border-b">
+              <TableCell className="p-2">PMS Postings</TableCell>
+              <TableCell className="p-2 text-end">{format(safePmsCashTotal)}</TableCell>
+              <TableCell className="p-2 text-end">{format(safePmsCcTotal)}</TableCell>
+              <TableCell
                 className={`p-2 text-right ${diffClass(
                   safePmsCashTotal - safePosCashTotal
                 )}`}
               >
                 {format(safePmsCashTotal - safePosCashTotal)}
-              </td>
-              <td
+              </TableCell>
+              <TableCell
                 className={`p-2 text-right ${diffClass(
                   safePmsCcTotal - safePosCcTotal
                 )}`}
               >
                 {format(safePmsCcTotal - safePosCcTotal)}
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
 
             {/* Terminal Batch */}
-            <tr className="dark:bg-darkSurface dark:border-darkSurface">
-              <td className="p-2">Terminal Batch</td>
-              <td className="p-2 text-end text-gray-600 dark:text-darkAccentGreen">-</td>
-              <td className="p-2 text-end">{format(safeTerminalTotal)}</td>
-              <td className="p-2" />
-              <td
+            <TableRow>
+              <TableCell className="p-2">Terminal Batch</TableCell>
+              <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
+              <TableCell className="p-2 text-end">{format(safeTerminalTotal)}</TableCell>
+              <TableCell className="p-2" />
+              <TableCell
                 className={`p-2 text-right ${diffClass(
                   safeTerminalTotal - safePosCcTotal
                 )}`}
               >
                 {format(safeTerminalTotal - safePosCcTotal)}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
 
         {/* Entry forms */}
         <div className="space-y-4 pt-2">

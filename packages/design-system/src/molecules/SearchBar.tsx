@@ -4,12 +4,17 @@
 import { useId, useMemo, useState } from "react";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
-import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import { resolveText } from "@acme/i18n/resolveText";
+import { useTranslations } from "@acme/i18n/Translations";
 import type { TranslatableText } from "@acme/types/i18n";
 
 import { Input } from "../primitives";
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export interface SearchBarProps {
@@ -26,6 +31,14 @@ export interface SearchBarProps {
   query?: string;
   /** Locale to resolve inline placeholder */
   locale?: Locale;
+  /** Semantic suggestion menu shape. Ignored when `menuRadius` is provided. */
+  menuShape?: PrimitiveShape;
+  /** Explicit suggestion menu radius token override. */
+  menuRadius?: PrimitiveRadius;
+  /** Semantic input shape. Ignored when `inputRadius` is provided. */
+  inputShape?: PrimitiveShape;
+  /** Explicit input radius token override. */
+  inputRadius?: PrimitiveRadius;
 }
 
 export function SearchBar({
@@ -36,6 +49,10 @@ export function SearchBar({
   label,
   query: initialQuery = "",
   locale = "en",
+  menuShape,
+  menuRadius,
+  inputShape,
+  inputRadius,
 }: SearchBarProps) {
   const t = useTranslations() as unknown as (key: string, params?: Record<string, unknown>) => string;
   const [query, setQuery] = useState(initialQuery);
@@ -43,6 +60,11 @@ export function SearchBar({
   const [focused, setFocused] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const inputId = useId();
+  const menuShapeRadiusClass = resolveShapeRadiusClass({
+    shape: menuShape,
+    radius: menuRadius,
+    defaultRadius: "md",
+  });
 
   const matches = useMemo(() => {
     if (isSelecting || !focused || !query) {
@@ -70,6 +92,8 @@ export function SearchBar({
         id={inputId}
         type="search"
         aria-label={label}
+        shape={inputShape}
+        radius={inputRadius}
         value={query}
         onChange={(e) => {
           setIsSelecting(false);
@@ -120,7 +144,10 @@ export function SearchBar({
       {matches.length > 0 && (
         <ul
           role="listbox"
-          className="bg-background absolute mt-1 w-full rounded-md border shadow" /* i18n-exempt -- UI-000: class names */
+          className={cn(
+            "bg-background absolute mt-1 w-full border shadow", // i18n-exempt -- UI-000: class names
+            menuShapeRadiusClass,
+          )}
         >
           {matches.map((m, i) => (
             <li

@@ -9,6 +9,16 @@
     "outDir": "dist",
     "module": "NodeNext",
     "moduleResolution": "nodenext",
+    "paths": {
+      "@acme/lib": [
+        "packages/lib/src/index.ts",
+        "packages/lib/dist/index.d.ts"
+      ],
+      "@acme/lib/*": [
+        "packages/lib/src/*",
+        "packages/lib/dist/*"
+      ]
+    },
     "types": ["node"]
   },
   "include": ["src/**/*"],

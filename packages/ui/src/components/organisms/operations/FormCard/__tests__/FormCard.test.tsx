@@ -31,7 +31,7 @@ describe('FormCard', () => {
   });
 
   it('shows success message when state is success', () => {
-    render(
+    const { container } = render(
       <FormCard
         {...defaultProps}
         state="success"
@@ -39,11 +39,20 @@ describe('FormCard', () => {
       />
     );
 
-    expect(screen.getByText('Operation successful!')).toBeInTheDocument();
+    const message = screen.getByText('Operation successful!');
+    expect(message).toBeInTheDocument();
+    expect(message).toHaveClass('text-success-foreground');
+    expect(message.parentElement?.parentElement).toHaveClass(
+      'border-success/40',
+      'bg-success-soft'
+    );
+    expect(
+      container.querySelector('svg.h-5.w-5.text-success-foreground')
+    ).toBeInTheDocument();
   });
 
   it('shows error message when state is error', () => {
-    render(
+    const { container } = render(
       <FormCard
         {...defaultProps}
         state="error"
@@ -51,7 +60,16 @@ describe('FormCard', () => {
       />
     );
 
-    expect(screen.getByText('Operation failed!')).toBeInTheDocument();
+    const message = screen.getByText('Operation failed!');
+    expect(message).toBeInTheDocument();
+    expect(message).toHaveClass('text-danger-foreground');
+    expect(message.parentElement?.parentElement).toHaveClass(
+      'border-danger/40',
+      'bg-danger-soft'
+    );
+    expect(
+      container.querySelector('svg.h-5.w-5.text-danger-foreground')
+    ).toBeInTheDocument();
   });
 
   it('shows loading overlay when showLoadingOverlay is true and state is loading', () => {
@@ -84,6 +102,29 @@ describe('FormCard', () => {
     );
 
     expect(container.firstChild).toHaveClass('custom-class');
+  });
+
+  it('uses semantic token classes for shell and sections', () => {
+    const { container } = render(
+      <FormCard {...defaultProps} footer={<button>Submit</button>} />
+    );
+
+    const shell = container.firstChild as HTMLElement;
+    const heading = screen.getByRole('heading', { name: 'Test Form' });
+    const header = heading.parentElement as HTMLElement;
+    const footer = screen.getByText('Submit').closest('div.border-t');
+
+    expect(shell).toHaveClass(
+      'overflow-hidden',
+      'rounded-lg',
+      'border-border-2',
+      'bg-surface-2'
+    );
+    expect(header).toHaveClass('border-border-2', 'bg-surface-1');
+    expect(screen.getByText('Test description')).toHaveClass(
+      'text-muted-foreground'
+    );
+    expect(footer).toHaveClass('border-border-2', 'bg-surface-1');
   });
 
   it('does not show success message when state is not success', () => {

@@ -1,0 +1,325 @@
+{
+  "baseUrl": "http://localhost:3018/en",
+  "steps": [
+    {
+      "step": 1,
+      "tMs": 0,
+      "file": "step-01-idle.png",
+      "particleState": "idle",
+      "wordState": "from",
+      "taglineReveal": "0"
+    },
+    {
+      "step": 2,
+      "tMs": 159,
+      "file": "step-02-idle.png",
+      "particleState": "idle",
+      "wordState": "from",
+      "taglineReveal": "0"
+    },
+    {
+      "step": 3,
+      "tMs": 318,
+      "file": "step-03-idle.png",
+      "particleState": "idle",
+      "wordState": "from",
+      "taglineReveal": "0"
+    },
+    {
+      "step": 4,
+      "tMs": 477,
+      "file": "step-04-dissolving.png",
+      "particleState": "dissolving",
+      "wordState": "to",
+      "taglineReveal": "0.000"
+    },
+    {
+      "step": 5,
+      "tMs": 636,
+      "file": "step-05-funneling.png",
+      "particleState": "funneling",
+      "wordState": "to",
+      "taglineReveal": "0.000"
+    },
+    {
+      "step": 6,
+      "tMs": 795,
+      "file": "step-06-funneling.png",
+      "particleState": "funneling",
+      "wordState": "to",
+      "taglineReveal": "0.000"
+    },
+    {
+      "step": 7,
+      "tMs": 954,
+      "file": "step-07-funneling.png",
+      "particleState": "funneling",
+      "wordState": "to",
+      "taglineReveal": "0.000"
+    },
+    {
+      "step": 8,
+      "tMs": 1113,
+      "file": "step-08-funneling.png",
+      "particleState": "funneling",
+      "wordState": "to",
+      "taglineReveal": "0.000"
+    },
+    {
+      "step": 9,
+      "tMs": 1272,
+      "file": "step-09-funneling.png",
+      "particleState": "funneling",
+      "wordState": "to",
+      "taglineReveal": "0.000"
+    },
+    {
+      "step": 10,
+      "tMs": 1431,
+      "file": "step-10-funneling.png",
+      "particleState": "funneling",
+      "wordState": "to",
+      "taglineReveal": "0.000"
+    },
+    {
+      "step": 11,
+      "tMs": 1590,
+      "file": "step-11-funneling.png",
+      "particleState": "funneling",
+      "wordState": "to",
+      "taglineReveal": "0.000"
+    },
+    {
+      "step": 12,
+      "tMs": 1749,
+      "file": "step-12-settling.png",
+      "particleState": "settling",
+      "wordState": "to",
+      "taglineReveal": "0.000"
+    },
+    {
+      "step": 13,
+      "tMs": 1908,
+      "file": "step-13-settling.png",
+      "particleState": "settling",
+      "wordState": "to",
+      "taglineReveal": "0.027"
+    },
+    {
+      "step": 14,
+      "tMs": 2067,
+      "file": "step-14-settling.png",
+      "particleState": "settling",
+      "wordState": "to",
+      "taglineReveal": "0.155"
+    },
+    {
+      "step": 15,
+      "tMs": 2226,
+      "file": "step-15-settling.png",
+      "particleState": "settling",
+      "wordState": "to",
+      "taglineReveal": "0.362"
+    },
+    {
+      "step": 16,
+      "tMs": 2385,
+      "file": "step-16-settling.png",
+      "particleState": "settling",
+      "wordState": "to",
+      "taglineReveal": "0.587"
+    },
+    {
+      "step": 17,
+      "tMs": 2544,
+      "file": "step-17-settling.png",
+      "particleState": "settling",
+      "wordState": "to",
+      "taglineReveal": "0.796"
+    },
+    {
+      "step": 18,
+      "tMs": 2703,
+      "file": "step-18-settling.png",
+      "particleState": "settling",
+      "wordState": "to",
+      "taglineReveal": "0.947"
+    },
+    {
+      "step": 19,
+      "tMs": 2862,
+      "file": "step-19-settling.png",
+      "particleState": "settling",
+      "wordState": "to",
+      "taglineReveal": "1.000"
+    },
+    {
+      "step": 20,
+      "tMs": 3021,
+      "file": "step-20-settling.png",
+      "particleState": "settling",
+      "wordState": "to",
+      "taglineReveal": "1.000"
+    },
+    {
+      "step": 21,
+      "tMs": 3180,
+      "file": "step-21-settling.png",
+      "particleState": "settling",
+      "wordState": "to",
+      "taglineReveal": "1.000"
+    },
+    {
+      "step": 22,
+      "tMs": 3339,
+      "file": "step-22-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 23,
+      "tMs": 3498,
+      "file": "step-23-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 24,
+      "tMs": 3657,
+      "file": "step-24-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 25,
+      "tMs": 3816,
+      "file": "step-25-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 26,
+      "tMs": 3975,
+      "file": "step-26-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 27,
+      "tMs": 4134,
+      "file": "step-27-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 28,
+      "tMs": 4293,
+      "file": "step-28-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 29,
+      "tMs": 4452,
+      "file": "step-29-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 30,
+      "tMs": 4611,
+      "file": "step-30-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 31,
+      "tMs": 4770,
+      "file": "step-31-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 32,
+      "tMs": 4929,
+      "file": "step-32-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 33,
+      "tMs": 5088,
+      "file": "step-33-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 34,
+      "tMs": 5247,
+      "file": "step-34-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 35,
+      "tMs": 5406,
+      "file": "step-35-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 36,
+      "tMs": 5565,
+      "file": "step-36-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 37,
+      "tMs": 5724,
+      "file": "step-37-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 38,
+      "tMs": 5883,
+      "file": "step-38-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 39,
+      "tMs": 6042,
+      "file": "step-39-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    },
+    {
+      "step": 40,
+      "tMs": 6201,
+      "file": "step-40-done.png",
+      "particleState": "done",
+      "wordState": "to",
+      "taglineReveal": "1"
+    }
+  ]
+}

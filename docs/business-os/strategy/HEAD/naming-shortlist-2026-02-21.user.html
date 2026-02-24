@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HEAD — Naming Shortlist · ASSESSMENT-04 · Round 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg:          #f5f7f3;
+      --surface:     #ffffff;
+      --text:        #181d14;
+      --muted:       #62705a;
+      --border:      #d8e0d2;
+      --header-bg:   #eaf0e5;
+
+      --accent:      #4e7a35;   /* warm olive-sage — Italian lifestyle, not medical */
+      --accent-warm: #eaf0e5;
+      --accent-dark: #2e5018;
+
+      --tier-lead:   #2e5018;   /* score 24 — deepest olive */
+      --tier-high:   #4e7a35;   /* score 23 — mid olive */
+      --tier-std:    #62705a;   /* score 22 — muted */
+
+      --dim-d:       #7c5cbf;   /* Distinctiveness — violet */
+      --dim-w:       #2a7a8a;   /* Wordmark — teal */
+      --dim-p:       #b84a3a;   /* Phonetics — brick red */
+      --dim-e:       #4e7a35;   /* Expansion — olive */
+      --dim-i:       #b07a28;   /* ICP resonance — amber */
+
+      --radius: 8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    main { max-width: 1200px; margin: 0 auto; padding: 24px 20px 48px; }
+
+    /* ── Header band ── */
+    .header-band {
+      background: linear-gradient(135deg, #1a2e10 0%, #2e5018 55%, #4e7a35 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header-band::after {
+      content: '';
+      position: absolute;
+      right: -50px; top: -50px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .header-band .label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.58);
+      margin-bottom: 8px;
+    }
+    .header-band h1 {
+      margin: 0 0 10px;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      color: #fff;
+    }
+    .header-band .subtitle {
+      color: rgba(255,255,255,0.72);
+      font-size: 0.93rem;
+      max-width: 680px;
+    }
+    .header-stats {
+      display: flex;
+      gap: 20px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .stat-chip {
+      background: rgba(255,255,255,0.11);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 0.83rem;
+    }
+    .stat-chip strong { display: block; font-size: 1.45rem; line-height: 1.2; color: #fff; }
+    .stat-chip span { color: rgba(255,255,255,0.62); font-size: 0.73rem; }
+
+    /* ── Section headings ── */
+    h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 36px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 { font-size: 1rem; font-weight: 700; margin: 20px 0 8px; }
+
+    /* ── Score legend ── */
+    .score-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      flex: 1 1 200px;
+    }
+    .legend-dot-row { display: flex; gap: 3px; }
+    .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .legend-info { font-size: 0.81rem; }
+    .legend-info strong { display: block; font-size: 0.87rem; }
+    .legend-info span { color: var(--muted); }
+
+    /* ── Tier legend ── */
+    .tier-legend {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .tier-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.83rem;
+    }
+    .tier-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ── Filter buttons ── */
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-row label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-right: 4px;
+    }
+    .filter-btn {
+      padding: 5px 14px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.81rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.14s, color 0.14s, border-color 0.14s;
+    }
+    .filter-btn:hover  { background: var(--header-bg); border-color: var(--accent); }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 24px;
+      font-size: 0.87rem;
+    }
+    th {
+      background: var(--header-bg);
+      border: 1px solid var(--border);
+      padding: 9px 12px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      vertical-align: middle;
+    }
+    tr:nth-child(even) td { background: #f8faf6; }
+    tr.hidden-row { display: none; }
+
+    /* Score badge */
+    .score-badge {
+      display: inline-block;
+      font-weight: 800;
+      font-size: 1rem;
+      min-width: 30px;
+      text-align: center;
+    }
+    .score-badge.lead { color: var(--tier-lead); }
+    .score-badge.high { color: var(--tier-high); }
+    .score-badge.std  { color: var(--tier-std); }
+
+    /* Name cell */
+    .name-cell { font-weight: 700; font-size: 0.97rem; }
+    .name-cell.lead { color: var(--tier-lead); }
+    .name-cell.high { color: var(--tier-high); }
+
+    /* Dimension dots */
+    .dims { display: flex; gap: 3px; }
+    .dim-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .dim-dot.on  { opacity: 1; }
+    .dim-dot.off { opacity: 0.14; }
+
+    /* Domain chip */
+    .domain-chip {
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.77rem;
+      background: #edf2ea;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 7px;
+      color: var(--accent-dark);
+      white-space: nowrap;
+    }
+    .domain-chip::after { content: '.com'; color: var(--muted); }
+
+    /* Pattern badge */
+    .pattern-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      border-radius: 4px;
+      padding: 2px 7px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .pat-a { background: #eee8f8; color: #6a4aaf; }
+    .pat-b { background: #e4f3f5; color: #2a7a8a; }
+    .pat-c { background: #fdeeed; color: #b84a3a; }
+    .pat-d { background: #eaf0e5; color: #4e7a35; }
+    .pat-e { background: #fdf3e4; color: #b07a28; }
+
+    /* Provenance */
+    .prov { color: var(--muted); font-size: 0.79rem; }
+
+    /* ── Charts ── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 640px) { .charts-grid { grid-template-columns: 1fr; } }
+    .chart-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .chart-card h3 {
+      margin: 0 0 14px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--muted);
+    }
+    .chart-card canvas { max-height: 200px; }
+
+    /* ── Collapsible sections ── */
+    details {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    summary {
+      padding: 14px 20px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      user-select: none;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    summary::before {
+      content: '▶';
+      font-size: 0.64rem;
+      color: var(--muted);
+      transition: transform 0.18s;
+    }
+    details[open] summary::before { transform: rotate(90deg); }
+    .details-body {
+      padding: 0 20px 20px;
+      border-top: 1px solid var(--border);
+    }
+    .details-body p  { margin: 12px 0; line-height: 1.65; }
+    .details-body h3 { color: var(--accent-dark); }
+    .details-body ul { margin: 8px 0; padding-left: 20px; }
+    .details-body li { margin: 4px 0; }
+    .details-body table { font-size: 0.83rem; margin: 12px 0; }
+    .details-body th   { font-size: 0.74rem; padding: 7px 10px; }
+    .details-body td   { font-size: 0.83rem; padding: 7px 10px; }
+
+    /* ── MDR notice ── */
+    .notice {
+      background: #fef8e8;
+      border: 1px solid #e8d88a;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 0.84rem;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .notice .icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .notice strong { display: block; margin-bottom: 2px; }
+
+    /* ── Meta footer ── */
+    .meta {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.81rem;
+      color: var(--muted);
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    @media print {
+      .filter-row, .filter-btn { display: none !important; }
+      details { display: block !important; }
+      .hidden-row { display: table-row !important; }
+    }
+  </style>
+</head>
+<body>
+<main>
+
+  <!-- ── Header ── -->
+  <div class="header-band">
+    <div class="label">HEAD · ASSESSMENT-04 · Naming Shortlist · Round 3</div>
+    <h1>Brand Name Candidates</h1>
+    <div class="subtitle">CI headband accessories — Italian lifestyle brand for families. Domain-verified via Verisign RDAP · 2026-02-21.</div>
+    <div class="header-stats">
+      <div class="stat-chip"><strong>250</strong><span>candidates generated</span></div>
+      <div class="stat-chip"><strong>150</strong><span>.com available</span></div>
+      <div class="stat-chip"><strong>20</strong><span>shortlisted</span></div>
+      <div class="stat-chip"><strong>24/25</strong><span>top score (Morativa)</span></div>
+      <div class="stat-chip"><strong>5</strong><span>naming patterns</span></div>
+    </div>
+  </div>
+
+  <!-- ── MDR notice ── -->
+  <div class="notice">
+    <div class="icon">⚠️</div>
+    <div>
+      <strong>EU MDR framing constraint</strong>
+      Avoid copy that implies the headband enables or improves cochlear implant function. Evaluate all top names against this constraint before committing — Pattern B names derived from "carry" or "anchor" warrant careful copy review.
+    </div>
+  </div>
+
+  <!-- ── Score key ── -->
+  <h2>Score key</h2>
+  <div class="score-legend">
+    <div class="legend-item">
+      <div class="legend-dot-row">
+        <div class="legend-dot" style="background:var(--dim-d)"></div>
+        <div class="legend-dot" style="background:var(--dim-d)"></div>
+        <div class="legend-dot" style="background:var(--dim-d)"></div>
+        <div class="legend-dot" style="background:var(--dim-d)"></div>
+        <div class="legend-dot" style="background:var(--dim-d)"></div>
+      </div>
+      <div class="legend-info">
+        <strong>D — Distinctiveness</strong>
+        <span>TM ownability, coined vs common. 5 = fully invented.</span>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot-row">
+        <div class="legend-dot" style="background:var(--dim-w)"></div>
+        <div class="legend-dot" style="background:var(--dim-w)"></div>
+        <div class="legend-dot" style="background:var(--dim-w)"></div>
+        <div class="legend-dot" style="background:var(--dim-w)"></div>
+        <div class="legend-dot" style="background:var(--dim-w)"></div>
+      </div>
+      <div class="legend-info">
+        <strong>W — Wordmark quality</strong>
+        <span>Logo, Instagram handle legibility. 5 = 7–12 letters, strong visual rhythm.</span>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot-row">
+        <div class="legend-dot" style="background:var(--dim-p)"></div>
+        <div class="legend-dot" style="background:var(--dim-p)"></div>
+        <div class="legend-dot" style="background:var(--dim-p)"></div>
+        <div class="legend-dot" style="background:var(--dim-p)"></div>
+        <div class="legend-dot" style="background:var(--dim-p)"></div>
+      </div>
+      <div class="legend-info">
+        <strong>P — Phonetics</strong>
+        <span>Smooth in IT + EN. 5 = natural flow, 3–4 syllables, aurally memorable.</span>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot-row">
+        <div class="legend-dot" style="background:var(--dim-e)"></div>
+        <div class="legend-dot" style="background:var(--dim-e)"></div>
+        <div class="legend-dot" style="background:var(--dim-e)"></div>
+        <div class="legend-dot" style="background:var(--dim-e)"></div>
+        <div class="legend-dot" style="background:var(--dim-e)"></div>
+      </div>
+      <div class="legend-info">
+        <strong>E — Expansion headroom</strong>
+        <span>Works beyond launch headband SKU. 5 = non-product-specific across accessories.</span>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot-row">
+        <div class="legend-dot" style="background:var(--dim-i)"></div>
+        <div class="legend-dot" style="background:var(--dim-i)"></div>
+        <div class="legend-dot" style="background:var(--dim-i)"></div>
+        <div class="legend-dot" style="background:var(--dim-i)"></div>
+        <div class="legend-dot" style="background:var(--dim-i)"></div>
+      </div>
+      <div class="legend-info">
+        <strong>I — ICP resonance</strong>
+        <span>Trusted by caregivers + active users. 5 = warm, non-clinical, family-safe.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tier legend ── -->
+  <div class="tier-legend">
+    <div class="tier-item"><div class="tier-dot" style="background:var(--tier-lead)"></div><span><strong>Lead (24)</strong> — highest-scoring name in pool</span></div>
+    <div class="tier-item"><div class="tier-dot" style="background:var(--tier-high)"></div><span><strong>High (23)</strong> — one dimension at 4, rest at 5</span></div>
+    <div class="tier-item"><div class="tier-dot" style="background:var(--tier-std)"></div><span><strong>Standard (22)</strong></span></div>
+  </div>
+
+  <!-- ── Filter + table ── -->
+  <h2>Top 20 shortlist</h2>
+  <div class="filter-row">
+    <label>Filter by pattern:</label>
+    <button class="filter-btn active" data-pattern="all">All</button>
+    <button class="filter-btn" data-pattern="A" title="Morpheme combination">A — Morpheme</button>
+    <button class="filter-btn" data-pattern="B" title="English-root respelling">B — Respell</button>
+    <button class="filter-btn" data-pattern="C" title="Fragment blend">C — Blend</button>
+    <button class="filter-btn" data-pattern="D" title="Root + suffix (spoken ≠ domain)">D — Root+suffix</button>
+    <button class="filter-btn" data-pattern="E" title="Real Italian word, non-descriptive in class">E — Real word</button>
+  </div>
+
+  <div class="table-wrap">
+    <table id="shortlist-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Score</th>
+          <th>D</th>
+          <th>W</th>
+          <th>P</th>
+          <th>E</th>
+          <th>I</th>
+          <th>Pattern</th>
+          <th>Domain</th>
+          <th>Provenance</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- Rank 1 — score 24 (Lead) -->
+        <tr data-pattern="A">
+          <td>1</td>
+          <td><span class="name-cell lead">Morativa</span></td>
+          <td><span class="score-badge lead">24</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-a">A</span></td>
+          <td><span class="domain-chip">morativa</span></td>
+          <td class="prov">morphemes mora+tiva</td>
+        </tr>
+
+        <!-- Ranks 2–13 — score 23 (High) -->
+        <tr data-pattern="A">
+          <td>2</td>
+          <td><span class="name-cell high">Calmasena</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-a">A</span></td>
+          <td><span class="domain-chip">calmasena</span></td>
+          <td class="prov">morphemes calma+sena</td>
+        </tr>
+        <tr data-pattern="B">
+          <td>3</td>
+          <td><span class="name-cell high">Carryina</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-b">B</span></td>
+          <td><span class="domain-chip">carryina</span></td>
+          <td class="prov">respelled from <em>carry</em> with ina — review MDR copy</td>
+        </tr>
+        <tr data-pattern="A">
+          <td>4</td>
+          <td><span class="name-cell high">Dorativa</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-a">A</span></td>
+          <td><span class="domain-chip">dorativa</span></td>
+          <td class="prov">morphemes dora+tiva</td>
+        </tr>
+        <tr data-pattern="A">
+          <td>5</td>
+          <td><span class="name-cell high">Fenirova</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-a">A</span></td>
+          <td><span class="domain-chip">fenirova</span></td>
+          <td class="prov">morphemes feni+rova</td>
+        </tr>
+        <tr data-pattern="C">
+          <td>6</td>
+          <td><span class="name-cell high">Loviire</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-c">C</span></td>
+          <td><span class="domain-chip">loviire</span></td>
+          <td class="prov">blend fragments lovi+ire</td>
+        </tr>
+        <tr data-pattern="C">
+          <td>7</td>
+          <td><span class="name-cell high">Rilauno</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-c">C</span></td>
+          <td><span class="domain-chip">rilauno</span></td>
+          <td class="prov">blend fragments rila+uno</td>
+        </tr>
+        <tr data-pattern="D">
+          <td>8</td>
+          <td><span class="name-cell high">Semira</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-d">D</span></td>
+          <td><span class="domain-chip">semiraatelier</span></td>
+          <td class="prov">root semira + suffix atelier</td>
+        </tr>
+        <tr data-pattern="C">
+          <td>9</td>
+          <td><span class="name-cell high">Soriari</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-c">C</span></td>
+          <td><span class="domain-chip">soriari</span></td>
+          <td class="prov">blend fragments sori+ari</td>
+        </tr>
+        <tr data-pattern="D">
+          <td>10</td>
+          <td><span class="name-cell high">Tireva</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-d">D</span></td>
+          <td><span class="domain-chip">tirevaco</span></td>
+          <td class="prov">root tireva + suffix co</td>
+        </tr>
+        <tr data-pattern="E">
+          <td>11</td>
+          <td><span class="name-cell high">Tramaio</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-e">E</span></td>
+          <td><span class="domain-chip">tramaio</span></td>
+          <td class="prov">obscure real word, non-descriptive lifestyle cue</td>
+        </tr>
+        <tr data-pattern="A">
+          <td>12</td>
+          <td><span class="name-cell high">Virilina</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-a">A</span></td>
+          <td><span class="domain-chip">virilina</span></td>
+          <td class="prov">morphemes viri+lina</td>
+        </tr>
+        <tr data-pattern="C">
+          <td>13</td>
+          <td><span class="name-cell high">Savaora</span></td>
+          <td><span class="score-badge high">23</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-c">C</span></td>
+          <td><span class="domain-chip">savaora</span></td>
+          <td class="prov">blend fragments sava+ora</td>
+        </tr>
+
+        <!-- Ranks 14–20 — score 22 (Standard) -->
+        <tr data-pattern="A">
+          <td>14</td>
+          <td><span class="name-cell">Navasora</span></td>
+          <td><span class="score-badge std">22</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-e)"></span><span class="dim-dot off" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-a">A</span></td>
+          <td><span class="domain-chip">navasora</span></td>
+          <td class="prov">morphemes nava+sora</td>
+        </tr>
+        <tr data-pattern="E">
+          <td>15</td>
+          <td><span class="name-cell">Tarlatana</span></td>
+          <td><span class="score-badge std">22</span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-d)"></span><span class="dim-dot off" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-e">E</span></td>
+          <td><span class="domain-chip">tarlatana</span></td>
+          <td class="prov">obscure real word (tarlatan cloth), non-descriptive in class</td>
+        </tr>
+        <tr data-pattern="A">
+          <td>16</td>
+          <td><span class="name-cell">Temivora</span></td>
+          <td><span class="score-badge std">22</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-e)"></span><span class="dim-dot off" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-a">A</span></td>
+          <td><span class="domain-chip">temivora</span></td>
+          <td class="prov">morphemes temi+vora</td>
+        </tr>
+        <tr data-pattern="A">
+          <td>17</td>
+          <td><span class="name-cell">Tramivina</span></td>
+          <td><span class="score-badge std">22</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-e)"></span><span class="dim-dot off" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-a">A</span></td>
+          <td><span class="domain-chip">tramivina</span></td>
+          <td class="prov">morphemes trami+vina</td>
+        </tr>
+        <tr data-pattern="A">
+          <td>18</td>
+          <td><span class="name-cell">Velisola</span></td>
+          <td><span class="score-badge std">22</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-e)"></span><span class="dim-dot off" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-a">A</span></td>
+          <td><span class="domain-chip">velisola</span></td>
+          <td class="prov">morphemes veli+sola</td>
+        </tr>
+        <tr data-pattern="B">
+          <td>19</td>
+          <td><span class="name-cell">Anchoreno</span></td>
+          <td><span class="score-badge std">22</span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-b">B</span></td>
+          <td><span class="domain-chip">anchoreno</span></td>
+          <td class="prov">respelled from <em>anchor</em> with eno — review MDR copy</td>
+        </tr>
+        <tr data-pattern="C">
+          <td>20</td>
+          <td><span class="name-cell">Nelaila</span></td>
+          <td><span class="score-badge std">22</span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span><span class="dim-dot on" style="background:var(--dim-d)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span><span class="dim-dot on" style="background:var(--dim-w)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span><span class="dim-dot on" style="background:var(--dim-p)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span><span class="dim-dot on" style="background:var(--dim-e)"></span></span></td>
+          <td><span class="dims"><span class="dim-dot off" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span><span class="dim-dot on" style="background:var(--dim-i)"></span></span></td>
+          <td><span class="pattern-badge pat-c">C</span></td>
+          <td><span class="domain-chip">nelaila</span></td>
+          <td class="prov">blend fragments nela+ila</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Charts ── -->
+  <h2>Candidate pool analysis</h2>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Score distribution — available names (150 total)</h3>
+      <canvas id="scoreChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Pattern breakdown — available names</h3>
+      <canvas id="patternChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ── Research context ── -->
+  <h2>Research context</h2>
+
+  <details>
+    <summary>Naming constraints &amp; strategic territory</summary>
+    <div class="details-body">
+      <h3>Recommended territory</h3>
+      <p><strong>Coined word with Italian-accessible phonetics, lifestyle-forward positioning.</strong> The name must avoid clinical register (no "hearing", "ear", or device-outcome language), feel warm and parent-safe, and stretch naturally beyond the launch headband SKU into a full accessories range (pouches, patches, clips).</p>
+
+      <h3>Hard constraints</h3>
+      <ul>
+        <li><strong>.com freely available</strong> at standard registration cost — parked or brokered domains treated as hard blockers</li>
+        <li><strong>No EU MDR framing risk</strong> in the name itself — avoid roots that imply the product enables or improves cochlear implant function</li>
+        <li><strong>No clinical register</strong> — avoid "hearing", "ear", "implant", "sound", "therapy" roots</li>
+        <li><strong>No prior business/consumer brand collision</strong> — coined words substantially reduce this risk</li>
+      </ul>
+
+      <h3>Two-layer brand system (unchanged from Round 1)</h3>
+      <table>
+        <thead><tr><th>Layer</th><th>Role</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Masterbrand</strong></td><td>One coined name from this shortlist</td><td>Morativa, Fenirova, Soriari…</td></tr>
+          <tr><td><strong>Product families</strong></td><td>Functional, non-medical descriptors</td><td>Softband · Hardband · Organiser Pouch · Patch Pack · Parts Pods</td></tr>
+        </tbody>
+      </table>
+
+      <h3>MDR framing note (Pattern B names)</h3>
+      <p><strong>Carryina</strong> (rank 3, from "carry") and <strong>Anchoreno</strong> (rank 19, from "anchor") require careful copy review. The names themselves are coined and non-descriptive, but copy using these roots to imply securing/holding the cochlear processor in place risks EU MDR accessory-enabling framing. Use functional lifestyle copy ("for active days", "made for everyday wear") rather than device-outcome copy.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Domain screening log — eliminated candidates</summary>
+    <div class="details-body">
+      <p>All 20 shortlisted names have confirmed available .com domains per Verisign RDAP (2026-02-21). Candidates eliminated in prior rounds include:</p>
+      <table>
+        <thead><tr><th>Name</th><th>Domain status</th><th>Round</th></tr></thead>
+        <tbody>
+          <tr><td>Nidilo</td><td>Parked — redirects to unrelated site</td><td>1</td></tr>
+          <tr><td>Telilo</td><td>For sale ~$1,500 — hard blocker</td><td>1</td></tr>
+          <tr><td>Nidela</td><td>For sale ~$1,500 — hard blocker</td><td>1</td></tr>
+          <tr><td>Lunava / Veluna / Morbina</td><td>Active websites</td><td>2</td></tr>
+          <tr><td>Calmera / Nivola / Cavania / Serenza</td><td>Registered (no HTTP)</td><td>2</td></tr>
+          <tr><td>Fermina</td><td>Explicitly for sale</td><td>2</td></tr>
+        </tbody>
+      </table>
+      <p>TM clearance in EUIPO Classes 10 and 25 remains required for all shortlisted names before committing. Social handle availability (Instagram, TikTok, Pinterest) and .it / .eu domains are the next recommended checks.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Pattern guide — what each generation method means</summary>
+    <div class="details-body">
+      <h3>Pattern A — Morpheme combination</h3>
+      <p>Two invented Italian-phonetic morpheme stems combined into a single word. Produces longer names (7-10 letters) with natural internal rhythm and strong TM ownability. Dominant pattern in this pool (68 of 150 available names).</p>
+      <h3>Pattern B — English-root respelling</h3>
+      <p>A functional English root (carry, anchor, comfort) respelled with an Italian suffix, removing plainly English character while retaining a subliminal functional cue. Requires copy review for EU MDR framing where the root implies device function.</p>
+      <h3>Pattern C — Fragment blend</h3>
+      <p>Two phonetic fragments joined at a natural junction. Produces shorter, flowing names (6-8 letters). Second-largest pattern group (32 of 150 available).</p>
+      <h3>Pattern D — Root + suffix (spoken name ≠ domain)</h3>
+      <p>Short invented root combined with a descriptive suffix to form the domain string, while the spoken brand name is the root alone. Enables a very short spoken name (Semira, Tireva) with a distinctive domain string.</p>
+      <h3>Pattern E — Real Italian word, non-descriptive in class</h3>
+      <p>An obscure or archaic Italian word with no descriptive meaning in EUIPO Classes 10 or 25. Tramaio (a type of net; non-descriptive for headbands) and Tarlatana (a loosely woven cloth; borderline — verify with counsel) are the shortlist representatives.</p>
+    </div>
+  </details>
+
+  <!-- ── Meta footer ── -->
+  <div class="meta">
+    <div>Source: <code>docs/business-os/strategy/HEAD/naming-shortlist-2026-02-21.user.md</code></div>
+    <div>Generated: 2026-02-21T00:00:00.000Z</div>
+    <div>RDAP check: Verisign, 2026-02-21</div>
+    <div>Stage: ASSESSMENT-04 · Round 3</div>
+  </div>
+
+</main>
+
+<script>
+  /* ── Pattern filter ── */
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const pattern = btn.dataset.pattern;
+      document.querySelectorAll('#shortlist-table tbody tr').forEach(row => {
+        row.classList.toggle('hidden-row', pattern !== 'all' && row.dataset.pattern !== pattern);
+      });
+    });
+  });
+
+  /* ── Charts ── */
+  const olive    = '#4e7a35';
+  const oliveDark = '#2e5018';
+  const muted    = '#62705a';
+  const violet   = '#7c5cbf';
+  const teal     = '#2a7a8a';
+  const brick    = '#b84a3a';
+  const amber    = '#b07a28';
+
+  // Score distribution
+  new Chart(document.getElementById('scoreChart'), {
+    type: 'bar',
+    data: {
+      labels: ['≥ 18 (145 names)', '14–17 (5 names)', '≤ 13 (0 names)'],
+      datasets: [{
+        data: [145, 5, 0],
+        backgroundColor: [oliveDark, olive, muted],
+        borderWidth: 0,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: muted } },
+        y: { grid: { display: false }, ticks: { color: '#181d14', font: { weight: '600' } } }
+      }
+    }
+  });
+
+  // Pattern breakdown
+  new Chart(document.getElementById('patternChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['A — Morpheme (68)', 'B — Respell (16)', 'C — Blend (32)', 'D — Root+suffix (29)', 'E — Real word (5)'],
+      datasets: [{
+        data: [68, 16, 32, 29, 5],
+        backgroundColor: [violet, teal, brick, olive, amber],
+        borderWidth: 2,
+        borderColor: '#f5f7f3',
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#181d14', font: { size: 11 }, padding: 10, boxWidth: 12, boxHeight: 12 }
+        }
+      },
+      cutout: '60%',
+    }
+  });
+</script>
+</body>
+</html>

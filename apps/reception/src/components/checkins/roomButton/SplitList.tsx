@@ -4,6 +4,8 @@ import { memo } from "react";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { Button } from "@acme/design-system/atoms";
+
 import type {
   PaymentSplit,
   PaymentType,
@@ -43,21 +45,21 @@ function SplitList({
             showAddButton={idx === 0}
           />
           {idx === 0 ? (
-            <button
+            <Button
               className="text-primary-main p-1 focus:outline-none"
               onClick={handleAddPaymentRow}
               disabled={isDisabled}
             >
               <FontAwesomeIcon icon={faPlus} />
-            </button>
+            </Button>
           ) : (
-            <button
+            <Button
               className="text-error-main p-1 focus:outline-none"
               onClick={() => handleRemovePaymentRow(idx)}
               disabled={isDisabled}
             >
               <FontAwesomeIcon icon={faTrash} />
-            </button>
+            </Button>
           )}
         </div>
       ))}

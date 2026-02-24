@@ -23,7 +23,6 @@ describe('prime theme tokens', () => {
   });
 
   test('css contains token variables', () => {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const cssPath = path.join(__dirname, '..', 'tokens.css');
     const css = fs.readFileSync(cssPath, 'utf8');
     for (const key of expectedKeys) {

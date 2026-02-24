@@ -2,6 +2,10 @@ import { revalidatePath } from "next/cache";
 
 import { listThemes } from "@acme/platform-core/createShop";
 import { baseTokens, loadThemeTokens } from "@acme/platform-core/themeTokens";
+import {
+  assertValidThemeTokens,
+  diffThemeTokenKeys,
+} from "@acme/platform-core/themeValidation";
 import type { Locale, Shop, ShopSettings } from "@acme/types";
 
 import {
@@ -73,12 +77,30 @@ export async function patchTheme(
     if (!availableThemes.includes(patch.themeId)) {
       throw new Error(`Theme ${patch.themeId} not found`);
     }
+    const previousThemeTokens = {
+      ...(current.themeDefaults ?? {}),
+      ...(current.themeOverrides ?? {}),
+    } as Record<string, string>;
     const themeDefaults = {
       ...baseTokens,
       ...(await loadThemeTokens(patch.themeId)),
     } as Record<string, string>;
     const themeOverrides = {};
     const themeTokens = { ...themeDefaults } as Record<string, string>;
+    assertValidThemeTokens(themeDefaults, {
+      context: "theme defaults from selected theme",
+      contrastRequirements: [],
+      unresolvedColorReferenceSeverity: "error",
+      unresolvableContrastPairSeverity: "error",
+    });
+    assertValidThemeTokens(themeTokens, {
+      context: "theme tokens from selected theme",
+      allowedTokenKeys: Object.keys(themeDefaults),
+      baselineTokens: previousThemeTokens,
+      changedTokenKeys: diffThemeTokenKeys(previousThemeTokens, themeTokens),
+      unresolvedColorReferenceSeverity: "error",
+      unresolvableContrastPairSeverity: "error",
+    });
     const saved = await persistShop(shop, {
       id: current.id,
       themeId: patch.themeId,
@@ -107,7 +129,19 @@ export async function resetThemeOverride(shop: string, token: string) {
   await authorize();
   const current = await fetchShop(shop);
   if (!current) throw new Error(`Shop ${shop} not found`);
+  const previousThemeTokens = {
+    ...(current.themeDefaults ?? {}),
+    ...(current.themeOverrides ?? {}),
+  } as Record<string, string>;
   const { overrides, themeTokens } = removeThemeToken(current, token);
+  assertValidThemeTokens(themeTokens, {
+    context: "theme tokens after override reset",
+    allowedTokenKeys: Object.keys((current.themeDefaults ?? {}) as Record<string, string>),
+    baselineTokens: previousThemeTokens,
+    changedTokenKeys: diffThemeTokenKeys(previousThemeTokens, themeTokens),
+    unresolvedColorReferenceSeverity: "error",
+    unresolvableContrastPairSeverity: "error",
+  });
   await persistShop(shop, {
     id: current.id,
     themeOverrides: overrides,

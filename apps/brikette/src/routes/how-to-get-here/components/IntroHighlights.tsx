@@ -99,7 +99,7 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
   )}`;
 
   return (
-    <div className="rounded-3xl bg-brand-secondary px-6 py-8 text-brand-heading shadow-sm dark:bg-brand-secondary dark:text-brand-bg">
+    <div className="rounded-3xl bg-brand-secondary px-6 py-8 text-brand-heading shadow-sm dark:bg-brand-surface/80 dark:text-brand-text">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 text-base leading-relaxed">
         <IntroHighlightCard
           eyebrow={taxiEyebrow}

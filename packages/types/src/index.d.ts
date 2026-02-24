@@ -13,7 +13,13 @@ export * from "./data";
 export * from "./ds";
 export * from "./environment";
 export * from "./ExampleProps";
-export * from "./i18n";
+export type {
+    Inline,
+    KeyRef,
+    LegacyLocalizedString,
+    LocalizedString,
+    TranslatableText
+} from "./i18n";
 export * from "./ImageOrientation";
 export * from "./InventoryItem";
 export * from "./MediaItem";

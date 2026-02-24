@@ -8,6 +8,7 @@ Updated: 2026-02-13
 Last-reviewed: 2026-02-13
 Owner: Pete
 Source-Forecast: docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # BRIK S3 Forecast v1 — Executive Summary

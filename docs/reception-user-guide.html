@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reception App — User Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #FAFBFC;
+      color: #1A1A1A;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── CSS Variables ────────────────────────────────────── */
+    :root {
+      --blue-600: #2563EB;
+      --blue-700: #1D4ED8;
+      --blue-50:  #EFF6FF;
+      --green-600: #158443;
+      --green-50:  #ECFDF5;
+      --amber-600: #D97706;
+      --amber-50:  #FFFBEB;
+      --red-600:  #DC2626;
+      --red-50:   #FEF2F2;
+      --purple-600: #7C3AED;
+      --purple-50:  #F5F3FF;
+      --gray-50:  #F9FAFB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-300: #D1D5DB;
+      --gray-400: #9CA3AF;
+      --gray-500: #6B7280;
+      --gray-600: #4B5563;
+      --gray-700: #374151;
+      --gray-800: #1F2937;
+      --gray-900: #111827;
+      --surface: #FFFFFF;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-card-hover: 0 10px 25px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.04);
+      --shadow-hero: 0 25px 50px -12px rgba(0,0,0,0.15);
+    }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 40%, #2563EB 100%);
+      color: #fff;
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 70%, rgba(37,99,235,0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 30%, rgba(124,58,237,0.1) 0%, transparent 50%);
+      animation: heroFloat 20s ease-in-out infinite;
+    }
+    @keyframes heroFloat {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(2%, -1%) rotate(1deg); }
+      66% { transform: translate(-1%, 1%) rotate(-0.5deg); }
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      color: rgba(255,255,255,0.9);
+    }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #34D399; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.125rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 540px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+    .hero-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+    .hero-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.25rem;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .hero-nav a.primary {
+      background: #fff;
+      color: var(--blue-700);
+    }
+    .hero-nav a.primary:hover { background: var(--blue-50); transform: translateY(-1px); }
+    .hero-nav a.ghost {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.9);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .hero-nav a.ghost:hover { background: rgba(255,255,255,0.15); }
+
+    /* ── Table of Contents ────────────────────────────────── */
+    .toc-strip {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+    }
+    .toc-strip a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--gray-500);
+      text-decoration: none;
+      padding: 0.35rem 0.85rem;
+      border-radius: 100px;
+      transition: all 0.15s ease;
+    }
+    .toc-strip a:hover { color: var(--blue-600); background: var(--blue-50); }
+    .toc-strip a.active { color: var(--blue-700); background: var(--blue-50); font-weight: 600; }
+
+    /* ── Section Layout ───────────────────────────────────── */
+    .section {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.35rem 0.9rem;
+      border-radius: 100px;
+      margin-bottom: 0.75rem;
+    }
+    .section-tag.blue   { background: var(--blue-50);   color: var(--blue-600); }
+    .section-tag.green  { background: var(--green-50);  color: var(--green-600); }
+    .section-tag.amber  { background: var(--amber-50);  color: var(--amber-600); }
+    .section-tag.purple { background: var(--purple-50); color: var(--purple-600); }
+    .section-tag.red    { background: var(--red-50);    color: var(--red-600); }
+    .section-header h2 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--gray-900);
+      margin-bottom: 0.5rem;
+    }
+    .section-header p {
+      font-size: 1.05rem;
+      color: var(--gray-500);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .section-divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--gray-200) 20%, var(--gray-200) 80%, transparent 100%);
+      margin: 0 auto;
+      max-width: 1120px;
+    }
+
+    /* ── Feature Cards ────────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      border-color: var(--gray-300);
+      box-shadow: var(--shadow-card-hover);
+      transform: translateY(-2px);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .card:hover::before { opacity: 1; }
+    .card.blue-accent::before   { background: linear-gradient(90deg, var(--blue-600), #60A5FA); }
+    .card.green-accent::before  { background: linear-gradient(90deg, var(--green-600), #34D399); }
+    .card.amber-accent::before  { background: linear-gradient(90deg, var(--amber-600), #FBBF24); }
+    .card.purple-accent::before { background: linear-gradient(90deg, var(--purple-600), #A78BFA); }
+    .card.red-accent::before    { background: linear-gradient(90deg, var(--red-600), #F87171); }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      flex-shrink: 0;
+    }
+    .card-icon.blue   { background: var(--blue-50);   color: var(--blue-600); }
+    .card-icon.green  { background: var(--green-50);  color: var(--green-600); }
+    .card-icon.amber  { background: var(--amber-50);  color: var(--amber-600); }
+    .card-icon.purple { background: var(--purple-50); color: var(--purple-600); }
+    .card-icon.red    { background: var(--red-50);    color: var(--red-600); }
+
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: var(--gray-500);
+      line-height: 1.65;
+    }
+    .card .feature-list {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .feature-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      background: var(--gray-100);
+      color: var(--gray-600);
+    }
+
+    /* ── Callout Box ──────────────────────────────────────── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .callout.info  { background: var(--blue-50);  border-left: 3px solid var(--blue-600); }
+    .callout.tip   { background: var(--green-50); border-left: 3px solid var(--green-600); }
+    .callout.warn  { background: var(--amber-50); border-left: 3px solid var(--amber-600); }
+    .callout-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .callout h4 { font-size: 0.9rem; font-weight: 600; color: var(--gray-800); margin-bottom: 0.25rem; }
+    .callout p  { font-size: 0.85rem; color: var(--gray-600); line-height: 1.6; }
+
+    /* ── Navigation Overview Diagram ──────────────────────── */
+    .nav-diagram {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .nav-box {
+      background: var(--surface);
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+    .nav-box:hover { border-color: var(--blue-600); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+    .nav-box .nav-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gray-400);
+      margin-bottom: 0.5rem;
+    }
+    .nav-box .nav-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+    .nav-box .nav-desc {
+      font-size: 0.8rem;
+      color: var(--gray-500);
+    }
+    .nav-box .nav-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gray-400);
+    }
+    .nav-box.ops { border-color: #93C5FD; }
+    .nav-box.ops .nav-title { color: var(--blue-600); }
+    .nav-box.till { border-color: #86EFAC; }
+    .nav-box.till .nav-title { color: var(--green-600); }
+    .nav-box.mgmt { border-color: #FCD34D; }
+    .nav-box.mgmt .nav-title { color: var(--amber-600); }
+    .nav-box.admin { border-color: #C4B5FD; }
+    .nav-box.admin .nav-title { color: var(--purple-600); }
+
+    /* ── Workflow Steps ────────────────────────────────────── */
+    .workflow {
+      display: flex;
+      gap: 0;
+      align-items: stretch;
+      margin: 2.5rem 0;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+    .workflow-step {
+      flex: 1;
+      min-width: 160px;
+      text-align: center;
+      padding: 1.25rem 1rem;
+      position: relative;
+    }
+    .workflow-step::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -12px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 12px solid var(--gray-300);
+      z-index: 1;
+    }
+    .workflow-step:last-child::after { display: none; }
+    .workflow-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--blue-600);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .workflow-step h4 { font-size: 0.85rem; font-weight: 600; color: var(--gray-800); margin-bottom: 0.2rem; }
+    .workflow-step p  { font-size: 0.75rem; color: var(--gray-500); }
+
+    /* ── Access Badge ─────────────────────────────────────── */
+    .access-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+    .access-badge.all-staff { background: var(--green-50); color: var(--green-600); }
+    .access-badge.owner     { background: var(--purple-50); color: var(--purple-600); }
+    .access-badge.manager   { background: var(--amber-50); color: var(--amber-600); }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    footer {
+      background: var(--gray-900);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 3rem 2rem;
+      font-size: 0.8rem;
+    }
+    footer strong { color: rgba(255,255,255,0.8); }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero { padding: 3rem 1.5rem 2.5rem; }
+      .hero h1 { font-size: 1.75rem; }
+      .section { padding: 2.5rem 1.25rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .workflow { flex-direction: column; align-items: center; }
+      .workflow-step::after { display: none; }
+      .toc-strip { padding: 0.5rem 1rem; gap: 0.15rem; }
+      .toc-strip a { font-size: 0.7rem; padding: 0.25rem 0.6rem; }
+      .nav-diagram { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── Print ────────────────────────────────────────────── */
+    @media print {
+      .toc-strip { display: none; }
+      .hero { background: #1E3A5F !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .card:hover { transform: none; box-shadow: none; }
+      body { font-size: 11pt; }
+    }
+
+    /* ── Animations on scroll ─────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<header class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Reception App Guide
+    </div>
+    <h1>Everything you can do with Reception</h1>
+    <p>A complete guide to managing your hostel's daily operations &mdash; from checking guests in, to running the bar, to balancing the till at end of day.</p>
+    <nav class="hero-nav">
+      <a href="#operations" class="primary">Operations</a>
+      <a href="#till" class="ghost">Till &amp; Cash</a>
+      <a href="#management" class="ghost">Management</a>
+      <a href="#admin" class="ghost">Admin</a>
+      <a href="#getting-around" class="ghost">Getting Around</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══════════════ STICKY NAV ═══════════════ -->
+<nav class="toc-strip" id="toc">
+  <a href="#getting-around">How It Works</a>
+  <a href="#operations">Operations</a>
+  <a href="#till">Till &amp; Cash</a>
+  <a href="#management">Management</a>
+  <a href="#admin">Admin</a>
+  <a href="#day-in-the-life">A Typical Day</a>
+</nav>
+
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section class="section" id="getting-around">
+  <div class="section-header fade-in">
+    <span class="section-tag blue">Overview</span>
+    <h2>How the App Is Organised</h2>
+    <p>Reception is split into four areas, each accessed from a simple on-screen menu. Here's what each area covers.</p>
+  </div>
+
+  <div class="nav-diagram fade-in">
+    <div class="nav-box ops">
+      <div class="nav-label">Area 1</div>
+      <div class="nav-title">Operations</div>
+      <div class="nav-desc">Day-to-day guest &amp; bar tasks</div>
+      <div class="nav-count">7 screens</div>
+    </div>
+    <div class="nav-box till">
+      <div class="nav-label">Area 2</div>
+      <div class="nav-title">Till &amp; Cash</div>
+      <div class="nav-desc">Money, shifts &amp; reconciliation</div>
+      <div class="nav-count">6 screens</div>
+    </div>
+    <div class="nav-box mgmt">
+      <div class="nav-label">Area 3</div>
+      <div class="nav-title">Management</div>
+      <div class="nav-desc">Housekeeping, payments &amp; search</div>
+      <div class="nav-count">4 screens</div>
+    </div>
+    <div class="nav-box admin">
+      <div class="nav-label">Area 4</div>
+      <div class="nav-title">Admin</div>
+      <div class="nav-desc">Compliance, stock &amp; analytics</div>
+      <div class="nav-count">6 screens</div>
+    </div>
+  </div>
+
+  <div class="callout info fade-in">
+    <span class="callout-icon">&#x1f511;</span>
+    <div>
+      <h4>Security &amp; Login</h4>
+      <p>You sign in with your email and password. For quick access, you can also set up a 6-digit PIN to unlock the app. If you step away from the screen for 60 seconds, the app automatically locks itself to keep things secure.</p>
+    </div>
+  </div>
+
+  <div class="callout tip fade-in">
+    <span class="callout-icon">&#x1f319;</span>
+    <div>
+      <h4>Dark Mode</h4>
+      <p>You can switch between a light and dark colour scheme at any time from the login screen. Your preference is saved so the app always opens the way you like it.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════ OPERATIONS ═══════════════ -->
+<section class="section" id="operations">
+  <div class="section-header fade-in">
+    <span class="section-tag blue">Area 1</span>
+    <h2>Operations</h2>
+    <p>The daily essentials &mdash; everything you need to serve guests, manage the bar, and handle check-ins and checkouts.</p>
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- Bar -->
+    <div class="card blue-accent fade-in">
+      <span class="access-badge all-staff">All Staff</span>
+      <div class="card-icon blue">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3h18l-2 13H5L3 3z"/><path d="M8 21h8M12 16v5"/></svg>
+      </div>
+      <h3>Bar &amp; Caf&eacute;</h3>
+      <p>The main point-of-sale screen for serving drinks and food. Browse products by category (alcoholic, non-alcoholic, food, other), take orders, and process payments by cash or card. Confirmed orders appear as tickets on the sales board so the bar and kitchen know what to prepare.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Order Taking</span>
+        <span class="feature-tag">Cash &amp; Card</span>
+        <span class="feature-tag">Kitchen Display</span>
+        <span class="feature-tag">Breakfast Plans</span>
+      </div>
+    </div>
+
+    <!-- Check-in -->
+    <div class="card blue-accent fade-in">
+      <span class="access-badge all-staff">All Staff</span>
+      <div class="card-icon blue">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-4 4-2-2"/></svg>
+      </div>
+      <h3>Check-In</h3>
+      <p>See today's arriving guests in a clear table. Create new bookings, add guests, scan or enter passport and ID details, and mark arrivals as checked in. Each guest row links to the document capture form for recording identity information.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Arrivals List</span>
+        <span class="feature-tag">ID Capture</span>
+        <span class="feature-tag">New Bookings</span>
+      </div>
+    </div>
+
+    <!-- Rooms Grid -->
+    <div class="card blue-accent fade-in">
+      <span class="access-badge all-staff">All Staff</span>
+      <div class="card-icon blue">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="12" y="3" width="7" height="7" rx="1"/><rect x="3" y="12" width="7" height="7" rx="1"/><rect x="12" y="12" width="7" height="7" rx="1"/></svg>
+      </div>
+      <h3>View Rooms</h3>
+      <p>A visual calendar grid showing which rooms are booked, free, or awaiting arrival over the next two weeks. Each room displays colour-coded bars so you can see at a glance what's happening across the whole property.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Room Grid</span>
+        <span class="feature-tag">2-Week View</span>
+        <span class="feature-tag">Colour-Coded</span>
+      </div>
+    </div>
+
+    <!-- Checkout -->
+    <div class="card blue-accent fade-in">
+      <span class="access-badge all-staff">All Staff</span>
+      <div class="card-icon blue">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      </div>
+      <h3>Checkout</h3>
+      <p>Lists all guests due to leave today. Check that keycards and towels have been returned, confirm bag storage arrangements, process any deposit refunds, and mark each guest as checked out.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Departures List</span>
+        <span class="feature-tag">Loan Returns</span>
+        <span class="feature-tag">Deposit Refunds</span>
+      </div>
+    </div>
+
+    <!-- Loans -->
+    <div class="card blue-accent fade-in">
+      <span class="access-badge all-staff">All Staff</span>
+      <div class="card-icon blue">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+      </div>
+      <h3>Loans</h3>
+      <p>Track items loaned to guests &mdash; keycards, towels, adaptors, and anything else. Record when items go out and when they come back. If a deposit was taken, the system tracks the amount so you can refund it on return.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Keycard Tracking</span>
+        <span class="feature-tag">Deposit Ledger</span>
+        <span class="feature-tag">Return Logging</span>
+      </div>
+    </div>
+
+    <!-- Extension -->
+    <div class="card blue-accent fade-in">
+      <span class="access-badge all-staff">All Staff</span>
+      <div class="card-icon blue">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M12 14v4M10 16h4"/></svg>
+      </div>
+      <h3>Stay Extension</h3>
+      <p>When a guest wants to stay longer, this screen shows every in-house guest with their room and nightly rate. It checks room availability automatically, calculates city tax, and lets you process the payment for the extra nights.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Availability Check</span>
+        <span class="feature-tag">City Tax</span>
+        <span class="feature-tag">Payment</span>
+      </div>
+    </div>
+
+    <!-- Prime Requests -->
+    <div class="card blue-accent fade-in">
+      <span class="access-badge all-staff">All Staff</span>
+      <div class="card-icon blue">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <h3>Guest Requests</h3>
+      <p>Guests can submit requests through the guest app (Prime) &mdash; things like extending their stay, storing luggage, or changing a meal plan. These requests appear here as a queue for staff to approve, decline, or mark as completed.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Request Queue</span>
+        <span class="feature-tag">Approve / Decline</span>
+        <span class="feature-tag">Bag Storage</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════ TILL & CASH ═══════════════ -->
+<section class="section" id="till">
+  <div class="section-header fade-in">
+    <span class="section-tag green">Area 2</span>
+    <h2>Till &amp; Cash</h2>
+    <p>Everything to do with money &mdash; opening and closing shifts, counting cash, reconciling with the bank, and spotting discrepancies.</p>
+  </div>
+
+  <div class="callout warn fade-in">
+    <span class="callout-icon">&#x1f512;</span>
+    <div>
+      <h4>Owner Access Only</h4>
+      <p>The Till &amp; Cash area is restricted to the owner account. Staff handle payments through the Bar screen; the till management screens are used by the owner to oversee cash handling.</p>
+    </div>
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- Till Reconciliation -->
+    <div class="card green-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon green">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/><path d="M12 4v16"/></svg>
+      </div>
+      <h3>Till</h3>
+      <p>Open and close cash register shifts. At the start, enter your opening cash count. At the end, count the drawer and the system compares what you have against what it expected. Track credit card slips, keycard deposits, and any cash exchanges during the shift.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Open / Close Shift</span>
+        <span class="feature-tag">Cash Count</span>
+        <span class="feature-tag">Variance Check</span>
+      </div>
+    </div>
+
+    <!-- Safe -->
+    <div class="card green-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon green">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M12 9v0M12 15v0"/></svg>
+      </div>
+      <h3>Safe</h3>
+      <p>Manage the property's safe. Count the physical cash (broken down by denomination) and compare it to the expected balance. Record bank deposits and petty cash withdrawals. Everything is tracked so the numbers always add up.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Safe Count</span>
+        <span class="feature-tag">Bank Deposits</span>
+        <span class="feature-tag">Petty Cash</span>
+      </div>
+    </div>
+
+    <!-- Reconciliation Workbench -->
+    <div class="card green-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon green">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="18" r="2"/></svg>
+      </div>
+      <h3>Workbench</h3>
+      <p>Cross-check what the property management system says was charged (cash and card) against what actually came through the card terminal. Highlights any discrepancies between the two so nothing slips through the cracks.</p>
+      <div class="feature-list">
+        <span class="feature-tag">PMS vs Terminal</span>
+        <span class="feature-tag">Discrepancy Alerts</span>
+      </div>
+    </div>
+
+    <!-- Live Shift -->
+    <div class="card green-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon green">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3>Live Shift View</h3>
+      <p>A real-time dashboard of the current open shift. See every transaction as it happens &mdash; opening cash, credit slips, card totals, keycard loans and returns. Useful for keeping an eye on things without waiting for the shift to close.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Real-Time</span>
+        <span class="feature-tag">All Transactions</span>
+      </div>
+    </div>
+
+    <!-- Variance Heatmap -->
+    <div class="card green-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon green">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="9" y="3" width="5" height="5" rx="1"/><rect x="15" y="3" width="5" height="5" rx="1"/><rect x="3" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/><rect x="15" y="9" width="5" height="5" rx="1"/><rect x="3" y="15" width="5" height="5" rx="1"/><rect x="9" y="15" width="5" height="5" rx="1"/><rect x="15" y="15" width="5" height="5" rx="1"/></svg>
+      </div>
+      <h3>Variance Heatmap</h3>
+      <p>A colour-coded grid showing how accurate each staff member's cash handling is across their shifts. Green means the count was spot on, yellow means a small difference, and red flags a larger discrepancy worth investigating.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Per-Staff View</span>
+        <span class="feature-tag">Colour-Coded</span>
+        <span class="feature-tag">Thresholds</span>
+      </div>
+    </div>
+
+    <!-- End of Day -->
+    <div class="card green-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon green">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
+      </div>
+      <h3>End of Day Report</h3>
+      <p>Generates a printable summary of the entire day: total sales, credit slip entries, safe balance, keycard movements, variances, and any irregularities. Print it for your records or review it on screen.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Daily Summary</span>
+        <span class="feature-tag">Printable</span>
+        <span class="feature-tag">Full Audit</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════ MANAGEMENT ═══════════════ -->
+<section class="section" id="management">
+  <div class="section-header fade-in">
+    <span class="section-tag amber">Area 3</span>
+    <h2>Management</h2>
+    <p>Housekeeping priorities, pre-arrival payments, email tracking, and a powerful search tool to find any booking or transaction.</p>
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- Prepare Dashboard -->
+    <div class="card amber-accent fade-in">
+      <span class="access-badge all-staff">All Staff</span>
+      <div class="card-icon amber">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/></svg>
+      </div>
+      <h3>Room Preparation</h3>
+      <p>Shows housekeeping which rooms need cleaning and in what order. The dashboard displays occupancy, checkout counts, and a priority ranking so cleaners tackle the most urgent rooms first.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Cleaning Priority</span>
+        <span class="feature-tag">Room Status</span>
+        <span class="feature-tag">Date Picker</span>
+      </div>
+    </div>
+
+    <!-- Prepayments -->
+    <div class="card amber-accent fade-in">
+      <span class="access-badge all-staff">All Staff</span>
+      <div class="card-icon amber">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+      </div>
+      <h3>Prepayments</h3>
+      <p>Manage credit card payments taken before guests arrive. See three queues: guests who agreed to terms and are awaiting a first charge, those whose first attempt failed, and those whose second attempt failed. Process payments, update card details, or mark bookings as paid.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Payment Queues</span>
+        <span class="feature-tag">Card Management</span>
+        <span class="feature-tag">Status Tracking</span>
+      </div>
+    </div>
+
+    <!-- Email Opt-In -->
+    <div class="card amber-accent fade-in">
+      <span class="access-badge all-staff">All Staff</span>
+      <div class="card-icon amber">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+      </div>
+      <h3>Email Tracking</h3>
+      <p>Track which automated emails have been sent to guests &mdash; booking confirmations, pre-arrival reminders, and follow-ups. Search by booking reference or guest name, and log the next step in the email sequence.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Email Progress</span>
+        <span class="feature-tag">Activity Logging</span>
+        <span class="feature-tag">Search</span>
+      </div>
+    </div>
+
+    <!-- Audit / Search -->
+    <div class="card amber-accent fade-in">
+      <span class="access-badge all-staff">All Staff</span>
+      <div class="card-icon amber">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </div>
+      <h3>Search &amp; Audit</h3>
+      <p>A powerful search tool with three tabs. <strong>Bookings</strong>: find any booking by name, reference, date, room, or status. <strong>Transactions</strong>: look up financial records. <strong>Audits</strong>: review the audit trail for any transaction. Each booking shows its full lifecycle from creation through checkout.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Booking Search</span>
+        <span class="feature-tag">Transaction Lookup</span>
+        <span class="feature-tag">Audit Trail</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════ ADMIN ═══════════════ -->
+<section class="section" id="admin">
+  <div class="section-header fade-in">
+    <span class="section-tag purple">Area 4</span>
+    <h2>Admin</h2>
+    <p>Compliance reporting, stock control, and performance dashboards to help you make better decisions.</p>
+  </div>
+
+  <div class="callout warn fade-in">
+    <span class="callout-icon">&#x1f512;</span>
+    <div>
+      <h4>Owner Access Only</h4>
+      <p>The Admin area is restricted to the owner account. These screens handle regulatory compliance, inventory management, and business analytics.</p>
+    </div>
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- Alloggiati -->
+    <div class="card purple-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon purple">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h3>Police Registration</h3>
+      <p>Italian law requires that guest check-ins are reported to the Alloggiati police system. This screen shows yesterday's arrivals, lets you select which guests to submit, and sends the records electronically. Colour-coded rows show which submissions succeeded and which need attention.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Alloggiati</span>
+        <span class="feature-tag">Legal Compliance</span>
+        <span class="feature-tag">Status Tracking</span>
+      </div>
+    </div>
+
+    <!-- Bar Stock -->
+    <div class="card purple-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon purple">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2h8l4 10H4L8 2z"/><path d="M12 12v10"/><path d="M8 22h8"/></svg>
+      </div>
+      <h3>Bar Stock</h3>
+      <p>Keep track of bar and beverage inventory. See expected stock counts for every product, log new purchases, record re-counts, and note any leakage or wastage. Covers all bar categories from coffee to cocktails.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Stock Levels</span>
+        <span class="feature-tag">Purchase Logging</span>
+        <span class="feature-tag">Wastage Tracking</span>
+      </div>
+    </div>
+
+    <!-- Ingredient Stock -->
+    <div class="card purple-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon purple">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </div>
+      <h3>Kitchen Ingredients</h3>
+      <p>Track kitchen ingredient quantities separately from bar stock. Update counts as ingredients are used or purchased. Maintains an audit trail so you can see exactly when and how stock levels changed.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Ingredient Counts</span>
+        <span class="feature-tag">Audit Trail</span>
+      </div>
+    </div>
+
+    <!-- Real-Time Dashboard -->
+    <div class="card purple-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon purple">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+      </div>
+      <h3>Real-Time Dashboard</h3>
+      <p>Live charts that update every 60 seconds. See daily sales totals over time, how payments split between cash and card, and a history of cash variances from recent shift closings. A quick snapshot of how the business is performing right now.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Live Charts</span>
+        <span class="feature-tag">Sales Trends</span>
+        <span class="feature-tag">Payment Breakdown</span>
+      </div>
+    </div>
+
+    <!-- Menu Performance -->
+    <div class="card purple-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon purple">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21.21 15.89A10 10 0 118 2.83"/><path d="M22 12A10 10 0 0012 2v10z"/></svg>
+      </div>
+      <h3>Menu Performance</h3>
+      <p>Understand which menu items make the most money. Charts show revenue and estimated profit margin by category (coffee, beer, cocktails, food), peak selling hours, and which items drive the most add-on sales.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Revenue by Category</span>
+        <span class="feature-tag">Margin Analysis</span>
+        <span class="feature-tag">Peak Hours</span>
+      </div>
+    </div>
+
+    <!-- Connection Test -->
+    <div class="card purple-accent fade-in">
+      <span class="access-badge owner">Owner</span>
+      <div class="card-icon purple">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1"/></svg>
+      </div>
+      <h3>Connection Test</h3>
+      <p>A simple diagnostic tool to check that the app can reach its backend services. Tap the button &mdash; if the connection is healthy, you're good to go.</p>
+      <div class="feature-list">
+        <span class="feature-tag">Connectivity</span>
+        <span class="feature-tag">Diagnostics</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════ A TYPICAL DAY ═══════════════ -->
+<section class="section" id="day-in-the-life">
+  <div class="section-header fade-in">
+    <span class="section-tag red">Workflow</span>
+    <h2>A Typical Day</h2>
+    <p>Here's how everything fits together during a normal working day.</p>
+  </div>
+
+  <div class="workflow fade-in">
+    <div class="workflow-step">
+      <div class="workflow-num">1</div>
+      <h4>Open Shift</h4>
+      <p>Count opening cash and start a new till shift</p>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">2</div>
+      <h4>Morning Prep</h4>
+      <p>Check the room preparation dashboard for cleaning priorities</p>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">3</div>
+      <h4>Checkouts</h4>
+      <p>Process departures, collect keycards, refund deposits</p>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">4</div>
+      <h4>Bar Service</h4>
+      <p>Take orders, serve food and drinks throughout the day</p>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">5</div>
+      <h4>Check-ins</h4>
+      <p>Welcome arriving guests, capture IDs, issue keycards</p>
+    </div>
+    <div class="workflow-step">
+      <div class="workflow-num">6</div>
+      <h4>Close Shift</h4>
+      <p>Count cash, reconcile the till, review the end-of-day report</p>
+    </div>
+  </div>
+
+  <div class="callout tip fade-in">
+    <span class="callout-icon">&#x1f4f1;</span>
+    <div>
+      <h4>Works Offline Too</h4>
+      <p>Reception is a progressive web app. If your internet connection drops briefly, you can keep working and everything syncs back up when you're online again. A small indicator appears at the top of the screen if you're offline.</p>
+    </div>
+  </div>
+
+  <div class="callout info fade-in">
+    <span class="callout-icon">&#x1f465;</span>
+    <div>
+      <h4>Guest Requests via the Guest App</h4>
+      <p>Guests can use the separate "Prime" app on their phone to request things like a stay extension, luggage storage, or a meal plan change. These requests automatically appear in your Guest Requests queue in the Operations area, ready for you to approve or decline.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <p><strong>Reception</strong> &mdash; Hostel Management System</p>
+  <p style="margin-top: 0.5rem;">Last updated: February 2026</p>
+</footer>
+
+<!-- ═══════════════ SCROLL ANIMATION ═══════════════ -->
+<script>
+  // Intersection Observer for fade-in animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Active TOC link tracking
+  const tocLinks = document.querySelectorAll('.toc-strip a');
+  const sections = ['getting-around', 'operations', 'till', 'management', 'admin', 'day-in-the-life'];
+
+  function updateActiveToc() {
+    let current = '';
+    for (const id of sections) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= 120) {
+        current = id;
+      }
+    }
+    tocLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveToc, { passive: true });
+  updateActiveToc();
+</script>
+
+</body>
+</html>

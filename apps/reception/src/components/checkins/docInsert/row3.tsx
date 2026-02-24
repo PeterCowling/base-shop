@@ -6,7 +6,8 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { ChevronDown } from "lucide-react";
+
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
 
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
@@ -122,106 +123,83 @@ function Row3({
    * Handle dropdown selection change for document type.
    */
   const handleDocTypeChange = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      setDocumentType(e.target.value as DocType);
+    (value: string) => {
+      setDocumentType(value as DocType);
     },
     []
   );
 
-  /**
-   * Save logic for document type (on blur).
-   */
-  const handleDocTypeBlur = useCallback(async () => {
-    if (documentType === occupantDetails?.document?.type) {
-      return;
-    }
-    try {
-      await saveField("document/type", documentType);
-      setSnackbar({
-        open: true,
-        message: "Document type updated successfully!",
-        severity: "success",
-      });
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setSnackbar({
-          open: true,
-          message: `Error updating document type: ${err.message}`,
-          severity: "error",
-        });
-      } else {
-        setSnackbar({
-          open: true,
-          message: "Error updating document type due to an unknown error.",
-          severity: "error",
-        });
-      }
-    }
-  }, [documentType, occupantDetails?.document?.type, saveField, setSnackbar]);
 
   return (
-    // eslint-disable-next-line ds/no-raw-spacing -- internal POS layout spacing [DS-06]
-    <div className="flex flex-wrap gap-12 mb-[75px]">
+    <div className="flex flex-wrap gap-12 mb-75px">
       {/* Document Number */}
-      <div className="flex flex-col w-[300px]">
+      <div className="flex flex-col w-300px">
         <label
           htmlFor="documentNumber"
           className="block mb-1 font-semibold text-info-dark"
         >
           Document Number
         </label>
-        <input
+        <Input compatibilityMode="no-wrapper"
           id="documentNumber"
           type="text"
           value={documentNumber}
           onChange={handleDocNumberChange}
           onBlur={saveDocNumber}
           onKeyDown={handleDocNumberKeyDown}
-          className={`border border-info-light rounded px-3 py-2 w-[300px] focus:outline-none focus:ring-2 focus:ring-primary-main ${
+          className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-2 focus:ring-primary-main ${
             isDocNumberPopulated ? "bg-success-light/50" : ""
-          } text-gray-900`}
+          } text-foreground`}
         />
       </div>
 
       {/* Document Type (Dropdown) */}
-      <div className="flex flex-col w-[300px]">
+      <div className="flex flex-col w-300px">
         <label
           htmlFor="documentType"
           className="block mb-1 font-semibold text-info-dark"
         >
           Document Type
         </label>
-        {/* Wrapper adds custom icon and positions it */}
-        <div className="relative w-[300px]">
-          <select
+        <Select
+          value={documentType || undefined}
+          onValueChange={(value) => {
+            handleDocTypeChange(value);
+            if (value !== occupantDetails?.document?.type) {
+              void saveField("document/type", value).then(() => {
+                setSnackbar({ open: true, message: "Document type updated successfully!", severity: "success" });
+              }).catch((err: unknown) => {
+                if (err instanceof Error) {
+                  setSnackbar({ open: true, message: `Error updating document type: ${err.message}`, severity: "error" });
+                } else {
+                  setSnackbar({ open: true, message: "Error updating document type due to an unknown error.", severity: "error" });
+                }
+              });
+            }
+          }}
+        >
+          <SelectTrigger
             id="documentType"
-            value={documentType}
-            onChange={handleDocTypeChange}
-            onBlur={handleDocTypeBlur}
-            className={`appearance-none border border-info-light rounded px-3 py-2 pr-10 w-full focus:outline-none focus:ring-2 focus:ring-primary-main transition-shadow ${
+            className={`border border-info-light rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary-main transition-shadow ${
               isDocTypePopulated
                 ? "bg-success-light/50"
-                : "bg-white dark:bg-darkSurface"
-            } text-gray-900 hover:border-primary-dark`}
+                : "bg-surface"
+            } text-foreground hover:border-primary-dark`}
           >
-            <option value="" disabled>
-              Select document type
-            </option>
+            <SelectValue placeholder="Select document type" />
+          </SelectTrigger>
+          <SelectContent>
             {DOC_TYPE_OPTIONS.map((option) => (
-              <option key={option} value={option}>
+              <SelectItem key={option} value={option}>
                 {option}
-              </option>
+              </SelectItem>
             ))}
-          </select>
-          {/* Chevron icon */}
-          <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-info-dark">
-            <ChevronDown className="h-4 w-4" />
-          </span>
-        </div>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Date of Birth */}
-      <div className="flex flex-col w-[300px]">
+      <div className="flex flex-col w-300px">
         <DOBSection occupantDetails={occupantDetails} saveField={saveField} />
       </div>
     </div>

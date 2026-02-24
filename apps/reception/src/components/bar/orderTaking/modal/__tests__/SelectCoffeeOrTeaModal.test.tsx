@@ -5,6 +5,10 @@ import userEvent from "@testing-library/user-event";
 
 import SelectCoffeeOrTeaModal from "../SelectCoffeeOrTeaModal";
 
+jest.mock("../../../../../hoc/withModalBackground", () => ({
+  withModalBackground: (Comp: React.ComponentType) => Comp,
+}));
+
 describe("SelectCoffeeOrTeaModal", () => {
   const orders = [
     { product: "Americano", count: 1, price: 3 },
@@ -44,4 +48,3 @@ describe("SelectCoffeeOrTeaModal", () => {
     expect(onCancel).toHaveBeenCalled();
   });
 });
-

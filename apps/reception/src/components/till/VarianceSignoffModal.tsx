@@ -1,5 +1,8 @@
 import { type FormEvent, memo, useCallback, useEffect, useRef, useState } from "react";
 
+import { Input, Textarea } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import { withModalBackground } from "../../hoc/withModalBackground";
 import { getUserDisplayName } from "../../lib/roles";
 import { verifyManagerCredentials } from "../../services/managerReauth";
@@ -90,37 +93,40 @@ function VarianceSignoffModalBase({
 
   return (
     <ModalContainer widthClasses="w-[26rem]">
-      <h2 className="mb-2 text-center text-xl font-semibold dark:text-darkAccentGreen">
+      <h2 className="mb-2 text-center text-xl font-semibold">
         Manager Sign-off Required
       </h2>
-      <p className="mb-4 text-center text-sm text-gray-700 dark:text-darkAccentGreen">
+      <p className="mb-4 text-center text-sm text-foreground">
         Variance detected: €{varianceAmount.toFixed(2)}. A manager must sign off
         before closing this shift.
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <input
+        <Input
+          compatibilityMode="no-wrapper"
           ref={emailRef}
           type="email"
           autoComplete="username"
           placeholder="Manager email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-center focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
+          className="w-full rounded-lg border border-border-2 px-4 py-2 text-center"
         />
-        <input
+        <Input
+          compatibilityMode="no-wrapper"
           type="password"
           autoComplete="current-password"
           placeholder="Manager password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-center focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
+          className="w-full rounded-lg border border-border-2 px-4 py-2 text-center"
         />
-        <textarea
+        <Textarea
+          compatibilityMode="no-wrapper"
           rows={3}
           placeholder="Variance note"
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
+          className="w-full rounded-lg border border-border-2 px-4 py-2 text-sm"
         />
         {error && (
           <div className="text-sm text-error-main" role="alert">
@@ -128,20 +134,20 @@ function VarianceSignoffModalBase({
           </div>
         )}
         <div className="mt-2 flex justify-center gap-2">
-          <button
+          <Button
             type="button"
             onClick={onCancel}
-            className="min-h-11 min-w-11 rounded bg-gray-300 px-4 py-2 text-gray-800 dark:bg-darkSurface dark:text-darkAccentOrange"
+            className="min-h-11 min-w-11 rounded bg-surface-3 px-4 py-2 text-foreground"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
             disabled={isSubmitting}
-            className="min-h-11 min-w-11 rounded bg-primary-main px-4 py-2 text-white disabled:opacity-50 dark:bg-darkAccentGreen"
+            className="min-h-11 min-w-11 rounded bg-primary-main px-4 py-2 text-primary-fg disabled:opacity-50"
           >
             {isSubmitting ? "Verifying..." : "Sign off"}
-          </button>
+          </Button>
         </div>
       </form>
     </ModalContainer>

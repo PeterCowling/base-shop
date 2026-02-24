@@ -44,8 +44,8 @@ The startup loop has no process for generating a business or product name when a
 - Constraints:
   - All `{{FIELD}}` placeholders in the prompt template must map 1:1 to the Naming Prompt Seed Contract in the fact-find. No additions without updating the contract first.
   - Gate ID is GATE-BD-00 — do not renumber existing gates.
-  - Shortlist detection is glob-based (`*-naming-shortlist.user.md`), not exact-path.
-  - Stable pointer file (`latest-naming-shortlist.user.md`) is written by gate logic — no `loop-spec.yaml` pointer field.
+  - Shortlist detection is glob-based (`*-candidate-names.user.md`), not exact-path.
+  - Stable pointer file (`latest-candidate-names.user.md`) is written by gate logic — no `loop-spec.yaml` pointer field.
   - `loop-spec.yaml` schema impact must be assessed before the gate entry is committed (TASK-03b).
   - Prompt generation is idempotent — do not overwrite an existing prompt file.
 - Assumptions:
@@ -263,15 +263,15 @@ The startup loop has no process for generating a business or product name when a
   - Decision table fully implemented:
     - `business_name_status` absent or `confirmed` → skip (no file read, no prompt write).
     - `business_name_status: unconfirmed`, no glob match → prompt generated (idempotent: skip if file already exists); blocking message emitted with verbatim resume instruction.
-    - `business_name_status: unconfirmed`, glob match found → stable pointer `latest-naming-shortlist.user.md` written; gate passes; advisory emitted (update `business_name` and optionally flip status to `confirmed`).
+    - `business_name_status: unconfirmed`, glob match found → stable pointer `latest-candidate-names.user.md` written; gate passes; advisory emitted (update `business_name` and optionally flip status to `confirmed`).
   - Prompt generation is idempotent: if `docs/business-os/strategy/<BIZ>/*-naming-prompt.md` exists (any glob match), skip generation.
   - `naming_gate` field present in `/startup-loop status` output, computed from filesystem state: `skipped | blocked | complete`.
-  - Verbatim resume instruction: "Place shortlist at `docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md` with required front matter (`recommended_business_name`, `shortlist`), then run `/startup-loop advance`."
+  - Verbatim resume instruction: "Place shortlist at `docs/business-os/strategy/<BIZ>/*-candidate-names.user.md` with required front matter (`recommended_business_name`, `shortlist`), then run `/startup-loop advance`."
 - **Validation contract (VC-03):**
   - VC-01: Test row 1 (absent/confirmed): gate check does not generate any files; advance proceeds to GATE-BD-01. Pass: no new files created in strategy/<BIZ>/.
   - VC-02: Test row 2 (unconfirmed, no shortlist): prompt file generated at dated path; blocking message printed; advance blocked. Pass: prompt file exists, advance returns blocking status.
   - VC-03: Test row 2b (unconfirmed, no shortlist, re-run): second `/startup-loop advance` call does not overwrite prompt file. Pass: prompt file mtime unchanged.
-  - VC-04: Test row 3 (unconfirmed, shortlist present): `latest-naming-shortlist.user.md` written; gate passes; advisory printed. Pass: stable pointer file exists, advance continues to GATE-BD-01.
+  - VC-04: Test row 3 (unconfirmed, shortlist present): `latest-candidate-names.user.md` written; gate passes; advisory printed. Pass: stable pointer file exists, advance continues to GATE-BD-01.
   - VC-05: `naming_gate` field appears in status output with correct value for each row. Pass: status output parseable; field present.
 - **Execution plan:** Red → Green → Refactor
   - Red evidence plan: Write the VC cases above before editing the skill file. Identify exact insertion point in `startup-loop/SKILL.md` (read the S0→S1 transition section).
@@ -310,13 +310,13 @@ Note: depending on the schema assessment finding, TASK-03 may include the `loop-
 ### TASK-04: Add shortlist read-in to `lp-brand-bootstrap/SKILL.md`
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `.claude/skills/lp-brand-bootstrap/SKILL.md` — reads `docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md` front matter if present; extracts `recommended_business_name` to pre-fill brand dossier name field; skips gracefully with advisory if file absent or front matter malformed.
+- **Deliverable:** Updated `.claude/skills/lp-brand-bootstrap/SKILL.md` — reads `docs/business-os/strategy/<BIZ>/latest-candidate-names.user.md` front matter if present; extracts `recommended_business_name` to pre-fill brand dossier name field; skips gracefully with advisory if file absent or front matter malformed.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
-- **Build evidence:** Two targeted edits to `lp-brand-bootstrap/SKILL.md`. (1) Inputs table: new row for `latest-naming-shortlist.user.md` (No — optional; provides `recommended_business_name` via YAML front matter). (2) Step 1 expanded: new step 4 reads naming shortlist if present, extracts `recommended_business_name` and `shortlist` array from front matter, uses recommended name as primary name input in brand dossier, skips gracefully when file absent (no message), emits advisory when front matter malformed. VC-01 passed: pre-fill logic present. VC-02 passed: silent skip when file absent confirmed. VC-03 passed: advisory on malformed front matter present, execution continues.
+- **Build evidence:** Two targeted edits to `lp-brand-bootstrap/SKILL.md`. (1) Inputs table: new row for `latest-candidate-names.user.md` (No — optional; provides `recommended_business_name` via YAML front matter). (2) Step 1 expanded: new step 4 reads naming shortlist if present, extracts `recommended_business_name` and `shortlist` array from front matter, uses recommended name as primary name input in brand dossier, skips gracefully when file absent (no message), emits advisory when front matter malformed. VC-01 passed: pre-fill logic present. VC-02 passed: silent skip when file absent confirmed. VC-03 passed: advisory on malformed front matter present, execution continues.
 - **Artifact-Destination:** `.claude/skills/lp-brand-bootstrap/SKILL.md`
 - **Reviewer:** Peter
 - **Approval-Evidence:** Peter confirms brand-bootstrap pre-fills name correctly when shortlist present; skips cleanly when absent.
@@ -329,24 +329,24 @@ Note: depending on the schema assessment finding, TASK-03 may include the `loop-
   - Approach: 87% — soft integration (graceful fallback) is the correct pattern; front matter schema is explicit and machine-readable.
   - Impact: 82% — if absent, brand-bootstrap simply doesn't pre-fill the name. Risk of degradation is low. Risk of brittle extraction is mitigated by requiring explicit front matter.
 - **Acceptance:**
-  - If `latest-naming-shortlist.user.md` exists and has valid `recommended_business_name` front matter: brand-bootstrap pre-fills the name field in the brand dossier template with that value.
+  - If `latest-candidate-names.user.md` exists and has valid `recommended_business_name` front matter: brand-bootstrap pre-fills the name field in the brand dossier template with that value.
   - If file absent: brand-bootstrap continues normally without the pre-fill; no error raised.
   - If front matter malformed or `recommended_business_name` key missing: brand-bootstrap skips pre-fill, emits a non-blocking advisory ("Naming shortlist found but front matter could not be parsed — fill business name manually").
   - `shortlist` array from front matter optionally available as context in brand-bootstrap output (informational only — not required).
 - **Validation contract (VC-04):**
-  - VC-01: With `latest-naming-shortlist.user.md` present and valid front matter: confirm brand dossier name field is pre-filled. Pass: name appears in dossier output.
+  - VC-01: With `latest-candidate-names.user.md` present and valid front matter: confirm brand dossier name field is pre-filled. Pass: name appears in dossier output.
   - VC-02: With file absent: confirm brand-bootstrap runs to completion without error. Pass: no exception, no blocking message.
   - VC-03: With front matter malformed: confirm advisory is emitted and brand-bootstrap continues. Pass: advisory message present; execution not blocked.
 - **Execution plan:** Red → Green → Refactor
   - Red evidence plan: Read `lp-brand-bootstrap/SKILL.md` end-to-end. Identify the section where strategy/<BIZ>/ docs are currently read. Identify where the brand dossier name field is populated.
-  - Green evidence plan: Add a conditional read block before the name field population: check for `latest-naming-shortlist.user.md`, attempt front matter parse, extract `recommended_business_name`, apply to name field. Add graceful-skip branches.
+  - Green evidence plan: Add a conditional read block before the name field population: check for `latest-candidate-names.user.md`, attempt front matter parse, extract `recommended_business_name`, apply to name field. Add graceful-skip branches.
   - Refactor evidence plan: Run all three VCs. Confirm advisory wording is consistent with other brand-bootstrap advisories. Confirm the read block does not alter any other brand-bootstrap behaviour.
 - **Planning validation:** None: S-effort.
 - **Scouts:**
   - Read `lp-brand-bootstrap/SKILL.md` in full before implementation. Identify: (a) exactly where strategy/<BIZ>/ docs are read, (b) how the brand dossier template is populated (fill-by-reference vs fill-by-extraction), (c) whether there is an existing "pre-fill" or "context" mechanism.
 - **Edge Cases & Hardening:**
   - `recommended_business_name` is an empty string: treat as malformed; emit advisory.
-  - Multiple entries matching the stable pointer path: the pointer (`latest-naming-shortlist.user.md`) is a single stable file by design. If missing, fall back to glob (`*-naming-shortlist.user.md`) and pick `max(date)`. If still nothing, skip gracefully.
+  - Multiple entries matching the stable pointer path: the pointer (`latest-candidate-names.user.md`) is a single stable file by design. If missing, fall back to glob (`*-candidate-names.user.md`) and pick `max(date)`. If still nothing, skip gracefully.
 - **What would make this >=90%:** Read `lp-brand-bootstrap/SKILL.md` in full during planning and confirm exact insertion point — this is currently unverified (H4, Medium confidence in fact-find).
 - **Rollout / rollback:**
   - Rollout: Additive edit to SKILL.md. Existing brand-bootstrap runs unaffected when file absent.
@@ -376,14 +376,14 @@ Note: depending on the schema assessment finding, TASK-03 may include the `loop-
 - [ ] TASK-02: Prompt template at `docs/business-os/market-research/_templates/deep-research-naming-prompt.md`; all placeholders mapped to Naming Prompt Seed Contract; front matter schema specified; four research task sections present.
 - [ ] TASK-03: Gate decision table (3 rows) fully implemented in startup-loop/SKILL.md; idempotent; `naming_gate` in status output; verbatim resume instruction in blocking message.
 - [ ] TASK-03b: loop-spec.yaml schema assessment documented in fact-find; spec_version decision recorded; GATE-BD-00 entry schema confirmed.
-- [ ] TASK-04: lp-brand-bootstrap reads `latest-naming-shortlist.user.md` front matter gracefully; pre-fills name if present; skips with advisory if absent/malformed.
+- [ ] TASK-04: lp-brand-bootstrap reads `latest-candidate-names.user.md` front matter gracefully; pre-fills name if present; skips with advisory if absent/malformed.
 - [ ] End-to-end: One manual pilot session using a synthetic intake packet produces a naming shortlist that passes through the full gate cycle (blocked → shortlist returned → complete → brand-bootstrap pre-fills name).
 
 ## Decision Log
 
 - 2026-02-17: `business_name_status` absent = `confirmed` (safe default; confirmed by Peter).
 - 2026-02-17: Second-pass S2B naming prompt deferred (TASK-05 non-binding; confirmed by Peter).
-- 2026-02-17: Stable `latest-naming-shortlist.user.md` file preferred over `loop-spec.yaml` pointer field (avoids schema creep; mirrors market intelligence `latest.user.md` pattern).
+- 2026-02-17: Stable `latest-candidate-names.user.md` file preferred over `loop-spec.yaml` pointer field (avoids schema creep; mirrors market intelligence `latest.user.md` pattern).
 - 2026-02-17: Glob-based shortlist detection committed (not exact-path; avoids date-mismatch footgun).
 - 2026-02-17: Naming step inserted at S0→S1 transition as GATE-BD-00 (before GATE-BD-01 brand-bootstrap).
 

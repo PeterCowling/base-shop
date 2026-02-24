@@ -2,6 +2,24 @@
 
 import { runEmailSystemPreflight } from "../tools/health";
 
+/**
+ * Stub probes for TASK-06 Gmail API + token expiry checks.
+ * These stubs ensure TASK-11 tests remain isolated from network/file I/O
+ * introduced by the new probes.
+ */
+const passingGmailApiProbe = async () => ({
+  status: "ok" as const,
+  detail: "Gmail API reachable (stub).",
+  remediation: "No action required.",
+});
+
+const passingTokenExpiryCheck = () => ({
+  status: "ok" as const,
+  severity: "warning" as const,
+  detail: "Token valid (stub).",
+  remediation: "No action required.",
+});
+
 describe("email startup preflight (TASK-11)", () => {
   it("TC-11-01: missing env var is surfaced with explicit variable name", async () => {
     const result = await runEmailSystemPreflight({
@@ -25,6 +43,8 @@ describe("email startup preflight (TASK-11)", () => {
         detail: "Missing env var: DATABASE_URL",
         remediation: "Set DATABASE_URL.",
       }),
+      gmailApiProbe: passingGmailApiProbe,
+      tokenExpiryCheck: passingTokenExpiryCheck,
     });
 
     const databaseEnvCheck = result.checks.find(
@@ -60,6 +80,8 @@ describe("email startup preflight (TASK-11)", () => {
         detail: "Database probe query succeeded.",
         remediation: "No action required.",
       }),
+      gmailApiProbe: passingGmailApiProbe,
+      tokenExpiryCheck: passingTokenExpiryCheck,
     });
 
     const storageCheck = result.checks.find(
@@ -95,6 +117,8 @@ describe("email startup preflight (TASK-11)", () => {
         detail: "Database probe query succeeded.",
         remediation: "No action required.",
       }),
+      gmailApiProbe: passingGmailApiProbe,
+      tokenExpiryCheck: passingTokenExpiryCheck,
     });
 
     expect(result.status).toBe("pass");

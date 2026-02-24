@@ -5,6 +5,7 @@ Business: BRIK
 Date: 2026-02-17
 Owner: Pete
 Relates-to: docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Brikette Sales Funnel (External Expert Brief, Revised v2)

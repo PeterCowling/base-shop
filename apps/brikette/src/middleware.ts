@@ -83,20 +83,80 @@ function splitSegmentSuffix(segment: string): SegmentWithSuffix {
   return { core: segment, suffix: "" };
 }
 
+function isIgnoredPath(pathname: string): boolean {
+  return pathname.startsWith("/_next/") || pathname === "/favicon.ico";
+}
+
+function parseLocalizedPath(pathname: string): { appLang: AppLanguage; parts: string[] } | null {
+  const parts = pathname.split("/").filter(Boolean);
+  if (parts.length < 2) return null;
+  const lang = parts[0]?.toLowerCase();
+  if (!lang || !SUPPORTED_LANGS.has(lang)) return null;
+  return { appLang: lang as AppLanguage, parts };
+}
+
+function buildRedirectResponse(request: NextRequest, path: string): NextResponse {
+  const redirectUrl = new URL(`${path}${request.nextUrl.search}${request.nextUrl.hash}`, request.url);
+  return NextResponse.redirect(redirectUrl, 301);
+}
+
+function detectWrongTopLevelKey(normalizedTopSegment: string): {
+  wrongKey: SlugKey | undefined;
+  wrongKeySource: "english" | "internal" | "cross-locale" | null;
+} {
+  const englishKey = ENGLISH_SLUG_TO_KEY.get(normalizedTopSegment);
+  if (englishKey) return { wrongKey: englishKey, wrongKeySource: "english" };
+
+  const internalKey = INTERNAL_SEGMENT_TO_KEY.get(normalizedTopSegment);
+  if (internalKey) return { wrongKey: internalKey, wrongKeySource: "internal" };
+
+  const crossLocaleKey = resolveAnyTopLevelKey(normalizedTopSegment);
+  if (crossLocaleKey) return { wrongKey: crossLocaleKey, wrongKeySource: "cross-locale" };
+
+  return { wrongKey: undefined, wrongKeySource: null };
+}
+
+function handleWrongTopLevelRedirect(params: {
+  request: NextRequest;
+  appLang: AppLanguage;
+  normalizedTopSegment: string;
+  topSegmentSuffix: SegmentWithSuffix["suffix"];
+  nextParts: string[];
+}): NextResponse | null {
+  const { request, appLang, normalizedTopSegment, topSegmentSuffix, nextParts } = params;
+  const localizedAssistanceSlug = SLUGS.assistance[appLang].toLowerCase();
+  if (
+    ASSISTANCE_ROOT_ALIASES.has(normalizedTopSegment) &&
+    normalizedTopSegment !== localizedAssistanceSlug
+  ) {
+    const correctedSegment = `${SLUGS.assistance[appLang]}${topSegmentSuffix}`;
+    const trailingSlash = topSegmentSuffix ? "" : "/";
+    return buildRedirectResponse(request, `/${appLang}/${correctedSegment}${trailingSlash}`);
+  }
+
+  const { wrongKey, wrongKeySource } = detectWrongTopLevelKey(normalizedTopSegment);
+  if (!wrongKey || !wrongKeySource) return null;
+
+  const correctSlug = SLUGS[wrongKey][appLang];
+  if (correctSlug.toLowerCase() === normalizedTopSegment) return null;
+
+  const correctedSegment = `${correctSlug}${topSegmentSuffix}`;
+  const trailingSlash = topSegmentSuffix ? "" : "/";
+  const shouldDropRemainingPath =
+    wrongKey === "assistance" && wrongKeySource === "cross-locale";
+  const remainingPath = shouldDropRemainingPath ? "" : nextParts.slice(2).join("/");
+  const redirectPath = `/${appLang}/${correctedSegment}${remainingPath ? `/${remainingPath}` : ""}${trailingSlash}`;
+  return buildRedirectResponse(request, redirectPath);
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Ignore Next internals and obvious static assets.
-  if (pathname.startsWith("/_next/")) return NextResponse.next();
-  if (pathname === "/favicon.ico") return NextResponse.next();
-
-  const parts = pathname.split("/").filter(Boolean);
-  if (parts.length < 2) return NextResponse.next();
-
-  const lang = parts[0]?.toLowerCase();
-  if (!lang || !SUPPORTED_LANGS.has(lang)) return NextResponse.next();
-
-  const appLang = lang as AppLanguage;
+  if (isIgnoredPath(pathname)) return NextResponse.next();
+  const parsedPath = parseLocalizedPath(pathname);
+  if (!parsedPath) return NextResponse.next();
+  const { appLang, parts } = parsedPath;
 
   const nextParts = [...parts];
   const originalTopSegment = nextParts[1] ?? "";
@@ -106,11 +166,7 @@ export function middleware(request: NextRequest) {
   const explicitLegacyRedirect =
     EXPLICIT_LEGACY_ROOT_REDIRECTS[`${appLang}/${normalizedTopSegment}`];
   if (explicitLegacyRedirect) {
-    const redirectUrl = new URL(
-      `${explicitLegacyRedirect}${request.nextUrl.search}${request.nextUrl.hash}`,
-      request.url,
-    );
-    return NextResponse.redirect(redirectUrl, 301);
+    return buildRedirectResponse(request, explicitLegacyRedirect);
   }
 
   // Rewrite the first segment (after lang) if it's a localized slug.
@@ -121,66 +177,14 @@ export function middleware(request: NextRequest) {
     // internal segment without the suffix to avoid deterministic 404 noise.
     nextParts[1] = INTERNAL_SEGMENT_BY_KEY[key];
   } else {
-    // TASK-SEO-3: Detect English slug or internal segment in wrong locale
-    // If the first segment is NOT a localized slug for this language, check if
-    // it's an English slug or internal segment that should be redirected.
-    const localizedAssistanceSlug = SLUGS.assistance[appLang].toLowerCase();
-
-    // Legacy assistance roots are normalized to locale assistance index and
-    // intentionally drop trailing segments to avoid redirecting to unknown 404 detail paths.
-    if (
-      ASSISTANCE_ROOT_ALIASES.has(normalizedTopSegment) &&
-      normalizedTopSegment !== localizedAssistanceSlug
-    ) {
-      const correctedSegment = `${SLUGS.assistance[appLang]}${topSegmentSuffix}`;
-      const trailingSlash = topSegmentSuffix ? "" : "/";
-      const redirectUrl = new URL(
-        `/${appLang}/${correctedSegment}${trailingSlash}${request.nextUrl.search}${request.nextUrl.hash}`,
-        request.url,
-      );
-      return NextResponse.redirect(redirectUrl, 301);
-    }
-
-    // Check if this is an English slug (e.g., /de/rooms should redirect to /de/zimmer)
-    let wrongKey: SlugKey | undefined = ENGLISH_SLUG_TO_KEY.get(normalizedTopSegment);
-    let wrongKeySource: "english" | "internal" | "cross-locale" | null = wrongKey
-      ? "english"
-      : null;
-
-    // Check if this is an internal segment (e.g., /fr/assistance should redirect to /fr/aide)
-    if (!wrongKey) {
-      wrongKey = INTERNAL_SEGMENT_TO_KEY.get(normalizedTopSegment);
-      if (wrongKey) wrongKeySource = "internal";
-    }
-
-    // Check if this is a localized slug for another locale (e.g., /it/aide, /ja/zimmer).
-    if (!wrongKey) {
-      wrongKey = resolveAnyTopLevelKey(normalizedTopSegment);
-      if (wrongKey) wrongKeySource = "cross-locale";
-    }
-
-    // If found, check if it's different from the current locale's slug
-    if (wrongKey) {
-      const correctSlug = SLUGS[wrongKey][appLang];
-      if (correctSlug.toLowerCase() !== normalizedTopSegment) {
-        // Build redirect URL with correct localized slug. Preserve .txt suffixes
-        // used by framework prefetch probes (e.g. /en/help.txt).
-        const correctedSegment = `${correctSlug}${topSegmentSuffix}`;
-        const trailingSlash = topSegmentSuffix ? "" : "/";
-        const shouldDropRemainingPath =
-          wrongKey === "assistance" && wrongKeySource === "cross-locale";
-        const remainingPath = shouldDropRemainingPath ? "" : nextParts.slice(2).join("/");
-        const redirectPath = `/${appLang}/${correctedSegment}${remainingPath ? `/${remainingPath}` : ""}${trailingSlash}`;
-
-        // Construct redirect URL preserving query params and hash
-        const redirectUrl = new URL(
-          redirectPath + request.nextUrl.search + request.nextUrl.hash,
-          request.url,
-        );
-
-        return NextResponse.redirect(redirectUrl, 301);
-      }
-    }
+    const redirectResponse = handleWrongTopLevelRedirect({
+      request,
+      appLang,
+      normalizedTopSegment,
+      topSegmentSuffix,
+      nextParts,
+    });
+    if (redirectResponse) return redirectResponse;
   }
 
   // Special-case nested localized segments.

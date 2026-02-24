@@ -74,18 +74,18 @@ function getRecommendedFocus(constraintKey: string): string {
     return "Improve conversion rate through offer clarity, trust signals, or checkout optimization";
   }
 
-  // S6B/traffic → traffic acquisition
-  if (constraintKey === "S6B/traffic") {
+  // SELL-01/traffic → traffic acquisition
+  if (constraintKey === "SELL-01/traffic") {
     return "Increase traffic through SEO, paid acquisition, or content marketing";
   }
 
-  // S6B/cac → cost optimization
-  if (constraintKey === "S6B/cac") {
+  // SELL-01/cac → cost optimization
+  if (constraintKey === "SELL-01/cac") {
     return "Reduce customer acquisition cost through channel optimization or targeting";
   }
 
-  // S2B/aov → AOV optimization
-  if (constraintKey === "S2B/aov") {
+  // MARKET-06/aov → AOV optimization (MARKET-06/aov retained for legacy runs)
+  if (constraintKey === "MARKET-06/aov" || constraintKey === "MARKET-06/aov") {
     return "Increase average order value through upsells, bundles, or pricing";
   }
 

@@ -545,7 +545,7 @@ describe("startup-loop MCP integration suite: BOS + baseline flows", () => {
       cardId: "BRIK-ENG-0001",
       stage: "plan",
       runId: "run-001",
-      current_stage: "S2A",
+      current_stage: "MARKET-01",
       write_reason: "sync plan stage doc",
       baseEntitySha: "sha-plan-current",
       patch: { content: "# Planned\n\nUpdated from MCP write." },

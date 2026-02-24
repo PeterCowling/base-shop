@@ -240,23 +240,23 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Impact: 90% — operator-facing guidance only; no runtime code; adds missing handoff steps for problem-first entry
 - **Acceptance:**
   - Gate D has separate `prompt_file` + `required_output_path` entries for S0B, S0C, and S0D
-  - S0B: prompt_file = `.claude/skills/lp-solution-space/SKILL.md`; required_output_path = `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-space-results.user.md` (the operator-filled results file — NOT the prompt file; the prompt at `<YYYY-MM-DD>-solution-space-prompt.md` signals "started", the results file signals "complete")
-  - S0C: prompt_file = `.claude/skills/lp-option-select/SKILL.md`; required_output_path = `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md` (skill writes directly — no operator research step)
-  - S0D: prompt_file = `.claude/skills/brand-naming-research/SKILL.md`; required_output_path = `docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md` (the operator-filled shortlist — NOT the naming-research-prompt.md; glob matches any date prefix)
-  - S0→S0 pass-through condition documented: Gate D is fully satisfied when all four completion artifacts exist — problem-statement.user.md + solution-space-results.user.md + s0c-option-select.user.md + naming-shortlist.user.md — at which point cmd-start routes to standard S0 intake
-  - Re-entry logic checks each sub-stage completion artifact independently: solution-space-results.user.md present → skip S0B; s0c-option-select.user.md present → skip S0C; naming-shortlist.user.md present → skip S0D and proceed to S0 intake
+  - S0B: prompt_file = `.claude/skills/lp-solution-profiling/SKILL.md`; required_output_path = `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-profile-results.user.md` (the operator-filled results file — NOT the prompt file; the prompt at `<YYYY-MM-DD>-solution-profiling-prompt.md` signals "started", the results file signals "complete")
+  - S0C: prompt_file = `.claude/skills/lp-option-select/SKILL.md`; required_output_path = `docs/business-os/strategy/<BIZ>/solution-select.user.md` (skill writes directly — no operator research step)
+  - S0D: prompt_file = `.claude/skills/brand-naming-research/SKILL.md`; required_output_path = `docs/business-os/strategy/<BIZ>/*-candidate-names.user.md` (the operator-filled shortlist — NOT the candidate-names-prompt.md; glob matches any date prefix)
+  - S0→S0 pass-through condition documented: Gate D is fully satisfied when all four completion artifacts exist — problem-statement.user.md + solution-profile-results.user.md + solution-select.user.md + candidate-names.user.md — at which point cmd-start routes to standard S0 intake
+  - Re-entry logic checks each sub-stage completion artifact independently: solution-profile-results.user.md present → skip S0B; solution-select.user.md present → skip S0C; candidate-names.user.md present → skip S0D and proceed to S0 intake
 - **Validation contract (TC-01 through TC-05):**
   - TC-01: Gate D section contains routing blocks for S0A, S0B, S0C, S0D (four distinct blocks or one block with four named sub-steps)
-  - TC-02: S0B routing distinguishes started (prompt file) from complete (results file); required_output_path references `solution-space-results.user.md`, not `solution-space-prompt.md`
-  - TC-03: S0C routing points to lp-option-select SKILL.md and `s0c-option-select.user.md` output
-  - TC-04: S0D routing distinguishes started (naming-research-prompt.md) from complete (naming-shortlist.user.md); required_output_path references `*-naming-shortlist.user.md`, not `naming-research-prompt.md`
+  - TC-02: S0B routing distinguishes started (prompt file) from complete (results file); required_output_path references `solution-profile-results.user.md`, not `solution-profiling-prompt.md`
+  - TC-03: S0C routing points to lp-option-select SKILL.md and `solution-select.user.md` output
+  - TC-04: S0D routing distinguishes started (candidate-names-prompt.md) from complete (candidate-names.user.md); required_output_path references `*-candidate-names.user.md`, not `candidate-names-prompt.md`
   - TC-05: Gate D documents the S0→S0 pass-through condition — all four completion artifacts present → route to standard S0 intake
 - **Execution plan:** Red → Green → Refactor
   - Red: Read cmd-start.md Gate D; confirm only S0A has prompt_file/required_output_path; confirm S0B/S0C/S0D have no routing; note current re-entry check only looks for problem-statement.user.md
   - Green: Extend Gate D with three sub-stage routing blocks; use two-tier artifact model for S0B and S0D (prompt file = started; results/shortlist file = complete); use single-artifact model for S0C; add S0→S0 pass-through block at the end of Gate D
   - Refactor: Add per-sub-stage re-entry skip logic that checks completion artifacts in sequence (results → skip S0B; s0c-option-select → skip S0C; shortlist → skip S0D → enter S0); ensure prompt placeholders use `<BIZ>` and `<YYYY-MM-DD>` consistent with skill output contracts
 - **Planning validation (required for M/L):** None: S-effort task
-- **Scouts:** Verify exact output artifact filenames from lp-solution-space (solution-space-prompt.md + solution-space-results.user.md), lp-option-select (s0c-option-select.user.md), and brand-naming-research (naming-research-prompt.md) SKILL.md files before writing routing entries — all confirmed in this planning phase
+- **Scouts:** Verify exact output artifact filenames from lp-solution-profiling (solution-profiling-prompt.md + solution-profile-results.user.md), lp-option-select (solution-select.user.md), and brand-naming-research (candidate-names-prompt.md) SKILL.md files before writing routing entries — all confirmed in this planning phase
 - **Edge Cases & Hardening:** Two-tier completion model — S0B and S0D each have a "started" artifact (prompt written by skill) and a "complete" artifact (results filled by operator); Gate D must check only the completion artifact for re-entry skip, not the prompt artifact; documenting this distinction prevents future regressions where the prompt file is mistakenly treated as the completion signal
 - **What would make this >=90%:** Already at 90%; output contracts verified from SKILL.md files
 - **Rollout / rollback:**
@@ -265,9 +265,9 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** cmd-start.md Gate D expanded; no other docs affected
 - **Notes / references:**
   - S0A block as template: `.claude/skills/startup-loop/modules/cmd-start.md` Gate D (currently S0A only)
-  - S0B output contract: `lp-solution-space/SKILL.md` — `## Output` section (prompt at `<YYYY-MM-DD>-solution-space-prompt.md`; results at `<YYYY-MM-DD>-solution-space-results.user.md`)
-  - S0C output contract: `lp-option-select/SKILL.md` — `## Output Contract` (path: `s0c-option-select.user.md`)
-  - S0D output contract: `brand-naming-research/SKILL.md` — saves prompt to `naming-research-prompt.md`; operator saves shortlist to `<YYYY-MM-DD>-naming-shortlist.user.md` (GATE-BD-00 checks for this on S0→S1 advance)
+  - S0B output contract: `lp-solution-profiling/SKILL.md` — `## Output` section (prompt at `<YYYY-MM-DD>-solution-profiling-prompt.md`; results at `<YYYY-MM-DD>-solution-profile-results.user.md`)
+  - S0C output contract: `lp-option-select/SKILL.md` — `## Output Contract` (path: `solution-select.user.md`)
+  - S0D output contract: `brand-naming-research/SKILL.md` — saves prompt to `candidate-names-prompt.md`; operator saves shortlist to `<YYYY-MM-DD>-candidate-names.user.md` (GATE-BD-00 checks for this on S0→S1 advance)
 
 ---
 

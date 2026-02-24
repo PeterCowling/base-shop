@@ -29,3 +29,37 @@ export const Default: Story = {
     </Select>
   ),
 };
+
+export const ShapeDepths: Story = {
+  render: () => (
+    <div className="grid max-w-xs gap-3">
+      <Select defaultValue="apple">
+        <SelectTrigger shape="square">
+          <SelectValue placeholder="Square select" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select defaultValue="apple">
+        <SelectTrigger shape="soft">
+          <SelectValue placeholder="Soft select" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select defaultValue="apple">
+        <SelectTrigger shape="pill">
+          <SelectValue placeholder="Pill select" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  ),
+};

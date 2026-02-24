@@ -1,0 +1,1694 @@
+<!-- AUTO-GENERATED (swim-lane stage cards) — to update stage cards, edit stage-operator-dictionary.yaml and re-run: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts. To update static sections, edit scripts/src/startup-loop/templates/process-map.html.tmpl directly. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Startup Loop — How It Works</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: #0d1117;
+  color: #c9d1d9;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  padding-top: 52px;
+}
+
+/* ── STICKY NAV ── */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(13,17,23,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #21262d;
+  height: 52px;
+  display: flex; align-items: center;
+  padding: 0 20px; gap: 4px;
+  overflow-x: auto; overflow-y: hidden;
+}
+.topnav::-webkit-scrollbar { display: none; }
+.topnav-brand {
+  font-size: 13px; font-weight: 700; color: #484f58;
+  white-space: nowrap; margin-right: 10px; letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+.topnav-link {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 13px; font-weight: 500; color: #8b949e;
+  text-decoration: none; padding: 5px 10px;
+  border-radius: 6px; white-space: nowrap; flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+.topnav-link:hover { background: #21262d; color: #e6edf3; }
+.topnav-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.topnav-sep { width: 1px; height: 20px; background: #21262d; flex-shrink: 0; margin: 0 4px; }
+
+/* ── PAGE WRAPPER ── */
+.page { padding: 28px 24px 80px; }
+.flow {
+  display: flex; flex-direction: column; align-items: center;
+  max-width: 1360px; margin: 0 auto; gap: 0;
+}
+
+/* ── PAGE HEADER ── */
+.page-header { width: 100%; margin-bottom: 24px; }
+h1 { font-size: 26px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
+.doc-meta { color: #6e7681; font-size: 14px; }
+
+/* ── LEGEND ── */
+.legend {
+  width: 100%;
+  display: flex; flex-wrap: wrap; gap: 8px 20px;
+  background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+  padding: 14px 18px; margin-bottom: 28px;
+}
+.legend-title { width: 100%; font-size: 12px; font-weight: 700; color: #484f58; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #8b949e; }
+.ls { width: 14px; height: 14px; border-radius: 2px; flex-shrink: 0; }
+.ls-hard { background: #3d0000; border: 2px solid #f85149; }
+.ls-soft { background: #2d1f00; border: 2px solid #d29922; }
+
+/* ── CONTAINERS ── */
+.cbox {
+  width: 100%; border-radius: 10px; border: 1px solid;
+  overflow: hidden; margin-bottom: 14px;
+}
+.cbox-head {
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.cbox-icon { font-size: 24px; line-height: 1.3; flex-shrink: 0; margin-top: 1px; }
+.cbox-title {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; line-height: 1;
+}
+.cbox-meta { font-size: 14px; color: rgba(255,255,255,0.55); margin-top: 5px; }
+.cbox-cond { font-size: 13px; color: rgba(255,255,255,0.30); margin-top: 3px; font-style: italic; }
+.cbox-body { padding: 16px; }
+
+/* per-container colors */
+.c-assessment { border-color: #6d28d9; }
+.c-assessment .cbox-head { background: rgba(109,40,217,0.14); }
+.c-assessment .cbox-title { color: #a78bfa; }
+.c-assessment .stage { border-left: 3px solid #6d28d9; }
+
+.c-measure { border-color: #0e7490; }
+.c-measure .cbox-head { background: rgba(14,116,144,0.14); }
+.c-measure .cbox-title { color: #38bdf8; }
+.c-measure .stage { border-left: 3px solid #0e7490; }
+
+.c-product { border-color: #92400e; }
+.c-product .cbox-head { background: rgba(146,64,14,0.14); }
+.c-product .cbox-title { color: #fbbf24; }
+.c-product .stage { border-left: 3px solid #92400e; }
+
+.c-products { border-color: #9a3412; }
+.c-products .cbox-head { background: rgba(154,52,18,0.14); }
+.c-products .cbox-title { color: #fb923c; }
+.c-products .stage { border-left: 3px solid #9a3412; }
+
+.c-logistics { border-color: #374151; border-style: dashed; }
+.c-logistics .cbox-head { background: rgba(55,65,81,0.12); }
+.c-logistics .cbox-title { color: #6b7280; }
+.c-logistics .stage { border-left: 3px solid #374151; }
+
+.c-market { border-color: #991b1b; }
+.c-market .cbox-head { background: rgba(153,27,27,0.14); }
+.c-market .cbox-title { color: #f87171; }
+.c-market .stage { border-left: 3px solid #991b1b; }
+
+.c-sell { border-color: #166534; }
+.c-sell .cbox-head { background: rgba(22,101,52,0.14); }
+.c-sell .cbox-title { color: #4ade80; }
+.c-sell .stage { border-left: 3px solid #166534; }
+
+.c-do { border-color: #6b21a8; }
+.c-do .cbox-head { background: rgba(107,33,168,0.14); }
+.c-do .cbox-title { color: #c084fc; }
+.c-do .stage { border-left: 3px solid #6b21a8; }
+
+/* ── STAGE LIST ── */
+.stage-list { display: flex; flex-direction: column; gap: 8px; }
+.stage-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.stage-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+/* ── STAGE CARD ── */
+.stage {
+  background: #1c2128; border: 1px solid #2d333b;
+  border-radius: 7px; padding: 14px 15px 13px 14px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.stage.conditional { border-style: dashed; border-color: #374151; opacity: 0.9; }
+.stage.highlight { background: #1a0d00; }
+
+.sid {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #484f58;
+}
+.sname {
+  font-size: 17px; font-weight: 600; color: #e6edf3; line-height: 1.3;
+}
+.sproduce {
+  font-size: 14px; color: #8b949e; line-height: 1.5; margin-top: 2px;
+}
+.snote {
+  font-size: 13px; color: #d29922; line-height: 1.5; margin-top: 2px;
+}
+.sfrom { font-size: 12px; color: #8b949e; line-height: 1.6; margin-top: 6px; padding-top: 5px; border-top: 1px dashed #21262d; }
+.sfrom-seed { color: #6b8cba; font-weight: 600; }
+.sfrom-live { color: #3fb950; font-weight: 600; }
+.swho {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 8px; padding-top: 8px;
+  border-top: 1px solid #21262d;
+}
+.bw {
+  font-size: 13px; padding: 3px 9px; border-radius: 4px;
+  border: 1px solid; white-space: nowrap; line-height: 1.5;
+}
+.bw-bot  { background: #0c1c17; border-color: #065f46; color: #6ee7b7; }
+.bw-you  { background: #1c1200; border-color: #92400e; color: #fcd34d; }
+.bw-both { background: #0d1429; border-color: #1e3a8a; color: #a5b4fc; }
+.bw-req  { background: #3d0000; border-color: #7f1d1d; color: #fca5a5; font-weight: 700; }
+.bw-opt  { background: #161b22; border-color: #374151; color: #6b7280; }
+.bw-star { background: #130c00; border-color: #78350f; color: #fbbf24; }
+
+/* ── ARROWS ── */
+.arrow {
+  display: flex; flex-direction: column; align-items: center;
+  width: 100%; padding: 0;
+}
+.arrow-line { width: 2px; height: 28px; background: #30363d; }
+.arrow-head {
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 9px solid #30363d;
+}
+.arrow.red .arrow-line  { background: #f85149; }
+.arrow.red .arrow-head  { border-top-color: #f85149; }
+.arrow.amber .arrow-line { background: #d29922; }
+.arrow.amber .arrow-head { border-top-color: #d29922; }
+
+/* ── GATEWAYS ── */
+.gw {
+  width: 100%; border-radius: 8px; border: 0;
+  border-left: 6px solid; padding: 14px 18px;
+  margin: 0;
+  position: relative;
+}
+.gw.hard {
+  border-left-color: #f85149; background: #160000;
+  outline: 1px solid #3d0000; outline-offset: -1px;
+  border-radius: 0 8px 8px 0;
+}
+.gw.soft {
+  border-left-color: #d29922; background: #140f00;
+  outline: 1px solid #2d1f00; outline-offset: -1px;
+  border-radius: 0 8px 8px 0;
+}
+.gw-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.gw-diamond {
+  width: 18px; height: 18px; transform: rotate(45deg);
+  border: 2px solid; border-radius: 2px; flex-shrink: 0;
+}
+.gw.hard .gw-diamond { background: #3d0000; border-color: #f85149; }
+.gw.soft .gw-diamond { background: #2d1f00; border-color: #d29922; }
+.gw-tag {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  padding: 2px 8px; border-radius: 4px; border: 1px solid;
+}
+.gw.hard .gw-tag { background: #3d0000; color: #f85149; border-color: #f85149; }
+.gw.soft .gw-tag { background: #2d1f00; color: #d29922; border-color: #d29922; }
+.gw-id { font-size: 15px; font-weight: 700; color: #e6edf3; }
+.gw-check { font-size: 14px; color: #c9d1d9; line-height: 1.6; margin-top: 2px; }
+.gw-check ul { margin: 4px 0 0 0; padding-left: 18px; list-style: none; }
+.gw-check ul li { position: relative; padding-left: 4px; margin-bottom: 3px; }
+.gw-check ul li::before { content: "✔"; position: absolute; left: -16px; color: #3fb950; font-size: 12px; top: 1px; }
+.gw-note { font-size: 14px; color: #d29922; line-height: 1.5; margin-top: 2px; }
+
+/* ── CONDITIONAL PATH WRAPPER ── */
+.cond-path {
+  border: 1px dashed #374151; border-radius: 8px;
+  background: rgba(15,20,28,0.6);
+  padding: 12px 14px 14px; margin-bottom: 8px; position: relative;
+}
+.cond-path-banner {
+  display: flex; align-items: center; gap: 8px;
+  background: #1c2128; border: 1px solid #374151;
+  border-radius: 6px; padding: 8px 12px; margin-bottom: 12px;
+}
+.cond-path-banner-tag {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+  background: #0c1a2e; color: #93c5fd; border: 1px solid #1e3a8a;
+  padding: 2px 7px; border-radius: 4px; white-space: nowrap;
+}
+.cond-path-banner-text { font-size: 13px; color: #8b949e; }
+
+/* ── FAN-OUT ── */
+.fanout {
+  width: 100%; background: #10151c;
+  border: 1px solid #30363d; border-radius: 10px;
+  padding: 16px; margin-bottom: 14px;
+}
+.fanout-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px; padding-bottom: 12px;
+  border-bottom: 1px solid #21262d;
+}
+.fanout-diamond {
+  width: 18px; height: 18px; transform: rotate(45deg);
+  border: 2px solid #854d0e; background: #291400;
+  border-radius: 2px; flex-shrink: 0;
+}
+.fanout-title { font-size: 14px; font-weight: 700; color: #fb923c; }
+.fanout-subtitle { font-size: 13px; color: #6e7681; margin-top: 2px; }
+.fanout-grid { display: grid; gap: 12px; }
+.fanout-2 { grid-template-columns: 3fr 2fr; }
+.fanout-3 { grid-template-columns: 1fr 1fr 1fr; }
+.fanout-col {
+  background: #161b22; border: 1px solid #21262d;
+  border-radius: 8px; padding: 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.fanout-col-head {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; padding-bottom: 8px;
+  border-bottom: 1px solid #21262d;
+}
+
+/* ── JOIN BARRIER ── */
+.join-barrier {
+  width: 100%; background: #0a1628;
+  border: 1px solid #1d4ed8; border-radius: 10px;
+  padding: 16px; margin-bottom: 14px;
+}
+.join-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+}
+.join-icon {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #1d3a7a; border: 2px solid #3b82f6;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #60a5fa; flex-shrink: 0;
+}
+.join-title { font-size: 15px; font-weight: 700; color: #60a5fa; }
+.join-subtitle { font-size: 13px; color: #4b6ea8; margin-top: 1px; }
+.join-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
+.join-input {
+  border-radius: 6px; padding: 8px 10px;
+  font-size: 13px; border: 1px solid; line-height: 1.5;
+}
+.join-input.req { background: #0d1e3d; border-color: #1d4ed8; color: #93c5fd; }
+.join-input.opt { background: #0d1117; border-color: #21262d; color: #6b7280; }
+.join-input strong { display: block; margin-bottom: 1px; }
+
+/* ── ORCHESTRATION STAGES ── */
+.orch {
+  background: #0a1628; border: 1px solid #1d4ed8;
+  border-radius: 8px; padding: 14px 16px;
+  width: 100%; margin-bottom: 14px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.orch.guarded { border-color: #f85149; background: #140000; }
+.orch.teal { border-color: #0e7490; background: #041117; }
+.orch.weekly { border-color: #0f766e; background: #041117; }
+.orch .sid { color: #4b6ea8; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.orch.guarded .sid { color: #7f1d1d; }
+.orch.teal .sid { color: #0e7490; }
+.orch.weekly .sid { color: #0f766e; }
+.orch .sname { font-size: 17px; font-weight: 600; color: #93c5fd; }
+.orch.guarded .sname { color: #f87171; }
+.orch.teal .sname { color: #38bdf8; }
+.orch.weekly .sname { color: #2dd4bf; }
+.orch .sproduce { font-size: 14px; color: #8b949e; line-height: 1.5; }
+.orch .swho { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; padding-top: 8px; border-top: 1px solid #21262d; }
+
+/* ── DO GRID ── */
+.do-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  width: 100%;
+}
+
+/* ── LOOP INDICATOR ── */
+.loop-indicator {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 8px; margin-top: 10px;
+  color: #484f58; font-size: 14px;
+  border-top: 1px solid #21262d;
+}
+
+/* ── SECTION HEADER ── */
+.section-label {
+  width: 100%; font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #30363d;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px; margin-top: 4px;
+}
+.section-label::before, .section-label::after {
+  content: ''; flex: 1; height: 1px; background: #21262d;
+}
+
+/* ── STANDING PIPELINES ── */
+.standing-wrap {
+  max-width: 1360px;
+  margin: 0 auto 28px;
+}
+.standing-shell {
+  border: 1px solid #4c1d95;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(76,29,149,0.14), rgba(17,24,39,0.9));
+  overflow: hidden;
+}
+.standing-head {
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.standing-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #c4b5fd;
+}
+.standing-meta { font-size: 14px; color: rgba(255,255,255,0.48); margin-top: 4px; }
+.standing-body {
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+}
+.standing-row {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 10px;
+  align-items: stretch;
+}
+.standing-card {
+  background: #181d26;
+  border: 1px solid #2d333b;
+  border-left: 3px solid #7e22ce;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.standing-card.op { border-left-color: #0e7490; }
+.standing-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #c084fc;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.standing-card.op .standing-card-title { color: #67e8f9; }
+.standing-line { font-size: 14px; color: #c9d1d9; margin-top: 4px; }
+.standing-pipe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.standing-pipe .arrow-line { height: 100%; min-height: 44px; background: #7e22ce; }
+.standing-pipe .arrow-head { border-top-color: #7e22ce; }
+.stage-badges { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 6px; }
+.badge {
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+.badge-auto { background: #0d2318; border-color: #14532d; color: #86efac; }
+.badge-semi { background: #1f2937; border-color: #4b5563; color: #d1d5db; }
+.badge-gate { background: #1e1b4b; border-color: #4338ca; color: #a5b4fc; }
+.standing-stage-list { display: grid; gap: 8px; }
+.standing-arrow-row {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.standing-arrow-row .standing-line {
+  font-size: 13px;
+  color: #8b949e;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1000px) {
+  .fanout-2 { grid-template-columns: 1fr; }
+  .fanout-3 { grid-template-columns: 1fr; }
+  .do-grid { grid-template-columns: 1fr 1fr; }
+  .join-inputs { grid-template-columns: 1fr 1fr; }
+  .stage-grid-3 { grid-template-columns: 1fr; }
+  .stage-grid-2 { grid-template-columns: 1fr; }
+  .standing-row { grid-template-columns: 1fr; }
+  .standing-arrow-row { grid-template-columns: 1fr; }
+  .standing-pipe { display: none; }
+}
+
+/* ── SWIM LANE WRAPPER (SVG coordinate root) ── */
+.lane-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+/* ── LANE CONTAINER ── */
+.lane-container {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* ── INDIVIDUAL LANE ── */
+.lane {
+  flex: 1 1 0;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(13, 17, 23, 0.4);
+  border: 1px solid #21262d;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+/* ── LANE HEADER ── */
+.lane-header {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 10px 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.lane-market .lane-header   { color: #f87171; background: rgba(153, 27, 27, 0.14); }
+.lane-products .lane-header { color: #fb923c; background: rgba(154, 52, 18, 0.14); }
+.lane-sell-hint .lane-header { color: #4ade80; background: rgba(22, 101, 52, 0.10); }
+
+/* ── SVG ARROW OVERLAY ── */
+.lane-arrows-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 10;
+}
+
+/* ── LANE JOIN LABEL ── */
+.lane-join-label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #991b1b;
+  margin-bottom: 8px;
+}
+.lane-join-label::before,
+.lane-join-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #991b1b;
+  opacity: 0.4;
+}
+
+/* ── SYNC GATE BADGE ── */
+.sync-gate {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  padding: 2px 7px;
+  background: rgba(210, 153, 34, 0.10);
+  border: 1px solid rgba(210, 153, 34, 0.28);
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #d29922;
+}
+
+/* ── CROSS-STREAM CONNECTOR PATHS ── */
+.cs-path {
+  fill: none;
+  stroke-width: 2;
+  stroke-dasharray: 6, 3;
+}
+.cs-path-1 { stroke: #f59e0b; }  /* amber  — MARKET-01 → PRODUCTS-02 */
+.cs-path-2 { stroke: #22d3ee; }  /* cyan   — MARKET-03 → PRODUCTS-04 */
+.cs-label {
+  font-size: 10px;
+  font-weight: 700;
+  fill: #d29922;
+  stroke: #0d1117;
+  stroke-width: 3px;
+  paint-order: stroke fill;
+  letter-spacing: 0.06em;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
+/* ── RESPONSIVE: stack lanes vertically on small screens ── */
+@media (max-width: 1000px) {
+  .lane-container {
+    flex-direction: column;
+  }
+  .lane {
+    min-width: unset;
+  }
+  .lane-arrows-svg {
+    display: none;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav class="topnav">
+  <span class="topnav-brand">Startup Loop v3.12.0</span>
+  <div class="topnav-sep"></div>
+  <a href="#s-assessment" class="topnav-link"><span class="topnav-dot" style="background:#6d28d9"></span>Assessment</a>
+  <a href="#s-measure" class="topnav-link"><span class="topnav-dot" style="background:#0e7490"></span>Data Connections</a>
+  <a href="#s-parallel-lanes" class="topnav-link"><span class="topnav-dot" style="background:#9a3412"></span>Product / Market (parallel)</a>
+  <a href="#s-market-06" class="topnav-link"><span class="topnav-dot" style="background:#991b1b"></span>Offer Design</a>
+  <a href="#s-standing" class="topnav-link"><span class="topnav-dot" style="background:#7e22ce"></span>Ideas Pipeline</a>
+  <div class="topnav-sep"></div>
+  <a href="#s-fanout" class="topnav-link"><span class="topnav-dot" style="background:#854d0e"></span>Fan-out</a>
+  <div class="topnav-sep"></div>
+  <a href="#s-s4" class="topnav-link"><span class="topnav-dot" style="background:#1d4ed8"></span>Bring Together</a>
+  <a href="#s-s5" class="topnav-link"><span class="topnav-dot" style="background:#1d4ed8"></span>Prioritise</a>
+  <a href="#s-do" class="topnav-link"><span class="topnav-dot" style="background:#6b21a8"></span>Implement</a>
+  <a href="#s-s9b" class="topnav-link"><span class="topnav-dot" style="background:#0e7490"></span>Pre-Launch</a>
+  <a href="#s-s10" class="topnav-link"><span class="topnav-dot" style="background:#0f766e"></span>Signals</a>
+</nav>
+
+<div class="page">
+<div class="flow">
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <h1>Startup Loop &mdash; How It Works</h1>
+  <p class="doc-meta">v3.12.0 &nbsp;&middot;&nbsp; 2026-02-23 &nbsp;&middot;&nbsp; Layer A builds intelligence &middot; Ideas pipeline surfaces what to build &middot; Layer B implements it &middot; MARKET + PRODUCTS+LOGISTICS now run in parallel from MEASURE exit</p>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-title">Who does what</div>
+  <div class="legend-item"><span class="bw bw-bot">&#x1F916; Agent</span> The agent handles this &mdash; you don't need to do anything</div>
+  <div class="legend-item"><span class="bw bw-you">&#x270D; You write</span> You write this &mdash; the agent guides you</div>
+  <div class="legend-item"><span class="bw bw-both">&#x1F91D; Both</span> Agent does the work, you provide input or approve the result</div>
+  <div class="legend-item"><div class="ls ls-hard"></div> Hard stop &mdash; cannot continue until this check passes</div>
+  <div class="legend-item"><div class="ls ls-soft"></div> Advisory check &mdash; warns you but doesn't block</div>
+  <div class="legend-item"><span class="bw bw-star">&#x2605; Standing doc</span> Maintained continuously &mdash; feeds into the rest of the loop</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     ASSESSMENT
+     ══════════════════════════════════════════════════ -->
+<div id="s-assessment" class="cbox c-assessment">
+  <div class="cbox-head">
+    <div class="cbox-icon">&#x1F50D;</div>
+    <div>
+      <div class="cbox-title">Assessment &mdash; Understand Your Business &amp; Brand</div>
+      <div class="cbox-meta">Steps 01&ndash;11 &middot; Everything before you start researching the market</div>
+      <div class="cbox-cond">Steps 01&ndash;08 only needed if you're starting from a problem idea. If you already have a product, skip straight to Step 09.</div>
+    </div>
+  </div>
+  <div class="cbox-body">
+    <div class="stage-list">
+
+      <div class="cond-path">
+        <div class="cond-path-banner">
+          <span class="cond-path-banner-tag">Starting from a problem?</span>
+          <span class="cond-path-banner-text">Steps 01&ndash;08 apply. If you already have a product, skip to Step 09.</span>
+        </div>
+        <div class="stage-list">
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-01</div>
+            <div class="sname">Problem Framing</div>
+            <div class="sproduce">A clear written definition of the problem you're solving and who has it</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-02</div>
+            <div class="sname">Solution-Space Scan</div>
+            <div class="sproduce">3 or more ways you could solve the problem, with notes on feasibility for each</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-03</div>
+            <div class="sname">Solution Selection</div>
+            <div class="sproduce">Your chosen approach, with a written record of why the alternatives were ruled out</div>
+            <div class="snote">Decision required to continue &mdash; this is an explicit kill gate</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-04</div>
+            <div class="sname">Candidate Names</div>
+            <div class="sproduce">A longlist of possible business names generated from your solution and audience</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-05</div>
+            <div class="sname">Name Selection Spec</div>
+            <div class="sproduce">A structured brief for generating and scoring 250 name candidates (domain checks, trademark signals, brand fit)</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-06</div>
+            <div class="sname">Distribution Profiling</div>
+            <div class="sproduce">Your launch channel plan &mdash; at least 2 channels with cost, effort, and why each fits your customer</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-07</div>
+            <div class="sname">Measurement Profiling</div>
+            <div class="sproduce">Your tracking approach with at least 2 key metrics and the targets they need to hit</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+          <div class="stage conditional">
+            <div class="sid">ASSESSMENT-08</div>
+            <div class="sname">Current Situation</div>
+            <div class="sproduce">A snapshot of where the business is today &mdash; what exists, what's missing, what the gaps are</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+
+          <div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+          <div class="gw hard">
+            <div class="gw-header">
+              <div class="gw-diamond"></div>
+              <span class="gw-tag">STOP</span>
+              <span class="gw-id">Current situation must be complete before continuing</span>
+            </div>
+            <div class="gw-check">&#x2714; Pass: Current situation document is done and marked Active</div>
+          </div>
+          <div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="sid">ASSESSMENT-09 &middot; Everyone starts here if skipping 01&ndash;08</div>
+        <div class="sname">Intake Check</div>
+        <div class="sproduce">Pulls together everything from steps 01&ndash;08 into a single intake packet the loop can work from</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+      </div>
+
+      <div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="gw hard">
+        <div class="gw-header">
+          <div class="gw-diamond"></div>
+          <span class="gw-tag">STOP</span>
+          <span class="gw-id">All 8 earlier steps must be complete with sufficient detail</span>
+        </div>
+        <div class="gw-check">&#x2714; Pass &mdash; all of the following complete:
+          <ul>
+            <li>Problem framing</li>
+            <li>Solution selection</li>
+            <li>Candidate names</li>
+            <li>Distribution plan (at least 2 launch channels)</li>
+            <li>Measurement plan (at least 2 metrics with targets)</li>
+            <li>Current situation</li>
+          </ul>
+        </div>
+      </div>
+      <div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage">
+        <div class="sid">ASSESSMENT-10</div>
+        <div class="sname">Brand Profiling</div>
+        <div class="sproduce">Your brand strategy &mdash; who you're for, your personality, how you sound, how you're positioned vs competitors</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage">
+        <div class="sid">ASSESSMENT-11</div>
+        <div class="sname">Brand Identity</div>
+        <div class="sproduce">Your visual identity &mdash; colour palette, typography choices, imagery direction, design token overrides</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+<div class="gw hard" style="width:100%;margin-bottom:14px">
+  <div class="gw-header">
+    <div class="gw-diamond"></div>
+    <span class="gw-tag">STOP</span>
+    <span class="gw-id">Brand strategy and visual identity both complete</span>
+  </div>
+  <div class="gw-check">&#x2714; Pass &mdash; both must be complete before market research begins:
+    <ul>
+      <li>Brand strategy (audience, personality, voice)</li>
+      <li>Visual identity (colours, type, imagery)</li>
+    </ul>
+  </div>
+</div>
+<div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<!-- ══════════════════════════════════════════════════
+     MEASURE
+     ══════════════════════════════════════════════════ -->
+<div id="s-measure" class="cbox c-measure">
+  <div class="cbox-head">
+    <div class="cbox-icon">&#x1F4CA;</div>
+    <div>
+      <div class="cbox-title">Data Connections</div>
+      <div class="cbox-meta">Anchor your live problem framing from assessment, then get analytics in place before market research starts</div>
+    </div>
+  </div>
+  <div class="cbox-body">
+    <div class="stage-list">
+
+      <div class="stage">
+        <div class="sid">MEASURE-00</div>
+        <div class="sname">Problem Framing &amp; ICP</div>
+        <div class="sproduce">Your live problem statement and target customer segments &mdash; seeded from assessment, then kept current here as your understanding evolves</div>
+        <div class="sfrom"><span class="sfrom-seed">&#x2193; Seeded once from</span> assessment intake (ASSESSMENT-01 problem statement &amp; ICP). Refresh directly here when framing changes or you pivot &mdash; not via assessment.</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span><span class="bw bw-star">&#x2605; Live doc</span></div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage">
+        <div class="sid">MEASURE-01</div>
+        <div class="sname">Analytics &amp; Tracking Setup</div>
+        <div class="sproduce">Your full analytics stack is configured &mdash; GA4, Search Console, key conversion events, Consent Mode</div>
+        <div class="snote">You'll need about 30&ndash;60 minutes to grant access to Google Cloud, GA4, Cloudflare, and GitHub. The agent handles the configuration once you've done that.</div>
+        <div class="sfrom"><span class="sfrom-seed">&#x2193; Seeded once from</span> assessment intake (tracking method, key metrics &amp; success thresholds from ASSESSMENT-07)</div>
+        <div class="swho"><span class="bw bw-both">&#x1F91D; Both</span></div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage">
+        <div class="sid">MEASURE-02</div>
+        <div class="sname">Historical Performance Baseline</div>
+        <div class="sproduce">A record of past performance &mdash; traffic, revenue, conversion rates. Zeroes are fine for brand-new businesses.</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MEASURE EXIT: fans out into parallel swim lanes -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+<div style="width:100%;margin-bottom:12px;display:flex;align-items:stretch;gap:0;border:1px solid #21262d;border-radius:8px;overflow:hidden">
+  <div style="background:#0d1117;padding:10px 14px;display:flex;align-items:center;justify-content:center;border-right:1px solid #21262d;font-size:22px;line-height:1;flex-shrink:0">&#x21C6;</div>
+  <div style="flex:1;padding:9px 14px;display:flex;flex-direction:column;gap:4px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8b949e">Fan-out &mdash; three parallel streams from MEASURE exit</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;line-height:1.4">
+      <span style="color:#f87171">&#x2193; Market intelligence (MARKET-01&ndash;05)</span>
+      <span style="color:#fb923c">&#x2193; Products &amp; Logistics</span>
+      <span style="color:#4ade80;opacity:0.55">&#x23F3; SELL waits for MARKET-06 offer</span>
+    </div>
+  </div>
+  <div style="background:#0d1117;padding:10px 14px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;border-left:1px solid #21262d;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#484f58;gap:2px;flex-shrink:0">
+    <span>Converges at</span>
+    <span style="color:#f87171">MARKET-06</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     PARALLEL SWIM LANES
+     MARKET-01..05 || PRODUCT-01 + PRODUCTS + LOGISTICS || SELL placeholder
+     ══════════════════════════════════════════════════ -->
+<div id="s-parallel-lanes" class="lane-wrapper">
+<!-- STAGE_CARDS_START -->
+  <div class="lane-container">
+
+    <!-- ── LANE 1: MARKET intelligence (01–05) ── -->
+    <div class="lane lane-market">
+      <div class="lane-header">&#x1F4C8; Market Intelligence — Runs in parallel</div>
+
+      <div class="section-label" style="margin-top:0;margin-bottom:6px">Core intelligence chain</div>
+
+      <div class="stage-grid-2">
+        <div class="stage" id="stage-market-01">
+          <div class="sid">MARKET-01</div>
+          <div class="sname">Competitor Mapping</div>
+          <div class="sproduce">A map of your competitors — what they offer, their strengths, where they’re weak</div>
+          <div class="sfrom"><span class="sfrom-live">↺ Always reads</span> current problem framing (MEASURE-00) — if problem framing changes, re-run this stage</div>
+          <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">MARKET-02</div>
+          <div class="sname">Demand Evidence</div>
+          <div class="sproduce">Evidence that real demand exists — search volume, social signals, marketplace data, with confidence ratings</div>
+          <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+        </div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage-grid-3">
+        <div class="stage" id="stage-market-03">
+          <div class="sid">MARKET-03</div>
+          <div class="sname">Pricing Benchmarks</div>
+          <div class="sproduce">Typical price ranges in your market, by competitor set</div>
+          <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">MARKET-04</div>
+          <div class="sname">Channel Landscape</div>
+          <div class="sproduce">Which sales channels work in your space, which don’t, and why</div>
+          <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">MARKET-05</div>
+          <div class="sname">Assumptions &amp; Risk Register</div>
+          <div class="sproduce">What you’re assuming to be true, rated by risk — so you know what to test first</div>
+          <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+        </div>
+      </div>
+
+    </div><!-- end lane-market -->
+
+    <!-- ── LANE 2: PRODUCT-01 + PRODUCTS + LOGISTICS ── -->
+    <div class="lane lane-products">
+      <div class="lane-header">&#x1F4E6; Product &amp; Logistics Intelligence — Runs in parallel</div>
+
+      <!-- PRODUCT-01 -->
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#484f58;margin-bottom:4px;padding-bottom:4px;border-bottom:1px solid #21262d">Product capture — initial record</div>
+
+      <div class="stage" id="s-product">
+        <div class="sid">PRODUCT-01</div>
+        <div class="sname">Product From Photo</div>
+        <div class="sproduce">Your initial product record — name, description, dimensions, materials, price point — built from photos or descriptions you provide</div>
+        <div class="sfrom"><span class="sfrom-seed">↓ Seeded once from</span> assessment intake (product definition, scope &amp; constraints from ASSESSMENT-03)</div>
+        <div class="swho"><span class="bw bw-both">🤝 Both</span></div>
+      </div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <!-- PRODUCTS standing intelligence -->
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#484f58;margin-bottom:4px;padding-bottom:4px;border-bottom:1px solid #21262d">Products — build product intelligence</div>
+
+      <div id="s-products" style="display:flex;flex-direction:column;gap:8px">
+
+        <div class="stage-grid-3">
+          <div class="stage">
+            <div class="sid">PRODUCTS-01</div>
+            <div class="sname">Product Line Mapping</div>
+            <div class="sproduce">A map of everything you sell, with positioning notes for each</div>
+            <div class="sfrom"><span class="sfrom-seed">↓ Seeded once from</span> assessment intake (product definitions from ASSESSMENT-03)</div>
+            <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+          </div>
+          <div class="stage" id="stage-products-02">
+            <div class="sid">PRODUCTS-02</div>
+            <div class="sname">Competitor Product Scan</div>
+            <div class="sproduce">What competitors sell and at what price points</div>
+            <div class="sfrom"><span class="sfrom-live">↺ Informed by</span> MARKET-01 competitor map — run after MARKET-01 where possible</div>
+            <div class="sync-gate" style="color:#f59e0b;background:rgba(245,158,11,0.10);border-color:rgba(245,158,11,0.28)">⇦ Sync point — wait for MARKET-01</div>
+            <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+          </div>
+          <div class="stage conditional">
+            <div class="sid">PRODUCTS-03 · Only once you have live sales data</div>
+            <div class="sname">Product Performance Baseline</div>
+            <div class="sproduce">Which products are selling and at what margins</div>
+            <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+          </div>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="stage-grid-3">
+          <div class="stage" id="stage-products-04">
+            <div class="sid">PRODUCTS-04</div>
+            <div class="sname">Bundle &amp; Packaging Hypotheses</div>
+            <div class="sproduce">Ideas for product bundles or packaging changes worth testing</div>
+            <div class="sfrom"><span class="sfrom-live">↺ Informed by</span> MARKET-03 pricing benchmarks — run after MARKET-03 where possible</div>
+            <div class="sync-gate" style="color:#22d3ee;background:rgba(34,211,238,0.10);border-color:rgba(34,211,238,0.28)">⇦ Sync point — wait for MARKET-03</div>
+            <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+          </div>
+          <div class="stage conditional">
+            <div class="sid">PRODUCTS-05 · Only once you have live sales data</div>
+            <div class="sname">Product-Market Fit Signals</div>
+            <div class="sproduce">Demand signals from reviews, returns, and repeat purchase patterns</div>
+            <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+          </div>
+          <div class="stage conditional">
+            <div class="sid">PRODUCTS-06 · Only once you have live sales data</div>
+            <div class="sname">Product Roadmap Snapshot</div>
+            <div class="sproduce">The key product decisions to make in the next 90 days</div>
+            <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+          </div>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="stage highlight" style="border-left-color:#9a3412">
+          <div class="sid">PRODUCTS-07</div>
+          <div class="sname">Aggregate Product Pack</div>
+          <div class="sproduce">A single summary of your full product intelligence — the other parts of the loop read from this</div>
+          <div class="swho"><span class="bw bw-bot">🤖 Agent</span><span class="bw bw-star">★ Standing doc</span><span class="bw bw-opt">Refreshes every 90 days</span></div>
+        </div>
+
+      </div><!-- end s-products -->
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <!-- LOGISTICS (conditional) -->
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#484f58;margin-bottom:4px;padding-bottom:4px;border-bottom:1px dashed #374151">Logistics — conditional (physical products only)</div>
+
+      <div id="s-logistics" style="display:flex;flex-direction:column;gap:8px;border:1px dashed #374151;border-radius:8px;padding:10px;background:rgba(55,65,81,0.06)">
+
+        <div style="font-size:12px;color:#6b7280;font-style:italic">Only for physical product businesses — skip entirely if you don’t hold or ship stock</div>
+
+        <div class="stage-grid-2">
+          <div class="stage conditional">
+            <div class="sid">LOGISTICS-01</div>
+            <div class="sname">Supplier &amp; Manufacturer Mapping</div>
+            <div class="sproduce">Your supplier list with minimum order quantities and lead times</div>
+            <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+          </div>
+          <div class="stage conditional">
+            <div class="sid">LOGISTICS-02</div>
+            <div class="sname">Lead Times &amp; MOQ Baseline</div>
+            <div class="sproduce">Consolidated stock constraints across all your SKUs</div>
+            <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+          </div>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="stage-grid-3">
+          <div class="stage conditional">
+            <div class="sid">LOGISTICS-03</div>
+            <div class="sname">Fulfilment Options</div>
+            <div class="sproduce">3PL vs self-fulfilment vs dropship — options and trade-offs</div>
+            <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+          </div>
+          <div class="stage conditional">
+            <div class="sid">LOGISTICS-04</div>
+            <div class="sname">Cost &amp; Margin by Route</div>
+            <div class="sproduce">The full cost stack for each fulfilment channel</div>
+            <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+          </div>
+          <div class="stage conditional">
+            <div class="sid">LOGISTICS-05</div>
+            <div class="sname">Returns &amp; Quality Baseline</div>
+            <div class="sproduce">Return rates and the most common quality failure modes</div>
+            <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+          </div>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="stage conditional">
+          <div class="sid">LOGISTICS-06</div>
+          <div class="sname">Inventory Policy Snapshot</div>
+          <div class="sproduce">Reorder points and safety stock targets for each SKU</div>
+          <div class="swho"><span class="bw bw-bot">🤖 Agent</span></div>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="stage conditional highlight" style="border-left-color:#374151">
+          <div class="sid">LOGISTICS-07</div>
+          <div class="sname">Aggregate Logistics Pack</div>
+          <div class="sproduce">A single summary of your logistics intelligence — the other parts of the loop read from this</div>
+          <div class="swho"><span class="bw bw-bot">🤖 Agent</span><span class="bw bw-star">★ Standing doc</span><span class="bw bw-opt">Refreshes every 90 days</span></div>
+        </div>
+
+      </div><!-- end s-logistics -->
+
+    </div><!-- end lane-products -->
+
+    <!-- ── LANE 3: SELL placeholder ── -->
+    <div class="lane lane-sell-hint">
+      <div class="lane-header">&#x1F4B0; Sell — Starts after MARKET-06</div>
+
+      <div class="stage" style="border-left-color:#166534;background:#001a0d;border-color:#166534">
+        <div class="sid">SELL · Not yet active</div>
+        <div class="sname">Channel Strategy &amp; Sales Intelligence</div>
+        <div class="sproduce">SELL stages (SELL-01 through SELL-08) begin after MARKET-06 Offer Design is complete. They open in the fan-out-1 section below.</div>
+        <div class="sfrom" style="color:#4ade80;border-top-color:#166534">&#x2193; Unlocked by MARKET-06 — scroll down to the fan-out section to see the SELL track in full</div>
+      </div>
+
+      <div style="margin-top:8px;padding:10px 12px;background:rgba(22,101,52,0.06);border:1px dashed #166534;border-radius:7px;font-size:13px;color:#4ade80">
+        <strong>Why is SELL in a separate lane here?</strong><br>
+        <span style="color:#8b949e;margin-top:4px;display:block">Channel strategy cannot be finalised until you know your offer (MARKET-06). SELL-01 opens immediately after MARKET-06 in the fan-out below — it runs in parallel with PRODUCT-02 adjacent research and Market intelligence deepening.</span>
+      </div>
+
+    </div><!-- end lane-sell-hint -->
+
+  </div><!-- end lane-container -->
+
+  <!-- SVG cross-stream dependency connectors -->
+  <svg class="lane-arrows-svg" id="laneArrowsSvg" aria-hidden="true">
+    <defs>
+      <!-- Amber arrowhead — MARKET-01 → PRODUCTS-02 -->
+      <marker id="cs-arrow-1" markerWidth="10" markerHeight="8" refX="9" refY="4"
+              orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0,1 L0,7 L9,4 z" fill="#f59e0b" />
+      </marker>
+      <!-- Cyan arrowhead — MARKET-03 → PRODUCTS-04 -->
+      <marker id="cs-arrow-2" markerWidth="10" markerHeight="8" refX="9" refY="4"
+              orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0,1 L0,7 L9,4 z" fill="#22d3ee" />
+      </marker>
+    </defs>
+    <!-- MARKET-01 → PRODUCTS-02 (amber — left track in gap) -->
+    <path id="arrow-m01-p02" class="cs-path cs-path-1" marker-end="url(#cs-arrow-1)" d="" />
+    <text id="label-m01-p02" class="cs-label"></text>
+    <!-- MARKET-03 → PRODUCTS-04 (cyan — right track in gap) -->
+    <path id="arrow-m03-p04" class="cs-path cs-path-2" marker-end="url(#cs-arrow-2)" d="" />
+    <text id="label-m03-p04" class="cs-label"></text>
+  </svg>
+<!-- STAGE_CARDS_END -->
+</div><!-- end lane-wrapper -->
+
+<!-- Lane convergence label -->
+<div class="lane-join-label">Converges at MARKET-06 &mdash; Offer Design</div>
+
+<!-- ══════════════════════════════════════════════════
+     MARKET-06 (full-width, below the swim lanes)
+     ══════════════════════════════════════════════════ -->
+<div id="s-market-06" class="cbox c-market" style="margin-bottom:14px">
+  <div class="cbox-head">
+    <div class="cbox-icon">&#x1F4C8;</div>
+    <div>
+      <div class="cbox-title">Market &mdash; Offer Design</div>
+      <div class="cbox-meta">MARKET-06 &middot; All three parallel streams converge here. Reads from MARKET-01&ndash;05 and PRODUCTS-07.</div>
+    </div>
+  </div>
+  <div class="cbox-body">
+    <div class="stage-list">
+
+      <div class="stage highlight" style="border-left-color:#991b1b;border-color:#7f1d1d">
+        <div class="sid">MARKET-06 &middot; Triggers the parallel tracks below</div>
+        <div class="sname">Offer Design</div>
+        <div class="sproduce">Your complete offer &mdash; who it's for, what's included, how it's priced, your positioning vs competitors, and how you handle the most common objections</div>
+        <div class="sfrom"><span class="sfrom-live">&#x21BA; Always reads</span> brand strategy &mdash; use <strong>/lp-brand-refresh</strong> to update positioning or voice before re-running</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+      </div>
+
+      <div class="arrow red"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="gw hard">
+        <div class="gw-header">
+          <div class="gw-diamond"></div>
+          <span class="gw-tag">STOP</span>
+          <span class="gw-id">Brand messaging framework must exist before offer is finalised</span>
+        </div>
+        <div class="gw-check">&#x2714; Pass: Your messaging hierarchy document (how you talk about your brand and products) is at least in draft</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     FAN-OUT (unchanged from previous — SELL stages etc.)
+     ══════════════════════════════════════════════════ -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<div id="s-fanout" class="fanout">
+  <div class="fanout-header">
+    <div class="fanout-diamond"></div>
+    <div>
+      <div class="fanout-title">Two tracks run in parallel from here</div>
+      <div class="fanout-subtitle">Both must finish before the next step. Track 1 produces the required inputs for the baseline merge. Track 2 produces optional supporting intelligence.</div>
+    </div>
+  </div>
+
+  <div class="fanout-grid fanout-2">
+
+    <!-- Track 1: SELL -->
+    <div class="fanout-col" style="border-color:#166534">
+      <div class="fanout-col-head" style="color:#4ade80">Track 1 &middot; Channel Strategy &amp; Sales Intelligence</div>
+
+      <div style="font-size:13px;color:#484f58;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Channel strategy starts now</div>
+      <div style="margin-bottom:8px">
+        <div class="gw hard" style="margin:0 0 8px 0">
+          <div class="gw-header">
+            <div class="gw-diamond"></div>
+            <span class="gw-tag">STOP</span>
+            <span class="gw-id">Demand evidence minimum quality before channel strategy starts</span>
+          </div>
+          <div class="gw-check" style="font-size:13px">&#x2714; Pass &mdash; all must be present in your demand evidence:
+            <ul>
+              <li>At least 2 price variants documented</li>
+              <li>Customer objections captured</li>
+              <li>A speed-to-lead sample</li>
+            </ul>
+          </div>
+        </div>
+        <div class="stage" style="border-left-color:#166534;background:#001a0d;border-color:#166534">
+          <div class="sid">SELL-01</div>
+          <div class="sname">Channel Strategy</div>
+          <div class="sproduce">Your top 2&ndash;3 launch channels with a 30-day action plan, plus SEO foundation and outreach templates</div>
+          <div class="sfrom"><span class="sfrom-seed">&#x2193; Seeded once from</span> assessment intake (planned channels from ASSESSMENT-06) and current problem framing (MEASURE-00)</div>
+          <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span><span class="bw bw-req">Required at join</span></div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;color:#484f58;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">After channel strategy &mdash; ongoing sales intelligence</div>
+
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="stage">
+        <div class="sid">SELL-02</div><div class="sname">Channel Performance Baseline</div>
+        <div class="sproduce">How each channel is actually performing &mdash; conversion rate, cost to acquire, return on investment</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+      </div>
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="stage">
+        <div class="sid">SELL-03</div><div class="sname">Outreach &amp; Content Standing</div>
+        <div class="sproduce">Your outreach cadence, content calendar, and engagement metrics</div>
+        <div class="sfrom"><span class="sfrom-live">&#x21BA; Always reads</span> brand strategy &mdash; use <strong>/lp-brand-refresh</strong> if voice or messaging direction changes</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+      </div>
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="stage">
+        <div class="sid">SELL-04</div><div class="sname">SEO Standing</div>
+        <div class="sproduce">Where you rank organically, keyword gaps, and backlink profile</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+      </div>
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="stage">
+        <div class="sid">SELL-05</div><div class="sname">Paid Channel Standing</div>
+        <div class="sproduce">Paid spend by channel, ROAS, and which creatives are showing fatigue</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+      </div>
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      <div class="stage">
+        <div class="sid">SELL-06</div><div class="sname">Partnerships &amp; Referrals</div>
+        <div class="sproduce">Your partnership pipeline, referral programmes, and affiliate activity</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+      </div>
+      <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+      <div class="stage highlight" style="border-left-color:#166534;border-color:#166534">
+        <div class="sid">SELL-07</div>
+        <div class="sname">Sell Aggregate Pack</div>
+        <div class="sproduce">A single summary of all your sales intelligence &mdash; the other parts of the loop read from this</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span><span class="bw bw-star">&#x2605; Standing doc</span><span class="bw bw-opt">Refreshes every 90 days</span></div>
+      </div>
+
+      <div style="border-top:1px solid #21262d;margin-top:8px;padding-top:8px">
+        <div style="font-size:13px;color:#d29922;margin-bottom:6px;font-weight:600">&#x21B7; Only needed if you plan to run paid ads</div>
+        <div class="stage conditional" style="border-color:#d29922;border-left-color:#d29922">
+          <div class="sid">SELL-08 &middot; Only when paid spend is planned</div>
+          <div class="sname">Activation Readiness</div>
+          <div class="sproduce">Confirmation that you're ready to activate paid spend &mdash; does not block the main flow</div>
+          <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+        </div>
+
+        <div class="arrow amber"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="gw hard">
+          <div class="gw-header">
+            <div class="gw-diamond"></div>
+            <span class="gw-tag">STOP &middot; Before any paid spend</span>
+            <span class="gw-id">Tracking, risks, and conversion events all clear</span>
+          </div>
+          <div class="gw-check">
+            All three must pass:<br>
+            &#x2460; Measurement is confirmed live and verified<br>
+            &#x2461; No critical or high-severity risks outstanding<br>
+            &#x2462; Conversion events (checkout, add-to-cart) are firing in production
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Track 2 -->
+    <div class="fanout-col" style="border-color:#374151">
+      <div class="fanout-col-head" style="color:#9ca3af">Track 2 &middot; Adjacent Products (optional) + Market Intelligence Depth</div>
+
+      <div class="stage conditional" style="border-left-color:#92400e;border-color:#92400e">
+        <div class="sid">PRODUCT-02 &middot; Only if expanding your product range</div>
+        <div class="sname">Adjacent Product Research</div>
+        <div class="sproduce">Ideas for new products to add to your range &mdash; what customers also buy, what you could make</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span><span class="bw bw-opt">Optional at join</span></div>
+      </div>
+
+      <div class="gw soft" style="margin:8px 0">
+        <div class="gw-header">
+          <div class="gw-diamond"></div>
+          <span class="gw-tag">ADVISORY</span>
+          <span class="gw-id">Prompted when you've indicated plans to expand your range</span>
+        </div>
+        <div class="gw-note">&#x26A0; Does not block anything &mdash; just kicks off the research automatically</div>
+      </div>
+
+      <div style="border-top:1px solid #21262d;margin-top:4px;padding-top:12px">
+        <div style="font-size:13px;color:#484f58;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Market intelligence deepens after offer is designed</div>
+
+        <div class="stage-list">
+          <div class="stage" style="border-left-color:#991b1b">
+            <div class="sid">MARKET-07</div><div class="sname">Post-Offer Synthesis</div>
+            <div class="sproduce">Market intelligence updated to reflect what you've now learned from designing your offer</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+          <div class="stage" style="border-left-color:#991b1b">
+            <div class="sid">MARKET-08</div><div class="sname">Demand Evidence Pack</div>
+            <div class="sproduce">All your demand signals compiled into a single reference document</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+          <div class="stage" style="border-left-color:#991b1b">
+            <div class="sid">MARKET-09</div><div class="sname">ICP Refinement</div>
+            <div class="sproduce">Your customer profile narrowed based on real demand signals and offer feedback</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+          <div class="stage" style="border-left-color:#991b1b">
+            <div class="sid">MARKET-10</div><div class="sname">Market Pack (Draft)</div>
+            <div class="sproduce">First consolidated draft of all market intelligence</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+          </div>
+          <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+          <div class="stage highlight" style="border-left-color:#991b1b;border-color:#991b1b">
+            <div class="sid">MARKET-11</div>
+            <div class="sname">Market Pack (Validated)</div>
+            <div class="sproduce">Your finalised market intelligence summary &mdash; used across the rest of the loop</div>
+            <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span><span class="bw bw-star">&#x2605; Standing doc</span><span class="bw bw-opt">Refreshes every 90 days</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     S4 JOIN BARRIER
+     ══════════════════════════════════════════════════ -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<div id="s-s4" class="join-barrier">
+  <div class="join-header">
+    <div class="join-icon">&#x2297;</div>
+    <div>
+      <div class="join-title">S4 &mdash; Bring Everything Together</div>
+      <div class="join-subtitle">All parallel tracks must finish before this step. The agent merges all inputs into a single baseline snapshot.</div>
+    </div>
+  </div>
+
+  <div class="stage" style="border-left-color:#1d4ed8;border-color:#1d4ed8;background:#071428">
+    <div class="sid">S4</div>
+    <div class="sname">Baseline Merge</div>
+    <div class="sproduce">A single merged snapshot of everything gathered so far &mdash; becomes the working baseline for the rest of the run</div>
+    <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+  </div>
+
+  <div style="font-size:14px;font-weight:700;color:#4b6ea8;margin:12px 0 6px">What gets brought together:</div>
+  <div class="join-inputs">
+    <div class="join-input req"><strong>&#x2714; Required &middot; Offer</strong>Your complete offer design (from MARKET-06)</div>
+    <div class="join-input req"><strong>&#x2714; Required &middot; Channel Strategy</strong>Your launch channels and 30-day plan (from SELL-01)</div>
+    <div class="join-input opt"><strong>&#x25CB; Optional &middot; SEO work</strong>From SELL-01 parallel output</div>
+    <div class="join-input opt"><strong>&#x25CB; Optional &middot; Outreach templates</strong>From SELL-01 parallel output</div>
+    <div class="join-input opt"><strong>&#x25CB; Optional &middot; Adjacent product research</strong>From PRODUCT-02, if run</div>
+    <div class="join-input opt"><strong>&#x25CB; Optional &middot; Product intelligence pack</strong>From PRODUCTS-07</div>
+    <div class="join-input opt"><strong>&#x25CB; Optional &middot; Logistics pack</strong>From LOGISTICS-07, if applicable</div>
+    <div class="join-input opt"><strong>&#x25CB; Optional &middot; Market intelligence pack</strong>From MARKET-11</div>
+  </div>
+</div>
+
+<!-- S5A + S5B -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<div id="s-s5" style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+  <div class="orch">
+    <div class="sid">S5A</div>
+    <div class="sname">Prioritise</div>
+    <div class="sproduce">The top 2&ndash;3 things to work on in this cycle, ranked and scored</div>
+    <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+  </div>
+  <div class="orch guarded">
+    <div class="sid">S5B</div>
+    <div class="sname">System Sync</div>
+    <div class="sproduce">Commits the baseline and prioritised plan to the system record &mdash; this is the point of no return for the current run</div>
+    <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+  </div>
+</div>
+
+<!-- WEBSITE -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<div id="s-website" style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+  <div class="orch">
+    <div class="sid">WEBSITE-01</div>
+    <div class="sname">L1 First Build Framework</div>
+    <div class="sproduce">A framework-first assembly contract for the first website build: canonical sources, boundaries, route skeleton, and implementation order</div>
+    <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+  </div>
+  <div class="orch">
+    <div class="sid">WEBSITE-02</div>
+    <div class="sname">Site Upgrade Synthesis</div>
+    <div class="sproduce">A prioritised list of website improvements &mdash; pulled from competitor benchmarking, platform capabilities, and your brand spec</div>
+    <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+  </div>
+</div>
+
+<!-- DO -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+<div id="s-do" class="cbox c-do">
+  <div class="cbox-head">
+    <div class="cbox-icon">&#x1F528;</div>
+    <div>
+      <div class="cbox-title">Implement &mdash; One Thing at a Time</div>
+      <div class="cbox-meta">Each cycle picks one idea from the Ideas pipeline and takes it through investigation &rarr; plan &rarr; build &rarr; review</div>
+      <div class="cbox-cond">Each cycle requires an idea card from the Ideas pipeline (or a direct inject with written rationale)</div>
+    </div>
+  </div>
+  <div class="cbox-body">
+    <div class="do-grid">
+
+      <div class="stage">
+        <div class="sid">DO / 1</div>
+        <div class="sname">Fact-Find</div>
+        <div class="sproduce">Agent investigates what needs building and why &mdash; evidence, confidence scores, open questions</div>
+        <div class="snote">You'll review: an investigation brief before planning begins</div>
+        <div class="swho"><span class="bw bw-both">&#x1F91D; Both</span></div>
+      </div>
+
+      <div class="stage">
+        <div class="sid">DO / 2</div>
+        <div class="sname">Plan</div>
+        <div class="sproduce">Agent breaks the work into tasks with estimates, dependencies, and confidence scores</div>
+        <div class="snote">You approve: the plan before any code is written</div>
+        <div class="swho"><span class="bw bw-both">&#x1F91D; Both</span></div>
+      </div>
+
+      <div class="stage">
+        <div class="sid">DO / 3</div>
+        <div class="sname">Build</div>
+        <div class="sproduce">Agent implements the plan and records what was built, what was tested, and any deviations from the plan</div>
+        <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+      </div>
+
+      <div class="stage conditional">
+        <div class="sid">DO / 4 &middot; You write this</div>
+        <div class="sname">Results Review</div>
+        <div class="sproduce">What actually happened &mdash; outcomes observed, what you learned, any updates to standing intelligence, new ideas that emerged</div>
+        <div class="snote">The build cycle is not complete without this. Writing it feeds your learnings back into Layer A.</div>
+        <div class="swho"><span class="bw bw-you">&#x270D; You write</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- S9B -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+<div id="s-s9b" class="orch teal" style="margin-bottom:14px">
+  <div class="sid">S9B &middot; Pre-Launch</div>
+  <div class="sname">Pre-Launch QA Gates</div>
+  <div class="sproduce">Checks that conversion flows work, SEO is technically sound, performance is within budget, and legal requirements are met before going live</div>
+  <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+</div>
+
+<!-- S10 -->
+<div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+<div id="s-s10" class="orch weekly" style="margin-bottom:14px">
+  <div class="sid">SIGNALS &middot; Repeating weekly</div>
+  <div class="sname">Signals</div>
+  <div class="sproduce">Your weekly cycle &mdash; compile the numbers, make the K/P/C/S call, audit signal quality, read out experiments</div>
+
+  <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+
+    <div class="stage" style="grid-column:1/-1">
+      <div class="sid">SIGNALS-01</div>
+      <div class="sname" style="font-size:15px">Revenue Forecast</div>
+      <div class="sproduce">P10 / P50 / P90 revenue scenarios for the next 90 days &mdash; refreshed each cycle as signals accumulate</div>
+      <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span><span class="bw bw-star">&#x2605; Refreshes each cycle</span></div>
+    </div>
+
+  </div>
+
+  <div class="stage-grid-2" style="margin-top:8px">
+
+    <div class="stage">
+      <div class="sid">SIGNALS-02</div>
+      <div class="sname" style="font-size:15px">Measure</div>
+      <div class="sproduce">Normalised KPI snapshot for the week &mdash; traffic, revenue, conversion rates, and denominator-valid metrics from live analytics</div>
+      <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+    </div>
+
+    <div class="stage">
+      <div class="sid">SIGNALS-03</div>
+      <div class="sname" style="font-size:15px">Decide</div>
+      <div class="sproduce">K/P/C/S decision &mdash; what to Keep, Pivot, Cut, and Scale this week, anchored to the KPI snapshot</div>
+      <div class="swho"><span class="bw bw-both">&#x1F91D; Both</span></div>
+    </div>
+
+    <div class="stage">
+      <div class="sid">SIGNALS-04</div>
+      <div class="sname" style="font-size:15px">Signal Review</div>
+      <div class="sproduce">Audit signal quality for this run &mdash; top findings ranked by Severity &times; Support, with process-improvement stubs</div>
+      <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+    </div>
+
+    <div class="stage">
+      <div class="sid">SIGNALS-05</div>
+      <div class="sname" style="font-size:15px">Experiments</div>
+      <div class="sproduce">Readout for active tests &mdash; completed experiments closed, next-cycle specs added, carry-forwards noted</div>
+      <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+    </div>
+
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+    <div class="gw soft" style="margin:0">
+      <div class="gw-header">
+        <div class="gw-diamond"></div>
+        <span class="gw-tag">ADVISORY</span>
+        <span class="gw-id">Brand dossier freshness</span>
+      </div>
+      <div class="gw-note">&#x26A0; Warning if your brand dossier hasn't been reviewed in more than 90 days &mdash; doesn't block anything</div>
+    </div>
+    <div class="gw soft" style="margin:0">
+      <div class="gw-header">
+        <div class="gw-diamond"></div>
+        <span class="gw-tag">ADVISORY &rarr; STOP</span>
+        <span class="gw-id">Bottleneck constraints</span>
+      </div>
+      <div class="gw-note">&#x26A0; Advisory when a new constraint is flagged &middot; becomes a hard block if the constraint is left unresolved &mdash; requires a replan before continuing</div>
+    </div>
+  </div>
+
+  <div class="loop-indicator">
+    <span style="font-size:20px;color:#0f766e">&#x21BA;</span>
+    SIGNALS repeats every week until the business exits the loop or starts a new run
+  </div>
+</div>
+
+<div style="text-align:center;color:#21262d;font-size:13px;margin-top:12px;margin-bottom:6px">
+  spec v3.12.0 &middot; 2026-02-23
+</div>
+
+</div><!-- end flow -->
+
+<!-- IDEAS PIPELINE -->
+<div class="section-label" id="s-standing">Ideas Pipeline</div>
+<div class="standing-wrap">
+  <div class="standing-shell">
+    <div class="standing-head">
+      <div class="standing-title">IDEAS &middot; Standing Pipeline</div>
+      <div class="standing-meta">Runs on its own schedule &mdash; not part of the sequential flow &middot; Layer A pack updates &rarr; Ideas backlog &rarr; Layer B implementation entry</div>
+    </div>
+    <div class="standing-body">
+      <div class="standing-row">
+        <div class="standing-card">
+          <div class="standing-card-title">Trigger A &middot; Pack Update</div>
+          <div class="standing-line">A market, sell, products, or logistics intelligence pack is refreshed &mdash; the agent scans the diff automatically</div>
+          <div class="stage-badges">
+            <span class="badge badge-auto">automatic</span>
+            <span class="badge badge-auto">diff-scan</span>
+          </div>
+        </div>
+        <div class="standing-pipe">
+          <div class="arrow-line"></div>
+          <div class="arrow-head"></div>
+        </div>
+        <div class="standing-card op">
+          <div class="standing-card-title">Trigger B &middot; You inject an idea</div>
+          <div class="standing-line">You want to add an idea outside the normal refresh cycle &mdash; raise it directly</div>
+          <div class="stage-badges">
+            <span class="badge badge-gate">operator inject</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="standing-arrow-row">
+        <div class="standing-line">Both triggers run through the same three stages.</div>
+        <div class="standing-pipe">
+          <div class="arrow-line"></div>
+          <div class="arrow-head"></div>
+        </div>
+        <div class="standing-line">Runs independently from the main loop &mdash; any number of cycles can be in flight at once.</div>
+      </div>
+
+      <div class="standing-stage-list">
+        <div class="stage">
+          <div class="sid">IDEAS-01</div>
+          <div class="sname">Pack Diff Scan</div>
+          <div class="sproduce">A set of scan proposals &mdash; new ideas to create, existing ideas to strengthen or invalidate, ideas that should be merged or split</div>
+          <div class="swho"><span class="bw bw-bot">&#x1F916; Agent</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">IDEAS-02</div>
+          <div class="sname">Backlog Update</div>
+          <div class="sproduce">The idea backlog is updated &mdash; new cards created, existing cards revised, weak ideas retired</div>
+          <div class="snote">Merge and split decisions require your confirmation before applying</div>
+          <div class="swho"><span class="bw bw-both">&#x1F91D; Both</span></div>
+        </div>
+        <div class="stage">
+          <div class="sid">IDEAS-03</div>
+          <div class="sname">Promote to Implement</div>
+          <div class="sproduce">A ready idea is promoted into the implementation loop &mdash; it becomes the starting point for a DO cycle</div>
+          <div class="snote">Promotion requires: score &ge; 3, evidence quality Medium or higher</div>
+          <div class="swho"><span class="bw bw-both">&#x1F91D; Both</span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;padding:8px 0 4px">
+        <div style="width:2px;height:22px;background:#6b21a8"></div>
+        <div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid #6b21a8"></div>
+      </div>
+
+      <div style="background:rgba(107,33,168,0.10);border:1px solid rgba(107,33,168,0.35);border-radius:8px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px">
+        <div style="flex-shrink:0;width:30px;height:30px;border-radius:50%;background:#1a0d2e;border:2px solid #6b21a8;display:flex;align-items:center;justify-content:center;font-size:16px;margin-top:1px">&#x1F528;</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#c084fc;margin-bottom:4px">Feeds into &rarr; Implement (DO &middot; Layer B)</div>
+          <div style="font-size:14px;color:#c9d1d9;">IDEAS-03 hands the idea off to the implementation loop &mdash; the DO cycle opens from there. Only promoted, scored ideas enter.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end page -->
+
+<script>
+(function() {
+  function updateCrossStreamArrows() {
+    var svg = document.getElementById('laneArrowsSvg');
+    if (!svg) return;
+    var container = svg.closest('.lane-wrapper');
+    if (!container) return;
+    var containerRect = container.getBoundingClientRect();
+
+    var pairs = [
+      { pathId: 'arrow-m01-p02', labelId: 'label-m01-p02',
+        srcId: 'stage-market-01', tgtId: 'stage-products-02',
+        trackFrac: 0.33 },   /* amber — left track in gap */
+      { pathId: 'arrow-m03-p04', labelId: 'label-m03-p04',
+        srcId: 'stage-market-03', tgtId: 'stage-products-04',
+        trackFrac: 0.67 }    /* cyan  — right track in gap */
+    ];
+
+    pairs.forEach(function(pair) {
+      var path  = document.getElementById(pair.pathId);
+      var label = document.getElementById(pair.labelId);
+      var src   = document.getElementById(pair.srcId);
+      var tgt   = document.getElementById(pair.tgtId);
+      if (!path || !src || !tgt) return;
+
+      var srcLane = src.closest('.lane');
+      var tgtLane = tgt.closest('.lane');
+      if (!srcLane || !tgtLane) return;
+
+      var srcRect     = src.getBoundingClientRect();
+      var tgtRect     = tgt.getBoundingClientRect();
+      var srcLaneRect = srcLane.getBoundingClientRect();
+      var tgtLaneRect = tgtLane.getBoundingClientRect();
+
+      /* Anchors on the LANE WALLS at each card's vertical centre.
+         x1 = right wall of source lane  (start of gap)
+         x2 = left wall of target lane   (end of gap)
+         The entire connector lives in the inter-lane gap — never inside a lane. */
+      var x1   = srcLaneRect.right - containerRect.left;
+      var y1   = (srcRect.top  + srcRect.bottom)  / 2 - containerRect.top;
+      var x2   = tgtLaneRect.left  - containerRect.left;
+      var y2   = (tgtRect.top  + tgtRect.bottom)  / 2 - containerRect.top;
+      /* Each connector gets its own vertical track — fraction of the gap width */
+      var xmid = x1 + (x2 - x1) * pair.trackFrac;
+
+      /* Orthogonal elbow with rounded corners, contained within the gap */
+      var r  = 5;
+      var dy = y2 - y1;
+      var rs = dy >= 0 ? 1 : -1;
+      var ra = Math.min(r, Math.abs(dy) / 2);
+
+      var d;
+      if (Math.abs(dy) < 4) {
+        d = 'M' + x1.toFixed(1) + ',' + y1.toFixed(1)
+          + ' L' + x2.toFixed(1) + ',' + y2.toFixed(1);
+      } else {
+        d = 'M'  + x1.toFixed(1)         + ',' + y1.toFixed(1)
+          + ' L' + (xmid - ra).toFixed(1) + ',' + y1.toFixed(1)
+          + ' Q' + xmid.toFixed(1)        + ',' + y1.toFixed(1)
+          + ' '  + xmid.toFixed(1)        + ',' + (y1 + ra * rs).toFixed(1)
+          + ' L' + xmid.toFixed(1)        + ',' + (y2 - ra * rs).toFixed(1)
+          + ' Q' + xmid.toFixed(1)        + ',' + y2.toFixed(1)
+          + ' '  + (xmid + ra).toFixed(1) + ',' + y2.toFixed(1)
+          + ' L' + x2.toFixed(1)          + ',' + y2.toFixed(1);
+      }
+      path.setAttribute('d', d);
+
+      if (label) { label.textContent = ''; }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', updateCrossStreamArrows);
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(updateCrossStreamArrows, 100);
+  });
+})();
+</script>
+
+</body>
+</html>

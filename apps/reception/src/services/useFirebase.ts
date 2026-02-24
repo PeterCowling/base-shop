@@ -8,12 +8,27 @@ import { type Firestore, getFirestore } from "firebase/firestore";
 import { firebaseEnvSchema } from "../schemas/firebaseEnvSchema";
 import type { FirebaseConfig } from "../types/FirebaseConfig";
 
+function getFirebasePublicEnv() {
+  // In Next.js client bundles, parse(process.env) is unreliable because only
+  // explicit NEXT_PUBLIC_* property accesses are inlined.
+  return {
+    NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    NEXT_PUBLIC_FIREBASE_DATABASE_URL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
+    NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  };
+}
+
 /**
  * Client Hook (Pure Data Hook):
  * Returns the Firebase configuration based on environment variables.
  */
 export function getFirebaseConfigFromEnv(): FirebaseConfig {
-  const env = firebaseEnvSchema.parse(process.env);
+  const env = firebaseEnvSchema.parse(getFirebasePublicEnv());
   return {
     apiKey: env.NEXT_PUBLIC_FIREBASE_API_KEY,
     authDomain: env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,

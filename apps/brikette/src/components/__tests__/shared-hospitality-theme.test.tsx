@@ -6,6 +6,9 @@ import { StaffSignalBadgeGroup } from "@acme/ui";
 
 describe("shared hospitality theme", () => {
   it("TC-02: shared hospitality composite renders with semantic token styles", () => {
+    document.documentElement.style.setProperty("--hospitality-ready", "142 76% 97%");
+    document.documentElement.style.setProperty("--hospitality-warning", "40 90% 96%");
+
     render(
       <StaffSignalBadgeGroup
         title="Signal bridge check"
@@ -16,12 +19,15 @@ describe("shared hospitality theme", () => {
       />,
     );
 
-    const readyBadge = screen.getByText("ETA shared: Ready");
-    const pendingBadge = screen.getByText("Cash prepared: Pending");
+    const badgeGroup = screen.getByLabelText("staff-signal-badges");
+    const readyBadge = screen.getByText("ETA shared: Ready").closest("span");
+    const pendingBadge = screen.getByText("Cash prepared: Pending").closest("span");
 
     expect(readyBadge).toBeInTheDocument();
     expect(pendingBadge).toBeInTheDocument();
-    expect(readyBadge).toHaveStyle({ backgroundColor: "hsl(var(--hospitality-ready))" });
-    expect(pendingBadge).toHaveStyle({ backgroundColor: "hsl(var(--hospitality-warning))" });
+    expect(badgeGroup).toContainElement(readyBadge);
+    expect(badgeGroup).toContainElement(pendingBadge);
+    expect(readyBadge).toHaveAttribute("data-token", "hospitality-ready");
+    expect(pendingBadge).toHaveAttribute("data-token", "hospitality-warning");
   });
 });

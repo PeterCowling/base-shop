@@ -33,7 +33,11 @@ import {
   resolvePrepaymentWorkflow,
 } from "../utils/workflow-triggers.js";
 
+import { handleOrganizeInbox as handleOrganizeInboxModule } from "./gmail-organize.js";
+import { setLockStore as setSharedLockStore } from "./gmail-shared.js";
 import { processCancellationEmail } from "./process-cancellation-email.js";
+
+export { checkBookingRefDuplicate } from "./gmail-booking.js";
 
 // =============================================================================
 // Constants
@@ -161,6 +165,7 @@ let lockStoreRef: LockStore = createLockStore();
  */
 export function setLockStore(store: LockStore): void {
   lockStoreRef = store;
+  setSharedLockStore(store);
 }
 
 // =============================================================================
@@ -1971,7 +1976,7 @@ async function runStartupRecovery(
   }
 }
 
-async function handleOrganizeInbox(
+async function _handleOrganizeInbox(
   gmail: gmail_v1.Gmail,
   args: unknown
 ): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
@@ -3298,7 +3303,7 @@ export async function handleGmailTool(name: string, args: unknown) {
   try {
     switch (name) {
       case "gmail_organize_inbox": {
-        return await handleOrganizeInbox(gmail, args);
+        return await handleOrganizeInboxModule(gmail, args);
       }
 
       case "gmail_list_pending": {

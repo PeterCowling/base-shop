@@ -2,6 +2,11 @@
 import * as React from "react";
 import Image, { type ImageProps } from "next/image";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 // ────────────────────────────────────────────────────────────────────────────────
@@ -20,6 +25,10 @@ export interface AvatarProps extends Omit<ImageProps, "width" | "height"> {
   padding?: string;
   /** Optional margin classes */
   margin?: string;
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 // ────────────────────────────────────────────────────────────────────────────────
@@ -37,6 +46,8 @@ export const Avatar = (
     height,
     padding,
     margin,
+    shape,
+    radius,
     style,
     ...props
   }: AvatarProps & {
@@ -61,6 +72,11 @@ export const Avatar = (
         : dimension;
 
   const boxClasses = cn(padding, margin);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "full",
+  });
   const inlineDimensions: React.CSSProperties = {
     width: numericWidth,
     height: numericHeight,
@@ -72,7 +88,8 @@ export const Avatar = (
       <div
         ref={ref as unknown as React.RefObject<HTMLDivElement>}
         className={cn(
-          "bg-muted flex items-center justify-center rounded-full text-sm", // i18n-exempt -- DEV-000 CSS utility class names
+          "bg-muted flex items-center justify-center text-sm", // i18n-exempt -- DEV-000 CSS utility class names
+          shapeRadiusClass,
           boxClasses,
           className
         )}
@@ -93,7 +110,8 @@ export const Avatar = (
       width={numericWidth}
       height={numericHeight}
       className={cn(
-        "rounded-full object-cover", // i18n-exempt -- DEV-000 CSS utility class names
+        "object-cover", // i18n-exempt -- DEV-000 CSS utility class names
+        shapeRadiusClass,
         boxClasses,
         className,
       )}
@@ -102,4 +120,3 @@ export const Avatar = (
     />
   );
 };
-

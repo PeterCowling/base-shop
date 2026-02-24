@@ -117,6 +117,31 @@ describe("DataGrid", () => {
 
       expect(screen.queryByRole("searchbox")).not.toBeInTheDocument();
     });
+
+    it("supports search input shape/radius overrides", () => {
+      const { rerender } = render(
+        <DataGrid
+          columns={TEST_COLUMNS}
+          data={TEST_DATA}
+          filterable
+          searchShape="square"
+        />,
+      );
+      let search = screen.getByRole("searchbox");
+      expect(search).toHaveClass("rounded-none");
+
+      rerender(
+        <DataGrid
+          columns={TEST_COLUMNS}
+          data={TEST_DATA}
+          filterable
+          searchShape="square"
+          searchRadius="xl"
+        />,
+      );
+      search = screen.getByRole("searchbox");
+      expect(search).toHaveClass("rounded-xl");
+    });
   });
 
   describe("pagination", () => {
@@ -205,6 +230,18 @@ describe("DataGrid", () => {
       // Click header checkbox (select all)
       fireEvent.click(checkboxes[0]);
       expect(onRowSelectionChange).toHaveBeenCalled();
+    });
+
+    it("supports selection checkbox shape/radius overrides", () => {
+      const columns: ColumnDef<TestRow, unknown>[] = [
+        createSelectionColumn<TestRow>({ shape: "square", radius: "xl" }),
+        ...TEST_COLUMNS,
+      ];
+      render(<DataGrid columns={columns} data={TEST_DATA} selectable />);
+
+      const checkboxes = screen.getAllByRole("checkbox");
+      expect(checkboxes[0]).toHaveClass("rounded-xl");
+      expect(checkboxes[1]).toHaveClass("rounded-xl");
     });
   });
 

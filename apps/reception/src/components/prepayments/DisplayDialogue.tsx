@@ -1,5 +1,7 @@
 import React from "react";
 
+import { ReceptionButton as Button } from "@acme/ui/operations";
+
 import MarkAsFailedButton from "./MarkAsFailedButton";
 import MarkAsPaidButton from "./MarkAsPaidButton";
 
@@ -91,23 +93,23 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-body">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 font-body">
       {/* Dialog container */}
-      <div className="bg-white w-96 rounded shadow-lg dark-surface dark:text-darkAccentGreen">
+      <div className="bg-surface w-96 rounded shadow-lg dark-surface dark:text-darkAccentGreen">
         {/* Header */}
-        <div className="flex justify-between items-center p-4 border-b border-gray-400 dark:border-darkSurface">
+        <div className="flex justify-between items-center p-4 border-b border-border-2 dark:border-darkSurface">
           <h2 className="text-lg font-heading">Existing Payment Details</h2>
-          <button
+          <Button
             aria-label="close"
             onClick={onClose}
             className="text-error-main hover:bg-error-light p-2 rounded transition-colors dark:hover:bg-error-light/70"
           >
             &times;
-          </button>
+          </Button>
         </div>
 
         {/* Content */}
-        <div className="p-4 border-b border-gray-400 dark:border-darkSurface">
+        <div className="p-4 border-b border-border-2 dark:border-darkSurface">
           <div className="mb-3">
             <strong className="font-heading">Credit Card Number:</strong>{" "}
             {cardNumber}
@@ -115,16 +117,16 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
           <div className="mb-3">
             <strong className="font-heading">Expiry (MM/YY):</strong> {expiry}
           </div>
-          <button
-            className="px-3 py-1 bg-warning-light text-white rounded hover:bg-warning-main transition-colors font-body dark:bg-warning-main dark:hover:bg-warning-light"
+          <Button
+            className="px-3 py-1 bg-warning-light text-primary-fg rounded hover:bg-warning-main transition-colors font-body dark:bg-warning-main dark:hover:bg-warning-light"
             onClick={onEdit}
           >
             Edit Details
-          </button>
+          </Button>
         </div>
 
         {/* Actions */}
-        <div className="p-4 flex gap-3 justify-end border-t border-gray-400 dark:border-darkSurface">
+        <div className="p-4 flex gap-3 justify-end border-t border-border-2 dark:border-darkSurface">
           {hasCard ? (
             <MarkAsFailedButton
               bookingRef={bookingRef}
@@ -134,12 +136,12 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
               onSuccess={() => handlePaymentSuccess("failed")}
             />
           ) : (
-            <button
-              className="px-3 py-1 bg-error-light text-white rounded cursor-not-allowed font-body"
+            <Button
+              className="px-3 py-1 bg-error-light text-primary-fg rounded cursor-not-allowed font-body"
               disabled
             >
               Mark as Failed
-            </button>
+            </Button>
           )}
 
           <MarkAsPaidButton

@@ -387,7 +387,7 @@ describe("Governed Test Runner", () => {
     expect(result.status).toBe(0);
 
     const log = fs.readFileSync(logPath, "utf8");
-    expect(log).toContain("exec jest --config ./jest.config.cjs --testPathPattern=foo --maxWorkers=2");
+    expect(log).toContain("exec jest --config ./jest.config.cjs --testPathPattern=foo --maxWorkers=2 --forceExit");
   });
 
   test("TC-03: watch policies enforce explicit watch-exclusive opt-in", () => {
@@ -490,8 +490,25 @@ describe("Governed Test Runner", () => {
     expect(turboRun.status).toBe(0);
 
     const log = fs.readFileSync(logPath, "utf8");
-    expect(log).toContain("exec jest --testPathPattern=foo --maxWorkers=2");
+    expect(log).toContain("exec jest --testPathPattern=foo --maxWorkers=2 --forceExit");
     expect(log).toContain("exec turbo run test --affected --concurrency=2");
+  });
+
+  test("TC-06b: --forceExit is not duplicated when explicitly provided", () => {
+    const repo = newRepo();
+    const mockBinDir = newTempDir("mock-pnpm-");
+    createMockPnpm(mockBinDir);
+    const logPath = path.join(newTempDir("governed-log-"), "events.log");
+    const env = baseEnv(repo, mockBinDir, logPath);
+
+    const result = runRunner(["jest", "--", "--forceExit", "--testPathPattern=foo"], repo, env);
+    expect(result.status).toBe(0);
+
+    const log = fs.readFileSync(logPath, "utf8");
+    const jestLine = log.split("\n").find((l: string) => l.includes("exec jest"));
+    expect(jestLine).toBeDefined();
+    const forceExitCount = (jestLine!.match(/--forceExit/g) || []).length;
+    expect(forceExitCount).toBe(1);
   });
 
   test("TC-07: BASESHOP_GOVERNED_CONTEXT is set for internal runner execution", () => {
@@ -556,7 +573,7 @@ describe("Governed Test Runner", () => {
     expect(lockStatus.stdout).toContain("unlocked");
 
     const log = fs.readFileSync(logPath, "utf8");
-    expect(log).toContain("exec jest --maxWorkers=2");
+    expect(log).toContain("exec jest --maxWorkers=2 --forceExit");
   });
 
   test.skip("TEG-07A TC-01: governed run emits classed telemetry for jest intent", () => {

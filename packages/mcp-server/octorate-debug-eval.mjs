@@ -101,7 +101,7 @@ async function main() {
     console.info("\n\nKeeping browser open for manual inspection...");
     console.info("Check the browser console for logs");
     console.info("Press Ctrl+C to close");
-    await new Promise((_resolve) => {});
+    await new Promise(() => {});
   }
 }
 

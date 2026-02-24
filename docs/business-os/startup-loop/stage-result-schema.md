@@ -2,7 +2,7 @@
 Type: Reference
 Status: Canonical
 Domain: Business-OS
-Last-reviewed: 2026-02-13
+Last-reviewed: 2026-02-21
 ---
 
 # Stage Result Schema + Data-Plane Ownership Contract
@@ -28,17 +28,26 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/
   state.json                          # CONTROL-PLANE owned (derived, single-writer)
   events.jsonl                        # CONTROL-PLANE owned (append-only, single-writer)
   stages/
-    S2B/                              # STAGE-OWNED: only S2B worker writes here
+    MARKET-06/                        # STAGE-OWNED: only MARKET-06 worker writes here
       stage-result.json
       offer.md
     S3/                               # STAGE-OWNED: only S3 worker writes here
       stage-result.json
       forecast.md
-    S6B/                              # STAGE-OWNED: only S6B worker writes here
+    PRODUCT-02/                       # STAGE-OWNED: only PRODUCT-02 worker writes here (conditional)
+      stage-result.json
+      adjacent-product-research.md    # optional
+    SELL-01/                          # STAGE-OWNED: only SELL-01 worker writes here
       stage-result.json
       channels.md
       seo.md                          # optional
       outreach.md                     # optional
+    SELL-02/                          # STAGE-OWNED: only SELL-02 worker writes here — channel performance baseline
+      stage-result.json
+      channel-performance-baseline.md
+    SELL-08/                          # STAGE-OWNED: only SELL-08 worker writes here (conditional — only when paid_spend_requested)
+      stage-result.json
+      activation-readiness.md
     S4/                               # STAGE-OWNED: only S4 worker writes here
       stage-result.json
       baseline.snapshot.md
@@ -53,7 +62,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/
 - A stage worker may ONLY write files under `stages/<its-stage-id>/`.
 - A stage worker MUST NOT read or write `baseline.manifest.json`, `state.json`, or `events.jsonl`.
 - The control plane is the SOLE writer for manifest, state, and events files.
-- Stage workers MAY read other stages' `stage-result.json` files (read-only) when needed for input validation (e.g., S4 reads S3 and S6B results).
+- Stage workers MAY read other stages' `stage-result.json` files (read-only) when needed for input validation (e.g., S4 reads S3 and SELL-01 results, and may read PRODUCT-02 when present).
 
 ## 3) Stage Result Schema (v1)
 
@@ -80,7 +89,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/
 |---|---|---|---|
 | `schema_version` | integer | yes | Always `1` for this version. |
 | `run_id` | string | yes | Stable run identifier matching `SFS-<BIZ>-<YYYYMMDD>-<hhmm>` format. |
-| `stage` | string | yes | Stage ID from loop-spec.yaml (e.g., `S3`, `S6B`). |
+| `stage` | string | yes | Stage ID from loop-spec.yaml (e.g., `S3`, `SELL-01`). |
 | `loop_spec_version` | string | yes | Version of the loop spec this run is executing against. |
 | `status` | enum | yes | `Done` = stage completed successfully. `Failed` = stage encountered an error. `Blocked` = stage cannot proceed due to missing input or gate failure. |
 | `timestamp` | string | yes | ISO 8601 UTC timestamp of when the stage completed/failed/blocked. |
@@ -100,19 +109,19 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/
 
 ## 4) Examples
 
-### Example 1: S2B (Offer design) — Done
+### Example 1: MARKET-06 (Offer design) — Done
 
 ```json
 {
   "schema_version": 1,
   "run_id": "SFS-HEAD-20260213-1200",
-  "stage": "S2B",
+  "stage": "MARKET-06",
   "loop_spec_version": "1.0.0",
   "status": "Done",
   "timestamp": "2026-02-13T12:02:00Z",
   "produced_keys": ["offer"],
   "artifacts": {
-    "offer": "stages/S2B/offer.md"
+    "offer": "stages/MARKET-06/offer.md"
   },
   "error": null,
   "blocking_reason": null
@@ -138,21 +147,21 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/
 }
 ```
 
-### Example 3: S6B (Channel strategy + GTM) — Done with optional artifacts
+### Example 3: SELL-01 (Channel strategy + GTM) — Done with optional artifacts
 
 ```json
 {
   "schema_version": 1,
   "run_id": "SFS-HEAD-20260213-1200",
-  "stage": "S6B",
+  "stage": "SELL-01",
   "loop_spec_version": "1.0.0",
   "status": "Done",
   "timestamp": "2026-02-13T12:05:00Z",
   "produced_keys": ["channels", "seo", "outreach"],
   "artifacts": {
-    "channels": "stages/S6B/channels.md",
-    "seo": "stages/S6B/seo.md",
-    "outreach": "stages/S6B/outreach.md"
+    "channels": "stages/SELL-01/channels.md",
+    "seo": "stages/SELL-01/seo.md",
+    "outreach": "stages/SELL-01/outreach.md"
   },
   "error": null,
   "blocking_reason": null

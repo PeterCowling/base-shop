@@ -32,7 +32,7 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
       <CatalogLoginForm
         token={consoleState.token}
         busy={consoleState.busy}
-        error={consoleState.error}
+        feedback={consoleState.actionFeedback.login}
         onTokenChange={consoleState.setToken}
         onSubmit={consoleState.handleLogin}
       />
@@ -86,6 +86,19 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
         </div>
       </div>
 
+      {consoleState.actionFeedback.login ? (
+        <p
+          role={consoleState.actionFeedback.login.kind === "error" ? "alert" : "status"}
+          className={
+            consoleState.actionFeedback.login.kind === "error"
+              ? "text-sm text-danger-fg"
+              : "text-sm text-success-fg"
+          }
+        >
+          {consoleState.actionFeedback.login.message}
+        </p>
+      ) : null}
+
       <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
         <CatalogProductsList
           products={consoleState.products}
@@ -107,7 +120,7 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
             fieldErrors={consoleState.fieldErrors}
             monoClassName={monoClassName}
             busy={consoleState.busy}
-            error={consoleState.error}
+            feedback={consoleState.actionFeedback.draft}
             onChangeDraft={consoleState.setDraft}
             onSave={consoleState.handleSave}
             onDelete={consoleState.handleDelete}
@@ -122,7 +135,7 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
             minImageEdge={consoleState.minImageEdge}
             r2Destination={consoleState.r2Destination}
             uploadUrl={consoleState.submissionUploadUrl}
-            submissionStatus={consoleState.submissionStatus}
+            feedback={consoleState.actionFeedback.submission}
             onUploadUrlChange={consoleState.setSubmissionUploadUrl}
             onUploadToR2={consoleState.handleUploadSubmissionToR2}
             onExport={consoleState.handleExportSubmission}
@@ -134,6 +147,7 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
               busy={consoleState.busy}
               syncOptions={consoleState.syncOptions}
               monoClassName={monoClassName}
+              feedback={consoleState.actionFeedback.sync}
               syncOutput={consoleState.syncOutput}
               onSync={consoleState.handleSync}
               onChangeSyncOptions={consoleState.setSyncOptions}

@@ -1,9 +1,10 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy edits data pending i18n overhaul */
+import { xaI18n } from "./xaI18n";
+
 export const XA_EDITS = [
   {
     slug: "atelier-essentials",
-    title: "Atelier Essentials",
-    description: "Core pieces with a sharp, minimal edge.",
+    title: xaI18n.t("xaB.src.lib.xaedits.l4c12"),
+    description: xaI18n.t("xaB.src.lib.xaedits.l5c18"),
     productSlugs: ["studio-jacket", "oversized-hoodie", "in-the-loop-belt-bag-gold"],
   },
   {

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { listGuideManifestEntries } from "@/lib/guide-authoring/manifest-loader";
+import { PREVIEW_TOKEN } from "@/lib/guide-authoring/public-config";
 
 type GuideOption = {
   key: string;
@@ -17,15 +17,62 @@ type Props = {
 
 export function GuideLinkPicker({ isOpen, onClose, onSelect }: Props) {
   const [search, setSearch] = useState("");
+  const [options, setOptions] = useState<GuideOption[]>([]);
+  const [loadState, setLoadState] = useState<"idle" | "loading" | "loaded" | "error">(
+    "idle",
+  );
+  const previewToken = PREVIEW_TOKEN ?? "";
 
-  const options = useMemo<GuideOption[]>(() => {
-    return listGuideManifestEntries()
-      .map((entry) => ({
-        key: entry.key,
-        label: entry.slug || entry.key,
-      }))
-      .sort((a, b) => a.label.localeCompare(b.label));
-  }, []);
+  useEffect(() => {
+    if (!isOpen || loadState === "loading" || loadState === "loaded") return;
+    if (!previewToken) {
+      setLoadState("error");
+      return;
+    }
+
+    let cancelled = false;
+    setLoadState("loading");
+
+    async function fetchGuideOptions() {
+      try {
+        const response = await fetch("/api/guides/manifest-list", {
+          headers: { "x-preview-token": previewToken },
+          cache: "no-store",
+        });
+        const data = (await response.json()) as {
+          ok?: boolean;
+          guides?: Array<{ key?: string; label?: string }>;
+        };
+        if (!response.ok || !data?.ok || !Array.isArray(data.guides)) {
+          throw new Error("Failed to load guides");
+        }
+        if (cancelled) return;
+
+        const nextOptions = data.guides
+          .filter(
+            (guide): guide is { key: string; label?: string } =>
+              Boolean(guide && typeof guide.key === "string" && guide.key.length > 0),
+          )
+          .map((guide) => ({
+            key: guide.key,
+            label: guide.label && guide.label.length > 0 ? guide.label : guide.key,
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label));
+
+        setOptions(nextOptions);
+        setLoadState("loaded");
+      } catch {
+        if (cancelled) return;
+        setOptions([]);
+        setLoadState("error");
+      }
+    }
+
+    void fetchGuideOptions();
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, loadState, previewToken]);
 
   const filteredGuides = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -58,7 +105,13 @@ export function GuideLinkPicker({ isOpen, onClose, onSelect }: Props) {
         }}
       />
       <ul className="max-h-52 overflow-y-auto" role="listbox" aria-label="Guide link options">
-        {filteredGuides.length === 0 ? (
+        {loadState === "loading" ? (
+          <li className="px-3 py-2 text-xs text-brand-text/60">Loading guides...</li>
+        ) : loadState === "error" ? (
+          <li className="px-3 py-2 text-xs text-brand-terra">
+            Unable to load guides. Check preview token.
+          </li>
+        ) : filteredGuides.length === 0 ? (
           <li className="px-3 py-2 text-xs text-brand-text/60">No matches</li>
         ) : (
           filteredGuides.map((guide) => (

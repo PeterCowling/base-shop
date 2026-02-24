@@ -2,13 +2,15 @@ import Link from "next/link";
 
 import { Button } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/atoms/Grid";
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy service center content pending design/i18n overhaul */
 import { Section } from "@acme/design-system/atoms/Section";
 import { Breadcrumbs } from "@acme/design-system/molecules";
-import { Stack } from "@acme/design-system/primitives/Stack";
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { ResourceCard } from "@acme/ui/components/organisms/ResourceCard";
+import { SupportSidebarNav } from "@acme/ui/components/organisms/SupportSidebarNav";
 
 import { siteConfig } from "../../lib/siteConfig";
 import { toWhatsappHref } from "../../lib/support";
+import { xaI18n } from "../../lib/xaI18n";
 
 export default function ServiceCenterPage() {
   const productLabelPlural = siteConfig.catalog.labelPlural;
@@ -17,72 +19,52 @@ export default function ServiceCenterPage() {
     : null;
   const showContactCard = siteConfig.showContactInfo || siteConfig.showSocialLinks;
   const navLinks = [
-    { href: "#orders", label: "Orders & contact" },
+    { href: "#orders", label: xaI18n.t("xaB.src.app.service.center.page.l21c31") },
     { href: "#shipping", label: "Shipping" },
     { href: "#returns", label: "Returns" },
-    { href: "#company", label: "Company & legal" },
+    { href: "#company", label: xaI18n.t("xaB.src.app.service.center.page.l24c32") },
   ];
 
   return (
     <main className="sf-content">
       <Section padding="default">
         <Breadcrumbs
-          items={[{ label: "Home", href: "/" }, { label: "Service center" }]}
+          items={[{ label: "Home", href: "/" }, { label: xaI18n.t("xaB.src.app.service.center.page.l31c58") }]}
         />
       </Section>
 
       <Section padding="wide">
-        <h1 className="text-3xl font-semibold">Service center</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Quick help with orders, shipping, returns, and support for {productLabelPlural}.
+        <h1 className="text-3xl font-semibold">{xaI18n.t("xaB.src.app.service.center.page.l36c48")}</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.service.center.page.l37c59")}{productLabelPlural}.
         </p>
       </Section>
 
       <Section padding="default">
         <Grid columns={{ base: 1, md: 4 }} gap={8}>
           <aside className="md:col-span-1">
-            <div className="sticky top-28 space-y-3">
-              <div className="text-sm font-semibold text-muted-foreground">Browse help</div>
-              <div className="flex flex-col gap-2">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="rounded border px-3 py-2 text-sm hover:border-foreground hover:text-foreground"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </div>
+            <SupportSidebarNav
+              title="Browse help"
+              items={navLinks}
+              variant="pill"
+            />
           </aside>
 
           <div className="md:col-span-3 space-y-6 scroll-mt-28" id="orders">
-            <div className="rounded-lg border p-5">
-            <Stack gap={3}>
-              <div className="text-sm font-semibold">Order help</div>
-              <div className="text-sm text-muted-foreground">
-                Track your order without logging in.
-              </div>
+            <ResourceCard title="Order help" description={xaI18n.t("xaB.src.app.service.center.page.l53c58")}>
               <Button asChild>
-                <Link href="/account/trackingorder">Check order status</Link>
+                <Link href="/account/trackingorder">{xaI18n.t("xaB.src.app.service.center.page.l55c53")}</Link>
               </Button>
               {siteConfig.showContactInfo ? (
-                <div className="text-xs text-muted-foreground">
-                  Prefer email? Include your order number and email address.
-                </div>
+                <div className="text-xs text-muted-foreground">{xaI18n.t("xaB.src.app.service.center.page.l58c64")}</div>
               ) : null}
-            </Stack>
-          </div>
+            </ResourceCard>
 
             {showContactCard ? (
-              <div className="rounded-lg border p-5">
-                <Stack gap={3}>
-                  <div className="text-sm font-semibold">Contact</div>
-                  <div className="text-sm text-muted-foreground">
-                    Choose a channel and we’ll route you to the right team.
-                  </div>
-                  <div className="flex flex-wrap gap-3">
+              <ResourceCard
+                title="Contact"
+                description={xaI18n.t("xaB.src.app.service.center.page.l67c29")}
+              >
+                <Inline gap={3} className="flex-wrap">
                     {whatsappHref ? (
                       <Button variant="outline" asChild>
                         <a href={whatsappHref} target="_blank" rel="noreferrer noopener">
@@ -102,94 +84,79 @@ export default function ServiceCenterPage() {
                         </a>
                       </Button>
                     ) : null}
-                  </div>
+                </Inline>
                   {siteConfig.showContactInfo && siteConfig.businessHours ? (
-                    <div className="text-xs text-muted-foreground">
-                      Business hours: {siteConfig.businessHours}
+                    <div className="text-xs text-muted-foreground">{xaI18n.t("xaB.src.app.service.center.page.l91c68")}{siteConfig.businessHours}
                     </div>
                   ) : null}
-                </Stack>
-              </div>
+              </ResourceCard>
             ) : (
-              <div className="rounded-lg border p-5">
-                <Stack gap={3}>
-                  <div className="text-sm font-semibold">Contact</div>
-                  <div className="text-sm text-muted-foreground">
-                    Contact details are available on request.
-                  </div>
-                </Stack>
-              </div>
+              <ResourceCard
+                title="Contact"
+                description={xaI18n.t("xaB.src.app.service.center.page.l99c29")}
+              />
             )}
 
-            <div className="rounded-lg border p-5">
-              <Stack gap={3}>
-                <div className="text-sm font-semibold">How to shop</div>
-                <div className="text-sm text-muted-foreground">
-                  Browse, order, and pay following our step-by-step guide.
-                </div>
-                <Button variant="outline" asChild>
-                  <Link href="/pages/how-to-shop">View guide</Link>
-                </Button>
-              </Stack>
-            </div>
+            <ResourceCard
+              title="How to shop"
+              description={xaI18n.t("xaB.src.app.service.center.page.l105c27")}
+            >
+              <Button variant="outline" asChild>
+                <Link href="/pages/how-to-shop">View guide</Link>
+              </Button>
+            </ResourceCard>
 
-            <div className="rounded-lg border p-5 scroll-mt-28" id="shipping">
-              <Stack gap={3}>
-                <div className="text-sm font-semibold">Shipping</div>
-                <div className="text-sm text-muted-foreground">
-                  Processing times, methods, and delivery windows.
-                </div>
-                <Button variant="outline" asChild>
-                  <Link href="/pages/shipping-policy">Shipping policy</Link>
-                </Button>
-              </Stack>
-            </div>
+            <ResourceCard
+              id="shipping"
+              className="scroll-mt-28"
+              title="Shipping"
+              description={xaI18n.t("xaB.src.app.service.center.page.l116c27")}
+            >
+              <Button variant="outline" asChild>
+                <Link href="/pages/shipping-policy">{xaI18n.t("xaB.src.app.service.center.page.l119c53")}</Link>
+              </Button>
+            </ResourceCard>
 
-            <div className="rounded-lg border p-5 scroll-mt-28" id="returns">
-              <Stack gap={3}>
-                <div className="text-sm font-semibold">Returns</div>
-                <div className="text-sm text-muted-foreground">
-                  What’s refundable, timelines, and how to start a return.
-                </div>
-                <Button variant="outline" asChild>
-                  <Link href="/pages/return-policy">Return policy</Link>
-                </Button>
-              </Stack>
-            </div>
+            <ResourceCard
+              id="returns"
+              className="scroll-mt-28"
+              title="Returns"
+              description={xaI18n.t("xaB.src.app.service.center.page.l127c27")}
+            >
+              <Button variant="outline" asChild>
+                <Link href="/pages/return-policy">{xaI18n.t("xaB.src.app.service.center.page.l130c51")}</Link>
+              </Button>
+            </ResourceCard>
 
-            <div className="rounded-lg border p-5">
-              <Stack gap={3}>
-                <div className="text-sm font-semibold">FAQs</div>
-                <div className="text-sm text-muted-foreground">
-                  Detailed answers for shopping, delivery, payments, and returns.
-                </div>
-                <Button variant="outline" asChild>
-                  <Link href="/faqs">View FAQs</Link>
-                </Button>
-              </Stack>
-            </div>
+            <ResourceCard
+              title="FAQs"
+              description={xaI18n.t("xaB.src.app.service.center.page.l136c27")}
+            >
+              <Button variant="outline" asChild>
+                <Link href="/faqs">View FAQs</Link>
+              </Button>
+            </ResourceCard>
           </div>
         </Grid>
       </Section>
 
       <Section padding="default" id="company" className="scroll-mt-28">
-        <div className="rounded-lg border p-5">
-          <div className="text-sm font-semibold">Company & legal</div>
-          <div className="mt-3 flex flex-wrap gap-3">
+        <ResourceCard title="Company & legal">
+          <Inline gap={3} className="mt-3 flex-wrap">
             <Button variant="outline" asChild>
               <Link href="/pages/about-us">About us</Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="/pages/privacy-policy">Privacy policy</Link>
+              <Link href="/pages/privacy-policy">{xaI18n.t("xaB.src.app.service.center.page.l153c50")}</Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="/pages/terms-of-service">Terms of service</Link>
+              <Link href="/pages/terms-of-service">{xaI18n.t("xaB.src.app.service.center.page.l156c52")}</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/pages/contact-us">Contact us</Link>
             </Button>
-          </div>
-        </div>
+          </Inline>
+        </ResourceCard>
       </Section>
     </main>
   );

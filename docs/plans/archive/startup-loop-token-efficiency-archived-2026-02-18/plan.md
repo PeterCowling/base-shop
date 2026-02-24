@@ -355,7 +355,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** `docs/plans/startup-loop-token-efficiency/plan.md` updated with new confidence scores
 - **Build evidence (2026-02-18):**
-  - H-01: Brand Copy (Domain 5) reads only brand-dossier + messaging-hierarchy — zero SEO domain references ✓
+  - H-01: Brand Copy (Domain 5) reads only brand-identity + messaging-hierarchy — zero SEO domain references ✓
   - H-02: lp-sequence SKILL.md Parallelism Guide format confirmed canonical (`| Wave | Tasks | Prerequisites | Notes |`) ✓
   - H-03: All 3 BOS integration files reference `stage-doc-core.md` (grep confirmed, 0 remaining `stage-doc-operations` refs) ✓
   - H-04: All active loop-spec.yaml gate names covered in startup-loop command modules ✓

@@ -5,9 +5,10 @@ import {
   getMediaOverview,
   listMedia,
   updateMediaMetadata,
-  type UpdateMediaMetadataFields,
   uploadMedia,
 } from "@cms/actions/media.server";
+
+import type { UpdateMediaMetadataFields } from "@acme/platform-core/repositories/media.server";
 
 export const runtime = "nodejs";
 

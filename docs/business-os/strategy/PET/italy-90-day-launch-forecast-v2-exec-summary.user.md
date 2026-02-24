@@ -8,6 +8,7 @@ Updated: 2026-02-11
 Last-reviewed: 2026-02-11
 Owner: Pete
 Source: docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # PET Italy Launch (90 Days) - Executive Cut

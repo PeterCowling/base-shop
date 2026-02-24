@@ -223,21 +223,36 @@ CHECKPOINT enforcement contract:
 
 ## Phase 11: Automatic Critique (score-gated)
 
-After the plan is persisted (Phase 8) and before any build handoff (Phase 10), evaluate `Overall-confidence` from the plan to decide whether `/lp-do-critique` runs automatically.
+After the plan is persisted (Phase 8) and before any build handoff (Phase 10), evaluate two independent triggers. Either trigger alone is sufficient to invoke `/lp-do-critique` automatically.
 
-**Gate rule:** If `Overall-confidence` < 4.0 (i.e. < 80), automatically invoke `/lp-do-critique`. Plans scoring >= 4.0 skip automatic critique (user can still invoke manually).
+**Trigger 1 — Whole-plan confidence:** `Overall-confidence` < 4.0 (i.e. < 80 on a 5-point scale).
 
-**Invocation (when triggered):**
+**Trigger 2 — Uncovered low-confidence task:** Any individual task has `confidence < 80%` AND has no upstream SPIKE or INVESTIGATE task that would plausibly resolve its uncertainty before it falls due.
+
+### Trigger 2 — Evaluation procedure
+
+For every task in the plan with `confidence < 80%`:
+
+1. Identify all tasks that are sequenced *before* this task (direct blockers and their transitive predecessors — i.e. the dependency chain upstream of this task).
+2. Check whether any of those upstream tasks has `Type: SPIKE` or `Type: INVESTIGATE`.
+3. If yes → the uncertainty is covered; this task passes Trigger 2 (skip to next low-confidence task).
+4. If no upstream SPIKE/INVESTIGATE exists → this task is **uncovered**. Trigger 2 fires.
+
+A task is only considered "covered" if the SPIKE/INVESTIGATE is upstream (i.e. must complete before the low-confidence task runs). A SPIKE that is parallel or downstream does not count.
+
+**Invocation (when either trigger fires):**
 - Target: `docs/plans/<feature-slug>/plan.md`
 - Mode: default (CRITIQUE + AUTOFIX)
 - Scope: `full`
+- When reporting, note which trigger(s) fired and which task(s) caused Trigger 2 (if applicable).
 
 **Flow:**
-1. Read `Overall-confidence` from the persisted plan frontmatter.
-2. If score >= 4.0: skip critique, proceed to Phase 10.
-3. If score < 4.0: run `/lp-do-critique docs/plans/<feature-slug>/plan.md`.
-4. Critique produces findings and applies autofixes to the plan.
-5. After critique:
+1. Read `Overall-confidence` from the persisted plan frontmatter → evaluate Trigger 1.
+2. Scan all task confidence values → evaluate Trigger 2 per the procedure above.
+3. If neither trigger fires: skip critique, proceed to Phase 10.
+4. If either trigger fires: run `/lp-do-critique docs/plans/<feature-slug>/plan.md`.
+5. Critique produces findings and applies autofixes to the plan.
+6. After critique:
    - If critique verdict is `not credible` or critique score <= 2.5:
      - Set plan `Status: Draft` (block auto-build).
      - Report critique findings to user.
@@ -254,13 +269,13 @@ After the plan is persisted (Phase 8) and before any build handoff (Phase 10), e
 
 ## Completion Messages
 
-Plan-only (confidence >= 4.0, critique skipped):
+Plan-only (both triggers clear, critique skipped):
 
-> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Overall-confidence: `<X.X>` (critique skipped — above threshold).
+> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Overall-confidence: `<X.X>` (critique skipped — all tasks covered above threshold).
 
-Plan-only (confidence < 4.0, critique ran):
+Plan-only (critique ran — note which trigger):
 
-> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Critique verdict: `<credible / partially credible / not credible>` (score: `<X.X>`).
+> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Critique triggered by: `<Overall-confidence below 4.0 | uncovered low-confidence task(s): [task IDs]>`. Critique verdict: `<credible / partially credible / not credible>` (score: `<X.X>`).
 
 Plan+auto:
 
@@ -275,7 +290,8 @@ Plan+auto:
 - [ ] VC checks reference shared business VC checklist when relevant
 - [ ] `/lp-sequence` completed after structural edits
 - [ ] Consumer tracing complete for all new outputs and modified behaviors in M/L code/mixed tasks
-- [ ] Phase 11 gate evaluated: `/lp-do-critique` ran automatically if Overall-confidence < 4.0
-- [ ] Critique verdict and score reported in completion message (or skipped note if >= 4.0)
+- [ ] Phase 11 Trigger 1 evaluated: Overall-confidence vs 4.0 threshold
+- [ ] Phase 11 Trigger 2 evaluated: every task with confidence < 80% checked for upstream SPIKE/INVESTIGATE coverage
+- [ ] Critique trigger reason(s) reported in completion message (or "skipped — all tasks covered" if both clear)
 - [ ] Auto-build blocked if critique score <= 2.5
 - [ ] Auto-build only when explicit intent + eligibility

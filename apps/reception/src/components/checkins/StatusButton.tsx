@@ -1,13 +1,10 @@
 // File: /Users/petercowling/reception/src/components/checkins/StatusButton.tsx
 
 import { memo, useCallback, useMemo, useState } from "react";
-import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import {
-  faBed,
-  faClock,
-  faShoppingBag,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { LucideIcon } from "lucide-react";
+import { Bed, Clock, ShoppingBag } from "lucide-react";
+
+import { Button } from "@acme/design-system/atoms";
 
 import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations";
 import { type CheckInRow } from "../../types/component/CheckinRow";
@@ -129,27 +126,27 @@ function StatusButton({ booking }: StatusButtonProps) {
   const getButtonStyle = useCallback((code: number): string => {
     if (code === 12) {
       // "Check-in complete" => greenish
-      return "bg-success-light text-white cursor-pointer hover:opacity-80";
+      return "bg-success-light text-primary-fg cursor-pointer hover:opacity-80";
     }
     if (code === 23) {
       // "Bags dropped" => a warning color
-      return "bg-warning-main text-white hover:opacity-80";
+      return "bg-warning-main text-primary-fg hover:opacity-80";
     }
     // default or no code => normal
-    return "bg-primary-main text-white hover:bg-primary-dark";
+    return "bg-primary-main text-primary-fg hover:bg-primary-dark";
   }, []);
 
   /**
    * Pick the button icon from occupant's code.
    */
-  const getStatusIcon = useCallback((code: number): IconDefinition => {
+  const getStatusIcon = useCallback((code: number): LucideIcon => {
     switch (code) {
       case 23:
-        return faShoppingBag; // "Bags dropped"
+        return ShoppingBag; // "Bags dropped"
       case 12:
-        return faBed; // "Check-in complete"
+        return Bed; // "Check-in complete"
       default:
-        return faClock; // "Pending" or code=0
+        return Clock; // "Pending" or code=0
     }
   }, []);
 
@@ -218,7 +215,7 @@ function StatusButton({ booking }: StatusButtonProps) {
     duration-300
     disabled:opacity-60
     disabled:cursor-not-allowed
-    min-h-[55px]
+    min-h-55px
     min-w-[55px]
   `;
 
@@ -227,7 +224,7 @@ function StatusButton({ booking }: StatusButtonProps) {
    */
   return (
     <>
-      <button
+      <Button
         onClick={handleStatusChange}
         disabled={isDisabled}
         className={buttonClass}
@@ -256,13 +253,12 @@ function StatusButton({ booking }: StatusButtonProps) {
             />
           </svg>
         ) : (
-          <FontAwesomeIcon
-            icon={getStatusIcon(occupantCode)}
-            size="lg"
-            className="transition-opacity duration-300"
-          />
+          (() => {
+            const StatusIcon = getStatusIcon(occupantCode);
+            return <StatusIcon size={20} className="transition-opacity duration-300" />;
+          })()
         )}
-      </button>
+      </Button>
     </>
   );
 }

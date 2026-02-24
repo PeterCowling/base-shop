@@ -160,7 +160,7 @@ Modularize the three highest-signal startup-loop skills identified in the 2026-0
 
 ### Recent Git History (Targeted)
 
-- `5d7cc5b4e8` `feat(startup-loop-branding-design-module)` — lp-channels last substantively modified: added brand-dossier/messaging-hierarchy as optional inputs. Current 262L SKILL.md reflects this.
+- `5d7cc5b4e8` `feat(startup-loop-branding-design-module)` — lp-channels last substantively modified: added brand-identity/messaging-hierarchy as optional inputs. Current 262L SKILL.md reflects this.
 - `5d7cc5b4e8` — lp-sequence modified in same session (workspace canonicalization). Current 287L SKILL.md reflects this.
 - `4ed0be7201` `feat(ds-skill-alignment)` — lp-design-qa last committed: Wave 4 build (distribution spine, launch QA, extensions). All three skills have uncommitted working-tree changes on dev branch (from git status at session start); tasks must operate on the current working tree state.
 

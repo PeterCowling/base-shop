@@ -45,4 +45,12 @@ describe("Toast", () => {
     await userEvent.click(screen.getByRole("button"));
     expect(handleClose).toHaveBeenCalled();
   });
+
+  it("supports shape/radius overrides", () => {
+    const { rerender } = render(<Toast open message="Saved" shape="square" />);
+    expect(screen.getByRole("alert").className).toContain("rounded-none");
+
+    rerender(<Toast open message="Saved" shape="square" radius="xl" />);
+    expect(screen.getByRole("alert").className).toContain("rounded-xl");
+  });
 });

@@ -10,6 +10,7 @@ Seed-Source: docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forec
 Market-Source: docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md
 Site-Source: docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md
 Promotion-Status: Integrated-into-canonical-plan
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # BRIK Forecast Seed for SFS-00

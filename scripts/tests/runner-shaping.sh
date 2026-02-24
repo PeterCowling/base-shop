@@ -98,6 +98,7 @@ baseshop_runner_shape_args() {
       local has_run_in_band="0"
       local has_max_workers="0"
       local has_max_workers_eq="0"
+      local has_force_exit="0"
       if [[ ${#shaped_args[@]} -gt 0 ]] && baseshop_runner_has_arg "--runInBand" "${shaped_args[@]}"; then
         has_run_in_band="1"
       fi
@@ -107,8 +108,14 @@ baseshop_runner_shape_args() {
       if [[ ${#shaped_args[@]} -gt 0 ]] && baseshop_runner_has_arg_prefix "--maxWorkers=" "${shaped_args[@]}"; then
         has_max_workers_eq="1"
       fi
+      if [[ ${#shaped_args[@]} -gt 0 ]] && baseshop_runner_has_arg "--forceExit" "${shaped_args[@]}"; then
+        has_force_exit="1"
+      fi
       if [[ "$has_run_in_band" != "1" && "$has_max_workers" != "1" && "$has_max_workers_eq" != "1" ]]; then
         shaped_args+=("--maxWorkers=2")
+      fi
+      if [[ "$has_force_exit" != "1" ]]; then
+        shaped_args+=("--forceExit")
       fi
       ;;
     turbo)

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy checkout page pending i18n overhaul */
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -13,6 +12,7 @@ import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 import { useCart } from "../../contexts/XaCartContext";
 import { recordSale } from "../../lib/inventoryStore";
 import { createOrder } from "../../lib/ordersStore";
+import { xaI18n } from "../../lib/xaI18n";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -70,9 +70,7 @@ export default function CheckoutPage() {
     <main className="sf-content">
       <Section padding="wide">
         <h1 className="text-2xl font-semibold">Checkout</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          This demo checkout stores orders locally in your browser (no backend APIs).
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.checkout.page.l72c59")}</p>
       </Section>
 
       <Section padding="default" className="space-y-8">
@@ -111,16 +109,14 @@ export default function CheckoutPage() {
           </div>
         ) : (
           <div className="rounded-lg border p-6">
-            <div className="font-medium">Your cart is empty.</div>
+            <div className="font-medium">{xaI18n.t("xaB.src.app.checkout.page.l113c42")}</div>
             <div className="mt-2 text-sm text-muted-foreground">
-              <Link href="/collections/all" className="underline">
-                Browse products
-              </Link>
+              <Link href="/collections/all" className="underline">{xaI18n.t("xaB.src.app.checkout.page.l115c67")}</Link>
             </div>
           </div>
         )}
 
-        <div className="max-w-md space-y-4">
+        <Section as="div" padding="none" width="full" className="max-w-md space-y-4">
           <form
             className="space-y-4"
             onSubmit={(e) => {
@@ -146,14 +142,14 @@ export default function CheckoutPage() {
 
             <div className="flex flex-wrap gap-3">
               <Button type="submit" disabled={loading || !lines.length}>
-                {loading ? "Placing order…" : "Place order"}
+                {loading ? xaI18n.t("xaB.src.app.checkout.page.l148c28") : "Place order"}
               </Button>
               <Button variant="outline" asChild>
                 <Link href="/cart">Back to cart</Link>
               </Button>
             </div>
           </form>
-        </div>
+        </Section>
       </Section>
     </main>
   );

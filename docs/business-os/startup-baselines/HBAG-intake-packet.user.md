@@ -6,21 +6,22 @@ Created: 2026-02-20
 Updated: 2026-02-20
 Last-reviewed: 2026-02-20
 Owner: Pete
-Precursor-DISCOVERY-01: 2026-02-20
-Precursor-DISCOVERY-02: 2026-02-20
-Precursor-DISCOVERY-03: 2026-02-20
-Precursor-DISCOVERY-04: 2026-02-20
-Precursor-DISCOVERY-05: (pending — new stage added 2026-02-20; not yet run for HBAG)
-Precursor-DISCOVERY-06: (pending — new stage added 2026-02-20; not yet run for HBAG)
-Precursor-DISCOVERY-07: 2026-02-20
+Precursor-ASSESSMENT-01: 2026-02-20
+Precursor-ASSESSMENT-02: 2026-02-20
+Precursor-ASSESSMENT-03: 2026-02-20
+Precursor-ASSESSMENT-04: 2026-02-20
+Precursor-ASSESSMENT-06: 2026-02-21
+Precursor-ASSESSMENT-07: 2026-02-21
+Precursor-ASSESSMENT-08: 2026-02-20
 Precursor-sync-date: 2026-02-20
-Source-DISCOVERY-01: docs/business-os/strategy/HBAG/problem-statement.user.md
-Source-DISCOVERY-02: docs/business-os/strategy/HBAG/2026-02-20-solution-space-results.user.md
-Source-DISCOVERY-03: docs/business-os/strategy/HBAG/s0c-option-select.user.md
-Source-DISCOVERY-04: docs/business-os/strategy/HBAG/2026-02-20-naming-shortlist.user.md
-Source-DISCOVERY-05: docs/business-os/strategy/HBAG/distribution-plan.user.md
-Source-DISCOVERY-06: docs/business-os/strategy/HBAG/measurement-plan.user.md
-Source-DISCOVERY-07: docs/business-os/strategy/HBAG/s0e-operator-evidence.user.md
+Source-ASSESSMENT-01: docs/business-os/strategy/HBAG/problem-statement.user.md
+Source-ASSESSMENT-02: docs/business-os/strategy/HBAG/2026-02-20-solution-profile-results.user.md
+Source-ASSESSMENT-03: docs/business-os/strategy/HBAG/solution-select.user.md
+Source-ASSESSMENT-04: docs/business-os/strategy/HBAG/2026-02-20-candidate-names.user.md
+Source-ASSESSMENT-06: docs/business-os/strategy/HBAG/distribution-profiling.user.md
+Source-ASSESSMENT-07: docs/business-os/strategy/HBAG/measurement-profiling.user.md
+Source-ASSESSMENT-08: docs/business-os/strategy/HBAG/current-situation.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HBAG Intake Packet
@@ -32,20 +33,21 @@ Source-DISCOVERY-07: docs/business-os/strategy/HBAG/s0e-operator-evidence.user.m
 - Product 2 direction exists: same physical body repurposed as AirPod/small items holder with clip attachment; AirPod fit confirmed (TASK-03 complete 2026-02-17). (`observed`)
 - Primary initial buyer hypothesis is fashion-conscious women 25–40 who own aspirational handbags and follow accessory trends. (`observed/inferred`)
 - Physical product exists; supplier is China-based; unit cost and MOQ not yet confirmed (TASK-02 pending). (`observed`)
-- Launch-surface mode is currently `pre-website` — Etsy and Instagram/TikTok are the first-day channels, no app or own-site yet. (`observed`)
+- Demand proven via WhatsApp orders (quantity TBC). Moving orders off WhatsApp onto owned channel (Caryina website) is the primary near-term execution step. (`observed`)
+- Launch-surface mode: `pre-website` transitioning to own-site first. Website (new app) is primary channel; Etsy and Instagram/TikTok are parallel channels. (`observed`)
 - In-destination channel (Brikette hostel + Positano boutiques) is a seasonal opportunity (June–September); operator is based in Positano, Amalfi Coast. (`observed`)
 - Core near-term execution risk is supply chain cost visibility and product quality perception in photography — not lack of category demand, which is well-evidenced. (`inferred`)
 - Brand positioning tier decided: **Premium €80–€150** (Pete confirmed 2026-02-17). (`observed`)
-- Business unit HBAG was recently separated from XA for independent planning. No customer-facing brand name confirmed yet. (`observed`)
-- Naming research complete (2026-02-20). Shortlist of 7 directions returned; top recommendation: **Veloria** (coined, Italian phonetics, strongest ownability path). Six alternatives: Orivella, Marevia, Cintara, Riflesso, Brunito, OroLuce. Operator name selection required before brand setup. (`observed`)
+- Business unit HBAG was recently separated from XA for independent planning. Customer-facing brand name selected: **Caryina** (Pete confirmed 2026-02-21). (`observed`)
+- Naming research complete (2026-02-20–21). Three rounds of candidate generation; name selected: **Caryina**. Domain registration and TM pre-screen required before brand setup. (`observed`)
 
 ## B) Business and Product Packet
 
 | Field | Value | Tag |
 |---|---|---|
 | Business code | HBAG | observed |
-| Business name | Shortlist returned (2026-02-20): Veloria (top recommendation), Orivella, Marevia, Cintara, Riflesso, Brunito, OroLuce — operator selection pending | observed |
-| business_name_status | shortlist-returned | observed |
+| Business name | Caryina (Pete selected 2026-02-21) | observed |
+| business_name_status | selected | observed |
 | Region | Italy (Positano, Amalfi Coast) primary; EU + international via Etsy | observed |
 | Target languages | EN (primary), IT | inferred |
 | Product 1 | Mini handbag bag charm — Birkin-style mini bag worn on handbag strap as fashion accessory | observed |
@@ -93,7 +95,7 @@ Source-DISCOVERY-07: docs/business-os/strategy/HBAG/s0e-operator-evidence.user.m
 | CE marking not required for fashion accessory variants H1–H4 | observed | TASK-04 complete 2026-02-18: TSD Directive 2009/48/EC Annex I item 10 exclusion applies | High |
 | H5 (children's first bag) requires GPSR + REACH compliance (~€1,000–3,000) before launch | observed | TASK-04 finding; no CE marking but product safety compliance required | High |
 | Single operator (Pete); max 1–2 active channel experiments simultaneously | observed | Bandwidth constraint; H4 and H5 deferred until post-checkpoint | High |
-| Business name shortlist returned; operator name selection required before brand setup | observed | Naming research complete 2026-02-20; top recommendation: Veloria (coined, Italian phonetics); 6 alternatives; see docs/business-os/strategy/HBAG/2026-02-20-naming-shortlist.user.md | High |
+| Business name selected: **Caryina** | observed | Pete confirmed 2026-02-21; domain registration and TM pre-screen required before brand setup | High |
 | Brand positioning locked at premium €80–€150 | observed | Pete decision 2026-02-17; gates all photography, copy, and channel choices | High |
 | IP/trade dress risk — Birkin-style silhouette | risk | 2025 Paris Judicial Court ruling affirmed Birkin shape protection; maintain fashion-accessory framing, avoid exact replica claim; do not use "Birkin" in product title or copy | High |
 | REACH compliance required — metal hardware | constraint | Nickel and chromium VI limits apply to all metal clasps and rings on H1–H4 under REACH Annex XVII; supplier must confirm REACH compliance on hardware | High |
@@ -102,7 +104,7 @@ Source-DISCOVERY-07: docs/business-os/strategy/HBAG/s0e-operator-evidence.user.m
 
 ## E) Draft Outcome Contract
 
-- Outcome statement: Achieve first paid demand signal for HBAG via Etsy and Instagram/TikTok demand probe, validating that premium €80–€150 positioning for mini handbag fashion accessories finds buyers at launch scale.
+- Outcome statement: Move Caryina from proven WhatsApp demand to a scalable owned channel (website + Etsy), validating that premium €80–€150 positioning converts at volume without manual order handling.
 - Baseline (2026-02-17):
   - paid orders: 0
   - net revenue: €0
@@ -132,7 +134,7 @@ Source-DISCOVERY-07: docs/business-os/strategy/HBAG/s0e-operator-evidence.user.m
 | Unit cost per bag (€) from China supplier | Required for margin stack calculation and pricing floor confirmation | Pete | Critical |
 | Minimum order quantity (MOQ) | Required for inventory planning and cash commitment assessment | Pete | Critical |
 | China→EU shipping cost per unit at MOQ | Required for contribution margin at target retail price | Pete | Critical |
-| Customer-facing brand name | Required before Etsy shop branding and Instagram account setup; shortlist returned 2026-02-20 (7 directions, top: Veloria); Pete to select from shortlist | Pete | High |
+| Customer-facing brand name | ~~Selected: Caryina (2026-02-21)~~ — domain registration and TM pre-screen still required before Etsy/Instagram setup | Pete | High |
 | Product quality perception in photography | Required before listing goes live; TASK-06 perception test is the gate | Pete | High |
 | Amalfi custom graphics capability (supplier) | Required to confirm H3 (location variant) is producible | Pete | Medium |
 | Instagram/TikTok account status for HBAG | Required before TASK-07 social probe; confirm whether separate account from Brikette needed | Pete | High |
@@ -230,7 +232,7 @@ Last updated: 2026-02-20 12:00 UTC
     "statement": "Price architecture for artisan accessories: <€100 is 'obvious yes'; €110–139 requires visible craft/material story; €160+ is high friction without brand proof. Coach bag charm €95 is the anchor comparator.",
     "confidence": 0.8,
     "last_updated": "2026-02-20T00:00:00Z",
-    "evidence": ["docs/business-os/strategy/HBAG/s0c-option-select.user.md"]
+    "evidence": ["docs/business-os/strategy/HBAG/solution-select.user.md"]
   },
   {
     "id": "risk.ip_trade_dress.birkin_silhouette",
@@ -238,7 +240,7 @@ Last updated: 2026-02-20 12:00 UTC
     "statement": "Birkin-style silhouette has trade dress sensitivity; 2025 Paris Judicial Court ruling affirmed Birkin shape protection; fashion-accessory framing required, avoid exact replica claim",
     "confidence": 0.85,
     "last_updated": "2026-02-20T00:00:00Z",
-    "evidence": ["docs/business-os/strategy/HBAG/2026-02-20-solution-space-results.user.md"]
+    "evidence": ["docs/business-os/strategy/HBAG/2026-02-20-solution-profile-results.user.md"]
   },
   {
     "id": "risk.reach.metal_hardware",
@@ -246,7 +248,7 @@ Last updated: 2026-02-20 12:00 UTC
     "statement": "REACH Annex XVII nickel and chromium VI limits apply to all metal clasps and rings on H1–H4; supplier must confirm REACH compliance before EU market entry",
     "confidence": 0.9,
     "last_updated": "2026-02-20T00:00:00Z",
-    "evidence": ["docs/business-os/strategy/HBAG/2026-02-20-solution-space-results.user.md"]
+    "evidence": ["docs/business-os/strategy/HBAG/2026-02-20-solution-profile-results.user.md"]
   },
   {
     "id": "compliance.eu_gpsr.applies",
@@ -254,7 +256,7 @@ Last updated: 2026-02-20 12:00 UTC
     "statement": "EU GPSR (2023/988) applies from 13 December 2024 to all consumer product variants; GPSR documentation (responsible person, product traceability) required before EU market entry",
     "confidence": 0.9,
     "last_updated": "2026-02-20T00:00:00Z",
-    "evidence": ["docs/business-os/strategy/HBAG/2026-02-20-solution-space-results.user.md"]
+    "evidence": ["docs/business-os/strategy/HBAG/2026-02-20-solution-profile-results.user.md"]
   },
   {
     "id": "market.eu_duty.sub150_parcels_2026",
@@ -262,7 +264,7 @@ Last updated: 2026-02-20 12:00 UTC
     "statement": "EU €3 interim duty on parcels under €150 applies from 1 July 2026; affects international Etsy shipping economics from summer 2026",
     "confidence": 0.85,
     "last_updated": "2026-02-20T00:00:00Z",
-    "evidence": ["docs/business-os/strategy/HBAG/2026-02-20-solution-space-results.user.md"]
+    "evidence": ["docs/business-os/strategy/HBAG/2026-02-20-solution-profile-results.user.md"]
   },
   {
     "id": "style.market_direction.craft_authenticity_2026",
@@ -270,7 +272,7 @@ Last updated: 2026-02-20 12:00 UTC
     "statement": "2026 fashion accessory market pivot: craft/material authenticity, vintage-inspired, no logos, natural textures. Buyer appetite is shifting to 'one considered piece that elevates' — away from playful/novelty accessories.",
     "confidence": 0.75,
     "last_updated": "2026-02-20T00:00:00Z",
-    "evidence": ["docs/business-os/strategy/HBAG/s0c-option-select.user.md"]
+    "evidence": ["docs/business-os/strategy/HBAG/solution-select.user.md"]
   }
 ]
 ```

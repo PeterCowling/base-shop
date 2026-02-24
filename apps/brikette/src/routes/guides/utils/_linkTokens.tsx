@@ -17,7 +17,7 @@ const BULLET_LINE = /^\s*\*\s+/u;
 const EXTERNAL_REL_PARTS = ["noopener", "noreferrer"] as const;
 const EXTERNAL_REL = EXTERNAL_REL_PARTS.join(" ");
 const INLINE_LINK_CLASS =
-  "inline-flex min-h-11 min-w-11 items-center font-medium text-primary-700 underline decoration-primary-300 underline-offset-2 transition-colors hover:text-primary-900 hover:decoration-primary-500 dark:text-primary-400 dark:decoration-primary-600 dark:hover:text-primary-300 dark:hover:decoration-primary-400";
+  "inline-flex min-h-11 min-w-11 items-center font-medium text-brand-primary underline decoration-brand-primary/50 underline-offset-2 transition-colors hover:text-brand-bougainvillea hover:decoration-brand-bougainvillea dark:text-brand-secondary dark:decoration-brand-secondary/60 dark:hover:text-brand-secondary dark:hover:decoration-brand-secondary";
 
 type EmphasisDelimiter = "***" | "**" | "*";
 type ParseResult = { endIndex: number; closed: boolean; children: ReactNode[] };

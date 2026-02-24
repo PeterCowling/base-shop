@@ -108,7 +108,7 @@ function TooltipComponent({ booking, onDoubleClick }: TooltipComponentProps) {
               cursor-pointer
               px-2 py-1
               rounded
-              hover:bg-black
+              hover:bg-foreground
               hover:bg-opacity-5
               focus:outline-none
             "

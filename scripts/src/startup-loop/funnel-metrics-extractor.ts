@@ -80,7 +80,7 @@ const METRIC_CATALOG: Record<MetricId, MetricCatalogEntry> = {
   traffic: {
     class: "primitive",
     direction: "higher_is_better",
-    stage: "S6B",
+    stage: "SELL-01",
     priority: "primary",
   },
   cvr: {
@@ -92,13 +92,13 @@ const METRIC_CATALOG: Record<MetricId, MetricCatalogEntry> = {
   aov: {
     class: "primitive",
     direction: "higher_is_better",
-    stage: "S2B",
+    stage: "MARKET-06",
     priority: "primary",
   },
   cac: {
     class: "primitive",
     direction: "lower_is_better",
-    stage: "S6B",
+    stage: "SELL-01",
     priority: "primary",
   },
   orders: {

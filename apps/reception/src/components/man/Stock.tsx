@@ -2,6 +2,16 @@
 
 import React, { useMemo } from "react";
 
+import {
+  ReceptionInput,
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
+
 import { useProducts } from "../../hooks/data/bar/useProducts";
 
 function Stock() {
@@ -18,42 +28,42 @@ function Stock() {
   }, [getProductsByCategory]);
 
   return (
-    <div className="min-h-[80vh] p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         STOCK
       </h1>
-      <div className="bg-white rounded-lg shadow p-6 dark:bg-darkSurface">
+      <div className="bg-surface rounded-lg shadow p-6 dark:bg-darkSurface">
         <div className="overflow-auto">
-          <table className="min-w-full border-collapse text-sm">
-            <thead>
-              <tr className="bg-gray-200 dark:bg-darkSurface">
-                <th className="p-2 border-b text-start">Item</th>
-                <th className="p-2 border-b text-end">Expected</th>
-                <th className="p-2 border-b text-end">Add Purchase</th>
-                <th className="p-2 border-b text-end">Add Re-count</th>
-                <th className="p-2 border-b text-end">Remove Leakage</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table className="min-w-full border-collapse text-sm">
+            <TableHeader>
+              <TableRow className="bg-surface-3 dark:bg-darkSurface">
+                <TableHead className="p-2 border-b text-start">Item</TableHead>
+                <TableHead className="p-2 border-b text-end">Expected</TableHead>
+                <TableHead className="p-2 border-b text-end">Add Purchase</TableHead>
+                <TableHead className="p-2 border-b text-end">Add Re-count</TableHead>
+                <TableHead className="p-2 border-b text-end">Remove Leakage</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {productNames.map((name) => (
-                <tr key={name}>
-                  <td className="p-2 border-b">{name}</td>
-                  <td className="p-2 border-b text-end">
-                    <input type="number" className="w-20 border p-1" />
-                  </td>
-                  <td className="p-2 border-b text-end">
-                    <input type="number" className="w-20 border p-1" />
-                  </td>
-                  <td className="p-2 border-b text-end">
-                    <input type="number" className="w-20 border p-1" />
-                  </td>
-                  <td className="p-2 border-b text-end">
-                    <input type="number" className="w-20 border p-1" />
-                  </td>
-                </tr>
+                <TableRow key={name}>
+                  <TableCell className="p-2 border-b">{name}</TableCell>
+                  <TableCell className="p-2 border-b text-end">
+                    <ReceptionInput type="number" className="w-20 border p-1" />
+                  </TableCell>
+                  <TableCell className="p-2 border-b text-end">
+                    <ReceptionInput type="number" className="w-20 border p-1" />
+                  </TableCell>
+                  <TableCell className="p-2 border-b text-end">
+                    <ReceptionInput type="number" className="w-20 border p-1" />
+                  </TableCell>
+                  <TableCell className="p-2 border-b text-end">
+                    <ReceptionInput type="number" className="w-20 border p-1" />
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </div>
     </div>

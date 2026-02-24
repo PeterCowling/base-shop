@@ -6,6 +6,7 @@ Created: 2026-02-09
 Updated: 2026-02-09
 Last-reviewed: 2026-02-09
 Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Business OS — Business Plan

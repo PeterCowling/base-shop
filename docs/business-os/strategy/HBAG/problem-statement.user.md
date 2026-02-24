@@ -1,11 +1,16 @@
+---
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
+---
+
 Type: Reference
 Status: Active
 
 # Problem Statement — HBAG
 
 ---
-Stage: DISCOVERY-01
-Skill: /lp-do-discovery-01-problem-framing
+Stage: ASSESSMENT-01
+Skill: /lp-do-assessment-01-problem-statement
 Business: HBAG
 Created: 2026-02-20
 Status: Active
@@ -115,12 +120,12 @@ Gift purchasers in the €80–€150 bracket who want "special + story-worthy" 
 Global DTC market for bag accessories exists and is growing (JOOR 12× wholesale signal). Destination retail in Positano is additive and seasonal. Provisional because a realistic CAC → conversion model has not been built. Unblocked by: running proof tests (questions in research appendix I) that establish actual conversion economics.
 
 **2. Solved by incumbents → PASS**
-Full competitor audit (10 verified brands at €50–€250) confirms the artisan-Italian-provenance position at €100–€160 is unoccupied. No funded incumbent combines AirPod Pro engineering + Italian artisan provenance + bag charm identity under €250. Destination retail as a distribution channel is entirely unoccupied by any competitor in this category. Detail in research appendix H and forward-propagated to DISCOVERY-02/DISCOVERY-03.
+Full competitor audit (10 verified brands at €50–€250) confirms the artisan-Italian-provenance position at €100–€160 is unoccupied. No funded incumbent combines AirPod Pro engineering + Italian artisan provenance + bag charm identity under €250. Destination retail as a distribution channel is entirely unoccupied by any competitor in this category. Detail in research appendix H and forward-propagated to ASSESSMENT-02/ASSESSMENT-03.
 
 **3. Insufficient willingness to pay → PASS (provisional)**
 High-end spend (Hermès $930, Chanel $950 AirPod cases; Loewe/Miu Miu €300–€1,990 bag charms) proves category desire exists. Your €80–€150 tier needs direct validation via conversion tests (preorders, pop-up, ads-to-waitlist). Unblocked by: proof tests measuring purchase behaviour at target price point.
 
-**Verdict: GO — proceed to DISCOVERY-02 (solution-space scan). Run proof tests that convert (a) trend evidence into (b) purchase evidence at target price point, with measured CAC and conversion before committing supply chain investment.**
+**Verdict: GO — proceed to ASSESSMENT-02 (solution-profiling scan). Run proof tests that convert (a) trend evidence into (b) purchase evidence at target price point, with measured CAC and conversion before committing supply chain investment.**
 
 ---
 
@@ -130,10 +135,10 @@ Research answers and forward-propagated stage artifacts:
 
 | Artifact | Path | Stage |
 |---|---|---|
-| Research appendix (A–I) | `s0a-research-appendix.user.md` | DISCOVERY-01 |
-| Solution-space prompt | `2026-02-20-solution-space-prompt.md` | DISCOVERY-02 |
-| Solution-space results | `2026-02-20-solution-space-results.user.md` | DISCOVERY-02 |
-| Option selection decision | `s0c-option-select.user.md` | DISCOVERY-03 |
-| Naming research prompt | `naming-research-prompt.md` | DISCOVERY-04 |
+| Research appendix (A–I) | `s0a-research-appendix.user.md` | ASSESSMENT-01 |
+| Solution-profiling prompt | `2026-02-20-solution-profiling-prompt.md` | ASSESSMENT-02 |
+| Solution-profiling results | `2026-02-20-solution-profile-results.user.md` | ASSESSMENT-02 |
+| Option selection decision | `solution-select.user.md` | ASSESSMENT-03 |
+| Naming research prompt | `candidate-names-prompt.md` | ASSESSMENT-04 |
 
 *Pending operator input: D (product spec — materials, construction, craft signatures) and E (brand/story — provenance narrative, marking strategy). Both are owner Pete decisions that require direct product knowledge.*

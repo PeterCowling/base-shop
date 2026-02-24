@@ -1,5 +1,8 @@
 import { type FC, type KeyboardEvent, memo, useCallback, useState } from "react";
 
+import { Textarea } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import useBookingNotes from "../../../hooks/data/useBookingNotes";
 import useBookingNotesMutation from "../../../hooks/mutations/useBookingNotesMutation";
 import { formatEnGbDateTimeFromIso } from "../../../utils/dateUtils";
@@ -57,45 +60,46 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div
-        className="absolute inset-0 bg-black opacity-50"
+        className="absolute inset-0 bg-foreground opacity-50"
         onClick={onClose}
         role="button"
         tabIndex={0}
         onKeyDown={handleKeyDown}
       />
-      <div className="bg-white rounded-lg shadow-lg z-10 p-4 w-11/12 max-w-md dark:bg-darkSurface dark:text-darkAccentGreen">
+      <div className="bg-surface rounded-lg shadow-lg z-10 p-4 w-11/12 max-w-md">
         <h2 className="text-xl font-bold mb-4">Booking Notes</h2>
         <div className="max-h-64 overflow-y-auto mb-4 space-y-2">
           {sorted.length === 0 && <p className="italic">No notes</p>}
           {sorted.map(([id, note]) => (
             <div key={id} className="border p-2 rounded space-y-1">
-              <div className="text-xs text-gray-600 dark:text-darkAccentGreen">
+              <div className="text-xs text-muted-foreground">
                 {formatEnGbDateTimeFromIso(note.timestamp)} - {note.user}
               </div>
               {editingId === id ? (
                 <>
-                  <textarea
-                    className="w-full border rounded p-1 text-gray-900 dark:text-darkAccentGreen"
+                  <Textarea
+                    compatibilityMode="no-wrapper"
+                    className="w-full border rounded p-1 text-foreground"
                     rows={2}
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
                   />
                   <div className="flex justify-end gap-2">
-                    <button
-                      className="px-2 py-1 bg-gray-300 text-gray-800 rounded dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
+                    <Button
+                      className="px-2 py-1 bg-surface-3 text-foreground rounded"
                       onClick={() => {
                         setEditingId(null);
                         setEditText("");
                       }}
                     >
                       Cancel
-                    </button>
-                    <button
-                      className="px-2 py-1 bg-primary-main text-white rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+                    </Button>
+                    <Button
+                      className="px-2 py-1 bg-primary text-primary-fg rounded"
                       onClick={handleUpdate}
                     >
                       Save
-                    </button>
+                    </Button>
                   </div>
                 </>
               ) : (
@@ -104,46 +108,47 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
                     {note.text}
                   </div>
                   <div className="flex gap-2">
-                    <button
-                      className="text-blue-600 text-sm"
+                    <Button
+                      className="text-info-main text-sm"
                       onClick={() => {
                         setEditingId(id);
                         setEditText(note.text);
                       }}
                     >
                       Edit
-                    </button>
-                    <button
-                      className="text-red-600 text-sm"
+                    </Button>
+                    <Button
+                      className="text-error-main text-sm"
                       onClick={() => handleDelete(id)}
                     >
                       Delete
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}
             </div>
           ))}
         </div>
-        <textarea
-          className="w-full border rounded p-2 mb-2 text-gray-900 dark:text-darkAccentGreen"
+        <Textarea
+          compatibilityMode="no-wrapper"
+          className="w-full border rounded p-2 mb-2 text-foreground"
           rows={3}
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
         <div className="flex justify-end gap-2">
-          <button
-            className="px-4 py-2 bg-gray-300 text-gray-800 rounded dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
+          <Button
+            className="px-4 py-2 bg-surface-3 text-foreground rounded"
             onClick={onClose}
           >
             Close
-          </button>
-          <button
-            className="px-4 py-2 bg-primary-main text-white rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+          </Button>
+          <Button
+            className="px-4 py-2 bg-primary text-primary-fg rounded"
             onClick={handleAdd}
           >
             Add Note
-          </button>
+          </Button>
         </div>
       </div>
     </div>

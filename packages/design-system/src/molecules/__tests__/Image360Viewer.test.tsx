@@ -54,4 +54,15 @@ describe("Image360Viewer", () => {
     fireEvent.pointerMove(container, { clientX: 220 });
     expect(img).toHaveAttribute("src", frames[2]);
   });
+
+  it("supports shape/radius overrides", () => {
+    const frames = ["/1.jpg", "/2.jpg"];
+    const { rerender } = render(<Image360Viewer frames={frames} alt="test" shape="square" />);
+    let img = screen.getByAltText("test");
+    expect(img).toHaveClass("rounded-none");
+
+    rerender(<Image360Viewer frames={frames} alt="test" shape="square" radius="2xl" />);
+    img = screen.getByAltText("test");
+    expect(img).toHaveClass("rounded-2xl");
+  });
 });

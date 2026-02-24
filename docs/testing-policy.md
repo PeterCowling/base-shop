@@ -47,6 +47,9 @@ jest                                # Runs all tests in current directory
   - `intent=turbo` injects `--concurrency=2` unless overridden.
   - Watch flags are blocked unless using explicit `watch-exclusive` opt-in.
   - `CI=true` runs in governed compatibility mode (shaping enabled; scheduler/admission bypassed).
+- Governed config path rule:
+  - If a package test script uses `pnpm -w run test:governed`, `--config` must be repo-relative (for example `apps/prime/jest.config.cjs`), not package-relative (`./jest.config.cjs`).
+  - If a package needs `./jest.config.cjs`, invoke `scripts/tests/run-governed-test.sh` from package CWD (for example `bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs`).
 - Migrated package `test` scripts now route through `test:governed` (or documented delegated wrappers).
 - If a full monorepo run is explicitly required, use:
   - `BASESHOP_ALLOW_BROAD_TESTS=1 pnpm test:all`
@@ -78,6 +81,12 @@ jest                                # Runs all tests in current directory
   ```
 - Use `--coverage=false` for single-file runs to avoid tripping the global coverage thresholds.
 
+### Coverage Tier Source Of Truth
+
+- Coverage tier assignments and per-metric thresholds are defined in `packages/config/coverage-tiers.cjs`.
+- `@acme/types` now uses `SCHEMA_BASELINE` (`lines:70`, `branches:0`, `functions:50`, `statements:70`) instead of `MINIMAL`.
+- `scripts/check-coverage.sh` resolves tier metadata directly from `coverage-tiers.cjs`; do not maintain duplicated threshold tables elsewhere.
+
 ---
 
 ## Rule 2: Always Use Targeted Test Commands
@@ -97,6 +106,28 @@ pnpm --filter @acme/ui test -- --testNamePattern="renders correctly"
 # CORRECT: Combine file and test name patterns
 pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx -t "handles click"
 ```
+
+### XA Uploader (Targeted)
+
+Use the uploader package scoped governed commands:
+
+```bash
+# Route-contract suite only (API regressions)
+pnpm --filter @apps/xa-uploader run test:api
+
+# Uploader-local operator surface (API + catalog console tests only)
+pnpm --filter @apps/xa-uploader run test:local
+
+# Uploader-local operator E2E (Playwright; includes app boot + temp fixtures)
+pnpm --filter @apps/xa-uploader run test:e2e
+```
+
+Scope caveat:
+- `test:local` intentionally covers only `src/app/api/**` and `src/components/catalog/**`.
+- It does not run all uploader tests (for example `src/lib/**`), and it is not a monorepo-wide gate.
+- For package-wide coverage, use `pnpm --filter @apps/xa-uploader test` with additional file/pattern scoping where possible.
+- `test:e2e` is intentionally scoped to `apps/xa-uploader/e2e/catalog-console.spec.ts` and spins up an isolated uploader dev server with temp CSV/image fixtures.
+
 ### Growth Accounting Kernel (Targeted)
 
 For growth-accounting verification, use these targeted commands:

@@ -51,4 +51,12 @@ describe("Tag", () => {
       expect(tag).toHaveAttribute("data-token-fg", tokenFg);
     }
   );
+
+  it("supports shape/radius overrides", () => {
+    const { rerender } = render(<Tag shape="square">Square</Tag>);
+    expect(screen.getByText("Square").className).toContain("rounded-none");
+
+    rerender(<Tag shape="square" radius="2xl">Square</Tag>);
+    expect(screen.getByText("Square").className).toContain("rounded-2xl");
+  });
 });

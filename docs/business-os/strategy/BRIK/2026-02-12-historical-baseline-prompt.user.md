@@ -5,6 +5,7 @@ Business: BRIK
 Date: 2026-02-12
 Owner: Pete
 Target-Output: docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # BRIK Historical Baseline Prompt

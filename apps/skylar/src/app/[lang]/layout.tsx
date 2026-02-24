@@ -10,6 +10,12 @@ import TranslationsProvider from "@acme/i18n/Translations";
 
 import { getLocaleFromParams, type LangRouteParams, type Locale } from "@/lib/locales";
 
+const localeMessagesLoaders: Record<Locale, () => Promise<Record<string, string>>> = {
+  en: async () => (await import("../../../i18n/en.json")).default as Record<string, string>,
+  it: async () => (await import("../../../i18n/it.json")).default as Record<string, string>,
+  zh: async () => (await import("../../../i18n/zh.json")).default as Record<string, string>,
+};
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["700"],
@@ -59,12 +65,8 @@ export default async function LanguageLayout(props: LayoutProps) {
   const resolvedParams = params ? await params : undefined;
   const locale: Locale = getLocaleFromParams(resolvedParams);
   const fontClassName = localeFonts[locale]?.join(" ") ?? "";
-  const messages = (
-    await import(
-      /* webpackInclude: /(en|it|zh)\.json$/ */
-      `../../../i18n/${locale}.json`
-    )
-  ).default;
+  const loadMessages = localeMessagesLoaders[locale] ?? localeMessagesLoaders.en;
+  const messages = await loadMessages();
   return (
     <TranslationsProvider messages={messages}>
       <div className={`${fontClassName} skylar-shell-root skylar-shell--${locale}`} data-locale={locale}>

@@ -1,6 +1,9 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
+import { Cluster, Inline } from "@acme/design-system/primitives";
+import { ReceptionButton as Button, ReceptionInput } from "@acme/ui/operations";
+
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { useDenominationCalculator } from "../../hooks/client/till/useDenominationCalculator";
 import { type Denomination, DENOMINATIONS } from "../../types/component/Till";
@@ -118,7 +121,7 @@ export const CashCountingForm = memo(function CashCountingForm({
           >
             {keycardLabel}
           </label>
-          <input
+          <ReceptionInput
             id={`${idPrefix}keycards`}
             type="number"
             value={keycardInput}
@@ -137,7 +140,7 @@ export const CashCountingForm = memo(function CashCountingForm({
           {expectedKeycards !== undefined && (
             <div className="mb-2">Expected keycards: {expectedKeycards}</div>
           )}
-          <div className="flex items-center justify-end gap-1">
+          <Cluster justify="end" gap={1} wrap={false}>
             {diffCash !== undefined && <DifferenceBadge value={diffCash} />}
             {diffKeycards !== undefined && (
               <DifferenceBadge value={diffKeycards} />
@@ -149,27 +152,27 @@ export const CashCountingForm = memo(function CashCountingForm({
                   aria-hidden="true"
                 />
               )}
-          </div>
+          </Cluster>
         </div>
       )}
-      <div className="mt-4 flex gap-2">
+      <Inline wrap={false} gap={2} className="mt-4">
         {!hideCancel && (
-          <button
+          <Button
             onClick={onCancel}
-            className="px-4 py-2 bg-info-main text-white rounded hover:bg-info-dark dark:bg-darkSurface dark:text-darkAccentOrange"
+            className="px-4 py-2 bg-info-main text-primary-fg rounded hover:bg-info-dark dark:bg-darkSurface dark:text-darkAccentOrange"
           >
             Cancel
-          </button>
+          </Button>
         )}
         {!hideConfirm && (
-          <button
+          <Button
             onClick={handleSubmit}
             className={`px-4 py-2 ${confirmClass} dark:bg-darkAccentGreen`}
           >
             {confirmLabel}
-          </button>
+          </Button>
         )}
-      </div>
+      </Inline>
     </div>
   );
 });

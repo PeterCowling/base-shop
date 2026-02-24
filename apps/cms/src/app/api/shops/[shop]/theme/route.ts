@@ -1,5 +1,5 @@
 import { type NextRequest,NextResponse } from "next/server";
-import { patchTheme } from "@cms/services/shops";
+import { patchTheme } from "@cms/services/shops/themeService";
 
 import { readShop } from "@acme/platform-core/repositories/shops.server";
 

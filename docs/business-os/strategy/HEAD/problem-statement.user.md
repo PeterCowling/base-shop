@@ -1,12 +1,14 @@
 ---
 Type: Problem-Statement
-Stage: DISCOVERY-01
+Stage: ASSESSMENT-01
 Business: HEAD
 Status: Active
 Created: 2026-02-20
 Updated: 2026-02-20
 Method: back-propagated from DISCOVERY intake packet + S2B offer + S2 market intel + brand dossier; enriched with external research (CI demographics, community evidence, comfort failure modes, WTP signals)
-Downstream: docs/business-os/strategy/HEAD/2026-02-20-solution-space-prompt.md
+Downstream: docs/business-os/strategy/HEAD/2026-02-20-solution-profiling-prompt.md
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Problem Statement — HEAD
@@ -65,10 +67,10 @@ Frequency and severity confirmed at community-signal level (forum discussions, B
 ## Current Workarounds and Why They Fail
 
 ### 1. Manufacturer accessories
-Each of the three main CI manufacturers (Cochlear, MED-EL, Advanced Bionics) offers retention headbands, clips, and carry cases. **Structural gap**: brand-locked compatibility means no product works across all processor types; design language is clinical/functional rather than lifestyle-led; no cross-brand "system" or routine framing exists. Full product catalog with named products, prices, and documented failure modes is in `docs/business-os/strategy/HEAD/2026-02-20-solution-space-prompt.md`.
+Each of the three main CI manufacturers (Cochlear, MED-EL, Advanced Bionics) offers retention headbands, clips, and carry cases. **Structural gap**: brand-locked compatibility means no product works across all processor types; design language is clinical/functional rather than lifestyle-led; no cross-brand "system" or routine framing exists. Full product catalog with named products, prices, and documented failure modes is in `docs/business-os/strategy/HEAD/2026-02-20-solution-profiling-prompt.md`.
 
 ### 2. Third-party retention products
-An active third-party market exists (Etsy sellers, independent DTC brands at EUR21–38 for functional headbands). **Structural gap**: no brand coherence across accessory types, no Italian-language support, inconsistent sizing guidance, and no compatibility guarantee across processor models. Third-party product catalog is in `docs/business-os/strategy/HEAD/2026-02-20-solution-space-prompt.md`.
+An active third-party market exists (Etsy sellers, independent DTC brands at EUR21–38 for functional headbands). **Structural gap**: no brand coherence across accessory types, no Italian-language support, inconsistent sizing guidance, and no compatibility guarantee across processor models. Third-party product catalog is in `docs/business-os/strategy/HEAD/2026-02-20-solution-profiling-prompt.md`.
 
 ### 3. DIY and improvised solutions
 Tape, hair ties, repurposed elastic bands — documented in community forums as active workarounds. **Structural gap**: inconsistent, not durable, socially awkward for school-age children, not a repeatable system.
@@ -109,7 +111,7 @@ Parents use ad-hoc combinations of manufacturer cases, school bags, and verbal h
 
 ## Open Questions (First-Priority Validation Checklist)
 
-These are the 8 questions most directly relevant to confirming the problem is real and who has it. Answer before advancing to offer or channel design. Full product, channel, and requirements questions are in `docs/business-os/strategy/HEAD/2026-02-20-solution-space-prompt.md`.
+These are the 8 questions most directly relevant to confirming the problem is real and who has it. Answer before advancing to offer or channel design. Full product, channel, and requirements questions are in `docs/business-os/strategy/HEAD/2026-02-20-solution-profiling-prompt.md`.
 
 1. In the last 30 days, how many times did the processor fall off or nearly fall off?
 2. How many times were accessories misplaced or "couldn't find at handover"?
@@ -133,7 +135,7 @@ These are the 8 questions most directly relevant to confirming the problem is re
 ### 3. Pain insufficient to drive willingness-to-pay
 **PASS (provisional)** — WTP EUR21–38 confirmed for functional retention; EUR2.50–20 for decorative/personalisation. Daily frequency and financial replacement risk provide strong purchase motivation. Needs first-party WTP confirmation from Italian buyers.
 
-**Verdict: GO (with explicit validation gap)** — proceed to solution-space exploration in parallel with first-party validation (customer interviews + early cohort instrumentation).
+**Verdict: GO (with explicit validation gap)** — proceed to solution-profiling exploration in parallel with first-party validation (customer interviews + early cohort instrumentation).
 
 ---
 
@@ -143,11 +145,11 @@ These are the 8 questions most directly relevant to confirming the problem is re
 
 | Artifact | Path | Stage | Status |
 |---|---|---|---|
-| Solution-space prompt | `2026-02-20-solution-space-prompt.md` | DISCOVERY-02 | 2026-02-20 |
-| Solution-space results | `2026-02-20-solution-space-results.user.md` | DISCOVERY-02 | 2026-02-20 |
-| Option selection decision | `s0c-option-select.user.md` | DISCOVERY-03 | 2026-02-20 |
-| Naming research prompt | `naming-research-prompt.md` | DISCOVERY-04 | 2026-02-19 |
-| Naming shortlist results | `2026-02-20-naming-shortlist.user.md` | DISCOVERY-04 | 2026-02-20 |
+| Solution-profiling prompt | `2026-02-20-solution-profiling-prompt.md` | ASSESSMENT-02 | 2026-02-20 |
+| Solution-profiling results | `2026-02-20-solution-profile-results.user.md` | ASSESSMENT-02 | 2026-02-20 |
+| Option selection decision | `solution-select.user.md` | ASSESSMENT-03 | 2026-02-20 |
+| Naming research prompt | `candidate-names-prompt.md` | ASSESSMENT-04 | 2026-02-19 |
+| Naming shortlist results | `2026-02-20-candidate-names.user.md` | ASSESSMENT-04 | 2026-02-20 |
 
 ## Key Sources
 

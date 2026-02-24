@@ -4,7 +4,7 @@ Status: Canonical
 Domain: Design System
 Created: 2026-01-16
 Created-by: Claude Opus 4.5
-Last-updated: 2026-01-16
+Last-updated: 2026-02-23
 ---
 
 # Design System Handbook
@@ -54,8 +54,8 @@ import { Button } from "@acme/ui/src/components/atoms/Button";
 ```
 
 For layering rules and public API surfaces, see:
-- `packages/ui/docs/architecture.md`
-- `packages/ui/docs/platform-vs-apps.md`
+- `docs/architecture.md`
+- `docs/design-system-package-import.md`
 
 ---
 
@@ -236,6 +236,20 @@ Available colors for toned components:
 - IconButton: `Atoms/IconButton`
 - Pills: `Atoms/Tag`, `Atoms/ProductBadge`, `Atoms/Chip`
 
+### Primitive Shape & Radius Contract
+
+Primitive depth variation is standardized through `shape` and `radius` props on core form/surface primitives (`Button`, `Input`, `Select`, `Textarea`, `Card`).
+
+| Prop | Values | Contract |
+|------|--------|----------|
+| `shape` | `square`, `soft`, `pill` | Semantic presets mapped to radius tokens (`none`, `md`, `full`) |
+| `radius` | `none`, `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `full` | Explicit override; takes precedence over `shape` |
+
+Rules:
+- Default component behavior remains backward compatible (existing call sites do not need updates).
+- Prefer `shape` for reusable patterns and `radius` for one-off fine tuning.
+- Do not hardcode `rounded-*` classes in component internals when `shape`/`radius` props exist.
+
 ---
 
 ## 4. Surfaces & Elevation
@@ -295,6 +309,24 @@ import {
 **Props:**
 - `side`: `"left" | "right"` (default: `"right"`)
 - `width`: Tailwind width class or pixel number
+
+### Containment & Bleed Safety Contract
+
+High-risk overlays and menu surfaces must apply explicit horizontal overflow containment via the shared utility in `packages/design-system/src/utils/style/overflowContainment.ts`.
+
+| Surface Type | Utility Variant | Resulting Class |
+|--------------|-----------------|-----------------|
+| Dialog content | `dialogContent` | `overflow-x-hidden` |
+| Menus/popovers/select content | `menuSurface` | `overflow-hidden` |
+
+Current primitive coverage:
+- `DialogContent` -> `overflowContainmentClass("dialogContent")`
+- `DropdownMenuContent` + `DropdownMenuSubContent` -> `overflowContainmentClass("menuSurface")`
+- `SelectContent` -> `overflowContainmentClass("menuSurface")`
+
+Policy:
+- New overlay/menu primitives must use the shared containment utility instead of bespoke overflow classes.
+- If containment must be relaxed for a legitimate layout reason, document the exception with a follow-up fix ticket.
 
 ---
 
@@ -624,6 +656,20 @@ The DS rules exist to keep UI consistent, accessible, and theme-safe across bran
 - Accessibility: enforce tap targets, focus rings, and SR-only usage.
 - Responsiveness: require breakpoint-aware patterns for layout stability.
 - RTL/i18n: avoid physical directions and hardcoded copy for localization.
+
+### Operations Baseline (Internal Admin UI)
+
+Internal admin surfaces under `packages/ui/src/components/organisms/operations/**` run a minimum safety baseline rather than full customer-facing strictness:
+
+| Rule Area | Baseline |
+|-----------|----------|
+| Overflow hazards | `ds/no-overflow-hazards = error` |
+| Arbitrary Tailwind values | `ds/no-arbitrary-tailwind = warn` (allowlisted for constrained runtime math/vars) |
+| Inline `style` props | `react/forbid-dom-props = error` by default |
+| Runtime layout exceptions | Explicit file-level overrides only (`ActionSheet`, `DataTable`, `SplitPane`, `StepWizard`, `VirtualList`) |
+| Ergonomic guardrails | Tap size, layout primitives, focus-ring token, viewport/RTL checks remain at warning level |
+
+This baseline keeps internal tools flexible while still protecting against content bleed, unsafe overflow, and raw styling drift.
 
 When a rule blocks legitimate work, use a temporary, ticketed exception and plan a follow-up fix:
 

@@ -18,7 +18,7 @@ source_of_truth: true
 depends_on:
   - docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md
   - docs/business-os/strategy/HEAD/lp-other-products-results.user.md
-  - docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md
+  - docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md
 decisions:
   - DEC-HEAD-CH-01
 ---
@@ -90,7 +90,7 @@ Why:
 - Supports Italy-first tone and later EU/US extension.
 
 Current shortlist artifact:
-- `docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md`
+- `docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md`
 
 ## F) Channel and Execution Implications
 

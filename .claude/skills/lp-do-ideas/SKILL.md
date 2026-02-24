@@ -21,12 +21,57 @@ activation criteria are defined in
 ## Invocation
 
 ```
-/lp-do-ideas <artifact-path-or-id> [--business <BIZ>] [--before <sha>] [--after <sha>]
+/lp-do-ideas [<artifact-path-or-id>] [--business <BIZ>] [--before <sha>] [--after <sha>]
 ```
 
-Or provide a `ArtifactDeltaEvent` JSON payload directly.
+Or provide a `ArtifactDeltaEvent` JSON payload directly. Or invoke with no arguments to use the intake path.
 
-## Required Inputs
+## Intake Path (No Arguments or Free Text)
+
+When invoked with no arguments, or with a plain description rather than a structured payload, run the intake flow.
+
+### Step 1 — Gather the idea
+
+Ask:
+
+> What's the new information or idea? Describe it in plain language.
+
+### Step 2 — Determine trigger type
+
+From the description, determine which of two trigger types applies:
+
+**`artifact_delta`** — the user describes a change that has *already happened* to a specific standing document. The artifact reflects the new truth now.
+
+**`operator_idea`** — the user describes new information, a signal, or an idea that has *not yet been written into any standing artifact*. The artifact update is a downstream output of the work this dispatch will trigger — not a precondition.
+
+If unclear, ask one question: "Has this already been written into a doc, or is this something new you want to act on?"
+
+### Step 3 — Gather minimum context
+
+**For artifact delta:**
+- Which business?
+- Which artifact changed? (show list from standing registry if needed)
+- What changed? — user describes in plain language; agent infers `changed_sections` from description if SHAs are unavailable
+
+**For operator idea:**
+- Which business? (infer from context or ask)
+- Area anchor — which system, product area, or business domain does this touch? (infer from description or confirm with one question)
+- Domain — `MARKET | SELL | PRODUCTS | LOGISTICS | STRATEGY` (infer from area anchor; confirm only if genuinely ambiguous)
+- Routing — is this something to investigate and plan, or just understand? Apply routing intelligence to decide; only ask the user if the description is genuinely ambiguous between planning and understanding
+
+### Step 4 — Apply routing intelligence and emit
+
+Apply routing intelligence (see below) to determine `status` and `recommended_route`. Emit a schema-valid dispatch packet and enqueue it in `queue-state.json`.
+
+For operator idea packets:
+- `trigger: "operator_idea"`
+- `artifact_id`, `before_sha`, `after_sha` — omit
+- `evidence_refs` — include operator-stated rationale using the format: `"operator-stated: <one-line summary>"`
+- All other required fields apply as normal
+
+## Required Inputs (Structured Invocation)
+
+For structured / programmatic invocation with an artifact delta:
 
 | Input | Description |
 |---|---|

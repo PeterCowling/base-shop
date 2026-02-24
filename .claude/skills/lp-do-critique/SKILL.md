@@ -289,8 +289,8 @@ Fact-Find `Related-Plan` field:
 - Do NOT flag a non-existent `Related-Plan` target as an issue.
 
 Open questions checks:
-- Each open question should include `Decision owner` (name or role).
-- Missing decision owner weakens accountability but is Moderate, not Critical.
+- Each open question should include `Decision owner` (name or role). Missing decision owner is Moderate, not Critical.
+- **Agent-resolvable deferral** (Major): any question in Open that the agent could have answered by reasoning about available evidence, effectiveness, efficiency, or documented business requirements. The question should appear in Resolved with a reasoned answer — not deferred to the operator. Flag the specific question and state what evidence or reasoning would have resolved it. This is a Major defect because it blocks the pipeline unnecessarily and signals the agent abdicated its core function.
 
 Fact-Find minimum bar:
 - Falsifiable goals
@@ -336,6 +336,11 @@ Business-artifact/mixed VC quality check (apply to each VC-XX):
 - Each VC must be **isolated** (tests one variable), **pre-committed** (pass/fail decision stated before data), **time-boxed** (measurement deadline defined), **minimum viable sample** (smallest signal that constitutes evidence), **diagnostic** (failure indicates *why*), **repeatable** (another operator reaches same conclusion), and **observable** (metric is directly measurable).
 - Anti-patterns to flag: "Validate demand is sufficient" (not isolated, not pre-committed, not observable), "Check market response" (no sample size, no deadline), "Confirm unit economics work" (conflates multiple variables).
 - VCs failing ≥3 quality principles are Major; failing 1-2 is Moderate.
+
+Agent-resolvable deferral checks (apply to every DECISION task and the Proposed Approach section):
+- **Agent-resolvable DECISION task** (Major): a DECISION task whose `**Decision input needed:**` questions the agent could have answered by reasoning about available evidence, effectiveness, efficiency, or documented business requirements. The task should have been folded into an IMPLEMENT task with the chosen approach, or the `**Recommendation:**` should have been decisive and `**Decision input needed:**` left empty. Flag the specific question and what reasoning would have resolved it.
+- **Weak or deferred recommendation** (Major): a DECISION task where `**Recommendation:**` is a hedge ("either A or B would work", "depends on preference", blank, or TBD). If the agent has enough context to list options, it has enough context to recommend. Flag and require a decisive position.
+- **Deferred approach** (Major): `Chosen approach:` in `## Proposed Approach` is blank, TBD, or deferred to a DECISION task that itself fails the self-resolve gate. The agent must choose.
 
 Plan minimum bar:
 - Falsifiable objective

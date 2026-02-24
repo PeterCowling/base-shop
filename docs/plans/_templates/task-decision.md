@@ -20,9 +20,9 @@ Status: Reference
   - Option A: <trade-offs>
   - Option B: <trade-offs>
 - **Recommendation:** <A/B + rationale>
-- **Decision input needed:**
+- **Decision input needed:** Only if the agent cannot make the recommendation without knowledge the operator holds and that is not documented anywhere. If the agent can reason to a recommendation from available evidence, effectiveness, efficiency, and business requirements — make the recommendation and consider converting this to an IMPLEMENT task instead.
   - question:
-  - why it matters:
+  - why operator input is required (not agent-resolvable):
   - default + risk:
 - **Acceptance:**
   - ...

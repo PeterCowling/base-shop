@@ -46,7 +46,7 @@ Auto-Build-Intent: <plan-only | plan+auto>
 ## Proposed Approach
 - Option A:
 - Option B:
-- Chosen approach:
+- Chosen approach: (required — agent must decide; if genuinely requires operator input, open a DECISION task, but apply the DECISION task self-resolve gate first)
 
 ## Plan Gates
 - Foundation Gate: <Pass | Fail>

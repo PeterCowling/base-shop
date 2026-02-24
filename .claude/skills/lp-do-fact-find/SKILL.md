@@ -56,6 +56,41 @@ If any item is missing, ask only the minimum follow-up questions needed to unblo
 
 For understanding-only briefings (no planning intent), use `/lp-do-briefing` instead.
 
+## Phase 0: Queue Check Gate
+
+Before doing anything else, check whether a queued dispatch packet exists for this invocation.
+
+**How to check:**
+Read `docs/business-os/startup-loop/ideas/trial/queue-state.json` (if it exists). Look for any packet where:
+- `queue_state: enqueued`, AND
+- `business` matches the invoked business, AND
+- `area_anchor` or `artifact_id` overlaps materially with the invoked topic.
+
+**If a matching queued packet is found:**
+
+Stop immediately. Output only the following — do not run any phases, read any files, or produce any artifacts:
+
+> A queued dispatch packet exists for this topic and requires confirmation before proceeding.
+>
+> **Area:** `<area_anchor>`
+> **What changed:** `<current_truth>`
+> **Proposed scope:** `<next_scope_now>`
+> **Priority:** `<priority>`
+>
+> _(If `triggered_by` is present, insert this block — otherwise omit entirely:)_
+> ⚠️ **This was triggered by a recent build, not a new external signal.** Check that this is genuinely new work before confirming — you may be looking at a follow-on from something you already ran.
+> _Source: `<triggered_by dispatch_id>`_
+>
+> Do you want to proceed with this fact-find? Reply **yes** to confirm, or anything else to leave it queued.
+
+If the operator replies **yes**: proceed to Phase 1 with `Dispatch-ID` set to the matching packet's `dispatch_id`. On artifact persistence (Phase 6), populate `processed_by` in the packet: `route: dispatch-routed`, `processed_at: <now>`, `fact_find_slug` and `fact_find_path` from the output. Set `queue_state: processed`.
+
+If the operator replies anything other than **yes**, or does not reply: stop. Do nothing. The packet remains `enqueued`.
+
+**If no matching queued packet is found:**
+
+Proceed to Phase 1 as a direct inject. `Trigger-Source` is required in the fact-find frontmatter (per `loop-output-contracts.md` Artifact 1).
+
 ## Phase 1: Discovery and Selection
 
 ### Fast path (argument provided)
@@ -122,6 +157,25 @@ Load only the relevant module file(s):
 - Template: `docs/plans/_templates/fact-find-planning.md`
 - Always include the routing header fields in frontmatter.
 - **Canonical artifact name:** `fact-find.md` is the formal loop output artifact for this skill. Required sections and frontmatter fields are defined in `docs/business-os/startup-loop/loop-output-contracts.md` (Artifact 1). The path above is authoritative; do not store this artifact at any other location.
+
+## Phase 6.5: Open Question Self-Resolve Gate
+
+Before running the evidence gap review or critique, review every question currently marked as Open.
+
+For each open question, apply this test:
+
+> Can I answer this by reasoning about available evidence, effectiveness, efficiency, and the documented business requirements?
+
+If yes: answer it. Move it to the Resolved section with a reasoned answer and the evidence or logic basis. Do not leave it open.
+
+A question is genuinely Open (operator input required) only if it meets one of these:
+- Requires knowledge the operator holds that is not documented anywhere (budget cap, undocumented strategic intent, personal preference)
+- Requires a real-world fact the agent cannot determine from any accessible source (supplier availability, current sales data not in the repo, regulatory status)
+- Is a strategic fork where the operator's preference is the deciding factor AND that preference is genuinely absent from all docs
+
+Questions of the form "which approach is better?", "how should we handle X?", or "what's the right architecture here?" are almost never genuinely open — reason through the tradeoffs using documented constraints and recommend. If the recommendation has uncertainty, state the confidence and the assumption it rests on, but do not defer the decision to the operator.
+
+The goal is a Resolved section that is long and an Open section that is short or empty.
 
 ## Phase 7: Mandatory Evidence Gap Review (Outcome A)
 
@@ -195,6 +249,7 @@ Status-dependent next action (execute immediately, do not wait for user):
 
 ## Quick Validation Gate
 
+- [ ] Phase 0 queue check run — matching queued packet confirmed or direct-inject path taken
 - [ ] Intake satisfied before repo audit
 - [ ] Routing header computed and written to frontmatter
 - [ ] Only relevant module(s) loaded

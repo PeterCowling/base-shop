@@ -22,9 +22,11 @@ This document is the canonical contract for the two-layer startup loop operating
 
 Layer A is the standing information system for a business. It accumulates, refreshes, and exposes domain-specific intelligence that persists across individual implementation cycles. Standing intelligence is not produced once and forgotten; it is a living set of artifacts that degrade in confidence over time and are refreshed on a defined schedule tied to the stage lifecycle.
 
+The four named domain containers (MARKET, SELL, PRODUCTS, LOGISTICS) are the canonical backbone of Layer A, but they do not define its ceiling. Any artifact that functions as standing intelligence — competitor snapshots, pricing assumptions, ops runbooks, regulatory constraints, SEO inventories, metrics baselines, and more — is equally part of Layer A and is subject to the same monitoring, change-detection, and trigger logic as the named aggregate packs. See **Monitoring Scope** below.
+
 ### Domains
 
-Layer A is partitioned into five domains. Each domain maps to a container ID in the stage graph (`loop-spec.yaml` `stages:` section) and owns a family of stages that build and maintain standing artifacts for that domain.
+Layer A is partitioned into four domains. Each domain maps to a container ID in the stage graph (`loop-spec.yaml` `stages:` section) and owns a family of stages that build and maintain standing artifacts for that domain.
 
 | Domain | Container ID | Stage Family | Conditional | Stage Count |
 |---|---|---|---|---|
@@ -32,7 +34,6 @@ Layer A is partitioned into five domains. Each domain maps to a container ID in 
 | Channel and GTM standing | SELL | SELL-01..08 | false | 8 (01 existing; 02..07 new; 08 renamed gate per TASK-03) |
 | Product portfolio standing | PRODUCTS | PRODUCTS-01..07 | false | 7 (new per TASK-02) |
 | Logistics and supply chain standing | LOGISTICS | LOGISTICS-01..07 | true | 7 (new conditional per TASK-02) |
-| Idea pipeline | IDEAS | IDEAS-01..03 | false | 3 (new stage-gated per TASK-04) |
 
 **LOGISTICS conditionality.** LOGISTICS stages are gated by business profile. The condition expression is:
 
@@ -42,8 +43,6 @@ condition: "business_profile includes logistics-heavy OR physical-product"
 ```
 
 Businesses without `physical-product` or `logistics-heavy` profile flags skip the LOGISTICS container entirely. Consumers of LOGISTICS artifacts (e.g. S4 optional inputs) must treat LOGISTICS outputs as optional to remain profile-agnostic.
-
-**IDEAS position.** IDEAS-01..03 are positioned after the ASSESSMENT container and before the MEASURE stage group. The IDEAS stage family enforces intake discipline: idea cards must pass through IDEAS-02 scoring and IDEAS-03 promotion gate before a fact-find (Layer B) is initiated. IDEAS-01..03 are unconditional (`conditional: false`) for all business profiles.
 
 ### Stage Families
 
@@ -100,24 +99,59 @@ LOGISTICS stages are conditional on business profile as specified above. All con
 - LOGISTICS-06: Inventory policy snapshot. Reorder points and safety stock assumptions.
 - LOGISTICS-07: Aggregate logistics pack. Assembles `logistics-pack.user.md`; conditional at S4 optional.
 
-#### IDEAS (IDEAS-01..03)
+### Monitoring Scope
 
-IDEAS stages are the formal interface between standing intelligence observations and Layer B implementation cycles. IDEAS enforce that only scored, promoted idea candidates enter the fact-find process.
+**The monitoring scope for standing intelligence is open-ended and inclusive by default.** Aggregate packs are the canonical summary artifacts, but monitoring must reach the underlying artifacts they summarise — and any artifact not captured by a named domain pack that still meets the qualification criteria.
 
-- IDEAS-01: Idea backlog capture. Operator reviews standing intelligence outputs and captures candidates as `idea-card.schema.md` entries.
-- IDEAS-02: Idea card review. Operator scores idea cards against ICP, offer hypothesis, and evidence quality; prioritises top 1–3 for fact-find promotion.
-- IDEAS-03: Promotion gate. Gate is satisfied when the operator initiates `/lp-do-fact-find` for the top-ranked idea card and a `fact-find.md` is created from that card. The idea card reference (ID and source domain) must appear in the fact-find frontmatter.
+#### Qualification criteria
+
+An artifact qualifies as standing intelligence and must be registered for change monitoring if it meets all three:
+
+1. **Persistent** — survives across multiple implementation cycles; not discarded after a single build.
+2. **Influential** — holds assumptions, baselines, or observations that would meaningfully affect a future fact-find, plan, or build decision if changed.
+3. **Signal-bearing** — a meaningful update to it is a plausible trigger for a new Layer B cycle or a standing-domain refresh.
+
+#### Example artifact categories (non-exhaustive)
+
+| Category | Example artifacts |
+|---|---|
+| Competitive intelligence | Competitor snapshots, feature comparison matrices, pricing benchmark sheets |
+| Product standing | Product specifications, SKU catalogue, bundle hypotheses, roadmap snapshots |
+| Pricing assumptions | Pricing policy docs, margin stack models, price-corridor artifacts |
+| Positioning and messaging | Brand strategy docs, offer artifacts, positioning notes, messaging frameworks |
+| Regulatory and legal | Compliance notes, regulatory constraint docs, jurisdictional requirements |
+| Operations | Ops runbooks, fulfillment SLAs, supplier lead-time tables, returns policy |
+| Key metrics baselines | Conversion baselines, CAC/AOV actuals, retention cohorts, engagement benchmarks |
+| SEO and content inventory | Keyword inventories, content gap snapshots, rank tracking baselines, content calendars |
+| Audience intelligence | ICP profiles, persona docs, customer interview summaries, NPS/review signals |
+
+The categories above are illustrative. Any artifact that meets the qualification criteria is in scope regardless of category. Operators and agents should apply the three criteria, not match against this list.
+
+#### Change detection → fact-find trigger
+
+When any registered standing artifact changes meaningfully, that change surfaces to the operator as a candidate for a new Layer B cycle. The operator reviews it and decides whether to open a fact-find directly. There is no formal scoring or staging gate between detection and fact-find initiation.
+
+This applies equally to named-domain aggregate packs and to any qualifying artifact registered outside the named domains. The mechanism is the same; the scope is unrestricted.
+
+#### Registration requirement
+
+Every artifact meeting the qualification criteria must be registered as a monitored source:
+
+- Added to the **Update Triggers** table with its applicable refresh trigger.
+
+Omission from the triggers table is an oversight to be corrected, not a deliberate exclusion. Use R9 when a build or observation surfaces a new qualifying artifact.
 
 ### Update Triggers
 
 Each domain's standing artifacts are refreshed when one of the following triggers fires:
 
-| Trigger | Applies to |
-|---|---|
-| Layer B build cycle completes (results-review.user.md optionally written) | All domains touched by the build's scope |
-| Operator explicitly re-runs a domain stage (e.g. MARKET-07 post-offer synthesis) | That domain only |
-| S10 weekly readout identifies a confidence-degraded field | Specific domain whose field confidence fell below threshold |
-| External event (competitor launch, pricing change, logistics disruption) | Domain that owns the affected field |
+| Trigger | Applies to | Anti-loop condition |
+|---|---|---|
+| Layer B build cycle completes (results-review.user.md optionally written) | All domains and registered standing artifacts touched by the build's scope | Do NOT update a source if the Layer B cycle was itself triggered by a change in that same source (see R8) |
+| Any registered standing artifact updated meaningfully (inside or outside named domain packs) | The specific artifact and any domain packs that aggregate it | Surfaces to operator as a fact-find candidate; operator decides whether to open a Layer B cycle directly |
+| Operator explicitly re-runs a domain stage (e.g. MARKET-07 post-offer synthesis) | That domain only | — |
+| S10 weekly readout identifies a confidence-degraded field | Specific domain or registered artifact whose field confidence fell below threshold | — |
+| External event (competitor launch, pricing change, logistics disruption, regulatory change) | Domain or registered artifact that owns the affected field | — |
 
 ### Lifecycle and Staleness
 
@@ -140,13 +174,13 @@ Full field-level carry-mode mapping is defined in `carry-mode-schema.md` (TASK-0
 
 ### Purpose
 
-Layer B is the implementation loop. It is instantiated per idea: when an idea card is promoted through IDEAS-03, Layer B opens a new implementation cycle that takes the idea from hypothesis to validated build output. Layer B is not a one-time linear path; it repeats for each promoted idea.
+Layer B is the implementation loop. It is instantiated per idea: when the operator decides to act on a standing-artifact signal or any other trigger, Layer B opens a new implementation cycle that takes the idea from hypothesis to validated build output. Layer B is not a one-time linear path; it repeats for each idea acted upon.
 
 ### Structure
 
 Layer B maps directly to the DO stage in loop-spec.yaml (stage ID: `DO`, line 944). The DO stage is defined as three sequential processes:
 
-1. **fact-find** (`/lp-do-fact-find`): produces `fact-find.md` under `docs/plans/<feature-slug>/`. The fact-find reads from Layer A standing artifacts as primary input context. The fact-find frontmatter must reference the source idea card ID.
+1. **fact-find** (`/lp-do-fact-find`): produces `fact-find.md` under `docs/plans/<feature-slug>/`. The fact-find reads from Layer A standing artifacts as primary input context.
 2. **plan** (`/lp-do-plan`): produces `plan.md` under `docs/plans/<feature-slug>/`. The plan converts fact-find findings into a sequenced, acceptance-criteria-bearing task list.
 3. **build** (`/lp-do-build`): executes plan tasks and produces a `build-record.user.md` under `docs/plans/<feature-slug>/`. Plan is archived on build completion. Operator may optionally write `results-review.user.md` to propagate learnings to Layer A.
 
@@ -160,24 +194,31 @@ At fact-find initiation, the operator or agent sources the following Layer A inp
 | Current `sell-pack.user.md` (SELL-07 output) | Channel assumptions, CAC/CVR baselines |
 | Current `product-pack.user.md` (PRODUCTS-07 output) | Product scope, bundle options, roadmap constraints |
 | Current `logistics-pack.user.md` (LOGISTICS-07 output, if applicable) | Fulfillment and supply chain constraints |
-| Promoted idea card (IDEAS-03 output) | Hypothesis, scope, success criteria seed |
+| Any relevant registered standing artifact (see Monitoring Scope) | Domain-specific assumptions or signals that motivated the cycle |
 | ASSESSMENT intake packet (ASSESSMENT-11 output) | Business profile, ICP, locked assumptions |
 
 The fact-find brief explicitly lists which Layer A artifacts were consulted and their `last_updated` dates. If a required artifact is absent or stale, the fact-find must document the gap and its impact on confidence.
 
 ### How Layer B Writes Back to Layer A
 
-On build completion, the `results-review.user.md` artifact documents observed outcomes and triggers standing updates:
+On build completion, the operator may optionally write `results-review.user.md` to document observed outcomes. When written, it informs standing updates:
 
-| results-review field | Layer A update target |
-|---|---|
-| Observed demand signals | MARKET confidence fields; MARKET-09 ICP refinement trigger |
-| Channel performance actuals | SELL-02 CAC/CVR baseline refresh |
-| Product sell-through actuals | PRODUCTS-03 performance baseline refresh |
-| Logistics actual costs/lead times | LOGISTICS-02 and LOGISTICS-04 revision-mode fields |
-| New idea candidates surfaced during build | IDEAS-01 backlog (operator adds as new idea cards) |
+| results-review field | Layer A update target | Anti-loop condition |
+|---|---|---|
+| Observed demand signals | MARKET confidence fields; MARKET-09 ICP refinement trigger | Skip if this cycle was triggered by a MARKET standing-info change |
+| Channel performance actuals | SELL-02 CAC/CVR baseline refresh | Skip if this cycle was triggered by a SELL standing-info change |
+| Product sell-through actuals | PRODUCTS-03 performance baseline refresh | Skip if this cycle was triggered by a PRODUCTS standing-info change |
+| Logistics actual costs/lead times | LOGISTICS-02 and LOGISTICS-04 revision-mode fields | Skip if this cycle was triggered by a LOGISTICS standing-info change |
+| New idea candidates surfaced during build | Operator note for future fact-find consideration | Always propagate |
 
-The closed-loop update is advisory: when `results-review.user.md` is written, any high-confidence findings should be propagated to the relevant standing artifacts.
+The closed-loop update is advisory: when `results-review.user.md` is written, any high-confidence findings should be propagated to the relevant standing artifacts, subject to the anti-loop condition above.
+
+**Standing information expansion.** After each build, the operator should explicitly consider two questions:
+
+1. Does this build produce outcomes that are not naturally captured by any existing Layer A domain? If yes, the operator should decide whether to add a new standing artifact or domain, and register it as a monitored trigger in the Update Triggers table above.
+2. Does this build create a new source of standing information that the loop does not currently monitor? If yes, the operator should adjust the workflow so that source can trigger future Layer B cycles when relevant.
+
+These expansion decisions should be recorded in `results-review.user.md` (if written) under a `## Standing Expansion` section, or as a replan note if no results-review is written.
 
 ---
 
@@ -192,19 +233,19 @@ market-pack.user.md ──────► fact-find.md (reads assumptions)
 sell-pack.user.md   ──────►
 product-pack.user.md ─────►
 logistics-pack.user.md ───►
-idea-card.user.md   ──────►
+any registered artifact ──►
 intake-packet.user.md ────►
                              plan.md
                              build-record.user.md
                              results-review.user.md ──► Layer A standing updates
-                             new idea candidates ─────► IDEAS-01 backlog
+                             new idea candidates ─────► operator (future fact-find)
 ```
 
 ### Specific Contract Rules
 
 **R1 — Fact-find must cite Layer A source artifacts.** The fact-find frontmatter must list `layer_a_inputs` with artifact paths and `last_updated` dates. Missing inputs must be documented as evidence gaps with confidence impact.
 
-**R2 — Idea card link is mandatory.** The fact-find frontmatter must include `idea_card_id` referencing the IDEAS-03 promoted card. A fact-find without an idea card reference is a direct-inject cycle (operator-override pattern) and must be flagged as such with a documented rationale.
+**R2 — Trigger source must be cited.** The fact-find frontmatter must identify what triggered the cycle — either a specific standing artifact path and change description, or a direct operator decision with rationale. Untriggered fact-finds (no source cited) must document why no standing artifact preceded the decision.
 
 **R3 — results-review is advisory.** The build process (`/lp-do-build`) archives the plan on build completion without waiting for `results-review.user.md`. Writing the results review is encouraged but does not block archival.
 
@@ -214,16 +255,20 @@ intake-packet.user.md ────►
 
 **R6 — LOGISTICS consumer safety.** Any stage, skill, or template that consumes LOGISTICS artifacts must implement a presence check. LOGISTICS absence must produce a no-op or a documented skip, not an error.
 
-**R7 — IDEAS card ID is the traceability key.** The idea card ID flows from IDEAS-03 through the fact-find, plan, and build artifacts. It is the primary traceability key linking a Layer B implementation cycle back to its Layer A origin. The idea portfolio (`idea-portfolio.user.md`, TASK-04) records all promoted cards and their outcome references.
+**R7 — Trigger artifact is the traceability key.** The standing artifact path (or operator decision note) cited in the fact-find frontmatter per R2 is the primary traceability key linking a Layer B cycle back to its Layer A origin.
+
+**R8 — No self-referential trigger loops.** When a Layer B cycle was initiated by a standing-information update trigger (S10 confidence degradation or external event observed in a specific domain), the completed build's outcomes must NOT be automatically propagated back to that same originating domain as a standing update. The operator must confirm that the observed outcome genuinely differs from or adds to the trigger source before applying any update to the originating domain. This rule prevents a standing-info change from triggering a build cycle that then continuously re-updates the same standing info.
+
+**R9 — Standing information expansion and registration.** When a build produces outcomes not captured by any existing Layer A artifact, or surfaces a new artifact that meets the Monitoring Scope qualification criteria, the operator must explicitly decide: (a) whether to add or revise a standing artifact, and (b) whether to register the new source in the Update Triggers table as a monitored artifact. The monitoring scope is inclusive by default — any qualifying artifact not yet registered is an omission, not a deliberate exclusion. This decision must be recorded in `results-review.user.md` under `## Standing Expansion`, or as a replan note if no results-review is written. Silence is not acceptable.
 
 ### Stage Transition Events That Cross Layer Boundary
 
 | Event | Layer A effect | Layer B effect |
 |---|---|---|
-| IDEAS-03 promotion gate satisfied | Idea card status updated to `promoted` in idea portfolio | New Layer B cycle opens; `/lp-do-fact-find` invoked |
-| Layer B build complete | Layer B cycle archived to `docs/plans/_archive/<feature-slug>/`. If results-review.user.md is written, standing fields updated per R4 and new idea candidates enter IDEAS-01 | |
-| S10 confidence degradation detected | Operator triggers domain re-run (new Layer A stage cycle) | No Layer B effect unless operator promotes a new idea |
-| External event observed | Operator updates relevant revision-mode fields in standing artifact | Standing artifact `last_updated` refreshed; confidence re-rated |
+| Operator decides to act on a standing-artifact signal or direct trigger | — | New Layer B cycle opens; `/lp-do-fact-find` invoked with trigger source cited per R2 |
+| Layer B build complete | Plan archived to `docs/plans/_archive/<feature-slug>/`. If results-review.user.md is written: standing fields updated per R4 (anti-loop R8 applies); standing expansion decision recorded per R9 | |
+| S10 confidence degradation detected | Operator triggers domain re-run (new Layer A stage cycle) | No Layer B effect unless operator promotes a new idea. Anti-loop R8 applies if a Layer B cycle is subsequently promoted from this trigger |
+| External event observed | Operator updates relevant revision-mode fields in standing artifact | Standing artifact `last_updated` refreshed; confidence re-rated. Anti-loop R8 applies to any resulting Layer B cycle |
 
 ---
 
@@ -256,4 +301,4 @@ This document was drafted against `loop-spec.yaml` spec_version `3.9.0`. The fol
 
 ### Divergence from Proposed-Target-Model
 
-No material divergences. The domain table, LOGISTICS condition expression, IDEAS stage-gated approach, SELL resequencing policy, and MARKET additive numbering policy in this document all match `proposed-target-model.md` exactly. Stage names for MARKET-07..11, SELL-02..07, PRODUCTS-01..07, and LOGISTICS-01..07 are reproduced from the proposals in `proposed-target-model.md`; TASK-02, TASK-03, and TASK-04 executors may refine names within the boundaries defined in that document.
+No material divergences for the remaining domains. The domain table, LOGISTICS condition expression, SELL resequencing policy, and MARKET additive numbering policy in this document match `proposed-target-model.md`. Stage names for MARKET-07..11, SELL-02..07, PRODUCTS-01..07, and LOGISTICS-01..07 are reproduced from the proposals in `proposed-target-model.md`. Note: IDEAS-01..03 stages from the proposed-target-model have been removed from this contract and archived.

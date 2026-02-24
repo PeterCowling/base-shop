@@ -21,6 +21,8 @@ Skills MUST use canonical paths from this registry. Stale or legacy paths listed
 
 ## Core Artifact Registry
 
+**Scope note.** The rows below are the named canonical artifacts with explicit producer/consumer contracts. They are not a closed list of all standing intelligence. Any artifact meeting the Monitoring Scope qualification criteria in `two-layer-model.md` — competitor snapshots, pricing assumptions, ops runbooks, metrics baselines, SEO inventories, regulatory constraints, etc. — is equally part of Layer A and subject to the same change-detection and trigger logic. Register such artifacts in the Update Triggers table in `two-layer-model.md` when created.
+
 | Artifact ID | Producer | Stage | Canonical Path | Required Fields / Sections | Consumers | Version Marker |
 |---|---|---|---|---|---|---|
 | `offer` | `lp-offer` | MARKET-06 | `docs/business-os/startup-baselines/<BIZ>-offer.md` | ICP segmentation, pain/promise mapping, offer structure, positioning one-pager, pricing/packaging hypothesis, objection map + risk reversal | `lp-channels`, `lp-forecast`, `lp-seo`, `lp-do-critique` | frontmatter `artifact: offer-artifact` |

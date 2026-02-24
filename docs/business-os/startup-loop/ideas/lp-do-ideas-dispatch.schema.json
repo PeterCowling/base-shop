@@ -27,8 +27,8 @@
     },
     "trigger": {
       "type": "string",
-      "enum": ["artifact_delta"],
-      "description": "Trigger type. Only 'artifact_delta' is supported in trial mode."
+      "enum": ["artifact_delta", "operator_idea"],
+      "description": "Trigger type. 'artifact_delta' — a standing artifact was already updated; this dispatch processes the diff. 'operator_idea' — new information or signal provided directly by the operator, not yet reflected in any artifact; artifact updates are downstream outputs of the work this dispatch triggers."
     },
     "artifact_id": {
       "type": "string",
@@ -121,6 +121,56 @@
       "type": "string",
       "enum": ["enqueued", "processed", "skipped", "error"],
       "description": "Current queue lifecycle state for this dispatch."
+    },
+    "processed_by": {
+      "type": "object",
+      "properties": {
+        "fact_find_slug": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Feature slug of the fact-find that consumed this dispatch (e.g. 'hbag-pricing-uplift-2026-02')."
+        },
+        "fact_find_path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical path to the fact-find.md that consumed this dispatch."
+        },
+        "processed_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when the fact-find was opened against this dispatch."
+        },
+        "route": {
+          "type": "string",
+          "enum": ["dispatch-routed", "direct-inject"],
+          "description": "How the fact-find was opened. 'dispatch-routed' = opened via queue confirmation with Dispatch-ID in frontmatter. 'direct-inject' = operator invoked directly; Trigger-Source cited instead."
+        }
+      },
+      "required": ["fact_find_slug", "fact_find_path", "processed_at", "route"],
+      "additionalProperties": false,
+      "description": "Populated when a fact-find or briefing has been opened against this dispatch. Presence sets queue_state to 'processed'. Absence means the dispatch is still pending."
+    },
+    "triggered_by": {
+      "type": "string",
+      "description": "Dispatch ID of the packet whose downstream build produced the artifact change that triggered this dispatch. Absent when triggered by direct operator action or an external signal. Presence indicates a cascade step — the operator should confirm this represents genuinely new work."
+    },
+    "clarification_needed": {
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "description": "Specific questions the operator must answer before this dispatch can be correctly scoped or invoked."
+        },
+        "blocks_invocation": {
+          "type": "boolean",
+          "description": "If true, all questions must be resolved before the downstream skill is invoked. If false, questions are advisory — invocation may proceed but scope may shift once resolved."
+        }
+      },
+      "required": ["questions", "blocks_invocation"],
+      "additionalProperties": false,
+      "description": "Present when the dispatch cannot be fully routed or scoped without operator input. Absence means no clarification is needed."
     }
   },
   "required": [

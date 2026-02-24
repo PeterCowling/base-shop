@@ -51,6 +51,10 @@ Execution-Track: <code | business-artifact | mixed>
 Deliverable-Type: <canonical type>
 Feature-Slug: <slug>
 artifact: fact-find
+# Optional — present when opened via a queued dispatch packet:
+Dispatch-ID: <IDEA-DISPATCH-YYYYMMDDHHmmss-NNNN | omit if direct inject>
+# Required when Dispatch-ID is absent:
+Trigger-Source: <path to standing artifact that motivated this cycle, or "direct-operator-decision: <rationale>">
 ```
 
 ### Lifecycle
@@ -144,8 +148,9 @@ artifact: build-record
 | Section | Purpose |
 |---|---|
 | `## Observed Outcomes` | What actually happened after the build was deployed or activated. Metrics, user feedback, anomalies, or qualitative notes. Minimum: one concrete observation. |
-| `## Standing Updates` | List of Layer A (standing-information) files that should be updated as a result of these outcomes, with a one-line description of the update needed. If no updates are needed, write: `No standing updates: <reason>`. This explicit entry is required — the section must not be left blank. |
+| `## Standing Updates` | List of Layer A (standing-information) files that should be updated as a result of these outcomes, with a one-line description of the update needed. If no updates are needed, write: `No standing updates: <reason>`. This explicit entry is required — the section must not be left blank. Anti-loop rule applies: do not update the domain that triggered this cycle (see R8 in `two-layer-model.md`). |
 | `## New Idea Candidates` | Any new opportunities, problems, or hypotheses surfaced by observing the outcomes. Each entry should include: idea summary, trigger observation, and suggested next action (e.g., create card, spike, defer). `None` if nothing surfaced. |
+| `## Standing Expansion` *(optional)* | Required when the build produces outcomes not captured by any existing Layer A domain, or creates a new standing information source not currently monitored. Record either: (a) a decision to add/revise a standing artifact and register the new trigger, or (b) a deliberate pass with rationale. See R9 in `two-layer-model.md`. |
 
 ### Required Frontmatter Fields
 

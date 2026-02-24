@@ -128,6 +128,23 @@ Route to one module only (or mixed pair):
 - business-artifact -> `modules/plan-business.md`
 - mixed -> `modules/plan-mixed.md`
 
+## Phase 4.5: DECISION Task Self-Resolve Gate
+
+Before creating any DECISION task, apply this test:
+
+> Can I make this decision by reasoning about available evidence, effectiveness, efficiency, and the documented business requirements?
+
+If yes: make the decision. Fold it into the relevant IMPLEMENT task as the chosen approach. Do not create a DECISION task.
+
+A DECISION task is only warranted when the decision requires input the operator holds that is not documented anywhere — undocumented budget, personal preference, strategic intent not yet written down, or a genuine binary fork where both options are valid and the operator's choice is the deciding factor.
+
+**Signs a DECISION task should not exist:**
+- The `**Recommendation:**` field can be filled with genuine conviction (not "either would work")
+- The `**Decision input needed:**` questions are answerable by reasoning about the codebase, business docs, or standard best practice
+- The only uncertainty is approach, and approach questions are the agent's job to resolve
+
+If a DECISION task survives this gate, its `**Recommendation:**` must be a decisive position — not a hedge. If the agent has a recommendation, the decision is effectively made and the task may not need to be a DECISION task at all. Reserve DECISION tasks for genuine operator forks where the recommendation depends on a preference the operator has not yet expressed.
+
 ## Phase 5: Decompose Tasks with External Templates
 
 Use:

@@ -1,7 +1,7 @@
 "use client";
 
 import type { KeyboardEvent } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Loader } from "@acme/design-system/atoms";
 import {
@@ -14,7 +14,7 @@ import {
   CardContent,
 } from "@acme/design-system/shadcn";
 import { cn } from "@acme/design-system/utils/style";
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 import type {
   ProductConfigSchema,
   ProductHotspotConfig,
@@ -230,15 +230,14 @@ export function ConfiguratorPanel(props: ConfiguratorPanelProps) {
   const t = useTranslations();
 
   // Detect mobile viewport for drawer vs flyout
-  useState(() => {
-    if (typeof window === "undefined") return;
+  useEffect(() => {
     // i18n-exempt -- HAND-101 [ttl=2026-12-31]: media query string is technical configuration, not user-facing copy.
     const mq = window.matchMedia("(max-width: 639px)");
     setIsMobile(mq.matches);
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
-  });
+  }, []);
 
   if (!panelOpen) return null;
 
@@ -257,7 +256,6 @@ export function ConfiguratorPanel(props: ConfiguratorPanelProps) {
         <DrawerContent
           side="bottom"
           className="max-h-dvh overflow-y-auto p-4"
-          radius="xl"
         >
           <DrawerTitle className="sr-only">
             {t("handbagConfigurator.configuratorTitle")}

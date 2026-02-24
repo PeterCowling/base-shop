@@ -41,6 +41,7 @@ describe("GA4 select_item on room CTA clicks (GA4-11)", () => {
       <RoomsSection
         lang="en"
         itemListId="rooms_index"
+        queryState="valid"
         bookingQuery={{ checkIn: "2026-06-10", checkOut: "2026-06-12", pax: "2", queryString: "" }}
       />,
     );
@@ -182,6 +183,47 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     const url = (assignMock as jest.Mock).mock.calls[0][0] as string;
     expect(typeof url).toBe("string");
     expect(url.length).toBeGreaterThan(0);
+  });
+
+  it("TC-06: room CTA navigation uses calendar endpoint with room/date params and no legacy confirm params", () => {
+    render(
+      <RoomsSection
+        lang="en"
+        itemListId="book_rooms"
+        queryState="valid"
+        bookingQuery={{ checkIn: "2026-07-01", checkOut: "2026-07-04", pax: "1", queryString: "" }}
+      />,
+    );
+
+    const assignMock = window.location.assign as jest.Mock;
+    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    fireEvent.click(buttons[0]);
+
+    const beginCheckoutCall = gtagMock.mock.calls.find(
+      (args: unknown[]) => args[0] === "event" && args[1] === "begin_checkout",
+    );
+    const eventCallback = (beginCheckoutCall?.[2] as Record<string, unknown>)?.event_callback as () => void;
+    eventCallback();
+
+    expect(assignMock).toHaveBeenCalledTimes(1);
+
+    const targetUrl = (assignMock as jest.Mock).mock.calls[0][0] as string;
+    const parsed = new URL(targetUrl);
+
+    expect(parsed.origin + parsed.pathname).toBe(
+      "https://book.octorate.com/octobook/site/reservation/calendar.xhtml",
+    );
+    expect(parsed.searchParams.get("codice")).toBe("45111");
+    expect(parsed.searchParams.get("checkin")).toBe("2026-07-01");
+    expect(parsed.searchParams.get("checkout")).toBe("2026-07-04");
+    expect(parsed.searchParams.get("date")).toBe("2026-07-01");
+    expect(parsed.searchParams.get("room")).toMatch(/^\d+$/u);
+
+    // Regression guard: do not reintroduce legacy confirm/deep-link params.
+    expect(targetUrl).not.toContain("/confirm.xhtml");
+    expect(parsed.searchParams.has("pax")).toBe(false);
+    expect(parsed.searchParams.has("children")).toBe(false);
+    expect(parsed.searchParams.has("childrenAges")).toBe(false);
   });
 
   // TC-05: second click while isNavigating=true → no duplicate GA4 events

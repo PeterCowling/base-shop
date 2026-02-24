@@ -254,6 +254,13 @@
     "ENG-2003": {},
     "FD-0001": {},
     "GS-001": {},
+    "HBAG-02": {
+      "allow": [
+        "apps/caryina/scripts/validate-launch-media-contract.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Caryina launch media contract validator security rule exceptions tracked for HBAG launch."
+    },
     "GUIDES-1421": {},
     "GUIDES-2176": {},
     "GUIDES-2470": {},

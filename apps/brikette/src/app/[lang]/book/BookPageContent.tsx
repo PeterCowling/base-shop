@@ -163,6 +163,8 @@ function BookPageContent({ lang }: Props): JSX.Element {
         </div>
       ) : null}
 
+      <SocialProofSection lang={lang} />
+
       <Section padding="default" className="mx-auto max-w-7xl">
         <h1 className="text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
           {t("heading")}
@@ -217,8 +219,6 @@ function BookPageContent({ lang }: Props): JSX.Element {
           </div>
         </div>
       </Section>
-
-      <SocialProofSection lang={lang} />
 
       <RoomsSection
         lang={lang}

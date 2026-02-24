@@ -114,7 +114,7 @@ Each domain's standing artifacts are refreshed when one of the following trigger
 
 | Trigger | Applies to |
 |---|---|
-| Layer B build cycle completes and results-review.user.md is written | All domains touched by the build's scope |
+| Layer B build cycle completes (results-review.user.md optionally written) | All domains touched by the build's scope |
 | Operator explicitly re-runs a domain stage (e.g. MARKET-07 post-offer synthesis) | That domain only |
 | S10 weekly readout identifies a confidence-degraded field | Specific domain whose field confidence fell below threshold |
 | External event (competitor launch, pricing change, logistics disruption) | Domain that owns the affected field |
@@ -148,7 +148,7 @@ Layer B maps directly to the DO stage in loop-spec.yaml (stage ID: `DO`, line 94
 
 1. **fact-find** (`/lp-do-fact-find`): produces `fact-find.md` under `docs/plans/<feature-slug>/`. The fact-find reads from Layer A standing artifacts as primary input context. The fact-find frontmatter must reference the source idea card ID.
 2. **plan** (`/lp-do-plan`): produces `plan.md` under `docs/plans/<feature-slug>/`. The plan converts fact-find findings into a sequenced, acceptance-criteria-bearing task list.
-3. **build** (`/lp-do-build`): executes plan tasks and produces a `build-record.user.md` and a `results-review.user.md` (TASK-08) under `docs/plans/<feature-slug>/`. Build completion is gated on results-review creation.
+3. **build** (`/lp-do-build`): executes plan tasks and produces a `build-record.user.md` under `docs/plans/<feature-slug>/`. Plan is archived on build completion. Operator may optionally write `results-review.user.md` to propagate learnings to Layer A.
 
 ### How Layer B Reads from Layer A
 
@@ -177,7 +177,7 @@ On build completion, the `results-review.user.md` artifact documents observed ou
 | Logistics actual costs/lead times | LOGISTICS-02 and LOGISTICS-04 revision-mode fields |
 | New idea candidates surfaced during build | IDEAS-01 backlog (operator adds as new idea cards) |
 
-The closed-loop update is mandatory, not advisory: a build cycle is not considered complete until `results-review.user.md` exists and any high-confidence findings have been propagated to the relevant standing artifacts (TASK-09 enforces this gate).
+The closed-loop update is advisory: when `results-review.user.md` is written, any high-confidence findings should be propagated to the relevant standing artifacts.
 
 ---
 
@@ -206,7 +206,7 @@ intake-packet.user.md ────►
 
 **R2 — Idea card link is mandatory.** The fact-find frontmatter must include `idea_card_id` referencing the IDEAS-03 promoted card. A fact-find without an idea card reference is a direct-inject cycle (operator-override pattern) and must be flagged as such with a documented rationale.
 
-**R3 — results-review is a build gate.** The build process (`/lp-do-build`) must not mark a cycle as complete without a `results-review.user.md` artifact present under `docs/plans/<feature-slug>/`. This is a hard gate, not advisory.
+**R3 — results-review is advisory.** The build process (`/lp-do-build`) archives the plan on build completion without waiting for `results-review.user.md`. Writing the results review is encouraged but does not block archival.
 
 **R4 — Standing update scope is bounded.** results-review updates propagate to the specific standing fields that the build outcome touched. Global standing refreshes (full domain re-runs) are not triggered by a single build cycle unless the operator explicitly initiates a domain re-run.
 
@@ -221,7 +221,7 @@ intake-packet.user.md ────►
 | Event | Layer A effect | Layer B effect |
 |---|---|---|
 | IDEAS-03 promotion gate satisfied | Idea card status updated to `promoted` in idea portfolio | New Layer B cycle opens; `/lp-do-fact-find` invoked |
-| Layer B build complete + results-review written | Standing fields updated per R4; new idea candidates enter IDEAS-01 | Layer B cycle closed; archived to `docs/plans/archive/<feature-slug>/` |
+| Layer B build complete | Layer B cycle archived to `docs/plans/_archive/<feature-slug>/`. If results-review.user.md is written, standing fields updated per R4 and new idea candidates enter IDEAS-01 | |
 | S10 confidence degradation detected | Operator triggers domain re-run (new Layer A stage cycle) | No Layer B effect unless operator promotes a new idea |
 | External event observed | Operator updates relevant revision-mode fields in standing artifact | Standing artifact `last_updated` refreshed; confidence re-rated |
 
@@ -234,7 +234,7 @@ The BOS (Business OS) kanban lane interface (`bos_sync` fields in loop-spec.yaml
 Specifically:
 
 - The layer boundary is defined by artifact reads and writes, not by BOS card lane transitions.
-- A Layer B cycle's completion is governed by `results-review.user.md` existence (R3 above), not by a BOS lane reaching "Done".
+- A Layer B cycle's completion is governed by `build-record.user.md` production and plan archival, not by a BOS lane reaching "Done".
 - BOS lane transitions may fire alongside Layer B completions but are not causally required for the closed-loop contract to be satisfied.
 - Future BOS integration changes must not alter the Layer A / Layer B artifact contracts without amending this document.
 

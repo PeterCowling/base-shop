@@ -158,10 +158,9 @@ artifact: results-review
 
 ### Lifecycle
 
-- Created by operator after build is deployed/activated and outcomes are observable.
-- Minimum viable version: a `Draft` with at least the `## Observed Outcomes` section populated (allows plan archival to proceed if operator confirms in writing).
+- Created by operator after build is deployed/activated and outcomes are observable (optional).
 - `Status: Complete` when all three required sections are filled.
-- Archived alongside `plan.md`; see `_shared/plan-archiving.md`.
+- Archived alongside `plan.md` if present; see `_shared/plan-archiving.md`.
 - **Layer A refresh**: after `Status: Complete`, the `## Standing Updates` section is read by the operator (or a dedicated refresh agent) to apply updates to standing-information files. This is the formal Layer B → Layer A feedback handoff.
 
 ---
@@ -190,10 +189,9 @@ The `.user.md` suffix on the last two artifacts signals that human input is requ
                     └── produces: plan.md (Status: Active)
                             └── /lp-do-build reads plan.md
                                     ├── produces: build-record.user.md (Status: Complete)
-                                    └── HARD GATE: waits for results-review.user.md
-                                            └── Operator produces: results-review.user.md
+                                    └── plan archived (Status: Archived)
+                                            └── [optional] Operator produces: results-review.user.md
                                                     └── Layer A standing-information refresh (§ Standing Updates)
-                                                            └── plan archived (Status: Archived)
 ```
 
 ---

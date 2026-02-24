@@ -1,6 +1,8 @@
 // packages/ui/components/atoms/primitives/table.tsx
 // i18n-exempt file -- DS-1234 [ttl=2025-11-30] — primitives expose no user-facing copy
 
+"use client";
+
 import * as React from "react";
 
 import { cn } from "../utils/style";

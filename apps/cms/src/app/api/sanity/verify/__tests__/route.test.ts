@@ -1,13 +1,6 @@
 import { NextRequest } from 'next/server';
 import { jest } from '@jest/globals';
 
-const verifyCredentials = jest.fn<any, any>();
-
-jest.mock('@acme/plugin-sanity', () => ({
-  __esModule: true,
-  verifyCredentials: (...args: any[]) => verifyCredentials(...args),
-}));
-
 let POST: typeof import('../route').POST;
 
 beforeAll(async () => {
@@ -24,7 +17,6 @@ describe('POST /api/sanity/verify', () => {
   });
 
   it('returns datasets on success', async () => {
-    verifyCredentials.mockResolvedValue(true);
     const mockFetch = jest
       .fn<any, any>()
       .mockResolvedValue(
@@ -45,11 +37,9 @@ describe('POST /api/sanity/verify', () => {
       'https://p123.api.sanity.io/v2023-01-01/datasets',
       { headers: { Authorization: 'Bearer tok' } }
     );
-    expect(verifyCredentials).toHaveBeenCalledWith({ projectId: 'p123', dataset: 'prod', token: 'tok' });
   });
 
   it('returns 401 for invalid credentials', async () => {
-    verifyCredentials.mockResolvedValue(false);
     const mockFetch = jest
       .fn<any, any>()
       .mockResolvedValue(new Response(JSON.stringify({ datasets: [] }), { status: 200 }));

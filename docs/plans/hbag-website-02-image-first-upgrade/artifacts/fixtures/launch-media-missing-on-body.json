@@ -1,0 +1,39 @@
+[
+  {
+    "id": "fixture-sku-001",
+    "sku": "fixture-missing-on-body",
+    "status": "active",
+    "media": [
+      {
+        "url": "/images/hbag/hero.svg",
+        "type": "image",
+        "altText": "Fixture hero",
+        "tags": ["slot:hero"]
+      },
+      {
+        "url": "/images/hbag/angle.svg",
+        "type": "image",
+        "altText": "Fixture angle",
+        "tags": ["slot:angle"]
+      },
+      {
+        "url": "/images/hbag/detail.svg",
+        "type": "image",
+        "altText": "Fixture detail",
+        "tags": ["slot:detail"]
+      },
+      {
+        "url": "/images/hbag/scale.svg",
+        "type": "image",
+        "altText": "Fixture scale",
+        "tags": ["slot:scale"]
+      },
+      {
+        "url": "/images/hbag/alternate.svg",
+        "type": "image",
+        "altText": "Fixture alternate",
+        "tags": ["slot:alternate"]
+      }
+    ]
+  }
+]

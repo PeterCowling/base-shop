@@ -1,22 +1,36 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] XA theme palette uses legacy patterns pending design/i18n overhaul */
 
 import * as React from "react";
 import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
-import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 import { Button, Price, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
 import { PriceCluster } from "@acme/design-system/molecules";
+import { Cluster } from "@acme/design-system/primitives/Cluster";
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
-import { XA_PRODUCTS } from "../lib/demoData";
-import type { XaProduct } from "../lib/demoData";
 import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
+import type { XaProduct } from "../lib/demoData";
+import { XA_PRODUCTS } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
-import { XA_COLOR_SWATCHES, formatLabel } from "../lib/xaCatalog";
+import { formatLabel, XA_COLOR_SWATCHES, XA_DEFAULT_SWATCH } from "../lib/xaCatalog";
+import { xaI18n } from "../lib/xaI18n";
+
 import { XaFadeImage } from "./XaFadeImage";
+
+function getDeliveryWindow(daysMin = 5, daysMax = 12): string {
+  const fmt = (d: Date) =>
+    d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  const now = new Date();
+  const min = new Date(now);
+  min.setDate(now.getDate() + daysMin);
+  const max = new Date(now);
+  max.setDate(now.getDate() + daysMax);
+  return `${fmt(min)} – ${fmt(max)}`;
+}
 
 export function XaBuyBox({ product }: { product: XaProduct }) {
   const [cart, dispatch] = useCart();
@@ -24,6 +38,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
   const [currency] = useCurrency();
 
   const [size, setSize] = React.useState<string>(product.sizes[0] ?? "");
+  const [qty, setQty] = React.useState(1);
   const [error, setError] = React.useState<string | null>(null);
   const isWishlisted = wishlist.includes(product.id);
   const sizeCount = product.sizes.length;
@@ -56,7 +71,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         type: "add",
         sku: product,
         size: product.sizes.length ? size : undefined,
-        qty: 1,
+        qty,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Cart update failed"); // i18n-exempt -- XA-0009: demo fallback error message
@@ -109,15 +124,47 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         sizeNote ? <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div> : null
       )}
 
+      <Inline gap={2} alignY="center" className="justify-between">
+        <span className="xa-pdp-label text-xs uppercase tracking-widest text-muted-foreground">
+          Quantity
+        </span>
+        <div className="flex items-center gap-0 border border-border-2">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            aria-label="Decrease quantity"
+            disabled={qty <= 1}
+            onClick={() => setQty((q) => Math.max(1, q - 1))}
+            className="h-8 w-8 rounded-none px-0 py-0 text-sm hover:bg-muted disabled:opacity-40"
+          >
+            −
+          </Button>
+          <Cluster asChild alignY="center" justify="center" wrap={false}>
+            <span className="h-8 w-8 text-sm tabular-nums">{qty}</span>
+          </Cluster>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            aria-label="Increase quantity"
+            onClick={() => setQty((q) => q + 1)}
+            className="h-8 w-8 rounded-none px-0 py-0 text-sm hover:bg-muted"
+          >
+            +
+          </Button>
+        </div>
+      </Inline>
+
       {error ? (
         <div className="rounded-md border border-danger/30 bg-danger/5 p-3 text-sm">
           {error}
         </div>
       ) : null}
 
-      <div className="flex flex-wrap gap-2">
+      <Inline gap={2} className="flex-wrap">
         <Button
-          className="xa-pdp-action flex-[2] h-11 rounded-none bg-foreground text-primary-fg hover:bg-foreground/90"
+          className="xa-pdp-action xa-flex-2 h-11 rounded-none bg-foreground text-primary-fg hover:bg-foreground/90"
           disabled={soldOut}
           onClick={() => void addToCart()}
         >
@@ -127,7 +174,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
           variant="outline"
           className="xa-pdp-action h-11 w-11 min-w-11 rounded-none border-foreground text-foreground hover:bg-foreground hover:text-primary-fg"
           aria-pressed={isWishlisted}
-          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          aria-label={isWishlisted ? xaI18n.t("xaB.src.components.xabuybox.client.l176c38") : xaI18n.t("xaB.src.components.xabuybox.client.l176c63")}
           onClick={() => wishlistDispatch({ type: "toggle", sku: product })}
         >
           {isWishlisted ? (
@@ -136,30 +183,28 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
             <HeartIcon className="h-4 w-4" />
           )}
         </Button>
-      </div>
+      </Inline>
 
       {soldOut ? (
-        <div className="xa-pdp-meta text-muted-foreground">Out of stock.</div>
+        <div className="xa-pdp-meta text-muted-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l188c60")}</div>
       ) : null}
 
       <div className="space-y-2">
-        <div className="xa-pdp-label text-muted-foreground">
-          Estimated delivery
-        </div>
-        <div className="xa-pdp-meta">Jan 5 - Jan 12</div>
+        <div className="xa-pdp-label text-muted-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l192c61")}</div>
+        <div className="xa-pdp-meta">{getDeliveryWindow()}</div>
       </div>
 
       {showVariantStrip || showColorStrip ? (
         <div className="space-y-2">
-          <div className="xa-pdp-label text-muted-foreground">
-            Also available in
-          </div>
+          <div className="xa-pdp-label text-muted-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l200c63")}</div>
           {showVariantStrip ? (
-            <div className="flex gap-2">
+            <Inline gap={2} wrap={false}>
               {variantProducts.map((variant) => {
                 const color = variant.taxonomy.color?.[0] ?? "";
                 const label = color ? formatLabel(color) : variant.title;
-                const swatch = color ? (XA_COLOR_SWATCHES[color] ?? "#e5e5e5") : "#e5e5e5";
+                const swatch = color
+                  ? (XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH)
+                  : XA_DEFAULT_SWATCH;
                 const media = variant.media.find((item) => item.type === "image" && item.url.trim());
                 const isCurrent = variant.id === product.id;
                 return (
@@ -189,11 +234,11 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
                   </Link>
                 );
               })}
-            </div>
+            </Inline>
           ) : (
-            <div className="flex gap-2">
+            <Inline gap={2} wrap={false}>
               {colorOptions.map((color, idx) => {
-                const swatch = XA_COLOR_SWATCHES[color] ?? "#e5e5e5";
+                const swatch = XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH;
                 const media = colorMedia[idx % Math.max(1, colorMedia.length)];
                 return (
                   <div
@@ -219,14 +264,13 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
                   </div>
                 );
               })}
-            </div>
+            </Inline>
           )}
         </div>
       ) : null}
 
-      <div className="xa-pdp-meta rounded-none bg-muted/60 px-4 py-3 text-foreground">
-        Free returns for 30 days | We can collect from your home
-      </div>
+      {/* i18n-exempt: XA-0001 */}
+      <div className="xa-pdp-meta rounded-none bg-muted/60 px-4 py-3 text-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l276c87")}</div>
     </div>
   );
 }

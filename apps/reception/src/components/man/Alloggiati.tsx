@@ -3,6 +3,17 @@
 
 import { type FC, memo, useEffect, useMemo, useState } from "react";
 
+import {
+  ReceptionButton as Button,
+  ReceptionInput,
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
+
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
 import useAlloggiatiLogs from "../../hooks/data/useAlloggiatiLogs";
 import { useCheckins } from "../../hooks/data/useCheckins";
@@ -270,7 +281,7 @@ const AlloggiatiComponent: FC = () => {
         </p>
       )}
       {combinedError && (
-        <p className="mt-4 text-red-500">Error: {String(combinedError)}</p>
+        <p className="mt-4 text-error-main">Error: {String(combinedError)}</p>
       )}
 
       {!isLoading && occupantEntries.length === 0 && (
@@ -279,42 +290,42 @@ const AlloggiatiComponent: FC = () => {
 
       {occupantEntries.length > 0 && (
         <div className="overflow-x-auto mt-4">
-          <table className="table-auto w-full border border-gray-400 text-sm dark:border-darkSurface">
-            <thead className="bg-gray-100 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
-              <tr>
-                <th className="py-2 px-3 text-start">Occupant ID</th>
-                <th className="py-2 px-3 text-start">Reservation Code</th>
-                <th className="py-2 px-3 text-start">NAME</th>
-                <th className="py-2 px-3 text-center">
-                  <button
+          <Table className="table-auto w-full border border-border-2 text-sm dark:border-darkSurface">
+            <TableHeader className="bg-surface-2 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
+              <TableRow>
+                <TableHead className="py-2 px-3 text-start">Occupant ID</TableHead>
+                <TableHead className="py-2 px-3 text-start">Reservation Code</TableHead>
+                <TableHead className="py-2 px-3 text-start">NAME</TableHead>
+                <TableHead className="py-2 px-3 text-center">
+                  <Button
                     onClick={handleToggleAll}
                     className="px-3 py-2 text-sm border rounded"
                   >
                     Select / Deselect All
-                  </button>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                  </Button>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {occupantEntries.map((entry) => {
                 const occupantId = entry.occupantId;
                 const occupantLog = alloggiatiLogs?.[occupantId];
 
                 // Determine row styles based on occupantLog status
-                let rowClass = "border-b border-gray-400 dark:border-darkSurface";
+                let rowClass = "border-b border-border-2 dark:border-darkSurface";
                 let showCheckbox = true;
 
                 if (occupantLog?.result === "ok") {
                   // If occupant was previously successful -> green row, no checkbox
-                  rowClass += " bg-green-100 dark:bg-darkSurface";
+                  rowClass += " bg-success-light dark:bg-darkSurface";
                   showCheckbox = false;
                 } else if (occupantLog?.result === "error") {
                   // Occupant had an error -> red row, still can re-submit
-                  rowClass += " bg-red-100 dark:bg-darkSurface";
+                  rowClass += " bg-error-light dark:bg-darkSurface";
                   showCheckbox = true;
                 } else {
                   // No log: normal row, checkbox
-                  rowClass += " bg-white dark:bg-darkSurface";
+                  rowClass += " bg-surface dark:bg-darkSurface";
                   showCheckbox = true;
                 }
 
@@ -325,50 +336,50 @@ const AlloggiatiComponent: FC = () => {
                   : "";
 
                 return (
-                  <tr key={occupantId} className={rowClass}>
-                    <td className="py-2 px-3">{occupantId}</td>
-                    <td className="py-2 px-3">{entry.reservationCode}</td>
-                    <td className="py-2 px-3">{occupantName}</td>
-                    <td className="py-2 px-3 text-center">
+                  <TableRow key={occupantId} className={rowClass}>
+                    <TableCell className="py-2 px-3">{occupantId}</TableCell>
+                    <TableCell className="py-2 px-3">{entry.reservationCode}</TableCell>
+                    <TableCell className="py-2 px-3">{occupantName}</TableCell>
+                    <TableCell className="py-2 px-3 text-center">
                       {showCheckbox ? (
-                        <input
+                        <ReceptionInput
                           type="checkbox"
                           className="h-6 w-6"
                           checked={!!selectedMap[occupantId]}
                           onChange={() => handleCheckboxChange(occupantId)}
                         />
                       ) : null}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
 
       {/* Send Section */}
-      <div className="mt-6 p-3 border border-gray-400 rounded dark:border-darkSurface">
+      <div className="mt-6 p-3 border border-border-2 rounded dark:border-darkSurface">
         <h3 className="font-semibold mb-2">Send to Alloggiati Web Service</h3>
 
-        <button
+        <Button
           onClick={handleSendAlloggiati}
-          className="px-3 py-2 bg-blue-600 text-white rounded"
+          className="px-3 py-2 bg-info-main text-primary-fg rounded"
           disabled={isLoading || isSendLoading}
         >
           {isSendLoading ? "Sending..." : "Send Occupants"}
-        </button>
+        </Button>
 
         {sendError && (
-          <p className="mt-2 text-red-600">Error Sending: {sendError}</p>
+          <p className="mt-2 text-error-main">Error Sending: {sendError}</p>
         )}
         {saveError ? (
-          <p className="mt-2 text-red-600">
+          <p className="mt-2 text-error-main">
             Error Saving to Firebase: {String(saveError)}
           </p>
         ) : null}
         {submissionResults && (
-          <div className="mt-2 p-2 border border-green-400 bg-green-50 text-sm">
+          <div className="mt-2 p-2 border border-success-main bg-success-light/20 text-sm">
             <p className="font-bold">
               Submission Results ({testMode ? "TEST" : "LIVE"}):
             </p>

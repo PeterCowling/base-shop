@@ -138,6 +138,24 @@ const REACT_ALIAS = NEXT_COMPILED_REACT ?? REACT_INDEX;
 const REACT_DOM_ALIAS = NEXT_COMPILED_REACT_DOM ?? REACT_DOM_INDEX;
 const REACT_DOM_CLIENT_ALIAS = NEXT_COMPILED_REACT_DOM_CLIENT ?? REACT_DOM_CLIENT;
 const REACT_DOM_SERVER_ALIAS = NEXT_COMPILED_REACT_DOM_SERVER ?? REACT_DOM_SERVER;
+const CMS_LIB_SRC_ALIAS = path.resolve(__dirname, "../../packages/lib/src");
+const CMS_LIB_DIST_ALIAS = path.resolve(__dirname, "../../packages/lib/dist");
+const CMS_CONFIGURATOR_SRC_ALIAS = path.resolve(
+  __dirname,
+  "../../packages/configurator/src",
+);
+const CMS_CONFIGURATOR_PROVIDERS_SRC_ALIAS = path.resolve(
+  __dirname,
+  "../../packages/configurator/src/providers.ts",
+);
+const CMS_CONFIGURATOR_DIST_ALIAS = path.resolve(
+  __dirname,
+  "../../packages/configurator/dist",
+);
+const CMS_CONFIGURATOR_PROVIDERS_DIST_ALIAS = path.resolve(
+  __dirname,
+  "../../packages/configurator/dist/providers.js",
+);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -197,7 +215,8 @@ const nextConfig = {
       // Must transpile: no dist/ directory (source-only theme packages).
       "@themes/brandx",
       "@themes/dark",
-      // Must transpile: src-aliased by this webpack config (dist/ is never reached).
+      // Keep source transpilation for dev HMR; production webpack builds switch
+      // these aliases to dist/ in TASK-04 to shrink build-graph memory pressure.
       "@acme/configurator",
     ])
   ),
@@ -206,7 +225,46 @@ const nextConfig = {
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
 
+  turbopack: {
+    ...(preset.turbopack ?? {}),
+    resolveAlias: {
+      ...(preset.turbopack?.resolveAlias ?? {}),
+      "@": path.resolve(__dirname, "src"),
+      "@themes-local": path.resolve(__dirname, "../../packages/themes"),
+      "@themes/bcd/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/bcd/src/tailwind-tokens.ts",
+      ),
+      "@themes/brandx/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/brandx/src/tailwind-tokens.ts",
+      ),
+      "@themes/dark/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/dark/src/tailwind-tokens.ts",
+      ),
+      "@themes/dummy/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/dummy/src/tailwind-tokens.ts",
+      ),
+      "@themes/prime/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/prime/src/tailwind-tokens.ts",
+      ),
+      "@acme/configurator": CMS_CONFIGURATOR_SRC_ALIAS,
+      "@acme/configurator/providers": CMS_CONFIGURATOR_PROVIDERS_SRC_ALIAS,
+      "entities/decode": ENTITIES_DECODE_PATH,
+      "entities/lib/decode.js": ENTITIES_DECODE_PATH,
+      "entities/escape": ENTITIES_ESCAPE_PATH,
+      "entities/lib/escape.js": ENTITIES_ESCAPE_PATH,
+    },
+  },
+
   webpack: (config, { dev, isServer, webpack }) => {
+    // Keep the webpack callback as an explicit exception for CMS until all
+    // webpack-pinned scripts are migrated. Turbopack alias parity is provided
+    // above; hash guarding, dev filesystem cache, warning suppression, and
+    // runtime dependency aliasing remain webpack-path behavior for now.
     ensureSafeWebpackHash(webpack);
     // Run preset webpack mutations first, then apply CMS-specific ones
     if (typeof preset.webpack === "function") {
@@ -262,14 +320,8 @@ const nextConfig = {
         __dirname,
         "../../packages/themes/prime/src/tailwind-tokens.ts",
       ),
-      "@acme/configurator": path.resolve(
-        __dirname,
-        "../../packages/configurator/src",
-      ),
-      "@acme/configurator/providers": path.resolve(
-        __dirname,
-        "../../packages/configurator/src/providers.ts",
-      ),
+      "@acme/configurator": CMS_CONFIGURATOR_SRC_ALIAS,
+      "@acme/configurator/providers": CMS_CONFIGURATOR_PROVIDERS_SRC_ALIAS,
       "drizzle-orm": false,
       "entities/decode": ENTITIES_DECODE_PATH,
       "entities/lib/decode.js": ENTITIES_DECODE_PATH,
@@ -284,6 +336,18 @@ const nextConfig = {
       "react-dom/client": REACT_DOM_CLIENT_ALIAS,
       "react-dom/server": REACT_DOM_SERVER_ALIAS,
     };
+
+    if (!dev) {
+      // Build-only graph reduction: keep dev source aliases for iteration speed,
+      // but compile against dist/ output during production builds to reduce TS
+      // source traversal in webpack.
+      config.resolve.alias["@acme/lib"] = CMS_LIB_DIST_ALIAS;
+      config.resolve.alias["@acme/configurator"] = CMS_CONFIGURATOR_DIST_ALIAS;
+      config.resolve.alias["@acme/configurator/providers"] =
+        CMS_CONFIGURATOR_PROVIDERS_DIST_ALIAS;
+    } else {
+      config.resolve.alias["@acme/lib"] = CMS_LIB_SRC_ALIAS;
+    }
 
     if (config.resolve.alias["oidc-token-hash"] === undefined) {
       try {

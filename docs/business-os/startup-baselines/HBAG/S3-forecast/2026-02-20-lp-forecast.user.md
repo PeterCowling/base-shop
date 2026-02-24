@@ -8,6 +8,7 @@ Updated: 2026-02-20
 Last-reviewed: 2026-02-20
 Owner: Pete
 Artifact: forecast
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HBAG 90-Day Launch Forecast (S3 Backfill — 2026-02-20)

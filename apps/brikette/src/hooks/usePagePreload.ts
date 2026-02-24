@@ -55,6 +55,6 @@ export function usePagePreload({
 
     void load();
     return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- namespaces arrays are stable per component
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- BRIK-821: namespaces arrays are stable per component
   }, [lang]);
 }

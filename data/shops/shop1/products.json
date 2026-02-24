@@ -1,0 +1,24 @@
+[
+  {
+    "id": "draft-id",
+    "sku": "DRAFT-1771871434033",
+    "title": {
+      "en": "Untitled",
+      "de": "",
+      "it": ""
+    },
+    "description": {
+      "en": "",
+      "de": "",
+      "it": ""
+    },
+    "price": 0,
+    "currency": "EUR",
+    "media": [],
+    "status": "draft",
+    "shop": "shop1",
+    "row_version": 1,
+    "created_at": "2026-02-23T18:30:34.032Z",
+    "updated_at": "2026-02-23T18:30:34.032Z"
+  }
+]

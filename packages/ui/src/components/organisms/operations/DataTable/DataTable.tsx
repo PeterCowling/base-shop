@@ -113,7 +113,7 @@ export function DataTable<T extends Record<string, unknown>>({
       {searchable && (
         <div className="flex items-center gap-2">
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
+            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
               placeholder={searchPlaceholder}
@@ -135,10 +135,10 @@ export function DataTable<T extends Record<string, unknown>>({
       )}
 
       {/* Table */}
-      <div className="rounded-lg border border-muted overflow-hidden">
+      <div className="rounded-lg border border-border-1 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-muted border-b border-muted">
+            <thead className="bg-surface-1 border-b border-border-1">
               <tr>
                 {columns.map((column) => (
                   <th
@@ -169,12 +169,12 @@ export function DataTable<T extends Record<string, unknown>>({
                 ))}
               </tr>
             </thead>
-            <tbody className="bg-bg divide-y divide-muted">
+            <tbody className="bg-bg divide-y divide-border-1">
               {loading ? (
                 <tr>
                   <td
                     colSpan={columns.length}
-                    className="px-[var(--table-cell-padding)] py-8 text-center text-muted"
+                    className="px-[var(--table-cell-padding)] py-8 text-center text-muted-foreground"
                   >
                     Loading...
                   </td>
@@ -183,7 +183,7 @@ export function DataTable<T extends Record<string, unknown>>({
                 <tr>
                   <td
                     colSpan={columns.length}
-                    className="px-[var(--table-cell-padding)] py-8 text-center text-muted"
+                    className="px-[var(--table-cell-padding)] py-8 text-center text-muted-foreground"
                   >
                     {emptyMessage}
                   </td>
@@ -221,7 +221,7 @@ export function DataTable<T extends Record<string, unknown>>({
 
       {/* Footer info */}
       {processedData.length > 0 && (
-        <div className="text-sm text-muted">
+        <div className="text-sm text-muted-foreground">
           Showing {processedData.length} of {data.length} items
         </div>
       )}

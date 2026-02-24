@@ -51,6 +51,8 @@ const nextConfig = {
   // This is an internal uploader console; do not static-export it.
   output: sharedConfig.output === "export" ? undefined : sharedConfig.output,
   webpack(config, ctx) {
+    // Legacy webpack path retained as an explicit exception while scripts still
+    // execute via `next --webpack`. This block is limited to cache behavior.
     if (typeof sharedConfig.webpack === "function") {
       config = sharedConfig.webpack(config, ctx);
     }

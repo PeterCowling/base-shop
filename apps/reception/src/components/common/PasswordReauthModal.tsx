@@ -1,5 +1,7 @@
 import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
+import { ReceptionButton as Button, ReceptionInput } from "@acme/ui/operations";
+
 import { useAuth } from "../../context/AuthContext";
 import { withModalBackground } from "../../hoc/withModalBackground";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
@@ -59,12 +61,12 @@ function PasswordReauthModalBase({
         {title}
       </h2>
       {instructions && (
-        <p className="mb-4 text-center text-sm text-gray-700 dark:text-darkAccentGreen">
+        <p className="mb-4 text-center text-sm text-foreground dark:text-darkAccentGreen">
           {instructions}
         </p>
       )}
       <form onSubmit={handleSubmit} className="mt-4 flex flex-col items-center gap-3">
-        <input
+        <ReceptionInput
           ref={inputRef}
           type="password"
           autoComplete="current-password"
@@ -72,7 +74,7 @@ function PasswordReauthModalBase({
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           disabled={isSubmitting}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-center focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 disabled:opacity-50 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
+          className="w-full rounded-lg border border-border-2 px-4 py-2 text-center focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 disabled:opacity-50 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
         />
         {error && (
           <div className="text-sm text-error-main" role="alert">
@@ -81,21 +83,21 @@ function PasswordReauthModalBase({
         )}
         <div className="mt-2 flex justify-center gap-2">
           {!hideCancel && (
-            <button
+            <Button
               type="button"
               onClick={onCancel}
-              className="min-h-11 min-w-11 rounded bg-gray-300 px-4 py-2 text-gray-800 dark:bg-darkSurface dark:text-darkAccentOrange"
+              className="min-h-11 min-w-11 rounded bg-surface-3 px-4 py-2 text-foreground dark:bg-darkSurface dark:text-darkAccentOrange"
             >
               Cancel
-            </button>
+            </Button>
           )}
-          <button
+          <Button
             type="submit"
             disabled={!password.trim() || isSubmitting}
-            className="min-h-11 min-w-11 rounded bg-primary-main px-4 py-2 text-white disabled:opacity-50 dark:bg-darkAccentGreen"
+            className="min-h-11 min-w-11 rounded bg-primary-main px-4 py-2 text-primary-fg disabled:opacity-50 dark:bg-darkAccentGreen"
           >
             {isSubmitting ? "Verifying..." : "Confirm"}
-          </button>
+          </Button>
         </div>
       </form>
     </ModalContainer>

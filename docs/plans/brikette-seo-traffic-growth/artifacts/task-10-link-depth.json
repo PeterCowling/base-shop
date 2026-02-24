@@ -1,0 +1,84 @@
+{
+  "generatedAt": "2026-02-22T22:48:57.325Z",
+  "start": "https://hostel-positano.com/en",
+  "maxDepth": 3,
+  "crawlVisited": 94,
+  "categoryStats": {
+    "transport": {
+      "total": 31,
+      "reachableWithin3": 10,
+      "unreachableWithin3": 21,
+      "minDepth": 2,
+      "medianDepth": 3,
+      "maxDepthSeen": 3
+    },
+    "beaches": {
+      "total": 18,
+      "reachableWithin3": 18,
+      "unreachableWithin3": 0,
+      "minDepth": 2,
+      "medianDepth": 3,
+      "maxDepthSeen": 3
+    },
+    "activities": {
+      "total": 14,
+      "reachableWithin3": 13,
+      "unreachableWithin3": 1,
+      "minDepth": 2,
+      "medianDepth": 2,
+      "maxDepthSeen": 3
+    },
+    "dining": {
+      "total": 5,
+      "reachableWithin3": 4,
+      "unreachableWithin3": 1,
+      "minDepth": 2,
+      "medianDepth": 2,
+      "maxDepthSeen": 3
+    },
+    "help": {
+      "total": 34,
+      "reachableWithin3": 13,
+      "unreachableWithin3": 21,
+      "minDepth": 2,
+      "medianDepth": 3,
+      "maxDepthSeen": 3
+    }
+  },
+  "totals": {
+    "allGuideUrls": 119,
+    "reachableWithin3": 64,
+    "deeperThan3": 0,
+    "orphanCount": 55
+  },
+  "samples": {
+    "deeperThan3": [],
+    "orphans": [
+      "https://hostel-positano.com/en/how-to-get-here/amalfi-positano-bus",
+      "https://hostel-positano.com/en/how-to-get-here/amalfi-positano-ferry",
+      "https://hostel-positano.com/en/how-to-get-here/naples-center-positano-ferry",
+      "https://hostel-positano.com/en/how-to-get-here/naples-center-train-bus",
+      "https://hostel-positano.com/en/how-to-get-here/positano-amalfi-bus",
+      "https://hostel-positano.com/en/how-to-get-here/positano-amalfi-ferry",
+      "https://hostel-positano.com/en/how-to-get-here/positano-naples-airport-bus",
+      "https://hostel-positano.com/en/how-to-get-here/positano-naples-center-ferry",
+      "https://hostel-positano.com/en/how-to-get-here/positano-ravello-bus",
+      "https://hostel-positano.com/en/how-to-get-here/positano-ravello-ferry-bus",
+      "https://hostel-positano.com/en/how-to-get-here/positano-salerno-bus",
+      "https://hostel-positano.com/en/how-to-get-here/positano-salerno-ferry",
+      "https://hostel-positano.com/en/how-to-get-here/positano-sorrento-bus",
+      "https://hostel-positano.com/en/how-to-get-here/positano-sorrento-ferry",
+      "https://hostel-positano.com/en/how-to-get-here/positano-to-naples-directions-by-ferry",
+      "https://hostel-positano.com/en/how-to-get-here/ravello-positano-bus",
+      "https://hostel-positano.com/en/how-to-get-here/salerno-positano-bus",
+      "https://hostel-positano.com/en/how-to-get-here/salerno-positano-ferry",
+      "https://hostel-positano.com/en/how-to-get-here/salerno-to-positano",
+      "https://hostel-positano.com/en/how-to-get-here/sorrento-positano-bus",
+      "https://hostel-positano.com/en/how-to-get-here/sorrento-positano-ferry",
+      "https://hostel-positano.com/en/experiences/camping-on-the-amalfi-coast",
+      "https://hostel-positano.com/en/experiences/digital-concierge-service",
+      "https://hostel-positano.com/en/experiences/ferragosto-in-positano",
+      "https://hostel-positano.com/en/experiences/fiordo-di-furore-bus-return"
+    ]
+  }
+}

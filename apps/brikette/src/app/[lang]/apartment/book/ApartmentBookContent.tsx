@@ -146,7 +146,7 @@ function ApartmentBookContent({ lang }: Props) {
         {/* Date Selection */}
         <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-3">
-            <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-white" aria-hidden>1</Inline>
+            <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-brand-on-primary" aria-hidden>1</Inline>
             <h2 className="text-lg font-semibold text-brand-heading">
               {tModals("booking2.selectDatesTitle")}
             </h2>
@@ -197,7 +197,7 @@ function ApartmentBookContent({ lang }: Props) {
         {/* Guest Count */}
         <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-3">
-            <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-white" aria-hidden>2</Inline>
+            <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-brand-on-primary" aria-hidden>2</Inline>
             <h2 className="text-lg font-semibold text-brand-heading">
               {tBook("apartment.guestLabel")}
             </h2>
@@ -223,7 +223,7 @@ function ApartmentBookContent({ lang }: Props) {
         {/* Rate Options */}
         <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-3">
-            <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-white" aria-hidden>3</Inline>
+            <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-brand-on-primary" aria-hidden>3</Inline>
             <h2 className="text-lg font-semibold text-brand-heading">
               {tBook("apartment.rateLabel")}
             </h2>
@@ -248,10 +248,10 @@ function ApartmentBookContent({ lang }: Props) {
                 </ul>
               </div>
               <div className="flex items-center justify-between gap-2 rounded-b-lg border-t border-brand-outline/20 bg-brand-accent/10 px-4 py-3 transition-colors group-hover:bg-brand-accent">
-                <span className="text-sm font-semibold text-brand-accent group-hover:text-white">
+                <span className="text-sm font-semibold text-brand-accent group-hover:text-brand-on-accent">
                   {tBook("apartment.cta.nr")}
                 </span>
-                <ArrowRight size={15} className="shrink-0 text-brand-accent group-hover:text-white transition-transform group-hover:translate-x-0.5" aria-hidden />
+                <ArrowRight size={15} className="shrink-0 text-brand-accent group-hover:text-brand-on-accent transition-transform group-hover:translate-x-0.5" aria-hidden />
               </div>
             </button>
 
@@ -274,10 +274,10 @@ function ApartmentBookContent({ lang }: Props) {
                 </ul>
               </div>
               <div className="flex items-center justify-between gap-2 rounded-b-lg border-t border-brand-outline/20 bg-brand-primary/10 px-4 py-3 transition-colors group-hover:bg-brand-primary">
-                <span className="text-sm font-semibold text-brand-primary group-hover:text-white">
+                <span className="text-sm font-semibold text-brand-primary group-hover:text-brand-on-primary">
                   {tBook("apartment.cta.flex")}
                 </span>
-                <ArrowRight size={15} className="shrink-0 text-brand-primary group-hover:text-white transition-transform group-hover:translate-x-0.5" aria-hidden />
+                <ArrowRight size={15} className="shrink-0 text-brand-primary group-hover:text-brand-on-primary transition-transform group-hover:translate-x-0.5" aria-hidden />
               </div>
             </button>
           </div>

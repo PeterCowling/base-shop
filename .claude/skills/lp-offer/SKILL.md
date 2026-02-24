@@ -1,9 +1,9 @@
 ---
 name: lp-offer
-description: Startup offer design skill (S2B). Consolidates ICP, positioning, pricing, and offer design into one artifact with 6 sections. Produces a validated offer hypothesis ready for forecasting and channel selection.
+description: Startup offer design skill (MARKET-06). Consolidates ICP, positioning, pricing, and offer design into one artifact with 6 sections. Produces a validated offer hypothesis ready for forecasting and channel selection.
 ---
 
-# lp-offer — Startup Offer Design (S2B)
+# lp-offer — Startup Offer Design (MARKET-06)
 
 Produces a comprehensive offer artifact for startups. Defines ICP, pain/promise mapping, offer structure, positioning, pricing hypothesis, and objection handling in one document.
 
@@ -220,14 +220,14 @@ Invalid outputs that MUST be rejected:
 
 ## Integration
 
-### Upstream (S1)
+### Upstream (MARKET-01 + readiness context)
 - Preceded by `/lp-readiness --business <BIZ>` (must pass RG-01 offer clarity gate)
 - Consumes offer clarity gaps from readiness output
 - Reads business context from `docs/business-os/strategy/<BIZ>/`
 
-### Downstream (S2C, S2D)
-- `/lp-forecast --business <BIZ>` (S2C) reads ICP and pricing hypothesis for revenue modeling
-- `/lp-channels --business <BIZ>` (S2D) reads ICP, positioning, and objections for channel selection
+### Downstream (S3, SELL-01)
+- `/lp-forecast --business <BIZ>` (S3) reads ICP and pricing hypothesis for revenue modeling
+- `/lp-channels --business <BIZ>` (SELL-01) reads ICP, positioning, and objections for channel selection
 - `lp-do-critique` (DS-14 offer mode) critiques this artifact for logical gaps
 
 ### Parallel Skills

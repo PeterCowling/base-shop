@@ -279,12 +279,12 @@ beyond the Etsy listing frame.
 > Name generation by agent was insufficient. A structured deep research naming process is running.
 >
 > Prompt: `docs/business-os/strategy/PET/2026-02-18-naming-prompt.user.md`
-> Return artifact (to be saved by Pete after running): `docs/business-os/strategy/PET/2026-02-18-naming-shortlist.user.md`
+> Return artifact (to be saved by Pete after running): `docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md`
 >
 > Once Pete saves the naming shortlist and confirms a name, update:
 > - This offer artifact (brand name field)
 > - `docs/plans/pets-dog-accessories-pmf/plan.md` TASK-01 (mark Complete)
-> - `docs/business-os/strategy/PET/brand-dossier.user.md` (name + personality)
+> - `docs/business-os/strategy/PET/brand-identity.user.md` (name + personality)
 
 ---
 
@@ -311,7 +311,7 @@ beyond the Etsy listing frame.
 ### Internal Context
 - PET fact-find: `docs/plans/pets-dog-accessories-pmf/fact-find.md`
 - PET plan: `docs/plans/pets-dog-accessories-pmf/plan.md`
-- PET brand dossier: `docs/business-os/strategy/PET/brand-dossier.user.md`
+- PET brand dossier: `docs/business-os/strategy/PET/brand-identity.user.md`
 
 ---
 

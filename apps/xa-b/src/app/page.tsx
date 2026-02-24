@@ -1,16 +1,16 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy landing content pending design/i18n overhaul */
-import Link from "next/link";
 import type { SVGProps } from "react";
+import Link from "next/link";
 import { ChatBubbleIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 
-import { Section } from "@acme/design-system/atoms/Section";
-import { Grid } from "@acme/design-system/atoms/Grid";
 import { Button } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
 
 import { XaFadeImage } from "../components/XaFadeImage";
 import { XaProductCard } from "../components/XaProductCard";
 import { XA_PRODUCTS } from "../lib/demoData";
 import { siteConfig } from "../lib/siteConfig";
+import { xaI18n } from "../lib/xaI18n";
 
 const heroImage =
   "https://images.unsplash.com/photo-1501348291533-cb233b7d4cc0?auto=format&fit=crop&w=1400&q=80";
@@ -43,15 +43,14 @@ export default function HomePage() {
   return (
     <main className="sf-content">
       <Section padding="wide" className="pt-10">
-        <div className="grid items-center gap-12 md:grid-cols-[minmax(0,0.48fr)_minmax(0,0.52fr)]">
+        <div className="xa-grid-home-primary">
           <div className="space-y-6">
             <div className="space-y-4">
               <h1 className="xa-hero-title">
-                Member rewards for {catalog.productDescriptor}
+                {siteConfig.heroHeadline}
               </h1>
               <p className="xa-hero-copy text-muted-foreground">
-                Get early access, member pricing, and curated edits across {catalog.labelPlural}. The more you shop,
-                the more you get.
+                {siteConfig.heroSubheadline}
               </p>
             </div>
             <Button
@@ -61,14 +60,14 @@ export default function HomePage() {
               <Link href="/account/register">Join Us</Link>
             </Button>
           </div>
-          <div className="xa-hero-media w-full md:justify-self-end md:max-w-[560px]">
+          <div className="xa-hero-media w-full md:justify-self-end xa-hero-media-max">
             <div className="p-6 md:p-10">
-              <div className="relative aspect-[4/5] w-full">
+              <div className="relative xa-aspect-4-5 w-full">
                 <XaFadeImage
                   src={heroImage}
                   alt="Two models in seasonal looks"
                   fill
-                  sizes="(min-width: 1024px) 45vw, 100vw"
+                  sizes={xaI18n.t("xaB.src.app.page.l69c25")}
                   className="object-contain"
                   priority
                 />
@@ -82,9 +81,7 @@ export default function HomePage() {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <h2 className="text-xl font-semibold">
             New in:{" "}
-            <span className="font-normal text-muted-foreground">
-              handpicked daily {catalog.labelPlural} from the world&apos;s best brands and boutiques
-            </span>
+            <span className="font-normal text-muted-foreground">{xaI18n.t("xaB.src.app.page.l83c65")}{catalog.labelPlural}{xaI18n.t("xaB.src.app.page.l84c53")}</span>
           </h2>
           <Button variant="outline" asChild>
             <Link href="/new-in">Shop now</Link>
@@ -112,9 +109,7 @@ export default function HomePage() {
             <div className="mt-2 text-sm font-semibold uppercase tracking-wide text-foreground">
               How to shop
             </div>
-            <div className="text-sm text-muted-foreground">
-              Your guide to shopping and placing orders
-            </div>
+            <div className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.page.l113c60")}</div>
           </Link>
 
           <Link
@@ -127,7 +122,7 @@ export default function HomePage() {
             <div className="mt-2 text-sm font-semibold uppercase tracking-wide text-foreground">
               FAQs
             </div>
-            <div className="text-sm text-muted-foreground">Your questions answered</div>
+            <div className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.page.l128c60")}</div>
           </Link>
 
           <Link
@@ -140,9 +135,7 @@ export default function HomePage() {
             <div className="mt-2 text-sm font-semibold uppercase tracking-wide text-foreground">
               Need help?
             </div>
-            <div className="text-sm text-muted-foreground">
-              Contact our global Customer Service team
-            </div>
+            <div className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.page.l141c60")}</div>
           </Link>
         </Grid>
       </Section>

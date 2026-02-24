@@ -3,6 +3,8 @@ Type: Strategy-Index
 Business-Unit: <BRIK|HEAD|PET|HBAG>
 Last-updated: <YYYY-MM-DD>
 Status: Reference
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Brand & Strategy Index — <BIZ>
@@ -14,7 +16,7 @@ Gates read `Status` from this table — not from individual file frontmatters.
 
 | Artifact | Path | Status | Last-reviewed |
 |----------|------|--------|---------------|
-| Brand Dossier | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | Draft | <YYYY-MM-DD> |
+| Brand Dossier | `docs/business-os/strategy/<BIZ>/brand-identity.user.md` | Draft | <YYYY-MM-DD> |
 | Competitive Positioning | `docs/business-os/strategy/<BIZ>/competitive-positioning.user.md` | — | — |
 | Messaging Hierarchy | `docs/business-os/strategy/<BIZ>/messaging-hierarchy.user.md` | — | — |
 | Creative Voice Brief | `docs/business-os/strategy/<BIZ>/creative-voice-brief.user.md` | — | — |

@@ -1,0 +1,48 @@
+import "../styles/global.css";
+
+import type { Metadata } from "next";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+
+import { initTheme } from "@acme/platform-core/utils";
+
+const heading = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-cormorant-garamond",
+});
+
+const body = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  display: "swap",
+  variable: "--font-dm-sans",
+});
+
+export const metadata: Metadata = {
+  // i18n-exempt -- CARYINA-101 [ttl=2026-12-31]
+  title: "Caryina",
+  // i18n-exempt -- CARYINA-102 [ttl=2026-12-31]
+  description: "Caryina storefront V1 framework",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html
+      lang="en"
+      className={`${heading.variable} ${body.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <meta name="color-scheme" content="light dark" />
+        <script dangerouslySetInnerHTML={{ __html: initTheme }} />
+      </head>
+      <body className="min-h-dvh antialiased">{children}</body>
+    </html>
+  );
+}

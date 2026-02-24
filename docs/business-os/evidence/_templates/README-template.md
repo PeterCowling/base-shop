@@ -61,4 +61,4 @@ Evidence files are consumed by brand artifacts that cite them. The artifact's `P
 2. Copy this README and fill in the frontmatter
 3. Add evidence files following the naming convention
 4. Fill in the Evidence Index table as files are added
-5. In your artifact (e.g., `brand-dossier.user.md`), cite entries by their `E-XX` ID and relative path
+5. In your artifact (e.g., `brand-identity.user.md`), cite entries by their `E-XX` ID and relative path

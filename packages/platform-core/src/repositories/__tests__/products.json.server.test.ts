@@ -5,7 +5,12 @@ describe("jsonProductsRepository", () => {
 
   beforeEach(() => {
     jest.resetModules();
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
     process.env.DATA_ROOT = "/tmp/data";
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it("duplicates product with fresh id, sku suffix, draft status and timestamps", async () => {
@@ -23,7 +28,6 @@ describe("jsonProductsRepository", () => {
     const mkdir = jest.fn();
     jest.doMock("fs", () => ({ promises: { readFile, writeFile, rename, mkdir } }));
     jest.doMock("ulid", () => ({ ulid: () => "new-id" }));
-    jest.doMock("@acme/date-utils", () => ({ nowIso: () => "2020-01-01T00:00:00Z" }));
     const { jsonProductsRepository } = await import("../products.json.server");
 
     const copy = await jsonProductsRepository.duplicate(shop, "1");
@@ -34,8 +38,8 @@ describe("jsonProductsRepository", () => {
       sku: "bcd-copy",
       status: "draft",
       row_version: 1,
-      created_at: "2020-01-01T00:00:00Z",
-      updated_at: "2020-01-01T00:00:00Z",
+      created_at: "2020-01-01T00:00:00.000Z",
+      updated_at: "2020-01-01T00:00:00.000Z",
     });
 
     const written = JSON.parse(writeFile.mock.calls[0][1] as string);
@@ -51,7 +55,6 @@ describe("jsonProductsRepository", () => {
     const mkdir = jest.fn();
     jest.doMock("fs", () => ({ promises: { readFile, writeFile, rename, mkdir } }));
     jest.doMock("ulid", () => ({ ulid: () => "new-id" }));
-    jest.doMock("@acme/date-utils", () => ({ nowIso: () => "2020-01-01T00:00:00Z" }));
     const { jsonProductsRepository } = await import("../products.json.server");
 
     await expect(jsonProductsRepository.duplicate(shop, "1")).rejects.toThrow(
@@ -60,4 +63,3 @@ describe("jsonProductsRepository", () => {
     expect(writeFile).not.toHaveBeenCalled();
   });
 });
-

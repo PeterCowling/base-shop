@@ -159,12 +159,12 @@ describe("replan-trigger", () => {
 
     it("should create open trigger when 3 persistent critical runs detected", () => {
       setupBottleneckHistory(tempDir, "BRIK", [
-        { runId: "R001", constraintKey: "S6B/traffic", severity: "critical" },
-        { runId: "R002", constraintKey: "S6B/traffic", severity: "critical" },
-        { runId: "R003", constraintKey: "S6B/traffic", severity: "critical" },
+        { runId: "R001", constraintKey: "SELL-01/traffic", severity: "critical" },
+        { runId: "R002", constraintKey: "SELL-01/traffic", severity: "critical" },
+        { runId: "R003", constraintKey: "SELL-01/traffic", severity: "critical" },
       ]);
 
-      const diagnosis = createMockDiagnosis("R003", "BRIK", "S6B/traffic", "critical", "S6B", "traffic");
+      const diagnosis = createMockDiagnosis("R003", "BRIK", "SELL-01/traffic", "critical", "SELL-01", "traffic");
 
       const trigger = checkAndTriggerReplan("BRIK", diagnosis, { baseDir: tempDir });
 
@@ -263,10 +263,10 @@ describe("replan-trigger", () => {
       setupBottleneckHistory(tempDir, "HEAD", [
         { runId: "R001", constraintKey: "S3/cvr", severity: "moderate" },
         { runId: "R002", constraintKey: "S3/cvr", severity: "moderate" },
-        { runId: "R003", constraintKey: "S6B/traffic", severity: "moderate" },
+        { runId: "R003", constraintKey: "SELL-01/traffic", severity: "moderate" },
       ]);
 
-      const diagnosis = createMockDiagnosis("R003", "HEAD", "S6B/traffic", "moderate", "S6B", "traffic");
+      const diagnosis = createMockDiagnosis("R003", "HEAD", "SELL-01/traffic", "moderate", "SELL-01", "traffic");
 
       const trigger = checkAndTriggerReplan("HEAD", diagnosis, { baseDir: tempDir });
 
@@ -305,10 +305,10 @@ describe("replan-trigger", () => {
       setupBottleneckHistory(tempDir, "HEAD", [
         { runId: "R001", constraintKey: "S3/cvr", severity: "moderate" },
         { runId: "R002", constraintKey: "S3/cvr", severity: "moderate" },
-        { runId: "R003", constraintKey: "S6B/traffic", severity: "moderate" },
+        { runId: "R003", constraintKey: "SELL-01/traffic", severity: "moderate" },
       ]);
 
-      let diagnosis = createMockDiagnosis("R004", "HEAD", "S6B/traffic", "moderate", "S6B", "traffic");
+      let diagnosis = createMockDiagnosis("R004", "HEAD", "SELL-01/traffic", "moderate", "SELL-01", "traffic");
       let trigger = checkAndTriggerReplan("HEAD", diagnosis, { baseDir: tempDir });
 
       expect(trigger!.status).toBe("open");
@@ -317,11 +317,11 @@ describe("replan-trigger", () => {
       // Second non-persistent run — should resolve
       setupBottleneckHistory(tempDir, "HEAD", [
         { runId: "R002", constraintKey: "S3/cvr", severity: "moderate" },
-        { runId: "R003", constraintKey: "S6B/traffic", severity: "moderate" },
-        { runId: "R004", constraintKey: "S6B/cac", severity: "moderate" },
+        { runId: "R003", constraintKey: "SELL-01/traffic", severity: "moderate" },
+        { runId: "R004", constraintKey: "SELL-01/cac", severity: "moderate" },
       ]);
 
-      diagnosis = createMockDiagnosis("R005", "HEAD", "S6B/cac", "moderate", "S6B", "cac");
+      diagnosis = createMockDiagnosis("R005", "HEAD", "SELL-01/cac", "moderate", "SELL-01", "cac");
       trigger = checkAndTriggerReplan("HEAD", diagnosis, { baseDir: tempDir });
 
       expect(trigger!.status).toBe("resolved");
@@ -354,10 +354,10 @@ describe("replan-trigger", () => {
       setupBottleneckHistory(tempDir, "HEAD", [
         { runId: "R001", constraintKey: "S3/cvr", severity: "moderate" },
         { runId: "R002", constraintKey: "S3/cvr", severity: "moderate" },
-        { runId: "R003", constraintKey: "S6B/traffic", severity: "moderate" },
+        { runId: "R003", constraintKey: "SELL-01/traffic", severity: "moderate" },
       ]);
 
-      let diagnosis = createMockDiagnosis("R004", "HEAD", "S6B/traffic", "moderate", "S6B", "traffic");
+      let diagnosis = createMockDiagnosis("R004", "HEAD", "SELL-01/traffic", "moderate", "SELL-01", "traffic");
       let trigger = checkAndTriggerReplan("HEAD", diagnosis, {
         baseDir: tempDir,
         autoResolveAfterNonPersistentRuns: 3,
@@ -368,11 +368,11 @@ describe("replan-trigger", () => {
       // Second non-persistent run — still open
       setupBottleneckHistory(tempDir, "HEAD", [
         { runId: "R002", constraintKey: "S3/cvr", severity: "moderate" },
-        { runId: "R003", constraintKey: "S6B/traffic", severity: "moderate" },
-        { runId: "R004", constraintKey: "S6B/cac", severity: "moderate" },
+        { runId: "R003", constraintKey: "SELL-01/traffic", severity: "moderate" },
+        { runId: "R004", constraintKey: "SELL-01/cac", severity: "moderate" },
       ]);
 
-      diagnosis = createMockDiagnosis("R005", "HEAD", "S6B/cac", "moderate", "S6B", "cac");
+      diagnosis = createMockDiagnosis("R005", "HEAD", "SELL-01/cac", "moderate", "SELL-01", "cac");
       trigger = checkAndTriggerReplan("HEAD", diagnosis, {
         baseDir: tempDir,
         autoResolveAfterNonPersistentRuns: 3,
@@ -382,12 +382,12 @@ describe("replan-trigger", () => {
 
       // Third non-persistent run — should resolve
       setupBottleneckHistory(tempDir, "HEAD", [
-        { runId: "R003", constraintKey: "S6B/traffic", severity: "moderate" },
-        { runId: "R004", constraintKey: "S6B/cac", severity: "moderate" },
-        { runId: "R005", constraintKey: "S2B/aov", severity: "moderate" },
+        { runId: "R003", constraintKey: "SELL-01/traffic", severity: "moderate" },
+        { runId: "R004", constraintKey: "SELL-01/cac", severity: "moderate" },
+        { runId: "R005", constraintKey: "MARKET-06/aov", severity: "moderate" },
       ]);
 
-      diagnosis = createMockDiagnosis("R006", "HEAD", "S2B/aov", "moderate", "S2B", "aov");
+      diagnosis = createMockDiagnosis("R006", "HEAD", "MARKET-06/aov", "moderate", "MARKET-06", "aov");
       trigger = checkAndTriggerReplan("HEAD", diagnosis, {
         baseDir: tempDir,
         autoResolveAfterNonPersistentRuns: 3,
@@ -455,14 +455,14 @@ describe("replan-trigger", () => {
       );
     });
 
-    it("should map S6B/traffic to traffic acquisition recommendation", () => {
+    it("should map SELL-01/traffic to traffic acquisition recommendation", () => {
       setupBottleneckHistory(tempDir, "HEAD", [
-        { runId: "R001", constraintKey: "S6B/traffic", severity: "moderate" },
-        { runId: "R002", constraintKey: "S6B/traffic", severity: "moderate" },
-        { runId: "R003", constraintKey: "S6B/traffic", severity: "moderate" },
+        { runId: "R001", constraintKey: "SELL-01/traffic", severity: "moderate" },
+        { runId: "R002", constraintKey: "SELL-01/traffic", severity: "moderate" },
+        { runId: "R003", constraintKey: "SELL-01/traffic", severity: "moderate" },
       ]);
 
-      const diagnosis = createMockDiagnosis("R003", "HEAD", "S6B/traffic", "moderate", "S6B", "traffic");
+      const diagnosis = createMockDiagnosis("R003", "HEAD", "SELL-01/traffic", "moderate", "SELL-01", "traffic");
       const trigger = checkAndTriggerReplan("HEAD", diagnosis, { baseDir: tempDir });
 
       expect(trigger!.recommended_focus).toBe(
@@ -470,14 +470,14 @@ describe("replan-trigger", () => {
       );
     });
 
-    it("should map S6B/cac to cost optimization recommendation", () => {
+    it("should map SELL-01/cac to cost optimization recommendation", () => {
       setupBottleneckHistory(tempDir, "HEAD", [
-        { runId: "R001", constraintKey: "S6B/cac", severity: "moderate" },
-        { runId: "R002", constraintKey: "S6B/cac", severity: "moderate" },
-        { runId: "R003", constraintKey: "S6B/cac", severity: "moderate" },
+        { runId: "R001", constraintKey: "SELL-01/cac", severity: "moderate" },
+        { runId: "R002", constraintKey: "SELL-01/cac", severity: "moderate" },
+        { runId: "R003", constraintKey: "SELL-01/cac", severity: "moderate" },
       ]);
 
-      const diagnosis = createMockDiagnosis("R003", "HEAD", "S6B/cac", "moderate", "S6B", "cac");
+      const diagnosis = createMockDiagnosis("R003", "HEAD", "SELL-01/cac", "moderate", "SELL-01", "cac");
       const trigger = checkAndTriggerReplan("HEAD", diagnosis, { baseDir: tempDir });
 
       expect(trigger!.recommended_focus).toBe(
@@ -485,14 +485,14 @@ describe("replan-trigger", () => {
       );
     });
 
-    it("should map S2B/aov to AOV optimization recommendation", () => {
+    it("should map MARKET-06/aov to AOV optimization recommendation", () => {
       setupBottleneckHistory(tempDir, "HEAD", [
-        { runId: "R001", constraintKey: "S2B/aov", severity: "moderate" },
-        { runId: "R002", constraintKey: "S2B/aov", severity: "moderate" },
-        { runId: "R003", constraintKey: "S2B/aov", severity: "moderate" },
+        { runId: "R001", constraintKey: "MARKET-06/aov", severity: "moderate" },
+        { runId: "R002", constraintKey: "MARKET-06/aov", severity: "moderate" },
+        { runId: "R003", constraintKey: "MARKET-06/aov", severity: "moderate" },
       ]);
 
-      const diagnosis = createMockDiagnosis("R003", "HEAD", "S2B/aov", "moderate", "S2B", "aov");
+      const diagnosis = createMockDiagnosis("R003", "HEAD", "MARKET-06/aov", "moderate", "MARKET-06", "aov");
       const trigger = checkAndTriggerReplan("HEAD", diagnosis, { baseDir: tempDir });
 
       expect(trigger!.recommended_focus).toBe(
@@ -502,17 +502,17 @@ describe("replan-trigger", () => {
 
     it("should map stage_blocked to blocker resolution recommendation", () => {
       setupBottleneckHistory(tempDir, "HEAD", [
-        { runId: "R001", constraintKey: "S2/stage_blocked/data_missing", severity: "critical" },
-        { runId: "R002", constraintKey: "S2/stage_blocked/data_missing", severity: "critical" },
-        { runId: "R003", constraintKey: "S2/stage_blocked/data_missing", severity: "critical" },
+        { runId: "R001", constraintKey: "MARKET-01/stage_blocked/data_missing", severity: "critical" },
+        { runId: "R002", constraintKey: "MARKET-01/stage_blocked/data_missing", severity: "critical" },
+        { runId: "R003", constraintKey: "MARKET-01/stage_blocked/data_missing", severity: "critical" },
       ]);
 
       const diagnosis = createMockDiagnosis(
         "R003",
         "HEAD",
-        "S2/stage_blocked/data_missing",
+        "MARKET-01/stage_blocked/data_missing",
         "critical",
-        "S2",
+        "MARKET-01",
         null
       );
       const trigger = checkAndTriggerReplan("HEAD", diagnosis, { baseDir: tempDir });
@@ -657,11 +657,11 @@ describe("replan-trigger", () => {
     it("should return null when no persistence and no existing trigger", () => {
       setupBottleneckHistory(tempDir, "HEAD", [
         { runId: "R001", constraintKey: "S3/cvr", severity: "moderate" },
-        { runId: "R002", constraintKey: "S6B/traffic", severity: "moderate" },
-        { runId: "R003", constraintKey: "S2B/aov", severity: "moderate" },
+        { runId: "R002", constraintKey: "SELL-01/traffic", severity: "moderate" },
+        { runId: "R003", constraintKey: "MARKET-06/aov", severity: "moderate" },
       ]);
 
-      const diagnosis = createMockDiagnosis("R003", "HEAD", "S2B/aov", "moderate", "S2B", "aov");
+      const diagnosis = createMockDiagnosis("R003", "HEAD", "MARKET-06/aov", "moderate", "MARKET-06", "aov");
       const trigger = checkAndTriggerReplan("HEAD", diagnosis, { baseDir: tempDir });
 
       expect(trigger).toBeNull();

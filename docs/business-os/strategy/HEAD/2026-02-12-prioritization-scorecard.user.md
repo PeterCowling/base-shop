@@ -18,6 +18,7 @@ depends_on:
   - docs/business-os/strategy/HEAD/lp-other-products-results.user.md
 decisions:
   - DEC-HEAD-CH-01
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Prioritization Scorecard (Refresh 2026-02-20)
@@ -52,7 +53,7 @@ Scale: 0-5 per criterion.
 | P1 | Organiser pouch MVP | Strong AOV and routine-friction reducer | 2-size pouch line live; compartment/zip QA complete | Pattern sampling + content assets | `docs/business-os/strategy/HEAD/lp-other-products-results.user.md` |
 | P1 | Patch packs MVP | Fast attach-rate and repeat mechanism | 3 themed packs live with age-safe attachment controls | Patch supplier + attachment QA | `docs/business-os/strategy/HEAD/lp-other-products-results.user.md` |
 | P1 | Analytics + payment reliability baseline | Protects denominator quality for all channel decisions | Daily KPI set includes CVR/CAC/payment success/returns and is reviewed | Tracking + checkout verification | `docs/business-os/contracts/HEAD/outcome-contract.user.md` |
-| P2 | Naming clearance lane | Required before final brand lock and scale creative | One shortlisted coined mark passes TM/domain gate with fallback | Shortlist + counsel input | `docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md` |
+| P2 | Naming clearance lane | Required before final brand lock and scale creative | One shortlisted coined mark passes TM/domain gate with fallback | Shortlist + counsel input | `docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md` |
 | P2 | Tether safety/governance lane | High customer impact but high safety/intent risk | Safety design spec + warning language + legal review complete | Engineering + legal review | `docs/business-os/strategy/HEAD/lp-other-products-results.user.md` |
 
 ## D) Deferred Items and Rationale

@@ -7,10 +7,10 @@ import {
   duplicateProductInRepo,
   getProductById,
   readRepo,
-  readSettings,
   updateProductInRepo,
   writeRepo,
-} from '@acme/platform-core/repositories/json.server';
+} from '@acme/platform-core/repositories/products.server';
+import { getShopSettings } from '@acme/platform-core/repositories/settings.server';
 
 import { captureException } from '@/utils/sentry.server';
 
@@ -32,14 +32,17 @@ jest.mock('next/navigation', () => ({
   redirect: jest.fn(),
 }));
 
-jest.mock('@acme/platform-core/repositories/json.server', () => ({
-  readSettings: jest.fn(),
+jest.mock('@acme/platform-core/repositories/products.server', () => ({
   readRepo: jest.fn(),
   writeRepo: jest.fn(),
   getProductById: jest.fn(),
   updateProductInRepo: jest.fn(),
   duplicateProductInRepo: jest.fn(),
   deleteProductFromRepo: jest.fn(),
+}));
+
+jest.mock('@acme/platform-core/repositories/settings.server', () => ({
+  getShopSettings: jest.fn(),
 }));
 
 jest.mock('@/utils/sentry.server', () => ({
@@ -66,7 +69,7 @@ describe('products.server actions', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (ensureAuthorized as jest.Mock).mockResolvedValue(undefined);
-    (readSettings as jest.Mock).mockResolvedValue({ languages: ['en'] });
+    (getShopSettings as jest.Mock).mockResolvedValue({ languages: ['en'] });
     (readRepo as jest.Mock).mockResolvedValue([]);
     (writeRepo as jest.Mock).mockResolvedValue(undefined);
     (getProductById as jest.Mock).mockResolvedValue(baseProduct);
@@ -276,4 +279,3 @@ describe('products.server actions', () => {
     });
   });
 });
-

@@ -333,6 +333,8 @@ function createJestPreset(options = {}) {
     coverageReporters,
     coverageThreshold,
     rootDir: process.cwd(),
+    forceExit: true,
+    detectOpenHandles: true,
   };
 
   // Limit coverage collection to the current workspace package/app

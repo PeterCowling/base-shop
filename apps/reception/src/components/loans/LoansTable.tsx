@@ -1,6 +1,15 @@
 // File: /src/components/loans/LoansTable.tsx
 import { memo, type ReactElement, useCallback, useMemo, useState } from "react";
 
+import {
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
+
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
 import { GuestRow } from "./GuestRow";
@@ -170,47 +179,47 @@ function LoansTableComponent({
   return (
     <>
       <div className="overflow-auto">
-        <table className="min-w-full border-collapse text-sm">
-          <thead>
-            <tr className="bg-gray-200 dark:bg-darkSurface">
-              <th className="p-2 text-start border-b">Booking Ref</th>
-              <th className="p-2 text-start border-b">Guest Name</th>
-              <th className="p-2 text-start border-b">New Loan</th>
-              <th className="p-2 text-start border-b">Change Existing Loan</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table className="min-w-full border-collapse text-sm">
+          <TableHeader>
+            <TableRow className="bg-surface-3 dark:bg-darkSurface">
+              <TableHead className="p-2 text-start border-b">Booking Ref</TableHead>
+              <TableHead className="p-2 text-start border-b">Guest Name</TableHead>
+              <TableHead className="p-2 text-start border-b">New Loan</TableHead>
+              <TableHead className="p-2 text-start border-b">Change Existing Loan</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {/* Render "Loading..." row if loading is true */}
             {loading && (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   colSpan={4}
-                  className="p-2 text-center border-b italic text-gray-600"
+                  className="p-2 text-center border-b italic text-muted-foreground"
                 >
                   Loading...
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )}
 
             {/* Render error row if error is non-null (and not loading) */}
             {!loading && error != null && (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   colSpan={4}
                   className="p-2 text-center border-b text-error-main"
                 >
                   Error: {String(error)}
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )}
 
             {/* If not loading, no error, but no guests => show "No guests" */}
             {!loading && error == null && !hasGuests && (
-              <tr>
-                <td colSpan={4} className="p-2 text-center border-b">
+              <TableRow>
+                <TableCell colSpan={4} className="p-2 text-center border-b">
                   No guests available.
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )}
 
             {/* If not loading, no error, and we do have guests => map over them */}
@@ -237,12 +246,12 @@ function LoansTableComponent({
                     buttonDisabled={buttonDisabled}
                     openModal={openModal}
                     openKeycardsModal={openKeycardsModal}
-                    rowBg="hover:bg-gray-50 dark:hover:bg-darkSurface cursor-pointer"
+                    rowBg="hover:bg-surface-2 dark:hover:bg-darkSurface cursor-pointer"
                   />
                 );
               })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
       {/* Centralized Loan/Return modal */}

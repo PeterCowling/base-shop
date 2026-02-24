@@ -9,6 +9,8 @@ import {
   useState,
 } from "react";
 
+import { ReceptionButton as Button, ReceptionInput as Input } from "@acme/ui/operations";
+
 import { withModalBackground } from "../../../../hoc/withModalBackground";
 
 import ModalContainer from "./ModalContainer";
@@ -69,8 +71,8 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
   return (
     <ModalContainer widthClasses="w-96">
       {/* Header with distinct background color */}
-      <div className="bg-blue-600 rounded-t dark:bg-darkAccentGreen">
-        <h2 className="text-2xl font-bold text-white text-center py-4 dark:text-darkBg">
+      <div className="bg-info-main rounded-t dark:bg-darkAccentGreen">
+        <h2 className="text-2xl font-bold text-primary-fg text-center py-4 dark:text-darkBg">
           Complete Payment
         </h2>
       </div>
@@ -79,102 +81,102 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
       <div className="p-6 space-y-8">
         {/* Payment Method */}
         <div className="space-y-3">
-          <p className="text-lg font-semibold text-gray-700 text-center dark:text-darkAccentGreen">
+          <p className="text-lg font-semibold text-foreground text-center dark:text-darkAccentGreen">
             Payment Method
           </p>
           <div className="flex justify-center space-x-4">
             <label
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 paymentMethod === "cash"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-300 hover:border-gray-400 dark:border-darkSurface"
+                  ? "border-info-main bg-info-light/20"
+                  : "border-border-2 hover:border-border-2 dark:border-darkSurface"
               }`}
             >
-              <input
+              <Input
                 type="radio"
                 value="cash"
                 checked={paymentMethod === "cash"}
                 onChange={handlePaymentChange}
-                className="form-radio h-5 w-5 text-blue-600"
+                className="form-radio h-5 w-5 text-info-main"
               />
-              <span className="text-gray-700 font-medium dark:text-darkAccentGreen">Cash</span>
+              <span className="text-foreground font-medium dark:text-darkAccentGreen">Cash</span>
             </label>
 
             <label
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 paymentMethod === "card"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-300 hover:border-gray-400 dark:border-darkSurface"
+                  ? "border-info-main bg-info-light/20"
+                  : "border-border-2 hover:border-border-2 dark:border-darkSurface"
               }`}
             >
-              <input
+              <Input
                 type="radio"
                 value="card"
                 checked={paymentMethod === "card"}
                 onChange={handlePaymentChange}
-                className="form-radio h-5 w-5 text-blue-600"
+                className="form-radio h-5 w-5 text-info-main"
               />
-              <span className="text-gray-700 font-medium dark:text-darkAccentGreen">Credit Card</span>
+              <span className="text-foreground font-medium dark:text-darkAccentGreen">Credit Card</span>
             </label>
           </div>
         </div>
 
         {/* Bleep or Go */}
         <div className="space-y-3">
-          <p className="text-lg font-semibold text-gray-700 text-center dark:text-darkAccentGreen">
+          <p className="text-lg font-semibold text-foreground text-center dark:text-darkAccentGreen">
             Bleep or Go
           </p>
           <div className="flex justify-center space-x-4">
             <label
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 bleepUsage === "bleep"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-300 hover:border-gray-400 dark:border-darkSurface"
+                  ? "border-info-main bg-info-light/20"
+                  : "border-border-2 hover:border-border-2 dark:border-darkSurface"
               }`}
             >
-              <input
+              <Input
                 type="radio"
                 value="bleep"
                 checked={bleepUsage === "bleep"}
                 onChange={handleBleepChange}
-                className="form-radio h-5 w-5 text-blue-600"
+                className="form-radio h-5 w-5 text-info-main"
               />
-              <span className="text-gray-700 font-medium dark:text-darkAccentGreen">Bleep</span>
+              <span className="text-foreground font-medium dark:text-darkAccentGreen">Bleep</span>
             </label>
 
             <label
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 bleepUsage === "go"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-300 hover:border-gray-400 dark:border-darkSurface"
+                  ? "border-info-main bg-info-light/20"
+                  : "border-border-2 hover:border-border-2 dark:border-darkSurface"
               }`}
             >
-              <input
+              <Input
                 type="radio"
                 value="go"
                 checked={bleepUsage === "go"}
                 onChange={handleBleepChange}
-                className="form-radio h-5 w-5 text-blue-600"
+                className="form-radio h-5 w-5 text-info-main"
               />
-              <span className="text-gray-700 font-medium dark:text-darkAccentGreen">Go</span>
+              <span className="text-foreground font-medium dark:text-darkAccentGreen">Go</span>
             </label>
           </div>
         </div>
 
         {/* Buttons (Centered) */}
         <div className="flex justify-center space-x-4">
-          <button
+          <Button
             onClick={handleCancelClick}
-            className="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="px-4 py-2 rounded bg-surface-3 text-foreground hover:bg-surface-3 font-medium dark:bg-darkSurface dark:text-darkAccentGreen"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleConfirmClick}
-            className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 font-medium dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+            className="px-4 py-2 rounded bg-success-main text-primary-fg hover:bg-green-700 font-medium dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
           >
             Confirm
-          </button>
+          </Button>
         </div>
       </div>
     </ModalContainer>

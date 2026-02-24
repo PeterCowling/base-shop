@@ -5,91 +5,148 @@ import userEvent from "@testing-library/user-event";
 
 import TillReconciliation from "../TillReconciliation";
 
-jest.mock("../../../hoc/withModalBackground", () => ({
-  withModalBackground: (Comp: React.ComponentType) => Comp,
-}));
+jest.mock("../FormsContainer", () => {
+  function MockFormsContainer() {
+    return <div data-testid="forms-container" />;
+  }
+  return MockFormsContainer;
+});
+jest.mock("../TransactionModals", () => {
+  function MockTransactionModals() {
+    return <div data-testid="txn-modals" />;
+  }
+  return MockTransactionModals;
+});
+jest.mock("../TillShiftHistory", () => {
+  function MockTillShiftHistory() {
+    return <div data-testid="till-history" />;
+  }
+  return MockTillShiftHistory;
+});
+jest.mock("../AddKeycardsModal", () => {
+  function MockAddKeycardsModal() {
+    return <div data-testid="add-keycards" />;
+  }
+  return MockAddKeycardsModal;
+});
+jest.mock("../ReturnKeycardsModal", () => {
+  function MockReturnKeycardsModal() {
+    return <div data-testid="return-keycards" />;
+  }
+  return MockReturnKeycardsModal;
+});
 
 const drawerState = {
   overLimit: false,
   overMax: false,
 };
 
-const useTillLogicMock = jest.fn(() => ({
-  // use a user with cash permissions so all dropdowns render
-  user: { user_name: "Pete", email: "t@test", roles: ["staff"] },
-  shiftOpenTime: new Date(),
-  shiftOwner: "test",
-  openingCash: 0,
-  finalCashCount: 0,
-  netCash: 0,
-  creditSlipTotal: 0,
-  netCC: 0,
-  docDepositsCount: 0,
-  docReturnsCount: 0,
-  keycardsLoaned: 0,
-  keycardsReturned: 0,
-  expectedCashAtClose: 0,
-  filteredTransactions: [],
-  ccTransactionsFromLastShift: [],
-  ccTransactionsFromThisShift: [],
-  showOpenShiftForm: false,
-  showCloseShiftForm: false,
-  isTillOverMax: drawerState.overMax,
-  isDrawerOverLimit: drawerState.overLimit,
-  pinRequiredForTenderRemoval: false,
-  setShowOpenShiftForm: jest.fn(),
-  setShowCloseShiftForm: jest.fn(),
-  handleOpenShiftClick: jest.fn(),
-  confirmShiftOpen: jest.fn(),
-  handleCloseShiftClick: jest.fn(),
-  confirmShiftClose: jest.fn(),
-  lastCloseCashCount: 0,
+const noop = jest.fn();
+
+const useTillReconciliationUIMock = jest.fn(() => ({
+  showFloatForm: false,
+  setShowFloatForm: noop,
+  showExchangeForm: false,
+  setShowExchangeForm: noop,
+  showTenderRemovalForm: false,
+  setShowTenderRemovalForm: noop,
+  drawerLimitInput: "",
+  setDrawerLimitInput: noop,
+  isDeleteMode: false,
+  setIsDeleteMode: noop,
+  txnToDelete: null,
+  setTxnToDelete: noop,
+  isEditMode: false,
+  setIsEditMode: noop,
+  txnToEdit: null,
+  setTxnToEdit: noop,
+  closeCashForms: noop,
+  handleAddChangeClick: noop,
+  handleExchangeClick: noop,
+  handleLiftClick: noop,
+  handleRowClickForDelete: noop,
+  handleRowClickForEdit: noop,
 }));
 
-jest.mock("../../../hooks/client/till/useTillShifts", () => ({
-  useTillShifts: () => useTillLogicMock(),
+const useTillReconciliationLogicMock = jest.fn(() => ({
+  user: { user_name: "Pete", email: "t@test", roles: ["staff"] },
+  shiftOpenTime: new Date(),
+  isTillOverMax: drawerState.overMax,
+  isDrawerOverLimit: drawerState.overLimit,
+  drawerLimitInput: "",
+  setDrawerLimitInput: noop,
+  updateLimit: noop,
+  handleOpenShiftClick: noop,
+  handleKeycardCountClick: noop,
+  handleCloseShiftClick: noop,
+  handleAddChangeClick: noop,
+  handleExchangeClick: noop,
+  handleAddKeycard: noop,
+  handleReturnKeycard: noop,
+  handleLiftClick: noop,
+  isEditMode: false,
+  isDeleteMode: false,
+  showOpenShiftForm: false,
+  showCloseShiftForm: false,
+  closeShiftFormVariant: "close",
+  showKeycardCountForm: false,
+  showFloatForm: false,
+  showExchangeForm: false,
+  showTenderRemovalForm: false,
+  pinRequiredForTenderRemoval: false,
+  lastCloseCashCount: 0,
+  expectedCashAtClose: 0,
+  expectedKeycardsAtClose: 0,
+  ccTransactionsFromLastShift: [],
+  ccTransactionsFromThisShift: [],
+  confirmShiftOpen: noop,
+  confirmShiftClose: noop,
+  confirmKeycardReconcile: noop,
+  confirmFloat: noop,
+  confirmExchange: noop,
+  handleTenderRemoval: noop,
+  setShowOpenShiftForm: noop,
+  setShowCloseShiftForm: noop,
+  setShowKeycardCountForm: noop,
+  setShowFloatForm: noop,
+  setShowExchangeForm: noop,
+  setShowTenderRemovalForm: noop,
+  txnToDelete: null,
+  txnToEdit: null,
+  setTxnToDelete: noop,
+  setTxnToEdit: noop,
+  showAddKeycardModal: false,
+  showReturnKeycardModal: false,
+  confirmAddKeycard: noop,
+  confirmReturnKeycard: noop,
+  cancelAddKeycard: noop,
+  cancelReturnKeycard: noop,
 }));
-jest.mock("../../../hooks/useCashCounts", () => ({
-  useCashCounts: () => ({ recordFloatEntry: jest.fn(), addCashCount: jest.fn() }),
+
+jest.mock("../../../hooks/client/till/useTillReconciliationUI", () => ({
+  useTillReconciliationUI: () => useTillReconciliationUIMock(),
 }));
-jest.mock("../../../hooks/useSafeLogic", () => ({
-  useSafeLogic: () => ({
-    recordDeposit: jest.fn(),
-    recordWithdrawal: jest.fn(),
-    recordBankWithdrawal: jest.fn(),
-    recordExchange: jest.fn(),
-  }),
-}));
-jest.mock("../../../hooks/data/useCashDrawerLimit", () => ({
-  useCashDrawerLimit: () => ({ limit: null, updateLimit: jest.fn() }),
-}));
-jest.mock("../../../services/useFirebase", () => ({
-  useFirebaseDatabase: () => ({}),
-}));
-jest.mock("../../../hooks/data/useSafeKeycardCount", () => ({
-  useSafeKeycardCount: () => ({ count: 0, updateCount: jest.fn() }),
-}));
-jest.mock("../../../context/AuthContext", () => ({
-  useAuth: () => ({
-    user: { user_name: "Pete", email: "t@test", roles: ["staff"] },
-    setUser: jest.fn(),
-  }),
+
+jest.mock("../../../hooks/useTillReconciliationLogic", () => ({
+  useTillReconciliationLogic: (...args: unknown[]) =>
+    useTillReconciliationLogicMock(...args),
 }));
 
 describe("TillReconciliation drawer limit warning", () => {
   beforeEach(() => {
     drawerState.overLimit = false;
     drawerState.overMax = false;
-    useTillLogicMock.mockClear();
+    useTillReconciliationUIMock.mockClear();
+    useTillReconciliationLogicMock.mockClear();
   });
 
-  it("shows warning when over limit", async () => {
+  it("shows warning when over limit", () => {
     drawerState.overLimit = true;
     render(<TillReconciliation />);
     expect(screen.getByText(/Cash exceeds drawer limit/i)).toBeInTheDocument();
   });
 
-  it("hides warning when within limit", async () => {
+  it("hides warning when within limit", () => {
     render(<TillReconciliation />);
     expect(
       screen.queryByText(/Cash exceeds drawer limit/i)
@@ -104,7 +161,7 @@ describe("TillReconciliation drawer limit warning", () => {
     ).not.toBeInTheDocument();
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Cash" }));
-    const liftButton = screen.getByRole("button", { name: /lift/i });
-    expect(liftButton.className).not.toMatch(/animate-pulse/);
+    const liftButton = screen.getByRole("menuitem", { name: /lift/i });
+    expect(liftButton).not.toHaveClass("animate-pulse");
   });
 });

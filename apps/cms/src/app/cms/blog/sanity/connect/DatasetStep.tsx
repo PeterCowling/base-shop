@@ -19,7 +19,7 @@ interface Props {
   setAclMode: (v: "public" | "private") => void;
   verifyStatus: "idle" | "loading" | "success" | "error";
   verifyError: string;
-  formAction: (formData: FormData) => void;
+  formAction: (formData: FormData) => void | Promise<void>;
   handleSubmit: () => void;
 }
 

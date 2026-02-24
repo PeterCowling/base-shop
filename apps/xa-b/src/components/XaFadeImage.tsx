@@ -2,12 +2,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { ImageProps } from "next/image";
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy fade image pending accessibility/i18n overhaul */
 import Image from "next/image";
 
+import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { cn } from "@acme/design-system/utils/style";
 
 export function XaFadeImage({
+  alt,
   className,
   onLoad,
   onLoadingComplete,
@@ -35,21 +36,25 @@ export function XaFadeImage({
     revealed && "opacity-0",
   );
 
-  const resolvedAlt = typeof props.alt === "string" ? props.alt.trim() : "";
+  const resolvedAlt = typeof alt === "string" ? alt.trim() : "";
 
   return (
     <>
       {failed ? (
-        <span
+        <Cluster
+          alignY="center"
+          justify="center"
+          wrap={false}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center bg-muted/20 text-xs text-muted-foreground"
+          className="pointer-events-none absolute inset-0 z-0 bg-muted/20 text-xs text-muted-foreground"
         >
           {resolvedAlt ? <span className="px-3 text-center">{resolvedAlt}</span> : null}
-        </span>
+        </Cluster>
       ) : null}
       <span aria-hidden="true" className={overlayClass} />
       <Image
         {...props}
+        alt={resolvedAlt}
         className={cn(imageClass, failed && "opacity-0")}
         onLoad={(event) => {
           setLoaded(true);

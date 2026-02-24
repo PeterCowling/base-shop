@@ -1,6 +1,8 @@
 /* File: src/components/checkins/header/ArchiveButton.tsx */
 import { type FC, memo, type MouseEventHandler } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 /**
  * This component renders a small archive icon button.
  * It matches the size and general style of DeleteButton but uses
@@ -19,15 +21,15 @@ interface ArchiveButtonProps {
 
 const ArchiveButton: FC<ArchiveButtonProps> = ({ onClick, eligibleCount }) => {
   return (
-    <button
+    <Button
       type="button"
       onClick={onClick}
-      className="flex items-center justify-center border border-yellow-400 rounded-md p-1 hover:bg-yellow-100 active:bg-yellow-200"
+      className="flex items-center justify-center border border-warning-main rounded-md p-1 hover:bg-yellow-100 active:bg-warning-light"
       aria-label="Archive"
     >
       {/* Archive icon (24x24) */}
       <svg
-        className="w-6 h-6 text-yellow-700"
+        className="w-6 h-6 text-warning-main"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -41,9 +43,9 @@ const ArchiveButton: FC<ArchiveButtonProps> = ({ onClick, eligibleCount }) => {
         />
       </svg>
       {typeof eligibleCount === "number" && (
-        <span className="ms-1 text-sm text-yellow-700">{`Archive (${eligibleCount})`}</span>
+        <span className="ms-1 text-sm text-warning-main">{`Archive (${eligibleCount})`}</span>
       )}
-    </button>
+    </Button>
   );
 };
 

@@ -2,53 +2,23 @@
 
 // apps/cms/src/actions/shops.server.ts
 
+import type { ShopSettings } from "@acme/types";
+
 import {
-  generateSeo as serviceGenerateSeo,
   getSettings as serviceGetSettings,
-  resetThemeOverride as serviceResetThemeOverride,
-  revertSeo as serviceRevertSeo,
   setFreezeTranslations as serviceSetFreezeTranslations,
-  type Shop,
-  type ShopSettings,
   updateAiCatalog as serviceUpdateAiCatalog,
   updateCurrencyAndTax as serviceUpdateCurrencyAndTax,
   updateDeposit as serviceUpdateDeposit,
   updateLateFee as serviceUpdateLateFee,
   updatePremierDelivery as serviceUpdatePremierDelivery,
   updateReverseLogistics as serviceUpdateReverseLogistics,
-  updateSeo as serviceUpdateSeo,
-  updateShop as serviceUpdateShop,
   updateStockAlert as serviceUpdateStockAlert,
   updateUpsReturns as serviceUpdateUpsReturns,
-} from "../services/shops";
-
-export async function updateShop(
-  shop: string,
-  formData: FormData,
-): Promise<{ shop?: Shop; errors?: Record<string, string[]> }> {
-  return serviceUpdateShop(shop, formData);
-}
+} from "../services/shops/settingsService";
 
 export async function getSettings(shop: string): Promise<ShopSettings> {
   return serviceGetSettings(shop) as unknown as ShopSettings;
-}
-
-export async function updateSeo(
-  shop: string,
-  formData: FormData,
-) {
-  return serviceUpdateSeo(shop, formData);
-}
-
-export async function generateSeo(
-  shop: string,
-  formData: FormData,
-) {
-  return serviceGenerateSeo(shop, formData);
-}
-
-export async function revertSeo(shop: string, timestamp: string) {
-  return serviceRevertSeo(shop, timestamp);
 }
 
 export async function setFreezeTranslations(shop: string, freeze: boolean) {
@@ -92,9 +62,3 @@ export async function updatePremierDelivery(
 export async function updateAiCatalog(shop: string, formData: FormData) {
   return serviceUpdateAiCatalog(shop, formData);
 }
-
-export async function resetThemeOverride(shop: string, token: string) {
-  return serviceResetThemeOverride(shop, token);
-}
-
-export type { Shop, ShopSettings };

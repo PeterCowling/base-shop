@@ -17,6 +17,11 @@ import {
 
 import { Inline } from "../primitives/Inline";
 import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
+import {
   Table,
   TableBody,
   TableCell,
@@ -79,13 +84,33 @@ export interface DataGridProps<TData> {
   striped?: boolean;
   /** Compact row padding */
   dense?: boolean;
+  /** Semantic search input shape. Ignored when `searchRadius` is provided. */
+  searchShape?: PrimitiveShape;
+  /** Explicit search input radius token override. */
+  searchRadius?: PrimitiveRadius;
 
   // --- Advanced ---
   /** Access the underlying table instance for advanced use cases */
   tableRef?: React.MutableRefObject<TanstackTable<TData> | null>;
 }
 
-function DataGridSearch({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+function DataGridSearch({
+  value,
+  onChange,
+  shape,
+  radius,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  shape?: PrimitiveShape;
+  radius?: PrimitiveRadius;
+}) {
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
+
   return (
     <input
       type="search"
@@ -93,9 +118,10 @@ function DataGridSearch({ value, onChange }: { value: string; onChange: (v: stri
       onChange={(e) => onChange(e.target.value)}
       placeholder="Search\u2026"
       className={cn(
-        "w-full rounded-md border border-border-2 bg-input px-3 py-2",
+        "w-full border border-border-2 bg-input px-3 py-2",
         "text-sm text-foreground placeholder:text-muted-foreground",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        shapeRadiusClass,
       )}
     />
   );
@@ -298,6 +324,8 @@ export function DataGrid<TData>({
   loadingMessage,
   striped = false,
   dense = false,
+  searchShape,
+  searchRadius,
   tableRef,
 }: DataGridProps<TData>): React.JSX.Element {
   // Internal state (used when not controlled)
@@ -347,6 +375,8 @@ export function DataGrid<TData>({
         <DataGridSearch
           value={globalFilter}
           onChange={applyFilterChange}
+          shape={searchShape}
+          radius={searchRadius}
         />
       )}
 
@@ -374,7 +404,19 @@ export function DataGrid<TData>({
 DataGrid.displayName = "DataGrid";
 
 /** Helper to create a checkbox selection column */
-export function createSelectionColumn<TData>(): ColumnDef<TData, unknown> {
+export function createSelectionColumn<TData>({
+  shape,
+  radius,
+}: {
+  shape?: PrimitiveShape;
+  radius?: PrimitiveRadius;
+} = {}): ColumnDef<TData, unknown> {
+  const selectionShapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "sm",
+  });
+
   return {
     id: "_select",
     header: ({ table: t }) => (
@@ -383,7 +425,10 @@ export function createSelectionColumn<TData>(): ColumnDef<TData, unknown> {
           checked={t.getIsAllPageRowsSelected()}
           onChange={t.getToggleAllPageRowsSelectedHandler()}
           aria-label="Select all"
-          className="min-h-12 min-w-12 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className={cn(
+            "min-h-12 min-w-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            selectionShapeRadiusClass,
+          )}
         />
       ),
     cell: ({ row }) => (
@@ -392,7 +437,10 @@ export function createSelectionColumn<TData>(): ColumnDef<TData, unknown> {
         checked={row.getIsSelected()}
         onChange={row.getToggleSelectedHandler()}
         aria-label="Select row"
-        className="min-h-12 min-w-12 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className={cn(
+          "min-h-12 min-w-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          selectionShapeRadiusClass,
+        )}
       />
     ),
     size: 40,

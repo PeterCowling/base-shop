@@ -94,7 +94,7 @@ function HeroSection({ hero }: { hero: HeroContent | null }) {
           {hero.bullets.map((bullet, idx) => (
             <li
               key={`${bullet}-${idx}`}
-              className="rounded-lg border border-brand-surface/60 bg-brand-bg/80 p-4 text-sm font-medium text-brand-text shadow-sm backdrop-blur dark:border-brand-surface/20 dark:bg-brand-text/90 dark:text-brand-surface"
+              className="rounded-lg border border-brand-surface/60 bg-brand-bg/80 p-4 text-sm font-medium text-brand-text shadow-sm backdrop-blur dark:border-brand-surface/20 dark:bg-brand-surface dark:text-brand-text"
             >
               {bullet}
             </li>
@@ -121,7 +121,7 @@ function OutlineSection({ outline }: { outline: OutlineContent | null }) {
         {outline.items?.map((item, idx) => (
           <article
             key={`${item.title ?? "outline"}-${idx}`}
-            className="rounded-lg border border-brand-surface/60 bg-brand-bg p-4 shadow-sm dark:border-brand-surface/20 dark:bg-brand-text"
+            className="rounded-lg border border-brand-surface/60 bg-brand-bg p-4 shadow-sm dark:border-brand-surface/20 dark:bg-brand-surface"
           >
             {item.title ? (
               <h3 className="text-base font-semibold text-brand-heading dark:text-brand-secondary">
@@ -129,7 +129,7 @@ function OutlineSection({ outline }: { outline: OutlineContent | null }) {
               </h3>
             ) : null}
             {item.body ? (
-              <p className="mt-2 text-sm leading-relaxed text-brand-text dark:text-brand-surface/90">
+              <p className="mt-2 text-sm leading-relaxed text-brand-text dark:text-brand-text/80">
                 {item.body}
               </p>
             ) : null}
@@ -170,7 +170,7 @@ function AmenitiesSection({
           {blurbs.map((item, idx) => (
             <div
               key={`${item.title ?? "amenity"}-${idx}`}
-              className="rounded-lg border border-brand-surface/60 bg-brand-bg p-4 shadow-sm dark:border-brand-surface/20 dark:bg-brand-text"
+              className="rounded-lg border border-brand-surface/60 bg-brand-bg p-4 shadow-sm dark:border-brand-surface/20 dark:bg-brand-surface"
             >
               {item.title ? (
                 <h3 className="text-base font-semibold text-brand-heading dark:text-brand-secondary">
@@ -178,7 +178,7 @@ function AmenitiesSection({
                 </h3>
               ) : null}
               {item.body ? (
-                <p className="mt-2 text-sm leading-relaxed text-brand-text dark:text-brand-surface/90">
+                <p className="mt-2 text-sm leading-relaxed text-brand-text dark:text-brand-text/80">
                   {item.body}
                 </p>
               ) : null}
@@ -260,7 +260,9 @@ export default function RoomDetailContent({ lang, id }: Props) {
   return (
     <Fragment>
       <RoomStructuredData room={room} lang={lang} />
-      <h1 className="sr-only" aria-hidden="true">{title}</h1>
+      <h1 className="mx-auto mt-6 px-4 text-3xl font-extrabold text-brand-primary dark:text-brand-secondary">
+        {title}
+      </h1>
 
       <HeroSection hero={hero} />
 

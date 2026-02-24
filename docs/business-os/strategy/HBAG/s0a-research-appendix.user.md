@@ -1,17 +1,22 @@
+---
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
+---
+
 Type: Reference
 Status: Active
 
 # S0A Research Appendix — HBAG
 
 ---
-Stage: DISCOVERY-01
+Stage: ASSESSMENT-01
 Business: HBAG
 Created: 2026-02-20
 Status: Complete — all sections A–I populated
 Questions-source: Problem Statement 2026-02-20 operator brief
 ---
 
-*This appendix records sourced research answers to the questions raised during DISCOVERY-01 problem framing. Sections are marked complete, partial, or pending. "Claimed-by-sources" means the stat has been cited but no HBAG-internal capture/screenshot yet exists.*
+*This appendix records sourced research answers to the questions raised during ASSESSMENT-01 problem framing. Sections are marked complete, partial, or pending. "Claimed-by-sources" means the stat has been cited but no HBAG-internal capture/screenshot yet exists.*
 
 ---
 
@@ -202,7 +207,7 @@ Sources: Marmalead | eRank Help | Gelato | Outfy
 
 ---
 
-## I. Proof Tests (DISCOVERY-01 → DISCOVERY-02 Gate)
+## I. Proof Tests (ASSESSMENT-01 → ASSESSMENT-02 Gate)
 
 ### I1. Seven-to-Fourteen Day Proof Test Designs
 

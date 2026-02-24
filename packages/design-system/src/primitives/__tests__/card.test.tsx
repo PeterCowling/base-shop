@@ -30,6 +30,19 @@ describe("Card", () => {
 
     expect(card).toHaveAttribute("data-foo", "bar");
   });
+
+  it("supports shape and radius variants with radius precedence", () => {
+    const { rerender, container } = render(<Card shape="square" />);
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveClass("rounded-none");
+
+    rerender(<Card shape="pill" />);
+    expect(container.firstChild).toHaveClass("rounded-full");
+
+    rerender(<Card shape="square" radius="2xl" />);
+    expect(container.firstChild).toHaveClass("rounded-2xl");
+    expect(container.firstChild).not.toHaveClass("rounded-none");
+  });
 });
 
 describe("CardContent", () => {

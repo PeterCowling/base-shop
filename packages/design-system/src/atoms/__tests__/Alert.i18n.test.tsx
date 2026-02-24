@@ -33,5 +33,14 @@ describe('Alert i18n title', () => {
     );
     expect(screen.getByText('Hinweis')).toBeInTheDocument();
   });
-});
 
+  it("supports shape/radius overrides", () => {
+    const { container } = render(
+      <TranslationsProvider messages={{}}>
+        <Alert shape="square" title="Notice">Body</Alert>
+      </TranslationsProvider>,
+    );
+    const alert = container.querySelector('[role="status"]');
+    expect(alert?.className).toContain("rounded-none");
+  });
+});

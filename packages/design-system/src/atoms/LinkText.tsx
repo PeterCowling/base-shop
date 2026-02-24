@@ -3,6 +3,11 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export type LinkColor =
@@ -21,6 +26,10 @@ export interface LinkTextProps
   color?: LinkColor;
   tone?: LinkTone;
   asChild?: boolean;
+  /** Semantic soft-tone surface shape. Ignored when `softRadius` is provided. */
+  softShape?: PrimitiveShape;
+  /** Explicit soft-tone surface radius token override. */
+  softRadius?: PrimitiveRadius;
 }
 
 export const LinkText = (
@@ -30,6 +39,8 @@ export const LinkText = (
     color = "primary",
     tone = "default",
     asChild = false,
+    softShape,
+    softRadius,
     children,
     ...props
   }: LinkTextProps & {
@@ -54,6 +65,11 @@ export const LinkText = (
     warning: "hover:bg-warning-soft",
     danger: "hover:bg-danger-soft",
   };
+  const softShapeRadiusClass = resolveShapeRadiusClass({
+    shape: softShape,
+    radius: softRadius,
+    defaultRadius: "sm",
+  });
   const Comp: React.ElementType = asChild ? Slot : "a";
   return (
     <Comp
@@ -61,7 +77,9 @@ export const LinkText = (
       className={cn(
         "inline-flex items-center", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — class names
         textByColor[color],
-        tone === "soft" ? cn("rounded px-0.5", softHoverByColor[color]) : "hover:underline", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — class names
+        tone === "soft"
+          ? cn("px-0.5", softShapeRadiusClass, softHoverByColor[color])
+          : "hover:underline", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — class names
         className,
       )}
       {...props}

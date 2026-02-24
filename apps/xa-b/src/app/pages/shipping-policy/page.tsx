@@ -1,6 +1,11 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy shipping policy content pending design/i18n overhaul */
 import { Section } from "@acme/design-system/atoms/Section";
+import { LegalEntityCard } from "@acme/ui/components/organisms/LegalEntityCard";
+import { PolicyContent } from "@acme/ui/components/organisms/PolicyContent";
+import { PolicyPageIntro } from "@acme/ui/components/organisms/PolicyPageIntro";
+import { PolicySection } from "@acme/ui/components/organisms/PolicySection";
+
 import { siteConfig } from "../../../lib/siteConfig";
+import { xaI18n } from "../../../lib/xaI18n";
 
 export default function ShippingPolicyPage() {
   const brandName = siteConfig.brandName;
@@ -9,18 +14,22 @@ export default function ShippingPolicyPage() {
   return (
     <main className="sf-content">
       <Section padding="wide">
-        <h1 className="text-2xl font-semibold">Shipping policy</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          This page outlines how {brandName} ships {productDescriptor}. Replace placeholders with your legal
-          entity details.
-        </p>
+        <PolicyPageIntro
+          title="Shipping policy"
+          description={`This page outlines how ${brandName} ships ${productDescriptor}. Replace placeholders with your legal entity details.`}
+          descriptionClassName={xaI18n.t("xaB.src.app.pages.shipping.policy.page.l19c32")}
+        />
       </Section>
 
       <Section padding="default">
-        <div className="space-y-6">
+        <PolicyContent className="space-y-6">
           {siteConfig.showLegalInfo || siteConfig.showContactInfo ? (
-            <div className="rounded-lg border p-4 text-sm">
-              <div className="font-semibold">Company</div>
+            <LegalEntityCard
+              title="Company"
+              className="rounded-lg border p-4 text-sm"
+              titleClassName={xaI18n.t("xaB.src.app.pages.shipping.policy.page.l29c30")}
+              bodyClassName="space-y-0"
+            >
               {siteConfig.showLegalInfo && siteConfig.legalEntityName ? (
                 <div>{siteConfig.legalEntityName}</div>
               ) : null}
@@ -33,37 +42,31 @@ export default function ShippingPolicyPage() {
               {siteConfig.showContactInfo && siteConfig.supportEmail ? (
                 <div>Support: {siteConfig.supportEmail}</div>
               ) : null}
-            </div>
+            </LegalEntityCard>
           ) : null}
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Order processing</h2>
-            <p className="text-sm text-muted-foreground">
-              2–7 business days.
-            </p>
-          </div>
+          <PolicySection title="Order processing" titleClassName={xaI18n.t("xaB.src.app.pages.shipping.policy.page.l47c66")}>
+            <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l48c58")}</p>
+          </PolicySection>
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Shipping methods</h2>
+          <PolicySection title="Shipping methods" titleClassName={xaI18n.t("xaB.src.app.pages.shipping.policy.page.l53c66")}>
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-              <li>Express (DHL): 7–20 business days</li>
-              <li>Standard: 12–25 business days</li>
+              <li>{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l55c19")}</li>
+              <li>{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l56c19")}</li>
             </ul>
-          </div>
+          </PolicySection>
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Notes</h2>
+          <PolicySection title="Notes" titleClassName={xaI18n.t("xaB.src.app.pages.shipping.policy.page.l60c55")}>
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-              <li>Delivery timelines vary by destination and peak periods.</li>
-              <li>Please double-check your address at checkout.</li>
+              <li>{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l62c19")}</li>
+              <li>{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l63c19")}</li>
               {siteConfig.showSocialLinks && siteConfig.whatsappNumber ? (
-                <li>
-                  If you need help, contact us on WhatsApp: {siteConfig.whatsappNumber}
+                <li>{xaI18n.t("xaB.src.app.pages.shipping.policy.page.l65c21")}{siteConfig.whatsappNumber}
                 </li>
               ) : null}
             </ul>
-          </div>
-        </div>
+          </PolicySection>
+        </PolicyContent>
       </Section>
     </main>
   );

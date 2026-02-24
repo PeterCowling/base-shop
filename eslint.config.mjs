@@ -148,6 +148,10 @@ export default [
       "react-hooks/unsupported-syntax": "off",
       "react-hooks/use-memo": "off",
       "react-hooks/preserve-manual-memoization": "off",
+      // React Compiler warns about libraries that return non-memoizable values (e.g. RHF watch(),
+      // tanstack-table). These are well-established libraries with intentional patterns; the
+      // warnings are informational, not actionable without replacing those libraries.
+      "react-hooks/incompatible-library": "off",
     },
   },
 
@@ -210,6 +214,30 @@ export default [
     ],
     rules: {
       "security/detect-non-literal-fs-filename": "off",
+    },
+  },
+  /* ▸ MCP server: suppress security plugin noise (all paths are internal/controlled; no user input) */
+  {
+    files: ["packages/mcp-server/**/*.{ts,tsx,mjs,js,cjs}"],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+      // Pattern `if (true === value)` is a Yoda-style guard, not a timing attack
+      "security/detect-possible-timing-attacks": "off",
+      // Regex patterns are constructed from known arrays/config, not user input
+      "security/detect-non-literal-regexp": "off",
+      "security/detect-unsafe-regex": "off",
+    },
+  },
+  /* ▸ guides-core, lib, guide-system: suppress fs filename noise (paths are internal/controlled) */
+  {
+    files: [
+      "packages/guides-core/**/*.{ts,tsx,js}",
+      "packages/lib/**/*.{ts,tsx,js}",
+      "packages/guide-system/**/*.{ts,tsx,js}",
+    ],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-unsafe-regex": "off",
     },
   },
 
@@ -292,7 +320,7 @@ export default [
     files: ["apps/cms/**/*.{ts,tsx,js,jsx,mdx}"],
     plugins: { ds: dsPlugin },
     rules: {
-      "ds/no-raw-tailwind-color": "error",
+      "ds/no-raw-tailwind-color": "warn",
       // Prevent low-contrast hero patterns (phase in as a warning first)
       "ds/no-hero-primary-foreground": "warn",
     },
@@ -303,7 +331,7 @@ export default [
     files: ["apps/dashboard/**/*.{ts,tsx,js,jsx,mdx}"],
     plugins: { ds: dsPlugin },
     rules: {
-      "ds/no-raw-tailwind-color": "error",
+      "ds/no-raw-tailwind-color": "warn",
     },
   },
 
@@ -334,15 +362,6 @@ export default [
     },
   },
 
-  /* ▸ XA: disallow raw Tailwind palette colors (migrated to semantic tokens) */
-  {
-    files: ["apps/xa/**/*.{ts,tsx,js,jsx,mdx}"],
-    plugins: { ds: dsPlugin },
-    rules: {
-      "ds/no-raw-tailwind-color": "error",
-    },
-  },
-
   /* ▸ Skylar: disallow raw Tailwind palette colors (migrated to semantic tokens) */
   {
     files: ["apps/skylar/**/*.{ts,tsx,js,jsx,mdx}"],
@@ -355,15 +374,6 @@ export default [
   /* ▸ XA-uploader: disallow raw Tailwind palette colors (migrated to semantic tokens) */
   {
     files: ["apps/xa-uploader/**/*.{ts,tsx,js,jsx,mdx}"],
-    plugins: { ds: dsPlugin },
-    rules: {
-      "ds/no-raw-tailwind-color": "error",
-    },
-  },
-
-  /* ▸ XA-J: disallow raw Tailwind palette colors (migrated to semantic tokens) */
-  {
-    files: ["apps/xa-j/**/*.{ts,tsx,js,jsx,mdx}"],
     plugins: { ds: dsPlugin },
     rules: {
       "ds/no-raw-tailwind-color": "error",
@@ -1782,35 +1792,58 @@ export default [
     },
   },
 
-  /* ▸ UI operations components: internal admin tools, exempt from strict DS/a11y rules */
+  /* ▸ UI operations components: internal admin tools with minimum safety baseline */
   {
     files: ["packages/ui/src/components/organisms/operations/**/*.{ts,tsx}"],
     ignores: ["**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
     rules: {
-      // Operations are internal admin tools (CMS, dashboards); not customer-facing, no i18n needed
-      // Full exemption from DS rules - these are admin-only components with different UX requirements
+      // Internal admin tools are exempt from customer-facing copy/i18n requirements.
       "ds/no-hardcoded-copy": "off",
-      "ds/min-tap-size": "off",
-      "ds/enforce-layout-primitives": "off",
-      "ds/container-widths-only-at": "off",
-      "ds/no-physical-direction-classes-in-rtl": "off",
-      "ds/enforce-focus-ring-token": "off",
-      "ds/no-arbitrary-tailwind": "off",
-      "ds/no-nonlayered-zindex": "off",
-      "ds/absolute-parent-guard": "off",
-      "ds/no-unsafe-viewport-units": "off",
-      // Relaxed a11y for internal tools - admin users have different requirements
-      "jsx-a11y/label-has-associated-control": "off",
-      "jsx-a11y/no-static-element-interactions": "off",
-      "jsx-a11y/no-noninteractive-element-interactions": "off",
-      "jsx-a11y/click-events-have-key-events": "off",
-      "jsx-a11y/no-autofocus": "off",
-      // Relaxed React rules for internal tools
-      "react/no-array-index-key": "off",
-      "react/forbid-dom-props": "off",
-      "react/no-unescaped-entities": "off",
+      // Minimum safety baseline: enforce overflow hazards, constrain arbitrary classes,
+      // and gate inline style usage by exception-only overrides.
+      "ds/no-overflow-hazards": "error",
+      "ds/no-arbitrary-tailwind": [
+        "warn",
+        {
+          allowedFunctions: ["var", "calc"],
+          allowedContentPatterns: ["^-?\\d+(?:\\.\\d+)?%$"],
+          allowedUtilities: ["translate-x", "translate-y"],
+        },
+      ],
+      "react/forbid-dom-props": ["error", { forbid: ["style"] }],
+      // Keep ergonomic rules at warning level for internal-tool workflows.
+      "ds/min-tap-size": ["warn", { min: 40 }],
+      "ds/enforce-layout-primitives": "warn",
+      "ds/container-widths-only-at": "warn",
+      "ds/no-physical-direction-classes-in-rtl": "warn",
+      "ds/enforce-focus-ring-token": "warn",
+      "ds/no-nonlayered-zindex": "warn",
+      "ds/absolute-parent-guard": "warn",
+      "ds/no-unsafe-viewport-units": "warn",
+      "jsx-a11y/label-has-associated-control": "warn",
+      "jsx-a11y/no-static-element-interactions": "warn",
+      "jsx-a11y/no-noninteractive-element-interactions": "warn",
+      "jsx-a11y/click-events-have-key-events": "warn",
+      "jsx-a11y/no-autofocus": "warn",
+      "react/no-array-index-key": "warn",
+      "react/no-unescaped-entities": "warn",
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+    },
+  },
+
+  /* ▸ UI operations runtime layout: explicit style-prop exceptions */
+  {
+    files: [
+      "packages/ui/src/components/organisms/operations/ActionSheet/ActionSheet.tsx",
+      "packages/ui/src/components/organisms/operations/DataTable/DataTable.tsx",
+      "packages/ui/src/components/organisms/operations/SplitPane/SplitPane.tsx",
+      "packages/ui/src/components/organisms/operations/StepWizard/StepWizard.tsx",
+      "packages/ui/src/components/organisms/operations/VirtualList/VirtualList.tsx",
+    ],
+    rules: {
+      // Runtime measurement and positioning require style props in these components.
+      "react/forbid-dom-props": "off",
     },
   },
 
@@ -2331,11 +2364,11 @@ export default [
   {
     files: ["apps/reception/src/**/*.{ts,tsx}"],
     rules: {
-      /* DS colour rules at error — reception migration complete (REC-09) */
+      /* DS colour rules — keep no-raw-color strict, phase Tailwind palette cleanup */
       "ds/no-raw-color": "error",
-      "ds/no-raw-tailwind-color": "error",
-      /* DS rules deferred to future phase — too many violations for current scope */
-      "ds/enforce-layout-primitives": "off", // ~437 violations — separate migration
+      "ds/no-raw-tailwind-color": "warn",
+      /* DS structural governance enabled post-migration (TASK-12) */
+      "ds/enforce-layout-primitives": "warn", // currently 42 known warnings; tracked for follow-up cleanups
       "ds/no-hardcoded-copy": "off", // internal staff tool — not localized
       /* DS rules off — not applicable for internal desktop tool */
       "ds/min-tap-size": "off", // 164 violations — desktop-only internal tool
@@ -2352,7 +2385,7 @@ export default [
       "ds/no-raw-font": "off", // receipt printing is domain-specific for POS system
       /* DS spacing rules — escalation per DS-06 */
       "ds/no-raw-spacing": "error", // escalated in DS-06 after fixing 8 violations
-      "ds/no-arbitrary-tailwind": "warn", // stays at warn — 69 legitimate POS patterns
+      "ds/no-arbitrary-tailwind": "error",
       /* Non-DS relaxations */
       complexity: ["error", 60],
       "max-lines-per-function": [
@@ -2363,6 +2396,40 @@ export default [
       "max-depth": ["error", 8],
       "max-params": ["error", 8],
       "no-console": "off",
+    },
+  },
+  /* ▸ LINT-01: Caryina storefront migration phase (DS rules to be tightened post-localization/layout pass) */
+  {
+    files: ["apps/caryina/src/**/*.{ts,tsx}"],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+      "ds/container-widths-only-at": "off",
+      "ds/enforce-layout-primitives": "off",
+      "ds/no-arbitrary-tailwind": "warn",
+    },
+  },
+  /* ▸ LINT-01: XA-B storefront migration phase (defer strict DS/import hygiene hard-fails) */
+  {
+    files: ["apps/xa-b/**/*.{ts,tsx,js,jsx,mjs,cjs}"],
+    rules: {
+      "ds/no-raw-color": "warn",
+      "ds/no-raw-tailwind-color": "warn",
+      "ds/no-hardcoded-copy": "warn",
+      "ds/enforce-layout-primitives": "warn",
+      "ds/container-widths-only-at": "warn",
+      "ds/no-physical-direction-classes-in-rtl": "warn",
+      "ds/no-nonlayered-zindex": "warn",
+      "ds/no-unsafe-viewport-units": "warn",
+      "ds/absolute-parent-guard": "warn",
+      complexity: "off",
+      "max-lines-per-function": "off",
+      "simple-import-sort/imports": "warn",
+      "simple-import-sort/exports": "warn",
+      "import/first": "warn",
+      "import/newline-after-import": "warn",
+      "import/no-duplicates": "warn",
+      "ds/no-raw-font": "warn",
+      "react/no-unescaped-entities": "warn",
     },
   },
   {

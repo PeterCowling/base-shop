@@ -1,5 +1,4 @@
 /** @jest-environment node */
-/* eslint-disable security/detect-non-literal-fs-filename -- Test creates temporary paths per-case. */
 
 import {
   mkdirSync,

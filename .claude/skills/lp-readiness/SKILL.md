@@ -29,11 +29,11 @@ This skill:
 - Does NOT modify any files
 - Does NOT ask follow-up questions (fails fast if gates don't pass)
 
-## Relationship to DISCOVERY GATE
+## Relationship to ASSESSMENT GATE
 
-When `start-point=problem`, the **DISCOVERY GATE** (GATE-DISCOVERY-00) runs before BRAND (BRAND-01 → BRAND-02), which precedes S1. GATE-DISCOVERY-00 validates all 7 DISCOVERY sub-stage artifacts including distribution feasibility (DISCOVERY-05) and measurement plan (DISCOVERY-06). After the gate passes, BRAND-01 (brand strategy) and BRAND-02 (brand identity) run in sequence before lp-readiness is reached. In this path, lp-readiness serves as a confirmation pass — RG-01, RG-02, and RG-03 should already be satisfied by DISCOVERY artifacts and the gate checks should return PASS quickly.
+When `start-point=problem`, the **ASSESSMENT GATE** (GATE-ASSESSMENT-00) runs before ASSESSMENT-10 (brand profiling) and ASSESSMENT-11 (brand identity), which precede S1. GATE-ASSESSMENT-00 validates all ASSESSMENT-01 through ASSESSMENT-08 sub-stage artifacts including distribution feasibility (ASSESSMENT-06) and measurement plan (ASSESSMENT-07). After the gate passes, ASSESSMENT-10 (brand profiling) and ASSESSMENT-11 (brand identity) run in sequence before lp-readiness is reached. In this path, lp-readiness serves as a confirmation pass — RG-01, RG-02, and RG-03 should already be satisfied by ASSESSMENT artifacts and the gate checks should return PASS quickly.
 
-When `start-point=product`, operators bypass DISCOVERY and BRAND entirely. lp-readiness performs the full RG-01/RG-02/RG-03 checks from scratch against whatever strategy docs exist.
+When `start-point=product`, operators bypass ASSESSMENT entirely. lp-readiness performs the full RG-01/RG-02/RG-03 checks from scratch against whatever strategy docs exist.
 
 ## Differs from idea-readiness
 

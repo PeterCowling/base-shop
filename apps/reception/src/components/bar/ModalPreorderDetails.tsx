@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+import { ReceptionButton as Button } from "@acme/ui/operations";
+
 import { useCompletedOrder } from "../../hooks/data/bar/useCompletedOrder";
 import { usePlacedPreorder } from "../../hooks/data/bar/usePlacedPreorder";
 import type { PlacedPreorder } from "../../types/bar/BarTypes";
@@ -302,7 +304,7 @@ const ModalPreorderDetails: React.FC<ModalPreorderDetailsProps> = ({
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 dark:bg-darkBg/80"
+      className="fixed inset-0 flex items-center justify-center bg-foreground bg-opacity-40 z-50 dark:bg-darkBg/80"
       role="button"
       tabIndex={0}
       // Close only if the user clicked exactly on the backdrop
@@ -320,19 +322,19 @@ const ModalPreorderDetails: React.FC<ModalPreorderDetailsProps> = ({
       }}
     >
       <div
-        className="bg-white p-6 rounded shadow-xl max-w-lg w-full relative max-h-screen overflow-y-auto dark:bg-darkSurface dark:text-darkAccentGreen"
+        className="bg-surface p-6 rounded shadow-xl max-w-lg w-full relative max-h-screen overflow-y-auto dark:bg-darkSurface dark:text-darkAccentGreen"
         role="dialog"
         aria-modal="true"
       >
-        <button
+        <Button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 dark:text-darkAccentGreen"
+          className="absolute top-2 right-2 text-muted-foreground hover:text-foreground dark:text-darkAccentGreen"
         >
           ✕
-        </button>
+        </Button>
         <h2 className="text-xl font-bold mb-4">Preorders for {guestName}</h2>
         {!checkInDateObj && (
-          <p className="text-red-500 mb-2 dark:text-darkAccentOrange">
+          <p className="text-error-main mb-2 dark:text-darkAccentOrange">
             Invalid checkInDate: <strong>{occupantCheckIn}</strong>
           </p>
         )}

@@ -1,21 +1,23 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy department landing pending design/i18n overhaul */
 import Link from "next/link";
 
-import { Section } from "@acme/design-system/atoms/Section";
 import { Grid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
-import { XaProductCard } from "./XaProductCard";
 import { XA_PRODUCTS } from "../lib/demoData";
+import { siteConfig } from "../lib/siteConfig";
 import {
-  XA_ALLOWED_CATEGORIES,
-  XA_CATEGORY_LABELS,
-  XA_SUBCATEGORIES,
   filterByDepartment,
   formatLabel,
   getTrendingDesigners,
+  XA_ALLOWED_CATEGORIES,
+  XA_CATEGORY_LABELS,
+  XA_SUBCATEGORIES,
 } from "../lib/xaCatalog";
+import { xaI18n } from "../lib/xaI18n";
 import type { XaDepartment } from "../lib/xaTypes";
-import { siteConfig } from "../lib/siteConfig";
+
+import { XaProductCard } from "./XaProductCard";
 
 export function XaDepartmentLanding({ department }: { department: XaDepartment }) {
   const departmentLabel = formatLabel(department);
@@ -37,18 +39,17 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
         <div className="space-y-2">
           <h1 className="text-3xl font-semibold">{departmentLabel}</h1>
           <p className="text-muted-foreground">
-            New in {siteConfig.catalog.labelPlural}, trending designers, and category highlights.
-          </p>
+            New in {siteConfig.catalog.labelPlural}{xaI18n.t("xaB.src.components.xadepartmentlanding.l41c52")}</p>
         </div>
       </Section>
 
       <Section padding="default">
-        <div className="flex items-center justify-between">
+        <Inline gap={2} alignY="center" className="justify-between">
           <h2 className="text-xl font-semibold">New In</h2>
           <Link href={`/new-in?department=${department}`} className="text-sm underline">
             View all
           </Link>
-        </div>
+        </Inline>
         <div className="mt-6">
           <Grid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>
             {newIn.map((product) => (
@@ -59,8 +60,8 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
       </Section>
 
       <Section padding="default">
-        <h2 className="text-xl font-semibold">Trending designers</h2>
-        <div className="mt-4 flex flex-wrap gap-3">
+        <h2 className="text-xl font-semibold">{xaI18n.t("xaB.src.components.xadepartmentlanding.l63c47")}</h2>
+        <Inline gap={3} className="mt-4 flex-wrap">
           {trendingDesigners.map((designer) => (
             <Link
               key={designer.handle}
@@ -70,11 +71,11 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
               {designer.name}
             </Link>
           ))}
-        </div>
+        </Inline>
       </Section>
 
       <Section padding="default">
-        <h2 className="text-xl font-semibold">Key categories</h2>
+        <h2 className="text-xl font-semibold">{xaI18n.t("xaB.src.components.xadepartmentlanding.l78c47")}</h2>
         <Grid columns={{ base: 1, md: 3 }} gap={6} className="mt-6">
           {categoryCards.map((card) => (
             <Link

@@ -2,6 +2,9 @@
 
 import { type FC, useMemo, useState } from "react";
 
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import { canAccess, Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
 import PasswordReauthModal from "../common/PasswordReauthModal";
@@ -151,27 +154,28 @@ const ActionButtons: FC<ActionButtonsProps> = ({
         </>
       )}
       {canManageDrawerLimit && (
-        <div className="flex items-center gap-2 dark:bg-darkSurface dark:text-darkAccentGreen sm:ms-auto">
+        <div className="flex items-center gap-2 sm:ms-auto">
           <label
-            className="text-sm font-semibold dark:text-darkAccentGreen"
+            className="text-sm font-semibold"
             htmlFor="drawerLimit"
           >
             Drawer Limit
           </label>
-          <input
+          <Input
+            compatibilityMode="no-wrapper"
             id="drawerLimit"
             type="number"
-            className="border rounded p-1 w-24 dark:bg-darkBg dark:text-darkAccentGreen"
+            className="border rounded p-1 w-24"
             value={drawerLimitInput}
             onChange={(e) => setDrawerLimitInput(e.target.value)}
           />
-          <button
+          <Button
             type="button"
             onClick={handleDrawerLimitSubmit}
-            className="px-3 py-1 rounded bg-primary-main text-white hover:bg-primary-dark dark:bg-darkAccentGreen dark:text-darkBg"
+            className="px-3 py-1 rounded bg-primary-main text-primary-fg hover:bg-primary-dark"
           >
             Update
-          </button>
+          </Button>
           {showDrawerReauth && (
             <PasswordReauthModal
               title="Confirm drawer limit"

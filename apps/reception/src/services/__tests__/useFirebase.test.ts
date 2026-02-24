@@ -56,20 +56,27 @@ jest.mock("firebase/firestore", () => {
 /*  Tests                                                              */
 /* ------------------------------------------------------------------ */
 describe("useFirebase hooks", () => {
+  const setFirebaseEnv = (overrides: Partial<Record<keyof NodeJS.ProcessEnv, string>> = {}) => {
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY = "key";
+    process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = "domain";
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID = "pid";
+    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = "bucket";
+    process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = "sender";
+    process.env.NEXT_PUBLIC_FIREBASE_APP_ID = "appid";
+    process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL = "url";
+    process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID = "measure";
+
+    for (const [key, value] of Object.entries(overrides)) {
+      process.env[key] = value;
+    }
+  };
+
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
-  it("useFirebaseConfig returns values from import.meta.env", () => {
-    import.meta.env.VITE_FIREBASE_API_KEY = "key";
-    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN = "domain";
-    import.meta.env.VITE_FIREBASE_PROJECT_ID = "pid";
-    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET = "bucket";
-    import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID = "sender";
-    import.meta.env.VITE_FIREBASE_APP_ID = "appid";
-    import.meta.env.VITE_FIREBASE_DATABASE_URL = "url";
-    import.meta.env.VITE_FIREBASE_MEASUREMENT_ID = "measure";
-
+  it("useFirebaseConfig returns values from process.env", () => {
+    setFirebaseEnv();
     const { result } = renderHook(() => useFirebaseConfig());
 
     expect(result.current).toEqual({
@@ -85,22 +92,14 @@ describe("useFirebase hooks", () => {
   });
 
   it("throws when env vars are missing or empty", () => {
-    import.meta.env.VITE_FIREBASE_API_KEY = "";
-    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN = "d";
-    import.meta.env.VITE_FIREBASE_PROJECT_ID = "p";
-    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET = "b";
-    import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID = "s";
-    import.meta.env.VITE_FIREBASE_APP_ID = "a";
-    import.meta.env.VITE_FIREBASE_DATABASE_URL = "u";
-    import.meta.env.VITE_FIREBASE_MEASUREMENT_ID = "m";
-
-    const consoleErrorSpy = vi
+    setFirebaseEnv({ NEXT_PUBLIC_FIREBASE_API_KEY: "" });
+    const consoleErrorSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
     try {
       expect(() => renderHook(() => useFirebaseConfig())).toThrow(
-        /VITE_FIREBASE_API_KEY/
+        /NEXT_PUBLIC_FIREBASE_API_KEY/
       );
     } finally {
       consoleErrorSpy.mockRestore();
@@ -108,14 +107,16 @@ describe("useFirebase hooks", () => {
   });
 
   it("useFirebaseApp initializes once and reuses existing app", () => {
-    import.meta.env.VITE_FIREBASE_API_KEY = "k";
-    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN = "d";
-    import.meta.env.VITE_FIREBASE_PROJECT_ID = "p";
-    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET = "b";
-    import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID = "s";
-    import.meta.env.VITE_FIREBASE_APP_ID = "a";
-    import.meta.env.VITE_FIREBASE_DATABASE_URL = "u";
-    import.meta.env.VITE_FIREBASE_MEASUREMENT_ID = "m";
+    setFirebaseEnv({
+      NEXT_PUBLIC_FIREBASE_API_KEY: "k",
+      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "d",
+      NEXT_PUBLIC_FIREBASE_PROJECT_ID: "p",
+      NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: "b",
+      NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: "s",
+      NEXT_PUBLIC_FIREBASE_APP_ID: "a",
+      NEXT_PUBLIC_FIREBASE_DATABASE_URL: "u",
+      NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: "m",
+    });
 
     // First call ⇒ initializeApp runs
     getAppsMock.mockReturnValueOnce([]).mockReturnValue([fakeApp]);

@@ -2,7 +2,12 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { RoomCardAction, RoomCardProps } from "../../types/roomCard";
-import { ROOM_CARD_ACTION_BUTTON_CLASS,ROOM_CARD_TEST_IDS, RoomCard } from "../RoomCard";
+import {
+  ROOM_CARD_ACTION_BUTTON_CLASS,
+  ROOM_CARD_ACTION_BUTTON_CLASS_PRIMARY,
+  ROOM_CARD_TEST_IDS,
+  RoomCard,
+} from "../RoomCard";
 
 const BASE_IMAGE_LABELS = {
   enlarge: "View image",
@@ -60,9 +65,14 @@ describe("RoomCard (design system)", () => {
     expect(screen.getByTestId("wifi-icon")).toBeInTheDocument();
 
     const firstCta = screen.getByRole("button", { name: "Book NR" });
-    ROOM_CARD_ACTION_BUTTON_CLASS.split(/\s+/).forEach((token) => {
+    ROOM_CARD_ACTION_BUTTON_CLASS_PRIMARY.split(/\s+/).forEach((token) => {
       if (!token) return;
       expect(firstCta).toHaveClass(token);
+    });
+    const secondaryCta = screen.getByRole("button", { name: "Book Flex" });
+    ROOM_CARD_ACTION_BUTTON_CLASS.split(/\s+/).forEach((token) => {
+      if (!token) return;
+      expect(secondaryCta).toHaveClass(token);
     });
 
     await user.click(firstCta);

@@ -1,6 +1,9 @@
 import { type FC, memo, useCallback, useState } from "react";
 import { z } from "zod";
 
+import { Input, Textarea } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import useCorrectTransaction from "../../hooks/mutations/useCorrectTransaction";
 import { type Transaction } from "../../types/component/Till";
 import { showToast } from "../../utils/toastUtils";
@@ -92,15 +95,16 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
   ]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-      <div className="bg-white w-full max-w-sm p-6 rounded shadow-lg dark:bg-darkSurface dark:text-darkAccentGreen">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 p-4">
+      <div className="bg-surface w-full max-w-sm p-6 rounded shadow-lg">
         <h2 className="text-lg font-semibold mb-4">Record Correction</h2>
 
         <label className="block mb-2">
           <span className="text-sm font-semibold">Amount</span>
-          <input
+          <Input
+            compatibilityMode="no-wrapper"
             type="text"
-            className="w-full border rounded p-1 text-gray-900"
+            className="w-full border rounded p-1 text-foreground"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
@@ -108,9 +112,10 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
 
         <label className="block mb-2">
           <span className="text-sm font-semibold">Method</span>
-          <input
+          <Input
+            compatibilityMode="no-wrapper"
             type="text"
-            className="w-full border rounded p-1 text-gray-900"
+            className="w-full border rounded p-1 text-foreground"
             value={method}
             onChange={(e) => setMethod(e.target.value)}
           />
@@ -118,9 +123,10 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
 
         <label className="block mb-2">
           <span className="text-sm font-semibold">Item Category</span>
-          <input
+          <Input
+            compatibilityMode="no-wrapper"
             type="text"
-            className="w-full border rounded p-1 text-gray-900"
+            className="w-full border rounded p-1 text-foreground"
             value={itemCategory}
             onChange={(e) => setItemCategory(e.target.value)}
           />
@@ -128,9 +134,10 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
 
         <label className="block mb-4">
           <span className="text-sm font-semibold">Description</span>
-          <input
+          <Input
+            compatibilityMode="no-wrapper"
             type="text"
-            className="w-full border rounded p-1 text-gray-900"
+            className="w-full border rounded p-1 text-foreground"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -138,8 +145,9 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
 
         <label className="block mb-4">
           <span className="text-sm font-semibold">Correction Reason</span>
-          <textarea
-            className="w-full border rounded p-2 text-gray-900"
+          <Textarea
+            compatibilityMode="no-wrapper"
+            className="w-full border rounded p-2 text-foreground"
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             rows={3}
@@ -147,7 +155,7 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
         </label>
 
         {Boolean(error) && (
-          <p className="text-red-500 text-sm mb-2">
+          <p className="text-error-main text-sm mb-2">
             An error occurred. Please try again.
           </p>
         )}
@@ -157,12 +165,12 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
             onSubmit={handleSave}
             submitLabel={loading ? "Saving..." : "Record correction"}
           />
-          <button
+          <Button
             onClick={onClose}
-            className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-3 text-foreground"
           >
             Cancel
-          </button>
+          </Button>
         </div>
       </div>
     </div>

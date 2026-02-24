@@ -34,7 +34,7 @@ Status: Active
 
 **New H2 finding (HIGH tier):** lp-sequence newly appears as dispatch-candidate (phase_matches 0→9 due to Step-N headings in new module files). Advisory: false positive — modules contain sequential algorithm steps, not parallel dispatch domains.
 
-Compliant skills (H1 and H2 clean): draft-outreach, lp-bos-sync, lp-brand-bootstrap\*,
+Compliant skills (H1 and H2 clean): draft-outreach, lp-bos-sync, lp-assessment-bootstrap\*,
 lp-channels, lp-design-qa, lp-design-system, lp-launch-qa, lp-prioritize, lp-refactor,
 lp-do-replan\*, lp-seo, lp-signal-review\*, lp-site-upgrade\*, startup-loop.
 
@@ -128,7 +128,7 @@ Ranked tier-first, then phase_matches descending within tier.
 | lp-measure | 7 | 0 | dispatch-candidate | — | known | Also H1 monolith (230L) |
 | lp-onboarding-audit | 6 | 0 | dispatch-candidate | — | known | Also H1 monolith (268L) |
 | lp-signal-review | 5 | 0 | dispatch-candidate | — | known | H1 compliant (98L, has modules) |
-| lp-brand-bootstrap | 4 | 0 | dispatch-candidate | — | known | H1 compliant (94L); 4 phase headings |
+| lp-assessment-bootstrap | 4 | 0 | dispatch-candidate | — | known | H1 compliant (94L); 4 phase headings |
 | lp-readiness | 3 | 0 | dispatch-candidate | — | known | Also H1 monolith (223L) |
 | lp-guide-improve | 3 | 0 | dispatch-candidate | — | known | Also H1 monolith (226L, unlisted → low) |
 

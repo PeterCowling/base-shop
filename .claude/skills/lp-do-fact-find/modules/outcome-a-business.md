@@ -59,3 +59,7 @@ If `Execution-Track: mixed`, pair this module with `outcome-a-code.md` and merge
 ## Website-Upgrade Rule
 
 If `Startup-Deliverable-Alias: website-upgrade-backlog`, stop and route to `outcome-a-website-upgrade.md` instead of this generic module.
+
+## Website-First-Build Rule
+
+If `Startup-Deliverable-Alias: website-first-build-backlog`, stop and route to `outcome-a-website-first-build.md` instead of this generic module.

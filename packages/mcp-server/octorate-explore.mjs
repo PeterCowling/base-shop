@@ -4,7 +4,6 @@
  * Interactive Octorate page explorer - quickly test navigation and element selection
  */
 
-import { promises as fs } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -181,7 +180,7 @@ async function main() {
     console.info("Press Ctrl+C when done");
 
     // Keep alive
-    await new Promise((_resolve) => {});
+    await new Promise(() => {});
 
   } catch (error) {
     console.error("\nError:", error.message);

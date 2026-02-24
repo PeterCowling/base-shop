@@ -103,4 +103,14 @@ describe("Accordion", () => {
     expect(first).toHaveAttribute("aria-expanded", "false");
     expect(third).toHaveAttribute("aria-expanded", "true");
   });
+
+  it("supports item shape/radius overrides", () => {
+    const { container, rerender } = render(<Accordion items={items} shape="square" />);
+    let firstItem = container.querySelector(".space-y-2 > div");
+    expect(firstItem).toHaveClass("rounded-none");
+
+    rerender(<Accordion items={items} shape="square" radius="xl" />);
+    firstItem = container.querySelector(".space-y-2 > div");
+    expect(firstItem).toHaveClass("rounded-xl");
+  });
 });

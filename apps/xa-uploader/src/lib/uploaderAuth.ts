@@ -46,6 +46,10 @@ function sessionSecret(): string {
 }
 
 function adminToken(): string {
+  if (process.env.NODE_ENV !== "production") {
+    const e2eOverride = process.env.XA_UPLOADER_E2E_ADMIN_TOKEN?.trim();
+    if (e2eOverride) return e2eOverride;
+  }
   return requireEnv("XA_UPLOADER_ADMIN_TOKEN").trim();
 }
 

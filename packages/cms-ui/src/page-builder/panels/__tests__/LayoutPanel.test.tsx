@@ -101,9 +101,8 @@ describe("LayoutPanel", () => {
         {...handlers}
       />
     );
-    expect(screen.getByLabelText(/Width \(Desktop\)/).getAttribute("error")).toBe(
-      "Invalid width value"
-    );
+    expect(screen.getByLabelText(/Width \(Desktop\)/)).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByText("Invalid width value")).toBeInTheDocument();
     (globalThis as any).CSS.supports = original;
   });
 
@@ -222,21 +221,37 @@ describe("LayoutPanel", () => {
       );
     };
     render(<Wrapper />);
+    const selectByOption = (optionName: string) => {
+      const triggers = screen.getAllByRole("combobox");
+      for (const trigger of triggers) {
+        fireEvent.pointerDown(trigger);
+        fireEvent.keyDown(trigger, { key: "ArrowDown" });
+        const option = screen.queryByText(optionName);
+        if (option) {
+          fireEvent.click(option);
+          return;
+        }
+        fireEvent.keyDown(trigger, { key: "Escape" });
+      }
+      throw new Error(`Could not find select option: ${optionName}`);
+    };
 
     expect(screen.queryByLabelText(/Top/)).toBeNull();
-    fireEvent.click(screen.getByText("absolute"));
+    selectByOption("absolute");
     expect(handlers.handleInput).toHaveBeenCalledWith("position", "absolute");
     const top = screen.getByLabelText(/Top/, { selector: 'input' });
     const left = screen.getByLabelText(/Left/, { selector: 'input' });
     fireEvent.change(top, { target: { value: "bad" } });
     fireEvent.change(left, { target: { value: "bad" } });
-    expect(top.getAttribute("error")).toBe("Invalid top value");
-    expect(left.getAttribute("error")).toBe("Invalid left value");
+    expect(top).toHaveAttribute("aria-invalid", "true");
+    expect(left).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByText("Invalid top value")).toBeInTheDocument();
+    expect(screen.getByText("Invalid left value")).toBeInTheDocument();
     fireEvent.change(top, { target: { value: "10px" } });
     fireEvent.change(left, { target: { value: "5px" } });
     expect(handlers.handleResize).toHaveBeenCalledWith("top", "10px");
     expect(handlers.handleResize).toHaveBeenCalledWith("left", "5px");
-    fireEvent.click(screen.getByText("relative"));
+    selectByOption("relative");
     expect(handlers.handleInput).toHaveBeenCalledWith("position", "relative");
     expect(screen.queryByLabelText(/Top/)).toBeNull();
     (globalThis as any).CSS.supports = original;
@@ -250,7 +265,8 @@ describe("LayoutPanel", () => {
     );
     const gapInput = screen.getByLabelText(/Gap/);
     expect(gapInput).toBeInTheDocument();
-    expect(gapInput.getAttribute("error")).toBe("Invalid gap value");
+    expect(gapInput).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByText("Invalid gap value")).toBeInTheDocument();
     fireEvent.change(gapInput, { target: { value: "2rem" } });
     expect(handlers.handleInput).toHaveBeenCalledWith("gap", "2rem");
     (globalThis as any).CSS.supports = original;

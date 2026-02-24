@@ -1,0 +1,24 @@
+{
+  "name": "@apps/caryina",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3018",
+    "build": "next build",
+    "start": "next start -p 3018",
+    "lint": "eslint . --no-error-on-unmatched-pattern",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs --passWithNoTests",
+    "validate:launch-media": "pnpm exec tsx ./scripts/validate-launch-media-contract.ts"
+  },
+  "dependencies": {
+    "@acme/design-system": "workspace:*",
+    "@acme/next-config": "workspace:*",
+    "@acme/platform-core": "workspace:*",
+    "@acme/ui": "workspace:*",
+    "@themes/base": "workspace:*",
+    "@themes/caryina": "workspace:*",
+    "next": "^16.1.6",
+    "react": "19.2.1",
+    "react-dom": "19.2.1"
+  }
+}

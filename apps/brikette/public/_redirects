@@ -2,8 +2,8 @@
 # https://developers.cloudflare.com/pages/configuration/redirects/
 # This file is deployed alongside static HTML for edge-level redirects
 
-# Root URL -> English homepage (no middleware on static deploy)
-/  /en/  302
+# Root URL -> English homepage (permanent, slashless target)
+/  /en  301
 
 # Health check endpoint -> homepage (no API routes on static deploy)
 /api/health  /en/  302

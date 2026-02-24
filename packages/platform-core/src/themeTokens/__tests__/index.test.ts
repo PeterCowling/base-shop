@@ -71,12 +71,13 @@ describe('loadThemeTokensNode', () => {
     const cwdSpy = jest
       .spyOn(process, 'cwd')
       .mockReturnValue(join(rootDir, 'packages', 'platform-core'));
+    const previousWorkspaceRoot = process.env.PNPM_WORKSPACE_ROOT;
+    process.env.PNPM_WORKSPACE_ROOT = rootDir;
     let workspaceFound = false;
 
     (fs.existsSync as jest.Mock).mockImplementation((p: string) => {
       if (p === join(rootDir, 'packages', 'platform-core', 'pnpm-workspace.yaml'))
         return false;
-      if (p === join(rootDir, 'packages', 'pnpm-workspace.yaml')) return false;
       if (p === join(rootDir, 'pnpm-workspace.yaml')) {
         workspaceFound = true;
         return true;
@@ -92,6 +93,7 @@ describe('loadThemeTokensNode', () => {
     });
 
     expect(themeTokens.loadThemeTokensNode(theme)).toEqual({ '--foo': 'bar' });
+    process.env.PNPM_WORKSPACE_ROOT = previousWorkspaceRoot;
     cwdSpy.mockRestore();
   });
 

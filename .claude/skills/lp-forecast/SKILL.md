@@ -24,7 +24,7 @@ Build P10/P50/P90 scenario bands and first-14-day validation plan for pre-launch
 
 READ + RESEARCH + FORECAST
 
-- Read existing business context, offer hypothesis (from lp-offer/S2B), and available market data
+- Read existing business context, offer hypothesis (from lp-offer/MARKET-06), and available market data
 - Research competitor benchmarks, channel performance ranges, and market size signals
 - Forecast P10/P50/P90 scenario bands with unit economics assumptions
 - Generate first-14-day validation plan (THE primary deliverable)
@@ -47,8 +47,8 @@ This skill is NOT a rename or copy of `idea-forecast`. Key differences:
 
 Reads from:
 - Business context: `docs/business-os/startup-baselines/<BIZ>/`
-- Offer hypothesis: Output from lp-offer (S2B) — `docs/business-os/startup-baselines/<BIZ>-offer.md`
-- Channel selection: Output from lp-channels — `docs/business-os/startup-baselines/<BIZ>-channels.md`
+- Offer hypothesis: Output from lp-offer (MARKET-06) — `docs/business-os/startup-baselines/<BIZ>-offer.md`
+- Channel selection (optional if available): Output from lp-channels (SELL-01) — `docs/business-os/startup-baselines/<BIZ>-channels.md`
 - Market data: Any available competitor pricing, channel benchmarks, market size signals (opportunistic)
 
 **Artifact registry**: Canonical producer paths are defined in `docs/business-os/startup-loop/artifact-registry.md`.
@@ -162,7 +162,7 @@ Invalid outputs that require rework:
 
 ## Integration
 
-- **Consumes**: lp-offer output (S2B), lp-channels output (S2C)
+- **Consumes**: lp-offer output (MARKET-06); may consume lp-channels output (SELL-01) when available
 - **Feeds into**: lp-prioritize (S4 prioritization), startup-loop S4 baseline (first-14-day tracking)
 - **Trigger**: Called automatically by startup-loop at S3 stage, or manually via `/lp-forecast`
 

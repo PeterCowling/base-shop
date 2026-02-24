@@ -69,10 +69,26 @@ export default function RenderFallbackStructured({
     Array.isArray(section?.body) && section.body.some((p) => typeof p === 'string' && p.trim().length > 0),
   );
 
-  const tocItems = resolveTocItems(tFb, t, guideKey, legacyKey, aliasKey, mergeAliasFaqs, meaningfulSections);
+  const tocItems = resolveTocItems({
+    tFb,
+    t,
+    guideKey,
+    legacyKey,
+    aliasKey,
+    mergeAliasFaqs,
+    meaningfulSections,
+  });
   const filteredTocItemsBase = filterTocItems(tocItems);
   const filteredTocItems = finalizeTocItems(filteredTocItemsBase, tFb, guideKey, legacyKey);
-  const tocWithFaq = addFaqToToc(filteredTocItems, tFb, t, guideKey, legacyKey, fallback, preferManualWhenUnlocalized);
+  const tocWithFaq = addFaqToToc({
+    filteredTocItems,
+    tFb,
+    t,
+    guideKey,
+    legacyKey,
+    fallback,
+    preferManualWhenUnlocalized,
+  });
 
   const shouldShowToc = tocWithFaq.length > 0 && showTocWhenUnlocalized;
 

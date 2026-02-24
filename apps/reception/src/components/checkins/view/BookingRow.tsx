@@ -1,5 +1,9 @@
 import React, { type FC } from "react";
 
+import { Input } from "@acme/design-system";
+import { TableCell, TableRow } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
+
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import type { Activity } from "../../../types/hooks/data/activitiesData";
 import type { LoanMethod } from "../../../types/hooks/data/loansData";
@@ -61,13 +65,13 @@ const BookingRowView: FC<BookingRowViewProps> = ({
   isCancelled,
 }) => (
   <>
-    <tr
-      className={`border-b border-gray-200 hover:bg-gray-50 transition-colors text-sm text-gray-700 ${
+    <TableRow
+      className={`border-b border-border hover:bg-surface-2 transition-colors text-sm text-foreground ${
         onRowClick ? "cursor-pointer" : ""
-      } dark:border-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen`}
+      }`}
       onClick={onRowClick}
     >
-      <td className="p-4">
+      <TableCell className="p-4">
         <div className="flex items-center gap-2 font-semibold">
           <TooltipComponent
             booking={{
@@ -85,17 +89,17 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             onDoubleClick={onNameDoubleClick}
           />
           {isCancelled && (
-            <span className="px-2 py-0.5 text-xs font-bold text-white bg-error-main rounded">
+            <span className="px-2 py-0.5 text-xs font-bold text-primary-fg bg-error-main rounded">
               CANCELLED
             </span>
           )}
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex items-center justify-center">
-          <input
+          <Input compatibilityMode="no-wrapper"
             type="text"
-            className="w-16 px-1 py-0.5 border border-gray-300 rounded text-center dark:bg-darkSurface dark:text-darkAccentGreen"
+            className="w-16 px-1 py-0.5 border border-border-2 rounded text-center"
             value={draftValue}
             onChange={(e) => onDraftChange(e.target.value)}
             onBlur={onBlur}
@@ -103,22 +107,22 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             onClick={(e) => e.stopPropagation()}
           />
         </div>
-      </td>
-      <td className="p-4">
-        <div className="flex justify-center items-center">
+      </TableCell>
+      <TableCell className="p-4">
+        <Cluster justify="center" wrap={false}>
           {booking.isFirstForBooking ? (
             <RoomPaymentButton booking={booking} />
           ) : (
             <em className="text-muted-foreground">—</em>
           )}
-        </div>
-      </td>
-      <td className="p-4">
+        </Cluster>
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex justify-center items-center">
           <CityTaxPaymentButton booking={booking} />
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex justify-center items-center gap-2">
           <KeycardDepositButton booking={booking} />
           {(hasKeycard || depositType === "NO_CARD") && depositType && (
@@ -134,18 +138,18 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             />
           )}
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex justify-center items-center">
           <StatusButton booking={booking} />
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex justify-center items-center">
           <DocInsertButton booking={booking} selectedDate={selectedDate} />
         </div>
-      </td>
-      <td className="p-4">
+      </TableCell>
+      <TableCell className="p-4">
         <div className="flex justify-center items-center">
           <EmailBookingButton
             bookingRef={booking.bookingRef}
@@ -153,22 +157,22 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             isFirstForBooking={Boolean(booking.isFirstForBooking)}
           />
         </div>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
     {notesOpen && booking.isFirstForBooking && (
-      <tr>
+      <TableRow>
         {/*
           Render the modal inside its own table row so that we keep valid
-          table semantics (a <div> directly under <tbody> triggers DOM nesting
+          table semantics (a <div> directly under <TableBody> triggers DOM nesting
           warnings during tests).
         */}
-        <td colSpan={8} className="p-0">
+        <TableCell colSpan={8} className="p-0">
           <BookingNotesModal
             bookingRef={booking.bookingRef}
             onClose={closeNotes}
           />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     )}
   </>
 );

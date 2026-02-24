@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-raw-tailwind-color -- test fixtures with product category colours */
 import "@testing-library/jest-dom";
 
 import { renderHook } from "@testing-library/react";
@@ -43,4 +42,3 @@ describe("useProducts", () => {
     expect(result.current.getProductCategory2).toBe(firstProdCategory2Fn);
   });
 });
-

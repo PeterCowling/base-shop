@@ -369,7 +369,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
 - **Reviewer:** Pete and startup-loop maintainers
 - **Approval-Evidence:** Schema accepted in plan Decision Log and linked from prompt templates
 - **Measurement-Readiness:** `% hypotheses with valid Demand Evidence Pack` tracked weekly
-- **Affects:** `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md`, `.claude/skills/lp-readiness/SKILL.md`, `.claude/skills/lp-channels/SKILL.md`, `docs/plans/startup-loop-marketing-sales-capability-gap-audit/fact-find.md`, `docs/business-os/startup-loop/demand-evidence-pack-schema.md` (new canonical schema — controlled scope expansion: primary task deliverable)
+- **Affects:** `docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md`, `.claude/skills/lp-readiness/SKILL.md`, `.claude/skills/lp-channels/SKILL.md`, `docs/plans/startup-loop-marketing-sales-capability-gap-audit/fact-find.md`, `docs/business-os/startup-loop/demand-evidence-pack-schema.md` (new canonical schema — controlled scope expansion: primary task deliverable)
 - **Depends on:** TASK-04
 - **Blocks:** TASK-08, TASK-09
 - **Confidence:** 82%
@@ -402,7 +402,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
   - Rollback: revert to advisory-only wording if strict pass floor causes operational stall.
 - **Documentation impact:** Template/skill updates and evidence-pack reference doc links.
 - **Notes / references:**
-  - `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md`
+  - `docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md`
   - `.claude/skills/lp-channels/SKILL.md`
 
 **Build evidence (2026-02-17) — Blocked pending reviewer acknowledgment:**
@@ -415,7 +415,7 @@ Critical path: TASK-14 -> TASK-15 -> TASK-16 -> TASK-07 -> TASK-11 -> TASK-12
   - Channel viability constraints table (6 required fields: spend/timebox, denominator target, quality metric, stop condition, owner, review date)
   - Updated `lp-channels/SKILL.md` — added DEP pre-activation gate in Inputs section; extended Channel Constraints with 6 required fields
   - Updated `lp-readiness/SKILL.md` — added DEP Capture Advisory section after RG-03 (informational, not blocking)
-  - Updated `pre-website-measurement-bootstrap-prompt.md` — added DEMAND SIGNAL CAPTURE section before OUTPUT FORMAT
+  - Updated `measurement-agent-setup-prompt.md` — added DEMAND SIGNAL CAPTURE section before OUTPUT FORMAT
 - **Refactor:** `none_observed` semantics explicit (must include sample_size ≥5). Source-tag fallback named. Channel constraints table separates required (6 fields, all for GATE-S6B-ACT-01) from optional (budget ceiling, resource requirements, time to competence, creative demands).
 - **VC-01 PASS:** All 8 schema fields from fact-find represented in schema doc; 3 parsable sample records included (Record 1 valid, Record 2 invalid, Record 3 valid-with-none_observed).
 - **VC-02 PASS:** Record 2 missing denominators → classified as INVALID with 4 explicit failure reason strings. Pass-floor text is unambiguous.

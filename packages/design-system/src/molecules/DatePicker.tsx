@@ -5,6 +5,11 @@ import "./DatePicker.css";
 import * as React from "react";
 import ReactDatePicker from "react-datepicker";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export interface DatePickerProps {
@@ -18,6 +23,10 @@ export interface DatePickerProps {
   className?: string;
   wrapperClassName?: string;
   invalid?: boolean;
+  /** Semantic input shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit input radius token override. */
+  radius?: PrimitiveRadius;
   disabled?: boolean;
   name?: string;
   autoComplete?: string;
@@ -36,19 +45,28 @@ export const DatePicker = (
     className,
     wrapperClassName,
     invalid,
+    shape,
+    radius,
     ...props
   }: DatePickerProps & {
     ref?: React.Ref<ReactDatePicker>;
   }
 ) => {
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
+
   return (
     <ReactDatePicker
       ref={ref}
       className={cn(
-        "w-full rounded-md border border-border-2 bg-input px-3 py-2",
+        "w-full border border-border-2 bg-input px-3 py-2",
         "text-sm text-foreground placeholder:text-muted-foreground",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         "disabled:cursor-not-allowed disabled:opacity-50",
+        shapeRadiusClass,
         invalid && "border-danger",
         className,
       )}

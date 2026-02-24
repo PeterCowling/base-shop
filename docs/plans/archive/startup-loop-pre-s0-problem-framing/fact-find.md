@@ -30,7 +30,7 @@ Current startup-loop entry assumes the operator already selected a product befor
 ### Goals
 - Add an explicit problem-to-product selection path before S0.
 - Preserve current S0-first path for operators with an already committed product.
-- Keep GATE-BD-00 naming contract compatible with existing `*-naming-shortlist.user.md` behavior.
+- Keep GATE-BD-00 naming contract compatible with existing `*-candidate-names.user.md` behavior.
 - Produce plan-ready scope for loop spec, skill, prompt, and contract updates.
 
 ### Non-goals
@@ -48,7 +48,7 @@ Current startup-loop entry assumes the operator already selected a product befor
 - Assumptions:
   - Operators starting from a problem need a lightweight pre-S0 scaffold more than deep automation.
   - New pre-S0 stages should be conditional and skipped for committed-product flows.
-  - Existing prompt-handoff model is sufficient for early solution-space and competition scans.
+  - Existing prompt-handoff model is sufficient for early solution-profiling and competition scans.
 
 ## Evidence Audit (Current State)
 ### Entry Points
@@ -95,8 +95,8 @@ Current startup-loop entry assumes the operator already selected a product befor
 
 ### Data & Contracts
 - Stage ID contract: `^S[0-9]+[A-Z]*$` (`docs/business-os/startup-loop/stage-operator-dictionary.schema.json:46`).
-- Naming gate pass artifact: `docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md` (`.claude/skills/startup-loop/modules/cmd-advance.md:35`).
-- Naming stable pointer: `latest-naming-shortlist.user.md` (`.claude/skills/startup-loop/modules/cmd-advance.md:71`).
+- Naming gate pass artifact: `docs/business-os/strategy/<BIZ>/*-candidate-names.user.md` (`.claude/skills/startup-loop/modules/cmd-advance.md:35`).
+- Naming stable pointer: `latest-candidate-names.user.md` (`.claude/skills/startup-loop/modules/cmd-advance.md:71`).
 - Run packet currently includes `naming_gate` but no product-selection gate field (`docs/business-os/startup-loop/loop-spec.yaml:296`).
 - Skill registry update path is generated via `scripts/agents/generate-skill-registry --write` (`.claude/SKILLS_INDEX.md:19`).
 
@@ -177,7 +177,7 @@ The startup loop currently starts from S0 Intake and assumes a product is alread
 ```text
 [If operator starts from problem]
   -> S0A Problem framing
-  -> S0B Solution-space scan
+  -> S0B Solution-profiling scan
   -> S0C Option selection + kill decisions
   -> S0D Naming handoff (existing shortlist contract)
   -> S0 Intake (selected product now explicit)
@@ -190,7 +190,7 @@ Operators who start with a committed product skip `S0A-S0D` and enter S0 directl
 - `S0A` Problem framing:
   - Output: explicit problem statement, affected user groups, severity/frequency, current workarounds, evidence pointers.
   - Kill condition: problem not meaningful enough for viable business.
-- `S0B` Solution-space scan:
+- `S0B` Solution-profiling scan:
   - Output: 5-10 candidate product-type options with rough feasibility/regulatory flags.
   - Kill condition: candidate-level hard blockers.
 - `S0C` Option selection:
@@ -198,13 +198,13 @@ Operators who start with a committed product skip `S0A-S0D` and enter S0 directl
   - Kill gate: explicit decision record required to continue.
 - `S0D` Naming handoff:
   - Reuse existing naming research and shortlist artifact contract.
-  - Do not introduce a new naming file contract that bypasses `*-naming-shortlist.user.md`.
+  - Do not introduce a new naming file contract that bypasses `*-candidate-names.user.md`.
 
 ## Contract Compatibility Rules
 - Stage IDs must remain canonical (`S0A`, `S0B`, `S0C`, `S0D`) instead of non-canonical labels such as `SPA/SPB/SPC/SPD`.
 - GATE-BD-00 should remain shortlist-driven:
-  - Keep `*-naming-shortlist.user.md` as pass artifact.
-  - Keep `latest-naming-shortlist.user.md` pointer write.
+  - Keep `*-candidate-names.user.md` as pass artifact.
+  - Keep `latest-candidate-names.user.md` pointer write.
 - Any new pre-S0 metadata must be additive and backward-compatible for existing S0-first flows.
 - Skill registration must follow generated registry workflow (`scripts/agents/generate-skill-registry --write`).
 
@@ -245,10 +245,10 @@ If added, it should mirror `naming_gate` semantics and default to `skipped` for 
 | Skill | Produces | Invocation point |
 |---|---|---|
 | `lp-problem-frame` | `docs/business-os/strategy/<BIZ>/problem-statement.user.md` | `S0A` |
-| `lp-solution-space` | `docs/business-os/strategy/<BIZ>/s0b-solution-space-prompt.md` and results artifact | `S0B` |
-| `lp-option-select` | `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md` | `S0C` |
+| `lp-solution-profiling` | `docs/business-os/strategy/<BIZ>/s0b-solution-profiling-prompt.md` and results artifact | `S0B` |
+| `lp-option-select` | `docs/business-os/strategy/<BIZ>/solution-select.user.md` | `S0C` |
 
-`brand-naming-research` remains the naming prompt generator used in `S0D`, with shortlist output remaining `*-naming-shortlist.user.md` for GATE-BD-00 compatibility.
+`brand-naming-research` remains the naming prompt generator used in `S0D`, with shortlist output remaining `*-candidate-names.user.md` for GATE-BD-00 compatibility.
 
 ## Questions
 ### Resolved
@@ -294,10 +294,10 @@ None.
 | Risk | Likelihood | Impact | Mitigation / Open Question |
 |---|---|---|---|
 | Non-canonical stage IDs break resolver and stage contracts | Medium | High | Use `S0A-S0D` format and update dictionary + resolver + tests together |
-| Naming gate regression from new artifact names | Medium | High | Keep `*-naming-shortlist.user.md` as canonical pass artifact; avoid alternate SPD-only filename contracts |
+| Naming gate regression from new artifact names | Medium | High | Keep `*-candidate-names.user.md` as canonical pass artifact; avoid alternate SPD-only filename contracts |
 | Added stage complexity increases operator confusion | Medium | Medium | Add explicit skip/run rule and concise operator guide examples for both start modes |
 | Typed stage unions become stale after stage additions | Medium | Medium | Grep and update all typed stage enumerations in same task wave |
-| S0B solution-space scan anchors operator on unvalidated product before S2 market intel | Medium | High | Cap S0B output format to candidate rows with feasibility flag only; no demand scoring until S2 |
+| S0B solution-profiling scan anchors operator on unvalidated product before S2 market intel | Medium | High | Cap S0B output format to candidate rows with feasibility flag only; no demand scoring until S2 |
 | Skill registry drift hides new skills | Low-Medium | Medium | Regenerate `.agents/registry/skills.json` via canonical script in same change set |
 
 ## Planning Constraints & Notes
@@ -320,7 +320,7 @@ None.
 1. Add pre-S0 stage contract (`S0A-S0D`) to `loop-spec.yaml` with conditional routing and ordering (requires Q1 resolved for skip-condition syntax).
 2. Add/validate stage dictionary entries and regenerate stage operator map/table outputs.
 3. Update stage addressing resolver and tests for new canonical stage IDs.
-4. Implement `lp-problem-frame`, `lp-solution-space`, and `lp-option-select` skill scaffolds.
+4. Implement `lp-problem-frame`, `lp-solution-profiling`, and `lp-option-select` skill scaffolds.
 5. Integrate `S0D` naming handoff with existing `brand-naming-research` and shortlist contract.
 6. Add `--start-point problem|product` optional arg and Gate D to `.claude/skills/startup-loop/modules/cmd-start.md`; default `product` for backward compatibility.
 7. Regenerate skill registry via `scripts/agents/generate-skill-registry --write`.

@@ -1,13 +1,13 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy orders page pending i18n overhaul */
-import Link from "next/link";
 import * as React from "react";
+import Link from "next/link";
 
-import { Section } from "@acme/design-system/atoms/Section";
 import { Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
 
 import { orderTotal, readOrders } from "../../../lib/ordersStore";
+import { xaI18n } from "../../../lib/xaI18n";
 
 export default function OrdersPage() {
   const [orders, setOrders] = React.useState(() => readOrders());
@@ -52,14 +52,10 @@ export default function OrdersPage() {
           </div>
         ) : (
           <div className="rounded-lg border p-6">
-            <div className="font-medium">No orders yet.</div>
-            <div className="mt-2 text-sm text-muted-foreground">
-              Place an order at checkout to see it here.
-            </div>
+            <div className="font-medium">{xaI18n.t("xaB.src.app.account.orders.page.l54c42")}</div>
+            <div className="mt-2 text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.account.orders.page.l55c65")}</div>
             <div className="mt-4">
-              <Link href="/collections/all" className="underline">
-                Browse products
-              </Link>
+              <Link href="/collections/all" className="underline">{xaI18n.t("xaB.src.app.account.orders.page.l59c67")}</Link>
             </div>
           </div>
         )}

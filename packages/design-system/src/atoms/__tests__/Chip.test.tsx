@@ -35,4 +35,13 @@ describe("Chip", () => {
     await userEvent.click(removeButton);
     expect(handleRemove).toHaveBeenCalledTimes(1);
   });
+
+  it("forwards shape/radius props to Tag", () => {
+    render(
+      <TranslationsProvider messages={en}>
+        <Chip shape="square">Chip</Chip>
+      </TranslationsProvider>,
+    );
+    expect(screen.getByText("Chip").className).toContain("rounded-none");
+  });
 });

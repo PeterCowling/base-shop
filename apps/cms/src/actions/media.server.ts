@@ -16,8 +16,6 @@ import type { ImageOrientation, MediaItem } from "@acme/types";
 import { ensureHasPermission } from "./common/auth";
 import { extractTagsFromFormData } from "./media/tagUtils";
 
-export type { MediaOverview, UpdateMediaMetadataFields };
-
 async function translateMediaError(err: unknown): Promise<string | null> {
   if (!isMediaError(err)) return null;
   const { useTranslations: getServerTranslations } = await import(

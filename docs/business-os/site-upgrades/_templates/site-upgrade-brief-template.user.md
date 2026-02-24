@@ -25,6 +25,13 @@ Platform-Baseline: docs/business-os/platform-capability/<YYYY-MM-DD>-platform-ca
 
 - Named reference sites and why each matters.
 
+## 3A) Exemplar Image Shot-Board (L1 Build 2 image-first mode)
+
+Use this section when WEBSITE-02 runs as L1 Build 2 for visual-heavy catalogs.
+
+| Reference site | Page URL | Shot type (hero/PLP/PDP/detail/on-body/cross-sell) | Why it matters | Evidence |
+|---|---|---|---|---|
+
 ## 4) Pattern Decomposition
 
 | Reference site | Pattern | Why it matters | Evidence |
@@ -41,12 +48,18 @@ Platform-Baseline: docs/business-os/platform-capability/<YYYY-MM-DD>-platform-ca
 - Page/component implications.
 - Copy/messaging implications.
 - Trust and support implications.
+- Image hierarchy implications (homepage/PLP/PDP) and media-to-copy balance.
 
 ## 7) Technical Implications
 
 - Reusable platform primitives to use.
 - New build requirements.
 - Testing and observability implications.
+
+## 7A) Image-Heavy Delivery Contract (L1 Build 2 image-first mode)
+
+| Surface | Required media behavior | Acceptance criteria | Dependencies | Evidence refs |
+|---|---|---|---|---|
 
 ## 8) Prioritized Backlog Candidates
 

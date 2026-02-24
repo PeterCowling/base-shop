@@ -6,6 +6,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 
+import { overflowContainmentClass } from "../../utils/style";
 import { Button } from "../button";
 import {
   DropdownMenu,
@@ -55,6 +56,7 @@ describe("DropdownMenu accessibility helpers", () => {
       await user.click(screen.getByRole("button", { name: /open/i }));
       const content = await screen.findByTestId("menu-content");
       expect(content).toBeInTheDocument();
+      expect(content.className).toContain(overflowContainmentClass("menuSurface"));
 
       expect(portalCalls[0]?.container).toBe(portalContainer);
     } finally {
@@ -136,6 +138,7 @@ describe("DropdownMenu accessibility helpers", () => {
     await user.hover(subTrigger);
     const subContent = await screen.findByTestId("sub-content");
     expect(subContent.className).toContain("custom-sub-content");
+    expect(subContent.className).toContain(overflowContainmentClass("menuSurface"));
 
     const label = screen.getByText("Tools").closest("[data-radix-mock='Label']");
     expect(label).not.toBeNull();

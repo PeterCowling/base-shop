@@ -16,10 +16,11 @@ last_updated: 2026-02-20
 source_of_truth: true
 depends_on:
   - docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md
-  - docs/business-os/strategy/HEAD/naming-research-prompt.md
+  - docs/business-os/strategy/HEAD/candidate-names-prompt.md
   - docs/business-os/strategy/HEAD/adjacent-product-research-prompt.md
 decisions:
   - DEC-HEAD-CH-01
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Italy-first Range + Naming Strategy (Non-Medical CI Processor Retention Brand)
@@ -352,7 +353,7 @@ Nidilo, Filido, Tramilo, Filama, Tessilo, Filessa, Telilo, Filotela, Ordifilo, F
 - `docs/business-os/startup-baselines/HEAD-offer.md`
 - `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md`
 - `docs/business-os/startup-baselines/HEAD-channels.md`
-- `docs/business-os/strategy/HEAD/2026-02-20-naming-shortlist.user.md`
+- `docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md`
 
 ## 20) Final caution
 

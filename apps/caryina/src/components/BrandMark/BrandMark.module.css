@@ -1,0 +1,228 @@
+.brand {
+  --dur: 900ms;
+  --y-fade-color: hsl(var(--color-fg-muted, 355 8% 52%) / 0.58);
+  --tagline-mask-solid-end: 0%;
+  --tagline-mask-feather-start: 0%;
+  --tagline-mask-end: 0%;
+  --tagline-opacity: 0;
+  --tagline-blur: 0.8px;
+
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+
+  font-family: var(--font-cormorant-garamond, "Cormorant Garamond", serif);
+  font-weight: 500;
+
+  font-size: 1.6rem;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+
+  color: var(--brand-mark-color, hsl(355 55% 75%));
+}
+
+.fallback {
+  display: inline-block;
+}
+
+.composed {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+}
+
+/* While not ready, show fallback only */
+.brand[data-ready="false"] .composed {
+  display: none;
+}
+.brand[data-ready="true"] .fallback {
+  display: none;
+}
+
+/* Invisible text that sets baseline + reserves width */
+.baseline {
+  visibility: hidden;
+  white-space: pre;
+  display: inline-block;
+}
+
+/* Layer sits atop baseline */
+.layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Segments */
+.car,
+.y,
+.ina {
+  position: absolute;
+  top: 0;
+  white-space: pre;
+}
+
+/* y and suffix transitions */
+.y {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
+  transition:
+    opacity var(--dur) ease,
+    transform var(--dur) cubic-bezier(0.2, 0.9, 0.25, 1),
+    color var(--dur) ease;
+  will-change: transform, opacity;
+}
+
+.ina {
+  transform: translateX(var(--shift, 0px));
+  transition: transform var(--dur) cubic-bezier(0.2, 0.9, 0.25, 1);
+  will-change: transform;
+}
+
+/* Target state: Carina */
+.brand[data-state="to"] .y {
+  opacity: 1;
+  transform: translateY(0);
+  color: var(--y-fade-color);
+}
+
+.brand[data-state="to"] .ina {
+  transform: translateX(var(--shift, 0px));
+}
+
+.particleCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms linear;
+}
+
+.brand[data-particle-active="true"] .particleCanvas {
+  opacity: 1;
+}
+
+/* Offscreen measurement probes */
+.measure {
+  position: absolute;
+  left: -10000px;
+  top: 0;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: pre;
+}
+.measure > span {
+  display: inline-block;
+}
+
+/* Tagline visibility is controlled by particle lifecycle */
+.tagline {
+  display: block;
+  margin-top: 0.25em;
+
+  font-family: var(--font-dm-sans, "DM Sans", system-ui, sans-serif);
+  font-weight: 400;
+  font-size: 0.55em;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+
+  color: hsl(var(--color-fg-muted, 355 8% 52%));
+
+  opacity: var(--tagline-opacity);
+  clip-path: inset(
+    0
+    0
+    calc((1 - var(--tagline-reveal, 1)) * 100%)
+    0
+  );
+  filter: blur(var(--tagline-blur));
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0 0 0 / 1) 0%,
+    rgba(0 0 0 / 1) var(--tagline-mask-solid-end),
+    rgba(0 0 0 / 0.44) var(--tagline-mask-feather-start),
+    rgba(0 0 0 / 0) var(--tagline-mask-end),
+    rgba(0 0 0 / 0) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0 0 0 / 1) 0%,
+    rgba(0 0 0 / 1) var(--tagline-mask-solid-end),
+    rgba(0 0 0 / 0.44) var(--tagline-mask-feather-start),
+    rgba(0 0 0 / 0) var(--tagline-mask-end),
+    rgba(0 0 0 / 0) 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  transition:
+    opacity 120ms linear,
+    filter 120ms linear;
+  will-change: clip-path, opacity, filter;
+}
+
+.brand[data-particle-state="idle"] .tagline,
+.brand[data-particle-state="dissolving"] .tagline,
+.brand[data-particle-state="funneling"] .tagline {
+  --tagline-opacity: 0;
+  --tagline-blur: 0.8px;
+  --tagline-mask-solid-end: 0%;
+  --tagline-mask-feather-start: 0%;
+  --tagline-mask-end: 0%;
+  opacity: 0;
+  clip-path: inset(0 0 100% 0);
+}
+
+.brand[data-particle-state="settling"] .tagline {
+  opacity: 1;
+  clip-path: inset(
+    0
+    0
+    calc((1 - var(--tagline-reveal, 0)) * 100%)
+    0
+  );
+}
+
+.brand[data-particle-state="done"] .tagline {
+  --tagline-opacity: 1;
+  --tagline-blur: 0px;
+  --tagline-mask-solid-end: 100%;
+  --tagline-mask-feather-start: 100%;
+  --tagline-mask-end: 100%;
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+}
+
+/* Before measurement, hide the tagline too */
+.brand[data-ready="false"] .tagline {
+  --tagline-opacity: 0;
+  --tagline-blur: 0.8px;
+  --tagline-mask-solid-end: 0%;
+  --tagline-mask-feather-start: 0%;
+  --tagline-mask-end: 0%;
+  opacity: 0;
+  clip-path: inset(0 0 100% 0);
+  transition: none;
+}
+
+/* Reduced motion: show final state, no transitions */
+@media (prefers-reduced-motion: reduce) {
+  .y,
+  .ina,
+  .tagline {
+    transition: none !important;
+  }
+  .y {
+    opacity: 1 !important;
+    color: var(--y-fade-color) !important;
+    transform: none !important;
+  }
+  .ina {
+    transform: translateX(var(--shift, 0px)) !important;
+  }
+  .tagline {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

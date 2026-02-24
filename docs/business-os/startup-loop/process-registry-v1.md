@@ -61,7 +61,7 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 | FIN-2 | Billing, payouts and reconciliation | FIN | Post-S9 launch | Weekly / Daily (high volume) | All (activates after first transactions) |
 | FIN-3 | Risk register, compliance, and incident readiness | FIN | S1, recurring | Weekly light / Monthly deep | All (see exception-runbooks-v1.md) |
 | FIN-4 | Vendor and procurement management | FIN | Post-S5B, recurring | Monthly; Weekly exceptions | `inventory_present`, `hospitality`, scaling stage |
-| DATA-1 | KPI refresh and data integrity checks | DATA | S1B/S2A, S3, S10 | Weekly + Daily key metrics | All |
+| DATA-1 | KPI refresh and data integrity checks | DATA | MEASURE-01/MEASURE-02, S3, S10 | Weekly + Daily key metrics | All |
 | DATA-2 | Leading indicator monitoring and alerting | DATA | S10, recurring | Daily monitoring / Weekly summary | All (see exception-runbooks-v1.md) |
 | DATA-3 | Incident post-mortems and corrective actions | DATA | Triggered | As-needed | All (see exception-runbooks-v1.md) |
 | DATA-4 | Weekly Review facilitation and decision log | DATA | S10 | Weekly | All — **fully covered by `weekly-kpcs-decision-prompt.md`; do not add competing contract** |
@@ -76,8 +76,8 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 |---|---|---|
 | S0 | Intake | FIN-3 (initial risk scan), DATA-1 (KPI setup start) |
 | S1 | Readiness | FIN-3 (compliance readiness), CDI-2 (customer evidence review) |
-| S1B | Measurement bootstrap | DATA-1 (KPI infrastructure setup) |
-| S2A | Historical baseline | DATA-1 (baseline KPI data collection) |
+| MEASURE-01 | Agent-Setup | DATA-1 (KPI infrastructure setup) |
+| MEASURE-02 | Historical baseline | DATA-1 (baseline KPI data collection) |
 | S2 | Market intelligence | CDI-3 (market/competitor scan), CDI-2 (customer interviews) |
 | S2B | Offer design | OFF-1 (offer iteration), OFF-2 (initial pricing hypothesis) |
 | S3 | Forecast | FIN-1 (unit economics baseline), DATA-1 (KPI modeling) |
@@ -520,7 +520,7 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 | Field | Value |
 |---|---|
 | **Purpose** | Produce a trusted weekly KPI pack, with integrity checks so decisions are based on reliable data. |
-| **Stage anchor** | S1B/S2A (initial measurement setup); S3 (KPI modeling); S10 (weekly refresh) |
+| **Stage anchor** | MEASURE-01/MEASURE-02 (initial measurement setup); S3 (KPI modeling); S10 (weekly refresh) |
 | **Cadence** | Weekly KPI pack + daily key metrics for ops |
 | **Owner role** | Data Owner / Ops Analyst; in small teams: Founder/GM |
 | **Inputs** | Source exports (shop/CRM/OTA/PMS/channel manager); financial reconciliation pack (FIN-2); metric dictionary |
@@ -530,7 +530,7 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 | **Exit criteria** | Dashboard published; anomalies assigned owners; data confidence level stated |
 | **Exception linkage** | Anomalies above threshold trigger DATA-2 alerting; data integrity failure blocks decision-grade decisions in S10 |
 | **Profile / branch** | All profiles and stages |
-| **CAP reference** | CAP-07 (Measurement and inference) — initial measurement setup is owned by S1B/S2A prompt handoff. DATA-1 is the recurring weekly data quality process that sustains CAP-07. These are complementary; DATA-1 does not replace the CAP-07 setup gate. |
+| **CAP reference** | CAP-07 (Measurement and inference) — initial measurement setup is owned by MEASURE-01/MEASURE-02 prompt handoff. DATA-1 is the recurring weekly data quality process that sustains CAP-07. These are complementary; DATA-1 does not replace the CAP-07 setup gate. |
 
 ### DATA-2 — Leading Indicator Monitoring and Alerting
 
@@ -611,7 +611,7 @@ All processes active. Cadences as specified per process. Monthly deep audit mand
 
 ## VC-02 Validation Evidence
 
-**VC-02-A — Mapping completeness:** All 17 startup-loop stages (S0, S1, S1B, S2A, S2, S2B, S3, S6B, S4, S5A, S5B, S6, S7, S8, S9, S9B, S10) have at least one linked process-domain responsibility. See Stage Coverage Map above. ✓
+**VC-02-A — Mapping completeness:** All startup-loop stages have at least one linked process-domain responsibility. See Stage Coverage Map above. ✓
 
 **VC-02-B — Contract uniqueness:** No process responsibility in this registry duplicates canonical stage ownership definitions. Key collision mitigations applied:
 - DATA-4 entry is reference-only; does not create a competing weekly-review contract.

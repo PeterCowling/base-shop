@@ -26,7 +26,7 @@ import {
   GUIDE_STATUS_VALUES,
 } from "@acme/guide-system";
 
-import { PREVIEW_TOKEN } from "@/lib/guide-authoring/config";
+import { PREVIEW_TOKEN } from "@/lib/guide-authoring/public-config";
 
 import DiagnosticDetails from "./DiagnosticDetails";
 import SeoAuditBadge from "./SeoAuditBadge";

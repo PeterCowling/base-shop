@@ -3,7 +3,11 @@ import { execFileSync } from "child_process";
 import { promises as fs } from "fs";
 import path from "path";
 
-import { checkBareStageIds, parseHeader } from "./docs-lint-helpers";
+import {
+  checkBareStageIds,
+  checkRetiredMarketingSalesStageIds,
+  parseHeader,
+} from "./docs-lint-helpers";
 
 const ROOT = process.cwd();
 const DOCS_DIR = path.join(ROOT, "docs");
@@ -72,6 +76,11 @@ const ALLOWED_STATUSES = new Set([
 const TYPE_HEADER_OPTIONAL_PATH_SUFFIXES = new Set([
   "docs/business-os/startup-loop/_generated/stage-operator-table.md",
   "docs/plans/webpack-removal-v2/critique-history.md",
+]);
+
+const STARTUP_LOOP_NO_LEGACY_STAGE_DOCS = new Set([
+  "docs/business-os/startup-loop-workflow.user.md",
+  "docs/business-os/workflow-prompts/README.user.md",
 ]);
 
 function isTypeHeaderOptionalDoc(rel: string): boolean {
@@ -181,16 +190,25 @@ async function main() {
       hadError = true;
     }
 
-    // Stage-label adjacency check for startup-loop operator docs (warn-level).
-    // Flags bare canonical stage IDs (e.g. "S6B") used in prose without an adjacent
+    // Stage-label adjacency check for startup-loop docs (warn-level).
+    // Flags bare canonical stage IDs (e.g. "SELL-01") used in prose without an adjacent
     // human-readable label. Scoped to startup-loop docs to avoid noise elsewhere.
     const relParts = rel.split(path.sep);
     const isStartupLoopDoc = relParts.includes("startup-loop");
+    const relNormalized = rel.split(path.sep).join("/");
     if (isStartupLoopDoc) {
       const bareIdViolations = checkBareStageIds(content);
       for (const violation of bareIdViolations) {
         console.warn(`[docs-lint] ${rel}: ${violation}`);
         // warn-level only during Phase 0 rollout; not setting hadError
+      }
+    }
+
+    if (STARTUP_LOOP_NO_LEGACY_STAGE_DOCS.has(relNormalized)) {
+      const retiredIdViolations = checkRetiredMarketingSalesStageIds(content);
+      for (const violation of retiredIdViolations) {
+        console.warn(`[docs-lint] ${rel}: ${violation}`);
+        hadError = true;
       }
     }
 
@@ -305,6 +323,57 @@ async function main() {
           console.warn(`[docs-lint] Missing Last-reviewed header in ${rel}`);
           hadError = true;
         }
+      }
+    }
+  }
+
+  // Hygiene check for standing .user.md docs in startup-baselines/ and strategy/
+  // Warning mode for existing docs (pre-2026-02-22); does not set hadError.
+  // Suppressed for docs containing <!-- HYGIENE-EXEMPT: ... -->.
+  const HYGIENE_CUTOFF_DATE = "2026-02-22";
+  const HYGIENE_DIRS = [
+    path.join("docs", "business-os", "startup-baselines"),
+    path.join("docs", "business-os", "strategy"),
+  ];
+  const hygieneTargets = docs.filter((file) => {
+    const rel = path.relative(ROOT, file);
+    return (
+      rel.endsWith(".user.md") &&
+      HYGIENE_DIRS.some((dir) => rel.startsWith(dir + path.sep) || rel.startsWith(dir + "/"))
+    );
+  });
+
+  for (const file of hygieneTargets) {
+    const rel = path.relative(ROOT, file);
+    let hygieneContent: string;
+    try {
+      hygieneContent = await readDocFile(file);
+    } catch (error) {
+      if (isMissingFileError(error)) continue;
+      throw error;
+    }
+
+    // Check for HYGIENE-EXEMPT suppression comment
+    if (/<!--\s*HYGIENE-EXEMPT\s*:/.test(hygieneContent)) continue;
+
+    const hasOwner = /^Owner:[ \t]*\S/m.test(hygieneContent);
+    const hasReviewTrigger = /^Review-trigger:[ \t]*\S/m.test(hygieneContent);
+
+    if (!hasOwner || !hasReviewTrigger) {
+      // Determine if this doc was created after the cutoff date (hard-fail for new docs)
+      // We check the Last-updated or Created frontmatter date to detect new docs.
+      // Docs without a date are treated as pre-cutoff (warn-only).
+      const { created, lastUpdated } = parseHeader(hygieneContent);
+      const docDate = lastUpdated ?? created ?? null;
+      const isNewDoc = docDate !== null && docDate >= HYGIENE_CUTOFF_DATE;
+
+      if (!hasOwner) {
+        console.warn(`[docs-lint] [hygiene] Missing Owner: field in ${rel}`);
+        if (isNewDoc) hadError = true;
+      }
+      if (!hasReviewTrigger) {
+        console.warn(`[docs-lint] [hygiene] Missing Review-trigger: field in ${rel}`);
+        if (isNewDoc) hadError = true;
       }
     }
   }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy wishlist page pending i18n overhaul */
 import Link from "next/link";
 
 import { Button } from "@acme/design-system/atoms";
@@ -11,6 +10,7 @@ import { Section } from "@acme/design-system/atoms/Section";
 import { XaProductCard } from "../../components/XaProductCard";
 import { useWishlist } from "../../contexts/XaWishlistContext";
 import { XA_PRODUCTS } from "../../lib/demoData";
+import { xaI18n } from "../../lib/xaI18n";
 
 export default function WishlistPage() {
   const [wishlist, dispatch] = useWishlist();
@@ -33,9 +33,7 @@ export default function WishlistPage() {
             </div>
           </div>
           {products.length ? (
-            <Button variant="outline" onClick={() => dispatch({ type: "clear" })}>
-              Clear wishlist
-            </Button>
+            <Button variant="outline" onClick={() => dispatch({ type: "clear" })}>{xaI18n.t("xaB.src.app.wishlist.page.l35c83")}</Button>
           ) : null}
         </div>
       </Section>
@@ -49,11 +47,9 @@ export default function WishlistPage() {
           </LayoutGrid>
         ) : (
           <div className="rounded-lg border p-6">
-            <div className="font-medium">Your wishlist is empty.</div>
+            <div className="font-medium">{xaI18n.t("xaB.src.app.wishlist.page.l51c42")}</div>
             <div className="mt-2 text-sm text-muted-foreground">
-              <Link href="/new-in" className="underline">
-                Discover new arrivals
-              </Link>
+              <Link href="/new-in" className="underline">{xaI18n.t("xaB.src.app.wishlist.page.l53c58")}</Link>
             </div>
           </div>
         )}

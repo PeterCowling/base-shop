@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { ReceptionTable as Table, ReceptionTableBody as TableBody } from "@acme/ui/operations";
+
 import { MainProvider } from "../../context";
 import type { TMainContext } from "../../interfaces/mainContext.interface";
 import type { TRow } from "../../interfaces/row";
@@ -89,10 +91,10 @@ function Grid<TCustomStatus extends string = never>(
       {" "}
       {/* Pass the updated context value */}
       <div className="rvg-wrapper" data-testid="grid-wrapper">
-        <table className="rvg-table">
+        <Table className="rvg-table">
           <Header title={title} info={info} />
-          <tbody>{data.map((row) => renderRow(row))}</tbody>
-        </table>
+          <TableBody>{data.map((row) => renderRow(row))}</TableBody>
+        </Table>
       </div>
     </MainProvider>
   );

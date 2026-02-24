@@ -1,5 +1,8 @@
 import { memo, useEffect, useState } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
+import { ReceptionInput } from "@acme/ui/operations";
+
 import { type Denomination, DENOMINATIONS } from "../../types/component/Till";
 
 export interface DenominationInputProps {
@@ -51,7 +54,7 @@ export const DenominationInput = memo(function DenominationInput({
             >
               {denom.label}
             </label>
-            <input
+            <ReceptionInput
               id={`${idPrefix}${idx}`}
               type="text"
               className={`border ${borderClass} rounded p-1 text-sm w-[130px] text-center dark:bg-darkBg dark:text-darkAccentGreen`}
@@ -77,21 +80,21 @@ export const DenominationInput = memo(function DenominationInput({
 
   return (
     <>
-      <p className="text-sm text-gray-600 dark:text-darkAccentGreen">
+      <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
         Sort notes and coins, then enter counts. Use a dedicated,
         distraction-free area for counting.
       </p>
       <div className="mb-4">
         <h3 className="text-lg font-semibold mt-12 mb-4 dark:text-darkAccentGreen">Coins</h3>
-        <div className="flex flex-nowrap gap-6 overflow-x-auto">
+        <Inline wrap={false} gap={6} className="overflow-x-auto">
           {renderRows(coinIndices)}
-        </div>
+        </Inline>
       </div>
       <div className="mb-4">
         <h3 className="text-lg font-semibold mt-12 mb-4 dark:text-darkAccentGreen">Notes</h3>
-        <div className="flex flex-nowrap gap-4 overflow-x-auto">
+        <Inline wrap={false} gap={4} className="overflow-x-auto">
           {renderRows(noteIndices)}
-        </div>
+        </Inline>
       </div>
     </>
   );

@@ -52,14 +52,14 @@ describe("ActionDropdown", () => {
 
     await user.click(screen.getByRole("button", { name: "Shift" }));
     expect(
-      screen.getByRole("button", { name: "Open Shift" })
+      screen.getByRole("menuitem", { name: "Open Shift" })
     ).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Cash" }));
     expect(
-      screen.queryByRole("button", { name: "Open Shift" })
+      screen.queryByRole("menuitem", { name: "Open Shift" })
     ).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Add" })).toBeInTheDocument();
+    expect(screen.getByRole("menuitem", { name: "Add" })).toBeInTheDocument();
   });
 
   it("shows only the shift dropdown for unauthorized users", () => {
@@ -83,12 +83,12 @@ describe("ActionDropdown", () => {
 
     await user.click(screen.getByRole("button", { name: "Shift" }));
     expect(
-      screen.getByRole("button", { name: "Open Shift" })
+      screen.getByRole("menuitem", { name: "Open Shift" })
     ).toBeInTheDocument();
 
-    await user.click(document.body);
+    await user.click(screen.getByRole("button", { name: "Shift" }));
     expect(
-      screen.queryByRole("button", { name: "Open Shift" })
+      screen.queryByRole("menuitem", { name: "Open Shift" })
     ).not.toBeInTheDocument();
   });
 
@@ -98,7 +98,7 @@ describe("ActionDropdown", () => {
     renderButtons("Pete", { handleKeycardCountClick: onCount });
 
     await user.click(screen.getByRole("button", { name: "Keycards" }));
-    await user.click(screen.getByRole("button", { name: "Count Keycards" }));
+    await user.click(screen.getByRole("menuitem", { name: "Count Keycards" }));
     expect(onCount).toHaveBeenCalled();
   });
 
@@ -108,7 +108,7 @@ describe("ActionDropdown", () => {
 
     await user.click(screen.getByRole("button", { name: "Keycards" }));
     expect(
-      screen.getByRole("button", { name: "Count Keycards" })
-    ).toBeDisabled();
+      screen.getByRole("menuitem", { name: "Count Keycards" })
+    ).toHaveAttribute("aria-disabled", "true");
   });
 });

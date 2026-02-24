@@ -220,6 +220,8 @@ admission_reason="admitted"
 admission_wait_ms="0"
 pressure_level="unknown"
 peak_rss_mb="0"
+timeout_killed="false"
+timeout_watchdog_pid=""
 rss_peak_file=""
 
 cleanup() {
@@ -281,6 +283,12 @@ else
   fi
 
   admission_start_sec="$SECONDS"
+  admission_timeout="${BASESHOP_TEST_ADMISSION_TIMEOUT_SEC:-300}"
+  if [[ "$admission_timeout" =~ ^[0-9]+$ ]] && (( admission_timeout > 0 )); then
+    admission_deadline=$((SECONDS + admission_timeout))
+  else
+    admission_deadline=0
+  fi
   while true; do
     if ! declare -f baseshop_resource_admission_decide >/dev/null 2>&1; then
       admitted="false"
@@ -295,6 +303,28 @@ else
 
     if [[ "$admitted" == "true" ]]; then
       break
+    fi
+
+    if (( admission_deadline > 0 && SECONDS > admission_deadline )); then
+      echo "Admission timeout after ${admission_timeout}s (reason=${admission_reason})" >&2
+      admission_end_sec="$SECONDS"
+      admission_wait_ms="$(( (admission_end_sec - admission_start_sec) * 1000 ))"
+      queue_end_sec="$SECONDS"
+      queued_ms="$(( (queue_end_sec - queue_start_sec) * 1000 ))"
+      baseshop_emit_governed_telemetry \
+        --governed true \
+        --policy-mode enforce \
+        --class "$telemetry_class" \
+        --normalized-sig "$normalized_sig" \
+        --admitted false \
+        --queued-ms "$queued_ms" \
+        --peak-rss-mb 0 \
+        --pressure-level "$pressure_level" \
+        --workers "$workers" \
+        --exit-code 124 \
+        --override-policy-used false \
+        --override-overload-used "${BASESHOP_ALLOW_OVERLOAD:-0}"
+      exit 124
     fi
 
     echo "Waiting for admission gate... reason=${admission_reason} memory=${BASESHOP_ADMISSION_PROJECTED_MEMORY_MB:-0}/${BASESHOP_ADMISSION_MEMORY_BUDGET_MB:-0} cpu=${BASESHOP_ADMISSION_PROJECTED_WORKER_SLOTS:-0}/${BASESHOP_ADMISSION_CPU_SLOTS_TOTAL:-0}" >&2
@@ -313,6 +343,17 @@ set +e
 "${command[@]}" &
 command_pid="$!"
 
+timeout_sec="${BASESHOP_TEST_TIMEOUT_SEC:-600}"
+if [[ "$timeout_sec" =~ ^[0-9]+$ ]] && (( timeout_sec > 0 )); then
+  (
+    sleep "$timeout_sec"
+    if kill -0 "$command_pid" 2>/dev/null; then
+      kill "$command_pid" 2>/dev/null || true
+    fi
+  ) &
+  timeout_watchdog_pid="$!"
+fi
+
 if [[ "$ci_compat_mode" != "1" ]]; then
   rss_peak_file="${TMPDIR:-/tmp}/baseshop-test-governor-rss.$$.$RANDOM"
   : > "$rss_peak_file"
@@ -323,6 +364,17 @@ fi
 wait "$command_pid"
 command_exit="$?"
 set -e
+
+if [[ -n "${timeout_watchdog_pid:-}" ]]; then
+  if kill -0 "$timeout_watchdog_pid" 2>/dev/null; then
+    kill "$timeout_watchdog_pid" 2>/dev/null || true
+    wait "$timeout_watchdog_pid" 2>/dev/null || true
+  else
+    # watchdog already exited = timeout fired
+    timeout_killed="true"
+    command_exit=124
+  fi
+fi
 
 if [[ -n "$rss_monitor_pid" ]]; then
   wait "$rss_monitor_pid" 2>/dev/null || true
@@ -352,6 +404,7 @@ baseshop_emit_governed_telemetry \
   --pressure-level "$pressure_level" \
   --workers "$workers" \
   --exit-code "$command_exit" \
+  --timeout-killed "$timeout_killed" \
   --override-policy-used false \
   --override-overload-used "${BASESHOP_ALLOW_OVERLOAD:-0}"
 

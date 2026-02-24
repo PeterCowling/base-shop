@@ -1,0 +1,134 @@
+{
+  "generatedAt": "2026-02-22T22:49:22.511Z",
+  "urls": [
+    {
+      "label": "homepage",
+      "url": "https://hostel-positano.com/en",
+      "httpStatus": 200,
+      "jsonLdScriptCount": 3,
+      "nodeCount": 3,
+      "parseErrors": 0,
+      "criticalErrors": 0,
+      "warnings": 0,
+      "types": [
+        "Organization",
+        "WebSite"
+      ],
+      "missingFields": [],
+      "warningFields": []
+    },
+    {
+      "label": "rooms",
+      "url": "https://hostel-positano.com/en/rooms",
+      "httpStatus": 200,
+      "jsonLdScriptCount": 1,
+      "nodeCount": 24,
+      "parseErrors": 0,
+      "criticalErrors": 0,
+      "warnings": 0,
+      "types": [
+        "HotelRoom",
+        "Offer",
+        "OfferCatalog"
+      ],
+      "missingFields": [],
+      "warningFields": []
+    },
+    {
+      "label": "transport_1",
+      "url": "https://hostel-positano.com/en/how-to-get-here/amalfi-positano-bus",
+      "httpStatus": 200,
+      "jsonLdScriptCount": 3,
+      "nodeCount": 3,
+      "parseErrors": 0,
+      "criticalErrors": 1,
+      "warnings": 0,
+      "types": [
+        "Article",
+        "BreadcrumbList"
+      ],
+      "missingFields": [
+        "Article.datePublished"
+      ],
+      "warningFields": []
+    },
+    {
+      "label": "transport_2",
+      "url": "https://hostel-positano.com/en/how-to-get-here/naples-center-positano-ferry",
+      "httpStatus": 200,
+      "jsonLdScriptCount": 3,
+      "nodeCount": 3,
+      "parseErrors": 0,
+      "criticalErrors": 1,
+      "warnings": 0,
+      "types": [
+        "Article",
+        "BreadcrumbList"
+      ],
+      "missingFields": [
+        "Article.datePublished"
+      ],
+      "warningFields": []
+    },
+    {
+      "label": "beach",
+      "url": "https://hostel-positano.com/en/experiences/arienzo-beach-guide",
+      "httpStatus": 200,
+      "jsonLdScriptCount": 3,
+      "nodeCount": 3,
+      "parseErrors": 0,
+      "criticalErrors": 1,
+      "warnings": 0,
+      "types": [
+        "Article",
+        "BreadcrumbList"
+      ],
+      "missingFields": [
+        "Article.datePublished"
+      ],
+      "warningFields": []
+    },
+    {
+      "label": "activity",
+      "url": "https://hostel-positano.com/en/experiences/capri-on-a-budget",
+      "httpStatus": 200,
+      "jsonLdScriptCount": 3,
+      "nodeCount": 3,
+      "parseErrors": 0,
+      "criticalErrors": 1,
+      "warnings": 0,
+      "types": [
+        "Article",
+        "BreadcrumbList"
+      ],
+      "missingFields": [
+        "Article.datePublished"
+      ],
+      "warningFields": []
+    },
+    {
+      "label": "assistance",
+      "url": "https://hostel-positano.com/en/help/how-to-get-to-positano",
+      "httpStatus": 200,
+      "jsonLdScriptCount": 3,
+      "nodeCount": 3,
+      "parseErrors": 0,
+      "criticalErrors": 1,
+      "warnings": 0,
+      "types": [
+        "Article",
+        "BreadcrumbList"
+      ],
+      "missingFields": [
+        "Article.datePublished"
+      ],
+      "warningFields": []
+    }
+  ],
+  "totals": {
+    "criticalErrors": 5,
+    "warnings": 0,
+    "urlsWithCritical": 5,
+    "urlsWithWarnings": 0
+  }
+}

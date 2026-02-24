@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Build Record: hbag-website-02-image-first-upgrade</title>
+  <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f8fb;
+      --text: #101418;
+      --text-muted: #5a6570;
+      --border: #d9e0e7;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
+
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
+      background: var(--header);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
+    }
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
+    .audience-toggle {
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
+    }
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
+<h1>Build Record: hbag-website-02-image-first-upgrade</h1>
+<h2>Completed Tasks</h2>
+<ul>
+<li>TASK-01: locked Option A launch defaults (6 mandatory slots + 3 family anchors).</li>
+<li>TASK-02: implemented typed media contract + deterministic validator command.</li>
+<li>TASK-03: shipped image-first homepage and PLP card/grid implementation.</li>
+<li>TASK-04: shipped deterministic PDP gallery with keyboard/touch navigation.</li>
+<li>TASK-05: published media production/QA contract artifact with reviewer sign-off.</li>
+<li>TASK-06: captured media-focused validation and performance evidence package.</li>
+<li>TASK-07: executed checkpoint with <code>Go</code> verdict for launch packaging.</li>
+</ul>
+<h2>Files Added / Updated (Primary)</h2>
+<ul>
+<li><code>apps/caryina/src/app/[lang]/page.tsx</code></li>
+<li><code>apps/caryina/src/app/[lang]/shop/page.tsx</code></li>
+<li><code>apps/caryina/src/app/[lang]/product/[slug]/page.tsx</code></li>
+<li><code>apps/caryina/src/components/catalog/ProductMediaCard.tsx</code></li>
+<li><code>apps/caryina/src/components/catalog/ProductGallery.client.tsx</code></li>
+<li><code>apps/caryina/src/components/catalog/ProductGallery.client.test.tsx</code></li>
+<li><code>apps/caryina/src/lib/launchMediaContract.ts</code></li>
+<li><code>apps/caryina/src/lib/launchMediaContract.test.ts</code></li>
+<li><code>apps/caryina/src/lib/launchMerchandising.ts</code></li>
+<li><code>apps/caryina/src/lib/shop.ts</code></li>
+<li><code>apps/caryina/scripts/validate-launch-media-contract.ts</code></li>
+<li><code>apps/caryina/src/styles/global.css</code></li>
+<li><code>apps/caryina/package.json</code></li>
+<li><code>apps/caryina/public/images/hbag/*.svg</code></li>
+<li><code>data/shops/caryina/products.json</code></li>
+<li><code>docs/business-os/site-upgrades/HBAG/2026-02-23-image-production-contract.user.md</code></li>
+<li><code>docs/business-os/site-upgrades/HBAG/2026-02-23-image-production-contract.user.html</code></li>
+<li><code>docs/plans/hbag-website-02-image-first-upgrade/artifacts/fixtures/launch-media-missing-on-body.json</code></li>
+<li><code>docs/plans/hbag-website-02-image-first-upgrade/artifacts/performance-evidence.md</code></li>
+<li><code>docs/plans/hbag-website-02-image-first-upgrade/plan.md</code></li>
+</ul>
+<h2>Validation Commands &#x26; Results</h2>
+<ul>
+<li><code>pnpm --filter @apps/caryina test -- --runInBand --testPathPattern="launchMediaContract.test.ts|ProductGallery.client.test.tsx"</code> -> pass (5 tests).</li>
+<li><code>pnpm --filter @apps/caryina typecheck</code> -> pass.</li>
+<li><code>pnpm --filter @apps/caryina lint</code> -> pass.</li>
+<li><code>pnpm --filter @apps/caryina validate:launch-media</code> -> pass (<code>3/3</code> active SKUs valid).</li>
+<li><code>pnpm --filter @apps/caryina validate:launch-media --file ../../docs/plans/hbag-website-02-image-first-upgrade/artifacts/fixtures/launch-media-missing-on-body.json</code> -> expected fail (<code>missing on_body</code>).</li>
+<li><code>pnpm --filter @apps/caryina build</code> -> pass.</li>
+</ul>
+<h2>Performance Snapshot</h2>
+<ul>
+<li>Root main client JS gzip payload: <code>115668</code> bytes (threshold <code>&#x3C;=120000</code>, pass).</li>
+<li>Build stability: compiled successfully and generated <code>13/13</code> static pages (pass).</li>
+<li>Media completeness gate: <code>3/3</code> active SKUs valid (pass).</li>
+</ul>
+<p>See: <code>docs/plans/hbag-website-02-image-first-upgrade/artifacts/performance-evidence.md</code></p>
+<h2>Checkpoint Verdict</h2>
+<ul>
+<li>TASK-07 decision: <code>Go</code></li>
+<li>Rationale:
+<ul>
+<li>media contract gating is deterministic and passing for active catalog;</li>
+<li>homepage/PLP/PDP image-first implementation is complete;</li>
+<li>validation package passes with explicit threshold evidence.</li>
+</ul>
+</li>
+<li>Residual risk:
+<ul>
+<li>operator-run real-device UX/performance spot-check remains required as post-merge launch QA.</li>
+<li>execution template: <code>docs/plans/hbag-website-02-image-first-upgrade/artifacts/real-device-qa-matrix.md</code>.</li>
+</ul>
+</li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md</code></div>
+      <div>Generated: 2026-02-23T18:20:07.710Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

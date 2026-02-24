@@ -9,6 +9,10 @@ import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+
 // We'll derive the logged-in user from AuthContext.
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -44,21 +48,15 @@ export default function DateSelectorCI({
   function renderButton(label: string, day: string): ReactElement {
     const isSelected = selectedDate === day;
     return (
-      <button
+      <Button
         key={day}
-        className={`
-          px-4 py-2 border rounded text-sm font-medium w-[100px] text-center
-          transition-colors
-          ${
-            isSelected
-              ? "bg-primary-main text-primary-fg border-primary-main"
-              : "bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface dark:hover:bg-darkSurface/70"
-          }
-        `}
+        color={isSelected ? "primary" : "default"}
+        tone={isSelected ? "solid" : "outline"}
+        size="sm"
         onClick={() => onDateChange(day)}
       >
         {label}
-      </button>
+      </Button>
     );
   }
 
@@ -104,13 +102,15 @@ export default function DateSelectorCI({
   if (isPete) {
     datePickerToggle = (
       <div className="relative">
-        <button
+        <Button
           ref={toggleRef}
-          className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
+          color="default"
+          tone="outline"
+          size="sm"
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate ? formatDateForInput(selectedDate) : "Select a date"}
-        </button>
+        </Button>
         {isCalendarOpen && (
           <div
             ref={calendarRef}
@@ -130,7 +130,7 @@ export default function DateSelectorCI({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded dark:bg-darkSurface dark:text-darkAccentGreen`,
+                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded`,
                 today: "border-warning-border",
                 selected: "bg-warning text-primary-fg",
                 chevron: `${defaultNames.chevron} fill-warning`,
@@ -146,15 +146,15 @@ export default function DateSelectorCI({
     <div className="relative pb-5">
       {/* A single-row flex: quick-date buttons + daypicker + test-mode toggle */}
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
+        <Inline wrap={false} gap={2}>
           {daySelectors}
           {datePickerToggle}
-        </div>
+        </Inline>
 
         {/* Show test mode toggle on far right, but only if user is Pete */}
         {isPete && (
           <label className="inline-flex items-center space-x-2">
-            <input
+            <Input compatibilityMode="no-wrapper"
               type="checkbox"
               checked={testMode}
               onChange={(e) => onTestModeChange(e.target.checked)}

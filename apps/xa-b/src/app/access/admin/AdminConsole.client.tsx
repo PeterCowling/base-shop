@@ -1,8 +1,13 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy admin console pending design/i18n overhaul */
 
 import * as React from "react";
+
+import { Button, Input } from "@acme/design-system/atoms";
+import { ElevatedPanel } from "@acme/ui/components/organisms/ElevatedPanel";
+
+import { xaI18n } from "../../../lib/xaI18n";
+import { gateClassNames } from "../gateClasses";
 
 type SessionState = {
   authenticated: boolean;
@@ -109,7 +114,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
       await fetch("/api/access-admin/logout", { method: "POST" });
       setSession({ authenticated: false });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Logout failed");
+      setError(err instanceof Error ? err.message : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l116c53"));
     } finally {
       setBusy(false);
     }
@@ -137,14 +142,14 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
       setLastIssuedLabel(label || "Manual issue");
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Invite creation failed");
+      setError(err instanceof Error ? err.message : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l144c53"));
     } finally {
       setBusy(false);
     }
   };
 
   const handleRevokeInvite = async (inviteId: string) => {
-    if (!confirm("Revoke this key?")) return;
+    if (!confirm(xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l151c18"))) return;
     setBusy(true);
     setError(null);
     try {
@@ -156,7 +161,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
       }
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Revoke failed");
+      setError(err instanceof Error ? err.message : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l163c53"));
     } finally {
       setBusy(false);
     }
@@ -174,7 +179,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
       }
       const data = (await response.json()) as { code?: string };
       setLastIssued(data.code ?? null);
-      setLastIssuedLabel(handle ? `Request: ${handle}` : "Request issue");
+      setLastIssuedLabel(handle ? `Request: ${handle}` : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l181c58"));
       await loadData();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Issue failed");
@@ -195,7 +200,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
       }
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Dismiss failed");
+      setError(err instanceof Error ? err.message : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l202c53"));
     } finally {
       setBusy(false);
     }
@@ -212,34 +217,30 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
 
   if (session === null) {
     return (
-      <div className="text-sm text-[color:var(--gate-muted)]">Checking console access...</div>
+      <div className={`text-sm ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l219c62")}</div>
     );
   }
 
   if (!session.authenticated) {
     return (
       <div className="space-y-6">
-        <div className="text-sm text-[color:var(--gate-muted)]">
-          Admin access requires the console token.
-        </div>
+        <div className={`text-sm ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l226c64")}</div>
         <form onSubmit={handleLogin} className="space-y-4">
-          <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
-            Console token
-            <input
+          <label className={gateClassNames.fieldLabel}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l230c56")}<Input
               value={token}
               onChange={(event) => setToken(event.target.value)}
-              className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              className={gateClassNames.fieldInput}
               autoComplete="off"
             />
           </label>
-          <button
+          <Button
             type="submit"
             disabled={busy}
-            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className={gateClassNames.primaryButton}
           >
-            {busy ? "Verifying..." : "Enter console"}
-          </button>
-          {error ? <div className="text-sm text-red-700">{error}</div> : null}
+            {busy ? "Verifying..." : xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l244c38")}
+          </Button>
+          {error ? <div className="text-sm text-danger-fg">{error}</div> : null}
         </form>
       </div>
     );
@@ -249,108 +250,105 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
     <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="space-y-1">
-          <div className="text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
-            Console active
-          </div>
-          <div className="text-sm text-[color:var(--gate-ink)]">
+          <div className={gateClassNames.eyebrow}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l256c51")}</div>
+          <div className={`text-sm ${gateClassNames.inkText}`}>
             Storage: {session?.storeMode ?? "unknown"}
           </div>
         </div>
-        <button
+        <Button
           type="button"
           onClick={handleLogout}
-          className="rounded-md border border-border-2 px-4 py-2 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] transition hover:underline"
+          variant="ghost"
+          className="rounded-md border border-border-2 px-4 py-2 text-xs uppercase xa-tracking-030 xa-gate-text-ink transition hover:bg-transparent hover:underline"
         >
           Exit console
-        </button>
+        </Button>
       </div>
 
       {lastIssued ? (
         <div className="rounded-md border border-border-2 bg-muted p-4 text-sm">
-          <div className="text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
-            Latest key issued
-          </div>
-          <div className="mt-2 flex flex-wrap items-center gap-3 text-[color:var(--gate-ink)]">
+          <div className={gateClassNames.eyebrow}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l275c51")}</div>
+          <div className={`mt-2 flex flex-wrap items-center gap-3 ${gateClassNames.inkText}`}>
             <span className={monoClassName}>{lastIssued}</span>
             {lastIssuedLabel ? (
-              <span className="text-xs text-[color:var(--gate-muted)]">{lastIssuedLabel}</span>
+              <span className={`text-xs ${gateClassNames.mutedText}`}>{lastIssuedLabel}</span>
             ) : null}
-            <button
+            <Button
               type="button"
               onClick={copyLastIssued}
-              className="rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)]"
+              variant="outline"
+              size="sm"
+              className={gateClassNames.subtleButton}
             >
               Copy
-            </button>
+            </Button>
           </div>
         </div>
       ) : null}
 
-      <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
+      <ElevatedPanel>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
+            <div className={gateClassNames.eyebrowWide}>
               Issue a key
             </div>
-            <div className="mt-2 text-sm text-[color:var(--gate-muted)]">
-              Create single-use or multi-use keys with optional expiry.
-            </div>
+            <div className={`mt-2 text-sm ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l302c73")}</div>
           </div>
-          <button
+          <Button
             type="button"
             onClick={() => loadData().catch(() => null)}
-            className="rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)]"
+            variant="outline"
+            size="sm"
+            className={gateClassNames.subtleButton}
           >
             Refresh
-          </button>
+          </Button>
         </div>
 
         <form onSubmit={handleCreateInvite} className="mt-6 grid gap-4 md:grid-cols-3">
-          <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+          <label className={gateClassNames.fieldLabel}>
             Label
-            <input
+            <Input
               value={label}
               onChange={(event) => setLabel(event.target.value)}
               placeholder="Inner circle"
-              className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              className={gateClassNames.fieldInputCompact}
             />
           </label>
-          <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+          <label className={gateClassNames.fieldLabel}>
             Max uses
-            <input
+            <Input
               value={maxUses}
               onChange={(event) => setMaxUses(event.target.value)}
               type="number"
               min="1"
-              className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              className={gateClassNames.fieldInputCompact}
             />
           </label>
-          <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+          <label className={gateClassNames.fieldLabel}>
             Expires
-            <input
+            <Input
               value={expiresAt}
               onChange={(event) => setExpiresAt(event.target.value)}
-              type="datetime-local"
-              className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              type={xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l342c20")}
+              className={gateClassNames.fieldInputCompact}
             />
           </label>
-          <button
+          <Button
             type="submit"
             disabled={busy}
-            className="md:col-span-3 inline-flex items-center justify-center rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className={`md:col-span-3 justify-center ${gateClassNames.primaryButton}`}
           >
             {busy ? "Creating..." : "Generate key"}
-          </button>
+          </Button>
         </form>
-      </section>
+      </ElevatedPanel>
 
-      <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
-        <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
-          Pending requests
-        </div>
+      <ElevatedPanel>
+        <div className={gateClassNames.eyebrowWide}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l357c53")}</div>
         <div className="mt-4 space-y-4">
           {requests.length === 0 ? (
-            <div className="text-sm text-[color:var(--gate-muted)]">No pending signals.</div>
+            <div className={`text-sm ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l362c68")}</div>
           ) : null}
           {requests.map((request) => (
             <div
@@ -358,39 +356,42 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
               className="rounded-md border border-border-2 bg-muted p-4 text-sm"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="text-[color:var(--gate-ink)]">
+                <div className={gateClassNames.inkText}>
                   {request.handle || "Anonymous"}{" "}
-                  <span className="text-xs text-[color:var(--gate-muted)]">
+                  <span className={`text-xs ${gateClassNames.mutedText}`}>
                     ({new Date(request.createdAt).toLocaleString()})
                   </span>
                 </div>
-                <div className="text-xs uppercase tracking-[0.2em] text-[color:var(--gate-muted)]">
+                <div className={`text-xs uppercase xa-tracking-020 ${gateClassNames.mutedText}`}>
                   {request.status}
                 </div>
               </div>
-              <div className="mt-2 text-[color:var(--gate-muted)]">
+              <div className={`mt-2 ${gateClassNames.mutedText}`}>
                 {request.referredBy ? `Sent by: ${request.referredBy}` : "No referrer"}
               </div>
-              <div className="mt-2 text-[color:var(--gate-ink)]">{request.note}</div>
+              <div className={`mt-2 ${gateClassNames.inkText}`}>{request.note}</div>
               <div className="mt-3 flex flex-wrap items-center gap-2">
-                <button
+                <Button
                   type="button"
                   onClick={() => handleIssueRequest(request.id, request.handle)}
                   disabled={busy || request.status !== "pending"}
-                  className="rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-3 py-1 text-xs uppercase tracking-[0.3em] text-primary-fg transition hover:opacity-90 disabled:opacity-50"
+                  size="sm"
+                  className="h-auto min-h-0 rounded-md border xa-gate-border-ink xa-gate-bg-ink px-3 py-1 text-xs uppercase xa-tracking-030 text-primary-fg transition hover:opacity-90 disabled:opacity-50"
                 >
                   Issue key
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
                   onClick={() => handleDismissRequest(request.id)}
                   disabled={busy || request.status !== "pending"}
-                  className="rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] disabled:opacity-50"
+                  variant="outline"
+                  size="sm"
+                  className={gateClassNames.subtleButton}
                 >
                   Dismiss
-                </button>
+                </Button>
                 {request.requestIp ? (
-                  <span className="text-[10px] uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+                  <span className={gateClassNames.tinyMeta}>
                     {request.requestIp}
                   </span>
                 ) : null}
@@ -398,15 +399,15 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
             </div>
           ))}
         </div>
-      </section>
+      </ElevatedPanel>
 
-      <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
-        <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
+      <ElevatedPanel>
+        <div className={gateClassNames.eyebrowWide}>
           Issued keys
         </div>
         <div className="mt-4 space-y-3 text-sm">
           {invites.length === 0 ? (
-            <div className="text-[color:var(--gate-muted)]">No issued keys.</div>
+            <div className={gateClassNames.mutedText}>{xaI18n.t("xaB.src.app.access.admin.adminconsole.client.l421c55")}</div>
           ) : null}
           {invites.map((invite) => (
             <div
@@ -414,30 +415,32 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
               className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-border-2 bg-muted p-3"
             >
               <div>
-                <div className="text-[color:var(--gate-ink)]">
+                <div className={gateClassNames.inkText}>
                   {invite.label || "Untitled"}{" "}
-                  <span className="text-xs text-[color:var(--gate-muted)]">
+                  <span className={`text-xs ${gateClassNames.mutedText}`}>
                     • {invite.codeHint}
                   </span>
                 </div>
-                <div className="text-xs text-[color:var(--gate-muted)]">
+                <div className={`text-xs ${gateClassNames.mutedText}`}>
                   {invite.uses}/{invite.maxUses ?? "∞"} uses · {invite.status}
                 </div>
               </div>
-              <button
+              <Button
                 type="button"
                 onClick={() => handleRevokeInvite(invite.id)}
                 disabled={busy || invite.status !== "active"}
-                className="rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] disabled:opacity-50"
+                variant="outline"
+                size="sm"
+                className={gateClassNames.subtleButton}
               >
                 Revoke
-              </button>
+              </Button>
             </div>
           ))}
         </div>
-      </section>
+      </ElevatedPanel>
 
-      {error ? <div className="text-sm text-red-700">{error}</div> : null}
+      {error ? <div className="text-sm text-danger-fg">{error}</div> : null}
     </div>
   );
 }

@@ -1,97 +1,51 @@
 #!/usr/bin/env node
-import { readFile } from "fs/promises";
+/**
+ * CI template lint gate.
+ *
+ * Runs the synchronous linter against email-templates.json — no network
+ * calls, no MCP resources. Fast and deterministic.
+ *
+ * Exit 0 = all clear (warnings printed but non-blocking).
+ * Exit 1 = hard errors found (placeholders, here-without-url, policy mismatch).
+ */
+import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
-import { handleBriketteResourceRead } from "../src/resources/brikette-knowledge.js";
 import {
-  buildPolicyKeywordSet,
   type EmailTemplate,
-  lintTemplates,
+  lintTemplatesSync,
   partitionIssues,
 } from "../src/utils/template-lint.js";
 
 const DATA_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "data");
-const LINK_TIMEOUT_MS = 5000;
 
-async function checkLink(url: string): Promise<{ ok: boolean; status?: number }> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), LINK_TIMEOUT_MS);
-  try {
-    const response = await fetch(url, {
-      method: "HEAD",
-      redirect: "follow",
-      signal: controller.signal,
-    });
-    return { ok: response.ok, status: response.status };
-  } catch {
-    try {
-      const response = await fetch(url, {
-        method: "GET",
-        redirect: "follow",
-        signal: controller.signal,
-      });
-      return { ok: response.ok, status: response.status };
-    } catch {
-      return { ok: false };
-    }
-  } finally {
-    clearTimeout(timeout);
-  }
-}
-
-async function loadTemplates(): Promise<EmailTemplate[]> {
-  const content = await readFile(join(DATA_ROOT, "email-templates.json"), "utf-8");
+function loadTemplates(): EmailTemplate[] {
+  const content = readFileSync(join(DATA_ROOT, "email-templates.json"), "utf-8");
   return JSON.parse(content) as EmailTemplate[];
 }
 
-async function loadPolicyKeywords(): Promise<Set<string>> {
-  const result = await handleBriketteResourceRead("brikette://policies");
-  const payload = JSON.parse(result.contents[0].text) as {
-    summary: Record<string, unknown>;
-    faqItems: Array<{ question: string; answer: string }>;
-  };
+const templates = loadTemplates();
+const issues = lintTemplatesSync(templates);
+const { hard, warnings } = partitionIssues(issues);
 
-  const entries: string[] = [];
-  for (const item of payload.faqItems ?? []) {
-    entries.push(item.question, item.answer);
+if (warnings.length > 0) {
+  console.warn(`Template lint: ${warnings.length} warning(s):\n`);
+  for (const issue of warnings) {
+    console.warn(`  [${issue.code}] ${issue.subject}: ${issue.details}`);
   }
-
-  entries.push(JSON.stringify(payload.summary ?? {}));
-  return buildPolicyKeywordSet(entries);
+  console.warn();
 }
 
-async function run(): Promise<void> {
-  const templates = await loadTemplates();
-  const policyKeywords = await loadPolicyKeywords();
-
-  const issues = await lintTemplates(templates, {
-    policyKeywords,
-    checkLink,
-  });
-
-  const { hard, warnings } = partitionIssues(issues);
-
-  if (warnings.length > 0) {
-    console.warn(`Template lint: ${warnings.length} broken link(s) (warn-only):\n`);
-    for (const issue of warnings) {
-      console.warn(`- [${issue.code}] ${issue.subject}: ${issue.details}`);
-    }
-  }
-
-  if (hard.length === 0) {
-    console.info("Template lint: OK");
-    return;
-  }
-
-  console.error("Template lint failed:\n");
-  for (const issue of hard) {
-    console.error(`- [${issue.code}] ${issue.subject}: ${issue.details}`);
-  }
-  process.exit(1);
+if (hard.length === 0) {
+  console.info(
+    `Template lint: OK (${templates.length} templates, ${warnings.length} warning(s))`
+  );
+  process.exit(0);
 }
 
-run().catch((error) => {
-  console.error("Template lint failed with error:", error);
-  process.exit(1);
-});
+console.error(`Template lint: ${hard.length} error(s):\n`);
+for (const issue of hard) {
+  console.error(`  [${issue.code}] ${issue.subject}: ${issue.details}`);
+}
+process.exit(1);

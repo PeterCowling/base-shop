@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-raw-color -- XA-0001 [ttl=2026-12-31] XA theme palette uses raw swatches pending tokenization */
 import type { XaProduct } from "./demoData";
 import { XA_BRANDS, XA_PRODUCTS } from "./demoData";
 import { siteConfig } from "./siteConfig";
@@ -32,21 +31,24 @@ export const XA_DEPARTMENTS: Array<{ slug: XaDepartment; label: string }> =
     label: formatLabel(slug),
   }));
 
+export const XA_DEFAULT_SWATCH = "var(--xa-swatch-fallback)";
+export const XA_FILTER_SWATCH_FALLBACK = "var(--xa-swatch-filter-fallback)";
+
 export const XA_COLOR_SWATCHES: Record<string, string> = {
-  black: "#0f0f0f",
-  ivory: "#f3f0e8",
-  cream: "#f4efe4",
-  camel: "#b88963",
-  brown: "#7c5a41",
-  navy: "#1f2a44",
-  gold: "#d3b26a",
-  graphite: "#3b3f46",
-  tan: "#c08a58",
-  charcoal: "#2b2d31",
-  bone: "#efe9dd",
-  silver: "#c9c9c9",
-  indigo: "#2d3c5a",
-  white: "#ffffff",
+  black: "var(--xa-swatch-black)",
+  ivory: "var(--xa-swatch-ivory)",
+  cream: "var(--xa-swatch-cream)",
+  camel: "var(--xa-swatch-camel)",
+  brown: "var(--xa-swatch-brown)",
+  navy: "var(--xa-swatch-navy)",
+  gold: "var(--xa-swatch-gold)",
+  graphite: "var(--xa-swatch-graphite)",
+  tan: "var(--xa-swatch-tan)",
+  charcoal: "var(--xa-swatch-charcoal)",
+  bone: "var(--xa-swatch-bone)",
+  silver: "var(--xa-swatch-silver)",
+  indigo: "var(--xa-swatch-indigo)",
+  white: "var(--xa-swatch-white)",
 };
 
 export function isCategoryAllowed(category: XaCategory): boolean {

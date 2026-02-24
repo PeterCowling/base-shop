@@ -7,3 +7,136 @@
 @import "./xa-cyber-atelier.css";
 
 @import "tailwindcss";
+
+:root {
+  --xa-swatch-black: #0f0f0f;
+  --xa-swatch-ivory: #f3f0e8;
+  --xa-swatch-cream: #f4efe4;
+  --xa-swatch-camel: #b88963;
+  --xa-swatch-brown: #7c5a41;
+  --xa-swatch-navy: #1f2a44;
+  --xa-swatch-gold: #d3b26a;
+  --xa-swatch-graphite: #3b3f46;
+  --xa-swatch-tan: #c08a58;
+  --xa-swatch-charcoal: #2b2d31;
+  --xa-swatch-bone: #efe9dd;
+  --xa-swatch-silver: #c9c9c9;
+  --xa-swatch-indigo: #2d3c5a;
+  --xa-swatch-white: #ffffff;
+  --xa-swatch-fallback: #e5e5e5;
+  --xa-swatch-filter-fallback: #f5f5f5;
+}
+
+.xa-gate-theme {
+  --xa-gate-bg: #ffffff;
+  --xa-gate-ink: #111111;
+  --xa-gate-muted: #6b6b6b;
+  background-color: var(--xa-gate-bg);
+  color: var(--xa-gate-ink);
+}
+
+.xa-gate-text-ink {
+  color: var(--xa-gate-ink);
+}
+
+.xa-gate-text-muted {
+  color: var(--xa-gate-muted);
+}
+
+.xa-gate-bg-ink {
+  background-color: var(--xa-gate-ink);
+}
+
+.xa-gate-border-ink {
+  border-color: var(--xa-gate-ink);
+}
+
+.xa-text-10 {
+  font-size: 10px;
+}
+
+.xa-text-11 {
+  font-size: 11px;
+}
+
+.xa-tracking-012 {
+  letter-spacing: 0.12em;
+}
+
+.xa-tracking-018 {
+  letter-spacing: 0.18em;
+}
+
+.xa-tracking-020 {
+  letter-spacing: 0.2em;
+}
+
+.xa-tracking-030 {
+  letter-spacing: 0.3em;
+}
+
+.xa-tracking-035 {
+  letter-spacing: 0.35em;
+}
+
+.xa-tracking-040 {
+  letter-spacing: 0.4em;
+}
+
+.xa-tracking-045 {
+  letter-spacing: 0.45em;
+}
+
+.xa-aspect-4-5 {
+  aspect-ratio: 4 / 5;
+}
+
+.xa-aspect-3-4 {
+  aspect-ratio: 3 / 4;
+}
+
+.xa-grid-shell-primary {
+  grid-template-columns: 1fr auto 1fr;
+}
+
+.xa-grid-home-primary {
+  display: grid;
+  align-items: center;
+  gap: 3rem;
+}
+
+.xa-grid-pdp-primary {
+  display: grid;
+  gap: 4rem;
+}
+
+.xa-grid-access-panels {
+  display: grid;
+  gap: 2rem;
+}
+
+.xa-flex-2 {
+  flex: 2 1 0%;
+}
+
+@media (min-width: 768px) {
+  .xa-grid-home-primary {
+    grid-template-columns: minmax(0, 0.48fr) minmax(0, 0.52fr);
+  }
+
+  .xa-hero-media-max {
+    max-width: 560px;
+  }
+
+  .xa-grid-pdp-primary {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.8fr);
+  }
+
+  .xa-pdp-sidebar-max {
+    max-width: 360px;
+  }
+
+  .xa-grid-access-panels {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}

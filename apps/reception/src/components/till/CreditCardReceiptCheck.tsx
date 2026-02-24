@@ -2,6 +2,8 @@
 
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 
+import { ReceptionInput } from "@acme/ui/operations";
+
 import { useCCReceiptConfirmations } from "../../hooks/mutations/useCCReceiptConfirmations";
 import { type Transaction } from "../../types/component/Till";
 import { formatEnGbDateTimeFromIso } from "../../utils/dateUtils";
@@ -97,7 +99,7 @@ export const CreditCardReceiptCheck = memo(function CreditCardReceiptCheck({
               className="flex flex-wrap items-center gap-3 border border-info-light p-2 rounded dark:border-darkSurface"
             >
               <label className="flex items-center gap-2 dark:text-darkAccentGreen">
-                <input
+                <ReceptionInput
                   type="checkbox"
                   className="h-4 w-4"
                   checked={checkMap[txnId] || false}

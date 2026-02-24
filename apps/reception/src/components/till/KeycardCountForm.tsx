@@ -1,6 +1,8 @@
 import { memo, useState } from "react";
 import { z } from "zod";
 
+import { ReceptionInput } from "@acme/ui/operations";
+
 import { showToast } from "../../utils/toastUtils";
 import { DifferenceBadge } from "../common/DifferenceBadge";
 import { FormActionButtons } from "../common/FormActionButtons";
@@ -45,7 +47,7 @@ export const KeycardCountForm = memo(function KeycardCountForm({
         <label htmlFor="keycardCount" className="font-semibold">
           Count
         </label>
-        <input
+        <ReceptionInput
           id="keycardCount"
           type="number"
           value={countInput}
@@ -61,7 +63,7 @@ export const KeycardCountForm = memo(function KeycardCountForm({
         onCancel={onCancel}
         onConfirm={handleConfirm}
         confirmText="Go"
-        confirmClassName="px-4 py-2 bg-warning-main text-white rounded hover:bg-warning-dark dark:bg-darkAccentGreen dark:text-darkBg"
+        confirmClassName="px-4 py-2 bg-warning-main text-primary-fg rounded hover:bg-warning-dark dark:bg-darkAccentGreen dark:text-darkBg"
         hideCancel={hideCancel}
       />
     </FormContainer>

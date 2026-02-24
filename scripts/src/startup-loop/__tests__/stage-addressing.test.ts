@@ -14,12 +14,13 @@ import {
   resolveByLabel,
   resolveStageId,
 } from "../stage-addressing.js";
+import stageOperatorMap from "../../../../docs/business-os/startup-loop/_generated/stage-operator-map.json";
 
 // ── VC-04: Canonical ID path ────────────────────────────────────────────────
 
 describe("resolveById (--stage <ID>)", () => {
   it("VC-04: resolves known canonical stage IDs", () => {
-    const ids = ["DISCOVERY-01", "DISCOVERY-02", "DISCOVERY-03", "DISCOVERY-04", "DISCOVERY-05", "DISCOVERY-06", "DISCOVERY-07", "DISCOVERY", "BRAND-01", "BRAND-02", "BRAND", "S1", "S1B", "S2A", "S2", "S2B", "S3", "S3B", "S4", "S5A", "S5B", "S6", "S6B", "DO", "S9B", "S10"];
+    const ids = stageOperatorMap.stages.map((stage) => stage.id);
     for (const id of ids) {
       const result = resolveById(id);
       expect(result.ok).toBe(true);
@@ -31,10 +32,10 @@ describe("resolveById (--stage <ID>)", () => {
   });
 
   it("VC-04: ID resolution is case-insensitive", () => {
-    const result = resolveById("s6b");
+    const result = resolveById("sell-01");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S6B");
+      expect(result.stageId).toBe("SELL-01");
     }
   });
 
@@ -57,13 +58,13 @@ describe("resolveById (--stage <ID>)", () => {
   });
 
   it("suggests alias path when input matches an alias", () => {
-    // "intake" is an alias for DISCOVERY
+    // "intake" is an alias for ASSESSMENT-09
     const result = resolveById("intake");
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      // Should suggest --stage DISCOVERY or --stage-alias intake
+      // Should suggest --stage ASSESSMENT-09 or --stage-alias intake
       const suggestionText = result.suggestions.join(" ");
-      expect(suggestionText).toContain("DISCOVERY");
+      expect(suggestionText).toContain("ASSESSMENT-09");
     }
   });
 });
@@ -71,28 +72,28 @@ describe("resolveById (--stage <ID>)", () => {
 // ── VC-01 + VC-02: Alias resolution (--stage-alias <slug>) ──────────────────
 
 describe("resolveByAlias (--stage-alias <slug>)", () => {
-  it("VC-01: valid alias 'intake' resolves to DISCOVERY", () => {
+  it("VC-01: valid alias 'intake' resolves to ASSESSMENT-09", () => {
     const result = resolveByAlias("intake");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("DISCOVERY");
+      expect(result.stageId).toBe("ASSESSMENT-09");
       expect(result.mode).toBe("alias");
     }
   });
 
-  it("VC-01: valid alias 'offer' resolves to S2B", () => {
+  it("VC-01: valid alias 'offer' resolves to MARKET-06", () => {
     const result = resolveByAlias("offer");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S2B");
+      expect(result.stageId).toBe("MARKET-06");
     }
   });
 
-  it("VC-01: valid alias 'channels' resolves to S6B", () => {
+  it("VC-01: valid alias 'channels' resolves to SELL-01", () => {
     const result = resolveByAlias("channels");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S6B");
+      expect(result.stageId).toBe("SELL-01");
     }
   });
 
@@ -104,11 +105,11 @@ describe("resolveByAlias (--stage-alias <slug>)", () => {
     }
   });
 
-  it("VC-01: valid alias 'gtm' resolves to S6B", () => {
+  it("VC-01: valid alias 'gtm' resolves to SELL-01", () => {
     const result = resolveByAlias("gtm");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S6B");
+      expect(result.stageId).toBe("SELL-01");
     }
   });
 
@@ -116,7 +117,7 @@ describe("resolveByAlias (--stage-alias <slug>)", () => {
     const result = resolveByAlias("OFFER-DESIGN");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S2B");
+      expect(result.stageId).toBe("MARKET-06");
     }
   });
 
@@ -203,19 +204,19 @@ describe("resolveByLabel (--stage-label <text>)", () => {
     }
   });
 
-  it("resolves 'Channel strategy + GTM' (S6B short label)", () => {
+  it("resolves 'Channel strategy + GTM' (SELL-01 short label)", () => {
     const result = resolveByLabel("Channel strategy + GTM");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S6B");
+      expect(result.stageId).toBe("SELL-01");
     }
   });
 
-  it("resolves 'Intake' (DISCOVERY short label)", () => {
+  it("resolves 'Intake' (ASSESSMENT-09 short label)", () => {
     const result = resolveByLabel("Intake");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("DISCOVERY");
+      expect(result.stageId).toBe("ASSESSMENT-09");
     }
   });
 
@@ -244,10 +245,10 @@ describe("resolveStageId (entry point)", () => {
   });
 
   it("dispatches label mode correctly", () => {
-    const r = resolveStageId("Readiness check", "label");
+    const r = resolveStageId("Agent-Setup", "label");
     expect(r.ok).toBe(true);
     if (r.ok) {
-      expect(r.stageId).toBe("S1");
+      expect(r.stageId).toBe("MEASURE-01");
     }
   });
 

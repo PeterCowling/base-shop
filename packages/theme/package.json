@@ -12,7 +12,7 @@
     "build": "tsc -b",
     "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
-    "test": "rimraf dist && pnpm -w run test:governed -- jest -- --config ./jest.config.cjs",
+    "test": "rimraf dist && bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs",
     "lint": "eslint ."
   },
   "dependencies": {

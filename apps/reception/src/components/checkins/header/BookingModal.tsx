@@ -9,6 +9,9 @@ import React, {
   useState,
 } from "react";
 
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import { useBookingDatesMutator } from "../../../hooks/mutations/useChangeBookingDatesMutator";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import { parseYMD } from "../../../utils/dateUtils";
@@ -147,14 +150,14 @@ const BookingModal: FC<BookingModalProps> = React.memo(
       <div className="fixed inset-0 flex items-center justify-center z-50">
         {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-black opacity-50"
+          className="absolute inset-0 bg-foreground opacity-50"
           onClick={onClose}
           role="button"
           tabIndex={0}
           onKeyDown={handleKeyDown}
         />
         {/* Modal Content */}
-        <div className="bg-white rounded-lg shadow-lg z-10 p-4 w-11/12 max-w-md dark:bg-darkSurface dark:text-darkAccentGreen">
+        <div className="bg-surface rounded-lg shadow-lg z-10 p-4 w-11/12 max-w-md">
           <h2 className="text-xl font-bold mb-4">Booking Details</h2>
 
           {/* Booking Reference */}
@@ -186,10 +189,10 @@ const BookingModal: FC<BookingModalProps> = React.memo(
             <label htmlFor="check-in-date" className="font-semibold me-2">
               Check-in Date:
             </label>
-            <input
+            <Input compatibilityMode="no-wrapper"
               id="check-in-date"
               type="date"
-              className="border rounded px-2 py-1 text-gray-900"
+              className="border rounded px-2 py-1 text-foreground"
               value={checkIn}
               onChange={handleCheckInChange}
             />
@@ -200,10 +203,10 @@ const BookingModal: FC<BookingModalProps> = React.memo(
             <label htmlFor="check-out-date" className="font-semibold me-2">
               Check-out Date:
             </label>
-            <input
+            <Input compatibilityMode="no-wrapper"
               id="check-out-date"
               type="date"
-              className="border rounded px-2 py-1 text-gray-900"
+              className="border rounded px-2 py-1 text-foreground"
               value={checkOut}
               onChange={handleCheckOutChange}
             />
@@ -215,37 +218,37 @@ const BookingModal: FC<BookingModalProps> = React.memo(
               <label htmlFor="extension-price" className="font-semibold me-2">
                 Extension Charge:
               </label>
-              <input
+              <Input compatibilityMode="no-wrapper"
                 id="extension-price"
                 type="number"
                 step="0.01"
                 min="0"
-                className="border rounded px-2 py-1 text-gray-900"
+                className="border rounded px-2 py-1 text-foreground"
                 value={extensionPrice}
                 onChange={handleExtensionPriceChange}
               />
               {priceError && (
-                <div className="text-red-500 text-sm mt-1">{priceError}</div>
+                <div className="text-error-main text-sm mt-1">{priceError}</div>
               )}
             </div>
           )}
 
           {/* Save & Cancel Buttons */}
           <div className="flex justify-end gap-2 mt-4">
-            <button
-              className="px-4 py-2 bg-gray-300 text-gray-800 rounded dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
+            <Button
+              className="px-4 py-2 bg-surface-3 text-foreground rounded"
               onClick={onClose}
               disabled={isLoading}
             >
               Cancel
-            </button>
-            <button
-              className="px-4 py-2 bg-primary-main text-white rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+            </Button>
+            <Button
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded"
               onClick={handleSave}
               disabled={isLoading}
             >
               {isLoading ? "Saving..." : "Save"}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

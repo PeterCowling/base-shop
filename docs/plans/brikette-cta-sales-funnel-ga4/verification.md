@@ -232,17 +232,56 @@ Fail signals:
 
 ---
 
-## Custom Dimensions Verification (After TASK-42)
+## Custom Dimensions — TASK-42 (GA4 Admin — manual ops)
 
-After `cta_id`, `cta_location`, `item_list_id`, and `coupon` are registered as event-scoped custom dimensions in GA4 Admin (TASK-42), verify in DebugView:
+**Property:** G-2ZSYXG8R7T (confirmed by TASK-38 smoke test against hostel-positano.com, 2026-02-22)
 
-1. Trigger a `cta_click` event with the Debugger extension active.
+**Context:** The TASK-38 smoke test confirmed all four params ARE present in live `g/collect` payloads:
+- `ep.item_list_id=book_rooms` (captured in `view_item_list` and `begin_checkout`)
+- `ep.cta_id` / `ep.cta_location` (fired by `cta_click` on CTAs)
+- `ep.coupon` (fired in deal context)
+
+Without GA4 Admin registration these params are **invisible in Explorations**. Registration is the only remaining gap.
+
+### Step-by-step: Register custom dimensions
+
+1. Open [GA4 Admin](https://analytics.google.com) → select property **G-2ZSYXG8R7T**.
+2. In the left panel: **Admin** → **Custom definitions** → **Custom dimensions** tab.
+3. Click **Create custom dimension** for each of the following:
+
+| Dimension name (display) | Event parameter name | Scope | Description |
+|---|---|---|---|
+| CTA ID | `cta_id` | Event | Which CTA was clicked (enum: header/hero/widget/room_card/sticky/deals/offers) |
+| CTA Location | `cta_location` | Event | Page surface where CTA click originated |
+| Item List ID | `item_list_id` | Event | GA4 e-commerce item list identifier (book_rooms, rooms_index, etc.) |
+| Coupon | `coupon` | Event | Deal/coupon code applied at checkout |
+
+4. **Before creating Coupon:** check if GA4 already surfaces a built-in Coupon dimension in Explorations (some e-commerce properties get this automatically). If it appears in the dimension picker without needing creation, skip step 4 and document "coupon — built-in, not duplicated" below.
+5. Save each dimension.
+6. Document confirmation below (TC-01 evidence).
+
+### TC-01 Confirmation
+
+```
+Date registered: 2026-02-22
+Registered by: ga4-automation-bot@brikette-web.iam.gserviceaccount.com (GA4 Admin API)
+cta_id: [x] registered
+cta_location: [x] registered
+item_list_id: [x] registered
+coupon: [x] registered
+Notes: All 4 created via GA4 Admin API v1beta on properties/474488225.
+       Allow 24-48h propagation before dimensions appear in Explorations.
+```
+
+### After Registration: Verify in DebugView
+
+Allow 24–48h propagation before expecting dimensions in Explorations.
+
+1. Trigger a `cta_click` event with the Google Analytics Debugger extension active.
 2. In GA4 DebugView, click the event name.
 3. Confirm `cta_id` and `cta_location` appear in the expanded event params list.
 4. Trigger a `begin_checkout` from a deal context.
 5. Confirm `coupon` and `item_list_id` appear in event params.
-
-If custom dimensions are not yet queryable in Explorations: allow 24–48h propagation delay after TASK-42 registration before expecting dimensions to appear in Explorations.
 
 ---
 

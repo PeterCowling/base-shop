@@ -154,5 +154,5 @@ See: `docs/business-os/startup-loop/octorate-data-collection-protocol.md`
 
 Used for:
 - S3 forecasting (pricing analysis, occupancy patterns)
-- S6 channel strategy (rate optimization)
+- SELL-01 channel strategy (rate optimization)
 - S9 post-launch monitoring (weekly refresh)

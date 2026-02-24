@@ -42,7 +42,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Canonical stage ID from loop-spec.yaml (e.g. S0, S1B, S6B). Must match exactly.",
+          "description": "Canonical stage ID from loop-spec.yaml (e.g. ASSESSMENT-09, MEASURE-01, S6B). Must match exactly.",
           "pattern": "^S[0-9]+[A-Z]*$"
         },
         "name_machine": {
@@ -109,7 +109,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Gate ID in canonical format (e.g. GATE-S6B-STRAT-01).",
+          "description": "Gate ID in canonical format (e.g. GATE-SELL-STRAT-01).",
           "pattern": "^GATE-[A-Z0-9][A-Z0-9-]*$"
         },
         "label": {

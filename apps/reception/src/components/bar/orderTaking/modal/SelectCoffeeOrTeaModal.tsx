@@ -1,6 +1,9 @@
 /* File: src/components/bar/orderTaking/modal/SelectCoffeeOrTeaModal.tsx */
 import { useCallback } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
+
 import { withModalBackground } from "../../../../hoc/withModalBackground";
 import { type AggregatedOrder } from "../../../../types/bar/BarTypes";
 
@@ -35,24 +38,27 @@ function SelectCoffeeOrTeaModalBase(
       <h2 className="text-lg font-semibold mb-4 text-center">
         Add {milkName} to which item?
       </h2>
-      <div className="flex flex-col space-y-2 mb-4">
+      <Stack gap={2} className="mb-4">
         {coffeeOrTeaOrders.map((o) => (
-          <button
+          <Button
             key={o.product}
             onClick={createSelectHandler(o.product)}
-            className="px-4 py-2 bg-green-500 text-white hover:bg-green-600 transition-colors duration-200 rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+            color="success"
+            tone="solid"
           >
             {o.count > 1 ? `${o.count}x ` : ""}
             {o.product}
-          </button>
+          </Button>
         ))}
-      </div>
-      <button
+      </Stack>
+      <Button
         onClick={onCancel}
-        className="px-4 py-2 bg-gray-300 text-black hover:bg-gray-400 transition-colors duration-200 rounded w-full dark:bg-darkSurface dark:text-darkAccentGreen"
+        color="default"
+        tone="soft"
+        className="w-full"
       >
         Cancel
-      </button>
+      </Button>
     </ModalContainer>
   );
 }

@@ -11,6 +11,13 @@ const config = [
       "security/detect-unsafe-regex": "off",
     },
   },
+  /* ▸ lib utilities operate on internal/controlled filesystem paths — fs filename rule is noisy */
+  {
+    files: ["src/**/*.{ts,tsx,js}"],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+    },
+  },
   {
     files: ["src/**/*.{ts,tsx}"],
     rules: {

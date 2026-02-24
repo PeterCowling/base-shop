@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Scale placeholder">
+  <rect width="800" height="1000" fill="#f4eee8"/>
+  <rect x="130" y="220" width="430" height="560" rx="34" fill="#fff8f2" stroke="#8a6956" stroke-width="8"/>
+  <rect x="610" y="180" width="60" height="640" rx="18" fill="#dcc8b9"/>
+  <line x1="620" y1="240" x2="670" y2="240" stroke="#8a6956" stroke-width="4"/>
+  <line x1="620" y1="360" x2="670" y2="360" stroke="#8a6956" stroke-width="4"/>
+  <line x1="620" y1="480" x2="670" y2="480" stroke="#8a6956" stroke-width="4"/>
+  <line x1="620" y1="600" x2="670" y2="600" stroke="#8a6956" stroke-width="4"/>
+  <line x1="620" y1="720" x2="670" y2="720" stroke="#8a6956" stroke-width="4"/>
+  <text x="400" y="910" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#6f5142">Scale Reference</text>
+</svg>

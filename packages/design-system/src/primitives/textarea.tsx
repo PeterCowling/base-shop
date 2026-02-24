@@ -6,6 +6,8 @@ import * as React from "react";
 import { FormField } from "../atoms/FormField";
 import { cn } from "../utils/style";
 
+import { type PrimitiveRadius, type PrimitiveShape, resolveShapeRadiusClass } from "./shape-radius";
+
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   /** Optional label displayed above or floating */
@@ -18,7 +20,15 @@ export interface TextareaProps
   floatingLabel?: boolean;
   /** Class applied to the wrapper element */
   wrapperClassName?: string;
+  /** Compatibility mode for migration scenarios that require bare textarea semantics. */
+  compatibilityMode?: TextareaCompatibilityMode;
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
 }
+
+export type TextareaCompatibilityMode = "default" | "no-wrapper";
 
 export const Textarea = (
   {
@@ -29,6 +39,9 @@ export const Textarea = (
     description,
     floatingLabel,
     wrapperClassName,
+    compatibilityMode = "default",
+    shape,
+    radius,
     id,
     onFocus,
     onBlur,
@@ -39,7 +52,14 @@ export const Textarea = (
 ) => {
   const generatedId = React.useId();
   const textareaId = id ?? generatedId;
+  const useFloatingLabel =
+    compatibilityMode === "default" && Boolean(floatingLabel);
   const [focused, setFocused] = React.useState(false);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
 
   /* ------------------------------------------------------------------
    * Tailwind / shadcn class string
@@ -47,9 +67,10 @@ export const Textarea = (
   const hasError = Boolean(error); // avoids 0 | 0n union in type-inference
 
   const baseClasses = cn(
-    "min-h-[6rem] w-full rounded-md border border-input bg-input px-3 py-2 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    "min-h-[6rem] w-full border border-input bg-input px-3 py-2 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    shapeRadiusClass,
     "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-    floatingLabel && "peer pt-5",
+    useFloatingLabel && "peer pt-5",
     hasError && "border-danger",
     className
   );
@@ -72,6 +93,22 @@ export const Textarea = (
       : Boolean(props.defaultValue);
   const required = props.required;
   const formClassName = wrapperClassName;
+  const compatibilityAriaInvalid =
+    props["aria-invalid"] ?? (hasError || undefined);
+
+  if (compatibilityMode === "no-wrapper") {
+    return (
+      <textarea
+        id={textareaId}
+        ref={ref}
+        className={baseClasses}
+        aria-invalid={compatibilityAriaInvalid}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        {...props}
+      />
+    );
+  }
 
   /* ------------------------------------------------------------------
    * Render
@@ -79,14 +116,14 @@ export const Textarea = (
   return (
     <FormField
       id={textareaId}
-      label={!floatingLabel ? label : undefined}
+      label={!useFloatingLabel ? label : undefined}
       description={description}
       error={error}
       {...(required !== undefined ? { required } : {})}
       {...(formClassName !== undefined ? { className: formClassName } : {})}
        
       input={({ id: controlId, describedBy, ariaInvalid }) =>
-        floatingLabel ? (
+        useFloatingLabel ? (
           <div className="relative flex flex-col gap-1">
             <textarea
               id={controlId}
@@ -126,4 +163,3 @@ export const Textarea = (
     />
   );
 };
-

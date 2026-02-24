@@ -29,4 +29,20 @@ describe("Tooltip", () => {
     await user.tab(); // focus
     expect(tooltip).toHaveAttribute("data-state", "open");
   });
+
+  it("supports shape/radius overrides and wraps long content", async () => {
+    const user = userEvent.setup();
+    const { getByRole } = render(
+      <Tooltip text="Long tooltip content that should wrap instead of overflowing the viewport." shape="square">
+        <button>Trigger</button>
+      </Tooltip>,
+    );
+    const button = getByRole("button", { name: "Trigger" });
+    const tooltip = getByRole("tooltip", { hidden: true });
+
+    await user.hover(button);
+    expect(tooltip.className).toContain("rounded-none");
+    expect(tooltip.className).toContain("whitespace-normal");
+    expect(tooltip.className).toContain("break-words");
+  });
 });

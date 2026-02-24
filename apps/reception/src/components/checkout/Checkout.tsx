@@ -25,6 +25,7 @@ import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData
 import { getItalyIsoString, getLocalToday } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 import { showToast } from "../../utils/toastUtils";
+import { PageShell } from "../common/PageShell";
 import { getDepositForItem } from "../loans/LoanUtils";
 
 import type { Guest } from "./CheckoutTable";
@@ -313,12 +314,8 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
   }
 
   return (
-    <div className="min-h-[80vh] p-4 bg-gray-100 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
-      <h1 className="w-full mb-6 text-5xl text-center font-heading text-primary-main">
-        CHECKOUTS
-      </h1>
-
-      <div className="flex-grow p-6 space-y-4 bg-white rounded-lg shadow dark:bg-darkSurface">
+    <PageShell title="CHECKOUTS">
+      <div className="flex-grow p-6 space-y-4 bg-surface rounded-lg shadow">
         <DateSelector
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}
@@ -326,12 +323,12 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
         />
 
         {!!error && (
-          <div className="font-semibold text-red-600">
+          <div className="font-semibold text-error-main">
             Error loading checkout data: {String(error)}
           </div>
         )}
 
-        {loading && <div className="italic text-gray-600 dark:text-darkAccentGreen">Loading...</div>}
+        {loading && <div className="italic text-muted-foreground">Loading...</div>}
 
         {!loading && (
           <CheckoutTable
@@ -341,7 +338,7 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
           />
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }
 

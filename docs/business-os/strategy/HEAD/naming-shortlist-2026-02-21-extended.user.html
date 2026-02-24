@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEAD · Extended Naming Shortlist (Ranks 21–40) — 2026-02-21</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --accent: #4e7a35;
+    --accent-dark: #3a5a28;
+    --accent-warm: #7a9e5a;
+    --accent-light: #c8ddb5;
+    --bg: #f5f7f3;
+    --surface: #ffffff;
+    --border: #d6e3cc;
+    --text: #1a2414;
+    --text-muted: #5a6e50;
+    --gold: #c9973a;
+    --gold-bg: #fdf6e3;
+    --slate: #4a6fa5;
+    --slate-bg: #edf2fa;
+    --mdr-warn: #b45309;
+    --mdr-bg: #fffbeb;
+    --mdr-border: #fbbf24;
+    --sem-warn: #7c3aed;
+    --sem-bg: #f5f3ff;
+    --sem-border: #c4b5fd;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 100%);
+    color: white;
+    padding: 32px 40px;
+  }
+  .header-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 8px;
+  }
+  .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+  .header-sub { font-size: 15px; opacity: 0.8; margin-bottom: 20px; }
+  .header-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* NOTICES */
+  .notice-mdr {
+    background: var(--mdr-bg);
+    border-left: 4px solid var(--mdr-warn);
+    padding: 14px 24px;
+    font-size: 13.5px;
+    color: #7c2d12;
+  }
+  .notice-mdr strong { color: var(--mdr-warn); }
+  .notice-info {
+    background: var(--slate-bg);
+    border-left: 4px solid var(--slate);
+    padding: 14px 24px;
+    font-size: 13.5px;
+    color: #1e3a5f;
+  }
+  .notice-info strong { color: var(--slate); }
+
+  /* MAIN LAYOUT */
+  .main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  .section { margin-bottom: 40px; }
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  /* SCORE KEY */
+  .score-key {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .key-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .key-dim { font-weight: 700; font-size: 13px; margin-bottom: 3px; }
+  .key-desc { font-size: 12px; color: var(--text-muted); }
+  .key-dots { margin: 6px 0 4px; font-size: 16px; letter-spacing: 2px; }
+  .d-dots { color: #7c3aed; }
+  .w-dots { color: #0d9488; }
+  .p-dots { color: #dc6a4b; }
+  .e-dots { color: #16a34a; }
+  .i-dots { color: #d97706; }
+
+  .tier-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .tier-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
+  }
+  .tier-lead { background: var(--gold-bg); color: var(--gold); border: 1px solid #e8c96a; }
+  .tier-high { background: var(--slate-bg); color: var(--slate); border: 1px solid #b0c8e8; }
+  .tier-standard { background: #f0f7ea; color: var(--accent); border: 1px solid var(--accent-light); }
+  .tier-listed { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
+
+  /* FILTER BUTTONS */
+  .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .filter-btn {
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; background: var(--surface); }
+  thead th {
+    background: var(--accent-dark);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f8faf6; }
+  tbody tr.hidden { display: none; }
+  td { padding: 10px 14px; vertical-align: middle; }
+
+  .rank-cell { font-weight: 700; color: var(--text-muted); font-size: 14px; width: 48px; }
+  .name-cell { font-weight: 700; font-size: 15px; }
+
+  /* Score badge */
+  .score-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 14px;
+    min-width: 36px;
+    text-align: center;
+  }
+  .badge-lead { background: var(--gold-bg); color: var(--gold); border: 1px solid #e8c96a; }
+  .badge-high { background: var(--slate-bg); color: var(--slate); border: 1px solid #b0c8e8; }
+  .badge-standard { background: #f0f7ea; color: var(--accent); border: 1px solid var(--accent-light); }
+  .badge-listed { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
+
+  /* Dimension dots */
+  .dim-dots { font-size: 12px; white-space: nowrap; letter-spacing: 1px; }
+
+  /* Pattern badge */
+  .pat-badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #f0f4ff;
+    color: #3730a3;
+    border: 1px solid #c7d2fe;
+  }
+  .pat-D { background: #fdf4ff; color: #7e22ce; border-color: #e9d5ff; }
+
+  /* Domain chip */
+  .domain-chip {
+    font-family: 'Courier New', monospace;
+    font-size: 11.5px;
+    background: #f1f5f9;
+    color: #475569;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    white-space: nowrap;
+  }
+  .domain-variant { border-color: var(--accent-light); color: var(--accent); background: #f0f7ea; }
+
+  /* Provenance cell */
+  .prov-cell { font-size: 12px; color: var(--text-muted); max-width: 200px; }
+
+  /* Flags */
+  .flag-mdr {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--mdr-warn);
+    background: var(--mdr-bg);
+    border: 1px solid var(--mdr-border);
+    border-radius: 4px;
+    padding: 1px 5px;
+    vertical-align: middle;
+  }
+  .flag-sem {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--sem-warn);
+    background: var(--sem-bg);
+    border: 1px solid var(--sem-border);
+    border-radius: 4px;
+    padding: 1px 5px;
+    vertical-align: middle;
+  }
+
+  /* CHARTS */
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 700px) { .charts-grid { grid-template-columns: 1fr; } }
+  .chart-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+  }
+  .chart-box h3 { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .chart-container { position: relative; height: 180px; }
+
+  /* DETAILS */
+  details {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+  summary {
+    padding: 14px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--accent-dark);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  summary::before { content: "▶"; font-size: 10px; transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body { padding: 0 20px 20px; font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+  .details-body p { margin-bottom: 8px; }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 20px 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+  }
+  .footer span::before { content: "· "; opacity: 0.5; }
+  .footer span:first-child::before { content: ""; }
+
+  @media print {
+    .filter-bar { display: none; }
+    details { border: none; }
+    details .details-body { display: none; }
+    .notice-mdr { background: white; border-left: 3px solid #999; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">HEAD · ASSESSMENT-04 · Extended View</div>
+  <h1>Naming Shortlist — Ranks 21–40</h1>
+  <div class="header-sub">Domain-verified names beyond the top 20 · 2026-02-21</div>
+  <div class="header-chips">
+    <span class="chip">250 candidates generated</span>
+    <span class="chip">150 .com available</span>
+    <span class="chip">Showing ranks 21–40</span>
+    <span class="chip">Top 20 excluded</span>
+    <span class="chip">Score range: 21–24</span>
+  </div>
+</div>
+
+<div class="notice-mdr">
+  <strong>EU MDR framing notice (applies to all names):</strong> HEAD sells cochlear implant headbands as accessories. No copy may imply the product enables, improves, or is necessary for device function. Names with flagged roots (⚠️ MDR) have higher copy-discipline risk — avoid any tagline that could be read as a device benefit claim.
+</div>
+<div class="notice-info">
+  <strong>Extended view:</strong> This report shows the next 20 domain-verified available names after the top 20 already presented. Use it to explore wider optionality — e.g. if the top 20 feel too similar to each other, or if a preferred name was unavailable.
+  <strong> Note on variant domains:</strong> Names marked <span style="font-family:monospace;background:#e8f4d4;padding:1px 5px;border-radius:4px;color:#3a5a28;font-size:12px;">variant</span> use a doubled-vowel domain (e.g. <code>calmalinaa.com</code>) because the clean domain was taken.
+</div>
+
+<div class="main">
+
+  <!-- SCORE KEY -->
+  <div class="section">
+    <div class="section-title">Score key — five dimensions, sum out of 25</div>
+    <div class="score-key">
+      <div class="key-item">
+        <div class="key-dim">D — Distinctiveness</div>
+        <div class="key-dots d-dots">●●●●●</div>
+        <div class="key-desc">TM ownability; not confusable with competitors</div>
+      </div>
+      <div class="key-item">
+        <div class="key-dim">W — Wordmark quality</div>
+        <div class="key-dots w-dots">●●●●●</div>
+        <div class="key-desc">Works stamped as a logo, Instagram handle, IG shop name</div>
+      </div>
+      <div class="key-item">
+        <div class="key-dim">P — Phonetics</div>
+        <div class="key-dots p-dots">●●●●●</div>
+        <div class="key-desc">Smooth in both IT and EN; memorable aurally</div>
+      </div>
+      <div class="key-item">
+        <div class="key-dim">E — Expansion headroom</div>
+        <div class="key-dots e-dots">●●●●●</div>
+        <div class="key-desc">Works beyond the initial product; non-product-specific</div>
+      </div>
+      <div class="key-item">
+        <div class="key-dim">I — ICP resonance</div>
+        <div class="key-dots i-dots">●●●●●</div>
+        <div class="key-desc">Primary buyer would stop scrolling at this name</div>
+      </div>
+    </div>
+    <div class="tier-legend">
+      <span class="tier-badge tier-lead">● Lead (24)</span>
+      <span class="tier-badge tier-high">● High (23)</span>
+      <span class="tier-badge tier-standard">● Standard (22)</span>
+      <span class="tier-badge tier-listed">● Listed (21)</span>
+    </div>
+  </div>
+
+  <!-- FILTER + TABLE -->
+  <div class="section">
+    <div class="section-title">Ranks 21–40 (domain-verified, scored)</div>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterPattern('all', this)">All</button>
+      <button class="filter-btn" onclick="filterPattern('A', this)">Pattern A</button>
+      <button class="filter-btn" onclick="filterPattern('B', this)">Pattern B</button>
+      <button class="filter-btn" onclick="filterPattern('C', this)">Pattern C</button>
+      <button class="filter-btn" onclick="filterPattern('D', this)">Pattern D</button>
+    </div>
+    <div class="table-wrap">
+      <table id="shortlist-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Score</th>
+            <th>D</th><th>W</th><th>P</th><th>E</th><th>I</th>
+            <th>Pattern</th>
+            <th>Domain</th>
+            <th>Provenance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- RANK 21: Calmalina / calmalinaa.com -->
+          <tr data-pattern="A">
+            <td class="rank-cell">21</td>
+            <td class="name-cell">Calmalina</td>
+            <td><span class="score-badge badge-lead">24</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●●</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge">A</span></td>
+            <td><span class="domain-chip domain-variant">calmalinaa.com <small>variant</small></span></td>
+            <td class="prov-cell">morphemes calma+lina</td>
+          </tr>
+          <!-- RANK 22: Aluvinova / aluvinovaa.com -->
+          <tr data-pattern="A">
+            <td class="rank-cell">22</td>
+            <td class="name-cell">Aluvinova</td>
+            <td><span class="score-badge badge-high">23</span></td>
+            <td><span class="dim-dots d-dots">●●●●○</span></td>
+            <td><span class="dim-dots w-dots">●●●●●</span></td>
+            <td><span class="dim-dots p-dots">●●●●○</span></td>
+            <td><span class="dim-dots e-dots">●●●●●</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge">A</span></td>
+            <td><span class="domain-chip domain-variant">aluvinovaa.com <small>variant</small></span></td>
+            <td class="prov-cell">morphemes aluvi+nova</td>
+          </tr>
+          <!-- RANK 23: Nivedore / nivedorea.com -->
+          <tr data-pattern="A">
+            <td class="rank-cell">23</td>
+            <td class="name-cell">Nivedore</td>
+            <td><span class="score-badge badge-high">23</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●○</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge">A</span></td>
+            <td><span class="domain-chip domain-variant">nivedorea.com <small>variant</small></span></td>
+            <td class="prov-cell">morphemes nive+dore</td>
+          </tr>
+          <!-- RANK 24: Temira / temiraatelier.com -->
+          <tr data-pattern="D">
+            <td class="rank-cell">24</td>
+            <td class="name-cell">Temira <span style="font-size:11px;color:var(--text-muted);font-weight:400">(spoken)</span></td>
+            <td><span class="score-badge badge-high">23</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●○</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge pat-D">D</span></td>
+            <td><span class="domain-chip">temiraatelier.com</span></td>
+            <td class="prov-cell">root temira + suffix atelier</td>
+          </tr>
+          <!-- RANK 25: Tessitela / tessitelaa.com -->
+          <tr data-pattern="A">
+            <td class="rank-cell">25</td>
+            <td class="name-cell">Tessitela</td>
+            <td><span class="score-badge badge-high">23</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●○</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge">A</span></td>
+            <td><span class="domain-chip domain-variant">tessitelaa.com <small>variant</small></span></td>
+            <td class="prov-cell">morphemes tessi+tela</td>
+          </tr>
+          <!-- RANK 26: Morena / morenaarte.com -->
+          <tr data-pattern="D">
+            <td class="rank-cell">26</td>
+            <td class="name-cell">Morena <span style="font-size:11px;color:var(--text-muted);font-weight:400">(spoken)</span></td>
+            <td><span class="score-badge badge-high">23</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●●</span></td>
+            <td><span class="dim-dots i-dots">●●●●○</span></td>
+            <td><span class="pat-badge pat-D">D</span></td>
+            <td><span class="domain-chip">morenaarte.com</span></td>
+            <td class="prov-cell">root morena + suffix arte</td>
+          </tr>
+          <!-- RANK 27: Selavo / selavoarte.com -->
+          <tr data-pattern="D">
+            <td class="rank-cell">27</td>
+            <td class="name-cell">Selavo <span style="font-size:11px;color:var(--text-muted);font-weight:400">(spoken)</span></td>
+            <td><span class="score-badge badge-high">23</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●●</span></td>
+            <td><span class="dim-dots i-dots">●●●●○</span></td>
+            <td><span class="pat-badge pat-D">D</span></td>
+            <td><span class="domain-chip">selavoarte.com</span></td>
+            <td class="prov-cell">root selavo + suffix arte</td>
+          </tr>
+          <!-- RANK 28: Levovera / levoveraa.com -->
+          <tr data-pattern="A">
+            <td class="rank-cell">28</td>
+            <td class="name-cell">Levovera</td>
+            <td><span class="score-badge badge-standard">22</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●○○</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge">A</span></td>
+            <td><span class="domain-chip domain-variant">levoveraa.com <small>variant</small></span></td>
+            <td class="prov-cell">morphemes levo+vera</td>
+          </tr>
+          <!-- RANK 29: Semameli -->
+          <tr data-pattern="A">
+            <td class="rank-cell">29</td>
+            <td class="name-cell">Semameli</td>
+            <td><span class="score-badge badge-standard">22</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●○</span></td>
+            <td><span class="dim-dots i-dots">●●●●○</span></td>
+            <td><span class="pat-badge">A</span></td>
+            <td><span class="domain-chip">semameli.com</span></td>
+            <td class="prov-cell">morphemes sema+meli</td>
+          </tr>
+          <!-- RANK 30: Semasola -->
+          <tr data-pattern="A">
+            <td class="rank-cell">30</td>
+            <td class="name-cell">Semasola</td>
+            <td><span class="score-badge badge-standard">22</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●○</span></td>
+            <td><span class="dim-dots i-dots">●●●●○</span></td>
+            <td><span class="pat-badge">A</span></td>
+            <td><span class="domain-chip">semasola.com</span></td>
+            <td class="prov-cell">morphemes sema+sola</td>
+          </tr>
+          <!-- RANK 31: Solavora / solavoraa.com -->
+          <tr data-pattern="A">
+            <td class="rank-cell">31</td>
+            <td class="name-cell">Solavora</td>
+            <td><span class="score-badge badge-standard">22</span></td>
+            <td><span class="dim-dots d-dots">●●●●○</span></td>
+            <td><span class="dim-dots w-dots">●●●●●</span></td>
+            <td><span class="dim-dots p-dots">●●●●○</span></td>
+            <td><span class="dim-dots e-dots">●●●●●</span></td>
+            <td><span class="dim-dots i-dots">●●●●○</span></td>
+            <td><span class="pat-badge">A</span></td>
+            <td><span class="domain-chip domain-variant">solavoraa.com <small>variant</small></span></td>
+            <td class="prov-cell">morphemes sola+vora</td>
+          </tr>
+          <!-- RANK 32: Velimeli -->
+          <tr data-pattern="A">
+            <td class="rank-cell">32</td>
+            <td class="name-cell">Velimeli</td>
+            <td><span class="score-badge badge-standard">22</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●○</span></td>
+            <td><span class="dim-dots i-dots">●●●●○</span></td>
+            <td><span class="pat-badge">A</span></td>
+            <td><span class="domain-chip">velimeli.com</span></td>
+            <td class="prov-cell">morphemes veli+meli</td>
+          </tr>
+          <!-- RANK 33: Ceriveno -->
+          <tr data-pattern="A">
+            <td class="rank-cell">33</td>
+            <td class="name-cell">Ceriveno</td>
+            <td><span class="score-badge badge-standard">22</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●●</span></td>
+            <td><span class="dim-dots i-dots">●●●○○</span></td>
+            <td><span class="pat-badge">A</span></td>
+            <td><span class="domain-chip">ceriveno.com</span></td>
+            <td class="prov-cell">morphemes ceri+veno</td>
+          </tr>
+          <!-- RANK 34: Tavirova / tavirovaa.com -->
+          <tr data-pattern="A">
+            <td class="rank-cell">34</td>
+            <td class="name-cell">Tavirova</td>
+            <td><span class="score-badge badge-standard">22</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●●</span></td>
+            <td><span class="dim-dots i-dots">●●●○○</span></td>
+            <td><span class="pat-badge">A</span></td>
+            <td><span class="domain-chip domain-variant">tavirovaa.com <small>variant</small></span></td>
+            <td class="prov-cell">morphemes tavi+rova</td>
+          </tr>
+          <!-- RANK 35: Anchorina -->
+          <tr data-pattern="B">
+            <td class="rank-cell">35</td>
+            <td class="name-cell">Anchorina <span class="flag-mdr">⚠️ MDR</span></td>
+            <td><span class="score-badge badge-listed">21</span></td>
+            <td><span class="dim-dots d-dots">●●●○○</span></td>
+            <td><span class="dim-dots w-dots">●●●●○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●○</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge">B</span></td>
+            <td><span class="domain-chip">anchorina.com</span></td>
+            <td class="prov-cell">respelled from anchor with ina — "anchor" root: copy must not imply device securing</td>
+          </tr>
+          <!-- RANK 36: Bariora -->
+          <tr data-pattern="C">
+            <td class="rank-cell">36</td>
+            <td class="name-cell">Bariora</td>
+            <td><span class="score-badge badge-listed">21</span></td>
+            <td><span class="dim-dots d-dots">●●○○○</span></td>
+            <td><span class="dim-dots w-dots">●●●●●</span></td>
+            <td><span class="dim-dots p-dots">●●●●○</span></td>
+            <td><span class="dim-dots e-dots">●●●●●</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge">C</span></td>
+            <td><span class="domain-chip">bariora.com</span></td>
+            <td class="prov-cell">blend fragments bari+ora</td>
+          </tr>
+          <!-- RANK 37: Benora / benoracasa.com -->
+          <tr data-pattern="D">
+            <td class="rank-cell">37</td>
+            <td class="name-cell">Benora <span style="font-size:11px;color:var(--text-muted);font-weight:400">(spoken)</span></td>
+            <td><span class="score-badge badge-listed">21</span></td>
+            <td><span class="dim-dots d-dots">●●●●●</span></td>
+            <td><span class="dim-dots w-dots">●●●○○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●○○</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge pat-D">D</span></td>
+            <td><span class="domain-chip">benoracasa.com</span></td>
+            <td class="prov-cell">root benora + suffix casa</td>
+          </tr>
+          <!-- RANK 38: Comforteva -->
+          <tr data-pattern="B">
+            <td class="rank-cell">38</td>
+            <td class="name-cell">Comforteva <span class="flag-mdr">⚠️ MDR</span></td>
+            <td><span class="score-badge badge-listed">21</span></td>
+            <td><span class="dim-dots d-dots">●●●●○</span></td>
+            <td><span class="dim-dots w-dots">●●●●●</span></td>
+            <td><span class="dim-dots p-dots">●●●●○</span></td>
+            <td><span class="dim-dots e-dots">●●●○○</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge">B</span></td>
+            <td><span class="domain-chip">comforteva.com</span></td>
+            <td class="prov-cell">respelled from comfort with eva — "comfort" root: risk of implied device benefit claim</td>
+          </tr>
+          <!-- RANK 39: Delira / delirastudio.com -->
+          <tr data-pattern="D">
+            <td class="rank-cell">39</td>
+            <td class="name-cell">Delira <span class="flag-sem">⚠️ semantic</span></td>
+            <td><span class="score-badge badge-listed">21</span></td>
+            <td><span class="dim-dots d-dots">●●●○○</span></td>
+            <td><span class="dim-dots w-dots">●●●○○</span></td>
+            <td><span class="dim-dots p-dots">●●●●●</span></td>
+            <td><span class="dim-dots e-dots">●●●●●</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge pat-D">D</span></td>
+            <td><span class="domain-chip">delirastudio.com</span></td>
+            <td class="prov-cell">root delira + suffix studio — IT "delira" = is delirious; verify brand fit</td>
+          </tr>
+          <!-- RANK 40: Dovira / dovirastudio.com -->
+          <tr data-pattern="D">
+            <td class="rank-cell">40</td>
+            <td class="name-cell">Dovira <span style="font-size:11px;color:var(--text-muted);font-weight:400">(spoken)</span></td>
+            <td><span class="score-badge badge-listed">21</span></td>
+            <td><span class="dim-dots d-dots">●●○○○</span></td>
+            <td><span class="dim-dots w-dots">●●●●●</span></td>
+            <td><span class="dim-dots p-dots">●●●●○</span></td>
+            <td><span class="dim-dots e-dots">●●●●●</span></td>
+            <td><span class="dim-dots i-dots">●●●●●</span></td>
+            <td><span class="pat-badge pat-D">D</span></td>
+            <td><span class="domain-chip">dovirastudio.com</span></td>
+            <td class="prov-cell">root dovira + suffix studio</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="section">
+    <div class="section-title">Score &amp; pattern distribution (this set of 20)</div>
+    <div class="charts-grid">
+      <div class="chart-box">
+        <h3>Score bands</h3>
+        <div class="chart-container">
+          <canvas id="scoreChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-box">
+        <h3>Pattern breakdown</h3>
+        <div class="chart-container">
+          <canvas id="patternChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEXT -->
+  <div class="section">
+    <div class="section-title">Context &amp; notes</div>
+    <details>
+      <summary>Why these 20? — pipeline methodology</summary>
+      <div class="details-body">
+        <p>All 250 candidates were scored across five dimensions (D, W, P, E, I). The 150 names with available .com domains were ranked by Score descending, then by I (ICP resonance) for ties, then alphabetically. The top 20 were presented first. This extended view shows the next 20 in the ranked sequence — they meet the same domain-availability gate but scored slightly lower or were displaced by tie-breaking.</p>
+        <p>The highest score in this set is 24 (Calmalina at rank 21), which would have appeared earlier but its primary domain <code>calmalina.com</code> was taken — only the variant <code>calmalinaa.com</code> is available. This is a strong candidate if the operator is comfortable with a double-vowel domain.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Variant domains (double-vowel) — what they mean</summary>
+      <div class="details-body">
+        <p>Several names in this set have a "variant" domain — e.g., <code>calmalinaa.com</code> (double-a) instead of <code>calmalina.com</code>. This occurred because the generation agent created both a primary and an alternative when the primary domain was taken. The brand name itself is the spoken version (without the extra letter); the domain simply adds a suffix to make the .com available.</p>
+        <p>Variant domains have trade-offs: they're harder to spell by ear, but they are real, available, registerable .com addresses. If the brand name has enough pull, customers navigate by search rather than memory — mitigating the double-vowel risk.</p>
+        <p>Affected names in this set: Calmalina, Aluvinova, Nivedore, Tessitela, Levovera, Solavora, Tavirova.</p>
+      </div>
+    </details>
+    <details>
+      <summary>MDR flag guidance — Anchorina &amp; Comforteva</summary>
+      <div class="details-body">
+        <p><strong>Anchorina (rank 35):</strong> The root "anchor" carries a physical securing/fixation connotation. Under EU MDR, marketing copy for cochlear implant accessories must not suggest the product aids or improves device function. A tagline like "anchors your sound" would be non-compliant. The name itself is not a regulatory problem — only the copy is governed. If selected, copy must treat the headband purely as a fashion/comfort accessory.</p>
+        <p><strong>Comforteva (rank 38):</strong> The root "comfort" is a common marketing claim that could be interpreted as a benefit for the device wearer (e.g., "makes wearing the processor more comfortable"). This is riskier than Anchorina because "comfort" is a direct product attribute claim. Requires stricter copy guardrails. Low risk if framed purely aesthetically ("the look of ease"), high risk if framed functionally.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Pattern guide</summary>
+      <div class="details-body">
+        <p><strong>Pattern A — Morpheme combination:</strong> Two invented morphemes fused together (e.g., calma+lina → Calmalina). High distinctiveness, fully ownable.</p>
+        <p><strong>Pattern B — Craft/English respelling:</strong> An English word with an Italian-style ending (e.g., comfort+eva → Comforteva). Accessible to English speakers; moderate distinctiveness.</p>
+        <p><strong>Pattern C — Fragment blend:</strong> Two syllable fragments blended (e.g., bari+ora → Bariora). Feels Italian and invented.</p>
+        <p><strong>Pattern D — Root + suffix:</strong> A root word combined with a suffix (e.g., temira+atelier → temiraatelier.com). Spoken name differs from domain string. Strong visual wordmark on the domain; the spoken/brand name registers first.</p>
+      </div>
+    </details>
+  </div>
+
+</div>
+
+<div class="footer">
+  <span>Source: docs/business-os/strategy/HEAD/naming-candidates-2026-02-21.md</span>
+  <span>RDAP check: Verisign, 2026-02-21</span>
+  <span>Extended view — excluding top 20 from naming-shortlist-2026-02-21.user.md</span>
+  <span>Generated: 2026-02-21</span>
+</div>
+
+<script>
+  // Pattern filter
+  function filterPattern(pattern, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#shortlist-table tbody tr').forEach(row => {
+      if (pattern === 'all' || row.dataset.pattern === pattern) {
+        row.classList.remove('hidden');
+      } else {
+        row.classList.add('hidden');
+      }
+    });
+  }
+
+  // Score distribution chart
+  const scoreCtx = document.getElementById('scoreChart').getContext('2d');
+  new Chart(scoreCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Score 24', 'Score 23', 'Score 22', 'Score 21'],
+      datasets: [{
+        label: 'Names',
+        data: [1, 6, 7, 6],
+        backgroundColor: ['#c9973a', '#4a6fa5', '#4e7a35', '#9ca3af'],
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: '#e5e7eb' }, ticks: { color: '#6b7280', font: { size: 11 } } },
+        y: { grid: { display: false }, ticks: { color: '#374151', font: { size: 12, weight: '600' } } }
+      }
+    }
+  });
+
+  // Pattern doughnut chart
+  const patCtx = document.getElementById('patternChart').getContext('2d');
+  new Chart(patCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['A — Morpheme', 'B — Respelled', 'C — Fragment', 'D — Root+suffix'],
+      datasets: [{
+        data: [11, 2, 1, 6],
+        backgroundColor: ['#4e7a35', '#d97706', '#dc6a4b', '#7c3aed'],
+        borderColor: '#ffffff',
+        borderWidth: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { font: { size: 11 }, padding: 10, color: '#374151' }
+        }
+      },
+      cutout: '60%'
+    }
+  });
+</script>
+</body>
+</html>

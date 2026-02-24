@@ -67,7 +67,7 @@ description: Thin build orchestrator. Executes one runnable task per cycle from 
 - `INVESTIGATE`: >=60 (information-gain work)
 - `CHECKPOINT`: protocol task; no numeric threshold gate
 
-If task confidence is below its threshold, stop and route to `/lp-do-replan`.
+If task confidence is below its threshold and no other eligible task in the current wave can raise it (e.g., an INVESTIGATE that feeds the low-confidence task), automatically invoke `/lp-do-replan` for the below-threshold task. Do not stop to ask the user — attempt the replan first. Only notify the user if `/lp-do-replan` cannot raise confidence to the threshold (dead end).
 
 ## Canonical Gates
 
@@ -99,6 +99,7 @@ All execution must pass these gates.
 
 5. **Post-task Update Gate**
 - Update task status + build evidence in plan.
+- **Precursor completion propagation**: if the completed task appears in other tasks' `Depends on` or `Blocks` lists, re-score those dependent tasks using the new evidence and actualize any conditional confidence patterns (see `modules/build-investigate.md` § Downstream Confidence Propagation and `modules/build-spike.md` step 4). If any re-scored task crosses its type threshold, it becomes eligible for the next build cycle without a separate `/lp-do-replan` invocation.
 - Recompute plan readiness for next cycle.
 - Run BOS sync hooks when enabled.
 
@@ -136,7 +137,7 @@ Read `Execution-Skill` from task, then normalize before comparison:
 
 - Isolation Mode: `../_shared/git-isolation-mode.md`
 - Extinct test policy: `../_shared/testing-extinct-tests.md`
-- Optional plan archiving: `../_shared/plan-archiving.md`
+- Plan archiving: `../_shared/plan-archiving.md`
 - BOS build integration: `../_shared/build-bos-integration.md`
 - Discovery index freshness: `../_shared/discovery-index-contract.md`
 
@@ -176,9 +177,18 @@ If confidence regresses below task threshold during execution:
 
 When all executable tasks are complete:
 
-- Set plan frontmatter `Status: Complete`.
-- Optional storage archival follows `../_shared/plan-archiving.md`.
-- Do not force a non-canonical `Archived` status unless status vocabulary is explicitly extended.
+1. **Produce `build-record.user.md`** at `docs/plans/<feature-slug>/build-record.user.md`. This artifact records what was built, tests run, and validation evidence. See formal contract: `docs/business-os/startup-loop/loop-output-contracts.md`.
+2. **Wait for `results-review.user.md`** (hard gate). Do NOT set plan `Status: Archived` until `docs/plans/<feature-slug>/results-review.user.md` exists. This artifact is produced by the operator after observing deployed outcomes and is required to close the Layer B → Layer A feedback loop. See formal contract: `docs/business-os/startup-loop/loop-output-contracts.md`.
+3. Set plan frontmatter `Status: Archived`.
+4. Archive the plan following `../_shared/plan-archiving.md`.
+
+### Plan Archival Checklist
+
+- [ ] All executable tasks are `Complete`.
+- [ ] `build-record.user.md` exists at `docs/plans/<feature-slug>/build-record.user.md`.
+- [ ] `results-review.user.md` exists with `## Standing Updates` section naming at least one of: `market-pack.user.md`, `sell-pack.user.md`, `product-pack.user.md`, `logistics-pack.user.md`, or explicit `No standing updates: <reason>` entry.
+- [ ] Plan `Status` set to `Archived` in frontmatter.
+- [ ] Archive procedure from `../_shared/plan-archiving.md` followed.
 
 ## BOS Integration
 
@@ -201,7 +211,7 @@ When the next task is CHECKPOINT:
 
 All eligible tasks complete:
 
-> Build complete. Updated `docs/plans/<feature-slug>/plan.md` with task evidence and `Status: Complete`.
+> Build complete. Plan archived to `docs/plans/_archive/<feature-slug>/plan.md` with `Status: Archived`.
 
 Partial completion:
 

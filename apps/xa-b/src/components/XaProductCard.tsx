@@ -1,22 +1,26 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy product card pending design/i18n overhaul */
 
+import { useState } from "react";
 import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
-import { IconButton, Price } from "@acme/design-system/atoms";
-import { ProductBadge } from "@acme/design-system/atoms";
+import { Button, IconButton, Price, ProductBadge } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { Inline } from "@acme/design-system/primitives/Inline";
-import { XaFadeImage } from "./XaFadeImage";
-import type { XaProduct } from "../lib/demoData";
+import { cn } from "@acme/design-system/utils/style";
+
 import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
+import type { XaProduct } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
 import { formatLabel, getDesignerName } from "../lib/xaCatalog";
+import { xaI18n } from "../lib/xaI18n";
+
+import { XaFadeImage } from "./XaFadeImage";
 
 export function XaProductCard({ product }: { product: XaProduct }) {
+  const [touched, setTouched] = useState(false);
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const images = product.media.filter((m) => m.type === "image" && m.url.trim());
@@ -46,26 +50,26 @@ export function XaProductCard({ product }: { product: XaProduct }) {
   })();
 
   return (
-    <div className="xa-panel rounded-lg border border-border-1 bg-surface-2/60 p-4 shadow-elevation-1 backdrop-blur">
+    <div className="xa-panel rounded-sm border border-border-1 bg-surface-2 p-4 shadow-elevation-1">
       <div className="relative">
         <Link href={`/products/${product.slug}`} className="group block">
-          <div className="relative aspect-square overflow-hidden rounded-md bg-surface">
+          <div className="relative aspect-square overflow-hidden rounded-sm bg-surface" onTouchStart={() => setTouched(true)} onTouchEnd={() => setTouched(false)}>
             {primaryImage ? (
               <>
                 <XaFadeImage
                   src={primaryImage.url}
                   alt={primaryImage.altText ?? product.title}
                   fill
-                  sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-                  className="object-cover transition-opacity duration-300 group-hover:opacity-0"
+                  sizes={xaI18n.t("xaB.src.components.xaproductcard.l62c25")}
+                  className={cn("object-cover transition-opacity duration-300 group-hover:opacity-0", touched ? "opacity-0" : "")}
                 />
                 {secondaryImage ? (
-                  <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <div className={cn("absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100", touched ? "opacity-100" : "")}>
                     <XaFadeImage
                       src={secondaryImage.url}
                       alt=""
                       fill
-                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                      sizes={xaI18n.t("xaB.src.components.xaproductcard.l71c29")}
                       className="object-cover"
                     />
                   </div>
@@ -104,7 +108,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
 
         <div className="absolute end-2 top-2">
           <IconButton
-            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            aria-label={isWishlisted ? xaI18n.t("xaB.src.components.xaproductcard.l110c40") : xaI18n.t("xaB.src.components.xaproductcard.l110c65")}
             aria-pressed={isWishlisted}
             variant="secondary"
             size="sm"
@@ -162,10 +166,12 @@ export function XaProductCard({ product }: { product: XaProduct }) {
             </div>
             <Inline gap={2} wrap>
               {product.sizes.map((size) => (
-                <button
+                <Button
                   key={`${product.slug}-size-${size}`}
                   type="button"
-                  className="rounded-full border px-2 py-1 text-[11px] font-medium hover:bg-muted"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto min-h-0 rounded-full border px-2 py-1 xa-text-11 font-medium hover:bg-muted"
                   onClick={(event) => {
                     event.preventDefault();
                     void dispatch({
@@ -177,7 +183,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
                   }}
                 >
                   {size}
-                </button>
+                </Button>
               ))}
             </Inline>
           </div>

@@ -57,8 +57,8 @@ describe("buildAppMetadata", () => {
       isPublished: false,
     });
 
-    expect(published.alternates?.canonical).toBe("https://hostel-positano.com/en/test/");
-    expect(unpublished.alternates?.canonical).toBe("https://hostel-positano.com/en/test/");
+    expect(published.alternates?.canonical).toBe("https://hostel-positano.com/en/test");
+    expect(unpublished.alternates?.canonical).toBe("https://hostel-positano.com/en/test");
   });
 
   it("generates localized hreflang alternates for rooms page", () => {
@@ -70,10 +70,10 @@ describe("buildAppMetadata", () => {
     });
 
     // Verify localized slugs (not naive string replacement)
-    expect(metadata.alternates?.languages?.de).toBe("https://hostel-positano.com/de/zimmer/");
-    expect(metadata.alternates?.languages?.fr).toBe("https://hostel-positano.com/fr/chambres/");
-    expect(metadata.alternates?.languages?.it).toBe("https://hostel-positano.com/it/camere/");
-    expect(metadata.alternates?.languages?.es).toBe("https://hostel-positano.com/es/habitaciones/");
+    expect(metadata.alternates?.languages?.de).toBe("https://hostel-positano.com/de/zimmer");
+    expect(metadata.alternates?.languages?.fr).toBe("https://hostel-positano.com/fr/chambres");
+    expect(metadata.alternates?.languages?.it).toBe("https://hostel-positano.com/it/camere");
+    expect(metadata.alternates?.languages?.es).toBe("https://hostel-positano.com/es/habitaciones");
   });
 
   it("generates localized hreflang alternates for deals page", () => {
@@ -84,9 +84,9 @@ describe("buildAppMetadata", () => {
       path: "/en/deals",
     });
 
-    expect(metadata.alternates?.languages?.de).toBe("https://hostel-positano.com/de/angebote/");
-    expect(metadata.alternates?.languages?.fr).toBe("https://hostel-positano.com/fr/offres/");
-    expect(metadata.alternates?.languages?.it).toBe("https://hostel-positano.com/it/offerte/");
+    expect(metadata.alternates?.languages?.de).toBe("https://hostel-positano.com/de/angebote");
+    expect(metadata.alternates?.languages?.fr).toBe("https://hostel-positano.com/fr/offres");
+    expect(metadata.alternates?.languages?.it).toBe("https://hostel-positano.com/it/offerte");
   });
 
   it("includes x-default alternate", () => {
@@ -115,8 +115,8 @@ describe("buildAppMetadata", () => {
     expect(metadata.alternates?.languages?.it).toContain("/it/assistenza/");
 
     // Verify guide slug is also translated
-    expect(metadata.alternates?.languages?.fr).toContain("/arriver-en-ferry/");
-    expect(metadata.alternates?.languages?.it).toContain("/arrivo-in-traghetto/");
+    expect(metadata.alternates?.languages?.fr).toContain("/arriver-en-ferry");
+    expect(metadata.alternates?.languages?.it).toContain("/arrivo-in-traghetto");
   });
 
   it("includes complete social metadata fields", () => {
@@ -131,7 +131,7 @@ describe("buildAppMetadata", () => {
     expect(metadata.openGraph?.siteName).toBe("Hostel Brikette");
     expect(metadata.openGraph?.title).toBe("Test Page");
     expect(metadata.openGraph?.description).toBe("Test description");
-    expect(metadata.openGraph?.url).toBe("https://hostel-positano.com/en/test/");
+    expect(metadata.openGraph?.url).toBe("https://hostel-positano.com/en/test");
     expect(metadata.openGraph?.images).toBeDefined();
     expect(Array.isArray(metadata.openGraph?.images)).toBe(true);
 

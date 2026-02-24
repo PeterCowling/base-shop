@@ -13,37 +13,14 @@
 
 import type { FC } from "react";
 import { memo, useCallback, useMemo, useState } from "react";
-import { ReservationGrid } from "@daminort/reservation-grid";
 
 import type { GridReservationRow } from "../../hooks/data/roomgrid/useGridData";
 import type { MyLocalStatus } from "../../types/MyLocalStatus";
 
 import BookingDetailsModal from "./BookingDetailsModal";
 import { statusColors } from "./constants/statusColors";
+import { ReservationGrid, type TClickCellEventData } from "./ReservationGrid";
 import styles from "./RoomGrid.module.css";
-
-/** ----------------------------------------------------------------
- *  Local copy of the `@daminort/reservation-grid` click-event type.
- *  ---------------------------------------------------------------- */
-export interface TClickCellEventData<TStatus = string> {
-  /** Row identifier (e.g., room ID). */
-  id: string;
-  /** ISO-8601 date string for the clicked cell. */
-  date: string;
-  /**
-   * Position of the day inside the booking period.
-   * The library uses the following literal values:
-   *  • 'single'  – a one-day period
-   *  • 'start'   – first day of a multi-day period
-   *  • 'between' – intermediate day of a multi-day period
-   *  • 'end'     – last day of a multi-day period
-   *
-   * We keep the union open with `string` to remain forward-compatible.
-   */
-  dayType: "single" | "start" | "between" | "end" | string;
-  /** Status or list of statuses assigned to the day. */
-  dayStatus: TStatus | TStatus[];
-}
 
 export interface BookingDetailsModalData {
   roomNumber: string;

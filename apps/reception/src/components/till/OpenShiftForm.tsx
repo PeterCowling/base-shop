@@ -136,7 +136,7 @@ export const OpenShiftForm = memo(function OpenShiftForm({
         title="Open Shift"
         borderClass="border-info-main"
         textClass="text-info-main"
-        confirmClass="bg-primary-main text-white rounded hover:bg-primary-dark"
+        confirmClass="bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
         confirmLabel="Confirm Shift Opening"
         showKeycards
         keycardLabel="Starting Keycards"

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="On-body placeholder">
+  <rect width="800" height="1000" fill="#f6efe9"/>
+  <circle cx="400" cy="250" r="90" fill="#e4cdbf"/>
+  <rect x="290" y="350" width="220" height="360" rx="100" fill="#e4cdbf"/>
+  <path d="M180 520c120-140 320-140 440 0" fill="none" stroke="#8b6a57" stroke-width="24"/>
+  <rect x="255" y="520" width="290" height="220" rx="28" fill="#fdf8f3" stroke="#8b6a57" stroke-width="8"/>
+  <text x="400" y="910" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#6f5142">On-Body Context</text>
+</svg>

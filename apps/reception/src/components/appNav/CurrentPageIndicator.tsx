@@ -74,13 +74,13 @@ function CurrentPageIndicatorComponent({ pathname }: CurrentPageIndicatorProps) 
 
   return (
     <div className="flex items-center gap-2 text-sm">
-      <span className="text-gray-400 dark:text-gray-500">{routeInfo.section}</span>
-      <span className="text-gray-300 dark:text-gray-600">/</span>
+      <span className="text-muted-foreground dark:text-darkAccentGreen">{routeInfo.section}</span>
+      <span className="text-muted-foreground dark:text-darkAccentGreen">/</span>
       <div className="flex items-center gap-2 font-semibold text-primary-600 dark:text-darkAccentGreen">
         <FontAwesomeIcon icon={routeInfo.icon} className="w-4" />
         <span>{routeInfo.label}</span>
         {routeInfo.shortcut && (
-          <kbd className="ms-1 rounded bg-gray-200 px-1.5 py-0.5 text-ops-micro font-mono text-gray-600 dark:bg-darkBorder dark:text-gray-400">
+          <kbd className="ms-1 rounded bg-surface-3 px-1.5 py-0.5 text-ops-micro font-mono text-muted-foreground dark:bg-darkBorder dark:text-darkAccentGreen">
             {routeInfo.shortcut}
           </kbd>
         )}

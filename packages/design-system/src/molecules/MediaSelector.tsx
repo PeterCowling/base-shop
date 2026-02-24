@@ -5,7 +5,12 @@ import Image from "next/image";
 
 import { useTranslations } from "@acme/i18n";
 
-import { Cover,Inline } from "../primitives";
+import { Cover, Inline } from "../primitives";
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export type MediaType = "image" | "video" | "360" | "model";
@@ -23,16 +28,27 @@ export interface MediaSelectorProps
   items: MediaItem[];
   active: number;
   onChange?: (idx: number) => void;
+  /** Semantic thumbnail shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit thumbnail radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 export function MediaSelector({
   items,
   active,
   onChange,
+  shape,
+  radius,
   className,
   ...props
 }: MediaSelectorProps) {
   const t = useTranslations();
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
   return (
     <Inline gap={2} className={cn(className)} {...props}>
       {items.map((item, idx) => {
@@ -43,8 +59,9 @@ export function MediaSelector({
             type="button"
             onClick={() => onChange?.(idx)}
             className={cn(
-              "h-16 w-16 overflow-hidden rounded border", // i18n-exempt -- UI-000: class names
-              active === idx && "ring-2 ring-[color:hsl(var(--color-border-strong))]" // i18n-exempt -- UI-000: class names
+              "h-16 w-16 overflow-hidden border", // i18n-exempt -- UI-000: class names
+              shapeRadiusClass,
+              active === idx && "ring-2 ring-ring" // i18n-exempt -- UI-000: class names
             )}
           >
             {item.type === "image" || item.type === "360" ? (

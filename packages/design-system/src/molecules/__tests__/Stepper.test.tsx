@@ -160,4 +160,26 @@ describe("Stepper", () => {
     const stepper = screen.getByRole("list");
     expect(stepper).toHaveAttribute("data-cy", "stepper");
   });
+
+  it("supports indicator shape/radius overrides", () => {
+    const { rerender } = render(
+      <Stepper currentStep={0} indicatorShape="square">
+        <StepperStep step={0} label="Step 1" />
+        <StepperStep step={1} label="Step 2" />
+      </Stepper>,
+    );
+    let firstStep = screen.getByText("Step 1").closest("li");
+    let indicator = firstStep?.querySelector("[class*='size-8']");
+    expect(indicator).toHaveClass("rounded-none");
+
+    rerender(
+      <Stepper currentStep={0} indicatorShape="square" indicatorRadius="xl">
+        <StepperStep step={0} label="Step 1" />
+        <StepperStep step={1} label="Step 2" />
+      </Stepper>,
+    );
+    firstStep = screen.getByText("Step 1").closest("li");
+    indicator = firstStep?.querySelector("[class*='size-8']");
+    expect(indicator).toHaveClass("rounded-xl");
+  });
 });

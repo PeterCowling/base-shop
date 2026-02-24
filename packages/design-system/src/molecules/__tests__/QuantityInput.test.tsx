@@ -44,4 +44,18 @@ describe("QuantityInput", () => {
     expect(handleChange).toHaveBeenCalledTimes(1);
     expect(handleChange).toHaveBeenCalledWith(4);
   });
+
+  it("supports control shape/radius overrides", () => {
+    const { getByRole, rerender } = render(
+      <QuantityInput value={2} min={1} max={5} shape="square" />,
+    );
+    let dec = getByRole("button", { name: "-" });
+    expect(dec).toHaveClass("rounded-none");
+
+    rerender(
+      <QuantityInput value={2} min={1} max={5} shape="square" radius="xl" />,
+    );
+    dec = getByRole("button", { name: "-" });
+    expect(dec).toHaveClass("rounded-xl");
+  });
 });

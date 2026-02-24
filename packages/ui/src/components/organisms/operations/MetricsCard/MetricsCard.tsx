@@ -28,17 +28,17 @@ export interface MetricsCardProps {
 }
 
 const variantStyles = {
-  default: 'bg-white dark:bg-darkSurface border-gray-200 dark:border-darkSurface',
-  success: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
-  warning: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800',
-  danger: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800',
+  default: 'bg-surface-2 border-border-2',
+  success: 'bg-success-soft border-success/40',
+  warning: 'bg-warning-soft border-warning/40',
+  danger: 'bg-danger-soft border-danger/40',
 }
 
 const iconColorStyles = {
-  default: 'text-gray-500 dark:text-gray-400',
-  success: 'text-green-600 dark:text-green-400',
-  warning: 'text-yellow-600 dark:text-yellow-400',
-  danger: 'text-red-600 dark:text-red-400',
+  default: 'text-muted-foreground',
+  success: 'text-success-foreground',
+  warning: 'text-warning-foreground',
+  danger: 'text-danger-foreground',
 }
 
 /**
@@ -105,18 +105,18 @@ export function MetricsCard({
       <div className="flex items-start justify-between">
         <div className="flex-1">
           {/* Label */}
-          <div className="text-[var(--label-size)] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+          <div className="text-[var(--label-size)] font-medium text-muted-foreground uppercase tracking-wide">
             {label}
           </div>
 
           {/* Value */}
-          <div className="mt-1 text-2xl font-bold text-gray-900 dark:text-darkAccentGreen">
+          <div className="mt-1 text-2xl font-bold text-foreground">
             {value}
           </div>
 
           {/* Description */}
           {description && (
-            <div className="mt-1 text-[var(--label-size)] text-gray-500 dark:text-gray-400">
+            <div className="mt-1 text-[var(--label-size)] text-muted-foreground">
               {description}
             </div>
           )}
@@ -126,7 +126,7 @@ export function MetricsCard({
             <div
               className={cn(
                 'mt-2 inline-flex items-center gap-1 text-sm font-medium',
-                trend.direction === 'up' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                trend.direction === 'up' ? 'text-success-foreground' : 'text-danger-foreground'
               )}
             >
               {trend.direction === 'up' ? (
@@ -146,7 +146,7 @@ export function MetricsCard({
         {Icon && (
           <div
             className={cn(
-              'flex-shrink-0 p-2 rounded-lg bg-white/50 dark:bg-black/20',
+              'flex-shrink-0 p-2 rounded-lg bg-surface-1/70',
               iconColorStyles[variant]
             )}
           >

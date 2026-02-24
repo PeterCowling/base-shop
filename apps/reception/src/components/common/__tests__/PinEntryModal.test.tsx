@@ -5,6 +5,10 @@ import userEvent from "@testing-library/user-event";
 
 import PinEntryModal from "../PinEntryModal";
 
+jest.mock("../../../hoc/withModalBackground", () => ({
+  withModalBackground: (Comp: React.ComponentType) => Comp,
+}));
+
 describe("PinEntryModal", () => {
   it("renders title and instructions", () => {
     render(

@@ -2,6 +2,8 @@
 
 import { type FC, memo, type MouseEventHandler } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 /**
  * This component renders a small "new booking" icon button.
  * It matches the size and style of other header action buttons.
@@ -17,15 +19,15 @@ interface NewBookingButtonProps {
 
 const NewBookingButton: FC<NewBookingButtonProps> = ({ onClick }) => {
   return (
-    <button
+    <Button
       type="button"
       onClick={onClick}
-      className="flex items-center justify-center border border-gray-400 rounded-md p-1 hover:bg-gray-100 active:bg-gray-200"
+      className="flex items-center justify-center border border-border-2 rounded-md p-1 hover:bg-surface-2 active:bg-surface-3"
       aria-label="New booking"
     >
       {/* Plus icon (24x24) for "new booking" */}
       <svg
-        className="w-6 h-6 text-gray-700"
+        className="w-6 h-6 text-foreground"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -34,7 +36,7 @@ const NewBookingButton: FC<NewBookingButtonProps> = ({ onClick }) => {
       >
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
       </svg>
-    </button>
+    </Button>
   );
 };
 

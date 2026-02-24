@@ -6,6 +6,7 @@ import * as React from "react";
 
 import type { ButtonProps as BaseButtonProps } from "../primitives/button";
 import { Button as BaseButton } from "../primitives/button";
+import { resolveShapeRadiusClass } from "../primitives/shape-radius";
 import { Slot } from "../primitives/slot";
 import { cn } from "../utils/style";
 
@@ -23,6 +24,8 @@ export const Button = (
     size,
     className,
     asChild = false,
+    shape,
+    radius,
     ...props
   }: ButtonProps & {
     ref?: React.Ref<HTMLButtonElement>;
@@ -37,9 +40,14 @@ export const Button = (
       : size === "sm"
       ? "h-8 px-3 py-1.5 text-xs" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       : "";
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
   if (variant === "destructive") {
     const base =
-      "inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+      "inline-flex h-10 items-center justify-center px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     const styles =
       "bg-destructive text-destructive-foreground hover:bg-destructive/90"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     // Avoid forwarding non-DOM props when rendering native elements
@@ -51,12 +59,14 @@ export const Button = (
       tone: _tone,
       color: _color,
       size: _size,
+      shape: _shape,
+      radius: _radius,
       ...restProps
     } = props as Omit<ButtonProps, "variant">;
     return (
       <Comp
         ref={ref}
-        className={cn(base, sizeClass, styles, className)}
+        className={cn(base, shapeRadiusClass, sizeClass, styles, className)}
         {...(restProps as unknown as React.ButtonHTMLAttributes<HTMLButtonElement>)}
       />
     );
@@ -66,6 +76,8 @@ export const Button = (
       ref={ref}
       variant={variant as BaseButtonProps["variant"]}
       asChild={asChild}
+      shape={shape}
+      radius={radius}
       className={cn(sizeClass, className)}
       {...props}
     />

@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HBAG Site Upgrade Brief (L1 Build 2, Image-First)</title>
+  <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f8fb;
+      --text: #101418;
+      --text-muted: #5a6570;
+      --border: #d9e0e7;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
+
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
+      background: var(--header);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
+    }
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
+    .audience-toggle {
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
+    }
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
+<h1>HBAG Site Upgrade Brief (L1 Build 2, Image-First)</h1>
+<h2>A) Executive Summary</h2>
+<ul>
+<li>(observed) WEBSITE-02 for HBAG is first-cycle and therefore L1 Build 2; image-first auto-mode is active by contract.</li>
+<li>(observed) Current Caryina surface is route-complete but merchandising-light: PLP and PDP are mostly text cards with minimal media depth (<code>apps/caryina/src/app/[lang]/shop/page.tsx</code>, <code>apps/caryina/src/app/[lang]/product/[slug]/page.tsx</code>).</li>
+<li>(observed) Brand dossier requires product imagery to lead and site chrome to stay recessive.</li>
+<li>(observed) World-class references converge on image-led hierarchy: hero campaign visual first, product grid second, copy tertiary.</li>
+<li>(observed) Best-performing bag sites show early on-body context and hardware detail proof, not just flat product renders.</li>
+<li>(inferred) With ~60 launch variants, conversion quality will depend on gallery consistency, strong filtering, and fast image browsing more than long copy.</li>
+<li>(inferred) Caryina should adopt a photo-led homepage/PLP/PDP contract before adding advanced storytelling modules.</li>
+<li>(inferred) Immediate priority is not “new pages” but reweighting existing pages toward visual merchandising and media QA.</li>
+<li>(observed) References repeatedly use 3:4 to 4:5 image framing and clear family-level navigation to keep browsing dense but premium.</li>
+<li>(inferred) A measurable media contract (shot counts, ordering, density, mobile behavior) is required to avoid subjective “make images bigger” execution drift.</li>
+<li>(inferred) First implementation wave can be shipped with current Next.js stack and existing design tokens without new runtime dependencies.</li>
+<li>(inferred) This brief is decision-ready and directly usable as lp-do-fact-find handoff input.</li>
+</ul>
+<h2>B) Business Outcome Frame and Constraints</h2>
+<p>Outcome frame:</p>
+<ul>
+<li>Move Caryina from manual WhatsApp demand handling to a conversion-capable owned website where image quality and browsing speed can support €80–€150 premium positioning.</li>
+</ul>
+<p>Decision links unlocked:</p>
+<ul>
+<li><code>DEC-HBAG-01</code>: continue/scale website-first investment if image-heavy merchandising raises qualified product-detail and checkout intent.</li>
+<li><code>DEC-HBAG-WEB-02</code>: lock a media-production contract (shots per SKU + ordering) before adding additional launch variants.</li>
+</ul>
+<p>Non-negotiables:</p>
+<ul>
+<li>Product imagery stays primary; copy supports, not dominates.</li>
+<li>Preserve active brand language and token contract from <code>docs/business-os/strategy/HBAG/brand-dossier.user.md</code>.</li>
+<li>Keep accessibility parity (semantic text remains present; no canvas-only semantic dependency).</li>
+<li>Avoid heavy runtime additions (no WebGL/effects libraries required for this upgrade lane).</li>
+<li>Mobile-first behavior is mandatory (social-origin traffic assumption).</li>
+</ul>
+<h2>C) Existing Site Baseline Assessment</h2>
+<p>Launch-surface mode:</p>
+<ul>
+<li><code>website-live</code> (Caryina app route framework exists and runs).</li>
+</ul>
+<p>Observed baseline:</p>
+<ul>
+<li>Locale and route shell exist for shop, PDP, checkout, legal/support paths.</li>
+<li><code>shop/page.tsx</code> renders product cards with slug/title/description/price but no media-forward tile system.</li>
+<li><code>product/[slug]/page.tsx</code> renders title/description/price and checkout link but no gallery, no detail zoom, and no on-body context.</li>
+<li>Header brand system is active (BrandMark + tokenized theme), but merchandising layers are still framework-level.</li>
+</ul>
+<p>Primary friction points:</p>
+<ul>
+<li>Insufficient visual hierarchy for a bag-first catalog.</li>
+<li>No image-depth contract per SKU (hero/detail/on-body/scale proof not encoded).</li>
+<li>Browsing density and variant scanning are not optimized for a 60-variant launch.</li>
+<li>PDP lacks trust-through-visual-proof (hardware, stitching, closure, scale, worn context).</li>
+</ul>
+<h2>D) Reference-Site Pattern Decomposition</h2>
+<table>
+<thead>
+<tr>
+<th>Reference site</th>
+<th>Pattern</th>
+<th>Why it matters for HBAG</th>
+<th>Evidence (observed/inferred)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LOEWE</td>
+<td>Editorial-first hero and family landing pages before dense product browsing</td>
+<td>Sets premium tone while still routing quickly into bag families</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>LOEWE</td>
+<td>PDP includes multiple framed angles and close craft views</td>
+<td>Supports premium price belief through visual proof, not claim-heavy copy</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Bottega Veneta</td>
+<td>Craft-signature visual emphasis (material texture as hero)</td>
+<td>Directly relevant for “reads premium in photos” requirement</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Coach</td>
+<td>High-density family collections with campaign + product mix</td>
+<td>Useful model for balancing scale (60 variants) and discoverability</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Strathberry</td>
+<td>Consistent 2x3/4x5 product framing with clear silhouette comparison</td>
+<td>Helps fast shape comparison across many SKUs</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Strathberry</td>
+<td>Frequent on-body and in-hand context imagery</td>
+<td>Reduces uncertainty about scale and styling outcome</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Polene</td>
+<td>Object-led minimal product framing and restrained copy</td>
+<td>Aligns with Caryina brand requirement: curated and image-led</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Longchamp</td>
+<td>Strong collection taxonomy plus clean PDP variants</td>
+<td>Supports broad assortment browsing without overwhelming UI chrome</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Mulberry</td>
+<td>Family hubs (e.g., Alexa) and shape-first category paths</td>
+<td>Useful for grouping many variants under coherent product stories</td>
+<td>observed/inferred</td>
+</tr>
+<tr>
+<td>DeMellier</td>
+<td>Collection-first bag browsing with premium image consistency</td>
+<td>Good benchmark for launch PLP image consistency across assortment</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Mansur Gavriel</td>
+<td>Minimal category scaffolding and silhouette-led navigation</td>
+<td>Reinforces “photo first, copy second” grid behavior</td>
+<td>observed/inferred</td>
+</tr>
+</tbody>
+</table>
+<h2>E) Best-Of Synthesis Matrix (Adopt / Adapt / Defer / Reject)</h2>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Source reference</th>
+<th align="right">User value</th>
+<th align="right">Conversion impact</th>
+<th align="right">Platform fit</th>
+<th align="right">Effort</th>
+<th align="right">Risk</th>
+<th>Classification</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Full-bleed homepage hero with immediate bag-category entries</td>
+<td>LOEWE, Coach</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Establishes premium intent fast while preserving quick route to shopping</td>
+</tr>
+<tr>
+<td>Media-dense PLP with uniform image ratio and minimal text</td>
+<td>Strathberry, Polene, DeMellier</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Critical for scanning ~60 variants without copy overload</td>
+</tr>
+<tr>
+<td>Early on-body shot in each product media sequence</td>
+<td>Strathberry, LOEWE</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Scale/styling confidence is a key bag purchase unlock</td>
+</tr>
+<tr>
+<td>Hardware/detail macro shot requirement per SKU</td>
+<td>Bottega, LOEWE</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Premium proof shifts from words to visual evidence</td>
+</tr>
+<tr>
+<td>Family-level collection hubs (silhouette-led)</td>
+<td>Mulberry, Longchamp</td>
+<td align="right">Medium</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Improves assortment navigation and internal search behavior</td>
+</tr>
+<tr>
+<td>Desktop hover second-image reveal on PLP</td>
+<td>Coach, Strathberry</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">High</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Faster visual comparison without extra clicks</td>
+</tr>
+<tr>
+<td>Mobile swipe preview behavior in PLP cards</td>
+<td>Premium DTC norm</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Adapt</td>
+<td>Useful on mobile but must not degrade scroll performance</td>
+</tr>
+<tr>
+<td>PDP media strip with “hero -> angle -> detail -> on-body -> scale” order</td>
+<td>LOEWE, Strathberry, Longchamp</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td>Adopt</td>
+<td>Creates deterministic, reusable media QA contract</td>
+</tr>
+<tr>
+<td>Cross-sell strip driven by image chips, not text list</td>
+<td>Coach, Longchamp</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td>Adapt</td>
+<td>Good AOV mechanism once primary PDP trust is solved</td>
+</tr>
+<tr>
+<td>Background video hero blocks above the fold</td>
+<td>Luxury campaign sites</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td align="right">Medium</td>
+<td>Defer</td>
+<td>Risky for LCP; can be tested after static-image baseline is stable</td>
+</tr>
+<tr>
+<td>Long editorial brand-story modules before catalog</td>
+<td>Luxury brand content hubs</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td align="right">High</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td>Reject</td>
+<td>Conflicts with current launch need: variant browsing and conversion proof</td>
+</tr>
+<tr>
+<td>3D/AR bag viewers at launch</td>
+<td>Luxury innovation showcases</td>
+<td align="right">Medium</td>
+<td align="right">Low</td>
+<td align="right">Low</td>
+<td align="right">High</td>
+<td align="right">High</td>
+<td>Defer</td>
+<td>Too heavy for L1 Build 2; revisit after conversion baseline is healthy</td>
+</tr>
+</tbody>
+</table>
+<h2>F) Design Implications Checklist</h2>
+<ul>
+<li>Homepage:
+<ul>
+<li>Hero must be image-first with direct entry to primary bag families.</li>
+<li>Campaign stack should prioritize bag imagery blocks over paragraph-heavy sections.</li>
+</ul>
+</li>
+<li>PLP:
+<ul>
+<li>Keep dense image-first grid with restrained metadata (title + price + quick CTA only).</li>
+<li>Make silhouette and color variation scannable before entering PDP.</li>
+</ul>
+</li>
+<li>PDP:
+<ul>
+<li>Deterministic media ordering: hero, alternate angle, detail macro, on-body, scale reference.</li>
+<li>Keep trust copy compact and adjacent to buy action; do not push media below long copy.</li>
+</ul>
+</li>
+<li>Information architecture:
+<ul>
+<li>Add family hubs for major silhouettes to prevent a flat 60-variant list.</li>
+</ul>
+</li>
+<li>Copy system:
+<ul>
+<li>Product copy remains concise; craft proof shifts to visual sequence and captions.</li>
+</ul>
+</li>
+<li>Trust/support:
+<ul>
+<li>Returns/shipping clarity remains visible, but as secondary support rails to visual proof.</li>
+</ul>
+</li>
+</ul>
+<h2>G) Technical Implications Checklist</h2>
+<ul>
+<li>Data model:
+<ul>
+<li>Extend product media schema to support typed assets (<code>hero</code>, <code>alt</code>, <code>detail</code>, <code>on_body</code>, <code>scale</code>, <code>video_optional</code>) and display order.</li>
+</ul>
+</li>
+<li>Rendering:
+<ul>
+<li>Introduce reusable PLP media card and PDP gallery components in <code>apps/caryina</code>.</li>
+<li>Keep typography/token usage aligned with existing theme (<code>@themes/caryina</code>).</li>
+</ul>
+</li>
+<li>Performance:
+<ul>
+<li>Use responsive image sizes and deterministic aspect-ratio placeholders.</li>
+<li>Add a launch guardrail for image payload and LCP on key surfaces.</li>
+</ul>
+</li>
+<li>QA:
+<ul>
+<li>Add content lint/check script for missing mandatory media slots per SKU.</li>
+<li>Add visual regression snapshots for PLP card and PDP gallery states.</li>
+</ul>
+</li>
+<li>Accessibility:
+<ul>
+<li>Ensure alt text strategy by shot role; preserve keyboard and screen-reader pathways.</li>
+</ul>
+</li>
+<li>Observability:
+<ul>
+<li>Track interaction events for media engagement (gallery slide, zoom, variant switch, cross-sell click).</li>
+</ul>
+</li>
+</ul>
+<h2>H) Prioritized Backlog Candidates (P1 / P2 / P3)</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Item</th>
+<th>Why now</th>
+<th>Acceptance criteria</th>
+<th>Dependencies</th>
+<th>Evidence refs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>Rebuild homepage as image-first merchandising surface</td>
+<td>Current homepage routing has no premium visual conversion layer</td>
+<td>First viewport uses >=70% image area on mobile and desktop; includes direct links to top bag families; text blocks do not exceed 20% viewport height above first scroll</td>
+<td>Hero and campaign image set ready</td>
+<td>LOEWE, Coach</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Replace current PLP cards with media-dense product grid</td>
+<td>60-variant launch needs fast visual scanning</td>
+<td>Mobile shows 2-up grid; desktop shows 4-up grid; each card has primary image + secondary image behavior; title and price remain visible without expanding card height</td>
+<td>New media schema + transformed product records</td>
+<td>Strathberry, Polene, DeMellier</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Introduce deterministic PDP gallery contract</td>
+<td>Current PDP has no media depth</td>
+<td>Each launch SKU has minimum 6 assets in fixed order: hero, angle, detail, on-body, scale, alternate; gallery is swipeable on mobile and keyboard-accessible on desktop</td>
+<td>Photography shot list + asset ingestion</td>
+<td>LOEWE, Bottega, Strathberry</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Ship media QA gate for launch catalog</td>
+<td>Prevent inconsistent image quality across 60 variants</td>
+<td>Build-time check fails when required media slots are missing; report lists SKU and missing shot type; zero missing required slots for launch subset</td>
+<td>Media schema + ingestion pipeline</td>
+<td>All exemplar references</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Add silhouette family landing pages and filters</td>
+<td>Improves findability as assortment grows</td>
+<td>Family hubs route from homepage and PLP; filter state persists across pagination and back navigation</td>
+<td>Taxonomy mapping from product data</td>
+<td>Mulberry, Longchamp</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Add visual cross-sell strip on PDP</td>
+<td>Supports AOV with low cognitive load</td>
+<td>PDP shows at least 8 image-led related products with quick view/add path; click-through tracked</td>
+<td>Related-product mapping and analytics events</td>
+<td>Coach, Longchamp</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Add optional lightweight campaign video module</td>
+<td>Potential uplift after static baseline</td>
+<td>Video block loads only after primary hero image; fallback static image required; no regression on target LCP threshold</td>
+<td>CDN/video asset support + perf budget</td>
+<td>Luxury campaign patterns</td>
+</tr>
+</tbody>
+</table>
+<h2>I) Open Questions and Risk Notes</h2>
+<p>Open questions:</p>
+<ul>
+<li>What is the mandatory launch shot pack per SKU (minimum viable: 6, stretch: 8)?</li>
+<li>Which families/silhouettes are the primary navigation anchors for launch?</li>
+<li>What percentage of the 60 variants is ready with premium-grade photography today?</li>
+<li>Should PDP include model video loops at launch or after static image contract is stable?</li>
+<li>What is the acceptable image payload budget per PDP on mobile 4G?</li>
+</ul>
+<p>Risk notes:</p>
+<ul>
+<li>If photography depth is inconsistent, premium price perception will collapse regardless of UI quality.</li>
+<li>A visually dense PLP without strict ratio/cropping rules can look chaotic and reduce trust.</li>
+<li>Overusing motion media early can hurt LCP and mobile conversion.</li>
+<li>Missing typed media metadata will create recurring manual QA debt at each SKU expansion.</li>
+</ul>
+<h2>J) Source List (URLs + access dates)</h2>
+<p>Accessed: 2026-02-23</p>
+<ul>
+<li><a href="https://www.loewe.com/usa/en/women/bags/">https://www.loewe.com/usa/en/women/bags/</a></li>
+<li><a href="https://www.loewe.com/usa/en/women/bags/amazona">https://www.loewe.com/usa/en/women/bags/amazona</a></li>
+<li><a href="https://www.loewe.com/usa/en/women/bags/mini-bags/mini-puzzle-bag-in-soft-grained-calfskin/A510P88X16-2150.html">https://www.loewe.com/usa/en/women/bags/mini-bags/mini-puzzle-bag-in-soft-grained-calfskin/A510P88X16-2150.html</a></li>
+<li><a href="https://www.bottegaveneta.com/en-us/search?cgid=women-bags-cabat">https://www.bottegaveneta.com/en-us/search?cgid=women-bags-cabat</a></li>
+<li><a href="https://www.bottegaveneta.com/en-us/mini-cabat-black-815643408.html">https://www.bottegaveneta.com/en-us/mini-cabat-black-815643408.html</a></li>
+<li><a href="https://www.coach.com/shop/women/handbags">https://www.coach.com/shop/women/handbags</a></li>
+<li><a href="https://www.coach.com/shop/women/collections/tabby">https://www.coach.com/shop/women/collections/tabby</a></li>
+<li><a href="https://www.coach.com/products/chain-tabby-shoulder-bag/CBH11.html">https://www.coach.com/products/chain-tabby-shoulder-bag/CBH11.html</a></li>
+<li><a href="https://us.strathberry.com/collections/all-bags">https://us.strathberry.com/collections/all-bags</a></li>
+<li><a href="https://us.strathberry.com/products/mosaic-bag-black">https://us.strathberry.com/products/mosaic-bag-black</a></li>
+<li><a href="https://us.strathberry.com/products/mosaic-nano-black">https://us.strathberry.com/products/mosaic-nano-black</a></li>
+<li><a href="https://eng.polene-paris.com/collections/numero-un">https://eng.polene-paris.com/collections/numero-un</a></li>
+<li><a href="https://www.longchamp.com/us/en/women/bags/">https://www.longchamp.com/us/en/women/bags/</a></li>
+<li><a href="https://www.longchamp.com/us/en/products/handbag-l-10212HCV001.html">https://www.longchamp.com/us/en/products/handbag-l-10212HCV001.html</a></li>
+<li><a href="https://www.longchamp.com/us/en/products/bucket-bag-xs-10159HCN001.html">https://www.longchamp.com/us/en/products/bucket-bag-xs-10159HCN001.html</a></li>
+<li><a href="https://www.mulberry.com/us/shop/women/bags">https://www.mulberry.com/us/shop/women/bags</a></li>
+<li><a href="https://www.mulberry.com/us/shop/women/bags/alexa">https://www.mulberry.com/us/shop/women/bags/alexa</a></li>
+<li><a href="https://www.demellierlondon.com/collections/all-bags">https://www.demellierlondon.com/collections/all-bags</a></li>
+<li><a href="https://www.mansurgavriel.com/collections/bags">https://www.mansurgavriel.com/collections/bags</a></li>
+</ul>
+<h2>K) Exemplar Image Shot-Board</h2>
+<table>
+<thead>
+<tr>
+<th>Reference site</th>
+<th>Page URL</th>
+<th>Shot type (hero/PLP/PDP/detail/on-body/cross-sell)</th>
+<th>Why it matters</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LOEWE</td>
+<td><a href="https://www.loewe.com/usa/en/women/bags/">https://www.loewe.com/usa/en/women/bags/</a></td>
+<td>hero</td>
+<td>Editorial-first bag entry with image-led hierarchy</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>LOEWE</td>
+<td><a href="https://www.loewe.com/usa/en/women/bags/amazona">https://www.loewe.com/usa/en/women/bags/amazona</a></td>
+<td>PLP</td>
+<td>Family-level entry with dense but premium bag assortment scan</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>LOEWE</td>
+<td><a href="https://www.loewe.com/usa/en/women/bags/mini-bags/mini-puzzle-bag-in-soft-grained-calfskin/A510P88X16-2150.html">https://www.loewe.com/usa/en/women/bags/mini-bags/mini-puzzle-bag-in-soft-grained-calfskin/A510P88X16-2150.html</a></td>
+<td>PDP</td>
+<td>Product gallery sequencing and premium framing standard</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>LOEWE</td>
+<td><a href="https://www.loewe.com/dw/image/v2/BBPC_PRD/on/demandware.static/-/Sites-LOW_ESP_master/default/dw27f6c9f5/images/A510P88X16/BP/2x3/A510P88X16_2150_2F.jpg?sw=1450&#x26;sh=2175&#x26;sm=fit">https://www.loewe.com/dw/image/v2/BBPC_PRD/on/demandware.static/-/Sites-LOW_ESP_master/default/dw27f6c9f5/images/A510P88X16/BP/2x3/A510P88X16_2150_2F.jpg?sw=1450&#x26;sh=2175&#x26;sm=fit</a></td>
+<td>on-body</td>
+<td>On-model shot demonstrates scale and styling outcome immediately</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Bottega Veneta</td>
+<td><a href="https://www.bottegaveneta.com/en-us/search?cgid=women-bags-cabat">https://www.bottegaveneta.com/en-us/search?cgid=women-bags-cabat</a></td>
+<td>PLP</td>
+<td>Craft-signature category treatment and shape taxonomy</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Bottega Veneta</td>
+<td><a href="https://www.bottegaveneta.com/en-us/mini-cabat-black-815643408.html">https://www.bottegaveneta.com/en-us/mini-cabat-black-815643408.html</a></td>
+<td>PDP</td>
+<td>Premium object treatment and focused gallery behavior</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Bottega Veneta</td>
+<td><a href="https://media.bottegaveneta.com/image/upload/f_auto,q_auto,dpr_2.0/v1732280916/content_pages/cabat/Parallax/Card_6.jpg">https://media.bottegaveneta.com/image/upload/f_auto,q_auto,dpr_2.0/v1732280916/content_pages/cabat/Parallax/Card_6.jpg</a></td>
+<td>detail</td>
+<td>Texture/material macro usage to justify premium quality</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Coach</td>
+<td><a href="https://www.coach.com/shop/women/handbags">https://www.coach.com/shop/women/handbags</a></td>
+<td>PLP</td>
+<td>High-density browsing model with clear family cues</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Coach</td>
+<td><a href="https://www.coach.com/shop/women/collections/tabby">https://www.coach.com/shop/women/collections/tabby</a></td>
+<td>collection hub</td>
+<td>Family-level assortment organization for fast intent routing</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Coach</td>
+<td><a href="https://www.coach.com/products/chain-tabby-shoulder-bag/CBH11.html">https://www.coach.com/products/chain-tabby-shoulder-bag/CBH11.html</a></td>
+<td>PDP</td>
+<td>Commerce-ready PDP with campaign-to-product continuity</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Strathberry</td>
+<td><a href="https://us.strathberry.com/collections/all-bags">https://us.strathberry.com/collections/all-bags</a></td>
+<td>PLP</td>
+<td>Uniform frame ratio and silhouette-comparison clarity</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Strathberry</td>
+<td><a href="https://us.strathberry.com/products/mosaic-bag-black">https://us.strathberry.com/products/mosaic-bag-black</a></td>
+<td>PDP</td>
+<td>Primary product framing with clean premium context</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Strathberry</td>
+<td><a href="https://us.strathberry.com/products/mosaic-nano-black">https://us.strathberry.com/products/mosaic-nano-black</a></td>
+<td>PDP (variant scale)</td>
+<td>Mini silhouette presentation useful for small-format SKU merchandising</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Strathberry</td>
+<td><a href="https://us.strathberry.com/cdn/shop/files/2x3_MosaicNano_Black_4x5_8f21808d-5fce-4a0b-8331-47d4031495c4.jpg?v=1747033348&#x26;width=1800">https://us.strathberry.com/cdn/shop/files/2x3_MosaicNano_Black_4x5_8f21808d-5fce-4a0b-8331-47d4031495c4.jpg?v=1747033348&#x26;width=1800</a></td>
+<td>on-body</td>
+<td>Strong size/context cue for micro-bag variants</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Polene</td>
+<td><a href="https://eng.polene-paris.com/collections/numero-un">https://eng.polene-paris.com/collections/numero-un</a></td>
+<td>PLP</td>
+<td>Minimal copy, image-first product-object browsing</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Polene</td>
+<td><a href="https://eng.polene-paris.com/cdn/shop/files/NumeroUnMonochromeNoirGraine_3_1800x1800.jpg?v=1745313048">https://eng.polene-paris.com/cdn/shop/files/NumeroUnMonochromeNoirGraine_3_1800x1800.jpg?v=1745313048</a></td>
+<td>detail/object</td>
+<td>Clean material/shape emphasis for premium perception</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Polene</td>
+<td><a href="https://eng.polene-paris.com/cdn/shop/files/0244_-_Cyme_Mini_Camel_3_4fce3322-f86c-4950-975f-5e2498f7423f_1800x1800.jpg?v=1737471656">https://eng.polene-paris.com/cdn/shop/files/0244_-_Cyme_Mini_Camel_3_4fce3322-f86c-4950-975f-5e2498f7423f_1800x1800.jpg?v=1737471656</a></td>
+<td>on-body</td>
+<td>Lifestyle framing while keeping product dominant</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Longchamp</td>
+<td><a href="https://www.longchamp.com/us/en/women/bags/">https://www.longchamp.com/us/en/women/bags/</a></td>
+<td>PLP</td>
+<td>Category breadth with readable family clustering</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Longchamp</td>
+<td><a href="https://www.longchamp.com/us/en/products/handbag-l-10212HCV001.html">https://www.longchamp.com/us/en/products/handbag-l-10212HCV001.html</a></td>
+<td>PDP</td>
+<td>Product-detail layout benchmark for structured bags</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Longchamp</td>
+<td><a href="https://www.longchamp.com/us/en/products/bucket-bag-xs-10159HCN001.html">https://www.longchamp.com/us/en/products/bucket-bag-xs-10159HCN001.html</a></td>
+<td>PDP</td>
+<td>Alternate silhouette PDP useful for cross-shape consistency checks</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Mulberry</td>
+<td><a href="https://www.mulberry.com/us/shop/women/bags">https://www.mulberry.com/us/shop/women/bags</a></td>
+<td>PLP</td>
+<td>Premium bag taxonomy and navigation benchmark</td>
+<td>observed/inferred</td>
+</tr>
+<tr>
+<td>Mulberry</td>
+<td><a href="https://www.mulberry.com/us/shop/women/bags/alexa">https://www.mulberry.com/us/shop/women/bags/alexa</a></td>
+<td>collection hub</td>
+<td>Family storytelling page pattern for key silhouettes</td>
+<td>observed/inferred</td>
+</tr>
+<tr>
+<td>DeMellier</td>
+<td><a href="https://www.demellierlondon.com/collections/all-bags">https://www.demellierlondon.com/collections/all-bags</a></td>
+<td>PLP</td>
+<td>Launch-grade collection page with premium visual consistency</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Mansur Gavriel</td>
+<td><a href="https://www.mansurgavriel.com/collections/bags">https://www.mansurgavriel.com/collections/bags</a></td>
+<td>PLP</td>
+<td>Minimalist silhouette-led browsing benchmark</td>
+<td>observed/inferred</td>
+</tr>
+</tbody>
+</table>
+<h2>L) Image-Heavy Launch Contract</h2>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Required media behavior</th>
+<th>Acceptance criteria</th>
+<th>Dependencies</th>
+<th>Evidence refs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Homepage hero</td>
+<td>Full-bleed campaign image leads; direct entry to top bag families</td>
+<td>First viewport has >=70% image area; at least 2 image-based family links visible without scrolling on mobile</td>
+<td>Hero shoot + family taxonomy</td>
+<td>LOEWE, Coach</td>
+</tr>
+<tr>
+<td>Homepage campaign stack</td>
+<td>Image-led modules before long copy</td>
+<td>Above the fold plus first scroll section contains max 2 short copy blocks; all other blocks are media-first</td>
+<td>Campaign asset pack</td>
+<td>LOEWE, Polene</td>
+</tr>
+<tr>
+<td>PLP grid</td>
+<td>Dense, uniform product imagery with restrained metadata</td>
+<td>Mobile 2-up and desktop 4-up; fixed image ratio across cards; secondary image available for >=90% launch SKUs</td>
+<td>Typed media schema + transformed card component</td>
+<td>Strathberry, DeMellier</td>
+</tr>
+<tr>
+<td>PDP gallery depth</td>
+<td>Deterministic media ordering for confidence</td>
+<td>Each launch SKU has minimum 6 assets in order: hero, alt angle, detail, on-body, scale, alternate; missing slot fails media QA</td>
+<td>Shot list + ingestion lint</td>
+<td>LOEWE, Bottega, Strathberry</td>
+</tr>
+<tr>
+<td>Mobile gallery behavior</td>
+<td>Swipeable gallery with clear progression and quick CTA reach</td>
+<td>Horizontal swipe works with indicator state; median thumb travel &#x3C;=1.5 screens to reach CTA after first media view; no blocked scrolling</td>
+<td>Mobile interaction QA + analytics</td>
+<td>Coach, Longchamp</td>
+</tr>
+<tr>
+<td>Visual trust layer</td>
+<td>Detail and craft proof near buy action</td>
+<td>Hardware/detail macro and one scale cue are visible before or adjacent to primary buy controls on PDP</td>
+<td>Media ordering + PDP composition update</td>
+<td>Bottega, LOEWE</td>
+</tr>
+<tr>
+<td>Performance guardrail</td>
+<td>Image-heavy but conversion-safe</td>
+<td>LCP on homepage hero &#x3C;=2.7s (mobile 4G profile) and no CLS from late media sizing on PLP/PDP</td>
+<td>Responsive image sizing + placeholders</td>
+<td>Platform baseline + implementation QA</td>
+</tr>
+</tbody>
+</table>
+<h2>11) HTML Companion (Required)</h2>
+<pre><code class="language-bash">pnpm docs:render-user-html -- docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md
+</code></pre>
+<h2>12) Fact-Find Handoff Packet</h2>
+<p>Use this brief as direct <code>/lp-do-fact-find</code> input with the following immediate seeds:</p>
+<table>
+<thead>
+<tr>
+<th>Candidate task seed</th>
+<th>Outcome linkage</th>
+<th>Decision linkage</th>
+<th>Dependencies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Implement typed media schema and ingestion checks</td>
+<td>Better premium proof and conversion confidence</td>
+<td>DEC-HBAG-WEB-02</td>
+<td>Product data + media asset inventory</td>
+</tr>
+<tr>
+<td>Rebuild PLP media grid with dense image behavior</td>
+<td>Faster variant scanning for 60-SKU launch</td>
+<td>DEC-HBAG-01</td>
+<td>Card component and data mapping</td>
+</tr>
+<tr>
+<td>Ship deterministic PDP gallery</td>
+<td>Visual trust and reduced hesitation at premium price</td>
+<td>DEC-HBAG-01</td>
+<td>Shot list and PDP component refactor</td>
+</tr>
+<tr>
+<td>Add homepage image-first merchandising modules</td>
+<td>Stronger first impression and path-to-shop clarity</td>
+<td>DEC-HBAG-01</td>
+<td>Campaign photography and IA decisions</td>
+</tr>
+</tbody>
+</table>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md</code></div>
+      <div>Generated: 2026-02-23T16:17:47.394Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

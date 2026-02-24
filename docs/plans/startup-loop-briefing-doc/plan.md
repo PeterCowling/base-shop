@@ -242,7 +242,7 @@ No parallel waves — all panel tasks edit the same single HTML file.
   `[readonly] docs/business-os/startup-baselines/HEAD-intake-packet.user.md`;
   `[readonly] docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md`;
   `[readonly] docs/business-os/site-upgrades/HEAD/2026-02-12-upgrade-brief.user.md`;
-  `[readonly] docs/business-os/strategy/HEAD/brand-dossier.user.md`;
+  `[readonly] docs/business-os/strategy/HEAD/brand-identity.user.md`;
   `[readonly] docs/business-os/startup-baselines/HEAD-forecast-seed.user.md`;
   `[readonly] docs/business-os/strategy/HEAD/2026-02-11-week2-gate-dry-run.user.md`
 - **Depends on:** TASK-01
@@ -262,7 +262,7 @@ No parallel waves — all panel tasks edit the same single HTML file.
 - **Acceptance:**
   - [x] All 11 HEAD content slots present as distinct artifact sections
   - [x] T1 sections (plan, kpcs, launch-backlog) not wrapped in `<details>`
-  - [x] T2 sections (forecast, market-intel, intake, scorecard, site-upgrade-brief, brand-dossier) in `<details open>`
+  - [x] T2 sections (forecast, market-intel, intake, scorecard, site-upgrade-brief, brand-identity) in `<details open>`
   - [x] T3 sections (forecast-seed, week2-gate-dry-run) in `<details>` (closed by default)
   - [x] Market-intelligence dated file (202 lines) embedded — not the pointer
   - [x] Site-upgrade dated file (152 lines) embedded — not the pointer
@@ -277,7 +277,7 @@ No parallel waves — all panel tasks edit the same single HTML file.
 
 - **Execution plan:** Red → Green → Refactor (VC-first)
   - Red evidence plan: VCs defined; read each of the 11 HEAD source files before writing any HTML
-  - Green evidence plan: Read each source file in slot order (plan → kpcs → backlog → forecast → market-intel → intake → scorecard → upgrade-brief → brand-dossier → forecast-seed → week2-dry-run); convert markdown to HTML per conversion rules; insert into HEAD panel. Run VC-01 through VC-04.
+  - Green evidence plan: Read each source file in slot order (plan → kpcs → backlog → forecast → market-intel → intake → scorecard → upgrade-brief → brand-identity → forecast-seed → week2-dry-run); convert markdown to HTML per conversion rules; insert into HEAD panel. Run VC-01 through VC-04.
   - Refactor evidence plan: Fix any malformed table conversions; verify `<details>` wrapping on T2/T3; confirm frontmatter is absent
 
 - **Planning validation (required for M/L):**
@@ -302,7 +302,7 @@ No parallel waves — all panel tasks edit the same single HTML file.
 
 - **Notes / references:**
   - HEAD T1 slot order from fact-find: plan → kpcs → backlog
-  - HEAD T2 slot order: forecast-v2 → market-intel (resolved) → intake → scorecard → upgrade-brief (resolved) → brand-dossier
+  - HEAD T2 slot order: forecast-v2 → market-intel (resolved) → intake → scorecard → upgrade-brief (resolved) → brand-identity
   - HEAD T3: forecast-seed, week2-gate-dry-run
 
 - **Build completion evidence (2026-02-19):**
@@ -321,7 +321,7 @@ No parallel waves — all panel tasks edit the same single HTML file.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** PET panel in `docs/business-os/startup-loop-output-registry.user.html`
-  populated with 13 content slots. PET-offer.md (327 lines) and naming-shortlist (364 lines)
+  populated with 13 content slots. PET-offer.md (327 lines) and candidate-names (364 lines)
   are T1 prominent. Both pointer slots resolved (market-intelligence 240 lines, site-upgrade 142 lines).
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
@@ -338,13 +338,13 @@ No parallel waves — all panel tasks edit the same single HTML file.
   `[readonly] docs/business-os/strategy/PET/2026-02-12-weekly-kpcs-decision.user.md`;
   `[readonly] docs/business-os/strategy/PET/launch-readiness-action-backlog.user.md`;
   `[readonly] docs/business-os/startup-baselines/PET-offer.md`;
-  `[readonly] docs/business-os/strategy/PET/2026-02-18-naming-shortlist.user.md`;
+  `[readonly] docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md`;
   `[readonly] docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md`;
   `[readonly] docs/business-os/market-research/PET/2026-02-12-market-intelligence.user.md`;
   `[readonly] docs/business-os/startup-baselines/PET-intake-packet.user.md`;
   `[readonly] docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.md`;
   `[readonly] docs/business-os/site-upgrades/PET/2026-02-12-upgrade-brief.user.md`;
-  `[readonly] docs/business-os/strategy/PET/brand-dossier.user.md`;
+  `[readonly] docs/business-os/strategy/PET/brand-identity.user.md`;
   `[readonly] docs/business-os/startup-baselines/PET-forecast-seed.user.md`;
   `[readonly] docs/business-os/strategy/PET/2026-02-11-week2-gate-dry-run.user.md`
 - **Depends on:** TASK-02
@@ -362,7 +362,7 @@ No parallel waves — all panel tasks edit the same single HTML file.
 
 - **Acceptance:**
   - [x] All 13 PET content slots present as distinct artifact sections
-  - [x] PET-offer.md and naming-shortlist both at T1 (no `<details>` wrapper)
+  - [x] PET-offer.md and candidate-names both at T1 (no `<details>` wrapper)
   - [x] T2 sections in `<details open>`; T3 in `<details>` (closed)
   - [x] Market-intelligence dated file (240 lines) embedded — not pointer
   - [x] Site-upgrade dated file (142 lines) embedded — not pointer
@@ -372,18 +372,18 @@ No parallel waves — all panel tasks edit the same single HTML file.
 - **Validation contract:**
   - VC-01: 13 artifact sections in PET panel. Check: count artifact containers inside PET panel. Pass: count = 13.
   - VC-02: Pointer resolution confirmed — grep for known content heading from `2026-02-12-market-intelligence.user.md` inside PET panel. Pass: ≥1 match. Same for `2026-02-12-upgrade-brief.user.md`. Pass: ≥1 match.
-  - VC-03: PET-offer.md and naming-shortlist not in `<details>` wrapper. Check: verify these two artifact containers appear outside any `<details>` tag in PET panel. Pass: 0 enclosing `<details>` found for each.
+  - VC-03: PET-offer.md and candidate-names not in `<details>` wrapper. Check: verify these two artifact containers appear outside any `<details>` tag in PET panel. Pass: 0 enclosing `<details>` found for each.
   - VC-04: At least one `<table>` inside PET panel. Pass: ≥1 match.
 
 - **Execution plan:** Red → Green → Refactor (VC-first)
   - Red evidence plan: Read each PET source file before authoring HTML; confirm PET-offer.md path is `docs/business-os/startup-baselines/PET-offer.md`
-  - Green evidence plan: Insert PET panel content in slot order; T1 first (plan → kpcs → backlog → offer → naming), then T2 (forecast → market-intel → intake → scorecard → upgrade-brief → brand-dossier), then T3 (forecast-seed, week2-dry-run). Run VCs.
-  - Refactor evidence plan: Verify PET naming-shortlist table (364 lines of shortlist data) renders as `<table>` or structured `<ul>` not `<pre>`. Fix any wrapping issues.
+  - Green evidence plan: Insert PET panel content in slot order; T1 first (plan → kpcs → backlog → offer → naming), then T2 (forecast → market-intel → intake → scorecard → upgrade-brief → brand-identity), then T3 (forecast-seed, week2-dry-run). Run VCs.
+  - Refactor evidence plan: Verify PET candidate-names table (364 lines of shortlist data) renders as `<table>` or structured `<ul>` not `<pre>`. Fix any wrapping issues.
 
 - **Planning validation (required for M/L):**
-  - Checks run: PET-offer.md path confirmed (`startup-baselines/PET-offer.md`); naming-shortlist confirmed at `strategy/PET/2026-02-18-naming-shortlist.user.md`
+  - Checks run: PET-offer.md path confirmed (`startup-baselines/PET-offer.md`); candidate-names confirmed at `strategy/PET/2026-02-18-candidate-names.user.md`
   - Validation artifacts: Output-registry fact-find confirmed PET-offer.md inclusion at S2B
-  - Unexpected findings: PET does not have a signal-review artifact (BRIK-specific); section 10 "Supporting Docs" for PET contains only brand-dossier (no product spec, no sales funnel brief, no signal review)
+  - Unexpected findings: PET does not have a signal-review artifact (BRIK-specific); section 10 "Supporting Docs" for PET contains only brand-identity (no product spec, no sales funnel brief, no signal review)
 
 - **Scouts:** PET-offer.md path non-standard — verified as `docs/business-os/startup-baselines/PET-offer.md`.
 - **Edge Cases & Hardening:**
@@ -402,7 +402,7 @@ No parallel waves — all panel tasks edit the same single HTML file.
 
 - **Notes / references:**
   - PET T1: plan → kpcs → backlog → offer → naming (5 sections)
-  - PET T2: forecast-v2 → market-intel (resolved) → intake → scorecard → upgrade-brief (resolved) → brand-dossier (6 sections)
+  - PET T2: forecast-v2 → market-intel (resolved) → intake → scorecard → upgrade-brief (resolved) → brand-identity (6 sections)
   - PET T3: forecast-seed, week2-gate-dry-run (2 sections)
 
 - **Build completion evidence (2026-02-19):**
@@ -446,7 +446,7 @@ No parallel waves — all panel tasks edit the same single HTML file.
   `[readonly] docs/business-os/strategy/BRIK/2026-02-17-brikette-sales-funnel-external-brief.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-17-octorate-process-reduction-feasibility.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/product-spec.user.md`;
-  `[readonly] docs/business-os/strategy/BRIK/brand-dossier.user.md`;
+  `[readonly] docs/business-os/strategy/BRIK/brand-identity.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md`;
@@ -486,13 +486,13 @@ No parallel waves — all panel tasks edit the same single HTML file.
 
 - **Execution plan:** Red → Green → Refactor (VC-first)
   - Red evidence plan: Read each of the 20 BRIK source files before authoring HTML; verify BRIK signal-review path (check Glob for `signal-review` file under BRIK)
-  - Green evidence plan: Insert BRIK panel in slot order. T1: plan → kpcs → signal-review-W08. T2: forecast-v1 → market-intel (resolved, 429 lines) → intake → scorecard → upgrade-brief (resolved) → sales-funnel-brief → octorate-feasibility → product-spec → brand-dossier. T3: historical-baseline → octorate-operational-data → ga4-setup → measurement-verification → apartment-revenue → room-pricing → prime-app-branding → forecast-seed → (no week2-dry-run for BRIK). Run VCs.
+  - Green evidence plan: Insert BRIK panel in slot order. T1: plan → kpcs → signal-review-W08. T2: forecast-v1 → market-intel (resolved, 429 lines) → intake → scorecard → upgrade-brief (resolved) → sales-funnel-brief → octorate-feasibility → product-spec → brand-identity. T3: historical-baseline → octorate-operational-data → ga4-setup → measurement-verification → apartment-revenue → room-pricing → prime-app-branding → forecast-seed → (no week2-dry-run for BRIK). Run VCs.
   - Refactor evidence plan: Verify room-pricing-analysis tables render as `<table>`; check that BRIK market-intel (429 lines) stays inside its `<details>` collapsible without breaking layout; verify T3 de-emphasis class applied
 
 - **Planning validation (required for M/L):**
   - Checks run: Glob and find confirmed all BRIK paths — strategy/BRIK, market-research/BRIK, site-upgrades/BRIK, startup-baselines/BRIK. Signal-review confirmed at `strategy/BRIK/signal-review-20260218-1238-W08.md`. Room-pricing confirmed at `strategy/BRIK/room-pricing-analysis.md`. Intake-packet and forecast-seed confirmed at `startup-baselines/`.
   - Validation artifacts: Output-registry HTML confirms BRIK has 20 entries at S0–S10 stages
-  - Unexpected findings: BRIK does not have a naming-shortlist (BRIK-specific branding is `prime-app-design-branding.user.md`). BRIK week2-gate-dry-run confirmed absent (HEAD/PET only). All 20 Affects paths verified.
+  - Unexpected findings: BRIK does not have a candidate-names (BRIK-specific branding is `prime-app-design-branding.user.md`). BRIK week2-gate-dry-run confirmed absent (HEAD/PET only). All 20 Affects paths verified.
 
 - **Scouts:**
   - Signal-review path confirmed: `docs/business-os/strategy/BRIK/signal-review-20260218-1238-W08.md`
@@ -515,7 +515,7 @@ No parallel waves — all panel tasks edit the same single HTML file.
 
 - **Notes / references:**
   - BRIK T1: plan → kpcs → signal-review-W08 (3 slots, ~480 lines)
-  - BRIK T2: forecast-v1 → market-intel (resolved, 429L) → intake → scorecard → upgrade-brief (resolved, 160L) → sales-funnel-brief → octorate-feasibility → product-spec → brand-dossier (9 slots)
+  - BRIK T2: forecast-v1 → market-intel (resolved, 429L) → intake → scorecard → upgrade-brief (resolved, 160L) → sales-funnel-brief → octorate-feasibility → product-spec → brand-identity (9 slots)
   - BRIK T3: historical-baseline → octorate-data → ga4-setup → measurement-verification → apartment-revenue → room-pricing → prime-app-branding → forecast-seed (8 slots; no week2-dry-run)
 
 - **Build completion evidence (2026-02-19):**

@@ -10,7 +10,7 @@ As-of: {{DATE}}
 Required inputs before running:
 - competitive-positioning.user.md (USP Whitespace + Customer Language Harvest)
 - messaging-hierarchy.user.md draft (value props)
-- brand-dossier.user.md (personality + voice)
+- brand-identity.user.md (personality + voice)
 
 Objective:
 Generate ≥6 distinct messaging angles grounded in ICP research and differentiation

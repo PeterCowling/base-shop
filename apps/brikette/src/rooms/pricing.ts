@@ -8,6 +8,18 @@ import dayjs from "dayjs";
 import type { Room } from "@/data/roomsData";
 import type { RateCalendar } from "@/types/rates";
 
+function hasUnifiedWidgetCodes(room: Room): boolean {
+  return Boolean(
+    room.widgetRateCodeNR &&
+      room.widgetRateCodeFlex &&
+      room.widgetRateCodeNR === room.widgetRateCodeFlex,
+  );
+}
+
+function hasFlexOnlyWidgetCode(room: Room): boolean {
+  return Boolean(!room.widgetRateCodeNR && room.widgetRateCodeFlex);
+}
+
 /**
  * Priority lookup for nightly rate on a given date.
  * Returns `undefined` when calendar is missing or no applicable rate exists.
@@ -32,17 +44,13 @@ export const getPriceForDate = (
   if (directPrice !== undefined) return directPrice;
 
   // 2. unified widget code (NR === Flex)
-  if (
-    room.widgetRateCodeNR &&
-    room.widgetRateCodeFlex &&
-    room.widgetRateCodeNR === room.widgetRateCodeFlex
-  ) {
+  if (hasUnifiedWidgetCodes(room)) {
     const unifiedPrice = lookup(room.widgetRateCodeNR);
     if (unifiedPrice !== undefined) return unifiedPrice;
   }
 
   // 3. flex‑only widget code (NR empty, Flex present)
-  if (!room.widgetRateCodeNR && room.widgetRateCodeFlex) {
+  if (hasFlexOnlyWidgetCode(room)) {
     const flexOnlyPrice = lookup(room.widgetRateCodeFlex);
     if (flexOnlyPrice !== undefined) return flexOnlyPrice;
   }
@@ -68,4 +76,3 @@ export const getPriceForDate = (
 
   return lookup(room.rateCodes.ota?.nr);
 };
-

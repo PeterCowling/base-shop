@@ -9,6 +9,7 @@ Last-reviewed: 2026-02-11
 Owner: Pete
 Source-Forecast: docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v1.user.md
 Mode: synthetic-no-live-site
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Week-2 Gate Review — Dry-Run (Synthetic)

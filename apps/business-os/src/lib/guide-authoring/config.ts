@@ -4,8 +4,16 @@
  * Resolves paths to brikette's content directories for local development.
  * In production (Cloudflare Worker), file writes don't persist anyway.
  */
+import "server-only";
+
 import fs from "fs";
 import path from "path";
+
+import {
+  ENABLE_GUIDE_AUTHORING,
+  isGuideAuthoringEnabled,
+  PREVIEW_TOKEN,
+} from "./public-config";
 
 /** Brikette app directory, resolved from monorepo root. */
 function findBriketteRoot(): string {
@@ -42,20 +50,7 @@ export function getDataDir(): string {
   return path.join(getBriketteRoot(), "src/data");
 }
 
-/** Environment helpers. */
-export const PREVIEW_TOKEN = process.env.NEXT_PUBLIC_PREVIEW_TOKEN ?? "";
-
-export const ENABLE_GUIDE_AUTHORING =
-  process.env.NEXT_PUBLIC_ENABLE_GUIDE_AUTHORING ??
-  process.env.ENABLE_GUIDE_AUTHORING ??
-  "";
-
-const TRUE_VALUES = new Set(["1", "true", "yes", "on"]);
-
-export function isGuideAuthoringEnabled(): boolean {
-  const value = ENABLE_GUIDE_AUTHORING.trim().toLowerCase();
-  return TRUE_VALUES.has(value);
-}
+export { ENABLE_GUIDE_AUTHORING, isGuideAuthoringEnabled, PREVIEW_TOKEN };
 
 export function isPreviewHeaderAllowed(request: Request): boolean {
   const token = PREVIEW_TOKEN;

@@ -1,18 +1,13 @@
-# Plan Archiving Utility
+# Plan Archiving
 
-Use only when all executable tasks are complete.
+Runs automatically when all executable tasks in a plan are complete.
 
 ## Status Rule
 
-Canonical plan completion status is `Complete`.
+Plan lifecycle: `Draft` → `Active` → `Archived`.
 
-## Optional Storage Archival
+## Archival Steps
 
-If repository policy requests moving completed plans to archive storage:
-
-1. Keep frontmatter status as `Complete`.
-2. Move plan and companion artifacts via `git mv` to archive location.
+1. Set frontmatter `Status: Archived`.
+2. Move plan directory to `docs/plans/_archive/` via `git mv` (or plain `mv` if uncommitted).
 3. Ensure no stale duplicates remain in active plan locations.
-4. Commit archival move as a docs-only commit.
-
-If no explicit archival request/policy exists, leave completed plan in place with `Status: Complete`.

@@ -1,0 +1,18 @@
+{
+  "id123.mp4": {
+    "url": "/uploads/shop/id123.mp4",
+    "type": "video",
+    "uploadedAt": "2026-02-19T11:10:45.944Z",
+    "size": 3,
+    "storage": "local"
+  },
+  "file.jpg": {
+    "title": "New",
+    "type": "image",
+    "uploadedAt": "2026-02-19T11:51:08.814Z"
+  },
+  "missing.jpg": {
+    "type": "image",
+    "uploadedAt": "2026-02-19T11:51:08.823Z"
+  }
+}

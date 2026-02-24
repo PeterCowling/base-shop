@@ -111,7 +111,7 @@ function BeforeYouTravelBase({ t, parkingHref }: BeforeYouTravelProps) {
                 {href ? (
                   <Link
                     href={href}
-                    className="mt-2 inline-flex min-h-11 items-center underline underline-offset-4 decoration-brand-heading/40 hover:decoration-transparent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary dark:focus-visible:outline-brand-secondary"
+                    className="mt-2 inline-flex min-h-11 items-center text-sm font-medium text-brand-primary underline underline-offset-4 decoration-transparent hover:decoration-brand-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary dark:text-brand-secondary dark:hover:decoration-brand-secondary dark:focus-visible:outline-brand-secondary"
                   >
                     {cta ?? t("beforeTravel.items.parking.cta", { defaultValue: "Open arriving-by-car guide" })}
                   </Link>

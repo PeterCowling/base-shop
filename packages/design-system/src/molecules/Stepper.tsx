@@ -4,6 +4,11 @@
 import * as React from "react";
 import { CheckIcon } from "@radix-ui/react-icons";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export type StepStatus = "completed" | "current" | "upcoming" | "disabled";
@@ -21,6 +26,10 @@ export interface StepperProps extends React.HTMLAttributes<HTMLOListElement> {
    * Child StepperStep components.
    */
   children: React.ReactNode;
+  /** Semantic step-indicator shape. Ignored when `indicatorRadius` is provided. */
+  indicatorShape?: PrimitiveShape;
+  /** Explicit step-indicator radius token override. */
+  indicatorRadius?: PrimitiveRadius;
 }
 
 export interface StepperStepProps extends React.HTMLAttributes<HTMLLIElement> {
@@ -44,12 +53,23 @@ export interface StepperStepProps extends React.HTMLAttributes<HTMLLIElement> {
    * Optional custom icon to display instead of step number.
    */
   icon?: React.ReactNode;
+  /** Semantic step-indicator shape. Ignored when `indicatorRadius` is provided. */
+  indicatorShape?: PrimitiveShape;
+  /** Explicit step-indicator radius token override. */
+  indicatorRadius?: PrimitiveRadius;
 }
 
 // Helper functions to reduce complexity
-function getStepIndicatorClasses(status: StepStatus, isCompleted: boolean, isCurrent: boolean, isDisabled: boolean) {
+function getStepIndicatorClasses(
+  status: StepStatus,
+  isCompleted: boolean,
+  isCurrent: boolean,
+  isDisabled: boolean,
+  shapeRadiusClass: string,
+) {
   return cn(
-    "grid size-8 shrink-0 place-content-center rounded-full border-2 font-medium text-sm transition-colors",
+    "grid size-8 shrink-0 place-content-center border-2 font-medium text-sm transition-colors",
+    shapeRadiusClass,
     isCompleted && "bg-primary border-primary text-primary-fg",
     isCurrent && "border-primary text-primary bg-background",
     (status === "upcoming" || isDisabled) && "border-muted text-muted-foreground bg-background",
@@ -67,16 +87,17 @@ function getStepLabelClasses(status: StepStatus, isCompleted: boolean, isCurrent
   );
 }
 
-function StepIndicator({ isCompleted, icon, step, status, isDisabled, isCurrent }: {
+function StepIndicator({ isCompleted, icon, step, status, isDisabled, isCurrent, shapeRadiusClass }: {
   isCompleted: boolean;
   icon?: React.ReactNode;
   step: number;
   status: StepStatus;
   isDisabled: boolean;
   isCurrent: boolean;
+  shapeRadiusClass: string;
 }) {
   return (
-    <div className={getStepIndicatorClasses(status, isCompleted, isCurrent, isDisabled)}>
+    <div className={getStepIndicatorClasses(status, isCompleted, isCurrent, isDisabled, shapeRadiusClass)}>
       {isCompleted ? <CheckIcon className="h-5 w-5" /> : icon ? icon : step + 1}
     </div>
   );
@@ -113,33 +134,42 @@ function StepContent({
   );
 }
 
-/**
- * Individual step component for use within Stepper.
- * Access currentStep from parent context.
- */
-export function StepperStep({
+function resolveStepStatus(statusProp: StepStatus | undefined, step: number, currentStep: number): StepStatus {
+  if (statusProp) return statusProp;
+  if (step < currentStep) return "completed";
+  if (step === currentStep) return "current";
+  return "upcoming";
+}
+
+function StepperStepLayout({
   step,
   label,
   description,
-  status: statusProp,
   icon,
   className,
-  ...props
-}: StepperStepProps) {
-  const context = React.useContext(StepperContext);
-  const currentStep = context?.currentStep ?? 0;
-  const orientation = context?.orientation ?? "horizontal";
-  const isLastStep = context?.isLastStep ?? false;
-
-  // Auto-calculate status if not provided
-  const status: StepStatus =
-    statusProp ??
-    (step < currentStep ? "completed" : step === currentStep ? "current" : "upcoming");
-
-  const isCompleted = status === "completed";
-  const isCurrent = status === "current";
-  const isDisabled = status === "disabled";
-
+  props,
+  orientation,
+  status,
+  isCompleted,
+  isCurrent,
+  isDisabled,
+  isLastStep,
+  stepIndicatorShapeRadiusClass,
+}: {
+  step: number;
+  label: React.ReactNode;
+  description?: React.ReactNode;
+  icon?: React.ReactNode;
+  className?: string;
+  props: Omit<StepperStepProps, "step" | "label" | "description" | "status" | "icon" | "className">;
+  orientation: "horizontal" | "vertical";
+  status: StepStatus;
+  isCompleted: boolean;
+  isCurrent: boolean;
+  isDisabled: boolean;
+  isLastStep: boolean;
+  stepIndicatorShapeRadiusClass: string;
+}) {
   return (
     <li
       className={cn(
@@ -160,6 +190,7 @@ export function StepperStep({
           status={status}
           isDisabled={isDisabled}
           isCurrent={isCurrent}
+          shapeRadiusClass={stepIndicatorShapeRadiusClass}
         />
         <StepContent
           label={label}
@@ -170,20 +201,71 @@ export function StepperStep({
           isDisabled={isDisabled}
           orientation={orientation}
         />
-        {orientation === "horizontal" && !isLastStep && (
+        {orientation === "horizontal" && !isLastStep ? (
           <div
             className={cn("h-[2px] flex-1 transition-colors", isCompleted ? "bg-primary" : "bg-muted")}
             aria-hidden="true"
           />
-        )}
+        ) : null}
       </div>
-      {orientation === "vertical" && !isLastStep && (
+      {orientation === "vertical" && !isLastStep ? (
         <div
           className={cn("w-[2px] h-full ml-4 transition-colors", isCompleted ? "bg-primary" : "bg-muted")}
           aria-hidden="true"
         />
-      )}
+      ) : null}
     </li>
+  );
+}
+
+/**
+ * Individual step component for use within Stepper.
+ * Access currentStep from parent context.
+ */
+export function StepperStep({
+  step,
+  label,
+  description,
+  status: statusProp,
+  icon,
+  indicatorShape,
+  indicatorRadius,
+  className,
+  ...props
+}: StepperStepProps) {
+  const context = React.useContext(StepperContext);
+  const currentStep = context?.currentStep ?? 0;
+  const orientation = context?.orientation ?? "horizontal";
+  const isLastStep = context?.isLastStep ?? false;
+  const stepIndicatorShape = indicatorShape ?? context?.indicatorShape;
+  const stepIndicatorRadius = indicatorRadius ?? context?.indicatorRadius;
+  const stepIndicatorShapeRadiusClass = resolveShapeRadiusClass({
+    shape: stepIndicatorShape,
+    radius: stepIndicatorRadius,
+    defaultRadius: "full",
+  });
+
+  const status = resolveStepStatus(statusProp, step, currentStep);
+  const isCompleted = status === "completed";
+  const isCurrent = status === "current";
+  const isDisabled = status === "disabled";
+
+  return (
+    <StepperStepLayout
+      step={step}
+      label={label}
+      description={description}
+      icon={icon}
+      className={className}
+      props={props}
+      orientation={orientation}
+      status={status}
+      isCompleted={isCompleted}
+      isCurrent={isCurrent}
+      isDisabled={isDisabled}
+      isLastStep={isLastStep}
+      stepIndicatorShapeRadiusClass={stepIndicatorShapeRadiusClass}
+    />
   );
 }
 
@@ -193,6 +275,8 @@ interface StepperContextValue {
   currentStep: number;
   orientation: "horizontal" | "vertical";
   isLastStep: boolean;
+  indicatorShape?: PrimitiveShape;
+  indicatorRadius?: PrimitiveRadius;
 }
 
 const StepperContext = React.createContext<StepperContextValue | null>(null);
@@ -205,6 +289,8 @@ export function Stepper({
   currentStep,
   orientation = "horizontal",
   children,
+  indicatorShape,
+  indicatorRadius,
   className,
   ...props
 }: StepperProps) {
@@ -212,7 +298,15 @@ export function Stepper({
   const stepCount = childrenArray.length;
 
   return (
-    <StepperContext.Provider value={{ currentStep, orientation, isLastStep: false }}>
+    <StepperContext.Provider
+      value={{
+        currentStep,
+        orientation,
+        isLastStep: false,
+        indicatorShape,
+        indicatorRadius,
+      }}
+    >
       <ol
         className={cn(
           "flex",
@@ -234,6 +328,8 @@ export function Stepper({
                   currentStep,
                   orientation,
                   isLastStep: index === stepCount - 1,
+                  indicatorShape,
+                  indicatorRadius,
                 }}
               >
                 {child}

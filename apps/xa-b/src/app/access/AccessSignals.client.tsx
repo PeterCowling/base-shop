@@ -1,10 +1,12 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy gate signals pending design/i18n overhaul */
 
 import * as React from "react";
 
+import { xaI18n } from "../../lib/xaI18n";
+
 import styles from "./access.module.css";
+import { gateClassNames } from "./gateClasses";
 
 type AccessSignalsProps = {
   dropLabel?: string;
@@ -85,7 +87,7 @@ export default function AccessSignals({
   if (!shouldRender) return null;
 
   return (
-    <div className="mt-5 grid gap-3 rounded-lg border border-border-2 bg-muted p-4 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+    <div className={`mt-5 grid gap-3 rounded-lg border border-border-2 bg-muted p-4 text-xs uppercase xa-tracking-030 ${gateClassNames.mutedText}`}>
       {hasDrop ? (
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span>{dropLabel || "Next drop"}</span>
@@ -94,13 +96,13 @@ export default function AccessSignals({
       ) : null}
       {hasKeysRemaining ? (
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span>Keys remaining</span>
+          <span>{xaI18n.t("xaB.src.app.access.accesssignals.client.l97c17")}</span>
           <span className={monoClassName}>{keysRemaining}</span>
         </div>
       ) : null}
       {hasSeries ? (
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span>Series in circulation</span>
+          <span>{xaI18n.t("xaB.src.app.access.accesssignals.client.l103c17")}</span>
           <span className={`${monoClassName ?? ""} ${styles.signalSwap}`} key={seriesLabel}>
             {seriesLabel}
           </span>

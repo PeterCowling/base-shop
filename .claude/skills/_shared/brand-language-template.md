@@ -13,7 +13,7 @@ Each operating business should have one. The `/lp-design-spec` skill reads these
 ```markdown
 ---
 Type: Brand-Language
-Stage: BRAND-02
+Stage: ASSESSMENT-11
 Business-Unit: {BIZ}
 Business-Name: {name}
 Status: Draft | Active
@@ -42,15 +42,45 @@ Owner: {operator}
 
 ## Visual Identity
 
-### Color Palette
+### Imagery Strategy
+
+| Field | Value |
+|-------|-------|
+| Imagery prominence | `high` \| `medium` \| `low` — how dominant is product/lifestyle photography in the site experience? |
+| Typical imagery character | {e.g., "bright product colours on editorial backgrounds", "muted lifestyle photography", "flat-lay product shots"} |
+| Palette implication | `recessive` (pastels/neutrals) \| `balanced` \| `expressive` (saturated brand colour leads) |
+
+> **Note:** If `imagery_prominence = high`, the palette must recede. Product images should do the visual work — a saturated or dark primary will compete with bright photography and reduce conversion on image-heavy pages.
+
+### Colour Palette — Light Mode
 
 | Role | Token | HSL | Rationale |
 |------|-------|-----|-----------|
 | Primary | `--color-primary` | {H S% L%} | {Why this color} |
+| Primary fg | `--color-primary-fg` | {H S% L%} | {Foreground on primary — must be WCAG AA} |
+| Primary soft | `--color-primary-soft` | {H S% L%} | {Tint for hover/secondary surfaces} |
 | Accent | `--color-accent` | {H S% L%} | {Why this color} |
 | Background | `--color-bg` | {from base or override} | {Why} |
 
 **Palette mood:** {1 sentence — warm/cool/neutral, high/low contrast, etc.}
+
+### Colour Palette — Dark Mode
+
+| Token | Light Value | Dark Value | Dark Rationale |
+|-------|-------------|------------|----------------|
+| `--color-bg` | {light hsl} | {dark hsl} | {e.g., "Warm near-black — stays in brand hue family"} |
+| `--color-fg` | {light hsl} | {dark hsl} | {e.g., "Warm near-white — avoids clinical cold-white"} |
+| `--color-fg-muted` | {light hsl} | {dark hsl} | {mid-tone muted text} |
+| `--color-border` | {light hsl} | {dark hsl} | {subtle warm-toned dividers} |
+| `--color-primary` | {same} | {same or adjusted} | {note if unchanged} |
+| `--color-primary-fg` | {light hsl} | {dark hsl} | {matches dark bg} |
+| `--color-primary-soft` | {light hsl} | {dark hsl} | {chips, badges on dark} |
+| `--color-accent` | {light hsl} | {dark hsl} | {slightly richer on dark or unchanged} |
+| `--color-accent-soft` | {light hsl} | {dark hsl} | {tags and focus rings in dark mode} |
+
+> **Surface token:** `--color-surface` light = `{hsl}` / dark = `{hsl}` (card faces lifted slightly from bg).
+
+**Dark mode mood:** {1 sentence — which hue family, temperature, register.}
 
 **Canonical token names** (from `packages/themes/base/src/tokens.ts`):
 `--color-primary` (+ `-fg`, `-soft`, `-hover`, `-active`), `--color-accent` (+ `-fg`, `-soft`), `--color-bg`, `--color-fg`, `--color-fg-muted`, `--color-border`.
@@ -102,6 +132,15 @@ Owner: {operator}
 
 - {Word or phrase} — {why}
 
+### Brand Claims
+
+**Origin claim:** Made in {country} | Designed in {country} | Handfinished in {country} | Curated in {country}
+
+> **Legal note:** "Made in [country]" requires substantial manufacturing in that country (EU consumer law; Italian Law 166/2009 for Italian claims). If manufacturing occurs elsewhere, use Designed / Handfinished / Curated instead.
+
+**Manufacturing country:** {where products are physically made}
+**Operator's role:** {designer | finisher | curator | sourcer}
+
 ## Token Overrides
 
 Theme package: `packages/themes/{theme}/src/tokens.ts`
@@ -113,7 +152,14 @@ Theme package: `packages/themes/{theme}/src/tokens.ts`
 | `--color-primary` | {base} | {override} | {reason} |
 | ... | ... | ... | ... |
 
-**Dark mode:** {inherits base dark tokens | requires bespoke overrides — list below}
+**Dark mode overrides** (tokens that differ from base dark — if your dark palette is custom, list them here):
+
+| Token | Base Dark Value | Override Value | Reason |
+|-------|-----------------|----------------|--------|
+| `--color-bg` | {base dark bg} | {override} | {reason} |
+| ... | ... | ... | ... |
+
+> If all dark tokens inherit from base with no overrides, write: "Dark mode inherits base dark tokens — no overrides."
 
 ## Signature Patterns
 

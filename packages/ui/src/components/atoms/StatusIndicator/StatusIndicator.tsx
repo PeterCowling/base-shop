@@ -197,14 +197,14 @@ export function StatusIndicator({
     <span
       className={cn(
         'inline-flex items-center rounded-full font-medium',
-        'bg-gray-100 dark:bg-gray-800',
+        'bg-surface-1',
         sizes.container,
         sizes.text,
         className
       )}
     >
       <span className={cn('inline-block rounded-full', statusStyle, sizes.dot)} />
-      <span className="text-gray-700 dark:text-gray-200">{statusLabel}</span>
+      <span className="text-foreground">{statusLabel}</span>
     </span>
   )
 }

@@ -8,6 +8,7 @@ Last-reviewed: 2026-02-12
 Owner: Pete
 Source-Market-Intel: docs/business-os/market-research/PET/2026-02-12-market-intelligence.user.md
 Source-Forecast: docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # PET Intake Packet

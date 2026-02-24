@@ -80,6 +80,74 @@ function buildEnglishFallbacks(
   return values;
 }
 
+function isMeaningfulEnglishGuidesTranslatorValue(
+  value: unknown,
+  placeholders: readonly string[],
+): boolean {
+  if (typeof value !== "string") return false;
+  const trimmed = value.trim();
+  if (trimmed.length === 0 || trimmed.startsWith("［Stub］")) return false;
+  const normalized = trimmed.toLowerCase();
+  return !placeholders.some((placeholder) => normalized === placeholder.toLowerCase());
+}
+
+function collectEnglishGuidesCandidates(params: {
+  englishGuidesTranslatorValue: unknown;
+  englishGuidesResource: unknown;
+  guidesEn: Translator;
+  hookI18n: HookI18n | undefined;
+}): string[] {
+  const { englishGuidesTranslatorValue, englishGuidesResource, guidesEn, hookI18n } = params;
+  const candidates: string[] = [];
+  const registerCandidate = (value: unknown) => {
+    if (typeof value === "string") candidates.push(value);
+  };
+
+  registerCandidate(englishGuidesTranslatorValue);
+  registerCandidate(englishGuidesResource);
+  try {
+    registerCandidate(guidesEn("breadcrumbs.guides"));
+  } catch {
+    void 0;
+  }
+  try {
+    registerCandidate(guidesEn("labels.indexTitle"));
+  } catch {
+    void 0;
+  }
+  try {
+    registerCandidate(hookI18n?.getFixedT?.("en", "guides")?.("meta.index.title"));
+  } catch {
+    void 0;
+  }
+  try {
+    registerCandidate(i18n.getFixedT?.("en", "guides")?.("meta.index.title"));
+  } catch {
+    void 0;
+  }
+
+  return candidates;
+}
+
+function resolveGuidesFromEnglishCandidates(params: {
+  candidates: string[];
+  primaryKey: string;
+  altKey: string;
+  indexKey: string;
+  allowEnglishFallback: boolean;
+  englishFallbacks: Set<string>;
+}): string | undefined {
+  const { candidates, primaryKey, altKey, indexKey, allowEnglishFallback, englishFallbacks } = params;
+  for (const candidate of candidates) {
+    if (candidate === primaryKey) continue;
+    const trimmed = candidate.trim();
+    if (trimmed.length === 0) return "";
+    if (trimmed === altKey || trimmed === indexKey || trimmed.startsWith("［Stub］")) continue;
+    if (allowEnglishFallback || !englishFallbacks.has(trimmed.toLowerCase())) return trimmed;
+  }
+  return undefined;
+}
+
 /**
  * Resolve the guides breadcrumb label.
  */
@@ -104,20 +172,10 @@ export function resolveGuidesLabel({
     hookI18n,
   );
 
-  const englishTranslatorMeaningful =
-    typeof englishGuidesTranslatorValue === "string" &&
-    (() => {
-      const trimmed = (englishGuidesTranslatorValue as string).trim();
-      if (trimmed.length === 0) return false;
-      if (trimmed.startsWith("［Stub］")) return false;
-      const normalized = trimmed.toLowerCase();
-      if (normalized === primaryKey.toLowerCase()) return false;
-      if (normalized === altKey.toLowerCase()) return false;
-      if (normalized === indexKey.toLowerCase()) return false;
-      if (normalized === metaIndexKey.toLowerCase()) return false;
-      if (normalized === nsKey.toLowerCase()) return false;
-      return true;
-    })();
+  const englishTranslatorMeaningful = isMeaningfulEnglishGuidesTranslatorValue(
+    englishGuidesTranslatorValue,
+    [primaryKey, altKey, indexKey, metaIndexKey, nsKey],
+  );
 
   const allowEnglishFallback = lang === "en" || englishTranslatorMeaningful;
 
@@ -147,53 +205,21 @@ export function resolveGuidesLabel({
     typeof englishGuidesResource === "string" && (englishGuidesResource as string).trim().length === 0;
   if (englishTranslatorMissing && englishResourceBlank) return primaryKey;
 
-  // Try English candidates
-  const englishCandidates: string[] = [];
-  if (typeof englishGuidesTranslatorValue === "string") {
-    englishCandidates.push(englishGuidesTranslatorValue as string);
-  }
-  if (typeof englishGuidesResource === "string") {
-    englishCandidates.push(englishGuidesResource as string);
-  }
-  try {
-    const val = guidesEn(altKey) as unknown;
-    if (typeof val === "string") englishCandidates.push(val);
-  } catch {
-    void 0;
-  }
-  try {
-    const val = guidesEn(indexKey) as unknown;
-    if (typeof val === "string") englishCandidates.push(val);
-  } catch {
-    void 0;
-  }
-  try {
-    const val = hookI18n?.getFixedT?.("en", "guides")?.(metaIndexKey);
-    if (typeof val === "string") englishCandidates.push(val);
-  } catch {
-    void 0;
-  }
-  try {
-    const val = i18n.getFixedT?.("en", "guides")?.(metaIndexKey);
-    if (typeof val === "string") englishCandidates.push(val);
-  } catch {
-    void 0;
-  }
-
-  for (const candidate of englishCandidates) {
-    if (candidate === primaryKey) continue;
-    const trimmed = candidate.trim();
-    if (trimmed.length === 0) return "";
-    if (
-      trimmed.length > 0 &&
-      trimmed !== altKey &&
-      trimmed !== indexKey &&
-      !trimmed.startsWith("［Stub］") &&
-      (allowEnglishFallback || !englishFallbacks.has(trimmed.toLowerCase()))
-    ) {
-      return trimmed;
-    }
-  }
+  const englishCandidates = collectEnglishGuidesCandidates({
+    englishGuidesTranslatorValue,
+    englishGuidesResource,
+    guidesEn,
+    hookI18n,
+  });
+  const englishResolved = resolveGuidesFromEnglishCandidates({
+    candidates: englishCandidates,
+    primaryKey,
+    altKey,
+    indexKey,
+    allowEnglishFallback,
+    englishFallbacks,
+  });
+  if (typeof englishResolved !== "undefined") return englishResolved;
 
   return primaryKey;
 }

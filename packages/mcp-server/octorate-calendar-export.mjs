@@ -74,56 +74,6 @@ async function openSession() {
   return sessionId;
 }
 
-async function navigateToCalendar(sessionId) {
-  await sleep(3000);
-
-  console.info("Clicking Standard View link...");
-
-  // Click the Standard View link directly by href
-  await tool("browser_act", {
-    sessionId,
-    observationId: "",
-    target: { kind: "page" },
-    action: {
-      type: "evaluate",
-      expression: `
-        const link = document.querySelector('a[href="/octobook/user/calendar/index.xhtml"]');
-        if (!link) throw new Error("Standard View link not found");
-        link.click();
-      `
-    }
-  });
-
-  await sleep(5000);
-}
-
-async function navigateToCalendarStandardView(sessionId) {
-  // Wait for dashboard to load
-  await sleep(3000);
-
-  console.info("Clicking Standard View link directly...");
-
-  // Go straight to the Standard View link - it has the actual href
-  await tool("browser_act", {
-    sessionId,
-    observationId: "",
-    target: { kind: "page" },
-    action: {
-      type: "evaluate",
-      expression: `
-        // Find the Standard View link by its href
-        const standardViewLink = document.querySelector('a[href="/octobook/user/calendar/index.xhtml"]');
-        if (!standardViewLink) throw new Error("Standard View link not found");
-
-        // Click it
-        standardViewLink.click();
-      `
-    }
-  });
-
-  await sleep(5000);
-}
-
 async function navigateToExport(sessionId) {
   // Step 1: Click the "..." menu button
   console.info("Clicking menu button via JavaScript...");

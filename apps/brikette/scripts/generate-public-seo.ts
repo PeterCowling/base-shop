@@ -1,28 +1,45 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- SEO-1001 [ttl=2026-12-31] Build-time generator writes only within the app workspace. */
 
-import { copyFile, mkdir, readdir, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 import { BASE_URL } from "@/config/site";
+import { GUIDES_INDEX } from "@/data/guides.index";
 import howToGetHereRoutes from "@/data/how-to-get-here/routes.json";
 import { type AppLanguage, i18nConfig } from "@/i18n.config";
+import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
+import { guidePath } from "@/routes.guides-helpers";
 import { listAppRouterUrls } from "@/routing/routeInventory";
 import { buildRobotsTxt } from "@/seo/robots";
 import type { SlugKey } from "@/types/slugs";
 import { getSlug } from "@/utils/slug";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const resolveAppRoot = (): string => {
+  const cwd = process.cwd();
+  const appLocalMarker = path.join(cwd, "src", "i18n.config.ts");
+  if (existsSync(appLocalMarker)) {
+    return cwd;
+  }
 
-const APP_ROOT = path.resolve(__dirname, "..");
+  const repoRootCandidate = path.join(cwd, "apps", "brikette");
+  const repoMarker = path.join(repoRootCandidate, "src", "i18n.config.ts");
+  if (existsSync(repoMarker)) {
+    return repoRootCandidate;
+  }
+
+  return cwd;
+};
+
+const APP_ROOT = resolveAppRoot();
 const PUBLIC_DIR = path.join(APP_ROOT, "public");
+const BULK_TODAY_GUARD_MIN_COUNT = 50;
+const BULK_TODAY_GUARD_THRESHOLD = 0.95;
 
-const normalizePathname = (value: string): string => {
+export const normalizePathname = (value: string): string => {
   const withLeadingSlash = value.startsWith("/") ? value : `/${value}`;
-  // Ensure trailing slash for all paths except root
   if (withLeadingSlash === "/") return withLeadingSlash;
-  return withLeadingSlash.endsWith("/") ? withLeadingSlash : `${withLeadingSlash}/`;
+  return withLeadingSlash.replace(/\/+$/, "");
 };
 
 const escapeXml = (value: string): string =>
@@ -51,14 +68,126 @@ const shouldExcludeFromSitemap = (pathname: string): boolean => {
   return false;
 };
 
-const buildSitemapXml = (paths: string[]): string => {
-  const entries = paths
-    .map((pathname) => normalizePathname(pathname))
-    .filter((pathname) => !shouldExcludeFromSitemap(pathname))
-    .map((pathname) => `${baseUrl}${pathname}`)
-    .sort();
+const resolveSemanticDate = (value: unknown): string | undefined => {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
 
-  const body = entries.map((loc) => `  <url><loc>${escapeXml(loc)}</loc></url>`).join("\n");
+  const parsed = new Date(trimmed);
+  if (Number.isNaN(parsed.getTime())) return undefined;
+  return parsed.toISOString();
+};
+
+export type GuideLastmodResolution = {
+  lastmod?: string;
+  hasConflict: boolean;
+};
+
+export const resolveGuideLastmod = (content: unknown): GuideLastmodResolution => {
+  if (!content || typeof content !== "object") {
+    return { hasConflict: false };
+  }
+
+  const payload = content as {
+    lastUpdated?: unknown;
+    seo?: { lastUpdated?: unknown } | null;
+  };
+
+  const preferredDate = resolveSemanticDate(payload.lastUpdated);
+  const fallbackDate = resolveSemanticDate(payload.seo?.lastUpdated);
+  const hasConflict = Boolean(preferredDate && fallbackDate && preferredDate !== fallbackDate);
+
+  return {
+    lastmod: preferredDate ?? fallbackDate,
+    hasConflict,
+  };
+};
+
+const readGuideContent = async (lang: AppLanguage, contentKey: string): Promise<unknown | undefined> => {
+  const contentPath = path.join(APP_ROOT, "src", "locales", lang, "guides", "content", `${contentKey}.json`);
+  try {
+    const raw = await readFile(contentPath, "utf8");
+    return JSON.parse(raw) as unknown;
+  } catch {
+    return undefined;
+  }
+};
+
+export type GuideLastmodBuildResult = {
+  conflictCount: number;
+  lastmodByPath: ReadonlyMap<string, string>;
+};
+
+export const buildGuideLastmodByPath = async (): Promise<GuideLastmodBuildResult> => {
+  const liveGuides = GUIDES_INDEX.filter((guide) => guide.status === "live");
+  const langs = i18nConfig.supportedLngs as AppLanguage[];
+  const contentCache = new Map<string, unknown | undefined>();
+  const lastmodByPath = new Map<string, string>();
+  let conflictCount = 0;
+
+  for (const lang of langs) {
+    for (const guide of liveGuides) {
+      const manifestEntry = getGuideManifestEntry(guide.key);
+      const contentKey = manifestEntry?.contentKey ?? guide.key;
+      const cacheKey = `${lang}:${contentKey}`;
+
+      let content = contentCache.get(cacheKey);
+      if (!contentCache.has(cacheKey)) {
+        content = await readGuideContent(lang, contentKey);
+        contentCache.set(cacheKey, content);
+      }
+
+      const { lastmod, hasConflict } = resolveGuideLastmod(content);
+      if (hasConflict) conflictCount += 1;
+      if (!lastmod) continue;
+
+      lastmodByPath.set(normalizePathname(guidePath(lang, guide.key)), lastmod);
+    }
+  }
+
+  return {
+    conflictCount,
+    lastmodByPath,
+  };
+};
+
+export const assertNoBulkTodayLastmod = (
+  lastmods: Iterable<string>,
+  now: Date = new Date(),
+): void => {
+  const values = Array.from(lastmods);
+  if (values.length < BULK_TODAY_GUARD_MIN_COUNT) return;
+
+  const todayPrefix = now.toISOString().slice(0, 10);
+  const todayCount = values.filter((value) => value.startsWith(todayPrefix)).length;
+  const todayRatio = todayCount / values.length;
+
+  if (todayRatio >= BULK_TODAY_GUARD_THRESHOLD) {
+    throw new Error(
+      `[generate-public-seo] bulk-today lastmod guard: ${todayCount}/${values.length} (${Math.round(todayRatio * 100)}%) entries are dated ${todayPrefix}.`,
+    );
+  }
+};
+
+export const buildSitemapXml = (paths: string[], lastmodByPath: ReadonlyMap<string, string> = new Map()): string => {
+  const uniquePaths = [...new Set(
+    paths
+      .map((pathname) => normalizePathname(pathname))
+      .filter((pathname) => !shouldExcludeFromSitemap(pathname)),
+  )];
+  const entries = uniquePaths
+    .map((pathname) => ({
+      lastmod: lastmodByPath.get(pathname),
+      loc: `${baseUrl}${pathname}`,
+    }))
+    .sort((a, b) => a.loc.localeCompare(b.loc));
+
+  const body = entries
+    .map(({ loc, lastmod }) =>
+      lastmod
+        ? `  <url><loc>${escapeXml(loc)}</loc><lastmod>${escapeXml(lastmod)}</lastmod></url>`
+        : `  <url><loc>${escapeXml(loc)}</loc></url>`)
+    .join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     `${body}\n` +
@@ -93,15 +222,17 @@ const syncSchemaAssets = async (): Promise<void> => {
 };
 
 // Direction paths use /directions/:slug prefix (Cloudflare _redirects)
-const listDirectionPaths = (): string[] =>
+export const listDirectionPaths = (): string[] =>
   Object.keys(howToGetHereRoutes.routes).map((slug) => `/directions/${slug}`);
 
-const main = async (): Promise<void> => {
+export const main = async (): Promise<void> => {
   await ensureDir(PUBLIC_DIR);
   await syncSchemaAssets();
+  const { conflictCount, lastmodByPath } = await buildGuideLastmodByPath();
+  assertNoBulkTodayLastmod(lastmodByPath.values());
 
   // Use App Router URL inventory as source of truth for sitemap
-  const sitemapXml = buildSitemapXml(["/", ...listDirectionPaths(), ...listAppRouterUrls()]);
+  const sitemapXml = buildSitemapXml(["/", ...listDirectionPaths(), ...listAppRouterUrls()], lastmodByPath);
   await writeFile(path.join(PUBLIC_DIR, "sitemap.xml"), sitemapXml, "utf8");
 
   const sitemapIndexXml = buildSitemapIndexXml();
@@ -109,9 +240,18 @@ const main = async (): Promise<void> => {
 
   const robotsTxt = buildRobotsTxt();
   await writeFile(path.join(PUBLIC_DIR, "robots.txt"), robotsTxt, "utf8");
+
+  if (conflictCount > 0) {
+    console.info(
+      `[generate-public-seo] guide lastmod conflict count (lastUpdated vs seo.lastUpdated): ${conflictCount}`,
+    );
+  }
+  console.info(`[generate-public-seo] sitemap lastmod entries emitted: ${lastmodByPath.size}`);
 };
 
-main().catch((error: unknown) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+if (process.env.JEST_WORKER_ID === undefined) {
+  main().catch((error: unknown) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}

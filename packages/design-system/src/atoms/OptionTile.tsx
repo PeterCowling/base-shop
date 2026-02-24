@@ -3,6 +3,11 @@
 import * as React from "react";
 import { CheckIcon } from "@radix-ui/react-icons";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export interface OptionTileProps
@@ -11,6 +16,18 @@ export interface OptionTileProps
   selectedLabel?: React.ReactNode;
   /** Extra cue for selection, independent of color. */
   showCheck?: boolean;
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
+  /** Semantic check-indicator shape. Ignored when `indicatorRadius` is provided. */
+  indicatorShape?: PrimitiveShape;
+  /** Explicit check-indicator radius token override. */
+  indicatorRadius?: PrimitiveRadius;
+  /** Semantic selected-label shape. Ignored when `selectedLabelRadius` is provided. */
+  selectedLabelShape?: PrimitiveShape;
+  /** Explicit selected-label radius token override. */
+  selectedLabelRadius?: PrimitiveRadius;
 }
 
 export const OptionTile = (
@@ -20,6 +37,12 @@ export const OptionTile = (
     selectedLabel,
     showCheck = true,
     className,
+    shape,
+    radius,
+    indicatorShape,
+    indicatorRadius,
+    selectedLabelShape,
+    selectedLabelRadius,
     type = "button",
     children,
     ...props
@@ -27,13 +50,30 @@ export const OptionTile = (
     ref?: React.Ref<HTMLButtonElement>;
   }
 ) => {
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "2xl",
+  });
+  const indicatorShapeRadiusClass = resolveShapeRadiusClass({
+    shape: indicatorShape,
+    radius: indicatorRadius,
+    defaultRadius: "full",
+  });
+  const selectedLabelShapeRadiusClass = resolveShapeRadiusClass({
+    shape: selectedLabelShape,
+    radius: selectedLabelRadius,
+    defaultRadius: "full",
+  });
+
   return (
     <button
       ref={ref}
       type={type}
       className={cn(
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — utility class names only
-        "group relative rounded-2xl border bg-surface-2 p-2 text-start transition-colors transition-shadow motion-reduce:transition-none",
+        "group relative border bg-surface-2 p-2 text-start transition-colors transition-shadow motion-reduce:transition-none",
+        shapeRadiusClass,
         // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         "focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-60",
         selected
@@ -51,7 +91,8 @@ export const OptionTile = (
           aria-hidden
           className={cn(
             // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-            "pointer-events-none absolute right-2 top-2 inline-flex h-6 w-6 items-center justify-center rounded-full border bg-surface-1 shadow-elevation-1 transition-opacity transition-shadow motion-reduce:transition-none",
+            "pointer-events-none absolute right-2 top-2 inline-flex h-6 w-6 items-center justify-center border bg-surface-1 shadow-elevation-1 transition-opacity transition-shadow motion-reduce:transition-none",
+            indicatorShapeRadiusClass,
             selected
               ? // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                 "border-border-3 opacity-100"
@@ -69,7 +110,8 @@ export const OptionTile = (
         <span
           className={cn(
             // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-            "inline-flex items-center rounded-full border border-border-2 bg-surface-1 px-2 py-0.5 text-xs font-semibold text-foreground",
+            "inline-flex items-center border border-border-2 bg-surface-1 px-2 py-0.5 text-xs font-semibold text-foreground",
+            selectedLabelShapeRadiusClass,
           )}
         >
           {selectedLabel}
@@ -78,4 +120,3 @@ export const OptionTile = (
     </button>
   );
 };
-

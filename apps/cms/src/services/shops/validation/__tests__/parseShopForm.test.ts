@@ -42,12 +42,12 @@ describe("parseShopForm", () => {
     fd.set("id", "1");
     fd.set("name", "Shop");
     fd.set("themeId", "theme");
-    fd.set("themeDefaults", '{"foo":1}');
+    fd.set("themeDefaults", '{"--foo":"1"}');
     fd.append("trackingProviders", "a");
     fd.append("trackingProviders", "b");
 
     const result = parseShopForm(fd);
-    expect(result.data?.themeDefaults).toEqual({ foo: 1 });
+    expect(result.data?.themeDefaults).toEqual({ "--foo": "1" });
     expect(result.data?.themeOverrides).toEqual({});
     expect(result.data?.trackingProviders).toEqual(["a", "b"]);
     expect(result.data?.filterMappings).toEqual({ f: "m" });

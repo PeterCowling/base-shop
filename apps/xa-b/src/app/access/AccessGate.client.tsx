@@ -1,8 +1,13 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy gate UI pending design/i18n overhaul */
 
 import * as React from "react";
+
+import { Button, Input, Textarea } from "@acme/design-system/atoms";
+
+import { xaI18n } from "../../lib/xaI18n";
+
+import { gateClassNames } from "./gateClasses";
 
 type RequestState = "idle" | "loading" | "success" | "error";
 
@@ -40,7 +45,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
         body: JSON.stringify(payload),
       });
       if (!response.ok) {
-        let message = "Request failed";
+        let message = xaI18n.t("xaB.src.app.access.accessgate.client.l46c23");
         try {
           const data = (await response.json()) as { error?: string };
           if (data?.error === "rate_limited") {
@@ -57,7 +62,7 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
       setReceipt(`RQ-${id}`);
       setState("success");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Request failed");
+      setError(err instanceof Error ? err.message : xaI18n.t("xaB.src.app.access.accessgate.client.l63c53"));
       setState("error");
     }
   };
@@ -66,81 +71,70 @@ export default function AccessGateClient({ monoClassName }: AccessGateProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <div className={`text-xs uppercase tracking-[0.35em] ${monoClassName ?? ""}`}>
-            Request invite
-          </div>
-          <div className="mt-2 text-sm text-[color:var(--gate-muted)]">
-            No email. No outbound links. Just a quiet signal.
-          </div>
+          <div className={`text-xs uppercase xa-tracking-035 ${monoClassName ?? ""}`}>{xaI18n.t("xaB.src.app.access.accessgate.client.l72c87")}</div>
+          <div className={`mt-2 text-sm ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.accessgate.client.l75c71")}</div>
         </div>
-        <div className="hidden rounded-full border border-border-2 bg-muted px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-[color:var(--gate-muted)] md:inline-flex">
-          Offline review
-        </div>
+        <div className={gateClassNames.chip}>{xaI18n.t("xaB.src.app.access.accessgate.client.l79c46")}</div>
       </div>
 
       <form onSubmit={submitRequest} className="space-y-4">
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className={gateClassNames.fieldLabel}>
           Alias
-          <input
+          <Input
             value={handle}
             onChange={(event) => setHandle(event.target.value)}
-            placeholder="Handle or collective name"
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+            placeholder={xaI18n.t("xaB.src.app.access.accessgate.client.l90c25")}
+            className={gateClassNames.fieldInput}
             autoComplete="off"
           />
         </label>
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className={gateClassNames.fieldLabel}>
           Sent by
-          <input
+          <Input
             value={referredBy}
             onChange={(event) => setReferredBy(event.target.value)}
-            placeholder="Who sent you?"
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+            placeholder={xaI18n.t("xaB.src.app.access.accessgate.client.l100c25")}
+            className={gateClassNames.fieldInput}
             autoComplete="off"
           />
         </label>
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className={gateClassNames.fieldLabel}>
           Why you
-          <textarea
+          <Textarea
             value={note}
             onChange={(event) => setNote(event.target.value)}
-            placeholder="What pulls you into the underground?"
+            placeholder={xaI18n.t("xaB.src.app.access.accessgate.client.l110c25")}
             rows={4}
-            className="mt-2 w-full resize-none rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+            className={gateClassNames.fieldInput}
           />
         </label>
 
         <div className="flex flex-wrap items-center gap-3">
-          <button
+          <Button
             type="submit"
             disabled={state === "loading"}
-            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className={gateClassNames.primaryButton}
           >
-            {state === "loading" ? "Transmitting..." : "Request access"}
-          </button>
-          <div className="text-xs text-[color:var(--gate-muted)]">
-            We do not send email. Keys move hand to hand.
-          </div>
+            {state === "loading" ? "Transmitting..." : xaI18n.t("xaB.src.app.access.accessgate.client.l122c56")}
+          </Button>
+          <div className={`text-xs ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.accessgate.client.l124c66")}</div>
         </div>
 
         {state === "success" ? (
           <div className="rounded-md border border-border-2 bg-muted p-3 text-sm">
-            <div className="text-[color:var(--gate-ink)]">
-              Request logged. Your receipt:{" "}
+            <div className={gateClassNames.inkText}>{xaI18n.t("xaB.src.app.access.accessgate.client.l131c53")}{" "}
               <span className={monoClassName}>{receipt}</span>
             </div>
             {displayReferredBy ? (
-              <div className="mt-1 text-[color:var(--gate-muted)]">
+              <div className={`mt-1 ${gateClassNames.mutedText}`}>
                 Sent by: <span className={monoClassName}>{displayReferredBy}</span>
               </div>
             ) : null}
-            <div className="mt-1 text-[color:var(--gate-muted)]">
-              If approved, you will receive a key from the person who sent you here.
-            </div>
+            <div className={`mt-1 ${gateClassNames.mutedText}`}>{xaI18n.t("xaB.src.app.access.accessgate.client.l140c65")}</div>
           </div>
         ) : null}
         {state === "error" ? (
-          <div className="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+          <div className="rounded-md border border-danger/30 bg-danger/5 p-3 text-sm text-danger-fg">
             {error ?? "Request failed. Try again."}
           </div>
         ) : null}

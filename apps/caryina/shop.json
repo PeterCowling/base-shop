@@ -1,0 +1,38 @@
+{
+  "id": "caryina",
+  "name": "Caryina",
+  "catalogFilters": [],
+  "themeId": "caryina",
+  "themeOverrides": {},
+  "filterMappings": {},
+  "shippingProviders": ["dhl"],
+  "returnsEnabled": true,
+  "returnPolicyUrl": "https://example.com/returns",
+  "returnService": {
+    "upsEnabled": false,
+    "bagEnabled": false,
+    "homePickupEnabled": false
+  },
+  "showCleaningTransparency": false,
+  "coverageIncluded": false,
+  "billingProvider": "stripe",
+  "priceOverrides": {},
+  "localeOverrides": {},
+  "rentalInventoryAllocation": false,
+  "analyticsEnabled": true,
+  "trackingEnabled": true,
+  "trackingProviders": [],
+  "plugins": {},
+  "componentVersions": {},
+  "lastUpgrade": "1970-01-01T00:00:00.000Z",
+  "luxuryFeatures": {
+    "blog": false,
+    "contentMerchandising": false,
+    "raTicketing": false,
+    "fraudReviewThreshold": 0,
+    "requireStrongCustomerAuth": false,
+    "strictReturnConditions": false,
+    "trackingDashboard": false,
+    "premierDelivery": false
+  }
+}

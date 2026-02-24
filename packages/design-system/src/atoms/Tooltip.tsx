@@ -2,12 +2,21 @@
 
 import * as React from "react";
 
-import { cn } from "../utils/style";
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
+import { cn, overflowContainmentClass } from "../utils/style";
 
 export interface TooltipProps {
   text: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  /** Semantic surface shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 const mergeHandlers = <E extends React.SyntheticEvent<HTMLElement>>(
@@ -23,11 +32,16 @@ const mergeHandlers = <E extends React.SyntheticEvent<HTMLElement>>(
   };
 };
 
-export const Tooltip = ({ text, children, className }: TooltipProps) => {
+export const Tooltip = ({ text, children, className, shape, radius }: TooltipProps) => {
   const [open, setOpen] = React.useState(false);
   const tooltipId = React.useId();
   const show = React.useCallback(() => setOpen(true), []);
   const hide = React.useCallback(() => setOpen(false), []);
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "sm",
+  });
 
   let trigger: React.ReactNode = children;
   if (React.isValidElement<React.HTMLAttributes<HTMLElement>>(children)) {
@@ -79,7 +93,9 @@ export const Tooltip = ({ text, children, className }: TooltipProps) => {
         data-state={open ? "open" : "closed"}
         className={cn(
           // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          "bg-fg text-bg pointer-events-none absolute top-full z-tooltip mt-2 whitespace-nowrap rounded px-2 py-1 text-xs shadow-md transition-opacity motion-reduce:transition-none",
+          "bg-fg text-bg pointer-events-none absolute top-full z-tooltip mt-2 max-w-80 border border-border-2 px-2 py-1 text-start text-xs shadow-md transition-opacity motion-reduce:transition-none whitespace-normal break-words",
+          shapeRadiusClass,
+          overflowContainmentClass("tooltipSurface"),
           open ? "opacity-100" : "opacity-0",
         )}
       >

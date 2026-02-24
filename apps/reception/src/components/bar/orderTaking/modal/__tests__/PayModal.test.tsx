@@ -5,6 +5,10 @@ import userEvent from "@testing-library/user-event";
 
 import PayModal from "../PayModal";
 
+jest.mock("../../../../../hoc/withModalBackground", () => ({
+  withModalBackground: (Comp: React.ComponentType) => Comp,
+}));
+
 describe("PayModal", () => {
   it("submits selected payment and bleep options", async () => {
     const onConfirm = jest.fn();

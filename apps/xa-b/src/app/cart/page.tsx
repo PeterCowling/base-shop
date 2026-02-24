@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy cart page pending i18n overhaul */
 import Link from "next/link";
 
 import {
@@ -18,6 +17,7 @@ import { Section } from "@acme/design-system/atoms/Section";
 import { QuantityInput } from "@acme/design-system/molecules";
 
 import { useCart } from "../../contexts/XaCartContext";
+import { xaI18n } from "../../lib/xaI18n";
 
 export default function CartPage() {
   const [cart, dispatch] = useCart();
@@ -36,11 +36,9 @@ export default function CartPage() {
       <Section padding="default">
         {lines.length === 0 ? (
           <div className="rounded-lg border p-6">
-            <div className="font-medium">Your cart is empty.</div>
+            <div className="font-medium">{xaI18n.t("xaB.src.app.cart.page.l38c42")}</div>
             <div className="mt-2 text-sm text-muted-foreground">
-              <Link href="/collections/all" className="underline">
-                Continue shopping
-              </Link>
+              <Link href="/collections/all" className="underline">{xaI18n.t("xaB.src.app.cart.page.l40c67")}</Link>
             </div>
           </div>
         ) : (

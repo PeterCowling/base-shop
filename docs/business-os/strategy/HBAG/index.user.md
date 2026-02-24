@@ -1,8 +1,11 @@
 ---
 Type: Strategy-Index
 Business-Unit: HBAG
-Last-updated: 2026-02-20
+Last-updated: 2026-02-23
+Business-Name: Caryina
 Status: Active
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Brand & Strategy Index — HBAG
@@ -14,7 +17,8 @@ Gates read `Status` from this table — not from individual file frontmatters.
 
 | Artifact | Path | Status | Last-reviewed |
 |----------|------|--------|---------------|
-| Brand Dossier | `docs/business-os/strategy/HBAG/brand-dossier.user.md` | Draft | 2026-02-17 |
+| Brand Dossier | `docs/business-os/strategy/HBAG/brand-dossier.user.md` | Active | 2026-02-23 |
+| Site V1 Builder Prompt | `docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md` | Active | 2026-02-23 |
 | Competitive Positioning | `docs/business-os/strategy/HBAG/competitive-positioning.user.md` | — | — |
 | Messaging Hierarchy | `docs/business-os/strategy/HBAG/messaging-hierarchy.user.md` | — | — |
 | Creative Voice Brief | `docs/business-os/strategy/HBAG/creative-voice-brief.user.md` | — | — |
@@ -27,15 +31,18 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | Mini Handbag PMF Plan | `docs/plans/mini-handbag-pmf/plan.md` | Draft | 2026-02-18 |
 | CE Marking Investigation | `docs/plans/mini-handbag-pmf/ce-marking-investigation.md` | Active | 2026-02-18 |
 | Photography Brief | `docs/plans/mini-handbag-pmf/task-06-photography-brief.md` | Active | 2026-02-17 |
-| Naming Research | `docs/business-os/strategy/HBAG/naming-research-prompt.md` | Active | 2026-02-20 |
-| Naming Shortlist | `docs/business-os/strategy/HBAG/2026-02-20-naming-shortlist.user.md` | Active | 2026-02-20 |
+| Naming Research | `docs/business-os/strategy/HBAG/candidate-names-prompt.md` | Active | 2026-02-20 |
+| Naming Shortlist (latest) | `docs/business-os/strategy/HBAG/naming-shortlist-2026-02-21.user.md` | Active | 2026-02-21 |
+| **Name Selected** | **Caryina** — Pete confirmed 2026-02-21 | **Selected** | **2026-02-21** |
 
 ## Startup-Loop Canonical Artifacts
 
 | Stage | Artifact | Path | Status | Last-reviewed |
 |-------|----------|------|--------|---------------|
-| DISCOVERY-05 | Operator evidence | `docs/business-os/strategy/HBAG/s0e-operator-evidence.user.md` | Active | 2026-02-20 |
-| DISCOVERY | Intake packet | `docs/business-os/startup-baselines/HBAG-intake-packet.user.md` | Active | 2026-02-20 |
+| ASSESSMENT-06 | Operator evidence | `docs/business-os/strategy/HBAG/current-situation.user.md` | Active | 2026-02-20 |
+| ASSESSMENT-09 | Intake packet | `docs/business-os/startup-baselines/HBAG-intake-packet.user.md` | Active | 2026-02-20 |
+| ASSESSMENT-10 | Brand profiling | `docs/business-os/strategy/HBAG/brand-strategy.user.md` | Draft | 2026-02-21 |
+| ASSESSMENT-11 | Brand identity | `docs/business-os/strategy/HBAG/brand-dossier.user.md` | Active | 2026-02-23 |
 | S1 | Readiness verdict | `docs/business-os/strategy/HBAG/s1-readiness.user.md` | Active | 2026-02-20 |
 | S2 | Market intelligence (latest) | `docs/business-os/market-research/HBAG/latest.user.md` | Active | 2026-02-20 |
 | S2B | Offer | `docs/business-os/startup-baselines/HBAG-offer.md` | Active | 2026-02-20 |
@@ -43,7 +50,9 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | S3 | Forecast seed | `docs/business-os/startup-baselines/HBAG-forecast-seed.user.md` | Active | 2026-02-20 |
 | S6B | Channels | `docs/business-os/startup-baselines/HBAG-channels.md` | Active | 2026-02-20 |
 | S6B gate | Demand evidence pack | `docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md` | Active | 2026-02-20 |
+| WEBSITE-CONTENT-01 | Website content packet | `docs/business-os/startup-baselines/HBAG-content-packet.md` | Active | 2026-02-23 |
 | S5A | Prioritization scorecard | — | — | — |
+| PRODUCT-01 | Product from photo | `docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md` | Draft | 2026-02-22 |
 
 > S2/S2B/S3/S6B backfill completed 2026-02-20 from `mini-handbag-pmf` fact-find and plan evidence.
 > All stage artifacts are hypothesis-quality — not yet validated by first-party HBAG sales data.

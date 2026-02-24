@@ -1,5 +1,10 @@
 import { memo, type ReactElement, useCallback, useMemo } from "react";
 
+import {
+  ReceptionTableCell as TableCell,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
+
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
 // Rename the default imports to avoid ESLint conflicts
@@ -86,14 +91,14 @@ function GuestRowComponent({
   }, [hasKeycards, openKeycardsModal, guest]);
 
   return (
-    <tr className={rowBg} onDoubleClick={handleDoubleClick}>
-      <td className="p-3 border-b border-gray-300 dark:border-darkSurface">{guest.bookingRef}</td>
-      <td className="p-3 border-b border-gray-300 dark:border-darkSurface">
+    <TableRow className={rowBg} onDoubleClick={handleDoubleClick}>
+      <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">{guest.bookingRef}</TableCell>
+      <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
         {guest.firstName} {guest.lastName}
-      </td>
+      </TableCell>
 
       {/* "New Loan" Column */}
-      <td className="p-3 border-b border-gray-300 dark:border-darkSurface">
+      <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
         <LoanableItemSelectorComp
           guest={guest}
           guestSelectedItem={guestSelectedItem}
@@ -101,18 +106,18 @@ function GuestRowComponent({
           onSelectItem={(item: LoanItem) => onSelectItem(guest.guestId, item)}
           openModal={openModal}
         />
-      </td>
+      </TableCell>
 
       {/* "Change Existing Loan" Column */}
-      <td className="p-3 border-b border-gray-300 dark:border-darkSurface">
+      <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
         <LoanedItemsListComp
           occupantId={guest.guestId}
           guest={guest}
           buttonDisabled={buttonDisabled}
           onReturnLoan={handleReturnLoan}
         />
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 

@@ -2,6 +2,8 @@
 import React, { memo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { type CheckInRow } from "../../types/component/CheckinRow";
 
 /**
@@ -59,7 +61,7 @@ const DocInsertButton: React.FC<DocInsertButtonProps> = ({
 
   /* ---------- styling --------------------------------------------------- */
   const baseClass =
-    "min-h-[55px] px-4 flex items-center justify-center rounded-md text-white transition-colors focus:outline-none";
+    "min-h-55px px-4 flex items-center justify-center rounded-md text-primary-fg transition-colors focus:outline-none";
 
   const colorClass = (() => {
     switch (status) {
@@ -79,14 +81,14 @@ const DocInsertButton: React.FC<DocInsertButtonProps> = ({
 
   /* ---------------------------------------------------------------------- */
   return (
-    <button
+    <Button
       onClick={handleClick}
       className={`${baseClass} ${colorClass}`}
       title={title}
     >
       <i className="fas fa-passport" />
       <span className="ms-2">Doc</span>
-    </button>
+    </Button>
   );
 };
 

@@ -3,6 +3,9 @@ import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
+import { Button } from "@acme/design-system/atoms";
+import { Cluster, Inline } from "@acme/design-system/primitives";
+
 import {
   buildQuickDateRange,
   formatDateForInput,
@@ -33,33 +36,27 @@ export default function DateSelector({
   function renderButton(label: string, dayStr: string): ReactElement {
     const isSelected = selectedDate === dayStr;
     return (
-      <button
+      <Button
         key={dayStr}
         onClick={() => onDateChange(dayStr)}
-        className={`
-          px-4 py-2 border rounded text-sm font-medium w-[100px] text-center
-          transition-colors
-          ${
-            isSelected
-              ? "bg-primary-main text-primary-fg border-primary-main dark:bg-darkAccentGreen dark:text-darkBg dark:border-darkAccentGreen"
-              : "bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
-          }
-        `}
+        color={isSelected ? "primary" : "default"}
+        tone={isSelected ? "solid" : "outline"}
+        size="sm"
       >
         {label}
-      </button>
+      </Button>
     );
   }
 
   const daySelectors = (
-    <div className="flex items-center flex-wrap gap-2">
+    <Cluster gap={2}>
       {renderButton("Yesterday", yesterdayLocalStr)}
       {renderButton("Today", todayLocalStr)}
       {nextFiveDays.map((dayStr) => {
         const shortLabel = getWeekdayShortLabel(dayStr);
         return renderButton(shortLabel, dayStr);
       })}
-    </div>
+    </Cluster>
   );
 
   // For Pete only: display a popup calendar
@@ -89,13 +86,15 @@ export default function DateSelector({
   if (isPete) {
     toggleAndCalendar = (
       <div className="relative">
-        <button
+        <Button
           ref={toggleRef}
-          className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
+          color="default"
+          tone="outline"
+          size="sm"
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate || "Select a date"}
-        </button>
+        </Button>
         {isCalendarOpen && (
           <div
             ref={calendarRef}
@@ -117,7 +116,7 @@ export default function DateSelector({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded dark:bg-darkSurface dark:text-darkAccentGreen`,
+                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded`,
                 today: "border-warning-border",
                 selected: "bg-warning text-primary-fg",
                 chevron: `${defaultNames.chevron} fill-warning`,
@@ -131,10 +130,10 @@ export default function DateSelector({
 
   return (
     <div className="relative pb-5">
-      <div className="flex items-center gap-2">
+      <Inline wrap={false} gap={2}>
         {daySelectors}
         {toggleAndCalendar}
-      </div>
+      </Inline>
     </div>
   );
 }

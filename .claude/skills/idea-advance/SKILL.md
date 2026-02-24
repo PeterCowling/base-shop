@@ -172,7 +172,7 @@ Before proposing a move, verify:
 ## Integration with Other Skills
 
 - Use `/idea-develop` to create Fact-finding stage doc before proposing Inbox → Fact-finding
-- Use `/idea-scan` to gather repo evidence for proposals
+- Use `scan-proposals.md` and updated `idea-backlog.user.md` as proposal evidence inputs
 - Follow up proposal with `/biz-update-plan` if lane move affects strategy
 
 ## Example Session

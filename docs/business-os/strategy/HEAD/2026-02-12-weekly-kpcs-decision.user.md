@@ -4,6 +4,7 @@ Status: Active
 Business: HEAD
 Week-Ending: 2026-02-20
 Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Weekly K/P/C/S Decision

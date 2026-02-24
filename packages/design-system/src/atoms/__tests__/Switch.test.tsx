@@ -32,4 +32,13 @@ describe("Switch", () => {
     expect(label).toHaveClass("items-center");
     expect(label).toHaveClass("my-switch");
   });
+
+  it("supports shape/radius overrides", () => {
+    const { container, rerender } = render(<Switch shape="square" />);
+    const track = container.querySelector("[data-token='--color-primary']");
+    expect(track).toHaveClass("rounded-none");
+
+    rerender(<Switch shape="square" radius="xl" />);
+    expect(container.querySelector("[data-token='--color-primary']")).toHaveClass("rounded-xl");
+  });
 });

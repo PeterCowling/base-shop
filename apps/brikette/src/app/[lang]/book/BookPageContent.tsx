@@ -158,7 +158,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
       <BookPageStructuredData lang={lang} />
 
       {deal ? (
-        <div className="sticky top-0 bg-brand-secondary px-4 py-2 text-center text-sm font-semibold text-neutral-900">
+        <div className="sticky top-0 bg-brand-secondary px-4 py-2 text-center text-sm font-semibold text-brand-on-accent">
           {t("dealBanner.applied", { defaultValue: `Deal applied: ${deal}`, replace: { code: deal } }) as string}
         </div>
       ) : null}
@@ -210,7 +210,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
             <button
               type="button"
               onClick={applyQuery}
-              className="min-h-11 min-w-11 w-full rounded-full bg-brand-secondary px-6 py-3 text-sm font-semibold tracking-wide text-neutral-900 shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
+              className="min-h-11 min-w-11 w-full rounded-full bg-brand-secondary px-6 py-3 text-sm font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-brand-on-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
             >
               {t("date.apply", { defaultValue: "Update" }) as string}
             </button>

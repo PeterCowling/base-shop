@@ -10,6 +10,13 @@ const config = require("@acme/config/jest.preset.cjs")({
   },
 });
 
-config.collectCoverageFrom = ["src/lib/pipeline/triage.ts"];
+config.collectCoverageFrom = [
+  "src/lib/**/*.{ts,tsx}",
+  "src/routes/**/*.{ts,tsx}",
+  "src/app/api/**/*.{ts,tsx}",
+  "!src/**/*.d.ts",
+  "!src/**/?(*.)+(spec|test).{ts,tsx}",
+  "!src/**/__tests__/**",
+];
 
 module.exports = config;

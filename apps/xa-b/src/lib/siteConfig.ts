@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- XA-123 [ttl=2026-12-31] XA marketing copy pending localization */
+import { xaI18n } from "./xaI18n";
 import type { XaCategory, XaDepartment } from "./xaTypes";
 
 const STEALTH_MODE = ["1", "true"].includes(
@@ -60,8 +60,8 @@ const catalogConfig = {
   labelPlural: "bags",
   productNoun: "bag",
   productNounPlural: "bags",
-  productDescriptor: "bags and carry goods",
-  packagingItems: "dust bags or boxes",
+  productDescriptor: xaI18n.t("xaB.src.lib.siteconfig.l62c22"),
+  packagingItems: xaI18n.t("xaB.src.lib.siteconfig.l63c19"),
 } as const;
 
 export const siteConfig = {
@@ -71,4 +71,6 @@ export const siteConfig = {
   showContactInfo: !STEALTH_MODE,
   showLegalInfo: !STEALTH_MODE,
   showSocialLinks: !STEALTH_MODE,
+  heroHeadline: "The finest carry goods. By invitation.",
+  heroSubheadline: "Exclusive access to curated bags from established designers.",
 } as const;

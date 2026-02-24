@@ -1,6 +1,6 @@
 # Baseline Merge (S4)
 
-Join parallel fan-out outputs (S2B + S3 + S6B) into a single baseline snapshot and draft manifest.
+Join parallel fan-out outputs (MARKET-06 + S3 + SELL-01, with optional PRODUCT-02) into a single baseline snapshot and draft manifest.
 This is the S4 join barrier in the startup loop.
 
 **Loop-spec reference:** `docs/business-os/startup-loop/loop-spec.yaml` — stage `S4`
@@ -23,11 +23,12 @@ All inputs are read from upstream `stage-result.json` files within the run direc
 
 | Source Stage | Artifact Key | Required | Description |
 |-------------|--------------|----------|-------------|
-| S2B | `offer` | **yes** | Offer design artifact (ICP, positioning, pricing, objections) |
+| MARKET-06 | `offer` | **yes** | Offer design artifact (ICP, positioning, pricing, objections) |
 | S3 | `forecast` | **yes** | 90-day P10/P50/P90 scenario forecast |
-| S6B | `channels` | **yes** | Channel strategy + GTM plan |
-| S6B | `seo` | no | SEO strategy (optional) |
-| S6B | `outreach` | no | Outreach plan (optional) |
+| SELL-01 | `channels` | **yes** | Channel strategy + GTM plan |
+| SELL-01 | `seo` | no | SEO strategy (optional) |
+| SELL-01 | `outreach` | no | Outreach plan (optional) |
+| PRODUCT-02 | `adjacent_product_research` | no | Adjacent product research results (optional) |
 
 ## Blocking Logic
 
@@ -35,24 +36,24 @@ Before producing any output, verify all required inputs are present and valid.
 
 ### Input Validation Sequence
 
-1. **Discover stage results:** Scan `stages/*/stage-result.json` for S2B, S3, S6B.
+1. **Discover stage results:** Scan `stages/*/stage-result.json` for MARKET-06, S3, SELL-01 (and PRODUCT-02 if present).
 2. **Validate each result:** Check `schema_version=1`, `status`, `produced_keys`, `artifacts`.
 3. **Check required inputs:**
 
 | Scenario | Action |
 |----------|--------|
-| S2B `stage-result.json` missing | Block: `"Required input missing: S2B stage-result.json not found (offer artifact required)"` |
+| MARKET-06 `stage-result.json` missing | Block: `"Required input missing: MARKET-06 stage-result.json not found (offer artifact required)"` |
 | S3 `stage-result.json` missing | Block: `"Required input missing: S3 stage-result.json not found (forecast artifact required)"` |
-| S6B `stage-result.json` missing | Block: `"Required input missing: S6B stage-result.json not found (channels artifact required)"` |
-| S2B result `status=Failed` | Block: `"Upstream failure: S2B status=Failed — offer design failed"` |
+| SELL-01 `stage-result.json` missing | Block: `"Required input missing: SELL-01 stage-result.json not found (channels artifact required)"` |
+| MARKET-06 result `status=Failed` | Block: `"Upstream failure: MARKET-06 status=Failed — offer design failed"` |
 | S3 result `status=Failed` | Block: `"Upstream failure: S3 status=Failed — forecast failed"` |
-| S6B result `status=Failed` | Block: `"Upstream failure: S6B status=Failed — channel strategy failed"` |
-| S2B result `status=Blocked` | Block: `"Upstream blocked: S2B status=Blocked — offer design blocked"` |
+| SELL-01 result `status=Failed` | Block: `"Upstream failure: SELL-01 status=Failed — channel strategy failed"` |
+| MARKET-06 result `status=Blocked` | Block: `"Upstream blocked: MARKET-06 status=Blocked — offer design blocked"` |
 | S3 result `status=Blocked` | Block: `"Upstream blocked: S3 status=Blocked — forecast blocked"` |
-| S6B result `status=Blocked` | Block: `"Upstream blocked: S6B status=Blocked — channel strategy blocked"` |
-| S2B `status=Done` but `offer` not in `produced_keys` | Block: `"Malformed input: S2B completed but offer artifact missing from produced_keys"` |
+| SELL-01 result `status=Blocked` | Block: `"Upstream blocked: SELL-01 status=Blocked — channel strategy blocked"` |
+| MARKET-06 `status=Done` but `offer` not in `produced_keys` | Block: `"Malformed input: MARKET-06 completed but offer artifact missing from produced_keys"` |
 | S3 `status=Done` but `forecast` not in `produced_keys` | Block: `"Malformed input: S3 completed but forecast artifact missing from produced_keys"` |
-| S6B `status=Done` but `channels` not in `produced_keys` | Block: `"Malformed input: S6B completed but channels artifact missing from produced_keys"` |
+| SELL-01 `status=Done` but `channels` not in `produced_keys` | Block: `"Malformed input: SELL-01 completed but channels artifact missing from produced_keys"` |
 | All required inputs present and valid | Proceed to snapshot composition |
 
 ### Block Output
@@ -81,11 +82,12 @@ When all required inputs pass validation:
 ### 1) Read upstream artifacts
 
 Read the actual artifact files referenced in each stage result's `artifacts` map:
-- `offer` from S2B (e.g., `stages/S2B/offer.md`)
+- `offer` from MARKET-06 (e.g., `stages/MARKET-06/offer.md`)
 - `forecast` from S3 (e.g., `stages/S3/forecast.md`)
-- `channels` from S6B (e.g., `stages/S6B/channels.md`)
-- `seo` from S6B if present (e.g., `stages/S6B/seo.md`)
-- `outreach` from S6B if present (e.g., `stages/S6B/outreach.md`)
+- `channels` from SELL-01 (e.g., `stages/SELL-01/channels.md`)
+- `seo` from SELL-01 if present (e.g., `stages/SELL-01/seo.md`)
+- `outreach` from SELL-01 if present (e.g., `stages/SELL-01/outreach.md`)
+- `adjacent_product_research` from PRODUCT-02 if present (e.g., `stages/PRODUCT-02/adjacent-product-research.md`)
 
 ### 2) Compose the baseline snapshot
 
@@ -98,7 +100,7 @@ Run: <run_id>
 Generated: <ISO 8601 UTC>
 Loop spec version: <version>
 
-## 1. Offer Design (S2B)
+## 1. Offer Design (MARKET-06)
 
 <contents of offer artifact>
 
@@ -106,17 +108,21 @@ Loop spec version: <version>
 
 <contents of forecast artifact>
 
-## 3. Channel Strategy + GTM (S6B)
+## 3. Channel Strategy + GTM (SELL-01)
 
 <contents of channels artifact>
 
-## 4. SEO Strategy (S6B, optional)
+## 4. SEO Strategy (SELL-01, optional)
 
 <contents of seo artifact, or "Not produced in this run.">
 
-## 5. Outreach Plan (S6B, optional)
+## 5. Outreach Plan (SELL-01, optional)
 
 <contents of outreach artifact, or "Not produced in this run.">
+
+## 6. Adjacent Product Research (PRODUCT-02, optional)
+
+<contents of adjacent product research artifact, or "Not produced in this run.">
 
 ---
 
@@ -127,7 +133,7 @@ pending review at S5A and commit at S5B._
 ### 3) Determinism guarantee
 
 The snapshot composition is deterministic:
-- Sections are always in the fixed priority order above (1-5).
+- Sections are always in the fixed priority order above (1-6).
 - Artifact contents are included verbatim (no rewriting or summarization).
 - Optional sections use the exact placeholder text when absent.
 - Same inputs produce identical output (byte-comparable).
@@ -180,7 +186,7 @@ Where `<run_root>` is `docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/`.
 
 Per `stage-result-schema.md` section 2:
 
-- S4 MAY read `stages/S2B/stage-result.json`, `stages/S3/stage-result.json`, `stages/S6B/stage-result.json` (and their referenced artifact files).
+- S4 MAY read `stages/MARKET-06/stage-result.json`, `stages/S3/stage-result.json`, `stages/SELL-01/stage-result.json`, and `stages/PRODUCT-02/stage-result.json`, plus referenced artifact files.
 - S4 MUST ONLY write to `stages/S4/`.
 - S4 MUST NOT read or write `baseline.manifest.json`, `state.json`, or `events.jsonl`.
 

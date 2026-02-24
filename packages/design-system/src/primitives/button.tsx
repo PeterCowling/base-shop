@@ -5,6 +5,7 @@ import * as React from "react";
 
 import { cn } from "../utils/style";
 
+import { type PrimitiveRadius, type PrimitiveShape, resolveShapeRadiusClass } from "./shape-radius";
 import { Slot } from "./slot";
 
 /* -------------------------------------------------------------------------- */
@@ -14,6 +15,7 @@ type LegacyVariant = "default" | "outline" | "ghost" | "destructive";
 type ButtonTone = "solid" | "soft" | "outline" | "ghost" | "quiet";
 type ButtonColor = "default" | "primary" | "accent" | "success" | "info" | "warning" | "danger";
 type ButtonSize = "sm" | "md" | "lg";
+type ButtonCompatibilityMode = "default" | "passthrough";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -38,6 +40,12 @@ export interface ButtonProps
   asChild?: boolean;
   /** Size scale for padding/height/typography. */
   size?: ButtonSize;
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit radius token override. */
+  radius?: PrimitiveRadius;
+  /** Compatibility mode for migration scenarios that require style-neutral passthrough behavior. */
+  compatibilityMode?: ButtonCompatibilityMode;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -50,7 +58,7 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
 };
 
 const BASE_CLASSES =
-  "inline-flex items-center justify-center rounded-md py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
 
 const LEGACY_VARIANT_MAP: Record<LegacyVariant, { color: ButtonColor; tone: ButtonTone }> = {
   default: { color: "primary", tone: "solid" },
@@ -195,6 +203,7 @@ function buildButtonClassName({
   variant,
   iconOnly,
   isLoading,
+  shapeRadiusClass,
   className,
 }: {
   size: ButtonSize;
@@ -203,10 +212,12 @@ function buildButtonClassName({
   variant: LegacyVariant;
   iconOnly: boolean;
   isLoading: boolean;
+  shapeRadiusClass: string;
   className?: string;
 }): string {
   return cn(
     BASE_CLASSES,
+    shapeRadiusClass,
     SIZE_CLASSES[size],
     CLASSES_BY_TONE[tone][color],
     legacyVariantClassName(variant, color),
@@ -214,6 +225,10 @@ function buildButtonClassName({
     isLoading ? "cursor-progress opacity-70" : "",
     className,
   );
+}
+
+function buildPassthroughClassName(className?: string): string {
+  return cn(className);
 }
 
 function renderSpinner({
@@ -224,10 +239,14 @@ function renderSpinner({
   iconSize: NonNullable<ButtonProps["iconSize"]>;
 }): React.ReactNode {
   if (!isLoading) return null;
+  const spinnerShapeRadiusClass = resolveShapeRadiusClass({
+    defaultRadius: "full",
+  });
   return (
     <span
       className={cn(
-        "me-2 inline-flex animate-spin motion-reduce:animate-none rounded-full border-2 border-current border-t-transparent",
+        "me-2 inline-flex animate-spin motion-reduce:animate-none border-2 border-current border-t-transparent",
+        spinnerShapeRadiusClass,
         iconDimensionClass(iconSize),
       )}
       aria-hidden="true"
@@ -262,6 +281,9 @@ export const Button = (
     iconSize = "md",
     iconOnly = false,
     size = "md",
+    shape,
+    radius,
+    compatibilityMode = "default",
     disabled,
     "aria-busy": ariaBusy,
     asChild = false,
@@ -281,15 +303,24 @@ export const Button = (
 
   const isLoading = coerceAriaBusy(ariaBusy);
   const isDisabled = computeIsDisabled(disabled, isLoading);
-  const computedClasses = buildButtonClassName({
-    size,
-    tone: effTone,
-    color: effColor,
-    variant,
-    iconOnly,
-    isLoading,
-    className,
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
   });
+  const computedClasses =
+    compatibilityMode === "passthrough"
+      ? buildPassthroughClassName(className)
+      : buildButtonClassName({
+          size,
+          tone: effTone,
+          color: effColor,
+          variant,
+          iconOnly,
+          isLoading,
+          shapeRadiusClass,
+          className,
+        });
 
   // When using asChild, Slot must receive exactly one valid element child.
   if (asChild) {
@@ -307,10 +338,22 @@ export const Button = (
     );
   }
 
-  const spinner = renderSpinner({ isLoading, iconSize });
-  const leading = isLoading ? null : renderIcon({ icon: leadingIcon, className: "me-2", iconSize });
-  const trailing = isLoading ? null : renderIcon({ icon: trailingIcon, className: "ms-2", iconSize });
-  const content = renderContent({ iconOnly, children });
+  const spinner =
+    compatibilityMode === "passthrough"
+      ? null
+      : renderSpinner({ isLoading, iconSize });
+  const leading =
+    compatibilityMode === "passthrough" || isLoading
+      ? null
+      : renderIcon({ icon: leadingIcon, className: "me-2", iconSize });
+  const trailing =
+    compatibilityMode === "passthrough" || isLoading
+      ? null
+      : renderIcon({ icon: trailingIcon, className: "ms-2", iconSize });
+  const content =
+    compatibilityMode === "passthrough"
+      ? children
+      : renderContent({ iconOnly, children });
 
   // Default: render a real button with internal layout helpers
   return (

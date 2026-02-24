@@ -9,8 +9,9 @@ import {
   useState,
 } from "react";
 import ReactDOM from "react-dom";
-import { faCreditCard, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Banknote, CreditCard } from "lucide-react";
+
+import { Button } from "@acme/design-system/atoms";
 
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../../hooks/mutations/useAllTransactionsMutations";
@@ -244,27 +245,27 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
   );
 
   // Icon & label
-  const getPayTypeIcon = () => (payType === "CC" ? faCreditCard : faMoneyBill);
+  const PayTypeIcon = payType === "CC" ? CreditCard : Banknote;
   const getButtonLabel = () => {
     if (loading) return <SmallSpinner />;
     return amount > 0 ? `€${amount.toFixed(2)}` : "Paid";
   };
   // Style classes
-  const activeClass = "bg-primary-main hover:bg-primary-dark text-white dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80";
+  const activeClass = "bg-primary-main hover:bg-primary-dark text-primary-fg";
   const disabledClass =
-    "bg-success-light text-white cursor-not-allowed opacity-70";
+    "bg-success-light text-primary-fg cursor-not-allowed opacity-70";
   const baseButtonClass =
-    "min-h-[55px] px-4 flex items-center justify-center focus:outline-none transition-colors";
+    "min-h-55px px-4 flex items-center justify-center focus:outline-none transition-colors";
 
   const leftButtonClass = isDisabled
     ? disabledClass
-    : `${activeClass} border-r border-gray-400/20`;
+    : `${activeClass} border-r border-border-2/20`;
   const rightButtonClass = isDisabled ? disabledClass : activeClass;
 
   return (
     <div className="relative flex items-center">
       {/* Left button: choose payment type */}
-      <button
+      <Button
         ref={buttonRef}
         onClick={handleMenuToggle}
         disabled={isDisabled}
@@ -275,15 +276,11 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
             : "Click to choose payment type"
         }
       >
-        <FontAwesomeIcon
-          icon={getPayTypeIcon()}
-          size="lg"
-          title={payType === "CC" ? "Credit Card" : "Cash"}
-        />
-      </button>
+        <PayTypeIcon size={20} />
+      </Button>
 
       {/* Right button: immediate payment */}
-      <button
+      <Button
         onClick={handleImmediatePayment}
         disabled={isDisabled}
         className={`${baseButtonClass} rounded-r ${rightButtonClass}`}
@@ -294,7 +291,7 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
         }
       >
         {getButtonLabel()}
-      </button>
+      </Button>
 
       {/* Dropdown menu */}
       {menuVisible &&
@@ -303,25 +300,25 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
         ReactDOM.createPortal(
           <div
             style={portalStyle}
-            className={`z-50 mt-1 w-32 border border-gray-400 rounded shadow-lg bg-white p-3 dark:bg-darkSurface dark:text-darkAccentGreen
+            className={`z-50 mt-1 w-32 border border-border-2 rounded shadow-lg bg-surface p-3
               transition-opacity duration-200 transform-gpu
               ${menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
             onMouseLeave={handleMenuMouseLeave}
           >
-            <button
+            <Button
               onClick={handleMenuItemClickCash}
-              className="w-full text-start px-3 py-1 focus:outline-none transition-colors hover:bg-gray-100"
+              className="w-full text-start px-3 py-1 focus:outline-none transition-colors hover:bg-surface-2"
             >
-              <FontAwesomeIcon icon={faMoneyBill} className="me-2" />
+              <Banknote size={16} className="me-2" />
               CASH
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleMenuItemClickCC}
-              className="w-full text-start px-3 py-1 focus:outline-none transition-colors hover:bg-gray-100"
+              className="w-full text-start px-3 py-1 focus:outline-none transition-colors hover:bg-surface-2"
             >
-              <FontAwesomeIcon icon={faCreditCard} className="me-2" />
+              <CreditCard size={16} className="me-2" />
               CC
-            </button>
+            </Button>
           </div>,
           document.body
         )}

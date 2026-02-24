@@ -2,6 +2,9 @@
 
 import React, { useState } from "react";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import useIngredients from "../../hooks/data/inventory/useIngredients";
 
 function IngredientStock() {
@@ -35,7 +38,7 @@ function IngredientStock() {
   };
 
   return (
-    <div className="p-4 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="p-4">
       <h1 className="text-3xl font-bold mb-4">Ingredient Stock</h1>
       {Object.keys(legacyIngredients).length > 0 && !migrationComplete && (
         <div className="mb-4 rounded border border-warning-main bg-warning-light/20 p-3 text-sm">
@@ -44,8 +47,8 @@ function IngredientStock() {
             Migrate {Object.keys(legacyIngredients).length} items into the
             inventory ledger to enable audit trails.
           </p>
-          <button
-            className="mt-2 px-3 py-1 rounded bg-warning-main text-white hover:bg-warning-dark"
+          <Button
+            className="mt-2 px-3 py-1 rounded bg-warning-main text-primary-fg hover:bg-warning-dark"
             onClick={() => {
               if (
                 window.confirm(
@@ -57,45 +60,45 @@ function IngredientStock() {
             }}
           >
             Migrate Legacy Ingredients
-          </button>
+          </Button>
         </div>
       )}
       {migrationComplete && (
-        <div className="mb-4 rounded border border-green-600 bg-green-50 p-3 text-sm text-green-700">
+        <div className="mb-4 rounded border border-success-main bg-success-light/20 p-3 text-sm text-success-main">
           Legacy ingredients migrated successfully.
         </div>
       )}
-      <table className="min-w-full text-sm dark:bg-darkSurface">
-        <thead>
-          <tr>
-            <th className="p-2 text-start">Ingredient</th>
-            <th className="p-2 text-end">Quantity</th>
-            <th className="p-2">Update</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table className="min-w-full text-sm">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="p-2 text-start">Ingredient</TableHead>
+            <TableHead className="p-2 text-end">Quantity</TableHead>
+            <TableHead className="p-2">Update</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {rows.map((ing) => (
-            <tr key={ing.name}>
-              <td className="p-2 border-b">{ing.name}</td>
-              <td className="p-2 border-b text-end">{ing.quantity}</td>
-              <td className="p-2 border-b">
+            <TableRow key={ing.name}>
+              <TableCell className="p-2 border-b">{ing.name}</TableCell>
+              <TableCell className="p-2 border-b text-end">{ing.quantity}</TableCell>
+              <TableCell className="p-2 border-b">
                 <input
                   type="number"
-                  className="border p-1 w-20 dark:bg-darkSurface dark:text-darkAccentGreen"
+                  className="border p-1 w-20"
                   value={edits[ing.name] ?? ing.quantity}
                   onChange={(e) => handleChange(ing.name, e.target.value)}
                 />
-                <button
-                  className="ms-2 px-2 py-1 bg-blue-500 text-white rounded dark:bg-darkAccentGreen dark:text-darkBg"
+                <Button
+                  className="ms-2 px-2 py-1 bg-info-main text-primary-fg rounded"
                   onClick={() => handleSave(ing.name)}
                 >
                   Save
-                </button>
-              </td>
-            </tr>
+                </Button>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

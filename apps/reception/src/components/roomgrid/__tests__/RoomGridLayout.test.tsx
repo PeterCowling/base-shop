@@ -8,7 +8,7 @@ import { formatDate } from "../../../utils/dateUtils";
 import RoomGrid from "../RoomGrid";
 
 // Mock ReservationGrid to render rows and cells based on props
-jest.mock("@daminort/reservation-grid", () => ({
+jest.mock("../ReservationGrid", () => ({
   __esModule: true,
   ReservationGrid: ({ start, end, data }: { start: string; end: string; data: GridReservationRow[] }) => {
     const startDate = new Date(start);

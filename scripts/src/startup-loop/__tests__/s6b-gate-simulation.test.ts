@@ -1,5 +1,5 @@
 /**
- * S6B Gate Simulation — Tests
+ * SELL-01 Gate Simulation — Tests
  *
  * Covers VC-12 validation contracts:
  *   VC-02: Gate simulation check — 4 scenario fixtures produce expected gate states exactly.
@@ -19,7 +19,7 @@ import * as os from "os";
 import * as path from "path";
 
 import {
-  evaluateS6bGates,
+  evaluateSellGates,
   type GateResult,
   type GateStatus,
 } from "../s6b-gates.js";
@@ -153,7 +153,7 @@ function gateReasons(results: GateResult[], gateId: string): string[] {
 
 // ── Test suite ───────────────────────────────────────────────────────────────
 
-describe("S6B Gate Simulation (VC-02)", () => {
+describe("SELL-01 Gate Simulation (VC-02)", () => {
   let repoRoot: string;
 
   beforeEach(async () => {
@@ -168,18 +168,18 @@ describe("S6B Gate Simulation (VC-02)", () => {
 
   it("VC-02 Scenario 1 (pre-website-low-signal): no DEP → STRAT FAIL, ACT NOT_EVALUATED", async () => {
     // No DEP artifact written — empty repo root
-    const results = await evaluateS6bGates(repoRoot, BIZ);
+    const results = await evaluateSellGates(repoRoot, BIZ);
 
     expect(results).toHaveLength(2);
-    expect(gateState(results, "GATE-S6B-STRAT-01")).toBe("FAIL");
-    expect(gateState(results, "GATE-S6B-ACT-01")).toBe("NOT_EVALUATED");
+    expect(gateState(results, "GATE-SELL-STRAT-01")).toBe("FAIL");
+    expect(gateState(results, "GATE-SELL-ACT-01")).toBe("NOT_EVALUATED");
   });
 
   it("VC-02 Scenario 1: STRAT FAIL reason references canonical DEP path", async () => {
-    const results = await evaluateS6bGates(repoRoot, BIZ);
-    const reasons = gateReasons(results, "GATE-S6B-STRAT-01");
+    const results = await evaluateSellGates(repoRoot, BIZ);
+    const reasons = gateReasons(results, "GATE-SELL-STRAT-01");
     expect(reasons.length).toBeGreaterThan(0);
-    expect(reasons[0]).toContain("GATE-S6B-STRAT-01");
+    expect(reasons[0]).toContain("GATE-SELL-STRAT-01");
     expect(reasons[0]).toContain("demand-evidence-pack.md");
   });
 
@@ -189,16 +189,16 @@ describe("S6B Gate Simulation (VC-02)", () => {
     await writeFile(depPath(repoRoot), DEP_CONTENT);
     // No measurement verification doc written
 
-    const results = await evaluateS6bGates(repoRoot, BIZ);
+    const results = await evaluateSellGates(repoRoot, BIZ);
 
-    expect(gateState(results, "GATE-S6B-STRAT-01")).toBe("PASS");
-    expect(gateState(results, "GATE-S6B-ACT-01")).toBe("FAIL");
+    expect(gateState(results, "GATE-SELL-STRAT-01")).toBe("PASS");
+    expect(gateState(results, "GATE-SELL-ACT-01")).toBe("FAIL");
   });
 
   it("VC-02 Scenario 2: ACT failure reason mentions check-1 (measurement-verification)", async () => {
     await writeFile(depPath(repoRoot), DEP_CONTENT);
-    const results = await evaluateS6bGates(repoRoot, BIZ);
-    const reasons = gateReasons(results, "GATE-S6B-ACT-01");
+    const results = await evaluateSellGates(repoRoot, BIZ);
+    const reasons = gateReasons(results, "GATE-SELL-ACT-01");
     expect(reasons.some((r) => r.includes("[check-1]"))).toBe(true);
     expect(reasons.some((r) => r.includes("measurement-verification"))).toBe(true);
   });
@@ -215,10 +215,10 @@ describe("S6B Gate Simulation (VC-02)", () => {
     // Plan has measurement risks at Severity: High and zero conversion events
     await writeFile(planPath(repoRoot), PLAN_WITH_RISKS);
 
-    const results = await evaluateS6bGates(repoRoot, BIZ);
+    const results = await evaluateSellGates(repoRoot, BIZ);
 
-    expect(gateState(results, "GATE-S6B-STRAT-01")).toBe("PASS");
-    expect(gateState(results, "GATE-S6B-ACT-01")).toBe("FAIL");
+    expect(gateState(results, "GATE-SELL-STRAT-01")).toBe("PASS");
+    expect(gateState(results, "GATE-SELL-ACT-01")).toBe("FAIL");
   });
 
   it("VC-02 Scenario 3: ACT failure includes check-1 (not Active) and check-2 (risks) failures", async () => {
@@ -229,8 +229,8 @@ describe("S6B Gate Simulation (VC-02)", () => {
     );
     await writeFile(planPath(repoRoot), PLAN_WITH_RISKS);
 
-    const results = await evaluateS6bGates(repoRoot, BIZ);
-    const reasons = gateReasons(results, "GATE-S6B-ACT-01");
+    const results = await evaluateSellGates(repoRoot, BIZ);
+    const reasons = gateReasons(results, "GATE-SELL-ACT-01");
 
     expect(reasons.some((r) => r.includes("[check-1]"))).toBe(true);
     expect(reasons.some((r) => r.includes("[check-2]"))).toBe(true);
@@ -248,11 +248,11 @@ describe("S6B Gate Simulation (VC-02)", () => {
     // Clean plan: no measurement risks, non-zero conversion events
     await writeFile(planPath(repoRoot), PLAN_CLEAN);
 
-    const results = await evaluateS6bGates(repoRoot, BIZ);
+    const results = await evaluateSellGates(repoRoot, BIZ);
 
     expect(results).toHaveLength(2);
-    expect(gateState(results, "GATE-S6B-STRAT-01")).toBe("PASS");
-    expect(gateState(results, "GATE-S6B-ACT-01")).toBe("PASS");
+    expect(gateState(results, "GATE-SELL-STRAT-01")).toBe("PASS");
+    expect(gateState(results, "GATE-SELL-ACT-01")).toBe("PASS");
   });
 
   it("VC-02 Scenario 4: PASS results have empty reasons arrays", async () => {
@@ -263,7 +263,7 @@ describe("S6B Gate Simulation (VC-02)", () => {
     );
     await writeFile(planPath(repoRoot), PLAN_CLEAN);
 
-    const results = await evaluateS6bGates(repoRoot, BIZ);
+    const results = await evaluateSellGates(repoRoot, BIZ);
 
     for (const result of results) {
       expect(result.reasons).toHaveLength(0);
@@ -280,8 +280,8 @@ describe("S6B Gate Simulation (VC-02)", () => {
     );
     await writeFile(planPath(repoRoot), PLAN_CLEAN);
 
-    const run1 = await evaluateS6bGates(repoRoot, BIZ);
-    const run2 = await evaluateS6bGates(repoRoot, BIZ);
+    const run1 = await evaluateSellGates(repoRoot, BIZ);
+    const run2 = await evaluateSellGates(repoRoot, BIZ);
 
     expect(JSON.stringify(run1)).toBe(JSON.stringify(run2));
   });

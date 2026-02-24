@@ -8,6 +8,7 @@ Updated: 2026-02-12
 Last-reviewed: 2026-02-12
 Owner: Pete
 Source: docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # HEAD Launch (90 Days) - Executive Cut (v2)

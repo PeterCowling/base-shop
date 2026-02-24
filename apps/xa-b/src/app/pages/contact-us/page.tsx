@@ -1,12 +1,16 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy contact-us content pending design/i18n overhaul */
 import Link from "next/link";
 
-import { Section } from "@acme/design-system/atoms/Section";
-import { Grid } from "@acme/design-system/atoms/Grid";
 import { Button } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
 import { Stack } from "@acme/design-system/primitives/Stack";
+import { FeedbackPreferenceCard } from "@acme/ui/components/organisms/FeedbackPreferenceCard";
+import { NewsletterSignupCard } from "@acme/ui/components/organisms/NewsletterSignupCard";
+import { SupportTwoColumnLayout } from "@acme/ui/components/organisms/SupportTwoColumnLayout";
 
 import { siteConfig } from "../../../lib/siteConfig";
+import { xaI18n } from "../../../lib/xaI18n";
+
 import { ContactUsEnquiryForm } from "./ContactUsEnquiryForm";
 import { ContactUsGeneralContacts } from "./ContactUsGeneralContacts";
 import { ContactUsSidebar } from "./ContactUsSidebar";
@@ -37,40 +41,33 @@ export default function ContactUsPage() {
   return (
     <main className="sf-content">
       <Section padding="wide">
-        <div className="grid gap-12 md:grid-cols-[260px_1fr]">
-          <ContactUsSidebar activeHref="/pages/contact-us" />
-
-          <div className="min-w-0 space-y-10">
+        <SupportTwoColumnLayout sidebar={<ContactUsSidebar activeHref={xaI18n.t("xaB.src.app.pages.contact.us.page.l43c71")} />}>
             <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Customer Service
-              </p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{xaI18n.t("xaB.src.app.pages.contact.us.page.l45c98")}</p>
               <h1 className="text-3xl font-semibold">Contact us</h1>
-              <p className="text-sm text-muted-foreground">
-                We usually respond within 24 hours. During busy periods, replies may take a little longer.
-              </p>
+              <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.pages.contact.us.page.l49c60")}</p>
             </div>
 
             <Grid columns={{ base: 1, md: 2 }} gap={6}>
               <div className="rounded-lg border p-6">
                 <Stack gap={3}>
-                  <div className="text-lg font-semibold">Email service hours</div>
+                  <div className="text-lg font-semibold">{xaI18n.t("xaB.src.app.pages.contact.us.page.l57c58")}</div>
                   <div className="space-y-2 text-sm text-muted-foreground">
-                    <p>Monday to Friday: 24 hours a day</p>
-                    <p>Saturday and Sunday: 8am to 3pm EST</p>
-                    {supportEmail ? <p>Support email: {supportEmail}</p> : null}
+                    <p>{xaI18n.t("xaB.src.app.pages.contact.us.page.l59c24")}</p>
+                    <p>{xaI18n.t("xaB.src.app.pages.contact.us.page.l60c24")}</p>
+                    {supportEmail ? <p>{xaI18n.t("xaB.src.app.pages.contact.us.page.l61c40")}{supportEmail}</p> : null}
                   </div>
                 </Stack>
               </div>
 
               <div className="rounded-lg border p-6">
                 <Stack gap={3}>
-                  <div className="text-lg font-semibold">Phone service hours</div>
+                  <div className="text-lg font-semibold">{xaI18n.t("xaB.src.app.pages.contact.us.page.l68c58")}</div>
                   <div className="space-y-2 text-sm text-muted-foreground">
-                    <p>Monday to Friday: 8am to 9pm EST</p>
-                    {whatsappNumber ? <p>Call or WhatsApp: {whatsappNumber}</p> : null}
+                    <p>{xaI18n.t("xaB.src.app.pages.contact.us.page.l70c24")}</p>
+                    {whatsappNumber ? <p>{xaI18n.t("xaB.src.app.pages.contact.us.page.l71c42")}{whatsappNumber}</p> : null}
                     {!supportEmail && !whatsappNumber ? (
-                      <p>Contact details are available on request.</p>
+                      <p>{xaI18n.t("xaB.src.app.pages.contact.us.page.l73c26")}</p>
                     ) : null}
                   </div>
                 </Stack>
@@ -82,9 +79,7 @@ export default function ContactUsPage() {
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <div className="space-y-1">
                     <div className="text-lg font-semibold">FAQs</div>
-                    <p className="text-sm text-muted-foreground">
-                      Find quick answers and step-by-step guides in our FAQ hub.
-                    </p>
+                    <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.pages.contact.us.page.l85c66")}</p>
                   </div>
                   <Button asChild variant="outline">
                     <Link href="/faqs">Go to FAQs</Link>
@@ -92,9 +87,7 @@ export default function ContactUsPage() {
                 </div>
 
                 <div className="mt-6">
-                  <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                    Quick actions
-                  </h2>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{xaI18n.t("xaB.src.app.pages.contact.us.page.l95c103")}</h2>
                   <Grid columns={{ base: 1, md: 2 }} gap={4} className="mt-4">
                     {quickActions.map((action) => (
                       <div
@@ -112,54 +105,44 @@ export default function ContactUsPage() {
               </div>
 
               <div className="rounded-lg border p-6">
-                <h2 className="text-lg font-semibold">We’ll be in touch soon</h2>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Scroll down for more ways to reach us. During peak periods you might experience longer
-                  waiting times.
-                </p>
+                <h2 className="text-lg font-semibold">{xaI18n.t("xaB.src.app.pages.contact.us.page.l115c55")}</h2>
+                <p className="mt-2 text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.pages.contact.us.page.l116c67")}</p>
               </div>
             </div>
 
             <div className="space-y-6">
               <div className="rounded-lg border p-6">
-                <h2 className="text-lg font-semibold">Step by step: cancel or return</h2>
+                <h2 className="text-lg font-semibold">{xaI18n.t("xaB.src.app.pages.contact.us.page.l125c55")}</h2>
                 <Grid columns={{ base: 1, md: 2 }} gap={6} className="mt-4">
                   <div className="space-y-3">
-                    <div className="text-sm font-semibold">To cancel your order</div>
+                    <div className="text-sm font-semibold">{xaI18n.t("xaB.src.app.pages.contact.us.page.l128c60")}</div>
                     <ol className="list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
                       {cancelSteps.map((step) => (
                         <li key={step}>{step}</li>
                       ))}
                     </ol>
-                    <p className="text-sm text-muted-foreground">
-                      If an order is already prepared, it may no longer be cancellable, but you can still return it.
-                    </p>
+                    <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.pages.contact.us.page.l134c66")}</p>
                   </div>
 
                   <div className="space-y-3">
-                    <div className="text-sm font-semibold">To return your order</div>
+                    <div className="text-sm font-semibold">{xaI18n.t("xaB.src.app.pages.contact.us.page.l140c60")}</div>
                     <ol className="list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
                       {returnSteps.map((step) => (
                         <li key={step}>{step}</li>
                       ))}
                     </ol>
-                    <div className="rounded-md bg-muted/40 p-3 text-xs text-muted-foreground">
-                      Tip: At least one option will always be available — collection or drop-off.
-                    </div>
+                    <div className="rounded-md bg-muted/40 p-3 text-xs text-muted-foreground">{xaI18n.t("xaB.src.app.pages.contact.us.page.l146c95")}</div>
                   </div>
                 </Grid>
 
                 <div className="mt-6 space-y-3">
-                  <div className="text-sm font-semibold">Prepare your return</div>
+                  <div className="text-sm font-semibold">{xaI18n.t("xaB.src.app.pages.contact.us.page.l153c58")}</div>
                   <ol className="list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
                     {prepareSteps.map((step) => (
                       <li key={step}>{step}</li>
                     ))}
                   </ol>
-                  <p className="text-sm text-muted-foreground">
-                    Ask the courier to scan the label so you can track your return. If you need new labels, reprint
-                    them from your order history.
-                  </p>
+                  <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.pages.contact.us.page.l159c64")}</p>
                 </div>
               </div>
             </div>
@@ -176,31 +159,20 @@ export default function ContactUsPage() {
             </Grid>
 
             <Grid columns={{ base: 1, md: 2 }} gap={6}>
-              <div className="rounded-lg border p-6 space-y-3">
-                <div className="text-lg font-semibold">Tell us what you think</div>
-                <p className="text-sm text-muted-foreground">Was this page helpful?</p>
-                <div className="flex flex-wrap gap-3">
-                  <Button variant="outline">Yes</Button>
-                  <Button variant="outline">Not really</Button>
-                </div>
-              </div>
-              <div className="rounded-lg border p-6 space-y-3">
-                <div className="text-lg font-semibold">Never miss a thing</div>
-                <p className="text-sm text-muted-foreground">
-                  Sign up for promotions, new arrivals in {siteConfig.catalog.labelPlural}, stock updates, and more.
-                </p>
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full rounded border px-3 py-2 text-sm"
-                  />
-                  <Button className="sm:w-auto">Sign up</Button>
-                </div>
-              </div>
+              <FeedbackPreferenceCard
+                title="Tell us what you think"
+                question={xaI18n.t("xaB.src.app.pages.contact.us.page.l181c26")}
+                options={[
+                  { id: "yes", label: "Yes" },
+                  { id: "not-really", label: "Not really" },
+                ]}
+              />
+              <NewsletterSignupCard
+                title="Never miss a thing"
+                description={`Sign up for promotions, new arrivals in ${siteConfig.catalog.labelPlural}, stock updates, and more.`}
+              />
             </Grid>
-          </div>
-        </div>
+        </SupportTwoColumnLayout>
       </Section>
     </main>
   );

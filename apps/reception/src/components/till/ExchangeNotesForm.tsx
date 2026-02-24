@@ -1,6 +1,8 @@
 import { memo, useState } from "react";
 import { z } from "zod";
 
+import { Button } from "@acme/design-system/atoms";
+
 import {
   useDenominationCalculator,
 } from "../../hooks/client/till/useDenominationCalculator";
@@ -96,7 +98,7 @@ export const ExchangeNotesForm = memo(function ExchangeNotesForm({
         className="dark:bg-darkSurface"
       >
         <p className="text-sm mb-4 dark:text-darkAccentGreen">{description}</p>
-        <button
+        <Button
           className="mb-4 underline text-sm text-info-main dark:text-darkAccentOrange"
           onClick={() =>
             setDirection((prev) =>
@@ -105,7 +107,7 @@ export const ExchangeNotesForm = memo(function ExchangeNotesForm({
           }
         >
           {toggleLabel}
-        </button>
+        </Button>
         <div className="flex flex-col gap-6">
           <div className="flex-1 w-full">
             <h3 className="text-lg font-semibold mb-2 text-center">{title}</h3>

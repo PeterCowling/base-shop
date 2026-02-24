@@ -4,7 +4,13 @@ import * as React from "react";
 import { CheckIcon } from "@radix-ui/react-icons";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 
-import { cn } from "../utils/style";
+import { cn, overflowContainmentClass } from "../utils/style";
+
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "./shape-radius";
 
 interface ComboboxContextValue {
   value: string;
@@ -91,19 +97,32 @@ export function Combobox({
 
 export interface ComboboxTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: React.Ref<HTMLButtonElement>;
+  /** Semantic trigger shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit trigger radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 export function ComboboxTrigger({
   ref,
   className,
+  shape,
+  radius,
   children,
   ...props
 }: ComboboxTriggerProps) {
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
+
   return (
     <PopoverPrimitive.Trigger
       ref={ref}
       className={cn(
-        "flex h-10 w-full items-center justify-between rounded-md border border-input bg-input px-3 py-2 text-sm text-foreground",
+        "flex h-10 w-full items-center justify-between border border-input bg-input px-3 py-2 text-sm text-foreground",
+        shapeRadiusClass,
         "placeholder:text-muted-foreground",
         "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
         className
@@ -117,27 +136,41 @@ export function ComboboxTrigger({
 
 export interface ComboboxContentProps extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content> {
   ref?: React.Ref<HTMLDivElement>;
+  /** Semantic content shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit content radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 export function ComboboxContent({
   ref,
   className,
+  shape,
+  radius,
   children,
   ...props
 }: ComboboxContentProps) {
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
+
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
         ref={ref}
         align="start"
         className={cn(
-          "w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-md border border-border-2 bg-panel p-1 text-foreground shadow-elevation-2",
+          "w-[var(--radix-popover-trigger-width)] border border-border-2 bg-panel p-1 text-foreground shadow-elevation-2 break-words",
+          shapeRadiusClass,
+          overflowContainmentClass("comboboxSurface"),
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
           className
         )}
         {...props}
       >
-        <div className="max-h-80 overflow-y-auto p-1">
+        <div className="max-h-80 min-w-0 overflow-y-auto p-1">
           {children}
         </div>
       </PopoverPrimitive.Content>
@@ -147,14 +180,25 @@ export function ComboboxContent({
 
 export interface ComboboxInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   ref?: React.Ref<HTMLInputElement>;
+  /** Semantic input shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit input radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 export function ComboboxInput({
   ref,
   className,
+  shape,
+  radius,
   ...props
 }: ComboboxInputProps) {
   const { search, setSearch } = useComboboxContext();
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "md",
+  });
 
   return (
     <input
@@ -163,7 +207,8 @@ export function ComboboxInput({
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       className={cn(
-        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground",
+        "flex h-10 w-full border border-input bg-background px-3 py-2 text-sm text-foreground",
+        shapeRadiusClass,
         "placeholder:text-muted-foreground",
         "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring",
         "mb-1",
@@ -202,6 +247,10 @@ export interface ComboboxItemProps extends React.ButtonHTMLAttributes<HTMLButton
   ref?: React.Ref<HTMLButtonElement>;
   value: string;
   keywords?: string[];
+  /** Semantic item shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit item radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 export function ComboboxItem({
@@ -210,6 +259,8 @@ export function ComboboxItem({
   value,
   children,
   keywords = [],
+  shape,
+  radius,
   ...props
 }: ComboboxItemProps) {
   const { value: selectedValue, onValueChange, onOpenChange, search } = useComboboxContext();
@@ -229,6 +280,11 @@ export function ComboboxItem({
   }
 
   const isSelected = selectedValue === value;
+  const shapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "sm",
+  });
 
   const handleSelect = () => {
     onValueChange(value);
@@ -243,7 +299,8 @@ export function ComboboxItem({
       aria-selected={isSelected}
       onClick={handleSelect}
       className={cn(
-        "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pe-2 ps-8 text-sm text-fg outline-none",
+        "relative flex w-full min-w-0 cursor-default select-none items-center py-1.5 pe-2 ps-8 text-sm text-fg outline-none break-words",
+        shapeRadiusClass,
         "hover:bg-surface-3 focus:bg-accent focus:text-accent-foreground",
         "disabled:pointer-events-none disabled:opacity-50",
         className
@@ -254,7 +311,7 @@ export function ComboboxItem({
       <span className="absolute start-2 flex h-3.5 w-3.5 items-center justify-center">
         {isSelected && <CheckIcon className="h-4 w-4" />}
       </span>
-      {children}
+      <span className="min-w-0 break-words">{children}</span>
     </button>
   );
 }

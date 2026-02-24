@@ -185,25 +185,25 @@ All gate decisions are defined here. All other sections reference gates by ID on
 
 | Gate ID | Enforcement point | Severity | Condition that triggers | Result |
 |---------|------------------|----------|------------------------|--------|
-| GATE-BD-01 | S1 advance | **Hard — blocked** | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` is missing OR `Status` is not `Draft` or `Active` | `status: blocked`, `blocking_reason: "Brand Dossier required at S1. Run /lp-brand-bootstrap <BIZ>."` |
+| GATE-BD-01 | S1 advance | **Hard — blocked** | `docs/business-os/strategy/<BIZ>/brand-identity.user.md` is missing OR `Status` is not `Draft` or `Active` | `status: blocked`, `blocking_reason: "Brand Dossier required at S1. Run /lp-brand-bootstrap <BIZ>."` |
 | GATE-BD-02 | S2B Done | **Hard — blocked** | `docs/business-os/strategy/<BIZ>/competitive-positioning.user.md` is missing OR `Status == Missing` | `status: blocked`, `blocking_reason: "Competitive Positioning required before S2B can be marked Done."` |
 | GATE-BD-03 | S2B Done | **Hard — blocked** | `docs/business-os/strategy/<BIZ>/messaging-hierarchy.user.md` is missing OR `Status` is not `Draft` or `Active` | `status: blocked`, `blocking_reason: "Messaging Hierarchy (Draft minimum) required before S2B Done. Messaging is a sub-deliverable of S2B."` |
-| GATE-BD-04 | S9B QA entry | **Hard — blocked** | `brand-dossier.user.md` `Status != Active` | `qa-report: blocked on brand-dossier not Active` |
+| GATE-BD-04 | S9B QA entry | **Hard — blocked** | `brand-identity.user.md` `Status != Active` | `qa-report: blocked on brand-identity not Active` |
 | GATE-BD-05 | S9B QA entry | **Hard — blocked** | `messaging-hierarchy.user.md` `Status != Active` OR Claims+Proof Ledger has < 3 rows | `qa-report: blocked on messaging-hierarchy not ready for launch` |
 | GATE-BD-06a | S9B QA checklist item BC-01 | **Hard — blocked** | Token compliance fails (hardcoded colors/fonts detected outside token system) | QA report: FAIL on BC-01; go/no-go = NO GO |
 | GATE-BD-06b | S9B QA checklist items BC-02..BC-07 | **Soft — warning** | Any of: wrong font stack, off-brand colors in content, disallowed words in copy, unsubstantiated claims, imagery direction violation, CTA language mismatch | QA report: WARNING on BC-0X; go/no-go unaffected by warnings alone |
-| GATE-BD-07 | `lp-design-spec` entry | **Hard — error** | `brand-dossier.user.md` missing OR `Status != Active` | Skill returns error: "Brand Dossier must be Active before running design spec. Run /lp-brand-bootstrap." |
-| GATE-BD-08 | Standing refresh (quarterly) | **Soft — warning** | `brand-dossier.user.md` `Last-reviewed` older than 90 days | S10 weekly decision loop emits warning: "Brand Dossier is stale. Review and update before next major launch." |
+| GATE-BD-07 | `lp-design-spec` entry | **Hard — error** | `brand-identity.user.md` missing OR `Status != Active` | Skill returns error: "Brand Dossier must be Active before running design spec. Run /lp-brand-bootstrap." |
+| GATE-BD-08 | Standing refresh (quarterly) | **Soft — warning** | `brand-identity.user.md` `Last-reviewed` older than 90 days | S10 weekly decision loop emits warning: "Brand Dossier is stale. Review and update before next major launch." |
 
 ---
 
 ## Artifact Front Matter Schemas
 
-### brand-dossier.user.md
+### brand-identity.user.md
 
 ```yaml
 ---
-Type: Brand-Dossier
+Type: Brand-Identity
 Business-Unit: <BIZ>
 Business-Name: <full name>
 Status: <Draft | Active>
@@ -360,8 +360,8 @@ prevents cross-contamination of demographics and voice styles.
 
 ```
 docs/business-os/strategy/<BIZ>/
-├── brand-dossier.user.md          ← primary brand file (replaces brand-language.user.md for new BIZ;
-│                                    BRIK: rename brand-language.user.md → brand-dossier.user.md)
+├── brand-identity.user.md          ← primary brand file (replaces brand-language.user.md for new BIZ;
+│                                    BRIK: rename brand-language.user.md → brand-identity.user.md)
 ├── competitive-positioning.user.md ← separate: monthly refresh lifecycle
 ├── messaging-hierarchy.user.md    ← separate: refreshed on offer version change
 ├── creative-voice-brief.user.md   ← optional: per-channel campaign brief
@@ -378,7 +378,7 @@ Last-updated: YYYY-MM-DD
 ---
 | Artifact | Path | Status | Last-reviewed |
 |----------|------|--------|--------------|
-| Brand Dossier | brand-dossier.user.md | Draft/Active | YYYY-MM-DD |
+| Brand Dossier | brand-identity.user.md | Draft/Active | YYYY-MM-DD |
 | Competitive Positioning | competitive-positioning.user.md | Draft/Active | YYYY-MM-DD |
 | Messaging Hierarchy | messaging-hierarchy.user.md | Draft/Active | YYYY-MM-DD |
 | Creative Voice Brief | creative-voice-brief.user.md | Draft/Active/N/A | YYYY-MM-DD |
@@ -395,7 +395,7 @@ This decouples the gate check from parsing individual files' frontmatter.
 channel work begins. Without it, downstream stages make implicit brand assumptions.
 
 **Insertion point:** Hard gate added to S1 advance (see GATE-BD-01). Bootstrap runs before
-or concurrently with RG-01/02/03 readiness checks when brand-dossier.user.md is missing.
+or concurrently with RG-01/02/03 readiness checks when brand-identity.user.md is missing.
 
 **Required inputs:**
 
@@ -405,15 +405,15 @@ or concurrently with RG-01/02/03 readiness checks when brand-dossier.user.md is 
 | Target customer hypothesis | Strategy plan §audience, or operator interview | Yes |
 | Existing app UI (if any) | `apps/<app>/src/app/layout.tsx`, key pages | Only if app exists |
 | Token package (if any) | `packages/themes/<theme>/src/tokens.ts` | Only if theme exists |
-| BRIK brand-dossier (reference example) | `docs/business-os/strategy/BRIK/brand-dossier.user.md` | Yes (reference) |
+| BRIK brand-identity (reference example) | `docs/business-os/strategy/BRIK/brand-identity.user.md` | Yes (reference) |
 
 **Method:** Run `/lp-brand-bootstrap <BIZ>`. Fills template from strategy plan + demographic
 hypothesis + existing UI/token evidence. Unknown fields marked `TBD — {rationale}`.
 
-**Output:** `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` at Status: Draft
+**Output:** `docs/business-os/strategy/<BIZ>/brand-identity.user.md` at Status: Draft
 (minimum acceptable for GATE-BD-01 to pass).
 
-**Token mirroring — critical:** The `Visual Identity` section of brand-dossier.user.md
+**Token mirroring — critical:** The `Visual Identity` section of brand-identity.user.md
 must NOT copy token values from `tokens.ts`. It must only reference the token file path:
 
 ```markdown
@@ -459,7 +459,7 @@ the compliance guardrails defined above. Artifacts cite evidence pack entries by
 | Input | Source | Required? |
 |-------|--------|----------|
 | S2 market intelligence pack | `docs/business-os/market-research/<BIZ>/latest.user.md` | Yes |
-| BD-1 brand-dossier (draft) | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | Yes |
+| BD-1 brand-identity (draft) | `docs/business-os/strategy/<BIZ>/brand-identity.user.md` | Yes |
 | Review extracts | Evidence pack: `evidence/<BIZ>/<YYYY-MM>/`  | Yes (≥5 quotes for Draft) |
 | Competitor ad samples | Evidence pack (screenshots) | Optional (Active requires ≥1 per competitor) |
 
@@ -501,7 +501,7 @@ messaging-hierarchy.user.md is not at least Draft. The fan-out to S3 and S6B is 
 |-------|--------|----------|
 | S2B offer artifact | `stages/S2B/offer.md` | Yes |
 | BD-2 competitive positioning | `competitive-positioning.user.md` | Yes (Draft minimum) |
-| BD-1 brand-dossier | `brand-dossier.user.md` | Yes (Draft minimum) |
+| BD-1 brand-identity | `brand-identity.user.md` | Yes (Draft minimum) |
 | Customer language harvest | `competitive-positioning.user.md §Customer Language Harvest` | Yes |
 
 **Output:** `docs/business-os/strategy/<BIZ>/messaging-hierarchy.user.md` at Status: Draft.
@@ -534,7 +534,7 @@ a GATE-BD-06b warning at S9B QA (not a blocker), incentivizing completion before
 |-------|--------|----------|
 | S6B channel plan | `stages/S6B/channels.md` | Yes |
 | BD-3 messaging hierarchy | `messaging-hierarchy.user.md` | Yes (Active for BD-4) |
-| BD-1 brand-dossier | `brand-dossier.user.md` | Yes (Active for BD-4) |
+| BD-1 brand-identity | `brand-identity.user.md` | Yes (Active for BD-4) |
 
 **Output:** `docs/business-os/strategy/<BIZ>/creative-voice-brief.user.md`
 
@@ -543,7 +543,7 @@ visual direction, CTA variants, measurement hook.
 
 **Note on lp-channels integration:** lp-channels SKILL.md was not read (E-12). The plan
 task adding brand consumption to lp-channels must read the skill file first and make a
-decision about whether brand-dossier + messaging-hierarchy become required inputs or optional
+decision about whether brand-identity + messaging-hierarchy become required inputs or optional
 recommendations.
 
 ---
@@ -562,7 +562,7 @@ and confirm there is no existing brand-language check before adding the gate.
 
 ### BD-6: Brand Compliance QA (S9B — GATE-BD-04, BD-05, BD-06a/b)
 
-**Purpose:** Verify shipped work complies with brand-dossier and messaging-hierarchy before
+**Purpose:** Verify shipped work complies with brand-identity and messaging-hierarchy before
 launch. Currently lp-launch-qa and lp-design-qa do not reference brand artifacts (E-13).
 
 **Change:** Add the following checklist to the S9B QA report output. Gate severity is defined
@@ -570,12 +570,12 @@ in the Gate Policy table and referenced here by ID only.
 
 ```
 BC-01 [GATE-BD-06a Hard]: Token compliance — no hardcoded colors/fonts outside token system
-BC-02 [GATE-BD-06b Warn]: Typography — font stack matches brand-dossier Token-Source
+BC-02 [GATE-BD-06b Warn]: Typography — font stack matches brand-identity Token-Source
 BC-03 [GATE-BD-06b Warn]: Palette — no off-brand colors in copy surfaces
 BC-04 [GATE-BD-06b Warn]: Voice — copy reviewed against Words to Avoid list
 BC-05 [GATE-BD-06b Warn]: Claims — all copy claims present in messaging-hierarchy Proof Ledger
-BC-06 [GATE-BD-06b Warn]: Imagery — any images follow Do/Don't from brand-dossier
-BC-07 [GATE-BD-06b Warn]: CTA language — primary CTA matches brand-dossier Key Phrases
+BC-06 [GATE-BD-06b Warn]: Imagery — any images follow Do/Don't from brand-identity
+BC-07 [GATE-BD-06b Warn]: CTA language — primary CTA matches brand-identity Key Phrases
 ```
 
 **Note on lp-launch-qa and lp-design-qa:** These skills were not read (E-13). Plan tasks
@@ -587,7 +587,7 @@ writing additions.
 ### Prime App Design Branding (BRIK-specific Consolidated Artifact)
 
 **What it is:** A single document that consolidates how BRIK's brand applies specifically
-to the Prime guest portal. Not a separate brand — a targeted projection of brand-dossier.
+to the Prime guest portal. Not a separate brand — a targeted projection of brand-identity.
 
 **Path:** `docs/business-os/strategy/BRIK/prime-app-design-branding.user.md`
 
@@ -597,19 +597,19 @@ to the Prime guest portal. Not a separate brand — a targeted projection of bra
    of the workflow doc, corrected to reference `packages/themes/prime/src/tokens.ts` not
    `tokens.css`, evidence E-11)
 2. **Design principles** — the 7 principles from §11.1, migrated here and cross-referenced
-   to brand-dossier (brand-dossier is the source of Personality; principles are derived from it)
+   to brand-identity (brand-identity is the source of Personality; principles are derived from it)
 3. **Token source reference only** — `packages/themes/prime/src/tokens.ts`. No table of
    values. Rationale for each key token is documented (as in BD-1 above). Pre-commit hook
    or render script may optionally inject a generated snapshot.
 4. **Signature patterns** — documented as they accumulate during lp-design-spec feature work
-5. **Link to brand-dossier** — for non-Prime-specific brand decisions
+5. **Link to brand-identity** — for non-Prime-specific brand decisions
 6. **Review cadence** — update when: token file changes, new surfaces are added, or brand
    principles are revised
 
 **How it is produced:** BD-1 BRIK extension. After running `/lp-brand-bootstrap BRIK` (or
-updating the existing BRIK brand-language.user.md → brand-dossier.user.md rename), a
+updating the existing BRIK brand-language.user.md → brand-identity.user.md rename), a
 companion task produces prime-app-design-branding.user.md by extracting Prime-specific content
-from §11.1 and linking to brand-dossier for the rest.
+from §11.1 and linking to brand-identity for the rest.
 
 ---
 
@@ -618,7 +618,7 @@ from §11.1 and linking to brand-dossier for the rest.
 ```
 docs/business-os/strategy/<BIZ>/
 ├── index.user.md                           [Loop gate reference point]
-├── brand-dossier.user.md                   [BD-1; replaces brand-language.user.md]
+├── brand-identity.user.md                   [BD-1; replaces brand-language.user.md]
 ├── competitive-positioning.user.md         [BD-2; separate lifecycle: monthly refresh]
 ├── messaging-hierarchy.user.md             [BD-3; separate lifecycle: per offer version]
 ├── creative-voice-brief.user.md            [BD-4; optional; per campaign cycle]
@@ -637,7 +637,7 @@ packages/themes/<theme>/src/tokens.ts       [Source of truth for all token value
 
 | Artifact | Produced by | Refresh trigger | Active DoD minimum |
 |----------|-------------|----------------|--------------------|
-| brand-dossier | BD-1 (lp-brand-bootstrap) | Strategy change or 90-day staleness | No TBD in core sections, token-source valid |
+| brand-identity | BD-1 (lp-brand-bootstrap) | Strategy change or 90-day staleness | No TBD in core sections, token-source valid |
 | competitive-positioning | BD-2 (Deep Research prompt) | Monthly or competitor major move | ≥3 competitors, ≥20 quotes, ≥3 proof rows |
 | messaging-hierarchy | BD-3 (synthesis from offer + BD-2) | Offer version change | ≥3 value props, ≥3 proof rows, voice examples |
 | creative-voice-brief | BD-4 (after S6B Done) | Channel plan change | All S6B channels covered |
@@ -649,7 +649,7 @@ packages/themes/<theme>/src/tokens.ts       [Source of truth for all token value
 
 ### Per Artifact
 
-#### brand-dossier.user.md
+#### brand-identity.user.md
 
 | Information needed | Internal source | External source | Evidence pack? |
 |--------------------|----------------|----------------|---------------|
@@ -840,7 +840,7 @@ As-of: {{DATE}}
 Required inputs before running:
 - competitive-positioning.user.md (USP Whitespace + Customer Language Harvest)
 - messaging-hierarchy.user.md draft (value props)
-- brand-dossier.user.md (personality + voice)
+- brand-identity.user.md (personality + voice)
 
 Objective:
 Generate ≥6 distinct messaging angles grounded in ICP research and differentiation
@@ -877,7 +877,7 @@ Stop conditions:
 ```
 ---
 Prompt-ID: BRAND-DR-05
-Stage: BD-1 (brand-dossier visual identity rationale), pre-BD-5 (lp-design-spec)
+Stage: BD-1 (brand-identity visual identity rationale), pre-BD-5 (lp-design-spec)
 Business: BRIK
 As-of: {{DATE}}
 Evidence-pack-target: docs/business-os/evidence/BRIK/{{YYYY-MM}}/
@@ -926,27 +926,27 @@ Stop conditions:
 
 | Gap | Current workflow area | Missing process | Missing inputs | Proposed step | New artifact(s) | Gate | Priority |
 |-----|----------------------|----------------|----------------|--------------|-----------------|------|---------|
-| G-01 | S1 Readiness | No brand identity gate — S1 can pass without brand-dossier | Target audience hypothesis | Add GATE-BD-01 to startup-loop SKILL.md advance rules | brand-dossier.user.md (Draft) | GATE-BD-01 | **P1** |
+| G-01 | S1 Readiness | No brand identity gate — S1 can pass without brand-identity | Target audience hypothesis | Add GATE-BD-01 to startup-loop SKILL.md advance rules | brand-identity.user.md (Draft) | GATE-BD-01 | **P1** |
 | G-02 | S2 Market intelligence | Competitive positioning not extracted as brand artifact | S2 market intel pack, evidence pack | BD-2 required before S2B Done | competitive-positioning.user.md | GATE-BD-02 | **P1** |
-| G-03 | S2B Offer design | No brand-dossier input; lp-offer skill does not accept it | brand-dossier.user.md (Active) | Read lp-offer SKILL.md; add brand-dossier as recommended input | None (consume existing) | Recommended input, not hard gate | **P1** |
+| G-03 | S2B Offer design | No brand-identity input; lp-offer skill does not accept it | brand-identity.user.md (Active) | Read lp-offer SKILL.md; add brand-identity as recommended input | None (consume existing) | Recommended input, not hard gate | **P1** |
 | G-04 | S2B Offer design | No messaging hierarchy produced as part of offer stage | Offer artifact, BD-2, customer language | BD-3 as S2B sub-deliverable; update S2B produced_keys in loop-spec.yaml | messaging-hierarchy.user.md | GATE-BD-03 | **P1** |
-| G-05 | S9B QA gates | No brand compliance checklist in lp-launch-qa or lp-design-qa | brand-dossier (Active), messaging-hierarchy (Active) | BD-6: add BC-01..07 to QA report; read both skill files first | BC-01..07 pass/fail table in QA report | GATE-BD-04, BD-05, BD-06a (hard) / BD-06b (warning) | **P1** |
-| G-06 | All non-BRIK businesses | No brand-dossier for HEAD, PET, HBAG, XA | Strategy plans + demographic hypothesis | BD-1 bootstrapped at each business's S1 entry | brand-dossier.user.md per BIZ | GATE-BD-01 per BIZ | **P1** |
+| G-05 | S9B QA gates | No brand compliance checklist in lp-launch-qa or lp-design-qa | brand-identity (Active), messaging-hierarchy (Active) | BD-6: add BC-01..07 to QA report; read both skill files first | BC-01..07 pass/fail table in QA report | GATE-BD-04, BD-05, BD-06a (hard) / BD-06b (warning) | **P1** |
+| G-06 | All non-BRIK businesses | No brand-identity for HEAD, PET, HBAG, XA | Strategy plans + demographic hypothesis | BD-1 bootstrapped at each business's S1 entry | brand-identity.user.md per BIZ | GATE-BD-01 per BIZ | **P1** |
 | G-07 | Section 11 (Design Policy) | Standalone appendix with no stage key or artifact contract | N/A (process redesign) | Retire §11; migrate content to prime-app-design-branding.user.md; embed BD-1..BD-6 in §4 stage table | prime-app-design-branding.user.md | N/A (editorial change) | **P2** |
-| G-08 | S6B Channel + GTM | Channel plan not informed by brand voice (unknown — lp-channels not read) | messaging-hierarchy (Active), brand-dossier (Active) | Read lp-channels SKILL.md; add brand inputs if absent | None (consume existing) | TBD after reading skill | **P2** |
-| G-09 | S7 Fact-find / lp-design-spec | lp-design-spec has no brand-dossier Active prerequisite | brand-dossier.user.md (Active) | Add GATE-BD-07 check to lp-design-spec | None (gate enhancement) | GATE-BD-07 | **P2** |
+| G-08 | S6B Channel + GTM | Channel plan not informed by brand voice (unknown — lp-channels not read) | messaging-hierarchy (Active), brand-identity (Active) | Read lp-channels SKILL.md; add brand inputs if absent | None (consume existing) | TBD after reading skill | **P2** |
+| G-09 | S7 Fact-find / lp-design-spec | lp-design-spec has no brand-identity Active prerequisite | brand-identity.user.md (Active) | Add GATE-BD-07 check to lp-design-spec | None (gate enhancement) | GATE-BD-07 | **P2** |
 | G-10 | loop-spec.yaml | S2B produced_keys only has `offer` | messaging-hierarchy as sub-deliverable | Update loop-spec.yaml: S2B produced_keys = `["offer", "messaging_hierarchy"]` | Updated loop-spec.yaml | N/A (spec change) | **P1** |
 | G-11 | workflow-prompts/_templates/ | No brand-specific Deep Research prompt templates | N/A | Create 5 templates (BRAND-DR-01..05) | 5 prompt template files | Referenced from §10 Prompt Hand-Off Map | **P2** |
 | G-12 | Evidence storage | No canonical evidence store for raw data exports | N/A | Create `docs/business-os/evidence/` convention | evidence/<BIZ>/<YYYY-MM>/ directory + README template | Compliance guardrails (soft; no hard gate) | **P2** |
-| G-13 | Token mirroring (BRIK) | brand-language.user.md copies token values from tokens.ts; already diverged (E-10) | tokens.ts as source of truth | Rename brand-language.user.md → brand-dossier.user.md; remove duplicated values; add token rationale section only | Updated brand-dossier.user.md | GATE-BD-07 (brand-dossier Active requires token-source valid) | **P1** |
+| G-13 | Token mirroring (BRIK) | brand-language.user.md copies token values from tokens.ts; already diverged (E-10) | tokens.ts as source of truth | Rename brand-language.user.md → brand-identity.user.md; remove duplicated values; add token rationale section only | Updated brand-identity.user.md | GATE-BD-07 (brand-identity Active requires token-source valid) | **P1** |
 | G-14 | §11 path inconsistency | §11.1 references `tokens.css`; actual file is `tokens.ts` (E-11) | N/A | Fix path reference when retiring §11 | N/A (editorial fix) | N/A | **P3** |
-| G-15 | Standing refresh | No brand refresh cadence | Updated competitor landscape | Add brand-dossier quarterly review to §12 Standing Refresh table | Updated brand-dossier.user.md | GATE-BD-08 (warning at S10) | **P3** |
+| G-15 | Standing refresh | No brand refresh cadence | Updated competitor landscape | Add brand-identity quarterly review to §12 Standing Refresh table | Updated brand-identity.user.md | GATE-BD-08 (warning at S10) | **P3** |
 
 ### Dependency Ordering (what must exist before build/launch)
 
 ```
 P1 chain (sequential within BRIK):
-G-13 (fix token mirroring in brand-dossier) → G-01 (brand-dossier at Draft) → G-02 (competitive positioning)
+G-13 (fix token mirroring in brand-identity) → G-01 (brand-identity at Draft) → G-02 (competitive positioning)
 → G-04 (messaging hierarchy) → G-10 (loop-spec update) → G-05 (QA gates)
 
 P1 chains (parallel, one per non-BRIK business):
@@ -958,7 +958,7 @@ G-05 (read lp-launch-qa + lp-design-qa before adding BC checklist)
 
 P2 gaps depend on P1 being done:
 G-08 (lp-channels read + brand inputs added) requires G-04 (messaging hierarchy exists)
-G-07 (retire §11) requires G-13 (brand-dossier complete) + prime-app-design-branding.user.md produced
+G-07 (retire §11) requires G-13 (brand-identity complete) + prime-app-design-branding.user.md produced
 G-09 (lp-design-spec gate) can be added anytime
 
 P2 gaps that can run in parallel:
@@ -1031,10 +1031,10 @@ skill files). No market spend required.
 | Risk | Likelihood | Impact | Mitigation |
 |------|-----------|--------|-----------|
 | BD-3 (messaging hierarchy as S2B sub-deliverable) adds unexpected latency | Medium | Medium | Allow S2B Done with messaging at Draft (not Active); Active required only at S9B via GATE-BD-05 |
-| lp-offer SKILL.md (beyond first 80 lines) has incompatible input handling for brand-dossier | Low | Medium | Read full skill file in plan investigation task before writing the gate; if incompatible, keep as "recommended" not "required" |
+| lp-offer SKILL.md (beyond first 80 lines) has incompatible input handling for brand-identity | Low | Medium | Read full skill file in plan investigation task before writing the gate; if incompatible, keep as "recommended" not "required" |
 | lp-design-qa already implements BC-01 token compliance (G-05 partial overlap) | Medium | Low (positive risk) | Read skill file; if check exists, reference it instead of duplicating |
 | Brand-dossier quarterly review cadence not followed → stale brand → GATE-BD-08 warnings ignored | Medium | Low | Standing refresh warning at S10 (soft gate); if warnings ignored 3+ cycles, escalate to hard gate at next S9B |
-| BRIK brand-language.user.md rename (→ brand-dossier.user.md) breaks existing references | Medium | Low | grep for `brand-language.user.md` references before renaming; update all references in same PR |
+| BRIK brand-language.user.md rename (→ brand-identity.user.md) breaks existing references | Medium | Low | grep for `brand-language.user.md` references before renaming; update all references in same PR |
 | Evidence pack files grow large over time | Low | Low | Enforce minimum-necessary rule at pack creation; add gitignore pattern for binary files >500KB |
 
 ---
@@ -1050,7 +1050,7 @@ skill files). No market spend required.
 - No new skill files required: BD-1 = lp-brand-bootstrap (existing, gate-enhanced); BD-2/BD-3/BD-4
   = new prompt templates + synthesis agent runs; BD-5 = lp-design-spec gate-enhanced; BD-6 =
   lp-launch-qa/lp-design-qa checklist additions.
-- BRIK brand-language.user.md → brand-dossier.user.md rename: update all references in:
+- BRIK brand-language.user.md → brand-identity.user.md rename: update all references in:
   - `.claude/skills/lp-brand-bootstrap/SKILL.md` (references brand-language.user.md)
   - `startup-loop-workflow.user.md` §11 (when retiring)
   - `docs/plans/prime-design-refresh-fact-find.md` (references brand-language)
@@ -1068,11 +1068,11 @@ skill files). No market spend required.
 7. **EDITORIAL**: Add GATE-BD-01 to startup-loop SKILL.md advance rules.
 8. **EDITORIAL**: Update startup-loop-workflow.user.md §4 to embed BD-1..BD-6; retire §11 content.
 9. **EDITORIAL**: Create prime-app-design-branding.user.md for BRIK (extract from §11.1, correct path).
-10. **EDITORIAL**: Rename BRIK brand-language.user.md → brand-dossier.user.md; remove mirrored token values; add token rationale section; update all references.
+10. **EDITORIAL**: Rename BRIK brand-language.user.md → brand-identity.user.md; remove mirrored token values; add token rationale section; update all references.
 11. **BUILD**: Run lp-brand-bootstrap for HEAD, PET, HBAG (three parallel agents).
 12. **BUILD**: Add GATE-BD-07 to lp-design-spec (after confirming full skill contract).
 13. **BUILD**: Add BC-01..07 checklist to lp-launch-qa / lp-design-qa (after confirming skills).
-14. **EDITORIAL**: Add brand-dossier quarterly refresh to §12 Standing Refresh Prompts table.
+14. **EDITORIAL**: Add brand-identity quarterly refresh to §12 Standing Refresh Prompts table.
 
 ---
 
@@ -1087,15 +1087,15 @@ skill files). No market spend required.
   - 5 prompt template files exist at `docs/business-os/workflow-prompts/_templates/brand-DR-0{1-5}.md`
   - `startup-loop-workflow.user.md` §4 includes BD-1..BD-6 rows; §11 retired or redirected
   - `docs/business-os/strategy/BRIK/prime-app-design-branding.user.md` exists, Status: Active
-  - `docs/business-os/strategy/BRIK/brand-dossier.user.md` exists (renamed from brand-language), Status: Active, no hand-copied token values
+  - `docs/business-os/strategy/BRIK/brand-identity.user.md` exists (renamed from brand-language), Status: Active, no hand-copied token values
   - GATE-BD-01 present in startup-loop SKILL.md advance rules
   - loop-spec.yaml S2B produced_keys includes `messaging_hierarchy`
-  - brand-dossier.user.md exists for HEAD, PET, HBAG (Status: Draft minimum)
+  - brand-identity.user.md exists for HEAD, PET, HBAG (Status: Draft minimum)
   - `docs/business-os/strategy/<BIZ>/index.user.md` exists for BRIK (and HEAD/PET/HBAG)
   - `docs/business-os/evidence/` directory with README template created
   - All references to `brand-language.user.md` updated or redirected
 - **Post-delivery measurement:**
-  - Next S1 run for any business: GATE-BD-01 blocks if brand-dossier missing (testable immediately)
+  - Next S1 run for any business: GATE-BD-01 blocks if brand-identity missing (testable immediately)
   - Next S2B run: GATE-BD-03 blocks if messaging-hierarchy Draft missing (testable in BRIK loop)
   - Next S9B run: BC-01..BC-07 table appears in QA report
 
@@ -1130,9 +1130,9 @@ skill files). No market spend required.
 
 ### Remaining Assumptions (flagged for /lp-do-plan)
 
-- **lp-offer additional input handling:** Assumed brand-dossier can be added as a recommended
+- **lp-offer additional input handling:** Assumed brand-identity can be added as a recommended
   input without breaking existing lp-offer workflow. Must be verified by reading full SKILL.md.
-- **lp-channels brand consumption:** Assumed brand-dossier and messaging-hierarchy are absent
+- **lp-channels brand consumption:** Assumed brand-identity and messaging-hierarchy are absent
   from lp-channels (indicated by, not confirmed — E-12). If already present, G-08 is resolved.
 - **lp-launch-qa BC-01 overlap:** Assumed token compliance is not already checked. If it exists,
   BC-01 should reference it rather than duplicate.

@@ -1,6 +1,9 @@
 /* File: src/componnents/bar/orderTaking/modal/MixerModal.tsx */
 import React, { type FC, useCallback } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
+
 import { withModalBackground } from "../../../../hoc/withModalBackground";
 
 import ModalContainer from "./ModalContainer";
@@ -36,23 +39,25 @@ const MixerModalBase: FC<MixerModalProps> = ({ onSelect, onCancel }) => {
   return (
     <ModalContainer widthClasses="w-80">
       <h2 className="text-lg font-semibold mb-4">Select a Mixer</h2>
-      <div className="flex flex-col space-y-2 mb-4">
+      <Stack gap={2} className="mb-4">
         {mixerOptions.map((m) => (
-          <button
+          <Button
             key={m}
             onClick={createMixerClickHandler(m)}
-            className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200 rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+            color="info"
+            tone="solid"
           >
             {m}
-          </button>
+          </Button>
         ))}
-      </div>
-      <button
+      </Stack>
+      <Button
         onClick={onCancel}
-        className="px-4 py-2 bg-gray-300 text-black hover:bg-gray-400 transition-colors duration-200 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
+        color="default"
+        tone="soft"
       >
         Cancel
-      </button>
+      </Button>
     </ModalContainer>
   );
 };

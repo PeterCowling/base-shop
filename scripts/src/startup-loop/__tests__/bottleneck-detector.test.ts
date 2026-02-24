@@ -12,7 +12,7 @@ import type { BottleneckDiagnosis,FunnelMetricsInput } from '../bottleneck-detec
 import { identifyBottleneck } from '../bottleneck-detector';
 
 describe('identifyBottleneck', () => {
-  // TC-01: Single clear bottleneck — CAC 80% worse → S6B/cac critical
+  // TC-01: Single clear bottleneck — CAC 80% worse → SELL-01/cac critical
   test('TC-01: identifies single clear bottleneck with critical severity', () => {
     const input: FunnelMetricsInput = {
       diagnosis_schema_version: 'v1',
@@ -24,7 +24,7 @@ describe('identifyBottleneck', () => {
           actual: 9800,
           delta_pct: -2.0,
           miss: 0.02,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -42,7 +42,7 @@ describe('identifyBottleneck', () => {
           actual: 148,
           delta_pct: -1.33,
           miss: 0.013,
-          stage: 'S2B',
+          stage: 'MARKET-06',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -51,7 +51,7 @@ describe('identifyBottleneck', () => {
           actual: 90,
           delta_pct: 80.0,
           miss: 0.80,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'lower_is_better',
           metric_class: 'primitive',
         },
@@ -91,14 +91,14 @@ describe('identifyBottleneck', () => {
 
     expect(result.diagnosis_status).toBe('ok');
     expect(result.identified_constraint).not.toBeNull();
-    expect(result.identified_constraint?.constraint_key).toBe('S6B/cac');
-    expect(result.identified_constraint?.stage).toBe('S6B');
+    expect(result.identified_constraint?.constraint_key).toBe('SELL-01/cac');
+    expect(result.identified_constraint?.stage).toBe('SELL-01');
     expect(result.identified_constraint?.metric).toBe('cac');
     expect(result.identified_constraint?.severity).toBe('critical');
     expect(result.identified_constraint?.miss).toBe(0.80);
   });
 
-  // TC-02: Equal miss tie — CAC 0.60 and CVR 0.60 → CVR wins by upstream priority (S3 < S6B)
+  // TC-02: Equal miss tie — CAC 0.60 and CVR 0.60 → CVR wins by upstream priority (S3 < SELL-01)
   test('TC-02: applies upstream priority tiebreaker when misses are equal', () => {
     const input: FunnelMetricsInput = {
       diagnosis_schema_version: 'v1',
@@ -110,7 +110,7 @@ describe('identifyBottleneck', () => {
           actual: 9900,
           delta_pct: -1.0,
           miss: 0.01,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -128,7 +128,7 @@ describe('identifyBottleneck', () => {
           actual: 148,
           delta_pct: -1.33,
           miss: 0.013,
-          stage: 'S2B',
+          stage: 'MARKET-06',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -137,7 +137,7 @@ describe('identifyBottleneck', () => {
           actual: 80,
           delta_pct: 60.0,
           miss: 0.60,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'lower_is_better',
           metric_class: 'primitive',
         },
@@ -180,7 +180,7 @@ describe('identifyBottleneck', () => {
     expect(result.identified_constraint?.constraint_key).toBe('S3/cvr');
     expect(result.identified_constraint?.severity).toBe('critical');
     expect(result.identified_constraint?.miss).toBe(0.60);
-    // S3 precedes S6B in upstream_priority_order
+    // S3 precedes SELL-01 in upstream_priority_order
   });
 
   // TC-03: No bottleneck — all within 4% → diagnosis_status="no_bottleneck", constraint=null
@@ -195,7 +195,7 @@ describe('identifyBottleneck', () => {
           actual: 9800,
           delta_pct: -2.0,
           miss: 0.02,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -213,7 +213,7 @@ describe('identifyBottleneck', () => {
           actual: 148,
           delta_pct: -1.33,
           miss: 0.013,
-          stage: 'S2B',
+          stage: 'MARKET-06',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -222,7 +222,7 @@ describe('identifyBottleneck', () => {
           actual: 48,
           delta_pct: -4.0,
           miss: 0.0,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'lower_is_better',
           metric_class: 'primitive',
         },
@@ -277,7 +277,7 @@ describe('identifyBottleneck', () => {
           actual: 9800,
           delta_pct: -2.0,
           miss: 0.02,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -295,7 +295,7 @@ describe('identifyBottleneck', () => {
           actual: 148,
           delta_pct: -1.33,
           miss: 0.013,
-          stage: 'S2B',
+          stage: 'MARKET-06',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -304,7 +304,7 @@ describe('identifyBottleneck', () => {
           actual: 48,
           delta_pct: -4.0,
           miss: 0.0,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'lower_is_better',
           metric_class: 'primitive',
         },
@@ -331,7 +331,7 @@ describe('identifyBottleneck', () => {
         {
           stage: 'S4',
           reason_code: 'deps_blocked',
-          blocking_reason: 'Missing S6B artifacts',
+          blocking_reason: 'Missing SELL-01 artifacts',
           timestamp: '2026-02-13T10:00:00Z',
         },
       ],
@@ -371,7 +371,7 @@ describe('identifyBottleneck', () => {
           actual: 9900,
           delta_pct: -1.0,
           miss: 0.01,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -389,7 +389,7 @@ describe('identifyBottleneck', () => {
           actual: 148,
           delta_pct: -1.33,
           miss: 0.013,
-          stage: 'S2B',
+          stage: 'MARKET-06',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -398,7 +398,7 @@ describe('identifyBottleneck', () => {
           actual: 48,
           delta_pct: -4.0,
           miss: 0.0,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'lower_is_better',
           metric_class: 'primitive',
         },
@@ -455,7 +455,7 @@ describe('identifyBottleneck', () => {
           actual: 7000,
           delta_pct: -30.0,
           miss: 0.30,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -473,7 +473,7 @@ describe('identifyBottleneck', () => {
           actual: 148,
           delta_pct: -1.33,
           miss: 0.013,
-          stage: 'S2B',
+          stage: 'MARKET-06',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -482,7 +482,7 @@ describe('identifyBottleneck', () => {
           actual: 48,
           delta_pct: -4.0,
           miss: 0.0,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'lower_is_better',
           metric_class: 'primitive',
         },
@@ -523,7 +523,7 @@ describe('identifyBottleneck', () => {
     expect(result.diagnosis_status).toBe('ok');
     expect(result.identified_constraint).not.toBeNull();
     // Traffic miss (0.30) > CVR miss (0.20), so traffic should be primary
-    expect(result.identified_constraint?.constraint_key).toBe('S6B/traffic');
+    expect(result.identified_constraint?.constraint_key).toBe('SELL-01/traffic');
     expect(result.identified_constraint?.severity).toBe('moderate');
     expect(result.identified_constraint?.miss).toBe(0.30);
   });
@@ -540,7 +540,7 @@ describe('identifyBottleneck', () => {
           actual: 8500,
           delta_pct: -15.0,
           miss: 0.15,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -558,7 +558,7 @@ describe('identifyBottleneck', () => {
           actual: 145,
           delta_pct: -3.33,
           miss: 0.033,
-          stage: 'S2B',
+          stage: 'MARKET-06',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -567,7 +567,7 @@ describe('identifyBottleneck', () => {
           actual: 45,
           delta_pct: -10.0,
           miss: 0.0,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'lower_is_better',
           metric_class: 'primitive',
         },
@@ -625,7 +625,7 @@ describe('identifyBottleneck', () => {
           actual: null,
           delta_pct: null,
           miss: null,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -643,7 +643,7 @@ describe('identifyBottleneck', () => {
           actual: null,
           delta_pct: null,
           miss: null,
-          stage: 'S2B',
+          stage: 'MARKET-06',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -652,7 +652,7 @@ describe('identifyBottleneck', () => {
           actual: null,
           delta_pct: null,
           miss: null,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'lower_is_better',
           metric_class: 'primitive',
         },
@@ -707,7 +707,7 @@ describe('identifyBottleneck', () => {
           actual: 9900,
           delta_pct: -1.0,
           miss: 0.01,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -725,7 +725,7 @@ describe('identifyBottleneck', () => {
           actual: 148,
           delta_pct: -1.33,
           miss: 0.013,
-          stage: 'S2B',
+          stage: 'MARKET-06',
           direction: 'higher_is_better',
           metric_class: 'primitive',
         },
@@ -734,7 +734,7 @@ describe('identifyBottleneck', () => {
           actual: 48,
           delta_pct: -4.0,
           miss: 0.0,
-          stage: 'S6B',
+          stage: 'SELL-01',
           direction: 'lower_is_better',
           metric_class: 'primitive',
         },
@@ -767,7 +767,7 @@ describe('identifyBottleneck', () => {
         {
           stage: 'S4',
           reason_code: 'deps_blocked',
-          blocking_reason: 'Missing S6B artifacts',
+          blocking_reason: 'Missing SELL-01 artifacts',
           timestamp: '2026-02-13T10:00:00Z',
         },
       ],

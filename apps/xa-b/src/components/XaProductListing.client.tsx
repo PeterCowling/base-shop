@@ -1,12 +1,8 @@
 "use client";
 
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy listing page pending design/i18n overhaul */
 
 import { useState } from "react";
 
-import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
-import { Section } from "@acme/design-system/atoms/Section";
-import { Breadcrumbs } from "@acme/design-system/molecules";
 import {
   Button,
   Select,
@@ -15,16 +11,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@acme/design-system/atoms";
+import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Breadcrumbs } from "@acme/design-system/molecules";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
-import { XaProductCard } from "./XaProductCard";
-import { XaFiltersDrawer } from "./XaFiltersDrawer.client";
-import { XaFilterChip } from "./XaFilterChip";
-import type { XaProduct } from "../lib/demoData";
-import type { XaCategory } from "../lib/xaTypes";
-import { ALL_FILTER_KEYS, type SortKey } from "../lib/xaFilters";
 import { useCart } from "../contexts/XaCartContext";
-import { useXaListingFilters } from "../lib/useXaListingFilters";
+import type { XaProduct } from "../lib/demoData";
 import { siteConfig } from "../lib/siteConfig";
+import { useXaListingFilters } from "../lib/useXaListingFilters";
+import { ALL_FILTER_KEYS, type SortKey } from "../lib/xaFilters";
+import { xaI18n } from "../lib/xaI18n";
+import type { XaCategory } from "../lib/xaTypes";
+
+import { XaFilterChip } from "./XaFilterChip";
+import { XaFiltersDrawer } from "./XaFiltersDrawer.client";
+import { XaProductCard } from "./XaProductCard";
+
+const SORT_LABELS: Record<string, string> = {
+  newest: "Newest",
+  "price-asc": "Price (low to high)",
+  "price-desc": "Price (high to low)",
+  "best-sellers": "Best sellers",
+  "biggest-discount": xaI18n.t("xaB.src.components.xaproductlisting.client.l35c23"),
+};
 
 export function XaProductListing({
   title,
@@ -128,14 +138,14 @@ export function XaProductListing({
               <div className="min-w-56">
                 <Select value={sort} onValueChange={(value) => applySort(value as SortKey)}>
                   <SelectTrigger className="w-full">
-                    <SelectValue aria-label={sort} />
+                    <SelectValue aria-label={SORT_LABELS[sort] ?? sort} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="newest">Newest</SelectItem>
-                    <SelectItem value="price-asc">Price (low to high)</SelectItem>
-                    <SelectItem value="price-desc">Price (high to low)</SelectItem>
+                    <SelectItem value="price-asc">{xaI18n.t("xaB.src.components.xaproductlisting.client.l144c51")}</SelectItem>
+                    <SelectItem value="price-desc">{xaI18n.t("xaB.src.components.xaproductlisting.client.l145c52")}</SelectItem>
                     <SelectItem value="best-sellers">Best sellers</SelectItem>
-                    <SelectItem value="biggest-discount">Biggest discount</SelectItem>
+                    <SelectItem value={xaI18n.t("xaB.src.components.xaproductlisting.client.l147c39")}>{xaI18n.t("xaB.src.components.xaproductlisting.client.l147c58")}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -143,36 +153,33 @@ export function XaProductListing({
           </div>
 
           {appliedChips.length ? (
-            <div className="flex flex-wrap gap-2">
+            <Inline gap={2} className="flex-wrap">
               {appliedChips.map((chip) => (
                 <XaFilterChip key={chip.label} label={chip.label} onRemove={chip.onRemove} />
               ))}
-            </div>
+            </Inline>
           ) : null}
         </div>
       </Section>
 
       <Section padding="default">
-        {filteredProducts.length ? (
+        {filteredProducts.length === 0 ? (
+          <div className="col-span-full flex flex-col items-center gap-4 py-16 text-center">
+            <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.components.xaproductlisting.client.l167c58")}</p>
+            <Button
+              type="button"
+              onClick={clearAppliedFilters}
+              variant="outline"
+              size="sm"
+              className="h-auto min-h-0 rounded-none border border-border-2 px-4 py-2 text-xs uppercase tracking-widest hover:bg-muted"
+            >{xaI18n.t("xaB.src.components.xaproductlisting.client.l174c14")}</Button>
+          </div>
+        ) : (
           <LayoutGrid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>
             {filteredProducts.map((product) => (
               <XaProductCard key={product.slug} product={product} />
             ))}
           </LayoutGrid>
-        ) : (
-          <div className="rounded-lg border p-6">
-            <div className="font-medium">No {siteConfig.catalog.productNounPlural} found.</div>
-            <div className="mt-2 text-sm text-muted-foreground">
-              Try adjusting filters, or clear them to see more results.
-            </div>
-            {hasAppliedFilters ? (
-              <div className="mt-4">
-                <Button variant="outline" onClick={clearAppliedFilters}>
-                  Clear filters
-                </Button>
-              </div>
-            ) : null}
-          </div>
         )}
       </Section>
     </main>

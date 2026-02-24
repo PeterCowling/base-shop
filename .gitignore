@@ -24,6 +24,9 @@
 /out/
 /.vercel
 **/.next/
+**/.next.bak*/
+**/test-results/
+**/playwright-report/
 
 # ---------------------------
 # OpenNext (Cloudflare Workers) build output

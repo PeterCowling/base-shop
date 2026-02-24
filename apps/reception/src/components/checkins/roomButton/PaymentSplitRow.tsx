@@ -4,6 +4,9 @@ import { type ChangeEvent, memo, useCallback } from "react";
 import { faCreditCard, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import type {
   PaymentSplit,
   PaymentType,
@@ -48,9 +51,9 @@ function PaymentSplitRow({
   return (
     <>
       {/* Amount input */}
-      <input
+      <Input compatibilityMode="no-wrapper"
         type="number"
-        className="border border-gray-300 rounded px-2 py-1 w-24 focus:outline-none dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+        className="border border-border-2 rounded px-2 py-1 w-24 focus:outline-none"
         placeholder="Amount"
         value={sp.amount || ""}
         onChange={handleAmountInput}
@@ -59,8 +62,8 @@ function PaymentSplitRow({
       />
 
       {/* Toggle pay type */}
-      <button
-        className="flex items-center justify-center border border-gray-300 rounded px-2 py-1 focus:outline-none dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+      <Button
+        className="flex items-center justify-center border border-border-2 rounded px-2 py-1 focus:outline-none"
         onClick={togglePayType}
         disabled={isDisabled}
       >
@@ -69,7 +72,7 @@ function PaymentSplitRow({
           className="me-1"
         />
         {sp.payType}
-      </button>
+      </Button>
     </>
   );
 }

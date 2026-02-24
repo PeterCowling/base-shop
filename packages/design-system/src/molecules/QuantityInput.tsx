@@ -3,6 +3,11 @@ import * as React from "react";
 
 import { useTranslations } from "@acme/i18n";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "../primitives/shape-radius";
 import { cn } from "../utils/style";
 
 export interface QuantityInputProps
@@ -11,6 +16,10 @@ export interface QuantityInputProps
   min?: number;
   max?: number;
   onChange?: (value: number) => void;
+  /** Semantic control shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit control radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 /**
@@ -23,6 +32,8 @@ export const QuantityInput = (
     min = 1,
     max = Infinity,
     onChange,
+    shape,
+    radius,
     className,
     ...props
   }: QuantityInputProps & {
@@ -30,6 +41,11 @@ export const QuantityInput = (
   }
 ) => {
   const t = useTranslations();
+  const controlShapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "sm",
+  });
   const handleDec = () => {
     if (value > min && onChange) onChange(value - 1);
   };
@@ -45,7 +61,10 @@ export const QuantityInput = (
         disabled={value <= min}
         // Match tests that query by "+"/"-" as the accessible name
         aria-label="-"
-        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-2 disabled:opacity-50"
+        className={cn(
+          "inline-flex min-h-11 min-w-11 items-center justify-center border px-2 disabled:opacity-50",
+          controlShapeRadiusClass,
+        )}
       >
         <span aria-hidden="true">-</span>{/* i18n-exempt: decorative glyph */}
         <span className="sr-only">{t("quantity.decrement")}</span>
@@ -57,7 +76,10 @@ export const QuantityInput = (
         disabled={value >= max}
         // Match tests that query by "+"/"-" as the accessible name
         aria-label="+"
-        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-2 disabled:opacity-50"
+        className={cn(
+          "inline-flex min-h-11 min-w-11 items-center justify-center border px-2 disabled:opacity-50",
+          controlShapeRadiusClass,
+        )}
       >
         <span aria-hidden="true">+</span>{/* i18n-exempt: decorative glyph */}
         <span className="sr-only">{t("quantity.increment")}</span>

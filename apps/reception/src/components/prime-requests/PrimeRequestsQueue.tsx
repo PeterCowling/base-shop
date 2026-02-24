@@ -3,6 +3,10 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
+
 import usePrimeRequestsData from "../../hooks/data/usePrimeRequestsData";
 import usePrimeRequestResolution from "../../hooks/mutations/usePrimeRequestResolution";
 import type {
@@ -125,69 +129,69 @@ export default function PrimeRequestsQueue() {
   }
 
   return (
-    <div className="min-h-[80vh] bg-gray-100 p-4 font-sans text-gray-800 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-80vh bg-surface-2 p-4 font-sans text-foreground">
       <h1 className="mb-6 w-full text-center font-heading text-5xl text-primary-main">
         PRIME REQUESTS
       </h1>
 
-      <div className="rounded-lg bg-white p-6 shadow dark:bg-darkSurface">
-        <p className="mb-4 text-sm text-gray-600 dark:text-darkAccentGreen">
+      <div className="rounded-lg bg-surface p-6 shadow">
+        <p className="mb-4 text-sm text-muted-foreground">
           Resolve Prime guest requests while keeping booking/preorder/check-out
           flows as the canonical source of truth.
         </p>
 
-        <div className="mb-4 flex flex-wrap gap-2">
+        <Cluster gap={2} className="mb-4">
           {STATUS_ORDER.map((status) => (
-            <button
+            <Button
               key={status}
               type="button"
               onClick={() => setSelectedStatusFilter(status)}
               className={`rounded px-3 py-1.5 text-xs font-semibold ${
                 selectedStatusFilter === status
-                  ? "bg-primary-main text-white"
-                  : "bg-gray-200 text-gray-700 dark:bg-darkBorder dark:text-darkAccentGreen"
+                  ? "bg-primary-main text-primary-fg"
+                  : "bg-surface-3 text-foreground"
               }`}
             >
               {STATUS_LABELS[status]}
-            </button>
+            </Button>
           ))}
-        </div>
+        </Cluster>
 
         {loading && (
-          <p className="italic text-gray-600 dark:text-darkAccentGreen">
+          <p className="italic text-muted-foreground">
             Loading Prime requests...
           </p>
         )}
 
         {!loading && error && (
-          <p className="font-semibold text-red-600">
+          <p className="font-semibold text-error-main">
             Error loading Prime requests: {String(error)}
           </p>
         )}
 
         {!loading && !error && visibleRequests.length === 0 && (
-          <p className="italic text-gray-600 dark:text-darkAccentGreen">
+          <p className="italic text-muted-foreground">
             No {STATUS_LABELS[selectedStatusFilter].toLowerCase()} requests.
           </p>
         )}
 
         {!loading && !error && visibleRequests.length > 0 && (
           <div className="overflow-auto">
-            <table
+            <Table
               className="min-w-full border-collapse text-sm"
               aria-label="Prime requests queue"
             >
-              <thead>
-                <tr className="bg-gray-200 dark:bg-darkBorder">
-                  <th className="border-b p-2 text-left">Type</th>
-                  <th className="border-b p-2 text-left">Guest</th>
-                  <th className="border-b p-2 text-left">Booking</th>
-                  <th className="border-b p-2 text-left">Submitted</th>
-                  <th className="border-b p-2 text-left">Context</th>
-                  <th className="border-b p-2 text-left">Action</th>
-                </tr>
-              </thead>
-              <tbody>
+              <TableHeader>
+                <TableRow className="bg-surface-3">
+                  <TableHead className="border-b p-2 text-left">Type</TableHead>
+                  <TableHead className="border-b p-2 text-left">Guest</TableHead>
+                  <TableHead className="border-b p-2 text-left">Booking</TableHead>
+                  <TableHead className="border-b p-2 text-left">Submitted</TableHead>
+                  <TableHead className="border-b p-2 text-left">Context</TableHead>
+                  <TableHead className="border-b p-2 text-left">Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {visibleRequests.map((request) => {
                   const contextLink = contextLinkForType(request.type);
                   const selectedStatus =
@@ -196,32 +200,32 @@ export default function PrimeRequestsQueue() {
                     isResolving && activeRequestId === request.requestId;
 
                   return (
-                    <tr key={request.requestId} className="bg-white dark:bg-darkSurface">
-                      <td className="border-b p-2 align-top font-semibold">
+                    <TableRow key={request.requestId} className="bg-surface">
+                      <TableCell className="border-b p-2 align-top font-semibold">
                         {TYPE_LABELS[request.type]}
-                        <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
+                        <p className="mt-1 text-xs font-normal text-muted-foreground">
                           Current: {STATUS_LABELS[request.status]}
                         </p>
-                      </td>
-                      <td className="border-b p-2 align-top">
+                      </TableCell>
+                      <TableCell className="border-b p-2 align-top">
                         <p className="font-medium">{request.guestName}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-muted-foreground">
                           {request.guestUuid}
                         </p>
-                      </td>
-                      <td className="border-b p-2 align-top">
+                      </TableCell>
+                      <TableCell className="border-b p-2 align-top">
                         <p className="font-medium">{request.bookingId}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-muted-foreground">
                           {request.requestId}
                         </p>
-                      </td>
-                      <td className="border-b p-2 align-top">
+                      </TableCell>
+                      <TableCell className="border-b p-2 align-top">
                         {formatTimestamp(request.submittedAt)}
-                      </td>
-                      <td className="border-b p-2 align-top">
+                      </TableCell>
+                      <TableCell className="border-b p-2 align-top">
                         <p>{renderContextSummary(request)}</p>
                         {request.note && (
-                          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                          <p className="mt-1 text-xs text-muted-foreground">
                             Guest note: {request.note}
                           </p>
                         )}
@@ -231,9 +235,9 @@ export default function PrimeRequestsQueue() {
                         >
                           {contextLink.label}
                         </Link>
-                      </td>
-                      <td className="border-b p-2 align-top">
-                        <div className="flex min-w-[220px] flex-col gap-2">
+                      </TableCell>
+                      <TableCell className="border-b p-2 align-top">
+                        <div className="flex min-w-220px flex-col gap-2">
                           <select
                             aria-label={`Status for ${request.requestId}`}
                             value={selectedStatus}
@@ -244,7 +248,7 @@ export default function PrimeRequestsQueue() {
                                   event.target.value as PrimeRequestStatus,
                               }))
                             }
-                            className="rounded border px-2 py-1 dark:bg-darkSurface dark:border-darkBorder"
+                            className="rounded border px-2 py-1"
                           >
                             {STATUS_ORDER.map((status) => (
                               <option key={status} value={status}>
@@ -263,36 +267,36 @@ export default function PrimeRequestsQueue() {
                               }))
                             }
                             placeholder="Optional operator note"
-                            className="rounded border px-2 py-1 dark:bg-darkSurface dark:border-darkBorder"
+                            className="rounded border px-2 py-1"
                           />
 
-                          <button
+                          <Button
                             type="button"
                             onClick={() => handleApply(request)}
                             disabled={isBusy}
-                            className="rounded bg-primary-main px-3 py-1.5 text-white disabled:opacity-60"
+                            className="rounded bg-primary-main px-3 py-1.5 text-primary-fg disabled:opacity-60"
                           >
                             {isBusy ? "Applying..." : "Apply"}
-                          </button>
+                          </Button>
 
                           {request.resolution && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <p className="text-xs text-muted-foreground">
                               Last by {request.resolution.operatorName} at{" "}
                               {formatTimestamp(request.resolution.resolvedAt)}
                             </p>
                           )}
                         </div>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   );
                 })}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         )}
 
         {resolveError && (
-          <p className="mt-4 font-semibold text-red-600">
+          <p className="mt-4 font-semibold text-error-main">
             Failed to apply request action: {String(resolveError)}
           </p>
         )}

@@ -37,5 +37,14 @@ describe("ProductBadge", () => {
     expect(inner).toHaveClass(textClasses[variant]);
     expect(inner).toHaveAttribute("data-token", textTokens[variant]);
   });
-});
 
+  it("supports shape/radius overrides", () => {
+    const { rerender } = render(<ProductBadge label="Label" shape="square" />);
+    let badge = screen.getByText("Label").parentElement as HTMLElement;
+    expect(badge).toHaveClass("rounded-none");
+
+    rerender(<ProductBadge label="Label" shape="square" radius="xl" />);
+    badge = screen.getByText("Label").parentElement as HTMLElement;
+    expect(badge).toHaveClass("rounded-xl");
+  });
+});

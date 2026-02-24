@@ -9,6 +9,12 @@ import TranslationsProvider from "@acme/i18n/Translations";
 import Footer from "@acme/ui/components/layout/Footer";
 import Header from "@acme/ui/components/layout/Header";
 
+const localeMessagesLoaders: Record<Locale, () => Promise<Record<string, string>>> = {
+  en: async () => (await import("@acme/i18n/en.json")).default as Record<string, string>, // i18n-exempt -- TURBO-220 [ttl=2026-12-31] static locale module path
+  de: async () => (await import("@acme/i18n/de.json")).default as Record<string, string>, // i18n-exempt -- TURBO-220 [ttl=2026-12-31] static locale module path
+  it: async () => (await import("@acme/i18n/it.json")).default as Record<string, string>, // i18n-exempt -- TURBO-220 [ttl=2026-12-31] static locale module path
+};
+
 export default async function LocaleLayout({
   children,
   params,
@@ -18,14 +24,8 @@ export default async function LocaleLayout({
 }) {
   const { lang: raw } = await params;
   const lang: Locale = resolveLocale(raw);
-
-  /* Dynamic import of the locale JSON. Webpack bundles only en/de/it.     */
-  const messages = (
-    await import(
-      /* webpackInclude: /(en|de|it)\.json$/ */
-      `@acme/i18n/${lang}.json`
-    )
-  ).default;
+  const loadMessages = localeMessagesLoaders[lang] ?? localeMessagesLoaders.en;
+  const messages = await loadMessages();
 
   return (
     <TranslationsProvider messages={messages}>

@@ -26,6 +26,55 @@ export type AppMetadataArgs = {
   isPublished?: boolean;
 };
 
+type LinkDescriptor = ReturnType<typeof seo.buildLinks>[number];
+
+type OpenGraphImage = {
+  imageUrl: string;
+  imageWidth: number;
+  imageHeight: number;
+};
+
+const resolveCanonicalFallback = (origin: string, path: string): string =>
+  `${origin}${path === "/" ? "" : path.replace(/\/+$/, "")}`;
+
+const resolveCanonicalUrl = (
+  links: LinkDescriptor[],
+  origin: string,
+  path: string,
+): string => links.find((link) => link.rel === "canonical")?.href ?? resolveCanonicalFallback(origin, path);
+
+const buildAlternateLanguages = (links: LinkDescriptor[]): Record<string, string> => {
+  const languages: Record<string, string> = {};
+  for (const link of links) {
+    if (link.rel === "alternate" && link.hrefLang) {
+      languages[link.hrefLang] = link.href;
+    }
+  }
+  return languages;
+};
+
+const resolveOpenGraphImage = ({
+  image,
+  imageWidth,
+  imageHeight,
+  origin,
+}: {
+  image?: string | { src: string; width: number; height: number };
+  imageWidth: number;
+  imageHeight: number;
+  origin: string;
+}): OpenGraphImage => {
+  const imageUrl = typeof image === "string" ? image : image?.src;
+  const resolvedWidth = typeof image === "object" ? image.width : imageWidth;
+  const resolvedHeight = typeof image === "object" ? image.height : imageHeight;
+
+  return {
+    imageUrl: imageUrl || `${origin}${DEFAULT_OG_IMAGE.path}`,
+    imageWidth: imageUrl ? resolvedWidth : DEFAULT_OG_IMAGE.width,
+    imageHeight: imageUrl ? resolvedHeight : DEFAULT_OG_IMAGE.height,
+  };
+};
+
 /**
  * Build Next.js App Router Metadata object from route head args.
  * This replaces the Remix-style buildRouteMeta() for App Router pages.
@@ -43,43 +92,30 @@ export function buildAppMetadata({
   isPublished = true,
 }: AppMetadataArgs): Metadata {
   const origin = BASE_URL || "https://hostel-positano.com";
-  const url = seo.ensureTrailingSlash(`${origin}${path}`);
-
-  // Normalize image to extract src, width, height
-  const imageUrl = typeof image === "string" ? image : image?.src;
-  const finalImageWidth = typeof image === "object" ? image.width : imageWidth;
-  const finalImageHeight = typeof image === "object" ? image.height : imageHeight;
 
   // Build hreflang alternates using proven buildLinks() logic
   const links = seo.buildLinks({ lang, origin, path });
-  const languages: Record<string, string> = {};
-
-  // Convert HtmlLinkDescriptor[] → Record<string, string> for Next.js alternates.languages
-  // Apply trailing-slash policy to alternates (buildLinks only applies it to canonical)
-  for (const link of links) {
-    if (link.rel === "alternate" && link.hrefLang) {
-      languages[link.hrefLang] = seo.ensureTrailingSlash(link.href);
-    }
-  }
-
-
-  // Use provided image or fall back to default OG image
-  const ogImageUrl = imageUrl || `${origin}${DEFAULT_OG_IMAGE.path}`;
-  const ogImageWidth = imageUrl ? finalImageWidth : DEFAULT_OG_IMAGE.width;
-  const ogImageHeight = imageUrl ? finalImageHeight : DEFAULT_OG_IMAGE.height;
+  const canonicalUrl = resolveCanonicalUrl(links, origin, path);
+  const languages = buildAlternateLanguages(links);
+  const { imageUrl: ogImageUrl, imageWidth: ogImageWidth, imageHeight: ogImageHeight } = resolveOpenGraphImage({
+    image,
+    imageWidth,
+    imageHeight,
+    origin,
+  });
 
   const metadata: Metadata = {
     title,
     description,
     alternates: {
-      canonical: url,
+      canonical: canonicalUrl,
       languages,
     },
     openGraph: {
       siteName: "Hostel Brikette",
       title,
       description,
-      url,
+      url: canonicalUrl,
       type: ogType,
       locale: lang,
       alternateLocale: i18nConfig.supportedLngs.filter((l) => l !== lang),
@@ -126,7 +162,7 @@ export function buildAppLinks(args: { lang: AppLanguage; path: string; origin?: 
     });
   } catch {
     // Fallback to basic canonical
-    const canonicalPath = args.path !== "/" && args.path.endsWith("/") ? args.path.slice(0, -1) : args.path;
+    const canonicalPath = args.path === "/" ? "/" : args.path.replace(/\/+$/, "");
     return [
       {
         rel: "canonical",

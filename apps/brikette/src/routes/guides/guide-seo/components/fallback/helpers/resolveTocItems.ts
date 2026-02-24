@@ -123,15 +123,26 @@ function deriveFromArray(
   return itemsWithMeta;
 }
 
-export function resolveTocItems(
-  tFb: FallbackTranslator | undefined,
-  t: Translator,
-  guideKey: string,
-  legacyKey: string,
-  aliasKey: string | null | undefined,
-  mergeAliasFaqs: boolean,
-  meaningfulSections: MeaningfulSection[],
-): TocItem[] {
+type ResolveTocItemsParams = {
+  tFb: FallbackTranslator | undefined;
+  t: Translator;
+  guideKey: string;
+  legacyKey: string;
+  aliasKey: string | null | undefined;
+  mergeAliasFaqs: boolean;
+  meaningfulSections: MeaningfulSection[];
+};
+
+export function resolveTocItems(params: ResolveTocItemsParams): TocItem[] {
+  const {
+    tFb,
+    t,
+    guideKey,
+    legacyKey,
+    aliasKey,
+    mergeAliasFaqs,
+    meaningfulSections,
+  } = params;
   const { explicitlyProvided, providedViaLegacy } = fetchTocFromFallback(tFb, guideKey, legacyKey);
 
   const explicitArray = Array.isArray(explicitlyProvided) ? explicitlyProvided : [];
@@ -222,15 +233,26 @@ export function finalizeTocItems(
   }
 }
 
-export function addFaqToToc(
-  filteredTocItems: TocItem[],
-  tFb: FallbackTranslator | undefined,
-  t: Translator,
-  guideKey: string,
-  legacyKey: string,
-  fallback: StructuredFallback,
-  preferManualWhenUnlocalized: boolean | undefined,
-): TocItem[] {
+type AddFaqToTocParams = {
+  filteredTocItems: TocItem[];
+  tFb: FallbackTranslator | undefined;
+  t: Translator;
+  guideKey: string;
+  legacyKey: string;
+  fallback: StructuredFallback;
+  preferManualWhenUnlocalized: boolean | undefined;
+};
+
+export function addFaqToToc(params: AddFaqToTocParams): TocItem[] {
+  const {
+    filteredTocItems,
+    tFb,
+    t,
+    guideKey,
+    legacyKey,
+    fallback,
+    preferManualWhenUnlocalized,
+  } = params;
   // Prefer a curated/manual-style ToC for unlocalized locales when the
   // route opts into manual handling. This mirrors RenderStructuredArrays so
   // tests can assert items like ["#s-0", "#parks", "#s-2"] and avoids

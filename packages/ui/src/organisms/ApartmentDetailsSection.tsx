@@ -61,12 +61,12 @@ function ApartmentDetailsSection({ bookingUrl, lang, onBookingCtaClick }: Detail
           <div className="mt-4">
             {bookingUrl ? (
               bookingUrl.startsWith("/") ? (
-                <Link href={bookingUrl} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-primary/90">{ctaLabel}</Link>
+                <Link href={bookingUrl} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 text-sm font-semibold text-brand-on-primary shadow-sm transition-colors hover:bg-brand-primary/90">{ctaLabel}</Link>
               ) : (
-                <a href={bookingUrl} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-primary/90">{ctaLabel}</a>
+                <a href={bookingUrl} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 text-sm font-semibold text-brand-on-primary shadow-sm transition-colors hover:bg-brand-primary/90">{ctaLabel}</a>
               )
             ) : (
-              <button type="button" onClick={() => onBookingCtaClick?.()} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-primary/90">
+              <button type="button" onClick={() => onBookingCtaClick?.()} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 text-sm font-semibold text-brand-on-primary shadow-sm transition-colors hover:bg-brand-primary/90">
                 {ctaLabel}
               </button>
             )}

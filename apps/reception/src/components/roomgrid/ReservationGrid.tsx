@@ -11,6 +11,15 @@ import "./rvg.css";
 import type { ReactElement } from "react";
 import { memo, useMemo } from "react";
 
+import {
+  ReceptionTable as Table,
+  ReceptionTableBody as TableBody,
+  ReceptionTableCell as TableCell,
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
+
 import { createDaysRange } from "../../utils/dateUtils";
 
 import { LOCALES } from "./constants/locales";
@@ -105,11 +114,11 @@ function ReservationGridInner<TCustomStatus extends string = never>({
 
   return (
     <div className="rvg-wrapper">
-      <table className="rvg-table">
-        <thead>
-          <tr>
+      <Table className="rvg-table">
+        <TableHeader>
+          <TableRow>
             {/* Title column header */}
-            <th className="rvg-title rvg-fixed">{title}</th>
+            <TableHead className="rvg-title rvg-fixed">{title}</TableHead>
             {/* Date column headers */}
             {daysRange.map((day) => {
               const cellClasses = [
@@ -121,23 +130,23 @@ function ReservationGridInner<TCustomStatus extends string = never>({
                 .join(" ");
 
               return (
-                <th key={day.value} className={cellClasses}>
+                <TableHead key={day.value} className={cellClasses}>
                   <div className="day">
                     <div>
                       <div>{day.day}</div>
                       <div>{day.date}</div>
                     </div>
                   </div>
-                </th>
+                </TableHead>
               );
             })}
-          </tr>
-        </thead>
-        <tbody>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {data.map((row) => (
-            <tr key={row.id}>
+            <TableRow key={row.id}>
               {/* Row title (sticky) */}
-              <td className="rvg-title rvg-fixed">{row.title}</td>
+              <TableCell className="rvg-title rvg-fixed">{row.title}</TableCell>
               {/* Date cells */}
               {daysRange.map((day) => (
                 <GridCell<TCustomStatus>
@@ -151,10 +160,10 @@ function ReservationGridInner<TCustomStatus extends string = never>({
                   onClickCell={onClickCell}
                 />
               ))}
-            </tr>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

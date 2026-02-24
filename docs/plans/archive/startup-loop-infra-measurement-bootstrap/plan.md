@@ -78,7 +78,7 @@ are encoded verbatim into the templates to prevent the same failure modes from r
 
 ## Proposed Approach
 
-**Option A (chosen):** Expand the existing `pre-website-measurement-bootstrap-prompt.md` in-place
+**Option A (chosen):** Expand the existing `measurement-agent-setup-prompt.md` in-place
 (keep filename) and add two new template files alongside it. Update loop-spec.yaml to reference the
 same filename (no version bump required if filename is unchanged). Produce separate audit and
 verification templates as net-new files.
@@ -140,7 +140,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 - **Effort:** S
 - **Status:** Complete (2026-02-17)
 - **Decision:** Option A — in-place expansion, same filename. Confirmed by Pete 2026-02-17.
-- **Affects:** `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md`,
+- **Affects:** `docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md`,
   `[readonly] docs/business-os/startup-loop/loop-spec.yaml`
 - **Depends on:** -
 - **Blocks:** TASK-01, TASK-04
@@ -149,7 +149,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
   - Approach: 80% — both options are valid; default is well-reasoned but not yet confirmed by Pete
   - Impact: 80% — choice affects whether downstream consumers of loop-spec need alignment check
 - **Options:**
-  - Option A — In-place expansion (default): keep filename `pre-website-measurement-bootstrap-prompt.md`;
+  - Option A — In-place expansion (default): keep filename `measurement-agent-setup-prompt.md`;
     overwrite content with comprehensive Phase 0-2 content. No loop-spec filename update; no
     spec_version bump required on that basis alone.
     Trade-offs: no clean version boundary; existing `loop-spec.yaml` reference continues to resolve.
@@ -179,7 +179,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 ### TASK-01: Write comprehensive S1B bootstrap prompt template (Phase 0-2)
 
 - **Type:** IMPLEMENT
-- **Deliverable:** `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md`
+- **Deliverable:** `docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md`
   (Option A default; filename may change per TASK-D1 to `infra-and-measurement-bootstrap-prompt.md`)
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
@@ -190,7 +190,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 - **Reviewer:** Pete (loop architecture owner)
 - **Approval-Evidence:** Pete confirms template is complete for next S1B run
 - **Measurement-Readiness:** Applied at next new S1B business entry; verified by TASK-D1 option choice
-- **Affects:** `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md`
+- **Affects:** `docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md`
 - **Depends on:** TASK-D1
 - **Blocks:** TASK-04, TASK-05, TASK-07
 - **Confidence:** 85%
@@ -269,7 +269,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 - **Edge Cases & Hardening:**
   - If TASK-D1 chooses Option B (new filename): write to new filename instead; do not delete old
     file (keep as redirect stub with a single note pointing to new file)
-  - If `pre-website-measurement-bootstrap-prompt.md` already has content: read first, then overwrite
+  - If `measurement-agent-setup-prompt.md` already has content: read first, then overwrite
     completely (the existing file is the thin template this task replaces)
   - Ensure `{{PLACEHOLDER}}` variables do not accidentally include brik-specific values
     (`G-2ZSYXG8R7T`, `474488225`, `hostel-positano.com`) — all must be genericised
@@ -499,12 +499,12 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
   - Refactor: add `# expanded YYYY-MM-DD` comment to S1B entry regardless of option
 - **Planning validation:**
   - Checks run: `loop-spec.yaml` read; S1B entry identified at line ~36-39; `prompt_template` field
-    currently = `pre-website-measurement-bootstrap-prompt.md`; spec_version currently `"1.1.0"`
+    currently = `measurement-agent-setup-prompt.md`; spec_version currently `"1.1.0"`
   - Validation artifacts: `docs/business-os/startup-loop/loop-spec.yaml` (read during planning)
   - Unexpected findings: None
 - **Scouts:** None: YAML edit is mechanical; no unknowns
 - **Edge Cases & Hardening:**
-  - If Option B: check all references to `pre-website-measurement-bootstrap-prompt.md` across the
+  - If Option B: check all references to `measurement-agent-setup-prompt.md` across the
     repo (`rg "pre-website-measurement-bootstrap-prompt"`) and update each; do not leave stale refs
 - **What would make this >=90%:** Perform a full downstream reference check regardless of option
   (not just loop-spec.yaml) and confirm no stale references exist
@@ -598,7 +598,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 - **Blocks:** -
 - **Confidence:** 83%
   - Implementation: 85% — Gate A section is clearly identified in SKILL.md; it references
-    `pre-website-measurement-bootstrap-prompt.md` by name; the edit is targeted
+    `measurement-agent-setup-prompt.md` by name; the edit is targeted
   - Approach: 83% — update Gate A to describe what the expanded template covers; add reference
     to cross-domain linking (DV-03) as a named human-gated delayed deliverable at S9B
   - Impact: 85% — without this, the SKILL.md description of Gate A still describes the old thin
@@ -642,7 +642,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
   - Green: replaced Gate A with expanded version: Phase 0 (access bundle), Phase 1 (agent config),
     Phase 2 (staging verification) all described concisely; DV-03 named as S9B delayed human action;
     website-live businesses redirected to measurement-quality-audit-prompt.md; post-deploy verification
-    template reference added for S9B. Filename unchanged (Option A — pre-website-measurement-bootstrap-prompt.md).
+    template reference added for S9B. Filename unchanged (Option A — measurement-agent-setup-prompt.md).
     No spec_version reference update needed (Option A).
   - Refactor: VC-01 PASS (correct filename present, 1 occurrence). VC-02 PASS (Phase 0: 3 occurrences,
     Phase 1: 3 occurrences, Phase 2: 1 occurrence). DV-03 note PASS.
@@ -810,7 +810,7 @@ All tasks proceed with Option A default until TASK-D1 produces an explicit overr
 - 2026-02-17: Fact-find complete. Default approach is Option A (S1B in-place expansion). Awaiting
   Pete's confirmation via TASK-D1 before TASK-04 executes.
 - 2026-02-17: TASK-D1 resolved. Pete confirmed **Option A** — in-place expansion, same filename
-  (`pre-website-measurement-bootstrap-prompt.md`). No loop-spec.yaml filename change. TASK-04 will
+  (`measurement-agent-setup-prompt.md`). No loop-spec.yaml filename change. TASK-04 will
   add a comment noting expansion date and plan reference; no spec_version bump on this basis.
 
 ## Overall-confidence Calculation

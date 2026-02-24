@@ -147,17 +147,30 @@ function resolveSeoTitle(
 }
 
 // Helper to determine if SEO title should be preferred over meta title
-function shouldPreferSeoOverMeta(
-  resolvedSeo: string | undefined,
-  metaTitle: string | undefined,
-  preferLocalizedSeoTitle: boolean | undefined,
-  localizedSeo: string | undefined,
-  hasLocalizedContent: boolean | undefined,
-  metaTitleIsPlaceholder: boolean,
-  metaTitleIsEnglishFallback: boolean,
-  normalizedMeta: string,
-  normalizedSeo: string,
-): boolean {
+type ShouldPreferSeoOverMetaParams = {
+  resolvedSeo: string | undefined;
+  metaTitle: string | undefined;
+  preferLocalizedSeoTitle: boolean | undefined;
+  localizedSeo: string | undefined;
+  hasLocalizedContent: boolean | undefined;
+  metaTitleIsPlaceholder: boolean;
+  metaTitleIsEnglishFallback: boolean;
+  normalizedMeta: string;
+  normalizedSeo: string;
+};
+
+function shouldPreferSeoOverMeta(params: ShouldPreferSeoOverMetaParams): boolean {
+  const {
+    resolvedSeo,
+    metaTitle,
+    preferLocalizedSeoTitle,
+    localizedSeo,
+    hasLocalizedContent,
+    metaTitleIsPlaceholder,
+    metaTitleIsEnglishFallback,
+    normalizedMeta,
+    normalizedSeo,
+  } = params;
   const preferSeoOverride = Boolean(preferLocalizedSeoTitle && localizedSeo && hasLocalizedContent);
 
   return Boolean(
@@ -206,7 +219,7 @@ export function useDisplayH1Title(params: {
       trimmedMeta,
     );
 
-    const shouldPreferSeo = shouldPreferSeoOverMeta(
+    const shouldPreferSeo = shouldPreferSeoOverMeta({
       resolvedSeo,
       metaTitle,
       preferLocalizedSeoTitle,
@@ -216,7 +229,7 @@ export function useDisplayH1Title(params: {
       metaTitleIsEnglishFallback,
       normalizedMeta,
       normalizedSeo,
-    );
+    });
 
     if (resolvedSeo && shouldPreferSeo) return resolvedSeo;
     if (metaTitle) return metaTitle;

@@ -1,5 +1,5 @@
 // scripts/src/add-locale.ts
-import { existsSync,readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 function usage(): never {
@@ -40,20 +40,8 @@ function main() {
     writeFileSync(localesPath, updated);
   }
 
-  // Update useTranslations.server.ts regex
-  const serverPath = path.join(i18nSrc, "useTranslations.server.ts");
-  if (existsSync(serverPath)) {
-    let serverSrc = readFileSync(serverPath, "utf8");
-    const regex = /webpackInclude: \/\(([^)]+)\)\.json\$\//;
-    const localesPattern = list.join("|");
-    if (regex.test(serverSrc)) {
-      serverSrc = serverSrc.replace(
-        regex,
-        `webpackInclude: /(${localesPattern})\\.json$/`
-      );
-      writeFileSync(serverPath, serverSrc);
-    }
-  }
+  // Webpack comment rewrites have been retired. Locale loading is now handled
+  // through explicit loader maps in app/package code.
 
   // Create translation stub
   const templatePath = path.join(i18nSrc, "en.json");

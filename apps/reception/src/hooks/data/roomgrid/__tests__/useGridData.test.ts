@@ -93,6 +93,75 @@ describe("useGridData", () => {
     jest.clearAllMocks();
   });
 
+  it("ignores booking metadata entries when building room rows", () => {
+    mockedRoomConfigs.mockReturnValue({
+      knownRooms: ["101"],
+      getBedCount: () => 2,
+      getMaxGuestsPerBed: () => 1,
+    });
+
+    mockedBookings.mockReturnValue({
+      bookingsData: {
+        BR1: {
+          OCC1: {
+            checkInDate: "2025-05-01",
+            checkOutDate: "2025-05-03",
+            leadGuest: true,
+            roomNumbers: ["101"],
+          },
+          __notes: {
+            note1: {
+              text: "late arrival",
+              timestamp: "2025-05-01T00:00:00.000Z",
+              user: "Test",
+            },
+          },
+        },
+      },
+      loading: false,
+      error: null,
+    });
+
+    mockedGuestByRoom.mockReturnValue({
+      guestByRoomData: {
+        OCC1: { allocated: "101", booked: "101" },
+      },
+      loading: false,
+      error: null,
+    });
+
+    mockedGuestsDetails.mockReturnValue({
+      guestsDetailsData: {
+        BR1: {
+          OCC1: stubGuest("Alice", "A"),
+        },
+      },
+      loading: false,
+      error: null,
+    });
+
+    mockedActivities.mockReturnValue({
+      activitiesData: {},
+      loading: false,
+      error: null,
+    });
+
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => undefined);
+    const { result } = renderHook(() =>
+      useGridData("2025-05-01", "2025-05-10")
+    );
+
+    const rows = result.current.getReservationDataForRoom("101");
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0].periods).toHaveLength(1);
+    expect(rows[0].periods[0].bookingRef).toBe("BR1");
+    expect(rows[0].periods[0].occupantId).toBe("OCC1");
+    expect(errorSpy).not.toHaveBeenCalled();
+
+    errorSpy.mockRestore();
+  });
+
   it("returns packed rows for a room", () => {
     mockedRoomConfigs.mockReturnValue({
       knownRooms: ["101"],

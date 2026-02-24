@@ -8,13 +8,18 @@ import {
   shouldForceGenericWhenUnlocalized,
 } from "../generic";
 
+type GuidesTranslations = Parameters<typeof makeBaseGenericProps>[0]["translations"];
+type HookI18n = Parameters<typeof makeBaseGenericProps>[0]["hookI18n"];
+type GenericContentBase = Parameters<typeof computeGenericContentProps>[0]["base"];
+type GenericContentMerged = ReturnType<typeof computeGenericContentProps>;
+
 export function renderGenericFastPaths(params: {
   renderWhenEmpty?: boolean;
   hasLocalizedContent: boolean;
   hasStructuredLocal: boolean;
   hasStructuredEnEffective: boolean;
-  translations: any;
-  hookI18n: any;
+  translations: GuidesTranslations;
+  hookI18n: HookI18n;
   guideKey: string;
   englishFallbackAllowed: boolean;
   genericContentOptions?: { showToc?: boolean } | undefined;
@@ -43,7 +48,7 @@ export function renderGenericFastPaths(params: {
 
   // renderWhenEmpty fast path
   if (renderWhenEmpty && !hasLocalizedContent) {
-    const baseProps = makeBaseGenericProps({
+    const baseProps: GenericContentBase = makeBaseGenericProps({
       hasLocalizedContent,
       preferGenericWhenFallback: true,
       translations,
@@ -51,17 +56,17 @@ export function renderGenericFastPaths(params: {
       guideKey,
       allowEnglishFallback: englishFallbackAllowed,
     });
-    let props = computeGenericContentProps({
-      base: baseProps as any,
+    let props: GenericContentMerged = computeGenericContentProps({
+      base: baseProps,
       ...(typeof genericContentOptions !== "undefined" ? { genericContentOptions } : {}),
       structuredTocItems,
       ...(typeof customTocProvided === "boolean" ? { customTocProvided } : {}),
       hasLocalizedContent,
     });
     if (hasStructuredLocal) {
-      props = { ...(props as any), suppressIntro: true } as any;
+      props = { ...props, suppressIntro: true };
     }
-    return renderGenericOnce(prepareProps(props)) as any;
+    return renderGenericOnce(prepareProps(props));
   }
 
   // Force generic for specific guides (e.g., backpackingSouthernItaly, avoidCrowdsPositano, praianoGuide)
@@ -70,7 +75,7 @@ export function renderGenericFastPaths(params: {
     if (requiresStructuredEnForForceGeneric(guideKey) && !hasStructuredEnEffective) {
       return null;
     }
-    const base = hasStructuredEnEffective
+    const base: GenericContentBase = hasStructuredEnEffective
       ? makeBaseGenericProps({
           hasLocalizedContent,
           preferGenericWhenFallback: true,
@@ -81,14 +86,14 @@ export function renderGenericFastPaths(params: {
         })
       : { t, guideKey };
 
-    const props = computeGenericContentProps({
-      base: base as any,
+    const props: GenericContentMerged = computeGenericContentProps({
+      base,
       ...(typeof genericContentOptions !== "undefined" ? { genericContentOptions } : {}),
       structuredTocItems,
       ...(typeof customTocProvided === "boolean" ? { customTocProvided } : {}),
       hasLocalizedContent,
     });
-    return renderGenericOnce(prepareProps(props)) as any;
+    return renderGenericOnce(prepareProps(props));
   }
 
   return null;

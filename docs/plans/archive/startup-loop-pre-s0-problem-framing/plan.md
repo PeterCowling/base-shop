@@ -25,14 +25,14 @@ Card-ID: none
 
 ## Summary
 
-Adds a conditional pre-intake stage family (`S0A`–`S0D`) to the startup loop so operators who begin from a customer problem rather than a committed product have an explicit path for problem framing, solution-space scanning, option selection, and naming handoff before entering S0. The plan also repairs a pre-existing S3B pipeline drift (loop-spec at v1.6.0, generated map at v1.3.0). Entry routing uses an explicit `--start-point problem|product` flag (default `product`) consistent with the existing `--launch-surface` pattern. Stages are first-class canonical entries, consistent with S1B, S2A, and S3B.
+Adds a conditional pre-intake stage family (`S0A`–`S0D`) to the startup loop so operators who begin from a customer problem rather than a committed product have an explicit path for problem framing, solution-profiling scanning, option selection, and naming handoff before entering S0. The plan also repairs a pre-existing S3B pipeline drift (loop-spec at v1.6.0, generated map at v1.3.0). Entry routing uses an explicit `--start-point problem|product` flag (default `product`) consistent with the existing `--launch-surface` pattern. Stages are first-class canonical entries, consistent with S1B, S2A, and S3B.
 
 ## Goals
 
 - Add canonical S0A–S0D conditional stages to loop-spec.yaml with `condition: "start-point = problem"`.
 - Propagate all new stage IDs through the full contract surface: dictionary, generated map, resolver, typed unions, tests (including derive-state), and the startup-loop SKILL.md stage model.
 - Add `--start-point` flag and Gate D to `cmd-start.md`; preserve backward compatibility via `product` default.
-- Scaffold three new stage skills: `lp-problem-frame`, `lp-solution-space`, `lp-option-select`.
+- Scaffold three new stage skills: `lp-problem-frame`, `lp-solution-profiling`, `lp-option-select`.
 - Fix pre-existing S3B pipeline drift before new stage additions land.
 - Keep GATE-BD-00 naming contract and shortlist artifact paths unchanged.
 
@@ -47,7 +47,7 @@ Adds a conditional pre-intake stage family (`S0A`–`S0D`) to the startup loop s
 - Constraints:
   - Stage ID format: `^S[0-9]+[A-Z]*$` — `S0A`–`S0D` comply.
   - Loop-spec.yaml is the stage-ordering source of truth; all other documents align to it.
-  - GATE-BD-00 shortlist artifact names (`*-naming-shortlist.user.md`) must remain unchanged.
+  - GATE-BD-00 shortlist artifact names (`*-candidate-names.user.md`) must remain unchanged.
   - `CANONICAL_IDS` in stage-addressing.ts is built dynamically from the generated map — map regeneration is the primary resolver fix; only the hardcoded suggestion string at :72 requires a manual edit.
   - Map generation command: `node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts`
   - Skill registry generation command: `scripts/agents/generate-skill-registry --write`
@@ -104,7 +104,7 @@ Contract-first, wave-sequenced:
 | TASK-06 | IMPLEMENT | Update startup-loop SKILL.md stage model and invocation | 80% | S | Complete (2026-02-20) | TASK-02 | CHECKPOINT-01 |
 | CHECKPOINT-01 | CHECKPOINT | Contract surface verification before skill work | 95% | S | Complete (2026-02-20) | TASK-04, TASK-05, TASK-06 | TASK-07 |
 | TASK-07 | INVESTIGATE | Investigate existing skill content patterns for scaffolding baseline | 85% | S | Complete (2026-02-20) | CHECKPOINT-01 | TASK-08 |
-| TASK-08 | IMPLEMENT | Scaffold lp-problem-frame, lp-solution-space, lp-option-select | 80% | L | Complete (2026-02-20) | TASK-07 | TASK-09, TASK-10, TASK-11 |
+| TASK-08 | IMPLEMENT | Scaffold lp-problem-frame, lp-solution-profiling, lp-option-select | 80% | L | Complete (2026-02-20) | TASK-07 | TASK-09, TASK-10, TASK-11 |
 | TASK-09 | IMPLEMENT | Verify S0D naming handoff compatibility with GATE-BD-00 | 85% | S | Complete (2026-02-20) | TASK-08 | - |
 | TASK-10 | IMPLEMENT | Regenerate skill registry | 90% | S | Complete (2026-02-20) | TASK-08 | - |
 | TASK-11 | IMPLEMENT | Update feature-workflow-guide.md with pre-S0 entry section | 80% | S | Complete (2026-02-20) | TASK-05, TASK-08 | - |
@@ -192,7 +192,7 @@ Contract-first, wave-sequenced:
   - Approach: 90% — version bump comment pattern established; edge format from existing spec
   - Impact: 85% — central contract file; downstream consumers depend on correctness before TASK-03
 - **Acceptance:**
-  - Four stage blocks added: S0A (Problem framing), S0B (Solution-space scan), S0C (Option selection), S0D (Naming handoff)
+  - Four stage blocks added: S0A (Problem framing), S0B (Solution-profiling scan), S0C (Option selection), S0D (Naming handoff)
   - All four have `conditional: true` and `condition: "start-point = problem"`
   - Sequential edges added: `[S0A, S0B]`, `[S0B, S0C]`, `[S0C, S0D]`, `[S0D, S0]`
   - Existing `S0 → S1` edge preserved unchanged
@@ -265,7 +265,7 @@ Contract-first, wave-sequenced:
   - Checked: Schema enforces `minimum: 1` for display_order — `display_order: 1` for S0A–S0D is valid.
   - Unexpected findings: None — display_order strategy is now locked; the global-renumber fallback is explicitly rejected.
 - **Scouts:** `None: display_order strategy locked per schema; no schema ambiguity remains`
-- **Edge Cases & Hardening:** Alias uniqueness: `s0a`, `s0b`, `s0c`, `s0d`, `problem-framing`, `solution-space-scan`, `option-selection`, `naming-handoff` — confirm no conflicts with existing aliases before committing
+- **Edge Cases & Hardening:** Alias uniqueness: `s0a`, `s0b`, `s0c`, `s0d`, `problem-framing`, `solution-profiling-scan`, `option-selection`, `naming-handoff` — confirm no conflicts with existing aliases before committing
 - **What would make this >=90%:** Dry-run generation script after TASK-01 (S3B only) to confirm tool runs cleanly before adding S0A–S0D
 - **Rollout / rollback:**
   - Rollout: Commit dictionary + map together as atomic change
@@ -398,7 +398,7 @@ Contract-first, wave-sequenced:
   - `loop_spec_version` in required output contract updated from `1.5.0` to `1.7.0`
   - Invocation section updated: `--start-point <problem|product>` added as optional arg with default noted
   - Stage model table updated: "17 stages total" → "22 stages total"; S3B, S0A, S0B, S0C, S0D rows added in canonical order
-  - S0A–S0D rows include stage name and skill reference (lp-problem-frame, lp-solution-space, lp-option-select, brand-naming-research)
+  - S0A–S0D rows include stage name and skill reference (lp-problem-frame, lp-solution-profiling, lp-option-select, brand-naming-research)
   - Existing stage rows unchanged
 - **Validation contract:**
   - TC-01: `grep "1.7.0" .claude/skills/startup-loop/SKILL.md` returns match in output contract block
@@ -466,7 +466,7 @@ Contract-first, wave-sequenced:
 ### TASK-07: Investigate existing skill content patterns for scaffolding baseline
 
 - **Type:** INVESTIGATE
-- **Deliverable:** Investigation notes at `docs/plans/startup-loop-pre-s0-problem-framing/task-07-skill-investigation.md` covering: skill SKILL.md structure pattern, prompt-handoff model depth, content quality bar, and per-skill acceptance criteria drafts for lp-problem-frame, lp-solution-space, lp-option-select
+- **Deliverable:** Investigation notes at `docs/plans/startup-loop-pre-s0-problem-framing/task-07-skill-investigation.md` covering: skill SKILL.md structure pattern, prompt-handoff model depth, content quality bar, and per-skill acceptance criteria drafts for lp-problem-frame, lp-solution-profiling, lp-option-select
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
@@ -480,7 +480,7 @@ Contract-first, wave-sequenced:
   - Impact: 85% — quality of TASK-08 directly depends on investigation findings; if patterns are inconsistent across skills, content bar may be harder to define
 - **Questions to answer:**
   - What is the minimum acceptable SKILL.md depth for a stage skill (sections, word count, prompt specificity)?
-  - Does lp-solution-space follow the prompt-handoff model (operator runs prompt in Perplexity) or does the skill execute the research itself?
+  - Does lp-solution-profiling follow the prompt-handoff model (operator runs prompt in Perplexity) or does the skill execute the research itself?
   - What kill-condition language pattern is used in existing gate-bearing skills?
   - What are the correct output artifact paths for each of the three new skills?
 - **Acceptance:**
@@ -491,7 +491,7 @@ Contract-first, wave-sequenced:
 - **Build evidence (2026-02-20):**
   - Investigation notes filed at `docs/plans/startup-loop-pre-s0-problem-framing/task-07-skill-investigation.md` ✓
   - Q1 (min depth): ~650–950w; 6–8 required sections; verdict confirmed ✓
-  - Q2 (lp-solution-space model): prompt-handoff ONLY (brand-naming-research pattern; not direct execution) ✓
+  - Q2 (lp-solution-profiling model): prompt-handoff ONLY (brand-naming-research pattern; not direct execution) ✓
   - Q3 (kill-condition patterns): 4 patterns documented; lp-option-select → binary gate (lp-readiness pattern); lp-problem-frame → soft kill (Red Flags) ✓
   - Q4 (artifact paths): all three paths confirmed in strategy tree (not startup-baselines) ✓
   - Per-skill acceptance criteria drafted for all three skills with TCs TC-TASK08-01 through TC-TASK08-12 ✓
@@ -501,19 +501,19 @@ Contract-first, wave-sequenced:
 
 ---
 
-### TASK-08: Scaffold lp-problem-frame, lp-solution-space, lp-option-select skills
+### TASK-08: Scaffold lp-problem-frame, lp-solution-profiling, lp-option-select skills
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Three new skill files:
   - `.claude/skills/lp-problem-frame/SKILL.md` → produces `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
-  - `.claude/skills/lp-solution-space/SKILL.md` → produces `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-space-prompt.md` and results artifact
-  - `.claude/skills/lp-option-select/SKILL.md` → produces `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md`
+  - `.claude/skills/lp-solution-profiling/SKILL.md` → produces `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-profiling-prompt.md` and results artifact
+  - `.claude/skills/lp-option-select/SKILL.md` → produces `docs/business-os/strategy/<BIZ>/solution-select.user.md`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
 - **Status:** Pending
-- **Affects:** `.claude/skills/lp-problem-frame/SKILL.md` (new), `.claude/skills/lp-solution-space/SKILL.md` (new), `.claude/skills/lp-option-select/SKILL.md` (new)
+- **Affects:** `.claude/skills/lp-problem-frame/SKILL.md` (new), `.claude/skills/lp-solution-profiling/SKILL.md` (new), `.claude/skills/lp-option-select/SKILL.md` (new)
 - **Depends on:** TASK-07
 - **Blocks:** TASK-09, TASK-10, TASK-11
 - **Confidence:** 80%
@@ -523,17 +523,17 @@ Contract-first, wave-sequenced:
 - **Acceptance:**
   - Each SKILL.md contains `## Inputs`, `## Steps`, `## Output` sections at minimum
   - `lp-problem-frame` Steps produce: problem statement, affected user groups, severity/frequency, current workarounds, evidence pointers, kill condition (problem not meaningful enough for viable business)
-  - `lp-solution-space` Steps produce: a deep-research prompt for 5–10 candidate product-type options with feasibility/regulatory flags; output is prompt + results artifact slot; **explicitly excludes demand scoring** (S0B anchoring risk mitigation — feasibility flags only until S2)
+  - `lp-solution-profiling` Steps produce: a deep-research prompt for 5–10 candidate product-type options with feasibility/regulatory flags; output is prompt + results artifact slot; **explicitly excludes demand scoring** (S0B anchoring risk mitigation — feasibility flags only until S2)
   - `lp-option-select` Steps produce: shortlist of 1–2 options with elimination rationale for dropped options; explicit kill gate: "explicit decision record required to continue"
-  - Handoff note in lp-solution-space: results artifact from operator's Perplexity run is the input to lp-option-select
+  - Handoff note in lp-solution-profiling: results artifact from operator's Perplexity run is the input to lp-option-select
   - All output artifact paths use `<BIZ>` placeholder consistent with existing strategy path convention
   - S0D is NOT included — brand-naming-research is already registered
 - **Validation contract:**
   - TC-01: All three SKILL.md files exist and pass minimum depth bar from TASK-07 investigation notes
-  - TC-02: lp-solution-space explicitly states "feasibility flag only — no demand scoring until S2"
+  - TC-02: lp-solution-profiling explicitly states "feasibility flag only — no demand scoring until S2"
   - TC-03: lp-option-select includes kill gate language: "explicit decision record required to continue"
   - TC-04: Output artifact paths match fact-find New Skills Required table
-  - TC-05: Handoff note present in lp-solution-space pointing to lp-option-select
+  - TC-05: Handoff note present in lp-solution-profiling pointing to lp-option-select
 - **Execution plan:** Red → Green → Refactor
   - Red: Confirm three skill directories absent
   - Green: Create three SKILL.md files using TASK-07 investigation notes as content baseline; apply acceptance criteria drafted in TASK-07
@@ -568,7 +568,7 @@ Contract-first, wave-sequenced:
   - Approach: 90% — GATE-BD-00 artifact contract is explicit and confirmed unchanged
   - Impact: 85% — if gap found, a doc fix to the S0D loop-spec block is needed
 - **Acceptance:**
-  - GATE-BD-00 trigger condition (`business_name_status = unconfirmed`) and pass artifact (`*-naming-shortlist.user.md`) confirmed unchanged post-TASK-02
+  - GATE-BD-00 trigger condition (`business_name_status = unconfirmed`) and pass artifact (`*-candidate-names.user.md`) confirmed unchanged post-TASK-02
   - GATE-BD-00 fires at S0→S1 advance (not S0D→S0) — confirmed from cmd-advance.md
   - S0D loop-spec block references `brand-naming-research` as the naming prompt generator
   - No new naming artifact contract introduced by S0D
@@ -585,11 +585,11 @@ Contract-first, wave-sequenced:
 - **Edge Cases & Hardening:** If GATE-BD-00 is triggered between S0D→S0 rather than S0→S1, it would block the advance before the product is selected; confirm gate placement is at S0→S1 only
 - **What would make this >=90%:** Trace artifact write path from brand-naming-research output through to GATE-BD-00 pass check
 - **Build evidence (2026-02-20):**
-  - TC-01: cmd-advance.md GATE-BD-00 artifact names (`*-naming-shortlist.user.md`) unchanged ✓
+  - TC-01: cmd-advance.md GATE-BD-00 artifact names (`*-candidate-names.user.md`) unchanged ✓
   - TC-02: GATE-BD-00 trigger confirmed at `S0→S1` (not S0D→S0) ✓
-  - TC-03 (gap found and fixed): loop-spec S0D comment was inaccurate ("shortlist produced by brand-naming-research"); corrected to accurately describe prompt-handoff model — brand-naming-research produces a PROMPT; operator saves Perplexity results as `*-naming-shortlist.user.md` to satisfy gate ✓
+  - TC-03 (gap found and fixed): loop-spec S0D comment was inaccurate ("shortlist produced by brand-naming-research"); corrected to accurately describe prompt-handoff model — brand-naming-research produces a PROMPT; operator saves Perplexity results as `*-candidate-names.user.md` to satisfy gate ✓
   - Additional fix: v1.7.0 changelog comment updated to match; S0A-S0D family header comment updated
-  - Known gap (non-blocking): GATE-BD-00 idempotency check looks for `*-naming-prompt.md`; brand-naming-research saves `naming-research-prompt.md` (different suffix pattern) — gate may re-generate a prompt if S0D has already run. Low severity; does not block operator flow.
+  - Known gap (non-blocking): GATE-BD-00 idempotency check looks for `*-naming-prompt.md`; brand-naming-research saves `candidate-names-prompt.md` (different suffix pattern) — gate may re-generate a prompt if S0D has already run. Low severity; does not block operator flow.
   - Commit: `9b03bd41a9`
 - **Rollout / rollback:** `None: verification task; any fix is a minor additive comment`
 
@@ -598,7 +598,7 @@ Contract-first, wave-sequenced:
 ### TASK-10: Regenerate skill registry
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `.agents/registry/skills.json` containing entries for `lp-problem-frame`, `lp-solution-space`, `lp-option-select`
+- **Deliverable:** Updated `.agents/registry/skills.json` containing entries for `lp-problem-frame`, `lp-solution-profiling`, `lp-option-select`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
@@ -616,7 +616,7 @@ Contract-first, wave-sequenced:
   - `.agents/registry/skills.json` contains entries for all three new skills
   - No existing skill entries removed or modified
 - **Validation contract:**
-  - TC-01: `grep "lp-problem-frame\|lp-solution-space\|lp-option-select" .agents/registry/skills.json` returns 3 matches
+  - TC-01: `grep "lp-problem-frame\|lp-solution-profiling\|lp-option-select" .agents/registry/skills.json` returns 3 matches
   - TC-02: Total skill count ≥ pre-TASK-10 count + 3
 - **Execution plan:** Red → Green → Refactor
   - Red: Confirm three skills absent from registry
@@ -627,7 +627,7 @@ Contract-first, wave-sequenced:
 - **Edge Cases & Hardening:** If generator fails due to malformed SKILL.md in TASK-08, fix SKILL.md syntax before re-running; do not force-write a partial registry
 - **What would make this >=90%:** Confirmed (already 90%)
 - **Build evidence (2026-02-20):**
-  - TC-01: `grep lp-problem-frame|lp-solution-space|lp-option-select skills.json` → 3 entries ✓
+  - TC-01: `grep lp-problem-frame|lp-solution-profiling|lp-option-select skills.json` → 3 entries ✓
   - TC-02: 59 skills total (previous was ~56) ✓
   - Generator exited 0 ✓
   - Commit: `9b03bd41a9`
@@ -674,8 +674,8 @@ Contract-first, wave-sequenced:
 - **Build evidence (2026-02-20):**
   - TC-01: "Pre-S0 problem-first entry" heading present in Special-Purpose Workflows ✓
   - TC-02: `--start-point` flag with default bypass documented ✓
-  - TC-03: S0A/S0B/S0C/S0D listed with skills (lp-problem-frame, lp-solution-space, lp-option-select, brand-naming-research) ✓
-  - Bonus: GATE-BD-00 shortlist filename guidance added (operator saves Perplexity results as `*-naming-shortlist.user.md`)
+  - TC-03: S0A/S0B/S0C/S0D listed with skills (lp-problem-frame, lp-solution-profiling, lp-option-select, brand-naming-research) ✓
+  - Bonus: GATE-BD-00 shortlist filename guidance added (operator saves Perplexity results as `*-candidate-names.user.md`)
   - Commit: `9b03bd41a9`
 - **Rollout / rollback:**
   - Rollout: Commit; immediately available to operators
@@ -690,7 +690,7 @@ Contract-first, wave-sequenced:
 | display_order `1` shared by S0A–S0D and S0 breaks a consumer reading display_order | Low | Medium | Schema:81 explicitly permits this; grep for display_order consumers before TASK-03 commit |
 | `validate-process-assignment.ts` has hardcoded stage IDs not caught in TASK-04 scout | Medium | Medium | TASK-04 scout: read file and update if found |
 | Map generation fails due to schema validation error on new entries | Low-Medium | High | Dry-run generation after TASK-01 (S3B only) before adding S0A–S0D in TASK-03 |
-| TASK-08 skill content enables demand scoring in S0B, anchoring operator before S2 | Medium | High | Explicit acceptance criterion: lp-solution-space output is feasibility-flag-only; verified in TC-02 |
+| TASK-08 skill content enables demand scoring in S0B, anchoring operator before S2 | Medium | High | Explicit acceptance criterion: lp-solution-profiling output is feasibility-flag-only; verified in TC-02 |
 | TASK-07 investigation finds inconsistent skill content patterns — no clear bar | Low-Medium | Medium | TASK-07 reads four reference skills; if inconsistent, pick lp-readiness or lp-offer as canonical reference |
 | S0D / GATE-BD-00 timing conflict (gate fires between S0D→S0 instead of S0→S1) | Low | High | TASK-09 explicitly verifies gate trigger placement |
 

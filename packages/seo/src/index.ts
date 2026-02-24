@@ -5,6 +5,7 @@ export type { AlternatesOptions, AlternatesResult, PageSeo } from "./metadata/in
 export {
   buildAlternates,
   buildMetadata,
+  ensureNoTrailingSlash,
   ensureTrailingSlash,
 } from "./metadata/index.js";
 export type { RobotsConfig } from "./robots/index.js";

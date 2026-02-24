@@ -1,24 +1,37 @@
 // src/utils/debug.ts
 import { DEBUG_GUIDE_TITLES, DEBUG_GUIDES } from "@/config/env";
 
+const TRUTHY_DEBUG_VALUES = new Set(["1", "true", "yes"]);
+const URL_DEBUG_VALUES = new Set(["1", "true", "yes", "guides", "guide"]);
+
+function normalizeDebugFlag(value: string | null | undefined): string {
+  return String(value ?? "").toLowerCase();
+}
+
+function isTruthyDebugFlag(value: string | null | undefined): boolean {
+  return TRUTHY_DEBUG_VALUES.has(normalizeDebugFlag(value));
+}
+
+function isUrlDebugFlag(value: string | null | undefined): boolean {
+  return URL_DEBUG_VALUES.has(normalizeDebugFlag(value));
+}
+
+function readUrlDebugFlag(): boolean {
+  if (typeof window === "undefined" || !window.location?.search) return false;
+  const params = new URLSearchParams(window.location.search);
+  return isUrlDebugFlag(params.get("debug"));
+}
+
+function readStorageDebugFlag(): boolean {
+  if (typeof window === "undefined" || !window.localStorage) return false;
+  return isTruthyDebugFlag(window.localStorage.getItem("debug:guides"));
+}
+
 export function isGuideDebugEnabled(): boolean {
   try {
-    // Env flag
-    const v = String(DEBUG_GUIDE_TITLES ?? DEBUG_GUIDES ?? "").toLowerCase();
-    if (v === "1" || v === "true" || v === "yes") return true;
-
-    // URL flag (?debug=1 or ?debug=guides)
-    if (typeof window !== "undefined" && window.location && window.location.search) {
-      const q = new URLSearchParams(window.location.search);
-      const d = (q.get("debug") || "").toLowerCase();
-      if (d === "1" || d === "true" || d === "yes" || d === "guides" || d === "guide") return true;
-    }
-
-    // localStorage flag (persist across refresh)
-    if (typeof window !== "undefined" && window.localStorage) {
-      const ls = (window.localStorage.getItem("debug:guides") || "").toLowerCase();
-      if (ls === "1" || ls === "true" || ls === "yes") return true;
-    }
+    if (isTruthyDebugFlag(DEBUG_GUIDE_TITLES ?? DEBUG_GUIDES)) return true;
+    if (readUrlDebugFlag()) return true;
+    if (readStorageDebugFlag()) return true;
   } catch {
     // ignore
   }

@@ -1,11 +1,11 @@
 /* eslint-disable ds/no-raw-color -- test fixtures */
 import "@testing-library/jest-dom";
 
-import type { TClickCellEventData } from "@daminort/reservation-grid";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { GridReservationRow } from "../../../hooks/data/roomgrid/useGridData";
+import type { TClickCellEventData } from "../ReservationGrid";
 import RoomGrid from "../RoomGrid";
 
 /* -------------------------------------------------------------------------- */
@@ -15,7 +15,7 @@ import RoomGrid from "../RoomGrid";
 var mockEvent: TClickCellEventData;
 /* eslint-enable no-var */
 
-jest.mock("@daminort/reservation-grid", () => ({
+jest.mock("../ReservationGrid", () => ({
   __esModule: true,
   ReservationGrid: ({ onClickCell }: { onClickCell: (e: TClickCellEventData) => void }) => (
     <button data-cy="reservation-grid" onClick={() => onClickCell(mockEvent)}>

@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
-const sendCampaignEmail = jest.fn();
-jest.mock("@acme/email", () => ({ sendCampaignEmail }));
+const sendEmail = jest.fn();
+jest.mock("@acme/email/sendEmail", () => ({ sendEmail }));
 
 // Mock auth to avoid pulling in the full auth chain
 jest.mock("@cms/actions/common/auth", () => ({
@@ -28,11 +28,11 @@ function req(body: any) {
 
 describe("POST", () => {
   it("sends campaign email", async () => {
-    sendCampaignEmail.mockResolvedValue(undefined);
+    sendEmail.mockResolvedValue(undefined);
     const res = await POST(req({ to: "a@b.com", subject: "Hi", body: "Test" }));
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
-    expect(sendCampaignEmail).toHaveBeenCalledWith({ to: "a@b.com", subject: "Hi", html: "Test" });
+    expect(sendEmail).toHaveBeenCalledWith("a@b.com", "Hi", "Test");
   });
 
   it("returns 400 for missing fields", async () => {
@@ -41,14 +41,14 @@ describe("POST", () => {
   });
 
   it("returns 500 when unauthorized to send", async () => {
-    sendCampaignEmail.mockRejectedValue(new Error("Unauthorized"));
+    sendEmail.mockRejectedValue(new Error("Unauthorized"));
     const res = await POST(req({ to: "a@b.com", subject: "Hi", body: "Test" }));
     expect(res.status).toBe(500);
     expect(await res.json()).toEqual({ error: "Failed to send" });
   });
 
   it("handles network errors from email service", async () => {
-    sendCampaignEmail.mockRejectedValue(new Error("network"));
+    sendEmail.mockRejectedValue(new Error("network"));
     const res = await POST(req({ to: "a@b.com", subject: "Hi", body: "Test" }));
     expect(res.status).toBe(500);
     expect(await res.json()).toEqual({ error: "Failed to send" });

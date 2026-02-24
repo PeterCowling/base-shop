@@ -53,7 +53,7 @@ function RoomImageBase({
   return (
     <div
       className={
-        "group relative aspect-square overflow-hidden rounded-t-lg shadow-md transition-shadow duration-300 " +
+        "group relative aspect-[4/3] overflow-hidden rounded-t-lg shadow-md transition-shadow duration-300 " +
         (isInteractive ? "cursor-pointer" : "cursor-default")
       }
     >
@@ -91,9 +91,11 @@ function RoomImageBase({
           type="button"
           onClick={handlePrev}
           aria-label={labels.prevAria}
-          className="inline-flex size-11 items-center justify-center text-sm font-semibold transition hover:text-brand-terra"
+          className="inline-flex size-11 items-center justify-center transition hover:text-brand-terra"
         >
-          &lt;
+          <svg aria-hidden="true" className="size-4" viewBox="0 0 20 20" fill="currentColor" focusable="false">
+            <path d="M12.78 4.22a.75.75 0 0 1 0 1.06L8.06 10l4.72 4.72a.75.75 0 1 1-1.06 1.06l-5.25-5.25a.75.75 0 0 1 0-1.06l5.25-5.25a.75.75 0 0 1 1.06 0Z" />
+          </svg>
         </button>
         <span className="text-xs">
           {imageIndex + 1}/{totalImages}
@@ -102,9 +104,11 @@ function RoomImageBase({
           type="button"
           onClick={handleNext}
           aria-label={labels.nextAria}
-          className="inline-flex size-11 items-center justify-center text-sm font-semibold transition hover:text-brand-terra"
+          className="inline-flex size-11 items-center justify-center transition hover:text-brand-terra"
         >
-          &gt;
+          <svg aria-hidden="true" className="size-4" viewBox="0 0 20 20" fill="currentColor" focusable="false">
+            <path d="M7.22 4.22a.75.75 0 0 1 1.06 0l5.25 5.25a.75.75 0 0 1 0 1.06l-5.25 5.25a.75.75 0 1 1-1.06-1.06L11.94 10 7.22 5.28a.75.75 0 0 1 0-1.06Z" />
+          </svg>
         </button>
       </div>
     </div>

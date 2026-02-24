@@ -2,6 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import { useAuth } from "../../context/AuthContext";
 import { useCashCountsData } from "../../hooks/data/useCashCountsData";
 import { useVarianceThresholds } from "../../hooks/data/useVarianceThresholds";
@@ -18,9 +21,9 @@ interface UserShiftMap {
 function getVarianceClass(diff: number | undefined): string {
   if (diff === undefined) return "";
   const abs = Math.abs(diff);
-  if (abs < 1) return "bg-green-100 dark:bg-darkAccentGreen";
-  if (abs < 5) return "bg-yellow-200 dark:bg-darkAccentOrange";
-  return "bg-red-300 dark:bg-darkAccentOrange";
+  if (abs < 1) return "bg-success-light";
+  if (abs < 5) return "bg-warning-light";
+  return "bg-error-light";
 }
 
 export default function VarianceHeatMap() {
@@ -78,11 +81,11 @@ export default function VarianceHeatMap() {
   }
 
   return (
-    <div className="space-y-6 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="space-y-6">
       {canManageThresholds && (
-        <div className="rounded border border-gray-200 bg-white p-4 shadow-sm dark:border-darkSurface dark:bg-darkSurface">
+        <div className="rounded border border-border bg-surface p-4 shadow-sm">
           <h2 className="text-lg font-semibold mb-3">Variance Thresholds</h2>
-          <p className="text-sm text-gray-600 dark:text-darkAccentGreen">
+          <p className="text-sm text-muted-foreground">
             Update the cash variance threshold (in euros) and optional keycard
             variance threshold. Leave keycards empty to disable keycard sign-off.
           </p>
@@ -97,7 +100,7 @@ export default function VarianceHeatMap() {
                 placeholder={thresholdsLoading ? "Loading..." : currentCashThreshold}
                 value={cashThresholdInput}
                 onChange={(e) => setCashThresholdInput(e.target.value)}
-                className="mt-1 w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+                className="mt-1 w-40 rounded border px-2 py-1 text-sm"
               />
             </label>
             <label className="flex flex-col text-sm font-semibold">
@@ -110,10 +113,10 @@ export default function VarianceHeatMap() {
                 placeholder={thresholdsLoading ? "Loading..." : currentKeycardThreshold}
                 value={keycardThresholdInput}
                 onChange={(e) => setKeycardThresholdInput(e.target.value)}
-                className="mt-1 w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+                className="mt-1 w-40 rounded border px-2 py-1 text-sm"
               />
             </label>
-            <button
+            <Button
               type="button"
               disabled={thresholdsLoading || pendingSave}
               onClick={() => {
@@ -146,10 +149,10 @@ export default function VarianceHeatMap() {
                 setPendingSave(true);
                 setShowReauth(true);
               }}
-              className="h-9 rounded bg-primary-main px-4 text-sm text-white hover:bg-primary-dark disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
+              className="h-9 rounded bg-primary-main px-4 text-sm text-primary-fg hover:bg-primary-dark disabled:opacity-50"
             >
               Save thresholds
-            </button>
+            </Button>
           </div>
           {showReauth && (
             <PasswordReauthModal
@@ -186,43 +189,43 @@ export default function VarianceHeatMap() {
           )}
         </div>
       )}
-      <div className="overflow-x-auto dark:bg-darkBg dark:text-darkAccentGreen">
-      <table className="border-collapse w-full dark:bg-darkSurface dark:text-darkAccentGreen">
-        <thead>
-          <tr>
-            <th className="p-2 border dark:border-darkSurface">Employee</th>
+      <div className="overflow-x-auto">
+      <Table className="border-collapse w-full">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="p-2 border">Employee</TableHead>
             {shiftLabels.map((label) => (
-              <th
+              <TableHead
                 key={label}
-                className="p-2 border whitespace-nowrap dark:border-darkSurface"
+                className="p-2 border whitespace-nowrap"
               >
                 {label}
-              </th>
+              </TableHead>
             ))}
-          </tr>
-        </thead>
-        <tbody>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {users.map((user) => (
-            <tr key={user} className="text-center">
-              <td className="p-2 border text-start font-medium dark:border-darkSurface">
+            <TableRow key={user} className="text-center">
+              <TableCell className="p-2 border text-start font-medium">
                 {user}
-              </td>
+              </TableCell>
               {shiftLabels.map((label, idx) => {
                 const diff = userMap[user]?.[idx + 1];
                 const cellClass = getVarianceClass(diff);
                 return (
-                  <td
+                  <TableCell
                     key={`${user}-${label}`}
-                    className={`p-2 border dark:border-darkSurface ${cellClass}`}
+                    className={`p-2 border ${cellClass}`}
                   >
                     {diff !== undefined ? diff.toFixed(2) : "-"}
-                  </td>
+                  </TableCell>
                 );
               })}
-            </tr>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
       </div>
     </div>
   );

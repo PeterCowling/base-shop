@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36, TASK-40, TASK-41 complete; TASK-20 + TASK-21 complete; TASK-14 complete — Tier 1 ContentStickyCta pages pre-implemented and tests confirmed; TASK-13 complete — /book page upgraded with conversion content + JSON-LD + deal banner; only TASK-38 + TASK-42 remain)
+Last-updated: 2026-02-22 (all tasks complete — TASK-38 smoke test passing live; TASK-42 GA4 custom dims created via Admin API)
 Last-reviewed: 2026-02-18
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Relates-to charter: docs/business-os/business-os-charter.md
@@ -201,11 +201,11 @@ See `## Tasks` section for the active task list.
 | TASK-35 | IMPLEMENT | Add begin_checkout to StickyBookNow click (via trackThenNavigate) | 82% | S | Complete (2026-02-18) | TASK-29,TASK-30,TASK-15 | — |
 | TASK-36 | IMPLEMENT | Wire cta_click to OffersModal + content-page CTAs (header/hero/widget already wired) | 85% | S | Complete (2026-02-18) | TASK-29,TASK-31,TASK-15 | — |
 | TASK-37 | IMPLEMENT | Update GA4_ENUMS + delete superseded helpers + clean prefetchInteractive dead imports | 88% | S | Complete (2026-02-18) | TASK-29 | TASK-31 |
-| TASK-38 | IMPLEMENT | Playwright smoke test: navigate /book with dates, intercept g/collect, assert select_item + begin_checkout + Octorate URL | 82% | M | Pending | TASK-29,TASK-32,TASK-15 | — |
+| TASK-38 | IMPLEMENT | Playwright smoke test: navigate /book with dates, intercept g/collect, assert select_item + begin_checkout + Octorate URL | 82% | M | Complete (2026-02-22) | TASK-29,TASK-32,TASK-15 | — |
 | TASK-39 | IMPLEMENT | Add test coverage for reportWebVitals.ts (absorbed from brik-ga4-baseline-lock TASK-04) | 80% | S | Complete (2026-02-18) | — | — |
 | TASK-40 | IMPLEMENT | Update verification protocol (DebugView via GA Analytics Debugger, SPA page_view step, custom dimensions) | 85% | S | Complete (2026-02-18) | TASK-29 | — |
 | TASK-41 | IMPLEMENT | Verify and implement page_view on SPA route changes (Home → /book internal navigation) | 80% | S | Complete (2026-02-18) | TASK-29 | — |
-| TASK-42 | IMPLEMENT | Register GA4 custom dimensions in GA4 Admin (cta_id, cta_location, item_list_id, coupon) | 90% | S | Pending | TASK-31,TASK-37 | — |
+| TASK-42 | IMPLEMENT | Register GA4 custom dimensions in GA4 Admin (cta_id, cta_location, item_list_id, coupon) | 90% | S | Complete (2026-02-22) | TASK-31,TASK-37 | — |
 
 > Effort scale: S=1, M=2, L=3. CHECKPOINT tasks excluded from confidence weighting.
 
@@ -1050,6 +1050,14 @@ See `## Tasks` section for the active task list.
 - **Validation contract:**
   - TC-01: Full test scenario described above passes on staging
 - **Scouts:** Confirm GA4 collect endpoint (`**/g/collect`) is correct; confirm Playwright intercept works with beacon transport (intercept is at network level, so transport type does not matter).
+- **Build completion evidence (2026-02-22):**
+  - Script: `apps/brikette/scripts/e2e/ga4-funnel-smoke.mjs`
+  - Run against: `https://hostel-positano.com` (live, per operator decision — not staging)
+  - Result: PASSED — `select_item` (tid=G-2ZSYXG8R7T, count=1), `begin_checkout` (count=1), Octorate navigation confirmed to `https://book.octorate.com/octobook/site/reservation/confirm.xhtml`
+  - All GA4 events captured: `[page_view, view_item_list, search_availability, handoff_to_engine, user_engagement, select_item, begin_checkout]`
+  - IT locale (`/it/prenota`) skipped — redirects to `/en` (route not in static export; expected)
+  - Key parser fix: GA4 MP v2 batches events in POST body split by `\r\n`; event name is in URL query string for non-batched events. Parser handles both cases.
+  - Consent: Consent Mode v2 defaults to `analytics_storage: denied`; test grants consent programmatically via `gtag('consent', 'update', ...)` before clicking CTAs.
 
 ---
 

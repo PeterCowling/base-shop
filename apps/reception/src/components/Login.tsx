@@ -10,6 +10,9 @@ import {
   useState,
 } from "react";
 
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
 import { useAuth } from "../context/AuthContext";
 import { readJson, removeItem,writeJson } from "../lib/offline/storage";
 import { useReceptionTheme } from "../providers/ReceptionThemeProvider";
@@ -299,10 +302,10 @@ function Login({ onLoginSuccess }: LoginProps) {
     return (
       <LoginContainer dark={dark} toggleDark={toggleDark}>
         <ProductLogo />
-        <h1 className="mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <h1 className="mt-6 text-xl font-semibold text-foreground">
           Reset your password
         </h1>
-        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        <p className="mt-2 text-sm text-muted-foreground">
           {resetStatus === "sent"
             ? "Check your email for a password reset link."
             : "Enter your email and we'll send you a reset link."}
@@ -313,11 +316,11 @@ function Login({ onLoginSuccess }: LoginProps) {
             <div>
               <label
                 htmlFor="reset-email"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="block text-sm font-medium text-foreground"
               >
                 Email
               </label>
-              <input
+              <Input compatibilityMode="no-wrapper"
                 ref={resetEmailRef}
                 id="reset-email"
                 type="email"
@@ -326,43 +329,42 @@ function Login({ onLoginSuccess }: LoginProps) {
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
                 placeholder="name@company.com"
-                className="mt-1.5 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
+                className="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500"
               />
             </div>
 
             {resetError && (
-              <p role="alert" className="text-sm font-medium text-red-600 dark:text-red-400">
+              <p role="alert" className="text-sm font-medium text-error-main">
                 {resetError}
               </p>
             )}
 
-            <button
+            <Button
               type="submit"
               disabled={resetStatus === "sending"}
-              className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus-visible:dark:focus:ring-offset-gray-900"
+              className="w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50"
             >
               {resetStatus === "sending" ? "Sending..." : "Send reset link"}
-            </button>
+            </Button>
           </form>
         ) : (
           <div className="mt-6">
-            <div className="rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
-              <p className="text-sm text-green-800 dark:text-green-300">
+            <div className="rounded-lg bg-success-light/20 p-4">
+              <p className="text-sm text-success-main">
                 If an account exists for {resetEmail}, you&apos;ll receive an email shortly.
               </p>
             </div>
           </div>
         )}
 
-        <button
+        <Button
           type="button"
           onClick={handleBackToLogin}
-          className="mt-4 w-full text-center text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+          className="mt-4 w-full text-center text-sm font-medium text-primary-main hover:text-indigo-500"
         >
           Back to sign in
-        </button>
+        </Button>
 
-        <LoginFooter />
       </LoginContainer>
     );
   }
@@ -372,10 +374,10 @@ function Login({ onLoginSuccess }: LoginProps) {
     return (
       <LoginContainer dark={dark} toggleDark={toggleDark}>
         <ProductLogo />
-        <h1 className="mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <h1 className="mt-6 text-xl font-semibold text-foreground">
           Set up quick unlock
         </h1>
-        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        <p className="mt-2 text-sm text-muted-foreground">
           Create a 6-digit PIN for faster access on this device.
         </p>
 
@@ -383,7 +385,7 @@ function Login({ onLoginSuccess }: LoginProps) {
           <label htmlFor="pin-setup" className="sr-only">
             Enter 6-digit PIN
           </label>
-          <input
+          <Input compatibilityMode="no-wrapper"
             ref={pinRef}
             id="pin-setup"
             type="password"
@@ -393,19 +395,18 @@ function Login({ onLoginSuccess }: LoginProps) {
             value={pinInput}
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter 6-digit PIN"
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-center text-2xl tracking-widest text-gray-900 placeholder:text-base placeholder:tracking-normal focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            className="w-full rounded-lg border border-border-2 px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500"
           />
         </div>
 
-        <button
+        <Button
           type="button"
           onClick={handleSkipPinSetup}
-          className="mt-4 w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 focus-visible:dark:focus:ring-offset-gray-900"
+          className="mt-4 w-full rounded-lg border border-border-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2"
         >
           Skip for now
-        </button>
+        </Button>
 
-        <LoginFooter />
       </LoginContainer>
     );
   }
@@ -416,10 +417,10 @@ function Login({ onLoginSuccess }: LoginProps) {
     return (
       <LoginContainer dark={dark} toggleDark={toggleDark}>
         <ProductLogo />
-        <h1 className="mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <h1 className="mt-6 text-xl font-semibold text-foreground">
           Welcome back
         </h1>
-        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        <p className="mt-2 text-sm text-muted-foreground">
           Enter your device PIN to unlock.
         </p>
 
@@ -427,7 +428,7 @@ function Login({ onLoginSuccess }: LoginProps) {
           <label htmlFor="pin-unlock" className="sr-only">
             Enter PIN
           </label>
-          <input
+          <Input compatibilityMode="no-wrapper"
             ref={pinRef}
             id="pin-unlock"
             type="password"
@@ -438,7 +439,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter PIN"
             aria-describedby={pinError ? pinErrorId : undefined}
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-center text-2xl tracking-widest text-gray-900 placeholder:text-base placeholder:tracking-normal focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            className="w-full rounded-lg border border-border-2 px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500"
           />
         </div>
 
@@ -446,21 +447,20 @@ function Login({ onLoginSuccess }: LoginProps) {
           <p
             id={pinErrorId}
             role="alert"
-            className="mt-2 text-sm font-medium text-red-600 dark:text-red-400"
+            className="mt-2 text-sm font-medium text-error-main"
           >
             {pinError}
           </p>
         )}
 
-        <button
+        <Button
           type="button"
           onClick={handleClearDevicePin}
-          className="mt-4 w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 focus-visible:dark:focus:ring-offset-gray-900"
+          className="mt-4 w-full rounded-lg border border-border-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2"
         >
           Sign in with email instead
-        </button>
+        </Button>
 
-        <LoginFooter />
       </LoginContainer>
     );
   }
@@ -470,10 +470,10 @@ function Login({ onLoginSuccess }: LoginProps) {
   return (
     <LoginContainer dark={dark} toggleDark={toggleDark}>
       <ProductLogo />
-      <h1 className="mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+      <h1 className="mt-6 text-xl font-semibold text-foreground">
         Sign in to Reception
       </h1>
-      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+      <p className="mt-2 text-sm text-muted-foreground">
         Enter your credentials to continue.
       </p>
 
@@ -481,11 +481,11 @@ function Login({ onLoginSuccess }: LoginProps) {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="block text-sm font-medium text-foreground"
           >
             Email
           </label>
-          <input
+          <Input compatibilityMode="no-wrapper"
             ref={emailRef}
             id="email"
             type="email"
@@ -495,7 +495,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="name@company.com"
             aria-describedby={error ? loginErrorId : undefined}
-            className="mt-1.5 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
+            className="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500"
           />
         </div>
 
@@ -503,20 +503,20 @@ function Login({ onLoginSuccess }: LoginProps) {
           <div className="flex items-center justify-between">
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              className="block text-sm font-medium text-foreground"
             >
               Password
             </label>
-            <button
+            <Button
               type="button"
               onClick={handleShowForgotPassword}
-              className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+              className="text-sm font-medium text-primary-main hover:text-indigo-500"
             >
               Forgot password?
-            </button>
+            </Button>
           </div>
           <div className="relative mt-1.5">
-            <input
+            <Input compatibilityMode="no-wrapper"
               id="password"
               type={showPassword ? "text" : "password"}
               autoComplete="current-password"
@@ -524,12 +524,12 @@ function Login({ onLoginSuccess }: LoginProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               aria-describedby={error ? loginErrorId : undefined}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 pr-10 text-gray-900 focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+              className="w-full rounded-lg border border-border-2 px-4 py-2.5 pr-10 text-foreground focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500"
             />
-            <button
+            <Button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:text-gray-500 dark:hover:text-gray-300 focus-visible:dark:focus:ring-offset-gray-900"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
@@ -537,7 +537,7 @@ function Login({ onLoginSuccess }: LoginProps) {
               ) : (
                 <EyeIcon className="h-5 w-5" />
               )}
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -545,22 +545,21 @@ function Login({ onLoginSuccess }: LoginProps) {
           <p
             id={loginErrorId}
             role="alert"
-            className="text-sm font-medium text-red-600 dark:text-red-400"
+            className="text-sm font-medium text-error-main"
           >
             {error}
           </p>
         )}
 
-        <button
+        <Button
           type="submit"
           disabled={isSubmitting || status === "loading"}
-          className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus-visible:dark:focus:ring-offset-gray-900"
+          className="w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50"
         >
           {isSubmitting ? "Signing in..." : "Sign in"}
-        </button>
+        </Button>
       </form>
 
-      <LoginFooter />
     </LoginContainer>
   );
 }
@@ -568,31 +567,16 @@ function Login({ onLoginSuccess }: LoginProps) {
 function ProductLogo() {
   return (
     <div className="flex items-center justify-center">
-      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 dark:bg-indigo-500">
-        <span className="text-lg font-bold text-white">R</span>
+      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-main">
+        <span className="text-lg font-bold text-primary-fg">R</span>
       </div>
-      <span className="ms-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+      <span className="ms-3 text-xl font-semibold text-foreground">
         Reception
       </span>
     </div>
   );
 }
 
-function LoginFooter() {
-  return (
-    <div className="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
-      <p className="text-center text-xs text-gray-500 dark:text-gray-400">
-        Having trouble?{" "}
-        <a
-          href="mailto:support@example.com"
-          className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
-        >
-          Contact support
-        </a>
-      </p>
-    </div>
-  );
-}
 
 interface LoginContainerProps {
   children: React.ReactNode;
@@ -602,21 +586,21 @@ interface LoginContainerProps {
 
 function LoginContainer({ children, dark, toggleDark }: LoginContainerProps) {
   return (
-    <div className="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 px-4 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
-      <div className="relative w-full max-w-md rounded-2xl bg-white px-8 py-10 shadow-xl dark:bg-gray-900 dark:shadow-2xl dark:shadow-black/20">
-        <button
+    <div className="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-surface-2 via-surface-2 to-surface-3 px-4">
+      <div className="relative w-full max-w-md rounded-2xl bg-surface px-8 py-10 shadow-xl">
+        <Button
           type="button"
           onClick={toggleDark}
           aria-pressed={dark}
           aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-          className="absolute right-4 top-4 rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300 focus-visible:dark:focus:ring-offset-gray-900"
+          className="absolute right-4 top-4 rounded-lg p-2 text-muted-foreground hover:bg-surface-2 hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2"
         >
           {dark ? (
             <SunIcon className="h-5 w-5" />
           ) : (
             <MoonIcon className="h-5 w-5" />
           )}
-        </button>
+        </Button>
 
         {children}
       </div>

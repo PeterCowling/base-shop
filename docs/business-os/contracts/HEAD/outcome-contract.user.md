@@ -4,7 +4,7 @@ Status: Active
 Business: HEAD
 Created: 2026-02-19
 Updated: 2026-02-20
-Last-reviewed: 2026-02-20
+Last-reviewed: 2026-02-21
 Owner: Pete
 business: HEAD
 artifact: outcome_contract
@@ -47,9 +47,9 @@ Achieve first reliable direct sales for HEAD in Italy, then stabilize weekly sal
 ## Targets (by 2026-05-13)
 
 - Net orders: 110
-- Net revenue: EUR 3,000
-- Blended CAC: <= EUR 13 by day 60-90
-- Return rate: <= 7%
+- Net revenue: EUR 2,000
+- Blended CAC: <= EUR 10 by day 60-90
+- Return rate: < 3%
 
 ## Weekly Leading Indicators
 
@@ -58,13 +58,13 @@ Achieve first reliable direct sales for HEAD in Italy, then stabilize weekly sal
 | Sessions (all channels) | Total tracked sessions | >=500 sessions by week 4 |
 | Sitewide CVR (7-day trailing) | Orders / sessions | >=1.4% target; 0.9% floor |
 | Paid CAC (7-day trailing) | Paid spend / paid orders | <=EUR 25 by week 6; <= gross profit/order always |
-| Blended CAC (7-day trailing) | Paid spend / all orders | <=EUR 15 by week 4; <=EUR 13 by week 8+ |
+| Blended CAC (7-day trailing) | Paid spend / all orders | <=EUR 15 by week 4; <=EUR 10 by week 8+ |
 | Payment success rate | Successful payments / payment attempts | >=97% (decision-valid at >=100 attempts) |
-| Return rate (30-day trailing) | Returned orders / shipped orders | <=7% (decision-valid at >=25 shipped orders) |
+| Return rate (30-day trailing) | Returned orders / shipped orders | <3% (decision-valid at >=25 shipped orders) |
 
 ## Kill / Pivot Thresholds
 
 1. If paid CAC is above observed gross profit/order for 7 consecutive days, pivot to retargeting-only acquisition.
 2. If sitewide CVR is below 0.9% after >=500 sessions in a 7-day window, stop spend expansion and run conversion fixes first.
-3. If return rate exceeds 7% after >=25 shipped orders, hold growth and remediate compatibility/fit issues before re-scaling.
+3. If return rate reaches 3% or above after >=25 shipped orders, hold growth and remediate compatibility/fit issues before re-scaling.
 4. If payment success drops below 97% after >=100 attempts, pause traffic increases until checkout reliability recovers.

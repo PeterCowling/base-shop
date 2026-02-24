@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HBAG Launch Media Production & QA Contract</title>
+  <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f8fb;
+      --text: #101418;
+      --text-muted: #5a6570;
+      --border: #d9e0e7;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
+
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
+      background: var(--header);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
+    }
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
+    .audience-toggle {
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
+    }
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
+<h1>HBAG Launch Media Production &#x26; QA Contract</h1>
+<h2>Purpose</h2>
+<p>This artifact is the operating gate for launch SKU media readiness in WEBSITE-02 L1 Build 2.
+No SKU is launch-ready unless all mandatory shot slots are present and validated.</p>
+<h2>Contract Defaults (TASK-01 Decision Lock)</h2>
+<ul>
+<li>Mandatory slot pack: 6 images per SKU (<code>hero</code>, <code>angle</code>, <code>detail</code>, <code>on_body</code>, <code>scale</code>, <code>alternate</code>)</li>
+<li>Optional slot: <code>video_optional</code> (not required for launch)</li>
+<li>Launch family anchors: <code>Top Handle</code>, <code>Shoulder</code>, <code>Mini</code></li>
+<li>Campaign video policy: deferred; static-image-first at launch</li>
+</ul>
+<h2>Mandatory Shot Checklist (per SKU)</h2>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Description</th>
+<th>Required quality check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hero</code></td>
+<td>Primary product framing</td>
+<td>Product silhouette fully visible and centered</td>
+</tr>
+<tr>
+<td><code>angle</code></td>
+<td>Alternate viewing angle</td>
+<td>Distinct from hero framing</td>
+</tr>
+<tr>
+<td><code>detail</code></td>
+<td>Hardware/craft macro</td>
+<td>Hardware or stitch proof clearly visible</td>
+</tr>
+<tr>
+<td><code>on_body</code></td>
+<td>Worn/in-hand context</td>
+<td>Scale and styling context obvious</td>
+</tr>
+<tr>
+<td><code>scale</code></td>
+<td>Reference scaling cue</td>
+<td>Relative size is legible</td>
+</tr>
+<tr>
+<td><code>alternate</code></td>
+<td>Supplemental alternate</td>
+<td>Adds distinct confidence view</td>
+</tr>
+</tbody>
+</table>
+<h2>Gate Command</h2>
+<pre><code class="language-bash">pnpm --filter @apps/caryina validate:launch-media
+</code></pre>
+<p>Gate rule:</p>
+<ul>
+<li>Pass: <code>PASS launch-media-contract: ...</code></li>
+<li>Fail: any <code>FAIL launch-media-contract</code> output blocks launch packaging for impacted SKUs.</li>
+</ul>
+<h2>Rehearsal Evidence (VC-05)</h2>
+<h3>VC-05-01 Deterministic Pass (Active Catalog)</h3>
+<p>DO:</p>
+<ol>
+<li>Run validator against active catalog:
+<ul>
+<li><code>pnpm --filter @apps/caryina validate:launch-media</code></li>
+</ul>
+</li>
+<li>Confirm all active SKUs pass.</li>
+</ol>
+<p>SAVE:</p>
+<ul>
+<li>Validator output summary in <code>docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md</code></li>
+</ul>
+<p>DONE WHEN:</p>
+<ul>
+<li>Command exits <code>0</code></li>
+<li>Report contains <code>PASS launch-media-contract</code></li>
+</ul>
+<p>IF BLOCKED:</p>
+<ul>
+<li>Re-run with <code>pnpm --filter @apps/caryina validate:launch-media -- --all-statuses</code> and inspect whether inactive records are misconfigured.</li>
+</ul>
+<h3>VC-05-02 Deterministic Fail + Fallback Path</h3>
+<p>DO:</p>
+<ol>
+<li>Run validator on fail fixture:
+<ul>
+<li><code>pnpm --filter @apps/caryina validate:launch-media -- --file ../../docs/plans/hbag-website-02-image-first-upgrade/artifacts/fixtures/launch-media-missing-on-body.json</code></li>
+</ul>
+</li>
+<li>Confirm missing slot is explicitly reported.</li>
+</ol>
+<p>SAVE:</p>
+<ul>
+<li>Fixture result summary in <code>docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md</code></li>
+</ul>
+<p>DONE WHEN:</p>
+<ul>
+<li>Command exits <code>1</code></li>
+<li>Output includes <code>missing required slot \</code>on_body``</li>
+</ul>
+<p>IF BLOCKED:</p>
+<ul>
+<li>Verify fixture path and JSON structure, then rerun with <code>--file</code> absolute path.</li>
+</ul>
+<h2>Fallback SLA for Failed SKUs</h2>
+<p>When validator fails for a launch SKU:</p>
+<ol>
+<li>Mark SKU as <code>hold-media</code> in launch tracker.</li>
+<li>Owner assigns reshoot to media producer within 1 business day.</li>
+<li>Updated media is ingested with slot tags.</li>
+<li>Validator is rerun; SKU is released only after pass.</li>
+</ol>
+<p>Ownership:</p>
+<ul>
+<li>Gate owner: Pete</li>
+<li>Media fulfillment owner: HBAG production lane</li>
+<li>Validation runner: build operator</li>
+</ul>
+<h2>Sign-off</h2>
+<ul>
+<li>Reviewer: Pete</li>
+<li>Review date: 2026-02-23</li>
+<li>Verdict: Approved as launch gate for WEBSITE-02 L1 Build 2</li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/site-upgrades/HBAG/2026-02-23-image-production-contract.user.md</code></div>
+      <div>Generated: 2026-02-23T18:14:13.073Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

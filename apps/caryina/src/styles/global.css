@@ -1,0 +1,66 @@
+@config "../../../../tailwind.config.mjs";
+
+/* Caryina — Tailwind 4 global stylesheet
+   Strawberry Milk + Light Warm Sage palette */
+
+@import "@themes/base/tokens.css";
+@import "@themes/caryina/tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Brand mark tokens */
+  --brand-mark-color: hsl(var(--color-primary));
+  --brand-accent-color: hsl(var(--color-accent));
+}
+
+body {
+  font-family: var(--font-dm-sans, var(--font-sans)), sans-serif;
+  background: hsl(var(--color-bg));
+  color: hsl(var(--color-fg));
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-cormorant-garamond, serif);
+}
+
+html,
+body {
+  transition-property: background-color, color, border-color;
+  transition-duration: 250ms;
+  transition-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    transition: none;
+  }
+}
+
+.media-card-secondary {
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.media-aspect-portrait {
+  aspect-ratio: 4 / 5;
+}
+
+.gallery-role-label {
+  background-color: hsl(var(--color-fg) / 0.45);
+  color: hsl(var(--color-bg));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .media-card:hover .media-card-secondary,
+  .media-card:focus-within .media-card-secondary {
+    opacity: 1;
+  }
+}

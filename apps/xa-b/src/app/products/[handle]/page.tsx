@@ -1,10 +1,10 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy product detail content pending design/i18n overhaul */
 import { notFound } from "next/navigation";
 
-import { Section } from "@acme/design-system/atoms/Section";
-import { Grid } from "@acme/design-system/atoms/Grid";
-import { Breadcrumbs } from "@acme/design-system/molecules";
 import { Button } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Breadcrumbs } from "@acme/design-system/molecules";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 import { XaBuyBox } from "../../../components/XaBuyBox.client";
 import { XaImageGallery } from "../../../components/XaImageGallery.client";
@@ -14,6 +14,7 @@ import { getXaProductByHandle, XA_PRODUCTS } from "../../../lib/demoData";
 import { siteConfig } from "../../../lib/siteConfig";
 import { toWhatsappHref } from "../../../lib/support";
 import { formatLabel, getDesignerName } from "../../../lib/xaCatalog";
+import { xaI18n } from "../../../lib/xaI18n";
 
 export default async function ProductPage({
   params,
@@ -56,7 +57,7 @@ export default async function ProductPage({
   return (
     <main className="sf-content xa-pdp">
       <Section padding="wide">
-        <div className="grid gap-16 md:grid-cols-[minmax(0,1.6fr)_minmax(0,0.8fr)]">
+        <div className="xa-grid-pdp-primary">
           <div className="space-y-6">
             <XaImageGallery title={product.title} media={product.media} />
             <Breadcrumbs
@@ -100,7 +101,7 @@ export default async function ProductPage({
                   </div>
 
                   <div className="space-y-2">
-                    <div className="text-sm font-semibold">Fabric & care</div>
+                    <div className="text-sm font-semibold">{xaI18n.t("xaB.src.app.products.handle.page.l103c60")}</div>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {product.details?.fabricFeel ? (
                         <div>{product.details.fabricFeel}</div>
@@ -148,7 +149,7 @@ export default async function ProductPage({
               {isJewelry ? (
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <div className="text-sm font-semibold">Materials & size</div>
+                    <div className="text-sm font-semibold">{xaI18n.t("xaB.src.app.products.handle.page.l151c60")}</div>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {product.taxonomy.metal ? (
                         <div>Metal: {formatLabel(product.taxonomy.metal)}</div>
@@ -160,13 +161,13 @@ export default async function ProductPage({
                         <div>Size: {formatLabel(product.taxonomy.jewelrySize)}</div>
                       ) : null}
                       {product.details?.sizeGuide ? (
-                        <div>Sizing guidance: {product.details.sizeGuide}</div>
+                        <div>{xaI18n.t("xaB.src.app.products.handle.page.l163c30")}{product.details.sizeGuide}</div>
                       ) : null}
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <div className="text-sm font-semibold">Care & warranty</div>
+                    <div className="text-sm font-semibold">{xaI18n.t("xaB.src.app.products.handle.page.l169c60")}</div>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {product.details?.care ? <div>{product.details.care}</div> : null}
                       {product.details?.warranty ? <div>{product.details.warranty}</div> : null}
@@ -233,7 +234,7 @@ export default async function ProductPage({
               {showContactInfo || showSocialLinks ? (
                 <div className="space-y-3">
                   <div className="text-sm font-semibold">Contact</div>
-                  <div className="flex flex-wrap gap-3">
+                  <Inline gap={3} className="flex-wrap">
                     {whatsappHref ? (
                       <Button variant="outline" size="sm" asChild>
                         <a href={whatsappHref} target="_blank" rel="noreferrer noopener">
@@ -257,12 +258,12 @@ export default async function ProductPage({
                         </a>
                       </Button>
                     ) : null}
-                  </div>
+                  </Inline>
                   {showContactInfo && (siteConfig.wechatId || siteConfig.businessHours) ? (
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {siteConfig.wechatId ? <div>WeChat: {siteConfig.wechatId}</div> : null}
                       {siteConfig.businessHours ? (
-                        <div>Business hours: {siteConfig.businessHours}</div>
+                        <div>{xaI18n.t("xaB.src.app.products.handle.page.l265c30")}{siteConfig.businessHours}</div>
                       ) : null}
                     </div>
                   ) : null}
@@ -271,7 +272,7 @@ export default async function ProductPage({
             </div>
           </div>
 
-          <div className="space-y-8 self-start md:sticky md:top-28 md:max-w-[360px] md:justify-self-end">
+          <div className="space-y-8 self-start md:sticky md:top-28 xa-pdp-sidebar-max md:justify-self-end">
             <div className="space-y-1">
               <div className="xa-pdp-brand">{designerName}</div>
               <div className="xa-pdp-title text-muted-foreground">{product.title}</div>
@@ -284,7 +285,7 @@ export default async function ProductPage({
 
       {completeLook.length ? (
         <Section padding="default">
-          <h2 className="text-xl font-semibold">Complete the look</h2>
+          <h2 className="text-xl font-semibold">{xaI18n.t("xaB.src.app.products.handle.page.l287c49")}</h2>
           <div className="mt-6">
             <Grid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>
               {completeLook.map((item) => (

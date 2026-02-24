@@ -9,6 +9,9 @@ import React, {
 } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
+
 import type { EmailProgressData } from "../../schemas/emailProgressDataSchema";
 import { showToast } from "../../utils/toastUtils";
 
@@ -62,8 +65,7 @@ export default function EmailProgressLists({
             )
           );
         })
-        .catch((err) => {
-          console.error("[EmailProgressLists] Next activity error:", err);
+        .catch(() => {
           showToast(
             `Error logging next activity for ${item.bookingRef}`,
             "error"
@@ -90,8 +92,7 @@ export default function EmailProgressLists({
             prev.filter((x) => x.occupantId !== item.occupantId)
           );
         })
-        .catch((err) => {
-          console.error("[EmailProgressLists] Confirm error:", err);
+        .catch(() => {
           showToast(
             `Error logging confirm activity for ${item.bookingRef}`,
             "error"
@@ -120,7 +121,7 @@ export default function EmailProgressLists({
   );
 
   return (
-    <div className="flex flex-col font-body w-full">
+    <Stack gap={0} className="font-body w-full">
       {code1List.length > 0 && (
         <ActivityCodeSection
           code={1}
@@ -157,7 +158,7 @@ export default function EmailProgressLists({
           onConfirm={handleConfirmButton}
         />
       )}
-    </div>
+    </Stack>
   );
 }
 
@@ -203,9 +204,9 @@ function ActivityCodeSection({
       >
         <div
           ref={containerRef}
-          className="mb-8 w-full bg-white border rounded dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="mb-8 w-full bg-surface border rounded"
         >
-          <div className="p-4 bg-primary-main text-white font-heading text-lg font-bold uppercase border-b border-primary-main">
+          <div className="p-4 bg-primary-main text-primary-fg font-heading text-lg font-bold uppercase border-b border-primary-main">
             {label} ({list.length})
           </div>
           <TransitionGroup component="ul" className="p-4">
@@ -227,7 +228,7 @@ function ActivityCodeSection({
                 >
                   <li
                     ref={nodeRef}
-                    className="instant-move my-4 p-4 rounded bg-white shadow-sm flex justify-between items-center dark:bg-darkSurface dark:text-darkAccentGreen"
+                    className="instant-move my-4 p-4 rounded bg-surface shadow-sm flex justify-between items-center"
                   >
                     <div className="flex items-center gap-4">
                       {item.hoursElapsed != null && (
@@ -247,13 +248,15 @@ function ActivityCodeSection({
                       <ArrivalDateChip arrivalDate={item.arrivalDate} />
                     )}
 
-                    <span className="text-gray-700 dark:text-darkAccentGreen">{item.occupantName}</span>
+                    <span className="text-foreground">{item.occupantName}</span>
                   </div>
 
                   {item.currentCode < 4 && (
                     <div className="flex items-center gap-2">
-                      <button
-                        className="px-4 py-2 bg-secondary-main text-white text-sm rounded hover:bg-secondary-dark transition-colors"
+                      <Button
+                        color="accent"
+                        tone="solid"
+                        size="sm"
                         onClick={() => onNext(item)}
                       >
                         {code === 1
@@ -261,13 +264,15 @@ function ActivityCodeSection({
                           : code === 2
                           ? "Send Second Reminder"
                           : "Cancel Booking"}
-                      </button>
-                      <button
-                        className="px-4 py-2 bg-success-main text-white text-sm rounded hover:bg-success-dark transition-colors"
+                      </Button>
+                      <Button
+                        color="success"
+                        tone="solid"
+                        size="sm"
                         onClick={() => onConfirm(item)}
                       >
                         Confirm
-                      </button>
+                      </Button>
                     </div>
                   )}
                 </li>

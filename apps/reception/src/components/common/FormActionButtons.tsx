@@ -1,5 +1,7 @@
 import { memo } from "react";
 
+import { ReceptionButton as Button } from "@acme/ui/operations";
+
 export interface FormActionButtonsProps {
   onCancel: () => void;
   onConfirm: () => void;
@@ -16,19 +18,19 @@ export const FormActionButtons = memo(function FormActionButtons({
   onConfirm,
   confirmText = "Confirm",
   className = "flex gap-2 justify-end mt-4",
-  cancelClassName = "px-4 py-2 bg-info-main text-white rounded hover:bg-info-dark dark:bg-darkSurface dark:text-darkAccentOrange",
-  confirmClassName = "px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark dark:bg-darkAccentGreen",
+  cancelClassName = "px-4 py-2 bg-info-main text-primary-fg rounded hover:bg-info-dark dark:bg-darkSurface dark:text-darkAccentOrange",
+  confirmClassName = "px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark dark:bg-darkAccentGreen",
   confirmDisabled = false,
   hideCancel = false,
 }: FormActionButtonsProps) {
   return (
     <div className={className}>
       {!hideCancel && (
-        <button onClick={onCancel} className={cancelClassName}>
+        <Button onClick={onCancel} className={cancelClassName}>
           Cancel
-        </button>
+        </Button>
       )}
-      <button
+      <Button
         onClick={onConfirm}
         disabled={confirmDisabled}
         className={`${confirmClassName} ${
@@ -36,7 +38,7 @@ export const FormActionButtons = memo(function FormActionButtons({
         }`.trim()}
       >
         {confirmText}
-      </button>
+      </Button>
     </div>
   );
 });

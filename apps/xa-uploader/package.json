@@ -2,12 +2,15 @@
   "name": "@apps/xa-uploader",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack -p 3020",
-    "build": "pnpm exec next build --webpack",
+    "dev": "next dev -p 3020",
+    "build": "pnpm exec next build",
     "start": "next start -p 3020",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "pnpm -w run test:governed -- jest -- --config ./jest.config.cjs"
+    "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs",
+    "test:api": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs --runInBand --testPathPattern=\"src/app/api/.*/__tests__/route.test.ts\"",
+    "test:local": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs --runInBand --roots ./src --testPathPattern=\"src/(app/api|components/catalog)/\"",
+    "test:e2e": "pnpm exec playwright test e2e/catalog-console.spec.ts --reporter=list"
   },
   "dependencies": {
     "@acme/next-config": "workspace:*",

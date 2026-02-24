@@ -2,6 +2,9 @@
 
 import { memo, type ReactElement, useCallback, useMemo } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+
 import {
   type LoanItem,
   type LoanMethod,
@@ -131,15 +134,15 @@ function LoanedItemsListComponent({
   }, [occupantLoans]);
 
   if (loading) {
-    return <span className="text-gray-600 italic dark:text-darkAccentGreen">Loading...</span>;
+    return <span className="text-muted-foreground italic">Loading...</span>;
   }
   if (error) {
     return (
-      <span className="text-red-500 italic dark:text-darkAccentOrange">Error loading occupant loans.</span>
+      <span className="text-error-main italic">Error loading occupant loans.</span>
     );
   }
   if (!loanItems.length) {
-    return <span className="text-gray-600 italic dark:text-darkAccentGreen">None</span>;
+    return <span className="text-muted-foreground italic">None</span>;
   }
 
   return (
@@ -148,14 +151,16 @@ function LoanedItemsListComponent({
         const showReturnButton = itemName !== "No_card";
 
         return (
-          <div key={key} className="flex items-center justify-between my-1 dark:text-darkAccentGreen">
+          <div key={key} className="flex items-center justify-between my-1">
             <div>
               {itemName} (x{count}) - {getDepositLabel(depositType)}
             </div>
-            <div className="flex gap-2">
+            <Inline wrap={false} gap={2}>
               {showReturnButton && (
-                <button
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded disabled:bg-gray-300 dark:bg-darkAccentOrange dark:text-darkSurface dark:hover:bg-darkAccentOrange/80 dark:disabled:bg-darkSurface/50"
+                <Button
+                  color="danger"
+                  tone="solid"
+                  size="sm"
                   disabled={buttonDisabled}
                   onClick={() =>
                     onReturnLoan(
@@ -167,9 +172,9 @@ function LoanedItemsListComponent({
                   }
                 >
                   Return
-                </button>
+                </Button>
               )}
-            </div>
+            </Inline>
           </div>
         );
       })}

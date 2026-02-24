@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
+import { ArrowUpRight } from "lucide-react";
 
 import { ChevronRight } from "@/icons";
 
@@ -345,7 +346,7 @@ function RouteCardGroupBase({
                 <span className="block truncate">{label}</span>
               </span>
               <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary transition group-hover:bg-brand-primary/15 dark:bg-brand-secondary/20 dark:text-brand-secondary">
-                <ChevronRight aria-hidden className="size-4" />
+                <ArrowUpRight aria-hidden className="size-4" />
               </span>
             </a>
           );

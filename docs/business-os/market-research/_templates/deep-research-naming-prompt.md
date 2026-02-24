@@ -417,7 +417,7 @@ generated_by: "Deep Research"
 ---
 ```
 
-This block is required for `lp-brand-bootstrap` to extract the recommended name automatically.
+This block is required for `lp-assessment-bootstrap` to extract the recommended name automatically.
 A document without this block will be accepted but requires manual name entry in the brand dossier.
 
 ---
@@ -432,7 +432,7 @@ available) and populates all `{{FIELD}}` placeholders before writing the prompt 
 The user then copies the populated prompt into their Deep Research tool, runs the research, and saves
 the returned document to:
 
-  `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-shortlist.user.md`
+  `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-candidate-names.user.md`
 
 The loop detects the returned file on the next `/startup-loop advance` call and passes GATE-BD-00.
 

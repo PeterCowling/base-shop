@@ -2,11 +2,21 @@
 
 import { cn } from "../utils/style/cn";
 
+import {
+  type PrimitiveRadius,
+  type PrimitiveShape,
+  resolveShapeRadiusClass,
+} from "./shape-radius";
+
 export interface StepProgressProps {
   currentStep: number;
   totalSteps: number;
   label?: string;
   className?: string;
+  /** Semantic segment shape. Ignored when `segmentRadius` is provided. */
+  segmentShape?: PrimitiveShape;
+  /** Explicit segment radius token override. */
+  segmentRadius?: PrimitiveRadius;
 }
 
 function clamp(value: number, min: number, max: number): number {
@@ -18,10 +28,17 @@ export function StepProgress({
   totalSteps,
   label = "Step progress",
   className,
+  segmentShape,
+  segmentRadius,
 }: StepProgressProps) {
   const safeTotal = Math.max(totalSteps, 1);
   const safeCurrent = clamp(currentStep, 0, safeTotal);
   const isComplete = safeCurrent >= safeTotal;
+  const segmentShapeRadiusClass = resolveShapeRadiusClass({
+    shape: segmentShape,
+    radius: segmentRadius,
+    defaultRadius: "full",
+  });
 
   return (
     <div className={cn("space-y-2", className)}>
@@ -41,7 +58,8 @@ export function StepProgress({
           <div
             key={i}
             className={cn(
-              "h-1.5 flex-1 rounded-full transition-colors",
+              "h-1.5 flex-1 transition-colors",
+              segmentShapeRadiusClass,
               i < safeCurrent ? "bg-primary" : "bg-muted/40",
             )}
           />

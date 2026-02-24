@@ -2,7 +2,7 @@
 Type: Reference
 Status: Reference
 Prompt-ID: BRAND-DR-05
-Stage: BD-1 (brand-dossier visual identity rationale), pre-BD-5 (lp-design-spec)
+Stage: BD-1 (brand-identity visual identity rationale), pre-BD-5 (lp-design-spec)
 Business: BRIK
 As-of: {{DATE}}
 Evidence-pack-target: docs/business-os/evidence/BRIK/{{YYYY-MM}}/

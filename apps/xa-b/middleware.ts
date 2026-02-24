@@ -1,30 +1,30 @@
-/* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy middleware copy pending i18n overhaul */
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { verifyAccessToken } from "./src/lib/accessTokens";
 import { ACCESS_COOKIE_NAME, resolveAccessCookieSecret } from "./src/lib/stealth";
+import { xaI18n } from "./src/lib/xaI18n";
 
 function buildContentSecurityPolicy() {
   const isProd = process.env.NODE_ENV === "production";
   const scriptSrc = [
-    "script-src 'self'",
-    "'unsafe-inline'",
-    ...(isProd ? [] : ["'unsafe-eval'"]),
+    xaI18n.t("xaB.middleware.l10c5"),
+    xaI18n.t("xaB.middleware.l11c5"),
+    ...(isProd ? [] : [xaI18n.t("xaB.middleware.l12c24")]),
   ].join(" ");
   const connectSrc = [
-    "connect-src 'self' https:",
+    xaI18n.t("xaB.middleware.l15c5"),
     ...(isProd ? ["wss:"] : ["ws:", "wss:"]),
   ].join(" ");
   return [
-    "default-src 'self'",
-    "base-uri 'self'",
-    "object-src 'none'",
-    "frame-ancestors 'none'",
-    "form-action 'self'",
-    "img-src 'self' data: https:",
-    "font-src 'self' data:",
-    "style-src 'self' 'unsafe-inline'",
+    xaI18n.t("xaB.middleware.l19c5"),
+    xaI18n.t("xaB.middleware.l20c5"),
+    xaI18n.t("xaB.middleware.l21c5"),
+    xaI18n.t("xaB.middleware.l22c5"),
+    xaI18n.t("xaB.middleware.l23c5"),
+    xaI18n.t("xaB.middleware.l24c5"),
+    xaI18n.t("xaB.middleware.l25c5"),
+    xaI18n.t("xaB.middleware.l26c5"),
     scriptSrc,
     connectSrc,
   ].join("; ");
@@ -132,8 +132,8 @@ function buildSecurityHeaders(): Record<string, string> {
     "Permissions-Policy": "camera=(), microphone=(), geolocation=()", // i18n-exempt -- XA-0015 [ttl=2026-12-31] technical HTTP header value
     ...(stealthEnabled
       ? {
-          "X-Robots-Tag": "noindex, nofollow, noarchive, nosnippet, noimageindex",
-          "Cache-Control": "no-store, max-age=0",
+          "X-Robots-Tag": xaI18n.t("xaB.middleware.l134c27"),
+          "Cache-Control": xaI18n.t("xaB.middleware.l135c28"),
         }
       : {}),
   };

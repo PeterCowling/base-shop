@@ -1,5 +1,11 @@
 import type { FC } from "react";
 
+import {
+  ReceptionTableHead as TableHead,
+  ReceptionTableHeader as TableHeader,
+  ReceptionTableRow as TableRow,
+} from "@acme/ui/operations";
+
 import clsx from "../../../../utils/clsx";
 import { useMainContext } from "../../context";
 import { useDaysRange } from "../../hooks";
@@ -34,38 +40,38 @@ const Header: FC<THeaderProps> = ({ title, info }) => {
     });
 
     return (
-      <th
+      <TableHead
         key={cell.value}
         className={className}
         scope="col"
         data-testid={`cell-${field}-${cell.value}`}
       >
         {cell[field]}
-      </th>
+      </TableHead>
     );
   };
 
   const clsTitle = clsx("rvg-title", "rvg-fixed");
 
   return (
-    <thead data-testid="header">
-      <tr data-testid="row-days">
-        <th scope="col" rowSpan={2} className={clsTitle} data-testid="title">
+    <TableHeader data-testid="header">
+      <TableRow data-testid="row-days">
+        <TableHead scope="col" rowSpan={2} className={clsTitle} data-testid="title">
           {" "}
           {title}
-        </th>
+        </TableHead>
         {showInfo && (
-          <th scope="col" rowSpan={2} className="rvg-info" data-testid="info">
+          <TableHead scope="col" rowSpan={2} className="rvg-info" data-testid="info">
             {" "}
             {info}
-          </th>
+          </TableHead>
         )}
         {range.map((cell: TDaysRange) => renderCell(cell, "day"))}
-      </tr>
-      <tr data-testid="row-dates">
+      </TableRow>
+      <TableRow data-testid="row-dates">
         {range.map((cell: TDaysRange) => renderCell(cell, "date"))}
-      </tr>
-    </thead>
+      </TableRow>
+    </TableHeader>
   );
 };
 

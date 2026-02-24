@@ -7,6 +7,19 @@ import type { GuidesTranslationsMinimal } from "./structuredArraysContent";
 
 export type FaqEntry = { q: string; a: string[] };
 
+function resolveFallbackHeading(
+  translator: FallbackTranslator | undefined,
+  key: string,
+): string | undefined {
+  try {
+    const raw = translator?.(key);
+    const heading = typeof raw === "string" ? raw.trim() : "";
+    return heading && heading !== key ? heading : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export function resolveStructuredArrayFaqs({
   tFb,
   translations,
@@ -96,42 +109,18 @@ export function resolveStructuredArrayFaqHeading({
 }): string {
   // Prefer a curated fallback FAQs title when provided; otherwise
   // fall back to the generic localized "FAQs" label.
-  try {
-    const k1 = `content.${guideKey}.faqsTitle` as const;
-    const raw1: unknown = tFb?.(k1);
-    const s1 = typeof raw1 === "string" ? raw1.trim() : "";
-    if (s1 && s1 !== k1) return s1;
-  } catch {
-    /* noop */
-  }
-  try {
-    const k2 = `${guideKey}.faqsTitle` as const;
-    const raw2: unknown = tFb?.(k2);
-    const s2 = typeof raw2 === "string" ? raw2.trim() : "";
-    if (s2 && s2 !== k2) return s2;
-  } catch {
-    /* noop */
+  const headingKeys = [`content.${guideKey}.faqsTitle`, `${guideKey}.faqsTitle`];
+  for (const key of headingKeys) {
+    const heading = resolveFallbackHeading(tFb, key);
+    if (heading) return heading;
   }
   // Content alias: prefer a direct fallback FAQs title under the
   // alias key when provided.
   if (alias) {
-    try {
-      const rawA1: unknown = tFb?.(`content.${alias}.faqsTitle`);
-      const sA1 = typeof rawA1 === "string" ? rawA1.trim() : "";
-      if (sA1 && sA1 !== `content.${alias}.faqsTitle`) {
-        return sA1;
-      }
-    } catch {
-      /* noop */
-    }
-    try {
-      const rawA2: unknown = tFb?.(`${alias}.faqsTitle`);
-      const sA2 = typeof rawA2 === "string" ? rawA2.trim() : "";
-      if (sA2 && sA2 !== `${alias}.faqsTitle`) {
-        return sA2;
-      }
-    } catch {
-      /* noop */
+    const aliasHeadingKeys = [`content.${alias}.faqsTitle`, `${alias}.faqsTitle`];
+    for (const key of aliasHeadingKeys) {
+      const heading = resolveFallbackHeading(tFb, key);
+      if (heading) return heading;
     }
     // When a specific FAQs label is provided under the alias key's
     // toc.faqs, use it as the section heading.

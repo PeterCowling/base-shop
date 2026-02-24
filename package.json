@@ -145,7 +145,6 @@
     "preflight:mcp-startup-loop": "node --import tsx scripts/src/startup-loop/mcp-preflight.ts",
     "startup-loop:s2-market-intel-handoff": "node --import tsx scripts/src/startup-loop/s2-market-intelligence-handoff.ts",
     "startup-loop:lint-market-intel-pack": "node --import tsx scripts/src/startup-loop/market-intelligence-pack-lint.ts",
-
     "brik:export-cloudflare-proxies": "node --import tsx scripts/src/brikette/export-cloudflare-monthly-proxies.ts",
     "brik:analyse-room-pricing": "python3 scripts/brik/analyse-room-pricing.py",
     "validate:manifest": "node scripts/validate-agent-manifest.js",
@@ -305,6 +304,7 @@
     "@types/amphtml-validator": "^1.0.4",
     "@types/estree": "^1.0.8",
     "@types/jest": "^29.5.12",
+    "@types/js-yaml": "4.0.9",
     "@types/jsdom": "^21.1.7",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.19.4",

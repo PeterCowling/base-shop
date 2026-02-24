@@ -1,6 +1,8 @@
 /* File: /src/hoc/withIconModal.tsx */
 import { useRouter } from "next/navigation";
 
+import { Grid } from "@acme/design-system/primitives";
+
 import { type ModalAction } from "../types/component/ModalAction";
 
 interface WithIconModalConfig {
@@ -29,18 +31,18 @@ export function withIconModal(config: WithIconModalConfig) {
     if (!visible) return null;
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white dark:bg-darkSurface rounded-lg p-6 max-w-md w-full">
-          <h2 className="text-2xl font-bold mb-4 dark:text-white">{config.label}</h2>
-          <div className="grid grid-cols-2 gap-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/50">
+        <div className="max-w-md w-full rounded-lg bg-surface p-6 dark:bg-darkSurface">
+          <h2 className="mb-4 text-2xl font-bold dark:text-darkAccentGreen">{config.label}</h2>
+          <Grid cols={2} gap={4}>
             {config.actions.map((action, index) => (
               <button
                 key={index}
                 onClick={() => handleActionClick(action.route)}
                 disabled={!interactive}
-                className={`flex flex-col items-center justify-center p-4 border rounded transition-colors dark:text-white ${
+                className={`flex flex-col items-center justify-center rounded border p-4 transition-colors dark:text-darkAccentGreen ${
                   interactive
-                    ? "hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                    ? "cursor-pointer hover:bg-surface-2 dark:hover:bg-darkBorder"
                     : "opacity-50 cursor-not-allowed"
                 }`}
               >
@@ -48,10 +50,10 @@ export function withIconModal(config: WithIconModalConfig) {
                 <span className="text-sm">{action.label}</span>
               </button>
             ))}
-          </div>
+          </Grid>
           <button
             onClick={onClose}
-            className="mt-4 w-full py-2 px-4 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors dark:text-white"
+            className="mt-4 w-full rounded bg-surface-3 px-4 py-2 transition-colors hover:bg-surface-2 dark:bg-darkBorder dark:text-darkAccentGreen dark:hover:bg-darkSurface"
           >
             Close
           </button>

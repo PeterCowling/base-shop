@@ -3,6 +3,8 @@ Type: Strategy-Index
 Business-Unit: PET
 Last-updated: 2026-02-17
 Status: Active
+Owner: Pete
+Review-trigger: After each completed build cycle touching this document.
 ---
 
 # Brand & Strategy Index — PET
@@ -14,7 +16,7 @@ Gates read `Status` from this table — not from individual file frontmatters.
 
 | Artifact | Path | Status | Last-reviewed |
 |----------|------|--------|---------------|
-| Brand Dossier | `docs/business-os/strategy/PET/brand-dossier.user.md` | Draft | 2026-02-17 |
+| Brand Dossier | `docs/business-os/strategy/PET/brand-identity.user.md` | Draft | 2026-02-17 |
 | Competitive Positioning | `docs/business-os/strategy/PET/competitive-positioning.user.md` | — | — |
 | Messaging Hierarchy | `docs/business-os/strategy/PET/messaging-hierarchy.user.md` | — | — |
 | Creative Voice Brief | `docs/business-os/strategy/PET/creative-voice-brief.user.md` | — | — |

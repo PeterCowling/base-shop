@@ -33,20 +33,16 @@ describe("Avatar", () => {
     expect(screen.getByText("J")).toBeInTheDocument();
   });
 
-  it("applies size and shape classes", () => {
-    render(
-      <Avatar
-        src="/avatar.jpg"
-        alt="User avatar"
-        size={64}
-        className="rounded-none"
-      />
+  it("applies size and shape/radius contract classes", () => {
+    const { rerender } = render(
+      <Avatar src="/avatar.jpg" alt="User avatar" size={64} shape="square" />
     );
     const img = screen.getByAltText("User avatar");
     expect(img).toHaveStyle({ width: "64px", height: "64px" });
-    // Note: cn() (tailwind-merge) replaces conflicting utilities,
-    // so rounded-none (passed via className) overrides the default rounded-full
     expect(img).toHaveClass("rounded-none");
+
+    rerender(<Avatar src="/avatar.jpg" alt="User avatar" size={64} shape="square" radius="xl" />);
+    expect(screen.getByAltText("User avatar")).toHaveClass("rounded-xl");
   });
 
   it("parses string dimensions into numbers and applies spacing", () => {

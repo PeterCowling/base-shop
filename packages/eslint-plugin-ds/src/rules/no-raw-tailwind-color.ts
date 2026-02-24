@@ -1,4 +1,3 @@
- 
 import type { Rule } from "eslint";
 
 // Tailwind palette names we want to forbid (non-token based)
@@ -46,18 +45,18 @@ const utilAlternation = UTILITIES.join("|");
 
 // e.g. text-gray-700, bg-red-50, border-blue-500/50, ring-amber-400
 const RAW_PALETTE_CLASS = new RegExp(
-  `(?:^|\n|\s)(?:${utilAlternation})-(?:${paletteAlternation})(?:-[0-9]{1,3})?(?:\\/[0-9]{1,3})?(?=\s|$)`,
+  `(?:^|\\n|\\s)(?:${utilAlternation})-(?:${paletteAlternation})(?:-[0-9]{1,3})?(?:\\/[0-9]{1,3})?(?=\\s|$)`,
   "i"
 );
 
 // e.g. text-[#111], bg-[#111111cc]
 const ARBITRARY_HEX = new RegExp(
-  `(?:^|\n|\s)(?:${utilAlternation})-\\[#(?:[0-9a-fA-F]{3,8})\\](?=\s|$)`
+  `(?:^|\\n|\\s)(?:${utilAlternation})-\\[#(?:[0-9a-fA-F]{3,8})\\](?=\\s|$)`
 );
 
 // e.g. bg-[hsl(200_50%_40%_/_.5)], bg-[rgba(255,0,0,0.5)], text-[rgb(10,10,10)]
 const ARBITRARY_COLOR_FUNC = new RegExp(
-  `(?:^|\n|\s)(?:${utilAlternation})-\\[[^\]]*(?:rgb|rgba|hsl|hsla)\\([^\)]*\\)[^\]]*\\](?=\s|$)`,
+  `(?:^|\\n|\\s)(?:${utilAlternation})-\\[[^\\]]*(?:rgb|rgba|hsl|hsla)\\([^\\)]*\\)[^\\]]*\\](?=\\s|$)`,
   "i"
 );
 
@@ -103,4 +102,3 @@ const rule: Rule.RuleModule = {
 };
 
 export default rule;
-

@@ -39,4 +39,25 @@ describe("DropdownMenu visuals", () => {
     expect(cls).toMatch(/border-border-2/);
     expect(cls).toMatch(/shadow-elevation/);
   });
+
+  it("applies content-bleed protection classes to menu items", async () => {
+    render(
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button>Open</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent data-cy="content">
+          <DropdownMenuItem data-cy="item">
+            This is an intentionally long menu label that should wrap safely
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: /open/i }));
+
+    const item = await screen.findByTestId("item");
+    expect(item).toHaveClass("min-w-0");
+    expect(item.querySelector("span.min-w-0.break-words")).not.toBeNull();
+  });
 });

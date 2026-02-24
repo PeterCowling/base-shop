@@ -159,6 +159,29 @@ describe("DatePicker", () => {
     expect(input).toHaveClass("custom-class");
   });
 
+  it("supports shape/radius overrides", () => {
+    const { rerender } = render(
+      <DatePicker
+        selected={null}
+        placeholderText="Select a date"
+        shape="square"
+      />,
+    );
+    let input = screen.getByPlaceholderText("Select a date");
+    expect(input).toHaveClass("rounded-none");
+
+    rerender(
+      <DatePicker
+        selected={null}
+        placeholderText="Select a date"
+        shape="square"
+        radius="xl"
+      />,
+    );
+    input = screen.getByPlaceholderText("Select a date");
+    expect(input).toHaveClass("rounded-xl");
+  });
+
   it("supports clearable functionality", async () => {
     const handleChange = jest.fn();
     const user = userEvent.setup();

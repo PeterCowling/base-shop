@@ -2,6 +2,7 @@
 import { memo, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import FocusTrap, { type FocusTrapProps } from "focus-trap-react";
 
@@ -35,6 +36,7 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
   }, [i18n?.language]);
   const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   const { t } = useTranslation("header", { lng: lang });
+  const pathname = usePathname();
 
   /* Focus management --------------------------------------------------- */
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
@@ -71,7 +73,7 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
           /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
           "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform " +
             /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-            "transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg",
+            "transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-surface",
           menuOpen ? "translate-y-0 visible pointer-events-auto" : "translate-y-full invisible pointer-events-none"
         )}
         // eslint-disable-next-line react/forbid-dom-props -- UI-1000 ttl=2026-12-31 menu offset is runtime-calculated.
@@ -92,20 +94,27 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
           })()}
         </h2>
         <ul className="flex flex-col items-center space-y-6 pt-6 pb-10">
-          {navLinks.map(({ key, to, label, prefetch }, idx) => (
-            <li key={key}>
-              <Link
-                ref={idx === 0 ? firstLinkRef : undefined}
-                href={`/${lang}${to}`}
-                prefetch={prefetch}
-                tabIndex={menuOpen ? 0 : -1}
-                className="block min-h-11 min-w-11 px-2 py-2 text-xl font-medium underline-offset-4 text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline"
-                onClick={close}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+          {navLinks.map(({ key, to, label, prefetch }, idx) => {
+            const isCurrent = pathname === `/${lang}${to}`;
+            return (
+              <li key={key}>
+                <Link
+                  ref={idx === 0 ? firstLinkRef : undefined}
+                  href={`/${lang}${to}`}
+                  prefetch={prefetch}
+                  tabIndex={menuOpen ? 0 : -1}
+                  aria-current={isCurrent ? "page" : undefined}
+                  className={clsx(
+                    "block min-h-11 min-w-11 px-2 py-2 text-xl underline-offset-4 text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline",
+                    isCurrent ? "font-semibold text-brand-secondary underline" : "font-medium"
+                  )}
+                  onClick={close}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
 
           {/* footer row — theme toggle + language chips */}
           <li className="mt-8 flex flex-wrap items-center justify-center gap-4">

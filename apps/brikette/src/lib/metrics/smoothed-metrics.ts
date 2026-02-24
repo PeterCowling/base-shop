@@ -25,7 +25,6 @@
 import {
   EWMA,
   HoltSmoothing,
-  isZScoreOutlier,
 } from "@acme/lib";
 
 // ============================================================================
@@ -143,7 +142,14 @@ export class SmoothedMetric {
     if (this.history.length < 10 || this.ewma.value === null) {
       return false;
     }
-    return isZScoreOutlier(value, this.history, sigmas);
+
+    const mean = this.history.reduce((a, b) => a + b, 0) / this.history.length;
+    const variance =
+      this.history.reduce((sum, v) => sum + (v - mean) ** 2, 0) /
+      this.history.length;
+    const std = Math.sqrt(variance);
+
+    return Math.abs(value - mean) > sigmas * std;
   }
 
   /**

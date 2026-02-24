@@ -42,7 +42,6 @@
     "@acme/design-system": "workspace:*",
     "@acme/guide-system": "workspace:*",
     "@acme/guides-core": "workspace:*",
-    "@acme/lib": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/platform-core": "workspace:*",
     "@acme/seo": "workspace:*",

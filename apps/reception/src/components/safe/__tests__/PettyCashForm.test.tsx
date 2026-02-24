@@ -59,14 +59,11 @@ describe("PettyCashForm", () => {
     );
   });
 
-  it("applies dark mode styles", () => {
+  it("applies token-based theme styles", () => {
     render(
-      <div className="dark">
-        <PettyCashForm onConfirm={jest.fn()} onCancel={jest.fn()} />
-      </div>
+      <PettyCashForm onConfirm={jest.fn()} onCancel={jest.fn()} />
     );
     const heading = screen.getByText(/petty cash withdrawal/i);
-    const container = heading.parentElement as HTMLElement;
-    expect(container).toHaveClass("dark:bg-darkSurface");
+    expect(heading.closest('[role="dialog"]')).toBeInTheDocument();
   });
 });

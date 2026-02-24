@@ -6,6 +6,7 @@
  * Tracks query performance and bandwidth usage for development monitoring.
  * Metrics are only collected in development mode to avoid performance overhead.
  */
+import { mean as libMean } from "@acme/lib/math/statistics";
 
 export interface FirebaseQueryMetric {
   type: 'get' | 'onValue' | 'subscription';
@@ -146,7 +147,7 @@ class FirebaseMetricsTracker {
         count: data.count,
         bytes: data.bytes,
         avgDuration: data.durations.length > 0
-          ? data.durations.reduce((a, b) => a + b, 0) / data.durations.length
+          ? libMean(data.durations)
           : 0,
       };
     }
@@ -178,18 +179,6 @@ class FirebaseMetricsTracker {
    */
   printSummary(): void {
     const summary = this.getSummary();
-
-    console.group('📊 Firebase Metrics Summary');
-
-    console.log(`Total Queries: ${summary.totalQueries}`);
-    console.log(`Total Bytes: ${this.formatBytes(summary.totalBytes)}`);
-    console.log(`Average Query Time: ${summary.averageQueryTime.toFixed(2)}ms`);
-
-    console.groupCollapsed('Queries by Type');
-    console.table(summary.byType);
-    console.groupEnd();
-
-    console.groupCollapsed('Queries by Path (Top 10)');
     const topPaths = Object.entries(summary.byPath)
       .sort((a, b) => b[1].count - a[1].count)
       .slice(0, 10)
@@ -199,22 +188,27 @@ class FirebaseMetricsTracker {
         bytes: this.formatBytes(stats.bytes),
         avgTime: `${stats.avgDuration.toFixed(2)}ms`,
       }));
-    console.table(topPaths);
-    console.groupEnd();
+    const slowQueries = summary.slowQueries.map((query) => ({
+      path: query.path,
+      duration: `${query.duration?.toFixed(2)}ms`,
+      bytes: this.formatBytes(query.bytesTransferred),
+      time: new Date(query.timestamp).toLocaleTimeString(),
+    }));
 
-    if (summary.slowQueries.length > 0) {
-      console.groupCollapsed(`⚠️  Slow Queries (>${this.slowQueryThreshold}ms)`);
-      const slowQueries = summary.slowQueries.map(q => ({
-        path: q.path,
-        duration: `${q.duration?.toFixed(2)}ms`,
-        bytes: this.formatBytes(q.bytesTransferred),
-        time: new Date(q.timestamp).toLocaleTimeString(),
-      }));
-      console.table(slowQueries);
-      console.groupEnd();
+    console.info('[Firebase Metrics] Summary', {
+      totalQueries: summary.totalQueries,
+      totalBytes: this.formatBytes(summary.totalBytes),
+      averageQueryTimeMs: Number(summary.averageQueryTime.toFixed(2)),
+      byType: summary.byType,
+      topPaths,
+    });
+
+    if (slowQueries.length > 0) {
+      console.warn(
+        `[Firebase Metrics] Slow queries over ${this.slowQueryThreshold}ms`,
+        slowQueries,
+      );
     }
-
-    console.groupEnd();
   }
 
   /**
@@ -236,20 +230,28 @@ class FirebaseMetricsTracker {
   }
 }
 
+type FirebaseMetricsDebugHandle = {
+  getSummary: () => FirebaseMetricsSummary;
+  printSummary: () => void;
+  clear: () => void;
+};
+
+declare global {
+  interface Window {
+    __firebaseMetrics?: FirebaseMetricsDebugHandle;
+  }
+}
+
 // Singleton instance
 export const firebaseMetrics = new FirebaseMetricsTracker();
 
 // Expose to window in development for manual inspection
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-  (window as any).__firebaseMetrics = {
+  window.__firebaseMetrics = {
     getSummary: () => firebaseMetrics.getSummary(),
     printSummary: () => firebaseMetrics.printSummary(),
     clear: () => firebaseMetrics.clear(),
   };
 
-  console.log(
-    '%c💡 Firebase Metrics Available',
-    'color: #4CAF50; font-weight: bold',
-    '\nAccess via: window.__firebaseMetrics'
-  );
+  console.info('[Firebase Metrics] Dev handle available at window.__firebaseMetrics');
 }

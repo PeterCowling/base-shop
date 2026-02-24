@@ -35,8 +35,8 @@ export type BuildOctorateUrlResult =
  * Returns `{ ok: true, url }` on success, or `{ ok: false, error }` on validation failure.
  * Never throws.
  *
- * - Uses `confirm.xhtml` endpoint (room-specific) when `octorateRateCode` is provided.
- * - Appends `room=<octorateRateCode>` as the rate code param (Octorate param name: `room`).
+ * - Uses Octorate room-rate `calendar.xhtml` endpoint.
+ * - Appends room and date params from the selected room-rate/check-in.
  * - Appends deal + UTM attribution params when `deal` is provided.
  *
  * 200ms timeout rationale (for callers using trackThenNavigate): empirically-established
@@ -46,14 +46,7 @@ export type BuildOctorateUrlResult =
 export function buildOctorateUrl(
   params: BuildOctorateUrlParams
 ): BuildOctorateUrlResult {
-  const {
-    checkin,
-    checkout,
-    pax,
-    octorateRateCode,
-    bookingCode,
-    deal,
-  } = params;
+  const { checkin, checkout, octorateRateCode, bookingCode, deal } = params;
 
   // Guard: booking code must be present
   if (!bookingCode || !bookingCode.trim()) {
@@ -73,15 +66,13 @@ export function buildOctorateUrl(
 
   const urlParams = new URLSearchParams({
     codice: bookingCode,
-    checkin,
-    checkout,
-    pax: String(pax),
-    children: "0",
-    childrenAges: "",
+    room: octorateRateCode,
+    date: checkin,
   });
 
-  // Set the room-specific rate code — param name is `room` per Octorate confirm endpoint
-  urlParams.set("room", octorateRateCode);
+  // Preserve selected stay window for analytics/debug correlation.
+  urlParams.set("checkin", checkin);
+  urlParams.set("checkout", checkout);
 
   // Append deal attribution params when a deal code is provided
   const dealCode = typeof deal === "string" ? deal.trim() : "";
@@ -92,7 +83,7 @@ export function buildOctorateUrl(
     urlParams.set("utm_campaign", dealCode);
   }
 
-  const url = `${OCTORATE_BASE}/confirm.xhtml?${urlParams.toString()}`;
+  const url = `${OCTORATE_BASE}/calendar.xhtml?${urlParams.toString()}`;
 
   return { ok: true, url };
 }

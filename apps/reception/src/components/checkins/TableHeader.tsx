@@ -1,87 +1,84 @@
 // File: src/components/roomview/TableHeader.tsx
 
 import React from 'react'
+import { Bed, Clock, Coins, CreditCard, FileText, Key, Mail, User } from 'lucide-react'
 
-import {
-  ReceptionTableHead,
-  ReceptionTableHeader,
-  ReceptionTableRow,
-} from '@acme/ui/operations'
+import { TableHead, TableHeader as DSTableHeader, TableRow } from '@acme/design-system'
 
 /**
- * Static table header row using Font Awesome icons only.
+ * Static table header row using Lucide icons.
  * All text has been removed from header cells per request.
  */
 const TableHeader: React.FC = () => {
   return (
-    <ReceptionTableHeader className='sticky top-0 bg-surface-2 text-foreground border-b border-border-2 z-5 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface'>
-      <ReceptionTableRow className='h-12'>
+    <DSTableHeader className='sticky top-0 bg-surface-2 text-foreground border-b border-border-2 z-5'>
+      <TableRow className='h-12'>
         {/* Guest Name */}
-        <ReceptionTableHead className='px-4 py-2 w-200px font-semibold' title='Guest Name'>
+        <TableHead className='px-4 py-2 w-200px font-semibold' title='Guest Name'>
           <div className='flex justify-center items-center'>
-            <i className='fas fa-user' />
+            <User size={16} />
           </div>
-        </ReceptionTableHead>
+        </TableHead>
 
         {/* Room Allocated */}
-        <ReceptionTableHead
+        <TableHead
           className='px-4 py-2 w-120px font-semibold'
           title='Room Allocated'
         >
           <div className='flex justify-center items-center'>
-            <i className='fas fa-bed' />
+            <Bed size={16} />
           </div>
-        </ReceptionTableHead>
+        </TableHead>
 
         {/* Room Payment */}
-        <ReceptionTableHead className='px-4 py-2 w-125px font-semibold' title='Room Payment'>
+        <TableHead className='px-4 py-2 w-125px font-semibold' title='Room Payment'>
           <div className='flex justify-center items-center'>
-            <i className='fas fa-credit-card' />
+            <CreditCard size={16} />
           </div>
-        </ReceptionTableHead>
+        </TableHead>
 
         {/* City Tax */}
-        <ReceptionTableHead className='px-4 py-2 w-125px font-semibold' title='City Tax'>
+        <TableHead className='px-4 py-2 w-125px font-semibold' title='City Tax'>
           <div className='flex justify-center items-center'>
-            <i className='fas fa-coins' />
+            <Coins size={16} />
           </div>
-        </ReceptionTableHead>
+        </TableHead>
 
         {/* Keycard Deposit */}
-        <ReceptionTableHead
+        <TableHead
           className='px-4 py-2 w-125px font-semibold'
           title='Keycard Deposit'
         >
           <div className='flex justify-center items-center'>
-            <i className='fas fa-key' />
+            <Key size={16} />
           </div>
-        </ReceptionTableHead>
+        </TableHead>
 
         {/* Status */}
-        <ReceptionTableHead className='px-4 py-2 w-120px font-semibold' title='Status'>
+        <TableHead className='px-4 py-2 w-120px font-semibold' title='Status'>
           <div className='flex justify-center items-center'>
-            <i className='fas fa-clock' />
+            <Clock size={16} />
           </div>
-        </ReceptionTableHead>
+        </TableHead>
 
         {/* Document Insert */}
-        <ReceptionTableHead
+        <TableHead
           className='px-4 py-2 w-150px font-semibold'
           title='Document Insert'
         >
           <div className='flex justify-center items-center'>
-            <i className='fas fa-file-alt' />
+            <FileText size={16} />
           </div>
-        </ReceptionTableHead>
+        </TableHead>
 
         {/* Email Booking */}
-        <ReceptionTableHead className='px-4 py-2 w-150px font-semibold' title='Email Booking'>
+        <TableHead className='px-4 py-2 w-150px font-semibold' title='Email Booking'>
           <div className='flex justify-center items-center'>
-            <i className='fas fa-envelope' />
+            <Mail size={16} />
           </div>
-        </ReceptionTableHead>
-      </ReceptionTableRow>
-    </ReceptionTableHeader>
+        </TableHead>
+      </TableRow>
+    </DSTableHeader>
   )
 }
 

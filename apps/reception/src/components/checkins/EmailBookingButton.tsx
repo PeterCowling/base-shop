@@ -1,10 +1,7 @@
 // File: /src/components/checkins/EmailBookingButton.tsx
 
 import { memo, useCallback, useMemo } from "react";
-import {
-  faThLarge, // grid-style icon commonly used to indicate an “app”
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LayoutGrid } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -99,7 +96,7 @@ function EmailBookingButton({
         className="min-h-55px px-4 bg-primary-main text-primary-fg rounded-md hover:bg-primary-dark transition-colors"
         title="Create booking email draft"
       >
-        {loading ? "..." : <FontAwesomeIcon icon={faThLarge} size="lg" />}
+        {loading ? "..." : <LayoutGrid size={20} />}
       </Button>
 
       {/* --- “i” badge centred horizontally at the top of the button --- */}

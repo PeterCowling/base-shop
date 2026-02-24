@@ -13,6 +13,7 @@ import {
 import { getItalyIsoString, getLocalToday } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 import { showToast } from "../../utils/toastUtils";
+import { PageShell } from "../common/PageShell";
 
 import { LoanFilters } from "./LoanFilters";
 import { LoansTable } from "./LoansTable";
@@ -206,11 +207,8 @@ function LoansContainer({ username }: { username: string }): ReactElement {
     [handleReturnLoanTransaction]
   );
   return (
-    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
-      <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
-        LOANS
-      </h1>
-      <div className="bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
+    <PageShell title="LOANS">
+      <div className="bg-surface rounded-lg shadow p-6 space-y-4">
         {error && (
           <div className="p-4 text-error-main font-semibold">
             Error loading loan data: {String(error)}
@@ -224,17 +222,17 @@ function LoansContainer({ username }: { username: string }): ReactElement {
           onGuestFilterChange={setGuestFilter}
         />
         {loading && (
-          <div className="italic text-muted-foreground dark:text-darkAccentGreen">
+          <div className="italic text-muted-foreground">
             Loading loan information...
           </div>
         )}
         {!loading && guests?.length === 0 && (
-          <div className="italic text-muted-foreground dark:text-darkAccentGreen">
+          <div className="italic text-muted-foreground">
             No guests found for this date.
           </div>
         )}
         {!loading && filteredData.length === 0 && (guests?.length ?? 0) > 0 && (
-          <div className="italic text-muted-foreground dark:text-darkAccentGreen">
+          <div className="italic text-muted-foreground">
             No guests match your search.
           </div>
         )}
@@ -247,7 +245,7 @@ function LoansContainer({ username }: { username: string }): ReactElement {
           />
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }
 export const Loans = memo(LoansContainer);

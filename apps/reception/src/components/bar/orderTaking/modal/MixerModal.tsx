@@ -1,8 +1,8 @@
 /* File: src/componnents/bar/orderTaking/modal/MixerModal.tsx */
 import React, { type FC, useCallback } from "react";
 
+import { Button } from "@acme/design-system/atoms";
 import { Stack } from "@acme/design-system/primitives";
-import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import { withModalBackground } from "../../../../hoc/withModalBackground";
 
@@ -44,7 +44,8 @@ const MixerModalBase: FC<MixerModalProps> = ({ onSelect, onCancel }) => {
           <Button
             key={m}
             onClick={createMixerClickHandler(m)}
-            className="px-4 py-2 bg-info-main text-primary-fg hover:bg-info-main transition-colors duration-200 rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+            color="info"
+            tone="solid"
           >
             {m}
           </Button>
@@ -52,7 +53,8 @@ const MixerModalBase: FC<MixerModalProps> = ({ onSelect, onCancel }) => {
       </Stack>
       <Button
         onClick={onCancel}
-        className="px-4 py-2 bg-surface-3 text-foreground hover:bg-surface-3 transition-colors duration-200 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
+        color="default"
+        tone="soft"
       >
         Cancel
       </Button>

@@ -17,6 +17,7 @@ import { formatEnGbDateTimeFromIso } from "../../utils/dateUtils";
 import { getErrorMessage } from "../../utils/errorMessage";
 import { showToast } from "../../utils/toastUtils";
 import { runTransaction } from "../../utils/transaction";
+import { PageShell } from "../common/PageShell";
 import { ExchangeNotesForm } from "../till/ExchangeNotesForm";
 import ReturnKeycardsModal from "../till/ReturnKeycardsModal";
 
@@ -357,11 +358,8 @@ function SafeManagement(): JSX.Element {
   };
 
   return (
-    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
-      <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
-        SAFE MANAGEMENT
-      </h1>
-      <div className="bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
+    <PageShell title="SAFE MANAGEMENT">
+      <div className="bg-surface rounded-lg shadow p-6 space-y-4">
         <p className="text-lg">
           Safe Balance: <strong>€{safeBalance.toFixed(2)}</strong>
         </p>
@@ -492,7 +490,7 @@ function SafeManagement(): JSX.Element {
         <div className="border-t pt-4">
           <h2 className="text-xl font-semibold mb-2">Transactions</h2>
           {safeCounts.length === 0 ? (
-            <div className="italic text-muted-foreground dark:text-darkAccentGreen">
+            <div className="italic text-muted-foreground">
               No transactions recorded.
             </div>
           ) : (
@@ -500,7 +498,7 @@ function SafeManagement(): JSX.Element {
               className="w-full border-collapse"
               aria-label="safe transactions"
             >
-              <TableHeader className="bg-surface-2 dark:bg-darkSurface">
+              <TableHeader className="bg-surface-2">
                 <TableRow>
                   <TableHead className="text-start p-2 border-b">Timestamp</TableHead>
                   <TableHead className="text-start p-2 border-b">Type</TableHead>
@@ -516,8 +514,8 @@ function SafeManagement(): JSX.Element {
                     <TableRow
                       className={
                         idx % 2 === 0
-                          ? "bg-surface dark:bg-darkSurface"
-                          : "bg-surface-2 dark:bg-darkSurface"
+                          ? "bg-surface"
+                          : "bg-surface-2"
                       }
                     >
                       <TableCell className="p-2">
@@ -564,8 +562,8 @@ function SafeManagement(): JSX.Element {
                       <TableRow
                         className={
                           idx % 2 === 0
-                            ? "bg-surface dark:bg-darkSurface"
-                            : "bg-surface-2 dark:bg-darkSurface"
+                            ? "bg-surface"
+                            : "bg-surface-2"
                         }
                       >
                         <TableCell colSpan={6} className="p-2">
@@ -580,7 +578,7 @@ function SafeManagement(): JSX.Element {
           )}
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }
 

@@ -3,8 +3,8 @@
 import React, { type FC, useCallback, useState } from "react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives";
-import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import { type AggregatedOrder } from "../../../types/bar/BarTypes";
 
@@ -58,7 +58,7 @@ const OrderList: FC<OrderListProps> = React.memo(
                   <TableHead className="px-4 py-2 text-end">Total&nbsp;€</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody className="divide-y divide-stone-200">
+              <TableBody className="divide-y divide-border-1">
                 {orders.map((o) => (
                   <TableRow
                     key={o.product}
@@ -92,12 +92,10 @@ const OrderList: FC<OrderListProps> = React.memo(
               type="button"
               disabled={!orders.length}
               onClick={() => setShowPayModal(true)}
-              className={[
-                "w-full rounded-lg py-2 text-center text-sm font-semibold shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-light",
-                !orders.length
-                  ? "cursor-not-allowed bg-surface-3 text-muted-foreground"
-                  : "bg-success-main text-success-foreground hover:bg-success-hover active:scale-97 motion-safe:transition-transform",
-              ].join(" ")}
+              color="success"
+              tone="solid"
+              size="sm"
+              className="w-full"
             >
               Pay
             </Button>
@@ -105,7 +103,10 @@ const OrderList: FC<OrderListProps> = React.memo(
             <Button
               type="button"
               onClick={onClearAll}
-              className="w-full rounded-lg bg-destructive-main py-2 text-sm font-semibold text-destructive-foreground shadow hover:bg-destructive-hover active:scale-97 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-destructive-main motion-safe:transition-transform"
+              color="danger"
+              tone="solid"
+              size="sm"
+              className="w-full"
             >
               Clear&nbsp;All
             </Button>

@@ -9,8 +9,9 @@ import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
-import { ReceptionButton as Button, ReceptionInput } from "@acme/ui/operations";
 
 // We'll derive the logged-in user from AuthContext.
 import { useAuth } from "../../context/AuthContext";
@@ -49,15 +50,9 @@ export default function DateSelectorCI({
     return (
       <Button
         key={day}
-        className={`
-          px-4 py-2 border rounded text-sm font-medium w-100px text-center
-          transition-colors
-          ${
-            isSelected
-              ? "bg-primary-main text-primary-fg border-primary-main"
-              : "bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface dark:hover:bg-darkSurface/70"
-          }
-        `}
+        color={isSelected ? "primary" : "default"}
+        tone={isSelected ? "solid" : "outline"}
+        size="sm"
         onClick={() => onDateChange(day)}
       >
         {label}
@@ -109,7 +104,9 @@ export default function DateSelectorCI({
       <div className="relative">
         <Button
           ref={toggleRef}
-          className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
+          color="default"
+          tone="outline"
+          size="sm"
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate ? formatDateForInput(selectedDate) : "Select a date"}
@@ -133,7 +130,7 @@ export default function DateSelectorCI({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded dark:bg-darkSurface dark:text-darkAccentGreen`,
+                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded`,
                 today: "border-warning-border",
                 selected: "bg-warning text-primary-fg",
                 chevron: `${defaultNames.chevron} fill-warning`,
@@ -157,7 +154,7 @@ export default function DateSelectorCI({
         {/* Show test mode toggle on far right, but only if user is Pete */}
         {isPete && (
           <label className="inline-flex items-center space-x-2">
-            <ReceptionInput
+            <Input compatibilityMode="no-wrapper"
               type="checkbox"
               checked={testMode}
               onChange={(e) => onTestModeChange(e.target.checked)}

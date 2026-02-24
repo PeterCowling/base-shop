@@ -6,12 +6,7 @@ import {
   useCallback,
   useState,
 } from "react";
-import {
-  faCreditCard,
-  faMoneyBill,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Banknote, CreditCard, Plus } from "lucide-react";
 
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
 
@@ -55,19 +50,12 @@ function PaymentForm({
     [isDisabled]
   );
 
-  const getPayTypeIcon = useCallback(() => {
+  const PayTypeIcon = (() => {
     if (splitPayments.length === 1) {
-      return splitPayments[0].payType === "CC" ? faCreditCard : faMoneyBill;
+      return splitPayments[0].payType === "CC" ? CreditCard : Banknote;
     }
-    return faPlus;
-  }, [splitPayments]);
-
-  const getPayTypeTooltip = useCallback(() => {
-    if (splitPayments.length === 1) {
-      return splitPayments[0].payType === "CC" ? "Credit Card" : "Cash";
-    }
-    return "Split Payment";
-  }, [splitPayments]);
+    return Plus;
+  })();
 
   const getButtonLabel = useCallback(() => {
     if (outstanding > 0) {
@@ -79,7 +67,7 @@ function PaymentForm({
     return "Paid";
   }, [outstanding, splitPayments]);
 
-  const activeClass = "bg-primary-main hover:bg-primary-dark text-primary-fg dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80";
+  const activeClass = "bg-primary-main hover:bg-primary-dark text-primary-fg";
   const disabledClass =
     "bg-success-light text-primary-fg cursor-not-allowed opacity-70";
   const leftButtonClass = isDisabled
@@ -101,11 +89,7 @@ function PaymentForm({
                 : "Click to split/change payment"
             }
           >
-            <FontAwesomeIcon
-              icon={getPayTypeIcon()}
-              size="lg"
-              title={getPayTypeTooltip()}
-            />
+            <PayTypeIcon size={20} />
           </Button>
         </PopoverTrigger>
         <Button

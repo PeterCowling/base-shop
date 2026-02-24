@@ -3,8 +3,8 @@ import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
+import { Button } from "@acme/design-system/atoms";
 import { Cluster, Inline } from "@acme/design-system/primitives";
-import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import {
   buildQuickDateRange,
@@ -39,15 +39,9 @@ export default function DateSelector({
       <Button
         key={dayStr}
         onClick={() => onDateChange(dayStr)}
-        className={`
-          px-4 py-2 border rounded text-sm font-medium w-100px text-center
-          transition-colors
-          ${
-            isSelected
-              ? "bg-primary-main text-primary-fg border-primary-main dark:bg-darkAccentGreen dark:text-darkBg dark:border-darkAccentGreen"
-              : "bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
-          }
-        `}
+        color={isSelected ? "primary" : "default"}
+        tone={isSelected ? "solid" : "outline"}
+        size="sm"
       >
         {label}
       </Button>
@@ -94,7 +88,9 @@ export default function DateSelector({
       <div className="relative">
         <Button
           ref={toggleRef}
-          className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
+          color="default"
+          tone="outline"
+          size="sm"
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate || "Select a date"}
@@ -120,7 +116,7 @@ export default function DateSelector({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded dark:bg-darkSurface dark:text-darkAccentGreen`,
+                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded`,
                 today: "border-warning-border",
                 selected: "bg-warning text-primary-fg",
                 chevron: `${defaultNames.chevron} fill-warning`,

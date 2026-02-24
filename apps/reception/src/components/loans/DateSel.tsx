@@ -13,8 +13,8 @@ import {
 } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 
+import { Button } from "@acme/design-system/atoms";
 import { Cluster, Inline } from "@acme/design-system/primitives";
-import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import {
   buildQuickDateRange,
@@ -54,15 +54,9 @@ function DateSel({
       return (
         <Button
           key={day}
-          className={`
-            px-4 py-2 border rounded text-sm font-medium w-100px text-center
-            transition-colors
-            ${
-              isSelected
-              ? "bg-primary-main text-primary-fg border-primary-main"
-              : "bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface dark:hover:bg-darkSurface/70"
-            }
-          `}
+          color={isSelected ? "primary" : "default"}
+          tone={isSelected ? "solid" : "outline"}
+          size="sm"
           onClick={() => onDateChange(day)}
         >
           {label}
@@ -116,7 +110,9 @@ function DateSel({
       <div className="relative">
         <Button
           ref={toggleRef}
-          className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
+          color="default"
+          tone="outline"
+          size="sm"
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate ? formatDateForInput(selectedDate) : "Select a date"}
@@ -140,7 +136,7 @@ function DateSel({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded dark:bg-darkSurface dark:text-darkAccentGreen`,
+                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded`,
                 today: "border-amber-500",
                 selected: "bg-amber-500 border-amber-500 text-primary-fg",
                 chevron: `${defaultNames.chevron} fill-amber-500`,

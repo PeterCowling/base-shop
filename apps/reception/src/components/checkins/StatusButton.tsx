@@ -1,13 +1,8 @@
 // File: /Users/petercowling/reception/src/components/checkins/StatusButton.tsx
 
 import { memo, useCallback, useMemo, useState } from "react";
-import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import {
-  faBed,
-  faClock,
-  faShoppingBag,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { LucideIcon } from "lucide-react";
+import { Bed, Clock, ShoppingBag } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -144,14 +139,14 @@ function StatusButton({ booking }: StatusButtonProps) {
   /**
    * Pick the button icon from occupant's code.
    */
-  const getStatusIcon = useCallback((code: number): IconDefinition => {
+  const getStatusIcon = useCallback((code: number): LucideIcon => {
     switch (code) {
       case 23:
-        return faShoppingBag; // "Bags dropped"
+        return ShoppingBag; // "Bags dropped"
       case 12:
-        return faBed; // "Check-in complete"
+        return Bed; // "Check-in complete"
       default:
-        return faClock; // "Pending" or code=0
+        return Clock; // "Pending" or code=0
     }
   }, []);
 
@@ -258,11 +253,10 @@ function StatusButton({ booking }: StatusButtonProps) {
             />
           </svg>
         ) : (
-          <FontAwesomeIcon
-            icon={getStatusIcon(occupantCode)}
-            size="lg"
-            className="transition-opacity duration-300"
-          />
+          (() => {
+            const StatusIcon = getStatusIcon(occupantCode);
+            return <StatusIcon size={20} className="transition-opacity duration-300" />;
+          })()
         )}
       </Button>
     </>

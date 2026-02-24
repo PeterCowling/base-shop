@@ -2,8 +2,8 @@
 
 import { memo, type ReactElement, useCallback, useMemo } from "react";
 
+import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
-import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import {
   type LoanItem,
@@ -134,15 +134,15 @@ function LoanedItemsListComponent({
   }, [occupantLoans]);
 
   if (loading) {
-    return <span className="text-muted-foreground italic dark:text-darkAccentGreen">Loading...</span>;
+    return <span className="text-muted-foreground italic">Loading...</span>;
   }
   if (error) {
     return (
-      <span className="text-error-main italic dark:text-darkAccentOrange">Error loading occupant loans.</span>
+      <span className="text-error-main italic">Error loading occupant loans.</span>
     );
   }
   if (!loanItems.length) {
-    return <span className="text-muted-foreground italic dark:text-darkAccentGreen">None</span>;
+    return <span className="text-muted-foreground italic">None</span>;
   }
 
   return (
@@ -151,14 +151,16 @@ function LoanedItemsListComponent({
         const showReturnButton = itemName !== "No_card";
 
         return (
-          <div key={key} className="flex items-center justify-between my-1 dark:text-darkAccentGreen">
+          <div key={key} className="flex items-center justify-between my-1">
             <div>
               {itemName} (x{count}) - {getDepositLabel(depositType)}
             </div>
             <Inline wrap={false} gap={2}>
               {showReturnButton && (
                 <Button
-                  className="bg-error-main hover:bg-error-main text-primary-fg px-3 py-1 rounded disabled:bg-surface-3 dark:bg-darkAccentOrange dark:text-darkSurface dark:hover:bg-darkAccentOrange/80 dark:disabled:bg-darkSurface/50"
+                  color="danger"
+                  tone="solid"
+                  size="sm"
                   disabled={buttonDisabled}
                   onClick={() =>
                     onReturnLoan(

@@ -9,8 +9,8 @@ import React, {
 } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import { Button } from "@acme/design-system/atoms";
 import { Stack } from "@acme/design-system/primitives";
-import { ReceptionButton as Button } from "@acme/ui/operations";
 
 import type { EmailProgressData } from "../../schemas/emailProgressDataSchema";
 import { showToast } from "../../utils/toastUtils";
@@ -204,7 +204,7 @@ function ActivityCodeSection({
       >
         <div
           ref={containerRef}
-          className="mb-8 w-full bg-surface border rounded dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="mb-8 w-full bg-surface border rounded"
         >
           <div className="p-4 bg-primary-main text-primary-fg font-heading text-lg font-bold uppercase border-b border-primary-main">
             {label} ({list.length})
@@ -228,7 +228,7 @@ function ActivityCodeSection({
                 >
                   <li
                     ref={nodeRef}
-                    className="instant-move my-4 p-4 rounded bg-surface shadow-sm flex justify-between items-center dark:bg-darkSurface dark:text-darkAccentGreen"
+                    className="instant-move my-4 p-4 rounded bg-surface shadow-sm flex justify-between items-center"
                   >
                     <div className="flex items-center gap-4">
                       {item.hoursElapsed != null && (
@@ -248,13 +248,15 @@ function ActivityCodeSection({
                       <ArrivalDateChip arrivalDate={item.arrivalDate} />
                     )}
 
-                    <span className="text-foreground dark:text-darkAccentGreen">{item.occupantName}</span>
+                    <span className="text-foreground">{item.occupantName}</span>
                   </div>
 
                   {item.currentCode < 4 && (
                     <div className="flex items-center gap-2">
                       <Button
-                        className="px-4 py-2 bg-secondary-main text-primary-fg text-sm rounded hover:bg-secondary-dark transition-colors"
+                        color="accent"
+                        tone="solid"
+                        size="sm"
                         onClick={() => onNext(item)}
                       >
                         {code === 1
@@ -264,7 +266,9 @@ function ActivityCodeSection({
                           : "Cancel Booking"}
                       </Button>
                       <Button
-                        className="px-4 py-2 bg-success-main text-primary-fg text-sm rounded hover:bg-success-dark transition-colors"
+                        color="success"
+                        tone="solid"
+                        size="sm"
                         onClick={() => onConfirm(item)}
                       >
                         Confirm

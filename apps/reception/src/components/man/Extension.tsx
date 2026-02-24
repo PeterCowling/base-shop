@@ -3,16 +3,8 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 
-import {
-  ReceptionButton as Button,
-  ReceptionInput,
-  ReceptionTable as Table,
-  ReceptionTableBody as TableBody,
-  ReceptionTableCell as TableCell,
-  ReceptionTableHead as TableHead,
-  ReceptionTableHeader as TableHeader,
-  ReceptionTableRow as TableRow,
-} from "@acme/ui/operations";
+import { Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
 
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
@@ -32,6 +24,7 @@ import {
   parseLocalDate,
 } from "../../utils/dateUtils";
 import { roundDownTo50Cents } from "../../utils/moneyUtils";
+import { PageShell } from "../common/PageShell";
 
 import ExtensionPayModal from "./modals/ExtensionPayModal";
 
@@ -283,8 +276,8 @@ function Extension() {
     filteredRows.forEach((r) => {
       if (!map[r.bookingRef]) {
         map[r.bookingRef] = useGrey
-          ? "bg-surface-2 dark:bg-darkSurface"
-          : "bg-surface dark:bg-darkSurface";
+          ? "bg-surface-2"
+          : "bg-surface";
         useGrey = !useGrey;
       }
     });
@@ -309,12 +302,8 @@ function Extension() {
 
   return (
     <>
-      <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
-        <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
-          EXTENSION
-        </h1>
-
-        <div className="bg-surface rounded-lg shadow p-6 dark:bg-darkSurface">
+      <PageShell title="EXTENSIONS">
+        <div className="bg-surface rounded-lg shadow p-6">
           {loading && (
             <p className="italic text-muted-foreground">Loading extension data...</p>
           )}
@@ -332,17 +321,17 @@ function Extension() {
               <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <label
                   htmlFor="extension-search"
-                  className="text-sm font-semibold text-foreground dark:text-darkAccentGreen"
+                  className="text-sm font-semibold text-foreground"
                 >
                   Search
                 </label>
-                <ReceptionInput
+                <Input compatibilityMode="no-wrapper"
                   id="extension-search"
                   type="search"
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
                   placeholder="Search by guest name, booking, or room"
-                  className="w-full sm:w-80 border rounded px-3 py-2 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+                  className="w-full sm:w-80 border rounded px-3 py-2"
                 />
               </div>
 
@@ -354,7 +343,7 @@ function Extension() {
                 <div className="overflow-auto">
                   <Table className="min-w-full border-collapse text-sm">
                     <TableHeader>
-                      <TableRow className="bg-surface-3 dark:bg-darkSurface">
+                      <TableRow className="bg-surface-3">
                         <TableHead
                           className="p-2 border-b text-start cursor-pointer"
                           onClick={() => handleSort("roomNumber")}
@@ -396,7 +385,7 @@ function Extension() {
                             )}
                           </TableCell>
                           <TableCell className="p-2 border-b text-end">
-                            <ReceptionInput
+                            <Input compatibilityMode="no-wrapper"
                               type="number"
                               min="1"
                               value={
@@ -410,17 +399,15 @@ function Extension() {
                                   [r.occupantId]: parseInt(e.target.value, 10),
                                 }))
                               }
-                              className="border rounded px-2 py-1 w-20 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+                              className="border rounded px-2 py-1 w-20"
                             />
                           </TableCell>
                           <TableCell className="p-2 border-b text-center">
                             <div className="flex gap-2 justify-center">
                               <Button
-                                className={`px-2 py-1 rounded ${
-                                  availabilityMap[r.occupantId]
-                                    ? "bg-primary-main text-primary-fg"
-                                    : "bg-muted text-primary-fg cursor-not-allowed"
-                                }`}
+                                color={availabilityMap[r.occupantId] ? "primary" : "default"}
+                                tone={availabilityMap[r.occupantId] ? "solid" : "soft"}
+                                size="sm"
                                 onClick={() => {
                                   if (availabilityMap[r.occupantId]) {
                                     setSelectedNights(getNights(r.occupantId));
@@ -435,11 +422,9 @@ function Extension() {
                               {r.occupantId === r.occupantIds[0] &&
                                 r.occupantCount > 1 && (
                                   <Button
-                                    className={`px-2 py-1 rounded ${
-                                      availabilityMap[r.occupantId]
-                                        ? "bg-primary-main text-primary-fg"
-                                        : "bg-muted text-primary-fg cursor-not-allowed"
-                                    }`}
+                                    color={availabilityMap[r.occupantId] ? "primary" : "default"}
+                                    tone={availabilityMap[r.occupantId] ? "solid" : "soft"}
+                                    size="sm"
                                     onClick={() => {
                                       if (availabilityMap[r.occupantId]) {
                                         setSelectedNights(
@@ -467,7 +452,7 @@ function Extension() {
             </div>
           )}
         </div>
-      </div>
+      </PageShell>
 
       {selectedRow && (
         <ExtensionPayModal

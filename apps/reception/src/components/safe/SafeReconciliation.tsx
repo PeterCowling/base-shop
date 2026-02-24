@@ -9,6 +9,7 @@ import { useSafeKeycardCount } from "../../hooks/data/useSafeKeycardCount";
 import { getErrorMessage } from "../../utils/errorMessage";
 import { showToast } from "../../utils/toastUtils";
 import { runTransaction } from "../../utils/transaction";
+import { PageShell } from "../common/PageShell";
 
 import { BankDepositForm } from "./BankDepositForm";
 import { PettyCashForm } from "./PettyCashForm";
@@ -97,11 +98,8 @@ function SafeReconciliation(): JSX.Element {
   };
 
   return (
-    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
-      <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
-        SAFE MANAGEMENT
-      </h1>
-      <div className="bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface">
+    <PageShell title="SAFE RECONCILIATION">
+      <div className="bg-surface rounded-lg shadow p-6 space-y-4">
         <p className="text-lg">
           Expected Balance: <strong>€{safeBalance.toFixed(2)}</strong>
         </p>
@@ -149,7 +147,7 @@ function SafeReconciliation(): JSX.Element {
           />
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }
 

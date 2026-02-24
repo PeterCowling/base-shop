@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lp-do skills — User Guide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #181b24;
+      --surface-raised: #1f2330;
+      --border: #2a2f3d;
+      --accent: #6c8fff;
+      --accent-subtle: #1a2240;
+      --text: #dde2f0;
+      --text-muted: #7d879e;
+      --text-dim: #4d5570;
+      --green: #3dd68c;
+      --green-subtle: #0e2a1c;
+      --amber: #f5a623;
+      --amber-subtle: #2b1e06;
+      --red: #ff6b6b;
+      --red-subtle: #2a0f0f;
+      --purple: #b98fff;
+      --purple-subtle: #1e1030;
+      --teal: #3dd6d6;
+      --teal-subtle: #0e2a2a;
+      --note: #8b9fc0;
+      --note-subtle: #171e2e;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ── */
+    .page-wrapper { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 32px 0 40px;
+    }
+
+    .sidebar-logo {
+      padding: 0 24px 24px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .sidebar nav a {
+      display: block;
+      padding: 7px 24px;
+      font-size: 13.5px;
+      color: var(--text-muted);
+      border-left: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .sidebar nav a:hover { color: var(--text); border-left-color: var(--border); text-decoration: none; }
+
+    .sidebar nav .nav-section {
+      padding: 16px 24px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .sidebar nav .nav-standalone {
+      font-style: italic;
+      opacity: 0.7;
+    }
+
+    .main { flex: 1; min-width: 0; max-width: 900px; padding: 56px 48px 100px; }
+
+    /* ── Hero ── */
+    .hero { margin-bottom: 56px; }
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      font-variant-ligatures: none;
+    }
+    .hero .subtitle {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 620px;
+      line-height: 1.7;
+    }
+
+    /* ── Workflow strip ── */
+    .workflow-strip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .wf-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 13.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .wf-arrow { color: var(--text-dim); font-size: 18px; padding: 0 2px; line-height: 1; }
+
+    /* Loop group */
+    .wf-loop-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 8px 14px 6px;
+    }
+    .wf-loop-pills { display: flex; align-items: center; gap: 6px; }
+    .wf-loop-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Section dividers ── */
+    .section-divider {
+      margin: 48px 0 32px;
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    h2 {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+    }
+
+    /* ── Skill cards ── */
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .skill-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 22px 26px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .skill-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .skill-header-text h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+    .skill-invoke {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12.5px;
+      color: var(--accent);
+      background: var(--accent-subtle);
+      border: 1px solid #2a3a6a;
+      padding: 2px 10px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-bottom: 7px;
+    }
+    .skill-tagline { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
+
+    /* Card body — always 2 columns */
+    .skill-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .skill-section {
+      padding: 18px 24px 20px;
+      border-right: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      min-width: 0; /* prevent grid blowout */
+    }
+    .skill-section:nth-child(2n) { border-right: none; }
+
+    /* Full-width spanning section (for 3-section cards) */
+    .skill-section.span-full {
+      grid-column: 1 / -1;
+      border-right: none;
+    }
+
+    /* Section panel titles */
+    .skill-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .in-color  { color: var(--amber); }
+    .out-color { color: var(--green); }
+    .does-color { color: var(--accent); }
+    .note-color { color: var(--note); }
+
+    /* Bullet lists */
+    .skill-section ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .skill-section ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+    .bullet-in   { background: var(--amber); }
+    .bullet-out  { background: var(--green); }
+    .bullet-does { background: var(--accent); }
+    .bullet-note { background: var(--note); }
+
+    /* li-body: text + badge stacked */
+    .li-body {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 0;
+    }
+    .li-text { line-height: 1.55; }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+      align-self: flex-start;
+      white-space: nowrap;
+    }
+    .badge-required {
+      background: var(--amber-subtle);
+      color: var(--amber);
+      border: 1px solid #4a3010;
+    }
+    .badge-optional {
+      background: var(--surface-raised);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    /* File paths */
+    .file-path {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px;
+      color: var(--green);
+      background: var(--green-subtle);
+      border: 1px solid #1a4030;
+      padding: 1px 7px;
+      border-radius: 4px;
+      word-break: break-all;
+      white-space: normal;
+      display: inline;
+    }
+
+    /* Flow notes */
+    .flow-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 20px 14px;
+      background: var(--surface-raised);
+      border-top: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .flow-note .flow-icon { font-size: 15px; flex-shrink: 0; margin-top: 2px; }
+    .flow-note strong { color: var(--text); }
+
+    /* Note box */
+    .note-box {
+      background: var(--accent-subtle);
+      border: 1px solid #2a3a6a;
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .note-box strong { color: var(--accent); }
+
+    /* ── Pill colours ── */
+    .pill-briefing  { background: var(--purple-subtle); color: var(--purple);  border: 1px solid #3a2060; }
+    .pill-factfind  { background: var(--amber-subtle);  color: var(--amber);   border: 1px solid #4a3010; }
+    .pill-plan      { background: var(--accent-subtle); color: var(--accent);  border: 1px solid #2a3a6a; }
+    .pill-build     { background: var(--green-subtle);  color: var(--green);   border: 1px solid #1a4030; }
+    .pill-replan    { background: var(--teal-subtle);   color: var(--teal);    border: 1px solid #0e3a3a; }
+    .pill-critique  { background: var(--red-subtle);    color: var(--red);     border: 1px solid #4a1010; }
+    .pill-ideas     { background: var(--surface-raised); color: var(--text-muted); border: 1px solid var(--border); }
+
+    /* ── Icon bg colours ── */
+    .icon-briefing  { background: var(--purple-subtle); border: 1px solid #3a2060; }
+    .icon-factfind  { background: var(--amber-subtle);  border: 1px solid #4a3010; }
+    .icon-plan      { background: var(--accent-subtle); border: 1px solid #2a3a6a; }
+    .icon-build     { background: var(--green-subtle);  border: 1px solid #1a4030; }
+    .icon-replan    { background: var(--teal-subtle);   border: 1px solid #0e3a3a; }
+    .icon-critique  { background: var(--red-subtle);    border: 1px solid #4a1010; }
+    .icon-ideas     { background: var(--surface-raised); border: 1px solid var(--border); }
+
+    /* ── Quick reference table ── */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .ref-table th {
+      text-align: left;
+      padding: 10px 16px;
+      background: var(--surface-raised);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+    .ref-table td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+    .ref-table tr:last-child td { border-bottom: none; }
+    .ref-table tr:hover td { background: var(--surface-raised); }
+    .ref-table .output-path {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px;
+      color: var(--green);
+    }
+
+    /* ── How they connect ── */
+    .connect-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .connect-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+    .connect-card h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .connect-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.65; }
+
+    /* ── Responsive ── */
+    @media (max-width: 780px) {
+      .page-wrapper { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); }
+      .main { padding: 32px 20px 60px; }
+      .skill-body { grid-template-columns: 1fr; }
+      .skill-section { border-right: none !important; }
+      .skill-section.span-full { grid-column: auto; }
+      .connect-grid { grid-template-columns: 1fr; }
+      .workflow-strip { gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">lp-do skills</div>
+    <nav>
+      <div class="nav-section">Overview</div>
+      <a href="#overview">Introduction</a>
+      <a href="#workflow">The Workflow</a>
+      <a href="#quick-ref">Quick Reference</a>
+
+      <div class="nav-section">The Sequence</div>
+      <a href="#ideas">Ideas</a>
+      <a href="#fact-find">Fact-Find</a>
+      <a href="#plan">Plan</a>
+      <a href="#build">Build</a>
+      <a href="#replan">Replan</a>
+      <a href="#critique">Critique</a>
+
+      <div class="nav-section">Standalone</div>
+      <a href="#briefing" class="nav-standalone">Briefing</a>
+
+      <div class="nav-section">Reference</div>
+      <a href="#connections">How They Connect</a>
+    </nav>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <!-- Hero -->
+    <div class="hero" id="overview">
+      <h1>lp-do skills</h1>
+      <p class="subtitle">
+        A family of AI-powered skills that work together to take a business idea from
+        initial discovery all the way through to built, tested, and shipped code or
+        documentation — with quality checks at every step.
+      </p>
+    </div>
+
+    <!-- Workflow -->
+    <div id="workflow">
+      <h2>The Standard Workflow</h2>
+
+      <div class="workflow-strip">
+        <span class="wf-pill pill-ideas">💡 Ideas</span>
+        <span class="wf-arrow">→</span>
+        <span class="wf-pill pill-factfind">🔍 Fact-Find</span>
+        <span class="wf-arrow">→</span>
+        <span class="wf-pill pill-plan">📐 Plan</span>
+        <span class="wf-arrow">→</span>
+        <div class="wf-loop-group">
+          <div class="wf-loop-pills">
+            <span class="wf-pill pill-build">🔨 Build</span>
+            <span class="wf-arrow">↔</span>
+            <span class="wf-pill pill-replan">🔄 Replan</span>
+          </div>
+          <div class="wf-loop-label">repeat per task until done</div>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <strong>Ideas</strong> detects meaningful changes in your strategic documents and surfaces what needs a Fact-Find next — it is the entry point for work that emerges from changing business context.
+        <strong>Critique</strong> runs automatically as a quality gate after Fact-Find and Plan — you don't invoke it directly.
+        <strong>Briefing</strong> is a standalone tool for background understanding; it sits outside the delivery sequence.
+      </div>
+    </div>
+
+    <!-- Quick Reference -->
+    <hr class="section-divider" id="quick-ref" />
+    <h2>Quick Reference</h2>
+
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th style="width:120px">Skill</th>
+          <th>You invoke it when…</th>
+          <th>Primary output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="wf-pill pill-ideas" style="font-size:12px">💡 Ideas</span></td>
+          <td>A strategic document has changed and you want to surface what follow-up work is needed</td>
+          <td>A dispatch packet recommending a Fact-Find</td>
+        </tr>
+        <tr>
+          <td><span class="wf-pill pill-factfind" style="font-size:12px">🔍 Fact-Find</span></td>
+          <td>You have a feature to scope and want it evidenced before planning</td>
+          <td><span class="output-path">fact-find.md</span> — structured discovery document</td>
+        </tr>
+        <tr>
+          <td><span class="wf-pill pill-plan" style="font-size:12px">📐 Plan</span></td>
+          <td>Fact-Find is complete and you're ready to decompose into tasks</td>
+          <td><span class="output-path">plan.md</span> — sequenced task list ready to build</td>
+        </tr>
+        <tr>
+          <td><span class="wf-pill pill-build" style="font-size:12px">🔨 Build</span></td>
+          <td>A plan exists and you want to execute the next task</td>
+          <td>Built artifact + plan updated with evidence</td>
+        </tr>
+        <tr>
+          <td><span class="wf-pill pill-replan" style="font-size:12px">🔄 Replan</span></td>
+          <td>A task is blocked, uncertain, or assumptions have changed</td>
+          <td>Updated <span class="output-path">plan.md</span> with revised tasks</td>
+        </tr>
+        <tr>
+          <td><span class="wf-pill pill-critique" style="font-size:12px">🔎 Critique</span></td>
+          <td>You want a quality check on a plan or document (auto-runs after Fact-Find and Plan)</td>
+          <td>Critique score + issues + in-place fixes applied</td>
+        </tr>
+        <tr>
+          <td><span class="wf-pill pill-briefing" style="font-size:12px">📖 Briefing</span></td>
+          <td>You want to understand how something currently works before deciding whether to change it — standalone, not part of the sequence</td>
+          <td>A briefing note with end-to-end evidence pointers — no tasks, no plan</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ════════════════════════════════════
+         SKILL CARDS — in workflow order
+         ════════════════════════════════════ -->
+
+    <hr class="section-divider" />
+
+    <!-- IDEAS -->
+    <div class="skill-card" id="ideas">
+      <div class="skill-header">
+        <div class="skill-icon icon-ideas">💡</div>
+        <div class="skill-header-text">
+          <div class="skill-invoke">/lp-do-ideas</div>
+          <h3>Ideas</h3>
+          <div class="skill-tagline">Monitor strategic documents for meaningful changes and queue the Fact-Find work they imply.</div>
+        </div>
+      </div>
+
+      <div class="skill-body">
+        <!-- Row 1 -->
+        <div class="skill-section">
+          <div class="skill-section-title in-color">What you tell it</div>
+          <ul>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text"><strong>Artifact ID</strong> — the identifier of the strategic document to evaluate</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text"><strong>Business</strong> — which business or product context this relates to</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text"><strong>After SHA</strong> — a fingerprint of the document's current version</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text"><strong>Path</strong> — the file path of the document</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title does-color">What it does</div>
+          <ul>
+            <li><span class="bullet bullet-does"></span><span>Compares the current document version against the last known version to detect meaningful changes</span></li>
+            <li><span class="bullet bullet-does"></span><span>Assesses every detected change using judgment — asks: is it material? does it open a planning gap? is the area already covered by in-flight work? Routes to <strong>Fact-Find</strong> if investigation is needed (any domain: strategy, offer, distribution, product, measurement, brand, supply), <strong>Briefing</strong> if understanding-only, or no-action if the change is minor or already handled</span></li>
+            <li><span class="bullet bullet-does"></span><span>No changed sections, or a first-time registration, results in a logged no-action — nothing queued</span></li>
+            <li><span class="bullet bullet-does"></span><span>Queues the dispatch for your review — never auto-invokes follow-up skills without your confirmation</span></li>
+            <li><span class="bullet bullet-does"></span><span>Suppresses duplicates — the same document-version pair is never queued twice</span></li>
+          </ul>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="skill-section">
+          <div class="skill-section-title out-color">What it produces</div>
+          <ul>
+            <li><span class="bullet bullet-out"></span><span>A dispatch record queued at <span class="file-path">ideas/trial/queue-state.json</span></span></li>
+            <li><span class="bullet bullet-out"></span><span>A telemetry log entry — what was detected, what route was recommended, and why</span></li>
+            <li><span class="bullet bullet-out"></span><span>A suggested next invocation — the area anchor, location anchor, and deliverable family pre-filled so you can run <strong>/lp-do-fact-find</strong> (or <strong>/lp-do-briefing</strong>) immediately without working out the inputs yourself</span></li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title note-color">Good to know</div>
+          <ul>
+            <li><span class="bullet bullet-note"></span><span>Operates in <strong>trial mode</strong> — it proposes actions, never takes them automatically. You confirm each dispatch</span></li>
+            <li><span class="bullet bullet-note"></span><span>Only strategically significant changes trigger a dispatch. Cosmetic or minor edits are logged but produce no action</span></li>
+            <li><span class="bullet bullet-note"></span><span>Runs independently of individual feature work — it monitors background strategic context</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-note">
+        <span class="flow-icon">→</span>
+        <span>After reviewing a dispatch, confirm it — then run <strong>Fact-Find</strong> with the recommended inputs to begin scoping the work.</span>
+      </div>
+    </div>
+
+    <!-- FACT-FIND -->
+    <div class="skill-card" id="fact-find">
+      <div class="skill-header">
+        <div class="skill-icon icon-factfind">🔍</div>
+        <div class="skill-header-text">
+          <div class="skill-invoke">/lp-do-fact-find</div>
+          <h3>Fact-Find</h3>
+          <div class="skill-tagline">Scope a feature idea into a structured, evidence-backed discovery document ready for planning.</div>
+        </div>
+      </div>
+
+      <div class="skill-body">
+        <!-- Row 1 -->
+        <div class="skill-section">
+          <div class="skill-section-title in-color">What you tell it</div>
+          <ul>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text"><strong>Area anchor</strong> — the broad domain of the feature (e.g. "checkout", "marketing", "product catalogue")</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text"><strong>Location anchor</strong> — which product, app, or codebase area is affected</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text"><strong>Provisional deliverable family</strong> — the type of output expected (e.g. "code feature", "business doc", "content")</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">Any existing briefs, research notes, or context documents</span>
+                <span class="badge badge-optional">Optional</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title does-color">What it does</div>
+          <ul>
+            <li><span class="bullet bullet-does"></span><span>Runs a structured discovery: sufficiency gate, work-type classification, module-specific investigation, evidence gap review</span></li>
+            <li><span class="bullet bullet-does"></span><span>If it doesn't have enough information to proceed, it pauses and asks targeted questions before continuing</span></li>
+            <li><span class="bullet bullet-does"></span><span>Classifies work as code, business doc, or mixed — this determines which planning and build modules are used downstream</span></li>
+            <li><span class="bullet bullet-does"></span><span>For business-track work: maps the blast radius — every other channel, copy asset, UX flow, automation, or policy doc that would become inconsistent if this deliverable ships without them also changing; flags which are in-scope vs out-of-scope with a reason</span></li>
+            <li><span class="bullet bullet-does"></span><span>Runs an evidence gap review and assigns a status: <strong>Ready-for-planning</strong>, <strong>Needs-input</strong> (stops for more info), or <strong>Infeasible</strong> (pipeline ends here)</span></li>
+            <li><span class="bullet bullet-does"></span><span>Checks a minimum evidence floor before running Critique — code track needs at least one entry point and key module; business track needs at least one hypothesis and Delivery-Readiness ≥60%; either failure forces Needs-input immediately</span></li>
+            <li><span class="bullet bullet-does"></span><span>Automatically runs <strong>Critique</strong> — auto-continues to <strong>Plan</strong> only when the critique scores ≥4.0 (credible); a partially credible result (3.0–3.5) stops the pipeline and surfaces the findings to address</span></li>
+          </ul>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="skill-section">
+          <div class="skill-section-title out-color">What it produces</div>
+          <ul>
+            <li><span class="bullet bullet-out"></span><span>A fact-find at <span class="file-path">docs/plans/&lt;feature-slug&gt;/fact-find.md</span> with status: Ready-for-planning, Needs-input, or Infeasible</span></li>
+            <li><span class="bullet bullet-out"></span><span>Sections: scope, evidence audit, open questions, confidence inputs, risks, planning readiness</span></li>
+            <li><span class="bullet bullet-out"></span><span>A routing header in frontmatter configuring work type, deliverable family, and execution skill</span></li>
+            <li><span class="bullet bullet-out"></span><span>A critique score in <span class="file-path">critique-history.md</span> appended automatically</span></li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title note-color">Good to know</div>
+          <ul>
+            <li><span class="bullet bullet-note"></span><span>This is the most important step — a thorough fact-find leads to a confident, well-scoped plan</span></li>
+            <li><span class="bullet bullet-note"></span><span>If it asks you questions, answer them fully — partial answers produce weaker downstream plans</span></li>
+            <li><span class="bullet bullet-note"></span><span>Critique must score ≥4.0 to proceed — a 3.0–3.5 result stops here and tells you exactly what to address before re-running</span></li>
+            <li><span class="bullet bullet-note"></span><span>An <strong>Infeasible</strong> result means the work can't be done as scoped — the pipeline ends and you get a kill rationale explaining why</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-note">
+        <span class="flow-icon">→</span>
+        <span>When status is <strong>Ready-for-planning</strong> <em>and</em> Critique scores ≥4.0, Fact-Find automatically continues to <strong>Plan</strong> — you don't need to invoke it separately. A score of 3.0–3.5 stops here first.</span>
+      </div>
+    </div>
+
+    <!-- PLAN -->
+    <div class="skill-card" id="plan">
+      <div class="skill-header">
+        <div class="skill-icon icon-plan">📐</div>
+        <div class="skill-header-text">
+          <div class="skill-invoke">/lp-do-plan</div>
+          <h3>Plan</h3>
+          <div class="skill-tagline">Turn a fact-find into a sequenced, confidence-gated task plan ready for the build skill to execute.</div>
+        </div>
+      </div>
+
+      <div class="skill-body">
+        <!-- Row 1 -->
+        <div class="skill-section">
+          <div class="skill-section-title in-color">What you tell it</div>
+          <ul>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">The feature slug (e.g. <code style="font-size:12px;color:var(--text-muted)">checkout-improvements</code>) — it finds the fact-find automatically</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">Or a direct path to the <span class="file-path">fact-find.md</span> document</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">Any additional constraints or scope guidance</span>
+                <span class="badge badge-optional">Optional</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title does-color">What it does</div>
+          <ul>
+            <li><span class="bullet bullet-does"></span><span>Reads the fact-find and decomposes the work into discrete, ordered tasks</span></li>
+            <li><span class="bullet bullet-does"></span><span>Assigns each task a <strong>confidence score</strong> (0–100%). Tasks below 80% without an upstream investigation task to cover them trigger an automatic Critique</span></li>
+            <li><span class="bullet bullet-does"></span><span>Sets up dependency chains and runs <strong>/lp-do-sequence</strong> to topologically sort tasks, detect parallelism, and produce a Parallelism Guide so Build can dispatch wave tasks concurrently</span></li>
+            <li><span class="bullet bullet-does"></span><span>Defines validation contracts per task — specifying what "done" looks like before a task counts as complete</span></li>
+            <li><span class="bullet bullet-does"></span><span>Runs <strong>Critique</strong> automatically when overall confidence is low or any task is uncovered; in pipeline mode, auto-continues to <strong>Build</strong> without waiting</span></li>
+          </ul>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="skill-section">
+          <div class="skill-section-title out-color">What it produces</div>
+          <ul>
+            <li><span class="bullet bullet-out"></span><span>A plan at <span class="file-path">docs/plans/&lt;feature-slug&gt;/plan.md</span> — status Draft until build is authorised, then Active</span></li>
+            <li><span class="bullet bullet-out"></span><span>Ordered task list with: type, confidence score, dependencies, files affected, and validation contracts</span></li>
+            <li><span class="bullet bullet-out"></span><span>A parallelism guide showing which tasks can run simultaneously</span></li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title note-color">Good to know</div>
+          <ul>
+            <li><span class="bullet bullet-note"></span><span>The plan is a living document — it can be updated at any time using <strong>Replan</strong></span></li>
+            <li><span class="bullet bullet-note"></span><span>When invoked from the pipeline (after Fact-Find), Plan will auto-continue to Build if all gates pass — no manual step needed</span></li>
+            <li><span class="bullet bullet-note"></span><span>The plan is a plain Markdown file — you can read and edit it at any time</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-note">
+        <span class="flow-icon">→</span>
+        <span>With a plan in place, run <strong>Build</strong> to execute tasks one at a time. Each call executes one task, updates the plan, and stops.</span>
+      </div>
+    </div>
+
+    <!-- BUILD -->
+    <div class="skill-card" id="build">
+      <div class="skill-header">
+        <div class="skill-icon icon-build">🔨</div>
+        <div class="skill-header-text">
+          <div class="skill-invoke">/lp-do-build</div>
+          <h3>Build</h3>
+          <div class="skill-tagline">Execute one plan task at a time — safely gated, validated, and committed with full evidence.</div>
+        </div>
+      </div>
+
+      <div class="skill-body">
+        <!-- Row 1 -->
+        <div class="skill-section">
+          <div class="skill-section-title in-color">What you tell it</div>
+          <ul>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">The feature slug or plan file path — it finds the next runnable task automatically</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">A specific task ID if you want to target a particular task</span>
+                <span class="badge badge-optional">Optional</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">The fact-find brief for additional context</span>
+                <span class="badge badge-optional">Optional</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title does-color">What it does</div>
+          <ul>
+            <li><span class="bullet bullet-does"></span><span>Selects the next eligible task from the plan (respects dependencies, confidence thresholds, and wave order)</span></li>
+            <li><span class="bullet bullet-does"></span><span>Checks 5 safety gates before touching any file: eligibility, scope, validation requirements, commit safety, and post-task updates</span></li>
+            <li><span class="bullet bullet-does"></span><span>Executes the task — writes code, creates documentation, or performs research depending on task type</span></li>
+            <li><span class="bullet bullet-does"></span><span>Validates the output matches the task's defined contract before marking it done</span></li>
+            <li><span class="bullet bullet-does"></span><span>If a task is a DECISION (requires a call you need to make), it stops, writes the question to replan-notes, and waits — it never silently skips</span></li>
+            <li><span class="bullet bullet-does"></span><span>If a task confidence is too low and no other task in the current wave can raise it, automatically calls <strong>Replan</strong> rather than guessing</span></li>
+          </ul>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="skill-section">
+          <div class="skill-section-title out-color">What it produces</div>
+          <ul>
+            <li><span class="bullet bullet-out"></span><span>The built artifact — code, documentation, or analysis as specified by the task</span></li>
+            <li><span class="bullet bullet-out"></span><span>Plan updated: task marked Complete with date and build evidence</span></li>
+            <li><span class="bullet bullet-out"></span><span>A <span class="file-path">build-record.user.md</span> when all tasks complete — immediately followed by <strong>/ops-ship</strong> to push and watch CI green</span></li>
+            <li><span class="bullet bullet-out"></span><span>Git commit(s) with scoped, traceable changes per task</span></li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title note-color">Good to know</div>
+          <ul>
+            <li><span class="bullet bullet-note"></span><span>Build always does one task and stops — review after each task before continuing</span></li>
+            <li><span class="bullet bullet-note"></span><span>Independent tasks that can safely run in parallel are dispatched together as a wave</span></li>
+            <li><span class="bullet bullet-note"></span><span>Shipping happens immediately when all tasks are done. A <strong>results review</strong> is required separately before the plan is <em>archived</em> — but it doesn't block the ship</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-note">
+        <span class="flow-icon">↔</span>
+        <span>Keep running <strong>Build</strong> until all tasks are complete. If a task gets blocked or requirements change mid-way, run <strong>Replan</strong> first then continue.</span>
+      </div>
+    </div>
+
+    <!-- REPLAN -->
+    <div class="skill-card" id="replan">
+      <div class="skill-header">
+        <div class="skill-icon icon-replan">🔄</div>
+        <div class="skill-header-text">
+          <div class="skill-invoke">/lp-do-replan</div>
+          <h3>Replan</h3>
+          <div class="skill-tagline">Update a plan when things change — without losing what's already been built.</div>
+        </div>
+      </div>
+
+      <div class="skill-body">
+        <!-- Row 1 — two equal panels -->
+        <div class="skill-section">
+          <div class="skill-section-title in-color">What you tell it</div>
+          <ul>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">The feature slug or plan file path</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">The task ID(s) that are blocked or uncertain</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">What changed — new constraints, failed assumptions, new information, scope shifts</span>
+                <span class="badge badge-optional">Optional but helpful</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title does-color">What it does</div>
+          <ul>
+            <li><span class="bullet bullet-does"></span><span>Reads the current plan and identifies what needs changing</span></li>
+            <li><span class="bullet bullet-does"></span><span>For low-confidence tasks, creates formal investigation or spike tasks as precursors — so Build never proceeds on guesswork</span></li>
+            <li><span class="bullet bullet-does"></span><span>Preserves all completed tasks and their evidence exactly as-is</span></li>
+            <li><span class="bullet bullet-does"></span><span>Updates task descriptions, dependencies, affected files, and validation contracts as needed</span></li>
+            <li><span class="bullet bullet-does"></span><span>If a task has been below threshold for 3+ replan rounds with no viable path forward, declares it <strong>Infeasible</strong> — the pipeline ends with a kill rationale</span></li>
+          </ul>
+        </div>
+
+        <!-- Row 2 — full-width spanning -->
+        <div class="skill-section span-full">
+          <div class="skill-section-title out-color">What it produces</div>
+          <ul>
+            <li><span class="bullet bullet-out"></span><span>An updated <span class="file-path">plan.md</span> — same file, stable task IDs, with revisions applied and re-sequenced</span></li>
+            <li><span class="bullet bullet-out"></span><span>A <span class="file-path">replan-notes.md</span> with a replan round counter and detailed reasoning when changes are significant</span></li>
+            <li><span class="bullet bullet-out"></span><span>New investigation/spike tasks pre-inserted ahead of the task that needed their findings — or an Infeasible declaration if no viable path exists</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-note">
+        <span class="flow-icon">→</span>
+        <span>After replan, return to <strong>Build</strong> to continue. Build picks up automatically from the newly updated task list.</span>
+      </div>
+    </div>
+
+    <!-- CRITIQUE -->
+    <div class="skill-card" id="critique">
+      <div class="skill-header">
+        <div class="skill-icon icon-critique">🔎</div>
+        <div class="skill-header-text">
+          <div class="skill-invoke">/lp-do-critique</div>
+          <h3>Critique</h3>
+          <div class="skill-tagline">A scored quality review of any plan or document — with automatic fixes applied where possible.</div>
+        </div>
+      </div>
+
+      <div class="skill-body">
+        <!-- Row 1 -->
+        <div class="skill-section">
+          <div class="skill-section-title in-color">What you tell it</div>
+          <ul>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">The document to review — plan, fact-find, or business artifact</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">The schema mode — what type of document this is (auto-detected if not specified)</span>
+                <span class="badge badge-optional">Optional</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">Whether to run critique-only or critique + autofix (default: autofix on)</span>
+                <span class="badge badge-optional">Optional</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title does-color">What it does</div>
+          <ul>
+            <li><span class="bullet bullet-does"></span><span>Works on fact-finds, plans, offer artifacts, and process/skill documents — auto-detects which lens to apply</span></li>
+            <li><span class="bullet bullet-does"></span><span>Scores across 6 weighted dimensions: Evidence quality (25%), Coherence (20%), Completeness (15%), Feasibility (15%), Risk handling (15%), Measurability (10%)</span></li>
+            <li><span class="bullet bullet-does"></span><span>Issues are tiered: Critical (blocks a safe decision), Major (meaningfully raises failure risk), Moderate (weakens confidence), Minor (style/template drift)</span></li>
+            <li><span class="bullet bullet-does"></span><span>In default autofix mode: applies a 4-step fix process — section rewrite gate, point fixes, consistency scan, then issues ledger update</span></li>
+            <li><span class="bullet bullet-does"></span><span>Escalates Critical issues it cannot fix on its own; blocks auto-build if critique score ≤ 2.5</span></li>
+          </ul>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="skill-section">
+          <div class="skill-section-title out-color">What it produces</div>
+          <ul>
+            <li><span class="bullet bullet-out"></span><span>Critique score and issue list appended to (or replacing) the document's critique section</span></li>
+            <li><span class="bullet bullet-out"></span><span>In-place edits to the document when autofix is enabled</span></li>
+            <li><span class="bullet bullet-out"></span><span>An entry in <span class="file-path">docs/plans/&lt;slug&gt;/critique-history.md</span> — a running quality ledger across all passes</span></li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title note-color">Good to know</div>
+          <ul>
+            <li><span class="bullet bullet-note"></span><span>Usually runs automatically — triggered by Plan when overall confidence is below 4.0/5.0, or when any task is low-confidence without an upstream investigation covering it</span></li>
+            <li><span class="bullet bullet-note"></span><span>Invoke manually for a fresh check on a document you've edited by hand, or on an offer artifact or skill doc</span></li>
+            <li><span class="bullet bullet-note"></span><span>Score ≤ 2.5 blocks auto-build; score 3.0–3.5 allows build but adds a warning flag; score ≥ 4.0 proceeds normally</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-note">
+        <span class="flow-icon">ℹ</span>
+        <span>Critique is primarily an automatic quality gate. Its output appears at the end of Fact-Find and Plan runs. Invoke it manually for a fresh check on an updated document.</span>
+      </div>
+    </div>
+
+    <!-- BRIEFING — standalone -->
+    <hr class="section-divider" />
+    <h2>Standalone Tool</h2>
+
+    <div class="skill-card" id="briefing">
+      <div class="skill-header">
+        <div class="skill-icon icon-briefing">📖</div>
+        <div class="skill-header-text">
+          <div class="skill-invoke">/lp-do-briefing</div>
+          <h3>Briefing</h3>
+          <div class="skill-tagline">Trace how something currently works — end-to-end with file and line evidence. Not part of the delivery sequence — use it when you need to understand a system before deciding whether to change it.</div>
+        </div>
+      </div>
+
+      <div class="skill-body">
+        <!-- Row 1 -->
+        <div class="skill-section">
+          <div class="skill-section-title in-color">What you tell it</div>
+          <ul>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text"><strong>Topic or system area</strong> — what you want to understand (e.g. "how checkout works", "the email sending pipeline")</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text"><strong>Location anchor</strong> — a file path, route, endpoint, error/log reference, or user flow to start the investigation from</span>
+                <span class="badge badge-required">Required</span>
+              </div>
+            </li>
+            <li><span class="bullet bullet-in"></span>
+              <div class="li-body">
+                <span class="li-text">Specific questions you want answered</span>
+                <span class="badge badge-optional">Optional</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="skill-section">
+          <div class="skill-section-title does-color">What it does</div>
+          <ul>
+            <li><span class="bullet bullet-does"></span><span>Traces current behavior end-to-end through code, configuration, and data flows — with file and line pointers for every non-trivial claim</span></li>
+            <li><span class="bullet bullet-does"></span><span>Investigates using read-only commands — searches, git history, targeted type checks — never changes anything</span></li>
+            <li><span class="bullet bullet-does"></span><span>Deliberately does <em>not</em> produce a plan or recommend actions — this is a factual snapshot, not direction</span></li>
+          </ul>
+        </div>
+
+        <!-- Row 2 — full-width -->
+        <div class="skill-section span-full">
+          <div class="skill-section-title out-color">What it produces</div>
+          <ul>
+            <li><span class="bullet bullet-out"></span><span>A briefing note at <span class="file-path">docs/briefs/&lt;topic-slug&gt;-briefing.md</span></span></li>
+            <li><span class="bullet bullet-out"></span><span>Evidence-backed explanation of current behavior — what exists, how it connects, where the boundaries are</span></li>
+            <li><span class="bullet bullet-out"></span><span>No tasks, no plan, no recommendations — a factual snapshot you can use to decide what (if anything) to do next</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-note">
+        <span class="flow-icon">ℹ</span>
+        <span>Briefing has no handoff — it produces a factual snapshot, not a plan. Use <strong>/lp-do-fact-find</strong> when you are ready to plan a change to what you've just understood.</span>
+      </div>
+    </div>
+
+    <!-- ── HOW THEY CONNECT ── -->
+    <hr class="section-divider" id="connections" />
+    <h2>How the Skills Connect</h2>
+
+    <div class="connect-grid">
+      <div class="connect-card">
+        <h4>The core delivery sequence</h4>
+        <p>Ideas → Fact-Find → Plan → Build is the primary delivery sequence. Each skill passes structured output to the next as a file — you always have a readable record of what was decided and why.</p>
+      </div>
+      <div class="connect-card">
+        <h4>Build and Replan iterate</h4>
+        <p>Build and Replan work as a pair. Build executes one task and stops. If anything is uncertain, Replan updates the plan. Build resumes. This continues until all tasks are complete.</p>
+      </div>
+      <div class="connect-card">
+        <h4>Critique is automatic</h4>
+        <p>You don't normally invoke Critique directly. It runs automatically after Fact-Find and after Plan to catch quality issues early — before Build starts executing.</p>
+      </div>
+      <div class="connect-card">
+        <h4>Briefing is standalone</h4>
+        <p>Briefing is not part of the delivery sequence. Use it any time you want background understanding on a topic. It produces no plan, no tasks, and has no handoff into the sequence.</p>
+      </div>
+    </div>
+
+    <div class="note-box" style="margin-top:24px; background:var(--green-subtle); border-color:#1a4030;">
+      <strong style="color:var(--green)">Where everything lives:</strong>&nbsp;
+      All skill outputs are saved as Markdown files — fact-find, plan, build record, and critique history all go under
+      <span class="file-path">docs/plans/&lt;feature-slug&gt;/</span>, briefing notes under
+      <span class="file-path">docs/briefs/</span>.
+      Nothing produced by a skill exists only in chat — everything is written to file.
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

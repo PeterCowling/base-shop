@@ -3,7 +3,153 @@
 @config "../../tailwind.config.mjs";
 
 @import "@themes/base/tokens.css";
+@import "../../../../packages/themes/reception/tokens.css";
 @import "tailwindcss";
+
+/* -------- TW v4 @theme — register custom colors as utility classes ------- */
+@theme {
+  /* Reception dark palette */
+  --color-darkBg: hsl(var(--reception-dark-bg));
+  --color-darkSurface: hsl(var(--reception-dark-surface));
+  --color-darkAccentGreen: hsl(var(--reception-dark-accent-green));
+  --color-darkAccentOrange: hsl(var(--reception-dark-accent-orange));
+  --color-darkBorder: hsl(var(--reception-dark-border));
+  --color-surface-dark: hsl(var(--reception-surface-dark));
+  --color-accent-hospitality: hsl(var(--reception-accent-hospitality));
+
+  /* Shared preset surfaces */
+  --color-surface: hsl(var(--surface-1, var(--color-bg)));
+  --color-surface-2: hsl(var(--surface-2, var(--color-bg)));
+  --color-surface-3: hsl(var(--surface-3, var(--color-bg)));
+
+  /* Shared preset semantic colors */
+  --color-primary: hsl(var(--color-primary));
+  --color-accent: hsl(var(--color-accent));
+  --color-destructive: hsl(var(--color-danger));
+  --color-success: hsl(var(--color-success));
+  --color-warning: hsl(var(--color-warning));
+  --color-muted: hsl(var(--color-muted));
+
+  /* Foreground / text */
+  --color-foreground: hsl(var(--color-fg));
+  --color-muted-foreground: hsl(var(--color-fg-muted, var(--color-fg)));
+  --color-primary-fg: hsl(var(--color-primary-fg));
+  --color-danger-fg: hsl(var(--color-danger-fg));
+  --color-success-foreground: hsl(var(--color-success-fg));
+  --color-destructive-foreground: hsl(var(--color-danger-fg));
+  --color-destructive-main: hsl(var(--color-danger));
+
+  /* Borders */
+  --color-border-1: hsl(var(--border-1, var(--color-fg) / 0.12));
+  --color-border-2: hsl(var(--border-2, var(--color-fg) / 0.22));
+
+  /* DS primitive tokens (needed for bg-input, bg-panel, ring-ring, etc.) */
+  --color-input: hsl(var(--surface-input, var(--color-bg)));
+  --color-panel: hsl(var(--color-panel));
+  --color-inset: hsl(var(--color-inset));
+  --color-ring: hsl(var(--ring));
+  --color-danger: hsl(var(--color-danger));
+  --color-info: hsl(var(--color-info));
+  --color-border: hsl(var(--color-border));
+  --color-border-strong: hsl(var(--color-border-strong));
+  --color-border-muted: hsl(var(--color-border-muted));
+  --color-link: hsl(var(--color-link));
+
+  /* Soft palette */
+  --color-accent-soft: hsl(var(--color-accent-soft, var(--color-accent) / 0.12));
+  --color-primary-soft: hsl(var(--color-primary-soft, var(--color-primary) / 0.12));
+  --color-danger-soft: hsl(var(--color-danger-soft, var(--color-danger) / 0.12));
+  --color-success-soft: hsl(var(--color-success-soft, var(--color-success) / 0.12));
+  --color-warning-soft: hsl(var(--color-warning-soft, var(--color-warning) / 0.12));
+  --color-info-soft: hsl(var(--color-info-soft, var(--color-info) / 0.12));
+
+  /* Typography */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-heading: var(--font-sans);
+  --font-body: var(--font-sans);
+
+  /* Chart palette (dark-mode-aware) */
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+  --color-chart-6: hsl(var(--chart-6));
+  --color-chart-7: hsl(var(--chart-7));
+
+  /* ── Category shade families (bar/POS product grid) ────────────── */
+  /* Pink shades (Sweet, Gelato) */
+  --color-pinkShades-row1: hsl(var(--color-pinkShades-row1));
+  --color-pinkShades-row2: hsl(var(--color-pinkShades-row2));
+  --color-pinkShades-row3: hsl(var(--color-pinkShades-row3));
+  --color-pinkShades-row4: hsl(var(--color-pinkShades-row4));
+
+  /* Coffee shades */
+  --color-coffeeShades-row1: hsl(var(--color-coffeeShades-row1));
+  --color-coffeeShades-row2: hsl(var(--color-coffeeShades-row2));
+  --color-coffeeShades-row3: hsl(var(--color-coffeeShades-row3));
+
+  /* Beer shades */
+  --color-beerShades-row1: hsl(var(--color-beerShades-row1));
+  --color-beerShades-row2: hsl(var(--color-beerShades-row2));
+
+  /* Wine shades */
+  --color-wineShades-row1: hsl(var(--color-wineShades-row1));
+  --color-wineShades-row2: hsl(var(--color-wineShades-row2));
+  --color-wineShades-row3: hsl(var(--color-wineShades-row3));
+
+  /* Tea shades */
+  --color-teaShades-row1: hsl(var(--color-teaShades-row1));
+  --color-teaShades-row2: hsl(var(--color-teaShades-row2));
+
+  /* Green shades (Savory) */
+  --color-greenShades-row1: hsl(var(--color-greenShades-row1));
+  --color-greenShades-row2: hsl(var(--color-greenShades-row2));
+  --color-greenShades-row3: hsl(var(--color-greenShades-row3));
+
+  /* Blue shades (Mixed Drinks) */
+  --color-blueShades-row1: hsl(var(--color-blueShades-row1));
+  --color-blueShades-row2: hsl(var(--color-blueShades-row2));
+  --color-blueShades-row3: hsl(var(--color-blueShades-row3));
+  --color-blueShades-row4: hsl(var(--color-blueShades-row4));
+  --color-blueShades-row5: hsl(var(--color-blueShades-row5));
+
+  /* Purple shades (Cocktails) */
+  --color-purpleShades-row1: hsl(var(--color-purpleShades-row1));
+  --color-purpleShades-row2: hsl(var(--color-purpleShades-row2));
+
+  /* Spritz shades */
+  --color-spritzShades-row1: hsl(var(--color-spritzShades-row1));
+  --color-spritzShades-row2: hsl(var(--color-spritzShades-row2));
+
+  /* Orange shades (Juices/Smoothies/Soda) */
+  --color-orangeShades-row1: hsl(var(--color-orangeShades-row1));
+  --color-orangeShades-row2: hsl(var(--color-orangeShades-row2));
+  --color-orangeShades-row3: hsl(var(--color-orangeShades-row3));
+  --color-orangeShades-row4: hsl(var(--color-orangeShades-row4));
+  --color-orangeShades-row5: hsl(var(--color-orangeShades-row5));
+
+  /* Grayish shades (Other, Gelato) */
+  --color-grayishShades-row1: hsl(var(--color-grayishShades-row1));
+  --color-grayishShades-row2: hsl(var(--color-grayishShades-row2));
+  --color-grayishShades-row3: hsl(var(--color-grayishShades-row3));
+  --color-grayishShades-row4: hsl(var(--color-grayishShades-row4));
+
+  /* Status -main/-dark/-light (mapped to base tokens) */
+  --color-primary-main: hsl(var(--color-primary));
+  --color-primary-dark: hsl(var(--color-primary-dark, var(--color-primary)));
+  --color-primary-light: hsl(var(--color-primary-light, var(--color-primary)));
+  --color-info-main: hsl(var(--color-info));
+  --color-info-dark: hsl(var(--color-info-dark, var(--color-info)));
+  --color-info-light: hsl(var(--color-info-light, var(--color-info)));
+  --color-success-main: hsl(var(--color-success));
+  --color-success-dark: hsl(var(--color-success-dark, var(--color-success)));
+  --color-warning-main: hsl(var(--color-warning));
+  --color-warning-dark: hsl(var(--color-warning-dark, var(--color-warning)));
+  --color-error-main: hsl(var(--color-danger));
+  --color-error-dark: hsl(var(--color-danger-dark, var(--color-danger)));
+}
 
 :root {
   /* Legacy dark palette aliases bridged to shared semantic tokens */
@@ -38,6 +184,8 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  background: hsl(var(--color-bg));
+  color: hsl(var(--color-fg));
 }
 
 /* Dark mode support via class */

@@ -8,6 +8,7 @@ import {
   resolveAccessCookieSecret,
   resolveAdminToken,
 } from "./stealth";
+import { readCookieValue } from "./httpCookies";
 
 const ADMIN_SESSION_MAX_AGE = 60 * 60 * 24 * 7;
 
@@ -33,11 +34,10 @@ export async function issueAdminSession(tokenSecret: string) {
 export async function hasAdminSession(request: Request) {
   const secret = resolveAccessCookieSecret();
   if (!secret) return false;
-  const cookie = request.headers.get("cookie") ?? "";
-  const match = cookie.match(new RegExp(`${ADMIN_COOKIE_NAME}=([^;]+)`));
-  if (!match?.[1]) return false;
+  const token = readCookieValue(request.headers.get("cookie"), ADMIN_COOKIE_NAME);
+  if (!token) return false;
   try {
-    const payload = await verifyAccessToken(match[1], secret);
+    const payload = await verifyAccessToken(token, secret);
     return payload?.kind === "admin";
   } catch {
     return false;

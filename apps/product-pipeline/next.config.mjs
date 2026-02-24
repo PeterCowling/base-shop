@@ -19,28 +19,6 @@ const nextConfig = {
       "@acme/ui": path.resolve(__dirname, "../../packages/ui/dist"),
     },
   },
-  webpack: (config, context) => {
-    // Legacy webpack path retained as an explicit exception while scripts still
-    // execute via `next --webpack`. Turbopack alias parity is configured above;
-    // snapshot/cache overrides remain webpack-path behavior for now.
-    if (typeof sharedConfig.webpack === "function") {
-      config = sharedConfig.webpack(config, context);
-    }
-
-    if (config.snapshot) {
-      config.snapshot.managedPaths = [];
-      config.snapshot.immutablePaths = [];
-    }
-
-    config.resolve ??= {};
-    config.resolve.alias = {
-      ...(config.resolve.alias ?? {}),
-      "@": path.resolve(__dirname, "src"),
-      // Ensure @acme/ui alias is available for this app if not inherited
-      "@acme/ui": path.resolve(__dirname, "../../packages/ui/dist"),
-    };
-    return config;
-  },
 };
 
 export default nextConfig;

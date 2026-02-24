@@ -7,7 +7,7 @@
 import type { ReactElement } from "react";
 import { memo, useCallback, useMemo } from "react";
 
-import { ReceptionTableCell as TableCell } from "@acme/ui/operations";
+import { TableCell } from "@acme/design-system";
 
 import type { TReservedPeriod } from "./interfaces/reservedPeriod";
 import type { TClickCellEventData } from "./ReservationGrid";

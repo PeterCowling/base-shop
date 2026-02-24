@@ -59,6 +59,20 @@ const messages = {
     syncDependencyValidate: "input validator",
     syncDependencyPipeline: "sync pipeline runner",
     syncRecoveryRestoreScripts: "Restore the missing scripts in scripts/src/xa, then retry sync.",
+    syncCatalogInputEmptyActionable:
+      "Catalog CSV is missing or empty. Sync would publish zero products.",
+    syncRecoveryConfirmEmptyCatalogSync:
+      "Confirm only if an empty storefront publish is intentional.",
+    syncConfirmEmptyCatalogSync:
+      "Catalog CSV is missing or empty. Continuing will publish zero products. Continue sync?",
+    syncPublishContractUnconfigured:
+      "Catalog publish target is not configured for this environment.",
+    syncRecoveryConfigureCatalogContract:
+      "Set XA_CATALOG_CONTRACT_BASE_URL and XA_CATALOG_CONTRACT_WRITE_TOKEN, then retry.",
+    syncPublishContractFailedActionable:
+      "Catalog artifacts were generated, but publish to contract storage failed.",
+    syncRecoveryReviewCatalogContract:
+      "Check catalog contract health, auth token, and endpoint availability, then retry.",
     syncValidationFailedActionable: "Validation failed before sync.",
     syncRecoveryReviewValidationLogs:
       "Fix validation errors from the sync log output, then retry.",
@@ -89,6 +103,10 @@ const messages = {
     validateAndSync: "Validate & sync",
     runSync: "Run sync",
     running: "Running...",
+    syncReadinessChecking: "Checking sync readiness...",
+    syncReadinessReady: "Sync dependencies are ready.",
+    syncReadinessCheckFailed: "Unable to verify sync readiness. Retry the readiness check.",
+    syncReadinessRefresh: "Recheck",
     syncOptionStrict: "strict",
     syncOptionRecursive: "recursive",
     syncOptionReplace: "replace",
@@ -244,6 +262,14 @@ const messages = {
     syncDependencyValidate: "输入校验脚本",
     syncDependencyPipeline: "同步流水线脚本",
     syncRecoveryRestoreScripts: "请恢复 scripts/src/xa 下缺失的脚本后重试同步。",
+    syncCatalogInputEmptyActionable: "目录 CSV 缺失或为空。继续同步将发布 0 个商品。",
+    syncRecoveryConfirmEmptyCatalogSync: "仅在确认需要发布空目录时继续。",
+    syncConfirmEmptyCatalogSync: "目录 CSV 缺失或为空。继续将发布 0 个商品，是否继续同步？",
+    syncPublishContractUnconfigured: "当前环境未配置目录发布目标。",
+    syncRecoveryConfigureCatalogContract:
+      "请先配置 XA_CATALOG_CONTRACT_BASE_URL 与 XA_CATALOG_CONTRACT_WRITE_TOKEN 后重试。",
+    syncPublishContractFailedActionable: "目录文件已生成，但发布到合同存储失败。",
+    syncRecoveryReviewCatalogContract: "请检查合同接口可用性、令牌和端点后重试。",
     syncValidationFailedActionable: "同步前校验失败。",
     syncRecoveryReviewValidationLogs: "请根据同步日志修复校验错误后重试。",
     syncPipelineFailedActionable: "同步流水线执行失败。",
@@ -272,6 +298,10 @@ const messages = {
     validateAndSync: "校验与同步",
     runSync: "运行同步",
     running: "运行中…",
+    syncReadinessChecking: "正在检查同步就绪状态…",
+    syncReadinessReady: "同步依赖已就绪。",
+    syncReadinessCheckFailed: "无法确认同步就绪状态，请重试就绪检查。",
+    syncReadinessRefresh: "重新检查",
     syncOptionStrict: "严格模式",
     syncOptionRecursive: "递归扫描",
     syncOptionReplace: "替换图片",

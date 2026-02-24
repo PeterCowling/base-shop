@@ -284,15 +284,15 @@ describe("Checkout component", () => {
 
     const heading = screen.getByRole("heading", { name: /checkouts/i });
     const outer = heading.parentElement as HTMLElement;
-    expect(outer.className).toContain("dark:bg-darkBg");
-    expect(outer.className).toContain("dark:text-darkAccentGreen");
+    expect(outer.className).toContain("bg-surface-2");
+    expect(outer.className).toContain("text-foreground");
 
     const tableWrapper = screen.getByRole("table", { name: /checkout table/i }).parentElement as HTMLElement;
-    expect(tableWrapper.className).toContain("dark:bg-darkSurface");
+    expect(tableWrapper.className).toContain("bg-surface");
 
     const todayBtn = screen.getByRole("button", { name: /today/i });
     const dateContainer = todayBtn.closest<HTMLDivElement>("div.relative");
-    expect(dateContainer?.className).toContain("dark:bg-darkSurface");
+    expect(dateContainer?.className).toContain("bg-surface-2");
 
     document.documentElement.classList.remove("dark");
   });

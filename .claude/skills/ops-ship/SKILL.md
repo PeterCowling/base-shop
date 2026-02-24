@@ -43,6 +43,17 @@ Do not use:
 - `ALLOW_COMMIT_ON_PROTECTED_BRANCH=1`
 - `--no-verify` / `-n`
 
+### Always confirm first (model-layer gate — not covered by git hooks)
+
+Even in fully autonomous / `-a never` mode, **stop and ask the user explicitly** before running:
+
+- `wrangler deploy` to production (irreversible live deploy)
+- `prisma migrate deploy` (irreversible schema migration)
+- `git branch -D <branch>` (branch deletion, no hook fires)
+- Any `--force` or `-f` flag on destructive commands not already listed above
+
+These are not blocked by git hooks or sandbox mode. The model must enforce this gate itself.
+
 ### Safe sharp tools (allowed, still use carefully)
 
 - `git reset HEAD <file>` (unstage only)
@@ -143,6 +154,14 @@ Run:
 
 ```bash
 bash scripts/validate-changes.sh
+```
+
+Default behavior is policy + typecheck + lint (`VALIDATE_INCLUDE_TESTS=0`). Required test gating is handled by GitHub Actions (`Core Platform CI` + `Merge Gate`).
+
+Optional local targeted-test pass when needed:
+
+```bash
+VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh
 ```
 
 If validation fails:

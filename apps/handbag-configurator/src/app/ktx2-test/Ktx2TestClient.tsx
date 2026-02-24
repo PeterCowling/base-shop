@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import { useModeStore } from "../../viewer/state/modeStore";
 import { ViewerCanvas } from "../../viewer/ViewerCanvas";

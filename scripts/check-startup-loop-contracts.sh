@@ -106,6 +106,8 @@ PROMPT_INDEX="docs/business-os/workflow-prompts/README.user.md"
 AUTONOMY_POLICY="docs/business-os/startup-loop/autonomy-policy.md"
 WORKSPACE_PATHS=".claude/skills/_shared/workspace-paths.md"
 STAGE_DOC_OPS=".claude/skills/_shared/stage-doc-operations.md"
+STAGE_OPERATOR_DICT="docs/business-os/startup-loop/stage-operator-dictionary.yaml"
+STAGE_OPERATOR_MAP="docs/business-os/startup-loop/_generated/stage-operator-map.json"
 
 # ── Prerequisite: reference files exist ──
 
@@ -154,6 +156,78 @@ while IFS= read -r stage_id; do
 done <<< "$spec_stages"
 
 if [[ $sq01b_fail -eq 0 ]]; then
+  check_pass
+fi
+
+# SQ-01D: Stage-ID parity check between loop-spec and operator map/dictionary.
+# Transitional remap is explicitly allowlisted:
+#   S3  -> SIGNALS-01
+#   S10 -> SIGNALS
+sq01d_fail=0
+
+if [[ ! -f "$STAGE_OPERATOR_DICT" ]]; then
+  check_fail "Stage operator dictionary missing: $STAGE_OPERATOR_DICT (SQ-01D)"
+  sq01d_fail=1
+fi
+
+if [[ ! -f "$STAGE_OPERATOR_MAP" ]]; then
+  check_fail "Stage operator map missing: $STAGE_OPERATOR_MAP (SQ-01D)"
+  sq01d_fail=1
+fi
+
+if [[ $sq01d_fail -eq 0 ]]; then
+  dict_stages=$(node -e "const fs=require('fs'); const yaml=require('js-yaml'); const d=yaml.load(fs.readFileSync('${STAGE_OPERATOR_DICT}','utf8')); console.log((d.stages||[]).map((s)=>s.id).sort().join('\n'))")
+  map_stages=$(node -e "const m=require('./${STAGE_OPERATOR_MAP}'); console.log(m.stages.map((s)=>s.id).sort().join('\n'))")
+  spec_unique=$(echo "$spec_stages" | sort -u)
+
+  # loop-spec vs dictionary: allow only controlled transitional remap pair.
+  while IFS= read -r missing_stage; do
+    [[ -z "$missing_stage" ]] && continue
+    if [[ "$missing_stage" != "S3" && "$missing_stage" != "S10" ]]; then
+      check_fail "Stage ${missing_stage} from loop-spec missing in stage-operator-dictionary.yaml (SQ-01D)"
+      sq01d_fail=1
+    fi
+  done < <(comm -23 <(echo "$spec_unique") <(echo "$dict_stages"))
+
+  while IFS= read -r extra_stage; do
+    [[ -z "$extra_stage" ]] && continue
+    case "$extra_stage" in
+      SIGNALS|SIGNALS-01|SIGNALS-02|SIGNALS-03|SIGNALS-04|SIGNALS-05) ;;
+      *)
+        check_fail "Extra stage ${extra_stage} present in stage-operator-dictionary.yaml but absent from loop-spec (SQ-01D)"
+        sq01d_fail=1
+        ;;
+    esac
+  done < <(comm -13 <(echo "$spec_unique") <(echo "$dict_stages"))
+
+  # loop-spec vs generated map: allow only controlled remap pair.
+  while IFS= read -r missing_map_stage; do
+    [[ -z "$missing_map_stage" ]] && continue
+    if [[ "$missing_map_stage" != "S3" && "$missing_map_stage" != "S10" ]]; then
+      check_fail "Stage ${missing_map_stage} from loop-spec missing in stage-operator-map.json (SQ-01D)"
+      sq01d_fail=1
+    fi
+  done < <(comm -23 <(echo "$spec_unique") <(echo "$map_stages"))
+
+  while IFS= read -r extra_map_stage; do
+    [[ -z "$extra_map_stage" ]] && continue
+    case "$extra_map_stage" in
+      SIGNALS|SIGNALS-01|SIGNALS-02|SIGNALS-03|SIGNALS-04|SIGNALS-05) ;;
+      *)
+        check_fail "Extra stage ${extra_map_stage} present in stage-operator-map.json but absent from loop-spec (SQ-01D)"
+        sq01d_fail=1
+        ;;
+    esac
+  done < <(comm -13 <(echo "$spec_unique") <(echo "$map_stages"))
+
+  # Controlled remap must remain explicit and stable.
+  if ! node -e "const m=require('./${STAGE_OPERATOR_MAP}'); process.exit((m.alias_index?.s3==='SIGNALS-01' && m.alias_index?.s10==='SIGNALS')?0:1)"; then
+    check_fail "Transitional remap aliases missing or changed: expected s3->SIGNALS-01 and s10->SIGNALS (SQ-01D)"
+    sq01d_fail=1
+  fi
+fi
+
+if [[ $sq01d_fail -eq 0 ]]; then
   check_pass
 fi
 

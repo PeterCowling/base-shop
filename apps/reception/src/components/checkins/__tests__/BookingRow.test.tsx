@@ -94,7 +94,7 @@ jest.mock("../notes/BookingNotesModal", () => ({
   default: () => (
     <div
       data-cy="notes-modal"
-      className="dark:bg-darkSurface dark:text-darkAccentGreen"
+      className="bg-surface"
     >
       notes
     </div>
@@ -250,7 +250,7 @@ describe("BookingRow", () => {
     await userEvent.dblClick(screen.getByTestId("tooltip-name"));
     const modal = screen.getByTestId("notes-modal");
     expect(modal).toBeInTheDocument();
-    expect(modal.className).toContain("dark:bg-darkSurface");
-    expect(modal.className).toContain("dark:text-darkAccentGreen");
+    expect(modal.className).toContain("bg-surface");
+    expect(modal.className).not.toContain("dark:");
   });
 });

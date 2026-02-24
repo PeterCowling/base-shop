@@ -1,8 +1,10 @@
 import { memo, useCallback, useEffect, useState } from "react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { TriangleAlert } from "lucide-react";
 
+import { Input } from "@acme/design-system";
+import type { ButtonProps } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/atoms";
 import { Cluster, Inline } from "@acme/design-system/primitives";
-import { ReceptionButton as Button, ReceptionInput } from "@acme/ui/operations";
 
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { useDenominationCalculator } from "../../hooks/client/till/useDenominationCalculator";
@@ -16,7 +18,8 @@ export interface CashCountingFormProps {
   title: string;
   borderClass: string;
   textClass: string;
-  confirmClass: string;
+  /** Semantic button colour for the confirm action. */
+  confirmColor?: ButtonProps["color"];
   confirmLabel: string;
   onConfirm: (
     cash: number,
@@ -46,7 +49,7 @@ export const CashCountingForm = memo(function CashCountingForm({
   title,
   borderClass,
   textClass,
-  confirmClass,
+  confirmColor = "primary",
   confirmLabel,
   onConfirm,
   onCancel,
@@ -103,9 +106,9 @@ export const CashCountingForm = memo(function CashCountingForm({
   }, [submitRef, handleSubmit]);
 
   return (
-    <div className={`mb-6 border ${borderClass} rounded p-4 dark:bg-darkSurface dark:text-darkAccentGreen`}>
-      <div className="flex justify-between items-center mb-2 dark:bg-darkSurface">
-        <h2 className="text-xl font-semibold dark:text-darkAccentGreen">{title}</h2>
+    <div className={`mb-6 border ${borderClass} rounded p-4`}>
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="text-xl font-semibold">{title}</h2>
       </div>
       <DenominationInput
         denomCounts={denomCounts}
@@ -117,23 +120,24 @@ export const CashCountingForm = memo(function CashCountingForm({
         <div className="mt-4 flex items-center gap-2">
           <label
             htmlFor={`${idPrefix}keycards`}
-            className="font-semibold text-sm dark:text-darkAccentGreen"
+            className="font-semibold text-sm"
           >
             {keycardLabel}
           </label>
-          <ReceptionInput
+          <Input
+            compatibilityMode="no-wrapper"
             id={`${idPrefix}keycards`}
             type="number"
             value={keycardInput}
             onChange={(e) => setKeycardInput(e.target.value)}
-            className="border rounded p-1 w-24 dark:bg-darkBg dark:text-darkAccentGreen"
+            className="border rounded p-1 w-24"
           />
         </div>
       )}
       {children}
       {showExpected && expectedCash !== undefined && (
         <div
-          className={`flex flex-col items-end mt-6 text-sm ${textClass} text-right dark:text-darkAccentGreen`}
+          className={`flex flex-col items-end mt-6 text-sm ${textClass} text-right`}
         >
           <strong className="mb-2">Total: €{totalDenomValue.toFixed(2)}</strong>
           <div className="mb-2">Expected cash: €{expectedCash.toFixed(2)}</div>
@@ -147,7 +151,7 @@ export const CashCountingForm = memo(function CashCountingForm({
             )}
             {diffCash !== undefined &&
               Math.abs(diffCash) >= DISCREPANCY_LIMIT && (
-                <ExclamationTriangleIcon
+                <TriangleAlert
                   className="h-4 w-4 text-warning-main"
                   aria-hidden="true"
                 />
@@ -159,7 +163,8 @@ export const CashCountingForm = memo(function CashCountingForm({
         {!hideCancel && (
           <Button
             onClick={onCancel}
-            className="px-4 py-2 bg-info-main text-primary-fg rounded hover:bg-info-dark dark:bg-darkSurface dark:text-darkAccentOrange"
+            color="info"
+            tone="solid"
           >
             Cancel
           </Button>
@@ -167,7 +172,8 @@ export const CashCountingForm = memo(function CashCountingForm({
         {!hideConfirm && (
           <Button
             onClick={handleSubmit}
-            className={`px-4 py-2 ${confirmClass} dark:bg-darkAccentGreen`}
+            color={confirmColor}
+            tone="solid"
           >
             {confirmLabel}
           </Button>

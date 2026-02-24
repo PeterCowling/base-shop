@@ -38,6 +38,34 @@ describe("sync failure feedback", () => {
     expect(message).toContain("scripts/src/xa");
   });
 
+  it("builds actionable localized message for empty catalog guard", () => {
+    const message = getSyncFailureMessage(
+      {
+        ok: false,
+        error: "catalog_input_empty",
+        recovery: "confirm_empty_catalog_sync",
+      },
+      translate,
+    );
+
+    expect(message).toContain("missing or empty");
+    expect(message).toContain("empty storefront publish");
+  });
+
+  it("builds actionable localized message for catalog publish configuration failures", () => {
+    const message = getSyncFailureMessage(
+      {
+        ok: false,
+        error: "catalog_publish_unconfigured",
+        recovery: "configure_catalog_contract",
+      },
+      translate,
+    );
+
+    expect(message).toContain("not configured");
+    expect(message).toContain("XA_CATALOG_CONTRACT_BASE_URL");
+  });
+
   it("builds actionable localized message for validation failures", () => {
     const message = getSyncFailureMessage(
       {
@@ -58,14 +86,48 @@ describe("sync failure feedback", () => {
         <CatalogSyncPanel
           busy={false}
           syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
+          syncReadiness={{
+            checking: false,
+            ready: true,
+            missingScripts: [],
+            error: null,
+          }}
           syncOutput={null}
           feedback={{ kind: "error", message: "Sync failed. Fix validation errors and retry." }}
           onSync={() => undefined}
+          onRefreshReadiness={() => undefined}
           onChangeSyncOptions={() => undefined}
         />
       </UploaderI18nProvider>,
     );
 
     expect(screen.getByRole("alert")).toHaveTextContent("Fix validation errors and retry.");
+  });
+
+  it("shows readiness failure details and disables run-sync until ready", () => {
+    render(
+      <UploaderI18nProvider>
+        <CatalogSyncPanel
+          busy={false}
+          syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
+          syncReadiness={{
+            checking: false,
+            ready: false,
+            missingScripts: ["validate", "sync"],
+            error: null,
+          }}
+          syncOutput={null}
+          feedback={null}
+          onSync={() => undefined}
+          onRefreshReadiness={() => undefined}
+          onChangeSyncOptions={() => undefined}
+        />
+      </UploaderI18nProvider>,
+    );
+
+    expect(screen.getByTestId("catalog-sync-readiness")).toHaveTextContent(
+      "required scripts are missing",
+    );
+    expect(screen.getByTestId("catalog-run-sync")).toBeDisabled();
   });
 });

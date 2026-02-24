@@ -57,8 +57,12 @@ For `start`, `status`, and `advance`, return this exact packet:
 ```text
 run_id: SFS-<BIZ>-<YYYYMMDD>-<hhmm>
 business: <BIZ>
-loop_spec_version: 3.9.4
+loop_spec_version: 3.12.0
 current_stage: <STAGE_ID>
+current_stage_label: <label_operator_short for current_stage>
+current_stage_display: <label_operator_long for current_stage>
+next_stage_label: <label_operator_short for next eligible stage or null>
+next_stage_display: <label_operator_long for next eligible stage or null>
 status: <ready|blocked|awaiting-input|complete>
 blocking_reason: <none or exact reason>
 next_action: <single sentence command/action>
@@ -74,7 +78,7 @@ bos_sync_actions:
 
 | Flag | Behavior |
 |---|---|
-| `--stage <ID>` | Canonical stage ID. Case-insensitive. Always primary. |
+| `--stage <ID>` | Canonical stage ID. Case-insensitive. Always primary. Legacy IDs `S3` and `S10` are accepted and remapped to map-canonical IDs (`SIGNALS-01`, `SIGNALS`) for compatibility. |
 | `--stage-alias <slug>` | Deterministic slug from `stage-operator-map.json` alias_index. Fail-closed on unknown. |
 | `--stage-label <text>` | Exact match against `label_operator_short` or `label_operator_long`. Case-sensitive. Fail-closed on near-match. |
 
@@ -85,7 +89,7 @@ When a stage reference cannot be resolved, return fail-closed with deterministic
 
 ## Stage Model
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 3.9.4).
+Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 3.12.0).
 Stage labels: `docs/business-os/startup-loop/_generated/stage-operator-map.json`.
 
 Stages (canonical IDs from loop-spec):
@@ -96,7 +100,7 @@ Stages (canonical IDs from loop-spec):
 | ASSESSMENT-02 | Solution-profiling scan | `/lp-do-assessment-02-solution-profiling` | start-point=problem |
 | ASSESSMENT-03 | Solution selection | `/lp-do-assessment-03-solution-selection` | start-point=problem |
 | ASSESSMENT-04 | Candidate names | `/lp-do-assessment-04-candidate-names` | start-point=problem |
-| ASSESSMENT-05 | Name selection | `/lp-do-assessment-05-name-selection` | start-point=problem |
+| ASSESSMENT-05 | Name selection | `/lp-do-assessment-05-name-selection` | start-point=problem AND naming_refinement_requested (optional) |
 | ASSESSMENT-06 | Distribution profiling | `/lp-do-assessment-06-distribution-profiling` | start-point=problem |
 | ASSESSMENT-07 | Measurement profiling | `/lp-do-assessment-07-measurement-profiling` | start-point=problem |
 | ASSESSMENT-08 | Current situation | `/lp-do-assessment-08-current-situation` | start-point=problem |
@@ -141,7 +145,7 @@ Stages (canonical IDs from loop-spec):
 | MARKET-09 | ICP refinement | prompt handoff | — |
 | MARKET-10 | Market aggregate pack (draft) | prompt handoff | — |
 | MARKET-11 | Market aggregate pack (validated) | prompt handoff | — |
-| S3 | Forecast (parallel with SELL-01) | `/lp-forecast` | — |
+| SIGNALS-01 | Forecast (parallel with SELL-01) | `/lp-forecast` | — (legacy alias: `S3`) |
 | PRODUCT-02 | Adjacent product research (PRODUCT container, post-offer) | `/lp-other-products` | growth_intent=product_range |
 | SELL | Sell (container) | — | — |
 | SELL-01 | Channel strategy + GTM | `/lp-channels`, `/lp-seo`, `/draft-outreach` | — |
@@ -160,11 +164,11 @@ Stages (canonical IDs from loop-spec):
 | WEBSITE-02 | Site-upgrade synthesis | `/lp-site-upgrade` (L1 Build 2 auto-mode: image-first merchandising for visual-heavy catalogs) | launch-surface=website-live |
 | DO | Do | `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build` | — |
 | S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa` | — |
-| S10 | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) | — |
+| SIGNALS | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) | — (legacy alias: `S10`) |
 
 ## Global Invariants
 
 - Never allow silent stage skipping.
-- BOS sync must be confirmed complete before advance. See `modules/cmd-advance.md` for sync contract.
+- BOS sync must be confirmed complete before advance for all non-DO stages. See `modules/cmd-advance.md` for sync contract.
 - Canonical source of truth is always `loop-spec.yaml` — not markdown mirrors of cards or ideas.
 - All stage references are resolved via stage-addressing.ts — never guess stage IDs.

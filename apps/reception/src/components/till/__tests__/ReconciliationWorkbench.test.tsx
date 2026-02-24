@@ -153,9 +153,9 @@ describe("ReconciliationWorkbench", () => {
     document.documentElement.classList.add("dark");
     const { container } = render(<ReconciliationWorkbench />);
     const thead = container.querySelector("thead") as HTMLElement;
-    expect(thead).toHaveClass("dark:bg-darkSurface");
+    expect(thead).toHaveClass("bg-surface-2");
     const posRow = screen.getByText("POS Totals").closest("tr") as HTMLElement;
-    expect(posRow).toHaveClass("dark:bg-darkSurface");
+    expect(posRow).toHaveClass("border-b");
     document.documentElement.classList.remove("dark");
   });
 

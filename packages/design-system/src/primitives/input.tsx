@@ -7,6 +7,7 @@ import * as React from "react";
 import { FormField } from "../atoms/FormField";
 import { cn } from "../utils/style";
 
+import { type PrimitiveDensity, resolveDensityClass } from "./density";
 import { Inline } from "./Inline";
 import { type PrimitiveRadius, type PrimitiveShape, resolveShapeRadiusClass } from "./shape-radius";
 
@@ -33,6 +34,8 @@ export interface InputProps
   shape?: PrimitiveShape;
   /** Explicit radius token override. */
   radius?: PrimitiveRadius;
+  /** Input density scale. */
+  density?: PrimitiveDensity;
 }
 
 export type InputCompatibilityMode = "default" | "no-wrapper";
@@ -53,6 +56,7 @@ export const Input = (
     compatibilityMode = "default",
     shape,
     radius,
+    density,
     id,
     onFocus,
     onBlur,
@@ -71,13 +75,29 @@ export const Input = (
     radius,
     defaultRadius: "md",
   });
+  const verticalDensityClass = resolveDensityClass({
+    density,
+    comfortableClass: "h-12 py-3",
+    compactClass: "h-10 py-2",
+  });
+  const floatingPaddingClass = resolveDensityClass({
+    density,
+    comfortableClass: "pt-5",
+    compactClass: "pt-4",
+  });
+  const floatingLabelTopClass = resolveDensityClass({
+    density,
+    comfortableClass: "top-2",
+    compactClass: "top-1.5",
+  });
 
   /* ------------------------------------------------------------------ *
    *  Dynamic classes
    * ------------------------------------------------------------------ */
   const baseClasses = cn(
     // base
-    "flex h-12 w-full border border-input bg-input px-3 py-3 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    "flex w-full border border-input bg-input px-3 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    verticalDensityClass,
     shapeRadiusClass,
     // placeholder + file input follow tokenized colors
     "placeholder:text-muted-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
@@ -85,7 +105,7 @@ export const Input = (
     "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     "disabled:cursor-not-allowed disabled:opacity-50",
     // floating-label tweak
-    useFloatingLabel && "peer pt-5",
+    useFloatingLabel && cn("peer", floatingPaddingClass),
     // error border leverages semantic color token
     error ? "border-danger" : undefined,
     // user-supplied
@@ -169,7 +189,7 @@ export const Input = (
               <Inline
                 wrap={false}
                 gap={1}
-                className="absolute top-2 ms-3 pointer-events-none"
+                className={cn("absolute ms-3 pointer-events-none", floatingLabelTopClass)}
               >
                 {label && (
                   <label

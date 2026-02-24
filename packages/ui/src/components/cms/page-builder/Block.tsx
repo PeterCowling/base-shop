@@ -115,6 +115,7 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
   const {
     id: _id,
     type: _type,
+    children: _children,
     clickAction,
     href,
     animation,
@@ -122,9 +123,10 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
     animationDelay,
     animationEasing,
     ...props
-  } = component as PageComponent & BuilderOnlyProps;
+  } = component as PageComponent & BuilderOnlyProps & { children?: unknown };
   void _id;
   void _type;
+  void _children;
 
   // Remove PB-only props that shouldn't leak to DOM nodes
   const {

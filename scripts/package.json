@@ -7,10 +7,16 @@
     "collect-workflow-metrics": "node --import tsx src/ci/collect-workflow-metrics.ts",
     "generate-stage-operator-views": "node --import tsx src/startup-loop/generate-stage-operator-views.ts",
     "check-stage-operator-views": "node --import tsx src/startup-loop/generate-stage-operator-views.ts --check",
+    "startup-loop:compile-website-content-packet": "node --import tsx src/startup-loop/compile-website-content-packet.ts",
     "validate-process-assignment": "node --import tsx src/startup-loop/validate-process-assignment.ts",
-    "test": "cross-env JEST_FORCE_CJS=1 bash tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs"
+    "test": "cross-env JEST_FORCE_CJS=1 bash tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs",
+    "startup-loop:materialize-site-content-payload": "node --import tsx src/startup-loop/materialize-site-content-payload.ts",
+    "startup-loop:lint-website-content-packet": "node --import tsx src/startup-loop/lint-website-content-packet.ts",
+    "startup-loop:map-artifact-delta-to-website-backlog": "node --import tsx src/startup-loop/map-artifact-delta-to-website-backlog.ts",
+    "startup-loop:website-iteration-throughput-report": "node --import tsx src/startup-loop/website-iteration-throughput-report.ts"
   },
   "dependencies": {
+    "@acme/lib": "workspace:*",
     "js-yaml": "4.1.1"
   }
 }

@@ -1,3 +1,5 @@
+import { clamp, clamp01 } from "@acme/lib";
+
 import { baseTokens } from "../themeTokens";
 
 import { parseColorValue, type RgbaColor } from "./colorParser";
@@ -113,12 +115,4 @@ function parseCanvasBackground(tokens: Record<string, string>): RgbaColor | null
   const parsed = parseColorValue(canvasValue, tokens, new Set(["--color-bg"]));
   if (!parsed || "unresolvedToken" in parsed) return null;
   return parsed.color;
-}
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
-
-function clamp01(value: number): number {
-  return clamp(value, 0, 1);
 }

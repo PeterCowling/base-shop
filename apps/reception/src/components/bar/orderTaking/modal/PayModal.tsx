@@ -9,7 +9,8 @@ import {
   useState,
 } from "react";
 
-import { ReceptionButton as Button, ReceptionInput as Input } from "@acme/ui/operations";
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
 
 import { withModalBackground } from "../../../../hoc/withModalBackground";
 
@@ -71,8 +72,8 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
   return (
     <ModalContainer widthClasses="w-96">
       {/* Header with distinct background color */}
-      <div className="bg-info-main rounded-t dark:bg-darkAccentGreen">
-        <h2 className="text-2xl font-bold text-primary-fg text-center py-4 dark:text-darkBg">
+      <div className="bg-info-main rounded-t">
+        <h2 className="text-2xl font-bold text-primary-fg text-center py-4">
           Complete Payment
         </h2>
       </div>
@@ -81,7 +82,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
       <div className="p-6 space-y-8">
         {/* Payment Method */}
         <div className="space-y-3">
-          <p className="text-lg font-semibold text-foreground text-center dark:text-darkAccentGreen">
+          <p className="text-lg font-semibold text-foreground text-center">
             Payment Method
           </p>
           <div className="flex justify-center space-x-4">
@@ -89,41 +90,43 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 paymentMethod === "cash"
                   ? "border-info-main bg-info-light/20"
-                  : "border-border-2 hover:border-border-2 dark:border-darkSurface"
+                  : "border-border-2 hover:border-border-2"
               }`}
             >
               <Input
+                compatibilityMode="no-wrapper"
                 type="radio"
                 value="cash"
                 checked={paymentMethod === "cash"}
                 onChange={handlePaymentChange}
                 className="form-radio h-5 w-5 text-info-main"
               />
-              <span className="text-foreground font-medium dark:text-darkAccentGreen">Cash</span>
+              <span className="text-foreground font-medium">Cash</span>
             </label>
 
             <label
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 paymentMethod === "card"
                   ? "border-info-main bg-info-light/20"
-                  : "border-border-2 hover:border-border-2 dark:border-darkSurface"
+                  : "border-border-2 hover:border-border-2"
               }`}
             >
               <Input
+                compatibilityMode="no-wrapper"
                 type="radio"
                 value="card"
                 checked={paymentMethod === "card"}
                 onChange={handlePaymentChange}
                 className="form-radio h-5 w-5 text-info-main"
               />
-              <span className="text-foreground font-medium dark:text-darkAccentGreen">Credit Card</span>
+              <span className="text-foreground font-medium">Credit Card</span>
             </label>
           </div>
         </div>
 
         {/* Bleep or Go */}
         <div className="space-y-3">
-          <p className="text-lg font-semibold text-foreground text-center dark:text-darkAccentGreen">
+          <p className="text-lg font-semibold text-foreground text-center">
             Bleep or Go
           </p>
           <div className="flex justify-center space-x-4">
@@ -131,34 +134,36 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 bleepUsage === "bleep"
                   ? "border-info-main bg-info-light/20"
-                  : "border-border-2 hover:border-border-2 dark:border-darkSurface"
+                  : "border-border-2 hover:border-border-2"
               }`}
             >
               <Input
+                compatibilityMode="no-wrapper"
                 type="radio"
                 value="bleep"
                 checked={bleepUsage === "bleep"}
                 onChange={handleBleepChange}
                 className="form-radio h-5 w-5 text-info-main"
               />
-              <span className="text-foreground font-medium dark:text-darkAccentGreen">Bleep</span>
+              <span className="text-foreground font-medium">Bleep</span>
             </label>
 
             <label
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 bleepUsage === "go"
                   ? "border-info-main bg-info-light/20"
-                  : "border-border-2 hover:border-border-2 dark:border-darkSurface"
+                  : "border-border-2 hover:border-border-2"
               }`}
             >
               <Input
+                compatibilityMode="no-wrapper"
                 type="radio"
                 value="go"
                 checked={bleepUsage === "go"}
                 onChange={handleBleepChange}
                 className="form-radio h-5 w-5 text-info-main"
               />
-              <span className="text-foreground font-medium dark:text-darkAccentGreen">Go</span>
+              <span className="text-foreground font-medium">Go</span>
             </label>
           </div>
         </div>
@@ -167,13 +172,15 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
         <div className="flex justify-center space-x-4">
           <Button
             onClick={handleCancelClick}
-            className="px-4 py-2 rounded bg-surface-3 text-foreground hover:bg-surface-3 font-medium dark:bg-darkSurface dark:text-darkAccentGreen"
+            color="default"
+            tone="soft"
           >
             Cancel
           </Button>
           <Button
             onClick={handleConfirmClick}
-            className="px-4 py-2 rounded bg-success-main text-primary-fg hover:bg-green-700 font-medium dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+            color="success"
+            tone="solid"
           >
             Confirm
           </Button>

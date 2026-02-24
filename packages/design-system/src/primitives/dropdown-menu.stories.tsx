@@ -64,4 +64,26 @@ export const Submenu: StoryObj<typeof DropdownMenu> = {
   ),
 };
 
+export const CompactDensity: StoryObj<typeof DropdownMenu> = {
+  render: () => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button>Open compact menu</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel density="compact">Compact actions</DropdownMenuLabel>
+        <DropdownMenuItem density="compact">Duplicate</DropdownMenuItem>
+        <DropdownMenuItem density="compact">Archive</DropdownMenuItem>
+        <DropdownMenu.Sub>
+          <DropdownMenu.SubTrigger density="compact">Move to…</DropdownMenu.SubTrigger>
+          <DropdownMenu.SubContent className="w-40">
+            <DropdownMenuItem density="compact">Inbox</DropdownMenuItem>
+            <DropdownMenuItem density="compact">Archive</DropdownMenuItem>
+          </DropdownMenu.SubContent>
+        </DropdownMenu.Sub>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ),
+};
+
 export const Default: StoryObj<typeof DropdownMenu> = {};

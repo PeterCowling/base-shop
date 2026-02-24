@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
 
+import type { ReactNode } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { fireEvent,render, screen } from "@testing-library/react";
@@ -8,6 +9,22 @@ import { Grid } from "../components/Grid";
 import { Header } from "../components/Header";
 import { Row } from "../components/Row";
 import { initialValue,MainProvider } from "../context";
+
+jest.mock("react-dnd", () => ({
+  __esModule: true,
+  DndProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
+  useDrag: () => [{ isDragging: false }, (node: unknown) => node],
+  useDrop: () => [{ handlerId: null, isOver: false }, (node: unknown) => node],
+}));
+
+jest.mock("react-dnd-html5-backend", () => ({
+  __esModule: true,
+  HTML5Backend: {},
+}));
+
+function getDataTestId(id: string): HTMLElement | null {
+  return document.querySelector(`[data-testid="${id}"]`);
+}
 
 // Helper to render components with context
 const renderWithProvider = (
@@ -67,15 +84,15 @@ describe("Grid and related components", () => {
     );
 
     // Header present
-    expect(screen.getByTestId("header")).toBeInTheDocument();
+    expect(getDataTestId("header")).toBeInTheDocument();
 
     // Row titles rendered
-    const title1 = screen.getByTestId("title-r1");
+    const title1 = getDataTestId("title-r1") as HTMLElement;
     expect(title1).toHaveTextContent("Room 1");
     expect(title1).toHaveClass("selected");
 
     // Selected column cell should have both selected and today classes
-    const selectedCell = screen.getByTestId("cell-r1-2023-01-02");
+    const selectedCell = getDataTestId("cell-r1-2023-01-02") as HTMLElement;
     expect(selectedCell).toHaveClass("selected");
     expect(selectedCell).toHaveClass("today");
 
@@ -83,21 +100,21 @@ describe("Grid and related components", () => {
     fireEvent.click(title1);
     expect(onTitle).toHaveBeenCalledWith("r1");
 
-    fireEvent.click(screen.getByTestId("cell-r1-2023-01-01"));
+    fireEvent.click(getDataTestId("cell-r1-2023-01-01") as HTMLElement);
     expect(onCell).toHaveBeenCalledWith(
       expect.objectContaining({
         id: "r1",
         date: "2023-01-01",
-        dayType: "arrival",
+        dayType: "single.start",
       })
     );
 
-    fireEvent.click(screen.getByTestId("cell-r2-2023-01-02"));
+    fireEvent.click(getDataTestId("cell-r2-2023-01-02") as HTMLElement);
     expect(onCell).toHaveBeenCalledWith(
       expect.objectContaining({
         id: "r2",
         date: "2023-01-02",
-        dayType: "arrival",
+        dayType: "single.start",
       })
     );
   });
@@ -119,12 +136,12 @@ describe("Grid and related components", () => {
       value
     );
 
-    expect(screen.getByTestId("title")).toHaveTextContent("Rooms");
+    expect(getDataTestId("title")).toHaveTextContent("Rooms");
     // Selected column
-    const sel = screen.getByTestId("cell-day-2023-01-01");
+    const sel = getDataTestId("cell-day-2023-01-01") as HTMLElement;
     expect(sel).toHaveClass("selected");
     // Today highlight
-    const today = screen.getByTestId("cell-day-2023-01-02");
+    const today = getDataTestId("cell-day-2023-01-02") as HTMLElement;
     expect(today).toHaveClass("today");
   });
 
@@ -151,6 +168,6 @@ describe("Grid and related components", () => {
       value
     );
 
-    expect(screen.queryByTestId("info-r1")).not.toBeInTheDocument();
+    expect(getDataTestId("info-r1")).not.toBeInTheDocument();
   });
 });

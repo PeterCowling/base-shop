@@ -4,7 +4,6 @@
 import React, { useEffect, useState } from "react";
 import { revertSeo } from "@cms/actions/shops-seo.server";
 
-import { formatTimestamp } from "@acme/date-utils";
 import { CodeBlock } from "@acme/design-system/molecules";
 import en from "@acme/i18n/en.json";
 import { useTranslations } from "@acme/i18n/Translations";
@@ -18,6 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/atoms/shadcn";
+import { formatTimestamp } from "@/lib/datetime";
 
 interface VersionTimelineProps {
   /** Shop identifier */

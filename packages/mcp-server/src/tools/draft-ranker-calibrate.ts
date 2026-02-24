@@ -9,6 +9,8 @@ import { readFile, rename, writeFile } from "fs/promises";
 import { join } from "path";
 import { z } from "zod";
 
+import { clamp, mean as libMean } from "@acme/lib";
+
 import {
   archiveEvents,
   countSignalEvents,
@@ -97,8 +99,9 @@ function computePriors(
   for (const [category, categoryMap] of accumulator) {
     priors[category] = {};
     for (const [subject, deltas] of categoryMap) {
-      const mean = deltas.reduce((a, b) => a + b, 0) / deltas.length;
-      const clamped = Math.max(-PRIOR_CAP, Math.min(PRIOR_CAP, mean));
+      const meanResult = libMean(deltas);
+      const mean = Number.isNaN(meanResult) ? 0 : meanResult;
+      const clamped = clamp(mean, -PRIOR_CAP, PRIOR_CAP);
       priors[category][subject] = Math.round(clamped);
     }
   }
@@ -265,4 +268,3 @@ export async function handleDraftRankerCalibrateTool(
 // ---------------------------------------------------------------------------
 
 export { RANKER_PRIORS_PATH as CALIBRATE_RANKER_PRIORS_PATH, SIGNAL_EVENTS_PATH as CALIBRATE_SIGNAL_EVENTS_PATH };
-

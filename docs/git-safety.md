@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-11
+Last-reviewed: 2026-02-23
 
 # Git Safety Guide (Agent Runbook)
 
@@ -939,7 +939,7 @@ Operational scripts:
 | `pre-commit` | `scripts/git-hooks/block-commit-on-protected-branches.sh && scripts/git-hooks/pre-commit.sh` | blocks protected-branch commits; runs staged-scope checks with writer-lock enforcement |
 | `prepare-commit-msg` | `scripts/git-hooks/prepare-commit-msg-safety.sh` | blocks amend/reuse-message workflows |
 | `pre-rebase` | `scripts/git-hooks/pre-rebase-safety.sh` | blocks rebase by default |
-| `pre-push` | `scripts/git-hooks/pre-push.sh` | enforces writer lock, blocks unsafe pushes, runs range-scoped `scripts/validate-changes.sh` |
+| `pre-push` | `scripts/git-hooks/pre-push.sh` | enforces writer lock, blocks unsafe pushes, runs range-scoped `scripts/validate-changes.sh` (forces `VALIDATE_INCLUDE_TESTS=0`) |
 
 Install/refresh hooks:
 
@@ -1002,6 +1002,8 @@ Regenerate lockfile from declarative sources where appropriate (for pnpm: `pnpm 
 bash scripts/validate-changes.sh
 git push origin dev
 ```
+
+Default `validate-changes.sh` execution is policy + typecheck + lint. Use `VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh` only when you intentionally want local targeted tests.
 
 ## Agent Session Checklist
 

@@ -42,6 +42,12 @@ const ALIAS_INDEX: Record<string, string> =
   stageOperatorMap.alias_index as Record<string, string>;
 
 /**
+ * Legacy stage IDs still emitted by loop-spec-era tooling.
+ * These are accepted in --stage mode and mapped to map-canonical IDs.
+ */
+const LEGACY_ID_COMPAT = new Set(["S3", "S10"]);
+
+/**
  * Exact label → canonical ID index.
  * Covers both label_operator_short (e.g. "Intake") and
  * label_operator_long (e.g. "ASSESSMENT — Intake").
@@ -66,8 +72,14 @@ export function resolveById(input: string): ResolveResult {
     return { ok: true, stageId: upper, mode: "id" };
   }
 
+  // Compatibility bridge: allow known legacy IDs in --stage mode.
+  const legacyMappedId = ALIAS_INDEX[input.toLowerCase().trim()];
+  if (LEGACY_ID_COMPAT.has(upper) && legacyMappedId) {
+    return { ok: true, stageId: legacyMappedId, mode: "id" };
+  }
+
   // Check if input matches an alias — suggest the correct path
-  const aliasMatch = ALIAS_INDEX[input.toLowerCase().trim()];
+  const aliasMatch = legacyMappedId;
   const suggestions: string[] = aliasMatch
     ? [`--stage ${aliasMatch}`, `--stage-alias ${input.toLowerCase().trim()}`]
     : [

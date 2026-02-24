@@ -37,6 +37,8 @@ describe("Switch", () => {
     const { container, rerender } = render(<Switch shape="square" />);
     const track = container.querySelector("[data-token='--color-primary']");
     expect(track).toHaveClass("rounded-none");
+    expect(track).toHaveAttribute("data-ds-contrast-exempt");
+    expect(track).toHaveAttribute("aria-hidden", "true");
 
     rerender(<Switch shape="square" radius="xl" />);
     expect(container.querySelector("[data-token='--color-primary']")).toHaveClass("rounded-xl");

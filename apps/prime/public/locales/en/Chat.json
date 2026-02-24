@@ -1,8 +1,11 @@
 {
   "anonymousGuest": "Guest",
   "availableWhenLive": "Chat will be available when the activity starts.",
+  "backToChat": "Back to Chat",
   "backToActivities": "Back to Activities",
   "channelTitle": "Activity Chat",
+  "directMessagingUnavailable": "Direct messaging is unavailable for this guest.",
+  "directMessagingUnavailableDescription": "Both guests must be confirmed on the same stay, opt into chat, and not be blocked.",
   "chat": {
     "directory": {
       "guestLabel": "Guest {{id}}",
@@ -18,10 +21,12 @@
     }
   },
   "goToActivities": "Go to Activities",
+  "loadingDirectChannel": "Loading chat...",
   "loadingActivity": "Loading activity\u2026",
   "markPresenceToChat": "Mark your presence on the activity page to start chatting.",
   "noChannelSelected": "No channel selected.",
   "send": "Send",
+  "statusDirect": "Direct chat",
   "statusLive": "Live now",
   "statusUpcoming": "Starts soon",
   "typeMessage": "Type a message\u2026"

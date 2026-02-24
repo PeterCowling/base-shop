@@ -44,7 +44,7 @@ jest.mock("../DeleteButton.client", () => ({
   default: () => <button data-cy="delete" />,
 }));
 
-jest.mock("@acme/date-utils", () => ({
+jest.mock("@/lib/datetime", () => ({
   formatTimestamp: (ts: string) => `formatted ${ts}`,
 }));
 

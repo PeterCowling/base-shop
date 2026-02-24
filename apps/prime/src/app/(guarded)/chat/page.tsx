@@ -1,7 +1,7 @@
 'use client';
 
-import GuardedRouteRedirect from '../../../components/navigation/GuardedRouteRedirect';
+import GuestDirectory from './GuestDirectory';
 
 export default function ChatPage() {
-  return <GuardedRouteRedirect targetPath="/activities" />;
+  return <GuestDirectory />;
 }

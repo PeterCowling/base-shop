@@ -53,6 +53,33 @@ describe("Dialog", () => {
 
   });
 
+  it("supports content shape and radius variants", () => {
+    const { rerender } = render(
+      <Dialog open>
+        <DialogContent data-testid="content" shape="soft">
+          <DialogTitle>Title</DialogTitle>
+          <DialogDescription>Description</DialogDescription>
+        </DialogContent>
+      </Dialog>
+    );
+
+    const content = screen.getByTestId("content");
+    expect(content).toHaveClass("rounded-md");
+
+    rerender(
+      <Dialog open>
+        <DialogContent data-testid="content" shape="pill" radius="lg">
+          <DialogTitle>Title</DialogTitle>
+          <DialogDescription>Description</DialogDescription>
+        </DialogContent>
+      </Dialog>
+    );
+
+    const contentWithRadiusOverride = screen.getByTestId("content");
+    expect(contentWithRadiusOverride).toHaveClass("rounded-lg");
+    expect(contentWithRadiusOverride).not.toHaveClass("rounded-full");
+  });
+
   it(
     "merges custom classes on DialogHeader, DialogFooter, DialogTitle, and DialogDescription",
     () => {

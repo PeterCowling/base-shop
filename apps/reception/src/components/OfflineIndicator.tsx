@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { WifiIcon } from "@heroicons/react/24/solid";
+import { Wifi } from "lucide-react";
 
 import { useOnlineStatus } from "../lib/offline/useOnlineStatus";
 
@@ -15,8 +15,8 @@ function OfflineIndicator() {
   if (online) return null;
 
   return (
-    <div className="fixed left-0 right-0 top-0 z-50 flex items-center justify-center gap-2 bg-warning px-4 py-2 text-sm font-medium text-primary-fg shadow-md dark:bg-darkAccentOrange dark:text-darkSurface">
-      <WifiIcon className="h-4 w-4" />
+    <div className="fixed left-0 right-0 top-0 z-50 flex items-center justify-center gap-2 bg-warning px-4 py-2 text-sm font-medium text-primary-fg shadow-md">
+      <Wifi className="h-4 w-4" />
       <span>You&apos;re offline. Some features may be unavailable.</span>
     </div>
   );

@@ -14,7 +14,7 @@ jest.mock("../service", () => ({
 
 jest.mock("@/utils/sentry.server", () => ({ captureException: jest.fn() }));
 jest.mock("ulid", () => ({ ulid: () => "generated-ulid" }));
-jest.mock("@acme/date-utils", () => ({ nowIso: () => "now" }));
+jest.mock("@/lib/datetime", () => ({ nowIso: () => "now" }));
 jest.mock("@acme/config/env/core", () => ({ coreEnv: { NODE_ENV: "test" } }));
 
 const service = jest.requireMock("../service") as {

@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../atoms/shadcn";
-import { ColorInput } from "../index";
+import { ColorInput } from "../ColorInput";
 
 interface ColorTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: string;

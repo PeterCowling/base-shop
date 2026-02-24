@@ -49,8 +49,6 @@ Status: <Ready-for-planning | Needs-input>
 Outcome: <planning | briefing>
 Execution-Track: <code | business-artifact | mixed>
 Deliverable-Type: <canonical type>
-Business-Unit: <BIZ code>        # present when card path is used
-Card-ID: <BOS card ID>           # present when card path is used
 Feature-Slug: <slug>
 artifact: fact-find
 ```
@@ -86,8 +84,6 @@ artifact: fact-find
 ```yaml
 Status: <Draft | Active | Archived>
 Feature-Slug: <slug>
-Business-Unit: <BIZ code>        # present when card path is used
-Card-ID: <BOS card ID>           # present when card path is used
 Execution-Track: <code | business-artifact | mixed>
 Last-updated: <YYYY-MM-DD>
 artifact: plan
@@ -123,8 +119,6 @@ artifact: plan
 ```yaml
 Status: Complete
 Feature-Slug: <slug>
-Business-Unit: <BIZ code>
-Card-ID: <BOS card ID>           # present when card path is used
 Completed-date: <YYYY-MM-DD>
 artifact: build-record
 ```
@@ -145,10 +139,6 @@ artifact: build-record
 **Stored at:** `docs/plans/<feature-slug>/results-review.user.md`
 **Consumers:** startup-loop Layer A (standing-information refresh), future plan sessions for the same business unit
 
-### Hard Gate
-
-**The build cycle is not complete without this artifact.** `/lp-do-build` MUST NOT set plan `Status: Archived` or trigger plan archival until `results-review.user.md` exists in the plan directory. See Plan Completion and Archiving section in `lp-do-build/SKILL.md`.
-
 ### Required Sections
 
 | Section | Purpose |
@@ -162,8 +152,6 @@ artifact: build-record
 ```yaml
 Status: <Draft | Complete>
 Feature-Slug: <slug>
-Business-Unit: <BIZ code>
-Card-ID: <BOS card ID>           # present when card path is used
 Review-date: <YYYY-MM-DD>
 artifact: results-review
 ```

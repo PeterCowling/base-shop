@@ -6,8 +6,8 @@ import { promises as fs } from "fs";
 import path from "path";
 import { z } from "zod";
 
-import { validateShopName } from "@acme/lib";
 import { parseJsonBody } from "@acme/lib/http/server";
+import { validateShopName } from "@acme/lib/validateShopName";
 import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { type Segment,segmentSchema } from "@acme/types";
 

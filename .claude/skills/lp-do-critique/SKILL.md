@@ -269,10 +269,6 @@ Prefer merged, high-leverage fixes over many tiny edits.
 Required checks:
 - Frontmatter fields:
   - `Type`, `Outcome`, `Status`, `Domain`, `Workstream`, `Created`, `Last-updated`, `Feature-Slug`, `Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`, `Supporting-Skills`, `Related-Plan`
-  - `Business-OS-Integration` must be explicit (`on`/`off`)
-  - If `on`, require `Business-Unit` and `Card-ID`
-  - **Card-ID timing:** The lp-do-fact-find skill creates cards even at `Needs-input` status. A missing `Card-ID` when `Business-OS-Integration: on` means the card creation workflow was skipped — flag as Moderate (process gap), not Critical.
-  - In Legacy mode, missing BOS fields are template drift unless higher-precedence policy says mandatory
 - Sections present and substantive:
   - Scope (summary/goals/non-goals)
   - Evidence Audit

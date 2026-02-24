@@ -1,6 +1,8 @@
 import { promises as fs } from "fs";
 import path from "path";
 
+import { pearson as libPearson } from "@acme/lib";
+
 import { parseFrontmatterMarkdown } from "../hypothesis-portfolio/markdown";
 
 import { computeHospitalityScenarioDateLabels } from "./hospitality-scenarios";
@@ -689,25 +691,8 @@ function parseCloudflareMonthlyProxiesCsv(content: string): CloudflareMonthRow[]
 
 function pearsonCorrelation(xs: number[], ys: number[]): number | null {
   if (xs.length !== ys.length || xs.length < 2) return null;
-
-  const n = xs.length;
-  const meanX = xs.reduce((a, b) => a + b, 0) / n;
-  const meanY = ys.reduce((a, b) => a + b, 0) / n;
-
-  let num = 0;
-  let denX = 0;
-  let denY = 0;
-
-  for (let i = 0; i < n; i += 1) {
-    const dx = xs[i] - meanX;
-    const dy = ys[i] - meanY;
-    num += dx * dy;
-    denX += dx * dx;
-    denY += dy * dy;
-  }
-
-  if (denX === 0 || denY === 0) return null;
-  return num / Math.sqrt(denX * denY);
+  const result = libPearson(xs, ys);
+  return Number.isNaN(result) ? null : result;
 }
 
 function computeWindowSummary(

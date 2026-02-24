@@ -7,10 +7,10 @@
 
 import { memo, useCallback, useState } from "react";
 import {
-  ArrowDownTrayIcon,
-  TrashIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/solid";
+  Download,
+  Trash2,
+  X,
+} from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -67,17 +67,17 @@ function BulkActionsToolbar({
 
   return (
     <>
-      <div className="sticky top-0 z-10 mb-4 flex items-center justify-between gap-4 rounded-lg bg-info-light/20 px-4 py-3 shadow-sm dark:bg-blue-900/30">
+      <div className="sticky top-0 z-10 mb-4 flex items-center justify-between gap-4 rounded-lg bg-info-light/20 px-4 py-3 shadow-sm">
         <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-info-main dark:text-blue-300">
+          <span className="text-sm font-medium text-info-main">
             {selectedCount} booking{selectedCount !== 1 ? "s" : ""} selected
           </span>
           <Button
             type="button"
             onClick={onClearSelection}
-            className="inline-flex min-h-9 min-w-9 items-center justify-center gap-1 rounded-md px-2 py-1 text-sm text-info-main hover:bg-info-light dark:text-blue-300 dark:hover:bg-blue-800/50"
+            className="inline-flex min-h-9 min-w-9 items-center justify-center gap-1 rounded-md px-2 py-1 text-sm text-info-main hover:bg-info-light"
           >
-            <XMarkIcon className="h-4 w-4" />
+            <X className="h-4 w-4" />
             Clear
           </Button>
         </div>
@@ -87,9 +87,9 @@ function BulkActionsToolbar({
           <Button
             type="button"
             onClick={handleExportCsv}
-            className="inline-flex min-h-9 items-center gap-2 rounded-md bg-surface px-3 py-1.5 text-sm font-medium text-foreground shadow-sm focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-gray-300 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen focus-visible:dark:ring-gray-600 dark:hover:bg-surface-3"
+            className="inline-flex min-h-9 items-center gap-2 rounded-md bg-surface px-3 py-1.5 text-sm font-medium text-foreground shadow-sm focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-border-2 hover:bg-surface-2"
           >
-            <ArrowDownTrayIcon className="h-4 w-4" />
+            <Download className="h-4 w-4" />
             Export CSV
           </Button>
 
@@ -99,9 +99,9 @@ function BulkActionsToolbar({
               type="button"
               onClick={handleCancelClick}
               disabled={loading}
-              className="inline-flex min-h-9 items-center gap-2 rounded-md bg-error-main px-3 py-1.5 text-sm font-medium text-primary-fg shadow-sm hover:bg-red-700 disabled:opacity-50 dark:bg-red-700 dark:hover:bg-error-main"
+              className="inline-flex min-h-9 items-center gap-2 rounded-md bg-error-main px-3 py-1.5 text-sm font-medium text-primary-fg shadow-sm hover:bg-error-dark disabled:opacity-50"
             >
-              <TrashIcon className="h-4 w-4" />
+              <Trash2 className="h-4 w-4" />
               {loading ? "Cancelling..." : "Cancel Selected"}
             </Button>
           )}

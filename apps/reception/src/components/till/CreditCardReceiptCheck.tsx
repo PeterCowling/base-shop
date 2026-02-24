@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 
-import { ReceptionInput } from "@acme/ui/operations";
+import { Input } from "@acme/design-system";
 
 import { useCCReceiptConfirmations } from "../../hooks/mutations/useCCReceiptConfirmations";
 import { type Transaction } from "../../types/component/Till";
@@ -80,10 +80,10 @@ export const CreditCardReceiptCheck = memo(function CreditCardReceiptCheck({
   if (filteredTxns.length === 0) return null;
 
   return (
-    <div className="mt-6 dark:text-darkAccentGreen">
-      <h3 className="text-lg font-semibold mb-2 dark:text-darkAccentGreen">Credit Card Receipts</h3>
+    <div className="mt-6">
+      <h3 className="text-lg font-semibold mb-2">Credit Card Receipts</h3>
 
-      <p className="mb-2 text-sm text-info-main dark:text-darkAccentGreen">
+      <p className="mb-2 text-sm text-info-main">
         Mark each credit card receipt as reconciled:
       </p>
 
@@ -96,18 +96,19 @@ export const CreditCardReceiptCheck = memo(function CreditCardReceiptCheck({
           return (
             <li
               key={txnId}
-              className="flex flex-wrap items-center gap-3 border border-info-light p-2 rounded dark:border-darkSurface"
+              className="flex flex-wrap items-center gap-3 border border-info-light p-2 rounded"
             >
-              <label className="flex items-center gap-2 dark:text-darkAccentGreen">
-                <ReceptionInput
+              <label className="flex items-center gap-2">
+                <Input
+                  compatibilityMode="no-wrapper"
                   type="checkbox"
                   className="h-4 w-4"
                   checked={checkMap[txnId] || false}
                   onChange={(e) => handleCheckChange(txnId, e.target.checked)}
                 />
-                <span className="text-sm dark:text-darkAccentGreen">Reconciled</span>
+                <span className="text-sm">Reconciled</span>
               </label>
-              <div className="text-sm text-info-dark dark:text-darkAccentGreen">
+              <div className="text-sm text-info-dark">
                 <strong>{displayDate}:</strong> {description ?? "CC payment"}{" "}
                 (Amount: €{amount.toFixed(2)})
               </div>

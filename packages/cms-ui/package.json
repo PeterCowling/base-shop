@@ -142,6 +142,7 @@
   "dependencies": {
     "@acme/design-system": "workspace:*",
     "@acme/i18n": "workspace:*",
+    "@acme/lib": "workspace:*",
     "@acme/page-builder-core": "workspace:*",
     "@acme/platform-core": "workspace:*",
     "@acme/telemetry": "workspace:*",

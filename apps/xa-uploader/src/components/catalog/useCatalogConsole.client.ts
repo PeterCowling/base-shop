@@ -2,7 +2,8 @@
 
 import * as React from "react";
 
-import type { CatalogProductDraftInput } from "../../lib/catalogAdminSchema";
+import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
+
 import {
   DEFAULT_STOREFRONT,
   getStorefrontConfig,
@@ -36,12 +37,28 @@ import {
   getSyncFailureMessage,
   type SessionState,
   type SubmissionAction,
+  type SyncReadinessResponse,
+  type SyncScriptId,
   updateActionFeedback,
 } from "./catalogConsoleFeedback";
 import { buildEmptyDraft } from "./catalogDraft";
 
 export type { ActionFeedback, ActionFeedbackState };
 export { createInitialActionFeedbackState, getSyncFailureMessage };
+
+function toPositiveInt(raw: string | undefined, fallback: number, min = 1): number {
+  const parsed = Number.parseInt(String(raw ?? ""), 10);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.max(min, parsed);
+}
+
+type SyncReadinessState = {
+  checking: boolean;
+  ready: boolean;
+  missingScripts: SyncScriptId[];
+  error: string | null;
+  checkedAt: string | null;
+};
 
 function useCatalogConsoleState() {
   const { locale, t } = useUploaderI18n();
@@ -67,9 +84,10 @@ function useCatalogConsoleState() {
 
   const submissionMax = 10;
   const submissionMaxBytes = 250 * 1024 * 1024;
-  const minImageEdge = Math.max(
+  const minImageEdge = toPositiveInt(
+    process.env.NEXT_PUBLIC_XA_UPLOADER_MIN_IMAGE_EDGE ?? "1600",
+    1600,
     1,
-    Number(process.env.NEXT_PUBLIC_XA_UPLOADER_MIN_IMAGE_EDGE ?? 1600) || 1600,
   );
   const [submissionSlugs, setSubmissionSlugs] = React.useState<Set<string>>(() => new Set());
   const [submissionUploadUrl, setSubmissionUploadUrl] = React.useState(
@@ -94,6 +112,13 @@ function useCatalogConsoleState() {
     recursive: true,
   });
   const [syncOutput, setSyncOutput] = React.useState<string | null>(null);
+  const [syncReadiness, setSyncReadiness] = React.useState<SyncReadinessState>({
+    checking: false,
+    ready: false,
+    missingScripts: [],
+    error: null,
+    checkedAt: null,
+  });
 
   const loadSession = React.useCallback(async () => {
     const response = await fetch("/api/uploader/session");
@@ -113,6 +138,35 @@ function useCatalogConsoleState() {
     setRevisionsById(data.revisionsById ?? {});
   }, [storefront, t]);
 
+  const loadSyncReadiness = React.useCallback(async () => {
+    if (uploaderMode !== "internal") return;
+    setSyncReadiness((prev) => ({ ...prev, checking: true, error: null }));
+    try {
+      const response = await fetch(
+        `/api/catalog/sync?storefront=${encodeURIComponent(storefront)}`,
+      );
+      const data = (await response.json()) as SyncReadinessResponse;
+      if (!response.ok || !data.ok) {
+        throw new Error(t("syncReadinessCheckFailed"));
+      }
+      setSyncReadiness({
+        checking: false,
+        ready: Boolean(data.ready),
+        missingScripts: data.missingScripts ?? [],
+        error: null,
+        checkedAt: data.checkedAt ?? null,
+      });
+    } catch {
+      setSyncReadiness({
+        checking: false,
+        ready: false,
+        missingScripts: [],
+        error: t("syncReadinessCheckFailed"),
+        checkedAt: null,
+      });
+    }
+  }, [storefront, t, uploaderMode]);
+
   React.useEffect(() => {
     loadSession().catch(() => setSession({ authenticated: false }));
   }, [loadSession]);
@@ -131,6 +185,21 @@ function useCatalogConsoleState() {
     if (typeof window === "undefined") return;
     window.localStorage.setItem("xa_uploader_storefront", storefront);
   }, [storefront]);
+
+  React.useEffect(() => {
+    if (uploaderMode !== "internal") return;
+    if (!session?.authenticated) {
+      setSyncReadiness({
+        checking: false,
+        ready: false,
+        missingScripts: [],
+        error: null,
+        checkedAt: null,
+      });
+      return;
+    }
+    loadSyncReadiness().catch(() => null);
+  }, [loadSyncReadiness, session?.authenticated, storefront, uploaderMode]);
 
   return {
     locale,
@@ -176,8 +245,11 @@ function useCatalogConsoleState() {
     setSyncOptions,
     syncOutput,
     setSyncOutput,
+    syncReadiness,
+    setSyncReadiness,
     loadSession,
     loadCatalog,
+    loadSyncReadiness,
   };
 }
 
@@ -291,18 +363,24 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
 
 function useCatalogSyncHandlers(state: CatalogConsoleState) {
   const handleSync = async () =>
-    handleSyncImpl({
-      storefront: state.storefront,
-      syncOptions: state.syncOptions,
-      t: state.t,
-      busyLockRef: state.busyLockRef,
-      setBusy: state.setBusy,
-      setActionFeedback: state.setActionFeedback,
-      setSyncOutput: state.setSyncOutput,
-      loadCatalog: state.loadCatalog,
-    });
+    !state.syncReadiness.ready || state.syncReadiness.checking
+      ? undefined
+      : await handleSyncImpl({
+          storefront: state.storefront,
+          syncOptions: state.syncOptions,
+          t: state.t,
+          busyLockRef: state.busyLockRef,
+          setBusy: state.setBusy,
+          setActionFeedback: state.setActionFeedback,
+          setSyncOutput: state.setSyncOutput,
+          loadCatalog: state.loadCatalog,
+          confirmEmptyCatalogSync: (message: string) => window.confirm(message),
+        });
 
-  return { handleSync };
+  const handleRefreshSyncReadiness = async () =>
+    await state.loadSyncReadiness().catch(() => null);
+
+  return { handleSync, handleRefreshSyncReadiness };
 }
 
 function useCatalogSubmissionHandlers(state: CatalogConsoleState) {
@@ -390,6 +468,8 @@ export function useCatalogConsole() {
     syncOptions: state.syncOptions,
     setSyncOptions: state.setSyncOptions,
     syncOutput: state.syncOutput,
+    syncReadiness: state.syncReadiness,
+    refreshSyncReadiness: state.loadSyncReadiness,
     ...submissionState,
     loadCatalog: state.loadCatalog,
     storefrontConfig: state.storefrontConfig,

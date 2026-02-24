@@ -24,6 +24,8 @@ const config = [
       "ds/no-overflow-hazards": "error",
       "ds/require-min-w-0-in-flex": "error",
       "ds/require-content-bleed-guards": "error",
+      "ds/require-bg-foreground-pair": "error",
+      "ds/require-contrast-exempt-justification": "error",
     },
   },
 ];

@@ -17,6 +17,8 @@ import {
   SelectValue,
 } from "../select";
 
+import { LONG_SENTENCE_WITH_TOKEN, LONG_UNBROKEN_TOKEN } from "./fixtures/longContent";
+
 configure({ testIdAttribute: "data-testid" });
 
 describe("Select", () => {
@@ -66,6 +68,27 @@ describe("Select", () => {
     const label = await screen.findByText("Label");
     expect(label).toHaveClass("px-2", "py-1.5", "text-sm", "font-semibold", "custom");
 
+  });
+
+  it("SelectLabel supports compact density", async () => {
+    render(
+      <Select>
+        <SelectTrigger data-testid="trigger">
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel density="compact">Compact label</SelectLabel>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    );
+
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("trigger"));
+    const compactLabel = await screen.findByText("Compact label");
+    expect(compactLabel).toHaveClass("py-1");
+    expect(compactLabel).not.toHaveClass("py-1.5");
   });
 
   it("SelectSeparator renders default and custom classes", async () => {
@@ -119,6 +142,24 @@ describe("Select", () => {
     const radiusOverrideTrigger = screen.getByTestId("trigger");
     expect(radiusOverrideTrigger).toHaveClass("rounded-lg");
     expect(radiusOverrideTrigger).not.toHaveClass("rounded-full");
+  });
+
+  it("SelectTrigger supports compact density", () => {
+    render(
+      <Select>
+        <SelectTrigger data-testid="trigger" density="compact">
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+      </Select>
+    );
+
+    const trigger = screen.getByTestId("trigger");
+    expect(trigger).toHaveClass("h-10", "px-2", "py-1.5");
+    expect(trigger).not.toHaveClass("px-3", "py-2");
+    const icon = trigger.querySelector("svg");
+    expect(icon).not.toBeNull();
+    expect(icon).toHaveClass("ms-1");
+    expect(icon).not.toHaveClass("ms-2");
   });
 
   it("SelectItem merges custom classes", async () => {
@@ -179,6 +220,27 @@ describe("Select", () => {
     const radiusItem = await screen.findByRole("option", { name: "One" });
     expect(radiusItem).toHaveClass("rounded-lg");
     expect(radiusItem).not.toHaveClass("rounded-full");
+  });
+
+  it("SelectItem supports compact density", async () => {
+    render(
+      <Select>
+        <SelectTrigger data-testid="trigger">
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="one" density="compact">
+            One
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    );
+
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("trigger"));
+    const compactItem = await screen.findByRole("option", { name: "One" });
+    expect(compactItem).toHaveClass("py-1");
+    expect(compactItem).not.toHaveClass("py-1.5");
   });
 
   it("forwards refs and attributes to subcomponents", async () => {
@@ -292,5 +354,29 @@ describe("Select", () => {
     await user.click(screen.getByTestId("trigger"));
     const content = await screen.findByTestId("content");
     expect(content).toHaveClass("rounded-2xl");
+  });
+
+  it("renders long unbroken option labels with bleed guards", async () => {
+    render(
+      <Select>
+        <SelectTrigger data-testid="trigger">
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="long">{LONG_SENTENCE_WITH_TOKEN}</SelectItem>
+          <SelectItem value="token">{LONG_UNBROKEN_TOKEN}</SelectItem>
+        </SelectContent>
+      </Select>
+    );
+
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("trigger"));
+
+    const longItem = screen.getByRole("option", { name: LONG_SENTENCE_WITH_TOKEN });
+    const tokenItem = screen.getByRole("option", { name: LONG_UNBROKEN_TOKEN });
+
+    expect(longItem).toHaveClass("min-w-0", "break-words");
+    expect(tokenItem).toHaveClass("min-w-0", "break-words");
+    expect(longItem.querySelector("span.min-w-0.break-words")).not.toBeNull();
   });
 });

@@ -3,6 +3,8 @@ import type { ProductConfigSchema } from "@acme/product-configurator";
 
 import { ConfiguratorPage } from "./ConfiguratorPage";
 
+export const dynamic = "force-dynamic";
+
 const API_ORIGIN =
   process.env["HANDBAG_CONFIGURATOR_API_ORIGIN"] ?? "http://localhost:3017";
 

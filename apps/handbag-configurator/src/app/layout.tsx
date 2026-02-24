@@ -1,23 +1,24 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 
-import { ShopThemeProvider } from "@acme/platform-core/contexts/ShopThemeContext";
+import { ThemeModeProvider } from "@acme/platform-core/contexts/ThemeModeContext";
 import { initTheme } from "@acme/platform-core/utils";
 
-const display = Cormorant_Garamond({
+const heading = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500"],
+  style: ["normal", "italic"],
   display: "swap",
-  variable: "--font-display",
+  variable: "--font-cormorant-garamond",
 });
 
-const body = Manrope({
+const body = DM_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500"],
   display: "swap",
-  variable: "--font-body",
+  variable: "--font-dm-sans",
 });
 
 export const metadata: Metadata = {
@@ -31,13 +32,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${heading.variable} ${body.variable}`} suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="light dark" />
         <script dangerouslySetInnerHTML={{ __html: initTheme }} />
       </head>
       <body className="min-h-dvh bg-bg text-foreground antialiased">
-        <ShopThemeProvider>{children}</ShopThemeProvider>
+        <ThemeModeProvider>{children}</ThemeModeProvider>
       </body>
     </html>
   );

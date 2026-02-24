@@ -19,19 +19,6 @@ const nextConfig = {
       "@": path.resolve(__dirname, "src"),
     },
   },
-  webpack(config, options) {
-    // Legacy webpack path retained as an explicit exception while scripts still
-    // execute via `next --webpack`. Turbopack alias parity is configured above.
-    if (typeof sharedConfig.webpack === "function") {
-      config = sharedConfig.webpack(config, options);
-    }
-
-    config.resolve ??= {};
-    config.resolve.alias ??= {};
-    config.resolve.alias["@"] = path.resolve(__dirname, "src");
-
-    return config;
-  },
 };
 
 export default nextConfig;

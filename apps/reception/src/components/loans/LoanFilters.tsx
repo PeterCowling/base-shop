@@ -1,6 +1,6 @@
 import { memo, type ReactElement } from "react";
 
-import { ReceptionInput } from "@acme/ui/operations";
+import { Input } from "@acme/design-system";
 
 import DateSelector from "./DateSel";
 
@@ -20,22 +20,22 @@ function LoanFiltersComponent({
   onGuestFilterChange,
 }: LoanFiltersProps): ReactElement {
   return (
-    <div className="space-y-4 dark:text-darkAccentGreen">
+    <div className="space-y-4">
       <DateSelector
         selectedDate={selectedDate}
         onDateChange={onDateChange}
         username={username}
       />
       <div className="flex items-center gap-2">
-        <label htmlFor="guestFilter" className="font-semibold dark:text-darkAccentGreen">
+        <label htmlFor="guestFilter" className="font-semibold">
           Filter by guest name:
         </label>
-        <ReceptionInput
+        <Input compatibilityMode="no-wrapper"
           id="guestFilter"
           type="text"
           value={guestFilter}
           onChange={(e) => onGuestFilterChange(e.target.value)}
-          className="border rounded px-2 py-1 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border rounded px-2 py-1"
           placeholder="Type a name..."
         />
       </div>

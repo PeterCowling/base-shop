@@ -30,6 +30,10 @@ import {
   computeSnapshotPath,
   type PriorDelta,
 } from './prior-update-writer';
+import {
+  WEEKLY_STAGE_CANDIDATES,
+  WEEKLY_STAGE_ID,
+} from "./stage-id-compat";
 
 /**
  * Extended experiment readout with supersede support.
@@ -137,7 +141,25 @@ function getBaselinePaths(
     runId
   );
   const manifestPath = path.join(baseDir, 'baseline.manifest.json');
-  const stageResultPath = path.join(baseDir, 'stages/S10/stage-result.json');
+  let stageResultPath = path.join(baseDir, `stages/${WEEKLY_STAGE_ID}/stage-result.json`);
+
+  // Prefer existing stage-result files first.
+  for (const stageId of WEEKLY_STAGE_CANDIDATES) {
+    const candidate = path.join(baseDir, `stages/${stageId}/stage-result.json`);
+    if (fs.existsSync(candidate)) {
+      stageResultPath = candidate;
+      return { baseDir, manifestPath, stageResultPath };
+    }
+  }
+
+  // If a legacy/canonical stage dir exists without stage-result.json, reuse it.
+  for (const stageId of WEEKLY_STAGE_CANDIDATES) {
+    const candidateDir = path.join(baseDir, `stages/${stageId}`);
+    if (fs.existsSync(candidateDir)) {
+      stageResultPath = path.join(candidateDir, "stage-result.json");
+      return { baseDir, manifestPath, stageResultPath };
+    }
+  }
 
   return { baseDir, manifestPath, stageResultPath };
 }

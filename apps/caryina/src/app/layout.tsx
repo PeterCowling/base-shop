@@ -24,7 +24,8 @@ export const metadata: Metadata = {
   // i18n-exempt -- CARYINA-101 [ttl=2026-12-31]
   title: "Caryina",
   // i18n-exempt -- CARYINA-102 [ttl=2026-12-31]
-  description: "Caryina storefront V1 framework",
+  description:
+    "Caryina mini bag charms and micro accessories designed in Positano, Italy.",
 };
 
 export default function RootLayout({

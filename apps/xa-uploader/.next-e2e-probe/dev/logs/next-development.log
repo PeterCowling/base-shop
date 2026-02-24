@@ -1,0 +1,27 @@
+[00:00:05.199] Server  LOG     ✓ Ready in 4.2s
+[00:00:08.522] Server  LOG     ○ Compiling / ...
+[00:00:12.625] Server  ERROR   Request timed out after 3000ms
+
+Retrying 1/3...
+[00:00:16.507] Server  INFO    [@acme/tailwind-config] ✅  preset imported (cwd: /Users/petercowling/base-shop/apps/xa-uploader)
+[00:00:16.508] Server  INFO    [@acme/tailwind-config] preset keys ["content","theme","plugins","presets"]
+[00:00:16.508] Server  INFO    [@acme/tailwind-config] has nested {}
+[00:00:31.885] Server  ERROR   ⨯ ../../node_modules/.pnpm/@fast-csv+format@5.0.5/node_modules/@fast-csv/format/build/src/index.js:32:1
+Module not found: Can't resolve 'fs'
+  30 | const util_1 = require("util");
+  31 | const stream_1 = require("stream");
+> 32 | const fs = __importStar(require("fs"));
+     | ^
+  33 | const FormatterOptions_1 = require("./FormatterOptions");
+  34 | const CsvFormatterStream_1 = require("./CsvFormatterStream");
+  35 | __exportStar(require("./types"), exports);
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+../../node_modules/.pnpm/fast-csv@5.0.5/node_modules/fast-csv/build/src/index.js
+../../packages/lib/src/xa/catalogCsvFormat.ts
+../../packages/lib/src/xa/index.ts
+./src/components/catalog/CatalogProductsList.client.tsx
+./src/components/catalog/CatalogConsole.client.tsx
+./src/app/UploaderHome.client.tsx

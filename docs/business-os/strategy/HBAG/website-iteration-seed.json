@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "changedPaths": [
+    "docs/business-os/startup-baselines/HBAG-channels.md",
+    "docs/business-os/startup-baselines/HBAG-offer.md"
+  ],
+  "matchedPaths": [
+    "docs/business-os/startup-baselines/HBAG-channels.md",
+    "docs/business-os/startup-baselines/HBAG-offer.md"
+  ],
+  "seeds": [
+    {
+      "id": "WEBSITE-02-channels-cta",
+      "route": "/[lang]/page",
+      "block": "primary-cta-language",
+      "title": "Refresh CTA language from channels delta",
+      "rationale": "Channel strategy changed; CTA copy path must mirror acquisition intent.",
+      "dependsOn": [
+        "website-content-packet",
+        "site-content.generated.json"
+      ]
+    },
+    {
+      "id": "WEBSITE-02-offer-home-copy",
+      "route": "/[lang]/page",
+      "block": "home-value-proposition",
+      "title": "Refresh homepage offer framing from offer delta",
+      "rationale": "Offer framing changed; homepage hero and trust posture must stay aligned.",
+      "dependsOn": [
+        "website-content-packet",
+        "site-content.generated.json"
+      ]
+    },
+    {
+      "id": "WEBSITE-02-offer-pdp-copy",
+      "route": "/[lang]/product/[slug]/page",
+      "block": "product-proof-copy",
+      "title": "Refresh PDP proof copy from offer delta",
+      "rationale": "Offer trust and risk-reversal changed; PDP proof bullets need sync.",
+      "dependsOn": [
+        "website-content-packet",
+        "site-content.generated.json"
+      ]
+    },
+    {
+      "id": "WEBSITE-02-offer-plp-copy",
+      "route": "/[lang]/shop/page",
+      "block": "collection-intro",
+      "title": "Refresh PLP intro copy from offer delta",
+      "rationale": "Offer promise changed; PLP comparison framing must stay consistent.",
+      "dependsOn": [
+        "website-content-packet",
+        "site-content.generated.json"
+      ]
+    }
+  ],
+  "noop": false
+}

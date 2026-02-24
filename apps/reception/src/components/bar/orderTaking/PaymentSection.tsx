@@ -2,7 +2,7 @@
 
 import React, { type FC, useCallback, useMemo } from "react";
 
-import { ReceptionInput as Input } from "@acme/ui/operations";
+import { Input } from "@acme/design-system";
 
 import { useBleepersData } from "../../../hooks/data/bar/useBleepersData";
 
@@ -39,7 +39,7 @@ const PaymentSection: FC<PaymentSectionProps> = React.memo(
 
     /* ------------------------------ render ------------------------------- */
     return (
-      <section className="space-y-5 border-t border-foreground/10 bg-surface-2/60 p-4 backdrop-blur-md dark:bg-darkSurface dark:text-darkAccentGreen">
+      <section className="space-y-5 border-t border-foreground/10 bg-surface-2/60 p-4 backdrop-blur-md">
         {/* ─────── Bleep input ─────── */}
         <div className="flex flex-col gap-1">
           <label
@@ -50,6 +50,7 @@ const PaymentSection: FC<PaymentSectionProps> = React.memo(
           </label>
 
           <Input
+            compatibilityMode="no-wrapper"
             id="bleepInput"
             type="text"
             inputMode="numeric"
@@ -57,13 +58,13 @@ const PaymentSection: FC<PaymentSectionProps> = React.memo(
             value={displayNumber}
             onChange={handleChange}
             placeholder='Leave blank for "go"'
-            className="w-full rounded-md border border-border-2 bg-surface/60 py-2 px-3 text-sm shadow-inner focus:border-primary-main focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main/40 dark:bg-darkBg dark:text-darkAccentGreen"
+            className="w-full min-h-11 rounded-md border border-border-2 bg-surface/60 py-2 px-3 text-sm shadow-inner focus:border-primary-main focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main/40"
           />
         </div>
 
         {/* ─────── Total ─────── */}
         <p
-          className="text-end text-2xl font-extrabold tracking-tight text-foreground tabular-nums dark:text-darkAccentGreen"
+          className="text-end text-2xl font-extrabold tracking-tight text-foreground tabular-nums"
           aria-live="polite"
         >
           Total:&nbsp;{totalPrice.toFixed(2)}&nbsp;€

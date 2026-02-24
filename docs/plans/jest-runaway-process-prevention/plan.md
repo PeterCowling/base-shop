@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-21
-Last-reviewed: 2026-02-21
-Last-updated: 2026-02-21
+Last-reviewed: 2026-02-23
+Last-updated: 2026-02-23
 Relates-to charter: none
 Feature-Slug: jest-runaway-process-prevention
 Deliverable-Type: code-change
@@ -30,9 +30,9 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
 - [x] TASK-01: Investigate PGID behavior and pkill -P reliability on macOS
 - [x] TASK-02: Add forceExit + detectOpenHandles to jest config and runner-shaping
 - [x] TASK-03: Add admission polling timeout to governed runner
-- [ ] TASK-04: Add wall-clock timeout to governed runner
-- [ ] TASK-05: Add child-process kill + SIGKILL escalation to cleanup
-- [ ] TASK-06: Update AGENTS.md and testing-policy.md
+- [x] TASK-04: Add wall-clock timeout to governed runner
+- [x] TASK-05: Add child-process kill + SIGKILL escalation to cleanup
+- [x] TASK-06: Update AGENTS.md and testing-policy.md
 
 ## Goals
 - Prevent jest processes from running longer than a configurable wall-clock timeout (default 600s)
@@ -52,7 +52,7 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
 - Constraints:
   - Backward-compatible with existing `test:governed` invocations
   - CI fast-path (`CI=true`) must not regress
-  - macOS has no GNU `timeout`; use bash background-wait pattern with PID liveness guard
+  - macOS has no GNU `timeout`; use bash polling + PID liveness guards
   - Telemetry contract must be preserved (additive fields only)
 - Assumptions:
   - 600s default timeout is configurable and sufficient (env var `BASESHOP_TEST_TIMEOUT_SEC`)
@@ -86,9 +86,9 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
 | TASK-01 | INVESTIGATE | Verify PGID behavior + pkill -P reliability | 85% | S | Complete | - | TASK-05 |
 | TASK-02 | IMPLEMENT | forceExit + detectOpenHandles in jest config + runner-shaping + baselines | 80% | S | Complete | - | TASK-06 |
 | TASK-03 | IMPLEMENT | Admission polling timeout in governed runner | 82% | S | Complete | - | TASK-06 |
-| TASK-04 | IMPLEMENT | Wall-clock timeout in governed runner + telemetry | 80% | M | Pending | TASK-03 | TASK-05, TASK-06 |
-| TASK-05 | IMPLEMENT | Child-process kill + SIGKILL escalation + telemetry | 85% | M | Pending | TASK-01, TASK-04 | TASK-06 |
-| TASK-06 | IMPLEMENT | Update AGENTS.md + testing-policy.md | 85% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05 | - |
+| TASK-04 | IMPLEMENT | Wall-clock timeout in governed runner + telemetry | 80% | M | Complete (2026-02-23) | TASK-03 | TASK-05, TASK-06 |
+| TASK-05 | IMPLEMENT | Child-process kill + SIGKILL escalation + telemetry | 85% | M | Complete (2026-02-23) | TASK-01, TASK-04 | TASK-06 |
+| TASK-06 | IMPLEMENT | Update AGENTS.md + testing-policy.md | 85% | S | Complete (2026-02-23) | TASK-02, TASK-03, TASK-04, TASK-05 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -249,7 +249,7 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `scripts/tests/run-governed-test.sh` (lines 312-358), `scripts/tests/telemetry-log.sh`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-05, TASK-06
@@ -329,6 +329,12 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
 - **Notes / references:**
   - GNU timeout uses exit 124 for timeout kills
   - macOS lacks `timeout` command; bash background-wait is the portable alternative
+- **Build completion (2026-02-23):**
+  - Replaced bare `wait "$command_pid"` flow with timeout-aware poll loop keyed by `BASESHOP_TEST_TIMEOUT_SEC` (default `600`, `0` disables).
+  - Timeout path now emits deterministic stderr signal (`Governed test timeout after ...`) and forces exit code `124`.
+  - Added telemetry propagation for timeout events (`timeout_killed`) in governed runner and telemetry writer.
+  - Validation:
+    - `pnpm --filter scripts test -- __tests__/test-governed-runner.test.ts` (PASS; TASK-04 timeout scenario covered)
 
 ### TASK-05: Add child-process kill + SIGKILL escalation to cleanup
 - **Type:** IMPLEMENT
@@ -337,7 +343,7 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `scripts/tests/run-governed-test.sh` (lines 225-248 cleanup function), `scripts/tests/telemetry-log.sh`
 - **Depends on:** TASK-01, TASK-04
 - **Blocks:** TASK-06
@@ -404,6 +410,16 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
 - **Notes / references:**
   - `pkill -P $pid` kills all processes whose parent PID is `$pid`
   - `pkill -KILL -P $pid` sends SIGKILL to children
+- **Build completion (2026-02-23):**
+  - Added reusable process-tree termination helper in governed runner:
+    - TERM children + parent first (`pkill -TERM -P`, `kill -TERM`)
+    - 5-second grace period
+    - Escalation to KILL when still alive (`pkill -KILL -P`, `kill -KILL`)
+  - Cleanup now uses process-tree termination instead of parent-only kill, preventing orphaned workers.
+  - Added telemetry field `kill_escalation` (`none|sigterm|sigkill`) end-to-end (`run-governed-test.sh` + `telemetry-log.sh`).
+  - Validation:
+    - `pnpm --filter scripts test -- __tests__/test-governed-runner.test.ts` (PASS; forced escalation + child cleanup scenario covered)
+    - `pnpm --filter scripts test -- __tests__/guarded-shell-hooks.test.ts` (PASS; telemetry schema contract updated)
 
 ### TASK-06: Update AGENTS.md and testing-policy.md
 - **Type:** IMPLEMENT
@@ -412,7 +428,7 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-23)
 - **Affects:** `AGENTS.md`, `docs/testing-policy.md`
 - **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05
 - **Blocks:** -
@@ -446,6 +462,15 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
   - Self-documenting task
 - **Notes / references:**
   - Existing AGENTS.md testing guidance at lines 93-98
+- **Build completion (2026-02-23):**
+  - Updated `AGENTS.md` testing rules with governed timeout defaults, escalation semantics, telemetry fields, and global Jest defaults (`forceExit`, `detectOpenHandles`).
+  - Updated `docs/testing-policy.md` with governed runaway-process safeguards:
+    - wall-clock timeout
+    - admission timeout
+    - child-process termination + SIGKILL escalation
+    - timeout exit code `124`
+    - telemetry fields (`timeout_killed`, `kill_escalation`)
+  - Cross-checked docs for consistency with implemented runner behavior.
 
 ## Risks & Mitigations
 | Risk | Likelihood | Impact | Mitigation |
@@ -454,7 +479,7 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
 | `forceExit` changes CI behavior | Medium | Medium | CI has `timeout-minutes`; forceExit prevents CI hangs too. Accept globally. |
 | 10-min timeout too short for some suites | Low | Medium | Configurable via `BASESHOP_TEST_TIMEOUT_SEC`; 600s matches CI unit test cap |
 | Process group kill self-destructs runner | Medium | High | Use `pkill -P` (kill by parent PID), not `kill -- -$pgid`. TASK-01 verifies. |
-| PID reuse race in timeout watchdog | Low | Low | `kill -0` liveness check before kill; microsecond window |
+| PID reuse race during timeout/termination checks | Low | Low | `kill -0` liveness checks before TERM/KILL; residual window is microsecond-scale |
 | Pipe interaction (external to governor) | Medium | Medium | Governor's `wait` is on direct PID (confirmed line 323 waits on line 313's backgrounded PID). External pipe is Claude's shell concern, not governor's. |
 
 ## Observability
@@ -463,12 +488,12 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
 - Alerts/Dashboards: Monitor `timeout_killed: true` events over 2 weeks post-deploy
 
 ## Acceptance Criteria (overall)
-- [ ] No jest process hangs longer than `BASESHOP_TEST_TIMEOUT_SEC` (default 600s) under governed runner
-- [ ] No orphaned jest-worker processes after governed runner cleanup
-- [ ] `forceExit` and `detectOpenHandles` active in all jest runs (governed and ungoverned)
-- [ ] Telemetry records timeout and escalation events
-- [ ] Existing tests pass with no regressions
-- [ ] AGENTS.md and testing-policy.md document new behavior
+- [x] No jest process hangs longer than `BASESHOP_TEST_TIMEOUT_SEC` (default 600s) under governed runner
+- [x] No orphaned jest-worker processes after governed runner cleanup
+- [x] `forceExit` and `detectOpenHandles` active in all jest runs (governed and ungoverned)
+- [x] Telemetry records timeout and escalation events
+- [x] Existing tests pass with no regressions
+- [x] AGENTS.md and testing-policy.md document new behavior
 
 ## Decision Log
 - 2026-02-21: Chose `pkill -P` over `kill -- -$pgid` as default tree-kill approach (pending TASK-01 verification). Rationale: avoids PGID self-destruct risk.
@@ -477,6 +502,9 @@ Harden the test governor to prevent jest processes from hanging indefinitely and
 - 2026-02-21: TASK-01 COMPLETE. Confirmed: (1) backgrounded children inherit parent PGID, (2) pkill -P reliably kills children on macOS, (3) setsid unavailable on macOS. pkill -P approach validated. TASK-05 confidence raised 75%→85%.
 - 2026-02-21: TASK-02 COMPLETE. forceExit+detectOpenHandles in preset and runner-shaping. 15 baselines updated. TC-06b added for dedup validation. All 12 governed runner tests pass.
 - 2026-02-21: TASK-03 REPLAN. Telemetry evidence from 1,654 governed events raised Impact confidence 75%→82%. Two 7-hour admission hangs from probe failures confirmed cascade risk (held lock blocks all governed tests). 300s default validated against P95=87s. Overall TASK-03 confidence 75%→82%.
+- 2026-02-23: TASK-04 COMPLETE. Added governed wall-clock timeout enforcement with configurable `BASESHOP_TEST_TIMEOUT_SEC`, deterministic exit code `124`, and timeout telemetry tagging.
+- 2026-02-23: TASK-05 COMPLETE. Replaced parent-only cleanup with process-tree TERM/KILL escalation and added telemetry field `kill_escalation`.
+- 2026-02-23: TASK-06 COMPLETE. Updated `AGENTS.md` and `docs/testing-policy.md` with timeout, escalation, and telemetry contracts for governed runs.
 
 ## Overall-confidence Calculation
 - TASK-01: 85% * S(1) = 85

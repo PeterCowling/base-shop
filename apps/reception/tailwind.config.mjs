@@ -65,6 +65,7 @@ const receptionMaxHeights = {
 
 const receptionFontSizes = {
   "0_65rem": "0.65rem",
+  "ops-micro": ["0.625rem", { lineHeight: "0.875rem" }],
   "10px": "10px",
   "11px": "11px",
   "13px": "13px",

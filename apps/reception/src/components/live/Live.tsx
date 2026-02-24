@@ -5,6 +5,7 @@ import { memo } from "react";
 import { TillDataProvider } from "../../context/TillDataContext";
 import { useTillReconciliationUI } from "../../hooks/client/till/useTillReconciliationUI";
 import { useTillReconciliationLogic } from "../../hooks/useTillReconciliationLogic";
+import { PageShell } from "../common/PageShell";
 import SummaryAndTransactions from "../till/SummaryAndTransactions";
 
 function LiveInner() {
@@ -21,11 +22,8 @@ function LiveInner() {
   }
 
   return (
-    <div className="min-h-80vh p-4 bg-surface-2 dark:bg-darkBg dark:text-darkAccentGreen">
-      <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
-        LIVE SHIFT
-      </h1>
-      <div className="bg-surface rounded-lg shadow p-6 space-y-8 dark:bg-darkSurface">
+    <PageShell title="LIVE SHIFT">
+      <div className="bg-surface rounded-lg shadow p-6 space-y-8">
         <SummaryAndTransactions
           shiftOpenTime={props.shiftOpenTime}
           shiftOwner={props.shiftOwner}
@@ -49,7 +47,7 @@ function LiveInner() {
           handleRowClickForEdit={props.handleRowClickForEdit}
         />
       </div>
-    </div>
+    </PageShell>
   );
 }
 

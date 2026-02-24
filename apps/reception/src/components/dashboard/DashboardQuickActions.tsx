@@ -68,8 +68,8 @@ export function DashboardQuickActions() {
   ]
 
   return (
-    <div className="bg-surface dark:bg-darkSurface rounded-lg p-3 shadow">
-      <h2 className="text-lg font-semibold mb-2 text-foreground dark:text-darkAccentGreen">
+    <div className="bg-surface rounded-lg p-3 shadow">
+      <h2 className="text-lg font-semibold mb-2 text-foreground">
         Quick Actions
       </h2>
       <QuickActionBar actions={actions} size="md" />

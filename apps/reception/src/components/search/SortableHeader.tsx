@@ -1,12 +1,12 @@
 // /src/components/bookingSearch/SortableHeader.tsx
 import React from "react";
 import {
-  ChevronDownIcon,
-  ChevronUpDownIcon,
-  ChevronUpIcon,
-} from "@heroicons/react/24/solid";
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronUp,
+} from "lucide-react";
 
-import { ReceptionTableHead as TableHead } from "@acme/ui/operations";
+import { TableHead } from "@acme/design-system";
 
 import clsx from "../../utils/clsx";
 
@@ -35,8 +35,8 @@ const SortableHeader: React.FC<SortableHeaderProps> = ({
 }) => {
   /** Which icon should appear */
   const Icon = React.useMemo(() => {
-    if (currentField !== field) return ChevronUpDownIcon;
-    return ascending ? ChevronUpIcon : ChevronDownIcon;
+    if (currentField !== field) return ChevronsUpDown;
+    return ascending ? ChevronUp : ChevronDown;
   }, [currentField, field, ascending]);
 
   return (
@@ -45,7 +45,7 @@ const SortableHeader: React.FC<SortableHeaderProps> = ({
       onClick={() => onSort(field)}
       className={clsx(
         "select-none whitespace-nowrap px-3 py-2 font-semibold text-sm text-foreground " +
-          "border-b border-border cursor-pointer transition-colors hover:text-primary-600 dark:border-darkSurface dark:text-darkAccentGreen",
+          "border-b border-border cursor-pointer transition-colors hover:text-primary-main",
         className
       )}
     >

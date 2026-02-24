@@ -1,7 +1,7 @@
 Type: Policy
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-13
+Last-reviewed: 2026-02-23
 Created: 2026-01-17
 Created-by: Claude Opus 4.5 (extracted from AGENTS.md)
 
@@ -233,6 +233,21 @@ The repository now includes `scripts/tests/test-lock.sh` as the scheduler primit
 
 Use this with `scripts/tests/run-governed-test.sh` (`pnpm run test:governed`) as the canonical entrypoint for local test execution.
 
+Runaway-process safeguards in the governed runner:
+
+- Wall-clock timeout: `BASESHOP_TEST_TIMEOUT_SEC` (default `600`, `0` disables timeout).
+- Admission timeout: `BASESHOP_TEST_ADMISSION_TIMEOUT_SEC` (default `300`, `0` disables timeout).
+- Cleanup behavior: runner terminates child processes first (`pkill -P <pid>`) and parent with `SIGTERM`, waits 5 seconds, then escalates to `SIGKILL` if still alive.
+- Timeout exit contract: when wall-clock timeout fires, runner exits with code `124`.
+- Telemetry fields:
+  - `timeout_killed` (`true|false`)
+  - `kill_escalation` (`none|sigterm|sigkill`)
+
+Jest defaults:
+
+- Shared Jest preset now enforces `forceExit: true` and `detectOpenHandles: true`.
+- Governed `jest`/`changed` intents inject `--forceExit` when absent.
+
 ### Resource Admission Defaults (TEG-08)
 
 Governed local runs apply admission before execution (unless `CI=true` compatibility mode is active):
@@ -427,17 +442,19 @@ pnpm --filter <package> test -- --maxWorkers=2
 ## Automated Validation
 
 Use `scripts/validate-changes.sh` to automatically:
-1. Check for orphaned Jest processes
-2. Run typecheck and lint
-3. Find and run only tests related to changed files
-4. Warn (or fail with `STRICT=1`) on missing test coverage
+1. Run policy checks, typecheck, and lint for the changed scope
+2. Run guide/contract validators wired into the gate
+3. Skip targeted local tests by default (CI/merge-gate is the required test gate)
 
 ```bash
-# Normal mode (warn on missing tests)
+# Default local gate (no targeted test execution)
 ./scripts/validate-changes.sh
 
-# Strict mode (fail on missing tests)
-STRICT=1 ./scripts/validate-changes.sh
+# Optional: include targeted local tests
+VALIDATE_INCLUDE_TESTS=1 ./scripts/validate-changes.sh
+
+# Optional strict mode for local targeted tests (fail on missing test mapping)
+STRICT=1 VALIDATE_INCLUDE_TESTS=1 ./scripts/validate-changes.sh
 ```
 
 See the script for full details and options.

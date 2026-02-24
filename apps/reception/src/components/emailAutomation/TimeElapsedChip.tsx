@@ -45,7 +45,7 @@ const TimeElapsedChip: FC<TimeElapsedChipProps> = ({
 
   return (
     <span
-      className={`inline-flex w-100px items-center justify-center px-4 py-2 text-sm rounded font-semibold ${chipColorClasses} dark:bg-darkSurface dark:text-darkAccentGreen`}
+      className={`inline-flex w-100px items-center justify-center px-4 py-2 text-sm rounded font-semibold ${chipColorClasses}`}
     >
       {displayHours}h
     </span>

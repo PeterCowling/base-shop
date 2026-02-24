@@ -17,6 +17,7 @@ import {
   type GrowthPeriod,
   type WeeklyGrowthMetrics,
 } from "./growth-metrics-adapter";
+import { WEEKLY_STAGE_ID } from "./stage-id-compat";
 
 export interface S10GrowthAccountingOptions extends GrowthMetricsAdapterOptions {
   dataRoot?: string;
@@ -41,7 +42,7 @@ export interface GrowthAccountingEventPayload {
   schema_version: 1;
   event: "stage_completed";
   run_id: string;
-  stage: "S10";
+  stage: string;
   timestamp: string;
   loop_spec_version: string;
   artifacts: Record<string, string>;
@@ -258,7 +259,7 @@ export async function runS10GrowthAccounting(
     schema_version: 1,
     event: "stage_completed",
     run_id: runId,
-    stage: "S10",
+    stage: WEEKLY_STAGE_ID,
     timestamp,
     loop_spec_version: options.loopSpecVersion ?? "1.0.0",
     artifacts: {

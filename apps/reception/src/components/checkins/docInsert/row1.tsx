@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 
-import { ReceptionInput, ReceptionSelect } from "@acme/ui/operations";
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
 
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
@@ -178,8 +178,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
    * Handle changes to gender
    */
   const handleChangeGender = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      const value = e.target.value;
+    (value: string) => {
       setLocalOccupant((prev) => ({
         ...prev,
         gender: value,
@@ -202,18 +201,18 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
 
   return (
     <>
-      <div className="flex flex-wrap gap-12 mt-100px mb-75px dark:text-darkAccentGreen">
+      <div className="flex flex-wrap gap-12 mt-100px mb-75px">
         {/* First Name */}
         <div className="flex flex-col w-300px">
           <label
             htmlFor="firstName"
-            className="block mb-1 font-semibold text-info-dark dark:text-darkAccentGreen"
+            className="block mb-1 font-semibold text-info-dark"
           >
             First Name
           </label>
-          <ReceptionInput
+          <Input compatibilityMode="no-wrapper"
             id="firstName"
-            className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
+            className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
               isFirstNamePlaceholder
                 ? "bg-warning-light/50"
                 : isFirstNamePopulated
@@ -230,13 +229,13 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
         <div className="flex flex-col w-300px">
           <label
             htmlFor="lastName"
-            className="block mb-1 font-semibold text-info-dark dark:text-darkAccentGreen"
+            className="block mb-1 font-semibold text-info-dark"
           >
             Last Name
           </label>
-          <ReceptionInput
+          <Input compatibilityMode="no-wrapper"
             id="lastName"
-            className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
+            className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
               isLastNamePlaceholder
                 ? "bg-warning-light/50"
                 : isLastNamePopulated
@@ -253,23 +252,37 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
         <div className="flex flex-col w-300px">
           <label
             htmlFor="gender"
-            className="block mb-1 font-semibold text-info-dark dark:text-darkAccentGreen"
+            className="block mb-1 font-semibold text-info-dark"
           >
             Gender
           </label>
-          <ReceptionSelect
-            id="gender"
-            className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
-              isGenderPopulated ? "bg-success-light/50" : ""
-            }`}
-            value={localOccupant.gender ?? ""}
-            onChange={handleChangeGender}
-            onBlur={() => handleBlur("gender")}
+          <Select
+            value={localOccupant.gender || undefined}
+            onValueChange={(value) => {
+              handleChangeGender(value);
+              const remoteValue = occupantDetails.gender ?? "";
+              if (value !== remoteValue) {
+                void saveField("gender", value).then(() => {
+                  setSnackbar({ open: true, message: "gender updated successfully!", severity: "success" });
+                }).catch((err) => {
+                  showError(`Failed to update gender: ${err instanceof Error ? err.message : "unknown error"}`);
+                });
+              }
+            }}
           >
-            <option value="">(select one)</option>
-            <option value="F">F</option>
-            <option value="M">M</option>
-          </ReceptionSelect>
+            <SelectTrigger
+              id="gender"
+              className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
+                isGenderPopulated ? "bg-success-light/50" : ""
+              }`}
+            >
+              <SelectValue placeholder="(select one)" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="F">F</SelectItem>
+              <SelectItem value="M">M</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </>

@@ -1,6 +1,7 @@
 import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
-import { ReceptionButton as Button, ReceptionInput } from "@acme/ui/operations";
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
 
 import { useAuth } from "../../context/AuthContext";
 import { withModalBackground } from "../../hoc/withModalBackground";
@@ -57,16 +58,17 @@ function PasswordReauthModalBase({
 
   return (
     <ModalContainer widthClasses="w-80">
-      <h2 className="mb-4 text-center text-xl font-semibold dark:text-darkAccentGreen">
+      <h2 className="mb-4 text-center text-xl font-semibold">
         {title}
       </h2>
       {instructions && (
-        <p className="mb-4 text-center text-sm text-foreground dark:text-darkAccentGreen">
+        <p className="mb-4 text-center text-sm text-foreground">
           {instructions}
         </p>
       )}
       <form onSubmit={handleSubmit} className="mt-4 flex flex-col items-center gap-3">
-        <ReceptionInput
+        <Input
+          compatibilityMode="no-wrapper"
           ref={inputRef}
           type="password"
           autoComplete="current-password"
@@ -74,7 +76,7 @@ function PasswordReauthModalBase({
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           disabled={isSubmitting}
-          className="w-full rounded-lg border border-border-2 px-4 py-2 text-center focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 disabled:opacity-50 dark:border-darkBorder dark:bg-darkSurface dark:text-darkAccentGreen"
+          className="w-full rounded-lg border border-border-2 px-4 py-2 text-center disabled:opacity-50"
         />
         {error && (
           <div className="text-sm text-error-main" role="alert">
@@ -86,7 +88,9 @@ function PasswordReauthModalBase({
             <Button
               type="button"
               onClick={onCancel}
-              className="min-h-11 min-w-11 rounded bg-surface-3 px-4 py-2 text-foreground dark:bg-darkSurface dark:text-darkAccentOrange"
+              color="default"
+              tone="soft"
+              className="min-h-11 min-w-11"
             >
               Cancel
             </Button>
@@ -94,7 +98,9 @@ function PasswordReauthModalBase({
           <Button
             type="submit"
             disabled={!password.trim() || isSubmitting}
-            className="min-h-11 min-w-11 rounded bg-primary-main px-4 py-2 text-primary-fg disabled:opacity-50 dark:bg-darkAccentGreen"
+            color="primary"
+            tone="solid"
+            className="min-h-11 min-w-11"
           >
             {isSubmitting ? "Verifying..." : "Confirm"}
           </Button>

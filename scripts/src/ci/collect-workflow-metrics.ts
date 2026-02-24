@@ -1,5 +1,7 @@
 import { execFileSync } from "node:child_process";
 
+import { mean as libMean, percentile as libPercentile } from "@acme/lib";
+
 type WorkflowConclusion = string | null;
 
 export type WorkflowRunRecord = {
@@ -92,13 +94,9 @@ function calculateDurationMinutes(
 
 function percentile(values: number[], point: number): number | null {
   if (values.length === 0) return null;
-  const sorted = [...values].sort((a, b) => a - b);
-  const index = (sorted.length - 1) * point;
-  const lower = Math.floor(index);
-  const upper = Math.ceil(index);
-  if (lower === upper) return sorted[lower];
-  const weight = index - lower;
-  return sorted[lower] * (1 - weight) + sorted[upper] * weight;
+
+  const result = libPercentile(values, point * 100);
+  return Number.isNaN(result) ? null : result;
 }
 
 function summarizeDurations(values: number[]): DurationStats {
@@ -111,12 +109,12 @@ function summarizeDurations(values: number[]): DurationStats {
     };
   }
 
-  const total = values.reduce((sum, value) => sum + value, 0);
+  const avg = libMean(values);
   return {
     count: values.length,
     p50: percentile(values, 0.5),
     p90: percentile(values, 0.9),
-    avg: total / values.length,
+    avg: Number.isNaN(avg) ? null : avg,
   };
 }
 

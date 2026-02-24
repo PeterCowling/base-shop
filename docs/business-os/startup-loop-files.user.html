@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Startup Loop: Your File Guide</title>
+  <style>
+    :root {
+      --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+      --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+      --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+      --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+
+      /* Semantic role colours */
+      --agent-bg: #e8f4ee;     --agent-border: #2d6a4f;    --agent-text: #1a3d2b;
+      --operator-bg: #fef3c7;  --operator-border: #92400e;  --operator-text: #4a1f05;
+      --standing-bg: #ede9fe;  --standing-border: #5b21b6;  --standing-text: #2e1065;
+      --dated-bg: #e0f2fe;     --dated-border: #0369a1;     --dated-text: #0c4a6e;
+      --infra-bg: #f1f5f9;     --infra-border: #64748b;     --infra-text: #1e293b;
+    }
+    @media(prefers-color-scheme:dark){:root{
+      --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+      --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+      --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+      --code-bg:#2e2c2a;--code-border:#3d3a37;
+
+      --agent-bg: #1e3d30;     --agent-border: #52b788;    --agent-text: #a7f3d0;
+      --operator-bg: #27201a;  --operator-border: #fbbf24;  --operator-text: #fde68a;
+      --standing-bg: #2d1f5c;  --standing-border: #a78bfa;  --standing-text: #ddd6fe;
+      --dated-bg: #0c2a3e;     --dated-border: #38bdf8;     --dated-text: #bae6fd;
+      --infra-bg: #1e2530;     --infra-border: #94a3b8;     --infra-text: #e2e8f0;
+    }}
+
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    main { max-width:1100px; margin:0 auto; padding:2.5rem 1.5rem 5rem; }
+
+    h1 { font-size:2rem; font-weight:800; margin:0 0 0.4rem; }
+    .lead { font-size:1.05rem; color:var(--text-muted); margin:0 0 2.5rem; line-height:1.7; }
+    h2 { font-size:1.25rem; font-weight:700; margin:2.5rem 0 0.6rem; }
+    h3 { font-size:0.95rem; font-weight:700; margin:0 0 0.3rem; letter-spacing:0.01em; }
+    p  { line-height:1.65; margin:0 0 0.6rem; font-size:0.9rem; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size:0.8em; background:var(--code-bg); border:1px solid var(--code-border);
+      border-radius:3px; padding:0.12em 0.3em;
+    }
+    hr { border:none; border-top:1px solid var(--border); margin:2.5rem 0; }
+
+    /* ── Legend pill ── */
+    .legend { display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:2rem; }
+    .pill {
+      display:inline-flex; align-items:center; gap:0.35rem;
+      padding:0.3rem 0.7rem; border-radius:999px; font-size:0.78rem; font-weight:600;
+      border:1px solid;
+    }
+    .pill-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .pill.agent    { background:var(--agent-bg);    border-color:var(--agent-border);    color:var(--agent-text); }
+    .pill.operator { background:var(--operator-bg); border-color:var(--operator-border); color:var(--operator-text); }
+    .pill.standing { background:var(--standing-bg); border-color:var(--standing-border); color:var(--standing-text); }
+    .pill.dated    { background:var(--dated-bg);    border-color:var(--dated-border);    color:var(--dated-text); }
+
+    /* ── Flow diagram ── */
+    .flow {
+      display:grid;
+      grid-template-columns: repeat(4, 1fr) 0.6fr repeat(4, 1fr);
+      align-items:center;
+      gap:0;
+      margin:1.5rem 0 2rem;
+      overflow-x:auto;
+    }
+    .flow-step {
+      background:var(--surface); border:1.5px solid var(--border);
+      border-radius:var(--radius-lg); padding:0.8rem 0.7rem;
+      text-align:center; font-size:0.78rem; font-weight:600; color:var(--text);
+      min-width:90px;
+    }
+    .flow-step .step-label { font-size:0.67rem; font-weight:500; color:var(--text-muted); margin-bottom:0.25rem; }
+    .flow-step .step-file  { font-family: ui-monospace, monospace; font-size:0.72rem; color:var(--accent); margin-top:0.25rem; }
+    .flow-arrow { text-align:center; font-size:1.1rem; color:var(--text-muted); padding:0 0.15rem; }
+    .flow-step.agent-step    { border-color:var(--agent-border);    background:var(--agent-bg); }
+    .flow-step.operator-step { border-color:var(--operator-border); background:var(--operator-bg); }
+    .flow-gate {
+      grid-column: span 1; display:flex; align-items:center; justify-content:center;
+      position:relative;
+    }
+    .gate-badge {
+      background:var(--operator-border); color:#fff;
+      font-size:0.62rem; font-weight:700; letter-spacing:0.06em;
+      padding:0.18rem 0.45rem; border-radius:999px; white-space:nowrap;
+    }
+
+    /* ── Grid of file cards ── */
+    .card-grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap:1rem;
+      margin-bottom:1.5rem;
+    }
+    .file-card {
+      border:1.5px solid var(--border); border-radius:var(--radius-lg);
+      background:var(--surface); padding:1rem 1.1rem; position:relative;
+      display:flex; flex-direction:column; gap:0.4rem;
+    }
+    .file-card.agent    { border-color:var(--agent-border);    background:var(--agent-bg); }
+    .file-card.operator { border-color:var(--operator-border); background:var(--operator-bg); }
+    .file-card.standing { border-color:var(--standing-border); background:var(--standing-bg); }
+    .file-card.dated    { border-color:var(--dated-border);    background:var(--dated-bg); }
+
+    .card-tag {
+      font-size:0.63rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+      padding:0.2rem 0.5rem; border-radius:3px; display:inline-block; width:fit-content;
+    }
+    .file-card.agent    .card-tag { background:var(--agent-border);    color:#fff; }
+    .file-card.operator .card-tag { background:var(--operator-border);  color:#fff; }
+    .file-card.standing .card-tag { background:var(--standing-border);  color:#fff; }
+    .file-card.dated    .card-tag { background:var(--dated-border);     color:#fff; }
+
+    .card-filename {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size:0.82rem; font-weight:600; color:var(--text); word-break:break-all;
+      background:rgba(0,0,0,0.05); border-radius:4px; padding:0.25rem 0.4rem;
+    }
+    @media(prefers-color-scheme:dark){
+      .card-filename { background:rgba(255,255,255,0.08); }
+    }
+    .card-desc { font-size:0.845rem; line-height:1.55; color:var(--text); }
+    .card-when { font-size:0.77rem; color:var(--text-muted); }
+    .card-gate {
+      font-size:0.75rem; font-weight:600; padding:0.2rem 0.5rem;
+      background:var(--operator-border); color:#fff; border-radius:3px;
+      display:inline-block; width:fit-content;
+    }
+    .card-detail { font-size:0.8rem; color:var(--text-muted); }
+    ul.card-list { margin:0; padding-left:1.1rem; }
+    ul.card-list li { font-size:0.82rem; line-height:1.5; margin-bottom:0.2rem; }
+
+    /* ── Naming conventions block ── */
+    .naming-grid {
+      display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap:0.8rem; margin:1rem 0;
+    }
+    .naming-card {
+      border:1px solid var(--border); border-radius:var(--radius);
+      background:var(--surface); padding:0.75rem 0.9rem;
+    }
+    .naming-pattern { font-family:monospace; font-size:0.85rem; font-weight:700; color:var(--accent); }
+    .naming-desc { font-size:0.8rem; color:var(--text-muted); margin-top:0.25rem; }
+
+    /* ── Quick reference table ── */
+    table { width:100%; border-collapse:collapse; font-size:0.83rem; margin:0.8rem 0; }
+    thead tr { background:var(--surface); }
+    th { text-align:left; padding:0.55rem 0.75rem; font-weight:700; border-bottom:2px solid var(--border); }
+    td { padding:0.5rem 0.75rem; border-bottom:1px solid var(--border); vertical-align:top; }
+    tr:last-child td { border-bottom:none; }
+    .badge {
+      display:inline-block; font-size:0.7rem; font-weight:700; letter-spacing:0.06em;
+      padding:0.15rem 0.4rem; border-radius:3px;
+    }
+    .badge-agent    { background:var(--agent-bg);    color:var(--agent-text);    border:1px solid var(--agent-border); }
+    .badge-operator { background:var(--operator-bg); color:var(--operator-text); border:1px solid var(--operator-border); }
+    .badge-standing { background:var(--standing-bg); color:var(--standing-text); border:1px solid var(--standing-border); }
+    .badge-dated    { background:var(--dated-bg);    color:var(--dated-text);    border:1px solid var(--dated-border); }
+
+    /* ── Callout ── */
+    .callout {
+      border:1.5px solid var(--operator-border); border-radius:var(--radius-lg);
+      background:var(--operator-bg); padding:1rem 1.2rem;
+      font-size:0.88rem; color:var(--operator-text); line-height:1.6;
+      margin:1.5rem 0;
+    }
+    .callout strong { color:var(--operator-text); }
+
+    /* ── Two-col layout ── */
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; }
+    @media(max-width:640px){ .two-col { grid-template-columns:1fr; } .flow { grid-template-columns:1fr; } .flow-arrow { transform:rotate(90deg); } }
+
+    .section-intro { font-size:0.9rem; color:var(--text-muted); margin:0 0 1rem; line-height:1.65; }
+
+    .divider-label {
+      font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+      color:var(--text-muted); margin:2rem 0 0.75rem;
+      display:flex; align-items:center; gap:0.6rem;
+    }
+    .divider-label::after { content:''; flex:1; border-top:1px solid var(--border); }
+  </style>
+</head>
+<body>
+<main>
+
+  <h1>Your Startup Loop File Guide</h1>
+  <p class="lead">
+    Every run through the startup loop creates, updates, or reads a set of files. This guide tells you what each file is,
+    who writes it, and what you need to do (if anything) when you see one.
+  </p>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <span class="pill agent">
+      <span class="pill-dot" style="background:var(--agent-border)"></span>
+      Agent writes it for you
+    </span>
+    <span class="pill operator">
+      <span class="pill-dot" style="background:var(--operator-border)"></span>
+      You need to write or review it
+    </span>
+    <span class="pill standing">
+      <span class="pill-dot" style="background:var(--standing-border)"></span>
+      Standing strategy file (updated each stage)
+    </span>
+    <span class="pill dated">
+      <span class="pill-dot" style="background:var(--dated-border)"></span>
+      Dated snapshot (new file each run)
+    </span>
+  </div>
+
+  <!-- FLOW DIAGRAM -->
+  <h2>How files flow through the loop</h2>
+  <p class="section-intro">
+    The build loop has four key moments. Files hand off from one to the next — each is the only authoritative input to the step after it.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step agent-step">
+      <div class="step-label">Step 1 · Agent</div>
+      <div>/lp-do-fact-find</div>
+      <div class="step-file">fact-find.md</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step agent-step">
+      <div class="step-label">Step 2 · Agent</div>
+      <div>/lp-do-plan</div>
+      <div class="step-file">plan.md</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step agent-step">
+      <div class="step-label">Step 3 · Agent</div>
+      <div>/lp-do-build</div>
+      <div class="step-file">build-record.user.md</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step operator-step">
+      <div class="step-label">Step 4 · You</div>
+      <div>Observe &amp; reflect</div>
+      <div class="step-file">results-review.user.md</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="border-color:var(--standing-border);background:var(--standing-bg);">
+      <div class="step-label">Layer A refreshed</div>
+      <div>Standing strategy files updated</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="border-color:var(--border);">
+      <div class="step-label">Archive</div>
+      <div>plan moved to _archive/</div>
+    </div>
+  </div>
+
+
+
+  <!-- PART 1: FEATURE BUILD LOOP FILES -->
+  <hr>
+  <h2>Part 1 — Feature build loop files</h2>
+  <p class="section-intro">
+    These live under <code>docs/plans/&lt;feature-slug&gt;/</code>. A new folder is created for every feature you work on.
+    The folder travels with the feature from fact-find → plan → build → archive.
+  </p>
+
+  <div class="divider-label">Agent produces these automatically</div>
+  <div class="card-grid">
+
+    <div class="file-card agent">
+      <span class="card-tag">Agent writes</span>
+      <div class="card-filename">fact-find.md</div>
+      <p class="card-desc">
+        The investigation brief. The agent reads your codebase, maps out what exists,
+        scores how confident it is about the approach, and flags any unknowns before touching anything.
+      </p>
+      <p class="card-when">Created: at the start of every feature.</p>
+      <div class="card-detail">
+        <strong>Key sections inside:</strong>
+        <ul class="card-list">
+          <li><strong>Scope</strong> — what was investigated, what was not</li>
+          <li><strong>Evidence Audit</strong> — key files found (max 10)</li>
+          <li><strong>Confidence Inputs</strong> — how sure the agent is and why</li>
+          <li><strong>Planning Readiness</strong> — go / no-go call</li>
+          <li><strong>Evidence Gap Review</strong> — what's still unknown</li>
+        </ul>
+      </div>
+      <p class="card-when">Status can be: <code>Ready-for-planning</code> · <code>Needs-input</code> · <code>Infeasible</code></p>
+    </div>
+
+    <div class="file-card agent">
+      <span class="card-tag">Agent writes</span>
+      <div class="card-filename">plan.md</div>
+      <p class="card-desc">
+        The task list with confidence scores. Every task has a type (IMPLEMENT, INVESTIGATE, SPIKE,
+        CHECKPOINT, DECISION), a confidence percentage, and explicit dependencies.
+        Nothing gets built unless it hits the confidence threshold.
+      </p>
+      <p class="card-when">Created: after <code>fact-find.md</code> reaches Ready-for-planning. Updated after each completed task.</p>
+      <div class="card-detail">
+        <strong>Key sections inside:</strong>
+        <ul class="card-list">
+          <li><strong>Tasks</strong> — ordered list; IMPLEMENT needs ≥80% confidence to run</li>
+          <li><strong>Parallelism Guide</strong> — which tasks can run in parallel</li>
+          <li><strong>Validation Contracts</strong> — pass criteria for each task</li>
+          <li><strong>Open Decisions</strong> — anything blocking that needs your input</li>
+        </ul>
+      </div>
+      <p class="card-when">Status: <code>Draft</code> → <code>Active</code> → <code>Archived</code></p>
+    </div>
+
+    <div class="file-card agent">
+      <span class="card-tag">Agent writes</span>
+      <div class="card-filename">replan-notes.md</div>
+      <p class="card-desc">
+        Created when the agent hits uncertainty mid-build and needs to re-evaluate.
+        Tracks how many replan rounds have happened, what evidence was found, and any
+        DECISION questions that need your input. After 3 failed rounds on the same task,
+        the task is declared infeasible and recorded here.
+      </p>
+      <p class="card-when">Created: when /lp-do-replan runs. May not exist if the build went smoothly.</p>
+    </div>
+
+    <div class="file-card agent">
+      <span class="card-tag">Agent writes</span>
+      <div class="card-filename">critique-history.md</div>
+      <p class="card-desc">
+        An audit ledger. Every time /lp-do-critique runs on the fact-find or plan,
+        it appends a round here: what it found, severity ratings, and any autofixes it applied.
+        Useful for seeing how the quality of planning has evolved.
+      </p>
+      <p class="card-when">Created: automatically during fact-find and planning. Appended on each re-run.</p>
+    </div>
+
+    <div class="file-card agent">
+      <span class="card-tag">Agent writes</span>
+      <div class="card-filename">task-XX-&lt;name&gt;.md</div>
+      <p class="card-desc">
+        Deliverable files produced inside a task — for example a brief, a research note,
+        a copy draft, or a shot list. Not every task produces one (code tasks don't),
+        but business-artifact tasks always output here rather than in chat.
+      </p>
+      <p class="card-when">Created: during /lp-do-build when executing a business-artifact task.</p>
+    </div>
+
+    <div class="file-card agent">
+      <span class="card-tag">Agent writes</span>
+      <div class="card-filename">build-record.user.md</div>
+      <p class="card-desc">
+        The completion record. Written the moment all tasks are done and shipped.
+        A factual log of what changed, what tests ran, and what the validation evidence showed.
+        Read this before writing your results review.
+      </p>
+      <p class="card-when">Created: once, at the very end of a successful build. Never overwritten.</p>
+      <div class="card-detail">
+        <strong>Key sections inside:</strong>
+        <ul class="card-list">
+          <li><strong>What Was Built</strong> — one paragraph per task group</li>
+          <li><strong>Tests Run</strong> — pass/fail outcomes</li>
+          <li><strong>Validation Evidence</strong> — proof each contract was met</li>
+          <li><strong>Scope Deviations</strong> — anything that grew beyond the original plan</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="divider-label">You write this one</div>
+  <div class="card-grid">
+
+    <div class="file-card operator">
+      <span class="card-tag">You write</span>
+      <div class="card-filename">results-review.user.md</div>
+      <span class="card-gate">⚠ Required before archive</span>
+      <p class="card-desc">
+        Your observations after the build is live. What actually happened? Did it work?
+        What surprised you? What should be updated in strategy? This file closes the loop —
+        without it, the feature stays open and the archive gate stays locked.
+      </p>
+      <p class="card-when">You write this: after observing real-world results (could be days after the build).</p>
+      <div class="card-detail">
+        <strong>Required sections:</strong>
+        <ul class="card-list">
+          <li><strong>Observed Outcomes</strong> — what actually happened (metrics, feedback, anomalies)</li>
+          <li><strong>Standing Updates</strong> — which strategy files need updating as a result (or explicitly "None")</li>
+          <li><strong>New Idea Candidates</strong> — any new opportunities surfaced (or "None")</li>
+        </ul>
+      </div>
+      <p class="card-when">A Draft with Observed Outcomes filled in is enough to unblock archiving if you confirm it in writing.</p>
+    </div>
+
+  </div>
+
+
+  <!-- PART 2: STANDING STRATEGY FILES -->
+  <hr>
+  <h2>Part 2 — Standing strategy files</h2>
+  <p class="section-intro">
+    These live under <code>docs/business-os/startup-baselines/</code> and
+    <code>docs/business-os/strategy/&lt;BIZ&gt;/</code>. They are the "living memory" for each business.
+    Most are overwritten on each run (not versioned) — they always reflect the latest thinking.
+    Where they're dated, each run creates a new file so you have a history.
+  </p>
+
+  <div class="divider-label">Overwritten on each run — always current</div>
+  <div class="card-grid">
+
+    <div class="file-card standing">
+      <span class="card-tag">Standing · Agent writes</span>
+      <div class="card-filename">&lt;BIZ&gt;-offer.md</div>
+      <p class="card-desc">
+        The offer hypothesis. ICP segmentation, pain/promise mapping, product structure,
+        positioning one-pager, pricing hypothesis, and objection map. The single source
+        of truth for what you're selling and who you're selling it to.
+      </p>
+      <p class="card-when">Produced by: /lp-offer at MARKET-06. Overwritten on each run.</p>
+      <p class="card-when">Path: <code>startup-baselines/&lt;BIZ&gt;-offer.md</code></p>
+    </div>
+
+    <div class="file-card standing">
+      <span class="card-tag">Standing · Agent writes</span>
+      <div class="card-filename">&lt;BIZ&gt;-channels.md</div>
+      <p class="card-desc">
+        Channel strategy. 2–3 selected launch channels with stop conditions, spend limits,
+        quality metrics, and a 30-day GTM timeline. Also lists budget allocation.
+        Consumed by the forecast and SEO steps.
+      </p>
+      <p class="card-when">Produced by: /lp-channels at SELL-01. Overwritten on each run.</p>
+      <p class="card-when">Path: <code>startup-baselines/&lt;BIZ&gt;-channels.md</code></p>
+    </div>
+
+    <div class="file-card standing">
+      <span class="card-tag">Standing · Agent writes</span>
+      <div class="card-filename">&lt;BIZ&gt;-content-packet.md</div>
+      <p class="card-desc">
+        Website content source of truth. SEO focus for launch phase, page intent map,
+        product copy matrix, and copy approval rules. The website builder reads this
+        to know what to say on every page.
+      </p>
+      <p class="card-when">Produced by: the website content factory. Overwritten on each run.</p>
+      <p class="card-when">Path: <code>startup-baselines/&lt;BIZ&gt;-content-packet.md</code></p>
+    </div>
+
+    <div class="file-card standing">
+      <span class="card-tag">Standing · Agent writes</span>
+      <div class="card-filename">market-pack.user.md</div>
+      <p class="card-desc">
+        Aggregate market intelligence. ICP summary, key assumptions, confidence score,
+        evidence sources, and open questions across the MARKET stage. Updated at MARKET-11.
+        Optional input to the S4 join barrier.
+      </p>
+      <p class="card-when">Path: <code>strategy/&lt;BIZ&gt;/market-pack.user.md</code></p>
+    </div>
+
+    <div class="file-card standing">
+      <span class="card-tag">Standing · Agent writes</span>
+      <div class="card-filename">sell-pack.user.md</div>
+      <p class="card-desc">
+        Aggregate sales intelligence. Same structure as market-pack but for the SELL domain.
+        Covers channel performance, conversion data, and positioning evidence gathered
+        across the SELL stage.
+      </p>
+      <p class="card-when">Path: <code>strategy/&lt;BIZ&gt;/sell-pack.user.md</code></p>
+    </div>
+
+    <div class="file-card standing">
+      <span class="card-tag">Standing · Agent writes</span>
+      <div class="card-filename">product-pack.user.md</div>
+      <p class="card-desc">
+        Aggregate product intelligence. What the product is, how it's structured, key assumptions,
+        and evidence across the PRODUCTS stage. Optional input to S4.
+      </p>
+      <p class="card-when">Path: <code>strategy/&lt;BIZ&gt;/product-pack.user.md</code></p>
+    </div>
+
+    <div class="file-card standing">
+      <span class="card-tag">Standing · Agent writes</span>
+      <div class="card-filename">logistics-pack.user.md</div>
+      <p class="card-desc">
+        Aggregate logistics intelligence. Only produced for physical-product or logistics-heavy
+        businesses. All consumers handle its absence safely — if you don't have it, nothing breaks.
+      </p>
+      <p class="card-when">Path: <code>strategy/&lt;BIZ&gt;/logistics-pack.user.md</code></p>
+    </div>
+
+  </div>
+
+  <div class="divider-label">Dated snapshots — new file each run, history preserved</div>
+  <div class="card-grid">
+
+    <div class="file-card dated">
+      <span class="card-tag">Dated · Agent writes</span>
+      <div class="card-filename">YYYY-MM-DD-lp-forecast.user.md</div>
+      <p class="card-desc">
+        90-day P10/P50/P90 scenario bands built from zero operational data.
+        Unit economics (CAC, AOV, margin, CVR), channel-specific ranges, and a
+        first-14-day validation plan. Each run creates a new dated file — old forecasts are preserved.
+      </p>
+      <p class="card-when">Produced by: /lp-forecast at S3.</p>
+      <p class="card-when">Path: <code>startup-baselines/&lt;BIZ&gt;/S3-forecast/YYYY-MM-DD-lp-forecast.user.md</code></p>
+    </div>
+
+    <div class="file-card dated">
+      <span class="card-tag">Dated · Agent writes</span>
+      <div class="card-filename">YYYY-MM-DD-&lt;phase&gt;-&lt;BIZ&gt;.user.md</div>
+      <p class="card-desc">
+        SEO strategy artifacts, one per phase per run. Phases build on each other:
+        keyword-universe → content-clusters → serp-briefs → tech-audit → snippet-optimization.
+        Each run appends a new dated file; you can see how SEO strategy has evolved.
+      </p>
+      <p class="card-when">Produced by: /lp-seo at SELL-01 (companion).</p>
+      <p class="card-when">Path: <code>strategy/&lt;BIZ&gt;/seo/YYYY-MM-DD-&lt;phase&gt;-&lt;BIZ&gt;.user.md</code></p>
+    </div>
+
+    <div class="file-card dated">
+      <span class="card-tag">Dated · Agent writes</span>
+      <div class="card-filename">YYYY-MM-DD-candidate-names.user.md</div>
+      <p class="card-desc">
+        250 scored candidate business names with RDAP availability checks and a ranked shortlist.
+        Produced during ASSESSMENT-04/05. Each naming run creates a new dated file.
+      </p>
+      <p class="card-when">Produced by: /lp-do-assessment-04 → /lp-do-assessment-05 naming pipeline.</p>
+      <p class="card-when">Path: <code>strategy/&lt;BIZ&gt;/YYYY-MM-DD-candidate-names.user.md</code></p>
+    </div>
+
+  </div>
+
+  <div class="divider-label">You fill these in</div>
+  <div class="card-grid">
+
+    <div class="file-card operator">
+      <span class="card-tag">You write</span>
+      <div class="card-filename">&lt;BIZ&gt;-intake-packet.user.md</div>
+      <p class="card-desc">
+        The founding brief for a business entering the loop. You fill this in once at onboarding.
+        It tells the agent what the business is, who it's for, what you know so far, and
+        what constraints apply (budget, geography, time). The agent reads this before every
+        strategy-building run.
+      </p>
+      <p class="card-when">Path: <code>startup-baselines/&lt;BIZ&gt;-intake-packet.user.md</code></p>
+    </div>
+
+    <div class="file-card operator">
+      <span class="card-tag">You write</span>
+      <div class="card-filename">brand-dossier.user.md</div>
+      <p class="card-desc">
+        Visual and verbal brand identity: colour palette, typography, imagery direction,
+        voice and tone, and design token overrides. The agent drafts the first version
+        (ASSESSMENT-11) but you confirm and maintain it. Feeds the design spec and website builder.
+      </p>
+      <p class="card-when">Path: <code>strategy/&lt;BIZ&gt;/brand-dossier.user.md</code></p>
+    </div>
+
+  </div>
+
+
+  <!-- PART 3: NAMING CONVENTIONS -->
+  <hr>
+  <h2>Part 3 — How to read a file name</h2>
+  <p class="section-intro">
+    The file naming system is deliberate. Once you know the patterns, you can tell at a glance
+    who wrote a file, whether it's current, and whether it needs your attention.
+  </p>
+
+  <div class="naming-grid">
+    <div class="naming-card">
+      <div class="naming-pattern">.user.md</div>
+      <div class="naming-desc">
+        Human input required. Either the agent wrote a draft that you must review and confirm,
+        or you wrote the whole thing yourself. The <code>.user.</code> suffix is a signal: this file
+        is not complete without a human decision.
+      </div>
+    </div>
+    <div class="naming-card">
+      <div class="naming-pattern">.md (no .user.)</div>
+      <div class="naming-desc">
+        Fully agent-produced. You don't need to touch it. It's used as authoritative input
+        by the next step in the pipeline. You can read it to understand what happened,
+        but you don't need to edit it.
+      </div>
+    </div>
+    <div class="naming-card">
+      <div class="naming-pattern">YYYY-MM-DD-*.user.md</div>
+      <div class="naming-desc">
+        Dated snapshot. Every run creates a new file with today's date. Old files are preserved
+        — you have a full history. The agent always reads the most recent dated file unless
+        you specify a different date.
+      </div>
+    </div>
+    <div class="naming-card">
+      <div class="naming-pattern">&lt;BIZ&gt;-*.md</div>
+      <div class="naming-desc">
+        Business-scoped flat file. One canonical file per business — overwritten on each run.
+        <code>&lt;BIZ&gt;</code> is a short code: <code>HBAG</code>, <code>HEAD</code>, <code>PET</code>, <code>BRIK</code>, etc.
+        Only the current version matters.
+      </div>
+    </div>
+    <div class="naming-card">
+      <div class="naming-pattern">docs/plans/&lt;slug&gt;/</div>
+      <div class="naming-desc">
+        Feature build workspace. Everything related to one feature lives in one folder.
+        When the feature is done and reviewed, the whole folder is moved to
+        <code>docs/plans/_archive/&lt;slug&gt;/</code>.
+      </div>
+    </div>
+    <div class="naming-card">
+      <div class="naming-pattern">docs/business-os/startup-baselines/</div>
+      <div class="naming-desc">
+        Standing strategy layer (Layer A). The agent's long-term memory about each business.
+        Always current. Updated by standing-information refresh after each results review.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- PART 4: QUICK REFERENCE TABLE -->
+  <hr>
+  <h2>Part 4 — Quick reference</h2>
+  <p class="section-intro">All files at a glance — sorted by where they live.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>File</th>
+        <th>Who writes it</th>
+        <th>When</th>
+        <th>Action needed from you?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>fact-find.md</code></td>
+        <td><span class="badge badge-agent">Agent</span></td>
+        <td>Start of every feature</td>
+        <td>Only if status is <code>Needs-input</code> — answer the blocking questions</td>
+      </tr>
+      <tr>
+        <td><code>plan.md</code></td>
+        <td><span class="badge badge-agent">Agent</span></td>
+        <td>After fact-find completes</td>
+        <td>Resolve any DECISION tasks if the agent surfaces one to you</td>
+      </tr>
+      <tr>
+        <td><code>replan-notes.md</code></td>
+        <td><span class="badge badge-agent">Agent</span></td>
+        <td>During replanning (if needed)</td>
+        <td>Only if a DECISION question is written there for you</td>
+      </tr>
+      <tr>
+        <td><code>critique-history.md</code></td>
+        <td><span class="badge badge-agent">Agent</span></td>
+        <td>During fact-find and planning</td>
+        <td>None — informational log</td>
+      </tr>
+      <tr>
+        <td><code>task-XX-&lt;name&gt;.md</code></td>
+        <td><span class="badge badge-agent">Agent</span></td>
+        <td>During build (business tasks)</td>
+        <td>Review the deliverable before the agent marks it complete</td>
+      </tr>
+      <tr>
+        <td><code>build-record.user.md</code></td>
+        <td><span class="badge badge-agent">Agent</span></td>
+        <td>End of build</td>
+        <td>Read it before writing your results review</td>
+      </tr>
+      <tr style="background:var(--operator-bg)">
+        <td><code>results-review.user.md</code></td>
+        <td><span class="badge badge-operator">You</span></td>
+        <td>After real-world observation</td>
+        <td><strong>Yes — required.</strong> Unlocks archiving. Updates strategy.</td>
+      </tr>
+      <tr>
+        <td><code>&lt;BIZ&gt;-intake-packet.user.md</code></td>
+        <td><span class="badge badge-operator">You</span></td>
+        <td>Once at onboarding</td>
+        <td>Fill in once. Update when the business fundamentally changes.</td>
+      </tr>
+      <tr>
+        <td><code>brand-dossier.user.md</code></td>
+        <td><span class="badge badge-operator">You</span> + <span class="badge badge-agent">Agent draft</span></td>
+        <td>ASSESSMENT-11</td>
+        <td>Confirm agent draft. Maintain over time.</td>
+      </tr>
+      <tr>
+        <td><code>&lt;BIZ&gt;-offer.md</code></td>
+        <td><span class="badge badge-standing">Standing</span></td>
+        <td>MARKET-06 (/lp-offer)</td>
+        <td>None — read it to check current positioning</td>
+      </tr>
+      <tr>
+        <td><code>&lt;BIZ&gt;-channels.md</code></td>
+        <td><span class="badge badge-standing">Standing</span></td>
+        <td>SELL-01 (/lp-channels)</td>
+        <td>None — read it to check current channel strategy</td>
+      </tr>
+      <tr>
+        <td><code>&lt;BIZ&gt;-content-packet.md</code></td>
+        <td><span class="badge badge-standing">Standing</span></td>
+        <td>WEBSITE factory</td>
+        <td>None — used by website builder automatically</td>
+      </tr>
+      <tr>
+        <td><code>market-pack.user.md</code></td>
+        <td><span class="badge badge-standing">Standing</span></td>
+        <td>MARKET-11</td>
+        <td>None — aggregate intelligence summary</td>
+      </tr>
+      <tr>
+        <td><code>sell-pack.user.md</code></td>
+        <td><span class="badge badge-standing">Standing</span></td>
+        <td>SELL-07</td>
+        <td>None — aggregate intelligence summary</td>
+      </tr>
+      <tr>
+        <td><code>product-pack.user.md</code></td>
+        <td><span class="badge badge-standing">Standing</span></td>
+        <td>PRODUCTS-07</td>
+        <td>None — aggregate intelligence summary</td>
+      </tr>
+      <tr>
+        <td><code>logistics-pack.user.md</code></td>
+        <td><span class="badge badge-standing">Standing</span></td>
+        <td>LOGISTICS-07 (if applicable)</td>
+        <td>None — may not exist for non-physical businesses</td>
+      </tr>
+      <tr>
+        <td><code>YYYY-MM-DD-lp-forecast.user.md</code></td>
+        <td><span class="badge badge-dated">Dated</span></td>
+        <td>S3 (/lp-forecast)</td>
+        <td>Review the assumptions; they're the inputs to S4 prioritisation</td>
+      </tr>
+      <tr>
+        <td><code>YYYY-MM-DD-&lt;phase&gt;-&lt;BIZ&gt;.user.md</code></td>
+        <td><span class="badge badge-dated">Dated</span></td>
+        <td>SELL-01 companion (/lp-seo)</td>
+        <td>None — agent uses these to build content; review if you want to check keyword strategy</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <!-- PART 5: THE FEEDBACK LOOP -->
+  <hr>
+  <h2>Part 5 — Why <code>results-review.user.md</code> matters so much</h2>
+  <div class="two-col">
+    <div>
+      <h3>The loop is only closed when you observe outcomes</h3>
+      <p>
+        Every feature passes through four phases. The agent handles the first three automatically.
+        But the fourth — observing what actually happened after deployment — can only be done by you.
+        Real-world behaviour is the only thing that can update the agent's standing knowledge.
+      </p>
+      <p>
+        The <strong>Standing Updates</strong> section in your results review is where that happens.
+        You list which strategy files need updating and why. The agent then applies those updates
+        on the next loop run, so its advice stays grounded in reality.
+      </p>
+    </div>
+    <div>
+      <h3>What happens if you skip it</h3>
+      <p>
+        If you don't write the results review, two things happen:
+      </p>
+      <ul>
+        <li>The feature plan stays open forever (it can't be archived)</li>
+        <li>The standing strategy files don't get updated — so the agent's next plan is built on stale assumptions</li>
+      </ul>
+      <p>
+        You don't need a polished document. A draft with one concrete observation in
+        <strong>Observed Outcomes</strong> is enough to unlock archiving.
+        Write what you actually saw. Even "no measurable change yet" is a valid outcome.
+      </p>
+    </div>
+  </div>
+
+  <!-- PART 6: LAYER A STRATEGY DOCUMENTS -->
+  <hr>
+  <h2>Part 6 — Layer A: strategy documents</h2>
+  <p class="section-intro">
+    These live in <code>docs/business-os/strategy/&lt;BIZ&gt;/</code> and form the long-term knowledge base for each business.
+    Most are created once during the relevant assessment or research stage, then updated as the business evolves.
+    The agent reads these files as context before any strategy run — so keeping them accurate matters.
+  </p>
+
+  <div class="card-grid">
+
+    <div class="file-card operator">
+      <span class="card-tag">You write / Agent drafts</span>
+      <div class="card-filename">problem-statement.user.md</div>
+      <p class="card-desc">Falsifiable problem definition. Who has it, what it costs them, and why existing solutions fall short. Created at ASSESSMENT-01 if you use the problem-first route. Feeds every downstream stage.</p>
+    </div>
+
+    <div class="file-card operator">
+      <span class="card-tag">You write / Agent drafts</span>
+      <div class="card-filename">current-situation.user.md</div>
+      <p class="card-desc">Baseline snapshot of the business as it stands: revenue, traffic, inventory, operational constraints. Critical for an existing business entering the loop — it's what the forecast recalibrates from.</p>
+    </div>
+
+    <div class="file-card operator">
+      <span class="card-tag">You write / Agent drafts</span>
+      <div class="card-filename">distribution-plan.user.md</div>
+      <p class="card-desc">Primary and secondary distribution channels, partnerships, and logistics constraints identified at ASSESSMENT-06. Consumed by the forecast and channel strategy steps.</p>
+    </div>
+
+    <div class="file-card operator">
+      <span class="card-tag">You write / Agent drafts</span>
+      <div class="card-filename">measurement-plan.user.md</div>
+      <p class="card-desc">KPIs, dashboard setup, leading/lagging indicators, and how you'll collect data. Created at ASSESSMENT-07. Feeds the MEASURE stage and S10 weekly review.</p>
+    </div>
+
+    <div class="file-card operator">
+      <span class="card-tag">You write / Agent drafts</span>
+      <div class="card-filename">brand-strategy.user.md</div>
+      <p class="card-desc">Brand positioning, key messages, target audience, and competitive differentiation. Sits upstream of brand identity (ASSESSMENT-11) and feeds all marketing and content work.</p>
+    </div>
+
+    <div class="file-card operator">
+      <span class="card-tag">You write</span>
+      <div class="card-filename">customer-interviews.user.md</div>
+      <p class="card-desc">Running log of customer interviews: notes, synthesis, themes, quotes, and how they've updated your objection map. Updated weekly. No fixed format — just keep adding to it.</p>
+    </div>
+
+    <div class="file-card operator">
+      <span class="card-tag">You write</span>
+      <div class="card-filename">experiment-backlog.user.md</div>
+      <p class="card-desc">Hypothesis list with priority scores, measurement plan, owner, and current status. Created at S5A and updated weekly at S10. Drives what you build or test next.</p>
+    </div>
+
+    <div class="file-card operator">
+      <span class="card-tag">You write</span>
+      <div class="card-filename">YYYY-MM-DD-weekly-kpcs-decision.user.md</div>
+      <p class="card-desc">Your weekly Keep / Pivot / Continue / Scale / Kill decision with the metrics and rationale that drove it. One dated file per week. This is the main governance artifact for the S10 weekly cadence.</p>
+    </div>
+
+    <div class="file-card operator">
+      <span class="card-tag">You write / Agent drafts</span>
+      <div class="card-filename">naming-shortlist-YYYY-MM-DD[-r&lt;N&gt;].user.md</div>
+      <p class="card-desc">Shortlisted business names with scoring, positioning variants, and domain/trademark checks. Produced during ASSESSMENT-04/05. Revision suffix (<code>-r2</code>, <code>-r4</code>, etc.) is added when you go back for another round.</p>
+    </div>
+
+    <div class="file-card operator">
+      <span class="card-tag">You write / Agent drafts</span>
+      <div class="card-filename">decisions/DEC-&lt;BIZ&gt;-&lt;CODE&gt;-&lt;N&gt;.user.md</div>
+      <p class="card-desc">Structured decision records. For significant calls (channel selection, pricing model, product scope) that need a paper trail: question, options, tradeoffs, recommendation, who approved it.</p>
+    </div>
+
+  </div>
+
+  <div class="callout">
+    <strong>Why Layer A matters:</strong> Every time the agent runs a planning or strategy skill, it reads the relevant Layer A files as context.
+    If your <code>current-situation.user.md</code> is six months out of date, the agent's advice will be too.
+    After each <code>results-review.user.md</code>, use the <strong>Standing Updates</strong> section you wrote to identify which Layer A files to refresh.
+  </div>
+
+  <div class="meta" style="margin-top:3rem; padding-top:1rem; border-top:1px solid var(--border); font-size:0.75rem; color:var(--text-muted)">
+    Startup Loop File Guide · Updated 2026-02-24 · See <code>docs/business-os/startup-loop/loop-output-contracts.md</code> and <code>docs/business-os/startup-loop/artifact-registry.md</code> for formal contracts.
+  </div>
+
+</main>
+</body>
+</html>

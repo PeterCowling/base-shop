@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import { cn } from "../utils/style";
 

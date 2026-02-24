@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 
 import { hasAdminSession } from "../../../../lib/accessAdmin";
 import { createInvite, listInvites } from "../../../../lib/accessStore";
+import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestBody";
 
 // Uses node:crypto/fs via accessStore.
 export const runtime = "nodejs";
+
+const INVITES_PAYLOAD_MAX_BYTES = 16 * 1024;
 
 function sanitizeMaxUses(value: unknown) {
   const parsed = Number(value);
@@ -71,8 +74,11 @@ export async function POST(request: Request) {
 
   let payload: Record<string, unknown>;
   try {
-    payload = (await request.json()) as Record<string, unknown>;
-  } catch {
+    payload = (await readJsonBodyWithLimit(request, INVITES_PAYLOAD_MAX_BYTES)) as Record<string, unknown>;
+  } catch (error) {
+    if (error instanceof PayloadTooLargeError) {
+      return NextResponse.json({ ok: false, error: "payload_too_large" }, { status: 413 });
+    }
     return NextResponse.json({ ok: false, error: "invalid" }, { status: 400 });
   }
 

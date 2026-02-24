@@ -7,15 +7,12 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faFileAlt, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { LucideIcon } from "lucide-react";
+import { Banknote, FileText } from "lucide-react";
 
-import {
-  ReceptionButton as Button,
-  ReceptionInput,
-  ReceptionSelect,
-} from "@acme/ui/operations";
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+import { SimpleModal } from "@acme/ui/molecules";
 
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
@@ -57,7 +54,7 @@ function LoanModalComponent({
   method,
   onClose,
   onConfirm,
-}: LoanModalProps): ReactElement | null {
+}: LoanModalProps): ReactElement {
   const [countInput, setCountInput] = useState<string>("1");
 
   /**
@@ -67,10 +64,10 @@ function LoanModalComponent({
   const [depositType, setDepositType] = useState<LoanMethod>("CASH");
 
   const depositIcon = useMemo(
-    (): { icon: IconDefinition; className: string } =>
+    (): { icon: LucideIcon; className: string } =>
       depositType === "CASH"
-        ? { icon: faMoneyBill, className: "text-success-main" }
-        : { icon: faFileAlt, className: "text-warning-main" },
+        ? { icon: Banknote, className: "text-success-main" }
+        : { icon: FileText, className: "text-warning-main" },
     [depositType]
   );
 
@@ -117,8 +114,8 @@ function LoanModalComponent({
    * "CASH" | "PASSPORT" | "LICENSE" | "ID".
    */
   const handleDepositTypeChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setDepositType(e.target.value as LoanMethod);
+    (value: string) => {
+      setDepositType(value as LoanMethod);
     },
     []
   );
@@ -132,145 +129,112 @@ function LoanModalComponent({
     onClose();
   }, [countInput, depositType, onConfirm, onClose]);
 
-  if (!isOpen) return null;
-
   return (
-    <div
-      className="fixed inset-0 bg-foreground bg-opacity-50 flex items-center justify-center px-4 z-50"
-      role="dialog"
-      aria-labelledby="loanModalTitle"
-      aria-modal="true"
-    >
-      <div className="bg-surface rounded-lg shadow-lg w-full max-w-lg dark:bg-darkSurface">
-        {/* Header Section */}
-        <div className="px-6 py-4 border-b border-border flex justify-between items-center">
-          <h2
-            id="loanModalTitle"
-            className="text-xl font-bold tracking-wide text-foreground dark:text-darkAccentGreen"
-          >
-            {mode === "loan" ? "Add Loan" : "Return Item"}
-          </h2>
+    <SimpleModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={mode === "loan" ? "Add Loan" : "Return Item"}
+      maxWidth="max-w-lg"
+      footer={
+        <div className="flex justify-end items-center space-x-2">
           <Button
-            onClick={onClose}
-            className="text-muted-foreground hover:text-foreground focus:outline-none dark:text-darkAccentGreen"
-            aria-label="Close Modal"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </Button>
-        </div>
-
-        {/* Content Section */}
-        <div className="px-6 py-4 space-y-6">
-          {/* Occupant Details */}
-          {occupant && (
-            <div className="text-sm text-foreground bg-surface-2 p-3 rounded dark:bg-darkSurface dark:text-darkAccentGreen">
-              <div className="font-semibold">Occupant:</div>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-1">
-                <span>
-                  {occupant.firstName} {occupant.lastName}
-                </span>
-                <span className="text-foreground">
-                  Ref: {occupant.bookingRef}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* Item Details */}
-          <div className="bg-surface-2 p-3 rounded dark:bg-darkSurface">
-            <label className="block font-semibold mb-1 text-foreground dark:text-darkAccentGreen">
-              {mode === "loan" ? "Loan Item:" : "Return Item:"}
-            </label>
-            <div className="text-foreground dark:text-darkAccentGreen">{item || "No item specified"}</div>
-            {mode === "loan" && (
-              <div className="text-sm text-muted-foreground mt-1 dark:text-darkAccentGreen">
-                Price: {itemPrice}
-              </div>
-            )}
-          </div>
-
-          {/* Quantity Input */}
-          <div className="bg-surface-2 p-3 rounded dark:bg-darkSurface">
-            <label
-              htmlFor="countInput"
-              className="block font-semibold mb-1 text-foreground dark:text-darkAccentGreen"
-            >
-              {mode === "loan" ? "Quantity to Loan" : "Quantity to Return"}
-            </label>
-            <div className="flex items-center">
-              <ReceptionInput
-                id="countInput"
-                type="number"
-                value={countInput}
-                min={1}
-                max={maxCount || 99}
-                onChange={handleCountChange}
-                className="border rounded px-2 py-1 w-20 me-2"
-              />
-              {maxCount !== undefined && mode === "return" && (
-                <span className="text-sm text-muted-foreground dark:text-darkAccentGreen">(Max: {maxCount})</span>
-              )}
-            </div>
-          </div>
-
-          {/* Deposit Method (only visible if mode === "loan" && item === "Keycard") */}
-          {mode === "loan" && item === "Keycard" && (
-            <div className="bg-surface-2 p-3 rounded dark:bg-darkSurface">
-              <label
-                htmlFor="depositMethod"
-                className="block font-semibold mb-1 text-foreground flex items-center gap-2 dark:text-darkAccentGreen"
-              >
-                Deposit Method
-                <FontAwesomeIcon
-                  icon={depositIcon.icon}
-                  className={depositIcon.className}
-                />
-              </label>
-              <ReceptionSelect
-                id="depositMethod"
-                value={depositType}
-                onChange={handleDepositTypeChange}
-                className="border rounded px-2 py-1 w-full dark:bg-darkSurface dark:text-darkAccentGreen"
-              >
-                <option value="CASH">Cash</option>
-                <option value="PASSPORT">Passport</option>
-                <option value="LICENSE">License</option>
-                <option value="ID">ID</option>
-              </ReceptionSelect>
-            </div>
-          )}
-        </div>
-
-        {/* Action Buttons */}
-        <div className="px-6 py-4 border-t border-border flex justify-end items-center space-x-2 dark:border-darkAccentGreen">
-          <Button
-            className="bg-muted hover:bg-surface-2 text-foreground px-4 py-2 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
+            color="default"
+            tone="soft"
             onClick={onClose}
           >
             Cancel
           </Button>
           <Button
-            className="bg-primary-main hover:bg-primary-dark text-primary-fg px-4 py-2 rounded dark:bg-darkAccentGreen dark:text-darkBg"
+            color="primary"
+            tone="solid"
             onClick={handleSubmit}
           >
             Confirm
           </Button>
         </div>
+      }
+    >
+      <div className="space-y-6">
+        {/* Occupant Details */}
+        {occupant && (
+          <div className="text-sm text-foreground bg-surface-2 p-3 rounded">
+            <div className="font-semibold">Occupant:</div>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-1">
+              <span>
+                {occupant.firstName} {occupant.lastName}
+              </span>
+              <span className="text-foreground">
+                Ref: {occupant.bookingRef}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Item Details */}
+        <div className="bg-surface-2 p-3 rounded">
+          <label className="block font-semibold mb-1 text-foreground">
+            {mode === "loan" ? "Loan Item:" : "Return Item:"}
+          </label>
+          <div className="text-foreground">{item || "No item specified"}</div>
+          {mode === "loan" && (
+            <div className="text-sm text-muted-foreground mt-1">
+              Price: {itemPrice}
+            </div>
+          )}
+        </div>
+
+        {/* Quantity Input */}
+        <div className="bg-surface-2 p-3 rounded">
+          <label
+            htmlFor="countInput"
+            className="block font-semibold mb-1 text-foreground"
+          >
+            {mode === "loan" ? "Quantity to Loan" : "Quantity to Return"}
+          </label>
+          <div className="flex items-center">
+            <Input compatibilityMode="no-wrapper"
+              id="countInput"
+              type="number"
+              value={countInput}
+              min={1}
+              max={maxCount || 99}
+              onChange={handleCountChange}
+              className="border rounded px-2 py-1 w-20 me-2"
+            />
+            {maxCount !== undefined && mode === "return" && (
+              <span className="text-sm text-muted-foreground">(Max: {maxCount})</span>
+            )}
+          </div>
+        </div>
+
+        {/* Deposit Method (only visible if mode === "loan" && item === "Keycard") */}
+        {mode === "loan" && item === "Keycard" && (
+          <div className="bg-surface-2 p-3 rounded">
+            <label
+              htmlFor="depositMethod"
+              className="block font-semibold mb-1 text-foreground flex items-center gap-2"
+            >
+              Deposit Method
+              <depositIcon.icon
+                size={16}
+                className={depositIcon.className}
+              />
+            </label>
+            <Select value={depositType} onValueChange={handleDepositTypeChange}>
+              <SelectTrigger id="depositMethod" className="border rounded px-2 py-1 w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="CASH">Cash</SelectItem>
+                <SelectItem value="PASSPORT">Passport</SelectItem>
+                <SelectItem value="LICENSE">License</SelectItem>
+                <SelectItem value="ID">ID</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
       </div>
-    </div>
+    </SimpleModal>
   );
 }
 

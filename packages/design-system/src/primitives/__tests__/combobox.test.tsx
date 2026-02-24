@@ -13,6 +13,8 @@ import {
   ComboboxTrigger,
 } from "../combobox";
 
+import { LONG_SENTENCE_WITH_TOKEN, LONG_UNBROKEN_TOKEN } from "./fixtures/longContent";
+
 function renderCombobox(props: { onValueChange?: (value: string) => void } = {}) {
   return render(
     <Combobox {...props}>
@@ -171,5 +173,71 @@ describe("Combobox", () => {
       expect(screen.queryByRole("option", { name: "Apple" })).not.toBeInTheDocument();
       expect(screen.getByRole("option", { name: "Carrot" })).toBeInTheDocument();
     });
+  });
+
+  it("renders long unbroken option labels with bleed guards", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Combobox>
+        <ComboboxTrigger>Select booking</ComboboxTrigger>
+        <ComboboxContent>
+          <ComboboxItem value="long">{LONG_SENTENCE_WITH_TOKEN}</ComboboxItem>
+          <ComboboxItem value="token">{LONG_UNBROKEN_TOKEN}</ComboboxItem>
+        </ComboboxContent>
+      </Combobox>
+    );
+
+    await user.click(screen.getByRole("button", { name: "Select booking" }));
+
+    const longItem = screen.getByRole("option", { name: LONG_SENTENCE_WITH_TOKEN });
+    const tokenItem = screen.getByRole("option", { name: LONG_UNBROKEN_TOKEN });
+
+    expect(longItem).toHaveClass("min-w-0", "break-words");
+    expect(tokenItem).toHaveClass("min-w-0", "break-words");
+    expect(tokenItem.querySelector("span.min-w-0.break-words")).not.toBeNull();
+  });
+
+  it("supports compact item density", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Combobox>
+        <ComboboxTrigger>Select booking</ComboboxTrigger>
+        <ComboboxContent>
+          <ComboboxItem value="compact" density="compact">
+            Compact option
+          </ComboboxItem>
+        </ComboboxContent>
+      </Combobox>
+    );
+
+    await user.click(screen.getByRole("button", { name: "Select booking" }));
+    const compactItem = screen.getByRole("option", { name: "Compact option" });
+    expect(compactItem).toHaveClass("py-1");
+    expect(compactItem).not.toHaveClass("py-1.5");
+  });
+
+  it("supports compact trigger and input density", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Combobox>
+        <ComboboxTrigger density="compact">Select booking</ComboboxTrigger>
+        <ComboboxContent>
+          <ComboboxInput density="compact" placeholder="Search bookings..." />
+          <ComboboxItem value="one">One</ComboboxItem>
+        </ComboboxContent>
+      </Combobox>
+    );
+
+    const trigger = screen.getByRole("button", { name: "Select booking" });
+    expect(trigger).toHaveClass("h-10", "px-2", "py-1.5");
+    expect(trigger).not.toHaveClass("px-3", "py-2");
+
+    await user.click(trigger);
+    const input = screen.getByPlaceholderText("Search bookings...");
+    expect(input).toHaveClass("h-10", "px-2", "py-1.5", "mb-0.5");
+    expect(input).not.toHaveClass("px-3", "py-2", "mb-1");
   });
 });

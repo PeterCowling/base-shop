@@ -8,8 +8,8 @@ import {
   useState,
 } from "react";
 
+import { Input } from "@acme/design-system";
 import { Grid } from "@acme/design-system/primitives";
-import { ReceptionInput } from "@acme/ui/operations";
 
 interface PinInputProps {
   onChange: (pin: string) => void;
@@ -23,7 +23,7 @@ const PIN_LENGTH = 6 as const;
 const PIN_BG_CLASSES: readonly string[] = [
   "bg-accent-soft focus:bg-pink-400",
   "bg-accent-soft focus:bg-purple-400",
-  "bg-primary-light focus:bg-indigo-400",
+  "bg-primary-light focus:bg-primary-soft",
   "bg-info-light focus:bg-sky-400",
   "bg-success-light focus:bg-teal-400",
   "bg-warning-light focus:bg-amber-400",
@@ -104,11 +104,12 @@ function PinInput({
   return (
     <div className="flex flex-col items-center">
       {title && (
-        <h2 className="mb-2 text-xl font-semibold text-center dark:text-darkAccentGreen">{title}</h2>
+        <h2 className="mb-2 text-xl font-semibold text-center">{title}</h2>
       )}
       <Grid cols={6} gap={4} className="justify-center">
         {Array.from({ length: PIN_LENGTH }, (_, i) => (
-          <ReceptionInput
+          <Input
+            compatibilityMode="no-wrapper"
             key={i}
             ref={(el) => { inputRefs.current[i] = el; }}
             type="password"
@@ -118,7 +119,7 @@ function PinInput({
             maxLength={1}
             placeholder={i === 0 ? placeholder : undefined}
             aria-label={`PIN digit ${i + 1}`}
-            className={`aspect-square w-14 rounded-lg text-center text-3xl font-semibold text-foreground caret-transparent transition-transform duration-150 focus:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:text-darkAccentGreen dark:ring-offset-darkSurface ${
+            className={`aspect-square w-14 rounded-lg text-center text-3xl font-semibold text-foreground caret-transparent transition-transform duration-150 focus:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-white ${
               pin[i] !== " " ? PIN_BG_CLASSES[i] : EMPTY_BG_CLASS
             }`}
             value={pin[i] === " " ? "" : pin[i]}

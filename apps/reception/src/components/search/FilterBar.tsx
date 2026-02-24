@@ -1,6 +1,6 @@
 // /src/components/bookingSearch/FilterBar.tsx
 import React from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { Search } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -19,8 +19,7 @@ export interface FilterBarProps {
 
 const fieldStyles =
   "rounded-md border border-border-2 bg-surface px-3 py-2 text-sm shadow-sm " +
-  "focus:outline-none focus:ring-2 focus:ring-primary-600 " +
-  "dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen";
+  "focus:outline-none focus:ring-2 focus:ring-ring";
 
 const FilterBar: React.FC<FilterBarProps> = ({
   firstName,
@@ -43,7 +42,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   >
     {/* First Name */}
     <div className="flex flex-col">
-      <label htmlFor="firstName" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
+      <label htmlFor="firstName" className="text-sm font-medium text-foreground">
         First Name
       </label>
       <input
@@ -57,7 +56,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Last Name */}
     <div className="flex flex-col">
-      <label htmlFor="lastName" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
+      <label htmlFor="lastName" className="text-sm font-medium text-foreground">
         Last Name
       </label>
       <input
@@ -71,7 +70,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Booking Ref */}
     <div className="flex flex-col">
-      <label htmlFor="bookingRef" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
+      <label htmlFor="bookingRef" className="text-sm font-medium text-foreground">
         Booking Ref
       </label>
       <input
@@ -85,7 +84,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Activity Level */}
     <div className="flex flex-col">
-      <label htmlFor="status" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
+      <label htmlFor="status" className="text-sm font-medium text-foreground">
         Activity Level
       </label>
       <select
@@ -107,7 +106,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     <div className="flex flex-col">
       <label
         htmlFor="nonRefundable"
-        className="text-sm font-medium text-foreground dark:text-darkAccentGreen"
+        className="text-sm font-medium text-foreground"
       >
         Refundable Status
       </label>
@@ -125,7 +124,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Date */}
     <div className="flex flex-col">
-      <label htmlFor="searchDate" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
+      <label htmlFor="searchDate" className="text-sm font-medium text-foreground">
         Date
       </label>
       <input
@@ -139,7 +138,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Room Number */}
     <div className="flex flex-col">
-      <label htmlFor="roomNumber" className="text-sm font-medium text-foreground dark:text-darkAccentGreen">
+      <label htmlFor="roomNumber" className="text-sm font-medium text-foreground">
         Room Number
       </label>
       <input
@@ -154,9 +153,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
     {/* Search Button (spans full width on small screens) */}
     <Button
       type="submit"
-      className="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-primary-fg shadow-sm transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 md:col-span-3 lg:col-span-1 dark:bg-darkSurface dark:text-darkAccentGreen"
+      className="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-primary-main px-4 py-2 text-sm font-semibold text-primary-fg shadow-sm transition-colors hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:col-span-3 lg:col-span-1"
     >
-      <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
+      <Search className="h-5 w-5" aria-hidden="true" />
       Search
     </Button>
   </form>

@@ -2,17 +2,10 @@
 
 import React, { useMemo } from "react";
 
-import {
-  ReceptionInput,
-  ReceptionTable as Table,
-  ReceptionTableBody as TableBody,
-  ReceptionTableCell as TableCell,
-  ReceptionTableHead as TableHead,
-  ReceptionTableHeader as TableHeader,
-  ReceptionTableRow as TableRow,
-} from "@acme/ui/operations";
+import { Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 
 import { useProducts } from "../../hooks/data/bar/useProducts";
+import { PageShell } from "../common/PageShell";
 
 function Stock() {
   const { getProductsByCategory } = useProducts();
@@ -28,15 +21,12 @@ function Stock() {
   }, [getProductsByCategory]);
 
   return (
-    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
-      <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
-        STOCK
-      </h1>
-      <div className="bg-surface rounded-lg shadow p-6 dark:bg-darkSurface">
+    <PageShell title="STOCK">
+      <div className="bg-surface rounded-lg shadow p-6">
         <div className="overflow-auto">
           <Table className="min-w-full border-collapse text-sm">
             <TableHeader>
-              <TableRow className="bg-surface-3 dark:bg-darkSurface">
+              <TableRow className="bg-surface-3">
                 <TableHead className="p-2 border-b text-start">Item</TableHead>
                 <TableHead className="p-2 border-b text-end">Expected</TableHead>
                 <TableHead className="p-2 border-b text-end">Add Purchase</TableHead>
@@ -49,16 +39,16 @@ function Stock() {
                 <TableRow key={name}>
                   <TableCell className="p-2 border-b">{name}</TableCell>
                   <TableCell className="p-2 border-b text-end">
-                    <ReceptionInput type="number" className="w-20 border p-1" />
+                    <Input compatibilityMode="no-wrapper" type="number" className="w-20 border p-1" />
                   </TableCell>
                   <TableCell className="p-2 border-b text-end">
-                    <ReceptionInput type="number" className="w-20 border p-1" />
+                    <Input compatibilityMode="no-wrapper" type="number" className="w-20 border p-1" />
                   </TableCell>
                   <TableCell className="p-2 border-b text-end">
-                    <ReceptionInput type="number" className="w-20 border p-1" />
+                    <Input compatibilityMode="no-wrapper" type="number" className="w-20 border p-1" />
                   </TableCell>
                   <TableCell className="p-2 border-b text-end">
-                    <ReceptionInput type="number" className="w-20 border p-1" />
+                    <Input compatibilityMode="no-wrapper" type="number" className="w-20 border p-1" />
                   </TableCell>
                 </TableRow>
               ))}
@@ -66,7 +56,7 @@ function Stock() {
           </Table>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }
 

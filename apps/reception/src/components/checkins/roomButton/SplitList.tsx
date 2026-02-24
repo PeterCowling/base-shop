@@ -1,8 +1,7 @@
 // File: /src/components/checkins/roomButton/SplitList.tsx
 
 import { memo } from "react";
-import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Plus, Trash2 } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -50,7 +49,7 @@ function SplitList({
               onClick={handleAddPaymentRow}
               disabled={isDisabled}
             >
-              <FontAwesomeIcon icon={faPlus} />
+              <Plus size={16} />
             </Button>
           ) : (
             <Button
@@ -58,7 +57,7 @@ function SplitList({
               onClick={() => handleRemovePaymentRow(idx)}
               disabled={isDisabled}
             >
-              <FontAwesomeIcon icon={faTrash} />
+              <Trash2 size={16} />
             </Button>
           )}
         </div>

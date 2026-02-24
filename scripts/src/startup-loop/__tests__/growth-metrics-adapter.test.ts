@@ -193,7 +193,7 @@ describe("getWeeklyGrowthMetrics", () => {
       // Assumptions note about no targets
       expect(result.data_quality.assumptions).toEqual(
         expect.arrayContaining([
-          expect.stringContaining("No S3/S10 targets found"),
+          expect.stringContaining("No forecast/weekly targets found"),
         ]),
       );
     });

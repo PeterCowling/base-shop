@@ -39,13 +39,9 @@ describe("Statistics", () => {
     await screen.findByText("Test Connection Failed: network");
   });
 
-  it("applies dark mode classes", () => {
-    render(
-      <div className="dark">
-        <Statistics />
-      </div>
-    );
+  it("renders with token-based theme classes", () => {
+    render(<Statistics />);
     const container = screen.getByRole("button", { name: /test connection/i }).parentElement as HTMLElement;
-    expect(container).toHaveClass("dark:bg-darkSurface");
+    expect(container).toHaveClass("bg-surface-2");
   });
 });

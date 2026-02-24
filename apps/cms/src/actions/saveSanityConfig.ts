@@ -10,6 +10,9 @@ import type { Shop } from "@acme/types";
 
 import { ensureAuthorized } from "./common/auth";
 
+const sanityPluginModuleId =
+  process.env.ACME_PLUGIN_SANITY_MODULE_ID || "@acme/plugin-sanity";
+
 export async function saveSanityConfig(
   shopId: string,
   formData: FormData
@@ -57,7 +60,9 @@ export async function saveSanityConfig(
       };
     }
   } else {
-    const { verifyCredentials } = await import("@acme/plugin-sanity");
+    const { verifyCredentials } = (await import(
+      sanityPluginModuleId
+    )) as typeof import("@acme/plugin-sanity");
     const valid = await verifyCredentials(config);
     if (!valid) {
       return { error: "Invalid Sanity credentials", errorCode: "INVALID_CREDENTIALS" };

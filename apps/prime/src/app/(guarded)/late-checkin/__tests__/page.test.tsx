@@ -33,6 +33,7 @@ describe('LateCheckInPage', () => {
     render(<LateCheckInPage />);
 
     expect(screen.getByText('lateCheckin.steps.step1')).toBeInTheDocument();
+    expect(screen.getByText('lateCheckin.priorityNotice')).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: 'lateCheckin.mainDoorCta' }),
     ).toHaveAttribute('href', '/main-door-access');
@@ -51,5 +52,17 @@ describe('LateCheckInPage', () => {
     render(<LateCheckInPage />);
 
     expect(screen.getByText('lateCheckin.loadError')).toBeInTheDocument();
+  });
+
+  it('TC-03: renders loading state while booking context is loading', () => {
+    mockUseUnifiedBookingData.mockReturnValue({
+      occupantData: null,
+      isLoading: true,
+      error: null,
+    });
+
+    const { container } = render(<LateCheckInPage />);
+
+    expect(container.querySelector('.animate-spin')).toBeInTheDocument();
   });
 });

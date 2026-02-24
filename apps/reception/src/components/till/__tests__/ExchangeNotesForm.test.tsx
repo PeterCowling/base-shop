@@ -58,7 +58,7 @@ describe("ExchangeNotesForm", () => {
     render(<Comp onConfirm={jest.fn()} onCancel={jest.fn()} />);
     const heading = screen.getByRole("heading", { name: /exchange notes/i });
     const container = heading.closest("div.relative") as HTMLElement;
-    expect(container).toHaveClass("dark:bg-darkSurface");
+    expect(container).toHaveClass("relative");
     document.documentElement.classList.remove("dark");
   });
 

@@ -16,9 +16,6 @@ Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-pla
 Primary-Execution-Skill: <lp-do-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>
 Related-Plan: docs/plans/<feature-slug>/plan.md
-Business-OS-Integration: <on | off>
-Business-Unit: <BRIK | PLAT | PIPE | BOS | none>
-Card-ID: <id | none>
 ---
 
 # <Feature Name> Fact-Find Brief

@@ -1,10 +1,11 @@
 import { ulid } from "ulid";
 
 import { coreEnv as env } from "@acme/config/env/core";
-import { nowIso } from "@acme/date-utils";
 import { incrementOperationalError } from "@acme/platform-core/shops/health";
 import { recordMetric } from "@acme/platform-core/utils";
 import type { Page } from "@acme/types";
+
+import { nowIso } from "@/lib/datetime";
 
 import { formDataToObject } from "../../utils/formData";
 import { ensureAuthorized } from "../common/auth";

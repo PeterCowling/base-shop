@@ -4,7 +4,7 @@
 
 import * as React from "react";
 
-import type { CatalogProductDraftInput } from "../../lib/catalogAdminSchema";
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 import type { ActionFeedback } from "./useCatalogConsole.client";
 

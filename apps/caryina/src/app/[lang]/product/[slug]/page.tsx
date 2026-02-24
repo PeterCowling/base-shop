@@ -7,8 +7,14 @@ import { type Locale, LOCALES, resolveLocale } from "@acme/i18n/locales";
 import { ProductGallery } from "@/components/catalog/ProductGallery.client";
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
 import {
+  getLaunchFamilyCopy,
+  getProductPageContent,
+  getSeoKeywords,
+} from "@/lib/contentPacket";
+import {
   buildCatalogCardMedia,
   buildProductGalleryItems,
+  getSkuFamilyLabel,
 } from "@/lib/launchMerchandising";
 import {
   formatMoney,
@@ -18,6 +24,7 @@ import {
 } from "@/lib/shop";
 
 import ProductAnalytics from "./ProductAnalytics.client";
+import { StickyCheckoutBar } from "./StickyCheckoutBar.client";
 
 export async function generateStaticParams() {
   const skus = await readShopSkus("en");
@@ -34,6 +41,8 @@ export async function generateMetadata({
   const product = await readShopSkuBySlug(lang, slug);
   return {
     title: product ? `${product.title} | Caryina` : "Product not found | Caryina",
+    description: product?.description ?? "Caryina launch product detail page",
+    keywords: getSeoKeywords(),
   };
 }
 
@@ -51,7 +60,11 @@ export default async function ProductDetailPage({
 
   if (!product) return notFound();
   const allProducts = await readShopSkus(lang);
+  const productPageContent = getProductPageContent(lang);
+  const familyCopy = getLaunchFamilyCopy(lang);
   const galleryItems = buildProductGalleryItems(product);
+  const productIndex = allProducts.findIndex((s) => s.id === product.id);
+  const familyLabel = getSkuFamilyLabel(product, Math.max(0, productIndex), familyCopy);
   const relatedProducts = allProducts
     .filter((sku) => sku.id !== product.id)
     .slice(0, 8);
@@ -59,70 +72,78 @@ export default async function ProductDetailPage({
   return (
     <>
       <ProductAnalytics locale={lang} productId={product.id} />
-      <article className="space-y-10">
-        <Link href={`/${lang}/shop`} className="text-sm text-muted-foreground hover:underline">
-          Back to shop
+      <article className="space-y-16">
+        <Link
+          href={`/${lang}/shop`}
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        >
+          <span aria-hidden="true">&larr;</span> Back to shop
         </Link>
 
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="pdp-grid gap-10 md:items-start">
           <ProductGallery productTitle={product.title} items={galleryItems} />
 
-          <div className="space-y-5">
+          <div className="space-y-6 md:sticky md:top-6">
             <div className="space-y-3">
               <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                {product.slug}
+                {familyLabel}
               </p>
-              <h1 className="text-4xl font-display">{product.title}</h1>
+              <h1 className="text-3xl font-display sm:text-4xl">{product.title}</h1>
               <p className="max-w-2xl text-muted-foreground">{product.description}</p>
             </div>
 
-            <div
-              className="rounded-3xl border border-solid p-6"
-              style={{ borderColor: "hsl(var(--color-border-default))" }}
-            >
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <p className="text-lg">{formatMoney(product.price, currency)}</p>
-                <Link
-                  href={`/${lang}/checkout?sku=${encodeURIComponent(product.slug)}`}
-                  className="rounded-full border border-solid px-5 py-2 text-sm hover:bg-muted"
-                  style={{ borderColor: "hsl(var(--color-border-default))" }}
-                >
-                  Continue to checkout
-                </Link>
-              </div>
+            <div className="space-y-4">
+              <p className="text-xl font-medium">{formatMoney(product.price, currency)}</p>
+              <Link
+                href={`/${lang}/checkout?sku=${encodeURIComponent(product.slug)}`}
+                className="btn-primary block w-full rounded-full px-6 py-3 text-center text-sm"
+                data-cy="pdp-checkout"
+              >
+                Continue to checkout
+              </Link>
+              <StickyCheckoutBar
+                priceLabel={formatMoney(product.price, currency)}
+                checkoutHref={`/${lang}/checkout?sku=${encodeURIComponent(product.slug)}`}
+              />
             </div>
 
             <section
-              className="rounded-3xl border border-solid p-5"
-              style={{ borderColor: "hsl(var(--color-border-default))" }}
+              className="space-y-3 border-t pt-5"
               aria-label="Product proof points"
             >
-              <h2 className="text-base font-medium">Visual trust checklist</h2>
-              <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                <li>Hero, angle, detail, on-body, scale, and alternate views.</li>
-                <li>Consistent 4:5 framing for cross-product comparison.</li>
-                <li>Keyboard-accessible gallery controls with ordered progression.</li>
+              <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+                {productPageContent.proofHeading}
+              </h2>
+              <ul className="list-none space-y-2 text-sm text-muted-foreground">
+                {productPageContent.proofBullets.map((bullet) => (
+                  <li key={bullet} className="flex items-start gap-2">
+                    <span className="mt-1.5 block h-1 w-1 shrink-0 rounded-full bg-accent" />
+                    {bullet}
+                  </li>
+                ))}
               </ul>
             </section>
           </div>
         </div>
 
         {relatedProducts.length > 0 ? (
-          <section className="space-y-4" aria-label="Related products">
+          <section className="space-y-5" aria-label="Related products">
             <div className="flex items-center justify-between gap-3">
-              <h2 className="text-2xl font-display">Related silhouettes</h2>
+              <h2 className="text-2xl font-display">
+                {productPageContent.relatedHeading}
+              </h2>
               <Link href={`/${lang}/shop`} className="text-sm text-muted-foreground hover:underline">
-                View all
+                See all
               </Link>
             </div>
-            <ul className="grid grid-cols-2 gap-5 lg:grid-cols-4">
-              {relatedProducts.map((relatedSku) => {
+            <ul className="grid list-none grid-cols-2 gap-5 lg:grid-cols-3">
+              {relatedProducts.map((relatedSku, idx) => {
                 const media = buildCatalogCardMedia(relatedSku);
                 return (
                   <li key={relatedSku.id}>
                     <ProductMediaCard
                       href={`/${lang}/product/${relatedSku.slug}`}
-                      slug={relatedSku.slug}
+                      category={getSkuFamilyLabel(relatedSku, idx, familyCopy)}
                       title={relatedSku.title}
                       priceLabel={formatMoney(relatedSku.price, currency)}
                       primarySrc={media.primarySrc}

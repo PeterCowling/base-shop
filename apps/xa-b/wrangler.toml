@@ -11,6 +11,8 @@ NEXT_PUBLIC_STEALTH_MODE = "true"
 # NOTE: Do not commit real hostnames/domains. Configure these per-environment in Cloudflare Pages:
 # - XA_ALLOWED_HOSTS
 # - NEXT_PUBLIC_SITE_DOMAIN
+# - XA_CF_ACCESS_AUDIENCE
+# - XA_CF_ACCESS_ISSUER (or XA_CF_ACCESS_ISSUERS)
 
 [env.preview]
 name = "xa-b-preview"

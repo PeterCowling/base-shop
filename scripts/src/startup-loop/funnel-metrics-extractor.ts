@@ -1,10 +1,17 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
+import {
+  FORECAST_STAGE_CANDIDATES,
+  FORECAST_STAGE_ID,
+  resolveStageResultPath,
+  WEEKLY_STAGE_CANDIDATES,
+  WEEKLY_STAGE_ID,
+} from "./stage-id-compat";
 
 /**
  * BL-02: Funnel metrics extraction into canonical diagnosis input shape
  *
- * Reads S3 forecast targets, S10 readout actuals, and events ledger to produce
+ * Reads forecast targets, weekly readout actuals, and events ledger to produce
  * a canonical FunnelMetricsInput object with direction-aware miss computation
  * and data quality tracking.
  */
@@ -86,7 +93,7 @@ const METRIC_CATALOG: Record<MetricId, MetricCatalogEntry> = {
   cvr: {
     class: "primitive",
     direction: "higher_is_better",
-    stage: "S3",
+    stage: FORECAST_STAGE_ID,
     priority: "primary",
   },
   aov: {
@@ -104,13 +111,13 @@ const METRIC_CATALOG: Record<MetricId, MetricCatalogEntry> = {
   orders: {
     class: "derived",
     direction: "higher_is_better",
-    stage: "S10",
+    stage: WEEKLY_STAGE_ID,
     priority: "secondary",
   },
   revenue: {
     class: "derived",
     direction: "higher_is_better",
-    stage: "S10",
+    stage: WEEKLY_STAGE_ID,
     priority: "secondary",
   },
 };
@@ -192,13 +199,17 @@ export function extractFunnelMetrics(
     excluded_metrics: [],
   };
 
-  // Read S3 forecast targets (primitive metrics only)
+  // Read forecast targets (primitive metrics only)
   let s3Targets: Record<string, number> = {};
   try {
-    const s3StageResultPath = path.join(runDir, "stage-result-S3.json");
-    if (fs.existsSync(s3StageResultPath)) {
-      const s3StageResult = JSON.parse(fs.readFileSync(s3StageResultPath, "utf8"));
-      const forecastRelPath = s3StageResult.artifacts?.forecast;
+    const s3StageResultRef = resolveStageResultPath(
+      runDir,
+      FORECAST_STAGE_CANDIDATES,
+    );
+    if (s3StageResultRef) {
+      const s3StageResultPath = s3StageResultRef.path;
+      const s3StageResultPayload = JSON.parse(fs.readFileSync(s3StageResultPath, "utf8"));
+      const forecastRelPath = s3StageResultPayload.artifacts?.forecast;
       if (forecastRelPath) {
         const forecastPath = path.join(runDir, forecastRelPath);
         if (fs.existsSync(forecastPath)) {
@@ -209,18 +220,22 @@ export function extractFunnelMetrics(
       }
     }
   } catch (error) {
-    console.warn(`[extractFunnelMetrics] Failed to read S3 forecast: ${error}`);
+    console.warn(`[extractFunnelMetrics] Failed to read forecast stage targets: ${error}`);
     sources.s3_forecast = null;
   }
 
-  // Read S10 readout (contains both actuals AND derived metric targets)
+  // Read weekly readout (contains both actuals AND derived metric targets)
   let actuals: Record<string, number> = {};
   let s10Targets: Record<string, number> = {};
   try {
-    const s10StageResultPath = path.join(runDir, "stage-result-S10.json");
-    if (fs.existsSync(s10StageResultPath)) {
-      const s10StageResult = JSON.parse(fs.readFileSync(s10StageResultPath, "utf8"));
-      const readoutRelPath = s10StageResult.artifacts?.readout;
+    const s10StageResultRef = resolveStageResultPath(
+      runDir,
+      WEEKLY_STAGE_CANDIDATES,
+    );
+    if (s10StageResultRef) {
+      const s10StageResultPath = s10StageResultRef.path;
+      const s10StageResultPayload = JSON.parse(fs.readFileSync(s10StageResultPath, "utf8"));
+      const readoutRelPath = s10StageResultPayload.artifacts?.readout;
       if (readoutRelPath) {
         const readoutPath = path.join(runDir, readoutRelPath);
         if (fs.existsSync(readoutPath)) {
@@ -232,11 +247,11 @@ export function extractFunnelMetrics(
       }
     }
   } catch (error) {
-    console.warn(`[extractFunnelMetrics] Failed to read S10 readout: ${error}`);
+    console.warn(`[extractFunnelMetrics] Failed to read weekly stage readout: ${error}`);
     sources.s10_readout = null;
   }
 
-  // Merge targets: S3 provides primitive targets, S10 provides derived targets
+  // Merge targets: forecast stage provides primitive targets, weekly stage provides derived targets
   const targets: Record<string, number> = { ...s3Targets, ...s10Targets };
 
   // Read events ledger for blocked stages

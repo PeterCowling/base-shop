@@ -51,7 +51,7 @@ export const Slider = ({
       {...props}
     >
       <SliderPrimitive.Track className={cn("relative h-2 w-full grow overflow-hidden bg-muted", trackShapeRadiusClass)}>
-        <SliderPrimitive.Range className="absolute h-full bg-primary" />
+        <SliderPrimitive.Range className="absolute h-full bg-primary" data-ds-contrast-exempt aria-hidden="true" />
       </SliderPrimitive.Track>
       {(props.defaultValue ?? props.value ?? [0]).map((_: number, i: number) => (
         <SliderPrimitive.Thumb

@@ -48,6 +48,10 @@ const REQUEST_LIMIT = 500;
 const INVITE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const INVITE_LENGTH = 8;
 
+function isProduction() {
+  return process.env.NODE_ENV === "production";
+}
+
 function ensureStoreShape(data: Partial<AccessStore> | null): AccessStore {
   return {
     invites: Array.isArray(data?.invites) ? data?.invites ?? [] : [],
@@ -91,6 +95,11 @@ export async function loadAccessStore(): Promise<{ store: AccessStore; mode: Sto
     globalThis.__xaAccessStoreMode = "file";
     return { store: storeFromFile, mode: "file" };
   }
+
+  if (isProduction()) {
+    throw new Error("Access store unavailable: file persistence required.");
+  }
+
   const store = getMemoryStore();
   globalThis.__xaAccessStoreMode = "memory";
   return { store, mode: "memory" };
@@ -103,7 +112,16 @@ export async function saveAccessStore(store: AccessStore, mode: StoreMode) {
       globalThis.__xaAccessStoreMode = "file";
       return { store, mode: "file" as const };
     }
+
+    if (isProduction()) {
+      throw new Error("Access store unavailable: write failed.");
+    }
   }
+
+  if (isProduction()) {
+    throw new Error("Access store unavailable: memory fallback disabled.");
+  }
+
   globalThis.__xaAccessStore = store;
   globalThis.__xaAccessStoreMode = "memory";
   return { store, mode: "memory" as const };

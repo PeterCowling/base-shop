@@ -4,6 +4,7 @@
  * Validation helpers, seasonal normalization, residual scoring, and
  * model-selection alignment utilities.
  */
+import { mean as libMean } from "../statistics/descriptive.js";
 
 /**
  * Assert that all elements in an array are finite
@@ -51,7 +52,7 @@ export function normalizeSeasonalAdditive(seasonals: number[]): number[] {
     return [];
   }
 
-  const mean = seasonals.reduce((a, b) => a + b, 0) / seasonals.length;
+  const mean = libMean(seasonals);
   return seasonals.map((s) => s - mean);
 }
 
@@ -66,7 +67,7 @@ export function normalizeSeasonalMultiplicative(seasonals: number[]): number[] {
     return [];
   }
 
-  const mean = seasonals.reduce((a, b) => a + b, 0) / seasonals.length;
+  const mean = libMean(seasonals);
   return seasonals.map((s) => s / mean);
 }
 

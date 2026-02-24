@@ -10,6 +10,7 @@ describe("PaginationDot", () => {
     const { container } = render(<PaginationDot active />);
     const button = screen.getByRole("button");
     expect(button).toHaveClass("bg-primary");
+    expect(button).toHaveClass("text-primary-foreground");
 
   });
 

@@ -32,3 +32,12 @@ export const ShapeDepths: Story = {
     </div>
   ),
 };
+
+export const DensityScale: Story = {
+  render: (args) => (
+    <div className="grid max-w-xl gap-3">
+      <Textarea {...args} density="comfortable" placeholder="Comfortable textarea" />
+      <Textarea {...args} density="compact" placeholder="Compact textarea" />
+    </div>
+  ),
+};

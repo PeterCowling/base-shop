@@ -7,6 +7,8 @@ import StepFlowShell from "../StepFlowShell";
 import StepProgress from "../StepProgress";
 import TrustCue from "../TrustCue";
 
+import { LONG_SENTENCE_WITH_TOKEN, LONG_UNBROKEN_TOKEN, LONG_URL } from "./fixtures/longContent";
+
 jest.mock("../../hooks/useReducedMotion", () => ({
   __esModule: true,
   default: jest.fn(),
@@ -103,5 +105,31 @@ describe("Step flow primitives", () => {
     expect(screen.getByRole("note", { name: "Privacy reassurance" })).toHaveClass("overflow-hidden");
     expect(screen.getByRole("status")).toHaveClass("rounded-sm", "overflow-hidden");
     expect(screen.getByText("Almost there")).toHaveClass("min-w-0", "break-words");
+  });
+
+  it("TC-05: long title and message content stays present with bleed-guard classes", () => {
+    render(
+      <StepFlowShell
+        currentStep={2}
+        totalSteps={4}
+        title={LONG_UNBROKEN_TOKEN}
+        description={LONG_URL}
+        trustCue={{
+          title: LONG_UNBROKEN_TOKEN,
+          description: LONG_SENTENCE_WITH_TOKEN,
+        }}
+        milestoneMessage={LONG_SENTENCE_WITH_TOKEN}
+      >
+        <button type="button">Continue</button>
+      </StepFlowShell>,
+    );
+
+    expect(screen.getByRole("heading", { level: 1, name: LONG_UNBROKEN_TOKEN })).toHaveClass(
+      "min-w-0",
+      "break-words",
+    );
+    expect(screen.getByText(LONG_URL)).toHaveClass("min-w-0", "break-words");
+    expect(screen.getByRole("note", { name: LONG_UNBROKEN_TOKEN })).toHaveClass("overflow-hidden");
+    expect(screen.getByRole("status")).toHaveTextContent(LONG_SENTENCE_WITH_TOKEN);
   });
 });

@@ -20,7 +20,7 @@
 
 **Condition**: `--start-point = problem`
 
-**Rule**: Route through ASSESSMENT-01 → ASSESSMENT-02 → ASSESSMENT-03 → ASSESSMENT-04 → ASSESSMENT-06 → ASSESSMENT-07 → ASSESSMENT-08 in sequence before ASSESSMENT-09 Intake contract. Skip Gate D entirely when `--start-point product` or flag absent (pass-through directly to ASSESSMENT-09).
+**Rule**: Route through ASSESSMENT-01 → ASSESSMENT-02 → ASSESSMENT-03 → ASSESSMENT-04 → ASSESSMENT-06 → ASSESSMENT-07 → ASSESSMENT-08 in sequence before ASSESSMENT-09 Intake contract. `ASSESSMENT-05` is optional and runs only when naming refinement is explicitly requested. Skip Gate D entirely when `--start-point product` or flag absent (pass-through directly to ASSESSMENT-09).
 
 **Backward compatibility**: Absent `--start-point` flag is treated as `product` — no behavior change for existing operators.
 

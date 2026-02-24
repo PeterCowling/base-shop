@@ -192,8 +192,7 @@ const getActivityStatus = (
 };
 
 const getStatusColor = (status: MyLocalStatus): string => {
-  // eslint-disable-next-line ds/no-raw-color -- fallback for chart/grid color config [REC-09]
-  return statusColors[status] ?? "#1E90FF";
+  return statusColors[status] ?? "hsl(var(--color-info))";
 };
 
 export default function useGridData(startDate: string, endDate: string) {

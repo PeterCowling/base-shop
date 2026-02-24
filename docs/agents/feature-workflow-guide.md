@@ -21,17 +21,18 @@ This is the **entrypoint** for feature work in Base-Shop. It is intentionally sh
 
 Read only the skill you need for the current phase:
 
-- **Fact-find:** `.claude/skills/lp-do-fact-find/SKILL.md`
-- **Plan:** `.claude/skills/lp-do-plan/SKILL.md` (auto-runs `/lp-sequence` at the end)
-- **Sequence:** `.claude/skills/lp-sequence/SKILL.md` (also runnable standalone)
+- **Briefing (understand only):** `.claude/skills/lp-do-briefing/SKILL.md`
+- **Fact-find (planning):** `.claude/skills/lp-do-fact-find/SKILL.md`
+- **Plan:** `.claude/skills/lp-do-plan/SKILL.md` (auto-runs `/lp-do-sequence` at the end)
 - **Build:** `.claude/skills/lp-do-build/SKILL.md`
-- **Re-plan:** `.claude/skills/lp-do-replan/SKILL.md` (auto-runs `/lp-sequence` at the end)
+- **Re-plan:** `.claude/skills/lp-do-replan/SKILL.md` (auto-runs `/lp-do-sequence` at the end)
 
 For non-code deliverables, `/lp-do-build` dispatches to progressive execution skills (for example: `/draft-email`, `/biz-product-brief`, `/draft-marketing`, `/biz-spreadsheet`, `/draft-whatsapp`).
 
 ## Phase Selection (Decision Tree)
 
-- **You don't understand current behavior or blast radius yet** → Fact-find
+- **You want to understand a system without planning a change** → Briefing (`/lp-do-briefing`)
+- **You don't understand current behavior or blast radius yet, and intend to change it** → Fact-find
 - **You need tasks + acceptance criteria + confidence** → Plan-feature (includes sequencing)
 - **You have an approved plan + an eligible task** → Build-feature
 - **Task is below its execution threshold (`IMPLEMENT/SPIKE <80`, `INVESTIGATE <60`), blocked, or scope changes during build** → Re-plan (includes sequencing)
@@ -76,31 +77,20 @@ When running `/lp-do-replan`, confidence increases must be evidence-led:
 - **Build-feature:** code and/or business artifacts + plan updated per task; commits tied to TASK IDs
 - **Re-plan:** plan updated with evidence/decisions/confidence (no implementation changes)
 
-## Business OS Card Tracking (Default)
+## Business OS Card Tracking
 
-The core loop updates Business OS automatically. No extra user action is required for baseline tracking.
+DO workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`) are **filesystem-only**. They do not create or update BOS cards, stage docs, or lane transitions. Card and lane tracking for DO-stage work is done manually via `/idea-advance` when needed.
 
-### Baseline Behavior
+### What is automated via BOS API
 
-1. Set `Business-Unit` in lp-do-fact-find frontmatter (or inherit from existing card).
-2. Keep `Business-OS-Integration` omitted or `on` (default).
-3. Use `Business-OS-Integration: off` only for intentionally standalone work.
+- `/idea-generate`: creates prioritized ideas/cards and seeds top-K `lp-do-fact-find` stage docs.
+- `/lp-bos-sync` (S5B): persists prioritized baseline outputs to Business OS.
 
-### What is automated
-
-- `/idea-generate`: creates prioritized ideas/cards and seeds top-K lp-do-fact-find stage docs.
-- `/lp-do-fact-find`: creates/updates card + `lp-do-fact-find` stage doc.
-- `/lp-do-plan`: creates `plan` stage doc and applies deterministic `Fact-finding -> Planned` when plan gate passes.
-- `/lp-do-build`: applies deterministic `Planned -> In progress` at build start and `In progress -> Done` at completion gate.
+All DO workflow artifacts are tracked through the `docs/plans/<feature-slug>/` filesystem namespace.
 
 ### Discovery freshness
 
-Loop write paths rebuild `docs/business-os/_meta/discovery-index.json`. If rebuild fails twice, the skill run fails with explicit `discovery-index stale` output instead of silent success.
-
-### Compatibility
-
-- With `Business-OS-Integration: off`, skills skip card/stage-doc/lane writes.
-- Existing docs without the field default to integration on.
+`docs/business-os/_meta/rebuild-discovery-index.sh` reads plan and fact-find artifact status from the filesystem. Run it after adding or moving plans to refresh `docs/business-os/_meta/discovery-index.json`.
 
 **Shared helpers:** `.claude/skills/_shared/card-operations.md` and `.claude/skills/_shared/stage-doc-operations.md`
 

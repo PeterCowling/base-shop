@@ -54,21 +54,19 @@ describe("SafeResetForm", () => {
     expect(onConfirm).toHaveBeenCalledWith(100, 3, 1, { "50": 2 });
   });
 
-  it("applies dark mode styles", () => {
+  it("applies token-based theme styles", () => {
     render(
-      <div className="dark">
-        <SafeResetForm
-          currentKeycards={0}
-          onConfirm={jest.fn()}
-          onCancel={jest.fn()}
-        />
-      </div>
+      <SafeResetForm
+        currentKeycards={0}
+        onConfirm={jest.fn()}
+        onCancel={jest.fn()}
+      />
     );
     const heading = screen.getByRole("heading", { name: /reset safe/i });
     const container = heading.parentElement as HTMLElement;
-    expect(container).toHaveClass("dark:bg-darkSurface");
+    expect(container).toHaveClass("bg-surface");
     expect(screen.getByRole("button", { name: /confirm reset/i })).toHaveClass(
-      "dark:bg-darkAccentGreen"
+      "bg-primary-main"
     );
   });
 });

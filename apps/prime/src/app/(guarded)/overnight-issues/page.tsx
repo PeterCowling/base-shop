@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { AlertTriangle, LifeBuoy } from 'lucide-react';
 
+import GuardedInfoPageShell from '../../../components/pre-arrival/GuardedInfoPageShell';
 import { buildSupportMailto } from '../../../config/supportContact';
 import { useUnifiedBookingData } from '../../../hooks/dataOrchestrator/useUnifiedBookingData';
 
@@ -24,40 +25,14 @@ export default function OvernightIssuesPage() {
     return buildSupportMailto({ subject, body });
   }, [occupantData?.reservationCode, t]);
 
-  if (isLoading) {
-    return (
-      <main className="bg-muted px-4 py-6 pb-24">
-        <div className="flex items-center justify-center py-10">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-        </div>
-      </main>
-    );
-  }
-
-  if (error || !occupantData) {
-    return (
-      <main className="bg-muted px-4 py-6 pb-24">
-        <section className="rounded-xl bg-card p-6 text-center shadow-sm">
-          <h1 className="text-xl font-semibold text-foreground">
-            {t('overnightIssues.title')}
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {t('overnightIssues.loadError')}
-          </p>
-          <Link
-            href="/"
-            className="mt-4 inline-block text-sm text-primary hover:underline"
-          >
-            {t('overnightIssues.returnHome')}
-          </Link>
-        </section>
-      </main>
-    );
-  }
-
   return (
-    <main className="bg-muted px-4 py-6 pb-24">
-      <div className="space-y-4">
+    <GuardedInfoPageShell
+      title={t('overnightIssues.title')}
+      loadErrorMessage={t('overnightIssues.loadError')}
+      returnHomeLabel={t('overnightIssues.returnHome')}
+      isLoading={isLoading}
+      hasError={Boolean(error) || !occupantData}
+    >
         <section className="rounded-xl bg-card p-5 shadow-sm">
           <div className="mb-4 flex items-start gap-3">
             <AlertTriangle className="h-6 w-6 text-warning-foreground" />
@@ -122,7 +97,6 @@ export default function OvernightIssuesPage() {
             {t('overnightIssues.returnHome')}
           </Link>
         </div>
-      </div>
-    </main>
+    </GuardedInfoPageShell>
   );
 }

@@ -81,6 +81,7 @@ baseshop_test_governor_emit_event() {
   local workers="0"
   local exit_code="0"
   local timeout_killed="false"
+  local kill_escalation="none"
   local override_policy_used="false"
   local override_overload_used="false"
 
@@ -98,11 +99,17 @@ baseshop_test_governor_emit_event() {
       --workers) workers="${2:-0}"; shift 2 ;;
       --exit-code) exit_code="${2:-0}"; shift 2 ;;
       --timeout-killed) timeout_killed="$(bool_normalize "${2:-false}")"; shift 2 ;;
+      --kill-escalation) kill_escalation="${2:-none}"; shift 2 ;;
       --override-policy-used) override_policy_used="$(bool_normalize "${2:-false}")"; shift 2 ;;
       --override-overload-used) override_overload_used="$(bool_normalize "${2:-false}")"; shift 2 ;;
       *) shift ;;
     esac
   done
+
+  case "$kill_escalation" in
+    none|sigterm|sigkill) ;;
+    *) kill_escalation="none" ;;
+  esac
 
   if [[ -z "$argv_hash" ]]; then
     argv_hash="$(calc_hash "${event_class}:${normalized_sig}")"
@@ -132,7 +139,7 @@ baseshop_test_governor_emit_event() {
     fi
   fi
 
-  printf '{"ts":"%s","governed":%s,"policy_mode":"%s","class":"%s","normalized_sig":"%s","argv_hash":"%s","admitted":%s,"queued_ms":%s,"peak_rss_mb":%s,"pressure_level":"%s","workers":%s,"exit_code":%s,"timeout_killed":%s,"override_policy_used":%s,"override_overload_used":%s}\n' \
+  printf '{"ts":"%s","governed":%s,"policy_mode":"%s","class":"%s","normalized_sig":"%s","argv_hash":"%s","admitted":%s,"queued_ms":%s,"peak_rss_mb":%s,"pressure_level":"%s","workers":%s,"exit_code":%s,"timeout_killed":%s,"kill_escalation":"%s","override_policy_used":%s,"override_overload_used":%s}\n' \
     "$(json_escape "$ts")" \
     "$governed" \
     "$(json_escape "$policy_mode")" \
@@ -146,6 +153,7 @@ baseshop_test_governor_emit_event() {
     "$workers" \
     "$exit_code" \
     "$timeout_killed" \
+    "$(json_escape "$kill_escalation")" \
     "$override_policy_used" \
     "$override_overload_used" >> "$events_file"
 }

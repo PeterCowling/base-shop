@@ -4,7 +4,8 @@ import * as React from "react";
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import type { CatalogProductDraftInput } from "../../../lib/catalogAdminSchema";
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
+
 import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
 import { useCatalogConsole } from "../useCatalogConsole.client";
 
@@ -99,6 +100,9 @@ describe("catalog console localized error surfaces", () => {
       if (url.startsWith("/api/catalog/products?storefront=")) {
         return jsonResponse({ ok: true, products: [], revisionsById: {} });
       }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+      }
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
@@ -138,6 +142,9 @@ describe("catalog console localized error surfaces", () => {
           );
         }
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
       }
       if (url.startsWith("/api/catalog/products/studio-jacket?storefront=") && init?.method === "DELETE") {
         return jsonResponse({ ok: false, error: "not_found", reason: "product_not_found" }, { status: 404 });
@@ -188,6 +195,9 @@ describe("catalog console localized error surfaces", () => {
           );
         }
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
       }
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;

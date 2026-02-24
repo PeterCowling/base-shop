@@ -2,16 +2,16 @@
 :root {
   --rvg-font-face: "sans-serif";
   --rvg-font-size: "14px";
-  --rvg-color-text: #30424f;
-  --rvg-color-background: #ffffff;
-  --rvg-color-border: #ddebf3;
+  --rvg-color-text: hsl(var(--color-foreground));
+  --rvg-color-background: hsl(var(--color-bg));
+  --rvg-color-border: hsl(var(--color-border-1));
   --rvg-color-free: transparent;
-  --rvg-color-awaiting: #ddebf3;
-  --rvg-color-confirmed: #006490;
-  --rvg-color-inaccessible: #759ab5;
-  --rvg-color-today: #e4ffe6;
-  --rvg-color-selected: #fff2f2;
-  --rvg-color-weekend: #f8fafb;
+  --rvg-color-awaiting: hsl(var(--color-info-light));
+  --rvg-color-confirmed: hsl(var(--color-info-main));
+  --rvg-color-inaccessible: hsl(var(--color-muted));
+  --rvg-color-today: hsl(var(--color-success-light));
+  --rvg-color-selected: hsl(var(--color-error-light));
+  --rvg-color-weekend: hsl(var(--color-surface-2));
   --rvg-width-title: 50%;
   --rvg-width-info: 50%;
 }

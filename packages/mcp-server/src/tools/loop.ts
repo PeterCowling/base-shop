@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { z } from "zod";
 
-import { mean as libMean, stddev as libStddev } from "@acme/lib";
+import { EWMA, mean as libMean, stddev as libStddev } from "@acme/lib";
 
 import {
   buildFreshnessEnvelope,
@@ -2107,10 +2107,11 @@ async function handleAnomalyDetect(
   const avg = mean(history);
   const std = standardDeviation(history);
   const ewmaAlpha = 0.3;
-  let ewma = history[0] ?? 0;
-  for (const value of history.slice(1)) {
-    ewma = ewmaAlpha * value + (1 - ewmaAlpha) * ewma;
+  const ewmaModel = new EWMA({ alpha: ewmaAlpha });
+  for (const value of history) {
+    ewmaModel.update(value);
   }
+  const ewma = ewmaModel.value ?? 0;
 
   const zScore =
     std === 0 ? (currentValue === avg ? 0 : Math.sign(currentValue - avg) * 10) : (currentValue - avg) / std;

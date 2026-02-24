@@ -1,0 +1,71 @@
+{
+  "sourcePaths": [],
+  "seoKeywords": ["mini bag", "bag charm", "micro accessories", "Positano", "Italian accessories"],
+  "home": {
+    "eyebrow": { "en": "Handcrafted in Positano" },
+    "heading": { "en": "Un solo dettaglio. Quello carino." },
+    "summary": { "en": "Micro accessories and mini bags designed with one detail in mind — the one that matters." },
+    "ctaPrimary": { "en": "Shop now" },
+    "ctaSecondary": { "en": "Explore mini bags" },
+    "seoHeading": { "en": "Caryina — Italian micro accessories" },
+    "seoBody": { "en": "Caryina creates small-scale accessories designed in Positano, Italy. Every piece is built around a single considered detail." },
+    "faqHeading": { "en": "Questions" },
+    "faqItems": [
+      { "question": { "en": "Where are pieces made?" }, "answer": { "en": "All pieces are designed in Positano and handcrafted in Italy." } },
+      { "question": { "en": "What is the return policy?" }, "answer": { "en": "We accept returns within 14 days of delivery for unworn items." } },
+      { "question": { "en": "How long does shipping take?" }, "answer": { "en": "Standard shipping takes 5–7 business days. Express is available at checkout." } }
+    ]
+  },
+  "shop": {
+    "eyebrow": { "en": "All pieces" },
+    "heading": { "en": "Shop" },
+    "summary": { "en": "Micro accessories and mini bags — each one built around a single considered detail." },
+    "trustBullets": [
+      { "en": "Handcrafted in Italy" },
+      { "en": "Free returns within 14 days" },
+      { "en": "Secure checkout" }
+    ]
+  },
+  "launchFamilies": {
+    "top-handle": { "label": { "en": "Top handle" }, "description": { "en": "Structured mini bags with a top handle." } },
+    "shoulder": { "label": { "en": "Shoulder" }, "description": { "en": "Soft shoulder bags for everyday wear." } },
+    "mini": { "label": { "en": "Mini" }, "description": { "en": "The smallest pieces in the collection." } }
+  },
+  "productPage": {
+    "proofHeading": { "en": "Why Caryina" },
+    "proofBullets": [
+      { "en": "Handcrafted in Italy" },
+      { "en": "Premium materials" },
+      { "en": "14-day returns" }
+    ],
+    "relatedHeading": { "en": "You may also like" }
+  },
+  "support": {
+    "title": { "en": "Support" },
+    "summary": { "en": "We're here to help. Reach us by email or WhatsApp." },
+    "channels": [{ "en": "Email: hello@caryina.com" }, { "en": "WhatsApp: +39 000 000 0000" }],
+    "responseSla": { "en": "We respond within 24 hours on business days." }
+  },
+  "policies": {
+    "privacy": {
+      "title": { "en": "Privacy Policy" },
+      "summary": { "en": "We take your privacy seriously." },
+      "bullets": [{ "en": "We do not sell your data." }, { "en": "We use cookies only for essential functionality." }]
+    },
+    "shipping": {
+      "title": { "en": "Shipping" },
+      "summary": { "en": "We ship worldwide from Italy." },
+      "bullets": [{ "en": "Standard: 5–7 business days" }, { "en": "Express: 2–3 business days" }]
+    },
+    "returns": {
+      "title": { "en": "Returns" },
+      "summary": { "en": "Hassle-free returns within 14 days." },
+      "bullets": [{ "en": "Items must be unworn and in original condition." }, { "en": "Contact us to start a return." }]
+    },
+    "terms": {
+      "title": { "en": "Terms of Service" },
+      "summary": { "en": "By using this site you agree to our terms." },
+      "bullets": [{ "en": "All prices are in EUR and include VAT." }, { "en": "Orders are subject to availability." }]
+    }
+  }
+}

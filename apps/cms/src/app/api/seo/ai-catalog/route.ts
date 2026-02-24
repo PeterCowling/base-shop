@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { validateShopName } from "@acme/lib";
+import { validateShopName } from "@acme/lib/validateShopName";
 import { getProductById, PRODUCTS } from "@acme/platform-core/products";
 import { readRepo } from "@acme/platform-core/repositories/products.server";
 import { getShopSettings } from "@acme/platform-core/repositories/settings.server";

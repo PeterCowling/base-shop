@@ -16,9 +16,6 @@ Supporting-Skills: <comma-separated or none>
 Overall-confidence: <0-100%>
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: <plan-only | plan+auto>
-Business-OS-Integration: <on | off>
-Business-Unit: <BRIK | PLAT | PIPE | BOS | none>
-Card-ID: <id | none>
 ---
 
 # <Feature Name> Plan

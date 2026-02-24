@@ -39,14 +39,18 @@ When you identify that the "right" solution requires significantly more work, ex
 | Lint | `pnpm --filter <pkg> lint` |
 | Test (single file) | `pnpm --filter <pkg> test -- path/to/file.test.ts` |
 | Test (pattern) | `pnpm --filter <pkg> test -- --testPathPattern="name"` |
-| Validate all | `bash scripts/validate-changes.sh` |
+| Validate all (local default) | `bash scripts/validate-changes.sh` |
+| Validate all (+ targeted local tests) | `VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh` |
 
 ## Validation Gate (Before Every Commit)
 
 ```bash
 # Scope validation to changed packages only (preferred default).
 pnpm --filter <pkg> typecheck && pnpm --filter <pkg> lint
-# Plus: targeted tests for changed files (see scripts/validate-changes.sh)
+# Default local gate (policy + typecheck + lint):
+bash scripts/validate-changes.sh
+# Optional: include targeted local tests; CI remains source of truth for test gating.
+VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh
 ```
 
 If multiple packages changed, run typecheck + lint for each affected package.
@@ -90,10 +94,16 @@ If one of these commands seems necessary, STOP and ask for help. Full guide: [do
 
 ## Testing Rules
 
-- **Always use targeted tests** — single file or pattern
+- **Default local gate is lint + typecheck:** `bash scripts/validate-changes.sh` skips targeted tests unless explicitly opted in
+- **GitHub Actions is source of truth for required tests:** rely on CI/merge-gate for test pass/fail gating
+- **When running tests locally, always use targeted scope** — single file or pattern
 - **Never run `pnpm test` unfiltered** — spawns too many workers
 - **Limit workers:** `--maxWorkers=2` for broader runs
 - **Check for orphans first:** `ps aux | grep jest | grep -v grep`
+- **Governed timeout defaults:** `BASESHOP_TEST_TIMEOUT_SEC=600` (wall-clock, `0` disables) and `BASESHOP_TEST_ADMISSION_TIMEOUT_SEC=300` (admission polling, `0` disables)
+- **Governed cleanup semantics:** on forced stop, runner kills child processes and parent with `SIGTERM`, then escalates to `SIGKILL` after 5s if still alive; timeout exits with code `124`
+- **Telemetry fields for runaway prevention:** `timeout_killed` and `kill_escalation` (`none|sigterm|sigkill`) in `.cache/test-governor/events.jsonl`
+- **Jest defaults:** shared preset enforces `forceExit: true` and `detectOpenHandles: true`
 - **ESM vs CJS in Jest:** If a test or imported file fails with ESM parsing errors (for example, `Cannot use import statement outside a module` or `import.meta` issues), rerun that test with `JEST_FORCE_CJS=1` to force the CommonJS preset and avoid ESM transform gaps.
 
 Full policy: [docs/testing-policy.md](docs/testing-policy.md)
@@ -180,7 +190,7 @@ All skills listed here use the same name in both Claude Code and Codex. The cano
 - `lp-readiness`: Startup preflight gate (S1). Lightweight readiness check before entering the offer-building stage. (file: `.claude/skills/lp-readiness/SKILL.md`)
 - `lp-refactor`: Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition. (file: `.claude/skills/lp-refactor/SKILL.md`)
 - `lp-seo`: S6B phased SEO strategy skill — keyword research, content clustering, SERP analysis, technical audit, and snippet optimization for any business. (file: `.claude/skills/lp-seo/SKILL.md`)
-- `lp-sequence`: Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata. (file: `.claude/skills/lp-sequence/SKILL.md`)
+- `lp-do-sequence`: Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata. (file: `.claude/skills/lp-do-sequence/SKILL.md`)
 - `lp-signal-review`: Weekly signal strengthening review for startup loop runs. Audits a run against ten structural signal-strengthening principles and emits a Signal Review artifact with ranked Finding Briefs. (file: `.claude/skills/lp-signal-review/SKILL.md`)
 - `lp-site-upgrade`: Build website-upgrade strategy in three layers: platform capability baseline, per-business upgrade brief, and lp-do-fact-find handoff packet. (file: `.claude/skills/lp-site-upgrade/SKILL.md`)
 - `lp-visual`: Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). (file: `.claude/skills/lp-visual/SKILL.md`)

@@ -117,14 +117,16 @@
         "../../packages/email/dist/*"
       ],
       "@acme/lib": [
-        "../../packages/lib/src/index.ts",
-        "../../packages/lib/src",
+        "../../packages/lib/dist/index.js",
+        "../../packages/lib/dist/index.d.ts",
         "../../packages/lib/dist/index",
-        "../../packages/lib/dist"
+        "../../packages/lib/dist",
+        "../../packages/lib/src/index.ts",
+        "../../packages/lib/src"
       ],
       "@acme/lib/*": [
-        "../../packages/lib/src/*",
-        "../../packages/lib/dist/*"
+        "../../packages/lib/dist/*",
+        "../../packages/lib/src/*"
       ],
       "@acme/email-templates": [
         "../../packages/email-templates/src/index.ts",
@@ -225,14 +227,16 @@
         "../../packages/cms-ui/dist/*"
       ],
       "@acme/seo": [
-        "../../packages/seo/src/index.ts",
-        "../../packages/seo/src",
+        "../../packages/seo/dist/index.js",
+        "../../packages/seo/dist/index.d.ts",
         "../../packages/seo/dist/index",
-        "../../packages/seo/dist"
+        "../../packages/seo/dist",
+        "../../packages/seo/src/index.ts",
+        "../../packages/seo/src"
       ],
       "@acme/seo/*": [
-        "../../packages/seo/src/*",
-        "../../packages/seo/dist/*"
+        "../../packages/seo/dist/*",
+        "../../packages/seo/src/*"
       ]
     },
     "module": "ESNext",

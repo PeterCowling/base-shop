@@ -1,3 +1,5 @@
+import { clamp } from "@acme/lib/math/animation";
+
 export type ParticlePoint = {
   x: number;
   y: number;
@@ -73,10 +75,6 @@ const DEFAULTS = {
   viewportWidth: Number.POSITIVE_INFINITY,
   viewportHeight: Number.POSITIVE_INFINITY,
 } as const;
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
 
 function lerp(start: number, end: number, t: number): number {
   return start + (end - start) * t;

@@ -204,7 +204,7 @@ function Search(): JSX.Element {
           onClick={setBookingsTab}
           className={`px-4 py-1 rounded ${
             activeTab === "bookings" ? "bg-primary-main text-primary-fg" : "bg-surface-2"
-          } dark:bg-darkSurface dark:text-darkAccentGreen`}
+          }`}
         >
           Bookings
         </Button>
@@ -214,7 +214,7 @@ function Search(): JSX.Element {
             activeTab === "transactions"
               ? "bg-primary-main text-primary-fg"
               : "bg-surface-2"
-          } dark:bg-darkSurface dark:text-darkAccentGreen`}
+          }`}
         >
           Transactions
         </Button>
@@ -222,7 +222,7 @@ function Search(): JSX.Element {
           onClick={setAuditsTab}
           className={`px-4 py-1 rounded ${
             activeTab === "audits" ? "bg-primary-main text-primary-fg" : "bg-surface-2"
-          } dark:bg-darkSurface dark:text-darkAccentGreen`}
+          }`}
         >
           Audits
         </Button>
@@ -230,7 +230,7 @@ function Search(): JSX.Element {
 
       {activeTab === "bookings" && (
         <>
-          <h2 className="text-xl font-semibold mb-4 dark:text-darkAccentGreen">
+          <h2 className="text-xl font-semibold mb-4">
             Search Bookings
           </h2>
 

@@ -1,9 +1,10 @@
 import { ulid } from "ulid";
 
-import { nowIso } from "@acme/date-utils";
 import { getSections, saveSection } from "@acme/platform-core/repositories/sections/index.server";
 import type { PageComponent,SectionTemplate } from "@acme/types";
 import { sectionTemplateSchema } from "@acme/types";
+
+import { nowIso } from "@/lib/datetime";
 
 import { formDataToObject } from "../../utils/formData";
 import { ensureAuthorized } from "../common/auth";

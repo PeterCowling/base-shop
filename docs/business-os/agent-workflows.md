@@ -84,11 +84,9 @@ Agent:
 - Evaluates evidence against lane criteria
 - Proposes `Proposed-Lane` with rationale and evidence
 
-**Important:** baseline core-loop transitions are deterministic in skill execution:
-- `/lp-do-plan`: `Fact-finding -> Planned`
-- `/lp-do-build`: `Planned -> In progress` and `In progress -> Done`
+**Important:** DO workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`) are filesystem-only and do not trigger BOS lane transitions. All lane moves require explicit operator action.
 
-Use `/idea-advance` only when you intentionally need an exception path.
+Use `/idea-advance` when you need to propose any lane transition based on stage document evidence.
 
 **Full instructions:** `.claude/skills/idea-advance/SKILL.md`
 ---
@@ -201,36 +199,25 @@ Agent:
 
 ## Workflow Integration
 
-### Feature Workflow Skills with Business OS Integration (Default)
+### Feature Workflow Skills — Business OS Integration
 
-The core loop (`/idea-generate` -> `/lp-do-fact-find` -> `/lp-do-plan` -> `/lp-do-build`) integrates with Business OS by default.
+`/idea-generate` and `/lp-bos-sync` (S5B) integrate with Business OS. DO workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`) are **filesystem-only** — they do not create or update BOS cards, stage docs, or lane transitions.
 
-**Baseline mode:** `Business-OS-Integration` omitted or `on`.
+**Automated behavior (BOS-integrated skills only):**
 
-**Escape hatch:** set `Business-OS-Integration: off` in controlling lp-do-fact-find/plan frontmatter for intentionally standalone work.
-
-**Automated behavior:**
-
-| Skill | Baseline integration behavior |
-|-------|-------------------------------|
+| Skill | Integration behavior |
+|-------|---------------------|
 | `/idea-generate` | Creates prioritized ideas/cards and seeds top-K `fact-find` stage docs via latest-wins upsert (`GET /api/agent/stage-docs/:cardId/:stage` -> `PATCH` if exists, `POST` if missing) |
-| `/lp-do-fact-find` | On card selection, reads latest `fact-find` stage doc (including sweep-seeded docs) as starting context; then creates/updates card + `fact-find` stage doc via latest-wins upsert |
-| `/lp-do-plan` | Creates `plan` stage doc, updates `Plan-Link`, applies deterministic `Fact-finding -> Planned` when gate passes |
-| `/lp-do-build` | Creates/updates `build` stage doc, updates `Last-Progress`, applies deterministic `Planned -> In progress` and `In progress -> Done` when gates pass |
+| `/lp-do-fact-find` | Filesystem-only. Produces `docs/plans/<slug>/fact-find.md`. No BOS writes. |
+| `/lp-do-plan` | Filesystem-only. Produces `docs/plans/<slug>/plan.md`. No BOS writes. |
+| `/lp-do-build` | Filesystem-only. Updates `docs/plans/<slug>/plan.md` per task. No BOS writes. |
 
 **Ideas triage UI:** `/ideas` is the backlog triage surface. It lists ideas in deterministic order (`P0 -> P5`, then created date DESC, then ID ASC) with server-driven filters/search via URL params and click-through to `/ideas/[id]`.
 
 **Automated idea routing:** idea writes from `/idea-generate` (`POST /api/agent/ideas`) are persisted to D1 in `inbox`/`worked` and become visible on `/ideas` immediately (page is `force-dynamic`). Kanban lanes remain card-only and do not render idea entities.
 
-**Discovery index freshness (fail-closed):**
-- Loop write paths rebuild `docs/business-os/_meta/discovery-index.json`.
-- Rebuild retries once after short backoff.
-- If second attempt fails, run surfaces `discovery-index stale` with:
-  - failing command,
-  - retry count,
-  - stderr summary,
-  - exact rerun command for operator reconciliation.
-- Success completion messages must not claim fresh discovery while stale persists.
+**Discovery index freshness:**
+- `docs/business-os/_meta/rebuild-discovery-index.sh` reads plan and fact-find artifact status from the filesystem to rebuild `docs/business-os/_meta/discovery-index.json`. Run it manually after adding or moving plans.
 
 **Partial sweep reconciliation (idea-generate):**
 - When persistence is partial (or index is stale), sweep report must include a reconciliation checklist:
@@ -239,39 +226,29 @@ The core loop (`/idea-generate` -> `/lp-do-fact-find` -> `/lp-do-plan` -> `/lp-d
   - exact retry commands,
   - owner handoff.
 
-**Stage-doc latest-wins upsert contract (canonical):**
-- Applies to both `/idea-generate` stage seeding and `/lp-do-fact-find` stage updates.
+**Stage-doc latest-wins upsert contract (for `/idea-generate` only):**
+- Applies to `/idea-generate` stage seeding.
 - Treat each `cardId + stage` as one logical current document.
 - Write flow: `GET /api/agent/stage-docs/:cardId/:stage` -> `PATCH` when present (`baseEntitySha` required) -> `POST` only when missing (`404`).
 - On `PATCH` conflict (`409`): refetch and retry once; if still conflicting, fail-closed and surface error.
 - Repository internals may append records over time, but workflow semantics are latest-wins for operator behavior.
 
-**Fact-find seeded-doc consumption contract:**
-- If `/idea-generate` seeded a `fact-find` stage doc, `/lp-do-fact-find` must load it when a card is selected.
-- Seeded content is starting context (questions/findings/recommendations), not a planning bypass.
-- `/lp-do-fact-find` deepens evidence and refreshes the same logical `fact-find` stage doc via latest-wins upsert.
-
-**Compatibility:** existing documents without `Business-OS-Integration` field default to `on`; set `off` only for exception paths.
 
 ### Typical Card Lifecycle (Agent-Assisted)
 
 ```
 1. /idea-generate -> prioritized ideas + cards + top-K fact-find stage docs
    ↓
-2. /lp-do-fact-find -> loads seeded fact-find stage doc (if present), produces evidence brief, refreshes fact-find stage doc (latest-wins)
+2. /lp-do-fact-find -> produces evidence brief at docs/plans/<slug>/fact-find.md
    ↓
-3. /lp-do-plan -> plan doc + plan stage doc
+3. /lp-do-plan -> produces plan at docs/plans/<slug>/plan.md
    ↓
-4. /lp-do-plan applies deterministic lane move: Fact-finding -> Planned (when plan gate passes)
+4. /lp-do-build -> completes eligible implementation tasks with validation evidence
    ↓
-5. /lp-do-build starts execution and applies deterministic lane move: Planned -> In progress
-   ↓
-6. /lp-do-build completes eligible implementation tasks with validation evidence
-   ↓
-7. /lp-do-build applies deterministic lane move: In progress -> Done (when completion gate passes)
-   ↓
-8. /biz-update-plan and /biz-update-people capture reflections and capability updates
+5. /biz-update-plan and /biz-update-people capture reflections and capability updates
 ```
+
+Lane transitions (Fact-finding → Planned → In progress → Done → Reflected) are managed manually via `/idea-advance` when needed.
 
 ### Recommended Scan Schedule
 
@@ -367,7 +344,7 @@ Before any agent skill commits:
 ## Next Steps
 
 1. For new ideas → Use `/idea-develop` to create cards
-2. For card progression → Run core loop stages; deterministic lane updates occur inside `/lp-do-plan` and `/lp-do-build`
+2. For card progression → Run core loop stages (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`); use `/idea-advance` to propose lane transitions when stage docs show completion evidence
 3. For weekly reviews → Use `/idea-scan` to detect changes
 4. For plan updates → Use `/biz-update-plan` after reflections
 5. For team tracking → Use `/biz-update-people` after capabilities/gaps change

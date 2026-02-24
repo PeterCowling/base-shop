@@ -136,7 +136,7 @@ export const OpenShiftForm = memo(function OpenShiftForm({
         title="Open Shift"
         borderClass="border-info-main"
         textClass="text-info-main"
-        confirmClass="bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+        confirmColor="primary"
         confirmLabel="Confirm Shift Opening"
         showKeycards
         keycardLabel="Starting Keycards"
@@ -152,7 +152,7 @@ export const OpenShiftForm = memo(function OpenShiftForm({
           />
         )}
         {showPrevious && (
-          <div className="text-sm text-info-main text-end mt-4 dark:text-darkAccentGreen">
+          <div className="text-sm text-info-main text-end mt-4">
             <div className="mb-2">
               Previous count was €{previousFinalCash.toFixed(2)}
             </div>

@@ -69,6 +69,8 @@ export const Progress = (
             "bg-primary h-full origin-left scale-x-0 transition-transform motion-reduce:transition-none", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
           )}
           data-token="--color-primary" // i18n-exempt -- UI-000: design token attribute, not user copy [ttl=2026-01-31]
+          data-ds-contrast-exempt
+          aria-hidden="true"
           style={{ transform: `scaleX(${scale})` }}
         />
       </div>

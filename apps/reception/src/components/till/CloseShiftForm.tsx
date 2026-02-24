@@ -42,6 +42,19 @@ const closeShiftFormSchema = z
     message: "Cash total does not match breakdown",
     path: ["cash"],
   });
+const STEP_STYLES = {
+  reconcile: {
+    closeBtnBg: "bg-warning-main",
+    border: "border-warning-main",
+    text: "text-warning-main",
+  },
+  error: {
+    closeBtnBg: "bg-error-main",
+    border: "border-error-main",
+    text: "text-error-main",
+  },
+} as const;
+
 /**
  * Form to close a shift:
  * - Count denominations for the final cash
@@ -56,6 +69,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
   onCancel,
 }: CloseShiftFormProps) {
   const isReconcile = variant === "reconcile";
+  const styles = STEP_STYLES[isReconcile ? "reconcile" : "error"];
   const STORAGE_KEY = isReconcile
     ? "reconcile-shift-progress"
     : "close-shift-progress";
@@ -220,20 +234,20 @@ export const CloseShiftForm = memo(function CloseShiftForm({
     <>
       <StepProgress step={step} onStepChange={setStep} user={user} />
       {step === 0 && (
-        <div className="relative dark:bg-darkSurface dark:text-darkAccentGreen">
+        <div className="relative">
           <Button
             onClick={onCancel}
             aria-label="Close"
-            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-${isReconcile ? "warning" : "error"}-main text-primary-fg`}
+            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full ${styles.closeBtnBg} text-primary-fg`}
           >
             <span aria-hidden="true">&times;</span>
           </Button>
           <CashCountingForm
             idPrefix={isReconcile ? "denomRecon_" : "denomClose_"}
             title={isReconcile ? "Reconcile Shift - Cash" : "Close Shift - Cash"}
-            borderClass={`border-${isReconcile ? "warning" : "error"}-main`}
-            textClass={`text-${isReconcile ? "warning" : "error"}-main`}
-            confirmClass={`bg-${isReconcile ? "warning" : "error"}-main text-primary-fg rounded hover:bg-${isReconcile ? "warning" : "error"}-dark dark:bg-darkAccentGreen dark:text-darkBg`}
+            borderClass={styles.border}
+            textClass={styles.text}
+            confirmColor={isReconcile ? "warning" : "danger"}
             confirmLabel="Next"
             expectedCash={expectedCashAtClose}
             showExpected={showExpected}
@@ -242,7 +256,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             onCancel={onCancel}
           />
           <Button
-            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded dark:bg-darkSurface dark:text-darkAccentOrange"
+            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded"
             onClick={saveProgress}
           >
             Save Progress
@@ -252,7 +266,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
 
       {step === 1 && (
         <div
-          className={`border border-${isReconcile ? "warning" : "error"}-main rounded p-4 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface`}
+          className={`border ${styles.border} rounded p-4`}
         >
           {isReconcile ? (
             <CreditCardReceiptCheck
@@ -272,19 +286,19 @@ export const CloseShiftForm = memo(function CloseShiftForm({
           <div className="mt-4 flex gap-2">
             <Button
               onClick={() => setStep(0)}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded dark:bg-darkSurface dark:text-darkAccentOrange"
+              className="px-4 py-2 bg-info-main text-primary-fg rounded"
             >
               Back
             </Button>
             <Button
               onClick={handleStep1Next}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded dark:bg-darkSurface dark:text-darkAccentOrange"
+              className="px-4 py-2 bg-info-main text-primary-fg rounded"
             >
               Next
             </Button>
             <Button
               onClick={saveProgress}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded dark:bg-darkSurface dark:text-darkAccentOrange"
+              className="px-4 py-2 bg-info-main text-primary-fg rounded"
             >
               Save Progress
             </Button>
@@ -312,11 +326,11 @@ export const CloseShiftForm = memo(function CloseShiftForm({
       )}
 
       {step === 2 && !showReauthModal && (
-        <div className="relative dark:bg-darkSurface dark:text-darkAccentGreen">
+        <div className="relative">
           <Button
             onClick={onCancel}
             aria-label="Close"
-            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-${isReconcile ? "warning" : "error"}-main text-primary-fg`}
+            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full ${styles.closeBtnBg} text-primary-fg`}
           >
             <span aria-hidden="true">&times;</span>
           </Button>
@@ -333,12 +347,12 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             hideCancel
           />
           {recountRequired && (
-            <p className="mt-2 text-center text-warning-main text-sm dark:text-darkAccentGreen">
+            <p className="mt-2 text-center text-warning-main text-sm">
               Please recount and click Go again.
             </p>
           )}
           <Button
-            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded dark:bg-darkSurface dark:text-darkAccentOrange"
+            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded"
             onClick={saveProgress}
           >
             Save Progress

@@ -1,54 +1,54 @@
 [
   {
     "id": "01KCS72C6YV3PFWJQNF0A4T1P1",
-    "sku": "silk-midi-slip-dress",
+    "sku": "caryina-mini-facade-bag-charm-silver",
     "title": {
-      "en": "[Placeholder] HBAG Product 01",
-      "de": "[Placeholder] HBAG Product 01",
-      "it": "[Placeholder] HBAG Product 01"
+      "en": "Mini Facade Bag Charm - Silver",
+      "de": "Mini-Facade Taschenanhaenger - Silber",
+      "it": "Charm Mini Facade - Argento"
     },
     "description": {
-      "en": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
-      "de": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
-      "it": "Placeholder catalog copy. Replace from approved HBAG product content packet."
+      "en": "Structured mini bag charm in metallic silver with a turn-lock front closure and scarf accent. Designed in Positano for day-to-evening styling.",
+      "de": "Strukturierter Mini-Taschenanhaenger in Metallic-Silber mit Turn-Lock-Verschluss und Schal-Akzent. In Positano entworfen fuer Day-to-Evening Styling.",
+      "it": "Mini charm da borsa strutturato in argento metallizzato con chiusura turn-lock frontale e dettaglio foulard. Disegnato a Positano per look dal giorno alla sera."
     },
-    "price": 16900,
+    "price": 9900,
     "currency": "EUR",
     "media": [
       {
-        "url": "/images/hbag/hero.svg",
+        "url": "/images/hbag/silver-hero.jpeg",
         "type": "image",
-        "altText": "HBAG Product 01 hero image",
+        "altText": "Caryina silver facade mini bag front hero view",
         "tags": ["slot:hero", "family:top-handle"]
       },
       {
-        "url": "/images/hbag/angle.svg",
+        "url": "/images/hbag/silver-angle.jpeg",
         "type": "image",
-        "altText": "HBAG Product 01 alternate angle",
+        "altText": "Caryina silver facade mini bag three-quarter angle",
         "tags": ["slot:angle", "family:top-handle"]
       },
       {
-        "url": "/images/hbag/detail.svg",
+        "url": "/images/hbag/silver-detail.jpeg",
         "type": "image",
-        "altText": "HBAG Product 01 hardware detail",
+        "altText": "Caryina silver facade mini bag side texture detail",
         "tags": ["slot:detail", "family:top-handle"]
       },
       {
-        "url": "/images/hbag/on_body.svg",
+        "url": "/images/hbag/silver-back.jpeg",
         "type": "image",
-        "altText": "HBAG Product 01 on-body context",
+        "altText": "Caryina silver facade mini bag rear view with scarf detail",
         "tags": ["slot:on_body", "family:top-handle"]
       },
       {
-        "url": "/images/hbag/scale.svg",
+        "url": "/images/hbag/silver-detail.jpeg",
         "type": "image",
-        "altText": "HBAG Product 01 scale reference",
+        "altText": "Caryina silver facade mini bag size context side view",
         "tags": ["slot:scale", "family:top-handle"]
       },
       {
-        "url": "/images/hbag/alternate.svg",
+        "url": "/images/hbag/silver-angle.jpeg",
         "type": "image",
-        "altText": "HBAG Product 01 alternate framing",
+        "altText": "Caryina silver facade mini bag alternate framing",
         "tags": ["slot:alternate", "family:top-handle"]
       }
     ],
@@ -63,54 +63,54 @@
   },
   {
     "id": "01KCS72C6YV3PFWJQNF0A4T1P2",
-    "sku": "cloud-knit-cardigan",
+    "sku": "caryina-mini-facade-bag-charm-rose-splash",
     "title": {
-      "en": "[Placeholder] HBAG Product 02",
-      "de": "[Placeholder] HBAG Product 02",
-      "it": "[Placeholder] HBAG Product 02"
+      "en": "Mini Facade Bag Charm - Rose Splash",
+      "de": "Mini-Facade Taschenanhaenger - Rose Splash",
+      "it": "Charm Mini Facade - Rose Splash"
     },
     "description": {
-      "en": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
-      "de": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
-      "it": "Placeholder catalog copy. Replace from approved HBAG product content packet."
+      "en": "White-and-rose mini bag charm with textured finish and compact profile. A playful colorway for one considered detail on your handbag.",
+      "de": "Weiss-rosafarbener Mini-Taschenanhaenger mit strukturierter Oberflaeche und kompaktem Profil. Eine spielerische Farbvariante als einzelnes Detail an deiner Tasche.",
+      "it": "Mini charm da borsa bianco e rosa con finitura testurizzata e profilo compatto. Una colorazione vivace per un unico dettaglio sulla borsa."
     },
-    "price": 12900,
+    "price": 9900,
     "currency": "EUR",
     "media": [
       {
-        "url": "/images/hbag/hero.svg",
+        "url": "/images/hbag/pink-hero.jpeg",
         "type": "image",
-        "altText": "HBAG Product 02 hero image",
+        "altText": "Caryina white and pink mini bag front hero view",
         "tags": ["slot:hero", "family:shoulder"]
       },
       {
-        "url": "/images/hbag/angle.svg",
+        "url": "/images/hbag/pink-angle.jpeg",
         "type": "image",
-        "altText": "HBAG Product 02 alternate angle",
+        "altText": "Caryina white and pink mini bag side angle view",
         "tags": ["slot:angle", "family:shoulder"]
       },
       {
-        "url": "/images/hbag/detail.svg",
+        "url": "/images/hbag/pink-top.jpeg",
         "type": "image",
-        "altText": "HBAG Product 02 hardware detail",
+        "altText": "Caryina white and pink mini bag top hardware detail",
         "tags": ["slot:detail", "family:shoulder"]
       },
       {
-        "url": "/images/hbag/on_body.svg",
+        "url": "/images/hbag/pink-back.jpeg",
         "type": "image",
-        "altText": "HBAG Product 02 on-body context",
+        "altText": "Caryina white and pink mini bag rear context view",
         "tags": ["slot:on_body", "family:shoulder"]
       },
       {
-        "url": "/images/hbag/scale.svg",
+        "url": "/images/hbag/pink-side.jpeg",
         "type": "image",
-        "altText": "HBAG Product 02 scale reference",
+        "altText": "Caryina white and pink mini bag scale reference side view",
         "tags": ["slot:scale", "family:shoulder"]
       },
       {
-        "url": "/images/hbag/alternate.svg",
+        "url": "/images/hbag/pink-alternate.jpeg",
         "type": "image",
-        "altText": "HBAG Product 02 alternate framing",
+        "altText": "Caryina white and pink mini bag alternate framing",
         "tags": ["slot:alternate", "family:shoulder"]
       }
     ],
@@ -125,54 +125,54 @@
   },
   {
     "id": "01KCS72C6YV3PFWJQNF0A4T1P3",
-    "sku": "satin-wide-leg-trousers",
+    "sku": "caryina-mini-facade-bag-charm-peach",
     "title": {
-      "en": "[Placeholder] HBAG Product 03",
-      "de": "[Placeholder] HBAG Product 03",
-      "it": "[Placeholder] HBAG Product 03"
+      "en": "Mini Facade Bag Charm - Peach",
+      "de": "Mini-Facade Taschenanhaenger - Peach",
+      "it": "Charm Mini Facade - Peach"
     },
     "description": {
-      "en": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
-      "de": "Placeholder catalog copy. Replace from approved HBAG product content packet.",
-      "it": "Placeholder catalog copy. Replace from approved HBAG product content packet."
+      "en": "Peach-toned mini bag charm with facade applique, structured side gussets, and polished hardware accents for everyday carry.",
+      "de": "Pfirsichfarbener Mini-Taschenanhaenger mit Fassaden-Applikation, strukturierten Seitenfalten und polierten Hardware-Akzenten fuer den Alltag.",
+      "it": "Mini charm da borsa in tonalita pesca con applique facciata, soffietti laterali strutturati e dettagli hardware per uso quotidiano."
     },
-    "price": 13900,
+    "price": 9900,
     "currency": "EUR",
     "media": [
       {
-        "url": "/images/hbag/hero.svg",
+        "url": "/images/hbag/peach-hero.jpeg",
         "type": "image",
-        "altText": "HBAG Product 03 hero image",
+        "altText": "Caryina peach facade mini bag front hero view",
         "tags": ["slot:hero", "family:mini"]
       },
       {
-        "url": "/images/hbag/angle.svg",
+        "url": "/images/hbag/peach-angle.jpeg",
         "type": "image",
-        "altText": "HBAG Product 03 alternate angle",
+        "altText": "Caryina peach facade mini bag three-quarter angle",
         "tags": ["slot:angle", "family:mini"]
       },
       {
-        "url": "/images/hbag/detail.svg",
+        "url": "/images/hbag/peach-detail.jpeg",
         "type": "image",
-        "altText": "HBAG Product 03 hardware detail",
+        "altText": "Caryina peach facade mini bag hardware and panel detail",
         "tags": ["slot:detail", "family:mini"]
       },
       {
-        "url": "/images/hbag/on_body.svg",
+        "url": "/images/hbag/peach-back.jpeg",
         "type": "image",
-        "altText": "HBAG Product 03 on-body context",
+        "altText": "Caryina peach facade mini bag rear context view",
         "tags": ["slot:on_body", "family:mini"]
       },
       {
-        "url": "/images/hbag/scale.svg",
+        "url": "/images/hbag/peach-side.jpeg",
         "type": "image",
-        "altText": "HBAG Product 03 scale reference",
+        "altText": "Caryina peach facade mini bag side scale reference",
         "tags": ["slot:scale", "family:mini"]
       },
       {
-        "url": "/images/hbag/alternate.svg",
+        "url": "/images/hbag/peach-angle.jpeg",
         "type": "image",
-        "altText": "HBAG Product 03 alternate framing",
+        "altText": "Caryina peach facade mini bag alternate framing",
         "tags": ["slot:alternate", "family:mini"]
       }
     ],

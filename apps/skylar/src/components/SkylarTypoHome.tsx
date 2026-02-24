@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import type { Locale } from "@/lib/locales";
 

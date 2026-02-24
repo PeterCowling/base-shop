@@ -48,8 +48,8 @@ function DateSelector({
             px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors
             ${
               isSelected
-                ? "bg-primary-main text-primary-fg border-primary-main dark:bg-darkAccentGreen dark:text-darkBg dark:border-darkAccentGreen"
-                : "bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+                ? "bg-primary-main text-primary-fg border-primary-main"
+                : "bg-surface text-foreground border-border-2 hover:bg-surface-2"
             }
           `}
           onClick={() => onDateChange(day)}
@@ -126,7 +126,7 @@ function DateSelector({
         {isCalendarOpen && (
           <div
             ref={calendarRef}
-            className="absolute z-50 mt-2 bg-surface shadow-lg rounded p-5 dark:bg-darkSurface"
+            className="absolute z-50 mt-2 bg-surface shadow-lg rounded p-5"
             style={{ top: "100%", right: 0 }}
           >
             <DayPicker
@@ -158,7 +158,7 @@ function DateSelector({
 
   // The final layout, combining quick selectors and the optional calendar.
   return (
-    <div className="relative pb-5 bg-surface-2 rounded border border-border-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface">
+    <div className="relative pb-5 bg-surface-2 rounded border border-border-2">
       <Inline wrap={false} gap={2}>
         {daySelectors}
         {toggleAndCalendar}

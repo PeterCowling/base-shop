@@ -1,14 +1,9 @@
 /* File: /src/components/checkins/KeycardButton/PaymentMethodSelector.tsx */
 import React, { memo } from "react";
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import {
-  faBan,
-  faFileAlt,
-  faMoneyBill,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { LucideIcon } from "lucide-react";
+import { Ban, Banknote, FileText } from "lucide-react";
 
-import { ReceptionInput } from "@acme/ui/operations";
+import { Input } from "@acme/design-system";
 
 import { KeycardPayType } from "../../../types/keycards";
 
@@ -26,13 +21,13 @@ function PaymentMethodSelector({
   setPayType,
 }: PaymentMethodSelectorProps) {
   return (
-    <fieldset className="flex flex-col gap-2 dark:text-darkAccentGreen">
+    <fieldset className="flex flex-col gap-2">
       <legend className="font-bold mb-1">Deposit Method</legend>
       <div className="flex justify-around">
         <RadioButton
           label="Cash"
           value={KeycardPayType.CASH}
-          icon={faMoneyBill}
+          icon={Banknote}
           iconClass="text-success-main"
           currentValue={payType}
           onChange={() => setPayType(KeycardPayType.CASH)}
@@ -40,7 +35,7 @@ function PaymentMethodSelector({
         <RadioButton
           label="Doc"
           value={KeycardPayType.DOCUMENT}
-          icon={faFileAlt}
+          icon={FileText}
           iconClass="text-warning-main"
           currentValue={payType}
           onChange={() => setPayType(KeycardPayType.DOCUMENT)}
@@ -48,7 +43,7 @@ function PaymentMethodSelector({
         <RadioButton
           label="No Card"
           value={KeycardPayType.NO_CARD}
-          icon={faBan}
+          icon={Ban}
           currentValue={payType}
           onChange={() => setPayType(KeycardPayType.NO_CARD)}
         />
@@ -65,7 +60,7 @@ export default memo(PaymentMethodSelector);
 interface RadioButtonProps {
   label: string;
   value: KeycardPayType;
-  icon: IconDefinition;
+  icon: LucideIcon;
   iconClass?: string;
   currentValue: KeycardPayType;
   onChange: () => void;
@@ -82,11 +77,11 @@ const RadioButton = memo(function RadioButton({
   const isActive = currentValue === value;
   return (
     <label
-      className={`flex items-center gap-2 p-2 rounded hover:bg-surface-2 dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen ${
-        isActive ? "bg-surface-3 font-semibold dark:bg-darkSurface" : ""
+      className={`flex items-center gap-2 p-2 rounded hover:bg-surface-2 ${
+        isActive ? "bg-surface-3 font-semibold" : ""
       }`}
     >
-      <ReceptionInput
+      <Input compatibilityMode="no-wrapper"
         type="radio"
         name="payType"
         value={value}
@@ -94,7 +89,7 @@ const RadioButton = memo(function RadioButton({
         onChange={onChange}
         className="sr-only"
       />
-      <FontAwesomeIcon icon={icon} className={iconClass} />
+      {React.createElement(icon, { size: 16, className: iconClass })}
       {label}
     </label>
   );

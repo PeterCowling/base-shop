@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { Input, Textarea } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { SimpleModal } from "@acme/ui/molecules";
 
 import useCorrectTransaction from "../../hooks/mutations/useCorrectTransaction";
 import { type Transaction } from "../../types/component/Till";
@@ -95,85 +96,86 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
   ]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 p-4">
-      <div className="bg-surface w-full max-w-sm p-6 rounded shadow-lg">
-        <h2 className="text-lg font-semibold mb-4">Record Correction</h2>
+    <SimpleModal
+      isOpen={true}
+      onClose={onClose}
+      title="Record Correction"
+      maxWidth="max-w-sm"
+      footer={
+        <Button
+          onClick={onClose}
+          className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-3 text-foreground"
+        >
+          Cancel
+        </Button>
+      }
+    >
+      <label className="block mb-2">
+        <span className="text-sm font-semibold">Amount</span>
+        <Input
+          compatibilityMode="no-wrapper"
+          type="text"
+          className="w-full border rounded p-1 text-foreground"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+      </label>
 
-        <label className="block mb-2">
-          <span className="text-sm font-semibold">Amount</span>
-          <Input
-            compatibilityMode="no-wrapper"
-            type="text"
-            className="w-full border rounded p-1 text-foreground"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-        </label>
+      <label className="block mb-2">
+        <span className="text-sm font-semibold">Method</span>
+        <Input
+          compatibilityMode="no-wrapper"
+          type="text"
+          className="w-full border rounded p-1 text-foreground"
+          value={method}
+          onChange={(e) => setMethod(e.target.value)}
+        />
+      </label>
 
-        <label className="block mb-2">
-          <span className="text-sm font-semibold">Method</span>
-          <Input
-            compatibilityMode="no-wrapper"
-            type="text"
-            className="w-full border rounded p-1 text-foreground"
-            value={method}
-            onChange={(e) => setMethod(e.target.value)}
-          />
-        </label>
+      <label className="block mb-2">
+        <span className="text-sm font-semibold">Item Category</span>
+        <Input
+          compatibilityMode="no-wrapper"
+          type="text"
+          className="w-full border rounded p-1 text-foreground"
+          value={itemCategory}
+          onChange={(e) => setItemCategory(e.target.value)}
+        />
+      </label>
 
-        <label className="block mb-2">
-          <span className="text-sm font-semibold">Item Category</span>
-          <Input
-            compatibilityMode="no-wrapper"
-            type="text"
-            className="w-full border rounded p-1 text-foreground"
-            value={itemCategory}
-            onChange={(e) => setItemCategory(e.target.value)}
-          />
-        </label>
+      <label className="block mb-4">
+        <span className="text-sm font-semibold">Description</span>
+        <Input
+          compatibilityMode="no-wrapper"
+          type="text"
+          className="w-full border rounded p-1 text-foreground"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </label>
 
-        <label className="block mb-4">
-          <span className="text-sm font-semibold">Description</span>
-          <Input
-            compatibilityMode="no-wrapper"
-            type="text"
-            className="w-full border rounded p-1 text-foreground"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </label>
+      <label className="block mb-4">
+        <span className="text-sm font-semibold">Correction Reason</span>
+        <Textarea
+          compatibilityMode="no-wrapper"
+          className="w-full border rounded p-2 text-foreground"
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+          rows={3}
+        />
+      </label>
 
-        <label className="block mb-4">
-          <span className="text-sm font-semibold">Correction Reason</span>
-          <Textarea
-            compatibilityMode="no-wrapper"
-            className="w-full border rounded p-2 text-foreground"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            rows={3}
-          />
-        </label>
+      {Boolean(error) && (
+        <p className="text-error-main text-sm mb-2">
+          An error occurred. Please try again.
+        </p>
+      )}
 
-        {Boolean(error) && (
-          <p className="text-error-main text-sm mb-2">
-            An error occurred. Please try again.
-          </p>
-        )}
-
-        <div className="flex flex-col gap-3">
-          <PasswordReauthInline
-            onSubmit={handleSave}
-            submitLabel={loading ? "Saving..." : "Record correction"}
-          />
-          <Button
-            onClick={onClose}
-            className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-3 text-foreground"
-          >
-            Cancel
-          </Button>
-        </div>
-      </div>
-    </div>
+      <PasswordReauthInline
+        onSubmit={handleSave}
+        submitLabel={loading ? "Saving..." : "Record correction"}
+      />
+    </SimpleModal>
   );
 };
 

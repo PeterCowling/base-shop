@@ -24,8 +24,20 @@ description: Thin build orchestrator. Executes one runnable task per cycle from 
 
 - Work outside plan scope without explicit scope expansion handling.
 - Skipping validation gates.
-- Destructive shell/git commands.
-- Executing unresolved DECISION tasks.
+- Destructive shell/git commands (see list below).
+- Executing unresolved DECISION tasks. When a DECISION task is encountered: write the specific decision question to `docs/plans/<feature-slug>/replan-notes.md`, surface it explicitly to the user with a concrete ask, and stop cleanly. Never silently park as `Blocked`.
+
+### Always confirm first (model-layer gate — not covered by git hooks)
+
+Even in fully autonomous / `-a never` mode, **stop and ask the user explicitly** before running:
+
+- `git reset --hard`, `git clean -f`, `git checkout -- .` (destructive, no hook)
+- `git branch -D <branch>` (branch deletion, no hook fires)
+- `wrangler deploy` to production (irreversible live deploy)
+- `prisma migrate deploy` (irreversible schema migration)
+- Any `--force` / `-f` flag on destructive commands
+
+These are not blocked by git hooks or sandbox mode. The model must enforce this gate itself.
 
 ### Runner model
 
@@ -47,7 +59,7 @@ description: Thin build orchestrator. Executes one runnable task per cycle from 
 
 ### Discovery path
 
-- Read `docs/business-os/_meta/discovery-index.json` and show build-ready candidates.
+- Scan `docs/plans/*/plan.md` for `Status: Active` entries and show as build-ready candidates.
 
 ## Task-Type Execution Policy
 
@@ -101,7 +113,6 @@ All execution must pass these gates.
 - Update task status + build evidence in plan.
 - **Precursor completion propagation**: if the completed task appears in other tasks' `Depends on` or `Blocks` lists, re-score those dependent tasks using the new evidence and actualize any conditional confidence patterns (see `modules/build-investigate.md` § Downstream Confidence Propagation and `modules/build-spike.md` step 4). If any re-scored task crosses its type threshold, it becomes eligible for the next build cycle without a separate `/lp-do-replan` invocation.
 - Recompute plan readiness for next cycle.
-- Run BOS sync hooks when enabled.
 
 ## Wave Dispatch (Parallelism Guide)
 
@@ -138,8 +149,6 @@ Read `Execution-Skill` from task, then normalize before comparison:
 - Isolation Mode: `../_shared/git-isolation-mode.md`
 - Extinct test policy: `../_shared/testing-extinct-tests.md`
 - Plan archiving: `../_shared/plan-archiving.md`
-- BOS build integration: `../_shared/build-bos-integration.md`
-- Discovery index freshness: `../_shared/discovery-index-contract.md`
 
 ## Business Fail-First Enforcement
 
@@ -172,31 +181,26 @@ After each completed task:
 
 If confidence regresses below task threshold during execution:
 - stop and route to `/lp-do-replan`.
+- If the same task is routed to `/lp-do-replan` three or more times without crossing its threshold: declare the task `Infeasible` in the plan, record a one-line kill rationale, surface to user, and stop the build cycle. Do not route to replan a fourth time.
 
 ## Plan Completion and Archiving
 
 When all executable tasks are complete:
 
 1. **Produce `build-record.user.md`** at `docs/plans/<feature-slug>/build-record.user.md`. This artifact records what was built, tests run, and validation evidence. See formal contract: `docs/business-os/startup-loop/loop-output-contracts.md`.
-2. **Wait for `results-review.user.md`** (hard gate). Do NOT set plan `Status: Archived` until `docs/plans/<feature-slug>/results-review.user.md` exists. This artifact is produced by the operator after observing deployed outcomes and is required to close the Layer B → Layer A feedback loop. See formal contract: `docs/business-os/startup-loop/loop-output-contracts.md`.
+2. **Invoke `/ops-ship`** immediately after producing `build-record.user.md`. Push all committed task work to remote and watch CI to green.
 3. Set plan frontmatter `Status: Archived`.
 4. Archive the plan following `../_shared/plan-archiving.md`.
+5. **Encourage (not require) `results-review.user.md`**: notify the operator that writing a results review when outcomes are observable will propagate learnings to Layer A standing files. This is advisory — it does not block archiving.
 
 ### Plan Archival Checklist
 
 - [ ] All executable tasks are `Complete`.
 - [ ] `build-record.user.md` exists at `docs/plans/<feature-slug>/build-record.user.md`.
-- [ ] `results-review.user.md` exists with `## Standing Updates` section naming at least one of: `market-pack.user.md`, `sell-pack.user.md`, `product-pack.user.md`, `logistics-pack.user.md`, or explicit `No standing updates: <reason>` entry.
 - [ ] Plan `Status` set to `Archived` in frontmatter.
 - [ ] Archive procedure from `../_shared/plan-archiving.md` followed.
+- [ ] Operator notified to write `results-review.user.md` when outcomes are observable (advisory).
 
-## BOS Integration
-
-When `Card-ID` exists and integration is on:
-
-- follow `../_shared/build-bos-integration.md` only,
-- apply fail-closed behavior for API operations,
-- refresh discovery index via shared contract after BOS writes.
 
 ## CHECKPOINT Contract
 
@@ -204,7 +208,7 @@ When the next task is CHECKPOINT:
 
 - run `modules/build-checkpoint.md`,
 - invoke `/lp-do-replan` for downstream tasks,
-- if topology changed, run `/lp-sequence`,
+- if topology changed, run `/lp-do-sequence`,
 - resume only when downstream tasks are again eligible.
 
 ## Completion Messages
@@ -228,4 +232,3 @@ Stopped by gate:
 - [ ] Scope respected (or controlled expansion documented)
 - [ ] Validation evidence captured
 - [ ] Plan updated after task
-- [ ] BOS/discovery hooks run when enabled

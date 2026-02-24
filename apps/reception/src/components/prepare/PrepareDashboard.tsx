@@ -70,11 +70,11 @@ function PrepareDashboard(): JSX.Element {
   // Loading
   if (combinedLoading) {
     return (
-      <div className="min-h-screen flex flex-col p-5 bg-surface-2 dark:bg-darkBg dark:text-darkAccentGreen">
+      <div className="min-h-screen flex flex-col p-5 bg-surface-2">
         <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
           PREPARE
         </h1>
-        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkBg dark:text-darkAccentGreen">
+        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
           <DateSelector
             selectedDate={selectedDate}
             onDateChange={setSelectedDate}
@@ -89,11 +89,11 @@ function PrepareDashboard(): JSX.Element {
   // Error
   if (combinedError) {
     return (
-      <div className="min-h-screen flex flex-col p-5 bg-surface-2 dark:bg-darkBg dark:text-darkAccentGreen">
+      <div className="min-h-screen flex flex-col p-5 bg-surface-2">
         <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
           PREPARE
         </h1>
-        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkBg dark:text-darkAccentGreen">
+        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
           <DateSelector
             selectedDate={selectedDate}
             onDateChange={setSelectedDate}
@@ -113,17 +113,17 @@ function PrepareDashboard(): JSX.Element {
   // No data
   if (noRoomsData && noCheckinsData) {
     return (
-      <div className="min-h-screen flex flex-col p-5 bg-surface-2 dark:bg-darkBg dark:text-darkAccentGreen">
+      <div className="min-h-screen flex flex-col p-5 bg-surface-2">
         <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
           PREPARE
         </h1>
-        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkBg dark:text-darkAccentGreen">
+        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
           <DateSelector
             selectedDate={selectedDate}
             onDateChange={setSelectedDate}
             username={user?.user_name ?? ""}
           />
-          <div className="bg-surface border border-border-2 rounded shadow p-8 text-center italic text-muted-foreground dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+          <div className="bg-surface border border-border-2 rounded shadow p-8 text-center italic text-muted-foreground">
             No cleaning data found for this date.
           </div>
         </div>
@@ -135,11 +135,11 @@ function PrepareDashboard(): JSX.Element {
   const isTodayFlag = isTodayDate(selectedDate);
 
   return (
-    <div className="min-h-screen flex flex-col p-5 bg-surface-2 dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="min-h-screen flex flex-col p-5 bg-surface-2">
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         PREPARE
       </h1>
-      <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-10 dark:bg-darkBg dark:text-darkAccentGreen">
+      <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-10">
         <DateSelector
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}

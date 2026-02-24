@@ -5,11 +5,12 @@
  * Used by directory views to show other guests.
  */
 
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { off,onValue, ref } from '@/services/firebase';
+import { equalTo, off, onValue, orderByChild, query, ref } from '@/services/firebase';
 import logger from '@/utils/logger';
 
+import { readGuestSession } from '../../lib/auth/guestSessionGuard';
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestProfiles } from '../../types/guestProfile';
 
@@ -33,6 +34,7 @@ export function useGuestProfiles(): UseGuestProfilesReturn {
   const [profiles, setProfiles] = useState<GuestProfiles>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const { bookingId: currentBookingId } = readGuestSession();
 
   useEffect(() => {
     if (!database) {
@@ -40,10 +42,22 @@ export function useGuestProfiles(): UseGuestProfilesReturn {
       return;
     }
 
-    const profilesRef = ref(database, 'guestProfiles');
+    if (!currentBookingId) {
+      // Fail closed: without a stay context we should not expose any guest directory data.
+      setProfiles({});
+      setIsLoading(false);
+      setError(null);
+      return;
+    }
+
+    const bookingProfilesQuery = query(
+      ref(database, 'guestProfiles'),
+      orderByChild('bookingId'),
+      equalTo(currentBookingId),
+    );
 
     const unsubscribe = onValue(
-      profilesRef,
+      bookingProfilesQuery,
       (snapshot) => {
         try {
           const data = snapshot.val() as GuestProfiles | null;
@@ -51,22 +65,23 @@ export function useGuestProfiles(): UseGuestProfilesReturn {
           setIsLoading(false);
           setError(null);
         } catch (err) {
-          logger.error('[useGuestProfiles] Error processing snapshot:', err);
+          logger.error('[useGuestProfiles] Error processing snapshot:', err); // i18n-exempt -- ENG-421 [ttl=2026-12-31] developer diagnostic
           setError(err instanceof Error ? err : new Error('Unknown error'));
           setIsLoading(false);
         }
       },
       (err) => {
-        logger.error('[useGuestProfiles] Firebase error:', err);
+        logger.error('[useGuestProfiles] Firebase error:', err); // i18n-exempt -- ENG-421 [ttl=2026-12-31] developer diagnostic
         setError(err instanceof Error ? err : new Error('Firebase error'));
         setIsLoading(false);
       },
     );
 
     return () => {
-      off(profilesRef, 'value', unsubscribe);
+      off(bookingProfilesQuery);
+      unsubscribe();
     };
-  }, [database]);
+  }, [currentBookingId, database]);
 
   return { profiles, isLoading, error };
 }

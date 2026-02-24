@@ -3,7 +3,7 @@ import Link from "next/link";
 
 interface ProductMediaCardProps {
   href: string;
-  slug: string;
+  category?: string | null;
   title: string;
   priceLabel: string;
   primarySrc: string;
@@ -14,7 +14,7 @@ interface ProductMediaCardProps {
 
 export function ProductMediaCard({
   href,
-  slug,
+  category,
   title,
   priceLabel,
   primarySrc,
@@ -25,10 +25,7 @@ export function ProductMediaCard({
   return (
     <article className="group media-card space-y-3">
       <Link href={href} className="block">
-        <div
-          className="media-aspect-portrait relative overflow-hidden rounded-3xl border border-solid bg-muted"
-          style={{ borderColor: "hsl(var(--color-border-default))" }}
-        >
+        <div className="media-aspect-portrait relative overflow-hidden rounded-xl bg-muted">
           <Image
             src={primarySrc}
             alt={primaryAlt}
@@ -48,10 +45,12 @@ export function ProductMediaCard({
         </div>
       </Link>
       <div className="space-y-1">
-        <p className="text-xs uppercase tracking-widest text-muted-foreground">
-          {slug}
-        </p>
-        <h2 className="text-lg font-display leading-tight">
+        {category ? (
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">
+            {category}
+          </p>
+        ) : null}
+        <h2 className="text-sm font-medium leading-tight">
           <Link href={href} className="hover:underline focus-visible:underline">
             {title}
           </Link>

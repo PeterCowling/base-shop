@@ -20,7 +20,7 @@ afterAll(() => {
   (global as any).fetch = originalFetch;
 });
 
-jest.mock("@acme/date-utils", () => ({
+jest.mock("@/lib/datetime", () => ({
   formatTimestamp: (value: string) => `formatted-${value}`,
 }));
 jest.mock(

@@ -116,13 +116,24 @@ export default function ChannelPage() {
 
   // Set current channel on mount
   useEffect(() => {
-    if (channelId) {
-      setCurrentChannelId(channelId);
+    if (!channelId) {
+      setCurrentChannelId(null);
+      return;
     }
+
+    if (channelMode === 'direct') {
+      if (isProfilesLoading || !isDirectConversationAllowed) {
+        setCurrentChannelId(null);
+        return;
+      }
+    }
+
+    setCurrentChannelId(channelId);
+
     return () => {
       setCurrentChannelId(null);
     };
-  }, [channelId, setCurrentChannelId]);
+  }, [channelId, channelMode, isDirectConversationAllowed, isProfilesLoading, setCurrentChannelId]);
 
   // Check presence
   useEffect(() => {
@@ -158,7 +169,21 @@ export default function ChannelPage() {
 
     setIsSending(true);
     try {
-      await sendMessage(channelId, messageInput);
+      const directSendOptions =
+        channelMode === 'direct' && peerUuid && currentBookingId
+          ? {
+              directMessage: {
+                bookingId: currentBookingId,
+                peerUuid,
+              },
+            }
+          : null;
+
+      if (directSendOptions) {
+        await sendMessage(channelId, messageInput, directSendOptions);
+      } else {
+        await sendMessage(channelId, messageInput);
+      }
       setMessageInput('');
     } catch (err) {
       console.error('Failed to send message:', err);

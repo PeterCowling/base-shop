@@ -109,8 +109,8 @@ describe("DateSelector", () => {
     await user.click(toggle);
     const pickBtn = screen.getByRole("button", { name: /pick/i });
     const container = screen.getByTestId("daypicker");
-    expect(container.className).toContain("dark:bg-darkSurface");
-    expect(container.className).toContain("dark:text-darkAccentGreen");
+    expect(container.className).toContain("bg-surface");
+    expect(container.className).not.toContain("dark:");
     await user.click(pickBtn);
     const expected = formatDateForInput("2025-01-05");
     expect(onDateChange).toHaveBeenCalledWith(expected);

@@ -49,7 +49,7 @@ const BookingRefChipPrepayComponent: FC<BookingRefChipPrepayProps> = ({
       }}
       onKeyDown={handleKeyDown}
       title="Click to copy booking reference"
-      className={`relative inline-flex items-center px-4 py-3 text-sm rounded leading-none ${chipStyle} focus:outline-none min-w-225px dark:bg-darkSurface dark:text-darkAccentGreen`}
+      className={`relative inline-flex items-center px-4 py-3 text-sm rounded leading-none ${chipStyle} focus:outline-none min-w-225px`}
       aria-label={`Copy booking reference ${bookingRef}`}
     >
       <i className="fas fa-copy absolute left-2 top-1/2 transform -translate-y-1/2"></i>

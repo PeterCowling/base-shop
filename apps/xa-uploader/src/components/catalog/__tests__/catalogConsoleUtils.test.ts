@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { catalogProductDraftSchema } from "../../../lib/catalogAdminSchema";
+import { catalogProductDraftSchema } from "@acme/lib/xa";
+
 import { getUploaderMessage, type UploaderMessageKey } from "../../../lib/uploaderI18n";
 import { localizeSchemaIssueMessage, toErrorMap } from "../catalogConsoleUtils";
 

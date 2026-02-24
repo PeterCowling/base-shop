@@ -365,6 +365,8 @@ describe("Telemetry log writer contract", () => {
         "2",
         "--exit-code",
         "0",
+        "--kill-escalation",
+        "none",
         "--override-policy-used",
         "false",
         "--override-overload-used",
@@ -392,6 +394,7 @@ describe("Telemetry log writer contract", () => {
     expect(event.pressure_level).toBe("normal");
     expect(event.workers).toBe(2);
     expect(event.exit_code).toBe(0);
+    expect(event.kill_escalation).toBe("none");
     expect(event.override_policy_used).toBe(false);
     expect(event.override_overload_used).toBe(false);
   });

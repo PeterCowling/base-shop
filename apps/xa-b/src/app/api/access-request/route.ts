@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
 
 import { createAccessRequest } from "../../../lib/accessStore";
+import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../lib/requestBody";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../lib/rateLimit";
 
 // Uses node:crypto/fs via accessStore.
 export const runtime = "nodejs";
+
+const ACCESS_REQUEST_PAYLOAD_MAX_BYTES = 16 * 1024;
 
 function sanitize(value: unknown, max: number) {
   if (typeof value !== "string") return "";
@@ -26,9 +29,18 @@ export async function POST(request: Request) {
 
   let payload: Record<string, unknown>;
   try {
-    payload = (await request.json()) as Record<string, unknown>;
-  } catch {
-    return NextResponse.json({ ok: false, error: "invalid" }, { status: 400 });
+    payload = (await readJsonBodyWithLimit(request, ACCESS_REQUEST_PAYLOAD_MAX_BYTES)) as Record<
+      string,
+      unknown
+    >;
+  } catch (error) {
+    const status = error instanceof PayloadTooLargeError ? 413 : 400;
+    const response = NextResponse.json(
+      { ok: false, error: status === 413 ? "payload_too_large" : "invalid" },
+      { status },
+    );
+    applyRateLimitHeaders(response.headers, limit);
+    return response;
   }
 
   const handle = sanitize(payload.handle, 80);

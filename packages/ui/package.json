@@ -329,6 +329,7 @@
     "@acme/config": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/i18n": "workspace:*",
+    "@acme/lib": "workspace:*",
     "@acme/platform-core": "workspace:*",
     "@acme/telemetry": "workspace:*",
     "@acme/types": "workspace:*",

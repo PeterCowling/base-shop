@@ -4,13 +4,13 @@ import { promises as fs } from "fs";
 import * as path from "path";
 
 import { loadCoreEnv } from "@acme/config/env/core";
-import { nowIso } from "@acme/date-utils";
 import type { AnalyticsEvent } from "@acme/types";
 
 import { resolveDataRoot } from "../dataRoot";
 import { getShopSettings, readShop } from "../repositories/shops.server";
 import { validateShopName } from "../shops";
 
+const nowIso = (): string => new Date().toISOString();
 
 let _coreEnv: ReturnType<typeof loadCoreEnv> | null = null;
 function getCoreEnv() {

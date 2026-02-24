@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-09
+Last-reviewed: 2026-02-23
 
 # Git & GitHub Workflow (Human UX)
 
@@ -34,6 +34,14 @@ git commit -m "feat: short description"
 ```bash
 bash scripts/validate-changes.sh
 git push -u origin dev
+```
+
+Default local validation is policy + typecheck + lint. Required test gating happens in GitHub Actions via `Core Platform CI`, watched by `Merge Gate`.
+
+Optional local targeted-test pass before push:
+
+```bash
+VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh
 ```
 
 ### 4) Ship to staging

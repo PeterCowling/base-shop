@@ -72,7 +72,7 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
 
   return (
     <>
-      <div className="relative dark:bg-darkSurface">
+      <div className="relative">
         <Button
           onClick={onCancel}
           aria-label="Close"
@@ -85,7 +85,7 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
           title="Reconcile Safe"
           borderClass="border-warning-main"
           textClass="text-warning-main"
-          confirmClass="bg-warning-main text-primary-fg rounded hover:bg-warning-dark dark:bg-darkAccentOrange dark:text-darkBg"
+          confirmColor="warning"
           confirmLabel="Go"
           expectedCash={expectedSafe}
           expectedKeycards={expectedKeycards}

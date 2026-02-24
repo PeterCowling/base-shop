@@ -70,12 +70,25 @@ Core primitives expose a shared shape/radius contract:
 - `shape`: `square` | `soft` | `pill`
 - `radius`: `none` | `xs` | `sm` | `md` | `lg` | `xl` | `2xl` | `3xl` | `4xl` | `full`
 
-Supported components: `Button`, `Input`, `Select`, `Textarea`, `Card`, `IconButton`, `Tag`, `Chip`, `Alert`, `Toast`, `Avatar`, `Skeleton`, `OptionPill`, `OptionTile`, `ColorSwatch`, `Progress`, `VideoPlayer`, `Switch`, `Tooltip`, `PopoverContent`, `PaginationDot`, `ThemeToggle`, `FileSelector`, `StatusIndicator`, `Loader`, `MediaSelector`, `DatePicker`, `DataGrid` (search input + selection checkboxes), `SearchBar` (menu), `CodeBlock`, `Stepper` (indicator), `Image360Viewer`, `ProductBadge`, `LinkText` (soft tone), `Accordion`, `QuantityInput`.
+Supported components: `Button`, `Input`, `Select`, `Textarea`, `Card`, `DialogContent`, `DrawerContent`, `IconButton`, `Tag`, `Chip`, `Alert`, `Toast`, `Avatar`, `Skeleton`, `OptionPill`, `OptionTile`, `ColorSwatch`, `Progress`, `VideoPlayer`, `Switch`, `Tooltip`, `PopoverContent`, `PaginationDot`, `ThemeToggle`, `FileSelector`, `StatusIndicator`, `Loader`, `MediaSelector`, `DatePicker`, `DataGrid` (search input + selection checkboxes), `SearchBar` (menu), `CodeBlock`, `Stepper` (indicator), `Image360Viewer`, `ProductBadge`, `LinkText` (soft tone), `Accordion`, `QuantityInput`.
 
 Rules:
 - `radius` overrides `shape` when both are provided.
 - Preserve backward compatibility via default radius values per primitive.
 - Prefer contract props over hardcoded `rounded-*` utilities in component internals.
+
+### Density depth
+
+Row-like primitives expose a shared density contract:
+
+- `density`: `comfortable` | `compact`
+
+Current adopters: `Input`, `Textarea`, `SelectTrigger`, `SelectLabel`, `SelectItem`, `ComboboxTrigger`, `ComboboxInput`, `ComboboxItem`, `DropdownMenuLabel`, `DropdownMenuItem`, `DropdownMenuSubTrigger`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioItem`, `Table` (context default), `TableHead`, `TableCell`.
+
+Rules:
+- `comfortable` remains the default to preserve legacy spacing.
+- `Table` propagates density to header/body cells, while `TableHead`/`TableCell` can override per node.
+- Prefer `density` props over ad hoc `py-*` overrides for vertical rhythm changes.
 
 ### Containment safety
 
@@ -87,9 +100,11 @@ Overlay/menu primitives must use the shared containment helper from `@acme/desig
 - `overflowContainmentClass("tooltipSurface")` -> `overflow-hidden`
 - `overflowContainmentClass("inlineNoticeSurface")` -> `overflow-hidden`
 
-Current adopters: `DialogContent`, `DropdownMenuContent`, `DropdownMenuSubContent`, `SelectContent`, `PopoverContent`, `ComboboxContent`, `Tooltip`, `TrustCue`, `MilestoneToast`.
+Current adopters: `DialogContent`, `DrawerContent`, `DropdownMenuContent`, `DropdownMenuSubContent`, `SelectContent`, `PopoverContent`, `ComboboxContent`, `Tooltip`, `TrustCue`, `MilestoneToast`.
 
 Text-heavy table and menu options now default to `break-words` + `min-w-0` contracts to prevent long tokens/URLs from overflowing containers.
+
+For intentionally non-text decorative fills (for example progress bars and connector rails), use `data-ds-contrast-exempt` with `aria-hidden={true}` on the element instead of adding meaningless text foreground classes.
 
 ## Operations Consumer Baseline
 

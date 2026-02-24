@@ -1,3 +1,5 @@
+import { clamp, clamp01 } from "@acme/lib";
+
 import { isCssCustomPropertyName } from "./constants";
 
 export interface RgbaColor {
@@ -267,12 +269,4 @@ function hslToRgb(hue: number, saturation: number, lightness: number): Omit<Rgba
 function normalizeHue(hue: number): number {
   const normalized = hue % 360;
   return normalized < 0 ? normalized + 360 : normalized;
-}
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
-
-function clamp01(value: number): number {
-  return clamp(value, 0, 1);
 }

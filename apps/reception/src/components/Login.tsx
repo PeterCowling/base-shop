@@ -329,7 +329,7 @@ function Login({ onLoginSuccess }: LoginProps) {
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
                 placeholder="name@company.com"
-                className="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500"
+                className="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
               />
             </div>
 
@@ -342,7 +342,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             <Button
               type="submit"
               disabled={resetStatus === "sending"}
-              className="w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50"
+              className="w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-primary-dark focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2 disabled:opacity-50"
             >
               {resetStatus === "sending" ? "Sending..." : "Send reset link"}
             </Button>
@@ -360,7 +360,7 @@ function Login({ onLoginSuccess }: LoginProps) {
         <Button
           type="button"
           onClick={handleBackToLogin}
-          className="mt-4 w-full text-center text-sm font-medium text-primary-main hover:text-indigo-500"
+          className="mt-4 w-full text-center text-sm font-medium text-primary-main hover:text-primary-main"
         >
           Back to sign in
         </Button>
@@ -395,14 +395,14 @@ function Login({ onLoginSuccess }: LoginProps) {
             value={pinInput}
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter 6-digit PIN"
-            className="w-full rounded-lg border border-border-2 px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500"
+            className="w-full rounded-lg border border-border-2 px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
           />
         </div>
 
         <Button
           type="button"
           onClick={handleSkipPinSetup}
-          className="mt-4 w-full rounded-lg border border-border-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2"
+          className="mt-4 w-full rounded-lg border border-border-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
         >
           Skip for now
         </Button>
@@ -439,7 +439,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter PIN"
             aria-describedby={pinError ? pinErrorId : undefined}
-            className="w-full rounded-lg border border-border-2 px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500"
+            className="w-full rounded-lg border border-border-2 px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
           />
         </div>
 
@@ -456,7 +456,7 @@ function Login({ onLoginSuccess }: LoginProps) {
         <Button
           type="button"
           onClick={handleClearDevicePin}
-          className="mt-4 w-full rounded-lg border border-border-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2"
+          className="mt-4 w-full rounded-lg border border-border-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
         >
           Sign in with email instead
         </Button>
@@ -495,7 +495,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="name@company.com"
             aria-describedby={error ? loginErrorId : undefined}
-            className="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500"
+            className="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
           />
         </div>
 
@@ -510,7 +510,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             <Button
               type="button"
               onClick={handleShowForgotPassword}
-              className="text-sm font-medium text-primary-main hover:text-indigo-500"
+              className="text-sm font-medium text-primary-main hover:text-primary-main"
             >
               Forgot password?
             </Button>
@@ -524,12 +524,12 @@ function Login({ onLoginSuccess }: LoginProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               aria-describedby={error ? loginErrorId : undefined}
-              className="w-full rounded-lg border border-border-2 px-4 py-2.5 pr-10 text-foreground focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500"
+              className="w-full rounded-lg border border-border-2 px-4 py-2.5 pr-10 text-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
             />
             <Button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
@@ -554,7 +554,7 @@ function Login({ onLoginSuccess }: LoginProps) {
         <Button
           type="submit"
           disabled={isSubmitting || status === "loading"}
-          className="w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50"
+          className="w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-primary-dark focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2 disabled:opacity-50"
         >
           {isSubmitting ? "Signing in..." : "Sign in"}
         </Button>
@@ -593,7 +593,7 @@ function LoginContainer({ children, dark, toggleDark }: LoginContainerProps) {
           onClick={toggleDark}
           aria-pressed={dark}
           aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-          className="absolute right-4 top-4 rounded-lg p-2 text-muted-foreground hover:bg-surface-2 hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2"
+          className="absolute right-4 top-4 rounded-lg p-2 text-muted-foreground hover:bg-surface-2 hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
         >
           {dark ? (
             <SunIcon className="h-5 w-5" />

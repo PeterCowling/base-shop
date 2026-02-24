@@ -11,6 +11,8 @@
 import { promises as fs } from "fs";
 import path from "path";
 
+import { median as libMedian } from "@acme/lib";
+
 // -- Types --
 
 export interface MetricEntry {
@@ -140,12 +142,8 @@ export async function aggregateMetrics(
 // -- Helpers --
 
 function computeMedian(sortedValues: number[]): number {
-  if (sortedValues.length === 0) return 0;
-  const mid = Math.floor(sortedValues.length / 2);
-  if (sortedValues.length % 2 === 0) {
-    return (sortedValues[mid - 1] + sortedValues[mid]) / 2;
-  }
-  return sortedValues[mid];
+  const result = libMedian(sortedValues);
+  return Number.isNaN(result) ? 0 : result;
 }
 
 function emptyReport(business: string, window: number): MetricsReport {

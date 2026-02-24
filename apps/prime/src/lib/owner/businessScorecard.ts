@@ -11,6 +11,8 @@
  * NEVER from raw booking data.
  */
 
+import { mean as libMean } from "@acme/lib";
+
 import { type DailyKpiRecord } from './kpiAggregator';
 
 /**
@@ -139,6 +141,11 @@ export const SCORECARD_TARGETS: Record<string, ScorecardTarget> = {
  */
 const MIN_DAYS_FOR_SCORECARD = 3;
 
+function meanOrZero(values: number[]): number {
+  const result = libMean(values);
+  return Number.isNaN(result) ? 0 : result;
+}
+
 /**
  * Evaluate metric status against target
  */
@@ -234,25 +241,21 @@ export function computeBusinessScorecard(
   const totalGuests = daysWithGuests.reduce((sum, day) => sum + day.guestCount, 0);
 
   // Compute averages (only from days with guests)
-  const avgReadinessPct =
-    daysWithData > 0
-      ? daysWithGuests.reduce((sum, day) => sum + day.readinessCompletionPct, 0) / daysWithData
-      : 0;
+  const avgReadinessPct = meanOrZero(
+    daysWithGuests.map((day) => day.readinessCompletionPct),
+  );
 
-  const avgEtaSubmissionPct =
-    daysWithData > 0
-      ? daysWithGuests.reduce((sum, day) => sum + day.etaSubmissionPct, 0) / daysWithData
-      : 0;
+  const avgEtaSubmissionPct = meanOrZero(
+    daysWithGuests.map((day) => day.etaSubmissionPct),
+  );
 
-  const avgCodeGenerationPct =
-    daysWithData > 0
-      ? daysWithGuests.reduce((sum, day) => sum + day.arrivalCodeGenPct, 0) / daysWithData
-      : 0;
+  const avgCodeGenerationPct = meanOrZero(
+    daysWithGuests.map((day) => day.arrivalCodeGenPct),
+  );
 
-  const avgCheckInLagMinutes =
-    daysWithData > 0
-      ? daysWithGuests.reduce((sum, day) => sum + day.medianCheckInLagMinutes, 0) / daysWithData
-      : 0;
+  const avgCheckInLagMinutes = meanOrZero(
+    daysWithGuests.map((day) => day.medianCheckInLagMinutes),
+  );
 
   // Compute support load
   const totalSupportRequests = daysWithGuests.reduce(

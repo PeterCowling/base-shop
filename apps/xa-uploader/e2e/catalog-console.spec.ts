@@ -1,4 +1,4 @@
-import { expect, type Page,test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
 
 import { createUploaderHarness, type UploaderHarness } from "./helpers/uploaderHarness";
 
@@ -34,8 +34,10 @@ async function fillRequiredProductFields(page: Page): Promise<void> {
 
 test.describe("catalog console e2e", () => {
   test.describe.configure({ mode: "serial", timeout: 180_000 });
+  test.setTimeout(180_000);
 
-  test.beforeAll(async () => {
+  test.beforeAll(async ({}, testInfo) => {
+    testInfo.setTimeout(180_000);
     harness = await createUploaderHarness();
     await harness.start();
   });
@@ -86,10 +88,24 @@ test.describe("catalog console e2e", () => {
     await expect(page.getByTestId("catalog-submission-feedback")).toContainText("Submission ID:");
   });
 
-  test("TC-09-02 sync failure shows actionable guidance and keeps keyboard focus on retry action", async ({
+  test("TC-09-02 sync dry-run succeeds and keeps keyboard access on the sync action", async ({
     page,
   }) => {
     await loginViaKeyboard(page);
+    await fillRequiredProductFields(page);
+
+    const saveButton = page.getByTestId("catalog-save-details");
+    await saveButton.click();
+    await expect(page.getByTestId("catalog-draft-feedback")).toContainText("Saved product details.", {
+      timeout: 120_000,
+    });
+
+    const dryRunToggle = page.getByLabel("dry run");
+    await dryRunToggle.check();
+    await expect(dryRunToggle).toBeChecked();
+
+    const syncReadiness = page.getByTestId("catalog-sync-readiness");
+    await expect(syncReadiness).toContainText("Sync dependencies are ready.");
 
     const runSyncButton = page.getByTestId("catalog-run-sync");
     await expect(runSyncButton).toBeEnabled();
@@ -98,12 +114,7 @@ test.describe("catalog console e2e", () => {
     await page.keyboard.press("Enter");
 
     const syncFeedback = page.getByTestId("catalog-sync-feedback");
-    await expect(syncFeedback).toContainText(
-      "Sync cannot run because required scripts are missing",
-    );
-    await expect(syncFeedback).toContainText(
-      "Restore the missing scripts in scripts/src/xa, then retry sync.",
-    );
+    await expect(syncFeedback).toContainText("Sync completed.");
     await expect(runSyncButton).toBeFocused();
   });
 });

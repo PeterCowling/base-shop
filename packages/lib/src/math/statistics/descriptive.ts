@@ -284,6 +284,36 @@ export function percentile(values: number[], p: number): number {
 }
 
 /**
+ * Calculate nearest-rank percentile from an ascending-sorted array.
+ *
+ * Nearest-rank picks the value at rank ceil(p * n), where p is in [0, 1]
+ * and n is the number of values.
+ *
+ * @param sortedValues - Numeric values sorted in ascending order
+ * @param p - Percentile as a decimal between 0 and 1
+ * @returns The nearest-rank percentile value
+ * @throws RangeError if array is empty or p is out of range [0, 1]
+ *
+ * @example
+ * ```typescript
+ * percentileNearestRank([1, 2, 3, 4, 5], 0.1); // 1
+ * percentileNearestRank([1, 2, 3, 4, 5], 0.9); // 5
+ * ```
+ */
+export function percentileNearestRank(sortedValues: number[], p: number): number {
+  if (sortedValues.length === 0) {
+    throw new RangeError("Cannot calculate nearest-rank percentile of empty array");
+  }
+  if (p < 0 || p > 1) {
+    throw new RangeError("Nearest-rank percentile must be between 0 and 1");
+  }
+
+  const rank = Math.ceil(p * sortedValues.length);
+  const index = Math.max(0, Math.min(sortedValues.length - 1, rank - 1));
+  return sortedValues[index];
+}
+
+/**
  * Calculate the quartiles (Q1, Q2, Q3) of an array.
  *
  * Uses the R-7 method for percentile calculation.

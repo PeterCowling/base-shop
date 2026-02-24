@@ -138,7 +138,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
   ({ guests, removeLoanItem, onComplete }) => {
     if (!guests || guests.length === 0) {
       return (
-        <div className="bg-surface border border-border-2 rounded shadow p-8 text-center italic text-muted-foreground dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+        <div className="bg-surface border border-border-2 rounded-lg shadow p-8 text-center italic text-muted-foreground">
           No checkouts found for this date.
         </div>
       );
@@ -151,32 +151,32 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
     console.log("Final sorted guests for CheckoutTable:", sortedGuests);
 
     return (
-      <div className="bg-surface border border-border-2 rounded shadow overflow-x-auto dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen">
+      <div className="bg-surface border border-border-2 rounded-lg shadow overflow-x-auto">
         <Table className="w-full border-collapse" aria-label="checkout table">
-          <TableHeader className="bg-surface-2 dark:bg-darkSurface">
+          <TableHeader className="bg-surface-2">
             <TableRow>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
                 DATE
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
                 REF
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
                 NAME
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
                 ROOM
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface w-48">
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground w-48">
                 LOANS
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
                 BAG STORAGE
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface">
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
                 FRIDGE
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface w-32">
+              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground w-32">
                 COMPLETE
               </TableHead>
             </TableRow>
@@ -188,24 +188,24 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                 : [];
               const rowBg =
                 index % 2 === 0
-                  ? "bg-surface dark:bg-darkSurface"
-                  : "bg-surface-2 dark:bg-darkSurface";
+                  ? "bg-surface"
+                  : "bg-surface-2";
 
               return (
                 <TableRow key={guest._key || guest.guestId} className={rowBg}>
-                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
+                  <TableCell className="p-3 border-b border-border-2">
                     {formatDdMm(guest.checkoutDate)}
                   </TableCell>
-                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
+                  <TableCell className="p-3 border-b border-border-2">
                     {guest.bookingRef}
                   </TableCell>
-                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
+                  <TableCell className="p-3 border-b border-border-2">
                     {guest.firstName} {guest.lastName}
                   </TableCell>
-                  <TableCell className="p-3 border-b text-center  border-border-2 dark:border-darkSurface">
+                  <TableCell className="p-3 border-b text-center  border-border-2">
                     {guest.roomAllocated}
                   </TableCell>
-                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface w-48">
+                  <TableCell className="p-3 border-b border-border-2 w-48">
                     {loanEntries.map(([txnKey, loan]) => {
                       console.debug(
                         `[CheckoutTable] Loan entry ${txnKey}:`,
@@ -240,7 +240,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                             )
                           }
                           aria-label={`Remove ${loanTitle}`}
-                          className="inline-flex items-center px-1 me-1 text-foreground hover:text-foreground transition-colors duration-200 dark:text-darkAccentGreen dark:hover:text-darkAccentGreen"
+                          className="inline-flex items-center px-1 me-1 text-foreground hover:text-foreground transition-colors duration-200"
                           title={loanTitle}
                         >
                           <i className={iconClass} aria-hidden="true" />
@@ -249,7 +249,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                     })}
                   </TableCell>
                   {/* Show an icon if the occupant opted into bag storage */}
-                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface text-center">
+                  <TableCell className="p-3 border-b border-border-2 text-center">
                     {guest.bagStorageOptedIn && (
                       <i
                         className="fas fa-suitcase fa-lg text-info-main"
@@ -258,10 +258,10 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                       />
                     )}
                   </TableCell>
-                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface">
+                  <TableCell className="p-3 border-b border-border-2">
                     {guest.fridge || ""}
                   </TableCell>
-                  <TableCell className="p-3 border-b border-border-2 dark:border-darkSurface text-center">
+                  <TableCell className="p-3 border-b border-border-2 text-center">
                     <Button
                       onClick={() =>
                         onComplete(

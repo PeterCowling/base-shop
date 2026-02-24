@@ -77,20 +77,22 @@
         "packages/themes/*/dist/index.d.ts"
       ],
       "@acme/lib": [
-        "packages/lib/src/index.ts",
-        "packages/lib/dist/index.d.ts"
+        "packages/lib/dist/index.js",
+        "packages/lib/dist/index.d.ts",
+        "packages/lib/src/index.ts"
       ],
       "@acme/lib/*": [
-        "packages/lib/src/*",
-        "packages/lib/dist/*"
+        "packages/lib/dist/*",
+        "packages/lib/src/*"
       ],
       "@acme/i18n": [
-        "packages/i18n/src/index.ts",
-        "packages/i18n/dist/index.d.ts"
+        "packages/i18n/dist/index.js",
+        "packages/i18n/dist/index.d.ts",
+        "packages/i18n/src/index.ts"
       ],
       "@acme/i18n/*": [
-        "packages/i18n/src/*",
-        "packages/i18n/dist/*"
+        "packages/i18n/dist/*",
+        "packages/i18n/src/*"
       ],
       "@acme/auth": [
         "packages/auth/src/index.ts",
@@ -149,12 +151,13 @@
         "packages/date-utils/dist/*"
       ],
       "@acme/seo": [
-        "packages/seo/src/index.ts",
-        "packages/seo/dist/index.d.ts"
+        "packages/seo/dist/index.js",
+        "packages/seo/dist/index.d.ts",
+        "packages/seo/src/index.ts"
       ],
       "@acme/seo/*": [
-        "packages/seo/src/*",
-        "packages/seo/dist/*"
+        "packages/seo/dist/*",
+        "packages/seo/src/*"
       ],
       "@acme/config": [
         "packages/config/src/index.ts",

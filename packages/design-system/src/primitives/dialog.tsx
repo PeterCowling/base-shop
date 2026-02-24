@@ -3,7 +3,7 @@ import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import { cn, overflowContainmentClass } from "../utils/style";
 
@@ -40,17 +40,28 @@ export const DialogContent = (
     ref,
     className,
     children,
+    shape,
+    radius,
     closeButtonShape,
     closeButtonRadius,
     ...props
   }: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
     ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Content>>;
+    /** Semantic content shape. Ignored when `radius` is provided. */
+    shape?: PrimitiveShape;
+    /** Explicit content radius token override. */
+    radius?: PrimitiveRadius;
     /** Semantic close-button shape. Ignored when `closeButtonRadius` is provided. */
     closeButtonShape?: PrimitiveShape;
     /** Explicit close-button radius token override. */
     closeButtonRadius?: PrimitiveRadius;
   }
 ) => {
+  const contentShapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "none",
+  });
   const closeButtonShapeRadiusClass = resolveShapeRadiusClass({
     shape: closeButtonShape,
     radius: closeButtonRadius,
@@ -68,6 +79,7 @@ export const DialogContent = (
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 motion-reduce:animate-none fixed top-1/2 start-1/2 z-modal grid w-full sm:max-w-xl -translate-x-1/2 -translate-y-1/2 gap-4 border p-6 shadow-elevation-4 duration-200 relative", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — class names; include relative to scope absolute close button
         overflowContainmentClass("dialogContent"),
         "bg-panel border-border-2 text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+        contentShapeRadiusClass,
         className
       )}
       aria-modal="true"

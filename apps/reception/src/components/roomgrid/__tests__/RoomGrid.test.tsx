@@ -150,12 +150,10 @@ describe("RoomGrid", () => {
     expect(screen.queryByText(/Booking Details/)).not.toBeInTheDocument();
   });
 
-  it("applies dark mode classes", () => {
-    document.documentElement.classList.add("dark");
+  it("renders with token-based theme classes", () => {
     const { container } = render(<RoomGrid {...baseProps} />);
-    const wrapper = container.querySelector("div.dark") as HTMLElement;
-    expect(wrapper).toHaveClass("dark:bg-darkSurface", "dark:border-darkSurface");
-    document.documentElement.classList.remove("dark");
+    const wrapper = container.querySelector("div.bg-surface-2") as HTMLElement;
+    expect(wrapper).toHaveClass("bg-surface-2", "border-border-1");
   });
 
   it("handles empty room data", async () => {

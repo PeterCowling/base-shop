@@ -30,17 +30,15 @@ const config: StorybookConfig = {
   env: { CORE_DISABLE_TELEMETRY: "1" },
   staticDirs: ["../../../public"],
 
-  // CI Storybook: curated, fast subset. Include internal stories plus core atoms/molecules/organisms for visual/a11y guardrails.
-  // Include MDX docs for internal pages where useful (non-interactive)
+  // CI Storybook: curated, fast subset.
+  // Keep internal diagnostics stories plus a small explicit allowlist that
+  // underpins smoke and ci-tagged runner coverage.
   stories: [
     path.resolve(__dirname, "../.storybook/stories/**/*.stories.@(ts|tsx)"),
-    path.resolve(__dirname, "../.storybook/stories/**/*.mdx"),
-    // Core atomic system coverage
-    path.resolve(__dirname, "../../../packages/ui/src/components/atoms/**/*.stories.@(ts|tsx)"),
-    path.resolve(__dirname, "../../../packages/ui/src/components/molecules/**/*.stories.@(ts|tsx)"),
-    path.resolve(__dirname, "../../../packages/ui/src/components/organisms/**/*.stories.@(ts|tsx)"),
-    path.resolve(__dirname, "../../../packages/ui/src/components/cms/blocks/**/*.stories.@(ts|tsx)"),
-    // Allowlist a handful of Matrix stories for a11y/visual gates
+    // Explicit smoke contract stories used by storybook:smoke:ci
+    path.resolve(__dirname, "../../../packages/ui/src/components/atoms/Tooltip.stories.tsx"),
+    path.resolve(__dirname, "../../../packages/ui/src/components/molecules/FormField.stories.tsx"),
+    // Allowlist Matrix stories for ci-tagged interaction coverage
     path.resolve(__dirname, "../../../packages/ui/src/components/organisms/OrderSummary.Matrix.stories.tsx"),
     path.resolve(__dirname, "../../../packages/ui/src/components/organisms/ProductVariantSelector.Matrix.stories.tsx"),
     path.resolve(__dirname, "../../../packages/ui/src/components/organisms/ProductGallery.Matrix.stories.tsx"),

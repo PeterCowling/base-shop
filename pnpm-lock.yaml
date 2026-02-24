@@ -683,6 +683,9 @@ importers:
       '@acme/guides-core':
         specifier: workspace:*
         version: link:../../packages/guides-core
+      '@acme/lib':
+        specifier: workspace:*
+        version: link:../../packages/lib
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
@@ -2111,6 +2114,9 @@ importers:
       '@acme/config':
         specifier: workspace:^
         version: link:../config
+      '@acme/lib':
+        specifier: workspace:^
+        version: link:../lib
       '@acme/platform-core':
         specifier: workspace:^
         version: link:../platform-core

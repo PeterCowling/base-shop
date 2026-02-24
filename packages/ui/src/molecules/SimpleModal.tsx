@@ -61,6 +61,7 @@ export const SimpleModal: React.FC<SimpleModalProps> = ({
       <DialogPortal>
         <DialogOverlay className={cn("bg-black/50 backdrop-blur-sm", backdropClassName)} />
         <DialogPrimitive.Content
+          aria-describedby={undefined}
           className={cn(
             "fixed top-1/2 start-1/2 z-modal w-full -translate-x-1/2 -translate-y-1/2",
             "rounded-lg border border-border-2 bg-panel text-foreground shadow-elevation-4",

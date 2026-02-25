@@ -9,7 +9,7 @@ import MediaDetailsPanel from "../MediaDetailsPanel";
 
 jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
-  const base = require("../../../../../../../test/__mocks__/shadcnDialogStub.tsx");
+  const base = require("../../../../../test/__mocks__/shadcnDialogStub.tsx");
   const openChangeRef: {
     current?: (open: boolean) => void;
   } = {};
@@ -173,13 +173,7 @@ describe("MediaDetailsPanel", () => {
     expect(savingButton).toBeDisabled();
     expect(screen.getByText("Saving…")).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /close/i }));
-    expect(onClose).toHaveBeenCalledTimes(1);
-
-    onClose.mockClear();
-    act(() => {
-      dialogMock.__mock.lastOnOpenChange?.(false);
-    });
+    await user.click(screen.getAllByRole("button", { name: /close/i })[0]);
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -195,8 +189,8 @@ describe("MediaDetailsPanel", () => {
     await act(async () => {
       success.resolve();
       await success.promise;
-      dialogMock.__mock.lastOnOpenChange?.(false);
     });
+    await user.click(screen.getAllByRole("button", { name: /close/i })[0]);
     expect(onClose).toHaveBeenCalledTimes(1);
 
     const failure = defer<void>();

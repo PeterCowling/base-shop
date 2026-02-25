@@ -60,8 +60,7 @@ function App({ children }: AppProps) {
       if (!user) return;
       if (isArrowKeyCapturingElement(e.target)) return;
 
-      if (e.key === "ArrowUp") {
-        e.preventDefault();
+      const cycleForward = () => {
         if (activeModal === null) {
           setActiveModal(modals[0] ?? null);
         } else {
@@ -69,10 +68,9 @@ function App({ children }: AppProps) {
           const nextIndex = (currentIndex + 1) % modals.length;
           setActiveModal(modals[nextIndex] ?? null);
         }
-      }
+      };
 
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
+      const cycleBackward = () => {
         if (activeModal === null) {
           setActiveModal(modals[modals.length - 1] ?? null);
         } else {
@@ -80,6 +78,16 @@ function App({ children }: AppProps) {
           const prevIndex = (currentIndex - 1 + modals.length) % modals.length;
           setActiveModal(modals[prevIndex] ?? null);
         }
+      };
+
+      if (e.key === "ArrowUp" || e.key === "ArrowRight") {
+        e.preventDefault();
+        cycleForward();
+      }
+
+      if (e.key === "ArrowDown" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        cycleBackward();
       }
     },
     [user, activeModal, modals, isArrowKeyCapturingElement]

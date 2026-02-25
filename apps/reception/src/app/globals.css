@@ -107,6 +107,12 @@
   --color-grayishShades-row3: var(--color-grayishShades-row3);
   --color-grayishShades-row4: var(--color-grayishShades-row4);
 
+  /* Z-index scale (exposes CSS tokens as Tailwind utilities) */
+  --z-modal-backdrop: 9998;
+  --z-modal: 9999;
+  --z-popover: 600;
+  --z-tooltip: 700;
+
   /* Chart palette (dark-mode-aware) */
   --color-chart-1: hsl(var(--chart-1));
   --color-chart-2: hsl(var(--chart-2));
@@ -132,6 +138,10 @@
 }
 
 :root {
+  /* Modal z-index override — must sit above all sticky/fixed page elements */
+  --z-modal-backdrop: 9998;
+  --z-modal: 9999;
+
   /* Legacy dark palette aliases bridged to shared semantic tokens */
   --reception-dark-bg: var(--color-bg-dark);
   --reception-dark-surface: var(--surface-2-dark);

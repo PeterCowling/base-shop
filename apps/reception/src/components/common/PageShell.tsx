@@ -20,12 +20,15 @@ export const PageShell = memo(function PageShell({
 }: PageShellProps) {
   return (
     <div
-      className={`min-h-80vh p-4 bg-surface-2 font-sans text-foreground${className ? ` ${className}` : ""}`}
+      className={`min-h-80vh p-4 font-sans text-foreground${className ? ` ${className}` : ""}`}
     >
       {headerSlot ?? (
-        <h1 className="w-full mb-6 text-2xl text-center font-heading text-primary-main">
-          {title}
-        </h1>
+        <div className="mb-6 flex items-center gap-3">
+          <div className="h-7 w-1 rounded-full bg-primary-main" aria-hidden="true" />
+          <h1 className="text-2xl font-heading font-semibold text-foreground">
+            {title}
+          </h1>
+        </div>
       )}
       {children}
     </div>

@@ -72,7 +72,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
   return (
     <ModalContainer widthClasses="w-96">
       {/* Header with distinct background color */}
-      <div className="bg-info-main rounded-t">
+      <div className="bg-primary-main rounded-t">
         <h2 className="text-2xl font-bold text-primary-fg text-center py-4">
           Complete Payment
         </h2>
@@ -89,7 +89,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
             <label
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 paymentMethod === "cash"
-                  ? "border-info-main bg-info-light/20"
+                  ? "border-primary-main bg-primary-soft"
                   : "border-border-2 hover:border-border-2"
               }`}
             >
@@ -99,7 +99,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
                 value="cash"
                 checked={paymentMethod === "cash"}
                 onChange={handlePaymentChange}
-                className="form-radio h-5 w-5 text-info-main"
+                className="form-radio h-5 w-5 text-primary-main"
               />
               <span className="text-foreground font-medium">Cash</span>
             </label>
@@ -107,7 +107,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
             <label
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 paymentMethod === "card"
-                  ? "border-info-main bg-info-light/20"
+                  ? "border-primary-main bg-primary-soft"
                   : "border-border-2 hover:border-border-2"
               }`}
             >
@@ -117,7 +117,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
                 value="card"
                 checked={paymentMethod === "card"}
                 onChange={handlePaymentChange}
-                className="form-radio h-5 w-5 text-info-main"
+                className="form-radio h-5 w-5 text-primary-main"
               />
               <span className="text-foreground font-medium">Credit Card</span>
             </label>
@@ -133,7 +133,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
             <label
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 bleepUsage === "bleep"
-                  ? "border-info-main bg-info-light/20"
+                  ? "border-primary-main bg-primary-soft"
                   : "border-border-2 hover:border-border-2"
               }`}
             >
@@ -143,7 +143,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
                 value="bleep"
                 checked={bleepUsage === "bleep"}
                 onChange={handleBleepChange}
-                className="form-radio h-5 w-5 text-info-main"
+                className="form-radio h-5 w-5 text-primary-main"
               />
               <span className="text-foreground font-medium">Bleep</span>
             </label>
@@ -151,7 +151,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
             <label
               className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
                 bleepUsage === "go"
-                  ? "border-info-main bg-info-light/20"
+                  ? "border-primary-main bg-primary-soft"
                   : "border-border-2 hover:border-border-2"
               }`}
             >
@@ -161,7 +161,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
                 value="go"
                 checked={bleepUsage === "go"}
                 onChange={handleBleepChange}
-                className="form-radio h-5 w-5 text-info-main"
+                className="form-radio h-5 w-5 text-primary-main"
               />
               <span className="text-foreground font-medium">Go</span>
             </label>

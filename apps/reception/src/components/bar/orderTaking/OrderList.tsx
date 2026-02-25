@@ -63,7 +63,7 @@ const OrderList: FC<OrderListProps> = React.memo(
                   <TableRow
                     key={o.product}
                     onClick={makeRowHandler(o.product)}
-                    className="group cursor-pointer bg-surface hover:bg-info-main/10 motion-safe:transition-colors"
+                    className="group cursor-pointer bg-surface hover:bg-primary-soft motion-safe:transition-colors"
                   >
                     <TableCell className="whitespace-pre-wrap px-4 py-2">
                       {o.count > 1 ? `${o.count}× ${o.product}` : o.product}

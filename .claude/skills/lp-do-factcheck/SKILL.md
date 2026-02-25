@@ -327,41 +327,8 @@ The config file is at `config/settings.json`.
 The config file is at `src/config/settings.json`.
 ```
 
-**Bad fix (over-editing):**
-```markdown
-# Before
-The config file is at `config/settings.json`.
+**Bad fix:** Adding explanatory context, rewriting for style, or expanding scope beyond the factual error.
 
-# After
-The application configuration is stored in `src/config/settings.json`. This file contains all runtime settings including database connections, API keys, and feature flags. See the Configuration Guide for details.
-```
-
-### Version updates
-```markdown
-# Before
-Built with React 18.
-
-# After
-Built with React 19.
-```
-
-### Count updates
-```markdown
-# Before
-The monorepo contains 5 packages.
-
-# After
-The monorepo contains 7 packages.
-```
-
-### Path updates with context
-```markdown
-# Before
-Authentication logic lives in `src/auth/`.
-
-# After
-Authentication logic lives in `src/lib/auth/`.
-```
 
 ### Unverifiable claim handling
 ```markdown
@@ -372,19 +339,6 @@ The API responds within 200ms.
 The API is designed to respond within 200ms (performance varies by load).
 ```
 
-### Obsolete section flagging
-```markdown
-# Before
-## Legacy Authentication
-The old auth system uses session cookies stored in Redis.
-
-# After
-## Legacy Authentication
-
-> **Note:** This section describes the legacy authentication system, which has been replaced. See [New Auth System](#new-auth-system) for current documentation.
-
-The old auth system uses session cookies stored in Redis.
-```
 
 ## When to Use
 
@@ -410,29 +364,17 @@ The old auth system uses session cookies stored in Redis.
 ### 2. Over-editing
 Don't rewrite sections for style. Only fix factual inaccuracies.
 
-### 3. Marking vague claims as accurate
-"The system is well-tested" - Mark as unverifiable and add clarifying note.
-
-### 4. Ignoring context
-A path in a code block might be an example, not a claim about repo state. Use the exclusion rules above.
-
-### 5. Deleting content
+### 3. Deleting content
 Never delete sections even if obsolete. Flag for user decision.
 
-### 6. Skipping negative evidence
+### 4. Skipping negative evidence
 If you find something that contradicts a claim, you must fix it even if inconvenient.
 
-### 7. Conflating "claim" with "intention"
-"We plan to add X" is not a factual claim to verify (it's a statement of intent).
-
-### 8. Outdated without git evidence
+### 5. Outdated without git evidence
 Never classify as "Outdated" unless you can prove via git history that it was previously true.
 
-### 9. Classifying without evidence
+### 6. Classifying without evidence
 Every classification (including Accurate) must have an explicit evidence pointer.
-
-### 10. Changing document meaning
-Fact-check fixes facts, not intent. If a section's purpose is unclear, flag for user.
 
 ## Integration with Other Skills
 

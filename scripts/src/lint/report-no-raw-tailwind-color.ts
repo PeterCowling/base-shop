@@ -36,6 +36,14 @@ function normalizePath(p: string) {
   return p.split(path.sep).join("/");
 }
 
+function toRepoRelativePath(filePath: string) {
+  if (!path.isAbsolute(filePath)) {
+    return normalizePath(filePath).replace(/^\.\//, "");
+  }
+
+  return normalizePath(path.relative(ROOT, filePath));
+}
+
 function run(cmd: string, args: string[], timeoutMs?: number) {
   return spawnSync(cmd, args, {
     cwd: ROOT,
@@ -201,7 +209,7 @@ function main() {
         const messages = entry.messages.filter((msg) => msg.ruleId === RULE_ID);
         if (messages.length > 0) {
           report.push({
-            filePath: normalizePath(entry.filePath),
+            filePath: toRepoRelativePath(entry.filePath),
             messages,
           });
         }

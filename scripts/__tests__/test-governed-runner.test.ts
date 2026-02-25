@@ -258,6 +258,14 @@ function lastTelemetryEvent(repoDir: string): Record<string, unknown> {
   return events[events.length - 1];
 }
 
+async function waitForLastTelemetryEvent(
+  repoDir: string,
+  timeoutMs = 10_000,
+): Promise<Record<string, unknown>> {
+  await waitForCondition(() => readTelemetryEvents(repoDir).length > 0, timeoutMs, 100);
+  return lastTelemetryEvent(repoDir);
+}
+
 describe("Governed Test Runner", () => {
   const tempRepos: string[] = [];
   const childProcesses: ChildProcess[] = [];
@@ -602,7 +610,7 @@ describe("Governed Test Runner", () => {
     expect(log).toContain("exec jest --maxWorkers=2 --forceExit");
   });
 
-  test("TASK-04 TC-01: timeout exits 124 and records timeout telemetry", () => {
+  test("TASK-04 TC-01: timeout exits 124 and records timeout telemetry", async () => {
     const repo = newRepo();
     const mockBinDir = newTempDir("mock-pnpm-");
     createMockPnpm(mockBinDir);
@@ -617,7 +625,7 @@ describe("Governed Test Runner", () => {
     expect(result.stderr).toContain("Governed test timeout after 1s");
     expect(runLockStatus(repo, env).stdout).toContain("unlocked");
 
-    const event = lastTelemetryEvent(repo);
+    const event = await waitForLastTelemetryEvent(repo);
     expect(event.timeout_killed).toBe(true);
     expect(event.kill_escalation).toBe("sigterm");
     expect(event.exit_code).toBe(124);
@@ -643,7 +651,7 @@ describe("Governed Test Runner", () => {
       expect(result.status).toBe(124);
       expect(runLockStatus(repo, env).stdout).toContain("unlocked");
 
-      const event = lastTelemetryEvent(repo);
+      const event = await waitForLastTelemetryEvent(repo);
       expect(event.timeout_killed).toBe(true);
       expect(event.kill_escalation).toBe("sigkill");
       expect(event.exit_code).toBe(124);

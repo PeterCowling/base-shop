@@ -1,4 +1,6 @@
 import React, { type FC } from "react";
+import type { LucideIcon } from "lucide-react";
+import { Ban, CreditCard, FileText } from "lucide-react";
 
 import { Input } from "@acme/design-system";
 import { TableCell, TableRow } from "@acme/design-system/atoms";
@@ -16,19 +18,21 @@ import RoomPaymentButton from "../roomButton/roomPaymentButton";
 import StatusButton from "../StatusButton";
 import TooltipComponent from "../tooltip/Tooltip";
 
-function getKeycardIconClass(depositType?: LoanMethod): string {
+function getKeycardIcon(
+  depositType?: LoanMethod
+): { Icon: LucideIcon; colorClass: string } {
   const normalized = depositType ? depositType.toUpperCase() : undefined;
 
-  if (normalized === "NO_CARD") return "fas fa-ban fa-lg text-error-main";
-  if (normalized === "CASH") return "fas fa-id-card fa-lg text-success-main";
+  if (normalized === "NO_CARD") return { Icon: Ban, colorClass: "text-error-main" };
+  if (normalized === "CASH") return { Icon: CreditCard, colorClass: "text-success-main" };
   if (
     normalized === "PASSPORT" ||
     normalized === "LICENSE" ||
     normalized === "ID"
   ) {
-    return "fas fa-id-card fa-lg text-warning-main";
+    return { Icon: FileText, colorClass: "text-warning-main" };
   }
-  return "fas fa-id-card fa-lg text-muted-foreground";
+  return { Icon: CreditCard, colorClass: "text-muted-foreground" };
 }
 
 interface BookingRowViewProps {
@@ -125,18 +129,20 @@ const BookingRowView: FC<BookingRowViewProps> = ({
       <TableCell className="p-4">
         <div className="flex justify-center items-center gap-2">
           <KeycardDepositButton booking={booking} />
-          {(hasKeycard || depositType === "NO_CARD") && depositType && (
-            <i
-              className={getKeycardIconClass(depositType)}
-              title={
-                depositType === "NO_CARD"
-                  ? "No Card"
-                  : depositType === "CASH"
-                  ? "Keycard with cash"
-                  : "Keycard with document"
-              }
-            />
-          )}
+          {(hasKeycard || depositType === "NO_CARD") && depositType && (() => {
+            const { Icon: KeycardIcon, colorClass } = getKeycardIcon(depositType);
+            const iconTitle =
+              depositType === "NO_CARD"
+                ? "No Card"
+                : depositType === "CASH"
+                ? "Keycard with cash"
+                : "Keycard with document";
+            return (
+              <span title={iconTitle}>
+                <KeycardIcon size={18} className={colorClass} aria-hidden="true" />
+              </span>
+            );
+          })()}
         </div>
       </TableCell>
       <TableCell className="p-4">

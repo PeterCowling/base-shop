@@ -64,7 +64,7 @@ export const SafeOpenForm = memo(function SafeOpenForm({
         <Button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 rounded bg-info-main text-primary-fg hover:bg-info-dark"
+          className="px-4 py-2 rounded bg-primary-main text-primary-fg hover:bg-primary-dark"
         >
           Cancel
         </Button>

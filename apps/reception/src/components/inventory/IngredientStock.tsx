@@ -89,7 +89,7 @@ function IngredientStock() {
                   onChange={(e) => handleChange(ing.name, e.target.value)}
                 />
                 <Button
-                  className="ms-2 px-2 py-1 bg-info-main text-primary-fg rounded"
+                  className="ms-2 px-2 py-1 bg-primary-main text-primary-fg rounded"
                   onClick={() => handleSave(ing.name)}
                 >
                   Save

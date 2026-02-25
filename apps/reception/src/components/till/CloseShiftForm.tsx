@@ -256,7 +256,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             onCancel={onCancel}
           />
           <Button
-            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded"
+            className="mt-2 px-3 py-1 bg-primary-main text-primary-fg rounded"
             onClick={saveProgress}
           >
             Save Progress
@@ -286,19 +286,19 @@ export const CloseShiftForm = memo(function CloseShiftForm({
           <div className="mt-4 flex gap-2">
             <Button
               onClick={() => setStep(0)}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded"
             >
               Back
             </Button>
             <Button
               onClick={handleStep1Next}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded"
             >
               Next
             </Button>
             <Button
               onClick={saveProgress}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded"
             >
               Save Progress
             </Button>
@@ -352,7 +352,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             </p>
           )}
           <Button
-            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded"
+            className="mt-2 px-3 py-1 bg-primary-main text-primary-fg rounded"
             onClick={saveProgress}
           >
             Save Progress

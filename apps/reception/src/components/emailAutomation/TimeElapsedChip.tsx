@@ -40,7 +40,7 @@ const TimeElapsedChip: FC<TimeElapsedChipProps> = ({
     // Cancelled stage
     chipColorClasses = "bg-error-main text-primary-fg";
   } else {
-    chipColorClasses = "bg-info-main text-primary-fg";
+    chipColorClasses = "bg-primary-main text-primary-fg";
   }
 
   return (

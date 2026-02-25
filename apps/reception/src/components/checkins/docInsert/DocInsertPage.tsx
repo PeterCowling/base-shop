@@ -165,7 +165,7 @@ const DocInsertPage: React.FC = () => {
                 ? "bg-error-main/50 text-primary-fg"
                 : snackbar.severity === "warning"
                 ? "bg-warning-main/50 text-foreground"
-                : "bg-info-main/50 text-primary-fg"
+                : "bg-primary-main/50 text-primary-fg"
             }`}
         >
           <span>{snackbar.message}</span>

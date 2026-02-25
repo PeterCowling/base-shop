@@ -143,7 +143,7 @@ function FinancialTransactionSearch(): JSX.Element {
 
         <Button
           onClick={handleSearch}
-          className="px-4 py-1 bg-info-main text-primary-fg rounded hover:bg-info-dark transition-colors"
+          className="px-4 py-1 bg-primary-main text-primary-fg rounded hover:bg-primary-dark transition-colors"
         >
           Search
         </Button>

@@ -101,7 +101,7 @@ function KeycardDepositMenu({
         className={`w-full mt-4 py-2 rounded text-primary-fg ${
           buttonDisabled
             ? "bg-surface-3 cursor-not-allowed"
-            : "bg-info-main hover:bg-info-dark"
+            : "bg-primary-main hover:bg-primary-dark"
         }`}
       >
         Confirm

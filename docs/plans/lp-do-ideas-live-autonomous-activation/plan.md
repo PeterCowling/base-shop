@@ -5,7 +5,7 @@ Domain: Platform / Business-OS
 Workstream: Engineering
 Created: 2026-02-25
 Last-reviewed: 2026-02-25
-Last-updated: 2026-02-25 (TASK-03+04 complete)
+Last-updated: 2026-02-25 (TASK-05+06+07 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-do-ideas-live-autonomous-activation
 Deliverable-Type: multi-deliverable
@@ -29,9 +29,9 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - [x] TASK-02: Add live orchestrator path and mode-guard compatibility
 - [x] TASK-03: Implement SIGNALS advisory live hook
 - [x] TASK-04: Add deterministic persistence adapter and CLI wiring
-- [ ] TASK-05: Materialize artifact plane and reconcile trial/live contracts
-- [ ] TASK-06: Add live-path regression and non-mutation test coverage
-- [ ] TASK-07: Wire KPI rollup evidence pipeline
+- [x] TASK-05: Materialize artifact plane and reconcile trial/live contracts
+- [x] TASK-06: Add live-path regression and non-mutation test coverage
+- [x] TASK-07: Wire KPI rollup evidence pipeline
 - [ ] TASK-08: Horizon checkpoint - reassess autonomous lane from live evidence
 - [ ] TASK-09: Implement autonomous gating and kill-switch controls (inactive)
 - [ ] TASK-10: Produce go-live checklist closure package and recommendation
@@ -85,9 +85,9 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 | TASK-02 | IMPLEMENT | Add live orchestrator path and mode-guard compatibility | 90% | M | Complete (2026-02-25) | TASK-01 ✓ | TASK-03, TASK-04, TASK-06 |
 | TASK-03 | IMPLEMENT | Implement SIGNALS advisory live hook with fail-open fallback | 90% | M | Complete (2026-02-25) | TASK-01 ✓, TASK-02 ✓ | TASK-06 |
 | TASK-04 | IMPLEMENT | Add deterministic persistence adapter and CLI command wiring | 85% | L | Complete (2026-02-25) | TASK-02 ✓ | TASK-05, TASK-06, TASK-07 |
-| TASK-05 | IMPLEMENT | Materialize trial/live artifact plane and reconcile contracts | 80% | M | Pending | TASK-04 | TASK-10 |
-| TASK-06 | IMPLEMENT | Expand test suite for live-path behavior and regressions | 85% | M | Pending | TASK-03, TASK-04 | TASK-08 |
-| TASK-07 | IMPLEMENT | Wire KPI rollup evidence generation for checklist VC-01/VC-02 | 85% | M | Pending | TASK-04 | TASK-08, TASK-10 |
+| TASK-05 | IMPLEMENT | Materialize trial/live artifact plane and reconcile contracts | 80% | M | Complete (2026-02-25) | TASK-04 ✓ | TASK-10 |
+| TASK-06 | IMPLEMENT | Expand test suite for live-path behavior and regressions | 85% | M | Complete (2026-02-25) | TASK-03 ✓, TASK-04 ✓ | TASK-08 |
+| TASK-07 | IMPLEMENT | Wire KPI rollup evidence generation for checklist VC-01/VC-02 | 85% | M | Complete (2026-02-25) | TASK-04 ✓ | TASK-08, TASK-10 |
 | TASK-08 | CHECKPOINT | Horizon checkpoint - reassess autonomous lane from live evidence | 95% | S | Pending | TASK-06, TASK-07 | TASK-09, TASK-10 |
 | TASK-09 | IMPLEMENT | Implement autonomous gating + kill-switch controls (inactive) | 85% | M | Pending | TASK-08 | TASK-10 |
 | TASK-10 | IMPLEMENT | Produce checklist closure package and activation recommendation | 80% | M | Pending | TASK-05, TASK-07, TASK-09 | - |
@@ -302,7 +302,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Artifact-Destination:** `docs/business-os/startup-loop/ideas/{trial,live}/`
 - **Reviewer:** startup-loop maintainers
 - **Approval-Evidence:** checklist section E/F links and contract parity note
@@ -339,6 +339,14 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
   - Rollback: remove live artifacts and restore prior contract text.
 - **Documentation impact:** updates checklist + trial contract + seam references.
 - **Notes / references:** BR-04, BR-05.
+- **Build completion evidence (2026-02-25):**
+  - Created `docs/business-os/startup-loop/ideas/trial/telemetry.jsonl` — empty seed JSONL file
+  - Created `docs/business-os/startup-loop/ideas/live/queue-state.json` — seed with `schema_version: "queue-state.v1"`, `mode: "live"`, empty entries
+  - Created `docs/business-os/startup-loop/ideas/live/telemetry.jsonl` — empty seed JSONL file
+  - Updated `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md` — added "Live Artifact Paths" subsection referencing both live/ and trial/ namespaces
+  - VC-05-A: ✓ `find` confirms both trial/ and live/ namespaces have queue-state.json + telemetry.jsonl
+  - VC-05-B: ✓ seed JSON validates against `queue-state.v1` schema with required fields present
+  - VC-05-C: ✓ contract doc updated to reference both namespace paths consistently
 
 ### TASK-06: Expand test suite for live-path behavior and regressions
 - **Type:** IMPLEMENT
@@ -347,7 +355,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Affects:** `scripts/src/startup-loop/__tests__/lp-do-ideas-*.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-build-reflection-debt.test.ts`
 - **Depends on:** TASK-03, TASK-04
 - **Blocks:** TASK-08
@@ -377,6 +385,17 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
   - Rollback: revert new tests if feature rollback is invoked.
 - **Documentation impact:** update plan/build evidence sections with exact passing command.
 - **Notes / references:** BR-01, BR-03, BR-06.
+- **Build completion evidence (2026-02-25):**
+  - Created `scripts/src/startup-loop/__tests__/lp-do-ideas-live-integration.test.ts` — 21 tests across 4 suites (TC-06-A through TC-06-D)
+  - TC-06-A: end-to-end hook → persist → idempotent re-run (5 tests)
+  - TC-06-B: hook error path non-blocking; simulates SIGNALS caller (5 tests)
+  - TC-06-C: dispatched live packets pass through `routeDispatch` (5 tests)
+  - TC-06-D: suppression counts are non-negative integers; taxonomy ordering deterministic (6 tests)
+  - Full regression: 71 tests, 5 suites pass (`lp-do-ideas-live|persistence|metrics-runner` pattern)
+  - TC-06-A: ✓ end-to-end hook+persist runs and re-runs idempotently
+  - TC-06-B: ✓ hook error path does not propagate to caller
+  - TC-06-C: ✓ live packets accepted by routing adapter
+  - Regression command: `pnpm -w run test:governed -- jest -- --config=scripts/jest.config.cjs --testPathPattern="lp-do-ideas" --no-coverage`
 
 ### TASK-07: Wire KPI rollup evidence generation for checklist VC-01/VC-02
 - **Type:** IMPLEMENT
@@ -385,7 +404,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Affects:** `scripts/src/startup-loop/lp-do-ideas-metrics-rollup.ts`, `docs/business-os/startup-loop/ideas/{trial,live}/telemetry.jsonl`, `docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-checklist.md`
 - **Depends on:** TASK-04
 - **Blocks:** TASK-08, TASK-10
@@ -415,6 +434,17 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
   - Rollback: keep previous manual KPI review path if rollup malfunctions.
 - **Documentation impact:** checklist evidence instructions may be simplified to command output links.
 - **Notes / references:** BR-06, BR-07.
+- **Build completion evidence (2026-02-25):**
+  - Created `scripts/src/startup-loop/lp-do-ideas-metrics-runner.ts` — `runMetricsRollup(options)` export
+  - Reads telemetry JSONL (cycle snapshot records only); reads queue state (dual-format: `queue-state.v1` + legacy `queue.v1`)
+  - Returns `{ ready: false, reason }` when no cycle snapshots present (fail-closed for activation)
+  - Infers lane from packet status: `fact_find_ready` → DO lane, else IMPROVE lane
+  - Created `scripts/src/startup-loop/__tests__/lp-do-ideas-metrics-runner.test.ts` — 4 tests (TC-07-A through TC-07-D)
+  - TC-07-A: ✓ fixture telemetry + queue returns valid rollup with correct lane counts
+  - TC-07-B: ✓ empty telemetry returns not-ready/zero-cycle result
+  - TC-07-C: ✓ missing telemetry file treated as empty — no throw
+  - TC-07-D: ✓ `generated_at` is ISO-8601 string
+  - Validation: 4 tests pass; handles legacy `trial/queue-state.json` dual-format transparently
 
 ### TASK-08: Horizon checkpoint - reassess autonomous lane from live evidence
 - **Type:** CHECKPOINT

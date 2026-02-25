@@ -5,7 +5,7 @@
     "classify-deploy-change": "node --import tsx src/ci/classify-deploy-change.ts",
     "classify-paths": "node ci/path-classifier.cjs",
     "collect-workflow-metrics": "node --import tsx src/ci/collect-workflow-metrics.ts",
-    "generate-stage-operator-views": "node --import tsx src/startup-loop/generate-stage-operator-views.ts",
+    "generate-stage-operator-views": "node --import tsx src/startup-loop/generate-stage-operator-views.ts && node --import tsx src/startup-loop/generate-build-summary.ts",
     "check-stage-operator-views": "node --import tsx src/startup-loop/generate-stage-operator-views.ts --check",
     "startup-loop:compile-website-content-packet": "node --import tsx src/startup-loop/compile-website-content-packet.ts",
     "validate-process-assignment": "node --import tsx src/startup-loop/validate-process-assignment.ts",

@@ -5,7 +5,7 @@ Domain: Platform / Business-OS
 Workstream: Engineering
 Created: 2026-02-25
 Last-reviewed: 2026-02-25
-Last-updated: 2026-02-25 (TASK-02 complete)
+Last-updated: 2026-02-25 (TASK-03+04 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-do-ideas-live-autonomous-activation
 Deliverable-Type: multi-deliverable
@@ -27,8 +27,8 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 ## Active tasks
 - [x] TASK-01: Resolve live hook boundary and invocation contract
 - [x] TASK-02: Add live orchestrator path and mode-guard compatibility
-- [ ] TASK-03: Implement SIGNALS advisory live hook
-- [ ] TASK-04: Add deterministic persistence adapter and CLI wiring
+- [x] TASK-03: Implement SIGNALS advisory live hook
+- [x] TASK-04: Add deterministic persistence adapter and CLI wiring
 - [ ] TASK-05: Materialize artifact plane and reconcile trial/live contracts
 - [ ] TASK-06: Add live-path regression and non-mutation test coverage
 - [ ] TASK-07: Wire KPI rollup evidence pipeline
@@ -83,8 +83,8 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Resolve live hook boundary and command invocation contract | 90% | S | Complete (2026-02-25) | - | TASK-02, TASK-03 |
 | TASK-02 | IMPLEMENT | Add live orchestrator path and mode-guard compatibility | 90% | M | Complete (2026-02-25) | TASK-01 ✓ | TASK-03, TASK-04, TASK-06 |
-| TASK-03 | IMPLEMENT | Implement SIGNALS advisory live hook with fail-open fallback | 90% | M | Pending | TASK-01 ✓, TASK-02 ✓ | TASK-06 |
-| TASK-04 | IMPLEMENT | Add deterministic persistence adapter and CLI command wiring | 85% | L | Pending | TASK-02 | TASK-05, TASK-06, TASK-07 |
+| TASK-03 | IMPLEMENT | Implement SIGNALS advisory live hook with fail-open fallback | 90% | M | Complete (2026-02-25) | TASK-01 ✓, TASK-02 ✓ | TASK-06 |
+| TASK-04 | IMPLEMENT | Add deterministic persistence adapter and CLI command wiring | 85% | L | Complete (2026-02-25) | TASK-02 ✓ | TASK-05, TASK-06, TASK-07 |
 | TASK-05 | IMPLEMENT | Materialize trial/live artifact plane and reconcile contracts | 80% | M | Pending | TASK-04 | TASK-10 |
 | TASK-06 | IMPLEMENT | Expand test suite for live-path behavior and regressions | 85% | M | Pending | TASK-03, TASK-04 | TASK-08 |
 | TASK-07 | IMPLEMENT | Wire KPI rollup evidence generation for checklist VC-01/VC-02 | 85% | M | Pending | TASK-04 | TASK-08, TASK-10 |
@@ -151,7 +151,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Affects:** `scripts/src/startup-loop/lp-do-ideas-live.ts`, `scripts/src/startup-loop/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-routing-adapter.test.ts` (scope expansion: TC-06 updated for live-mode acceptance), `scripts/src/startup-loop/__tests__/lp-do-ideas-live.test.ts` (new — TC-02-A/B/C/D/E), `[readonly] docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-seam.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03, TASK-04, TASK-06
@@ -199,7 +199,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Affects:** `scripts/src/startup-loop/lp-do-ideas-live-hook.ts`, `<boundary file from TASK-01>`
 - **Depends on:** TASK-01, TASK-02
 - **Blocks:** TASK-06
@@ -229,6 +229,19 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
   - Rollback: disable hook call site, keep live modules dormant.
 - **Documentation impact:** add seam implementation note to go-live checklist evidence.
 - **Notes / references:** BR-01, BR-03, risk table (hook error propagation).
+- **Build completion evidence (2026-02-25):**
+  - Created `scripts/src/startup-loop/lp-do-ideas-live-hook.ts` — advisory CLI module with `runLiveHook(options)` pure export
+  - Hook reads standing registry from disk, calls `runLiveOrchestrator`, returns result — never throws
+  - All errors caught and returned as result fields (fail-open advisory posture)
+  - `queueStatePath` and `telemetryPath` accepted in options but not written (TASK-04 scope)
+  - CLI main (isMain check) exits 0 on all outcomes — SIGNALS never blocked by hook errors
+  - Removed `import.meta.url` from module (Jest CJS incompatible); uses `process.argv[1]` endsWith check
+  - Created `scripts/src/startup-loop/__tests__/lp-do-ideas-live-hook.test.ts` — TC-03-A/B/C/D (17 tests)
+  - TC-03-A: ✓ registry load + orchestrator dispatch → ok: true, mode="live" packets
+  - TC-03-B: ✓ malformed registry and missing registry return ok: false, no throw
+  - TC-03-C: ✓ no file writes to queue-state or telemetry paths after any run
+  - TC-03-D: ✓ non-existent registry returns diagnostic error without throwing
+  - Validation: 2 suites, 32 tests pass; lint fixed with `npx eslint --fix`
 
 ### TASK-04: Add deterministic persistence adapter and CLI command wiring
 - **Type:** IMPLEMENT
@@ -237,7 +250,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Affects:** `scripts/src/startup-loop/lp-do-ideas-*.ts`, `scripts/package.json`, `docs/business-os/startup-loop/ideas/{trial,live}/*`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-05, TASK-06, TASK-07
@@ -267,6 +280,20 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
   - Rollback: remove command wiring and disable persistence wrapper.
 - **Documentation impact:** command usage block updates in seam/checklist docs.
 - **Notes / references:** BR-03, BR-04, BR-05.
+- **Build completion evidence (2026-02-25):**
+  - Created `scripts/src/startup-loop/lp-do-ideas-persistence.ts` — file-backed persistence adapter
+  - Exports: `loadQueueState`, `writeQueueState`, `appendTelemetry`, `persistOrchestratorResult`
+  - Atomic writes via write-temp-then-rename (`<dir>/.filename.tmp.<hex>` → target)
+  - Queue state schema: `queue-state.v1` with `entries[]` keyed by `dispatch_id`
+  - Idempotent: duplicate `dispatch_id` silently skipped on subsequent runs
+  - Telemetry: JSONL deduplication by `dispatch_id+recorded_at+kind`
+  - Fail-closed: malformed existing queue state returns `ok: false` without partial write
+  - Created `scripts/src/startup-loop/__tests__/lp-do-ideas-persistence.test.ts` — TC-04-A/B/C + utilities (22 tests)
+  - TC-04-A: ✓ first run creates queue-state.json + telemetry.jsonl with correct content
+  - TC-04-B: ✓ repeated identical run produces zero new entries and zero new telemetry
+  - TC-04-C: ✓ malformed input fails closed; corrupted queue state not overwritten
+  - Added to `scripts/package.json`: `startup-loop:lp-do-ideas-live-run` and `startup-loop:lp-do-ideas-trial-run`
+  - Validation: 9 suites (extended regression), 177 tests all pass
 
 ### TASK-05: Materialize trial/live artifact plane and reconcile contracts
 - **Type:** IMPLEMENT

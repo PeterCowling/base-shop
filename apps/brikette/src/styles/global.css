@@ -333,13 +333,13 @@
   /* ── CTA pills for mobile header ───────────────────────────── */
   .cta-light,
   .cta-dark {
-    @apply inline-block min-w-[10rem] rounded px-4 py-2 text-center shadow-md;
+    @apply inline-block min-w-0 rounded-full px-4 py-1.5 text-center shadow-sm;
     transition: background-color var(--theme-transition-duration) ease,
       color var(--theme-transition-duration) ease;
   }
   .cta-light {
     background-color: var(--color-brand-secondary);
-    color: var(--color-brand-heading);
+    color: var(--color-brand-on-accent);
   }
   .cta-light:hover {
     background-color: rgb(var(--rgb-brand-secondary) / 0.9);

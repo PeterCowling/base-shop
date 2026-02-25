@@ -51,6 +51,20 @@ const THEME_COLOR_TOKENS = [
   "link",
   "ring",
   "hero-foreground",
+  "brand-bg",
+  "brand-surface",
+  "brand-text",
+  "brand-heading",
+  "brand-outline",
+  "brand-primary",
+  "brand-secondary",
+  "brand-terra",
+  "brand-bougainvillea",
+  "brand-on-primary",
+  "brand-on-accent",
+  "brand-gradient-start",
+  "brand-gradient-mid",
+  "brand-gradient-end",
 ] as const;
 
 const twMerge = extendTailwindMerge({

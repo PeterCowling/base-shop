@@ -107,15 +107,15 @@ function DesktopHeader({
   );
 
   const { navLinks } = buildNavLinks(lang, navTranslate);
-  const ctaClass = "cta-dark";
+  const ctaClass = "cta-light";
   const primaryCtaLabel = useMemo(() => {
     if (!tokensReady) return FALLBACK_PRIMARY_CTA_LABEL;
     return resolvePrimaryCtaLabel(tTokens, { fallback: FALLBACK_PRIMARY_CTA_LABEL }) ?? FALLBACK_PRIMARY_CTA_LABEL;
   }, [tTokens, tokensReady]);
 
   return (
-    <div className="hidden lg:block bg-header-gradient">
-      <Section as="div" padding="none" className="max-w-6xl px-8 text-brand-heading">
+    <div className="hidden md:block bg-header-gradient">
+      <Section as="div" padding="none" className="max-w-6xl px-4 text-brand-heading lg:px-8">
         {/* Row 1 – logo • CTA • toggles */}
         <div className="header-row-1 flex items-center justify-between">
           <Link

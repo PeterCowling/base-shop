@@ -182,7 +182,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
   const copyright = tFooter("copyright", { lng: lang, year: CURRENT_YEAR }) as string;
   const noPhoneNotice = tFooter("noPhoneNotice", { lng: lang }) as string;
   const emailLinkLabel = `${tFooter("email", { lng: lang })}: ${CONTACT_EMAIL}`;
-  const bookDirectCtaLabel = tDeals("dealCard.cta.bookDirect", { lng: lang }) as string;
+  const bookDirectCtaLabel = tDeals("dealCard.cta.bookDirect", { lng: lang, defaultValue: "Book direct" }) as string;
   const navAriaLabel = tFooter("navAriaLabel", { lng: lang }) as string;
 
   return (

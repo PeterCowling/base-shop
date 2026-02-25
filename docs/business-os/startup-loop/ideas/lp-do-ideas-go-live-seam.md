@@ -1,7 +1,7 @@
 ---
 Type: Seam-Contract
 Schema: lp-do-ideas-go-live-seam
-Version: 1.1.0
+Version: 1.2.0
 Mode: trial → live (activation deferred)
 Status: Active
 Created: 2026-02-24
@@ -39,21 +39,25 @@ standing-artifact delta
     → /lp-do-fact-find or /lp-do-briefing invoked by operator
 ```
 
-In live mode, the pipeline integrates into the startup-loop SIGNALS (S10) weekly
-cycle and activates automatically when standing-artifact deltas are detected:
+In live mode, the pipeline fires immediately when a build task commits changes to a
+registered standing artifact:
 
 ```
-SIGNALS weekly advance (/lp-weekly --biz <BIZ>)
-    → delta detection for registered standing artifacts
-    → runLiveOrchestrator()      ← live-mode variant (to be implemented at activation)
+/lp-do-build task completes → commit touches registered standing artifact(s)
+    → SHA delta computed for each affected registered artifact
+    → runLiveHook() invoked with delta events
+    → runLiveOrchestrator() processes events
     → dispatch.v1 packets emitted (mode: live)
     → live queue
     → Option B: operator confirmation still required for all routes (unless escalated to Option C)
     → /lp-do-fact-find or /lp-do-briefing invoked
 ```
 
-The fundamental change in live mode is **automated trigger integration** — deltas are
-detected as part of the weekly cycle rather than requiring manual skill invocation.
+The fundamental change in live mode is **event-driven trigger integration** — ideas
+surface immediately when a standing artifact changes, rather than waiting for a weekly
+review cycle or requiring manual skill invocation. This ensures that process improvement
+and new direction ideas are visible at the point they become relevant, not days later.
+
 The queue-with-confirmation (Option B) operator gate remains active in live mode until
 explicitly escalated to Option C (see policy decision).
 
@@ -61,19 +65,24 @@ explicitly escalated to Option C (see policy decision).
 
 ## 2. Integration Boundary Points
 
-### 2.1 Startup-Loop Trigger Hook (SIGNALS weekly advance)
+### 2.1 Build-Time Trigger Hook (/lp-do-build post-task)
 
-**Boundary**: `apps/prime/src/lib/owner/` or `scripts/src/startup-loop/` — wherever
-the SIGNALS weekly cycle collects standing-artifact snapshots.
+**Boundary**: `/lp-do-build` skill — after each task commit, the build skill checks
+whether any committed files are registered in `live/standing-registry.json`. If so,
+it computes SHA deltas and invokes the hook with those events.
 
 **Action required at activation**:
-- Add a call to the live orchestrator after the SIGNALS weekly snapshot is taken.
-- The orchestrator reads `lp-do-ideas-standing-registry.json` for registered artifacts,
-  computes per-artifact SHA deltas, and emits dispatch packets for qualifying changes.
-- Integration point is advisory in v1 live mode — it does not block SIGNALS stage advance.
+- After each task commit in `/lp-do-build`, compare the committed file set against
+  `live/standing-registry.json`.
+- For each file that is a registered artifact, construct an `ArtifactDeltaEvent` with
+  `before_sha` (from the previous commit) and `after_sha` (from the new commit).
+- Call `runLiveHook()` with those events. Surface any dispatch candidates to the
+  operator before moving to the next task.
+- Integration is advisory — it does not block the build cycle or require the operator
+  to act before continuing.
 
-**Location for integration stub**: `scripts/src/startup-loop/lp-do-ideas-live-hook.ts`
-(IMPLEMENTED — advisory hook is live; wire into `/lp-weekly` at activation time).
+**Location**: `scripts/src/startup-loop/lp-do-ideas-live-hook.ts`
+(IMPLEMENTED — hook module is ready; wiring into `/lp-do-build` is the remaining activation step).
 
 ### 2.2 Mode Guard Updates (code changes required at activation)
 
@@ -90,7 +99,7 @@ as a separate module. `routeDispatch()` guard updated to accept `"trial" | "live
 **Preferred pattern** (implemented): `lp-do-ideas-live.ts` is a separate module that:
 - Imports the same routing adapter (the adapter guard has been updated to allow `"live"`)
 - Uses production artifact paths (not trial paths)
-- Integrates with the SIGNALS hook
+- Integrates with the `/lp-do-build` post-task hook
 
 ### 2.3 Artifact Path Switch
 
@@ -121,12 +130,19 @@ Before activation, the operator must:
 3. Capture initial SHAs for all registered artifacts using the SHA snapshot tooling
    (to be added in the live implementation).
 
-### 2.5 startup-loop cmd-advance Integration (advisory, not blocking)
+### 2.5 Relationship to Other Cycle Points
 
-In live mode v1, `lp-do-ideas` dispatch is **advisory** — it does not block
-`/startup-loop advance`. The advance gate `GATE-LOOP-GAP-01` and `GATE-LOOP-GAP-02`
-are the appropriate hooks for gap-fill dispatch; `lp-do-ideas` live dispatch complements
-these by detecting semantic-strategy deltas, not stage-blocked events.
+`lp-do-ideas` live dispatch is **advisory and non-blocking** at all integration points.
+
+| Cycle point | lp-do-ideas role | Blocking? |
+|---|---|---|
+| `/lp-do-build` post-task commit | Primary trigger — fires when registered artifact changes | No |
+| `/startup-loop advance` | Not a trigger; `lp-do-ideas` does not hook into advance | N/A |
+| `/lp-weekly` | Not a trigger in v1 live mode | N/A |
+
+The advance gates `GATE-LOOP-GAP-01` and `GATE-LOOP-GAP-02` handle stage-blocked gap
+events; `lp-do-ideas` complements these by detecting semantic-strategy deltas at build
+time, not stage-transition time.
 
 A future hard gate (e.g. `GATE-IDEAS-01`) may be added to `cmd-advance.md` to block
 advance when a critical live dispatch is pending operator confirmation. This is out of
@@ -188,12 +204,17 @@ touch docs/business-os/startup-loop/ideas/live/telemetry.jsonl
 echo '{"entries":{},"dedupe_index":{}}' > docs/business-os/startup-loop/ideas/live/queue-state.json
 ```
 
-### Step 6 — Wire SIGNALS integration hook
+### Step 6 — Wire build-time integration hook
 
-**Action**: Create `scripts/src/startup-loop/lp-do-ideas-live-hook.ts` and wire it
-into the SIGNALS weekly cycle at the appropriate delta-detection point.
+**Action**: `scripts/src/startup-loop/lp-do-ideas-live-hook.ts` is already implemented.
+Wire it into `/lp-do-build` so that after each task commit, the skill:
+1. Checks the committed file set against `live/standing-registry.json`
+2. Constructs `ArtifactDeltaEvent[]` for any registered files (using `git diff HEAD~1 HEAD -- <file>` to obtain before/after SHAs)
+3. Calls `runLiveHook({ business, registryPath, queueStatePath, telemetryPath, events })`
+4. Surfaces any `result.dispatched` packets to the operator as advisory output
 
-**Scope note**: This step does not modify `cmd-advance.md`. The hook is advisory only.
+**Scope note**: This step does not modify `cmd-advance.md`. The hook is advisory only
+and does not block the build cycle.
 
 ### Step 7 — Rehearse rollback playbook
 
@@ -215,7 +236,7 @@ Once live, the following behaviors are in effect:
 
 | Behavior | Live mode (Option B) | Change vs Trial |
 |---|---|---|
-| Dispatch trigger | Automated — fires during SIGNALS weekly cycle | Was: manual skill invocation only |
+| Dispatch trigger | Event-driven — fires after `/lp-do-build` task commit touches a registered artifact | Was: manual skill invocation only |
 | Operator confirmation | Required for all routes (Option B) | Unchanged |
 | Artifact paths | Production paths (`live/`) | Was: trial paths (`trial/`) |
 | Telemetry | Appended to `live/telemetry.jsonl` | New file; trial file preserved |
@@ -259,3 +280,4 @@ If any of the following are true, do NOT activate live mode:
 |---|---|---|
 | 1.0.0 | 2026-02-24 | Initial go-live seam definition (pre-activation) |
 | 1.1.0 | 2026-02-25 | Updated to reflect implementation completion: live.ts, routing-adapter, live-hook.ts, live/ artifacts all created. Activation remains deferred pending KPI evidence. |
+| 1.2.0 | 2026-02-25 | Changed integration point from `/lp-weekly` (weekly cadence) to `/lp-do-build` (event-driven, fires at task commit time). Updated sections 1, 2.1, 2.5, step 6, and post-activation behavior table. |

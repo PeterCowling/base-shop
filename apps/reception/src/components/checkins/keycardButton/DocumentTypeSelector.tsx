@@ -1,13 +1,9 @@
 /* File: /src/components/checkins/KeycardButton/DocumentTypeSelector.tsx */
 import React, { memo } from "react";
-import {
-  faDriversLicense,
-  faIdCard,
-  faPassport,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { LucideIcon } from "lucide-react";
+import { BookOpen, Contact, IdCard } from "lucide-react";
 
-import { ReceptionInput } from "@acme/ui/operations";
+import { Input } from "@acme/design-system";
 
 import { DocumentType } from "../../../types/keycards";
 
@@ -24,13 +20,13 @@ function DocumentTypeSelector({
   setDocType,
 }: DocumentTypeSelectorProps) {
   return (
-    <fieldset className="mt-2 dark:text-darkAccentGreen">
+    <fieldset className="mt-2">
       <legend className="block mb-1 font-semibold">Document Type:</legend>
       <div className="flex flex-col gap-2">
         <DocRadioButton
           label="Passport"
           value={DocumentType.PASSPORT}
-          icon={faPassport}
+          icon={BookOpen}
           currentValue={docType}
           onChange={() => setDocType(DocumentType.PASSPORT)}
         />
@@ -38,7 +34,7 @@ function DocumentTypeSelector({
         <DocRadioButton
           label="Driver License"
           value={DocumentType.DRIVING_LICENSE}
-          icon={faDriversLicense}
+          icon={Contact}
           currentValue={docType}
           onChange={() => setDocType(DocumentType.DRIVING_LICENSE)}
         />
@@ -46,7 +42,7 @@ function DocumentTypeSelector({
         <DocRadioButton
           label="National ID"
           value={DocumentType.ID_CARD}
-          icon={faIdCard}
+          icon={IdCard}
           currentValue={docType}
           onChange={() => setDocType(DocumentType.ID_CARD)}
         />
@@ -63,7 +59,7 @@ export default memo(DocumentTypeSelector);
 interface DocRadioButtonProps {
   label: string;
   value: DocumentType;
-  icon: typeof faPassport; // or more precisely, IconDefinition
+  icon: LucideIcon;
   currentValue: DocumentType;
   onChange: () => void;
 }
@@ -78,11 +74,11 @@ const DocRadioButton = memo(function DocRadioButton({
   const isActive = currentValue === value;
   return (
     <label
-      className={`flex items-center gap-2 border rounded p-2 hover:bg-surface-2 dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen ${
-        isActive ? "bg-surface-3 dark:bg-darkSurface" : ""
+      className={`flex items-center gap-2 border rounded p-2 hover:bg-surface-2 ${
+        isActive ? "bg-surface-3" : ""
       }`}
     >
-      <ReceptionInput
+      <Input compatibilityMode="no-wrapper"
         type="radio"
         name="docType"
         value={value}
@@ -90,7 +86,7 @@ const DocRadioButton = memo(function DocRadioButton({
         onChange={onChange}
         className="sr-only"
       />
-      <FontAwesomeIcon icon={icon} />
+      {React.createElement(icon, { size: 16 })}
       {label}
     </label>
   );

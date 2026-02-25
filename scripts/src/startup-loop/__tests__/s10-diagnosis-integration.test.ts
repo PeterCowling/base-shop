@@ -19,6 +19,7 @@ import { generateDiagnosisSnapshot } from "../diagnosis-snapshot";
 import { runMcpPreflight } from "../mcp-preflight";
 import { checkAndTriggerReplan, type ReplanTrigger } from "../replan-trigger";
 import { runDiagnosisPipeline } from "../s10-diagnosis-integration";
+import { WEEKLY_STAGE_CANDIDATES, WEEKLY_STAGE_ID } from "../stage-id-compat";
 
 // Mock the imported modules
 jest.mock("../diagnosis-snapshot");
@@ -119,10 +120,30 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
       business,
       "runs",
       runId,
-      "stages/S10"
+      "stages",
+      WEEKLY_STAGE_ID,
     );
     fs.mkdirSync(stageResultDir, { recursive: true });
     return stageResultDir;
+  }
+
+  function findWeeklyStageResultPath(business: string, runId: string): string | null {
+    for (const stageId of WEEKLY_STAGE_CANDIDATES) {
+      const candidatePath = path.join(
+        tempDir,
+        "docs/business-os/startup-baselines",
+        business,
+        "runs",
+        runId,
+        "stages",
+        stageId,
+        "stage-result.json",
+      );
+      if (fs.existsSync(candidatePath)) {
+        return candidatePath;
+      }
+    }
+    return null;
   }
 
   /**
@@ -161,17 +182,9 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     expect(result.warnings).toEqual([]);
 
     // Verify stage-result artifact pointer was written
-    const stageResultPath = path.join(
-      tempDir,
-      "docs/business-os/startup-baselines",
-      business,
-      "runs",
-      runId,
-      "stages/S10/stage-result.json"
-    );
-    expect(fs.existsSync(stageResultPath)).toBe(true);
-
-    const stageResult = JSON.parse(fs.readFileSync(stageResultPath, "utf-8"));
+    const stageResultPath = findWeeklyStageResultPath(business, runId);
+    expect(stageResultPath).not.toBeNull();
+    const stageResult = JSON.parse(fs.readFileSync(stageResultPath!, "utf-8"));
     expect(stageResult.artifacts.bottleneck_diagnosis).toBe("bottleneck-diagnosis.json");
   });
 
@@ -307,15 +320,8 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     );
 
     // Verify stage-result was NOT written (since snapshot failed)
-    const stageResultPath = path.join(
-      tempDir,
-      "docs/business-os/startup-baselines",
-      business,
-      "runs",
-      runId,
-      "stages/S10/stage-result.json"
-    );
-    expect(fs.existsSync(stageResultPath)).toBe(false);
+    const stageResultPath = findWeeklyStageResultPath(business, runId);
+    expect(stageResultPath).toBeNull();
   });
 
   /**
@@ -335,7 +341,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     // Create stage-result directory with existing stage-result.json
     const stageResultDir = createStageResultDir(business, runId);
     const existingStageResult = {
-      stage: "S10",
+      stage: WEEKLY_STAGE_ID,
       status: "completed",
       artifacts: {
         readout: "readout.json",
@@ -354,7 +360,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     const updatedStageResult = JSON.parse(fs.readFileSync(stageResultPath, "utf-8"));
 
     // Verify existing fields preserved
-    expect(updatedStageResult.stage).toBe("S10");
+    expect(updatedStageResult.stage).toBe(WEEKLY_STAGE_ID);
     expect(updatedStageResult.status).toBe("completed");
     expect(updatedStageResult.artifacts.readout).toBe("readout.json");
 
@@ -383,17 +389,9 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     await runDiagnosisPipeline(runId, business, { baseDir: tempDir });
 
     // Verify stage-result was created
-    const stageResultPath = path.join(
-      tempDir,
-      "docs/business-os/startup-baselines",
-      business,
-      "runs",
-      runId,
-      "stages/S10/stage-result.json"
-    );
-    expect(fs.existsSync(stageResultPath)).toBe(true);
-
-    const stageResult = JSON.parse(fs.readFileSync(stageResultPath, "utf-8"));
+    const stageResultPath = findWeeklyStageResultPath(business, runId);
+    expect(stageResultPath).not.toBeNull();
+    const stageResult = JSON.parse(fs.readFileSync(stageResultPath!, "utf-8"));
     expect(stageResult.artifacts.bottleneck_diagnosis).toBe("bottleneck-diagnosis.json");
   });
 
@@ -434,15 +432,8 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     expect(mockCheckAndTriggerReplan).toHaveBeenCalled();
 
     // Verify stage-result was still written
-    const stageResultPath = path.join(
-      tempDir,
-      "docs/business-os/startup-baselines",
-      business,
-      "runs",
-      runId,
-      "stages/S10/stage-result.json"
-    );
-    expect(fs.existsSync(stageResultPath)).toBe(true);
+    const stageResultPath = findWeeklyStageResultPath(business, runId);
+    expect(stageResultPath).not.toBeNull();
   });
 
   /**
@@ -480,15 +471,8 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     expect(result.warnings[0]).toContain("Failed to write trigger file");
 
     // Verify stage-result was still written
-    const stageResultPath = path.join(
-      tempDir,
-      "docs/business-os/startup-baselines",
-      business,
-      "runs",
-      runId,
-      "stages/S10/stage-result.json"
-    );
-    expect(fs.existsSync(stageResultPath)).toBe(true);
+    const stageResultPath = findWeeklyStageResultPath(business, runId);
+    expect(stageResultPath).not.toBeNull();
   });
 
   test("TC-08: MCP preflight advisories are recorded when enabled", async () => {

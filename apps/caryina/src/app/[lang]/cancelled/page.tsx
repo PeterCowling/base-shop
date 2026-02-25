@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { resolveLocale } from "@acme/i18n/locales";
 
+import { getSeoKeywords } from "@/lib/contentPacket";
+
 export async function generateMetadata({
   params,
 }: {
@@ -10,7 +12,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang: rawLang } = await params;
   const lang = resolveLocale(rawLang);
-  return { title: `Checkout cancelled (${lang}) | Caryina` };
+  return {
+    title: `Checkout cancelled (${lang}) | Caryina`,
+    description: "Checkout was cancelled before payment confirmation.",
+    keywords: getSeoKeywords(),
+  };
 }
 
 export default async function CancelledPage({

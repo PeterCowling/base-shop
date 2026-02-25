@@ -1,6 +1,6 @@
 import type { SKU } from "@acme/types";
 
-import catalog from "../data/catalog.json";
+import catalog from "../data/catalog.runtime.json";
 
 import { buildXaImageUrl } from "./xaImages";
 import type { XaProductDetails, XaProductTaxonomy } from "./xaTypes";

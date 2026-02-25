@@ -155,8 +155,7 @@ function MenuPerformanceDashboard(): React.ReactElement {
       {
         label: "Margin %",
         data: Object.values(categoryMarginPct),
-        /* eslint-disable-next-line ds/no-raw-color -- REC-02: chart colour config; tokens not applicable to chart.js/recharts datasets */
-        backgroundColor: "#4f46e5",
+        backgroundColor: "hsl(var(--chart-1))",
       },
     ],
   };
@@ -168,8 +167,7 @@ function MenuPerformanceDashboard(): React.ReactElement {
       {
         label: "Item Count",
         data: [baseCount, attachCount],
-        /* eslint-disable-next-line ds/no-raw-color -- REC-02: chart colour config; tokens not applicable to chart.js/recharts datasets */
-        backgroundColor: ["#0ea5e9", "#fb923c"],
+        backgroundColor: ["hsl(var(--chart-6))", "hsl(var(--chart-3))"],
       },
     ],
   };
@@ -180,24 +178,22 @@ function MenuPerformanceDashboard(): React.ReactElement {
       {
         label: "Contribution €",
         data: hourlyContribution,
-        /* eslint-disable-next-line ds/no-raw-color -- REC-02: chart colour config; tokens not applicable to chart.js/recharts datasets */
-        borderColor: "#10b981",
-        /* eslint-disable-next-line ds/no-raw-color -- REC-02: chart colour config; tokens not applicable to chart.js/recharts datasets */
-        backgroundColor: "#a7f3d0",
+        borderColor: "hsl(var(--chart-7))",
+        backgroundColor: "hsl(var(--chart-7) / 0.4)",
       },
     ],
   };
 
   return (
-    <div className="space-y-8 p-4 bg-surface rounded shadow dark:bg-darkSurface dark:text-darkAccentGreen">
-      <h1 className="text-2xl font-semibold mb-4 dark:text-darkAccentGreen">Menu Performance</h1>
+    <div className="space-y-8 p-4 bg-surface rounded shadow">
+      <h1 className="text-2xl font-semibold mb-4">Menu Performance</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <Bar data={marginChartData} />
         </div>
         <div>
           <Doughnut data={attachChartData} />
-          <p className="text-center mt-2 font-medium dark:text-darkAccentGreen">
+          <p className="text-center mt-2 font-medium">
             Attach Rate: {attachRate.toFixed(1)}%
           </p>
         </div>
@@ -205,7 +201,7 @@ function MenuPerformanceDashboard(): React.ReactElement {
       <div>
         <Line data={contributionChartData} />
       </div>
-      <p className="text-center font-semibold mt-4 dark:text-darkAccentGreen">
+      <p className="text-center font-semibold mt-4">
         Overall Margin: {totalMarginPct}%
       </p>
     </div>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import type { PersonDefinition } from "@/data/people";
 import { CRISTIANA_WECHAT_QR_IMAGE } from "@/lib/assets";

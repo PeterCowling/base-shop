@@ -41,6 +41,23 @@ now_start="$(date +%s)"
 if [[ -n "$log_file" ]]; then
   echo "START|\${now_start}|\${BASESHOP_GOVERNED_CONTEXT:-0}|$*" >> "$log_file"
 fi
+if [[ "\${BASESHOP_TEST_GOVERNED_TRAP_TERM:-0}" == "1" ]]; then
+  trap '' TERM
+fi
+if [[ "\${BASESHOP_TEST_GOVERNED_SPAWN_CHILD:-0}" == "1" ]]; then
+  child_pid_file="\${BASESHOP_TEST_GOVERNED_CHILD_PID_FILE:-}"
+  (
+    trap '' TERM
+    trap '' INT
+    while true; do
+      sleep 1
+    done
+  ) &
+  child_pid="$!"
+  if [[ -n "$child_pid_file" ]]; then
+    echo "$child_pid" > "$child_pid_file"
+  fi
+fi
 sleep_sec="\${BASESHOP_TEST_GOVERNED_SLEEP_SEC:-0}"
 if [[ "$sleep_sec" != "0" ]]; then
   sleep "$sleep_sec"
@@ -206,6 +223,15 @@ async function waitForCondition(
   throw new Error(`Condition not met within ${timeoutMs}ms`);
 }
 
+function processExists(pid: number): boolean {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function telemetryEventsPath(repoDir: string): string {
   return path.join(repoDir, ".cache/test-governor/events.jsonl");
 }
@@ -230,6 +256,14 @@ function lastTelemetryEvent(repoDir: string): Record<string, unknown> {
     throw new Error(`Expected telemetry events at ${telemetryEventsPath(repoDir)}`);
   }
   return events[events.length - 1];
+}
+
+async function waitForLastTelemetryEvent(
+  repoDir: string,
+  timeoutMs = 10_000,
+): Promise<Record<string, unknown>> {
+  await waitForCondition(() => readTelemetryEvents(repoDir).length > 0, timeoutMs, 100);
+  return lastTelemetryEvent(repoDir);
 }
 
 describe("Governed Test Runner", () => {
@@ -575,6 +609,61 @@ describe("Governed Test Runner", () => {
     const log = fs.readFileSync(logPath, "utf8");
     expect(log).toContain("exec jest --maxWorkers=2 --forceExit");
   });
+
+  test("TASK-04 TC-01: timeout exits 124 and records timeout telemetry", async () => {
+    const repo = newRepo();
+    const mockBinDir = newTempDir("mock-pnpm-");
+    createMockPnpm(mockBinDir);
+    const logPath = path.join(newTempDir("governed-log-"), "events.log");
+    const env = baseEnv(repo, mockBinDir, logPath, {
+      BASESHOP_TEST_TIMEOUT_SEC: "1",
+      BASESHOP_TEST_GOVERNED_SLEEP_SEC: "5",
+    });
+
+    const result = runRunner(["jest"], repo, env, 20_000);
+    expect(result.status).toBe(124);
+    expect(result.stderr).toContain("Governed test timeout after 1s");
+    expect(runLockStatus(repo, env).stdout).toContain("unlocked");
+
+    const event = await waitForLastTelemetryEvent(repo);
+    expect(event.timeout_killed).toBe(true);
+    expect(event.kill_escalation).toBe("sigterm");
+    expect(event.exit_code).toBe(124);
+  });
+
+  test(
+    "TASK-05 TC-01: timeout kill escalates to SIGKILL and cleans child processes",
+    async () => {
+      const repo = newRepo();
+      const mockBinDir = newTempDir("mock-pnpm-");
+      createMockPnpm(mockBinDir);
+      const logPath = path.join(newTempDir("governed-log-"), "events.log");
+      const childPidFile = path.join(newTempDir("governed-child-"), "child.pid");
+      const env = baseEnv(repo, mockBinDir, logPath, {
+        BASESHOP_TEST_TIMEOUT_SEC: "1",
+        BASESHOP_TEST_GOVERNED_SLEEP_SEC: "20",
+        BASESHOP_TEST_GOVERNED_TRAP_TERM: "1",
+        BASESHOP_TEST_GOVERNED_SPAWN_CHILD: "1",
+        BASESHOP_TEST_GOVERNED_CHILD_PID_FILE: childPidFile,
+      });
+
+      const result = runRunner(["jest"], repo, env, 30_000);
+      expect(result.status).toBe(124);
+      expect(runLockStatus(repo, env).stdout).toContain("unlocked");
+
+      const event = await waitForLastTelemetryEvent(repo);
+      expect(event.timeout_killed).toBe(true);
+      expect(event.kill_escalation).toBe("sigkill");
+      expect(event.exit_code).toBe(124);
+
+      expect(fs.existsSync(childPidFile)).toBe(true);
+      const childPid = Number(fs.readFileSync(childPidFile, "utf8").trim());
+      expect(Number.isInteger(childPid)).toBe(true);
+
+      await waitForCondition(() => !processExists(childPid), 10_000, 200);
+    },
+    40_000,
+  );
 
   test.skip("TEG-07A TC-01: governed run emits classed telemetry for jest intent", () => {
     const repo = newRepo();

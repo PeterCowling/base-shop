@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "lp-do-ideas-standing-registry.schema.json",
+  "title": "lp-do-ideas Standing Artifact Registry (registry.v1)",
+  "description": "Registry of standing artifacts monitored by lp-do-ideas trial orchestrator. Defines artifact identities, hash/delta tracking, and T1-conservative semantic-delta trigger criteria.",
+  "type": "object",
+  "properties": {
+    "registry_version": {
+      "type": "string",
+      "const": "registry.v1",
+      "description": "Schema version. Must be 'registry.v1' in this tranche."
+    },
+    "trigger_threshold": {
+      "type": "string",
+      "enum": ["T1-conservative", "T2-moderate", "T3-open"],
+      "description": "Active trigger threshold policy. T1-conservative = semantic ICP/positioning/pricing/channel changes only. See trial-policy-decision.md for escalation conditions."
+    },
+    "t1_semantic_sections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "Section heading keywords that qualify as semantic deltas under T1-conservative threshold. A change to any section matching one of these keywords in a registered artifact triggers a fact_find_ready dispatch. Case-insensitive substring match."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last registry update."
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact_entry"
+      },
+      "minItems": 1,
+      "description": "Registered standing artifacts. Each entry defines an artifact to monitor."
+    }
+  },
+  "required": [
+    "registry_version",
+    "trigger_threshold",
+    "t1_semantic_sections",
+    "artifacts"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "artifact_entry": {
+      "type": "object",
+      "description": "A single registered standing artifact.",
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]+-[A-Z]+-[A-Z0-9_-]+$",
+          "description": "Registry key. Format: <BIZ>-<DOMAIN>-<descriptor> in uppercase. Example: HBAG-MARKET-PACK."
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Relative path to the artifact file from repo root."
+        },
+        "domain": {
+          "type": "string",
+          "enum": ["MARKET", "SELL", "PRODUCTS", "LOGISTICS", "STRATEGY", "BOS"],
+          "description": "Layer A domain this artifact belongs to."
+        },
+        "business": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Business identifier (e.g. HBAG, BRIK)."
+        },
+        "last_known_sha": {
+          "type": ["string", "null"],
+          "description": "Last known content hash for this artifact. Null until first delta is processed. Updated by orchestrator on each processed delta."
+        },
+        "registered_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when this artifact was added to the registry."
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Whether this artifact is actively monitored. Set to false to pause monitoring without unregistering the entry."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional free-text notes about this artifact entry."
+        }
+      },
+      "required": [
+        "artifact_id",
+        "path",
+        "domain",
+        "business",
+        "active"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

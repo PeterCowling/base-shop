@@ -1,5 +1,7 @@
 "use client";
 
+import { clamp } from "@acme/lib";
+
 import { cn } from "../utils/style/cn";
 
 import {
@@ -17,10 +19,6 @@ export interface StepProgressProps {
   segmentShape?: PrimitiveShape;
   /** Explicit segment radius token override. */
   segmentRadius?: PrimitiveRadius;
-}
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
 }
 
 export function StepProgress({
@@ -62,6 +60,8 @@ export function StepProgress({
               segmentShapeRadiusClass,
               i < safeCurrent ? "bg-primary" : "bg-muted/40",
             )}
+            data-ds-contrast-exempt
+            aria-hidden="true"
           />
         ))}
       </div>

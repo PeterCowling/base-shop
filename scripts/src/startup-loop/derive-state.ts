@@ -55,6 +55,30 @@ const STAGE_NAMES: Record<string, string> = Object.fromEntries(
 
 /** All stage IDs, sorted alphabetically for deterministic output. */
 const ALL_STAGE_IDS = Object.keys(STAGE_NAMES).sort();
+const CANONICAL_STAGE_IDS = new Set(ALL_STAGE_IDS);
+const ALIAS_INDEX: Record<string, string> =
+  stageOperatorMap.alias_index as Record<string, string>;
+
+/**
+ * Normalizes event stage IDs to map-canonical IDs.
+ * Supports:
+ * - canonical IDs (exact)
+ * - canonical IDs in different casing
+ * - legacy aliases (e.g. S3/S10 -> SIGNALS-01/SIGNALS)
+ */
+function normalizeStageId(rawStage: string): string | null {
+  const trimmed = rawStage.trim();
+  if (CANONICAL_STAGE_IDS.has(trimmed)) {
+    return trimmed;
+  }
+
+  const upper = trimmed.toUpperCase();
+  if (CANONICAL_STAGE_IDS.has(upper)) {
+    return upper;
+  }
+
+  return ALIAS_INDEX[trimmed.toLowerCase()] ?? null;
+}
 
 // -- Derivation --
 
@@ -91,15 +115,18 @@ export function deriveState(
       continue;
     }
 
-    const stage = stages[event.stage];
-    if (!stage) continue; // Unknown stage — skip
+    const normalizedStageId = normalizeStageId(event.stage);
+    if (!normalizedStageId) continue; // Unknown stage — skip
+
+    const stage = stages[normalizedStageId];
+    if (!stage) continue;
 
     switch (event.event) {
       case "stage_started":
         stage.status = "Active";
         stage.timestamp = event.timestamp;
         stage.blocking_reason = null; // Clear on resume
-        activeStage = event.stage;
+        activeStage = normalizedStageId;
         break;
 
       case "stage_completed":

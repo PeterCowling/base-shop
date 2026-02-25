@@ -29,6 +29,7 @@ describe("Drawer visuals", () => {
     expect(cls).toMatch(/right-0/);
     expect(cls).toMatch(/border-l/);
     expect(cls).toMatch(/border-border-2/);
+    expect(cls).toMatch(/overflow-x-hidden/);
   });
 
   it("renders left-side panel with correct classes", async () => {
@@ -51,5 +52,33 @@ describe("Drawer visuals", () => {
     expect(cls).toMatch(/left-0/);
     expect(cls).toMatch(/border-r/);
     expect(cls).toMatch(/border-border-2/);
+    expect(cls).toMatch(/overflow-x-hidden/);
+  });
+
+  it("supports content shape and radius variants", async () => {
+    const { rerender } = render(
+      <Drawer open>
+        <DrawerContent side="right" data-cy="content" shape="soft">
+          <DrawerTitle className="sr-only">Title</DrawerTitle>
+          <DrawerDescription className="sr-only">Desc</DrawerDescription>
+        </DrawerContent>
+      </Drawer>
+    );
+
+    const softContent = await screen.findByTestId("content");
+    expect(softContent.className).toMatch(/rounded-md/);
+
+    rerender(
+      <Drawer open>
+        <DrawerContent side="right" data-cy="content" shape="pill" radius="lg">
+          <DrawerTitle className="sr-only">Title</DrawerTitle>
+          <DrawerDescription className="sr-only">Desc</DrawerDescription>
+        </DrawerContent>
+      </Drawer>
+    );
+
+    const radiusOverrideContent = await screen.findByTestId("content");
+    expect(radiusOverrideContent.className).toMatch(/rounded-lg/);
+    expect(radiusOverrideContent.className).not.toMatch(/rounded-full/);
   });
 });

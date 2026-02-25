@@ -40,7 +40,7 @@ const CopyOccupantIdPill: React.FC<CopyOccupantIdPillProps> = ({
     <Button
       type="button"
       onClick={handleCopy}
-      className="inline-flex items-center rounded-full bg-surface-3 px-2 py-0.5 text-xs font-semibold text-foreground hover:bg-surface-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 dark:bg-darkSurface dark:text-darkAccentGreen"
+      className="inline-flex items-center rounded-full bg-surface-3 px-2 py-0.5 text-xs font-semibold text-foreground hover:bg-surface-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       title="Copy occupant ID"
     >
       {copied ? "Copied!" : "copy"}

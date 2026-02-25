@@ -8,6 +8,7 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 
 import { cn, overflowContainmentClass } from "../utils/style";
 
+import { type PrimitiveDensity, resolveDensityClass } from "./density";
 import { type PrimitiveRadius, type PrimitiveShape, resolveShapeRadiusClass } from "./shape-radius";
 
 export const Select = SelectPrimitive.Root;
@@ -19,6 +20,8 @@ export interface SelectTriggerProps extends React.ComponentPropsWithoutRef<typeo
   shape?: PrimitiveShape;
   /** Explicit radius token override. */
   radius?: PrimitiveRadius;
+  /** Trigger density scale. */
+  density?: PrimitiveDensity;
 }
 
 export interface SelectContentProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content> {
@@ -33,6 +36,13 @@ export interface SelectItemProps extends React.ComponentPropsWithoutRef<typeof S
   shape?: PrimitiveShape;
   /** Explicit radius token override. */
   radius?: PrimitiveRadius;
+  /** Item density scale. */
+  density?: PrimitiveDensity;
+}
+
+export interface SelectLabelProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label> {
+  /** Label density scale. */
+  density?: PrimitiveDensity;
 }
 
 export const SelectTrigger = (
@@ -42,6 +52,7 @@ export const SelectTrigger = (
     children,
     shape,
     radius,
+    density,
     ...props
   }: SelectTriggerProps & {
     ref?: React.Ref<React.ElementRef<typeof SelectPrimitive.Trigger>>;
@@ -52,11 +63,22 @@ export const SelectTrigger = (
     radius,
     defaultRadius: "md",
   });
+  const densityClass = resolveDensityClass({
+    density,
+    comfortableClass: "px-3 py-2",
+    compactClass: "px-2 py-1.5",
+  });
+  const iconSpacingClass = resolveDensityClass({
+    density,
+    comfortableClass: "ms-2",
+    compactClass: "ms-1",
+  });
 
   return (<SelectPrimitive.Trigger
   ref={ref}
   className={cn(
-    "flex h-10 w-full items-center justify-between border border-input bg-input px-3 py-2 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    "flex h-10 w-full items-center justify-between border border-input bg-input text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    densityClass,
     shapeRadiusClass,
     "placeholder:text-muted-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
@@ -66,7 +88,7 @@ export const SelectTrigger = (
 >
   {children}
   <SelectPrimitive.Icon asChild>
-    <ChevronDownIcon className="ms-2 h-4 w-4 opacity-50" />
+    <ChevronDownIcon className={cn("h-4 w-4 opacity-50", iconSpacingClass)} />
   </SelectPrimitive.Icon>
 </SelectPrimitive.Trigger>);
 };
@@ -100,7 +122,7 @@ export const SelectContent = (
     )}
     {...props}
   >
-    <SelectPrimitive.Viewport className="p-1 bg-panel">
+    <SelectPrimitive.Viewport className="p-1 bg-panel text-foreground">
       {children}
     </SelectPrimitive.Viewport>
   </SelectPrimitive.Content>
@@ -111,16 +133,25 @@ export const SelectLabel = (
   {
     ref,
     className,
+    density,
     ...props
-  }: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label> & {
+  }: SelectLabelProps & {
     ref?: React.Ref<React.ElementRef<typeof SelectPrimitive.Label>>;
   }
-) => (<SelectPrimitive.Label
+) => {
+  const densityClass = resolveDensityClass({
+    density,
+    comfortableClass: "py-1.5",
+    compactClass: "py-1",
+  });
+
+  return (<SelectPrimitive.Label
   ref={ref}
   // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-  className={cn("px-2 py-1.5 text-sm font-semibold", className)}
+  className={cn("px-2 text-sm font-semibold", densityClass, className)}
   {...props}
 />);
+};
 
 export const SelectItem = (
   {
@@ -129,6 +160,7 @@ export const SelectItem = (
     children,
     shape,
     radius,
+    density,
     ...props
   }: SelectItemProps & {
     ref?: React.Ref<React.ElementRef<typeof SelectPrimitive.Item>>;
@@ -139,12 +171,18 @@ export const SelectItem = (
     radius,
     defaultRadius: "sm",
   });
+  const densityClass = resolveDensityClass({
+    density,
+    comfortableClass: "py-1.5",
+    compactClass: "py-1",
+  });
 
   return (
     <SelectPrimitive.Item
       ref={ref}
       className={cn(
-        "relative flex w-full min-w-0 cursor-default select-none items-center py-1.5 pe-2 ps-8 text-sm text-fg outline-none break-words data-[disabled]:pointer-events-none data-[disabled]:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+        "relative flex w-full min-w-0 cursor-default select-none items-center pe-2 ps-8 text-sm text-fg outline-none break-words data-[disabled]:pointer-events-none data-[disabled]:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+        densityClass,
         shapeRadiusClass,
         "hover:bg-surface-3 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         className

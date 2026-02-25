@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-31
+Last-reviewed: 2026-02-23
 Created: 2026-01-17
 Created-by: Claude Opus 4.5
 
@@ -92,8 +92,9 @@ Benefit: faster orientation and less context thrash.
 
 ### 4) Automated Validation Script
 
-- `scripts/validate-changes.sh` enforces validation + targeted tests.
-- Supports strict mode; checks for orphaned test processes.
+- `scripts/validate-changes.sh` enforces policy + typecheck + lint by default.
+- Local targeted tests are opt-in (`VALIDATE_INCLUDE_TESTS=1`); required test gating runs in GitHub Actions.
+- Supports strict mode for local targeted tests and orphan-process checks when local tests are enabled.
 
 ### 5) Post-Deploy Health Checks
 
@@ -135,7 +136,7 @@ Benefit: faster orientation and less context thrash.
 | Incident | Failure Mode | Ralph Mitigation |
 |----------|--------------|------------------|
 | 2026-01-14 Git reset disaster | Destructive commands used to recover | Destructive commands prohibited; ask for help |
-| 2026-01-16 System slowdown | Orphaned test processes | Validation checks for orphans |
+| 2026-01-16 System slowdown | Orphaned test processes | Governed test runner timeout/kill escalation + optional local orphan checks during targeted runs |
 | Parallel work conflicts | Multiple agents edited same files | Single-writer lock + custodian ownership |
 
 ---

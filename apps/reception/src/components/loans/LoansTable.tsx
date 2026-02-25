@@ -1,14 +1,7 @@
 // File: /src/components/loans/LoansTable.tsx
 import { memo, type ReactElement, useCallback, useMemo, useState } from "react";
 
-import {
-  ReceptionTable as Table,
-  ReceptionTableBody as TableBody,
-  ReceptionTableCell as TableCell,
-  ReceptionTableHead as TableHead,
-  ReceptionTableHeader as TableHeader,
-  ReceptionTableRow as TableRow,
-} from "@acme/ui/operations";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
@@ -181,11 +174,11 @@ function LoansTableComponent({
       <div className="overflow-auto">
         <Table className="min-w-full border-collapse text-sm">
           <TableHeader>
-            <TableRow className="bg-surface-3 dark:bg-darkSurface">
-              <TableHead className="p-2 text-start border-b">Booking Ref</TableHead>
-              <TableHead className="p-2 text-start border-b">Guest Name</TableHead>
-              <TableHead className="p-2 text-start border-b">New Loan</TableHead>
-              <TableHead className="p-2 text-start border-b">Change Existing Loan</TableHead>
+            <TableRow className="bg-surface-2">
+              <TableHead className="p-2 text-start border-b border-border-2 text-muted-foreground">Booking Ref</TableHead>
+              <TableHead className="p-2 text-start border-b border-border-2 text-muted-foreground">Guest Name</TableHead>
+              <TableHead className="p-2 text-start border-b border-border-2 text-muted-foreground">New Loan</TableHead>
+              <TableHead className="p-2 text-start border-b border-border-2 text-muted-foreground">Change Existing Loan</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -246,7 +239,7 @@ function LoansTableComponent({
                     buttonDisabled={buttonDisabled}
                     openModal={openModal}
                     openKeycardsModal={openKeycardsModal}
-                    rowBg="hover:bg-surface-2 dark:hover:bg-darkSurface cursor-pointer"
+                    rowBg="hover:bg-surface-2 cursor-pointer"
                   />
                 );
               })}

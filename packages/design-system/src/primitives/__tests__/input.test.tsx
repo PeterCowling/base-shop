@@ -162,4 +162,12 @@ describe("Input primitive", () => {
     expect(radiusOverrideInput).toHaveClass("rounded-lg");
     expect(radiusOverrideInput).not.toHaveClass("rounded-none");
   });
+
+  it("supports compact density spacing", () => {
+    render(<Input aria-label="Compact input" density="compact" />);
+    const input = screen.getByRole("textbox", { name: "Compact input" });
+    expect(input).toHaveClass("h-10", "py-2");
+    expect(input).not.toHaveClass("h-12");
+    expect(input).not.toHaveClass("py-3");
+  });
 });

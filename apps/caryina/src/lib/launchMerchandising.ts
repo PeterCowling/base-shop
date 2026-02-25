@@ -71,6 +71,11 @@ export interface LaunchFamilyAnchor {
   heroImageSrc: string;
 }
 
+export interface LaunchFamilyCopyOverride {
+  label?: string;
+  description?: string;
+}
+
 interface FamilyEntry {
   key: LaunchFamilyKey;
   product: SKU;
@@ -115,7 +120,33 @@ function resolveRoleImages(
   );
 }
 
-function classifySkuFamily(sku: Pick<SKU, "slug">, index: number): LaunchFamilyKey {
+function familyFromMediaTags(
+  sku: Pick<SKU, "media">,
+): LaunchFamilyKey | null {
+  for (const mediaItem of sku.media ?? []) {
+    const tags =
+      "tags" in mediaItem &&
+      Array.isArray((mediaItem as { tags?: string[] }).tags)
+        ? (mediaItem as { tags?: string[] }).tags ?? []
+        : [];
+    for (const tag of tags) {
+      const normalized = tag.trim().toLowerCase();
+      if (!normalized.startsWith("family:")) continue;
+      const familyValue = normalized.slice("family:".length);
+      const resolved = resolveLaunchFamily(familyValue);
+      if (resolved) return resolved;
+    }
+  }
+  return null;
+}
+
+export function classifySkuFamily(
+  sku: Pick<SKU, "slug" | "media">,
+  index: number,
+): LaunchFamilyKey {
+  const mediaTagFamily = familyFromMediaTags(sku);
+  if (mediaTagFamily) return mediaTagFamily;
+
   const slug = sku.slug.toLowerCase();
   if (slug.includes("mini")) return "mini";
   if (slug.includes("shoulder") || slug.includes("crossbody")) return "shoulder";
@@ -123,6 +154,18 @@ function classifySkuFamily(sku: Pick<SKU, "slug">, index: number): LaunchFamilyK
 
   const fallbackOrder: LaunchFamilyKey[] = ["top-handle", "shoulder", "mini"];
   return fallbackOrder[index % fallbackOrder.length];
+}
+
+export function getSkuFamilyLabel(
+  sku: Pick<SKU, "slug" | "media">,
+  index: number,
+  copyOverrides: Partial<Record<LaunchFamilyKey, LaunchFamilyCopyOverride>> = {},
+): string {
+  const familyKey = classifySkuFamily(sku, index);
+  const override = copyOverrides[familyKey];
+  if (override?.label) return override.label;
+  const anchor = LAUNCH_FAMILY_ANCHORS.find((a) => a.key === familyKey);
+  return anchor?.label ?? familyKey;
 }
 
 export function resolveLaunchFamily(value: string | undefined): LaunchFamilyKey | null {
@@ -213,6 +256,7 @@ export function filterSkusByLaunchFamily(
 export function buildLaunchFamilyAnchors(
   skus: ReadonlyArray<SKU>,
   lang: string,
+  copyOverrides: Partial<Record<LaunchFamilyKey, LaunchFamilyCopyOverride>> = {},
 ): LaunchFamilyAnchor[] {
   const families = familiesForSkus(skus);
 
@@ -224,8 +268,9 @@ export function buildLaunchFamilyAnchors(
       : fallbackSrc("hero");
     return {
       key: definition.key,
-      label: definition.label,
-      description: definition.description,
+      label: copyOverrides[definition.key]?.label ?? definition.label,
+      description:
+        copyOverrides[definition.key]?.description ?? definition.description,
       href: `/${lang}/shop?family=${definition.key}`,
       productCount: matches.length,
       heroImageSrc,

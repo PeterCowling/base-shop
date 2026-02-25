@@ -2,7 +2,9 @@
 
 /* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy uploader images form pending design/i18n overhaul */
 
-import type { CatalogProductDraftInput } from "../../lib/catalogAdminSchema";
+import { toPositiveInt } from "@acme/lib";
+
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 export function CatalogProductImagesFields({
@@ -15,9 +17,10 @@ export function CatalogProductImagesFields({
   onChange: (next: CatalogProductDraftInput) => void;
 }) {
   const { t } = useUploaderI18n();
-  const minEdge = Math.max(
+  const minEdge = toPositiveInt(
+    process.env.NEXT_PUBLIC_XA_UPLOADER_MIN_IMAGE_EDGE ?? 1600,
+    1600,
     1,
-    Number(process.env.NEXT_PUBLIC_XA_UPLOADER_MIN_IMAGE_EDGE ?? 1600) || 1600,
   );
 
   return (

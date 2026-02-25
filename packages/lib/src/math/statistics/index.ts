@@ -40,6 +40,7 @@ export {
   mode,
   normalizeArray,
   percentile,
+  percentileNearestRank,
   quartiles,
   range,
   skewness,

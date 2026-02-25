@@ -151,6 +151,6 @@ describe("Dark mode styling", () => {
       </div>
     );
     const input = screen.getByLabelText(/first name/i);
-    expect(input).toHaveClass("dark:bg-darkSurface");
+    expect(input).not.toHaveClass("dark:bg-darkSurface");
   });
 });

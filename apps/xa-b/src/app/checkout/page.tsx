@@ -4,15 +4,17 @@ import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { Button, Input, Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Button, Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
 import { Section } from "@acme/design-system/atoms/Section";
-import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { useCart } from "../../contexts/XaCartContext";
-import { recordSale } from "../../lib/inventoryStore";
-import { createOrder } from "../../lib/ordersStore";
 import { xaI18n } from "../../lib/xaI18n";
+
+type SessionPayload = {
+  authenticated?: boolean;
+  email?: string;
+};
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -25,17 +27,49 @@ export default function CheckoutPage() {
     [lines],
   );
 
-  const [email, setEmail] = React.useState("");
+  const [sessionLoading, setSessionLoading] = React.useState(true);
+  const [authenticated, setAuthenticated] = React.useState(false);
+  const [sessionEmail, setSessionEmail] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
+  React.useEffect(() => {
+    let cancelled = false;
+
+    fetch("/api/account/session", { cache: "no-store" })
+      .then(async (response) => {
+        if (!response.ok) return null;
+        return (await response.json()) as SessionPayload;
+      })
+      .then((payload) => {
+        if (cancelled) return;
+        setAuthenticated(Boolean(payload?.authenticated));
+        setSessionEmail(payload?.email ?? "");
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setAuthenticated(false);
+        setSessionEmail("");
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setSessionLoading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const placeOrder = async () => {
     setError(null);
-    const normalizedEmail = email.trim().toLowerCase();
-    if (!normalizedEmail) {
-      setError("Enter an email address."); // i18n-exempt -- XA-0023: demo validation
+
+    if (!authenticated) {
+      setError("Please log in before placing your order."); // i18n-exempt -- XA-0111: checkout UX copy
       return;
     }
+
     if (!lines.length) {
       setError("Your cart is empty."); // i18n-exempt -- XA-0023
       return;
@@ -43,24 +77,43 @@ export default function CheckoutPage() {
 
     setLoading(true);
     try {
-      const order = createOrder({
-        email: normalizedEmail,
-        currency,
-        lines: lines.map(([, line]) => ({
-          skuId: line.sku.id,
-          title: line.sku.title ?? "Item", // i18n-exempt -- XA-0023: fallback label
-          size: line.size,
-          qty: line.qty,
-          unitPrice: line.sku.price ?? 0,
-        })),
+      const response = await fetch("/api/account/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          currency,
+          lines: lines.map(([, line]) => ({
+            skuId: line.sku.id,
+            title: line.sku.title ?? "Item", // i18n-exempt -- XA-0023: fallback label
+            size: line.size,
+            qty: line.qty,
+            unitPrice: line.sku.price ?? 0,
+          })),
+        }),
       });
 
-      for (const [, line] of lines) {
-        recordSale(line.sku.id, line.qty);
+      if (response.status === 401) {
+        setAuthenticated(false);
+        setError("Please log in before placing your order."); // i18n-exempt -- XA-0111: checkout UX copy
+        return;
+      }
+
+      if (!response.ok) {
+        setError("Unable to place order right now."); // i18n-exempt -- XA-0111: checkout UX copy
+        return;
+      }
+
+      const payload = (await response.json()) as {
+        order?: { number?: string };
+      };
+      const orderNumber = payload.order?.number;
+      if (!orderNumber) {
+        setError("Unable to place order right now."); // i18n-exempt -- XA-0111: checkout UX copy
+        return;
       }
 
       await dispatch({ type: "clear" });
-      router.push(`/checkout/success?order=${encodeURIComponent(order.number)}`);
+      router.push(`/checkout/success?order=${encodeURIComponent(orderNumber)}`);
     } finally {
       setLoading(false);
     }
@@ -117,38 +170,46 @@ export default function CheckoutPage() {
         )}
 
         <Section as="div" padding="none" width="full" className="max-w-md space-y-4">
-          <form
-            className="space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              void placeOrder();
-            }}
-          >
-            <FormField label="Email" htmlFor="email">
-              <Input
-                id="email"
-                type="email"
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </FormField>
+          <div className="rounded-lg border p-4 text-sm">
+            {sessionLoading ? (
+              <div className="text-muted-foreground">Checking account session...</div>
+            ) : authenticated ? (
+              <>
+                <div className="font-medium">Signed in as</div>
+                <div className="mt-1 text-muted-foreground">{sessionEmail}</div>
+              </>
+            ) : (
+              <>
+                <div className="font-medium">Login required</div>
+                <div className="mt-1 text-muted-foreground">
+                  Sign in or create an account to place this order.
+                </div>
+                <div className="mt-3 flex flex-wrap gap-3">
+                  <Link href="/account/login" className="underline">Login</Link>
+                  <Link href="/account/register" className="underline">Create account</Link>
+                </div>
+              </>
+            )}
+          </div>
 
-            {error ? (
-              <div className="rounded-md border border-danger/30 bg-danger/5 p-3 text-sm">
-                {error}
-              </div>
-            ) : null}
-
-            <div className="flex flex-wrap gap-3">
-              <Button type="submit" disabled={loading || !lines.length}>
-                {loading ? xaI18n.t("xaB.src.app.checkout.page.l148c28") : "Place order"}
-              </Button>
-              <Button variant="outline" asChild>
-                <Link href="/cart">Back to cart</Link>
-              </Button>
+          {error ? (
+            <div className="rounded-md border border-danger/30 bg-danger/5 p-3 text-sm">
+              {error}
             </div>
-          </form>
+          ) : null}
+
+          <div className="flex flex-wrap gap-3">
+            <Button
+              type="button"
+              onClick={() => void placeOrder()}
+              disabled={loading || !lines.length || !authenticated || sessionLoading}
+            >
+              {loading ? xaI18n.t("xaB.src.app.checkout.page.l148c28") : "Place order"}
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/cart">Back to cart</Link>
+            </Button>
+          </div>
         </Section>
       </Section>
     </main>

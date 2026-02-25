@@ -5,9 +5,14 @@ import { type Locale, resolveLocale } from "@acme/i18n/locales";
 
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
 import {
+  getLaunchFamilyCopy,
+  getSeoKeywords,
+  getShopContent,
+} from "@/lib/contentPacket";
+import {
   buildCatalogCardMedia,
-  buildLaunchFamilyAnchors,
   filterSkusByLaunchFamily,
+  getSkuFamilyLabel,
   LAUNCH_FAMILY_ANCHORS,
   resolveLaunchFamily,
 } from "@/lib/launchMerchandising";
@@ -21,9 +26,12 @@ export async function generateMetadata({
   params: Promise<{ lang?: string }>;
 }): Promise<Metadata> {
   const { lang: rawLang } = await params;
-  const lang = resolveLocale(rawLang);
+  const lang: Locale = resolveLocale(rawLang);
+  const shopContent = getShopContent(lang);
   return {
-    title: `Shop (${lang}) | Caryina`,
+    title: `${shopContent.heading} | Caryina`,
+    description: shopContent.summary,
+    keywords: getSeoKeywords(),
   };
 }
 
@@ -43,7 +51,8 @@ export default async function ShopPage({
     readShopSkus(lang),
     readShopCurrency(),
   ]);
-  const familyAnchors = buildLaunchFamilyAnchors(skus, lang);
+  const shopContent = getShopContent(lang);
+  const familyCopy = getLaunchFamilyCopy(lang);
   const filteredSkus = filterSkusByLaunchFamily(skus, activeFamily);
   const hasUnknownFamily = Boolean(familyParam) && activeFamily === null;
 
@@ -53,91 +62,70 @@ export default async function ShopPage({
       <section className="space-y-10">
         <div className="space-y-4">
           <div className="space-y-2">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground">
-              Image-first product listing
+            <p className="text-xs uppercase tracking-widest" style={{ color: "hsl(var(--color-accent))" }}>
+              {shopContent.eyebrow}
             </p>
-            <h1 className="text-5xl font-display">Shop all bags</h1>
+            <h1 className="text-3xl font-display sm:text-4xl">{shopContent.heading}</h1>
             <p className="max-w-3xl text-muted-foreground">
-              Mobile is 2-up, desktop is 4-up. Each card leads with hero imagery
-              and reveals a secondary angle on pointer-hover devices.
+              {shopContent.summary}
             </p>
           </div>
 
-          <ul className="flex flex-wrap gap-2">
-            <li>
-              <Link
-                href={`/${lang}/shop`}
-                className={`inline-flex rounded-full border border-solid px-4 py-2 text-sm ${
-                  activeFamily === null ? "bg-muted" : ""
-                }`}
-                style={{ borderColor: "hsl(var(--color-border-default))" }}
-              >
-                All families
-              </Link>
-            </li>
-            {LAUNCH_FAMILY_ANCHORS.map((family) => (
-              <li key={family.key}>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <ul className="flex list-none flex-wrap gap-2">
+              <li>
                 <Link
-                  href={`/${lang}/shop?family=${family.key}`}
-                  className={`inline-flex rounded-full border border-solid px-4 py-2 text-sm ${
-                    activeFamily === family.key ? "bg-muted" : ""
+                  href={`/${lang}/shop`}
+                  className={`inline-flex rounded-full border px-4 py-2 text-sm ${
+                    activeFamily === null ? "btn-primary" : ""
                   }`}
-                  style={{ borderColor: "hsl(var(--color-border-default))" }}
                 >
-                  {family.label}
+                  All
                 </Link>
               </li>
-            ))}
-          </ul>
+              {LAUNCH_FAMILY_ANCHORS.map((family) => (
+                <li key={family.key}>
+                  <Link
+                    href={`/${lang}/shop?family=${family.key}`}
+                    className={`inline-flex rounded-full border px-4 py-2 text-sm ${
+                      activeFamily === family.key ? "btn-primary" : ""
+                    }`}
+                  >
+                    {familyCopy[family.key]?.label ?? family.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="text-sm text-muted-foreground">
+              {filteredSkus.length} {filteredSkus.length === 1 ? "product" : "products"}
+            </p>
+          </div>
+
           {hasUnknownFamily ? (
             <p className="text-sm text-muted-foreground">
-              Unknown family filter. Showing all families.
+              Unknown family filter. Showing all products.
             </p>
           ) : null}
         </div>
 
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-          {familyAnchors.map((family) => (
-            <li
-              key={family.key}
-              className="rounded-3xl border border-solid bg-card px-5 py-4"
-              style={{ borderColor: "hsl(var(--color-border-default))" }}
-            >
-              <Link href={family.href} className="block">
-                <p className="text-sm font-medium">{family.label}</p>
-                <p className="text-sm text-muted-foreground">{family.description}</p>
-                <p className="mt-2 text-xs uppercase tracking-wider text-muted-foreground">
-                  {family.productCount} products
-                </p>
-              </Link>
-            </li>
-          ))}
-        </ul>
-
         {skus.length === 0 ? (
-          <div
-            className="rounded-3xl border border-dashed p-8 text-sm text-muted-foreground"
-            style={{ borderColor: "hsl(var(--color-border-default))" }}
-          >
+          <div className="rounded-lg border border-dashed p-8 text-sm text-muted-foreground">
             No active products found yet. Populate `data/shops/caryina/products.json`
             and `data/shops/caryina/inventory.json` to render the catalog.
           </div>
         ) : filteredSkus.length === 0 ? (
-          <div
-            className="rounded-3xl border border-dashed p-8 text-sm text-muted-foreground"
-            style={{ borderColor: "hsl(var(--color-border-default))" }}
-          >
+          <div className="rounded-lg border border-dashed p-8 text-sm text-muted-foreground">
             No products are currently assigned to this family.
           </div>
         ) : (
-          <ul className="grid grid-cols-2 gap-5 lg:grid-cols-4">
-            {filteredSkus.map((sku) => {
+          <ul className="grid list-none grid-cols-2 gap-5 lg:grid-cols-3">
+            {filteredSkus.map((sku, index) => {
               const media = buildCatalogCardMedia(sku);
               return (
                 <li key={sku.id}>
                   <ProductMediaCard
                     href={`/${lang}/product/${sku.slug}`}
-                    slug={sku.slug}
+                    category={getSkuFamilyLabel(sku, index, familyCopy)}
                     title={sku.title}
                     priceLabel={formatMoney(sku.price, currency)}
                     primarySrc={media.primarySrc}
@@ -150,6 +138,17 @@ export default async function ShopPage({
             })}
           </ul>
         )}
+
+        <section className="rounded-lg bg-accent-soft px-6 py-6">
+          <ul className="grid list-none gap-x-6 gap-y-2 text-sm text-muted-foreground sm:grid-cols-3">
+            {shopContent.trustBullets.map((bullet) => (
+              <li key={bullet} className="flex items-start gap-2">
+                <span className="mt-1.5 block h-1 w-1 shrink-0 rounded-full bg-accent" />
+                {bullet}
+              </li>
+            ))}
+          </ul>
+        </section>
       </section>
     </>
   );

@@ -5,7 +5,7 @@ For operational reference (stage types, schema, creation procedures), see `./sta
 
 ## Fact-Finding Stage Doc
 
-Created when a card enters the Fact-finding lane (typically from `/lp-do-fact-find` or `/idea-develop`).
+Created when a card enters the Fact-finding lane (typically from `/lp-do-fact-find` or `/lp-do-ideas` dispatch routing).
 
 ```markdown
 ---

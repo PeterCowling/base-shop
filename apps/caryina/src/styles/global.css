@@ -10,10 +10,117 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Default border color — sets theme-aware border on all elements so
+ * `border` and `border-solid` Tailwind utilities "just work" without
+ * an inline style={{ borderColor: ... }} on every element.
+ */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: hsl(var(--color-border));
+  }
+
+  a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+}
+
 :root {
   /* Brand mark tokens */
   --brand-mark-color: hsl(var(--color-primary));
   --brand-accent-color: hsl(var(--color-accent));
+}
+
+/* ── Component: Primary CTA ────────────────────────────── */
+@layer components {
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: hsl(var(--color-primary));
+    color: hsl(var(--color-primary-fg));
+    font-weight: 500;
+    transition: background-color 150ms ease;
+  }
+  .btn-primary:hover {
+    background-color: hsl(var(--color-primary-hover));
+  }
+  .btn-primary:active {
+    background-color: hsl(var(--color-primary-active));
+  }
+  .btn-primary:focus-visible {
+    outline: 2px solid hsl(var(--color-focus-ring));
+    outline-offset: 2px;
+  }
+}
+
+/* ── Utilities ─────────────────────────────────────────── */
+@layer utilities {
+  .bg-accent-soft {
+    background-color: hsl(var(--color-accent-soft));
+  }
+}
+
+/*
+ * Fix: When user explicitly selects light mode (no .theme-dark class),
+ * override the @media (prefers-color-scheme: dark) blocks from both
+ * base/tokens.css and caryina/tokens.css. Those blocks fire based on
+ * OS dark-mode preference regardless of the user's in-app choice.
+ * :root:not(.theme-dark) has higher specificity than bare :root.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not(.theme-dark) {
+    /* Caryina light palette */
+    --color-bg: 38 18% 98%;
+    --color-fg: 355 12% 20%;
+    --color-fg-muted: 355 8% 52%;
+    --color-primary: 355 55% 75%;
+    --color-primary-fg: 355 12% 20%;
+    --color-primary-soft: 355 40% 96%;
+    --color-primary-hover: 355 55% 68%;
+    --color-primary-active: 355 55% 61%;
+    --color-accent: 130 18% 72%;
+    --color-accent-fg: 130 20% 18%;
+    --color-accent-soft: 130 15% 95%;
+    --color-border: 355 12% 90%;
+    --color-border-muted: 355 8% 95%;
+    --color-border-strong: 355 15% 78%;
+    --color-surface: 0 0% 100%;
+    /* Base tokens light values */
+    --color-bg-1: 0 0% 100%;
+    --color-bg-2: 0 0% 98%;
+    --color-bg-3: 0 0% 96%;
+    --color-bg-4: 0 0% 94%;
+    --color-bg-5: 0 0% 92%;
+    --color-panel: 0 0% 96%;
+    --color-inset: 0 0% 98%;
+    --surface-1: 0 0% 100%;
+    --surface-2: 0 0% 96%;
+    --surface-3: 0 0% 92%;
+    --surface-input: 0 0% 96%;
+    --color-muted: 0 0% 88%;
+    --color-muted-fg: 0 0% 20%;
+    --color-link: 220 75% 40%;
+    --color-focus-ring: 220 90% 56%;
+    --ring: 220 90% 56%;
+    --ring-offset: 0 0% 100%;
+    --color-danger: 0 86% 97%;
+    --color-danger-fg: 0 74% 42%;
+    --color-success: 142 76% 97%;
+    --color-success-fg: 142 72% 30%;
+    --color-warning: 40 90% 96%;
+    --color-warning-fg: 25 85% 31%;
+    --color-info: 210 90% 96%;
+    --color-info-fg: 210 90% 35%;
+    --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.06);
+    --elevation-2: 0 2px 6px rgba(0, 0, 0, 0.10);
+    --elevation-3: 0 4px 12px rgba(0, 0, 0, 0.14);
+    --elevation-4: 0 8px 24px rgba(0, 0, 0, 0.18);
+    --elevation-5: 0 12px 36px rgba(0, 0, 0, 0.22);
+  }
 }
 
 body {
@@ -53,9 +160,64 @@ body {
   aspect-ratio: 4 / 5;
 }
 
-.gallery-role-label {
-  background-color: hsl(var(--color-fg) / 0.45);
-  color: hsl(var(--color-bg));
+/* Named grid layouts — Tailwind v4 scanner doesn't generate responsive grid variants for this app */
+.hero-grid {
+  display: grid;
+}
+@media (min-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 5fr 7fr;
+  }
+}
+
+.pdp-grid {
+  display: grid;
+}
+@media (min-width: 768px) {
+  .pdp-grid {
+    grid-template-columns: 7fr 5fr;
+  }
+}
+
+/* Responsive grid column overrides */
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sm\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+@media (min-width: 768px) {
+  .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .md\:items-start { align-items: start; }
+  .md\:items-center { align-items: center; }
+  .md\:sticky { position: sticky; }
+  .md\:top-6 { top: 1.5rem; }
+  .md\:hidden { display: none; }
+}
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* Responsive flex/layout overrides */
+@media (min-width: 640px) {
+  .sm\:flex-row { flex-direction: row; }
+  .sm\:items-center { align-items: center; }
+  .sm\:justify-between { justify-content: space-between; }
+  .sm\:block { display: block; }
+  .sm\:text-base { font-size: 1rem; line-height: 1.5rem; }
+  .sm\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+  .sm\:text-5xl { font-size: 3rem; line-height: 1; }
+  .sm\:text-6xl { font-size: 3.75rem; line-height: 1; }
+  .sm\:space-y-20 > :not(:first-child) { margin-top: 5rem; }
+}
+
+/* Focus ring for interactive elements without explicit focus styles */
+@layer base {
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid hsl(var(--color-focus-ring));
+    outline-offset: 2px;
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {

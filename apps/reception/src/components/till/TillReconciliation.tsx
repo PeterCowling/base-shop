@@ -4,6 +4,7 @@ import { memo } from "react";
 
 import { useTillReconciliationUI } from "../../hooks/client/till/useTillReconciliationUI";
 import { useTillReconciliationLogic } from "../../hooks/useTillReconciliationLogic";
+import { PageShell } from "../common/PageShell";
 
 import ActionButtons from "./ActionButtons";
 import AddKeycardsModal from "./AddKeycardsModal";
@@ -35,11 +36,8 @@ function TillReconciliation(): JSX.Element {
   }
 
   return (
-    <div className="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen">
-      <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
-        TILL MANAGEMENT
-      </h1>
-      <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-8 dark:bg-darkSurface">
+    <PageShell title="TILL MANAGEMENT">
+      <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-8">
         <DrawerLimitWarning
           show={props.isDrawerOverLimit}
           onLift={props.handleLiftClick}
@@ -119,7 +117,7 @@ function TillReconciliation(): JSX.Element {
           />
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }
 

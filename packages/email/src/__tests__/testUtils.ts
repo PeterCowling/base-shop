@@ -30,7 +30,7 @@ jest.mock("../templates", () => ({
   renderTemplate: jest.fn(),
 }));
 
-jest.mock("@acme/lib", () => ({
+jest.mock("@acme/lib/validateShopName", () => ({
   validateShopName: jest.fn((s: string) => s),
 }));
 
@@ -39,7 +39,7 @@ export { emitSend } from "../hooks";
 export { resolveSegment } from "../segments";
 export { sendCampaignEmail } from "../send";
 export { renderTemplate } from "../templates";
-export { validateShopName } from "@acme/lib";
+export { validateShopName } from "@acme/lib/validateShopName";
 export { listEvents } from "@acme/platform-core/repositories/analytics.server";
 
 export const shop = "test-shop";

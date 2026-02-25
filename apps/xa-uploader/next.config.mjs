@@ -1,20 +1,24 @@
 // apps/xa-uploader/next.config.mjs
 
+import crypto from "node:crypto";
+
 import sharedConfig from "@acme/next-config/next.config.mjs";
 
-// Keep production config strict: missing secrets should fail fast so we don't
+// Keep production config strict: missing secrets should fail fast so we do not
 // accidentally deploy with insecure defaults.
-const DEV_NEXTAUTH = "dev-nextauth-secret-32-chars-long-string!";
-const DEV_SESSION = "dev-session-secret-32-chars-long-string!";
-const DEV_UPLOADER_SESSION = "dev-xa-uploader-session-secret-32-chars!";
-const DEV_UPLOADER_ADMIN_TOKEN = "dev-xa-uploader-admin-token-32-chars!!";
-
 const VENDOR_MODE =
   process.env.XA_UPLOADER_MODE === "vendor" || process.env.NEXT_PUBLIC_XA_UPLOADER_MODE === "vendor";
 
-function ensureStrong(name, fallback) {
+function randomSecret(minLength = 32) {
+  const length = Math.max(32, minLength);
+  const bytes = Math.max(32, Math.ceil(length * 1.25));
+  return crypto.randomBytes(bytes).toString("base64url").slice(0, length);
+}
+
+function ensureStrongOrRandom(name, minLength = 32) {
   const val = process.env[name];
-  if (!val || val.length < 32) process.env[name] = fallback;
+  if (val && val.length >= minLength) return;
+  process.env[name] = randomSecret(minLength);
 }
 
 function requireEnv(name, minLength) {
@@ -25,7 +29,7 @@ function requireEnv(name, minLength) {
   }
 }
 
-// In CI, skip validation since we only need runtime secrets at deploy time, not build time
+// In CI, skip validation since we only need runtime secrets at deploy time, not build time.
 if (process.env.NODE_ENV === "production" && !VENDOR_MODE && !process.env.CI) {
   requireEnv("NEXTAUTH_SECRET", 32);
   requireEnv("SESSION_SECRET", 32);
@@ -33,11 +37,11 @@ if (process.env.NODE_ENV === "production" && !VENDOR_MODE && !process.env.CI) {
   requireEnv("XA_UPLOADER_SESSION_SECRET", 32);
   requireEnv("XA_UPLOADER_ADMIN_TOKEN", 32);
 } else {
-  ensureStrong("NEXTAUTH_SECRET", DEV_NEXTAUTH);
-  ensureStrong("SESSION_SECRET", DEV_SESSION);
-  process.env.CART_COOKIE_SECRET ??= "dev-cart-secret";
-  ensureStrong("XA_UPLOADER_SESSION_SECRET", DEV_UPLOADER_SESSION);
-  ensureStrong("XA_UPLOADER_ADMIN_TOKEN", DEV_UPLOADER_ADMIN_TOKEN);
+  ensureStrongOrRandom("NEXTAUTH_SECRET", 32);
+  ensureStrongOrRandom("SESSION_SECRET", 32);
+  process.env.CART_COOKIE_SECRET ??= randomSecret(32);
+  ensureStrongOrRandom("XA_UPLOADER_SESSION_SECRET", 32);
+  ensureStrongOrRandom("XA_UPLOADER_ADMIN_TOKEN", 32);
 }
 
 process.env.CMS_SPACE_URL ??= "https://cms.example.com";
@@ -50,18 +54,11 @@ const nextConfig = {
   poweredByHeader: false,
   // This is an internal uploader console; do not static-export it.
   output: sharedConfig.output === "export" ? undefined : sharedConfig.output,
-  webpack(config, ctx) {
-    // Legacy webpack path retained as an explicit exception while scripts still
-    // execute via `next --webpack`. This block is limited to cache behavior.
-    if (typeof sharedConfig.webpack === "function") {
-      config = sharedConfig.webpack(config, ctx);
-    }
-    // Avoid intermittent cache-related build crashes; opt back in via NEXT_CACHE=true.
-    if (process.env.NEXT_CACHE !== "true") {
-      config.cache = false;
-    }
-    return config;
-  },
 };
+
+const distDirOverride = process.env.XA_UPLOADER_NEXT_DIST_DIR?.trim();
+if (distDirOverride) {
+  nextConfig.distDir = distDirOverride;
+}
 
 export default nextConfig;

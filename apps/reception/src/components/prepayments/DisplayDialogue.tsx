@@ -1,6 +1,7 @@
 import React from "react";
 
-import { ReceptionButton as Button } from "@acme/ui/operations";
+import { Button } from "@acme/design-system/atoms";
+import { SimpleModal } from "@acme/ui/molecules";
 
 import MarkAsFailedButton from "./MarkAsFailedButton";
 import MarkAsPaidButton from "./MarkAsPaidButton";
@@ -62,13 +63,8 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
   createPaymentTransaction,
   logActivity,
 }) => {
-  // If no booking is selected or the dialog is not open, do not render.
-  if (
-    !open ||
-    !selectedBooking ||
-    !selectedBooking.bookingRef ||
-    !selectedBooking.guestId
-  ) {
+  // If no booking is selected, do not render (SimpleModal handles open/closed state).
+  if (!selectedBooking || !selectedBooking.bookingRef || !selectedBooking.guestId) {
     return null;
   }
 
@@ -93,40 +89,14 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 font-body">
-      {/* Dialog container */}
-      <div className="bg-surface w-96 rounded shadow-lg dark-surface dark:text-darkAccentGreen">
-        {/* Header */}
-        <div className="flex justify-between items-center p-4 border-b border-border-2 dark:border-darkSurface">
-          <h2 className="text-lg font-heading">Existing Payment Details</h2>
-          <Button
-            aria-label="close"
-            onClick={onClose}
-            className="text-error-main hover:bg-error-light p-2 rounded transition-colors dark:hover:bg-error-light/70"
-          >
-            &times;
-          </Button>
-        </div>
-
-        {/* Content */}
-        <div className="p-4 border-b border-border-2 dark:border-darkSurface">
-          <div className="mb-3">
-            <strong className="font-heading">Credit Card Number:</strong>{" "}
-            {cardNumber}
-          </div>
-          <div className="mb-3">
-            <strong className="font-heading">Expiry (MM/YY):</strong> {expiry}
-          </div>
-          <Button
-            className="px-3 py-1 bg-warning-light text-primary-fg rounded hover:bg-warning-main transition-colors font-body dark:bg-warning-main dark:hover:bg-warning-light"
-            onClick={onEdit}
-          >
-            Edit Details
-          </Button>
-        </div>
-
-        {/* Actions */}
-        <div className="p-4 flex gap-3 justify-end border-t border-border-2 dark:border-darkSurface">
+    <SimpleModal
+      isOpen={open}
+      onClose={onClose}
+      title="Existing Payment Details"
+      maxWidth="max-w-sm"
+      className="font-body"
+      footer={
+        <div className="flex gap-3 justify-end">
           {hasCard ? (
             <MarkAsFailedButton
               bookingRef={bookingRef}
@@ -137,7 +107,9 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
             />
           ) : (
             <Button
-              className="px-3 py-1 bg-error-light text-primary-fg rounded cursor-not-allowed font-body"
+              color="danger"
+              tone="soft"
+              size="sm"
               disabled
             >
               Mark as Failed
@@ -153,8 +125,24 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
             onSuccess={() => handlePaymentSuccess("paid")}
           />
         </div>
+      }
+    >
+      <div className="mb-3">
+        <strong className="font-heading">Credit Card Number:</strong>{" "}
+        {cardNumber}
       </div>
-    </div>
+      <div className="mb-3">
+        <strong className="font-heading">Expiry (MM/YY):</strong> {expiry}
+      </div>
+      <Button
+        onClick={onEdit}
+        color="warning"
+        tone="soft"
+        size="sm"
+      >
+        Edit Details
+      </Button>
+    </SimpleModal>
   );
 };
 

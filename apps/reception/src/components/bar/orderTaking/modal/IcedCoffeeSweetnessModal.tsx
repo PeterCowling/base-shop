@@ -1,7 +1,7 @@
 /* File: src/components/bar/orderTaking/modal/IcedCoffeeSweetnessModal.tsx */
 import { useCallback } from "react";
 
-import { ReceptionButton as Button } from "@acme/ui/operations";
+import { Button } from "@acme/design-system/atoms";
 
 import { withModalBackground } from "../../../../hoc/withModalBackground";
 
@@ -39,20 +39,24 @@ function IcedCoffeeSweetnessModalBase(
       <div className="flex flex-col space-y-3 mb-4">
         <Button
           onClick={handleSweetened}
-          className="px-4 py-2 bg-primary-main text-primary-fg hover:bg-primary-dark transition-colors duration-200 rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+          color="primary"
+          tone="solid"
         >
           Sweetened
         </Button>
         <Button
           onClick={handleUnsweetened}
-          className="px-4 py-2 bg-primary-main text-primary-fg hover:bg-primary-dark transition-colors duration-200 rounded dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+          color="primary"
+          tone="solid"
         >
           Unsweetened
         </Button>
       </div>
       <Button
         onClick={onCancel}
-        className="px-4 py-2 w-full bg-surface-3 text-foreground hover:bg-surface-3 transition-colors duration-200 rounded dark:bg-darkSurface dark:text-darkAccentGreen"
+        color="default"
+        tone="soft"
+        className="w-full"
       >
         Cancel
       </Button>

@@ -1598,5 +1598,23 @@
     "reference_scope": "reference_required",
     "canonical_reference_url": "https://www.google.com/maps?cid=17374643982085849306",
     "normalization_batch": "E"
+  },
+  {
+    "subject": "Terms Reminder - Action Required",
+    "body": "{{SLOT:GREETING}}\r\n\r\nThis is a reminder that your reservation still requires confirmation of the booking terms and conditions.\r\n\r\nPlease complete the agreement step as soon as possible so your reservation can proceed without interruption.\r\n\r\nIf you cannot find the original message with the agreement steps, reply to this email and we will resend the instructions.\r\n\r\nFor more information, please see:\r\nBooking terms and contract formation: <https://hostel-positano.com/en/terms#s2-2-booking-requests-authorised-channels-and-contract-formation>",
+    "category": "booking-issues",
+    "template_id": "T179",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/terms#s2-2-booking-requests-authorised-channels-and-contract-formation",
+    "normalization_batch": "E"
+  },
+  {
+    "subject": "Final Terms Reminder - Action Required",
+    "body": "{{SLOT:GREETING}}\r\n\r\nThis is the final reminder to complete agreement to the booking terms and conditions for your reservation.\r\n\r\nIf the agreement step is not completed in time, the reservation may be cancelled automatically according to policy.\r\n\r\nIf you need help completing the agreement, reply and our team will assist you.\r\n\r\nFor more information, please see:\r\nBooking terms and cancellation rules: <https://hostel-positano.com/en/terms#s6-6-cancellations-changes-no-shows-early-departure>",
+    "category": "booking-issues",
+    "template_id": "T180",
+    "reference_scope": "reference_required",
+    "canonical_reference_url": "https://hostel-positano.com/en/terms#s6-6-cancellations-changes-no-shows-early-departure",
+    "normalization_batch": "E"
   }
 ]

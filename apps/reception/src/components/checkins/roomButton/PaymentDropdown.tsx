@@ -48,7 +48,7 @@ function PaymentDropdown({
       <Button
         onClick={handleImmediatePayment}
         disabled={isDisabled}
-        className={`w-full bg-primary-dark hover:bg-primary-main text-primary-fg rounded px-3 py-1 mt-2 focus:outline-none transition-colors dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80
+        className={`w-full bg-primary-dark hover:bg-primary-main text-primary-fg rounded px-3 py-1 mt-2 focus:outline-none transition-colors
           ${isDisabled ? "cursor-not-allowed opacity-70" : ""}`}
       >
         Confirm Payment

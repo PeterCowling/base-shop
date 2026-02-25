@@ -213,7 +213,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
   );
 
   return (
-    <div className="flex flex-wrap gap-12 mb-75px dark:text-darkAccentGreen">
+    <div className="flex flex-wrap gap-12 mb-75px">
       {/* Place of Birth */}
       <div className="flex flex-col w-300px">
         <AutoComplete
@@ -226,7 +226,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
           onKeyDown={handleKeyDown(placeOfBirth, finalizePlaceOfBirth)}
           suggestions={countries}
           placeholder="Enter place of birth"
-          inputClassName={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
+          inputClassName={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
             isPlaceOfBirthSaved ? "bg-success-light/50" : ""
           }`}
         />
@@ -244,7 +244,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
           onKeyDown={handleKeyDown(citizenship, finalizeCitizenship)}
           suggestions={countries}
           placeholder="Enter citizenship"
-          inputClassName={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
+          inputClassName={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
             isCitizenshipSaved ? "bg-success-light/50" : ""
           }`}
         />
@@ -254,7 +254,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
       <div className="flex flex-col w-300px">
         <label
           htmlFor="municipality"
-          className="block mb-1 font-semibold text-info-dark dark:text-darkAccentGreen"
+          className="block mb-1 font-semibold text-info-dark"
         >
           Municipality
         </label>
@@ -268,7 +268,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
           onKeyDown={handleKeyDown(municipality, finalizeMunicipality)}
           suggestions={municipalities}
           placeholder="Enter municipality"
-          inputClassName={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${
+          inputClassName={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
             isMunicipalitySaved ? "bg-success-light/50" : ""
           }`}
         />

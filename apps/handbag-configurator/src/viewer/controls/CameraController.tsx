@@ -8,6 +8,8 @@ import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
+import { fitPerspectiveDistance } from "@acme/lib";
+
 import { useCameraFocusStore } from "../state/cameraStore";
 
 export type FrameBounds = {
@@ -88,16 +90,14 @@ export function CameraController({
           if (!isPerspectiveCamera(camera)) {
             return bounds.sphere.radius * 2;
           }
-          const fill = frameTightness ?? 0.9;
-          const height = Math.max(bounds.size.y, 0.001);
-          const width = Math.max(bounds.size.x, 0.001);
-          const fov = THREE.MathUtils.degToRad(camera.fov);
-          const aspect = camera.aspect || 1;
-          const fitHeight = (height / 2) / (Math.tan(fov / 2) * fill);
-          const fitWidth = (width / 2) / (Math.tan(fov / 2) * aspect * fill);
-          if (frameFit === "height") return fitHeight;
-          if (frameFit === "width") return fitWidth;
-          return Math.max(fitHeight, fitWidth);
+          return fitPerspectiveDistance({
+            width: bounds.size.x,
+            height: bounds.size.y,
+            fovDegrees: camera.fov,
+            aspectRatio: camera.aspect || 1,
+            fill: frameTightness ?? 0.9,
+            fit: frameFit,
+          });
         })()
       : null;
 

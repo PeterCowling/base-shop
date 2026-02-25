@@ -47,7 +47,7 @@ export const SafeDepositForm = memo(function SafeDepositForm({
       title="Deposit Cash"
       borderClass="border-primary-main"
       textClass="text-primary-main"
-      confirmClass="bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+      confirmColor="primary"
       confirmLabel="Confirm"
       showExpected={false}
       showKeycards

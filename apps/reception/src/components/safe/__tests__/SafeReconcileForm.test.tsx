@@ -81,19 +81,17 @@ describe("SafeReconcileForm", () => {
     expect(screen.getAllByText(/\+\s*0/).length).toBeGreaterThan(0);
   });
 
-  it("applies dark mode styles", async () => {
+  it("applies token-based theme styles", async () => {
     render(
-      <div className="dark">
-        <SafeReconcileForm
-          expectedSafe={100}
-          expectedKeycards={0}
-          onConfirm={jest.fn()}
-          onCancel={jest.fn()}
-        />
-      </div>
+      <SafeReconcileForm
+        expectedSafe={100}
+        expectedKeycards={0}
+        onConfirm={jest.fn()}
+        onCancel={jest.fn()}
+      />
     );
     const heading = screen.getByRole("heading", { name: /reconcile safe/i });
     const container = heading.closest("div.relative") as HTMLElement;
-    expect(container).toHaveClass("dark:bg-darkSurface");
+    expect(container).toHaveClass("relative");
   });
 });

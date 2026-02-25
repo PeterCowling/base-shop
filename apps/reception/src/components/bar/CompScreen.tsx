@@ -3,13 +3,13 @@
 import React, { useMemo, useState } from "react";
 
 import {
-  ReceptionTable,
-  ReceptionTableBody,
-  ReceptionTableCell,
-  ReceptionTableHead,
-  ReceptionTableHeader,
-  ReceptionTableRow,
-} from "@acme/ui/operations";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow as DSTableRow,
+} from "@acme/design-system";
 
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
 import useBookingsData from "../../hooks/data/useBookingsData";
@@ -52,7 +52,7 @@ interface TableSectionProps {
 }
 
 const planColorMap: Record<string, string> = {
-  NA: "bg-surface-3 text-foreground dark:bg-darkSurface dark:text-darkAccentGreen",
+  NA: "bg-surface-3 text-foreground",
   continental: "bg-info-main text-primary-fg",
   cooked: "bg-success-main text-primary-fg",
   // fallback style
@@ -68,19 +68,19 @@ const TableRow: React.FC<{
   onDoubleClick: (row: RowData) => void;
   showPlan?: boolean;
 }> = React.memo(({ row, idx, onDoubleClick, showPlan }) => (
-  <ReceptionTableRow
+  <DSTableRow
     className={`${
       idx % 2 === 0
-        ? "bg-muted/50 dark:bg-darkSurface"
-        : "bg-surface dark:bg-darkSurface"
+        ? "bg-muted/50"
+        : "bg-surface"
     } hover:bg-primary-light/30 transition-colors cursor-pointer`}
     onDoubleClick={() => onDoubleClick(row)}
   >
-    <ReceptionTableCell className="px-4 py-3 whitespace-nowrap">{row.bookingRef}</ReceptionTableCell>
-    <ReceptionTableCell className="px-4 py-3">{row.occId}</ReceptionTableCell>
-    <ReceptionTableCell className="px-4 py-3">{row.guestName}</ReceptionTableCell>
+    <TableCell className="px-4 py-3 whitespace-nowrap">{row.bookingRef}</TableCell>
+    <TableCell className="px-4 py-3">{row.occId}</TableCell>
+    <TableCell className="px-4 py-3">{row.guestName}</TableCell>
     {showPlan && (
-      <ReceptionTableCell className="px-4 py-3">
+      <TableCell className="px-4 py-3">
         <span
           className={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${getPlanClasses(
             row.plan
@@ -88,9 +88,9 @@ const TableRow: React.FC<{
         >
           {row.plan}
         </span>
-      </ReceptionTableCell>
+      </TableCell>
     )}
-  </ReceptionTableRow>
+  </DSTableRow>
 ));
 
 TableRow.displayName = "TableRow";
@@ -106,29 +106,29 @@ const TableSection: React.FC<TableSectionProps> = ({
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-primary-main dark:text-darkAccentGreen">{title}</h2>
-      <div className="max-h-60vh overflow-auto rounded-lg shadow focus-visible:ring-1 focus-visible:ring-info-main dark:bg-darkSurface">
-        <ReceptionTable className="min-w-40rem w-full table-auto text-start text-sm">
-          <ReceptionTableHeader
-            className={`sticky top-0 bg-${accentBase} text-primary-fg uppercase ${accent === 'error' ? 'dark:bg-darkAccentOrange' : 'dark:bg-darkSurface'}`}
+      <h2 className="text-xl font-semibold text-primary-main">{title}</h2>
+      <div className="max-h-60vh overflow-auto rounded-lg shadow focus-visible:ring-1 focus-visible:ring-info-main">
+        <Table className="min-w-40rem w-full table-auto text-start text-sm">
+          <TableHeader
+            className={`sticky top-0 bg-${accentBase} text-primary-fg uppercase`}
           >
-            <ReceptionTableRow>
-              <ReceptionTableHead className="px-4 py-3">Booking&nbsp;Ref</ReceptionTableHead>
-              <ReceptionTableHead className="px-4 py-3">Occ.&nbsp;ID</ReceptionTableHead>
-              <ReceptionTableHead className="px-4 py-3">Guest&nbsp;Name</ReceptionTableHead>
-              {showPlan && <ReceptionTableHead className="px-4 py-3">Plan</ReceptionTableHead>}
-            </ReceptionTableRow>
-          </ReceptionTableHeader>
-          <ReceptionTableBody>
+            <DSTableRow>
+              <TableHead className="px-4 py-3">Booking&nbsp;Ref</TableHead>
+              <TableHead className="px-4 py-3">Occ.&nbsp;ID</TableHead>
+              <TableHead className="px-4 py-3">Guest&nbsp;Name</TableHead>
+              {showPlan && <TableHead className="px-4 py-3">Plan</TableHead>}
+            </DSTableRow>
+          </TableHeader>
+          <TableBody>
             {rows.length === 0 ? (
-              <ReceptionTableRow>
-                <ReceptionTableCell
+              <DSTableRow>
+                <TableCell
                   colSpan={showPlan ? 4 : 3}
-                  className="px-4 py-6 text-center text-muted-foreground dark:text-darkAccentGreen"
+                  className="px-4 py-6 text-center text-muted-foreground"
                 >
                   No data
-                </ReceptionTableCell>
-              </ReceptionTableRow>
+                </TableCell>
+              </DSTableRow>
             ) : (
               rows.map((row, idx) => (
                 <TableRow
@@ -140,8 +140,8 @@ const TableSection: React.FC<TableSectionProps> = ({
                 />
               ))
             )}
-          </ReceptionTableBody>
-        </ReceptionTable>
+          </TableBody>
+        </Table>
       </div>
     </section>
   );
@@ -281,7 +281,7 @@ const CompScreen: React.FC = React.memo(() => {
   }
 
   return (
-    <div className="mx-auto max-w-screen-xl space-y-10 p-6 font-body dark:bg-darkBg dark:text-darkAccentGreen">
+    <div className="mx-auto max-w-screen-xl space-y-10 p-6 font-body">
       {selectedOcc && (
         <ModalPreorderDetails
           preorder={selectedOcc.preorder}

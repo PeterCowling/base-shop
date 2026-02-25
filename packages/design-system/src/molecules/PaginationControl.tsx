@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import { Button,Inline  } from "../primitives";
 import { cn } from "../utils/style";

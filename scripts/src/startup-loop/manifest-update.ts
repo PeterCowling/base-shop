@@ -15,6 +15,11 @@
 import { promises as fs } from "fs";
 import path from "path";
 
+import {
+  FORECAST_STAGE_CANDIDATES,
+  FORECAST_STAGE_ID,
+} from "./stage-id-compat";
+
 // -- Types --
 
 export interface StageResult {
@@ -74,7 +79,11 @@ export interface ManifestUpdateOptions {
 // -- Constants --
 
 /** Required stage results for S4 barrier merge (per loop-spec.yaml). */
-const REQUIRED_STAGES = ["MARKET-06", "S3", "SELL-01"] as const;
+const REQUIRED_STAGE_GROUPS: Array<{ canonical: string; candidates: string[] }> = [
+  { canonical: "MARKET-06", candidates: ["MARKET-06"] },
+  { canonical: FORECAST_STAGE_ID, candidates: FORECAST_STAGE_CANDIDATES },
+  { canonical: "SELL-01", candidates: ["SELL-01"] },
+];
 
 const VALID_STATUSES = new Set(["Done", "Failed", "Blocked"]);
 
@@ -216,19 +225,27 @@ export async function updateManifest(
   }
 
   // Check required stages
-  for (const required of REQUIRED_STAGES) {
-    if (malformed.includes(required)) {
+  for (const required of REQUIRED_STAGE_GROUPS) {
+    const malformedMatch = required.candidates.find((candidate) =>
+      malformed.includes(candidate),
+    );
+    if (malformedMatch) {
       continue; // Already flagged
     }
-    if (!valid.has(required)) {
-      missing.push(required);
+
+    const presentStage = required.candidates.find((candidate) =>
+      valid.has(candidate),
+    );
+    if (!presentStage) {
+      missing.push(required.canonical);
       continue;
     }
-    const result = valid.get(required)!;
+
+    const result = valid.get(presentStage)!;
     if (result.status === "Failed") {
-      failed.push(required);
+      failed.push(required.canonical);
     } else if (result.status === "Blocked") {
-      blocked.push(required);
+      blocked.push(required.canonical);
     }
   }
 

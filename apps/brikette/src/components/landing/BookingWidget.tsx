@@ -267,7 +267,7 @@ const BookingWidget = memo(function BookingWidget({
               color="accent"
               tone="solid"
               size="lg"
-              className="w-full rounded-full md:col-span-2"
+              className="w-full rounded-full md:col-span-2 bg-brand-secondary text-brand-on-accent hover:bg-brand-primary hover:text-brand-on-primary focus-visible:ring-brand-secondary"
             >
               {checkAvailabilityLabel}
             </Button>

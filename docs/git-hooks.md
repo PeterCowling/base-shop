@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-09
+Last-reviewed: 2026-02-23
 
 # Git Hooks (Agent Runbook)
 
@@ -53,13 +53,15 @@ Entry script: `scripts/git-hooks/pre-push.sh`
 1. Runs `require-writer-lock.sh`
 2. Runs `pre-push-safety.sh` on the pushed ref updates from stdin
 3. For each branch update being pushed, computes a git range and runs:
-   - `STRICT=1 VALIDATE_RANGE=<range> bash scripts/validate-changes.sh`
+   - `VALIDATE_RANGE=<range> VALIDATE_INCLUDE_TESTS=0 bash scripts/validate-changes.sh`
 
 Key behavior:
 
 - direct pushes to `main`/`staging`/`master` are blocked
 - non-fast-forward pushes are blocked
 - validation is scoped to the pushed delta, not full repository
+- pre-push never runs local targeted tests (hard-coded `VALIDATE_INCLUDE_TESTS=0`)
+- if needed, run local targeted tests manually before push: `VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh`
 
 ## Hook Configuration
 

@@ -15,7 +15,7 @@ Reassess downstream tasks using completed-task evidence and update plan viabilit
 - revise/split
 - defer/remove
 4. Add precursor tasks for newly exposed unknowns.
-5. Run `/lp-sequence` in stable-ID mode after topology changes.
+5. Run `/lp-do-sequence` in stable-ID mode after topology changes.
 
 ## Constraint
 

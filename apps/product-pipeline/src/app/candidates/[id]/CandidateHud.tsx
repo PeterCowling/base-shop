@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 
 import { Grid, Stack } from "@acme/design-system/primitives";
+import { clamp } from "@acme/lib";
 
 import { extractStageRSummary } from "./stageRHelpers";
 import { extractStageSSummary } from "./stageSHelpers";
@@ -14,10 +15,6 @@ import type {
 } from "./types";
 
 const CONFIDENCE_MAX = 100;
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
 
 function resolveStageRun(stageRuns: StageRun[], stage: string): StageRun | null {
   return stageRuns.find((run) => run.stage === stage) ?? null;

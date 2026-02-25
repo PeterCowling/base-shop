@@ -79,3 +79,19 @@ export const KeyboardClose: StoryObj<typeof Drawer> = {
     expect(canvas.queryByText(/Press Escape/)).not.toBeInTheDocument();
   },
 };
+
+export const SquareCorners: StoryObj<typeof Drawer> = {
+  render: () => (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <button className="rounded border px-4 min-h-10 min-w-10">Open square drawer</button>
+      </DrawerTrigger>
+      <DrawerPortal>
+        <OverlayScrim />
+        <DrawerContent side="right" width="w-64" shape="square" className="p-4">
+          <p className="text-sm">Square-corner drawer content</p>
+        </DrawerContent>
+      </DrawerPortal>
+    </Drawer>
+  ),
+};

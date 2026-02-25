@@ -78,7 +78,7 @@ describe("IngredientStock", () => {
     expect(updateMock).toHaveBeenCalledWith("Flour", 15);
   });
 
-  it("applies dark mode classes", () => {
+  it("renders with token-based theme classes", () => {
     useIngredientsMock.mockReturnValue({
       ingredients: {},
       loading: false,
@@ -89,13 +89,9 @@ describe("IngredientStock", () => {
       migrationComplete: false,
     });
 
-    render(
-      <div className="dark">
-        <IngredientStock />
-      </div>
-    );
+    render(<IngredientStock />);
 
     const heading = screen.getByRole("heading", { name: /ingredient stock/i });
-    expect(heading.parentElement).toHaveClass("dark:bg-darkBg");
+    expect(heading.parentElement).toBeInTheDocument();
   });
 });

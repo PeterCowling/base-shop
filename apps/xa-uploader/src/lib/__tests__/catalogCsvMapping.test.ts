@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { buildCsvRowUpdateFromDraft, rowToDraftInput } from "../catalogCsvMapping";
+import { buildCsvRowUpdateFromDraft, rowToDraftInput } from "@acme/lib/xa";
 
 describe("catalogCsvMapping", () => {
   it("derives collection_handle from collectionTitle when handle is empty", () => {

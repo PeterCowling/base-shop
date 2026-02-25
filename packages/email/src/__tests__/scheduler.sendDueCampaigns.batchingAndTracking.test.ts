@@ -7,7 +7,7 @@ jest.mock("@acme/i18n/useTranslations.server", () => ({
     Promise.resolve((key: string) => key === "email.unsubscribe" ? "Unsubscribe" : key)
   ),
 }));
-jest.mock("@acme/lib", () => ({
+jest.mock("@acme/lib/validateShopName", () => ({
   validateShopName: jest.fn((s: string) => s),
 }));
 jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
@@ -131,4 +131,3 @@ describe("sendDueCampaigns – batching and tracking URLs", () => {
     );
   });
 });
-

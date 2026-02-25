@@ -18,7 +18,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   if (shop && campaign) {
-    const { emitClick } = await import("@acme/email");
+    const { emitClick } = await import("@acme/email/hooks");
     await emitClick(shop, { campaign });
   }
 

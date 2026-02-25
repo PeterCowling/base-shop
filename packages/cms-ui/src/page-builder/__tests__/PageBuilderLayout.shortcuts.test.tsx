@@ -23,6 +23,21 @@ jest.mock("@dnd-kit/core", () => ({
   },
 }));
 
+jest.mock("@dnd-kit/sortable", () => ({
+  __esModule: true,
+  SortableContext: ({ children }: any) => <>{children}</>,
+  useSortable: () => ({
+    attributes: {},
+    listeners: {},
+    setNodeRef: () => {},
+    transform: null,
+    transition: undefined,
+    isDragging: false,
+  }),
+  verticalListSortingStrategy: {},
+  arrayMove: <T,>(items: T[]) => items,
+}));
+
 jest.mock("@acme/design-system/atoms", () => {
   const actual = jest.requireActual("@acme/design-system/atoms");
   return {
@@ -32,17 +47,17 @@ jest.mock("@acme/design-system/atoms", () => {
   };
 });
 
-jest.mock("../PageToolbar", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/PageToolbar", () => ({
   __esModule: true,
   default: () => <div data-cy="toolbar" />,
 }));
 
-jest.mock("../PageCanvas", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/PageCanvas", () => ({
   __esModule: true,
   default: () => <div data-cy="canvas" />,
 }));
 
-jest.mock("../PageSidebar", () => {
+jest.mock("@acme/ui/components/cms/page-builder/PageSidebar", () => {
   const React = require("react");
   const Sidebar = () => {
     const setNode = React.useCallback((node: HTMLDivElement | null) => {
@@ -64,37 +79,37 @@ jest.mock("../PageSidebar", () => {
   return { __esModule: true, default: Sidebar };
 });
 
-jest.mock("../HistoryControls", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/HistoryControls", () => ({
   __esModule: true,
   default: () => <div data-cy="history" />,
 }));
 
-jest.mock("../PreviewPane", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/PreviewPane", () => ({
   __esModule: true,
   default: () => <div data-cy="preview" />,
 }));
 
-jest.mock("../devtools/DevToolsOverlay", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/devtools/DevToolsOverlay", () => ({
   __esModule: true,
   default: () => null,
 }));
 
-jest.mock("../PageBuilderTour", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/PageBuilderTour", () => ({
   __esModule: true,
   default: () => null,
 }));
 
-jest.mock("../ResponsiveRightActions", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/ResponsiveRightActions", () => ({
   __esModule: true,
   default: () => <div data-cy="right-actions" />,
 }));
 
-jest.mock("../DragOverlayPreview", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/DragOverlayPreview", () => ({
   __esModule: true,
   default: () => <div data-cy="drag-preview" />,
 }));
 
-jest.mock("../ErrorBoundary", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/ErrorBoundary", () => ({
   __esModule: true,
   default: ({ children }: { children: React.ReactNode }) => children,
 }));
@@ -104,22 +119,17 @@ jest.mock("@acme/ui/hooks/useReducedMotion", () => ({
   default: () => false,
 }));
 
-jest.mock("../EmptyCanvasOverlay", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/EmptyCanvasOverlay", () => ({
   __esModule: true,
   default: () => null,
 }));
 
-jest.mock("../CommandPalette", () => ({
-  __esModule: true,
-  default: () => null,
-}));
-
-jest.mock("@acme/ui/hooks/useDndA11y", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/hooks/useDndA11y", () => ({
   __esModule: true,
   default: () => ({}),
 }));
 
-jest.mock("@acme/ui/hooks/usePaletteState", () => {
+jest.mock("@acme/ui/components/cms/page-builder/hooks/usePaletteState", () => {
   const React = require("react");
   const usePaletteState = () => {
     const [showPalette, setShowPalette] = React.useState(true);
@@ -129,53 +139,53 @@ jest.mock("@acme/ui/hooks/usePaletteState", () => {
   return { __esModule: true, default: usePaletteState };
 });
 
-jest.mock("@acme/ui/hooks/useDevToolsToggle", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/hooks/useDevToolsToggle", () => ({
   __esModule: true,
   default: () => ({ showDevTools: false }),
 }));
 
-jest.mock("@acme/ui/hooks/useCommandPalette", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/hooks/useCommandPalette", () => ({
   __esModule: true,
   default: () => ({ open: false, setOpen: jest.fn() }),
 }));
 
-jest.mock("@acme/ui/hooks/useSpacePanning", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/hooks/useSpacePanning", () => ({
   __esModule: true,
   default: () => ({ onPointerDown: jest.fn() }),
 }));
 
-jest.mock("../PaletteSidebar", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/PaletteSidebar", () => ({
   __esModule: true,
   default: () => <div data-cy="palette-sidebar" />,
 }));
 
-jest.mock("../QuickPaletteControls", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/QuickPaletteControls", () => ({
   __esModule: true,
   default: () => <div data-cy="quick-controls" />,
 }));
 
-jest.mock("../PlaceholderAnimations", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/PlaceholderAnimations", () => ({
   __esModule: true,
   default: () => null,
 }));
 
-jest.mock("../LeftRail", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/LeftRail", () => ({
   __esModule: true,
   default: () => <div data-cy="left-rail" />,
 }));
 
-jest.mock("../PresenceAvatars", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/PresenceAvatars", () => ({
   __esModule: true,
   default: () => <div data-cy="presence" />,
 }));
 
-jest.mock("../NotificationsBell", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/NotificationsBell", () => ({
   __esModule: true,
   default: () => <div data-cy="notifications" />,
 }));
 
 
-jest.mock("../StudioMenu", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/StudioMenu", () => ({
   __esModule: true,
   default: () => <div data-cy="studio-menu" />,
 }));

@@ -192,6 +192,42 @@ rem_delta:
   carryover: <count of prior unresolved REM tasks not yet closed>
 ```
 
+#### 4.8 — Pending reviews scan
+
+Scan for items requiring operator attention and update the pending reviews registry.
+
+**Scan targets:**
+
+1. **Archived plans without results-review**: for each plan in `docs/plans/` with an archived/complete `plan.md` that has no sibling `results-review.user.md`, emit a pending review item.
+   - Locate candidates: `grep -rl 'Status: archived\|Status: complete' docs/plans/*/plan.md 2>/dev/null`
+   - Confirm absence: `ls docs/plans/<slug>/results-review.user.md 2>/dev/null`
+
+2. **R9 flags**: scan `docs/plans/*/results-review.user.md` and `docs/plans/*/fact-find.md` written within the last 30 days for any `## Standing Expansion` section not yet actioned (no corresponding entry in the artifact registry).
+
+3. **Stale queued dispatch packets**: read `docs/business-os/startup-loop/ideas/trial/queue-state.json` (if it exists). Any packet where `queue_state: enqueued` and `queued_at` is older than 7 days is a pending review item.
+
+**Output:**
+
+Update `docs/business-os/pending-reviews.user.html`:
+- Add newly discovered items to the appropriate section (R9, Ideas, Reviews).
+- Remove items where the corresponding artifact now exists (results-review written, R9 actioned, queue packet processed).
+- Update summary bar counts and footer date.
+
+Emit `pending_reviews_delta`:
+
+```yaml
+pending_reviews_delta:
+  new_r9_flags: <count>
+  new_review_items: <count>
+  stale_queue_packets: <count>
+  resolved_this_week: <count>
+  registry_updated: true | false
+```
+
+If no items found: all counts `0`, `registry_updated: false`.
+
+Failure handling: if scan cannot complete, emit warning and record `pending_reviews_delta: scan-failed`. Does not block the weekly cycle.
+
 ### Lane `a` Exit Conditions
 
 | State | Condition |
@@ -306,6 +342,7 @@ measurement_summary: <block or restricted>
 rem_delta: <block>
 experiment_portfolio_summary: <block>
 next_cycle_backlog_delta: <block>
+pending_reviews_delta: <block>
 ```
 
 Pass all outputs to `modules/publish.md`.

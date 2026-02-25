@@ -63,3 +63,36 @@ export const ShapeDepths: Story = {
     </div>
   ),
 };
+
+export const DensityScale: Story = {
+  render: () => (
+    <div className="grid max-w-xs gap-3">
+      <Select defaultValue="apple">
+        <SelectTrigger density="comfortable">
+          <SelectValue placeholder="Comfortable density" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="apple" density="comfortable">
+            Apple
+          </SelectItem>
+          <SelectItem value="banana" density="comfortable">
+            Banana
+          </SelectItem>
+        </SelectContent>
+      </Select>
+      <Select defaultValue="apple">
+        <SelectTrigger density="compact">
+          <SelectValue placeholder="Compact density" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="apple" density="compact">
+            Apple
+          </SelectItem>
+          <SelectItem value="banana" density="compact">
+            Banana
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  ),
+};

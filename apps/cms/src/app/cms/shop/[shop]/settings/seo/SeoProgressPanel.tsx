@@ -1,5 +1,5 @@
-import { formatTimestamp } from "@acme/date-utils";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { mean as libMean } from "@acme/lib/math/statistics";
 import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 import {
   readSeoAudits,
@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/atoms/shadcn";
+import { formatTimestamp } from "@/lib/datetime";
 
 import { SeoChart } from "./SeoChart.client";
 
@@ -51,7 +52,7 @@ export default async function SeoProgressPanel({ shop }: Props) {
   const recs: string[] = audits.at(-1)?.recommendations ?? [];
   const latestScore = audits.at(-1)?.score;
   const averageScore = audits.length
-    ? Math.round(scores.reduce((total, val) => total + val, 0) / audits.length)
+    ? Math.round(libMean(scores))
     : undefined;
 
   return (

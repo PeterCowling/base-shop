@@ -48,17 +48,15 @@ describe("SafeOpenForm", () => {
     expect(onConfirm).toHaveBeenCalledWith(100, 5);
   });
 
-  it("applies dark mode styles", () => {
+  it("applies token-based theme styles", () => {
     render(
-      <div className="dark">
-        <SafeOpenForm onConfirm={jest.fn()} onCancel={jest.fn()} />
-      </div>
+      <SafeOpenForm onConfirm={jest.fn()} onCancel={jest.fn()} />
     );
     const heading = screen.getByRole("heading", { name: /open safe/i });
     const container = heading.parentElement as HTMLElement;
-    expect(container).toHaveClass("dark:bg-darkSurface");
+    expect(container).toHaveClass("bg-surface");
     expect(screen.getByRole("button", { name: /confirm opening/i })).toHaveClass(
-      "dark:bg-darkAccentGreen"
+      "bg-primary-main"
     );
   });
 });

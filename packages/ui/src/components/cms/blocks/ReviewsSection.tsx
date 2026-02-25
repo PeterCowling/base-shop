@@ -2,6 +2,8 @@
 
 import * as React from "react";
 
+import { mean as libMean } from "@acme/lib/math/statistics";
+
 type Review = {
   id: string;
   author?: string;
@@ -69,7 +71,7 @@ export default function ReviewsSection({ provider = "custom", productId, items: 
           setItems(inputItems);
           if (!showAggregate) return;
           const ratings = inputItems.map((r) => r.rating ?? 0).filter((n) => n > 0);
-          const avg = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
+          const avg = ratings.length ? libMean(ratings) : 0;
           if (!cancelled) setAggregate({ ratingValue: Number(avg.toFixed(2)), reviewCount: ratings.length });
           return;
         }

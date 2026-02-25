@@ -4,7 +4,8 @@ import * as React from "react";
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import type { CatalogProductDraftInput } from "../../../lib/catalogAdminSchema";
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
+
 import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
 import { useCatalogConsole } from "../useCatalogConsole.client";
 
@@ -100,7 +101,10 @@ function renderHarness() {
             </button>
           );
         })}
-        <button type="button" onClick={() => state.setSubmissionUploadUrl("https://upload.local/put")}>
+        <button
+          type="button"
+          onClick={() => state.setSubmissionUploadUrl("https://upload.local/upload/path-token")}
+        >
           set-upload-url
         </button>
         <button type="button" onClick={() => void state.handleExportSubmission()}>
@@ -112,6 +116,12 @@ function renderHarness() {
         <button type="button" onClick={() => state.handleClearSubmission()}>
           clear-submission
         </button>
+        <button type="button" onClick={() => void state.handleSync()}>
+          sync
+        </button>
+        <button type="button" onClick={() => void state.refreshSyncReadiness()}>
+          refresh-sync-readiness
+        </button>
 
         <div data-cy="session-auth">{state.session?.authenticated ? "yes" : "no"}</div>
         <div data-cy="products-count">{state.products.length}</div>
@@ -120,6 +130,13 @@ function renderHarness() {
         <div data-cy="draft-category">{state.draft.taxonomy.category}</div>
         <div data-cy="draft-revision">{state.draftRevision ?? ""}</div>
         <div data-cy="submission-count">{state.submissionSlugs.size}</div>
+        <div data-cy="sync-ready">{state.syncReadiness.ready ? "yes" : "no"}</div>
+        <div data-cy="sync-checking">{state.syncReadiness.checking ? "yes" : "no"}</div>
+        <div data-cy="sync-feedback">
+          {state.actionFeedback.sync
+            ? `${state.actionFeedback.sync.kind}:${state.actionFeedback.sync.message}`
+            : ""}
+        </div>
         <div data-cy="draft-feedback">
           {state.actionFeedback.draft
             ? `${state.actionFeedback.draft.kind}:${state.actionFeedback.draft.message}`
@@ -177,6 +194,9 @@ describe("useCatalogConsole domain behavior", () => {
         }
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
       }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+      }
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
@@ -224,6 +244,9 @@ describe("useCatalogConsole domain behavior", () => {
           revisionsById: deleted ? {} : { p1: "rev-2" },
         });
       }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+      }
       if (url.startsWith("/api/catalog/products/studio-jacket?storefront=") && init?.method === "DELETE") {
         deleted = true;
         return jsonResponse({ ok: true });
@@ -265,13 +288,26 @@ describe("useCatalogConsole domain behavior", () => {
         r2Key: "submissions/sub-upload.zip",
       });
 
-    global.fetch = jest.fn(async (input: RequestInfo | URL) => {
+    let uploadRequest: { url: string; headers: HeadersInit | undefined } | null = null;
+    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
       if (url.startsWith("/api/catalog/products?storefront=")) {
         return jsonResponse({ ok: true, products: [], revisionsById: {} });
       }
-      if (url === "https://upload.local/put") return new Response(null, { status: 200 });
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+      }
+      if (url === "https://upload.local/upload") {
+        const requestHeaders =
+          init?.headers ??
+          (typeof Request !== "undefined" && input instanceof Request ? input.headers : undefined);
+        uploadRequest = {
+          url,
+          headers: requestHeaders,
+        };
+        return new Response(null, { status: 200 });
+      }
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
@@ -310,6 +346,16 @@ describe("useCatalogConsole domain behavior", () => {
     expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
       "success:Uploaded submission sub-upload.",
     );
+    expect(uploadRequest?.url).toBe("https://upload.local/upload");
+    const normalizedHeaders =
+      uploadRequest?.headers instanceof Headers
+        ? Object.fromEntries(uploadRequest.headers.entries())
+        : uploadRequest?.headers;
+    expect(normalizedHeaders).toMatchObject({
+      "Content-Type": "application/zip",
+      "X-XA-Submission-Id": "sub-upload",
+      "X-XA-Upload-Token": "path-token",
+    });
   }, 15_000);
 
   it("TC-04: storefront switch resets scoped state and draft defaults", async () => {
@@ -319,6 +365,9 @@ describe("useCatalogConsole domain behavior", () => {
       if (url.startsWith("/api/catalog/products?storefront=")) {
         if (init?.method === "POST") return jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-1" });
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
       }
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
@@ -344,5 +393,39 @@ describe("useCatalogConsole domain behavior", () => {
     expect(screen.getByTestId("submission-count")).toHaveTextContent("0");
     expect(screen.getByTestId("draft-feedback")).toHaveTextContent("");
     expect(screen.getByTestId("draft-category")).toHaveTextContent("clothing");
+  });
+
+  it("TC-05: sync action is gated when readiness check reports missing dependencies", async () => {
+    let syncPostCalls = 0;
+    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=")) {
+        return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({
+          ok: true,
+          ready: false,
+          missingScripts: ["validate"],
+        });
+      }
+      if (url === "/api/catalog/sync" && init?.method === "POST") {
+        syncPostCalls += 1;
+        return jsonResponse({ ok: true });
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    renderHarness();
+
+    await waitFor(() => {
+      expect(screen.getByTestId("sync-ready")).toHaveTextContent("no");
+      expect(screen.getByTestId("sync-checking")).toHaveTextContent("no");
+    });
+
+    await clickButton("sync");
+    expect(syncPostCalls).toBe(0);
+    expect(screen.getByTestId("sync-feedback")).toHaveTextContent("");
   });
 });

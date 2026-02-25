@@ -20,7 +20,7 @@ Analyze Layer A standing-intelligence packs for one business and produce proposa
 
 **Not allowed:**
 - Modifying existing cards or ideas/backlog entries.
-- Creating cards directly (use `/idea-develop` in IDEAS-02).
+- Creating cards directly (route accepted proposals through `/lp-do-ideas` in IDEAS-02).
 - Writing legacy `docs/business-os/scans/` artifacts.
 - Auto-applying `MERGE` or `SPLIT` decisions (operator confirmation is required in IDEAS-02).
 
@@ -148,7 +148,7 @@ Return:
 ## Integration with Other Skills
 
 - **IDEAS-01:** `/idea-scan` produces `scan-proposals.md` only.
-- **IDEAS-02:** `/idea-develop` applies accepted proposals; `/idea-advance` supports lane/promotion decisions.
+- **IDEAS-02:** `/lp-do-ideas` applies accepted proposal routing and emits downstream dispatch packets.
 - **IDEAS-03:** `/lp-do-fact-find` starts the selected promoted idea as DO work.
 - **Plan updates:** `/biz-update-plan` can consume accepted proposal outcomes plus reflection evidence.
 

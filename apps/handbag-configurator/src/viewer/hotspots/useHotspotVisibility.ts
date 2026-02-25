@@ -1,5 +1,6 @@
 import * as THREE from "three";
 
+import { minDistanceCull, screenMarginCull } from "@acme/lib";
 import type { ProductConfigSchema } from "@acme/product-configurator";
 
 export type HotspotRegionId =
@@ -100,8 +101,7 @@ export function computeVisibleHotspots({
 
     projected.copy(anchorPos).project(camera);
     if (projected.z < 0 || projected.z > 1) continue;
-    const maxScreen = 1 - SCREEN_MARGIN;
-    if (Math.abs(projected.x) > maxScreen || Math.abs(projected.y) > maxScreen) {
+    if (screenMarginCull(projected.x, projected.y, SCREEN_MARGIN)) {
       continue;
     }
 
@@ -159,7 +159,7 @@ export function computeVisibleHotspots({
       const overlaps = spaced.some((existing) => {
         const dx = existing.screenX - candidate.screenX;
         const dy = existing.screenY - candidate.screenY;
-        return Math.hypot(dx, dy) < minDistance;
+        return minDistanceCull(dx, dy, minDistance);
       });
       if (overlaps) continue;
     }

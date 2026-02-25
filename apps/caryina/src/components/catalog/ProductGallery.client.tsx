@@ -62,10 +62,7 @@ export function ProductGallery({ productTitle, items }: ProductGalleryProps) {
 
   if (!activeItem) {
     return (
-      <div
-        className="rounded-3xl border border-dashed p-6 text-sm text-muted-foreground"
-        style={{ borderColor: "hsl(var(--color-border-default))" }}
-      >
+      <div className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
         No product media is available yet.
       </div>
     );
@@ -81,10 +78,7 @@ export function ProductGallery({ productTitle, items }: ProductGalleryProps) {
       aria-label={`${productTitle} media gallery`}
       data-cy="product-gallery"
     >
-      <div
-        className="media-aspect-portrait relative overflow-hidden rounded-3xl border border-solid bg-muted"
-        style={{ borderColor: "hsl(var(--color-border-default))" }}
-      >
+      <div className="relative aspect-square overflow-hidden rounded-xl bg-muted">
         {activeItem.type === "video" ? (
           <video
             className="h-full w-full aspect-square object-cover"
@@ -98,44 +92,38 @@ export function ProductGallery({ productTitle, items }: ProductGalleryProps) {
             src={activeItem.src}
             alt={activeItem.alt}
             fill
-            sizes="(max-width: 1024px) 100vw, 56vw"
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
             priority
           />
         )}
-        <div className="gallery-role-label absolute inset-x-0 bottom-0 px-4 py-2 text-xs uppercase tracking-wider">
-          {activeItem.roleLabel}
-          {activeItem.isFallback ? " (placeholder)" : ""}
-        </div>
       </div>
 
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center justify-center gap-4">
         <button
           type="button"
           onClick={goPrevious}
           disabled={!canNavigate}
-          className="min-h-12 min-w-12 rounded-full border border-solid px-4 py-2 text-sm disabled:opacity-50"
-          style={{ borderColor: "hsl(var(--color-border-default))" }}
+          className="flex h-10 w-10 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
           aria-label="Previous media"
         >
-          Previous
+          <span aria-hidden="true">&larr;</span>
         </button>
-        <p className="text-sm text-muted-foreground" data-cy="gallery-position">
+        <p className="min-w-12 text-center text-sm text-muted-foreground" data-cy="gallery-position">
           {activeIndex + 1} / {safeItems.length}
         </p>
         <button
           type="button"
           onClick={goNext}
           disabled={!canNavigate}
-          className="min-h-12 min-w-12 rounded-full border border-solid px-4 py-2 text-sm disabled:opacity-50"
-          style={{ borderColor: "hsl(var(--color-border-default))" }}
+          className="flex h-10 w-10 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
           aria-label="Next media"
         >
-          Next
+          <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
 
-      <ul className="grid grid-cols-4 gap-2 sm:grid-cols-6">
+      <ul className="grid list-none grid-cols-4 gap-2 sm:grid-cols-6">
         {safeItems.map((item, index) => {
           const isActive = index === activeIndex;
           return (
@@ -148,8 +136,7 @@ export function ProductGallery({ productTitle, items }: ProductGalleryProps) {
                 aria-current={isActive ? "true" : undefined}
               >
                 <div
-                  className={`relative aspect-square overflow-hidden rounded-xl border border-solid ${isActive ? "ring-2 ring-offset-1" : ""}`}
-                  style={{ borderColor: "hsl(var(--color-border-default))" }}
+                  className={`relative aspect-square overflow-hidden rounded-lg ${isActive ? "ring-2 ring-offset-1" : "opacity-70"}`}
                 >
                   {item.type === "video" ? (
                     <div className="flex h-full w-full items-center justify-center bg-muted text-xs uppercase tracking-wider text-muted-foreground">

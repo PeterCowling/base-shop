@@ -74,7 +74,7 @@ function MobileNav({
     },
     [onPrimaryCtaClick, isApartmentRoute]
   );
-  const ctaClass = "cta-dark";
+  const ctaClass = "cta-light";
   const primaryCtaLabel = useMemo(() => {
     if (!ready && !tokensReady) {
       return FALLBACK_PRIMARY_CTA_LABEL;
@@ -85,7 +85,7 @@ function MobileNav({
   return (
     <nav
       data-testid="mobile-nav"
-      className="fixed inset-x-0 z-50 h-16 bg-header-gradient px-3 py-3 shadow lg:hidden sm:px-4"
+      className="fixed inset-x-0 z-50 h-16 bg-header-gradient px-3 py-3 shadow md:hidden sm:px-4"
       // eslint-disable-next-line react/forbid-dom-props -- UI-1000 ttl=2026-12-31 banner offset is runtime-calculated.
       style={{ top: bannerHeight }}
     >
@@ -110,7 +110,7 @@ function MobileNav({
             loading="eager"
             decoding="async"
           />
-          <span className="hidden text-lg font-bold text-white sm:inline">
+          <span className="whitespace-nowrap text-sm font-bold text-white sm:text-lg">
             {(() => {
               const title = t("title") as string;
               if (title && title !== "title") return title;
@@ -119,16 +119,17 @@ function MobileNav({
           </span>
         </Link>
 
+        {/* Spacer */}
+        <div className="flex-1" />
+
         {/* Reserve CTA */}
-        <div className="flex flex-1 justify-center">
-          <Link
-            href={bookHref}
-            onClick={onBookingClick}
-            className={`min-h-11 min-w-11 whitespace-nowrap px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:px-4 sm:text-sm`}
-          >
-            {primaryCtaLabel}
-          </Link>
-        </div>
+        <Link
+          href={bookHref}
+          onClick={onBookingClick}
+          className={`cta min-h-11 min-w-11 max-w-[6rem] px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:max-w-none sm:whitespace-nowrap sm:px-4 sm:text-sm`}
+        >
+          {primaryCtaLabel}
+        </Link>
 
         {/* Burger / X toggler */}
         <button

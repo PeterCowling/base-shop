@@ -1,6 +1,6 @@
 ---
 Type: Plan-Artifact
-Status: Draft
+Status: Complete
 Domain: Infra
 Feature-Slug: turbopack-full-migration
 Task-ID: TASK-02
@@ -12,16 +12,19 @@ Relates-to: docs/plans/turbopack-full-migration/plan.md
 # Turbopack Migration Matrix (TASK-02)
 
 ## Scope Snapshot
-- Webpack-pinned package scripts: `28` command surfaces across `14` in-scope app/package units.
+- Baseline (TASK-02 start): webpack-pinned package scripts were `28` command surfaces across `14` in-scope app/package units.
 - App/package units in scope: `business-os`, `caryina`, `cms`, `cochlearfit`, `cover-me-pretty`, `handbag-configurator`, `prime`, `product-pipeline`, `skylar`, `xa`, `xa-b`, `xa-j`, `xa-uploader`, `template-app`.
 - Explicit webpack callback files (for TASK-07): `9` total (`packages/next-config/next.config.mjs` + 8 app/package config files).
 - Global guardrail coupling: `scripts/check-next-webpack-flag.mjs` enforced by pre-commit + merge-gate.
+- Final state (TASK-09 close): in-scope package-script `--webpack` matches are `0`; default policy is Turbopack-first (`require-turbopack`).
 
 ## Evidence Commands (2026-02-23)
 - `rg --glob 'apps/*/package.json' --glob 'packages/template-app/package.json' '"(dev|build|preview|dev:debug)"\s*:\s*"[^"]*--webpack[^"]*"' apps packages`
 - `rg 'webpack\s*\(' apps/*/next.config.mjs packages/next-config/next.config.mjs packages/template-app/next.config.mjs`
 - `rg '@apps/...|@acme/template-app' .github/workflows/*.yml`
-- `node scripts/check-next-webpack-flag.mjs --all` (policy baseline command)
+- `pnpm exec jest --runInBand --config ./jest.config.cjs scripts/__tests__/next-webpack-flag-policy.test.ts`
+- `node scripts/check-next-webpack-flag.mjs --all`
+- Representative build probes: `pnpm --filter @apps/prime build`, `pnpm --filter @apps/cover-me-pretty build`, `pnpm --filter @apps/skylar build`, `pnpm --filter @apps/business-os build`, `pnpm --filter @apps/cms build`
 
 ## App Script Surface Matrix
 
@@ -46,6 +49,14 @@ Notes:
 - All rows are additionally coupled to global policy checks via `scripts/check-next-webpack-flag.mjs` (merge-gate + local validation).
 - S3 is intentionally delayed until callback-parity evidence from TASK-07 is complete.
 - `ci.yml` is path-ignored for `apps/cms/**` and is not an active CMS build-status consumer in the current split-pipeline model.
+
+## Migration Completion Snapshot (2026-02-23)
+
+| Wave | Outcome | Evidence |
+|---|---|---|
+| TASK-07 callback parity | Complete | `@apps/business-os`, `@apps/skylar`, and `@apps/cms` builds pass under Turbopack after alias/fallback cleanup and client/server boundary fixes. |
+| TASK-08 script migration | Complete | In-scope `--webpack` script audit returns zero matches across `apps/*/package.json` + `packages/template-app/package.json`. |
+| TASK-09 hardening | Complete | Policy default now requires Turbopack and rejects `--webpack`; policy tests and full policy scan pass. |
 
 ## Callback Responsibility Map (TASK-07 Input)
 
@@ -80,23 +91,10 @@ Prime-specific note:
 
 ## TASK-07 Validation Snapshot (2026-02-23)
 
-- `pnpm --filter @apps/business-os build` -> pass (`next build --webpack`).
-- `pnpm --filter @apps/skylar build` -> pass (`next build --webpack`).
-- `pnpm --filter @apps/cms build` -> fail with Node heap OOM (`SIGABRT`) on three runs:
-  - default command,
-  - `NODE_OPTIONS=--max-old-space-size=8192`,
-  - `NEXT_BUILD_CPUS=1 NODE_OPTIONS=--max-old-space-size=8192`.
-- Result: TASK-07 callback parity work is implemented, but CMS representative-build validation remains blocked by pre-existing webpack memory pressure in current environment.
-
-### Checkpoint Addendum (2026-02-23)
-
-Dedicated mitigation lane evidence from `docs/plans/_archive/cms-webpack-build-oom/` confirms the blocker remains active after one bounded graph-reduction slice:
-- Post-mitigation probe matrix (`docs/plans/_archive/cms-webpack-build-oom/artifacts/raw/2026-02-23-task-04-r1/`):
-  - `pnpm --filter @apps/cms build` -> `exit 134` in `441s` (`SIGABRT` OOM)
-  - `NODE_OPTIONS=--max-old-space-size=8192 pnpm --filter @apps/cms build` -> `exit 134` in `558s` (`SIGABRT` OOM)
-  - `NEXT_BUILD_CPUS=1 NODE_OPTIONS=--max-old-space-size=8192 pnpm --filter @apps/cms build` -> `exit 134` in `431s` (`SIGABRT` OOM)
-- Contract implication:
-  - Option A hard-blocker policy remains in force; TASK-08 script-surface migration remains blocked by TASK-07 until CMS representative build validation can pass under the agreed gate contract.
+- `pnpm --filter @apps/business-os build` -> pass (`next build`, Turbopack).
+- `pnpm --filter @apps/skylar build` -> pass (`next build`, Turbopack).
+- `pnpm --filter @apps/cms build` -> pass (`next build`, Turbopack; known non-fatal Edge-runtime warnings from `instrumentation.ts`).
+- Result: callback parity lane is closed; remaining webpack callback branches are explicitly retained exceptions with rationale.
 
 ## Script Wave Validation Commands
 
@@ -126,6 +124,11 @@ Precondition: callback parity outcomes for C0/C2 documented in TASK-07 logs.
 2. `node scripts/check-next-webpack-flag.mjs --all`
 3. `pnpm --filter @apps/business-os build`
 4. `pnpm --filter @apps/cms build`
+
+## Final Hardening Notes (TASK-09)
+- Policy default in `scripts/check-next-webpack-flag.mjs` is now `require-turbopack` for `dev/build`.
+- Root `webpack` dependency remains intentionally because Storybook webpack builder is explicitly out-of-scope for this migration (`apps/storybook/.storybook/main.ts`, `apps/storybook/.storybook-ci/main.ts`).
+- Residual non-migration failure observed during validation: `pnpm --filter @apps/caryina build` currently fails on a TypeScript model mismatch in `src/lib/launchMerchandising.ts` (`mediaItem.tags`), unrelated to Turbopack/script-policy migration.
 
 ## Task-03 Input (Policy Strategy)
 - Matrix indicates broad mixed coupling (script policy + shared callback reuse) rather than isolated app-local usage.

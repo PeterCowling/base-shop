@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { ReceptionButton as Button } from "@acme/ui/operations";
+import { Button } from "@acme/design-system/atoms";
 
 import useSingleGuestDetails from "../../../hooks/data/useSingleGuestDetails";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
@@ -125,14 +125,15 @@ const DocInsertPage: React.FC = () => {
       <div className="flex justify-end mb-4">
         <Button
           onClick={handleBack}
-          className="inline-flex items-center px-3 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark transition-colors"
+          color="primary"
+          tone="solid"
         >
           <span className="me-2">&larr;</span>
           Back
         </Button>
       </div>
 
-      <div className="bg-surface rounded-lg shadow px-8 py-12 dark:bg-darkSurface dark:text-darkAccentGreen">
+      <div className="bg-surface rounded-lg shadow px-8 py-12">
         {/* BookingRef component */}
         <div className="mb-50px">
           <BookingRef bookingRef={bookingRef} />
@@ -168,7 +169,7 @@ const DocInsertPage: React.FC = () => {
             }`}
         >
           <span>{snackbar.message}</span>
-          <Button onClick={closeSnackbar} className="ms-4 font-bold">
+          <Button onClick={closeSnackbar} color="default" tone="ghost" className="ms-4">
             ×
           </Button>
         </div>

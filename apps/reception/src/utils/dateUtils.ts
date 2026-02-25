@@ -179,30 +179,63 @@ export const dateUtils = {
     dateIso: string,
     periods: Period<TCustomStatus>[] = []
   ): { dayType: TDayType; dayStatus: TDateStatus<TCustomStatus>[] } {
-    const period = periods.find((p) => dateIso >= p.start && dateIso < p.end);
+    const intersections: TDayType[] = [];
+    const dayStatus: TDateStatus<TCustomStatus>[] = [];
 
-    if (!period) {
+    const sortedPeriods = [...periods].sort((a, b) => {
+      if (a.start === b.start) {
+        return 0;
+      }
+
+      return a.start < b.start ? -1 : 1;
+    });
+
+    for (const period of sortedPeriods) {
+      let position: "none" | "start" | "middle" | "end" = "none";
+      if (dateIso === period.start) {
+        position = "start";
+      } else if (dateIso === period.end) {
+        position = "end";
+      } else if (dateIso > period.start && dateIso < period.end) {
+        position = "middle";
+      }
+
+      let dayType: TDayType = "single.free";
+      if (position !== "none") {
+        if (period.status === "disabled") {
+          dayType = "single.disabled";
+        } else if (position === "start") {
+          dayType = "single.start";
+        } else if (position === "end") {
+          dayType = "single.end";
+        } else {
+          dayType = "single.full";
+        }
+      }
+
+      if (dayType !== "single.free") {
+        intersections.push(dayType);
+        dayStatus.push(period.status as TDateStatus<TCustomStatus>);
+      }
+    }
+
+    if (intersections.length === 0) {
       return {
-        dayType: "free" as TDayType,
-        dayStatus: ["free", "free"] as unknown as TDateStatus<TCustomStatus>[],
+        dayType: "single.free",
+        dayStatus: [],
       };
     }
 
-    const isStart = dateIso === period.start;
-    const isEnd = dateIso === period.end;
-
-    let dayType: TDayType = "busy";
-    if (isStart && isEnd) dayType = "busy";
-    else if (isStart) dayType = "arrival";
-    else if (isEnd) dayType = "departure";
+    if (intersections.length === 1) {
+      return {
+        dayType: intersections[0],
+        dayStatus,
+      };
+    }
 
     return {
-      dayType,
-      dayStatus: [
-        (period.status as TDateStatus<TCustomStatus>) ??
-          ("busy" as TDateStatus<TCustomStatus>),
-        "busy" as TDateStatus<TCustomStatus>,
-      ],
+      dayType: "intersection",
+      dayStatus,
     };
   },
 

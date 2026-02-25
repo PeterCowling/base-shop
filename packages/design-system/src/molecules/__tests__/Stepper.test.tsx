@@ -182,4 +182,18 @@ describe("Stepper", () => {
     indicator = firstStep?.querySelector("[class*='size-8']");
     expect(indicator).toHaveClass("rounded-xl");
   });
+
+  it("applies foreground pairing on completed connector segments", () => {
+    render(
+      <Stepper currentStep={1}>
+        <StepperStep step={0} label="Step 1" />
+        <StepperStep step={1} label="Step 2" />
+      </Stepper>
+    );
+
+    const connectors = document.querySelectorAll("[aria-hidden='true']");
+    expect(connectors.length).toBeGreaterThan(0);
+    expect(connectors[0]).toHaveClass("bg-primary");
+    expect(connectors[0]).toHaveAttribute("data-ds-contrast-exempt");
+  });
 });

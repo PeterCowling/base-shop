@@ -53,6 +53,15 @@ function adminToken(): string {
   return requireEnv("XA_UPLOADER_ADMIN_TOKEN").trim();
 }
 
+function vendorToken(): string {
+  const configured = process.env.XA_UPLOADER_VENDOR_TOKEN?.trim();
+  return configured || adminToken();
+}
+
+function expectedLoginToken(): string {
+  return isVendorMode() ? vendorToken() : adminToken();
+}
+
 function issueSessionToken(secret: string): string {
   const issuedAt = Date.now();
   const nonce = crypto.randomBytes(16).toString("base64url");
@@ -80,22 +89,19 @@ function verifySessionToken(token: string, secret: string): boolean {
 }
 
 export async function validateUploaderAdminToken(token: string): Promise<boolean> {
-  if (isVendorMode()) return true;
-  const expected = adminToken();
+  const expected = expectedLoginToken();
   const trimmed = token.trim();
   if (!trimmed) return false;
   return timingSafeEqual(trimmed, expected);
 }
 
 export async function hasUploaderSession(request: Request): Promise<boolean> {
-  if (isVendorMode()) return true;
   const token = getCookieValue(request.headers.get("cookie"), COOKIE_NAME);
   if (!token) return false;
   return verifySessionToken(token, sessionSecret());
 }
 
 export async function issueUploaderSession(): Promise<string> {
-  if (isVendorMode()) return "vendor";
   return issueSessionToken(sessionSecret());
 }
 

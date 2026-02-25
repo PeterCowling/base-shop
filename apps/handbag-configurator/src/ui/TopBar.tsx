@@ -2,7 +2,7 @@
 
 import { Switch } from "@acme/design-system/atoms";
 import { type ThemeOption,ThemeToggle } from "@acme/design-system/atoms/ThemeToggle";
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 import { useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
 
 import { useModeStore } from "../viewer/state/modeStore";

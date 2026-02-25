@@ -1,7 +1,8 @@
 import { ulid } from "ulid";
 
-import { nowIso } from "@acme/date-utils";
 import type { Page } from "@acme/types";
+
+import { nowIso } from "@/lib/datetime";
 
 import { ensureAuthorized } from "../common/auth";
 

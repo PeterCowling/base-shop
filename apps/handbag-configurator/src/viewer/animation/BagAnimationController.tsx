@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+import { clamp01Vec3 } from "@acme/lib";
 import type { ProductAssetProceduralOpen } from "@acme/product-configurator";
 
 type BagAnimationControllerProps = {
@@ -134,9 +135,7 @@ export function BagAnimationController({
     const pivotPoint = center.clone();
     const pivot = proceduralOpen.pivot;
     if (!pivot) return;
-    const x = Math.min(Math.max(pivot.x ?? 0.5, 0), 1);
-    const y = Math.min(Math.max(pivot.y ?? 0.5, 0), 1);
-    const z = Math.min(Math.max(pivot.z ?? 0.5, 0), 1);
+    const { x, y, z } = clamp01Vec3(pivot, 0.5);
     pivotPoint.set(
       box.min.x + (box.max.x - box.min.x) * x,
       box.min.y + (box.max.y - box.min.y) * y,

@@ -86,18 +86,16 @@ describe("SafeDepositForm", () => {
     expect(onConfirm).not.toHaveBeenCalled();
   });
 
-  it("applies dark mode styles", async () => {
+  it("applies token-based theme styles", async () => {
     render(
-      <div className="dark">
-        <SafeDepositForm
-          currentKeycards={0}
-          onConfirm={jest.fn()}
-          onCancel={jest.fn()}
-        />
-      </div>
+      <SafeDepositForm
+        currentKeycards={0}
+        onConfirm={jest.fn()}
+        onCancel={jest.fn()}
+      />
     );
     const heading = screen.getByRole("heading", { name: /deposit cash/i });
     const container = heading.parentElement as HTMLElement;
-    expect(container).toHaveClass("dark:bg-darkSurface");
+    expect(container).toHaveClass("bg-surface");
   });
 });

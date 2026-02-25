@@ -1,8 +1,11 @@
 {
   "anonymousGuest": "Ospite",
   "availableWhenLive": "La chat sar\u00e0 disponibile quando l'attivit\u00e0 inizia.",
+  "backToChat": "Torna alla chat",
   "backToActivities": "Torna alle attivit\u00e0",
   "channelTitle": "Chat attivit\u00e0",
+  "directMessagingUnavailable": "La messaggistica diretta non \u00e8 disponibile per questo ospite.",
+  "directMessagingUnavailableDescription": "Entrambi gli ospiti devono essere confermati sullo stesso soggiorno, attivare la chat e non essere bloccati.",
   "chat": {
     "directory": {
       "guestLabel": "Ospite {{id}}",
@@ -18,10 +21,12 @@
     }
   },
   "goToActivities": "Vai alle attivit\u00e0",
+  "loadingDirectChannel": "Caricamento chat...",
   "loadingActivity": "Caricamento attivit\u00e0\u2026",
   "markPresenceToChat": "Segna la tua presenza nella pagina attivit\u00e0 per iniziare a chattare.",
   "noChannelSelected": "Nessun canale selezionato.",
   "send": "Invia",
+  "statusDirect": "Chat diretta",
   "statusLive": "In corso",
   "statusUpcoming": "Inizia a breve",
   "typeMessage": "Scrivi un messaggio\u2026"

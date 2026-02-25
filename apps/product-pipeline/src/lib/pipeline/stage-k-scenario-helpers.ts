@@ -1,6 +1,10 @@
 /* i18n-exempt file -- PP-1100 Stage K scenario helpers [ttl=2026-06-30] */
 
+import { clamp } from "@acme/lib";
+
 import type { StageKScenarioAssumptions } from "./stage-k-scenario";
+
+export { clamp };
 
 export function nowIso(): string {
   return new Date().toISOString();
@@ -21,10 +25,6 @@ export function toInt(value: unknown): number | null {
   const num = toNumber(value);
   if (num === null) return null;
   return Math.round(num);
-}
-
-export function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
 }
 
 export function normalizeAssumptions(

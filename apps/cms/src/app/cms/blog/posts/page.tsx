@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { getPosts } from "@cms/actions/blog.server";
 
-import { formatTimestamp } from "@acme/date-utils";
 import { Button } from "@acme/design-system/shadcn";
 import { getShopById } from "@acme/platform-core/repositories/shop.server";
 import { getSanityConfig, type Shop } from "@acme/platform-core/shops";
+
+function formatTimestamp(ts: string): string {
+  const date = /^\d+$/.test(ts) ? new Date(Number(ts)) : new Date(ts);
+  return Number.isNaN(date.getTime()) ? ts : date.toLocaleString();
+}
 
 export default async function BlogPostsPage(props: {
   searchParams?: Promise<{ shopId?: string }>;

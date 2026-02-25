@@ -7,10 +7,10 @@ import React, {
   useState,
 } from "react";
 import {
-  ChevronDownIcon,
-  ChevronRightIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/solid";
+  ChevronDown,
+  ChevronRight,
+  X,
+} from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
@@ -275,7 +275,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                   type="checkbox"
                   checked={allSelected}
                   onChange={toggleSelectAll}
-                  className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-blue-500"
+                  className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-ring"
                   aria-label="Select all rows"
                 />
               </TableHead>
@@ -335,7 +335,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
           </TableRow>
         </TableHeader>
 
-          <TableBody className="divide-y divide-gray-100">
+          <TableBody className="divide-y divide-border-1">
             {sortedGuests.map((guest) => {
               const isExpanded = !!expandedRows[guest.guestId];
               const isSelected = selectedRows.has(guest.bookingRef);
@@ -345,14 +345,14 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
               return (
                 <Fragment key={guest._key ?? guest.guestId}>
                   {/* -------  Main row  ------- */}
-                  <TableRow className={`transition-colors ${isSelected ? "bg-info-light/20" : "odd:bg-surface even:bg-surface-2 hover:bg-primary-50"}`}>
+                  <TableRow className={`transition-colors ${isSelected ? "bg-info-light/20" : "odd:bg-surface even:bg-surface-2 hover:bg-primary-light"}`}>
                     {/* Row selection checkbox */}
                     <TableCell className="px-3 py-2 text-center">
                       <input
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => toggleRowSelection(guest.bookingRef)}
-                        className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-blue-500"
+                        className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-ring"
                         aria-label={`Select booking ${guest.bookingRef}`}
                       />
                     </TableCell>
@@ -361,12 +361,12 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                       <Button
                       type="button"
                       onClick={() => toggleRow(guest.guestId)}
-                      className="rounded-full p-0.5 hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600"
+                      className="rounded-full p-0.5 hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       {isExpanded ? (
-                        <ChevronDownIcon className="h-4 w-4" />
+                        <ChevronDown className="h-4 w-4" />
                       ) : (
-                        <ChevronRightIcon className="h-4 w-4" />
+                        <ChevronRight className="h-4 w-4" />
                       )}
                       <span className="sr-only">
                         {isExpanded ? "Collapse" : "Expand"} row
@@ -432,7 +432,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                             <h4>
                               Activities
                               {activitiesForGuest.length === 0 && (
-                                <XMarkIcon
+                                <X
                                   className="h-4 w-4 text-muted-foreground"
                                   aria-hidden="true"
                                 />
@@ -452,7 +452,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                             <h4>
                               Transactions
                               {guest.transactions.length === 0 && (
-                                <XMarkIcon
+                                <X
                                   className="h-4 w-4 text-muted-foreground"
                                   aria-hidden="true"
                                 />

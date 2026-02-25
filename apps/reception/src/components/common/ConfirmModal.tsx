@@ -1,13 +1,13 @@
 // File: /src/components/common/ConfirmModal.tsx
 import { memo, useCallback, useState } from "react";
 import {
-  ExclamationTriangleIcon,
-  QuestionMarkCircleIcon,
-} from "@heroicons/react/24/solid";
+  CircleHelp,
+  TriangleAlert,
+} from "lucide-react";
 
+import { Button } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
-import { ReceptionButton as Button } from "@acme/ui/operations";
 
 export type ConfirmVariant = "default" | "danger";
 
@@ -50,7 +50,7 @@ function ConfirmModal({
   if (!isOpen) return null;
 
   const isDanger = variant === "danger";
-  const Icon = isDanger ? ExclamationTriangleIcon : QuestionMarkCircleIcon;
+  const Icon = isDanger ? TriangleAlert : CircleHelp;
 
   return (
     <SimpleModal
@@ -64,7 +64,9 @@ function ConfirmModal({
             type="button"
             onClick={onCancel}
             disabled={isProcessing}
-            className="min-h-11 min-w-11 flex-1 rounded-md border border-border-2 bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-2 disabled:opacity-50 dark:border-gray-600 dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-surface-3"
+            color="default"
+            tone="outline"
+            className="min-h-11 min-w-11 flex-1"
           >
             {cancelLabel}
           </Button>
@@ -72,11 +74,9 @@ function ConfirmModal({
             type="button"
             onClick={handleConfirm}
             disabled={isProcessing}
-            className={`min-h-11 min-w-11 flex-1 rounded-md px-4 py-2 text-sm font-medium text-primary-fg disabled:opacity-50 ${
-              isDanger
-                ? "bg-error-main hover:bg-red-700"
-                : "bg-info-main hover:bg-blue-700"
-            }`}
+            color={isDanger ? "danger" : "info"}
+            tone="solid"
+            className="min-h-11 min-w-11 flex-1"
           >
             {isProcessing ? "Processing..." : confirmLabel}
           </Button>
@@ -85,18 +85,18 @@ function ConfirmModal({
     >
       <div
         className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full ${
-          isDanger ? "bg-error-light dark:bg-red-900/30" : "bg-info-light dark:bg-blue-900/30"
+          isDanger ? "bg-error-light" : "bg-info-light"
         }`}
       >
         <Icon
           className={`h-6 w-6 ${
-            isDanger ? "text-error-main dark:text-red-400" : "text-info-main dark:text-blue-400"
+            isDanger ? "text-error-main" : "text-info-main"
           }`}
         />
       </div>
       <p
         id="confirm-message"
-        className="mt-2 text-center text-sm text-muted-foreground dark:text-muted-foreground"
+        className="mt-2 text-center text-sm text-muted-foreground"
       >
         {message}
       </p>

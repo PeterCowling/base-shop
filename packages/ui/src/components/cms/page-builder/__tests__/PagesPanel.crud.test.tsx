@@ -46,11 +46,9 @@ jest.mock("../../../atoms", () => ({ __esModule: true, OverlayScrim: () => null 
 
 describe("PagesPanel – load, reorder, save, toggle, add, saveDraft", () => {
   beforeEach(() => {
-    jest.useFakeTimers();
     (global.fetch as any) = jest.fn();
   });
   afterEach(() => {
-    jest.useRealTimers();
     jest.resetAllMocks();
   });
 

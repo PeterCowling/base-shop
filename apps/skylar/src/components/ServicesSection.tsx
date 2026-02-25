@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import { Grid } from "@/components/primitives/Grid";
 import { joinClasses } from "@/lib/joinClasses";

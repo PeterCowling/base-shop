@@ -202,7 +202,7 @@ ls docs/business-os/strategy/<BIZ>/lp-other-products-prompt.md 2>/dev/null
 
 **When triggered** (MARKET-06 Done + condition met + prompt absent):
 - Advisory: `GATE-PRODUCT-02-01: Growth intent references product range expansion. Run /lp-other-products <BIZ> to generate the adjacent product research prompt, then drop it into a deep research tool (OpenAI Deep Research or equivalent). Save results to docs/business-os/strategy/<BIZ>/lp-other-products-results.user.md for S5A (lp-prioritize) to pick up as additional go-item candidates.`
-- Does NOT block S3/SELL-01 fan-out or S4 join barrier.
+- Does NOT block SIGNALS-01/SELL-01 fan-out or S4 join barrier.
 
 **When skipped**: Condition not met (growth_intent absent or does not reference product range expansion), OR prompt already exists.
 
@@ -251,9 +251,9 @@ grep -l "Status: Ready-for-planning" docs/plans/<biz>-website-v1-first-build/fac
 
 ---
 
-### S10 Phase 1 Weekly Advance Dispatch
+### SIGNALS Phase 1 Weekly Advance Dispatch (legacy: S10)
 
-**Trigger**: S10 weekly advance (Phase 1 default route).
+**Trigger**: SIGNALS weekly advance (legacy stage label: S10) — Phase 1 default route.
 
 **Invocation**:
 
@@ -271,23 +271,23 @@ Where:
 
 ---
 
-### GATE-BD-08: Brand Dossier staleness warning at S10
+### GATE-BD-08: Brand Dossier staleness warning at SIGNALS (legacy: S10)
 
 **Gate ID**: GATE-BD-08 (Soft — warning, not block)
-**Trigger**: S10 weekly readout review.
+**Trigger**: SIGNALS weekly readout review.
 
 **Rule**: Check Brand Dossier `Last-reviewed` date in `docs/business-os/strategy/<BIZ>/index.user.md`. If Last-reviewed > 90 days ago: emit warning (do not block).
 - Warning: `GATE-BD-08: Brand Dossier not reviewed in >90 days. Consider re-running BRAND-DR-01/02 and updating brand-identity.user.md.`
 
 ---
 
-### S10 Signal Review Dispatch (weekly signal strengthening)
+### SIGNALS Signal Review Dispatch (weekly signal strengthening)
 
-**Trigger**: During S10 weekly readout, after GATE-BD-08 check completes (whether warning or clear).
+**Trigger**: During SIGNALS weekly readout, after GATE-BD-08 check completes (whether warning or clear).
 
-**Do NOT alter**: GATE-BD-08, the weekly-kpcs prompt handoff reference in `startup-loop/SKILL.md`, or any other S10 gate.
+**Do NOT alter**: GATE-BD-08, the weekly-kpcs prompt handoff reference in `startup-loop/SKILL.md`, or any other SIGNALS/S10 gate.
 
-**Directive**: Invoke `/lp-signal-review` for the current business to audit the run and emit a Signal Review artifact. This is advisory in v1 — it does not block S10 advance.
+**Directive**: Invoke `/lp-signal-review` for the current business to audit the run and emit a Signal Review artifact. This is advisory in v1 — it does not block SIGNALS advance.
 
 **Invocation**:
 
@@ -302,7 +302,7 @@ Where:
 
 **Output**: `docs/business-os/strategy/<BIZ>/signal-review-<YYYYMMDD>-<HHMM>-W<ISOweek>.md`
 
-**v1 posture (advisory)**: Signal Review is emitted for operator review. Findings are presented as Finding Briefs which the operator promotes to `/lp-do-fact-find` manually. This dispatch does NOT block S10 advance regardless of finding count or severity.
+**v1 posture (advisory)**: Signal Review is emitted for operator review. Findings are presented as Finding Briefs which the operator promotes to `/lp-do-fact-find` manually. This dispatch does NOT block SIGNALS advance regardless of finding count or severity.
 
 **GATE-S10-SIGNAL-01**: Reserved for v1.1 (artifact existence soft warning). Not active in v1.
 
@@ -460,10 +460,10 @@ Output path: `docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-
 
 ---
 
-### GATE-LOOP-GAP-03: Pre-S10 feedback loop audit
+### GATE-LOOP-GAP-03: Pre-SIGNALS feedback loop audit
 
-**Gate ID**: GATE-LOOP-GAP-03 (Soft — advisory, does not block S10 advance)
-**Trigger**: Before S10 becomes Active (S9B→S10 transition), when no `feedback-loop-audit-<YYYY-MM-DD>.md` exists for the current cycle's date.
+**Gate ID**: GATE-LOOP-GAP-03 (Soft — advisory, does not block SIGNALS/S10 advance)
+**Trigger**: Before SIGNALS becomes Active (legacy transition label `S9B→S10`), when no `feedback-loop-audit-<YYYY-MM-DD>.md` exists for the current cycle's date.
 
 **Check**:
 
@@ -483,9 +483,9 @@ Dispatch `/lp-do-fact-find` with:
 
 Output path: `docs/business-os/strategy/<BIZ>/feedback-loop-audit-<YYYY-MM-DD>.md`
 
-Present output summary to operator alongside the S10 weekly-kpcs prompt — this audit is the input context for the decision memo. Do NOT delay S10 advance if operator wishes to proceed.
+Present output summary to operator alongside the SIGNALS weekly-kpcs prompt — this audit is the input context for the decision memo. Do NOT delay SIGNALS advance if operator wishes to proceed.
 
-**Advisory message**: `GATE-LOOP-GAP-03: Feedback loop audit dispatched. Review feedback-loop-audit-<date>.md before completing the S10 KPCs memo — it lists which assumptions can now be updated from this cycle's actuals.`
+**Advisory message**: `GATE-LOOP-GAP-03: Feedback loop audit dispatched. Review feedback-loop-audit-<date>.md before completing the SIGNALS (legacy S10) KPCs memo — it lists which assumptions can now be updated from this cycle's actuals.`
 
 ---
 
@@ -494,12 +494,12 @@ Present output summary to operator alongside the S10 weekly-kpcs prompt — this
 For each stage, require appropriate sync actions:
 
 - `ASSESSMENT-09`: validate required ASSESSMENT precursor artifacts, then write/refresh `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md`.
-- `MEASURE-01/PRODUCT-01/MARKET-01..MARKET-06/S3/S10`: persist strategy/readiness artifacts under `docs/business-os/...` and update any `latest.user.md` pointers.
+- `MEASURE-01/PRODUCT-01/MARKET-01..MARKET-06/SIGNALS-01/SIGNALS`: persist strategy/readiness artifacts under `docs/business-os/...` and update any `latest.user.md` pointers.
 - `S5A`: no BOS sync (pure ranking, no side effects).
 - `S5B`: create/update ideas/cards via Business OS API (`/api/agent/ideas`, `/api/agent/cards`); commit manifest pointer.
-- `DO`: upsert stage docs and lane transitions via `/api/agent/stage-docs` and `/api/agent/cards`.
+- `DO`: filesystem-only. Advance is gated on artifact existence and plan status (see GATE-WEBSITE-DO-01). No BOS API calls required for DO stage progression.
 
-Never allow stage advance when BOS sync has failed.
+Never allow stage advance when BOS sync has failed (applies to non-DO stages; DO advance is filesystem-only and does not require BOS sync).
 
 ---
 
@@ -526,7 +526,7 @@ Example:
 ## Red Flags (invalid operation)
 
 1. Advancing a stage while required output is missing.
-2. Advancing a stage while required BOS sync action is incomplete.
+2. Advancing a non-DO stage while required BOS sync action is incomplete.
 3. Skipping MEASURE-01 (Agent-Setup) before downstream stages.
 4. Skipping MEASURE-02 (Results) before PRODUCT-01.
 5. Skipping PRODUCT-01 (Product from photo) before MARKET-01.

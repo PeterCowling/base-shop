@@ -146,10 +146,12 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
             <CatalogSyncPanel
               busy={consoleState.busy}
               syncOptions={consoleState.syncOptions}
+              syncReadiness={consoleState.syncReadiness}
               monoClassName={monoClassName}
               feedback={consoleState.actionFeedback.sync}
               syncOutput={consoleState.syncOutput}
               onSync={consoleState.handleSync}
+              onRefreshReadiness={consoleState.refreshSyncReadiness}
               onChangeSyncOptions={consoleState.setSyncOptions}
             />
           ) : null}

@@ -54,6 +54,10 @@ describe('OvernightIssuesPage', () => {
       'mailto:hostelbrikette@gmail.com',
     );
     expect(reportLink.getAttribute('href')).toContain('BRK123');
+    expect(
+      screen.getByRole('link', { name: 'overnightIssues.assistantCta' }),
+    ).toHaveAttribute('href', '/digital-assistant');
+    expect(screen.getByText('overnightIssues.priorityNotice')).toBeInTheDocument();
   });
 
   it('TC-02: renders load error when booking context is unavailable', () => {
@@ -66,5 +70,34 @@ describe('OvernightIssuesPage', () => {
     render(<OvernightIssuesPage />);
 
     expect(screen.getByText('overnightIssues.loadError')).toBeInTheDocument();
+  });
+
+  it('TC-03: renders loading spinner while booking context loads', () => {
+    mockUseUnifiedBookingData.mockReturnValue({
+      occupantData: null,
+      isLoading: true,
+      error: null,
+    });
+
+    const { container } = render(<OvernightIssuesPage />);
+
+    expect(container.querySelector('.animate-spin')).toBeInTheDocument();
+  });
+
+  it('TC-04: uses fallback email content when booking reference is unavailable', () => {
+    mockUseUnifiedBookingData.mockReturnValue({
+      occupantData: {},
+      isLoading: false,
+      error: null,
+    });
+
+    render(<OvernightIssuesPage />);
+
+    const reportLink = screen.getByRole('link', {
+      name: 'overnightIssues.emailCta',
+    });
+    const href = reportLink.getAttribute('href') ?? '';
+    expect(href).toContain('subject=Overnight+issue+-+Prime+app');
+    expect(href).toContain('Booking%3A+Unknown');
   });
 });

@@ -1,6 +1,7 @@
 /* i18n-exempt file -- I18N-123 try-on canvas preview helpers; errors are developer diagnostics, not user-facing copy [ttl=2026-01-31] */
 "use client";
 
+import { clamp } from "@acme/lib";
 import { renderShadow } from "@acme/lib/tryon/fallback/shadow";
 
 type Overlay = { x: number; y: number; scale: number; rot: number };
@@ -159,5 +160,3 @@ async function loadImage(src: string): Promise<HTMLImageElement> {
   INFLIGHT.set(key, p);
   return p;
 }
-
-function clamp(v: number, lo: number, hi: number) { return Math.max(lo, Math.min(hi, v)); }

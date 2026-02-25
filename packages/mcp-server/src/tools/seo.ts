@@ -1,3 +1,5 @@
+import { mean as libMean } from "@acme/lib";
+
 import {
   errorResult,
   formatError,
@@ -178,7 +180,8 @@ export async function handleSeoTool(name: string, args: unknown) {
 
         const latest = sorted[0];
         const scores = sorted.map((a) => a.score);
-        const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+        const avgScoreResult = libMean(scores);
+        const avgScore = Number.isNaN(avgScoreResult) ? 0 : avgScoreResult;
 
         // Calculate trend
         let trend: "improving" | "declining" | "stable" = "stable";
@@ -186,10 +189,10 @@ export async function handleSeoTool(name: string, args: unknown) {
           const recent = sorted.slice(0, Math.min(3, sorted.length));
           const older = sorted.slice(Math.min(3, sorted.length));
           if (older.length > 0) {
-            const recentAvg =
-              recent.reduce((a, b) => a + b.score, 0) / recent.length;
-            const olderAvg =
-              older.reduce((a, b) => a + b.score, 0) / older.length;
+            const recentAvgResult = libMean(recent.map((entry) => entry.score));
+            const olderAvgResult = libMean(older.map((entry) => entry.score));
+            const recentAvg = Number.isNaN(recentAvgResult) ? 0 : recentAvgResult;
+            const olderAvg = Number.isNaN(olderAvgResult) ? 0 : olderAvgResult;
             if (recentAvg > olderAvg + 5) trend = "improving";
             else if (recentAvg < olderAvg - 5) trend = "declining";
           }

@@ -29,8 +29,10 @@ import noRawZindex from "./rules/no-raw-zindex.js";
 import noTransitionAll from "./rules/no-transition-all.js";
 import noUnsafeViewportUnits from "./rules/no-unsafe-viewport-units.js";
 import requireAspectRatioOnMedia from "./rules/require-aspect-ratio-on-media.js";
+import requireBgForegroundPair from "./rules/require-bg-foreground-pair.js";
 import requireBreakpointModifiers from "./rules/require-breakpoint-modifiers.js";
 import requireContentBleedGuards from "./rules/require-content-bleed-guards.js";
+import requireContrastExemptJustification from "./rules/require-contrast-exempt-justification.js";
 import requireDisableJustification from "./rules/require-disable-justification.js";
 import requireMinW0InFlex from "./rules/require-min-w-0-in-flex.js";
 import requireSectionPadding from "./rules/require-section-padding.js";
@@ -64,6 +66,7 @@ export const rules = {
   "min-tap-size": minTapSize,
   "no-misused-sr-only": noMisusedSrOnly,
   "require-aspect-ratio-on-media": requireAspectRatioOnMedia,
+  "require-bg-foreground-pair": requireBgForegroundPair,
   "no-naked-img": noNakedImg,
   "no-overflow-hazards": noOverflowHazards,
   "absolute-parent-guard": absoluteParentGuard,
@@ -71,6 +74,7 @@ export const rules = {
   "no-unsafe-viewport-units": noUnsafeViewportUnits,
   "require-disable-justification": requireDisableJustification,
   "require-content-bleed-guards": requireContentBleedGuards,
+  "require-contrast-exempt-justification": requireContrastExemptJustification,
   "require-section-padding": requireSectionPadding,
 };
 

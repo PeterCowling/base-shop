@@ -10,10 +10,8 @@ import {
   useState,
 } from "react";
 
-import {
-  ReceptionButton as Button,
-  ReceptionInput,
-} from "@acme/ui/operations";
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
 
 import type { AutoCompleteProps } from "../../../types/component/autoComplete";
 
@@ -171,12 +169,12 @@ function AutoComplete({
       {label && (
         <label
           htmlFor={id}
-          className="block font-semibold text-foreground mb-1 dark:text-darkAccentGreen"
+          className="block font-semibold text-foreground mb-1"
         >
           {label}
         </label>
       )}
-      <ReceptionInput
+      <Input compatibilityMode="no-wrapper"
         ref={inputRef}
         id={id}
         type="text"
@@ -187,23 +185,26 @@ function AutoComplete({
         placeholder={placeholder}
         className={
           inputClassName ||
-          "w-full border border-border-2 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          "w-full border border-border-2 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-ring"
         }
       />
 
       {isOpen && filteredSuggestions.length > 0 && (
         <ul
-          className="absolute left-0 right-0 max-h-52 overflow-y-auto border border-border-2 bg-surface list-none p-0 m-0 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="absolute left-0 right-0 max-h-52 overflow-y-auto border border-border-2 bg-surface list-none p-0 m-0"
           style={dropdownStyle}
         >
           {filteredSuggestions.map((suggestion) => (
             <li key={suggestion}>
               <Button
                 type="button"
+                color="default"
+                tone="ghost"
+                size="sm"
                 data-suggestion-button="true"
                 onClick={createSuggestionClickHandler(suggestion)}
                 onKeyDown={createSuggestionKeyDownHandler(suggestion)}
-                className="w-full text-start py-2 px-3 hover:bg-surface-2 focus:bg-surface-2"
+                className="w-full justify-start"
               >
                 {suggestion}
               </Button>

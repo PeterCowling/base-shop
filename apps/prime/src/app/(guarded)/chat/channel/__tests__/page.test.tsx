@@ -10,8 +10,6 @@ import { useSearchParams } from 'next/navigation';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { readGuestSession } from '@/lib/auth/guestSessionGuard';
-
 import ChannelPage from '../page';
 
 // Mock dependencies
@@ -29,9 +27,26 @@ jest.mock('@/contexts/messaging/ChatProvider', () => ({
   useChat: jest.fn(),
 }));
 
+let mockProfiles: Record<string, { bookingId: string; chatOptIn: boolean; blockedUsers: string[] }> = {};
+let mockProfilesLoading = false;
+const mockCanSendDirectMessage = jest.fn();
+
+jest.mock('@/hooks/data/useGuestProfiles', () => ({
+  useGuestProfiles: () => ({
+    profiles: mockProfiles,
+    isLoading: mockProfilesLoading,
+    error: null,
+  }),
+}));
+
+jest.mock('@/lib/chat/messagingPolicy', () => ({
+  canSendDirectMessage: (...args: unknown[]) => mockCanSendDirectMessage(...args),
+}));
+
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string, fallback?: string) => fallback ?? key,
+    t: (key: string, fallbackOrOpts?: string | Record<string, unknown>) =>
+      typeof fallbackOrOpts === 'string' ? fallbackOrOpts : key,
   }),
 }));
 
@@ -92,6 +107,10 @@ describe('Channel Page (TASK-45)', () => {
       bookingId: 'booking123',
       verifiedAt: null,
     });
+
+    mockProfiles = {};
+    mockProfilesLoading = false;
+    mockCanSendDirectMessage.mockReturnValue(true);
 
     mockRef.mockImplementation((_db: unknown, path: string) => ({
       toString: () => path,
@@ -248,6 +267,134 @@ describe('Channel Page (TASK-45)', () => {
       });
 
       // Should not show composer
+      expect(screen.queryByPlaceholderText(/type.*message/i)).not.toBeInTheDocument();
+    });
+  });
+
+  describe('TC-04: Direct guest channel behavior', () => {
+    it('uses deterministic direct channel ID and sends messages when policy allows', async () => {
+      const directChannelId = 'dm_guest_abc_guest_xyz';
+      const mockSendMessage = jest.fn().mockResolvedValue(undefined);
+      const mockSetCurrentChannelId = jest.fn();
+
+      (useSearchParams as jest.Mock).mockReturnValue({
+        get: (param: string) => {
+          if (param === 'id') return 'tampered-channel-id';
+          if (param === 'mode') return 'direct';
+          if (param === 'peer') return 'guest_xyz';
+          return null;
+        },
+      });
+
+      mockProfiles = {
+        guest_abc: { bookingId: 'booking123', chatOptIn: true, blockedUsers: [] },
+        guest_xyz: { bookingId: 'booking123', chatOptIn: true, blockedUsers: [] },
+      };
+      mockCanSendDirectMessage.mockReturnValue(true);
+
+      (useChat as jest.Mock).mockReturnValue({
+        messages: { [directChannelId]: [] },
+        activities: {},
+        currentChannelId: directChannelId,
+        setCurrentChannelId: mockSetCurrentChannelId,
+        loadOlderMessages: jest.fn(),
+        loadMoreActivities: jest.fn(),
+        hasMoreActivities: false,
+        sendMessage: mockSendMessage,
+      });
+
+      const user = userEvent.setup();
+      render(<ChannelPage />);
+
+      const input = await screen.findByPlaceholderText(/type.*message/i);
+      await user.type(input, 'Direct hello');
+      await user.click(screen.getByRole('button', { name: /send/i }));
+
+      await waitFor(() => {
+        expect(mockSetCurrentChannelId).toHaveBeenCalledWith(directChannelId);
+        expect(mockSendMessage).toHaveBeenCalledWith(directChannelId, 'Direct hello', {
+          directMessage: {
+            bookingId: 'booking123',
+            peerUuid: 'guest_xyz',
+          },
+        });
+      });
+    });
+
+    it('shows blocked state when direct policy denies conversation', async () => {
+      (useSearchParams as jest.Mock).mockReturnValue({
+        get: (param: string) => {
+          if (param === 'id') return 'dm_guest_abc_guest_xyz';
+          if (param === 'mode') return 'direct';
+          if (param === 'peer') return 'guest_xyz';
+          return null;
+        },
+      });
+
+      mockProfiles = {
+        guest_abc: { bookingId: 'booking123', chatOptIn: true, blockedUsers: [] },
+        guest_xyz: { bookingId: 'booking123', chatOptIn: false, blockedUsers: [] },
+      };
+      mockCanSendDirectMessage.mockReturnValue(false);
+
+      (useChat as jest.Mock).mockReturnValue({
+        messages: { dm_guest_abc_guest_xyz: [] },
+        activities: {},
+        currentChannelId: 'dm_guest_abc_guest_xyz',
+        setCurrentChannelId: jest.fn(),
+        loadOlderMessages: jest.fn(),
+        loadMoreActivities: jest.fn(),
+        hasMoreActivities: false,
+        sendMessage: jest.fn(),
+      });
+
+      render(<ChannelPage />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/direct messaging is unavailable for this guest/i),
+        ).toBeInTheDocument();
+      });
+
+      expect(screen.queryByPlaceholderText(/type.*message/i)).not.toBeInTheDocument();
+    });
+
+    it('denies direct mode when peer is outside the current booking', async () => {
+      (useSearchParams as jest.Mock).mockReturnValue({
+        get: (param: string) => {
+          if (param === 'id') return 'dm_guest_abc_guest_xyz';
+          if (param === 'mode') return 'direct';
+          if (param === 'peer') return 'guest_xyz';
+          return null;
+        },
+      });
+
+      mockProfiles = {
+        guest_abc: { bookingId: 'booking123', chatOptIn: true, blockedUsers: [] },
+        guest_xyz: { bookingId: 'booking999', chatOptIn: true, blockedUsers: [] },
+      };
+      mockCanSendDirectMessage.mockReturnValue(true);
+
+      (useChat as jest.Mock).mockReturnValue({
+        messages: { dm_guest_abc_guest_xyz: [] },
+        activities: {},
+        currentChannelId: 'dm_guest_abc_guest_xyz',
+        setCurrentChannelId: jest.fn(),
+        loadOlderMessages: jest.fn(),
+        loadMoreActivities: jest.fn(),
+        hasMoreActivities: false,
+        sendMessage: jest.fn(),
+      });
+
+      render(<ChannelPage />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/direct messaging is unavailable for this guest/i),
+        ).toBeInTheDocument();
+      });
+
+      expect(mockCanSendDirectMessage).not.toHaveBeenCalled();
       expect(screen.queryByPlaceholderText(/type.*message/i)).not.toBeInTheDocument();
     });
   });

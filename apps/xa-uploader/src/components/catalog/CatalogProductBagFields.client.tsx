@@ -2,7 +2,7 @@
 
 /* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy gate form pending design token refactor */
 
-import type { CatalogProductDraftInput } from "../../lib/catalogAdminSchema";
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 export function CatalogProductBagFields({

@@ -1,4 +1,4 @@
-import { getContrast } from "../../../cms/ColorInput";
+import { getContrast } from "@acme/ui/components/cms/ColorInput";
 
 function hslVar(name: string): string {
   const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();

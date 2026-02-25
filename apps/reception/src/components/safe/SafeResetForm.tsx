@@ -50,7 +50,7 @@ export const SafeResetForm = memo(function SafeResetForm({
       title="Reset Safe"
       borderClass="border-info-main"
       textClass="text-info-main"
-      confirmClass="bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+      confirmColor="primary"
       confirmLabel="Go"
       showExpected={false}
       showKeycards

@@ -4,7 +4,8 @@ import * as React from "react";
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import type { CatalogProductDraftInput } from "../../../lib/catalogAdminSchema";
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
+
 import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
 import { useCatalogConsole } from "../useCatalogConsole.client";
 
@@ -80,6 +81,7 @@ function renderHarness() {
           sync
         </button>
         <div data-cy="busy">{state.busy ? "busy" : "idle"}</div>
+        <div data-cy="sync-ready">{state.syncReadiness.ready ? "yes" : "no"}</div>
         <div data-cy="login-feedback">
           {state.actionFeedback.login
             ? `${state.actionFeedback.login.kind}:${state.actionFeedback.login.message}`
@@ -134,6 +136,9 @@ describe("useCatalogConsole scoped action feedback", () => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: false });
       if (url === "/api/uploader/login") return jsonResponse({ ok: false }, { status: 401 });
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+      }
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
@@ -161,6 +166,9 @@ describe("useCatalogConsole scoped action feedback", () => {
           return jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-1" });
         }
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
       }
       if (url.startsWith("/api/catalog/products/studio-jacket?storefront=") && init?.method === "DELETE") {
         return jsonResponse({ ok: true });
@@ -205,7 +213,10 @@ describe("useCatalogConsole scoped action feedback", () => {
         }
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
       }
-      if (url === "/api/catalog/sync") {
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+      }
+      if (url === "/api/catalog/sync" && init?.method === "POST") {
         return jsonResponse({
           ok: true,
           logs: {
@@ -236,6 +247,9 @@ describe("useCatalogConsole scoped action feedback", () => {
     });
     expect(screen.getByTestId("draft-feedback")).toHaveTextContent("success:Saved product details.");
 
+    await waitFor(() => {
+      expect(screen.getByTestId("sync-ready")).toHaveTextContent("yes");
+    });
     await clickButton("sync");
 
     await waitFor(() => {
@@ -261,6 +275,9 @@ describe("useCatalogConsole scoped action feedback", () => {
         return Promise.resolve(
           jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } }),
         );
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return Promise.resolve(jsonResponse({ ok: true, ready: true, missingScripts: [] }));
       }
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;

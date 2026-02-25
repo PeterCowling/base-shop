@@ -1,7 +1,7 @@
 /**
- * S10 Weekly Routing — Compatibility Regression Checks
+ * SIGNALS Weekly Routing — Compatibility Regression Checks
  *
- * TC-06-01: Stage contract stability — S10 stage order/ID/skill unchanged
+ * TC-06-01: Stage contract stability — SIGNALS stage order/ID/skill unchanged
  * TC-06-02: Authority boundary — prompt authority references preserved;
  *           /lp-weekly dispatch present with Phase 0 fallback; no conflicting authority text
  *
@@ -17,46 +17,64 @@ const REPO_ROOT = path.resolve(__dirname, "../../../../");
 
 // ── TC-06-01: Stage contract stability ───────────────────────────────────────
 
-describe("TC-06-01: S10 stage contract stability (loop-spec.yaml)", () => {
+describe("TC-06-01: SIGNALS stage contract stability (loop-spec.yaml)", () => {
   const loopSpecPath = path.join(REPO_ROOT, "docs/business-os/startup-loop/loop-spec.yaml");
+  const signalsStageBlock = (raw: string): string | null => {
+    const lines = raw.split("\n");
+    const start = lines.findIndex((line) => line.trim() === "- id: SIGNALS");
+    if (start === -1) {
+      return null;
+    }
+
+    let end = lines.length;
+    for (let i = start + 1; i < lines.length; i += 1) {
+      if (lines[i].startsWith("  - id: ")) {
+        end = i;
+        break;
+      }
+      if (lines[i].startsWith("dag:")) {
+        end = i;
+        break;
+      }
+    }
+
+    return lines.slice(start, end).join("\n");
+  };
 
   it("loop-spec.yaml is readable", () => {
     expect(() => fs.readFileSync(loopSpecPath, "utf8")).not.toThrow();
   });
 
-  it("S10 stage ID is present and unchanged", () => {
+  it("SIGNALS stage ID is present and unchanged", () => {
     const raw = fs.readFileSync(loopSpecPath, "utf8");
-    expect(raw).toContain("id: S10");
+    expect(raw).toContain("id: SIGNALS");
   });
 
-  it("S10 skill remains /lp-experiment (no Phase 2 remap applied)", () => {
+  it("SIGNALS skill remains /lp-experiment (no Phase 2 remap applied)", () => {
     const raw = fs.readFileSync(loopSpecPath, "utf8");
-    // Extract the S10 block to verify its specific skill field
-    const s10BlockMatch = raw.match(/id: S10[\s\S]*?(?=\n  - id:|\ndag:|$)/);
-    expect(s10BlockMatch).not.toBeNull();
-    const s10Block = s10BlockMatch![0];
-    expect(s10Block).toContain("skill: /lp-experiment");
+    const block = signalsStageBlock(raw);
+    expect(block).not.toBeNull();
+    expect(block).toContain("skill: /lp-experiment");
   });
 
-  it("S10 prompt_template remains weekly-kpcs-decision-prompt.md", () => {
+  it("SIGNALS prompt_template remains weekly-kpcs-decision-prompt.md", () => {
     const raw = fs.readFileSync(loopSpecPath, "utf8");
-    const s10BlockMatch = raw.match(/id: S10[\s\S]*?(?=\n  - id:|\ndag:|$)/);
-    expect(s10BlockMatch).not.toBeNull();
-    const s10Block = s10BlockMatch![0];
-    expect(s10Block).toContain("prompt_template: weekly-kpcs-decision-prompt.md");
+    const block = signalsStageBlock(raw);
+    expect(block).not.toBeNull();
+    expect(block).toContain("prompt_template: weekly-kpcs-decision-prompt.md");
   });
 
-  it("S9B→S10 DAG edge is preserved", () => {
+  it("S9B→SIGNALS DAG edge is preserved", () => {
     const raw = fs.readFileSync(loopSpecPath, "utf8");
-    // DAG edge is represented as [S9B, S10] in the edges list
-    expect(raw).toContain("[S9B, S10]");
+    // DAG edge is represented as [S9B, SIGNALS] in the edges list
+    expect(raw).toContain("[S9B, SIGNALS]");
   });
 
-  it("total stage count is 66 (matches current loop-spec contract)", () => {
+  it("total stage count is 69 (matches current loop-spec contract)", () => {
     const raw = fs.readFileSync(loopSpecPath, "utf8");
-    const idMatches = raw.match(/^\s+- id: [A-Z]\w+/gm);
+    const idMatches = raw.match(/^\s+- id: [A-Z][A-Z0-9-]*/gm);
     expect(idMatches).not.toBeNull();
-    expect(idMatches!.length).toBe(66); // Includes ASSESSMENT, MEASURE, PRODUCT, PRODUCTS (container+7), LOGISTICS (container+7), MARKET (container+11), SELL (container+8), IDEAS (container+3), and downstream stages
+    expect(idMatches!.length).toBe(69); // Includes ASSESSMENT, IDEAS, MEASURE, PRODUCT, PRODUCTS, LOGISTICS, MARKET, SELL, WEBSITE, and downstream stages.
   });
 });
 
@@ -70,7 +88,7 @@ describe("TC-06-02: authority boundary (cmd-advance.md + startup-loop SKILL.md)"
     expect(() => fs.readFileSync(cmdAdvancePath, "utf8")).not.toThrow();
   });
 
-  it("cmd-advance.md references /lp-weekly as Phase 1 S10 dispatch", () => {
+  it("cmd-advance.md references /lp-weekly as Phase 1 SIGNALS dispatch", () => {
     const raw = fs.readFileSync(cmdAdvancePath, "utf8");
     expect(raw).toContain("/lp-weekly");
   });
@@ -93,20 +111,20 @@ describe("TC-06-02: authority boundary (cmd-advance.md + startup-loop SKILL.md)"
     expect(raw).toContain("weekly-kpcs");
   });
 
-  it("SKILL.md still references /lp-experiment for S10 (sub-flow not removed)", () => {
+  it("SKILL.md still references /lp-experiment for SIGNALS (sub-flow not removed)", () => {
     const raw = fs.readFileSync(skillPath, "utf8");
     expect(raw).toContain("/lp-experiment");
   });
 
-  it("SKILL.md references /lp-weekly as Phase 1 default for S10", () => {
+  it("SKILL.md references /lp-weekly as Phase 1 default for SIGNALS", () => {
     const raw = fs.readFileSync(skillPath, "utf8");
     expect(raw).toContain("/lp-weekly");
   });
 
-  it("S10 row in SKILL.md includes both /lp-experiment and /lp-weekly (dual reference)", () => {
+  it("SIGNALS row in SKILL.md includes both /lp-experiment and /lp-weekly (dual reference)", () => {
     const raw = fs.readFileSync(skillPath, "utf8");
-    // Match the full S10 table row to end of line (no newlines in a markdown table row)
-    const s10RowMatch = raw.match(/\|\s*S10\s*\|[^\n]*/);
+    // Match the full SIGNALS table row to end of line (no newlines in a markdown table row)
+    const s10RowMatch = raw.match(/\|\s*SIGNALS\s*\|[^\n]*/);
     expect(s10RowMatch).not.toBeNull();
     const s10Row = s10RowMatch![0];
     expect(s10Row).toContain("lp-experiment");

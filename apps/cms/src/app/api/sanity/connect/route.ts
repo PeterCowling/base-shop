@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { saveSanityConfig } from "@cms/actions/saveSanityConfig";
 
-import { validateShopName } from "@acme/lib";
+import { validateShopName } from "@acme/lib/validateShopName";
 
 interface Body {
   shopId?: string;
@@ -42,6 +41,7 @@ export async function POST(req: NextRequest) {
   if (body.enableEditorial) formData.set("enableEditorial", "on");
   if (body.promoteSchedule) formData.set("promoteSchedule", body.promoteSchedule);
 
+  const { saveSanityConfig } = await import("@cms/actions/saveSanityConfig");
   const result = await saveSanityConfig(shopId, formData);
   return NextResponse.json(result, { status: result.error ? 400 : 200 });
 }

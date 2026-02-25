@@ -66,10 +66,8 @@ describe("SalesScreen", () => {
     expect(screen.getByText("1")).toBeInTheDocument();
     expect(screen.getByText("2")).toBeInTheDocument();
     expect(container.firstChild).toHaveClass(
-      "dark:bg-darkBg",
-      "dark:from-darkBg",
-      "dark:via-darkBg",
-      "dark:to-darkBg"
+      "min-h-screen",
+      "font-body"
     );
   });
 });
@@ -102,8 +100,8 @@ describe("Ticket", () => {
     expect(screen.getByText("Water")).toBeInTheDocument();
     expect(screen.getByText("2 × Beer")).toBeInTheDocument();
     expect(container.querySelector("article")).toHaveClass(
-      "dark:bg-darkSurface",
-      "dark:border-darkSurface"
+      "bg-surface/90",
+      "border-border-2"
     );
   });
 });

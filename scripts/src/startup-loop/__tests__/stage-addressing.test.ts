@@ -43,7 +43,15 @@ describe("resolveById (--stage <ID>)", () => {
     const result = resolveById("  S3  ");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S3");
+      expect(result.stageId).toBe("SIGNALS-01");
+    }
+  });
+
+  it("VC-04: legacy S10 ID resolves to map-canonical SIGNALS", () => {
+    const result = resolveById("S10");
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.stageId).toBe("SIGNALS");
     }
   });
 
@@ -97,11 +105,11 @@ describe("resolveByAlias (--stage-alias <slug>)", () => {
     }
   });
 
-  it("VC-01: valid alias 'weekly-decision' resolves to S10", () => {
+  it("VC-01: valid alias 'weekly-decision' resolves to SIGNALS", () => {
     const result = resolveByAlias("weekly-decision");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S10");
+      expect(result.stageId).toBe("SIGNALS");
     }
   });
 
@@ -160,16 +168,16 @@ describe("resolveByLabel (--stage-label <text>)", () => {
     const result = resolveByLabel("Forecast");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S3");
+      expect(result.stageId).toBe("SIGNALS-01");
       expect(result.mode).toBe("label");
     }
   });
 
   it("VC-03: exact label_operator_long resolves correctly", () => {
-    const result = resolveByLabel("S3 — Forecast");
+    const result = resolveByLabel("SIGNALS-01 — Forecast");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S3");
+      expect(result.stageId).toBe("SIGNALS-01");
     }
   });
 
@@ -220,11 +228,11 @@ describe("resolveByLabel (--stage-label <text>)", () => {
     }
   });
 
-  it("resolves 'Weekly decision' (S10 short label)", () => {
-    const result = resolveByLabel("Weekly decision");
+  it("resolves 'Signals' (SIGNALS short label)", () => {
+    const result = resolveByLabel("Signals");
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.stageId).toBe("S10");
+      expect(result.stageId).toBe("SIGNALS");
     }
   });
 });
@@ -240,7 +248,7 @@ describe("resolveStageId (entry point)", () => {
     const r = resolveStageId("weekly", "alias");
     expect(r.ok).toBe(true);
     if (r.ok) {
-      expect(r.stageId).toBe("S10");
+      expect(r.stageId).toBe("SIGNALS");
     }
   });
 

@@ -11,7 +11,17 @@ import { type Product,ProductCarousel } from "../ProductCarousel";
 // Avoid TDZ issues with jest.mock hoisting by requiring inside the factory
 jest.mock(
   "@acme/platform-core/contexts/CurrencyContext",
-  () => require("~test/__mocks__/currencyContextMock.tsx")
+  () => {
+    const React = require("react");
+    const Ctx = React.createContext(["EUR", () => {}]);
+    return {
+      CurrencyProvider: ({ children }: { children: React.ReactNode }) => {
+        const state = React.useState("EUR");
+        return React.createElement(Ctx.Provider, { value: state }, children);
+      },
+      useCurrency: () => React.useContext(Ctx),
+    };
+  }
 );
 
 jest.mock("@acme/platform-core/contexts/CartContext", () => ({

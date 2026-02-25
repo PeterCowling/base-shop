@@ -15,6 +15,9 @@ import * as os from "node:os";
 import * as path from "node:path";
 
 import { generateDiagnosisSnapshot } from "../diagnosis-snapshot";
+import { FORECAST_STAGE_ID } from "../stage-id-compat";
+
+const FORECAST_CVR_CONSTRAINT_KEY = `${FORECAST_STAGE_ID}/cvr`;
 
 describe("BL-04: Diagnosis Snapshot Generation", () => {
   let tempDir: string;
@@ -127,7 +130,7 @@ describe("BL-04: Diagnosis Snapshot Generation", () => {
         timestamp: "2026-02-06T12:30:00Z",
         diagnosis_status: "ok",
         identified_constraint: {
-          constraint_key: "S3/cvr",
+          constraint_key: FORECAST_CVR_CONSTRAINT_KEY,
           constraint_type: "metric",
           stage: "S3",
           metric: "cvr",
@@ -165,13 +168,13 @@ describe("BL-04: Diagnosis Snapshot Generation", () => {
 
     // Verify identified constraint
     expect(snapshot.identified_constraint).not.toBeNull();
-    expect(snapshot.identified_constraint?.constraint_key).toBe("S3/cvr");
+    expect(snapshot.identified_constraint?.constraint_key).toBe(FORECAST_CVR_CONSTRAINT_KEY);
 
     // Verify comparison to prior run
     expect(snapshot.comparison_to_prior_run).not.toBeNull();
     expect(snapshot.comparison_to_prior_run?.prior_run_id).toBe(priorRunId);
     expect(snapshot.comparison_to_prior_run?.constraint_changed).toBe(false);
-    expect(snapshot.comparison_to_prior_run?.prior_constraint_key).toBe("S3/cvr");
+    expect(snapshot.comparison_to_prior_run?.prior_constraint_key).toBe(FORECAST_CVR_CONSTRAINT_KEY);
     expect(snapshot.comparison_to_prior_run?.metric_trends).toBeDefined();
     expect(snapshot.comparison_to_prior_run?.metric_trends.cvr).toBe("worsening");
 
@@ -247,7 +250,7 @@ describe("BL-04: Diagnosis Snapshot Generation", () => {
     expect(snapshot.comparison_to_prior_run).not.toBeNull();
     expect(snapshot.comparison_to_prior_run?.constraint_changed).toBe(true);
     expect(snapshot.comparison_to_prior_run?.prior_constraint_key).toBe("S6B/cac");
-    expect(snapshot.identified_constraint?.constraint_key).toBe("S3/cvr");
+    expect(snapshot.identified_constraint?.constraint_key).toBe(FORECAST_CVR_CONSTRAINT_KEY);
   });
 
   // TC-03: First run — no prior → comparison_to_prior_run=null
@@ -301,7 +304,7 @@ describe("BL-04: Diagnosis Snapshot Generation", () => {
         timestamp: "2026-01-30T09:30:00Z",
         diagnosis_status: "ok",
         identified_constraint: {
-          constraint_key: "S3/cvr",
+          constraint_key: FORECAST_CVR_CONSTRAINT_KEY,
           constraint_type: "metric",
           stage: "S3",
           metric: "cvr",
@@ -333,7 +336,7 @@ describe("BL-04: Diagnosis Snapshot Generation", () => {
         timestamp: "2026-02-06T12:30:00Z",
         diagnosis_status: "ok",
         identified_constraint: {
-          constraint_key: "S3/cvr",
+          constraint_key: FORECAST_CVR_CONSTRAINT_KEY,
           constraint_type: "metric",
           stage: "S3",
           metric: "cvr",
@@ -425,7 +428,7 @@ describe("BL-04: Diagnosis Snapshot Generation", () => {
         timestamp: "2026-01-30T10:45:00Z",
         diagnosis_status: "ok",
         identified_constraint: {
-          constraint_key: "S3/cvr",
+          constraint_key: FORECAST_CVR_CONSTRAINT_KEY,
           constraint_type: "metric",
           stage: "S3",
           metric: "cvr",

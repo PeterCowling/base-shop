@@ -4,7 +4,7 @@
 
 import type { ShopSettings } from "@acme/types";
 
-import { generateSeo as serviceGenerateSeo } from "../services/shops/seoGenerateService";
+import { generateSeo as serviceGenerateSeoFromPrompt } from "../services/shops/seoGenerateService";
 import {
   revertSeo as serviceRevertSeo,
   updateSeo as serviceUpdateSeo,
@@ -72,6 +72,7 @@ export async function updateAiCatalog(shop: string, formData: FormData) {
   return serviceUpdateAiCatalog(shop, formData);
 }
 
+// Backward-compatible action exports used by existing tests/routes.
 export async function updateShop(shop: string, formData: FormData) {
   return serviceUpdateShop(shop, formData);
 }
@@ -84,10 +85,11 @@ export async function updateSeo(shop: string, formData: FormData) {
   return serviceUpdateSeo(shop, formData);
 }
 
-export async function revertSeo(shop: string, timestamp: string) {
-  return serviceRevertSeo(shop, timestamp);
+export async function generateSeo(shop: string, formData: FormData) {
+  // Prefer dedicated generate service while preserving legacy action surface.
+  return serviceGenerateSeoFromPrompt(shop, formData);
 }
 
-export async function generateSeo(shop: string, formData: FormData) {
-  return serviceGenerateSeo(shop, formData);
+export async function revertSeo(shop: string, timestamp: string) {
+  return serviceRevertSeo(shop, timestamp);
 }

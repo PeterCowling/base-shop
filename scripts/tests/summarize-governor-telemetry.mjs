@@ -3,6 +3,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { mean as libMean, percentile as libPercentile } from "@acme/lib";
+
 function fail(message) {
   process.stderr.write(`ERROR: ${message}\n`);
   process.exit(2);
@@ -94,18 +96,23 @@ function percentile(values, p) {
   if (values.length === 0) {
     return 0;
   }
-  const sorted = [...values].sort((a, b) => a - b);
-  const rank = Math.ceil((p / 100) * sorted.length) - 1;
-  const index = Math.min(Math.max(rank, 0), sorted.length - 1);
-  return sorted[index];
+  try {
+    const result = libPercentile(values, p);
+    return Number.isFinite(result) ? result : 0;
+  } catch {
+    return 0;
+  }
 }
 
 function average(values) {
   if (values.length === 0) {
     return 0;
   }
-  const total = values.reduce((sum, value) => sum + value, 0);
-  return Number((total / values.length).toFixed(2));
+  const result = libMean(values);
+  if (!Number.isFinite(result)) {
+    return 0;
+  }
+  return Number(result.toFixed(2));
 }
 
 function parseEvents(eventsFile) {

@@ -67,4 +67,14 @@ if (!disableCoverageThreshold) {
   };
 }
 
+// During cms-ui -> ui consolidation, page-builder/media/blocks/marketing suites
+// are maintained in @acme/ui and are not authoritative in this package.
+config.testPathIgnorePatterns = [
+  ...(config.testPathIgnorePatterns || []),
+  "<rootDir>/src/page-builder/",
+  "<rootDir>/src/blocks/",
+  "<rootDir>/src/media/",
+  "<rootDir>/src/marketing/",
+];
+
 module.exports = config;

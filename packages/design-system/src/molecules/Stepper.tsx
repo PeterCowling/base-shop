@@ -203,15 +203,23 @@ function StepperStepLayout({
         />
         {orientation === "horizontal" && !isLastStep ? (
           <div
-            className={cn("h-[2px] flex-1 transition-colors", isCompleted ? "bg-primary" : "bg-muted")}
+            className={cn(
+              "h-[2px] flex-1 transition-colors",
+              isCompleted ? "bg-primary" : "bg-muted"
+            )}
             aria-hidden="true"
+            data-ds-contrast-exempt
           />
         ) : null}
       </div>
       {orientation === "vertical" && !isLastStep ? (
         <div
-          className={cn("w-[2px] h-full ml-4 transition-colors", isCompleted ? "bg-primary" : "bg-muted")}
+          className={cn(
+            "w-[2px] h-full ml-4 transition-colors",
+            isCompleted ? "bg-primary" : "bg-muted"
+          )}
           aria-hidden="true"
+          data-ds-contrast-exempt
         />
       ) : null}
     </li>

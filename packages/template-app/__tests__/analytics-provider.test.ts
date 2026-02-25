@@ -119,9 +119,10 @@ describe("analytics provider resolution", () => {
     await trackEvent(shop, { type: "ai_crawl" });
     const aggPath = path.join("/data", shop, "analytics-aggregates.json");
     const agg = JSON.parse(files.get(aggPath)!);
-    expect(agg.page_view["2024-01-01"]).toBe(1);
-    expect(agg.order["2024-01-01"]).toEqual({ count: 1, amount: 5 });
-    expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(1);
-    expect(agg.ai_crawl["2024-01-01"]).toBe(1);
+    const day = new Date().toISOString().slice(0, 10);
+    expect(agg.page_view[day]).toBe(1);
+    expect(agg.order[day]).toEqual({ count: 1, amount: 5 });
+    expect(agg.discount_redeemed[day].SAVE).toBe(1);
+    expect(agg.ai_crawl[day]).toBe(1);
   });
 });

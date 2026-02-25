@@ -70,7 +70,7 @@ export default function DateSelector({
             ${
               isSelected
                 ? "bg-primary-main text-primary-fg border-primary-main"
-                : "bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface dark:hover:bg-darkSurface/70"
+                : "bg-surface text-foreground border-border-2 hover:bg-surface-2"
             }
           `}
           onClick={() => handleQuickSelect(day)}
@@ -183,7 +183,7 @@ export default function DateSelector({
                   }
                 : {})}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded dark:bg-darkSurface dark:text-darkAccentGreen`,
+                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded`,
                 /* eslint-disable ds/no-raw-tailwind-color -- calendar day-picker accent styling (amber-500); no semantic token equivalent [REC-09] */
                 today: "border-amber-500",
                 selected: "bg-amber-500 border-amber-500 text-primary-fg",

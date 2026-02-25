@@ -4,6 +4,7 @@ export type * from "./experimentation/index.js";
 export * from "./financial/index.js";
 export * from "./forecasting/index.js";
 export * from "./geometry/index.js";
+export * from "./ops/index.js";
 export * from "./probabilistic/index.js";
 export * from "./random/index.js";
 export * from "./rate-limit/index.js";

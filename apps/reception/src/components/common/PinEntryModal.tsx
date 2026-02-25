@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { ReceptionButton as Button } from "@acme/ui/operations";
+import { Button } from "@acme/design-system/atoms";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
@@ -34,9 +34,9 @@ function PinEntryModalBase({
 
   return (
     <ModalContainer widthClasses="w-80">
-      <h2 className="text-xl font-semibold mb-4 text-center dark:text-darkAccentGreen">{title}</h2>
+      <h2 className="text-xl font-semibold mb-4 text-center">{title}</h2>
       {instructions && (
-        <p className="text-center mb-4 text-sm text-foreground dark:text-darkAccentGreen">{instructions}</p>
+        <p className="text-center mb-4 text-sm text-foreground">{instructions}</p>
       )}
       <div className="mt-4">
         <PinInput onChange={setPin} placeholder={title} />
@@ -46,14 +46,16 @@ function PinEntryModalBase({
         {!hideCancel && (
           <Button
             onClick={onCancel}
-            className="px-4 py-2 rounded bg-surface-3 text-foreground dark:bg-darkSurface dark:text-darkAccentOrange"
+            color="default"
+            tone="soft"
           >
             Cancel
           </Button>
         )}
         <Button
           onClick={handleSubmit}
-          className="px-4 py-2 rounded bg-primary-main text-primary-fg dark:bg-darkAccentGreen"
+          color="primary"
+          tone="solid"
         >
           Confirm
         </Button>

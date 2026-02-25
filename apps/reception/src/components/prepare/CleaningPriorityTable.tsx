@@ -3,13 +3,13 @@
 import { type FC, memo } from "react";
 
 import {
-  ReceptionTable,
-  ReceptionTableBody,
-  ReceptionTableCell,
-  ReceptionTableHead,
-  ReceptionTableHeader,
-  ReceptionTableRow,
-} from "@acme/ui/operations";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow as DSTableRow,
+} from "@acme/design-system";
 
 import { type Cleanliness } from "../../types/hooks/data/roomStatusData";
 
@@ -44,13 +44,13 @@ interface ChipProps {
 const Chip: FC<ChipProps> = memo(function Chip({ label, color }) {
   const backgroundClass =
     color === "red"
-      ? "bg-error-main dark:bg-darkAccentOrange"
+      ? "bg-error-main"
       : color === "green"
-      ? "bg-success-main dark:bg-darkAccentGreen"
+      ? "bg-success-main"
       : "";
   return (
     <span
-      className={`${backgroundClass} text-primary-fg dark:text-darkBg px-2 py-1 rounded text-sm`}
+      className={`${backgroundClass} text-primary-fg px-2 py-1 rounded text-sm`}
     >
       {label}
     </span>
@@ -72,31 +72,31 @@ const Chip: FC<ChipProps> = memo(function Chip({ label, color }) {
 const CleaningPriorityTable: FC<CleaningPriorityTableProps> = memo(
   function CleaningPriorityTable({ data, isToday }) {
     return (
-      <div className="bg-surface shadow-md rounded p-4 dark:bg-darkBg dark:text-darkAccentGreen">
-        <ReceptionTable className="w-full border-collapse dark:bg-darkBg dark:text-darkAccentGreen">
-          <ReceptionTableHeader>
-            <ReceptionTableRow>
-              <ReceptionTableHead className="border-b py-2 text-center">Room</ReceptionTableHead>
-              <ReceptionTableHead className="border-b py-2 text-center">Occupants</ReceptionTableHead>
-              <ReceptionTableHead className="border-b py-2 text-center">Checkouts</ReceptionTableHead>
-              <ReceptionTableHead className="border-b py-2 text-center">Cleanliness</ReceptionTableHead>
-            </ReceptionTableRow>
-          </ReceptionTableHeader>
-          <ReceptionTableBody>
+      <div className="bg-surface shadow-md rounded p-4">
+        <Table className="w-full border-collapse">
+          <TableHeader>
+            <DSTableRow>
+              <TableHead className="border-b py-2 text-center">Room</TableHead>
+              <TableHead className="border-b py-2 text-center">Occupants</TableHead>
+              <TableHead className="border-b py-2 text-center">Checkouts</TableHead>
+              <TableHead className="border-b py-2 text-center">Cleanliness</TableHead>
+            </DSTableRow>
+          </TableHeader>
+          <TableBody>
             {data.map((row) => {
               const isDirty = row.finalCleanliness === "Dirty";
               return (
-                <ReceptionTableRow key={row.roomNumber}>
-                  <ReceptionTableCell className="border-b py-2 text-center">
+                <DSTableRow key={row.roomNumber}>
+                  <TableCell className="border-b py-2 text-center">
                     {row.roomNumber}
-                  </ReceptionTableCell>
-                  <ReceptionTableCell className="border-b py-2 text-center">
+                  </TableCell>
+                  <TableCell className="border-b py-2 text-center">
                     {row.occupantCount}
-                  </ReceptionTableCell>
+                  </TableCell>
                   {/* Instead of a red "no" chip, display the actual checkout count */}
-                  <ReceptionTableCell className="border-b py-2 text-center">{row.checkouts}</ReceptionTableCell>
+                  <TableCell className="border-b py-2 text-center">{row.checkouts}</TableCell>
                   {/* Cleanliness column: colored chip */}
-                  <ReceptionTableCell className="border-b py-2 text-center">
+                  <TableCell className="border-b py-2 text-center">
                     <Chip
                       label={row.finalCleanliness}
                       color={isDirty ? "red" : "green"}
@@ -106,12 +106,12 @@ const CleaningPriorityTable: FC<CleaningPriorityTableProps> = memo(
                         (Needs cleaning)
                       </span>
                     )}
-                  </ReceptionTableCell>
-                </ReceptionTableRow>
+                  </TableCell>
+                </DSTableRow>
               );
             })}
-          </ReceptionTableBody>
-        </ReceptionTable>
+          </TableBody>
+        </Table>
       </div>
     );
   }

@@ -1,108 +1,287 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TableHeader renders column titles with icons 1`] = `
 <div>
   <table>
     <thead
-      class="sticky top-0 bg-surface-2 text-foreground border-b border-border-2 z-5 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+      class="sticky top-0 bg-surface-2 text-foreground border-b border-border-2 z-5"
     >
       <tr
-        class="h-12"
+        class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3 h-12"
       >
         <th
-          class="px-4 py-2 w-200px font-semibold"
+          class="text-foreground break-words px-4 py-2 w-200px font-semibold"
           title="Guest Name"
         >
           <div
             class="flex justify-center items-center"
           >
-            <i
-              class="fas fa-user"
-            />
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-user"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"
+              />
+              <circle
+                cx="12"
+                cy="7"
+                r="4"
+              />
+            </svg>
           </div>
         </th>
         <th
-          class="px-4 py-2 w-120px font-semibold"
+          class="text-foreground break-words px-4 py-2 w-120px font-semibold"
           title="Room Allocated"
         >
           <div
             class="flex justify-center items-center"
           >
-            <i
-              class="fas fa-bed"
-            />
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-bed"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M2 4v16"
+              />
+              <path
+                d="M2 8h18a2 2 0 0 1 2 2v10"
+              />
+              <path
+                d="M2 17h20"
+              />
+              <path
+                d="M6 8v9"
+              />
+            </svg>
           </div>
         </th>
         <th
-          class="px-4 py-2 w-125px font-semibold"
+          class="text-foreground break-words px-4 py-2 w-125px font-semibold"
           title="Room Payment"
         >
           <div
             class="flex justify-center items-center"
           >
-            <i
-              class="fas fa-credit-card"
-            />
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-credit-card"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="14"
+                rx="2"
+                width="20"
+                x="2"
+                y="5"
+              />
+              <line
+                x1="2"
+                x2="22"
+                y1="10"
+                y2="10"
+              />
+            </svg>
           </div>
         </th>
         <th
-          class="px-4 py-2 w-125px font-semibold"
+          class="text-foreground break-words px-4 py-2 w-125px font-semibold"
           title="City Tax"
         >
           <div
             class="flex justify-center items-center"
           >
-            <i
-              class="fas fa-coins"
-            />
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-coins"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="8"
+                cy="8"
+                r="6"
+              />
+              <path
+                d="M18.09 10.37A6 6 0 1 1 10.34 18"
+              />
+              <path
+                d="M7 6h1v4"
+              />
+              <path
+                d="m16.71 13.88.7.71-2.82 2.82"
+              />
+            </svg>
           </div>
         </th>
         <th
-          class="px-4 py-2 w-125px font-semibold"
+          class="text-foreground break-words px-4 py-2 w-125px font-semibold"
           title="Keycard Deposit"
         >
           <div
             class="flex justify-center items-center"
           >
-            <i
-              class="fas fa-key"
-            />
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-key"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"
+              />
+              <path
+                d="m21 2-9.6 9.6"
+              />
+              <circle
+                cx="7.5"
+                cy="15.5"
+                r="5.5"
+              />
+            </svg>
           </div>
         </th>
         <th
-          class="px-4 py-2 w-120px font-semibold"
+          class="text-foreground break-words px-4 py-2 w-120px font-semibold"
           title="Status"
         >
           <div
             class="flex justify-center items-center"
           >
-            <i
-              class="fas fa-clock"
-            />
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-clock"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 6v6l4 2"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+              />
+            </svg>
           </div>
         </th>
         <th
-          class="px-4 py-2 w-150px font-semibold"
+          class="text-foreground break-words px-4 py-2 w-150px font-semibold"
           title="Document Insert"
         >
           <div
             class="flex justify-center items-center"
           >
-            <i
-              class="fas fa-file-alt"
-            />
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-file-text"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+              />
+              <path
+                d="M14 2v4a2 2 0 0 0 2 2h4"
+              />
+              <path
+                d="M10 9H8"
+              />
+              <path
+                d="M16 13H8"
+              />
+              <path
+                d="M16 17H8"
+              />
+            </svg>
           </div>
         </th>
         <th
-          class="px-4 py-2 w-150px font-semibold"
+          class="text-foreground break-words px-4 py-2 w-150px font-semibold"
           title="Email Booking"
         >
           <div
             class="flex justify-center items-center"
           >
-            <i
-              class="fas fa-envelope"
-            />
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-mail"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"
+              />
+              <rect
+                height="16"
+                rx="2"
+                width="20"
+                x="2"
+                y="4"
+              />
+            </svg>
           </div>
         </th>
       </tr>

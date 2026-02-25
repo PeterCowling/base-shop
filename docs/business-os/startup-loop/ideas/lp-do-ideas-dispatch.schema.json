@@ -1,0 +1,188 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "lp-do-ideas-dispatch.schema.json",
+  "title": "lp-do-ideas Dispatch Packet (dispatch.v1)",
+  "description": "Dispatch packet emitted by the lp-do-ideas trial orchestrator for each processed standing-artifact delta. All fields labelled required must be present for schema validation to pass.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "dispatch.v1",
+      "description": "Schema version identifier. Must be 'dispatch.v1' in this tranche."
+    },
+    "dispatch_id": {
+      "type": "string",
+      "pattern": "^IDEA-DISPATCH-[0-9]{14}-[0-9]{4}$",
+      "description": "Unique dispatch identifier. Format: IDEA-DISPATCH-<YYYYMMDDHHmmss>-<seq4>. Example: IDEA-DISPATCH-20260224153000-0001."
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["trial"],
+      "description": "Operating mode. Only 'trial' is permitted in this tranche. 'live' is reserved for future go-live integration and must be rejected fail-closed."
+    },
+    "business": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Business identifier. Example: HBAG, BRIK."
+    },
+    "trigger": {
+      "type": "string",
+      "enum": ["artifact_delta", "operator_idea"],
+      "description": "Trigger type. 'artifact_delta' — a standing artifact was already updated; this dispatch processes the diff. 'operator_idea' — new information or signal provided directly by the operator, not yet reflected in any artifact; artifact updates are downstream outputs of the work this dispatch triggers."
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Registered artifact key from the standing registry. Must match an entry in the standing registry."
+    },
+    "before_sha": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Git commit SHA or content hash of the artifact before the delta."
+    },
+    "after_sha": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Git commit SHA or content hash of the artifact after the delta."
+    },
+    "area_anchor": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Feature, component, or system area this dispatch addresses. Required for lp-do-fact-find intake routing."
+    },
+    "location_anchors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "One or more paths, routes, endpoints, or flows relevant to this dispatch. Must be non-empty. Required for lp-do-fact-find intake routing."
+    },
+    "provisional_deliverable_family": {
+      "type": "string",
+      "enum": ["code-change", "doc", "multi", "business-artifact", "design", "infra"],
+      "description": "Provisional deliverable family for routing and fact-find intake completeness check."
+    },
+    "current_truth": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Plain-language statement of what is now true after this delta."
+    },
+    "next_scope_now": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What should be investigated or acted on now in response to this delta."
+    },
+    "adjacent_later": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Optional future opportunities identified alongside this dispatch. May be empty."
+    },
+    "recommended_route": {
+      "type": "string",
+      "enum": ["lp-do-fact-find", "lp-do-briefing"],
+      "description": "Downstream routing recommendation. 'lp-do-fact-find' for planning work; 'lp-do-briefing' for understanding-only work. No other values are valid."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["fact_find_ready", "briefing_ready", "auto_executed", "logged_no_action"],
+      "description": "Dispatch lifecycle status. Transitions are monotonic: dispatches move forward only."
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["P1", "P2", "P3"],
+      "description": "Dispatch priority. P1 is highest. Used for escalation path to Option C autonomy mode."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Confidence score 0.0–1.0 for this dispatch being actionable."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "One or more artifact paths or anchors supporting this dispatch. Must be non-empty."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this dispatch was created."
+    },
+    "queue_state": {
+      "type": "string",
+      "enum": ["enqueued", "processed", "skipped", "error"],
+      "description": "Current queue lifecycle state for this dispatch."
+    },
+    "processed_by": {
+      "type": "object",
+      "properties": {
+        "fact_find_slug": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Feature slug of the fact-find that consumed this dispatch (e.g. 'hbag-pricing-uplift-2026-02')."
+        },
+        "fact_find_path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical path to the fact-find.md that consumed this dispatch."
+        },
+        "processed_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when the fact-find was opened against this dispatch."
+        },
+        "route": {
+          "type": "string",
+          "enum": ["dispatch-routed", "direct-inject"],
+          "description": "How the fact-find was opened. 'dispatch-routed' = opened via queue confirmation with Dispatch-ID in frontmatter. 'direct-inject' = operator invoked directly; Trigger-Source cited instead."
+        }
+      },
+      "required": ["fact_find_slug", "fact_find_path", "processed_at", "route"],
+      "additionalProperties": false,
+      "description": "Populated when a fact-find or briefing has been opened against this dispatch. Presence sets queue_state to 'processed'. Absence means the dispatch is still pending."
+    },
+    "triggered_by": {
+      "type": "string",
+      "description": "Dispatch ID of the packet whose downstream build produced the artifact change that triggered this dispatch. Absent when triggered by direct operator action or an external signal. Presence indicates a cascade step — the operator should confirm this represents genuinely new work."
+    },
+    "clarification_needed": {
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "description": "Specific questions the operator must answer before this dispatch can be correctly scoped or invoked."
+        },
+        "blocks_invocation": {
+          "type": "boolean",
+          "description": "If true, all questions must be resolved before the downstream skill is invoked. If false, questions are advisory — invocation may proceed but scope may shift once resolved."
+        }
+      },
+      "required": ["questions", "blocks_invocation"],
+      "additionalProperties": false,
+      "description": "Present when the dispatch cannot be fully routed or scoped without operator input. Absence means no clarification is needed."
+    }
+  },
+  "required": [
+    "schema_version",
+    "dispatch_id",
+    "mode",
+    "area_anchor",
+    "location_anchors",
+    "provisional_deliverable_family",
+    "recommended_route",
+    "status",
+    "evidence_refs"
+  ],
+  "additionalProperties": false
+}

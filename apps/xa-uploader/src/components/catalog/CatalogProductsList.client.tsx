@@ -4,7 +4,7 @@
 
 import * as React from "react";
 
-import { slugify, type CatalogProductDraftInput } from "../../lib/catalogAdminSchema";
+import { slugify, type CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 export function CatalogProductsList({

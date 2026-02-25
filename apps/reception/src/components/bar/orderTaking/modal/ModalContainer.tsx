@@ -14,7 +14,7 @@ const ModalContainer: FC<ModalContainerProps> = memo(
   ({ children, widthClasses }) => {
     return (
       <div
-        className={`bg-surface p-6 rounded shadow-lg ${widthClasses || "w-80"} dark:bg-darkSurface dark:text-darkAccentGreen`}
+        className={`bg-surface p-6 rounded shadow-lg ${widthClasses || "w-80"}`}
       >
         {children}
       </div>

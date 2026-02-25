@@ -10,8 +10,8 @@
 import type { FC } from "react";
 import { memo, useCallback, useState } from "react";
 
-import { ConfirmDialog } from "@acme/design-system/atoms";
-import { ReceptionButton as Button, ReceptionSelect } from "@acme/ui/operations";
+import { Button, ConfirmDialog, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
+import { SimpleModal } from "@acme/ui/molecules";
 
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useGuestByRoomData from "../../hooks/data/roomgrid/useGuestByRoomData";
@@ -102,92 +102,86 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 p-4">
-        <div className="relative bg-surface w-full max-w-sm p-6 rounded shadow-lg dark:bg-darkSurface">
-          <Button
-            onClick={handleClose}
-            className="absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-3 hover:bg-surface-3 flex items-center justify-center"
-            aria-label="Close"
-          >
-            <span className="text-lg">&#x2715;</span>
-          </Button>
-          <h2 className="text-lg font-semibold mb-4">Booking Details</h2>
+      <SimpleModal
+        isOpen={true}
+        onClose={handleClose}
+        title="Booking Details"
+        maxWidth="max-w-sm"
+      >
+        <div className="mb-4">
+          <p>
+            <strong>Room Number:</strong> {bookingDetails.roomNumber}
+          </p>
+          <p>
+            <strong>ID:</strong> {bookingDetails.id}
+          </p>
+          <p>
+            <strong>Date:</strong> {bookingDetails.date}
+          </p>
+          <p>
+            <strong>Day Type:</strong> {bookingDetails.dayType}
+          </p>
+          <p>
+            <strong>Day Status:</strong> {bookingDetails.dayStatus}
+          </p>
+        </div>
+        {bookingDetails.bookingRef ? (
           <div className="mb-4">
             <p>
-              <strong>Room Number:</strong> {bookingDetails.roomNumber}
+              <strong>Booking Reference:</strong> {bookingDetails.bookingRef}
             </p>
             <p>
-              <strong>ID:</strong> {bookingDetails.id}
+              <strong>Occupant ID:</strong> {bookingDetails.occupantId}
             </p>
             <p>
-              <strong>Date:</strong> {bookingDetails.date}
+              <strong>First Name:</strong> {bookingDetails.firstName}
             </p>
             <p>
-              <strong>Day Type:</strong> {bookingDetails.dayType}
+              <strong>Last Name:</strong> {bookingDetails.lastName}
             </p>
             <p>
-              <strong>Day Status:</strong> {bookingDetails.dayStatus}
+              <strong>ID Suffix:</strong> {bookingDetails.idSuffix}
+            </p>
+            <p>
+              <strong>Title Prefix:</strong> {bookingDetails.titlePrefix}
+            </p>
+            <p>
+              <strong>Info:</strong> {bookingDetails.info}
             </p>
           </div>
-          {bookingDetails.bookingRef ? (
-            <div className="mb-4">
-              <p>
-                <strong>Booking Reference:</strong> {bookingDetails.bookingRef}
-              </p>
-              <p>
-                <strong>Occupant ID:</strong> {bookingDetails.occupantId}
-              </p>
-              <p>
-                <strong>First Name:</strong> {bookingDetails.firstName}
-              </p>
-              <p>
-                <strong>Last Name:</strong> {bookingDetails.lastName}
-              </p>
-              <p>
-                <strong>ID Suffix:</strong> {bookingDetails.idSuffix}
-              </p>
-              <p>
-                <strong>Title Prefix:</strong> {bookingDetails.titlePrefix}
-              </p>
-              <p>
-                <strong>Info:</strong> {bookingDetails.info}
-              </p>
-            </div>
-          ) : (
-            <p>No booking period details found for the selected date.</p>
-          )}
-          {bookingDetails.bookingRef && (
-            <div className="mt-4 space-y-2">
-              <label
-                className="block text-sm font-semibold"
-                htmlFor="target-room"
-              >
-                Move booking to room:
-              </label>
-              <ReceptionSelect
-                id="target-room"
-                className="w-full border rounded p-2 text-foreground"
-                value={targetRoom}
-                onChange={(e) => setTargetRoom(e.target.value)}
-              >
-                <option value="">Select room</option>
+        ) : (
+          <p>No booking period details found for the selected date.</p>
+        )}
+        {bookingDetails.bookingRef && (
+          <div className="mt-4 space-y-2">
+            <label
+              className="block text-sm font-semibold"
+              htmlFor="target-room"
+            >
+              Move booking to room:
+            </label>
+            <Select value={targetRoom} onValueChange={setTargetRoom}>
+              <SelectTrigger id="target-room" className="w-full border rounded p-2 text-foreground">
+                <SelectValue placeholder="Select room" />
+              </SelectTrigger>
+              <SelectContent>
                 {knownRooms.map((r) => (
-                  <option key={r} value={r}>
+                  <SelectItem key={r} value={r}>
                     {r}
-                  </option>
+                  </SelectItem>
                 ))}
-              </ReceptionSelect>
-              <Button
-                type="button"
-                onClick={handleMoveBooking}
-                className="w-full px-4 py-2 rounded bg-primary text-primary-fg hover:bg-primary"
-              >
-                Move Booking
-              </Button>
-            </div>
-          )}
-        </div>
-      </div>
+              </SelectContent>
+            </Select>
+            <Button
+              type="button"
+              onClick={handleMoveBooking}
+              className="w-full px-4 py-2 rounded bg-primary text-primary-fg hover:bg-primary"
+            >
+              Move Booking
+            </Button>
+          </div>
+        )}
+      </SimpleModal>
       <ConfirmDialog
         open={confirmMoveOpen}
         onOpenChange={setConfirmMoveOpen}

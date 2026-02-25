@@ -49,10 +49,12 @@ Status: <Ready-for-planning | Needs-input>
 Outcome: <planning | briefing>
 Execution-Track: <code | business-artifact | mixed>
 Deliverable-Type: <canonical type>
-Business-Unit: <BIZ code>        # present when card path is used
-Card-ID: <BOS card ID>           # present when card path is used
 Feature-Slug: <slug>
 artifact: fact-find
+# Optional — present when opened via a queued dispatch packet:
+Dispatch-ID: <IDEA-DISPATCH-YYYYMMDDHHmmss-NNNN | omit if direct inject>
+# Required when Dispatch-ID is absent:
+Trigger-Source: <path to standing artifact that motivated this cycle, or "direct-operator-decision: <rationale>">
 ```
 
 ### Lifecycle
@@ -86,8 +88,6 @@ artifact: fact-find
 ```yaml
 Status: <Draft | Active | Archived>
 Feature-Slug: <slug>
-Business-Unit: <BIZ code>        # present when card path is used
-Card-ID: <BOS card ID>           # present when card path is used
 Execution-Track: <code | business-artifact | mixed>
 Last-updated: <YYYY-MM-DD>
 artifact: plan
@@ -123,8 +123,6 @@ artifact: plan
 ```yaml
 Status: Complete
 Feature-Slug: <slug>
-Business-Unit: <BIZ code>
-Card-ID: <BOS card ID>           # present when card path is used
 Completed-date: <YYYY-MM-DD>
 artifact: build-record
 ```
@@ -145,35 +143,29 @@ artifact: build-record
 **Stored at:** `docs/plans/<feature-slug>/results-review.user.md`
 **Consumers:** startup-loop Layer A (standing-information refresh), future plan sessions for the same business unit
 
-### Hard Gate
-
-**The build cycle is not complete without this artifact.** `/lp-do-build` MUST NOT set plan `Status: Archived` or trigger plan archival until `results-review.user.md` exists in the plan directory. See Plan Completion and Archiving section in `lp-do-build/SKILL.md`.
-
 ### Required Sections
 
 | Section | Purpose |
 |---|---|
 | `## Observed Outcomes` | What actually happened after the build was deployed or activated. Metrics, user feedback, anomalies, or qualitative notes. Minimum: one concrete observation. |
-| `## Standing Updates` | List of Layer A (standing-information) files that should be updated as a result of these outcomes, with a one-line description of the update needed. If no updates are needed, write: `No standing updates: <reason>`. This explicit entry is required — the section must not be left blank. |
+| `## Standing Updates` | List of Layer A (standing-information) files that should be updated as a result of these outcomes, with a one-line description of the update needed. If no updates are needed, write: `No standing updates: <reason>`. This explicit entry is required — the section must not be left blank. Anti-loop rule applies: do not update the domain that triggered this cycle (see R8 in `two-layer-model.md`). |
 | `## New Idea Candidates` | Any new opportunities, problems, or hypotheses surfaced by observing the outcomes. Each entry should include: idea summary, trigger observation, and suggested next action (e.g., create card, spike, defer). `None` if nothing surfaced. |
+| `## Standing Expansion` *(optional)* | Required when the build produces outcomes not captured by any existing Layer A domain, or creates a new standing information source not currently monitored. Record either: (a) a decision to add/revise a standing artifact and register the new trigger, or (b) a deliberate pass with rationale. See R9 in `two-layer-model.md`. |
 
 ### Required Frontmatter Fields
 
 ```yaml
 Status: <Draft | Complete>
 Feature-Slug: <slug>
-Business-Unit: <BIZ code>
-Card-ID: <BOS card ID>           # present when card path is used
 Review-date: <YYYY-MM-DD>
 artifact: results-review
 ```
 
 ### Lifecycle
 
-- Created by operator after build is deployed/activated and outcomes are observable.
-- Minimum viable version: a `Draft` with at least the `## Observed Outcomes` section populated (allows plan archival to proceed if operator confirms in writing).
+- Created by operator after build is deployed/activated and outcomes are observable (optional).
 - `Status: Complete` when all three required sections are filled.
-- Archived alongside `plan.md`; see `_shared/plan-archiving.md`.
+- Archived alongside `plan.md` if present; see `_shared/plan-archiving.md`.
 - **Layer A refresh**: after `Status: Complete`, the `## Standing Updates` section is read by the operator (or a dedicated refresh agent) to apply updates to standing-information files. This is the formal Layer B → Layer A feedback handoff.
 
 ---
@@ -202,10 +194,9 @@ The `.user.md` suffix on the last two artifacts signals that human input is requ
                     └── produces: plan.md (Status: Active)
                             └── /lp-do-build reads plan.md
                                     ├── produces: build-record.user.md (Status: Complete)
-                                    └── HARD GATE: waits for results-review.user.md
-                                            └── Operator produces: results-review.user.md
+                                    └── plan archived (Status: Archived)
+                                            └── [optional] Operator produces: results-review.user.md
                                                     └── Layer A standing-information refresh (§ Standing Updates)
-                                                            └── plan archived (Status: Archived)
 ```
 
 ---

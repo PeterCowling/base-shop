@@ -221,8 +221,50 @@ admission_wait_ms="0"
 pressure_level="unknown"
 peak_rss_mb="0"
 timeout_killed="false"
-timeout_watchdog_pid=""
+kill_escalation="none"
 rss_peak_file=""
+
+baseshop_record_kill_escalation() {
+  local next="${1:-none}"
+  if [[ "$kill_escalation" == "sigkill" ]]; then
+    return 0
+  fi
+
+  case "$next" in
+    sigkill)
+      kill_escalation="sigkill"
+      ;;
+    sigterm)
+      if [[ "$kill_escalation" == "none" ]]; then
+        kill_escalation="sigterm"
+      fi
+      ;;
+  esac
+}
+
+baseshop_terminate_command_tree() {
+  local target_pid="$1"
+  local grace_seconds="${2:-5}"
+
+  if [[ -z "$target_pid" ]] || ! kill -0 "$target_pid" 2>/dev/null; then
+    return 0
+  fi
+
+  pkill -TERM -P "$target_pid" 2>/dev/null || true
+  kill -TERM "$target_pid" 2>/dev/null || true
+  baseshop_record_kill_escalation "sigterm"
+
+  local grace_start="$SECONDS"
+  while kill -0 "$target_pid" 2>/dev/null && (( SECONDS - grace_start < grace_seconds )); do
+    sleep 0.2
+  done
+
+  if kill -0 "$target_pid" 2>/dev/null; then
+    pkill -KILL -P "$target_pid" 2>/dev/null || true
+    kill -KILL "$target_pid" 2>/dev/null || true
+    baseshop_record_kill_escalation "sigkill"
+  fi
+}
 
 cleanup() {
   if [[ "$cleanup_running" == "1" ]]; then
@@ -230,8 +272,8 @@ cleanup() {
   fi
   cleanup_running="1"
 
-  if [[ -n "$command_pid" ]] && kill -0 "$command_pid" 2>/dev/null; then
-    kill "$command_pid" 2>/dev/null || true
+  if [[ -n "$command_pid" ]]; then
+    baseshop_terminate_command_tree "$command_pid"
   fi
 
   if [[ -n "$rss_monitor_pid" ]] && kill -0 "$rss_monitor_pid" 2>/dev/null; then
@@ -343,15 +385,10 @@ set +e
 "${command[@]}" &
 command_pid="$!"
 
+timeout_deadline_sec=0
 timeout_sec="${BASESHOP_TEST_TIMEOUT_SEC:-600}"
 if [[ "$timeout_sec" =~ ^[0-9]+$ ]] && (( timeout_sec > 0 )); then
-  (
-    sleep "$timeout_sec"
-    if kill -0 "$command_pid" 2>/dev/null; then
-      kill "$command_pid" 2>/dev/null || true
-    fi
-  ) &
-  timeout_watchdog_pid="$!"
+  timeout_deadline_sec=$((SECONDS + timeout_sec))
 fi
 
 if [[ "$ci_compat_mode" != "1" ]]; then
@@ -361,19 +398,22 @@ if [[ "$ci_compat_mode" != "1" ]]; then
   rss_monitor_pid="$!"
 fi
 
+while kill -0 "$command_pid" 2>/dev/null; do
+  if (( timeout_deadline_sec > 0 && SECONDS >= timeout_deadline_sec )); then
+    echo "Governed test timeout after ${timeout_sec}s; terminating process tree." >&2
+    timeout_killed="true"
+    baseshop_terminate_command_tree "$command_pid"
+    break
+  fi
+  sleep 1
+done
+
 wait "$command_pid"
 command_exit="$?"
 set -e
 
-if [[ -n "${timeout_watchdog_pid:-}" ]]; then
-  if kill -0 "$timeout_watchdog_pid" 2>/dev/null; then
-    kill "$timeout_watchdog_pid" 2>/dev/null || true
-    wait "$timeout_watchdog_pid" 2>/dev/null || true
-  else
-    # watchdog already exited = timeout fired
-    timeout_killed="true"
-    command_exit=124
-  fi
+if [[ "$timeout_killed" == "true" ]]; then
+  command_exit=124
 fi
 
 if [[ -n "$rss_monitor_pid" ]]; then
@@ -405,6 +445,7 @@ baseshop_emit_governed_telemetry \
   --workers "$workers" \
   --exit-code "$command_exit" \
   --timeout-killed "$timeout_killed" \
+  --kill-escalation "$kill_escalation" \
   --override-policy-used false \
   --override-overload-used "${BASESHOP_ALLOW_OVERLOAD:-0}"
 

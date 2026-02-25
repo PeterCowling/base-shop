@@ -2,7 +2,7 @@
 import type { ChangeEvent, FC } from "react";
 import { memo, useState } from "react";
 
-import { ReceptionInput as Input } from "@acme/ui/operations";
+import { Input } from "@acme/design-system";
 
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useGridData from "../../hooks/data/roomgrid/useGridData";
@@ -11,9 +11,9 @@ import { addDays, formatDateForInput, getYesterday } from "../../utils/dateUtils
 import RoomGrid from "./RoomGrid";
 
 /**
-* Essential styles from `@daminort/reservation-grid/dist/style.css` are
- * bundled locally in `reservationGrid.css` to avoid a run‑time dependency on
- * the external stylesheet while keeping the original look and feel. If you
+* Essential reservation-grid styles are
+ * bundled locally in `reservationGrid.css` to keep the original look and feel
+ * without any external package dependency. If you
  * need to tweak colours or spacing, edit that file instead of overriding
  * Tailwind classes elsewhere.
  *
@@ -83,16 +83,17 @@ const RoomsGrid: FC = () => {
 
   return (
     <>
-      <div className="font-sans p-4 dark:bg-darkBg dark:text-darkAccentGreen">
-        <h1 className="text-2xl font-bold mb-4 dark:text-darkAccentGreen">Multiple Room Grids</h1>
+      <div className="font-sans p-4">
+        <h1 className="text-2xl font-bold mb-4">Multiple Room Grids</h1>
         <div className="flex items-center gap-4 mb-4">
           <label className="font-semibold" htmlFor="start-date">
             Start:
           </label>
           <Input
+            compatibilityMode="no-wrapper"
             id="start-date"
             type="date"
-            className="border rounded px-2 py-1 text-foreground dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+            className="border rounded px-2 py-1 text-foreground"
             value={startDate}
             onChange={handleStartChange}
           />
@@ -100,19 +101,20 @@ const RoomsGrid: FC = () => {
             End:
           </label>
           <Input
+            compatibilityMode="no-wrapper"
             id="end-date"
             type="date"
-            className="border rounded px-2 py-1 text-foreground dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+            className="border rounded px-2 py-1 text-foreground"
             value={endDate}
             onChange={handleEndChange}
           />
         </div>
         {loading && (
-          <p className="p-4 italic text-muted-foreground dark:text-darkAccentGreen">Loading rooms...</p>
+          <p className="p-4 italic text-muted-foreground">Loading rooms...</p>
         )}
 
         {!loading && error != null && (
-          <p className="p-4 text-error-main dark:text-darkAccentOrange">Error: {String(error)}</p>
+          <p className="p-4 text-error-main">Error: {String(error)}</p>
         )}
 
         {!loading &&

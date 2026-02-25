@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Startup Loop: File Types Explained</title>
+  <style>
+    :root {
+      --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+      --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+      --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+      --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:12px;
+
+      --c-doc:   #2d6a4f; --c-doc-bg:   #e8f4ee; --c-doc-text:   #1a3d2b;
+      --c-human: #92400e; --c-human-bg: #fef3c7; --c-human-text: #4a1f05;
+      --c-render:#0369a1; --c-render-bg:#e0f2fe; --c-render-text:#0c4a6e;
+      --c-schema:#5b21b6; --c-schema-bg:#ede9fe; --c-schema-text:#2e1065;
+      --c-code:  #1e3a5f; --c-code-bg:  #dbeafe; --c-code-text:  #1e3a5f;
+      --c-script:#7c2d12; --c-script-bg:#ffedd5; --c-script-text:#7c2d12;
+      --c-data:  #374151; --c-data-bg:  #f3f4f6; --c-data-text:  #374151;
+    }
+    @media(prefers-color-scheme:dark){:root{
+      --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+      --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+      --code-bg:#2e2c2a;--code-border:#3d3a37;
+
+      --c-doc:   #52b788; --c-doc-bg:   #1e3d30; --c-doc-text:   #a7f3d0;
+      --c-human: #fbbf24; --c-human-bg: #27201a; --c-human-text: #fde68a;
+      --c-render:#38bdf8; --c-render-bg:#0c2a3e; --c-render-text:#bae6fd;
+      --c-schema:#a78bfa; --c-schema-bg:#2d1f5c; --c-schema-text:#ddd6fe;
+      --c-code:  #93c5fd; --c-code-bg:  #1e2f4a; --c-code-text:  #bfdbfe;
+      --c-script:#fb923c; --c-script-bg:#2d1a0e; --c-script-text:#fed7aa;
+      --c-data:  #d1d5db; --c-data-bg:  #1f2937; --c-data-text:  #e5e7eb;
+    }}
+
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+      font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;}
+    main{max-width:1060px;margin:0 auto;padding:2.5rem 1.5rem 5rem;}
+
+    h1{font-size:2rem;font-weight:800;margin:0 0 0.3rem;}
+    .lead{font-size:1rem;color:var(--text-muted);margin:0 0 2.5rem;line-height:1.7;max-width:680px;}
+    h2{font-size:1.15rem;font-weight:700;margin:2.5rem 0 0.7rem;border-bottom:1px solid var(--border);padding-bottom:0.35rem;}
+    p{line-height:1.65;margin:0 0 0.55rem;font-size:0.9rem;}
+    code{font-family:ui-monospace,"SFMono-Regular","SF Mono",Menlo,monospace;
+      font-size:0.82em;background:var(--code-bg);border:1px solid var(--code-border);
+      border-radius:3px;padding:0.12em 0.3em;}
+    hr{border:none;border-top:1px solid var(--border);margin:2.5rem 0;}
+
+    /* ── Legend ── */
+    .legend{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:2.2rem;}
+    .leg{display:inline-flex;align-items:center;gap:0.4rem;
+      padding:0.28rem 0.65rem;border-radius:999px;font-size:0.76rem;font-weight:600;border:1px solid;}
+    .leg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+    /* ── Big card grid ── */
+    .type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.1rem;margin-bottom:1.5rem;}
+
+    .type-card{
+      border-radius:var(--radius-lg);padding:1.3rem 1.3rem 1.1rem;
+      border:2px solid;display:flex;flex-direction:column;gap:0.55rem;
+    }
+
+    /* colour variants */
+    .doc    {background:var(--c-doc-bg);   border-color:var(--c-doc);   color:var(--c-doc-text);}
+    .human  {background:var(--c-human-bg); border-color:var(--c-human); color:var(--c-human-text);}
+    .render {background:var(--c-render-bg);border-color:var(--c-render);color:var(--c-render-text);}
+    .schema {background:var(--c-schema-bg);border-color:var(--c-schema);color:var(--c-schema-text);}
+    .code   {background:var(--c-code-bg);  border-color:var(--c-code);  color:var(--c-code-text);}
+    .script {background:var(--c-script-bg);border-color:var(--c-script);color:var(--c-script-text);}
+    .data   {background:var(--c-data-bg);  border-color:var(--c-data);  color:var(--c-data-text);}
+
+    .ext{font-family:ui-monospace,"SFMono-Regular","SF Mono",Menlo,monospace;
+      font-size:1.8rem;font-weight:800;letter-spacing:-0.02em;line-height:1;}
+    .ext-sub{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;opacity:0.7;margin-top:0.15rem;}
+    .card-role{
+      font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+      padding:0.18rem 0.45rem;border-radius:3px;display:inline-block;width:fit-content;
+      border:1px solid currentColor;opacity:0.85;
+    }
+    .card-body{font-size:0.875rem;line-height:1.6;color:var(--text);}
+    .card-examples{margin-top:0.2rem;}
+    .card-examples-label{font-size:0.7rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;opacity:0.6;margin-bottom:0.25rem;}
+    .ex-list{display:flex;flex-direction:column;gap:0.2rem;}
+    .ex{font-family:ui-monospace,"SFMono-Regular","SF Mono",Menlo,monospace;
+      font-size:0.75rem;background:rgba(0,0,0,0.06);border-radius:3px;
+      padding:0.18rem 0.4rem;color:var(--text);width:fit-content;}
+    @media(prefers-color-scheme:dark){.ex{background:rgba(255,255,255,0.09);}}
+
+    .who-line{font-size:0.78rem;color:var(--text-muted);display:flex;align-items:center;gap:0.3rem;margin-top:auto;}
+    .who-icon{font-size:0.85rem;}
+
+    /* ── Relationship diagram ── */
+    .rel-wrap{overflow-x:auto;margin:1rem 0 2rem;}
+    .rel{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:0;
+      min-width:560px;
+      border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;
+    }
+    .rel-col{padding:1rem;border-right:1px solid var(--border);}
+    .rel-col:last-child{border-right:none;}
+    .rel-col-head{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.6rem;}
+    .rel-item{
+      display:flex;align-items:center;gap:0.4rem;
+      padding:0.3rem 0.45rem;border-radius:4px;margin-bottom:0.3rem;
+      font-size:0.8rem;font-weight:600;
+    }
+    .rel-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+    /* ── Suffix explainer ── */
+    .suffix-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem;margin:0.8rem 0 1.5rem;}
+    .suffix-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0.8rem 0.9rem;}
+    .suffix-pat{font-family:monospace;font-weight:700;font-size:0.88rem;color:var(--accent);}
+    .suffix-desc{font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem;line-height:1.5;}
+
+    @media(max-width:600px){.rel{grid-template-columns:1fr;}.rel-col{border-right:none;border-bottom:1px solid var(--border);}.rel-col:last-child{border-bottom:none;}}
+  </style>
+
+<style id="sl-theme-css">html[data-theme="dark"]{--bg:#0e1016;--surface:#161921;--surface-2:#1e2230;--surface-raised:#1e2230;--border:#2a2f45;--text:#e4e7f2;--text-muted:#6b728f;--text-dim:#454d6a;--accent:#5b9cf6;--accent-soft:rgba(91,156,246,.15);--code-bg:#161921;--code-border:#2a2f45;--red-bg:rgba(240,92,92,.10);--amber-bg:rgba(245,166,35,.10);--green-bg:rgba(74,222,128,.08);--blue-bg:rgba(91,156,246,.10);--purple-bg:rgba(167,139,250,.10)}html[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}html[data-theme="light"]{--bg:#f5f6fa;--surface:#ffffff;--surface-2:#f0f1f7;--surface-raised:#f0f1f7;--border:#dde0ed;--text:#1a1d2e;--text-muted:#5a6080;--text-dim:#a0a8c0;--accent:#3362d0;--accent-soft:#e8eeff;--code-bg:#f0f1f7;--code-border:#dde0ed;--red-bg:rgba(200,50,50,.08);--amber-bg:rgba(180,120,0,.08);--green-bg:rgba(40,160,80,.06);--blue-bg:rgba(40,100,220,.08);--purple-bg:rgba(120,80,200,.08)}html[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}[data-theme="light"] #sl-nav{background:#eef0f7!important;border-bottom-color:#dde0ed!important}[data-theme="light"] #sl-nav .sl-brand,[data-theme="light"] #sl-nav a,[data-theme="light"] #sl-theme-btn{color:#5a6080!important}[data-theme="light"] #sl-nav a:hover,[data-theme="light"] #sl-nav a.sl-on{color:#1a1d2e!important}</style>
+<script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
+</head>
+<body>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="startup-loop-workflow.user.html">Workflow</a><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="pending-reviews.user.html">Pending Reviews</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<main>
+
+  <h1>Startup Loop: File Types Explained</h1>
+  <p class="lead">
+    Seven file types power the entire startup loop. Each has a specific job.
+    Understanding what each extension does tells you at a glance what a file is for,
+    who's responsible for it, and whether you need to act.
+  </p>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <span class="leg" style="background:var(--c-doc-bg);border-color:var(--c-doc);color:var(--c-doc-text);">
+      <span class="leg-dot" style="background:var(--c-doc)"></span>Documents
+    </span>
+    <span class="leg" style="background:var(--c-human-bg);border-color:var(--c-human);color:var(--c-human-text);">
+      <span class="leg-dot" style="background:var(--c-human)"></span>Needs your input
+    </span>
+    <span class="leg" style="background:var(--c-render-bg);border-color:var(--c-render);color:var(--c-render-text);">
+      <span class="leg-dot" style="background:var(--c-render)"></span>Rendered for reading
+    </span>
+    <span class="leg" style="background:var(--c-schema-bg);border-color:var(--c-schema);color:var(--c-schema-text);">
+      <span class="leg-dot" style="background:var(--c-schema)"></span>Schema / config
+    </span>
+    <span class="leg" style="background:var(--c-code-bg);border-color:var(--c-code);color:var(--c-code-text);">
+      <span class="leg-dot" style="background:var(--c-code)"></span>Code
+    </span>
+    <span class="leg" style="background:var(--c-script-bg);border-color:var(--c-script);color:var(--c-script-text);">
+      <span class="leg-dot" style="background:var(--c-script)"></span>Scripts
+    </span>
+    <span class="leg" style="background:var(--c-data-bg);border-color:var(--c-data);color:var(--c-data-text);">
+      <span class="leg-dot" style="background:var(--c-data)"></span>Data
+    </span>
+  </div>
+
+  <!-- CARD GRID -->
+  <div class="type-grid">
+
+    <!-- .md -->
+    <div class="type-card doc">
+      <div>
+        <div class="ext">.md</div>
+        <div class="ext-sub">Markdown</div>
+      </div>
+      <span class="card-role">The workhorse</span>
+      <p class="card-body">
+        The primary format for everything the startup loop reads and writes.
+        Plans, fact-finds, strategy briefs, skill instructions, results reviews —
+        they're all <code>.md</code>. Markdown lets the agent read and write
+        structured documents that are also human-readable without any tooling.
+        Over 1,200 of them in the loop alone.
+      </p>
+      <div class="card-examples">
+        <div class="card-examples-label">Examples</div>
+        <div class="ex-list">
+          <span class="ex">plan.md</span>
+          <span class="ex">fact-find.md</span>
+          <span class="ex">HBAG-offer.md</span>
+          <span class="ex">SKILL.md</span>
+          <span class="ex">market-pack.md</span>
+        </div>
+      </div>
+      <p class="who-line"><span class="who-icon">🤖</span> Agent writes. You read.</p>
+    </div>
+
+    <!-- .user.md -->
+    <div class="type-card human">
+      <div>
+        <div class="ext">.user.md</div>
+        <div class="ext-sub">Markdown · human required</div>
+      </div>
+      <span class="card-role">Needs your hand</span>
+      <p class="card-body">
+        Same format as <code>.md</code> — the <code>.user.</code> part is a
+        naming convention, not a different file type. It signals that human
+        involvement is required before this file is complete: either you wrote
+        the whole thing, or the agent drafted it and you must confirm it.
+        The loop will not advance past a gate until the required
+        <code>.user.md</code> file exists.
+      </p>
+      <div class="card-examples">
+        <div class="card-examples-label">Examples</div>
+        <div class="ex-list">
+          <span class="ex">results-review.user.md</span>
+          <span class="ex">build-record.user.md</span>
+          <span class="ex">brand-dossier.user.md</span>
+          <span class="ex">intake-packet.user.md</span>
+          <span class="ex">2026-02-24-lp-forecast.user.md</span>
+        </div>
+      </div>
+      <p class="who-line"><span class="who-icon">✍️</span> You write or confirm. Agent may draft.</p>
+    </div>
+
+    <!-- .html -->
+    <div class="type-card render">
+      <div>
+        <div class="ext">.html</div>
+        <div class="ext-sub">Rendered document</div>
+      </div>
+      <span class="card-role">For reading in a browser</span>
+      <p class="card-body">
+        The polished, operator-facing layer. When a document needs charts,
+        colour coding, tables, or a visual layout that's easier to scan than
+        plain text, it gets an <code>.html</code> version. These embed the
+        design system's colour tokens so they respect dark mode and match
+        the brand. You open them in a browser — they're not meant to be edited directly.
+      </p>
+      <div class="card-examples">
+        <div class="card-examples-label">Examples</div>
+        <div class="ex-list">
+          <span class="ex">startup-loop-workflow.user.html</span>
+          <span class="ex">startup-loop-files.user.html</span>
+          <span class="ex">startup-loop-file-types.user.html</span>
+        </div>
+      </div>
+      <p class="who-line"><span class="who-icon">👁</span> Agent writes. Open in browser and read.</p>
+    </div>
+
+    <!-- .yaml -->
+    <div class="type-card schema">
+      <div>
+        <div class="ext">.yaml</div>
+        <div class="ext-sub">Schema &amp; configuration</div>
+      </div>
+      <span class="card-role">The rules engine</span>
+      <p class="card-body">
+        YAML files define the structure that makes the loop work:
+        which stages exist and in what order, what each stage requires
+        before it can start, how deliverables are routed to the right skill,
+        and what vocabulary is valid. The agent reads YAML as authoritative
+        configuration — if the stage graph lives in a <code>.yaml</code> file,
+        that's what determines what comes next.
+      </p>
+      <div class="card-examples">
+        <div class="card-examples-label">Examples</div>
+        <div class="ex-list">
+          <span class="ex">loop-spec.yaml</span>
+          <span class="ex">deliverable-routing.yaml</span>
+          <span class="ex">process-assignment-v2.yaml</span>
+          <span class="ex">workstream-workflow-taxonomy-v2.yaml</span>
+        </div>
+      </div>
+      <p class="who-line"><span class="who-icon">⚙️</span> Loop maintainers write. Agent reads as law.</p>
+    </div>
+
+    <!-- .ts -->
+    <div class="type-card code">
+      <div>
+        <div class="ext">.ts</div>
+        <div class="ext-sub">TypeScript · compiled code</div>
+      </div>
+      <span class="card-role">The engine room</span>
+      <p class="card-body">
+        TypeScript is what runs under the hood. The startup loop processors
+        (metrics aggregation, manifest updates, stage derivation, growth accounting)
+        are all <code>.ts</code> files. So are the MCP server tools that give the
+        agent access to live shop data, Gmail, analytics, and the BOS API.
+        You never edit these directly — they're the compiled machinery.
+      </p>
+      <div class="card-examples">
+        <div class="card-examples-label">Examples</div>
+        <div class="ex-list">
+          <span class="ex">derive-state.ts</span>
+          <span class="ex">s10-growth-accounting.ts</span>
+          <span class="ex">tools/seo.ts</span>
+          <span class="ex">tools/loop.ts</span>
+          <span class="ex">metrics-aggregate.ts</span>
+        </div>
+      </div>
+      <p class="who-line"><span class="who-icon">🔧</span> Engineers write. Runs automatically.</p>
+    </div>
+
+    <!-- .sh -->
+    <div class="type-card script">
+      <div>
+        <div class="ext">.sh</div>
+        <div class="ext-sub">Shell script · automation</div>
+      </div>
+      <span class="card-role">The safety layer</span>
+      <p class="card-body">
+        Shell scripts are the enforcement layer. They run automatically
+        at key moments — before a commit, before a push, during CI —
+        and they stop bad things from happening. The writer lock
+        (which prevents two agents from overwriting each other's work),
+        the pre-push safety checks, and the CI validation gates are all
+        <code>.sh</code> files. They say yes or no; they don't negotiate.
+      </p>
+      <div class="card-examples">
+        <div class="card-examples-label">Examples</div>
+        <div class="ex-list">
+          <span class="ex">require-writer-lock.sh</span>
+          <span class="ex">pre-push.sh</span>
+          <span class="ex">validate-changes.sh</span>
+          <span class="ex">with-writer-lock.sh</span>
+          <span class="ex">telemetry-log.sh</span>
+        </div>
+      </div>
+      <p class="who-line"><span class="who-icon">🔒</span> Engineers write. Runs at git hooks &amp; CI.</p>
+    </div>
+
+    <!-- .json -->
+    <div class="type-card data">
+      <div>
+        <div class="ext">.json</div>
+        <div class="ext-sub">Data &amp; manifests</div>
+      </div>
+      <span class="card-role">Structured data</span>
+      <p class="card-body">
+        JSON holds static data, generated indexes, and package configuration.
+        In the startup loop specifically: email templates the MCP server uses,
+        shop inventory and product data, the stage-operator map the agent looks
+        up when routing between stages, and the discovery index that tracks
+        which plans are active. Unlike YAML, JSON is rarely written by hand —
+        it's either generated or maintained by tooling.
+      </p>
+      <div class="card-examples">
+        <div class="card-examples-label">Examples</div>
+        <div class="ex-list">
+          <span class="ex">email-templates.json</span>
+          <span class="ex">stage-operator-map.json</span>
+          <span class="ex">products.json</span>
+          <span class="ex">inventory.json</span>
+          <span class="ex">package.json</span>
+        </div>
+      </div>
+      <p class="who-line"><span class="who-icon">📦</span> Generated or tooling-maintained.</p>
+    </div>
+
+  </div>
+
+
+  <!-- RELATIONSHIP MAP -->
+  <hr>
+  <h2>How they relate to each other</h2>
+  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1rem;">
+    The loop has three layers. File types cluster by layer.
+  </p>
+
+  <div class="rel-wrap">
+    <div class="rel">
+      <div class="rel-col" style="background:var(--surface);">
+        <div class="rel-col-head">Layer A — Strategy &amp; Standing Knowledge</div>
+        <div class="rel-item" style="background:var(--c-human-bg);color:var(--c-human-text);">
+          <span class="rel-dot" style="background:var(--c-human);border-radius:2px;"></span>
+          <code>.user.md</code> — strategy docs you fill in
+        </div>
+        <div class="rel-item" style="background:var(--c-doc-bg);color:var(--c-doc-text);">
+          <span class="rel-dot" style="background:var(--c-doc);border-radius:2px;"></span>
+          <code>.md</code> — agent-written strategy packs
+        </div>
+        <div class="rel-item" style="background:var(--c-data-bg);color:var(--c-data-text);">
+          <span class="rel-dot" style="background:var(--c-data);border-radius:2px;"></span>
+          <code>.json</code> — shop data &amp; product inventory
+        </div>
+      </div>
+      <div class="rel-col" style="background:var(--surface);">
+        <div class="rel-col-head">Layer B — Feature Build Loop</div>
+        <div class="rel-item" style="background:var(--c-doc-bg);color:var(--c-doc-text);">
+          <span class="rel-dot" style="background:var(--c-doc);border-radius:2px;"></span>
+          <code>.md</code> — fact-find, plan, task artifacts
+        </div>
+        <div class="rel-item" style="background:var(--c-human-bg);color:var(--c-human-text);">
+          <span class="rel-dot" style="background:var(--c-human);border-radius:2px;"></span>
+          <code>.user.md</code> — build-record &amp; results-review
+        </div>
+        <div class="rel-item" style="background:var(--c-render-bg);color:var(--c-render-text);">
+          <span class="rel-dot" style="background:var(--c-render);border-radius:2px;"></span>
+          <code>.html</code> — operator dashboards &amp; guides
+        </div>
+      </div>
+      <div class="rel-col" style="background:var(--surface);">
+        <div class="rel-col-head">Infrastructure — Loop Machinery</div>
+        <div class="rel-item" style="background:var(--c-schema-bg);color:var(--c-schema-text);">
+          <span class="rel-dot" style="background:var(--c-schema);border-radius:2px;"></span>
+          <code>.yaml</code> — stage graph, routing rules
+        </div>
+        <div class="rel-item" style="background:var(--c-doc-bg);color:var(--c-doc-text);">
+          <span class="rel-dot" style="background:var(--c-doc);border-radius:2px;"></span>
+          <code>.md</code> — skill instructions &amp; contracts
+        </div>
+        <div class="rel-item" style="background:var(--c-code-bg);color:var(--c-code-text);">
+          <span class="rel-dot" style="background:var(--c-code);border-radius:2px;"></span>
+          <code>.ts</code> — runtime processors &amp; MCP tools
+        </div>
+        <div class="rel-item" style="background:var(--c-script-bg);color:var(--c-script-text);">
+          <span class="rel-dot" style="background:var(--c-script);border-radius:2px;"></span>
+          <code>.sh</code> — safety hooks &amp; CI gates
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- SUFFIX EXPLAINER -->
+  <hr>
+  <h2>The naming conventions that matter</h2>
+  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:0.8rem;">
+    Within <code>.md</code> files, the file name carries extra meaning.
+  </p>
+
+  <div class="suffix-grid">
+    <div class="suffix-card">
+      <div class="suffix-pat">&lt;name&gt;.md</div>
+      <div class="suffix-desc">Fully agent-produced. No action needed from you. Used as input by the next step in the pipeline.</div>
+    </div>
+    <div class="suffix-card">
+      <div class="suffix-pat">&lt;name&gt;.user.md</div>
+      <div class="suffix-desc">Human input required. Either you wrote it, or you need to confirm it before the loop advances.</div>
+    </div>
+    <div class="suffix-card">
+      <div class="suffix-pat">YYYY-MM-DD-&lt;name&gt;.user.md</div>
+      <div class="suffix-desc">Dated snapshot. One new file per run. History is preserved. Agent reads the most recent.</div>
+    </div>
+    <div class="suffix-card">
+      <div class="suffix-pat">&lt;BIZ&gt;-&lt;name&gt;.md</div>
+      <div class="suffix-desc">Per-business flat file. One file per business, overwritten on each run. Always reflects the latest.</div>
+    </div>
+    <div class="suffix-card">
+      <div class="suffix-pat">SKILL.md</div>
+      <div class="suffix-desc">Skill instruction file. Tells the agent exactly what a skill does, what it's allowed to do, and how to run it.</div>
+    </div>
+    <div class="suffix-card">
+      <div class="suffix-pat">&lt;name&gt;-r&lt;N&gt;.user.md</div>
+      <div class="suffix-desc">Revision suffix. Used when you go back for another round — r2, r4, etc. Common in naming sprints.</div>
+    </div>
+  </div>
+
+
+  <!-- ONE-LINE SUMMARY TABLE -->
+  <hr>
+  <h2>At a glance</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin:0.5rem 0;">
+    <thead>
+      <tr style="background:var(--surface);">
+        <th style="text-align:left;padding:0.55rem 0.75rem;font-weight:700;border-bottom:2px solid var(--border);">Extension</th>
+        <th style="text-align:left;padding:0.55rem 0.75rem;font-weight:700;border-bottom:2px solid var(--border);">Job in the startup loop</th>
+        <th style="text-align:left;padding:0.55rem 0.75rem;font-weight:700;border-bottom:2px solid var(--border);">Who touches it</th>
+        <th style="text-align:left;padding:0.55rem 0.75rem;font-weight:700;border-bottom:2px solid var(--border);">Volume</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);"><code>.md</code></td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Every document — plans, briefs, strategy, skill instructions</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Agent writes; you read</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">~1,200+</td>
+      </tr>
+      <tr>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);"><code>.user.md</code></td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Same as .md but flags human input is required</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">You write or confirm</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">~200+</td>
+      </tr>
+      <tr>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);"><code>.html</code></td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Polished visual guides and dashboards for the browser</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Agent writes; open to read</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">~80</td>
+      </tr>
+      <tr>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);"><code>.yaml</code></td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Stage graph, routing rules, schemas — the rules the loop follows</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Maintainers write; agent reads</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">~10</td>
+      </tr>
+      <tr>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);"><code>.ts</code></td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Runtime processors and MCP tools — the code that runs under the hood</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Engineers write; runs automatically</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">~250+</td>
+      </tr>
+      <tr>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);"><code>.sh</code></td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Safety gates — writer lock, pre-push checks, CI validation</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Engineers write; fires at git hooks</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">~45</td>
+      </tr>
+      <tr>
+        <td style="padding:0.5rem 0.75rem;border-bottom:none;"><code>.json</code></td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:none;">Static data, indexes, shop data, package manifests</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:none;">Generated or tooling-maintained</td>
+        <td style="padding:0.5rem 0.75rem;border-bottom:none;">~50+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);font-size:0.75rem;color:var(--text-muted);">
+    Startup Loop File Types Guide · Updated 2026-02-24 · Companion: <code>startup-loop-files.user.html</code> for the specific named files within each type.
+  </div>
+
+</main>
+</body>
+</html>

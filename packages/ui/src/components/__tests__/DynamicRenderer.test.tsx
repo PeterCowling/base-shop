@@ -34,7 +34,26 @@ const mockBlockRegistry = {
   },
 };
 
-jest.mock("../cms/blocks", () => ({ blockRegistry: mockBlockRegistry }));
+jest.mock("../cms/blocks", () => ({
+  blockRegistry: {
+    Parent: {
+      component: (props: unknown) => ParentComp(props),
+      getRuntimeProps: (_block: PageComponent, locale: string) => ({
+        foo: "runtimeProp",
+        fromRuntimeProps: `rp-${locale}`,
+      }),
+    },
+    Child: {
+      component: (props: unknown) => ChildComp(props),
+      getRuntimeProps: (block: any, locale: string) => ({
+        text: block.text[locale],
+      }),
+    },
+    Simple: {
+      component: (props: unknown) => SimpleComp(props),
+    },
+  },
+}));
 
 jest.mock("../cms/page-builder/scrollEffects", () => ({
   ensureScrollStyles: jest.fn(),

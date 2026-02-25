@@ -3,7 +3,9 @@
 /* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex -- HAND-0009 [ttl=2026-12-31]: hotspot overlay buttons positioned absolutely over 3D canvas with z-index layering */
 import { useEffect, useRef, useState } from "react";
 
-import { useTranslations } from "@acme/i18n";
+import { Button } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
+import { useTranslations } from "@acme/i18n/Translations";
 import type { ProductHotspotConfig } from "@acme/product-configurator";
 
 import { useCameraFocusStore } from "../state/cameraStore";
@@ -17,19 +19,15 @@ type HotspotOverlayProps = {
   onPersistOffsets?: (offsets: Record<string, { x: number; y: number }>) => void;
 };
 
-const HOTSPOT_ACTIVE_CLASSES =
-  // i18n-exempt -- HAND-0005 [ttl=2026-12-31]: CSS utility string, not user copy.
-  "border-primary bg-primary text-primary-foreground";
-const HOTSPOT_INACTIVE_CLASSES =
-  // i18n-exempt -- HAND-0005 [ttl=2026-12-31]: CSS utility string, not user copy.
-  "border-primary/60 bg-panel text-primary hover:border-primary";
-
 function HotspotGlyph({ active }: { active: boolean }) {
   return (
     <span
-      className={`relative flex h-7 w-7 items-center justify-center rounded-full border shadow-elevation-2 transition ${
-        active ? HOTSPOT_ACTIVE_CLASSES : HOTSPOT_INACTIVE_CLASSES
-      }`}
+      className={cn(
+        "relative flex h-7 w-7 items-center justify-center rounded-full border shadow-elevation-2 transition",
+        active
+          ? "border-primary bg-primary text-primary-foreground"
+          : "border-primary/60 bg-panel text-primary hover:border-primary",
+      )}
     >
       <span className="relative flex h-4 w-4 items-center justify-center">
         <svg
@@ -143,7 +141,7 @@ export function HotspotOverlay({
           <button
             key={hotspot.hotspotId}
             type="button"
-            className="min-h-11 min-w-11 group pointer-events-auto absolute z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-transform duration-150 ease-out active:scale-95"
+            className="min-h-11 min-w-11 group pointer-events-auto absolute z-base -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-transform duration-150 ease-out active:scale-95"
             style={{
               left: hotspot.screenX + offset.x,
               top: hotspot.screenY + offset.y,
@@ -187,13 +185,15 @@ export function HotspotOverlay({
         <div className="pointer-events-auto fixed bottom-24 start-6 handbag-hotspot-panel rounded-lg border border-border-1 bg-panel/95 p-3 handbag-caption text-muted-foreground shadow-elevation-2">
           <div className="flex items-center justify-between gap-2 uppercase handbag-tracking-label text-foreground">
             <span>{t("handbagConfigurator.hotspot.configTitle")}</span>
-            <button
-              type="button"
-              className="uppercase handbag-tracking-label text-primary min-h-11 min-w-11"
+            <Button
+              tone="ghost"
+              color="primary"
+              size="sm"
+              className="uppercase handbag-tracking-label"
               onClick={() => setConfigMode(false)}
             >
               {t("handbagConfigurator.hotspot.done")}
-            </button>
+            </Button>
           </div>
           <pre className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap handbag-caption text-muted-foreground">
             {JSON.stringify(offsets, null, 2)}

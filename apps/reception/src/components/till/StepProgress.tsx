@@ -41,13 +41,13 @@ const StepProgress: FC<StepProgressProps> = ({ step, onStepChange, user }) => {
                 aria-current={active ? 'step' : undefined}
                 className={`w-8 h-8 rounded-full border flex items-center justify-center ${
                   active
-                    ? 'bg-primary-main text-primary-fg dark:bg-darkAccentGreen'
-                    : 'bg-surface-3 text-muted-foreground dark:bg-darkSurface dark:text-darkAccentGreen'
+                    ? 'bg-primary-main text-primary-fg'
+                    : 'bg-surface-3 text-muted-foreground'
                 } ${clickable ? 'hover:bg-primary-light' : 'cursor-default'}`}
               >
                 {index + 1}
               </Button>
-              <span className="text-xs mt-1 dark:text-darkAccentGreen">{label}</span>
+              <span className="text-xs mt-1">{label}</span>
             </li>
           );
         })}

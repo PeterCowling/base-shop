@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { formatTimestamp } from "@acme/date-utils";
 import { useTranslations } from "@acme/i18n";
 import { useToast } from "@acme/ui/operations";
 
 import { Skeleton } from "@/components/atoms";
 import { Button,Card, CardContent } from "@/components/atoms/shadcn";
+import { formatTimestamp } from "@/lib/datetime";
 
 type Status = {
   origin?: string;

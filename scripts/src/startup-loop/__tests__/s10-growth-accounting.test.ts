@@ -8,6 +8,7 @@ import type { RunEvent } from "../derive-state";
 import { validateEventStream } from "../event-validation";
 import { runDiagnosisPipeline } from "../s10-diagnosis-integration";
 import { runS10GrowthAccounting } from "../s10-growth-accounting";
+import { FORECAST_STAGE_ID, WEEKLY_STAGE_CANDIDATES, WEEKLY_STAGE_ID } from "../stage-id-compat";
 
 function writeJson(filePath: string, value: unknown): void {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -23,13 +24,13 @@ function seedRunArtifacts(baseDir: string, business: string, runId: string): voi
     runId,
   );
 
-  writeJson(path.join(runDir, "stage-result-S3.json"), {
-    stage: "S3",
+  writeJson(path.join(runDir, `stage-result-${FORECAST_STAGE_ID}.json`), {
+    stage: FORECAST_STAGE_ID,
     status: "completed",
-    artifacts: { forecast: "stages/S3/forecast.json" },
+    artifacts: { forecast: `stages/${FORECAST_STAGE_ID}/forecast.json` },
   });
 
-  writeJson(path.join(runDir, "stages/S3/forecast.json"), {
+  writeJson(path.join(runDir, "stages", FORECAST_STAGE_ID, "forecast.json"), {
     targets: {
       traffic: 10000,
       cvr: 0.05,
@@ -40,13 +41,13 @@ function seedRunArtifacts(baseDir: string, business: string, runId: string): voi
     },
   });
 
-  writeJson(path.join(runDir, "stage-result-S10.json"), {
-    stage: "S10",
+  writeJson(path.join(runDir, `stage-result-${WEEKLY_STAGE_ID}.json`), {
+    stage: WEEKLY_STAGE_ID,
     status: "completed",
-    artifacts: { readout: "stages/S10/readout.json" },
+    artifacts: { readout: `stages/${WEEKLY_STAGE_ID}/readout.json` },
   });
 
-  writeJson(path.join(runDir, "stages/S10/readout.json"), {
+  writeJson(path.join(runDir, "stages", WEEKLY_STAGE_ID, "readout.json"), {
     actuals: {
       traffic: 8500,
       cvr: 0.025,
@@ -62,6 +63,41 @@ function seedRunArtifacts(baseDir: string, business: string, runId: string): voi
   });
 
   fs.writeFileSync(path.join(runDir, "events.jsonl"), "", "utf8");
+}
+
+function findWeeklyStageResultPath(
+  baseDir: string,
+  business: string,
+  runId: string,
+): string | null {
+  for (const stageId of WEEKLY_STAGE_CANDIDATES) {
+    const nested = path.join(
+      baseDir,
+      "docs/business-os/startup-baselines",
+      business,
+      "runs",
+      runId,
+      "stages",
+      stageId,
+      "stage-result.json",
+    );
+    if (fs.existsSync(nested)) {
+      return nested;
+    }
+
+    const legacy = path.join(
+      baseDir,
+      "docs/business-os/startup-baselines",
+      business,
+      "runs",
+      runId,
+      `stage-result-${stageId}.json`,
+    );
+    if (fs.existsSync(legacy)) {
+      return legacy;
+    }
+  }
+  return null;
 }
 
 describe("S10 growth accounting integration", () => {
@@ -149,15 +185,9 @@ describe("S10 growth accounting integration", () => {
     expect(result.growthEventPayload).not.toBeNull();
     expect(result.growthAccounting?.stageSummary.overall_status).toBe("red");
 
-    const stageResultPath = path.join(
-      tempDir,
-      "docs/business-os/startup-baselines",
-      business,
-      "runs",
-      runId,
-      "stages/S10/stage-result.json",
-    );
-    const stageResult = JSON.parse(fs.readFileSync(stageResultPath, "utf8"));
+    const stageResultPath = findWeeklyStageResultPath(tempDir, business, runId);
+    expect(stageResultPath).not.toBeNull();
+    const stageResult = JSON.parse(fs.readFileSync(stageResultPath!, "utf8"));
 
     expect(stageResult.artifacts.bottleneck_diagnosis).toBe("bottleneck-diagnosis.json");
     expect(stageResult.artifacts.growth_ledger).toContain("growth-ledger.json");

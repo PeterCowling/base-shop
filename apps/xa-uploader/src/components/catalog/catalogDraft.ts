@@ -1,4 +1,4 @@
-import { type CatalogProductDraftInput,slugify } from "../../lib/catalogAdminSchema";
+import { type CatalogProductDraftInput, slugify } from "@acme/lib/xa/catalogAdminSchema";
 
 export const EMPTY_TAXONOMY: CatalogProductDraftInput["taxonomy"] = {
   department: "women",

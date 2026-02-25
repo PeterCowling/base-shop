@@ -173,7 +173,14 @@ describe("guest email activity helper", () => {
     expect(decoded).not.toContain("Owner");
   });
 
-  it("defers unsupported activity codes without creating drafts", async () => {
+  it("creates first terms reminder draft for activity code 2", async () => {
+    const createDraftMock = jest
+      .fn()
+      .mockResolvedValue({ data: { id: "draft-2", message: { id: "msg-2" } } });
+    const { gmail } = buildGuestActivityGmailMock(createDraftMock);
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
     const result = await sendGuestEmailActivity({
       bookingRef: "BOOK123",
       activityCode: 2,
@@ -182,8 +189,82 @@ describe("guest email activity helper", () => {
 
     expect(result).toMatchObject({
       success: true,
+      status: "drafted",
+      subject: "Terms Reminder - Action Required",
+      draftId: "draft-2",
+      messageId: "msg-2",
+    });
+
+    const raw = createDraftMock.mock.calls[0][0].requestBody.message.raw as string;
+    const decoded = decodeRawEmail(raw);
+    expect(decoded).toContain("Subject: Terms Reminder - Action Required");
+  });
+
+  it("creates final terms reminder draft for activity code 3", async () => {
+    const createDraftMock = jest
+      .fn()
+      .mockResolvedValue({ data: { id: "draft-3", message: { id: "msg-3" } } });
+    const { gmail } = buildGuestActivityGmailMock(createDraftMock);
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await sendGuestEmailActivity({
+      bookingRef: "BOOK123",
+      activityCode: 3,
+      recipients: ["guest@example.com"],
+    });
+
+    expect(result).toMatchObject({
+      success: true,
+      status: "drafted",
+      subject: "Final Terms Reminder - Action Required",
+      draftId: "draft-3",
+      messageId: "msg-3",
+    });
+
+    const raw = createDraftMock.mock.calls[0][0].requestBody.message.raw as string;
+    const decoded = decodeRawEmail(raw);
+    expect(decoded).toContain("Subject: Final Terms Reminder - Action Required");
+  });
+
+  it("creates no-agreement cancellation draft for activity code 4", async () => {
+    const createDraftMock = jest
+      .fn()
+      .mockResolvedValue({ data: { id: "draft-4", message: { id: "msg-4" } } });
+    const { gmail } = buildGuestActivityGmailMock(createDraftMock);
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await sendGuestEmailActivity({
+      bookingRef: "BOOK123",
+      activityCode: 4,
+      recipients: ["guest@example.com"],
+    });
+
+    expect(result).toMatchObject({
+      success: true,
+      status: "drafted",
+      subject: "Why Pre-paid Booking Type Cancelled",
+      draftId: "draft-4",
+      messageId: "msg-4",
+    });
+
+    const raw = createDraftMock.mock.calls[0][0].requestBody.message.raw as string;
+    const decoded = decodeRawEmail(raw);
+    expect(decoded).toContain("Subject: Why Pre-paid Booking Type Cancelled");
+  });
+
+  it("defers unknown activity codes without creating drafts", async () => {
+    const result = await sendGuestEmailActivity({
+      bookingRef: "BOOK123",
+      activityCode: 999,
+      recipients: ["guest@example.com"],
+    });
+
+    expect(result).toMatchObject({
+      success: true,
       status: "deferred",
-      reason: "unsupported-activity-code",
+      reason: "unknown-activity-code",
     });
     expect(getGmailClientMock).not.toHaveBeenCalled();
 
@@ -197,7 +278,7 @@ describe("guest email activity helper", () => {
         expect.objectContaining({
           event_key: "email_draft_deferred",
           source_path: "reception",
-          reason: "unsupported-activity-code",
+          reason: "unknown-activity-code",
         }),
       ]),
     );

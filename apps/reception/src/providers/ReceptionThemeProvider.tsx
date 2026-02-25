@@ -144,11 +144,10 @@ const resolveUserName = (
 const bootstrapCanonicalMode = (userName: string | null): void => {
   const bootstrapMode =
     (userName ? readPreference(getUserStorageKey(userName)) : null) ??
-    readPreference(GLOBAL_STORAGE_KEY);
+    readPreference(GLOBAL_STORAGE_KEY) ??
+    "dark"; // Reception defaults to dark mode
 
-  if (bootstrapMode) {
-    writeCanonicalMode(bootstrapMode);
-  }
+  writeCanonicalMode(bootstrapMode);
 };
 
 function ReceptionThemeBridge({

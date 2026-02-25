@@ -2,7 +2,7 @@
 import { memo, useCallback, useState } from "react";
 
 import { Input } from "@acme/design-system";
-import { Button } from "@acme/design-system/atoms";
+import { SimpleModal } from "@acme/ui/molecules";
 
 import { showToast } from "../../utils/toastUtils";
 import PasswordReauthInline from "../common/PasswordReauthInline";
@@ -45,48 +45,33 @@ export const PettyCashForm = memo(function PettyCashForm({
 
   /** ---------- UI -------------------------------------------------------- */
   return (
-    <>
-      {/* Overlay */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/60 p-4">
-        {/* Modal */}
-        <div className="relative w-full max-w-sm rounded-lg bg-surface p-8 shadow-xl">
-          {/* Close button */}
-          <Button
-            onClick={handleCancel}
-            className="absolute right-3 top-3 h-7 w-7 rounded-full bg-error-main text-primary-fg transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
-            aria-label="Close"
-          >
-            &times;
-          </Button>
-
-          {/* Title */}
-          <h2 className="mb-6 text-center text-xl font-semibold">
-            Petty Cash Withdrawal
-          </h2>
-
-          {/* Input */}
-          <div className="flex flex-col gap-4">
-            <Input
-              compatibilityMode="no-wrapper"
-              type="number"
-              inputMode="decimal"
-              className="w-32 rounded border px-3 py-2 text-sm"
-              placeholder="Amount"
-              value={amount}
-              onChange={handleAmountChange}
-            />
-          </div>
-
-          {/* Reauth */}
-          <div className="mt-6">
-            <PasswordReauthInline
-              onSubmit={handleReauthSubmit}
-              submitLabel="Confirm withdrawal"
-            />
-          </div>
-        </div>
+    <SimpleModal
+      isOpen={true}
+      onClose={handleCancel}
+      title="Petty Cash Withdrawal"
+      maxWidth="max-w-sm"
+    >
+      {/* Input */}
+      <div className="flex flex-col gap-4">
+        <Input
+          compatibilityMode="no-wrapper"
+          type="number"
+          inputMode="decimal"
+          className="w-32 rounded border px-3 py-2 text-sm"
+          placeholder="Amount"
+          value={amount}
+          onChange={handleAmountChange}
+        />
       </div>
-    </>
+
+      {/* Reauth */}
+      <div className="mt-6">
+        <PasswordReauthInline
+          onSubmit={handleReauthSubmit}
+          submitLabel="Confirm withdrawal"
+        />
+      </div>
+    </SimpleModal>
   );
 });
 

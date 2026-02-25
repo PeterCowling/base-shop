@@ -1,5 +1,7 @@
 import {
+  clamp,
   type Hypothesis,
+  percentileNearestRank,
   type PortfolioMetadata,
   rankHypotheses,
 } from "@acme/lib";
@@ -37,15 +39,6 @@ export interface PrioritizeBridgeResult {
   items: PrioritizeBridgeItem[];
 }
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
-
-function nearestRank(sortedValues: number[], percentile: number): number {
-  const rank = Math.ceil(percentile * sortedValues.length);
-  return sortedValues[Math.max(0, Math.min(sortedValues.length - 1, rank - 1))];
-}
-
 function mapToPrioritizeScale(compositeScores: number[]): number[] {
   if (compositeScores.length === 0) {
     return [];
@@ -68,8 +61,8 @@ function mapToPrioritizeScale(compositeScores: number[]): number[] {
   }
 
   const sorted = [...compositeScores].sort((left, right) => left - right);
-  const p10 = nearestRank(sorted, 0.1);
-  const p90 = nearestRank(sorted, 0.9);
+  const p10 = percentileNearestRank(sorted, 0.1);
+  const p90 = percentileNearestRank(sorted, 0.9);
   if (p10 === p90) {
     return compositeScores.map(() => 3);
   }

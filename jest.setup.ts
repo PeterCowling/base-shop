@@ -253,8 +253,14 @@ if (__mswServer) {
       __mswServer?.close?.();
     } catch (error) {
       // MSW 2.x can throw when tearing down fetch interceptors in jsdom.
-      // Tests are finished at this point, so swallow the teardown failure.
-      if (process.env.CI) {
+      // Ignore known interceptor teardown bug, but keep failing CI for other errors.
+      const message = error instanceof Error ? error.message : String(error);
+      const isKnownMswTeardownIssue =
+        /Object\.defineProperty called on non-object/i.test(message) &&
+        (error instanceof Error
+          ? /@mswjs\/interceptors|SetupServerApi\.close/.test(error.stack ?? "")
+          : false);
+      if (process.env.CI && !isKnownMswTeardownIssue) {
         throw error;
       }
     }

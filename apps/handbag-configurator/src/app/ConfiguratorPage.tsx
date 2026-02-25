@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { useTranslations } from "@acme/i18n";
+import { Alert } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/primitives";
+import { useTranslations } from "@acme/i18n/Translations";
 import type {
   ProductConfigSchema,
   SelectionState,
@@ -170,8 +172,8 @@ export function ConfiguratorPage({ schema, apiOrigin, error }: ConfiguratorPageP
         />
 
         {error ? (
-          <div className="absolute start-6 top-6 handbag-alert rounded-2xl border border-danger/30 bg-danger-soft p-4 text-xs text-danger-foreground">
-            {error}
+          <div className="absolute start-6 top-6 handbag-alert">
+            <Alert variant="danger">{error}</Alert>
           </div>
         ) : null}
 
@@ -184,30 +186,36 @@ export function ConfiguratorPage({ schema, apiOrigin, error }: ConfiguratorPageP
           {...(schema ? { schema } : {})}
         />
 
-        <div className="pointer-events-none absolute bottom-6 start-1/2 flex -translate-x-1/2 items-center gap-6 text-sm text-primary">
-          <button
-            type="button"
-            className="pointer-events-auto min-h-11 min-w-11 rounded-md px-3 py-2 transition hover:text-primary/80"
+        <div className="pointer-events-none absolute bottom-6 start-1/2 flex -translate-x-1/2 items-center gap-3 text-sm sm:gap-6">
+          <Button
+            tone="ghost"
+            color="primary"
+            size="sm"
+            className="pointer-events-auto"
             onClick={handleDone}
           >
             {t("handbagConfigurator.action.done")}
-          </button>
-        <span className="h-6 w-px bg-border-1" aria-hidden="true" />
-          <button
-            type="button"
-            className="pointer-events-auto min-h-11 min-w-11 rounded-md px-3 py-2 transition hover:text-primary/80"
+          </Button>
+          <span className="h-6 w-px bg-border-1" aria-hidden="true" />
+          <Button
+            tone="ghost"
+            color="primary"
+            size="sm"
+            className="pointer-events-auto"
             onClick={() => {}}
           >
-          {t("handbagConfigurator.action.saveShare")}
-          </button>
-        <span className="h-6 w-px bg-border-1" aria-hidden="true" />
-          <button
-            type="button"
-            className="pointer-events-auto min-h-11 min-w-11 rounded-md px-3 py-2 transition hover:text-primary/80"
+            {t("handbagConfigurator.action.saveShare")}
+          </Button>
+          <span className="h-6 w-px bg-border-1" aria-hidden="true" />
+          <Button
+            tone="ghost"
+            color="primary"
+            size="sm"
+            className="pointer-events-auto"
             onClick={handleReset}
           >
             {t("handbagConfigurator.action.blankBag")}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

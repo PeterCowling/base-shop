@@ -8,6 +8,8 @@
  * See kpiWriter.ts for persistence and kpiReader.ts for retrieval.
  */
 
+import { mean as libMean, median as libMedian } from "@acme/lib/math/statistics";
+
 /**
  * Daily KPI record stored in Firebase at ownerKpis/{date}
  * All percentages are 0-100, all counts are non-negative integers.
@@ -98,15 +100,8 @@ function computeReadinessScore(checklist: ChecklistProgress | undefined): number
  * Returns 0 for empty arrays.
  */
 function median(values: number[]): number {
-  if (values.length === 0) return 0;
-
-  const sorted = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-
-  if (sorted.length % 2 === 0) {
-    return (sorted[mid - 1] + sorted[mid]) / 2;
-  }
-  return sorted[mid];
+  const result = libMedian(values);
+  return Number.isNaN(result) ? 0 : result;
 }
 
 /**
@@ -175,7 +170,7 @@ export function aggregateDailyKpis(date: string, data: RawDayData): DailyKpiReco
   );
   const avgReadiness =
     readinessScores.length > 0
-      ? readinessScores.reduce((sum, score) => sum + score, 0) / readinessScores.length
+      ? libMean(readinessScores)
       : 0;
 
   // Compute ETA submission percentage

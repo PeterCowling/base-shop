@@ -1,23 +1,84 @@
 "use client";
 
-
 import * as React from "react";
 import Link from "next/link";
 
 import { Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
 import { Section } from "@acme/design-system/atoms/Section";
 
-import { findOrderByNumber, orderTotal, type XaOrder } from "../../../../lib/ordersStore";
-import { xaI18n } from "../../../../lib/xaI18n";
+type OrderDetail = {
+  id: string;
+  number: string;
+  status: string;
+  currency: string;
+  total: number;
+  lines: Array<{
+    title: string;
+    size?: string;
+    qty: number;
+    unitPrice: number;
+  }>;
+};
 
 export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
-  const [order, setOrder] = React.useState<XaOrder | null>(null);
+  const [order, setOrder] = React.useState<OrderDetail | null>(null);
   const [loading, setLoading] = React.useState(true);
+  const [authenticated, setAuthenticated] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    setLoading(true);
-    setOrder(findOrderByNumber(orderNumber));
-    setLoading(false);
+    let cancelled = false;
+
+    const loadOrder = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(
+          `/api/account/orders/${encodeURIComponent(orderNumber)}`,
+          { cache: "no-store" },
+        );
+
+        if (response.status === 401) {
+          if (!cancelled) {
+            setAuthenticated(false);
+            setOrder(null);
+          }
+          return;
+        }
+
+        if (response.status === 404) {
+          if (!cancelled) {
+            setAuthenticated(true);
+            setOrder(null);
+          }
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error("load_failed");
+        }
+
+        const payload = (await response.json()) as { order?: OrderDetail };
+        if (!cancelled) {
+          setAuthenticated(true);
+          setOrder(payload.order ?? null);
+        }
+      } catch {
+        if (!cancelled) {
+          setError("Unable to load this order right now."); // i18n-exempt -- XA-0111: account UX copy
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void loadOrder();
+
+    return () => {
+      cancelled = true;
+    };
   }, [orderNumber]);
 
   if (loading) {
@@ -28,8 +89,35 @@ export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
         </Section>
         <Section padding="default">
           <div className="rounded-lg border p-6 text-sm text-muted-foreground">
-            Loading…
+            Loading...
           </div>
+        </Section>
+      </main>
+    );
+  }
+
+  if (!authenticated) {
+    return (
+      <main className="sf-content">
+        <Section padding="wide">
+          <h1 className="text-2xl font-semibold">Order</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Sign in to view this order.</p>
+        </Section>
+        <Section padding="default">
+          <Link href="/account/login" className="underline">Login</Link>
+        </Section>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="sf-content">
+        <Section padding="wide">
+          <h1 className="text-2xl font-semibold">Order</h1>
+        </Section>
+        <Section padding="default">
+          <div className="rounded-md border border-danger/30 bg-danger/5 p-3 text-sm">{error}</div>
         </Section>
       </main>
     );
@@ -39,11 +127,11 @@ export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
     return (
       <main className="sf-content">
         <Section padding="wide">
-          <h1 className="text-2xl font-semibold">{xaI18n.t("xaB.src.app.account.orders.orderid.orderdetail.client.l41c50")}</h1>
-          <p className="mt-2 text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.account.orders.orderid.orderdetail.client.l42c61")}</p>
+          <h1 className="text-2xl font-semibold">Order not found</h1>
+          <p className="mt-2 text-sm text-muted-foreground">This order could not be found.</p>
         </Section>
         <Section padding="default">
-          <Link href="/account/orders" className="underline">{xaI18n.t("xaB.src.app.account.orders.orderid.orderdetail.client.l47c62")}</Link>
+          <Link href="/account/orders" className="underline">Back to your orders</Link>
         </Section>
       </main>
     );
@@ -89,7 +177,7 @@ export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
                   Total
                 </TableCell>
                 <TableCell className="text-end font-semibold">
-                  <Price amount={orderTotal(order)} currency={order.currency} />
+                  <Price amount={order.total} currency={order.currency} />
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -97,8 +185,8 @@ export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link href="/account/orders" className="underline">{xaI18n.t("xaB.src.app.account.orders.orderid.orderdetail.client.l103c62")}</Link>
-          <Link href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.account.orders.orderid.orderdetail.client.l106c69")}</Link>
+          <Link href="/account/orders" className="underline">Back to your orders</Link>
+          <Link href="/account/trackingorder" className="underline">Track order</Link>
         </div>
       </Section>
     </main>

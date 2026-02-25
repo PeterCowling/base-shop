@@ -20,7 +20,7 @@ import { useCart } from "../contexts/XaCartContext";
 import type { XaProduct } from "../lib/demoData";
 import { siteConfig } from "../lib/siteConfig";
 import { useXaListingFilters } from "../lib/useXaListingFilters";
-import { ALL_FILTER_KEYS, type SortKey } from "../lib/xaFilters";
+import type { SortKey } from "../lib/xaFilters";
 import { xaI18n } from "../lib/xaI18n";
 import type { XaCategory } from "../lib/xaTypes";
 
@@ -59,7 +59,6 @@ export function XaProductListing({
     facetValues,
     filteredProducts,
     appliedChips,
-    hasAppliedFilters,
     draftValues,
     draftInStock,
     draftSale,
@@ -83,15 +82,6 @@ export function XaProductListing({
     filtersOpen,
   });
 
-  const draftHasSelections =
-    draftInStock ||
-    draftSale ||
-    draftNewIn ||
-    Boolean(draftMin.trim() || draftMax.trim()) ||
-    ALL_FILTER_KEYS.some((key) => draftValues[key].size > 0);
-
-  const effectiveFiltersOpen = filtersOpen || hasAppliedFilters;
-
   return (
     <main className="sf-content">
       <Section padding="default">
@@ -107,12 +97,8 @@ export function XaProductListing({
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <XaFiltersDrawer
-                open={effectiveFiltersOpen}
-                onOpenChange={(next) => {
-                  // Keep the drawer visible while filters are applied; allow closing once none remain.
-                  if (!next && hasAppliedFilters) return;
-                  setFiltersOpen(next);
-                }}
+                open={filtersOpen}
+                onOpenChange={setFiltersOpen}
                 filterConfigs={filterConfigs}
                 facetValues={facetValues}
                 draftValues={draftValues}
@@ -130,8 +116,7 @@ export function XaProductListing({
                 onClear={clearAllDraft}
                 onApply={() => {
                   applyFilters();
-                  // Keep drawer open if a selection exists; otherwise close.
-                  setFiltersOpen(draftHasSelections);
+                  setFiltersOpen(false);
                 }}
               />
 

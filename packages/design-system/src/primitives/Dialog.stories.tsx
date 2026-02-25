@@ -39,3 +39,19 @@ export const Default: Story = {
     </Dialog>
   ),
 };
+
+export const SquareCorners: Story = {
+  render: () => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Open square dialog</Button>
+      </DialogTrigger>
+      <DialogContent shape="square">
+        <DialogHeader>
+          <DialogTitle>Square dialog</DialogTitle>
+          <DialogDescription>Square corners for utilitarian workflows.</DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  ),
+};

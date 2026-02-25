@@ -4,11 +4,11 @@ import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import type { CatalogProductDraftInput } from "./catalogAdminSchema";
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
 import { XA_PRODUCTS_CSV_MUTABLE_COLUMNS } from "./catalogCsvColumns";
-import { buildCsvHeader, readCsvFile, writeCsvFileAtomically, type XaProductsCsvRow } from "./catalogCsvFormat";
-import { buildCsvRowUpdateFromDraft, rowToDraftInput } from "./catalogCsvMapping";
-import { slugify } from "./catalogAdminSchema";
+import { buildCsvHeader, readCsvFile, writeCsvFileAtomically, type XaProductsCsvRow } from "@acme/lib/xa";
+import { buildCsvRowUpdateFromDraft, rowToDraftInput } from "@acme/lib/xa";
+import { slugify } from "@acme/lib/xa";
 import { resolveCatalogProductsCsvPath } from "./catalogStorefront.server";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 

@@ -42,24 +42,9 @@
       "path": ".claude/skills/draft-whatsapp/SKILL.md"
     },
     {
-      "name": "frontend-design",
-      "description": "Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. Combines bold creative direction with token-constrained implementation.",
-      "path": ".claude/skills/frontend-design/SKILL.md"
-    },
-    {
       "name": "guide-translate",
       "description": "Propagate updated EN guide content to all locales using parallel translation. Requires EN audit to be clean first.",
       "path": ".claude/skills/guide-translate/SKILL.md"
-    },
-    {
-      "name": "idea-advance",
-      "description": "Propose lane transitions for Business OS cards based on stage document evidence and completion criteria.",
-      "path": ".claude/skills/idea-advance/SKILL.md"
-    },
-    {
-      "name": "idea-develop",
-      "description": "Convert a raw idea from inbox to a worked idea with card and initial Fact-find stage doc using agent APIs.",
-      "path": ".claude/skills/idea-develop/SKILL.md"
     },
     {
       "name": "idea-forecast",
@@ -70,11 +55,6 @@
       "name": "idea-generate",
       "description": "Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking.",
       "path": ".claude/skills/idea-generate/SKILL.md"
-    },
-    {
-      "name": "idea-readiness",
-      "description": "Readiness gate for idea generation. Use before /idea-generate, or whenever plans/context may be stale. Audit business-plan freshness, outcome clarity, code-to-plan traceability, tooling/data availability, and market-research freshness; fail closed on critical gaps; ask targeted questions to collect missing information and update source docs before allowing idea generation.",
-      "path": ".claude/skills/idea-readiness/SKILL.md"
     },
     {
       "name": "idea-scan",
@@ -182,6 +162,11 @@
       "path": ".claude/skills/lp-do-assessment-12-promote/SKILL.md"
     },
     {
+      "name": "lp-do-briefing",
+      "description": "Produce an understanding-only system briefing — how something works now, traced end-to-end with evidence pointers. No planning artifacts or tasks. Use when you need current-behavior understanding without committing to a plan.",
+      "path": ".claude/skills/lp-do-briefing/SKILL.md"
+    },
+    {
       "name": "lp-do-build",
       "description": "Thin build orchestrator. Executes one runnable task per cycle from an approved plan using canonical gates, track-specific executors, and shared ops utilities.",
       "path": ".claude/skills/lp-do-build/SKILL.md"
@@ -193,13 +178,18 @@
     },
     {
       "name": "lp-do-fact-find",
-      "description": "Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits planning or briefing artifacts with a shared schema.",
+      "description": "Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits planning artifacts ready for /lp-do-plan. For understanding-only briefings, use /lp-do-briefing.",
       "path": ".claude/skills/lp-do-fact-find/SKILL.md"
     },
     {
       "name": "lp-do-factcheck",
       "description": "Verify the accuracy of statements in markdown documents by auditing the actual repository state. Directly fix inaccuracies in-place rather than producing a separate report.",
       "path": ".claude/skills/lp-do-factcheck/SKILL.md"
+    },
+    {
+      "name": "lp-do-ideas",
+      "description": "Trial-mode idea orchestrator. Ingests standing-artifact delta events and emits schema-valid dispatch packets routed to lp-do-fact-find or lp-do-briefing. Trial mode only — does not mutate startup-loop stage state.",
+      "path": ".claude/skills/lp-do-ideas/SKILL.md"
     },
     {
       "name": "lp-do-plan",
@@ -210,6 +200,11 @@
       "name": "lp-do-replan",
       "description": "Thin orchestrator for resolving low-confidence plan tasks with evidence, explicit precursor tasks, stable task IDs, and checkpoint-aware reassessment.",
       "path": ".claude/skills/lp-do-replan/SKILL.md"
+    },
+    {
+      "name": "lp-do-sequence",
+      "description": "Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata to enable parallel subagent execution.",
+      "path": ".claude/skills/lp-do-sequence/SKILL.md"
     },
     {
       "name": "lp-experiment",
@@ -277,11 +272,6 @@
       "path": ".claude/skills/lp-seo/SKILL.md"
     },
     {
-      "name": "lp-sequence",
-      "description": "Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata to enable parallel subagent execution.",
-      "path": ".claude/skills/lp-sequence/SKILL.md"
-    },
-    {
       "name": "lp-signal-review",
       "description": "Weekly signal strengthening review for startup loop runs. Audits a run against ten structural signal-strengthening principles, scores each on Severity × Support axes, identifies top findings, and emits a Signal Review artifact with ranked Finding Briefs (quality check — what went wrong this run) and Process-Improvement Stubs (continuous improvement — which process artifact caused it and what to change).",
       "path": ".claude/skills/lp-signal-review/SKILL.md"
@@ -340,6 +330,21 @@
       "name": "startup-loop",
       "description": "Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks. Routes to lp-* stage skills at each stage.",
       "path": ".claude/skills/startup-loop/SKILL.md"
+    },
+    {
+      "name": "tools-ui-breakpoint-sweep",
+      "description": "Open the app at user-specified viewport widths and systematically detect responsive layout failures (overflow/bleed, clipping, misalignment, broken reflow). Produces a screenshot-backed issue log with repro steps and fix hypotheses.",
+      "path": ".claude/skills/tools-web-breakpoint/SKILL.md"
+    },
+    {
+      "name": "tools-ui-contrast-sweep",
+      "description": "At user-specified breakpoints, audit the UI for contrast failures (text/background, icons, controls, focus indicators) and visual-uniformity drift (inconsistent tokens, typography, spacing, component variants). Produces screenshot-backed findings with WCAG-aligned thresholds and fix hypotheses.",
+      "path": ".claude/skills/tools-ui-contrast-sweep/SKILL.md"
+    },
+    {
+      "name": "tools-ui-frontend-design",
+      "description": "Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. Combines bold creative direction with token-constrained implementation.",
+      "path": ".claude/skills/frontend-design/SKILL.md"
     }
   ]
 }

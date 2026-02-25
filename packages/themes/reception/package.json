@@ -1,0 +1,24 @@
+{
+  "name": "@themes/reception",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "src",
+    "tokens.css"
+  ],
+  "main": "./src/tokens.ts",
+  "exports": {
+    ".": "./src/tokens.ts",
+    "./tokens": "./src/tokens.ts",
+    "./tailwind-tokens": "./src/tailwind-tokens.ts",
+    "./tokens.css": "./tokens.css"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "lint": "eslint . --no-error-on-unmatched-pattern"
+  },
+  "dependencies": {
+    "@themes/base": "workspace:*"
+  }
+}

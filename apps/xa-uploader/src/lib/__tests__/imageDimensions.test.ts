@@ -6,7 +6,7 @@ import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
-import { readImageDimensions } from "../imageDimensions";
+import { readImageDimensions } from "@acme/lib/xa";
 
 function makeWebpVp8x(width: number, height: number): Buffer {
   const chunkData = Buffer.alloc(10);

@@ -1207,7 +1207,7 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 | DGP created (data gap) | Next sweep with `improve-data` stance | DGP pickup for investigation |
 | DGP created (timing gap) | Trigger condition met | Re-evaluate when trigger fires |
 | DGP created (dependency gap) | Prerequisite work completes | Re-evaluate after dependency resolved |
-| DGP resurfaced (ready-now) | `/idea-develop <idea-id>` -> `/lp-do-fact-find <card-id>` | Convert resurfaced idea to card, then execute investigation |
+| DGP resurfaced (ready-now) | `/lp-do-ideas` -> `/lp-do-fact-find <card-id>` | Route resurfaced idea into dispatch intake, then execute investigation |
 | Technical cabinet not triggered | Next sweep with trigger conditions | Run occurs automatically when stance/flags/diff artifacts trigger |
 
 ---

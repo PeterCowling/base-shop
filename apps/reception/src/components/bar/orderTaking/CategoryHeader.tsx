@@ -143,7 +143,7 @@ const CategoryHeader: FC<CategoryHeaderProps> = React.memo(
               /* styling ----------------------------------------------------- */
               compatibilityMode="passthrough"
               data-selected={selectedCategory === cat}
-              className={`relative flex-shrink-0 snap-start whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold uppercase tracking-wide transition
+              className={`relative flex-shrink-0 snap-start whitespace-nowrap rounded-lg px-4 py-2 min-h-11 text-sm font-semibold uppercase tracking-wide transition
                           ${bg} ${hover} ${text}
                           opacity-[0.85] hover:opacity-100
                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80

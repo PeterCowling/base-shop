@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 
-import { validateShopName } from "@acme/lib";
+import { validateShopName } from "@acme/lib/validateShopName";
 import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 
 import type { SegmentDef } from "./filters";

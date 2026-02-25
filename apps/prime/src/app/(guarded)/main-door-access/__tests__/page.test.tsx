@@ -92,4 +92,41 @@ describe('MainDoorAccessPage', () => {
 
     expect(screen.getByText('mainDoor.staleWarning')).toBeInTheDocument();
   });
+
+  it('TC-04: renders offline/no-cache warning when offline and no code exists', () => {
+    mockUseCheckInCode.mockReturnValue({
+      code: null,
+      isLoading: false,
+      isError: false,
+      errorMessage: null,
+      isStale: false,
+      isOffline: true,
+      refetch: jest.fn(),
+      generateCode: jest.fn(),
+    });
+
+    render(<MainDoorAccessPage />);
+
+    expect(screen.getByText('mainDoor.offlineNoCode')).toBeInTheDocument();
+  });
+
+  it('TC-05: refreshes code when refresh button is pressed', () => {
+    const refetchMock = jest.fn();
+    mockUseCheckInCode.mockReturnValue({
+      code: null,
+      isLoading: false,
+      isError: false,
+      errorMessage: null,
+      isStale: false,
+      isOffline: false,
+      refetch: refetchMock,
+      generateCode: jest.fn(),
+    });
+
+    render(<MainDoorAccessPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'mainDoor.refreshCode' }));
+
+    expect(refetchMock).toHaveBeenCalledTimes(1);
+  });
 });

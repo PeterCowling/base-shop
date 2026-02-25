@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier } from "dnd-core";
 
-import { ReceptionTableCell as TableCell } from "@acme/ui/operations";
+import { TableCell } from "@acme/design-system";
 
 import {
   ItemTypes,
@@ -34,6 +34,14 @@ interface RowCellProps<TCustomStatus extends string = never> {
   theme: TTheme<TCustomStatus>;
 }
 
+function isFreeDayType(dayType: TDayType): boolean {
+  return dayType === "single.free" || dayType === "free";
+}
+
+function isDisabledDayType(dayType: TDayType): boolean {
+  return dayType === "single.disabled" || dayType === "disabled";
+}
+
 const RowCell = <TCustomStatus extends string = never>({
   cell,
   periods,
@@ -56,7 +64,8 @@ const RowCell = <TCustomStatus extends string = never>({
 
   // Booking status for the given date
   const { dayType, dayStatus } = dateUtils.getDayParams(cellDate, periods);
-  const isBooked = dayType !== "free" && dayType !== "disabled";
+  const isBooked = !isFreeDayType(dayType) && !isDisabledDayType(dayType);
+  const canDropOnCell = isFreeDayType(dayType);
 
   // Find the enclosing period if the cell is booked
   const currentPeriod = isBooked
@@ -76,7 +85,7 @@ const RowCell = <TCustomStatus extends string = never>({
       handlerId: monitor.getHandlerId(),
       isOver: monitor.isOver(),
     }),
-    canDrop: () => dayType === "free",
+    canDrop: () => canDropOnCell,
     drop: (item, monitor) => {
       if (!monitor.didDrop() && onReservationMove && roomNumber) {
         const payload: ReservationMovePayload<TCustomStatus> = {
@@ -127,12 +136,14 @@ const RowCell = <TCustomStatus extends string = never>({
     "rvg-clickable": !isDragging,
     dragging: isDragging,
     "drop-over": isOver,
-    "can-drop": dayType === "free" && isOver,
-    "cannot-drop": dayType !== "free" && isOver,
+    "can-drop": canDropOnCell && isOver,
+    "cannot-drop": !canDropOnCell && isOver,
   });
 
-  const topColor = theme["date.status"][dayStatus[0]];
-  const bottomColor = theme["date.status"][dayStatus[1]];
+  const topStatus = (dayStatus[0] ?? "free") as TDateStatus<TCustomStatus>;
+  const bottomStatus = (dayStatus[1] ?? topStatus) as TDateStatus<TCustomStatus>;
+  const topColor = theme["date.status"][topStatus];
+  const bottomColor = theme["date.status"][bottomStatus];
 
   return (
     <TableCell

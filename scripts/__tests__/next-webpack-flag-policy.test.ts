@@ -24,8 +24,8 @@ function runCheck(args: string[], repoRoot: string): { status: number | null; st
   };
 }
 
-describe("Next.js command policy matrix check", () => {
-  test("fails when apps/**/package.json script contains next build without --webpack", () => {
+describe("Next.js command policy matrix check (Turbopack final mode)", () => {
+  test("fails when apps/**/package.json script contains next build with --webpack", () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
     writeFile(
       path.join(tmp, "apps/foo/package.json"),
@@ -33,8 +33,7 @@ describe("Next.js command policy matrix check", () => {
         {
           name: "@apps/foo",
           scripts: {
-            dev: "next dev --webpack -p 3000",
-            build: "next build",
+            build: "next build --webpack",
           },
         },
         null,
@@ -46,10 +45,10 @@ describe("Next.js command policy matrix check", () => {
     expect(r.status).toBe(1);
     expect(r.stderr).toContain("POLICY VIOLATION");
     expect(r.stderr).toContain("apps/foo/package.json");
-    expect(r.stderr).toContain("script \"build\"");
+    expect(r.stderr).toContain("with forbidden --webpack");
   });
 
-  test("fails when one command segment is missing --webpack (multi-command script)", () => {
+  test("fails when one command segment includes --webpack (multi-command script)", () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
     writeFile(
       path.join(tmp, "packages/bar/package.json"),
@@ -57,7 +56,7 @@ describe("Next.js command policy matrix check", () => {
         {
           name: "@packages/bar",
           scripts: {
-            dev: "next dev --webpack -p 3000 && next build",
+            dev: "next dev -p 3000 && next build --webpack",
           },
         },
         null,
@@ -68,127 +67,18 @@ describe("Next.js command policy matrix check", () => {
     const r = runCheck(["--paths", "packages/bar/package.json"], tmp);
     expect(r.status).toBe(1);
     expect(r.stderr).toContain("next build");
-    expect(r.stderr).toContain("without --webpack");
+    expect(r.stderr).toContain("with forbidden --webpack");
   });
 
-  test("passes for Brikette package dev without --webpack when build still includes --webpack", () => {
+  test("passes when next dev/build scripts do not use --webpack", () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
     writeFile(
-      path.join(tmp, "apps/brikette/package.json"),
+      path.join(tmp, "apps/ok/package.json"),
       JSON.stringify(
         {
-          name: "@apps/brikette",
+          name: "@apps/ok",
           scripts: {
-            dev: "next dev -p 3012",
-            build: "next build --webpack",
-          },
-        },
-        null,
-        2,
-      ),
-    );
-
-    const r = runCheck(["--paths", "apps/brikette/package.json"], tmp);
-    expect(r.status).toBe(0);
-    expect(r.stderr).toBe("");
-  });
-
-  test("passes for Brikette package build without --webpack (TC-01: Turbopack allowed)", () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
-    writeFile(
-      path.join(tmp, "apps/brikette/package.json"),
-      JSON.stringify(
-        {
-          name: "@apps/brikette",
-          scripts: {
-            dev: "next dev -p 3012",
-            build: "next build",
-          },
-        },
-        null,
-        2,
-      ),
-    );
-
-    const r = runCheck(["--paths", "apps/brikette/package.json"], tmp);
-    expect(r.status).toBe(0);
-    expect(r.stderr).toBe("");
-  });
-
-  test("passes for reception dev without --webpack (Turbopack allowed)", () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
-    writeFile(
-      path.join(tmp, "apps/reception/package.json"),
-      JSON.stringify(
-        {
-          name: "@apps/reception",
-          scripts: {
-            dev: "next dev -p 3020",
-            build: "next build",
-          },
-        },
-        null,
-        2,
-      ),
-    );
-
-    const r = runCheck(["--paths", "apps/reception/package.json"], tmp);
-    expect(r.status).toBe(0);
-    expect(r.stderr).toBe("");
-  });
-
-  test("passes for caryina package build without --webpack (migration wave S1)", () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
-    writeFile(
-      path.join(tmp, "apps/caryina/package.json"),
-      JSON.stringify(
-        {
-          name: "@apps/caryina",
-          scripts: {
-            dev: "next dev -p 3018",
-            build: "next build",
-          },
-        },
-        null,
-        2,
-      ),
-    );
-
-    const r = runCheck(["--paths", "apps/caryina/package.json"], tmp);
-    expect(r.status).toBe(0);
-    expect(r.stderr).toBe("");
-  });
-
-  test("fails closed for template-app build without --webpack (TC-03: non-Brikette fail-closed)", () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
-    writeFile(
-      path.join(tmp, "apps/template-app/package.json"),
-      JSON.stringify(
-        {
-          name: "@acme/template-app",
-          scripts: {
-            build: "next build",
-          },
-        },
-        null,
-        2,
-      ),
-    );
-
-    const r = runCheck(["--paths", "apps/template-app/package.json"], tmp);
-    expect(r.status).toBe(1);
-    expect(r.stderr).toContain("apps/template-app/package.json");
-    expect(r.stderr).toContain('script "build"');
-  });
-
-  test("fails closed for business-os build without --webpack (TC-04: non-Brikette fail-closed)", () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
-    writeFile(
-      path.join(tmp, "apps/business-os/package.json"),
-      JSON.stringify(
-        {
-          name: "@apps/business-os",
-          scripts: {
+            dev: "next dev -p 3000",
             build: "pnpm exec next build",
           },
         },
@@ -197,68 +87,34 @@ describe("Next.js command policy matrix check", () => {
       ),
     );
 
-    const r = runCheck(["--paths", "apps/business-os/package.json"], tmp);
-    expect(r.status).toBe(1);
-    expect(r.stderr).toContain("apps/business-os/package.json");
-    expect(r.stderr).toContain('script "build"');
-  });
-
-  test("passes for Brikette workflow with next build without --webpack (TC-07: WORKFLOW_APP_MATRIX path)", () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
-    writeFile(
-      path.join(tmp, ".github/workflows/brikette.yml"),
-      [
-        "name: Brikette",
-        "on: [push]",
-        "jobs:",
-        "  build:",
-        "    runs-on: ubuntu-latest",
-        "    steps:",
-        "      - run: pnpm exec next build",
-      ].join("\n"),
-    );
-
-    const r = runCheck(["--paths", ".github/workflows/brikette.yml"], tmp);
+    const r = runCheck(["--paths", "apps/ok/package.json"], tmp);
     expect(r.status).toBe(0);
     expect(r.stderr).toBe("");
   });
 
-  test("passes for Prime workflow with next build without --webpack (migration wave S1 workflow mapping)", () => {
+  test("passes when package scripts do not invoke next dev/build", () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
     writeFile(
-      path.join(tmp, ".github/workflows/prime.yml"),
-      [
-        "name: Prime",
-        "on: [push]",
-        "jobs:",
-        "  build:",
-        "    runs-on: ubuntu-latest",
-        "    steps:",
-        "      - run: pnpm exec next build",
-      ].join("\n"),
-    );
-
-    const r = runCheck(["--paths", ".github/workflows/prime.yml"], tmp);
-    expect(r.status).toBe(0);
-    expect(r.stderr).toBe("");
-  });
-
-  test("passes when all relevant next invocations include --webpack", () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
-    writeFile(
-      path.join(tmp, "apps/foo/package.json"),
+      path.join(tmp, "apps/other/package.json"),
       JSON.stringify(
         {
-          name: "@apps/foo",
+          name: "@apps/other",
           scripts: {
-            dev: "next dev --webpack -p 3000",
-            build: "pnpm exec next build --webpack",
+            lint: "eslint .",
           },
         },
         null,
         2,
       ),
     );
+
+    const r = runCheck(["--paths", "apps/other/package.json"], tmp);
+    expect(r.status).toBe(0);
+    expect(r.stderr).toBe("");
+  });
+
+  test("fails for workflow using next build with --webpack", () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
     writeFile(
       path.join(tmp, ".github/workflows/ci.yml"),
       [
@@ -272,53 +128,13 @@ describe("Next.js command policy matrix check", () => {
       ].join("\n"),
     );
 
-    const r = runCheck(["--paths", "apps/foo/package.json", ".github/workflows/ci.yml"], tmp);
-    expect(r.status).toBe(0);
-    expect(r.stderr).toBe("");
-  });
-
-  test("passes for Brikette workflow with next dev without --webpack", () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
-    writeFile(
-      path.join(tmp, ".github/workflows/brikette.yml"),
-      [
-        "name: Brikette",
-        "on: [push]",
-        "jobs:",
-        "  smoke:",
-        "    runs-on: ubuntu-latest",
-        "    steps:",
-        "      - run: pnpm exec next dev -p 3012",
-      ].join("\n"),
-    );
-
-    const r = runCheck(["--paths", ".github/workflows/brikette.yml"], tmp);
-    expect(r.status).toBe(0);
-    expect(r.stderr).toBe("");
-  });
-
-  test("fails closed for non-Brikette workflow using next dev without --webpack", () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
-    writeFile(
-      path.join(tmp, ".github/workflows/ci.yml"),
-      [
-        "name: CI",
-        "on: [push]",
-        "jobs:",
-        "  smoke:",
-        "    runs-on: ubuntu-latest",
-        "    steps:",
-        "      - run: pnpm exec next dev -p 3000",
-      ].join("\n"),
-    );
-
     const r = runCheck(["--paths", ".github/workflows/ci.yml"], tmp);
     expect(r.status).toBe(1);
     expect(r.stderr).toContain(".github/workflows/ci.yml");
-    expect(r.stderr).toContain("next dev");
+    expect(r.stderr).toContain("with forbidden --webpack");
   });
 
-  test("passes when workflow uses backslash line continuation and includes --webpack on next line", () => {
+  test("passes for workflow using next build without --webpack", () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
     writeFile(
       path.join(tmp, ".github/workflows/ci.yml"),
@@ -329,13 +145,54 @@ describe("Next.js command policy matrix check", () => {
         "  build:",
         "    runs-on: ubuntu-latest",
         "    steps:",
-        "      - run: |",
-        "          pnpm exec next build \\",
-        "            --webpack",
+        "      - run: pnpm exec next build",
       ].join("\n"),
     );
 
     const r = runCheck(["--paths", ".github/workflows/ci.yml"], tmp);
     expect(r.status).toBe(0);
+    expect(r.stderr).toBe("");
+  });
+
+  test("passes when workflow uses backslash continuation without --webpack", () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
+    writeFile(
+      path.join(tmp, ".github/workflows/ci.yml"),
+      [
+        "name: CI",
+        "on: [push]",
+        "jobs:",
+        "  build:",
+        "    runs-on: ubuntu-latest",
+        "    steps:",
+        "      - run: pnpm exec next build \\",
+        "            --no-lint",
+      ].join("\n"),
+    );
+
+    const r = runCheck(["--paths", ".github/workflows/ci.yml"], tmp);
+    expect(r.status).toBe(0);
+    expect(r.stderr).toBe("");
+  });
+
+  test("fails when workflow line continuation includes forbidden --webpack", () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "next-webpack-policy-"));
+    writeFile(
+      path.join(tmp, ".github/workflows/ci.yml"),
+      [
+        "name: CI",
+        "on: [push]",
+        "jobs:",
+        "  build:",
+        "    runs-on: ubuntu-latest",
+        "    steps:",
+        "      - run: pnpm exec next build \\",
+        "            --webpack",
+      ].join("\n"),
+    );
+
+    const r = runCheck(["--paths", ".github/workflows/ci.yml"], tmp);
+    expect(r.status).toBe(1);
+    expect(r.stderr).toContain("with forbidden --webpack");
   });
 });

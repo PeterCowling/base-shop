@@ -2336,6 +2336,24 @@ export default [
       "no-console": "off",
     },
   },
+  {
+    files: ["scripts/src/xa/**/*.{ts,tsx,js,mjs,cjs}"],
+    rules: {
+      "import/no-restricted-paths": [
+        "error",
+        {
+          zones: [
+            {
+              target: "./apps",
+              from: "./scripts/src/xa",
+              message:
+                "XA scripts must import shared logic from workspace packages (for example @acme/lib/xa), not app internals.",
+            },
+          ],
+        },
+      ],
+    },
+  },
   /* ▸ LINT-01: Transitional limits for cms-ui page-builder (ported legacy implementation) */
   {
     files: ["packages/cms-ui/src/page-builder/**/*.{ts,tsx}"],

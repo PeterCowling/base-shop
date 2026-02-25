@@ -23,6 +23,21 @@ function normalizePath(p: string) {
   return p.split(path.sep).join("/");
 }
 
+function toRepoRelativePath(filePath: string) {
+  const normalizedInput = normalizePath(filePath);
+  const repoMarker = "/base-shop/";
+  const markerIndex = normalizedInput.lastIndexOf(repoMarker);
+  if (markerIndex !== -1) {
+    return normalizedInput.slice(markerIndex + repoMarker.length);
+  }
+
+  if (!path.isAbsolute(filePath)) {
+    return normalizedInput.replace(/^\.\//, "");
+  }
+
+  return normalizePath(path.relative(ROOT, filePath));
+}
+
 function readJson(p: string) {
   return JSON.parse(fs.readFileSync(p, "utf8"));
 }
@@ -51,9 +66,7 @@ function collectViolations(reportPath: string): Violation[] {
     if (!entry?.messages?.length) continue;
     for (const msg of entry.messages) {
       if (msg.ruleId !== RULE_ID) continue;
-      const filePath = path.isAbsolute(entry.filePath)
-        ? normalizePath(path.relative(ROOT, entry.filePath))
-        : normalizePath(entry.filePath);
+      const filePath = toRepoRelativePath(entry.filePath);
       violations.push({
         filePath,
         line: msg.line ?? 0,

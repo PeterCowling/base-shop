@@ -1,0 +1,19 @@
+[00:02:58.637] Server  ERROR   ⨯ ../../node_modules/.pnpm/@fast-csv+format@5.0.5/node_modules/@fast-csv/format/build/src/index.js:32:1
+Module not found: Can't resolve 'fs'
+  30 | const util_1 = require("util");
+  31 | const stream_1 = require("stream");
+> 32 | const fs = __importStar(require("fs"));
+     | ^
+  33 | const FormatterOptions_1 = require("./FormatterOptions");
+  34 | const CsvFormatterStream_1 = require("./CsvFormatterStream");
+  35 | __exportStar(require("./types"), exports);
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+../../node_modules/.pnpm/fast-csv@5.0.5/node_modules/fast-csv/build/src/index.js
+../../packages/lib/src/xa/catalogCsvFormat.ts
+../../packages/lib/src/xa/index.ts
+./src/components/catalog/CatalogProductsList.client.tsx
+./src/components/catalog/CatalogConsole.client.tsx
+./src/app/UploaderHome.client.tsx

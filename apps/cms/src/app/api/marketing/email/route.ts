@@ -1,8 +1,15 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { ensureShopAccess, ensureShopReadAccess } from "@cms/actions/common/auth";
 
-import type { Campaign } from "@acme/email";
+import type { Campaign } from "@acme/email/types";
 import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+
+const schedulerModuleId =
+  process.env.ACME_EMAIL_SCHEDULER_MODULE_ID || "@acme/email/scheduler";
+
+async function loadSchedulerModule(): Promise<typeof import("@acme/email/scheduler")> {
+  return import(schedulerModuleId) as Promise<typeof import("@acme/email/scheduler")>;
+}
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
@@ -16,7 +23,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const status = message === "Forbidden" ? 403 : 401;
     return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
   }
-  const { listCampaigns } = await import("@acme/email");
+  const { listCampaigns } = await loadSchedulerModule();
   const campaigns: Campaign[] = await listCampaigns(shop);
   const events = await listEvents();
   const withMetrics = campaigns.map((c) => {
@@ -66,14 +73,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const status = message === "Forbidden" ? 403 : 401;
     return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
   }
-  const { createCampaign, renderTemplate } = await import("@acme/email");
-  let html = body;
-  if (templateId) {
-    html = renderTemplate(templateId, { subject, body });
-  } else {
-    html = `${body}<p>%%UNSUBSCRIBE%%</p>`;
-  }
+  const html = `${body}<p>%%UNSUBSCRIBE%%</p>`;
   try {
+    const { createCampaign } = await loadSchedulerModule();
     const id = await createCampaign({
       shop,
       recipients: list,
@@ -88,4 +90,3 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Failed to send" }, { status: 500 });
   }
 }
-

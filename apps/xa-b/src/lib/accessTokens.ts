@@ -1,9 +1,28 @@
-type AccessTokenPayload = {
-  kind: "invite" | "admin";
+type InviteAccessTokenPayload = {
+  kind: "invite";
   exp: number;
   iat: number;
   inviteId?: string;
 };
+
+type AdminAccessTokenPayload = {
+  kind: "admin";
+  exp: number;
+  iat: number;
+};
+
+type AccountAccessTokenPayload = {
+  kind: "account";
+  exp: number;
+  iat: number;
+  sub: string;
+  email: string;
+};
+
+type AccessTokenPayload =
+  | InviteAccessTokenPayload
+  | AdminAccessTokenPayload
+  | AccountAccessTokenPayload;
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
@@ -60,6 +79,15 @@ async function signPayload(payload: string, secret: string) {
   return base64UrlEncode(new Uint8Array(signature));
 }
 
+function constantTimeEqual(left: string, right: string) {
+  if (left.length !== right.length) return false;
+  let result = 0;
+  for (let i = 0; i < left.length; i += 1) {
+    result |= left.charCodeAt(i) ^ right.charCodeAt(i);
+  }
+  return result === 0;
+}
+
 function isTokenExpired(exp: number) {
   const now = Math.floor(Date.now() / 1000);
   return exp <= now;
@@ -67,12 +95,44 @@ function isTokenExpired(exp: number) {
 
 function safeParsePayload(value: string): AccessTokenPayload | null {
   try {
-    const data = JSON.parse(value) as AccessTokenPayload;
+    const data = JSON.parse(value) as Partial<AccessTokenPayload>;
     if (!data || typeof data !== "object") return null;
-    if (data.kind !== "invite" && data.kind !== "admin") return null;
+    if (
+      data.kind !== "invite" &&
+      data.kind !== "admin" &&
+      data.kind !== "account"
+    ) {
+      return null;
+    }
     if (typeof data.exp !== "number" || typeof data.iat !== "number") return null;
     if (isTokenExpired(data.exp)) return null;
-    return data;
+
+    if (data.kind === "account") {
+      if (typeof data.sub !== "string" || data.sub.trim().length === 0) return null;
+      if (typeof data.email !== "string" || data.email.trim().length === 0) return null;
+      return {
+        kind: "account",
+        exp: data.exp,
+        iat: data.iat,
+        sub: data.sub,
+        email: data.email,
+      };
+    }
+
+    if (data.kind === "invite") {
+      return {
+        kind: "invite",
+        exp: data.exp,
+        iat: data.iat,
+        inviteId: typeof data.inviteId === "string" ? data.inviteId : undefined,
+      };
+    }
+
+    return {
+      kind: "admin",
+      exp: data.exp,
+      iat: data.iat,
+    };
   } catch {
     return null;
   }
@@ -88,7 +148,7 @@ export async function verifyAccessToken(token: string, secret: string) {
   const [encodedPayload, signature] = token.split(".");
   if (!encodedPayload || !signature) return null;
   const expected = await signPayload(encodedPayload, secret);
-  if (expected !== signature) return null;
+  if (!constantTimeEqual(expected, signature)) return null;
   const payloadBytes = base64UrlDecode(encodedPayload);
   return safeParsePayload(decoder.decode(payloadBytes));
 }

@@ -192,4 +192,12 @@ describe("Textarea", () => {
     expect(radiusOverrideTextarea).toHaveClass("rounded-lg");
     expect(radiusOverrideTextarea).not.toHaveClass("rounded-none");
   });
+
+  it("supports compact density spacing", () => {
+    render(<Textarea aria-label="Compact textarea" density="compact" />);
+    const textarea = screen.getByRole("textbox", { name: "Compact textarea" });
+    expect(textarea).toHaveClass("min-h-[5rem]", "py-1.5");
+    expect(textarea).not.toHaveClass("min-h-[6rem]");
+    expect(textarea).not.toHaveClass("py-2");
+  });
 });

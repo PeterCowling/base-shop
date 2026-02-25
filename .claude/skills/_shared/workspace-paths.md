@@ -1,7 +1,7 @@
 # Workspace Path Policy
 
 Canonical path resolution for feature workspaces and stage-doc API keys.
-All workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`, `/lp-do-replan`, `/lp-sequence`) MUST follow this policy.
+All workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`, `/lp-do-replan`, `/lp-do-sequence`) MUST follow this policy.
 
 ## 1) Feature Workspace Layout
 

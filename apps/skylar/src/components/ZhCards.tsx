@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import { getContactRowsForPerson } from "@/data/people";
 import { CRISTIANA_WECHAT_QR_IMAGE } from "@/lib/assets";

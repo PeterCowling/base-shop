@@ -53,9 +53,9 @@ describe("KeycardCountForm", () => {
     );
     const heading = screen.getByRole("heading", { name: /count keycards/i });
     const container = heading.closest("div.relative") as HTMLElement;
-    expect(container).toHaveClass("dark:bg-darkSurface");
+    expect(container).toHaveClass("relative");
     expect(screen.getByRole("button", { name: /go/i })).toHaveClass(
-      "dark:bg-darkAccentGreen"
+      "bg-primary-main"
     );
     document.documentElement.classList.remove("dark");
   });

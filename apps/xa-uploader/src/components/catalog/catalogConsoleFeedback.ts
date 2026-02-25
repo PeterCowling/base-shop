@@ -1,10 +1,22 @@
 import type * as React from "react";
 
-import type { CatalogProductDraftInput } from "../../lib/catalogAdminSchema";
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
-type SyncScriptId = "validate" | "sync";
-type SyncErrorCode = "sync_dependencies_missing" | "validation_failed" | "sync_failed";
-type SyncRecoveryCode = "restore_sync_scripts" | "review_validation_logs" | "review_sync_logs";
+export type SyncScriptId = "validate" | "sync";
+type SyncErrorCode =
+  | "sync_dependencies_missing"
+  | "catalog_input_empty"
+  | "catalog_publish_unconfigured"
+  | "catalog_publish_failed"
+  | "validation_failed"
+  | "sync_failed";
+type SyncRecoveryCode =
+  | "restore_sync_scripts"
+  | "confirm_empty_catalog_sync"
+  | "configure_catalog_contract"
+  | "review_catalog_contract"
+  | "review_validation_logs"
+  | "review_sync_logs";
 type CatalogApiErrorCode = "invalid" | "missing_product" | "not_found" | "conflict" | "internal_error";
 type ActionDomain = "login" | "draft" | "submission" | "sync";
 type ActionFeedbackKind = "error" | "success";
@@ -27,10 +39,20 @@ export type SyncResponse = {
   error?: SyncErrorCode | string;
   recovery?: SyncRecoveryCode | string;
   missingScripts?: SyncScriptId[];
+  requiresConfirmation?: boolean;
   logs?: {
     validate?: { code: number; stdout: string; stderr: string };
     sync?: { code: number; stdout: string; stderr: string };
   };
+};
+
+export type SyncReadinessResponse = {
+  ok: boolean;
+  ready?: boolean;
+  error?: string;
+  recovery?: SyncRecoveryCode | string;
+  missingScripts?: SyncScriptId[];
+  checkedAt?: string;
 };
 
 export type BusyLockRef = React.MutableRefObject<boolean>;
@@ -104,11 +126,24 @@ function getSyncScriptLabel(
   return t("syncDependencyPipeline");
 }
 
+export function formatSyncMissingScripts(
+  missingScripts: SyncScriptId[] | undefined,
+  t: (key: string, vars?: Record<string, unknown>) => string,
+): string {
+  if (!missingScripts || missingScripts.length === 0) {
+    return t("syncDependenciesUnknown");
+  }
+  return missingScripts.map((script) => getSyncScriptLabel(script, t)).join(", ");
+}
+
 function getSyncRecoveryMessage(
   recovery: string | undefined,
   t: (key: string, vars?: Record<string, unknown>) => string,
 ): string {
   if (recovery === "restore_sync_scripts") return t("syncRecoveryRestoreScripts");
+  if (recovery === "confirm_empty_catalog_sync") return t("syncRecoveryConfirmEmptyCatalogSync");
+  if (recovery === "configure_catalog_contract") return t("syncRecoveryConfigureCatalogContract");
+  if (recovery === "review_catalog_contract") return t("syncRecoveryReviewCatalogContract");
   if (recovery === "review_validation_logs") return t("syncRecoveryReviewValidationLogs");
   if (recovery === "review_sync_logs") return t("syncRecoveryReviewSyncLogs");
   return "";
@@ -120,11 +155,20 @@ export function getSyncFailureMessage(
 ): string {
   const recoveryMessage = getSyncRecoveryMessage(data.recovery, t);
   if (data.error === "sync_dependencies_missing") {
-    const scripts =
-      data.missingScripts && data.missingScripts.length > 0
-        ? data.missingScripts.map((script) => getSyncScriptLabel(script, t)).join(", ")
-        : t("syncDependenciesUnknown");
+    const scripts = formatSyncMissingScripts(data.missingScripts, t);
     const base = t("syncDependenciesMissing", { scripts });
+    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
+  }
+  if (data.error === "catalog_input_empty") {
+    const base = t("syncCatalogInputEmptyActionable");
+    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
+  }
+  if (data.error === "catalog_publish_unconfigured") {
+    const base = t("syncPublishContractUnconfigured");
+    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
+  }
+  if (data.error === "catalog_publish_failed") {
+    const base = t("syncPublishContractFailedActionable");
     return recoveryMessage ? `${base} ${recoveryMessage}` : base;
   }
   if (data.error === "validation_failed") {

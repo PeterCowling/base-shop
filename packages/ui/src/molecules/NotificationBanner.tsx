@@ -127,7 +127,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
       ref={setBannerRef}
       type="button"
       onClick={openDeals}
-      className="sticky top-0 z-50 flex min-h-10 min-w-10 w-full cursor-pointer items-center justify-center gap-2 overflow-hidden bg-brand-primary px-6 py-4 text-brand-on-primary shadow-md transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg motion-safe:animate-slide-down"
+      className="sticky top-0 z-50 flex min-h-10 min-w-10 w-full cursor-pointer items-center justify-center gap-2 overflow-hidden bg-brand-primary px-4 py-2 text-brand-on-primary shadow-md transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg motion-safe:animate-slide-down md:px-6 md:py-4"
     >
       <span
         aria-hidden="true"
@@ -140,7 +140,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
         <X className="size-6" />
       </span>
 
-      <p className="text-balance text-center text-lg font-semibold leading-snug md:text-xl">
+      <p className="text-balance text-center text-sm font-semibold leading-snug md:text-lg lg:text-xl">
         <span data-notification-banner="message">{messageText}</span>{" "}
         <span data-notification-banner="cta" className="underline underline-offset-4">
           {ctaText}

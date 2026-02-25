@@ -5,7 +5,7 @@ Domain: BOS
 Workstream: Engineering
 Created: 2026-02-25
 Last-reviewed: 2026-02-25
-Last-updated: 2026-02-25 (TASK-01 complete)
+Last-updated: 2026-02-25 (all tasks complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: build-subagent-jest-zombie-cleanup
 Deliverable-Type: code-change
@@ -25,10 +25,10 @@ This plan closes the subagent Jest zombie risk via two parallel tracks after TAS
 
 ## Active tasks
 - [x] TASK-01: Attribute incident source and verify non-interactive guard coverage
-- [ ] TASK-02: Add governed Jest invocation contract to `build-code.md`
-- [ ] TASK-03: Harden adjacent build docs (`SKILL.md` pointer and optional SPIKE note)
-- [ ] TASK-04: Validate post-fix runtime behavior and telemetry
-- [ ] TASK-05: Harden governed-runner kill escalation to prevent Jest worker orphaning
+- [x] TASK-02: Add governed Jest invocation contract to `build-code.md`
+- [x] TASK-03: Harden adjacent build docs (`SKILL.md` pointer and optional SPIKE note)
+- [x] TASK-04: Validate post-fix runtime behavior and telemetry
+- [x] TASK-05: Harden governed-runner kill escalation to prevent Jest worker orphaning
 
 ## Goals
 - Confirm whether 2026-02-25 zombie processes came from a build subagent path or a human/operator path.
@@ -82,10 +82,10 @@ This plan closes the subagent Jest zombie risk via two parallel tracks after TAS
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Attribute incident source and verify non-interactive guard coverage | 80% | S | Complete | - | TASK-02, TASK-05 |
-| TASK-02 | IMPLEMENT | Add explicit governed test invocation contract to `build-code.md` | 75% | S | Pending | TASK-01 | TASK-03, TASK-04 |
-| TASK-03 | IMPLEMENT | Add adjacent policy pointers (`lp-do-build/SKILL.md`, optional `build-spike.md`) | 85% | S | Pending | TASK-02 | - |
-| TASK-04 | INVESTIGATE | Verify post-fix behavior (no zombies + telemetry consistency) | 70% | S | Pending | TASK-02, TASK-05 | - |
-| TASK-05 | IMPLEMENT | Harden governed-runner kill escalation to prevent Jest worker orphaning | 80% | S | Pending | TASK-01 | TASK-04 |
+| TASK-02 | IMPLEMENT | Add explicit governed test invocation contract to `build-code.md` | 75% | S | Complete | TASK-01 | TASK-03, TASK-04 |
+| TASK-03 | IMPLEMENT | Add adjacent policy pointers (`lp-do-build/SKILL.md`, optional `build-spike.md`) | 85% | S | Complete | TASK-02 | - |
+| TASK-04 | INVESTIGATE | Verify post-fix behavior (no zombies + telemetry consistency) | 70% | S | Complete | TASK-02, TASK-05 | - |
+| TASK-05 | IMPLEMENT | Harden governed-runner kill escalation to prevent Jest worker orphaning | 80% | S | Complete | TASK-01 | TASK-04 |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -138,7 +138,7 @@ This plan closes the subagent Jest zombie risk via two parallel tracks after TAS
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Affects:** `.claude/skills/lp-do-build/modules/build-code.md`, `[readonly] docs/testing-policy.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03, TASK-04
@@ -168,6 +168,7 @@ This plan closes the subagent Jest zombie risk via two parallel tracks after TAS
   - Rollout: commit scoped doc edit; consume in next `/lp-do-build` implementation cycle.
   - Rollback: revert the `build-code.md` section if unintended instruction conflicts appear.
 - **Documentation impact:** Updates build executor contract at point of use.
+- **Build evidence (2026-02-25):** `build-code.md` updated with explicit `## Test Invocation` section. TC-02-01: governed command string present (lines 30, 35). TC-02-02: Package-CWD variant documented (line 38). TC-02-03: blocked forms (`pnpm exec jest`, `npx jest`, direct invocations) enumerated; no contradictory permissive instruction. `npx-jest` class (2 events on 2026-02-25) now covered in blocked-forms list. Committed in Wave 2 (`df0560fdb6`).
 - **Notes / references:**
   - `docs/testing-policy.md` Rule 1 governed entrypoint.
 
@@ -178,7 +179,7 @@ This plan closes the subagent Jest zombie risk via two parallel tracks after TAS
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Affects:** `.claude/skills/lp-do-build/SKILL.md`, `.claude/skills/lp-do-build/modules/build-spike.md`, `[readonly] docs/testing-policy.md`
 - **Depends on:** TASK-02
 - **Blocks:** -
@@ -207,6 +208,8 @@ This plan closes the subagent Jest zombie risk via two parallel tracks after TAS
   - Rollout: ship alongside TASK-02 to keep policy references consistent.
   - Rollback: revert pointer/note if it introduces duplicated or stale guidance.
 - **Documentation impact:** Hardens policy discoverability across build orchestration docs.
+- **Build evidence (2026-02-25):** TC-03-01: `docs/testing-policy.md` pointer added to `Shared Utilities` section of `SKILL.md` (line 153). TC-03-02: `build-spike.md` note is conditional on "spike scope explicitly includes Jest test execution" — does not imply all spikes run tests. TC-03-03: grep of `lp-do-build` module docs confirms no instruction permits `npx jest`/`pnpm exec jest` — only blocked-forms lists reference these. Committed in `173d3f6fba`.
+- **Status:** Complete (2026-02-25)
 - **Notes / references:**
   - `.claude/skills/lp-do-build/modules/build-code.md`
   - `docs/testing-policy.md`
@@ -217,7 +220,7 @@ This plan closes the subagent Jest zombie risk via two parallel tracks after TAS
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Affects:** `docs/plans/build-subagent-jest-zombie-cleanup/post-fix-verification.md`, `[readonly] .cache/test-governor/events.jsonl`
 - **Depends on:** TASK-02, TASK-05
 - **Blocks:** -
@@ -236,6 +239,7 @@ This plan closes the subagent Jest zombie risk via two parallel tracks after TAS
 - **Planning validation:** None: runtime verification task; validation occurs during execution.
 - **What would make this >=90%:**
   - Three consecutive post-fix build sessions with zero survivors and consistent healthy telemetry (`kill_escalation: none`).
+- **Build evidence (2026-02-25):** `post-fix-verification.md` produced. Post-fix session: `stage-label-rename` (281 passed, exit 0). Telemetry at 22:19Z and 22:20Z: `kill_escalation: none`, `exit_code: 0`. `ps aux | grep jest` after session: 0 survivors. Orphaned process invariant: **PASS**. Residual risk noted: SIGTERM/timeout kill path not triggered post-fix; monitoring recommendation added. Verdict: partial pass — normal-exit path confirmed clean; full SIGTERM-path confirmation requires a future congestion-condition session.
 - **Rollout / rollback:** `None: non-implementation task`
 - **Documentation impact:** Adds operational verification artifact linked to this plan.
 - **Notes / references:**
@@ -248,7 +252,7 @@ This plan closes the subagent Jest zombie risk via two parallel tracks after TAS
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Affects:** `scripts/tests/run-governed-test.sh`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-04
@@ -282,6 +286,7 @@ This plan closes the subagent Jest zombie risk via two parallel tracks after TAS
   - Rollout: targeted edit to `scripts/tests/run-governed-test.sh`; no schema changes; backwards-compatible with existing telemetry fields.
   - Rollback: revert `setsid` spawn and restore `pkill -P` form if unexpected process-group side effects observed (e.g., RSS monitor or heartbeat killed inadvertently).
 - **Documentation impact:** Adds inline comment explaining why `setsid` is used; no external doc changes required.
+- **Build evidence (2026-02-25):** `run-governed-test.sh` hardened with two changes: (1) command spawn site now uses `setsid "${command[@]}" &` with `command -v setsid` availability check and fallback; (2) `baseshop_terminate_command_tree` rewritten to resolve `pgid` via `ps -o pgid=`, send `kill -TERM -- -$pgid` to full process group, with `own_pgid` safety guard (lines 259-284). SIGKILL escalation path preserved. All TC checks pass: TC-05-01 (setsid at line 407), TC-05-02 (kill -TERM -- -$pgid at line 263), TC-05-03 (own_pgid guard at lines 262, 277), TC-05-04 (no test files in scripts/tests/ — static check clear). Committed in Wave 2 (`df0560fdb6`).
 - **Notes / references:**
   - `scripts/tests/run-governed-test.sh` — `baseshop_terminate_command_tree` function and `"${command[@]}" &` spawn site
   - `.cache/test-governor/events.jsonl` — 5 `kill_escalation:sigterm` events on 2026-02-25 as primary evidence

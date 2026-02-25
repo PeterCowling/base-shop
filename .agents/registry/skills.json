@@ -182,6 +182,11 @@
       "path": ".claude/skills/lp-do-assessment-12-promote/SKILL.md"
     },
     {
+      "name": "lp-do-briefing",
+      "description": "Produce an understanding-only system briefing — how something works now, traced end-to-end with evidence pointers. No planning artifacts or tasks. Use when you need current-behavior understanding without committing to a plan.",
+      "path": ".claude/skills/lp-do-briefing/SKILL.md"
+    },
+    {
       "name": "lp-do-build",
       "description": "Thin build orchestrator. Executes one runnable task per cycle from an approved plan using canonical gates, track-specific executors, and shared ops utilities.",
       "path": ".claude/skills/lp-do-build/SKILL.md"
@@ -193,13 +198,18 @@
     },
     {
       "name": "lp-do-fact-find",
-      "description": "Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits planning or briefing artifacts with a shared schema.",
+      "description": "Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits planning artifacts ready for /lp-do-plan. For understanding-only briefings, use /lp-do-briefing.",
       "path": ".claude/skills/lp-do-fact-find/SKILL.md"
     },
     {
       "name": "lp-do-factcheck",
       "description": "Verify the accuracy of statements in markdown documents by auditing the actual repository state. Directly fix inaccuracies in-place rather than producing a separate report.",
       "path": ".claude/skills/lp-do-factcheck/SKILL.md"
+    },
+    {
+      "name": "lp-do-ideas",
+      "description": "Trial-mode idea orchestrator. Ingests standing-artifact delta events and emits schema-valid dispatch packets routed to lp-do-fact-find or lp-do-briefing. Trial mode only — does not mutate startup-loop stage state.",
+      "path": ".claude/skills/lp-do-ideas/SKILL.md"
     },
     {
       "name": "lp-do-plan",
@@ -210,6 +220,11 @@
       "name": "lp-do-replan",
       "description": "Thin orchestrator for resolving low-confidence plan tasks with evidence, explicit precursor tasks, stable task IDs, and checkpoint-aware reassessment.",
       "path": ".claude/skills/lp-do-replan/SKILL.md"
+    },
+    {
+      "name": "lp-do-sequence",
+      "description": "Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata to enable parallel subagent execution.",
+      "path": ".claude/skills/lp-do-sequence/SKILL.md"
     },
     {
       "name": "lp-experiment",
@@ -275,11 +290,6 @@
       "name": "lp-seo",
       "description": "S6B phased SEO strategy skill - keyword research, content clustering, SERP analysis, technical audit, and snippet optimization for any business",
       "path": ".claude/skills/lp-seo/SKILL.md"
-    },
-    {
-      "name": "lp-sequence",
-      "description": "Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata to enable parallel subagent execution.",
-      "path": ".claude/skills/lp-sequence/SKILL.md"
     },
     {
       "name": "lp-signal-review",

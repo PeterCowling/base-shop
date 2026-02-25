@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Startup Loop — Process Improvements</title>
+  <style>
+    :root {
+      --bg:            #0e1016;
+      --surface:       #161921;
+      --surface-2:     #1e2230;
+      --border:        #2a2f45;
+      --text:          #e4e7f2;
+      --text-muted:    #6b728f;
+      --text-dim:      #454d6a;
+
+      --red:           #f05c5c;
+      --red-bg:        rgba(240,92,92,0.10);
+      --red-border:    rgba(240,92,92,0.28);
+
+      --amber:         #f5a623;
+      --amber-bg:      rgba(245,166,35,0.10);
+      --amber-border:  rgba(245,166,35,0.28);
+
+      --blue:          #5b9cf6;
+      --blue-bg:       rgba(91,156,246,0.10);
+      --blue-border:   rgba(91,156,246,0.28);
+
+      --green:         #4ade80;
+      --green-bg:      rgba(74,222,128,0.08);
+      --green-border:  rgba(74,222,128,0.25);
+
+      --purple:        #a78bfa;
+      --purple-bg:     rgba(167,139,250,0.10);
+      --purple-border: rgba(167,139,250,0.28);
+
+      --radius:        8px;
+      --radius-sm:     5px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .sl-content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    .page-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+    .page-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+    .page-header p  { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+
+    /* ── Filter bar ── */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+      align-items: center;
+    }
+    .filter-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
+      margin-right: 4px;
+    }
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.12s;
+    }
+    .filter-btn:hover { color: var(--text); border-color: var(--text-dim); }
+    .filter-btn.active           { background: var(--blue-bg);   border-color: var(--blue-border);   color: var(--blue); }
+    .filter-btn.active.biz-HBAG { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
+    .filter-btn.active.biz-BRIK { background: var(--green-bg);  border-color: var(--green-border);  color: var(--green); }
+    .filter-btn.active.biz-BOS  { background: var(--blue-bg);   border-color: var(--blue-border);   color: var(--blue); }
+    .filter-btn.active.biz-PLAT { background: var(--amber-bg);  border-color: var(--amber-border);  color: var(--amber); }
+    .filter-divider { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+
+    /* ── Summary bar ── */
+    .summary-bar { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
+    .summary-pill {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 100px;
+      font-size: 12px; font-weight: 500; border: 1px solid;
+    }
+    .summary-pill .count { font-size: 15px; font-weight: 700; line-height: 1; }
+    .pill-blue   { background: var(--blue-bg);   border-color: var(--blue-border);   color: var(--blue); }
+    .pill-amber  { background: var(--amber-bg);  border-color: var(--amber-border);  color: var(--amber); }
+    .pill-purple { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
+    .pill-muted  { background: var(--surface-2); border-color: var(--border);        color: var(--text-muted); }
+
+    /* ── Section ── */
+    .section { margin-bottom: 36px; }
+    .section-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+    }
+    .section-header h2 {
+      font-size: 13px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.6px; color: var(--text-muted);
+    }
+    .section-count {
+      font-size: 11px; font-weight: 700; padding: 1px 7px;
+      border-radius: 100px; background: var(--surface-2); color: var(--text-muted);
+    }
+
+    /* ── Item card ── */
+    .item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin-bottom: 10px;
+      border-left: 3px solid transparent;
+    }
+    .item.idea { border-left-color: var(--blue); }
+    .item.risk { border-left-color: var(--amber); }
+    .item.pending-review { border-left-color: var(--purple); }
+
+    .item-top {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 12px; margin-bottom: 8px;
+    }
+    .item-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
+    .item-badges { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+
+    .badge {
+      font-size: 10px; font-weight: 700; padding: 2px 7px;
+      border-radius: var(--radius-sm); text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap;
+    }
+    .badge-idea    { background: var(--blue-bg);   color: var(--blue);   border: 1px solid var(--blue-border); }
+    .badge-risk    { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-border); }
+    .badge-pending { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+    .badge-HBAG    { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+    .badge-BRIK    { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green-border); }
+    .badge-BOS     { background: var(--blue-bg);   color: var(--blue);   border: 1px solid var(--blue-border); }
+    .badge-PLAT    { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-border); }
+    .badge-generic { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
+
+    .item-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .item-body strong { color: var(--text); }
+
+    .item-action {
+      margin-top: 10px; padding: 8px 12px;
+      background: var(--surface-2); border-radius: var(--radius-sm);
+      font-size: 12.5px; color: var(--text);
+    }
+    .item-action-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 3px;
+    }
+
+    .item-meta {
+      display: flex; flex-wrap: wrap; gap: 16px;
+      margin-top: 10px; padding-top: 10px;
+      border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--text-dim);
+    }
+    .item-meta span { display: flex; align-items: center; gap: 4px; }
+    .item-meta code {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 10px; background: var(--surface-2);
+      padding: 1px 5px; border-radius: 3px; color: var(--text-muted);
+    }
+
+    /* ── Empty ── */
+    .empty {
+      padding: 20px; text-align: center; color: var(--text-dim);
+      font-size: 13px; border: 1px dashed var(--border); border-radius: var(--radius);
+    }
+
+    /* ── Stale notice ── */
+    .stale-notice {
+      padding: 10px 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+    }
+    .stale-notice strong { color: var(--text-muted); }
+
+    /* ── Footer ── */
+    .page-footer {
+      margin-top: 48px; padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px; color: var(--text-dim);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f5f6fa; --surface: #ffffff; --surface-2: #f0f1f7;
+        --border: #dde0ed; --text: #1a1d2e; --text-muted: #5a6080; --text-dim: #a0a8c0;
+      }
+    }
+  </style>
+
+<style id="sl-theme-css">html[data-theme="dark"]{--bg:#0e1016;--surface:#161921;--surface-2:#1e2230;--surface-raised:#1e2230;--border:#2a2f45;--text:#e4e7f2;--text-muted:#6b728f;--text-dim:#454d6a;--accent:#5b9cf6;--accent-soft:rgba(91,156,246,.15);--code-bg:#161921;--code-border:#2a2f45;--red-bg:rgba(240,92,92,.10);--amber-bg:rgba(245,166,35,.10);--green-bg:rgba(74,222,128,.08);--blue-bg:rgba(91,156,246,.10);--purple-bg:rgba(167,139,250,.10)}html[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}html[data-theme="light"]{--bg:#f5f6fa;--surface:#ffffff;--surface-2:#f0f1f7;--surface-raised:#f0f1f7;--border:#dde0ed;--text:#1a1d2e;--text-muted:#5a6080;--text-dim:#a0a8c0;--accent:#3362d0;--accent-soft:#e8eeff;--code-bg:#f0f1f7;--code-border:#dde0ed;--red-bg:rgba(200,50,50,.08);--amber-bg:rgba(180,120,0,.08);--green-bg:rgba(40,160,80,.06);--blue-bg:rgba(40,100,220,.08);--purple-bg:rgba(120,80,200,.08)}html[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}[data-theme="light"] #sl-nav{background:#eef0f7!important;border-bottom-color:#dde0ed!important}[data-theme="light"] #sl-nav .sl-brand,[data-theme="light"] #sl-nav a,[data-theme="light"] #sl-theme-btn{color:#5a6080!important}[data-theme="light"] #sl-nav a:hover,[data-theme="light"] #sl-nav a.sl-on{color:#1a1d2e!important}</style>
+<script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
+</head>
+<body>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="startup-loop-workflow.user.html">Workflow</a><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="ideas.user.html">Ideas</a><a href="process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+
+<div class="sl-content">
+
+  <div class="page-header">
+    <h1>Process Improvements</h1>
+    <p>Improvements, risks, and pending reviews from completed build cycles. Filter by business or type to focus your review. Regenerate after each build cycle completes.</p>
+  </div>
+
+  <div id="app"></div>
+
+  <div class="page-footer">
+    <span>docs/business-os/process-improvements.user.html</span>
+    <span>Last cleared: 2026-02-25 — extracted from build records, reflection debt, and results reviews</span>
+    <span id="footer-generated"></span>
+  </div>
+
+</div><!-- /.sl-content -->
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Inline data extracted from results-review and build-record files ────────
+  // Regenerate after each build cycle by re-running the extraction.
+
+  var IDEA_ITEMS = [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Octorate → Google Hotel Free Listing activation: Not a new idea — VC-02 plan-level gate explicitly requires this. Trigger action: run /lp-do-plan brikette-google-hotel-free-listing within 5 business days of TASK-01 sign-off.",
+      "body": "fact-find confirmed Octorate Metasearch active (2026-02-18), GBP verified, both blockers resolved",
+      "suggested_action": "create plan",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:09:12.356Z",
+      "path": "docs/plans/brik-gbp-api-rejection-remediation/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "/assistance Book Direct CTA copy i18n audit",
+      "body": "The \"Book Direct\" button text in AssistanceIndexContent uses a hardcoded string; other locales are untested.",
+      "suggested_action": "create card (P2 i18n, can batch with next locale pass)",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T21:15:42.906Z",
+      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "/how-to-get-here server-resolved hero H1 (sub-track C)",
+      "body": "TASK-11 deferred useHowToGetHereContent audit — HowToGetHereIndexContent hook needs investigation before server-resolved props pattern can be applied safely.",
+      "suggested_action": "spike (audit hook dependencies before scoping)",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T21:15:42.906Z",
+      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "RSC conversion for RoomsStructuredData + ExperiencesStructuredData",
+      "body": "TASK-10 investigation confirmed both use useCurrentLanguage() (client hooks) but all underlying data is static — full RSC conversion is feasible and would eliminate the client component boundary.",
+      "suggested_action": "create card (P3 SSR, low urgency post-launch)",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T21:15:42.906Z",
+      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Consider adding a CI lint step that fails when a build-record.user.md is committed without an ## Outcome Contract section, so the contract-first constraint is enforced at commit time rather than post-hoc by the Build Summary generator.",
+      "body": "TASK-04 established the contract as a required section in the template but enforcement is instructional only (no automated gate).",
+      "suggested_action": "defer — low urgency until v2 adoption rate is measurable; revisit after 2026-03-27 cutover.",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T19:14:02.461Z",
+      "path": "docs/plans/_archive/startup-loop-why-intended-outcome-automation/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "The Build-Event-Ref frontmatter link from strategy artifacts to build-event.json requires a manual step from lp-do-build. An automated hook in the lp-do-build SKILL.md completion checklist was documented but not code-enforced. If operators skip the step the canonical event is never read by the Build Summary generator.",
+      "body": "TASK-05 notes lp-do-build SKILL.md must be updated to include build-event emission step (documentation impact recorded).",
+      "suggested_action": "create a follow-up card to audit lp-do-build/SKILL.md and add the emission step to the build completion checklist.",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T19:14:02.461Z",
+      "path": "docs/plans/_archive/startup-loop-why-intended-outcome-automation/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "HBAG",
+      "title": "add a small seed-ranking layer for mapper outputs (high/medium/low impact) before handoff to planning.",
+      "body": "Idea: add a small seed-ranking layer for mapper outputs (high/medium/low impact) before handoff to planning.",
+      "source": "results-review.user.md",
+      "date": "2026-02-24T11:57:10.286Z",
+      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "HBAG",
+      "title": "add a strict profile resolver in compiler/materializer shared utility to avoid duplicate logistics-conditional logic drift.",
+      "body": "Idea: add a strict profile resolver in compiler/materializer shared utility to avoid duplicate logistics-conditional logic drift.",
+      "source": "results-review.user.md",
+      "date": "2026-02-24T11:57:10.286Z",
+      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "HBAG",
+      "title": "Suggested next action: create a focused INVESTIGATE task to calibrate ranking heuristics with two additional historical deltas.",
+      "body": "Suggested next action: create a focused INVESTIGATE task to calibrate ranking heuristics with two additional historical deltas.",
+      "suggested_action": "create a focused INVESTIGATE task to calibrate ranking heuristics with two additional historical deltas.",
+      "source": "results-review.user.md",
+      "date": "2026-02-24T11:57:10.286Z",
+      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "HBAG",
+      "title": "Suggested next action: create an IMPLEMENT task to centralize business-profile evaluation and reuse it across compiler, materializer, and mapper.",
+      "body": "Suggested next action: create an IMPLEMENT task to centralize business-profile evaluation and reuse it across compiler, materializer, and mapper.",
+      "suggested_action": "create an IMPLEMENT task to centralize business-profile evaluation and reuse it across compiler, materializer, and mapper.",
+      "source": "results-review.user.md",
+      "date": "2026-02-24T11:57:10.286Z",
+      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "HBAG",
+      "title": "Trigger observation: 1 of 4 generated seeds was not accepted in pilot review.",
+      "body": "1 of 4 generated seeds was not accepted in pilot review.",
+      "source": "results-review.user.md",
+      "date": "2026-02-24T11:57:10.286Z",
+      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "HBAG",
+      "title": "Trigger observation: logistics applicability is currently inferred in multiple places.",
+      "body": "logistics applicability is currently inferred in multiple places.",
+      "source": "results-review.user.md",
+      "date": "2026-02-24T11:57:10.286Z",
+      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "HBAG",
+      "title": "Add a lightweight CI reminder/gate to require a populated physical-device matrix (or explicit waiver) before plan closure for animation-heavy UI changes.",
+      "body": "Add a lightweight CI reminder/gate to require a populated physical-device matrix (or explicit waiver) before plan closure for animation-heavy UI changes.",
+      "source": "results-review.user.md",
+      "date": "2026-02-23T15:36:51.398Z",
+      "path": "docs/plans/_archive/hbag-brandmark-particle-animation/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "HBAG",
+      "title": "Add a small runtime diagnostics toggle for BrandMark phase/frame sampling that can be enabled in staging for faster performance triage.",
+      "body": "Add a small runtime diagnostics toggle for BrandMark phase/frame sampling that can be enabled in staging for faster performance triage.",
+      "source": "results-review.user.md",
+      "date": "2026-02-23T15:36:51.398Z",
+      "path": "docs/plans/_archive/hbag-brandmark-particle-animation/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add a dedicated scripts package command (for example check-website-contract-parity) and wire it into the standard startup-loop validation path so WEBSITE parity checks run by default.",
+      "body": "Add a dedicated scripts package command (for example check-website-contract-parity) and wire it into the standard startup-loop validation path so WEBSITE parity checks run by default.",
+      "source": "results-review.user.md",
+      "date": "2026-02-23T15:36:51.349Z",
+      "path": "docs/plans/_archive/startup-loop-website-first-build-contract/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add a lightweight doc-lint rule that flags legacy stage aliases in authoritative startup-loop workflow sections unless explicitly tagged historical.",
+      "body": "Add a lightweight doc-lint rule that flags legacy stage aliases in authoritative startup-loop workflow sections unless explicitly tagged historical.",
+      "source": "results-review.user.md",
+      "date": "2026-02-23T15:36:51.349Z",
+      "path": "docs/plans/_archive/startup-loop-website-first-build-contract/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "PLAT",
+      "title": "Deterministic CMS build-memory telemetry contract",
+      "body": "Deterministic CMS build-memory telemetry contract",
+      "source": "results-review.user.md",
+      "date": "2026-02-23T15:36:51.271Z",
+      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "PLAT",
+      "title": "Machine-class validation lane for CMS build gating",
+      "body": "Machine-class validation lane for CMS build gating",
+      "source": "results-review.user.md",
+      "date": "2026-02-23T15:36:51.271Z",
+      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "PLAT",
+      "title": "Suggested next action: add a repeatable artifact schema for memory/elapsed metrics per run (same variant set), then wire it into ongoing mitigation cycles for clearer trend detection.",
+      "body": "Suggested next action: add a repeatable artifact schema for memory/elapsed metrics per run (same variant set), then wire it into ongoing mitigation cycles for clearer trend detection.",
+      "suggested_action": "add a repeatable artifact schema for memory/elapsed metrics per run (same variant set), then wire it into ongoing mitigation cycles for clearer trend detection.",
+      "source": "results-review.user.md",
+      "date": "2026-02-23T15:36:51.271Z",
+      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "PLAT",
+      "title": "Suggested next action: create a focused plan to validate the same probe matrix on a higher-memory build class and compare pass/fail + memory envelope before additional config churn.",
+      "body": "Suggested next action: create a focused plan to validate the same probe matrix on a higher-memory build class and compare pass/fail + memory envelope before additional config churn.",
+      "suggested_action": "create a focused plan to validate the same probe matrix on a higher-memory build class and compare pass/fail + memory envelope before additional config churn.",
+      "source": "results-review.user.md",
+      "date": "2026-02-23T15:36:51.271Z",
+      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "PLAT",
+      "title": "Trigger observation: current probes rely on log tails and /usr/bin/time snapshots without structured longitudinal tracking.",
+      "body": "current probes rely on log tails and /usr/bin/time snapshots without structured longitudinal tracking.",
+      "source": "results-review.user.md",
+      "date": "2026-02-23T15:36:51.271Z",
+      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "PLAT",
+      "title": "Trigger observation: OOM persists after bounded graph reduction on current 16 GB class.",
+      "body": "OOM persists after bounded graph reduction on current 16 GB class.",
+      "source": "results-review.user.md",
+      "date": "2026-02-23T15:36:51.271Z",
+      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Idea candidate",
+      "body": "—",
+      "source": "results-review.user.md",
+      "date": "<YYYY-MM-DD>",
+      "path": "docs/plans/_templates/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "OR None.",
+      "body": "OR None.",
+      "source": "results-review.user.md",
+      "date": "<YYYY-MM-DD>",
+      "path": "docs/plans/_templates/results-review.user.md"
+    }
+  ];
+
+  var RISK_ITEMS = [];
+
+  var PENDING_REVIEW_ITEMS = [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: lp-do-ideas-live-autonomous-activation",
+      "body": "Build record exists but no results-review.user.md is present yet.",
+      "suggested_action": "Complete docs/plans/_archive/lp-do-ideas-live-autonomous-activation/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-25T17:21:38.696Z",
+      "path": "docs/plans/_archive/lp-do-ideas-live-autonomous-activation/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: brikette-seo-api-optimization-loop",
+      "body": "Build record exists but no results-review.user.md is present yet.",
+      "suggested_action": "Complete docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-25T11:56:41.158Z",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: lp-do-ideas-startup-loop-integration",
+      "body": "Build record exists but no results-review.user.md is present yet.",
+      "suggested_action": "Complete docs/plans/lp-do-ideas-startup-loop-integration/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-24T16:55:19.500Z",
+      "path": "docs/plans/lp-do-ideas-startup-loop-integration/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: do-skills-bos-decoupling",
+      "body": "Build record exists but no results-review.user.md is present yet.",
+      "suggested_action": "Complete docs/plans/do-skills-bos-decoupling/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-24T15:16:59.364Z",
+      "path": "docs/plans/do-skills-bos-decoupling/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: startup-loop-new-business-launch-priorities",
+      "body": "Results review exists but is incomplete: Standing Expansion.",
+      "suggested_action": "Complete docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-24T11:55:10.202Z",
+      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "HBAG",
+      "title": "Pending results review: hbag-website-02-image-first-upgrade",
+      "body": "Build record exists but no results-review.user.md is present yet.",
+      "suggested_action": "Complete docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-23T18:19:57.820Z",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: hbag-brandmark-particle-animation",
+      "body": "Results review exists but is incomplete: Standing Expansion.",
+      "suggested_action": "Complete docs/plans/_archive/hbag-brandmark-particle-animation/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-23T15:36:51.399Z",
+      "path": "docs/plans/_archive/hbag-brandmark-particle-animation/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: startup-loop-website-first-build-contract",
+      "body": "Results review exists but is incomplete: Standing Expansion.",
+      "suggested_action": "Complete docs/plans/_archive/startup-loop-website-first-build-contract/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-23T15:36:51.352Z",
+      "path": "docs/plans/_archive/startup-loop-website-first-build-contract/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "PLAT",
+      "title": "Pending results review: cms-webpack-build-oom",
+      "body": "Results review exists but is incomplete: Standing Expansion.",
+      "suggested_action": "Complete docs/plans/_archive/cms-webpack-build-oom/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-23T15:36:51.272Z",
+      "path": "docs/plans/_archive/cms-webpack-build-oom/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: xa-uploader-usability-hardening",
+      "body": "Build record exists but no results-review.user.md is present yet.",
+      "suggested_action": "Complete docs/plans/xa-uploader-usability-hardening/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-23T15:36:51.219Z",
+      "path": "docs/plans/xa-uploader-usability-hardening/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: startup-loop-parallel-container-wiring",
+      "body": "Build record exists but no results-review.user.md is present yet.",
+      "suggested_action": "Complete docs/plans/startup-loop-parallel-container-wiring/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-23T15:36:51.203Z",
+      "path": "docs/plans/startup-loop-parallel-container-wiring/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: hostel-email-template-expansion",
+      "body": "Build record exists but no results-review.user.md is present yet.",
+      "suggested_action": "Complete docs/plans/hostel-email-template-expansion/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-23T15:36:51.161Z",
+      "path": "docs/plans/hostel-email-template-expansion/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: brikette-cta-sales-funnel-ga4",
+      "body": "Build record exists but no results-review.user.md is present yet.",
+      "suggested_action": "Complete docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md with required sections: Observed Outcomes, Standing Updates, New Idea Candidates, Standing Expansion.",
+      "source": "build-record.user.md",
+      "date": "2026-02-23T15:36:51.147Z",
+      "path": "docs/plans/brikette-cta-sales-funnel-ga4/build-record.user.md"
+    }
+  ];
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  var activeBusiness = 'ALL';
+  var activeType = 'all';
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function fmtDate(iso) {
+    try {
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } catch (e) { return iso; }
+  }
+
+  function esc(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function bizBadge(b) {
+    var known = ['HBAG','BRIK','BOS','PLAT','XA'];
+    var cls = known.indexOf(b) >= 0 ? 'badge-' + b : 'badge-generic';
+    return '<span class="badge ' + cls + '">' + esc(b) + '</span>';
+  }
+
+  function typeBadge(t) {
+    var map = { idea: 'badge-idea', risk: 'badge-risk', 'pending-review': 'badge-pending' };
+    var lbl = { idea: 'Idea Candidate', risk: 'Open Risk', 'pending-review': 'Pending Review' };
+    return '<span class="badge ' + (map[t] || 'badge-generic') + '">' + esc(lbl[t] || t) + '</span>';
+  }
+
+  // ── Render ─────────────────────────────────────────────────────────────────
+  function allItems() { return IDEA_ITEMS.concat(RISK_ITEMS).concat(PENDING_REVIEW_ITEMS); }
+
+  function filtered(items) {
+    return items.filter(function (item) {
+      if (activeBusiness !== 'ALL' && item.business !== activeBusiness) return false;
+      if (activeType !== 'all' && item.type !== activeType) return false;
+      return true;
+    });
+  }
+
+  function render() {
+    var ideas    = filtered(IDEA_ITEMS);
+    var risks    = filtered(RISK_ITEMS);
+    var pending  = filtered(PENDING_REVIEW_ITEMS);
+
+    // All distinct businesses
+    var bizsAll = ['ALL'];
+    allItems().forEach(function (item) {
+      if (item.business && bizsAll.indexOf(item.business) < 0) bizsAll.push(item.business);
+    });
+
+    var html = '';
+
+    // Summary bar
+    html += '<div class="summary-bar">';
+    html += '<div class="summary-pill pill-blue"><span class="count">' + IDEA_ITEMS.length + '</span> Idea Candidates</div>';
+    html += '<div class="summary-pill pill-amber"><span class="count">' + RISK_ITEMS.length + '</span> Open Risks</div>';
+    html += '<div class="summary-pill pill-purple"><span class="count">' + PENDING_REVIEW_ITEMS.length + '</span> Pending Reviews</div>';
+    html += '</div>';
+
+    // Filter bar
+    html += '<div class="filter-bar">';
+    html += '<span class="filter-label">Business</span>';
+    bizsAll.forEach(function (b) {
+      var active = activeBusiness === b ? ' active biz-' + b : '';
+      html += '<button class="filter-btn' + active + '" data-filter-biz="' + esc(b) + '">' + esc(b) + '</button>';
+    });
+    html += '<div class="filter-divider"></div>';
+    html += '<span class="filter-label">Type</span>';
+    [['all','All'],['idea','Ideas'],['risk','Risks'],['pending-review','Pending Review']].forEach(function (p) {
+      var active = activeType === p[0] ? ' active' : '';
+      html += '<button class="filter-btn' + active + '" data-filter-type="' + esc(p[0]) + '">' + esc(p[1]) + '</button>';
+    });
+    html += '</div>';
+
+    // ── Section: Idea Candidates ── //
+    if (activeType === 'all' || activeType === 'idea') {
+      html += '<div class="section">';
+      html += '<div class="section-header"><h2>Idea Candidates</h2><span class="section-count">' + ideas.length + '</span></div>';
+      if (ideas.length === 0) {
+        html += '<div class="empty">No idea candidates match the current filter.</div>';
+      } else {
+        ideas.forEach(function (item) { html += renderItem(item); });
+      }
+      html += '</div>';
+    }
+
+    // ── Section: Open Risks ── //
+    if (activeType === 'all' || activeType === 'risk') {
+      html += '<div class="section">';
+      html += '<div class="section-header"><h2>Open Risks</h2><span class="section-count">' + risks.length + '</span></div>';
+      if (risks.length === 0) {
+        html += '<div class="empty">No open risks match the current filter.</div>';
+      } else {
+        risks.forEach(function (item) { html += renderItem(item); });
+      }
+      html += '</div>';
+    }
+
+    // ── Section: Pending Results Reviews ── //
+    if (activeType === 'all' || activeType === 'pending-review') {
+      html += '<div class="section">';
+      html += '<div class="section-header"><h2>Pending Results Reviews</h2><span class="section-count">' + pending.length + '</span></div>';
+      if (pending.length === 0) {
+        html += '<div class="empty">No pending reviews match the current filter.</div>';
+      } else {
+        html += '<p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">These plans have build records but no <code>results-review.user.md</code> yet. Plans cannot be archived until the operator produces a results review.</p>';
+        pending.forEach(function (item) { html += renderItem(item); });
+      }
+      html += '</div>';
+    }
+
+    document.getElementById('app').innerHTML = html;
+    attachHandlers();
+  }
+
+  function renderItem(item) {
+    var html = '<div class="item ' + esc(item.type) + '">';
+    html += '<div class="item-top">';
+    html += '<div class="item-title">' + esc(item.title) + '</div>';
+    html += '<div class="item-badges">' + bizBadge(item.business) + typeBadge(item.type) + '</div>';
+    html += '</div>';
+    html += '<div class="item-body">' + esc(item.body) + '</div>';
+    if (item.suggested_action) {
+      html += '<div class="item-action"><div class="item-action-label">Suggested Next Action</div>' + esc(item.suggested_action) + '</div>';
+    }
+    html += '<div class="item-meta">';
+    html += '<span>Source: <code>' + esc(item.source) + '</code></span>';
+    if (item.date) html += '<span>Date: ' + esc(fmtDate(item.date)) + '</span>';
+    if (item.path) html += '<span>Path: <code>' + esc(item.path) + '</code></span>';
+    html += '</div>';
+    html += '</div>';
+    return html;
+  }
+
+  function attachHandlers() {
+    document.querySelectorAll('[data-filter-biz]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeBusiness = this.getAttribute('data-filter-biz');
+        render();
+      });
+    });
+    document.querySelectorAll('[data-filter-type]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeType = this.getAttribute('data-filter-type');
+        render();
+      });
+    });
+  }
+
+  render();
+
+  var genEl = document.getElementById('footer-generated');
+  if (genEl) {
+    genEl.textContent = 'Aperto: ' + new Date().toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  }
+})();
+</script>
+</body>
+</html>

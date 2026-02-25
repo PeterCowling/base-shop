@@ -35,7 +35,7 @@ The Brikette `/book` page is fully optimized from the `brikette-cta-sales-funnel
 - [x] TASK-08: CHECKPOINT — verify P1/P2 GA4 events and unit test coverage — Complete (2026-02-25)
 - [x] TASK-09: Fix i18n key leakage on /rooms/[id] (loadingPrice, roomImage.*) — Complete (2026-02-25)
 - [x] TASK-10: INVESTIGATE — SSR architecture for discovery route bailout markers — Complete (2026-02-25)
-- [ ] TASK-11: Fix bailout markers on /rooms, /how-to-get-here, /experiences discovery routes
+- [x] TASK-11: Fix bailout markers on /rooms, /how-to-get-here, /experiences discovery routes — Complete (2026-02-25)
 
 ## Goals
 - Deploy `ContentStickyCta` on `/how-to-get-here` (index + slug) and `/assistance`.
@@ -107,7 +107,7 @@ The Brikette `/book` page is fully optimized from the `brikette-cta-sales-funnel
 | TASK-08 | CHECKPOINT | Verify P1/P2 GA4 events + test coverage | 95% | S | Complete (2026-02-25) | TASK-01–07✓ | TASK-09, TASK-10 |
 | TASK-09 | IMPLEMENT | Fix i18n key leakage on /rooms/[id] | 83% | M | Complete (2026-02-25) | TASK-08 | - |
 | TASK-10 | INVESTIGATE | SSR architecture for discovery route bailout markers | 90% | S | Complete (2026-02-25) | TASK-08 | TASK-11 |
-| TASK-11 | IMPLEMENT | Fix bailout markers on discovery routes | 82% | M | Pending | TASK-10 | - |
+| TASK-11 | IMPLEMENT | Fix bailout markers on discovery routes | 82% | M | Complete (2026-02-25) | TASK-10 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -530,7 +530,8 @@ The Brikette `/book` page is fully optimized from the `brikette-cta-sales-funnel
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
+- **Build evidence:** Commit `903ee09342`. Investigation confirmed NO `useSearchParams` on /rooms (index), /experiences, or /how-to-get-here — bailout grep already returns 0. The only confirmed gap was the missing `getTranslations` pre-warm on `/experiences`. Changes: (1) `experiences/page.tsx`: added `await getTranslations(validLang, ["experiencesPage", "guides"])` — matches the pattern already used by /rooms and /how-to-get-here; `generateMetadata` runs in a separate execution context so its call doesn't populate the cache for the page render. (2) `rooms/page.tsx`: stored `t` from `getTranslations`, resolved `hero.heading`/`hero.subheading` server-side, passed as `serverTitle`/`serverSubtitle` props. (3) `RoomsPageContent.tsx`: added optional `serverTitle`/`serverSubtitle` props; uses server-resolved values via `??` operator, falling back to `useTranslation` in test contexts. `/how-to-get-here` sub-track C deferred: lower ROI, requires `useHowToGetHereContent` audit; H1 is already rendered via pre-warmed cache with `useSuspense: true`. TypeScript clean. Lint passed. Tests: exit 0.
 - **Affects:**
   - `apps/brikette/src/app/[lang]/rooms/page.tsx` and `RoomsPageContent.tsx`
   - `apps/brikette/src/app/[lang]/how-to-get-here/page.tsx` and `HowToGetHereIndexContent.tsx`

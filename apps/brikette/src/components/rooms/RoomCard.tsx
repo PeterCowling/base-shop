@@ -137,7 +137,7 @@ export default memo(function RoomCard({
 }: RoomCardProps): JSX.Element {
   const resolvedLang = (lang ?? i18nConfig.fallbackLng) as string;
   const { t, ready: readyRaw } = useTranslation("roomsPage", { lng: resolvedLang });
-  const ready = readyRaw !== false;
+  const ready = readyRaw === true;
   const { t: tTokens, ready: tokensReadyRaw } = useTranslation("_tokens", { lng: resolvedLang });
   const tokensReady = tokensReadyRaw !== false;
   const router = useRouter();
@@ -354,11 +354,13 @@ export default memo(function RoomCard({
     `${baseKey}.title`,
     room.id.replace(/_/gu, " ")
   );
-  const imageAlt = resolveTranslatedCopy(
-    t("roomImage.photoAlt", { room: title, defaultValue: `${title} room` }),
-    "roomImage.photoAlt",
-    `${title} room`
-  );
+  const imageAlt = ready
+    ? resolveTranslatedCopy(
+        t("roomImage.photoAlt", { room: title, defaultValue: `${title} room` }),
+        "roomImage.photoAlt",
+        `${title} room`
+      )
+    : "";
   const imageLabels: RoomCardImageLabels = (() => {
     if (!ready) {
       return { enlarge: "", prevAria: "", nextAria: "", empty: "" };

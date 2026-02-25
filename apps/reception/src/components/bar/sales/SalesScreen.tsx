@@ -120,7 +120,7 @@ const SalesScreen: FC = React.memo(() => {
           onClick={handleRecallLastOrder}
           disabled={!lastRemovedOrder}
           compatibilityMode="passthrough"
-          className="min-h-11 rounded-md px-3 py-2 text-sm font-medium transition-colors bg-surface/15 text-primary-fg hover:bg-surface/25 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="min-h-11 rounded-lg px-3 py-2 text-sm font-medium transition-colors bg-surface/15 text-primary-fg hover:bg-surface/25 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Recall
         </Button>
@@ -133,7 +133,7 @@ const SalesScreen: FC = React.memo(() => {
               compatibilityMode="passthrough"
               aria-pressed={isActive}
               className={
-                "min-h-11 rounded-md px-3 py-2 text-sm font-semibold transition-colors " +
+                "min-h-11 rounded-lg px-3 py-2 text-sm font-semibold transition-colors " +
                 (isActive
                   ? "bg-surface/90 text-primary-main ring-2 ring-surface/50 ring-offset-1 ring-offset-primary-main"
                   : "bg-surface/15 text-primary-fg hover:bg-surface/25")

@@ -219,6 +219,7 @@ function RoomsSection({
                 </p>
                 <Link
                   href={`${href}${searchString}`}
+                  aria-label={`${resolveTranslatedCopy(t("moreAboutThisRoom", { defaultValue: "More About This Room" }), "More About This Room")} ${title}`}
                   className="mt-2 inline-flex min-h-11 items-center self-start text-sm font-medium text-brand-primary underline hover:text-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70 dark:text-brand-secondary dark:hover:text-brand-secondary/85 dark:focus-visible:ring-brand-secondary/70"
                 >
                   {resolveTranslatedCopy(

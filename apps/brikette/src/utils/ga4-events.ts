@@ -410,7 +410,7 @@ export function fireViewItem(params: { itemId: string; itemName?: string }): voi
 // Required params: handoff_mode, engine_endpoint, checkin, checkout, pax.
 
 export type HandoffMode = "new_tab" | "same_tab";
-export type EngineEndpoint = "result" | "confirm";
+export type EngineEndpoint = "calendar" | "result" | "confirm";
 
 export interface HandoffToEngineParams {
   handoff_mode: HandoffMode;

@@ -5,6 +5,7 @@
 import { type ComponentProps, type ComponentPropsWithoutRef, Fragment, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import type { TFunction } from "i18next";
 
 import { DirectBookingPerks } from "@acme/ui/molecules";
@@ -190,6 +191,38 @@ function AmenitiesSection({
   );
 }
 
+type BookingQuery = { checkIn: string; checkOut: string; adults: number; queryState: "valid" | "absent" };
+
+function parseBookingQuery(
+  searchParams: { get: (key: string) => string | null } | null,
+  todayIso: string,
+): BookingQuery {
+  const checkIn = searchParams?.get("checkin") || todayIso;
+  const checkOut = searchParams?.get("checkout") || getDatePlusTwoDays(checkIn);
+  const adultsRaw = parseInt(searchParams?.get("pax") ?? "", 10);
+  const adults = Number.isFinite(adultsRaw) && adultsRaw > 0 ? adultsRaw : 1;
+  const queryState: "valid" | "absent" =
+    Boolean(searchParams?.get("checkin")) && checkIn >= todayIso && checkOut > checkIn
+      ? "valid"
+      : "absent";
+  return { checkIn, checkOut, adults, queryState };
+}
+
+function coerceToContent<T>(raw: unknown): T | null {
+  return raw && typeof raw === "object" && !Array.isArray(raw) ? (raw as T) : null;
+}
+
+function resolveAmenitiesSection(
+  amenityRaw: unknown,
+  heading: string,
+  intro: string,
+): { blurbs: AmenityContent[]; shouldRender: boolean } {
+  const isArray = Array.isArray(amenityRaw);
+  const blurbs = isArray ? (amenityRaw as AmenityContent[]) : [];
+  const hasFallback = !isArray && Boolean(amenityRaw) && Boolean(heading || intro);
+  return { blurbs, shouldRender: blurbs.length > 0 || hasFallback };
+}
+
 export default function RoomDetailContent({ lang, id }: Props) {
   const { t } = useTranslation("roomsPage", { lng: lang, useSuspense: true });
   const { t: tGuides } = useTranslation("guides", { lng: lang, useSuspense: true });
@@ -201,30 +234,17 @@ export default function RoomDetailContent({ lang, id }: Props) {
     namespaces: ["roomsPage", "guides", "pages.rooms", "rooms"],
     optionalNamespaces: ["assistanceCommon", "modals", "ratingsBar"],
   });
+  const searchParams = useSearchParams();
   const room = roomsData.find((r) => r.id === id)!;
-  const checkIn = getTodayIso();
-  const checkOut = getDatePlusTwoDays(checkIn);
-  const adults = 1;
+  const todayIso = getTodayIso();
+  const { checkIn, checkOut, adults, queryState } = parseBookingQuery(searchParams, todayIso);
   const roomTitleKey = `rooms.${id}.title`;
   const bedDescriptionKey = `rooms.${id}.bed_description`;
 
   const title = resolveCopy(t(roomTitleKey), roomTitleKey, id.replace(/_/gu, " "));
 
-  const heroRaw = tRoomsPageDetail(`detail.${id}.hero`, { returnObjects: true });
-  const hero =
-    heroRaw && typeof heroRaw === "object" && !Array.isArray(heroRaw)
-      ? (heroRaw as HeroContent)
-      : null;
-
-  const outlineRaw = tRoomsPageDetail(`detail.${id}.outline`, { returnObjects: true });
-  const outline =
-    outlineRaw && typeof outlineRaw === "object" && !Array.isArray(outlineRaw)
-      ? (outlineRaw as OutlineContent)
-      : null;
-
-  const amenityRaw = tRoomDetail(`detail.${id}.amenities`, { returnObjects: true });
-  const isAmenityArray = Array.isArray(amenityRaw);
-  const amenityBlurbs = isAmenityArray ? (amenityRaw as AmenityContent[]) : [];
+  const hero = coerceToContent<HeroContent>(tRoomsPageDetail(`detail.${id}.hero`, { returnObjects: true }));
+  const outline = coerceToContent<OutlineContent>(tRoomsPageDetail(`detail.${id}.outline`, { returnObjects: true }));
 
   const amenitiesHeading = resolveCopy(
     tRoomDetail("detail.common.amenitiesHeading"),
@@ -234,8 +254,11 @@ export default function RoomDetailContent({ lang, id }: Props) {
     tRoomDetail("detail.common.amenitiesIntro"),
     "detail.common.amenitiesIntro",
   );
-  const hasFallbackCopy = !isAmenityArray && Boolean(amenityRaw) && Boolean(amenitiesHeading || amenitiesIntro);
-  const shouldRenderAmenities = amenityBlurbs.length > 0 || hasFallbackCopy;
+  const { blurbs: amenityBlurbs, shouldRender: shouldRenderAmenities } = resolveAmenitiesSection(
+    tRoomDetail(`detail.${id}.amenities`, { returnObjects: true }),
+    amenitiesHeading,
+    amenitiesIntro,
+  );
 
   const onStickyCheckoutClick = useCallback(
     (ctx: StickyBookNowClickContext) => {
@@ -266,7 +289,7 @@ export default function RoomDetailContent({ lang, id }: Props) {
 
       <HeroSection hero={hero} />
 
-      <RoomCard room={room} checkIn={checkIn} checkOut={checkOut} adults={adults} lang={lang} />
+      <RoomCard room={room} checkIn={checkIn} checkOut={checkOut} adults={adults} lang={lang} queryState={queryState} />
 
       <Section className="mx-auto max-w-3xl px-4">
         <p className="mt-6 text-base leading-relaxed">

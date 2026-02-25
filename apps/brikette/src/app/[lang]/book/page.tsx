@@ -63,7 +63,7 @@ export default async function BookPage({ params }: Props) {
           Satisfies TASK-10A TC-02 gate (no dead-end pre-hydration for /{lang}/book). */}
       <noscript>
         {/* eslint-disable-next-line ds/no-hardcoded-copy -- i18n-exempt: noscript-only technical fallback for no-JS users, not rendered in normal UI. TASK-10B [ttl=2026-12-31] */}
-        <a href="https://book.octorate.com/octobook/site/reservation/result.xhtml?codice=45111">
+        <a href="https://book.octorate.com/octobook/site/reservation/calendar.xhtml?codice=45111">
           Check availability
         </a>
       </noscript>

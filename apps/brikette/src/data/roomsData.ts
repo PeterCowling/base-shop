@@ -81,7 +81,7 @@ const roomsData: Room[] = [
       "/images/7/7_3.webp",
     ],
     landingImage: "/images/7/landing.webp",
-    roomsHref: "/rooms#double_room",
+    roomsHref: "/rooms/double_room",
   },
 
   /* ── Room 10 → room_10 ────────────────────────────────────────────── */
@@ -102,7 +102,7 @@ const roomsData: Room[] = [
     availability: { totalBeds: 6, defaultRelease: 6 },
     imagesRaw: ["/images/10/landing.webp", "/images/10/10_1.webp", "/images/10/10_2.webp"],
     landingImage: "/images/10/landing.webp",
-    roomsHref: "/rooms#room_10",
+    roomsHref: "/rooms/room_10",
   },
 
   /* ── Room 11 → room_11 ───────────────────────────────────────────── */
@@ -130,7 +130,7 @@ const roomsData: Room[] = [
       "/images/11/11_5.webp",
     ],
     landingImage: "/images/11/landing.webp",
-    roomsHref: "/rooms#room_11",
+    roomsHref: "/rooms/room_11",
   },
 
   /* ── Room 12 → room_12 ───────────────────────────────────────────── */
@@ -159,7 +159,7 @@ const roomsData: Room[] = [
       "/images/12/12_6.webp",
     ],
     landingImage: "/images/12/landing.webp",
-    roomsHref: "/rooms#room_12",
+    roomsHref: "/rooms/room_12",
   },
 
   /* ── Room 3 → room_3 ─────────────────────────────────────────────── */
@@ -185,7 +185,7 @@ const roomsData: Room[] = [
       "/images/4/4_3.webp",
     ],
     landingImage: "/images/3/landing.webp",
-    roomsHref: "/rooms#room_3",
+    roomsHref: "/rooms/room_3",
   },
 
   /* ── Room 4 → room_4 ─────────────────────────────────────────────── */
@@ -206,7 +206,7 @@ const roomsData: Room[] = [
     availability: { totalBeds: 8, defaultRelease: 8 },
     imagesRaw: ["/images/4/4_1.webp", "/images/4/4_2.webp", "/images/4/4_3.webp"],
     landingImage: "/images/4/landing.webp",
-    roomsHref: "/rooms#room_4",
+    roomsHref: "/rooms/room_4",
   },
 
   /* ── Room 5 → room_5 ─────────────────────────────────────────────── */
@@ -235,7 +235,7 @@ const roomsData: Room[] = [
       "/images/6/6_6.webp",
     ],
     landingImage: "/images/5/landing.webp",
-    roomsHref: "/rooms#room_5",
+    roomsHref: "/rooms/room_5",
   },
 
   /* ── Room 6 → room_6 ─────────────────────────────────────────────── */
@@ -264,7 +264,7 @@ const roomsData: Room[] = [
       "/images/6/6_6.webp",
     ],
     landingImage: "/images/6/landing.webp",
-    roomsHref: "/rooms#room_6",
+    roomsHref: "/rooms/room_6",
   },
 
   /* ── Room 9 → room_9 ─────────────────────────────────────────────── */
@@ -291,7 +291,7 @@ const roomsData: Room[] = [
       "/images/9/9_4.webp",
     ],
     landingImage: "/images/9/landing.webp",
-    roomsHref: "/rooms#room_9",
+    roomsHref: "/rooms/room_9",
   },
 
   /* ── Room 8 → room_8 ─────────────────────────────────────────────── */
@@ -312,7 +312,7 @@ const roomsData: Room[] = [
     availability: { totalBeds: 2, defaultRelease: 2 },
     imagesRaw: ["/images/8/landing.webp", "/images/8/8_1.webp"],
     landingImage: "/images/8/landing.webp",
-    roomsHref: "/rooms#room_8",
+    roomsHref: "/rooms/room_8",
   },
 
   /* ── Apartment → apartment ───────────────────────────────────────── */

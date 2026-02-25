@@ -19,7 +19,7 @@ import BookPageStructuredData from "@/components/seo/BookPageStructuredData";
 import { roomsData } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
-import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { addDays, getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { fireSearchAvailability, fireViewItemList } from "@/utils/ga4-events";
 
 type Props = {
@@ -102,7 +102,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
     setPax(initialPax);
   }, [initialCheckin, initialCheckout, initialPax]);
 
-  const minCheckout = useMemo(() => getDatePlusTwoDays(checkin), [checkin]);
+  const minCheckout = useMemo(() => addDays(checkin, 1), [checkin]);
 
   const applyQuery = useCallback(() => {
     const normalizedCheckin = checkin || todayIso;
@@ -180,7 +180,10 @@ function BookPageContent({ lang }: Props): JSX.Element {
               type="date"
               value={checkin}
               min={todayIso}
-              onChange={(e) => setCheckin(e.target.value)}
+              onChange={(e) => {
+                setCheckin(e.target.value);
+                writeCanonicalBookingQuery({ checkin: e.target.value, checkout, pax });
+              }}
               className="min-h-11 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
             />
           </label>
@@ -191,7 +194,10 @@ function BookPageContent({ lang }: Props): JSX.Element {
               type="date"
               value={checkout}
               min={minCheckout}
-              onChange={(e) => setCheckout(e.target.value)}
+              onChange={(e) => {
+                setCheckout(e.target.value);
+                writeCanonicalBookingQuery({ checkin, checkout: e.target.value, pax });
+              }}
               className="min-h-11 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
             />
           </label>
@@ -203,7 +209,11 @@ function BookPageContent({ lang }: Props): JSX.Element {
               min={1}
               max={8}
               value={pax}
-              onChange={(e) => setPax(parsePositiveInt(e.target.value, 1))}
+              onChange={(e) => {
+                const newPax = parsePositiveInt(e.target.value, 1);
+                setPax(newPax);
+                writeCanonicalBookingQuery({ checkin, checkout, pax: newPax });
+              }}
               className="min-h-11 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
             />
           </label>

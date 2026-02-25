@@ -38,11 +38,17 @@ function StickyBookNow({
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
 
   const [isDismissed, setIsDismissed] = useState(false);
+  const [urlParams, setUrlParams] = useState<URLSearchParams | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
+
+    // Reading URL params in an effect avoids SSR/hydration mismatches: both server
+    // and the initial client render use defaults, then this effect patches the deep
+    // link after mount so the correct dates are always sent to Octorate.
+    setUrlParams(new URLSearchParams(window.location.search));
 
     try {
       const storedValue = window.sessionStorage.getItem(STICKY_CTA_STORAGE_KEY);
@@ -54,14 +60,12 @@ function StickyBookNow({
     }
   }, []);
 
-  const search = typeof window !== "undefined" ? window.location.search : "";
-  const urlParams = useMemo(() => new URLSearchParams(search), [search]);
-  const checkIn = useMemo(() => urlParams.get("checkin") ?? getTodayIso(), [urlParams]);
+  const checkIn = useMemo(() => urlParams?.get("checkin") ?? getTodayIso(), [urlParams]);
   const checkOut = useMemo(
-    () => urlParams.get("checkout") ?? getDatePlusTwoDays(checkIn),
+    () => urlParams?.get("checkout") ?? getDatePlusTwoDays(checkIn),
     [urlParams, checkIn]
   );
-  const adults = useMemo(() => parseInt(urlParams.get("pax") ?? "1", 10) || 1, [urlParams]);
+  const adults = useMemo(() => parseInt(urlParams?.get("pax") ?? "1", 10) || 1, [urlParams]);
 
   const perksEyebrow = useMemo(
     () => (tokensReady ? (tTokens("directBookingPerks") as string) : ""),
@@ -127,7 +131,7 @@ function StickyBookNow({
       children: "0",
       childrenAges: "",
     });
-    return `https://book.octorate.com/octobook/site/reservation/result.xhtml?${qs}`;
+    return `https://book.octorate.com/octobook/site/reservation/calendar.xhtml?${qs}`;
   }, [checkIn, checkOut, adults]);
 
   const onDismiss = useCallback(() => {

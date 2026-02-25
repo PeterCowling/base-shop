@@ -53,7 +53,7 @@ jest.mock("@acme/ui/organisms/StickyBookNow", () => {
               checkin: "2026-06-10",
               checkout: "2026-06-12",
               pax: 2,
-              href: "https://book.octorate.com/octobook/site/reservation/result.xhtml",
+              href: "https://book.octorate.com/octobook/site/reservation/calendar.xhtml",
               proceed,
             });
           }}

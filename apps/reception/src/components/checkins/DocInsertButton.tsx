@@ -1,6 +1,7 @@
 // src/components/checkins/DocInsertButton.tsx
 import React, { memo, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { FileText } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -86,7 +87,7 @@ const DocInsertButton: React.FC<DocInsertButtonProps> = ({
       className={`${baseClass} ${colorClass}`}
       title={title}
     >
-      <i className="fas fa-passport" />
+      <FileText size={16} />
       <span className="ms-2">Doc</span>
     </Button>
   );

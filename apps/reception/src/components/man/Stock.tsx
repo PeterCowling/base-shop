@@ -22,7 +22,7 @@ function Stock() {
 
   return (
     <PageShell title="STOCK">
-      <div className="bg-surface rounded-lg shadow p-6">
+      <div className="bg-surface rounded-xl shadow-lg p-6">
         <div className="overflow-auto">
           <Table className="min-w-full border-collapse text-sm">
             <TableHeader>

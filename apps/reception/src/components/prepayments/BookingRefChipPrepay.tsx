@@ -1,5 +1,6 @@
 // src/components/payments/prepayments/BookingRefChipPrepay.tsx
 import { type FC, type KeyboardEvent, memo, useCallback } from "react";
+import { Copy } from "lucide-react";
 
 import { showToast } from "../../utils/toastUtils";
 
@@ -18,7 +19,7 @@ const BookingRefChipPrepayComponent: FC<BookingRefChipPrepayProps> = ({
 }) => {
   const chipStyle = hasCard
     ? "bg-success-main text-primary-fg"
-    : "bg-info-main text-primary-fg";
+    : "bg-primary-main text-primary-fg";
 
   const handleCopy = useCallback(async (): Promise<void> => {
     try {
@@ -49,11 +50,11 @@ const BookingRefChipPrepayComponent: FC<BookingRefChipPrepayProps> = ({
       }}
       onKeyDown={handleKeyDown}
       title="Click to copy booking reference"
-      className={`relative inline-flex items-center px-4 py-3 text-sm rounded leading-none ${chipStyle} focus:outline-none min-w-225px`}
+      className={`inline-flex items-center gap-2 px-4 py-3 text-sm rounded-lg leading-none ${chipStyle} focus:outline-none min-w-225px`}
       aria-label={`Copy booking reference ${bookingRef}`}
     >
-      <i className="fas fa-copy absolute left-2 top-1/2 transform -translate-y-1/2"></i>
-      <span className="ms-8">{bookingRef}</span>
+      <Copy size={14} className="shrink-0" />
+      <span>{bookingRef}</span>
     </span>
   );
 };

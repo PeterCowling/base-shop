@@ -23,7 +23,7 @@ function LiveInner() {
 
   return (
     <PageShell title="LIVE SHIFT">
-      <div className="bg-surface rounded-lg shadow p-6 space-y-8">
+      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-8">
         <SummaryAndTransactions
           shiftOpenTime={props.shiftOpenTime}
           shiftOwner={props.shiftOwner}

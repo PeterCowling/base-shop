@@ -303,7 +303,7 @@ function Extension() {
   return (
     <>
       <PageShell title="EXTENSIONS">
-        <div className="bg-surface rounded-lg shadow p-6">
+        <div className="bg-surface rounded-xl shadow-lg p-6">
           {loading && (
             <p className="italic text-muted-foreground">Loading extension data...</p>
           )}

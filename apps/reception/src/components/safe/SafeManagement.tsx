@@ -359,7 +359,7 @@ function SafeManagement(): JSX.Element {
 
   return (
     <PageShell title="SAFE MANAGEMENT">
-      <div className="bg-surface rounded-lg shadow p-6 space-y-4">
+      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
         <p className="text-lg">
           Safe Balance: <strong>€{safeBalance.toFixed(2)}</strong>
         </p>

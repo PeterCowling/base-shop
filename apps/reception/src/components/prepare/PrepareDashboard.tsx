@@ -74,7 +74,7 @@ function PrepareDashboard(): JSX.Element {
         <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
           PREPARE
         </h1>
-        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
+        <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4">
           <DateSelector
             selectedDate={selectedDate}
             onDateChange={setSelectedDate}
@@ -93,7 +93,7 @@ function PrepareDashboard(): JSX.Element {
         <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
           PREPARE
         </h1>
-        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
+        <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4">
           <DateSelector
             selectedDate={selectedDate}
             onDateChange={setSelectedDate}
@@ -117,7 +117,7 @@ function PrepareDashboard(): JSX.Element {
         <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
           PREPARE
         </h1>
-        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
+        <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4">
           <DateSelector
             selectedDate={selectedDate}
             onDateChange={setSelectedDate}
@@ -139,7 +139,7 @@ function PrepareDashboard(): JSX.Element {
       <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
         PREPARE
       </h1>
-      <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-10">
+      <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-10">
         <DateSelector
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}

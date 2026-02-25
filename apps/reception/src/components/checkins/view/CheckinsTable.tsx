@@ -84,7 +84,7 @@ const CheckinsTableView: React.FC<Props> = ({
       onArchiveClick={onArchiveClick}
       eligibleCount={eligibleCount}
     />
-    <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
+    <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <DateSelector

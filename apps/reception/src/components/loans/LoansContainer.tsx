@@ -208,7 +208,7 @@ function LoansContainer({ username }: { username: string }): ReactElement {
   );
   return (
     <PageShell title="LOANS">
-      <div className="bg-surface rounded-lg shadow p-6 space-y-4">
+      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
         {error && (
           <div className="p-4 text-error-main font-semibold">
             Error loading loan data: {String(error)}

@@ -84,30 +84,35 @@ const RoomsGrid: FC = () => {
   return (
     <>
       <div className="font-sans p-4">
-        <h1 className="text-2xl font-bold mb-4">Multiple Room Grids</h1>
-        <div className="flex items-center gap-4 mb-4">
-          <label className="font-semibold" htmlFor="start-date">
-            Start:
-          </label>
-          <Input
-            compatibilityMode="no-wrapper"
-            id="start-date"
-            type="date"
-            className="border rounded px-2 py-1 text-foreground"
-            value={startDate}
-            onChange={handleStartChange}
-          />
-          <label className="font-semibold" htmlFor="end-date">
-            End:
-          </label>
-          <Input
-            compatibilityMode="no-wrapper"
-            id="end-date"
-            type="date"
-            className="border rounded px-2 py-1 text-foreground"
-            value={endDate}
-            onChange={handleEndChange}
-          />
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-3">
+            <div className="h-7 w-1 rounded-full bg-primary-main" aria-hidden="true" />
+            <h1 className="text-2xl font-heading font-semibold text-foreground">Room Grid</h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <label className="text-sm font-medium text-muted-foreground" htmlFor="start-date">
+              From
+            </label>
+            <Input
+              compatibilityMode="no-wrapper"
+              id="start-date"
+              type="date"
+              className="rounded-lg border border-border-2 bg-surface px-3 py-1.5 text-sm text-foreground focus:border-primary-main focus:outline-none"
+              value={startDate}
+              onChange={handleStartChange}
+            />
+            <label className="text-sm font-medium text-muted-foreground" htmlFor="end-date">
+              To
+            </label>
+            <Input
+              compatibilityMode="no-wrapper"
+              id="end-date"
+              type="date"
+              className="rounded-lg border border-border-2 bg-surface px-3 py-1.5 text-sm text-foreground focus:border-primary-main focus:outline-none"
+              value={endDate}
+              onChange={handleEndChange}
+            />
+          </div>
         </div>
         {loading && (
           <p className="p-4 italic text-muted-foreground">Loading rooms...</p>

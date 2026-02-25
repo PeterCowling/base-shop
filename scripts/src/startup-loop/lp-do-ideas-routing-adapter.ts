@@ -10,19 +10,23 @@
  *   - Option B (queue-with-confirmation): adapter produces payloads only.
  *     It does NOT invoke skills. Downstream callers are responsible for
  *     operator confirmation and actual invocation.
- *   - auto_executed status is reserved and MUST be rejected in trial mode.
+ *   - auto_executed status is reserved and MUST be rejected in both trial and live modes.
  *   - Invalid or incomplete packets fail closed with actionable error messages.
  *
  * Contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md
  * Matrix:   docs/business-os/startup-loop/ideas/lp-do-ideas-routing-matrix.md
  */
 
+import type { LiveDispatchPacket } from "./lp-do-ideas-live.js";
 import type {
+  DeliverableFamily,
   DispatchStatus,
   RecommendedRoute,
-  DeliverableFamily,
   TrialDispatchPacket,
 } from "./lp-do-ideas-trial.js";
+
+/** Union of all accepted dispatch packet types. */
+export type AnyDispatchPacket = TrialDispatchPacket | LiveDispatchPacket;
 
 // ---------------------------------------------------------------------------
 // Invocation payloads
@@ -48,7 +52,7 @@ export interface FactFindInvocationPayload {
   /** ISO-8601 string: when the dispatch packet was created */
   dispatch_created_at: string;
   /** The originating dispatch packet, preserved for traceability */
-  source_packet: TrialDispatchPacket;
+  source_packet: AnyDispatchPacket;
 }
 
 /**
@@ -71,7 +75,7 @@ export interface BriefingInvocationPayload {
   /** ISO-8601 string: when the dispatch packet was created */
   dispatch_created_at: string;
   /** The originating dispatch packet, preserved for traceability */
-  source_packet: TrialDispatchPacket;
+  source_packet: AnyDispatchPacket;
 }
 
 export type InvocationPayload = FactFindInvocationPayload | BriefingInvocationPayload;
@@ -159,6 +163,7 @@ function extractDispatchId(packet: unknown): string | null {
 /**
  * Routes a validated dispatch.v1 packet to the appropriate downstream skill.
  *
+ * Accepts both trial (mode="trial") and live (mode="live") packets.
  * Returns a RouteSuccess with an invocation payload, or a RouteError with an
  * actionable error message and machine-readable error code.
  *
@@ -166,7 +171,7 @@ function extractDispatchId(packet: unknown): string | null {
  * skills. The returned payload is a data structure describing what to invoke;
  * actual invocation is the caller's responsibility (Option B policy).
  */
-export function routeDispatch(packet: TrialDispatchPacket): RouteResult {
+export function routeDispatch(packet: AnyDispatchPacket): RouteResult {
   const dispatchId = extractDispatchId(packet);
 
   // --- Schema version guard ---
@@ -183,15 +188,15 @@ export function routeDispatch(packet: TrialDispatchPacket): RouteResult {
   }
 
   // --- Mode guard ---
-  if (packet.mode !== "trial") {
+  if (packet.mode !== "trial" && packet.mode !== "live") {
     return {
       ok: false,
       code: "INVALID_MODE",
       error:
         `[lp-do-ideas-routing-adapter] Packet mode "${packet.mode}" is not permitted. ` +
-        `Only mode="trial" packets are accepted in this tranche. ` +
-        `mode="live" routing is reserved for the go-live integration phase ` +
-        `defined in lp-do-ideas-go-live-seam.md.`,
+        `Only mode="trial" and mode="live" packets are accepted. ` +
+        `Ensure the packet was produced by lp-do-ideas-trial or lp-do-ideas-live ` +
+        `and has not been mutated. See lp-do-ideas-go-live-seam.md.`,
       dispatch_id: dispatchId,
     };
   }

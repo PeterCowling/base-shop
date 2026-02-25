@@ -18,14 +18,16 @@
  * TC-15: Payload fields are correctly mapped from source packet
  */
 
+import { createHash } from "node:crypto";
+
 import { describe, expect, it } from "@jest/globals";
 
 import {
-  routeDispatch,
-  type FactFindInvocationPayload,
   type BriefingInvocationPayload,
-  type RouteSuccess,
+  type FactFindInvocationPayload,
+  routeDispatch,
   type RouteError,
+  type RouteSuccess,
 } from "../lp-do-ideas-routing-adapter.js";
 import type { TrialDispatchPacket } from "../lp-do-ideas-trial.js";
 
@@ -48,6 +50,13 @@ function makeFactFindPacket(
     artifact_id: "HBAG-SELL-PACK",
     before_sha: "abc1234",
     after_sha: "def5678",
+    root_event_id: "HBAG-SELL-PACK:def5678",
+    anchor_key: "channel-strategy",
+    cluster_key: "hbag:unknown:channel-strategy:HBAG-SELL-PACK:def5678",
+    cluster_fingerprint: createHash("sha256")
+      .update("HBAG-SELL-PACK:def5678\nchannel-strategy\ndocs/business-os/strategy/HBAG/sell-pack.user.md")
+      .digest("hex"),
+    lineage_depth: 0,
     area_anchor: "channel-strategy",
     location_anchors: ["docs/business-os/strategy/HBAG/sell-pack.user.md"],
     provisional_deliverable_family: "business-artifact",
@@ -78,6 +87,13 @@ function makeBriefingPacket(
     artifact_id: "HBAG-MARKET-PACK",
     before_sha: "ccc1234",
     after_sha: "fff5678",
+    root_event_id: "HBAG-MARKET-PACK:fff5678",
+    anchor_key: "market-intelligence",
+    cluster_key: "hbag:unknown:market-intelligence:HBAG-MARKET-PACK:fff5678",
+    cluster_fingerprint: createHash("sha256")
+      .update("HBAG-MARKET-PACK:fff5678\nmarket-intelligence\ndocs/business-os/strategy/HBAG/market-pack.user.md")
+      .digest("hex"),
+    lineage_depth: 0,
     area_anchor: "market-intelligence",
     location_anchors: ["docs/business-os/strategy/HBAG/market-pack.user.md"],
     provisional_deliverable_family: "business-artifact",
@@ -240,14 +256,22 @@ describe("TC-05: Invalid schema_version", () => {
 // TC-06: Invalid mode → INVALID_MODE
 // ---------------------------------------------------------------------------
 
-describe("TC-06: Invalid mode", () => {
-  it("rejects packet with mode=live", () => {
-    const packet = makeFactFindPacket({ mode: "live" as "trial" });
+describe("TC-06: Mode guard — invalid modes rejected, trial and live accepted", () => {
+  it("rejects packet with a truly invalid mode (not trial or live)", () => {
+    const packet = makeFactFindPacket({ mode: "garbage" as "trial" });
     const result = routeDispatch(packet) as RouteError;
 
     expect(result.ok).toBe(false);
     expect(result.code).toBe("INVALID_MODE");
-    expect(result.error).toContain("live");
+    expect(result.error).toContain("garbage");
+  });
+
+  it("accepts packet with mode=live (live path now supported)", () => {
+    const packet = makeFactFindPacket({ mode: "live" as "trial" });
+    const result = routeDispatch(packet);
+
+    // mode="live" is now a valid mode — packet should route successfully
+    expect(result.ok).toBe(true);
   });
 });
 
@@ -462,7 +486,7 @@ describe("TC-15: Payload field mapping", () => {
 
   it("RouteError captures dispatch_id from packet for correlation", () => {
     const packet = makeFactFindPacket({
-      mode: "live" as "trial",
+      mode: "corrupt_mode" as "trial",
       dispatch_id: "IDEA-DISPATCH-20260224153000-CORR",
     });
     const result = routeDispatch(packet) as RouteError;

@@ -5,7 +5,7 @@ Domain: Platform / Business-OS
 Workstream: Engineering
 Created: 2026-02-25
 Last-reviewed: 2026-02-25
-Last-updated: 2026-02-25 (TASK-01 complete)
+Last-updated: 2026-02-25 (TASK-02 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-do-ideas-live-autonomous-activation
 Deliverable-Type: multi-deliverable
@@ -26,7 +26,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 
 ## Active tasks
 - [x] TASK-01: Resolve live hook boundary and invocation contract
-- [ ] TASK-02: Add live orchestrator path and mode-guard compatibility
+- [x] TASK-02: Add live orchestrator path and mode-guard compatibility
 - [ ] TASK-03: Implement SIGNALS advisory live hook
 - [ ] TASK-04: Add deterministic persistence adapter and CLI wiring
 - [ ] TASK-05: Materialize artifact plane and reconcile trial/live contracts
@@ -82,8 +82,8 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Resolve live hook boundary and command invocation contract | 90% | S | Complete (2026-02-25) | - | TASK-02, TASK-03 |
-| TASK-02 | IMPLEMENT | Add live orchestrator path and mode-guard compatibility | 90% | M | Pending | TASK-01 ✓ | TASK-03, TASK-04, TASK-06 |
-| TASK-03 | IMPLEMENT | Implement SIGNALS advisory live hook with fail-open fallback | 88% | M | Pending | TASK-01 ✓, TASK-02 | TASK-06 |
+| TASK-02 | IMPLEMENT | Add live orchestrator path and mode-guard compatibility | 90% | M | Complete (2026-02-25) | TASK-01 ✓ | TASK-03, TASK-04, TASK-06 |
+| TASK-03 | IMPLEMENT | Implement SIGNALS advisory live hook with fail-open fallback | 90% | M | Pending | TASK-01 ✓, TASK-02 ✓ | TASK-06 |
 | TASK-04 | IMPLEMENT | Add deterministic persistence adapter and CLI command wiring | 85% | L | Pending | TASK-02 | TASK-05, TASK-06, TASK-07 |
 | TASK-05 | IMPLEMENT | Materialize trial/live artifact plane and reconcile contracts | 80% | M | Pending | TASK-04 | TASK-10 |
 | TASK-06 | IMPLEMENT | Expand test suite for live-path behavior and regressions | 85% | M | Pending | TASK-03, TASK-04 | TASK-08 |
@@ -152,7 +152,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/lp-do-ideas-live.ts`, `scripts/src/startup-loop/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts`, `[readonly] docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-seam.md`
+- **Affects:** `scripts/src/startup-loop/lp-do-ideas-live.ts`, `scripts/src/startup-loop/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-routing-adapter.test.ts` (scope expansion: TC-06 updated for live-mode acceptance), `scripts/src/startup-loop/__tests__/lp-do-ideas-live.test.ts` (new — TC-02-A/B/C/D/E), `[readonly] docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-seam.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03, TASK-04, TASK-06
 - **Confidence:** 85%
@@ -181,6 +181,16 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
   - Rollback: revert live wrapper import paths and restore strict trial mode guard.
 - **Documentation impact:** update seam/checklist references after code lands.
 - **Notes / references:** BR-01, BR-02.
+- **Build completion evidence (2026-02-25):**
+  - Created `scripts/src/startup-loop/lp-do-ideas-live.ts` — live orchestrator (pure, delegates to trial core, re-tags as `mode: "live"`)
+  - Added `export type PacketMode = "trial" | "live"` to `lp-do-ideas-trial.ts`; updated `TrialDispatchPacket.mode` to `PacketMode`
+  - Updated `lp-do-ideas-routing-adapter.ts` mode guard: `!== "trial" && !== "live"`; added `AnyDispatchPacket` union type; `routeDispatch` accepts both modes
+  - Scope expansion: updated `lp-do-ideas-routing-adapter.test.ts` TC-06 (mode=live now accepted, truly invalid modes still rejected); updated TC-15 to use `"corrupt_mode"` instead of `"live"` for error correlation test
+  - Created `scripts/src/startup-loop/__tests__/lp-do-ideas-live.test.ts` — TC-02-A/B/C/D/E (22 tests)
+  - Validation: 7 suites, 145 tests all pass; propagation.test.ts failure is pre-existing (file was never tracked)
+  - TC-02-A: ✓ mode=live returns ok: true with live packets
+  - TC-02-B: ✓ invalid mode (trial, garbage, empty) returns fail-closed error
+  - TC-02-C: ✓ auto_executed status still rejected in adapter for live packets
 
 ### TASK-03: Implement SIGNALS advisory live hook with fail-open fallback
 - **Type:** IMPLEMENT

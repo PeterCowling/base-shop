@@ -144,7 +144,7 @@ export default function CollectionSectionClient({ initial, params, paginationMod
             {paginationMode === "ssr" ? (
               <div className="mt-6 flex items-center justify-between text-sm">
                 <button
-                  className="rounded border px-3 py-1 disabled:opacity-50 inline-flex items-center justify-center min-h-10 min-w-10"
+                  className="rounded border px-3 py-1 disabled:opacity-50 inline-flex items-center justify-center min-h-11 min-w-11"
                   disabled={page <= 1}
                   onClick={() => updateUrl({ page: String(Math.max(1, page - 1)), pageSize: String(pageSize) })}
                 >
@@ -152,7 +152,7 @@ export default function CollectionSectionClient({ initial, params, paginationMod
                 </button>
                 <span>{t("collections.pagination.page", { page })}</span>
                 <button
-                  className="rounded border px-3 py-1 inline-flex items-center justify-center min-h-10 min-w-10"
+                  className="rounded border px-3 py-1 inline-flex items-center justify-center min-h-11 min-w-11"
                   onClick={() => updateUrl({ page: String(page + 1), pageSize: String(pageSize) })}
                 >
                   {t("collections.pagination.next")}

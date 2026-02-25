@@ -59,7 +59,7 @@ export const SimpleModal: React.FC<SimpleModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogPortal>
-        <DialogOverlay style={{ zIndex: 9998 }} className={cn("bg-black/50 backdrop-blur-sm", backdropClassName)} />
+        <DialogOverlay style={{ zIndex: 9998 }} className={cn("bg-surface/50 backdrop-blur-sm", backdropClassName)} />
         <DialogPrimitive.Content
           aria-describedby={undefined}
           style={{ zIndex: 9999 }}
@@ -81,7 +81,7 @@ export const SimpleModal: React.FC<SimpleModalProps> = ({
               )}
               {showCloseButton && (
                 <DialogPrimitive.Close
-                  className="min-h-10 min-w-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                  className="min-h-11 min-w-11 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                   aria-label="Close modal"
                 >
                   <svg

@@ -85,7 +85,7 @@ export const NewsletterForm = memo(function NewsletterForm({
         <button
           type="submit"
           // i18n-exempt: CSS utility classes, not user copy
-          className="rounded bg-primary px-4 py-2 text-primary-fg min-h-10 min-w-10"
+          className="rounded bg-primary px-4 py-2 text-primary-fg min-h-11 min-w-11"
           data-token={"--color-primary" /* i18n-exempt: token name */}
         >
           <span data-token={"--color-primary-fg" /* i18n-exempt: token name */}>{label}</span>
@@ -122,7 +122,7 @@ export const PromoBanner = memo(function PromoBanner({
       <Inline alignY="center" className="justify-between">
       <span>{txt}</span>
       {href && (
-        <a href={href} className="rounded bg-bg px-3 py-1 text-fg min-h-10 min-w-10">
+        <a href={href} className="rounded bg-bg px-3 py-1 text-fg min-h-11 min-w-11">
           {label}
         </a>
       )}

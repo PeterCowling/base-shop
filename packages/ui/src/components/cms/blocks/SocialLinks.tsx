@@ -91,7 +91,7 @@ export default function SocialLinks({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={l.name}
-          className="text-current hover:opacity-80 inline-flex items-center justify-center size-10"
+          className="text-current hover:opacity-80 inline-flex items-center justify-center size-11"
         >
           {l.icon}
         </a>

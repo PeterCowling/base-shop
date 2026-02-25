@@ -63,7 +63,7 @@ const DestinationSlideshow: FC<{ lang?: string }> = ({ lang }) => {
               data-testid="cf-hero-img"
               className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
             />
-            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-surface/70 via-surface/20 to-transparent" />
           </div>
 
           <figcaption className="absolute inset-x-0 bottom-0 px-6 pb-6 pt-10 text-center sm:px-8">
@@ -73,8 +73,8 @@ const DestinationSlideshow: FC<{ lang?: string }> = ({ lang }) => {
               width="full"
               className="relative z-10 flex w-full max-w-md flex-col items-center justify-center px-4"
             >
-              <h3 className="text-lg font-semibold leading-snug text-white sm:text-xl md:text-2xl">{title}</h3>
-              <p className="mt-2 text-sm text-white/90 md:text-base">{text}</p>
+              <h3 className="text-lg font-semibold leading-snug text-primary-fg sm:text-xl md:text-2xl">{title}</h3>
+              <p className="mt-2 text-sm text-primary-fg/90 md:text-base">{text}</p>
             </Section>
           </figcaption>
         </figure>

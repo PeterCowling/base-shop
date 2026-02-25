@@ -28,7 +28,7 @@ export default function HiddenBadge({ hiddenList, isHiddenHere, viewport, compon
         {isHiddenHere && (
           <button
             type="button"
-            className="ms-2 inline-flex min-h-10 min-w-10 items-center justify-center px-2 py-1 underline"
+            className="ms-2 inline-flex min-h-11 min-w-11 items-center justify-center px-2 py-1 underline"
             onClick={(e) => {
               e.stopPropagation();
               const cur = (editor ?? {})[componentId]?.hidden ?? [];

@@ -66,7 +66,7 @@ function LocationModal({
       onClose={onClose}
       testId={testId}
       title={copy.title}
-      overlayClassName="pointer-coarse:p-6 bg-black/50 p-6 backdrop-blur-sm dark:bg-black/80"
+      overlayClassName="pointer-coarse:p-6 bg-surface/50 p-6 backdrop-blur-sm dark:bg-black/80"
     >
       <ModalPanel
         widthClassName={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "w-full sm:max-w-xl"}
@@ -82,7 +82,7 @@ function LocationModal({
             "top-4",
             "end-4",
             "inline-flex",
-            "size-10",
+            "size-11",
             "items-center",
             "justify-center",
             "rounded-full",
@@ -121,14 +121,14 @@ function LocationModal({
           <button
             type="button"
             onClick={handleGetDirections}
-            className="min-h-10 min-w-10 rounded bg-brand-primary px-5 py-3 font-medium text-brand-bg drop-shadow-md transition-all hover:bg-brand-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+            className="min-h-11 min-w-11 rounded bg-brand-primary px-5 py-3 font-medium text-brand-bg drop-shadow-md transition-all hover:bg-brand-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             {copy.getDirections}
           </button>
           <button
             type="button"
             onClick={handleShowMapOnly}
-            className="min-h-10 min-w-10 rounded bg-brand-surface px-5 py-3 font-medium text-brand-text drop-shadow-md transition-colors hover:bg-brand-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+            className="min-h-11 min-w-11 rounded bg-brand-surface px-5 py-3 font-medium text-brand-text drop-shadow-md transition-colors hover:bg-brand-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             {copy.justShowMap}
           </button>
@@ -149,7 +149,7 @@ function LocationModal({
               href={fallbackHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex aspect-video size-full items-center justify-center rounded border border-brand-surface text-brand-primary underline-offset-4 hover:underline"
+              className="flex aspect-video size-full items-center justify-center rounded border border-brand-surface text-brand-primary underline-offset-4 hover:underline min-h-11 min-w-11"
             >
               {copy.title}
             </a>

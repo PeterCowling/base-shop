@@ -56,7 +56,7 @@ function ProductCardInner({ sku }: { sku: SKU & { badges?: { sale?: boolean; new
       {sku.badges?.new && <span data-cy="badge-new">{NEW_LABEL}</span>}
       <h3 className="font-medium">{sku.title}</h3>
       {sku.price != null && (
-        <div className="font-semibold text-gray-900">
+        <div className="font-semibold text-foreground">
           <Price amount={sku.price} />
         </div>
       )}

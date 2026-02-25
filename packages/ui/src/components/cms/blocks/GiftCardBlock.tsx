@@ -42,7 +42,7 @@ export default function GiftCardBlock({
             key={value}
             type="button"
             onClick={() => setAmount(value)}
-            className={`rounded border px-3 py-2 min-h-10 min-w-10 ${
+            className={`rounded border px-3 py-2 min-h-11 min-w-11 ${
               amount === value ? "bg-fg" : "bg-bg"
             }`}
             data-token={amount === value ? "--color-fg" : "--color-bg"}

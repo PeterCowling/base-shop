@@ -62,7 +62,7 @@ function PaymentSplitRow({
 
       {/* Toggle pay type */}
       <Button
-        className="flex items-center justify-center border border-border-2 rounded px-2 py-1 focus:outline-none"
+        className="border border-border-2 rounded px-2 py-1 focus:outline-none min-h-11 min-w-11"
         onClick={togglePayType}
         disabled={isDisabled}
       >

@@ -60,8 +60,8 @@ export function Timeline({
 }: TimelineProps) {
   if (events.length === 0) {
     return (
-      <div className={`rounded-lg border border-slate-200 bg-slate-50 px-4 py-8 text-center dark:border-slate-700 dark:bg-slate-800 ${className}`}>
-        <p className="text-sm text-slate-500 dark:text-slate-400">{emptyMessage}</p>
+      <div className={`rounded-lg border border-border-2 bg-surface px-4 py-8 text-center dark:border-slate-700 dark:bg-slate-800 ${className}`}>
+        <p className="text-sm text-muted-foreground dark:text-muted-foreground">{emptyMessage}</p>
       </div>
     );
   }
@@ -85,11 +85,11 @@ export function Timeline({
   };
 
   const iconColorClasses = {
-    blue: 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300',
-    green: 'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300',
-    yellow: 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300',
-    red: 'bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300',
-    gray: 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300',
+    blue: 'bg-info-light text-info-main dark:bg-blue-900 dark:text-blue-300',
+    green: 'bg-success-light text-success-main dark:bg-green-900 dark:text-green-300',
+    yellow: 'bg-warning-light text-warning-main dark:bg-yellow-900 dark:text-yellow-300',
+    red: 'bg-error-light text-danger-fg dark:bg-red-900 dark:text-red-300',
+    gray: 'bg-surface-2 text-muted-foreground dark:bg-slate-700 dark:text-slate-300',
   };
 
   return (
@@ -103,7 +103,7 @@ export function Timeline({
           <div key={event.id} className="relative flex gap-4 pb-8">
             {/* Timeline line */}
             {!isLast && (
-              <div className="absolute left-5 top-10 h-full w-0.5 bg-slate-200 dark:bg-slate-700" />
+              <div className="absolute left-5 top-10 h-full w-0.5 bg-surface-3 dark:bg-slate-700" />
             )}
 
             {/* Icon */}
@@ -119,18 +119,18 @@ export function Timeline({
             <div className="flex-1 pt-1">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <h4 className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  <h4 className="text-sm font-medium text-foreground dark:text-slate-100">
                     {event.title}
                   </h4>
 
                   {event.description && (
-                    <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                    <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                       {event.description}
                     </p>
                   )}
 
                   {event.user && (
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-500">
+                    <p className="mt-1 text-xs text-muted-foreground dark:text-muted-foreground">
                       by {event.user}
                     </p>
                   )}
@@ -141,12 +141,12 @@ export function Timeline({
                 {/* Timestamp */}
                 <div className="flex-shrink-0 text-end">
                   {showDate && (
-                    <p className="text-xs text-slate-500 dark:text-slate-500">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                       {formatDate(event.timestamp)}
                     </p>
                   )}
                   {showTime && (
-                    <p className="text-xs text-slate-500 dark:text-slate-500">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                       {formatTime(event.timestamp)}
                     </p>
                   )}

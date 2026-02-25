@@ -79,15 +79,15 @@ const HeroProofRow = memo(function HeroProofRow({ items }: { items: HeroProofIte
       gap={2}
       wrap={false}
       role="list"
-      className="mt-3 overflow-x-auto text-xs font-medium text-black/80 sm:mt-4 sm:text-sm"
+      className="mt-3 overflow-x-auto text-xs font-medium text-foreground/80 sm:mt-4 sm:text-sm"
     >
             {items.map(({ label, Icon }) => (
               <span
                 role="listitem"
                 key={label}
-                className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/80 px-3 py-1 sm:whitespace-nowrap"
+                className="inline-flex items-center gap-2 rounded-full border border-primary-fg/30 bg-surface/80 px-3 py-1 sm:whitespace-nowrap"
               >
-                <Icon className="size-4 text-black/70" aria-hidden />
+                <Icon className="size-4 text-foreground/70" aria-hidden />
                 <span className="hidden md:inline">{label}</span>
                 <span className="sr-only md:hidden">{label}</span>
               </span>
@@ -108,7 +108,7 @@ const HeroProofPanel = memo(function HeroProofPanel({
   if (!ratings.length && !highlights.length) return null;
 
   return (
-    <div className="rounded-2xl border border-white/20 bg-brand-primary/80 p-4 text-brand-on-primary shadow-md backdrop-blur-sm dark:border-white/20 dark:bg-black/60 dark:text-brand-text">
+    <div className="rounded-2xl border border-primary-fg/20 bg-brand-primary/80 p-4 text-brand-on-primary shadow-md backdrop-blur-sm dark:border-primary-fg/20 dark:bg-black/60 dark:text-brand-text">
       {ratings.length ? (
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-on-primary/80 dark:text-brand-text/80">
@@ -132,7 +132,7 @@ const HeroProofPanel = memo(function HeroProofPanel({
       ) : null}
       {highlights.length ? (
         <ul
-          className={`mt-4 space-y-2 text-sm text-brand-on-primary/90 ${ratings.length ? "border-t border-white/10 pt-4" : ""} dark:text-brand-text/90`} // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
+          className={`mt-4 space-y-2 text-sm text-brand-on-primary/90 ${ratings.length ? "border-t border-primary-fg/10 pt-4" : ""} dark:text-brand-text/90`} // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
         >
           {highlights.map(({ label, Icon }) => (
             <li key={label} className="flex items-center gap-2">
@@ -269,7 +269,7 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
 
   return (
     <section className="w-full">
-      <div className="relative isolate w-full min-h-[var(--landing-hero-min-h,28rem)] sm:min-h-[var(--landing-hero-min-h-sm,32rem)] lg:min-h-[var(--landing-hero-min-h-lg,36rem)]">
+      <div className="relative isolate w-full min-h-96 sm:min-h-screen lg:min-h-screen">
         <div className="absolute inset-0 z-0 overflow-hidden">
           <CfHeroImage
             src={heroOriginal}
@@ -285,8 +285,8 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
             priority
             className="h-full w-full object-cover"
           />
-          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-r from-black/65 via-black/35 to-black/10" />
-          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/30 to-transparent" />
+          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-r from-surface/65 via-surface/35 to-surface/10" />
+          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-surface/30 to-transparent" />
         </div>
 
         <Section
@@ -296,14 +296,14 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
           className="relative z-20 mx-auto h-full max-w-6xl px-6 pb-8 pt-8 sm:pb-12 sm:pt-10 lg:pb-14"
         >
           <div className="grid w-full items-start gap-8 lg:grid-cols-2 lg:gap-10">
-            <Section as="div" padding="none" width="full" className="max-w-xl px-4 sm:px-0 text-white">
-              <span className="block w-full text-xs uppercase tracking-widest text-white/75 sm:text-sm">
+            <Section as="div" padding="none" width="full" className="max-w-xl px-4 sm:px-0 text-primary-fg">
+              <span className="block w-full text-xs uppercase tracking-widest text-primary-fg/75 sm:text-sm">
                 {heroIntro}
               </span>
-              <h1 className="mt-3 text-balance text-4xl font-semibold leading-tight tracking-tight text-white drop-shadow-lg sm:text-5xl lg:text-5xl xl:text-6xl">
+              <h1 className="mt-3 text-balance text-4xl font-semibold leading-tight tracking-tight text-primary-fg drop-shadow-lg sm:text-5xl lg:text-5xl xl:text-6xl">
                 {heroTitle}
               </h1>
-              <p className="mt-4 text-base text-white/90 sm:text-lg lg:text-xl">{heroSubtitle}</p>
+              <p className="mt-4 text-base text-primary-fg/90 sm:text-lg lg:text-xl">{heroSubtitle}</p>
 
               {proofItems.length ? (
                 <div className="mt-4 lg:hidden">
@@ -332,7 +332,7 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
                 <Link
                   href={`/${lang}/${translatePath("rooms", lang)}`}
                   prefetch={true}
-                  className="inline-flex min-h-11 min-w-11 items-center gap-2 rounded-full border border-white/40 bg-white/10 px-7 py-3 text-sm font-semibold text-white transition hover:border-white hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                  className="inline-flex min-h-11 min-w-11 items-center gap-2 rounded-full border border-primary-fg/40 bg-surface/10 px-7 py-3 text-sm font-semibold text-primary-fg transition hover:border-white hover:bg-surface/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
                 >
                   {secondaryCta}
                   <ArrowRight className="size-4" aria-hidden />
@@ -340,12 +340,12 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
               </div>
 
               {perksLabel ? (
-                <div className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-white/80">
-                  <Sparkles className="size-4 text-white/70" aria-hidden />
+                <div className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-primary-fg/80">
+                  <Sparkles className="size-4 text-primary-fg/70" aria-hidden />
                   <button
                     type="button"
                     onClick={handlePerksClick}
-                    className="inline-flex min-h-10 min-w-10 items-center underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                    className="inline-flex min-h-11 min-w-11 items-center underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
                   >
                     {perksLabel}
                   </button>

@@ -32,22 +32,22 @@ export const Default: Story = {
     children: (
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-medium text-muted-foreground dark:text-gray-300">
             Quantity
           </label>
           <input
             type="number"
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
+            className="mt-1 block w-full rounded-md border border-border-2 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
             placeholder="Enter quantity"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-medium text-muted-foreground dark:text-gray-300">
             Reason
           </label>
           <textarea
             rows={3}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
+            className="mt-1 block w-full rounded-md border border-border-2 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
             placeholder="Explain the adjustment"
           />
         </div>
@@ -57,13 +57,13 @@ export const Default: Story = {
       <>
         <button
           type="button"
-          className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-darkBg dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg"
+          className="rounded-lg border border-border-2 bg-surface px-4 py-2 text-sm font-semibold text-muted-foreground shadow-sm hover:bg-gray-50 dark:border-darkBg dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg min-h-11 min-w-11"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-green-600"
+          className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-primary-fg shadow-sm hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-green-600 min-h-11 min-w-11"
         >
           Save Changes
         </button>
@@ -107,16 +107,16 @@ export const NoFooter: Story = {
     children: (
       <div className="space-y-3">
         <div className="flex justify-between">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">SKU:</span>
-          <span className="text-sm text-gray-900 dark:text-darkAccentGreen">PROD-001</span>
+          <span className="text-sm font-medium text-muted-foreground dark:text-gray-300">SKU:</span>
+          <span className="text-sm text-foreground dark:text-darkAccentGreen">PROD-001</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Stock:</span>
-          <span className="text-sm text-gray-900 dark:text-darkAccentGreen">45 units</span>
+          <span className="text-sm font-medium text-muted-foreground dark:text-gray-300">Stock:</span>
+          <span className="text-sm text-foreground dark:text-darkAccentGreen">45 units</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Location:</span>
-          <span className="text-sm text-gray-900 dark:text-darkAccentGreen">Warehouse A</span>
+          <span className="text-sm font-medium text-muted-foreground dark:text-gray-300">Location:</span>
+          <span className="text-sm text-foreground dark:text-darkAccentGreen">Warehouse A</span>
         </div>
       </div>
     ),
@@ -156,7 +156,7 @@ function InteractiveStory() {
               setState('idle');
               setQuantity('');
             }}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-darkBg dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg"
+            className="rounded-lg border border-border-2 bg-surface px-4 py-2 text-sm font-semibold text-muted-foreground shadow-sm hover:bg-gray-50 dark:border-darkBg dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg min-h-11 min-w-11"
           >
             Reset
           </button>
@@ -164,7 +164,7 @@ function InteractiveStory() {
             type="button"
             onClick={handleSubmit}
             disabled={state === 'loading'}
-            className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-green-600"
+            className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-primary-fg shadow-sm hover:bg-primary-700 disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-green-600 min-h-11 min-w-11"
           >
             {state === 'loading' ? 'Saving...' : 'Add Stock'}
           </button>
@@ -172,7 +172,7 @@ function InteractiveStory() {
       }
     >
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label className="block text-sm font-medium text-muted-foreground dark:text-gray-300">
           Quantity to Add
         </label>
         <input
@@ -180,7 +180,7 @@ function InteractiveStory() {
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
           min="1"
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
+          className="mt-1 block w-full rounded-md border border-border-2 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
           placeholder="Enter quantity"
         />
       </div>

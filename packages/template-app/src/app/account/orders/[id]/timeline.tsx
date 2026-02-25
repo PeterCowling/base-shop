@@ -27,14 +27,14 @@ export default async function OrderTimeline({
   return (
     <div className="mx-auto p-6">
       <h1 className="mb-4 text-xl font-bold">{t("title")}</h1>
-      <ol className="border-l border-gray-200 pl-4">
+      <ol className="border-l border-border-2 pl-4">
         {orderEvents.map((evt) => (
           <li key={evt.id} className="mb-2">
             <div className="flex flex-col">
               <span className="font-medium">
                 {STATUS_LABELS[evt.event] ?? evt.event}
               </span>
-              <time dateTime={evt.createdAt} className="text-sm text-gray-500">
+              <time dateTime={evt.createdAt} className="text-sm text-muted-foreground">
                 {formatTimestamp(evt.createdAt)}
               </time>
             </div>

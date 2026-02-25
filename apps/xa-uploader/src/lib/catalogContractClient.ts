@@ -94,8 +94,8 @@ export async function publishCatalogArtifactsToContract(params: {
 
   const publishUrl = buildCatalogContractPublishUrl(params.storefrontId);
   const [catalogRaw, mediaRaw] = await Promise.all([
-    fs.readFile(params.catalogOutPath, "utf8"),
-    fs.readFile(params.mediaOutPath, "utf8"),
+    readFileUtf8(params.catalogOutPath),
+    readFileUtf8(params.mediaOutPath),
   ]);
 
   const payload = {
@@ -120,6 +120,7 @@ export async function publishCatalogArtifactsToContract(params: {
       signal: controller.signal,
     });
   } catch (error) {
+    // i18n-exempt -- XAUP-118 [ttl=2026-12-31]
     const message = error instanceof Error ? error.message : "catalog contract request failed";
     throw new CatalogPublishError("request_failed", message);
   } finally {
@@ -155,4 +156,10 @@ export async function publishCatalogArtifactsToContract(params: {
     version: typeof parsed.version === "string" ? parsed.version : undefined,
     publishedAt: typeof parsed.publishedAt === "string" ? parsed.publishedAt : undefined,
   };
+}
+
+async function readFileUtf8(filePath: string): Promise<string> {
+  // Paths are produced by the XA uploader pipeline and stay within generated artifact directories.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled artifact path from server-side pipeline
+  return fs.readFile(filePath, "utf8");
 }

@@ -136,7 +136,7 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
         key={`${i.category}-${i.type}`}
         type="button"
         data-index={idx}
-        className={`inline-flex items-center gap-2 rounded border p-1 text-sm hover:bg-muted focus:outline-none min-h-10 min-w-10 ${active === idx ? "ring-1 ring-primary" : ""}`}
+        className={`inline-flex items-center gap-2 rounded border p-1 text-sm hover:bg-muted focus:outline-none min-h-11 min-w-11 ${active === idx ? "ring-1 ring-primary" : ""}`}
         onClick={() => handleChoose(i.type as ComponentType)}
         role="option"
         aria-selected={active === idx}
@@ -156,7 +156,7 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
           <button
             type="button"
             aria-label={ARIA_LABEL_INSERT_BUTTON}
-            className="opacity-0 transition-opacity duration-150 hover:opacity-100 focus:opacity-100 group-hover:opacity-100 group/button inline-flex items-center justify-center min-h-10 min-w-10"
+            className="opacity-0 transition-opacity duration-150 hover:opacity-100 focus:opacity-100 group-hover:opacity-100 group/button inline-flex items-center justify-center min-h-11 min-w-11"
             onClick={() => setOpen((v) => !v)}
             onMouseEnter={() => setOpen((v) => v)}
           >

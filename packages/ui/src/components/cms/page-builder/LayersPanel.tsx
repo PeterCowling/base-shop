@@ -81,7 +81,7 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
         <h3 className="text-sm font-semibold">{t("cms.builder.layers.title")}</h3>
         <button
           type="button"
-          className="min-h-10 min-w-10 rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          className="min-h-11 min-w-11 rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
           title={t("cms.builder.applyDesktopOrder.title") as string}
           onClick={() => {
             try { applyDesktopOrderAcrossBreakpoints(components, editor, dispatch); } catch {}

@@ -33,14 +33,14 @@ export default function ConsentSection() {
           <div className="flex gap-2">
             <button
               type="button"
-              className="rounded bg-card px-3 py-1 text-sm text-foreground inline-flex items-center justify-center min-h-10 min-w-10"
+              className="rounded bg-card px-3 py-1 text-sm text-foreground inline-flex items-center justify-center min-h-11 min-w-11"
               onClick={() => { setCookie("consent.analytics", "false"); setShown(false); }}
             >
               {t("consent.reject")}
             </button>
             <button
               type="button"
-              className="rounded bg-primary px-3 py-1 text-sm text-foreground inline-flex items-center justify-center min-h-10 min-w-10"
+              className="rounded bg-primary px-3 py-1 text-sm text-foreground inline-flex items-center justify-center min-h-11 min-w-11"
               onClick={() => { setCookie("consent.analytics", "true"); setShown(false); }}
             >
               {t("consent.accept")}

@@ -456,7 +456,7 @@ export function ComboBox<T = string>({
             <button
               type="button"
               onClick={handleClear}
-              className="rounded p-0.5 text-fg-muted hover:bg-bg-2 hover:text-fg"
+              className="rounded p-0.5 text-fg-muted hover:bg-bg-2 hover:text-fg min-h-11 min-w-11"
               aria-label="Clear selection"
             >
               <X className="h-4 w-4" />

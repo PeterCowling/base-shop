@@ -130,14 +130,14 @@ function DesktopHeader({
                 if (logoAlt && logoAlt !== "logoAlt") return logoAlt;
                 return FALLBACK_LOGO_ALT;
               })()}
-              className="size-10"
+              className="size-11"
               width={40}
               height={40}
               loading="eager"
               decoding="async"
             />
             <span
-              className="text-lg font-bold text-white notranslate"
+              className="text-lg font-bold text-primary-fg notranslate"
               translate="no"
               data-brand-name={BRAND_NAME}
             >

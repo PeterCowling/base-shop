@@ -21,6 +21,10 @@ const CreateStageDocSchema = z.object({
   stage: z.string().min(1),
   content: z.string().min(1),
 });
+// i18n-exempt -- BOS-02 API validation message [ttl=2026-12-31]
+const INVALID_REQUEST_ERROR = "Invalid request";
+// i18n-exempt -- BOS-02 API validation message [ttl=2026-12-31]
+const INVALID_STAGE_ERROR = "Invalid stage";
 
 function maybeLogStageAliasUse(input: {
   endpoint: string;
@@ -109,7 +113,7 @@ export async function POST(request: NextRequest) {
     if (!parsed.success) {
       return NextResponse.json(
         // i18n-exempt -- BOS-02 API validation message [ttl=2026-03-31]
-        { error: "Invalid request", details: parsed.error.errors },
+        { error: INVALID_REQUEST_ERROR, details: parsed.error.errors },
         { status: 400 }
       );
     }
@@ -122,13 +126,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         // i18n-exempt -- BOS-02 API validation message [ttl=2026-03-31]
         {
-          error: "Invalid request",
+          error: INVALID_REQUEST_ERROR,
           details: [
             {
               code: "custom",
               path: ["stage"],
-              // i18n-exempt -- BOS-02 API validation message [ttl=2026-03-31]
-              message: "Invalid stage",
+              message: INVALID_STAGE_ERROR,
             },
           ],
         },

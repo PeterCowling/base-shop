@@ -17,7 +17,7 @@ const renderLinks = (item: AssistanceKeyword): JSX.Element[] =>
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-block min-h-10 min-w-10 break-all font-medium text-brand-primary decoration-brand-primary underline underline-offset-2 transition-colors hover:decoration-brand-bougainvillea dark:text-brand-secondary dark:decoration-brand-secondary"
+        className="inline-block min-h-11 min-w-11 break-all font-medium text-brand-primary decoration-brand-primary underline underline-offset-2 transition-colors hover:decoration-brand-bougainvillea dark:text-brand-secondary dark:decoration-brand-secondary"
       >
         {text}
       </a>
@@ -95,7 +95,7 @@ function AssistanceAmaSection({ initialQuery = "", lang }: AmaSectionProps): JSX
               type="button"
               onClick={clear}
               aria-label={t("clearLabel")}
-              className="absolute inset-y-0 end-0 inline-flex min-h-10 min-w-10 items-center justify-center px-3 text-2xl font-light text-brand-text/60 transition hover:text-brand-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+              className="absolute inset-y-0 end-0 inline-flex min-h-11 min-w-11 items-center justify-center px-3 text-2xl font-light text-brand-text/60 transition hover:text-brand-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
             >
               ×
             </button>

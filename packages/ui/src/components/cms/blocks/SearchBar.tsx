@@ -100,7 +100,7 @@ export default function SearchBar({ placeholder, limit = 5, locale = "en" }: Sea
               onMouseDown={() => handleSelect(r)}
               role="button"
               tabIndex={0}
-              className="text-fg hover:bg-accent hover:text-accent-foreground cursor-pointer px-3 py-1 min-h-10 flex items-center"
+              className="text-fg hover:bg-accent hover:text-accent-foreground cursor-pointer px-3 py-1 min-h-11 flex items-center"
               data-token="--color-fg"
             >
               <span>{r.title}</span>

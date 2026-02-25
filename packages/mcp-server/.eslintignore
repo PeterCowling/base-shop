@@ -1,8 +1,0 @@
-# Temporary debug/exploration scripts - not production code
-*.mjs
-**/*.mjs
-
-# Build outputs and dependencies
-node_modules
-dist
-.next

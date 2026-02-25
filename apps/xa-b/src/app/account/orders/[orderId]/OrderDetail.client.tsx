@@ -100,10 +100,13 @@ export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
     return (
       <main className="sf-content">
         <Section padding="wide">
+          {/* i18n-exempt -- XAB-311 [ttl=2026-12-31] */}
           <h1 className="text-2xl font-semibold">Order</h1>
+          {/* i18n-exempt -- XAB-311 [ttl=2026-12-31] */}
           <p className="mt-2 text-sm text-muted-foreground">Sign in to view this order.</p>
         </Section>
         <Section padding="default">
+          {/* i18n-exempt -- XAB-311 [ttl=2026-12-31] */}
           <Link href="/account/login" className="underline">Login</Link>
         </Section>
       </main>
@@ -114,6 +117,7 @@ export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
     return (
       <main className="sf-content">
         <Section padding="wide">
+          {/* i18n-exempt -- XAB-311 [ttl=2026-12-31] */}
           <h1 className="text-2xl font-semibold">Order</h1>
         </Section>
         <Section padding="default">
@@ -127,10 +131,13 @@ export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
     return (
       <main className="sf-content">
         <Section padding="wide">
+          {/* i18n-exempt -- XAB-311 [ttl=2026-12-31] */}
           <h1 className="text-2xl font-semibold">Order not found</h1>
+          {/* i18n-exempt -- XAB-311 [ttl=2026-12-31] */}
           <p className="mt-2 text-sm text-muted-foreground">This order could not be found.</p>
         </Section>
         <Section padding="default">
+          {/* i18n-exempt -- XAB-311 [ttl=2026-12-31] */}
           <Link href="/account/orders" className="underline">Back to your orders</Link>
         </Section>
       </main>
@@ -185,7 +192,9 @@ export function OrderDetailClient({ orderNumber }: { orderNumber: string }) {
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
+          {/* i18n-exempt -- XAB-311 [ttl=2026-12-31] */}
           <Link href="/account/orders" className="underline">Back to your orders</Link>
+          {/* i18n-exempt -- XAB-311 [ttl=2026-12-31] */}
           <Link href="/account/trackingorder" className="underline">Track order</Link>
         </div>
       </Section>

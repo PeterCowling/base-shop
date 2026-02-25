@@ -42,22 +42,22 @@ export default function ContactForm({
         type="text"
         name="name"
         placeholder={String(t("contact.name"))}
-        className="w-full rounded border p-2 min-h-10"
+        className="w-full rounded border p-2 min-h-11"
       />
       <input
         type="email"
         name="email"
         placeholder={String(t("contact.email"))}
-        className="w-full rounded border p-2 min-h-10"
+        className="w-full rounded border p-2 min-h-11"
       />
       <textarea
         name="message"
         placeholder={String(t("contact.message"))}
-        className="w-full rounded border p-2 min-h-10"
+        className="w-full rounded border p-2 min-h-11"
       />
       <button
         type="submit"
-        className="rounded bg-primary px-4 py-2 text-primary-fg min-h-10 min-w-10"
+        className="rounded bg-primary px-4 py-2 text-primary-fg min-h-11 min-w-11"
       >
         {t("contact.submit")}
       </button>

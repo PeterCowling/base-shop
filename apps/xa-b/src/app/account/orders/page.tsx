@@ -72,13 +72,17 @@ export default function OrdersPage() {
       <Section padding="default">
         {loading ? (
           <div className="rounded-lg border p-6 text-sm text-muted-foreground">
+            {/* i18n-exempt -- XAB-312 [ttl=2026-12-31] */}
             Loading your orders...
           </div>
         ) : !authenticated ? (
           <div className="rounded-lg border p-6">
+            {/* i18n-exempt -- XAB-312 [ttl=2026-12-31] */}
             <div className="font-medium">Sign in to view your orders.</div>
             <div className="mt-3 flex flex-wrap gap-3 text-sm">
+              {/* i18n-exempt -- XAB-312 [ttl=2026-12-31] */}
               <Link href="/account/login" className="underline">Login</Link>
+              {/* i18n-exempt -- XAB-312 [ttl=2026-12-31] */}
               <Link href="/account/register" className="underline">Create account</Link>
             </div>
           </div>
@@ -117,9 +121,12 @@ export default function OrdersPage() {
           </div>
         ) : (
           <div className="rounded-lg border p-6">
+            {/* i18n-exempt -- XAB-312 [ttl=2026-12-31] */}
             <div className="font-medium">You have no orders yet.</div>
+            {/* i18n-exempt -- XAB-312 [ttl=2026-12-31] */}
             <div className="mt-2 text-sm text-muted-foreground">Start shopping to place your first order.</div>
             <div className="mt-4">
+              {/* i18n-exempt -- XAB-312 [ttl=2026-12-31] */}
               <Link href="/collections/all" className="underline">Shop all</Link>
             </div>
           </div>

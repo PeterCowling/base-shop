@@ -23,7 +23,7 @@ export const Right: StoryObj<typeof Drawer> = {
     <Drawer>
       <DrawerTrigger asChild>
         {/* i18n-exempt: story demo control label */}
-        <button className="rounded border px-4 min-h-10 min-w-10">Open right drawer</button>
+        <button className="rounded border px-4 min-h-11 min-w-11">Open right drawer</button>
       </DrawerTrigger>
       <DrawerPortal>
         <OverlayScrim />
@@ -41,7 +41,7 @@ export const Left: StoryObj<typeof Drawer> = {
     <Drawer>
       <DrawerTrigger asChild>
         {/* i18n-exempt: story demo control label */}
-        <button className="rounded border px-4 min-h-10 min-w-10">Open left drawer</button>
+        <button className="rounded border px-4 min-h-11 min-w-11">Open left drawer</button>
       </DrawerTrigger>
       <DrawerPortal>
         <OverlayScrim />
@@ -60,7 +60,7 @@ export const KeyboardClose: StoryObj<typeof Drawer> = {
   render: () => (
     <Drawer>
       <DrawerTrigger asChild>
-        <button className="rounded border px-4 min-h-10 min-w-10">Open drawer</button>
+        <button className="rounded border px-4 min-h-11 min-w-11">Open drawer</button>
       </DrawerTrigger>
       <DrawerPortal>
         <OverlayScrim />

@@ -34,8 +34,11 @@ function shouldTrustProxyHeaders() {
 }
 
 function isValidIpv4(value: string): boolean {
-  if (!/^\d{1,3}(\.\d{1,3}){3}$/.test(value)) return false;
-  return value.split(".").every((segment) => {
+  const segments = value.split(".");
+  if (segments.length !== 4) return false;
+  return segments.every((segment) => {
+    if (!segment || segment.length > 3) return false;
+    if (![...segment].every((char) => char >= "0" && char <= "9")) return false;
     const part = Number.parseInt(segment, 10);
     return Number.isFinite(part) && part >= 0 && part <= 255;
   });
@@ -66,7 +69,7 @@ function normalizeIpCandidate(raw: string | null): string {
 }
 
 function readStoreFromDisk(now: number) {
-  const raw = fs.readFileSync(RATE_LIMIT_STORE_PATH, "utf-8");
+  const raw = safeReadFileSyncUtf8(RATE_LIMIT_STORE_PATH);
   const parsed = JSON.parse(raw) as Record<string, Partial<RateLimitEntry>>;
 
   const store = new Map<string, RateLimitEntry>();
@@ -92,10 +95,34 @@ function writeStoreToDisk(store: Map<string, RateLimitEntry>, now: number) {
     if (entries >= MAX_STORE_ENTRIES) break;
   }
 
-  fs.mkdirSync(path.dirname(RATE_LIMIT_STORE_PATH), { recursive: true });
+  safeMkdirSync(path.dirname(RATE_LIMIT_STORE_PATH), { recursive: true });
   const tempPath = `${RATE_LIMIT_STORE_PATH}.tmp`;
-  fs.writeFileSync(tempPath, JSON.stringify(serialized), "utf-8");
-  fs.renameSync(tempPath, RATE_LIMIT_STORE_PATH);
+  safeWriteFileSyncUtf8(tempPath, JSON.stringify(serialized));
+  safeRenameSync(tempPath, RATE_LIMIT_STORE_PATH);
+}
+
+function safeReadFileSyncUtf8(filePath: string): string {
+  // Rate-limit store path is configured server-side and not user-controlled.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAB-316 controlled server-side rate-limit store path
+  return fs.readFileSync(filePath, "utf-8");
+}
+
+function safeMkdirSync(dirPath: string, options: { recursive: true }): void {
+  // Directory path is derived from RATE_LIMIT_STORE_PATH.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAB-316 controlled server-side rate-limit store path
+  fs.mkdirSync(dirPath, options);
+}
+
+function safeWriteFileSyncUtf8(filePath: string, contents: string): void {
+  // File path is derived from RATE_LIMIT_STORE_PATH.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAB-316 controlled server-side rate-limit store path
+  fs.writeFileSync(filePath, contents, "utf-8");
+}
+
+function safeRenameSync(fromPath: string, toPath: string): void {
+  // File paths are derived from RATE_LIMIT_STORE_PATH.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAB-316 controlled server-side rate-limit store path
+  fs.renameSync(fromPath, toPath);
 }
 
 function pruneExpiredEntries(store: Map<string, RateLimitEntry>, now: number) {

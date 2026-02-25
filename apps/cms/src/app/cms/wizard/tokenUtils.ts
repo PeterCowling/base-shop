@@ -25,11 +25,11 @@ type ThemeTokensModule = { tokens?: Record<string, unknown> };
 const THEME_TAILWIND_LOADERS: Record<string, () => Promise<ThemeTokensModule>> = {
   bcd: () => import("@themes/bcd/tailwind-tokens"),
   // @themes/brandx has no built dist/; resolved by webpack (transpilePackages) at runtime.
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- CMS-2418 runtime-only theme package module resolution
   // @ts-ignore -- module resolved by webpack at runtime
   brandx: () => import("@themes/brandx/tailwind-tokens"),
   // @themes/dark has no built dist/; same as brandx above.
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- CMS-2418 runtime-only theme package module resolution
   // @ts-ignore -- module resolved by webpack at runtime
   dark: () => import("@themes/dark/tailwind-tokens"),
   dummy: () => import("@themes/dummy/tailwind-tokens"),

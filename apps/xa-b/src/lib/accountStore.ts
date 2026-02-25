@@ -179,7 +179,7 @@ function normalizeAccountStoreShape(data: Partial<AccountStore> | null): Account
 
 async function readStoreFile(): Promise<AccountStore | null> {
   try {
-    const raw = await fs.readFile(STORE_PATH, "utf-8");
+    const raw = await safeReadFileUtf8(STORE_PATH);
     return normalizeAccountStoreShape(JSON.parse(raw) as Partial<AccountStore>);
   } catch (error) {
     const err = error as NodeJS.ErrnoException;
@@ -190,14 +190,38 @@ async function readStoreFile(): Promise<AccountStore | null> {
 
 async function writeStoreFile(store: AccountStore): Promise<boolean> {
   try {
-    await fs.mkdir(path.dirname(STORE_PATH), { recursive: true });
+    await safeMkdir(path.dirname(STORE_PATH), { recursive: true });
     const tmpPath = `${STORE_PATH}.tmp`;
-    await fs.writeFile(tmpPath, JSON.stringify(store, null, 2), "utf-8");
-    await fs.rename(tmpPath, STORE_PATH);
+    await safeWriteFileUtf8(tmpPath, JSON.stringify(store, null, 2));
+    await safeRename(tmpPath, STORE_PATH);
     return true;
   } catch {
     return false;
   }
+}
+
+async function safeReadFileUtf8(filePath: string): Promise<string> {
+  // Path is restricted to the XA account store location and controlled by app config.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAB-315 controlled server-side store path
+  return fs.readFile(filePath, "utf-8");
+}
+
+async function safeMkdir(dirPath: string, options: { recursive: true }): Promise<void> {
+  // Directory is derived from STORE_PATH and not user input.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAB-315 controlled server-side store path
+  await fs.mkdir(dirPath, options);
+}
+
+async function safeWriteFileUtf8(filePath: string, contents: string): Promise<void> {
+  // File path is derived from STORE_PATH and not user input.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAB-315 controlled server-side store path
+  await fs.writeFile(filePath, contents, "utf-8");
+}
+
+async function safeRename(fromPath: string, toPath: string): Promise<void> {
+  // Both paths are derived from STORE_PATH and not user input.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAB-315 controlled server-side store path
+  await fs.rename(fromPath, toPath);
 }
 
 function getMemoryStore(): AccountStore {

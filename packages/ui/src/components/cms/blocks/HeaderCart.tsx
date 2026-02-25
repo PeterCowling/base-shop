@@ -44,7 +44,7 @@ export default function HeaderCart({
   const trigger = (
     <button
       type="button"
-      className="relative inline-flex items-center gap-2 min-h-10 min-w-10"
+      className="relative inline-flex items-center gap-2 min-h-11 min-w-11"
       aria-label={label}
     >
       <span aria-hidden>🛒</span>

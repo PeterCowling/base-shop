@@ -103,18 +103,18 @@ function CommandPaletteDemo({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="min-h-[400px] bg-gray-50 p-8 dark:bg-slate-900">
+    <div className="min-h-96 bg-gray-50 p-8 dark:bg-slate-900">
       <div className="text-center">
         <button
           onClick={() => setOpen(true)}
-          className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm transition-colors hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+          className="rounded-lg border border-border-2 bg-surface px-4 py-2 text-sm text-muted-foreground shadow-sm transition-colors hover:bg-gray-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 min-h-11 min-w-11"
         >
           Open Command Palette{' '}
-          <kbd className="ms-2 rounded border border-gray-200 bg-gray-100 px-1.5 py-0.5 text-xs dark:border-slate-600 dark:bg-slate-700">
+          <kbd className="ms-2 rounded border border-border-2 bg-surface-2 px-1.5 py-0.5 text-xs dark:border-slate-600 dark:bg-slate-700">
             ⌘K
           </kbd>
         </button>
-        <p className="mt-4 text-sm text-gray-500 dark:text-slate-400">
+        <p className="mt-4 text-sm text-muted-foreground dark:text-muted-foreground">
           Or press <kbd className="rounded border px-1 text-xs">⌘K</kbd> / <kbd className="rounded border px-1 text-xs">Ctrl+K</kbd>
         </p>
       </div>
@@ -215,9 +215,9 @@ export const CustomFooter: Story = {
     <CommandPaletteDemo
       commands={basicCommands}
       footer={
-        <div className="flex items-center justify-between text-xs text-gray-500">
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>Tip: Use keywords to find commands faster</span>
-          <button className="text-blue-500 hover:underline">
+          <button className="text-info-main hover:underline min-h-11 min-w-11">
             View all shortcuts
           </button>
         </div>
@@ -243,15 +243,15 @@ function ThemeToggleStory() {
   ];
 
   return (
-    <div className={`min-h-[400px] p-8 ${isDark ? 'dark bg-slate-900' : 'bg-gray-50'}`}>
+    <div className={`min-h-96 p-8 ${isDark ? 'dark bg-slate-900' : 'bg-gray-50'}`}>
       <div className="text-center">
         <button
           onClick={() => setOpen(true)}
-          className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+          className="rounded-lg border border-border-2 bg-surface px-4 py-2 text-sm text-muted-foreground shadow-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 min-h-11 min-w-11"
         >
           Open Command Palette
         </button>
-        <p className={`mt-4 text-sm ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
+        <p className={`mt-4 text-sm ${isDark ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
           Current theme: {isDark ? 'Dark' : 'Light'}
         </p>
       </div>
@@ -313,7 +313,7 @@ export const WithKeywords: Story = {
     return (
       <div>
         <CommandPaletteDemo commands={commands} />
-        <p className="mt-4 text-center text-xs text-gray-500">
+        <p className="mt-4 text-center text-xs text-muted-foreground">
           Try searching for &quot;config&quot;, &quot;account&quot;, or &quot;sign out&quot;
         </p>
       </div>

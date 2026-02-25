@@ -24,6 +24,7 @@ export default function TrackingOrderPage() {
   return (
     <main className="sf-content">
       <Section padding="wide">
+        {/* i18n-exempt -- XAB-313 [ttl=2026-12-31] */}
         <h1 className="text-2xl font-semibold">Track your order</h1>
       </Section>
 

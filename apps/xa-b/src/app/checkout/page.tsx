@@ -172,20 +172,28 @@ export default function CheckoutPage() {
         <Section as="div" padding="none" width="full" className="max-w-md space-y-4">
           <div className="rounded-lg border p-4 text-sm">
             {sessionLoading ? (
-              <div className="text-muted-foreground">Checking account session...</div>
+              <div className="text-muted-foreground">
+                {/* i18n-exempt -- XAB-314 [ttl=2026-12-31] */}
+                Checking account session...
+              </div>
             ) : authenticated ? (
               <>
+                {/* i18n-exempt -- XAB-314 [ttl=2026-12-31] */}
                 <div className="font-medium">Signed in as</div>
                 <div className="mt-1 text-muted-foreground">{sessionEmail}</div>
               </>
             ) : (
               <>
+                {/* i18n-exempt -- XAB-314 [ttl=2026-12-31] */}
                 <div className="font-medium">Login required</div>
                 <div className="mt-1 text-muted-foreground">
+                  {/* i18n-exempt -- XAB-314 [ttl=2026-12-31] */}
                   Sign in or create an account to place this order.
                 </div>
                 <div className="mt-3 flex flex-wrap gap-3">
+                  {/* i18n-exempt -- XAB-314 [ttl=2026-12-31] */}
                   <Link href="/account/login" className="underline">Login</Link>
+                  {/* i18n-exempt -- XAB-314 [ttl=2026-12-31] */}
                   <Link href="/account/register" className="underline">Create account</Link>
                 </div>
               </>

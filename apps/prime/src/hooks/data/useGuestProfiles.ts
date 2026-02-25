@@ -14,6 +14,8 @@ import { readGuestSession } from '../../lib/auth/guestSessionGuard';
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestProfiles } from '../../types/guestProfile';
 
+const EMPTY_PROFILES: GuestProfiles = {};
+
 export interface UseGuestProfilesReturn {
   /** All guest profiles indexed by UUID */
   profiles: GuestProfiles;
@@ -31,7 +33,7 @@ export interface UseGuestProfilesReturn {
  */
 export function useGuestProfiles(): UseGuestProfilesReturn {
   const database = useFirebaseDatabase();
-  const [profiles, setProfiles] = useState<GuestProfiles>({});
+  const [profiles, setProfiles] = useState<GuestProfiles>(EMPTY_PROFILES);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const { bookingId: currentBookingId } = readGuestSession();
@@ -44,7 +46,7 @@ export function useGuestProfiles(): UseGuestProfilesReturn {
 
     if (!currentBookingId) {
       // Fail closed: without a stay context we should not expose any guest directory data.
-      setProfiles({});
+      setProfiles(EMPTY_PROFILES);
       setIsLoading(false);
       setError(null);
       return;
@@ -61,7 +63,7 @@ export function useGuestProfiles(): UseGuestProfilesReturn {
       (snapshot) => {
         try {
           const data = snapshot.val() as GuestProfiles | null;
-          setProfiles(data || {});
+          setProfiles(data || EMPTY_PROFILES);
           setIsLoading(false);
           setError(null);
         } catch (err) {

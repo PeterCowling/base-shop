@@ -19,6 +19,7 @@ import { type GuideMeta, GUIDES_INDEX } from "@/data/guides.index";
 import { matchesGuideTopic, resolveGuideTopicId } from "@/data/guideTopics";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { fireCtaClick } from "@/utils/ga4-events";
 import { getSlug } from "@/utils/slug";
 import { getTagMeta } from "@/utils/tags";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
@@ -122,7 +123,10 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
 
   const experiencesEnT = useEnglishFallback("experiencesPage");
 
-  const handleOpenBooking = useCallback(() => router.push(`/${lang}/book`), [router, lang]);
+  const handleOpenBooking = useCallback(() => {
+    fireCtaClick({ ctaId: "experiences_book_cta", ctaLocation: "experiences_page" });
+    router.push(`/${lang}/book`);
+  }, [router, lang]);
   const handleOpenConcierge = useCallback(() => openModal("contact"), [openModal]);
 
   const [clientTopicParam, setClientTopicParam] = useState(topicParam);
@@ -278,6 +282,7 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
             subtitle={ctaSubtitle || undefined}
             bookLabel={ctaBook || undefined}
             onBookClick={handleOpenBooking}
+            bookHref={`/${lang}/book`}
             eventsLabel={ctaEvents || undefined}
             eventsHref={barMenuHref}
             breakfastLabel={ctaBreakfast || undefined}

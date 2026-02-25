@@ -5,7 +5,7 @@ Domain: Platform / Business-OS
 Workstream: Engineering
 Created: 2026-02-25
 Last-reviewed: 2026-02-25
-Last-updated: 2026-02-25 (TASK-05+06+07 complete)
+Last-updated: 2026-02-25 (TASK-09 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-do-ideas-live-autonomous-activation
 Deliverable-Type: multi-deliverable
@@ -32,8 +32,8 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - [x] TASK-05: Materialize artifact plane and reconcile trial/live contracts
 - [x] TASK-06: Add live-path regression and non-mutation test coverage
 - [x] TASK-07: Wire KPI rollup evidence pipeline
-- [ ] TASK-08: Horizon checkpoint - reassess autonomous lane from live evidence
-- [ ] TASK-09: Implement autonomous gating and kill-switch controls (inactive)
+- [x] TASK-08: Horizon checkpoint - reassess autonomous lane from live evidence
+- [x] TASK-09: Implement autonomous gating and kill-switch controls (inactive)
 - [ ] TASK-10: Produce go-live checklist closure package and recommendation
 
 ## Goals
@@ -88,8 +88,8 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 | TASK-05 | IMPLEMENT | Materialize trial/live artifact plane and reconcile contracts | 80% | M | Complete (2026-02-25) | TASK-04 ✓ | TASK-10 |
 | TASK-06 | IMPLEMENT | Expand test suite for live-path behavior and regressions | 85% | M | Complete (2026-02-25) | TASK-03 ✓, TASK-04 ✓ | TASK-08 |
 | TASK-07 | IMPLEMENT | Wire KPI rollup evidence generation for checklist VC-01/VC-02 | 85% | M | Complete (2026-02-25) | TASK-04 ✓ | TASK-08, TASK-10 |
-| TASK-08 | CHECKPOINT | Horizon checkpoint - reassess autonomous lane from live evidence | 95% | S | Pending | TASK-06, TASK-07 | TASK-09, TASK-10 |
-| TASK-09 | IMPLEMENT | Implement autonomous gating + kill-switch controls (inactive) | 85% | M | Pending | TASK-08 | TASK-10 |
+| TASK-08 | CHECKPOINT | Horizon checkpoint - reassess autonomous lane from live evidence | 95% | S | Complete (2026-02-25) | TASK-06, TASK-07 | TASK-09, TASK-10 |
+| TASK-09 | IMPLEMENT | Implement autonomous gating + kill-switch controls (inactive) | 88% | M | Complete (2026-02-25) | TASK-08 ✓ | TASK-10 |
 | TASK-10 | IMPLEMENT | Produce checklist closure package and activation recommendation | 80% | M | Pending | TASK-05, TASK-07, TASK-09 | - |
 
 ## Parallelism Guide
@@ -452,7 +452,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Affects:** `docs/plans/lp-do-ideas-live-autonomous-activation/plan.md`
 - **Depends on:** TASK-06, TASK-07
 - **Blocks:** TASK-09, TASK-10
@@ -471,6 +471,11 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - **Planning validation:** replan evidence linked in this plan task.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** updates task statuses/confidence in this plan.
+- **Build completion evidence (2026-02-25):**
+  - Horizon assumption 1: "Live advisory path remains non-blocking under hook error scenarios." — VERIFIED. TC-06-B (5 tests) explicitly covers the hook error path; the simulated SIGNALS caller flow continues unblocked in all error cases. TC-06-A (5 tests) confirms end-to-end hook → persist → idempotent re-run. TC-06-C (5 tests) confirms dispatched live packets pass through routeDispatch. 21 TASK-06 tests total pass.
+  - Horizon assumption 2: "KPI rollup is producing stable weekly snapshots with valid sample accounting." — PARTIALLY VERIFIED (expected at this build stage). The metrics runner (TASK-07) correctly handles empty telemetry (TC-07-B: not-ready/zero-cycle result), missing telemetry file with no throw (TC-07-C), and dual queue-state formats (TC-07-A/D). No live telemetry data has accumulated yet because the seed files are empty — the runner correctly reports not-ready when data is absent, which is the correct fail-closed posture. Real weekly data will accumulate during live advisory operation.
+  - TASK-09 confidence re-scored: 85% → 88%. Hook non-blocking behavior confirmed (TC-06-B), live orchestrator tested, persistence adapter validated. Gating logic implementation is the remaining unknown; all foundational inputs are now proven.
+  - TASK-10 confidence held: 80% unchanged. Checklist closure requires real KPI evidence from at least 2 weekly windows, which is not yet available. This is correct and expected; the runner is ready to produce evidence once live operation begins.
 
 ### TASK-09: Implement autonomous gating + kill-switch controls (inactive)
 - **Type:** IMPLEMENT
@@ -479,7 +484,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Affects:** `scripts/src/startup-loop/lp-do-ideas-*.ts`, `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md`, `docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-checklist.md`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-10
@@ -509,6 +514,19 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
   - Rollback: disable Option C gate checks and force advisory route.
 - **Documentation impact:** update policy/gate sections in checklist and seam docs.
 - **Notes / references:** BR-07 and phase-boundary note.
+- **Build completion evidence (2026-02-25):**
+  - Created `scripts/src/startup-loop/lp-do-ideas-autonomous-gate.ts` — pure module (zero I/O)
+  - Exports: `evaluateOptionCReadiness`, `checkOptionCGate`, `applyKillSwitch`
+  - Five threshold checks: reviewPeriodDays ≥ 14, sampleSize ≥ 40, routeAccuracy ≥ 80%, suppressionVariance ≤ 10%, kpiSnapshotAge ≤ 7 days
+  - `operatorEnable` defaults to inactive (false); must be explicitly `true`
+  - Stale KPI snapshot: generated_at > 7 days triggers `"stale_kpi_snapshot"` blocker
+  - Missing inputs (routeAccuracy/suppressionVariance undefined) → named blocker codes
+  - `applyKillSwitch()` returns `{ mode: "advisory", activationBlocked: true }` unconditionally
+  - Created `scripts/src/startup-loop/__tests__/lp-do-ideas-autonomous-gate.test.ts` — 14 tests
+  - TC-09-A: ✓ all 7 individual threshold failures + 2 operator-enable cases → `permitted: false`
+  - TC-09-B: ✓ all thresholds met + `operatorEnable: true` → `{ permitted: true, mode: "option_c_ready" }`
+  - TC-09-C: ✓ `applyKillSwitch()` → `{ mode: "advisory", activationBlocked: true }`
+  - Regression: 219/220 pass (propagation TC-05B-01 is pre-existing); 14 new tests all pass
 
 ### TASK-10: Produce checklist closure package and activation recommendation
 - **Type:** IMPLEMENT

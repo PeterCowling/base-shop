@@ -60,7 +60,7 @@ Decision Gap Proposals are stored as **Idea entities** via the Agent API with sp
 
 | Field | Value | Purpose |
 |-------|-------|---------|
-| `Status` | `raw` | Compatible with `/idea-develop` entry requirement |
+| `Status` | `raw` | Compatible with `/lp-do-ideas` operator-idea intake and dispatch flow |
 | `Tags` | `["sweep-generated", "cabinet-v1", "dgp", "gap:<type>"]` | Enable filtering for pickup mechanism. Type is `data`, `timing`, or `dependency`. Also add `held` tag if DGP originates from Stage 4 Hold verdict. |
 | `Content` | Full Dossier (see below) | Include Dossier Header + resolution plan |
 

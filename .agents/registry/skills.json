@@ -42,24 +42,9 @@
       "path": ".claude/skills/draft-whatsapp/SKILL.md"
     },
     {
-      "name": "frontend-design",
-      "description": "Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. Combines bold creative direction with token-constrained implementation.",
-      "path": ".claude/skills/frontend-design/SKILL.md"
-    },
-    {
       "name": "guide-translate",
       "description": "Propagate updated EN guide content to all locales using parallel translation. Requires EN audit to be clean first.",
       "path": ".claude/skills/guide-translate/SKILL.md"
-    },
-    {
-      "name": "idea-advance",
-      "description": "Propose lane transitions for Business OS cards based on stage document evidence and completion criteria.",
-      "path": ".claude/skills/idea-advance/SKILL.md"
-    },
-    {
-      "name": "idea-develop",
-      "description": "Convert a raw idea from inbox to a worked idea with card and initial Fact-find stage doc using agent APIs.",
-      "path": ".claude/skills/idea-develop/SKILL.md"
     },
     {
       "name": "idea-forecast",
@@ -70,11 +55,6 @@
       "name": "idea-generate",
       "description": "Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking.",
       "path": ".claude/skills/idea-generate/SKILL.md"
-    },
-    {
-      "name": "idea-readiness",
-      "description": "Readiness gate for idea generation. Use before /idea-generate, or whenever plans/context may be stale. Audit business-plan freshness, outcome clarity, code-to-plan traceability, tooling/data availability, and market-research freshness; fail closed on critical gaps; ask targeted questions to collect missing information and update source docs before allowing idea generation.",
-      "path": ".claude/skills/idea-readiness/SKILL.md"
     },
     {
       "name": "idea-scan",
@@ -350,6 +330,21 @@
       "name": "startup-loop",
       "description": "Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks. Routes to lp-* stage skills at each stage.",
       "path": ".claude/skills/startup-loop/SKILL.md"
+    },
+    {
+      "name": "tools-ui-breakpoint-sweep",
+      "description": "Open the app at user-specified viewport widths and systematically detect responsive layout failures (overflow/bleed, clipping, misalignment, broken reflow). Produces a screenshot-backed issue log with repro steps and fix hypotheses.",
+      "path": ".claude/skills/tools-web-breakpoint/SKILL.md"
+    },
+    {
+      "name": "tools-ui-contrast-sweep",
+      "description": "At user-specified breakpoints, audit the UI for contrast failures (text/background, icons, controls, focus indicators) and visual-uniformity drift (inconsistent tokens, typography, spacing, component variants). Produces screenshot-backed findings with WCAG-aligned thresholds and fix hypotheses.",
+      "path": ".claude/skills/tools-ui-contrast-sweep/SKILL.md"
+    },
+    {
+      "name": "tools-ui-frontend-design",
+      "description": "Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. Combines bold creative direction with token-constrained implementation.",
+      "path": ".claude/skills/frontend-design/SKILL.md"
     }
   ]
 }

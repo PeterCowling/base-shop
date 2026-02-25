@@ -144,15 +144,11 @@ All skills listed here use the same name in both Claude Code and Codex. The cano
 - `draft-marketing`: Create channel-specific marketing asset drafts with clear positioning, CTA, and measurable campaign intent. (file: `.claude/skills/draft-marketing/SKILL.md`)
 - `draft-outreach`: Draft sales and partnership outreach scripts (DMs, cold emails, follow-ups, objection handlers) for 1:1 relationship building. (file: `.claude/skills/draft-outreach/SKILL.md`)
 - `draft-whatsapp`: Draft WhatsApp-ready business messages with concise structure, clear CTA, and compliance-aware guardrails. (file: `.claude/skills/draft-whatsapp/SKILL.md`)
-- `frontend-design`: Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. (file: `.claude/skills/frontend-design/SKILL.md`)
+- `tools-ui-frontend-design`: Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. (file: `.claude/skills/frontend-design/SKILL.md`)
 - `guide-translate`: Propagate updated EN guide content to all locales using parallel translation. Requires EN audit to be clean first. (file: `.claude/skills/guide-translate/SKILL.md`)
-- `idea-advance`: Propose lane transitions for Business OS cards based on stage document evidence and completion criteria. (file: `.claude/skills/idea-advance/SKILL.md`)
-- `idea-develop`: Convert a raw idea from inbox to a worked idea with card and initial Fact-find stage doc using agent APIs. (file: `.claude/skills/idea-develop/SKILL.md`)
 - `idea-forecast`: Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research. (file: `.claude/skills/idea-forecast/SKILL.md`)
 - `idea-generate`: Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking. (file: `.claude/skills/idea-generate/SKILL.md`)
-- `idea-readiness`: Readiness gate for idea generation. Audit business-plan freshness, outcome clarity, tooling/data availability, and market-research freshness; fail closed on critical gaps. (file: `.claude/skills/idea-readiness/SKILL.md`)
 - `idea-scan`: Scan docs/business-os/ for changes and create business-relevant ideas from findings. (file: `.claude/skills/idea-scan/SKILL.md`)
-- `ideas-go-faster`: Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking. (file: `.claude/skills/ideas-go-faster/SKILL.md`)
 - `lp-assessment-bootstrap`: Bootstrap a brand-dossier.user.md for a business entering the startup loop. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec. (file: `.claude/skills/lp-assessment-bootstrap/SKILL.md`)
 - `lp-baseline-merge`: Join startup-loop fan-out outputs (S2B + S3 + S6B) into a single baseline snapshot and draft manifest. (file: `.claude/skills/lp-baseline-merge/SKILL.md`)
 - `lp-bos-sync`: S5B BOS sync stage worker. Persists prioritized baseline outputs to Business OS (D1) via agent API, then emits S5B stage-result.json. (file: `.claude/skills/lp-bos-sync/SKILL.md`)
@@ -207,7 +203,7 @@ All skills listed here use the same name in both Claude Code and Codex. The cano
 ### Design & Visual routing
 
 When the user's request involves building or modifying UI:
-1. Load `frontend-design` for aesthetic direction grounded in the design system
+1. Load `tools-ui-frontend-design` for aesthetic direction grounded in the design system
 2. Reference `lp-design-system` for token quick-ref during implementation
 3. After significant UI work, suggest `/lp-visual` to document the feature visually
 
@@ -387,11 +383,13 @@ When to proceed normally:
 - Recent commits from other agents on `dev`
 - Untracked files outside your work scope
 - Unrelated modified files in the working tree that do not conflict with your task
+- Files deleted, moved, or renamed by another agent that you were **not** working on
 
 Prompting policy for shared worktrees:
 - Do **not** pause to ask for confirmation solely because unrelated/untracked files appeared.
+- Do **not** pause to ask for confirmation because files you were **not** working on were deleted or moved by another agent. Stay calm and proceed.
 - Continue by default and keep your commit scope limited to files required for the current task.
-- Only stop and ask if there is a direct conflict with your intended edits or a git consistency issue.
+- **One exception — own-file deletion:** if a file you were actively editing in the current session has been deleted by another agent, flag it to the user before continuing. Do not flag deletions of files you never touched.
 
 ## Quick Reference
 
@@ -399,6 +397,8 @@ Prompting policy for shared worktrees:
 |----------|--------|
 | Git state internally inconsistent | STOP. Run `git status`, share output, ask user |
 | Files/commits from other agents | Normal — pull latest and proceed |
+| Files deleted/moved by another agent (files you weren't working on) | Normal — ignore, proceed |
+| File deleted by another agent that you were actively editing | FLAG to user, then stop |
 | Tests failing | Fix before commit. Never skip validation |
 | Need to undo | Use `git revert`, never `reset --hard` |
 | Large-scale fix needed | Create plan in `docs/plans/`, don't take shortcuts |

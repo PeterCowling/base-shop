@@ -18,11 +18,11 @@ When reflecting on completed work with `Card-ID`:
 |-------------------|--------------------------|
 | reflect.user.md | Done -> Reflected |
 
-Use `/idea-advance` to formally propose transitions.
+Use `/lp-do-ideas` or the operator flow to formally propose transitions.
 
 ## Related Resources
 
 - Card operations: `.claude/skills/_shared/card-operations.md`
-- Lane transitions: `.claude/skills/idea-advance/SKILL.md`
+- Dispatch routing: `.claude/skills/lp-do-ideas/SKILL.md`
 - Stage types reference: `apps/business-os/src/lib/types.ts` (StageType enum)
 - Example stage doc: `docs/business-os/cards/BRIK-ENG-0020/fact-find.user.md`

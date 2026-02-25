@@ -110,7 +110,7 @@ Stages (canonical IDs from loop-spec):
 | ASSESSMENT | Brand (container) | — | — |
 | IDEAS | Ideas pipeline (standing) | — | event-driven trigger paths |
 | IDEAS-01 | Pack diff scan | `/idea-scan` | layer_a_pack_diff OR operator_inject |
-| IDEAS-02 | Backlog update | `/idea-develop`, `/idea-advance` | semi-automated; operator confirms MERGE/SPLIT |
+| IDEAS-02 | Backlog update | `/lp-do-ideas` | semi-automated; operator confirms MERGE/SPLIT |
 | IDEAS-03 | Promote to DO | `/lp-do-fact-find` | operator gate |
 | MEASURE-00 | Problem framing and ICP | prompt handoff | — |
 | MEASURE-01 | Agent-Setup | prompt handoff | — |

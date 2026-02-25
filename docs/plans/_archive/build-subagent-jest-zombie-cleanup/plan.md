@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Archived
 Domain: BOS
 Workstream: Engineering
 Created: 2026-02-25

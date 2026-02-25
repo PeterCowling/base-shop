@@ -1,4 +1,4 @@
-import Providers from "@/components/Providers";
+import Providers from "@/components/ClientProviders";
 import EndOfDayPacket from "@/components/reports/EndOfDayPacket";
 
 // Prevent static prerendering — Firebase RTDB requires runtime env vars

@@ -1,4 +1,4 @@
-import Providers from "@/components/Providers";
+import Providers from "@/components/ClientProviders";
 import SafeManagement from "@/components/safe/SafeManagement";
 import { SafeDataProvider } from "@/context/SafeDataContext";
 import { TillShiftProvider } from "@/hooks/client/till/TillShiftProvider";

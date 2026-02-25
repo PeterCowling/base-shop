@@ -1,13 +1,12 @@
-import BarRoot from "@/components/bar/Bar";
-import Providers from "@/components/Providers";
+"use client";
 
-// Prevent static prerendering — Firebase RTDB requires runtime env vars
-export const dynamic = "force-dynamic";
+import dynamicImport from "next/dynamic";
+
+// Dynamically import with ssr: false to prevent Firebase initialization during SSR.
+// SSR-rendering the Firebase/auth provider tree causes side-effects in the Node.js
+// process that make every subsequent request to this route return 400.
+const BarContent = dynamicImport(() => import("./BarContent"), { ssr: false });
 
 export default function BarPage() {
-  return (
-    <Providers>
-      <BarRoot />
-    </Providers>
-  );
+  return <BarContent />;
 }

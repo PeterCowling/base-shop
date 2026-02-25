@@ -1,5 +1,5 @@
+import Providers from "@/components/ClientProviders";
 import PrimeRequestsQueue from "@/components/prime-requests/PrimeRequestsQueue";
-import Providers from "@/components/Providers";
 
 export const dynamic = "force-dynamic";
 

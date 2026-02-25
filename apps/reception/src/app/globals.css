@@ -69,6 +69,44 @@
   --font-heading: var(--font-sans);
   --font-body: var(--font-sans);
 
+  /* Category shade families (bar/POS product grid) */
+  /* Shade vars store full hsl() in tokens.css, so @theme just references var() directly */
+  --color-pinkShades-row1: var(--color-pinkShades-row1);
+  --color-pinkShades-row2: var(--color-pinkShades-row2);
+  --color-pinkShades-row3: var(--color-pinkShades-row3);
+  --color-pinkShades-row4: var(--color-pinkShades-row4);
+  --color-coffeeShades-row1: var(--color-coffeeShades-row1);
+  --color-coffeeShades-row2: var(--color-coffeeShades-row2);
+  --color-coffeeShades-row3: var(--color-coffeeShades-row3);
+  --color-beerShades-row1: var(--color-beerShades-row1);
+  --color-beerShades-row2: var(--color-beerShades-row2);
+  --color-wineShades-row1: var(--color-wineShades-row1);
+  --color-wineShades-row2: var(--color-wineShades-row2);
+  --color-wineShades-row3: var(--color-wineShades-row3);
+  --color-teaShades-row1: var(--color-teaShades-row1);
+  --color-teaShades-row2: var(--color-teaShades-row2);
+  --color-greenShades-row1: var(--color-greenShades-row1);
+  --color-greenShades-row2: var(--color-greenShades-row2);
+  --color-greenShades-row3: var(--color-greenShades-row3);
+  --color-blueShades-row1: var(--color-blueShades-row1);
+  --color-blueShades-row2: var(--color-blueShades-row2);
+  --color-blueShades-row3: var(--color-blueShades-row3);
+  --color-blueShades-row4: var(--color-blueShades-row4);
+  --color-blueShades-row5: var(--color-blueShades-row5);
+  --color-purpleShades-row1: var(--color-purpleShades-row1);
+  --color-purpleShades-row2: var(--color-purpleShades-row2);
+  --color-spritzShades-row1: var(--color-spritzShades-row1);
+  --color-spritzShades-row2: var(--color-spritzShades-row2);
+  --color-orangeShades-row1: var(--color-orangeShades-row1);
+  --color-orangeShades-row2: var(--color-orangeShades-row2);
+  --color-orangeShades-row3: var(--color-orangeShades-row3);
+  --color-orangeShades-row4: var(--color-orangeShades-row4);
+  --color-orangeShades-row5: var(--color-orangeShades-row5);
+  --color-grayishShades-row1: var(--color-grayishShades-row1);
+  --color-grayishShades-row2: var(--color-grayishShades-row2);
+  --color-grayishShades-row3: var(--color-grayishShades-row3);
+  --color-grayishShades-row4: var(--color-grayishShades-row4);
+
   /* Chart palette (dark-mode-aware) */
   --color-chart-1: hsl(var(--chart-1));
   --color-chart-2: hsl(var(--chart-2));

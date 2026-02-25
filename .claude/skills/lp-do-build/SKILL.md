@@ -103,6 +103,7 @@ All execution must pass these gates.
 - Track-specific requirements:
   - code/mixed -> TC contracts
   - business/mixed -> VC contracts + fail-first evidence progression
+- Post-build validation (IMPLEMENT tasks only): after TC/VC contracts pass, run `modules/build-validate.md`. Mode is selected by deliverable type (Mode 1: visual UI, Mode 2: data/API, Mode 3: business artifact). Fix+retry loop (max 3 attempts) is required before a task can be marked complete. SPIKE, INVESTIGATE, and CHECKPOINT tasks are exempt.
 
 4. **Commit Gate**
 - Commit only task-scoped files.
@@ -149,6 +150,7 @@ Read `Execution-Skill` from task, then normalize before comparison:
 - Isolation Mode: `../_shared/git-isolation-mode.md`
 - Extinct test policy: `../_shared/testing-extinct-tests.md`
 - Plan archiving: `../_shared/plan-archiving.md`
+- Testing policy (governed Jest entrypoint, blocked forms): `docs/testing-policy.md`
 
 ## Business Fail-First Enforcement
 
@@ -188,18 +190,40 @@ If confidence regresses below task threshold during execution:
 When all executable tasks are complete:
 
 1. **Produce `build-record.user.md`** at `docs/plans/<feature-slug>/build-record.user.md`. This artifact records what was built, tests run, and validation evidence. See formal contract: `docs/business-os/startup-loop/loop-output-contracts.md`.
-2. **Invoke `/ops-ship`** immediately after producing `build-record.user.md`. Push all committed task work to remote and watch CI to green.
-3. Set plan frontmatter `Status: Archived`.
-4. Archive the plan following `../_shared/plan-archiving.md`.
-5. **Encourage (not require) `results-review.user.md`**: notify the operator that writing a results review when outcomes are observable will propagate learnings to Layer A standing files. This is advisory — it does not block archiving.
+2. **Auto-draft `results-review.user.md`** from build context — do not leave this for the operator — then regenerate the process-improvements page:
+   - Write `docs/plans/<feature-slug>/results-review.user.md` using the template at `docs/plans/_templates/results-review.user.md`.
+   - Pre-fill every section the agent can answer from build evidence:
+     - `## Observed Outcomes` — stub: `Pending — check back after first live activation. Expected: <restate intended outcome from build-record>.`
+     - `## Standing Updates` — list every standing doc modified during the build, or `None.`
+     - `## New Idea Candidates` — list any improvement ideas or edge cases surfaced during build, or `None.`
+     - `## Standing Expansion` — agent recommendation based on scope changes observed, or `No standing expansion: <reason>.`
+     - `## Intended Outcome Check` — fill `Intended:` from build-record; leave `Observed:` and `Verdict:` as stubs for post-deployment update.
+   - **Run the reflection debt emitter** after drafting:
+     - Evaluate the drafted `results-review.user.md` against the minimum payload.
+     - If still incomplete (stubs don't count as payload), upsert `reflection-debt.user.md` with deterministic key `reflection-debt:{build_id}`.
+     - Soft-gate policy: debt is assigned to lane `IMPROVE`, SLA `7` days; breach behavior is `block_new_admissions_same_owner_business_scope_until_resolved_or_override`.
+   - **Regenerate the process-improvements page** after drafting results-review and emitting reflection debt:
+     - Run: `pnpm --filter scripts startup-loop:generate-process-improvements`
+     - This extracts idea candidates, open reflection debts, and pending reviews from all plan files and rewrites `docs/business-os/process-improvements.user.html` automatically.
+3. **Produce `reflection-debt.user.html`** if reflection debt was emitted:
+   - Use template: `docs/templates/visual/loop-output-report-template.html`.
+   - Replace `{{NAV_PREFIX}}` with `../../../business-os` (archive depth) or `../../business-os` (active plans depth).
+   - **Writing rules (mandatory):** Write for the business operator, not the engineer. No technical jargon (no "minimum payload", "ctaLocation", "breach behavior", "artifact", schema terms). Every page readable in under 60 seconds. One clear action per page — say exactly what to do, where, and when.
+   - Content pattern: status strip (amber = pending) → what was done (plain English, one bullet per change) → action box (what the operator must do, plain steps, deadline stated plainly).
+4. **Invoke `/ops-ship`** immediately after producing `build-record.user.md` and reflection-debt update (if any). Push all committed task work to remote. **Do not watch CI** — push and stop.
+5. Set plan frontmatter `Status: Archived`.
+6. Archive the plan following `../_shared/plan-archiving.md`.
+7. **Encourage `results-review.user.md` completion**: archiving is not blocked, but missing minimum payload will keep reflection debt open until resolved.
 
 ### Plan Archival Checklist
 
 - [ ] All executable tasks are `Complete`.
 - [ ] `build-record.user.md` exists at `docs/plans/<feature-slug>/build-record.user.md`.
+- [ ] `results-review.user.md` auto-drafted with all agent-fillable sections complete.
+- [ ] Reflection debt emitter was executed and `reflection-debt.user.md` updated if needed.
+- [ ] `reflection-debt.user.html` produced from `docs/templates/visual/loop-output-report-template.html` (operator-readable, full nav).
 - [ ] Plan `Status` set to `Archived` in frontmatter.
 - [ ] Archive procedure from `../_shared/plan-archiving.md` followed.
-- [ ] Operator notified to write `results-review.user.md` when outcomes are observable (advisory).
 
 
 ## CHECKPOINT Contract
@@ -207,9 +231,13 @@ When all executable tasks are complete:
 When the next task is CHECKPOINT:
 
 - run `modules/build-checkpoint.md`,
-- invoke `/lp-do-replan` for downstream tasks,
+- invoke `/lp-do-replan` for all downstream tasks,
 - if topology changed, run `/lp-do-sequence`,
-- resume only when downstream tasks are again eligible.
+- re-evaluate confidence for all downstream tasks after replan:
+  - if all downstream tasks meet their type threshold (IMPLEMENT/SPIKE ≥80%, INVESTIGATE ≥60%) → **continue automatically without pausing for user input**,
+  - if any downstream task remains below threshold after replan → stop, report the specific task and confidence gap, ask for operator input.
+
+Do not stop to ask the user just because a CHECKPOINT was reached. The checkpoint triggers replan; if replan passes, build continues.
 
 ## Completion Messages
 

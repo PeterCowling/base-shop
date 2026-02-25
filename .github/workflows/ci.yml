@@ -316,6 +316,9 @@ jobs:
           pnpm --filter @acme/platform-core build
           pnpm --filter @acme/date-utils build
           pnpm --filter @acme/i18n build
+          pnpm --filter @acme/design-system build
+          pnpm --filter @acme/telemetry build
+          pnpm --filter @acme/ui build
       - name: Typecheck tests (Phase-1 + Phase-4 + Phase-5 packages + apps/cms)
         run: |
           set -e

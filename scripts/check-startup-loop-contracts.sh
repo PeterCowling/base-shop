@@ -348,10 +348,10 @@ fi
 # Stages with side_effects: none in loop-spec must not have BOS write instructions.
 
 sq06_fail=0
-# S5A is the canonical side_effects: none stage
-if [[ -f ".claude/skills/lp-prioritize/SKILL.md" ]]; then
-  if rg -qi "/api/agent" ".claude/skills/lp-prioritize/SKILL.md"; then
-    check_fail "lp-prioritize (side_effects: none) references /api/agent — should not perform BOS writes (SQ-06)"
+# S4 is the canonical merge stage and must remain local-only (no direct BOS API writes)
+if [[ -f ".claude/skills/lp-baseline-merge/SKILL.md" ]]; then
+  if rg -qi "/api/agent" ".claude/skills/lp-baseline-merge/SKILL.md"; then
+    check_fail "lp-baseline-merge references /api/agent — S4 must remain local-only (SQ-06)"
     sq06_fail=1
   fi
 fi
@@ -492,25 +492,24 @@ if [[ $sq11_fail -eq 0 ]]; then
 fi
 
 # ── SQ-12: Stage semantics consistency ──
-# Stage number references in skills must match loop-spec stage assignments.
-# e.g., prioritize is S5A (not S3), forecast is S3 (not S5).
+# Removed stage IDs must not reappear in active startup-loop contracts.
 
 sq12_fail=0
-# Check lp-prioritize references S5 (not S3)
-if [[ -f ".claude/skills/lp-prioritize/SKILL.md" ]]; then
-  if rg -q '\bS3\b.*prioriti' ".claude/skills/lp-prioritize/SKILL.md" 2>/dev/null; then
-    check_fail "lp-prioritize references S3 for prioritization — should be S5A (SQ-12)"
-    sq12_fail=1
-  fi
+if rg -q '^\s*-\s+id:\s+S5[A-B]\b' "$LOOP_SPEC"; then
+  check_fail "loop-spec contains removed stage IDs (SQ-12)"
+  sq12_fail=1
 fi
 
-# Check lp-experiment doesn't mismap stage numbers
-if [[ -f ".claude/skills/lp-experiment/SKILL.md" ]]; then
-  if rg -q 'lp-prioritize.*S3\b' ".claude/skills/lp-experiment/SKILL.md" 2>/dev/null; then
-    check_fail "lp-experiment maps lp-prioritize to S3 — should be S5A (SQ-12)"
+for active_contract in \
+  ".claude/skills/startup-loop/SKILL.md" \
+  ".claude/skills/startup-loop/modules/cmd-advance.md" \
+  "docs/business-os/startup-loop/stage-operator-dictionary.yaml"
+do
+  if [[ -f "$active_contract" ]] && rg -q '\bS5[A-B]\b' "$active_contract" 2>/dev/null; then
+    check_fail "${active_contract} still references removed stage IDs (SQ-12)"
     sq12_fail=1
   fi
-fi
+done
 
 if [[ $sq12_fail -eq 0 ]]; then
   check_pass

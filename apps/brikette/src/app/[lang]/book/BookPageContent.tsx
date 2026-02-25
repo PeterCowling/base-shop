@@ -3,7 +3,7 @@
 // src/app/[lang]/book/BookPageContent.tsx
 // Booking landing page used for direct landings (SEO/sitemap/no-JS fallback).
 
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "next/navigation";
 
@@ -83,6 +83,8 @@ function BookPageContent({ lang }: Props): JSX.Element {
 
   // Dedupe ref: tracks the search key of the last fired search_availability event.
   const lastSearchKeyRef = useRef<string | null>(null);
+  // Capture initial values so mount effect can seed dedup and prevent debounce firing on render.
+  const initialValuesRef = useRef({ checkin: initialCheckin, checkout: initialCheckout, pax: initialPax });
   // Capture initial URL params at component init time for the mount-only effect.
   // Only fire on mount when the user explicitly provided checkin/checkout in the URL.
   const mountedSearchRef = useRef(
@@ -104,54 +106,34 @@ function BookPageContent({ lang }: Props): JSX.Element {
 
   const minCheckout = useMemo(() => addDays(checkin, 1), [checkin]);
 
-  const applyQuery = useCallback(() => {
-    const normalizedCheckin = checkin || todayIso;
-    const normalizedCheckout = checkout && checkout >= minCheckout ? checkout : minCheckout;
-    const normalizedPax = Math.max(1, pax);
-
-    if (normalizedCheckout !== checkout) {
-      setCheckout(normalizedCheckout);
-    }
-
-    writeCanonicalBookingQuery({
-      checkin: normalizedCheckin,
-      checkout: normalizedCheckout,
-      pax: normalizedPax,
-    });
-
-    // TC-01: fire search_availability on submit; dedupe repeated identical queries.
-    if (isValidSearch(normalizedCheckin, normalizedCheckout)) {
-      const key = `${normalizedCheckin}|${normalizedCheckout}|${normalizedPax}`;
-      if (lastSearchKeyRef.current !== key) {
-        lastSearchKeyRef.current = key;
-        fireSearchAvailability({
-          source: "booking_widget",
-          checkin: normalizedCheckin,
-          checkout: normalizedCheckout,
-          pax: normalizedPax,
-        });
-      }
-    }
-  }, [checkin, checkout, minCheckout, pax, todayIso]);
+  // TC-01: fire search_availability when dates/pax change; debounced + deduped.
+  useEffect(() => {
+    if (!isValidSearch(checkin, checkout)) return;
+    const key = `${checkin}|${checkout}|${pax}`;
+    if (lastSearchKeyRef.current === key) return;
+    const timer = window.setTimeout(() => {
+      // Re-check inside timer: mount effect may have seeded the key after this effect ran.
+      if (lastSearchKeyRef.current === key) return;
+      lastSearchKeyRef.current = key;
+      fireSearchAvailability({ source: "booking_widget", checkin, checkout, pax });
+    }, 600);
+    return () => window.clearTimeout(timer);
+  }, [checkin, checkout, pax]);
 
   useEffect(() => {
-    fireViewItemList({
-      itemListId: "book_rooms",
-      rooms: roomsData,
-    });
-    // TC-03: fire search_availability on mount when URL params provide a valid date range.
+    fireViewItemList({ itemListId: "book_rooms", rooms: roomsData });
     const initial = mountedSearchRef.current;
     if (initial) {
+      // URL params provided: fire immediately and seed dedup to prevent double-fire.
       const key = `${initial.checkin}|${initial.checkout}|${initial.pax}`;
       lastSearchKeyRef.current = key;
-      fireSearchAvailability({
-        source: "booking_widget",
-        checkin: initial.checkin,
-        checkout: initial.checkout,
-        pax: initial.pax,
-      });
+      fireSearchAvailability({ source: "booking_widget", checkin: initial.checkin, checkout: initial.checkout, pax: initial.pax });
+    } else {
+      // No URL params: seed dedup with defaults to prevent debounce firing on initial render.
+      const iv = initialValuesRef.current;
+      lastSearchKeyRef.current = `${iv.checkin}|${iv.checkout}|${iv.pax}`;
     }
-  }, []); // mount only — initial URL params captured in mountedSearchRef
+  }, []); // mount only
 
   return (
     <>
@@ -173,7 +155,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
           {t("subheading", { defaultValue: "Choose your dates, then pick a room." }) as string}
         </p>
 
-        <div className="mt-6 grid gap-4 rounded-2xl border border-brand-outline/40 bg-brand-surface p-4 shadow-sm sm:grid-cols-4">
+        <div className="mt-6 grid gap-4 rounded-2xl border border-brand-outline/40 bg-brand-surface p-4 shadow-sm sm:grid-cols-3">
           <label className="flex flex-col gap-1 text-sm font-medium text-brand-heading">
             {t("date.checkIn", { defaultValue: "Check in" }) as string}
             <input
@@ -217,16 +199,6 @@ function BookPageContent({ lang }: Props): JSX.Element {
               className="min-h-11 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
             />
           </label>
-
-          <div className="flex items-end">
-            <button
-              type="button"
-              onClick={applyQuery}
-              className="min-h-11 min-w-11 w-full rounded-full bg-brand-secondary px-6 py-3 text-sm font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-brand-on-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
-            >
-              {t("date.apply", { defaultValue: "Update" }) as string}
-            </button>
-          </div>
         </div>
       </Section>
 

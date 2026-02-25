@@ -1,6 +1,6 @@
 ---
-name: idea-forecast
-description: Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research (competitor analysis, price bands, channel benchmarks, demand signals). Use when a user provides idea/product inputs and wants the agent to set most targets, assumptions, risks, and validation metrics before SFS-00 or idea-generate.
+name: lp-do-idea-forecast
+description: Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research (competitor analysis, price bands, channel benchmarks, demand signals). Use when a user provides idea/product inputs and wants the agent to set most targets, assumptions, risks, and validation metrics before SFS-00 or lp-do-idea-generate.
 ---
 
 # Ideas Forecasting
@@ -10,11 +10,11 @@ Use this skill to invert planning: user provides the business idea and products,
 ## Invocation
 
 ```bash
-/idea-forecast
-/idea-forecast --biz=HEAD
-/idea-forecast --biz=PET --country=IT --horizon-days=90
-/idea-forecast --biz=PET --launch-surface=pre-website
-/idea-forecast --biz=PET --market-research-max-age-days=30
+/lp-do-idea-forecast
+/lp-do-idea-forecast --biz=HEAD
+/lp-do-idea-forecast --biz=PET --country=IT --horizon-days=90
+/lp-do-idea-forecast --biz=PET --launch-surface=pre-website
+/lp-do-idea-forecast --biz=PET --market-research-max-age-days=30
 ```
 
 Defaults:
@@ -188,7 +188,7 @@ Use forecast evidence to propose these fields; do not leave them blank.
 
 1. Forecasting runs before idea prioritization when startup context is sparse.
 2. Approved forecast outcomes seed SFS-00 business intent baseline.
-3. `idea-generate` should use approved forecast outcomes as steering constraints.
+3. `lp-do-idea-generate` should use approved forecast outcomes as steering constraints.
 4. `lp-do-fact-find` / `lp-do-plan` / `lp-do-build` remain the delivery path for selected go items.
 
 ## Red Flags (invalid output)

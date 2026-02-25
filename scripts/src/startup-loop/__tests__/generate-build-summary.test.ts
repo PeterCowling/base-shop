@@ -12,6 +12,7 @@ import {
   shouldExcludeSourcePath,
   sortRows,
 } from "../generate-build-summary";
+import { emitBuildEvent, writeBuildEvent } from "../lp-do-build-event-emitter";
 
 const FIXED_TIMESTAMP = "2026-02-25T00:00:00.000Z";
 
@@ -255,6 +256,178 @@ describe("generate-build-summary", () => {
     expect(rows).toHaveLength(1);
     expect(rows[0]?.why).toBe("—");
     expect(rows[0]?.intended).toBe("—");
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  // -------------------------------------------------------------------------
+  // TC-05-C: generator prefers canonical build-event.json when present
+  // and why_source is "operator"
+  // -------------------------------------------------------------------------
+
+  it("TC-05-C: prefers canonical build-event.json why value over heuristic when Build-Event-Ref present and why_source=operator", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-canonical-"));
+
+    const featureSlug = "test-feature-canonical";
+    const canonicalWhy =
+      "Improve DTC conversion by removing friction from the booking flow — operator-authored.";
+    const canonicalIntended =
+      ">=10% improvement in DTC booking conversion within 30 days";
+
+    // Write strategy artifact with Build-Event-Ref frontmatter
+    await writeFile(
+      repoRoot,
+      "docs/business-os/strategy/BRIK/2026-02-25-test-build.user.md",
+      [
+        "---",
+        `Build-Event-Ref: docs/plans/${featureSlug}/build-event.json`,
+        "---",
+        "",
+        "# Test Build",
+        "",
+        "## Why",
+        "This heuristic why should NOT appear — canonical preferred.",
+        "",
+        "## Intended outcome",
+        "This heuristic intended should NOT appear.",
+      ].join("\n"),
+    );
+
+    // Write canonical build-event.json
+    const event = emitBuildEvent({
+      feature_slug: featureSlug,
+      build_id: `${featureSlug}:2026-02-25`,
+      why: canonicalWhy,
+      why_source: "operator",
+      intended_outcome: {
+        type: "measurable",
+        statement: canonicalIntended,
+        source: "operator",
+      },
+      emitted_at: "2026-02-25T12:00:00.000Z",
+    });
+    const planDir = path.join(repoRoot, "docs", "plans", featureSlug);
+    await fs.mkdir(planDir, { recursive: true });
+    writeBuildEvent(event, planDir);
+
+    const rows = generateBuildSummaryRows(repoRoot, {
+      timestampResolver: () => FIXED_TIMESTAMP,
+    });
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0]?.why).toBe(canonicalWhy);
+    expect(rows[0]?.intended).toBe(canonicalIntended);
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  // -------------------------------------------------------------------------
+  // TC-05-D: generator falls back to heuristic when build-event.json absent
+  // -------------------------------------------------------------------------
+
+  it("TC-05-D: falls back to heuristic extraction when no Build-Event-Ref present", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-fallback-"));
+
+    // Strategy artifact without Build-Event-Ref
+    await writeFile(
+      repoRoot,
+      "docs/business-os/strategy/BRIK/2026-02-25-no-ref.user.md",
+      [
+        "# No Canonical Ref",
+        "",
+        "## Why",
+        "heuristic why extracted from markdown",
+        "",
+        "## Intended outcome",
+        "heuristic intended outcome",
+      ].join("\n"),
+    );
+
+    const rows = generateBuildSummaryRows(repoRoot, {
+      timestampResolver: () => FIXED_TIMESTAMP,
+    });
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0]?.why).toBe("heuristic why extracted from markdown");
+    expect(rows[0]?.intended).toBe("heuristic intended outcome");
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  it("TC-05-D variant: falls back to heuristic when Build-Event-Ref present but file missing", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-missing-ref-"));
+
+    // Strategy artifact with Build-Event-Ref, but file does not exist
+    await writeFile(
+      repoRoot,
+      "docs/business-os/strategy/BRIK/2026-02-25-missing-ref.user.md",
+      [
+        "---",
+        "Build-Event-Ref: docs/plans/nonexistent-feature/build-event.json",
+        "---",
+        "",
+        "# Missing Ref",
+        "",
+        "## Why",
+        "heuristic fallback when canonical absent",
+      ].join("\n"),
+    );
+
+    const rows = generateBuildSummaryRows(repoRoot, {
+      timestampResolver: () => FIXED_TIMESTAMP,
+    });
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0]?.why).toBe("heuristic fallback when canonical absent");
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  it("TC-05-D variant: falls back to heuristic when Build-Event-Ref event has why_source=heuristic", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-heuristic-src-"));
+
+    const featureSlug = "test-feature-heuristic-src";
+
+    // Strategy artifact with Build-Event-Ref
+    await writeFile(
+      repoRoot,
+      "docs/business-os/strategy/BRIK/2026-02-25-heuristic-src.user.md",
+      [
+        "---",
+        `Build-Event-Ref: docs/plans/${featureSlug}/build-event.json`,
+        "---",
+        "",
+        "# Heuristic Src",
+        "",
+        "## Why",
+        "heuristic section why",
+        "",
+        "## Intended outcome",
+        "heuristic section intended",
+      ].join("\n"),
+    );
+
+    // Write canonical build-event.json with why_source: heuristic (should NOT override)
+    const event = emitBuildEvent({
+      feature_slug: featureSlug,
+      build_id: `${featureSlug}:2026-02-25`,
+      why: "—",
+      why_source: "heuristic",
+      intended_outcome: null,
+      emitted_at: "2026-02-25T12:00:00.000Z",
+    });
+    const planDir = path.join(repoRoot, "docs", "plans", featureSlug);
+    await fs.mkdir(planDir, { recursive: true });
+    writeBuildEvent(event, planDir);
+
+    const rows = generateBuildSummaryRows(repoRoot, {
+      timestampResolver: () => FIXED_TIMESTAMP,
+    });
+
+    expect(rows).toHaveLength(1);
+    // Heuristic-sourced build event should NOT override the markdown extraction
+    expect(rows[0]?.why).toBe("heuristic section why");
+    expect(rows[0]?.intended).toBe("heuristic section intended");
 
     await fs.rm(repoRoot, { recursive: true, force: true });
   });

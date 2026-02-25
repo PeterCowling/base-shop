@@ -1,6 +1,6 @@
 ---
 name: lp-do-plan
-description: Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and optionally hands off to /lp-do-build when explicit auto-build intent is present.
+description: Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and hands off to /lp-do-build by default unless --notauto is passed.
 ---
 
 # Plan Orchestrator
@@ -54,13 +54,10 @@ If a pipeline treats pending/todo tests as failing, do not commit stubs; record 
 
 Determine planning mode early:
 
-- `plan-only` (default in interactive sessions)
-- `plan+auto` when any of the following apply:
-  - explicit user intent: "build now", "ship now", "implement now"
-  - `--auto` flag passed (set by `/lp-do-fact-find` pipeline auto-handoff)
-  - invoked automatically as part of a pipeline initiated by the user
-
-Never assume silent approval to auto-build in interactive sessions where the user has not expressed intent. `--auto` is only set by the pipeline or by explicit user instruction.
+- `plan+auto` (default — proceeds to `/lp-do-build` after plan gates pass)
+- `plan-only` when any of the following apply:
+  - `--notauto` flag passed explicitly by the user
+  - user explicitly says "plan only", "just plan", "don't build yet", or equivalent
 
 ## Phase 2: Discovery and De-duplication
 
@@ -215,7 +212,7 @@ Write/update:
 Status policy:
 - Default `Status: Draft`.
 - Set `Status: Active` only when:
-  - user explicitly wants build handoff now, or `--auto` flag is set, and
+  - mode is `plan+auto` (default) or user explicitly wants build handoff now, and
   - plan gates pass.
 
 ## Phase 10: Optional Handoff to Build
@@ -228,66 +225,67 @@ If eligible and mode is `plan+auto`, invoke `/lp-do-build <feature-slug>`.
 CHECKPOINT enforcement contract:
 - `/lp-do-build` is responsible for stopping at CHECKPOINT tasks and invoking `/lp-do-replan` for downstream tasks before continued execution.
 
-## Phase 11: Automatic Critique (score-gated)
+## Phase 11: Critique Loop (1–3 rounds, mandatory)
 
-After the plan is persisted (Phase 8) and before any build handoff (Phase 10), evaluate two independent triggers. Either trigger alone is sufficient to invoke `/lp-do-critique` automatically.
+After the plan is persisted (Phase 8) and before any build handoff (Phase 10), run the critique loop. Critique always runs at least once — there is no skip condition.
 
-**Trigger 1 — Whole-plan confidence:** `Overall-confidence` < 4.0 (i.e. < 80 on a 5-point scale).
+### Factcheck gate
 
-**Trigger 2 — Uncovered low-confidence task:** Any individual task has `confidence < 80%` AND has no upstream SPIKE or INVESTIGATE task that would plausibly resolve its uncertainty before it falls due.
+Before Round 1, evaluate whether `/lp-do-factcheck` should run on the plan. Run it if the plan contains any of:
+- Specific file paths or module names stated as facts
+- Function signatures, API behavior, or interface claims
+- Test coverage or CI behavior assertions
 
-### Trigger 2 — Evaluation procedure
+This may be run before Round 1 (to pre-clean factual errors before critique) or between rounds if critique surfaces factual claim issues. Use judgment on timing.
 
-For every task in the plan with `confidence < 80%`:
+### Iteration rules
 
-1. Identify all tasks that are sequenced *before* this task (direct blockers and their transitive predecessors — i.e. the dependency chain upstream of this task).
-2. Check whether any of those upstream tasks has `Type: SPIKE` or `Type: INVESTIGATE`.
-3. If yes → the uncertainty is covered; this task passes Trigger 2 (skip to next low-confidence task).
-4. If no upstream SPIKE/INVESTIGATE exists → this task is **uncovered**. Trigger 2 fires.
+Run `/lp-do-critique` at least once and up to three times. The number of rounds is driven by severity of findings:
 
-A task is only considered "covered" if the SPIKE/INVESTIGATE is upstream (i.e. must complete before the low-confidence task runs). A SPIKE that is parallel or downstream does not count.
+| After round | Condition to run next round |
+|---|---|
+| Round 1 | Any Critical finding, OR 2+ Major findings |
+| Round 2 | Any Critical finding still present |
+| Round 3 | Final round — always the last regardless of outcome |
 
-**Invocation (when either trigger fires):**
-- Target: `docs/plans/<feature-slug>/plan.md`
-- Mode: default (CRITIQUE + AUTOFIX)
-- Scope: `full`
-- When reporting, note which trigger(s) fired and which task(s) caused Trigger 2 (if applicable).
+Before each round after the first: revise the plan to address prior-round findings, then re-run.
 
-**Flow:**
-1. Read `Overall-confidence` from the persisted plan frontmatter → evaluate Trigger 1.
-2. Scan all task confidence values → evaluate Trigger 2 per the procedure above.
-3. If neither trigger fires: skip critique, proceed to Phase 10.
-4. If either trigger fires: run `/lp-do-critique docs/plans/<feature-slug>/plan.md`.
-5. Critique produces findings and applies autofixes to the plan.
-6. After critique:
-   - If critique verdict is `not credible` or critique score <= 2.5:
-     - Set plan `Status: Draft` (block auto-build).
-     - Report critique findings to user.
-     - Recommend `/lp-do-replan` or revision before proceeding.
-   - If critique verdict is `partially credible` (critique score 3.0–3.5):
-     - Autofixes are already applied.
-     - Report top issues.
-     - In `plan+auto` mode: proceed to build handoff. Add `Critique-Warning: partially-credible` to plan frontmatter. Do not require interactive confirmation.
-     - In `plan-only` mode: report to user and stop; recommend `/lp-do-replan` before proceeding.
-   - If critique verdict is `credible` (critique score >= 4.0):
-     - Autofixes are already applied.
-     - Proceed normally (build handoff if eligible).
+**Round 1 (mandatory — always runs)**
+1. Invoke `/lp-do-critique docs/plans/<feature-slug>/plan.md` (default mode: CRITIQUE + AUTOFIX, scope: full).
+2. Record: round number, score, finding counts by severity (Critical / Major / Minor).
+3. Apply the round 2 condition from the table above.
+
+**Round 2 (conditional — any Critical, or 2+ Major in Round 1)**
+1. Revise the plan to address Round 1 findings.
+2. Re-invoke `/lp-do-critique`.
+3. Record results. Apply the round 3 condition.
+
+**Round 3 (conditional — any Critical still present after Round 2)**
+1. Revise the plan to address Round 2 findings.
+2. Re-invoke `/lp-do-critique`.
+3. Record results. This is the final round — do not loop further.
+
+### Post-loop gate
+
+Evaluate the verdict from the final completed round:
+
+- **`not credible` or score ≤ 2.5:** set plan `Status: Draft`, block auto-build. Report findings. Recommend `/lp-do-replan`.
+- **`partially credible` (score 3.0–3.5):** autofixes already applied. Report top issues.
+  - `plan+auto` mode: proceed to build handoff with `Critique-Warning: partially-credible` in frontmatter.
+  - `plan-only` mode: report to user and stop; recommend `/lp-do-replan`.
+- **`credible` (score ≥ 4.0):** autofixes applied, proceed normally.
 
 **Ordering:** Phase 11 runs after Phase 8 (persist) but before Phase 10 (build handoff). Build eligibility is re-evaluated after critique autofixes are applied.
 
 ## Completion Messages
 
-Plan-only (both triggers clear, critique skipped):
+Plan-only:
 
-> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Overall-confidence: `<X.X>` (critique skipped — all tasks covered above threshold).
-
-Plan-only (critique ran — note which trigger):
-
-> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Critique triggered by: `<Overall-confidence below 4.0 | uncovered low-confidence task(s): [task IDs]>`. Critique verdict: `<credible / partially credible / not credible>` (score: `<X.X>`).
+> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Critique: `<N>` round(s), final verdict `<credible | partially credible | not credible>` (score: `<X.X>`).
 
 Plan+auto:
 
-> Plan complete and eligible. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `Active`. Gates passed. Critique verdict: `<credible / partially credible / not credible>` (score: `<X.X>`). Auto-continuing to `/lp-do-build <feature-slug>`.
+> Plan complete and eligible. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `Active`. Gates passed. Critique: `<N>` round(s), final verdict `<credible | partially credible | not credible>` (score: `<X.X>`). Auto-continuing to `/lp-do-build <feature-slug>`.
 
 ## Quick Checklist
 
@@ -298,8 +296,7 @@ Plan+auto:
 - [ ] VC checks reference shared business VC checklist when relevant
 - [ ] `/lp-do-sequence` completed after structural edits
 - [ ] Consumer tracing complete for all new outputs and modified behaviors in M/L code/mixed tasks
-- [ ] Phase 11 Trigger 1 evaluated: Overall-confidence vs 4.0 threshold
-- [ ] Phase 11 Trigger 2 evaluated: every task with confidence < 80% checked for upstream SPIKE/INVESTIGATE coverage
-- [ ] Critique trigger reason(s) reported in completion message (or "skipped — all tasks covered" if both clear)
-- [ ] Auto-build blocked if critique score <= 2.5
-- [ ] Auto-build only when explicit intent + eligibility
+- [ ] lp-do-factcheck run if plan contains codebase claims (file paths, function signatures, coverage assertions)
+- [ ] Phase 11 critique loop run (1–3 rounds, mandatory): round count and final verdict recorded
+- [ ] Auto-build blocked if critique score ≤ 2.5
+- [ ] Auto-build blocked only if `--notauto` passed or critique score ≤ 2.5

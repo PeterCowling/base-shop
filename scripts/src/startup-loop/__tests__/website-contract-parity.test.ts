@@ -50,7 +50,7 @@ describe("WEBSITE contract parity guards", () => {
     );
     expect(website02?.condition).toBe("launch-surface = website-live");
 
-    expect(spec.ordering?.sequential).toContainEqual(["S5B", "WEBSITE"]);
+    expect(spec.ordering?.sequential).toContainEqual(["S4", "WEBSITE"]);
     expect(spec.ordering?.sequential).toContainEqual(["WEBSITE", "DO"]);
   });
 
@@ -113,8 +113,8 @@ describe("WEBSITE contract parity guards", () => {
   it("keeps process-layer WEBSITE ownership explicit via OFF-3", () => {
     const processRegistry = readText("docs/business-os/startup-loop/process-registry-v2.md");
 
-    expect(processRegistry).toContain(
-      "| OFF-3 | Product / listing content and merchandising refresh | OFF | WEBSITE-01 (bootstrap), WEBSITE-02 (recurring) |"
+    expect(processRegistry).toMatch(
+      /\| OFF-3 \| Product \/ listing content and merchandising refresh \| OFF \| WEBSITE-01 \(bootstrap\), WEBSITE-02 \(recurring[^|]*\) \|/
     );
     expect(processRegistry).toContain(
       "| WEBSITE-01 | L1 first build framework | OFF-3 (first-build framework and content/listing baseline contract) |"

@@ -5,7 +5,7 @@ Feature-Slug: hbag-brandmark-particle-animation
 Business-Unit: HBAG
 Target-App: caryina
 Theme-Package: @themes/caryina
-Brand-Language: docs/business-os/strategy/HBAG/brand-dossier.user.md
+Brand-Language: docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md
 Created: 2026-02-23
 Updated: 2026-02-23
 Owner: Pete
@@ -26,7 +26,7 @@ Owner: Pete
 
 ## Gate Pre-flight (GATE-BD-07)
 
-- Brand dossier exists and is `Active`: `docs/business-os/strategy/HBAG/brand-dossier.user.md`
+- Brand dossier exists and is `Active`: `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md`
 - Strategy index Brand Dossier row is `Active`: `docs/business-os/strategy/HBAG/index.user.md`
 
 Gate result: PASS.
@@ -158,7 +158,7 @@ Header (existing)
 
 ## Prerequisites for Plan
 
-- [x] Brand language doc exists and is `Active`: `docs/business-os/strategy/HBAG/brand-dossier.user.md`
+- [x] Brand language doc exists and is `Active`: `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md`
 - [x] Theme package exists: `packages/themes/caryina/`
 - [x] Required tokens exist; no new token additions needed
 - [x] Reused components/patterns verified in app and design-system sources

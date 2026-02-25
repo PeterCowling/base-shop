@@ -142,8 +142,6 @@ The derived state is compatible with the existing `loop-state.json` contract:
 | S3 | Forecast |
 | S6B | Channel strategy + GTM |
 | S4 | Baseline merge |
-| S5A | Prioritize |
-| S5B | BOS sync |
 | WEBSITE | Website |
 | WEBSITE-01 | L1 first build framework |
 | WEBSITE-02 | Site-upgrade synthesis |

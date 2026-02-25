@@ -36,7 +36,7 @@ Required:
 If no results file exists, stop: instruct the operator to complete the deep research run from `/lp-do-assessment-02-solution-profiling` first.
 
 Also read if present:
-- `docs/business-os/strategy/<BIZ>/problem-statement.user.md` — use to verify options are still solving the stated problem
+- `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md` — use to verify options are still solving the stated problem
 
 ## Steps
 
@@ -51,7 +51,7 @@ For each option, score across these four criteria:
 1. **Launch feasibility** — can a small team launch this within 6 months with realistic capital?
 2. **Distribution path** — is there a known, accessible channel to reach the target user group?
 3. **Regulatory/compliance burden** — are there licensing, certification, or compliance requirements that would materially delay or block launch?
-4. **Problem-solution fit** — does this option directly address the stated problem in `problem-statement.user.md`, or does it require the problem to be reframed?
+4. **Problem-solution fit** — does this option directly address the stated problem in `<YYYY-MM-DD>-problem-statement.user.md`, or does it require the problem to be reframed?
 
 Score each: Pass / Flag / Fail. A single Fail does not automatically eliminate an option — use judgment based on all four together. Document the rationale for each score; do not leave scores unexplained.
 
@@ -86,7 +86,7 @@ Assemble all outputs into the decision record format below. Save to the output p
 
 ## Output Contract
 
-**Path:** `docs/business-os/strategy/<BIZ>/solution-select.user.md`
+**Path:** `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-decision.user.md`
 
 **Format:**
 
@@ -131,7 +131,7 @@ Before saving, verify:
 - [ ] Shortlist contains 1–2 options (not zero unless kill gate applies, not more than 2)
 - [ ] Kill gate applied if no viable options remain
 - [ ] `## Decision` section contains explicit GO/NO-GO verdict
-- [ ] Shortlisted options align with the problem statement from `problem-statement.user.md`
+- [ ] Shortlisted options align with the problem statement from `<YYYY-MM-DD>-problem-statement.user.md`
 - [ ] Artifact saved to correct path before completion message
 
 ## Red Flags
@@ -148,4 +148,4 @@ Invalid outputs — do not emit:
 
 **Upstream (ASSESSMENT-02):** Reads `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-profile-results.user.md` from the operator's deep research run via `/lp-do-assessment-02-solution-profiling`.
 
-**Downstream (ASSESSMENT-04):** `/lp-do-assessment-04-candidate-names --business <BIZ>` reads `solution-select.user.md` to scope naming research to the shortlisted option(s). The naming skill should be run with the shortlisted option names provided as context.
+**Downstream (ASSESSMENT-04):** `/lp-do-assessment-04-candidate-names --business <BIZ>` reads `<YYYY-MM-DD>-solution-decision.user.md` to scope naming research to the shortlisted option(s). The naming skill should be run with the shortlisted option names provided as context.

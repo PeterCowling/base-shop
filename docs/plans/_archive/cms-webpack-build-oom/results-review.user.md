@@ -28,9 +28,8 @@ No standing updates: this lane produced execution evidence and plan-contract syn
 
 ## New Idea Candidates
 
-1. **Machine-class validation lane for CMS build gating**
-   - Trigger observation: OOM persists after bounded graph reduction on current 16 GB class.
-   - Suggested next action: create a focused plan to validate the same probe matrix on a higher-memory build class and compare pass/fail + memory envelope before additional config churn.
-2. **Deterministic CMS build-memory telemetry contract**
-   - Trigger observation: current probes rely on log tails and `/usr/bin/time` snapshots without structured longitudinal tracking.
-   - Suggested next action: add a repeatable artifact schema for memory/elapsed metrics per run (same variant set), then wire it into ongoing mitigation cycles for clearer trend detection.
+- None.
+
+## Standing Expansion
+
+- No standing expansion: this lane produced execution evidence and plan-contract synchronization only. The probe variant set (`default`, `8GB`, `8GB+cpus=1`) and raw logs are plan-local artifacts; no reusable schema or reference document was produced that warrants registration outside this archive.

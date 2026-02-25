@@ -4,7 +4,11 @@
 # Version bumps require downstream alignment check (VC-02).
 # See also: docs/business-os/startup-loop/two-layer-model.md (Layer A standing intelligence / Layer B implementation loop contract)
 
-spec_version: "3.12.0"
+spec_version: "3.13.0"
+# v3.13.0: Removed deprecated prioritize and BOS sync stages.
+#          Post-merge flow is now S4 -> WEBSITE -> DO.
+#          S4 now represents the baseline merge + manifest commit boundary.
+#          Decision: 2026-02-25.
 # v3.12.0: Promoted SIGNALS naming to canonical stage IDs in loop-spec.
 #          Renamed legacy IDs:
 #            S3  -> SIGNALS-01 (Forecast)
@@ -21,7 +25,7 @@ spec_version: "3.12.0"
 # v3.11.0: Replaced legacy S6 with WEBSITE container and named sub-stages:
 #          WEBSITE-01 (L1 first build framework, launch-surface=pre-website)
 #          WEBSITE-02 (site-upgrade synthesis, launch-surface=website-live).
-#          Added explicit post-S5B sequence S5B -> WEBSITE -> DO with child-to-container
+#          Added explicit post-merge sequence into WEBSITE -> DO with child-to-container
 #          ordering constraints (WEBSITE-01 -> WEBSITE, WEBSITE-02 -> WEBSITE).
 #          Decision: 2026-02-23.
 # v3.10.0: Replaced broken sequential LOGISTICS→MARKET-01 and PRODUCTS→MARKET-01 chains with a
@@ -86,7 +90,7 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 #         Condition: growth_intent in intake packet references product range expansion, or operator invokes.
 #         Non-blocking at S4 — results artifact is optional (required: false).
 #         GATE-S3B-01 (Soft/advisory) dispatches /lp-other-products at S2B Done.
-#         Results artifact (human-produced after deep research tool run) consumed optionally by lp-prioritize (S5A).
+#         Results artifact (human-produced after deep research tool run) consumed optionally by S4 baseline merge.
 #         Skill: .claude/skills/lp-other-products/SKILL.md. Decision: 2026-02-20.
 # v1.7.0: Added ASSESSMENT-01–ASSESSMENT-04 conditional pre-intake stage family for problem-first operator entry.
 #         Entry routing: explicit --start-point problem|product flag (default: product).
@@ -99,7 +103,7 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 # v1.8.0: Added ASSESSMENT-06 (Current situation) as mandatory fifth stage in the conditional pre-intake family.
 #         Stage ASSESSMENT-06 follows ASSESSMENT-04 and precedes ASSESSMENT-09 intake. Skill: /lp-do-assessment-08-current-situation.
 #         Mandatory within start-point=problem path — cannot be skipped.
-#         GATE-ASSESSMENT-06-00 (Hard) fires at ASSESSMENT-06→ASSESSMENT-09 advance: blocks until current-situation.user.md exists.
+#         GATE-ASSESSMENT-06-00 (Hard) fires at ASSESSMENT-06→ASSESSMENT-09 advance: blocks until <YYYY-MM-DD>-operator-context.user.md exists.
 #         assessment-intake-sync.md extended to consume ASSESSMENT-06 as fifth precursor (Precursor-ASSESSMENT-06).
 #         Rationale: research stages ASSESSMENT-01–ASSESSMENT-04 produce externally-verified market/naming context; ASSESSMENT-06
 #         records what only the operator can know (physical product, supplier, infrastructure, pre-decisions).
@@ -113,7 +117,7 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 #         Decision: 2026-02-20.
 # v2.1.0: Added ASSESSMENT stage (ASSESSMENT-10 Brand profiling, ASSESSMENT-11 Brand Identity) between ASSESSMENT-09 and MEASURE entry.
 #         GATE-ASSESSMENT-01 (Hard) validates ASSESSMENT completeness at ASSESSMENT→MEASURE entry.
-#         Skill: /lp-do-assessment-10-brand-profiling (brand-profiling.user.md), /lp-do-assessment-11-brand-identity (brand-identity.user.md).
+#         Skill: /lp-do-assessment-10-brand-profiling (<YYYY-MM-DD>-brand-profile.user.md), /lp-do-assessment-11-brand-identity (<YYYY-MM-DD>-brand-identity-dossier.user.md).
 #         Decision: 2026-02-20.
 # v1.9.0: Renamed stage family S0/S0A-S0E → ASSESSMENT/ASSESSMENT-01..08 and updated skill references.
 #         S0A → ASSESSMENT-01, S0B → ASSESSMENT-02, S0C → ASSESSMENT-03, S0D → ASSESSMENT-04, S0E → ASSESSMENT-08, S0 → ASSESSMENT-09.
@@ -182,8 +186,8 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 #           PRODUCTS-01: seeded from ASSESSMENT-03 via intake packet section B (product definition)
 #           SELL-01: seeded from ASSESSMENT-06 via intake packet section C (channels)
 #           MARKET-01: always reads MEASURE-00 current-problem-framing.user.md
-#           MARKET-06: reads brand-profiling.user.md (updated via /lp-brand-refresh)
-#           SELL-03: reads brand-profiling.user.md (updated via /lp-brand-refresh)
+#           MARKET-06: reads <YYYY-MM-DD>-brand-profile.user.md (updated via /lp-brand-refresh)
+#           SELL-03: reads <YYYY-MM-DD>-brand-profile.user.md (updated via /lp-brand-refresh)
 #         Brand refresh path: standalone /lp-brand-refresh skill (outside ASSESSMENT sequence).
 #         Decision: 2026-02-22.
 
@@ -258,8 +262,8 @@ stages:
     # Mandatory within the problem-start path — cannot be skipped.
     # Identifies ≥2 launch channels with cost/effort estimates and ICP fit rationale.
     # Reads ASSESSMENT-01 (ICP) and ASSESSMENT-03 (selected product) as inputs.
-    # Artifact: distribution-profiling.user.md. ASSESSMENT GATE checks ≥2 channels present.
-    bos_sync: "Persist distribution-profiling.user.md under docs/business-os/strategy/<BIZ>/"
+    # Artifact: <YYYY-MM-DD>-launch-distribution-plan.user.md. ASSESSMENT GATE checks ≥2 channels present.
+    bos_sync: "Persist <YYYY-MM-DD>-launch-distribution-plan.user.md under docs/business-os/strategy/<BIZ>/"
 
   - id: ASSESSMENT-07
     name: Measurement profiling
@@ -271,8 +275,8 @@ stages:
     # Mandatory within the problem-start path — cannot be skipped.
     # Defines tracking method, ≥2 key metrics, success thresholds, and data collection feasibility.
     # Reads ASSESSMENT-06 (channels) as input.
-    # Artifact: measurement-profiling.user.md. ASSESSMENT GATE checks tracking method + ≥2 metrics present.
-    bos_sync: "Persist measurement-profiling.user.md under docs/business-os/strategy/<BIZ>/"
+    # Artifact: <YYYY-MM-DD>-measurement-profile.user.md. ASSESSMENT GATE checks tracking method + ≥2 metrics present.
+    bos_sync: "Persist <YYYY-MM-DD>-measurement-profile.user.md under docs/business-os/strategy/<BIZ>/"
 
   - id: ASSESSMENT-08
     name: Current situation
@@ -285,9 +289,9 @@ stages:
     # Captures what the operator directly knows: physical product, supplier, infrastructure,
     # commercial architecture, and pre-locked channel decisions.
     # All externally-researched context lives in ASSESSMENT-01–ASSESSMENT-07; ASSESSMENT-08 is operator-direct only.
-    # GATE-A08-00 (Hard) blocks ASSESSMENT-08→ASSESSMENT-09 advance until current-situation.user.md exists with Status: Active.
+    # GATE-A08-00 (Hard) blocks ASSESSMENT-08→ASSESSMENT-09 advance until <YYYY-MM-DD>-operator-context.user.md exists with Status: Active.
     # assessment-intake-sync.md reads this as Precursor-ASSESSMENT-08.
-    bos_sync: "Persist current-situation.user.md under docs/business-os/strategy/<BIZ>/"
+    bos_sync: "Persist <YYYY-MM-DD>-operator-context.user.md under docs/business-os/strategy/<BIZ>/"
 
   - id: ASSESSMENT-09
     name: Intake
@@ -295,20 +299,20 @@ stages:
     prompt_required: true
     prompt_template: intake-normalizer-prompt.md
     conditional: false
-    bos_sync: "Write/refresh docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md"
+    bos_sync: "Write/refresh docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md"
     # ASSESSMENT-09 contract: validate required ASSESSMENT precursors and then sync the intake packet.
     # GATE-ASSESSMENT-00 (Hard) is evaluated at ASSESSMENT-09→ASSESSMENT-10 advance.
     # Validates required ASSESSMENT precursor artifacts (ASSESSMENT-01,02,03,04,06,07,08) are present and complete.
-    # Checks: ≥2 channels in distribution-profiling.user.md (ASSESSMENT-06),
-    #         tracking method + ≥2 metrics in measurement-profiling.user.md (ASSESSMENT-07),
-    #         current-situation.user.md Active (ASSESSMENT-08).
+    # Checks: ≥2 channels in <YYYY-MM-DD>-launch-distribution-plan.user.md (ASSESSMENT-06),
+    #         tracking method + ≥2 metrics in <YYYY-MM-DD>-measurement-profile.user.md (ASSESSMENT-07),
+    #         <YYYY-MM-DD>-operator-context.user.md Active (ASSESSMENT-08).
     # Naming shortlist (ASSESSMENT-04) is validated as part of GATE-ASSESSMENT-00.
-    # Output contract: docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md.
+    # Output contract: docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md.
 
   # ── ASSESSMENT stage family ────────────────────────────────────────────────────
   # Runs for all start-points (conditional: false). Inserted between ASSESSMENT-09 and MEASURE entry.
   # ASSESSMENT→MEASURE-01 is guarded by GATE-ASSESSMENT-01 (Hard): both ASSESSMENT-10 and ASSESSMENT-11
-  # outputs must exist and meet quality minimum (brand-profiling.user.md + brand-identity.user.md).
+  # outputs must exist and meet quality minimum (<YYYY-MM-DD>-brand-profile.user.md + <YYYY-MM-DD>-brand-identity-dossier.user.md).
 
   - id: ASSESSMENT
     name: Assessment
@@ -320,8 +324,8 @@ stages:
     ordering_constraints:
       - ASSESSMENT-10 → ASSESSMENT-11
       - ASSESSMENT-11 → ASSESSMENT
-    # ASSESSMENT-10: brand-profiling.user.md (skill: /lp-do-assessment-10-brand-profiling)
-    # ASSESSMENT-11: brand-identity.user.md (skill: /lp-do-assessment-11-brand-identity)
+    # ASSESSMENT-10: <YYYY-MM-DD>-brand-profile.user.md (skill: /lp-do-assessment-10-brand-profiling)
+    # ASSESSMENT-11: <YYYY-MM-DD>-brand-identity-dossier.user.md (skill: /lp-do-assessment-11-brand-identity)
     # GATE-ASSESSMENT-01 (Hard) at ASSESSMENT→MEASURE-01 enforces completeness + quality of both outputs.
 
   - id: ASSESSMENT-10
@@ -330,7 +334,7 @@ stages:
     prompt_required: true
     prompt_template: brand-01-brand-profiling-prompt.md
     conditional: false
-    bos_sync: "Persist brand-profiling.user.md under docs/business-os/strategy/<BIZ>/"
+    bos_sync: "Persist <YYYY-MM-DD>-brand-profile.user.md under docs/business-os/strategy/<BIZ>/"
 
   - id: ASSESSMENT-11
     name: Brand identity
@@ -338,7 +342,7 @@ stages:
     prompt_required: true
     prompt_template: brand-02-brand-identity-prompt.md
     conditional: false
-    bos_sync: "Persist brand-identity.user.md under docs/business-os/strategy/<BIZ>/"
+    bos_sync: "Persist <YYYY-MM-DD>-brand-identity-dossier.user.md under docs/business-os/strategy/<BIZ>/"
 
   # ── IDEAS standing pipeline ────────────────────────────────────────────────────────────────────────
   # IDEAS remains in the canonical stages list for stage-ID compatibility, but is not sequential.
@@ -810,7 +814,7 @@ stages:
     inputs:
       - source: brand_profiling
         artifact_key: brand_strategy
-        artifact_path: "docs/business-os/strategy/<BIZ>/brand-profiling.user.md"
+        artifact_path: "docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md"
         required: false
         seed_only: false
         # Read on every MARKET-06 run — positioning and voice informed by current brand strategy.
@@ -889,7 +893,7 @@ stages:
     # Trigger: growth_intent field in intake packet references product range expansion.
     # Pass condition: lp-other-products-prompt.md exists under docs/business-os/strategy/<BIZ>/
     # Results (human-produced after deep research tool run): docs/business-os/strategy/<BIZ>/lp-other-products-results.user.md
-    # Results consumed optionally by S5A (lp-prioritize) as additional go-item candidates.
+    # Results consumed optionally by S4 baseline merge as additional candidate context.
 
   - id: SELL
     name: Sell
@@ -984,7 +988,7 @@ stages:
     inputs:
       - source: brand_profiling
         artifact_key: brand_strategy
-        artifact_path: "docs/business-os/strategy/<BIZ>/brand-profiling.user.md"
+        artifact_path: "docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md"
         required: false
         seed_only: false
         # Read on every SELL-03 run — outreach tone and content framing informed by current brand strategy.
@@ -1087,24 +1091,7 @@ stages:
         artifact_key: sell_pack
         required: false
         # sell-pack consumed optionally at S4 — absent until SELL-02..07 stages run.
-    bos_sync: "Write candidate baseline snapshot + draft manifest (uncommitted)"
-
-  - id: S5A
-    name: Prioritize
-    skill: /lp-prioritize
-    prompt_required: true
-    prompt_template: prioritization-scorer-prompt.md
-    conditional: false
-    side_effects: none
-    bos_sync: none
-
-  - id: S5B
-    name: BOS sync
-    skill: /lp-bos-sync
-    prompt_required: false
-    conditional: false
-    side_effects: guarded
-    bos_sync: "Persist cards/stage-docs to D1 via /api/agent/*; commit manifest pointer"
+    bos_sync: "Write merged baseline snapshot + commit manifest pointer as current"
 
   - id: WEBSITE
     name: Website
@@ -1140,10 +1127,13 @@ stages:
     condition: "launch-surface = website-live"
     bos_sync: "Update docs/business-os/site-upgrades/<BIZ>/latest.user.md pointer"
 
-  # Build completion gate: results-review.user.md must exist before DO stage can be marked complete.
-  # The ## Standing Updates section must name at least one standing pack (market/sell/product/logistics)
-  # or include an explicit "No standing updates: <reason>" entry.
-  # See: docs/business-os/startup-loop/loop-output-contracts.md#results-review
+  # Build completion soft gate: DO can complete and archive without results-review.user.md.
+  # /lp-do-build must run deterministic reflection debt emission:
+  # - validate results-review minimum payload (Observed Outcomes, Standing Updates,
+  #   New Idea Candidates, Standing Expansion decision)
+  # - if missing, upsert docs/plans/<feature-slug>/reflection-debt.user.md
+  #   with key reflection-debt:{build_id}, lane IMPROVE, SLA 7 days.
+  # See: docs/business-os/startup-loop/loop-output-contracts.md#soft-gate-artifact-reflection-debtusermd
   - id: DO
     name: Do
     processes:
@@ -1242,9 +1232,7 @@ ordering:
     - [SIGNALS-01, S4]   # fan-in: S4 waits for SIGNALS-01
     - [PRODUCT-02, S4]   # fan-in: S4 waits for PRODUCT-02 if running (non-blocking — optional artifact)
     - [SELL-01, S4]      # fan-in: S4 waits for SELL-01 strategy outputs
-    - [S4, S5A]
-    - [S5A, S5B]
-    - [S5B, WEBSITE]
+    - [S4, WEBSITE]
     - [WEBSITE, DO]
     - [DO, S9B]
     - [S9B, SIGNALS]

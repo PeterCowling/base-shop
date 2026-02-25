@@ -137,9 +137,9 @@ Pass condition:
 2. Validation was run against HEAD/PET/BRIK sample artifacts in this task cycle.
 
 Sample set used (2026-02-19):
-- `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`
-- `docs/business-os/startup-baselines/PET-intake-packet.user.md`
-- `docs/business-os/startup-baselines/BRIK-intake-packet.user.md`
+- `docs/business-os/startup-baselines/HEAD-<YYYY-MM-DD>assessment-intake-packet.user.md`
+- `docs/business-os/startup-baselines/PET-<YYYY-MM-DD>assessment-intake-packet.user.md`
+- `docs/business-os/startup-baselines/BRIK-<YYYY-MM-DD>assessment-intake-packet.user.md`
 
 Observed baseline:
 - Canonical lowercase schema keys are missing in all three sample artifacts.

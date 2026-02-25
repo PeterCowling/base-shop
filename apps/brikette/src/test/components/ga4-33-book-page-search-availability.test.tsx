@@ -52,18 +52,23 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
     jest.useRealTimers();
   });
 
-  // TC-01: Click Update with valid dates fires search_availability.
+  // TC-01: Changing dates fires search_availability after debounce.
   // Payload must not include raw date strings (nights/lead_time_days only).
-  it("TC-01: click Update with valid dates fires search_availability with nights/lead_time_days/pax", () => {
+  it("TC-01: changing dates fires search_availability after debounce with nights/lead_time_days/pax", () => {
     render(<BookPageContent lang="en" />);
 
     const checkinInput = screen.getByLabelText(/check in/i);
     const checkoutInput = screen.getByLabelText(/check out/i);
-    const updateBtn = screen.getByRole("button", { name: /update/i });
 
     fireEvent.change(checkinInput, { target: { value: "2026-06-10" } });
     fireEvent.change(checkoutInput, { target: { value: "2026-06-12" } });
-    fireEvent.click(updateBtn);
+
+    // No fire yet — debounce pending
+    expect(
+      gtagMock.mock.calls.filter((args: unknown[]) => args[1] === "search_availability"),
+    ).toHaveLength(0);
+
+    jest.advanceTimersByTime(600);
 
     const searchCall = gtagMock.mock.calls.find(
       (args: unknown[]) => args[0] === "event" && args[1] === "search_availability",
@@ -81,10 +86,12 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
     expect(payload).not.toHaveProperty("checkout");
   });
 
-  // TC-02: Mount with no URL params does not fire search_availability.
+  // TC-02: Mount with no URL params does not fire search_availability (even after debounce).
   it("TC-02: mount with no URL params does not fire search_availability", () => {
     mockSearchParams = new URLSearchParams();
     render(<BookPageContent lang="en" />);
+
+    jest.advanceTimersByTime(1000);
 
     const searchCalls = gtagMock.mock.calls.filter(
       (args: unknown[]) => args[0] === "event" && args[1] === "search_availability",

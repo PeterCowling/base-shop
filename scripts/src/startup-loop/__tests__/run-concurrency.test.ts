@@ -128,7 +128,7 @@ describe("checkRunConcurrency", () => {
     await writeRunState(
       runsDir,
       "SFS-TEST-20260213-1200",
-      makeState({ business: "TEST", active_stage: "S5B" }),
+      makeState({ business: "TEST", active_stage: "S4" }),
       "active",
     );
 

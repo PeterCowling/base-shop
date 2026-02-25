@@ -16,7 +16,7 @@ Gates read `Status` from this table — not from individual file frontmatters.
 
 | Artifact | Path | Status | Last-reviewed |
 |----------|------|--------|---------------|
-| Brand Dossier | `docs/business-os/strategy/HEAD/brand-identity.user.md` | Draft | 2026-02-20 |
+| Brand Dossier | `docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md` | Draft | 2026-02-20 |
 | Competitive Positioning | `docs/business-os/strategy/HEAD/competitive-positioning.user.md` | — | — |
 | Messaging Hierarchy | `docs/business-os/strategy/HEAD/messaging-hierarchy.user.md` | Draft | 2026-02-20 |
 | Creative Voice Brief | `docs/business-os/strategy/HEAD/creative-voice-brief.user.md` | — | — |
@@ -40,9 +40,9 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | S3 | Forecast | `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md` | Active | 2026-02-20 |
 | S6B | Channels | `docs/business-os/startup-baselines/HEAD-channels.md` | Active | 2026-02-20 |
 | S3B | Adjacent product + naming research | `docs/business-os/strategy/HEAD/lp-other-products-results.user.md` | Active | 2026-02-20 |
-| S5A | Prioritization | `docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md` | Active | 2026-02-20 |
+| S4 | Prioritization | `docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md` | Active | 2026-02-20 |
 
-> S3B refresh completed on 20 Feb 2026 and replayed into canonical S2B/S3/S6B/S5A artifacts. Top-3 build candidates: Activity organiser pouch, School-ready multi-pack headbands, Clip-on identity badges.
+> S3B refresh completed on 20 Feb 2026 and replayed into canonical S2B/S3/S6B/S4 artifacts. Top-3 build candidates: Activity organiser pouch, School-ready multi-pack headbands, Clip-on identity badges.
 
 **Status vocabulary:**
 - `—` Not yet created

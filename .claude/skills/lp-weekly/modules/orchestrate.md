@@ -129,7 +129,7 @@ Run Section H checks and monthly deep-audit trigger check; link signal-review an
 
 Check Brand Dossier `Last-reviewed` date from `docs/business-os/strategy/<BIZ>/index.user.md`. If >90 days ago: emit soft warning (non-blocking):
 ```
-GATE-BD-08: Brand Dossier not reviewed in >90 days. Consider re-running BRAND-DR-01/02 and updating brand-dossier.user.md.
+GATE-BD-08: Brand Dossier not reviewed in >90 days. Consider re-running BRAND-DR-01/02 and updating <YYYY-MM-DD>-brand-identity-dossier.user.md.
 ```
 
 This check is inherited from `cmd-advance.md` GATE-BD-08 and must NOT be altered or suppressed here.

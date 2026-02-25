@@ -3,7 +3,7 @@
 Shared template for per-business brand language documents. These live at:
 
 ```
-docs/business-os/strategy/<BIZ>/brand-dossier.user.md
+docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md
 ```
 
 Each operating business should have one. The `/lp-design-spec` skill reads these as input and writes back stable new patterns as output.

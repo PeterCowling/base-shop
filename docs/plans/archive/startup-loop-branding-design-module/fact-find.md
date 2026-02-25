@@ -405,7 +405,7 @@ or concurrently with RG-01/02/03 readiness checks when brand-identity.user.md is
 | Target customer hypothesis | Strategy plan §audience, or operator interview | Yes |
 | Existing app UI (if any) | `apps/<app>/src/app/layout.tsx`, key pages | Only if app exists |
 | Token package (if any) | `packages/themes/<theme>/src/tokens.ts` | Only if theme exists |
-| BRIK brand-identity (reference example) | `docs/business-os/strategy/BRIK/brand-identity.user.md` | Yes (reference) |
+| BRIK brand-identity (reference example) | `docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md` | Yes (reference) |
 
 **Method:** Run `/lp-brand-bootstrap <BIZ>`. Fills template from strategy plan + demographic
 hypothesis + existing UI/token evidence. Unknown fields marked `TBD — {rationale}`.
@@ -1087,7 +1087,7 @@ skill files). No market spend required.
   - 5 prompt template files exist at `docs/business-os/workflow-prompts/_templates/brand-DR-0{1-5}.md`
   - `startup-loop-workflow.user.md` §4 includes BD-1..BD-6 rows; §11 retired or redirected
   - `docs/business-os/strategy/BRIK/prime-app-design-branding.user.md` exists, Status: Active
-  - `docs/business-os/strategy/BRIK/brand-identity.user.md` exists (renamed from brand-language), Status: Active, no hand-copied token values
+  - `docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md` exists (renamed from brand-language), Status: Active, no hand-copied token values
   - GATE-BD-01 present in startup-loop SKILL.md advance rules
   - loop-spec.yaml S2B produced_keys includes `messaging_hierarchy`
   - brand-identity.user.md exists for HEAD, PET, HBAG (Status: Draft minimum)

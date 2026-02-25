@@ -6,8 +6,9 @@ description: Trial-mode idea orchestrator. Ingests standing-artifact delta event
 # lp-do-ideas Trial Orchestrator
 
 `/lp-do-ideas` generates actionable dispatch packets from standing-artifact deltas.
-It runs in `mode: trial` and queues packets for operator review before any downstream
-skill is invoked.
+It runs in `mode: trial`. When a dispatch resolves to `fact_find_ready`, the agent
+**immediately invokes `/lp-do-fact-find` without stopping for operator approval**.
+`briefing_ready` dispatches are enqueued and presented for review only.
 
 ## Operating Mode
 
@@ -59,7 +60,7 @@ If unclear, ask one question: "Has this already been written into a doc, or is t
 - Domain — `MARKET | SELL | PRODUCTS | LOGISTICS | STRATEGY` (infer from area anchor; confirm only if genuinely ambiguous)
 - Routing — is this something to investigate and plan, or just understand? Apply routing intelligence to decide; only ask the user if the description is genuinely ambiguous between planning and understanding
 
-### Step 4 — Apply routing intelligence and emit
+### Step 4 — Apply routing intelligence, emit, and auto-execute
 
 Apply routing intelligence (see below) to determine `status` and `recommended_route`. Emit a schema-valid dispatch packet and enqueue it in `queue-state.json`.
 
@@ -68,6 +69,11 @@ For operator idea packets:
 - `artifact_id`, `before_sha`, `after_sha` — omit
 - `evidence_refs` — include operator-stated rationale using the format: `"operator-stated: <one-line summary>"`
 - All other required fields apply as normal
+
+**Auto-execution policy:**
+- `fact_find_ready` → immediately invoke `/lp-do-fact-find` with the dispatch packet. Do NOT stop for user approval. Set `queue_state: "auto_executed"` after invocation.
+- `briefing_ready` → enqueue (`queue_state: "enqueued"`) and present a summary to the operator. Wait for confirmation before invoking `/lp-do-briefing`.
+- `logged_no_action` → record and report. No downstream invocation.
 
 ## Required Inputs (Structured Invocation)
 
@@ -86,6 +92,22 @@ Optional but needed for classification:
 | `before_sha` | Content hash before delta (null = first registration → logged_no_action) |
 | `changed_sections` | List of section headings that changed (used for routing assessment) |
 | `domain` | `MARKET \| SELL \| PRODUCTS \| LOGISTICS \| STRATEGY \| BOS` |
+
+## Cutover Phase Behavior (Source-Trigger Migration)
+
+Runtime admission behavior is phase-aware:
+
+| Phase | Intent | Admission behavior |
+|---|---|---|
+| `P0` | Legacy baseline | Existing admission logic remains, with fail-closed unknown-artifact suppression when registry is present |
+| `P1` | Shadow | Same admission policy as P0 plus shadow telemetry (`root_event_count`, `candidate_count`, `admitted_count`, suppression pre-codes) |
+| `P2` | Source-primary | Requires standing registry; only source-class + `trigger_policy=eligible` artifacts auto-admit; pack-only deltas do not admit unless manual override |
+| `P3` | Pack-disabled steady state | Same as P2, with aggregate packs operationally non-trigger by default |
+
+Safety rules:
+- Unknown artifacts never auto-admit.
+- Projection/read-model artifacts (`projection_summary`) do not auto-admit.
+- `trigger_policy: never` cannot be bypassed by manual override.
 
 ## Routing Intelligence
 

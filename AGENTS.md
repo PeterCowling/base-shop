@@ -119,8 +119,8 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 
 **Feature workflow**: `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build` → `/lp-do-replan` (when tasks are below execution threshold, blocked, or scope shifts)
 
-**Idea generation**: `/idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-do-fact-find docs. Feeds into the feature workflow above.
-- Full pipeline: `/idea-generate` → `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build`
+**Idea generation**: `/lp-do-idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-do-fact-find docs. Feeds into the feature workflow above.
+- Full pipeline: `/lp-do-idea-generate` → `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build`
 - Spec: `.claude/skills/idea-generate/SKILL.md`
 - Stances: `--stance=improve-data` (default) or `--stance=grow-business` (activates traction mode for market-facing L1-L2 businesses)
 - Shared personas: `.claude/skills/_shared/cabinet/` (filter, prioritizer, dossier template, lens files)
@@ -146,12 +146,11 @@ All skills listed here use the same name in both Claude Code and Codex. The cano
 - `draft-whatsapp`: Draft WhatsApp-ready business messages with concise structure, clear CTA, and compliance-aware guardrails. (file: `.claude/skills/draft-whatsapp/SKILL.md`)
 - `tools-ui-frontend-design`: Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. (file: `.claude/skills/frontend-design/SKILL.md`)
 - `guide-translate`: Propagate updated EN guide content to all locales using parallel translation. Requires EN audit to be clean first. (file: `.claude/skills/guide-translate/SKILL.md`)
-- `idea-forecast`: Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research. (file: `.claude/skills/idea-forecast/SKILL.md`)
-- `idea-generate`: Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking. (file: `.claude/skills/idea-generate/SKILL.md`)
+- `lp-do-idea-forecast`: Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research. (file: `.claude/skills/idea-forecast/SKILL.md`)
+- `lp-do-idea-generate`: Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking. (file: `.claude/skills/idea-generate/SKILL.md`)
 - `idea-scan`: Scan docs/business-os/ for changes and create business-relevant ideas from findings. (file: `.claude/skills/idea-scan/SKILL.md`)
-- `lp-assessment-bootstrap`: Bootstrap a brand-dossier.user.md for a business entering the startup loop. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec. (file: `.claude/skills/lp-assessment-bootstrap/SKILL.md`)
+- `lp-assessment-bootstrap`: Bootstrap a brand-identity-dossier.user.md for a business entering the startup loop. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec. (file: `.claude/skills/lp-assessment-bootstrap/SKILL.md`)
 - `lp-baseline-merge`: Join startup-loop fan-out outputs (S2B + S3 + S6B) into a single baseline snapshot and draft manifest. (file: `.claude/skills/lp-baseline-merge/SKILL.md`)
-- `lp-bos-sync`: S5B BOS sync stage worker. Persists prioritized baseline outputs to Business OS (D1) via agent API, then emits S5B stage-result.json. (file: `.claude/skills/lp-bos-sync/SKILL.md`)
 - `lp-channels`: Startup channel strategy + GTM skill (S6B). Analyzes channel-customer fit, selects 2-3 launch channels with rationale, and produces a 30-day GTM timeline. (file: `.claude/skills/lp-channels/SKILL.md`)
 - `lp-design-qa`: Audit a built UI against the design spec and design system for visual consistency, accessibility, responsive behavior, and token compliance. (file: `.claude/skills/lp-design-qa/SKILL.md`)
 - `lp-design-spec`: Translate a feature requirement into a concrete frontend design specification mapped to the design system, theme tokens, and per-business brand language. (file: `.claude/skills/lp-design-spec/SKILL.md`)
@@ -182,14 +181,14 @@ All skills listed here use the same name in both Claude Code and Codex. The cano
 - `lp-offer`: Startup offer design skill (S2B). Consolidates ICP, positioning, pricing, and offer design into one artifact with 6 sections. (file: `.claude/skills/lp-offer/SKILL.md`)
 - `lp-onboarding-audit`: Audit an app's onboarding flow against the "Onboarding Done Right" checklist. Produces a planning-ready brief. (file: `.claude/skills/lp-onboarding-audit/SKILL.md`)
 - `lp-other-products`: Produce a deep research prompt for adjacent product range exploration covering customer JTBD, product candidate set, prioritisation rubric, and 90-day MVP plan. (file: `.claude/skills/lp-other-products/SKILL.md`)
-- `lp-prioritize`: S5 startup go-item ranking — score and select top 2-3 items to pursue. (file: `.claude/skills/lp-prioritize/SKILL.md`)
+- `lp-prioritize`: Startup go-item ranking — score and select top 2-3 items to pursue. (file: `.claude/skills/lp-prioritize/SKILL.md`)
 - `lp-readiness`: Startup preflight gate (S1). Lightweight readiness check before entering the offer-building stage. (file: `.claude/skills/lp-readiness/SKILL.md`)
 - `lp-refactor`: Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition. (file: `.claude/skills/lp-refactor/SKILL.md`)
 - `lp-seo`: S6B phased SEO strategy skill — keyword research, content clustering, SERP analysis, technical audit, and snippet optimization for any business. (file: `.claude/skills/lp-seo/SKILL.md`)
 - `lp-do-sequence`: Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata. (file: `.claude/skills/lp-do-sequence/SKILL.md`)
 - `lp-signal-review`: Weekly signal strengthening review for startup loop runs. Audits a run against ten structural signal-strengthening principles and emits a Signal Review artifact with ranked Finding Briefs. (file: `.claude/skills/lp-signal-review/SKILL.md`)
 - `lp-site-upgrade`: Build website-upgrade strategy in three layers: platform capability baseline, per-business upgrade brief, and lp-do-fact-find handoff packet. (file: `.claude/skills/lp-site-upgrade/SKILL.md`)
-- `lp-visual`: Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). (file: `.claude/skills/lp-visual/SKILL.md`)
+- `tools-bos-design-page`: Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). (file: `.claude/skills/tools-bos-design-page/SKILL.md`)
 - `lp-weekly`: S10 weekly orchestration wrapper. Coordinates the full weekly decision, audit/CI, measurement compilation, and experiment lane flows into one deterministic sequence. (file: `.claude/skills/lp-weekly/SKILL.md`)
 - `meta-loop-efficiency`: Weekly startup-loop skill efficiency audit. Scans lp-* + startup-loop + draft-outreach skills with deterministic heuristics and emits a ranked opportunity artifact. (file: `.claude/skills/meta-loop-efficiency/SKILL.md`)
 - `meta-reflect`: Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only — closes the feedback loop directly by updating existing files. (file: `.claude/skills/meta-reflect/SKILL.md`)
@@ -205,10 +204,10 @@ All skills listed here use the same name in both Claude Code and Codex. The cano
 When the user's request involves building or modifying UI:
 1. Load `tools-ui-frontend-design` for aesthetic direction grounded in the design system
 2. Reference `lp-design-system` for token quick-ref during implementation
-3. After significant UI work, suggest `/lp-visual` to document the feature visually
+3. After significant UI work, suggest `/tools-bos-design-page` to document the feature visually
 
 When the user's request involves documentation or diagrams:
-1. Load `lp-visual` for diagram/chart creation
+1. Load `tools-bos-design-page` for diagram/chart creation
 2. If the doc is for a specific business, derive palette from the brand dossier (see `references/css-variables.md` Brand-Derived Palettes)
 3. Reference `lp-design-system` for consistent color language
 

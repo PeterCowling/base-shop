@@ -51,7 +51,7 @@ Runs GATE-BD-07 pre-flight for the business unit without producing a feature des
 | Source | Path | Purpose |
 |--------|------|---------|
 | Business registry | `docs/business-os/strategy/businesses.json` | Resolve app → business unit → theme package |
-| Brand language | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | Per-business visual identity, tone, audience |
+| Brand language | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` | Per-business visual identity, tone, audience |
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | Concrete token values for the target app |
 | Base tokens | `packages/themes/base/src/tokens.ts` | Default token system (overridden by theme) |
 | Design system handbook | `docs/design-system-handbook.md` | Component catalog, atomic design layers |
@@ -62,7 +62,7 @@ Runs GATE-BD-07 pre-flight for the business unit without producing a feature des
 ### App-to-Business Resolution
 
 Use `businesses.json` to resolve which business owns the target app, then locate:
-1. **Brand language doc**: `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
+1. **Brand language doc**: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md`
 2. **Theme package**: `packages/themes/<theme>/` (mapped from app name)
 3. **Strategy context**: `docs/business-os/strategy/<BIZ>/plan.user.md`
 
@@ -156,7 +156,7 @@ Define:
 
 **Before writing the design spec**, verify the Brand Dossier is Active:
 
-1. **Check** `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` exists AND frontmatter `Status: Active`.
+1. **Check** `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` exists AND frontmatter `Status: Active`.
 2. **Check** the strategy index `docs/business-os/strategy/<BIZ>/index.user.md` — Brand Dossier row must show `Active`.
 
 **Gate result:**
@@ -165,7 +165,7 @@ Define:
 - **FAIL** (missing or Status != Active): **STOP immediately.**
   - Error: `GATE-BD-07: Brand Dossier must be Active before running design spec.`
   - Remediation: `Run /lp-do-assessment-11-brand-identity --business <BIZ> to create the Brand Dossier, then have the operator promote it to Active before re-running /lp-design-spec.`
-  - Do NOT create or populate brand-dossier.user.md from within this skill. That is the job of `/lp-assessment-bootstrap`.
+  - Do NOT create or populate <YYYY-MM-DD>-brand-identity-dossier.user.md from within this skill. That is the job of `/lp-assessment-bootstrap`.
 
 **Note:** GATE-BD-01 at S1 advance requires brand-dossier at Draft minimum. GATE-BD-07 here requires Active. The gap (Draft → Active) is the operator's responsibility before running lp-design-spec.
 
@@ -193,7 +193,7 @@ Feature-Slug: {slug}
 Business-Unit: {BIZ}
 Target-App: {app-name}
 Theme-Package: {theme-package}
-Brand-Language: docs/business-os/strategy/{BIZ}/brand-dossier.user.md
+Brand-Language: docs/business-os/strategy/{BIZ}/<YYYY-MM-DD>-brand-identity-dossier.user.md
 Created: {DATE}
 Updated: {DATE}
 Owner: {operator}
@@ -285,7 +285,7 @@ PageLayout
 
 ## Prerequisites for Plan
 
-- [ ] Brand language doc exists: `docs/business-os/strategy/{BIZ}/brand-dossier.user.md`
+- [ ] Brand language doc exists: `docs/business-os/strategy/{BIZ}/<YYYY-MM-DD>-brand-identity-dossier.user.md`
 - [ ] Theme package exists: `packages/themes/{theme}/`
 - [ ] All required tokens exist (see "New tokens required" above)
 - [ ] All reused components verified in component catalog
@@ -302,7 +302,7 @@ PageLayout
 - [ ] Layout specifies all three breakpoints (mobile, tablet, desktop)
 - [ ] Dark mode addressed for every token binding
 - [ ] Accessibility section is non-empty with concrete ARIA/focus/contrast items
-- [ ] Brand Dossier Active (GATE-BD-07 pre-flight passed: Status == Active in brand-dossier.user.md)
+- [ ] Brand Dossier Active (GATE-BD-07 pre-flight passed: Status == Active in <YYYY-MM-DD>-brand-identity-dossier.user.md)
 - [ ] Token bindings match actual values in theme package (not invented)
 - [ ] Prerequisites list is complete — no hidden assumptions for `/lp-do-plan`
 
@@ -335,7 +335,7 @@ During build, the design spec serves as a reference:
 
 ### With Brand Language Docs
 
-**Reads from:** `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
+**Reads from:** `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md`
 **Writes back to:** Same file, when stable new patterns emerge (Step 8).
 
 This creates a virtuous cycle: each design spec strengthens the brand language, which makes future specs faster and more consistent.
@@ -363,7 +363,7 @@ This creates a virtuous cycle: each design spec strengthens the brand language, 
 
 > **GATE-BD-07:** Brand Dossier must be Active before running design spec.
 >
-> **Current Status:** `docs/business-os/strategy/{BIZ}/brand-dossier.user.md` is missing or Status ≠ Active.
+> **Current Status:** `docs/business-os/strategy/{BIZ}/<YYYY-MM-DD>-brand-identity-dossier.user.md` is missing or Status ≠ Active.
 >
 > **Remediation:** Run `/lp-do-assessment-11-brand-identity --business {BIZ}` to create the Brand Dossier, then promote to Active before re-running `/lp-design-spec`.
 

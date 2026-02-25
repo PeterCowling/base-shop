@@ -42,7 +42,7 @@ Paid spend authorization is evaluated separately at SELL-08 after strategy outpu
 
 Optional (enhances quality):
 - Competitor channel analysis, budget/resource constraints, existing audiences, market research
-- `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` — channel voice and tone alignment
+- `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` — channel voice and tone alignment
 - `docs/business-os/strategy/<BIZ>/messaging-hierarchy.user.md` — channel-specific messaging
 
 ## Workflow

@@ -210,36 +210,64 @@ Before running critique, verify the brief is not empty in critical areas. A brie
 
 **Mixed:** apply both code and business checks above.
 
-## Phase 7a: Automatic Critique
+## Phase 7a: Critique Loop (1–3 rounds, mandatory)
 
-After persisting the fact-find artifact and completing the evidence gap review, automatically invoke `/lp-do-critique` on the written document.
+After persisting the fact-find artifact and completing the evidence gap review, run the critique loop.
 
-### When to run
+### Pre-critique factcheck gate
 
-- Run after Phase 7 evidence gap review is complete and written into the artifact.
+Before Round 1, evaluate whether `/lp-do-factcheck` should run on the artifact. Run it if the fact-find contains any of:
+- Specific file paths or module names stated as facts
+- Function names, API signatures, or interface claims
+- Test coverage assertions (e.g. "X is tested", "coverage is Y%")
+- Architecture descriptions referencing actual code structure
 
-### Execution
+Skip it if the artifact is purely business/hypothesis-based with no codebase claims.
 
-1. Invoke `/lp-do-critique` with the path to the persisted fact-find: `docs/plans/<feature-slug>/fact-find.md`.
-2. Use default mode (`full` scope, autofix enabled).
-3. Let the critique skill apply its autofix phase directly to the fact-find document.
+### Iteration rules
 
-### Post-critique gate
+Run `/lp-do-critique` at least once and up to three times. The number of rounds is driven by severity of findings:
 
-- If critique verdict is `not credible`: evaluate whether the issues are recoverable.
-  - Recoverable (fixable with more evidence or scope adjustment): set `Status: Needs-input`, surface the top Critical/Major issues to the user, and stop.
-  - Structural (Critical/Major issues cannot be resolved without fundamentally changing the scope): set `Status: Infeasible`, write `## Kill Rationale`, and stop.
-- If critique verdict is `partially credible` (score 3.0–3.5): set `Status: Needs-input`, surface the top-ranked findings to the user, and stop. A fact-find must reach a `credible` verdict (score ≥4.0) before auto-handoff to planning. Extend the investigation or decompose the complexity to address the findings, then re-run `/lp-do-critique`.
-- If critique verdict is `credible` (score ≥4.0): record the critique round number and overall score in the completion message and proceed to completion.
+| After round | Condition to run next round |
+|---|---|
+| Round 1 | Any Critical finding, OR 2+ Major findings |
+| Round 2 | Any Critical finding still present |
+| Round 3 | Final round — always the last regardless of outcome |
+
+Before each round after the first: revise the artifact to address prior-round findings, then re-run.
+
+**Round 1 (mandatory)**
+1. Invoke `/lp-do-critique docs/plans/<feature-slug>/fact-find.md` (default mode: CRITIQUE + AUTOFIX).
+2. Record: round number, score, finding counts by severity (Critical / Major / Minor).
+3. Apply the round 2 condition from the table above.
+
+**Round 2 (conditional — any Critical, or 2+ Major in Round 1)**
+1. Revise the fact-find to address Round 1 findings.
+2. Re-invoke `/lp-do-critique`.
+3. Record results. Apply the round 3 condition.
+
+**Round 3 (conditional — any Critical still present after Round 2)**
+1. Revise the fact-find to address Round 2 findings.
+2. Re-invoke `/lp-do-critique`.
+3. Record results. This is the final round — do not loop further.
+
+### Post-loop gate
+
+Evaluate the verdict from the final completed round:
+
+- **`credible` (score ≥ 4.0), no Critical findings remaining:** record round count and score, proceed to completion.
+- **`partially credible` OR Critical findings remain after the final round:** set `Status: Needs-input`, surface the top-ranked unresolved findings, stop. Do not route to planning.
+- **`not credible` (score < 3.0) after the final round:** evaluate recoverability:
+  - Recoverable (more evidence or scope adjustment could resolve it): set `Status: Needs-input`, surface findings, stop.
+  - Structural (cannot be resolved without changing scope): set `Status: Infeasible`, write `## Kill Rationale`, stop.
 
 ### Idempotency
 
-- The critique creates/updates `docs/plans/<feature-slug>/critique-history.md`. This is expected and does not require separate user approval.
-- If the fact-find is re-run (scope restart), the critique will append a new round to the existing ledger.
+The critique creates/updates `docs/plans/<feature-slug>/critique-history.md`. Multiple rounds append to the same ledger. Re-running the fact-find appends new rounds — this is expected and does not require user approval.
 
 ## Completion Message
 
-> Fact-find complete. Brief saved to `docs/plans/<feature-slug>/fact-find.md`. Status: `<Ready-for-planning | Needs-input | Infeasible>`. Primary execution skill: `<skill>`. Evidence gap review complete. Critique round <N>: verdict `<credible | partially credible | not credible>`, score <X.X>/5.0.
+> Fact-find complete. Brief saved to `docs/plans/<feature-slug>/fact-find.md`. Status: `<Ready-for-planning | Needs-input | Infeasible>`. Primary execution skill: `<skill>`. Evidence gap review complete. Critique: `<N>` round(s), final verdict `<credible | partially credible | not credible>`, score `<X.X>`/5.0.
 
 Status-dependent next action (execute immediately, do not wait for user):
 
@@ -256,6 +284,7 @@ Status-dependent next action (execute immediately, do not wait for user):
 - [ ] Output generated from shared template file (not inline template)
 - [ ] Outcome A evidence gap review completed and recorded
 - [ ] Minimum evidence floor gate passed (or `Status: Needs-input` set if floor failed)
-- [ ] Outcome A automatic critique run and verdict recorded (≥4.0 required for auto-handoff)
+- [ ] lp-do-factcheck run if fact-find contains codebase claims (file paths, function names, coverage assertions)
+- [ ] Critique loop run (1–3 rounds): round count, final verdict, and score recorded (≥4.0 required for auto-handoff)
 - [ ] Status classified as `Ready-for-planning`, `Needs-input`, or `Infeasible` (not left ambiguous)
 - [ ] If `Ready-for-planning`: `/lp-do-plan <feature-slug> --auto` automatically invoked

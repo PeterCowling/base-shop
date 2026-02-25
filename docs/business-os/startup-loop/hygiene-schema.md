@@ -137,7 +137,7 @@ Last-updated: 2026-02-22
 **Purpose:** Identifies the primary evidence source that underpins the document's content. Enables rapid verification without reading the entire doc.
 
 ```yaml
-Evidence: docs/business-os/strategy/HEAD/current-situation.user.md
+Evidence: docs/business-os/strategy/HEAD/<YYYY-MM-DD>-operator-context.user.md
 ```
 
 ```yaml
@@ -237,7 +237,7 @@ Review-trigger: After each completed build cycle touching product scope or distr
 Confidence: 0.7
 Confidence-reason: Built from ASSESSMENT-01 through ASSESSMENT-08 outputs; pricing assumptions unvalidated with end customers.
 Last-updated: 2026-02-22
-Evidence: docs/business-os/strategy/HEAD/current-situation.user.md
+Evidence: docs/business-os/strategy/HEAD/<YYYY-MM-DD>-operator-context.user.md
 Open-questions:
   - Has the primary customer persona been validated with direct interviews?
 Change-log:

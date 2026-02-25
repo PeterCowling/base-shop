@@ -307,7 +307,7 @@ Every plan update must include:
 - **After `/lp-do-ideas` dispatch acceptance:** Update Opportunities section with newly accepted ideas and routed actions
 - **After execution reaches completion:** Trigger reflection and plan update
 - **After IDEAS-02 backlog update:** Aggregate accepted proposal outcomes into plan updates
-- **After `/idea-generate`:** Sweep reads plans and flags gaps/staleness — use this skill to act on sweep recommendations for plan bootstrapping or updates
+- **After `/lp-do-idea-generate`:** Sweep reads plans and flags gaps/staleness — use this skill to act on sweep recommendations for plan bootstrapping or updates
 - **Before planning sessions:** Review plan to inform priority decisions
 
 ## Example Session

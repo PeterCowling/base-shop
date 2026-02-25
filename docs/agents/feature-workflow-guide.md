@@ -84,7 +84,6 @@ DO workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`) are **fil
 ### What is automated via BOS API
 
 - `/idea-generate`: creates prioritized ideas/cards and seeds top-K `lp-do-fact-find` stage docs.
-- `/lp-bos-sync` (S5B): persists prioritized baseline outputs to Business OS.
 
 All DO workflow artifacts are tracked through the `docs/plans/<feature-slug>/` filesystem namespace.
 

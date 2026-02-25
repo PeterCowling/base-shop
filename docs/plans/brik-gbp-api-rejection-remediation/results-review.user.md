@@ -19,7 +19,7 @@ Pending — check back after TASK-01 sign-off and first monthly maintenance sess
 
 ## New Idea Candidates
 
-- **Octorate → Google Hotel Free Listing activation**: Not a new idea — VC-02 plan-level gate explicitly requires this. Trigger action: run `/lp-do-plan brikette-google-hotel-free-listing` within 5 business days of TASK-01 sign-off. | Trigger observation: fact-find confirmed Octorate Metasearch active (2026-02-18), GBP verified, both blockers resolved | Suggested next action: create plan
+- None.
 
 ## Standing Expansion
 

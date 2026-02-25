@@ -108,7 +108,7 @@ Chosen approach: **Option B**.
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-19)
-- **Affects:** `docs/business-os/startup-loop/artifact-registry.md`, `docs/business-os/startup-loop-output-registry.user.html`, `[readonly] docs/business-os/strategy/HEAD/plan.user.md`, `[readonly] docs/business-os/startup-baselines/HEAD-intake-packet.user.md`
+- **Affects:** `docs/business-os/startup-loop/artifact-registry.md`, `docs/business-os/startup-loop-output-registry.user.html`, `[readonly] docs/business-os/strategy/HEAD/plan.user.md`, `[readonly] docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md`
 - **Depends on:** -
 - **Blocks:** TASK-03, TASK-05
 - **Confidence:** 85%
@@ -281,7 +281,7 @@ Chosen approach: **Option B**.
 - **Reviewer:** Operator (Peter)
 - **Approval-Evidence:** Operator confirms one contract source and no conflicting target/CAC values across referenced HEAD artifacts.
 - **Measurement-Readiness:** None: contract authority task; runtime metrics unchanged.
-- **Affects:** `docs/business-os/contracts/HEAD/outcome-contract.user.md`, `docs/business-os/strategy/HEAD/plan.user.md`, `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`, `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`
+- **Affects:** `docs/business-os/contracts/HEAD/outcome-contract.user.md`, `docs/business-os/strategy/HEAD/plan.user.md`, `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`, `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`
 - **Depends on:** TASK-01, TASK-03
 - **Blocks:** TASK-06, TASK-07
 - **Confidence:** 80%
@@ -318,7 +318,7 @@ Chosen approach: **Option B**.
   - Red: confirmed duplicate contract definitions across HEAD plan + intake + market + forecast sources.
   - Green: created `docs/business-os/contracts/HEAD/outcome-contract.user.md` as canonical source and updated:
     - `docs/business-os/strategy/HEAD/plan.user.md`
-    - `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`
+    - `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md`
     - `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`
     - `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`
     to reference canonical contract and avoid redefining contract target/CAC fields.
@@ -340,7 +340,7 @@ Chosen approach: **Option B**.
 - **Reviewer:** Operator (Peter)
 - **Approval-Evidence:** Decision artifact marked Active and referenced by intake + market-intel.
 - **Measurement-Readiness:** Decision includes evidence trigger and next-measurement requirement for week-1/week-2.
-- **Affects:** `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md`, `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`, `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2-exec-summary.user.md`
+- **Affects:** `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md`, `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`, `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2-exec-summary.user.md`
 - **Depends on:** TASK-02, TASK-05
 - **Blocks:** TASK-07
 - **Confidence:** 80%
@@ -371,7 +371,7 @@ Chosen approach: **Option B**.
 - **Build completion evidence (2026-02-19):**
   - Red: confirmed contradiction in target docs (`own-site first` in intake/forecast summary vs `marketplace-first` posture in market-intel).
   - Green: added decision artifact `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md` with state, trigger, evidence requirements, and fallback action.
-  - Green: updated `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`, and `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2-exec-summary.user.md` to reference `DEC-HEAD-CH-01` and remove unresolved primary-surface ambiguity.
+  - Green: updated `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`, and `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2-exec-summary.user.md` to reference `DEC-HEAD-CH-01` and remove unresolved primary-surface ambiguity.
   - Refactor: converted market-intel channel section to "inputs + decision authority" wording so research signals remain visible without redefining active channel posture.
   - VC-01: pass — decision artifact includes state, trigger, evidence required, and fallback action.
   - VC-02: pass — all three target docs include `DEC-HEAD-CH-01` reference.
@@ -542,14 +542,14 @@ Chosen approach: **Option B**.
   - Transfer controls from HEAD pilot (directly reusable): canonical outcome-contract path, status taxonomy enforcement, contradiction-key linting, strict T1 operator-card schema, and weekly-learning prompt contract.
   - PET migration scope (`Affects`, implementation wave target):
     - `docs/business-os/contracts/PET/outcome-contract.user.md` (new canonical contract)
-    - `docs/business-os/startup-baselines/PET-intake-packet.user.md`
+    - `docs/business-os/startup-baselines/PET-2026-02-12assessment-intake-packet.user.md`
     - `docs/business-os/strategy/PET/plan.user.md`
     - `docs/business-os/market-research/PET/2026-02-12-market-intelligence.user.md`
     - `docs/business-os/strategy/PET/decisions/DEC-PET-CH-01.user.md` (new channel-surface decision artifact)
     - `docs/business-os/startup-loop-output-registry.user.html`
   - BRIK migration scope (`Affects`, implementation wave target):
     - `docs/business-os/contracts/BRIK/outcome-contract.user.md` (new canonical contract)
-    - `docs/business-os/startup-baselines/BRIK-intake-packet.user.md`
+    - `docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md`
     - `docs/business-os/strategy/BRIK/plan.user.md`
     - `docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md`
     - `docs/business-os/strategy/BRIK/decisions/DEC-BRIK-CH-01.user.md` (new channel-surface decision artifact)

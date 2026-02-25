@@ -15,6 +15,10 @@ The Red→Green→Refactor phases are always sequential. Subagent parallelism ap
    - If artifact has ≥2 structurally independent sections (e.g. separate contract docs, independent taxonomy tables): dispatch parallel drafting subagents in a SINGLE message. Apply section diffs serially under writer lock.
    - If sections are coupled or artifact is a single unified doc: draft sequentially.
 3. **Refactor:** improve quality/operability; rerun VC checks. Always sequential — cross-section coherence required.
+4. **Post-build validation:** run `modules/build-validate.md` (Mode 3 — Document Review).
+   - Read the completed artifact linearly as its intended audience would. Check for broken references, internal inconsistencies, missing required sections, and dead calls-to-action.
+   - Task completion is gated on the document review passing. If it fails, run the Fix+Retry loop (max 3 attempts) before capturing approval evidence or marking the task done.
+   - Do not proceed to Approval and Measurement until the Mode 3 review passes or the task is marked `Blocked`.
 
 See `../../_shared/subagent-dispatch-contract.md` (Model A) for output schema, budget controls, and failure handling.
 

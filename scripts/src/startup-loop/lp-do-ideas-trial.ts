@@ -171,6 +171,197 @@ export interface ClusterCooldownStateEntry {
   cluster_fingerprint: string;
 }
 
+// ---------------------------------------------------------------------------
+// dispatch.v2 types
+// ---------------------------------------------------------------------------
+
+/**
+ * Typed intended outcome for dispatch.v2 packets.
+ *
+ * `type: "measurable"` — outcome has a quantifiable KPI target.
+ * `type: "operational"` — outcome is process/documentation work; no KPI required,
+ *   but `statement` must still be non-empty and not a template placeholder.
+ *
+ * `source: "operator"` — value was authored by the operator at Option B confirmation.
+ * `source: "auto"` — value was auto-generated (e.g. artifact_delta fallback text).
+ *   Auto-sourced values pass schema validation but are excluded from quality metrics.
+ *
+ * Changelog: introduced in dispatch.v2 to distinguish operator-authored content from
+ * auto-generated fallback strings (e.g. `"ARTIFACT changed (sha → sha)"`).
+ */
+export interface IntendedOutcomeV2 {
+  type: "measurable" | "operational";
+  statement: string;
+  source: "operator" | "auto";
+}
+
+/**
+ * dispatch.v2 packet type.
+ *
+ * Extends dispatch.v1 fields with required `why` and `intended_outcome`.
+ * `schema_version` is `"dispatch.v2"` — used by the routing adapter to
+ * discriminate v1 vs v2 packets.
+ *
+ * Migration: v1 packets are handled by a compatibility reader in the routing
+ * adapter (TASK-08) that maps `current_truth` → `why` with `source: "auto"`
+ * and sets `intended_outcome: null` to avoid fabrication.
+ *
+ * Changelog: dispatch.v2 introduced in startup-loop-why-intended-outcome-automation
+ * to address 98.9%/100% missing rates for `why`/`intended_outcome` in Build Summary.
+ */
+export interface TrialDispatchPacketV2 {
+  schema_version: "dispatch.v2";
+  dispatch_id: string;
+  mode: PacketMode;
+  business: string;
+  trigger: "artifact_delta" | "operator_idea";
+  artifact_id: string;
+  before_sha: string | null;
+  after_sha: string;
+  root_event_id: string;
+  anchor_key: string;
+  cluster_key: string;
+  cluster_fingerprint: string;
+  lineage_depth: number;
+  area_anchor: string;
+  location_anchors: [string, ...string[]];
+  provisional_deliverable_family: DeliverableFamily;
+  current_truth: string;
+  next_scope_now: string;
+  adjacent_later: string[];
+  recommended_route: RecommendedRoute;
+  status: DispatchStatus;
+  priority: "P1" | "P2" | "P3";
+  confidence: number;
+  evidence_refs: [string, ...string[]];
+  created_at: string;
+  queue_state: QueueState;
+  /**
+   * Why this work is happening now.
+   * Required, non-empty string.
+   * At Option B confirmation: operator must author a real explanation, not a generated string.
+   */
+  why: string;
+  /**
+   * The intended outcome of this build.
+   * Required object with `type`, `statement`, and `source`.
+   * `source: "auto"` values pass schema but are excluded from quality metrics.
+   */
+  intended_outcome: IntendedOutcomeV2;
+}
+
+// ---------------------------------------------------------------------------
+// dispatch.v2 validation
+// ---------------------------------------------------------------------------
+
+export interface DispatchV2ValidationResult {
+  /** True if all required fields are present and valid. */
+  valid: boolean;
+  /** Actionable error messages for schema failures. */
+  errors: string[];
+  /**
+   * Non-blocking quality warnings (e.g. `source: "auto"` values).
+   * Packet is still valid when warnings are present.
+   * These values are excluded from operator-quality metrics.
+   */
+  quality_warnings?: string[];
+}
+
+/**
+ * Validates a dispatch.v2 packet against the v2 contract.
+ *
+ * Checks:
+ * - `schema_version` must be `"dispatch.v2"`
+ * - `why` must be a non-empty, non-whitespace-only string
+ * - `intended_outcome` must be present with valid `type`, non-empty `statement`, and valid `source`
+ * - Empty `statement` strings are rejected (minLength: 1)
+ *
+ * Quality warnings (non-blocking):
+ * - `intended_outcome.source: "auto"` triggers a quality warning
+ *
+ * @param packet - The dispatch.v2 packet to validate. May contain wrong schema_version.
+ * @returns DispatchV2ValidationResult with `valid`, `errors`, and optional `quality_warnings`.
+ */
+export function validateDispatchV2(
+  packet: Partial<TrialDispatchPacketV2> & Record<string, unknown>,
+): DispatchV2ValidationResult {
+  const errors: string[] = [];
+  const quality_warnings: string[] = [];
+
+  // schema_version must be "dispatch.v2"
+  if (packet.schema_version !== "dispatch.v2") {
+    errors.push(
+      `[dispatch.v2] schema_version must be "dispatch.v2" but got "${String(packet.schema_version ?? "(missing)")}". ` +
+        `Use validateDispatchV2 only for dispatch.v2 packets.`,
+    );
+  }
+
+  // why: required, non-empty string
+  const why = packet.why;
+  if (why === undefined || why === null) {
+    errors.push(
+      `[dispatch.v2] "why" is required but missing. ` +
+        `Operator must author a real explanation of why this work is happening now. ` +
+        `Auto-generated fallback strings are permitted only with source: "auto".`,
+    );
+  } else if (typeof why !== "string" || why.trim().length === 0) {
+    errors.push(
+      `[dispatch.v2] "why" must be a non-empty string (minLength: 1 after trim). ` +
+        `Got: ${JSON.stringify(why)}.`,
+    );
+  }
+
+  // intended_outcome: required object
+  const io = packet.intended_outcome as IntendedOutcomeV2 | undefined | null;
+  if (io === undefined || io === null) {
+    errors.push(
+      `[dispatch.v2] "intended_outcome" is required but missing. ` +
+        `Must be an object with fields: type ("measurable"|"operational"), statement (string, minLength: 1), source ("operator"|"auto").`,
+    );
+  } else {
+    // type must be "measurable" or "operational"
+    if (io.type !== "measurable" && io.type !== "operational") {
+      errors.push(
+        `[dispatch.v2] "intended_outcome.type" must be "measurable" or "operational" but got "${String(io.type ?? "(missing)")}".`,
+      );
+    }
+
+    // statement must be non-empty
+    if (
+      io.statement === undefined ||
+      io.statement === null ||
+      typeof io.statement !== "string" ||
+      io.statement.trim().length === 0
+    ) {
+      errors.push(
+        `[dispatch.v2] "intended_outcome.statement" must be a non-empty string (minLength: 1). ` +
+          `Got: ${JSON.stringify(io.statement ?? "(missing)")}.`,
+      );
+    }
+
+    // source must be "operator" or "auto"
+    if (io.source !== "operator" && io.source !== "auto") {
+      errors.push(
+        `[dispatch.v2] "intended_outcome.source" must be "operator" or "auto" but got "${String(io.source ?? "(missing)")}".`,
+      );
+    }
+
+    // Quality warning: auto-sourced values are excluded from quality metrics
+    if (errors.length === 0 && io.source === "auto") {
+      quality_warnings.push(
+        `[dispatch.v2] intended_outcome.source is "auto" — this value was auto-generated and will be ` +
+          `excluded from operator-quality metrics. Operator should review and update at Option B confirmation.`,
+      );
+    }
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    quality_warnings: quality_warnings.length > 0 ? quality_warnings : undefined,
+  };
+}
+
 export interface TrialOrchestratorResult {
   ok: true;
   dispatched: TrialDispatchPacket[];

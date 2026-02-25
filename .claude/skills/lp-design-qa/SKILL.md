@@ -56,7 +56,7 @@ Audit a built UI against the design spec, design system standards, and brand lan
 |--------|------|----------|
 | Design spec | `docs/plans/<slug>-design-spec.md` | Yes (feature audit) |
 | Plan doc | `docs/plans/<slug>-plan.md` | Yes (feature audit) |
-| Brand language | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | Yes |
+| Brand language | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` | Yes |
 | Built UI components | Paths from plan's completed tasks "Affects" lists | Yes |
 | Design system handbook | `docs/design-system-handbook.md` | Yes |
 | Token reference | `packages/themes/<theme>/src/tokens.ts` | Yes |

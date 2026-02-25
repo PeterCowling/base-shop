@@ -4,6 +4,8 @@ import path from "node:path";
 
 import { load as loadYaml } from "js-yaml";
 
+import { getPlanDir, readBuildEvent } from "./lp-do-build-event-emitter.js";
+
 const SOURCE_ROOT = "docs/business-os";
 const BUSINESS_CATALOG_RELATIVE_PATH = "docs/business-os/strategy/businesses.json";
 const OUTPUT_RELATIVE_PATH = "docs/business-os/_data/build-summary.json";
@@ -543,7 +545,55 @@ function getWhatValue(candidate: SourceCandidate, content: string): string {
   return sanitizeAndCap(path.basename(candidate.stem));
 }
 
-function getWhyValue(candidate: SourceCandidate, content: string): string {
+/**
+ * Attempt to load a canonical BuildEvent from a strategy artifact's `Build-Event-Ref`
+ * frontmatter field. Returns null when the field is absent, the file is missing, or
+ * the event has `why_source: "heuristic"` (meaning no canonical contract is present).
+ *
+ * Only returns an event when `why_source` is "operator" or "auto" — i.e. when the
+ * event carries a real outcome contract, not a fallback placeholder.
+ */
+function tryLoadCanonicalBuildEvent(
+  candidate: SourceCandidate,
+  content: string,
+  repoRoot: string,
+): ReturnType<typeof readBuildEvent> {
+  if (candidate.sourcePath.endsWith(".user.html")) {
+    // HTML strategy artifacts do not carry frontmatter — skip canonical check.
+    return null;
+  }
+
+  const parsed = parseFrontmatter(content);
+  const buildEventRef = parsed.frontmatter["Build-Event-Ref"];
+  if (typeof buildEventRef !== "string" || !buildEventRef.trim()) {
+    return null;
+  }
+
+  // Build-Event-Ref is a repo-relative path to build-event.json.
+  // Resolve the plan directory from the ref path.
+  const refPath = buildEventRef.trim();
+  const planDir = path.join(repoRoot, path.dirname(refPath));
+
+  const event = readBuildEvent(planDir);
+  if (!event) {
+    return null;
+  }
+
+  // Only use canonical event when it carries real content (not heuristic fallback).
+  if (event.why_source === "heuristic") {
+    return null;
+  }
+
+  return event;
+}
+
+function getWhyValue(candidate: SourceCandidate, content: string, repoRoot: string): string {
+  // TC-05-C: prefer canonical build-event.json when Build-Event-Ref present and non-heuristic
+  const canonicalEvent = tryLoadCanonicalBuildEvent(candidate, content, repoRoot);
+  if (canonicalEvent) {
+    return sanitizeAndCap(canonicalEvent.why);
+  }
+
   if (candidate.sourcePath.endsWith(".user.html")) {
     return findHtmlSection(content, WHY_KEYS) ?? MISSING_VALUE;
   }
@@ -557,7 +607,13 @@ function getWhyValue(candidate: SourceCandidate, content: string): string {
   return extractFrontmatterField(parsed.frontmatter, WHY_KEYS) ?? MISSING_VALUE;
 }
 
-function getIntendedValue(candidate: SourceCandidate, content: string): string {
+function getIntendedValue(candidate: SourceCandidate, content: string, repoRoot: string): string {
+  // TC-05-C: prefer canonical build-event.json when Build-Event-Ref present and non-heuristic
+  const canonicalEvent = tryLoadCanonicalBuildEvent(candidate, content, repoRoot);
+  if (canonicalEvent?.intended_outcome) {
+    return sanitizeAndCap(canonicalEvent.intended_outcome.statement);
+  }
+
   if (candidate.sourcePath.endsWith(".user.html")) {
     return findHtmlSection(content, INTENDED_KEYS) ?? MISSING_VALUE;
   }
@@ -637,8 +693,8 @@ export function generateBuildSummaryRows(
       business: candidate.business,
       domain: classifyDomain(candidate.sourcePath),
       what: getWhatValue(candidate, content),
-      why: getWhyValue(candidate, content),
-      intended: getIntendedValue(candidate, content),
+      why: getWhyValue(candidate, content, repoRoot),
+      intended: getIntendedValue(candidate, content, repoRoot),
       links: [{ label: "Open", href: `/${candidate.sourcePath.replace(/^\.\//, "")}` }],
       sourcePath: candidate.sourcePath,
     } satisfies BuildSummaryRow;

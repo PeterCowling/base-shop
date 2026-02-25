@@ -30,7 +30,7 @@ Hostel-positano.com has 4,093 URLs across 18 locales with 100% of sampled guide 
 - [x] TASK-03: Fix Article.datePublished wiring at both call sites — Complete (2026-02-25)
 - [x] TASK-04: Initialize monitoring cadence — baseline run and monitoring-log — Complete (2026-02-25)
 - [x] TASK-05: Investigate Google Indexing API eligibility for guide pages — Complete (2026-02-25)
-- [x] TASK-06: Build Sitemaps API re-ping script — Complete (2026-02-25)
+- [x] TASK-06: Build Sitemaps API re-ping script — Superseded (2026-02-25): Indexing API confirmed eligible; sitemaps re-ping is redundant for recrawl signaling. Script built but deprioritised.
 
 ## Goals
 - Build a reusable GSC URL Inspection batch script that mirrors the `ga4-run-report.ts` JWT auth pattern
@@ -89,7 +89,7 @@ Hostel-positano.com has 4,093 URLs across 18 locales with 100% of sampled guide 
 | TASK-03 | SPIKE | Fix Article.datePublished wiring | 90% | S | Complete (2026-02-25) | - | - |
 | TASK-04 | INVESTIGATE | Initialize monitoring cadence (baseline run) | 95% | S | Complete (2026-02-25) | TASK-01, TASK-02 | TASK-06 |
 | TASK-05 | INVESTIGATE | Google Indexing API eligibility | 85% | S | Complete (2026-02-25) | - | TASK-06 |
-| TASK-06 | SPIKE | Build Sitemaps API re-ping script | 90% | S | Complete (2026-02-25) | TASK-04, TASK-05 | - |
+| TASK-06 | SPIKE | Build Sitemaps API re-ping script | 90% | S | Superseded (2026-02-25) | TASK-04, TASK-05 | - |
 
 > **Build-gate note (AGENTS.md line 230):** TASK-02, TASK-03, and TASK-06 carry <80% confidence and have been reclassified from IMPLEMENT to SPIKE. SPIKE tasks carry the same ≥80% gate. Each must reach 80% before `/lp-do-build` proceeds past that task — see per-task "What would make this ≥90%" sections and the scout obligations noted below. TASK-05 dependency on TASK-01 removed: the Indexing API submission itself does not require TASK-01; only the 48h verification check does (handled within TASK-05's own execution plan).
 
@@ -469,6 +469,7 @@ Hostel-positano.com has 4,093 URLs across 18 locales with 100% of sampled guide 
 - 2026-02-25 (critique R2): TASK-06 now also depends on TASK-05 verdict — if Indexing API is eligible, TASK-06 is deferred to Phase B as redundant. TASK-05 dependency replaces the parenthetical note in planning validation.
 - 2026-02-25 (critique R2): TASK-05 dependency on TASK-01 removed from Depends-on — Indexing API submission can start in Wave 1; only the 48h verification check requires TASK-01, which is handled within TASK-05's own execution plan.
 - 2026-02-25 (critique R2): TASK-02, TASK-03, TASK-06 reclassified from IMPLEMENT to SPIKE — all three are below the ≥80% confidence gate for IMPLEMENT/SPIKE tasks (AGENTS.md line 230). TASK-03 reclassification also reflects architecture gap: prop threading requires HeadSection interface extension, not a 2-call-site patch.
+- 2026-02-25 (post-build): TASK-06 superseded — Indexing API confirmed eligible for Article-schema travel guide pages (all 5 test URLs returned 200 OK). Sitemaps re-ping is redundant for recrawl signaling; Indexing API is the stronger mechanism. `gsc-sitemap-ping.ts` script is built and available but deprioritised. Use the Indexing API submission pattern from `task-05-indexing-api-investigation.md` as the canonical post-deploy recrawl call.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

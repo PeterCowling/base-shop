@@ -89,10 +89,10 @@ Run the S1B Measure prompt before advancing to S2.
 **Files scanned**:
 - `docs/business-os/startup-baselines/HEAD-offer.md`
 - `docs/business-os/startup-baselines/HEAD-channels.md`
-- `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`
+- `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md`
 - `docs/business-os/strategy/HEAD/index.user.md`
 - `docs/business-os/strategy/HEAD/plan.user.md`
-- `docs/business-os/strategy/HEAD/current-situation.user.md`
+- `docs/business-os/strategy/HEAD/2026-02-20-operator-context.user.md`
 
 **Strategy docs found**: 4 (plan, index, s0e-operator-evidence, intake-packet)
 
@@ -104,6 +104,6 @@ Run the S1B Measure prompt before advancing to S2.
 - S3 Forecast: Active (2026-02-20)
 - S6B Channels: Active (2026-02-20)
 - S3B Adjacent products: Active (2026-02-20)
-- S5A Prioritization: Active (2026-02-20)
+- S4 Prioritization: Active (2026-02-20)
 
 S1 readiness was not previously documented. This artifact creates the formal S1 record for gate traceability.

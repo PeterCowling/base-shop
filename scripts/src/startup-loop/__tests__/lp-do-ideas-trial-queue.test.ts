@@ -15,16 +15,18 @@
  * - Edge: multiple duplicate suppression paths (dispatch_id vs dedupe_key)
  */
 
+import { createHash } from "node:crypto";
+
 import { describe, expect, it } from "@jest/globals";
 
+import type { TrialDispatchPacket } from "../lp-do-ideas-trial.js";
 import {
+  type QueueEntry,
+  type TelemetryAggregates,
+  type TelemetryRecord,
   TrialQueue,
   validatePacket,
-  type QueueEntry,
-  type TelemetryRecord,
-  type TelemetryAggregates,
 } from "../lp-do-ideas-trial-queue.js";
-import type { TrialDispatchPacket } from "../lp-do-ideas-trial.js";
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -37,7 +39,7 @@ const FIXED_DATE_B = new Date("2026-02-24T12:00:05.000Z");
 function makePacket(
   overrides: Partial<TrialDispatchPacket> = {},
 ): TrialDispatchPacket {
-  return {
+  const base: TrialDispatchPacket = {
     schema_version: "dispatch.v1",
     dispatch_id: "IDEA-DISPATCH-20260224120000-0001",
     mode: "trial",
@@ -46,6 +48,13 @@ function makePacket(
     artifact_id: "HBAG-SELL-PACK",
     before_sha: "abc1234",
     after_sha: "def5678",
+    root_event_id: "HBAG-SELL-PACK:def5678",
+    anchor_key: "channel-strategy",
+    cluster_key: "hbag:unknown:channel-strategy:HBAG-SELL-PACK:def5678",
+    cluster_fingerprint: createHash("sha256")
+      .update("HBAG-SELL-PACK:def5678\nchannel-strategy\ndocs/business-os/strategy/HBAG/sell-pack.user.md")
+      .digest("hex"),
+    lineage_depth: 0,
     area_anchor: "channel-strategy",
     location_anchors: ["docs/business-os/strategy/HBAG/sell-pack.user.md"],
     provisional_deliverable_family: "business-artifact",
@@ -59,7 +68,35 @@ function makePacket(
     evidence_refs: ["docs/business-os/strategy/HBAG/sell-pack.user.md"],
     created_at: FIXED_DATE_A.toISOString(),
     queue_state: "enqueued",
-    ...overrides,
+  };
+
+  const merged = { ...base, ...overrides } as TrialDispatchPacket;
+  const rootEventId =
+    overrides.root_event_id ??
+    `${merged.artifact_id}:${merged.after_sha}`;
+  const anchorKey = overrides.anchor_key ?? merged.area_anchor;
+  const clusterKey =
+    overrides.cluster_key ??
+    `${merged.business.toLowerCase()}:unknown:${anchorKey}:${rootEventId}`;
+  const clusterFingerprint =
+    overrides.cluster_fingerprint ??
+    createHash("sha256")
+      .update(
+        [
+          rootEventId,
+          anchorKey,
+          [...merged.evidence_refs].sort((a, b) => a.localeCompare(b)).join("|"),
+        ].join("\n"),
+      )
+      .digest("hex");
+
+  return {
+    ...merged,
+    root_event_id: rootEventId,
+    anchor_key: anchorKey,
+    cluster_key: clusterKey,
+    cluster_fingerprint: clusterFingerprint,
+    lineage_depth: overrides.lineage_depth ?? merged.lineage_depth ?? 0,
   };
 }
 
@@ -205,6 +242,356 @@ describe("TC-01: Replay idempotency — same dispatch enqueued twice", () => {
 
     // Only one entry in the queue (the canonical one)
     expect(queue.size()).toBe(1);
+  });
+
+  it("dispatch_id collision with distinct dedupe keys remints and admits second dispatch", () => {
+    const queue = makeQueue();
+    const collidingDispatchId = "IDEA-DISPATCH-20260224120000-0001";
+    const first = makePacket({
+      dispatch_id: collidingDispatchId,
+      before_sha: "abc1000",
+      after_sha: "def1000",
+    });
+    const second = makePacket({
+      dispatch_id: collidingDispatchId,
+      before_sha: "abc2000",
+      after_sha: "def2000",
+    });
+
+    const r1 = queue.enqueue(first);
+    const r2 = queue.enqueue(second);
+
+    expect(r1.ok).toBe(true);
+    expect(r2.ok).toBe(true);
+    if (!r1.ok || !r2.ok) {
+      return;
+    }
+
+    expect(r2.entry.dispatch_id).not.toBe(collidingDispatchId);
+    expect(r2.entry.dispatch_id).toMatch(/^IDEA-DISPATCH-[0-9]{14}-[0-9]{4}$/);
+    expect(queue.size()).toBe(2);
+    expect(queue.getTelemetry().map((record) => record.kind)).toEqual([
+      "enqueued",
+      "enqueued",
+    ]);
+  });
+});
+
+describe("TC-06: cluster identity + dual-key dedupe transition", () => {
+  it("TC-06-01: same root+anchor+fingerprint admits once", () => {
+    const queue = makeQueue();
+    const first = makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0101",
+      root_event_id: "HBAG-SELL-PACK:def9000",
+      anchor_key: "channel-strategy",
+      cluster_key: "hbag:sell:channel-strategy:HBAG-SELL-PACK:def9000",
+      cluster_fingerprint: "cfp-001",
+      before_sha: "abc9000",
+      after_sha: "def9000",
+    });
+    const duplicate = makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0102",
+      root_event_id: "HBAG-SELL-PACK:def9000",
+      anchor_key: "channel-strategy",
+      cluster_key: "hbag:sell:channel-strategy:HBAG-SELL-PACK:def9000",
+      cluster_fingerprint: "cfp-001",
+      before_sha: "abc9001",
+      after_sha: "def9001",
+    });
+
+    const r1 = queue.enqueue(first);
+    const r2 = queue.enqueue(duplicate);
+
+    expect(r1.ok).toBe(true);
+    expect(r2.ok).toBe(false);
+    if (!r2.ok) {
+      expect(r2.reason).toContain("v2");
+    }
+    expect(queue.size()).toBe(1);
+  });
+
+  it("TC-06-02: fingerprint change admits new cluster revision", () => {
+    const queue = makeQueue();
+    const first = makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0201",
+      root_event_id: "HBAG-SELL-PACK:def9010",
+      anchor_key: "channel-strategy",
+      cluster_key: "hbag:sell:channel-strategy:HBAG-SELL-PACK:def9010",
+      cluster_fingerprint: "cfp-010",
+      before_sha: "abc9010",
+      after_sha: "def9010",
+    });
+    const revision = makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0202",
+      root_event_id: "HBAG-SELL-PACK:def9010",
+      anchor_key: "channel-strategy",
+      cluster_key: "hbag:sell:channel-strategy:HBAG-SELL-PACK:def9010",
+      cluster_fingerprint: "cfp-011",
+      before_sha: "abc9011",
+      after_sha: "def9011",
+    });
+
+    expect(queue.enqueue(first).ok).toBe(true);
+    const second = queue.enqueue(revision);
+    expect(second.ok).toBe(true);
+    expect(queue.size()).toBe(2);
+  });
+
+  it("same-origin v2 duplicate attaches new evidence to canonical entry", () => {
+    const queue = makeQueue();
+    const first = makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0251",
+      root_event_id: "HBAG-SELL-PACK:def9025",
+      anchor_key: "channel-strategy",
+      cluster_key: "hbag:sell:channel-strategy:HBAG-SELL-PACK:def9025",
+      cluster_fingerprint: "cfp-025",
+      before_sha: "abc9025",
+      after_sha: "def9025",
+      evidence_refs: ["docs/a.md"],
+      location_anchors: ["docs/a.md"],
+    });
+    const duplicate = makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0252",
+      root_event_id: "HBAG-SELL-PACK:def9025",
+      anchor_key: "channel-strategy",
+      cluster_key: "hbag:sell:channel-strategy:HBAG-SELL-PACK:def9025",
+      cluster_fingerprint: "cfp-025",
+      before_sha: "abc9026",
+      after_sha: "def9026",
+      evidence_refs: ["docs/a.md", "docs/new.md"],
+      location_anchors: ["docs/a.md", "docs/new-location.md"],
+    });
+
+    expect(queue.enqueue(first).ok).toBe(true);
+    const second = queue.enqueue(duplicate);
+
+    expect(second.ok).toBe(false);
+    if (!second.ok) {
+      expect(second.reason).toContain("attached_evidence=1");
+      expect(second.reason).toContain("attached_locations=1");
+    }
+
+    const canonical = queue.getEntry(first.dispatch_id);
+    expect(canonical?.packet?.evidence_refs).toEqual(["docs/a.md", "docs/new.md"]);
+    expect(canonical?.packet?.location_anchors).toEqual([
+      "docs/a.md",
+      "docs/new-location.md",
+    ]);
+  });
+
+  it("TC-06-03: evidence order variance does not alter fallback v2 dedupe", () => {
+    const queue = makeQueue();
+    const first = makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0301",
+      artifact_id: "",
+      before_sha: null,
+      after_sha: "",
+      root_event_id: "ROOT-ALPHA",
+      anchor_key: "",
+      cluster_key: "",
+      cluster_fingerprint: "",
+      evidence_refs: ["docs/b.md", "docs/a.md"],
+    });
+    const reordered = makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0302",
+      artifact_id: "",
+      before_sha: null,
+      after_sha: "",
+      root_event_id: "ROOT-ALPHA",
+      anchor_key: "",
+      cluster_key: "",
+      cluster_fingerprint: "",
+      evidence_refs: ["docs/a.md", "docs/b.md"],
+    });
+
+    expect(queue.enqueue(first).ok).toBe(true);
+    const second = queue.enqueue(reordered);
+    expect(second.ok).toBe(false);
+    if (!second.ok) {
+      expect(second.reason).toContain("v2");
+    }
+    expect(queue.size()).toBe(1);
+  });
+
+  it("TC-06-04: legacy v1 dedupe suppresses when v2 keys differ", () => {
+    const queue = makeQueue();
+    const first = makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0401",
+      artifact_id: "HBAG-SELL-PACK",
+      before_sha: "abc9040",
+      after_sha: "def9040",
+      cluster_key: "hbag:sell:channel-strategy:ROOT-9040-A",
+      cluster_fingerprint: "cfp-040a",
+    });
+    const second = makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0402",
+      artifact_id: "HBAG-SELL-PACK",
+      before_sha: "abc9040",
+      after_sha: "def9040",
+      cluster_key: "hbag:sell:channel-strategy:ROOT-9040-B",
+      cluster_fingerprint: "cfp-040b",
+    });
+
+    expect(queue.enqueue(first).ok).toBe(true);
+    const duplicate = queue.enqueue(second);
+    expect(duplicate.ok).toBe(false);
+    if (!duplicate.ok) {
+      expect(duplicate.reason).toContain("v1");
+    }
+    expect(queue.size()).toBe(1);
+  });
+});
+
+describe("TC-08: lane scheduler and governance", () => {
+  it("TC-08-01: scheduler never exceeds per-lane WIP caps", () => {
+    const queue = makeQueue(FIXED_DATE_B);
+
+    queue.enqueue(
+      makePacket({
+        dispatch_id: "IDEA-DISPATCH-20260224120000-0801",
+        before_sha: "do-a-01",
+        after_sha: "do-a-02",
+        root_event_id: "HBAG-DO-01",
+        cluster_key: "hbag:sell:channel-strategy:HBAG-DO-01",
+        cluster_fingerprint: "cfp-do-01",
+      }),
+    );
+    queue.enqueue(
+      makePacket({
+        dispatch_id: "IDEA-DISPATCH-20260224120000-0802",
+        before_sha: "do-b-01",
+        after_sha: "do-b-02",
+        root_event_id: "HBAG-DO-02",
+        cluster_key: "hbag:sell:channel-strategy:HBAG-DO-02",
+        cluster_fingerprint: "cfp-do-02",
+      }),
+    );
+    queue.enqueue(
+      makePacket(
+        {
+          dispatch_id: "IDEA-DISPATCH-20260224120000-0803",
+          before_sha: "im-a-01",
+          after_sha: "im-a-02",
+          root_event_id: "HBAG-IMPROVE-01",
+          cluster_key: "hbag:ops:improve:HBAG-IMPROVE-01",
+          cluster_fingerprint: "cfp-improve-01",
+          status: "briefing_ready",
+          recommended_route: "lp-do-briefing",
+          priority: "P3",
+        },
+        // explicit lane admission (needed until upstream sets lane directly)
+      ),
+      { lane: "IMPROVE" },
+    );
+    queue.enqueue(
+      makePacket({
+        dispatch_id: "IDEA-DISPATCH-20260224120000-0804",
+        before_sha: "im-b-01",
+        after_sha: "im-b-02",
+        root_event_id: "HBAG-IMPROVE-02",
+        cluster_key: "hbag:ops:improve:HBAG-IMPROVE-02",
+        cluster_fingerprint: "cfp-improve-02",
+        status: "briefing_ready",
+        recommended_route: "lp-do-briefing",
+        priority: "P3",
+      }),
+      { lane: "IMPROVE" },
+    );
+
+    const scheduled = queue.planNextDispatches({
+      wip_caps: { DO: 1, IMPROVE: 2 },
+      active_counts: { DO: 0, IMPROVE: 1 },
+      now: FIXED_DATE_B,
+    });
+
+    const doCount = scheduled.filter((entry) => entry.lane === "DO").length;
+    const improveCount = scheduled.filter((entry) => entry.lane === "IMPROVE").length;
+
+    expect(doCount).toBeLessThanOrEqual(1);
+    expect(improveCount).toBeLessThanOrEqual(1);
+    expect(scheduled.length).toBeLessThanOrEqual(2);
+  });
+
+  it("TC-08-02: aging promotes older low-priority item within lane", () => {
+    const queue = makeQueue(FIXED_DATE_B);
+    const oldTimestamp = new Date("2026-02-21T12:00:00.000Z").toISOString();
+    const newTimestamp = FIXED_DATE_B.toISOString();
+
+    queue.enqueue(
+      makePacket({
+        dispatch_id: "IDEA-DISPATCH-20260224120000-0810",
+        before_sha: "old-01",
+        after_sha: "old-02",
+        root_event_id: "HBAG-DO-OLD",
+        cluster_key: "hbag:sell:channel-strategy:HBAG-DO-OLD",
+        cluster_fingerprint: "cfp-do-old",
+        priority: "P3",
+        created_at: oldTimestamp,
+      }),
+    );
+    queue.enqueue(
+      makePacket({
+        dispatch_id: "IDEA-DISPATCH-20260224120000-0811",
+        before_sha: "new-01",
+        after_sha: "new-02",
+        root_event_id: "HBAG-DO-NEW",
+        cluster_key: "hbag:sell:channel-strategy:HBAG-DO-NEW",
+        cluster_fingerprint: "cfp-do-new",
+        priority: "P1",
+        created_at: newTimestamp,
+      }),
+    );
+
+    const scheduled = queue.planNextDispatches({
+      wip_caps: { DO: 1, IMPROVE: 0 },
+      now: FIXED_DATE_B,
+      aging_window_hours: 24,
+    });
+
+    expect(scheduled).toHaveLength(1);
+    expect(scheduled[0].dispatch_id).toBe("IDEA-DISPATCH-20260224120000-0810");
+    expect(scheduled[0].lane).toBe("DO");
+  });
+
+  it("TC-08-03: lane reassignment requires explicit override path", () => {
+    const queue = makeQueue();
+    const packet = makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0820",
+      before_sha: "lane-01",
+      after_sha: "lane-02",
+      root_event_id: "HBAG-LANE-01",
+      cluster_key: "hbag:sell:channel-strategy:HBAG-LANE-01",
+      cluster_fingerprint: "cfp-lane-01",
+    });
+
+    expect(queue.enqueue(packet).ok).toBe(true);
+    expect(queue.getEntry(packet.dispatch_id)?.lane).toBe("DO");
+
+    const noOverride = queue.reassignLane(packet.dispatch_id, "IMPROVE");
+    expect(noOverride.ok).toBe(false);
+    if (!noOverride.ok) {
+      expect(noOverride.reason).toContain("requires explicit override");
+    }
+
+    const missingReason = queue.reassignLane(packet.dispatch_id, "IMPROVE", {
+      override: true,
+    });
+    expect(missingReason.ok).toBe(false);
+    if (!missingReason.ok) {
+      expect(missingReason.reason).toContain("requires a non-empty reason");
+    }
+
+    const reassigned = queue.reassignLane(packet.dispatch_id, "IMPROVE", {
+      override: true,
+      reason: "reflection debt triage",
+    });
+    expect(reassigned.ok).toBe(true);
+    expect(queue.getEntry(packet.dispatch_id)?.lane).toBe("IMPROVE");
+
+    const telemetry = queue.getTelemetry();
+    const laneEvent = telemetry.find((entry) => entry.kind === "lane_reassigned");
+    expect(laneEvent).toBeDefined();
+    expect(laneEvent?.reason).toContain("DO->IMPROVE");
   });
 });
 

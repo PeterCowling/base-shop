@@ -24,13 +24,13 @@ Paths are relative to `run_root` (`docs/business-os/strategy/<BIZ>/`) except whe
 |---|---|---|
 | S0–S1 | Business plan (scope and constraints) | `{run_root}plan.user.md` |
 | S1 | Strategy index (Brand Dossier status tracking) | `{run_root}index.user.md` |
-| S1 | Brand dossier | `{run_root}brand-dossier.user.md` |
+| S1 | Brand dossier | `{run_root}<YYYY-MM-DD>-brand-identity-dossier.user.md` |
 | S2 | Demand evidence pack | `docs/business-os/startup-baselines/<BIZ>/demand-evidence-pack.md` |
 | S2A | Measurement verification | `{run_root}*measurement-verification*.user.md` (date-prefixed; pick most recent) |
 | S2B | Offer artifact | `{run_root}*offer*.user.md` or `{run_root}offer.user.md` (date-prefixed acceptable) |
 | S2B | Messaging hierarchy | `{run_root}messaging-hierarchy.user.md` |
 | S3 | Forecast artifact | `{run_root}*forecast*.user.md` or `{run_root}forecast.user.md` |
-| S5A | Prioritization | `{run_root}*priorit*.user.md` or `{run_root}priorities.user.md` |
+| S4 | Prioritization | `{run_root}*priorit*.user.md` or `{run_root}priorities.user.md` |
 | S6B | Channel strategy | `{run_root}*channel*.user.md` |
 | S10 | Weekly readout / KPCS memo | `{run_root}*readout*.user.md` or `{run_root}*kpcs*.user.md` (most recent) |
 
@@ -109,7 +109,7 @@ Score each principle independently. Correlated co-failures (e.g., P01 and P02 fa
 
 ### P03: Adversarial Review
 
-**Artifacts to read**: `plan.user.md`, S2B offer artifact, S6B channel strategy, S5A prioritization artifact.
+**Artifacts to read**: `plan.user.md`, S2B offer artifact, S6B channel strategy, S4 prioritization artifact.
 
 **Positive evidence**:
 - A `/lp-do-critique` call documented in the plan or stage doc for the stage where a key decision was locked
@@ -273,7 +273,7 @@ Score each principle independently. Correlated co-failures (e.g., P01 and P02 fa
 
 ### P10: Human Judgment Gates
 
-**Artifacts to read**: S2B offer artifact, S5A prioritization artifact, S6B channel strategy, S10 weekly readout, `plan.user.md`.
+**Artifacts to read**: S2B offer artifact, S4 prioritization artifact, S6B channel strategy, S10 weekly readout, `plan.user.md`.
 
 **SPECULATIVE-FINDING PROHIBITION**: Do not raise a P10 finding unless **both** of the following are true:
 1. The relevant stage artifact **exists and is readable**
@@ -287,7 +287,7 @@ If the stage artifact is missing entirely, defer to P09. Do not raise P10 specul
 3. A DECISION task in the plan with `Status: Complete` and a named decision-maker in the task body
 
 **Failure indicators** (only raised when stage artifact exists and is readable):
-- Relevant stage artifact (S2B, S5A, or S6B) exists but all three marker types are absent
+- Relevant stage artifact (S2B, S4, or S6B) exists but all three marker types are absent
 - Pricing, ICP, or channel decision recorded only in an AI-produced artifact with no human confirmation
 - DECISION task marked Complete but has no named decision-maker in the task body
 

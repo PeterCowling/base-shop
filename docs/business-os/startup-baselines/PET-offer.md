@@ -284,7 +284,7 @@ beyond the Etsy listing frame.
 > Once Pete saves the naming shortlist and confirms a name, update:
 > - This offer artifact (brand name field)
 > - `docs/plans/pets-dog-accessories-pmf/plan.md` TASK-01 (mark Complete)
-> - `docs/business-os/strategy/PET/brand-identity.user.md` (name + personality)
+> - `docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md` (name + personality)
 
 ---
 
@@ -311,7 +311,7 @@ beyond the Etsy listing frame.
 ### Internal Context
 - PET fact-find: `docs/plans/pets-dog-accessories-pmf/fact-find.md`
 - PET plan: `docs/plans/pets-dog-accessories-pmf/plan.md`
-- PET brand dossier: `docs/business-os/strategy/PET/brand-identity.user.md`
+- PET brand dossier: `docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md`
 
 ---
 

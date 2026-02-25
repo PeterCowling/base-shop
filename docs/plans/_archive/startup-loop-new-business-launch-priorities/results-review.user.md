@@ -24,10 +24,8 @@ artifact: results-review
 
 ## New Idea Candidates
 
-- Idea: add a small seed-ranking layer for mapper outputs (high/medium/low impact) before handoff to planning.
-  - Trigger observation: 1 of 4 generated seeds was not accepted in pilot review.
-  - Suggested next action: create a focused `INVESTIGATE` task to calibrate ranking heuristics with two additional historical deltas.
+- None.
 
-- Idea: add a strict profile resolver in compiler/materializer shared utility to avoid duplicate logistics-conditional logic drift.
-  - Trigger observation: logistics applicability is currently inferred in multiple places.
-  - Suggested next action: create an `IMPLEMENT` task to centralize business-profile evaluation and reuse it across compiler, materializer, and mapper.
+## Standing Expansion
+
+- `docs/business-os/startup-loop/website-iteration-throughput-report-contract.md`: register as the authoritative telemetry schema for WEBSITE iteration cycles — input/output fields, lead-time and manual-touch metrics, and gap policy format should be referenced from here whenever a new WEBSITE throughput report is generated.

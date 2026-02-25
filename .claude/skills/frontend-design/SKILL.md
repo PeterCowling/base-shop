@@ -28,7 +28,7 @@ Load these before any design work:
 | What | Where | Load when |
 |------|-------|-----------|
 | Token quick-ref | `.claude/skills/lp-design-system/SKILL.md` | Always — first thing |
-| Brand dossier | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | If it exists for the business |
+| Brand dossier | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` | If it exists for the business |
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | Before any design |
 | Base tokens | `packages/themes/base/src/tokens.ts` | Always (fallback + reference) |
 | Component catalog | `docs/design-system-handbook.md` | When composing layouts |
@@ -80,7 +80,7 @@ Read `docs/business-os/strategy/businesses.json` to find the target business for
 | PET | (no apps yet) | `packages/themes/base/` |
 | HBAG | cover-me-pretty, handbag-configurator | `packages/themes/base/` |
 
-Load the brand dossier: `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
+Load the brand dossier: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md`
 
 **If no brand dossier exists** (common for PLAT, BOS, PIPE, XA): use base theme tokens directly from `packages/themes/base/src/tokens.ts` as the design reference. No redirection needed — the design system tokens provide a complete and correct palette. Reserve `/lp-assessment-bootstrap <BIZ>` for operating businesses that will have a distinct brand identity.
 
@@ -118,7 +118,7 @@ After building, run `/lp-design-qa` to audit:
 
 ### Step 6: Document (optional)
 
-For significant features that benefit from visual documentation, suggest `/lp-visual` to create diagrams showing the component architecture, state flows, or interaction patterns.
+For significant features that benefit from visual documentation, suggest `/tools-bos-design-page` to create diagrams showing the component architecture, state flows, or interaction patterns.
 
 ## Anti-Patterns
 

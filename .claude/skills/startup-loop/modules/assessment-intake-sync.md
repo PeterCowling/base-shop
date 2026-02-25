@@ -1,6 +1,6 @@
 # assessment-intake-sync — ASSESSMENT Intake Auto-Sync
 
-Called automatically when required problem-path precursors are first all complete, or when any precursor has been updated since the last intake sync. Reads ASSESSMENT-01/02/03/04/06/07/08 artifacts (`ASSESSMENT-05` optional) and writes or refreshes `<BIZ>-intake-packet.user.md`.
+Called automatically when required problem-path precursors are first all complete, or when any precursor has been updated since the last intake sync. Reads ASSESSMENT-01/02/03/04/06/07/08 artifacts (`ASSESSMENT-05` optional) and writes or refreshes `<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md`.
 
 This module is **not operator-invoked directly** — it is called by `cmd-start.md` and `cmd-advance.md` as part of the ASSESSMENT-09 Intake contract (`GATE-ASSESSMENT-00`).
 
@@ -10,7 +10,7 @@ This module is **not operator-invoked directly** — it is called by `cmd-start.
 
 **First-run** (intake does not yet exist):
 - All seven ASSESSMENT completion artifacts are present (see Gate D in `cmd-start.md`)
-- `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md` does NOT exist
+- `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` does NOT exist
 
 **Refresh** (intake exists but a precursor has been updated):
 - Intake packet exists with `Precursor-ASSESSMENT-01/02/03/04/06/07/08:` fields in frontmatter
@@ -26,16 +26,16 @@ This module is **not operator-invoked directly** — it is called by `cmd-start.
 
 ```bash
 # Step 1 — read current precursor dates from their frontmatter (Updated preferred; Created fallback)
-grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/problem-statement.user.md
+grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md
 grep -m1 "^Updated:\|^Created:" "$(ls docs/business-os/strategy/<BIZ>/*-solution-profile-results.user.md 2>/dev/null | sort -r | head -1)"
-grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/solution-select.user.md
+grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-decision.user.md
 grep -m1 "^Updated:\|^Created:\|^Date:" "$(ls docs/business-os/strategy/<BIZ>/*-candidate-names.user.md 2>/dev/null | sort -r | head -1)"
-grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/distribution-profiling.user.md
-grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/measurement-profiling.user.md
-grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/current-situation.user.md
+grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-launch-distribution-plan.user.md
+grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-measurement-profile.user.md
+grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-operator-context.user.md
 
 # Step 2 — read stored precursor dates from intake packet frontmatter
-grep -E "^Precursor-ASSESSMENT-[0-9]+:" docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md 2>/dev/null
+grep -E "^Precursor-ASSESSMENT-[0-9]+:" docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md 2>/dev/null
 ```
 
 If any precursor date is newer than the stored value → drift detected → proceed to sync steps.
@@ -49,7 +49,7 @@ If intake packet is absent → first-run → proceed to sync steps.
 
 Read and extract from each:
 
-**ASSESSMENT-01 — `problem-statement.user.md`:**
+**ASSESSMENT-01 — `<YYYY-MM-DD>-problem-statement.user.md`:**
 - `## Core Problem` — 1-2 sentence summary for Intake Summary
 - `## Affected User Groups` — Group 1 (primary ICP with segment qualifiers), Group 2 (secondary ICP)
 - `## Problem Boundary` — In-scope / Out-of-scope (feeds product constraints)
@@ -59,7 +59,7 @@ Read and extract from each:
 - Shortlisted option name and 2-3 sentence description
 - Frontmatter `Updated`/`Created` date
 
-**ASSESSMENT-03 — `solution-select.user.md`:**
+**ASSESSMENT-03 — `<YYYY-MM-DD>-solution-decision.user.md`:**
 - Selected option name and product scope statement
 - Shortlist caveats: regulatory constraints, tether gate, naming status note
 - Frontmatter `Updated`/`Created` date
@@ -69,17 +69,17 @@ Read and extract from each:
 - Top recommended name from shortlist (for business name field and naming status note)
 - Frontmatter `Updated`/`Created`/`Date` date
 
-**ASSESSMENT-06 — `distribution-profiling.user.md`:**
+**ASSESSMENT-06 — `<YYYY-MM-DD>-launch-distribution-plan.user.md`:**
 - Section A: channels (feeds intake Section C Channel Packet), channel names, cost/effort estimates, ICP fit rationale
 - Section C: priority order of channels (feeds intake Section A execution posture)
 - Frontmatter `Updated`/`Created` date
 
-**ASSESSMENT-07 — `measurement-profiling.user.md`:**
+**ASSESSMENT-07 — `<YYYY-MM-DD>-measurement-profile.user.md`:**
 - Section A: tracking method (feeds intake Section A execution posture)
 - Section B: key metrics (feeds intake Section F Missing-Data if any have feasibility gaps)
 - Frontmatter `Updated`/`Created` date
 
-**ASSESSMENT-08 — `current-situation.user.md`:**
+**ASSESSMENT-08 — `<YYYY-MM-DD>-operator-context.user.md`:**
 - Section A: launch surface, execution posture, primary time constraint, hard stop conditions
 - Section B: Product 1 stock status, in-stock date, sellable units, compatibility matrix status
 - Section C: pricing model, price range, payment provider, returns policy
@@ -98,7 +98,7 @@ If intake exists, extract and preserve:
 
 ### Step 3: Write or refresh intake packet
 
-**Output path:** `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md`
+**Output path:** `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md`
 
 **Frontmatter fields — always set/update:**
 
@@ -111,21 +111,21 @@ Created: <preserve on refresh; set today on first-run>
 Updated: <today>
 Last-reviewed: <today>
 Owner: <preserve on refresh; set Pete on first-run if unknown>
-Precursor-ASSESSMENT-01: <date from problem-statement.user.md>
+Precursor-ASSESSMENT-01: <date from <YYYY-MM-DD>-problem-statement.user.md>
 Precursor-ASSESSMENT-02: <date from solution-profile-results>
-Precursor-ASSESSMENT-03: <date from solution-select.user.md>
+Precursor-ASSESSMENT-03: <date from <YYYY-MM-DD>-solution-decision.user.md>
 Precursor-ASSESSMENT-04: <date from candidate-names>
-Precursor-ASSESSMENT-06: <date from distribution-profiling.user.md>
-Precursor-ASSESSMENT-07: <date from measurement-profiling.user.md>
-Precursor-ASSESSMENT-08: <date from current-situation.user.md>
+Precursor-ASSESSMENT-06: <date from <YYYY-MM-DD>-launch-distribution-plan.user.md>
+Precursor-ASSESSMENT-07: <date from <YYYY-MM-DD>-measurement-profile.user.md>
+Precursor-ASSESSMENT-08: <date from <YYYY-MM-DD>-operator-context.user.md>
 Precursor-sync-date: <today>
-Source-ASSESSMENT-01: docs/business-os/strategy/<BIZ>/problem-statement.user.md
+Source-ASSESSMENT-01: docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md
 Source-ASSESSMENT-02: docs/business-os/strategy/<BIZ>/<date>-solution-profile-results.user.md
-Source-ASSESSMENT-03: docs/business-os/strategy/<BIZ>/solution-select.user.md
+Source-ASSESSMENT-03: docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-decision.user.md
 Source-ASSESSMENT-04: docs/business-os/strategy/<BIZ>/<date>-candidate-names.user.md
-Source-ASSESSMENT-06: docs/business-os/strategy/<BIZ>/distribution-profiling.user.md
-Source-ASSESSMENT-07: docs/business-os/strategy/<BIZ>/measurement-profiling.user.md
-Source-ASSESSMENT-08: docs/business-os/strategy/<BIZ>/current-situation.user.md
+Source-ASSESSMENT-06: docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-launch-distribution-plan.user.md
+Source-ASSESSMENT-07: docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-measurement-profile.user.md
+Source-ASSESSMENT-08: docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-operator-context.user.md
 ---
 ```
 
@@ -189,7 +189,7 @@ ASSESSMENT intake sync: COMPLETE
   Drift detected: [list changed precursors, or "none (first-run)"]
   Updated:        [list sections updated, e.g. "A, B, C, D (new rows added), F (new gaps added)"]
   Preserved:      [list operator-locked sections, e.g. "D (observed rows), E, G"]
-  Output:         docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md
+  Output:         docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md
 ```
 
 ---
@@ -200,7 +200,7 @@ Carry-mode classification for all intake packet fields is defined in `docs/busin
 
 These fields are `link` mode — they derive from operator direct knowledge or committed decisions, not from ASSESSMENT precursor artifacts, and must never be overwritten by automated refresh:
 
-- Section D rows tagged `observed` with evidence source that is NOT `problem-statement.user.md`, `solution-select.user.md`, `candidate-names`, `distribution-profiling.user.md`, `measurement-profiling.user.md`, or `current-situation.user.md` — **`link` mode** (discriminated by non-ASSESSMENT source tag)
+- Section D rows tagged `observed` with evidence source that is NOT `<YYYY-MM-DD>-problem-statement.user.md`, `<YYYY-MM-DD>-solution-decision.user.md`, `candidate-names`, `<YYYY-MM-DD>-launch-distribution-plan.user.md`, `<YYYY-MM-DD>-measurement-profile.user.md`, or `<YYYY-MM-DD>-operator-context.user.md` — **`link` mode** (discriminated by non-ASSESSMENT source tag)
 - All of Section E (Outcome Contract Reference) — **`link` mode** from first-run onward
 - Channel decision references (`DEC-<BIZ>-CH-*`) — **`link` mode** once a decision reference is recorded in ASSESSMENT-08 Section D; `revision` mode prior to that (see carry-mode-schema.md Section C for per-row transition rules)
 - Inventory / stock status fields (stock dates, unit counts) — always sync from ASSESSMENT-08; do not overwrite with stale values

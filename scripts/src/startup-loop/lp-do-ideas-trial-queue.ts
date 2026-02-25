@@ -8,14 +8,16 @@
  * - Pure in-memory data structure — no file I/O. CLI/persistence is the
  *   caller's responsibility.
  * - Queue state machine is monotonic (forward-only transitions).
- * - Duplicate suppression on both `dispatch_id` and
- *   (artifact_id, before_sha, after_sha) dedupe key.
+ * - Duplicate suppression on both `dispatch_id` and dual dedupe keys:
+ *   v1 legacy tuple + v2 cluster key/fingerprint.
  * - Telemetry is append-only: one TelemetryRecord per state transition.
  * - Clock is injectable for deterministic tests.
  *
  * Contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md
  * Telemetry schema: docs/business-os/startup-loop/ideas/lp-do-ideas-telemetry.schema.md
  */
+
+import { createHash } from "node:crypto";
 
 import type {
   DispatchStatus,
@@ -29,6 +31,43 @@ import type {
 
 export type { DispatchStatus, QueueState, TrialDispatchPacket };
 
+export type QueueLane = "DO" | "IMPROVE";
+
+export interface LaneWipCaps {
+  DO: number;
+  IMPROVE: number;
+}
+
+export interface LaneActiveCounts {
+  DO: number;
+  IMPROVE: number;
+}
+
+export interface LaneSchedulerOptions {
+  wip_caps: LaneWipCaps;
+  active_counts?: Partial<LaneActiveCounts>;
+  now?: Date;
+  max_dispatches?: number;
+  aging_window_hours?: number;
+}
+
+export interface ScheduledDispatch {
+  dispatch_id: string;
+  lane: QueueLane;
+  priority: "P1" | "P2" | "P3";
+  age_hours: number;
+  score: number;
+}
+
+export interface ReassignLaneOptions {
+  override?: boolean;
+  reason?: string;
+}
+
+export interface EnqueueOptions {
+  lane?: QueueLane;
+}
+
 // ---------------------------------------------------------------------------
 // Queue entry
 // ---------------------------------------------------------------------------
@@ -38,12 +77,17 @@ export interface QueueEntry {
   /** Unique dispatch identifier (primary key). */
   dispatch_id: string;
   /**
-   * Deduplication key: `"<artifact_id>:<before_sha|null>:<after_sha>"`.
-   * Used to suppress duplicate events that arrive with different dispatch_ids.
+   * Compatibility alias of dedupe_key_v2 for existing queue-state readers.
    */
   dedupe_key: string;
+  /** Legacy dedupe key: `<artifact_id>:<before_sha|null>:<after_sha>` (nullable for non-artifact events). */
+  dedupe_key_v1: string | null;
+  /** Cluster dedupe key: `<cluster_key>:<cluster_fingerprint>`. */
+  dedupe_key_v2: string;
   /** Current lifecycle state. Transitions are monotonic (forward-only). */
   queue_state: QueueState;
+  /** Logical queue lane assigned at admission (`DO` or `IMPROVE`). */
+  lane: QueueLane;
   /** The validated dispatch packet. Null only when entry is in error state due to validation failure. */
   packet: TrialDispatchPacket | null;
   /** ISO 8601 timestamp from packet.created_at (event clock). */
@@ -63,6 +107,7 @@ export type TelemetryEventKind =
   | "enqueued"
   | "advanced_to_processed"
   | "advanced_to_error"
+  | "lane_reassigned"
   | "skipped_duplicate_dispatch_id"
   | "skipped_duplicate_dedupe_key"
   | "validation_rejected";
@@ -131,6 +176,9 @@ const VALID_STATUSES: ReadonlySet<DispatchStatus> = new Set<DispatchStatus>([
   "auto_executed",
   "logged_no_action",
 ]);
+
+const LANE_SEQUENCE: readonly QueueLane[] = ["DO", "IMPROVE"];
+const DEFAULT_AGING_WINDOW_HOURS = 24;
 
 /**
  * Validates a TrialDispatchPacket against the queue's acceptance criteria.
@@ -233,6 +281,107 @@ function isTransitionAllowed(from: QueueState, to: QueueState): boolean {
   return ALLOWED_TRANSITIONS.get(from)?.has(to) ?? false;
 }
 
+function coerceNonNegativeInteger(value: number): number {
+  if (!Number.isFinite(value)) {
+    return 0;
+  }
+  return Math.max(0, Math.floor(value));
+}
+
+function computeAvailableLaneSlots(
+  wipCaps: LaneWipCaps,
+  activeCounts?: Partial<LaneActiveCounts>,
+): LaneWipCaps {
+  const doCap = coerceNonNegativeInteger(wipCaps.DO);
+  const improveCap = coerceNonNegativeInteger(wipCaps.IMPROVE);
+
+  const doActive = coerceNonNegativeInteger(activeCounts?.DO ?? 0);
+  const improveActive = coerceNonNegativeInteger(activeCounts?.IMPROVE ?? 0);
+
+  return {
+    DO: Math.max(0, doCap - doActive),
+    IMPROVE: Math.max(0, improveCap - improveActive),
+  };
+}
+
+function priorityBaseScore(priority: "P1" | "P2" | "P3"): number {
+  switch (priority) {
+    case "P1":
+      return 300;
+    case "P2":
+      return 200;
+    case "P3":
+      return 100;
+    default:
+      return 0;
+  }
+}
+
+function computeSchedulingScore(
+  priority: "P1" | "P2" | "P3",
+  ageHours: number,
+  agingWindowHours: number,
+): number {
+  const normalizedAge = Math.max(0, ageHours);
+  const agingMultiplier = normalizedAge / Math.max(1, agingWindowHours);
+  return priorityBaseScore(priority) + agingMultiplier * 100;
+}
+
+function computeAgeHours(eventTimestamp: string, nowMs: number): number {
+  const eventMs = Date.parse(eventTimestamp);
+  if (Number.isNaN(eventMs)) {
+    return 0;
+  }
+  const deltaMs = Math.max(0, nowMs - eventMs);
+  return deltaMs / (60 * 60 * 1000);
+}
+
+function normalizeLaneToken(value: string): QueueLane | null {
+  const normalized = value.trim().toUpperCase();
+  if (normalized === "DO" || normalized === "IMPROVE") {
+    return normalized;
+  }
+  return null;
+}
+
+function resolveAdmissionLane(
+  packet: TrialDispatchPacket,
+  explicitLane?: QueueLane,
+): QueueLane {
+  if (explicitLane) {
+    return explicitLane;
+  }
+
+  const rawLane = (packet as unknown as Record<string, unknown>).lane;
+  if (typeof rawLane === "string") {
+    const lane = normalizeLaneToken(rawLane);
+    if (lane) {
+      return lane;
+    }
+  }
+
+  if (packet.status === "fact_find_ready") {
+    return "DO";
+  }
+  return "IMPROVE";
+}
+
+function tryTakeNextLaneDispatch(
+  lane: QueueLane,
+  candidates: Record<QueueLane, ScheduledDispatch[]>,
+  availableSlots: LaneWipCaps,
+): ScheduledDispatch | null {
+  if (availableSlots[lane] <= 0) {
+    return null;
+  }
+  const candidate = candidates[lane].shift();
+  if (!candidate) {
+    return null;
+  }
+  availableSlots[lane] -= 1;
+  return candidate;
+}
+
 // ---------------------------------------------------------------------------
 // TrialQueue
 // ---------------------------------------------------------------------------
@@ -246,7 +395,9 @@ export interface TrialQueueOptions {
  * In-memory idempotent trial queue.
  *
  * Primary data structure: `Map<dispatch_id, QueueEntry>`.
- * Secondary deduplication index: `Set<dedupe_key>` (artifact-level).
+ * Secondary deduplication indexes:
+ * - v1 tuple index for legacy compatibility (`dedupe_key_v1`)
+ * - v2 cluster index for primary suppression (`dedupe_key_v2`)
  *
  * Usage:
  * ```typescript
@@ -259,8 +410,10 @@ export interface TrialQueueOptions {
  */
 export class TrialQueue {
   private readonly entries: Map<string, QueueEntry> = new Map();
-  /** Secondary dedup index: maps dedupe_key → dispatch_id of the canonical entry. */
-  private readonly dedupeIndex: Map<string, string> = new Map();
+  /** Secondary dedup index (legacy): dedupe_key_v1 → dispatch_id of canonical entry. */
+  private readonly dedupeIndexV1: Map<string, string> = new Map();
+  /** Secondary dedup index (cluster): dedupe_key_v2 → dispatch_id of canonical entry. */
+  private readonly dedupeIndexV2: Map<string, string> = new Map();
   private readonly telemetryLog: TelemetryRecord[] = [];
   private readonly clock: () => Date;
 
@@ -278,7 +431,7 @@ export class TrialQueue {
    * Steps:
    * 1. Validate packet structure.
    * 2. Check dispatch_id duplicate (primary dedup).
-   * 3. Check dedupe_key duplicate (secondary dedup).
+   * 3. Check dedupe keys duplicate (secondary dedup: v2 then v1).
    * 4. Create QueueEntry in `enqueued` state.
    * 5. Append telemetry record.
    *
@@ -288,6 +441,7 @@ export class TrialQueue {
    */
   enqueue(
     packet: Partial<TrialDispatchPacket>,
+    enqueueOptions: EnqueueOptions = {},
   ):
     | { ok: true; entry: QueueEntry }
     | { ok: false; reason: string; queue_state: "skipped" | "error" } {
@@ -321,45 +475,100 @@ export class TrialQueue {
     }
 
     // Safe to cast: validation confirmed required fields present
-    const validPacket = packet as TrialDispatchPacket;
-    const dispatchId = validPacket.dispatch_id;
+    let validPacket = packet as TrialDispatchPacket;
+    let dispatchId = validPacket.dispatch_id;
     const eventTimestamp = validPacket.created_at ?? processingTimestamp;
+    const lane = resolveAdmissionLane(validPacket, enqueueOptions.lane);
+    const dedupeKeyV2 = buildDedupeKeyV2FromPacket(validPacket);
+    const dedupeKeyV1 = buildDedupeKeyV1FromPacket(validPacket);
 
-    // Step 2: dispatch_id primary dedup
-    if (this.entries.has(dispatchId)) {
-      const existing = this.entries.get(dispatchId)!;
-      this.telemetryLog.push({
-        recorded_at: processingTimestamp,
-        dispatch_id: dispatchId,
-        kind: "skipped_duplicate_dispatch_id",
-        queue_state: "skipped",
-        reason: `Duplicate dispatch_id "${dispatchId}" — already in state "${existing.queue_state}"`,
-        event_timestamp: eventTimestamp,
-        processing_timestamp: processingTimestamp,
-      });
-      return {
-        ok: false,
-        reason: `Duplicate dispatch_id: ${dispatchId}`,
-        queue_state: "skipped",
+    // Step 2: dispatch_id primary dedup. If the ID collides but dedupe keys
+    // differ, remint dispatch_id to preserve the distinct dispatch.
+    const existingByDispatchId = this.entries.get(dispatchId);
+    if (existingByDispatchId) {
+      const sameV2 = existingByDispatchId.dedupe_key_v2 === dedupeKeyV2;
+      const sameV1 =
+        dedupeKeyV1 !== null &&
+        existingByDispatchId.dedupe_key_v1 === dedupeKeyV1;
+
+      if (sameV2 || sameV1) {
+        this.telemetryLog.push({
+          recorded_at: processingTimestamp,
+          dispatch_id: dispatchId,
+          kind: "skipped_duplicate_dispatch_id",
+          queue_state: "skipped",
+          reason: `Duplicate dispatch_id "${dispatchId}" — already in state "${existingByDispatchId.queue_state}"`,
+          event_timestamp: eventTimestamp,
+          processing_timestamp: processingTimestamp,
+        });
+        return {
+          ok: false,
+          reason: `Duplicate dispatch_id: ${dispatchId}`,
+          queue_state: "skipped",
+        };
+      }
+
+      const remintedDispatchId = mintCollisionDispatchId(
+        dispatchId,
+        processingTimestamp,
+        this.entries,
+      );
+      dispatchId = remintedDispatchId;
+      validPacket = {
+        ...validPacket,
+        dispatch_id: remintedDispatchId,
       };
     }
 
-    // Step 3: dedupe key secondary dedup
-    const dedupeKey = buildDedupeKeyFromPacket(validPacket);
-    if (this.dedupeIndex.has(dedupeKey)) {
-      const canonicalId = this.dedupeIndex.get(dedupeKey)!;
+    // Step 3: dedupe key secondary dedup (v2 first, then v1 compatibility)
+
+    if (this.dedupeIndexV2.has(dedupeKeyV2)) {
+      const canonicalId = this.dedupeIndexV2.get(dedupeKeyV2)!;
+      const attachment = attachEvidenceToCanonicalEntry(
+        this.entries.get(canonicalId),
+        validPacket,
+      );
+      const attachmentSummary =
+        attachment.evidence_added_count > 0 ||
+        attachment.location_added_count > 0
+          ? `; attached_evidence=${attachment.evidence_added_count}; attached_locations=${attachment.location_added_count}`
+          : "";
       this.telemetryLog.push({
         recorded_at: processingTimestamp,
         dispatch_id: dispatchId,
         kind: "skipped_duplicate_dedupe_key",
         queue_state: "skipped",
-        reason: `Duplicate dedupe key "${dedupeKey}" — canonical dispatch_id is "${canonicalId}"`,
+        reason:
+          `Duplicate dedupe key v2 "${dedupeKeyV2}" — canonical dispatch_id is "${canonicalId}"` +
+          attachmentSummary,
         event_timestamp: eventTimestamp,
         processing_timestamp: processingTimestamp,
       });
       return {
         ok: false,
-        reason: `Duplicate dedupe key for dispatch ${dispatchId} (canonical: ${canonicalId})`,
+        reason:
+          `Duplicate dedupe key v2 for dispatch ${dispatchId} ` +
+          `(canonical: ${canonicalId})${attachmentSummary}`,
+        queue_state: "skipped",
+      };
+    }
+
+    if (dedupeKeyV1 && this.dedupeIndexV1.has(dedupeKeyV1)) {
+      const canonicalId = this.dedupeIndexV1.get(dedupeKeyV1)!;
+      this.telemetryLog.push({
+        recorded_at: processingTimestamp,
+        dispatch_id: dispatchId,
+        kind: "skipped_duplicate_dedupe_key",
+        queue_state: "skipped",
+        reason: `Duplicate dedupe key v1 "${dedupeKeyV1}" — canonical dispatch_id is "${canonicalId}"`,
+        event_timestamp: eventTimestamp,
+        processing_timestamp: processingTimestamp,
+      });
+      return {
+        ok: false,
+        reason:
+          `Duplicate dedupe key v1 for dispatch ${dispatchId} ` +
+          `(canonical: ${canonicalId})`,
         queue_state: "skipped",
       };
     }
@@ -367,8 +576,11 @@ export class TrialQueue {
     // Step 4: create entry
     const entry: QueueEntry = {
       dispatch_id: dispatchId,
-      dedupe_key: dedupeKey,
+      dedupe_key: dedupeKeyV2,
+      dedupe_key_v1: dedupeKeyV1,
+      dedupe_key_v2: dedupeKeyV2,
       queue_state: "enqueued",
+      lane,
       packet: validPacket,
       event_timestamp: eventTimestamp,
       processing_timestamp: processingTimestamp,
@@ -376,7 +588,10 @@ export class TrialQueue {
     };
 
     this.entries.set(dispatchId, entry);
-    this.dedupeIndex.set(dedupeKey, dispatchId);
+    this.dedupeIndexV2.set(dedupeKeyV2, dispatchId);
+    if (dedupeKeyV1) {
+      this.dedupeIndexV1.set(dedupeKeyV1, dispatchId);
+    }
 
     // Step 5: telemetry
     this.telemetryLog.push({
@@ -465,6 +680,173 @@ export class TrialQueue {
     return { ok: true, entry };
   }
 
+  /**
+   * Reassigns a queue entry to a different lane.
+   *
+   * This operation is protected by an explicit override requirement to prevent
+   * accidental lane churn.
+   */
+  reassignLane(
+    dispatchId: string,
+    nextLane: QueueLane,
+    options: ReassignLaneOptions = {},
+  ):
+    | { ok: true; entry: QueueEntry }
+    | { ok: false; reason: string } {
+    const entry = this.entries.get(dispatchId);
+    if (!entry) {
+      return {
+        ok: false,
+        reason: `dispatch_id "${dispatchId}" not found in queue`,
+      };
+    }
+
+    if (!options.override) {
+      return {
+        ok: false,
+        reason:
+          `Lane reassignment for dispatch_id "${dispatchId}" requires explicit override. ` +
+          `Call reassignLane(..., { override: true, reason: "..." }).`,
+      };
+    }
+
+    const reason = options.reason?.trim() ?? "";
+    if (reason.length === 0) {
+      return {
+        ok: false,
+        reason:
+          `Lane reassignment for dispatch_id "${dispatchId}" requires a non-empty reason.`,
+      };
+    }
+
+    if (entry.lane === nextLane) {
+      return {
+        ok: false,
+        reason:
+          `dispatch_id "${dispatchId}" is already assigned to lane "${nextLane}"`,
+      };
+    }
+
+    const processingTimestamp = this.clock().toISOString();
+    const previousLane = entry.lane;
+    entry.lane = nextLane;
+    entry.processing_timestamp = processingTimestamp;
+    entry.state_reason = reason;
+
+    this.telemetryLog.push({
+      recorded_at: processingTimestamp,
+      dispatch_id: dispatchId,
+      kind: "lane_reassigned",
+      queue_state: entry.queue_state,
+      reason: `lane_reassigned:${previousLane}->${nextLane}; reason=${reason}`,
+      event_timestamp: entry.event_timestamp,
+      processing_timestamp: processingTimestamp,
+    });
+
+    return { ok: true, entry };
+  }
+
+  /**
+   * Computes the next dispatches to execute under lane-specific WIP caps.
+   *
+   * The scheduler is non-mutating: it returns a deterministic plan snapshot
+   * without changing queue state.
+   */
+  planNextDispatches(options: LaneSchedulerOptions): ScheduledDispatch[] {
+    const now = options.now ?? this.clock();
+    const nowMs = now.getTime();
+    const maxDispatches = Math.max(0, options.max_dispatches ?? Number.MAX_SAFE_INTEGER);
+    const agingWindowHours = Math.max(
+      1,
+      options.aging_window_hours ?? DEFAULT_AGING_WINDOW_HOURS,
+    );
+    const availableByLane = computeAvailableLaneSlots(
+      options.wip_caps,
+      options.active_counts,
+    );
+
+    const laneCandidates: Record<QueueLane, ScheduledDispatch[]> = {
+      DO: [],
+      IMPROVE: [],
+    };
+
+    for (const entry of this.entries.values()) {
+      if (entry.queue_state !== "enqueued" || !entry.packet) {
+        continue;
+      }
+
+      const ageHours = computeAgeHours(entry.event_timestamp, nowMs);
+      const score = computeSchedulingScore(
+        entry.packet.priority,
+        ageHours,
+        agingWindowHours,
+      );
+
+      laneCandidates[entry.lane].push({
+        dispatch_id: entry.dispatch_id,
+        lane: entry.lane,
+        priority: entry.packet.priority,
+        age_hours: ageHours,
+        score,
+      });
+    }
+
+    for (const lane of LANE_SEQUENCE) {
+      laneCandidates[lane].sort((left, right) => {
+        if (left.score !== right.score) {
+          return right.score - left.score;
+        }
+        const leftEntry = this.entries.get(left.dispatch_id);
+        const rightEntry = this.entries.get(right.dispatch_id);
+        const leftTimestamp = leftEntry?.event_timestamp ?? "";
+        const rightTimestamp = rightEntry?.event_timestamp ?? "";
+        const tsCmp = leftTimestamp.localeCompare(rightTimestamp);
+        if (tsCmp !== 0) {
+          return tsCmp;
+        }
+        return left.dispatch_id.localeCompare(right.dispatch_id);
+      });
+    }
+
+    const planned: ScheduledDispatch[] = [];
+    let totalRemaining = Math.min(
+      maxDispatches,
+      availableByLane.DO + availableByLane.IMPROVE,
+    );
+    let laneCursor = 0;
+
+    while (totalRemaining > 0) {
+      const lane = LANE_SEQUENCE[laneCursor % LANE_SEQUENCE.length];
+      const alternateLane =
+        lane === "DO"
+          ? "IMPROVE"
+          : "DO";
+
+      const preferredDispatch = tryTakeNextLaneDispatch(
+        lane,
+        laneCandidates,
+        availableByLane,
+      );
+      const selectedDispatch =
+        preferredDispatch ??
+        tryTakeNextLaneDispatch(
+          alternateLane,
+          laneCandidates,
+          availableByLane,
+        );
+
+      if (!selectedDispatch) {
+        break;
+      }
+
+      planned.push(selectedDispatch);
+      totalRemaining -= 1;
+      laneCursor += 1;
+    }
+
+    return planned;
+  }
+
   // -------------------------------------------------------------------------
   // Accessors
   // -------------------------------------------------------------------------
@@ -549,13 +931,256 @@ export class TrialQueue {
 // Internal helpers
 // ---------------------------------------------------------------------------
 
+const DISPATCH_ID_PATTERN = /^IDEA-DISPATCH-(\d{14})-(\d{4})$/;
+const MAX_DISPATCH_SEQUENCE = 9999;
+
+function padNumber(value: number, length: number): string {
+  return String(value).padStart(length, "0");
+}
+
+function formatDispatchId(timestampToken: string, seq: number): string {
+  return `IDEA-DISPATCH-${timestampToken}-${padNumber(seq, 4)}`;
+}
+
+function isoToDispatchTimestamp(isoValue: string): string {
+  const dateValue = new Date(isoValue);
+  if (Number.isNaN(dateValue.getTime())) {
+    return "19700101000000";
+  }
+  return (
+    `${dateValue.getUTCFullYear()}` +
+    `${padNumber(dateValue.getUTCMonth() + 1, 2)}` +
+    `${padNumber(dateValue.getUTCDate(), 2)}` +
+    `${padNumber(dateValue.getUTCHours(), 2)}` +
+    `${padNumber(dateValue.getUTCMinutes(), 2)}` +
+    `${padNumber(dateValue.getUTCSeconds(), 2)}`
+  );
+}
+
+function mintDispatchIdWithPrefix(
+  timestampToken: string,
+  startSeq: number,
+  entries: ReadonlyMap<string, QueueEntry>,
+): string | null {
+  const normalizedStart =
+    ((Math.max(1, startSeq) - 1) % MAX_DISPATCH_SEQUENCE) + 1;
+  for (let offset = 0; offset < MAX_DISPATCH_SEQUENCE; offset += 1) {
+    const seq = ((normalizedStart - 1 + offset) % MAX_DISPATCH_SEQUENCE) + 1;
+    const candidate = formatDispatchId(timestampToken, seq);
+    if (!entries.has(candidate)) {
+      return candidate;
+    }
+  }
+  return null;
+}
+
+function mintCollisionDispatchId(
+  dispatchId: string,
+  processingTimestamp: string,
+  entries: ReadonlyMap<string, QueueEntry>,
+): string {
+  const parsed = DISPATCH_ID_PATTERN.exec(dispatchId);
+  if (parsed) {
+    const [, timestampToken, seqToken] = parsed;
+    const startSeq = Number.parseInt(seqToken, 10) + 1;
+    const candidate = mintDispatchIdWithPrefix(timestampToken, startSeq, entries);
+    if (candidate) {
+      return candidate;
+    }
+  }
+
+  const fallbackTimestamp = isoToDispatchTimestamp(processingTimestamp);
+  const fallbackCandidate = mintDispatchIdWithPrefix(
+    fallbackTimestamp,
+    1,
+    entries,
+  );
+  if (fallbackCandidate) {
+    return fallbackCandidate;
+  }
+
+  throw new Error(
+    "Unable to mint unique dispatch_id after collision (all sequence slots exhausted).",
+  );
+}
+
 /**
- * Builds the dedupe key for an already-validated packet.
- * Format: "<artifact_id>:<before_sha|null>:<after_sha>"
- * Mirrors buildDedupeKey() in lp-do-ideas-trial.ts but operates on a packet.
+ * Builds the v1 dedupe key for an already-validated packet.
+ * Format: "<artifact_id>:<before_sha|null>:<after_sha>".
+ * Returns null when required fields are absent (for compatibility with
+ * non-artifact dispatches such as operator injects).
  */
-function buildDedupeKeyFromPacket(packet: TrialDispatchPacket): string {
-  return `${packet.artifact_id}:${packet.before_sha ?? "null"}:${packet.after_sha}`;
+function buildDedupeKeyV1FromPacket(packet: TrialDispatchPacket): string | null {
+  const artifactId = readPacketString(packet, "artifact_id");
+  const afterSha = readPacketString(packet, "after_sha");
+  if (!artifactId || !afterSha) {
+    return null;
+  }
+
+  const beforeSha = readPacketString(packet, "before_sha");
+  return `${artifactId}:${beforeSha ?? "null"}:${afterSha}`;
+}
+
+/**
+ * Builds the v2 dedupe key for an already-validated packet.
+ * Format: "<cluster_key>:<cluster_fingerprint>".
+ *
+ * For legacy packets that do not carry cluster fields, this function falls back
+ * to deterministic construction from stable packet fields.
+ */
+function buildDedupeKeyV2FromPacket(packet: TrialDispatchPacket): string {
+  const rootEventId =
+    readPacketString(packet, "root_event_id") ??
+    buildFallbackRootEventId(packet);
+  const anchorKey =
+    readPacketString(packet, "anchor_key") ??
+    normalizeKeyToken(readPacketString(packet, "area_anchor") ?? "unknown");
+  const clusterKey =
+    readPacketString(packet, "cluster_key") ??
+    buildFallbackClusterKey(packet, rootEventId, anchorKey);
+  const clusterFingerprint =
+    readPacketString(packet, "cluster_fingerprint") ??
+    buildFallbackClusterFingerprint(packet, rootEventId, anchorKey);
+
+  return `${clusterKey}:${clusterFingerprint}`;
+}
+
+function normalizeKeyToken(value: string): string {
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  return normalized.length > 0 ? normalized : "unknown";
+}
+
+function sha256(input: string): string {
+  // Use sha256 so dedupe keys remain deterministic across runtimes.
+  return createHash("sha256").update(input, "utf-8").digest("hex");
+}
+
+function readPacketString(
+  packet: TrialDispatchPacket,
+  key: string,
+): string | null {
+  const value = (packet as unknown as Record<string, unknown>)[key];
+  if (typeof value !== "string") {
+    return null;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function buildFallbackRootEventId(packet: TrialDispatchPacket): string {
+  const artifactId = readPacketString(packet, "artifact_id");
+  const afterSha = readPacketString(packet, "after_sha");
+  if (artifactId && afterSha) {
+    return `${artifactId}:${afterSha}`;
+  }
+  return `dispatch:${readPacketString(packet, "dispatch_id") ?? "unknown"}`;
+}
+
+function buildFallbackClusterKey(
+  packet: TrialDispatchPacket,
+  rootEventId: string,
+  anchorKey: string,
+): string {
+  const business = normalizeKeyToken(readPacketString(packet, "business") ?? "unknown");
+  return `${business}:unknown:${anchorKey}:${rootEventId}`;
+}
+
+function readEvidenceRefs(packet: TrialDispatchPacket): string[] {
+  const value = (packet as unknown as Record<string, unknown>).evidence_refs;
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value
+    .filter((entry): entry is string => typeof entry === "string")
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length > 0)
+    .sort((left, right) => left.localeCompare(right));
+}
+
+function readLocationAnchors(packet: TrialDispatchPacket): string[] {
+  const value = (packet as unknown as Record<string, unknown>).location_anchors;
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value
+    .filter((entry): entry is string => typeof entry === "string")
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length > 0);
+}
+
+function mergeUniqueSorted(
+  existing: readonly string[],
+  incoming: readonly string[],
+): { merged: string[]; addedCount: number } {
+  const mergedSet = new Set(existing.map((value) => value.trim()).filter((value) => value.length > 0));
+  let addedCount = 0;
+  for (const candidate of incoming) {
+    const normalized = candidate.trim();
+    if (normalized.length === 0) {
+      continue;
+    }
+    if (!mergedSet.has(normalized)) {
+      mergedSet.add(normalized);
+      addedCount += 1;
+    }
+  }
+  return {
+    merged: [...mergedSet].sort((left, right) => left.localeCompare(right)),
+    addedCount,
+  };
+}
+
+function attachEvidenceToCanonicalEntry(
+  canonicalEntry: QueueEntry | undefined,
+  incomingPacket: TrialDispatchPacket,
+): { evidence_added_count: number; location_added_count: number } {
+  if (!canonicalEntry?.packet) {
+    return {
+      evidence_added_count: 0,
+      location_added_count: 0,
+    };
+  }
+
+  const canonicalPacket = canonicalEntry.packet;
+  const mergedEvidence = mergeUniqueSorted(
+    readEvidenceRefs(canonicalPacket),
+    readEvidenceRefs(incomingPacket),
+  );
+  if (mergedEvidence.merged.length > 0) {
+    canonicalPacket.evidence_refs = mergedEvidence.merged as [string, ...string[]];
+  }
+
+  const mergedLocations = mergeUniqueSorted(
+    readLocationAnchors(canonicalPacket),
+    readLocationAnchors(incomingPacket),
+  );
+  if (mergedLocations.merged.length > 0) {
+    canonicalPacket.location_anchors = mergedLocations.merged as [string, ...string[]];
+  }
+
+  return {
+    evidence_added_count: mergedEvidence.addedCount,
+    location_added_count: mergedLocations.addedCount,
+  };
+}
+
+function buildFallbackClusterFingerprint(
+  packet: TrialDispatchPacket,
+  rootEventId: string,
+  anchorKey: string,
+): string {
+  const evidenceRefs = readEvidenceRefs(packet).join("|");
+  const artifactId = readPacketString(packet, "artifact_id") ?? "unknown-artifact";
+  const beforeSha = readPacketString(packet, "before_sha") ?? "null";
+  const afterSha = readPacketString(packet, "after_sha") ?? "unknown-after";
+  return sha256(
+    [rootEventId, anchorKey, artifactId, beforeSha, afterSha, evidenceRefs].join("\n"),
+  );
 }
 
 /** Maps a QueueState to the appropriate TelemetryEventKind for an advance() call. */

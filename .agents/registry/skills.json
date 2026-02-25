@@ -47,16 +47,6 @@
       "path": ".claude/skills/guide-translate/SKILL.md"
     },
     {
-      "name": "idea-forecast",
-      "description": "Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research (competitor analysis, price bands, channel benchmarks, demand signals). Use when a user provides idea/product inputs and wants the agent to set most targets, assumptions, risks, and validation metrics before SFS-00 or idea-generate.",
-      "path": ".claude/skills/idea-forecast/SKILL.md"
-    },
-    {
-      "name": "idea-generate",
-      "description": "Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking.",
-      "path": ".claude/skills/idea-generate/SKILL.md"
-    },
-    {
       "name": "idea-scan",
       "description": "Analyze standing-intelligence pack diffs and produce scan-proposals.md for IDEAS-02 backlog updates.",
       "path": ".claude/skills/idea-scan/SKILL.md"
@@ -68,18 +58,13 @@
     },
     {
       "name": "lp-assessment-bootstrap",
-      "description": "Bootstrap a brand-dossier.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec.",
+      "description": "Bootstrap a <YYYY-MM-DD>-brand-identity-dossier.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec.",
       "path": ".claude/skills/lp-assessment-bootstrap/SKILL.md"
     },
     {
       "name": "lp-baseline-merge",
       "description": "Join parallel fan-out outputs (MARKET-06 + S3 + SELL-01, with optional PRODUCT-02) into a single baseline snapshot and draft manifest.",
       "path": ".claude/skills/lp-baseline-merge/SKILL.md"
-    },
-    {
-      "name": "lp-bos-sync",
-      "description": "S5B BOS sync stage worker. Persists prioritized baseline outputs to Business OS (D1) via agent API, then emits S5B stage-result.json to signal control plane commit.",
-      "path": ".claude/skills/lp-bos-sync/SKILL.md"
     },
     {
       "name": "lp-brand-refresh",
@@ -123,12 +108,12 @@
     },
     {
       "name": "lp-do-assessment-04-candidate-names",
-      "description": "Full naming pipeline orchestrator (ASSESSMENT-04). Runs four parts in sequence: (1) produce naming-generation-spec.md from ASSESSMENT docs, (2) agent generates 250 scored candidates, (3) RDAP batch check all .com domains, (4) filter to available names and produce ranked shortlist. Delivers a final operator-ready shortlist of domain-verified, scored brand name candidates.",
+      "description": "Full naming pipeline orchestrator (ASSESSMENT-04). Runs four parts in sequence: (1) produce <YYYY-MM-DD>-naming-generation-spec.md from ASSESSMENT docs, (2) agent generates 250 scored candidates, (3) RDAP batch check all .com domains, (4) filter to available names and produce ranked shortlist. Delivers a final operator-ready shortlist of domain-verified, scored brand name candidates.",
       "path": ".claude/skills/lp-do-assessment-04-candidate-names/SKILL.md"
     },
     {
       "name": "lp-do-assessment-05-name-selection",
-      "description": "Produce a naming-generation-spec.md for a business. Reads ASSESSMENT stage docs, extracts ICP, product, brand personality, competitive set, and any prior eliminated names, then writes a fully-structured agent-executable spec that generates 250 scored candidate names. Part 1 of a 4-part naming pipeline (spec → generate → RDAP batch check → rank).",
+      "description": "Produce a <YYYY-MM-DD>-naming-generation-spec.md for a business. Reads ASSESSMENT stage docs, extracts ICP, product, brand personality, competitive set, and any prior eliminated names, then writes a fully-structured agent-executable spec that generates 250 scored candidate names. Part 1 of a 4-part naming pipeline (spec → generate → RDAP batch check → rank).",
       "path": ".claude/skills/lp-do-assessment-05-name-selection/SKILL.md"
     },
     {
@@ -185,6 +170,16 @@
       "name": "lp-do-factcheck",
       "description": "Verify the accuracy of statements in markdown documents by auditing the actual repository state. Directly fix inaccuracies in-place rather than producing a separate report.",
       "path": ".claude/skills/lp-do-factcheck/SKILL.md"
+    },
+    {
+      "name": "lp-do-idea-forecast",
+      "description": "Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research (competitor analysis, price bands, channel benchmarks, demand signals). Use when a user provides idea/product inputs and wants the agent to set most targets, assumptions, risks, and validation metrics before SFS-00 or lp-do-idea-generate.",
+      "path": ".claude/skills/idea-forecast/SKILL.md"
+    },
+    {
+      "name": "lp-do-idea-generate",
+      "description": "Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking.",
+      "path": ".claude/skills/idea-generate/SKILL.md"
     },
     {
       "name": "lp-do-ideas",
@@ -282,11 +277,6 @@
       "path": ".claude/skills/lp-site-upgrade/SKILL.md"
     },
     {
-      "name": "lp-visual",
-      "description": "Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). Supports multiple documents via a references directory of reusable palettes, zoom controls, and initialization patterns. Use when asked to add diagrams to a guide, visualise a system or workflow, build a KPI dashboard, or improve documentation readability with visuals.",
-      "path": ".claude/skills/lp-visual/SKILL.md"
-    },
-    {
       "name": "lp-weekly",
       "description": "S10 weekly orchestration wrapper. Coordinates the full weekly decision, audit/CI, measurement compilation, and experiment lane flows into one deterministic sequence. Additive-first; never replaces canonical S10 authorities. No new hard stage blocks in first iteration.",
       "path": ".claude/skills/lp-weekly/SKILL.md"
@@ -330,6 +320,16 @@
       "name": "startup-loop",
       "description": "Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks. Routes to lp-* stage skills at each stage.",
       "path": ".claude/skills/startup-loop/SKILL.md"
+    },
+    {
+      "name": "tool-process-audit",
+      "description": "Diagnose a named or described business/engineering process for bottlenecks, risks, and optimization opportunities. Use when a user asks to review, map, or improve a workflow and wants concrete next steps with effort/impact tradeoffs.",
+      "path": ".claude/skills/tool-process-audit/SKILL.md"
+    },
+    {
+      "name": "tools-bos-design-page",
+      "description": "Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). Supports multiple documents via a references directory of reusable palettes, zoom controls, and initialization patterns. Use when asked to add diagrams to a guide, visualise a system or workflow, build a KPI dashboard, or improve documentation readability with visuals.",
+      "path": ".claude/skills/tools-bos-design-page/SKILL.md"
     },
     {
       "name": "tools-ui-breakpoint-sweep",

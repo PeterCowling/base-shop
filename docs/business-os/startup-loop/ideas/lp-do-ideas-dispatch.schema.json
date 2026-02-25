@@ -45,6 +45,31 @@
       "minLength": 1,
       "description": "Git commit SHA or content hash of the artifact after the delta."
     },
+    "root_event_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable causal root ID for the triggering change-set. Default for source deltas: <artifact_id>:<after_sha>."
+    },
+    "anchor_key": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Normalized anchor key representing the cluster target area/section."
+    },
+    "cluster_key": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable cluster key used for cluster-aware dedupe. Canonical form: <business>:<domain>:<anchor_key>:<root_event_id>."
+    },
+    "cluster_fingerprint": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Deterministic cluster fingerprint from stable evidence inputs. Used with cluster_key for v2 dedupe."
+    },
+    "lineage_depth": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Cascade depth index. Root dispatches start at 0; first cascade hop is 1."
+    },
     "area_anchor": {
       "type": "string",
       "minLength": 1,
@@ -177,6 +202,11 @@
     "schema_version",
     "dispatch_id",
     "mode",
+    "root_event_id",
+    "anchor_key",
+    "cluster_key",
+    "cluster_fingerprint",
+    "lineage_depth",
     "area_anchor",
     "location_anchors",
     "provisional_deliverable_family",

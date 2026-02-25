@@ -206,7 +206,7 @@ processes:
     workflow_phases: ["Decide/Plan"]
     primary_workflow_phase: "Decide/Plan"
     activation: "conditional"
-    activation_condition: "Mandatory for hospitality / inventory_present; monthly review; weekly only on exception; activates post-S5B"
+    activation_condition: "Mandatory for hospitality / inventory_present; monthly review; weekly only on exception; activates post-S4"
 
   # ── DATA: Data Capture and Continuous Improvement ────────────────────────
 

@@ -16,7 +16,7 @@ Fall through to Step 2.
 
 1. Scan `docs/business-os/strategy/` for immediate subdirectories. Each subdirectory is a business code.
 2. For each, attempt to read a display name from the first available source:
-   - `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md` frontmatter field `Business name`
+   - `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` frontmatter field `Business name`
    - `docs/business-os/strategy/<BIZ>/plan.user.md` title or first heading
    - Fallback: show the directory name only
 3. Present the list:

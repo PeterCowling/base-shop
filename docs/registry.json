@@ -1620,12 +1620,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/BRIK-intake-packet.user.md",
-    "type": "Startup-Intake-Packet",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/startup-baselines/BRIK/demand-evidence-pack.md",
     "type": "Demand-Evidence-Pack",
     "status": "Active",
@@ -1646,12 +1640,6 @@
   {
     "path": "docs/business-os/startup-baselines/HBAG-forecast-seed.user.md",
     "type": "Startup-Baseline-Seed",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/startup-baselines/HBAG-intake-packet.user.md",
-    "type": "Startup-Intake-Packet",
     "status": "Active",
     "domain": null
   },
@@ -1686,12 +1674,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HEAD-intake-packet.user.md",
-    "type": "Startup-Intake-Packet",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/startup-baselines/HEAD-offer.md",
     "type": "Reference",
     "status": "Active",
@@ -1707,12 +1689,6 @@
     "path": "docs/business-os/startup-baselines/PET-forecast-seed.user.md",
     "type": "Startup-Baseline-Seed",
     "status": "Draft",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/startup-baselines/PET-intake-packet.user.md",
-    "type": "Startup-Intake-Packet",
-    "status": "Active",
     "domain": null
   },
   {
@@ -1830,33 +1806,69 @@
     "domain": "Startup Loop"
   },
   {
-    "path": "docs/business-os/startup-loop/ideas/handoff-to-fact-find.md",
+    "path": "docs/business-os/startup-loop/ideas/_archive/handoff-to-fact-find.md",
     "type": "Handoff-Contract",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-loop/ideas/idea-backlog.schema.md",
+    "path": "docs/business-os/startup-loop/ideas/_archive/idea-backlog.schema.md",
     "type": "Schema",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-loop/ideas/idea-card.schema.md",
+    "path": "docs/business-os/startup-loop/ideas/_archive/idea-card.schema.md",
     "type": "Schema",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-loop/ideas/idea-portfolio.schema.md",
+    "path": "docs/business-os/startup-loop/ideas/_archive/idea-portfolio.schema.md",
     "type": "Schema",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-loop/ideas/scan-proposals.schema.md",
+    "path": "docs/business-os/startup-loop/ideas/_archive/scan-proposals.schema.md",
     "type": "Schema",
     "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-checklist.md",
+    "type": "Checklist",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-seam.md",
+    "type": "Seam-Contract",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-loop/ideas/lp-do-ideas-rollback-playbook.md",
+    "type": "Rollback-Playbook",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-loop/ideas/lp-do-ideas-routing-matrix.md",
+    "type": "Routing-Matrix",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-loop/ideas/lp-do-ideas-telemetry.schema.md",
+    "type": "Schema",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md",
+    "type": "Contract",
+    "status": "Active",
     "domain": null
   },
   {
@@ -1936,6 +1948,12 @@
     "type": "Architecture-Contract",
     "status": "Active",
     "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-loop/website-iteration-throughput-report-contract.md",
+    "type": "Contract",
+    "status": "Active",
+    "domain": "Startup-Loop"
   },
   {
     "path": "docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.md",
@@ -2030,12 +2048,6 @@
   {
     "path": "docs/business-os/strategy/BRIK/2026-02-17-octorate-process-reduction-feasibility.user.md",
     "type": "Feasibility-Report",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/BRIK/brand-identity.user.md",
-    "type": "Brand-Identity",
     "status": "Active",
     "domain": null
   },
@@ -2142,20 +2154,8 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/brand-dossier.user.md",
-    "type": "Brand-Language",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/brand-identity.user.md",
+    "path": "docs/business-os/strategy/HBAG/2026-02-17-brand-identity-dossier.user.md",
     "type": "Brand-Identity",
-    "status": "Draft",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/brand-strategy.user.md",
-    "type": "Brand-Strategy",
     "status": "Draft",
     "domain": null
   },
@@ -2178,18 +2178,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/current-situation.user.md",
-    "type": "Operator-Evidence",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/distribution-plan.user.md",
-    "type": "Distribution-Plan",
-    "status": "Draft",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HBAG/index.user.md",
     "type": "Strategy-Index",
     "status": "Active",
@@ -2202,12 +2190,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/measurement-plan.user.md",
-    "type": "Measurement-Plan",
-    "status": "Draft",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HBAG/name-selection-spec.md",
     "type": "Generation-Spec",
     "status": "Active",
@@ -2217,12 +2199,6 @@
     "path": "docs/business-os/strategy/HBAG/naming-candidates-2026-02-21.md",
     "type": "Naming-Candidates",
     "status": "Draft",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/naming-generation-spec.md",
-    "type": "Generation-Spec",
-    "status": "Active",
     "domain": null
   },
   {
@@ -2240,12 +2216,6 @@
   {
     "path": "docs/business-os/strategy/HBAG/plan.user.md",
     "type": "Business-Plan",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/problem-statement.user.md",
-    "type": "Reference",
     "status": "Active",
     "domain": null
   },
@@ -2298,15 +2268,15 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/solution-select.user.md",
-    "type": "Reference",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HBAG/tagline-options.user.md",
     "type": "Decision",
     "status": "Decided",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/website-iteration-throughput-report.user.md",
+    "type": "Website-Iteration-Throughput-Report",
+    "status": "Draft",
     "domain": null
   },
   {
@@ -2364,18 +2334,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/brand-identity.user.md",
-    "type": "Brand-Language",
-    "status": "Draft",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/brand-profiling.user.md",
-    "type": "Brand-Profiling",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HEAD/candidate-names-prompt-v2.md",
     "type": "Candidate-Names-Prompt",
     "status": "Active",
@@ -2388,21 +2346,9 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/current-situation.user.md",
-    "type": "Operator-Evidence",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md",
     "type": "Strategy-Decision",
     "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/distribution-plan.user.md",
-    "type": "Distribution-Plan",
-    "status": "Draft",
     "domain": null
   },
   {
@@ -2472,12 +2418,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/measurement-plan.user.md",
-    "type": "Measurement-Plan",
-    "status": "Draft",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HEAD/messaging-hierarchy.user.md",
     "type": "Messaging-Hierarchy",
     "status": "Draft",
@@ -2505,12 +2445,6 @@
     "path": "docs/business-os/strategy/HEAD/naming-candidates-2026-02-22-r6.md",
     "type": "Naming-Candidates",
     "status": "Draft",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/naming-generation-spec.md",
-    "type": "Naming-Generation-Spec",
-    "status": "Active",
     "domain": null
   },
   {
@@ -2550,20 +2484,8 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/problem-statement.user.md",
-    "type": "Problem-Statement",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HEAD/s1-readiness.user.md",
     "type": "Startup-Readiness-Verdict",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/solution-select.user.md",
-    "type": "Option-Selection-Decision",
     "status": "Active",
     "domain": null
   },
@@ -2601,12 +2523,6 @@
     "path": "docs/business-os/strategy/PET/2026-02-18-naming-prompt.user.md",
     "type": "Deep-Research-Prompt",
     "status": "Ready",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/PET/brand-identity.user.md",
-    "type": "Brand-Identity",
-    "status": "Draft",
     "domain": null
   },
   {
@@ -2710,6 +2626,12 @@
     "type": "Reference",
     "status": "Canonical",
     "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/strategy/startup-loop-holistic-strategy.md",
+    "type": "Strategy",
+    "status": "Draft",
+    "domain": "Venture-Studio / Startup-Loop"
   },
   {
     "path": "docs/business-os/sweeps/2026-02-10-grow-business/2026-02-10-sweep.agent.md",
@@ -3448,6 +3370,30 @@
     "type": "Plan",
     "status": "Archived",
     "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Draft",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md",
+    "type": "Results-Review",
+    "status": "Complete",
+    "domain": null
   },
   {
     "path": "docs/plans/_archive/startup-loop-standing-info-gap-analysis/critique-history.md",
@@ -5600,7 +5546,7 @@
   {
     "path": "docs/plans/brikette-seo-traffic-growth/task-03b-gsc-canonical-validation.md",
     "type": "Task-Artifact",
-    "status": "Draft",
+    "status": "Complete",
     "domain": null
   },
   {
@@ -5838,6 +5784,18 @@
     "domain": "Dashboard / Upgrade"
   },
   {
+    "path": "docs/plans/do-skills-bos-decoupling/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/do-skills-bos-decoupling/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
     "path": "docs/plans/email-autodraft-workflow-design.md",
     "type": "Design-Doc",
     "status": "Active",
@@ -5938,6 +5896,12 @@
     "type": "Audit",
     "status": "Reference",
     "domain": null
+  },
+  {
+    "path": "docs/plans/hbag-startup-loop-content-integration/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Growth"
   },
   {
     "path": "docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md",
@@ -6132,6 +6096,36 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md",
+    "type": "Decision",
+    "status": "Closed",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/lp-do-ideas-startup-loop-integration/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/lp-do-ideas-startup-loop-integration/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform / Business-OS"
+  },
+  {
+    "path": "docs/plans/lp-do-ideas-startup-loop-integration/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Platform / Business-OS"
+  },
+  {
+    "path": "docs/plans/lp-responsive-qa-skill/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
     "path": "docs/plans/lp-skill-system-sequencing-plan.md",
     "type": "Plan",
     "status": "Canonical",
@@ -6208,6 +6202,18 @@
     "type": "Analysis",
     "status": "Reference",
     "domain": null
+  },
+  {
+    "path": "docs/plans/prime-app-improvement-backlog/critique-history.md",
+    "type": "Critique-History",
+    "status": "Reference",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/prime-app-improvement-backlog/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/prime-hardcoded-copy-i18n-remediation-fact-find.md",
@@ -6304,6 +6310,36 @@
     "type": "Plan",
     "status": "Active",
     "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/reception-roomgrid-external-package-removal/artifacts/upstream-capability-contract.md",
+    "type": "Implementation-Artifact",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-roomgrid-external-package-removal/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-roomgrid-external-package-removal/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-visual-ux-audit/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-visual-ux-audit/plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/repo-native-business-os-kanban-system-prompt.md",
@@ -6406,6 +6442,24 @@
     "type": "Investigation",
     "status": "Complete",
     "domain": null
+  },
+  {
+    "path": "docs/plans/startup-loop-launch-acceleration-gap-fill/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/plans/startup-loop-legal-container-insertion/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/startup-loop-legal-container-insertion/plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "Platform"
   },
   {
     "path": "docs/plans/startup-loop-orchestrated-os-comparison/artifacts/contract-overlap-matrix.md",
@@ -6604,6 +6658,30 @@
     "type": "Operator-Guide",
     "status": "Active",
     "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/plans/storybook-vite-migration-assessment/artifacts/story-source-collision.md",
+    "type": "Investigation",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/storybook-vite-migration-assessment/artifacts/task-03-validation-2026-02-24.md",
+    "type": "Validation",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/storybook-vite-migration-assessment/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/storybook-vite-migration-assessment/plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/test-execution-resource-governor-calibration.md",
@@ -6822,6 +6900,12 @@
     "domain": null
   },
   {
+    "path": "docs/runbooks/artifacts/xa-catalog-contract-staging-evidence.md",
+    "type": "Runbook-Artifact",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/runbooks/launch-shop-runbook.md",
     "type": "Runbook",
     "status": "Active",
@@ -6831,6 +6915,12 @@
     "path": "docs/runbooks/tunnel-setup.md",
     "type": "Runbook",
     "status": "Reference",
+    "domain": null
+  },
+  {
+    "path": "docs/runbooks/xa-catalog-contract-staging-checklist.md",
+    "type": "Runbook",
+    "status": "Active",
     "domain": null
   },
   {

@@ -3,31 +3,11 @@
     {
       "type": "idea",
       "business": "BOS",
-      "title": "Add session_id or caller_pid to governed telemetry event schema to enable actor attribution in future zombie incidents.",
-      "body": "TASK-01 could not confirm actor identity with 80% confidence; no session metadata in events.jsonl.",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:24:07.859Z",
-      "path": "docs/plans/build-subagent-jest-zombie-cleanup/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Octorate → Google Hotel Free Listing activation: Not a new idea — VC-02 plan-level gate explicitly requires this. Trigger action: run /lp-do-plan brikette-google-hotel-free-listing within 5 business days of TASK-01 sign-off.",
-      "body": "fact-find confirmed Octorate Metasearch active (2026-02-18), GBP verified, both blockers resolved",
-      "suggested_action": "create plan",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:09:12.356Z",
-      "path": "docs/plans/brik-gbp-api-rejection-remediation/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
       "title": "/assistance Book Direct CTA copy i18n audit",
       "body": "The \"Book Direct\" button text in AssistanceIndexContent uses a hardcoded string; other locales are untested.",
       "suggested_action": "create card (P2 i18n, can batch with next locale pass)",
       "source": "results-review.user.md",
-      "date": "2026-02-25T21:15:42.906Z",
+      "date": "2026-02-25",
       "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
     },
     {
@@ -37,8 +17,158 @@
       "body": "TASK-11 deferred useHowToGetHereContent audit — HowToGetHereIndexContent hook needs investigation before server-resolved props pattern can be applied safely.",
       "suggested_action": "spike (audit hook dependencies before scoping)",
       "source": "results-review.user.md",
-      "date": "2026-02-25T21:15:42.906Z",
+      "date": "2026-02-25",
       "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add automated constraint-graph cycle check to CI",
+      "body": "cycles were manually verified via generate-stage-operator-views.ts; no automated CI gate exists",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add datePublished to monitoring baseline to track when guide pages first appear with valid structured data in search results",
+      "body": "T+0 baseline has 29 unknown URLs; structured data correctness cannot be validated until pages are indexed",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add E2E coverage for sync success path once scripts are restored",
+      "body": "test:e2e only covers J1 happy path; J2 has no E2E test",
+      "suggested_action": "defer until sync scripts exist",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/xa-uploader-usability-hardening/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add filesystem discovery smoke test to CI",
+      "body": "rebuild-discovery-index.sh is validated manually; no automated regression guard on its output shape",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add IT locale /book route to the static export to stop the redirect to /en",
+      "body": "Smoke test confirmed /it/prenota redirects to /en — IT-speaking visitors get an English booking page",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add session_id or caller_pid to governed telemetry event schema to enable actor attribution in future zombie incidents.",
+      "body": "TASK-01 could not confirm actor identity with 80% confidence; no session metadata in events.jsonl.",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/_archive/build-subagent-jest-zombie-cleanup/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add validate:launch-media to CI so media contract failures block merges",
+      "body": "contract validator currently run manually; new SKUs could be merged without images",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add view_item_list assertions to the Playwright smoke test",
+      "body": "Smoke test confirmed view_item_list fires but no assertion captures it — gap in automated verification",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Audit existing in-flight plans for stale BOS frontmatter fields",
+      "body": "Templates cleaned but older active plans may still carry Business-OS-Integration/Card-ID fields",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Automated policy-fact consistency check across templates",
+      "body": "three policy facts manually verified across 125 templates; any future policy change has no automated catch",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Enable Google Indexing API and test URL submission eligibility",
+      "body": "All 5 test submissions returned HTTP 403 — API not enabled in GCP project 98263641014",
+      "suggested_action": "spike (operator enables API at GCP console, then re-runs 5 test URLs)",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Expand catalog from 3 to target SKU count with production imagery",
+      "body": "launch media contract passes for 3 active SKUs — catalog is minimal for launch",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Post-stay review workflow using T178 as the trigger template",
+      "body": "T178 built and lint-passing but review-link URL still a placeholder; workflow not yet activated",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Real-device performance spot-check before public launch",
+      "body": "build-record flags this as the only remaining pre-launch gate; a QA matrix is already drafted at artifacts/real-device-qa-matrix.md",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Restore or port missing XA sync scripts to unblock J2",
+      "body": "scripts/src/xa/validate-xa-inputs.ts and run-xa-pipeline.ts are absent; sync journey is deterministically blocked",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25",
+      "path": "docs/plans/xa-uploader-usability-hardening/results-review.user.md"
     },
     {
       "type": "idea",
@@ -47,309 +177,68 @@
       "body": "TASK-10 investigation confirmed both use useCurrentLanguage() (client hooks) but all underlying data is static — full RSC conversion is feasible and would eliminate the client component boundary.",
       "suggested_action": "create card (P3 SSR, low urgency post-launch)",
       "source": "results-review.user.md",
-      "date": "2026-02-25T21:15:42.906Z",
+      "date": "2026-02-25",
       "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
     },
     {
       "type": "idea",
       "business": "BOS",
-      "title": "Consider adding a CI lint step that fails when a build-record.user.md is committed without an ## Outcome Contract section, so the contract-first constraint is enforced at commit time rather than post-hoc by the Build Summary generator.",
-      "body": "TASK-04 established the contract as a required section in the template but enforcement is instructional only (no automated gate).",
-      "suggested_action": "defer — low urgency until v2 adoption rate is measurable; revisit after 2026-03-27 cutover.",
+      "title": "Template selection rate monitoring dashboard or weekly report",
+      "body": "build-record recommends running draft_signal_stats after 4 weeks; no scheduled monitoring exists",
+      "suggested_action": "create card",
       "source": "results-review.user.md",
-      "date": "2026-02-25T19:14:02.461Z",
-      "path": "docs/plans/_archive/startup-loop-why-intended-outcome-automation/results-review.user.md"
+      "date": "2026-02-25",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md"
     },
     {
       "type": "idea",
       "business": "BOS",
-      "title": "The Build-Event-Ref frontmatter link from strategy artifacts to build-event.json requires a manual step from lp-do-build. An automated hook in the lp-do-build SKILL.md completion checklist was documented but not code-enforced. If operators skip the step the canonical event is never read by the Build Summary generator.",
-      "body": "TASK-05 notes lp-do-build SKILL.md must be updated to include build-event emission step (documentation impact recorded).",
-      "suggested_action": "create a follow-up card to audit lp-do-build/SKILL.md and add the emission step to the build completion checklist.",
+      "title": "Track GA4 funnel drop-off in Explorations once custom dimensions are visible (48h)",
+      "body": "Full funnel confirmed firing; no conversion rate baseline exists yet",
+      "suggested_action": "defer (check at T+7 days when custom dimensions propagate)",
       "source": "results-review.user.md",
-      "date": "2026-02-25T19:14:02.461Z",
-      "path": "docs/plans/_archive/startup-loop-why-intended-outcome-automation/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "HBAG",
-      "title": "1 of 4 generated seeds was not accepted in pilot review.",
-      "body": "1 of 4 generated seeds was not accepted in pilot review.",
-      "source": "results-review.user.md",
-      "date": "2026-02-24T11:57:10.286Z",
-      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "HBAG",
-      "title": "Add a small seed-ranking layer for mapper outputs (high/medium/low impact) before handoff to planning.",
-      "body": "add a small seed-ranking layer for mapper outputs (high/medium/low impact) before handoff to planning.",
-      "source": "results-review.user.md",
-      "date": "2026-02-24T11:57:10.286Z",
-      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "HBAG",
-      "title": "Add a strict profile resolver in compiler/materializer shared utility to avoid duplicate logistics-conditional logic drift.",
-      "body": "add a strict profile resolver in compiler/materializer shared utility to avoid duplicate logistics-conditional logic drift.",
-      "source": "results-review.user.md",
-      "date": "2026-02-24T11:57:10.286Z",
-      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "HBAG",
-      "title": "Create a focused INVESTIGATE task to calibrate ranking heuristics with two additional historical deltas.",
-      "body": "create a focused INVESTIGATE task to calibrate ranking heuristics with two additional historical deltas.",
-      "suggested_action": "create a focused INVESTIGATE task to calibrate ranking heuristics with two additional historical deltas.",
-      "source": "results-review.user.md",
-      "date": "2026-02-24T11:57:10.286Z",
-      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "HBAG",
-      "title": "Create an IMPLEMENT task to centralize business-profile evaluation and reuse it across compiler, materializer, and mapper.",
-      "body": "create an IMPLEMENT task to centralize business-profile evaluation and reuse it across compiler, materializer, and mapper.",
-      "suggested_action": "create an IMPLEMENT task to centralize business-profile evaluation and reuse it across compiler, materializer, and mapper.",
-      "source": "results-review.user.md",
-      "date": "2026-02-24T11:57:10.286Z",
-      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "HBAG",
-      "title": "Logistics applicability is currently inferred in multiple places.",
-      "body": "logistics applicability is currently inferred in multiple places.",
-      "source": "results-review.user.md",
-      "date": "2026-02-24T11:57:10.286Z",
-      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "HBAG",
-      "title": "Add a lightweight CI reminder/gate to require a populated physical-device matrix (or explicit waiver) before plan closure for animation-heavy UI changes.",
-      "body": "Add a lightweight CI reminder/gate to require a populated physical-device matrix (or explicit waiver) before plan closure for animation-heavy UI changes.",
-      "source": "results-review.user.md",
-      "date": "2026-02-23T15:36:51.398Z",
-      "path": "docs/plans/_archive/hbag-brandmark-particle-animation/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "HBAG",
-      "title": "Add a small runtime diagnostics toggle for BrandMark phase/frame sampling that can be enabled in staging for faster performance triage.",
-      "body": "Add a small runtime diagnostics toggle for BrandMark phase/frame sampling that can be enabled in staging for faster performance triage.",
-      "source": "results-review.user.md",
-      "date": "2026-02-23T15:36:51.398Z",
-      "path": "docs/plans/_archive/hbag-brandmark-particle-animation/results-review.user.md"
+      "date": "2026-02-25",
+      "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md"
     },
     {
       "type": "idea",
       "business": "BOS",
-      "title": "Add a dedicated scripts package command (for example check-website-contract-parity) and wire it into the standard startup-loop validation path so WEBSITE parity checks run by default.",
-      "body": "Add a dedicated scripts package command (for example check-website-contract-parity) and wire it into the standard startup-loop validation path so WEBSITE parity checks run by default.",
+      "title": "Visual diff test for process-map HTML to catch silent regressions",
+      "body": "swim-lane layout was browser-verified manually; no regression test exists",
+      "suggested_action": "spike",
       "source": "results-review.user.md",
-      "date": "2026-02-23T15:36:51.349Z",
-      "path": "docs/plans/_archive/startup-loop-website-first-build-contract/results-review.user.md"
+      "date": "2026-02-25",
+      "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md"
     },
     {
       "type": "idea",
       "business": "BOS",
-      "title": "Add a lightweight doc-lint rule that flags legacy stage aliases in authoritative startup-loop workflow sections unless explicitly tagged historical.",
-      "body": "Add a lightweight doc-lint rule that flags legacy stage aliases in authoritative startup-loop workflow sections unless explicitly tagged historical.",
+      "title": "Wire lastUpdated prop through HowToGetHereContent to unlock datePublished on transport pages",
+      "body": "31 EN transport pages have no lastUpdated in RouteDefinition; datePublished fix was deferred from TASK-03",
+      "suggested_action": "defer",
       "source": "results-review.user.md",
-      "date": "2026-02-23T15:36:51.349Z",
-      "path": "docs/plans/_archive/startup-loop-website-first-build-contract/results-review.user.md"
+      "date": "2026-02-25",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md"
     },
     {
       "type": "idea",
-      "business": "PLAT",
-      "title": "Add a repeatable artifact schema for memory/elapsed metrics per run (same variant set), then wire it into ongoing mitigation cycles for clearer trend detection.",
-      "body": "add a repeatable artifact schema for memory/elapsed metrics per run (same variant set), then wire it into ongoing mitigation cycles for clearer trend detection.",
-      "suggested_action": "add a repeatable artifact schema for memory/elapsed metrics per run (same variant set), then wire it into ongoing mitigation cycles for clearer trend detection.",
+      "business": "BOS",
+      "title": "Idea candidate",
+      "body": "—",
       "source": "results-review.user.md",
-      "date": "2026-02-23T15:36:51.271Z",
-      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
+      "date": "<YYYY-MM-DD>",
+      "path": "docs/plans/_templates/results-review.user.md"
     },
     {
       "type": "idea",
-      "business": "PLAT",
-      "title": "Create a focused plan to validate the same probe matrix on a higher-memory build class and compare pass/fail + memory envelope before additional config churn.",
-      "body": "create a focused plan to validate the same probe matrix on a higher-memory build class and compare pass/fail + memory envelope before additional config churn.",
-      "suggested_action": "create a focused plan to validate the same probe matrix on a higher-memory build class and compare pass/fail + memory envelope before additional config churn.",
+      "business": "BOS",
+      "title": "OR None.",
+      "body": "OR None.",
       "source": "results-review.user.md",
-      "date": "2026-02-23T15:36:51.271Z",
-      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "PLAT",
-      "title": "Current probes rely on log tails and /usr/bin/time snapshots without structured longitudinal tracking.",
-      "body": "current probes rely on log tails and /usr/bin/time snapshots without structured longitudinal tracking.",
-      "source": "results-review.user.md",
-      "date": "2026-02-23T15:36:51.271Z",
-      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "PLAT",
-      "title": "Deterministic CMS build-memory telemetry contract",
-      "body": "Deterministic CMS build-memory telemetry contract",
-      "source": "results-review.user.md",
-      "date": "2026-02-23T15:36:51.271Z",
-      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "PLAT",
-      "title": "Machine-class validation lane for CMS build gating",
-      "body": "Machine-class validation lane for CMS build gating",
-      "source": "results-review.user.md",
-      "date": "2026-02-23T15:36:51.271Z",
-      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "PLAT",
-      "title": "OOM persists after bounded graph reduction on current 16 GB class.",
-      "body": "OOM persists after bounded graph reduction on current 16 GB class.",
-      "source": "results-review.user.md",
-      "date": "2026-02-23T15:36:51.271Z",
-      "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md"
+      "date": "<YYYY-MM-DD>",
+      "path": "docs/plans/_templates/results-review.user.md"
     }
   ],
   "riskItems": [],
-  "pendingReviewItems": [
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: lp-do-ideas-live-autonomous-activation",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/_archive/lp-do-ideas-live-autonomous-activation/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-25T17:21:38.696Z",
-      "path": "docs/plans/_archive/lp-do-ideas-live-autonomous-activation/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: brikette-seo-api-optimization-loop",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-25T11:56:41.158Z",
-      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: lp-do-ideas-startup-loop-integration",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/lp-do-ideas-startup-loop-integration/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-24T16:55:19.500Z",
-      "path": "docs/plans/lp-do-ideas-startup-loop-integration/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: do-skills-bos-decoupling",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/do-skills-bos-decoupling/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-24T15:16:59.364Z",
-      "path": "docs/plans/do-skills-bos-decoupling/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: startup-loop-new-business-launch-priorities",
-      "body": "Results review exists but the \"expansion opportunities\" section is missing.",
-      "suggested_action": "Complete docs/plans/_archive/startup-loop-new-business-launch-priorities/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-24T11:55:10.202Z",
-      "path": "docs/plans/_archive/startup-loop-new-business-launch-priorities/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "HBAG",
-      "title": "Pending results review: hbag-website-02-image-first-upgrade",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-23T18:19:57.820Z",
-      "path": "docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: hbag-brandmark-particle-animation",
-      "body": "Results review exists but the \"expansion opportunities\" section is missing.",
-      "suggested_action": "Complete docs/plans/_archive/hbag-brandmark-particle-animation/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-23T15:36:51.399Z",
-      "path": "docs/plans/_archive/hbag-brandmark-particle-animation/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: startup-loop-website-first-build-contract",
-      "body": "Results review exists but the \"expansion opportunities\" section is missing.",
-      "suggested_action": "Complete docs/plans/_archive/startup-loop-website-first-build-contract/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-23T15:36:51.352Z",
-      "path": "docs/plans/_archive/startup-loop-website-first-build-contract/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "PLAT",
-      "title": "Pending results review: cms-webpack-build-oom",
-      "body": "Results review exists but the \"expansion opportunities\" section is missing.",
-      "suggested_action": "Complete docs/plans/_archive/cms-webpack-build-oom/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-23T15:36:51.272Z",
-      "path": "docs/plans/_archive/cms-webpack-build-oom/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: xa-uploader-usability-hardening",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/xa-uploader-usability-hardening/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-23T15:36:51.219Z",
-      "path": "docs/plans/xa-uploader-usability-hardening/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: startup-loop-parallel-container-wiring",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/startup-loop-parallel-container-wiring/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-23T15:36:51.203Z",
-      "path": "docs/plans/startup-loop-parallel-container-wiring/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: hostel-email-template-expansion",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/hostel-email-template-expansion/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-23T15:36:51.161Z",
-      "path": "docs/plans/hostel-email-template-expansion/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: brikette-cta-sales-funnel-ga4",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-23T15:36:51.147Z",
-      "path": "docs/plans/brikette-cta-sales-funnel-ga4/build-record.user.md"
-    }
-  ]
+  "pendingReviewItems": []
 }

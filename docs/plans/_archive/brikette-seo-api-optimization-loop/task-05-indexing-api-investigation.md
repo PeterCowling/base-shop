@@ -79,6 +79,66 @@ The original investigation question was whether Google Indexing API accepts cont
 
 ---
 
+## Re-run Results (2026-02-25)
+
+**API now reachable** — `indexing.googleapis.com` is enabled in GCP project 98263641014. The prior "API not enabled" 403 is resolved.
+
+All 5 submissions returned HTTP **403** with a different error code:
+
+```
+PERMISSION_DENIED — "Failed to verify the URL ownership."
+```
+
+### Per-URL Results
+
+| # | URL | Status | Response |
+|---|-----|--------|----------|
+| 1 | `https://hostel-positano.com/en/experiences/arienzo-beach-guide` | 403 | `PERMISSION_DENIED: Failed to verify the URL ownership.` |
+| 2 | `https://hostel-positano.com/en/experiences/boat-tours-positano` | 403 | `PERMISSION_DENIED: Failed to verify the URL ownership.` |
+| 3 | `https://hostel-positano.com/en/experiences/capri-on-a-budget` | 403 | `PERMISSION_DENIED: Failed to verify the URL ownership.` |
+| 4 | `https://hostel-positano.com/en/how-to-get-here/amalfi-positano-ferry` | 403 | `PERMISSION_DENIED: Failed to verify the URL ownership.` |
+| 5 | `https://hostel-positano.com/it/come-arrivare/amalfi-positano-bus` | 403 | `PERMISSION_DENIED: Failed to verify the URL ownership.` |
+
+### Full Response Body (same for all 5)
+
+```json
+{
+  "error": {
+    "code": 403,
+    "message": "Permission denied. Failed to verify the URL ownership.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+```
+
+### Diagnosis
+
+This is a **different** 403 from the previous run. The API is now enabled. The error is the Indexing API's ownership gate: the SA `ga4-automation-bot@brikette-web.iam.gserviceaccount.com` is verified in GSC (it can call the URL Inspection and Search Analytics APIs) but it is not registered as a **Property Owner** in Google Search Console. The Indexing API enforces Owner-level verification — "Verified User" is insufficient.
+
+**Updated Eligibility Verdict: INCONCLUSIVE** — The API is enabled and reachable. Content eligibility (`Article` schema policy question) still cannot be tested until the SA ownership blocker is resolved.
+
+**48h GSC re-inspection check: NOT YET PENDING** — No successful submissions were made, so no re-inspection timer is running.
+
+### Required Operator Action (Updated)
+
+The API enablement step is done. The remaining blocker is:
+
+1. **Add SA as Property Owner in GSC:**
+   - Go to `https://search.google.com/search-console/` → select `sc-domain:hostel-positano.com` → Settings → Users and permissions
+   - Add `ga4-automation-bot@brikette-web.iam.gserviceaccount.com` with role **Owner** (not "Full User")
+   - Owner status requires the SA to appear as a verified owner, not just a delegated user
+
+2. **Re-run the submission script:**
+   ```bash
+   source /Users/petercowling/base-shop/.env.local && \
+   ./node_modules/.bin/tsx --tsconfig scripts/tsconfig.json \
+   scripts/src/brikette/indexing-api-submit.ts
+   ```
+
+3. **Await 48h** after successful (200 OK) submissions, then run `gsc-url-inspection-batch.ts` on the same 5 URLs.
+
+---
+
 ## Impact on TASK-06
 
 Per the plan conditional gate: TASK-06 (Sitemaps re-ping script) proceeds because this investigation is **inconclusive**, not "eligible". The conditional gate reads:
@@ -120,3 +180,41 @@ Cadence recommendation (if eligible):
 4. 48h later: run `gsc-url-inspection-batch.ts` on those 5 URLs and compare `coverageState` to the T+0 baseline
 
 The investigation report will be updated with final verdict once the re-inspection completes.
+
+---
+
+## Re-run 2 Results (2026-02-25)
+
+**SA Owner status confirmed** — `ga4-automation-bot@brikette-web.iam.gserviceaccount.com` was added as an Owner in Google Search Console. The prior `PERMISSION_DENIED` 403 is resolved.
+
+All 5 submissions returned HTTP **200 OK**.
+
+### Per-URL Results
+
+| # | URL | Status | Verdict |
+|---|-----|--------|---------|
+| 1 | `https://hostel-positano.com/en/experiences/arienzo-beach-guide` | 200 | eligible |
+| 2 | `https://hostel-positano.com/en/experiences/boat-tours-positano` | 200 | eligible |
+| 3 | `https://hostel-positano.com/en/experiences/capri-on-a-budget` | 200 | eligible |
+| 4 | `https://hostel-positano.com/en/how-to-get-here/amalfi-positano-ferry` | 200 | eligible |
+| 5 | `https://hostel-positano.com/it/come-arrivare/amalfi-positano-bus` | 200 | eligible |
+
+### Full Response Bodies
+
+Each response contained a `urlNotificationMetadata` object with the submitted URL and no error fields, confirming acceptance by the API:
+
+```json
+{
+  "urlNotificationMetadata": {
+    "url": "https://hostel-positano.com/en/experiences/arienzo-beach-guide"
+  }
+}
+```
+
+(Pattern identical for all 5 URLs — only the `url` field differs.)
+
+### Updated Eligibility Verdict: ELIGIBLE
+
+The Google Indexing API accepted all 5 guide pages (Article schema, travel content) with 200 OK. Google did not reject them on schema grounds. The working hypothesis that `Article` schema would be refused was not borne out empirically.
+
+**48h GSC re-inspection check: PENDING** — Submissions were made on 2026-02-25. Run `gsc-url-inspection-batch.ts` on the same 5 URLs on or after 2026-02-27 to check whether `coverageState` has changed (e.g. `SUBMITTED_AND_INDEXED` or updated crawl timestamp).

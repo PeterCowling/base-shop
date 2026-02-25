@@ -212,58 +212,9 @@ Before running critique, verify the brief is not empty in critical areas. A brie
 
 ## Phase 7a: Critique Loop (1–3 rounds, mandatory)
 
-After persisting the fact-find artifact and completing the evidence gap review, run the critique loop.
+After persisting the fact-find artifact and completing the evidence gap review, run the critique loop in **fact-find mode**.
 
-### Pre-critique factcheck gate
-
-Before Round 1, evaluate whether `/lp-do-factcheck` should run on the artifact. Run it if the fact-find contains any of:
-- Specific file paths or module names stated as facts
-- Function names, API signatures, or interface claims
-- Test coverage assertions (e.g. "X is tested", "coverage is Y%")
-- Architecture descriptions referencing actual code structure
-
-Skip it if the artifact is purely business/hypothesis-based with no codebase claims.
-
-### Iteration rules
-
-Run `/lp-do-critique` at least once and up to three times. The number of rounds is driven by severity of findings:
-
-| After round | Condition to run next round |
-|---|---|
-| Round 1 | Any Critical finding, OR 2+ Major findings |
-| Round 2 | Any Critical finding still present |
-| Round 3 | Final round — always the last regardless of outcome |
-
-Before each round after the first: revise the artifact to address prior-round findings, then re-run.
-
-**Round 1 (mandatory)**
-1. Invoke `/lp-do-critique docs/plans/<feature-slug>/fact-find.md` (default mode: CRITIQUE + AUTOFIX).
-2. Record: round number, score, finding counts by severity (Critical / Major / Minor).
-3. Apply the round 2 condition from the table above.
-
-**Round 2 (conditional — any Critical, or 2+ Major in Round 1)**
-1. Revise the fact-find to address Round 1 findings.
-2. Re-invoke `/lp-do-critique`.
-3. Record results. Apply the round 3 condition.
-
-**Round 3 (conditional — any Critical still present after Round 2)**
-1. Revise the fact-find to address Round 2 findings.
-2. Re-invoke `/lp-do-critique`.
-3. Record results. This is the final round — do not loop further.
-
-### Post-loop gate
-
-Evaluate the verdict from the final completed round:
-
-- **`credible` (score ≥ 4.0), no Critical findings remaining:** record round count and score, proceed to completion.
-- **`partially credible` OR Critical findings remain after the final round:** set `Status: Needs-input`, surface the top-ranked unresolved findings, stop. Do not route to planning.
-- **`not credible` (score < 3.0) after the final round:** evaluate recoverability:
-  - Recoverable (more evidence or scope adjustment could resolve it): set `Status: Needs-input`, surface findings, stop.
-  - Structural (cannot be resolved without changing scope): set `Status: Infeasible`, write `## Kill Rationale`, stop.
-
-### Idempotency
-
-The critique creates/updates `docs/plans/<feature-slug>/critique-history.md`. Multiple rounds append to the same ledger. Re-running the fact-find appends new rounds — this is expected and does not require user approval.
+Load and follow: `../_shared/critique-loop-protocol.md`
 
 ## Completion Message
 

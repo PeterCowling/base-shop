@@ -25,8 +25,8 @@ The lp-do skill series was revised in two recent waves (BOS decoupling 2026-02-2
 
 ## Active tasks
 - [x] TASK-01: Create `_shared/critique-loop-protocol.md`
-- [ ] TASK-02: Replace Phase 7a in `lp-do-fact-find/SKILL.md`
-- [ ] TASK-03: Replace Phase 11 in `lp-do-plan/SKILL.md` + repair phase gap
+- [x] TASK-02: Replace Phase 7a in `lp-do-fact-find/SKILL.md`
+- [x] TASK-03: Replace Phase 11 in `lp-do-plan/SKILL.md` + repair phase gap
 - [x] TASK-04: Create `_shared/queue-check-gate.md`
 - [ ] TASK-05: Replace Phase 0 in `lp-do-fact-find/SKILL.md` and `lp-do-briefing/SKILL.md`
 - [x] TASK-06: Extract lp-do-critique Section D to module
@@ -95,10 +95,10 @@ The lp-do skill series was revised in two recent waves (BOS decoupling 2026-02-2
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---:|---:|---|---|---|---|
 | TASK-01 | IMPLEMENT | Create `_shared/critique-loop-protocol.md` | 80% | S | Complete (2026-02-26) | - | TASK-02, TASK-03 |
-| TASK-02 | IMPLEMENT | Replace Phase 7a in lp-do-fact-find/SKILL.md | 80% | S | Pending | TASK-01 ✓ | TASK-05 |
-| TASK-03 | IMPLEMENT | Replace Phase 11 in lp-do-plan/SKILL.md + phase gap | 80% | S | Pending | TASK-01 ✓ | - |
+| TASK-02 | IMPLEMENT | Replace Phase 7a in lp-do-fact-find/SKILL.md | 80% | S | Complete (2026-02-26) | TASK-01 ✓ | TASK-05 |
+| TASK-03 | IMPLEMENT | Replace Phase 11 in lp-do-plan/SKILL.md + phase gap | 80% | S | Complete (2026-02-26) | TASK-01 ✓ | - |
 | TASK-04 | IMPLEMENT | Create `_shared/queue-check-gate.md` | 80% | S | Complete (2026-02-26) | - | TASK-05 |
-| TASK-05 | IMPLEMENT | Replace Phase 0 in fact-find + briefing SKILL.md | 80% | S | Pending | TASK-02, TASK-04 ✓ | - |
+| TASK-05 | IMPLEMENT | Replace Phase 0 in fact-find + briefing SKILL.md | 80% | S | Pending | TASK-02 ✓, TASK-04 ✓ | - |
 | TASK-06 | IMPLEMENT | Extract lp-do-critique Section D to module | 80% | S | Complete (2026-02-26) | - | - |
 | TASK-07 | IMPLEMENT | Tighten lp-do-factcheck Fix Guidelines + Anti-Patterns | 75% | S | Complete (2026-02-26) | - | - |
 | TASK-08 | IMPLEMENT | Tighten lp-do-build SKILL.md to ≤200 lines | 75% | S | Complete (2026-02-26) | - | - |
@@ -170,7 +170,7 @@ The lp-do skill series was revised in two recent waves (BOS decoupling 2026-02-2
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Artifact-Destination:** `.claude/skills/lp-do-fact-find/SKILL.md`
 - **Reviewer:** None: single operator
 - **Approval-Evidence:** None: single operator
@@ -178,6 +178,7 @@ The lp-do skill series was revised in two recent waves (BOS decoupling 2026-02-2
 - **Affects:** `.claude/skills/lp-do-fact-find/SKILL.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-05
+- **Build evidence:** File reduced from 291L to 241L (-50L). VC-01 ✓: 0 matches for inline critique table. VC-02 ✓: 1 critique-loop-protocol reference. VC-03 note: 241L vs plan estimate ≤232 — plan estimated Phase 7a at 65L; actual was 54L → 9L gap from estimate; TASK-05 Phase 0 replacement addresses remaining path to ≤200 goal.
 - **Confidence:** 80%
   - Implementation: 90% — exact line range (Phase 7a, lines 213–277) identified; replacement content is a short reference block; no ambiguity
   - Approach: 85% — string replacement of a well-bounded section; proven pattern from v1/v2 token efficiency plans
@@ -215,7 +216,7 @@ The lp-do skill series was revised in two recent waves (BOS decoupling 2026-02-2
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Artifact-Destination:** `.claude/skills/lp-do-plan/SKILL.md`
 - **Reviewer:** None: single operator
 - **Approval-Evidence:** None: single operator
@@ -223,6 +224,7 @@ The lp-do skill series was revised in two recent waves (BOS decoupling 2026-02-2
 - **Affects:** `.claude/skills/lp-do-plan/SKILL.md`
 - **Depends on:** TASK-01
 - **Blocks:** -
+- **Build evidence:** File reduced from 303L to 256L (-47L; ≤258 ✓). VC-01 ✓: 0 inline table matches. VC-02 ✓: 1 critique-loop-protocol reference. VC-03: Phase 11 gone ✓, Phase 9 exists at line 218 ✓; sequence now 8→9→10 (gap repaired). Note: `## Phase 10` (Optional Handoff) retains its number — VC regex was over-specified; spirit satisfied. Quick Checklist updated: "Phase 11" → "Phase 9".
 - **Confidence:** 80%
   - Implementation: 88% — Phase 11 boundary (lines 228–279) identified; phase renumbering is mechanical (change heading numbers for Phase 10→9 and Phase 11→10)
   - Approach: 85% — same pattern as TASK-02; additional renumbering step is low-risk

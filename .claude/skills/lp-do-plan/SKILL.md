@@ -215,6 +215,12 @@ Status policy:
   - mode is `plan+auto` (default) or user explicitly wants build handoff now, and
   - plan gates pass.
 
+## Phase 9: Critique Loop (1–3 rounds, mandatory)
+
+After the plan is persisted (Phase 8) and before any build handoff (Phase 10), run the critique loop in **plan mode**.
+
+Load and follow: `../_shared/critique-loop-protocol.md`
+
 ## Phase 10: Optional Handoff to Build
 
 Evaluate shared auto-continue policy:
@@ -224,58 +230,6 @@ If eligible and mode is `plan+auto`, invoke `/lp-do-build <feature-slug>`.
 
 CHECKPOINT enforcement contract:
 - `/lp-do-build` is responsible for stopping at CHECKPOINT tasks and invoking `/lp-do-replan` for downstream tasks before continued execution.
-
-## Phase 11: Critique Loop (1–3 rounds, mandatory)
-
-After the plan is persisted (Phase 8) and before any build handoff (Phase 10), run the critique loop. Critique always runs at least once — there is no skip condition.
-
-### Factcheck gate
-
-Before Round 1, evaluate whether `/lp-do-factcheck` should run on the plan. Run it if the plan contains any of:
-- Specific file paths or module names stated as facts
-- Function signatures, API behavior, or interface claims
-- Test coverage or CI behavior assertions
-
-This may be run before Round 1 (to pre-clean factual errors before critique) or between rounds if critique surfaces factual claim issues. Use judgment on timing.
-
-### Iteration rules
-
-Run `/lp-do-critique` at least once and up to three times. The number of rounds is driven by severity of findings:
-
-| After round | Condition to run next round |
-|---|---|
-| Round 1 | Any Critical finding, OR 2+ Major findings |
-| Round 2 | Any Critical finding still present |
-| Round 3 | Final round — always the last regardless of outcome |
-
-Before each round after the first: revise the plan to address prior-round findings, then re-run.
-
-**Round 1 (mandatory — always runs)**
-1. Invoke `/lp-do-critique docs/plans/<feature-slug>/plan.md` (default mode: CRITIQUE + AUTOFIX, scope: full).
-2. Record: round number, score, finding counts by severity (Critical / Major / Minor).
-3. Apply the round 2 condition from the table above.
-
-**Round 2 (conditional — any Critical, or 2+ Major in Round 1)**
-1. Revise the plan to address Round 1 findings.
-2. Re-invoke `/lp-do-critique`.
-3. Record results. Apply the round 3 condition.
-
-**Round 3 (conditional — any Critical still present after Round 2)**
-1. Revise the plan to address Round 2 findings.
-2. Re-invoke `/lp-do-critique`.
-3. Record results. This is the final round — do not loop further.
-
-### Post-loop gate
-
-Evaluate the verdict from the final completed round:
-
-- **`not credible` or score ≤ 2.5:** set plan `Status: Draft`, block auto-build. Report findings. Recommend `/lp-do-replan`.
-- **`partially credible` (score 3.0–3.5):** autofixes already applied. Report top issues.
-  - `plan+auto` mode: proceed to build handoff with `Critique-Warning: partially-credible` in frontmatter.
-  - `plan-only` mode: report to user and stop; recommend `/lp-do-replan`.
-- **`credible` (score ≥ 4.0):** autofixes applied, proceed normally.
-
-**Ordering:** Phase 11 runs after Phase 8 (persist) but before Phase 10 (build handoff). Build eligibility is re-evaluated after critique autofixes are applied.
 
 ## Completion Messages
 
@@ -297,6 +251,6 @@ Plan+auto:
 - [ ] `/lp-do-sequence` completed after structural edits
 - [ ] Consumer tracing complete for all new outputs and modified behaviors in M/L code/mixed tasks
 - [ ] lp-do-factcheck run if plan contains codebase claims (file paths, function signatures, coverage assertions)
-- [ ] Phase 11 critique loop run (1–3 rounds, mandatory): round count and final verdict recorded
+- [ ] Phase 9 critique loop run (1–3 rounds, mandatory): round count and final verdict recorded
 - [ ] Auto-build blocked if critique score ≤ 2.5
 - [ ] Auto-build blocked only if `--notauto` passed or critique score ≤ 2.5

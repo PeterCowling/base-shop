@@ -7,6 +7,7 @@
  *
  * Requires: .secrets/ga4/brikette-web-2b73459e229a.json (service account key)
  * Scope: passed by each consumer (webmasters.readonly, indexing, etc.)
+ * Run scripts with: tsx --tsconfig scripts/tsconfig.json scripts/src/brikette/<script>.ts
  */
 
 import * as crypto from "node:crypto";

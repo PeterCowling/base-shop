@@ -6,11 +6,11 @@
  * URL Inspection API and write results to a monitoring JSON file. Used for
  * the every-other-day indexation monitoring cadence (Phase A → B transition).
  *
- * Usage:
- *   tsx scripts/src/brikette/gsc-url-inspection-batch.ts urls.json
- *   cat urls.json | tsx scripts/src/brikette/gsc-url-inspection-batch.ts
- *   tsx scripts/src/brikette/gsc-url-inspection-batch.ts urls.json --dry-run
- *   tsx scripts/src/brikette/gsc-url-inspection-batch.ts urls.json --output path/to/run.json
+ * Usage (run from repo root):
+ *   tsx --tsconfig scripts/tsconfig.json scripts/src/brikette/gsc-url-inspection-batch.ts urls.json
+ *   cat urls.json | tsx --tsconfig scripts/tsconfig.json scripts/src/brikette/gsc-url-inspection-batch.ts
+ *   tsx --tsconfig scripts/tsconfig.json scripts/src/brikette/gsc-url-inspection-batch.ts urls.json --dry-run
+ *   tsx --tsconfig scripts/tsconfig.json scripts/src/brikette/gsc-url-inspection-batch.ts urls.json --output path/to/run.json
  *
  * Input formats accepted:
  *   - JSON array of strings: ["https://...", "https://..."]

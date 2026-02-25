@@ -6,11 +6,11 @@
  * from the Google Search Console Search Analytics API. Used for the monitoring
  * cadence alongside gsc-url-inspection-batch.ts.
  *
- * Usage:
- *   tsx scripts/src/brikette/gsc-search-analytics.ts
- *   tsx scripts/src/brikette/gsc-search-analytics.ts --start 2026-01-01 --end 2026-01-31
- *   tsx scripts/src/brikette/gsc-search-analytics.ts --start 2026-01-01 --end 2026-01-31 --query
- *   tsx scripts/src/brikette/gsc-search-analytics.ts --output path/to/analytics.json
+ * Usage (run from repo root):
+ *   tsx --tsconfig scripts/tsconfig.json scripts/src/brikette/gsc-search-analytics.ts
+ *   tsx --tsconfig scripts/tsconfig.json scripts/src/brikette/gsc-search-analytics.ts --start 2026-01-01 --end 2026-01-31
+ *   tsx --tsconfig scripts/tsconfig.json scripts/src/brikette/gsc-search-analytics.ts --start 2026-01-01 --end 2026-01-31 --query
+ *   tsx --tsconfig scripts/tsconfig.json scripts/src/brikette/gsc-search-analytics.ts --output path/to/analytics.json
  *
  * Output:
  *   docs/plans/brikette-seo-api-optimization-loop/monitoring/analytics-<YYYY-MM-DD>.json

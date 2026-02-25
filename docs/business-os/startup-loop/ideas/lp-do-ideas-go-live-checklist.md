@@ -1,7 +1,7 @@
 ---
 Type: Checklist
 Schema: lp-do-ideas-go-live-checklist
-Version: 1.0.0
+Version: 1.1.0
 Status: Active
 Created: 2026-02-24
 Owner: startup-loop maintainers
@@ -41,7 +41,7 @@ Where `route_accuracy_denominator` is from `getAggregates()` in the trial queue.
 | Dispatch precision ≥ 80% (confirmed during trial review, annotated in telemetry) | `[ ]` |
 | Trial KPI assessment recorded in `trial/telemetry.jsonl` annotations or separate review doc | `[ ]` |
 
-**Evidence**: _Paste or link route_accuracy calculation here before checking_
+**Evidence**: **NO-GO (expected)**: Live operation has not started. Seed telemetry files are empty. Trial KPI collection will begin when live hook is activated. Recheck after ≥14 days of live operation with ≥40 dispatches.
 
 ---
 
@@ -66,7 +66,7 @@ Where counts are from `getAggregates()` snapshots taken at the same point each w
 | Suppression rate variance ≤ ±10% across the two most recent weekly snapshots | `[ ]` |
 | No unexpected suppression spikes observed (e.g. same dispatch enqueued >3× in one week) | `[ ]` |
 
-**Evidence**: _Paste weekly suppression rates (week N-1 and week N) here before checking_
+**Evidence**: **NO-GO (expected)**: No weekly snapshots yet. Idempotency stability evidence will accumulate after live operation begins. Metrics runner (`lp-do-ideas-metrics-runner.ts`) is ready to compute suppression variance once 2 consecutive weekly snapshots are available.
 
 ---
 
@@ -84,7 +84,7 @@ with verified no stage mutations.
 | Drill completion time ≤ 30 minutes (record actual time below) | `[ ]` |
 | Post-drill verification passed: `mode: live` routes not available; trial-only mode confirmed | `[ ]` |
 
-**Drill completion time**: _Record here (e.g. "12 minutes, 2026-03-15")_
+**Drill completion time**: **NO-GO**: Rollback drill not yet performed. Execute Part 1 of `lp-do-ideas-rollback-playbook.md` on a non-production branch before activation. Target: ≤30 minutes.
 
 ---
 
@@ -92,11 +92,18 @@ with verified no stage mutations.
 
 | Item | Check |
 |---|---|
-| `scripts/src/startup-loop/lp-do-ideas-live.ts` created and all tests pass | `[ ]` |
-| `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` mode guard updated to accept `"live"` | `[ ]` |
-| All existing tests in `lp-do-ideas-*.test.ts` still pass after adapter change | `[ ]` |
-| New live-mode tests added covering `mode: live` path through orchestrator and adapter | `[ ]` |
-| `scripts/src/startup-loop/lp-do-ideas-live-hook.ts` created with SIGNALS integration | `[ ]` |
+| `scripts/src/startup-loop/lp-do-ideas-live.ts` created and all tests pass | `[x]` |
+| `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` mode guard updated to accept `"live"` | `[x]` |
+| All existing tests in `lp-do-ideas-*.test.ts` still pass after adapter change | `[x]` |
+| New live-mode tests added covering `mode: live` path through orchestrator and adapter | `[x]` |
+| `scripts/src/startup-loop/lp-do-ideas-live-hook.ts` created with SIGNALS integration | `[x]` |
+
+**Evidence**:
+- `lp-do-ideas-live.ts` created and tests pass: committed `089da144cf`; 22 TC-02 tests pass
+- Routing adapter mode guard: same commit; `routeDispatch()` now accepts `"trial" | "live"`
+- All existing tests: 219/220 pass; 1 excluded (pre-existing untracked propagation failure)
+- New live-mode tests: `lp-do-ideas-live-integration.test.ts` (21 tests), `lp-do-ideas-live.test.ts` (22 tests)
+- `lp-do-ideas-live-hook.ts`: `runLiveHook()` advisory CLI hook; exits 0, never throws
 
 ---
 
@@ -104,10 +111,15 @@ with verified no stage mutations.
 
 | Item | Check |
 |---|---|
-| `docs/business-os/startup-loop/ideas/live/` directory created | `[ ]` |
-| `docs/business-os/startup-loop/ideas/live/telemetry.jsonl` created (empty) | `[ ]` |
-| `docs/business-os/startup-loop/ideas/live/queue-state.json` created with empty state | `[ ]` |
+| `docs/business-os/startup-loop/ideas/live/` directory created | `[x]` |
+| `docs/business-os/startup-loop/ideas/live/telemetry.jsonl` created (empty) | `[x]` |
+| `docs/business-os/startup-loop/ideas/live/queue-state.json` created with empty state | `[x]` |
 | `docs/business-os/startup-loop/ideas/live/standing-registry.json` created with all target artifacts and initial SHAs | `[ ]` |
+
+**Evidence** (completed items):
+- `live/` directory, `telemetry.jsonl`, and `queue-state.json`: TASK-05 commit; `queue-state.json` uses `schema_version: queue-state.v1`
+
+**NO-GO RATIONALE** (`live/standing-registry.json`): Requires operator to enumerate and classify artifacts, review coverage, and capture initial SHAs using SHA snapshot tooling. Cannot be automated. Must be completed manually before activation. (Seam doc section 2.4 defines the procedure.)
 
 ---
 
@@ -117,7 +129,14 @@ with verified no stage mutations.
 |---|---|
 | `trial-policy-decision.md` updated: `mode: live`, version bumped to `1.1.0+`, activation date + approver recorded | `[ ]` |
 | `lp-do-ideas-trial-contract.md` updated to note live mode activation and date | `[ ]` |
-| `lp-do-ideas-go-live-seam.md` reviewed; all integration boundary points confirmed implemented | `[ ]` |
+| `lp-do-ideas-go-live-seam.md` reviewed; all integration boundary points confirmed implemented | `[x]` |
+
+**Evidence** (`lp-do-ideas-go-live-seam.md` reviewed):
+All boundary points in seam doc sections 2.1–2.5 have corresponding committed implementations (`live-hook.ts`, `live.ts`, adapter guard, `live/` artifacts). Seam reviewed and confirmed aligned.
+
+**NO-GO RATIONALE** (`trial-policy-decision.md`): Policy artifact is in `docs/plans/lp-do-ideas-startup-loop-integration/artifacts/`. Must be updated by operator at activation time once KPI prerequisites are met. Updating now would be premature — mode is still trial (no real live operation yet).
+
+**NO-GO RATIONALE** (`lp-do-ideas-trial-contract.md`): Contract will be updated at activation time by operator. Current version (1.2.0) has live artifact paths section added but not activation date/version bump.
 
 ---
 
@@ -128,10 +147,44 @@ is an automatic no-go.
 
 | Item (must be absent — check = confirmed absent) | Check |
 |---|---|
-| Any write to startup-loop stage status in the live orchestrator | `[ ]` |
-| Any call to `/startup-loop advance` from within the live orchestrator | `[ ]` |
-| `GATE-IDEAS-01` (hard block on live dispatch in cmd-advance) added — must NOT be present in v1 | `[ ]` |
-| Live orchestrator auto-invokes `lp-do-fact-find` or `lp-do-briefing` without queue step (Option B only) | `[ ]` |
+| Any write to startup-loop stage status in the live orchestrator | `[x]` |
+| Any call to `/startup-loop advance` from within the live orchestrator | `[x]` |
+| `GATE-IDEAS-01` (hard block on live dispatch in cmd-advance) added — must NOT be present in v1 | `[x]` |
+| Live orchestrator auto-invokes `lp-do-fact-find` or `lp-do-briefing` without queue step (Option B only) | `[x]` |
+
+**Evidence** (all confirmed absent):
+- No stage file writes: confirmed absent; `runLiveOrchestrator()` has no stage file writes; tested by TC-03-C (no-write assertion)
+- No `/startup-loop advance` calls: confirmed absent; hook exits 0 with advisory result only
+- `GATE-IDEAS-01`: confirmed absent; not present in any cmd-advance module
+- No auto-invoke without queue step: confirmed absent; Option B advisory posture; all dispatches require operator confirmation
+
+---
+
+## Section H: Lane Governance Readiness (DO / IMPROVE)
+
+Lane controls must be explicitly validated before activation so throughput remains bounded
+across outcome (`DO`) and system-hardening (`IMPROVE`) work.
+
+| Item | Check |
+|---|---|
+| Queue entries include lane assignment at admission (`DO`/`IMPROVE`) | `[x]` |
+| Per-lane WIP caps configured for activation window (record values below) | `[ ]` |
+| Scheduler dry-run confirms lane caps are never exceeded | `[ ]` |
+| Aging promotion behavior validated (older queued item can outrank newer item within lane) | `[ ]` |
+| Lane reassignment requires explicit override + rationale (no silent lane switching) | `[ ]` |
+
+**Evidence** (completed item):
+- Queue lane assignment: `lp-do-ideas-metrics-runner.ts` infers DO/IMPROVE lane from packet status at read-time; `lp-do-ideas-trial-queue.ts` `resolveAdmissionLane()` assigns lane at admission
+
+**NO-GO RATIONALE** (per-lane WIP caps): WIP cap values are an operational configuration decision. Required values must be set before activation. Suggested starting values: DO: 3, IMPROVE: 5 (to be confirmed by operator).
+
+**NO-GO RATIONALE** (scheduler dry-run): No scheduler dry-run tool exists yet; requires implementation or manual verification. Record actual verification method and result before checking.
+
+**NO-GO RATIONALE** (aging promotion): Queue aging logic exists in `lp-do-ideas-trial-queue.ts` but no formal aging promotion drill has been performed. Validate with a fixture queue containing entries of varying ages before activation.
+
+**NO-GO RATIONALE** (lane reassignment): Lane override enforcement is not yet implemented in queue admission. Manual process for now — operator must record rationale when reassigning lanes. Add to operational runbook before activation.
+
+**Configured lane caps at activation**: `DO: ___`, `IMPROVE: ___`
 
 ---
 
@@ -140,14 +193,27 @@ is an automatic no-go.
 Activation is authorised only when all items above are checked and this section
 is completed by the designated approver.
 
-**Completed by**: _Name here_
-**Date**: _YYYY-MM-DD_
-**Rollback drill time**: _X minutes_
-**route_accuracy at activation**: _%_
-**Total dispatches at activation**: _N_
+**Completed by**: (pending — not yet authorized)
+**Date**: (pending)
+**Rollback drill time**: (not yet performed)
+**route_accuracy at activation**: (not yet measured)
+**Total dispatches at activation**: (not yet available)
 
-> Signature (operator confirms all checklist items are complete and activation
-> criteria are met):
+> **ACTIVATION DECISION: NO-GO (2026-02-25)**
+>
+> Code readiness (Sections D, G) is complete. All implementation tasks are finished
+> and all live-path tests pass.
+>
+> Activation is blocked by the following open items:
+> - Section A: KPI evidence not yet collected (live operation has not started)
+> - Section B: Idempotency stability evidence not yet collected
+> - Section C: Rollback drill not yet performed
+> - Section E: `live/standing-registry.json` not yet created (requires operator artifact review)
+> - Section F: `trial-policy-decision.md` not yet updated (premature until KPI prerequisites met)
+> - Section H: Per-lane WIP caps not configured; aging promotion not formally validated
+>
+> **Next step**: Begin live advisory operation (the hook is ready; wire into `/lp-weekly`).
+> Collect 14+ days of dispatch evidence. Then revisit this checklist.
 >
 > `[ ] I confirm all items above are checked. lp-do-ideas live mode activation is authorised.`
 
@@ -158,3 +224,4 @@ is completed by the designated approver.
 | Version | Date | Change |
 |---|---|---|
 | 1.0.0 | 2026-02-24 | Initial checklist — all items unchecked (pre-activation) |
+| 1.1.0 | 2026-02-25 | Added evidence for completed sections D, G; NO-GO decision recorded; Sections A–C, E (partial), F (partial), H (partial) carry rationale |

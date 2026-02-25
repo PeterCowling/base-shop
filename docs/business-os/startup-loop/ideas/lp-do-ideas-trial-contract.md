@@ -1,10 +1,11 @@
 ---
 Type: Contract
 Schema: lp-do-ideas-trial-contract
-Version: 1.1.1
+Version: 1.2.0
 Mode: trial
 Status: Active
 Created: 2026-02-24
+Updated: 2026-02-25
 Owner: startup-loop maintainers
 Related-plan: docs/plans/lp-do-ideas-startup-loop-integration/plan.md
 Related-schema: lp-do-ideas-dispatch.schema.json, lp-do-ideas-standing-registry.schema.json
@@ -175,6 +176,26 @@ Until these conditions are met:
 - `mode: live` invocation is rejected fail-closed
 - Trial artifact paths remain the only permitted write targets
 - Startup-loop stage orchestration remains unchanged
+
+### 8.1 Live Mode Implementation Status (2026-02-25)
+
+As of this date, the following live-mode components have been implemented:
+
+| Component | Status | Location |
+|---|---|---|
+| Live orchestrator (`runLiveOrchestrator`) | Complete | `scripts/src/startup-loop/lp-do-ideas-live.ts` |
+| Routing adapter live-mode guard | Complete | `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` |
+| SIGNALS advisory hook (`runLiveHook`) | Complete | `scripts/src/startup-loop/lp-do-ideas-live-hook.ts` |
+| Persistence adapter | Complete | `scripts/src/startup-loop/lp-do-ideas-persistence.ts` |
+| Live artifact paths (`live/`) | Complete | `docs/business-os/startup-loop/ideas/live/` |
+| Autonomous gate + kill-switch | Complete (inactive) | `scripts/src/startup-loop/lp-do-ideas-autonomous-gate.ts` |
+| KPI rollup runner | Complete | `scripts/src/startup-loop/lp-do-ideas-metrics-runner.ts` |
+| Production standing registry | Pending | Requires operator artifact review and SHA capture |
+| Go-live activation | Pending | Blocked: KPI evidence, rollback drill, policy update |
+
+Activation prerequisites (Section 8, full list in seam doc) remain unmet — KPI evidence
+has not yet been collected. The hook is ready to wire into `/lp-weekly`. Live operation
+data will drive Section A/B checklist completion.
 
 ## 9. Forward Compatibility
 

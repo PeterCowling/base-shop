@@ -1,7 +1,7 @@
 ---
 Type: Seam-Contract
 Schema: lp-do-ideas-go-live-seam
-Version: 1.0.0
+Version: 1.1.0
 Mode: trial → live (activation deferred)
 Status: Active
 Created: 2026-02-24
@@ -73,19 +73,22 @@ the SIGNALS weekly cycle collects standing-artifact snapshots.
 - Integration point is advisory in v1 live mode — it does not block SIGNALS stage advance.
 
 **Location for integration stub**: `scripts/src/startup-loop/lp-do-ideas-live-hook.ts`
-(not yet created — implementation deferred until go-live activation).
+(IMPLEMENTED — advisory hook is live; wire into `/lp-weekly` at activation time).
 
 ### 2.2 Mode Guard Updates (code changes required at activation)
 
-Two functions currently hard-reject `mode: live`. Both must be updated:
+Two functions previously hard-rejected `mode: live`. Both have been updated:
 
-| Function | File | Current guard | Live-mode update required |
+| Function | File | Previous guard | Live-mode update required |
 |---|---|---|---|
-| `runTrialOrchestrator()` | `scripts/src/startup-loop/lp-do-ideas-trial.ts` | Rejects if `mode !== "trial"` | Either update to accept `"live"` or create `lp-do-ideas-live.ts` as a parallel module |
-| `routeDispatch()` | `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` | Rejects if `mode !== "trial"` | Update guard to accept `"live"` with same routing logic |
+| `runTrialOrchestrator()` | `scripts/src/startup-loop/lp-do-ideas-trial.ts` | Rejects if `mode !== "trial"` | COMPLETE |
+| `routeDispatch()` | `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` | Rejects if `mode !== "trial"` | COMPLETE |
 
-**Preferred pattern**: Create `lp-do-ideas-live.ts` as a separate module that:
-- Imports the same routing adapter (the adapter guard must be updated to allow `"live"`)
+**Status**: Both mode guards implemented as of 2026-02-25. `lp-do-ideas-live.ts` created
+as a separate module. `routeDispatch()` guard updated to accept `"trial" | "live"`.
+
+**Preferred pattern** (implemented): `lp-do-ideas-live.ts` is a separate module that:
+- Imports the same routing adapter (the adapter guard has been updated to allow `"live"`)
 - Uses production artifact paths (not trial paths)
 - Integrates with the SIGNALS hook
 
@@ -137,6 +140,8 @@ go-live activation to preserve advisory posture.
 The following sequence switches `lp-do-ideas` from trial to live mode. All steps
 must be completed in order. **Do not skip steps.** Each step has an explicit
 verification check.
+
+**Implementation status (2026-02-25)**: Steps 1 (checklist — NO-GO), 3 (code), 5 (artifacts) and 6 (hook) are complete as of this build. Steps 2 (policy update), 4 (production registry), and 7 (rollback drill) remain for the operator to complete at activation time.
 
 ### Step 1 — Confirm checklist sign-off
 
@@ -253,3 +258,4 @@ If any of the following are true, do NOT activate live mode:
 | Version | Date | Change |
 |---|---|---|
 | 1.0.0 | 2026-02-24 | Initial go-live seam definition (pre-activation) |
+| 1.1.0 | 2026-02-25 | Updated to reflect implementation completion: live.ts, routing-adapter, live-hook.ts, live/ artifacts all created. Activation remains deferred pending KPI evidence. |

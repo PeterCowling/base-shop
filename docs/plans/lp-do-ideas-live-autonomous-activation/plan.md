@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Platform / Business-OS
 Workstream: Engineering
 Created: 2026-02-25
 Last-reviewed: 2026-02-25
-Last-updated: 2026-02-25 (TASK-09 complete)
+Last-updated: 2026-02-25 (TASK-10 complete — all tasks done)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-do-ideas-live-autonomous-activation
 Deliverable-Type: multi-deliverable
@@ -34,7 +34,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - [x] TASK-07: Wire KPI rollup evidence pipeline
 - [x] TASK-08: Horizon checkpoint - reassess autonomous lane from live evidence
 - [x] TASK-09: Implement autonomous gating and kill-switch controls (inactive)
-- [ ] TASK-10: Produce go-live checklist closure package and recommendation
+- [x] TASK-10: Produce go-live checklist closure package and recommendation
 
 ## Goals
 - Enable a live advisory intake path that can run during SIGNALS without mutating stage state.
@@ -90,7 +90,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 | TASK-07 | IMPLEMENT | Wire KPI rollup evidence generation for checklist VC-01/VC-02 | 85% | M | Complete (2026-02-25) | TASK-04 ✓ | TASK-08, TASK-10 |
 | TASK-08 | CHECKPOINT | Horizon checkpoint - reassess autonomous lane from live evidence | 95% | S | Complete (2026-02-25) | TASK-06, TASK-07 | TASK-09, TASK-10 |
 | TASK-09 | IMPLEMENT | Implement autonomous gating + kill-switch controls (inactive) | 88% | M | Complete (2026-02-25) | TASK-08 ✓ | TASK-10 |
-| TASK-10 | IMPLEMENT | Produce checklist closure package and activation recommendation | 80% | M | Pending | TASK-05, TASK-07, TASK-09 | - |
+| TASK-10 | IMPLEMENT | Produce checklist closure package and activation recommendation | 80% | M | Complete (2026-02-25) | TASK-05 ✓, TASK-07 ✓, TASK-09 ✓ | - |
 
 ## Parallelism Guide
 
@@ -535,7 +535,7 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-25)
 - **Artifact-Destination:** `docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-checklist.md` + linked evidence artifacts
 - **Reviewer:** startup-loop maintainers (operator)
 - **Approval-Evidence:** signed checklist section with date + approver
@@ -572,6 +572,20 @@ This plan moves `lp-do-ideas` from trial-only operation to live advisory operati
   - Rollback: keep `no-go` posture and continue trial/advisory evidence collection.
 - **Documentation impact:** checklist/seam/rollback docs become the canonical activation record.
 - **Notes / references:** BR-06, BR-07.
+- **Build completion evidence (2026-02-25):**
+  - Updated `docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-checklist.md` → v1.1.0
+  - Section D (Code Readiness): all 5 items `[x]` with evidence links to commits + test counts
+  - Section E (Artifact Readiness): 3 of 4 items `[x]`; standing-registry `[ ]` with no-go rationale (requires operator artifact review + SHA capture)
+  - Section F (Policy/Governance): seam doc review `[x]`; policy artifact update + contract date `[ ]` with rationale (premature until KPI evidence collected)
+  - Section G (Scope Confirmation): all 4 absence items `[x]` confirmed absent (no stage writes, no advance calls, GATE-IDEAS-01 absent, Option B posture)
+  - Section H (Lane Governance): lane assignment `[x]`; WIP caps/scheduler/aging/reassignment `[ ]` with rationale
+  - Sections A, B, C: all `[ ]` — NO-GO (expected): live operation not started; data accumulation required
+  - Sign-off: **NO-GO decision recorded (2026-02-25)** with 6 blocking items and next-step instruction
+  - Updated `docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-seam.md` → v1.1.0: sections 2.1, 2.2, 2.3 updated to reflect IMPLEMENTED status; implementation status block added to section 3
+  - Updated `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md` → v1.2.0: section 8.1 added with implementation status table (7 components complete, 2 pending)
+  - VC-10-A: ✓ no unresolved placeholder evidence fields — all have either `[x]` evidence or explicit rationale
+  - VC-10-B: ✓ recommendation is explicitly NO-GO with rationale
+  - VC-10-C: ✓ no-go conditions not verified absent (sections A, B, C open as expected)
 
 ## Risks & Mitigations
 - Live hook introduces hidden stage coupling.

@@ -9,8 +9,6 @@ const __dirname = path.dirname(__filename);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   ...sharedConfig,
-  // Product Pipeline relies on dynamic route handlers, so disable static export.
-  output: sharedConfig.output === "export" ? undefined : sharedConfig.output,
   turbopack: {
     ...(sharedConfig.turbopack ?? {}),
     resolveAlias: {

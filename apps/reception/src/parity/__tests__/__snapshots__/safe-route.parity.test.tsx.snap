@@ -3,15 +3,23 @@
 exports[`/safe-management parity matches baseline safe selectors and DOM snapshot 1`] = `
 <div>
   <div
-    class="min-h-80vh p-4 bg-surface-2 font-sans text-foreground"
+    class="bg-gradient-to-b from-surface-2 to-surface-3 min-h-80vh p-4 font-sans text-foreground"
   >
-    <h1
-      class="w-full mb-6 text-5xl text-center font-heading text-primary-main"
-    >
-      SAFE MANAGEMENT
-    </h1>
     <div
-      class="bg-surface rounded-lg shadow p-6 space-y-4"
+      class="mb-6 flex items-center gap-3"
+    >
+      <div
+        aria-hidden="true"
+        class="h-7 w-1 rounded-full bg-primary-main"
+      />
+      <h1
+        class="text-2xl font-heading font-semibold text-foreground"
+      >
+        SAFE MANAGEMENT
+      </h1>
+    </div>
+    <div
+      class="bg-surface rounded-xl shadow-lg p-6 space-y-4"
     >
       <p
         class="text-lg"

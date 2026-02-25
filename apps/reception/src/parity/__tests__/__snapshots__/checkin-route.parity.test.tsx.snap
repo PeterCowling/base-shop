@@ -25,7 +25,7 @@ exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
       </div>
     </div>
     <div
-      class="flex-grow bg-surface rounded-lg shadow p-6 space-y-4"
+      class="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4"
     >
       <div
         class="flex items-center justify-between"

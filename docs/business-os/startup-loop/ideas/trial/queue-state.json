@@ -2,17 +2,109 @@
   "queue_version": "queue.v1",
   "mode": "trial",
   "created_at": "2026-02-25T00:00:00Z",
-  "last_updated": "2026-02-25T00:00:00Z",
+  "last_updated": "2026-02-25T16:00:00Z",
   "counts": {
     "enqueued": 0,
     "processed": 2,
     "skipped": 0,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 2,
-    "total": 1
+    "auto_executed": 4,
+    "total": 2
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260225-0005",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-ui-screen-polish:20260225",
+      "anchor_key": "reception-ui-screen-polish",
+      "cluster_key": "BRIK:PRODUCTS:reception-ui-screen-polish:operator:BRIK:PRODUCTS:reception-ui-screen-polish:20260225",
+      "cluster_fingerprint": "e7c3a9f2b4d1085690abcdef34567891",
+      "lineage_depth": 0,
+      "area_anchor": "Reception app — screen-by-screen UI polish using the frontend-design skill",
+      "location_anchors": [
+        "apps/reception/src/app/",
+        "apps/reception/src/components/",
+        "docs/plans/reception-design-overhaul/assessment.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "The reception app login and bar screens have been visually improved using the frontend-design skill. The reception-design-overhaul assessment documents a Phase 3 'screen-by-screen polish' vision but no plan has been created for it. The reception-visual-ux-audit plan addressed systematic bug fixes (token normalization, dark mode overlays, touch targets, modal unification) — not creative UI design polish. No active plan covers applying the frontend-design skill to remaining reception screens.",
+      "next_scope_now": "Fact-find to scope reception app screen-by-screen UI polish using the frontend-design skill: (1) inventory all major reception app screens/routes — which exist beyond login and bar? (checkin, checkout, room grid, till reconciliation, safe management, sales, settings, etc.); (2) for each screen, assess current visual quality against the 'Skeuomorphic Hospitality POS' direction from the design overhaul assessment — what needs attention and why?; (3) identify the highest-leverage screens first — which screens are used most frequently by bar/reception staff and would benefit most from improved visual clarity and touch usability?; (4) review what the frontend-design skill produced for login and bar screens — what design patterns were applied, what can be systematically extended to other screens?; (5) identify any shared components or layout patterns that, if redesigned once, would improve multiple screens simultaneously; (6) produce a planning-ready brief with a prioritised screen list, per-screen improvement goals, and a phased execution approach.",
+      "adjacent_later": [
+        "Shared layout/navigation component polish (sidebar, header, breadcrumbs) that spans all screens",
+        "Micro-interaction and animation improvements for touch POS feedback (button press states, transitions)",
+        "Accessibility audit post-redesign — colour contrast, focus management for keyboard-navigable POS modes",
+        "Responsive/tablet layout optimisation for bar POS use on iPad"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.90,
+      "evidence_refs": [
+        "operator-stated: login and bar screens improved via frontend-design skill; more opportunity to improve remaining reception screens",
+        "docs/plans/reception-design-overhaul/assessment.md",
+        "docs/plans/reception-visual-ux-audit/plan.md"
+      ],
+      "created_at": "2026-02-25T16:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "reception-ui-screen-polish",
+        "fact_find_path": "docs/plans/reception-ui-screen-polish/fact-find.md",
+        "processed_at": "2026-02-25T16:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260225-0004",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:lp-do-skills-token-efficiency-post-revision:20260225",
+      "anchor_key": "lp-do-skills-token-efficiency-post-revision",
+      "cluster_key": "BOS:BOS:lp-do-skills-token-efficiency-post-revision:operator:BOS:BOS:lp-do-skills-token-efficiency-post-revision:20260225",
+      "cluster_fingerprint": "f5a2b8c3d4e6079012345678abcdef90",
+      "lineage_depth": 0,
+      "area_anchor": "lp-do skill series — token efficiency and effectiveness improvements after recent revisions (BOS decoupling + post-build validation)",
+      "location_anchors": [
+        ".claude/skills/lp-do-fact-find/",
+        ".claude/skills/lp-do-plan/",
+        ".claude/skills/lp-do-build/",
+        ".claude/skills/lp-do-replan/",
+        ".claude/skills/lp-do-critique/",
+        ".claude/skills/lp-do-factcheck/"
+      ],
+      "provisional_deliverable_family": "skill-change",
+      "domain": "BOS",
+      "current_truth": "The lp-do skill series (fact-find, plan, build, replan, critique, factcheck) have been recently revised — BOS integration was removed (do-skills-bos-decoupling, all tasks done 2026-02-24) and post-build validation was added to lp-do-build (lp-do-build-post-build-validation, TASK-01 done 2026-02-25). Previous token efficiency work (startup-loop-token-efficiency v1 and v2) targeted other skills (lp-design-qa, lp-sequence, lp-channels, lp-seo, lp-launch-qa). The lp-do skills themselves have not had a dedicated post-revision token efficiency audit. The operator has identified this as an opportunity.",
+      "next_scope_now": "Fact-find the lp-do skill series for token efficiency and effectiveness improvements post-revision. Scope: (1) measure current SKILL.md line counts for all six lp-do skills and their modules — which exceed the 200-line thin-orchestrator threshold? (2) identify content that is now redundant post-BOS-decoupling — removed BOS phases may have left residual context, examples, or instructions that no longer apply; (3) identify module content that could be tightened without losing accuracy — verbose examples, repeated preambles, over-specified gate descriptions; (4) identify structural improvements — do the skills have clear, efficient handoff contracts, or do they repeat context that could be moved to a single shared reference? (5) assess effectiveness — do the skills produce consistent, high-quality outputs across the lp-do-fact-find → lp-do-plan → lp-do-build chain, or are there known failure modes that a better skill design would prevent? Output: a planning brief scoping specific token reduction targets per skill + any structural/effectiveness improvements.",
+      "adjacent_later": [
+        "Second meta-loop-efficiency audit post-improvements to confirm H1 compliance",
+        "lp-do-sequence potential merge or simplification",
+        "Shared lp-do context budget — a common preamble for the chain that avoids repeating architectural context in each skill"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: lp-do skills have been revised; opportunity to make them more token efficient and effective",
+        "docs/plans/do-skills-bos-decoupling/plan.md",
+        "docs/plans/lp-do-build-post-build-validation/plan.md"
+      ],
+      "created_at": "2026-02-25T15:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "lp-do-skills-token-efficiency-post-revision",
+        "fact_find_path": "docs/plans/lp-do-skills-token-efficiency-post-revision/fact-find.md",
+        "processed_at": "2026-02-25T15:00:00Z",
+        "route": "auto-executed"
+      }
+    },
     {
       "schema_version": "dispatch.v1",
       "dispatch_id": "IDEA-DISPATCH-20260225-0003",

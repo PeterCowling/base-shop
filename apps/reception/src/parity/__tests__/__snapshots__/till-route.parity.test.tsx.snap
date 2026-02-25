@@ -3,15 +3,23 @@
 exports[`/till-reconciliation parity matches baseline heading and dropdown selector snapshot 1`] = `
 <div>
   <div
-    class="min-h-80vh p-4 bg-surface-2 font-sans text-foreground"
+    class="bg-gradient-to-b from-surface-2 to-surface-3 min-h-80vh p-4 font-sans text-foreground"
   >
-    <h1
-      class="w-full mb-6 text-5xl text-center font-heading text-primary-main"
-    >
-      TILL MANAGEMENT
-    </h1>
     <div
-      class="flex-grow bg-surface rounded-lg shadow p-6 space-y-8"
+      class="mb-6 flex items-center gap-3"
+    >
+      <div
+        aria-hidden="true"
+        class="h-7 w-1 rounded-full bg-primary-main"
+      />
+      <h1
+        class="text-2xl font-heading font-semibold text-foreground"
+      >
+        TILL MANAGEMENT
+      </h1>
+    </div>
+    <div
+      class="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-8"
     >
       <div
         class="flex flex-col gap-4 sm:flex-row"

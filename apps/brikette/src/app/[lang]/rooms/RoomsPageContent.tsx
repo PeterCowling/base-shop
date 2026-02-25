@@ -19,6 +19,10 @@ import { fireViewItemList } from "@/utils/ga4-events";
 type Props = {
   lang: AppLanguage;
   bookingQuery?: RoomsSectionBookingQuery;
+  /** Server-resolved hero heading from the RSC page wrapper; used as SSR-stable primary value. */
+  serverTitle?: string;
+  /** Server-resolved hero subheading from the RSC page wrapper. */
+  serverSubtitle?: string;
 };
 
 const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
@@ -31,7 +35,7 @@ function resolveTranslatedCopy(value: unknown, fallback: string): string {
   return trimmed;
 }
 
-function RoomsPageContent({ lang, bookingQuery }: Props) {
+function RoomsPageContent({ lang, bookingQuery, serverTitle, serverSubtitle }: Props) {
   const { t } = useTranslation("roomsPage", { lng: lang, useSuspense: true });
   useTranslation("ratingsBar", { lng: lang, useSuspense: true });
   usePagePreload({
@@ -40,14 +44,14 @@ function RoomsPageContent({ lang, bookingQuery }: Props) {
     optionalNamespaces: ["ratingsBar", "modals", "guides"],
   });
 
-  const pageTitle = resolveTranslatedCopy(
-    t("hero.heading", { defaultValue: "Our rooms" }),
-    "Our rooms"
-  );
-  const pageSubtitle = resolveTranslatedCopy(
-    t("hero.subheading", { defaultValue: "" }),
-    ""
-  );
+  // Use server-resolved props when available (guaranteed SSR content from RSC wrapper).
+  // Fall back to client-side translation if server props are absent (e.g. in tests).
+  const pageTitle =
+    serverTitle ??
+    resolveTranslatedCopy(t("hero.heading", { defaultValue: "Our rooms" }), "Our rooms");
+  const pageSubtitle =
+    serverSubtitle ??
+    resolveTranslatedCopy(t("hero.subheading", { defaultValue: "" }), "");
 
   useEffect(() => {
     fireViewItemList({

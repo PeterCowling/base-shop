@@ -51,6 +51,11 @@ export default async function RoomsPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  await getTranslations(validLang, ["roomsPage", "_tokens"]);
-  return <RoomsPageContent lang={validLang} />;
+  // Pre-warm i18n cache and resolve hero copy server-side so the H1 is
+  // guaranteed to render with translated content in the initial SSR HTML.
+  const t = await getTranslations(validLang, ["roomsPage", "_tokens"]);
+  const serverTitle = (t("hero.heading") as string) || "Our rooms";
+  const serverSubtitle = (t("hero.subheading") as string) || "";
+
+  return <RoomsPageContent lang={validLang} serverTitle={serverTitle} serverSubtitle={serverSubtitle} />;
 }

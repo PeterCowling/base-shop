@@ -39,5 +39,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ExperiencesPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
+  // Pre-warm i18n cache so ExperiencesPageContent has translations available on first SSR render.
+  // generateMetadata also calls getTranslations but that runs in a separate execution context.
+  await getTranslations(validLang, ["experiencesPage", "guides"]);
   return <ExperiencesPageContent lang={validLang} />;
 }

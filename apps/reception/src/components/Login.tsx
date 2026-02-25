@@ -15,7 +15,6 @@ import { Button } from "@acme/design-system/atoms";
 
 import { useAuth } from "../context/AuthContext";
 import { readJson, removeItem,writeJson } from "../lib/offline/storage";
-import { useReceptionTheme } from "../providers/ReceptionThemeProvider";
 import {
   getFirebaseAuth,
   sendPasswordResetEmail,
@@ -34,7 +33,7 @@ async function hashPin(pin: string): Promise<string> {
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-// Icon components for password visibility toggle and dark mode
+// Icon components for password visibility toggle
 function EyeIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -80,45 +79,7 @@ function EyeSlashIcon({ className }: { className?: string }) {
   );
 }
 
-function SunIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className={className}
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-      />
-    </svg>
-  );
-}
 
-function MoonIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className={className}
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
-      />
-    </svg>
-  );
-}
 
 interface LoginProps {
   onLoginSuccess?: () => void;
@@ -126,7 +87,6 @@ interface LoginProps {
 
 function Login({ onLoginSuccess }: LoginProps) {
   const { login, status } = useAuth();
-  const { toggleDark, dark } = useReceptionTheme();
   const app = useFirebaseApp();
   const auth = useMemo(() => getFirebaseAuth(app), [app]);
 
@@ -300,7 +260,7 @@ function Login({ onLoginSuccess }: LoginProps) {
   // Render forgot password screen
   if (showForgotPassword) {
     return (
-      <LoginContainer dark={dark} toggleDark={toggleDark}>
+      <LoginContainer>
         <ProductLogo />
         <h1 className="mt-6 text-xl font-semibold text-foreground">
           Reset your password
@@ -372,7 +332,7 @@ function Login({ onLoginSuccess }: LoginProps) {
   // Render PIN setup screen
   if (showPinSetup) {
     return (
-      <LoginContainer dark={dark} toggleDark={toggleDark}>
+      <LoginContainer>
         <ProductLogo />
         <h1 className="mt-6 text-xl font-semibold text-foreground">
           Set up quick unlock
@@ -415,7 +375,7 @@ function Login({ onLoginSuccess }: LoginProps) {
   if (showPinUnlock && devicePin) {
     const pinErrorId = "pin-error";
     return (
-      <LoginContainer dark={dark} toggleDark={toggleDark}>
+      <LoginContainer>
         <ProductLogo />
         <h1 className="mt-6 text-xl font-semibold text-foreground">
           Welcome back
@@ -468,7 +428,7 @@ function Login({ onLoginSuccess }: LoginProps) {
   // Render email/password login
   const loginErrorId = "login-error";
   return (
-    <LoginContainer dark={dark} toggleDark={toggleDark}>
+    <LoginContainer>
       <ProductLogo />
       <h1 className="mt-6 text-xl font-semibold text-foreground">
         Sign in to Reception
@@ -580,28 +540,12 @@ function ProductLogo() {
 
 interface LoginContainerProps {
   children: React.ReactNode;
-  dark: boolean;
-  toggleDark: () => void;
 }
 
-function LoginContainer({ children, dark, toggleDark }: LoginContainerProps) {
+function LoginContainer({ children }: LoginContainerProps) {
   return (
     <div className="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-surface-2 via-surface-2 to-surface-3 px-4">
       <div className="relative w-full max-w-md rounded-2xl bg-surface px-8 py-10 shadow-xl">
-        <Button
-          type="button"
-          onClick={toggleDark}
-          aria-pressed={dark}
-          aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-          className="absolute right-4 top-4 rounded-lg p-2 text-muted-foreground hover:bg-surface-2 hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
-        >
-          {dark ? (
-            <SunIcon className="h-5 w-5" />
-          ) : (
-            <MoonIcon className="h-5 w-5" />
-          )}
-        </Button>
-
         {children}
       </div>
     </div>

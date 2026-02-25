@@ -1,0 +1,182 @@
+{
+  "queue_version": "queue.v1",
+  "mode": "trial",
+  "created_at": "2026-02-25T00:00:00Z",
+  "last_updated": "2026-02-25T00:00:00Z",
+  "counts": {
+    "enqueued": 0,
+    "processed": 2,
+    "skipped": 0,
+    "error": 0,
+    "suppressed": 0,
+    "auto_executed": 2,
+    "total": 1
+  },
+  "dispatches": [
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260225-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-remove-light-mode:20260225",
+      "anchor_key": "reception-remove-light-mode",
+      "cluster_key": "BRIK:PRODUCTS:reception-remove-light-mode:operator:BRIK:PRODUCTS:reception-remove-light-mode:20260225",
+      "cluster_fingerprint": "d4e9f1a2b3c5076890abcdef12345678",
+      "lineage_depth": 0,
+      "area_anchor": "Reception app \u2014 remove light mode, enforce dark-mode-only theming throughout",
+      "location_anchors": [
+        "apps/reception/src/context/DarkModeContext.tsx",
+        "apps/reception/src/context/__tests__/DarkModeContext.test.tsx",
+        "apps/reception/src/components/common/DarkModeToggle.tsx",
+        "apps/reception/src/providers/ReceptionThemeProvider.tsx",
+        "apps/reception/tailwind.config.mjs",
+        "apps/reception/src/app/globals.css"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "The reception app has historically supported both light and dark modes via DarkModeContext (localStorage + Firebase sync). The operator has confirmed light mode is no longer needed \u2014 the app is dark-mode-only. DarkModeContext.tsx and its test file are already deleted (confirmed in git status). However, the DarkModeToggle UI component, any light-mode CSS variable overrides, tailwind light/dark variants, and any remaining toggling logic in providers or hooks have not yet been systematically audited and removed. The app should run exclusively in dark mode with no toggle mechanism.",
+      "next_scope_now": "Fact-find to scope the full removal of light-mode support from the reception app: (1) audit what light-mode-specific CSS exists \u2014 any :root variables that define a separate light palette, any Tailwind `dark:` variant classes that imply a light baseline, any `light` class conditionals in JSX; (2) identify all consumers of the deleted DarkModeContext (components that imported it, hooks that referenced it, Firebase paths that stored preference data) and verify none are broken by the deletion; (3) audit ReceptionThemeProvider \u2014 does it still reference DarkModeContext or toggle classes?; (4) locate DarkModeToggle.tsx in the component tree and identify everywhere it is rendered so it can be removed; (5) check globals.css and tailwind.config.mjs for any light-mode-specific token overrides that can be pruned; (6) check parity snapshots \u2014 do any snapshot tests capture light-mode states that will now fail?; (7) scope the safe removal sequence: provider simplification \u2192 toggle removal \u2192 CSS cleanup \u2192 snapshot updates.",
+      "adjacent_later": [
+        "Remove DarkModeToggle from all nav/settings surfaces once confirmed unused",
+        "Prune Firebase darkMode preference path from user records (data migration, optional)",
+        "Audit other apps (prime, brikette) to determine if they share any DarkModeContext logic that is now orphaned",
+        "Simplify ReceptionThemeProvider to a static dark-class injector (no toggle state)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: reception app is dark-mode-only; light mode can be removed",
+        "git-status: apps/reception/src/context/DarkModeContext.tsx deleted",
+        "git-status: apps/reception/src/context/__tests__/DarkModeContext.test.tsx deleted"
+      ],
+      "created_at": "2026-02-25T14:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "reception-remove-light-mode",
+        "fact_find_path": "docs/plans/reception-remove-light-mode/fact-find.md",
+        "processed_at": "2026-02-25T14:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260225120000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:SELL:deeper-route-funnel:20260225",
+      "anchor_key": "brik-deeper-route-funnel-cro",
+      "cluster_key": "BRIK:SELL:brik-deeper-route-funnel-cro:operator:BRIK:SELL:deeper-route-funnel:20260225",
+      "cluster_fingerprint": "a3f8c2d1e7b94506f0123456789abcde",
+      "lineage_depth": 0,
+      "area_anchor": "Sales funnel \u2014 deeper route conversion improvement (/book, /rooms, /rooms/[slug], /experiences, /how-to-get-here)",
+      "location_anchors": [
+        "apps/brikette/src/app/[lang]/book/",
+        "apps/brikette/src/app/[lang]/rooms/",
+        "apps/brikette/src/app/[lang]/experiences/",
+        "apps/brikette/src/app/[lang]/how-to-get-here/",
+        "apps/brikette/src/app/[lang]/apartment/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The Brikette homepage is performing adequately. Deeper funnel routes \u2014 /book, /rooms, /rooms/[slug], /experiences, /how-to-get-here \u2014 lack the conversion polish of the homepage. An unplanned usability-hardening fact-find (docs/plans/brikette-booking-funnel-usability-hardening-fact-find.md) documents SSR/no-JS CTA fallback failures and i18n key leakage on these routes but has never been converted into a plan. No active plan covers broader UX or CRO improvements on these deeper pages. The in-flight octorate-funnel-reduction plan covers measurement reconciliation only, not page-level UX design.",
+      "next_scope_now": "Fact-find for deeper-route sales funnel improvement. Scope: (1) audit current UX and conversion signals on /book, /rooms/[slug], /experiences, and /how-to-get-here \u2014 what does a user see, what frictions exist, what is missing relative to the homepage quality bar; (2) incorporate the unplanned usability-hardening findings (SSR/no-JS CTA fallbacks, i18n key leakage in initial HTML) as confirmed technical blockers; (3) identify the highest-leverage UX changes per route \u2014 social proof placement, CTA hierarchy, information completeness, trust signals, mobile experience; (4) check what GA4 data is available (exit rates, scroll depth, cta_click events) for these routes to prioritise by drop-off signal; (5) produce a planning-ready brief that scopes implementation tracks by route, distinguishing quick wins from larger redesigns.",
+      "adjacent_later": [
+        "Dedicated /rooms/[slug] room detail page with richer photos, amenities breakdown, and inline availability CTA",
+        "Experiences page conversion \u2014 structured offers with pricing, booking CTA per activity",
+        "How-to-get-here page as a trust/reassurance step in the pre-booking journey \u2014 proximity signals, map embed",
+        "Mobile-first CTA audit across all deeper routes (sticky CTA on scroll, thumb-friendly button sizes)",
+        "A/B test framework for CTA copy and placement on /book page (post SSR hardening)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.87,
+      "evidence_refs": [
+        "operator-stated: homepage is performing adequately; deeper funnel routes need conversion improvement",
+        "docs/plans/brikette-booking-funnel-usability-hardening-fact-find.md",
+        "docs/plans/brikette-octorate-funnel-reduction/plan.md"
+      ],
+      "created_at": "2026-02-25T12:00:00Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "fact_find_slug": "brikette-deeper-route-funnel-cro",
+        "fact_find_path": "docs/plans/brikette-deeper-route-funnel-cro/fact-find.md",
+        "processed_at": "2026-02-25T12:30:00Z",
+        "route": "dispatch-routed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260225000000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "API-driven SEO optimization loop \u2014 indexation, locale content promotion, and data-pipeline cadence using Cloudflare, GSC, and GTM",
+      "location_anchors": [
+        "apps/brikette/src/",
+        "apps/brikette/public/sitemap.xml",
+        "apps/brikette/scripts/generate-public-seo.ts",
+        "docs/plans/brikette-seo-traffic-growth/plan.md",
+        "docs/plans/brikette-seo-traffic-growth/fact-find.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "BRIK has API access to Cloudflare Analytics, Google Search Console, and GA4/GTM. The site has 4,093 sitemap URLs across 18 locales with significant translated content, but all 30 sampled guide URLs returned 'URL is unknown to Google' in Phase A investigation (TASK-11). The current Phase B plan contains TASK-13 (content quality pass) gated on indexation recovery signal, with confidence at 45% \u2014 effectively stalled. No systematic mechanism exists to use available data APIs to diagnose crawl gaps, prioritise locale content for indexation, or drive a measurable optimization cadence. SEO work to date has been reactive (fix known blockers) rather than proactive (instrument and iterate).",
+      "next_scope_now": "Fact-find to design a systematic, API-driven SEO optimization loop: (1) establish what Cloudflare, GSC, and GTM data is currently available and queryable per-page/per-locale; (2) identify the specific signals that explain why 4,093 URLs remain largely unknown to Google despite active crawling; (3) design a data pipeline that surfaces crawl-gap pages, tracks indexation progression per locale, and prioritises which translated content to submit for recrawl; (4) determine what on-page signals Google needs to promote translated pages (hreflang health, freshness, authority, internal link depth); (5) scope what a measurable every-other-day optimization cadence looks like using zero-cost first-party data APIs \u2014 we are in an active growth phase and need signal frequently, not weekly/monthly. Output: a plan that replaces passive waiting with an instrumented improvement loop.",
+      "adjacent_later": [
+        "Schema.org Article.datePublished fix across guide pages (5 critical findings from TASK-05 \u2014 currently unfixed)",
+        "Programmatic GSC recrawl submission for newly-modified guide pages (post TASK-13 content edits)",
+        "Cloudflare Cache Analytics for crawl-bot traffic segmentation vs human traffic baseline",
+        "GA4 organic landing-page funnel to identify which locale content converts vs which bounces",
+        "Locale-specific sitemap partitioning to give Google clearer crawl priority signals per language"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: API access available (Cloudflare, GSC, GTM); 18-locale content translated; guide pages not indexed; need systematic optimization loop rather than waiting for Google",
+        "docs/plans/brikette-seo-traffic-growth/task-11-gsc-indexing.md",
+        "docs/plans/brikette-seo-traffic-growth/task-03b-gsc-canonical-validation.md",
+        "docs/plans/brikette-seo-traffic-growth/plan-v1.md"
+      ],
+      "created_at": "2026-02-25T00:00:00Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "fact_find_slug": "brikette-seo-api-optimization-loop",
+        "fact_find_path": "docs/plans/brikette-seo-api-optimization-loop/fact-find.md",
+        "processed_at": "2026-02-25T00:00:00Z",
+        "route": "dispatch-routed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "DISPATCH-BOS-2026-02-25-002",
+      "trigger": "operator_idea",
+      "business": "BOS",
+      "area_anchor": "lp-do-build post-build validation",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P1",
+      "confidence": 0.92,
+      "current_truth": "lp-do-build has no post-build validation phase. After a task is implemented the workflow advances to the next task with no simulation or end-to-end verification of the built item.",
+      "next_scope_now": "Design and embed a post-build validation phase in lp-do-build: (1) visual walkthrough via screenshots for UI, (2) data-flow simulation for coded systems, (3) document review for business artifacts. Issues trigger a fix+retry loop with explicit proof of resolution before the task is marked done.",
+      "evidence_refs": [
+        "operator-stated: post-build validation should simulate/walk through the built item \u2014 screenshots for UI, data simulation for code, document review for business artifacts",
+        "operator-stated: issues found during validation must be fixed and retried to prove resolution before proceeding"
+      ],
+      "created_at": "2026-02-25T00:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "lp-do-build-post-build-validation",
+        "fact_find_path": "docs/plans/lp-do-build-post-build-validation/fact-find.md",
+        "processed_at": "2026-02-25T00:00:00Z",
+        "route": "dispatch-routed"
+      }
+    }
+  ]
+}

@@ -6,7 +6,6 @@ import userEvent from "@testing-library/user-event";
 import Login from "../../components/Login";
 
 const loginMock = jest.fn();
-const toggleDarkMock = jest.fn();
 const readJsonMock = jest.fn();
 
 jest.mock("../../context/AuthContext", () => ({
@@ -17,10 +16,7 @@ jest.mock("../../context/AuthContext", () => ({
 }));
 
 jest.mock("../../providers/ReceptionThemeProvider", () => ({
-  useReceptionTheme: () => ({
-    dark: false,
-    toggleDark: () => toggleDarkMock(),
-  }),
+  useReceptionTheme: () => ({}),
 }));
 
 jest.mock("../../services/useFirebase", () => ({
@@ -53,9 +49,6 @@ describe("/bar unauthenticated login parity", () => {
     ).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /switch to dark mode/i }),
-    ).toBeInTheDocument();
 
     expect(container).toMatchSnapshot();
   });
@@ -82,11 +75,5 @@ describe("/bar unauthenticated login parity", () => {
     expect(
       screen.getByRole("button", { name: /hide password/i }),
     ).toBeInTheDocument();
-
-    const themeToggle = screen.getByRole("button", {
-      name: /switch to dark mode/i,
-    });
-    await user.click(themeToggle);
-    expect(toggleDarkMock).toHaveBeenCalledTimes(1);
   });
 });

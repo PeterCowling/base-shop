@@ -311,14 +311,8 @@ jobs:
         run: pnpm exec turbo run typecheck --affected
       - name: Build workspace deps for downstream type resolution
         run: |
-          pnpm --filter @acme/guide-system build
-          pnpm --filter @themes/base build
-          pnpm --filter @acme/platform-core build
-          pnpm --filter @acme/date-utils build
-          pnpm --filter @acme/i18n build
-          pnpm --filter @acme/design-system build
-          pnpm --filter @acme/telemetry build
-          pnpm --filter @acme/ui build
+          # Build package-level declaration outputs so typecheck-tests can resolve path aliases.
+          pnpm -r --filter "./packages/**" --if-present build
       - name: Typecheck tests (Phase-1 + Phase-4 + Phase-5 packages + apps/cms)
         run: |
           set -e

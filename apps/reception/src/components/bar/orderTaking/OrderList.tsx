@@ -48,7 +48,7 @@ const OrderList: FC<OrderListProps> = React.memo(
     /* ------------------------------ render ------------------------------ */
     return (
       <>
-        <section className="flex h-full flex-col overflow-hidden rounded-lg shadow-inner">
+        <section className="flex h-full flex-col overflow-hidden rounded-xl shadow-inner">
           {/* ─────── List / table ─────── */}
           {orders.length ? (
             <Table className="w-full flex-1 border-separate border-spacing-0">
@@ -92,7 +92,7 @@ const OrderList: FC<OrderListProps> = React.memo(
               type="button"
               disabled={!orders.length}
               onClick={() => setShowPayModal(true)}
-              color="success"
+              color="primary"
               tone="solid"
               size="sm"
               className="w-full"

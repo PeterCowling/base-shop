@@ -30,7 +30,7 @@ const ProductItem: FC<ProductItemProps> = React.memo(({ product, onAdd }) => {
       onClick={handleClick}
       compatibilityMode="passthrough"
       className={[
-        "relative flex aspect-square w-full min-h-11 select-none items-center justify-center overflow-hidden rounded-lg text-center font-semibold shadow-md motion-safe:transition-transform",
+        "relative flex aspect-square w-full min-h-11 select-none items-center justify-center overflow-hidden rounded-xl text-center font-semibold shadow-md motion-safe:transition-transform",
         "hover:scale-[1.03] active:scale-97",
         product.bgColor || "bg-surface-2",
       ].join(" ")}
@@ -40,7 +40,7 @@ const ProductItem: FC<ProductItemProps> = React.memo(({ product, onAdd }) => {
       </span>
 
       {/* Price badge */}
-      <span className="absolute bottom-1 right-1 rounded bg-black/40 px-1.5 py-0.5 text-0_65rem font-bold text-primary-fg">
+      <span className="absolute bottom-1 right-1 rounded bg-surface/80 px-1.5 py-0.5 text-0_65rem font-bold text-primary-fg">
         €{product.price.toFixed(2)}
       </span>
     </Button>

@@ -71,15 +71,15 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
 
   return (
     <ModalContainer widthClasses="w-96">
-      {/* Header with distinct background color */}
-      <div className="bg-primary-main rounded-t">
-        <h2 className="text-2xl font-bold text-primary-fg text-center py-4">
+      {/* Header panel */}
+      <div className="bg-primary-main rounded-xl mb-6 py-4">
+        <h2 className="text-2xl font-bold text-primary-fg text-center">
           Complete Payment
         </h2>
       </div>
 
       {/* Body content with spacing */}
-      <div className="p-6 space-y-8">
+      <div className="space-y-8">
         {/* Payment Method */}
         <div className="space-y-3">
           <p className="text-lg font-semibold text-foreground text-center">
@@ -87,7 +87,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
           </p>
           <div className="flex justify-center space-x-4">
             <label
-              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
+              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded-xl w-32 ${
                 paymentMethod === "cash"
                   ? "border-primary-main bg-primary-soft"
                   : "border-border-2 hover:border-border-2"
@@ -105,7 +105,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
             </label>
 
             <label
-              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
+              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded-xl w-32 ${
                 paymentMethod === "card"
                   ? "border-primary-main bg-primary-soft"
                   : "border-border-2 hover:border-border-2"
@@ -131,7 +131,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
           </p>
           <div className="flex justify-center space-x-4">
             <label
-              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
+              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded-xl w-32 ${
                 bleepUsage === "bleep"
                   ? "border-primary-main bg-primary-soft"
                   : "border-border-2 hover:border-border-2"
@@ -149,7 +149,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
             </label>
 
             <label
-              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
+              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded-xl w-32 ${
                 bleepUsage === "go"
                   ? "border-primary-main bg-primary-soft"
                   : "border-border-2 hover:border-border-2"
@@ -179,7 +179,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
           </Button>
           <Button
             onClick={handleConfirmClick}
-            color="success"
+            color="primary"
             tone="solid"
           >
             Confirm

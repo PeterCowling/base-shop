@@ -124,6 +124,103 @@
       background: linear-gradient(180deg, rgba(251, 113, 133, 0.22), rgba(251, 113, 133, 0.08));
     }
 
+    .build-summary {
+      margin-bottom: 24px;
+      background: linear-gradient(180deg, rgba(12, 24, 48, 0.62), rgba(7, 15, 30, 0.92));
+      border: 1px solid rgba(201, 168, 76, 0.18);
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .build-summary h2 {
+      margin: 0;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #ece8e0;
+    }
+
+    .build-summary-status {
+      margin: 8px 0 16px;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .build-summary-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .build-summary-controls label {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .build-summary-controls select {
+      min-width: 160px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      font-family: "Sora", sans-serif;
+      font-size: 12px;
+      padding: 7px 9px;
+    }
+
+    .build-summary-table-wrap {
+      overflow-x: auto;
+    }
+
+    .build-summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+      font-size: 12px;
+    }
+
+    .build-summary-table thead th {
+      background: rgba(255, 255, 255, 0.05);
+      color: #efeadd;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+    }
+
+    .build-summary-table tbody td {
+      padding: 9px 10px;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+      vertical-align: top;
+      color: var(--text);
+    }
+
+    .build-summary-empty {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .build-summary-links a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .build-summary-links a:hover {
+      text-decoration: underline;
+    }
+
     .panel {
       display: none;
       background: linear-gradient(180deg, rgba(12, 24, 48, 0.62), rgba(7, 15, 30, 0.92));
@@ -518,7 +615,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
 </style>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="startup-loop-workflow.user.html">Workflow</a><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="pending-reviews.user.html">Pending Reviews</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="startup-loop-workflow.user.html">Workflow</a><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="#build-summary">Build Summary</a><a href="ideas.user.html">Ideas</a><a href="process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
   <main class="wrap">
     <header class="page-header">
       <h1>Startup Loop — Consolidated Briefing</h1>
@@ -532,6 +629,50 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
       <button class="tab-button" type="button" data-panel="pet" aria-controls="pet" aria-selected="false">PET</button>
       <button class="tab-button" type="button" data-panel="brik" aria-controls="brik" aria-selected="false">BRIK</button>
     </nav>
+
+    <section id="build-summary" class="build-summary" aria-label="Build Summary">
+      <h2>Build Summary</h2>
+      <p id="build-summary-status" class="build-summary-status">Loading build summary...</p>
+
+      <div class="build-summary-controls">
+        <label for="build-summary-business">
+          Business
+          <select id="build-summary-business">
+            <option value="All">All</option>
+          </select>
+        </label>
+
+        <label for="build-summary-timeframe">
+          Timeframe
+          <select id="build-summary-timeframe">
+            <option value="1">1 day</option>
+            <option value="3">3 days</option>
+            <option value="7" selected>7 days</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="build-summary-table-wrap">
+        <table class="build-summary-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Business</th>
+              <th>Workstream / Domain</th>
+              <th>What got built</th>
+              <th>Why</th>
+              <th>Intended outcome</th>
+              <th>Links</th>
+            </tr>
+          </thead>
+          <tbody id="build-summary-body">
+            <tr>
+              <td colspan="7" class="build-summary-empty">Loading build summary...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
     <section id="head" class="panel head is-active" aria-label="HEAD briefing panel">
       <h2><span class="panel-dot">●</span> HEAD — Cochlear Implant Retention Accessories</h2>
@@ -567,7 +708,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
                     <tr>
                       <td>DISCOVERY-01 Problem Statement</td>
                       <td>✅ PASS</td>
-                      <td>problem-statement.user.md (2026-02-20)</td>
+                      <td>2026-02-20-problem-statement.user.md</td>
                     </tr>
                     <tr>
                       <td>DISCOVERY-02 Solution Space</td>
@@ -648,7 +789,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
                       <td>Pete</td>
                       <td>2026-02-27</td>
                       <td>Open</td>
-                      <td><code>HEAD-intake-packet.user.md:F</code></td>
+                      <td><code>&lt;BIZ&gt;-&lt;YYYY-MM-DD&gt;assessment-intake-packet.user.md:F</code></td>
                     </tr>
                     <tr>
                       <td>HEAD-BLK-03</td>
@@ -656,7 +797,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
                       <td>Pete</td>
                       <td>2026-02-27</td>
                       <td>Open</td>
-                      <td><code>HEAD-intake-packet.user.md:F</code></td>
+                      <td><code>&lt;BIZ&gt;-&lt;YYYY-MM-DD&gt;assessment-intake-packet.user.md:F</code></td>
                     </tr>
                     <tr>
                       <td>HEAD-BLK-04</td>
@@ -1003,7 +1144,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
           <header class="artifact-header">
             <h3 class="artifact-title">Intake Packet</h3>
             <p class="artifact-meta">T2 · 128 lines</p>
-            <p class="artifact-path"><code>docs/business-os/startup-baselines/HEAD-intake-packet.user.md</code></p>
+            <p class="artifact-path"><code>docs/business-os/startup-baselines/&lt;BIZ&gt;-&lt;YYYY-MM-DD&gt;assessment-intake-packet.user.md</code></p>
           </header>
           <div class="artifact-content"><h3>HEAD Intake Packet</h3>
         <h4>A) Intake Summary</h4>
@@ -1122,7 +1263,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
           <header class="artifact-header">
             <h3 class="artifact-title">Brand Dossier</h3>
             <p class="artifact-meta">T2 · 151 lines</p>
-            <p class="artifact-path"><code>docs/business-os/strategy/HEAD/brand-identity.user.md</code></p>
+            <p class="artifact-path"><code>docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md</code></p>
           </header>
           <div class="artifact-content"><h3>Headband (CochlearFit) — Brand Dossier</h3>
         <p>&gt; <strong>Draft status.</strong> Token values are not duplicated in this document. When the theme package &gt; is created, the single source of truth will be <code>packages/themes/cochlearfit/src/tokens.ts</code>. &gt; This document records <em>why</em> tokens should be chosen, not what values they hold. &gt; All <code>TBD</code> fields require operator input or market research before this dossier can advance to Active.</p>
@@ -1268,7 +1409,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
           <header class="artifact-header">
             <h3 class="artifact-title">DISCOVERY-03 Option Select</h3>
             <p class="artifact-meta">T2 · 2026-02-20 · backfilled DISCOVERY</p>
-            <p class="artifact-path"><code>docs/business-os/strategy/HEAD/solution-select.user.md</code></p>
+            <p class="artifact-path"><code>docs/business-os/strategy/HEAD/2026-02-20-solution-decision.user.md</code></p>
           </header>
           <div class="artifact-content"><h3>HEAD DISCOVERY-03 — Option Selection</h3>
         <h4>Options Evaluated (7 total)</h4>
@@ -1681,7 +1822,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
         <table class="content-table"><thead><tr><th>Objection</th><th>Response</th><th>Proof / Risk Reversal</th></tr></thead><tbody><tr><td>&quot;€80 for a poop bag holder feels like a lot&quot;</td><td>&quot;It&#39;s €80 for the thing that makes every walk feel put together. You&#39;ll use it every day. That&#39;s less than a dinner out — and it lasts years.&quot;</td><td>90-day quality guarantee; comparable: leather wallet at €80 is expected, leather dog holder is seen as &quot;a lot&quot; only before first use</td></tr><tr><td>&quot;I&#39;ve never heard of this brand — can I trust it?&quot;</td><td>&quot;We&#39;re a small Italian maker — same leather body as our mini handbag line. Read the reviews [link]. And if it&#39;s not right: free exchange within 30 days.&quot;</td><td>30-day no-fault exchange removes the trust barrier; handwritten note + real-person maker story; Etsy trust layer at launch</td></tr><tr><td>&quot;What if it doesn&#39;t work with my lead?&quot;</td><td>&quot;It clips to any standard lead ring with a standard spring-clip carabiner. Works on any D-ring or O-ring lead attachment.&quot;</td><td>Clear sizing/compatibility description in listing; product photo showing clip in use on a real lead</td></tr><tr><td>&quot;I&#39;m worried it won&#39;t last / will look cheap after a month&quot;</td><td>&quot;Same leather body we use in our mini handbag line. The hardware is solid brass-finish and will outlast a dozen walk seasons.&quot;</td><td>90-day hardware replacement guarantee; photography shows detail of hardware quality; &quot;still looking brand new&quot; framing in listing copy</td></tr><tr><td>&quot;I don&#39;t want to deal with a difficult return if it&#39;s not right&quot;</td><td>&quot;30-day free exchange. No forms, no original packaging required. Just message us.&quot;</td><td>30-day exchange policy (the direct counter to Pagerie&#39;s single biggest failing; stated prominently in listing and bio)</td></tr></tbody></table>
         <hr class="section-divider" />
         <h4>Brand Name</h4>
-        <p>&gt; <strong>Superseded — escalated to Deep Research (2026-02-18).</strong> &gt; Name generation by agent was insufficient. A structured deep research naming process is running. &gt; &gt; Prompt: <code>docs/business-os/strategy/PET/2026-02-18-naming-prompt.user.md</code> &gt; Return artifact (to be saved by Pete after running): <code>docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md</code> &gt; &gt; Once Pete saves the naming shortlist and confirms a name, update: &gt; - This offer artifact (brand name field) &gt; - <code>docs/plans/pets-dog-accessories-pmf/plan.md</code> TASK-01 (mark Complete) &gt; - <code>docs/business-os/strategy/PET/brand-identity.user.md</code> (name + personality)</p>
+        <p>&gt; <strong>Superseded — escalated to Deep Research (2026-02-18).</strong> &gt; Name generation by agent was insufficient. A structured deep research naming process is running. &gt; &gt; Prompt: <code>docs/business-os/strategy/PET/2026-02-18-naming-prompt.user.md</code> &gt; Return artifact (to be saved by Pete after running): <code>docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md</code> &gt; &gt; Once Pete saves the naming shortlist and confirms a name, update: &gt; - This offer artifact (brand name field) &gt; - <code>docs/plans/pets-dog-accessories-pmf/plan.md</code> TASK-01 (mark Complete) &gt; - <code>docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md</code> (name + personality)</p>
         <hr class="section-divider" />
         <h4>Evidence Register</h4>
         <h5>Competitor Sources</h5>
@@ -1691,7 +1832,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
         <h5>Community / Hashtag Research</h5>
         <ul><li>#dogmom hashtag volume and clusters: <a href="https://best-hashtags.com/hashtag/dogmom/">best-hashtags.com</a>, <a href="https://best-hashtags.com/hashtag/dogmum/">best-hashtags.com/dogmum</a></li><li>Dog spend psychology: <a href="https://pbfulfill.com/blogs/marketing-strategy/psychology-pet-owners-spend-more-online">PBFulfill pet marketing research</a></li><li>Millennial pet-as-child research: <a href="https://www.boisestate.edu/news/2021/11/01/new-research-suggests-cat-and-dog-moms-and-dads-really-are-parenting-their-pets-heres-the-evolutionary-explanation-why/">Boise State, ScienceDirect</a></li><li>Gen Z dog ownership stats: <a href="https://rochsociety.com/gen-z-dog-ownership-statistics/">Roch Society</a>, <a href="https://www.dogster.com/lifestyle/how-different-generations-care-for-their-pets">Dogster</a></li><li>APPA 2024 pet owner insight report: <a href="https://americanpetproducts.org/news/the-american-pet-products-association-appa-releases-2024-dog-and-cat-owner-insight-report">americanpetproducts.org</a></li></ul>
         <h5>Internal Context</h5>
-        <ul><li>PET fact-find: <code>docs/plans/pets-dog-accessories-pmf/fact-find.md</code></li><li>PET plan: <code>docs/plans/pets-dog-accessories-pmf/plan.md</code></li><li>PET brand dossier: <code>docs/business-os/strategy/PET/brand-identity.user.md</code></li></ul>
+        <ul><li>PET fact-find: <code>docs/plans/pets-dog-accessories-pmf/fact-find.md</code></li><li>PET plan: <code>docs/plans/pets-dog-accessories-pmf/plan.md</code></li><li>PET brand dossier: <code>docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md</code></li></ul>
         <hr class="section-divider" />
         <h4>Quality Check Self-Audit</h4>
         <ul><li>QC-01: All 6 sections present and complete ✓</li><li>QC-02: ICP is specific (urban millennial female dog owner, 25–40, dog-as-lifestyle) ✓</li><li>QC-03: Pricing hypothesis includes ≥3 competitors with prices (7 competitors listed) ✓</li><li>QC-04: ≥3 objections mapped (5 mapped) ✓</li><li>QC-05: ≥1 risk reversal defined (30-day exchange + 90-day hardware guarantee) ✓</li><li>QC-06: Confidence level stated explicitly (MEDIUM) ✓</li><li>QC-07: Evidence register cites ≥3 sources (13 sources cited) ✓</li><li>QC-08: Pain/promise mapping uses customer language from reviews (verbatim quotes throughout) ✓</li><li>QC-09: Moore template fills all 6 blanks ✓</li><li>QC-10: Pricing rationale explains WHY €80 (4 explicit reasons given) ✓</li></ul></div>
@@ -1929,7 +2070,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
           <header class="artifact-header">
             <h3 class="artifact-title">Intake Packet</h3>
             <p class="artifact-meta">T2 · 141 lines</p>
-            <p class="artifact-path"><code>docs/business-os/startup-baselines/PET-intake-packet.user.md</code></p>
+            <p class="artifact-path"><code>docs/business-os/startup-baselines/&lt;BIZ&gt;-&lt;YYYY-MM-DD&gt;assessment-intake-packet.user.md</code></p>
           </header>
           <div class="artifact-content"><h3>PET Intake Packet</h3>
         <h4>A) Intake Summary</h4>
@@ -2058,7 +2199,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
           <header class="artifact-header">
             <h3 class="artifact-title">Brand Dossier</h3>
             <p class="artifact-meta">T2 · 146 lines</p>
-            <p class="artifact-path"><code>docs/business-os/strategy/PET/brand-identity.user.md</code></p>
+            <p class="artifact-path"><code>docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md</code></p>
           </header>
           <div class="artifact-content"><h3>Pet Product — Brand Dossier</h3>
         <p>&gt; <strong>Draft status.</strong> This dossier was bootstrapped from the business plan and forecast. &gt; No app or theme package exists yet. All visual identity fields are <code>TBD</code> with rationale. &gt; The category has not yet been narrowed from the broader &quot;pet products&quot; space — &gt; brand identity cannot be fully resolved until the primary product category is locked. &gt; All <code>TBD</code> fields require operator input after Category and Segment Prioritization (plan §Strategy item 2).</p>
@@ -2629,7 +2770,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
           <header class="artifact-header">
             <h3 class="artifact-title">Intake Packet</h3>
             <p class="artifact-meta">T2 · 176 lines</p>
-            <p class="artifact-path"><code>docs/business-os/startup-baselines/BRIK-intake-packet.user.md</code></p>
+            <p class="artifact-path"><code>docs/business-os/startup-baselines/&lt;BIZ&gt;-&lt;YYYY-MM-DD&gt;assessment-intake-packet.user.md</code></p>
           </header>
           <div class="artifact-content"><h3>BRIK Intake Packet</h3>
         <h4>A) Intake Summary</h4>
@@ -3015,7 +3156,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
           <header class="artifact-header">
             <h3 class="artifact-title">Brand Dossier</h3>
             <p class="artifact-meta">T2 · 152 lines</p>
-            <p class="artifact-path"><code>docs/business-os/strategy/BRIK/brand-identity.user.md</code></p>
+            <p class="artifact-path"><code>docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md</code></p>
           </header>
           <div class="artifact-content"><h3>Brikette — Brand Dossier</h3>
         <p>&gt; Token values are not duplicated in this document. The single source of truth is &gt; <code>packages/themes/prime/src/tokens.ts</code>. The Token Rationale section below records &gt; <em>why</em> each token was chosen, not what value it holds.</p>
@@ -3407,7 +3548,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
           </header>
           <div class="artifact-content"><h3>Prime App — Design &amp; Branding Policy</h3>
         <p>Prime-specific projection of the BRIK brand. Governs all guest-facing surfaces for the Prime guest portal. For cross-cutting brand decisions (voice, personality, audience), see the Brand Dossier.</p>
-        <p>&gt; Token values are not duplicated here. The single source of truth is &gt; <code>packages/themes/prime/src/tokens.ts</code>. Refer to the Token Rationale in <code>brand-identity.user.md</code> &gt; for the design reasoning behind each token choice.</p>
+        <p>&gt; Token values are not duplicated here. The single source of truth is &gt; <code>packages/themes/prime/src/tokens.ts</code>. Refer to the Token Rationale in <code>&lt;YYYY-MM-DD&gt;-brand-identity-dossier.user.md</code> &gt; for the design reasoning behind each token choice.</p>
         <h4>Governed Surfaces</h4>
         <ul><li>Prime guest portal (all guest-facing pages)</li><li>Brikette website (booking and guide pages) — to be aligned in a future pass</li><li>Email templates sent to guests</li></ul>
         <h4>Surfaces NOT Governed (Internal)</h4>
@@ -3417,7 +3558,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
         <h4>Design Principles</h4>
         <ol><li><strong>Warm over cold</strong> — Primary palette uses warm hues (coral, rose, warm violet, sage) rather than cold corporate blues/teals.</li><li><strong>Approachable typography</strong> — Friendly geometric sans-serifs (Plus Jakarta Sans) over developer-oriented fonts (Geist Sans). Rounded terminals signal warmth.</li><li><strong>Expressive but not noisy</strong> — Subtle gradients, soft shadows, and gentle motion. Avoid flat gray backgrounds. Slight warm tints on surfaces.</li><li><strong>Mobile-only, thumb-first</strong> — Prime is a phone-only app. Design exclusively for mobile viewports. Optimize for one-handed use, thumb-zone reachability, handheld viewing distance. Primary actions belong in the bottom half of the screen.</li><li><strong>Mobile-native quality bar</strong> — Benchmarks against Airbnb, Pinterest, Hostelworld, and Instagram. Card-based layouts, generous radius, smooth transitions, high-quality imagery.</li><li><strong>Inclusive, not stereotyped</strong> — Warm, polished, photography-forward, emotionally resonant. Not &quot;pink everything.&quot;</li><li><strong>Token-driven</strong> — All visual changes flow through <code>packages/themes/prime/src/tokens.ts</code>. No hardcoded Tailwind colors. Ensures dark mode, accessibility, and future theme variants work automatically.</li></ol>
         <h4>Token Rationale</h4>
-        <p>See <code>docs/business-os/strategy/BRIK/brand-identity.user.md</code> § Token Rationale for the full table. Key Prime-specific decisions:</p>
+        <p>See <code>docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md</code> § Token Rationale for the full table. Key Prime-specific decisions:</p>
         <ul><li><code>--color-primary</code>: Warm coral (replaces cold teal) — aligned to Airbnb/Glossier aesthetic for 18-25 female demographic</li><li><code>--font-sans</code>: Plus Jakarta Sans — geometric warmth, high x-height for mobile legibility</li><li><code>--radius-md</code> / <code>--radius-lg</code>: Softer than base — friendlier feel at card and section level</li></ul>
         <h4>Signature Patterns</h4>
         <h5>Gradient Cards</h5>
@@ -3426,7 +3567,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
         <p><strong>When:</strong> Primary actions (book, explore, confirm). <strong>Implementation:</strong> <code>bg-primary text-primary-foreground hover:bg-primary-hover rounded-md px-4 py-2 font-medium</code>. <strong>Example:</strong> Standard across Prime app.</p>
         <p>_More patterns will be added as <code>/lp-design-spec</code> identifies them during feature work._</p>
         <h4>References</h4>
-        <ul><li>Brand Dossier (cross-cutting brand decisions): <code>docs/business-os/strategy/BRIK/brand-identity.user.md</code></li><li>Prime theme tokens (source of truth): <code>packages/themes/prime/src/tokens.ts</code></li><li>Base theme tokens: <code>packages/themes/base/src/tokens.ts</code></li><li>Design system handbook: <code>docs/design-system-handbook.md</code></li><li>Design refresh fact-find: <code>docs/plans/prime-design-refresh-fact-find.md</code></li></ul></div>
+        <ul><li>Brand Dossier (cross-cutting brand decisions): <code>docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md</code></li><li>Prime theme tokens (source of truth): <code>packages/themes/prime/src/tokens.ts</code></li><li>Base theme tokens: <code>packages/themes/base/src/tokens.ts</code></li><li>Design system handbook: <code>docs/design-system-handbook.md</code></li><li>Design refresh fact-find: <code>docs/plans/prime-design-refresh-fact-find.md</code></li></ul></div>
         </article>
         </details>
         
@@ -3558,7 +3699,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
                     <tr><th>Stage Gate</th><th>Status</th><th>Notes</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>DISCOVERY-01 Problem Statement</td><td>✅ PASS</td><td>problem-statement.user.md + s0a-research-appendix.user.md (2026-02-20)</td></tr>
+                    <tr><td>DISCOVERY-01 Problem Statement</td><td>✅ PASS</td><td>2026-02-20-problem-statement.user.md + s0a-research-appendix.user.md</td></tr>
                     <tr><td>DISCOVERY-02 Solution Space</td><td>✅ PASS</td><td>9 options mapped; results in solution-profile-results.user.md</td></tr>
                     <tr><td>DISCOVERY-03 Option Select</td><td>✅ PASS</td><td>3 shortlisted: O1 bag charm, O2 AirPod holder, O3 Amalfi destination (conditional)</td></tr>
                     <tr><td>DISCOVERY-04 Naming</td><td>✅ GATE-BD-00 PASS</td><td>candidate-names.user.md exists (2026-02-20). Brand name pending operator selection.</td></tr>
@@ -3675,7 +3816,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
           <div class="artifact-content"><h3>HBAG DISCOVERY-01–DISCOVERY-03</h3>
         <h4>DISCOVERY-01 — Problem Statement</h4>
         <p>Fashion-conscious women want artisan-quality bag accessories at EUR 80–150, but face a forced choice between mass-market (EUR 5–35) and luxury-house (EUR 300–1,500+). Secondary problem: Amalfi Coast destination visitors want place-specific premium souvenirs at approachable luxury price points.</p>
-        <p>Source: <code>docs/business-os/strategy/HBAG/problem-statement.user.md</code> + <code>s0a-research-appendix.user.md</code></p>
+        <p>Source: <code>docs/business-os/strategy/HBAG/2026-02-20-problem-statement.user.md</code> + <code>s0a-research-appendix.user.md</code></p>
         <h4>DISCOVERY-02 — Solution Space (9 options mapped)</h4>
         <p>Deep-research run completed. 9 viable product-type approaches identified. Results in <code>2026-02-20-solution-profile-results.user.md</code>.</p>
         <h4>DISCOVERY-03 — Option Select (3 shortlisted)</h4>
@@ -3711,7 +3852,7 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
           <header class="artifact-header">
             <h3 class="artifact-title">DISCOVERY-05 Operator Evidence</h3>
             <p class="artifact-meta">T2 · 2026-02-20</p>
-            <p class="artifact-path"><code>docs/business-os/strategy/HBAG/current-situation.user.md</code></p>
+            <p class="artifact-path"><code>docs/business-os/strategy/HBAG/2026-02-20-operator-context.user.md</code></p>
           </header>
           <div class="artifact-content"><h3>HBAG DISCOVERY-05 — Operator Evidence</h3>
         <table class="content-table"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>
@@ -3808,6 +3949,14 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
   <script>
     const tabButtons = Array.from(document.querySelectorAll(".tab-button"));
     const panels = Array.from(document.querySelectorAll(".panel"));
+    const buildSummaryBody = document.getElementById("build-summary-body");
+    const buildSummaryStatus = document.getElementById("build-summary-status");
+    const businessFilter = document.getElementById("build-summary-business");
+    const timeframeFilter = document.getElementById("build-summary-timeframe");
+
+    const defaultBusiness = "All";
+    const defaultTimeframeDays = 7;
+    let buildSummaryRows = [];
 
     function showPanel(panelId) {
       panels.forEach((panel) => {
@@ -3822,9 +3971,225 @@ html[data-theme="light"] .section-placeholder p { color: #5a6080 !important; }
       });
     }
 
+    function compareSummaryRows(left, right) {
+      const dateOrder = String(right.date || "").localeCompare(String(left.date || ""));
+      if (dateOrder !== 0) {
+        return dateOrder;
+      }
+      return String(left.sourcePath || "").localeCompare(String(right.sourcePath || ""));
+    }
+
+    function clearSummaryBody() {
+      if (!buildSummaryBody) {
+        return;
+      }
+      while (buildSummaryBody.firstChild) {
+        buildSummaryBody.removeChild(buildSummaryBody.firstChild);
+      }
+    }
+
+    function renderSummaryMessage(text) {
+      if (!buildSummaryBody) {
+        return;
+      }
+      const row = document.createElement("tr");
+      const cell = document.createElement("td");
+      cell.colSpan = 7;
+      cell.className = "build-summary-empty";
+      cell.textContent = text;
+      row.appendChild(cell);
+      buildSummaryBody.appendChild(row);
+    }
+
+    function normalizeSummaryRows(payload) {
+      if (!Array.isArray(payload)) {
+        return [];
+      }
+
+      const normalized = payload
+        .filter((item) => item && typeof item === "object")
+        .map((item) => {
+          const links = Array.isArray(item.links)
+            ? item.links
+                .filter((link) => link && typeof link === "object" && typeof link.href === "string")
+                .map((link) => ({
+                  label: typeof link.label === "string" && link.label.trim().length > 0 ? link.label : "Open",
+                  href: link.href,
+                }))
+            : [];
+
+          return {
+            date: typeof item.date === "string" ? item.date : "",
+            business: typeof item.business === "string" ? item.business : "",
+            domain: typeof item.domain === "string" ? item.domain : "",
+            what: typeof item.what === "string" ? item.what : "",
+            why: typeof item.why === "string" ? item.why : "—",
+            intended: typeof item.intended === "string" ? item.intended : "—",
+            links,
+            sourcePath: typeof item.sourcePath === "string" ? item.sourcePath : "",
+          };
+        })
+        .filter((item) => item.date && item.business && item.domain && item.what && item.sourcePath && item.links.length > 0)
+        .sort(compareSummaryRows);
+
+      return normalized;
+    }
+
+    function populateBusinessFilter(rows) {
+      if (!businessFilter) {
+        return;
+      }
+
+      const selectedBefore = businessFilter.value || defaultBusiness;
+      businessFilter.innerHTML = "";
+
+      const allOption = document.createElement("option");
+      allOption.value = defaultBusiness;
+      allOption.textContent = defaultBusiness;
+      businessFilter.appendChild(allOption);
+
+      const businesses = Array.from(new Set(rows.map((row) => row.business))).sort((left, right) =>
+        left.localeCompare(right),
+      );
+      businesses.forEach((business) => {
+        const option = document.createElement("option");
+        option.value = business;
+        option.textContent = business;
+        businessFilter.appendChild(option);
+      });
+
+      const canRestoreSelection = selectedBefore === defaultBusiness || businesses.includes(selectedBefore);
+      businessFilter.value = canRestoreSelection ? selectedBefore : defaultBusiness;
+    }
+
+    function renderBuildSummaryRows() {
+      if (!buildSummaryBody) {
+        return;
+      }
+
+      clearSummaryBody();
+
+      const selectedBusiness = businessFilter ? businessFilter.value : defaultBusiness;
+      const selectedDays = timeframeFilter ? Number(timeframeFilter.value) : defaultTimeframeDays;
+      const nowMs = Date.now();
+      const cutoffMs = nowMs - selectedDays * 24 * 60 * 60 * 1000;
+
+      const filteredRows = buildSummaryRows
+        .filter((row) => {
+          const timestamp = new Date(row.date).getTime();
+          if (Number.isNaN(timestamp)) {
+            return false;
+          }
+          if (timestamp < cutoffMs) {
+            return false;
+          }
+          if (selectedBusiness === defaultBusiness) {
+            return true;
+          }
+          return row.business === selectedBusiness;
+        })
+        .sort(compareSummaryRows);
+
+      if (filteredRows.length === 0) {
+        renderSummaryMessage("No outputs in selected timeframe.");
+        return;
+      }
+
+      filteredRows.forEach((rowData) => {
+        const row = document.createElement("tr");
+
+        const dateCell = document.createElement("td");
+        dateCell.textContent = rowData.date;
+        row.appendChild(dateCell);
+
+        const businessCell = document.createElement("td");
+        businessCell.textContent = rowData.business;
+        row.appendChild(businessCell);
+
+        const domainCell = document.createElement("td");
+        domainCell.textContent = rowData.domain;
+        row.appendChild(domainCell);
+
+        const whatCell = document.createElement("td");
+        whatCell.textContent = rowData.what;
+        row.appendChild(whatCell);
+
+        const whyCell = document.createElement("td");
+        whyCell.textContent = rowData.why;
+        row.appendChild(whyCell);
+
+        const intendedCell = document.createElement("td");
+        intendedCell.textContent = rowData.intended;
+        row.appendChild(intendedCell);
+
+        const linksCell = document.createElement("td");
+        linksCell.className = "build-summary-links";
+        rowData.links.forEach((link, index) => {
+          if (index > 0) {
+            linksCell.appendChild(document.createTextNode(" | "));
+          }
+          const anchor = document.createElement("a");
+          anchor.textContent = link.label;
+          anchor.setAttribute("href", link.href);
+          linksCell.appendChild(anchor);
+        });
+        row.appendChild(linksCell);
+
+        buildSummaryBody.appendChild(row);
+      });
+    }
+
+    function renderBuildSummaryUnavailable() {
+      clearSummaryBody();
+      renderSummaryMessage("Build Summary data unavailable.");
+      if (buildSummaryStatus) {
+        buildSummaryStatus.textContent = "Build Summary data unavailable.";
+      }
+    }
+
+    async function loadBuildSummary() {
+      if (!timeframeFilter) {
+        return;
+      }
+
+      timeframeFilter.value = String(defaultTimeframeDays);
+      if (businessFilter) {
+        businessFilter.value = defaultBusiness;
+      }
+
+      try {
+        const response = await fetch("./_data/build-summary.json", { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error(`Fetch failed with status ${response.status}`);
+        }
+
+        const payload = await response.json();
+        buildSummaryRows = normalizeSummaryRows(payload);
+        populateBusinessFilter(buildSummaryRows);
+        renderBuildSummaryRows();
+
+        if (buildSummaryStatus) {
+          buildSummaryStatus.textContent = `${buildSummaryRows.length} entries loaded`;
+        }
+      } catch (_error) {
+        buildSummaryRows = [];
+        populateBusinessFilter([]);
+        renderBuildSummaryUnavailable();
+      }
+    }
+
     tabButtons.forEach((button) => {
       button.addEventListener("click", () => showPanel(button.dataset.panel));
     });
+
+    if (businessFilter) {
+      businessFilter.addEventListener("change", () => renderBuildSummaryRows());
+    }
+    if (timeframeFilter) {
+      timeframeFilter.addEventListener("change", () => renderBuildSummaryRows());
+    }
+
+    loadBuildSummary();
   </script>
 </body>
 </html>

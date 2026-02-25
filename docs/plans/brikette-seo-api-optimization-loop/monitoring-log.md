@@ -54,11 +54,13 @@ tsx --tsconfig scripts/tsconfig.json scripts/src/brikette/gsc-search-analytics.t
 
 ## After Each Deploy
 
-Run Sitemaps re-ping (once TASK-06 is complete):
+Run Sitemaps re-ping (TASK-06 complete, use after every content deploy):
 
 ```bash
 tsx --tsconfig scripts/tsconfig.json scripts/src/brikette/gsc-sitemap-ping.ts
 ```
+
+Returns: `OK (HTTP 204): Sitemap re-pinged successfully.`
 
 ---
 

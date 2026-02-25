@@ -21,6 +21,11 @@
       "dependsOn": [
         "^build"
       ],
+      "env": [
+        "NEXTAUTH_SECRET",
+        "SESSION_SECRET",
+        "CART_COOKIE_SECRET"
+      ],
       "outputs": [
         "dist/**",
         ".next/**",

@@ -1,13 +1,16 @@
 import { jest } from "@jest/globals";
 
+import * as seoGenerateService from "../../services/shops/seoGenerateService";
 import * as seoService from "../../services/shops/seoService";
 import * as settingsService from "../../services/shops/settingsService";
 import * as actions from "../shops.server";
 
 jest.mock("../../services/shops/seoService", () => ({
   updateSeo: jest.fn(),
-  generateSeo: jest.fn(),
   revertSeo: jest.fn(),
+}));
+jest.mock("../../services/shops/seoGenerateService", () => ({
+  generateSeo: jest.fn(),
 }));
 
 jest.mock("../../services/shops/settingsService", () => ({
@@ -51,7 +54,7 @@ describe("shops.server actions", () => {
     {
       name: "generateSeo",
       action: actions.generateSeo,
-      serviceFn: seoService.generateSeo as jest.Mock,
+      serviceFn: seoGenerateService.generateSeo as jest.Mock,
       args: ["s", fd],
       result: { ok: true },
     },

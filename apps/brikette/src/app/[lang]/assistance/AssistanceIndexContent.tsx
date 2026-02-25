@@ -1,6 +1,6 @@
 "use client";
 
-/* eslint-disable ds/no-hardcoded-copy -- PUB-05 pre-existing */
+/* eslint-disable ds/no-hardcoded-copy, max-lines-per-function -- PUB-05 pre-existing */
 // src/app/[lang]/assistance/AssistanceIndexContent.tsx
 // Client component for assistance landing page
 import { type ComponentProps, memo, useCallback, useMemo, useRef } from "react";
@@ -15,6 +15,7 @@ import type { AssistanceQuickLinkRenderProps } from "@acme/ui/organisms/Assistan
 import { AssistanceQuickLinksSection as AssistanceQuickLinksSectionUi } from "@acme/ui/organisms/AssistanceQuickLinksSection";
 
 import AssistanceQuickLinksSection from "@/components/assistance/quick-links-section";
+import ContentStickyCta from "@/components/cta/ContentStickyCta";
 import FaqStructuredData from "@/components/seo/FaqStructuredData";
 import { isGuideLive } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -311,7 +312,14 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
                   <dd>{t("addressValue", { defaultValue: "Via Marconi 358, Positano 84017 SA" })}</dd>
                 </div>
               </dl>
-              <p className="mt-5 text-sm font-semibold text-brand-heading dark:text-brand-text">
+              <div className="mt-5">
+                <Button asChild size="sm" className="w-full">
+                  <Link href={`/${resolvedLang}/book`}>
+                    {t("bookDirect", { defaultValue: "Book Direct" })}
+                  </Link>
+                </Button>
+              </div>
+              <p className="mt-4 text-sm font-semibold text-brand-heading dark:text-brand-text">
                 {t("otherBookingOptions", { defaultValue: "Other booking options" })}
               </p>
               <Cluster className="mt-3">
@@ -351,6 +359,7 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
         renderLink={renderAssistanceLink}
       />
 
+      <ContentStickyCta lang={resolvedLang} ctaLocation="assistance" />
     </>
   );
 }

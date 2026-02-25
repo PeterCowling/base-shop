@@ -12,6 +12,7 @@ import { DirectBookingPerks } from "@acme/ui/molecules";
 import StickyBookNow, { type StickyBookNowClickContext } from "@acme/ui/organisms/StickyBookNow";
 
 import LocationInline from "@/components/booking/LocationInline";
+import SocialProofSection from "@/components/landing/SocialProofSection";
 import RoomCard from "@/components/rooms/RoomCard";
 import RoomStructuredData from "@/components/seo/RoomStructuredData";
 import roomsData, { type RoomId } from "@/data/roomsData";
@@ -288,6 +289,8 @@ export default function RoomDetailContent({ lang, id }: Props) {
       </h1>
 
       <HeroSection hero={hero} />
+
+      <SocialProofSection lang={lang} />
 
       <RoomCard room={room} checkIn={checkIn} checkOut={checkOut} adults={adults} lang={lang} queryState={queryState} />
 

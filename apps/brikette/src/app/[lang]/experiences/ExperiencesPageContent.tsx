@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 
+import ContentStickyCta from "@/components/cta/ContentStickyCta";
 import GroupedGuideCollection from "@/components/guides/GroupedGuideCollection";
 import GuideCollection from "@/components/guides/GuideCollection";
 import GuideFaqSection, { type GuideFaq } from "@/components/guides/GuideFaqSection";
@@ -292,6 +293,8 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
           />
         </Section>
       </Section>
+
+      <ContentStickyCta lang={lang} ctaLocation="experiences_page" />
     </Fragment>
   );
 }

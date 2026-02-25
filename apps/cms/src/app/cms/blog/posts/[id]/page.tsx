@@ -4,9 +4,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPost, updatePost } from "@cms/actions/blog.server";
 
-import { formatTimestamp } from "@acme/date-utils";
 import { getShopById } from "@acme/platform-core/repositories/shop.server";
 import { getSanityConfig, type Shop } from "@acme/platform-core/shops";
+
+import { formatTimestamp } from "@/lib/datetime";
 
 import DeleteButton from "../DeleteButton.client";
 import PostForm from "../PostForm.client";

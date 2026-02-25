@@ -12,6 +12,12 @@ import {
 } from 'react';
 import { push } from 'firebase/database';
 
+import { readGuestSession } from '@/lib/auth/guestSessionGuard';
+import {
+  buildDirectMessageChannelId,
+  directMessageChannelIncludesGuest,
+  isDirectMessageChannelId,
+} from '@/lib/chat/directMessageChannel';
 import { MSG_ROOT } from '@/utils/messaging/dbRoot';
 
 import {
@@ -40,6 +46,8 @@ import type { Message } from '../../types/messenger/chat';
 
 const PAGE_SIZE = 50;
 const ACTIVITIES_PAGE_SIZE = 20;
+const DIRECT_MESSAGES_POLL_INTERVAL_MS = 3_000;
+const DIRECT_MESSAGES_RETRY_FALLBACK_MS = 10_000;
 
 interface ChatState {
   activities: Record<string, ActivityInstance>;
@@ -52,7 +60,66 @@ interface ChatContextValue extends ChatState {
   loadOlderMessages: (channelId: string) => Promise<void>;
   loadMoreActivities: () => void;
   hasMoreActivities: boolean;
-  sendMessage: (channelId: string, content: string) => Promise<void>;
+  sendMessage: (
+    channelId: string,
+    content: string,
+    options?: SendMessageOptions,
+  ) => Promise<void>;
+}
+
+interface DirectMessageContext {
+  bookingId: string;
+  peerUuid: string;
+}
+
+interface SendMessageOptions {
+  directMessage?: DirectMessageContext;
+}
+
+interface DirectMessagesApiResponse {
+  messages?: unknown;
+}
+
+function buildDirectMessagesRequestUrl(
+  channelId: string,
+  options?: {
+    before?: number;
+    limit?: number;
+  },
+): string {
+  const params = new URLSearchParams();
+  params.set('channelId', channelId);
+  params.set('limit', String(options?.limit ?? PAGE_SIZE));
+
+  if (typeof options?.before === 'number') {
+    params.set('before', String(options.before));
+  }
+
+  return `/api/direct-messages?${params.toString()}`;
+}
+
+function parseRetryAfterMs(headers: Headers, fallbackMs: number): number {
+  const retryAfter = headers.get('Retry-After')?.trim() ?? '';
+  if (!retryAfter) {
+    return fallbackMs;
+  }
+
+  const retryAfterSeconds = Number.parseInt(retryAfter, 10);
+  if (Number.isFinite(retryAfterSeconds) && retryAfterSeconds > 0) {
+    return retryAfterSeconds * 1000;
+  }
+
+  const retryAfterTimestamp = Date.parse(retryAfter);
+  if (Number.isFinite(retryAfterTimestamp)) {
+    return Math.max(1_000, retryAfterTimestamp - Date.now());
+  }
+
+  return fallbackMs;
+}
+
+function buildDirectRateLimitMessage(retryAfterMs: number): string {
+  const seconds = Math.max(1, Math.ceil(retryAfterMs / 1000));
+  return `Too many direct messages. Try again in ${seconds}s.`;
 }
 
 type ChatAction =
@@ -116,6 +183,50 @@ function reducer(state: ChatState, action: ChatAction): ChatState {
   }
 }
 
+function isMessage(value: unknown): value is Message {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const candidate = value as Partial<Message>;
+  if (
+    typeof candidate.id !== 'string'
+    || typeof candidate.content !== 'string'
+    || typeof candidate.senderId !== 'string'
+    || typeof candidate.senderRole !== 'string'
+    || typeof candidate.createdAt !== 'number'
+  ) {
+    return false;
+  }
+
+  if (candidate.senderName !== undefined && typeof candidate.senderName !== 'string') {
+    return false;
+  }
+  if (candidate.deleted !== undefined && typeof candidate.deleted !== 'boolean') {
+    return false;
+  }
+  if (candidate.imageUrl !== undefined && typeof candidate.imageUrl !== 'string') {
+    return false;
+  }
+
+  return true;
+}
+
+function normalizeDirectMessages(payload: unknown): Message[] {
+  if (!payload || typeof payload !== 'object') {
+    return [];
+  }
+
+  const rawMessages = (payload as DirectMessagesApiResponse).messages;
+  if (!Array.isArray(rawMessages)) {
+    return [];
+  }
+
+  return rawMessages
+    .filter(isMessage)
+    .sort((left, right) => left.createdAt - right.createdAt);
+}
+
 const initialState: ChatState = { activities: {}, messages: {} };
 
 export const ChatContext = createContext<ChatContextValue | undefined>(
@@ -134,6 +245,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
   const [hasMoreActivities, setHasMoreActivities] = useState(false);
 
   const prevStatusRef = useRef<Record<string, ActivityInstance['status']>>({});
+  const directReadBackoffUntilRef = useRef<Record<string, number>>({});
+  const directWriteBackoffUntilRef = useRef<number>(0);
 
   const removeSystemMessages = useCallback(
     async (instanceId: string) => {
@@ -244,8 +357,95 @@ export function ChatProvider({ children }: ChatProviderProps) {
     messageListenerRef.current = null;
     if (!currentChannelId) return;
 
+    const activeChannelId = currentChannelId;
+
+    if (isDirectMessageChannelId(activeChannelId)) {
+      const session = readGuestSession();
+      if (
+        !session.uuid
+        || !session.token
+        || !session.bookingId
+        || !directMessageChannelIncludesGuest(activeChannelId, session.uuid)
+      ) {
+        dispatch({ type: 'setMessages', channelId: activeChannelId, messages: [] });
+        return;
+      }
+
+      let cancelled = false;
+
+      const pollDirectMessages = async () => {
+        const backoffUntil = directReadBackoffUntilRef.current[activeChannelId] ?? 0;
+        if (Date.now() < backoffUntil) {
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            buildDirectMessagesRequestUrl(activeChannelId, { limit: PAGE_SIZE }),
+            {
+              method: 'GET',
+              headers: {
+                'X-Prime-Guest-Token': session.token,
+                'X-Prime-Guest-Booking-Id': session.bookingId,
+              },
+              cache: 'no-store',
+            },
+          );
+
+          if (!response.ok) {
+            if (response.status === 429) {
+              const retryMs = parseRetryAfterMs(
+                response.headers,
+                DIRECT_MESSAGES_RETRY_FALLBACK_MS,
+              );
+              directReadBackoffUntilRef.current[activeChannelId] = Date.now() + retryMs;
+              return;
+            }
+
+            if (!cancelled && (response.status === 403 || response.status === 404)) {
+              dispatch({
+                type: 'setMessages',
+                channelId: activeChannelId,
+                messages: [],
+              });
+            }
+            return;
+          }
+
+          const payload = await response.json();
+          if (cancelled) {
+            return;
+          }
+          directReadBackoffUntilRef.current[activeChannelId] = 0;
+
+          dispatch({
+            type: 'setMessages',
+            channelId: activeChannelId,
+            messages: normalizeDirectMessages(payload),
+          });
+        } catch (error) {
+          console.error('Failed to load direct messages', error);
+        }
+      };
+
+      void pollDirectMessages();
+      const intervalId = window.setInterval(() => {
+        void pollDirectMessages();
+      }, DIRECT_MESSAGES_POLL_INTERVAL_MS);
+
+      messageListenerRef.current = () => {
+        cancelled = true;
+        window.clearInterval(intervalId);
+      };
+
+      return () => {
+        messageListenerRef.current?.();
+        messageListenerRef.current = null;
+      };
+    }
+
     const q = query(
-      ref(db, `${MSG_ROOT}/channels/${currentChannelId}/messages`),
+      ref(db, `${MSG_ROOT}/channels/${activeChannelId}/messages`),
       orderByChild('createdAt'),
       limitToLast(PAGE_SIZE),
     );
@@ -256,7 +456,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
       );
       dispatch({
         type: 'setMessages',
-        channelId: currentChannelId!,
+        channelId: activeChannelId,
         messages,
       });
     });
@@ -267,7 +467,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
       const message: Message = { id: snap.key as string, ...msg };
       dispatch({
         type: 'upsertMessage',
-        channelId: currentChannelId!,
+        channelId: activeChannelId,
         message,
       });
     };
@@ -277,14 +477,14 @@ export function ChatProvider({ children }: ChatProviderProps) {
       const message: Message = { id: snap.key as string, ...msg };
       dispatch({
         type: 'upsertMessage',
-        channelId: currentChannelId!,
+        channelId: activeChannelId,
         message,
       });
     };
     const handleRemove = (snap: DataSnapshot) => {
       dispatch({
         type: 'removeMessage',
-        channelId: currentChannelId!,
+        channelId: activeChannelId,
         id: snap.key as string,
       });
     };
@@ -311,6 +511,70 @@ export function ChatProvider({ children }: ChatProviderProps) {
 
   const loadOlderMessages = useCallback(
     async (channelId: string) => {
+      if (isDirectMessageChannelId(channelId)) {
+        const session = readGuestSession();
+        if (
+          !session.uuid
+          || !session.token
+          || !session.bookingId
+          || !directMessageChannelIncludesGuest(channelId, session.uuid)
+        ) {
+          dispatch({ type: 'setMessages', channelId, messages: [] });
+          return;
+        }
+
+        const current = state.messages[channelId] ?? [];
+        const oldest = current[0];
+        if (!oldest) return;
+
+        const backoffUntil = directReadBackoffUntilRef.current[channelId] ?? 0;
+        if (Date.now() < backoffUntil) {
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            buildDirectMessagesRequestUrl(channelId, {
+              before: oldest.createdAt,
+              limit: PAGE_SIZE,
+            }),
+            {
+              method: 'GET',
+              headers: {
+                'X-Prime-Guest-Token': session.token,
+                'X-Prime-Guest-Booking-Id': session.bookingId,
+              },
+              cache: 'no-store',
+            },
+          );
+
+          if (!response.ok) {
+            if (response.status === 429) {
+              const retryMs = parseRetryAfterMs(
+                response.headers,
+                DIRECT_MESSAGES_RETRY_FALLBACK_MS,
+              );
+              directReadBackoffUntilRef.current[channelId] = Date.now() + retryMs;
+              return;
+            }
+            if (response.status === 403 || response.status === 404) {
+              dispatch({ type: 'setMessages', channelId, messages: [] });
+            }
+            return;
+          }
+
+          const payload = await response.json();
+          directReadBackoffUntilRef.current[channelId] = 0;
+          const messages = normalizeDirectMessages(payload);
+          if (messages.length) {
+            dispatch({ type: 'prependMessages', channelId, messages });
+          }
+        } catch (error) {
+          console.error('Failed to load older direct messages', error);
+        }
+
+        return;
+      }
       const current = state.messages[channelId] ?? [];
       const oldest = current[0];
       if (!oldest) return;
@@ -333,15 +597,80 @@ export function ChatProvider({ children }: ChatProviderProps) {
   );
 
   const sendMessage = useCallback(
-    async (channelId: string, content: string) => {
+    async (channelId: string, content: string, options?: SendMessageOptions) => {
       if (!content.trim()) return;
 
       // Get guest session info
-      const { readGuestSession: readSession } = await import('@/lib/auth/guestSessionGuard');
-      const session = readSession();
+      const session = readGuestSession();
 
       if (!session.uuid) {
         throw new Error('Guest session not found');
+      }
+
+      if (options?.directMessage) {
+        const { bookingId, peerUuid } = options.directMessage;
+
+        if (!bookingId || !peerUuid || !session.bookingId || !session.token) {
+          throw new Error('Direct message context is incomplete.');
+        }
+
+        if (session.bookingId !== bookingId) {
+          throw new Error('Direct message booking mismatch.');
+        }
+
+        if (session.uuid === peerUuid) {
+          throw new Error('Cannot send a direct message to the same guest UUID.');
+        }
+
+        const expectedChannelId = buildDirectMessageChannelId(session.uuid, peerUuid);
+        if (channelId !== expectedChannelId) {
+          throw new Error('Direct message channel does not match participant UUIDs.');
+        }
+
+        const activeWriteBackoff = directWriteBackoffUntilRef.current - Date.now();
+        if (activeWriteBackoff > 0) {
+          throw new Error(buildDirectRateLimitMessage(activeWriteBackoff));
+        }
+
+        const directResponse = await fetch('/api/direct-message', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Prime-Guest-Token': session.token,
+            'X-Prime-Guest-Booking-Id': bookingId,
+          },
+          body: JSON.stringify({
+            bookingId,
+            peerUuid,
+            channelId,
+            content: content.trim(),
+          }),
+        });
+
+        if (!directResponse.ok) {
+          if (directResponse.status === 429) {
+            const retryMs = parseRetryAfterMs(
+              directResponse.headers,
+              DIRECT_MESSAGES_RETRY_FALLBACK_MS,
+            );
+            directWriteBackoffUntilRef.current = Date.now() + retryMs;
+            throw new Error(buildDirectRateLimitMessage(retryMs));
+          }
+
+          let errorMessage = 'Failed to send direct message.';
+          try {
+            const payload = await directResponse.json() as { error?: string };
+            if (typeof payload.error === 'string' && payload.error.trim()) {
+              errorMessage = payload.error;
+            }
+          } catch {
+            // Keep default message for non-JSON or empty responses.
+          }
+          throw new Error(errorMessage);
+        }
+
+        directWriteBackoffUntilRef.current = 0;
+        return;
       }
 
       const messageRef = push(ref(db, `${MSG_ROOT}/channels/${channelId}/messages`));

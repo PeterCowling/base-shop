@@ -6,10 +6,13 @@ import {
   listAccessRequests,
   updateAccessRequest,
 } from "../../../../../../lib/accessStore";
+import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../../../lib/requestBody";
 import { xaI18n } from "../../../../../../lib/xaI18n";
 
 // Uses node:crypto/fs via accessStore + accessAdmin.
 export const runtime = "nodejs";
+
+const ISSUE_INVITE_PAYLOAD_MAX_BYTES = 8 * 1024;
 
 function summarizeInvite(invite: {
   id: string;
@@ -99,9 +102,22 @@ export async function POST(
 
   let payload: Record<string, unknown> = {};
   try {
-    payload = (await request.json()) as Record<string, unknown>;
-  } catch {
-    payload = {};
+    const contentLengthHeader = request.headers.get("content-length");
+    const contentLength = contentLengthHeader ? Number(contentLengthHeader) : Number.NaN;
+    const shouldAttemptParse = Number.isFinite(contentLength)
+      ? contentLength > 0
+      : Boolean(request.body);
+    if (shouldAttemptParse) {
+      payload = (await readJsonBodyWithLimit(request, ISSUE_INVITE_PAYLOAD_MAX_BYTES)) as Record<
+        string,
+        unknown
+      >;
+    }
+  } catch (error) {
+    if (error instanceof PayloadTooLargeError) {
+      return NextResponse.json({ ok: false, error: "payload_too_large" }, { status: 413 });
+    }
+    return NextResponse.json({ ok: false, error: "invalid" }, { status: 400 });
   }
 
   const maxUses = sanitizeMaxUses(payload.maxUses, 1);

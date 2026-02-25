@@ -256,6 +256,7 @@ export {
   type OnlineStatsState,
   pearson,
   percentile,
+  percentileNearestRank,
   quartiles,
   range,
   skewness,
@@ -302,3 +303,28 @@ export {
   roundUpToIncrement,
   taxAmount,
 } from "./math/financial/index.js";
+
+// Operations utilities (units, spatial helpers, media constraints, robust stats)
+export {
+  boundedReadSize,
+  bpsFromRatio,
+  clamp01Vec3,
+  type FitMode,
+  fitPerspectiveDistance,
+  isZScoreOutlier,
+  minDistanceCull,
+  type PerspectiveFitOptions,
+  type RateScale,
+  rateToBps,
+  type RateToBpsResult,
+  rollingZScore,
+  safeDivideRound,
+  screenMarginCull,
+  shortestEdge,
+  stddevOrZero,
+  toCents,
+  toPositiveInt,
+  toWholeCount,
+  validateMinImageEdge,
+  type Vec3Like,
+} from "./math/ops/index.js";

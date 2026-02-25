@@ -3,6 +3,7 @@
 import { type FC, memo, useCallback } from "react";
 
 import { Button } from "@acme/design-system/atoms";
+import { SimpleModal } from "@acme/ui/molecules";
 
 import useDeleteGuestFromBooking from "../../../hooks/mutations/useDeleteGuestFromBooking";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
@@ -43,43 +44,45 @@ const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
   }, [booking.bookingRef, booking.occupantId, deleteGuest, onClose]);
 
   return (
-    <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 p-4">
-        <div className="bg-surface w-full max-w-sm p-6 rounded shadow-lg dark:bg-darkSurface dark:text-darkAccentGreen">
-          <h2 className="text-lg font-semibold mb-4">Confirm Deletion</h2>
-          <p className="mb-4">
-            Are you sure you want to delete{" "}
-            <strong>
-              {booking.firstName} {booking.lastName}
-            </strong>{" "}
-            from booking <strong>{booking.bookingRef}</strong>?
-          </p>
-          <p className="text-error-main text-sm mb-6">
-            This action cannot be undone.
-          </p>
-          {Boolean(error) && (
-            <p className="text-error-main text-sm mb-4">
-              An error occurred while deleting. Please try again.
-            </p>
-          )}
-          <div className="flex justify-end space-x-3">
-            <Button
-              onClick={onClose}
-              className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-3 text-foreground dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleConfirmDelete}
-              disabled={loading}
-              className="px-4 py-2 rounded bg-error-main hover:bg-red-700 text-primary-fg"
-            >
-              {loading ? "Deleting..." : "Delete"}
-            </Button>
-          </div>
+    <SimpleModal
+      isOpen={true}
+      onClose={onClose}
+      title="Confirm Deletion"
+      maxWidth="max-w-sm"
+      footer={
+        <div className="flex justify-end space-x-3">
+          <Button
+            onClick={onClose}
+            className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-3 text-foreground"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleConfirmDelete}
+            disabled={loading}
+            className="px-4 py-2 rounded bg-error-main hover:bg-error-dark text-primary-fg"
+          >
+            {loading ? "Deleting..." : "Delete"}
+          </Button>
         </div>
-      </div>
-    </>
+      }
+    >
+      <p className="mb-4">
+        Are you sure you want to delete{" "}
+        <strong>
+          {booking.firstName} {booking.lastName}
+        </strong>{" "}
+        from booking <strong>{booking.bookingRef}</strong>?
+      </p>
+      <p className="text-error-main text-sm mb-6">
+        This action cannot be undone.
+      </p>
+      {Boolean(error) && (
+        <p className="text-error-main text-sm mb-4">
+          An error occurred while deleting. Please try again.
+        </p>
+      )}
+    </SimpleModal>
   );
 };
 

@@ -1,5 +1,7 @@
 import { execSync } from "node:child_process";
 
+import { mean as libMean } from "@acme/lib/math/statistics";
+
 import { inlineStylesToTokens } from "./codemods/inline-styles-to-tokens";
 import { tokensToCssVars } from "./codemods/tokens-to-css-vars";
 
@@ -14,9 +16,7 @@ export function run({ apply }: { apply: boolean }): MigrationReport {
     tokensToCssVars({ apply }),
     inlineStylesToTokens({ apply }),
   ];
-  const coverage = Math.round(
-    results.reduce((sum, r) => sum + r.coverage, 0) / results.length,
-  );
+  const coverage = Math.round(libMean(results.map((result) => result.coverage)));
   const unmapped = results.flatMap((r) => r.unmapped);
   const manualActions = ["Review new theme tokens", "Adjust custom styles"];
   console.log(`Token coverage: ${coverage}%`);

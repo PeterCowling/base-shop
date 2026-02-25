@@ -1542,9 +1542,27 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/site-upgrades/HBAG/2026-02-23-deep-research-site-upgrade-prompt.user.md",
+    "type": "Deep-Research-Prompt",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/HBAG/2026-02-23-image-production-contract.user.md",
+    "type": "Site-Upgrade-Artifact",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md",
+    "type": "Site-Upgrade-Brief",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/site-upgrades/HBAG/latest.user.md",
     "type": "Site-Upgrade-Pointer",
-    "status": "Missing",
+    "status": "Active",
     "domain": null
   },
   {
@@ -1616,6 +1634,12 @@
   {
     "path": "docs/business-os/startup-baselines/HBAG-channels.md",
     "type": "Reference",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-baselines/HBAG-content-packet.md",
+    "type": "Startup-Content-Packet",
     "status": "Active",
     "domain": null
   },
@@ -1695,6 +1719,12 @@
     "path": "docs/business-os/startup-baselines/PET-offer.md",
     "type": "Offer",
     "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-baselines/_templates/content-packet-template.md",
+    "type": "Startup-Content-Packet",
+    "status": "Draft",
     "domain": null
   },
   {
@@ -3282,6 +3312,48 @@
     "domain": "CMS"
   },
   {
+    "path": "docs/plans/_archive/cms-webpack-build-oom/artifacts/build-surface-matrix.md",
+    "type": "Plan-Artifact",
+    "status": "Draft",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/_archive/cms-webpack-build-oom/artifacts/profiling-baseline.md",
+    "type": "Plan-Artifact",
+    "status": "Draft",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/_archive/cms-webpack-build-oom/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/_archive/cms-webpack-build-oom/critique-history.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/_archive/cms-webpack-build-oom/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/_archive/cms-webpack-build-oom/plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/_archive/cms-webpack-build-oom/results-review.user.md",
+    "type": "Results-Review",
+    "status": "Complete",
+    "domain": null
+  },
+  {
     "path": "docs/plans/_archive/email-system-production-readiness/critique-history.md",
     "type": "Critique-History",
     "status": "Reference",
@@ -3994,6 +4066,18 @@
     "type": "Plan",
     "status": "Active",
     "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/archive/design-system-depth-and-guardrail-hardening/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/archive/design-system-depth-and-guardrail-hardening/plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/archive/design-system-plan-archived-2026-02-10.md",
@@ -5676,24 +5760,6 @@
     "domain": "CI-Deploy"
   },
   {
-    "path": "docs/plans/_archive/cms-webpack-build-oom/critique-history.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Repo"
-  },
-  {
-    "path": "docs/plans/_archive/cms-webpack-build-oom/fact-find.md",
-    "type": "Fact-Find",
-    "status": "Ready-for-planning",
-    "domain": "Infra"
-  },
-  {
-    "path": "docs/plans/_archive/cms-webpack-build-oom/plan.md",
-    "type": "Plan",
-    "status": "Archived",
-    "domain": "Infra"
-  },
-  {
     "path": "docs/plans/cochlearfit-deployment-readiness/email-setup.md",
     "type": "Setup-Runbook",
     "status": "Draft",
@@ -5770,18 +5836,6 @@
     "type": "Plan",
     "status": "Draft",
     "domain": "Dashboard / Upgrade"
-  },
-  {
-    "path": "docs/plans/archive/design-system-depth-and-guardrail-hardening/fact-find.md",
-    "type": "Fact-Find",
-    "status": "Ready-for-planning",
-    "domain": "UI"
-  },
-  {
-    "path": "docs/plans/archive/design-system-depth-and-guardrail-hardening/plan.md",
-    "type": "Plan",
-    "status": "Archived",
-    "domain": "UI"
   },
   {
     "path": "docs/plans/email-autodraft-workflow-design.md",
@@ -5884,6 +5938,30 @@
     "type": "Audit",
     "status": "Reference",
     "domain": null
+  },
+  {
+    "path": "docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/hbag-website-02-image-first-upgrade/critique-history.md",
+    "type": "Critique-History",
+    "status": "Reference",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/hbag-website-02-image-first-upgrade/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/hbag-website-02-image-first-upgrade/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/hbag-website-v1-first-build/fact-find.md",
@@ -6026,7 +6104,7 @@
   {
     "path": "docs/plans/jest-runaway-process-prevention/plan.md",
     "type": "Plan",
-    "status": "Draft",
+    "status": "Complete",
     "domain": "Infra"
   },
   {
@@ -6174,6 +6252,30 @@
     "domain": "UI"
   },
   {
+    "path": "docs/plans/reception-ds-centralization-growth-first/artifacts/wave-1-results.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-ds-centralization-growth-first/artifacts/wave-2-results.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-ds-centralization-growth-first/artifacts/wave-3-results.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-ds-centralization-growth-first/artifacts/wave-4-results.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
     "path": "docs/plans/reception-ds-centralization-growth-first/fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
@@ -6182,7 +6284,7 @@
   {
     "path": "docs/plans/reception-ds-centralization-growth-first/plan.md",
     "type": "Plan",
-    "status": "Draft",
+    "status": "Complete",
     "domain": "UI"
   },
   {
@@ -6536,7 +6638,7 @@
   {
     "path": "docs/plans/turbopack-full-migration/artifacts/migration-matrix.md",
     "type": "Plan-Artifact",
-    "status": "Draft",
+    "status": "Complete",
     "domain": "Infra"
   },
   {
@@ -6554,7 +6656,7 @@
   {
     "path": "docs/plans/turbopack-full-migration/plan.md",
     "type": "Plan",
-    "status": "Draft",
+    "status": "Complete",
     "domain": "Infra"
   },
   {
@@ -6606,6 +6708,18 @@
     "domain": "UI"
   },
   {
+    "path": "docs/plans/unit-test-sufficiency-audit/artifacts/coverage-tier-decision.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/unit-test-sufficiency-audit/artifacts/coverage-tier-graduation.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "Repo"
+  },
+  {
     "path": "docs/plans/unit-test-sufficiency-audit/artifacts/test-config-strategy.md",
     "type": "Decision-Record",
     "status": "Approved",
@@ -6620,7 +6734,7 @@
   {
     "path": "docs/plans/unit-test-sufficiency-audit/plan.md",
     "type": "Plan",
-    "status": "Draft",
+    "status": "Complete",
     "domain": "Repo"
   },
   {
@@ -6646,6 +6760,24 @@
     "type": "Artifact",
     "status": "Complete",
     "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-usability-hardening/artifacts/usability-kpi-delta.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-usability-hardening/artifacts/validation-summary.md",
+    "type": "Artifact",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-usability-hardening/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
   },
   {
     "path": "docs/plans/xa-uploader-usability-hardening/fact-find.md",

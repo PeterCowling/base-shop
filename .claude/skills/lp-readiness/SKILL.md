@@ -35,9 +35,9 @@ When `start-point=problem`, the **ASSESSMENT GATE** (GATE-ASSESSMENT-00) runs be
 
 When `start-point=product`, operators bypass ASSESSMENT entirely. lp-readiness performs the full RG-01/RG-02/RG-03 checks from scratch against whatever strategy docs exist.
 
-## Differs from idea-readiness
+## Scope Boundaries
 
-The `idea-readiness` skill is for **established businesses** with active plans, historical data, and full BOS integration. This startup version differs in:
+This startup readiness skill targets early-stage businesses and lightweight launch validation. It differs from heavier enterprise readiness flows in:
 
 1. **3 gates vs 7 gates**: Only checks (a) offer clarity, (b) distribution feasibility, (c) measurement plan — NOT business-plan freshness, outcome clarity, code-to-plan traceability, tooling/data prereqs, decision context, or market research freshness
 2. **No existing business data required**: Works from zero — no historical data, no active plan targets, no BOS cards/stage-docs needed
@@ -227,5 +227,4 @@ Invalid outputs:
 - lp-offer skill expects offer clarity from RG-01 as input
 
 ### Parallel Skills
-- Can be run independently of `/idea-readiness` (different scope)
-- Does NOT block or depend on `/idea-develop`, `/idea-scan`, or other BOS workflows
+- Does NOT block or depend on `/idea-scan` or other BOS workflows

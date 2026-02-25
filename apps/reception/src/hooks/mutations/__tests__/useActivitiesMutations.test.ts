@@ -145,40 +145,42 @@ describe("useActivitiesMutations", () => {
     });
   });
 
-  // TASK-06: Fix silent email failures for codes 2, 3, 4
-  it("does not attempt email for code 2 (no MCP template)", async () => {
+  it("sends guest email for activity code 2 (FIRST_REMINDER)", async () => {
     const { result } = renderHook(() => useActivitiesMutations());
 
     await act(async () => {
       await result.current.addActivity("occ1", 2);
     });
 
-    // TC-01: Code 2 does not trigger email attempt (not in relevantCodes)
-    expect(getMock).not.toHaveBeenCalled();
-    expect(sendEmailGuestMock).not.toHaveBeenCalled();
+    expect(sendEmailGuestMock).toHaveBeenCalledWith({
+      bookingRef: "REF123",
+      activityCode: 2,
+    });
   });
 
-  it("does not attempt email for code 3 (no MCP template)", async () => {
+  it("sends guest email for activity code 3 (SECOND_REMINDER)", async () => {
     const { result } = renderHook(() => useActivitiesMutations());
 
     await act(async () => {
       await result.current.addActivity("occ1", 3);
     });
 
-    // TC-02: Code 3 does not trigger email attempt (not in relevantCodes)
-    expect(getMock).not.toHaveBeenCalled();
-    expect(sendEmailGuestMock).not.toHaveBeenCalled();
+    expect(sendEmailGuestMock).toHaveBeenCalledWith({
+      bookingRef: "REF123",
+      activityCode: 3,
+    });
   });
 
-  it("does not attempt email for code 4 (no MCP template)", async () => {
+  it("sends guest email for activity code 4 (AUTO_CANCEL_NO_TNC)", async () => {
     const { result } = renderHook(() => useActivitiesMutations());
 
     await act(async () => {
       await result.current.addActivity("occ1", 4);
     });
 
-    // TC-03: Code 4 does not trigger email attempt (not in relevantCodes)
-    expect(getMock).not.toHaveBeenCalled();
-    expect(sendEmailGuestMock).not.toHaveBeenCalled();
+    expect(sendEmailGuestMock).toHaveBeenCalledWith({
+      bookingRef: "REF123",
+      activityCode: 4,
+    });
   });
 });

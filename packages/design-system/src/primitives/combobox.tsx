@@ -6,6 +6,7 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 
 import { cn, overflowContainmentClass } from "../utils/style";
 
+import { type PrimitiveDensity, resolveDensityClass } from "./density";
 import {
   type PrimitiveRadius,
   type PrimitiveShape,
@@ -101,6 +102,8 @@ export interface ComboboxTriggerProps extends React.ButtonHTMLAttributes<HTMLBut
   shape?: PrimitiveShape;
   /** Explicit trigger radius token override. */
   radius?: PrimitiveRadius;
+  /** Trigger density scale. */
+  density?: PrimitiveDensity;
 }
 
 export function ComboboxTrigger({
@@ -108,6 +111,7 @@ export function ComboboxTrigger({
   className,
   shape,
   radius,
+  density,
   children,
   ...props
 }: ComboboxTriggerProps) {
@@ -116,12 +120,18 @@ export function ComboboxTrigger({
     radius,
     defaultRadius: "md",
   });
+  const densityClass = resolveDensityClass({
+    density,
+    comfortableClass: "px-3 py-2",
+    compactClass: "px-2 py-1.5",
+  });
 
   return (
     <PopoverPrimitive.Trigger
       ref={ref}
       className={cn(
-        "flex h-10 w-full items-center justify-between border border-input bg-input px-3 py-2 text-sm text-foreground",
+        "flex h-10 w-full items-center justify-between border border-input bg-input text-sm text-foreground",
+        densityClass,
         shapeRadiusClass,
         "placeholder:text-muted-foreground",
         "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
@@ -184,6 +194,8 @@ export interface ComboboxInputProps extends React.InputHTMLAttributes<HTMLInputE
   shape?: PrimitiveShape;
   /** Explicit input radius token override. */
   radius?: PrimitiveRadius;
+  /** Input density scale. */
+  density?: PrimitiveDensity;
 }
 
 export function ComboboxInput({
@@ -191,6 +203,7 @@ export function ComboboxInput({
   className,
   shape,
   radius,
+  density,
   ...props
 }: ComboboxInputProps) {
   const { search, setSearch } = useComboboxContext();
@@ -198,6 +211,11 @@ export function ComboboxInput({
     shape,
     radius,
     defaultRadius: "md",
+  });
+  const densityClass = resolveDensityClass({
+    density,
+    comfortableClass: "px-3 py-2 mb-1",
+    compactClass: "px-2 py-1.5 mb-0.5",
   });
 
   return (
@@ -207,11 +225,11 @@ export function ComboboxInput({
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       className={cn(
-        "flex h-10 w-full border border-input bg-background px-3 py-2 text-sm text-foreground",
+        "flex h-10 w-full border border-input bg-background text-sm text-foreground",
+        densityClass,
         shapeRadiusClass,
         "placeholder:text-muted-foreground",
         "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring",
-        "mb-1",
         className
       )}
       {...props}
@@ -251,6 +269,8 @@ export interface ComboboxItemProps extends React.ButtonHTMLAttributes<HTMLButton
   shape?: PrimitiveShape;
   /** Explicit item radius token override. */
   radius?: PrimitiveRadius;
+  /** Item density scale. */
+  density?: PrimitiveDensity;
 }
 
 export function ComboboxItem({
@@ -261,6 +281,7 @@ export function ComboboxItem({
   keywords = [],
   shape,
   radius,
+  density,
   ...props
 }: ComboboxItemProps) {
   const { value: selectedValue, onValueChange, onOpenChange, search } = useComboboxContext();
@@ -285,6 +306,11 @@ export function ComboboxItem({
     radius,
     defaultRadius: "sm",
   });
+  const densityClass = resolveDensityClass({
+    density,
+    comfortableClass: "py-1.5",
+    compactClass: "py-1",
+  });
 
   const handleSelect = () => {
     onValueChange(value);
@@ -299,7 +325,8 @@ export function ComboboxItem({
       aria-selected={isSelected}
       onClick={handleSelect}
       className={cn(
-        "relative flex w-full min-w-0 cursor-default select-none items-center py-1.5 pe-2 ps-8 text-sm text-fg outline-none break-words",
+        "relative flex w-full min-w-0 cursor-default select-none items-center pe-2 ps-8 text-sm text-fg outline-none break-words",
+        densityClass,
         shapeRadiusClass,
         "hover:bg-surface-3 focus:bg-accent focus:text-accent-foreground",
         "disabled:pointer-events-none disabled:opacity-50",

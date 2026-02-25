@@ -13,7 +13,7 @@ const updateAiCatalog = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({
   updateAiCatalog: (...args: any[]) => updateAiCatalog(...args),
 }));
-jest.mock("@acme/date-utils", () => ({
+jest.mock("@/lib/datetime", () => ({
   formatTimestamp: (value: string) => `formatted-${value}`,
 }));
 jest.mock(

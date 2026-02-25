@@ -69,8 +69,8 @@ function atomicWriteTrigger(triggerPath: string, trigger: ReplanTrigger): void {
 }
 
 function getRecommendedFocus(constraintKey: string): string {
-  // S3/cvr → conversion optimization
-  if (constraintKey === "S3/cvr") {
+  // SIGNALS-01/cvr (legacy S3/cvr) → conversion optimization
+  if (constraintKey === "SIGNALS-01/cvr" || constraintKey === "S3/cvr") {
     return "Improve conversion rate through offer clarity, trust signals, or checkout optimization";
   }
 

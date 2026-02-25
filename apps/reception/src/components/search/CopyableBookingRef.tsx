@@ -1,6 +1,6 @@
 // /src/components/bookingSearch/CopyableBookingRef.tsx
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { CheckIcon, ClipboardIcon } from "@heroicons/react/24/solid";
+import { Check, Clipboard } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -35,17 +35,17 @@ const CopyableBookingRef: React.FC<CopyableBookingRefProps> = ({ text }) => {
       type="button"
       onClick={handleCopy}
       title="Copy booking reference"
-      className="group inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 dark:text-darkAccentGreen"
+      className="group inline-flex items-center gap-1 text-primary-main hover:text-primary-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <span className="underline">{text}</span>
       {copied ? (
-        <CheckIcon
-          className="h-4 w-4 text-success-main transition-opacity duration-150 dark:text-darkAccentGreen"
+        <Check
+          className="h-4 w-4 text-success-main transition-opacity duration-150"
           aria-label="Copied!"
         />
       ) : (
-        <ClipboardIcon
-          className="h-4 w-4 opacity-0 transition-opacity duration-150 group-hover:opacity-100 dark:text-darkAccentGreen"
+        <Clipboard
+          className="h-4 w-4 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
           aria-hidden="true"
         />
       )}

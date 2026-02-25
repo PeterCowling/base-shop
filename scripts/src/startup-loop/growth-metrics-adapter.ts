@@ -1,7 +1,21 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-import type { GrowthStageKey } from "@acme/lib";
+import {
+  type GrowthStageKey,
+  rateToBps as libRateToBps,
+  safeDivideRound,
+  toCents,
+  toWholeCount,
+} from "@acme/lib";
+
+import {
+  FORECAST_STAGE_CANDIDATES,
+  FORECAST_STAGE_ID,
+  resolveStageResultPath,
+  WEEKLY_STAGE_CANDIDATES,
+  WEEKLY_STAGE_ID,
+} from "./stage-id-compat";
 
 export interface GrowthPeriod {
   period_id: string;
@@ -64,41 +78,22 @@ function readNumber(
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
-function toWholeCount(value: number | null): number | null {
-  if (value === null) {
-    return null;
-  }
-  return Math.round(value);
-}
-
-function eurosToCents(value: number | null): number | null {
-  if (value === null) {
-    return null;
-  }
-  return Math.round(value * 100);
-}
-
 function normalizeRateToBps(
   value: number | null,
   assumptions: string[],
   metricLabel: string,
 ): number | null {
-  if (value === null) {
+  const normalized = libRateToBps(value);
+  if (!normalized) {
     return null;
   }
 
-  // v1 contract expects fractions in [0,1]; keep backward-compatible fallbacks.
-  if (Math.abs(value) <= 1) {
-    return Math.round(value * 10000);
-  }
-
-  if (Math.abs(value) <= 100) {
+  if (normalized.scale === "percent") {
     assumptions.push(`${metricLabel} normalized from percent value (${value}) to bps.`);
-    return Math.round(value * 100);
+  } else if (normalized.scale === "bps") {
+    assumptions.push(`${metricLabel} treated as already-in-bps value (${value}).`);
   }
-
-  assumptions.push(`${metricLabel} treated as already-in-bps value (${value}).`);
-  return Math.round(value);
+  return normalized.bps;
 }
 
 function collectMissingMetrics(
@@ -147,10 +142,18 @@ export function getWeeklyGrowthMetrics(
 
   const assumptions: string[] = [];
 
-  const s3StageResultPath = path.join(runDir, "stage-result-S3.json");
-  const s10StageResultPath = path.join(runDir, "stage-result-S10.json");
-  const s3ForecastPath = resolveArtifactPath(runDir, s3StageResultPath, "forecast");
-  const s10ReadoutPath = resolveArtifactPath(runDir, s10StageResultPath, "readout");
+  const s3StageResultRef = resolveStageResultPath(runDir, FORECAST_STAGE_CANDIDATES);
+  const s10StageResultRef = resolveStageResultPath(runDir, WEEKLY_STAGE_CANDIDATES);
+  const s3ForecastPath = resolveArtifactPath(
+    runDir,
+    s3StageResultRef?.path ?? path.join(runDir, `stage-result-${FORECAST_STAGE_ID}.json`),
+    "forecast",
+  );
+  const s10ReadoutPath = resolveArtifactPath(
+    runDir,
+    s10StageResultRef?.path ?? path.join(runDir, `stage-result-${WEEKLY_STAGE_ID}.json`),
+    "readout",
+  );
   const eventsPath = path.join(runDir, "events.jsonl");
 
   const s3Forecast =
@@ -191,9 +194,9 @@ export function getWeeklyGrowthMetrics(
   }
 
   const spendEurCents =
-    eurosToCents(readoutSpend) ??
+    toCents(readoutSpend) ??
     (cac !== null && newCustomersCount !== null
-      ? eurosToCents(cac * newCustomersCount)
+      ? toCents(cac * newCustomersCount)
       : null);
   if (readoutSpend === null && cac !== null && newCustomersCount !== null) {
     assumptions.push(
@@ -202,11 +205,11 @@ export function getWeeklyGrowthMetrics(
   }
 
   const blendedCacEurCents =
-    eurosToCents(cac) ??
+    toCents(cac) ??
     (spendEurCents !== null &&
     newCustomersCount !== null &&
     newCustomersCount > 0
-      ? Math.round(spendEurCents / newCustomersCount)
+      ? safeDivideRound(spendEurCents, newCustomersCount)
       : null);
   if (cac === null && spendEurCents !== null && newCustomersCount !== null) {
     assumptions.push(
@@ -219,7 +222,7 @@ export function getWeeklyGrowthMetrics(
   const sitewideCvrBps =
     normalizeRateToBps(cvr, assumptions, "activation.sitewide_cvr_bps") ??
     (ordersCount !== null && sessionsCount !== null && sessionsCount > 0
-      ? Math.round((ordersCount * 10000) / sessionsCount)
+      ? safeDivideRound(ordersCount * 10000, sessionsCount)
       : null);
   if (cvr === null && ordersCount !== null && sessionsCount !== null && sessionsCount > 0) {
     assumptions.push(
@@ -227,11 +230,11 @@ export function getWeeklyGrowthMetrics(
     );
   }
 
-  const grossRevenueEurCents = eurosToCents(revenue);
+  const grossRevenueEurCents = toCents(revenue);
   const aovEurCents =
-    eurosToCents(aov) ??
+    toCents(aov) ??
     (grossRevenueEurCents !== null && ordersCount !== null && ordersCount > 0
-      ? Math.round(grossRevenueEurCents / ordersCount)
+      ? safeDivideRound(grossRevenueEurCents, ordersCount)
       : null);
   if (aov === null && grossRevenueEurCents !== null && ordersCount !== null && ordersCount > 0) {
     assumptions.push(
@@ -246,7 +249,7 @@ export function getWeeklyGrowthMetrics(
     (retentionReturnedOrders !== null &&
     retentionOrdersShipped !== null &&
     retentionOrdersShipped > 0
-      ? Math.round((retentionReturnedOrders * 10000) / retentionOrdersShipped)
+      ? safeDivideRound(retentionReturnedOrders * 10000, retentionOrdersShipped)
       : null);
   if (
     readoutReturnRate === null &&
@@ -270,7 +273,7 @@ export function getWeeklyGrowthMetrics(
     (referralOrdersCount !== null &&
     referralSessionsCount !== null &&
     referralSessionsCount > 0
-      ? Math.round((referralOrdersCount * 10000) / referralSessionsCount)
+      ? safeDivideRound(referralOrdersCount * 10000, referralSessionsCount)
       : null);
   if (
     readoutReferralConversionRate === null &&
@@ -313,7 +316,7 @@ export function getWeeklyGrowthMetrics(
 
   // Keep targets read to preserve source ownership visibility in debugging paths.
   if (Object.keys(targets).length === 0) {
-    assumptions.push("No S3/S10 targets found; v1 growth evaluation proceeds on actuals-only metrics.");
+    assumptions.push("No forecast/weekly targets found; v1 growth evaluation proceeds on actuals-only metrics.");
   }
 
   return {

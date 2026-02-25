@@ -27,7 +27,7 @@ Canonical path defined in `docs/business-os/startup-loop/artifact-registry.md` (
 
 ## Model
 
-Always use `model: "opus"` for all Task tool calls within phases.
+Always use `model: "sonnet"` for all Task tool calls within phases.
 
 ## Cross-Phase Quality Requirements
 

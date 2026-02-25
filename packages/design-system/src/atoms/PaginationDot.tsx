@@ -43,7 +43,7 @@ export const PaginationDot = (
       className={cn(
         `h-${size} w-${size}`,
         shapeRadiusClass,
-        active ? "bg-primary" : "bg-muted",
+        active ? "bg-primary text-primary-foreground" : "bg-muted",
         className
       )}
       {...props}

@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
 
+import { Input } from "@acme/design-system";
 import { Inline } from "@acme/design-system/primitives";
-import { ReceptionInput } from "@acme/ui/operations";
 
 import { type Denomination, DENOMINATIONS } from "../../types/component/Till";
 
@@ -50,14 +50,15 @@ export const DenominationInput = memo(function DenominationInput({
           <div key={denom.label} className="p-1 flex-none">
             <label
               htmlFor={`${idPrefix}${idx}`}
-              className="block text-xs font-medium mb-1 text-center dark:text-darkAccentGreen"
+              className="block text-xs font-medium mb-1 text-center"
             >
               {denom.label}
             </label>
-            <ReceptionInput
+            <Input
+              compatibilityMode="no-wrapper"
               id={`${idPrefix}${idx}`}
               type="text"
-              className={`border ${borderClass} rounded p-1 text-sm w-[130px] text-center dark:bg-darkBg dark:text-darkAccentGreen`}
+              className={`border ${borderClass} rounded p-1 text-sm w-[130px] text-center`}
               value={localValues[idx]}
               onChange={(e) => {
                 const val = e.target.value;
@@ -69,7 +70,7 @@ export const DenominationInput = memo(function DenominationInput({
                 handleChange(idx, val);
               }}
             />
-            <span className="text-sm block mt-1 text-center dark:text-darkAccentGreen">
+            <span className="text-sm block mt-1 text-center">
               €{lineTotal.toFixed(2)}
             </span>
           </div>
@@ -80,18 +81,18 @@ export const DenominationInput = memo(function DenominationInput({
 
   return (
     <>
-      <p className="text-sm text-muted-foreground dark:text-darkAccentGreen">
+      <p className="text-sm text-muted-foreground">
         Sort notes and coins, then enter counts. Use a dedicated,
         distraction-free area for counting.
       </p>
       <div className="mb-4">
-        <h3 className="text-lg font-semibold mt-12 mb-4 dark:text-darkAccentGreen">Coins</h3>
+        <h3 className="text-lg font-semibold mt-12 mb-4">Coins</h3>
         <Inline wrap={false} gap={6} className="overflow-x-auto">
           {renderRows(coinIndices)}
         </Inline>
       </div>
       <div className="mb-4">
-        <h3 className="text-lg font-semibold mt-12 mb-4 dark:text-darkAccentGreen">Notes</h3>
+        <h3 className="text-lg font-semibold mt-12 mb-4">Notes</h3>
         <Inline wrap={false} gap={4} className="overflow-x-auto">
           {renderRows(noteIndices)}
         </Inline>

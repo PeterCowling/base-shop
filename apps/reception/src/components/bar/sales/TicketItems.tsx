@@ -16,11 +16,11 @@ const TicketItems: FC<Props> = memo(({ order, removeSingleItem }) => {
   );
 
   return (
-    <ul className="divide-y divide-zinc-200 px-2 py-2 dark:divide-darkSurface">
+    <ul className="divide-y divide-border-1 px-2 py-2">
       {order.items.map((it, i) => (
         <li
           key={it.id ?? crypto.randomUUID()}
-          className="cursor-pointer rounded px-2 py-1 font-medium text-foreground dark:text-darkAccentGreen transition hover:bg-zinc-100 active:bg-zinc-200 dark:hover:bg-darkSurface dark:active:bg-darkBg"
+          className="cursor-pointer rounded px-2 py-1 font-medium text-foreground transition hover:bg-surface-2 active:bg-surface-3"
           onDoubleClick={() => removeLine(i)}
         >
           {it.count === 1 ? it.product : `${it.count} × ${it.product}`}

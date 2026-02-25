@@ -83,7 +83,7 @@ Rank within each tier by `phase_matches_any_md` descending:
 
 ### Invocation tier assignments (fixed)
 
-- **high**: startup-loop, lp-do-build, lp-do-plan, lp-do-replan, lp-sequence, lp-offer, lp-channels, lp-seo, lp-forecast, lp-do-fact-find
+- **high**: startup-loop, lp-do-build, lp-do-plan, lp-do-replan, lp-do-sequence, lp-offer, lp-channels, lp-seo, lp-forecast, lp-do-fact-find
 - **medium**: lp-launch-qa, lp-design-qa, lp-experiment, lp-design-spec, lp-prioritize, lp-site-upgrade
 - **low**: lp-onboarding-audit, lp-assessment-bootstrap, lp-readiness, lp-bos-sync, lp-baseline-merge, lp-measure, draft-outreach
 

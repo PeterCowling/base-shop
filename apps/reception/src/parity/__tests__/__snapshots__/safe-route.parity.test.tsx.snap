@@ -1,17 +1,17 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/safe-management parity matches baseline safe selectors and DOM snapshot 1`] = `
 <div>
   <div
-    class="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen"
+    class="min-h-80vh p-4 bg-surface-2 font-sans text-foreground"
   >
     <h1
-      class="text-5xl font-heading text-primary-main w-full text-center mb-6"
+      class="w-full mb-6 text-5xl text-center font-heading text-primary-main"
     >
       SAFE MANAGEMENT
     </h1>
     <div
-      class="bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface"
+      class="bg-surface rounded-lg shadow p-6 space-y-4"
     >
       <p
         class="text-lg"
@@ -112,38 +112,38 @@ exports[`/safe-management parity matches baseline safe selectors and DOM snapsho
             class="text-foreground text-left text-sm w-full border-collapse"
           >
             <thead
-              class="border-b border-border-2 bg-surface-2 dark:bg-darkSurface"
+              class="text-foreground border-b border-border-2 bg-surface-2"
             >
               <tr
                 class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3"
               >
                 <th
-                  class="text-foreground font-semibold text-start p-2 border-b"
+                  class="text-foreground font-semibold break-words text-start p-2 border-b"
                 >
                   Timestamp
                 </th>
                 <th
-                  class="text-foreground font-semibold text-start p-2 border-b"
+                  class="text-foreground font-semibold break-words text-start p-2 border-b"
                 >
                   Type
                 </th>
                 <th
-                  class="text-foreground font-semibold text-start p-2 border-b"
+                  class="text-foreground font-semibold break-words text-start p-2 border-b"
                 >
                   Amount/Count
                 </th>
                 <th
-                  class="text-foreground font-semibold text-start p-2 border-b"
+                  class="text-foreground font-semibold break-words text-start p-2 border-b"
                 >
                   Keycards
                 </th>
                 <th
-                  class="text-foreground font-semibold text-start p-2 border-b"
+                  class="text-foreground font-semibold break-words text-start p-2 border-b"
                 >
                   User
                 </th>
                 <th
-                  class="text-foreground font-semibold text-start p-2 border-b"
+                  class="text-foreground font-semibold break-words text-start p-2 border-b"
                 >
                   Details
                 </th>
@@ -153,35 +153,35 @@ exports[`/safe-management parity matches baseline safe selectors and DOM snapsho
               class=""
             >
               <tr
-                class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3 bg-surface dark:bg-darkSurface"
+                class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3 bg-surface"
               >
                 <td
-                  class="align-middle p-2"
+                  class="align-middle min-w-0 break-words p-2"
                 >
                   03/01/2025, 11:00:00
                 </td>
                 <td
-                  class="align-middle p-2"
+                  class="align-middle min-w-0 break-words p-2"
                 >
                   deposit
                 </td>
                 <td
-                  class="align-middle p-2"
+                  class="align-middle min-w-0 break-words p-2"
                 >
                   €100.00
                 </td>
                 <td
-                  class="align-middle p-2"
+                  class="align-middle min-w-0 break-words p-2"
                 >
                   4 (+1)
                 </td>
                 <td
-                  class="align-middle p-2"
+                  class="align-middle min-w-0 break-words p-2"
                 >
                   Manager
                 </td>
                 <td
-                  class="align-middle p-2"
+                  class="align-middle min-w-0 break-words p-2"
                 >
                   <button
                     class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-10 px-4 text-sm bg-primary hover:bg-primary/90 text-primary-main underline"

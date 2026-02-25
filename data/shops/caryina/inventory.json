@@ -1,28 +1,28 @@
 [
   {
-    "sku": "silk-midi-slip-dress-8",
+    "sku": "caryina-mini-facade-bag-charm-silver",
     "productId": "01KCS72C6YV3PFWJQNF0A4T1P1",
     "quantity": 5,
     "variantAttributes": {
-      "size": "8"
+      "color": "silver"
     },
     "lowStockThreshold": 1
   },
   {
-    "sku": "cloud-knit-cardigan-m",
+    "sku": "caryina-mini-facade-bag-charm-rose-splash",
     "productId": "01KCS72C6YV3PFWJQNF0A4T1P2",
     "quantity": 7,
     "variantAttributes": {
-      "size": "M"
+      "color": "rose-splash"
     },
     "lowStockThreshold": 2
   },
   {
-    "sku": "satin-wide-leg-trousers-10",
+    "sku": "caryina-mini-facade-bag-charm-peach",
     "productId": "01KCS72C6YV3PFWJQNF0A4T1P3",
     "quantity": 4,
     "variantAttributes": {
-      "size": "10"
+      "color": "peach"
     },
     "lowStockThreshold": 1
   }

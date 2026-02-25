@@ -2,7 +2,7 @@
  * rateLimiter.ts
  *
  * Simple in-memory rate limiter for the find-booking API.
- * Uses sliding window algorithm with IP-based tracking.
+ * Uses token bucket algorithm with IP-based tracking.
  *
  * Configuration:
  * - 5 requests per IP per 15-minute window
@@ -12,6 +12,8 @@
  * For production with multiple instances, consider @upstash/ratelimit
  * or similar distributed solution.
  */
+
+import { TokenBucket } from "@acme/lib";
 
 /**
  * Rate limit configuration.
@@ -26,19 +28,19 @@ export const RATE_LIMIT_CONFIG = {
 } as const;
 
 /**
- * Request record for rate limiting.
+ * Bucket refill rate derived from max requests / window.
  */
-interface RequestRecord {
-  /** Timestamp of the request */
-  timestamp: number;
-}
+const REFILL_RATE_PER_SECOND =
+  RATE_LIMIT_CONFIG.maxRequests / (RATE_LIMIT_CONFIG.windowMs / 1000);
 
 /**
- * IP record tracking all requests from an IP.
+ * IP record tracking bucket state for an IP.
  */
 interface IpRecord {
-  /** Array of request timestamps in the current window */
-  requests: RequestRecord[];
+  /** Token bucket for this IP */
+  bucket: TokenBucket;
+  /** Last time this IP interacted with the limiter */
+  lastSeenAt: number;
 }
 
 /**
@@ -80,14 +82,13 @@ export function stopRateLimitCleanup(): void {
  */
 function cleanupExpiredEntries(): void {
   const now = Date.now();
-  const windowStart = now - RATE_LIMIT_CONFIG.windowMs;
 
   for (const [ip, record] of rateLimitStore.entries()) {
-    // Filter out expired requests
-    record.requests = record.requests.filter((r) => r.timestamp >= windowStart);
-
-    // Remove IP entirely if no requests remain
-    if (record.requests.length === 0) {
+    const { tokens } = record.bucket.peek();
+    const isFull = tokens >= RATE_LIMIT_CONFIG.maxRequests;
+    const isIdleBeyondWindow =
+      now - record.lastSeenAt >= RATE_LIMIT_CONFIG.windowMs;
+    if (isFull && isIdleBeyondWindow) {
       rateLimitStore.delete(ip);
     }
   }
@@ -101,10 +102,24 @@ export interface RateLimitResult {
   allowed: boolean;
   /** Number of requests remaining in the window */
   remaining: number;
-  /** Timestamp when the rate limit resets (oldest request + window) */
+  /** Timestamp when bucket replenishment clears the current limit state */
   resetAt: number;
   /** Number of requests made in the current window */
   current: number;
+}
+
+function createIpRecord(now: number): IpRecord {
+  return {
+    bucket: new TokenBucket({
+      capacity: RATE_LIMIT_CONFIG.maxRequests,
+      refillRate: REFILL_RATE_PER_SECOND,
+    }),
+    lastSeenAt: now,
+  };
+}
+
+function msUntilTokens(tokensNeeded: number): number {
+  return Math.ceil((tokensNeeded / REFILL_RATE_PER_SECOND) * 1000);
 }
 
 /**
@@ -120,37 +135,43 @@ export function checkRateLimit(
   recordRequest = true,
 ): RateLimitResult {
   const now = Date.now();
-  const windowStart = now - RATE_LIMIT_CONFIG.windowMs;
 
   // Get or create IP record
   let record = rateLimitStore.get(ip);
   if (!record) {
-    record = { requests: [] };
+    record = createIpRecord(now);
     rateLimitStore.set(ip, record);
   }
+  record.lastSeenAt = now;
 
-  // Filter to requests within the current window
-  record.requests = record.requests.filter((r) => r.timestamp >= windowStart);
+  if (recordRequest) {
+    const consumed = record.bucket.consume(1);
+    const remaining = Math.max(0, Math.floor(consumed.remainingTokens));
+    const current = RATE_LIMIT_CONFIG.maxRequests - remaining;
+    const resetAt = consumed.allowed
+      ? now + msUntilTokens(RATE_LIMIT_CONFIG.maxRequests - consumed.remainingTokens)
+      : now + (consumed.retryAfterMs ?? RATE_LIMIT_CONFIG.windowMs);
 
-  const current = record.requests.length;
-  const allowed = current < RATE_LIMIT_CONFIG.maxRequests;
-  const remaining = Math.max(0, RATE_LIMIT_CONFIG.maxRequests - current - (allowed && recordRequest ? 1 : 0));
-
-  // Calculate reset time (when the oldest request expires)
-  const resetAt = record.requests.length > 0
-    ? record.requests[0].timestamp + RATE_LIMIT_CONFIG.windowMs
-    : now + RATE_LIMIT_CONFIG.windowMs;
-
-  // Record the request if allowed
-  if (allowed && recordRequest) {
-    record.requests.push({ timestamp: now });
+    return {
+      allowed: consumed.allowed,
+      remaining,
+      resetAt,
+      current,
+    };
   }
 
+  const status = record.bucket.peek();
+  const remaining = Math.max(0, Math.floor(status.tokens));
+  const current = RATE_LIMIT_CONFIG.maxRequests - remaining;
+  const tokensUntilNext = Math.max(0, 1 - status.tokens);
+  const retryAfterMs = tokensUntilNext > 0 ? msUntilTokens(tokensUntilNext) : null;
+  const resetAt = now + (retryAfterMs ?? msUntilTokens(RATE_LIMIT_CONFIG.maxRequests - status.tokens));
+
   return {
-    allowed,
+    allowed: status.tokens >= 1,
     remaining,
     resetAt,
-    current: current + (allowed && recordRequest ? 1 : 0),
+    current,
   };
 }
 

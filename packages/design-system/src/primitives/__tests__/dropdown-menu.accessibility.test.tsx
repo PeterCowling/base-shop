@@ -72,16 +72,17 @@ describe("DropdownMenu accessibility helpers", () => {
           <Button>Open</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuCheckboxItem checked className="custom-checkbox">
+          <DropdownMenuCheckboxItem checked density="compact" className="custom-checkbox">
             Checkbox choice
           </DropdownMenuCheckboxItem>
           <DropdownMenuRadioGroup value="one">
-            <DropdownMenuRadioItem value="one" className="custom-radio">
+            <DropdownMenuRadioItem value="one" density="compact" className="custom-radio">
               Radio choice
             </DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger
+              density="compact"
               inset
               className="custom-sub-trigger"
               data-cy="sub-trigger"
@@ -92,11 +93,11 @@ describe("DropdownMenu accessibility helpers", () => {
               className="custom-sub-content"
               data-cy="sub-content"
             >
-              <DropdownMenuLabel inset className="custom-label">
+              <DropdownMenuLabel inset density="compact" className="custom-label">
                 Tools
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="custom-separator" />
-              <DropdownMenuItem inset className="custom-item">
+              <DropdownMenuItem inset density="compact" className="custom-item">
                 Nested choice
               </DropdownMenuItem>
             </DropdownMenuSubContent>
@@ -118,12 +119,16 @@ describe("DropdownMenu accessibility helpers", () => {
     const checkbox = checkboxText.closest("[data-radix-mock='CheckboxItem']");
     expect(checkbox).not.toBeNull();
     expect(checkbox?.className).toContain("custom-checkbox");
+    expect(checkbox?.className).toContain("py-1");
+    expect(checkbox?.className).not.toContain("py-1.5");
     expect(checkbox?.querySelector("svg")).toBeInTheDocument();
 
     const radioText = screen.getByText(/radio choice/i);
     const radio = radioText.closest("[data-radix-mock='RadioItem']");
     expect(radio).not.toBeNull();
     expect(radio?.className).toContain("custom-radio");
+    expect(radio?.className).toContain("py-1");
+    expect(radio?.className).not.toContain("py-1.5");
     expect(radio?.querySelector("svg")).toBeInTheDocument();
 
     const shortcut = screen.getByText("⌘S");
@@ -133,6 +138,8 @@ describe("DropdownMenu accessibility helpers", () => {
     const subTrigger = screen.getByTestId("sub-trigger");
     expect(subTrigger.className).toContain("custom-sub-trigger");
     expect(subTrigger.className).toContain("ps-8");
+    expect(subTrigger.className).toContain("py-1");
+    expect(subTrigger.className).not.toContain("py-1.5");
     expect(subTrigger.querySelector("svg")).toBeInTheDocument();
 
     await user.hover(subTrigger);
@@ -144,9 +151,17 @@ describe("DropdownMenu accessibility helpers", () => {
     expect(label).not.toBeNull();
     expect(label?.className).toContain("custom-label");
     expect(label?.className).toContain("ps-8");
+    expect(label?.className).toContain("py-1");
+    expect(label?.className).not.toContain("py-1.5");
 
     const separator = subContent.querySelector("[data-radix-mock='Separator']");
     expect(separator).not.toBeNull();
     expect(separator?.className).toContain("custom-separator");
+
+    const nestedItem = screen.getByText("Nested choice").closest("[data-radix-mock='Item']");
+    expect(nestedItem).not.toBeNull();
+    expect(nestedItem?.className).toContain("custom-item");
+    expect(nestedItem?.className).toContain("py-1");
+    expect(nestedItem?.className).not.toContain("py-1.5");
   });
 });

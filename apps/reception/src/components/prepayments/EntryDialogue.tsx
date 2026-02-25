@@ -8,7 +8,9 @@ import React, {
   useState,
 } from "react";
 
-import { ReceptionButton as Button, ReceptionInput } from "@acme/ui/operations";
+import { Input } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+import { SimpleModal } from "@acme/ui/molecules";
 
 import { creditCardSchema } from "../../schemas/creditCardSchema";
 import { formatCreditCardNumber } from "../../utils/creditCardUtils"; // Adjust path as needed
@@ -154,105 +156,26 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
     }
   }, [cardNumber, onProcessPayment]); // Include cardNumber if payment needs it immediately
 
-  // If not open, do not render
-  if (!open) return null;
-
   // Conditional loading/feedback inside the dialog
   // const showSpinner = isFetchingDetails || isProcessing || isSaving; // Combine loading states
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground bg-opacity-50 font-body p-4">
-      {/* Dialog container */}
-      <div className="bg-surface w-full max-w-md rounded shadow-lg dark-surface dark:text-darkAccentGreen">
-        {/* Header */}
-        <div className="flex justify-between items-center p-4 border-b border-border-2 dark:border-darkSurface">
-          <h2 className="text-lg font-heading">
-            {hasExistingCard
-              ? "Update or Process Payment"
-              : "Enter Payment Details"}{" "}
-            <br />
-            <span className="text-sm font-normal text-muted-foreground dark:text-darkAccentGreen">
-              {bookingRef && `Ref: ${bookingRef}`}
-              {amountToCharge !== undefined &&
-                ` | Amount: €${amountToCharge.toFixed(2)}`}
-            </span>
-          </h2>
-          <Button
-            onClick={onClose}
-            disabled={isProcessing || isSaving}
-            className="text-foreground hover:bg-surface-3 p-1 rounded transition-colors disabled:opacity-50 dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
-            aria-label="Close dialog"
-          >
-            &times;
-          </Button>
-        </div>
-
-        {/* Content with optional loading overlay */}
-        <div className="relative">
-          {/* Loading indicator */}
-          {(isProcessing || isSaving) && (
-            <div className="absolute inset-0 bg-surface bg-opacity-75 flex flex-col items-center justify-center z-10 dark:bg-darkBg dark:bg-opacity-80">
-              <div className="w-8 h-8 border-4 border-border-2 border-t-primary-main rounded-full animate-spin dark:border-darkSurface" />
-              <p className="mt-2 text-foreground font-medium dark:text-darkAccentGreen">
-                {isSaving ? "Saving..." : "Processing..."}
-              </p>
-            </div>
-          )}
-
-          <div className="p-4 border-b border-border-2 space-y-4 dark:border-darkSurface">
-            {/* CC Number Input */}
-            <div>
-              <label
-                htmlFor="creditCardNumber"
-                className="block text-sm font-heading text-foreground mb-1 dark:text-darkAccentGreen"
-              >
-                Credit Card Number
-              </label>
-              <ReceptionInput
-                id="creditCardNumber"
-                type="text" // Use text to allow formatted input
-                inputMode="numeric" // Hint for mobile keyboards
-                autoComplete="cc-number"
-                className="w-full border border-border-2 rounded px-3 py-2 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main font-mono text-lg dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen" // Use mono font for CC
-                placeholder="XXXX XXXX XXXX XXXX"
-                value={cardNumber}
-                onChange={handleCreditCardChange}
-                onPaste={handleCreditCardPaste}
-                disabled={isProcessing || isSaving}
-              />
-            </div>
-
-            {/* Expiry Date Input */}
-            <div>
-              <label
-                htmlFor="expiryDate"
-                className="block text-sm font-heading text-foreground mb-1 dark:text-darkAccentGreen"
-              >
-                Expiry (MM/YY)
-              </label>
-              <ReceptionInput
-                id="expiryDate"
-                type="text" // Use text to allow formatting like "MM/YY"
-                inputMode="numeric"
-                autoComplete="cc-exp"
-                className="w-full border border-border-2 rounded px-3 py-2 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main font-mono text-lg dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
-                placeholder="MM/YY"
-                value={expiryDate}
-                onChange={handleExpiryChange}
-                disabled={isProcessing || isSaving}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="p-4 flex flex-wrap gap-2 justify-end border-t border-border-2 dark:border-darkSurface">
+    <SimpleModal
+      isOpen={open}
+      onClose={onClose}
+      title={hasExistingCard ? "Update or Process Payment" : "Enter Payment Details"}
+      maxWidth="max-w-md"
+      className="font-body"
+      showCloseButton={!isProcessing && !isSaving}
+      footer={
+        <div className="flex flex-wrap gap-2 justify-end">
           {/* Process button only shows if card details already exist */}
           {hasExistingCard && (
             <Button
               onClick={handleProcessClick}
-              disabled={isProcessing || isSaving || !cardNumber || !expiryDate} // Disable if processing or fields are empty
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark transition-colors font-body disabled:opacity-50 disabled:cursor-not-allowed dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+              disabled={isProcessing || isSaving || !cardNumber || !expiryDate}
+              color="primary"
+              tone="solid"
             >
               {isProcessing ? "Processing..." : "Process Payment"}
             </Button>
@@ -260,8 +183,9 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
           {/* Save/Update Button */}
           <Button
             onClick={handleSaveOrUpdate}
-            disabled={isProcessing || isSaving || !cardNumber || !expiryDate} // Disable if processing or fields are empty
-            className="px-4 py-2 bg-success-main text-primary-fg rounded hover:bg-success-dark transition-colors font-body disabled:opacity-50 disabled:cursor-not-allowed dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+            disabled={isProcessing || isSaving || !cardNumber || !expiryDate}
+            color="success"
+            tone="solid"
           >
             {isSaving ? "Saving..." : saveButtonText}
           </Button>
@@ -269,13 +193,83 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
           <Button
             onClick={onClose}
             disabled={isProcessing || isSaving}
-            className="px-4 py-2 bg-surface-3 text-foreground rounded hover:bg-surface-3 transition-colors font-body disabled:opacity-50 dark:bg-darkSurface dark:hover:bg-darkSurface/70 dark:text-darkAccentGreen"
+            color="default"
+            tone="soft"
           >
             Cancel
           </Button>
         </div>
+      }
+    >
+      {/* Subtitle shown below title inside body */}
+      {(bookingRef || amountToCharge !== undefined) && (
+        <p className="text-sm text-muted-foreground mb-4">
+          {bookingRef && `Ref: ${bookingRef}`}
+          {amountToCharge !== undefined &&
+            ` | Amount: €${amountToCharge.toFixed(2)}`}
+        </p>
+      )}
+
+      {/* Content with optional loading overlay */}
+      <div className="relative">
+        {/* Loading indicator */}
+        {(isProcessing || isSaving) && (
+          <div className="absolute inset-0 bg-surface bg-opacity-75 flex flex-col items-center justify-center z-10">
+            <div className="w-8 h-8 border-4 border-border-2 border-t-primary-main rounded-full animate-spin" />
+            <p className="mt-2 text-foreground font-medium">
+              {isSaving ? "Saving..." : "Processing..."}
+            </p>
+          </div>
+        )}
+
+        <div className="space-y-4">
+          {/* CC Number Input */}
+          <div>
+            <label
+              htmlFor="creditCardNumber"
+              className="block text-sm font-heading text-foreground mb-1"
+            >
+              Credit Card Number
+            </label>
+            <Input
+              compatibilityMode="no-wrapper"
+              id="creditCardNumber"
+              type="text" // Use text to allow formatted input
+              inputMode="numeric" // Hint for mobile keyboards
+              autoComplete="cc-number"
+              className="w-full border border-border-2 rounded px-3 py-2 font-mono text-lg" // Use mono font for CC
+              placeholder="XXXX XXXX XXXX XXXX"
+              value={cardNumber}
+              onChange={handleCreditCardChange}
+              onPaste={handleCreditCardPaste}
+              disabled={isProcessing || isSaving}
+            />
+          </div>
+
+          {/* Expiry Date Input */}
+          <div>
+            <label
+              htmlFor="expiryDate"
+              className="block text-sm font-heading text-foreground mb-1"
+            >
+              Expiry (MM/YY)
+            </label>
+            <Input
+              compatibilityMode="no-wrapper"
+              id="expiryDate"
+              type="text" // Use text to allow formatting like "MM/YY"
+              inputMode="numeric"
+              autoComplete="cc-exp"
+              className="w-full border border-border-2 rounded px-3 py-2 font-mono text-lg"
+              placeholder="MM/YY"
+              value={expiryDate}
+              onChange={handleExpiryChange}
+              disabled={isProcessing || isSaving}
+            />
+          </div>
+        </div>
       </div>
-    </div>
+    </SimpleModal>
   );
 };
 

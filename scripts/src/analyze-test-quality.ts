@@ -17,6 +17,8 @@
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, relative } from "node:path";
 
+import { mean as libMean } from "@acme/lib";
+
 // ============================================================================
 // Types
 // ============================================================================
@@ -439,7 +441,9 @@ function analyzePackage(packagePath: string, rootDir: string): PackageAnalysis |
 
 function average(nums: number[]): number {
   if (nums.length === 0) return 0;
-  return Math.round((nums.reduce((a, b) => a + b, 0) / nums.length) * 10) / 10;
+  const result = libMean(nums);
+  if (Number.isNaN(result)) return 0;
+  return Math.round(result * 10) / 10;
 }
 
 // ============================================================================

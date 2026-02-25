@@ -1,9 +1,13 @@
 // packages/ui/components/atoms/primitives/table.tsx
 // i18n-exempt file -- DS-1234 [ttl=2025-11-30] — primitives expose no user-facing copy
 
+"use client";
+
 import * as React from "react";
 
 import { cn } from "../utils/style";
+
+import { type PrimitiveDensity, resolveDensityClass } from "./density";
 
 /**
  * Basic, unopinionated table primitives (shadcn-ui style).
@@ -18,25 +22,32 @@ export interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
    * change layout contracts.
    */
   compatibilityMode?: TableCompatibilityMode;
+  /** Applies default density to `TableHead` and `TableCell` children. */
+  density?: PrimitiveDensity;
 }
+
+const TableDensityContext = React.createContext<PrimitiveDensity>("comfortable");
 
 export const Table = (
   {
     ref,
     className,
     compatibilityMode = "default",
+    density = "comfortable",
     ...props
   }: TableProps & {
     ref?: React.Ref<HTMLTableElement>;
   }
 ) => {
   const tableNode = (
-    <table
-      ref={ref}
-      // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-      className={cn("text-foreground w-full text-left text-sm", className)}
-      {...props}
-    />
+    <TableDensityContext value={density}>
+      <table
+        ref={ref}
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+        className={cn("text-foreground w-full text-left text-sm", className)}
+        {...props}
+      />
+    </TableDensityContext>
   );
 
   if (compatibilityMode === "no-wrapper") {
@@ -57,7 +68,7 @@ export const TableHeader = (
     ref?: React.Ref<HTMLTableSectionElement>;
   }
 ) => // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-(<thead ref={ref} className={cn("bg-panel border-b border-border-2", className)} {...props} />);
+(<thead ref={ref} className={cn("bg-panel text-foreground border-b border-border-2", className)} {...props} />);
 
 export type TableBodyProps = React.HTMLAttributes<HTMLTableSectionElement>;
 
@@ -91,38 +102,64 @@ export const TableRow = (
   {...props}
 />);
 
-export type TableHeadProps = React.ThHTMLAttributes<HTMLTableCellElement>;
+export interface TableHeadProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
+  /** Header cell density override for this column. */
+  density?: PrimitiveDensity;
+}
 
 export const TableHead = (
   {
     ref,
     className,
+    density,
     ...props
   }: TableHeadProps & {
     ref?: React.Ref<HTMLTableCellElement>;
   }
-) => (<th
+) => {
+  const tableDensity = React.use(TableDensityContext);
+  const densityClass = resolveDensityClass({
+    density: density ?? tableDensity,
+    comfortableClass: "py-2",
+    compactClass: "py-1.5",
+  });
+
+  return (<th
   ref={ref}
   // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-  className={cn("text-foreground px-4 py-2 font-semibold break-words", className)}
+  className={cn("text-foreground px-4 font-semibold break-words", densityClass, className)}
   {...props}
 />);
+};
 
-export type TableCellProps = React.TdHTMLAttributes<HTMLTableCellElement>;
+export interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
+  /** Body cell density override for this cell. */
+  density?: PrimitiveDensity;
+}
 
 export const TableCell = (
   {
     ref,
     className,
+    density,
     ...props
   }: TableCellProps & {
     ref?: React.Ref<HTMLTableCellElement>;
   }
-) => (<>
+) => {
+  const tableDensity = React.use(TableDensityContext);
+  const densityClass = resolveDensityClass({
+    density: density ?? tableDensity,
+    comfortableClass: "py-2",
+    compactClass: "py-1.5",
+  });
+
+  return (<>
   {/* i18n-exempt: classes only */}
   <td
     ref={ref}
-    className={cn("px-4 py-2 align-middle min-w-0 break-words", className)}
+    className={cn("px-4 align-middle min-w-0 break-words", densityClass, className)}
     {...props}
   />
 </>);
+};

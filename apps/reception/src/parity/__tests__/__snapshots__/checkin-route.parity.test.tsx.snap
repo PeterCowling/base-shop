@@ -1,9 +1,9 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
 <div>
   <div
-    class="min-h-screen flex flex-col p-5 dark:bg-darkBg dark:text-darkAccentGreen"
+    class="min-h-screen flex flex-col p-5"
   >
     <div
       class="grid grid-cols-3 items-center mb-6"
@@ -25,7 +25,7 @@ exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
       </div>
     </div>
     <div
-      class="flex-grow bg-surface rounded-lg shadow p-6 space-y-4 dark:bg-darkSurface"
+      class="flex-grow bg-surface rounded-lg shadow p-6 space-y-4"
     >
       <div
         class="flex items-center justify-between"
@@ -42,7 +42,9 @@ exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
             class="flex items-center gap-2 text-sm cursor-pointer"
           >
             <input
-              class="w-4 h-4 cursor-pointer"
+              class="flex border border-input bg-input px-3 text-sm text-foreground py-3 rounded-md placeholder:text-muted-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 w-4 h-4 cursor-pointer"
+              data-token="--color-bg"
+              id="_r_0_"
               type="checkbox"
             />
             <span>
@@ -51,7 +53,7 @@ exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
           </label>
         </div>
         <button
-          class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm hover:bg-primary/90 px-3 py-2 bg-success-main text-primary-fg rounded dark:bg-darkAccentGreen dark:text-darkBg"
+          class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm hover:bg-primary/90 px-3 py-2 bg-success-main text-primary-fg rounded"
           data-token="--color-primary"
           type="button"
         >

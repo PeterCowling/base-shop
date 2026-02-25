@@ -27,34 +27,34 @@ const TransactionTable = memo(function TransactionTable({
   onRowDelete,
 }: TransactionTableProps) {
   return (
-    <Table className="min-w-full border-collapse text-xs sm:text-sm md:text-base dark:text-darkAccentGreen">
-      <TableHeader>
+    <Table className="min-w-full border-collapse text-xs sm:text-sm md:text-base">
+      <TableHeader className="bg-surface-2">
         <TableRow>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
             TIMESTAMP
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
             AMOUNT
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
             METHOD
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
             TYPE
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
             STAFF
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
             ITEM CATEGORY
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
             OCCUPANT
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
             BOOKING
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
+          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
             DESCRIPTION
           </TableHead>
         </TableRow>
@@ -70,8 +70,8 @@ const TransactionTable = memo(function TransactionTable({
           const isCorrection = Boolean(t.sourceTxnId || t.correctionKind);
           const rowBg =
             index % 2 === 0
-              ? "bg-surface dark:bg-darkBg"
-              : "bg-surface-2 dark:bg-darkSurface";
+              ? "bg-surface"
+              : "bg-surface-2";
           const rowTextClass = isVoided ? "opacity-60 line-through" : "";
           const category = t.type === "barSale" ? "Bar Sale" : t.itemCategory;
           const summary = summariseDescription(t.description);
@@ -86,7 +86,7 @@ const TransactionTable = memo(function TransactionTable({
                   ? () => onRowEdit(t)
                   : undefined
               }
-              className={`${rowBg} border-b border-border-2 dark:border-darkSurface hover:bg-surface-2$${
+              className={`${rowBg} border-b border-border-2 hover:bg-surface-2 ${
                 isDeleteMode || isEditMode ? " cursor-pointer" : ""
               } ${rowTextClass}`}
             >
@@ -97,7 +97,7 @@ const TransactionTable = memo(function TransactionTable({
                     €{t.amount.toFixed(2)}
                   </span>
                 ) : (
-                  <span className="dark:text-darkAccentGreen">
+                  <span className="text-foreground">
                     €{t.amount.toFixed(2)}
                   </span>
                 )}

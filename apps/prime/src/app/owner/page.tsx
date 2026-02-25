@@ -2,6 +2,9 @@ import type { HTMLAttributes } from 'react';
 import Link from 'next/link';
 import { BarChart3, Clock, TrendingUp, Users } from 'lucide-react';
 
+import { mean as libMean } from "@acme/lib";
+
+import DirectTelemetryPanel from '../../components/owner/DirectTelemetryPanel';
 import StaffOwnerDisabledNotice from '../../components/security/StaffOwnerDisabledNotice';
 import { readKpiRange } from '../../lib/owner/kpiReader';
 import { canAccessStaffOwnerRoutes } from '../../lib/security/staffOwnerGate';
@@ -9,6 +12,11 @@ import { canAccessStaffOwnerRoutes } from '../../lib/security/staffOwnerGate';
 type ContainerProps = HTMLAttributes<HTMLDivElement>;
 function Container(props: ContainerProps) {
   return <div {...props} />;
+}
+
+function meanOrZero(values: number[]): number {
+  const result = libMean(values);
+  return Number.isNaN(result) ? 0 : result;
 }
 
 /**
@@ -34,28 +42,25 @@ export default async function OwnerPage() {
 
   // Compute aggregated metrics across the date range
   const totalGuests = kpiData.reduce((sum, day) => sum + day.guestCount, 0);
-  const daysWithData = kpiData.filter((day) => day.guestCount > 0).length;
+  const daysWithGuests = kpiData.filter((day) => day.guestCount > 0);
+  const daysWithData = daysWithGuests.length;
 
   // Average percentages across days with data
-  const avgReadiness =
-    daysWithData > 0
-      ? kpiData.reduce((sum, day) => sum + day.readinessCompletionPct, 0) / daysWithData
-      : 0;
+  const avgReadiness = meanOrZero(
+    daysWithGuests.map((day) => day.readinessCompletionPct),
+  );
 
-  const avgEtaSubmission =
-    daysWithData > 0
-      ? kpiData.reduce((sum, day) => sum + day.etaSubmissionPct, 0) / daysWithData
-      : 0;
+  const avgEtaSubmission = meanOrZero(
+    daysWithGuests.map((day) => day.etaSubmissionPct),
+  );
 
-  const avgCodeGeneration =
-    daysWithData > 0
-      ? kpiData.reduce((sum, day) => sum + day.arrivalCodeGenPct, 0) / daysWithData
-      : 0;
+  const avgCodeGeneration = meanOrZero(
+    daysWithGuests.map((day) => day.arrivalCodeGenPct),
+  );
 
-  const avgCheckInLag =
-    daysWithData > 0
-      ? kpiData.reduce((sum, day) => sum + day.medianCheckInLagMinutes, 0) / daysWithData
-      : 0;
+  const avgCheckInLag = meanOrZero(
+    daysWithGuests.map((day) => day.medianCheckInLagMinutes),
+  );
 
   const totalExtensions = kpiData.reduce((sum, day) => sum + day.extensionRequestCount, 0);
   const totalBagDrops = kpiData.reduce((sum, day) => sum + day.bagDropRequestCount, 0);
@@ -131,6 +136,8 @@ export default async function OwnerPage() {
             </div>
           )}
         </div>
+
+        <DirectTelemetryPanel />
 
         {/* Daily Breakdown */}
         <div className="mt-6 rounded-xl bg-card p-6 shadow-sm">

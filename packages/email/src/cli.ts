@@ -6,7 +6,7 @@ import path from "path";
 
 import { nowIso } from "@acme/date-utils";
 import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";
-import { validateShopName } from "@acme/lib";
+import { validateShopName } from "@acme/lib/validateShopName";
 
 interface Campaign {
   id: string;

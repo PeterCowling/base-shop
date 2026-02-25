@@ -13,20 +13,21 @@ describe("TableHeader", () => {
     );
 
     const columns = [
-      { title: "Guest Name", icon: "fa-user" },
-      { title: "Room Allocated", icon: "fa-bed" },
-      { title: "Room Payment", icon: "fa-credit-card" },
-      { title: "City Tax", icon: "fa-coins" },
-      { title: "Keycard Deposit", icon: "fa-key" },
-      { title: "Status", icon: "fa-clock" },
-      { title: "Document Insert", icon: "fa-file-alt" },
-      { title: "Email Booking", icon: "fa-envelope" },
+      "Guest Name",
+      "Room Allocated",
+      "Room Payment",
+      "City Tax",
+      "Keycard Deposit",
+      "Status",
+      "Document Insert",
+      "Email Booking",
     ];
 
-    columns.forEach(({ title, icon }) => {
+    columns.forEach((title) => {
       const headerCell = screen.getByTitle(title);
       expect(headerCell).toBeInTheDocument();
-      expect(headerCell.querySelector(`.${icon}`)).toBeInTheDocument();
+      // Lucide icons render as SVG elements
+      expect(headerCell.querySelector("svg")).toBeInTheDocument();
     });
 
     expect(container).toMatchSnapshot();

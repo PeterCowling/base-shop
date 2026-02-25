@@ -13,6 +13,8 @@ import {
   TableRow,
 } from "../table";
 
+import { LONG_SENTENCE_WITH_TOKEN, LONG_UNBROKEN_TOKEN } from "./fixtures/longContent";
+
 describe("Table", () => {
   it("renders with header and body and wraps table in overflow container", async () => {
     const { container } = render(
@@ -84,7 +86,7 @@ describe("Table", () => {
     );
     expect(ref.current).toBeInstanceOf(HTMLTableSectionElement);
     const header = container.querySelector("thead");
-    expect(header).toHaveClass("bg-panel", "border-b", "border-border-2", "custom-header");
+    expect(header).toHaveClass("bg-panel", "text-foreground", "border-b", "border-border-2", "custom-header");
   });
 
   it("merges classes and forwards ref for TableBody", () => {
@@ -230,5 +232,78 @@ describe("Table", () => {
     expect(screen.getAllByRole("row")[0]).toHaveAttribute("id", "row");
     expect(screen.getByRole("columnheader")).toHaveAttribute("id", "head");
     expect(screen.getByRole("gridcell")).toHaveAttribute("id", "cell");
+  });
+
+  it("applies compact density from table context to header and body cells", () => {
+    render(
+      <Table density="compact">
+        <TableHeader>
+          <TableRow>
+            <TableHead>Compact Head</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>Compact Cell</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
+
+    const header = screen.getByText("Compact Head");
+    const cell = screen.getByText("Compact Cell");
+
+    expect(header).toHaveClass("py-1.5");
+    expect(header).not.toHaveClass("py-2");
+    expect(cell).toHaveClass("py-1.5");
+    expect(cell).not.toHaveClass("py-2");
+  });
+
+  it("allows per-cell density overrides over table defaults", () => {
+    render(
+      <Table density="compact">
+        <TableHeader>
+          <TableRow>
+            <TableHead density="comfortable">Comfortable Head</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell density="comfortable">Comfortable Cell</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
+
+    const header = screen.getByText("Comfortable Head");
+    const cell = screen.getByText("Comfortable Cell");
+
+    expect(header).toHaveClass("py-2");
+    expect(cell).toHaveClass("py-2");
+  });
+
+  it("keeps long unbroken content visible with table bleed guards", () => {
+    render(
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>{LONG_UNBROKEN_TOKEN}</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>{LONG_SENTENCE_WITH_TOKEN}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
+
+    const header = screen.getByText(LONG_UNBROKEN_TOKEN);
+    const cell = screen.getByText(LONG_SENTENCE_WITH_TOKEN);
+
+    expect(header).toBeInTheDocument();
+    expect(header).toHaveClass("break-words");
+    expect(cell).toBeInTheDocument();
+    expect(cell).toHaveClass("min-w-0", "break-words");
   });
 });

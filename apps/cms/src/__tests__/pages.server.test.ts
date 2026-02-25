@@ -8,8 +8,6 @@ import { savePageDraft } from "../actions/pages/draft";
 import * as service from "../actions/pages/service";
 import { updatePage } from "../actions/pages/update";
 
-const captureException = jest.fn();
-
 jest.mock("../actions/common/auth", () => ({
   ensureAuthorized: jest
     .fn()
@@ -37,7 +35,11 @@ jest.mock("@acme/platform-core/shops/health", () => ({
     incrementOperationalError(...args),
 }));
 
-jest.mock("@/utils/sentry.server", () => ({ captureException }));
+jest.mock("@/utils/sentry.server", () => ({ captureException: jest.fn() }));
+
+const { captureException } = jest.requireMock("@/utils/sentry.server") as {
+  captureException: jest.Mock;
+};
 
 describe("pages.server", () => {
   beforeEach(() => {

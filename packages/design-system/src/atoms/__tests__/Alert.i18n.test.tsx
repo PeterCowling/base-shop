@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { axe } from "jest-axe";
 
-import { TranslationsProvider } from '@acme/i18n';
+import { TranslationsProvider } from '@acme/i18n/Translations';
 
 import { Alert } from '../Alert';
 

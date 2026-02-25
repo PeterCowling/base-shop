@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 Input } from "@acme/design-system/shadcn";
+import { clamp as libClamp } from "@acme/lib";
 
 export type FocalPoint = { x: number; y: number }; // 0..1
 
@@ -69,7 +70,8 @@ function parseFilter(input?: string): { brightness: number; contrast: number; sa
   } catch {
     // ignore
   }
-  const clamp = (n: number, min: number, max: number) => (Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : min);
+  const clamp = (n: number, min: number, max: number) =>
+    (Number.isFinite(n) ? libClamp(n, min, max) : min);
   return { brightness: clamp(out.brightness || 1, 0, 4), contrast: clamp(out.contrast || 1, 0, 4), saturate: clamp(out.saturate || 1, 0, 4), blur: clamp(out.blur || 0, 0, 100) };
 }
 

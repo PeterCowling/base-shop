@@ -2,38 +2,37 @@
 
 import { memo, useCallback,useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import type { LucideIcon } from "lucide-react";
 import {
-  faBars,
-  faBed,
-  faBoxes,
-  faCalendarPlus,
-  faCarrot,
-  faCashRegister,
-  faChartArea,
-  faChartBar,
-  faChartLine,
-  faChartPie,
-  faClipboardList,
-  faCreditCard,
-  faDatabase,
-  faDoorOpen,
-  faFileAlt,
-  faHandHolding,
-  faHome,
-  faInbox,
-  faSearch,
-  faShieldAlt,
-  faSignOutAlt,
-  faStream,
-  faTimes,
-  faToggleOn,
-  faTools,
-  faUserCheck,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+  AreaChart,
+  BarChart3,
+  Bed,
+  Calculator,
+  CalendarPlus,
+  Carrot,
+  ClipboardList,
+  CreditCard,
+  Database,
+  DoorOpen,
+  FileText,
+  HandCoins,
+  Home,
+  Inbox,
+  LineChart,
+  List,
+  LogOut,
+  Menu,
+  Package,
+  PieChart,
+  Search,
+  Shield,
+  ToggleRight,
+  UserCheck,
+  Wrench,
+  X,
+} from "lucide-react";
 
-import { ReceptionButton as Button } from "@acme/ui/operations";
+import { Button } from "@acme/design-system/atoms";
 
 import { canAccess,Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
@@ -41,7 +40,7 @@ import type { User } from "../../types/domains/userDomain";
 interface NavItem {
   label: string;
   route: string;
-  icon: IconDefinition;
+  icon: LucideIcon;
   permission?: (typeof Permissions)[keyof typeof Permissions];
 }
 
@@ -55,47 +54,47 @@ const navSections: NavSection[] = [
   {
     label: "Operations",
     items: [
-      { label: "Dashboard", route: "/", icon: faHome },
-      { label: "Bar", route: "/bar", icon: faCashRegister },
-      { label: "Check-in", route: "/checkin", icon: faUserCheck },
-      { label: "Rooms", route: "/rooms-grid", icon: faBed },
-      { label: "Check-out", route: "/checkout", icon: faDoorOpen },
-      { label: "Loans", route: "/loan-items", icon: faHandHolding },
-      { label: "Extension", route: "/extension", icon: faCalendarPlus },
-      { label: "Prime Requests", route: "/prime-requests", icon: faInbox },
+      { label: "Dashboard", route: "/", icon: Home },
+      { label: "Bar", route: "/bar", icon: Calculator },
+      { label: "Check-in", route: "/checkin", icon: UserCheck },
+      { label: "Rooms", route: "/rooms-grid", icon: Bed },
+      { label: "Check-out", route: "/checkout", icon: DoorOpen },
+      { label: "Loans", route: "/loan-items", icon: HandCoins },
+      { label: "Extension", route: "/extension", icon: CalendarPlus },
+      { label: "Prime Requests", route: "/prime-requests", icon: Inbox },
     ],
   },
   {
     label: "Till & Safe",
     permission: Permissions.TILL_ACCESS,
     items: [
-      { label: "Till", route: "/till-reconciliation", icon: faCashRegister },
-      { label: "Safe", route: "/safe-reconciliation", icon: faShieldAlt },
-      { label: "Workbench", route: "/reconciliation-workbench", icon: faTools },
-      { label: "Live", route: "/live", icon: faStream },
-      { label: "Variance", route: "/variance-heatmap", icon: faChartArea },
-      { label: "End of Day", route: "/end-of-day", icon: faFileAlt },
+      { label: "Till", route: "/till-reconciliation", icon: Calculator },
+      { label: "Safe", route: "/safe-reconciliation", icon: Shield },
+      { label: "Workbench", route: "/reconciliation-workbench", icon: Wrench },
+      { label: "Live", route: "/live", icon: List },
+      { label: "Variance", route: "/variance-heatmap", icon: AreaChart },
+      { label: "End of Day", route: "/end-of-day", icon: FileText },
     ],
   },
   {
     label: "Management",
     items: [
-      { label: "Prepare", route: "/prepare-dashboard", icon: faClipboardList },
-      { label: "Prepayments", route: "/prepayments", icon: faCreditCard },
-      { label: "Opt-In", route: "/email-automation", icon: faToggleOn },
-      { label: "Search", route: "/audit", icon: faSearch },
+      { label: "Prepare", route: "/prepare-dashboard", icon: ClipboardList },
+      { label: "Prepayments", route: "/prepayments", icon: CreditCard },
+      { label: "Opt-In", route: "/email-automation", icon: ToggleRight },
+      { label: "Search", route: "/audit", icon: Search },
     ],
   },
   {
     label: "Admin",
     permission: Permissions.MANAGEMENT_ACCESS,
     items: [
-      { label: "Alloggiati", route: "/alloggiati", icon: faDatabase },
-      { label: "Stock", route: "/stock", icon: faBoxes },
-      { label: "Ingredients", route: "/ingredient-stock", icon: faCarrot },
-      { label: "Real Time", route: "/real-time-dashboard", icon: faChartLine },
-      { label: "Statistics", route: "/statistics", icon: faChartBar },
-      { label: "Menu Perf", route: "/menu-performance", icon: faChartPie },
+      { label: "Alloggiati", route: "/alloggiati", icon: Database },
+      { label: "Stock", route: "/stock", icon: Package },
+      { label: "Ingredients", route: "/ingredient-stock", icon: Carrot },
+      { label: "Real Time", route: "/real-time-dashboard", icon: LineChart },
+      { label: "Statistics", route: "/statistics", icon: BarChart3 },
+      { label: "Menu Perf", route: "/menu-performance", icon: PieChart },
     ],
   },
 ];
@@ -140,17 +139,20 @@ function AppNav({ user, onLogout }: AppNavProps) {
       {/* Nav Toggle Button */}
       <Button
         onClick={toggleNav}
-        className="fixed start-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg bg-primary-600 text-primary-fg shadow-lg hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg"
+        color="primary"
+        tone="solid"
+        iconOnly
+        className="fixed start-4 top-4 shadow-lg"
         aria-label={isOpen ? "Close navigation" : "Open navigation"}
         aria-expanded={isOpen}
       >
-        <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
+        {isOpen ? <X size={20} /> : <Menu size={20} />}
       </Button>
 
       {/* Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-foreground/50 backdrop-blur-sm"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
           onClick={closeNav}
           aria-hidden="true"
         />
@@ -158,27 +160,29 @@ function AppNav({ user, onLogout }: AppNavProps) {
 
       {/* Sidebar */}
       <nav
-        className={`fixed start-0 top-0 h-full w-64 transform bg-surface shadow-xl transition-transform duration-300 dark:bg-darkSurface flex flex-col ${
+        className={`fixed start-0 top-0 h-full w-64 transform bg-surface shadow-xl transition-transform duration-300 flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         aria-label="Main navigation"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-border p-4 dark:border-darkBorder">
+        <div className="flex items-center justify-between border-b border-border p-4">
           <div>
-            <h2 className="text-lg font-semibold text-foreground dark:text-darkAccentGreen">
+            <h2 className="text-lg font-semibold text-foreground">
               Reception
             </h2>
-            <p className="text-sm text-muted-foreground dark:text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               {user.user_name}
             </p>
           </div>
           <Button
             onClick={closeNav}
-            className="min-h-11 min-w-11 rounded-lg p-2 text-muted-foreground hover:bg-surface-2 dark:text-muted-foreground dark:hover:bg-darkBorder"
+            color="default"
+            tone="ghost"
+            iconOnly
             aria-label="Close navigation"
           >
-            <FontAwesomeIcon icon={faTimes} />
+            <X size={20} />
           </Button>
         </div>
 
@@ -189,7 +193,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
 
             return (
               <div key={section.label} className="mb-6">
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground dark:text-muted-foreground">
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   {section.label}
                 </h3>
                 <ul className="space-y-1">
@@ -202,16 +206,12 @@ function AppNav({ user, onLogout }: AppNavProps) {
                       <li key={item.route}>
                         <Button
                           onClick={() => navigateTo(item.route)}
-                          className={`flex min-h-11 w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
-                            isActive
-                              ? "bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-darkAccentGreen"
-                              : "text-foreground hover:bg-surface-2 dark:text-gray-300 dark:hover:bg-darkBorder"
-                          }`}
+                          color={isActive ? "primary" : "default"}
+                          tone={isActive ? "soft" : "ghost"}
+                          size="sm"
+                          className="w-full gap-3 justify-start min-h-11"
                         >
-                          <FontAwesomeIcon
-                            icon={item.icon}
-                            className="w-4 text-center"
-                          />
+                          <item.icon size={16} className="shrink-0" />
                           {item.label}
                         </Button>
                       </li>
@@ -224,12 +224,15 @@ function AppNav({ user, onLogout }: AppNavProps) {
         </div>
 
         {/* Footer */}
-        <div className="mt-auto border-t border-border p-4 dark:border-darkBorder">
+        <div className="mt-auto border-t border-border p-4">
           <Button
             onClick={onLogout}
-            className="flex min-h-11 min-w-11 w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-error-main hover:bg-error-light/20 dark:text-red-400 dark:hover:bg-red-900/20"
+            color="danger"
+            tone="ghost"
+            size="sm"
+            className="w-full gap-3 justify-start min-h-11"
           >
-            <FontAwesomeIcon icon={faSignOutAlt} className="w-4 text-center" />
+            <LogOut size={16} className="shrink-0" />
             Sign out
           </Button>
         </div>
@@ -237,7 +240,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
 
       {/* Keyboard shortcut hint (only shown when nav is closed) */}
       {!isOpen && (
-        <div className="fixed bottom-4 left-4 z-30 rounded-lg bg-foreground/80 px-3 py-1.5 text-xs text-primary-fg opacity-50 backdrop-blur-sm">
+        <div className="fixed bottom-4 left-4 z-30 rounded-lg bg-black/80 px-3 py-1.5 text-xs text-primary-fg opacity-50 backdrop-blur-sm">
           <kbd className="rounded bg-surface-3 px-1.5 py-0.5 font-mono">
             Arrow Up/Down
           </kbd>{" "}

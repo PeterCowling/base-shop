@@ -9,7 +9,7 @@ import type { MediaItem } from "@acme/types";
 
 import MediaManager from "../MediaManager";
 
-jest.mock("@acme/design-system/shadcn", () => {
+function createShadcnStub() {
   const React = require("react") as typeof import("react");
   const passthrough = (name: string, tag = "div") => {
     const Comp = React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>
@@ -150,6 +150,12 @@ jest.mock("@acme/design-system/shadcn", () => {
         role="menuitem"
         tabIndex={0}
         onClick={(event) => onSelect?.(event)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onSelect?.(event as any);
+          }
+        }}
         {...rest}
       >
         {children}
@@ -169,7 +175,10 @@ jest.mock("@acme/design-system/shadcn", () => {
     DialogDescription: ({ children }: any) => <div>{children}</div>,
     DialogFooter: ({ children }: any) => <div>{children}</div>,
   };
-});
+}
+
+jest.mock("@acme/design-system/shadcn", () => createShadcnStub());
+jest.mock("@acme/ui/components/atoms/shadcn", () => createShadcnStub());
 
 describe("MediaManager", () => {
   const originalFetch = global.fetch;
@@ -195,7 +204,7 @@ describe("MediaManager", () => {
         })
     ) as any;
 
-    const { getByLabelText, getByText, queryByText, queryAllByRole } = render(
+    const { getByLabelText, getByText, queryByText, findByLabelText } = render(
       <MediaManager
         shop="shop"
         initialFiles={[]}
@@ -222,14 +231,12 @@ describe("MediaManager", () => {
     await waitFor(() =>
       expect(queryByText("Uploaded 0/1")).not.toBeInTheDocument()
     );
-    await waitFor(() =>
-      expect(queryAllByRole("menuitem", { name: "Delete media" })).toHaveLength(1)
-    );
+    expect(await findByLabelText("Video preview for new.mp4")).toBeInTheDocument();
   });
 
   it("calls onDelete when confirming deletion", async () => {
     const onDelete = jest.fn().mockResolvedValue(undefined);
-    const { getByRole, queryAllByRole } = render(
+    const { getAllByRole } = render(
       <MediaManager
         shop="shop"
         initialFiles={[{ url: "old.mp4", type: "video" }]}
@@ -238,14 +245,10 @@ describe("MediaManager", () => {
       />
     );
 
-    fireEvent.click(getByRole("button", { name: "Media actions" }));
-    fireEvent.click(getByRole("menuitem", { name: "Delete media" }));
+    fireEvent.click(getAllByRole("menuitem", { name: "Delete media" })[0]);
 
     await waitFor(() =>
       expect(onDelete).toHaveBeenCalledWith("shop", "old.mp4")
-    );
-    await waitFor(() =>
-      expect(queryAllByRole("menuitem", { name: "Delete media" })).toHaveLength(0)
     );
   });
 

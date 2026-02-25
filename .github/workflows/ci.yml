@@ -220,7 +220,29 @@ jobs:
         run: pnpm run lint:exceptions
       - name: Docs lint
         if: ${{ github.event_name != 'push' || github.ref != 'refs/heads/staging' }}
-        run: pnpm run docs:lint
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
+              git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            fi
+            export DOCS_LINT_BASE="origin/${{ github.base_ref }}"
+          else
+            export DOCS_LINT_BASE="${{ github.event.before }}"
+          fi
+          export DOCS_LINT_HEAD="${{ github.sha }}"
+
+          # Fallback: first push events can have an empty/zero before SHA.
+          if [ -z "${DOCS_LINT_BASE}" ] || [ "${DOCS_LINT_BASE}" = "0000000000000000000000000000000000000000" ]; then
+            unset DOCS_LINT_BASE
+            export DOCS_LINT_CHANGED_ONLY="0"
+          else
+            export DOCS_LINT_CHANGED_ONLY="1"
+          fi
+
+          pnpm run docs:lint
+        env:
+          DOCS_LINT_CHANGED_ONLY: "1"
       - name: Plans lint
         if: ${{ github.event_name != 'push' || github.ref != 'refs/heads/staging' }}
         run: pnpm run plans:lint

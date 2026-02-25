@@ -66,11 +66,11 @@ const DocInsertButton: React.FC<DocInsertButtonProps> = ({
   const colorClass = (() => {
     switch (status) {
       case "complete":
-        return "bg-success-main hover:bg-success-dark dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80";
+        return "bg-success-main hover:bg-success-dark";
       case "partial":
-        return "bg-warning-main hover:bg-warning-dark dark:bg-darkAccentOrange dark:text-darkBg dark:hover:bg-darkAccentOrange/80";
+        return "bg-warning-main hover:bg-warning-dark";
       default:
-        return "bg-primary-main hover:bg-primary-dark dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80";
+        return "bg-primary-main hover:bg-primary-dark";
     }
   })();
 

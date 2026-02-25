@@ -166,4 +166,122 @@ describe("submissionZip", () => {
       else process.env.XA_UPLOADER_MIN_IMAGE_EDGE = prevMinEdge;
     }
   });
+
+  it("rejects image paths outside the allowed roots", async () => {
+    const prevMinEdge = process.env.XA_UPLOADER_MIN_IMAGE_EDGE;
+    process.env.XA_UPLOADER_MIN_IMAGE_EDGE = "1";
+
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "xa-submission-allow-roots-"));
+    const externalDir = await mkdtemp(path.join(os.tmpdir(), "xa-submission-external-"));
+    try {
+      const tinyPng = Buffer.from(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO3Zf5cAAAAASUVORK5CYII=",
+        "base64",
+      );
+      const outsideImage = path.join(externalDir, "outside.png");
+      await writeFile(outsideImage, tinyPng);
+
+      const attempt = buildSubmissionZipStream({
+        products: [
+          {
+            id: "p1",
+            slug: "studio-jacket",
+            title: "Studio jacket",
+            brandHandle: "atelier-x",
+            collectionHandle: "outerwear",
+            collectionTitle: "Outerwear",
+            price: "189",
+            description: "A structured layer.",
+            createdAt: "2025-12-01T12:00:00.000Z",
+            deposit: "0",
+            stock: "0",
+            forSale: true,
+            forRental: false,
+            popularity: "0",
+            sizes: "S|M|L",
+            taxonomy: {
+              department: "women",
+              category: "clothing",
+              subcategory: "outerwear",
+              color: "black",
+              material: "wool",
+            },
+            imageFiles: outsideImage,
+            imageAltTexts: "Studio jacket image",
+            details: {},
+          },
+        ],
+        productsCsvPath: path.join(tempDir, "products.csv"),
+        options: { maxProducts: 10, maxBytes: 50 * 1024 * 1024, recursiveDirs: true },
+      });
+
+      await expect(attempt).rejects.toThrow(/outside allowed roots/i);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+      await rm(externalDir, { recursive: true, force: true });
+      if (prevMinEdge === undefined) delete process.env.XA_UPLOADER_MIN_IMAGE_EDGE;
+      else process.env.XA_UPLOADER_MIN_IMAGE_EDGE = prevMinEdge;
+    }
+  });
+
+  it("rejects submissions that exceed the file scan limit", async () => {
+    const prevMinEdge = process.env.XA_UPLOADER_MIN_IMAGE_EDGE;
+    const prevMaxScanned = process.env.XA_UPLOADER_MAX_FILES_SCANNED;
+    process.env.XA_UPLOADER_MIN_IMAGE_EDGE = "1";
+    process.env.XA_UPLOADER_MAX_FILES_SCANNED = "1";
+
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "xa-submission-scan-limit-"));
+    try {
+      const imagesDir = path.join(tempDir, "vendor-images");
+      await mkdir(imagesDir, { recursive: true });
+      const tinyPng = Buffer.from(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO3Zf5cAAAAASUVORK5CYII=",
+        "base64",
+      );
+      await writeFile(path.join(imagesDir, "one.png"), tinyPng);
+      await writeFile(path.join(imagesDir, "two.png"), tinyPng);
+
+      const attempt = buildSubmissionZipStream({
+        products: [
+          {
+            id: "p1",
+            slug: "studio-jacket",
+            title: "Studio jacket",
+            brandHandle: "atelier-x",
+            collectionHandle: "outerwear",
+            collectionTitle: "Outerwear",
+            price: "189",
+            description: "A structured layer.",
+            createdAt: "2025-12-01T12:00:00.000Z",
+            deposit: "0",
+            stock: "0",
+            forSale: true,
+            forRental: false,
+            popularity: "0",
+            sizes: "S|M|L",
+            taxonomy: {
+              department: "women",
+              category: "clothing",
+              subcategory: "outerwear",
+              color: "black",
+              material: "wool",
+            },
+            imageFiles: "vendor-images/*.png",
+            imageAltTexts: "Studio jacket images",
+            details: {},
+          },
+        ],
+        productsCsvPath: path.join(tempDir, "products.csv"),
+        options: { maxProducts: 10, maxBytes: 50 * 1024 * 1024, recursiveDirs: true },
+      });
+
+      await expect(attempt).rejects.toThrow(/scan limit exceeded/i);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+      if (prevMinEdge === undefined) delete process.env.XA_UPLOADER_MIN_IMAGE_EDGE;
+      else process.env.XA_UPLOADER_MIN_IMAGE_EDGE = prevMinEdge;
+      if (prevMaxScanned === undefined) delete process.env.XA_UPLOADER_MAX_FILES_SCANNED;
+      else process.env.XA_UPLOADER_MAX_FILES_SCANNED = prevMaxScanned;
+    }
+  });
 });

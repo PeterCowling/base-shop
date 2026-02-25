@@ -3,8 +3,9 @@
 # Portable across macOS and Linux (not strictly POSIX due to ps/grep usage)
 #
 # Usage:
-#   ./scripts/validate-changes.sh                      # Warn on missing tests
-#   STRICT=1 ./scripts/validate-changes.sh             # Fail on missing tests
+#   ./scripts/validate-changes.sh                      # Policy + typecheck + lint (default local gate)
+#   VALIDATE_INCLUDE_TESTS=1 ./scripts/validate-changes.sh  # Include targeted tests locally
+#   STRICT=1 VALIDATE_INCLUDE_TESTS=1 ./scripts/validate-changes.sh  # Fail on missing tests
 #   ALLOW_TEST_PROCS=1 ./scripts/validate-changes.sh   # Skip orphan process check
 #
 # Limitations:
@@ -16,6 +17,7 @@ set -e
 STRICT="${STRICT:-0}"
 ALLOW_TEST_PROCS="${ALLOW_TEST_PROCS:-0}"
 VALIDATE_RANGE="${VALIDATE_RANGE:-}"
+VALIDATE_INCLUDE_TESTS="${VALIDATE_INCLUDE_TESTS:-0}"
 # Hard cap for batched --findRelatedTests breadth. Above this we run source-adjacent tests.
 RELATED_TEST_LIMIT="${RELATED_TEST_LIMIT:-20}"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
@@ -25,12 +27,12 @@ echo "  Validation Gate"
 echo "========================================"
 
 # 0. Check for orphaned test processes (incident 2026-01-16)
-if [ "$ALLOW_TEST_PROCS" != "1" ]; then
+if [ "$VALIDATE_INCLUDE_TESTS" = "1" ] && [ "$ALLOW_TEST_PROCS" != "1" ]; then
     JEST_PROCS=$(ps -ef | grep -E 'jest-worker|jest\.js' | grep -v grep | wc -l | tr -d ' ')
     if [ "$JEST_PROCS" -gt 0 ]; then
         echo "WARN: $JEST_PROCS Jest worker processes detected."
         echo "  If these are intentional (watch mode), re-run with:"
-        echo "    ALLOW_TEST_PROCS=1 ./scripts/validate-changes.sh"
+        echo "    ALLOW_TEST_PROCS=1 VALIDATE_INCLUDE_TESTS=1 ./scripts/validate-changes.sh"
         echo "  To kill orphans: pkill -f 'jest-worker' && pkill -f 'jest.js'"
         echo "  See: docs/testing-policy.md for testing policy details"
         if [ "$STRICT" = "1" ]; then
@@ -179,163 +181,164 @@ else
     fi
 fi
 
-# 3. Find changed TS/TSX files for targeted tests
-# Ignore generated build output so it does not inflate related-test resolution.
-CHANGED=$(echo "$ALL_CHANGED" \
-    | grep -E '\.(ts|tsx)$' \
-    | grep -Ev '^apps/[^/]+/\.wrangler/tmp/' \
-    | grep -Ev '^apps/[^/]+/\.next/' \
-    | grep -Ev '^apps/[^/]+/dist/' || true)
-
-if [ -z "$CHANGED" ]; then
-    echo ""
-    echo "INFO: No changed TS/TSX files detected (skipping targeted test lookup)"
-else
-    echo ""
-    echo "Changed TS/TSX files:"
-    echo "$CHANGED" | sed 's/^/  /'
-fi
-
-# 4. Group files by package (using type__name to avoid packages/foo vs apps/foo collision)
-echo ""
-echo "> Grouping by package..."
-
-TMPDIR="${TMPDIR:-/tmp}"
-PKG_MAP="$TMPDIR/validate-changes-$$"
-mkdir -p "$PKG_MAP"
-trap 'rm -rf "$PKG_MAP"' EXIT
-
-for file in $CHANGED; do
-    # Determine package type and name from file path
-    PKG_KEY=""
-    case "$file" in
-        packages/*)
-            PKG_NAME=$(echo "$file" | cut -d/ -f2)
-            # Handle nested packages (e.g., packages/themes/prime) where the
-            # parent directory has no package.json.
-            if [ ! -f "packages/${PKG_NAME}/package.json" ]; then
-                SUB_NAME=$(echo "$file" | cut -d/ -f3)
-                if [ -n "$SUB_NAME" ] && [ -f "packages/${PKG_NAME}/${SUB_NAME}/package.json" ]; then
-                    PKG_NAME="${PKG_NAME}/${SUB_NAME}"
-                fi
-            fi
-            # Use ~ as separator for nested names to avoid / in temp file paths
-            PKG_KEY="packages__$(echo "$PKG_NAME" | tr '/' '~')"
-            ;;
-        apps/*)
-            PKG_NAME=$(echo "$file" | cut -d/ -f2)
-            PKG_KEY="apps__${PKG_NAME}"
-            ;;
-        *)
-            # Root-level files (scripts/, etc.) - skip test lookup
-            continue
-            ;;
-    esac
-
-    # Append file to package's file list (keyed by type__name)
-    echo "$file" >> "$PKG_MAP/$PKG_KEY"
-done
-
-# 5. For each package, check for related tests and run them (one Jest run per package)
-echo ""
-echo "> Running targeted tests..."
-
 TESTED_PKGS=0
 MISSING_TESTS=0
 MISSING_FILES=""
 
-# Run Jest with package-specific configuration when needed.
-run_jest_exec() {
-    pkg_path="$1"
-    shift
+if [ "$VALIDATE_INCLUDE_TESTS" = "1" ]; then
+    # 3. Find changed TS/TSX files for targeted tests
+    # Ignore generated build output so it does not inflate related-test resolution.
+    CHANGED=$(echo "$ALL_CHANGED" \
+        | grep -E '\.(ts|tsx)$' \
+        | grep -Ev '^apps/[^/]+/\.wrangler/tmp/' \
+        | grep -Ev '^apps/[^/]+/\.next/' \
+        | grep -Ev '^apps/[^/]+/dist/' || true)
 
-    if [ "$pkg_path" = "./packages/mcp-server" ]; then
-        # Always run via the governed runner to comply with test policy.
-        # Use the package-local config so Jest's haste-map doesn't index unrelated apps,
-        # which can trigger duplicate manual mock errors.
-        JEST_FORCE_CJS=1 bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- \
-            --config "$REPO_ROOT/packages/mcp-server/jest.config.cjs" \
-            "$@"
-        return $?
+    if [ -z "$CHANGED" ]; then
+        echo ""
+        echo "INFO: No changed TS/TSX files detected (skipping targeted test lookup)"
+    else
+        echo ""
+        echo "Changed TS/TSX files:"
+        echo "$CHANGED" | sed 's/^/  /'
     fi
 
-    (
-        cd "$pkg_path" || exit 1
-        if [ -f "jest.config.cjs" ]; then
-            bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- --config ./jest.config.cjs "$@"
-            exit $?
+    # 4. Group files by package (using type__name to avoid packages/foo vs apps/foo collision)
+    echo ""
+    echo "> Grouping by package..."
+
+    TMPDIR="${TMPDIR:-/tmp}"
+    PKG_MAP="$TMPDIR/validate-changes-$$"
+    mkdir -p "$PKG_MAP"
+    trap 'rm -rf "$PKG_MAP"' EXIT
+
+    for file in $CHANGED; do
+        # Determine package type and name from file path
+        PKG_KEY=""
+        case "$file" in
+            packages/*)
+                PKG_NAME=$(echo "$file" | cut -d/ -f2)
+                # Handle nested packages (e.g., packages/themes/prime) where the
+                # parent directory has no package.json.
+                if [ ! -f "packages/${PKG_NAME}/package.json" ]; then
+                    SUB_NAME=$(echo "$file" | cut -d/ -f3)
+                    if [ -n "$SUB_NAME" ] && [ -f "packages/${PKG_NAME}/${SUB_NAME}/package.json" ]; then
+                        PKG_NAME="${PKG_NAME}/${SUB_NAME}"
+                    fi
+                fi
+                # Use ~ as separator for nested names to avoid / in temp file paths
+                PKG_KEY="packages__$(echo "$PKG_NAME" | tr '/' '~')"
+                ;;
+            apps/*)
+                PKG_NAME=$(echo "$file" | cut -d/ -f2)
+                PKG_KEY="apps__${PKG_NAME}"
+                ;;
+            *)
+                # Root-level files (scripts/, etc.) - skip test lookup
+                continue
+                ;;
+        esac
+
+        # Append file to package's file list (keyed by type__name)
+        echo "$file" >> "$PKG_MAP/$PKG_KEY"
+    done
+
+    # 5. For each package, check for related tests and run them (one Jest run per package)
+    echo ""
+    echo "> Running targeted tests..."
+
+    # Run Jest with package-specific configuration when needed.
+    run_jest_exec() {
+        pkg_path="$1"
+        shift
+
+        if [ "$pkg_path" = "./packages/mcp-server" ]; then
+            # Always run via the governed runner to comply with test policy.
+            # Use the package-local config so Jest's haste-map doesn't index unrelated apps,
+            # which can trigger duplicate manual mock errors.
+            JEST_FORCE_CJS=1 bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- \
+                --config "$REPO_ROOT/packages/mcp-server/jest.config.cjs" \
+                "$@"
+            return $?
         fi
-        bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- --config "$REPO_ROOT/jest.config.cjs" "$@"
-    )
-}
 
-# For broad related sets, run only tests adjacent to changed source files.
-find_source_adjacent_tests() {
-    pkg_path="$1"
-    pkg_type="$2"
-    pkg_name="$3"
-    source_files="$4"
+        (
+            cd "$pkg_path" || exit 1
+            if [ -f "jest.config.cjs" ]; then
+                bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- --config ./jest.config.cjs "$@"
+                exit $?
+            fi
+            bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- --config "$REPO_ROOT/jest.config.cjs" "$@"
+        )
+    }
 
-    adjacent_tests=""
-    for sf in $source_files; do
-        rel_sf=$(echo "$sf" | sed "s|^${pkg_type}/${pkg_name}/||")
-        rel_dir=$(dirname "$rel_sf")
-        source_name=$(basename "$rel_sf")
-        source_stem=${source_name%.*}
+    # For broad related sets, run only tests adjacent to changed source files.
+    find_source_adjacent_tests() {
+        pkg_path="$1"
+        pkg_type="$2"
+        pkg_name="$3"
+        source_files="$4"
 
-        for candidate in \
-            "$pkg_path/$rel_dir/__tests__/${source_stem}.test.ts" \
-            "$pkg_path/$rel_dir/__tests__/${source_stem}.test.tsx" \
-            "$pkg_path/$rel_dir/__tests__/${source_stem}.spec.ts" \
-            "$pkg_path/$rel_dir/__tests__/${source_stem}.spec.tsx" \
-            "$pkg_path/$rel_dir/${source_stem}.test.ts" \
-            "$pkg_path/$rel_dir/${source_stem}.test.tsx" \
-            "$pkg_path/$rel_dir/${source_stem}.spec.ts" \
-            "$pkg_path/$rel_dir/${source_stem}.spec.tsx"
-        do
-            if [ -f "$candidate" ]; then
-                adjacent_tests="$adjacent_tests
+        adjacent_tests=""
+        for sf in $source_files; do
+            rel_sf=$(echo "$sf" | sed "s|^${pkg_type}/${pkg_name}/||")
+            rel_dir=$(dirname "$rel_sf")
+            source_name=$(basename "$rel_sf")
+            source_stem=${source_name%.*}
+
+            for candidate in \
+                "$pkg_path/$rel_dir/__tests__/${source_stem}.test.ts" \
+                "$pkg_path/$rel_dir/__tests__/${source_stem}.test.tsx" \
+                "$pkg_path/$rel_dir/__tests__/${source_stem}.spec.ts" \
+                "$pkg_path/$rel_dir/__tests__/${source_stem}.spec.tsx" \
+                "$pkg_path/$rel_dir/${source_stem}.test.ts" \
+                "$pkg_path/$rel_dir/${source_stem}.test.tsx" \
+                "$pkg_path/$rel_dir/${source_stem}.spec.ts" \
+                "$pkg_path/$rel_dir/${source_stem}.spec.tsx"
+            do
+                if [ -f "$candidate" ]; then
+                    adjacent_tests="$adjacent_tests
 $(pwd)/$candidate"
+                fi
+            done
+        done
+
+        echo "$adjacent_tests" | grep '^/' | sort -u | tr '\n' ' '
+    }
+
+    find_source_named_tests() {
+        pkg_path="$1"
+        pkg_type="$2"
+        pkg_name="$3"
+        source_files="$4"
+
+        named_tests=""
+        for sf in $source_files; do
+            rel_sf=$(echo "$sf" | sed "s|^${pkg_type}/${pkg_name}/||")
+            source_name=$(basename "$rel_sf")
+            source_stem=${source_name%.*}
+            test_root="$pkg_path/src/__tests__"
+            if [ ! -d "$test_root" ]; then
+                continue
+            fi
+
+            matches=$(find "$test_root" -type f \( \
+                -iname "*${source_stem}*.test.ts" -o \
+                -iname "*${source_stem}*.test.tsx" -o \
+                -iname "*${source_stem}*.spec.ts" -o \
+                -iname "*${source_stem}*.spec.tsx" \
+            \) 2>/dev/null || true)
+
+            if [ -n "$matches" ]; then
+                named_tests="$named_tests
+$matches"
             fi
         done
-    done
 
-    echo "$adjacent_tests" | grep '^/' | sort -u | tr '\n' ' '
-}
+        echo "$named_tests" | grep '^/' | sort -u | tr '\n' ' '
+    }
 
-find_source_named_tests() {
-    pkg_path="$1"
-    pkg_type="$2"
-    pkg_name="$3"
-    source_files="$4"
-
-    named_tests=""
-    for sf in $source_files; do
-        rel_sf=$(echo "$sf" | sed "s|^${pkg_type}/${pkg_name}/||")
-        source_name=$(basename "$rel_sf")
-        source_stem=${source_name%.*}
-        test_root="$pkg_path/src/__tests__"
-        if [ ! -d "$test_root" ]; then
-            continue
-        fi
-
-        matches=$(find "$test_root" -type f \( \
-            -iname "*${source_stem}*.test.ts" -o \
-            -iname "*${source_stem}*.test.tsx" -o \
-            -iname "*${source_stem}*.spec.ts" -o \
-            -iname "*${source_stem}*.spec.tsx" \
-        \) 2>/dev/null || true)
-
-        if [ -n "$matches" ]; then
-            named_tests="$named_tests
-$matches"
-        fi
-    done
-
-    echo "$named_tests" | grep '^/' | sort -u | tr '\n' ' '
-}
-
-for pkg_file in "$PKG_MAP"/*; do
+    for pkg_file in "$PKG_MAP"/*; do
     [ -f "$pkg_file" ] || continue
 
     # Parse type and name from key (e.g., "packages__ui" -> type=packages, name=ui)
@@ -523,8 +526,14 @@ for pkg_file in "$PKG_MAP"/*; do
         fi
     fi
 
-    TESTED_PKGS=$((TESTED_PKGS + 1))
-done
+        TESTED_PKGS=$((TESTED_PKGS + 1))
+    done
+else
+    echo ""
+    echo "> Running targeted tests..."
+    echo "INFO: Skipping local targeted tests (VALIDATE_INCLUDE_TESTS=0)."
+    echo "INFO: GitHub Actions is the source of truth for test execution."
+fi
 
 # 6. Guide validation (brikette-specific)
 # Detect guide content/manifest changes and run validate-content + validate-links.
@@ -585,10 +594,14 @@ fi
 echo ""
 echo "========================================"
 echo "Summary:"
-echo "  Packages tested: $TESTED_PKGS"
-echo "  Files missing tests: $MISSING_TESTS"
+if [ "$VALIDATE_INCLUDE_TESTS" = "1" ]; then
+    echo "  Packages tested: $TESTED_PKGS"
+    echo "  Files missing tests: $MISSING_TESTS"
+else
+    echo "  Local targeted tests: skipped (VALIDATE_INCLUDE_TESTS=0)"
+fi
 
-if [ "$MISSING_TESTS" -gt 0 ]; then
+if [ "$VALIDATE_INCLUDE_TESTS" = "1" ] && [ "$MISSING_TESTS" -gt 0 ]; then
     echo ""
     echo "Files without test coverage:"
     for f in $MISSING_FILES; do

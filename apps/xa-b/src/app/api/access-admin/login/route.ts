@@ -5,11 +5,14 @@ import {
   setAdminCookie,
   validateAdminToken,
 } from "../../../../lib/accessAdmin";
+import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestBody";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { resolveAccessCookieSecret } from "../../../../lib/stealth";
 
 // Uses node:crypto via accessAdmin.
 export const runtime = "nodejs";
+
+const LOGIN_PAYLOAD_MAX_BYTES = 8 * 1024;
 
 export async function POST(request: Request) {
   const requestIp = getRequestIp(request);
@@ -26,9 +29,15 @@ export async function POST(request: Request) {
 
   let payload: Record<string, unknown>;
   try {
-    payload = (await request.json()) as Record<string, unknown>;
-  } catch {
-    return NextResponse.json({ ok: false, error: "invalid" }, { status: 400 });
+    payload = (await readJsonBodyWithLimit(request, LOGIN_PAYLOAD_MAX_BYTES)) as Record<string, unknown>;
+  } catch (error) {
+    const status = error instanceof PayloadTooLargeError ? 413 : 400;
+    const response = NextResponse.json(
+      { ok: false, error: status === 413 ? "payload_too_large" : "invalid" },
+      { status },
+    );
+    applyRateLimitHeaders(response.headers, limit);
+    return response;
   }
 
   const token = typeof payload.token === "string" ? payload.token.trim() : "";

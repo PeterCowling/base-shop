@@ -78,6 +78,14 @@
       "types": "./dist/tryon/*.d.ts",
       "import": "./dist/tryon/*.js"
     },
+    "./xa": {
+      "types": "./dist/xa/index.d.ts",
+      "import": "./dist/xa/index.js"
+    },
+    "./xa/*": {
+      "types": "./dist/xa/*.d.ts",
+      "import": "./dist/xa/*.js"
+    },
     "./validateShopName": {
       "types": "./dist/validateShopName.d.ts",
       "import": "./dist/validateShopName.js"
@@ -98,11 +106,13 @@
     "next": "16.1.6"
   },
   "dependencies": {
+    "@noble/hashes": "^1.8.0",
     "@acme/config": "workspace:^",
     "@acme/zod-utils": "workspace:^",
+    "fast-csv": "^5.0.5",
+    "minimatch": "^9.0.5",
     "pino": "^9.9.0",
     "server-only": "^0.0.1",
-    "zod": "^3.25.73",
-    "@noble/hashes": "^1.8.0"
+    "zod": "^3.25.73"
   }
 }

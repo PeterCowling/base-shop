@@ -26,12 +26,12 @@ function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
 
   const [isLargeScreen, setIsLargeScreen] = useState(() => {
     if (typeof window === "undefined") return false;
-    return window.innerWidth >= 1024;
+    return window.innerWidth >= 768;
   });
 
   useEffect(() => {
     const update = () => {
-      setIsLargeScreen(window.innerWidth >= 1024);
+      setIsLargeScreen(window.innerWidth >= 768);
     };
     update();
     window.addEventListener("resize", update);

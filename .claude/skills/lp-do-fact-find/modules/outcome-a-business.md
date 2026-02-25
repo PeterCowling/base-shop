@@ -24,10 +24,15 @@ Produce evidence that lets `/lp-do-plan` create validation-first, channel-aware 
 5. Compliance and brand constraints
 - Legal/privacy/contact-policy constraints and brand boundaries.
 
-6. Measurement and decision hooks
+6. Blast-radius map
+- What else is affected if this change is made: other channels carrying the same message, marketing copy that references these claims, UX flows that surface the affected data, policy/legal docs, downstream automations, and any other live artifacts that would be inconsistent if this deliverable ships and they do not change.
+- Flag which affected areas are in-scope for this plan and which are out-of-scope with an explicit reason (e.g. owned by a separate team, covered by a dependent plan, accepted inconsistency risk).
+- A pricing change typically blows out across channel copy, checkout UX, email automations, and policy docs — map them all even if most are out-of-scope.
+
+7. Measurement and decision hooks
 - Metrics, attribution limits, and decision cadence after delivery.
 
-7. Hypothesis and validation landscape
+8. Hypothesis and validation landscape
 - Key hypotheses
 - Existing signal coverage
 - Falsifiability/cost/time to test
@@ -48,6 +53,7 @@ For business-heavy work, Delivery-Readiness should explicitly cover owner + chan
 Ensure these sections in the planning brief are filled (or explicitly marked not investigated):
 - `## Evidence Audit (Current State)`
 - `### Delivery & Channel Landscape`
+- `### Blast-Radius Map`
 - `### Hypothesis & Validation Landscape`
 - `## Confidence Inputs`
 - `## Risks`

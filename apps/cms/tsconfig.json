@@ -68,10 +68,14 @@
         "../../packages/auth/src/*", "../../packages/auth/dist/*"
       ],
       "@acme/lib": [
-        "../../packages/lib/src/index.ts", "../../packages/lib/dist/index"
+        "../../packages/lib/dist/index.js",
+        "../../packages/lib/dist/index.d.ts",
+        "../../packages/lib/dist/index",
+        "../../packages/lib/src/index.ts"
       ],
       "@acme/lib/*": [
-        "../../packages/lib/src/*", "../../packages/lib/dist/*"
+        "../../packages/lib/dist/*",
+        "../../packages/lib/src/*"
       ],
       "@acme/types": [
         "../../packages/types/src/index.ts", "../../packages/types/dist/index"

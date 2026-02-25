@@ -191,7 +191,7 @@ function computeIsDisabled(disabled: ButtonProps["disabled"], isLoading: boolean
 
 function legacyVariantClassName(variant: LegacyVariant, effColor: ButtonColor): string {
   if (variant === "outline") return "border-input";
-  if (variant === "destructive") return "bg-destructive";
+  if (variant === "destructive") return "bg-destructive text-destructive-foreground";
   if (variant === "ghost" && effColor === "accent") return "hover:bg-accent hover:text-accent-foreground";
   return "";
 }

@@ -2,9 +2,6 @@
 
 import * as React from 'react'
 
-import { Button, type ButtonProps } from '@acme/design-system/primitives'
-
-export type ReceptionButtonProps = Omit<ButtonProps, 'compatibilityMode'>
 export type ReceptionInputProps = React.InputHTMLAttributes<HTMLInputElement>
 export type ReceptionSelectProps = React.SelectHTMLAttributes<HTMLSelectElement>
 export type ReceptionTextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>
@@ -14,13 +11,6 @@ export type ReceptionTableBodyProps = React.HTMLAttributes<HTMLTableSectionEleme
 export type ReceptionTableRowProps = React.HTMLAttributes<HTMLTableRowElement>
 export type ReceptionTableHeadProps = React.ThHTMLAttributes<HTMLTableCellElement>
 export type ReceptionTableCellProps = React.TdHTMLAttributes<HTMLTableCellElement>
-
-export const ReceptionButton = React.forwardRef<
-  HTMLButtonElement,
-  ReceptionButtonProps
->(function ReceptionButton(props, ref) {
-  return <Button compatibilityMode='passthrough' ref={ref} {...props} />
-})
 
 export const ReceptionInput = React.forwardRef<
   HTMLInputElement,

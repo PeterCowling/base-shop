@@ -5,7 +5,7 @@
  * Validates TC-02, TC-03, TC-04 from TASK-46.
  */
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import type { GuestProfile } from '../../../../types/guestProfile';
 import GuestDirectory from '../GuestDirectory';
@@ -13,10 +13,26 @@ import GuestDirectory from '../GuestDirectory';
 // Mock profiles data
 let mockProfiles: Record<string, GuestProfile> = {};
 const mockCurrentUuid = 'guest-1';
+const mockPush = jest.fn();
+const mockReadGuestSession = jest.fn(() => ({
+  token: 'token_123',
+  bookingId: 'booking_123',
+  uuid: mockCurrentUuid,
+  firstName: 'Test',
+  verifiedAt: null,
+}));
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ push: mockPush }),
+}));
 
 jest.mock('../../../../hooks/useUuid', () => ({
   __esModule: true,
   default: () => mockCurrentUuid,
+}));
+
+jest.mock('../../../../lib/auth/guestSessionGuard', () => ({
+  readGuestSession: () => mockReadGuestSession(),
 }));
 
 jest.mock('../../../../hooks/data/useGuestProfiles', () => ({
@@ -93,6 +109,19 @@ describe('GuestDirectory', () => {
       // Should show guest-2
       expect(screen.queryByText(/guest-2/i)).toBeDefined();
       // Should NOT show guest-3
+      expect(screen.queryByText(/guest-3/i)).toBeNull();
+    });
+
+    it('hides guests from a different booking', () => {
+      mockProfiles = {
+        'guest-1': createProfile('guest-1', { bookingId: 'booking_123', chatOptIn: true }),
+        'guest-2': createProfile('guest-2', { bookingId: 'booking_123', chatOptIn: true }),
+        'guest-3': createProfile('guest-3', { bookingId: 'booking_999', chatOptIn: true }),
+      };
+
+      render(<GuestDirectory />);
+
+      expect(screen.queryByText(/guest-2/i)).toBeDefined();
       expect(screen.queryByText(/guest-3/i)).toBeNull();
     });
 
@@ -200,7 +229,11 @@ describe('GuestDirectory', () => {
 
       const buttons = screen.getAllByText(/chat.directory.startChat/i);
       expect(buttons.length).toBeGreaterThan(0);
-      // Navigation would be tested in e2e
+      fireEvent.click(buttons[0]!);
+
+      expect(mockPush).toHaveBeenCalledWith(
+        '/chat/channel?id=dm_guest-1_guest-2&mode=direct&peer=guest-2',
+      );
     });
   });
 });

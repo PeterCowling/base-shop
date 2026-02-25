@@ -239,11 +239,11 @@ describe("CheckoutTable component", () => {
     );
 
     const wrapper = container.firstChild as HTMLElement;
-    expect(wrapper.className).toContain("dark:bg-darkSurface");
+    expect(wrapper.className).toContain("bg-surface");
     document.documentElement.classList.remove("dark");
   });
 
-  it("applies dark accent color to loan buttons in dark mode", () => {
+  it("applies token color to loan buttons in dark mode", () => {
     const guests: Guest[] = [
       {
         bookingRef: "BR1",
@@ -264,8 +264,8 @@ describe("CheckoutTable component", () => {
     );
 
     const loanBtn = screen.getByRole("button", { name: /remove umbrella/i });
-    expect(loanBtn.className).toContain("dark:text-darkAccentGreen");
-    expect(loanBtn.className).toContain("dark:hover:text-darkAccentGreen");
+    expect(loanBtn.className).toContain("text-foreground");
+    expect(loanBtn.className).toContain("hover:text-foreground");
     document.documentElement.classList.remove("dark");
   });
 });

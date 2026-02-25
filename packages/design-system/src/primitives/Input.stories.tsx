@@ -30,3 +30,12 @@ export const ShapeDepths: Story = {
     </div>
   ),
 };
+
+export const DensityScale: Story = {
+  render: (args) => (
+    <div className="grid max-w-xl gap-3">
+      <Input {...args} density="comfortable" placeholder="Comfortable input" />
+      <Input {...args} density="compact" placeholder="Compact input" />
+    </div>
+  ),
+};

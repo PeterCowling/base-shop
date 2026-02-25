@@ -5,6 +5,7 @@ import path from "node:path";
 import crypto from "node:crypto";
 
 import * as yazl from "yazl";
+import { toPositiveInt, validateMinImageEdge } from "@acme/lib";
 
 import {
   catalogProductDraftSchema,
@@ -12,11 +13,11 @@ import {
   slugify,
   splitList,
   type CatalogProductDraftInput,
-} from "./catalogAdminSchema";
-import { buildCsvRowUpdateFromDraft } from "./catalogCsvMapping";
-import { buildCsvHeader, csvEscape, type XaProductsCsvRow } from "./catalogCsvFormat";
-import { expandFileSpec } from "./fileGlob";
-import { readImageDimensions } from "./imageDimensions";
+} from "@acme/lib/xa";
+import { buildCsvRowUpdateFromDraft } from "@acme/lib/xa";
+import { buildCsvHeader, csvEscape, type XaProductsCsvRow } from "@acme/lib/xa";
+import { expandFileSpec } from "@acme/lib/xa";
+import { readImageDimensions } from "@acme/lib/xa";
 
 export type SubmissionZipManifest = {
   submissionId: string;
@@ -32,6 +33,45 @@ type BuildSubmissionZipOptions = {
   maxBytes: number;
   recursiveDirs: boolean;
 };
+
+const DEFAULT_MAX_FILES_SCANNED = 10_000;
+const DEFAULT_MAX_FILES_PER_SPEC = 500;
+const DEFAULT_MAX_IMAGES_PER_PRODUCT = 100;
+const DEFAULT_MAX_IMAGES_PER_SUBMISSION = 400;
+
+function getMaxFilesScanned(): number {
+  return toPositiveInt(process.env.XA_UPLOADER_MAX_FILES_SCANNED, DEFAULT_MAX_FILES_SCANNED, 1);
+}
+
+function getMaxFilesPerSpec(): number {
+  return toPositiveInt(process.env.XA_UPLOADER_MAX_FILES_PER_SPEC, DEFAULT_MAX_FILES_PER_SPEC, 1);
+}
+
+function getMaxImagesPerProduct(): number {
+  return toPositiveInt(
+    process.env.XA_UPLOADER_MAX_IMAGES_PER_PRODUCT,
+    DEFAULT_MAX_IMAGES_PER_PRODUCT,
+    1,
+  );
+}
+
+function getMaxImagesPerSubmission(): number {
+  return toPositiveInt(
+    process.env.XA_UPLOADER_MAX_IMAGES_PER_SUBMISSION,
+    DEFAULT_MAX_IMAGES_PER_SUBMISSION,
+    1,
+  );
+}
+
+function resolveAllowedImageRoots(baseDir: string): string[] {
+  const configured = (process.env.XA_UPLOADER_ALLOWED_IMAGE_ROOTS ?? "")
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .map((entry) => (path.isAbsolute(entry) ? entry : path.resolve(baseDir, entry)));
+
+  return Array.from(new Set([baseDir, ...configured]));
+}
 
 function buildCsvString(header: string[], rows: XaProductsCsvRow[]): string {
   return (
@@ -54,10 +94,8 @@ function getMinImageEdgePx(): number {
     process.env.XA_UPLOADER_MIN_IMAGE_EDGE ??
     process.env.NEXT_PUBLIC_XA_UPLOADER_MIN_IMAGE_EDGE ??
     "";
-  const parsed = Number(raw);
   const fallback = 1600;
-  if (!Number.isFinite(parsed) || parsed <= 0) return fallback;
-  return Math.floor(parsed);
+  return toPositiveInt(raw, fallback, 1);
 }
 
 export async function buildSubmissionZipStream({
@@ -78,6 +116,12 @@ export async function buildSubmissionZipStream({
   }
 
   const baseDir = path.dirname(path.resolve(productsCsvPath));
+  const allowedImageRoots = resolveAllowedImageRoots(baseDir);
+  const maxFilesScanned = getMaxFilesScanned();
+  const maxFilesPerSpec = getMaxFilesPerSpec();
+  const maxImagesPerProduct = getMaxImagesPerProduct();
+  const maxImagesPerSubmission = getMaxImagesPerSubmission();
+
   const zip = new yazl.ZipFile();
 
   const submissionId = crypto.randomUUID().replace(/-/g, "");
@@ -94,7 +138,7 @@ export async function buildSubmissionZipStream({
   for (const draftInput of products) {
     const draft = catalogProductDraftSchema.parse(draftInput);
     const productSlug = slugify(draft.slug?.trim() || draft.title);
-    if (!productSlug) throw new Error(`Missing product slug/title.`);
+    if (!productSlug) throw new Error("Missing product slug/title.");
 
     const fileSpecs = splitList(draft.imageFiles ?? "");
     if (!fileSpecs.length) {
@@ -109,12 +153,24 @@ export async function buildSubmissionZipStream({
       const altText = altSpecs[specIndex] || draft.title || productSlug;
       const resolved = await expandFileSpec(fileSpec, baseDir, {
         recursiveDirs: options.recursiveDirs,
+        allowedRoots: allowedImageRoots,
+        maxFilesScanned,
+        maxMatches: maxFilesPerSpec,
       }).catch((err) => {
         const message = err instanceof Error ? err.message : String(err);
         throw new Error(`"${productSlug}": ${message}`);
       });
 
       for (const resolvedPath of resolved) {
+        if (packagedFiles.length >= maxImagesPerProduct) {
+          throw new Error(
+            `"${productSlug}": too many images for one product. Maximum is ${maxImagesPerProduct}.`,
+          );
+        }
+        if (totalImages >= maxImagesPerSubmission) {
+          throw new Error(`Submission has too many images. Maximum is ${maxImagesPerSubmission}.`);
+        }
+
         const info = await stat(resolvedPath).catch(() => null);
         if (!info?.isFile()) {
           throw new Error(`"${productSlug}": not a file: ${fileSpec}`);
@@ -128,8 +184,7 @@ export async function buildSubmissionZipStream({
           const message = err instanceof Error ? err.message : "Unsupported image format.";
           throw new Error(`"${productSlug}": ${message}`);
         });
-        const shortest = Math.min(dims.width, dims.height);
-        if (shortest < minEdge) {
+        if (!validateMinImageEdge(dims.width, dims.height, minEdge)) {
           throw new Error(
             `"${productSlug}": image is too small (${dims.width}x${dims.height}). Minimum is ${minEdge}px on the shortest edge.`,
           );
@@ -137,7 +192,7 @@ export async function buildSubmissionZipStream({
 
         totalBytes += info.size;
         if (totalBytes > options.maxBytes) {
-          throw new Error(`Submission is too large. Reduce images or products.`);
+          throw new Error("Submission is too large. Reduce images or products.");
         }
 
         const zipPath = path.posix.join(

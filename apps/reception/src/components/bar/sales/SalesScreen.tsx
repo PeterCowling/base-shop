@@ -2,7 +2,7 @@
 import React, { type FC, useCallback, useMemo, useState } from "react";
 import { ref, remove, set } from "firebase/database";
 
-import { ReceptionButton as Button } from "@acme/ui/operations";
+import { Button } from "@acme/design-system/atoms";
 
 import { useSalesOrders } from "../../../hooks/data/bar/useSalesOrders";
 import { useBleeperMutations } from "../../../hooks/mutations/useBleeperMutations";
@@ -107,38 +107,42 @@ const SalesScreen: FC = React.memo(() => {
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-lg font-medium text-muted-foreground dark:text-darkAccentGreen">Loading orders…</p>
+        <p className="text-lg font-medium text-muted-foreground">Loading orders…</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-2 via-surface-3 to-surface-3 font-body dark:bg-darkBg dark:text-darkAccentGreen dark:from-darkBg dark:via-darkBg dark:to-darkBg">
+    <div className="min-h-screen bg-gradient-to-b from-surface-2 via-surface-3 to-surface-3 font-body">
       {/* --- Top control bar --- */}
-      <div className="sticky top-0 z-10 flex items-center justify-end gap-2 bg-surface/60 px-4 py-2 backdrop-blur shadow-md dark:bg-darkSurface/60">
+      <div className="sticky top-0 z-10 flex items-center justify-end gap-2 bg-surface/60 px-4 py-2 backdrop-blur shadow-md">
         <Button
           onClick={handleRecallLastOrder}
           disabled={!lastRemovedOrder}
-          className="rounded px-4 py-2 text-sm font-semibold text-primary-fg shadow transition
-                     enabled:bg-primary-main enabled:hover:bg-indigo-700
-                     disabled:cursor-not-allowed disabled:bg-primary-light"
+          compatibilityMode="passthrough"
+          className="min-h-11 rounded-md px-3 py-2 text-sm font-medium transition-colors bg-primary-main text-primary-fg hover:bg-primary-main/90 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Recall
         </Button>
-        {filterButtons.map((btn) => (
-          <Button
-            key={btn}
-            onClick={() => handleFilterChange(btn)}
-            className={`rounded px-4 py-2 text-sm font-semibold text-primary-fg shadow transition
-                        ${
-                          selectedFilter === btn
-                            ? "bg-success-main hover:bg-emerald-700"
-                            : "bg-success-main hover:bg-success-main"
-                        }`}
-          >
-            {btn}
-          </Button>
-        ))}
+        {filterButtons.map((btn) => {
+          const isActive = selectedFilter === btn;
+          return (
+            <Button
+              key={btn}
+              onClick={() => handleFilterChange(btn)}
+              compatibilityMode="passthrough"
+              aria-pressed={isActive}
+              className={
+                "min-h-11 rounded-md px-3 py-2 text-sm font-medium transition-colors " +
+                (isActive
+                  ? "bg-primary-main text-primary-fg ring-2 ring-primary-main ring-offset-1 ring-offset-surface"
+                  : "bg-surface-2 text-foreground hover:bg-surface-3")
+              }
+            >
+              {btn}
+            </Button>
+          );
+        })}
       </div>
 
       {/* --- Tickets --- */}
@@ -152,7 +156,7 @@ const SalesScreen: FC = React.memo(() => {
           />
         ) : (
           <div className="flex h-60vh flex-col items-center justify-center">
-            <p className="text-4xl font-semibold text-foreground/70 text-shadow-sm dark:text-darkAccentGreen">
+            <p className="text-4xl font-semibold text-foreground/70 text-shadow-sm">
               No orders
             </p>
           </div>

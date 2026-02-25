@@ -20,6 +20,10 @@ import { type DiagnosisSnapshot,generateDiagnosisSnapshot } from "./diagnosis-sn
 import { type McpPreflightResult,runMcpPreflight } from "./mcp-preflight";
 import { checkAndTriggerReplan, type ReplanTrigger } from "./replan-trigger";
 import {
+  WEEKLY_STAGE_CANDIDATES,
+  WEEKLY_STAGE_ID,
+} from "./stage-id-compat";
+import {
   type GrowthAccountingEventPayload,
   runS10GrowthAccounting,
   type S10GrowthAccountingResult,
@@ -78,6 +82,45 @@ function summarizePreflightIssues(result: McpPreflightResult): string {
 
 // -- Helper functions --
 
+function resolveWeeklyStageResultPath(
+  business: string,
+  runId: string,
+  baseDir: string,
+): string {
+  const runStagesDir = path.join(
+    baseDir,
+    "docs/business-os/startup-baselines",
+    business,
+    "runs",
+    runId,
+    "stages",
+  );
+
+  // Prefer existing stage-result files.
+  for (const stageId of WEEKLY_STAGE_CANDIDATES) {
+    const candidatePath = path.join(
+      runStagesDir,
+      stageId,
+      "stage-result.json",
+    );
+    if (fs.existsSync(candidatePath)) {
+      return candidatePath;
+    }
+  }
+
+  // If a legacy/canonical stage directory already exists but stage-result file
+  // does not, write there to avoid splitting artifacts across stage IDs.
+  for (const stageId of WEEKLY_STAGE_CANDIDATES) {
+    const candidateDir = path.join(runStagesDir, stageId);
+    if (fs.existsSync(candidateDir)) {
+      return path.join(candidateDir, "stage-result.json");
+    }
+  }
+
+  // Default to canonical path for new writes.
+  return path.join(runStagesDir, WEEKLY_STAGE_ID, "stage-result.json");
+}
+
 /**
  * Write or update stage-result.json with diagnosis artifact pointer
  */
@@ -87,14 +130,7 @@ function writeStageResultArtifact(
   baseDir: string,
   growthAccounting: S10GrowthAccountingResult | null = null,
 ): void {
-  const stageResultPath = path.join(
-    baseDir,
-    "docs/business-os/startup-baselines",
-    business,
-    "runs",
-    runId,
-    "stages/S10/stage-result.json"
-  );
+  const stageResultPath = resolveWeeklyStageResultPath(business, runId, baseDir);
 
   const stageResultDir = path.dirname(stageResultPath);
 

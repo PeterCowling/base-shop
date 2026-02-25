@@ -4,7 +4,8 @@ import {
   type CatalogProductDraftInput,
   catalogProductDraftSchema,
   slugify,
-} from "../../lib/catalogAdminSchema";
+} from "@acme/lib/xa/catalogAdminSchema";
+
 import { getStorefrontConfig } from "../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { getUploaderConfirmDelete, type UploaderLocale } from "../../lib/uploaderI18n";
@@ -143,6 +144,33 @@ export function handleClearSubmissionImpl({
 }): void {
   setSubmissionSlugs(new Set());
   clearActionFeedbackDomains(setActionFeedback, ["submission"]);
+}
+
+function parseUploadEndpoint(rawUploadUrl: string): {
+  endpointUrl: string;
+  token?: string;
+} {
+  const trimmed = rawUploadUrl.trim();
+  try {
+    const parsed = new URL(trimmed);
+    const headerToken =
+      parsed.searchParams.get("token")?.trim() || parsed.searchParams.get("uploadToken")?.trim() || "";
+    if (headerToken) {
+      parsed.searchParams.delete("token");
+      parsed.searchParams.delete("uploadToken");
+      return { endpointUrl: parsed.toString(), token: headerToken };
+    }
+
+    const segments = parsed.pathname.split("/").filter(Boolean);
+    if (segments.length === 2 && segments[0] === "upload") {
+      const pathToken = decodeURIComponent(segments[1] ?? "").trim();
+      parsed.pathname = "/upload";
+      return pathToken ? { endpointUrl: parsed.toString(), token: pathToken } : { endpointUrl: parsed.toString() };
+    }
+    return { endpointUrl: parsed.toString() };
+  } catch {
+    return { endpointUrl: trimmed };
+  }
 }
 
 export async function handleLoginImpl({
@@ -380,6 +408,7 @@ export async function handleSyncImpl({
   setActionFeedback,
   setSyncOutput,
   loadCatalog,
+  confirmEmptyCatalogSync,
 }: {
   storefront: XaCatalogStorefront;
   syncOptions: { strict: boolean; dryRun: boolean; replace: boolean; recursive: boolean };
@@ -389,30 +418,50 @@ export async function handleSyncImpl({
   setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
   setSyncOutput: React.Dispatch<React.SetStateAction<string | null>>;
   loadCatalog: () => Promise<void>;
+  confirmEmptyCatalogSync: (message: string) => boolean;
 }): Promise<void> {
   if (!tryBeginBusyAction(busyLockRef, setBusy)) return;
   clearActionFeedbackDomains(setActionFeedback, ["sync"]);
   setSyncOutput(null);
-  try {
+
+  const runSyncRequest = async (confirmEmptyInput: boolean): Promise<{ response: Response; data: SyncResponse }> => {
     const response = await fetch("/api/catalog/sync", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ options: syncOptions, storefront }),
+      body: JSON.stringify({
+        options: { ...syncOptions, confirmEmptyInput },
+        storefront,
+      }),
     });
     const data = (await response.json()) as SyncResponse;
+    return { response, data };
+  };
+
+  try {
+    let syncAttempt = await runSyncRequest(false);
+
+    if (
+      syncAttempt.response.status === 409 &&
+      syncAttempt.data.error === "catalog_input_empty" &&
+      syncAttempt.data.requiresConfirmation
+    ) {
+      const confirmed = confirmEmptyCatalogSync(t("syncConfirmEmptyCatalogSync"));
+      if (!confirmed) return;
+      syncAttempt = await runSyncRequest(true);
+    }
 
     const output =
       [
-        buildLogBlock("validate", data.logs?.validate),
-        buildLogBlock("sync", data.logs?.sync),
+        buildLogBlock("validate", syncAttempt.data.logs?.validate),
+        buildLogBlock("sync", syncAttempt.data.logs?.sync),
       ]
         .filter(Boolean)
         .join("\n\n")
         .trim() || null;
     setSyncOutput(output);
 
-    if (!response.ok || !data.ok) {
-      throw new Error(getSyncFailureMessage(data, t));
+    if (!syncAttempt.response.ok || !syncAttempt.data.ok) {
+      throw new Error(getSyncFailureMessage(syncAttempt.data, t));
     }
     await loadCatalog().catch(() => null);
     updateActionFeedback(setActionFeedback, "sync", {
@@ -516,9 +565,11 @@ export async function handleUploadSubmissionToR2Impl({
       t("exportFailed"),
       storefront,
     );
+    const uploadTarget = parseUploadEndpoint(submissionUploadUrl);
     const headers: Record<string, string> = { "Content-Type": "application/zip" };
     if (submissionId) headers["X-XA-Submission-Id"] = submissionId;
-    const res = await fetch(submissionUploadUrl.trim(), {
+    if (uploadTarget.token) headers["X-XA-Upload-Token"] = uploadTarget.token;
+    const res = await fetch(uploadTarget.endpointUrl, {
       method: "PUT",
       headers,
       body: blob,

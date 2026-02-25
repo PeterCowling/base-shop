@@ -3,7 +3,7 @@
 
 import type { ReactNode } from "react";
 
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import { getContactRowsForPerson } from "@/data/people";
 import { joinClasses } from "@/lib/joinClasses";

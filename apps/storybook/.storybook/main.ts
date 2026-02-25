@@ -34,10 +34,10 @@ const config: StorybookConfig = {
   env: { CORE_DISABLE_TELEMETRY: "1" },
   staticDirs: ["../../../public"],
 
-  // Find stories and MDX docs across UI package and local Storybook docs
+  // Full build canonical source set: UI package plus local Storybook docs.
   stories: [
-    path.resolve(__dirname, "../../../packages/ui/**/*.stories.@(ts|tsx)"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-    path.resolve(__dirname, "../../../packages/design-system/src/**/*.stories.@(ts|tsx)"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    // Keep a single canonical package for component stories to avoid duplicate IDs from mirrored design-system files.
+    path.resolve(__dirname, "../../../packages/ui/src/**/*.stories.@(ts|tsx)"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     path.resolve(__dirname, "./stories/**/*.stories.@(ts|tsx)"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     path.resolve(__dirname, "./stories/**/*.mdx"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
   ],

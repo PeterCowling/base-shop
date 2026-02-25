@@ -3,9 +3,12 @@ main = "src/index.ts"
 compatibility_date = "2025-12-26"
 
 [vars]
-# Shared secret used to validate signed upload links. Generate a unique value
-# per environment (>= 32 chars).
-UPLOAD_TOKEN_SECRET = "dev-xa-drop-upload-secret-32-chars-long!!"
+# Shared secret used to validate signed upload links.
+# Do not commit this value. Set it per environment:
+#   wrangler secret put UPLOAD_TOKEN_SECRET
+# For local development, create a gitignored `apps/xa-drop-worker/.dev.vars`
+# file with:
+#   UPLOAD_TOKEN_SECRET=<32+ char random secret>
 
 # R2 object key prefix for incoming submissions.
 R2_PREFIX = "submissions/"
@@ -13,8 +16,23 @@ R2_PREFIX = "submissions/"
 # Maximum accepted upload size in bytes (default 250MB).
 MAX_BYTES = "262144000"
 
+# Optional CORS allowlist for browser-based uploads.
+# Comma-separated origins, for example:
+#   UPLOAD_ALLOWED_ORIGINS = "https://uploader.example.com,https://staging-uploader.example.com"
+# If omitted, browser-origin uploads are rejected (non-browser uploads still work).
+# UPLOAD_ALLOWED_ORIGINS = ""
+
+# Catalog contract object key prefix.
+CATALOG_PREFIX = "catalog/"
+
+# Maximum accepted catalog publish payload in bytes (default 10MB).
+CATALOG_MAX_BYTES = "10485760"
+
+# Catalog publish/read tokens are secrets; set per environment:
+#   wrangler secret put CATALOG_WRITE_TOKEN
+#   wrangler secret put CATALOG_READ_TOKEN   (optional)
+
 [[r2_buckets]]
 binding = "SUBMISSIONS_BUCKET"
 bucket_name = "xa-submissions"
 preview_bucket_name = "xa-submissions-preview"
-

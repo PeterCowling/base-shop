@@ -4,6 +4,7 @@ import os from "os";
 import path from "path";
 
 import { baselineMerge } from "../baseline-merge";
+import { FORECAST_STAGE_ID } from "../stage-id-compat";
 
 /**
  * LPSP-06B: /lp-baseline-merge (S4 join barrier)
@@ -53,10 +54,10 @@ const S2B_DONE = makeStageResult({
 });
 
 const S3_DONE = makeStageResult({
-  stage: "S3",
+  stage: FORECAST_STAGE_ID,
   status: "Done",
   produced_keys: ["forecast"],
-  artifacts: { forecast: "stages/S3/forecast.md" },
+  artifacts: { forecast: `stages/${FORECAST_STAGE_ID}/forecast.md` },
 });
 
 const S6B_DONE = makeStageResult({
@@ -139,15 +140,15 @@ describe("baselineMerge", () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.stage_result.status).toBe("Blocked");
-        expect(result.stage_result.blocking_reason).toContain("S3");
+        expect(result.stage_result.blocking_reason).toContain(FORECAST_STAGE_ID);
         expect(result.stage_result.blocking_reason).toContain("forecast");
       }
     });
 
     it("blocks when MARKET-06 stage-result is absent", async () => {
       const runDir = await setupRunDir();
-      await writeStageResult(runDir, "S3", S3_DONE);
-      await writeArtifact(runDir, "stages/S3/forecast.md", "# Forecast");
+      await writeStageResult(runDir, FORECAST_STAGE_ID, S3_DONE);
+      await writeArtifact(runDir, `stages/${FORECAST_STAGE_ID}/forecast.md`, "# Forecast");
       await writeStageResult(runDir, "SELL-01", S6B_DONE);
       await writeArtifact(runDir, "stages/SELL-01/channels.md", "# Channels");
       // MARKET-06 is absent
@@ -165,8 +166,8 @@ describe("baselineMerge", () => {
       const runDir = await setupRunDir();
       await writeStageResult(runDir, "MARKET-06", S2B_DONE);
       await writeArtifact(runDir, "stages/MARKET-06/offer.md", "# Offer");
-      await writeStageResult(runDir, "S3", S3_DONE);
-      await writeArtifact(runDir, "stages/S3/forecast.md", "# Forecast");
+      await writeStageResult(runDir, FORECAST_STAGE_ID, S3_DONE);
+      await writeArtifact(runDir, `stages/${FORECAST_STAGE_ID}/forecast.md`, "# Forecast");
       // SELL-01 is absent
 
       const result = await baselineMerge(runDir, MERGE_OPTIONS);
@@ -182,8 +183,8 @@ describe("baselineMerge", () => {
       const runDir = await setupRunDir();
       await writeStageResult(runDir, "MARKET-06", S2B_DONE);
       await writeArtifact(runDir, "stages/MARKET-06/offer.md", "# Offer");
-      await writeStageResult(runDir, "S3", makeStageResult({
-        stage: "S3",
+      await writeStageResult(runDir, FORECAST_STAGE_ID, makeStageResult({
+        stage: FORECAST_STAGE_ID,
         status: "Failed",
         error: "forecast computation error",
       }));
@@ -195,7 +196,7 @@ describe("baselineMerge", () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.stage_result.status).toBe("Blocked");
-        expect(result.stage_result.blocking_reason).toContain("S3");
+        expect(result.stage_result.blocking_reason).toContain(FORECAST_STAGE_ID);
         expect(result.stage_result.blocking_reason).toContain("Failed");
       }
     });
@@ -224,8 +225,8 @@ describe("baselineMerge", () => {
       const runDir = await setupRunDir();
       await writeStageResult(runDir, "MARKET-06", S2B_DONE);
       await writeArtifact(runDir, "stages/MARKET-06/offer.md", "# Offer\nValue prop here.");
-      await writeStageResult(runDir, "S3", S3_DONE);
-      await writeArtifact(runDir, "stages/S3/forecast.md", "# Forecast\nP50 scenario.");
+      await writeStageResult(runDir, FORECAST_STAGE_ID, S3_DONE);
+      await writeArtifact(runDir, `stages/${FORECAST_STAGE_ID}/forecast.md`, "# Forecast\nP50 scenario.");
       await writeStageResult(runDir, "SELL-01", S6B_DONE);
       await writeArtifact(runDir, "stages/SELL-01/channels.md", "# Channels\nSEO + paid.");
 
@@ -255,8 +256,8 @@ describe("baselineMerge", () => {
       const runDir = await setupRunDir();
       await writeStageResult(runDir, "MARKET-06", S2B_DONE);
       await writeArtifact(runDir, "stages/MARKET-06/offer.md", "# Offer");
-      await writeStageResult(runDir, "S3", S3_DONE);
-      await writeArtifact(runDir, "stages/S3/forecast.md", "# Forecast");
+      await writeStageResult(runDir, FORECAST_STAGE_ID, S3_DONE);
+      await writeArtifact(runDir, `stages/${FORECAST_STAGE_ID}/forecast.md`, "# Forecast");
       await writeStageResult(runDir, "SELL-01", S6B_DONE_WITH_OPTIONAL);
       await writeArtifact(runDir, "stages/SELL-01/channels.md", "# Channels");
       await writeArtifact(runDir, "stages/SELL-01/seo.md", "# SEO Strategy");
@@ -281,8 +282,8 @@ describe("baselineMerge", () => {
       const runDir = await setupRunDir();
       await writeStageResult(runDir, "MARKET-06", S2B_DONE);
       await writeArtifact(runDir, "stages/MARKET-06/offer.md", "# Offer");
-      await writeStageResult(runDir, "S3", S3_DONE);
-      await writeArtifact(runDir, "stages/S3/forecast.md", "# Forecast");
+      await writeStageResult(runDir, FORECAST_STAGE_ID, S3_DONE);
+      await writeArtifact(runDir, `stages/${FORECAST_STAGE_ID}/forecast.md`, "# Forecast");
       await writeStageResult(runDir, "SELL-01", S6B_DONE);
       await writeArtifact(runDir, "stages/SELL-01/channels.md", "# Channels");
       await writeStageResult(runDir, "PRODUCT-02", PRODUCT_02_DONE);
@@ -311,8 +312,8 @@ describe("baselineMerge", () => {
         const runDir = await setupRunDir();
         await writeStageResult(runDir, "MARKET-06", S2B_DONE);
         await writeArtifact(runDir, "stages/MARKET-06/offer.md", "# Offer\nContent A.");
-        await writeStageResult(runDir, "S3", S3_DONE);
-        await writeArtifact(runDir, "stages/S3/forecast.md", "# Forecast\nContent B.");
+        await writeStageResult(runDir, FORECAST_STAGE_ID, S3_DONE);
+        await writeArtifact(runDir, `stages/${FORECAST_STAGE_ID}/forecast.md`, "# Forecast\nContent B.");
         await writeStageResult(runDir, "SELL-01", S6B_DONE);
         await writeArtifact(runDir, "stages/SELL-01/channels.md", "# Channels\nContent C.");
 
@@ -332,8 +333,8 @@ describe("baselineMerge", () => {
       const runDir = await setupRunDir();
       await writeStageResult(runDir, "MARKET-06", S2B_DONE);
       await writeArtifact(runDir, "stages/MARKET-06/offer.md", "# Offer");
-      await writeStageResult(runDir, "S3", S3_DONE);
-      await writeArtifact(runDir, "stages/S3/forecast.md", "# Forecast");
+      await writeStageResult(runDir, FORECAST_STAGE_ID, S3_DONE);
+      await writeArtifact(runDir, `stages/${FORECAST_STAGE_ID}/forecast.md`, "# Forecast");
       await writeStageResult(runDir, "SELL-01", S6B_DONE_WITH_OPTIONAL);
       await writeArtifact(runDir, "stages/SELL-01/channels.md", "# Channels");
       await writeArtifact(runDir, "stages/SELL-01/seo.md", "# SEO");

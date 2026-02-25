@@ -14,7 +14,7 @@ import { useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 
-import { useTranslations } from "@acme/i18n";
+import { useTranslations } from "@acme/i18n/Translations";
 import type {
   ProductConfigSchema,
   ProductHotspotConfig,

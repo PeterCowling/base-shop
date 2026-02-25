@@ -65,7 +65,7 @@ Evaluate and record these gates for each affected task:
 - No inline "needs spike" notes.
 
 4. **Sequencing Gate**
-- If topology changed (tasks added/split/removed/dependencies updated), run `/lp-sequence` in stable-ID mode (no renumbering).
+- If topology changed (tasks added/split/removed/dependencies updated), run `/lp-do-sequence` in stable-ID mode (no renumbering).
 
 5. **Escalation Gate**
 - Ask user only when decision intent cannot be inferred after evidence review.
@@ -114,7 +114,7 @@ ID policy:
 
 ## Phase 4: Sequencing
 
-When topology changed, run `/lp-sequence` with stable IDs preserved.
+When topology changed, run `/lp-do-sequence` with stable IDs preserved.
 
 Expected sequence behavior for replan flows:
 - reorder tasks,
@@ -122,25 +122,43 @@ Expected sequence behavior for replan flows:
 - refresh Parallelism Guide,
 - **do not renumber task IDs**.
 
+## Replan Depth Gate
+
+Track the replan round count in `docs/plans/<feature-slug>/replan-notes.md` using a frontmatter field `Replan-round: N`. Increment on each invocation.
+
+If any task has been below its type threshold across 3+ consecutive replan rounds without new evidence or a viable new precursor path:
+- Declare that task `Infeasible` in the plan with a one-line kill rationale.
+- If all tasks that were the target of this replan are now `Infeasible` and no other runnable tasks remain: set plan `Status: Infeasible` in frontmatter, write a `## Kill Rationale` block, surface to user, and stop. Do not route to `/lp-do-build`.
+
 ## Phase 5: Readiness Decision
 
 - `Ready`: runnable tasks meet type thresholds (`IMPLEMENT/SPIKE >=80`, `INVESTIGATE >=60`) and have complete validation contracts.
-- `Partially ready`: precursor chain created; blocked tasks remain below type threshold.
-- `Blocked`: unresolved decision/input or tasks <60 without viable precursor path.
+- `Partially ready`: precursor chain created; blocked tasks remain below type threshold. Build precursor tasks first.
+- `Blocked (pending-decision)`: a DECISION task requires user input to proceed. Surface the specific question; build cannot continue until resolved.
+- `Blocked (low-confidence)`: tasks remain below threshold with no viable precursor path and have not yet hit the 3-round depth limit. Escalate to user for scope clarification.
+- `Infeasible`: tasks declared infeasible after hitting the replan depth gate. Pipeline ends.
 
 ## Completion Messages
 
 Ready:
 
-> Re-plan complete. Updated `docs/plans/<feature-slug>/plan.md`. Stable task IDs preserved. Eligible tasks are ready for `/lp-do-build`.
+> Re-plan complete. Updated `docs/plans/<feature-slug>/plan.md`. Stable task IDs preserved. Eligible tasks are ready for `/lp-do-build`. If invoked from a CHECKPOINT in an active build pipeline: automatically resume `/lp-do-build <feature-slug>` without waiting for manual invocation.
 
 Partially ready:
 
 > Re-plan complete. Added precursor chain(s) and updated dependencies with stable task IDs. Build precursor tasks first, then re-run `/lp-do-replan` for blocked tasks.
 
-Blocked:
+Blocked (pending-decision):
 
-> Re-plan complete but blocked by unresolved decisions or confidence floor. See updated tasks and required decisions in plan/replan notes.
+> Re-plan blocked. DECISION required: [specific question]. Build cannot continue until resolved. See `docs/plans/<feature-slug>/replan-notes.md`.
+
+Blocked (low-confidence):
+
+> Re-plan complete but confidence floor not reached. No viable precursor path found. Escalating to user — scope clarification required before proceeding.
+
+Infeasible:
+
+> Re-plan terminated. Task(s) [IDs] declared infeasible after [N] replan rounds with no viable path. Plan `Status: Infeasible`. See `## Kill Rationale` in plan. Pipeline ends here.
 
 ## Quick Checklist
 
@@ -148,4 +166,4 @@ Blocked:
 - [ ] Unknowns converted to formal precursor tasks
 - [ ] Validation contracts complete for runnable tasks
 - [ ] Stable task IDs preserved
-- [ ] `/lp-sequence` run after topology changes (no renumber)
+- [ ] `/lp-do-sequence` run after topology changes (no renumber)

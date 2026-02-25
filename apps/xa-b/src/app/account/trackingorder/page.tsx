@@ -1,6 +1,5 @@
 "use client";
 
-
 import * as React from "react";
 import Link from "next/link";
 
@@ -8,10 +7,12 @@ import { Button, Input, Price, Table, TableBody, TableCell, TableHead, TableHead
 import { Section } from "@acme/design-system/atoms/Section";
 import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 
-import { findOrdersByNumberAndEmail, orderTotal } from "../../../lib/ordersStore";
-import { xaI18n } from "../../../lib/xaI18n";
-
-type TrackRow = { order: string; status: string; total: number };
+type TrackRow = {
+  order: string;
+  status: string;
+  total: number;
+  currency: string;
+};
 
 export default function TrackingOrderPage() {
   const [order, setOrder] = React.useState("");
@@ -23,31 +24,44 @@ export default function TrackingOrderPage() {
   return (
     <main className="sf-content">
       <Section padding="wide">
-        <h1 className="text-2xl font-semibold">{xaI18n.t("xaB.src.app.account.trackingorder.page.l25c48")}</h1>
+        <h1 className="text-2xl font-semibold">Track your order</h1>
       </Section>
 
       <Section padding="default" className="max-w-lg">
         <form
           className="space-y-4"
-          onSubmit={async (e) => {
-            e.preventDefault();
+          onSubmit={async (event) => {
+            event.preventDefault();
             setError(null);
             if (!order.trim() || !email.trim()) {
               setRows([]);
-              setError("Enter your order number and email."); // i18n-exempt -- XA-0018: demo form validation
+              setError("Enter your order number and email."); // i18n-exempt -- XA-0018: form validation
               return;
             }
 
             setLoading(true);
             try {
-              const orders = findOrdersByNumberAndEmail(order, email);
-              const nextRows = orders.map((o) => ({
-                order: o.number,
-                status: o.status,
-                total: orderTotal(o),
-              }));
+              const response = await fetch("/api/account/track", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ order, email }),
+              });
+
+              if (!response.ok) {
+                setRows([]);
+                setError("Unable to check this order right now."); // i18n-exempt -- XA-0111: tracking UX copy
+                return;
+              }
+
+              const payload = (await response.json()) as { rows?: TrackRow[] };
+              const nextRows = Array.isArray(payload.rows) ? payload.rows : [];
               setRows(nextRows);
-              if (!nextRows.length) setError("No matching order found."); // i18n-exempt -- XA-0018
+              if (!nextRows.length) {
+                setError("No matching order found."); // i18n-exempt -- XA-0018
+              }
+            } catch {
+              setRows([]);
+              setError("Unable to check this order right now."); // i18n-exempt -- XA-0111: tracking UX copy
             } finally {
               setLoading(false);
             }
@@ -57,7 +71,7 @@ export default function TrackingOrderPage() {
             <Input
               id="orderNumber"
               value={order}
-              onChange={(e) => setOrder(e.target.value)}
+              onChange={(event) => setOrder(event.target.value)}
               autoComplete="off"
             />
           </FormField>
@@ -65,14 +79,14 @@ export default function TrackingOrderPage() {
             <Input
               id="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
               type="email"
               autoComplete="email"
             />
           </FormField>
           <div className="flex items-center gap-3">
             <Button type="submit" disabled={loading}>
-              {loading ? "Tracking…" : "Track"}
+              {loading ? "Tracking..." : "Track"}
             </Button>
             <Link href="/service-center" className="text-sm underline">
               Need help?
@@ -92,16 +106,16 @@ export default function TrackingOrderPage() {
             </TableHeader>
             <TableBody>
               {rows.length ? (
-                rows.map((r) => (
-                  <TableRow key={r.order}>
-                    <TableCell>{r.order}</TableCell>
-                    <TableCell>{r.status}</TableCell>
+                rows.map((row) => (
+                  <TableRow key={row.order}>
+                    <TableCell>{row.order}</TableCell>
+                    <TableCell>{row.status}</TableCell>
                     <TableCell className="text-end">
-                      <Price amount={r.total} />
+                      <Price amount={row.total} currency={row.currency} />
                     </TableCell>
                     <TableCell className="text-end">
                       <Button variant="outline" size="sm" asChild>
-                        <Link href={`/account/orders/${r.order}`}>View</Link>
+                        <Link href={`/account/orders/${row.order}`}>View</Link>
                       </Button>
                     </TableCell>
                   </TableRow>

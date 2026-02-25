@@ -3,9 +3,17 @@ import type { Mock } from "jest-mock";
 
 import { savePageDraft } from "../draft";
 
-jest.mock("@acme/types", () => ({
-  historyStateSchema: { parse: (v: any) => v ?? {} },
-}), { virtual: true });
+jest.mock(
+  "@acme/types",
+  () => {
+    const { z } = jest.requireActual("zod") as typeof import("zod");
+    return {
+      historyStateSchema: { parse: (v: any) => v ?? {} },
+      pageSchema: z.object({}).passthrough(),
+    };
+  },
+  { virtual: true }
+);
 
 jest.mock("../../common/auth", () => ({
   ensureAuthorized: jest.fn<Promise<{ user: { email: string } }>, []>().mockResolvedValue({ user: { email: "user@example.com" } }),
@@ -18,7 +26,7 @@ jest.mock("../service", () => ({
 
 jest.mock("@/utils/sentry.server", () => ({ captureException: jest.fn() }));
 jest.mock("ulid", () => ({ ulid: () => "generated-ulid" }));
-jest.mock("@acme/date-utils", () => ({ nowIso: () => "now" }));
+jest.mock("@/lib/datetime", () => ({ nowIso: () => "now" }));
 
 const service = jest.requireMock("../service") as {
   getPages: Mock<any, any>;

@@ -1,3 +1,5 @@
+import { percentileNearestRank } from "../math/statistics/index.js";
+
 import type { Hypothesis, PortfolioMetadata } from "./types.js";
 import { validateHypothesis } from "./validation.js";
 
@@ -27,11 +29,6 @@ export interface RankHypothesesResult {
   blocked: BlockedHypothesis[];
 }
 
-function nearestRank(sortedValues: number[], percentile: number): number {
-  const rank = Math.ceil(percentile * sortedValues.length);
-  return sortedValues[Math.max(0, Math.min(sortedValues.length - 1, rank - 1))];
-}
-
 function clampZeroToOne(value: number): number {
   if (value < 0) {
     return 0;
@@ -51,8 +48,8 @@ function normalizeWithPolicy(values: number[]): number[] {
   const normalizedInput =
     values.length >= 10
       ? values.map((value) => {
-          const p10 = nearestRank(sortedValues, 0.1);
-          const p90 = nearestRank(sortedValues, 0.9);
+          const p10 = percentileNearestRank(sortedValues, 0.1);
+          const p90 = percentileNearestRank(sortedValues, 0.9);
           return Math.max(p10, Math.min(p90, value));
         })
       : [...values];
@@ -197,4 +194,3 @@ export function rankHypotheses(
 
   return { admissible: ranked, blocked };
 }
-

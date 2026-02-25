@@ -1,4 +1,3 @@
-import { formatTimestamp } from "@acme/date-utils";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 
@@ -9,6 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow } from "@/components/atoms/shadcn";
+import { formatTimestamp } from "@/lib/datetime";
 
 interface EventRecord {
   shop?: string;

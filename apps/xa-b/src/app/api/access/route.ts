@@ -6,6 +6,7 @@ import {
   listInvites,
   registerInviteUse,
 } from "../../../lib/accessStore";
+import { readFormBodyWithLimit } from "../../../lib/requestBody";
 import { createAccessToken } from "../../../lib/accessTokens";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../lib/rateLimit";
 import {
@@ -19,6 +20,7 @@ import {
 export const runtime = "nodejs";
 
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
+const ACCESS_FORM_MAX_BYTES = 8 * 1024;
 
 function resolveNextPath(value: string | null) {
   if (!value) return "/";
@@ -70,7 +72,18 @@ export async function POST(request: Request) {
     return redirectToAccess({ request, limit, error: "rate_limited" });
   }
 
-  const form = await request.formData();
+  let form: URLSearchParams;
+  try {
+    form = await readFormBodyWithLimit(request, ACCESS_FORM_MAX_BYTES);
+  } catch {
+    const response = redirectToAccess({
+      request,
+      limit,
+      error: "invalid",
+    });
+    return response;
+  }
+
   const code = String(form.get("code") ?? "").trim();
   const next = resolveNextPath(String(form.get("next") ?? ""));
   const codes = resolveInviteCodes();

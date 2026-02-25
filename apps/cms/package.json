@@ -23,6 +23,7 @@
     "@acme/email": "workspace:*",
     "@acme/email-templates": "workspace:*",
     "@acme/i18n": "workspace:*",
+    "@acme/lib": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/page-builder-ui": "workspace:*",
     "@acme/plugin-sanity": "workspace:*",

@@ -1,5 +1,5 @@
 ---
-name: frontend-design
+name: tools-ui-frontend-design
 description: Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. Combines bold creative direction with token-constrained implementation.
 ---
 

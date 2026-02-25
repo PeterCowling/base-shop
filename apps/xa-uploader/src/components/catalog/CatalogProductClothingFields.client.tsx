@@ -2,7 +2,7 @@
 
 /* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy uploader clothing form pending design/i18n overhaul */
 
-import type { CatalogProductDraftInput } from "../../lib/catalogAdminSchema";
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 export function CatalogProductClothingFields({

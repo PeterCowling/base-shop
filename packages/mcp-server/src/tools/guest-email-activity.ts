@@ -115,9 +115,11 @@ function resolveTemplateSubject(
       // TASK-04: Wire activity code 27 (CANCELLED) to cancellation confirmation template
       return { subject: "Cancellation Confirmation" };
     case 2:
+      return { subject: "Terms Reminder - Action Required" };
     case 3:
+      return { subject: "Final Terms Reminder - Action Required" };
     case 4:
-      return { reason: "unsupported-activity-code" };
+      return { subject: "Why Pre-paid Booking Type Cancelled" };
     default:
       return { reason: "unknown-activity-code" };
   }

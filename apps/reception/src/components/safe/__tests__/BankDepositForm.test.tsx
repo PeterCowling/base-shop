@@ -64,19 +64,17 @@ describe("BankDepositForm", () => {
     expect(toastMock).toHaveBeenCalled();
   });
 
-  it("applies dark mode styles", () => {
+  it("applies token-based theme styles", () => {
     render(
-      <div className="dark">
-        <BankDepositForm
-          currentKeycards={0}
-          onConfirm={jest.fn()}
-          onCancel={jest.fn()}
-        />
-      </div>
+      <BankDepositForm
+        currentKeycards={0}
+        onConfirm={jest.fn()}
+        onCancel={jest.fn()}
+      />
     );
 
     expect(
       screen.getByText(/Record cash taken from the safe to deposit at the bank/i)
-    ).toHaveClass("dark:text-muted-foreground");
+    ).toHaveClass("text-muted-foreground");
   });
 });

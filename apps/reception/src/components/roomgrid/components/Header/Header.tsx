@@ -1,10 +1,6 @@
 import type { FC } from "react";
 
-import {
-  ReceptionTableHead as TableHead,
-  ReceptionTableHeader as TableHeader,
-  ReceptionTableRow as TableRow,
-} from "@acme/ui/operations";
+import { TableHead, TableHeader, TableRow } from "@acme/design-system";
 
 import clsx from "../../../../utils/clsx";
 import { useMainContext } from "../../context";

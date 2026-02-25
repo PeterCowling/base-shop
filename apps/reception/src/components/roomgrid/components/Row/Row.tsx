@@ -2,7 +2,7 @@
 
 import { memo, type ReactElement, useCallback } from "react";
 
-import { ReceptionTableCell as TableCell, ReceptionTableRow as TableRow } from "@acme/ui/operations";
+import { TableCell, TableRow } from "@acme/design-system";
 
 import clsx from "../../../../utils/clsx";
 import { useMainContext } from "../../context";

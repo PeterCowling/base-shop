@@ -32,6 +32,33 @@ function tryGetTrackedMarkdownDocs(): string[] | null {
   }
 }
 
+function tryGetChangedMarkdownDocs(baseRef: string, headRef: string): string[] | null {
+  try {
+    const stdout = execFileSync(
+      "git",
+      [
+        "diff",
+        "--name-only",
+        "--diff-filter=ACMR",
+        baseRef,
+        headRef,
+        "--",
+        "docs/**/*.md",
+      ],
+      { cwd: ROOT, encoding: "utf8" },
+    );
+    const files = stdout
+      .split("\n")
+      .map((f) => f.trim())
+      .filter(Boolean)
+      .map((rel) => path.join(ROOT, rel));
+
+    return files;
+  } catch {
+    return null;
+  }
+}
+
 function docsPath(target: string): string {
   const resolved = path.resolve(DOCS_DIR, target);
   if (resolved !== DOCS_DIR && !resolved.startsWith(DOCS_DIR_WITH_TRAILING)) {
@@ -138,8 +165,23 @@ async function buildRegistry(docs: string[]) {
 }
 
 async function main() {
+  const changedOnly = process.env.DOCS_LINT_CHANGED_ONLY === "1";
+  const baseRef = process.env.DOCS_LINT_BASE ?? process.env.TURBO_SCM_BASE ?? "";
+  const headRef = process.env.DOCS_LINT_HEAD ?? process.env.TURBO_SCM_HEAD ?? "HEAD";
   const trackedDocs = tryGetTrackedMarkdownDocs();
-  const docs = trackedDocs ?? (await walk(DOCS_DIR));
+  const allDocs = trackedDocs ?? (await walk(DOCS_DIR));
+  let docs = allDocs;
+  if (changedOnly && baseRef) {
+    const changedDocs = tryGetChangedMarkdownDocs(baseRef, headRef);
+    if (changedDocs) {
+      docs = changedDocs;
+      if (docs.length === 0) {
+        console.log("[docs-lint] No changed docs detected; skipping checks.");
+        return;
+      }
+    }
+  }
+  const allDocsSet = new Set(allDocs);
   let hadError = false;
 
   for (const file of docs) {
@@ -401,7 +443,7 @@ async function main() {
     // Check for dual-audience pairing
     if (file.endsWith(".user.md")) {
       const agentFile = file.replace(/\.user\.md$/, ".agent.md");
-      const agentExists = docs.includes(agentFile);
+      const agentExists = allDocsSet.has(agentFile);
       if (!agentExists) {
         const rel = path.relative(ROOT, file);
         console.warn(
@@ -411,7 +453,7 @@ async function main() {
       }
     } else if (file.endsWith(".agent.md")) {
       const userFile = file.replace(/\.agent\.md$/, ".user.md");
-      const userExists = docs.includes(userFile);
+      const userExists = allDocsSet.has(userFile);
       if (!userExists) {
         const rel = path.relative(ROOT, file);
         console.warn(
@@ -422,7 +464,7 @@ async function main() {
     }
   }
 
-  await buildRegistry(docs);
+  await buildRegistry(allDocs);
 
   if (hadError) {
     process.exitCode = 1;

@@ -16,9 +16,6 @@ Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-pla
 Primary-Execution-Skill: <lp-do-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>
 Related-Plan: docs/plans/<feature-slug>/plan.md
-Business-OS-Integration: <on | off>
-Business-Unit: <BRIK | PLAT | PIPE | BOS | none>
-Card-ID: <id | none>
 ---
 
 # <Feature Name> Fact-Find Brief
@@ -169,9 +166,10 @@ Card-ID: <id | none>
   - A: ...
   - Evidence: `...`
 
-### Open (User Input Needed)
+### Open (Operator Input Required)
+Only questions that cannot be answered without knowledge the operator holds that is not documented anywhere — undocumented budget, personal preference, real-world state the agent cannot determine. Any question answerable by reasoning about effectiveness, efficiency, and documented business requirements must be answered by the agent and placed in Resolved above. Leaving an answerable question here is a Major defect.
 - Q: ...
-  - Why it matters: ...
+  - Why operator input is required (not agent-resolvable): ...
   - Decision impacted: ...
   - Decision owner: <name or role>
   - Default assumption (if any) + risk: ...

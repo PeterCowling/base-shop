@@ -5,13 +5,14 @@ import type { Result as AuditResult } from "lighthouse/types/lhr/audit-result.js
 // @ts-ignore -- validator/lib/isURL lacks type declarations in test tsconfig context; using ts-ignore since ts-expect-error fails in production tsconfig where types resolve
 import isURL from "validator/lib/isURL";
 
-import { nowIso } from "@acme/date-utils";
-import { validateShopName } from "@acme/lib";
+import { validateShopName } from "@acme/lib/validateShopName";
 import {
   appendSeoAudit,
   readSeoAudits,
   type SeoAuditEntry,
 } from "@acme/platform-core/repositories/seoAudit.server";
+
+import { nowIso } from "@/lib/datetime";
 
 export const TRUSTED_HOSTS = new Set(
   (process.env.LIGHTHOUSE_TRUSTED_HOSTS || "localhost")

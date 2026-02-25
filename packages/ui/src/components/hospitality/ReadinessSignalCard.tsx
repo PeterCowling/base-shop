@@ -2,6 +2,8 @@
 
 import { CheckCircle2 } from 'lucide-react'
 
+import { clamp } from '@acme/lib/math/animation'
+
 import { cn } from '../../utils/style/cn'
 
 export interface ReadinessSignalCardProps {
@@ -10,10 +12,6 @@ export interface ReadinessSignalCardProps {
   totalCount: number
   readyLabel?: string
   className?: string
-}
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value))
 }
 
 export function ReadinessSignalCard({

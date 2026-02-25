@@ -1,7 +1,7 @@
 /**
  * Baseline merge — S4 join barrier (LPSP-06B).
  *
- * Reads upstream stage-result files (MARKET-06, S3, SELL-01), validates required
+ * Reads upstream stage-result files (MARKET-06, SIGNALS-01, SELL-01), validates required
  * inputs, and composes a deterministic baseline snapshot.
  *
  * This is a data-plane stage worker. It writes ONLY to `stages/S4/`.
@@ -15,6 +15,10 @@ import { promises as fs } from "fs";
 import path from "path";
 
 import type { StageResult } from "./manifest-update";
+import {
+  FORECAST_STAGE_CANDIDATES,
+  FORECAST_STAGE_ID,
+} from "./stage-id-compat";
 
 // -- Types --
 
@@ -41,13 +45,19 @@ export type BaselineMergeResult = BaselineMergeSuccess | BaselineMergeFailure;
 
 interface RequiredInput {
   stage: string;
+  stage_candidates?: string[];
   artifact_key: string;
   label: string;
 }
 
 const REQUIRED_INPUTS: RequiredInput[] = [
   { stage: "MARKET-06", artifact_key: "offer", label: "offer" },
-  { stage: "S3", artifact_key: "forecast", label: "forecast" },
+  {
+    stage: FORECAST_STAGE_ID,
+    stage_candidates: FORECAST_STAGE_CANDIDATES,
+    artifact_key: "forecast",
+    label: "forecast",
+  },
   { stage: "SELL-01", artifact_key: "channels", label: "channels" },
 ];
 
@@ -72,9 +82,10 @@ export async function baselineMerge(
 
   // 1. Discover and validate upstream stage results
   const stageResults = new Map<string, StageResult>();
-  const stagesToRead = Array.from(
-    new Set([...REQUIRED_INPUTS, ...OPTIONAL_INPUTS].map((input) => input.stage)),
-  );
+  const stagesToRead = Array.from(new Set([
+    ...REQUIRED_INPUTS.flatMap((input) => input.stage_candidates ?? [input.stage]),
+    ...OPTIONAL_INPUTS.map((input) => input.stage),
+  ]));
   for (const stage of stagesToRead) {
     const resultPath = path.join(runDir, "stages", stage, "stage-result.json");
     try {
@@ -88,8 +99,19 @@ export async function baselineMerge(
   // 2. Check required inputs
   const blockingReasons: string[] = [];
 
+  const resolveStageResult = (input: RequiredInput): StageResult | undefined => {
+    const candidates = input.stage_candidates ?? [input.stage];
+    for (const candidate of candidates) {
+      const result = stageResults.get(candidate);
+      if (result) {
+        return result;
+      }
+    }
+    return undefined;
+  };
+
   for (const input of REQUIRED_INPUTS) {
-    const result = stageResults.get(input.stage);
+    const result = resolveStageResult(input);
     if (!result) {
       blockingReasons.push(
         `Required input missing: ${input.stage} stage-result.json not found (${input.artifact_key} artifact required)`,
@@ -113,7 +135,7 @@ export async function baselineMerge(
 
     if (!result.produced_keys.includes(input.artifact_key)) {
       blockingReasons.push(
-        `Malformed input: ${input.stage} completed but ${input.artifact_key} artifact missing from produced_keys`,
+        `Malformed input: ${result.stage} completed but ${input.artifact_key} artifact missing from produced_keys`,
       );
     }
   }
@@ -128,7 +150,9 @@ export async function baselineMerge(
   const artifacts: Record<string, string> = {};
 
   for (const input of [...REQUIRED_INPUTS, ...OPTIONAL_INPUTS]) {
-    const result = stageResults.get(input.stage);
+    const result = input.stage_candidates
+      ? resolveStageResult(input)
+      : stageResults.get(input.stage);
     if (!result) continue;
 
     const artifactPath = result.artifacts[input.artifact_key];
@@ -203,7 +227,7 @@ function composeSnapshot(
     "",
     artifacts.offer ?? placeholder,
     "",
-    "## 2. Forecast (S3)",
+    `## 2. Forecast (${FORECAST_STAGE_ID})`,
     "",
     artifacts.forecast ?? placeholder,
     "",

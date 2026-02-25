@@ -36,6 +36,14 @@ function normalizePath(p: string) {
   return p.split(path.sep).join("/");
 }
 
+function toRepoRelativePath(filePath: string) {
+  if (!path.isAbsolute(filePath)) {
+    return normalizePath(filePath).replace(/^\.\//, "");
+  }
+
+  return normalizePath(path.relative(ROOT, filePath));
+}
+
 function run(cmd: string, args: string[], timeoutMs?: number) {
   return spawnSync(cmd, args, {
     cwd: ROOT,
@@ -135,12 +143,13 @@ function main() {
 
   // Add timeout support (default: 3 minutes total)
   const TIMEOUT_MS = parseInt(process.env.LINT_TIMEOUT_MS || "180000", 10);
+  const CHUNK_SIZE = parseInt(process.env.LINT_REPORT_CHUNK_SIZE || "100", 10);
   const startTime = Date.now();
 
   const files = listFiles();
   console.log(`[lint-report] Found ${files.length} files with potential violations`);
 
-  const chunks = chunk(files, 500);
+  const chunks = chunk(files, Number.isFinite(CHUNK_SIZE) && CHUNK_SIZE > 0 ? CHUNK_SIZE : 100);
   const report: Array<{
     filePath: string;
     messages: Array<{
@@ -184,6 +193,14 @@ function main() {
       }
       throw result.error;
     }
+    if (result.status === null && result.signal) {
+      throw new Error(`eslint was terminated by signal ${result.signal} on chunk ${i + 1}/${chunks.length}`);
+    }
+    if ((result.status ?? 0) !== 0 && !result.stdout) {
+      throw new Error(
+        `eslint failed for chunk ${i + 1}/${chunks.length} with status ${String(result.status)}`
+      );
+    }
 
     if (result.stdout) {
       const parsed = JSON.parse(result.stdout) as typeof report;
@@ -192,7 +209,7 @@ function main() {
         const messages = entry.messages.filter((msg) => msg.ruleId === RULE_ID);
         if (messages.length > 0) {
           report.push({
-            filePath: normalizePath(entry.filePath),
+            filePath: toRepoRelativePath(entry.filePath),
             messages,
           });
         }

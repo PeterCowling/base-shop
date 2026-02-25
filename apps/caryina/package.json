@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",
+    "@acme/lib": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/platform-core": "workspace:*",
     "@acme/ui": "workspace:*",

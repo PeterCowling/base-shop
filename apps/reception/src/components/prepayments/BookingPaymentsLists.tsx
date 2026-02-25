@@ -125,7 +125,7 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
         >
           <div
             ref={containerRef}
-            className="mb-8 w-full bg-surface border border-border-2 rounded dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="mb-8 w-full bg-surface border border-border-2 rounded"
           >
             {/* Subheader */}
             <div className="p-4 bg-primary-main text-primary-fg border-b border-primary-main font-heading text-lg font-bold uppercase">
@@ -189,7 +189,7 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
                             }
                           }
                         }}
-                        className="w-full text-start cursor-pointer transition-colors p-4 rounded hover:bg-surface-2 dark:hover:bg-darkSurface font-body flex flex-wrap items-center justify-between gap-3"
+                        className="w-full text-start cursor-pointer transition-colors p-4 rounded hover:bg-surface-2 font-body flex flex-wrap items-center justify-between gap-3"
                       >
                         {/* Left side: Check-In Date, Booking Ref, Guest Name */}
                         <div className="flex flex-wrap items-center gap-3">

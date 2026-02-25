@@ -1,8 +1,7 @@
 // File: /src/components/checkins/roomButton/PaymentSplitRow.tsx
 
 import { type ChangeEvent, memo, useCallback } from "react";
-import { faCreditCard, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Banknote, CreditCard } from "lucide-react";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
@@ -67,10 +66,7 @@ function PaymentSplitRow({
         onClick={togglePayType}
         disabled={isDisabled}
       >
-        <FontAwesomeIcon
-          icon={sp.payType === "CASH" ? faMoneyBill : faCreditCard}
-          className="me-1"
-        />
+        {sp.payType === "CASH" ? <Banknote size={16} className="me-1" /> : <CreditCard size={16} className="me-1" />}
         {sp.payType}
       </Button>
     </>

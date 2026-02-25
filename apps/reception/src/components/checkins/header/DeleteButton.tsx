@@ -23,7 +23,7 @@ const DeleteButton: FC<DeleteButtonProps> = ({ onClick, disabled }) => {
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="flex items-center justify-center border border-error-main rounded-md p-1 hover:bg-error-light active:bg-red-200"
+      className="flex items-center justify-center border border-error-main rounded-md p-1 hover:bg-error-light active:bg-error-light"
       aria-label="Delete"
     >
       {/* Trash icon (24x24) */}

@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import { clamp } from "@acme/lib/math/animation";
+
 import styles from "./BrandMark.module.css";
 import {
   createParticleEngine,
@@ -57,10 +59,6 @@ export type BrandMarkProps = {
 const PARTICLE_SAMPLING_TIMEOUT_MS = 500;
 const HOVER_REPLAY_COOLDOWN_MS = 1200;
 const PARTICLE_SAMPLE_SEED = 20260223;
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
 
 function xorshift32(seed: number): () => number {
   let x = seed | 0;

@@ -291,6 +291,18 @@ When the file exists, every `logistics-pack.user.md` file must contain the follo
 
 Frontmatter must include: `artifact: logistics-pack`, `business: <BIZ>`, `producer_stage: LOGISTICS-07`, `confidence: <float>`, `last_updated: <ISO date>`, `status: Active | Stale | Draft`, `conditional: true`, `condition: "business_profile includes logistics-heavy OR physical-product"`.
 
+### Website Policy Consumer Fields
+
+When WEBSITE consumers materialize policy copy from `logistics-pack.user.md`, they must be able to resolve these required fields (exact labels) from the pack body:
+
+- `Dispatch SLA`
+- `Return Window Rule`
+- `Return Condition Rule`
+- `Duties/Tax Payer Rule`
+- `Support Response SLA`
+
+For logistics-required profiles, missing any required field above is a deterministic `needs-input` failure for website policy materialization.
+
 ---
 
 ## Cross-Pack Rules

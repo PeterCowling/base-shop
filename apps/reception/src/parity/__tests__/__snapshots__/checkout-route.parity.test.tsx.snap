@@ -1,9 +1,9 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1`] = `
 <div>
   <div
-    class="min-h-80vh p-4 bg-surface-2 font-sans text-foreground dark:bg-darkBg dark:text-darkAccentGreen"
+    class="min-h-80vh p-4 bg-surface-2 font-sans text-foreground"
   >
     <h1
       class="w-full mb-6 text-5xl text-center font-heading text-primary-main"
@@ -11,10 +11,10 @@ exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1
       CHECKOUTS
     </h1>
     <div
-      class="flex-grow p-6 space-y-4 bg-surface rounded-lg shadow dark:bg-darkSurface"
+      class="flex-grow p-6 space-y-4 bg-surface rounded-lg shadow"
     >
       <div
-        class="relative pb-5 bg-surface-2 rounded border border-border-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+        class="relative pb-5 bg-surface-2 rounded border border-border-2"
       >
         <div
           class="flex flex-nowrap gap-2 items-center"
@@ -23,52 +23,52 @@ exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1
             class="flex flex-wrap gap-2 items-center justify-start"
           >
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
               data-token="--color-primary"
             >
               Yesterday
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 hover:bg-primary/90 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-primary-main text-primary-fg border-primary-main dark:bg-darkAccentGreen dark:text-darkBg dark:border-darkAccentGreen"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 hover:bg-primary/90 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-primary-main text-primary-fg border-primary-main"
               data-token="--color-primary"
             >
               Today
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
-              data-token="--color-primary"
-            >
-              Tue
-            </button>
-            <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
               data-token="--color-primary"
             >
               Wed
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
               data-token="--color-primary"
             >
               Thu
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
               data-token="--color-primary"
             >
               Fri
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
               data-token="--color-primary"
             >
               Sat
+            </button>
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
+              data-token="--color-primary"
+            >
+              Sun
             </button>
           </div>
         </div>
       </div>
       <div
-        class="bg-surface border border-border-2 rounded shadow overflow-x-auto dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+        class="bg-surface border border-border-2 rounded shadow overflow-x-auto"
       >
         <div
           class="w-full overflow-x-auto"
@@ -78,48 +78,48 @@ exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1
             class="text-foreground text-left text-sm w-full border-collapse"
           >
             <thead
-              class="border-b border-border-2 bg-surface-2 dark:bg-darkSurface"
+              class="text-foreground border-b border-border-2 bg-surface-2"
             >
               <tr
                 class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3"
               >
                 <th
-                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface"
+                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
                 >
                   DATE
                 </th>
                 <th
-                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface"
+                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
                 >
                   REF
                 </th>
                 <th
-                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface"
+                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
                 >
                   NAME
                 </th>
                 <th
-                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface"
+                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
                 >
                   ROOM
                 </th>
                 <th
-                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface w-48"
+                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 w-48"
                 >
                   LOANS
                 </th>
                 <th
-                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface"
+                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
                 >
                   BAG STORAGE
                 </th>
                 <th
-                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface"
+                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
                 >
                   FRIDGE
                 </th>
                 <th
-                  class="text-foreground font-semibold sticky top-0 z-10 text-center p-3 border-b border-border-2 dark:border-darkSurface w-32"
+                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 w-32"
                 >
                   COMPLETE
                 </th>
@@ -129,36 +129,36 @@ exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1
               class=""
             >
               <tr
-                class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3 bg-surface dark:bg-darkSurface"
+                class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3 bg-surface"
               >
                 <td
-                  class="align-middle p-3 border-b border-border-2 dark:border-darkSurface"
+                  class="align-middle min-w-0 break-words p-3 border-b border-border-2"
                 >
                   01/01
                 </td>
                 <td
-                  class="align-middle p-3 border-b border-border-2 dark:border-darkSurface"
+                  class="align-middle min-w-0 break-words p-3 border-b border-border-2"
                 >
                   BR1
                 </td>
                 <td
-                  class="align-middle p-3 border-b border-border-2 dark:border-darkSurface"
+                  class="align-middle min-w-0 break-words p-3 border-b border-border-2"
                 >
                   Alice
                    
                   Smith
                 </td>
                 <td
-                  class="align-middle p-3 border-b text-center border-border-2 dark:border-darkSurface"
+                  class="align-middle min-w-0 break-words p-3 border-b text-center border-border-2"
                 >
                   101
                 </td>
                 <td
-                  class="align-middle p-3 border-b border-border-2 dark:border-darkSurface w-48"
+                  class="align-middle min-w-0 break-words p-3 border-b border-border-2 w-48"
                 >
                   <button
                     aria-label="Remove Umbrella"
-                    class="justify-center py-2 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-10 text-sm bg-primary hover:bg-primary/90 inline-flex items-center px-1 me-1 text-foreground hover:text-foreground transition-colors duration-200 dark:text-darkAccentGreen dark:hover:text-darkAccentGreen"
+                    class="justify-center py-2 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-10 text-sm bg-primary hover:bg-primary/90 inline-flex items-center px-1 me-1 text-foreground hover:text-foreground transition-colors duration-200"
                     data-token="--color-primary"
                     title="Umbrella"
                   >
@@ -169,7 +169,7 @@ exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1
                   </button>
                 </td>
                 <td
-                  class="align-middle p-3 border-b border-border-2 dark:border-darkSurface text-center"
+                  class="align-middle min-w-0 break-words p-3 border-b border-border-2 text-center"
                 >
                   <i
                     aria-hidden="true"
@@ -178,10 +178,10 @@ exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1
                   />
                 </td>
                 <td
-                  class="align-middle p-3 border-b border-border-2 dark:border-darkSurface"
+                  class="align-middle min-w-0 break-words p-3 border-b border-border-2"
                 />
                 <td
-                  class="align-middle p-3 border-b border-border-2 dark:border-darkSurface text-center"
+                  class="align-middle min-w-0 break-words p-3 border-b border-border-2 text-center"
                 >
                   <button
                     aria-label="Complete checkout"

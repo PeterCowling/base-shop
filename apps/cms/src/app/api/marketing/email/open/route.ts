@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   const shop = params.get("shop");
   const campaign = params.get("campaign");
   if (shop && campaign) {
-    const { emitOpen } = await import("@acme/email");
+    const { emitOpen } = await import("@acme/email/hooks");
     await emitOpen(shop, { campaign });
   }
   return new Response(pixel, {

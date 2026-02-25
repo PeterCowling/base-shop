@@ -103,6 +103,7 @@ Required packet sections:
 - `rem_delta`: new and resolved REM items this week
 - `experiment_portfolio_summary`: rollup of active/completed experiments
 - `next_cycle_backlog_delta`: new next-experiment specs added or carried forward
+- `pending_reviews_delta`: new R9 flags, review items, stale queue packets, and resolved items found by the Lane A pending reviews scan (Step 4.8)
 - `run_trace`: list of sub-flows invoked with their outcomes
 
 **Restricted lane state**: when lane `b` inputs are incomplete, `lane_b_status` is set to `restricted`. A REM task is emitted identifying the missing denominator or KPI family. The packet is still written; the operator is not blocked from closing the weekly cycle.

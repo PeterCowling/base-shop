@@ -19,13 +19,13 @@ describe("DifferenceBadge", () => {
     expect(badge).toHaveClass("bg-error-main", "text-primary-fg");
   });
 
-  it("applies dark mode classes", () => {
+  it("applies token classes in dark mode", () => {
     const { container } = render(
       <div className="dark">
         <DifferenceBadge value={5} />
       </div>
     );
     const badge = container.querySelector("span") as HTMLElement;
-    expect(badge.className).toContain("dark:bg-darkAccentGreen");
+    expect(badge.className).toContain("bg-success-main");
   });
 });

@@ -11,29 +11,33 @@ const footerLinks: Array<{ href: string; label: string }> = [
 
 export function SiteFooter({ lang }: { lang: string }) {
   return (
-    <footer
-      className="border-t border-solid"
-      style={{
-        borderTopColor: "hsl(var(--color-border-muted))",
-      }}
-    >
-      <div className="mx-auto grid w-full max-w-5xl gap-4 px-6 py-8 text-sm text-muted-foreground sm:grid-cols-2 sm:items-center">
-        {/* i18n-exempt -- CARYINA-104 [ttl=2026-12-31] */}
-        <p>Caryina</p>
-        <nav
-          className="grid grid-flow-col auto-cols-max gap-4 sm:justify-self-end"
-          aria-label="Footer"
-        >
-          {footerLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={`/${lang}/${link.href}`}
-              className="hover:text-foreground hover:underline"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+    <footer className="mt-20 border-t bg-accent-soft">
+      <div className="mx-auto w-full max-w-5xl space-y-6 px-6 py-10 text-sm text-muted-foreground">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          {/* i18n-exempt -- CARYINA-104 [ttl=2026-12-31] */}
+          <div className="space-y-1">
+            <p className="font-display text-base text-foreground">Caryina</p>
+            <p className="text-xs">Un solo dettaglio. Quello carino.</p>
+          </div>
+          <nav
+            className="flex flex-wrap gap-x-5 gap-y-2"
+            aria-label="Footer"
+          >
+            {footerLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={`/${lang}/${link.href}`}
+                className="hover:text-foreground hover:underline"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+        <div className="border-t pt-4 text-xs">
+          {/* i18n-exempt -- CARYINA-105 [ttl=2026-12-31] */}
+          <p>&copy; {new Date().getFullYear()} Caryina. All rights reserved.</p>
+        </div>
       </div>
     </footer>
   );

@@ -3,7 +3,6 @@
 import { type ChangeEvent,type FormEvent, useState } from "react";
 import { updateAiCatalog } from "@cms/actions/shops.server";
 
-import { formatTimestamp } from "@acme/date-utils";
 import { useTranslations } from "@acme/i18n";
 import type { AiCatalogField } from "@acme/types";
 import { useToast } from "@acme/ui/operations";
@@ -20,6 +19,7 @@ import {
   DialogTitle,
   Input,
 } from "@/components/atoms/shadcn";
+import { formatTimestamp } from "@/lib/datetime";
 
 const ALL_FIELDS: AiCatalogField[] = [
   "id",

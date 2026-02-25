@@ -17,9 +17,9 @@ type TableStoryArgs = React.ComponentProps<typeof Table> & {
   caption?: string;
 };
 
-const renderTable = ({ columns, rows, caption }: TableStoryArgs) => (
+const renderTable = ({ columns, rows, caption, ...tableProps }: TableStoryArgs) => (
   <Stack gap={3}>
-    <Table>
+    <Table {...tableProps}>
       {caption ? (
         <caption className="text-left text-sm text-muted-foreground">{caption}</caption>
       ) : null}
@@ -86,6 +86,15 @@ const hoverVsSelectedArgs: TableStoryArgs = {
 
 export const HoverVsSelected: Story = {
   args: hoverVsSelectedArgs,
+  render: (args) => renderTable(args as TableStoryArgs),
+};
+
+export const CompactDensity: Story = {
+  args: {
+    ...hoverVsSelectedArgs,
+    density: "compact",
+    caption: "Compact density table",
+  } satisfies TableStoryArgs,
   render: (args) => renderTable(args as TableStoryArgs),
 };
 

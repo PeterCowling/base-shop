@@ -12,9 +12,8 @@ It owns:
 2. Planning gates
 3. Track routing to specialized planner modules
 4. Plan persistence using external templates
-5. Optional BOS sync
-6. Mandatory critique via `/lp-do-critique` (autofix mode)
-7. Optional handoff to `/lp-do-build`
+5. Mandatory critique via `/lp-do-critique` (autofix mode)
+6. Optional handoff to `/lp-do-build`
 
 It does not embed large plan/task templates or long doctrine blocks.
 
@@ -55,23 +54,25 @@ If a pipeline treats pending/todo tests as failing, do not commit stubs; record 
 
 Determine planning mode early:
 
-- `plan-only` (default)
-- `plan+auto` (only when explicit user intent says build now, ship now, implement now, or user passes an explicit `--auto` style instruction)
+- `plan-only` (default in interactive sessions)
+- `plan+auto` when any of the following apply:
+  - explicit user intent: "build now", "ship now", "implement now"
+  - `--auto` flag passed (set by `/lp-do-fact-find` pipeline auto-handoff)
+  - invoked automatically as part of a pipeline initiated by the user
 
-Never assume silent approval to auto-build.
+Never assume silent approval to auto-build in interactive sessions where the user has not expressed intent. `--auto` is only set by the pipeline or by explicit user instruction.
 
 ## Phase 2: Discovery and De-duplication
 
 ### Fast path (argument provided)
 
-- Slug -> open matching plan/fact-find paths directly.
-- Card ID -> resolve card, then slug/plan link from card metadata.
+- Slug or fact-find path -> open matching plan/fact-find paths directly.
 
 ### Discovery path (no argument)
 
-- Read `docs/business-os/_meta/discovery-index.json`.
-- Present short planning-ready table.
-- Ask user to select a slug/card/topic.
+- Scan `docs/plans/*/fact-find.md` files for entries with `Status: Ready-for-planning`.
+- Present results as a short table (slug | title | track | effort).
+- Ask user to select a slug or topic.
 
 ### De-duplication rule
 
@@ -127,6 +128,23 @@ Route to one module only (or mixed pair):
 - business-artifact -> `modules/plan-business.md`
 - mixed -> `modules/plan-mixed.md`
 
+## Phase 4.5: DECISION Task Self-Resolve Gate
+
+Before creating any DECISION task, apply this test:
+
+> Can I make this decision by reasoning about available evidence, effectiveness, efficiency, and the documented business requirements?
+
+If yes: make the decision. Fold it into the relevant IMPLEMENT task as the chosen approach. Do not create a DECISION task.
+
+A DECISION task is only warranted when the decision requires input the operator holds that is not documented anywhere — undocumented budget, personal preference, strategic intent not yet written down, or a genuine binary fork where both options are valid and the operator's choice is the deciding factor.
+
+**Signs a DECISION task should not exist:**
+- The `**Recommendation:**` field can be filled with genuine conviction (not "either would work")
+- The `**Decision input needed:**` questions are answerable by reasoning about the codebase, business docs, or standard best practice
+- The only uncertainty is approach, and approach questions are the agent's job to resolve
+
+If a DECISION task survives this gate, its `**Recommendation:**` must be a decisive position — not a hedge. If the agent has a recommendation, the decision is effectively made and the task may not need to be a DECISION task at all. Reserve DECISION tasks for genuine operator forks where the recommendation depends on a preference the operator has not yet expressed.
+
 ## Phase 5: Decompose Tasks with External Templates
 
 Use:
@@ -179,9 +197,9 @@ Use evidence-based scores only. Every task must explain confidence briefly.
 
 ## Phase 7: Sequence + Edge-Case Review
 
-1. Run `/lp-sequence` after decomposition/topology edits.
+1. Run `/lp-do-sequence` after decomposition/topology edits.
 2. Run edge-case review and update impacted tasks.
-3. If task structure changes again, run `/lp-sequence` again.
+3. If task structure changes again, run `/lp-do-sequence` again.
 
 Set plan gate statuses explicitly:
 - Foundation Gate: Pass/Fail
@@ -197,19 +215,8 @@ Write/update:
 Status policy:
 - Default `Status: Draft`.
 - Set `Status: Active` only when:
-  - user explicitly wants build handoff now, and
+  - user explicitly wants build handoff now, or `--auto` flag is set, and
   - plan gates pass.
-
-## Phase 9: Optional Business OS Integration
-
-When `Card-ID` exists and integration is on, execute:
-- `../_shared/plan-bos-integration.md`
-
-Payload shapes live in:
-- `../_shared/bos-api-payloads.md`
-
-Use shared discovery index contract for BOS mutations:
-- `../_shared/discovery-index-contract.md`
 
 ## Phase 10: Optional Handoff to Build
 
@@ -259,13 +266,14 @@ A task is only considered "covered" if the SPIKE/INVESTIGATE is upstream (i.e. m
      - Recommend `/lp-do-replan` or revision before proceeding.
    - If critique verdict is `partially credible` (critique score 3.0–3.5):
      - Autofixes are already applied.
-     - Report top issues to user.
-     - Proceed to build handoff only if mode is `plan+auto` and user confirms.
+     - Report top issues.
+     - In `plan+auto` mode: proceed to build handoff. Add `Critique-Warning: partially-credible` to plan frontmatter. Do not require interactive confirmation.
+     - In `plan-only` mode: report to user and stop; recommend `/lp-do-replan` before proceeding.
    - If critique verdict is `credible` (critique score >= 4.0):
      - Autofixes are already applied.
      - Proceed normally (build handoff if eligible).
 
-**Ordering:** Phase 11 runs after Phase 8 (persist) and Phase 9 (BOS sync), but before Phase 10 (build handoff). Build eligibility is re-evaluated after critique autofixes are applied.
+**Ordering:** Phase 11 runs after Phase 8 (persist) but before Phase 10 (build handoff). Build eligibility is re-evaluated after critique autofixes are applied.
 
 ## Completion Messages
 
@@ -288,7 +296,7 @@ Plan+auto:
 - [ ] Plan gates populated and evaluated
 - [ ] Confidence rules applied from shared scoring doc
 - [ ] VC checks reference shared business VC checklist when relevant
-- [ ] `/lp-sequence` completed after structural edits
+- [ ] `/lp-do-sequence` completed after structural edits
 - [ ] Consumer tracing complete for all new outputs and modified behaviors in M/L code/mixed tasks
 - [ ] Phase 11 Trigger 1 evaluated: Overall-confidence vs 4.0 threshold
 - [ ] Phase 11 Trigger 2 evaluated: every task with confidence < 80% checked for upstream SPIKE/INVESTIGATE coverage

@@ -1,9 +1,7 @@
 import { memo, type ReactElement, useCallback, useMemo, useState } from "react";
 
-import {
-  ReceptionButton as Button,
-  ReceptionSelect,
-} from "@acme/ui/operations";
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
+import { SimpleModal } from "@acme/ui/molecules";
 
 import { useLoanData } from "../../context/LoanDataContext";
 import { type LoanMethod } from "../../types/hooks/data/loansData";
@@ -27,7 +25,7 @@ function KeycardsModalComponent({
   isOpen,
   occupant,
   onClose,
-}: KeycardsModalProps): ReactElement | null {
+}: KeycardsModalProps): ReactElement {
   const { occupantLoans, loading, error } = useOccupantLoans(
     occupant?.bookingRef || "",
     occupant?.guestId || ""
@@ -52,8 +50,8 @@ function KeycardsModalComponent({
     {}
   );
 
-  const handleTypeChange = useCallback((txnId: string, value: LoanMethod) => {
-    setEditedTypes((prev) => ({ ...prev, [txnId]: value }));
+  const handleTypeChange = useCallback((txnId: string, val: string) => {
+    setEditedTypes((prev) => ({ ...prev, [txnId]: val as LoanMethod }));
   }, []);
 
   const handleSave = useCallback(
@@ -98,74 +96,65 @@ function KeycardsModalComponent({
     ]
   );
 
-  if (!isOpen || !occupant) return null;
-
   return (
-    <div className="fixed inset-0 bg-foreground bg-opacity-50 flex items-center justify-center px-4 z-50">
-      <div className="bg-surface rounded-lg shadow-lg w-full max-w-md dark:bg-darkSurface">
-        <div className="px-4 py-2 border-b flex justify-between items-center">
-          <h2 className="font-bold text-lg dark:text-darkAccentGreen">Keycards on Loan</h2>
-          <Button
-            onClick={onClose}
-            aria-label="Close"
-            className="text-muted-foreground hover:text-foreground dark:text-darkAccentGreen"
-          >
-            &times;
-          </Button>
+    <SimpleModal
+      isOpen={isOpen && !!occupant}
+      onClose={onClose}
+      title="Keycards on Loan"
+      maxWidth="max-w-md"
+    >
+      <div className="space-y-2">
+        <div className="text-sm text-foreground">
+          {`${occupant?.firstName} ${occupant?.lastName} - Ref: ${occupant?.bookingRef}`}
         </div>
-        <div className="p-4 space-y-2">
-          <>
-            <div className="text-sm text-foreground dark:text-darkAccentGreen">
-              {`${occupant.firstName} ${occupant.lastName} - Ref: ${occupant.bookingRef}`}
-            </div>
-            {loading && <div className="italic text-muted-foreground dark:text-darkAccentGreen">Loading...</div>}
-            {error && (
-              <div className="text-error-main">Error loading keycards.</div>
-            )}
-            {!loading && !error && keycardTxns.length === 0 && (
-              <div className="italic text-muted-foreground dark:text-darkAccentGreen">
-                No keycards currently loaned.
-              </div>
-            )}
-            {!loading && !error && keycardTxns.length > 0 && (
-              <ul className="space-y-2">
-                {keycardTxns.map((txn, idx) => {
-                  const current = editedTypes[txn.id] ?? txn.depositType;
-                  return (
-                    <li
-                      key={txn.id}
-                      className="flex items-center justify-between gap-2"
+        {loading && <div className="italic text-muted-foreground ">Loading...</div>}
+        {error && (
+          <div className="text-error-main">Error loading keycards.</div>
+        )}
+        {!loading && !error && keycardTxns.length === 0 && (
+          <div className="italic text-muted-foreground ">
+            No keycards currently loaned.
+          </div>
+        )}
+        {!loading && !error && keycardTxns.length > 0 && (
+          <ul className="space-y-2">
+            {keycardTxns.map((txn, idx) => {
+              const current = editedTypes[txn.id] ?? txn.depositType;
+              return (
+                <li
+                  key={txn.id}
+                  className="flex items-center justify-between gap-2"
+                >
+                  <span>Card {idx + 1}</span>
+                  <Select
+                    value={current}
+                    onValueChange={(val) => handleTypeChange(txn.id, val)}
+                  >
+                    <SelectTrigger className="border rounded px-2 py-1 flex-1">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="CASH">Cash</SelectItem>
+                      <SelectItem value="PASSPORT">Passport</SelectItem>
+                      <SelectItem value="LICENSE">License</SelectItem>
+                      <SelectItem value="ID">ID</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {current !== txn.depositType && (
+                    <Button
+                      onClick={() => handleSave(txn.id)}
+                      className="bg-info-main hover:bg-info-dark text-primary-fg px-2 py-1 rounded"
                     >
-                      <span>Card {idx + 1}</span>
-                      <ReceptionSelect
-                        value={current}
-                        onChange={(e) =>
-                          handleTypeChange(txn.id, e.target.value as LoanMethod)
-                        }
-                        className="border rounded px-2 py-1 flex-1 dark:bg-darkSurface dark:text-darkAccentGreen"
-                      >
-                        <option value="CASH">Cash</option>
-                        <option value="PASSPORT">Passport</option>
-                        <option value="LICENSE">License</option>
-                        <option value="ID">ID</option>
-                      </ReceptionSelect>
-                      {current !== txn.depositType && (
-                        <Button
-                          onClick={() => handleSave(txn.id)}
-                          className="bg-info-main hover:bg-blue-700 text-primary-fg px-2 py-1 rounded"
-                        >
-                          Save
-                        </Button>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </>
-        </div>
+                      Save
+                    </Button>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </div>
-    </div>
+    </SimpleModal>
   );
 }
 

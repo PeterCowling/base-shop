@@ -12,6 +12,7 @@ import {
 
 import { cn, overflowContainmentClass } from "../utils/style";
 
+import { type PrimitiveDensity, resolveDensityClass } from "./density";
 import {
   type PrimitiveRadius,
   type PrimitiveShape,
@@ -32,6 +33,7 @@ export const DropdownMenuSubTrigger = (
     inset,
     shape,
     radius,
+    density,
     children,
     ...props
   }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger> & {
@@ -41,8 +43,16 @@ export const DropdownMenuSubTrigger = (
     shape?: PrimitiveShape;
     /** Explicit item radius token override. */
     radius?: PrimitiveRadius;
+    /** Item density scale. */
+    density?: PrimitiveDensity;
   }
 ) => {
+  const densityClass = resolveDensityClass({
+    density,
+    comfortableClass: "py-1.5",
+    compactClass: "py-1",
+  });
+
   const shapeRadiusClass = resolveShapeRadiusClass({
     shape,
     radius,
@@ -53,7 +63,8 @@ export const DropdownMenuSubTrigger = (
     <DropdownMenuPrimitive.SubTrigger
       ref={ref}
       className={cn(
-        "flex min-w-0 cursor-default select-none items-center px-2 py-1.5 text-sm outline-none break-words transition-colors hover:bg-accent-soft data-[highlighted]:bg-accent-soft",
+        "flex min-w-0 cursor-default select-none items-center px-2 text-sm outline-none break-words transition-colors hover:bg-accent-soft data-[highlighted]:bg-accent-soft",
+        densityClass,
         shapeRadiusClass,
         inset && "ps-8",
         className
@@ -164,6 +175,7 @@ export const DropdownMenuItem = (
     children,
     shape,
     radius,
+    density,
     ...props
   }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
     ref?: React.Ref<React.ElementRef<typeof DropdownMenuPrimitive.Item>>;
@@ -172,8 +184,16 @@ export const DropdownMenuItem = (
     shape?: PrimitiveShape;
     /** Explicit item radius token override. */
     radius?: PrimitiveRadius;
+    /** Item density scale. */
+    density?: PrimitiveDensity;
   }
 ) => {
+  const densityClass = resolveDensityClass({
+    density,
+    comfortableClass: "py-1.5",
+    compactClass: "py-1",
+  });
+
   const shapeRadiusClass = resolveShapeRadiusClass({
     shape,
     radius,
@@ -184,7 +204,8 @@ export const DropdownMenuItem = (
     <DropdownMenuPrimitive.Item
       ref={ref}
       className={cn(
-        "relative flex min-w-0 cursor-default select-none items-center px-2 py-1.5 text-sm outline-none break-words transition-colors hover:bg-accent-soft data-[highlighted]:bg-accent-soft data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "relative flex min-w-0 cursor-default select-none items-center px-2 text-sm outline-none break-words transition-colors hover:bg-accent-soft data-[highlighted]:bg-accent-soft data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        densityClass,
         shapeRadiusClass,
         inset && "ps-8",
         className
@@ -204,6 +225,7 @@ export const DropdownMenuCheckboxItem = (
     checked,
     shape,
     radius,
+    density,
     ...props
   }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem> & {
     ref?: React.Ref<React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>>;
@@ -211,8 +233,16 @@ export const DropdownMenuCheckboxItem = (
     shape?: PrimitiveShape;
     /** Explicit item radius token override. */
     radius?: PrimitiveRadius;
+    /** Item density scale. */
+    density?: PrimitiveDensity;
   }
 ) => {
+  const densityClass = resolveDensityClass({
+    density,
+    comfortableClass: "py-1.5",
+    compactClass: "py-1",
+  });
+
   const shapeRadiusClass = resolveShapeRadiusClass({
     shape,
     radius,
@@ -223,7 +253,8 @@ export const DropdownMenuCheckboxItem = (
     <DropdownMenuPrimitive.CheckboxItem
       ref={ref}
       className={cn(
-        "relative flex min-w-0 cursor-default select-none items-center py-1.5 ps-8 pe-2 text-sm outline-none break-words transition-colors hover:bg-accent-soft data-[highlighted]:bg-accent-soft data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "relative flex min-w-0 cursor-default select-none items-center ps-8 pe-2 text-sm outline-none break-words transition-colors hover:bg-accent-soft data-[highlighted]:bg-accent-soft data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        densityClass,
         shapeRadiusClass,
         className
       )}
@@ -250,6 +281,7 @@ export const DropdownMenuRadioItem = (
     children,
     shape,
     radius,
+    density,
     ...props
   }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem> & {
     ref?: React.Ref<React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>>;
@@ -257,8 +289,16 @@ export const DropdownMenuRadioItem = (
     shape?: PrimitiveShape;
     /** Explicit item radius token override. */
     radius?: PrimitiveRadius;
+    /** Item density scale. */
+    density?: PrimitiveDensity;
   }
 ) => {
+  const densityClass = resolveDensityClass({
+    density,
+    comfortableClass: "py-1.5",
+    compactClass: "py-1",
+  });
+
   const shapeRadiusClass = resolveShapeRadiusClass({
     shape,
     radius,
@@ -269,7 +309,8 @@ export const DropdownMenuRadioItem = (
     <DropdownMenuPrimitive.RadioItem
       ref={ref}
       className={cn(
-        "relative flex min-w-0 cursor-default select-none items-center py-1.5 ps-8 pe-2 text-sm outline-none break-words transition-colors hover:bg-accent-soft data-[highlighted]:bg-accent-soft data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "relative flex min-w-0 cursor-default select-none items-center ps-8 pe-2 text-sm outline-none break-words transition-colors hover:bg-accent-soft data-[highlighted]:bg-accent-soft data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        densityClass,
         shapeRadiusClass,
         className
       )}
@@ -293,16 +334,27 @@ export const DropdownMenuLabel = (
     ref,
     className,
     inset,
+    density,
     ...props
   }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> & {
     ref?: React.Ref<React.ElementRef<typeof DropdownMenuPrimitive.Label>>;
     inset?: boolean;
+    /** Label density scale. */
+    density?: PrimitiveDensity;
   }
-) => (<DropdownMenuPrimitive.Label
-  ref={ref}
-  className={cn("px-2 py-1.5 text-sm font-semibold", inset && "ps-8", className)}
-  {...props}
-/>);
+) => {
+  const densityClass = resolveDensityClass({
+    density,
+    comfortableClass: "py-1.5",
+    compactClass: "py-1",
+  });
+
+  return (<DropdownMenuPrimitive.Label
+    ref={ref}
+    className={cn("px-2 text-sm font-semibold", densityClass, inset && "ps-8", className)}
+    {...props}
+  />);
+};
 
 export const DropdownMenuSeparator = (
   {

@@ -110,7 +110,7 @@ describe("OpenShiftForm", () => {
     );
 
     const info = screen.getByText(/previous count was/i).parentElement as HTMLElement;
-    expect(info).toHaveClass("dark:text-darkAccentGreen");
+    expect(info).toHaveClass("text-info-main");
     document.documentElement.classList.remove("dark");
   });
 });

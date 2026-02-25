@@ -19,14 +19,9 @@ const nextConfig = {
     // Pin workspace root to this repository to avoid lockfile-based mis-detection.
     root: path.resolve(__dirname, "../.."),
     resolveAlias: {
-      // Bare-specifier aliases only — resolve workspace packages to src to
-      // avoid dual module identity (src vs dist) under Turbopack.
-      // Sub-path imports (e.g. @acme/design-system/atoms) resolve via each
-      // package's exports map; absolute-path sub-path aliases cause
-      // "server relative imports are not implemented yet" errors.
-      "@acme/design-system": path.resolve(__dirname, "../../packages/design-system/src"),
-      "@acme/ui": path.resolve(__dirname, "../../packages/ui/src"),
-      "@acme/lib": path.resolve(__dirname, "../../packages/lib/src"),
+      // @acme/ui and @acme/lib resolve via their package.json exports maps.
+      // Do NOT add absolute-path aliases here — Turbopack treats them as
+      // server-relative ("./Users/...") which breaks resolution.
 
       // CSS theme alias — reception uses @themes (not @themes-local from shared config)
       "@themes": path.resolve(__dirname, "../../packages/themes"),

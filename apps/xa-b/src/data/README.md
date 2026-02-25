@@ -1,3 +1,5 @@
 # XA catalog data
 
-`catalog.json` is intentionally large because it is a demo dataset that keeps all product content in one place for easy editing. If this grows further, split it into per-category JSON files and compose them in `apps/xa/src/lib/demoData.ts`.
+`catalog.json` is the local fallback seed.
+
+`catalog.runtime.json` is the file consumed by the app at build/runtime. `apps/xa-b/scripts/build-xa.mjs` refreshes it from the catalog contract (`XA_CATALOG_CONTRACT_BASE_URL`/`XA_CATALOG_CONTRACT_READ_URL`) before `next build`, and falls back to the local seed when the contract is unavailable.

@@ -27,7 +27,7 @@ export const tokens: TokenMap = {
 
   // Accent: Light Warm Sage
   '--color-accent': { light: '130 18% 72%', dark: '130 18% 62%' },
-  '--color-accent-fg': { light: '130 20% 18%', dark: '130 15% 88%' },
+  '--color-accent-fg': { light: '130 20% 18%', dark: '130 20% 18%' },
   '--color-accent-soft': { light: '130 15% 95%', dark: '130 14% 18%' },
 
   // Borders: warm blush family

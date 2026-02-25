@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { catalogProductDraftSchema } from "../catalogAdminSchema";
+import { catalogProductDraftSchema } from "@acme/lib/xa";
 
 function baseDraft() {
   return {

@@ -1,0 +1,1060 @@
+{
+  "collections": [
+    {
+      "handle": "crossbody",
+      "title": "Crossbody bags"
+    },
+    {
+      "handle": "belt-bag",
+      "title": "Belt bags"
+    },
+    {
+      "handle": "tote",
+      "title": "Tote bags"
+    },
+    {
+      "handle": "shoulder",
+      "title": "Shoulder bags"
+    },
+    {
+      "handle": "clutch",
+      "title": "Clutch bags"
+    },
+    {
+      "handle": "backpack",
+      "title": "Backpacks"
+    },
+    {
+      "handle": "bucket",
+      "title": "Bucket bags"
+    }
+  ],
+  "brands": [
+    {
+      "handle": "hermes",
+      "name": "Hermes"
+    },
+    {
+      "handle": "louis-vuitton",
+      "name": "Louis Vuitton"
+    }
+  ],
+  "products": [
+    {
+      "id": "XA-CONSTANCE-18-GOLD",
+      "slug": "constance-18",
+      "title": "Constance 18",
+      "brand": "hermes",
+      "collection": "crossbody",
+      "price": 11800,
+      "compareAtPrice": 11800,
+      "deposit": 0,
+      "stock": 6,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/constance-18/1.jpg",
+          "altText": "Constance 18 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/constance-18/2.jpg",
+          "altText": "Constance 18 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/constance-18/3.jpg",
+          "altText": "Constance 18 by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "Hermes Constance 18 in Epsom calfskin with a palladium plated H clasp and lined interior.",
+      "createdAt": "2025-12-10T12:00:00.000Z",
+      "popularity": 96,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "crossbody",
+        "color": [
+          "gold"
+        ],
+        "material": [
+          "epsom calfskin"
+        ],
+        "sizeClass": "small",
+        "strapStyle": "convertible",
+        "hardwareColor": "palladium",
+        "closureType": "clasp",
+        "fits": [
+          "phone",
+          "compact wallet",
+          "keys",
+          "sunglasses"
+        ]
+      },
+      "details": {
+        "dimensions": "18 x 15 x 5 cm",
+        "strapDrop": "50 cm single (30 cm doubled)",
+        "whatFits": [
+          "phone",
+          "compact wallet",
+          "keys",
+          "sunglasses"
+        ],
+        "interior": [
+          "two gusseted compartments",
+          "rear slip pocket"
+        ]
+      }
+    },
+    {
+      "id": "XA-IN-THE-LOOP-GOLD",
+      "slug": "in-the-loop-belt-bag-gold",
+      "title": "In-The-Loop belt bag",
+      "brand": "hermes",
+      "collection": "belt-bag",
+      "variantGroup": "in-the-loop-belt-bag",
+      "price": 3250,
+      "deposit": 0,
+      "stock": 12,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/in-the-loop-belt-bag-gold/1.jpg",
+          "altText": "In-The-Loop belt bag by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/in-the-loop-belt-bag-gold/2.jpg",
+          "altText": "In-The-Loop belt bag by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/in-the-loop-belt-bag-gold/3.jpg",
+          "altText": "In-The-Loop belt bag by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "Evercolor calfskin belt bag with Chaîne d'Ancre inspired tab and tonal stitching.",
+      "createdAt": "2025-10-30T12:00:00.000Z",
+      "popularity": 78,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "belt-bag",
+        "color": [
+          "gold"
+        ],
+        "material": [
+          "evercolor calfskin"
+        ],
+        "sizeClass": "small",
+        "strapStyle": "adjustable belt",
+        "hardwareColor": "gold",
+        "closureType": "tab",
+        "fits": [
+          "phone",
+          "cardholder",
+          "passport"
+        ]
+      },
+      "details": {
+        "dimensions": "20 x 12.5 x 6 cm",
+        "strapDrop": "60-105 cm",
+        "whatFits": [
+          "phone",
+          "cardholder",
+          "passport",
+          "keys"
+        ],
+        "interior": [
+          "slip pocket"
+        ]
+      }
+    },
+    {
+      "id": "XA-IN-THE-LOOP-NOIR",
+      "slug": "in-the-loop-belt-bag-noir",
+      "title": "In-The-Loop belt bag",
+      "brand": "hermes",
+      "collection": "belt-bag",
+      "variantGroup": "in-the-loop-belt-bag",
+      "price": 3250,
+      "deposit": 0,
+      "stock": 10,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/in-the-loop-belt-bag-noir/1.jpg",
+          "altText": "In-The-Loop belt bag by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/in-the-loop-belt-bag-noir/2.jpg",
+          "altText": "In-The-Loop belt bag by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/in-the-loop-belt-bag-noir/3.jpg",
+          "altText": "In-The-Loop belt bag by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "In-The-Loop belt bag in Noir Evercolor calfskin with polished hardware.",
+      "createdAt": "2025-11-02T12:00:00.000Z",
+      "popularity": 74,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "belt-bag",
+        "color": [
+          "black"
+        ],
+        "material": [
+          "evercolor calfskin"
+        ],
+        "sizeClass": "small",
+        "strapStyle": "adjustable belt",
+        "hardwareColor": "palladium",
+        "closureType": "tab",
+        "fits": [
+          "phone",
+          "cardholder",
+          "passport"
+        ]
+      },
+      "details": {
+        "dimensions": "20 x 12.5 x 6 cm",
+        "strapDrop": "60-105 cm",
+        "whatFits": [
+          "phone",
+          "cardholder",
+          "passport",
+          "keys"
+        ],
+        "interior": [
+          "slip pocket"
+        ]
+      }
+    },
+    {
+      "id": "XA-GARDEN-PARTY-36",
+      "slug": "garden-party-36",
+      "title": "Garden Party 36",
+      "brand": "hermes",
+      "collection": "tote",
+      "price": 4300,
+      "compareAtPrice": 4300,
+      "deposit": 0,
+      "stock": 9,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/garden-party-36/1.jpg",
+          "altText": "Garden Party 36 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/garden-party-36/2.jpg",
+          "altText": "Garden Party 36 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/garden-party-36/3.jpg",
+          "altText": "Garden Party 36 by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "Negonda calfskin Garden Party 36 with Clou de Selle snap closure and canvas lining.",
+      "createdAt": "2025-12-08T12:00:00.000Z",
+      "popularity": 88,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "tote",
+        "color": [
+          "gold"
+        ],
+        "material": [
+          "negonda calfskin"
+        ],
+        "sizeClass": "large",
+        "strapStyle": "top-handle",
+        "hardwareColor": "palladium",
+        "closureType": "snap",
+        "fits": [
+          "13-inch laptop",
+          "notebook",
+          "wallet",
+          "makeup pouch"
+        ]
+      },
+      "details": {
+        "dimensions": "36 x 26 x 17 cm",
+        "strapDrop": "15 cm",
+        "whatFits": [
+          "13-inch laptop",
+          "notebook",
+          "water bottle"
+        ],
+        "interior": [
+          "zip pocket"
+        ]
+      }
+    },
+    {
+      "id": "XA-LINDY-26-ETOUP",
+      "slug": "lindy-26-etoupe",
+      "title": "Lindy 26",
+      "brand": "hermes",
+      "collection": "shoulder",
+      "variantGroup": "lindy-26",
+      "price": 8650,
+      "deposit": 0,
+      "stock": 7,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/lindy-26-etoupe/1.jpg",
+          "altText": "Lindy 26 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/lindy-26-etoupe/2.jpg",
+          "altText": "Lindy 26 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/lindy-26-etoupe/3.jpg",
+          "altText": "Lindy 26 by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "Clemence leather Lindy 26 with double handles, shoulder strap, and palladium-plated swivel clasp.",
+      "createdAt": "2025-11-20T12:00:00.000Z",
+      "popularity": 86,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "shoulder",
+        "color": [
+          "etoupe"
+        ],
+        "material": [
+          "clemence leather"
+        ],
+        "sizeClass": "medium",
+        "strapStyle": "shoulder",
+        "hardwareColor": "palladium",
+        "closureType": "turn-lock",
+        "fits": [
+          "phone",
+          "continental wallet",
+          "mini tablet",
+          "sunglasses"
+        ]
+      },
+      "details": {
+        "dimensions": "26 x 18 x 13 cm",
+        "strapDrop": "32 cm",
+        "whatFits": [
+          "phone",
+          "continental wallet",
+          "mini tablet",
+          "sunglasses"
+        ],
+        "interior": [
+          "two interior pockets",
+          "two exterior pockets"
+        ]
+      }
+    },
+    {
+      "id": "XA-LINDY-26-NOIR",
+      "slug": "lindy-26-noir",
+      "title": "Lindy 26",
+      "brand": "hermes",
+      "collection": "shoulder",
+      "variantGroup": "lindy-26",
+      "price": 8650,
+      "deposit": 0,
+      "stock": 6,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/lindy-26-noir/1.jpg",
+          "altText": "Lindy 26 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/lindy-26-noir/2.jpg",
+          "altText": "Lindy 26 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/lindy-26-noir/3.jpg",
+          "altText": "Lindy 26 by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "Lindy 26 in Noir Clemence leather with gold-plated hardware and a comfortable shoulder strap.",
+      "createdAt": "2025-11-23T12:00:00.000Z",
+      "popularity": 82,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "shoulder",
+        "color": [
+          "black"
+        ],
+        "material": [
+          "clemence leather"
+        ],
+        "sizeClass": "medium",
+        "strapStyle": "shoulder",
+        "hardwareColor": "gold",
+        "closureType": "turn-lock",
+        "fits": [
+          "phone",
+          "continental wallet",
+          "mini tablet",
+          "sunglasses"
+        ]
+      },
+      "details": {
+        "dimensions": "26 x 18 x 13 cm",
+        "strapDrop": "32 cm",
+        "whatFits": [
+          "phone",
+          "continental wallet",
+          "mini tablet",
+          "sunglasses"
+        ],
+        "interior": [
+          "two interior pockets",
+          "two exterior pockets"
+        ]
+      }
+    },
+    {
+      "id": "XA-JIGE-ELAN-29",
+      "slug": "jige-elan-29",
+      "title": "Jige Elan 29",
+      "brand": "hermes",
+      "collection": "clutch",
+      "price": 4050,
+      "deposit": 0,
+      "stock": 14,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/jige-elan-29/1.jpg",
+          "altText": "Jige Elan 29 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/jige-elan-29/2.jpg",
+          "altText": "Jige Elan 29 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/jige-elan-29/3.jpg",
+          "altText": "Jige Elan 29 by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "Swift leather Jige Elan 29 with tonal H tab closure and a slim silhouette for evening wear.",
+      "createdAt": "2025-10-25T12:00:00.000Z",
+      "popularity": 76,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "clutch",
+        "color": [
+          "rouge h"
+        ],
+        "material": [
+          "swift leather"
+        ],
+        "sizeClass": "medium",
+        "strapStyle": "hand carry",
+        "hardwareColor": "tonal",
+        "closureType": "tab",
+        "fits": [
+          "phone",
+          "cardholder",
+          "lipstick",
+          "keys"
+        ]
+      },
+      "details": {
+        "dimensions": "29 x 15 x 3 cm",
+        "strapDrop": "hand carry",
+        "whatFits": [
+          "phone",
+          "cardholder",
+          "lipstick",
+          "keys"
+        ],
+        "interior": [
+          "unlined interior"
+        ]
+      }
+    },
+    {
+      "id": "XA-HERBAG-ZIP-BACKPACK-31",
+      "slug": "herbag-zip-backpack-31",
+      "title": "Herbag Zip backpack 31",
+      "brand": "hermes",
+      "collection": "backpack",
+      "price": 3150,
+      "deposit": 0,
+      "stock": 8,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/herbag-zip-backpack-31/1.jpg",
+          "altText": "Herbag Zip backpack 31 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/herbag-zip-backpack-31/2.jpg",
+          "altText": "Herbag Zip backpack 31 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/herbag-zip-backpack-31/3.jpg",
+          "altText": "Herbag Zip backpack 31 by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "Canvas Herbag Zip 31 backpack with Vache Hunter leather flap, zip pocket, and padlock strap closure.",
+      "createdAt": "2025-12-14T12:00:00.000Z",
+      "popularity": 79,
+      "taxonomy": {
+        "department": "men",
+        "category": "bags",
+        "subcategory": "backpack",
+        "color": [
+          "navy"
+        ],
+        "material": [
+          "canvas",
+          "vache hunter leather"
+        ],
+        "sizeClass": "large",
+        "strapStyle": "adjustable",
+        "hardwareColor": "palladium",
+        "closureType": "strap and padlock",
+        "fits": [
+          "13-inch laptop",
+          "notebook",
+          "water bottle"
+        ]
+      },
+      "details": {
+        "dimensions": "40 x 31 x 14 cm",
+        "strapDrop": "45-90 cm",
+        "whatFits": [
+          "13-inch laptop",
+          "notebook",
+          "water bottle"
+        ],
+        "interior": [
+          "removable zipped pouch"
+        ]
+      }
+    },
+    {
+      "id": "XA-PICOTIN-LOCK-18",
+      "slug": "picotin-lock-18",
+      "title": "Picotin Lock 18",
+      "brand": "hermes",
+      "collection": "bucket",
+      "price": 2875,
+      "deposit": 0,
+      "stock": 15,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/picotin-lock-18/1.jpg",
+          "altText": "Picotin Lock 18 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/picotin-lock-18/2.jpg",
+          "altText": "Picotin Lock 18 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/picotin-lock-18/3.jpg",
+          "altText": "Picotin Lock 18 by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "Clemence calfskin Picotin Lock 18 with leather strap closure and palladium padlock.",
+      "createdAt": "2025-09-30T12:00:00.000Z",
+      "popularity": 83,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "bucket",
+        "color": [
+          "etoupe"
+        ],
+        "material": [
+          "clemence leather"
+        ],
+        "sizeClass": "small",
+        "strapStyle": "top-handle",
+        "hardwareColor": "palladium",
+        "closureType": "strap and lock",
+        "fits": [
+          "phone",
+          "small wallet",
+          "keys",
+          "card case"
+        ]
+      },
+      "details": {
+        "dimensions": "18 x 19 x 13.5 cm",
+        "strapDrop": "12 cm",
+        "whatFits": [
+          "phone",
+          "small wallet",
+          "keys",
+          "card case"
+        ],
+        "interior": [
+          "unlined interior"
+        ]
+      }
+    },
+    {
+      "id": "XA-EVELYNE-TPM",
+      "slug": "evelyne-tpm",
+      "title": "Evelyne TPM",
+      "brand": "hermes",
+      "collection": "crossbody",
+      "price": 2150,
+      "deposit": 0,
+      "stock": 18,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/evelyne-tpm/1.jpg",
+          "altText": "Evelyne TPM by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/evelyne-tpm/2.jpg",
+          "altText": "Evelyne TPM by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/evelyne-tpm/3.jpg",
+          "altText": "Evelyne TPM by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "Clemence calfskin Evelyne TPM with perforated H detail and a removable canvas crossbody strap.",
+      "createdAt": "2025-08-22T12:00:00.000Z",
+      "popularity": 84,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "crossbody",
+        "color": [
+          "gold"
+        ],
+        "material": [
+          "clemence leather"
+        ],
+        "sizeClass": "small",
+        "strapStyle": "webbing crossbody",
+        "hardwareColor": "palladium",
+        "closureType": "snap",
+        "fits": [
+          "phone",
+          "small wallet",
+          "keys",
+          "sunglasses"
+        ]
+      },
+      "details": {
+        "dimensions": "20 x 19 x 5 cm",
+        "strapDrop": "105 cm adjustable",
+        "whatFits": [
+          "phone",
+          "slim wallet",
+          "keys",
+          "sunglasses"
+        ],
+        "interior": [
+          "unlined compartment"
+        ]
+      }
+    },
+    {
+      "id": "XA-CITYSLIDE-BELT-BAG",
+      "slug": "cityslide-belt-bag",
+      "title": "Cityslide belt bag",
+      "brand": "hermes",
+      "collection": "belt-bag",
+      "price": 3500,
+      "deposit": 0,
+      "stock": 10,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/cityslide-belt-bag/1.jpg",
+          "altText": "Cityslide belt bag by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/cityslide-belt-bag/2.jpg",
+          "altText": "Cityslide belt bag by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/cityslide-belt-bag/3.jpg",
+          "altText": "Cityslide belt bag by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "Evergrain calfskin Cityslide belt bag with a technical web strap and zippered main compartment.",
+      "createdAt": "2025-10-05T12:00:00.000Z",
+      "popularity": 72,
+      "taxonomy": {
+        "department": "men",
+        "category": "bags",
+        "subcategory": "belt-bag",
+        "color": [
+          "black"
+        ],
+        "material": [
+          "evergrain calfskin"
+        ],
+        "sizeClass": "small",
+        "strapStyle": "adjustable",
+        "hardwareColor": "palladium",
+        "closureType": "zip",
+        "fits": [
+          "phone",
+          "passport",
+          "keys",
+          "sunglasses"
+        ]
+      },
+      "details": {
+        "dimensions": "22 x 14 x 5 cm",
+        "strapDrop": "60-110 cm",
+        "whatFits": [
+          "phone",
+          "passport",
+          "keys",
+          "cardholder"
+        ],
+        "interior": [
+          "zip pocket",
+          "card slots"
+        ]
+      }
+    },
+    {
+      "id": "XA-HERBAG-ZIP-31",
+      "slug": "herbag-zip-31",
+      "title": "Herbag Zip 31",
+      "brand": "hermes",
+      "collection": "tote",
+      "price": 2825,
+      "deposit": 0,
+      "stock": 11,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/hermes/herbag-zip-31/1.jpg",
+          "altText": "Herbag Zip 31 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/herbag-zip-31/2.jpg",
+          "altText": "Herbag Zip 31 by Hermes"
+        },
+        {
+          "type": "image",
+          "path": "/images/hermes/herbag-zip-31/3.jpg",
+          "altText": "Herbag Zip 31 by Hermes"
+        }
+      ],
+      "sizes": [],
+      "description": "Canvas and Vache Hunter leather Herbag Zip 31 with removable zipped pouch and shoulder strap.",
+      "createdAt": "2025-07-18T12:00:00.000Z",
+      "popularity": 73,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "tote",
+        "color": [
+          "navy",
+          "etoupe"
+        ],
+        "material": [
+          "canvas",
+          "vache hunter leather"
+        ],
+        "sizeClass": "medium",
+        "strapStyle": "shoulder",
+        "hardwareColor": "palladium",
+        "closureType": "strap and padlock",
+        "fits": [
+          "tablet",
+          "notebook",
+          "phone"
+        ]
+      },
+      "details": {
+        "dimensions": "31 x 25 x 10 cm",
+        "strapDrop": "20 cm top handle / 47 cm strap",
+        "whatFits": [
+          "tablet",
+          "notebook",
+          "long wallet"
+        ],
+        "interior": [
+          "removable zipped pouch"
+        ]
+      }
+    },
+    {
+      "id": "LV-SPEEDY-25-MONO",
+      "slug": "lv-speedy-25",
+      "title": "Speedy Bandoulière 25",
+      "brand": "louis-vuitton",
+      "collection": "crossbody",
+      "price": 1690,
+      "compareAtPrice": 0,
+      "deposit": 0,
+      "stock": 12,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/louis-vuitton/lv-speedy-25/1.jpg",
+          "altText": "Louis Vuitton Speedy Bandoulière 25"
+        },
+        {
+          "type": "image",
+          "path": "/images/louis-vuitton/lv-speedy-25/2.jpg",
+          "altText": "Louis Vuitton Speedy Bandoulière 25"
+        },
+        {
+          "type": "image",
+          "path": "/images/louis-vuitton/lv-speedy-25/3.jpg",
+          "altText": "Louis Vuitton Speedy Bandoulière 25"
+        }
+      ],
+      "sizes": [],
+      "description": "Monogram canvas Speedy Bandoulière 25 with leather trims and removable strap.",
+      "createdAt": "2025-12-20T12:00:00.000Z",
+      "popularity": 90,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "crossbody",
+        "color": [
+          "brown"
+        ],
+        "material": [
+          "coated canvas",
+          "leather"
+        ],
+        "sizeClass": "small",
+        "strapStyle": "adjustable",
+        "hardwareColor": "gold",
+        "closureType": "zip",
+        "fits": [
+          "phone",
+          "wallet",
+          "keys",
+          "sunglasses"
+        ]
+      },
+      "details": {
+        "dimensions": "25 x 19 x 15 cm",
+        "strapDrop": "48-55 cm adjustable",
+        "whatFits": [
+          "phone",
+          "compact wallet",
+          "keys",
+          "sunglasses"
+        ],
+        "interior": [
+          "slip pocket"
+        ]
+      }
+    },
+    {
+      "id": "LV-NEVERFULL-MM-MONO",
+      "slug": "lv-neverfull-mm",
+      "title": "Neverfull MM",
+      "brand": "louis-vuitton",
+      "collection": "tote",
+      "price": 2150,
+      "compareAtPrice": 0,
+      "deposit": 0,
+      "stock": 10,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/louis-vuitton/lv-neverfull-mm/1.jpg",
+          "altText": "Louis Vuitton Neverfull MM"
+        },
+        {
+          "type": "image",
+          "path": "/images/louis-vuitton/lv-neverfull-mm/2.jpg",
+          "altText": "Louis Vuitton Neverfull MM"
+        },
+        {
+          "type": "image",
+          "path": "/images/louis-vuitton/lv-neverfull-mm/3.jpg",
+          "altText": "Louis Vuitton Neverfull MM"
+        }
+      ],
+      "sizes": [],
+      "description": "Classic Monogram Neverfull MM with natural cowhide trim and removable pouch.",
+      "createdAt": "2025-12-18T12:00:00.000Z",
+      "popularity": 88,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "tote",
+        "color": [
+          "brown"
+        ],
+        "material": [
+          "coated canvas",
+          "leather"
+        ],
+        "sizeClass": "large",
+        "strapStyle": "shoulder",
+        "hardwareColor": "gold",
+        "closureType": "clasp",
+        "fits": [
+          "13-inch laptop",
+          "tablet",
+          "notebook"
+        ]
+      },
+      "details": {
+        "dimensions": "31 x 28 x 14 cm",
+        "strapDrop": "21 cm",
+        "whatFits": [
+          "13-inch laptop",
+          "notebook",
+          "wallet"
+        ],
+        "interior": [
+          "zip pocket",
+          "removable pouch"
+        ]
+      }
+    },
+    {
+      "id": "LV-POCHETTE-METIS",
+      "slug": "lv-pochette-metis",
+      "title": "Pochette Métis",
+      "brand": "louis-vuitton",
+      "collection": "crossbody",
+      "price": 2550,
+      "compareAtPrice": 0,
+      "deposit": 0,
+      "stock": 8,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/louis-vuitton/lv-pochette-metis/1.jpg",
+          "altText": "Louis Vuitton Pochette Métis"
+        },
+        {
+          "type": "image",
+          "path": "/images/louis-vuitton/lv-pochette-metis/2.jpg",
+          "altText": "Louis Vuitton Pochette Métis"
+        },
+        {
+          "type": "image",
+          "path": "/images/louis-vuitton/lv-pochette-metis/3.jpg",
+          "altText": "Louis Vuitton Pochette Métis"
+        }
+      ],
+      "sizes": [],
+      "description": "Pochette Métis in Monogram canvas with S-lock closure and braided top handle.",
+      "createdAt": "2025-12-22T12:00:00.000Z",
+      "popularity": 86,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "crossbody",
+        "color": [
+          "brown"
+        ],
+        "material": [
+          "coated canvas",
+          "leather"
+        ],
+        "sizeClass": "medium",
+        "strapStyle": "adjustable",
+        "hardwareColor": "gold",
+        "closureType": "clasp",
+        "fits": [
+          "phone",
+          "wallet",
+          "keys",
+          "sunglasses"
+        ]
+      },
+      "details": {
+        "dimensions": "25 x 19 x 7 cm",
+        "strapDrop": "48-55 cm adjustable",
+        "whatFits": [
+          "phone",
+          "continental wallet",
+          "keys"
+        ],
+        "interior": [
+          "three interior compartments",
+          "zip pocket"
+        ]
+      }
+    }
+  ]
+}

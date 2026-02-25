@@ -2,27 +2,23 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 
 import Block from "../Block";
-import Button from "../blocks/Button";
 
-const blockRegistryMock = {
-  Foo: {
-    component: ({ style }: { style?: React.CSSProperties }) => (
-       
-      <div data-cy="foo" style={style}>
-        Foo
-      </div>
-    ),
+jest.mock("@acme/ui/components/cms/blocks", () => ({
+  blockRegistry: {
+    Foo: {
+      component: ({ style }: { style?: React.CSSProperties }) => (
+        <div data-cy="foo" style={style}>
+          Foo
+        </div>
+      ),
+    },
+    Bar: {
+      component: () => <div data-cy="bar">Bar</div>,
+    },
+    Button: {
+      component: require("@acme/ui/components/cms/blocks/Button").default,
+    },
   },
-  Bar: {
-    component: () => <div data-cy="bar">Bar</div>,
-  },
-  Button: {
-    component: Button,
-  },
-};
-
-jest.mock("../../blocks", () => ({
-  blockRegistry: blockRegistryMock,
 }));
 
 describe("Block", () => {

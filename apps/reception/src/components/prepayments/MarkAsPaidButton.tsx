@@ -1,6 +1,6 @@
 import React, { type FC } from "react";
 
-import { ReceptionButton as Button } from "@acme/ui/operations";
+import { Button } from "@acme/design-system/atoms";
 
 interface MarkAsPaidButtonProps {
   bookingRef: string;
@@ -46,7 +46,9 @@ const MarkAsPaidButton: FC<MarkAsPaidButtonProps> = ({
   return (
     <Button
       onClick={handleMarkAsPaid}
-      className="inline-flex w-100px items-center justify-center font-semibold px-4 py-2 bg-primary-main text-primary-fg text-sm rounded hover:bg-primary-dark transition-colors font-body dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80"
+      color="primary"
+      tone="solid"
+      size="sm"
     >
       €{amount.toFixed(2)}
     </Button>

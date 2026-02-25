@@ -10,13 +10,8 @@ import {
   useState,
 } from "react";
 import ReactDOM from "react-dom";
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import {
-  faBan,
-  faFileAlt,
-  faMoneyBill,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { LucideIcon } from "lucide-react";
+import { Ban, Banknote, FileText } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -157,22 +152,22 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
 
   /* --- icon on the selector button --------------------------------------- */
   const depositIcon = useMemo((): {
-    icon: IconDefinition;
+    icon: LucideIcon;
     className: string;
   } => {
     switch (payType) {
       case KeycardPayType.DOCUMENT:
         return {
-          icon: faFileAlt,
-          className: "text-warning-main dark:text-darkAccentOrange",
+          icon: FileText,
+          className: "text-warning-main",
         };
       case KeycardPayType.NO_CARD:
-        return { icon: faBan, className: "dark:text-darkAccentGreen" };
+        return { icon: Ban, className: "text-primary" };
       case KeycardPayType.CASH:
       default:
         return {
-          icon: faMoneyBill,
-          className: "text-success-main dark:text-darkAccentGreen",
+          icon: Banknote,
+          className: "text-success-main",
         };
     }
   }, [payType]);
@@ -203,17 +198,17 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     "min-h-55px px-4 flex items-center justify-center transition-colors focus:outline-none";
 
   const activeClass =
-    "bg-primary-main hover:bg-primary-dark text-primary-fg dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-darkAccentGreen/80";
+    "bg-primary-main hover:bg-primary-dark text-primary-fg";
   const successDisabledClass =
     "bg-success-light text-primary-fg cursor-not-allowed opacity-70";
   const greyDisabledClass =
-    "bg-surface-3 text-primary-fg cursor-not-allowed opacity-70 dark:bg-darkSurface dark:text-darkAccentGreen";
+    "bg-surface-3 text-primary-fg cursor-not-allowed opacity-70";
 
   const leftButtonClass = disabledDueToKeycard
-    ? `${successDisabledClass} border-r border-border/20 dark:border-darkSurface`
+    ? `${successDisabledClass} border-r border-border/20`
     : isDisabled
     ? greyDisabledClass
-    : `${activeClass} border-r border-border/20 dark:border-darkSurface`;
+    : `${activeClass} border-r border-border/20`;
 
   const rightButtonClass = disabledDueToKeycard
     ? successDisabledClass
@@ -361,10 +356,9 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
             : "Select deposit type"
         }
       >
-        <FontAwesomeIcon
-          icon={depositIcon.icon}
+        <depositIcon.icon
+          size={20}
           className={depositIcon.className}
-          size="lg"
         />
       </Button>
 

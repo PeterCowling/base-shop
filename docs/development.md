@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-09
+Last-reviewed: 2026-02-23
 
 # Development
 
@@ -22,11 +22,12 @@ Last-reviewed: 2026-02-09
 
 - Pre-push uses `scripts/git-hooks/pre-push.sh`:
   - enforces writer lock and push safety
-  - validates only the pushed delta via `VALIDATE_RANGE=<range> bash scripts/validate-changes.sh`
+  - validates only the pushed delta via `VALIDATE_RANGE=<range> VALIDATE_INCLUDE_TESTS=0 bash scripts/validate-changes.sh` (tests hard-disabled in hook)
 
 ## Tests and CI gating
 
-- Prefer CI for most test execution.
+- CI is the required test gate (`Core Platform CI` + `Merge Gate`); local test runs are optional and targeted.
+- `bash scripts/validate-changes.sh` is the default local gate (policy + typecheck + lint, no targeted local tests).
 - For local testing, always run targeted commands (never unfiltered `pnpm test`):
 
   ```bash

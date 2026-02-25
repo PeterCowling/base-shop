@@ -53,16 +53,16 @@ export const ShiftSummary = memo(function ShiftSummary({
   const grid = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-1";
 
   return (
-    <section className="rounded-lg border border-border-2 bg-surface/80 p-6 shadow-sm backdrop-blur-sm dark:border-darkSurface dark:bg-darkBg">
+    <section className="rounded-lg border border-border-2 bg-surface/80 p-6 shadow-sm backdrop-blur-sm">
       {/* Header */}
       <header className="mb-6 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground dark:text-darkAccentGreen">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
           Shift Summary
         </h2>
 
         <time
           dateTime={shiftOpenTime.toISOString()}
-          className="rounded-full bg-success-light/20 px-3 py-1 text-xs font-medium text-success-main dark:text-darkAccentGreen"
+          className="rounded-full bg-success-light/20 px-3 py-1 text-xs font-medium text-success-main"
         >
           {formatEnGbDateTime(shiftOpenTime, {
             day: "2-digit",
@@ -135,10 +135,10 @@ interface StatProps {
 const Stat = memo<StatProps>(function Stat({ label, value }) {
   return (
     <div className="flex items-start">
-      <dt className="me-1 font-medium text-muted-foreground dark:text-darkAccentGreen">
+      <dt className="me-1 font-medium text-muted-foreground">
         {label}:
       </dt>
-      <dd className="text-foreground dark:text-darkAccentGreen">{value}</dd>
+      <dd className="text-foreground">{value}</dd>
     </div>
   );
 });

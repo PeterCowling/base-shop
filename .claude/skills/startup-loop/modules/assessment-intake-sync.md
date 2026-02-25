@@ -1,6 +1,6 @@
 # assessment-intake-sync — ASSESSMENT Intake Auto-Sync
 
-Called automatically when ASSESSMENT-01–ASSESSMENT-08 precursors are first all complete, or when any precursor has been updated since the last intake sync. Reads ASSESSMENT-01–ASSESSMENT-08 artifacts and writes or refreshes `<BIZ>-intake-packet.user.md`.
+Called automatically when required problem-path precursors are first all complete, or when any precursor has been updated since the last intake sync. Reads ASSESSMENT-01/02/03/04/06/07/08 artifacts (`ASSESSMENT-05` optional) and writes or refreshes `<BIZ>-intake-packet.user.md`.
 
 This module is **not operator-invoked directly** — it is called by `cmd-start.md` and `cmd-advance.md` as part of the ASSESSMENT-09 Intake contract (`GATE-ASSESSMENT-00`).
 
@@ -215,6 +215,6 @@ These fields are `link` mode — they derive from operator direct knowledge or c
 
 | Condition | Action |
 |---|---|
-| A required precursor file is missing | Log `ASSESSMENT intake sync: SKIPPED — <file> missing. All seven ASSESSMENT-01–ASSESSMENT-08 precursors required.`; do not write partial intake; do not block startup-loop operation |
+| A required precursor file is missing | Log `ASSESSMENT intake sync: SKIPPED — <file> missing. Required precursors are ASSESSMENT-01/02/03/04/06/07/08 (ASSESSMENT-05 optional).`; do not write partial intake; do not block startup-loop operation |
 | Precursor frontmatter date cannot be parsed | Log `ASSESSMENT intake sync: WARNING — could not parse date from <file>; treating as stale`; proceed with sync |
 | Intake packet write fails | Log error; surface to operator; do not block startup-loop operation |

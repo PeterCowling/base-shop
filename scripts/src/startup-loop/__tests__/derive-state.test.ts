@@ -114,6 +114,29 @@ describe("deriveState", () => {
       expect(state.stages["SELL-01"].artifacts).toEqual(["stages/SELL-01/channels.md"]);
       expect(state.stages.S4.artifacts).toEqual(["stages/S4/baseline.snapshot.md"]);
     });
+
+    it("normalizes legacy event stage IDs via alias index", () => {
+      // Compatibility contract: legacy S3/S10 event stages map to
+      // map-canonical SIGNALS-01/SIGNALS when those IDs exist.
+      const events: RunEvent[] = [
+        makeEvent({ event: "stage_started", stage: "S3", timestamp: "2026-02-13T12:10:00Z" }),
+        makeEvent({
+          event: "stage_completed",
+          stage: "S3",
+          timestamp: "2026-02-13T12:11:00Z",
+          artifacts: { forecast: "stages/S3/forecast.md" },
+        }),
+      ];
+
+      const state = deriveState(events, STATE_OPTIONS);
+      if ("SIGNALS-01" in state.stages) {
+        expect(state.stages["SIGNALS-01"].status).toBe("Done");
+        expect(state.active_stage).toBe("SIGNALS-01");
+      } else {
+        expect(state.stages.S3.status).toBe("Done");
+        expect(state.active_stage).toBe("S3");
+      }
+    });
   });
 
   // VC-04A-02: Manual resume — inject stage_started event for a Blocked stage

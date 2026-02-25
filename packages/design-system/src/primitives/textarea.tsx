@@ -6,6 +6,7 @@ import * as React from "react";
 import { FormField } from "../atoms/FormField";
 import { cn } from "../utils/style";
 
+import { type PrimitiveDensity, resolveDensityClass } from "./density";
 import { type PrimitiveRadius, type PrimitiveShape, resolveShapeRadiusClass } from "./shape-radius";
 
 export interface TextareaProps
@@ -26,6 +27,8 @@ export interface TextareaProps
   shape?: PrimitiveShape;
   /** Explicit radius token override. */
   radius?: PrimitiveRadius;
+  /** Textarea density scale. */
+  density?: PrimitiveDensity;
 }
 
 export type TextareaCompatibilityMode = "default" | "no-wrapper";
@@ -42,6 +45,7 @@ export const Textarea = (
     compatibilityMode = "default",
     shape,
     radius,
+    density,
     id,
     onFocus,
     onBlur,
@@ -60,6 +64,21 @@ export const Textarea = (
     radius,
     defaultRadius: "md",
   });
+  const verticalDensityClass = resolveDensityClass({
+    density,
+    comfortableClass: "min-h-[6rem] py-2",
+    compactClass: "min-h-[5rem] py-1.5",
+  });
+  const floatingPaddingClass = resolveDensityClass({
+    density,
+    comfortableClass: "pt-5",
+    compactClass: "pt-4",
+  });
+  const floatingLabelTopClass = resolveDensityClass({
+    density,
+    comfortableClass: "top-2",
+    compactClass: "top-1.5",
+  });
 
   /* ------------------------------------------------------------------
    * Tailwind / shadcn class string
@@ -67,10 +86,11 @@ export const Textarea = (
   const hasError = Boolean(error); // avoids 0 | 0n union in type-inference
 
   const baseClasses = cn(
-    "min-h-[6rem] w-full border border-input bg-input px-3 py-2 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    "w-full border border-input bg-input px-3 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    verticalDensityClass,
     shapeRadiusClass,
     "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-    useFloatingLabel && "peer pt-5",
+    useFloatingLabel && cn("peer", floatingPaddingClass),
     hasError && "border-danger",
     className
   );
@@ -139,7 +159,8 @@ export const Textarea = (
               <label
                 htmlFor={controlId}
                 className={cn(
-                  "text-muted-foreground pointer-events-none absolute top-2 left-3 transition-colors transition-transform motion-reduce:transition-none", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                  "text-muted-foreground pointer-events-none absolute left-3 transition-colors transition-transform motion-reduce:transition-none", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                  floatingLabelTopClass,
                   (focused || hasValue) && "-translate-y-3 text-xs" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                 )}
               >

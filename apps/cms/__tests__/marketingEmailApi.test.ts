@@ -150,11 +150,10 @@ describe("marketing email API campaign listing", () => {
       { type: "email_open", campaign: "c1" },
       { type: "email_click", campaign: "c1" },
     ]);
-    jest.doMock("@acme/email", () => ({
+    jest.doMock("@acme/email/scheduler", () => ({
       __esModule: true,
       createCampaign: jest.fn(),
       listCampaigns,
-      renderTemplate: jest.fn(),
     }));
     jest.doMock("@acme/platform-core/repositories/analytics.server", () => ({
       __esModule: true,
@@ -187,37 +186,34 @@ describe("marketing email API templates", () => {
     jest.resetModules();
   });
 
-  test("rejects invalid templateId", async () => {
-    const renderTemplate = jest.fn(() => {
-      throw new Error("Unknown template: bad");
-    });
-    jest.doMock("@acme/email", () => ({
+  test("returns 500 when scheduler rejects templateId", async () => {
+    const createCampaign = (jest.fn() as unknown as MockFn).mockRejectedValue(
+      new Error("Unknown template: bad")
+    );
+    jest.doMock("@acme/email/scheduler", () => ({
       __esModule: true,
-      createCampaign: jest.fn(),
-      renderTemplate,
+      createCampaign,
       listCampaigns: jest.fn(),
     }));
     const { POST } = await import("../src/app/api/marketing/email/route");
-    await expect(
-      POST({
-        json: async () => ({
-          shop,
-          recipients: ["a@example.com"],
-          subject: "Hi",
-          body: "<p>Hi</p>",
-          templateId: "bad",
-        }),
-      } as unknown as NextRequest)
-    ).rejects.toThrow("Unknown template");
+    const res = await POST({
+      json: async () => ({
+        shop,
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        templateId: "bad",
+      }),
+    } as unknown as NextRequest);
+    expect(res.status).toBe(500);
+    await expect(res.json()).resolves.toEqual({ error: "Failed to send" });
   });
 
-  test("calls renderTemplate when templateId provided", async () => {
-    const renderTemplate = jest.fn(() => "<p>Rendered</p>");
+  test("passes templateId to scheduler when provided", async () => {
     const createCampaign = (jest.fn() as unknown as MockFn).mockResolvedValue("id1");
-    jest.doMock("@acme/email", () => ({
+    jest.doMock("@acme/email/scheduler", () => ({
       __esModule: true,
       createCampaign,
-      renderTemplate,
       listCampaigns: jest.fn(),
     }));
     const { POST } = await import("../src/app/api/marketing/email/route");
@@ -231,19 +227,22 @@ describe("marketing email API templates", () => {
       }),
     } as unknown as NextRequest);
     expect(res.status).toBe(200);
-    expect(renderTemplate).toHaveBeenCalledWith("basic", {
+    expect(createCampaign).toHaveBeenCalledWith({
+      shop,
+      recipients: ["a@example.com"],
       subject: "Hi",
-      body: "<p>Hi</p>",
+      body: "<p>Hi</p><p>%%UNSUBSCRIBE%%</p>",
+      segment: undefined,
+      sendAt: undefined,
+      templateId: "basic",
     });
   });
 
   test("appends unsubscribe placeholder when no templateId", async () => {
     const createCampaign = (jest.fn() as unknown as MockFn).mockResolvedValue("id1");
-    const renderTemplate = jest.fn();
-    jest.doMock("@acme/email", () => ({
+    jest.doMock("@acme/email/scheduler", () => ({
       __esModule: true,
       createCampaign,
-      renderTemplate,
       listCampaigns: jest.fn(),
     }));
     const { POST } = await import("../src/app/api/marketing/email/route");
@@ -256,7 +255,6 @@ describe("marketing email API templates", () => {
       }),
     } as unknown as NextRequest);
     expect(res.status).toBe(200);
-    expect(renderTemplate).not.toHaveBeenCalled();
     expect(createCampaign).toHaveBeenCalledWith({
       shop,
       recipients: ["a@example.com"],
@@ -283,10 +281,9 @@ describe("marketing email API validation", () => {
 
   test("POST missing required fields returns 400", async () => {
     const createCampaign = jest.fn();
-    jest.doMock("@acme/email", () => ({
+    jest.doMock("@acme/email/scheduler", () => ({
       __esModule: true,
       createCampaign,
-      renderTemplate: jest.fn(),
       listCampaigns: jest.fn(),
     }));
     const { POST } = await import("../src/app/api/marketing/email/route");
@@ -303,10 +300,9 @@ describe("marketing email API validation", () => {
 
   test("POST returns 500 when createCampaign fails", async () => {
     const createCampaign = jest.fn(() => Promise.reject(new Error("fail")));
-    jest.doMock("@acme/email", () => ({
+    jest.doMock("@acme/email/scheduler", () => ({
       __esModule: true,
       createCampaign,
-      renderTemplate: jest.fn(),
       listCampaigns: jest.fn(),
     }));
     const { POST } = await import("../src/app/api/marketing/email/route");

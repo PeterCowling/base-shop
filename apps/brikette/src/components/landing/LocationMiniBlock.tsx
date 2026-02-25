@@ -74,7 +74,7 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
                   "Location & transport"
                 )}
               </h2>
-              <p className="mt-2 text-sm text-brand-text/70 dark:text-brand-text/70">
+              <p className="mt-2 text-sm text-brand-text/80 dark:text-brand-text/80">
                 {resolveTranslatedCopy(
                   t("locationSection.subtitle", {
                     defaultValue:
@@ -117,7 +117,7 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
                 href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-h-11 min-w-11 rounded-full border border-brand-outline/50 px-6 py-3 text-sm font-semibold text-brand-heading transition hover:border-brand-primary hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary text-brand-surface dark:hover:text-brand-secondary"
+                className="min-h-11 min-w-11 rounded-full border border-brand-outline/50 px-6 py-3 text-sm font-semibold text-brand-heading transition hover:border-brand-primary hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-text dark:hover:text-brand-secondary"
               >
                 {resolveTranslatedCopy(
                   tModals("location.justShowMap", { defaultValue: "Show map" }),

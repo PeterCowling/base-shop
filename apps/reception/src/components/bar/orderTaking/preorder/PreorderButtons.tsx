@@ -20,6 +20,7 @@ import {
 
 import { Button } from "@acme/design-system/atoms";
 import { Grid as LayoutGrid } from "@acme/design-system/primitives";
+import { SimpleModal } from "@acme/ui/molecules";
 
 import { useAuth } from "../../../../context/AuthContext";
 import { useBleepersData } from "../../../../hooks/data/bar/useBleepersData";
@@ -98,11 +99,12 @@ interface ConfirmDeleteModalProps {
 /* ------------------------------------------------------------------ */
 const ConfirmDeleteModal: FC<ConfirmDeleteModalProps> = memo(
   ({ onConfirm, onCancel }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/60">
-      <div className="w-300px rounded-lg bg-surface p-6 shadow-xl">
-        <p className="mb-4 text-center text-sm font-medium text-foreground">
-          Are you sure you want to delete this preorder?
-        </p>
+    <SimpleModal
+      isOpen={true}
+      onClose={onCancel}
+      title="Delete Preorder"
+      maxWidth="max-w-xs"
+      footer={
         <div className="flex justify-evenly">
           <Button
             color="danger"
@@ -121,8 +123,12 @@ const ConfirmDeleteModal: FC<ConfirmDeleteModalProps> = memo(
             No
           </Button>
         </div>
-      </div>
-    </div>
+      }
+    >
+      <p className="text-center text-sm font-medium text-foreground">
+        Are you sure you want to delete this preorder?
+      </p>
+    </SimpleModal>
   )
 );
 ConfirmDeleteModal.displayName = "ConfirmDeleteModal";
@@ -308,7 +314,7 @@ const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
           absolute right-0 top-0 z-20 h-5 w-5 translate-x-1/2 -translate-y-1/2
           rounded-full bg-error-main text-11px font-bold text-primary-fg
           shadow-md ring-1 ring-inset ring-foreground/20 transition-colors
-          hover:bg-error-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300
+          hover:bg-error-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
         `}
       >
         ×
@@ -319,10 +325,10 @@ const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
         <div
           className={`
             absolute bottom-full left-1/2 z-30 w-60 -translate-x-1/2
-            whitespace-pre-line rounded-md bg-foreground/90 px-3 py-2 text-13px font-medium text-primary-fg
+            whitespace-pre-line rounded-md bg-black/90 px-3 py-2 text-13px font-medium text-primary-fg
             shadow-lg backdrop-blur-md
             before:absolute before:-bottom-1.5 before:left-1/2 before:-translate-x-1/2
-            before:h-3 before:w-3 before:rotate-45 before:rounded-sm before:bg-foreground/90
+            before:h-3 before:w-3 before:rotate-45 before:rounded-md before:bg-black/90
           `}
         >
           {tooltipText}

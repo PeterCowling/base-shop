@@ -3,6 +3,9 @@ import type { Locale, ShopSeoFields, ShopSettings } from "@acme/types";
 import { authorize, fetchSettings, persistSettings } from "./helpers";
 import { parseGenerateSeoForm } from "./validation";
 
+const generateMetaModuleId =
+  process.env.ACME_LIB_GENERATE_META_MODULE_ID || "@acme/lib/generateMeta";
+
 export async function generateSeo(
   shop: string,
   formData: FormData,
@@ -17,7 +20,9 @@ export async function generateSeo(
   }
 
   const { id, locale, title, description } = data;
-  const { generateMeta } = await import("@acme/lib/server");
+  const { generateMeta } = (await import(
+    generateMetaModuleId
+  )) as typeof import("@acme/lib/generateMeta");
 
   const result = await generateMeta({ id, title, description });
   const current = await fetchSettings(shop);

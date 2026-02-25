@@ -34,6 +34,13 @@ const mockOff = jest.fn();
 const mockGet = jest.fn();
 const mockQuery = jest.fn();
 const mockRef = jest.fn();
+const mockReadGuestSession = jest.fn(() => ({
+  bookingId: 'booking_123',
+  firstName: 'Guest',
+  token: 'token_123',
+  uuid: 'guest_abc',
+  verifiedAt: null,
+}));
 
 let activeListeners = 0;
 
@@ -71,10 +78,21 @@ jest.mock('@/utils/messaging/dbRoot', () => ({
   MSG_ROOT: 'messaging',
 }));
 
+jest.mock('@/lib/auth/guestSessionGuard', () => ({
+  readGuestSession: () => mockReadGuestSession(),
+}));
+
 describe('ChatProvider Channel Listener Lifecycle (TASK-45 TC-04)', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     activeListeners = 0;
+    mockReadGuestSession.mockReturnValue({
+      bookingId: 'booking_123',
+      firstName: 'Guest',
+      token: 'token_123',
+      uuid: 'guest_abc',
+      verifiedAt: null,
+    });
 
     mockRef.mockImplementation((_db: unknown, path: string) => ({
       toString: () => path,
@@ -229,4 +247,27 @@ describe('ChatProvider Channel Listener Lifecycle (TASK-45 TC-04)', () => {
     // Final check - should be at baseline
     expect(activeListeners).toBe(0);
   }, 30000);
+
+  it('TC-05: ignores direct channels that do not include the current guest UUID', async () => {
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <ChatProvider>{children}</ChatProvider>
+    );
+
+    const { result } = renderHook(() => useChat(), { wrapper });
+
+    await act(async () => {
+      result.current.setCurrentChannelId('dm_guest_xyz_guest_qwe');
+    });
+
+    await waitFor(
+      () => {
+        expect(activeListeners).toBe(0);
+      },
+      { timeout: 1000 },
+    );
+
+    expect(mockOnChildAdded).not.toHaveBeenCalled();
+    expect(mockOnChildChanged).not.toHaveBeenCalled();
+    expect(mockOnChildRemoved).not.toHaveBeenCalled();
+  });
 });

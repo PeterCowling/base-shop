@@ -4,12 +4,13 @@ import os from "os";
 import path from "path";
 
 import { updateManifest } from "../manifest-update";
+import { FORECAST_STAGE_ID } from "../stage-id-compat";
 
 /**
  * LPSP-03B: Single-writer manifest update mechanism
  *
  * Tests cover:
- * - VC-03B-01: Parallel completion (S3 + SELL-01 both Done → manifest updated)
+ * - VC-03B-01: Parallel completion (forecast + SELL-01 both Done → manifest updated)
  * - VC-03B-02: Upstream failure (SELL-01 Failed → manifest rejected)
  * - VC-03B-03: Idempotent re-derivation (same inputs → same manifest)
  */
@@ -39,11 +40,11 @@ const S2B_DONE = makeStageResult({
 });
 
 const S3_DONE = makeStageResult({
-  stage: "S3",
+  stage: FORECAST_STAGE_ID,
   status: "Done",
   timestamp: "2026-02-13T12:04:00Z",
   produced_keys: ["forecast"],
-  artifacts: { forecast: "stages/S3/forecast.md" },
+  artifacts: { forecast: `stages/${FORECAST_STAGE_ID}/forecast.md` },
 });
 
 const S6B_DONE = makeStageResult({
@@ -66,7 +67,7 @@ const S6B_FAILED = makeStageResult({
 });
 
 const S3_BLOCKED = makeStageResult({
-  stage: "S3",
+  stage: FORECAST_STAGE_ID,
   status: "Blocked",
   timestamp: "2026-02-13T12:04:00Z",
   blocking_reason: "Required input missing: MARKET-06 offer artifact",
@@ -97,13 +98,13 @@ afterEach(async () => {
 });
 
 describe("updateManifest", () => {
-  // VC-03B-01: Simulated parallel completion — write S3 and SELL-01 stage results
+  // VC-03B-01: Simulated parallel completion — write forecast and SELL-01 stage results
   // concurrently → S4 merge consumes both deterministically and manifest artifact
   // pointers are correct.
   describe("VC-03B-01: parallel completion", () => {
     it("creates manifest when all required stages are Done", async () => {
       await writeStageResult("MARKET-06", S2B_DONE);
-      await writeStageResult("S3", S3_DONE);
+      await writeStageResult(FORECAST_STAGE_ID, S3_DONE);
       await writeStageResult("SELL-01", S6B_DONE);
 
       const result = await updateManifest(runDir, {
@@ -128,7 +129,7 @@ describe("updateManifest", () => {
       // All artifact pointers collected
       expect(manifest.artifacts).toEqual({
         "MARKET-06/offer": "stages/MARKET-06/offer.md",
-        "S3/forecast": "stages/S3/forecast.md",
+        [`${FORECAST_STAGE_ID}/forecast`]: `stages/${FORECAST_STAGE_ID}/forecast.md`,
         "SELL-01/channels": "stages/SELL-01/channels.md",
         "SELL-01/outreach": "stages/SELL-01/outreach.md",
         "SELL-01/seo": "stages/SELL-01/seo.md",
@@ -136,17 +137,17 @@ describe("updateManifest", () => {
 
       // Stage completions recorded
       expect(manifest.stage_completions["MARKET-06"].status).toBe("Done");
-      expect(manifest.stage_completions.S3.status).toBe("Done");
+      expect(manifest.stage_completions[FORECAST_STAGE_ID].status).toBe("Done");
       expect(manifest.stage_completions["SELL-01"].status).toBe("Done");
     });
   });
 
-  // VC-03B-02: Simulated upstream failure — S3 completes, SELL-01 fails → manifest
+  // VC-03B-02: Simulated upstream failure — forecast completes, SELL-01 fails → manifest
   // update blocked with explicit reason referencing SELL-01 failure.
   describe("VC-03B-02: upstream failure rejection", () => {
     it("rejects when a required stage has Failed", async () => {
       await writeStageResult("MARKET-06", S2B_DONE);
-      await writeStageResult("S3", S3_DONE);
+      await writeStageResult(FORECAST_STAGE_ID, S3_DONE);
       await writeStageResult("SELL-01", S6B_FAILED);
 
       const result = await updateManifest(runDir, {
@@ -164,7 +165,7 @@ describe("updateManifest", () => {
 
     it("rejects when a required stage is Blocked", async () => {
       await writeStageResult("MARKET-06", S2B_DONE);
-      await writeStageResult("S3", S3_BLOCKED);
+      await writeStageResult(FORECAST_STAGE_ID, S3_BLOCKED);
       await writeStageResult("SELL-01", S6B_DONE);
 
       const result = await updateManifest(runDir, {
@@ -176,12 +177,12 @@ describe("updateManifest", () => {
       expect(result.success).toBe(false);
       if (result.success) return;
 
-      expect(result.blocked_stages).toContain("S3");
+      expect(result.blocked_stages).toContain(FORECAST_STAGE_ID);
     });
 
     it("rejects when a required stage result is missing", async () => {
       await writeStageResult("MARKET-06", S2B_DONE);
-      await writeStageResult("S3", S3_DONE);
+      await writeStageResult(FORECAST_STAGE_ID, S3_DONE);
       // SELL-01 missing entirely
 
       const result = await updateManifest(runDir, {
@@ -198,7 +199,7 @@ describe("updateManifest", () => {
 
     it("rejects when a stage result is malformed", async () => {
       await writeStageResult("MARKET-06", S2B_DONE);
-      await writeStageResult("S3", S3_DONE);
+      await writeStageResult(FORECAST_STAGE_ID, S3_DONE);
 
       // Write malformed JSON
       const s6bDir = path.join(runDir, "stages", "SELL-01");
@@ -222,7 +223,7 @@ describe("updateManifest", () => {
 
     it("does not write manifest file when rejected", async () => {
       await writeStageResult("MARKET-06", S2B_DONE);
-      await writeStageResult("S3", S3_DONE);
+      await writeStageResult(FORECAST_STAGE_ID, S3_DONE);
       await writeStageResult("SELL-01", S6B_FAILED);
 
       await updateManifest(runDir, {
@@ -241,7 +242,7 @@ describe("updateManifest", () => {
   describe("VC-03B-03: idempotent re-derivation", () => {
     it("produces identical manifests on repeated invocation", async () => {
       await writeStageResult("MARKET-06", S2B_DONE);
-      await writeStageResult("S3", S3_DONE);
+      await writeStageResult(FORECAST_STAGE_ID, S3_DONE);
       await writeStageResult("SELL-01", S6B_DONE);
 
       const opts = {
@@ -271,7 +272,7 @@ describe("updateManifest", () => {
 
     it("sorts artifact keys alphabetically for deterministic output", async () => {
       await writeStageResult("MARKET-06", S2B_DONE);
-      await writeStageResult("S3", S3_DONE);
+      await writeStageResult(FORECAST_STAGE_ID, S3_DONE);
       await writeStageResult("SELL-01", S6B_DONE);
 
       await updateManifest(runDir, {

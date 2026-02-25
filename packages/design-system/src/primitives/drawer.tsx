@@ -4,7 +4,9 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
-import { cn } from "../utils/style";
+import { cn, overflowContainmentClass } from "../utils/style";
+
+import { type PrimitiveRadius, type PrimitiveShape, resolveShapeRadiusClass } from "./shape-radius";
 
 export const Drawer = DialogPrimitive.Root;
 export const DrawerTrigger = DialogPrimitive.Trigger;
@@ -17,6 +19,10 @@ export interface DrawerContentProps
   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
   side?: "left" | "right" | "bottom";
   width?: string | number;
+  /** Semantic content shape. Ignored when `radius` is provided. */
+  shape?: PrimitiveShape;
+  /** Explicit content radius token override. */
+  radius?: PrimitiveRadius;
 }
 
 export const DrawerContent = (
@@ -25,12 +31,19 @@ export const DrawerContent = (
     className,
     side = "right",
     width,
+    shape,
+    radius,
     style,
     ...props
   }: DrawerContentProps & {
     ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Content>>;
   }
 ) => {
+  const contentShapeRadiusClass = resolveShapeRadiusClass({
+    shape,
+    radius,
+    defaultRadius: "none",
+  });
   const widthClass = typeof width === "string" ? width : undefined;
   const inlineStyle =
     typeof width === "number" ? ({ width, maxWidth: "100%" } as React.CSSProperties) : ({} as React.CSSProperties);
@@ -46,7 +59,15 @@ export const DrawerContent = (
   return (
     <DialogPrimitive.Content
       ref={ref}
-      className={cn("bg-panel text-foreground", common, sideClass, widthClass, className)} // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+      className={cn(
+        "bg-panel text-foreground",
+        overflowContainmentClass("dialogContent"),
+        common,
+        sideClass,
+        contentShapeRadiusClass,
+        widthClass,
+        className
+      )} // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       style={{ ...inlineStyle, ...style }}
       {...props}
     />

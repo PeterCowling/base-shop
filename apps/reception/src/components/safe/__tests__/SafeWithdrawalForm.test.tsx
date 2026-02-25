@@ -67,15 +67,13 @@ describe("SafeWithdrawalForm", () => {
     expect(onConfirm).not.toHaveBeenCalled();
   });
 
-  it("applies dark mode styles", async () => {
+  it("applies token-based theme styles", async () => {
     render(
-      <div className="dark">
-        <SafeWithdrawalForm onConfirm={jest.fn().mockResolvedValue(undefined)} onCancel={jest.fn()} />
-      </div>
+      <SafeWithdrawalForm onConfirm={jest.fn().mockResolvedValue(undefined)} onCancel={jest.fn()} />
     );
     const heading = screen.getByRole("heading", { name: /withdraw cash/i });
     const container = heading.parentElement as HTMLElement;
-    expect(container).toHaveClass("dark:bg-darkSurface");
+    expect(container).toHaveClass("bg-surface");
   });
 
   it("displays errors from onConfirm", async () => {

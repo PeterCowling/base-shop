@@ -9,6 +9,7 @@ import {
   mode,
   normalizeArray,
   percentile,
+  percentileNearestRank,
   quartiles,
   range,
   skewness,
@@ -235,6 +236,33 @@ describe("Descriptive Statistics", () => {
       // h = (4-1) * 25/100 = 0.75
       // result = 1 + 0.75 * (2 - 1) = 1.75
       expect(percentile([1, 2, 3, 4], 25)).toBeCloseTo(1.75);
+    });
+  });
+
+  describe("percentileNearestRank", () => {
+    it("calculates nearest-rank percentile with decimal input", () => {
+      expect(percentileNearestRank([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0.1)).toBe(1);
+      expect(percentileNearestRank([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0.9)).toBe(9);
+    });
+
+    it("returns minimum at p=0", () => {
+      expect(percentileNearestRank([1, 2, 3, 4, 5], 0)).toBe(1);
+    });
+
+    it("returns maximum at p=1", () => {
+      expect(percentileNearestRank([1, 2, 3, 4, 5], 1)).toBe(5);
+    });
+
+    it("throws RangeError for empty array", () => {
+      expect(() => percentileNearestRank([], 0.5)).toThrow(RangeError);
+    });
+
+    it("throws RangeError for p < 0", () => {
+      expect(() => percentileNearestRank([1, 2, 3], -0.1)).toThrow(RangeError);
+    });
+
+    it("throws RangeError for p > 1", () => {
+      expect(() => percentileNearestRank([1, 2, 3], 1.1)).toThrow(RangeError);
     });
   });
 

@@ -23,7 +23,7 @@ export const setupSegmentTest = () => {
     },
   }));
 
-  jest.doMock('@acme/lib', () => ({
+  jest.doMock('@acme/lib/validateShopName', () => ({
     validateShopName,
   }));
 

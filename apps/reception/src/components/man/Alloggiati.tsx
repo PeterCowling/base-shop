@@ -3,16 +3,8 @@
 
 import { type FC, memo, useEffect, useMemo, useState } from "react";
 
-import {
-  ReceptionButton as Button,
-  ReceptionInput,
-  ReceptionTable as Table,
-  ReceptionTableBody as TableBody,
-  ReceptionTableCell as TableCell,
-  ReceptionTableHead as TableHead,
-  ReceptionTableHeader as TableHeader,
-  ReceptionTableRow as TableRow,
-} from "@acme/ui/operations";
+import { Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
 
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
 import useAlloggiatiLogs from "../../hooks/data/useAlloggiatiLogs";
@@ -290,8 +282,8 @@ const AlloggiatiComponent: FC = () => {
 
       {occupantEntries.length > 0 && (
         <div className="overflow-x-auto mt-4">
-          <Table className="table-auto w-full border border-border-2 text-sm dark:border-darkSurface">
-            <TableHeader className="bg-surface-2 border-b border-border-2 dark:border-darkSurface dark:bg-darkSurface">
+          <Table className="table-auto w-full border border-border-2 text-sm">
+            <TableHeader className="bg-surface-2 border-b border-border-2">
               <TableRow>
                 <TableHead className="py-2 px-3 text-start">Occupant ID</TableHead>
                 <TableHead className="py-2 px-3 text-start">Reservation Code</TableHead>
@@ -299,7 +291,9 @@ const AlloggiatiComponent: FC = () => {
                 <TableHead className="py-2 px-3 text-center">
                   <Button
                     onClick={handleToggleAll}
-                    className="px-3 py-2 text-sm border rounded"
+                    color="default"
+                    tone="outline"
+                    size="sm"
                   >
                     Select / Deselect All
                   </Button>
@@ -312,20 +306,20 @@ const AlloggiatiComponent: FC = () => {
                 const occupantLog = alloggiatiLogs?.[occupantId];
 
                 // Determine row styles based on occupantLog status
-                let rowClass = "border-b border-border-2 dark:border-darkSurface";
+                let rowClass = "border-b border-border-2";
                 let showCheckbox = true;
 
                 if (occupantLog?.result === "ok") {
                   // If occupant was previously successful -> green row, no checkbox
-                  rowClass += " bg-success-light dark:bg-darkSurface";
+                  rowClass += " bg-success-light";
                   showCheckbox = false;
                 } else if (occupantLog?.result === "error") {
                   // Occupant had an error -> red row, still can re-submit
-                  rowClass += " bg-error-light dark:bg-darkSurface";
+                  rowClass += " bg-error-light";
                   showCheckbox = true;
                 } else {
                   // No log: normal row, checkbox
-                  rowClass += " bg-surface dark:bg-darkSurface";
+                  rowClass += " bg-surface";
                   showCheckbox = true;
                 }
 
@@ -342,7 +336,7 @@ const AlloggiatiComponent: FC = () => {
                     <TableCell className="py-2 px-3">{occupantName}</TableCell>
                     <TableCell className="py-2 px-3 text-center">
                       {showCheckbox ? (
-                        <ReceptionInput
+                        <Input compatibilityMode="no-wrapper"
                           type="checkbox"
                           className="h-6 w-6"
                           checked={!!selectedMap[occupantId]}
@@ -359,12 +353,13 @@ const AlloggiatiComponent: FC = () => {
       )}
 
       {/* Send Section */}
-      <div className="mt-6 p-3 border border-border-2 rounded dark:border-darkSurface">
+      <div className="mt-6 p-3 border border-border-2 rounded">
         <h3 className="font-semibold mb-2">Send to Alloggiati Web Service</h3>
 
         <Button
           onClick={handleSendAlloggiati}
-          className="px-3 py-2 bg-info-main text-primary-fg rounded"
+          color="info"
+          tone="solid"
           disabled={isLoading || isSendLoading}
         >
           {isSendLoading ? "Sending..." : "Send Occupants"}

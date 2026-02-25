@@ -131,6 +131,35 @@ export const Uncontrolled: Story = {
   },
 };
 
+function CompactDensityExample() {
+  const [value, setValue] = useState("");
+
+  return (
+    <div className="w-80">
+      <Combobox value={value} onValueChange={setValue}>
+        <ComboboxTrigger density="compact">
+          {value
+            ? frameworks.find((fw) => fw.value === value)?.label
+            : "Select compact option..."}
+        </ComboboxTrigger>
+        <ComboboxContent>
+          <ComboboxInput density="compact" placeholder="Search frameworks..." />
+          {frameworks.map((framework) => (
+            <ComboboxItem key={framework.value} value={framework.value} density="compact">
+              {framework.label}
+            </ComboboxItem>
+          ))}
+          <ComboboxEmpty>No framework found.</ComboboxEmpty>
+        </ComboboxContent>
+      </Combobox>
+    </div>
+  );
+}
+
+export const CompactDensity: Story = {
+  render: () => <CompactDensityExample />,
+};
+
 function CustomEmptyExample() {
   const [value, setValue] = useState("");
 

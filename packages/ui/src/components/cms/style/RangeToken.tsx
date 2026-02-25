@@ -5,7 +5,7 @@ import { type ReactElement } from "react";
 import { useTranslations } from "@acme/i18n";
 
 import type { TokenInfo } from "../../../hooks/useTokenEditor";
-import { RangeInput } from "../index";
+import { RangeInput } from "../RangeInput";
 
 interface RangeTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: TokenInfo["key"];

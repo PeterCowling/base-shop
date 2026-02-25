@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { formatTimestamp } from "@acme/date-utils";
 import { useTranslations } from "@acme/i18n";
 import { useToast } from "@acme/ui/operations";
 
@@ -18,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/atoms/shadcn";
+import { formatTimestamp } from "@/lib/datetime";
 
 interface AuditRecord {
   timestamp: string;

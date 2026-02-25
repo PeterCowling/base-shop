@@ -5,7 +5,7 @@ import { ensureShopAccess } from "@cms/actions/common/auth";
 import path from "path";
 import { z } from "zod";
 
-import { validateShopName } from "@acme/lib";
+import { validateShopName } from "@acme/lib/validateShopName";
 import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 
 import { writeJsonFile } from "@/lib/server/jsonIO";

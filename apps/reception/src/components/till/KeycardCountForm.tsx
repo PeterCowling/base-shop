@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 import { z } from "zod";
 
-import { ReceptionInput } from "@acme/ui/operations";
+import { Input } from "@acme/design-system";
 
 import { showToast } from "../../utils/toastUtils";
 import { DifferenceBadge } from "../common/DifferenceBadge";
@@ -41,21 +41,21 @@ export const KeycardCountForm = memo(function KeycardCountForm({
       title="Count Keycards"
       borderColor="border-warning-main"
       onClose={onCancel}
-      className="dark:bg-darkSurface"
     >
       <div className="mb-4 flex items-center gap-2">
         <label htmlFor="keycardCount" className="font-semibold">
           Count
         </label>
-        <ReceptionInput
+        <Input
+          compatibilityMode="no-wrapper"
           id="keycardCount"
           type="number"
           value={countInput}
           onChange={(e) => setCountInput(e.target.value)}
-          className="border rounded p-1 w-24 dark:bg-darkBg dark:text-darkAccentGreen"
+          className="border rounded p-1 w-24"
         />
       </div>
-      <div className="text-sm text-warning-main text-end mb-2 dark:text-darkAccentGreen">
+      <div className="text-sm text-warning-main text-end mb-2">
         Expected: {expectedCount} &nbsp;
         <DifferenceBadge value={diff} />
       </div>
@@ -63,7 +63,7 @@ export const KeycardCountForm = memo(function KeycardCountForm({
         onCancel={onCancel}
         onConfirm={handleConfirm}
         confirmText="Go"
-        confirmClassName="px-4 py-2 bg-warning-main text-primary-fg rounded hover:bg-warning-dark dark:bg-darkAccentGreen dark:text-darkBg"
+        confirmColor="warning"
         hideCancel={hideCancel}
       />
     </FormContainer>

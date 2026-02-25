@@ -3,7 +3,7 @@ import fs from "fs/promises";
 import path from "path";
 
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { validateShopName } from "@acme/lib";
+import { validateShopName } from "@acme/lib/validateShopName";
 import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 
 import { writeJsonFile } from "@/lib/server/jsonIO";
@@ -15,6 +15,9 @@ interface Body {
   description: string;
 }
 
+const generateMetaModuleId =
+  process.env.ACME_LIB_GENERATE_META_MODULE_ID || "@acme/lib/generateMeta";
+
 export async function POST(req: NextRequest) {
   const t = await getServerTranslations("en");
   const body = (await req.json().catch(() => ({}))) as Partial<Body>;
@@ -25,7 +28,9 @@ export async function POST(req: NextRequest) {
   const shop = validateShopName(body.shop);
 
   // i18n-exempt -- CMS-2652 [ttl=2026-01-01] non-UI module specifier
-  const { generateMeta } = await import("@acme/lib/generateMeta");
+  const { generateMeta } = (await import(
+    generateMetaModuleId
+  )) as typeof import("@acme/lib/generateMeta");
 
   const result = await generateMeta({
     id: body.id,

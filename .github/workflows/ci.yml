@@ -309,8 +309,10 @@ jobs:
           echo "TURBO_SCM_HEAD=${{ github.sha }}" >> "$GITHUB_ENV"
       - name: Typecheck (affected workspaces)
         run: pnpm exec turbo run typecheck --affected
-      - name: Build guide-system for downstream type resolution
-        run: pnpm --filter @acme/guide-system build
+      - name: Build workspace deps for downstream type resolution
+        run: |
+          pnpm --filter @acme/guide-system build
+          pnpm --filter @themes/base build
       - name: Typecheck tests (Phase-1 + Phase-4 + Phase-5 packages + apps/cms)
         run: |
           set -e

@@ -1,7 +1,7 @@
 ---
 Type: Checklist
 Schema: lp-do-ideas-go-live-checklist
-Version: 1.1.0
+Version: 1.2.0
 Status: Active
 Created: 2026-02-24
 Owner: startup-loop maintainers
@@ -188,6 +188,36 @@ across outcome (`DO`) and system-hardening (`IMPROVE`) work.
 
 ---
 
+## Section I: Payload Quality Prerequisites
+
+Payload quality gate — ensures operator-authored `why` and `intended_outcome` fields
+are present in a meaningful fraction of dispatches before live activation. This gate
+prevents premature activation where the Build Summary `why`/`intended_outcome` fill
+rate remains structurally low despite the v2 schema being deployed.
+
+**Definitions**:
+- `operator-authored why` = Build Summary rows where `why_source = "operator"` (not `"auto"`, `"heuristic"`, or `"compat-v1"`)
+- `complete v2 outcome contract` = dispatch packet with `schema_version: "dispatch.v2"`, non-empty `why`, and `intended_outcome.statement` not a template placeholder
+- `build-reflect cycle` = a build completed with a `build-event.json` emitted AND a `results-review.user.md` with `## Intended Outcome Check` section containing a `Verdict:` line
+
+**How to compute**:
+```
+operator_authored_why_pct = (rows with why_source="operator" / total rows) × 100%
+v2_outcome_contract_pct   = (dispatches with complete v2 contract / dispatches in last 14 days) × 100%
+```
+
+| Item | Check |
+|---|---|
+| `% Build Summary rows with operator-authored why >= 50%` (rows with `why_source: "operator"`) | `[ ]` |
+| `% dispatches with complete v2 outcome contract >= 80%` over last 14 days | `[ ]` |
+| At least one full build-reflect cycle completed: `build-event.json` emitted AND `results-review.user.md` has `## Intended Outcome Check` with a `Verdict:` line | `[ ]` |
+
+**Evidence**: **NO-GO (expected)**: dispatch.v2 schema is newly deployed. No dispatches with operator-authored `why`/`intended_outcome` have been processed yet. This gate will become checkable after the first full v2 dispatch cycle completes and a `results-review.user.md` with `Intended Outcome Check` is filed.
+
+**Thresholds**: The 50% / 80% thresholds above are starter values. Operator may adjust them before activation based on business scope. Record any adjustments with rationale in the activation sign-off notes below.
+
+---
+
 ## Sign-Off
 
 Activation is authorised only when all items above are checked and this section
@@ -211,9 +241,10 @@ is completed by the designated approver.
 > - Section E: `live/standing-registry.json` not yet created (requires operator artifact review)
 > - Section F: `trial-policy-decision.md` not yet updated (premature until KPI prerequisites met)
 > - Section H: Per-lane WIP caps not configured; aging promotion not formally validated
+> - Section I: No v2 dispatches processed yet; payload quality evidence not yet collected
 >
 > **Next step**: Begin live advisory operation (the hook is ready; wire into `/lp-weekly`).
-> Collect 14+ days of dispatch evidence. Then revisit this checklist.
+> Collect 14+ days of dispatch evidence with v2 dispatch packets. Then revisit this checklist.
 >
 > `[ ] I confirm all items above are checked. lp-do-ideas live mode activation is authorised.`
 
@@ -225,3 +256,4 @@ is completed by the designated approver.
 |---|---|---|
 | 1.0.0 | 2026-02-24 | Initial checklist — all items unchecked (pre-activation) |
 | 1.1.0 | 2026-02-25 | Added evidence for completed sections D, G; NO-GO decision recorded; Sections A–C, E (partial), F (partial), H (partial) carry rationale |
+| 1.2.0 | 2026-02-25 | Added Section I: Payload Quality Prerequisites (dispatch.v2 why/intended_outcome fill-rate gate); updated activation decision to include Section I NO-GO |

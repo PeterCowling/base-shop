@@ -14,6 +14,7 @@ import {
   ensureTrailingSlash,
   type HtmlLinkDescriptor,
 } from "@/utils/seo";
+import { buildArticlePayload } from "@/utils/seo/jsonld/article";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld/serialize";
 
 // Set up supported languages for test (same as seo.test.ts)
@@ -146,4 +147,52 @@ describe("SEO Extraction: full suite regression", () => {
   // TC-07: Full Brikette test suite passes
   // Validated by: pnpm --filter brikette test (all 3 CI shards)
   test.todo("full Brikette test suite passes after extraction");
+});
+
+describe("Article JSON-LD: datePublished contract (SEO-datePublished-01)", () => {
+  // TC-06: Guide with lastUpdated → Article JSON-LD contains datePublished = lastUpdated
+  //        and dateModified = lastUpdated.
+  test("TC-06: guide fixture with lastUpdated emits datePublished and dateModified", () => {
+    const payload = buildArticlePayload({
+      headline: "Arienzo Beach Guide",
+      description: "How to visit Arienzo beach from Positano.",
+      lang: "en",
+      url: "https://hostel-positano.com/en/experiences/arienzo-beach-guide",
+      datePublished: "2024-12-01",
+      dateModified: "2024-12-01",
+    });
+    expect(payload).not.toBeNull();
+    expect(payload?.["datePublished"]).toBe("2024-12-01");
+    expect(payload?.["dateModified"]).toBe("2024-12-01");
+  });
+
+  // TC-07: Guide without lastUpdated → Article JSON-LD does NOT include datePublished or dateModified.
+  // Backward compatibility preserved for guides without an authoritative date.
+  test("TC-07: guide fixture without lastUpdated omits datePublished and dateModified", () => {
+    const payload = buildArticlePayload({
+      headline: "Arienzo Beach Guide",
+      description: "How to visit Arienzo beach from Positano.",
+      lang: "en",
+      url: "https://hostel-positano.com/en/experiences/arienzo-beach-guide",
+    });
+    expect(payload).not.toBeNull();
+    expect(payload).not.toHaveProperty("datePublished");
+    expect(payload).not.toHaveProperty("dateModified");
+  });
+
+  // TC-06b: Empty string lastUpdated is treated as absent (no empty field emitted).
+  test("TC-06b: empty string lastUpdated does not emit datePublished or dateModified", () => {
+    const payload = buildArticlePayload({
+      headline: "Arienzo Beach Guide",
+      description: "How to visit Arienzo beach from Positano.",
+      lang: "en",
+      url: "https://hostel-positano.com/en/experiences/arienzo-beach-guide",
+      datePublished: "",
+      dateModified: "",
+    });
+    expect(payload).not.toBeNull();
+    // buildArticlePayload uses conditional spread: only emits when truthy
+    expect(payload).not.toHaveProperty("datePublished");
+    expect(payload).not.toHaveProperty("dateModified");
+  });
 });

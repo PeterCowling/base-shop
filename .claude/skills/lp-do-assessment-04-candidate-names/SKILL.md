@@ -1,11 +1,11 @@
 ---
 name: lp-do-assessment-04-candidate-names
-description: Full naming pipeline orchestrator (ASSESSMENT-04). Runs four parts in sequence: (1) produce <YYYY-MM-DD>-naming-generation-spec.md from ASSESSMENT docs, (2) agent generates 250 scored candidates, (3) RDAP batch check all .com domains, (4) filter to available names and produce ranked shortlist. Delivers a final operator-ready shortlist of domain-verified, scored brand name candidates.
+description: Full naming pipeline orchestrator (ASSESSMENT-04). Runs four parts in sequence: (1) produce <YYYY-MM-DD>-naming-generation-spec.md from ASSESSMENT docs, (2) agent generates 250 scored candidates, (3) TM pre-screen via tm-prescreen-cli.ts, (4) rank all candidates by score and produce shortlist. Delivers a final operator-ready shortlist of scored brand name candidates with TM direction provided.
 ---
 
 # lp-do-assessment-04-candidate-names — Candidate Names Pipeline (ASSESSMENT-04)
 
-Orchestrates the complete four-part naming pipeline from a standing start to a domain-verified, ranked shortlist. The operator receives a shortlist where every name has a confirmed available .com and a multi-dimension quality score.
+Orchestrates the complete four-part naming pipeline from a standing start to a TM-direction-provided, ranked shortlist. The operator receives a shortlist where every name has a multi-dimension quality score and TM pre-screen direction.
 
 ## When to use
 
@@ -25,8 +25,8 @@ Rerunnable. If a spec and/or candidates file already exist from a prior round, t
 |------|------|--------------|------|
 | 1 | **Spec** | Read ASSESSMENT docs → write `<YYYY-MM-DD>-naming-generation-spec.md` | Invoke `lp-do-assessment-05-name-selection` |
 | 2 | **Generate** | Read spec → generate 250 scored candidates → write `naming-candidates-<date>.md` | Spawn general-purpose agent |
-| 3 | **RDAP check** | Batch-check all .com domains → write `naming-rdap-<date>.txt` | Bash |
-| 4 | **Rank** | Filter to available → sort by score → write `naming-shortlist-<date>.user.md` | Inline |
+| 3 | **TM pre-screen** | Run `tm-prescreen-cli.ts` on all candidates → write `naming-tm-<date>.txt` | Bash |
+| 4 | **Rank** | Sort all candidates by score → write `naming-shortlist-<date>.user.md` | Inline |
 | 5 | **Render HTML** | Convert shortlist + research context → write `naming-shortlist-<date>.user.html` | Inline |
 
 All five parts run sequentially. Each part gates on the output of the prior part.
@@ -57,62 +57,50 @@ Gate: `naming-candidates-<date>.md` exists with ≥ 240 rows.
 
 ---
 
-### Part 3 — RDAP batch check
+### Part 3 — TM pre-screen
 
-Extract all names from the candidates file into a plain list. For Pattern D entries, use the **domain string** (e.g. `torevaco`), not the spoken name.
-
-Run the following bash loop:
+Extract all names from the candidates file into a plain list, then run `tm-prescreen-cli.ts` to generate TM direction URLs for each candidate.
 
 ```bash
 DATE=$(date +%Y-%m-%d)
 BIZ="<BIZ>"
 CANDIDATES="docs/business-os/strategy/${BIZ}/naming-candidates-${DATE}.md"
-OUT="docs/business-os/strategy/${BIZ}/naming-rdap-${DATE}.txt"
 
 # Extract names from the # | Name column (col 2) of the markdown table
-# For Pattern D rows, extract domain string from col 5 instead
 grep "^|" "$CANDIDATES" \
   | tail -n +3 \
   | awk -F'|' '{
-      gsub(/^ +| +$/, "", $3);   # Pattern col
       gsub(/^ +| +$/, "", $2);   # Name col
-      gsub(/^ +| +$/, "", $6);   # Domain string col
-      if ($3 == "D" && $6 != "") print $6;
-      else print $2
     }' \
-  | grep -v "^$\|^Name$\|^Spoken" \
-  > /tmp/hbag_names.txt
+  | grep -v "^$\|^Name$" \
+  > /tmp/brand_names.txt
 
-while IFS= read -r name; do
-  name_lower=$(echo "$name" | tr '[:upper:]' '[:lower:]' | tr -d ' ')
-  status=$(curl -s -o /dev/null -w "%{http_code}" \
-    "https://rdap.verisign.com/com/v1/domain/${name_lower}.com")
-  if [ "$status" = "404" ]; then
-    echo "AVAILABLE $name"
-  elif [ "$status" = "200" ]; then
-    echo "TAKEN     $name"
-  else
-    echo "UNKNOWN($status) $name"
-  fi
-done < /tmp/hbag_names.txt | tee "$OUT"
-
-echo ""
-echo "Available count: $(grep -c '^AVAILABLE' "$OUT")"
-echo "Taken count:     $(grep -c '^TAKEN' "$OUT")"
+TM_SIDECAR_DIR="docs/business-os/strategy/<BIZ>/naming-sidecars" \
+TM_BUSINESS="<BIZ>" \
+TM_ROUND="<N>" \
+TM_NICE_CLASSES="35,25,26" \
+cat /tmp/brand_names.txt | npx tsx scripts/src/startup-loop/naming/tm-prescreen-cli.ts \
+  > "docs/business-os/strategy/<BIZ>/naming-tm-${DATE}.txt"
 ```
 
-Gate: `naming-rdap-<date>.txt` exists before proceeding to Part 4.
+`TM_NICE_CLASSES` should be set based on the business type:
+- Class 35: retail services, advertising, business management (standard brand TM filing — almost always required)
+- Classes 25/26: clothing and hair accessories (typical for fashion/accessories brands)
+- Adjust per the business's product category
+
+Gate: `naming-tm-<date>.txt` exists before proceeding to Part 4.
 
 ---
 
 ### Part 4 — Rank
 
-Read the candidates table and the RDAP results file. Produce the final shortlist:
+Read the candidates table and rank all candidates. Produce the final shortlist:
 
-1. Filter the candidates table to rows where the name (or domain string for Pattern D) appears as `AVAILABLE` in the RDAP file
-2. Sort by Score descending
-3. For ties, sort by I (ICP resonance) descending, then alphabetically
-4. Take the top 20 as the working shortlist
+1. Sort all candidates by Score descending (no domain filter — rank all)
+2. For ties, sort by I (ICP resonance) descending, then alphabetically
+3. Take the top 20 as the working shortlist
+
+Also note: the TM direction file (`naming-tm-<date>.txt`) is available for the operator to review after the shortlist is presented.
 
 Save to `docs/business-os/strategy/<BIZ>/naming-shortlist-<YYYY-MM-DD>.user.md` with this structure:
 
@@ -122,9 +110,8 @@ Type: Naming-Shortlist
 Business-Unit: <BIZ>
 Round: <N>
 Created: <YYYY-MM-DD>
-Domain-check: RDAP via Verisign, <YYYY-MM-DD>
+TM-direction: EUIPO/WIPO/UIBM, <YYYY-MM-DD>
 Total candidates generated: 250
-Total .com available: <N>
 Presented: top 20 by score
 ---
 
@@ -141,18 +128,18 @@ Presented: top 20 by score
 | **I** | ICP resonance — would the primary buyer stop scrolling at this name? | Immediately feels like a brand they'd follow on Instagram |
 | **Score** | Sum of D + W + P + E + I | Max 25 |
 
-## Top 20 (domain-verified, ranked by score)
+## Top 20 (ranked by score)
 
-| Rank | Name | Score | D | W | P | E | I | Pattern | Domain | Provenance |
-|------|------|-------|---|---|---|---|---|---------|--------|------------|
+| Rank | Name | Score | D | W | P | E | I | Pattern | TM Status | Provenance |
+|------|------|-------|---|---|---|---|---|---------|-----------|------------|
 ...
 
-## Score distribution (available names only)
+## Score distribution (all candidates)
 - ≥ 18: N names
 - 14–17: N names
 - ≤ 13: N names
 
-## Pattern breakdown (available names only)
+## Pattern breakdown (all candidates)
 - Pattern A: N
 - Pattern B: N
 - Pattern C: N
@@ -160,7 +147,7 @@ Presented: top 20 by score
 - Pattern E: N
 
 ## Next step
-Operator reviews top 20. Select 1–3 names for registrar confirmation (standard registration price check) and TM pre-screen before committing.
+Operator reviews top 20. Review TM direction file (`naming-tm-<date>.txt`) for each name of interest. Select 1–3 names for TM pre-screen completion and professional IP advice before committing.
 
 To reject the shortlist and trigger a new round, the operator says any of:
 - "none of these work"
@@ -181,13 +168,13 @@ After Part 4 produces the `.user.md` shortlist, render a polished HTML artifact 
 
 **Required HTML structure:**
 
-- **Header band** — business name, pipeline stage label ("ASSESSMENT-04 · Naming Shortlist"), round number, date, total candidates / available count
+- **Header band** — business name, pipeline stage label ("ASSESSMENT-04 · Naming Shortlist"), round number, date, total candidates count
 - **Score key** — rendered as a visual legend (5-dot scale, one dot per dimension), not just a table
-- **Top 20 shortlist table** — each row shows: rank, name, score badge (colored by tier: 25=gold, 23-24=silver, <23=standard), individual dimension scores as filled dots, pattern label, domain string as a `monospace` chip, provenance note
+- **Top 20 shortlist table** — each row shows: rank, name, score badge (colored by tier: 25=gold, 23-24=silver, <23=standard), individual dimension scores as filled dots, pattern label, TM Status column (default: "Pending operator check"), provenance note
 - **Score distribution** — Chart.js horizontal bar chart: ≥18, 14-17, ≤13 bands
 - **Pattern breakdown** — Chart.js doughnut chart: patterns A/B/C/D/E with counts
 - **Research context** — collapsible section with naming territory analysis and competitive landscape notes, sourced from the corresponding `naming-candidates-<date>.md` summary paragraph
-- **Meta footer** — Source file, Generated timestamp, RDAP check date
+- **Meta footer** — Source file, Generated timestamp, TM direction date
 
 **Design requirements:**
 - Brand-appropriate warm palette for the business (read from `<YYYY-MM-DD>-brand-identity-dossier.user.md` if it exists — use `--accent` and `--accent-warm` CSS vars derived from brand colours; fall back to a warm terracotta/sand palette `#c4714a` / `#f5ede4` if no brand dossier)
@@ -211,8 +198,8 @@ If the pipeline is interrupted or rerun, check which parts are already complete:
 |-----------|-------------|
 | No spec exists | Part 1 |
 | Spec exists, no candidates file | Part 2 |
-| Candidates file exists, no RDAP file | Part 3 |
-| RDAP file exists, no shortlist `.md` | Part 4 |
+| Candidates file exists, no TM file | Part 3 |
+| TM file exists, no shortlist `.md` | Part 4 |
 | Shortlist `.md` exists, no `.html` | Part 5 |
 | Shortlist `.html` exists | Pipeline complete — await operator review |
 
@@ -224,12 +211,12 @@ When resuming from Part 2 after a new round (new eliminated names added to spec)
 
 A new round is triggered in two ways:
 
-**Automatically** — if the quality gate finds fewer than 10 available names with score ≥ 14 after Part 4. The pipeline cannot deliver a credible shortlist from this result.
+**Automatically** — if the quality gate finds fewer than 10 names with score ≥ 14 after Part 4. The pipeline cannot deliver a credible shortlist from this result.
 
 **User-triggered** — if the operator reviews the shortlist and rejects it (says "none of these work", "try again", "I don't like these", or equivalent). The operator may optionally say *why* (e.g. "too clinical", "wrong feel", "too similar to each other") — if they do, capture that as a **rejection note** and encode it as an additional anti-criterion in the next round's spec.
 
 **New round procedure:**
-1. Add all names from the current candidates file to §5.3 of `<YYYY-MM-DD>-naming-generation-spec.md` as eliminated (reason: "domain taken" for RDAP-failed names; "operator rejected" for RDAP-available names the operator did not want). If a rejection note was given, add it as a new bullet under §6 Anti-Criteria.
+1. Add all names from the current candidates file to §5.3 of `<YYYY-MM-DD>-naming-generation-spec.md` as eliminated (reason: "operator rejected"). If a rejection note was given, add it as a new bullet under §6 Anti-Criteria.
 2. Increment the round counter in the spec frontmatter.
 3. Re-run Parts 2–4 with a fresh date stamp. Do not re-run Part 1 unless the ICP or product has changed.
 4. Present the new shortlist to the operator.
@@ -242,12 +229,12 @@ There is no cap on the number of rounds. Each round adds all prior candidates to
 
 - [ ] `<YYYY-MM-DD>-naming-generation-spec.md` updated today
 - [ ] `naming-candidates-<date>.md` contains ≥ 240 rows with scores
-- [ ] `naming-rdap-<date>.txt` contains a result line for every name in the candidates file
-- [ ] `naming-shortlist-<date>.user.md` contains ≥ 10 AVAILABLE names with score ≥ 14
+- [ ] `naming-tm-<date>.txt` exists (TM pre-screen direction generated for all candidates)
+- [ ] `naming-shortlist-<date>.user.md` contains ≥ 10 names with score ≥ 14
 - [ ] All Pattern D entries in the shortlist list both spoken name and domain string
-- [ ] If quality gate fails (< 10 available names scoring ≥ 14): trigger new round automatically
+- [ ] If quality gate fails (< 10 names scoring ≥ 14): trigger new round automatically
 
-If the shortlist contains 0 names with score ≥ 14, or fewer than 5 available names total, trigger a new round: run Part 1 to add the current candidates to the elimination list, then re-run Parts 2–4 with a fresh date.
+If the shortlist contains 0 names with score ≥ 14, or fewer than 5 names total, trigger a new round: run Part 1 to add the current candidates to the elimination list, then re-run Parts 2–4 with a fresh date.
 
 ---
 
@@ -258,16 +245,17 @@ Present the top 10 from the shortlist inline in the conversation, preceded by th
 > **Score key:** D = Distinctiveness · W = Wordmark quality · P = Phonetics (IT+EN) · E = Expansion headroom · I = ICP resonance · Score = sum out of 25
 >
 > **Naming pipeline complete — <BIZ> Round N**
-> N domain-verified names found from 250 candidates. Top 10:
+> TM direction provided for N candidates from 250 generated. Top 10:
 >
-> | Rank | Name | Score | D | W | P | E | I | .com domain |
-> |------|------|-------|---|---|---|---|---|-------------|
-> | 1 | ... | ... | ... | ... | ... | ... | ... | available |
+> | Rank | Name | Score | D | W | P | E | I | TM Status |
+> |------|------|-------|---|---|---|---|---|-----------|
+> | 1 | ... | ... | ... | ... | ... | ... | ... | Pending operator check |
 > | ... |
 >
 > Full shortlist (top 20) saved to:
 > - `naming-shortlist-<date>.user.md` (source of truth)
 > - `naming-shortlist-<date>.user.html` (formatted view — open in browser)
+> - `naming-tm-<date>.txt` (TM pre-screen direction — EUIPO/WIPO/UIBM URLs for each name)
 >
 > To select a name, say which one. To reject and try again, say "none of these work" — optionally tell me why and I'll encode it as a constraint for the next round.
 

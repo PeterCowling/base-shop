@@ -1,11 +1,11 @@
 ---
 name: lp-do-assessment-05-name-selection
-description: Produce a <YYYY-MM-DD>-naming-generation-spec.md for a business. Reads ASSESSMENT stage docs, extracts ICP, product, brand personality, competitive set, and any prior eliminated names, then writes a fully-structured agent-executable spec that generates 250 scored candidate names. Part 1 of a 4-part naming pipeline (spec → generate → RDAP batch check → rank).
+description: Produce a <YYYY-MM-DD>-naming-generation-spec.md for a business. Reads ASSESSMENT stage docs, extracts ICP, product, brand personality, competitive set, and any prior eliminated names, then writes a fully-structured agent-executable spec that generates 250 scored candidate names. Part 1 of a 4-part naming pipeline (spec → generate → TM pre-screen direction → rank).
 ---
 
 # lp-do-assessment-05-name-selection — Name Selection (ASSESSMENT-05)
 
-Produces a `<YYYY-MM-DD>-naming-generation-spec.md` tailored to a specific business. The spec is the input to a name-generation agent that produces 250 scored candidates, which are then batch-checked for .com availability via RDAP and ranked.
+Produces a `<YYYY-MM-DD>-naming-generation-spec.md` tailored to a specific business. The spec is the input to a name-generation agent that produces 250 scored candidates, which are then run through TM pre-screen direction and ranked.
 
 This skill replaced the former naming research prompt approach (obsolete since deep research tools cannot verify domain availability).
 
@@ -23,8 +23,8 @@ This skill produces Part 1 only. The full pipeline is:
 |------|------|-------------|
 | **1 — Spec** | This skill. Reads ASSESSMENT docs, writes `<YYYY-MM-DD>-naming-generation-spec.md` | This skill |
 | **2 — Generate** | Agent reads the spec and produces 250 scored candidate names | Spawn a general-purpose agent with the spec as input |
-| **3 — RDAP batch check** | Shell loop hits `https://rdap.verisign.com/com/v1/domain/<name>.com` for all 250; 404 = available, 200 = taken | Bash tool |
-| **4 — Rank** | Filter to available names, sort by score, produce final shortlist | Agent or inline |
+| **3 — TM pre-screen** | Run `tm-prescreen-cli.ts` on all candidates; generates EUIPO/WIPO/UIBM direction URLs | Bash tool (`npx tsx scripts/src/startup-loop/naming/tm-prescreen-cli.ts`) |
+| **4 — Rank** | Sort all candidates by score, produce final shortlist | Agent or inline |
 
 ## Operating mode
 
@@ -201,24 +201,26 @@ Find a real word from a niche domain relevant to this business (see §4.2 for th
 
 ### §5. Hard blockers and elimination list
 
-#### 5.1 Domain availability gate (copy verbatim — do not rewrite)
+#### 5.1 TM pre-screen direction (copy verbatim — do not rewrite)
 
-.com availability at standard registration price is a prerequisite for shortlisting. Domain checking is a separate automated step (Part 3 of the pipeline) — the generation agent does NOT check domains. The agent generates and scores only.
+TM pre-screen is a separate step (Part 3 of the pipeline) — the generation agent does NOT check trademarks. The agent generates and scores only.
 
-**RDAP verification protocol (for Part 3):**
-1. `curl -s -o /dev/null -w "%{http_code}" "https://rdap.verisign.com/com/v1/domain/<name>.com"` — 404 = unregistered, 200 = registered
-2. For names passing step 1, confirm with a registrar (Namecheap, GoDaddy) that the domain is at standard registration price, not broker/aftermarket pricing
-3. Document: RDAP result, registrar result, date checked
+**TM pre-screen protocol (for Part 3):**
+Run `tm-prescreen-cli.ts` on the candidate list with appropriate Nice Classification classes for the business:
+- Class 35: retail services, advertising, business management (standard brand filing — almost always required)
+- Classes relevant to the product category (e.g., Class 25 clothing, Class 26 hair accessories, Class 14 jewellery)
 
-.eu and .it are desirable but secondary. .com is the only hard gate.
+The CLI generates EUIPO, WIPO GBD, and UIBM search direction URLs. The operator must visit each URL and record outcomes. A clear result in the target class does not guarantee no conflict — seek IP advice if near-matches are found.
 
-#### 5.2 Why short coinages fail (copy verbatim — do not rewrite)
+#### 5.2 Why longer coined names have stronger TM positions (copy verbatim — do not rewrite)
 
-Short pronounceable coinages (5–8 letters) with Romance-language phonotactics are almost entirely exhausted in the .com namespace. Domain investment funds systematically register every plausible 5–8 letter token with open vowels, soft consonants, and common suffixes. Three naming rounds for this business produced 80 candidates; 80/80 .com domains were taken.
+Short pronounceable coinages (5–8 letters) with Romance-language phonotactics are densely registered as trademarks in most product categories. The trademark search space for common phonetic patterns is saturated — short coined words with open vowels, soft consonants, and common suffixes are frequently already registered or too close to existing marks.
+
+Longer coined names (9–12 letters) have stronger TM distinctiveness claims and fewer conflicts. Longer, more unusual coinages score higher on the D (Distinctiveness) dimension precisely because they are less likely to overlap with the existing trademark register.
 
 **Length guidance for all patterns:**
 - Prefer 9–12 letter tokens
-- 6–8 letter tokens permitted only with Pattern D (compound domain) or Pattern E (obscure real word with verified domain)
+- 6–8 letter tokens permitted only with Pattern D (compound domain strategy) or Pattern E (obscure real word with demonstrated non-descriptiveness)
 - Do not generate 5-letter coinages
 
 #### 5.3 Eliminated names
@@ -227,9 +229,11 @@ Short pronounceable coinages (5–8 letters) with Romance-language phonotactics 
 
 Example format:
 ```
-**Round 1 (YYYY-MM-DD):** Name1 (.com taken), Name2 (.com taken), Name3 (active brand conflict)
-**Round 2 (YYYY-MM-DD):** Name4 (.com taken), Name5 (active brand conflict)
+**Round 1 (YYYY-MM-DD):** Name1 (operator rejected), Name2 (operator rejected), Name3 (active brand conflict)
+**Round 2 (YYYY-MM-DD):** Name4 (operator rejected), Name5 (TM conflict)
 ```
+
+Valid elimination reasons: "(operator rejected)", "(TM conflict)", "(active brand conflict)". Do not use "(.com taken)" as a reason — domain availability is no longer a hard gate.
 
 ---
 
@@ -266,11 +270,12 @@ After the table, write a one-paragraph summary: names per pattern, score distrib
 - [ ] §5.3 elimination list populated (or explicitly marked "None — first naming run")
 - [ ] All universal sections (§3 D/W/P/E, §4.1, §5.1, §5.2, §6) copied verbatim — no rewrites
 - [ ] Length guidance reflected in §4.1 (no 5-letter coinage instruction present)
+- [ ] §5.1 TM pre-screen direction section present (not the domain availability gate)
 - [ ] Regulatory constraints encoded in §1 "what the brand must NOT sound like" if applicable
 
 ## Completion message
 
-> "Naming generation spec ready: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-generation-spec.md`. Next: spawn a general-purpose agent with this spec as input to generate 250 scored candidates. Then run the RDAP batch check. Then filter and rank."
+> "Naming generation spec ready: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-generation-spec.md`. Next: spawn a general-purpose agent with this spec as input to generate 250 scored candidates. Then run the TM pre-screen. Then rank by score."
 
 ## Integration
 
@@ -278,15 +283,16 @@ After the table, write a one-paragraph summary: names per pattern, score distrib
 
 **Downstream — Part 2:** Spawn a general-purpose agent with the spec. Prompt: "Read `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-generation-spec.md` in full, then generate exactly 250 brand name candidates following the spec exactly. Save to `docs/business-os/strategy/<BIZ>/naming-candidates-<YYYY-MM-DD>.md`."
 
-**Downstream — Part 3 (RDAP batch):** Extract all names from the candidates file. Run:
+**Downstream — Part 3 (TM pre-screen):** Extract all names from the candidates file. Run `tm-prescreen-cli.ts` with appropriate `TM_NICE_CLASSES` for the business:
 ```bash
-while IFS= read -r name; do
-  status=$(curl -s -o /dev/null -w "%{http_code}" "https://rdap.verisign.com/com/v1/domain/${name}.com")
-  echo "$status $name"
-done < names.txt
+TM_SIDECAR_DIR="docs/business-os/strategy/<BIZ>/naming-sidecars" \
+TM_BUSINESS="<BIZ>" \
+TM_ROUND="<N>" \
+TM_NICE_CLASSES="35,25,26" \
+cat /tmp/brand_names.txt | npx tsx scripts/src/startup-loop/naming/tm-prescreen-cli.ts \
+  > "docs/business-os/strategy/<BIZ>/naming-tm-<date>.txt"
 ```
-Filter to 404s. For Pattern D names, check the domain string, not the spoken name.
 
-**Downstream — Part 4 (rank):** Filter candidates table to domain-available names only. Sort by Score descending. Present top 20 as the working shortlist for operator review. Save to `docs/business-os/strategy/<BIZ>/naming-shortlist-<YYYY-MM-DD>.user.md`.
+**Downstream — Part 4 (rank):** Sort all candidates by Score descending (no domain filter). Present top 20 as the working shortlist for operator review. Save to `docs/business-os/strategy/<BIZ>/naming-shortlist-<YYYY-MM-DD>.user.md`.
 
 **Downstream (ASSESSMENT-06):** `/lp-do-assessment-06-distribution-profiling` runs after the operator has confirmed a working name from the shortlist.

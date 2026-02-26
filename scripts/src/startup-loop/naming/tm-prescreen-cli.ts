@@ -1,11 +1,11 @@
 /**
  * tm-prescreen-cli.ts
  *
- * Reads a newline-separated list of product line name candidates from stdin,
+ * Reads a newline-separated list of name candidates from stdin,
  * generates structured TM pre-screen direction (EUIPO, WIPO GBD, and UIBM
- * search URLs for Nice Classification Classes 25 and 26), outputs the
+ * search URLs for configurable Nice Classification classes), outputs the
  * direction text to stdout, and writes sidecar events (generated +
- * tm_prescreened) for each name to the product-naming-sidecars directory.
+ * tm_prescreened) for each name to the configured sidecars directory.
  *
  * This CLI produces direction only — it makes no HTTP requests to trademark
  * registries. The operator follows the URLs to complete the search manually.
@@ -18,10 +18,13 @@
  *   docs/business-os/strategy/HEAD/product-naming-sidecars/
  *
  * Environment variable overrides (optional):
- *   TM_SIDECAR_DIR   — override default sidecar directory
- *   TM_RUN_DATE      — override default run date (YYYY-MM-DD)
- *   TM_ROUND         — override default round number (integer)
- *   TM_BUSINESS      — override default business identifier
+ *   TM_SIDECAR_DIR    — override default sidecar directory
+ *   TM_RUN_DATE       — override default run date (YYYY-MM-DD)
+ *   TM_ROUND          — override default round number (integer)
+ *   TM_BUSINESS       — override default business identifier
+ *   TM_NICE_CLASSES   — comma-separated list of Nice Classification class numbers
+ *                        (e.g. "35,25,26" for brand naming; default "25,26" for
+ *                        product line naming backward compat)
  */
 
 import * as readline from 'node:readline';
@@ -47,12 +50,30 @@ const ROUND = process.env['TM_ROUND'] != null ? parseInt(process.env['TM_ROUND']
 const BUSINESS = process.env['TM_BUSINESS'] ?? 'HEAD';
 
 /**
- * Nice Classification classes used for textile headbands as headwear and
- * hair accessories:
- *   Class 25 — Clothing, footwear, headgear (includes headbands as headwear)
- *   Class 26 — Lace, embroidery, ribbons; hair accessories; buttons
+ * Nice Classification classes to search. Configurable via TM_NICE_CLASSES env
+ * var (comma-separated list of class numbers, e.g. "35,25,26").
+ *
+ * Default "25,26" for backward compatibility with the product line naming
+ * pipeline (HEAD hairband accessories: Class 25 headgear, Class 26 hair
+ * accessories).
+ *
+ * For brand/company naming, use "35,25,26" or adjust per business category:
+ *   Class 35 — retail services, advertising, business management
+ *   Class 25 — clothing, footwear, headgear
+ *   Class 26 — lace, embroidery, ribbons, hair accessories
+ *   Class 14 — jewellery, watches, precious metals
  */
-const TM_CLASSES: readonly number[] = [25, 26];
+const TM_CLASSES: readonly number[] = (() => {
+  const raw = process.env['TM_NICE_CLASSES'];
+  if (raw != null && raw.trim().length > 0) {
+    return raw
+      .split(',')
+      .map((s) => parseInt(s.trim(), 10))
+      .filter((n) => !isNaN(n) && n >= 1 && n <= 99);
+  }
+  // Default: Classes 25 and 26 (product line naming backward compat)
+  return [25, 26];
+})();
 
 // ---------------------------------------------------------------------------
 // URL generators
@@ -163,20 +184,20 @@ function formatTmDirectionBlock(
   const classesStr = tmRecord.classes.map((c) => `Class ${c}`).join(', ');
   const lines: string[] = [
     `--- ${index}. ${name} ---`,
-    `Compound: Facilella ${name}`,
+    `Compound: ${BUSINESS} ${name}`,
     `TM classes: ${classesStr}`,
     ``,
     `EUIPO (EU trademark register — eTMview):`,
     `  ${tmRecord.euipo_url}`,
-    `  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.`,
+    `  Note: Check "Word" search for exact match + phonetic near-matches in ${classesStr}.`,
     ``,
     `WIPO Global Brand Database (cross-jurisdictional):`,
     `  ${tmRecord.wipo_url}`,
-    `  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.`,
+    `  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in ${classesStr}.`,
     ``,
     `UIBM (Italian national trademark register):`,
     `  ${tmRecord.uibm_url}`,
-    `  Manual step: Navigate to the URL, enter "${name}" in the word mark search field, filter by Classes 25 and 26.`,
+    `  Manual step: Navigate to the URL, enter "${name}" in the word mark search field, filter by ${classesStr}.`,
     ``,
     `Operator result: [ ] Clear  [ ] Conflict  [ ] Pending`,
     ``,
@@ -192,7 +213,7 @@ function formatTmDirectionOutput(
   tmRecords: TmPrescreenRecord[],
 ): string {
   const header = [
-    `TM Pre-Screen Direction — Facilella Product Naming Pipeline`,
+    `TM Pre-Screen Direction — ${BUSINESS} Naming Pipeline`,
     `Run date: ${RUN_DATE}  |  Round: ${ROUND}  |  Business: ${BUSINESS}`,
     `Candidates: ${names.length}  |  Classes checked: ${TM_CLASSES.map((c) => `Class ${c}`).join(', ')}`,
     ``,
@@ -215,12 +236,10 @@ function formatTmDirectionOutput(
     `====================================================================`,
     ``,
     `Next step: After completing searches, update the shortlist artifact`,
-    `(product-naming-shortlist-2026-02-26.user.md) with TM pre-screen results.`,
+    `(naming-shortlist-${RUN_DATE}.user.md) with TM pre-screen results.`,
     ``,
-    `Registered Nice Classification class descriptions:`,
-    `  Class 25: Clothing, footwear, headgear (includes headbands worn as headgear)`,
-    `  Class 26: Lace, embroidery, ribbons, buttons, hooks, pins, needlework;`,
-    `            hair accessories (slides, bands, clips, pins, headbands)`,
+    `Nice Classification classes searched: ${TM_CLASSES.map((c) => `Class ${c}`).join(', ')}`,
+    `(See https://www.wipo.int/classifications/nice/en/ for class descriptions)`,
     ``,
   ].join('\n');
 

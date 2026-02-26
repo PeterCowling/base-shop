@@ -1,6 +1,6 @@
 ---
 slug: brand-naming-tm-pipeline
-status: Active
+status: Archived
 foundation-gate: Pass
 build-gate: Pass
 ---
@@ -62,3 +62,4 @@ Replace RDAP domain checking with TM pre-screen in the brand/company naming pipe
 - Check if `domain_string` is required or optional
 - If required, make it optional/nullable
 - Result: `domain_string` is already nullable (`["string", "null"]`) and not in the `required` array — no change needed
+- Status: Complete (no file edit required)

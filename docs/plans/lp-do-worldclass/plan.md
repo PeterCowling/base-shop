@@ -6,7 +6,7 @@ Workstream: Operations
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
 Last-updated: 2026-02-26
-Build-progress: TASK-01 Complete, TASK-02 Complete, TASK-03 Complete, TASK-04+05 Pending
+Build-progress: TASK-01 Complete, TASK-02 Complete, TASK-03 Complete, TASK-04 Complete, TASK-05 Complete, CHECKPOINT-A Pending
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-do-worldclass
 Deliverable-Type: doc
@@ -29,8 +29,8 @@ Auto-Build-Intent: plan-only
 - [x] TASK-01: SKILL.md orchestrator
 - [x] TASK-02: worldclass-goal.template.md
 - [x] TASK-03: modules/goal-phase.md
-- [ ] TASK-04: modules/scan-phase.md
-- [ ] TASK-05: modules/ideas-phase.md
+- [x] TASK-04: modules/scan-phase.md
+- [x] TASK-05: modules/ideas-phase.md
 - [ ] CHECKPOINT-A: consistency gate
 
 ## Goals
@@ -93,8 +93,8 @@ The research prompt must be regenerated when the goal artifact's `goal_version` 
 | TASK-01 | IMPLEMENT | SKILL.md orchestrator | 85% | S | Complete (2026-02-26) | - | TASK-03 |
 | TASK-02 | IMPLEMENT | worldclass-goal.template.md | 90% | S | Complete (2026-02-26) | - | TASK-03 |
 | TASK-03 | IMPLEMENT | modules/goal-phase.md | 80% | M | Complete (2026-02-26) | TASK-01, TASK-02 | TASK-04, TASK-05 |
-| TASK-04 | IMPLEMENT | modules/scan-phase.md | 80% | L | Pending | TASK-03 | CHECKPOINT-A |
-| TASK-05 | IMPLEMENT | modules/ideas-phase.md | 80% | M | Pending | TASK-03 | CHECKPOINT-A |
+| TASK-04 | IMPLEMENT | modules/scan-phase.md | 80% | L | Complete (2026-02-26) | TASK-03 | CHECKPOINT-A |
+| TASK-05 | IMPLEMENT | modules/ideas-phase.md | 80% | M | Complete (2026-02-26) | TASK-03 | CHECKPOINT-A |
 | CHECKPOINT-A | CHECKPOINT | Consistency gate | 95% | S | Pending | TASK-04, TASK-05 | - |
 
 ## Parallelism Guide
@@ -267,8 +267,9 @@ The research prompt must be regenerated when the goal artifact's `goal_version` 
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Artifact-Destination:** `.claude/skills/lp-do-worldclass/modules/scan-phase.md`
+- **Build evidence:** Module written. VC-01 pass (all 5 data source categories present: repo Step 2a, Stripe Step 2b with `mcp__brikette__product_stats`, GA4 Step 2c with `G-[A-Z0-9]{8,12}` grep pattern, Firebase Step 2d with `.firebaserc`/`firebase.json`, Octorate Step 2e with `apps/reception/` grep). VC-02 pass (Step 3 uncertain handling: "pause and ask the operator a structured question before proceeding. Do not assume accessibility. Do not skip silently" — example questions per source, yes/no/skip response handling). VC-03 pass (Step 6 gap table has 7 columns: Domain | Gap | Current State | Threshold | Gap Classification | Evidence Source | Notes; one-row-per-gap rule explicit). VC-04 pass (Step 5 rubric documents `no-data` classification for sources not-configured or skipped and no repo evidence). VC-05 pass (Step 6 output path `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md` matches ideas-phase Step 1 input declaration). Wave 3 parallel dispatch.
 - **Reviewer:** operator
 - **Approval-Evidence:** None: verified by CHECKPOINT-A
 - **Measurement-Readiness:** None
@@ -317,8 +318,9 @@ The research prompt must be regenerated when the goal artifact's `goal_version` 
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Artifact-Destination:** `.claude/skills/lp-do-worldclass/modules/ideas-phase.md`
+- **Build evidence:** Module written. VC-01 pass (Pattern A "External evidence / artifact creation" and Pattern B "Current state vs world-class" both present with distinct current_truth and next_scope_now templates; unambiguous decision rule: Evidence Source containing repo-relative path prefix → Pattern B, otherwise → Pattern A). VC-02 pass (field checklist explicit: 14 core dispatch.v1 fields + 4 operator-idea routing fields (business, trigger, current_truth, next_scope_now) + 3 additional fields (priority, created_at, queue_state) = 21 fields total). VC-03 pass (decomposition rule: "One dispatch per gap row. Never aggregate multiple gap rows into one dispatch"; deterministic key formulas block covers anchor_key, cluster_key, cluster_fingerprint, root_event_id, dispatch_id with sha256 computation documented). VC-04 pass (Priority Mapping Table VC-04: P1 major-gap conversion-critical, P2 major-gap other + no-data, P3 minor-gap; conversion-critical domain identification rule explicit). VC-05 pass (Section "no-data gap handling (VC-05)" provides specific templates for current_truth and next_scope_now, plus priority P2, deliverable_family business-artifact, route lp-do-fact-find). Wave 3 parallel dispatch.
 - **Reviewer:** operator
 - **Approval-Evidence:** None: verified by CHECKPOINT-A
 - **Measurement-Readiness:** None

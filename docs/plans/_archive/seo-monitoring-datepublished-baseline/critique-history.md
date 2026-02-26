@@ -1,3 +1,8 @@
+---
+Type: Archived
+Status: Archived
+---
+
 # Critique History: seo-monitoring-datepublished-baseline
 
 ## Round 1 — 2026-02-26

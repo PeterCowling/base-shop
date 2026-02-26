@@ -147,7 +147,7 @@ If confidence regresses below task threshold during execution:
 
 ## Plan Completion and Archiving
 
-When all executable tasks are complete:
+When all executable tasks are complete, execute **every step below in order**. Do not emit the completion message until all steps are done and the Plan Completion Checklist is clear.
 
 1. Produce `build-record.user.md` per `docs/business-os/startup-loop/loop-output-contracts.md`.
 2. Auto-draft `results-review.user.md` using `docs/plans/_templates/results-review.user.md`; pre-fill all agent-fillable sections (Observed Outcomes stub, Standing Updates, New Idea Candidates, Standing Expansion, Intended Outcome Check). When pre-filling `## New Idea Candidates`, scan build context for signals in each category below — write `None` if no evidence found for that category:
@@ -156,12 +156,11 @@ When all executable tasks are complete:
    - New skill — recurring agent workflow ready to be codified as a named skill
    - New loop process — missing stage, gate, or feedback path in the startup loop
    - AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script
-   Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content). Regenerate process-improvements: `pnpm --filter scripts startup-loop:generate-process-improvements`.
-
-   After regenerating, for each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately.
-
-   Only mark ideas as complete if they were directly delivered by this build. Ideas that are deferred, out of scope, or earmarked for a future plan remain in the report.
-3. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
+3. Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content).
+4. Run `pnpm --filter scripts startup-loop:generate-process-improvements`. Confirm the output line `updated docs/business-os/process-improvements.user.html` appears before continuing.
+5. For each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately. Only mark ideas as complete if they were directly delivered by this build; deferred or future ideas remain in the report.
+6. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
+7. Commit all post-build artifacts (build-record, results-review, reflection-debt if produced, process-improvements, archive move) as a single commit via `scripts/agents/with-writer-lock.sh`.
 
 ## CHECKPOINT Contract
 
@@ -192,3 +191,15 @@ Stopped by gate:
 - [ ] Scope respected (or controlled expansion documented)
 - [ ] Validation evidence captured
 - [ ] Plan updated after task
+
+## Plan Completion Checklist
+
+Run through this before emitting the "Build complete" message:
+
+- [ ] `build-record.user.md` produced
+- [ ] `results-review.user.md` produced (all sections filled, including New Idea Candidates)
+- [ ] Reflection debt emitter run (`reflection-debt.user.html` produced if debt exists, skipped if none)
+- [ ] `pnpm --filter scripts startup-loop:generate-process-improvements` run and confirmed updated
+- [ ] `completed-ideas.json` checked — entries added for any ideas directly actioned by this build
+- [ ] Plan moved to `docs/plans/_archive/<slug>/` (no stale copy in active `docs/plans/`)
+- [ ] All post-build artifacts committed via writer lock

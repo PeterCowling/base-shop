@@ -53,6 +53,27 @@ Optional:
 - Prior critique reference (for delta scoring) — or read automatically from issues ledger if present
 - `--no-autofix`: suppress fix application; produce critique output only
 
+## Preflight Trust Policy
+
+CI-gated linters pre-check some structural fields. Trust linter output rather than re-auditing; re-check only when a specific conflict with a higher-precedence doc is suspected.
+
+**Trust and skip** (hard-fail in `plans-lint.ts` for lp-do-workflow plans at `docs/plans/*/plan.md`):
+- `Domain`, `Last-reviewed`, `## Active tasks` section present
+- `Execution-Track`, `Primary-Execution-Skill`, `Deliverable-Type`, `Feature-Slug`, `Workstream`
+- IMPLEMENT task completeness: Confidence section, Validation contract (TC-/VC- reference), Acceptance criteria
+
+**Still check** (warn-only or scoped — not authoritative gates):
+- `Status` enum — docs-lint warns only, does not hard-fail
+- Relates-to charter target validity — plans-lint warns only
+- `Type` header — docs-lint has explicit exceptions; check if routing looks wrong
+
+**Always check** (not covered by any linter):
+- `Supporting-Skills`, `Overall-confidence`, `Confidence-Method`
+- VC quality (isolated/pre-committed/time-boxed/diagnostic/repeatable/observable) and VC coverage ratio
+- Confidence-gated markers coherence (if Confidence column in Task Summary → `Overall-confidence` must exist)
+
+Note: plans-lint.ts planning-field checks apply only to `docs/plans/*/plan.md` (lp-do-workflow plans). For Fact-Find docs, linter coverage is minimal (Type header, Status warn-only) — all structural checks still apply.
+
 ## Auto-Detection and Schema Mode
 
 Detection order:

@@ -9,6 +9,11 @@ type PlanHeader = {
   domain: string | null;
   lastReviewed: string | null;
   relatesToCharter: string | null;
+  executionTrack: string | null;
+  primaryExecutionSkill: string | null;
+  deliverableType: string | null;
+  featureSlug: string | null;
+  workstream: string | null;
 };
 
 const ROOT = process.cwd();
@@ -30,7 +35,7 @@ async function walk(dir: string): Promise<string[]> {
 }
 
 function parseHeader(content: string): PlanHeader {
-  const lines = content.split(/\r?\n/).slice(0, 40);
+  const lines = content.split(/\r?\n/).slice(0, 60);
   const get = (prefix: string) => {
     const line = lines.find((l) => l.startsWith(prefix));
     return line ? line.slice(prefix.length).trim() || null : null;
@@ -41,7 +46,56 @@ function parseHeader(content: string): PlanHeader {
     domain: get("Domain:"),
     lastReviewed: get("Last-reviewed:"),
     relatesToCharter: get("Relates-to charter:"),
+    executionTrack: get("Execution-Track:"),
+    primaryExecutionSkill: get("Primary-Execution-Skill:"),
+    deliverableType: get("Deliverable-Type:"),
+    featureSlug: get("Feature-Slug:"),
+    workstream: get("Workstream:"),
   };
+}
+
+type TaskBlock = { id: string; body: string };
+
+function parseImplementTaskBlocks(content: string): TaskBlock[] {
+  // Split on ### headings; collect blocks whose Type field is IMPLEMENT
+  const chunks = content.split(/^(?=### )/m);
+  const blocks: TaskBlock[] = [];
+  for (const chunk of chunks) {
+    const headingMatch = chunk.match(/^### \*{0,2}([A-Z0-9-]+-\d+)/);
+    if (!headingMatch) continue;
+    // Only IMPLEMENT tasks
+    if (!/^\*{0,2}Type\*{0,2}:\s*IMPLEMENT\b/im.test(chunk)) continue;
+    blocks.push({ id: headingMatch[1], body: chunk });
+  }
+  return blocks;
+}
+
+function validateImplementTask(
+  id: string,
+  body: string,
+  rel: string,
+): string[] {
+  const errors: string[] = [];
+  if (!/^\*{0,2}Confidence\*{0,2}:/im.test(body)) {
+    errors.push(
+      `[plans-lint] ${rel}: ${id}: IMPLEMENT task missing Confidence section`,
+    );
+  }
+  // Validation contract: heading present OR at least one TC-/VC- reference
+  if (
+    !/^\*{0,2}Validation contract\*{0,2}:/im.test(body) &&
+    !/\b[TV]C-\d+/i.test(body)
+  ) {
+    errors.push(
+      `[plans-lint] ${rel}: ${id}: IMPLEMENT task missing Validation contract (no TC-/VC- reference found)`,
+    );
+  }
+  if (!/^\*{0,2}Acceptance criteria\*{0,2}:/im.test(body)) {
+    errors.push(
+      `[plans-lint] ${rel}: ${id}: IMPLEMENT task missing Acceptance criteria`,
+    );
+  }
+  return errors;
 }
 
 async function fileExists(rel: string): Promise<boolean> {
@@ -130,7 +184,7 @@ async function main() {
     if (header.type !== "Plan") continue;
 
     // Archive/historical plans are exempt from metadata completeness checks.
-    // Detected by terminal status OR path containing /historical/ or /archive/.
+    // Detected by terminal status OR path containing /historical/ or /archive/ or /_archive/.
     const terminalStatuses = new Set([
       "Historical",
       "Complete",
@@ -142,7 +196,13 @@ async function main() {
     const isTerminal =
       (header.status && terminalStatuses.has(header.status)) ||
       rel.includes("/historical/") ||
-      rel.includes("/archive/");
+      rel.includes("/archive/") ||
+      rel.includes("_archive/");
+
+    // Planning-specific checks (frontmatter fields + IMPLEMENT task completeness) apply only to
+    // modern lp-do-workflow plans at docs/plans/<slug>/plan.md. Legacy flat plans (docs/*.md,
+    // docs/cms-plan/*.md, etc.) predate this schema and are not required to carry these fields.
+    const isLpDoPlan = /^docs\/plans\/[^/]+\/plan\.md$/.test(rel);
 
     if (!isTerminal) {
       if (!header.status || !header.domain || !header.lastReviewed) {
@@ -150,6 +210,25 @@ async function main() {
           `[plans-lint] ${rel}: Plan missing Status/Domain/Last-reviewed header`,
         );
         hadError = true;
+      }
+
+      // Planning-specific frontmatter required for lp-do-workflow plans only
+      if (isLpDoPlan) {
+        const missingPlanningFields: string[] = [];
+        if (!header.executionTrack)
+          missingPlanningFields.push("Execution-Track");
+        if (!header.primaryExecutionSkill)
+          missingPlanningFields.push("Primary-Execution-Skill");
+        if (!header.deliverableType)
+          missingPlanningFields.push("Deliverable-Type");
+        if (!header.featureSlug) missingPlanningFields.push("Feature-Slug");
+        if (!header.workstream) missingPlanningFields.push("Workstream");
+        if (missingPlanningFields.length > 0) {
+          console.warn(
+            `[plans-lint] ${rel}: Plan missing planning frontmatter fields: ${missingPlanningFields.join(", ")}`,
+          );
+          hadError = true;
+        }
       }
 
       if (!header.relatesToCharter) {
@@ -167,6 +246,18 @@ async function main() {
             `[plans-lint] ${rel}: Relates-to charter does not point to a Charter/Contract doc: ${header.relatesToCharter}`,
           );
           // Treat as a warning for now; do not fail CI solely on this.
+        }
+      }
+
+      // IMPLEMENT task structural completeness — lp-do-workflow plans only
+      if (isLpDoPlan) {
+        const implTasks = parseImplementTaskBlocks(content);
+        for (const task of implTasks) {
+          const errs = validateImplementTask(task.id, task.body, rel);
+          if (errs.length) {
+            hadError = true;
+            errs.forEach((e) => console.warn(e));
+          }
         }
       }
     }

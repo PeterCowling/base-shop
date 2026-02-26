@@ -5,7 +5,7 @@ Domain: Products
 Workstream: Engineering
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
-Last-updated: 2026-02-26 (Wave 1 complete: TASK-01, TASK-02, TASK-08)
+Last-updated: 2026-02-26 (Wave 2 complete: TASK-03)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: caryina-catalog-cart
 Deliverable-Type: multi-deliverable
@@ -28,7 +28,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 
 - [x] TASK-01: Configure Caryina for Cloudflare Worker build
 - [x] TASK-02: Add stock badge to PLP and PDP
-- [ ] TASK-03: Admin auth middleware and login route
+- [x] TASK-03: Admin auth middleware and login route
 - [ ] TASK-04: Product and inventory CRUD API routes
 - [ ] TASK-05: Admin product list and create/edit form pages
 - [ ] TASK-06: Admin inventory quantity edit
@@ -105,8 +105,8 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 |---|---|---:|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Worker build config | 80% | S | Complete (2026-02-26) | — | TASK-03, TASK-09 |
 | TASK-02 | IMPLEMENT | Stock badge (PLP + PDP) | 80% | S | Complete (2026-02-26) | — | — |
-| TASK-03 | IMPLEMENT | Admin auth middleware + login | 75% | S | Pending | TASK-01 ✓ | TASK-04 |
-| TASK-04 | IMPLEMENT | Product + inventory CRUD API routes | 80% | M | Pending | TASK-03 | TASK-05, TASK-06 |
+| TASK-03 | IMPLEMENT | Admin auth middleware + login | 75% | S | Complete (2026-02-26) | TASK-01 ✓ | TASK-04 |
+| TASK-04 | IMPLEMENT | Product + inventory CRUD API routes | 80% | M | Pending | TASK-03 ✓ | TASK-05, TASK-06 |
 | TASK-05 | IMPLEMENT | Admin product list + create/edit form | 75% | M | Pending | TASK-04 | TASK-07 |
 | TASK-06 | IMPLEMENT | Admin inventory quantity edit | 80% | S | Pending | TASK-04 | TASK-07 |
 | TASK-07 | CHECKPOINT | Admin workstream verified | 95% | S | Pending | TASK-05, TASK-06 | TASK-09 |
@@ -121,7 +121,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
 | 1 | TASK-01, TASK-02, TASK-08 | None | ✓ Complete 2026-02-26 |
-| 2 | TASK-03 | TASK-01 ✓ | Admin auth gates all admin work |
+| 2 | TASK-03 | TASK-01 ✓ | ✓ Complete 2026-02-26 |
 | 3 | TASK-04 | TASK-03 ✓ | CRUD API routes before admin pages |
 | 4 | TASK-05, TASK-06 | TASK-04 ✓ | Admin list/form + inventory edit in parallel |
 | 5 | TASK-07 (CHECKPOINT) | TASK-05 ✓, TASK-06 ✓ | Verify admin end-to-end; triggers /lp-do-replan |
@@ -246,9 +246,18 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** `apps/caryina/src/middleware.ts` (new), `apps/caryina/src/app/admin/api/auth/route.ts` (new), `apps/caryina/src/app/admin/login/page.tsx` (new)
-- **Depends on:** TASK-01
+- **Status:** Complete (2026-02-26)
+- **Build evidence:**
+  - Created `adminAuth.ts`: Web Crypto HMAC-SHA256 `signAdminSession`/`verifyAdminSession`/`compareAdminKey`. `getSubtle()` helper falls back to `require('node:crypto').webcrypto.subtle` in jsdom (safe because `wrangler.toml` has `nodejs_compat`). `ADMIN_SESSION_MAX_AGE = 3600` (1 hour). Cookie name `admin_session`; HttpOnly, Secure, SameSite=Strict.
+  - Created `middleware.ts`: matches `/admin/:path*` via config.matcher; excludes `/admin/login` and `/admin/api/auth*` with pathname check; redirects unauthenticated to `/admin/login?redirect=<path>`; returns 500 when `CARYINA_ADMIN_KEY` env var absent.
+  - Created `admin/api/auth/route.ts`: POST handler; validates `{ key }` body against `CARYINA_ADMIN_KEY` via constant-time comparison; signs HMAC session token; sets HttpOnly cookie; returns 401 on wrong key, 500 on missing env var.
+  - Created `admin/login/page.tsx`: `"use client"` component; Suspense boundary for `useSearchParams`; submits to `/admin/api/auth`; redirects on success; error display.
+  - 14 tests: 9 unit (sign/verify/compare including wrong-key, tampered, malformed token) + 5 route handler (TC-02 200+cookie, TC-03 401, TC-04 500, 400 cases). All 43 caryina tests pass.
+  - Scope expansion: added `apps/caryina/src/lib/adminAuth.ts` and test files to `Affects`.
+  - Unexpected finding: jsdom exposes partial `crypto` object without `subtle` — fixed via `getSubtle()` fallback in `adminAuth.ts`.
+  - Commit: d5d37f0bfe
+- **Affects:** `apps/caryina/src/middleware.ts` (new), `apps/caryina/src/app/admin/api/auth/route.ts` (new), `apps/caryina/src/app/admin/login/page.tsx` (new), `apps/caryina/src/lib/adminAuth.ts` (new)
+- **Depends on:** TASK-01 ✓
 - **Blocks:** TASK-04
 - **Confidence:** 75%
   - Implementation: 75% — xa-b admin pattern confirmed (`accessAdmin.ts`, HttpOnly cookie). Key uncertainty: the HMAC implementation must use Web Crypto API (not Node.js `crypto` module) for Cloudflare Worker runtime compatibility. Web Crypto is standard but the exact signing pattern needs to be confirmed against xa-b's implementation.

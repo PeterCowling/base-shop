@@ -4,7 +4,7 @@
 /*  No side-effects, no throws — always returns a discriminated-union result. */
 /* -------------------------------------------------------------------------- */
 
-import { isValidMinStayRange } from "@/utils/bookingDateRules";
+import { isValidPax, isValidStayRange } from "@/utils/bookingDateRules";
 
 const OCTORATE_BASE = "https://book.octorate.com/octobook/site/reservation";
 
@@ -62,7 +62,7 @@ export function buildOctorateUrl(
 
   // Guard: dates must be non-empty strings in YYYY-MM-DD format
   const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-  if (!datePattern.test(checkin) || !datePattern.test(checkout) || !isValidMinStayRange(checkin, checkout)) {
+  if (!datePattern.test(checkin) || !datePattern.test(checkout) || !isValidStayRange(checkin, checkout) || !isValidPax(pax)) {
     return { ok: false, error: "invalid_dates" };
   }
 

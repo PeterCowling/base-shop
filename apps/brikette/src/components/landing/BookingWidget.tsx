@@ -14,7 +14,8 @@ import type { AppLanguage } from "@/i18n.config";
 import {
   ensureMinCheckoutForStay,
   getMinCheckoutForStay,
-  isValidMinStayRange,
+  isValidPax,
+  isValidStayRange,
 } from "@/utils/bookingDateRules";
 import { fireCtaClick } from "@/utils/ga4-events";
 
@@ -117,7 +118,7 @@ const BookingWidget = memo(function BookingWidget({
 
   const invalidRange = (() => {
     if (!checkIn || !checkOut) return false;
-    return !isValidMinStayRange(checkIn, checkOut);
+    return !isValidStayRange(checkIn, checkOut) || !isValidPax(guests);
   })();
 
   const fallbackAvailabilityLabel = tModals("booking.buttonAvailability") as string;

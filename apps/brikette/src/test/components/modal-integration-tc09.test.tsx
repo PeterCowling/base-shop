@@ -167,6 +167,25 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
     // Error alert is shown.
     expect(screen.getByRole("alert")).toBeInTheDocument();
   });
+
+  it("does not navigate when pax exceeds maximum", () => {
+    render(<BookingWidget />);
+
+    fireEvent.change(screen.getByLabelText("booking.checkInLabel"), {
+      target: { value: "2025-06-05" },
+    });
+    fireEvent.change(screen.getByLabelText("booking.checkOutLabel"), {
+      target: { value: "2025-06-09" },
+    });
+    fireEvent.change(screen.getByLabelText("booking.guestsLabel"), {
+      target: { value: "9" },
+    });
+
+    fireEvent.click(screen.getByRole("button"));
+
+    expect(mockPush).not.toHaveBeenCalled();
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+  });
 });
 
 // ---------------------------------------------------------------------------

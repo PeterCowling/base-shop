@@ -22,7 +22,8 @@ import type { AppLanguage } from "@/i18n.config";
 import {
   ensureMinCheckoutForStay,
   getMinCheckoutForStay,
-  isValidMinStayRange,
+  isValidPax,
+  isValidStayRange,
 } from "@/utils/bookingDateRules";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { fireSearchAvailability, fireViewItemList } from "@/utils/ga4-events";
@@ -65,8 +66,8 @@ function writeCanonicalBookingQuery(next: { checkin: string; checkout: string; p
   window.history.replaceState(null, "", url.toString());
 }
 
-function isValidSearch(checkIn: string, checkOut: string): boolean {
-  return checkIn.length > 0 && checkOut.length > 0 && isValidMinStayRange(checkIn, checkOut);
+function isValidSearch(checkIn: string, checkOut: string, pax: number): boolean {
+  return checkIn.length > 0 && checkOut.length > 0 && isValidStayRange(checkIn, checkOut) && isValidPax(pax);
 }
 
 function BookPageContent({ lang }: Props): JSX.Element {
@@ -96,7 +97,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
   // Only fire on mount when the user explicitly provided checkin/checkout in the URL.
   const hasValidCheckinParam = (params?.get("checkin") ?? "") === initialCheckin;
   const mountedSearchRef = useRef(
-    hasValidCheckinParam && params?.has("checkout") && isValidSearch(initialCheckin, initialCheckout)
+    hasValidCheckinParam && params?.has("checkout") && isValidSearch(initialCheckin, initialCheckout, initialPax)
       ? { checkin: initialCheckin, checkout: initialCheckout, pax: initialPax }
       : null,
   );
@@ -118,13 +119,13 @@ function BookPageContent({ lang }: Props): JSX.Element {
   );
 
   const roomQueryState = useMemo<"valid" | "invalid">(
-    () => (isValidSearch(checkin, checkout) ? "valid" : "invalid"),
-    [checkin, checkout],
+    () => (isValidSearch(checkin, checkout, pax) ? "valid" : "invalid"),
+    [checkin, checkout, pax],
   );
 
   // TC-01: fire search_availability when dates/pax change; debounced + deduped.
   useEffect(() => {
-    if (!isValidSearch(checkin, checkout)) return;
+    if (!isValidSearch(checkin, checkout, pax)) return;
     const key = `${checkin}|${checkout}|${pax}`;
     if (lastSearchKeyRef.current === key) return;
     const timer = window.setTimeout(() => {

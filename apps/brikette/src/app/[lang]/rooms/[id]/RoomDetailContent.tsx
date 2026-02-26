@@ -23,7 +23,8 @@ import { guideHref } from "@/routes.guides-helpers";
 import {
   ensureMinCheckoutForStay,
   getMinCheckoutForStay,
-  isValidMinStayRange,
+  isValidPax,
+  isValidStayRange,
 } from "@/utils/bookingDateRules";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { buildRoomItem, fireViewItem } from "@/utils/ga4-events";
@@ -211,7 +212,7 @@ function parseBookingQuery(
   const adults = Number.isFinite(adultsRaw) && adultsRaw > 0 ? adultsRaw : 1;
   const hasCheckIn = Boolean(checkInParam) && checkInParam === checkIn;
   const queryState: "valid" | "absent" =
-    hasCheckIn && checkIn >= todayIso && isValidMinStayRange(checkIn, checkOut)
+    hasCheckIn && checkIn >= todayIso && isValidStayRange(checkIn, checkOut) && isValidPax(adults)
       ? "valid"
       : "absent";
   return { checkIn, checkOut, adults, queryState };

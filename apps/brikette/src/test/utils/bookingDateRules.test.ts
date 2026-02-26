@@ -2,14 +2,29 @@ import "@testing-library/jest-dom";
 
 import {
   ensureMinCheckoutForStay,
+  getMaxCheckoutForStay,
   getMinCheckoutForStay,
+  HOSTEL_MAX_PAX,
+  HOSTEL_MAX_STAY_NIGHTS,
+  HOSTEL_MIN_PAX,
   HOSTEL_MIN_STAY_NIGHTS,
   isValidMinStayRange,
+  isValidPax,
+  isValidStayRange,
 } from "@/utils/bookingDateRules";
 
 describe("bookingDateRules", () => {
   it("uses a two-night minimum stay", () => {
     expect(HOSTEL_MIN_STAY_NIGHTS).toBe(2);
+  });
+
+  it("uses an eight-night maximum stay", () => {
+    expect(HOSTEL_MAX_STAY_NIGHTS).toBe(8);
+  });
+
+  it("uses pax bounds 1..8", () => {
+    expect(HOSTEL_MIN_PAX).toBe(1);
+    expect(HOSTEL_MAX_PAX).toBe(8);
   });
 
   describe("getMinCheckoutForStay", () => {
@@ -20,6 +35,17 @@ describe("bookingDateRules", () => {
     it("returns null for malformed checkin", () => {
       expect(getMinCheckoutForStay("bad-date")).toBeNull();
       expect(getMinCheckoutForStay("2026-04-99")).toBeNull();
+    });
+  });
+
+  describe("getMaxCheckoutForStay", () => {
+    it("returns checkin + 8 nights", () => {
+      expect(getMaxCheckoutForStay("2026-04-24")).toBe("2026-05-02");
+    });
+
+    it("returns null for malformed checkin", () => {
+      expect(getMaxCheckoutForStay("bad-date")).toBeNull();
+      expect(getMaxCheckoutForStay("2026-04-99")).toBeNull();
     });
   });
 
@@ -38,6 +64,28 @@ describe("bookingDateRules", () => {
     });
   });
 
+  describe("isValidStayRange", () => {
+    it("accepts up to eight nights", () => {
+      expect(isValidStayRange("2026-04-24", "2026-05-02")).toBe(true);
+    });
+
+    it("rejects stays longer than eight nights", () => {
+      expect(isValidStayRange("2026-04-24", "2026-05-03")).toBe(false);
+    });
+  });
+
+  describe("isValidPax", () => {
+    it("accepts pax in 1..8", () => {
+      expect(isValidPax(1)).toBe(true);
+      expect(isValidPax(8)).toBe(true);
+    });
+
+    it("rejects pax outside bounds", () => {
+      expect(isValidPax(0)).toBe(false);
+      expect(isValidPax(9)).toBe(false);
+    });
+  });
+
   describe("ensureMinCheckoutForStay", () => {
     it("bumps missing/invalid checkout to minimum checkout", () => {
       expect(ensureMinCheckoutForStay("2026-04-24", "")).toBe("2026-04-26");
@@ -48,6 +96,10 @@ describe("bookingDateRules", () => {
     it("preserves checkout when it already satisfies minimum stay", () => {
       expect(ensureMinCheckoutForStay("2026-04-24", "2026-04-26")).toBe("2026-04-26");
       expect(ensureMinCheckoutForStay("2026-04-24", "2026-04-28")).toBe("2026-04-28");
+    });
+
+    it("caps checkout at eight-night maximum", () => {
+      expect(ensureMinCheckoutForStay("2026-04-24", "2026-05-03")).toBe("2026-05-02");
     });
   });
 });

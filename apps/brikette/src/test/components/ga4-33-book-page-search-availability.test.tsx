@@ -141,4 +141,23 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
     expect(checkoutInput.value).toBe("2026-06-12");
     expect(checkoutInput.min).toBe("2026-06-12");
   });
+
+  it("TC-06: pax above max prevents search_availability emission", () => {
+    render(<BookPageContent lang="en" />);
+
+    const checkinInput = screen.getByLabelText(/check in/i);
+    const checkoutInput = screen.getByLabelText(/check out/i);
+    const paxInput = screen.getByLabelText(/guests/i);
+
+    fireEvent.change(checkinInput, { target: { value: "2026-06-10" } });
+    fireEvent.change(checkoutInput, { target: { value: "2026-06-12" } });
+    fireEvent.change(paxInput, { target: { value: "9" } });
+
+    jest.advanceTimersByTime(1000);
+
+    const searchCalls = gtagMock.mock.calls.filter(
+      (args: unknown[]) => args[0] === "event" && args[1] === "search_availability",
+    );
+    expect(searchCalls).toHaveLength(0);
+  });
 });

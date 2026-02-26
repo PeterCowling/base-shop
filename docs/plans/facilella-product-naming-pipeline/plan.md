@@ -6,6 +6,7 @@ Workstream: Mixed
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
 Last-updated: 2026-02-26
+Wave-1-completed: 2026-02-26
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: facilella-product-naming-pipeline
 Deliverable-Type: multi-deliverable
@@ -25,13 +26,13 @@ Auto-Build-Intent: plan+auto
 HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Draft ASSESSMENT-13 product naming document with 5 provisional candidates and no systematic scoring. This plan builds a product naming pipeline analogous to the company naming pipeline — a spec document, a 75-candidate generation run with DWPEIC scoring, a TM pre-screen direction CLI, and an operator-facing shortlist. The pipeline also extends the shared sidecar event infrastructure with a new `tm_prescreened` stage and an optional `tm_prescreen` field. ASSESSMENT-13 SKILL.md is updated with a pointer to this pipeline for cases where more rigour than the 3–5 candidate write-first approach is needed. Output is a shortlist of 10–20 scored product line names for operator selection before logo brief work begins.
 
 ## Active tasks
-- [ ] TASK-01: Write product naming spec (`2026-02-26-product-naming-spec.md`)
-- [ ] TASK-02: Extend `event-log-writer.ts` and `candidate-sidecar-schema.json` for product naming stages
-- [ ] TASK-03: Build `tm-prescreen-cli.ts` — structured TM direction URL generator
-- [ ] TASK-04: Generate 75 product name candidates (SPIKE)
+- [x] TASK-01: Write product naming spec (`2026-02-26-product-naming-spec.md`) — Complete (2026-02-26)
+- [x] TASK-02: Extend `event-log-writer.ts` and `candidate-sidecar-schema.json` for product naming stages — Complete (2026-02-26)
+- [x] TASK-03: Build `tm-prescreen-cli.ts` — structured TM direction URL generator — Complete (2026-02-26)
+- [x] TASK-04: Generate 75 product name candidates (SPIKE) — Complete (2026-02-26) — 72 valid candidates (3 eliminations)
 - [ ] TASK-05: Run `tm-prescreen-cli.ts` on the shortlist candidates; capture output
 - [ ] TASK-06: Write shortlist artifact (`product-naming-shortlist-2026-02-26.user.md`)
-- [ ] TASK-07: Update ASSESSMENT-13 SKILL.md with pipeline pointer
+- [x] TASK-07: Update ASSESSMENT-13 SKILL.md with pipeline pointer — Complete (2026-02-26)
 
 ## Goals
 - Produce a systematic product naming spec with DWPEIC scoring dimensions (6 dimensions, max 30)
@@ -99,13 +100,13 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Write product naming spec (`2026-02-26-product-naming-spec.md`) | 90% | S | Pending | - | TASK-04 |
-| TASK-02 | IMPLEMENT | Extend `event-log-writer.ts` + `candidate-sidecar-schema.json` for `tm_prescreened` stage | 90% | S | Pending | - | TASK-03 |
-| TASK-03 | IMPLEMENT | Build `tm-prescreen-cli.ts` | 85% | S | Pending | TASK-02 | TASK-05 |
-| TASK-04 | SPIKE | Generate 75 scored product name candidates | 80% | M | Pending | TASK-01 | TASK-05 |
+| TASK-01 | IMPLEMENT | Write product naming spec (`2026-02-26-product-naming-spec.md`) | 90% | S | Complete (2026-02-26) | - | TASK-04 |
+| TASK-02 | IMPLEMENT | Extend `event-log-writer.ts` + `candidate-sidecar-schema.json` for `tm_prescreened` stage | 90% | S | Complete (2026-02-26) | - | TASK-03 |
+| TASK-03 | IMPLEMENT | Build `tm-prescreen-cli.ts` | 85% | S | Complete (2026-02-26) | TASK-02 | TASK-05 |
+| TASK-04 | SPIKE | Generate 75 scored product name candidates | 80% | M | Complete (2026-02-26) — 72 valid | TASK-01 | TASK-05 |
 | TASK-05 | IMPLEMENT | Run `tm-prescreen-cli.ts` on top 20 candidates; capture output | 85% | S | Pending | TASK-03, TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Write shortlist artifact (`product-naming-shortlist-2026-02-26.user.md`) | 90% | S | Pending | TASK-05 | - |
-| TASK-07 | IMPLEMENT | Update ASSESSMENT-13 SKILL.md with pipeline pointer | 95% | S | Pending | - | - |
+| TASK-07 | IMPLEMENT | Update ASSESSMENT-13 SKILL.md with pipeline pointer | 95% | S | Complete (2026-02-26) | - | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -126,7 +127,8 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build Evidence:** VC-01 pass (file exists); VC-02 pass (D/W/P/E/I/C headers present); VC-03 pass (5 territories with distinct situation anchors — T1 Italian Product-Type, T2 Italian Benefit, T3 Italian Routine, T4 English Loan, T5 Coined Diminutive); VC-04 pass (EU MDR ban list + compound phonetic consonant constraint present). File committed in Wave 1 commit `ed4a99fb08`.
 - **Artifact-Destination:** `docs/business-os/strategy/HEAD/2026-02-26-product-naming-spec.md`
 - **Reviewer:** Pete (operator)
 - **Approval-Evidence:** Operator selection from shortlist in TASK-06 confirms spec produced usable candidates
@@ -179,7 +181,8 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build Evidence:** TC-01 pass (SidecarStage includes 'tm_prescreened'); TC-02 pass (validateSidecarEvent returns valid: true for tm_prescreened stage); TC-03 pass (JSON Schema stage enum contains "tm_prescreened" — verified via Python); TC-04 pass (npx tsc --project scripts/tsconfig.json --noEmit exits 0 — no errors). Committed in Wave 1 commit `ed4a99fb08`.
 - **Affects:** `scripts/src/startup-loop/naming/event-log-writer.ts`, `scripts/src/startup-loop/naming/candidate-sidecar-schema.json`
 - **Depends on:** -
 - **Blocks:** TASK-03
@@ -231,7 +234,8 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build Evidence:** TC-01 pass (Cerchietto → stdout contains EUIPO/WIPO/UIBM URLs); TC-02 pass (EUIPO URL has `euipo.europa.eu` domain); TC-03 pass (sidecar JSONL created in temp dir `/tmp/tm-prescreen-test-sidecars/`); TC-04 pass (sidecar contains `stage: "tm_prescreened"` with `tm_prescreen` field populated). Full typecheck clean (npx tsc --noEmit exits 0). Test runs used `TM_SIDECAR_DIR=/tmp/...` env override — production `product-naming-sidecars/` is clean. UIBM: no deep-link query param confirmed, outputs base URL + manual instruction as planned.
 - **Affects:** `scripts/src/startup-loop/naming/tm-prescreen-cli.ts` (new)
 - **Depends on:** TASK-02
 - **Blocks:** TASK-05
@@ -295,7 +299,8 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build Evidence:** VC-01 pass (234 lines — well above 80); VC-02 pass (D|W|P|E|I|C|Score header present in both tables); VC-03 pass (territory distribution: T1=17, T2=16, T3=14, T4=11, T5=14 — all ≥10, all ≤20); VC-04 pass (min I score = 4 across all scored rows — I gate enforced). Total valid: 72 (3 eliminated: Pronteska W=1 cluttered; Sveltta double-consonant; Fisco wrong register). English Loan territory at 11 (below 15 target — explained in summary, second-round option noted). Top 20 by score identified for TASK-05 input.
 - **Artifact-Destination:** `docs/business-os/strategy/HEAD/product-naming-candidates-2026-02-26.md`
 - **Reviewer:** Pete (operator)
 - **Approval-Evidence:** Shortlist selection (TASK-06) is the upstream approval; operator reviews full table if shortlist needs expansion
@@ -460,7 +465,8 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build Evidence:** VC-01 pass (grep for "product naming pipeline" in SKILL.md returns match in Completion Message section). Pipeline pointer paragraph added after the ASSESSMENT-14 next-step line. Committed in Wave 1 commit `ed4a99fb08`.
 - **Artifact-Destination:** `.claude/skills/lp-do-assessment-13-product-naming/SKILL.md`
 - **Reviewer:** none (internal skill update)
 - **Approval-Evidence:** Skill invocation by future agent picks up the pipeline pointer in the completion message

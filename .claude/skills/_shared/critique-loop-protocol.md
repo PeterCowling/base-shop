@@ -15,23 +15,26 @@ Before Round 1, evaluate whether `/lp-do-factcheck` should run. Run it if the ar
 
 ## Critique Route Selection
 
-Before starting each round, resolve the codemoot path:
+Before starting each round, check whether codemoot is available under Node 22:
 
 ```
-CODEMOOT="$(nvm exec 22 which codemoot 2>/dev/null | tail -1)"
+nvm exec 22 codemoot --version >/dev/null 2>&1 && CODEMOOT_OK=1 || CODEMOOT_OK=0
 ```
 
-If `CODEMOOT` resolves to a non-empty path: use **codemoot route** (see below).
-If `CODEMOOT` is empty (nvm unavailable, Node 22 not installed, or codemoot not installed): use **inline route** (fallback, `/lp-do-critique`).
+If `CODEMOOT_OK=1`: use **codemoot route** (see below).
+If `CODEMOOT_OK=0` (nvm unavailable, Node 22 not installed, or codemoot not installed): use **inline route** (fallback, `/lp-do-critique`).
+
+> **Why `nvm exec 22` for invocation:** codemoot uses `#!/usr/bin/env node`. Running the binary path directly picks up the shell's default Node (which may be older than v22). Always invoke via `nvm exec 22 codemoot` to guarantee the correct runtime.
 
 **Prerequisites for codemoot route (one-time setup):**
 1. Install codemoot: `nvm exec 22 npm install -g @codemoot/cli`
 2. Install Codex CLI: `nvm exec 22 npm install -g @openai/codex`
 3. Init project config: `nvm exec 22 codemoot init --non-interactive` (creates `.cowork.yml` and `.cowork/` — both gitignored)
 4. Verify auth: run `nvm exec 22 codex login status` → should show "Logged in using ChatGPT"
+5. Reasoning effort and model are controlled by `~/.codex/config.toml` (`model_reasoning_effort`, `model`). codemoot inherits these automatically — no flag override needed. Current config: `model_reasoning_effort = "medium"`.
 
 **codemoot route — score mapping:**
-- Run: `"$CODEMOOT" review <artifact>` (stdout is JSON; no `--json` flag needed)
+- Run: `nvm exec 22 codemoot review <artifact>` (stdout is JSON; no `--json` flag needed)
 - Parse: `score` (integer 0–10, or null), `verdict` ("approved"|"needs_revision"|"unknown"), `findings` (array of `{severity, file, line, message}`)
 - Map to lp_score: `lp_score = codemoot_score / 2` (e.g. 8/10 → lp_score 4.0; 4/10 → lp_score 2.0)
 - Null guard: if `score` is null, fall back to inline route for this round with a warning note.

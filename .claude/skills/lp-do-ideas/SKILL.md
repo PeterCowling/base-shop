@@ -57,10 +57,29 @@ If unclear, ask one question: "Has this already been written into a doc, or is t
 **For operator idea:**
 - Which business? (infer from context or ask)
 - Area anchor — which system, product area, or business domain does this touch? (infer from description or confirm with one question)
+  - **Format rule:** `area_anchor` must be ≤12 words, no full sentences, no narrative prose.
+  - **Template:** `"<Business> <Artifact> — <gap in one clause>"`
+  - **Good:** `"PWRB IPEI agreement — document empty, needs drafting"` (7 words)
+  - **Good:** `"PWRB hardware SKU — no decision, needs supplier research"` (9 words)
+  - **Bad (do not do this):** `"New business registration — PWRB powerbank rental station network for Amalfi Coast tourists. Business plan backfilled from offline planning sessions dated 2026-01-29."` — this is a narrative, not an anchor.
+  - The ≤12 word limit is guidance, not schema-enforced. Exceed it only for genuinely complex multi-system area names; never use full sentences or narrative prose.
 - Domain — `MARKET | SELL | PRODUCTS | LOGISTICS | STRATEGY` (infer from area anchor; confirm only if genuinely ambiguous)
 - Routing — is this something to investigate and plan, or just understand? Apply routing intelligence to decide; only ask the user if the description is genuinely ambiguous between planning and understanding
 
 ### Step 4 — Apply routing intelligence, emit, and auto-execute
+
+**Decomposition rule — one event, multiple narrow packets:**
+When one incoming event contains multiple distinct gaps, emit one dispatch packet per gap.
+Do NOT produce one aggregate packet covering the entire event.
+
+Each packet must be independently actionable — routable to a separate fact-find or briefing
+without depending on the others.
+
+**Example:** A PWRB strategy backfill touching 4 pending items should produce 4 packets:
+- `"PWRB IPEI agreement — document empty, needs drafting"`
+- `"PWRB hardware SKU — no decision, needs supplier research"`
+- `"PWRB venue shortlist — no selection made from IPEI customer base"`
+- `"PWRB brand name — 'PWRB' is a code not a brand, ASSESSMENT-10 pending"`
 
 Apply routing intelligence (see below) to determine `status` and `recommended_route`. Emit a schema-valid dispatch packet and enqueue it in `queue-state.json`.
 
@@ -115,7 +134,10 @@ Any delta with `changed_sections` present is assessed by the agent. The agent re
 the changed section content and exercises judgment to determine whether the change
 warrants planning investigation, understanding only, or no action.
 
-No hard keyword lists. The agent must answer these questions:
+No hard keyword lists for operator-idea routing. The agent must answer these questions
+using judgment. (Note: artifact-delta routing in the TS orchestrator uses the
+`T1_SEMANTIC_KEYWORDS` list in `lp-do-ideas-trial.ts` — that list applies only to
+`artifact_delta` events, not to operator ideas handled here.)
 
 1. **Is the change material?** Substantive edit, or a typo/formatting fix?
 2. **Does it open a planning gap?** Does what's documented now differ from what's
@@ -136,9 +158,35 @@ No hard keyword lists. The agent must answer these questions:
   a planning gap (existing behaviour, context, background), OR in-flight work
   already covers the area and a briefing to review it is a better fit.
 - `logged_no_action` → change is not material (formatting, typo, minor
-  clarification), OR `before_sha` is null (first registration).
+  clarification), OR `before_sha` is null (first registration), OR the event
+  **describes an administrative startup-loop action rather than a knowledge or
+  planning gap** (see Admin non-idea suppression below).
 
 No `changed_sections` or missing `before_sha` → `logged_no_action` (no dispatch emitted).
+
+### Admin non-idea suppression
+
+Events that describe a startup-loop administrative action — not a gap in knowledge,
+strategy, or planning — must route `logged_no_action`. The test is:
+
+> "Does this event describe something the operator *does*, or something the operator
+> needs to *know or decide*?"
+
+If it describes an action (register, advance, complete), it is `logged_no_action`.
+If it describes a gap or uncertainty that requires investigation or a plan, it is
+`fact_find_ready` or `briefing_ready`.
+
+**Suppression examples:**
+- `"PWRB startup loop not yet formally started"` → `logged_no_action`. Redirect:
+  run `/startup-loop start --business PWRB`.
+- `"Startup loop advanced to stage S4"` → `logged_no_action`. No planning gap opened
+  by the advancement itself.
+- `"Results review completed with no new findings"` → `logged_no_action`.
+
+**Edge case — admin action that opens a planning gap:**
+If a completed action *reveals* a gap (e.g. stage S3 complete → brand profiling now
+needed), suppress the admin action itself as `logged_no_action` and submit the
+revealed gap as a *separate* operator-idea dispatch with its own narrow `area_anchor`.
 
 ## Evidence Fields for Classification
 
@@ -210,3 +258,26 @@ The `seenDedupeKeys` set is maintained across calls to the queue layer.
 - Policy decision: `docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md`
 - Routing adapter: `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` (TASK-04)
 - Queue + telemetry: `scripts/src/startup-loop/lp-do-ideas-trial-queue.ts` (TASK-05)
+
+## Known Issues
+
+### queue-state.json format divergence
+
+The live queue file (`docs/business-os/startup-loop/ideas/trial/queue-state.json`) uses
+a hand-authored format that differs from what the TypeScript persistence layer writes:
+
+| | Live file | TS persistence (`lp-do-ideas-persistence.ts`) |
+|---|---|---|
+| Top-level version key | `"queue_version": "queue.v1"` | `"schema_version": "queue-state.v1"` |
+| Dispatch array key | `"dispatches": [...]` | `"entries": [...]` |
+
+The TS persistence layer (`persistOrchestratorResult`) has **never been used to write to
+the live queue file**. All current dispatches in the file are agent-authored directly.
+
+The `ideas.user.html` viewer handles both formats via a conditional branch
+(`else if (raw && Array.isArray(raw.dispatches))`).
+
+**Do not attempt to migrate the live queue file to the TS format without a dedicated
+plan.** The divergence is stable and intentional for this trial phase. The TS persistence
+infrastructure is ready for live-mode activation when the trial escalation criteria are
+met (trial contract Section 8).

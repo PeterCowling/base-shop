@@ -6,6 +6,7 @@ import forbidFixedHeightsOnText from "./rules/forbid-fixed-heights-on-text.js";
 import iconButtonSize from "./rules/icon-button-size.js";
 import minTapSize from "./rules/min-tap-size.js";
 import noArbitraryTailwind from "./rules/no-arbitrary-tailwind.js";
+import noBareRounded from "./rules/no-bare-rounded.js";
 import noHardcodedCopy from "./rules/no-hardcoded-copy.js";
 import noHardcodedRoundedClass from "./rules/no-hardcoded-rounded-class.js";
 import noHeroPrimaryForeground from "./rules/no-hero-primary-foreground.js";
@@ -59,6 +60,7 @@ export const rules = {
   "require-min-w-0-in-flex": requireMinW0InFlex,
   "forbid-fixed-heights-on-text": forbidFixedHeightsOnText,
   "require-breakpoint-modifiers": requireBreakpointModifiers,
+  "no-bare-rounded": noBareRounded,
   "no-hardcoded-copy": noHardcodedCopy,
   "no-hardcoded-rounded-class": noHardcodedRoundedClass,
   "no-physical-direction-classes-in-rtl": noPhysicalDirectionClassesInRtl,

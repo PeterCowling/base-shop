@@ -263,7 +263,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-26T17:35:13.907Z";
+  var GEN_TS = "2026-02-26T17:56:29.881Z";
 
   var IDEA_ITEMS = [
     {
@@ -445,6 +445,23 @@
       "date": "2026-02-25T22:36:24.076Z",
       "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
       "idea_key": "e6d41217823fc313fd5fe0ae6781723def8af146",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Product naming pipeline as a reusable skill",
+      "body": "the facilella-product-naming-pipeline plan was designed as a standalone pipeline analogous to the company naming pipeline, but no lp-do-product-naming-pipeline skill exists — each future business that wants a rigorous product naming run would need to re-plan from scratch",
+      "suggested_action": "create a skill document at .claude/skills/lp-do-product-naming-pipeline/SKILL.md encoding this pipeline as a repeatable agent workflow (spec → generate → TM direction → shortlist)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T17:55:44.559Z",
+      "path": "docs/plans/_archive/facilella-product-naming-pipeline/results-review.user.md",
+      "idea_key": "482832b11bd238863377b6a9511638e252007807",
       "priority_tier": "P4",
       "own_priority_rank": 9,
       "urgency": "U2",
@@ -700,6 +717,23 @@
       "date": "2026-02-25T22:34:30.738Z",
       "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md",
       "idea_key": "c5a46e9603aeec9f92f8561051fbaed85592406d",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "UIBM deep-link URL format research",
+      "body": "the CLI outputs the UIBM base URL with a manual-entry instruction because no confirmed query-parameter format was found. If UIBM supports a deep-link (e.g., ?denominazione= or ?query= ), the CLI could pre-fill the search",
+      "suggested_action": "spike — navigate to uibm.gov.it/bancadati manually and inspect the URL when searching for a term; update buildUibmUrl() in tm-prescreen-cli.ts if a deep-link format is confirmed",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T17:55:44.559Z",
+      "path": "docs/plans/_archive/facilella-product-naming-pipeline/results-review.user.md",
+      "idea_key": "d86a618feb4e1a0376ad6af0e952cb7945d8a22e",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

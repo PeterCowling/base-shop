@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Mixed
 Workstream: Mixed
 Created: 2026-02-26

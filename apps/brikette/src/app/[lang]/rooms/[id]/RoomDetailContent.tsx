@@ -20,6 +20,11 @@ import { usePagePreload } from "@/hooks/usePagePreload";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref } from "@/routes.guides-helpers";
+import {
+  ensureMinCheckoutForStay,
+  getMinCheckoutForStay,
+  isValidMinStayRange,
+} from "@/utils/bookingDateRules";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { buildRoomItem, fireViewItem } from "@/utils/ga4-events";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
@@ -198,12 +203,15 @@ function parseBookingQuery(
   searchParams: { get: (key: string) => string | null } | null,
   todayIso: string,
 ): BookingQuery {
-  const checkIn = searchParams?.get("checkin") || todayIso;
-  const checkOut = searchParams?.get("checkout") || getDatePlusTwoDays(checkIn);
+  const checkInParam = searchParams?.get("checkin");
+  const checkIn = checkInParam && getMinCheckoutForStay(checkInParam) ? checkInParam : todayIso;
+  const checkOutRaw = searchParams?.get("checkout") ?? getDatePlusTwoDays(checkIn);
+  const checkOut = ensureMinCheckoutForStay(checkIn, checkOutRaw);
   const adultsRaw = parseInt(searchParams?.get("pax") ?? "", 10);
   const adults = Number.isFinite(adultsRaw) && adultsRaw > 0 ? adultsRaw : 1;
+  const hasCheckIn = Boolean(checkInParam) && checkInParam === checkIn;
   const queryState: "valid" | "absent" =
-    Boolean(searchParams?.get("checkin")) && checkIn >= todayIso && checkOut > checkIn
+    hasCheckIn && checkIn >= todayIso && isValidMinStayRange(checkIn, checkOut)
       ? "valid"
       : "absent";
   return { checkIn, checkOut, adults, queryState };

@@ -128,6 +128,18 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
     expect(mockPush).toHaveBeenCalledWith("/en/book?checkin=2025-06-01&checkout=2025-06-03&pax=2");
   });
 
+  it("auto-sets checkout to two nights after check-in", () => {
+    render(<BookingWidget />);
+
+    const checkInInput = screen.getByLabelText("booking.checkInLabel");
+    const checkOutInput = screen.getByLabelText("booking.checkOutLabel") as HTMLInputElement;
+
+    fireEvent.change(checkInInput, { target: { value: "2025-06-05" } });
+
+    expect(checkOutInput.value).toBe("2025-06-07");
+    expect(checkOutInput.min).toBe("2025-06-07");
+  });
+
   it("navigates to /book with pax only when no dates are entered", () => {
     render(<BookingWidget />);
 
@@ -138,14 +150,14 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
     expect(mockPush).toHaveBeenCalledWith("/en/book?pax=1");
   });
 
-  it("does not navigate when date range is invalid (checkout <= checkin)", () => {
+  it("does not navigate when stay is shorter than two-night minimum", () => {
     render(<BookingWidget />);
 
     fireEvent.change(screen.getByLabelText("booking.checkInLabel"), {
       target: { value: "2025-06-05" },
     });
     fireEvent.change(screen.getByLabelText("booking.checkOutLabel"), {
-      target: { value: "2025-06-03" }, // Before check-in — invalid range
+      target: { value: "2025-06-06" }, // 1-night stay — invalid range
     });
 
     fireEvent.click(screen.getByRole("button"));

@@ -115,4 +115,30 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
       pax: 2,
     });
   });
+
+  it("TC-04: check-in change auto-adjusts checkout to preserve two-night minimum", () => {
+    render(<BookPageContent lang="en" />);
+
+    const checkinInput = screen.getByLabelText(/check in/i);
+    const checkoutInput = screen.getByLabelText(/check out/i) as HTMLInputElement;
+
+    fireEvent.change(checkinInput, { target: { value: "2026-06-10" } });
+
+    expect(checkoutInput.value).toBe("2026-06-12");
+    expect(checkoutInput.min).toBe("2026-06-12");
+    expect(window.location.search).toContain("checkin=2026-06-10");
+    expect(window.location.search).toContain("checkout=2026-06-12");
+  });
+
+  it("TC-05: one-night URL params are normalized to the two-night minimum", () => {
+    mockSearchParams = new URLSearchParams("checkin=2026-06-10&checkout=2026-06-11&pax=1");
+    render(<BookPageContent lang="en" />);
+
+    const checkinInput = screen.getByLabelText(/check in/i) as HTMLInputElement;
+    const checkoutInput = screen.getByLabelText(/check out/i) as HTMLInputElement;
+
+    expect(checkinInput.value).toBe("2026-06-10");
+    expect(checkoutInput.value).toBe("2026-06-12");
+    expect(checkoutInput.min).toBe("2026-06-12");
+  });
 });

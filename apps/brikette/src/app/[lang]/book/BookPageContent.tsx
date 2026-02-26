@@ -19,7 +19,12 @@ import BookPageStructuredData from "@/components/seo/BookPageStructuredData";
 import { roomsData } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
-import { addDays, getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import {
+  ensureMinCheckoutForStay,
+  getMinCheckoutForStay,
+  isValidMinStayRange,
+} from "@/utils/bookingDateRules";
+import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { fireSearchAvailability, fireViewItemList } from "@/utils/ga4-events";
 
 type Props = {
@@ -61,7 +66,7 @@ function writeCanonicalBookingQuery(next: { checkin: string; checkout: string; p
 }
 
 function isValidSearch(checkIn: string, checkOut: string): boolean {
-  return checkIn.length > 0 && checkOut.length > 0 && checkOut > checkIn;
+  return checkIn.length > 0 && checkOut.length > 0 && isValidMinStayRange(checkIn, checkOut);
 }
 
 function BookPageContent({ lang }: Props): JSX.Element {
@@ -77,8 +82,10 @@ function BookPageContent({ lang }: Props): JSX.Element {
 
   const todayIso = useMemo(() => getTodayIso(), []);
 
-  const initialCheckin = readQueryDate(params, ["checkin"], todayIso);
-  const initialCheckout = readQueryDate(params, ["checkout"], getDatePlusTwoDays(initialCheckin));
+  const initialCheckinRaw = readQueryDate(params, ["checkin"], todayIso);
+  const initialCheckin = getMinCheckoutForStay(initialCheckinRaw) ? initialCheckinRaw : todayIso;
+  const initialCheckoutRaw = readQueryDate(params, ["checkout"], getDatePlusTwoDays(initialCheckin));
+  const initialCheckout = ensureMinCheckoutForStay(initialCheckin, initialCheckoutRaw);
   const initialPax = readQueryNumber(params, ["pax", "guests", "adults"], 1);
 
   // Dedupe ref: tracks the search key of the last fired search_availability event.
@@ -87,8 +94,9 @@ function BookPageContent({ lang }: Props): JSX.Element {
   const initialValuesRef = useRef({ checkin: initialCheckin, checkout: initialCheckout, pax: initialPax });
   // Capture initial URL params at component init time for the mount-only effect.
   // Only fire on mount when the user explicitly provided checkin/checkout in the URL.
+  const hasValidCheckinParam = (params?.get("checkin") ?? "") === initialCheckin;
   const mountedSearchRef = useRef(
-    params?.has("checkin") && params?.has("checkout") && isValidSearch(initialCheckin, initialCheckout)
+    hasValidCheckinParam && params?.has("checkout") && isValidSearch(initialCheckin, initialCheckout)
       ? { checkin: initialCheckin, checkout: initialCheckout, pax: initialPax }
       : null,
   );
@@ -104,7 +112,15 @@ function BookPageContent({ lang }: Props): JSX.Element {
     setPax(initialPax);
   }, [initialCheckin, initialCheckout, initialPax]);
 
-  const minCheckout = useMemo(() => addDays(checkin, 1), [checkin]);
+  const minCheckout = useMemo(
+    () => getMinCheckoutForStay(checkin) ?? getMinCheckoutForStay(todayIso) ?? getDatePlusTwoDays(todayIso),
+    [checkin, todayIso],
+  );
+
+  const roomQueryState = useMemo<"valid" | "invalid">(
+    () => (isValidSearch(checkin, checkout) ? "valid" : "invalid"),
+    [checkin, checkout],
+  );
 
   // TC-01: fire search_availability when dates/pax change; debounced + deduped.
   useEffect(() => {
@@ -165,8 +181,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
               onChange={(e) => {
                 const newCheckin = e.target.value;
                 setCheckin(newCheckin);
-                const newMin = addDays(newCheckin, 1);
-                const effectiveCheckout = checkout < newMin ? newMin : checkout;
+                const effectiveCheckout = ensureMinCheckoutForStay(newCheckin, checkout);
                 if (effectiveCheckout !== checkout) setCheckout(effectiveCheckout);
                 writeCanonicalBookingQuery({ checkin: newCheckin, checkout: effectiveCheckout, pax });
               }}
@@ -209,7 +224,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
       <RoomsSection
         lang={lang}
         itemListId="book_rooms"
-        queryState="valid"
+        queryState={roomQueryState}
         deal={deal ?? undefined}
         bookingQuery={{
           checkIn: checkin,

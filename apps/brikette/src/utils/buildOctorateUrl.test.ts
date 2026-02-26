@@ -211,6 +211,21 @@ describe("buildOctorateUrl — validation guards", () => {
     if (result.ok) throw new Error("Expected ok:false");
     expect(result.error).toBe("invalid_dates");
   });
+
+  it("returns ok:false with error invalid_dates when stay is shorter than two nights", () => {
+    const result = buildOctorateUrl({
+      ...BASE_PARAMS,
+      checkin: "2025-07-01",
+      checkout: "2025-07-02",
+      plan: "nr",
+      roomSku: "double_room",
+      octorateRateCode: "433883",
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) throw new Error("Expected ok:false");
+    expect(result.error).toBe("invalid_dates");
+  });
 });
 
 // Exact URL structure assertions

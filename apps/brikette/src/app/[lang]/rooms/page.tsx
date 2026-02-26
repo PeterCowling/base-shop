@@ -7,6 +7,7 @@ import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
+import RoomsStructuredDataRsc from "@/components/seo/RoomsStructuredDataRsc";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
@@ -57,5 +58,10 @@ export default async function RoomsPage({ params }: Props) {
   const serverTitle = (t("hero.heading") as string) || "Our rooms";
   const serverSubtitle = (t("hero.subheading") as string) || "";
 
-  return <RoomsPageContent lang={validLang} serverTitle={serverTitle} serverSubtitle={serverSubtitle} />;
+  return (
+    <>
+      <RoomsStructuredDataRsc lang={validLang} />
+      <RoomsPageContent lang={validLang} serverTitle={serverTitle} serverSubtitle={serverSubtitle} />
+    </>
+  );
 }

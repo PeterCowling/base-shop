@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
+import ExperiencesStructuredDataRsc from "@/components/seo/ExperiencesStructuredDataRsc";
 import { getSlug } from "@/utils/slug";
 
 import ExperiencesPageContent from "./ExperiencesPageContent";
@@ -42,5 +43,10 @@ export default async function ExperiencesPage({ params }: Props) {
   // Pre-warm i18n cache so ExperiencesPageContent has translations available on first SSR render.
   // generateMetadata also calls getTranslations but that runs in a separate execution context.
   await getTranslations(validLang, ["experiencesPage", "guides"]);
-  return <ExperiencesPageContent lang={validLang} />;
+  return (
+    <>
+      <ExperiencesStructuredDataRsc lang={validLang} />
+      <ExperiencesPageContent lang={validLang} />
+    </>
+  );
 }

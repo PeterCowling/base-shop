@@ -10,7 +10,6 @@ import { DirectBookingPerks } from "@acme/ui/molecules";
 
 import AlsoHelpful from "@/components/common/AlsoHelpful";
 import RoomsSection, { type RoomsSectionBookingQuery } from "@/components/rooms/RoomsSection";
-import RoomsStructuredData from "@/components/seo/RoomsStructuredData";
 import { roomsData } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
@@ -62,8 +61,6 @@ function RoomsPageContent({ lang, bookingQuery, serverTitle, serverSubtitle }: P
 
   return (
     <Fragment>
-      <RoomsStructuredData />
-
       {/* Page Header */}
       <Section padding="default" className="text-center">
         <h1 className="mb-4 text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl lg:text-5xl">

@@ -14,7 +14,6 @@ import GroupedGuideCollection from "@/components/guides/GroupedGuideCollection";
 import GuideCollection from "@/components/guides/GuideCollection";
 import GuideFaqSection, { type GuideFaq } from "@/components/guides/GuideFaqSection";
 import { useGuideTopicOptions } from "@/components/guides/useGuideTopicOptions";
-import ExperiencesStructuredData from "@/components/seo/ExperiencesStructuredData";
 import { useOptionalModal } from "@/context/ModalContext";
 import { type GuideMeta, GUIDES_INDEX } from "@/data/guides.index";
 import { matchesGuideTopic, resolveGuideTopicId } from "@/data/guideTopics";
@@ -202,7 +201,6 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
 
   return (
     <Fragment>
-      <ExperiencesStructuredData />
       <Section as="main" width="full" padding="none" className="bg-brand-surface text-brand-text dark:bg-brand-bg">
         {/* Hero */}
         <Section padding="none" width="full" className="px-4 pt-10 sm:pt-12">

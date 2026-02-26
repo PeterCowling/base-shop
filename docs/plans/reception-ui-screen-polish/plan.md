@@ -5,7 +5,7 @@ Domain: UI
 Workstream: Engineering
 Created: 2026-02-25
 Last-reviewed: 2026-02-25
-Last-updated: 2026-02-26
+Last-updated: 2026-02-26 (Wave 2)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-ui-screen-polish
 Deliverable-Type: code-change
@@ -25,11 +25,11 @@ Auto-Build-Intent: plan+auto
 Extends the visual design language established on the login and bar screens (gradient backdrops, elevated card surfaces, semantic token discipline, `rounded-2xl/xl/lg` radius cascade) to all remaining reception app screens across three phases. Phase 1 targets the highest visual debt: RoomsGrid (disconnected from the token system), TillReconciliation (invisible mode banners), and SafeManagement (key financial data buried in plain text). Phase 2 unifies the heading system and polishes the dashboard/management screens. Phase 3 applies minor remaining polish. Two shared components — `ReceptionSkeleton` and `StatPanel` — are created within their first-use tasks and then reused across later screens.
 
 ## Active tasks
-- [ ] TASK-00: PageShell — add gradient backdrop as default
-- [ ] TASK-01: INVESTIGATE — RoomsGrid CSS module full scope
-- [ ] TASK-02: RoomsGrid — token migration and card container
-- [ ] TASK-03: INVESTIGATE — TillReconciliation children (ActionButtons, FormsContainer)
-- [ ] TASK-04: TillReconciliation — mode banners and shift state polish
+- [x] TASK-00: PageShell — add gradient backdrop as default
+- [x] TASK-01: INVESTIGATE — RoomsGrid CSS module full scope
+- [x] TASK-02: RoomsGrid — token migration and card container
+- [x] TASK-03: INVESTIGATE — TillReconciliation children (ActionButtons, FormsContainer)
+- [x] TASK-04: TillReconciliation — mode banners and shift state polish
 - [ ] TASK-05: SafeManagement — balance panel, button grouping, denomination polish
 - [ ] TASK-06: CHECKPOINT — Phase 1 verification and downstream replan
 - [ ] TASK-07: PrepareDashboard — heading fix and PageShell migration
@@ -101,10 +101,10 @@ Extends the visual design language established on the login and bar screens (gra
 |---|---|---|---:|---:|---|---|---|
 | TASK-00 | IMPLEMENT | PageShell — gradient backdrop as default | 90% | S | Complete (2026-02-26) | - | TASK-04, TASK-05 |
 | TASK-01 | INVESTIGATE | RoomsGrid CSS module full scope | 90% | S | Complete (2026-02-26) | - | TASK-02 |
-| TASK-02 | IMPLEMENT | RoomsGrid — token migration and card container | 85% | S | Pending | TASK-01 | TASK-06 |
+| TASK-02 | IMPLEMENT | RoomsGrid — token migration and card container | 85% | S | Complete (2026-02-26) | TASK-01 | TASK-06 |
 | TASK-03 | INVESTIGATE | TillReconciliation children scope | 90% | S | Complete (2026-02-26) | - | TASK-04 |
-| TASK-04 | IMPLEMENT | TillReconciliation — mode banners and state polish | 85% | S | Pending | TASK-00, TASK-03 | TASK-06 |
-| TASK-05 | IMPLEMENT | SafeManagement — balance panel, button grouping | 75% | M | Pending | TASK-00 | TASK-06 |
+| TASK-04 | IMPLEMENT | TillReconciliation — mode banners and state polish | 85% | S | Complete (2026-02-26) | TASK-00, TASK-03 | TASK-06 |
+| TASK-05 | IMPLEMENT | SafeManagement — balance panel, button grouping | 91% | S | Pending | TASK-00 | TASK-06 |
 | TASK-06 | CHECKPOINT | Phase 1 verification and downstream replan | 95% | S | Pending | TASK-02, TASK-04, TASK-05 | TASK-07, TASK-08, TASK-09 |
 | TASK-07 | IMPLEMENT | PrepareDashboard — heading fix and PageShell migration | 75% | M | Pending | TASK-06 | TASK-10 |
 | TASK-08 | IMPLEMENT | RealTimeDashboard — heading fix and chart card polish | 75% | S | Pending | TASK-06 | TASK-10 |
@@ -228,7 +228,16 @@ Extends the visual design language established on the login and bar screens (gra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build evidence:**
+  - Dead code comment block (lines 13–56 in original RoomsGrid.tsx) deleted — 7 hardcoded hex values removed from codebase
+  - Orphaned `_reservationGrid.css` deleted — confirmed no active imports
+  - RoomsGrid migrated to `PageShell` with custom `headerSlot` (date controls preserved in heading row)
+  - Grid content wrapped in `bg-surface rounded-xl shadow-lg p-4 space-y-4` card container
+  - TC-02-01: `grep -riE "#[0-9a-f]{3,6}|rgb\(" apps/reception/src/components/roomgrid/ --exclude-dir=__tests__` → clean (no matches)
+  - TC-02-02: 12/15 test suites pass (36/38 tests); 3 failing suites are pre-existing FakeTimers issues in Day component `buildData.test.ts` — confirmed unrelated to structural changes
+  - TC-02-04: `pnpm typecheck --filter @apps/reception` → 55/55 tasks successful
+  - Lint: `pnpm lint --filter @apps/reception` → 19/19 tasks successful (import sort auto-fixed)
 - **Affects:** `apps/reception/src/components/roomgrid/RoomsGrid.tsx`, `apps/reception/src/components/roomgrid/*.module.css` (or equivalent CSS file)
 - **Depends on:** TASK-01
 - **Blocks:** TASK-06
@@ -305,7 +314,15 @@ Extends the visual design language established on the login and bar screens (gra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build evidence:**
+  - Edit mode banner: `bg-info-light/20 rounded-lg p-3 flex items-center gap-2` container + `<Info>` Lucide icon + `text-info-main text-sm font-semibold` label
+  - Delete mode banner: `bg-warning-light/20 rounded-lg p-3 flex items-center gap-2` container + `<AlertTriangle>` Lucide icon + `text-error-main text-sm font-semibold` label
+  - `AlertTriangle` and `Info` added to imports from `lucide-react`
+  - TC-04-04: `pnpm -w run test:governed -- jest -- --config=apps/reception/jest.config.cjs --testPathPattern=till --updateSnapshot` → 1 snapshot passed; hook test failures (23) are pre-existing, not caused by banner changes
+  - TC-04-01/02: Banners have semantic background containers (code confirmed); icon present with `shrink-0` + `size={16}` — accessible at all viewports
+  - TC-04-03: Degraded mode (no dev server) — shift workflow manual check deferred
+  - Typecheck + lint: ✓ (covered by TASK-02 run — same `--filter @apps/reception`)
 - **Affects:** `apps/reception/src/components/till/TillReconciliation.tsx` (ActionButtons.tsx not needed — banners are in parent)
 - **Depends on:** TASK-00, TASK-03
 - **Blocks:** TASK-06
@@ -344,14 +361,14 @@ Extends the visual design language established on the login and bar screens (gra
 - **Execution-Skill:** lp-do-build / frontend-design
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
-- **Effort:** M
+- **Effort:** S _(revised from M by Wave 2 pre-execution probe — balance tags at JSX top level, all handlers extracted, no entanglement)_
 - **Status:** Pending
 - **Affects:** `apps/reception/src/components/safe/SafeManagement.tsx`, `apps/reception/src/components/common/StatPanel.tsx` (new)
 - **Depends on:** TASK-00
 - **Blocks:** TASK-06
-- **Confidence:** 75%
-  - Implementation: 75% — monolith risk: 9 inline forms; visual wrapper addition may interact with handler logic. Pre-execution probe (in Scouts) is mandatory.
-  - Approach: 75% — StatPanel component design is clear; button grouping via `flex-col gap-2` dividers is clear; denomination display restructure from `Cluster` of spans to a proper grid is clear. Uncertainty is whether JSX nesting allows adding a `StatPanel` wrapper without touching handler logic.
+- **Confidence:** 91% _(raised from 75% by Wave 2 pre-execution probe — E2 evidence)_
+  - Implementation: 93% — Probe confirms balance `<p>` tags are unconditionally at JSX top level (lines 363-368, before all form conditionals). All 9 handler functions are extracted above the `return` statement with no JSX entanglement. Adding `StatPanel` wrapper requires inserting ~2 lines, no handler changes.
+  - Approach: 95% — Two pre-existing `div.flex.gap-2.flex-wrap` button groups (lines 370-397 and 398-429) provide clean grouping scaffold. `rounded` → `rounded-lg` is mechanical across 9 buttons. No denomination section at page level (it's in the Transactions table expandable rows, out of scope).
   - Impact: 85% — balance data is the primary operational readout on SafeManagement; zero visual prominence today
 - **Acceptance:**
   - `StatPanel` component created at `apps/reception/src/components/common/StatPanel.tsx` with: `bg-surface-2 rounded-lg p-4 flex items-center gap-4` layout, label + value display, optional icon slot

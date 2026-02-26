@@ -1,6 +1,7 @@
 // src/components/till/TillReconciliation.tsx
 
 import { memo } from "react";
+import { AlertTriangle, Info } from "lucide-react";
 
 import { useTillReconciliationUI } from "../../hooks/client/till/useTillReconciliationUI";
 import { useTillReconciliationLogic } from "../../hooks/useTillReconciliationLogic";
@@ -60,13 +61,19 @@ function TillReconciliation(): JSX.Element {
           handleLiftClick={props.handleLiftClick}
         />
         {props.isEditMode && (
-          <div className="text-info-main text-sm font-semibold text-center">
-            Click a row to edit the transaction
+          <div className="bg-info-light/20 rounded-lg p-3 flex items-center gap-2">
+            <Info className="text-info-main shrink-0" size={16} />
+            <span className="text-info-main text-sm font-semibold">
+              Click a row to edit the transaction
+            </span>
           </div>
         )}
         {props.isDeleteMode && (
-          <div className="text-error-main text-sm font-semibold text-center">
-            Click a row to delete the transaction
+          <div className="bg-warning-light/20 rounded-lg p-3 flex items-center gap-2">
+            <AlertTriangle className="text-error-main shrink-0" size={16} />
+            <span className="text-error-main text-sm font-semibold">
+              Click a row to delete the transaction
+            </span>
           </div>
         )}
         <FormsContainer

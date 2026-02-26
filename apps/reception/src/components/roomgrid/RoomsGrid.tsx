@@ -7,53 +7,9 @@ import { Input } from "@acme/design-system";
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useGridData from "../../hooks/data/roomgrid/useGridData";
 import { addDays, formatDateForInput, getYesterday } from "../../utils/dateUtils";
+import { PageShell } from "../common/PageShell";
 
 import RoomGrid from "./RoomGrid";
-
-/**
-* Essential reservation-grid styles are
- * bundled locally in `reservationGrid.css` to keep the original look and feel
- * without any external package dependency. If you
- * need to tweak colours or spacing, edit that file instead of overriding
- * Tailwind classes elsewhere.
- *
-const reservationGridCss = /* css *`
-.reservation-grid {
-  font-family: var(--font-face, sans-serif);
-  font-size: var(--font-size, 14px);
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.reservation-grid__header,
-.reservation-grid__cell {
-  border: 1px solid var(--color-border, #DDEBF3);
-  padding: 0.25rem 0.5rem;
-  text-align: center;
-}
-
-.reservation-grid__header {
-  background: var(--color-background, #FFFFFF);
-  font-weight: 600;
-}
-
-.reservation-grid__cell--today    { background: var(--color-today,      #E4FFE6); }
-.reservation-grid__cell--weekend  { background: var(--color-weekend,    #F8FAFB); }
-.reservation-grid__cell--free     { background: var(--date-status-free,        transparent); }
-.reservation-grid__cell--disabled { background: var(--date-status-disabled,    #759AB5); }
-.reservation-grid__cell--awaiting { background: var(--date-status-awaiting,    #DDEBF3); }
-.reservation-grid__cell--confirmed{ background: var(--date-status-confirmed,   #006490); }
-
-.reservation-grid__title,
-.reservation-grid__info {
-  width: var(--width-title, 50%);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-`;
-*/
 
 /**
  * Renders multiple reservation grids (one per room) using the known room configs
@@ -82,9 +38,10 @@ const RoomsGrid: FC = () => {
   };
 
   return (
-    <>
-      <div className="font-sans p-4">
-        <div className="flex items-center justify-between mb-5">
+    <PageShell
+      title="Room Grid"
+      headerSlot={
+        <div className="mb-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="h-7 w-1 rounded-full bg-primary-main" aria-hidden="true" />
             <h1 className="text-2xl font-heading font-semibold text-foreground">Room Grid</h1>
@@ -114,6 +71,9 @@ const RoomsGrid: FC = () => {
             />
           </div>
         </div>
+      }
+    >
+      <div className="bg-surface rounded-xl shadow-lg p-4 space-y-4">
         {loading && (
           <p className="p-4 italic text-muted-foreground">Loading rooms...</p>
         )}
@@ -146,7 +106,7 @@ const RoomsGrid: FC = () => {
             );
           })}
       </div>
-    </>
+    </PageShell>
   );
 };
 

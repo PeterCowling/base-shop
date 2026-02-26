@@ -108,21 +108,21 @@ const HeroProofPanel = memo(function HeroProofPanel({
   if (!ratings.length && !highlights.length) return null;
 
   return (
-    <div className="rounded-2xl border border-primary-fg/20 bg-brand-primary/80 p-4 text-brand-on-primary shadow-md backdrop-blur-sm dark:border-primary-fg/20 dark:bg-black/60 dark:text-brand-text">
+    <div className="rounded-2xl border border-white/15 bg-brand-primary/85 p-5 text-brand-on-primary shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-black/70 dark:text-brand-text">
       {ratings.length ? (
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-on-primary/80 dark:text-brand-text/80">
-            <Star className="size-4 text-brand-on-primary/80" aria-hidden />
+          <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-brand-on-primary/70 dark:text-brand-text/70">
+            <Star className="size-3.5 text-brand-on-primary/70" aria-hidden />
             <span>{heading}</span>
           </div>
-          <ul className="mt-3 divide-y divide-white/10 text-sm">
+          <ul className="mt-3 divide-y divide-white/15 text-sm dark:divide-white/10">
             {ratings.map((item) => (
-              <li key={item.providerLabel} className="flex items-center justify-between py-2">
+              <li key={item.providerLabel} className="flex items-center justify-between py-2.5">
                 <div>
                   <p className="font-semibold text-brand-on-primary dark:text-brand-text">{item.providerLabel}</p>
-                  <p className="text-xs text-brand-on-primary/70 dark:text-brand-text/70">{item.reviewText}</p>
+                  <p className="text-xs text-brand-on-primary/65 dark:text-brand-text/65">{item.reviewText}</p>
                 </div>
-                <span className="text-base font-semibold text-brand-on-primary dark:text-brand-text">
+                <span className="text-xl font-bold tabular-nums text-brand-on-primary dark:text-brand-text">
                   {item.score}
                 </span>
               </li>
@@ -132,11 +132,11 @@ const HeroProofPanel = memo(function HeroProofPanel({
       ) : null}
       {highlights.length ? (
         <ul
-          className={`mt-4 space-y-2 text-sm text-brand-on-primary/90 ${ratings.length ? "border-t border-primary-fg/10 pt-4" : ""} dark:text-brand-text/90`} // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
+          className={`mt-3.5 space-y-2.5 text-sm text-brand-on-primary/85 ${ratings.length ? "border-t border-white/15 pt-3.5 dark:border-white/10" : ""} dark:text-brand-text/85`} // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
         >
           {highlights.map(({ label, Icon }) => (
-            <li key={label} className="flex items-center gap-2">
-              <Icon className="size-4 text-brand-on-primary/70 dark:text-brand-text/70" aria-hidden />
+            <li key={label} className="flex items-center gap-2.5">
+              <Icon className="size-4 shrink-0 text-brand-on-primary/60 dark:text-brand-text/60" aria-hidden />
               <span className="font-medium">{label}</span>
             </li>
           ))}
@@ -285,8 +285,8 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
             priority
             className="h-full w-full object-cover"
           />
-          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-r from-surface/65 via-surface/35 to-surface/10" />
-          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-surface/30 to-transparent" />
+          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-r from-brand-bg/70 via-brand-bg/35 to-brand-bg/0" />
+          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-brand-bg/30 to-transparent" />
         </div>
 
         <Section
@@ -296,7 +296,7 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
           className="relative z-20 mx-auto h-full max-w-6xl px-6 pb-8 pt-8 sm:pb-12 sm:pt-10 lg:pb-14"
         >
           <div className="grid w-full items-start gap-8 lg:grid-cols-2 lg:gap-10">
-            <Section as="div" padding="none" width="full" className="max-w-xl px-4 sm:px-0 text-primary-fg">
+            <Section as="div" padding="none" width="full" className="max-w-xl px-4 sm:px-0 text-primary-fg motion-safe:animate-fade-up">
               <span className="block w-full text-xs uppercase tracking-widest text-primary-fg/75 sm:text-sm">
                 {heroIntro}
               </span>
@@ -353,7 +353,7 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
               ) : null}
             </Section>
 
-            <aside className="hidden lg:flex lg:justify-end">
+            <aside className="hidden lg:flex lg:justify-end motion-safe:animate-fade-up [animation-delay:150ms]">
               <Section as="div" padding="none" width="full" className="max-w-sm px-4 lg:px-0">
                 <HeroProofPanel
                   heading={resolveTranslatedCopy(tRatings("reviewed", { defaultValue: "Reviewed" }), "Reviewed")}

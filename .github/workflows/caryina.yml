@@ -1,0 +1,62 @@
+name: Deploy Caryina
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/caryina/**"
+      - "packages/design-system/**"
+      - "packages/next-config/**"
+      - "packages/platform-core/**"
+      - "packages/ui/**"
+      - "packages/themes/**"
+      - "packages/types/**"
+      - "data/shops/caryina/**"
+      - ".github/workflows/caryina.yml"
+      - ".github/workflows/reusable-app.yml"
+  pull_request:
+    paths:
+      - "apps/caryina/**"
+      - "packages/design-system/**"
+      - "packages/next-config/**"
+      - "packages/platform-core/**"
+      - "packages/ui/**"
+      - "packages/themes/**"
+      - "packages/types/**"
+      - "data/shops/caryina/**"
+      - ".github/workflows/caryina.yml"
+      - ".github/workflows/reusable-app.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: caryina-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  production:
+    name: Deploy (production)
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:caryina')
+      }}
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/caryina"
+      build-cmd: >
+        pnpm exec turbo run build --filter=@apps/caryina^... &&
+        cd apps/caryina &&
+        pnpm exec opennextjs-cloudflare build
+      artifact-path: "apps/caryina/.open-next"
+      deploy_cmd: >
+        cd apps/caryina &&
+        pnpm exec wrangler deploy
+      deploy_enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
+      project-name: "caryina"
+      environment-name: "production"
+      environment-url: ""
+      healthcheck-base-url: ""
+    secrets: inherit

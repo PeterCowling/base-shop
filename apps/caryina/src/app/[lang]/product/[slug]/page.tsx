@@ -6,6 +6,7 @@ import { type Locale, LOCALES, resolveLocale } from "@acme/i18n/locales";
 
 import { ProductGallery } from "@/components/catalog/ProductGallery.client";
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
+import { StockBadge } from "@/components/catalog/StockBadge";
 import {
   getLaunchFamilyCopy,
   getProductPageContent,
@@ -19,6 +20,7 @@ import {
 import {
   formatMoney,
   readShopCurrency,
+  readShopInventory,
   readShopSkuBySlug,
   readShopSkus,
 } from "@/lib/shop";
@@ -53,12 +55,15 @@ export default async function ProductDetailPage({
 }) {
   const { lang: rawLang, slug } = await params;
   const lang: Locale = resolveLocale(rawLang);
-  const [product, currency] = await Promise.all([
+  const [product, currency, inventoryItems] = await Promise.all([
     readShopSkuBySlug(lang, slug),
     readShopCurrency(),
+    readShopInventory(),
   ]);
 
   if (!product) return notFound();
+  const inventoryItem = inventoryItems.find((item) => item.productId === product.id);
+  const lowStockThreshold = inventoryItem?.lowStockThreshold ?? 2;
   const allProducts = await readShopSkus(lang);
   const productPageContent = getProductPageContent(lang);
   const familyCopy = getLaunchFamilyCopy(lang);
@@ -94,16 +99,30 @@ export default async function ProductDetailPage({
 
             <div className="space-y-4">
               <p className="text-xl font-medium">{formatMoney(product.price, currency)}</p>
-              <Link
-                href={`/${lang}/checkout?sku=${encodeURIComponent(product.slug)}`}
-                className="btn-primary block w-full rounded-full px-6 py-3 text-center text-sm"
-                data-cy="pdp-checkout"
-              >
-                Continue to checkout
-              </Link>
+              <StockBadge stock={product.stock} lowStockThreshold={lowStockThreshold} />
+              {product.stock === 0 ? (
+                <button
+                  type="button"
+                  className="btn-primary block min-h-[44px] w-full cursor-not-allowed rounded-full px-6 py-3 text-center text-sm opacity-50"
+                  disabled
+                  aria-disabled="true"
+                  data-cy="pdp-checkout"
+                >
+                  Out of stock
+                </button>
+              ) : (
+                <Link
+                  href={`/${lang}/checkout?sku=${encodeURIComponent(product.slug)}`}
+                  className="btn-primary block w-full rounded-full px-6 py-3 text-center text-sm"
+                  data-cy="pdp-checkout"
+                >
+                  Continue to checkout
+                </Link>
+              )}
               <StickyCheckoutBar
                 priceLabel={formatMoney(product.price, currency)}
                 checkoutHref={`/${lang}/checkout?sku=${encodeURIComponent(product.slug)}`}
+                outOfStock={product.stock === 0}
               />
             </div>
 

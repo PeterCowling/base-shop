@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next dev -p 3018",
     "build": "next build",
+    "build:worker": "opennextjs-cloudflare build",
     "start": "next start -p 3018",
     "lint": "eslint . --no-error-on-unmatched-pattern",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -21,5 +22,8 @@
     "next": "^16.1.6",
     "react": "19.2.1",
     "react-dom": "19.2.1"
+  },
+  "devDependencies": {
+    "@opennextjs/cloudflare": "^1.16.5"
   }
 }

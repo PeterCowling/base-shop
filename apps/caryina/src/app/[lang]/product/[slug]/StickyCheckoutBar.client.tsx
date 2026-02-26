@@ -6,11 +6,13 @@ import Link from "next/link";
 interface StickyCheckoutBarProps {
   priceLabel: string;
   checkoutHref: string;
+  outOfStock?: boolean;
 }
 
 export function StickyCheckoutBar({
   priceLabel,
   checkoutHref,
+  outOfStock = false,
 }: StickyCheckoutBarProps) {
   const [visible, setVisible] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -40,12 +42,23 @@ export function StickyCheckoutBar({
       >
         <div className="mx-auto flex max-w-lg items-center justify-between gap-4">
           <p className="text-base font-medium">{priceLabel}</p>
-          <Link
-            href={checkoutHref}
-            className="btn-primary rounded-full px-5 py-2.5 text-sm"
-          >
-            Checkout
-          </Link>
+          {outOfStock ? (
+            <button
+              type="button"
+              className="btn-primary min-h-[44px] cursor-not-allowed rounded-full px-5 py-2.5 text-sm opacity-50"
+              disabled
+              aria-disabled="true"
+            >
+              Out of stock
+            </button>
+          ) : (
+            <Link
+              href={checkoutHref}
+              className="btn-primary rounded-full px-5 py-2.5 text-sm"
+            >
+              Checkout
+            </Link>
+          )}
         </div>
       </div>
     </>

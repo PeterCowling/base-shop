@@ -1,6 +1,7 @@
 import { getShopSkuBySlug, listShopSkus } from "@acme/platform-core/repositories/catalogSkus.server";
+import { readInventory } from "@acme/platform-core/repositories/inventory.server";
 import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
-import type { Locale, SKU } from "@acme/types";
+import type { InventoryItem, Locale, SKU } from "@acme/types";
 
 import shop from "../../shop.json";
 
@@ -29,6 +30,15 @@ export async function readShopSkuBySlug(
     return await getShopSkuBySlug(SHOP_ID, slug, locale, { includeDraft: false });
   } catch {
     return null;
+  }
+}
+
+export async function readShopInventory(): Promise<InventoryItem[]> {
+  try {
+    const items = await readInventory(SHOP_ID);
+    return Array.isArray(items) ? items : [];
+  } catch {
+    return [];
   }
 }
 

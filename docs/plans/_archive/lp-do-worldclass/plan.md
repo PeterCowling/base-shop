@@ -1,12 +1,12 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: BOS
 Workstream: Operations
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
 Last-updated: 2026-02-26
-Build-progress: TASK-01 Complete, TASK-02 Complete, TASK-03 Complete, TASK-04 Complete, TASK-05 Complete, CHECKPOINT-A Pending
+Build-progress: All tasks complete. CHECKPOINT-A passed. Plan complete.
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-do-worldclass
 Deliverable-Type: doc
@@ -31,7 +31,7 @@ Auto-Build-Intent: plan-only
 - [x] TASK-03: modules/goal-phase.md
 - [x] TASK-04: modules/scan-phase.md
 - [x] TASK-05: modules/ideas-phase.md
-- [ ] CHECKPOINT-A: consistency gate
+- [x] CHECKPOINT-A: consistency gate
 
 ## Goals
 - Provide a structured path from "operator states a goal" to "dispatch packets in the idea queue comparing current state to world class"
@@ -95,7 +95,7 @@ The research prompt must be regenerated when the goal artifact's `goal_version` 
 | TASK-03 | IMPLEMENT | modules/goal-phase.md | 80% | M | Complete (2026-02-26) | TASK-01, TASK-02 | TASK-04, TASK-05 |
 | TASK-04 | IMPLEMENT | modules/scan-phase.md | 80% | L | Complete (2026-02-26) | TASK-03 | CHECKPOINT-A |
 | TASK-05 | IMPLEMENT | modules/ideas-phase.md | 80% | M | Complete (2026-02-26) | TASK-03 | CHECKPOINT-A |
-| CHECKPOINT-A | CHECKPOINT | Consistency gate | 95% | S | Pending | TASK-04, TASK-05 | - |
+| CHECKPOINT-A | CHECKPOINT | Consistency gate | 95% | S | Complete (2026-02-26) | TASK-04, TASK-05 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -385,7 +385,8 @@ The research prompt must be regenerated when the goal artifact's `goal_version` 
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build evidence:** All 4 consistency checks pass. (1) Module file paths in SKILL.md (`modules/goal-phase.md`, `modules/scan-phase.md`, `modules/ideas-phase.md`) match actual files at `.claude/skills/lp-do-worldclass/modules/`. (2) Output artifact paths consistent: research-prompt at `docs/business-os/strategy/<BIZ>/worldclass-research-prompt.md`, scan output at `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md`, queue at `docs/business-os/startup-loop/ideas/trial/queue-state.json` — all matching across SKILL.md → goal-phase → scan-phase → ideas-phase inputs. (3) Goal artifact field names consistent: `goal_version`, `benchmark-status`, `singular-goal`, `last-updated`, `domains[{name,context,examples}]` identical in template (TASK-02) and goal-phase validation table (TASK-03). (4) dispatch.v1 fields consistent: all 14 required core fields present; operator-idea routing correct (`trigger: operator_idea`, artifact_id/before_sha/after_sha omitted); queue append format `"dispatches"` array matches live queue format. No inconsistencies — no replan required.
 - **Affects:** `docs/plans/lp-do-worldclass/plan.md`
 - **Depends on:** TASK-04, TASK-05
 - **Blocks:** -

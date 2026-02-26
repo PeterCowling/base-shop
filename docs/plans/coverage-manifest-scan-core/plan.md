@@ -6,7 +6,7 @@ Workstream: Operations
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
 Last-updated: 2026-02-26
-Build-progress: TASK-01 Complete, TASK-02 Complete, CHECKPOINT-A Pending
+Build-progress: TASK-01 Complete, TASK-02 Complete, CHECKPOINT-A Complete, TASK-03 Complete, TASK-04 Pending
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: coverage-manifest-scan-core
 Deliverable-Type: multi-deliverable
@@ -94,8 +94,8 @@ Build the core infrastructure for deterministic artifact-coverage auditing. Deli
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Define coverage-manifest.yaml template | 80% | S | Complete (2026-02-26) | - | CHECKPOINT-A |
 | TASK-02 | IMPLEMENT | Implement lp-coverage-scan SKILL.md | 80% | S | Complete (2026-02-26) | - | CHECKPOINT-A |
-| CHECKPOINT-A | CHECKPOINT | Consistency gate before module implementation | — | — | Pending | TASK-01, TASK-02 | TASK-03 |
-| TASK-03 | IMPLEMENT | Implement scan-phase module | 75% | M | Pending | CHECKPOINT-A | TASK-04 |
+| CHECKPOINT-A | CHECKPOINT | Consistency gate before module implementation | — | — | Complete (2026-02-26) | TASK-01, TASK-02 | TASK-03 |
+| TASK-03 | IMPLEMENT | Implement scan-phase module | 80% | M | Complete (2026-02-26) | CHECKPOINT-A | TASK-04 |
 | TASK-04 | IMPLEMENT | Implement emit-phase module | 75% | M | Pending | TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Write manual validation test protocol | 70% | S | Pending | TASK-04 | - |
 
@@ -242,7 +242,7 @@ Build the core infrastructure for deterministic artifact-coverage auditing. Deli
 ### CHECKPOINT-A: Consistency gate before module implementation
 
 - **Type:** CHECKPOINT
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Depends on:** TASK-01, TASK-02
 - **Blocks:** TASK-03
 - **Purpose:** Verify that the coverage-manifest.yaml template (TASK-01) and the SKILL.md orchestrator (TASK-02) are consistent before modules are built. Specifically check:
@@ -269,14 +269,15 @@ Build the core infrastructure for deterministic artifact-coverage auditing. Deli
 - **Affects:** `.claude/skills/lp-coverage-scan/modules/scan-phase.md` (new file)
 - **Depends on:** CHECKPOINT-A
 - **Blocks:** TASK-04
-- **Confidence:** 75%
-  - Implementation: 75% — scan logic is clear conceptually (read manifest → scan directory → read frontmatter → compare staleness → classify gap) but frontmatter `Last-updated:` date availability across all BRIK artifacts is unconfirmed; mtime fallback is less reliable
-  - Approach: 85% — approach is validated by lp-signal-review precedent; gap classification model (CRITICAL/MAJOR/MINOR) is fully defined in fact-find
-  - Impact: 75% — scanner accuracy is the core value; if staleness detection is unreliable, MAJOR gaps (stale artifact) may be misclassified
+- **Confidence:** 80% ↑ (was 75%; raised by CHECKPOINT-A Scout evidence 2026-02-26)
+  - Implementation: 80% ↑ (was 75%) — Scout confirmed `Last-updated:` is not universal across BRIK artifacts (present in 1/20+ files). Multi-key priority chain now fully evidenced: `Last-updated:` > `Updated:` > `Run-date:` > `Date:` > filename prefix (YYYY-MM-DD-*) > mtime. Approach is specified from actual artifact evidence, not assumed.
+  - Approach: 85% — unchanged
+  - Impact: 80% ↑ (was 75%) — filename date prefix is consistently present on all dated BRIK artifacts; multi-key chain provides reliable date signals for the majority of cases; mtime fallback only for edge cases. Scanner accuracy is sufficient for production use.
+- **Replan evidence (2026-02-26):** CHECKPOINT-A Scout: `Last-updated:` in 1/20+ BRIK files; `Updated:`, `Run-date:`, `Date:` also found. Filename prefix `YYYY-MM-DD-*` universal. Multi-key chain covers all patterns observed. Confidence raised to 80%.
 - **Acceptance:**
   - `.claude/skills/lp-coverage-scan/modules/scan-phase.md` exists
   - Agent instructions: read manifest YAML, parse all domain entries with `mandatory: true`, scan `docs/business-os/strategy/<BIZ>/` for files matching `artifact_path_patterns` globs
-  - Staleness check: read `Last-updated:` from file frontmatter; if absent, use file mtime; compare to `staleness_threshold_days`; document which method was used in gap report per entry
+  - Staleness check (multi-key priority chain): try frontmatter keys in order: `Last-updated:` → `Updated:` → `Run-date:` (format YYYYMMDD) → `Date:` → filename date prefix (YYYY-MM-DD from filename); if all absent, use file mtime; document which method was used in the gap report per domain entry (label: frontmatter-{key} | filename-prefix | mtime)
   - Data-connection check: for each `data_connections` entry, check known integration status from a fixed lookup table (Stripe — check `data/` directory or `.env.local`; Firebase — check Firebase config; GA4 — check GA4 property config; Octorate — check Octorate session state)
   - Gap classification: CRITICAL = artifact_path_patterns has 0 matches AND data_connections has 0 configured; MAJOR = artifact exists but is stale (> staleness_threshold_days) OR data_connection configured but not verified active; MINOR = artifact exists and fresh but structured fields are thin (assessed by agent judgment)
   - Output: structured gap table with columns: Domain | Status | Severity | Evidence | Staleness-source (frontmatter | mtime | n/a)
@@ -299,14 +300,23 @@ Build the core infrastructure for deterministic artifact-coverage auditing. Deli
   - Checks run: Confirmed frontmatter date format in BRIK artifacts by reviewing strategy directory listing (dated filenames suggest dates are tracked); exact frontmatter key (`Last-updated:`) confirmed present in fact-find template
   - Validation artifacts: `docs/plans/coverage-manifest-scan-core/fact-find.md` — test landscape and staleness detection decision
   - Unexpected findings: Mtime unreliability after git checkout is a real concern; mitigation (frontmatter-first) documented in module
-- **Scouts:** Verify frontmatter `Last-updated:` is present in at least 3 BRIK artifacts before running TASK-03; if absent, update gap-classification approach to use filename dates as fallback
+- **Scouts:** Complete (2026-02-26) — Scout confirmed `Last-updated:` in only 1/20+ BRIK files. Multi-key chain implemented: `Last-updated:` > `Updated:` > `Run-date:` > `Date:` > filename-prefix > mtime. Covers all observed patterns.
 - **Edge Cases & Hardening:**
   - Domain with `artifact_path_patterns: []` (empty list) — treat as CRITICAL if data_connections also empty; MAJOR if data_connections present
   - Multiple artifacts matching a pattern (e.g., multiple weekly-kpcs files) — use the most recent by date; only one match needed to satisfy existence check
   - data_connection "octorate" check — Octorate session state file existence at `.tmp/octorate-state.json` or equivalent; document what "configured" means per integration
   - Artifact with frontmatter date in future (clock skew) — treat as fresh; log the anomaly in the gap report
+- **Build evidence (2026-02-26):**
+  - Artifact: `.claude/skills/lp-coverage-scan/modules/scan-phase.md` — created
+  - TC-01: PASS — R1 classifies 0-match mandatory domain as CRITICAL (line 90)
+  - TC-02: PASS — R3/R4 classifies stale artifact as MAJOR (lines 92-93)
+  - TC-03: PASS — R6 classifies fresh thin artifact as MINOR (line 95 equivalent)
+  - TC-04: PASS — optional domains marked OPTIONAL-skipped, no classification (Scope filter + Step 5)
+  - TC-05: PASS — R5 classifies fresh artifact with no data-connection as MAJOR (line 94)
+  - Post-build validation: Mode 3 (Document Review), Attempt 1, Result: Pass — module is self-contained; 6-priority staleness chain covers all observed BRIK date patterns; 7-rule classification table covers all TC contracts; output format includes Staleness-source column; emit-phase handoff documented
+  - Symptom patches: None
+  - Approval: TASK-05 validation pass (pending)
 - **What would make this ≥90%:**
-  - Confirmed frontmatter date availability across all BRIK strategy artifacts (prior to build)
   - First live scan run showing ≥3 correctly classified CRITICAL/MAJOR gaps
 - **Rollout / rollback:**
   - Rollout: Commit module file; no deployment

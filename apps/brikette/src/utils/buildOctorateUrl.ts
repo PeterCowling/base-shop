@@ -37,10 +37,9 @@ export type BuildOctorateUrlResult =
  * Returns `{ ok: true, url }` on success, or `{ ok: false, error }` on validation failure.
  * Never throws.
  *
- * - Uses Octorate booking `calendar.xhtml` endpoint with canonical
- *   Octorate params (`arrivo`, `partenza`, `adulti`, `camera`).
- * - Also appends legacy mirrors (`checkin`, `checkout`, `pax`, `room`) for
- *   analytics/debugging continuity and backwards compatibility.
+ * - Uses Octorate `result.xhtml` endpoint so explicit checkin/checkout
+ *   selections are preserved from the booking flow.
+ * - Appends room/date/checkin/checkout/pax params (plus adulti mirror).
  * - Appends deal + UTM attribution params when `deal` is provided.
  *
  * 200ms timeout rationale (for callers using trackThenNavigate): empirically-established
@@ -70,19 +69,13 @@ export function buildOctorateUrl(
 
   const paxString = String(pax);
   const urlParams = new URLSearchParams({
-    // Canonical Octorate calendar params
     codice: bookingCode,
-    camera: octorateRateCode,
-    arrivo: checkin,
-    partenza: checkout,
-    adulti: paxString,
-    bambini: "0",
-    // Compatibility mirrors retained intentionally
-    date: checkin,
     room: octorateRateCode,
+    date: checkin,
     checkin,
     checkout,
     pax: paxString,
+    adulti: paxString,
   });
 
   // Append deal attribution params when a deal code is provided
@@ -94,7 +87,7 @@ export function buildOctorateUrl(
     urlParams.set("utm_campaign", dealCode);
   }
 
-  const url = `${OCTORATE_BASE}/calendar.xhtml?${urlParams.toString()}`;
+  const url = `${OCTORATE_BASE}/result.xhtml?${urlParams.toString()}`;
 
   return { ok: true, url };
 }

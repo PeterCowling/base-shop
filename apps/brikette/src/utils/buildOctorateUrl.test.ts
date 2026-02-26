@@ -11,7 +11,7 @@ const BASE_PARAMS = {
 
 // TC-01: NR plan for double_room (widgetRateCodeNR: "433883")
 describe("buildOctorateUrl — NR plan", () => {
-  it("returns ok:true and calendar URL containing canonical Octorate params for NR rate code (double_room)", () => {
+  it("returns ok:true and result URL containing room/date/checkin/checkout for NR rate code (double_room)", () => {
     const result = buildOctorateUrl({
       ...BASE_PARAMS,
       plan: "nr",
@@ -22,11 +22,8 @@ describe("buildOctorateUrl — NR plan", () => {
     expect(result.ok).toBe(true);
     if (!result.ok) throw new Error("Expected ok:true");
 
-    expect(result.url).toContain("book.octorate.com/octobook/site/reservation/calendar.xhtml");
-    expect(result.url).toContain("arrivo=2025-07-01");
-    expect(result.url).toContain("partenza=2025-07-05");
+    expect(result.url).toContain("book.octorate.com/octobook/site/reservation/result.xhtml");
     expect(result.url).toContain("adulti=2");
-    expect(result.url).toContain("camera=433883");
     expect(result.url).toContain("checkin=2025-07-01");
     expect(result.url).toContain("checkout=2025-07-05");
     expect(result.url).toContain("date=2025-07-01");
@@ -45,7 +42,7 @@ describe("buildOctorateUrl — NR plan", () => {
     expect(result.ok).toBe(true);
     if (!result.ok) throw new Error("Expected ok:true");
 
-    expect(result.url).toContain("camera=433887");
+    expect(result.url).toContain("room=433887");
     expect(result.url).toContain("adulti=2");
     expect(result.url).toContain("date=2025-07-01");
     expect(result.url).toContain("codice=45111");
@@ -67,7 +64,7 @@ describe("buildOctorateUrl — Flex plan", () => {
     expect(result.ok).toBe(true);
     if (!result.ok) throw new Error("Expected ok:true");
 
-    expect(result.url).toContain("camera=433894");
+    expect(result.url).toContain("room=433894");
     expect(result.url).toContain("adulti=2");
     expect(result.url).toContain("date=2025-07-01");
     expect(result.url).toContain("codice=45111");
@@ -86,7 +83,7 @@ describe("buildOctorateUrl — Flex plan", () => {
     expect(result.ok).toBe(true);
     if (!result.ok) throw new Error("Expected ok:true");
 
-    expect(result.url).toContain("camera=433898");
+    expect(result.url).toContain("room=433898");
     expect(result.url).toContain("codice=45111");
   });
 });
@@ -265,7 +262,7 @@ describe("buildOctorateUrl — validation guards", () => {
 
 // Exact URL structure assertions
 describe("buildOctorateUrl — exact URL structure", () => {
-  it("NR double_room: URL starts with correct calendar.xhtml base and has all required params", () => {
+  it("NR double_room: URL starts with correct result.xhtml base and has all required params", () => {
     const result = buildOctorateUrl({
       checkin: "2025-07-01",
       checkout: "2025-07-05",
@@ -281,14 +278,10 @@ describe("buildOctorateUrl — exact URL structure", () => {
 
     const url = new URL(result.url);
     expect(url.origin + url.pathname).toBe(
-      "https://book.octorate.com/octobook/site/reservation/calendar.xhtml"
+      "https://book.octorate.com/octobook/site/reservation/result.xhtml"
     );
     expect(url.searchParams.get("codice")).toBe("45111");
-    expect(url.searchParams.get("arrivo")).toBe("2025-07-01");
-    expect(url.searchParams.get("partenza")).toBe("2025-07-05");
     expect(url.searchParams.get("adulti")).toBe("2");
-    expect(url.searchParams.get("bambini")).toBe("0");
-    expect(url.searchParams.get("camera")).toBe("433883");
     expect(url.searchParams.get("date")).toBe("2025-07-01");
     expect(url.searchParams.get("checkin")).toBe("2025-07-01");
     expect(url.searchParams.get("checkout")).toBe("2025-07-05");
@@ -311,10 +304,8 @@ describe("buildOctorateUrl — exact URL structure", () => {
     if (!result.ok) throw new Error("Expected ok:true");
 
     const url = new URL(result.url);
-    expect(url.searchParams.get("camera")).toBe("433894");
+    expect(url.searchParams.get("room")).toBe("433894");
     expect(url.searchParams.get("date")).toBe("2025-08-10");
-    expect(url.searchParams.get("arrivo")).toBe("2025-08-10");
-    expect(url.searchParams.get("partenza")).toBe("2025-08-14");
     expect(url.searchParams.get("adulti")).toBe("1");
     expect(url.searchParams.get("pax")).toBe("1");
   });

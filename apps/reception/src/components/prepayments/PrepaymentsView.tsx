@@ -6,6 +6,7 @@ import { Button } from "@acme/design-system/atoms";
 import { type PrepaymentData } from "../../hooks/client/checkin/usePrepaymentData";
 import DeleteButton from "../checkins/header/DeleteButton";
 import { PageShell } from "../common/PageShell";
+import { Spinner } from "../common/Spinner";
 
 import BookingPaymentsLists, {
   type BookingPaymentItem,
@@ -100,7 +101,7 @@ function PrepaymentsView({
                   compatibilityMode="no-wrapper"
                   id="filterInput"
                   type="text"
-                  className="w-full border border-border-2 rounded-lg px-3 py-1 font-body"
+                  className="w-full border border-border-strong rounded-lg px-3 py-1 font-body"
                   placeholder="Type to filter..."
                   value={filterText}
                   onChange={(e) => setFilterText(e.target.value)}
@@ -118,25 +119,24 @@ function PrepaymentsView({
               {isPete && <DeleteButton onClick={handleDeleteClick} />}
             </div>
             {isDeleteMode && (
-              <div className="text-error-main text-sm font-semibold text-center">
-                Click a row to delete the booking
+              <div className="bg-warning/10 border border-warning rounded-lg px-4 py-3 flex items-center gap-3">
+                <span className="text-warning shrink-0 text-base" aria-hidden="true">⚠</span>
+                <span className="text-foreground text-sm font-semibold">
+                  Click a row to delete the booking
+                </span>
               </div>
             )}
 
             {loading && (
-              <div
-                className="my-4 flex justify-center"
-                role="status"
-                aria-live="polite"
-              >
-                <div className="w-8 h-8 border-4 border-border-2 border-t-primary-main rounded-full animate-spin" />
-                <p className="ms-2 text-muted-foreground">Loading prepayment data...</p>
+              <div className="my-4 flex items-center justify-center gap-2" aria-live="polite">
+                <Spinner size="md" label="Loading prepayment data" />
+                <p className="text-sm text-muted-foreground">Loading prepayment data...</p>
               </div>
             )}
 
             {error && (
               <div
-                className="text-error-main font-semibold text-center mt-4 p-3 bg-error-light rounded-lg"
+                className="text-danger-fg font-semibold text-center mt-4 p-3 bg-danger-fg/10 rounded-lg border border-danger-fg/30"
                 role="alert"
               >
                 Error loading payment data:{" "}

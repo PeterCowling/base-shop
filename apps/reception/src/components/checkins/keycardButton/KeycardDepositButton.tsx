@@ -4,14 +4,13 @@ import {
   type MouseEvent,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 import ReactDOM from "react-dom";
 import type { LucideIcon } from "lucide-react";
-import { Ban, Banknote, FileText } from "lucide-react";
+import { Ban, Banknote, FileText, Key } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -88,11 +87,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  /* Reference for the confirm ("Keycard") button so it can be resized */
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
-  const [confirmButtonWidth, setConfirmButtonWidth] = useState<number | null>(
-    null
-  );
 
   /* Track active timers so they can be cleared on unmount */
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -113,14 +108,6 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
       timeoutsRef.current.forEach((t) => clearTimeout(t));
     };
   }, []);
-
-  /* Ensure the confirm button is exactly 15 px narrower than its natural width */
-  useLayoutEffect(() => {
-    if (confirmButtonRef.current && confirmButtonWidth === null) {
-      const naturalWidth = confirmButtonRef.current.offsetWidth;
-      setConfirmButtonWidth(naturalWidth - 15);
-    }
-  }, [confirmButtonWidth]);
 
   /* ──────────────── payment- & doc-type state ───────────────────────────── */
   const [payType, setPayType] = useState<KeycardPayType>(KeycardPayType.CASH);
@@ -195,20 +182,20 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
 
   /* ──────────────── styling helpers ────────────────────────────────────── */
   const baseButtonClass =
-    "min-h-55px px-4 flex items-center justify-center transition-colors focus:outline-none";
+    "h-9 px-2.5 flex items-center justify-center transition-colors focus:outline-none text-xs font-medium";
 
   const activeClass =
-    "bg-primary-main hover:bg-primary-dark text-primary-fg";
+    "bg-primary-main/100 hover:opacity-90 text-primary-fg/100";
   const successDisabledClass =
-    "bg-success-light text-primary-fg cursor-not-allowed opacity-70";
+    "bg-success-main/100 text-foreground cursor-not-allowed opacity-70";
   const greyDisabledClass =
-    "bg-surface-3 text-primary-fg cursor-not-allowed opacity-70";
+    "bg-surface-3 text-foreground cursor-not-allowed opacity-50";
 
   const leftButtonClass = disabledDueToKeycard
-    ? `${successDisabledClass} border-r border-border/20`
+    ? successDisabledClass
     : isDisabled
     ? greyDisabledClass
-    : `${activeClass} border-r border-border/20`;
+    : activeClass;
 
   const rightButtonClass = disabledDueToKeycard
     ? successDisabledClass
@@ -341,44 +328,46 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
 
   /* ──────────────── render ─────────────────────────────────────────────── */
   return (
-    <div className="relative flex items-center">
-      {/* Deposit-type selector */}
-      <Button
-        ref={buttonRef}
-        onClick={handleMenuToggle}
-        disabled={isDisabled}
-        className={`${baseButtonClass} rounded-l ${leftButtonClass}`}
-        title={
-          disabledDueToKeycard
-            ? "Guest already has a keycard."
-            : isDisabled
-            ? "Keycard deposit action not available."
-            : "Select deposit type"
-        }
-      >
-        <depositIcon.icon
-          size={20}
-          className={depositIcon.className}
-        />
-      </Button>
+    <div className="relative">
+      <div className="flex items-stretch rounded-md overflow-hidden">
+        {/* Deposit-type selector */}
+        <Button
+          compatibilityMode="passthrough"
+          ref={buttonRef}
+          onClick={handleMenuToggle}
+          disabled={isDisabled}
+          className={`${baseButtonClass} rounded-none ${leftButtonClass}`}
+          title={
+            disabledDueToKeycard
+              ? "Guest already has a keycard."
+              : isDisabled
+              ? "Keycard deposit action not available."
+              : "Select deposit type"
+          }
+        >
+          <depositIcon.icon size={16} />
+        </Button>
 
-      {/* Confirm action */}
-      <Button
-        ref={confirmButtonRef}
-        onClick={handleConfirm}
-        disabled={isDisabled}
-        style={confirmButtonWidth ? { width: confirmButtonWidth } : undefined}
-        className={`${baseButtonClass} rounded-r ${rightButtonClass}`}
-        title={
-          disabledDueToKeycard
-            ? "Guest already has a keycard."
-            : isDisabled
-            ? "Keycard deposit action not available."
-            : "Confirm keycard deposit"
-        }
-      >
-        <span className="ms-2 hidden md:inline">Keycard</span>
-      </Button>
+        <div className="w-px self-stretch bg-black/10" />
+
+        {/* Confirm action */}
+        <Button
+          compatibilityMode="passthrough"
+          ref={confirmButtonRef}
+          onClick={handleConfirm}
+          disabled={isDisabled}
+          className={`${baseButtonClass} rounded-none ${rightButtonClass}`}
+          title={
+            disabledDueToKeycard
+              ? "Guest already has a keycard."
+              : isDisabled
+              ? "Keycard deposit action not available."
+              : "Confirm keycard deposit"
+          }
+        >
+          <Key size={14} />
+        </Button>
+      </div>
 
       {/* Dropdown menu (portal) */}
       {menuVisible &&

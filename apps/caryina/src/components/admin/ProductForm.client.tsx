@@ -127,6 +127,7 @@ export function ProductForm({ product }: ProductFormProps) {
   const router = useRouter();
   const isEdit = !!product;
 
+  const [sku, setSku] = useState(product?.sku ?? "");
   const [title, setTitle] = useState(product?.title.en ?? "");
   const [description, setDescription] = useState(product?.description.en ?? "");
   const [price, setPrice] = useState(product ? priceToEuros(product.price) : "");
@@ -154,6 +155,7 @@ export function ProductForm({ product }: ProductFormProps) {
     e.preventDefault();
     setError(null);
     const priceNum = parseFloat(price);
+    if (!isEdit && !sku.trim()) { setError("SKU is required."); return; }
     if (!title.trim()) { setError("Title is required."); return; }
     if (isNaN(priceNum) || priceNum <= 0) { setError("Price must be greater than 0."); return; }
 
@@ -162,7 +164,9 @@ export function ProductForm({ product }: ProductFormProps) {
       const media = mediaRows
         .filter((r) => r.url.trim())
         .map((r) => ({ url: r.url.trim(), type: r.type, ...(r.altText.trim() ? { altText: r.altText.trim() } : {}) }));
-      const payload = { title: title.trim(), description: description.trim(), price: eurosToMinorUnits(price), status, forSale, media };
+      const payload = isEdit
+        ? { title: title.trim(), description: description.trim(), price: eurosToMinorUnits(price), status, forSale, media }
+        : { sku: sku.trim(), title: title.trim(), description: description.trim(), price: eurosToMinorUnits(price), status, forSale, media };
       const res = isEdit
         ? await fetch(`/admin/api/products/${product.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
         : await fetch("/admin/api/products", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
@@ -185,6 +189,22 @@ export function ProductForm({ product }: ProductFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="space-y-1.5">
+        <label htmlFor="pf-sku" className="block text-sm font-medium">
+          SKU {!isEdit && <span aria-hidden>*</span>}
+          {isEdit && <span className="ms-1 text-xs font-normal text-muted-foreground">(read-only)</span>}
+        </label>
+        <input
+          id="pf-sku"
+          type="text"
+          value={sku}
+          onChange={(e) => setSku(e.target.value)}
+          required={!isEdit}
+          readOnly={isEdit}
+          placeholder={isEdit ? undefined : "e.g. silver-necklace-001"}
+          className={`block w-full rounded-lg border border-border px-3 py-2 text-sm${isEdit ? " bg-muted text-muted-foreground" : ""}`}
+        />
+      </div>
       <div className="space-y-1.5">
         <label htmlFor="pf-title" className="block text-sm font-medium">
           Title <span aria-hidden>*</span>

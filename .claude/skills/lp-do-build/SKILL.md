@@ -150,12 +150,28 @@ If confidence regresses below task threshold during execution:
 When all executable tasks are complete, execute **every step below in order**. Do not emit the completion message until all steps are done and the Plan Completion Checklist is clear.
 
 1. Produce `build-record.user.md` per `docs/business-os/startup-loop/loop-output-contracts.md`.
-2. Auto-draft `results-review.user.md` using `docs/plans/_templates/results-review.user.md`; pre-fill all agent-fillable sections (Observed Outcomes stub, Standing Updates, New Idea Candidates, Standing Expansion, Intended Outcome Check). When pre-filling `## New Idea Candidates`, scan build context for signals in each category below — write `None` if no evidence found for that category:
-   - New standing data source — external feed, API, or dataset suitable for Layer A standing intelligence
-   - New open-source package — library to replace custom code or add capability
-   - New skill — recurring agent workflow ready to be codified as a named skill
-   - New loop process — missing stage, gate, or feedback path in the startup loop
-   - AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script
+2. Produce `results-review.user.md` using the template at `docs/plans/_templates/results-review.user.md`.
+
+   **Codemoot route check:**
+   ```
+   nvm exec 22 codemoot --version >/dev/null 2>&1 && CODEMOOT_OK=1 || CODEMOOT_OK=0
+   ```
+
+   **If `CODEMOOT_OK=1` (codemoot route — preferred):**
+   - Run:
+     ```
+     nvm exec 22 codemoot run "Complete docs/plans/<slug>/results-review.user.md. Read the build context from docs/plans/<slug>/plan.md and docs/plans/<slug>/build-record.user.md. Use the template at docs/plans/_templates/results-review.user.md. Fill all agent-fillable sections: Observed Outcomes stub, Standing Updates, New Idea Candidates (scan for: new standing data sources, new open-source packages, new skills, new loop processes, AI-to-mechanistic steps; write None for any category with no evidence), Standing Expansion, Intended Outcome Check." --mode autonomous
+     ```
+   - Wait for exit. On non-zero exit or missing/empty file: fall back to inline route with a warning note recorded in the build evidence.
+   - Verify `docs/plans/<slug>/results-review.user.md` exists and is non-empty before continuing.
+
+   **If `CODEMOOT_OK=0` (inline fallback):**
+   - Auto-draft `results-review.user.md` inline; pre-fill all agent-fillable sections (Observed Outcomes stub, Standing Updates, New Idea Candidates, Standing Expansion, Intended Outcome Check). When pre-filling `## New Idea Candidates`, scan build context for signals in each category below — write `None` if no evidence found for that category:
+     - New standing data source — external feed, API, or dataset suitable for Layer A standing intelligence
+     - New open-source package — library to replace custom code or add capability
+     - New skill — recurring agent workflow ready to be codified as a named skill
+     - New loop process — missing stage, gate, or feedback path in the startup loop
+     - AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script
 3. Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content).
 4. Run `pnpm --filter scripts startup-loop:generate-process-improvements`. Confirm the output line `updated docs/business-os/process-improvements.user.html` appears before continuing.
 5. For each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately. Only mark ideas as complete if they were directly delivered by this build; deferred or future ideas remain in the report.

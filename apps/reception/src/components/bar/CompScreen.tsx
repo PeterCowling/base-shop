@@ -16,6 +16,7 @@ import useBookingsData from "../../hooks/data/useBookingsData";
 import useGuestDetails from "../../hooks/data/useGuestDetails";
 import useGuestsByBooking from "../../hooks/data/useGuestsByBooking";
 import usePreorder from "../../hooks/data/usePreorder";
+import { Spinner } from "../common/Spinner";
 
 import ModalPreorderDetails from "./ModalPreorderDetails";
 
@@ -258,24 +259,7 @@ const CompScreen: React.FC = React.memo(() => {
   if (allLoading) {
     return (
       <div className="flex min-h-30vh items-center justify-center">
-        <svg
-          className="h-8 w-8 animate-spin text-primary-main"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          />
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8v4l3.536-3.536A8 8 0 1120 12h-4l3.536 3.536A8 8 0 014 12z"
-          />
-        </svg>
+        <Spinner size="md" />
       </div>
     );
   }

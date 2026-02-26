@@ -18,8 +18,8 @@ const BookingRefChipPrepayComponent: FC<BookingRefChipPrepayProps> = ({
   hasCard,
 }) => {
   const chipStyle = hasCard
-    ? "bg-success-main text-primary-fg"
-    : "bg-primary-main text-primary-fg";
+    ? "bg-primary-soft border border-primary-main/30 text-primary-main"
+    : "bg-surface-2 border border-border-strong text-muted-foreground";
 
   const handleCopy = useCallback(async (): Promise<void> => {
     try {
@@ -50,7 +50,7 @@ const BookingRefChipPrepayComponent: FC<BookingRefChipPrepayProps> = ({
       }}
       onKeyDown={handleKeyDown}
       title="Click to copy booking reference"
-      className={`inline-flex items-center gap-2 px-4 py-3 text-sm rounded-lg leading-none ${chipStyle} focus:outline-none min-w-225px`}
+      className={`inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg leading-none ${chipStyle} focus:outline-none min-w-48`}
       aria-label={`Copy booking reference ${bookingRef}`}
     >
       <Copy size={14} className="shrink-0" />

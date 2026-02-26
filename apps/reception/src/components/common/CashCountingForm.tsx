@@ -130,7 +130,7 @@ export const CashCountingForm = memo(function CashCountingForm({
             type="number"
             value={keycardInput}
             onChange={(e) => setKeycardInput(e.target.value)}
-            className="border rounded-lg p-1 w-24"
+            className="border border-border-strong rounded-lg p-1 w-24"
           />
         </div>
       )}
@@ -152,7 +152,7 @@ export const CashCountingForm = memo(function CashCountingForm({
             {diffCash !== undefined &&
               Math.abs(diffCash) >= DISCREPANCY_LIMIT && (
                 <TriangleAlert
-                  className="h-4 w-4 text-warning-main"
+                  className="h-4 w-4 text-warning"
                   aria-hidden="true"
                 />
               )}

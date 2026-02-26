@@ -251,47 +251,51 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
     return amount > 0 ? `€${amount.toFixed(2)}` : "Paid";
   };
   // Style classes
-  const activeClass = "bg-primary-main hover:bg-primary-dark text-primary-fg";
+  const activeClass = "bg-primary-main/100 hover:opacity-90 text-primary-fg/100";
   const disabledClass =
-    "bg-success-light text-primary-fg cursor-not-allowed opacity-70";
+    "bg-success-main/100 text-foreground cursor-not-allowed opacity-70";
   const baseButtonClass =
-    "min-h-55px px-4 flex items-center justify-center focus:outline-none transition-colors";
+    "h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors text-xs font-medium";
 
-  const leftButtonClass = isDisabled
-    ? disabledClass
-    : `${activeClass} border-r border-border-2/20`;
+  const leftButtonClass = isDisabled ? disabledClass : activeClass;
   const rightButtonClass = isDisabled ? disabledClass : activeClass;
 
   return (
-    <div className="relative flex items-center">
-      {/* Left button: choose payment type */}
-      <Button
-        ref={buttonRef}
-        onClick={handleMenuToggle}
-        disabled={isDisabled}
-        className={`${baseButtonClass} rounded-l ${leftButtonClass}`}
-        title={
-          isDisabled
-            ? "City tax is already paid or not applicable."
-            : "Click to choose payment type"
-        }
-      >
-        <PayTypeIcon size={20} />
-      </Button>
+    <div className="relative">
+      <div className="flex items-stretch rounded-md overflow-hidden">
+        {/* Left button: choose payment type */}
+        <Button
+          compatibilityMode="passthrough"
+          ref={buttonRef}
+          onClick={handleMenuToggle}
+          disabled={isDisabled}
+          className={`${baseButtonClass} rounded-none ${leftButtonClass}`}
+          title={
+            isDisabled
+              ? "City tax is already paid or not applicable."
+              : "Click to choose payment type"
+          }
+        >
+          <PayTypeIcon size={16} />
+        </Button>
 
-      {/* Right button: immediate payment */}
-      <Button
-        onClick={handleImmediatePayment}
-        disabled={isDisabled}
-        className={`${baseButtonClass} rounded-r ${rightButtonClass}`}
-        title={
-          isDisabled
-            ? "City tax is already paid or not applicable."
-            : "Pay immediately with selected type"
-        }
-      >
-        {getButtonLabel()}
-      </Button>
+        <div className="w-px self-stretch bg-black/10" />
+
+        {/* Right button: immediate payment */}
+        <Button
+          compatibilityMode="passthrough"
+          onClick={handleImmediatePayment}
+          disabled={isDisabled}
+          className={`${baseButtonClass} rounded-none ${rightButtonClass}`}
+          title={
+            isDisabled
+              ? "City tax is already paid or not applicable."
+              : "Pay immediately with selected type"
+          }
+        >
+          {getButtonLabel()}
+        </Button>
+      </div>
 
       {/* Dropdown menu */}
       {menuVisible &&

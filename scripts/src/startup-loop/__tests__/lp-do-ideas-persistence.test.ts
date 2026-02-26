@@ -11,6 +11,7 @@
  * - loadQueueState: wrong schema_version returns error struct
  * - writeQueueState: atomic write via temp-rename
  * - appendTelemetry: JSONL deduplication by dispatch_id+recorded_at+kind
+ * - appendClassifications: TC-01 two records written; TC-02 dedup; TC-03 empty no-op
  */
 
 import { createHash, randomBytes } from "node:crypto";
@@ -20,8 +21,10 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
+import type { IdeaClassification } from "../lp-do-ideas-classifier.js";
 import type { LiveDispatchPacket } from "../lp-do-ideas-live.js";
 import {
+  appendClassifications,
   appendTelemetry,
   loadQueueState,
   type PersistedQueueState,
@@ -571,5 +574,145 @@ describe("TC-04-C: malformed input fails closed", () => {
       readFileSync(queueStatePath, "utf-8"),
     ) as PersistedQueueState;
     expect(state.entries).toHaveLength(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// appendClassifications: TC-01, TC-02, TC-03
+// ---------------------------------------------------------------------------
+
+function makeClassificationRecord(
+  overrides: Partial<IdeaClassification> = {},
+): IdeaClassification {
+  const base: IdeaClassification = {
+    idea_id: overrides.idea_id ?? "IDEA-TEST-001",
+    title: "Test idea",
+    source_path: "docs/plans/test/results-review.user.md",
+    source_excerpt: "An idea.",
+    created_at: "2026-02-26T10:00:00.000Z",
+    priority_tier: "P5",
+    proximity: null,
+    urgency: "U2",
+    effort: "S",
+    reason_code: "RULE_P5_DEFAULT",
+    parent_idea_id: null,
+    is_prerequisite: false,
+    effective_priority_rank: 10,
+    own_priority_rank: 10,
+    incident_id: null,
+    deadline_date: null,
+    repro_ref: null,
+    leakage_estimate_value: null,
+    leakage_estimate_unit: null,
+    first_observed_at: null,
+    risk_vector: null,
+    risk_ref: null,
+    failure_metric: null,
+    baseline_value: null,
+    funnel_step: null,
+    metric_name: null,
+    classified_by: "lp-do-ideas-classifier-v1",
+    classified_at: overrides.classified_at ?? "2026-02-26T12:00:00.000Z",
+    status: "open",
+    trigger: "artifact_delta",
+    artifact_id: "BRIK-SELL-PACK",
+    evidence_refs: [],
+    ...overrides,
+  };
+  return base;
+}
+
+describe("appendClassifications", () => {
+  it("TC-01: appends two records — file contains 2 JSONL lines", () => {
+    const dir = join(tmpdir(), `classifications-test-${randomBytes(4).toString("hex")}`);
+    mkdirSync(dir, { recursive: true });
+    const filePath = join(dir, "classifications.jsonl");
+
+    const record1 = makeClassificationRecord({ idea_id: "IDEA-001", classified_at: "2026-02-26T12:00:00.000Z" });
+    const record2 = makeClassificationRecord({ idea_id: "IDEA-002", classified_at: "2026-02-26T12:01:00.000Z" });
+
+    appendClassifications(filePath, [record1, record2]);
+
+    expect(existsSync(filePath)).toBe(true);
+    const lines = readFileSync(filePath, "utf-8")
+      .split("\n")
+      .filter((l) => l.trim().length > 0);
+    expect(lines).toHaveLength(2);
+
+    const parsed1 = JSON.parse(lines[0]) as IdeaClassification;
+    const parsed2 = JSON.parse(lines[1]) as IdeaClassification;
+    expect(parsed1.idea_id).toBe("IDEA-001");
+    expect(parsed2.idea_id).toBe("IDEA-002");
+  });
+
+  it("TC-02: calling twice with the same record → 1 line (deduplication by idea_id+classified_at)", () => {
+    const dir = join(tmpdir(), `classifications-test-${randomBytes(4).toString("hex")}`);
+    mkdirSync(dir, { recursive: true });
+    const filePath = join(dir, "classifications.jsonl");
+
+    const record = makeClassificationRecord({ idea_id: "IDEA-001", classified_at: "2026-02-26T12:00:00.000Z" });
+
+    appendClassifications(filePath, [record]);
+    appendClassifications(filePath, [record]); // duplicate call
+
+    const lines = readFileSync(filePath, "utf-8")
+      .split("\n")
+      .filter((l) => l.trim().length > 0);
+    expect(lines).toHaveLength(1);
+  });
+
+  it("TC-03: empty array call → file unchanged (no-op)", () => {
+    const dir = join(tmpdir(), `classifications-test-${randomBytes(4).toString("hex")}`);
+    mkdirSync(dir, { recursive: true });
+    const filePath = join(dir, "classifications.jsonl");
+
+    // Write one record first
+    const record = makeClassificationRecord({ idea_id: "IDEA-001" });
+    appendClassifications(filePath, [record]);
+
+    const beforeContent = readFileSync(filePath, "utf-8");
+
+    // No-op call
+    appendClassifications(filePath, []);
+
+    const afterContent = readFileSync(filePath, "utf-8");
+    expect(afterContent).toBe(beforeContent);
+  });
+
+  it("first run: creates file and parent directories as needed", () => {
+    const dir = join(
+      tmpdir(),
+      `classifications-test-${randomBytes(4).toString("hex")}`,
+      "nested",
+      "path",
+    );
+    const filePath = join(dir, "classifications.jsonl");
+
+    const record = makeClassificationRecord({ idea_id: "IDEA-NEW" });
+    appendClassifications(filePath, [record]); // dir does not exist yet
+
+    expect(existsSync(filePath)).toBe(true);
+    const lines = readFileSync(filePath, "utf-8")
+      .split("\n")
+      .filter((l) => l.trim().length > 0);
+    expect(lines).toHaveLength(1);
+  });
+
+  it("malformed lines in existing file are silently skipped", () => {
+    const dir = join(tmpdir(), `classifications-test-${randomBytes(4).toString("hex")}`);
+    mkdirSync(dir, { recursive: true });
+    const filePath = join(dir, "classifications.jsonl");
+
+    // Write a malformed line followed by a valid line
+    writeFileSync(filePath, '{"bad json\n{"idea_id":"IDEA-OK","classified_at":"2026-02-26T10:00:00.000Z","title":"","source_path":"","source_excerpt":"","created_at":"","priority_tier":"P5","proximity":null,"urgency":"U2","effort":"S","reason_code":"RULE_P5_DEFAULT","parent_idea_id":null,"is_prerequisite":false,"effective_priority_rank":10,"own_priority_rank":10,"incident_id":null,"deadline_date":null,"repro_ref":null,"leakage_estimate_value":null,"leakage_estimate_unit":null,"first_observed_at":null,"risk_vector":null,"risk_ref":null,"failure_metric":null,"baseline_value":null,"funnel_step":null,"metric_name":null,"classified_by":"v1","classified_at":"2026-02-26T10:00:00.000Z","status":"open","trigger":"artifact_delta","artifact_id":"X","evidence_refs":[]}\n', "utf-8");
+
+    const newRecord = makeClassificationRecord({ idea_id: "IDEA-NEW", classified_at: "2026-02-26T11:00:00.000Z" });
+    appendClassifications(filePath, [newRecord]);
+
+    const lines = readFileSync(filePath, "utf-8")
+      .split("\n")
+      .filter((l) => l.trim().length > 0);
+    // 1 valid existing + 1 new = 2 lines (malformed line skipped)
+    expect(lines).toHaveLength(2);
   });
 });

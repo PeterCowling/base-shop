@@ -16,36 +16,29 @@ const TimeElapsedChip: FC<TimeElapsedChipProps> = ({
   let chipColorClasses = "";
 
   if (currentCode === 1) {
-    // Booking Created stage
+    // Booking Created stage: overdue ≥48h = danger, else ok
     if (hoursElapsed >= 48) {
-      chipColorClasses = "bg-error-main text-primary-fg";
+      chipColorClasses = "bg-danger-fg/15 border border-danger-fg text-danger-fg";
     } else {
-      chipColorClasses = "bg-primary-main text-primary-fg";
+      chipColorClasses = "bg-primary-soft border border-primary-main/30 text-primary-main";
     }
-  } else if (currentCode === 2) {
-    // First Reminder Sent stage
+  } else if (currentCode === 2 || currentCode === 3) {
+    // Reminder stages: overdue ≥24h = warning, else ok
     if (hoursElapsed >= 24) {
-      chipColorClasses = "bg-warning-main text-primary-fg";
+      chipColorClasses = "bg-warning text-primary-fg";
     } else {
-      chipColorClasses = "bg-secondary-main text-primary-fg";
-    }
-  } else if (currentCode === 3) {
-    // Second Reminder Sent stage
-    if (hoursElapsed >= 24) {
-      chipColorClasses = "bg-warning-dark text-primary-fg";
-    } else {
-      chipColorClasses = "bg-secondary-main text-primary-fg";
+      chipColorClasses = "bg-primary-soft border border-primary-main/30 text-primary-main";
     }
   } else if (currentCode === 4) {
-    // Cancelled stage
-    chipColorClasses = "bg-error-main text-primary-fg";
+    // Cancelled stage: always danger
+    chipColorClasses = "bg-danger-fg/15 border border-danger-fg text-danger-fg";
   } else {
-    chipColorClasses = "bg-primary-main text-primary-fg";
+    chipColorClasses = "bg-primary-soft border border-primary-main/30 text-primary-main";
   }
 
   return (
     <span
-      className={`inline-flex w-100px items-center justify-center px-4 py-2 text-sm rounded-lg font-semibold ${chipColorClasses}`}
+      className={`inline-flex items-center justify-center px-4 py-2 text-sm rounded-lg font-semibold ${chipColorClasses}`}
     >
       {displayHours}h
     </span>

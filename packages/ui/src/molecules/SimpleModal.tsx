@@ -71,6 +71,9 @@ export const SimpleModal: React.FC<SimpleModalProps> = ({
             className
           )}
         >
+          {/* DialogTitle must always be in the DOM for Radix accessibility — hidden when no title prop */}
+          {!title && <DialogTitle className="sr-only">Dialog</DialogTitle>}
+
           {(title || showCloseButton) && (
             // eslint-disable-next-line ds/enforce-layout-primitives -- UI-LINT-05 Modal header layout; fixed 2-column structure
             <div className="flex items-center justify-between px-6 py-4 border-b border-border-2">

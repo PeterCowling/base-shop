@@ -5,8 +5,11 @@ import path from "node:path";
 import { describe, expect, it } from "@jest/globals";
 
 import {
+  type BuildSummaryRow,
   classifyDomain,
   generateBuildSummaryRows,
+  inferBusinessFromPlanSlug,
+  inlineBuildSummaryIntoHtml,
   sanitizeAndCap,
   serializeRows,
   shouldExcludeSourcePath,
@@ -428,6 +431,262 @@ describe("generate-build-summary", () => {
     // Heuristic-sourced build event should NOT override the markdown extraction
     expect(rows[0]?.why).toBe("heuristic section why");
     expect(rows[0]?.intended).toBe("heuristic section intended");
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  // -------------------------------------------------------------------------
+  // Plan build-record scanning
+  // -------------------------------------------------------------------------
+
+  it("extracts why and intended from Outcome Contract bold-labeled bullets in build-records", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-outcome-contract-"));
+
+    await writeFile(
+      repoRoot,
+      "docs/business-os/strategy/businesses.json",
+      JSON.stringify({ businesses: [{ id: "BRIK", apps: ["brikette"] }] }, null, 2),
+    );
+
+    await writeFile(
+      repoRoot,
+      "docs/plans/brik-outcome-contract-test/build-record.user.md",
+      [
+        "---",
+        "Type: Build-Record",
+        "Status: Complete",
+        "Feature-Slug: brik-outcome-contract-test",
+        "Completed-date: 2026-02-25",
+        "artifact: build-record",
+        "---",
+        "",
+        "# Build Record: Outcome Contract Test",
+        "",
+        "## Outcome Contract",
+        "",
+        "- **Why:** The existing flow had a critical conversion gap at checkout.",
+        "- **Intended Outcome Type:** measurable",
+        "- **Intended Outcome Statement:** Checkout conversion rate improves by ≥10% within 30 days.",
+        "- **Source:** operator",
+        "",
+        "## What Was Built",
+        "",
+        "Some work done here.",
+      ].join("\n"),
+    );
+
+    const rows = generateBuildSummaryRows(repoRoot, {
+      timestampResolver: () => FIXED_TIMESTAMP,
+    });
+
+    const row = rows.find((r) =>
+      r.sourcePath === "docs/plans/brik-outcome-contract-test/build-record.user.md",
+    );
+    expect(row).toBeDefined();
+    expect(row?.why).toBe("The existing flow had a critical conversion gap at checkout.");
+    expect(row?.intended).toBe(
+      "Checkout conversion rate improves by ≥10% within 30 days.",
+    );
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  it("infers business from plan slug using longest-prefix-wins map", () => {
+    const prefixMap = new Map([
+      ["brik", "BRIK"],
+      ["brikette", "BRIK"],
+      ["reception", "BRIK"],
+      ["xa", "XA"],
+      ["xa-uploader", "XA"],
+      ["head", "HEAD"],
+      ["hbag", "HBAG"],
+      ["pet", "PET"],
+    ]);
+
+    expect(inferBusinessFromPlanSlug("brik-gbp-api", prefixMap)).toBe("BRIK");
+    expect(inferBusinessFromPlanSlug("brikette-cta-funnel", prefixMap)).toBe("BRIK");
+    expect(inferBusinessFromPlanSlug("reception-ui-screen-polish", prefixMap)).toBe("BRIK");
+    expect(inferBusinessFromPlanSlug("xa-uploader-usability", prefixMap)).toBe("XA");
+    expect(inferBusinessFromPlanSlug("head-brand", prefixMap)).toBe("HEAD");
+    expect(inferBusinessFromPlanSlug("hbag-website", prefixMap)).toBe("HBAG");
+    expect(inferBusinessFromPlanSlug("pet-accessories", prefixMap)).toBe("PET");
+    expect(inferBusinessFromPlanSlug("startup-loop-pipeline", prefixMap)).toBe(null);
+    expect(inferBusinessFromPlanSlug("lp-do-build", prefixMap)).toBe(null);
+  });
+
+  it("maps plan build-record paths to plan domains", () => {
+    expect(
+      classifyDomain("docs/plans/brikette-cta-sales-funnel-ga4/build-record.user.md"),
+    ).toBe("SEO / Measurement");
+    expect(
+      classifyDomain("docs/plans/reception-design-overhaul/build-record.user.md"),
+    ).toBe("UI / Site");
+    expect(
+      classifyDomain("docs/plans/brik-gbp-api-rejection-remediation/build-record.user.md"),
+    ).toBe("Engineering");
+    expect(
+      classifyDomain("docs/plans/startup-loop-pipeline/build-record.user.md"),
+    ).toBe("Engineering");
+  });
+
+  it("includes plan build-record entries matched by business slug prefix", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-plan-scan-"));
+
+    await writeFile(
+      repoRoot,
+      "docs/business-os/strategy/businesses.json",
+      JSON.stringify(
+        { businesses: [{ id: "BRIK", apps: ["brikette", "reception"] }, { id: "HEAD" }] },
+        null,
+        2,
+      ),
+    );
+
+    // BRIK plan with build-record
+    await writeFile(
+      repoRoot,
+      "docs/plans/brik-feature-test/build-record.user.md",
+      "# BRIK Feature\n\n## Why\nbrik why\n\n## Intended outcome\nbrik intended",
+    );
+
+    // Plan with no matching business — should be excluded
+    await writeFile(
+      repoRoot,
+      "docs/plans/startup-loop-pipeline/build-record.user.md",
+      "# Infrastructure\n\n## Why\ninfra why",
+    );
+
+    // Plan dir without build-record — should be excluded
+    await writeFile(repoRoot, "docs/plans/brik-no-record/plan.md", "# Plan only");
+
+    // Plan in _archive subdir — should be excluded (starts with _)
+    await writeFile(
+      repoRoot,
+      "docs/plans/_archive/brik-old/build-record.user.md",
+      "# Old\n\n## Why\nold why",
+    );
+
+    const rows = generateBuildSummaryRows(repoRoot, {
+      timestampResolver: () => FIXED_TIMESTAMP,
+    });
+
+    const planRow = rows.find(
+      (r) => r.sourcePath === "docs/plans/brik-feature-test/build-record.user.md",
+    );
+    expect(planRow).toBeDefined();
+    expect(planRow?.business).toBe("BRIK");
+    expect(planRow?.what).toBe("BRIK Feature");
+    expect(planRow?.why).toBe("brik why");
+    expect(planRow?.intended).toBe("brik intended");
+    expect(planRow?.domain).toBe("Engineering");
+
+    expect(rows.find((r) => r.sourcePath.includes("startup-loop-pipeline"))).toBeUndefined();
+    expect(rows.find((r) => r.sourcePath.includes("brik-old"))).toBeUndefined();
+    expect(rows.find((r) => r.sourcePath.includes("brik-no-record"))).toBeUndefined();
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  // -------------------------------------------------------------------------
+  // HTML inlining
+  // -------------------------------------------------------------------------
+
+  it("inlines build summary rows into the HTML file via the inline data script tag", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-inline-html-"));
+
+    const htmlDir = path.join(repoRoot, "docs/business-os");
+    await fs.mkdir(htmlDir, { recursive: true });
+    const htmlPath = path.join(htmlDir, "startup-loop-output-registry.user.html");
+    await fs.writeFile(
+      htmlPath,
+      `<html><body><script id="build-summary-inline-data" type="application/json">[]</script></body></html>`,
+      "utf8",
+    );
+
+    const rows: BuildSummaryRow[] = [
+      {
+        date: "2026-02-25T00:00:00.000Z",
+        business: "BRIK",
+        domain: "Engineering",
+        what: "Test feature",
+        why: "test why",
+        intended: "test intended",
+        links: [{ label: "Open", href: "/docs/plans/test-feature/build-record.user.md" }],
+        sourcePath: "docs/plans/test-feature/build-record.user.md",
+      },
+    ];
+
+    const result = inlineBuildSummaryIntoHtml(repoRoot, rows);
+    expect(result).toBe(true);
+
+    const updated = await fs.readFile(htmlPath, "utf8");
+    expect(updated).toContain('"Test feature"');
+    expect(updated).toContain('"test why"');
+    expect(updated).toMatch(/<script[^>]+id="build-summary-inline-data"[^>]*>/);
+    // Verify the script tag is valid JSON (not corrupted by $ replacement)
+    const m = updated.match(/<script[^>]+id="build-summary-inline-data"[^>]*>([\s\S]*?)<\/script>/);
+    expect(() => JSON.parse(m![1]!)).not.toThrow();
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  it("inlineBuildSummaryIntoHtml does not corrupt rows containing dollar signs", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-inline-dollar-"));
+
+    const htmlDir = path.join(repoRoot, "docs/business-os");
+    await fs.mkdir(htmlDir, { recursive: true });
+    const htmlPath = path.join(htmlDir, "startup-loop-output-registry.user.html");
+    await fs.writeFile(
+      htmlPath,
+      `<html><body><script id="build-summary-inline-data" type="application/json">[]</script></body></html>`,
+      "utf8",
+    );
+
+    const rows: BuildSummaryRow[] = [
+      {
+        date: "2026-02-25T00:00:00.000Z",
+        business: "BRIK",
+        domain: "Strategy",
+        what: "Pricing plan",
+        why: "Target price is $152 per unit to hit margin",
+        intended: "Revenue of $10k MRR within 90 days",
+        links: [{ label: "Open", href: "/docs/plans/brik-pricing/build-record.user.md" }],
+        sourcePath: "docs/plans/brik-pricing/build-record.user.md",
+      },
+    ];
+
+    inlineBuildSummaryIntoHtml(repoRoot, rows);
+
+    const updated = await fs.readFile(htmlPath, "utf8");
+    const m = updated.match(/<script[^>]+id="build-summary-inline-data"[^>]*>([\s\S]*?)<\/script>/);
+    expect(m).not.toBeNull();
+    const parsed = JSON.parse(m![1]!);
+    expect(parsed[0]?.why).toBe("Target price is $152 per unit to hit margin");
+    expect(parsed[0]?.intended).toBe("Revenue of $10k MRR within 90 days");
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  it("returns false from inlineBuildSummaryIntoHtml when HTML file is missing", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-inline-missing-"));
+    const result = inlineBuildSummaryIntoHtml(repoRoot, []);
+    expect(result).toBe(false);
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  it("returns false from inlineBuildSummaryIntoHtml when inline script tag is absent", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-inline-notag-"));
+
+    const htmlDir = path.join(repoRoot, "docs/business-os");
+    await fs.mkdir(htmlDir, { recursive: true });
+    await fs.writeFile(
+      path.join(htmlDir, "startup-loop-output-registry.user.html"),
+      "<html><body>no inline tag here</body></html>",
+      "utf8",
+    );
+
+    const result = inlineBuildSummaryIntoHtml(repoRoot, []);
+    expect(result).toBe(false);
 
     await fs.rm(repoRoot, { recursive: true, force: true });
   });

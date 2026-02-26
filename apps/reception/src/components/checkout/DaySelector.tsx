@@ -1,11 +1,10 @@
 import type { ReactElement } from "react";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DayPicker, getDefaultClassNames } from "react-day-picker";
+import { memo, useCallback, useMemo, useState } from "react";
+import { DayPicker } from "react-day-picker";
 
 import { Button } from "@acme/design-system/atoms";
-import { Cluster, Inline } from "@acme/design-system/primitives";
+import { Cluster } from "@acme/design-system/primitives";
 
-// Import your existing date utilities
 import {
   buildQuickDateRange,
   formatDateForInput,
@@ -20,38 +19,30 @@ interface DateSelectorProps {
 }
 
 /**
- * A quick-select + optional calendar for picking a date.
+ * Quick-select date buttons + an inline calendar picker available to all users.
+ * The calendar expands inline below the button row to avoid popup timing races.
  */
 function DateSelector({
   selectedDate,
   onDateChange,
-  username,
+  username: _username,
 }: DateSelectorProps): ReactElement {
-  const isPete = username?.toLowerCase() === "pete";
-
   const { today, yesterday, nextDays: nextFiveDays } = useMemo(
     () => buildQuickDateRange(5),
-    [],
+    []
   );
 
-  /**
-   * Renders a button for quickly selecting a date.
-   * Uses a callback to avoid unnecessary re-renders.
-   */
   const renderButton = useCallback(
     (label: string, day: string): ReactElement => {
       const isSelected = selectedDate === day;
       return (
         <Button
           key={day}
-          className={`
-            px-4 py-2 border rounded-lg text-sm font-medium w-100px text-center transition-colors
-            ${
-              isSelected
-                ? "bg-primary-main text-primary-fg border-primary-main"
-                : "bg-surface text-foreground border-border-2 hover:bg-surface-2"
-            }
-          `}
+          className={`px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors ${
+            isSelected
+              ? "bg-primary-main text-primary-fg border-primary-main"
+              : "bg-surface text-foreground border-border-strong hover:bg-surface-2"
+          }`}
           onClick={() => onDateChange(day)}
         >
           {label}
@@ -61,108 +52,80 @@ function DateSelector({
     [selectedDate, onDateChange]
   );
 
-  /**
-   * Render the quick date selection buttons (yesterday, today, plus next 5 days).
-   */
-  const daySelectors: ReactElement = (
-    <Cluster gap={2}>
-      {renderButton("Yesterday", yesterday)}
-      {renderButton("Today", today)}
-      {nextFiveDays.map((day) => {
-        // Label is the weekday abbreviation, e.g., "Mon", "Tue"
-        const shortLabel = getWeekdayShortLabel(day);
-        return renderButton(shortLabel, day);
-      })}
-    </Cluster>
-  );
-
-  // For "pete": show an optional toggleable calendar
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const calendarRef = useRef<HTMLDivElement>(null);
-  const toggleRef = useRef<HTMLButtonElement>(null);
 
-  /**
-   * Close the calendar if the user clicks outside of it.
-   */
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (isCalendarOpen) {
-        if (
-          calendarRef.current &&
-          !calendarRef.current.contains(event.target as Node) &&
-          toggleRef.current &&
-          !toggleRef.current.contains(event.target as Node)
-        ) {
-          setIsCalendarOpen(false);
+  const handleDayPickerSelect = useCallback(
+    (date?: Date) => {
+      if (date) {
+        const newDate = formatDateForInput(date);
+        if (newDate !== formatDateForInput(selectedDate)) {
+          onDateChange(newDate);
         }
       }
-    }
+      setIsCalendarOpen(false);
+    },
+    [onDateChange, selectedDate]
+  );
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isCalendarOpen]);
+  return (
+    <div className="flex flex-col gap-3 px-4 py-3 bg-surface-2 rounded-lg border border-border-strong">
+      {/* Top row: quick-select buttons + calendar toggle */}
+      <div className="flex items-center justify-between gap-4">
+        <Cluster gap={2}>
+          {renderButton("Yesterday", yesterday)}
+          {renderButton("Today", today)}
+          {nextFiveDays.map((day) => renderButton(getWeekdayShortLabel(day), day))}
+        </Cluster>
 
-  /**
-   * Use default class names from react-day-picker, but override some of them.
-   */
-  const defaultNames = getDefaultClassNames();
-
-  /**
-   * If the user is "Pete", we render a button and calendar popup for date selection.
-   */
-  let toggleAndCalendar: ReactElement | null = null;
-  if (isPete) {
-    toggleAndCalendar = (
-      <div className="relative">
         <Button
-          ref={toggleRef}
-          className="px-3 py-2 border rounded-lg focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
+          className={`shrink-0 px-3 py-2 border rounded-lg text-sm font-medium transition-colors ${
+            isCalendarOpen
+              ? "bg-primary-main text-primary-fg border-primary-main"
+              : "bg-surface text-foreground border-border-strong hover:bg-surface-2"
+          }`}
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate || "Select a date"}
         </Button>
-        {isCalendarOpen && (
-          <div
-            ref={calendarRef}
-            className="absolute z-50 mt-2 bg-surface shadow-lg rounded-lg p-5"
-            style={{ top: "100%", right: 0 }}
-          >
-            <DayPicker
-              mode="single"
-              selected={parseDate(selectedDate)}
-              onSelect={(date) => {
-                if (date) {
-                  const newDate = formatDateForInput(date);
-                  if (newDate !== selectedDate) {
-                    onDateChange(newDate);
-                  }
-                }
-                setIsCalendarOpen(false);
-              }}
-              classNames={{
-                root: defaultNames.root,
-                /* eslint-disable ds/no-raw-tailwind-color -- REC-02: calendar accent colour; no semantic token maps to amber-500 selection highlight */
-                today: "border-amber-500",
-                selected: "bg-amber-500 border-amber-500 text-primary-fg",
-                chevron: `${defaultNames.chevron} fill-amber-500`,
-                /* eslint-enable ds/no-raw-tailwind-color */
-              }}
-            />
-          </div>
-        )}
       </div>
-    );
-  }
 
-  // The final layout, combining quick selectors and the optional calendar.
-  return (
-    <div className="relative pb-5 bg-surface-2 rounded-lg border border-border-2">
-      <Inline wrap={false} gap={2}>
-        {daySelectors}
-        {toggleAndCalendar}
-      </Inline>
+      {/* Inline calendar — expands below the button row, no popup timing race */}
+      {isCalendarOpen && (
+        <div className="border-t border-border-strong pt-3 flex justify-end">
+          <DayPicker
+            mode="single"
+            selected={parseDate(selectedDate)}
+            onSelect={handleDayPickerSelect}
+            classNames={{
+              root: "bg-surface border border-border-strong rounded-xl shadow-lg p-4 text-foreground",
+              months: "relative",
+              month: "space-y-3",
+              month_caption: "flex items-center justify-center h-9",
+              caption_label: "text-sm font-semibold text-foreground",
+              nav: "absolute top-0 inset-x-0 flex justify-between",
+              button_previous:
+                "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors",
+              button_next:
+                "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors",
+              chevron: "w-4 h-4 fill-current",
+              month_grid: "border-collapse",
+              weekdays: "flex",
+              weekday:
+                "flex h-9 w-9 items-center justify-center text-xs font-medium text-muted-foreground",
+              weeks: "space-y-1 mt-1",
+              week: "flex",
+              day: "p-0",
+              day_button:
+                "flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium text-foreground hover:bg-surface-2 transition-colors cursor-pointer",
+              today: "font-bold text-primary-main/100",
+              selected:
+                "bg-primary-main/100 text-primary-fg/100 hover:bg-primary-main/100",
+              outside: "opacity-30",
+              disabled: "opacity-25 cursor-not-allowed",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

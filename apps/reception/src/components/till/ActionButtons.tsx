@@ -165,7 +165,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
             compatibilityMode="no-wrapper"
             id="drawerLimit"
             type="number"
-            className="border rounded-lg p-1 w-24"
+            className="border border-border-strong rounded-lg p-1 w-24"
             value={drawerLimitInput}
             onChange={(e) => setDrawerLimitInput(e.target.value)}
           />

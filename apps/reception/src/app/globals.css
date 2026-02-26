@@ -45,7 +45,7 @@
 
   /* DS primitive tokens (needed for bg-input, bg-panel, ring-ring, etc.) */
   --color-input: hsl(var(--surface-input, var(--color-bg)));
-  --color-panel: hsl(var(--color-panel));
+  --color-panel: var(--color-panel);
   --color-inset: hsl(var(--color-inset));
   --color-ring: hsl(var(--ring));
   --color-danger: hsl(var(--color-danger));

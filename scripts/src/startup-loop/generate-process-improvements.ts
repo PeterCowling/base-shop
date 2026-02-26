@@ -566,7 +566,9 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
 
       try {
         const classifierInput: IdeaClassificationInput = {
-          area_anchor: idea.title,
+          area_anchor: [idea.title, idea.body !== MISSING_VALUE ? idea.body : ""]
+            .filter(Boolean)
+            .join(" "),
           evidence_refs:
             idea.body && idea.body !== MISSING_VALUE
               ? [`operator-stated: ${idea.body}`]

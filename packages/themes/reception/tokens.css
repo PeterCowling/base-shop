@@ -31,8 +31,8 @@
   --color-fg-dark: 150 10% 92%;
   --color-fg-muted: 0 0% 40%;
   --color-fg-muted-dark: 150 5% 65%;
-  --color-panel: 150 4% 97%;
-  --color-panel-dark: 160 6% 10%;
+  --color-panel: hsl(150 4% 97%);
+  --color-panel-dark: hsl(160 6% 10%);
   --color-inset: 150 4% 98%;
   --color-inset-dark: 160 8% 6%;
   --color-border: 0 0% 80%;

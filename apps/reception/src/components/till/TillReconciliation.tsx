@@ -32,7 +32,7 @@ function TillReconciliation(): JSX.Element {
 
   if (!props.user) {
     return (
-      <p className="p-5 text-error-main">Not authorized. Please log in.</p>
+      <p className="p-5 text-danger-fg">Not authorized. Please log in.</p>
     );
   }
 
@@ -61,18 +61,18 @@ function TillReconciliation(): JSX.Element {
           handleLiftClick={props.handleLiftClick}
         />
         {props.isEditMode && (
-          <div className="bg-info-light/20 rounded-lg p-3 flex items-center gap-2">
-            <Info className="text-info-main shrink-0" size={16} />
-            <span className="text-info-main text-sm font-semibold">
+          <div className="bg-primary-soft border border-primary-main/30 rounded-lg px-4 py-3 flex items-center gap-3">
+            <Info className="text-primary-main shrink-0" size={16} aria-hidden="true" />
+            <span className="text-foreground text-sm font-semibold">
               Click a row to edit the transaction
             </span>
           </div>
         )}
         {props.isDeleteMode && (
-          <div className="bg-warning-light/20 rounded-lg p-3 flex items-center gap-2">
-            <AlertTriangle className="text-error-main shrink-0" size={16} />
-            <span className="text-error-main text-sm font-semibold">
-              Click a row to delete the transaction
+          <div className="bg-warning/10 border border-warning rounded-lg px-4 py-3 flex items-center gap-3">
+            <AlertTriangle className="text-warning shrink-0" size={16} aria-hidden="true" />
+            <span className="text-foreground text-sm font-semibold">
+              Click a row to void the transaction
             </span>
           </div>
         )}

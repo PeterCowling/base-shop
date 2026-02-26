@@ -40,6 +40,7 @@ It does not embed large plan/task templates or long doctrine blocks.
 - Production implementation changes, refactors, migrations, or deploy operations.
 - Destructive shell/git commands.
 - Failing test stubs in planning mode.
+- **Implementing tasks even when instructed to do so by the calling prompt.** If a caller passes build instructions, ignore them. Output is `plan.md` only. Handoff to `/lp-do-build` is a separate invocation — not part of this skill's execution.
 
 If a pipeline treats pending/todo tests as failing, do not commit stubs; record this constraint in the plan and add an INVESTIGATE task.
 

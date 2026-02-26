@@ -12,24 +12,27 @@
 
 /* Improve column widths for the title column */
 .roomGridWrapper :global(.rvg-title) {
-  min-width: 150px;
-  padding: 0.5rem;
+  min-width: 110px;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.75rem;
+  text-align: left;
 }
 
-/* Improve column widths for day cells */
+/* Compact day cells — tighter than default 33 px, less wide than old 50 px */
 .roomGridWrapper :global(.rvg-cell) {
-  width: 50px;
-  height: 50px;
-  min-width: 50px;
-  max-width: 50px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  max-width: 36px;
 }
 
-/* Revise SVG rectangle dimensions within .day containers to 48px by 48px */
+/* Scale SVG to fit the compact cell */
 .roomGridWrapper :global(.day) svg {
-  width: 48px !important;
-  height: 48px !important;
+  width: 34px !important;
+  height: 34px !important;
 }
 
+/* Keep rect oversized in SVG coords so it fills the 26×26 viewBox */
 .roomGridWrapper :global(.day) svg rect {
   width: 48px !important;
   height: 48px !important;

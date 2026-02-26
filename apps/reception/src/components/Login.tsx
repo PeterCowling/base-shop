@@ -289,12 +289,12 @@ function Login({ onLoginSuccess }: LoginProps) {
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
                 placeholder="name@company.com"
-                className="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+                className="mt-1.5 w-full rounded-lg border border-border-strong px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
               />
             </div>
 
             {resetError && (
-              <p role="alert" className="text-sm font-medium text-error-main">
+              <p role="alert" className="text-sm font-medium text-danger-fg">
                 {resetError}
               </p>
             )}
@@ -355,14 +355,14 @@ function Login({ onLoginSuccess }: LoginProps) {
             value={pinInput}
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter 6-digit PIN"
-            className="w-full rounded-lg border border-border-2 px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+            className="w-full rounded-lg border border-border-strong px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
           />
         </div>
 
         <Button
           type="button"
           onClick={handleSkipPinSetup}
-          className="mt-4 w-full rounded-lg border border-border-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
+          className="mt-4 w-full rounded-lg border border-border-strong px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
         >
           Skip for now
         </Button>
@@ -399,7 +399,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter PIN"
             aria-describedby={pinError ? pinErrorId : undefined}
-            className="w-full rounded-lg border border-border-2 px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+            className="w-full rounded-lg border border-border-strong px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
           />
         </div>
 
@@ -407,7 +407,7 @@ function Login({ onLoginSuccess }: LoginProps) {
           <p
             id={pinErrorId}
             role="alert"
-            className="mt-2 text-sm font-medium text-error-main"
+            className="mt-2 text-sm font-medium text-danger-fg"
           >
             {pinError}
           </p>
@@ -416,7 +416,7 @@ function Login({ onLoginSuccess }: LoginProps) {
         <Button
           type="button"
           onClick={handleClearDevicePin}
-          className="mt-4 w-full rounded-lg border border-border-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
+          className="mt-4 w-full rounded-lg border border-border-strong px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
         >
           Sign in with email instead
         </Button>
@@ -430,10 +430,7 @@ function Login({ onLoginSuccess }: LoginProps) {
   return (
     <LoginContainer>
       <ProductLogo />
-      <h1 className="mt-6 text-xl font-semibold text-foreground">
-        Sign in to Reception
-      </h1>
-      <p className="mt-2 text-sm text-muted-foreground">
+      <p className="mt-6 text-sm text-muted-foreground">
         Enter your credentials to continue.
       </p>
 
@@ -455,7 +452,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="name@company.com"
             aria-describedby={error ? loginErrorId : undefined}
-            className="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+            className="mt-1.5 w-full rounded-lg border border-border-strong px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
           />
         </div>
 
@@ -484,7 +481,7 @@ function Login({ onLoginSuccess }: LoginProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               aria-describedby={error ? loginErrorId : undefined}
-              className="w-full rounded-lg border border-border-2 px-4 py-2.5 pr-10 text-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+              className="w-full rounded-lg border border-border-strong px-4 py-2.5 pr-10 text-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
             />
             <Button
               type="button"
@@ -505,7 +502,7 @@ function Login({ onLoginSuccess }: LoginProps) {
           <p
             id={loginErrorId}
             role="alert"
-            className="text-sm font-medium text-error-main"
+            className="text-sm font-medium text-danger-fg"
           >
             {error}
           </p>
@@ -528,10 +525,10 @@ function ProductLogo() {
   return (
     <div className="flex items-center justify-center">
       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-main">
-        <span className="text-lg font-bold text-primary-fg">R</span>
+        <span className="text-lg font-bold text-primary-fg">B</span>
       </div>
       <span className="ms-3 text-xl font-semibold text-foreground">
-        Reception
+        Brikette Operating System
       </span>
     </div>
   );

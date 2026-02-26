@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 
 import { Button } from "@acme/design-system/atoms";
-import { Grid } from "@acme/design-system/primitives";
 import { cn } from "@acme/design-system/utils/style";
 import { SimpleModal } from "@acme/ui/molecules";
 
@@ -32,22 +31,20 @@ export function withIconModal(config: WithIconModalConfig) {
       router.push(route);
     };
 
-    const cols = 3 as const;
-    const maxWidth = "max-w-lg";
-
     return (
       <SimpleModal
         isOpen={visible}
         onClose={onClose}
         title={config.label}
-        maxWidth={maxWidth}
+        maxWidth="max-w-lg"
+        backdropClassName="bg-surface/80 backdrop-blur-md"
         footer={
           <Button color="default" tone="outline" onClick={onClose}>
             Close
           </Button>
         }
       >
-        <Grid cols={cols} gap={3}>
+        <div className="grid grid-cols-3 gap-3">
           {config.actions.map((action) => {
             const Icon = action.icon;
             return (
@@ -56,18 +53,18 @@ export function withIconModal(config: WithIconModalConfig) {
                 onClick={() => handleActionClick(action.route)}
                 disabled={!interactive}
                 className={cn(
-                  "flex flex-col items-center justify-center gap-2 rounded-lg border p-4 transition-all duration-150 text-center",
+                  "flex flex-col items-center justify-center gap-3 rounded-lg border bg-surface-2 p-5 transition-all duration-150 text-center",
                   interactive
-                    ? "cursor-pointer border-border-2 text-foreground hover:border-primary hover:bg-primary-soft hover:text-primary-main active:scale-95"
+                    ? "cursor-pointer border-border-2 text-primary-main hover:border-primary hover:bg-primary-soft active:scale-95"
                     : "cursor-not-allowed border-border-1 text-muted-foreground opacity-40"
                 )}
               >
-                <Icon size={22} className="shrink-0" />
-                <span className="text-xs font-medium leading-tight">{action.label}</span>
+                <Icon size={26} className="shrink-0" />
+                <span className="text-sm font-medium leading-tight text-foreground">{action.label}</span>
               </button>
             );
           })}
-        </Grid>
+        </div>
       </SimpleModal>
     );
   };

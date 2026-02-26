@@ -51,10 +51,10 @@ const CheckinsTable: React.FC = () => {
   });
 
   useEffect(() => {
-    if (validationError) {
+    if (validationError && isPete) {
       showToast(getErrorMessage(validationError), "warning");
     }
-  }, [validationError]);
+  }, [validationError, isPete]);
 
   /**
    * rows already contains occupants within a pre-defined range.

@@ -20,8 +20,7 @@ Pending — check back after first live activation. Expected: lp-do skill invoca
 
 ## New Idea Candidates
 
-- lp-do-plan is at 256 lines — still above 200-line threshold | Trigger observation: TASK-03 reached 256L; ≤200 requires removing governing content | Suggested next action: defer (follow-on initiative only if 256L proves to be a practical problem)
-- lp-do-critique is at ~600 lines — multi-mode content-dense utility skill | Trigger observation: justified exception confirmed during fact-find; Offer Lens extraction saved ~85L | Suggested next action: defer (further module extraction opportunities exist but not urgent)
+None. Both candidates (lp-do-plan 256L threshold and lp-do-critique 600L exception) taken forward and closed as deferred decisions.
 
 ## Standing Expansion
 

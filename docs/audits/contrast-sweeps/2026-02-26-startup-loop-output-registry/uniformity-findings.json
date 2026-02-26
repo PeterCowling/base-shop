@@ -1,0 +1,35 @@
+[
+  {
+    "id": "U-01",
+    "severity": "S2",
+    "theme": "all",
+    "breakpoint": "all",
+    "route": "startup-loop-output-registry.user.html",
+    "componentFamily": "Muted/secondary text tokens",
+    "description": "Two parallel muted-colour variables exist — --muted (in :root) and --text-muted (in sl-theme-css) — with different names, different values, and no bridge. Elements using var(--muted) never receive a theme-adapted colour, while those using var(--text-muted) do.",
+    "observedDifference": {
+      "variable1": "--muted",
+      "variable1DefinedIn": ":root block (always #5a6b7a regardless of theme)",
+      "variable1UsedBy": [".page-header p", ".snapshot-chip", ".panel-meta", ".build-summary-status", ".build-summary-controls label", ".build-summary-empty", ".fold-meta", ".section-placeholder p"],
+      "variable2": "--text-muted",
+      "variable2DefinedIn": "sl-theme-css html[data-theme] blocks",
+      "variable2DarkValue": "#6b728f",
+      "variable2LightValue": "#5a6080",
+      "variable2UsedBy": [".zoom-controls button", ".mermaid .edgeLabel", ".diagram-caption"]
+    },
+    "likelyCause": "The sl-theme-css system was added later to provide multi-theme support. It introduced its own --text-muted token without migrating the existing --muted usages.",
+    "fixDirection": "Add --muted overrides to both sl-theme-css blocks: html[data-theme=\"dark\"] { --muted: #909db5; } and html[data-theme=\"light\"] { --muted: #5a6080; }. Resolves C-01 and most of C-05 in a two-line change."
+  },
+  {
+    "id": "U-02",
+    "severity": "S3",
+    "theme": "all",
+    "breakpoint": "all",
+    "route": "startup-loop-output-registry.user.html",
+    "componentFamily": "Focus indicators",
+    "description": "No :focus-visible rule is defined. All interactive elements (nav links, tab buttons, build-summary selects, zoom buttons, Open links) rely on browser-default focus rings.",
+    "observedDifference": "Focus ring style is inconsistent across element types and may clip inside rounded corners (border-radius on .tab-button, .artifact, .artifact-fold). No visual link to the page accent colour system.",
+    "likelyCause": "Focus styling was not included when the page was built.",
+    "fixDirection": "Add: a:focus-visible, button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; } This binds focus rings to the accent colour (#5b9cf6 dark / #3362d0 light), both of which pass 3.0:1 non-text contrast."
+  }
+]

@@ -30,7 +30,13 @@ const RoomsGrid: FC = () => {
   );
 
   const handleStartChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setStartDate(e.target.value);
+    const newStart = e.target.value;
+    const spanDays = Math.round(
+      (new Date(endDate).getTime() - new Date(startDate).getTime()) /
+        (24 * 60 * 60 * 1000)
+    );
+    setStartDate(newStart);
+    setEndDate(formatDateForInput(addDays(new Date(newStart), spanDays)));
   };
 
   const handleEndChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,34 +52,39 @@ const RoomsGrid: FC = () => {
             <div className="h-7 w-1 rounded-full bg-primary-main" aria-hidden="true" />
             <h1 className="text-2xl font-heading font-semibold text-foreground">Room Grid</h1>
           </div>
-          <div className="flex items-center gap-4">
-            <label className="text-sm font-medium text-muted-foreground" htmlFor="start-date">
-              From
-            </label>
-            <Input
-              compatibilityMode="no-wrapper"
-              id="start-date"
-              type="date"
-              className="rounded-lg border border-border-2 bg-surface px-3 py-1.5 text-sm text-foreground focus:border-primary-main focus:outline-none"
-              value={startDate}
-              onChange={handleStartChange}
-            />
-            <label className="text-sm font-medium text-muted-foreground" htmlFor="end-date">
-              To
-            </label>
-            <Input
-              compatibilityMode="no-wrapper"
-              id="end-date"
-              type="date"
-              className="rounded-lg border border-border-2 bg-surface px-3 py-1.5 text-sm text-foreground focus:border-primary-main focus:outline-none"
-              value={endDate}
-              onChange={handleEndChange}
-            />
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider" htmlFor="start-date">
+                From
+              </label>
+              <Input
+                compatibilityMode="no-wrapper"
+                id="start-date"
+                type="date"
+                className="rounded-lg border border-border-2 bg-surface px-3 py-1.5 text-sm text-foreground focus:border-primary-main focus:outline-none"
+                value={startDate}
+                onChange={handleStartChange}
+              />
+            </div>
+            <span className="text-muted-foreground text-sm select-none">→</span>
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider" htmlFor="end-date">
+                To
+              </label>
+              <Input
+                compatibilityMode="no-wrapper"
+                id="end-date"
+                type="date"
+                className="rounded-lg border border-border-2 bg-surface px-3 py-1.5 text-sm text-foreground focus:border-primary-main focus:outline-none"
+                value={endDate}
+                onChange={handleEndChange}
+              />
+            </div>
           </div>
         </div>
       }
     >
-      <div className="bg-surface rounded-xl shadow-lg p-4 space-y-4">
+      <div className="bg-surface rounded-xl shadow-lg p-5 flex flex-col gap-5">
         {loading && (
           <p className="p-4 italic text-muted-foreground">Loading rooms...</p>
         )}

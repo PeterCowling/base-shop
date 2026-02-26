@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Closed
 Domain: PRODUCTS
 Workstream: Engineering
 Created: 2026-02-26
@@ -31,7 +31,7 @@ Auto-Build-Intent: plan+auto
 - [x] TASK-03: Integrate RSC components into page wrappers and remove client renders (atomic)
 - [x] TASK-05: Delete old client-only structured data components
 - [x] TASK-06: Unit tests for both RSC components
-- [ ] TASK-07: Staging smoke-test via curl
+- [x] TASK-07: Smoke-test via curl on live site (hostel-positano.com)
 
 ## Goals
 
@@ -105,7 +105,7 @@ Auto-Build-Intent: plan+auto
 | TASK-03 | IMPLEMENT | Integrate RSC into page wrappers + remove client renders (atomic) | 85% | S | Complete (2026-02-26) | TASK-01, TASK-02 | TASK-05, TASK-07 |
 | TASK-05 | IMPLEMENT | Delete old client-only structured data components | 85% | S | Complete (2026-02-26) | TASK-03 | TASK-07 |
 | TASK-06 | IMPLEMENT | Unit tests for `RoomsStructuredDataRsc` and `ExperiencesStructuredDataRsc` | 85% | M | Complete (2026-02-26) | TASK-01, TASK-02 | TASK-07 |
-| TASK-07 | IMPLEMENT | Staging smoke-test via curl (both routes, 2 locales) | 85% | S | Pending | TASK-03, TASK-05, TASK-06 | - |
+| TASK-07 | IMPLEMENT | Staging smoke-test via curl (both routes, 2 locales) | 85% | S | Complete (2026-02-26) | TASK-03, TASK-05, TASK-06 | - |
 
 ## Parallelism Guide
 
@@ -473,7 +473,7 @@ Auto-Build-Intent: plan+auto
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** None (read-only verification task)
 - **Depends on:** TASK-03, TASK-05, TASK-06
 - **Blocks:** -
@@ -516,6 +516,13 @@ Auto-Build-Intent: plan+auto
   - Staging URL: `staging.brikette-website.pages.dev`
   - Static export deploy pattern: MEMORY.md CI/Deploy Pipeline section
   - Post-build cleanup: `find out -name "__next.*" -type f -delete` (MEMORY.md)
+- **Build evidence (Complete 2026-02-26):**
+  - Run on live production site `hostel-positano.com` (not staging — changes were already deployed).
+  - All 18 supported locales tested on both `/rooms` and `/experiences`: 36/36 pass.
+  - `/en/rooms`: `@type=OfferCatalog`, `inLanguage=en`, 23 items. Valid JSON.
+  - `/en/experiences`: `@type=ItemList`, `inLanguage=en`, 3 items. Valid JSON.
+  - All non-EN locales (`es`, `de`, `fr`, `it`, `ja`, `ko`, `pt`, `ru`, `zh`, `ar`, `hi`, `vi`, `pl`, `sv`, `no`, `da`, `hu`): JSON-LD present, `inLanguage` matches URL locale, JSON valid.
+  - TC-01 through TC-04: all pass.
 
 ---
 

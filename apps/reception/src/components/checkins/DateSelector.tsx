@@ -8,10 +8,9 @@ import {
   useRef,
   useState,
 } from "react";
-import { DayPicker, getDefaultClassNames } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 
 import { Button } from "@acme/design-system/atoms";
-import { Cluster, Inline } from "@acme/design-system/primitives";
 
 import {
   addDays,
@@ -70,7 +69,7 @@ export default function DateSelector({
             ${
               isSelected
                 ? "bg-primary-main text-primary-fg border-primary-main"
-                : "bg-surface text-foreground border-border-2 hover:bg-surface-2"
+                : "bg-surface text-foreground border-border-strong hover:bg-surface-2"
             }
           `}
           onClick={() => handleQuickSelect(day)}
@@ -82,25 +81,6 @@ export default function DateSelector({
     [handleQuickSelect, selectedDate],
   );
 
-  const daySelectors = useMemo(
-    () => (
-      <Cluster gap={2}>
-        {isPete && renderButton("Yesterday", yesterday)}
-        {renderButton("Today", today)}
-        {nextDays.map((day) => {
-          const shortLabel = getWeekdayShortLabel(day);
-          return renderButton(shortLabel, day);
-        })}
-      </Cluster>
-    ),
-    [
-      today,
-      yesterday,
-      isPete,
-      nextDays,
-      renderButton,
-    ],
-  );
 
   // DayPicker toggle logic (Pete/Serena)
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -148,9 +128,6 @@ export default function DateSelector({
     [],
   );
 
-  // Extend default DayPicker class names
-  const defaultNames = getDefaultClassNames();
-
   const parsedToday = useMemo(() => parseDate(today), [today]);
 
   let toggleAndCalendar: ReactElement | null = null;
@@ -183,12 +160,26 @@ export default function DateSelector({
                   }
                 : {})}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded-lg`,
-                /* eslint-disable ds/no-raw-tailwind-color -- calendar day-picker accent styling (amber-500); no semantic token equivalent [REC-09] */
-                today: "border-amber-500",
-                selected: "bg-amber-500 border-amber-500 text-primary-fg",
-                chevron: `${defaultNames.chevron} fill-amber-500`,
-                /* eslint-enable ds/no-raw-tailwind-color */
+                root: "bg-surface border border-border-strong rounded-xl shadow-lg p-4 text-foreground",
+                months: "relative",
+                month: "space-y-3",
+                month_caption: "flex items-center justify-center h-9",
+                caption_label: "text-sm font-semibold text-foreground",
+                nav: "absolute top-0 inset-x-0 flex justify-between",
+                button_previous: "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors",
+                button_next: "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors",
+                chevron: "w-4 h-4 fill-current",
+                month_grid: "border-collapse",
+                weekdays: "flex",
+                weekday: "flex h-9 w-9 items-center justify-center text-xs font-medium text-muted-foreground",
+                weeks: "space-y-1 mt-1",
+                week: "flex",
+                day: "p-0",
+                day_button: "flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium text-foreground hover:bg-surface-2 transition-colors cursor-pointer",
+                today: "font-bold text-primary-main/100",
+                selected: "bg-primary-main/100 text-primary-fg/100 hover:bg-primary-main/100",
+                outside: "opacity-30",
+                disabled: "opacity-25 cursor-not-allowed",
               }}
             />
           </div>
@@ -198,11 +189,11 @@ export default function DateSelector({
   }
 
   return (
-    <div className="relative pb-5">
-      <Inline wrap={false} gap={2}>
-        {daySelectors}
-        {toggleAndCalendar}
-      </Inline>
+    <div className="flex flex-wrap items-center gap-2">
+      {isPete && renderButton("Yesterday", yesterday)}
+      {renderButton("Today", today)}
+      {nextDays.map((day) => renderButton(getWeekdayShortLabel(day), day))}
+      {toggleAndCalendar}
     </div>
   );
 }

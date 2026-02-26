@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { load as loadYaml } from "js-yaml";
@@ -9,6 +9,10 @@ import { getPlanDir, readBuildEvent } from "./lp-do-build-event-emitter.js";
 const SOURCE_ROOT = "docs/business-os";
 const BUSINESS_CATALOG_RELATIVE_PATH = "docs/business-os/strategy/businesses.json";
 const OUTPUT_RELATIVE_PATH = "docs/business-os/_data/build-summary.json";
+const HTML_FILE_RELATIVE_PATH = "docs/business-os/startup-loop-output-registry.user.html";
+const PLANS_ROOT = "docs/plans";
+const INLINE_SCRIPT_PATTERN =
+  /(<script\b[^>]*id="build-summary-inline-data"[^>]*>)([\s\S]*?)(<\/script>)/;
 
 const MISSING_VALUE = "—";
 const TEXT_CAP = 320;
@@ -16,6 +20,7 @@ const TEXT_CAP = 320;
 const WHY_KEYS = ["Why", "Problem", "Opportunity", "Driver", "Rationale"];
 const INTENDED_KEYS = [
   "Intended outcome",
+  "Intended Outcome Statement",
   "Expected outcome",
   "Outcome",
   "Success criteria",
@@ -271,6 +276,61 @@ function loadAuthoritativeBusinessIds(repoRoot: string): Set<string> | null {
   }
 }
 
+interface BusinessEntry {
+  id: string;
+  apps: string[];
+}
+
+function loadBusinessEntries(repoRoot: string): BusinessEntry[] {
+  const absCatalogPath = path.join(repoRoot, BUSINESS_CATALOG_RELATIVE_PATH);
+  try {
+    const raw = readFileSync(absCatalogPath, "utf8");
+    const parsed = JSON.parse(raw) as {
+      businesses?: Array<{ id?: unknown; apps?: unknown }>;
+    };
+    if (!Array.isArray(parsed.businesses)) {
+      return [];
+    }
+    return parsed.businesses
+      .filter((b) => typeof b.id === "string" && (b.id as string).trim().length > 0)
+      .map((b) => ({
+        id: (b.id as string).trim(),
+        apps: Array.isArray(b.apps)
+          ? (b.apps as unknown[])
+              .filter((a): a is string => typeof a === "string" && a.trim().length > 0)
+              .map((a) => a.trim())
+          : [],
+      }));
+  } catch {
+    return [];
+  }
+}
+
+export function buildSlugPrefixMap(businesses: BusinessEntry[]): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const business of businesses) {
+    map.set(business.id.toLowerCase(), business.id);
+    for (const app of business.apps) {
+      map.set(app.toLowerCase(), business.id);
+    }
+  }
+  return map;
+}
+
+export function inferBusinessFromPlanSlug(
+  slug: string,
+  prefixMap: Map<string, string>,
+): string | null {
+  const slugLower = slug.toLowerCase();
+  const sortedPrefixes = [...prefixMap.keys()].sort((a, b) => b.length - a.length);
+  for (const prefix of sortedPrefixes) {
+    if (slugLower === prefix || slugLower.startsWith(`${prefix}-`)) {
+      return prefixMap.get(prefix) ?? null;
+    }
+  }
+  return null;
+}
+
 function isInAllowedSourcePath(sourcePath: string): boolean {
   if (
     sourcePath.startsWith("docs/business-os/strategy/") ||
@@ -350,6 +410,65 @@ function collectSourceCandidates(repoRoot: string): SourceCandidate[] {
   return [...byStem.values()].sort((left, right) => left.sourcePath.localeCompare(right.sourcePath));
 }
 
+function collectPlanBuildRecordCandidates(
+  repoRoot: string,
+  prefixMap: Map<string, string>,
+  authoritativeBusinessIds: Set<string> | null,
+): SourceCandidate[] {
+  const plansDir = path.join(repoRoot, PLANS_ROOT);
+  let slugEntries: string[];
+  try {
+    slugEntries = readdirSync(plansDir, { withFileTypes: true })
+      .filter((e) => e.isDirectory() && !e.name.startsWith("_") && e.name !== "archive")
+      .map((e) => e.name);
+  } catch {
+    return [];
+  }
+
+  const candidates: SourceCandidate[] = [];
+
+  for (const slug of slugEntries) {
+    const business = inferBusinessFromPlanSlug(slug, prefixMap);
+    if (!business) {
+      continue;
+    }
+    if (authoritativeBusinessIds && !authoritativeBusinessIds.has(business)) {
+      continue;
+    }
+
+    const sourcePath = `${PLANS_ROOT}/${slug}/build-record.user.md`;
+    const absPath = path.join(repoRoot, sourcePath);
+
+    if (!existsSync(absPath)) {
+      continue;
+    }
+
+    candidates.push({
+      sourcePath,
+      absPath,
+      stem: `${PLANS_ROOT}/${slug}/build-record`,
+      rank: 3,
+      business,
+    });
+  }
+
+  return candidates;
+}
+
+function classifyPlanDomain(slug: string): string {
+  const s = slug.toLowerCase();
+  if (/(seo|ga4|gsc|search|analytics|measurement|traffic)/.test(s)) {
+    return "SEO / Measurement";
+  }
+  if (/(brand|identity|design|ui|ux|visual|theme|token|style)/.test(s)) {
+    return "UI / Site";
+  }
+  if (/(forecast|pricing|revenue|pmf|channel|market)/.test(s)) {
+    return "Strategy";
+  }
+  return "Engineering";
+}
+
 function domainFromStrategyFilename(filename: string): string {
   const normalized = filename.toLowerCase();
   if (/(seo|ga4|gsc|search)/.test(normalized)) {
@@ -379,6 +498,10 @@ export function classifyDomain(sourcePath: string): string {
   }
   if (sourcePath.includes("/strategy/")) {
     return domainFromStrategyFilename(path.basename(sourcePath));
+  }
+  if (sourcePath.startsWith("docs/plans/")) {
+    const slug = sourcePath.split("/")[2] ?? "";
+    return classifyPlanDomain(slug);
   }
   return "Strategy";
 }
@@ -523,6 +646,41 @@ function findHtmlSection(content: string, keys: string[]): string | null {
   return null;
 }
 
+/**
+ * Extracts a value from bold-labeled list items in the form:
+ *   - **Key:** value
+ *   **Key:** value
+ *
+ * Used as a fallback for build-records that store outcome contract fields
+ * as bullets inside `## Outcome Contract` rather than as separate headings.
+ */
+function extractBoldLabeledField(body: string, keys: string[]): string | null {
+  const regex = /^[-*]?\s*\*\*([^*]+)\*\*:?\s*(.+)$/gm;
+  const candidates: Map<string, string> = new Map();
+
+  for (let match = regex.exec(body); match; match = regex.exec(body)) {
+    const labelNorm = normalizeHeadingKey(match[1]);
+    const rawValue = match[2].trim();
+    if (rawValue.length > 0) {
+      candidates.set(labelNorm, rawValue);
+    }
+  }
+
+  for (const key of keys) {
+    const keyNorm = normalizeHeadingKey(key);
+    const rawValue = candidates.get(keyNorm);
+    if (!rawValue) {
+      continue;
+    }
+    const value = sanitizeAndCap(stripHtmlTags(rawValue));
+    if (value.length > 0) {
+      return value;
+    }
+  }
+
+  return null;
+}
+
 function getWhatValue(candidate: SourceCandidate, content: string): string {
   if (candidate.sourcePath.endsWith(".user.html")) {
     const heading = extractFirstHtmlHeading(content);
@@ -604,6 +762,11 @@ function getWhyValue(candidate: SourceCandidate, content: string, repoRoot: stri
     return section;
   }
 
+  const boldWhy = extractBoldLabeledField(parsed.body, WHY_KEYS);
+  if (boldWhy) {
+    return boldWhy;
+  }
+
   return extractFrontmatterField(parsed.frontmatter, WHY_KEYS) ?? MISSING_VALUE;
 }
 
@@ -622,6 +785,11 @@ function getIntendedValue(candidate: SourceCandidate, content: string, repoRoot:
   const section = findMarkdownSection(parsed.body, INTENDED_KEYS);
   if (section) {
     return section;
+  }
+
+  const boldIntended = extractBoldLabeledField(parsed.body, INTENDED_KEYS);
+  if (boldIntended) {
+    return boldIntended;
   }
 
   return extractFrontmatterField(parsed.frontmatter, INTENDED_KEYS) ?? MISSING_VALUE;
@@ -681,10 +849,20 @@ export function generateBuildSummaryRows(
   repoRoot: string,
   options: GenerateBuildSummaryOptions = {},
 ): BuildSummaryRow[] {
-  const candidates = collectSourceCandidates(repoRoot);
+  const businessEntries = loadBusinessEntries(repoRoot);
+  const prefixMap = buildSlugPrefixMap(businessEntries);
+  const authoritativeBusinessIds =
+    businessEntries.length > 0
+      ? new Set(businessEntries.map((b) => b.id))
+      : loadAuthoritativeBusinessIds(repoRoot);
+
+  const strategyCandidates = collectSourceCandidates(repoRoot);
+  const planCandidates = collectPlanBuildRecordCandidates(repoRoot, prefixMap, authoritativeBusinessIds);
+  const allCandidates = [...strategyCandidates, ...planCandidates];
+
   const resolveTimestamp = options.timestampResolver ?? defaultTimestampResolver;
 
-  const rows = candidates.map((candidate) => {
+  const rows = allCandidates.map((candidate) => {
     const content = readFileSync(candidate.absPath, "utf8");
     const date = new Date(resolveTimestamp(candidate, repoRoot)).toISOString();
 
@@ -713,10 +891,40 @@ export function writeBuildSummaryJson(
   writeFileSync(absOutputPath, serializeRows(rows), "utf8");
 }
 
+export function inlineBuildSummaryIntoHtml(repoRoot: string, rows: BuildSummaryRow[]): boolean {
+  const absHtmlPath = path.join(repoRoot, HTML_FILE_RELATIVE_PATH);
+  let html: string;
+  try {
+    html = readFileSync(absHtmlPath, "utf8");
+  } catch {
+    return false;
+  }
+
+  // Escape </ to prevent premature script tag closing
+  const json = JSON.stringify(rows).replace(/<\//g, "<\\/");
+  // Escape $ so String.replace doesn't treat $1, $&, $' etc. as special patterns
+  const safeJson = json.replace(/\$/g, "$$$$");
+  const updated = html.replace(INLINE_SCRIPT_PATTERN, `$1${safeJson}$3`);
+
+  if (updated === html) {
+    return false;
+  }
+
+  writeFileSync(absHtmlPath, updated, "utf8");
+  return true;
+}
+
 export function run(repoRoot: string = path.resolve(__dirname, "../../..")): void {
   const rows = generateBuildSummaryRows(repoRoot);
   writeBuildSummaryJson(repoRoot, rows);
   process.stdout.write(`[generate-build-summary] wrote ${OUTPUT_RELATIVE_PATH} (${rows.length} rows)\n`);
+
+  const inlined = inlineBuildSummaryIntoHtml(repoRoot, rows);
+  if (inlined) {
+    process.stdout.write(
+      `[generate-build-summary] inlined data into ${HTML_FILE_RELATIVE_PATH}\n`,
+    );
+  }
 }
 
 if (process.argv[1]?.includes("generate-build-summary")) {

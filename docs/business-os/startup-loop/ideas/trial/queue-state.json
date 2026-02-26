@@ -2,18 +2,108 @@
   "queue_version": "queue.v1",
   "mode": "trial",
   "created_at": "2026-02-25T00:00:00Z",
-  "last_updated": "2026-02-26T21:30:00Z",
+  "last_updated": "2026-02-26T22:05:00Z",
   "counts": {
     "enqueued": 6,
     "processed": 2,
     "skipped": 3,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 17,
+    "auto_executed": 19,
     "completed": 3,
-    "total": 31
+    "total": 33
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0032",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:coverage-system-integration:20260226",
+      "anchor_key": "coverage-system-integration",
+      "cluster_key": "BOS:STRATEGY:coverage-system-integration:operator:20260226",
+      "cluster_fingerprint": "b8c4d2e3f5a1092345678901bcdefa67",
+      "lineage_depth": 0,
+      "area_anchor": "Coverage system integration — lp-weekly step + per-business manifests not initialized",
+      "location_anchors": [
+        ".claude/skills/lp-weekly/SKILL.md",
+        "docs/business-os/strategy/BRIK/",
+        "docs/business-os/strategy/PWRB/"
+      ],
+      "provisional_deliverable_family": "config+skill-update",
+      "domain": "STRATEGY",
+      "current_truth": "lp-weekly skill exists but contains no coverage scan step. No per-business coverage manifests exist for BRIK, PWRB, or any other business. The Startup Loop S1 onboarding gate has no manifest initialization hook. Coverage gaps are currently discovered only when an operator explicitly asks or when ad hoc work surfaces them — never by proactive systemic audit.",
+      "next_scope_now": "Fact-find to scope coverage system integration (contingent on coverage-manifest-scan-core schema being defined): (1) audit lp-weekly SKILL.md — where does a coverage scan step slot in relative to signal review and other standing steps, and what output format does weekly workflow expect?; (2) determine per-business manifest initialization requirements for BRIK (hospitality profile) and PWRB (physical-product/rental profile) — which domains are mandatory vs optional for each?; (3) design S1 onboarding hook — what does 'initialize manifest + run scan once' mean in the context of the S1 gate, and which existing skill or step triggers it?; (4) assess post-build re-scan integration — which event or hook triggers a re-scan, and how does it update the expected-state contract when a gap is resolved?; (5) produce a planning brief for lp-weekly integration, BRIK/PWRB manifest initialization, and S1 onboarding hook.",
+      "adjacent_later": [
+        "Initialize coverage manifests for HEAD and HBAG after BRIK/PWRB done",
+        "Retroactive coverage scan to discover existing blind spots across all active businesses as baseline",
+        "Per-business coverage health summary in Business OS dashboard"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.87,
+      "evidence_refs": [
+        "operator-stated: lp-weekly should run coverage scan on cadence alongside signal review",
+        "operator-stated: Startup Loop S1 should initialize manifest and run scan once to surface foundational gaps early",
+        "operator-stated: post-build re-scan should confirm coverage gaps were satisfied and update expected-state contract"
+      ],
+      "created_at": "2026-02-26T22:05:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "coverage-system-integration",
+        "fact_find_path": "docs/plans/coverage-system-integration/fact-find.md",
+        "processed_at": "2026-02-26T22:05:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0031",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:coverage-manifest-scan-core:20260226",
+      "anchor_key": "coverage-manifest-scan-core",
+      "cluster_key": "BOS:BOS:coverage-manifest-scan-core:operator:20260226",
+      "cluster_fingerprint": "a7b3c1d2e4f0981234567890abcdef56",
+      "lineage_depth": 0,
+      "area_anchor": "Coverage manifest schema + lp-coverage-scan — deterministic artifact-gap detector, not yet built",
+      "location_anchors": [
+        ".claude/skills/",
+        "docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json",
+        "docs/business-os/strategy/",
+        "docs/business-os/startup-loop/ideas/"
+      ],
+      "provisional_deliverable_family": "skill+schema",
+      "domain": "BOS",
+      "current_truth": "No coverage manifest schema or lp-coverage-scan skill exists. The system has quality audits of what exists (signal review, lp-do-ideas change detection) but no mechanism that asks 'what should exist but doesn't?' — no expected-state contract per business, no scanner comparing actual artifact/data-source state to expected coverage, and no automated detection of blind spots. Ad hoc workflow divergence currently defines coverage boundaries by default.",
+      "next_scope_now": "Fact-find to design and scope the core coverage infrastructure: (1) define the YAML schema for coverage-manifest.yaml — domain taxonomy (Financial, Inventory, Customer, Operational, Marketing, Compliance), profile scoping rules (physical-product, SaaS, hospitality), staleness thresholds, document-only vs data-backed distinction; (2) scan what exists that could be reused — any artifact existence checkers, staleness validators, data-connection detectors, or domain classification logic already in the codebase or skills; (3) design gap classification model — CRITICAL (no artifact and no data source), MAJOR (stale artifact or missing live backing), MINOR (thin structure or missing required fields); (4) design dispatch emission format — how does lp-coverage-scan produce fact_find_ready packets schema-compatible with lp-do-ideas-dispatch.schema.json?; (5) confirm skill file and manifest file locations and naming conventions; (6) produce a planning brief for implementing the manifest schema template and lp-coverage-scan skill.",
+      "adjacent_later": [
+        "Per-business coverage manifest initialization for BRIK and PWRB (blocked by schema design)",
+        "lp-weekly integration to run coverage scan as a standing weekly step",
+        "S1 onboarding hook: initialize manifest + run scan once to surface foundational gaps early",
+        "Post-build re-scan to confirm coverage gaps were satisfied"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.90,
+      "evidence_refs": [
+        "operator-stated: ad hoc workflow creates permanent blind spots — need deterministic coverage radar to surface missing artifact and data-source domains automatically",
+        "operator-stated: deterministic processes are faster, more incisive, and compound tooling; ad hoc variance creates inconsistency and execution imbalance",
+        "operator-stated: current quality audits audit what exists — neither asks 'what should exist but doesn't?'"
+      ],
+      "created_at": "2026-02-26T22:05:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "coverage-manifest-scan-core",
+        "fact_find_path": "docs/plans/coverage-manifest-scan-core/fact-find.md",
+        "processed_at": "2026-02-26T22:05:00Z",
+        "route": "auto-executed"
+      }
+    },
     {
       "schema_version": "dispatch.v1",
       "dispatch_id": "IDEA-DISPATCH-20260226-0025",

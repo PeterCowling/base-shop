@@ -59,7 +59,7 @@ const BookingRefChipComponent: FC<BookingRefChipProps> = ({ bookingRef }) => {
       color="primary"
       tone="solid"
       size="sm"
-      className="cursor-pointer min-w-225px"
+      className="cursor-pointer min-w-48"
       aria-label={`Copy booking reference ${bookingRef}`}
     >
       <Copy size={14} className="shrink-0" />

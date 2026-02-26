@@ -26,6 +26,10 @@ import {
 import { tmpdir } from "node:os";
 import { basename, dirname, join } from "node:path";
 
+// ---------------------------------------------------------------------------
+// Classification JSONL persistence
+// ---------------------------------------------------------------------------
+import type { IdeaClassification } from "./lp-do-ideas-classifier.js";
 import type { LiveDispatchPacket } from "./lp-do-ideas-live.js";
 import type { QueueState, TrialDispatchPacket } from "./lp-do-ideas-trial.js";
 
@@ -257,6 +261,86 @@ export function appendTelemetry(
 
   const newRecords = records.filter(
     (record) => !seenKeys.has(telemetryDedupeKey(record)),
+  );
+  if (newRecords.length === 0) {
+    return;
+  }
+
+  const allRecords = [...existingRecords, ...newRecords];
+  const content = allRecords.map((r) => JSON.stringify(r)).join("\n") + "\n";
+  atomicWrite(filePath, content);
+}
+
+/** Builds a deduplication key for a classification record. */
+function classificationDedupeKey(record: IdeaClassification): string {
+  return `${record.idea_id}::${record.classified_at}`;
+}
+
+/**
+ * Reads existing classification records from a JSONL file.
+ * Returns empty array if the file does not exist or contains no valid records.
+ * Silently skips malformed lines (append-only semantics are preserved).
+ */
+function readExistingClassifications(filePath: string): IdeaClassification[] {
+  if (!existsSync(filePath)) {
+    return [];
+  }
+
+  let raw: string;
+  try {
+    raw = readFileSync(filePath, "utf-8");
+  } catch {
+    return [];
+  }
+
+  const records: IdeaClassification[] = [];
+  for (const line of raw.split("\n")) {
+    const trimmed = line.trim();
+    if (trimmed.length === 0) {
+      continue;
+    }
+    try {
+      const record = JSON.parse(trimmed) as IdeaClassification;
+      if (typeof record.idea_id === "string" && record.idea_id.length > 0) {
+        records.push(record);
+      }
+    } catch {
+      // Skip malformed lines
+    }
+  }
+  return records;
+}
+
+/**
+ * Appends new classification records to a JSONL file atomically.
+ *
+ * Deduplicates by `idea_id + classified_at` — records with the same idea_id
+ * and classified_at timestamp are silently skipped (idempotent).
+ *
+ * Pattern follows `appendTelemetry` exactly: atomic write via temp-rename,
+ * JSONL dedup, malformed-line tolerance, first-run mkdir.
+ *
+ * Contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md Section 6
+ * Artifact path: docs/business-os/startup-loop/ideas/trial/classifications.jsonl
+ *
+ * Callers: The caller of `runTrialOrchestrator()` (CLI or hook layer) is
+ * responsible for calling this function after the orchestrator returns.
+ * `runTrialOrchestrator()` does not call this directly — it attaches
+ * `result.classifications` to the orchestrator result for the caller to persist.
+ */
+export function appendClassifications(
+  filePath: string,
+  records: IdeaClassification[],
+): void {
+  if (records.length === 0) {
+    return;
+  }
+
+  const existingRecords = readExistingClassifications(filePath);
+  const seenKeys = new Set(existingRecords.map(classificationDedupeKey));
+
+  const newRecords = records.filter(
+    (record) => !seenKeys.has(classificationDedupeKey(record)),
   );
   if (newRecords.length === 0) {
     return;

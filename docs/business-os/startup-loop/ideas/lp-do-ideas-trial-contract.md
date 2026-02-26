@@ -5,7 +5,7 @@ Version: 1.2.0
 Mode: trial
 Status: Active
 Created: 2026-02-24
-Updated: 2026-02-25
+Updated: 2026-02-26
 Owner: startup-loop maintainers
 Related-plan: docs/plans/lp-do-ideas-startup-loop-integration/plan.md
 Related-schema: lp-do-ideas-dispatch.schema.json, lp-do-ideas-standing-registry.schema.json
@@ -126,6 +126,7 @@ All trial-mode writes are restricted to the following paths:
 | Dispatch ledger | `docs/business-os/startup-loop/ideas/trial/dispatch-ledger.jsonl` | newline-delimited JSON |
 | Queue state | `docs/business-os/startup-loop/ideas/trial/queue-state.json` | JSON object |
 | Telemetry records | `docs/business-os/startup-loop/ideas/trial/telemetry.jsonl` | newline-delimited JSON |
+| Classification records | `docs/business-os/startup-loop/ideas/trial/classifications.jsonl` | newline-delimited JSON |
 | Standing registry (live) | `docs/business-os/startup-loop/ideas/trial/standing-registry.json` | JSON object conforming to `lp-do-ideas-standing-registry.schema.json` |
 
 No trial-mode operation may write to any path outside this list.

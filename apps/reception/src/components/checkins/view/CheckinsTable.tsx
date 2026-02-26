@@ -2,7 +2,7 @@ import React from "react";
 import { AlertTriangle, Info, UserPlus } from "lucide-react";
 
 import { Input } from "@acme/design-system";
-import { Button, Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms";
+import { Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms";
 
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import ReceptionSkeleton from "../../common/ReceptionSkeleton";
@@ -90,7 +90,7 @@ const CheckinsTableView: React.FC<Props> = ({
     </div>
     <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4">
       {isEditMode && (
-        <div className="bg-info-light/20 rounded-lg p-3 flex items-center gap-2">
+        <div className="bg-info-light/100 rounded-lg p-3 flex items-center gap-2">
           <Info className="text-info-main shrink-0" size={16} />
           <span className="text-info-main text-sm font-semibold">
             Click a row to edit the booking
@@ -98,7 +98,7 @@ const CheckinsTableView: React.FC<Props> = ({
         </div>
       )}
       {isDeleteMode && (
-        <div className="bg-warning-light/20 rounded-lg p-3 flex items-center gap-2">
+        <div className="bg-warning-light/100 rounded-lg p-3 flex items-center gap-2">
           <AlertTriangle className="text-error-main shrink-0" size={16} />
           <span className="text-error-main text-sm font-semibold">
             Click a row to delete the booking
@@ -106,22 +106,25 @@ const CheckinsTableView: React.FC<Props> = ({
         </div>
       )}
       {isAddGuestMode && (
-        <div className="bg-success-light/20 rounded-lg p-3 flex items-center gap-2">
+        <div className="bg-success-light/100 rounded-lg p-3 flex items-center gap-2">
           <UserPlus className="text-success-main shrink-0" size={16} />
           <span className="text-success-main text-sm font-semibold">
             Click a row to add a guest to that booking
           </span>
         </div>
       )}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <DateSelector
-            selectedDate={selectedDate}
-            onDateChange={onDateChange}
-            username={username}
-          />
-          <label className="flex items-center gap-2 text-sm cursor-pointer">
-            <Input compatibilityMode="no-wrapper"
+      <div className="space-y-3">
+        {/* Day selector — wraps naturally at any width */}
+        <DateSelector
+          selectedDate={selectedDate}
+          onDateChange={onDateChange}
+          username={username}
+        />
+        {/* Controls row */}
+        <div className="flex items-center justify-between">
+          <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer select-none">
+            <Input
+              compatibilityMode="no-wrapper"
               type="checkbox"
               checked={showCancelled}
               onChange={onToggleCancelled}
@@ -129,20 +132,20 @@ const CheckinsTableView: React.FC<Props> = ({
             />
             <span>Show cancelled</span>
           </label>
+          {roomsReady ? (
+            <span className="text-sm font-semibold text-success-main">
+              Rooms are Set
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setRoomsReady(true)}
+              className="rounded-lg bg-primary-main/100 px-4 py-2 text-sm font-semibold text-primary-fg/100 transition-all duration-150 hover:opacity-90 active:scale-95"
+            >
+              Rooms Ready
+            </button>
+          )}
         </div>
-        {roomsReady ? (
-          <span className="ms-4 text-success-main font-semibold">
-            Rooms are Set
-          </span>
-        ) : (
-            <Button
-            type="button"
-            onClick={() => setRoomsReady(true)}
-            className="px-3 py-2 bg-success-main text-primary-fg rounded-lg"
-          >
-            Rooms Ready
-          </Button>
-        )}
       </div>
       <div className="overflow-x-auto">
         <Table className="w-full table-auto border border-border-2 text-sm">

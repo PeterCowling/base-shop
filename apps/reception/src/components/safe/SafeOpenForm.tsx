@@ -43,7 +43,7 @@ export const SafeOpenForm = memo(function SafeOpenForm({
       <Input
         compatibilityMode="no-wrapper"
         type="number"
-        className="border rounded-lg p-1 w-full"
+        className="border border-border-strong rounded-lg p-1 w-full"
         placeholder="Opening Count"
         value={count}
         onChange={(e) => setCount(e.target.value)}
@@ -51,7 +51,7 @@ export const SafeOpenForm = memo(function SafeOpenForm({
       <Input
         compatibilityMode="no-wrapper"
         type="number"
-        className="border rounded-lg p-1 w-full mt-2"
+        className="border border-border-strong rounded-lg p-1 w-full mt-2"
         placeholder="Opening Keycards"
         value={keycards}
         onChange={(e) => setKeycards(e.target.value)}
@@ -64,7 +64,8 @@ export const SafeOpenForm = memo(function SafeOpenForm({
         <Button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 rounded-lg bg-primary-main text-primary-fg hover:bg-primary-dark"
+          color="default"
+          tone="outline"
         >
           Cancel
         </Button>

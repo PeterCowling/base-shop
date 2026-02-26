@@ -1,51 +1,81 @@
 [
   {
-    "date": "2026-02-25T10:03:36.720Z",
-    "business": "HEAD",
-    "domain": "Brand / UI",
-    "what": "Brand Strategy — HEAD (ASSESSMENT-10)",
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "BRIK",
+    "domain": "Research",
+    "what": "BRIK Market Intelligence Pack (Europe, Italy-first)",
     "why": "—",
     "intended": "—",
     "links": [
       {
         "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-21-brand-profile.user.md"
+        "href": "/docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md"
       }
     ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-brand-profile.user.md"
+    "sourcePath": "docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md"
   },
   {
-    "date": "2026-02-25T10:03:36.075Z",
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Research",
+    "what": "Market Intelligence Pack: HEAD (Refresh 2026-02-20)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
     "business": "HBAG",
-    "domain": "Brand / UI",
-    "what": "Caryina — Brand Language",
+    "domain": "UI / Site",
+    "what": "HBAG Deep Research Prompt (Site Upgrade)",
     "why": "—",
     "intended": "—",
     "links": [
       {
         "label": "Open",
-        "href": "/docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md"
+        "href": "/docs/business-os/site-upgrades/HBAG/2026-02-23-deep-research-site-upgrade-prompt.user.md"
       }
     ],
-    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md"
+    "sourcePath": "docs/business-os/site-upgrades/HBAG/2026-02-23-deep-research-site-upgrade-prompt.user.md"
   },
   {
-    "date": "2026-02-25T10:03:35.418Z",
-    "business": "HEAD",
-    "domain": "Brand / UI",
-    "what": "Solena — Brand Language",
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "UI / Site",
+    "what": "HBAG Site Upgrade Brief (L1 Build 2, Image-First)",
     "why": "—",
     "intended": "—",
     "links": [
       {
         "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md"
+        "href": "/docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md"
       }
     ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md"
+    "sourcePath": "docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md"
   },
   {
-    "date": "2026-02-25T10:03:34.773Z",
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "BRIK",
+    "domain": "Baseline",
+    "what": "BRIK Intake Packet",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
     "business": "HBAG",
     "domain": "Baseline",
     "what": "HBAG Intake Packet",
@@ -60,7 +90,22 @@
     "sourcePath": "docs/business-os/startup-baselines/HBAG-2026-02-20assessment-intake-packet.user.md"
   },
   {
-    "date": "2026-02-25T10:03:34.086Z",
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Baseline",
+    "what": "Caryina (HBAG) — Offer Design (MARKET-06)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/startup-baselines/HBAG-offer.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/startup-baselines/HBAG-offer.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
     "business": "HEAD",
     "domain": "Baseline",
     "what": "HEAD Intake Packet",
@@ -75,67 +120,172 @@
     "sourcePath": "docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md"
   },
   {
-    "date": "2026-02-25T10:03:31.292Z",
-    "business": "HEAD",
-    "domain": "Strategy",
-    "what": "Measurement Plan — HEAD (ASSESSMENT-07)",
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "PET",
+    "domain": "Baseline",
+    "what": "PET Intake Packet",
     "why": "—",
     "intended": "—",
     "links": [
       {
         "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-21-measurement-profile.user.md"
+        "href": "/docs/business-os/startup-baselines/PET-2026-02-12assessment-intake-packet.user.md"
       }
     ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-measurement-profile.user.md"
+    "sourcePath": "docs/business-os/startup-baselines/PET-2026-02-12assessment-intake-packet.user.md"
   },
   {
-    "date": "2026-02-25T10:03:27.345Z",
-    "business": "HEAD",
-    "domain": "Planning",
-    "what": "Option Selection Decision — HEAD (ASSESSMENT-03)",
-    "why": "—",
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "PET",
+    "domain": "Baseline",
+    "what": "PET Dog Accessories — Offer Design",
+    "why": "1. **Competitive gap:** No brand owns €60–100 premium fashion-forward dog accessories in the EU market. LISH is the closest analogue at £65 but has operational failures and limited distribution. 2. **Willingness-to-pay evidence:** Pagerie reviews show buyers comfortable at $152 for the concept; the only complaints are…",
     "intended": "—",
     "links": [
       {
         "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-20-solution-decision.user.md"
+        "href": "/docs/business-os/startup-baselines/PET-offer.md"
       }
     ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-20-solution-decision.user.md"
+    "sourcePath": "docs/business-os/startup-baselines/PET-offer.md"
   },
   {
-    "date": "2026-02-25T10:03:09.756Z",
-    "business": "HEAD",
-    "domain": "Strategy",
-    "what": "Problem Statement — HEAD",
-    "why": "—",
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "BRIK",
+    "domain": "Forecast / Pricing",
+    "what": "Fact-Find: Apartment Revenue Architecture — Dual-Intent Landing System (2026)",
+    "why": "Reduces cancellations and review negativity. Avoids \"hidden gotcha\" perception. At €500+/night, a single bad review from mismatch costs more than any lost conversion from honesty.",
     "intended": "—",
     "links": [
       {
         "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-20-problem-statement.user.md"
+        "href": "/docs/business-os/strategy/BRIK/2026-02-12-apartment-revenue-architecture.user.md"
       }
     ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-20-problem-statement.user.md"
+    "sourcePath": "docs/business-os/strategy/BRIK/2026-02-12-apartment-revenue-architecture.user.md"
   },
   {
-    "date": "2026-02-25T09:45:03.603Z",
-    "business": "HEAD",
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "BRIK",
     "domain": "Brand / UI",
-    "what": "2026-02-21-brand-identity-preview",
+    "what": "Brikette — Brand Dossier",
     "why": "—",
     "intended": "—",
     "links": [
       {
         "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-21-brand-identity-preview.user.html"
+        "href": "/docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md"
       }
     ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-brand-identity-preview.user.html"
+    "sourcePath": "docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md"
   },
   {
-    "date": "2026-02-25T09:45:03.598Z",
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "BRIK",
+    "domain": "Brand / UI",
+    "what": "Prime App — Design & Branding Policy",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/BRIK/prime-app-design-branding.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/BRIK/prime-app-design-branding.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "BRIK",
+    "domain": "Strategy",
+    "what": "BRIK Signal Strengthening Review — W08 (2026-02-18)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/BRIK/signal-review-20260218-1238-W08.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/BRIK/signal-review-20260218-1238-W08.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Brand / UI",
+    "what": "Caryina — Brand Dossier",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/2026-02-17-brand-identity-dossier.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-17-brand-identity-dossier.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Strategy",
+    "what": "Operator Evidence — HBAG (ASSESSMENT-06)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/2026-02-20-operator-context.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-20-operator-context.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Strategy",
+    "what": "Problem Statement — HBAG",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/2026-02-20-problem-statement.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-20-problem-statement.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Planning",
+    "what": "Option Selection Decision — HBAG",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/2026-02-20-solution-decision.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-20-solution-decision.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Brand / UI",
+    "what": "Caryina — Brand Language",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
     "business": "HBAG",
     "domain": "Brand / UI",
     "what": "2026-02-21-brand-identity-preview",
@@ -150,7 +300,292 @@
     "sourcePath": "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-preview.user.html"
   },
   {
-    "date": "2026-02-25T09:32:17.000Z",
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Brand / UI",
+    "what": "Brand Strategy — Caryina / HBAG (ASSESSMENT-10)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/2026-02-21-brand-profile.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-21-brand-profile.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Planning",
+    "what": "Distribution Plan — Caryina (HBAG)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/2026-02-21-launch-distribution-plan.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-21-launch-distribution-plan.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Strategy",
+    "what": "Measurement Plan — Caryina (HBAG)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/2026-02-21-measurement-profile.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-21-measurement-profile.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Strategy",
+    "what": "HBAG — Name Generation Spec (Agent-Executable)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/2026-02-21-naming-generation-spec.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-21-naming-generation-spec.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Strategy",
+    "what": "Caryina (HBAG) — Current Problem Framing",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/current-problem-framing.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/current-problem-framing.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HBAG",
+    "domain": "Strategy",
+    "what": "Caryina Website V1 Builder Prompt (Agent-Ready)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "Operator Evidence — HEAD (ASSESSMENT-06)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-20-operator-context.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-20-operator-context.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "Problem Statement — HEAD",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-20-problem-statement.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-20-problem-statement.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Planning",
+    "what": "Option Selection Decision — HEAD (ASSESSMENT-03)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-20-solution-decision.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-20-solution-decision.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "Solution Space Research Results — HEAD (ASSESSMENT-02)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-20-solution-profile-results.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-20-solution-profile-results.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "Solution Space Research Prompt — HEAD (ASSESSMENT-02)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-20-solution-profiling-prompt.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-20-solution-profiling-prompt.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Brand / UI",
+    "what": "Solena — Brand Language",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Brand / UI",
+    "what": "2026-02-21-brand-identity-preview",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-21-brand-identity-preview.user.html"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-brand-identity-preview.user.html"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Brand / UI",
+    "what": "Brand Strategy — HEAD (ASSESSMENT-10)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-21-brand-profile.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-brand-profile.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Planning",
+    "what": "Distribution Plan — HEAD (ASSESSMENT-06)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-21-launch-distribution-plan.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-launch-distribution-plan.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "Measurement Plan — HEAD (ASSESSMENT-07)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-21-measurement-profile.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-measurement-profile.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "HEAD — Naming Generation Spec (ASSESSMENT-04 Part 1)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-22-naming-generation-spec.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-22-naming-generation-spec.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "Business Name Research Prompt — Cochlear Implant Headband Brand",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/candidate-names-prompt.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/candidate-names-prompt.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "DEC-HEAD-CH-01 - Channel Surface Decision",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
     "business": "HEAD",
     "domain": "Strategy",
     "what": "Naming Shortlist — Ranks 21–40",
@@ -163,6 +598,51 @@
       }
     ],
     "sourcePath": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-21-extended.user.html"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "HEAD",
+    "domain": "Planning",
+    "what": "Startup Readiness Verdict — HEAD",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/s1-readiness.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/s1-readiness.user.md"
+  },
+  {
+    "date": "2026-02-25T22:48:19.000Z",
+    "business": "PET",
+    "domain": "Brand / UI",
+    "what": "Pet Product — Brand Dossier",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md"
+  },
+  {
+    "date": "2026-02-25T22:12:35.000Z",
+    "business": "BRIK",
+    "domain": "Engineering",
+    "what": "Build Record: BRIK GBP API Rejection — Decision & Remediation",
+    "why": "Google rejected BRIK's GBP API access application (case #1-1062000040302, submitted 2026-02-23). Operator needed a documented decision on the API path and confirmation that the Octorate/Hotel Free Listing channel is not blocked.",
+    "intended": "Close the GBP API application track with a documented decision; establish manual GBP maintenance cadence; confirm Google Hotel Free Listing plan is unblocked.",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/plans/brik-gbp-api-rejection-remediation/build-record.user.md"
+      }
+    ],
+    "sourcePath": "docs/plans/brik-gbp-api-rejection-remediation/build-record.user.md"
   },
   {
     "date": "2026-02-24T20:22:49.000Z",
@@ -195,19 +675,19 @@
     "sourcePath": "docs/business-os/startup-baselines/HBAG-content-packet.md"
   },
   {
-    "date": "2026-02-23T22:06:48.000Z",
+    "date": "2026-02-23T18:20:33.000Z",
     "business": "HBAG",
-    "domain": "Strategy",
-    "what": "Caryina Website V1 Builder Prompt (Agent-Ready)",
+    "domain": "Engineering",
+    "what": "Build Record: hbag-website-02-image-first-upgrade",
     "why": "—",
     "intended": "—",
     "links": [
       {
         "label": "Open",
-        "href": "/docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md"
+        "href": "/docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md"
       }
     ],
-    "sourcePath": "docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md"
+    "sourcePath": "docs/plans/hbag-website-02-image-first-upgrade/build-record.user.md"
   },
   {
     "date": "2026-02-23T18:17:44.000Z",
@@ -228,21 +708,6 @@
     "date": "2026-02-23T17:54:44.000Z",
     "business": "HBAG",
     "domain": "UI / Site",
-    "what": "HBAG Deep Research Prompt (Site Upgrade)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/site-upgrades/HBAG/2026-02-23-deep-research-site-upgrade-prompt.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/site-upgrades/HBAG/2026-02-23-deep-research-site-upgrade-prompt.user.md"
-  },
-  {
-    "date": "2026-02-23T17:54:44.000Z",
-    "business": "HBAG",
-    "domain": "UI / Site",
     "what": "HBAG Launch Media Production & QA Contract",
     "why": "—",
     "intended": "—",
@@ -255,259 +720,19 @@
     "sourcePath": "docs/business-os/site-upgrades/HBAG/2026-02-23-image-production-contract.user.md"
   },
   {
-    "date": "2026-02-23T17:54:44.000Z",
-    "business": "HBAG",
-    "domain": "UI / Site",
-    "what": "HBAG Site Upgrade Brief (L1 Build 2, Image-First)",
+    "date": "2026-02-23T14:16:38.000Z",
+    "business": "XA",
+    "domain": "Engineering",
+    "what": "Build Record: xa-uploader-usability-hardening",
     "why": "—",
     "intended": "—",
     "links": [
       {
         "label": "Open",
-        "href": "/docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md"
+        "href": "/docs/plans/xa-uploader-usability-hardening/build-record.user.md"
       }
     ],
-    "sourcePath": "docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.208Z",
-    "business": "HBAG",
-    "domain": "Strategy",
-    "what": "Operator Evidence — HBAG (ASSESSMENT-06)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HBAG/2026-02-20-operator-context.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-20-operator-context.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.206Z",
-    "business": "HBAG",
-    "domain": "Strategy",
-    "what": "Problem Statement — HBAG",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HBAG/2026-02-20-problem-statement.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-20-problem-statement.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.206Z",
-    "business": "HBAG",
-    "domain": "Strategy",
-    "what": "Measurement Plan — Caryina (HBAG)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HBAG/2026-02-21-measurement-profile.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-21-measurement-profile.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.204Z",
-    "business": "HBAG",
-    "domain": "Brand / UI",
-    "what": "Brand Strategy — Caryina / HBAG (ASSESSMENT-10)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HBAG/2026-02-21-brand-profile.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-21-brand-profile.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.204Z",
-    "business": "HBAG",
-    "domain": "Strategy",
-    "what": "HBAG — Name Generation Spec (Agent-Executable)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HBAG/2026-02-21-naming-generation-spec.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-21-naming-generation-spec.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.193Z",
-    "business": "HBAG",
-    "domain": "Planning",
-    "what": "Distribution Plan — Caryina (HBAG)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HBAG/2026-02-21-launch-distribution-plan.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-21-launch-distribution-plan.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.191Z",
-    "business": "HBAG",
-    "domain": "Planning",
-    "what": "Option Selection Decision — HBAG",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HBAG/2026-02-20-solution-decision.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-20-solution-decision.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.189Z",
-    "business": "HBAG",
-    "domain": "Brand / UI",
-    "what": "Caryina — Brand Dossier",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HBAG/2026-02-17-brand-identity-dossier.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-17-brand-identity-dossier.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.170Z",
-    "business": "HEAD",
-    "domain": "Planning",
-    "what": "Distribution Plan — HEAD (ASSESSMENT-06)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-21-launch-distribution-plan.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-launch-distribution-plan.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.169Z",
-    "business": "HEAD",
-    "domain": "Strategy",
-    "what": "Operator Evidence — HEAD (ASSESSMENT-06)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-20-operator-context.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-20-operator-context.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.163Z",
-    "business": "HEAD",
-    "domain": "Strategy",
-    "what": "HEAD — Naming Generation Spec (ASSESSMENT-04 Part 1)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-22-naming-generation-spec.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-22-naming-generation-spec.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.140Z",
-    "business": "PET",
-    "domain": "Brand / UI",
-    "what": "Pet Product — Brand Dossier",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.129Z",
-    "business": "BRIK",
-    "domain": "Brand / UI",
-    "what": "Brikette — Brand Dossier",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.125Z",
-    "business": "PET",
-    "domain": "Baseline",
-    "what": "PET Intake Packet",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/startup-baselines/PET-2026-02-12assessment-intake-packet.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/startup-baselines/PET-2026-02-12assessment-intake-packet.user.md"
-  },
-  {
-    "date": "2026-02-23T15:36:51.124Z",
-    "business": "BRIK",
-    "domain": "Baseline",
-    "what": "BRIK Intake Packet",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md"
-  },
-  {
-    "date": "2026-02-23T10:44:49.000Z",
-    "business": "HBAG",
-    "domain": "Baseline",
-    "what": "Caryina (HBAG) — Offer Design (MARKET-06)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/startup-baselines/HBAG-offer.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/startup-baselines/HBAG-offer.md"
+    "sourcePath": "docs/plans/xa-uploader-usability-hardening/build-record.user.md"
   },
   {
     "date": "2026-02-23T10:44:49.000Z",
@@ -782,21 +1007,6 @@
   {
     "date": "2026-02-23T05:13:50.000Z",
     "business": "BRIK",
-    "domain": "Forecast / Pricing",
-    "what": "Fact-Find: Apartment Revenue Architecture — Dual-Intent Landing System (2026)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/BRIK/2026-02-12-apartment-revenue-architecture.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/BRIK/2026-02-12-apartment-revenue-architecture.user.md"
-  },
-  {
-    "date": "2026-02-23T05:13:50.000Z",
-    "business": "BRIK",
     "domain": "SEO / Measurement",
     "what": "BRIK GA4 + Search Console Setup Note",
     "why": "—",
@@ -992,21 +1202,6 @@
   {
     "date": "2026-02-23T05:13:50.000Z",
     "business": "BRIK",
-    "domain": "Brand / UI",
-    "what": "Prime App — Design & Branding Policy",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/BRIK/prime-app-design-branding.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/BRIK/prime-app-design-branding.user.md"
-  },
-  {
-    "date": "2026-02-23T05:13:50.000Z",
-    "business": "BRIK",
     "domain": "Strategy",
     "what": "Brikette — Product Spec",
     "why": "—",
@@ -1093,21 +1288,6 @@
       }
     ],
     "sourcePath": "docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md"
-  },
-  {
-    "date": "2026-02-23T05:13:50.000Z",
-    "business": "HBAG",
-    "domain": "Strategy",
-    "what": "Caryina (HBAG) — Current Problem Framing",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HBAG/current-problem-framing.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HBAG/current-problem-framing.user.md"
   },
   {
     "date": "2026-02-23T05:13:50.000Z",
@@ -1249,7 +1429,7 @@
     "business": "HEAD",
     "domain": "Strategy",
     "what": "HEAD Naming Shortlist (Italy-first Lifestyle Masterbrand)",
-    "why": "—",
+    "why": "strongest fit with non-clinical positioning and lowest claim-drift pressure",
     "intended": "—",
     "links": [
       {
@@ -1258,21 +1438,6 @@
       }
     ],
     "sourcePath": "docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md"
-  },
-  {
-    "date": "2026-02-23T05:13:50.000Z",
-    "business": "HEAD",
-    "domain": "Strategy",
-    "what": "Solution Space Research Results — HEAD (ASSESSMENT-02)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-20-solution-profile-results.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-20-solution-profile-results.user.md"
   },
   {
     "date": "2026-02-23T05:13:50.000Z",
@@ -1288,21 +1453,6 @@
       }
     ],
     "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-candidate-names-r2.user.md"
-  },
-  {
-    "date": "2026-02-23T05:13:50.000Z",
-    "business": "HEAD",
-    "domain": "Strategy",
-    "what": "DEC-HEAD-CH-01 - Channel Surface Decision",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md"
   },
   {
     "date": "2026-02-23T05:13:50.000Z",
@@ -1369,7 +1519,7 @@
     "business": "HEAD",
     "domain": "Strategy",
     "what": "HEAD Naming Shortlist (Italy-first Lifestyle Masterbrand)",
-    "why": "—",
+    "why": "strongest fit with non-clinical positioning and lowest claim-drift pressure",
     "intended": "—",
     "links": [
       {
@@ -1558,21 +1708,6 @@
       }
     ],
     "sourcePath": "docs/business-os/strategy/HEAD/plan.user.md"
-  },
-  {
-    "date": "2026-02-23T05:13:50.000Z",
-    "business": "HEAD",
-    "domain": "Planning",
-    "what": "Startup Readiness Verdict — HEAD",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/s1-readiness.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HEAD/s1-readiness.user.md"
   },
   {
     "date": "2026-02-23T05:13:50.000Z",
@@ -1802,21 +1937,6 @@
   {
     "date": "2026-02-23T03:00:20.000Z",
     "business": "HEAD",
-    "domain": "Research",
-    "what": "Market Intelligence Pack: HEAD (Refresh 2026-02-20)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md"
-  },
-  {
-    "date": "2026-02-23T03:00:20.000Z",
-    "business": "HEAD",
     "domain": "Baseline",
     "what": "HEAD Offer Design (S2B Backfill)",
     "why": "—",
@@ -1828,21 +1948,6 @@
       }
     ],
     "sourcePath": "docs/business-os/startup-baselines/HEAD-offer.md"
-  },
-  {
-    "date": "2026-02-23T03:00:20.000Z",
-    "business": "PET",
-    "domain": "Baseline",
-    "what": "PET Dog Accessories — Offer Design",
-    "why": "1. **Competitive gap:** No brand owns €60–100 premium fashion-forward dog accessories in the EU market. LISH is the closest analogue at £65 but has operational failures and limited distribution. 2. **Willingness-to-pay evidence:** Pagerie reviews show buyers comfortable at $152 for the concept; the only complaints are…",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/startup-baselines/PET-offer.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/startup-baselines/PET-offer.md"
   },
   {
     "date": "2026-02-23T03:00:20.000Z",
@@ -1923,21 +2028,6 @@
     "date": "2026-02-23T03:00:20.000Z",
     "business": "HEAD",
     "domain": "Strategy",
-    "what": "Solution Space Research Prompt — HEAD (ASSESSMENT-02)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-20-solution-profiling-prompt.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-20-solution-profiling-prompt.md"
-  },
-  {
-    "date": "2026-02-23T03:00:20.000Z",
-    "business": "HEAD",
-    "domain": "Strategy",
     "what": "Business Name Research Prompt — Round 2 (Domain-Gated)",
     "why": "—",
     "intended": "—",
@@ -1951,18 +2041,18 @@
   },
   {
     "date": "2026-02-23T03:00:20.000Z",
-    "business": "HEAD",
-    "domain": "Strategy",
-    "what": "Business Name Research Prompt — Cochlear Implant Headband Brand",
+    "business": "BRIK",
+    "domain": "SEO / Measurement",
+    "what": "Build Record — Brikette CTA + GA4 Sales Funnel",
     "why": "—",
     "intended": "—",
     "links": [
       {
         "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/candidate-names-prompt.md"
+        "href": "/docs/plans/brikette-cta-sales-funnel-ga4/build-record.user.md"
       }
     ],
-    "sourcePath": "docs/business-os/strategy/HEAD/candidate-names-prompt.md"
+    "sourcePath": "docs/plans/brikette-cta-sales-funnel-ga4/build-record.user.md"
   },
   {
     "date": "2026-02-20T21:41:50.000Z",
@@ -2115,21 +2205,6 @@
     "sourcePath": "docs/business-os/strategy/PET/launch-readiness-action-backlog.agent.md"
   },
   {
-    "date": "2026-02-20T18:56:51.000Z",
-    "business": "BRIK",
-    "domain": "Strategy",
-    "what": "BRIK Signal Strengthening Review — W08 (2026-02-18)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/BRIK/signal-review-20260218-1238-W08.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/BRIK/signal-review-20260218-1238-W08.md"
-  },
-  {
     "date": "2026-02-19T21:08:55.000Z",
     "business": "HEAD",
     "domain": "Research",
@@ -2248,21 +2323,6 @@
       }
     ],
     "sourcePath": "docs/business-os/market-research/BRIK/2026-02-12-deep-research-market-intelligence-prompt.user.md"
-  },
-  {
-    "date": "2026-02-14T06:34:56.000Z",
-    "business": "BRIK",
-    "domain": "Research",
-    "what": "BRIK Market Intelligence Pack (Europe, Italy-first)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md"
   },
   {
     "date": "2026-02-14T06:34:56.000Z",

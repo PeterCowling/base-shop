@@ -4,7 +4,6 @@ import { Ban, CreditCard, FileText } from "lucide-react";
 
 import { Input } from "@acme/design-system";
 import { TableCell, TableRow } from "@acme/design-system/atoms";
-import { Cluster } from "@acme/design-system/primitives";
 
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import type { Activity } from "../../../types/hooks/data/activitiesData";
@@ -70,12 +69,12 @@ const BookingRowView: FC<BookingRowViewProps> = ({
 }) => (
   <>
     <TableRow
-      className={`border-b border-border hover:bg-surface-2 transition-colors text-sm text-foreground ${
+      className={`border-b border-border-2 hover:bg-surface-2 transition-colors text-sm text-foreground ${
         onRowClick ? "cursor-pointer" : ""
       }`}
       onClick={onRowClick}
     >
-      <TableCell className="p-4">
+      <TableCell className="px-3 py-2">
         <div className="flex items-center gap-2 font-semibold">
           <TooltipComponent
             booking={{
@@ -93,17 +92,17 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             onDoubleClick={onNameDoubleClick}
           />
           {isCancelled && (
-            <span className="px-2 py-0.5 text-xs font-bold text-primary-fg bg-error-main rounded-lg">
+            <span className="px-2 py-0.5 text-xs font-bold text-primary-fg/100 bg-error-main/100 rounded-md">
               CANCELLED
             </span>
           )}
         </div>
       </TableCell>
-      <TableCell className="p-4">
+      <TableCell className="px-3 py-2">
         <div className="flex items-center justify-center">
           <Input compatibilityMode="no-wrapper"
             type="text"
-            className="w-16 px-1 py-0.5 border border-border-2 rounded-lg text-center"
+            className="w-10 px-0.5 py-0.5 border-0 border-b border-border-2 text-center bg-transparent text-foreground text-sm font-mono focus:outline-none focus:border-primary-main/100"
             value={draftValue}
             onChange={(e) => onDraftChange(e.target.value)}
             onBlur={onBlur}
@@ -112,22 +111,22 @@ const BookingRowView: FC<BookingRowViewProps> = ({
           />
         </div>
       </TableCell>
-      <TableCell className="p-4">
-        <Cluster justify="center" wrap={false}>
+      <TableCell className="px-3 py-2">
+        <div className="flex justify-center items-center">
           {booking.isFirstForBooking ? (
             <RoomPaymentButton booking={booking} />
           ) : (
-            <em className="text-muted-foreground">—</em>
+            <em className="text-muted-foreground text-xs">—</em>
           )}
-        </Cluster>
+        </div>
       </TableCell>
-      <TableCell className="p-4">
+      <TableCell className="px-3 py-2">
         <div className="flex justify-center items-center">
           <CityTaxPaymentButton booking={booking} />
         </div>
       </TableCell>
-      <TableCell className="p-4">
-        <div className="flex justify-center items-center gap-2">
+      <TableCell className="px-3 py-2">
+        <div className="flex justify-center items-center gap-1.5">
           <KeycardDepositButton booking={booking} />
           {(hasKeycard || depositType === "NO_CARD") && depositType && (() => {
             const { Icon: KeycardIcon, colorClass } = getKeycardIcon(depositType);
@@ -139,23 +138,23 @@ const BookingRowView: FC<BookingRowViewProps> = ({
                 : "Keycard with document";
             return (
               <span title={iconTitle}>
-                <KeycardIcon size={18} className={colorClass} aria-hidden="true" />
+                <KeycardIcon size={16} className={colorClass} aria-hidden="true" />
               </span>
             );
           })()}
         </div>
       </TableCell>
-      <TableCell className="p-4">
+      <TableCell className="px-3 py-2">
         <div className="flex justify-center items-center">
           <StatusButton booking={booking} />
         </div>
       </TableCell>
-      <TableCell className="p-4">
+      <TableCell className="px-3 py-2">
         <div className="flex justify-center items-center">
           <DocInsertButton booking={booking} selectedDate={selectedDate} />
         </div>
       </TableCell>
-      <TableCell className="p-4">
+      <TableCell className="px-3 py-2">
         <div className="flex justify-center items-center">
           <EmailBookingButton
             bookingRef={booking.bookingRef}

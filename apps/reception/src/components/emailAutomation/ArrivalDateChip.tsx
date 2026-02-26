@@ -7,7 +7,7 @@ interface ArrivalDateChipProps {
 
 export default function ArrivalDateChip({ arrivalDate }: ArrivalDateChipProps) {
   return (
-    <div className="w-175px bg-surface-2 text-foreground px-2 py-1 rounded-lg text-sm text-center">
+    <div className="w-44 bg-surface-2 border border-border-strong text-foreground px-2 py-1 rounded-lg text-sm text-center">
       {arrivalDate || "—"}
     </div>
   );

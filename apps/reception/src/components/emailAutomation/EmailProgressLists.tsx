@@ -194,6 +194,14 @@ function ActivityCodeSection({
     });
   }, [list]);
 
+  const codeStyles = {
+    1: { headerBg: "bg-surface-2", headerBorder: "border-border-strong", bar: "bg-primary-main", labelColor: "text-foreground" },
+    2: { headerBg: "bg-warning/10", headerBorder: "border-warning", bar: "bg-warning", labelColor: "text-foreground" },
+    3: { headerBg: "bg-warning/20", headerBorder: "border-warning", bar: "bg-warning", labelColor: "text-foreground" },
+    4: { headerBg: "bg-surface-2", headerBorder: "border-border-strong", bar: "bg-muted-foreground", labelColor: "text-muted-foreground" },
+  } as const;
+  const style = codeStyles[code as keyof typeof codeStyles] ?? codeStyles[1];
+
   return (
     <TransitionGroup component={React.Fragment}>
       <CSSTransition
@@ -204,9 +212,10 @@ function ActivityCodeSection({
       >
         <div
           ref={containerRef}
-          className="mb-8 w-full bg-surface border rounded-lg"
+          className="mb-8 w-full bg-surface border border-border-strong rounded-xl overflow-hidden"
         >
-          <div className="p-4 bg-primary-main text-primary-fg font-heading text-lg font-bold uppercase border-b border-primary-main">
+          <div className={`p-4 ${style.headerBg} border-b ${style.headerBorder} flex items-center gap-3 font-heading font-bold text-sm uppercase tracking-wide ${style.labelColor}`}>
+            <span className={`h-5 w-0.5 rounded-full ${style.bar} shrink-0 inline-block`} aria-hidden="true" />
             {label} ({list.length})
           </div>
           <TransitionGroup component="ul" className="p-4">

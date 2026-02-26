@@ -37,7 +37,8 @@ export type BuildOctorateUrlResult =
  * Returns `{ ok: true, url }` on success, or `{ ok: false, error }` on validation failure.
  * Never throws.
  *
- * - Uses Octorate room-rate `calendar.xhtml` endpoint.
+ * - Uses Octorate room-rate `result.xhtml` endpoint so explicit
+ *   checkin/checkout/pax are applied directly.
  * - Appends room and date params from the selected room-rate/check-in.
  * - Appends deal + UTM attribution params when `deal` is provided.
  *
@@ -86,7 +87,7 @@ export function buildOctorateUrl(
     urlParams.set("utm_campaign", dealCode);
   }
 
-  const url = `${OCTORATE_BASE}/calendar.xhtml?${urlParams.toString()}`;
+  const url = `${OCTORATE_BASE}/result.xhtml?${urlParams.toString()}`;
 
   return { ok: true, url };
 }

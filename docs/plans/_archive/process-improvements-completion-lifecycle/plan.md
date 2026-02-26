@@ -1,7 +1,7 @@
 ---
 Plan: process-improvements-completion-lifecycle
 Business-Unit: BOS
-Status: Complete
+Status: Archived
 Created: 2026-02-26
 Completed: 2026-02-26
 Dispatch-ID: IDEA-DISPATCH-20260226-0014

@@ -5,7 +5,7 @@ Domain: UI
 Workstream: Engineering
 Created: 2026-02-25
 Last-reviewed: 2026-02-25
-Last-updated: 2026-02-26 (TASK-10 CHECKPOINT complete — TASK-11 80%, TASK-12 80%)
+Last-updated: 2026-02-26 (Wave 5 complete — TASK-11, TASK-12)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-ui-screen-polish
 Deliverable-Type: code-change
@@ -36,8 +36,8 @@ Extends the visual design language established on the login and bar screens (gra
 - [x] TASK-08: RealTimeDashboard — heading fix and chart card polish
 - [x] TASK-09: CheckinsTable — gradient backdrop, toolbar container, skeleton
 - [x] TASK-10: CHECKPOINT — Phase 2 verification and downstream replan
-- [ ] TASK-11: Checkout — sticky header blur and loading skeleton
-- [ ] TASK-12: EndOfDayPacket — gradient backdrop and surface polish
+- [x] TASK-11: Checkout — sticky header blur and loading skeleton
+- [x] TASK-12: EndOfDayPacket — gradient backdrop and surface polish
 
 ## Goals
 - Extend gradient backdrop + card elevation pattern to all Phase 1–3 screens
@@ -110,8 +110,8 @@ Extends the visual design language established on the login and bar screens (gra
 | TASK-08 | IMPLEMENT | RealTimeDashboard — heading fix and chart card polish | 88% | S | Complete (2026-02-26) | TASK-06 | TASK-10 |
 | TASK-09 | IMPLEMENT | CheckinsTable — gradient backdrop, toolbar, skeleton | 90% | M | Complete (2026-02-26) | TASK-06 | TASK-10 |
 | TASK-10 | CHECKPOINT | Phase 2 verification and downstream replan | 95% | S | Complete (2026-02-26) | TASK-07, TASK-08, TASK-09 | TASK-11, TASK-12 |
-| TASK-11 | IMPLEMENT | Checkout — sticky header blur and loading skeleton | 80% | S | Pending | TASK-10 | - |
-| TASK-12 | IMPLEMENT | EndOfDayPacket — gradient backdrop and surface polish | 80% | S | Pending | TASK-10 | - |
+| TASK-11 | IMPLEMENT | Checkout — sticky header blur and loading skeleton | 80% | S | Complete (2026-02-26) | TASK-10 | - |
+| TASK-12 | IMPLEMENT | EndOfDayPacket — gradient backdrop and surface polish | 80% | S | Complete (2026-02-26) | TASK-10 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -652,7 +652,16 @@ Extends the visual design language established on the login and bar screens (gra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build evidence:**
+  - `Checkout.tsx`: `import ReceptionSkeleton from "../common/ReceptionSkeleton"` added; loading div at line 331 replaced with `{loading && <ReceptionSkeleton rows={5} />}`
+  - `CheckoutTable.tsx`: `<TableHeader>` promoted to sticky element with `sticky top-0 z-10 backdrop-blur-sm bg-surface-2/80`; individual `sticky top-0 z-10` removed from all 8 `<TableHead>` elements
+  - Complete button at line 265 already uses `rounded-lg` — no change needed (documented decision: green→red hover is intentional reversible-action affordance)
+  - Checkout.tsx already used PageShell from TASK-00 — gradient already present; no additional gradient changes needed
+  - TC-11-01: `grep -n "backdrop-blur-sm" CheckoutTable.tsx` → line 157 (TableHeader); `grep -c "sticky top-0 z-10" CheckoutTable.tsx` → 1 (only TableHeader)
+  - TC-11-02: `grep -n "ReceptionSkeleton" Checkout.tsx` → 2 matches (import + usage); italic Loading div → CLEAN
+  - TC-11-03: checkout-route.parity snapshot updated (TableHead sticky removal visible); both parity tests PASS. Pre-existing failures: Checkout.test.tsx (useBookingsData mock type error at line 53, all 5 tests), CheckoutHelpers (Lucide icon typeof assertion) — confirmed by error trace, unrelated to Wave 5 changes
+  - Typecheck: 55/55 successful; lint: 19/19 clean
 - **Affects:** `apps/reception/src/components/checkout/Checkout.tsx`, `apps/reception/src/components/checkout/CheckoutTable.tsx`
 - **Depends on:** TASK-10
 - **Blocks:** -
@@ -689,8 +698,17 @@ Extends the visual design language established on the login and bar screens (gra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** `apps/reception/src/components/reports/EndOfDayPacket.tsx`
+- **Status:** Complete (2026-02-26)
+- **Build evidence:**
+  - `EndOfDayPacketContent` outer div: `bg-surface` → `bg-gradient-to-b from-surface-2 to-surface-3`
+  - Print button at line 724: `rounded` → `rounded-lg`
+  - `@media print` rule added to `apps/reception/src/app/globals.css`: gradient background suppression + `break-inside: avoid` on sections
+  - TC-12-01: `grep -n "bg-gradient-to-b from-surface-2 to-surface-3" EndOfDayPacket.tsx` → line 312 ✓
+  - TC-12-02: `grep -n "rounded[^-a-zA-Z0-9]" EndOfDayPacket.tsx` → CLEAN
+  - TC-12-03: `grep -n "@media print" globals.css` → line 192 ✓
+  - EndOfDayPacket.test.tsx: PASSES
+  - Typecheck: 55/55 successful; lint: 19/19 clean
+- **Affects:** `apps/reception/src/components/reports/EndOfDayPacket.tsx`, `apps/reception/src/app/globals.css`
 - **Depends on:** TASK-10
 - **Blocks:** -
 - **Confidence:** 80% _(raised from 70% by TASK-10 CHECKPOINT confirmation — gradient scope confirmed appropriate; print suppression pattern proven; impact revised from 70%→80%)_

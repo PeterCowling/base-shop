@@ -33,6 +33,14 @@ export interface ProcessImprovementItem {
   priority_tier?: string;
   /** Numeric rank (1=P0 highest … 10=P5 lowest). Lower = higher priority. Only set for idea items. */
   own_priority_rank?: number;
+  /** Urgency from the classifier (U0–U3). U0 = critical/now, U3 = no urgency. Only set for idea items. */
+  urgency?: string;
+  /** Effort estimate from the classifier (XS/S/M/L/XL). Only set for idea items. */
+  effort?: string;
+  /** Proximity for P1-tier ideas (Direct/Near/Indirect). Null for non-P1 tiers. Only set for idea items. */
+  proximity?: string | null;
+  /** Reason code from the classifier decision tree. Only set for idea items. */
+  reason_code?: string;
 }
 
 export interface CompletedIdeaEntry {
@@ -567,8 +575,13 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
         const classification = classifyIdea(classifierInput);
         ideaItem.priority_tier = classification.priority_tier;
         ideaItem.own_priority_rank = classification.own_priority_rank;
+        ideaItem.urgency = classification.urgency;
+        ideaItem.effort = classification.effort;
+        ideaItem.proximity = classification.proximity ?? null;
+        ideaItem.reason_code = classification.reason_code;
       } catch {
-        // Non-fatal: priority_tier and own_priority_rank remain unset
+        // Non-fatal: all six classification fields (priority_tier, own_priority_rank,
+        // urgency, effort, proximity, reason_code) remain unset on classifier error
       }
 
       ideaItems.push(ideaItem);

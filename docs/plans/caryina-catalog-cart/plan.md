@@ -5,7 +5,7 @@ Domain: Products
 Workstream: Engineering
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
-Last-updated: 2026-02-26 (Wave 2 complete: TASK-03)
+Last-updated: 2026-02-26 (Wave 3 complete: TASK-04)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: caryina-catalog-cart
 Deliverable-Type: multi-deliverable
@@ -29,7 +29,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - [x] TASK-01: Configure Caryina for Cloudflare Worker build
 - [x] TASK-02: Add stock badge to PLP and PDP
 - [x] TASK-03: Admin auth middleware and login route
-- [ ] TASK-04: Product and inventory CRUD API routes
+- [x] TASK-04: Product and inventory CRUD API routes
 - [ ] TASK-05: Admin product list and create/edit form pages
 - [ ] TASK-06: Admin inventory quantity edit
 - [ ] TASK-07: CHECKPOINT — admin workstream verified
@@ -106,9 +106,9 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 | TASK-01 | IMPLEMENT | Worker build config | 80% | S | Complete (2026-02-26) | — | TASK-03, TASK-09 |
 | TASK-02 | IMPLEMENT | Stock badge (PLP + PDP) | 80% | S | Complete (2026-02-26) | — | — |
 | TASK-03 | IMPLEMENT | Admin auth middleware + login | 75% | S | Complete (2026-02-26) | TASK-01 ✓ | TASK-04 |
-| TASK-04 | IMPLEMENT | Product + inventory CRUD API routes | 80% | M | Pending | TASK-03 ✓ | TASK-05, TASK-06 |
-| TASK-05 | IMPLEMENT | Admin product list + create/edit form | 75% | M | Pending | TASK-04 | TASK-07 |
-| TASK-06 | IMPLEMENT | Admin inventory quantity edit | 80% | S | Pending | TASK-04 | TASK-07 |
+| TASK-04 | IMPLEMENT | Product + inventory CRUD API routes | 80% | M | Complete (2026-02-26) | TASK-03 ✓ | TASK-05, TASK-06 |
+| TASK-05 | IMPLEMENT | Admin product list + create/edit form | 75% | M | Pending | TASK-04 ✓ | TASK-07 |
+| TASK-06 | IMPLEMENT | Admin inventory quantity edit | 80% | S | Pending | TASK-04 ✓ | TASK-07 |
 | TASK-07 | CHECKPOINT | Admin workstream verified | 95% | S | Pending | TASK-05, TASK-06 | TASK-09 |
 | TASK-08 | INVESTIGATE | Cart API storage approach | 85% | S | Complete (2026-02-26) | — | TASK-09 |
 | TASK-09 | IMPLEMENT | CartProvider + /api/cart route | 80% | M | Pending | TASK-01 ✓, TASK-07, TASK-08 ✓ | TASK-10, TASK-11 |
@@ -122,7 +122,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 |---|---|---|---|
 | 1 | TASK-01, TASK-02, TASK-08 | None | ✓ Complete 2026-02-26 |
 | 2 | TASK-03 | TASK-01 ✓ | ✓ Complete 2026-02-26 |
-| 3 | TASK-04 | TASK-03 ✓ | CRUD API routes before admin pages |
+| 3 | TASK-04 | TASK-03 ✓ | ✓ Complete 2026-02-26 |
 | 4 | TASK-05, TASK-06 | TASK-04 ✓ | Admin list/form + inventory edit in parallel |
 | 5 | TASK-07 (CHECKPOINT) | TASK-05 ✓, TASK-06 ✓ | Verify admin end-to-end; triggers /lp-do-replan |
 | 6 | TASK-09 | TASK-01 ✓, TASK-07 ✓, TASK-08 ✓ | Cart backend approach resolved before implementation |
@@ -300,9 +300,9 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/caryina/src/app/admin/api/products/route.ts` (new), `apps/caryina/src/app/admin/api/products/[id]/route.ts` (new), `apps/caryina/src/app/admin/api/inventory/[sku]/route.ts` (new)
-- **Depends on:** TASK-03
+- **Depends on:** TASK-03 ✓
 - **Blocks:** TASK-05, TASK-06
 - **Confidence:** 80%
   - Implementation: 80% — all backing functions confirmed: `writeRepo`, `updateProductInRepo`, `deleteProductFromRepo` in products.server.ts; `updateInventoryItem` in inventory.server.ts. Route wiring is standard Next.js. Held-back test: a single unknown would be Zod request body validation schema for `ProductPublication` (multilingual `title`/`description` as objects). This is a known type — schema can be derived from the existing type. No single unknown would push below 80 — schemas are code, not runtime unknowns.
@@ -343,6 +343,11 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
   - Rollback: Remove route files; no state change (writes are to json files which can be git-reverted).
 - **Documentation impact:** None: admin-only API.
 - **Notes / references:** `packages/platform-core/src/repositories/products.server.ts`, `inventory.server.ts`.
+- **Build evidence (2026-02-26):**
+  - Commit: `e41d231291`
+  - Files: `apps/caryina/src/lib/adminSchemas.ts` (Zod schemas); `admin/api/products/route.ts` (POST); `admin/api/products/[id]/route.ts` (PATCH/DELETE); `admin/api/inventory/[sku]/route.ts` (PATCH); 3 test files.
+  - TC-01 ✓ (201 create), TC-02 ✓ (200 patch), TC-03 ✓ (204 delete), TC-04 ✓ (200 inventory update), TC-06 ✓ (400 missing sku). 16/16 new tests pass; 54/54 full caryina suite.
+  - Deviation: `ulid` package not in caryina deps — used `crypto.randomUUID()` (UUID format, `id` field is `string`). `generateId()` helper with `node:crypto` webcrypto fallback for jsdom (same pattern as TASK-03 `getSubtle()`). Import sort autofix required for `inventory/[sku]/route.ts`.
 
 ---
 

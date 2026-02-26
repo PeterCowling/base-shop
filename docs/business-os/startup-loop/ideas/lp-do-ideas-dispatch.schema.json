@@ -196,6 +196,22 @@
       "required": ["questions", "blocks_invocation"],
       "additionalProperties": false,
       "description": "Present when the dispatch cannot be fully routed or scoped without operator input. Absence means no clarification is needed."
+    },
+    "priority_tier": {
+      "type": "string",
+      "description": "8-tier priority assigned by the idea classifier. P0 = act immediately (highest), P0R = fast-track escalation, P1 = high priority direct path, P1M = high priority multi-step path, P2 = medium, P3 = steady-state, P4 = low priority, P5 = backlog (lowest). Optional — present only when the idea has been classified."
+    },
+    "urgency": {
+      "type": "string",
+      "description": "Urgency level from the classifier. U0 = critical / act now, U1 = act soon, U2 = routine timeline, U3 = no time pressure. Optional — present only when the idea has been classified."
+    },
+    "effort": {
+      "type": "string",
+      "description": "Effort estimate from the classifier. XS = extra small, S = small, M = medium, L = large, XL = extra large. Optional — present only when the idea has been classified."
+    },
+    "reason_code": {
+      "type": "string",
+      "description": "Short code from the classifier decision tree indicating which rule produced the priority tier assignment. Optional — present only when the idea has been classified."
     }
   },
   "required": [

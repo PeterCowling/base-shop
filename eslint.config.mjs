@@ -2403,6 +2403,7 @@ export default [
       "ds/no-raw-font": "off", // receipt printing is domain-specific for POS system
       /* DS spacing rules — escalation per DS-06 */
       "ds/no-raw-spacing": "error", // escalated in DS-06 after fixing 8 violations
+      "ds/no-bare-rounded": "error", // Design standard: bare 'rounded' must be 'rounded-lg' — see Phase 1-4 reception UI polish
       "ds/no-arbitrary-tailwind": "error",
       /* Non-DS relaxations */
       complexity: ["error", 60],

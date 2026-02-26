@@ -3,6 +3,28 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Classifier auto-demotion rate dashboard for Phase 4 readiness",
+      "body": "all dispatches auto-demote to P4/P5 without operator evidence fields; a weekly count would surface this clearly",
+      "suggested_action": "defer (manual inspection sufficient for Phase 1)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T10:26:13.357Z",
+      "path": "docs/plans/_archive/reflection-prioritization-policy-implementation/results-review.user.md",
+      "idea_key": "c53d8fe7718817a876e18b3b40f8a53467ed3aeb"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Phase 4 enforcement — wire priority rank into dispatch sort and enforce evidence gates",
+      "body": "Phase 4 deferred in classifier with explicit comment; natural next step after advisory calibration period",
+      "suggested_action": "create card after ~2 weeks of trial data",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T10:26:13.357Z",
+      "path": "docs/plans/_archive/reflection-prioritization-policy-implementation/results-review.user.md",
+      "idea_key": "8c68b866f7784e56527f73e12625cc53b0f986d0"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
       "body": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
       "source": "results-review.user.md",

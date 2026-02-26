@@ -5,7 +5,7 @@ Domain: UI
 Workstream: Engineering
 Created: 2026-02-25
 Last-reviewed: 2026-02-25
-Last-updated: 2026-02-26 (Wave 2 + TASK-05)
+Last-updated: 2026-02-26 (TASK-06 CHECKPOINT complete; Wave 4 eligible)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-ui-screen-polish
 Deliverable-Type: code-change
@@ -31,7 +31,7 @@ Extends the visual design language established on the login and bar screens (gra
 - [x] TASK-03: INVESTIGATE — TillReconciliation children (ActionButtons, FormsContainer)
 - [x] TASK-04: TillReconciliation — mode banners and shift state polish
 - [x] TASK-05: SafeManagement — balance panel, button grouping, denomination polish
-- [ ] TASK-06: CHECKPOINT — Phase 1 verification and downstream replan
+- [x] TASK-06: CHECKPOINT — Phase 1 verification and downstream replan
 - [ ] TASK-07: PrepareDashboard — heading fix and PageShell migration
 - [ ] TASK-08: RealTimeDashboard — heading fix and chart card polish
 - [ ] TASK-09: CheckinsTable — gradient backdrop, toolbar container, skeleton
@@ -105,10 +105,10 @@ Extends the visual design language established on the login and bar screens (gra
 | TASK-03 | INVESTIGATE | TillReconciliation children scope | 90% | S | Complete (2026-02-26) | - | TASK-04 |
 | TASK-04 | IMPLEMENT | TillReconciliation — mode banners and state polish | 85% | S | Complete (2026-02-26) | TASK-00, TASK-03 | TASK-06 |
 | TASK-05 | IMPLEMENT | SafeManagement — balance panel, button grouping | 91% | S | Complete (2026-02-26) | TASK-00 | TASK-06 |
-| TASK-06 | CHECKPOINT | Phase 1 verification and downstream replan | 95% | S | Pending | TASK-02, TASK-04, TASK-05 | TASK-07, TASK-08, TASK-09 |
-| TASK-07 | IMPLEMENT | PrepareDashboard — heading fix and PageShell migration | 75% | M | Pending | TASK-06 | TASK-10 |
-| TASK-08 | IMPLEMENT | RealTimeDashboard — heading fix and chart card polish | 75% | S | Pending | TASK-06 | TASK-10 |
-| TASK-09 | IMPLEMENT | CheckinsTable — gradient backdrop, toolbar, skeleton | 75% | M | Pending | TASK-06 | TASK-10 |
+| TASK-06 | CHECKPOINT | Phase 1 verification and downstream replan | 95% | S | Complete (2026-02-26) | TASK-02, TASK-04, TASK-05 | TASK-07, TASK-08, TASK-09 |
+| TASK-07 | IMPLEMENT | PrepareDashboard — heading fix and PageShell migration | 86% | M | Pending | TASK-06 | TASK-10 |
+| TASK-08 | IMPLEMENT | RealTimeDashboard — heading fix and chart card polish | 88% | S | Pending | TASK-06 | TASK-10 |
+| TASK-09 | IMPLEMENT | CheckinsTable — gradient backdrop, toolbar, skeleton | 90% | M | Pending | TASK-06 | TASK-10 |
 | TASK-10 | CHECKPOINT | Phase 2 verification and downstream replan | 95% | S | Pending | TASK-07, TASK-08, TASK-09 | TASK-11, TASK-12 |
 | TASK-11 | IMPLEMENT | Checkout — sticky header blur and loading skeleton | 80% | S | Pending | TASK-10 | - |
 | TASK-12 | IMPLEMENT | EndOfDayPacket — gradient backdrop and surface polish | 70% | S | Pending | TASK-10 | - |
@@ -418,7 +418,7 @@ Extends the visual design language established on the login and bar screens (gra
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `docs/plans/reception-ui-screen-polish/plan.md`
 - **Depends on:** TASK-02, TASK-04, TASK-05
 - **Blocks:** TASK-07, TASK-08, TASK-09
@@ -440,6 +440,17 @@ Extends the visual design language established on the login and bar screens (gra
 - **Planning validation:** None: checkpoint task
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** `docs/plans/reception-ui-screen-polish/plan.md` updated by `/lp-do-replan`
+- **Build evidence (2026-02-26):**
+  - Horizon assumptions resolved:
+    - RoomsGrid CSS module: TASK-01/02 confirmed _reservationGrid.css was fully orphaned (0 active imports); deleted safely. No additional complexity.
+    - SafeManagement handler entanglement: TASK-05 confirmed handlers at top of function, balance `<p>` tags unconditional at JSX top. No scope expansion needed. Effort revised M→S.
+    - TillReconciliation children: TASK-03/04 confirmed no ActionButtons/FormsContainer children; banners were invisible text spans. Clean S-scope fix.
+    - Phase 2 screens assessed (see TASK-07/08/09 updates below).
+    - PageShell gradient: No regressions reported on existing consumers.
+  - TASK-07 replan: 75% → 86%; PrepareDashboard is 155 lines with 4 inlined render paths (text-5xl heading appears 4×); scout gate triggered — extract `PreparePage` layout wrapper first.
+  - TASK-08 replan: 75% → 88%; RealTimeDashboard heading at line 133; 3 chart cards with `rounded shadow p-4`; setInterval unaffected; impact raised to 85% (auto-refresh confirms operational use).
+  - TASK-09 replan: 75% → 90%; CheckinsHeader is 69 lines (flat flex, easily wrappable); loading state is plain "Loading..." text at view/CheckinsTable.tsx:123-132; mode flags exist but no visible banner (edge case: add if mode is set); TC-09-01 regex scope confirmed.
+  - All 3 downstream tasks ≥80% — CHECKPOINT auto-continues.
 
 ---
 
@@ -454,10 +465,10 @@ Extends the visual design language established on the login and bar screens (gra
 - **Affects:** `apps/reception/src/components/prepare/PrepareDashboard.tsx`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-10
-- **Confidence:** 75%
-  - Implementation: 75% — PrepareDashboard has 4 separate render paths (loading, error, no-data, success) each with full layout repeated; migrating all 4 to PageShell could be non-trivial if paths diverge significantly
-  - Approach: 75% — heading replacement (`text-5xl text-center text-primary-main` → PageShell accent-bar `text-2xl`) is mechanical; the repeated layout pattern is the main risk
-  - Impact: 80% — PrepareDashboard is used daily for housekeeping prep; heading size mismatch with other screens is jarring
+- **Confidence:** 86%
+  - Implementation: 90% — Phase 1 probe confirmed: PrepareDashboard.tsx is 155 lines; text-5xl heading appears in all 4 render paths (lines ~74, ~93, ~117, ~139); scout gate triggered → extract `PreparePage` wrapper first (S sub-task), then migrate heading. Path is clear.
+  - Approach: 88% — extraction pattern is standard React: pull outer wrapper + heading JSX into `PreparePage`, render children; then swap out PageShell. No diverging paths.
+  - Impact: 80% — PrepareDashboard used daily for housekeeping prep; heading mismatch jarring; Phase 1 confirms the visual gap is real.
 - **Acceptance:**
   - `text-5xl text-primary-main text-center` heading replaced with PageShell accent-bar pattern (`text-2xl font-heading font-semibold text-foreground` with `h-7 w-1 rounded-full bg-primary-main` pill) across all render paths
   - All 4 render paths (loading, error, no-data, success) use consistent layout via PageShell or equivalent unified wrapper
@@ -493,10 +504,10 @@ Extends the visual design language established on the login and bar screens (gra
 - **Affects:** `apps/reception/src/components/reports/RealTimeDashboard.tsx`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-10
-- **Confidence:** 75%
-  - Implementation: 85% — file is fully read; changes are localized (heading, chart card shadows, page bg)
-  - Approach: 85% — class changes are mechanical and well-understood
-  - Impact: 75% — admin-only read-only dashboard; visual improvement is real (heading mismatch elimination, cohesion with other screens) but lower operational urgency than P1 interactive screens
+- **Confidence:** 88%
+  - Implementation: 90% — Phase 1 probe confirmed: heading at line 133; 3 chart cards at lines 137/141/146 with `rounded shadow p-4`; setInterval at lines 28–34 is unaffected by JSX wrapper changes. All changes are localized.
+  - Approach: 90% — mechanical class swaps; PageShell wrapper or inline gradient both valid; chart.js color vars unchanged.
+  - Impact: 85% — auto-refresh cadence (60s) and variance tracking confirm management team uses this screen operationally. Impact raised from 75%.
 - **Acceptance:**
   - `text-5xl text-primary-main text-center` heading replaced with accent-bar `text-2xl` pattern (inline or via PageShell migration)
   - Chart card `shadow` upgraded to `shadow-lg` on all three chart panels
@@ -531,10 +542,10 @@ Extends the visual design language established on the login and bar screens (gra
 - **Affects:** `apps/reception/src/components/checkins/CheckinsTable.tsx`, `apps/reception/src/components/checkins/view/CheckinsTable.tsx`, `apps/reception/src/components/checkins/header/CheckinsHeader.tsx` (likely), `apps/reception/src/components/common/ReceptionSkeleton.tsx` (new)
 - **Depends on:** TASK-06
 - **Blocks:** TASK-10
-- **Confidence:** 75%
-  - Implementation: 75% — CheckinsHeader (toolbar) component not fully read from fact-find; its internal structure affects how we can add the toolbar container wrapper
-  - Approach: 75% — gradient backdrop and `rounded-lg` sweep are clear; toolbar container requires reading CheckinsHeader first; ReceptionSkeleton design is clear (DS-based or simple Tailwind divs)
-  - Impact: 85% — check-in is a daily high-use screen; the unstyled toolbar is the most visible gap after login/bar work
+- **Confidence:** 90%
+  - Implementation: 92% — Phase 1 probe confirmed: CheckinsHeader.tsx is 69 lines (flat flex div, no complexity); loading state is plain "Loading..." text in TableCell at view/CheckinsTable.tsx:123–132; mode flags (isEditMode/isDeleteMode/isAddGuestMode) exist but no visual banner is present. CheckinsTable.tsx outer wrapper is the clear PageShell target.
+  - Approach: 92% — toolbar container: wrap outer toolbar div with `bg-surface/80 rounded-xl px-4 py-3 mb-4`; ReceptionSkeleton: straightforward animated Tailwind skeleton rows; mode banner: add inline (matching TillReconciliation TASK-04 pattern) if mode flag is set — props already wired.
+  - Impact: 85% — check-in is a daily high-use screen; the unstyled toolbar is the most visible gap after login/bar work.
 - **Acceptance:**
   - Page outer wrapper has gradient backdrop (`bg-gradient-to-b from-surface-2 to-surface-3`)
   - Toolbar area (CheckinsHeader or its container) has a visual container: `bg-surface/80 rounded-xl px-4 py-3 mb-4` or similar — clearly separated from the table card
@@ -556,7 +567,7 @@ Extends the visual design language established on the login and bar screens (gra
 - **Edge Cases & Hardening:**
   - `ReceptionSkeleton` must handle variable row counts; accept a `rows?: number` prop (default 5)
   - The toolbar container must not break the existing `flex items-center justify-between` layout inside CheckinsHeader
-  - Mode indicator (edit/delete/add-guest mode) — if it exists as a visual element in CheckinsTable, ensure it gets the same visual container treatment as TillReconciliation mode banners
+  - Mode indicator (edit/delete/add-guest mode) — Phase 1 probe confirmed: mode flags exist (isEditMode/isDeleteMode/isAddGuestMode) but NO visual banner currently exists. Add mode banners inline in CheckinsTable using the same pattern as TillReconciliation TASK-04: `bg-info-light/20` for edit, `bg-warning-light/20` for delete, `bg-success-light/20` for add-guest. Props are already wired through.
 - **What would make this >=90%:** Read of CheckinsHeader confirms it is a simple, easily-wrappable component; ReceptionSkeleton can use DS `Skeleton` atoms if they exist
 - **Rollout / rollback:**
   - Rollout: Per-screen

@@ -5,7 +5,7 @@ Domain: Products
 Workstream: Engineering
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
-Last-updated: 2026-02-26 (Wave 4 complete: TASK-05, TASK-06)
+Last-updated: 2026-02-26 (Wave 5 complete: TASK-07 CHECKPOINT — cart tasks eligible)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: caryina-catalog-cart
 Deliverable-Type: multi-deliverable
@@ -32,7 +32,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - [x] TASK-04: Product and inventory CRUD API routes
 - [x] TASK-05: Admin product list and create/edit form pages
 - [x] TASK-06: Admin inventory quantity edit
-- [ ] TASK-07: CHECKPOINT — admin workstream verified
+- [x] TASK-07: CHECKPOINT — admin workstream verified
 - [x] TASK-08: INVESTIGATE — cart API storage backend approach
 - [ ] TASK-09: CartProvider wrap and /api/cart route handler
 - [ ] TASK-10: AddToCartButton and /cart page
@@ -109,9 +109,9 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 | TASK-04 | IMPLEMENT | Product + inventory CRUD API routes | 80% | M | Complete (2026-02-26) | TASK-03 ✓ | TASK-05, TASK-06 |
 | TASK-05 | IMPLEMENT | Admin product list + create/edit form | 75% | M | Complete (2026-02-26) | TASK-04 ✓ | TASK-07 |
 | TASK-06 | IMPLEMENT | Admin inventory quantity edit | 80% | S | Complete (2026-02-26) | TASK-04 ✓ | TASK-07 |
-| TASK-07 | CHECKPOINT | Admin workstream verified | 95% | S | Pending | TASK-05 ✓, TASK-06 ✓ | TASK-09 |
+| TASK-07 | CHECKPOINT | Admin workstream verified | 95% | S | Complete (2026-02-26) | TASK-05 ✓, TASK-06 ✓ | TASK-09 |
 | TASK-08 | INVESTIGATE | Cart API storage approach | 85% | S | Complete (2026-02-26) | — | TASK-09 |
-| TASK-09 | IMPLEMENT | CartProvider + /api/cart route | 80% | M | Pending | TASK-01 ✓, TASK-07, TASK-08 ✓ | TASK-10, TASK-11 |
+| TASK-09 | IMPLEMENT | CartProvider + /api/cart route | 80% | M | Pending | TASK-01 ✓, TASK-07 ✓, TASK-08 ✓ | TASK-10, TASK-11 |
 | TASK-10 | IMPLEMENT | AddToCartButton + /cart page | 80% | M | Pending | TASK-09 | — |
 | TASK-11 | IMPLEMENT | Checkout session API + /success verify | 75% | M | Pending | TASK-01, TASK-09 | TASK-12 |
 | TASK-12 | IMPLEMENT | Wire /checkout → Stripe redirect | 80% | S | Pending | TASK-11 | — |
@@ -124,7 +124,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 | 2 | TASK-03 | TASK-01 ✓ | ✓ Complete 2026-02-26 |
 | 3 | TASK-04 | TASK-03 ✓ | ✓ Complete 2026-02-26 |
 | 4 | TASK-05, TASK-06 | TASK-04 ✓ | ✓ Complete 2026-02-26 |
-| 5 | TASK-07 (CHECKPOINT) | TASK-05 ✓, TASK-06 ✓ | Verify admin end-to-end; triggers /lp-do-replan |
+| 5 | TASK-07 (CHECKPOINT) | TASK-05 ✓, TASK-06 ✓ | ✓ Complete 2026-02-26 |
 | 6 | TASK-09 | TASK-01 ✓, TASK-07 ✓, TASK-08 ✓ | Cart backend approach resolved before implementation |
 | 7 | TASK-10, TASK-11 | TASK-09 ✓ | Cart UI + checkout API in parallel |
 | 8 | TASK-12 | TASK-11 ✓ | Wire checkout flow |
@@ -457,9 +457,9 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `docs/plans/caryina-catalog-cart/plan.md`
-- **Depends on:** TASK-05, TASK-06
+- **Depends on:** TASK-05 ✓, TASK-06 ✓
 - **Blocks:** TASK-09
 - **Confidence:** 95%
   - Implementation: 95% — process is defined.
@@ -480,6 +480,12 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - **Planning validation:** None: procedural gate.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** Plan updated by `/lp-do-replan`.
+- **Build evidence (2026-02-26):**
+  - Admin workstream (TASK-01–06): all complete. 54/54 caryina tests passing.
+  - (a) Worker build: ✓ TASK-01 complete — `@opennextjs/cloudflare`, `wrangler.toml` configured.
+  - (b) Stripe keys: NOT yet set in env. `STRIPE_USE_MOCK=true` handles test suite. Operator must set `STRIPE_SECRET_KEY` + `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` before TASK-11 deployment.
+  - (c) TASK-08 ✓ — `CART_COOKIE_SECRET` confirmed in `apps/caryina/.env.local`. `createShopCartApi({ shop: "caryina" })` approach confirmed viable.
+  - Downstream re-score: TASK-09 80% ✓ eligible; TASK-10 80% ✓; TASK-11 80% (Stripe runtime caveat noted); TASK-12 80%. All cart tasks proceed.
 
 ---
 

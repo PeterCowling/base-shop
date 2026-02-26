@@ -11,6 +11,11 @@
 
 import { createHash } from "node:crypto";
 
+import {
+  classifyIdea,
+  type IdeaClassification,
+  type IdeaClassificationInput,
+} from "./lp-do-ideas-classifier.js";
 import { computeClusterFingerprint } from "./lp-do-ideas-fingerprint.js";
 import type { RegistryV2ArtifactEntry } from "./lp-do-ideas-registry-migrate-v1-v2.js";
 
@@ -369,6 +374,15 @@ export interface TrialOrchestratorResult {
   noop: number;
   warnings: string[];
   shadow_telemetry: ShadowTelemetrySnapshot;
+  /**
+   * Advisory-phase classification records for each dispatched packet.
+   * Produced by lp-do-ideas-classifier-v1. One entry per dispatched packet.
+   * Empty array on classification failure (non-fatal).
+   *
+   * Callers should persist via appendClassifications() from lp-do-ideas-persistence.ts
+   * after the orchestrator returns.
+   */
+  classifications: IdeaClassification[];
 }
 
 export interface TrialOrchestratorError {
@@ -701,6 +715,7 @@ export function runTrialOrchestrator(
   const cooldownState = options.cooldownState ?? new Map<string, ClusterCooldownStateEntry>();
 
   const dispatched: TrialDispatchPacket[] = [];
+  const classifications: IdeaClassification[] = [];
   let suppressed = 0;
   let noop = 0;
   const suppressionCounters = buildSuppressionCounter();
@@ -893,7 +908,7 @@ export function runTrialOrchestrator(
     const beforeShort = event.before_sha.slice(0, 7);
     const afterShort = event.after_sha.slice(0, 7);
 
-    dispatched.push({
+    const packet: TrialDispatchPacket = {
       schema_version: "dispatch.v1",
       dispatch_id: dispatchId,
       mode: "trial",
@@ -920,7 +935,23 @@ export function runTrialOrchestrator(
       evidence_refs: evidenceRefs,
       created_at: now.toISOString(),
       queue_state: "enqueued",
-    });
+    };
+    dispatched.push(packet);
+
+    // Advisory-phase classification (Phase 1) — non-fatal; does not block dispatch
+    try {
+      const classificationInput: IdeaClassificationInput = {
+        trigger: packet.trigger,
+        artifact_id: "artifact_id" in packet ? (packet as { artifact_id?: string | null }).artifact_id : null,
+        area_anchor: packet.area_anchor,
+        evidence_refs: packet.evidence_refs,
+      };
+      classifications.push(classifyIdea(classificationInput));
+    } catch (classifyErr) {
+      process.stderr.write(
+        `[lp-do-ideas-trial] Classification failed for ${packet.dispatch_id}: ${String(classifyErr)}\n`,
+      );
+    }
 
     cooldownState.set(clusterKey, {
       last_admitted_at: now.toISOString(),
@@ -949,6 +980,7 @@ export function runTrialOrchestrator(
     noop,
     warnings,
     shadow_telemetry: shadowTelemetry,
+    classifications,
   };
 }
 

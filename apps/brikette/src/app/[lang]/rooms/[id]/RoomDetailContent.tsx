@@ -21,7 +21,6 @@ import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref } from "@/routes.guides-helpers";
 import {
-  ensureMinCheckoutForStay,
   getMinCheckoutForStay,
   isValidPax,
   isValidStayRange,
@@ -207,7 +206,7 @@ function parseBookingQuery(
   const checkInParam = searchParams?.get("checkin");
   const checkIn = checkInParam && getMinCheckoutForStay(checkInParam) ? checkInParam : todayIso;
   const checkOutRaw = searchParams?.get("checkout") ?? getDatePlusTwoDays(checkIn);
-  const checkOut = ensureMinCheckoutForStay(checkIn, checkOutRaw);
+  const checkOut = checkOutRaw;
   const adultsRaw = parseInt(searchParams?.get("pax") ?? "", 10);
   const adults = Number.isFinite(adultsRaw) && adultsRaw > 0 ? adultsRaw : 1;
   const hasCheckIn = Boolean(checkInParam) && checkInParam === checkIn;

@@ -86,7 +86,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
   const initialCheckinRaw = readQueryDate(params, ["checkin"], todayIso);
   const initialCheckin = getMinCheckoutForStay(initialCheckinRaw) ? initialCheckinRaw : todayIso;
   const initialCheckoutRaw = readQueryDate(params, ["checkout"], getDatePlusTwoDays(initialCheckin));
-  const initialCheckout = ensureMinCheckoutForStay(initialCheckin, initialCheckoutRaw);
+  const initialCheckout = initialCheckoutRaw;
   const initialPax = readQueryNumber(params, ["pax", "guests", "adults"], 1);
 
   // Dedupe ref: tracks the search key of the last fired search_availability event.

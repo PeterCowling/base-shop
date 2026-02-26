@@ -130,7 +130,7 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
     expect(window.location.search).toContain("checkout=2026-06-12");
   });
 
-  it("TC-05: one-night URL params are normalized to the two-night minimum", () => {
+  it("TC-05: one-night URL params remain invalid and do not emit search_availability", () => {
     mockSearchParams = new URLSearchParams("checkin=2026-06-10&checkout=2026-06-11&pax=1");
     render(<BookPageContent lang="en" />);
 
@@ -138,8 +138,14 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
     const checkoutInput = screen.getByLabelText(/check out/i) as HTMLInputElement;
 
     expect(checkinInput.value).toBe("2026-06-10");
-    expect(checkoutInput.value).toBe("2026-06-12");
+    expect(["", "2026-06-11"]).toContain(checkoutInput.value);
     expect(checkoutInput.min).toBe("2026-06-12");
+
+    jest.advanceTimersByTime(1000);
+    const searchCalls = gtagMock.mock.calls.filter(
+      (args: unknown[]) => args[0] === "event" && args[1] === "search_availability",
+    );
+    expect(searchCalls).toHaveLength(0);
   });
 
   it("TC-06: pax above max prevents search_availability emission", () => {

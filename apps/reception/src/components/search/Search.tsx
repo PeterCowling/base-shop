@@ -8,6 +8,7 @@ import { Button } from "@acme/design-system/atoms";
 import useBookingSearchClient from "../../hooks/client/useBookingSearchClient";
 import { type BookingSearchRow, type Guest } from "../../types/component/bookingSearch";
 import { showToast } from "../../utils/toastUtils";
+import { PageShell } from "../common/PageShell";
 
 import BookingSearchTable from "./BookingSearchTable";
 import FilterBar from "./FilterBar";
@@ -198,71 +199,73 @@ function Search(): JSX.Element {
   }, [errorMessage]);
 
   return (
-    <>
-      <div className="flex gap-2 mb-4">
-        <Button
-          onClick={setBookingsTab}
-          className={`px-4 py-1 rounded ${
-            activeTab === "bookings" ? "bg-primary-main text-primary-fg" : "bg-surface-2"
-          }`}
-        >
-          Bookings
-        </Button>
-        <Button
-          onClick={setTransactionsTab}
-          className={`px-4 py-1 rounded ${
-            activeTab === "transactions"
-              ? "bg-primary-main text-primary-fg"
-              : "bg-surface-2"
-          }`}
-        >
-          Transactions
-        </Button>
-        <Button
-          onClick={setAuditsTab}
-          className={`px-4 py-1 rounded ${
-            activeTab === "audits" ? "bg-primary-main text-primary-fg" : "bg-surface-2"
-          }`}
-        >
-          Audits
-        </Button>
+    <PageShell title="Audit">
+      <div className="bg-surface rounded-xl shadow-lg p-6">
+        <div className="flex gap-2 mb-4">
+          <Button
+            onClick={setBookingsTab}
+            className={`px-4 py-1 rounded-lg ${
+              activeTab === "bookings" ? "bg-primary-main text-primary-fg" : "bg-surface-2"
+            }`}
+          >
+            Bookings
+          </Button>
+          <Button
+            onClick={setTransactionsTab}
+            className={`px-4 py-1 rounded-lg ${
+              activeTab === "transactions"
+                ? "bg-primary-main text-primary-fg"
+                : "bg-surface-2"
+            }`}
+          >
+            Transactions
+          </Button>
+          <Button
+            onClick={setAuditsTab}
+            className={`px-4 py-1 rounded-lg ${
+              activeTab === "audits" ? "bg-primary-main text-primary-fg" : "bg-surface-2"
+            }`}
+          >
+            Audits
+          </Button>
+        </div>
+
+        {activeTab === "bookings" && (
+          <>
+            <h2 className="text-xl font-semibold mb-4">
+              Search Bookings
+            </h2>
+
+            <FilterBar
+              firstName={filters.firstName}
+              lastName={filters.lastName}
+              bookingRef={filters.bookingRef}
+              status={filters.status}
+              nonRefundable={filters.nonRefundable}
+              date={filters.date}
+              roomNumber={filters.roomNumber}
+              onFilterChange={handleFilterChange}
+              onSearch={handleSearchClick}
+              activityCodes={activityCodes}
+            />
+
+            {loading && (
+              <div className="flex justify-center my-4">
+                <SmallSpinner />
+              </div>
+            )}
+
+            <BookingSearchTable
+              guests={guests}
+              searchTriggered={searchTriggered}
+            />
+          </>
+        )}
+
+        {activeTab === "transactions" && <FinancialTransactionSearch />}
+        {activeTab === "audits" && <FinancialTransactionAuditSearch />}
       </div>
-
-      {activeTab === "bookings" && (
-        <>
-          <h2 className="text-xl font-semibold mb-4">
-            Search Bookings
-          </h2>
-
-          <FilterBar
-            firstName={filters.firstName}
-            lastName={filters.lastName}
-            bookingRef={filters.bookingRef}
-            status={filters.status}
-            nonRefundable={filters.nonRefundable}
-            date={filters.date}
-            roomNumber={filters.roomNumber}
-            onFilterChange={handleFilterChange}
-            onSearch={handleSearchClick}
-            activityCodes={activityCodes}
-          />
-
-          {loading && (
-            <div className="flex justify-center my-4">
-              <SmallSpinner />
-            </div>
-          )}
-
-          <BookingSearchTable
-            guests={guests}
-            searchTriggered={searchTriggered}
-          />
-        </>
-      )}
-
-      {activeTab === "transactions" && <FinancialTransactionSearch />}
-      {activeTab === "audits" && <FinancialTransactionAuditSearch />}
-    </>
+    </PageShell>
   );
 }
 

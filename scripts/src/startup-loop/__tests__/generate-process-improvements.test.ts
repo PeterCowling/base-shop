@@ -2,10 +2,11 @@ import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import { describe, expect, it } from "@jest/globals";
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 import {
   collectProcessImprovements,
+  runCheck,
   updateProcessImprovementsHtml,
 } from "../generate-process-improvements";
 
@@ -109,7 +110,7 @@ Feature-Slug: feature-b
     await fs.rm(repoRoot, { recursive: true, force: true });
   });
 
-  it("replaces array assignments and footer date in process improvements HTML", () => {
+  it("replaces array assignments and footer date in process improvements HTML", async () => {
     const html = `
 <div>Last cleared: 2026-01-01 — test</div>
 <script>
@@ -147,3 +148,84 @@ var PENDING_REVIEW_ITEMS = [];
   });
 });
 
+const HTML_TEMPLATE = `<div>Last cleared: 2026-01-01 — test</div>
+<script>
+var IDEA_ITEMS = [];
+var RISK_ITEMS = [];
+var PENDING_REVIEW_ITEMS = [];
+</script>
+`;
+
+const IDEA_SOURCE_MD = `---
+Business-Unit: BRIK
+Review-date: 2026-02-25
+---
+# Results Review
+
+## Observed Outcomes
+- Outcome observed.
+
+## Standing Updates
+- No standing updates: reason.
+
+## New Idea Candidates
+- Add ranking layer | Trigger observation: 1 seed rejected in pilot | Suggested next action: create INVESTIGATE task
+
+## Standing Expansion
+- No standing expansion: reason.
+`;
+
+describe("runCheck", () => {
+  let tmpDir: string;
+  let exitSpy: ReturnType<typeof jest.spyOn>;
+
+  beforeEach(async () => {
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "run-check-"));
+    exitSpy = jest.spyOn(process, "exit").mockImplementation((code) => {
+      throw new Error(`process.exit called with ${String(code)}`);
+    });
+  });
+
+  afterEach(async () => {
+    exitSpy.mockRestore();
+    await fs.rm(tmpDir, { recursive: true, force: true });
+  });
+
+  it("TC-13: completes without error when committed output files are up-to-date", async () => {
+    await writeFile(tmpDir, "docs/plans/feature-a/results-review.user.md", IDEA_SOURCE_MD);
+
+    const data = collectProcessImprovements(tmpDir);
+    const expectedDataJson = `${JSON.stringify(data, null, 2)}\n`;
+    const expectedHtml = updateProcessImprovementsHtml(HTML_TEMPLATE, data, "2026-02-25");
+
+    await writeFile(tmpDir, "docs/business-os/process-improvements.user.html", expectedHtml);
+    await writeFile(tmpDir, "docs/business-os/_data/process-improvements.json", expectedDataJson);
+
+    expect(() => runCheck(tmpDir)).not.toThrow();
+    expect(exitSpy).not.toHaveBeenCalled();
+  });
+
+  it("TC-14: calls process.exit(1) when committed HTML has stale array assignments", async () => {
+    await writeFile(tmpDir, "docs/plans/feature-a/results-review.user.md", IDEA_SOURCE_MD);
+
+    const data = collectProcessImprovements(tmpDir);
+    const expectedDataJson = `${JSON.stringify(data, null, 2)}\n`;
+
+    // Stale HTML — empty arrays, does not reflect the actual idea item
+    await writeFile(tmpDir, "docs/business-os/process-improvements.user.html", HTML_TEMPLATE);
+    await writeFile(tmpDir, "docs/business-os/_data/process-improvements.json", expectedDataJson);
+
+    expect(() => runCheck(tmpDir)).toThrow("process.exit called with 1");
+  });
+
+  it("TC-15: calls process.exit(1) when the committed HTML file does not exist", async () => {
+    await writeFile(tmpDir, "docs/plans/feature-a/results-review.user.md", IDEA_SOURCE_MD);
+
+    const data = collectProcessImprovements(tmpDir);
+    const expectedDataJson = `${JSON.stringify(data, null, 2)}\n`;
+    await writeFile(tmpDir, "docs/business-os/_data/process-improvements.json", expectedDataJson);
+    // No HTML file written — drift should be detected
+
+    expect(() => runCheck(tmpDir)).toThrow("process.exit called with 1");
+  });
+});

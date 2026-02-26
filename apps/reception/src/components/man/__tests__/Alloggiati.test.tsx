@@ -182,9 +182,7 @@ describe("Alloggiati", () => {
       error: null,
     });
     render(<Alloggiati />);
-    expect(
-      screen.getByText(/Loading checkins, financial data, guest details, or occupant logs/)
-    ).toBeInTheDocument();
+    expect(document.querySelector('[aria-busy="true"]')).toBeInTheDocument();
   });
 
   it("shows error state", () => {

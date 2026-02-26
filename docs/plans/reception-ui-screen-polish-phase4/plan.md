@@ -6,7 +6,7 @@ Workstream: Engineering
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
 Last-updated: 2026-02-26
-Build-last-task: TASK-04 (Wave 1 complete)
+Build-last-task: TASK-09 (Wave 2 complete)
 Critique-Round: 2
 Critique-Score: 4.5
 Critique-Verdict: credible
@@ -34,11 +34,11 @@ Phase 1–3 of the reception app UI polish is complete (9 screens, archived 2026
 - [x] TASK-02: Wave 1 — Prime Requests screen polish
 - [x] TASK-03: Wave 1 — Alloggiati screen polish
 - [x] TASK-04: Wave 1 — Doc Insert screen polish
-- [ ] TASK-05: Wave 2 — Reconciliation Workbench screen polish
-- [ ] TASK-06: Wave 2 — Variance Heatmap screen polish
-- [ ] TASK-07: Wave 2 — Menu Performance screen polish
-- [ ] TASK-08: Wave 2 — Ingredient Stock screen polish
-- [ ] TASK-09: Wave 2 — Statistics screen polish
+- [x] TASK-05: Wave 2 — Reconciliation Workbench screen polish
+- [x] TASK-06: Wave 2 — Variance Heatmap screen polish
+- [x] TASK-07: Wave 2 — Menu Performance screen polish
+- [x] TASK-08: Wave 2 — Ingredient Stock screen polish
+- [x] TASK-09: Wave 2 — Statistics screen polish
 - [ ] TASK-10: Wave 3 — Loan Items light polish
 - [ ] TASK-11: Wave 3 — Extension light polish
 - [ ] TASK-12: Wave 3 — Safe Reconciliation light polish
@@ -126,11 +126,11 @@ Phase 1–3 of the reception app UI polish is complete (9 screens, archived 2026
 | TASK-02 | IMPLEMENT | Wave 1 — Prime Requests screen polish | 80% | M | Complete (2026-02-26) | TASK-00 | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-03 | IMPLEMENT | Wave 1 — Alloggiati screen polish | 80% | M | Complete (2026-02-26) | TASK-00 | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-04 | IMPLEMENT | Wave 1 — Doc Insert screen polish | 80% | M | Complete (2026-02-26) | TASK-00 | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
-| TASK-05 | IMPLEMENT | Wave 2 — Reconciliation Workbench screen polish | 75% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
-| TASK-06 | IMPLEMENT | Wave 2 — Variance Heatmap screen polish | 75% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
-| TASK-07 | IMPLEMENT | Wave 2 — Menu Performance screen polish | 75% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
-| TASK-08 | IMPLEMENT | Wave 2 — Ingredient Stock screen polish | 75% | S | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
-| TASK-09 | IMPLEMENT | Wave 2 — Statistics screen polish | 75% | S | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
+| TASK-05 | IMPLEMENT | Wave 2 — Reconciliation Workbench screen polish | 75% | M | Complete (2026-02-26) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
+| TASK-06 | IMPLEMENT | Wave 2 — Variance Heatmap screen polish | 75% | M | Complete (2026-02-26) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
+| TASK-07 | IMPLEMENT | Wave 2 — Menu Performance screen polish | 75% | M | Complete (2026-02-26) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
+| TASK-08 | IMPLEMENT | Wave 2 — Ingredient Stock screen polish | 75% | S | Complete (2026-02-26) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
+| TASK-09 | IMPLEMENT | Wave 2 — Statistics screen polish | 75% | S | Complete (2026-02-26) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
 | TASK-10 | IMPLEMENT | Wave 3 — Loan Items light polish | 60% | S | Pending | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
 | TASK-11 | IMPLEMENT | Wave 3 — Extension light polish | 65% | M | Pending | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
 | TASK-12 | IMPLEMENT | Wave 3 — Safe Reconciliation light polish | 60% | S | Pending | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
@@ -457,7 +457,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/till/ReconciliationWorkbench.tsx`; `[readonly] apps/reception/src/app/reconciliation-workbench/page.tsx`
 - **Depends on:** TASK-01, TASK-02, TASK-03, TASK-04
 - **Blocks:** TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16
@@ -504,6 +504,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None: visual-only change
 - **Notes / references:**
   - CRITICAL: PageShell added inside ReconciliationWorkbench.tsx component return, NOT in page.tsx. This preserves TillDataProvider context for all child components.
+- **Build evidence (2026-02-26):**
+  - `PageShell title="Reconciliation Workbench"` added as root of `ReconciliationWorkbenchContent` (inner memoized component); `h2 text-2xl font-semibold` removed
+  - Content wrapped in `bg-surface rounded-xl shadow-lg p-6` card
+  - PmsPostingForm inputs/select/button: `rounded` → `rounded-lg`; TerminalBatchForm inputs/button: `rounded` → `rounded-lg` (6 instances total)
+  - `TillDataProvider` wrapper in outer `ReconciliationWorkbench` component preserved unchanged
+  - TC-01–TC-05: all tests pass; typecheck clean; ESLint clean; zero raw colors; zero bare `rounded`
+  - Commit: 4b777cacab
 
 ---
 
@@ -514,7 +521,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/reports/VarianceHeatMap.tsx`
 - **Depends on:** TASK-01, TASK-02, TASK-03, TASK-04
 - **Blocks:** TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16
@@ -555,6 +562,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: Per-screen commit; no feature flag
   - Rollback: `git revert` the VarianceHeatMap.tsx commit
 - **Documentation impact:** None: visual-only change
+- **Build evidence (2026-02-26):**
+  - `PageShell title="Variance Heatmap"` added replacing bare `div.space-y-6` root
+  - Loading early-return: `<p>Loading variance data...</p>` → `<PageShell title="Variance Heatmap"><ReceptionSkeleton rows={4} /></PageShell>`
+  - Error early-return wrapped in PageShell for visual consistency
+  - Thresholds card: `rounded border border-border bg-surface p-4 shadow-sm` → `rounded-xl border border-border bg-surface p-4 shadow-lg`
+  - Cash threshold input: `rounded border` → `rounded-lg border`; keycard threshold input: `rounded border` → `rounded-lg border`
+  - Save button: `rounded bg-primary-main` → `rounded-lg bg-primary-main`
+  - TC-01–TC-04: all tests pass; typecheck clean; ESLint clean; zero raw colors; zero bare `rounded`
+  - Commit: 4b777cacab
 
 ---
 
@@ -610,6 +626,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None beyond inline code comment for Chart.js constraint
 - **Notes / references:**
   - Chart.js HSL constraint is a known limitation of the Chart.js API — color values must be passed as strings, not Tailwind utility classes
+- **Build evidence (2026-02-26):**
+  - `PageShell title="Menu Performance"` added replacing `div.space-y-8.p-4.bg-surface.rounded.shadow` root
+  - `h1 text-2xl font-semibold` removed (replaced by PageShell accent-bar heading with font-heading)
+  - Content wrapped in `bg-surface rounded-xl shadow-lg p-6 space-y-8` card
+  - Loading early-return: `<p>Loading transaction data…</p>` → `<PageShell title="Menu Performance"><ReceptionSkeleton rows={4} /></PageShell>`
+  - Error early-return: `<p className="text-danger-fg">` → `<PageShell title="Menu Performance"><p className="text-error-main">` (token fix: `text-danger-fg` → `text-error-main`)
+  - Chart.js HSL dataset strings on lines 158, 170–171, 181–182 left unchanged
+  - TC-01–TC-04: all tests pass; typecheck clean; ESLint clean; zero raw colors; zero bare `rounded`
+  - Commit: 4b777cacab
 
 ---
 
@@ -620,7 +645,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/inventory/IngredientStock.tsx`
 - **Depends on:** TASK-01, TASK-02, TASK-03, TASK-04
 - **Blocks:** TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16
@@ -657,6 +682,16 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: Per-screen commit; no feature flag
   - Rollback: `git revert` the IngredientStock.tsx commit
 - **Documentation impact:** None
+- **Build evidence (2026-02-26):**
+  - `PageShell title="Ingredient Stock"` added replacing `div.p-4`; `h1 text-3xl font-bold` removed (replaced by PageShell accent-bar heading)
+  - Loading early-return: `<div>Loading...</div>` → `<PageShell title="Ingredient Stock"><ReceptionSkeleton rows={3} /></PageShell>`
+  - Error early-return: `<div>Error loading inventory</div>` → `<PageShell title="Ingredient Stock"><p className="text-error-main">Error loading inventory</p></PageShell>`
+  - Content wrapped in `bg-surface rounded-xl shadow-lg p-6 space-y-4` card
+  - Warning banner: `rounded border` → `rounded-lg border`; migrate button: `rounded bg-warning-main` → `rounded-lg bg-warning-main`
+  - Success banner: `rounded border` → `rounded-lg border`; stock-item save button: `rounded` → `rounded-lg`
+  - Test updated: `screen.getByText("Loading...")` → `document.querySelector('[aria-busy="true"]')`
+  - TC-01–TC-04: all tests pass; typecheck clean; ESLint clean; zero raw colors; zero bare `rounded`
+  - Commit: 4b777cacab
 
 ---
 
@@ -667,7 +702,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/stats/Statistics.tsx`
 - **Depends on:** TASK-01, TASK-02, TASK-03, TASK-04
 - **Blocks:** TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16
@@ -703,6 +738,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: Per-screen commit; no feature flag
   - Rollback: `git revert` the Statistics.tsx commit
 - **Documentation impact:** None
+- **Build evidence (2026-02-26):**
+  - `PageShell title="Connection Test"` added replacing `div.p-6.text-center.bg-surface-2.rounded.border.border-border`
+  - `h2 text-2xl font-semibold` removed (replaced by PageShell accent-bar heading via title prop)
+  - Content wrapped in `bg-surface rounded-xl shadow-lg p-6 text-center` card
+  - Test updated: `expect(container).toHaveClass("bg-surface-2")` → `expect(container).toHaveClass("bg-surface")`
+  - TC-01–TC-03: all tests pass; typecheck clean; ESLint clean; zero raw colors; zero bare `rounded`
+  - Commit: 4b777cacab
 
 ---
 

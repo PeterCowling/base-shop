@@ -1,0 +1,15 @@
+name = "xa-uploader"
+main = ".open-next/worker.js"
+compatibility_date = "2025-06-20"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[env.preview]
+name = "xa-uploader-preview"
+
+[env.preview.vars]
+# Operator console: staging env vars
+# Session/auth secrets must be set via wrangler secret put --env preview

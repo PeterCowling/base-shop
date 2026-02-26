@@ -1,0 +1,77 @@
+name: XA Apps CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'apps/xa-b/**'
+      - 'apps/xa-drop-worker/**'
+      - 'apps/xa-uploader/**'
+      - '.github/workflows/xa.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: xa-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup-repo
+
+      - name: Build workspace package dependencies
+        run: pnpm exec turbo run build --filter=@apps/xa-b^... --filter=@apps/xa-drop-worker^... --filter=@apps/xa-uploader^...
+
+      - name: Lint xa-b
+        run: pnpm --filter @apps/xa-b lint
+
+      - name: Lint xa-drop-worker
+        run: pnpm --filter @apps/xa-drop-worker lint
+
+      - name: Lint xa-uploader
+        run: pnpm --filter @apps/xa-uploader lint
+
+      - name: Typecheck xa-b
+        run: pnpm --filter @apps/xa-b typecheck
+
+      - name: Typecheck xa-drop-worker
+        run: pnpm --filter @apps/xa-drop-worker typecheck
+
+      - name: Typecheck xa-uploader
+        run: pnpm --filter @apps/xa-uploader typecheck
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup-repo
+
+      - name: Build workspace package dependencies
+        run: pnpm exec turbo run build --filter=@apps/xa-b^... --filter=@apps/xa-drop-worker^... --filter=@apps/xa-uploader^...
+
+      - name: Test xa-b
+        run: pnpm --filter @apps/xa-b test
+
+      - name: Test xa-drop-worker
+        run: pnpm --filter @apps/xa-drop-worker test
+
+      - name: Test xa-uploader
+        run: pnpm --filter @apps/xa-uploader test

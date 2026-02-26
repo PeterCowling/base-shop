@@ -1541,6 +1541,9 @@ importers:
         specifier: ^3.25.73
         version: 3.25.73
     devDependencies:
+      '@opennextjs/cloudflare':
+        specifier: ^1.16.5
+        version: 1.16.5(encoding@0.1.13)(next@16.1.6(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(wrangler@4.60.0(@cloudflare/workers-types@4.20260123.0))
       '@types/yauzl':
         specifier: ^2.10.3
         version: 2.10.3

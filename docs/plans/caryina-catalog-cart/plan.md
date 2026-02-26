@@ -34,7 +34,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - [x] TASK-06: Admin inventory quantity edit
 - [x] TASK-07: CHECKPOINT — admin workstream verified
 - [x] TASK-08: INVESTIGATE — cart API storage backend approach
-- [ ] TASK-09: CartProvider wrap and /api/cart route handler
+- [x] TASK-09: CartProvider wrap and /api/cart route handler
 - [ ] TASK-10: AddToCartButton and /cart page
 - [ ] TASK-11: Checkout session API route and /success payment verify
 - [ ] TASK-12: Wire /checkout to Stripe redirect; update success and cancelled pages
@@ -111,7 +111,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 | TASK-06 | IMPLEMENT | Admin inventory quantity edit | 80% | S | Complete (2026-02-26) | TASK-04 ✓ | TASK-07 |
 | TASK-07 | CHECKPOINT | Admin workstream verified | 95% | S | Complete (2026-02-26) | TASK-05 ✓, TASK-06 ✓ | TASK-09 |
 | TASK-08 | INVESTIGATE | Cart API storage approach | 85% | S | Complete (2026-02-26) | — | TASK-09 |
-| TASK-09 | IMPLEMENT | CartProvider + /api/cart route | 80% | M | Pending | TASK-01 ✓, TASK-07 ✓, TASK-08 ✓ | TASK-10, TASK-11 |
+| TASK-09 | IMPLEMENT | CartProvider + /api/cart route | 80% | M | Complete (2026-02-26) | TASK-01 ✓, TASK-07 ✓, TASK-08 ✓ | TASK-10, TASK-11 |
 | TASK-10 | IMPLEMENT | AddToCartButton + /cart page | 80% | M | Pending | TASK-09 | — |
 | TASK-11 | IMPLEMENT | Checkout session API + /success verify | 75% | M | Pending | TASK-01, TASK-09 | TASK-12 |
 | TASK-12 | IMPLEMENT | Wire /checkout → Stripe redirect | 80% | S | Pending | TASK-11 | — |
@@ -582,7 +582,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/caryina/src/app/[lang]/product/[slug]/page.tsx`, `apps/caryina/src/components/bar/StickyCheckoutBar.client.tsx`, `apps/caryina/src/components/Header.tsx`, `apps/caryina/src/app/[lang]/cart/page.tsx` (new)
 - **Depends on:** TASK-09
 - **Blocks:** —
@@ -622,6 +622,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
   - Rollback: Revert PDP and StickyCheckoutBar to original link; remove header cart icon; remove `/cart` page.
 - **Documentation impact:** None.
 - **Notes / references:** `packages/platform-core/src/components/shop/AddToCartButton.client.tsx`; `packages/types/src/Cart.ts`.
+- **Build evidence (2026-02-26):** All deliverables created. `CartIcon.client.tsx` new component with badge count. `Header.tsx` swapped Checkout Link for CartIcon. `StickyCheckoutBar.client.tsx` rewritten — props changed from `{priceLabel, checkoutHref}` to `{priceLabel, sku}`, renders AddToCartButton. `product/[slug]/page.tsx` AddToCartButton integrated. `/cart/page.tsx` new client component with qty controls (+/−), Remove, total, "Proceed to payment" Link. TC-02/03/03b/04/empty-state: 5/5 PASS. ESLint clean. `ds/min-tap-size` satisfied (h-11 w-11 buttons).
 
 ---
 
@@ -632,7 +633,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/caryina/src/app/api/checkout-session/route.ts` (new), `apps/caryina/src/app/[lang]/success/page.tsx`
 - **Depends on:** TASK-01, TASK-09
 - **Blocks:** TASK-12
@@ -669,6 +670,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
   - Rollback: Remove `api/checkout-session/route.ts`; revert /success to stub.
 - **Documentation impact:** Confirm `STRIPE_SECRET_KEY` and `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` env vars documented (add to `.env.example` or equivalent).
 - **Notes / references:** `packages/platform-core/src/checkout/createSession.ts`; `packages/stripe/src/index.ts`; `apps/cover-me-pretty/src/api/checkout-session/route.ts`.
+- **Build evidence (2026-02-26):** All deliverables created. `api/checkout-session/route.ts` new POST handler: reads cart from `CART_COOKIE` → `decodeCartCookie` → `getCart`; calls `stripe.checkout.sessions.create` directly with hosted mode (no ui_mode; plan referenced `createCheckoutSession` which uses `ui_mode: "custom"` returning only `clientSecret` — deviation: direct call used to obtain `session.url` for redirect). Returns `{ sessionId, url }`. `/success/page.tsx` rewritten: reads `session_id` searchParam; calls `verifyStripeSession()`; renders paid/unpaid/no-session UI. `verifyStripeSession.ts` extracted to `src/lib/` for testability. TC-01/TC-02/TC-03/TC-04: 4/4 PASS. ESLint clean.
 
 ---
 

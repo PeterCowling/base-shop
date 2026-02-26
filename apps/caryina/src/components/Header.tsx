@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { BrandMark } from "@/components/BrandMark/BrandMark";
+import { CartIcon } from "@/components/CartIcon.client";
 import { ThemeModeSwitch } from "@/components/ThemeModeSwitch";
 
 export function Header({ lang }: { lang: string }) {
@@ -31,12 +32,7 @@ export function Header({ lang }: { lang: string }) {
             Support
           </Link>
           <ThemeModeSwitch />
-          <Link
-            href={`/${lang}/checkout`}
-            className="btn-primary rounded-full px-5 py-2 text-xs font-medium tracking-widest uppercase"
-          >
-            Checkout
-          </Link>
+          <CartIcon lang={lang} />
         </nav>
       </div>
     </header>

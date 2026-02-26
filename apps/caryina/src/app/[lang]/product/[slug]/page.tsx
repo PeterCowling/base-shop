@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { type Locale, LOCALES, resolveLocale } from "@acme/i18n/locales";
+import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
 
 import { ProductGallery } from "@/components/catalog/ProductGallery.client";
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
@@ -100,29 +101,12 @@ export default async function ProductDetailPage({
             <div className="space-y-4">
               <p className="text-xl font-medium">{formatMoney(product.price, currency)}</p>
               <StockBadge stock={product.stock} lowStockThreshold={lowStockThreshold} />
-              {product.stock === 0 ? (
-                <button
-                  type="button"
-                  className="btn-primary block min-h-[44px] w-full cursor-not-allowed rounded-full px-6 py-3 text-center text-sm opacity-50"
-                  disabled
-                  aria-disabled="true"
-                  data-cy="pdp-checkout"
-                >
-                  Out of stock
-                </button>
-              ) : (
-                <Link
-                  href={`/${lang}/checkout?sku=${encodeURIComponent(product.slug)}`}
-                  className="btn-primary block w-full rounded-full px-6 py-3 text-center text-sm"
-                  data-cy="pdp-checkout"
-                >
-                  Continue to checkout
-                </Link>
-              )}
+              <div data-cy="pdp-checkout">
+                <AddToCartButton sku={product} disabled={product.stock === 0} />
+              </div>
               <StickyCheckoutBar
                 priceLabel={formatMoney(product.price, currency)}
-                checkoutHref={`/${lang}/checkout?sku=${encodeURIComponent(product.slug)}`}
-                outOfStock={product.stock === 0}
+                sku={product}
               />
             </div>
 

@@ -1,19 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+
+import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
+import type { SKU } from "@acme/types";
 
 interface StickyCheckoutBarProps {
   priceLabel: string;
-  checkoutHref: string;
-  outOfStock?: boolean;
+  sku: SKU;
 }
 
-export function StickyCheckoutBar({
-  priceLabel,
-  checkoutHref,
-  outOfStock = false,
-}: StickyCheckoutBarProps) {
+export function StickyCheckoutBar({ priceLabel, sku }: StickyCheckoutBarProps) {
   const [visible, setVisible] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -42,23 +39,7 @@ export function StickyCheckoutBar({
       >
         <div className="mx-auto flex max-w-lg items-center justify-between gap-4">
           <p className="text-base font-medium">{priceLabel}</p>
-          {outOfStock ? (
-            <button
-              type="button"
-              className="btn-primary min-h-[44px] cursor-not-allowed rounded-full px-5 py-2.5 text-sm opacity-50"
-              disabled
-              aria-disabled="true"
-            >
-              Out of stock
-            </button>
-          ) : (
-            <Link
-              href={checkoutHref}
-              className="btn-primary rounded-full px-5 py-2.5 text-sm"
-            >
-              Checkout
-            </Link>
-          )}
+          <AddToCartButton sku={sku} disabled={sku.stock === 0} />
         </div>
       </div>
     </>

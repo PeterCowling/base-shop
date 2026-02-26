@@ -83,7 +83,7 @@ const EmailProgress: React.FC<EmailProgressProps> = ({
                   compatibilityMode="no-wrapper"
                   id="filterInput"
                   type="text"
-                  className="w-full border border-primary-light rounded px-3 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main"
+                  className="w-full border border-primary-light rounded-lg px-3 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main"
                   placeholder="Type to filter..."
                   value={filterText}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>

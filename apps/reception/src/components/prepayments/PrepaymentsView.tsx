@@ -100,7 +100,7 @@ function PrepaymentsView({
                   compatibilityMode="no-wrapper"
                   id="filterInput"
                   type="text"
-                  className="w-full border border-border-2 rounded px-3 py-1 font-body"
+                  className="w-full border border-border-2 rounded-lg px-3 py-1 font-body"
                   placeholder="Type to filter..."
                   value={filterText}
                   onChange={(e) => setFilterText(e.target.value)}
@@ -136,7 +136,7 @@ function PrepaymentsView({
 
             {error && (
               <div
-                className="text-error-main font-semibold text-center mt-4 p-3 bg-error-light rounded"
+                className="text-error-main font-semibold text-center mt-4 p-3 bg-error-light rounded-lg"
                 role="alert"
               >
                 Error loading payment data:{" "}

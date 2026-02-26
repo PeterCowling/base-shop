@@ -14,11 +14,19 @@ function LiveInner() {
   const props = { ...ui, ...logic };
 
   if (!props.user || props.user.user_name !== "Pete") {
-    return <p className="p-5 text-error-main">Not authorized.</p>;
+    return (
+      <PageShell title="LIVE SHIFT">
+        <p className="text-error-main">Not authorized.</p>
+      </PageShell>
+    );
   }
 
   if (!props.shiftOpenTime) {
-    return <p className="p-5">No shift is currently open.</p>;
+    return (
+      <PageShell title="LIVE SHIFT">
+        <p className="text-muted-foreground">No shift is currently open.</p>
+      </PageShell>
+    );
   }
 
   return (

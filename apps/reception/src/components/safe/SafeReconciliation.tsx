@@ -107,20 +107,20 @@ function SafeReconciliation(): JSX.Element {
           <div className="flex gap-2">
             <Button
               onClick={() => openForm("reconcile")}
-              className="px-4 py-2 bg-warning-main text-primary-fg rounded hover:bg-warning-dark"
+              className="px-4 py-2 bg-warning-main text-primary-fg rounded-lg hover:bg-warning-dark"
             >
               Reconcile Safe
             </Button>
             <Button
               onClick={() => openForm("deposit")}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
             >
               Bank Deposit
             </Button>
           </div>
           <Button
             onClick={() => openForm("petty")}
-            className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
           >
             Petty Cash
           </Button>

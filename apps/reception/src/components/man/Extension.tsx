@@ -25,6 +25,7 @@ import {
 } from "../../utils/dateUtils";
 import { roundDownTo50Cents } from "../../utils/moneyUtils";
 import { PageShell } from "../common/PageShell";
+import ReceptionSkeleton from "../common/ReceptionSkeleton";
 
 import ExtensionPayModal from "./modals/ExtensionPayModal";
 
@@ -189,6 +190,7 @@ function Extension() {
       const bedCount = getBedCount(room);
       const roomKey = room;
 
+      // TODO: remove debug console.log — not removing here as log is in availability check logic (useMemo + event handler)
       console.log("[Extension] checkAvailability", {
         room: roomKey,
         start,
@@ -304,12 +306,10 @@ function Extension() {
     <>
       <PageShell title="EXTENSIONS">
         <div className="bg-surface rounded-xl shadow-lg p-6">
-          {loading && (
-            <p className="italic text-muted-foreground">Loading extension data...</p>
-          )}
+          {loading && <ReceptionSkeleton rows={3} />}
 
           {!loading && hasError && (
-            <p className="text-danger-fg">Error loading data: {String(error)}</p>
+            <p className="text-error-main">Error loading data: {String(error)}</p>
           )}
 
           {!loading && !hasError && rows.length === 0 && (
@@ -331,7 +331,7 @@ function Extension() {
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
                   placeholder="Search by guest name, booking, or room"
-                  className="w-full sm:w-80 border rounded px-3 py-2"
+                  className="w-full sm:w-80 border rounded-lg px-3 py-2"
                 />
               </div>
 
@@ -399,7 +399,7 @@ function Extension() {
                                   [r.occupantId]: parseInt(e.target.value, 10),
                                 }))
                               }
-                              className="border rounded px-2 py-1 w-20"
+                              className="border rounded-lg px-2 py-1 w-20"
                             />
                           </TableCell>
                           <TableCell className="p-2 border-b text-center">

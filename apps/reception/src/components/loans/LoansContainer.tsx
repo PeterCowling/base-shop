@@ -14,6 +14,7 @@ import { getItalyIsoString, getLocalToday } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 import { showToast } from "../../utils/toastUtils";
 import { PageShell } from "../common/PageShell";
+import ReceptionSkeleton from "../common/ReceptionSkeleton";
 
 import { LoanFilters } from "./LoanFilters";
 import { LoansTable } from "./LoansTable";
@@ -221,11 +222,7 @@ function LoansContainer({ username }: { username: string }): ReactElement {
           guestFilter={guestFilter}
           onGuestFilterChange={setGuestFilter}
         />
-        {loading && (
-          <div className="italic text-muted-foreground">
-            Loading loan information...
-          </div>
-        )}
+        {loading && <ReceptionSkeleton rows={3} />}
         {!loading && guests?.length === 0 && (
           <div className="italic text-muted-foreground">
             No guests found for this date.

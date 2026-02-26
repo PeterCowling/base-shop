@@ -681,7 +681,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/caryina/src/app/[lang]/checkout/page.tsx`, `apps/caryina/src/app/[lang]/cancelled/page.tsx`
 - **Depends on:** TASK-11
 - **Blocks:** —
@@ -713,6 +713,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
   - Rollback: Revert `/checkout/page.tsx` to stub Link version.
 - **Documentation impact:** None.
 - **Notes / references:** `apps/caryina/src/app/[lang]/checkout/page.tsx`; `apps/caryina/src/app/[lang]/cancelled/page.tsx`.
+- **Build evidence (2026-02-26):** `CheckoutClient.client.tsx` new client component: useCart() + cart summary + "Pay now" button → POST /api/checkout-session → window.location.href redirect. `checkout/page.tsx` simplified to metadata + `<CheckoutClient />`. `cancelled/page.tsx` updated: "Payment cancelled" heading + "Return to cart" link to `/[lang]/cart`. TC-01 (fetch+redirect) PASS. Error state and empty cart tests PASS.
 
 ---
 

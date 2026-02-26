@@ -1,0 +1,13 @@
+{
+  "schema_version": "completed-ideas.v1",
+  "entries": [
+    {
+      "idea_key": "a8cc677f63b4af7ba37b1b47a163e7f32d62af6c",
+      "title": "~~Add view_item_list assertions to the Playwright smoke test~~",
+      "source_path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md",
+      "plan_slug": "brikette-smoke-view-item-list",
+      "completed_at": "2026-02-26",
+      "output_link": "docs/plans/_archive/brikette-smoke-view-item-list/"
+    }
+  ]
+}

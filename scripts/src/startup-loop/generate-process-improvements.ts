@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
@@ -11,6 +12,7 @@ import {
 
 const PROCESS_HTML_RELATIVE_PATH = "docs/business-os/process-improvements.user.html";
 const PROCESS_DATA_RELATIVE_PATH = "docs/business-os/_data/process-improvements.json";
+export const COMPLETED_IDEAS_RELATIVE_PATH = "docs/business-os/_data/completed-ideas.json";
 const PLANS_ROOT = "docs/plans";
 const MISSING_VALUE = "—";
 
@@ -25,6 +27,21 @@ export interface ProcessImprovementItem {
   source: string;
   date: string;
   path: string;
+  idea_key?: string;
+}
+
+export interface CompletedIdeaEntry {
+  idea_key: string;
+  title: string;
+  source_path: string;
+  plan_slug: string;
+  completed_at: string;
+  output_link?: string;
+}
+
+export interface CompletedIdeasRegistry {
+  schema_version: "completed-ideas.v1";
+  entries: CompletedIdeaEntry[];
 }
 
 interface ReflectionDebtLedgerItem {
@@ -72,6 +89,10 @@ function sanitizeText(input: string): string {
 function capitalizeFirst(s: string): string {
   if (!s) return s;
   return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function stripHtmlComments(text: string): string {
+  return text.replace(/<!--[\s\S]*?-->/g, "");
 }
 
 const SECTION_PLAIN_NAMES: Readonly<Record<string, string>> = {
@@ -259,7 +280,8 @@ function parseIdeaCandidate(item: string): {
       (segments[0] ?? "Idea candidate")
         .replace(/^idea:\s*/i, "")
         .replace(/^trigger observation:\s*/i, "")
-        .replace(/^suggested next action:\s*/i, ""),
+        .replace(/^suggested next action:\s*/i, "")
+        .replace(/^Category\s+\d+\s*[—\-]+\s*[^:]+:\s*/i, ""),
     ),
   );
   let body = item
@@ -332,7 +354,77 @@ export interface ProcessImprovementsData {
   pendingReviewItems: ProcessImprovementItem[];
 }
 
+/**
+ * Derive a stable, deterministic key for an idea based on its source file path and title.
+ * The key is the SHA-1 hash of `${sourcePath}::${title}`.
+ * This function has no filesystem side effects and is safe to call in tests and check mode.
+ */
+export function deriveIdeaKey(sourcePath: string, title: string): string {
+  return createHash("sha1").update(`${sourcePath}::${title}`).digest("hex");
+}
+
+/**
+ * Load the completed-ideas registry from disk.
+ * Returns an empty Set if the file does not exist or cannot be parsed —
+ * preserving existing behavior for repos that have not yet created the registry.
+ */
+export function loadCompletedIdeasRegistry(repoRoot: string): Set<string> {
+  const filePath = path.join(repoRoot, COMPLETED_IDEAS_RELATIVE_PATH);
+  if (!existsSync(filePath)) {
+    return new Set<string>();
+  }
+  try {
+    const raw = readFileSync(filePath, "utf8");
+    const parsed = JSON.parse(raw) as CompletedIdeasRegistry;
+    if (!Array.isArray(parsed.entries)) {
+      return new Set<string>();
+    }
+    return new Set<string>(parsed.entries.map((e) => e.idea_key));
+  } catch {
+    return new Set<string>();
+  }
+}
+
+/**
+ * Append a completed idea entry to the registry file.
+ * Derives `idea_key` from `entry.source_path` and `entry.title`.
+ * Idempotent: if an entry with the same `idea_key` already exists, does nothing.
+ * Creates the registry file (and its parent directory) if it does not yet exist.
+ */
+export function appendCompletedIdea(
+  repoRoot: string,
+  entry: Omit<CompletedIdeaEntry, "idea_key">,
+): void {
+  const ideaKey = deriveIdeaKey(entry.source_path, entry.title);
+  const filePath = path.join(repoRoot, COMPLETED_IDEAS_RELATIVE_PATH);
+
+  let registry: CompletedIdeasRegistry;
+  if (existsSync(filePath)) {
+    try {
+      const raw = readFileSync(filePath, "utf8");
+      registry = JSON.parse(raw) as CompletedIdeasRegistry;
+      if (!Array.isArray(registry.entries)) {
+        registry.entries = [];
+      }
+    } catch {
+      registry = { schema_version: "completed-ideas.v1", entries: [] };
+    }
+  } else {
+    registry = { schema_version: "completed-ideas.v1", entries: [] };
+  }
+
+  // Idempotency check
+  if (registry.entries.some((e) => e.idea_key === ideaKey)) {
+    return;
+  }
+
+  registry.entries.push({ ...entry, idea_key: ideaKey });
+  writeFileAtomic(filePath, `${JSON.stringify(registry, null, 2)}\n`);
+}
+
 export function collectProcessImprovements(repoRoot: string): ProcessImprovementsData {
+  const completedKeys = loadCompletedIdeasRegistry(repoRoot);
+
   const absPlansRoot = path.join(repoRoot, PLANS_ROOT);
   const allPaths: string[] = [];
   try {
@@ -372,7 +464,19 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
       continue;
     }
 
-    const ideasRaw = extractBulletItems(ideasSection).filter((item) => !/^none\.?$/i.test(item));
+    const ideasRaw = extractBulletItems(stripHtmlComments(ideasSection))
+      .filter((item) => {
+        if (/^~~.+~~(\s*\|.*)?$/.test(item.trim())) {
+          process.stderr.write(
+            `[generate-process-improvements] info: suppressing struck-through idea in ${sourcePath}: "${item.trim().slice(0, 60)}..."\n`,
+          );
+          return false;
+        }
+        return true;
+      })
+      .filter(
+        (item) => !/^none\.?$/i.test(item),
+      );
     if (ideasRaw.length === 0) {
       continue;
     }
@@ -384,6 +488,12 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
 
     for (const ideaRaw of ideasRaw) {
       const idea = parseIdeaCandidate(ideaRaw);
+      const ideaKey = deriveIdeaKey(sourcePath, idea.title);
+
+      if (completedKeys.has(ideaKey)) {
+        continue;
+      }
+
       if (idea.title.length > 100) {
         process.stderr.write(
           `[generate-process-improvements] warn: idea title exceeds 100 chars in ${sourcePath} — shorten at source: "${idea.title.slice(0, 60)}..."\n`,
@@ -398,6 +508,7 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
         source: "results-review.user.md",
         date: toIsoDate(date),
         path: sourcePath,
+        idea_key: ideaKey,
       });
     }
   }
@@ -492,6 +603,17 @@ function replaceArrayAssignment(html: string, variableName: string, items: Proce
   return `${html.slice(0, start)}${assignment}${html.slice(close + 2)}`;
 }
 
+function replaceGenTs(html: string, genTs: string): string {
+  const pattern = /var GEN_TS = "[^"]*";/;
+  if (!pattern.test(html)) {
+    process.stderr.write(
+      "[generate-process-improvements] warn: GEN_TS placeholder not found in HTML — skipping timestamp embed\n",
+    );
+    return html;
+  }
+  return html.replace(pattern, `var GEN_TS = "${genTs}";`);
+}
+
 function updateLastClearedFooter(html: string, dateIso: string): string {
   const pattern = /Last cleared:\s*[^<]+/;
   if (!pattern.test(html)) {
@@ -507,12 +629,16 @@ export function updateProcessImprovementsHtml(
   html: string,
   data: ProcessImprovementsData,
   dateIso: string,
+  genTs?: string,
 ): string {
   let next = html;
   next = replaceArrayAssignment(next, "IDEA_ITEMS", data.ideaItems);
   next = replaceArrayAssignment(next, "RISK_ITEMS", data.riskItems);
   next = replaceArrayAssignment(next, "PENDING_REVIEW_ITEMS", data.pendingReviewItems);
   next = updateLastClearedFooter(next, dateIso);
+  if (genTs !== undefined) {
+    next = replaceGenTs(next, genTs);
+  }
   return next;
 }
 
@@ -546,6 +672,13 @@ function buildArrayAssignmentBlock(variableName: string, items: ProcessImproveme
  * Check mode: compare only the three array variable assignment blocks in the committed HTML
  * (avoids false positives from the date-stamp footer) plus the full JSON data file.
  * Exits 0 if up-to-date, exits 1 if drift detected.
+ *
+ * The drift check works by re-running `collectProcessImprovements` (which reads
+ * `completed-ideas.json`) and comparing the fresh output against committed files.
+ * Any change to the registry — whether a new entry is appended or an entry is removed —
+ * will cause `collectProcessImprovements` to produce different `ideaItems`, which the
+ * drift check will detect here. No modification to this function is required to cover
+ * registry-driven filtering.
  */
 export function runCheck(repoRoot: string): void {
   const htmlPath = path.join(repoRoot, PROCESS_HTML_RELATIVE_PATH);
@@ -618,11 +751,13 @@ function runCli(): void {
   const repoRoot = path.resolve(process.cwd(), "..");
   const htmlPath = path.join(repoRoot, PROCESS_HTML_RELATIVE_PATH);
   const dataPath = path.join(repoRoot, PROCESS_DATA_RELATIVE_PATH);
-  const dateIso = new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const dateIso = now.toISOString().slice(0, 10);
+  const genTs = now.toISOString();
 
   const data = collectProcessImprovements(repoRoot);
   const html = readFileSync(htmlPath, "utf8");
-  const updatedHtml = updateProcessImprovementsHtml(html, data, dateIso);
+  const updatedHtml = updateProcessImprovementsHtml(html, data, dateIso, genTs);
 
   writeFileAtomic(htmlPath, updatedHtml);
   mkdirSync(path.dirname(dataPath), { recursive: true });

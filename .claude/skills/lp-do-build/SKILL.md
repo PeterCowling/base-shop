@@ -157,6 +157,10 @@ When all executable tasks are complete:
    - New loop process — missing stage, gate, or feedback path in the startup loop
    - AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script
    Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content). Regenerate process-improvements: `pnpm --filter scripts startup-loop:generate-process-improvements`.
+
+   After regenerating, for each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately.
+
+   Only mark ideas as complete if they were directly delivered by this build. Ideas that are deferred, out of scope, or earmarked for a future plan remain in the report.
 3. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
 
 ## CHECKPOINT Contract

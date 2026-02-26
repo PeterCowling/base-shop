@@ -107,6 +107,14 @@
       "notes": "Brikette i18n preload hook dependency exception for stable namespace arrays used by page components."
     },
     "CAR-1432": {},
+    "CARYINA-AUTH-01": {
+      "allow": [
+        "apps/caryina/src/app/admin/api/products/route.ts",
+        "apps/caryina/src/lib/adminAuth.ts"
+      ],
+      "expires": "2027-12-31",
+      "notes": "Dynamic require used only in jsdom test environment (no globalThis.crypto.subtle); dead path in Worker/Node 18+."
+    },
     "CF-1001": {},
     "CF-1002": {},
     "CF-1003": {},

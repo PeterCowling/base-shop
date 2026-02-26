@@ -16,6 +16,13 @@ artifact: results-review
 - OR `No standing updates: <reason>`
 
 ## New Idea Candidates
+<!-- Scan for signals in these five categories. For each, cite a "Trigger observation" from this build. Use "None." if no evidence found for any category.
+  1. New standing data source — external feed, API, or dataset suitable for Layer A standing intelligence
+  2. New open-source package — library to replace custom code or add capability
+  3. New skill — recurring agent workflow ready to be codified as a named skill
+  4. New loop process — missing stage, gate, or feedback path in the startup loop
+  5. AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script
+-->
 - <Idea summary — ≤80 chars, plain language, no prefix> | Trigger observation: <one-line evidence> | Suggested next action: <create card | spike | defer>
 - OR `None.`
 

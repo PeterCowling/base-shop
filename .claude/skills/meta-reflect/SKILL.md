@@ -61,6 +61,16 @@ Prompt the user to run reflection when any of these occurred:
 - The user asked for the same clarification more than once across sessions.
 - Repo conventions were unclear and had to be inferred from history.
 
+### Platform evolution signals
+
+Prompt the user to run reflection when any of the following were spotted during the session:
+
+- A new external data source or API emerged that could become Layer A standing intelligence.
+- A build used a pattern that an existing open-source package could replace or improve.
+- A recurring agent workflow was executed that would benefit from codification as a named skill.
+- A missing startup loop stage, gate, or feedback path was identified.
+- A step currently done by LLM reasoning could be replaced with a deterministic script, saving tokens each cycle.
+
 ### Do not trigger
 
 - Routine work that proceeded smoothly with no notable friction

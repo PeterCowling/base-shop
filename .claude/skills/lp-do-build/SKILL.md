@@ -150,7 +150,13 @@ If confidence regresses below task threshold during execution:
 When all executable tasks are complete:
 
 1. Produce `build-record.user.md` per `docs/business-os/startup-loop/loop-output-contracts.md`.
-2. Auto-draft `results-review.user.md` using `docs/plans/_templates/results-review.user.md`; pre-fill all agent-fillable sections (Observed Outcomes stub, Standing Updates, New Idea Candidates, Standing Expansion, Intended Outcome Check). Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content). Regenerate process-improvements: `pnpm --filter scripts startup-loop:generate-process-improvements`.
+2. Auto-draft `results-review.user.md` using `docs/plans/_templates/results-review.user.md`; pre-fill all agent-fillable sections (Observed Outcomes stub, Standing Updates, New Idea Candidates, Standing Expansion, Intended Outcome Check). When pre-filling `## New Idea Candidates`, scan build context for signals in each category below — write `None` if no evidence found for that category:
+   - New standing data source — external feed, API, or dataset suitable for Layer A standing intelligence
+   - New open-source package — library to replace custom code or add capability
+   - New skill — recurring agent workflow ready to be codified as a named skill
+   - New loop process — missing stage, gate, or feedback path in the startup loop
+   - AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script
+   Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content). Regenerate process-improvements: `pnpm --filter scripts startup-loop:generate-process-improvements`.
 3. Invoke `/ops-ship` to push all committed task work. Do not watch CI.
 4. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
 

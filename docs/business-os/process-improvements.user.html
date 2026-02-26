@@ -253,6 +253,36 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Automate rounded → rounded-lg lint rule to prevent recurrence",
+      "body": "12+ bare rounded instances found across 7 screens in this plan; same violations were found in Phase 1–3; no lint rule currently prevents reintroduction",
+      "suggested_action": "spike (ESLint custom rule or Tailwind lint plugin)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:46:43.788Z",
+      "path": "docs/plans/reception-ui-screen-polish-phase4/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Extension.tsx debug console.log removal",
+      "body": "4 debug console.log calls flagged with TODO comments in Extension.tsx during TASK-11; removal deferred as logic-entangled per non-goal",
+      "suggested_action": "create card (code quality, TASK-11 already has TODO markers in-place)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:46:43.788Z",
+      "path": "docs/plans/reception-ui-screen-polish-phase4/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Sweep PaymentsView.test.tsx to use data-cy attribute",
+      "body": "pre-existing test failure discovered during Wave 3; root cause is testIdAttribute: \"data-cy\" jest config vs data-testid in test mock — a one-line fix in the test file",
+      "suggested_action": "create card (quick fix, low effort)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:46:43.788Z",
+      "path": "docs/plans/reception-ui-screen-polish-phase4/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Automate periodic smoke test runs against production (e.g. weekly cron) so GA4 event regressions are caught without manual operator invocation",
       "body": "smoke test is manual-only; value of the assertion is bounded by run frequency",
       "suggested_action": "defer",

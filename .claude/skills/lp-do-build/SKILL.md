@@ -157,8 +157,7 @@ When all executable tasks are complete:
    - New loop process — missing stage, gate, or feedback path in the startup loop
    - AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script
    Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content). Regenerate process-improvements: `pnpm --filter scripts startup-loop:generate-process-improvements`.
-3. Invoke `/ops-ship` to push all committed task work. Do not watch CI.
-4. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
+3. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
 
 ## CHECKPOINT Contract
 

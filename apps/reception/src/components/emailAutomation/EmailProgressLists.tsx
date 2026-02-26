@@ -204,7 +204,7 @@ function ActivityCodeSection({
       >
         <div
           ref={containerRef}
-          className="mb-8 w-full bg-surface border rounded"
+          className="mb-8 w-full bg-surface border rounded-lg"
         >
           <div className="p-4 bg-primary-main text-primary-fg font-heading text-lg font-bold uppercase border-b border-primary-main">
             {label} ({list.length})
@@ -228,7 +228,7 @@ function ActivityCodeSection({
                 >
                   <li
                     ref={nodeRef}
-                    className="instant-move my-4 p-4 rounded bg-surface shadow-sm flex justify-between items-center"
+                    className="instant-move my-4 p-4 rounded-lg bg-surface shadow-sm flex justify-between items-center"
                   >
                     <div className="flex items-center gap-4">
                       {item.hoursElapsed != null && (

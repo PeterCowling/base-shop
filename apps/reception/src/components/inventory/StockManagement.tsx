@@ -494,7 +494,7 @@ function StockManagement() {
       {(missingRecipeItems.missingItems.length > 0 ||
         missingRecipeItems.missingInventory.length > 0 ||
         legacyRecipes.length > 0) && (
-        <section className="border border-warning-main rounded p-4 bg-warning-light/10">
+        <section className="border border-warning-main rounded-lg p-4 bg-warning-light/10">
           <h2 className="text-xl font-semibold mb-2 text-warning-main">
             Recipe Coverage Warnings
           </h2>
@@ -518,7 +518,7 @@ function StockManagement() {
               </p>
               <Button
                 type="button"
-                className="px-3 py-1 rounded bg-warning-main text-primary-fg hover:bg-warning-dark"
+                className="px-3 py-1 rounded-lg bg-warning-main text-primary-fg hover:bg-warning-dark"
                 onClick={handleMigrateLegacyRecipes}
               >
                 Migrate Legacy Recipes
@@ -528,7 +528,7 @@ function StockManagement() {
         </section>
       )}
 
-      <section className="border border-border rounded p-4 ">
+      <section className="border border-border rounded-lg p-4 ">
         <h2 className="text-xl font-semibold mb-3">Add Inventory Item</h2>
         <div className="grid gap-3 md:grid-cols-5">
           <input
@@ -586,7 +586,7 @@ function StockManagement() {
         <Button
           type="button"
           onClick={handleAddItem}
-          className="mt-3 inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+          className="mt-3 inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
         >
           Add Item
         </Button>
@@ -721,7 +721,7 @@ function StockManagement() {
                         <Button
                           type="button"
                           onClick={() => handleRecordAction(item.id ?? "")}
-                          className="inline-flex min-h-11 min-w-11 items-center justify-center px-3 py-1 rounded bg-primary-main text-primary-fg hover:bg-primary-dark"
+                          className="inline-flex min-h-11 min-w-11 items-center justify-center px-3 py-1 rounded-lg bg-primary-main text-primary-fg hover:bg-primary-dark"
                         >
                           Record
                         </Button>
@@ -735,7 +735,7 @@ function StockManagement() {
         )}
       </section>
 
-      <section className="border border-border rounded p-4 ">
+      <section className="border border-border rounded-lg p-4 ">
         <h2 className="text-xl font-semibold mb-3">Alerts</h2>
         {lowStockItems.length === 0 ? (
           <p className="text-sm text-muted-foreground">
@@ -769,27 +769,27 @@ function StockManagement() {
         </div>
       </section>
 
-      <section className="border border-border rounded p-4 ">
+      <section className="border border-border rounded-lg p-4 ">
         <h2 className="text-xl font-semibold mb-3">Exports</h2>
         <div className="flex flex-wrap gap-2">
           <Button
             type="button"
             onClick={handleExportLedger}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
           >
             Export Ledger CSV
           </Button>
           <Button
             type="button"
             onClick={handleExportVariance}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
           >
             Export Variance CSV
           </Button>
         </div>
       </section>
 
-      <section className="border border-border rounded p-4 ">
+      <section className="border border-border rounded-lg p-4 ">
         <h2 className="text-xl font-semibold mb-3">Count Variance Report</h2>
         {countEntries.length === 0 ? (
           <p className="text-sm text-muted-foreground">

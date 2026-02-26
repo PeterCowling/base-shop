@@ -116,7 +116,7 @@ export default function DateSelector({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded`,
+                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded-lg`,
                 today: "border-warning-border",
                 selected: "bg-warning text-primary-fg",
                 chevron: `${defaultNames.chevron} fill-warning`,

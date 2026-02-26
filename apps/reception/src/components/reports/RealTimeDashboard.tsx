@@ -133,16 +133,16 @@ export default function RealTimeDashboard(): JSX.Element {
     <PageShell title="REAL TIME DASHBOARD">
       <div className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-surface rounded shadow-lg p-4">
+          <div className="bg-surface rounded-lg shadow-lg p-4">
             <h2 className="text-xl font-semibold mb-2">Sales Totals</h2>
             <Bar data={salesChartData} options={{ responsive: true }} />
           </div>
-          <div className="bg-surface rounded shadow-lg p-4">
+          <div className="bg-surface rounded-lg shadow-lg p-4">
             <h2 className="text-xl font-semibold mb-2">Tender Mix</h2>
             <Pie data={tenderChartData} />
           </div>
         </div>
-        <div className="bg-surface rounded shadow-lg p-4">
+        <div className="bg-surface rounded-lg shadow-lg p-4">
           <h2 className="text-xl font-semibold mb-2">Current Variances</h2>
           <Line data={varianceChartData} options={{ responsive: true }} />
         </div>

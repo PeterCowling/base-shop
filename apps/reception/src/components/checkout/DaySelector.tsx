@@ -45,7 +45,7 @@ function DateSelector({
         <Button
           key={day}
           className={`
-            px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors
+            px-4 py-2 border rounded-lg text-sm font-medium w-100px text-center transition-colors
             ${
               isSelected
                 ? "bg-primary-main text-primary-fg border-primary-main"
@@ -118,7 +118,7 @@ function DateSelector({
       <div className="relative">
         <Button
           ref={toggleRef}
-          className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
+          className="px-3 py-2 border rounded-lg focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate || "Select a date"}
@@ -126,7 +126,7 @@ function DateSelector({
         {isCalendarOpen && (
           <div
             ref={calendarRef}
-            className="absolute z-50 mt-2 bg-surface shadow-lg rounded p-5"
+            className="absolute z-50 mt-2 bg-surface shadow-lg rounded-lg p-5"
             style={{ top: "100%", right: 0 }}
           >
             <DayPicker
@@ -158,7 +158,7 @@ function DateSelector({
 
   // The final layout, combining quick selectors and the optional calendar.
   return (
-    <div className="relative pb-5 bg-surface-2 rounded border border-border-2">
+    <div className="relative pb-5 bg-surface-2 rounded-lg border border-border-2">
       <Inline wrap={false} gap={2}>
         {daySelectors}
         {toggleAndCalendar}

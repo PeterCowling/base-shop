@@ -18,10 +18,10 @@ jest.mock("../BookingPaymentsLists", () => {
       );
       return (
         <div>
-          <div data-testid="code21-count">{code21List.length}</div>
-          <div data-testid="code5-count">{code5List.length}</div>
-          <div data-testid="code6-count">{code6List.length}</div>
-          <div data-testid="summary-total">{total}</div>
+          <div data-cy="code21-count">{code21List.length}</div>
+          <div data-cy="code5-count">{code5List.length}</div>
+          <div data-cy="code6-count">{code6List.length}</div>
+          <div data-cy="summary-total">{total}</div>
         </div>
       );
     },

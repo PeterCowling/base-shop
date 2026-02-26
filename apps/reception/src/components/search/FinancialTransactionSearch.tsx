@@ -59,7 +59,7 @@ function FinancialTransactionSearch(): JSX.Element {
             type="number"
             value={filters.amount}
             onChange={(e) => handleChange("amount", e.target.value)}
-            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
           />
         </div>
 
@@ -72,7 +72,7 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.itemCategory}
             onChange={(e) => handleChange("itemCategory", e.target.value)}
-            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
           />
         </div>
 
@@ -85,7 +85,7 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.userName}
             onChange={(e) => handleChange("userName", e.target.value)}
-            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
           />
         </div>
 
@@ -98,7 +98,7 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.bookingRef}
             onChange={(e) => handleChange("bookingRef", e.target.value)}
-            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
           />
         </div>
 
@@ -111,7 +111,7 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.shiftId}
             onChange={(e) => handleChange("shiftId", e.target.value)}
-            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
           />
         </div>
 
@@ -124,7 +124,7 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.sourceTxnId}
             onChange={(e) => handleChange("sourceTxnId", e.target.value)}
-            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
           />
         </div>
 
@@ -137,13 +137,13 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.reason}
             onChange={(e) => handleChange("reason", e.target.value)}
-            className="border border-border-2 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
           />
         </div>
 
         <Button
           onClick={handleSearch}
-          className="px-4 py-1 bg-primary-main text-primary-fg rounded hover:bg-primary-dark transition-colors"
+          className="px-4 py-1 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark transition-colors"
         >
           Search
         </Button>
@@ -155,13 +155,13 @@ function FinancialTransactionSearch(): JSX.Element {
       {loading && <div className="text-muted-foreground">Loading data ...</div>}
 
       {searchTriggered && !loading && filteredTransactions.length === 0 && (
-        <div className="bg-surface border border-border-2 rounded p-4 text-center italic text-muted-foreground">
+        <div className="bg-surface border border-border-2 rounded-lg p-4 text-center italic text-muted-foreground">
           No matching results.
         </div>
       )}
 
       {filteredTransactions.length > 0 && (
-        <div className="overflow-x-auto w-full bg-surface border border-border-2 rounded shadow">
+        <div className="overflow-x-auto w-full bg-surface border border-border-2 rounded-lg shadow">
           <Table className="table-fixed w-full border-collapse">
             <TableHeader className="bg-surface-2 sticky top-0">
               <TableRow>

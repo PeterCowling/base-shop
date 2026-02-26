@@ -25,7 +25,7 @@ const CheckInDateChip: React.FC<CheckInDateChipProps> = ({ checkInDate }) => {
 
   return (
     <span
-      className={`inline-flex w-[140px] items-center justify-center px-4 py-2 text-sm font-semibold rounded ${chipStyle}`}
+      className={`inline-flex w-[140px] items-center justify-center px-4 py-2 text-sm font-semibold rounded-lg ${chipStyle}`}
     >
       {formattedCheckInDate}
     </span>

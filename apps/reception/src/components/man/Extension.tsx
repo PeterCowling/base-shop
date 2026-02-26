@@ -190,28 +190,15 @@ function Extension() {
       const bedCount = getBedCount(room);
       const roomKey = room;
 
-      // TODO: remove debug console.log — not removing here as log is in availability check logic (useMemo + event handler)
-      console.log("[Extension] checkAvailability", {
-        room: roomKey,
-        start,
-        nights,
-      });
-
       const startDate = parseLocalDate(start) || new Date(start);
       const checkOut = formatDate(addDays(startDate, nights));
       for (const date of computeNightsRange(start, checkOut)) {
         const occList = occupancyMap[date]?.[roomKey] ?? [];
-        console.log("[Extension] date", date, "occList", occList);
 
         if (occList.length >= bedCount) {
-          console.log(
-            `[Extension] room unavailable - occupant(s) ${occList.join(", ")} on ${date}`
-          );
           return false;
         }
       }
-
-      console.log("[Extension] room available");
 
       return true;
     },
@@ -226,12 +213,6 @@ function Extension() {
         row.checkOutDate,
         nights
       );
-      console.log("[Extension] availability", {
-        occupantId: row.occupantId,
-        room: row.roomNumber,
-        nights,
-        result,
-      });
       map[row.occupantId] = result;
     });
     return map;

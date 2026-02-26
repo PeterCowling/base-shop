@@ -79,7 +79,7 @@ function CurrentPageIndicatorComponent({ pathname }: CurrentPageIndicatorProps) 
         <routeInfo.icon size={16} />
         <span>{routeInfo.label}</span>
         {routeInfo.shortcut && (
-          <kbd className="ms-1 rounded bg-surface-3 px-1.5 py-0.5 text-ops-micro font-mono text-muted-foreground">
+          <kbd className="ms-1 rounded-lg bg-surface-3 px-1.5 py-0.5 text-ops-micro font-mono text-muted-foreground">
             {routeInfo.shortcut}
           </kbd>
         )}

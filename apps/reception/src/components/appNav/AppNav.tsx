@@ -241,7 +241,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
       {/* Keyboard shortcut hint (only shown when nav is closed) */}
       {!isOpen && (
         <div className="fixed bottom-4 left-4 z-30 rounded-lg bg-surface/90 px-3 py-1.5 text-xs text-primary-fg opacity-50 backdrop-blur-sm">
-          <kbd className="rounded bg-surface-3 px-1.5 py-0.5 font-mono">
+          <kbd className="rounded-lg bg-surface-3 px-1.5 py-0.5 font-mono">
             Arrow Up/Down
           </kbd>{" "}
           for modals

@@ -106,7 +106,7 @@ export const CashCountingForm = memo(function CashCountingForm({
   }, [submitRef, handleSubmit]);
 
   return (
-    <div className={`mb-6 border ${borderClass} rounded p-4`}>
+    <div className={`mb-6 border ${borderClass} rounded-lg p-4`}>
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-xl font-semibold">{title}</h2>
       </div>
@@ -130,7 +130,7 @@ export const CashCountingForm = memo(function CashCountingForm({
             type="number"
             value={keycardInput}
             onChange={(e) => setKeycardInput(e.target.value)}
-            className="border rounded p-1 w-24"
+            className="border rounded-lg p-1 w-24"
           />
         </div>
       )}

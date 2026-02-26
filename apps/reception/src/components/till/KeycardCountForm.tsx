@@ -52,7 +52,7 @@ export const KeycardCountForm = memo(function KeycardCountForm({
           type="number"
           value={countInput}
           onChange={(e) => setCountInput(e.target.value)}
-          className="border rounded p-1 w-24"
+          className="border rounded-lg p-1 w-24"
         />
       </div>
       <div className="text-sm text-warning-main text-end mb-2">

@@ -136,7 +136,7 @@ function DateSel({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded`,
+                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded-lg`,
                 today: "border-amber-500",
                 selected: "bg-amber-500 border-amber-500 text-primary-fg",
                 chevron: `${defaultNames.chevron} fill-amber-500`,

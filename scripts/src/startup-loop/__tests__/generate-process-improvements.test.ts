@@ -345,6 +345,65 @@ Review-date: 2026-02-25
     expect(data.ideaItems[0]?.title).toBe("Real idea to keep");
   });
 
+  it("idea items produced by collectProcessImprovements carry classifier output fields", async () => {
+    // The classifier runs during collectProcessImprovements() for every idea item.
+    // Verify that the four new classification fields (urgency, effort, proximity, reason_code)
+    // are present on the emitted item, even if their values are classifier-determined.
+    const tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), "process-improvements-clf-"));
+
+    await writeFile(
+      tmpRoot,
+      "docs/plans/clf-feature/build-record.user.md",
+      `---
+Business-Unit: BRIK
+Feature-Slug: clf-feature
+---
+# Build Record`,
+    );
+    await writeFile(
+      tmpRoot,
+      "docs/plans/clf-feature/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-02-26
+---
+# Results Review
+
+## Observed Outcomes
+- Outcome observed.
+
+## Standing Updates
+- No standing updates: reason.
+
+## New Idea Candidates
+- Add classifier output fields | Trigger observation: classification fields missing | Suggested next action: create INVESTIGATE task
+
+## Standing Expansion
+- No standing expansion: reason.
+`,
+    );
+
+    const data = collectProcessImprovements(tmpRoot);
+    expect(data.ideaItems).toHaveLength(1);
+    const item = data.ideaItems[0]!;
+
+    // Classification fields must be present (values are classifier-determined but type is string)
+    expect(typeof item.urgency).toBe("string");
+    expect(typeof item.effort).toBe("string");
+    // reason_code must be a non-empty string
+    expect(typeof item.reason_code).toBe("string");
+    expect((item.reason_code ?? "").length).toBeGreaterThan(0);
+    // priority_tier must be a recognized tier code
+    expect(["P0", "P0R", "P1", "P1M", "P2", "P3", "P4", "P5"]).toContain(item.priority_tier);
+    // own_priority_rank must be a positive integer
+    expect(typeof item.own_priority_rank).toBe("number");
+    expect(item.own_priority_rank!).toBeGreaterThan(0);
+    // proximity is null or string (null for non-P1 tiers)
+    expect(item.proximity === null || typeof item.proximity === "string").toBe(true);
+
+    await fs.rm(tmpRoot, { recursive: true, force: true });
+  });
+
   it("appendCompletedIdea is idempotent — calling twice yields one entry", async () => {
     const entry = {
       title: "My idea",

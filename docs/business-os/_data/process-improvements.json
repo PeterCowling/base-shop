@@ -11,7 +11,11 @@
       "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md",
       "idea_key": "be4c24a746a5caf425cb4ee64fd66eea7732854f",
       "priority_tier": "P1",
-      "own_priority_rank": 5
+      "own_priority_rank": 5,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": "Near",
+      "reason_code": "RULE_P1_NEAR_CAUSAL"
     },
     {
       "type": "idea",
@@ -24,7 +28,11 @@
       "path": "docs/plans/_archive/build-subagent-jest-zombie-cleanup/results-review.user.md",
       "idea_key": "2adca1b79137219ebded92915d3d2b227e9b00db",
       "priority_tier": "P3",
-      "own_priority_rank": 8
+      "own_priority_rank": 8,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P3_MEASUREMENT"
     },
     {
       "type": "idea",
@@ -37,7 +45,11 @@
       "path": "docs/plans/_archive/xa-e2e-sync-success-path/results-review.user.md",
       "idea_key": "352a6020732ed972f3a5203e01616eb26ad89742",
       "priority_tier": "P4",
-      "own_priority_rank": 9
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
     },
     {
       "type": "idea",
@@ -50,7 +62,11 @@
       "path": "docs/plans/_archive/post-build-reflection-prompting/results-review.user.md",
       "idea_key": "a8bd43e491362bb28adf381f0d335f9b08dccbfe",
       "priority_tier": "P4",
-      "own_priority_rank": 9
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
     },
     {
       "type": "idea",
@@ -63,7 +79,11 @@
       "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
       "idea_key": "e6d41217823fc313fd5fe0ae6781723def8af146",
       "priority_tier": "P4",
-      "own_priority_rank": 9
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
     },
     {
       "type": "idea",
@@ -76,7 +96,11 @@
       "path": "docs/plans/_archive/reflection-prioritization-policy-implementation/results-review.user.md",
       "idea_key": "c53d8fe7718817a876e18b3b40f8a53467ed3aeb",
       "priority_tier": "P4",
-      "own_priority_rank": 9
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
     },
     {
       "type": "idea",
@@ -89,7 +113,11 @@
       "path": "docs/plans/_archive/process-improvements-live-update/results-review.user.md",
       "idea_key": "9dc16843ce70700259c1e422c106cdb28273ecb2",
       "priority_tier": "P4",
-      "own_priority_rank": 9
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
     },
     {
       "type": "idea",
@@ -102,7 +130,11 @@
       "path": "docs/plans/_archive/post-build-reflection-prompting/results-review.user.md",
       "idea_key": "d6de990c408eef01e2ccebf0268908ac8e4110fa",
       "priority_tier": "P4",
-      "own_priority_rank": 9
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
     },
     {
       "type": "idea",
@@ -115,7 +147,11 @@
       "path": "docs/plans/_archive/reflection-prioritization-policy-implementation/results-review.user.md",
       "idea_key": "8c68b866f7784e56527f73e12625cc53b0f986d0",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -128,7 +164,11 @@
       "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "c4bd1e648763f424e2bd509de647df7b3925a428",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -141,7 +181,11 @@
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "b2d857f1b9b0b1a353fed9023a281fee1f85a525",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -154,7 +198,11 @@
       "path": "docs/plans/_archive/brikette-it-book-route-static-export/results-review.user.md",
       "idea_key": "d8e5e55862f2c3c4703d7605ba2e1dc4773b1615",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -167,7 +215,11 @@
       "path": "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md",
       "idea_key": "56df98e4006fb2a28f3af4e6e16e10228c829801",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -180,7 +232,11 @@
       "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
       "idea_key": "ac3d068ddeedab6a631cf1798af0a87688c96116",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -193,7 +249,11 @@
       "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
       "idea_key": "45c78ffe03dc5912a945f665dc9fb674e05e72e6",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -206,7 +266,11 @@
       "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
       "idea_key": "c4b0e1bcf4fabf89df721f914bf64e644fdb801b",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -219,7 +283,11 @@
       "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
       "idea_key": "0788a8f4a7e332d5daa0073b10366b7d35840f7c",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -232,7 +300,11 @@
       "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
       "idea_key": "19390ebb667f9ecf94a405949128d0acbeb629e5",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -245,7 +317,11 @@
       "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
       "idea_key": "d5ebf7bacf8d307645289097e7a30d2d68601692",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -258,7 +334,11 @@
       "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md",
       "idea_key": "c5a46e9603aeec9f92f8561051fbaed85592406d",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -271,7 +351,11 @@
       "path": "docs/plans/_archive/process-improvements-completion-lifecycle/results-review.user.md",
       "idea_key": "b94ed760a8c6e70812f1e715d57ff654a038eda5",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -284,7 +368,11 @@
       "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md",
       "idea_key": "b550e7d7075385897bfdb286e51d043750f351d7",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -297,7 +385,11 @@
       "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
       "idea_key": "d6c0d012a20bfaa110f0a2ea0fdeded4b3e11bc3",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -310,7 +402,11 @@
       "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md",
       "idea_key": "336cadb8c091f25f65d75cf9beca9c762c25d087",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -323,7 +419,11 @@
       "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
       "idea_key": "2a9895c0b987426e79f26ab0ad5d09a70a53152e",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -335,7 +435,11 @@
       "path": "docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md",
       "idea_key": "78659c800551efcc152a19e465ce0ed9f94f6ffb",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -347,7 +451,11 @@
       "path": "docs/plans/reception-rounded-lg-lint-rule/results-review.user.md",
       "idea_key": "fe02150793889094003f0c4a9cb631967e47e91f",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -360,7 +468,11 @@
       "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "45bfc4f2a076416e63c7fa72dc75143a2d0591a9",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -373,7 +485,11 @@
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -386,7 +502,11 @@
       "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "d60d167a7803b1b4c4e2b9a54192015a1ca9c2ff",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -399,7 +519,11 @@
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "515ff10d4c18b25b9a19da5a477002662c796142",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -412,7 +536,11 @@
       "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
       "idea_key": "94171ba01389aff8f13c0eb976c89cfdf61747d9",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -425,7 +553,11 @@
       "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
       "idea_key": "a7d9276518b19aed313e3f444b6db67349cc1cfb",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -438,7 +570,11 @@
       "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
       "idea_key": "5a52fb8afce7adb5c0738ce56dd61c016da11049",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -451,7 +587,11 @@
       "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md",
       "idea_key": "bcdd9c80911fe4bd1a09728c3fecc7b6861104a3",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -464,7 +604,11 @@
       "path": "docs/plans/_archive/brikette-smoke-view-item-list/results-review.user.md",
       "idea_key": "b3cb39280dd5e64ca2f271505fc3617bb9ce4186",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -477,7 +621,11 @@
       "path": "docs/plans/_archive/brikette-it-book-route-static-export/results-review.user.md",
       "idea_key": "30a0a8985d1c87982902aead225c25cd09a5b0bc",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -490,7 +638,11 @@
       "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
       "idea_key": "361960b9c7d02a3691633298d03f6b1b32df7506",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -503,7 +655,11 @@
       "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
       "idea_key": "27d5c91eacc1a6e92dfea3cb5bb52da69026e1ad",
       "priority_tier": "P5",
-      "own_priority_rank": 10
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     }
   ],
   "riskItems": [],

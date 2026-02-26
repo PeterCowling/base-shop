@@ -1018,3 +1018,173 @@ describe("Clock injection", () => {
     expect(entry?.processing_timestamp).toBe(FIXED_DATE_B.toISOString());
   });
 });
+
+// ---------------------------------------------------------------------------
+// TC-09: Classifier-aware scheduling (QueueEntry.classification)
+// ---------------------------------------------------------------------------
+
+describe("TC-09: Classifier-aware scheduling", () => {
+  it("TC-09-01: classified entry outranks unclassified entry with higher legacy priority", () => {
+    // P1 unclassified vs P3 classified with high urgency
+    // Classified entry must always win regardless of legacy priority
+    const queue = makeQueue(FIXED_DATE_A);
+
+    queue.enqueue(
+      makePacket({
+        dispatch_id: "IDEA-DISPATCH-20260224120000-0901",
+        before_sha: "c901-a",
+        after_sha: "c901-b",
+        root_event_id: "TC09-UNCLASSIFIED-01",
+        cluster_key: "hbag:sell:channel-strategy:TC09-UNCLASSIFIED-01",
+        cluster_fingerprint: "cfp-0901",
+        priority: "P1",
+        created_at: FIXED_DATE_A.toISOString(),
+      }),
+    );
+    queue.enqueue(
+      makePacket({
+        dispatch_id: "IDEA-DISPATCH-20260224120000-0902",
+        before_sha: "c902-a",
+        after_sha: "c902-b",
+        root_event_id: "TC09-CLASSIFIED-01",
+        cluster_key: "hbag:sell:channel-strategy:TC09-CLASSIFIED-01",
+        cluster_fingerprint: "cfp-0902",
+        priority: "P3",
+        created_at: FIXED_DATE_A.toISOString(),
+      }),
+    );
+
+    // Inject classification onto the P3 entry via listEntries() seam
+    const entry = queue.listEntries().find((e) => e.dispatch_id === "IDEA-DISPATCH-20260224120000-0902");
+    expect(entry).toBeDefined();
+    entry!.classification = { effective_priority_rank: 1, urgency: "U1", effort: "M" };
+
+    const scheduled = queue.planNextDispatches({
+      wip_caps: { DO: 1, IMPROVE: 0 },
+      now: FIXED_DATE_A,
+    });
+
+    expect(scheduled).toHaveLength(1);
+    expect(scheduled[0].dispatch_id).toBe("IDEA-DISPATCH-20260224120000-0902");
+  });
+
+  it("TC-09-02: among two classified entries, lower effective_priority_rank wins", () => {
+    const queue = makeQueue(FIXED_DATE_A);
+
+    for (const id of ["0910", "0911"]) {
+      queue.enqueue(
+        makePacket({
+          dispatch_id: `IDEA-DISPATCH-20260224120000-${id}`,
+          before_sha: `${id}-a`,
+          after_sha: `${id}-b`,
+          root_event_id: `TC09-CLASSIFIED-${id}`,
+          cluster_key: `hbag:sell:channel-strategy:TC09-CLASSIFIED-${id}`,
+          cluster_fingerprint: `cfp-${id}`,
+          priority: "P2",
+          created_at: FIXED_DATE_A.toISOString(),
+        }),
+      );
+    }
+
+    const entries = queue.listEntries();
+    const entry0910 = entries.find((e) => e.dispatch_id === "IDEA-DISPATCH-20260224120000-0910");
+    const entry0911 = entries.find((e) => e.dispatch_id === "IDEA-DISPATCH-20260224120000-0911");
+    expect(entry0910).toBeDefined();
+    expect(entry0911).toBeDefined();
+
+    // 0910 gets rank 5 (P2-equivalent), 0911 gets rank 1 (P0-equivalent)
+    entry0910!.classification = { effective_priority_rank: 5, urgency: "U2", effort: "M" };
+    entry0911!.classification = { effective_priority_rank: 1, urgency: "U2", effort: "M" };
+
+    const scheduled = queue.planNextDispatches({
+      wip_caps: { DO: 1, IMPROVE: 0 },
+      now: FIXED_DATE_A,
+    });
+
+    expect(scheduled).toHaveLength(1);
+    expect(scheduled[0].dispatch_id).toBe("IDEA-DISPATCH-20260224120000-0911");
+  });
+
+  it("TC-09-03: among two classified entries with same rank, lower urgency rank wins", () => {
+    const queue = makeQueue(FIXED_DATE_A);
+
+    for (const id of ["0920", "0921"]) {
+      queue.enqueue(
+        makePacket({
+          dispatch_id: `IDEA-DISPATCH-20260224120000-${id}`,
+          before_sha: `${id}-a`,
+          after_sha: `${id}-b`,
+          root_event_id: `TC09-URGENCY-${id}`,
+          cluster_key: `hbag:sell:channel-strategy:TC09-URGENCY-${id}`,
+          cluster_fingerprint: `cfp-${id}`,
+          priority: "P2",
+          created_at: FIXED_DATE_A.toISOString(),
+        }),
+      );
+    }
+
+    const entries = queue.listEntries();
+    const entry0920 = entries.find((e) => e.dispatch_id === "IDEA-DISPATCH-20260224120000-0920");
+    const entry0921 = entries.find((e) => e.dispatch_id === "IDEA-DISPATCH-20260224120000-0921");
+    expect(entry0920).toBeDefined();
+    expect(entry0921).toBeDefined();
+
+    // Same rank, but 0921 has U0 (critical) vs 0920 has U2 (routine)
+    entry0920!.classification = { effective_priority_rank: 3, urgency: "U2", effort: "M" };
+    entry0921!.classification = { effective_priority_rank: 3, urgency: "U0", effort: "M" };
+
+    const scheduled = queue.planNextDispatches({
+      wip_caps: { DO: 1, IMPROVE: 0 },
+      now: FIXED_DATE_A,
+    });
+
+    expect(scheduled).toHaveLength(1);
+    expect(scheduled[0].dispatch_id).toBe("IDEA-DISPATCH-20260224120000-0921");
+  });
+
+  it("TC-09-04: classification field is absent by default after enqueue", () => {
+    const queue = makeQueue(FIXED_DATE_A);
+    queue.enqueue(makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0930",
+      before_sha: "c930-a",
+      after_sha: "c930-b",
+      root_event_id: "TC09-DEFAULT-01",
+      cluster_key: "hbag:sell:channel-strategy:TC09-DEFAULT-01",
+      cluster_fingerprint: "cfp-0930",
+    }));
+
+    const entry = queue.getEntry("IDEA-DISPATCH-20260224120000-0930");
+    expect(entry?.classification).toBeUndefined();
+  });
+
+  it("TC-09-05: listEntries() mutation seam — setting classification on returned entry is visible to scheduler", () => {
+    const queue = makeQueue(FIXED_DATE_A);
+    queue.enqueue(makePacket({
+      dispatch_id: "IDEA-DISPATCH-20260224120000-0940",
+      before_sha: "c940-a",
+      after_sha: "c940-b",
+      root_event_id: "TC09-SEAM-01",
+      cluster_key: "hbag:sell:channel-strategy:TC09-SEAM-01",
+      cluster_fingerprint: "cfp-0940",
+      priority: "P3",
+    }));
+
+    // Mutation via listEntries() seam
+    const liveEntry = queue.listEntries().find((e) => e.dispatch_id === "IDEA-DISPATCH-20260224120000-0940");
+    expect(liveEntry).toBeDefined();
+    liveEntry!.classification = { effective_priority_rank: 1, urgency: "U0", effort: "XS" };
+
+    // getEntry() should return the same mutated state
+    const entry = queue.getEntry("IDEA-DISPATCH-20260224120000-0940");
+    expect(entry?.classification).toEqual({ effective_priority_rank: 1, urgency: "U0", effort: "XS" });
+
+    // Scheduler should produce a high score for this entry
+    const scheduled = queue.planNextDispatches({
+      wip_caps: { DO: 1, IMPROVE: 0 },
+      now: FIXED_DATE_A,
+    });
+    expect(scheduled).toHaveLength(1);
+    // Score for classified: 10000 - 0*1000 - 1*10 + (5-0) = 9995
+    expect(scheduled[0].score).toBe(9995);
+  });
+});

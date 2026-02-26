@@ -101,3 +101,95 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  deploy-xa-b:
+    name: Deploy xa-b (staging)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [deploy-drop-worker]
+    concurrency:
+      group: xa-deploy-xa-b-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup-repo
+
+      - name: Build workspace package dependencies
+        run: pnpm exec turbo run build --filter=@apps/xa-b^...
+
+      - name: Build xa-b (OpenNext)
+        run: cd apps/xa-b && pnpm exec opennextjs-cloudflare build
+        env:
+          XA_CATALOG_CONTRACT_READ_URL: ${{ vars.XA_CATALOG_CONTRACT_READ_URL }}
+
+      - name: Deploy xa-b to staging
+        run: cd apps/xa-b && pnpm exec wrangler deploy --env preview
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Health check xa-b
+        run: |
+          WORKER_URL="https://xa-b-preview.${CLOUDFLARE_ACCOUNT_ID}.workers.dev"
+          response=$(curl -s -o /dev/null -w "%{http_code}" "${WORKER_URL}/")
+          echo "Health check response: HTTP ${response}"
+          if [[ "$response" -ge 500 ]] 2>/dev/null; then
+            echo "Health check FAILED: HTTP ${response} (server error)"
+            exit 1
+          elif [[ -z "$response" || "$response" == "000" ]]; then
+            echo "Health check FAILED: no response (Worker unreachable)"
+            exit 1
+          fi
+          echo "Health check PASSED (HTTP ${response})"
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  deploy-xa-uploader:
+    name: Deploy xa-uploader (staging)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [test]
+    concurrency:
+      group: xa-deploy-xa-uploader-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup-repo
+
+      - name: Build workspace package dependencies
+        run: pnpm exec turbo run build --filter=@apps/xa-uploader^...
+
+      - name: Build xa-uploader (OpenNext)
+        run: cd apps/xa-uploader && pnpm exec opennextjs-cloudflare build
+
+      - name: Deploy xa-uploader to staging
+        run: cd apps/xa-uploader && pnpm exec wrangler deploy --env preview
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Health check xa-uploader
+        run: |
+          WORKER_URL="https://xa-uploader-preview.${CLOUDFLARE_ACCOUNT_ID}.workers.dev"
+          response=$(curl -s -o /dev/null -w "%{http_code}" "${WORKER_URL}/")
+          echo "Health check response: HTTP ${response}"
+          if [[ "$response" -ge 500 ]] 2>/dev/null; then
+            echo "Health check FAILED: HTTP ${response} (server error)"
+            exit 1
+          elif [[ -z "$response" || "$response" == "000" ]]; then
+            echo "Health check FAILED: no response (Worker unreachable)"
+            exit 1
+          fi
+          echo "Health check PASSED (HTTP ${response})"
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

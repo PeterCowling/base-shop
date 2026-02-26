@@ -5,7 +5,7 @@ Domain: BOS
 Workstream: XA
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
-Last-updated: 2026-02-26 (Wave 2 complete)
+Last-updated: 2026-02-26 (Wave 4 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-apps-ci-staging
 Deliverable-Type: code-change
@@ -31,9 +31,9 @@ Wire `apps/xa-b` (storefront), `apps/xa-drop-worker` (catalog Worker), and `apps
 - [x] TASK-04: Add @opennextjs/cloudflare to xa-b; add build:worker script + wrangler.toml
 - [x] TASK-05: Add xa-drop-worker build + deploy job to xa.yml
 - [x] TASK-06: Add @opennextjs/cloudflare + wrangler.toml to xa-uploader
-- [ ] TASK-07: CHECKPOINT — Reassess xa-b + xa-uploader deploy after adapter verified
-- [ ] TASK-08: Add xa-b deploy job to xa.yml
-- [ ] TASK-09: Add xa-uploader deploy job to xa.yml
+- [x] TASK-07: CHECKPOINT — Reassess xa-b + xa-uploader deploy after adapter verified
+- [x] TASK-08: Add xa-b deploy job to xa.yml
+- [x] TASK-09: Add xa-uploader deploy job to xa.yml
 - [x] TASK-10: Produce operator prerequisites checklist
 
 ## Goals
@@ -97,9 +97,9 @@ Wire `apps/xa-b` (storefront), `apps/xa-drop-worker` (catalog Worker), and `apps
 | TASK-04 | IMPLEMENT | Add OpenNext to xa-b + build:worker script + wrangler.toml | 85% | M | Complete (2026-02-26) | TASK-01 | TASK-07 |
 | TASK-05 | IMPLEMENT | xa-drop-worker deploy job in xa.yml | 85% | S | Complete (2026-02-26) | TASK-02, TASK-03 | TASK-07 |
 | TASK-06 | IMPLEMENT | Add OpenNext + wrangler.toml to xa-uploader | 80% | M | Complete (2026-02-26) | — | TASK-09 |
-| TASK-07 | CHECKPOINT | Reassess xa-b + xa-uploader deploy after adapter verified | 95% | S | Pending | TASK-04, TASK-05 | TASK-08, TASK-09 |
-| TASK-08 | IMPLEMENT | xa-b deploy job in xa.yml | 80% | M | Pending | TASK-07 | — |
-| TASK-09 | IMPLEMENT | xa-uploader deploy job in xa.yml | 80% | S | Pending | TASK-03, TASK-06, TASK-07 | — |
+| TASK-07 | CHECKPOINT | Reassess xa-b + xa-uploader deploy after adapter verified | 95% | S | Complete (2026-02-26) | TASK-04, TASK-05 | TASK-08, TASK-09 |
+| TASK-08 | IMPLEMENT | xa-b deploy job in xa.yml | 80% | M | Complete (2026-02-26) | TASK-07 | — |
+| TASK-09 | IMPLEMENT | xa-uploader deploy job in xa.yml | 80% | S | Complete (2026-02-26) | TASK-03, TASK-06, TASK-07 | — |
 | TASK-10 | IMPLEMENT | Operator prerequisites checklist | 95% | S | Complete (2026-02-26) | — | — |
 
 ## Parallelism Guide
@@ -372,7 +372,8 @@ Wire `apps/xa-b` (storefront), `apps/xa-drop-worker` (catalog Worker), and `apps
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build evidence:** Checkpoint cleared. All 5 horizon assumptions confirmed: (1) `.open-next/worker.js` produced for xa-b (TASK-04 evidence: 11265 KiB); (2) `wrangler deploy --env preview --dry-run` exit 0 for xa-b (Worker `xa-b-preview`, ASSETS binding); (3) xa-drop-worker deploy job live in xa.yml — first actual deploy awaits operator provisioning per TASK-10; (4) `fast-csv`/`yazl`/`yauzl` build-compatible (TASK-06: build + dry-run passed, `nodejs_compat` flag included); (5) TASK-08 deploy command confirmed. Inline replan: TASK-08 confidence maintained at 80%; TASK-09 confidence maintained at 80%. Both at IMPLEMENT threshold — Wave 4 proceeds.
 - **Affects:** `docs/plans/xa-apps-ci-staging/plan.md`
 - **Depends on:** TASK-04, TASK-05
 - **Blocks:** TASK-08, TASK-09
@@ -399,7 +400,8 @@ Wire `apps/xa-b` (storefront), `apps/xa-drop-worker` (catalog Worker), and `apps
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build evidence:** `deploy-xa-b` job added to xa.yml. `needs: [deploy-drop-worker]`. Steps: checkout → setup-repo → turbo workspace dep build (`--filter=@apps/xa-b^...`) → `cd apps/xa-b && pnpm exec opennextjs-cloudflare build` (with `XA_CATALOG_CONTRACT_READ_URL` env var from vars context) → `wrangler deploy --env preview` (with CF secrets) → health check (`curl` to `xa-b-preview.<account>.workers.dev`, accepts any non-5xx/000 response). Job concurrency: `xa-deploy-xa-b-${{ github.ref }}`, `cancel-in-progress: false`. YAML validated: python3 pass + actionlint 0 errors.
 - **Affects:** `.github/workflows/xa.yml`
 - **Depends on:** TASK-07 (CHECKPOINT)
 - **Blocks:** —
@@ -445,7 +447,8 @@ Wire `apps/xa-b` (storefront), `apps/xa-drop-worker` (catalog Worker), and `apps
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build evidence:** `deploy-xa-uploader` job added to xa.yml. `needs: [test]`. Steps: checkout → setup-repo → turbo workspace dep build (`--filter=@apps/xa-uploader^...`) → `cd apps/xa-uploader && pnpm exec opennextjs-cloudflare build` (two-script pattern: OpenNext calls `pnpm build` internally = `next build --webpack`) → `wrangler deploy --env preview` (with CF secrets) → health check (`curl` to `xa-uploader-preview.<account>.workers.dev`, accepts any non-5xx/000). Job concurrency: `xa-deploy-xa-uploader-${{ github.ref }}`, `cancel-in-progress: false`. YAML validated: python3 pass + actionlint 0 errors.
 - **Affects:** `.github/workflows/xa.yml`
 - **Depends on:** TASK-03, TASK-06, TASK-07
 - **Blocks:** —

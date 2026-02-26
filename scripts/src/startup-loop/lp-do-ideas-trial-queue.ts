@@ -54,6 +54,12 @@ export interface LaneSchedulerOptions {
 export interface ScheduledDispatch {
   dispatch_id: string;
   lane: QueueLane;
+  /**
+   * Legacy display field — reflects the original packet priority tier (P1/P2/P3),
+   * not the classifier-based sort rank. Sort order is determined by `score`.
+   * When a classified entry outranks an unclassified one, this field still shows
+   * the packet's original priority label.
+   */
   priority: "P1" | "P2" | "P3";
   age_hours: number;
   score: number;
@@ -96,6 +102,20 @@ export interface QueueEntry {
   processing_timestamp: string;
   /** Human-readable reason for the current state (error diagnostics, skip reason). */
   state_reason: string | null;
+  /**
+   * Classifier output injected after enqueue. Optional — absent when the idea has not
+   * been classified yet. When present, `planNextDispatches()` uses `effective_priority_rank`
+   * and urgency/effort to compute a classifier-aware scheduling score that outranks any
+   * unclassified entry.
+   */
+  classification?: {
+    /** Numeric rank from the classifier (1=P0 highest … 10=P5 lowest). Lower = higher priority. */
+    effective_priority_rank: number;
+    /** Urgency code from the classifier (U0–U3). */
+    urgency: string;
+    /** Effort estimate from the classifier (XS/S/M/L/XL). */
+    effort: string;
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -317,11 +337,64 @@ function priorityBaseScore(priority: "P1" | "P2" | "P3"): number {
   }
 }
 
+/**
+ * Maps a classifier urgency code to a numeric rank (lower = more urgent).
+ * Unknown codes map to 4 (treated as lower urgency than U3).
+ */
+function urgencyRank(u: string): number {
+  switch (u) {
+    case "U0": return 0;
+    case "U1": return 1;
+    case "U2": return 2;
+    case "U3": return 3;
+    default:   return 4;
+  }
+}
+
+/**
+ * Maps a classifier effort estimate to a numeric rank (lower = less effort).
+ * Unknown codes map to 5.
+ */
+function effortRank(e: string): number {
+  switch (e) {
+    case "XS": return 0;
+    case "S":  return 1;
+    case "M":  return 2;
+    case "L":  return 3;
+    case "XL": return 4;
+    default:   return 5;
+  }
+}
+
+/**
+ * Scores a classified entry using a composite formula that guarantees all
+ * classified entries outrank any unclassified entry.
+ *
+ * Formula: 10000 - (urgencyRank * 1000) - (effective_priority_rank * 10) + (5 - effortRank)
+ *
+ * Score bands:
+ * - Classified entries: 5_006 – 9_959  (always above max unclassified)
+ * - Unclassified entries: ≤ 500 + 100  (max is P1 + full aging window)
+ */
+function computeClassifiedScore(classification: {
+  effective_priority_rank: number;
+  urgency: string;
+  effort: string;
+}): number {
+  const ur = urgencyRank(classification.urgency);
+  const er = effortRank(classification.effort);
+  return 10000 - ur * 1000 - classification.effective_priority_rank * 10 + (5 - er);
+}
+
 function computeSchedulingScore(
   priority: "P1" | "P2" | "P3",
   ageHours: number,
   agingWindowHours: number,
+  classification?: QueueEntry["classification"],
 ): number {
+  if (classification !== undefined) {
+    return computeClassifiedScore(classification);
+  }
   const normalizedAge = Math.max(0, ageHours);
   const agingMultiplier = normalizedAge / Math.max(1, agingWindowHours);
   return priorityBaseScore(priority) + agingMultiplier * 100;
@@ -780,6 +853,7 @@ export class TrialQueue {
         entry.packet.priority,
         ageHours,
         agingWindowHours,
+        entry.classification,
       );
 
       laneCandidates[entry.lane].push({

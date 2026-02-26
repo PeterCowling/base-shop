@@ -263,7 +263,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-26T19:07:20.303Z";
+  var GEN_TS = "2026-02-26T19:31:29.150Z";
 
   var IDEA_ITEMS = [
     {
@@ -445,6 +445,23 @@
       "date": "2026-02-25T22:36:24.076Z",
       "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
       "idea_key": "e6d41217823fc313fd5fe0ae6781723def8af146",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New loop process: post-build re-scan to confirm gap was satisfied",
+      "body": "skill emits dispatches for gaps but has no mechanism to close/resolve dispatches when a satisfying artifact is later created; a post-build coverage-check step would close the feedback loop",
+      "suggested_action": "add to lp-weekly integration scope in companion packet 0032",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:29:52.802Z",
+      "path": "docs/plans/_archive/coverage-manifest-scan-core/results-review.user.md",
+      "idea_key": "57a90832ed120619b948f902d8f555fb4a84a4f2",
       "priority_tier": "P4",
       "own_priority_rank": 9,
       "urgency": "U2",
@@ -914,6 +931,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Coverage manifest initialization for BRIK and PWRB",
+      "body": "lp-coverage-scan skill is ready; BRIK and PWRB have no manifests yet; the scanner cannot run until manifests exist",
+      "suggested_action": "companion packet IDEA-DISPATCH-20260226-0032 already covers this; no new card needed",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:29:52.802Z",
+      "path": "docs/plans/_archive/coverage-manifest-scan-core/results-review.user.md",
+      "idea_key": "9f63fe44dc0a428b7e3f0c5a2df1c616a04f37ae",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Stripe test-mode end-to-end checkout flow on staging",
       "body": "TASK-11 + TASK-12 complete but no real payment tested — Stripe keys not yet in env",
       "suggested_action": "operator sets STRIPE_SECRET_KEY + NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in Caryina staging/prod env; then manual payment test with Stripe test card",
@@ -987,6 +1021,23 @@
       "date": "2026-02-26T08:53:01.939Z",
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic: lp-coverage-scan staleness detection uses agent file-reading",
+      "body": "staleness multi-key chain reads frontmatter via agent text parsing; a deterministic TypeScript script could replicate this more reliably and at scale (Phase 2 candidate)",
+      "suggested_action": "defer to Phase 2 scanner enhancement",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:29:52.802Z",
+      "path": "docs/plans/_archive/coverage-manifest-scan-core/results-review.user.md",
+      "idea_key": "40224e697a02a777a14367f053458c446b734599",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

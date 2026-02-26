@@ -152,3 +152,6 @@ data/octorate/
 # Email draft fallback queues (may contain customer content/PII)
 data/email-fallback-queue/
 packages/mcp-server/.tmp/
+
+.cowork/
+.cowork.yml

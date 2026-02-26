@@ -79,7 +79,7 @@ export function InventoryEditor({ productSku, inventoryItems }: InventoryEditorP
           {status === "saving" ? "Saving…" : "Update stock"}
         </button>
         {status === "saved" ? (
-          <span className="text-sm text-green-600">Saved!</span>
+          <span className="text-sm text-success-fg">Saved!</span>
         ) : null}
         {status === "error" ? (
           <span className="text-sm text-destructive">{errorMsg}</span>

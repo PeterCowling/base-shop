@@ -42,8 +42,8 @@ export default async function AdminProductsPage() {
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs ${
                       p.status === "active"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-gray-100 text-gray-600"
+                        ? "bg-success text-success-fg"
+                        : "bg-muted text-muted-fg"
                     }`}
                   >
                     {p.status}

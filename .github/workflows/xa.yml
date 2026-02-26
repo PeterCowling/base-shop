@@ -75,3 +75,29 @@ jobs:
 
       - name: Test xa-uploader
         run: pnpm --filter @apps/xa-uploader test
+
+  deploy-drop-worker:
+    name: Deploy xa-drop-worker (staging)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [test]
+    concurrency:
+      group: xa-deploy-drop-worker-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup-repo
+
+      - name: Build xa-drop-worker
+        run: pnpm --filter @apps/xa-drop-worker build
+
+      - name: Deploy xa-drop-worker to staging
+        run: cd apps/xa-drop-worker && pnpm exec wrangler deploy --env preview
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

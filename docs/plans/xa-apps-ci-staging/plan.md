@@ -5,7 +5,7 @@ Domain: BOS
 Workstream: XA
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
-Last-updated: 2026-02-26 (Wave 1 complete)
+Last-updated: 2026-02-26 (Wave 2 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-apps-ci-staging
 Deliverable-Type: code-change
@@ -28,8 +28,8 @@ Wire `apps/xa-b` (storefront), `apps/xa-drop-worker` (catalog Worker), and `apps
 - [x] TASK-01: Verify OpenNext compatibility with xa-b (local build smoke test)
 - [x] TASK-02: Add [env.preview] staging block to xa-drop-worker/wrangler.toml
 - [x] TASK-03: Create xa.yml — validate (lint+typecheck) + test jobs for all three apps
-- [ ] TASK-04: Add @opennextjs/cloudflare to xa-b; add build:worker script + wrangler.toml
-- [ ] TASK-05: Add xa-drop-worker build + deploy job to xa.yml
+- [x] TASK-04: Add @opennextjs/cloudflare to xa-b; add build:worker script + wrangler.toml
+- [x] TASK-05: Add xa-drop-worker build + deploy job to xa.yml
 - [x] TASK-06: Add @opennextjs/cloudflare + wrangler.toml to xa-uploader
 - [ ] TASK-07: CHECKPOINT — Reassess xa-b + xa-uploader deploy after adapter verified
 - [ ] TASK-08: Add xa-b deploy job to xa.yml
@@ -94,8 +94,8 @@ Wire `apps/xa-b` (storefront), `apps/xa-drop-worker` (catalog Worker), and `apps
 | TASK-01 | INVESTIGATE | Verify OpenNext + xa-b local build smoke | 75% | S | Complete (2026-02-26) | — | TASK-04 |
 | TASK-02 | IMPLEMENT | xa-drop-worker wrangler.toml staging env | 90% | S | Complete (2026-02-26) | — | TASK-05 |
 | TASK-03 | IMPLEMENT | xa.yml validate + test jobs | 85% | M | Complete (2026-02-26) | — | TASK-05, TASK-09 |
-| TASK-04 | IMPLEMENT | Add OpenNext to xa-b + build:worker script + wrangler.toml | 85% | M | Pending | TASK-01 | TASK-07 |
-| TASK-05 | IMPLEMENT | xa-drop-worker deploy job in xa.yml | 85% | S | Pending | TASK-02, TASK-03 | TASK-07 |
+| TASK-04 | IMPLEMENT | Add OpenNext to xa-b + build:worker script + wrangler.toml | 85% | M | Complete (2026-02-26) | TASK-01 | TASK-07 |
+| TASK-05 | IMPLEMENT | xa-drop-worker deploy job in xa.yml | 85% | S | Complete (2026-02-26) | TASK-02, TASK-03 | TASK-07 |
 | TASK-06 | IMPLEMENT | Add OpenNext + wrangler.toml to xa-uploader | 80% | M | Complete (2026-02-26) | — | TASK-09 |
 | TASK-07 | CHECKPOINT | Reassess xa-b + xa-uploader deploy after adapter verified | 95% | S | Pending | TASK-04, TASK-05 | TASK-08, TASK-09 |
 | TASK-08 | IMPLEMENT | xa-b deploy job in xa.yml | 80% | M | Pending | TASK-07 | — |
@@ -241,7 +241,9 @@ Wire `apps/xa-b` (storefront), `apps/xa-drop-worker` (catalog Worker), and `apps
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Scope expansion:** `apps/xa-b/open-next.config.ts` added (required by OpenNext); `apps/xa-b/src/app/api/search/sync/route.ts` — `export const runtime = "edge"` removed (OpenNext does not support edge runtime declarations; consistent with MEMORY.md pattern for CF Worker apps).
+- **Build evidence:** `@opennextjs/cloudflare ^1.16.5` devDep added. `build:worker` script added. `pages_build_output_dir` removed; `main = ".open-next/worker.js"` + `[assets]` block added to wrangler.toml. `pnpm install` succeeded. `CI=1 pnpm --filter @apps/xa-b build` success (62 routes). `opennextjs-cloudflare build` success — `.open-next/worker.js` produced (11265 KiB total). `wrangler deploy --env preview --dry-run` exit 0; Worker name `xa-b-preview`, ASSETS binding confirmed. `typecheck` pass.
 - **Affects:** `apps/xa-b/package.json`, `apps/xa-b/open-next.config.ts` (new), `apps/xa-b/wrangler.toml`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-07 (via CHECKPOINT)
@@ -289,7 +291,8 @@ Wire `apps/xa-b` (storefront), `apps/xa-drop-worker` (catalog Worker), and `apps
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build evidence:** `deploy-drop-worker` job appended to xa.yml. `needs: [test]`, job-scoped concurrency with `cancel-in-progress: false`. Build: `pnpm --filter @apps/xa-drop-worker build`. Deploy: `wrangler deploy --env preview` with `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` secrets. YAML validated (python3 pass + actionlint 0 errors).
 - **Affects:** `.github/workflows/xa.yml`
 - **Depends on:** TASK-02, TASK-03
 - **Blocks:** TASK-07 (CHECKPOINT)

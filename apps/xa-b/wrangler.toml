@@ -1,7 +1,11 @@
 name = "xa-b-site"
+main = ".open-next/worker.js"
 compatibility_date = "2025-06-20"
-pages_build_output_dir = ".vercel/output/static"
 compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
 
 [vars]
 XA_STEALTH_MODE = "true"

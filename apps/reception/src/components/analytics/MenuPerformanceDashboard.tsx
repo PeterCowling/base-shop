@@ -22,6 +22,8 @@ import useProductsHook from "../../hooks/data/bar/useProducts";
 import useAllFinancialTransactionsData from "../../hooks/data/useAllFinancialTransactionsData";
 import type { FinancialTransaction } from "../../types/hooks/data/allFinancialTransaction";
 import { isVoidedTransaction } from "../../utils/transactionUtils";
+import { PageShell } from "../common/PageShell";
+import ReceptionSkeleton from "../common/ReceptionSkeleton";
 
 ChartJS.register(
   CategoryScale,
@@ -141,12 +143,20 @@ function MenuPerformanceDashboard(): React.ReactElement {
   }, [transactions, getCategoryTypeByProductName, getProductCategory2]);
 
   if (loading) {
-    return <p>Loading transaction data…</p>;
+    return (
+      <PageShell title="Menu Performance">
+        <ReceptionSkeleton rows={4} />
+      </PageShell>
+    );
   }
 
   if (error) {
     const message = error instanceof Error ? error.message : String(error);
-    return <p className="text-danger-fg">Error: {message}</p>;
+    return (
+      <PageShell title="Menu Performance">
+        <p className="text-error-main">Error: {message}</p>
+      </PageShell>
+    );
   }
 
   const marginChartData = {
@@ -185,26 +195,27 @@ function MenuPerformanceDashboard(): React.ReactElement {
   };
 
   return (
-    <div className="space-y-8 p-4 bg-surface rounded shadow">
-      <h1 className="text-2xl font-semibold mb-4">Menu Performance</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <Bar data={marginChartData} />
+    <PageShell title="Menu Performance">
+      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <Bar data={marginChartData} />
+          </div>
+          <div>
+            <Doughnut data={attachChartData} />
+            <p className="text-center mt-2 font-medium">
+              Attach Rate: {attachRate.toFixed(1)}%
+            </p>
+          </div>
         </div>
         <div>
-          <Doughnut data={attachChartData} />
-          <p className="text-center mt-2 font-medium">
-            Attach Rate: {attachRate.toFixed(1)}%
-          </p>
+          <Line data={contributionChartData} />
         </div>
+        <p className="text-center font-semibold mt-4">
+          Overall Margin: {totalMarginPct}%
+        </p>
       </div>
-      <div>
-        <Line data={contributionChartData} />
-      </div>
-      <p className="text-center font-semibold mt-4">
-        Overall Margin: {totalMarginPct}%
-      </p>
-    </div>
+    </PageShell>
   );
 }
 

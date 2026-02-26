@@ -14,6 +14,7 @@ import { usePmsPostingsMutations } from "../../hooks/mutations/usePmsPostingsMut
 import { useTerminalBatchesMutations } from "../../hooks/mutations/useTerminalBatchesMutations";
 import { type CashCount } from "../../types/hooks/data/cashCountData";
 import { showToast } from "../../utils/toastUtils";
+import { PageShell } from "../common/PageShell";
 
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
@@ -62,7 +63,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
           compatibilityMode="no-wrapper"
           type="number"
           inputMode="decimal"
-          className="w-28 rounded border px-2 py-1 text-sm"
+          className="w-28 rounded-lg border px-2 py-1 text-sm"
           placeholder="0.00"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
@@ -72,7 +73,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
       <div>
         <label className="block text-xs mb-1">Method</label>
         <select
-          className="rounded border px-2 py-1 text-sm"
+          className="rounded-lg border px-2 py-1 text-sm"
           value={method}
           onChange={(e) => setMethod(e.target.value as "CASH" | "CC")}
           disabled={submitting}
@@ -86,7 +87,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
         <Input
           compatibilityMode="no-wrapper"
           type="text"
-          className="w-40 rounded border px-2 py-1 text-sm"
+          className="w-40 rounded-lg border px-2 py-1 text-sm"
           placeholder="Optional"
           value={note}
           onChange={(e) => setNote(e.target.value)}
@@ -96,7 +97,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
       <Button
         onClick={handleSubmit}
         disabled={submitting}
-        className="rounded bg-primary-main px-3 py-1 text-sm text-primary-fg hover:opacity-90 disabled:opacity-50"
+        className="rounded-lg bg-primary-main px-3 py-1 text-sm text-primary-fg hover:opacity-90 disabled:opacity-50"
       >
         {submitting ? "Saving…" : "Add PMS Posting"}
       </Button>
@@ -137,7 +138,7 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
           compatibilityMode="no-wrapper"
           type="number"
           inputMode="decimal"
-          className="w-28 rounded border px-2 py-1 text-sm"
+          className="w-28 rounded-lg border px-2 py-1 text-sm"
           placeholder="0.00"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
@@ -149,7 +150,7 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
         <Input
           compatibilityMode="no-wrapper"
           type="text"
-          className="w-40 rounded border px-2 py-1 text-sm"
+          className="w-40 rounded-lg border px-2 py-1 text-sm"
           placeholder="Optional"
           value={note}
           onChange={(e) => setNote(e.target.value)}
@@ -159,7 +160,7 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
       <Button
         onClick={handleSubmit}
         disabled={submitting}
-        className="rounded bg-primary-main px-3 py-1 text-sm text-primary-fg hover:opacity-90 disabled:opacity-50"
+        className="rounded-lg bg-primary-main px-3 py-1 text-sm text-primary-fg hover:opacity-90 disabled:opacity-50"
       >
         {submitting ? "Saving…" : "Add Terminal Batch"}
       </Button>
@@ -263,117 +264,118 @@ const ReconciliationWorkbenchContent = memo(
 
     /* --------------------------------- UI ---------------------------------- */
     return (
-      <div className="p-4 space-y-4">
-        <h2 className="text-2xl font-semibold">Reconciliation Workbench</h2>
-        {hasParseError && (
-          <p className="text-sm text-warning-main">
-            Some values could not be parsed.
-          </p>
-        )}
+      <PageShell title="Reconciliation Workbench">
+        <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+          {hasParseError && (
+            <p className="text-sm text-warning-main">
+              Some values could not be parsed.
+            </p>
+          )}
 
-        {!pmsLoading && !hasPmsData && (
-          <p className="text-sm text-warning-main" data-cy="pms-missing-warning">
-            No PMS postings entered for today. Add entries below.
-          </p>
-        )}
-        {!batchLoading && !hasBatchData && (
-          <p className="text-sm text-warning-main" data-cy="batch-missing-warning">
-            No terminal batch entered for today. Add an entry below.
-          </p>
-        )}
+          {!pmsLoading && !hasPmsData && (
+            <p className="text-sm text-warning-main" data-cy="pms-missing-warning">
+              No PMS postings entered for today. Add entries below.
+            </p>
+          )}
+          {!batchLoading && !hasBatchData && (
+            <p className="text-sm text-warning-main" data-cy="batch-missing-warning">
+              No terminal batch entered for today. Add an entry below.
+            </p>
+          )}
 
-        <Table className="w-full border-collapse text-sm">
-          <TableHeader className="bg-surface-2">
-            <TableRow>
-              <TableHead className="p-2 text-start border">Source</TableHead>
-              <TableHead className="p-2 text-end border">Cash</TableHead>
-              <TableHead className="p-2 text-end border">CC</TableHead>
-              <TableHead className="p-2 text-end border">Cash Δ</TableHead>
-              <TableHead className="p-2 text-end border">CC Δ</TableHead>
-            </TableRow>
-          </TableHeader>
+          <Table className="w-full border-collapse text-sm">
+            <TableHeader className="bg-surface-2">
+              <TableRow>
+                <TableHead className="p-2 text-start border">Source</TableHead>
+                <TableHead className="p-2 text-end border">Cash</TableHead>
+                <TableHead className="p-2 text-end border">CC</TableHead>
+                <TableHead className="p-2 text-end border">Cash Δ</TableHead>
+                <TableHead className="p-2 text-end border">CC Δ</TableHead>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {/* POS Totals */}
-            <TableRow className="border-b">
-              <TableCell className="p-2">POS Totals</TableCell>
-              <TableCell className="p-2 text-end">{format(safePosCashTotal)}</TableCell>
-              <TableCell className="p-2 text-end">{format(safePosCcTotal)}</TableCell>
-              <TableCell className="p-2" />
-              <TableCell className="p-2" />
-            </TableRow>
+            <TableBody>
+              {/* POS Totals */}
+              <TableRow className="border-b">
+                <TableCell className="p-2">POS Totals</TableCell>
+                <TableCell className="p-2 text-end">{format(safePosCashTotal)}</TableCell>
+                <TableCell className="p-2 text-end">{format(safePosCcTotal)}</TableCell>
+                <TableCell className="p-2" />
+                <TableCell className="p-2" />
+              </TableRow>
 
-            {/* Cash Drawer */}
-            <TableRow className="border-b">
-              <TableCell className="p-2">Cash Drawer</TableCell>
-              <TableCell
-                className={`p-2 text-right ${diffClass(
-                  safeDrawerTotal - safePosCashTotal
-                )}`}
-              >
-                {format(safeDrawerTotal)}
-              </TableCell>
-              <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
-              <TableCell
-                className={`p-2 text-right ${diffClass(
-                  safeDrawerTotal - safePosCashTotal
-                )}`}
-              >
-                {format(safeDrawerTotal - safePosCashTotal)}
-              </TableCell>
-              <TableCell className="p-2" />
-            </TableRow>
+              {/* Cash Drawer */}
+              <TableRow className="border-b">
+                <TableCell className="p-2">Cash Drawer</TableCell>
+                <TableCell
+                  className={`p-2 text-right ${diffClass(
+                    safeDrawerTotal - safePosCashTotal
+                  )}`}
+                >
+                  {format(safeDrawerTotal)}
+                </TableCell>
+                <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
+                <TableCell
+                  className={`p-2 text-right ${diffClass(
+                    safeDrawerTotal - safePosCashTotal
+                  )}`}
+                >
+                  {format(safeDrawerTotal - safePosCashTotal)}
+                </TableCell>
+                <TableCell className="p-2" />
+              </TableRow>
 
-            {/* PMS Postings */}
-            <TableRow className="border-b">
-              <TableCell className="p-2">PMS Postings</TableCell>
-              <TableCell className="p-2 text-end">{format(safePmsCashTotal)}</TableCell>
-              <TableCell className="p-2 text-end">{format(safePmsCcTotal)}</TableCell>
-              <TableCell
-                className={`p-2 text-right ${diffClass(
-                  safePmsCashTotal - safePosCashTotal
-                )}`}
-              >
-                {format(safePmsCashTotal - safePosCashTotal)}
-              </TableCell>
-              <TableCell
-                className={`p-2 text-right ${diffClass(
-                  safePmsCcTotal - safePosCcTotal
-                )}`}
-              >
-                {format(safePmsCcTotal - safePosCcTotal)}
-              </TableCell>
-            </TableRow>
+              {/* PMS Postings */}
+              <TableRow className="border-b">
+                <TableCell className="p-2">PMS Postings</TableCell>
+                <TableCell className="p-2 text-end">{format(safePmsCashTotal)}</TableCell>
+                <TableCell className="p-2 text-end">{format(safePmsCcTotal)}</TableCell>
+                <TableCell
+                  className={`p-2 text-right ${diffClass(
+                    safePmsCashTotal - safePosCashTotal
+                  )}`}
+                >
+                  {format(safePmsCashTotal - safePosCashTotal)}
+                </TableCell>
+                <TableCell
+                  className={`p-2 text-right ${diffClass(
+                    safePmsCcTotal - safePosCcTotal
+                  )}`}
+                >
+                  {format(safePmsCcTotal - safePosCcTotal)}
+                </TableCell>
+              </TableRow>
 
-            {/* Terminal Batch */}
-            <TableRow>
-              <TableCell className="p-2">Terminal Batch</TableCell>
-              <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
-              <TableCell className="p-2 text-end">{format(safeTerminalTotal)}</TableCell>
-              <TableCell className="p-2" />
-              <TableCell
-                className={`p-2 text-right ${diffClass(
-                  safeTerminalTotal - safePosCcTotal
-                )}`}
-              >
-                {format(safeTerminalTotal - safePosCcTotal)}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+              {/* Terminal Batch */}
+              <TableRow>
+                <TableCell className="p-2">Terminal Batch</TableCell>
+                <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
+                <TableCell className="p-2 text-end">{format(safeTerminalTotal)}</TableCell>
+                <TableCell className="p-2" />
+                <TableCell
+                  className={`p-2 text-right ${diffClass(
+                    safeTerminalTotal - safePosCcTotal
+                  )}`}
+                >
+                  {format(safeTerminalTotal - safePosCcTotal)}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
 
-        {/* Entry forms */}
-        <div className="space-y-4 pt-2">
-          <div>
-            <h3 className="text-sm font-semibold mb-2">Add PMS Posting</h3>
-            <PmsPostingForm onSubmit={addPmsPosting} />
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold mb-2">Add Terminal Batch</h3>
-            <TerminalBatchForm onSubmit={addTerminalBatch} />
+          {/* Entry forms */}
+          <div className="space-y-4 pt-2">
+            <div>
+              <h3 className="text-sm font-semibold mb-2">Add PMS Posting</h3>
+              <PmsPostingForm onSubmit={addPmsPosting} />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold mb-2">Add Terminal Batch</h3>
+              <TerminalBatchForm onSubmit={addTerminalBatch} />
+            </div>
           </div>
         </div>
-      </div>
+      </PageShell>
     );
   }
 );

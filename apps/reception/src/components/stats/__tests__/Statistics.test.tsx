@@ -42,6 +42,6 @@ describe("Statistics", () => {
   it("renders with token-based theme classes", () => {
     render(<Statistics />);
     const container = screen.getByRole("button", { name: /test connection/i }).parentElement as HTMLElement;
-    expect(container).toHaveClass("bg-surface-2");
+    expect(container).toHaveClass("bg-surface");
   });
 });

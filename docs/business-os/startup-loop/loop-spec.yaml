@@ -4,7 +4,15 @@
 # Version bumps require downstream alignment check (VC-02).
 # See also: docs/business-os/startup-loop/two-layer-model.md (Layer A standing intelligence / Layer B implementation loop contract)
 
-spec_version: "3.13.0"
+spec_version: "3.14.0"
+# v3.14.0: Added ASSESSMENT-13 (Product naming, /lp-do-assessment-13-product-naming),
+#          ASSESSMENT-14 (Logo design brief, /lp-do-assessment-14-logo-brief), and
+#          ASSESSMENT-15 (Packaging brief, /lp-do-assessment-15-packaging-brief, conditional: physical-product).
+#          ASSESSMENT container stages extended: [ASSESSMENT-10, ASSESSMENT-11, ASSESSMENT-13, ASSESSMENT-14, ASSESSMENT-15].
+#          Ordering constraint chain updated: ASSESSMENT-11 → ASSESSMENT-13 → ASSESSMENT-14 → ASSESSMENT-15 → ASSESSMENT.
+#          GATE-ASSESSMENT-01 updated to require new stage outputs.
+#          Note: ASSESSMENT-12 (dossier promotion) remains skill-only and is NOT in loop-spec; gate does not enforce it.
+#          Decision: 2026-02-26.
 # v3.13.0: Removed deprecated prioritize and BOS sync stages.
 #          Post-merge flow is now S4 -> WEBSITE -> DO.
 #          S4 now represents the baseline merge + manifest commit boundary.
@@ -311,8 +319,13 @@ stages:
 
   # ── ASSESSMENT stage family ────────────────────────────────────────────────────
   # Runs for all start-points (conditional: false). Inserted between ASSESSMENT-09 and MEASURE entry.
-  # ASSESSMENT→MEASURE-01 is guarded by GATE-ASSESSMENT-01 (Hard): both ASSESSMENT-10 and ASSESSMENT-11
-  # outputs must exist and meet quality minimum (<YYYY-MM-DD>-brand-profile.user.md + <YYYY-MM-DD>-brand-identity-dossier.user.md).
+  # ASSESSMENT→MEASURE-01 is guarded by GATE-ASSESSMENT-01 (Hard): ASSESSMENT-10, ASSESSMENT-11,
+  # ASSESSMENT-13, and ASSESSMENT-14 outputs must exist and meet quality minimum.
+  # ASSESSMENT-15 is required only for businesses with physical-product profile flag.
+  # ASSESSMENT-12 (dossier promotion, skill: /lp-do-assessment-12-promote) is a skill-only gate —
+  # it is NOT in loop-spec and GATE-ASSESSMENT-01 does not enforce its completion. Operators should
+  # run ASSESSMENT-12 before ASSESSMENT-13 to promote the brand dossier from Draft to Active, but
+  # the gate does not block if the dossier remains at Draft status.
 
   - id: ASSESSMENT
     name: Assessment
@@ -320,13 +333,24 @@ stages:
     stages:
       - ASSESSMENT-10
       - ASSESSMENT-11
+      - ASSESSMENT-13
+      - ASSESSMENT-14
+      - ASSESSMENT-15
     conditional: false
     ordering_constraints:
       - ASSESSMENT-10 → ASSESSMENT-11
-      - ASSESSMENT-11 → ASSESSMENT
+      - ASSESSMENT-11 → ASSESSMENT-13
+      - ASSESSMENT-13 → ASSESSMENT-14
+      - ASSESSMENT-14 → ASSESSMENT-15
+      - ASSESSMENT-15 → ASSESSMENT
     # ASSESSMENT-10: <YYYY-MM-DD>-brand-profile.user.md (skill: /lp-do-assessment-10-brand-profiling)
     # ASSESSMENT-11: <YYYY-MM-DD>-brand-identity-dossier.user.md (skill: /lp-do-assessment-11-brand-identity)
-    # GATE-ASSESSMENT-01 (Hard) at ASSESSMENT→MEASURE-01 enforces completeness + quality of both outputs.
+    # ASSESSMENT-13: <YYYY-MM-DD>-product-naming.user.md (skill: /lp-do-assessment-13-product-naming) — mandatory
+    # ASSESSMENT-14: <YYYY-MM-DD>-logo-brief.user.md (skill: /lp-do-assessment-14-logo-brief) — mandatory
+    # ASSESSMENT-15: <YYYY-MM-DD>-packaging-brief.user.md (skill: /lp-do-assessment-15-packaging-brief) — conditional: physical-product
+    # GATE-ASSESSMENT-01 (Hard) at ASSESSMENT→MEASURE-01 enforces completeness + quality of all mandatory outputs.
+    # For physical-product businesses: all five outputs required.
+    # For non-physical businesses: ASSESSMENT-13 and ASSESSMENT-14 required; ASSESSMENT-15 skipped (clean skip message emitted by skill).
 
   - id: ASSESSMENT-10
     name: Brand profiling
@@ -343,6 +367,30 @@ stages:
     prompt_template: brand-02-brand-identity-prompt.md
     conditional: false
     bos_sync: "Persist <YYYY-MM-DD>-brand-identity-dossier.user.md under docs/business-os/strategy/<BIZ>/"
+
+  - id: ASSESSMENT-13
+    name: Product naming
+    skill: /lp-do-assessment-13-product-naming
+    prompt_required: false
+    conditional: false
+    bos_sync: "Persist <YYYY-MM-DD>-product-naming.user.md under docs/business-os/strategy/<BIZ>/"
+
+  - id: ASSESSMENT-14
+    name: Logo design brief
+    skill: /lp-do-assessment-14-logo-brief
+    prompt_required: false
+    conditional: false
+    bos_sync: "Persist <YYYY-MM-DD>-logo-brief.user.md under docs/business-os/strategy/<BIZ>/"
+
+  - id: ASSESSMENT-15
+    name: Packaging brief
+    skill: /lp-do-assessment-15-packaging-brief
+    prompt_required: false
+    conditional: true
+    condition: "business_profile includes physical-product"
+    bos_sync: "Persist <YYYY-MM-DD>-packaging-brief.user.md under docs/business-os/strategy/<BIZ>/"
+    # Profile-unaware consumers must not fail when ASSESSMENT-15 artifact is absent (non-physical businesses).
+    # Skill emits a clean skip message for non-physical-product businesses and creates no output artifact.
 
   # ── IDEAS standing pipeline ────────────────────────────────────────────────────────────────────────
   # IDEAS remains in the canonical stages list for stage-ID compatibility, but is not sequential.

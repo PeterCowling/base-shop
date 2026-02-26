@@ -3,6 +3,66 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Add ASSESSMENT-12 to loop-spec so GATE-ASSESSMENT-01 enforces dossier promotion before ASSESSMENT-13",
+      "body": "TASK-06 acceptance note calls out that ASSESSMENT-12 should run before ASSESSMENT-13 but the gate does not enforce it — documented friction point.",
+      "suggested_action": "create card to add ASSESSMENT-12 to loop-spec and update GATE-ASSESSMENT-01.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:10.111Z",
+      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Assess whether ASSESSMENT-13/14/15 need prompt template files",
+      "body": "prompt_required: false set for all three new stages — consistent with skill-file execution but may need revisiting if the loop UI requires prompt templates.",
+      "suggested_action": "defer — assess when first real business runs ASSESSMENT-13.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:10.111Z",
+      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Validate packaging brief with a real physical-product operator",
+      "body": "TASK-04 and TASK-03 confidence capped at 80% — regulatory reference data not yet validated against real production experience.",
+      "suggested_action": "when a physical-product business first runs ASSESSMENT-15, collect feedback and update regulatory-requirements.md.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:10.111Z",
+      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add ASSESSMENT-12 to loop-spec so GATE-ASSESSMENT-01 enforces dossier promotion before ASSESSMENT-13",
+      "body": "TASK-06 acceptance note calls out that ASSESSMENT-12 should run before ASSESSMENT-13 but the gate does not enforce it — documented friction point.",
+      "suggested_action": "create card to add ASSESSMENT-12 to loop-spec and update GATE-ASSESSMENT-01.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:01.939Z",
+      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Assess whether ASSESSMENT-13/14/15 need prompt template files",
+      "body": "prompt_required: false set for all three new stages — consistent with skill-file execution but may need revisiting if the loop UI requires prompt templates.",
+      "suggested_action": "defer — assess when first real business runs ASSESSMENT-13.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:01.939Z",
+      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Validate packaging brief with a real physical-product operator",
+      "body": "TASK-04 and TASK-03 confidence capped at 80% — regulatory reference data not yet validated against real production experience.",
+      "suggested_action": "when a physical-product business first runs ASSESSMENT-15, collect feedback and update regulatory-requirements.md.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:01.939Z",
+      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Add Jest unit test with fixture JSON mock for gsc-url-inspection-batch.ts extraction logic",
       "body": "TC-01 through TC-04 validated by code inspection only; fixture-based test would catch regression on return-type refactors",
       "suggested_action": "defer",

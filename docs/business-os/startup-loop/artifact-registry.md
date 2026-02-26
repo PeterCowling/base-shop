@@ -5,7 +5,7 @@ Version: 1.1.0
 Domain: Venture-Studio
 Workstream: Mixed
 Created: 2026-02-17
-Last-updated: 2026-02-21
+Last-updated: 2026-02-26
 Owner: startup-loop maintainers
 Related-plan: docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md
 Related-capability: docs/business-os/startup-loop/marketing-sales-capability-contract.md
@@ -31,6 +31,9 @@ Skills MUST use canonical paths from this registry. Stale or legacy paths listed
 | `seo` | `lp-seo` | SELL-01 companion | `docs/business-os/strategy/<BIZ>/seo/YYYY-MM-DD-<phase>-<BIZ>.user.md` | Phase-specific output (keyword-universe / content-clusters / serp-briefs / tech-audit / snippet-optimization) | `draft-marketing`, `lp-launch-qa`, `lp-metrics` | Dated filename; phase tag in filename |
 | `website-content-packet` | startup-loop WEBSITE factory (`compile-website-content-packet`) | WEBSITE-01 / DO | `docs/business-os/startup-baselines/<BIZ>-content-packet.md` | Source Ledger, SEO Focus (Launch-Phase), Page Intent Map, Product Copy Matrix, Copy Approval Rules | WEBSITE-01 first-build contract, `/lp-do-build` website-first-build tasks, app content materializers | frontmatter `Type: Startup-Content-Packet` |
 | `briefing_contract` | startup-loop maintainers (`lp-do-build` workflow) | WEBSITE/S10 operator briefing | `docs/business-os/startup-loop/briefing-contract-schema-v1.md` | Required metadata keys (`business`, `artifact`, `status`, `owner`, `last_updated`, `source_of_truth`, `depends_on`, `decisions`); status taxonomy; contradiction key set; T1 operator-card schema | `scripts/src/startup-loop/contract-lint.ts`, `docs/business-os/startup-loop-output-registry.user.html`, `/lp-do-build` task contracts | frontmatter `Type: Schema-Contract`, `Version: 1.0.0` |
+| `product-naming` | `lp-do-assessment-13-product-naming` | ASSESSMENT-13 | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-product-naming.user.md` | Sections: Brand-Product Name Relationship, Product Name Candidates (≥3), TM Pre-Screen Direction, Naming Convention for Future SKUs; frontmatter: `Type: Product-Naming`, `Stage: ASSESSMENT-13` | `lp-do-assessment-14-logo-brief` (required), `lp-do-assessment-15-packaging-brief` (required) | frontmatter `artifact: product-naming` |
+| `logo-brief` | `lp-do-assessment-14-logo-brief` | ASSESSMENT-14 | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-logo-brief.user.md` | Sections: Mark Type, Colour Specification, Typography Specification, Use Case List (≥3), Forbidden Territory (≥2), Reference Inspirations, Optional Wordmark Note; frontmatter: `Type: Logo-Brief`, `Stage: ASSESSMENT-14` | `lp-do-assessment-15-packaging-brief` (required), `/lp-design-spec` (reads Logo Brief section of brand language template) | frontmatter `artifact: logo-brief` |
+| `packaging-brief` | `lp-do-assessment-15-packaging-brief` | ASSESSMENT-15 | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-packaging-brief.user.md` | Sections: Structural Format, Surface Design Scope, Regulatory Requirements Checklist (≥3 items sourced from reference data), Brand Assets, Print Specification Notes, EAN/Barcode Note, Designer Handoff Checklist; frontmatter: `Type: Packaging-Brief`, `Stage: ASSESSMENT-15` | Operator (production/designer handoff) | frontmatter `artifact: packaging-brief`; **conditional: physical-product profile only** — absence is not an error for non-physical businesses. All consumers must implement absent-file safety. |
 
 ## Loop Output Artifact Registry
 
@@ -90,7 +93,16 @@ Paths that existed before this registry was published. Skills MUST NOT read from
 ## Producer/Consumer Dependency Graph
 
 ```
-ASSESSMENT quality gate complete (GATE-ASSESSMENT-01)
+ASSESSMENT stage sequence (GATE-ASSESSMENT-01 enforces completion at ASSESSMENT→MEASURE)
+    ASSESSMENT-10 (brand profiling)  →  strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md
+        └── ASSESSMENT-11 (brand identity)  →  strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md
+                └── ASSESSMENT-13 (product naming)  →  strategy/<BIZ>/<YYYY-MM-DD>-product-naming.user.md
+                        └── ASSESSMENT-14 (logo brief)  →  strategy/<BIZ>/<YYYY-MM-DD>-logo-brief.user.md
+                                ├── ASSESSMENT-15 (packaging brief, conditional: physical-product)
+                                │       →  strategy/<BIZ>/<YYYY-MM-DD>-packaging-brief.user.md
+                                └── /lp-design-spec (reads Logo Brief section of brand language template)
+
+GATE-ASSESSMENT-01 passed
     └── lp-offer (MARKET-06)  →  startup-baselines/<BIZ>-offer.md
             ├── lp-forecast (S3)  →  startup-baselines/<BIZ>/S3-forecast/YYYY-MM-DD.user.md
             │       └── startup-loop S4 join barrier

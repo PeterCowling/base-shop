@@ -1,6 +1,7 @@
 ---
 Type: Naming-Shortlist
 Business-Unit: PWRB
+Status: Active
 Round: 1
 Created: 2026-02-26
 Domain-check: RDAP via Verisign, 2026-02-26

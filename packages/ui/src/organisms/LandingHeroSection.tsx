@@ -108,14 +108,14 @@ const HeroProofPanel = memo(function HeroProofPanel({
   if (!ratings.length && !highlights.length) return null;
 
   return (
-    <div className="rounded-2xl border border-white/15 bg-brand-primary/85 p-5 text-brand-on-primary shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-black/70 dark:text-brand-text">
+    <div className="rounded-2xl border border-brand-on-primary/15 bg-brand-primary/85 p-5 text-brand-on-primary shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-black/70 dark:text-brand-text">
       {ratings.length ? (
         <div>
           <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-brand-on-primary/70 dark:text-brand-text/70">
             <Star className="size-3.5 text-brand-on-primary/70" aria-hidden />
             <span>{heading}</span>
           </div>
-          <ul className="mt-3 divide-y divide-white/15 text-sm dark:divide-white/10">
+          <ul className="mt-3 divide-y divide-brand-on-primary/15 text-sm dark:divide-white/10">
             {ratings.map((item) => (
               <li key={item.providerLabel} className="flex items-center justify-between py-2.5">
                 <div>
@@ -132,7 +132,7 @@ const HeroProofPanel = memo(function HeroProofPanel({
       ) : null}
       {highlights.length ? (
         <ul
-          className={`mt-3.5 space-y-2.5 text-sm text-brand-on-primary/85 ${ratings.length ? "border-t border-white/15 pt-3.5 dark:border-white/10" : ""} dark:text-brand-text/85`} // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
+          className={`mt-3.5 space-y-2.5 text-sm text-brand-on-primary/85 ${ratings.length ? "border-t border-brand-on-primary/15 pt-3.5 dark:border-white/10" : ""} dark:text-brand-text/85`} // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
         >
           {highlights.map(({ label, Icon }) => (
             <li key={label} className="flex items-center gap-2.5">

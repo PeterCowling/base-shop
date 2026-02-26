@@ -279,7 +279,7 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
           <PayTypeIcon size={16} />
         </Button>
 
-        <div className="w-px self-stretch bg-black/10" />
+        <div className="w-px self-stretch bg-border-1" />
 
         {/* Right button: immediate payment */}
         <Button

@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "filePath": "apps/brikette/src/app/[lang]/apartment/ApartmentPageContent.tsx",
+    "messages": [
+      {
+        "ruleId": "ds/no-raw-tailwind-color",
+        "severity": 2,
+        "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-white/70'",
+        "line": 118,
+        "column": 32,
+        "nodeType": "Literal",
+        "messageId": "noRawTw",
+        "endLine": 118,
+        "endColumn": 83
+      },
+      {
+        "ruleId": "ds/no-raw-tailwind-color",
+        "severity": 2,
+        "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-white/70'",
+        "line": 127,
+        "column": 32,
+        "nodeType": "Literal",
+        "messageId": "noRawTw",
+        "endLine": 127,
+        "endColumn": 83
+      }
+    ]
+  }
+]

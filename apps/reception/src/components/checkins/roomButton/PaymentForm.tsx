@@ -91,7 +91,7 @@ function PaymentForm({
               <PayTypeIcon size={16} />
             </Button>
           </PopoverTrigger>
-          <div className="w-px self-stretch bg-black/10" />
+          <div className="w-px self-stretch bg-border-1" />
           <Button
             compatibilityMode="passthrough"
             onClick={handleImmediatePayment}

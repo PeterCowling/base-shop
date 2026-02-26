@@ -348,7 +348,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
           <depositIcon.icon size={16} />
         </Button>
 
-        <div className="w-px self-stretch bg-black/10" />
+        <div className="w-px self-stretch bg-border-1" />
 
         {/* Confirm action */}
         <Button

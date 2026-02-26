@@ -15,6 +15,7 @@ import { SimpleModal } from "@acme/ui/molecules";
 import { creditCardSchema } from "../../schemas/creditCardSchema";
 import { formatCreditCardNumber } from "../../utils/creditCardUtils"; // Adjust path as needed
 import { showToast } from "../../utils/toastUtils";
+import { Spinner } from "../common/Spinner";
 
 interface PaymentInfo {
   cardNumber: string;
@@ -214,9 +215,9 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
       <div className="relative">
         {/* Loading indicator */}
         {(isProcessing || isSaving) && (
-          <div className="absolute inset-0 bg-surface bg-opacity-75 flex flex-col items-center justify-center z-10">
-            <div className="w-8 h-8 border-4 border-border-2 border-t-primary-main rounded-full animate-spin" />
-            <p className="mt-2 text-foreground font-medium">
+          <div className="absolute inset-0 bg-surface/75 flex flex-col items-center justify-center gap-3 z-10">
+            <Spinner size="md" label={isSaving ? "Saving" : "Processing"} />
+            <p className="text-sm font-medium text-foreground">
               {isSaving ? "Saving..." : "Processing..."}
             </p>
           </div>

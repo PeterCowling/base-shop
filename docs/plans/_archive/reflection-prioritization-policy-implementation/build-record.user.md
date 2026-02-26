@@ -1,4 +1,5 @@
 ---
+Type: Build-Record
 Status: Complete
 Feature-Slug: reflection-prioritization-policy-implementation
 Completed-date: 2026-02-26

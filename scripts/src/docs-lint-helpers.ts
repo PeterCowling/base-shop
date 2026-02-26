@@ -43,7 +43,7 @@ export function parseHeader(content: string): DocHeader {
 }
 
 const CANONICAL_STAGE_ID_REGEX =
-  /\b(?:ASSESSMENT(?:-(?:0[1-9]|10|11))?|MEASURE-(?:01|02)|MARKET(?:-(?:01|02|03))?|SELL(?:-(?:01|02))?|S(?:3|4|5A|5B|6|9B|10)|DO)\b/g;
+  /\b(?:ASSESSMENT(?:-(?:0[1-9]|1[0-5]))?|MEASURE-(?:01|02)|MARKET(?:-(?:0[1-9]|1[0-9]))?|SELL(?:-(?:0[1-9]|1[0-9]))?|S(?:3|4|5A|5B|6|9B|10)|DO)\b/g;
 
 const RETIRED_MARKETING_SALES_ID_REGEX =
   /\b(?:S2|S2B|S3B|S6B|GATE-S6B-STRAT-01|GATE-S6B-ACT-01|GATE-S3B-01)\b/g;

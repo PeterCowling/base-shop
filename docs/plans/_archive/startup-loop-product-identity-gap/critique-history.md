@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archived
+Feature-Slug: startup-loop-product-identity-gap
+---
+
 # Critique History: startup-loop-product-identity-gap
 
 ## Round 1 — 2026-02-26

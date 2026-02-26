@@ -1,5 +1,6 @@
 ---
-Status: Ready-for-planning
+Type: Fact-Find
+Status: Archived
 Outcome: Three new deliverable types (product naming, logo design, product packaging) need explicit assessment stages in the startup loop. Current ASSESSMENT chain ends brand work at ASSESSMENT-12 (dossier promotion) with no path to these outputs.
 Execution-Track: BOS
 Deliverable-Type: doc

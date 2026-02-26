@@ -1,7 +1,8 @@
 ---
+Type: Fact-Find
 Plan: process-improvements-completion-lifecycle
 Business-Unit: BOS
-Status: Ready-for-planning
+Status: Archived
 Fact-Find-Date: 2026-02-26
 Dispatch-ID: IDEA-DISPATCH-20260226-0014
 ---

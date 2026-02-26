@@ -1,4 +1,6 @@
 ---
+Type: Build-Record
+Status: Complete
 Plan: process-improvements-completion-lifecycle
 Feature-Slug: process-improvements-completion-lifecycle
 Business-Unit: BOS

@@ -1,5 +1,6 @@
 ---
-Status: Draft
+Type: Results-Review
+Status: Complete
 Feature-Slug: reflection-prioritization-policy-implementation
 Review-date: 2026-02-26
 artifact: results-review

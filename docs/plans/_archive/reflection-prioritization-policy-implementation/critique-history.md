@@ -1,5 +1,6 @@
 ---
 Type: Critique-History
+Status: Archived
 Feature-Slug: reflection-prioritization-policy-implementation
 ---
 

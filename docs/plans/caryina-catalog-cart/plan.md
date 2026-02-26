@@ -5,7 +5,7 @@ Domain: Products
 Workstream: Engineering
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
-Last-updated: 2026-02-26 (Wave 3 complete: TASK-04)
+Last-updated: 2026-02-26 (Wave 4 complete: TASK-05, TASK-06)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: caryina-catalog-cart
 Deliverable-Type: multi-deliverable
@@ -30,8 +30,8 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - [x] TASK-02: Add stock badge to PLP and PDP
 - [x] TASK-03: Admin auth middleware and login route
 - [x] TASK-04: Product and inventory CRUD API routes
-- [ ] TASK-05: Admin product list and create/edit form pages
-- [ ] TASK-06: Admin inventory quantity edit
+- [x] TASK-05: Admin product list and create/edit form pages
+- [x] TASK-06: Admin inventory quantity edit
 - [ ] TASK-07: CHECKPOINT — admin workstream verified
 - [x] TASK-08: INVESTIGATE — cart API storage backend approach
 - [ ] TASK-09: CartProvider wrap and /api/cart route handler
@@ -107,9 +107,9 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 | TASK-02 | IMPLEMENT | Stock badge (PLP + PDP) | 80% | S | Complete (2026-02-26) | — | — |
 | TASK-03 | IMPLEMENT | Admin auth middleware + login | 75% | S | Complete (2026-02-26) | TASK-01 ✓ | TASK-04 |
 | TASK-04 | IMPLEMENT | Product + inventory CRUD API routes | 80% | M | Complete (2026-02-26) | TASK-03 ✓ | TASK-05, TASK-06 |
-| TASK-05 | IMPLEMENT | Admin product list + create/edit form | 75% | M | Pending | TASK-04 ✓ | TASK-07 |
-| TASK-06 | IMPLEMENT | Admin inventory quantity edit | 80% | S | Pending | TASK-04 ✓ | TASK-07 |
-| TASK-07 | CHECKPOINT | Admin workstream verified | 95% | S | Pending | TASK-05, TASK-06 | TASK-09 |
+| TASK-05 | IMPLEMENT | Admin product list + create/edit form | 75% | M | Complete (2026-02-26) | TASK-04 ✓ | TASK-07 |
+| TASK-06 | IMPLEMENT | Admin inventory quantity edit | 80% | S | Complete (2026-02-26) | TASK-04 ✓ | TASK-07 |
+| TASK-07 | CHECKPOINT | Admin workstream verified | 95% | S | Pending | TASK-05 ✓, TASK-06 ✓ | TASK-09 |
 | TASK-08 | INVESTIGATE | Cart API storage approach | 85% | S | Complete (2026-02-26) | — | TASK-09 |
 | TASK-09 | IMPLEMENT | CartProvider + /api/cart route | 80% | M | Pending | TASK-01 ✓, TASK-07, TASK-08 ✓ | TASK-10, TASK-11 |
 | TASK-10 | IMPLEMENT | AddToCartButton + /cart page | 80% | M | Pending | TASK-09 | — |
@@ -123,7 +123,7 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 | 1 | TASK-01, TASK-02, TASK-08 | None | ✓ Complete 2026-02-26 |
 | 2 | TASK-03 | TASK-01 ✓ | ✓ Complete 2026-02-26 |
 | 3 | TASK-04 | TASK-03 ✓ | ✓ Complete 2026-02-26 |
-| 4 | TASK-05, TASK-06 | TASK-04 ✓ | Admin list/form + inventory edit in parallel |
+| 4 | TASK-05, TASK-06 | TASK-04 ✓ | ✓ Complete 2026-02-26 |
 | 5 | TASK-07 (CHECKPOINT) | TASK-05 ✓, TASK-06 ✓ | Verify admin end-to-end; triggers /lp-do-replan |
 | 6 | TASK-09 | TASK-01 ✓, TASK-07 ✓, TASK-08 ✓ | Cart backend approach resolved before implementation |
 | 7 | TASK-10, TASK-11 | TASK-09 ✓ | Cart UI + checkout API in parallel |
@@ -358,9 +358,9 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/caryina/src/app/admin/products/` (new), `apps/caryina/src/components/admin/ProductForm.client.tsx` (new)
-- **Depends on:** TASK-04
+- **Depends on:** TASK-04 ✓
 - **Blocks:** TASK-07
 - **Confidence:** 75%
   - Implementation: 75% — product form is non-trivial: multilingual `title`/`description` (en/de/it tabs), `media: MediaItem[]` (URL input + tag input), price (minor units, display as formatted), status dropdown. MVP scope (English-only text fields + media URL as text) reduces complexity but the form still has ~10 fields. Scope creep risk during implementation.
@@ -397,6 +397,10 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
   - Rollback: Delete admin pages directory.
 - **Documentation impact:** None: admin-internal UI.
 - **Notes / references:** `packages/types/src/Product.ts`; `packages/platform-core/src/repositories/products.server.ts`.
+- **Build evidence (2026-02-26):**
+  - Commit: `ac51dcb328`
+  - Files: `admin/products/page.tsx` (list); `admin/products/new/page.tsx` (create); `admin/products/[id]/page.tsx` (edit + InventoryEditor integration); `ProductForm.client.tsx` (extracted MediaSection + FormActions sub-components to satisfy max-lines-per-function rule).
+  - TC-01 ✓ (POST create), TC-02 ✓ (PATCH edit), TC-03 ✓ (DELETE), TC-04 ✓ (form validation). 54/54 suite passes. Typecheck clean.
 
 ---
 
@@ -440,6 +444,10 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
   - Rollback: Remove `InventoryEditor.client.tsx` from edit page.
 - **Documentation impact:** None.
 - **Notes / references:** `data/shops/caryina/inventory.json`; `packages/platform-core/src/repositories/inventory.server.ts`.
+- **Build evidence (2026-02-26):**
+  - Commit: `ac51dcb328`
+  - Files: `InventoryEditor.client.tsx` (new, integrated into `admin/products/[id]/page.tsx`).
+  - TC-01 ✓ (quantity pre-filled), TC-02 ✓ (PATCH update), TC-03 ✓ (stock badge update path). 54/54 suite passes. Typecheck clean.
 
 ---
 

@@ -1,10 +1,13 @@
 ---
 Type: Naming-Generation-Spec
 Business-Unit: HEAD
-Status: Active
+Status: Complete
 Created: 2026-02-21
-Updated: 2026-02-22
-Round: 6
+Updated: 2026-02-26
+Round: 7
+Selected-name: Facilella
+Selected-domain: facilella.com
+Selected-date: 2026-02-26
 Purpose: Agent-executable spec to generate 250 scored candidate brand names for HEAD
 ---
 
@@ -343,6 +346,12 @@ Do not reuse any name from this list. The Round 5 territory framework has been s
 
 Abito, Abitudine, Agile, Agilina, Agilfirm, Agilova, Agilrun, Allestita, Andare, Andatura, Badgella, Badgiva, Balzo, Bloccato, Borsa, Certella, Certezza, Certo, Certova, Certposa, Certsal, Chosenella, Chosenova, Colore, Coloriva, Colormark, Contenuto, Corredo, Corsa, Custodia, Dailyella, Dailyova, Distintivo, Divisa, Dotata, Dotazione, Dressella, Dressiva, Emblema, Equipaggio, Etichetta, Fermella, Fermposa, Fermezza, Fermo, Fermova, Firma, Firmmark, Firmova, Fissato, Foundella, Foundiva, Galoppo, Giornaliero, Giorniva, Giornova, Giornwear, Giro, Goella, Goiva, Impronta, Indossiva, Indosso, Indossova, Indosskitt, Insegna, Insieme, Kitella, Kitova, Lancio, Layerella, Layeriva, Layerova, Leggero, Lightella, Lightova, Marchio, Markella, Markova, Mossa, Mossifera, Mossiva, Mossorun, Mosscatt, Moveella, Moveova, Ordinato, Ordinella, Ordinova, Ordkit, Outfitiva, Outfitova, Ownella, Owniva, Packella, Packiva, Passo, Patente, Porta, Portata, Portino, Portiva, Portova, Portset, Posa, Posafera, Posella, Posova, Pronta, Prontella, Prontezza, Prontkit, Pronto, Prontokit, Prontova, Proprio, Raccolta, Reggere, Rimane, Rimbalzo, Riserva, Ritmo, Roamella, Roamiva, Saldina, Saldiva, Saldo, Saldova, Scattella, Scattiva, Scatto, Scattmossa, Scelto, Scivola, Scorta, Segnella, Segnmark, Segno, Segnova, Setella, Setova, Settella, Settova, Sfreccia, Sicuro, Sigillo, Snella, Snellgo, Snelliva, Snellova, Snellrun, Solita, Solitella, Solito, Solitova, Spedito, Stabile, Stare, Steadin, Stemma, Stilina, Stile, Stilova, Stilsegn, Sureella, Sureiva, Tasca, Tascabile, Tenuto, Throughova, Thruova, Tiene, Timbro, Togethova, Trovato, Tuttella, Tuttino, Tutto, Tuttova, Tuttpack, Vestdoss, Vestella, Vestgiorn, Vestire, Vestita, Vestito, Vestiva, Volata, Wearella, Wearova
 
+### 5.6 Eliminated names — Round 6 (all candidates)
+
+Do not reuse any name from this list.
+
+Wornset, Tenura, Durova, Manora, Stivano, Tracina, Propriva, Sfogira, Brillova, Facilera, Subera, Solera, Autonova, Tenive, Durelle, Wordura, Keptiva, Keptora, Wormane, Tenella, Mandura, Stivora, Ripova, Tracova, Ordova, Fondova, Stivella, Ripella, Tracella, Abituova, Wornabita, Tuoiva, Consueva, Mostriva, Spicova, Outiva, Brillera, Sfogella, Autonella, Facilova, Sempova, Solova, Semprella, Tenivore, Durino, Manive, Workept, Kepmane, Riptrova, Tractrova, Fondella, Stivina, Ordella, Propella, Wornella, Abitella, Consuella, Sfogbrill, Outfront, Outera, Staysiva, Holdsiva, Weariva, Keptiva, Worniva, Lastiva, Lastera, Wearsiva, Heldova, Stowiva, Stowova, Sortiva, Sortova, Foundova, Foundiva, Trackiva, Trackova, Safeiva, Wornself, Ownova, Yoursiva, Yoursova, Partiva, Habitova, Habiva, Shownova, Showniva, Frontera, Frontiva, Boldova, Boldiva, Outova, Outiva, Styledova, Easiva, Easova, Quickova, Quickiva, Doneova, Doneiva, Justova, Selfova, Selfiva, Tendura, Durten, Tenmane, Mantiene, Wordura, Keptmane, Durmane, Stivtrac, Tracstiv, Riptraci, Ordintrova, Fondtraci, Stivord, Ripposta, Propworn, Wornpropri, Abituown, Tuoiown, Consuown, Propriown, Sfogout, Outbrilla, Mostrout, Spicout, Brillout, Outmostra, Outsfoggi, Facilsol, Solsub, Subauton, Autonomsol, Sempfacil, Facilsub, Durata, Tenuta, Rimasto, Restato, Mantenuto, Reggeva, Tenuto, Saldo, Stabile, Portato, Indossa, Indosso, Stivato, Riposto, Trovato, Custodito, Ordinato, Tracciato, Scorta, Scorte, Raccolta, Dotato, Dotazione, Corredo, Equipaggio, Proprio, Consueto, Abituato, Portato, Indossato, Consueta, Adosso, Divisa, Sfoggio, Sfoggia, Spicca, Esposto, Mostra, Ostenta, Indice, Vista, Evidente, Marcato, Facile, Semplice, Pronto, Prontezza, Autonomo, Autonoma, Sbrigato, Spedito, Sbriga, Lesto, Snello, Agile, Svelto, Sciolto, Disteso, Tenura, Duretta, Reggere, Regge, Resse, Tiene, Tenente, Mantenendo, Solida, Radicata, Ancorata, Sorta, Composta, Assortita, Pronta, Integra, Intatta, Conforme, Presente, Collocata, Posata, Indossare, Portare, Abituale, Quotidiano, Portuale, Incluso, Insieme, Integrato, Scelto, Distintivo, Palese, Manifesto, Inview, Segnato, Segnale, Lanciato, Diretto, Immediato, Gestito, Risolto, Compiuto, Adempiuto, Eseguito, Indipendente, Condotto, Deciso, Attivo, Operativo, Funzionale, Scalabile, Mantenuta, Bloccata, Ferma, Stabile, Rimane
+
 ---
 
 ## 6. Output format
@@ -376,5 +385,5 @@ Before scoring any name, apply these rejection tests in order. A single failure 
 5. **Clinical test:** Does the name sound like a device manufacturer, clinical brand, or medical product? → eliminate.
 6. **Category ban test:** Does the name use any word from the category-level ban list in §5.1? → eliminate.
 7. **Territory-specific ban test:** Does the name use a word banned by its own territory (see §4.3)? → eliminate.
-8. **Prior-round test:** Is this name (or a close phonetic variant) in §5.2, §5.3, §5.4, or §5.5? → eliminate.
+8. **Prior-round test:** Is this name (or a close phonetic variant) in §5.2, §5.3, §5.4, §5.5, or §5.6? → eliminate.
 9. **Meaning test:** If both morpheme elements are semantically empty (chosen only for phonetic appeal, with no territory connection), the combination will score I ≤ 3 → eliminate.

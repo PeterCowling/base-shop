@@ -1,7 +1,9 @@
 ---
 Type: Strategy-Index
 Business-Unit: HEAD
-Last-updated: 2026-02-20
+Last-updated: 2026-02-26
+Brand-name: Facilella
+Brand-domain: facilella.com
 Status: Active
 Owner: Pete
 Review-trigger: After each completed build cycle touching this document.
@@ -30,6 +32,8 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | Naming Research (prompt) | `docs/business-os/strategy/HEAD/candidate-names-prompt.md` | Active | 2026-02-19 |
 | Naming Research (shortlist) | `docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md` | Draft | 2026-02-20 |
 | Naming Research (latest pointer) | `docs/business-os/strategy/HEAD/latest-candidate-names.user.md` | Draft | 2026-02-20 |
+| Naming Decision | `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-NAME-01.user.md` | Active | 2026-02-26 |
+| Naming Shortlist R7 (selected) | `docs/business-os/strategy/HEAD/naming-shortlist-2026-02-26-r7.user.md` | Complete | 2026-02-26 |
 
 ## Startup-Loop Canonical Artifacts
 

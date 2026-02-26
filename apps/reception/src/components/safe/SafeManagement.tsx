@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, memo, useEffect, useState } from "react";
+import { Key, Wallet } from "lucide-react";
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives";
@@ -18,6 +19,7 @@ import { getErrorMessage } from "../../utils/errorMessage";
 import { showToast } from "../../utils/toastUtils";
 import { runTransaction } from "../../utils/transaction";
 import { PageShell } from "../common/PageShell";
+import { StatPanel } from "../common/StatPanel";
 import { ExchangeNotesForm } from "../till/ExchangeNotesForm";
 import ReturnKeycardsModal from "../till/ReturnKeycardsModal";
 
@@ -360,37 +362,43 @@ function SafeManagement(): JSX.Element {
   return (
     <PageShell title="SAFE MANAGEMENT">
       <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
-        <p className="text-lg">
-          Safe Balance: <strong>€{safeBalance.toFixed(2)}</strong>
-        </p>
-        <p className="text-lg">
-          Keycards in Safe: <strong>{safeKeycards}</strong>
-        </p>
+        <div className="flex flex-wrap gap-4">
+          <StatPanel
+            label="Safe Balance"
+            value={`€${safeBalance.toFixed(2)}`}
+            icon={<Wallet className="text-primary-main" size={24} />}
+          />
+          <StatPanel
+            label="Keycards in Safe"
+            value={safeKeycards}
+            icon={<Key className="text-primary-main" size={24} />}
+          />
+        </div>
         <div className="space-y-4">
           <div className="flex gap-2 flex-wrap">
             {canOpenSafe && (
               <Button
                 onClick={() => setShowOpen(true)}
-                className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+                className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
               >
                 Open
               </Button>
             )}
             <Button
               onClick={() => setShowDeposit(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
             >
               Deposit
             </Button>
             <Button
               onClick={() => setShowWithdrawal(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
             >
               Withdraw
             </Button>
             <Button
               onClick={() => setShowExchange(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
             >
               Exchange
             </Button>
@@ -398,31 +406,31 @@ function SafeManagement(): JSX.Element {
           <div className="flex gap-2 flex-wrap">
             <Button
               onClick={() => setShowBankDeposit(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
             >
               Bank Deposit
             </Button>
             <Button
               onClick={() => setShowPettyCash(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
             >
               Petty Cash
             </Button>
             <Button
               onClick={() => setShowReset(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
             >
               Reset Safe
             </Button>
             <Button
               onClick={() => setShowReturn(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
             >
               Return Keycards
             </Button>
             <Button
               onClick={() => setShowReconcile(true)}
-              className="px-4 py-2 bg-warning-main text-primary-fg rounded hover:bg-warning-dark"
+              className="px-4 py-2 bg-warning-main text-primary-fg rounded-lg hover:bg-warning-dark"
             >
               Reconcile
             </Button>

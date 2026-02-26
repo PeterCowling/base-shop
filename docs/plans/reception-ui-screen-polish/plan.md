@@ -5,7 +5,7 @@ Domain: UI
 Workstream: Engineering
 Created: 2026-02-25
 Last-reviewed: 2026-02-25
-Last-updated: 2026-02-26 (Wave 2)
+Last-updated: 2026-02-26 (Wave 2 + TASK-05)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-ui-screen-polish
 Deliverable-Type: code-change
@@ -30,7 +30,7 @@ Extends the visual design language established on the login and bar screens (gra
 - [x] TASK-02: RoomsGrid — token migration and card container
 - [x] TASK-03: INVESTIGATE — TillReconciliation children (ActionButtons, FormsContainer)
 - [x] TASK-04: TillReconciliation — mode banners and shift state polish
-- [ ] TASK-05: SafeManagement — balance panel, button grouping, denomination polish
+- [x] TASK-05: SafeManagement — balance panel, button grouping, denomination polish
 - [ ] TASK-06: CHECKPOINT — Phase 1 verification and downstream replan
 - [ ] TASK-07: PrepareDashboard — heading fix and PageShell migration
 - [ ] TASK-08: RealTimeDashboard — heading fix and chart card polish
@@ -104,7 +104,7 @@ Extends the visual design language established on the login and bar screens (gra
 | TASK-02 | IMPLEMENT | RoomsGrid — token migration and card container | 85% | S | Complete (2026-02-26) | TASK-01 | TASK-06 |
 | TASK-03 | INVESTIGATE | TillReconciliation children scope | 90% | S | Complete (2026-02-26) | - | TASK-04 |
 | TASK-04 | IMPLEMENT | TillReconciliation — mode banners and state polish | 85% | S | Complete (2026-02-26) | TASK-00, TASK-03 | TASK-06 |
-| TASK-05 | IMPLEMENT | SafeManagement — balance panel, button grouping | 91% | S | Pending | TASK-00 | TASK-06 |
+| TASK-05 | IMPLEMENT | SafeManagement — balance panel, button grouping | 91% | S | Complete (2026-02-26) | TASK-00 | TASK-06 |
 | TASK-06 | CHECKPOINT | Phase 1 verification and downstream replan | 95% | S | Pending | TASK-02, TASK-04, TASK-05 | TASK-07, TASK-08, TASK-09 |
 | TASK-07 | IMPLEMENT | PrepareDashboard — heading fix and PageShell migration | 75% | M | Pending | TASK-06 | TASK-10 |
 | TASK-08 | IMPLEMENT | RealTimeDashboard — heading fix and chart card polish | 75% | S | Pending | TASK-06 | TASK-10 |
@@ -362,7 +362,16 @@ Extends the visual design language established on the login and bar screens (gra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S _(revised from M by Wave 2 pre-execution probe — balance tags at JSX top level, all handlers extracted, no entanglement)_
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build evidence:**
+  - `StatPanel` created at `apps/reception/src/components/common/StatPanel.tsx` — `bg-surface-2 rounded-lg p-4 flex items-center gap-4`, label + value display, optional icon slot
+  - Safe Balance and Keycards in Safe replaced with `<StatPanel>` using `Wallet` and `Key` Lucide icons; value displayed at `text-2xl font-semibold`
+  - `rounded` → `rounded-lg` applied to all 9 action buttons (8× bg-primary-main, 1× bg-warning-main)
+  - TC-05-01: StatPanel containers confirmed in snapshot — `bg-surface-2 rounded-lg p-4`, `text-2xl font-semibold text-foreground` value, `text-xs font-medium text-muted-foreground uppercase tracking-wide` label
+  - TC-05-03: StatPanel renders correctly in safe-route parity snapshot (€100.00 value, Wallet SVG icon)
+  - TC-05-04: `pnpm -w run test:governed -- jest -- --testPathPattern=safe --updateSnapshot` → 1 snapshot updated; 8 failing suites are pre-existing (SafeOpenForm `bg-primary-main` assertion — unrelated to button rounding change)
+  - TC-05-05: `grep -n 'className=.*rounded[^-]' SafeManagement.tsx` → CLEAN
+  - Typecheck: 55/55 successful; lint: 19/19 successful
 - **Affects:** `apps/reception/src/components/safe/SafeManagement.tsx`, `apps/reception/src/components/common/StatPanel.tsx` (new)
 - **Depends on:** TASK-00
 - **Blocks:** TASK-06

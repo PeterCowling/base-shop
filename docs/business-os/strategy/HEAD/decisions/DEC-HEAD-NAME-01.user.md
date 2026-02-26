@@ -6,6 +6,7 @@ Category: naming
 Date: 2026-02-26
 Status: Active
 Owner: Pete
+Review-trigger: Reassess only if legal/domain conflict appears pre-launch
 ---
 
 # Brand Name Decision — HEAD

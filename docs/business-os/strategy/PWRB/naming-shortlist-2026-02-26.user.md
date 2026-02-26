@@ -7,6 +7,8 @@ Domain-check: RDAP via Verisign, 2026-02-26
 Total candidates generated: 250
 Total .com available: 188
 Presented: top 20 by score
+Owner: Pete
+Review-trigger: Update after TM screen completion or shortlist change
 ---
 
 # PWRB Naming Shortlist — 2026-02-26

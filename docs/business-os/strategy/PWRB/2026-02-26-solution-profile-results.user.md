@@ -7,6 +7,8 @@ Created: 2026-02-26
 Prompt-file: docs/business-os/strategy/PWRB/2026-02-26-solution-profiling-prompt.md
 Source: Operator deep research run (2026-02-26)
 Downstream: docs/business-os/strategy/PWRB/2026-02-26-solution-decision.user.md
+Owner: Pete
+Review-trigger: Refresh when channel, regulatory, or supplier assumptions materially change
 ---
 
 # Solution-Profiling Results — PWRB

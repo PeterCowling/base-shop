@@ -7,6 +7,8 @@ Created: 2026-02-26
 Source: docs/business-os/strategy/PWRB/2026-02-26-solution-profile-results.user.md
 Problem-statement: docs/business-os/strategy/PWRB/2026-02-26-problem-statement.user.md
 Downstream: docs/business-os/strategy/PWRB/candidate-names-prompt.md
+Owner: Pete
+Review-trigger: Revisit after first operator deep-research rerun or pilot feasibility update
 ---
 
 # Option Selection Decision — PWRB

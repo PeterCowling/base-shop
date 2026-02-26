@@ -8,6 +8,7 @@ Created: 2026-02-26
 Updated: 2026-02-26
 Pipeline-Completed: 2026-02-26
 Owner: Pete
+Review-trigger: Re-run before launch copy freeze or when hero SKU changes
 ---
 
 # Product Naming — HEAD (ASSESSMENT-13)

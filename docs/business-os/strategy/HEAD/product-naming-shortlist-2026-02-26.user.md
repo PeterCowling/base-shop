@@ -7,6 +7,7 @@ Status: Draft
 Created: 2026-02-26
 Updated: 2026-02-26
 Owner: Pete
+Review-trigger: Update when TM pre-screen or final line-name selection changes
 Source-Candidates: docs/business-os/strategy/HEAD/product-naming-candidates-2026-02-26.md
 Source-TM: docs/business-os/strategy/HEAD/product-naming-tm-2026-02-26.txt
 Source-Spec: docs/business-os/strategy/HEAD/2026-02-26-product-naming-spec.md

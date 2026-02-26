@@ -6,7 +6,7 @@ Workstream: Engineering
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
 Last-updated: 2026-02-26
-Build-last-task: TASK-00
+Build-last-task: TASK-04 (Wave 1 complete)
 Critique-Round: 2
 Critique-Score: 4.5
 Critique-Verdict: credible
@@ -30,10 +30,10 @@ Phase 1–3 of the reception app UI polish is complete (9 screens, archived 2026
 
 ## Active tasks
 - [x] TASK-00: Pre-wave fact-check: confirm PageShell and ReceptionSkeleton stable, grep Phase 4 screens for any new issues
-- [ ] TASK-01: Wave 1 — Audit/Search screen polish
-- [ ] TASK-02: Wave 1 — Prime Requests screen polish
-- [ ] TASK-03: Wave 1 — Alloggiati screen polish
-- [ ] TASK-04: Wave 1 — Doc Insert screen polish
+- [x] TASK-01: Wave 1 — Audit/Search screen polish
+- [x] TASK-02: Wave 1 — Prime Requests screen polish
+- [x] TASK-03: Wave 1 — Alloggiati screen polish
+- [x] TASK-04: Wave 1 — Doc Insert screen polish
 - [ ] TASK-05: Wave 2 — Reconciliation Workbench screen polish
 - [ ] TASK-06: Wave 2 — Variance Heatmap screen polish
 - [ ] TASK-07: Wave 2 — Menu Performance screen polish
@@ -122,10 +122,10 @@ Phase 1–3 of the reception app UI polish is complete (9 screens, archived 2026
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-00 | CHECKPOINT | Pre-wave fact-check: confirm PageShell and ReceptionSkeleton stable | 95% | S | Complete (2026-02-26) | - | TASK-01, TASK-02, TASK-03, TASK-04 |
-| TASK-01 | IMPLEMENT | Wave 1 — Audit/Search screen polish | 80% | M | Pending | TASK-00 | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
-| TASK-02 | IMPLEMENT | Wave 1 — Prime Requests screen polish | 80% | M | Pending | TASK-00 | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
-| TASK-03 | IMPLEMENT | Wave 1 — Alloggiati screen polish | 80% | M | Pending | TASK-00 | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
-| TASK-04 | IMPLEMENT | Wave 1 — Doc Insert screen polish | 80% | M | Pending | TASK-00 | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
+| TASK-01 | IMPLEMENT | Wave 1 — Audit/Search screen polish | 80% | M | Complete (2026-02-26) | TASK-00 | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
+| TASK-02 | IMPLEMENT | Wave 1 — Prime Requests screen polish | 80% | M | Complete (2026-02-26) | TASK-00 | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
+| TASK-03 | IMPLEMENT | Wave 1 — Alloggiati screen polish | 80% | M | Complete (2026-02-26) | TASK-00 | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
+| TASK-04 | IMPLEMENT | Wave 1 — Doc Insert screen polish | 80% | M | Complete (2026-02-26) | TASK-00 | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-05 | IMPLEMENT | Wave 2 — Reconciliation Workbench screen polish | 75% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
 | TASK-06 | IMPLEMENT | Wave 2 — Variance Heatmap screen polish | 75% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
 | TASK-07 | IMPLEMENT | Wave 2 — Menu Performance screen polish | 75% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
@@ -209,7 +209,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/search/Search.tsx`; snapshot test file in `apps/reception/src/components/search/__tests__/`
 - **Depends on:** TASK-00
 - **Blocks:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
@@ -257,6 +257,14 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - SmallSpinner located at `apps/reception/src/components/search/SmallSpinner.tsx` — retain if used for single-element loading; only replace with ReceptionSkeleton if a full table skeleton is needed
   - Phase 1–3 reference screens for heading pattern: PrepareDashboard, RealTimeDashboard (accent-bar h1 with `h-7 w-1 rounded-full bg-primary-main`)
+- **Build evidence (2026-02-26):**
+  - `PageShell title="Audit"` added as root wrapper replacing React fragment
+  - `bg-surface rounded-xl shadow-lg p-6` card wrapping tab bar + tab content
+  - Tab buttons: 3× bare `rounded` → `rounded-lg`
+  - `h2 text-xl font-semibold "Search Bookings"` retained as tab sub-heading (not page heading)
+  - SmallSpinner retained in loading path (per fact-find resolution)
+  - TC-01–TC-04: all 19 Wave 1 tests pass; ESLint clean; zero raw colors; zero bare `rounded`
+  - Commit: d23f167a85
 
 ---
 
@@ -267,7 +275,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/prime-requests/PrimeRequestsQueue.tsx`; snapshot test file in `apps/reception/src/components/prime-requests/__tests__/`
 - **Depends on:** TASK-00
 - **Blocks:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
@@ -310,6 +318,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None: visual-only change
 - **Notes / references:**
   - Same heading anti-pattern (`text-5xl text-primary-main text-center`) also in DocInsertPage.tsx — removed in TASK-04
+- **Build evidence (2026-02-26):**
+  - `PageShell title="Prime Requests"` added replacing `div.min-h-80vh bg-surface-2`
+  - `h1 text-5xl text-primary-main text-center` removed (replaced by PageShell accent-bar heading)
+  - Card shadow upgraded: `shadow` → `shadow-lg`
+  - Status filter buttons: `rounded` → `rounded-lg`; select: `rounded` → `rounded-lg`; input: `rounded` → `rounded-lg`; Apply button: `rounded` → `rounded-lg`
+  - TC-01–TC-04: all tests pass; ESLint clean; zero raw colors; zero bare `rounded`
+  - Commit: d23f167a85
 
 ---
 
@@ -320,7 +335,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/man/Alloggiati.tsx`; snapshot test file in `apps/reception/src/components/man/__tests__/`
 - **Depends on:** TASK-00
 - **Blocks:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
@@ -368,6 +383,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Alloggiati is the police registration compliance tool — visual quality matters for staff confidence in compliance workflows
   - Debug note from fact-find: no debug console.log calls noted in Alloggiati.tsx (only Extension.tsx has this issue)
+- **Build evidence (2026-02-26):**
+  - `PageShell title="Alloggiati"` added replacing React fragment root; `h2 text-xl font-bold` removed
+  - Loading `<p>` replaced with `<ReceptionSkeleton rows={3} />`; test updated to use `aria-busy="true"` selector
+  - Send section: `border border-border-2 rounded` → `bg-surface rounded-xl shadow-lg p-6` card
+  - TC-01–TC-05: all tests pass; ESLint clean; zero raw colors; zero bare `rounded`
+  - Commit: d23f167a85
 
 ---
 
@@ -378,7 +399,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/checkins/docInsert/DocInsertPage.tsx`
 - **Depends on:** TASK-00
 - **Blocks:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
@@ -419,6 +440,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None: visual-only change
 - **Notes / references:**
   - Keep existing `bg-surface rounded-2xl shadow-xl` card — it already meets the standard (shadow-xl exceeds shadow-lg, rounded-2xl is correct for this panel level)
+- **Build evidence (2026-02-26):**
+  - `PageShell title="Insert Guest Details"` added replacing `div.p-4.mx-auto.font-body`
+  - `h1 text-5xl font-heading text-primary-main` removed (replaced by PageShell accent-bar heading)
+  - Existing `bg-surface rounded-2xl shadow-xl px-8 py-12` card preserved
+  - Early-return loading/error/no-occupant states also wrapped in PageShell for visual consistency
+  - TC-01–TC-03: all tests pass; ESLint clean; zero raw colors; zero bare `rounded`
+  - Commit: d23f167a85
 
 ---
 
